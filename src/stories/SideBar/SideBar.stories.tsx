@@ -10,7 +10,11 @@ export default {
   },
 } as Meta;
 
-const Template: Story = (args) => <SideBar {...args} />;
+const Template: Story = () => (
+  <div style={{ display: "flex" }}>
+    <SideBar />
+  </div>
+);
 
 export const Primary = Template.bind({});
 Primary.args = {};

@@ -1,6 +1,7 @@
 import { Story, Meta } from "@storybook/react";
 
 import MulticolorProgressCircle, {
+  ColoredProgressCircle,
   MulticolorProgressCircleProps,
 } from "./MulticolorProgressCircle";
 
@@ -8,7 +9,13 @@ export default {
   title: "MulticolorProgressCircle",
   component: MulticolorProgressCircle,
   argTypes: {
-    backgroundColor: { control: "color" },
+    data: {
+      defaultValue: [
+        { fillPercent: 20, color: "red" },
+        { fillPercent: 40, color: "blue" },
+      ] as ColoredProgressCircle[],
+    },
+    completed: { defaultValue: 40 },
   },
 } as Meta;
 

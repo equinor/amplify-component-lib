@@ -6,7 +6,7 @@ export default {
   title: "EquinorLog",
   component: EquinorLog,
   argTypes: {
-    backgroundColor: { control: "color" },
+    color: { control: "select", options: ["red", "white", "black", undefined] },
   },
 } as Meta;
 

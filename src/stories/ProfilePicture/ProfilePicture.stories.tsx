@@ -1,3 +1,4 @@
+import { Avatar } from "@equinor/eds-core-react";
 import { Story, Meta } from "@storybook/react";
 
 import { createImageFromInitials } from "./";
@@ -5,12 +6,28 @@ import { createImageFromInitials } from "./";
 export default {
   title: "ProfilePicture",
   argTypes: {
-    backgroundColor: { control: "color" },
+    name: { control: "text", defaultValue: "Fredrik Wigsnes" },
   },
 } as Meta;
 
-const Template: Story = (args) => (
-  <img src={createImageFromInitials("Fredrik Wigsnes")} alt="ProfilePicture" />
+interface StoryProps {
+  name: string;
+}
+
+const Template: Story<StoryProps> = ({ name }) => (
+  <img src={createImageFromInitials(name)} alt="ProfilePicture" />
+);
+
+const TemplateAvatar: Story<StoryProps> = ({ name }) => (
+  <>
+    <Avatar
+      src={createImageFromInitials(name)}
+      alt="ProfilePicture"
+      size={48}
+    />
+  </>
 );
 
 export const Primary = Template.bind({});
+
+export const Profile = TemplateAvatar.bind({});

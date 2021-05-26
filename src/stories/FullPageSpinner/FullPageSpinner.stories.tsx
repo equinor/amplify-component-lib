@@ -5,9 +5,6 @@ import FullPageSpinner from "./FullPageSpinner";
 export default {
   title: "FullPageSpinner",
   component: FullPageSpinner,
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
 } as Meta;
 
 const Template: Story = () => <FullPageSpinner />;

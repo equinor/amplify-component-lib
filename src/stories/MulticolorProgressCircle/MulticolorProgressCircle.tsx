@@ -41,18 +41,21 @@ const CenterText = styled(Typography)`
   font-size: ${typography.ui.chart.fontSize};
 `;
 
+export type ColoredProgressCircle = {
+  fillPercent: number;
+  color: string;
+};
+
 export interface MulticolorProgressCircleProps {
   completed: number;
   data: Array<ColoredProgressCircle>;
-  height?: string;
-  width?: string;
+  size?: string;
 }
 
 const MulticolorProgressCircle: React.FC<MulticolorProgressCircleProps> = ({
   completed,
   data = [],
-  height,
-  width,
+  size,
 }) => {
   const radius = 22;
   const radiusOffset = 90;
@@ -78,8 +81,8 @@ const MulticolorProgressCircle: React.FC<MulticolorProgressCircleProps> = ({
           data-testid="svgcontainer"
           viewBox="24 24 48 48"
           role="progressbar"
-          height={height ? height : "100%"}
-          width={width ? width : "100%"}
+          height={size ? size : "100%"}
+          width={size ? size : "100%"}
           preserveAspectRatio="xMidYMid meet"
         >
           <BackgroundCircle
@@ -125,11 +128,6 @@ const MulticolorProgressCircle: React.FC<MulticolorProgressCircleProps> = ({
       </Circle>
     </Container>
   );
-};
-
-export type ColoredProgressCircle = {
-  fillPercent: number;
-  color: string;
 };
 
 export default MulticolorProgressCircle;

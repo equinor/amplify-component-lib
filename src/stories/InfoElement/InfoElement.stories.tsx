@@ -6,7 +6,8 @@ export default {
   title: "InfoElement",
   component: InfoElement,
   argTypes: {
-    backgroundColor: { control: "color" },
+    title: { control: "text", defaultValue: "Title" },
+    content: { control: "text", defaultValue: "Content" },
   },
 } as Meta;
 

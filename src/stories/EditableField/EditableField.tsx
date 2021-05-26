@@ -40,42 +40,43 @@ const TextField = styled(EdsTextField)<ITextFieldProps>`
   & > div > input {
     ${(props) =>
       props.editing &&
-      `font-family: Equinor;
-font-size: 1rem;
-font-weight: 500;
-padding: 0;
-box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__border.hsla};
-`}
+      ` font-family: Equinor;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0;
+        box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__border.hsla};
+      `}
   }
 
   & > div > input:focus {
     ${(props) =>
       props.editing &&
       ` outline: none;
-box-shadow: inset 0 -1px 0 0 ${colors.interactive.primary__resting.hsla};`}
+        box-shadow: inset 0 -1px 0 0 ${colors.interactive.primary__resting.hsla};
+      `}
   }
 `;
 
 export interface EditableFieldProps {
   editable: boolean;
   inputField?: ReactElement;
-  content?: string;
+  value?: string;
   onChange?: (value: string) => void;
 }
 
 const EditableField: React.FC<EditableFieldProps> = ({
   editable,
-  content,
+  value: initValue,
   inputField,
   onChange,
   children,
 }) => {
   const [editing, setEditing] = useState(false);
-  const [textContent, setTextContent] = useState(content);
+  const [value, setValue] = useState(initValue);
 
   useEffect(() => {
-    setTextContent(content);
-  }, [content]);
+    setValue(initValue);
+  }, [initValue]);
 
   useEffect(() => {
     if (!editable) setEditing(false);
@@ -85,7 +86,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
     e: React.ChangeEvent<HTMLInputElement> &
       React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setTextContent(e.target.value);
+    setValue(e.target.value);
   };
 
   const handleBlur = (
@@ -110,9 +111,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
       data-testid="editablefield"
       onClick={handleFieldClick}
     >
-      {!editing && !children && (
-        <Typography variant="h6">{textContent}</Typography>
-      )}
+      {!editing && !children && <Typography variant="h6">{value}</Typography>}
       {!editing && children && children}
       {editing && (
         <>
@@ -120,12 +119,12 @@ const EditableField: React.FC<EditableFieldProps> = ({
             inputField
           ) : (
             <TextField
-              editing={editing}
               autoFocus
-              id={`edit-${content}`}
-              value={textContent}
-              onChange={handleChange}
+              editing={editing}
+              id={`edit-${initValue}`}
               onBlur={handleBlur}
+              onChange={handleChange}
+              value={value}
             ></TextField>
           )}
         </>
