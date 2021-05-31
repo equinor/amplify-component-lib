@@ -15,6 +15,10 @@ const Container = styled.div`
   margin-bottom: ${spacings.comfortable.medium};
 `;
 
+const TableHeader = styled(Typography)`
+  font-weight: 500;
+`;
+
 export interface TableProps {
   title: string;
   data: TableItemProps[];
@@ -24,11 +28,11 @@ const Table: React.FC<TableProps> = ({ title, data }) => {
   return (
     <div>
       <Container>
-        <Typography>{title}</Typography>
+        <TableHeader>{title}</TableHeader>
         <div />
-        <Typography>Owner</Typography>
-        <Typography>Published</Typography>
-        {data[0].size && <Typography>Size</Typography>}
+        <TableHeader>Owner</TableHeader>
+        <TableHeader>Published</TableHeader>
+        {data[0].size && <TableHeader>Size</TableHeader>}
       </Container>
       {data.map((item, index) => (
         <TableItem key={`${title}-table-item-${index}`} {...item} />
