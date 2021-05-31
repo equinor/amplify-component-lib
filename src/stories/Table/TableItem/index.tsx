@@ -1,0 +1,76 @@
+import React from "react";
+import { Typography, Icon } from "@equinor/eds-core-react";
+import { tokens } from "@equinor/eds-tokens";
+import { file, folder, link } from "@equinor/eds-icons";
+import styled from "styled-components";
+
+const { colors, spacings } = tokens;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+`;
+
+interface GridItemProps {
+  hoverable: number;
+}
+
+const GridItem = styled.div<GridItemProps>`
+  display: grid;
+  grid-template-columns: 1fr 4fr 2fr 1fr 1fr;
+  border: 1px solid ${colors.interactive.table__header__fill_hover.hex};
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.medium};
+  ${(props) =>
+    props.hoverable === 1 &&
+    `&:hover {
+      background: ${colors.interactive.primary__hover_alt.hex};
+      cursor: pointer;
+    }`}
+`;
+
+const StyledTypography = styled(Typography)`
+  font-weight: 600;
+`;
+
+export interface TableItemProps {
+  icon: "Link" | "File" | "Folder";
+  name: string;
+  owner: string;
+  publishedDate: string;
+  size?: string;
+  onClick?: () => void;
+}
+
+const getIcon = (icon: string) => {
+  switch (icon) {
+    case "Link":
+      return link;
+    case "File":
+      return file;
+    case "Folder":
+      return folder;
+  }
+};
+
+const TableItem: React.FC<TableItemProps> = ({
+  icon,
+  name,
+  owner,
+  publishedDate,
+  size,
+  onClick,
+}) => {
+  return (
+    <Grid>
+      <GridItem hoverable={onClick ? 1 : 0} onClick={() => onClick!()}>
+        <Icon data={getIcon(icon)} />
+        <StyledTypography variant="h6">{name}</StyledTypography>
+        <StyledTypography variant="h6">{owner}</StyledTypography>
+        <StyledTypography variant="h6">{publishedDate}</StyledTypography>
+        {size && <StyledTypography variant="h6">{size}</StyledTypography>}
+      </GridItem>
+    </Grid>
+  );
+};
+
+export default TableItem;
