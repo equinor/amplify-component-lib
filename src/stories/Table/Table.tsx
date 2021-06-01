@@ -9,8 +9,8 @@ const { spacings } = tokens;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 4fr 2fr 1fr 1fr;
-  padding: ${spacings.comfortable.small} ${spacings.comfortable.medium};
+  grid-template-columns: 4fr 2fr 1fr 1fr;
+  padding: ${spacings.comfortable.small} 0;
   padding-left: 0;
   margin-bottom: ${spacings.comfortable.medium};
 `;
@@ -29,7 +29,6 @@ const Table: React.FC<TableProps> = ({ title, data }) => {
     <div>
       <Container>
         <TableHeader>{title}</TableHeader>
-        <div />
         <TableHeader>Owner</TableHeader>
         <TableHeader>Published</TableHeader>
         {data[0].size && <TableHeader>Size</TableHeader>}

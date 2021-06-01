@@ -39,18 +39,21 @@ const FileData: TableItemProps[] = [
     name: "Fiber_data_file_d23",
     owner: "Gavin McQueen",
     publishedDate: "02.05.2021",
+    size: "23 MB",
   },
   {
     icon: "File",
     name: "Fiber_data_file_d23",
     owner: "Gavin McQueen",
     publishedDate: "02.05.2021",
+    size: "23 MB",
   },
   {
     icon: "File",
     name: "Fiber_data_file_d23",
     owner: "Gavin McQueen",
     publishedDate: "02.05.2021",
+    size: "23 MB",
   },
 ];
 
@@ -60,7 +63,7 @@ const FolderData: TableItemProps[] = [
     name: "Fiber_data_folder_d23",
     owner: "Gavin McQueen",
     publishedDate: "02.05.2021",
-    size: "23 GB",
+    size: "3.8 GB",
   },
   {
     icon: "Folder",
@@ -81,7 +84,7 @@ const FolderData: TableItemProps[] = [
     name: "Fiber_data_folder_d23",
     owner: "Gavin McQueen",
     publishedDate: "02.05.2021",
-    size: "23 GB",
+    size: "23GB",
   },
 ];
 
