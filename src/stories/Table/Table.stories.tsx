@@ -1,8 +1,9 @@
+import { Typography } from "@equinor/eds-core-react";
 import { Story, Meta } from "@storybook/react";
 import styled from "styled-components";
 
 import Table, { TableProps } from "./Table";
-import { TableItemProps } from "./TableItem";
+import TableItem, { TableItemProps } from "./TableItem";
 
 export default {
   title: "Table",
@@ -94,13 +95,22 @@ const Container = styled.div`
   gap: 3rem;
 `;
 
-const Template: Story<TableProps> = () => (
+const TableStory: Story<TableProps> = () => (
   <Container>
+    <Typography variant="h3">Tables</Typography>
     <Table title="Web Link" data={LinkData} />
     <Table title="File" data={FileData} />
     <Table title="Zip Folder" data={FolderData} />
   </Container>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Tables = TableStory.bind({});
+
+const TableItemStory: Story<TableItemProps> = () => (
+  <Container>
+    <Typography variant="h3">Table item</Typography>
+    <TableItem {...LinkData[0]} />
+  </Container>
+);
+
+export const TableItems = TableItemStory.bind({});
