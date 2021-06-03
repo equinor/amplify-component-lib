@@ -26,8 +26,8 @@ const GridItem = styled.div<GridItemProps>`
 const NameItem = styled.div`
   display: grid;
   grid-template-columns: 24px max-content;
-  grid-gap: ${spacings.comfortable.small};
-  margin-left: ${spacings.comfortable.small};
+  grid-gap: ${spacings.comfortable.large};
+  margin-left: ${spacings.comfortable.medium};
 `;
 
 const StyledTypography = styled(Typography)`
