@@ -28,7 +28,9 @@ export const Body = Template.bind({});
 Body.args = {
   title: "Composite",
   headerText: "PETROPHYSICIST",
-  headerRightElement: <Icon data={account_circle} />,
+  headerRightElement: (
+      <Icon data={account_circle} />
+  ),
   body: (
     <DataTypeCardBody>
       <Chip>{"Responsible user"}</Chip>

@@ -11,13 +11,10 @@ export default {
 } as Meta;
 
 const Template: Story<IComponentProps> = (args) => {
-  const [shouldShow, setShouldShow] = useState(true);
-
   return (
     <ConfirmationPopup
       show={args.show}
-      actions={[<Button variant="ghost" onClick={() => }>Close</Button>,
-      <Button>Ok</Button>]}
+      actions={args.actions}
       body={args.body}
       onClose={args.onClose}
     />
@@ -27,9 +24,11 @@ const Template: Story<IComponentProps> = (args) => {
 export const Primary = Template.bind({});
 
 Primary.args = {
+  show: true,
   title: "Title",
   body: "This is the body",
   onClose: (event, open) => {
     alert("onClose called");
   },
+  actions: [<Button variant="ghost">Action</Button>, <Button>Action</Button>],
 };

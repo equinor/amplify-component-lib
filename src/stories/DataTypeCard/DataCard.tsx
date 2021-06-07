@@ -3,7 +3,7 @@ import { tokens } from "@equinor/eds-tokens";
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 
-const { elevation } = tokens;
+const { elevation, spacings } = tokens;
 
 const Card = styled(EDSCard)<CardProps>`
   box-shadow: ${elevation.raised};
@@ -16,6 +16,17 @@ const Card = styled(EDSCard)<CardProps>`
       }`;
     }
   }}
+`;
+
+const Header = styled(Card.Header)`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  & > :not(:first-child) {
+    margin-left: 0 !important;
+    padding: ${spacings.comfortable.small};
+  }
 `;
 
 interface CardProps {
@@ -45,7 +56,7 @@ const DataCard: React.FC<DataTypeCardProps> = ({
   onClick,
 }) => (
   <Card className={className} onClick={onClick}>
-    <Card.Header>
+    <Header>
       <Card.HeaderTitle>
         <Typography group="paragraph" variant="overline">
           {headerText}
@@ -53,7 +64,7 @@ const DataCard: React.FC<DataTypeCardProps> = ({
         <Typography variant="h6">{title}</Typography>
       </Card.HeaderTitle>
       {headerRightElement && headerRightElement}
-    </Card.Header>
+    </Header>
     {body && body}
   </Card>
 );
