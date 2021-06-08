@@ -17,7 +17,7 @@ const UploadWrapper = withTheme(styled.div<UploadWrapperProps>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 400px;
+  min-width: 300px;
   height: 152px;
   border: ${(props) => `2px dotted ${props.theme.primary__resting}`};
   border-radius: 12px;
