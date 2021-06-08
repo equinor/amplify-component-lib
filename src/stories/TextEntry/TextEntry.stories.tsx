@@ -3,7 +3,7 @@ import { Story, Meta } from "@storybook/react";
 import TextEntry, { TextEntryProps } from "./TextEntry";
 
 export default {
-  title: "TextEntry",
+  title: "TextEntry/TextEntry",
   component: TextEntry,
   argTypes: {
     body: { control: "text", defaultValue: "Value" },
