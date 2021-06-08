@@ -1,9 +1,9 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { Typography, Icon } from "@equinor/eds-core-react";
 import styled from "styled-components";
 import { upload } from "@equinor/eds-icons";
 import { withTheme } from "@material-ui/core";
-import { DropzoneOptions, FileRejection, useDropzone } from "react-dropzone";
+import { DropzoneOptions, useDropzone } from "react-dropzone";
 
 import { tokens } from "@equinor/eds-tokens";
 const { colors } = tokens;
