@@ -3,7 +3,7 @@ import { tokens } from "@equinor/eds-tokens";
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 
-const { elevation } = tokens;
+const { elevation, spacings } = tokens;
 
 const Card = styled(EDSCard)<CardProps>`
   box-shadow: ${elevation.raised};
@@ -18,42 +18,55 @@ const Card = styled(EDSCard)<CardProps>`
   }}
 `;
 
+const Header = styled(Card.Header)`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  & > :not(:first-child) {
+    margin-left: 0 !important;
+    padding: ${spacings.comfortable.small};
+  }
+`;
+
 interface CardProps {
   onClick?: React.MouseEventHandler;
 }
 
-interface DataType {
+export interface DataType {
   discipline?: string;
   dataType?: string;
 }
 
 export interface DataTypeCardProps {
-  datatype: DataType;
-  headerRight?: ReactElement;
+  headerText: string;
+  title: string;
+  headerRightElement?: ReactElement;
   body?: ReactElement;
   className?: string;
   onClick?: React.MouseEventHandler;
 }
 
-const DataTypeCard: React.FC<DataTypeCardProps> = ({
-  datatype,
-  headerRight,
+const DataCard: React.FC<DataTypeCardProps> = ({
+  headerText,
+  title,
+  headerRightElement,
   body,
   className,
   onClick,
 }) => (
   <Card className={className} onClick={onClick}>
-    <Card.Header>
+    <Header>
       <Card.HeaderTitle>
         <Typography group="paragraph" variant="overline">
-          {datatype.discipline!.toUpperCase()}
+          {headerText}
         </Typography>
-        <Typography variant="h6">{datatype.dataType}</Typography>
+        <Typography variant="h6">{title}</Typography>
       </Card.HeaderTitle>
-      {headerRight && headerRight}
-    </Card.Header>
+      {headerRightElement && headerRightElement}
+    </Header>
     {body && body}
   </Card>
 );
 
-export default DataTypeCard;
+export default DataCard;

@@ -1,7 +1,7 @@
 import { Button, Chip, Icon } from "@equinor/eds-core-react";
 import { more_vertical } from "@equinor/eds-icons";
 import styled from "styled-components";
-import DataTypeCard from "../DataTypeCard";
+import DataCard from "../DataCard";
 import DataTypeCardSkeleton from "../Skeleton/DataTypeCardSkeleton";
 
 const Container = styled.div`
@@ -40,12 +40,13 @@ const DataTypeCardGrid: React.FC<DataTypeCardGridProps> = ({ skelleton }) => (
       return skelleton ? (
         <DataTypeCardSkeleton key={value + index} />
       ) : (
-        <DataTypeCard
+        <DataCard
           key={value + index}
-          datatype={{ dataType: "dataType", discipline: "discipline" }}
+          headerText= "headertext"
+          title="title"
           body={
             <DataTypeCardBody>
-              <Chip>{"Responsible user"}</Chip>
+              <Chip>{"Body"}</Chip>
               <Button variant="ghost_icon">
                 <Icon data={more_vertical} />
               </Button>
