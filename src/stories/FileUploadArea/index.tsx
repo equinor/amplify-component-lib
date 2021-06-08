@@ -29,7 +29,7 @@ const UploadWrapper = withTheme(styled.div<UploadWrapperProps>`
   background-color: ${(props) => (props.isDragActive ? `#deedee` : "")};
 `);
 
-export type FileUploadAreaProps = {} & DropzoneOptions;
+export type FileUploadAreaProps = DropzoneOptions;
 
 const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
