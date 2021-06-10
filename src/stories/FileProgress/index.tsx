@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
   Card,
   Typography,
@@ -10,12 +10,10 @@ import {
 import {
   check_circle_outlined,
   close_circle_outlined,
-  pause_circle_outlined,
   refresh,
 } from "@equinor/eds-icons";
 import { tokens } from "@equinor/eds-tokens";
 import styled from "styled-components";
-import { truncate } from "lodash";
 
 const { elevation, colors } = tokens;
 
@@ -23,6 +21,15 @@ const StyledCard = styled(Card)`
   box-shadow: ${elevation.raised};
   overflow: hidden;
   margin: 10px 0;
+`;
+
+const CardHeader = styled(Card.Header)`
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+`;
+
+const StyledButton = styled(Button)`
+  margin-left: 0 !important;
 `;
 
 interface TopProgressProps {
@@ -41,6 +48,13 @@ const TopProgress = styled(Progress.Linear)<TopProgressProps>`
   }
 `;
 
+const TruncatedTypography = styled(Typography)`
+  text-overflow: ellipsis;
+  max-width: fit-content;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
 const getTitle = (
   status: "loading" | "paused" | "error" | "done",
   errorMsg?: string
@@ -51,46 +65,18 @@ const getTitle = (
     case "paused":
       return <Typography variant="overline">Upload is paused</Typography>;
     case "error":
-      return <Typography variant="overline">{`${errorMsg}`}</Typography>;
+      return (
+        <Tooltip title={errorMsg} placement="top">
+          <TruncatedTypography variant="overline">{`${errorMsg}`}</TruncatedTypography>
+        </Tooltip>
+      );
     case "done":
       return <Typography variant="overline">Success!</Typography>;
   }
 };
 
-const getIcon = (status: "loading" | "paused" | "error" | "done") => {
-  switch (status) {
-    case "loading":
-      return (
-        <Icon
-          color={colors.text.static_icons__tertiary.hex}
-          data={pause_circle_outlined}
-          size={24}
-        />
-      );
-    case "paused":
-      return (
-        <Icon
-          color={colors.interactive.warning__resting.hex}
-          data={pause_circle_outlined}
-          size={24}
-        />
-      );
-    case "error":
-      return <Icon data={refresh} size={24} />;
-    case "done":
-      return (
-        <Icon
-          color={colors.interactive.primary__resting.hex}
-          data={check_circle_outlined}
-          size={24}
-        />
-      );
-  }
-};
-
-const getStatus = (loading?: boolean, error?: boolean, paused?: boolean) => {
+const getStatus = (loading?: boolean, error?: boolean) => {
   if (error) return "error";
-  if (paused) return "paused";
   if (loading) return "loading";
   return "done";
 };
@@ -98,54 +84,59 @@ const getStatus = (loading?: boolean, error?: boolean, paused?: boolean) => {
 export interface FileProgressProps {
   error?: boolean;
   errorMsg?: string;
-  id: string;
+  fileId: string;
   loading?: boolean;
   name: string;
-  onDelete: (name: string) => void;
+  onDelete: (fileId: string) => void;
+  onRetry: (fileId: string) => void;
 }
 
 const FileProgress: FC<FileProgressProps> = ({
   error,
   errorMsg,
-  id,
+  fileId,
   name,
   onDelete,
+  onRetry,
   loading,
 }) => {
-  const [paused, setPaused] = useState(false);
   return (
     <StyledCard>
       <TopProgress
         variant={error || !loading ? "determinate" : "indeterminate"}
         value={error || !loading ? 100 : undefined}
-        paused={paused}
         error={error}
       />
-      <Card.Header>
+      <CardHeader>
         <Card.HeaderTitle>
-          {getTitle(getStatus(loading, error, paused), errorMsg)}
-          {name.length > 25 ? (
-            <Tooltip title={name}>
-              <Typography variant="h4" token={{ fontWeight: 500 }}>
-                {truncate(name, { length: 25 })}
-              </Typography>
-            </Tooltip>
-          ) : (
-            <Typography variant="h4" token={{ fontWeight: 500 }}>
-              {truncate(name, { length: 25 })}
-            </Typography>
-          )}
+          {getTitle(getStatus(loading, error), errorMsg)}
+          <Tooltip title={name}>
+            <TruncatedTypography variant="h4" token={{ fontWeight: 500 }}>
+              {name}
+            </TruncatedTypography>
+          </Tooltip>
         </Card.HeaderTitle>
-        <Button
+        {error ? (
+          <StyledButton
+            variant="ghost_icon"
+            onClick={!loading ? () => onRetry(fileId) : undefined}
+          >
+            <Icon
+              color={colors.text.static_icons__tertiary.hex}
+              data={refresh}
+              size={24}
+            />
+          </StyledButton>
+        ) : !error && !loading ? (
+          <StyledButton variant="ghost_icon" color="primary">
+            <Icon data={check_circle_outlined} size={24} />
+          </StyledButton>
+        ) : (
+          <div />
+        )}
+        <StyledButton
           variant="ghost_icon"
-          onClick={loading ? () => setPaused((p) => !p) : undefined}
-          disabled
-        >
-          {getIcon(getStatus(loading, error, paused))}
-        </Button>
-        <Button
-          variant="ghost_icon"
-          onClick={() => onDelete(id)}
+          onClick={() => onDelete(fileId)}
           disabled={loading}
         >
           <Icon
@@ -153,8 +144,8 @@ const FileProgress: FC<FileProgressProps> = ({
             data={close_circle_outlined}
             size={24}
           />
-        </Button>
-      </Card.Header>
+        </StyledButton>
+      </CardHeader>
     </StyledCard>
   );
 };
