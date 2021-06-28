@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { tokens } from "@equinor/eds-tokens";
+import "./animation.css";
 
 const { colors, spacings, elevation, shape } = tokens;
 
@@ -61,12 +62,12 @@ const DataTypeCardSkeleton: React.FC = () => {
   return (
     <TaskSkeleton>
       <Top>
-        <Title />
-        <Status />
+        <Title className="skeleton-loading" />
+        <Status className="skeleton-loading" />
       </Top>
       <Bottom>
-        <Assigned />
-        <Button />
+        <Assigned className="skeleton-loading" />
+        <Button className="skeleton-loading" />
       </Bottom>
     </TaskSkeleton>
   );
