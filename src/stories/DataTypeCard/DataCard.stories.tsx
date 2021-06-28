@@ -24,13 +24,18 @@ Primary.args = {
   headerText: "PETROPHYSICIST",
 };
 
+export const Compact = Template.bind({});
+Compact.args = {
+  title: "Composite",
+  headerText: "PETROPHYSICIST",
+  headerRightElement: <Icon data={account_circle} />,
+};
+
 export const Body = Template.bind({});
 Body.args = {
   title: "Composite",
   headerText: "PETROPHYSICIST",
-  headerRightElement: (
-      <Icon data={account_circle} />
-  ),
+  headerRightElement: <Icon data={account_circle} />,
   body: (
     <DataTypeCardBody>
       <Chip>{"Responsible user"}</Chip>
