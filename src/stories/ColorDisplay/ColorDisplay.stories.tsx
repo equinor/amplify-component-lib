@@ -1,9 +1,9 @@
-import { Story, Meta } from "@storybook/react";
+import { Story, Meta } from '@storybook/react';
 
-import ColorDisplay from "./";
+import ColorDisplay from './';
 
 export default {
-  title: "ColorDisplay",
+  title: 'ColorDisplay',
   component: ColorDisplay,
 } as Meta;
 

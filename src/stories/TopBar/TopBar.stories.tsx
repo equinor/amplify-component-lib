@@ -1,12 +1,12 @@
-import { Story, Meta } from "@storybook/react";
+import { Story, Meta } from '@storybook/react';
 
-import ApplicationTopBar from "./TopBar";
+import ApplicationTopBar from './TopBar';
 
 export default {
-  title: "TopBar",
+  title: 'TopBar',
   component: ApplicationTopBar,
   argTypes: {
-    backgroundColor: { control: "color" },
+    backgroundColor: { control: 'color' },
   },
 } as Meta;
 

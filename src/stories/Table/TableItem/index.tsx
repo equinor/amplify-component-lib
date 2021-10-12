@@ -1,8 +1,8 @@
-import React from "react";
-import { Typography, Icon } from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import { file, folder, link } from "@equinor/eds-icons";
-import styled from "styled-components";
+import React from 'react';
+import { Typography, Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { file, folder, link } from '@equinor/eds-icons';
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 
@@ -35,7 +35,7 @@ const StyledTypography = styled(Typography)`
 `;
 
 export interface TableItemProps {
-  icon: "Link" | "File" | "Folder";
+  icon: 'Link' | 'File' | 'Folder';
   name: string;
   owner: string;
   publishedDate: string;
@@ -45,11 +45,11 @@ export interface TableItemProps {
 
 const getIcon = (icon: string) => {
   switch (icon) {
-    case "Link":
+    case 'Link':
       return link;
-    case "File":
+    case 'File':
       return file;
-    case "Folder":
+    case 'Folder':
       return folder;
   }
 };

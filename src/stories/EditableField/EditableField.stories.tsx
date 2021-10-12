@@ -1,14 +1,14 @@
-import { SingleSelect } from "@equinor/eds-core-react";
-import { Story, Meta } from "@storybook/react";
+import { SingleSelect } from '@equinor/eds-core-react';
+import { Story, Meta } from '@storybook/react';
 
-import EditableField, { EditableFieldProps } from "./EditableField";
+import EditableField, { EditableFieldProps } from './EditableField';
 
 export default {
-  title: "EditableField",
+  title: 'EditableField',
   component: EditableField,
   argTypes: {
-    editable: { control: "boolean", defaultValue: true },
-    value: { control: "text", defaultValue: "Initial value" },
+    editable: { control: 'boolean', defaultValue: true },
+    value: { control: 'text', defaultValue: 'Initial value' },
   },
 } as Meta;
 
@@ -21,5 +21,5 @@ Primary.args = {};
 
 export const Select = Template.bind({});
 Select.args = {
-  inputField: <SingleSelect label="Select" items={["1", "2", "3"]} />,
+  inputField: <SingleSelect label="Select" items={['1', '2', '3']} />,
 };

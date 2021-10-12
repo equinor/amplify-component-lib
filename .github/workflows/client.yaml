@@ -4,8 +4,8 @@ on:
   pull_request:
     branches: [main, development, staging]
     paths:
-      - "client/**"
-      - ".github/workflows/client.yml"
+      - 'client/**'
+      - '.github/workflows/client.yml'
 
 jobs:
   build:

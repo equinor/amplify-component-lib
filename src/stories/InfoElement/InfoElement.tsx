@@ -1,5 +1,5 @@
-import { Typography } from "@equinor/eds-core-react";
-import React, { ReactElement } from "react";
+import { Typography } from '@equinor/eds-core-react';
+import React, { ReactElement } from 'react';
 
 export interface InfoElementProps {
   title: string;
@@ -11,7 +11,7 @@ const InfoElement: React.FC<InfoElementProps> = ({ title, content }) => (
     <Typography group="paragraph" variant="overline">
       {title?.toUpperCase()}
     </Typography>
-    {typeof content === "string" ? (
+    {typeof content === 'string' ? (
       <Typography variant="h6">{content}</Typography>
     ) : (
       content

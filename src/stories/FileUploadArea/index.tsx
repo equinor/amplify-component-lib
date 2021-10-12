@@ -1,11 +1,11 @@
-import { FC } from "react";
-import { Typography, Icon } from "@equinor/eds-core-react";
-import styled from "styled-components";
-import { upload } from "@equinor/eds-icons";
-import { withTheme } from "@material-ui/core";
-import { DropzoneOptions, useDropzone } from "react-dropzone";
+import { FC } from 'react';
+import { Typography, Icon } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { upload } from '@equinor/eds-icons';
+import { withTheme } from '@material-ui/core';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
-import { tokens } from "@equinor/eds-tokens";
+import { tokens } from '@equinor/eds-tokens';
 const { colors } = tokens;
 
 interface UploadWrapperProps {
@@ -26,7 +26,7 @@ const UploadWrapper = withTheme(styled.div<UploadWrapperProps>`
     background-color: #deedee;
     cursor: pointer;
   }
-  background-color: ${(props) => (props.isDragActive ? `#deedee` : "")};
+  background-color: ${(props) => (props.isDragActive ? `#deedee` : '')};
 `);
 
 export type FileUploadAreaProps = DropzoneOptions;
@@ -48,13 +48,13 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
             color={colors.interactive.primary__resting.hsla}
           />
           <Typography group="navigation" variant="button">
-            Drop files or{" "}
+            Drop files or{' '}
             <Typography
               color={colors.interactive.primary__resting.hsla}
               as="span"
             >
               browse
-            </Typography>{" "}
+            </Typography>{' '}
             to upload
           </Typography>
           {props.accept && (

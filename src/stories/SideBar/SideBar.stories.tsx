@@ -1,17 +1,17 @@
-import { Story, Meta } from "@storybook/react";
+import { Story, Meta } from '@storybook/react';
 
-import SideBar from "./SideBar";
+import SideBar from './SideBar';
 
 export default {
-  title: "SideBar",
+  title: 'SideBar',
   component: SideBar,
   argTypes: {
-    backgroundColor: { control: "color" },
+    backgroundColor: { control: 'color' },
   },
 } as Meta;
 
 const Template: Story = () => (
-  <div style={{ display: "flex" }}>
+  <div style={{ display: 'flex' }}>
     <SideBar />
   </div>
 );

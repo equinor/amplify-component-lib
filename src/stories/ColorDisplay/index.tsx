@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import { tokens } from "@equinor/eds-tokens";
-import styled from "styled-components";
-import { Typography } from "@equinor/eds-core-react";
+import React, { FC } from 'react';
+import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
+import { Typography } from '@equinor/eds-core-react';
 
 const { colors } = tokens;
 

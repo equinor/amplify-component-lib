@@ -1,16 +1,16 @@
-import React from "react";
-import { tokens } from "@equinor/eds-tokens";
+import React from 'react';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;
 
-const colorSwitch = (color?: "red" | "white" | "black") => {
+const colorSwitch = (color?: 'red' | 'white' | 'black') => {
   switch (color) {
-    case "red":
+    case 'red':
       return colors.logo.fill_positive.hex;
-    case "white":
+    case 'white':
       return colors.logo.fill_negative.hex;
-    case "black":
-      return "#000";
+    case 'black':
+      return '#000';
     default:
       return colors.logo.fill_positive.hex;
   }
@@ -18,7 +18,7 @@ const colorSwitch = (color?: "red" | "white" | "black") => {
 
 export interface EquinorLogoProps {
   large?: boolean;
-  color?: "red" | "white" | "black";
+  color?: 'red' | 'white' | 'black';
   size?: 16 | 24 | 32 | 40 | 48;
 }
 

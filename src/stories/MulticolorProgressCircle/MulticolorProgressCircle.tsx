@@ -1,7 +1,7 @@
-import { Typography } from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import React from "react";
-import styled from "styled-components";
+import { Typography } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import React from 'react';
+import styled from 'styled-components';
 const { colors, typography } = tokens;
 
 const Container = styled.div`
@@ -81,8 +81,8 @@ const MulticolorProgressCircle: React.FC<MulticolorProgressCircleProps> = ({
           data-testid="svgcontainer"
           viewBox="24 24 48 48"
           role="progressbar"
-          height={size ? size : "100%"}
-          width={size ? size : "100%"}
+          height={size ? size : '100%'}
+          width={size ? size : '100%'}
           preserveAspectRatio="xMidYMid meet"
         >
           <BackgroundCircle

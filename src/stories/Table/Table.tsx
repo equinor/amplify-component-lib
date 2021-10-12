@@ -1,9 +1,9 @@
-import React from "react";
-import { Typography } from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import styled from "styled-components";
+import React from 'react';
+import { Typography } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
 
-import TableItem, { TableItemProps } from "./TableItem";
+import TableItem, { TableItemProps } from './TableItem';
 
 const { spacings } = tokens;
 

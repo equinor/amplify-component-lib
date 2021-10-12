@@ -1,8 +1,8 @@
-import { forwardRef, useState } from "react";
-import { Button, Icon } from "@equinor/eds-core-react";
-import { IconData } from "@equinor/eds-icons";
-import { Placement } from "@equinor/eds-core-react/dist/types/hooks";
-import OptionalTooltip from "../../Tooltip/OptionalTooltip";
+import { forwardRef, useState } from 'react';
+import { Button, Icon } from '@equinor/eds-core-react';
+import { IconData } from '@equinor/eds-icons';
+import { Placement } from '@equinor/eds-core-react/dist/types/hooks';
+import OptionalTooltip from '../../Tooltip/OptionalTooltip';
 
 interface Tooltip {
   title: string;
@@ -59,5 +59,7 @@ const IconToggleButton = forwardRef<HTMLButtonElement, IconToggleButtonProps>(
     );
   }
 );
+
+IconToggleButton.displayName = 'IconToggleButton';
 
 export default IconToggleButton;

@@ -3,13 +3,13 @@ import {
   Description,
   Primary,
   Stories,
-} from "@storybook/addon-docs/blocks";
+} from '@storybook/addon-docs/blocks';
 
-import { Meta, Story } from "@storybook/react";
-import FileUpload from ".";
+import { Meta, Story } from '@storybook/react';
+import FileUpload from '.';
 
 export default {
-  title: "FileUpload/Full File uploading example with Hook",
+  title: 'FileUpload/Full File uploading example with Hook',
   component: FileUpload,
   parameters: {
     docs: {

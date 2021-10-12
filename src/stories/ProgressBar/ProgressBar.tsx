@@ -1,6 +1,6 @@
-import { tokens } from "@equinor/eds-tokens";
-import React from "react";
-import styled from "styled-components";
+import { tokens } from '@equinor/eds-tokens';
+import React from 'react';
+import styled from 'styled-components';
 
 const { colors, spacings, shape } = tokens;
 
@@ -73,7 +73,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         data-testid="progressbarfill"
         size={size}
       >
-        <FillValue>{value && value + (unit ? " " + unit : "")}</FillValue>
+        <FillValue>{value && value + (unit ? ' ' + unit : '')}</FillValue>
       </Fill>
     </Container>
   );

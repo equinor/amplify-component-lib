@@ -1,21 +1,21 @@
-import { Story, Meta } from "@storybook/react";
+import { Story, Meta } from '@storybook/react';
 
-import ProgressBar, { ProgressBarProps } from "./ProgressBar";
+import ProgressBar, { ProgressBarProps } from './ProgressBar';
 
 export default {
-  title: "ProgressBar",
+  title: 'ProgressBar',
   component: ProgressBar,
   argTypes: {
-    progress: { control: "number", defaultValue: 25 },
-    unit: { control: "text", defaultValue: "%" },
+    progress: { control: 'number', defaultValue: 25 },
+    unit: { control: 'text', defaultValue: '%' },
     size: {
-      control: "select",
+      control: 'select',
       options: [8, 16, 32, 64],
       defaultValue: 16,
     },
-    value: { control: "text", defaultValue: "25" },
-    backgroundColor: { control: "color", defaultValue: "lightGreen" },
-    fillColor: { control: "color", defaultValue: "green" },
+    value: { control: 'text', defaultValue: '25' },
+    backgroundColor: { control: 'color', defaultValue: 'lightGreen' },
+    fillColor: { control: 'color', defaultValue: 'green' },
   },
 } as Meta;
 

@@ -1,8 +1,8 @@
-import { Story, Meta } from "@storybook/react";
-import DataTypeCardGrid, { DataTypeCardGridProps } from "./DataTypeCardGrid";
+import { Story, Meta } from '@storybook/react';
+import DataTypeCardGrid, { DataTypeCardGridProps } from './DataTypeCardGrid';
 
 export default {
-  title: "DataTypeCard/Grid",
+  title: 'DataTypeCard/Grid',
   component: DataTypeCardGrid,
 } as Meta;
 

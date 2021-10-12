@@ -1,12 +1,12 @@
-import { Story, Meta } from "@storybook/react";
+import { Story, Meta } from '@storybook/react';
 
-import NewTextEntry, { NewTextEntryProps } from "./NewTextEntry";
+import NewTextEntry, { NewTextEntryProps } from './NewTextEntry';
 
 export default {
-  title: "TextEntry/NewTextEntry",
+  title: 'TextEntry/NewTextEntry',
   component: NewTextEntry,
   argTypes: {
-    title: { control: "text", defaultValue: "comment" },
+    title: { control: 'text', defaultValue: 'comment' },
   },
 } as Meta;
 

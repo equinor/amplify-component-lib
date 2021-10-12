@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { FileRejection } from "react-dropzone";
-import { v4 as uuidv4 } from "uuid";
+import { useState } from 'react';
+import { FileRejection } from 'react-dropzone';
+import { v4 as uuidv4 } from 'uuid';
 
 // TODO:
 // document stuff.
@@ -12,7 +12,7 @@ type FileType = {
   fileId?: string;
   name: string;
   size: number;
-  status: "success" | "failed" | "uploading";
+  status: 'success' | 'failed' | 'uploading';
   type: string;
 };
 
@@ -40,7 +40,7 @@ export function useFileUpload(
           data: inf,
           name: inf.name,
           size: inf.size,
-          status: "success",
+          status: 'success',
           type: inf.type,
         } as FileType)
     ) ?? []
@@ -50,7 +50,7 @@ export function useFileUpload(
     const rejected = rejectedFiles.map(
       (rf) =>
         ({
-          status: "failed",
+          status: 'failed',
           name: rf.file.name,
           size: rf.file.size,
           data: rf.file,
@@ -68,7 +68,7 @@ export function useFileUpload(
         // Set file to success
         setFiles((f) => [
           ...f.slice(0, index),
-          { ...f[index], status: "success", fileId: fileId },
+          { ...f[index], status: 'success', fileId: fileId },
           ...f.slice(index + 1, f.length),
         ]);
       })
@@ -78,7 +78,7 @@ export function useFileUpload(
           ...f.slice(0, index),
           {
             ...f[index],
-            status: "failed",
+            status: 'failed',
             error: true,
             errorMessage: error,
             fileId: uuidv4(),
@@ -92,7 +92,7 @@ export function useFileUpload(
     const accepted = files.map(
       (f) =>
         ({
-          status: "uploading",
+          status: 'uploading',
           name: f.name,
           size: f.size,
           type: f.type,
@@ -112,17 +112,17 @@ export function useFileUpload(
       try {
         return await deleteFunction(fileId);
       } catch {
-        return "Delete failed";
+        return 'Delete failed';
       }
     }
-    return "File not found";
+    return 'File not found';
   };
 
   const retryFile = (fileId: string) => {
     const index = files.findIndex((f) => f.fileId === fileId);
     setFiles((f) => [
       ...f.slice(0, index),
-      { ...f[index], status: "uploading", error: false, errorMessage: "" },
+      { ...f[index], status: 'uploading', error: false, errorMessage: '' },
       ...f.slice(index + 1, f.length),
     ]);
     const file = files[index];

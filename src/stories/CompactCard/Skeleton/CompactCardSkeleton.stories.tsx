@@ -1,8 +1,8 @@
-import { Story, Meta } from "@storybook/react";
-import CompactCardSkeleton from "./CompactCardSkeleton";
+import { Story, Meta } from '@storybook/react';
+import CompactCardSkeleton from './CompactCardSkeleton';
 
 export default {
-  title: "CompactCard/Skelleton",
+  title: 'CompactCard/Skelleton',
   component: CompactCardSkeleton,
 } as Meta;
 

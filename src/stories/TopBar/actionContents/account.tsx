@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Button,
   Menu,
   Typography,
   Icon,
   Avatar,
-} from "@equinor/eds-core-react";
-import styled from "styled-components";
-import { clear, account_circle } from "@equinor/eds-icons";
-import { Box } from "@material-ui/core";
-import { tokens } from "@equinor/eds-tokens";
-import { useAuth } from "../../../Auth";
+} from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { clear, account_circle } from '@equinor/eds-icons';
+import { Box } from '@material-ui/core';
+import { tokens } from '@equinor/eds-tokens';
+import { useAuth } from '../../../Auth';
 const { colors } = tokens;
 
 const StyledMenu = styled(Menu)`

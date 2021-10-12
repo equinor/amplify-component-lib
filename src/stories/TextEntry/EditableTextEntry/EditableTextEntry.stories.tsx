@@ -1,12 +1,12 @@
-import { Story, Meta } from "@storybook/react";
+import { Story, Meta } from '@storybook/react';
 
-import EditableTextEntry, { EditableTextEntryProps } from "./EditableTextEntry";
+import EditableTextEntry, { EditableTextEntryProps } from './EditableTextEntry';
 
 export default {
-  title: "TextEntry/EditableTextEntry",
+  title: 'TextEntry/EditableTextEntry',
   component: EditableTextEntry,
   argTypes: {
-    body: { control: "text", defaultValue: "Value" },
+    body: { control: 'text', defaultValue: 'Value' },
   },
 } as Meta;
 

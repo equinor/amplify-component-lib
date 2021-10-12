@@ -1,7 +1,7 @@
-import { Card as EDSCard, Typography } from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import React, { ReactElement } from "react";
-import styled from "styled-components";
+import { Card as EDSCard, Typography } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
 
 const { elevation, spacings } = tokens;
 

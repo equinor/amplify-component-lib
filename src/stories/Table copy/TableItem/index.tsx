@@ -1,8 +1,8 @@
-import React from "react";
-import { Typography, Icon } from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import { IconData } from "@equinor/eds-icons";
-import styled from "styled-components";
+import React from 'react';
+import { Typography, Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { IconData } from '@equinor/eds-icons';
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 
@@ -55,7 +55,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, grow = 1, onClick }) => {
   return (
     <TableRow hoverable={onClick ? 1 : 0} onClick={() => onClick!()}>
       {data.map((item) => (
-        <TableCell grow={grow}>
+        <TableCell key={item.value} grow={grow}>
           {item.icon && <StyledIcon data={item.icon} />}
           <StyledTypography variant="h6">{item.value}</StyledTypography>
         </TableCell>

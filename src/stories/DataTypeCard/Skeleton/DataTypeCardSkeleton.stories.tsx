@@ -1,8 +1,8 @@
-import { Story, Meta } from "@storybook/react";
-import DataTypeCardSkeleton from "./DataTypeCardSkeleton";
+import { Story, Meta } from '@storybook/react';
+import DataTypeCardSkeleton from './DataTypeCardSkeleton';
 
 export default {
-  title: "DataTypeCard/Skelleton",
+  title: 'DataTypeCard/Skelleton',
   component: DataTypeCardSkeleton,
 } as Meta;
 

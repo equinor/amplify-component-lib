@@ -1,12 +1,12 @@
-import { Story, Meta } from "@storybook/react";
+import { Story, Meta } from '@storybook/react';
 
-import EquinorLog, { EquinorLogoProps } from ".";
+import EquinorLog, { EquinorLogoProps } from '.';
 
 export default {
-  title: "EquinorLog",
+  title: 'EquinorLog',
   component: EquinorLog,
   argTypes: {
-    color: { control: "select", options: ["red", "white", "black", undefined] },
+    color: { control: 'select', options: ['red', 'white', 'black', undefined] },
   },
 } as Meta;
 

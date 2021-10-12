@@ -1,13 +1,13 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useState } from 'react';
 import {
   Button,
   Icon,
   TextField,
   TextFieldProps,
-} from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import styled from "styled-components";
-import { add } from "@equinor/eds-icons";
+} from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
+import { add } from '@equinor/eds-icons';
 
 const { colors, spacings } = tokens;
 
@@ -37,7 +37,7 @@ export type NewTextEntryProps = {
 } & TextFieldProps;
 
 const NewTextEntry: FC<NewTextEntryProps> = ({ onSave, title, ...rest }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [newEntry, setNewEntry] = useState(false);
 
   if (newEntry) {
@@ -47,7 +47,7 @@ const NewTextEntry: FC<NewTextEntryProps> = ({ onSave, title, ...rest }) => {
           {...rest}
           value={value}
           autoFocus
-          style={{ resize: "none" }}
+          style={{ resize: 'none' }}
           onChange={(
             e: ChangeEvent<HTMLInputElement> & ChangeEvent<HTMLTextAreaElement>
           ) => setValue(e.target.value)}
@@ -60,7 +60,7 @@ const NewTextEntry: FC<NewTextEntryProps> = ({ onSave, title, ...rest }) => {
             variant="ghost"
             onClick={() => {
               setNewEntry(false);
-              setValue("");
+              setValue('');
             }}
           >
             Cancel
@@ -70,7 +70,7 @@ const NewTextEntry: FC<NewTextEntryProps> = ({ onSave, title, ...rest }) => {
             onClick={() => {
               setNewEntry(false);
               onSave(value);
-              setValue("");
+              setValue('');
             }}
           >
             Finish

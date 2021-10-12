@@ -1,12 +1,12 @@
-import { Avatar } from "@equinor/eds-core-react";
-import { Story, Meta } from "@storybook/react";
+import { Avatar } from '@equinor/eds-core-react';
+import { Story, Meta } from '@storybook/react';
 
-import { createImageFromInitials } from "./";
+import { createImageFromInitials } from './';
 
 export default {
-  title: "ProfilePicture",
+  title: 'ProfilePicture',
   argTypes: {
-    name: { control: "text", defaultValue: "Fredrik Wigsnes" },
+    name: { control: 'text', defaultValue: 'Fredrik Wigsnes' },
   },
 } as Meta;
 

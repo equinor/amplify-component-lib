@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Button, Menu, Typography, Radio, Icon } from "@equinor/eds-core-react";
-import styled from "styled-components";
-import { clear, settings } from "@equinor/eds-icons";
-import { Box } from "@material-ui/core";
-import { tokens } from "@equinor/eds-tokens";
+import React, { useState } from 'react';
+import { Button, Menu, Typography, Radio, Icon } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { clear, settings } from '@equinor/eds-icons';
+import { Box } from '@material-ui/core';
+import { tokens } from '@equinor/eds-tokens';
 const { colors, elevation } = tokens;
 
 const StyledMenu = styled(Menu)`
@@ -40,7 +40,7 @@ const Settings: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const onChange = () => {};
+  const onChange = () => null;
 
   return (
     <>

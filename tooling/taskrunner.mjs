@@ -1,8 +1,8 @@
-import ora from "ora";
-import { exec } from "child_process";
-import chalk from "chalk";
+import ora from 'ora';
+import { exec } from 'child_process';
+import chalk from 'chalk';
 
-// Project used to be TS, keeping 
+// Project used to be TS, keeping
 // types here for object prop reference
 
 // export type CmdTask = {
@@ -18,17 +18,15 @@ import chalk from "chalk";
 //   stderr: string | null;
 // };
 
-
 class Queue {
-    _store = [];
-    push(val) {
-      this._store.push(val);
-    }
-    pop() {
-      return this._store.shift();
-    }
+  _store = [];
+  push(val) {
+    this._store.push(val);
   }
-
+  pop() {
+    return this._store.shift();
+  }
+}
 
 const execShell = async (task) => {
   return new Promise((resolve, reject) => {
@@ -54,12 +52,11 @@ const execShell = async (task) => {
   });
 };
 
-
 function taskFactory(task) {
   return function () {
     return new Promise(async (resolve, reject) => {
       const spinner = ora(task.name);
-      spinner.spinner = "earth";
+      spinner.spinner = 'earth';
       spinner.indent = 4;
       spinner.start();
 
@@ -70,7 +67,7 @@ function taskFactory(task) {
         reject(status.error.message);
       }
 
-      if (status.stderr && status.stderr !== "" && !task.ignoreStdErr) {
+      if (status.stderr && status.stderr !== '' && !task.ignoreStdErr) {
         spinner.fail();
         reject(status.stderr);
       }
@@ -88,6 +85,6 @@ export async function processCmdTasks(tasks) {
 
   while (queue._store.length > 0) {
     const test = queue.pop();
-    await test().catch((err) => console.log("\n" + chalk.red(err)));
+    await test().catch((err) => console.log('\n' + chalk.red(err)));
   }
 }

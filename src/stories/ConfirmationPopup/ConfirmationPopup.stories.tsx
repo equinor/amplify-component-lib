@@ -1,11 +1,10 @@
-import { Button } from "@equinor/eds-core-react";
-import { Story, Meta } from "@storybook/react";
-import { useState } from "react";
+import { Button } from '@equinor/eds-core-react';
+import { Story, Meta } from '@storybook/react';
 
-import ConfirmationPopup, { IComponentProps } from ".";
+import ConfirmationPopup, { IComponentProps } from '.';
 
 export default {
-  title: "Confirmation Popup",
+  title: 'Confirmation Popup',
   component: ConfirmationPopup,
   argTypes: {},
 } as Meta;
@@ -25,10 +24,15 @@ export const Primary = Template.bind({});
 
 Primary.args = {
   show: true,
-  title: "Title",
-  body: "This is the body",
-  onClose: (event, open) => {
-    alert("onClose called");
+  title: 'Title',
+  body: 'This is the body',
+  onClose: () => {
+    alert('onClose called');
   },
-  actions: [<Button variant="ghost">Action</Button>, <Button>Action</Button>],
+  actions: [
+    <Button key="A1" variant="ghost">
+      Action
+    </Button>,
+    <Button key="A2">Action</Button>,
+  ],
 };

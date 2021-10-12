@@ -1,5 +1,5 @@
-import React from "react";
-import { tokens } from "@equinor/eds-tokens";
+import React from 'react';
+import { tokens } from '@equinor/eds-tokens';
 import {
   Button,
   ButtonProps,
@@ -7,9 +7,9 @@ import {
   IconProps,
   Typography,
   TypographyProps,
-} from "@equinor/eds-core-react";
-import styled from "styled-components";
-import { IconData } from "@equinor/eds-icons";
+} from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { IconData } from '@equinor/eds-icons';
 
 const { colors } = tokens;
 
@@ -23,9 +23,9 @@ const MenuItemButton = styled(Button)<IMenuItemButtonProps>`
     props.active
       ? colors.interactive.primary__selected_highlight.hsla
       : undefined};
-  display: ${(props) => (props.open ? "grid" : "flex")};
+  display: ${(props) => (props.open ? 'grid' : 'flex')};
   grid-template-columns: repeat(8, 1fr);
-  justify-content: ${(props) => !props.open && "center"};
+  justify-content: ${(props) => !props.open && 'center'};
   align-items: center;
   border-bottom: 2px solid ${colors.ui.background__medium.hsla};
   text-decoration: none;
@@ -46,7 +46,7 @@ interface IMenuItemButtonIconProps extends IconProps {
 }
 
 const MenuItemButtonIcon = styled(Icon)<IMenuItemButtonIconProps>`
-  grid-column: ${(props) => props.open && "2 / 3"};
+  grid-column: ${(props) => props.open && '2 / 3'};
 `;
 
 type MenuItemButtonTypographyProps = TypographyProps & {
@@ -56,7 +56,7 @@ type MenuItemButtonTypographyProps = TypographyProps & {
 const MenuItemButtonTypography = styled(
   Typography
 )<MenuItemButtonTypographyProps>`
-  grid-column: ${(props) => props.open && "4 / -1"};
+  grid-column: ${(props) => props.open && '4 / -1'};
 `;
 
 export type MenuItemDto = {
@@ -85,10 +85,10 @@ const MenuItem: React.FC<IProps> = ({ data, open, currentUrl }) => {
     <MenuItemButton
       data-testid="menu-item-button"
       href={data.link}
-      as={data.onClick ? "button" : "a"}
+      as={data.onClick ? 'button' : 'a'}
       active={isCurrentUrl()}
       onClick={data.onClick}
-      variant={"ghost"}
+      variant="ghost"
       open={open}
     >
       {data.icon && (

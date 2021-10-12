@@ -1,66 +1,66 @@
-import { Typography } from "@equinor/eds-core-react";
-import { file, folder, link } from "@equinor/eds-icons";
-import { Story, Meta } from "@storybook/react";
-import styled from "styled-components";
+import { Typography } from '@equinor/eds-core-react';
+import { file, folder, link } from '@equinor/eds-icons';
+import { Story, Meta } from '@storybook/react';
+import styled from 'styled-components';
 
-import Table, { TableProps } from "./Table";
-import TableItem, { TableItemProps } from "./TableItem";
+import Table, { TableProps } from './Table';
+import TableItem, { TableItemProps } from './TableItem';
 
 export default {
-  title: "Table2",
+  title: 'Table2',
   component: Table,
 } as Meta;
 
 const LinkData: TableItemProps[] = [
   {
     data: [
-      { value: "D23 Webwiz Model", icon: link },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
+      { value: 'D23 Webwiz Model', icon: link },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
     ],
-    onClick: () => console.log("clicked"),
+    onClick: () => console.log('clicked'),
   },
   {
     data: [
-      { value: "D23 Webwiz Model", icon: link },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
+      { value: 'D23 Webwiz Model', icon: link },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
     ],
-    onClick: () => console.log("clicked"),
+    onClick: () => console.log('clicked'),
   },
   {
     data: [
-      { value: "D23 Webwiz Model", icon: link },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
+      { value: 'D23 Webwiz Model', icon: link },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
     ],
-    onClick: () => console.log("clicked"),
+    onClick: () => console.log('clicked'),
   },
 ];
 
 const FileData: TableItemProps[] = [
   {
     data: [
-      { value: "D23 Webwiz Model", icon: file },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
-      { value: "23 MB" },
+      { value: 'D23 Webwiz Model', icon: file },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
+      { value: '23 MB' },
     ],
   },
   {
     data: [
-      { value: "D23 Webwiz Model", icon: file },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
-      { value: "23 MB" },
+      { value: 'D23 Webwiz Model', icon: file },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
+      { value: '23 MB' },
     ],
   },
   {
     data: [
-      { value: "D23 Webwiz Model", icon: file },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
-      { value: "23 MB" },
+      { value: 'D23 Webwiz Model', icon: file },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
+      { value: '23 MB' },
     ],
   },
 ];
@@ -68,34 +68,34 @@ const FileData: TableItemProps[] = [
 const FolderData: TableItemProps[] = [
   {
     data: [
-      { value: "D23 Webwiz Model", icon: folder },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
-      { value: "23 MB" },
+      { value: 'D23 Webwiz Model', icon: folder },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
+      { value: '23 MB' },
     ],
   },
   {
     data: [
-      { value: "D23 Webwiz Model", icon: folder },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
-      { value: "23 MB" },
+      { value: 'D23 Webwiz Model', icon: folder },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
+      { value: '23 MB' },
     ],
   },
   {
     data: [
-      { value: "D23 Webwiz Model", icon: folder },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
-      { value: "23 MB" },
+      { value: 'D23 Webwiz Model', icon: folder },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
+      { value: '23 MB' },
     ],
   },
   {
     data: [
-      { value: "D23 Webwiz Model", icon: folder },
-      { value: "Gavin McQueen" },
-      { value: "02.05.2021" },
-      { value: "23 MB" },
+      { value: 'D23 Webwiz Model', icon: folder },
+      { value: 'Gavin McQueen' },
+      { value: '02.05.2021' },
+      { value: '23 MB' },
     ],
   },
 ];
@@ -112,19 +112,19 @@ const TableStory: Story<TableProps> = () => (
     <Table
       title="Web Link"
       data={LinkData}
-      headers={["Name", "owner", "date"]}
+      headers={['Name', 'owner', 'date']}
       grow={[2, 1, 1]}
     />
     <Table
       title="File"
       data={FileData}
-      headers={["Name", "owner", "date", "size"]}
+      headers={['Name', 'owner', 'date', 'size']}
       grow={[2, 1, 1, 1]}
     />
     <Table
       title="Zip Folder"
       data={FolderData}
-      headers={["Name", "owner", "date", "size"]}
+      headers={['Name', 'owner', 'date', 'size']}
       grow={[2, 1, 1, 1]}
     />
   </Container>

@@ -4,11 +4,11 @@ import {
   Icon,
   Menu as EdsMenu,
   Typography,
-} from "@equinor/eds-core-react";
-import { IconData } from "@equinor/eds-icons";
-import { tokens } from "@equinor/eds-tokens";
-import React, { useState } from "react";
-import styled from "styled-components";
+} from '@equinor/eds-core-react';
+import { IconData } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 
@@ -54,7 +54,7 @@ const FilterMenu: React.FC<IComponentProps> = ({
   onChange,
   icon,
   menuTitle,
-  data
+  data,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [buttonElement, setButtonElement] = useState<HTMLButtonElement>();
@@ -91,7 +91,11 @@ const FilterMenu: React.FC<IComponentProps> = ({
           {selectedName}
         </StyledChip>
       )}
-      <FilterButton data-testid="menuButton" variant="ghost_icon" onClick={(e) => openMenu(e)}>
+      <FilterButton
+        data-testid="menuButton"
+        variant="ghost_icon"
+        onClick={(e) => openMenu(e)}
+      >
         <Icon data={icon} />
       </FilterButton>
       <Menu

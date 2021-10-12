@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { tokens } from "@equinor/eds-tokens";
-import { Button, ButtonProps, Icon, Typography } from "@equinor/eds-core-react";
-import EquinorLogo from "../EquinorLogo";
-import { dashboard, menu, add } from "@equinor/eds-icons";
-import MenuItem, { MenuItemDto } from "./MenuItem";
-import Wellbore from "../Icons/wellbore";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
+import { Button, ButtonProps, Icon, Typography } from '@equinor/eds-core-react';
+import EquinorLogo from '../EquinorLogo';
+import { dashboard, menu, add } from '@equinor/eds-icons';
+import MenuItem, { MenuItemDto } from './MenuItem';
+import Wellbore from '../Icons/wellbore';
 
 const { colors, shape } = tokens;
 
@@ -20,8 +20,8 @@ const Container = styled.div<IContainerProps>`
   flex-direction: column;
   padding-bottom: 2em;
   overflow: hidden;
-  width: ${(props) => (props.open ? "256px" : "72px")};
-  min-width: ${(props) => (props.open ? "256px" : "72px")};
+  width: ${(props) => (props.open ? '256px' : '72px')};
+  min-width: ${(props) => (props.open ? '256px' : '72px')};
 `;
 
 const LogoContainer = styled.div`
@@ -37,7 +37,7 @@ const TopContainer = styled.div`
 `;
 
 const MenuButtonContainer = styled.div<IContainerProps>`
-  display: ${(props) => (props.open ? "grid" : "flex")};
+  display: ${(props) => (props.open ? 'grid' : 'flex')};
   grid-template-columns: repeat(8, 1fr);
   justify-content: center;
 `;
@@ -57,7 +57,7 @@ interface INewWellBoreButtonProps extends ButtonProps {
 
 const CreateNewButton = styled(Button)<INewWellBoreButtonProps>`
   background: ${colors.interactive.primary__resting.hsla};
-  width: ${(props) => props.open && "100%"};
+  width: ${(props) => props.open && '100%'};
   border-radius: ${(props) => props.open && shape.icon_button.borderRadius};
   grid-column: 2 / 8;
 
@@ -74,8 +74,8 @@ const SideBar: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const menuItems: Array<MenuItemDto> = [
-    { name: "Dashboard", icon: dashboard, link: "/dashboard" },
-    { name: "Wellbore", icon: Wellbore, link: "/wellbore" },
+    { name: 'Dashboard', icon: dashboard, link: '/dashboard' },
+    { name: 'Wellbore', icon: Wellbore, link: '/wellbore' },
   ];
 
   return (
@@ -96,7 +96,7 @@ const SideBar: React.FC = () => {
         <MenuButtonContainer open={open}>
           <CreateNewButton
             open={open}
-            variant={open ? "contained" : "ghost_icon"}
+            variant={open ? 'contained' : 'ghost_icon'}
             href="/add"
           >
             <Icon data={add} color={colors.ui.background__default.hsla} />

@@ -5,11 +5,11 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react";
-import { Button, TextField, TextFieldProps } from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import styled from "styled-components";
-import TextEntry from "../TextEntry";
+} from 'react';
+import { Button, TextField, TextFieldProps } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
+import TextEntry from '../TextEntry';
 
 const { colors, spacings } = tokens;
 
@@ -50,9 +50,9 @@ const EditableTextEntry: FC<EditableTextEntryProps> = ({
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [wrapperRef]);
 
@@ -68,7 +68,7 @@ const EditableTextEntry: FC<EditableTextEntryProps> = ({
               e.currentTarget.value.length
             )
           }
-          style={{ resize: "none" }}
+          style={{ resize: 'none' }}
           value={value}
           helperText={
             value.length > 900 ? `${value.length}/${1000}` : undefined

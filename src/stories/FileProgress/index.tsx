@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 import {
   Card,
   Typography,
@@ -6,14 +6,14 @@ import {
   Progress,
   Button,
   Tooltip,
-} from "@equinor/eds-core-react";
+} from '@equinor/eds-core-react';
 import {
   check_circle_outlined,
   close_circle_outlined,
   refresh,
-} from "@equinor/eds-icons";
-import { tokens } from "@equinor/eds-tokens";
-import styled from "styled-components";
+} from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
 
 const { elevation, colors } = tokens;
 
@@ -42,9 +42,9 @@ const TopProgress = styled(Progress.Linear)<TopProgressProps>`
   top: 0;
   div {
     background-color: ${(props) =>
-      props.paused ? colors.interactive.warning__resting.hsla : ""};
+      props.paused ? colors.interactive.warning__resting.hsla : ''};
     background-color: ${(props) =>
-      props.error ? colors.interactive.danger__resting.hsla : ""};
+      props.error ? colors.interactive.danger__resting.hsla : ''};
   }
 `;
 
@@ -56,29 +56,29 @@ const TruncatedTypography = styled(Typography)`
 `;
 
 const getTitle = (
-  status: "loading" | "paused" | "error" | "done",
+  status: 'loading' | 'paused' | 'error' | 'done',
   errorMsg?: string
 ) => {
   switch (status) {
-    case "loading":
+    case 'loading':
       return <Typography variant="overline">Uploading</Typography>;
-    case "paused":
+    case 'paused':
       return <Typography variant="overline">Upload is paused</Typography>;
-    case "error":
+    case 'error':
       return (
         <Tooltip title={errorMsg} placement="top">
           <TruncatedTypography variant="overline">{`${errorMsg}`}</TruncatedTypography>
         </Tooltip>
       );
-    case "done":
+    case 'done':
       return <Typography variant="overline">Success!</Typography>;
   }
 };
 
 const getStatus = (loading?: boolean, error?: boolean) => {
-  if (error) return "error";
-  if (loading) return "loading";
-  return "done";
+  if (error) return 'error';
+  if (loading) return 'loading';
+  return 'done';
 };
 
 export interface FileProgressProps {
@@ -103,7 +103,7 @@ const FileProgress: FC<FileProgressProps> = ({
   return (
     <StyledCard>
       <TopProgress
-        variant={error || !loading ? "determinate" : "indeterminate"}
+        variant={error || !loading ? 'determinate' : 'indeterminate'}
         value={error || !loading ? 100 : undefined}
         error={error}
       />

@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { tokens } from "@equinor/eds-tokens";
-import "./animation.css";
+import React from 'react';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
+import './animation.css';
 
 const { colors, spacings, elevation, shape } = tokens;
 

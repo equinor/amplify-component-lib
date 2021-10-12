@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
 import {
   Button,
   Icon,
   Tooltip,
   TopBar,
   Typography,
-} from "@equinor/eds-core-react";
-import { tokens } from "@equinor/eds-tokens";
-import { trending_up, notifications, info_circle } from "@equinor/eds-icons";
-import Settings from "./actionContents/settings";
-import Account from "./actionContents/account";
-import Guidelines from "./actionContents/guidelines";
+} from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { trending_up, notifications, info_circle } from '@equinor/eds-icons';
+import Settings from './actionContents/settings';
+import Account from './actionContents/account';
+import Guidelines from './actionContents/guidelines';
 // import { useHistory } from "react-router";
 
 const { colors } = tokens;

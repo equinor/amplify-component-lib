@@ -1,7 +1,7 @@
-import React from "react";
-import { SideSheet } from "@equinor/eds-core-react";
-import styled from "styled-components";
-import { tokens } from "@equinor/eds-tokens";
+import React from 'react';
+import { SideSheet } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 const { elevation } = tokens;
 
 const StyledSideSheet = styled(SideSheet)`

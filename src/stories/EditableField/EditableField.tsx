@@ -2,11 +2,11 @@ import {
   Icon as EdsIcon,
   TextField as EdsTextField,
   Typography,
-} from "@equinor/eds-core-react";
-import { edit } from "@equinor/eds-icons";
-import { tokens } from "@equinor/eds-tokens";
-import React, { ReactElement, useEffect, useState } from "react";
-import styled from "styled-components";
+} from '@equinor/eds-core-react';
+import { edit } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+import React, { ReactElement, useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const { spacings, colors } = tokens;
 
@@ -18,7 +18,7 @@ const Container = styled.div<ContainerProps>`
   display: flex;
 
   &:hover {
-    cursor: ${(props) => (props.editable ? "pointer" : undefined)};
+    cursor: ${(props) => (props.editable ? 'pointer' : undefined)};
   }
 
   & > div {

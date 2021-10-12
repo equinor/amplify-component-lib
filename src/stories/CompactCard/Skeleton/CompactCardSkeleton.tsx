@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { tokens } from "@equinor/eds-tokens";
+import React from 'react';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings, elevation, shape } = tokens;
 

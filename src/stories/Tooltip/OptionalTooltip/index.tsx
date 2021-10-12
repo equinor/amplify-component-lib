@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
-import { Tooltip, TooltipProps } from "@equinor/eds-core-react";
+import { PropsWithChildren } from 'react';
+import { Tooltip, TooltipProps } from '@equinor/eds-core-react';
 
 function OptionalTooltip({
   title,

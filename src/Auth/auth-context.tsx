@@ -1,21 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import {
   GRAPH_ENDPOINTS,
   GRAPH_REQUESTS,
   fetchMsGraph,
   msalApp,
-} from "./auth-utils";
+} from './auth-utils';
 import {
   Account,
   AuthError,
   AuthenticationParameters,
   InteractionRequiredAuthError,
-} from "msal";
-import { createImageFromInitials } from "../stories/ProfilePicture";
-import FullPageSpinner from "../stories/FullPageSpinner/FullPageSpinner";
-import jwt_decode, { JwtPayload } from "jwt-decode";
+} from 'msal';
+import { createImageFromInitials } from '../stories/ProfilePicture';
+import FullPageSpinner from '../stories/FullPageSpinner/FullPageSpinner';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
 
-export type AuthState = "loading" | "authorized" | "unauthorized";
+export type AuthState = 'loading' | 'authorized' | 'unauthorized';
 
 interface ExtendedJwtPayload extends JwtPayload {
   roles: string[];
@@ -42,7 +42,7 @@ export const acquireToken = async (
       if (!token?.accessToken) {
         console.log(`Token acquire is empty: ${JSON.stringify(token)}`);
         msalApp.acquireTokenRedirect(request);
-        throw new Error("Redirecting");
+        throw new Error('Redirecting');
       }
       return token;
     })
@@ -52,7 +52,7 @@ export const acquireToken = async (
       if (
         InteractionRequiredAuthError.isInteractionRequiredError(error.errorCode)
       ) {
-        throw new Error("Redirecting");
+        throw new Error('Redirecting');
       } else {
         throw new Error(`Non-interactive error: ${error.errorCode}`);
       }
@@ -64,13 +64,13 @@ const AuthContext = React.createContext<Partial<ContextValue>>({});
 const AuthProvider: React.FC = (props) => {
   const [account, setAccount] = useState<Account | undefined | null>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
-  const [authState, setAuthState] = useState<AuthState>("loading");
+  const [authState, setAuthState] = useState<AuthState>('loading');
   const [photo, setPhoto] = useState<string | undefined>();
 
   const logRedirectCallbackErrors = (error: AuthError) => {
     if (error) {
       console.log(`Redirect callback error: ${JSON.stringify(error)}`);
-      setAuthState("unauthorized");
+      setAuthState('unauthorized');
       // Clear session to remove "login in process" error
       localStorage.clear();
     }
@@ -94,7 +94,7 @@ const AuthProvider: React.FC = (props) => {
               if (response.status === 404) return null;
             })
             .catch((error) =>
-              console.error("Failed to fetch profile photo", error)
+              console.error('Failed to fetch profile photo', error)
             );
 
           if (graphPhoto) {
@@ -116,11 +116,11 @@ const AuthProvider: React.FC = (props) => {
             if (accessToken.roles) {
               setRoles(accessToken.roles as string[]);
             }
-            setAuthState("authorized");
+            setAuthState('authorized');
           }
         })
         .catch(() => {
-          setAuthState("unauthorized");
+          setAuthState('unauthorized');
         });
     } else {
       msalApp.handleRedirectCallback(logRedirectCallbackErrors);
@@ -128,7 +128,7 @@ const AuthProvider: React.FC = (props) => {
     }
   }, [setAccount]);
 
-  if (authState === "loading") {
+  if (authState === 'loading') {
     return <FullPageSpinner />;
   } else {
     return (
@@ -154,14 +154,14 @@ const login = () => {
 const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };
 
 const isReaderOnly = (roles: string[] | undefined) => {
   if (roles) {
-    const enrolledToWriterRole = roles.some((r) => r.includes("WRITE"));
+    const enrolledToWriterRole = roles.some((r) => r.includes('WRITE'));
     return !enrolledToWriterRole;
   } else {
     return true;

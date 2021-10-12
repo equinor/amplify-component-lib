@@ -1,4 +1,4 @@
-import { UserAgentApplication } from "msal";
+import { UserAgentApplication } from 'msal';
 
 export const fetchMsGraph = async (url: string, accessToken: string) => {
   return await fetch(url, {
@@ -9,10 +9,10 @@ export const fetchMsGraph = async (url: string, accessToken: string) => {
 };
 
 export const GRAPH_SCOPES = {
-  OPENID: "openid",
-  PROFILE: "profile",
-  USER_READ: "User.Read",
-  API_SCOPE: "API_SCOPE",
+  OPENID: 'openid',
+  PROFILE: 'profile',
+  USER_READ: 'User.Read',
+  API_SCOPE: 'API_SCOPE',
 };
 
 export const GRAPH_REQUESTS = {
@@ -28,19 +28,19 @@ export const GRAPH_REQUESTS = {
 };
 
 export const GRAPH_ENDPOINTS = {
-  PHOTO: "https://graph.microsoft.com/v1.0/me/photos/96x96/$value",
+  PHOTO: 'https://graph.microsoft.com/v1.0/me/photos/96x96/$value',
 };
 
 export const msalApp = new UserAgentApplication({
   auth: {
-    clientId: "CLIENT_ID",
-    authority: "https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/",
+    clientId: 'CLIENT_ID',
+    authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
     redirectUri: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
     navigateToLoginRequestUrl: false,
   },
   cache: {
-    cacheLocation: "localStorage",
+    cacheLocation: 'localStorage',
     storeAuthStateInCookie: true,
   },
 });

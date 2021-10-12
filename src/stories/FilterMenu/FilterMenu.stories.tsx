@@ -1,14 +1,14 @@
-import { filter_list } from "@equinor/eds-icons";
-import { Story, Meta } from "@storybook/react";
+import { filter_list } from '@equinor/eds-icons';
+import { Story, Meta } from '@storybook/react';
 
-import FilterMenu, { IComponentProps } from ".";
+import FilterMenu, { IComponentProps } from '.';
 
 export default {
-  title: "FilterMenu",
+  title: 'FilterMenu',
   component: FilterMenu,
   argTypes: {
-    menuTitle: { defaultValue: "Menu Title" },
-    data: { defaultValue: ["Item 1", "Item 2", "Apple"] },
+    menuTitle: { defaultValue: 'Menu Title' },
+    data: { defaultValue: ['Item 1', 'Item 2', 'Apple'] },
     icon: { defaultValue: filter_list },
   },
 } as Meta;
