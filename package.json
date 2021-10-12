@@ -12,7 +12,9 @@
     "pretty:fix": "prettier --write .",
     "lint": "tsc --noEmit && eslint . --ext .jsx,.ts,.tsx",
     "lint-fix": "eslint . --ext .jsx,.ts,.tsx --fix",
-    "test": "set CI=true&react-scripts test --colors",
+    "test": "run-script-os",
+    "test:win32": "set CI=true&react-scripts test --colors",
+    "test:macos": "CI=true react-scripts test",
     "postinstall": "husky install",
     "prepare": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs"
@@ -100,6 +102,7 @@
     "eslint-plugin-jest-dom": "^3.9.2",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-testing-library": "^4.12.4"
+    "eslint-plugin-testing-library": "^4.12.4",
+    "run-script-os": "^1.1.6"
   }
 }
