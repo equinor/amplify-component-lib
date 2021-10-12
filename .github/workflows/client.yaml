@@ -2,7 +2,7 @@ name: Client CI
 
 on:
   pull_request:
-    branches: [main, develop, staging]
+    branches: [main, development, staging]
     paths:
       - "client/**"
       - ".github/workflows/client.yml"
@@ -33,6 +33,10 @@ jobs:
       - name: Unit tests
         working-directory: client
         run: yarn run test:ci
+
+      - name: Linting
+        working-directory: client
+        run: yarn run lint
 
       - name: Build
         working-directory: client
