@@ -2,7 +2,7 @@ import { IconToggleButton } from './Buttons';
 import { OptionalTooltip } from './Tooltip';
 import CompactCard from './CompactCard';
 import ConfirmationPopup from './ConfirmationPopup';
-import createImageFromInitials from './CreateImageFromInitials';
+import CreateImageFromInitials from './CreateImageFromInitials';
 import DataTypeCard from './DataTypeCard';
 import EditableField from './EditableField';
 import EquinorLogo from './EquinorLogo';
@@ -12,7 +12,7 @@ import FileUploadArea from './FileUploadArea';
 import FilterMenu from './FilterMenu';
 import FullPageSpinner from './FullPageSpinner';
 import InfoElement from './InfoElement';
-import MulticolorProgressCircleStories from './MulticolorProgressCircle/MulticolorProgressCircle.stories';
+import MulticolorProgressCircle from './MulticolorProgressCircle';
 import ProgressBar from './ProgressBar';
 import SideBar from './SideBar';
 import Table from './Table';
@@ -22,7 +22,7 @@ import TopBar from './TopBar';
 export {
   CompactCard,
   ConfirmationPopup,
-  createImageFromInitials,
+  CreateImageFromInitials,
   DataTypeCard,
   EditableField,
   EquinorLogo,
@@ -33,7 +33,7 @@ export {
   FullPageSpinner,
   IconToggleButton,
   InfoElement,
-  MulticolorProgressCircleStories,
+  MulticolorProgressCircle,
   OptionalTooltip,
   ProgressBar,
   SideBar,
