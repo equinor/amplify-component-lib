@@ -1,5 +1,5 @@
 import { Story, Meta } from '@storybook/react';
-import FileProgress, { FileProgressProps } from '.';
+import FileProgress, { FileProgressProps } from '../../components/FileProgress';
 
 export default {
   title: 'FileUpload/FileProgress',

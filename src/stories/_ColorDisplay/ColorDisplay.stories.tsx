@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import ColorDisplay from '.';
+import ColorDisplay from '../../components/_ColorDisplay';
 
 export default {
   title: 'ColorDisplay',

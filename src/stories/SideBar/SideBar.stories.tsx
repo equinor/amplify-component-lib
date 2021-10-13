@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import SideBar from '.';
+import SideBar from '../../components/SideBar';
 
 export default {
   title: 'SideBar',
@@ -11,7 +11,7 @@ export default {
 } as Meta;
 
 const Template: Story = () => (
-  <div style={{ display: 'flex' }}>
+  <div style={{ display: 'flex', height: '95vh' }}>
     <SideBar />
   </div>
 );

@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { clear, account_circle } from '@equinor/eds-icons';
 import { Box } from '@material-ui/core';
 import { tokens } from '@equinor/eds-tokens';
-import { useAuth } from '../../../Auth';
 const { colors } = tokens;
 
 const StyledMenu = styled(Menu)`
@@ -32,7 +31,7 @@ const FullWidthWrapper = styled.div`
 `;
 
 const Account: React.FC = () => {
-  const { account, logout, photo } = useAuth();
+  // const { account, logout, photo } = useAuth();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>();
   const isOpen = Boolean(anchorEl);
 
@@ -77,7 +76,7 @@ const Account: React.FC = () => {
             <Icon data={clear} />
           </Button>
         </Box>
-        <Box display="flex" alignItems="center">
+        {/* <Box display="flex" alignItems="center">
           <StyledAvatar alt="user image" size={40} src={photo} />
           <div>
             <Typography variant="h6">{account?.name}</Typography>
@@ -86,7 +85,7 @@ const Account: React.FC = () => {
         </Box>
         <FullWidthWrapper>
           <Button onClick={logout}>Log out</Button>
-        </FullWidthWrapper>
+        </FullWidthWrapper> */}
       </StyledMenu>
     </>
   );

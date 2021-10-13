@@ -2,8 +2,8 @@ import { Typography } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
 import styled from 'styled-components';
 
-import Table, { TableProps } from '.';
-import TableItem, { TableItemProps } from './TableItem';
+import Table, { TableProps } from '../../components/Table';
+import TableItem, { TableItemProps } from '../../components/Table/TableItem';
 
 export default {
   title: 'Table',

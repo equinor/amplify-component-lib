@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import EquinorLog, { EquinorLogoProps } from '.';
+import EquinorLog, { EquinorLogoProps } from '../../components/EquinorLogo';
 
 export default {
   title: 'EquinorLog',

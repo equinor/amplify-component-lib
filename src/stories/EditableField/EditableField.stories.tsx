@@ -1,7 +1,9 @@
 import { SingleSelect } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
 
-import EditableField, { EditableFieldProps } from '.';
+import EditableField, {
+  EditableFieldProps,
+} from '../../components/EditableField';
 
 export default {
   title: 'EditableField',

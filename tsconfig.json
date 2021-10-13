@@ -13,8 +13,19 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "outDir": "./lib",
+    "importHelpers": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "**/__tests__/*",
+    "**/stories/",
+    "*/Auth",
+    "*/test-utils.tsx"
+  ]
 }

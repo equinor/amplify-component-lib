@@ -1,5 +1,7 @@
 import { Story, Meta } from '@storybook/react';
-import DataTypeCardGrid, { DataTypeCardGridProps } from './DataTypeCardGrid';
+import DataTypeCardGrid, {
+  DataTypeCardGridProps,
+} from '../../../components/DataTypeCard/Grid/DataTypeCardGrid';
 
 export default {
   title: 'DataTypeCard/Grid',

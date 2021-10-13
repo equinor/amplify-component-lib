@@ -1,3 +1,3 @@
-import IconToggleButton from './IconToggleButton';
+import IConToggleButton from './IconToggleButton';
 
-export { IconToggleButton };
+export { IConToggleButton };

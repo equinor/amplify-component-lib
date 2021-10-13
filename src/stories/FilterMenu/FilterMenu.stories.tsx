@@ -1,7 +1,7 @@
 import { filter_list } from '@equinor/eds-icons';
 import { Story, Meta } from '@storybook/react';
 
-import FilterMenu, { IComponentProps } from '.';
+import FilterMenu, { IComponentProps } from '../../components/FilterMenu';
 
 export default {
   title: 'FilterMenu',

@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import TextEntry, { TextEntryProps } from '.';
+import TextEntry, { TextEntryProps } from '../../components/TextEntry';
 
 export default {
   title: 'TextEntry/TextEntry',

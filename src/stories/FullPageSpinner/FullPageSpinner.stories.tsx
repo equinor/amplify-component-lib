@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import FullPageSpinner from '.';
+import FullPageSpinner from '../../components/FullPageSpinner';
 
 export default {
   title: 'FullPageSpinner',
