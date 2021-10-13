@@ -32,10 +32,6 @@ This package contains components used by the amplify team.
 
 ![FileProgress Example](https://github.com/equinor/amplify-components/blob/main/repo/FileProgress.PNG)
 
-## FileUpload
-
-![FileUpload Example](https://github.com/equinor/amplify-components/blob/main/repo/FileUpload.PNG)
-
 ## FileUploadArea
 
 ![FileUploadArea Example](https://github.com/equinor/amplify-components/blob/main/repo/FileUploadArea.PNG)
@@ -50,7 +46,7 @@ This package contains components used by the amplify team.
 
 ## IconToggleButton
 
-![IconToggleButton Example](https://github.com/equinor/amplify-components/blob/main/repo/IconToggleButton.PNG)
+Icon button that toggle icon.
 
 ## InfoElement
 
@@ -58,11 +54,10 @@ This package contains components used by the amplify team.
 
 ## MulticolorProgressCircle
 
-![MulticolorProgressCircle Example](https://github.com/equinor/amplify-components/blob/main/repo/MulticolorProgressCircle.PNG)
+![MulticolorProgressCircle Example](https://github.com/equinor/amplify-components/blob/main/repo/MultiColorProgressCircle.PNG)
 
 ## OptionalTooltip
-
-![OptionalTooltip Example](https://github.com/equinor/amplify-components/blob/main/repo/OptionalTooltip.PNG)
+Tooltip from EDS only made optional.
 
 ## ProgressBar
 
@@ -75,10 +70,6 @@ This package contains components used by the amplify team.
 ## Table
 
 ![Table Example](https://github.com/equinor/amplify-components/blob/main/repo/Table.PNG)
-
-## TextEntry
-
-![TextEntry Example](https://github.com/equinor/amplify-components/blob/main/repo/TextEntry.PNG)
 
 ## TopBar
 
