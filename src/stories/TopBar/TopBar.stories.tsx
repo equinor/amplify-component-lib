@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import ApplicationTopBar from './TopBar';
+import ApplicationTopBar from '.';
 
 export default {
   title: 'TopBar',

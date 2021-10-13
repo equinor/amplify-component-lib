@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
 import styled from 'styled-components';
 
-import Table, { TableProps } from './Table';
+import Table, { TableProps } from '.';
 import TableItem, { TableItemProps } from './TableItem';
 
 export default {

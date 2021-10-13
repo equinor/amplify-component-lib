@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
-import DataCard, { CompactCardProps } from './CompactCard';
-import CompactCard from './CompactCard';
+import DataCard, { CompactCardProps } from '.';
+import CompactCard from '.';
 
 export default {
   title: 'CompactCard',

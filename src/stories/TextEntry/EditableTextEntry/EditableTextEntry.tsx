@@ -9,7 +9,7 @@ import {
 import { Button, TextField, TextFieldProps } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import TextEntry from '../TextEntry';
+import TextEntry from '..';
 
 const { colors, spacings } = tokens;
 

@@ -1,7 +1,17 @@
 {
-  "name": "amplify-components",
-  "version": "0.1.0",
   "private": true,
+  "name": "@equinor/amplify-components",
+  "version": "0.1.0",
+  "description": "Frontend Typescript components for the Amplify team",
+  "main": "./dist/index.js",
+  "files": [
+    "dist/*"
+  ],
+  "types": "dist/types/index.d.ts",
+  "directories": {
+    "dist": "dist",
+    "lib": "lib"
+  },
   "scripts": {
     "start": "yarn storybook",
     "build": "yarn build-storybook",
@@ -104,5 +114,15 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-testing-library": "^4.12.4",
     "run-script-os": "^1.1.6"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/equinor/amplify-components.git"
+  },
+  "author": "Amplify Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/equinor/amplify-components/issues"
+  },
+  "homepage": "https://github.com/equinor/amplify-components#readme"
 }

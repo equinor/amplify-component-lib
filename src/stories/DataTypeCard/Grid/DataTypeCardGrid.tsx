@@ -1,7 +1,7 @@
 import { Button, Chip, Icon } from '@equinor/eds-core-react';
 import { more_vertical } from '@equinor/eds-icons';
 import styled from 'styled-components';
-import DataCard from '../DataCard';
+import DataCard from '..';
 import DataTypeCardSkeleton from '../Skeleton/DataTypeCardSkeleton';
 
 const Container = styled.div`

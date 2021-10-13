@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import SideBar from './SideBar';
+import SideBar from '.';
 
 export default {
   title: 'SideBar',

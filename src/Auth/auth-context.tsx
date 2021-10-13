@@ -11,8 +11,8 @@ import {
   AuthenticationParameters,
   InteractionRequiredAuthError,
 } from 'msal';
-import { createImageFromInitials } from '../stories/ProfilePicture';
-import FullPageSpinner from '../stories/FullPageSpinner/FullPageSpinner';
+import { createImageFromInitials } from '../stories/CreateImageFromInitials';
+import FullPageSpinner from '../stories/FullPageSpinner';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 export type AuthState = 'loading' | 'authorized' | 'unauthorized';

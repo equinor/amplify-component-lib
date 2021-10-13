@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, cleanup } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import DataCard from '../DataCard';
+import DataCard from '..';
 // import { DataTypeAndDisciplineRead } from "../../../api";
 
 afterEach(cleanup);

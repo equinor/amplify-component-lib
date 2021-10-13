@@ -1,6 +1,6 @@
 import { render, cleanup } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import CompactCard from '../CompactCard';
+import CompactCard from '..';
 
 afterEach(cleanup);
 

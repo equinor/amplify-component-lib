@@ -2,7 +2,7 @@
 import { Button, Chip, Icon } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
 import { more_vertical, account_circle } from '@equinor/eds-icons';
-import DataCard, { DataTypeCardProps } from './DataCard';
+import DataCard, { DataTypeCardProps } from '.';
 import styled from 'styled-components';
 
 const DataTypeCardBody = styled.div`

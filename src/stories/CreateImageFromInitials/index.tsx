@@ -1,7 +1,7 @@
 import RandomSeed from 'random-seed';
 
 // Copied from https://betterprogramming.pub/create-a-letter-picture-like-google-with-react-ae12a7a4390e
-export const createImageFromInitials = (name: string | undefined) => {
+const CreateImageFromInitials = (name: string | undefined) => {
   if (name === undefined) return undefined;
   if (name === null) return undefined;
 
@@ -50,3 +50,5 @@ export const createImageFromInitials = (name: string | undefined) => {
 
   return canvas.toDataURL();
 };
+
+export default CreateImageFromInitials;

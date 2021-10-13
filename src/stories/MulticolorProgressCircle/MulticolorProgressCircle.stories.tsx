@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react';
 import MulticolorProgressCircle, {
   ColoredProgressCircle,
   MulticolorProgressCircleProps,
-} from './MulticolorProgressCircle';
+} from '.';
 
 export default {
   title: 'MulticolorProgressCircle',

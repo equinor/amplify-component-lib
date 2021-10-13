@@ -1,10 +1,9 @@
 import { Avatar } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
-
-import { createImageFromInitials } from './';
+import CreateImageFromInitials from '.';
 
 export default {
-  title: 'ProfilePicture',
+  title: 'CreateImageFromInitials',
   argTypes: {
     name: { control: 'text', defaultValue: 'Fredrik Wigsnes' },
   },
@@ -15,13 +14,13 @@ interface StoryProps {
 }
 
 const Template: Story<StoryProps> = ({ name }) => (
-  <img src={createImageFromInitials(name)} alt="ProfilePicture" />
+  <img src={CreateImageFromInitials(name)} alt="ProfilePicture" />
 );
 
 const TemplateAvatar: Story<StoryProps> = ({ name }) => (
   <>
     <Avatar
-      src={createImageFromInitials(name)}
+      src={CreateImageFromInitials(name)}
       alt="ProfilePicture"
       size={48}
     />
