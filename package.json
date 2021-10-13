@@ -25,9 +25,15 @@
     "test": "run-script-os",
     "test:win32": "set CI=true&react-scripts test --colors",
     "test:macos": "CI=true react-scripts test",
+    "test:watch": "react-scripts test",
     "postinstall": "husky install",
     "prepare": "husky install",
-    "precommit": "yarn && node tooling/commit-tasks.mjs"
+    "precommit": "yarn && node tooling/commit-tasks.mjs",
+    "build-components": "yarn run clean && tsc && webpack",
+    "clean": "rm -rf lib dist",
+    "version": "yarn run lint && git add -A",
+    "postversion": "git push && git push --tags",
+    "webpack": "webpack"
   },
   "eslintConfig": {
     "extends": [
@@ -113,7 +119,10 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-testing-library": "^4.12.4",
-    "run-script-os": "^1.1.6"
+    "run-script-os": "^1.1.6",
+    "ts-loader": "^9.2.6",
+    "webpack-cli": "^4.9.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "repository": {
     "type": "git",

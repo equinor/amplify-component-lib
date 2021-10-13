@@ -57,6 +57,7 @@ Icon button that toggle icon.
 ![MulticolorProgressCircle Example](https://github.com/equinor/amplify-components/blob/main/repo/MultiColorProgressCircle.PNG)
 
 ## OptionalTooltip
+
 Tooltip from EDS only made optional.
 
 ## ProgressBar

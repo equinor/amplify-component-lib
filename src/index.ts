@@ -19,7 +19,7 @@ import {
   Table,
   TextEntry,
   TopBar,
-} from './stories';
+} from './components';
 
 export {
   CompactCard,

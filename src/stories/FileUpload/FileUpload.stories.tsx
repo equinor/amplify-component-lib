@@ -6,7 +6,7 @@ import {
 } from '@storybook/addon-docs/blocks';
 
 import { Meta, Story } from '@storybook/react';
-import FileUpload from '.';
+import FileUpload from '../../components/FileUpload';
 
 export default {
   title: 'FileUpload/Full File uploading example with Hook',

@@ -1,5 +1,7 @@
 import { Story, Meta } from '@storybook/react';
-import FileUploadArea, { FileUploadAreaProps } from '.';
+import FileUploadArea, {
+  FileUploadAreaProps,
+} from '../../components/FileUploadArea';
 
 export default {
   title: 'FileUpload/FileUploadArea',

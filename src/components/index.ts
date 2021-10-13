@@ -1,4 +1,4 @@
-import { IconToggleButton } from './Buttons';
+import IconToggleButton from './Buttons';
 import { OptionalTooltip } from './Tooltip';
 import CompactCard from './CompactCard';
 import ConfirmationPopup from './ConfirmationPopup';

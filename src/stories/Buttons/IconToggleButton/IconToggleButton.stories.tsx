@@ -1,5 +1,7 @@
 import { Story, Meta } from '@storybook/react';
-import IconToggleButton, { IconToggleButtonProps } from './';
+import IconToggleButton, {
+  IconToggleButtonProps,
+} from '../../../components/Buttons';
 import { list, view_module } from '@equinor/eds-icons';
 
 export default {

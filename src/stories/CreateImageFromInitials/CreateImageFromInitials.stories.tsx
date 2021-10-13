@@ -1,6 +1,6 @@
 import { Avatar } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
-import CreateImageFromInitials from '.';
+import CreateImageFromInitials from '../../components/CreateImageFromInitials';
 
 export default {
   title: 'CreateImageFromInitials',

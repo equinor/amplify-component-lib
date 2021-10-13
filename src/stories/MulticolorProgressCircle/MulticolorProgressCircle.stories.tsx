@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react';
 import MulticolorProgressCircle, {
   ColoredProgressCircle,
   MulticolorProgressCircleProps,
-} from '.';
+} from '../../components/MulticolorProgressCircle';
 
 export default {
   title: 'MulticolorProgressCircle',
@@ -24,4 +24,6 @@ const Template: Story<MulticolorProgressCircleProps> = (args) => (
 );
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+  size: '300',
+};
