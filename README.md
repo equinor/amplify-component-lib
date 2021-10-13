@@ -6,80 +6,80 @@ This package contains components used by the amplify team.
 
 ## CompactCard
 
-![CompactCard Example](https://github.com/equinor/amplify-components/blob/main/repo/CompactCard.png)
+![CompactCard Example](https://github.com/equinor/amplify-components/blob/main/repo/CompactCard.PNG)
 
 ## ConfirmationPopup
 
-![ConfirmationPopup Example](https://github.com/equinor/amplify-components/blob/main/repo/ConfirmationPopup.png)
+![ConfirmationPopup Example](https://github.com/equinor/amplify-components/blob/main/repo/ConfirmationPopup.PNG)
 
 ## CreateImageFromInitials
 
-![CreateImageFromInitials Example](https://github.com/equinor/amplify-components/blob/main/repo/CreateImageFromInitials.png)
+![CreateImageFromInitials Example](https://github.com/equinor/amplify-components/blob/main/repo/CreateImageFromInitials.PNG)
 
 ## DataTypeCard
 
-![DataTypeCard Example](https://github.com/equinor/amplify-components/blob/main/repo/DataTypeCard.png)
+![DataTypeCard Example](https://github.com/equinor/amplify-components/blob/main/repo/DataTypeCard.PNG)
 
 ## EditableField
 
-![EditableField Example](https://github.com/equinor/amplify-components/blob/main/repo/EditableField.png)
+![EditableField Example](https://github.com/equinor/amplify-components/blob/main/repo/EditableField.PNG)
 
 ## EquinorLogo
 
-![EquinorLogo Example](https://github.com/equinor/amplify-components/blob/main/repo/EquinorLogo.png)
+![EquinorLogo Example](https://github.com/equinor/amplify-components/blob/main/repo/EquinorLogo.PNG)
 
 ## FileProgress
 
-![FileProgress Example](https://github.com/equinor/amplify-components/blob/main/repo/FileProgress.png)
+![FileProgress Example](https://github.com/equinor/amplify-components/blob/main/repo/FileProgress.PNG)
 
 ## FileUpload
 
-![FileUpload Example](https://github.com/equinor/amplify-components/blob/main/repo/FileUpload.png)
+![FileUpload Example](https://github.com/equinor/amplify-components/blob/main/repo/FileUpload.PNG)
 
 ## FileUploadArea
 
-![FileUploadArea Example](https://github.com/equinor/amplify-components/blob/main/repo/FileUploadArea.png)
+![FileUploadArea Example](https://github.com/equinor/amplify-components/blob/main/repo/FileUploadArea.PNG)
 
 ## FilterMenu
 
-![FilterMenu Example](https://github.com/equinor/amplify-components/blob/main/repo/FilterMenu.png)
+![FilterMenu Example](https://github.com/equinor/amplify-components/blob/main/repo/FilterMenu.PNG)
 
 ## FullPageSpinner
 
-![FullPageSpinner Example](https://github.com/equinor/amplify-components/blob/main/repo/FullPageSpinner.png)
+![FullPageSpinner Example](https://github.com/equinor/amplify-components/blob/main/repo/FullPageSpinner.PNG)
 
 ## IconToggleButton
 
-![IconToggleButton Example](https://github.com/equinor/amplify-components/blob/main/repo/IconToggleButton.png)
+![IconToggleButton Example](https://github.com/equinor/amplify-components/blob/main/repo/IconToggleButton.PNG)
 
 ## InfoElement
 
-![InfoElement Example](https://github.com/equinor/amplify-components/blob/main/repo/InfoElement.png)
+![InfoElement Example](https://github.com/equinor/amplify-components/blob/main/repo/InfoElement.PNG)
 
 ## MulticolorProgressCircle
 
-![MulticolorProgressCircle Example](https://github.com/equinor/amplify-components/blob/main/repo/MulticolorProgressCircle.png)
+![MulticolorProgressCircle Example](https://github.com/equinor/amplify-components/blob/main/repo/MulticolorProgressCircle.PNG)
 
 ## OptionalTooltip
 
-![OptionalTooltip Example](https://github.com/equinor/amplify-components/blob/main/repo/OptionalTooltip.png)
+![OptionalTooltip Example](https://github.com/equinor/amplify-components/blob/main/repo/OptionalTooltip.PNG)
 
 ## ProgressBar
 
-![ProgressBar Example](https://github.com/equinor/amplify-components/blob/main/repo/ProgressBar.png)
+![ProgressBar Example](https://github.com/equinor/amplify-components/blob/main/repo/ProgressBar.PNG)
 
 ## SideBar
 
-![SideBar Example](https://github.com/equinor/amplify-components/blob/main/repo/SideBar.png)
+![SideBar Example](https://github.com/equinor/amplify-components/blob/main/repo/SideBar.PNG)
 
 ## Table
 
-![Table Example](https://github.com/equinor/amplify-components/blob/main/repo/Table.png)
+![Table Example](https://github.com/equinor/amplify-components/blob/main/repo/Table.PNG)
 
 ## TextEntry
 
-![TextEntry Example](https://github.com/equinor/amplify-components/blob/main/repo/TextEntry.png)
+![TextEntry Example](https://github.com/equinor/amplify-components/blob/main/repo/TextEntry.PNG)
 
 ## TopBar
 
-![TopBar Example](https://github.com/equinor/amplify-components/blob/main/repo/TopBar.png)
+![TopBar Example](https://github.com/equinor/amplify-components/blob/main/repo/TopBar.PNG)
