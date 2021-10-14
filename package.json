@@ -1,7 +1,6 @@
 {
-  "private": true,
   "name": "@equinor/amplify-components",
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "./dist/index.js",
   "files": [
@@ -26,8 +25,7 @@
     "test:win32": "set CI=true&react-scripts test --colors",
     "test:macos": "CI=true react-scripts test",
     "test:watch": "react-scripts test",
-    "postinstall": "husky install",
-    "prepare": "husky install",
+    "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "build-components": "yarn run clean && tsc && webpack",
     "clean": "rm -rf lib dist",
