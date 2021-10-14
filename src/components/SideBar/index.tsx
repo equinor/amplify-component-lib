@@ -77,12 +77,14 @@ interface SideBarProps {
   onCreate?: () => void;
   createLabel?: string;
   menuItems: MenuItemType[];
+  currentUrl?: string;
 }
 
 const SideBar: React.FC<SideBarProps> = ({
   onCreate,
   createLabel,
   menuItems,
+  currentUrl,
 }) => {
   const [open, setOpen] = useState(true);
 
@@ -110,7 +112,7 @@ const SideBar: React.FC<SideBarProps> = ({
           </MenuButtonContainer>
         )}
         {menuItems.map((m) => (
-          <MenuItem key={m.name} open={open} {...m} currentUrl="" />
+          <MenuItem key={m.name} currentUrl={currentUrl} open={open} {...m} />
         ))}
       </TopContainer>
       <ToggleContainer open={open}>

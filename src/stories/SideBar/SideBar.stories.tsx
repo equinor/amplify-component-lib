@@ -21,43 +21,120 @@ export default {
   },
 } as Meta;
 
-const menuItems: MenuItemType[] = [
-  {
-    name: 'home',
-    icon: home,
-  },
-  {
-    name: 'history',
-    icon: history,
-  },
-  {
-    name: 'favourites',
-    icon: favorite_outlined,
-  },
-];
+export const Primary: Story = () => {
+  const menuItems: MenuItemType[] = [
+    {
+      name: 'home',
+      icon: home,
+      link: 'home',
+    },
+    {
+      name: 'history',
+      icon: history,
+      link: 'history',
+    },
+    {
+      name: 'favourites',
+      icon: favorite_outlined,
+      link: 'favourites',
+    },
+  ];
 
-export const Primary: Story = () => (
-  <div style={{ display: 'flex', height: '95vh' }}>
-    <SideBar
-      menuItems={menuItems}
-      createLabel="Create story"
-      onCreate={() => console.log('Created 🖋')}
-    />
-  </div>
-);
+  return (
+    <div style={{ display: 'flex', height: '95vh' }}>
+      <SideBar
+        menuItems={menuItems}
+        createLabel="Create story"
+        currentUrl="home"
+        onCreate={() => console.log('Created 🖋')}
+      />
+    </div>
+  );
+};
 
-export const NoCreateAction: Story = () => (
-  <div style={{ display: 'flex', height: '95vh' }}>
-    <SideBar menuItems={menuItems} />
-  </div>
-);
+export const NoCreateAction: Story = () => {
+  const menuItems: MenuItemType[] = [
+    {
+      name: 'Dashboard',
+      icon: dashboard,
+      link: 'dashboard',
+    },
+    {
+      name: 'history',
+      icon: history,
+      link: 'history',
+    },
+    {
+      name: 'favourites',
+      icon: favorite_outlined,
+      link: 'favourites',
+    },
+  ];
 
-export const WithCreateAction: Story = () => (
-  <div style={{ display: 'flex', height: '95vh' }}>
-    <SideBar
-      menuItems={menuItems}
-      createLabel="Create story"
-      onCreate={() => console.log('Created 🖋')}
-    />
-  </div>
-);
+  return (
+    <div style={{ display: 'flex', height: '95vh' }}>
+      <SideBar menuItems={menuItems} />
+    </div>
+  );
+};
+
+export const WithCreateAction: Story = () => {
+  const menuItems: MenuItemType[] = [
+    {
+      name: 'Dashboard',
+      icon: dashboard,
+      link: 'dashboard',
+    },
+    {
+      name: 'history',
+      icon: history,
+      link: 'history',
+    },
+    {
+      name: 'favourites',
+      icon: favorite_outlined,
+      link: 'favourites',
+    },
+  ];
+
+  return (
+    <div style={{ display: 'flex', height: '95vh' }}>
+      <SideBar
+        menuItems={menuItems}
+        createLabel="Create story"
+        onCreate={() => console.log('Created 🖋')}
+      />
+    </div>
+  );
+};
+
+export const WithCurrentUrl: Story = () => {
+  const menuItems: MenuItemType[] = [
+    {
+      name: 'Dashboard',
+      icon: dashboard,
+      link: 'dashboard',
+    },
+    {
+      name: 'history',
+      icon: history,
+      link: 'history',
+    },
+    {
+      name: 'favourites',
+      icon: favorite_outlined,
+      link: 'favourites',
+    },
+  ];
+
+  return (
+    <div style={{ display: 'flex', height: '95vh' }}>
+      <SideBar
+        menuItems={menuItems}
+        currentUrl="favourites"
+        createLabel="Create story"
+        onCreate={() => console.log('Created 🖋')}
+      />
+    </div>
+  );
+};
