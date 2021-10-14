@@ -3,22 +3,21 @@ import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { Button, ButtonProps, Icon, Typography } from '@equinor/eds-core-react';
 import EquinorLogo from '../EquinorLogo';
-import { dashboard, menu, add } from '@equinor/eds-icons';
-import MenuItem, { MenuItemDto } from './MenuItem';
-import Wellbore from '../Icons/wellbore';
+import { add } from '@equinor/eds-icons';
+import MenuItem, { MenuItemType } from './MenuItem';
+import ToggleOpen from './ToggleOpen';
 
-const { colors, shape } = tokens;
-
-interface IContainerProps {
+const { colors, shape, spacings } = tokens;
+interface ContainerProps {
   open: boolean;
 }
 
-const Container = styled.div<IContainerProps>`
+const Container = styled.div<ContainerProps>`
   border-right: 2px solid ${colors.ui.background__medium.hsla};
   background-color: ${colors.ui.background__default.hsla};
   display: flex;
   flex-direction: column;
-  padding-bottom: 2em;
+  padding-bottom: ${spacings.comfortable.large};
   overflow: hidden;
   width: ${(props) => (props.open ? '256px' : '72px')};
   min-width: ${(props) => (props.open ? '256px' : '72px')};
@@ -27,7 +26,16 @@ const Container = styled.div<IContainerProps>`
 const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
+  border-top: 2px solid ${colors.ui.background__medium.hex};
+  padding-top: ${spacings.comfortable.large};
+`;
+
+const ToggleContainer = styled.div<ContainerProps>`
+  display: ${(props) => (props.open ? 'grid' : 'flex')};
+  grid-template-columns: repeat(8, 1fr);
+  justify-content: center;
   margin-top: auto;
+  margin-bottom: ${spacings.comfortable.medium};
 `;
 
 const TopContainer = styled.div`
@@ -36,30 +44,25 @@ const TopContainer = styled.div`
   align-items: center;
 `;
 
-const MenuButtonContainer = styled.div<IContainerProps>`
+const MenuButtonContainer = styled.div<ContainerProps>`
   display: ${(props) => (props.open ? 'grid' : 'flex')};
   grid-template-columns: repeat(8, 1fr);
   justify-content: center;
 `;
-
-interface IMenuToggleButtonProps extends ButtonProps {
+interface CustomButtonProps extends ButtonProps {
   open?: boolean;
 }
 
-const MenuToggleButton = styled(Button)<IMenuToggleButtonProps>`
-  background: transparent;
-  grid-column: 2 / 8;
-`;
-
-interface INewWellBoreButtonProps extends ButtonProps {
-  open?: boolean;
-}
-
-const CreateNewButton = styled(Button)<INewWellBoreButtonProps>`
+const CreateNewButton = styled(Button)<CustomButtonProps>`
   background: ${colors.interactive.primary__resting.hsla};
   width: ${(props) => props.open && '100%'};
   border-radius: ${(props) => props.open && shape.icon_button.borderRadius};
-  grid-column: 2 / 8;
+  grid-column: 2;
+  ${(props) =>
+    props.open &&
+    `
+  padding-right: ${spacings.comfortable.large}
+  `};
 
   &:hover {
     border-radius: ${(props) => props.open && shape.icon_button.borderRadius};
@@ -67,53 +70,52 @@ const CreateNewButton = styled(Button)<INewWellBoreButtonProps>`
 `;
 
 const CreateNewButtonText = styled(Typography)`
-  font-size: 12px;
+  font-weight: 400;
 `;
 
-const SideBar: React.FC = () => {
-  const [open, setOpen] = useState(false);
+interface SideBarProps {
+  onCreate?: () => void;
+  createLabel?: string;
+  menuItems: MenuItemType[];
+}
 
-  const menuItems: Array<MenuItemDto> = [
-    { name: 'Dashboard', icon: dashboard, link: '/dashboard' },
-    { name: 'Wellbore', icon: Wellbore, link: '/wellbore' },
-  ];
+const SideBar: React.FC<SideBarProps> = ({
+  onCreate,
+  createLabel,
+  menuItems,
+}) => {
+  const [open, setOpen] = useState(true);
 
   return (
     <Container open={open}>
       <TopContainer>
-        <MenuButtonContainer open={open}>
-          <MenuToggleButton
-            open={open}
-            onClick={() => setOpen((o) => !o)}
-            variant="ghost_icon"
-          >
-            <Icon
-              data={menu}
-              color={colors.interactive.primary__resting.hsla}
-            />
-          </MenuToggleButton>
-        </MenuButtonContainer>
-        <MenuButtonContainer open={open}>
-          <CreateNewButton
-            open={open}
-            variant={open ? 'contained' : 'ghost_icon'}
-            href="/add"
-          >
-            <Icon data={add} color={colors.ui.background__default.hsla} />
-            {open && (
-              <CreateNewButtonText
-                color={colors.text.static_icons__primary_white.hsla}
-                variant="body_short"
-              >
-                Create new wellbore
-              </CreateNewButtonText>
-            )}
-          </CreateNewButton>
-        </MenuButtonContainer>
+        {onCreate && createLabel && (
+          <MenuButtonContainer open={open}>
+            <CreateNewButton
+              open={open}
+              variant={open ? 'contained' : 'ghost_icon'}
+              href="/add"
+            >
+              <Icon data={add} color={colors.ui.background__default.hsla} />
+              {open && (
+                <CreateNewButtonText
+                  color={colors.text.static_icons__primary_white.hsla}
+                  variant="button"
+                  group="navigation"
+                >
+                  {createLabel}
+                </CreateNewButtonText>
+              )}
+            </CreateNewButton>
+          </MenuButtonContainer>
+        )}
         {menuItems.map((m) => (
-          <MenuItem key={m.name} open={open} data={m} currentUrl="" />
+          <MenuItem key={m.name} open={open} {...m} currentUrl="" />
         ))}
       </TopContainer>
+      <ToggleContainer open={open}>
+        <ToggleOpen open={open} setOpen={setOpen} />
+      </ToggleContainer>
       <LogoContainer>
         <EquinorLogo />
       </LogoContainer>

@@ -19,7 +19,7 @@ interface IMenuItemButtonProps extends ButtonProps {
 }
 
 const MenuItemButton = styled(Button)<IMenuItemButtonProps>`
-  background: ${(props: IMenuItemButtonProps) =>
+  background: ${(props) =>
     props.active
       ? colors.interactive.primary__selected_highlight.hsla
       : undefined};
@@ -32,6 +32,7 @@ const MenuItemButton = styled(Button)<IMenuItemButtonProps>`
   min-height: 72px;
 
   &:hover {
+    cursor: pointer;
     background: ${colors.interactive.primary__selected_hover.hsla};
   }
 
@@ -57,23 +58,30 @@ const MenuItemButtonTypography = styled(
   Typography
 )<MenuItemButtonTypographyProps>`
   grid-column: ${(props) => props.open && '4 / -1'};
+  text-transform: capitalize;
 `;
 
-export type MenuItemDto = {
+export type MenuItemType = {
   icon?: IconData;
   name: string;
   link?: string;
   onClick?: () => void;
 };
 
-interface IProps {
-  data: MenuItemDto;
+interface IProps extends MenuItemType {
   open?: boolean;
-  currentUrl: string;
+  currentUrl?: string;
 }
 
-const MenuItem: React.FC<IProps> = ({ data, open, currentUrl }) => {
-  const isCurrentUrl = () => currentUrl.includes(data.link!);
+const MenuItem: React.FC<IProps> = ({
+  open,
+  currentUrl,
+  icon,
+  name,
+  link,
+  onClick,
+}) => {
+  const isCurrentUrl = () => currentUrl?.includes(link!);
 
   const getIconColor = () => {
     return isCurrentUrl()
@@ -84,27 +92,23 @@ const MenuItem: React.FC<IProps> = ({ data, open, currentUrl }) => {
   return (
     <MenuItemButton
       data-testid="menu-item-button"
-      href={data.link}
-      as={data.onClick ? 'button' : 'a'}
+      href={link}
+      as="a"
       active={isCurrentUrl()}
-      onClick={data.onClick}
+      onClick={onClick}
       variant="ghost"
       open={open}
     >
-      {data.icon && (
-        <MenuItemButtonIcon
-          open={open}
-          data={data.icon}
-          color={getIconColor()}
-        />
+      {icon && (
+        <MenuItemButtonIcon open={open} data={icon} color={getIconColor()} />
       )}
-      {data.name && open && (
+      {name && open && (
         <MenuItemButtonTypography
           open={open}
           group="navigation"
           variant="button"
         >
-          {data.name}
+          {name}
         </MenuItemButtonTypography>
       )}
     </MenuItemButton>
