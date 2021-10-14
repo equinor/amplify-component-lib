@@ -5,8 +5,8 @@ module.exports = {
   mode: 'production',
   devtool: 'inline-source-map',
   output: {
-    filename: 'index.js', // <-- Important
-    libraryTarget: 'this', // <-- Important
+    filename: 'index.js',
+    libraryTarget: 'umd',
   },
   module: {
     rules: [
@@ -20,5 +20,5 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  externals: [nodeExternals()], // <-- Important
+  externals: [nodeExternals()],
 };

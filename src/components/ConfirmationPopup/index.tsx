@@ -54,6 +54,7 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
   actions,
   actionPosition,
   onClose,
+  children,
 }) => {
   if (show) {
     return (
@@ -61,10 +62,13 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
         <StyledDialog>
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.CustomContent>
-            <Typography
-              variant="body_short"
-              dangerouslySetInnerHTML={{ __html: body! }}
-            />
+            {body && (
+              <Typography
+                variant="body_short"
+                dangerouslySetInnerHTML={{ __html: body! }}
+              />
+            )}
+            {children}
           </Dialog.CustomContent>
           <StyledActions actionPosition={actionPosition}>
             {actions}
