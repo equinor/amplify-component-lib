@@ -9,9 +9,28 @@ const StyledDialog = styled(Dialog)`
   width: 400px;
 `;
 
-const StyledActions = styled(Dialog.Actions)`
+interface IStyledActionsProps {
+  actionPosition?: 'left' | 'right';
+}
+
+const StyledActions = styled(Dialog.Actions)<IStyledActionsProps>`
   display: flex;
   gap: ${spacings.comfortable.small};
+  justify-self: ${(props) =>
+    props.actionPosition === 'left' ? 'flex-start' : 'flex-end'};
+  align-items: center;
+
+  & > * {
+    margin-left: ${(props) =>
+      props.actionPosition === 'right' || !props.actionPosition
+        ? spacings.comfortable.x_small
+        : undefined};
+
+    margin-right: ${(props) =>
+      props.actionPosition === 'left'
+        ? spacings.comfortable.x_small
+        : undefined};
+  }
 `;
 
 export interface IComponentProps {
@@ -19,6 +38,7 @@ export interface IComponentProps {
   title?: string;
   body?: string;
   actions?: Array<JSX.Element>;
+  actionPosition?: 'left' | 'right';
   onClose?:
     | ((
         event: React.MouseEvent<Element, MouseEvent> | KeyboardEvent,
@@ -32,6 +52,7 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
   title,
   body,
   actions,
+  actionPosition,
   onClose,
 }) => {
   if (show) {
@@ -45,7 +66,9 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
               dangerouslySetInnerHTML={{ __html: body! }}
             />
           </Dialog.CustomContent>
-          <StyledActions>{actions}</StyledActions>
+          <StyledActions actionPosition={actionPosition}>
+            {actions}
+          </StyledActions>
         </StyledDialog>
       </Scrim>
     );
