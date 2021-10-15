@@ -1,32 +1,33 @@
-import React, { useState } from 'react';
-import { withTheme } from '@material-ui/core/styles';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import {
-  Button,
+  CircularProgress as EDSCircularProgress,
   Icon,
-  Tooltip,
-  TopBar,
+  TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { trending_up, notifications, info_circle } from '@equinor/eds-icons';
-import Settings from './actionContents/settings';
-import Account from './actionContents/account';
-import Guidelines from './actionContents/guidelines';
-// import { useHistory } from "react-router";
+import { IconData } from '@equinor/eds-icons';
 
 const { colors } = tokens;
 
-const Bar = withTheme(styled(TopBar)`
-  border-bottom: 2px solid ${colors.ui.background__medium.hsla};
-  background-color: ${(props) => props.theme.palette.background.default};
-`);
-
-const Header = styled(TopBar.Header)`
-  cursor: pointer;
+const Bar = styled(EDSTopBar)`
+  border-bottom: 1px solid ${colors.ui.background__medium.hsla};
+  padding-left: 18px;
 `;
 
-const Icons = styled.div`
+const Header = styled(EDSTopBar.Header)`
+  cursor: pointer;
+  position: relative;
+  display: grid;
+  // 64px for application icon
+  grid-template-columns: 32px auto;
+  > svg {
+    justify-self: center;
+  }
+`;
+
+const Actions = styled(EDSTopBar.Actions)`
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
@@ -35,61 +36,48 @@ const Icons = styled.div`
   }
 `;
 
-const ApplicationTopBar: React.FC = () => {
-  const [guidelineOpen, setGuidelineOpen] = useState(false);
-  const { Actions } = TopBar;
-  // const history = useHistory();
+interface CircularProgressProps {
+  isFetching: boolean;
+}
 
-  const handleHeaderClick = () => {
-    // history.push("/");
-  };
+const CircularProgress = styled(EDSCircularProgress)<CircularProgressProps>`
+  position: absolute;
+  right: -24px;
+  visibility: ${(props) => (props.isFetching ? 'visible' : 'hidden')};
+`;
+interface TopBarProps {
+  onHeaderClick: () => void;
+  applicationIcon: IconData | ReactElement;
+  applicationName: string;
+  actions: ReactElement[];
+  isFetching?: boolean;
+}
 
+const TopBar: React.FC<TopBarProps> = ({
+  onHeaderClick,
+  applicationIcon,
+  applicationName,
+  actions,
+  isFetching = false,
+}) => {
   return (
-    <>
-      <Bar>
-        <Header onClick={handleHeaderClick}>
+    <Bar>
+      <Header onClick={onHeaderClick}>
+        {React.isValidElement(applicationIcon) ? (
+          applicationIcon
+        ) : (
           <Icon
-            data={trending_up}
+            data={applicationIcon}
+            size={24}
             color={colors.interactive.primary__resting.hsla}
           />
-          <Typography variant="h6">
-            Application Name - Johan Sverdrup
-          </Typography>
-        </Header>
-        <Actions>
-          <Icons>
-            <Account />
-            <Settings />
-            <Button
-              variant="ghost_icon"
-              onClick={() =>
-                guidelineOpen ? setGuidelineOpen(false) : setGuidelineOpen(true)
-              }
-            >
-              <Icon
-                data={info_circle}
-                size={24}
-                color={colors.interactive.primary__resting.hsla}
-              />
-            </Button>
-            <Tooltip title="Coming Later" placement="bottom">
-              <Button variant="ghost_icon" disabled>
-                <Icon
-                  data={notifications}
-                  size={24}
-                  color={colors.interactive.primary__resting.hsla}
-                />
-              </Button>
-            </Tooltip>
-          </Icons>
-        </Actions>
-      </Bar>
-      <Guidelines
-        onClose={() => setGuidelineOpen(false)}
-        open={guidelineOpen}
-      />
-    </>
+        )}
+        <Typography variant="h6">{applicationName}</Typography>
+        <CircularProgress size={16} isFetching={isFetching} />
+      </Header>
+      <Actions>{actions.map((action) => action)}</Actions>
+    </Bar>
   );
 };
 
-export default ApplicationTopBar;
+export default TopBar;
