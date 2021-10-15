@@ -1,17 +1,16 @@
-import { StarProgress } from '@equinor/eds-core-react';
-import { Backdrop } from '@material-ui/core';
-import styled from 'styled-components';
+import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
 
-const StyledBackdrop = styled(Backdrop)`
-  z-index: 300;
-  background-color: rgba(255, 255, 255, 0.4);
-`;
+interface IFullpageSpinnerProps {
+  variant?: 'equinor' | 'circle' | 'dots';
+}
 
-const FullPageSpinner = () => {
+const FullPageSpinner: React.FC<IFullpageSpinnerProps> = ({ variant }) => {
   return (
-    <StyledBackdrop open={true}>
-      <StarProgress />
-    </StyledBackdrop>
+    <Scrim>
+      {(variant === 'equinor' || !variant) && <StarProgress />}
+      {variant === 'circle' && <Progress.Circular />}
+      {variant === 'dots' && <Progress.Dots />}
+    </Scrim>
   );
 };
 
