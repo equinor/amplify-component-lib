@@ -1,20 +1,20 @@
-import { PropsWithChildren } from 'react';
+import { forwardRef } from 'react';
 import { Tooltip, TooltipProps } from '@equinor/eds-core-react';
 
-function OptionalTooltip({
-  title,
-  children,
-  ...rest
-}: PropsWithChildren<TooltipProps>) {
-  if (title === undefined) {
-    return <>{children}</>;
-  }
+const OptionalTooltip = forwardRef<HTMLDivElement, TooltipProps>(
+  ({ title, children, ...rest }, ref) => {
+    if (title === undefined) {
+      return <>{children}</>;
+    }
 
-  return (
-    <Tooltip title={title} {...rest}>
-      {children}
-    </Tooltip>
-  );
-}
+    return (
+      <Tooltip ref={ref} title={title} {...rest}>
+        {children}
+      </Tooltip>
+    );
+  }
+);
+
+OptionalTooltip.displayName = 'OptionalTooltip';
 
 export default OptionalTooltip;
