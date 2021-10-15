@@ -2,13 +2,30 @@ import { tokens } from '@equinor/eds-tokens';
 import React from 'react';
 import styled from 'styled-components';
 
-const { colors, spacings, shape } = tokens;
+const { colors, spacings, typography, shape } = tokens;
+
+export interface ProgressBarProps {
+  progress: number;
+  displayValue?: number;
+  backgroundColor?: string;
+  fillColor?: string;
+  displayValueInBar?: boolean;
+  valueUnit?: string;
+  style?: React.CSSProperties;
+  className?: string | undefined;
+  valueColor?: string;
+}
 
 interface ContainerProps {
   backgroundColor?: string;
 }
 
-const Container = styled.div<ContainerProps>`
+const DefaultStyle = styled.div`
+  width: 100%;
+  height: ${spacings.comfortable.medium};
+`;
+
+const Bar = styled.div<ContainerProps>`
   background-color: ${(props) =>
     props.backgroundColor
       ? props.backgroundColor
@@ -18,10 +35,9 @@ const Container = styled.div<ContainerProps>`
 `;
 
 interface FillProps {
-  progress?: number;
   value?: number;
+  progress?: number;
   fillColor?: string;
-  size: 8 | 16 | 32 | 64;
 }
 
 const Fill = styled.div<FillProps>`
@@ -31,7 +47,7 @@ const Fill = styled.div<FillProps>`
     props.fillColor
       ? props.fillColor
       : colors.infographic.substitute__blue_sky.hsla};
-  height: ${(props) => `${props.size}px`};
+  height: 100%;
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -39,43 +55,48 @@ const Fill = styled.div<FillProps>`
 
 const FillValue = styled.span`
   align-self: center;
-  color: ${colors.text.static_icons__primary_white.hsla};
+  color: ${(props) =>
+    props.color ? props.color : colors.text.static_icons__primary_white.hsla};
+`;
+
+const ValueDisplay = styled.div`
+  color: ${(props) =>
+    props.color ? props.color : colors.text.static_icons__primary_white.hsla};
+  font-size: ${typography.paragraph.caption.fontSize};
+  line-height: 16px;
+  margin-top: 4px;
 `;
 
 const clampValue = (num: number) => Math.min(Math.max(num, 0), 100);
 
-export interface ProgressBarProps {
-  progress: number;
-  value?: number;
-  backgroundColor: string;
-  fillColor: string;
-  unit?: string;
-  size: 8 | 16 | 32 | 64;
-}
-
-const ProgressBar: React.FC<ProgressBarProps> = ({
-  progress,
-  value,
-  backgroundColor,
-  fillColor,
-  unit,
-  size,
-}) => {
+const ProgressBar: React.FC<ProgressBarProps> = (props) => {
   return (
-    <Container
-      backgroundColor={backgroundColor}
-      data-testid="progressbarbackground"
-    >
-      <Fill
-        value={progress}
-        fillColor={fillColor}
-        progress={progress}
-        data-testid="progressbarfill"
-        size={size}
+    <DefaultStyle className={props.className} style={props.style}>
+      <Bar
+        backgroundColor={props.backgroundColor}
+        data-testid="progressbarbackground"
       >
-        <FillValue>{value && value + (unit ? ' ' + unit : '')}</FillValue>
-      </Fill>
-    </Container>
+        <Fill
+          value={props.progress}
+          fillColor={props.fillColor}
+          progress={props.progress}
+          data-testid="progressbarfill"
+        >
+          {props.displayValueInBar && (
+            <FillValue color={props.valueColor}>
+              {props.displayValue +
+                (props.valueUnit ? ' ' + props.valueUnit : '')}
+            </FillValue>
+          )}
+        </Fill>
+      </Bar>
+      <ValueDisplay data-testid="progressbarvalue" color={props.valueColor}>
+        {props.displayValue &&
+          !props.displayValueInBar &&
+          props.displayValue.toFixed(1) +
+            (props.valueUnit ? ' ' + props.valueUnit : '')}
+      </ValueDisplay>
+    </DefaultStyle>
   );
 };
 
