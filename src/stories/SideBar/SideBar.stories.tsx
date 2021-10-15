@@ -101,8 +101,8 @@ export const WithCreateAction: Story = () => {
     <div style={{ display: 'flex', height: '95vh' }}>
       <SideBar
         menuItems={menuItems}
-        createLabel="Create story"
-        onCreate={() => console.log('Created 🖋')}
+        createLabel="Create a diamond"
+        onCreate={() => console.log('Created 💎')}
       />
     </div>
   );

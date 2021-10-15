@@ -4,30 +4,30 @@ import {
   Button,
   ButtonProps,
   Icon,
-  IconProps,
+  Tooltip as EDSTooltip,
   Typography,
-  TypographyProps,
 } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { IconData } from '@equinor/eds-icons';
 
-const { colors } = tokens;
+const { colors, spacings } = tokens;
 
-interface IMenuItemButtonProps extends ButtonProps {
+interface ContainerProps extends ButtonProps {
   active?: boolean;
   open?: boolean;
 }
 
-const MenuItemButton = styled(Button)<IMenuItemButtonProps>`
+const Container = styled(Button)<ContainerProps>`
   background: ${(props) =>
     props.active
       ? colors.interactive.primary__selected_highlight.hsla
-      : undefined};
+      : 'none'};
   display: ${(props) => (props.open ? 'grid' : 'flex')};
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: ${spacings.comfortable.medium};
   justify-content: ${(props) => !props.open && 'center'};
   align-items: center;
-  border-bottom: 2px solid ${colors.ui.background__medium.hsla};
+  border-bottom: 1px solid ${colors.ui.background__medium.hsla};
   text-decoration: none;
   min-height: 72px;
 
@@ -42,22 +42,24 @@ const MenuItemButton = styled(Button)<IMenuItemButtonProps>`
   }
 `;
 
-interface IMenuItemButtonIconProps extends IconProps {
-  open?: boolean;
-}
-
-const MenuItemButtonIcon = styled(Icon)<IMenuItemButtonIconProps>`
-  grid-column: ${(props) => props.open && '2 / 3'};
+const ItemIcon = styled(Icon)`
+  grid-column: 2;
 `;
 
-type MenuItemButtonTypographyProps = TypographyProps & {
-  open?: boolean;
-};
+interface ItemTextProps {
+  active?: boolean;
+}
 
-const MenuItemButtonTypography = styled(
-  Typography
-)<MenuItemButtonTypographyProps>`
-  grid-column: ${(props) => props.open && '4 / -1'};
+const ItemText = styled(Typography)<ItemTextProps>`
+  font-weight: ${(props) => (props.active ? '500' : '400')};
+  grid-column: 3 / -1;
+  color: ${colors.text.static_icons__default.hex};
+  &::first-letter {
+    text-transform: capitalize;
+  }
+`;
+
+const Tooltip = styled(EDSTooltip)`
   text-transform: capitalize;
 `;
 
@@ -68,12 +70,12 @@ export type MenuItemType = {
   onClick?: () => void;
 };
 
-interface IProps extends MenuItemType {
-  open?: boolean;
+interface MenuItemProps extends MenuItemType {
+  open: boolean;
   currentUrl?: string;
 }
 
-const MenuItem: React.FC<IProps> = ({
+const MenuItem: React.FC<MenuItemProps> = ({
   open,
   currentUrl,
   icon,
@@ -86,32 +88,40 @@ const MenuItem: React.FC<IProps> = ({
   const getIconColor = () => {
     return isCurrentUrl()
       ? colors.interactive.primary__resting.hsla
-      : colors.text.static_icons__secondary.hsla;
+      : colors.text.static_icons__default.hsla;
   };
 
-  return (
-    <MenuItemButton
-      data-testid="menu-item-button"
-      href={link}
-      as="a"
-      active={isCurrentUrl()}
-      onClick={onClick}
-      variant="ghost"
-      open={open}
-    >
-      {icon && (
-        <MenuItemButtonIcon open={open} data={icon} color={getIconColor()} />
-      )}
-      {name && open && (
-        <MenuItemButtonTypography
-          open={open}
-          group="navigation"
-          variant="button"
-        >
+  if (open) {
+    return (
+      <Container
+        data-testid="menu-item-button"
+        as="a"
+        active={isCurrentUrl()}
+        onClick={onClick}
+        variant="ghost"
+        open={open}
+      >
+        {icon && <ItemIcon data={icon} color={getIconColor()} />}
+        <ItemText variant="cell_text" group="table" active={isCurrentUrl()}>
           {name}
-        </MenuItemButtonTypography>
-      )}
-    </MenuItemButton>
+        </ItemText>
+      </Container>
+    );
+  }
+
+  return (
+    <Tooltip title={name} placement="right">
+      <Container
+        data-testid="menu-item-button"
+        as="a"
+        active={isCurrentUrl()}
+        onClick={onClick}
+        variant="ghost"
+        open={open}
+      >
+        {icon && <ItemIcon data={icon} color={getIconColor()} />}
+      </Container>
+    </Tooltip>
   );
 };
 
