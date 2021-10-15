@@ -21,7 +21,8 @@
     "pretty:fix": "prettier --write .",
     "lint": "tsc --noEmit && eslint . --ext .jsx,.ts,.tsx",
     "lint-fix": "eslint . --ext .jsx,.ts,.tsx --fix",
-    "test": "run-script-os",
+    "test": "react-scripts test",
+    "test:ci": "run-script-os",
     "test:win32": "set CI=true&react-scripts test --colors",
     "test:macos": "CI=true react-scripts test",
     "test:watch": "react-scripts test",
@@ -62,7 +63,8 @@
     ]
   },
   "resolutions": {
-    "babel-loader": "8.1.0"
+    "babel-loader": "8.1.0",
+    "webpack": "4.44.2"
   },
   "dependencies": {
     "@equinor/eds-core-react": "^0.14.0",

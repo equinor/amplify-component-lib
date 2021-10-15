@@ -16,7 +16,7 @@ const tasks = [
     name: chalk.hex('#CCE0E8')('Running Lint'),
   },
   {
-    command: 'npm run test',
+    command: 'npm run test:ci',
     name: chalk.hex('#CCE0E8')('Client Unit-Tests'),
     ignoreStdErr: true, // For some reason jest prints to StdErr that everything is ok?
   },

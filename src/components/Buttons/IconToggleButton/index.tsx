@@ -2,7 +2,7 @@ import { forwardRef, useState } from 'react';
 import { Button, Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { Placement } from '@equinor/eds-core-react/dist/types/hooks';
-import OptionalTooltip from '../../Tooltip/OptionalTooltip';
+import OptionalTooltip from '../../OptionalTooltip';
 
 interface Tooltip {
   title: string;
