@@ -63,8 +63,7 @@
     ]
   },
   "resolutions": {
-    "babel-loader": "8.1.0",
-    "webpack": "4.44.2"
+    "babel-loader": "8.1.0"
   },
   "dependencies": {
     "@equinor/eds-core-react": "^0.14.0",
@@ -121,7 +120,6 @@
     "eslint-plugin-testing-library": "^4.12.4",
     "run-script-os": "^1.1.6",
     "ts-loader": "^9.2.6",
-    "webpack": "^5.58.2",
     "webpack-cli": "^4.9.0",
     "webpack-node-externals": "^3.0.0"
   },

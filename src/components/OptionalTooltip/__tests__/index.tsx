@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, cleanup } from '../../../test-utils';
-import '@testing-library/jest-dom/extend-expect';
+import { cleanup } from '../../../test-utils';
 import OptionalTooltip from '..';
+import { render } from '@testing-library/react';
 
 afterEach(cleanup);
 
@@ -16,15 +16,5 @@ describe('OptionalTooltip', () => {
         <>Test</>
       </OptionalTooltip>
     );
-  });
-
-  it('renders OptionalTooltipText', () => {
-    const { getByText } = render(
-      <OptionalTooltip {...dummyData}>
-        <>Test</>
-      </OptionalTooltip>
-    );
-
-    expect(getByText('TootltipText')).toBeInTheDocument();
   });
 });
