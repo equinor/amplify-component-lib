@@ -58,7 +58,8 @@ Icon button that toggle icon.
 
 ## OptionalTooltip
 
-Tooltip from EDS only made optional.
+If title is undefined the tooltip will not up, this is not possible today with the EDS component.
+We use this on other components to help make them more modular. Feel free to use it as well as you please.
 
 ## ProgressBar
 
