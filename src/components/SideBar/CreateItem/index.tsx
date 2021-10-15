@@ -63,17 +63,17 @@ const Tooltip = styled(EDSTooltip)`
 interface CreateItemProps {
   createLabel: string;
   onCreate: () => void;
-  open: boolean;
+  isOpen: boolean;
 }
 
 const CreateItem: React.FC<CreateItemProps> = ({
   createLabel,
   onCreate,
-  open,
+  isOpen,
 }) => {
-  if (open) {
+  if (isOpen) {
     return (
-      <MenuButtonContainer open={open}>
+      <MenuButtonContainer open={isOpen}>
         <CreateNewButton open variant="contained" onClick={onCreate}>
           <Icon data={add} color={colors.ui.background__default.hsla} />
           <CreateNewButtonText
@@ -89,7 +89,7 @@ const CreateItem: React.FC<CreateItemProps> = ({
   }
   return (
     <Tooltip title={createLabel} placement="right">
-      <MenuButtonContainer open={open}>
+      <MenuButtonContainer open={isOpen}>
         <CreateNewButton variant="ghost_icon" onClick={onCreate}>
           <Icon data={add} color={colors.ui.background__default.hsla} />
         </CreateNewButton>

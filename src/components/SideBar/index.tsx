@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import EquinorLogo from '../EquinorLogo';
@@ -40,6 +40,7 @@ interface SideBarProps {
   createLabel?: string;
   menuItems: MenuItemType[];
   currentUrl?: string;
+  open?: boolean;
 }
 
 const SideBar: React.FC<SideBarProps> = ({
@@ -47,24 +48,34 @@ const SideBar: React.FC<SideBarProps> = ({
   createLabel,
   menuItems,
   currentUrl,
+  open = false,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(open);
+
+  useEffect(() => {
+    setIsOpen(open);
+  }, [open]);
 
   return (
-    <Container open={open}>
+    <Container open={isOpen}>
       <TopContainer>
         {onCreate && createLabel && (
           <CreateItem
-            open={open}
+            isOpen={isOpen}
             createLabel={createLabel}
             onCreate={onCreate}
           />
         )}
         {menuItems.map((m) => (
-          <MenuItem key={m.name} currentUrl={currentUrl} open={open} {...m} />
+          <MenuItem
+            key={m.name}
+            currentUrl={currentUrl}
+            isOpen={isOpen}
+            {...m}
+          />
         ))}
       </TopContainer>
-      <ToggleOpen open={open} setOpen={setOpen} />
+      <ToggleOpen isOpen={isOpen} setIsOpen={setIsOpen} />
       <LogoContainer>
         <EquinorLogo />
       </LogoContainer>

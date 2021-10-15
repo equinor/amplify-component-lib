@@ -45,42 +45,42 @@ const Text = styled(Typography)`
 `;
 
 interface ToggleOpenProps {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const ToggleOpen: React.FC<ToggleOpenProps> = ({ open, setOpen }) => {
-  if (!open) {
+const ToggleOpen: React.FC<ToggleOpenProps> = ({ isOpen, setIsOpen }) => {
+  if (isOpen) {
     return (
-      <ToggleContainer>
-        <Tooltip title="Expand" placement="right">
-          <Button
-            onClick={() => setOpen((o) => !o)}
-            color="secondary"
-            variant="ghost_icon"
-          >
-            <Icon
-              size={24}
-              data={last_page}
-              color={colors.text.static_icons__default.hex}
-            />
-          </Button>
-        </Tooltip>
+      <ToggleContainer open={isOpen}>
+        <LargeButton onClick={() => setIsOpen((o) => !o)}>
+          <Icon
+            size={24}
+            data={first_page}
+            color={colors.text.static_icons__default.hex}
+          />
+          <Text variant="cell_text" group="table">
+            Collapse
+          </Text>
+        </LargeButton>
       </ToggleContainer>
     );
   }
   return (
-    <ToggleContainer open>
-      <LargeButton onClick={() => setOpen((o) => !o)}>
-        <Icon
-          size={24}
-          data={first_page}
-          color={colors.text.static_icons__default.hex}
-        />
-        <Text variant="cell_text" group="table">
-          Collapse
-        </Text>
-      </LargeButton>
+    <ToggleContainer open={isOpen}>
+      <Tooltip title="Expand" placement="right">
+        <Button
+          onClick={() => setIsOpen((o) => !o)}
+          color="secondary"
+          variant="ghost_icon"
+        >
+          <Icon
+            size={24}
+            data={last_page}
+            color={colors.text.static_icons__default.hex}
+          />
+        </Button>
+      </Tooltip>
     </ToggleContainer>
   );
 };

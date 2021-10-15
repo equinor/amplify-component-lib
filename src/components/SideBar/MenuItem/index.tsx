@@ -71,12 +71,12 @@ export type MenuItemType = {
 };
 
 interface MenuItemProps extends MenuItemType {
-  open: boolean;
+  isOpen: boolean;
   currentUrl?: string;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
-  open,
+  isOpen,
   currentUrl,
   icon,
   name,
@@ -91,7 +91,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       : colors.text.static_icons__default.hsla;
   };
 
-  if (open) {
+  if (isOpen) {
     return (
       <Container
         data-testid="menu-item-button"
@@ -99,7 +99,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         active={isCurrentUrl()}
         onClick={onClick}
         variant="ghost"
-        open={open}
+        open
       >
         {icon && <ItemIcon data={icon} color={getIconColor()} />}
         <ItemText variant="cell_text" group="table" active={isCurrentUrl()}>
@@ -117,7 +117,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         active={isCurrentUrl()}
         onClick={onClick}
         variant="ghost"
-        open={open}
+        open={isOpen}
       >
         {icon && <ItemIcon data={icon} color={getIconColor()} />}
       </Container>
