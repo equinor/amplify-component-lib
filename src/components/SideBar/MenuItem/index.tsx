@@ -44,6 +44,7 @@ const Container = styled(Button)<ContainerProps>`
 
 const ItemIcon = styled(Icon)`
   grid-column: 2;
+  margin-left: -4px;
 `;
 
 interface ItemTextProps {

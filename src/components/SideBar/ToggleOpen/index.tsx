@@ -16,6 +16,13 @@ const ToggleContainer = styled.div<ContainerProps>`
   justify-content: center;
   margin-top: auto;
   margin-bottom: ${spacings.comfortable.medium};
+  ${(props) =>
+    !props.open &&
+    `
+    > button {
+      margin-left: -4px;
+    }
+  `}
 `;
 
 const LargeButton = styled.button`
@@ -27,7 +34,7 @@ const LargeButton = styled.button`
   background: none;
   border: none;
   border-radius: ${shape.button.borderRadius};
-  padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
+  padding: ${spacings.comfortable.medium_small};
   margin-left: -${spacings.comfortable.medium};
   margin-right: -${spacings.comfortable.medium};
   > p {
