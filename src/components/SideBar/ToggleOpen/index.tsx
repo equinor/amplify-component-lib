@@ -9,18 +9,16 @@ const { colors, spacings, shape } = tokens;
 const LargeButton = styled.button`
   grid-column: 2 / 8;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
   background: none;
   border: none;
   border-radius: ${shape.button.borderRadius};
   padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
   margin-left: -${spacings.comfortable.medium};
-  > svg {
-    grid-column: 1;
-  }
+  margin-right: -${spacings.comfortable.medium};
   > p {
-    grid-column: 4;
+    grid-column: 2;
   }
   &:hover {
     cursor: pointer;

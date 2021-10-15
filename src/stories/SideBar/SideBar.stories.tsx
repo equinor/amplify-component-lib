@@ -108,7 +108,7 @@ export const WithCreateAction: Story = () => {
   );
 };
 
-export const WithCurrentUrl: Story = () => {
+export const WithCurrentUrlAndCreate: Story = () => {
   const menuItems: MenuItemType[] = [
     {
       name: 'Dashboard',
