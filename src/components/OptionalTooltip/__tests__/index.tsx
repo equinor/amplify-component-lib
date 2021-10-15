@@ -1,7 +1,6 @@
 import React from 'react';
-import { cleanup } from '../../../test-utils';
+import { cleanup, render } from '../../../test-utils';
 import OptionalTooltip from '..';
-import { render } from '@testing-library/react';
 
 afterEach(cleanup);
 
