@@ -24,7 +24,7 @@ describe('ComponentToTest', () => {
     expect(queryByTestId('menuContainer')).toHaveStyle('visibility: hidden');
   });
 
-  it('renders a the menu when button is clicked', async () => {
+  it('renders the menu when button is clicked', async () => {
     const { findByTestId } = render(
       <SingleFilterMenu {...dummyData}></SingleFilterMenu>
     );
@@ -44,9 +44,9 @@ describe('ComponentToTest', () => {
     expect(getByText('123')).toBeInTheDocument();
   });
 
-  it('renders a the chip when menu item is selected', async () => {
+  it('renders a the chip when menu item is selected and showChip = true', async () => {
     const { findByTestId, getByText } = render(
-      <SingleFilterMenu {...dummyData}></SingleFilterMenu>
+      <SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>
     );
     const menuItemText = dummyData.data[2];
 
