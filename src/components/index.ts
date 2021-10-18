@@ -9,7 +9,7 @@ import EquinorLogo from './EquinorLogo';
 import FileProgress from './FileProgress';
 import FileUpload from './FileUpload';
 import FileUploadArea from './FileUploadArea';
-import FilterMenu from './FilterMenu';
+import SingleFilterMenu from './SingleFilterMenu';
 import FullPageSpinner from './FullPageSpinner';
 import InfoElement from './InfoElement';
 import MulticolorProgressCircle from './MulticolorProgressCircle';
@@ -29,7 +29,7 @@ export {
   FileProgress,
   FileUpload,
   FileUploadArea,
-  FilterMenu,
+  SingleFilterMenu as FilterMenu,
   FullPageSpinner,
   IconToggleButton,
   InfoElement,
