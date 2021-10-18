@@ -36,16 +36,16 @@ describe('ComponentToTest', () => {
   });
 
   it('renders a the menu items', () => {
-    const { getByText } = render(
+    const { queryByText } = render(
       <SingleFilterMenu {...dummyData}></SingleFilterMenu>
     );
-    expect(getByText('test')).toBeInTheDocument();
-    expect(getByText('best')).toBeInTheDocument();
-    expect(getByText('123')).toBeInTheDocument();
+    expect(queryByText('test')).toBeInTheDocument();
+    expect(queryByText('best')).toBeInTheDocument();
+    expect(queryByText('123')).toBeInTheDocument();
   });
 
   it('renders a the chip when menu item is selected and showChip = true', async () => {
-    const { findByTestId, getByText } = render(
+    const { findByTestId, queryByText } = render(
       <SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>
     );
     const menuItemText = dummyData.data[2];
@@ -53,7 +53,7 @@ describe('ComponentToTest', () => {
     const button = await findByTestId('menuButton');
     fireEvent.click(button);
 
-    const menuItem = getByText(menuItemText);
+    const menuItem = queryByText(menuItemText);
     fireEvent.click(menuItem);
 
     const chip = await findByTestId('chip');
