@@ -71,7 +71,7 @@ export type MenuItemType = {
   onClick?: () => void;
 };
 
-interface MenuItemProps extends MenuItemType {
+export interface MenuItemProps extends MenuItemType {
   isOpen: boolean;
   currentUrl?: string;
 }
