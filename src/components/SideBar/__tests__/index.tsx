@@ -3,7 +3,7 @@ import { render, screen, cleanup } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import SideBar from '../index';
 import { MenuItemType } from '../MenuItem';
-import { home, star_half, star_outlined } from '@equinor/eds-icons';
+import { home, star_half } from '@equinor/eds-icons';
 
 afterEach(cleanup);
 

@@ -33,6 +33,7 @@ describe('FullPageSpinner', () => {
   it('renders star progress as default', () => {
     render(<FullPageSpinner withoutScrim></FullPageSpinner>);
 
+    // eslint-disable-next-line jest-dom/prefer-to-have-attribute
     expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
       'StarProgress'
     );
@@ -41,6 +42,7 @@ describe('FullPageSpinner', () => {
   it('renders circle when prop is given', () => {
     render(<FullPageSpinner withoutScrim variant="circle"></FullPageSpinner>);
 
+    // eslint-disable-next-line jest-dom/prefer-to-have-attribute
     expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
       'CircularProgress'
     );
@@ -49,6 +51,7 @@ describe('FullPageSpinner', () => {
   it('renders dots when prop is given', () => {
     render(<FullPageSpinner withoutScrim variant="dots"></FullPageSpinner>);
 
+    // eslint-disable-next-line jest-dom/prefer-to-have-attribute
     expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
       'DotProgress'
     );

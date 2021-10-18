@@ -3,7 +3,7 @@ import { render, screen, cleanup } from '../../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import MenuItem, { MenuItemProps } from '../index';
 import { home } from '@equinor/eds-icons';
-import { fireEvent, getByText, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 
 afterEach(cleanup);
 
