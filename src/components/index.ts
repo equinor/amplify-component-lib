@@ -2,7 +2,6 @@ import IconToggleButton from './Buttons';
 import OptionalTooltip from './OptionalTooltip';
 import CompactCard from './CompactCard';
 import ConfirmationPopup from './ConfirmationPopup';
-import CreateImageFromInitials from './CreateImageFromInitials';
 import DataTypeCard from './DataTypeCard';
 import EditableField from './EditableField';
 import EquinorLogo from './EquinorLogo';
@@ -22,7 +21,6 @@ import TopBar from './TopBar';
 export {
   CompactCard,
   ConfirmationPopup,
-  CreateImageFromInitials,
   DataTypeCard,
   EditableField,
   EquinorLogo,
