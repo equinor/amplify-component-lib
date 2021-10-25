@@ -6,7 +6,7 @@ import {
   history,
   home,
 } from '@equinor/eds-icons';
-import SideBar from '../../components/SideBar';
+import { SideBar } from '../../components/SideBar';
 import { MenuItemType } from '../../components/SideBar/MenuItem';
 
 export default {
@@ -43,11 +43,13 @@ export const Primary: Story = () => {
   return (
     <div style={{ display: 'flex', height: '95vh' }}>
       <SideBar
-        menuItems={menuItems}
         createLabel="Create story"
-        currentUrl="home"
         onCreate={() => console.log('Created 🖋')}
-      />
+      >
+        {menuItems.map((m) => (
+          <SideBar.Item key={m.name} {...m} />
+        ))}
+      </SideBar>
     </div>
   );
 };
@@ -73,7 +75,11 @@ export const NoCreateAction: Story = () => {
 
   return (
     <div style={{ display: 'flex', height: '95vh' }}>
-      <SideBar menuItems={menuItems} />
+      <SideBar>
+        {menuItems.map((m) => (
+          <SideBar.Item key={m.name} {...m} />
+        ))}
+      </SideBar>
     </div>
   );
 };
@@ -100,10 +106,13 @@ export const WithCreateAction: Story = () => {
   return (
     <div style={{ display: 'flex', height: '95vh' }}>
       <SideBar
-        menuItems={menuItems}
         createLabel="Create a diamond"
         onCreate={() => console.log('Created 💎')}
-      />
+      >
+        {menuItems.map((m) => (
+          <SideBar.Item key={m.name} {...m} />
+        ))}
+      </SideBar>
     </div>
   );
 };
@@ -130,11 +139,13 @@ export const WithCurrentUrlAndCreate: Story = () => {
   return (
     <div style={{ display: 'flex', height: '95vh' }}>
       <SideBar
-        menuItems={menuItems}
-        currentUrl="favourites"
         createLabel="Create story"
         onCreate={() => console.log('Created 🖋')}
-      />
+      >
+        {menuItems.map((m) => (
+          <SideBar.Item key={m.name} {...m} />
+        ))}
+      </SideBar>
     </div>
   );
 };

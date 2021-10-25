@@ -1,60 +1,56 @@
 import React from 'react';
-import { render, fireEvent, screen, cleanup } from '../../../../test-utils';
+import { render, screen } from '../../../../test-utils';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import CreateItem from '../index';
 
-afterEach(cleanup);
+test('CreateItem renders', () => {
+  render(
+    <CreateItem
+      createLabel="Label"
+      isOpen={false}
+      onCreate={() => undefined}
+    ></CreateItem>
+  );
+});
 
-describe('CreateItem', () => {
-  it('renders without crashing', () => {
-    render(
-      <CreateItem
-        createLabel="Label"
-        isOpen={false}
-        onCreate={() => undefined}
-      ></CreateItem>
-    );
-  });
+test('Renders label when open', () => {
+  render(
+    <CreateItem
+      createLabel="Label"
+      isOpen={true}
+      onCreate={() => undefined}
+    ></CreateItem>
+  );
 
-  it('renders label when open', () => {
-    render(
-      <CreateItem
-        createLabel="Label"
-        isOpen={true}
-        onCreate={() => undefined}
-      ></CreateItem>
-    );
+  expect(screen.getByText('Label')).toBeInTheDocument();
+});
 
-    expect(screen.queryByText('Label')).toBeInTheDocument();
-  });
+test("Doesn't render label when closed", () => {
+  render(
+    <CreateItem
+      createLabel="Label"
+      isOpen={false}
+      onCreate={() => undefined}
+    ></CreateItem>
+  );
 
-  it('does not render label when closed', () => {
-    render(
-      <CreateItem
-        createLabel="Label"
-        isOpen={false}
-        onCreate={() => undefined}
-      ></CreateItem>
-    );
+  expect(screen.queryByText('Label')).not.toBeInTheDocument();
+});
 
-    expect(screen.queryByText('Label')).not.toBeInTheDocument();
-  });
+test('Fires onCreate when clicked', () => {
+  const onCreateFn = jest.fn();
 
-  it('Triggers onCreate', () => {
-    let counter = 0;
-    const testFunc = () => counter++;
+  render(
+    <CreateItem
+      createLabel="Label"
+      isOpen={true}
+      onCreate={onCreateFn}
+    ></CreateItem>
+  );
 
-    render(
-      <CreateItem
-        createLabel="Label"
-        isOpen={true}
-        onCreate={testFunc}
-      ></CreateItem>
-    );
+  const btn = screen.getByRole('button');
+  userEvent.click(btn);
 
-    const btn = screen.queryByRole('button');
-    fireEvent.click(btn);
-
-    expect(counter).toBe(1);
-  });
+  expect(onCreateFn).toHaveBeenCalledTimes(1);
 });

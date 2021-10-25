@@ -1,11 +1,9 @@
 import React from 'react';
-import { render, screen, cleanup } from '../../../test-utils';
+import { render, screen } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import SideBar from '../index';
+import { SideBar } from '..';
 import { MenuItemType } from '../MenuItem';
 import { home, star_half } from '@equinor/eds-icons';
-
-afterEach(cleanup);
 
 const defaultMenuItems: MenuItemType[] = [
   {
@@ -18,33 +16,52 @@ const defaultMenuItems: MenuItemType[] = [
   },
 ];
 
-describe('SideBar', () => {
-  it('renders without crashing', () => {
-    render(<SideBar menuItems={defaultMenuItems}></SideBar>);
-  });
+test('Sidebar renders', () => {
+  const currentUrl = 'home';
+  render(
+    <SideBar>
+      {defaultMenuItems.map((m) => {
+        return <SideBar.Item key={m.name} currentUrl={currentUrl} {...m} />;
+      })}
+    </SideBar>
+  );
+});
 
-  it('renders create new button when onCreate prop is given', () => {
-    render(
-      <SideBar
-        onCreate={() => console.log('test')}
-        createLabel="createlabel"
-        open={true}
-        menuItems={defaultMenuItems}
-      ></SideBar>
-    );
+test('Renders create new button when onCreate prop is given', () => {
+  render(
+    <SideBar
+      onCreate={() => console.log('test')}
+      createLabel="createlabel"
+      open={true}
+    >
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>
+  );
+  expect(screen.getByText('createlabel')).toBeInTheDocument();
+});
 
-    expect(screen.getByText('createlabel')).toBeInTheDocument();
-  });
+test('Renders closed width when closed', () => {
+  render(
+    <SideBar open={false}>
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>
+  );
 
-  it('renders correct width when menu is closed', () => {
-    render(<SideBar open={false} menuItems={defaultMenuItems}></SideBar>);
+  expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '72px' });
+});
 
-    expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '72px' });
-  });
+test('Renders open width when open', () => {
+  render(
+    <SideBar open={true}>
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>
+  );
 
-  it('renders correct width when menu is open', () => {
-    render(<SideBar open={true} menuItems={defaultMenuItems}></SideBar>);
-
-    expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '256px' });
-  });
+  expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '256px' });
 });

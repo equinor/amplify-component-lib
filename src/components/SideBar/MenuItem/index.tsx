@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 import {
   Button,
@@ -9,6 +9,7 @@ import {
 } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { IconData } from '@equinor/eds-icons';
+import { useSideBar } from '../SideBar';
 
 const { colors, spacings } = tokens;
 
@@ -71,59 +72,59 @@ export type MenuItemType = {
   onClick?: () => void;
 };
 
-export interface MenuItemProps extends MenuItemType {
-  isOpen: boolean;
+export type MenuItemProps = {
   currentUrl?: string;
-}
+} & MenuItemType &
+  React.HTMLAttributes<HTMLAnchorElement>;
 
-const MenuItem: React.FC<MenuItemProps> = ({
-  isOpen,
-  currentUrl,
-  icon,
-  name,
-  link,
-  onClick,
-}) => {
-  const isCurrentUrl = () => currentUrl?.includes(link!);
+const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
+  ({ currentUrl, icon, name, link, onClick }, ref) => {
+    const isCurrentUrl = () => currentUrl?.includes(link!);
+    const { isOpen } = useSideBar();
 
-  const getIconColor = () => {
-    return isCurrentUrl()
-      ? colors.interactive.primary__resting.hsla
-      : colors.text.static_icons__default.hsla;
-  };
+    const getIconColor = () => {
+      return isCurrentUrl()
+        ? colors.interactive.primary__resting.hsla
+        : colors.text.static_icons__default.hsla;
+    };
 
-  if (isOpen) {
+    if (isOpen) {
+      return (
+        <Container
+          as="a"
+          active={isCurrentUrl()}
+          onClick={onClick}
+          variant="ghost"
+          open
+          ref={ref}
+          data-testid="sidebar-menu-item"
+        >
+          {icon && <ItemIcon data={icon} color={getIconColor()} />}
+          <ItemText variant="cell_text" group="table" active={isCurrentUrl()}>
+            {name}
+          </ItemText>
+        </Container>
+      );
+    }
+
     return (
-      <Container
-        data-testid="menu-item-button"
-        as="a"
-        active={isCurrentUrl()}
-        onClick={onClick}
-        variant="ghost"
-        open
-      >
-        {icon && <ItemIcon data={icon} color={getIconColor()} />}
-        <ItemText variant="cell_text" group="table" active={isCurrentUrl()}>
-          {name}
-        </ItemText>
-      </Container>
+      <Tooltip title={name} placement="right">
+        <Container
+          as="a"
+          active={isCurrentUrl()}
+          onClick={onClick}
+          variant="ghost"
+          open={isOpen}
+          ref={ref}
+          data-testid="sidebar-menu-item"
+        >
+          {icon && <ItemIcon data={icon} color={getIconColor()} />}
+        </Container>
+      </Tooltip>
     );
   }
+);
 
-  return (
-    <Tooltip title={name} placement="right">
-      <Container
-        data-testid="menu-item-button"
-        as="a"
-        active={isCurrentUrl()}
-        onClick={onClick}
-        variant="ghost"
-        open={isOpen}
-      >
-        {icon && <ItemIcon data={icon} color={getIconColor()} />}
-      </Container>
-    </Tooltip>
-  );
-};
+MenuItem.displayName = 'MenuItem';
 
 export default MenuItem;

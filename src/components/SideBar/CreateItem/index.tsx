@@ -29,6 +29,8 @@ interface CustomButtonProps extends ButtonProps {
 }
 
 const CreateNewButton = styled(Button)<CustomButtonProps>`
+  width: ${(props) => (props.open ? 'fit-content' : '40px')};
+  height: ${(props) => (props.open ? '36px' : '40px')};
   background: ${colors.interactive.primary__resting.hsla};
   border-radius: ${(props) => props.open && shape.icon_button.borderRadius};
   grid-column: 3;
