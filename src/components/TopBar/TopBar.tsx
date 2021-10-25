@@ -1,13 +1,13 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
 import {
   CircularProgress as EDSCircularProgress,
   Icon,
   TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { IconData } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+import React, { forwardRef, ReactElement } from 'react';
+import styled from 'styled-components';
 
 const { colors } = tokens;
 
@@ -26,16 +26,6 @@ const Header = styled(EDSTopBar.Header)`
     justify-self: center;
   }
 `;
-
-const Actions = styled(EDSTopBar.Actions)`
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  > * {
-    margin-left: 24px;
-  }
-`;
-
 interface CircularProgressProps {
   isFetching: boolean;
 }
@@ -45,23 +35,26 @@ const CircularProgress = styled(EDSCircularProgress)<CircularProgressProps>`
   right: -24px;
   visibility: ${(props) => (props.isFetching ? 'visible' : 'hidden')};
 `;
-interface TopBarProps {
+
+type TopBarType = {
   onHeaderClick: () => void;
   applicationIcon: IconData | ReactElement;
   applicationName: string;
-  actions: ReactElement[];
   isFetching?: boolean;
-}
+} & React.HTMLAttributes<HTMLElement>;
 
-const TopBar: React.FC<TopBarProps> = ({
-  onHeaderClick,
-  applicationIcon,
-  applicationName,
-  actions,
-  isFetching = false,
-}) => {
-  return (
-    <Bar>
+export const TopBar = forwardRef<HTMLElement, TopBarType>(
+  (
+    {
+      children,
+      onHeaderClick,
+      applicationIcon,
+      applicationName,
+      isFetching = false,
+    },
+    ref
+  ) => (
+    <Bar ref={ref}>
       <Header onClick={onHeaderClick}>
         {React.isValidElement(applicationIcon) ? (
           applicationIcon
@@ -75,9 +68,9 @@ const TopBar: React.FC<TopBarProps> = ({
         <Typography variant="h6">{applicationName}</Typography>
         <CircularProgress size={16} isFetching={isFetching} />
       </Header>
-      <Actions>{actions.map((action) => action)}</Actions>
+      {children}
     </Bar>
-  );
-};
+  )
+);
 
-export default TopBar;
+TopBar.displayName = 'TopBar';

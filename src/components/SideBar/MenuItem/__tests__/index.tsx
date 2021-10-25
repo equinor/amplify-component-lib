@@ -1,57 +1,66 @@
 import React from 'react';
-import { render, screen, cleanup } from '../../../../test-utils';
+import { render, screen } from '../../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import MenuItem, { MenuItemProps } from '../index';
 import { home } from '@equinor/eds-icons';
-import { fireEvent, waitFor } from '@testing-library/react';
-
-afterEach(cleanup);
+import { waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { SideBar } from '../../SideBar';
 
 const defaultProps: MenuItemProps = {
-  isOpen: false,
   name: 'Home',
   currentUrl: 'http://localhost:3000/home',
   icon: home,
   link: 'home',
 };
 
-describe('MenuItem', () => {
-  it('renders without crashing', () => {
-    render(<MenuItem {...defaultProps}></MenuItem>);
+function SideBarWrapper(children: React.ReactChildren, isOpen?: boolean) {
+  return <SideBar open={isOpen}>{children}</SideBar>;
+}
+
+test('Renders', () => {
+  render(<MenuItem {...defaultProps}></MenuItem>, {
+    wrapper: ({ children }) => SideBarWrapper(children),
+  });
+});
+
+test('Renders tooltip when closed', async () => {
+  render(<MenuItem {...defaultProps}></MenuItem>, {
+    wrapper: ({ children }) => SideBarWrapper(children),
+  });
+  const link = screen.getByTestId('sidebar-menu-item');
+
+  userEvent.hover(link);
+
+  await waitFor(() => screen.getByRole('tooltip'));
+  expect(screen.getByRole('tooltip')).toHaveTextContent('Home');
+});
+
+test('Does not render tooltip when open', async () => {
+  render(<MenuItem {...defaultProps}></MenuItem>, {
+    wrapper: ({ children }) => SideBarWrapper(children, true),
+  });
+  const link = screen.getByTestId('sidebar-menu-item');
+
+  userEvent.hover(link);
+
+  await waitFor(() =>
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+  );
+});
+
+test('Renders name when open', () => {
+  render(<MenuItem {...defaultProps}></MenuItem>, {
+    wrapper: ({ children }) => SideBarWrapper(children, true),
   });
 
-  it('renders tooltip when closed', async () => {
-    render(<MenuItem {...defaultProps}></MenuItem>);
+  expect(screen.getByText('Home')).toHaveTextContent('Home');
+});
 
-    const link = screen.queryAllByText('')[3];
-    fireEvent.mouseOver(link);
-
-    await waitFor(() => screen.getByText(defaultProps.name));
-    expect(screen.queryByRole('tooltip')).toBeInTheDocument();
+test('Does not render name when closed', () => {
+  render(<MenuItem {...defaultProps}></MenuItem>, {
+    wrapper: ({ children }) => SideBarWrapper(children),
   });
 
-  it('does not render tooltip when open', async () => {
-    const props = defaultProps;
-    props.isOpen = true;
-    render(<MenuItem {...props}></MenuItem>);
-
-    const link = screen.queryAllByText('')[3];
-    fireEvent.mouseOver(link);
-
-    await waitFor(() => {
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-    });
-  });
-
-  it('Renders name when open', async () => {
-    render(<MenuItem isOpen={true} name="Home"></MenuItem>);
-
-    expect(screen.queryByText('Home')).toBeInTheDocument();
-  });
-
-  it('Does not render name when closed', async () => {
-    render(<MenuItem isOpen={false} name="Home" icon={home}></MenuItem>);
-
-    expect(screen.queryByText('Home')).not.toBeInTheDocument();
-  });
+  expect(screen.queryByText('Home')).not.toBeInTheDocument();
 });
