@@ -25,57 +25,47 @@ export default {
 } as Meta;
 
 export const Primary: Story = () => {
-  const actions = [
-    <Button variant="ghost_icon" key="account">
-      <Icon
-        data={account_circle}
-        size={24}
-        color={colors.interactive.primary__resting.hsla}
-      />
-    </Button>,
-  ];
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
       applicationName="Heinrich von Schnellfahrer"
-      actions={actions}
-    />
+    >
+      <TopBar.Actions>
+        <Button variant="ghost_icon" key="account">
+          <Icon
+            data={account_circle}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+        </Button>
+      </TopBar.Actions>
+    </TopBar>
   );
 };
 
 export const WithFetchingSetToTrue: Story = () => {
-  const actions = [
-    <Button variant="ghost_icon" key="account">
-      <Icon
-        data={account_circle}
-        size={24}
-        color={colors.interactive.primary__resting.hsla}
-      />
-    </Button>,
-  ];
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
       applicationName="Heinrich von Schnellfahrer"
-      actions={actions}
       isFetching
-    />
+    >
+      <TopBar.Actions>
+        <Button variant="ghost_icon" key="account">
+          <Icon
+            data={account_circle}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+        </Button>
+      </TopBar.Actions>
+    </TopBar>
   );
 };
 
 export const ExampleWithSidebar: Story = () => {
-  const actions = [
-    <Button variant="ghost_icon" key="account">
-      <Icon
-        data={account_circle}
-        size={24}
-        color={colors.interactive.primary__resting.hsla}
-      />
-    </Button>,
-  ];
-
   const menuItems = [
     {
       link: '/home',
@@ -264,27 +254,30 @@ export const ExampleWithSidebar: Story = () => {
           </svg>
         }
         applicationName="Heinrich von Schnellfahrer"
-        actions={actions}
         isFetching
-      />
+      >
+        <TopBar.Actions>
+          <Button variant="ghost_icon" key="account">
+            <Icon
+              data={account_circle}
+              size={24}
+              color={colors.interactive.primary__resting.hsla}
+            />
+          </Button>
+        </TopBar.Actions>
+      </TopBar>
       <div style={{ display: 'flex', height: 'calc(50vh - 72px)' }}>
-        <SideBar menuItems={menuItems} />
+        <SideBar>
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} />
+          ))}
+        </SideBar>
       </div>
     </div>
   );
 };
 
 export const ExampleWithSidebarCustomIcon: Story = () => {
-  const actions = [
-    <Button variant="ghost_icon" key="account">
-      <Icon
-        data={account_circle}
-        size={24}
-        color={colors.interactive.primary__resting.hsla}
-      />
-    </Button>,
-  ];
-
   const menuItems = [
     {
       link: '/home',
@@ -307,17 +300,31 @@ export const ExampleWithSidebarCustomIcon: Story = () => {
       icon: favorite_outlined,
     },
   ];
+
   return (
     <div style={{ height: '50vh' }}>
       <TopBar
         onHeaderClick={() => console.log('Going to homepage 🏠')}
         applicationIcon={car}
         applicationName="Heinrich von Schnellfahrer"
-        actions={actions}
         isFetching
-      />
+      >
+        <TopBar.Actions>
+          <Button variant="ghost_icon" key="account">
+            <Icon
+              data={account_circle}
+              size={24}
+              color={colors.interactive.primary__resting.hsla}
+            />
+          </Button>
+        </TopBar.Actions>
+      </TopBar>
       <div style={{ display: 'flex', height: 'calc(50vh - 72px)' }}>
-        <SideBar menuItems={menuItems} />
+        <SideBar>
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} />
+          ))}
+        </SideBar>
       </div>
     </div>
   );

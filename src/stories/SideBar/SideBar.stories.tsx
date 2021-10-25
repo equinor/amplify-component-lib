@@ -6,7 +6,7 @@ import {
   history,
   home,
 } from '@equinor/eds-icons';
-import { SideBar } from '../../components/SideBar';
+import SideBar from '../../components/SideBar';
 import { MenuItemType } from '../../components/SideBar/MenuItem';
 
 export default {

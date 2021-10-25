@@ -9,5 +9,5 @@ const SideBar = BaseSideBar as SidebarType;
 SideBar.Item = MenuItem;
 SideBar.Item.displayName = 'SideBar.Item';
 
-export { SideBar };
+export default SideBar;
 export type { SidebarType, ItemType };

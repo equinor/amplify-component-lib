@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import { SideBar } from '..';
+import SideBar from '..';
 import { MenuItemType } from '../MenuItem';
 import { home, star_half } from '@equinor/eds-icons';
 

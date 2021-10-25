@@ -29,7 +29,7 @@ export {
   FileProgress,
   FileUpload,
   FileUploadArea,
-  SingleFilterMenu as FilterMenu,
+  SingleFilterMenu,
   FullPageSpinner,
   IconToggleButton,
   InfoElement,
