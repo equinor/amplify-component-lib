@@ -1,16 +1,25 @@
 import { Story, Meta } from '@storybook/react';
 
-import EquinorLog, { EquinorLogoProps } from '../../components/EquinorLogo';
+import EquinorLogo, { EquinorLogoProps } from '../../components/EquinorLogo';
 
 export default {
-  title: 'EquinorLog',
-  component: EquinorLog,
+  title: 'EquinorLogo',
+  component: EquinorLogo,
   argTypes: {
-    color: { control: 'select', options: ['red', 'white', 'black', undefined] },
+    color: {
+      control: 'radio',
+      options: ['red', 'white', 'black', undefined],
+      defaultValue: 'red',
+    },
+    large: { control: 'boolean', defaultValue: false },
+    size: { control: 'radio', options: [16, 24, 32, 40, 48] },
   },
 } as Meta;
 
-const Template: Story<EquinorLogoProps> = (args) => <EquinorLog {...args} />;
+export const Primary: Story<EquinorLogoProps> = (args) => (
+  <EquinorLogo {...args} />
+);
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const LargeLogo: Story<EquinorLogoProps> = (args) => (
+  <EquinorLogo {...args} large size={48} />
+);
