@@ -67,7 +67,7 @@ type Field = {
 };
 
 export type FieldSelectorType = {
-  currentField: Field;
+  currentField?: Field;
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
 };
@@ -118,7 +118,7 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
               </Button>
             </MenuHeader>
             {availableFields.map((field) => {
-              if (field.guid === currentField.guid) {
+              if (currentField && field.guid === currentField.guid) {
                 return (
                   <MenuItem selected key={field.guid}>
                     <TextContainer>
