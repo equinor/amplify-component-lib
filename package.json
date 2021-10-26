@@ -28,9 +28,7 @@
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "clean": "rm -rf lib dist",
-    "version": "yarn run lint && git add -A",
-    "postversion": "git push && git push --tags",
-    "build-components": "rollup -c rollup.config.js"
+    "build-components": "yarn clean && rollup -c rollup.config.js"
   },
   "eslintConfig": {
     "extends": [
