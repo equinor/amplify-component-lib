@@ -2,19 +2,32 @@ import React from 'react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import './animation.css';
+import { Card as EDSCard, CardProps } from '@equinor/eds-core-react';
 
 const { colors, spacings, elevation, shape } = tokens;
 
-const TaskSkeleton = styled.div`
-  background: ${colors.ui.background__default.hex};
+const Card = styled(EDSCard)<CardProps>`
   box-shadow: ${elevation.raised};
-  border-radius: ${shape.corners.borderRadius};
-  padding: ${spacings.comfortable.medium};
-  height: 100%;
-  width: 100%;
+  grid-gap: 0px;
+  ${(props) => {
+    if (props.onClick) {
+      return `&:hover {
+        box-shadow: ${elevation.overlay};
+        cursor: pointer;
+      }`;
+    }
+  }}
+`;
+
+const Header = styled(Card.Header)`
   display: flex;
-  gap: ${spacings.comfortable.large};
-  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  & > :not(:first-child) {
+    margin-left: 0 !important;
+    padding: ${spacings.comfortable.small};
+  }
 `;
 
 const Top = styled.div`
@@ -36,40 +49,26 @@ const Status = styled.div`
   margin-left: auto;
 `;
 
-const Bottom = styled.div`
-  display: flex;
-  margin-top: auto;
-  align-items: baseline;
-`;
-
-const Assigned = styled.div`
-  background: ${colors.ui.background__light.hex};
-  height: 30px;
-  width: 115px;
-  border-radius: ${shape.circle.borderRadius};
-`;
-
-const Button = styled.div`
-  background: ${colors.ui.background__light.hex};
-  height: 40px;
-  width: 12px;
-  border-radius: ${shape.circle.borderRadius};
-  margin-right: ${spacings.comfortable.small};
-  margin-left: auto;
-`;
-
 const DataTypeCardSkeleton: React.FC = () => {
   return (
-    <TaskSkeleton>
-      <Top>
-        <Title className="skeleton-loading" />
-        <Status className="skeleton-loading" />
-      </Top>
-      <Bottom>
-        <Assigned className="skeleton-loading" />
-        <Button className="skeleton-loading" />
-      </Bottom>
-    </TaskSkeleton>
+    <Card>
+      <Header>
+        <Card.HeaderTitle>
+          <Top>
+            <Title className="skeleton-loading" />
+            <Status className="skeleton-loading" />
+          </Top>
+        </Card.HeaderTitle>
+      </Header>
+      <Header>
+        <Card.HeaderTitle>
+          <Top>
+            <Title className="skeleton-loading" />
+            <Status className="skeleton-loading" />
+          </Top>
+        </Card.HeaderTitle>
+      </Header>
+    </Card>
   );
 };
 
