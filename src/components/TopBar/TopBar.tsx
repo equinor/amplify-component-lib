@@ -25,6 +25,9 @@ const Header = styled(EDSTopBar.Header)`
   > svg {
     justify-self: center;
   }
+  > h6 {
+    text-transform: capitalize;
+  }
 `;
 interface CircularProgressProps {
   isFetching: boolean;
@@ -65,7 +68,7 @@ export const TopBar = forwardRef<HTMLElement, TopBarType>(
             color={colors.interactive.primary__resting.hsla}
           />
         )}
-        <Typography variant="h6">{applicationName}</Typography>
+        <Typography variant="h6">{applicationName.toLowerCase()}</Typography>
         <CircularProgress size={16} isFetching={isFetching} />
       </Header>
       {children}

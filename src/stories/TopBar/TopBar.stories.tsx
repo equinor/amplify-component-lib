@@ -29,7 +29,7 @@ export const Primary: Story = () => {
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
-      applicationName="Heinrich von Schnellfahrer"
+      applicationName="HEINRICH VON SCHNELLFAHRER"
     >
       <TopBar.Actions>
         <Button variant="ghost_icon" key="account">
@@ -49,7 +49,7 @@ export const WithFetchingSetToTrue: Story = () => {
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
-      applicationName="Heinrich von Schnellfahrer"
+      applicationName="HEINRICH VON SCHNELLFAHRER"
       isFetching
     >
       <TopBar.Actions>
@@ -253,7 +253,7 @@ export const ExampleWithSidebar: Story = () => {
             </defs>
           </svg>
         }
-        applicationName="Heinrich von Schnellfahrer"
+        applicationName="HEINRICH VON SCHNELLFAHRER"
         isFetching
       >
         <TopBar.Actions>
@@ -306,7 +306,7 @@ export const ExampleWithSidebarCustomIcon: Story = () => {
       <TopBar
         onHeaderClick={() => console.log('Going to homepage 🏠')}
         applicationIcon={car}
-        applicationName="Heinrich von Schnellfahrer"
+        applicationName="HEINRICH VON SCHNELLFAHRER"
         isFetching
       >
         <TopBar.Actions>

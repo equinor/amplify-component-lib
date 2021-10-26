@@ -55,6 +55,9 @@ const MenuHeader = styled.li`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
+  > h6 {
+    text-transform: capitalize;
+  }
 `;
 
 type Field = {
@@ -122,7 +125,9 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
                       <Typography variant="overline">
                         Current selection:
                       </Typography>
-                      <Typography variant="h6">{field.name}</Typography>
+                      <Typography variant="h6">
+                        {field.name.toLowerCase()}
+                      </Typography>
                     </TextContainer>
                     <Icon
                       data={check}
@@ -136,7 +141,9 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
                 <MenuItem key={field.guid} onClick={() => onSelect(field)}>
                   <TextContainer>
                     <Typography variant="overline">Switch to:</Typography>
-                    <Typography variant="h6">{field.name}</Typography>
+                    <Typography variant="h6">
+                      {field.name.toLowerCase()}
+                    </Typography>
                   </TextContainer>
                 </MenuItem>
               );

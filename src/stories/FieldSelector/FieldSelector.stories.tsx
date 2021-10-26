@@ -11,18 +11,18 @@ export default {
 
 const defaultProps: FieldSelectorType = {
   currentField: {
-    name: 'Johan Sverdrup',
+    name: 'JOHAN SVERDRUP',
     guid: '123123123',
     country: 'Norway',
   },
   availableFields: [
     {
-      name: 'Johan Sverdrup',
+      name: 'JOHAN SVERDRUP',
       guid: '123123123',
       country: 'Norway',
     },
     {
-      name: 'Martin Linge',
+      name: 'MARTIN LINGE',
       guid: '123423634',
       country: 'Norway',
     },
