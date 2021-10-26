@@ -1,4 +1,4 @@
-import { useState, MouseEvent, forwardRef, useRef } from 'react';
+import { useState, MouseEvent, forwardRef } from 'react';
 import {
   Button,
   Icon,
