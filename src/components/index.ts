@@ -5,6 +5,7 @@ import ConfirmationPopup from './ConfirmationPopup';
 import DataTypeCard from './DataTypeCard';
 import EditableField from './EditableField';
 import EquinorLogo from './EquinorLogo';
+import FieldSelector from './FieldSelector';
 import FileProgress from './FileProgress';
 import FileUpload from './FileUpload';
 import FileUploadArea from './FileUploadArea';
@@ -25,6 +26,7 @@ export {
   DataTypeCard,
   EditableField,
   EquinorLogo,
+  FieldSelector,
   FileProgress,
   FileUpload,
   FileUploadArea,
