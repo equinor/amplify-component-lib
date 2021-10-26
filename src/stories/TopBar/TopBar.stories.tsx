@@ -7,6 +7,7 @@ import {
   favorite_outlined,
   history,
   home,
+  notifications,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { Story, Meta } from '@storybook/react';
@@ -313,6 +314,20 @@ export const ExampleWithSidebarCustomIcon: Story = () => {
           <Button variant="ghost_icon" key="account">
             <Icon
               data={account_circle}
+              size={24}
+              color={colors.interactive.primary__resting.hsla}
+            />
+          </Button>
+          <Button variant="ghost_icon" key="car" disabled>
+            <Icon
+              data={car}
+              size={24}
+              color={colors.interactive.primary__resting.hsla}
+            />
+          </Button>
+          <Button variant="ghost_icon" key="account">
+            <Icon
+              data={notifications}
               size={24}
               color={colors.interactive.primary__resting.hsla}
             />
