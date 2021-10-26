@@ -1,6 +1,5 @@
 import IconToggleButton from './Buttons';
 import OptionalTooltip from './OptionalTooltip';
-import CompactCard from './CompactCard';
 import ConfirmationPopup from './ConfirmationPopup';
 import DataTypeCard from './DataTypeCard';
 import EditableField from './EditableField';
@@ -19,7 +18,6 @@ import TextEntry from './TextEntry';
 import TopBar from './TopBar';
 
 export {
-  CompactCard,
   ConfirmationPopup,
   DataTypeCard,
   EditableField,

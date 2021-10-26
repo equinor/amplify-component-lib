@@ -1,5 +1,4 @@
 import {
-  CompactCard,
   ConfirmationPopup,
   DataTypeCard,
   EditableField,
@@ -21,7 +20,6 @@ import {
 } from './components';
 
 export {
-  CompactCard,
   ConfirmationPopup,
   DataTypeCard,
   EditableField,
