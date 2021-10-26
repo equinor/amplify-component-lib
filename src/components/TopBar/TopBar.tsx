@@ -13,7 +13,7 @@ const { colors } = tokens;
 
 const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.hsla};
-  padding-left: 18px;
+  padding-left: 20px;
 `;
 
 const Header = styled(EDSTopBar.Header)`

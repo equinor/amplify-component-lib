@@ -268,7 +268,10 @@ export const ExampleWithSidebar: Story = () => {
         </TopBar.Actions>
       </TopBar>
       <div style={{ display: 'flex', height: 'calc(50vh - 72px)' }}>
-        <SideBar>
+        <SideBar
+          onCreate={() => console.log('Created stuff 🎉')}
+          createLabel="Create stuff"
+        >
           {menuItems.map((m) => (
             <SideBar.Item key={m.name} {...m} />
           ))}
