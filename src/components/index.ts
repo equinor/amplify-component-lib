@@ -8,6 +8,7 @@ import EquinorLogo from './EquinorLogo';
 import FileProgress from './FileProgress';
 import FileUpload from './FileUpload';
 import FileUploadArea from './FileUploadArea';
+import SkeletonBase from './SkeletonBase';
 import SingleFilterMenu from './SingleFilterMenu';
 import FullPageSpinner from './FullPageSpinner';
 import InfoElement from './InfoElement';
@@ -27,6 +28,7 @@ export {
   FileProgress,
   FileUpload,
   FileUploadArea,
+  SkeletonBase,
   SingleFilterMenu,
   FullPageSpinner,
   IconToggleButton,
