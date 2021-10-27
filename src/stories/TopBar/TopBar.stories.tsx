@@ -7,6 +7,7 @@ import {
   favorite_outlined,
   history,
   home,
+  notifications,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { Story, Meta } from '@storybook/react';
@@ -29,7 +30,7 @@ export const Primary: Story = () => {
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
-      applicationName="Heinrich von Schnellfahrer"
+      applicationName="HEINRICH VON SCHNELLFAHRER"
     >
       <TopBar.Actions>
         <Button variant="ghost_icon" key="account">
@@ -49,7 +50,7 @@ export const WithFetchingSetToTrue: Story = () => {
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
-      applicationName="Heinrich von Schnellfahrer"
+      applicationName="HEINRICH VON SCHNELLFAHRER"
       isFetching
     >
       <TopBar.Actions>
@@ -253,7 +254,7 @@ export const ExampleWithSidebar: Story = () => {
             </defs>
           </svg>
         }
-        applicationName="Heinrich von Schnellfahrer"
+        applicationName="HEINRICH VON SCHNELLFAHRER"
         isFetching
       >
         <TopBar.Actions>
@@ -267,7 +268,10 @@ export const ExampleWithSidebar: Story = () => {
         </TopBar.Actions>
       </TopBar>
       <div style={{ display: 'flex', height: 'calc(50vh - 72px)' }}>
-        <SideBar>
+        <SideBar
+          onCreate={() => console.log('Created stuff 🎉')}
+          createLabel="Create stuff"
+        >
           {menuItems.map((m) => (
             <SideBar.Item key={m.name} {...m} />
           ))}
@@ -306,13 +310,27 @@ export const ExampleWithSidebarCustomIcon: Story = () => {
       <TopBar
         onHeaderClick={() => console.log('Going to homepage 🏠')}
         applicationIcon={car}
-        applicationName="Heinrich von Schnellfahrer"
+        applicationName="HEINRICH VON SCHNELLFAHRER"
         isFetching
       >
         <TopBar.Actions>
           <Button variant="ghost_icon" key="account">
             <Icon
               data={account_circle}
+              size={24}
+              color={colors.interactive.primary__resting.hsla}
+            />
+          </Button>
+          <Button variant="ghost_icon" key="car" disabled>
+            <Icon
+              data={car}
+              size={24}
+              color={colors.interactive.primary__resting.hsla}
+            />
+          </Button>
+          <Button variant="ghost_icon" key="account">
+            <Icon
+              data={notifications}
               size={24}
               color={colors.interactive.primary__resting.hsla}
             />
