@@ -37,3 +37,15 @@ test('Shows progress indicator only when isFetching={true}', () => {
 
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
+
+test('Shows correct application name', () => {
+  const appName = 'Car-go 🏎';
+  render(
+    <TopBar
+      applicationIcon={car}
+      applicationName={appName}
+      onHeaderClick={() => console.log('Going home 🏡')}
+    />
+  );
+  expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();
+});

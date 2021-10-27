@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Typography, Icon } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { upload } from '@equinor/eds-icons';
-import { withTheme } from '@material-ui/core';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 import { tokens } from '@equinor/eds-tokens';
@@ -12,7 +11,7 @@ interface UploadWrapperProps {
   isDragActive: boolean;
 }
 
-const UploadWrapper = withTheme(styled.div<UploadWrapperProps>`
+const UploadWrapper = styled.div<UploadWrapperProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +26,7 @@ const UploadWrapper = withTheme(styled.div<UploadWrapperProps>`
     cursor: pointer;
   }
   background-color: ${(props) => (props.isDragActive ? `#deedee` : '')};
-`);
+`;
 
 export type FileUploadAreaProps = DropzoneOptions;
 

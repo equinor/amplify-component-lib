@@ -6,9 +6,7 @@ const ActionsContainer = styled(EDSTopBar.Actions)`
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
-  > * {
-    margin-left: 24px;
-  }
+  gap: 24px;
 `;
 
 export const Actions = forwardRef<
