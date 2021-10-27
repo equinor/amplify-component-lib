@@ -12,6 +12,7 @@ import FileUploadArea from './FileUploadArea';
 import SkeletonBase from './SkeletonBase';
 import SingleFilterMenu from './SingleFilterMenu';
 import FullPageSpinner from './FullPageSpinner';
+import FullPageStatus from './FullPageStatus';
 import InfoElement from './InfoElement';
 import MulticolorProgressCircle from './MulticolorProgressCircle';
 import ProgressBar from './ProgressBar';
@@ -33,6 +34,7 @@ export {
   SkeletonBase,
   SingleFilterMenu,
   FullPageSpinner,
+  FullPageStatus,
   IconToggleButton,
   InfoElement,
   MulticolorProgressCircle,
