@@ -8,9 +8,11 @@ This package contains components used by the amplify team.
     2. Ensure you are on the latest version of main branch
     3. Update "version" string in package.json (i.e "1.0.0")
     4. Run "yarn build-components" and ensure a "dist" folder has been created
-    5. Run "npm publish" -> follow instructions (if any)
-    6. Once package is published to npm add git tags with corresponding version number (git tag "v1.0.0")
-    7. Run "git push --tags" to create a git tag snapshot that corresponds to the npmpackage
+    5. Check that the "dist" folder contains types and index.js files 
+        (Sometimes tests and other commands can change the tsconfig "noEmit" to true, makes sure this is false or missing)
+    6. Run "npm publish" -> follow instructions (if any)
+    7. Once package is published to npm add git tags with corresponding version number (git tag "v1.0.0")
+    8. Run "git push --tags" to create a git tag snapshot that corresponds to the npmpackage
 
 # Documentation
 
