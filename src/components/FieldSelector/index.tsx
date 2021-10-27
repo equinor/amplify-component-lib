@@ -22,7 +22,9 @@ interface MenuItemProps {
 const MenuItem = styled(Menu.Item)<MenuItemProps>`
   ${(props) =>
     props.selected &&
-    `background: ${colors.interactive.primary__selected_highlight.hex}`};
+    `background: ${colors.interactive.primary__selected_highlight.hex};
+     border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
+    `};
   > div {
     display: grid;
     grid-template-columns: 1fr 24px;
@@ -117,36 +119,34 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
                 />
               </Button>
             </MenuHeader>
+            {currentField && (
+              <MenuItem selected>
+                <TextContainer>
+                  <Typography variant="overline">Current selection:</Typography>
+                  <Typography variant="h6">
+                    {currentField.name.toLowerCase()}
+                  </Typography>
+                </TextContainer>
+                <Icon
+                  data={check}
+                  color={colors.interactive.primary__resting.hex}
+                  size={24}
+                />
+              </MenuItem>
+            )}
             {availableFields.map((field) => {
-              if (currentField && field.guid === currentField.guid) {
+              if (field.guid !== currentField?.guid) {
                 return (
-                  <MenuItem selected key={field.guid}>
+                  <MenuItem key={field.guid} onClick={() => onSelect(field)}>
                     <TextContainer>
-                      <Typography variant="overline">
-                        Current selection:
-                      </Typography>
+                      <Typography variant="overline">Switch to:</Typography>
                       <Typography variant="h6">
                         {field.name.toLowerCase()}
                       </Typography>
                     </TextContainer>
-                    <Icon
-                      data={check}
-                      color={colors.interactive.primary__resting.hex}
-                      size={24}
-                    />
                   </MenuItem>
                 );
               }
-              return (
-                <MenuItem key={field.guid} onClick={() => onSelect(field)}>
-                  <TextContainer>
-                    <Typography variant="overline">Switch to:</Typography>
-                    <Typography variant="h6">
-                      {field.name.toLowerCase()}
-                    </Typography>
-                  </TextContainer>
-                </MenuItem>
-              );
             })}
           </MenuSection>
           <MenuItem
