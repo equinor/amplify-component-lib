@@ -48,7 +48,7 @@ test('renders correct background color', () => {
   );
 });
 
-it('renders completed number', () => {
+test('renders completed number', () => {
   const testNumber = 10;
   const { getByText } = render(
     <MultiColorProgressCircle
@@ -142,7 +142,7 @@ test('renders all circles with correct dashoffset', () => {
   });
 });
 
-it('renders all circles with correct rotation', () => {
+test('renders all circles with correct rotation', () => {
   const { getByTestId } = render(
     <MultiColorProgressCircle
       completed={0}
