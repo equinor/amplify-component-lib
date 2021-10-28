@@ -1,20 +1,20 @@
 import { Card as EDSCard, Icon, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { IconData } from '@equinor/eds-icons';
-import React, { ReactElement } from 'react';
+import React, { forwardRef, ReactElement } from 'react';
 import styled from 'styled-components';
 
 const { elevation, spacings } = tokens;
 
 const Card = styled(EDSCard)<CardProps>`
-  box-shadow: ${elevation.none};
+  box-shadow: ${elevation.raised};
   transition: box-shadow 100ms;
   min-width: 200px;
   grid-gap: 0px;
   ${(props) => {
     if (props.onClick) {
       return `&:hover {
-        box-shadow: ${elevation.raised};
+        box-shadow: ${elevation.overlay};
         cursor: pointer;
       }`;
     }
@@ -51,37 +51,37 @@ export interface CompactCardProps {
   onClick?: React.MouseEventHandler;
 }
 
-const CompactCard: React.FC<CompactCardProps> = ({
-  headerText,
-  name,
-  headerRightElement,
-  rightIcon,
-  className,
-  onClick,
-}) => {
-  const handleOnCardClick = (e: React.MouseEvent) => {
-    if (e.target instanceof HTMLButtonElement) {
-      // Clicked settings menu
-    } else if (onClick) {
-      // Clicked card
-      onClick(e);
-    }
-  };
+const CompactCard = forwardRef<HTMLDivElement, CompactCardProps>(
+  (
+    { headerText, name, headerRightElement, rightIcon, className, onClick },
+    ref
+  ) => {
+    const handleOnCardClick = (e: React.MouseEvent) => {
+      if (e.target instanceof HTMLButtonElement) {
+        // Clicked settings menu
+      } else if (onClick) {
+        // Clicked card
+        onClick(e);
+      }
+    };
 
-  return (
-    <Card className={className} onClick={handleOnCardClick}>
-      <Header>
-        <Card.HeaderTitle>
-          <Title group="paragraph" variant="overline">
-            {headerText}
-          </Title>
-          <Title variant="h6">{name}</Title>
-        </Card.HeaderTitle>
-        {rightIcon && <Icon data={rightIcon} size={40} />}
-        {headerRightElement && headerRightElement}
-      </Header>
-    </Card>
-  );
-};
+    return (
+      <Card className={className} onClick={handleOnCardClick} ref={ref}>
+        <Header>
+          <Card.HeaderTitle>
+            <Title group="paragraph" variant="overline">
+              {headerText}
+            </Title>
+            <Title variant="h6">{name}</Title>
+          </Card.HeaderTitle>
+          {rightIcon && <Icon data={rightIcon} size={40} />}
+          {headerRightElement && headerRightElement}
+        </Header>
+      </Card>
+    );
+  }
+);
+
+CompactCard.displayName = 'CompactCard';
 
 export default CompactCard;
