@@ -2,6 +2,18 @@
 
 This package contains components used by the amplify team.
 
+# Building amplify-components
+
+    1. Commit, push or PR all changes to main branch
+    2. Ensure you are on the latest version of main branch
+    3. Update "version" string in package.json (i.e "1.0.0")
+    4. Run "yarn build-components" and ensure a "dist" folder has been created
+    5. Check that the "dist" folder contains types and index.js files
+        (Sometimes tests and other commands can change the tsconfig "noEmit" to true, makes sure this is false or missing)
+    6. Run "npm publish" -> follow instructions (if any)
+    7. Once package is published to npm add git tags with corresponding version number (git tag "v1.0.0")
+    8. Run "git push --tags" to create a git tag snapshot that corresponds to the npmpackage
+
 # Documentation
 
 ## CompactCard
@@ -43,6 +55,10 @@ This package contains components used by the amplify team.
 ## FullPageSpinner
 
 ![FullPageSpinner Example](https://github.com/equinor/amplify-components/blob/main/repo/FullPageSpinner.PNG)
+
+## FullPageStatus
+
+![FullPageStatus Example](https://github.com/equinor/amplify-components/blob/main/repo/FullPageStatus.PNG)
 
 ## IconToggleButton
 

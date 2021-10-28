@@ -1,19 +1,19 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
 import {
   CircularProgress as EDSCircularProgress,
   Icon,
   TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { IconData } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+import React, { forwardRef, ReactElement } from 'react';
+import styled from 'styled-components';
 
 const { colors } = tokens;
 
 const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.hsla};
-  padding-left: 18px;
+  padding-left: 20px;
 `;
 
 const Header = styled(EDSTopBar.Header)`
@@ -25,17 +25,10 @@ const Header = styled(EDSTopBar.Header)`
   > svg {
     justify-self: center;
   }
-`;
-
-const Actions = styled(EDSTopBar.Actions)`
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  > * {
-    margin-left: 24px;
+  > h6 {
+    text-transform: capitalize;
   }
 `;
-
 interface CircularProgressProps {
   isFetching: boolean;
 }
@@ -45,23 +38,26 @@ const CircularProgress = styled(EDSCircularProgress)<CircularProgressProps>`
   right: -24px;
   visibility: ${(props) => (props.isFetching ? 'visible' : 'hidden')};
 `;
-interface TopBarProps {
+
+type TopBarType = {
   onHeaderClick: () => void;
   applicationIcon: IconData | ReactElement;
   applicationName: string;
-  actions: ReactElement[];
   isFetching?: boolean;
-}
+} & React.HTMLAttributes<HTMLElement>;
 
-const TopBar: React.FC<TopBarProps> = ({
-  onHeaderClick,
-  applicationIcon,
-  applicationName,
-  actions,
-  isFetching = false,
-}) => {
-  return (
-    <Bar>
+export const TopBar = forwardRef<HTMLElement, TopBarType>(
+  (
+    {
+      children,
+      onHeaderClick,
+      applicationIcon,
+      applicationName,
+      isFetching = false,
+    },
+    ref
+  ) => (
+    <Bar ref={ref}>
       <Header onClick={onHeaderClick}>
         {React.isValidElement(applicationIcon) ? (
           applicationIcon
@@ -72,12 +68,12 @@ const TopBar: React.FC<TopBarProps> = ({
             color={colors.interactive.primary__resting.hsla}
           />
         )}
-        <Typography variant="h6">{applicationName}</Typography>
+        <Typography variant="h6">{applicationName.toLowerCase()}</Typography>
         <CircularProgress size={16} isFetching={isFetching} />
       </Header>
-      <Actions>{actions.map((action) => action)}</Actions>
+      {children}
     </Bar>
-  );
-};
+  )
+);
 
-export default TopBar;
+TopBar.displayName = 'TopBar';
