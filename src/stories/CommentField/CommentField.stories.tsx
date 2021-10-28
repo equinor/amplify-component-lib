@@ -2,12 +2,6 @@ import { Typography } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
 import CommentField, { CommentFieldProps } from '../../components/CommentField';
 
-// id: string;
-//   value: string;
-//   createdDate?: string;
-//   onChange: (value: string) => void;
-//   onDelete: () => void;
-
 export default {
   title: 'CommentField/CommentField',
   component: CommentField,
