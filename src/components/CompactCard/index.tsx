@@ -7,14 +7,14 @@ import styled from 'styled-components';
 const { elevation, spacings } = tokens;
 
 const Card = styled(EDSCard)<CardProps>`
-  box-shadow: ${elevation.none};
+  box-shadow: ${elevation.raised};
   transition: box-shadow 100ms;
   min-width: 200px;
   grid-gap: 0px;
   ${(props) => {
     if (props.onClick) {
       return `&:hover {
-        box-shadow: ${elevation.raised};
+        box-shadow: ${elevation.overlay};
         cursor: pointer;
       }`;
     }
