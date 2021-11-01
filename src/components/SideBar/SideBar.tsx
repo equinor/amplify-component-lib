@@ -57,14 +57,21 @@ type SidebarType = {
   createLabel?: string;
   open?: boolean;
   maxHeight?: string;
+  onChange?: (state: boolean) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
-  ({ onCreate, createLabel, open = false, maxHeight, children }, ref) => {
+  (
+    { onCreate, createLabel, onChange, open = false, maxHeight, children },
+    ref
+  ) => {
     const [isOpen, setIsOpen] = useState<boolean>(open);
 
     useEffect(() => {
       setIsOpen(open);
+      if (onChange) {
+        onChange(open);
+      }
     }, [open]);
 
     return (
