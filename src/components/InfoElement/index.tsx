@@ -6,7 +6,7 @@ export interface InfoElementProps {
   content: ReactElement | string;
 }
 
-export const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
+const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
   ({ title, content }, ref) => (
     <div ref={ref}>
       <Typography group="paragraph" variant="overline">
@@ -22,3 +22,4 @@ export const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
 );
 
 InfoElement.displayName = 'InfoElement';
+export default InfoElement;
