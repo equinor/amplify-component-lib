@@ -7,11 +7,11 @@ import { getByRole, waitFor } from '@testing-library/react';
 afterEach(cleanup);
 
 describe('NewCommentField', () => {
-  it('renders without crashing', () => {
+  test('renders without crashing', () => {
     render(<NewCommentField onPublish={() => undefined}></NewCommentField>);
   });
 
-  it('Triggers publish on button press', async () => {
+  test('Triggers publish on button press', async () => {
     let str = '';
     const handlePublish = (value: string) => {
       str = value;
@@ -30,7 +30,7 @@ describe('NewCommentField', () => {
     expect(str).toBe('I am comment');
   });
 
-  it('Triggers publish on enter press', async () => {
+  test('Triggers publish on enter press', async () => {
     let str = '';
     const handlePublish = (value: string) => {
       str = value;
@@ -49,7 +49,7 @@ describe('NewCommentField', () => {
     expect(str).toBe('I am comment');
   });
 
-  it('Clears text on clear button pressed', async () => {
+  test('Clears text on clear button pressed', async () => {
     render(
       <NewCommentField
         defaultValue="I am comment"
