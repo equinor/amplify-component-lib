@@ -21,4 +21,4 @@ export const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
   )
 );
 
-export default InfoElement;
+InfoElement.displayName = 'InfoElement';
