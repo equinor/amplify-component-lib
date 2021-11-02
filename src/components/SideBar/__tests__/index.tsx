@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 import SideBar from '..';
 import { MenuItemType } from '../MenuItem';
 import { home, star_half } from '@equinor/eds-icons';
-import { fireEvent } from '@testing-library/dom';
 
 const defaultMenuItems: MenuItemType[] = [
   {
@@ -67,10 +67,10 @@ test('Renders open width when open', () => {
   expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '256px' });
 });
 
-test('Triggers onChange callback when closed', () => {
+test('Triggers onToggle callback when closed', () => {
   const cb = jest.fn();
   render(
-    <SideBar open={true} onChange={cb}>
+    <SideBar open={true} onToggle={cb}>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
@@ -78,15 +78,15 @@ test('Triggers onChange callback when closed', () => {
   );
 
   const collapse = screen.getByRole('button', { name: /collapse/i });
-  fireEvent.click(collapse);
+  userEvent.click(collapse);
 
   expect(cb).toHaveBeenCalled();
 });
 
-test('Triggers onChange callback when opened', () => {
+test('Triggers onToggle callback when opened', () => {
   const cb = jest.fn();
   render(
-    <SideBar open={false} onChange={cb}>
+    <SideBar open={false} onToggle={cb}>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
@@ -94,7 +94,24 @@ test('Triggers onChange callback when opened', () => {
   );
 
   const expand = screen.getByRole('button');
-  fireEvent.click(expand);
+  userEvent.click(expand);
 
   expect(cb).toHaveBeenCalled();
+});
+
+test('onToggle send correct state back', () => {
+  const toggle = jest.fn();
+  render(
+    <SideBar open={false} onToggle={toggle}>
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>
+  );
+
+  const expand = screen.getByRole('button');
+  userEvent.click(expand);
+
+  expect(toggle).toBeCalled();
+  expect(toggle).toHaveBeenCalledWith(true); // Since we send in false to start with
 });

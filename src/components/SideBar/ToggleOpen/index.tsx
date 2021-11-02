@@ -53,14 +53,14 @@ const Text = styled(Typography)`
 
 interface ToggleOpenProps {
   isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  toggle: () => void;
 }
 
-const ToggleOpen: React.FC<ToggleOpenProps> = ({ isOpen, setIsOpen }) => {
+const ToggleOpen: React.FC<ToggleOpenProps> = ({ isOpen, toggle }) => {
   if (isOpen) {
     return (
       <ToggleContainer open={isOpen}>
-        <LargeButton onClick={() => setIsOpen((o) => !o)}>
+        <LargeButton onClick={toggle}>
           <Icon
             size={24}
             data={first_page}
@@ -76,11 +76,7 @@ const ToggleOpen: React.FC<ToggleOpenProps> = ({ isOpen, setIsOpen }) => {
   return (
     <ToggleContainer open={isOpen}>
       <Tooltip title="Expand" placement="right">
-        <Button
-          onClick={() => setIsOpen((o) => !o)}
-          color="secondary"
-          variant="ghost_icon"
-        >
+        <Button onClick={toggle} color="secondary" variant="ghost_icon">
           <Icon
             size={24}
             data={last_page}
