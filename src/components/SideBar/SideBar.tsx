@@ -69,7 +69,7 @@ export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
 
     const handleToggle = () => {
       setIsOpen((o) => !o);
-      onToggle!(!isOpen);
+      onToggle?.(!isOpen);
     };
 
     return (

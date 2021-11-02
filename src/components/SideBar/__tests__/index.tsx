@@ -70,7 +70,7 @@ test('Renders open width when open', () => {
 test('Triggers onChange callback when closed', () => {
   const cb = jest.fn();
   render(
-    <SideBar open={true} onChange={cb}>
+    <SideBar open={true} onToggle={cb}>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
@@ -86,7 +86,7 @@ test('Triggers onChange callback when closed', () => {
 test('Triggers onChange callback when opened', () => {
   const cb = jest.fn();
   render(
-    <SideBar open={false} onChange={cb}>
+    <SideBar open={false} onToggle={cb}>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
