@@ -11,30 +11,28 @@ const dummyData = {
   headerText: 'PETROPHYSICIST',
 };
 
-describe('DataTypeCard', () => {
-  it('renders without crashing', () => {
-    render(<DataCard {...dummyData} />);
-  });
+test('renders without crashing', () => {
+  render(<DataCard {...dummyData} />);
+});
 
-  it('renders datatype discipline and type correctly', () => {
-    const { getByText } = render(<DataCard {...dummyData} />);
+test('renders datatype discipline and type correctly', () => {
+  const { getByText } = render(<DataCard {...dummyData} />);
 
-    expect(getByText('PETROPHYSICIST')).toBeInTheDocument();
-    expect(getByText('Composite')).toBeInTheDocument();
-  });
+  expect(getByText('PETROPHYSICIST')).toBeInTheDocument();
+  expect(getByText('Composite')).toBeInTheDocument();
+});
 
-  it('renders right side header element and body when given', () => {
-    const headerTextToTest = 'Xenia Onatopp';
-    const bodyTextToTest = 'Auric Goldfinger';
-    const { getByText } = render(
-      <DataCard
-        {...dummyData}
-        headerRightElement={<p>{headerTextToTest}</p>}
-        body={<p>{bodyTextToTest}</p>}
-      />
-    );
+test('renders right side header element and body when given', () => {
+  const headerTextToTest = 'Xenia Onatopp';
+  const bodyTextToTest = 'Auric Goldfinger';
+  const { getByText } = render(
+    <DataCard
+      {...dummyData}
+      headerRightElement={<p>{headerTextToTest}</p>}
+      body={<p>{bodyTextToTest}</p>}
+    />
+  );
 
-    expect(getByText(headerTextToTest)).toBeInTheDocument();
-    expect(getByText(bodyTextToTest)).toBeInTheDocument();
-  });
+  expect(getByText(headerTextToTest)).toBeInTheDocument();
+  expect(getByText(bodyTextToTest)).toBeInTheDocument();
 });
