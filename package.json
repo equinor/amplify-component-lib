@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "./dist/index.js",
   "files": [
@@ -69,6 +69,7 @@
     "chalk": "^4.1.2",
     "child_process": "^1.0.2",
     "husky": "^7.0.2",
+    "lodash": "^4.17.21",
     "ora": "^6.0.1",
     "react": "^17.0.2",
     "react-dropzone": "^11.4.2",
@@ -91,6 +92,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
+    "@types/lodash": "^4.14.176",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.10.3",
     "@types/random-seed": "^0.3.3",
