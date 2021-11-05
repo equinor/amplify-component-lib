@@ -20,10 +20,12 @@ import SideBar from './SideBar';
 import Table from './Table';
 import TextEntry from './TextEntry';
 import TopBar from './TopBar';
+import CopyText from './CopyText';
 
 export {
   CompactCard,
   ConfirmationPopup,
+  CopyText,
   DataTypeCard,
   EditableField,
   EquinorLogo,

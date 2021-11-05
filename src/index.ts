@@ -1,6 +1,7 @@
 import {
   CompactCard,
   ConfirmationPopup,
+  CopyText,
   DataTypeCard,
   EditableField,
   EquinorLogo,
@@ -26,6 +27,7 @@ import {
 export {
   CompactCard,
   ConfirmationPopup,
+  CopyText,
   DataTypeCard,
   EditableField,
   EquinorLogo,
