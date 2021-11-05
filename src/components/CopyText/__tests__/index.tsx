@@ -1,4 +1,4 @@
-import { render, screen } from '../../../utils/test-utils';
+import { render, screen } from '../../../test-utils';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import CopyText from '../index';
