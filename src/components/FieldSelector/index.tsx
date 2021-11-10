@@ -147,6 +147,7 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
                   </MenuItem>
                 );
               }
+              return undefined;
             })}
           </MenuSection>
           <MenuItem
