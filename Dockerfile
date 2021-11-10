@@ -16,4 +16,5 @@ COPY src src
 FROM dependencies as builder
 WORKDIR /app
 RUN yarn run build-storybook
+COPY Dockerfile storybook-static
 RUN serve storybook-static
