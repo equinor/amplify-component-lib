@@ -15,7 +15,7 @@
     "start": "yarn storybook",
     "build": "yarn build-storybook",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
+    "build-storybook": "build-storybook",
     "setup": "yarn",
     "pretty": "prettier --check .",
     "pretty:fix": "prettier --write .",
