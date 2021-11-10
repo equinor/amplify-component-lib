@@ -23,6 +23,7 @@ const BackgroundCircle = styled.circle<CircleProps>`
 `;
 
 const ColorCircle = styled.circle<CircleProps>`
+  transition: stroke-dashoffset 0.5s cubic-bezier(0.65, 0, 0.35, 1);
   stroke-dashoffset: ${(props) => props.dashoffset}px;
 `;
 
