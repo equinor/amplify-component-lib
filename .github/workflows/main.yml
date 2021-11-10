@@ -6,18 +6,17 @@ name: NPM Publish
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ doesnotexist ]
+    branches: [ main ]
 
-#jobs:
-#  publish:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - uses: actions/setup-node@v1
-#        with:
-#          node-version: 10
-#      - run: yarn install
-#      - run: yarn test
-#      - uses: JS-DevTools/npm-publish@v1
-#        with:
-#          token: ${{ secrets.NPM_TOKEN }}
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+          
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
