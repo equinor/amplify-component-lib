@@ -22,6 +22,9 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
+      
+    - name: Run Tests
+      run: yarn run test:ci
 
     - name: Build Components  
       run: yarn run build-components
@@ -30,7 +33,6 @@ jobs:
       uses: JesseTG/rm@v1.0.2
       with:
         path: .gitignore
-
 
     - name: Commit Build Folder
       uses: stefanzweifel/git-auto-commit-action@v4
