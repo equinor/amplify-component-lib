@@ -6,7 +6,7 @@ This package contains components used by the amplify team.
 
 Build is done automatically when code is merged into the `development` branch.
 Publish is done automatically when code is merged into `main` branch, if the package.json version number is higher.
-To increase the version number use `yarn run version <arg>` and specify what type of [versioning](https://github.com/theogravity/version-bump#quick-start-usage).
+To increase the version number use `yarn run version <type>` and specify what type of [versioning](https://github.com/theogravity/version-bump#quick-start-usage).
 
     
 
