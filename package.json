@@ -25,6 +25,7 @@
     "test:win32": "set CI=true&react-scripts test --colors",
     "test:macos": "CI=true react-scripts test",
     "test:watch": "react-scripts test",
+    "test:ci": "CI=true react-scripts test",
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "clean": "rm -rf lib dist",
