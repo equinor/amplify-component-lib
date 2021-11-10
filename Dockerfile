@@ -11,6 +11,8 @@ FROM base as dependencies
 WORKDIR /app
 RUN yarn install
 COPY src src
+COPY .storybook .storybook
+
 
 # Build and serve
 FROM dependencies as builder
