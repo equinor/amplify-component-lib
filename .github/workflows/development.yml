@@ -24,7 +24,7 @@ jobs:
       run: yarn install
       
     - name: Run Tests
-      run: yarn run test
+      run: yarn run test:ci
 
     - name: Build Components  
       run: yarn run build-components
