@@ -6,7 +6,7 @@ name: Development Build & Commit
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ actiontestbranch ]
+    branches: [ development ]
 
 
 jobs:
@@ -37,4 +37,4 @@ jobs:
       with:
         commit_message: Add build folder
         file_pattern: dist/*
-        branch: actiontestbranch
+        branch: development
