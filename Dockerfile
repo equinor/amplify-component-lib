@@ -9,7 +9,7 @@ COPY tsconfig*.json ./
 # Dependencies
 FROM base as dependencies
 WORKDIR /app
-RUN npm install --frozen-lockfile
+RUN npm install
 COPY src src
 
 # Build and serve
