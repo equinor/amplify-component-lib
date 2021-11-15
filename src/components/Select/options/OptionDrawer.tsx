@@ -88,7 +88,11 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
     return (
       <StyledOptionWrapper ref={ref} key={value} section={section}>
         <StyledOption section={section} onClick={handleClick}>
-          <Checkbox checked={checked} onChange={handleCheck} />
+          <Checkbox
+            checked={checked}
+            onChange={handleCheck}
+            color="secondary"
+          />
           {label}
           {children && children.length !== 0 && (
             <StyledIcon data={open ? arrow_drop_up : arrow_drop_down} />

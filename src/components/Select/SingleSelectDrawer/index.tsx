@@ -8,10 +8,10 @@ import {
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import OptionDrawer from '../Options/OptionDrawer';
-import { useCombobox, UseComboboxProps } from 'downshift';
+import { useCombobox } from 'downshift';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import { Item } from '../types';
+import { OptionDrawer } from '..';
 
 const { colors, spacings, elevation } = tokens;
 
@@ -101,17 +101,26 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
       items: inputItems,
       selectedItem: options.find((item) => item.value === selectedValue),
       itemToString: (item) => (item ? item.label : ''),
-      onInputValueChange: ({ inputValue }) => {
-        setInputItems(
-          items.filter((item) =>
-            item.label.toLowerCase().includes(inputValue?.toLowerCase() ?? '')
-          )
-        );
-      },
-      onIsOpenChange: ({ selectedItem }) => {
-        if (selectedItem?.value === initialSelectedItem) {
-          setInputItems(items);
+      onInputValueChange: ({ inputValue, type }) => {
+        switch (type) {
+          case useCombobox.stateChangeTypes.InputChange:
+            setInputItems(
+              items.filter((item) =>
+                item.label
+                  .toLowerCase()
+                  .includes(inputValue?.toLowerCase() ?? '')
+              )
+            );
+            break;
+          case useCombobox.stateChangeTypes.InputKeyDownEnter:
+          case useCombobox.stateChangeTypes.ItemClick:
+          case useCombobox.stateChangeTypes.InputBlur:
+            setInputItems(items);
+            break;
         }
+      },
+      onIsOpenChange: () => {
+        setInputItems(items);
       },
       initialSelectedItem: options.find(
         (item) => item.value === initialSelectedItem
