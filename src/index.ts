@@ -1,5 +1,4 @@
 import {
-  CompactCard,
   ConfirmationPopup,
   CopyText,
   DataTypeCard,
@@ -27,7 +26,6 @@ import {
 } from './components';
 
 export {
-  CompactCard,
   ConfirmationPopup,
   CopyText,
   DataTypeCard,

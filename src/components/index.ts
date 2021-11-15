@@ -1,6 +1,5 @@
 import IconToggleButton from './Buttons';
 import OptionalTooltip from './OptionalTooltip';
-import CompactCard from './CompactCard';
 import ConfirmationPopup from './ConfirmationPopup';
 import DataTypeCard from './DataTypeCard';
 import EditableField from './EditableField';
@@ -25,7 +24,6 @@ import MultiSelectDrawer from './Select/MultiSelectDrawer';
 import SingleSelectDrawer from './Select/SingleSelectDrawer';
 
 export {
-  CompactCard,
   ConfirmationPopup,
   CopyText,
   DataTypeCard,
