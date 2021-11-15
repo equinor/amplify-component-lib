@@ -40,7 +40,7 @@ export default {
         },
       ],
     },
-    initialSelectedItem: { control: 'string', defaultValue: '' },
+    initialSelectedItem: { control: 'string', defaultValue: '1' },
   },
 } as Meta;
 
