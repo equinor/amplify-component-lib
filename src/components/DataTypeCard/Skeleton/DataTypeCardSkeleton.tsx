@@ -6,17 +6,9 @@ import { Card as EDSCard, CardProps } from '@equinor/eds-core-react';
 
 const { colors, spacings, elevation, shape } = tokens;
 
-const Card = styled(EDSCard)<CardProps>`
+const Card = styled(EDSCard)`
   box-shadow: ${elevation.raised};
   grid-gap: 0px;
-  ${(props) => {
-    if (props.onClick) {
-      return `&:hover {
-        box-shadow: ${elevation.overlay};
-        cursor: pointer;
-      }`;
-    }
-  }}
 `;
 
 const Header = styled(Card.Header)`
