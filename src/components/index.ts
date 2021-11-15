@@ -21,6 +21,8 @@ import Table from './Table';
 import TextEntry from './TextEntry';
 import TopBar from './TopBar';
 import CopyText from './CopyText';
+import MultiSelectDrawer from './Select/MultiSelectDrawer';
+import SingleSelectDrawer from './Select/SingleSelectDrawer';
 
 export {
   CompactCard,
@@ -46,4 +48,6 @@ export {
   Table,
   TextEntry,
   TopBar,
+  MultiSelectDrawer,
+  SingleSelectDrawer,
 };

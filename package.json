@@ -27,7 +27,9 @@
     "test:watch": "react-scripts test",
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
-    "clean": "rm -rf lib dist",
+    "clean": "run-script-os",
+    "clean:win32": "rmdir -rf lib dist",
+    "clean:macos": "rm -rf lib dist",
     "build-components": "yarn clean && rollup -c rollup.config.js"
   },
   "eslintConfig": {

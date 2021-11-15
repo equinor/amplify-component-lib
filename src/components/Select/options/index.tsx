@@ -1,1 +1,3 @@
-export { default } from './OptionDrawer';
+import OptionDrawer from './OptionDrawer';
+
+export { OptionDrawer };

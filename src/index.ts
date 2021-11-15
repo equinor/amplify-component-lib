@@ -22,6 +22,8 @@ import {
   Table,
   TextEntry,
   TopBar,
+  SingleSelectDrawer,
+  MultiSelectDrawer,
 } from './components';
 
 export {
@@ -48,4 +50,6 @@ export {
   Table,
   TextEntry,
   TopBar,
+  SingleSelectDrawer,
+  MultiSelectDrawer,
 };
