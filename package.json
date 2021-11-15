@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "./dist/index.js",
   "files": [
@@ -15,7 +15,7 @@
     "start": "yarn storybook",
     "build": "yarn build-storybook",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
+    "build-storybook": "build-storybook",
     "setup": "yarn",
     "pretty": "prettier --check ./src",
     "pretty:fix": "prettier --write ./src",
@@ -25,12 +25,16 @@
     "test:win32": "set CI=true&react-scripts test --colors",
     "test:macos": "CI=true react-scripts test",
     "test:watch": "react-scripts test",
+    "test:ci": "CI=true react-scripts test",
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "clean": "run-script-os",
     "clean:win32": "rmdir /s /q dist",
     "clean:macos": "rm -rf lib dist",
-    "build-components": "yarn clean && rollup -c rollup.config.js"
+    "build-components": "yarn clean && rollup -c rollup.config.js",
+    "version": "version-bump cli --bump",
+    "postversion": "git add package.json && git commit -m 'Upgraded package version'"
+
   },
   "eslintConfig": {
     "extends": [
@@ -94,6 +98,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "@theo.gravity/version-bump": "^2.0.14",
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.176",

@@ -6,7 +6,7 @@ name: Development Build & Commit
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ testbranch ]
+    branches: [ development ]
 
 
 jobs:
@@ -15,23 +15,28 @@ jobs:
         
     steps:
     - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
       with:
-        persist-credentials: true
-        fetch-depth: 0
-    
-    
-    - name: Create local changes
-      run: |
-         uses: actions/setup-node@v2
-         with:
-          node-version: 14.x
-         npm run build-components
+        node-version: 14.x
 
-    # Deploy to local repo
-    - name: Deploy
-      uses: s0/git-publish-subdir-action@develop
-      env:
-        REPO: self
-        BRANCH: testbranch
-        FOLDER: dist
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install dependencies
+      run: yarn install
+      
+    - name: Run Tests
+      run: yarn run test:ci
+
+    - name: Build Components  
+      run: yarn run build-components
+
+    - name: Remove Gitignore
+      uses: JesseTG/rm@v1.0.2
+      with:
+        path: .gitignore
+
+    - name: Commit Build Folder
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Add build folder
+        file_pattern: dist/*
+        branch: development

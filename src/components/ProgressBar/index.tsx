@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const { colors, spacings, typography, shape } = tokens;
@@ -41,8 +41,9 @@ interface FillProps {
 }
 
 const Fill = styled.div<FillProps>`
+  transition: width 700ms cubic-bezier(0.65, 0, 0.2, 1);
   width: ${(props) => (props.progress ? clampValue(props.progress) : 0)}%;
-  min-width: ${spacings.comfortable.large};
+  min-width: ${spacings.comfortable.xx_large};
   background-color: ${(props) =>
     props.fillColor
       ? props.fillColor
@@ -70,6 +71,16 @@ const ValueDisplay = styled.div`
 const clampValue = (num: number) => Math.min(Math.max(num, 0), 100);
 
 const ProgressBar: React.FC<ProgressBarProps> = (props) => {
+  const [fill, setFill] = useState(0);
+
+  useEffect(() => {
+    setFill(props.progress);
+  }, []);
+
+  useEffect(() => {
+    setFill(props.progress);
+  }, [props.progress]);
+
   return (
     <DefaultStyle className={props.className} style={props.style}>
       <Bar
@@ -79,7 +90,7 @@ const ProgressBar: React.FC<ProgressBarProps> = (props) => {
         <Fill
           value={props.progress}
           fillColor={props.fillColor}
-          progress={props.progress}
+          progress={fill}
           data-testid="progressbarfill"
         >
           {props.displayValueInBar && (
