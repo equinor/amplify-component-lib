@@ -13,7 +13,7 @@ const { colors } = tokens;
 
 const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.hsla};
-  padding-left: 18px;
+  padding-left: 20px;
 `;
 
 const Header = styled(EDSTopBar.Header)`
@@ -24,6 +24,9 @@ const Header = styled(EDSTopBar.Header)`
   grid-template-columns: 32px auto;
   > svg {
     justify-self: center;
+  }
+  > h6 {
+    text-transform: capitalize;
   }
 `;
 interface CircularProgressProps {
@@ -65,7 +68,7 @@ export const TopBar = forwardRef<HTMLElement, TopBarType>(
             color={colors.interactive.primary__resting.hsla}
           />
         )}
-        <Typography variant="h6">{applicationName}</Typography>
+        <Typography variant="h6">{applicationName.toLowerCase()}</Typography>
         <CircularProgress size={16} isFetching={isFetching} />
       </Header>
       {children}

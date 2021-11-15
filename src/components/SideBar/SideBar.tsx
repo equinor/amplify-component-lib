@@ -57,15 +57,20 @@ type SidebarType = {
   createLabel?: string;
   open?: boolean;
   maxHeight?: string;
+  onToggle?: (state: boolean) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
-  ({ onCreate, createLabel, open = false, maxHeight, children }, ref) => {
+  (
+    { onCreate, createLabel, onToggle, open = false, maxHeight, children },
+    ref
+  ) => {
     const [isOpen, setIsOpen] = useState<boolean>(open);
 
-    useEffect(() => {
-      setIsOpen(open);
-    }, [open]);
+    const handleToggle = () => {
+      setIsOpen((o) => !o);
+      onToggle?.(!isOpen);
+    };
 
     return (
       <SideBarContext.Provider value={{ isOpen }}>
@@ -80,7 +85,7 @@ export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
             )}
             {children}
           </TopContainer>
-          <ToggleOpen isOpen={isOpen} setIsOpen={setIsOpen} />
+          <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
           <LogoContainer>
             <EquinorLogo />
           </LogoContainer>

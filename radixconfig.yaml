@@ -1,0 +1,22 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: storybook-amplify-components
+spec:
+  environments:
+    - name: production
+      build:
+        from: main
+    - name: development
+      build:
+        from: development
+  components:
+    - name: client
+      src: ./
+      ports:
+        - name: http
+          port: 5000
+      publicPort: http
+  dnsAppAlias:
+    environment: production
+    component: client

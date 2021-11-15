@@ -18,8 +18,7 @@
     "declaration": true,
     "declarationDir": "./dist/types",
     "outDir": "./lib",
-    "importHelpers": true,
-    "noEmit": true
+    "importHelpers": true
   },
   "include": ["src"],
   "exclude": [
