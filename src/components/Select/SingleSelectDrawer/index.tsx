@@ -8,8 +8,8 @@ import {
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import OptionDrawer from '../Options/OptionDrawer';
-import { useCombobox, UseComboboxProps } from 'downshift';
+import OptionDrawer from '../OptionDrawer';
+import { useCombobox } from 'downshift';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import { Item } from '../types';
 
