@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "./dist/index.js",
   "files": [
@@ -34,7 +34,6 @@
     "build-components": "yarn clean && rollup -c rollup.config.js",
     "version": "version-bump cli --bump",
     "postversion": "git add package.json && git commit -m 'Upgraded package version'"
-
   },
   "eslintConfig": {
     "extends": [
