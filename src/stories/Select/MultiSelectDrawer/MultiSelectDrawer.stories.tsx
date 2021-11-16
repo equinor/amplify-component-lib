@@ -48,7 +48,7 @@ const Template: Story<MultiSelectDrawerProps> = (args) => (
   <div style={{ width: '300px' }}>
     <MultiSelectDrawer
       {...args}
-      onChange={() => null}
+      onChange={(values) => console.log(values)}
       placeholder="Select..."
     />
   </div>
