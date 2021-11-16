@@ -1477,10 +1477,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@equinor/amplify-utils@1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@equinor/amplify-utils/-/amplify-utils-1.1.4.tgz#3624ce7cee8fc5eff078ff7f8b1c9f9078450971"
-  integrity sha512-JecbD3vZopVL93SE4xx6AeO29TvrydvYD0ylS1Qe4XFVfD3L8z0sxWIhPjbzJETR0KugNGzixHYnWeU5e9GqFQ==
+"@equinor/amplify-utils@1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@equinor/amplify-utils/-/amplify-utils-1.1.9.tgz#570b74178998ad1777005a65998ca172bc1aa04b"
+  integrity sha512-YolRKQiTfuUMPQYo9XMWBH01x/a5kpawHihNEC/X3Z29bBsgJRaiK2C+Kjg6+1+hLKv0/xu1xKY1FF8QRPzNaQ==
   dependencies:
     "@equinor/eds-core-react" "^0.14.0"
     ansi-styles "^3.2.1"
