@@ -1,6 +1,6 @@
 import { Card as EDSCard, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import React, { ReactElement } from 'react';
+import React, { forwardRef, ReactElement } from 'react';
 import styled from 'styled-components';
 
 const { elevation, spacings } = tokens;
@@ -47,26 +47,31 @@ export interface DataTypeCardProps {
   onClick?: React.MouseEventHandler;
 }
 
-const DataCard: React.FC<DataTypeCardProps> = ({
-  headerText,
-  title,
-  headerRightElement,
-  body,
-  className,
-  onClick,
-}) => (
-  <Card className={className} onClick={onClick}>
-    <Header>
-      <Card.HeaderTitle>
-        <Typography group="paragraph" variant="overline">
-          {headerText}
-        </Typography>
-        <Typography variant="h6">{title}</Typography>
-      </Card.HeaderTitle>
-      {headerRightElement && headerRightElement}
-    </Header>
-    {body && body}
-  </Card>
+const DataCard = forwardRef<HTMLDivElement, DataTypeCardProps>(
+  (
+    { headerText, title, headerRightElement, body, className, onClick },
+    ref
+  ) => (
+    <Card
+      ref={ref}
+      className={className ?? ''}
+      onClick={onClick}
+      data-testid="dataTypeCard"
+    >
+      <Header>
+        <Card.HeaderTitle>
+          <Typography group="paragraph" variant="overline">
+            {headerText}
+          </Typography>
+          <Typography variant="h6">{title}</Typography>
+        </Card.HeaderTitle>
+        {headerRightElement && headerRightElement}
+      </Header>
+      {body && body}
+    </Card>
+  )
 );
+
+DataCard.displayName = 'DataCard';
 
 export default DataCard;
