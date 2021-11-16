@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { useCombobox } from 'downshift';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import { Item } from '../types';
-import { OptionDrawer } from '..';
+import OptionDrawer from '../OptionDrawer';
 
 const { colors, spacings, elevation } = tokens;
 
