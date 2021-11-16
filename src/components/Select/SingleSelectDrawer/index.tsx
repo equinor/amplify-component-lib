@@ -79,7 +79,8 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
     },
     ref
   ) => {
-    const [selectedValue, setSelectedValue] = useState(initialSelectedItem);
+    const [selectedValue, setSelectedValue] =
+      useState<string>(initialSelectedItem);
     const [inputItems, setInputItems] = useState<Item[]>(items);
     const options = getAllItems(items);
 
@@ -99,8 +100,9 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
       openMenu,
     } = useCombobox({
       items: inputItems,
-      selectedItem: options.find((item) => item.value === selectedValue),
-      itemToString: (item) => (item ? item.label : ''),
+      selectedItem:
+        options.find((item) => item.value === selectedValue) ?? null,
+      itemToString: (item) => (item ? item?.label : ''),
       onInputValueChange: ({ inputValue, type }) => {
         switch (type) {
           case useCombobox.stateChangeTypes.InputChange:

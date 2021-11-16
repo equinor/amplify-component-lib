@@ -179,7 +179,7 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
     });
 
     const selectedValues =
-      items.length > 0
+      selectedItems.length > 0
         ? `${selectedItems
             .map(
               (selected) =>
