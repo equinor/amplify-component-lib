@@ -11,11 +11,11 @@ import {
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { Story, Meta } from '@storybook/react';
+import TopBar from '../../components/TopBar';
+import SideBar from '../../components/SideBar';
 
 const { colors } = tokens;
 
-import TopBar from '../../components/TopBar';
-import SideBar from '../../components/SideBar';
 
 export default {
   title: 'TopBar',

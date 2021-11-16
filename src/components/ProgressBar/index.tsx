@@ -75,10 +75,6 @@ const ProgressBar: React.FC<ProgressBarProps> = (props) => {
 
   useEffect(() => {
     setFill(props.progress);
-  }, []);
-
-  useEffect(() => {
-    setFill(props.progress);
   }, [props.progress]);
 
   return (

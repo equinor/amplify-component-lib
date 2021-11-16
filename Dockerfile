@@ -12,11 +12,18 @@ WORKDIR /app
 RUN yarn install
 COPY src src
 COPY .storybook .storybook
+COPY .eslintrc.js .eslintrc.js
 
-
-# Build and serve
+# Build
 FROM dependencies as builder
 WORKDIR /app
 RUN yarn run build-storybook
 COPY Dockerfile storybook-static
-RUN serve storybook-static
+
+# STAGE 2 => SETUP NGINX and Run
+FROM nginxinc/nginx-unprivileged:stable
+USER 0
+# Clear default nginx html file
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/storybook-static /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf.template

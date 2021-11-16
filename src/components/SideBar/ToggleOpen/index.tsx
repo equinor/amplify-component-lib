@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { first_page, last_page } from '@equinor/eds-icons';
