@@ -20,7 +20,7 @@
     "pretty": "prettier --check ./src",
     "pretty:fix": "prettier --write ./src",
     "lint": "tsc --noEmit && eslint ./src --ext .jsx,.ts,.tsx",
-    "lint-fix": "eslint ./src --ext .jsx,.ts,.tsx --fix",
+    "lint:fix": "eslint ./src --ext .jsx,.ts,.tsx --fix",
     "test": "run-script-os",
     "test:win32": "set CI=true&react-scripts test --colors",
     "test:macos": "CI=true react-scripts test",
@@ -68,7 +68,7 @@
     "babel-loader": "8.1.0"
   },
   "dependencies": {
-    "@equinor/amplify-utils": "1.1.9",
+    "@equinor/amplify-utils": "1.1.4",
     "@equinor/eds-core-react": "^0.14.0",
     "@equinor/eds-icons": "^0.7.0",
     "@equinor/eds-tokens": "^0.7.0",
