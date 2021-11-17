@@ -51,5 +51,5 @@ export {
   Table,
   TextEntry,
   TopBar,
-  utilities
+  utilities,
 };

@@ -20,13 +20,13 @@
     "jsx": "react-jsx",
     "sourceMap": true,
     "declaration": true,
-    "declarationDir": "./dist/types",
+    "declarationDir": "./lib/types",
     "outDir": "./lib",
     "importHelpers": true,
     "noEmit": true
   },
   "include": [
-    "src"
+    "src/index.ts"
   ],
   "exclude": [
     "node_modules",
