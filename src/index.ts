@@ -26,6 +26,8 @@ import {
   TopBar,
 } from './components';
 
+import * as utils from './components/utilities'
+
 export {
   ConfirmationPopup,
   CopyText,
@@ -52,4 +54,5 @@ export {
   Table,
   TextEntry,
   TopBar,
+  utils
 };

@@ -68,7 +68,6 @@
     "babel-loader": "8.1.0"
   },
   "dependencies": {
-    "@equinor/amplify-utils": "^1.1.4",
     "@equinor/eds-core-react": "^0.14.0",
     "@equinor/eds-icons": "^0.7.0",
     "@equinor/eds-tokens": "^0.7.0",
