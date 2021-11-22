@@ -5,12 +5,14 @@ import string from './string';
 import { ApplicationIcon, FeedBackIcon } from './icons';
 import { useDebounce, useSnackbar, useOnScreen } from './hooks';
 import Providers from './providers';
+import image from './image';
 
 export {
   date,
   size,
   string,
   favicon,
+  image,
   Providers,
   ApplicationIcon,
   FeedBackIcon,

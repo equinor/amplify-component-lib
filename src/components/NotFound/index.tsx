@@ -2,7 +2,7 @@ import { FC, ReactElement } from 'react';
 import { Button, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { FeedBackIcon } from '../utilities';
+import { FeedBackIcon } from '../../utilities';
 
 const { spacings } = tokens;
 

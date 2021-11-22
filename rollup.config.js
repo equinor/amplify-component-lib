@@ -9,6 +9,7 @@ import { terser } from 'rollup-plugin-terser';
 import dts from 'rollup-plugin-dts';
 import pkg from './package.json';
 import generatePackageJson from 'rollup-plugin-generate-package-json';
+import copy from 'rollup-plugin-copy';
 
 const globals = {
   react: 'React',
@@ -41,7 +42,6 @@ export default [
     output: [{ file: pkg.main, format: 'esm', name: pkg.name, globals }],
   },
   {
-    // path to your declaration files root
     input: './lib/types/components/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'es' }],
     plugins: [dts()],
@@ -69,7 +69,7 @@ export default [
           private: true,
           main: 'index.js',
           dependencies: {},
-          types: "index.d.ts"
+          types: 'index.d.ts',
         }),
       }),
     ],
@@ -83,9 +83,15 @@ export default [
     ],
   },
   {
-    // path to your declaration files root
     input: './lib/types/utilities/index.d.ts',
     output: [{ file: 'dist/utils/index.d.ts', format: 'es' }],
-    plugins: [dts()],
+    plugins: [
+      dts(),
+      copy({
+        targets: [
+          { src: './tooling/postinstall.js', dest: 'dist/' },
+        ],
+      }),
+    ],
   },
 ];
