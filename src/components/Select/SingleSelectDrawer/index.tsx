@@ -10,7 +10,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useCombobox } from 'downshift';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { Item } from '../types';
+import { SelectItem } from '../';
 import { OptionDrawer } from '..';
 
 const { colors, spacings, elevation } = tokens;
@@ -44,12 +44,12 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-const getAllItems = (items: Item[] | undefined): Item[] => {
+const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
   if (items === undefined || items.length === 0) {
     return [];
   }
 
-  let options: Item[] = [];
+  let options: SelectItem[] = [];
 
   items.forEach((item) => {
     const children = getAllItems(item.children);
@@ -60,7 +60,7 @@ const getAllItems = (items: Item[] | undefined): Item[] => {
 };
 
 export type SingleSelectDrawerProps = {
-  items: Item[];
+  items: SelectItem[];
   onChange: (value: string) => void;
 } & Omit<SingleSelectProps, 'items'>;
 
@@ -80,7 +80,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
     ref
   ) => {
     const [selectedValue, setSelectedValue] = useState(initialSelectedItem);
-    const [inputItems, setInputItems] = useState<Item[]>(items);
+    const [inputItems, setInputItems] = useState<SelectItem[]>(items);
     const options = getAllItems(items);
 
     useEffect(() => {
