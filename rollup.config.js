@@ -20,7 +20,7 @@ const extensions = ['.jsx', '.js', '.tsx', '.ts'];
 
 export default [
   {
-    input: './src/index.ts',
+    input: './src/index.tsx',
     external: peerDeps,
     plugins: [
       resolve({ extensions }),
@@ -38,5 +38,5 @@ export default [
       uglify(),
     ],
     output: [{ file: pkg.main, format: 'esm', name: pkg.name, globals }],
-  }
+  },
 ];

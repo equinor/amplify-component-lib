@@ -16,7 +16,6 @@ import SideBar from '../../components/SideBar';
 
 const { colors } = tokens;
 
-
 export default {
   title: 'TopBar',
   component: TopBar,
