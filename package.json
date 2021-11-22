@@ -35,8 +35,7 @@
     "build-components": "yarn clean && rollup -c rollup.config.js",
     "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.js",
     "version": "version-bump cli --bump",
-    "postversion": "git add package.json && git commit -m 'Upgraded package version'",
-    "postinstall": "node dist/postinstall.js"
+    "postversion": "git add package.json && git commit -m 'Upgraded package version'"
   },
   "eslintConfig": {
     "extends": [
