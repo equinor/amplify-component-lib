@@ -1,6 +1,6 @@
 import ConfirmationPopup from './ConfirmationPopup';
 import CopyText from './CopyText';
-import DataTypeCard from './DataTypeCard';
+import DataCard from './DataCard';
 import EditableField from './EditableField';
 import EquinorLogo from './EquinorLogo';
 import FieldSelector from './FieldSelector';
@@ -28,7 +28,7 @@ import TopBar from './TopBar';
 export {
   ConfirmationPopup,
   CopyText,
-  DataTypeCard,
+  DataCard,
   EditableField,
   EquinorLogo,
   FieldSelector,

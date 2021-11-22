@@ -1,7 +1,7 @@
 import {
   ConfirmationPopup,
   CopyText,
-  DataTypeCard,
+  DataCard,
   EditableField,
   EquinorLogo,
   FieldSelector,
@@ -30,7 +30,7 @@ import {
 export {
   ConfirmationPopup,
   CopyText,
-  DataTypeCard,
+  DataCard,
   EditableField,
   EquinorLogo,
   FieldSelector,
