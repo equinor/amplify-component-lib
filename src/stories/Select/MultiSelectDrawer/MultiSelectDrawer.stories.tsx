@@ -40,13 +40,17 @@ export default {
         },
       ],
     },
-    initialSelectedItems: { control: 'array', defaultValue: ['11', '31'] },
+    initialSelectedItems: { control: 'array', defaultValue: ['1', '3'] },
   },
 } as Meta;
 
 const Template: Story<MultiSelectDrawerProps> = (args) => (
   <div style={{ width: '300px' }}>
-    <MultiSelectDrawer {...args} onChange={() => null} />
+    <MultiSelectDrawer
+      {...args}
+      onChange={(values) => console.log(values)}
+      placeholder="Select..."
+    />
   </div>
 );
 

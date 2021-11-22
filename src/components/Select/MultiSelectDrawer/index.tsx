@@ -102,10 +102,6 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
       initialSelectedItems: initialSelectedItems,
     });
 
-    useEffect(() => {
-      onChange(selectedItems);
-    }, [onChange, selectedItems]);
-
     const {
       isOpen,
       getToggleButtonProps,
@@ -120,8 +116,7 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
       items: inputItems,
       selectedItem: null,
       itemToString: (item) => (item ? item.label : ''),
-      stateReducer: (state, actionAndChanges) => {
-        const { changes, type } = actionAndChanges;
+      stateReducer: (state, { changes, type }) => {
         switch (type) {
           case useCombobox.stateChangeTypes.InputKeyDownEnter:
           case useCombobox.stateChangeTypes.ItemClick:
@@ -160,6 +155,7 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
           case useCombobox.stateChangeTypes.InputKeyDownEnter:
           case useCombobox.stateChangeTypes.ItemClick:
           case useCombobox.stateChangeTypes.InputBlur:
+            onChange(selectedItems);
             if (selectedItem) {
               if (initialSelectedItems.includes(selectedItem.value)) {
                 setInputItems(items);
@@ -179,7 +175,7 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
     });
 
     const selectedValues =
-      items.length > 0
+      selectedItems.length > 0
         ? `${selectedItems
             .map(
               (selected) =>

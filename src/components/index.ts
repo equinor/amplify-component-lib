@@ -15,6 +15,7 @@ import MulticolorProgressCircle from './MulticolorProgressCircle';
 import MultiSelectDrawer from './Select/MultiSelectDrawer';
 import NotFound from './NotFound';
 import OptionalTooltip from './OptionalTooltip';
+import OptionDrawer from './Select/OptionDrawer';
 import ProgressBar from './ProgressBar';
 import SideBar from './SideBar';
 import SingleFilterMenu from './SingleFilterMenu';
@@ -43,6 +44,7 @@ export {
   MultiSelectDrawer,
   NotFound,
   OptionalTooltip,
+  OptionDrawer,
   ProgressBar,
   SideBar,
   SingleFilterMenu,
