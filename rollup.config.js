@@ -22,7 +22,7 @@ const extensions = ['.jsx', '.js', '.tsx', '.ts'];
 
 export default [
   {
-    input: './src/components/index.ts',
+    input: './src/index.tsx',
     external: peerDeps,
     plugins: [
       resolve({ extensions }),
@@ -40,58 +40,5 @@ export default [
       uglify(),
     ],
     output: [{ file: pkg.main, format: 'esm', name: pkg.name, globals }],
-  },
-  {
-    input: './lib/types/components/index.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'es' }],
-    plugins: [dts()],
-  },
-  {
-    input: './src/utilities/index.tsx',
-    external: peerDeps,
-    plugins: [
-      resolve({ extensions }),
-      typescript({ useTsconfigDeclarationDir: true }),
-      typescriptPaths(),
-      babel({
-        exclude: 'node_modules/**',
-        babelHelpers: 'bundled',
-        presets: ['@babel/preset-env', '@babel/preset-react'],
-        extensions,
-        plugins: ['babel-plugin-styled-components'],
-      }),
-      commonjs(),
-      terser(),
-      uglify(),
-      generatePackageJson({
-        baseContents: (pkg) => ({
-          name: '@equinor/amplify-components/utils',
-          private: true,
-          main: 'index.js',
-          dependencies: {},
-          types: 'index.d.ts',
-        }),
-      }),
-    ],
-    output: [
-      {
-        file: 'dist/utils/index.js',
-        format: 'esm',
-        name: pkg.name,
-        globals,
-      },
-    ],
-  },
-  {
-    input: './lib/types/utilities/index.d.ts',
-    output: [{ file: 'dist/utils/index.d.ts', format: 'es' }],
-    plugins: [
-      dts(),
-      copy({
-        targets: [
-          { src: './tooling/postinstall.js', dest: 'dist/' },
-        ],
-      }),
-    ],
   },
 ];
