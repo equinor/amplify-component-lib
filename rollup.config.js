@@ -6,10 +6,7 @@ import typescript from 'rollup-plugin-typescript2';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
 import { uglify } from 'rollup-plugin-uglify';
 import { terser } from 'rollup-plugin-terser';
-import dts from 'rollup-plugin-dts';
 import pkg from './package.json';
-import generatePackageJson from 'rollup-plugin-generate-package-json';
-import copy from 'rollup-plugin-copy';
 
 const globals = {
   react: 'React',

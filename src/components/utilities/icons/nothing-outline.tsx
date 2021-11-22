@@ -1,5 +1,5 @@
-import React from 'react';
-import { ISvgIconProps } from '.';
+import React from "react";
+import { ISvgIconProps } from ".";
 
 const NothingOutline: React.FC<ISvgIconProps> = ({ size }) => (
   <svg
@@ -15,15 +15,7 @@ const NothingOutline: React.FC<ISvgIconProps> = ({ size }) => (
     />
     <circle cx="16" cy="15" r="3" fill="#6F6F6F" />
     <circle cx="32" cy="15" r="3" fill="#6F6F6F" />
-    <rect
-      x="0.5"
-      y="0.5"
-      width="47"
-      height="47"
-      rx="7.5"
-      stroke="#6F6F6F"
-      strokeDasharray="4 4"
-    />
+    <rect x="0.5" y="0.5" width="47" height="47" rx="7.5" stroke="#6F6F6F" strokeDasharray="4 4" />
   </svg>
 );
 

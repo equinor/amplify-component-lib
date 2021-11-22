@@ -1,5 +1,5 @@
-import React from 'react';
-import { ISvgIconProps } from '.';
+import React from "react";
+import { ISvgIconProps } from ".";
 
 const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
   <svg
@@ -9,24 +9,8 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <mask
-      id="data-acquisition-mask0"
-      mask-type="alpha"
-      maskUnits="userSpaceOnUse"
-      x="0"
-      y="0"
-      width="48"
-      height="48"
-    >
-      <rect
-        x="48"
-        y="48"
-        width="48"
-        height="48"
-        rx="8"
-        transform="rotate(-180 48 48)"
-        fill="#C4C4C4"
-      />
+    <mask id="data-acquisition-mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+      <rect x="48" y="48" width="48" height="48" rx="8" transform="rotate(-180 48 48)" fill="#C4C4C4" />
     </mask>
     <g mask="url(#data-acquisition-mask0)">
       <path
@@ -75,15 +59,8 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="3" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0" />
+        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -92,21 +69,9 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="2" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow"
-          result="effect2_dropShadow"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect2_dropShadow"
-          result="shape"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0" />
+        <feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow" />
+        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape" />
       </filter>
       <filter
         id="data-acquisition-filter1_dd"
@@ -126,15 +91,8 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="3" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0" />
+        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -143,21 +101,9 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="2" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow"
-          result="effect2_dropShadow"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect2_dropShadow"
-          result="shape"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0" />
+        <feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow" />
+        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape" />
       </filter>
     </defs>
   </svg>

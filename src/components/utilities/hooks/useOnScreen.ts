@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 // https://stackoverflow.com/a/65008608
 export default function useOnScreen(
@@ -11,7 +11,7 @@ export default function useOnScreen(
     ([entry]) => {
       setIntersecting(entry.isIntersecting);
     },
-    { rootMargin: '0px', threshold }
+    { rootMargin: "0px", threshold }
   );
 
   useEffect(() => {

@@ -1,21 +1,17 @@
-import date from './date';
-import size from './size';
-import favicon from './favicon';
-import string from './string';
-import { ApplicationIcon, FeedBackIcon } from './icons';
-import { useDebounce, useSnackbar, useOnScreen } from './hooks';
-import Providers from './providers';
-import image from './image';
+import { image, date, size, favicon, string } from "./utilities";
+import { ApplicationIcon, FeedBackIcon } from "./icons";
+import { useDebounce, useSnackbar, useOnScreen } from "./hooks";
+import Providers from "./providers";
 
 export {
+  ApplicationIcon,
   date,
-  size,
-  string,
   favicon,
+  FeedBackIcon,
   image,
   Providers,
-  ApplicationIcon,
-  FeedBackIcon,
+  size,
+  string,
   useDebounce,
   useOnScreen,
   useSnackbar,

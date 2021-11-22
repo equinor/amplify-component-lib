@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Snackbar, SnackbarProps } from '@equinor/eds-core-react';
+import React, { useState } from "react";
+import { Snackbar, SnackbarProps } from "@equinor/eds-core-react";
 
 export interface State {
   setSnackbarText: (val: string) => void;
@@ -13,7 +13,7 @@ export const SnackbarContext = React.createContext<State>({
 
 const SnackbarContextProvider: React.FC<SnackbarProps> = (props) => {
   const [open, setOpen] = React.useState(false);
-  const [snackbarText, setSnackbarText] = React.useState('');
+  const [snackbarText, setSnackbarText] = React.useState("");
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
 
   const showSnackbar = (customProps?: SnackbarProps) => {

@@ -1,32 +1,10 @@
-import React from 'react';
-import { ISvgIconProps } from '.';
+import React from "react";
+import { ISvgIconProps } from ".";
 
 const DataExperience: React.FC<ISvgIconProps> = ({ size }) => (
-  <svg
-    width={size ? size : 48}
-    height={size ? size : 48}
-    viewBox="0 0 48 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <mask
-      id="data-experience-mask0"
-      mask-type="alpha"
-      maskUnits="userSpaceOnUse"
-      x="0"
-      y="0"
-      width="48"
-      height="48"
-    >
-      <rect
-        x="48"
-        y="48"
-        width="48"
-        height="48"
-        rx="8"
-        transform="rotate(180 48 48)"
-        fill="#C4C4C4"
-      />
+  <svg width={size ? size : 48} height={size ? size : 48} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <mask id="data-experience-mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+      <rect x="48" y="48" width="48" height="48" rx="8" transform="rotate(180 48 48)" fill="#C4C4C4" />
     </mask>
     <g mask="url(#data-experience-mask0)">
       <g filter="url(#data-experience-filter0_dd)">
@@ -75,15 +53,8 @@ const DataExperience: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="3" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0" />
+        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -92,21 +63,9 @@ const DataExperience: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="2" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow"
-          result="effect2_dropShadow"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect2_dropShadow"
-          result="shape"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0" />
+        <feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow" />
+        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape" />
       </filter>
       <filter
         id="data-experience-filter1_dd"
@@ -126,15 +85,8 @@ const DataExperience: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="3" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0" />
+        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -143,21 +95,9 @@ const DataExperience: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="2" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow"
-          result="effect2_dropShadow"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect2_dropShadow"
-          result="shape"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0" />
+        <feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow" />
+        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape" />
       </filter>
       <filter
         id="data-experience-filter2_dd"
@@ -177,15 +117,8 @@ const DataExperience: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="3" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0" />
+        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -194,21 +127,9 @@ const DataExperience: React.FC<ISvgIconProps> = ({ size }) => (
         />
         <feOffset dy="2" />
         <feGaussianBlur stdDeviation="2" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow"
-          result="effect2_dropShadow"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect2_dropShadow"
-          result="shape"
-        />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.14 0" />
+        <feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow" />
+        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape" />
       </filter>
     </defs>
   </svg>

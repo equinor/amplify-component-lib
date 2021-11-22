@@ -1,5 +1,5 @@
-import { useDebounce } from './useDebounce';
-import useOnScreen from './useOnScreen';
-import { useSnackbar } from './useSnackbar';
+import { useDebounce } from "./useDebounce";
+import useOnScreen from "./useOnScreen";
+import { useSnackbar } from "./useSnackbar";
 
 export { useDebounce, useOnScreen, useSnackbar };
