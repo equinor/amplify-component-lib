@@ -1,16 +1,14 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "./dist/index.js",
   "files": [
-    "dist/*",
-    "utilities"
+    "dist/*"
   ],
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "directories": {
-    "dist": "dist",
-    "lib": "lib"
+    "dist": "dist"
   },
   "scripts": {
     "start": "yarn storybook",

@@ -17,9 +17,8 @@
     "sourceMap": true,
     "declaration": true,
     "declarationDir": "./dist/types",
-    "outDir": "./lib",
-    "importHelpers": true,
-    "noEmit": true
+    "outDir": "./dist",
+    "importHelpers": true
   },
   "include": ["src/index.tsx"],
   "exclude": [

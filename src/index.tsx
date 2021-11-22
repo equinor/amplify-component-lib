@@ -25,8 +25,8 @@ import {
   Table,
   TextEntry,
   TopBar,
+  utilities as utils,
 } from './components';
-import * as utils from './components/utilities';
 
 export {
   ConfirmationPopup,
