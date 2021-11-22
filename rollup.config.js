@@ -5,7 +5,7 @@ import babel from '@rollup/plugin-babel';
 import typescript from 'rollup-plugin-typescript2';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
 import { uglify } from 'rollup-plugin-uglify';
-
+import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 const globals = {
@@ -19,7 +19,7 @@ const extensions = ['.jsx', '.js', '.tsx', '.ts'];
 
 export default [
   {
-    input: './src/index.ts',
+    input: './src/index.tsx',
     external: peerDeps,
     plugins: [
       resolve({ extensions }),
@@ -28,17 +28,14 @@ export default [
       babel({
         exclude: 'node_modules/**',
         babelHelpers: 'bundled',
-        presets: [
-          '@babel/preset-env',
-          '@babel/preset-react',
-          'babel-preset-minify',
-        ],
+        presets: ['@babel/preset-env', '@babel/preset-react'],
         extensions,
         plugins: ['babel-plugin-styled-components'],
       }),
       commonjs(),
+      terser(),
       uglify(),
     ],
-    output: [{ file: pkg.main, format: 'umd', name: pkg.name, globals }],
+    output: [{ file: pkg.main, format: 'esm', name: pkg.name, globals }],
   },
 ];
