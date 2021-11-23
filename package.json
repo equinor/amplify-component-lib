@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.3.0-beta.1",
+  "version": "1.3.0-beta.2",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "./dist/index.js",
   "files": [
@@ -27,9 +27,7 @@
     "test:ci": "CI=true react-scripts test",
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
-    "clean": "run-script-os",
-    "clean:win32": "rmdir ./dist/* -r",
-    "clean:macos": "rm -rf lib dist",
+    "clean": "rm -rf lib dist",
     "build-components": "yarn clean && rollup -c rollup.config.js",
     "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.js",
     "version": "version-bump cli --bump",
