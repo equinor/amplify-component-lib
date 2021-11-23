@@ -24,6 +24,7 @@ import Table from './Table';
 import TextEntry from './TextEntry';
 import TopBar from './TopBar';
 import * as utilities from './utilities';
+import { SelectItem } from './Select';
 
 export {
   ConfirmationPopup,
@@ -53,3 +54,5 @@ export {
   TopBar,
   utilities,
 };
+
+export type { SelectItem };

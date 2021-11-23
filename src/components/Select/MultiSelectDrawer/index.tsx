@@ -10,7 +10,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useCombobox, useMultipleSelection } from 'downshift';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { SelectItem } from '../';
+import { SelectItem } from '..';
 import { OptionDrawer } from '..';
 
 const { colors, spacings, elevation } = tokens;

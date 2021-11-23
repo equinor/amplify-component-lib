@@ -25,6 +25,7 @@ import {
   TextEntry,
   TopBar,
   utilities as utils,
+  SelectItem,
 } from './components';
 
 export {
@@ -55,3 +56,5 @@ export {
   TopBar,
   utils,
 };
+
+export type { SelectItem };
