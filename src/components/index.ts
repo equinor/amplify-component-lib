@@ -5,7 +5,6 @@ import EditableField from './EditableField';
 import EquinorLogo from './EquinorLogo';
 import FieldSelector from './FieldSelector';
 import FileProgress from './FileProgress';
-import FileUpload from './FileUpload';
 import FileUploadArea from './FileUploadArea';
 import FullPageSpinner from './FullPageSpinner';
 import FullPageStatus from './FullPageStatus';
@@ -34,7 +33,6 @@ export {
   EquinorLogo,
   FieldSelector,
   FileProgress,
-  FileUpload,
   FileUploadArea,
   FullPageSpinner,
   FullPageStatus,

@@ -10,7 +10,6 @@ import {
 import {
   check_circle_outlined,
   close_circle_outlined,
-  refresh,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
@@ -84,27 +83,31 @@ const getStatus = (loading?: boolean, error?: boolean) => {
 export interface FileProgressProps {
   error?: boolean;
   errorMsg?: string;
-  fileId: string;
   loading?: boolean;
   name: string;
-  onDelete: (fileId: string) => void;
-  onRetry: (fileId: string) => void;
+  progress?: number;
+  onDelete: () => void;
+  onAbort: () => void;
 }
 
 const FileProgress: FC<FileProgressProps> = ({
   error,
   errorMsg,
-  fileId,
   name,
   onDelete,
-  onRetry,
+  onAbort,
   loading,
+  progress,
 }) => {
   return (
     <StyledCard>
       <TopProgress
-        variant={error || !loading ? 'determinate' : 'indeterminate'}
-        value={error || !loading ? 100 : undefined}
+        variant={
+          error || !loading || (progress && progress !== 100)
+            ? 'determinate'
+            : 'indeterminate'
+        }
+        value={error || !loading ? 100 : progress ? progress : undefined}
         error={error}
       />
       <CardHeader>
@@ -116,18 +119,7 @@ const FileProgress: FC<FileProgressProps> = ({
             </TruncatedTypography>
           </Tooltip>
         </Card.HeaderTitle>
-        {error ? (
-          <StyledButton
-            variant="ghost_icon"
-            onClick={!loading ? () => onRetry(fileId) : undefined}
-          >
-            <Icon
-              color={colors.text.static_icons__tertiary.hex}
-              data={refresh}
-              size={24}
-            />
-          </StyledButton>
-        ) : !error && !loading ? (
+        {!error && !loading ? (
           <StyledButton variant="ghost_icon" color="primary">
             <Icon data={check_circle_outlined} size={24} />
           </StyledButton>
@@ -136,8 +128,7 @@ const FileProgress: FC<FileProgressProps> = ({
         )}
         <StyledButton
           variant="ghost_icon"
-          onClick={() => onDelete(fileId)}
-          disabled={loading}
+          onClick={() => (loading ? onAbort() : onDelete())}
         >
           <Icon
             color={colors.text.static_icons__tertiary.hex}
