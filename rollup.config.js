@@ -36,6 +36,6 @@ export default [
       terser(),
       uglify(),
     ],
-    output: [{ file: pkg.main, format: 'esm', name: pkg.name, globals }],
+    output: [{ file: pkg.main, format: 'cjs', name: pkg.name, globals }],
   },
 ];
