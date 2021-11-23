@@ -1,9 +1,9 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
-import { date, useDebounce } from '@equinor/amplify-utils';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { date, useDebounce } from '../utilities';
 
 const { colors, spacings } = tokens;
 

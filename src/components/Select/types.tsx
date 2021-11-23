@@ -1,5 +1,5 @@
-export interface Item {
+export interface SelectItem {
   value: string;
   label: string;
-  children?: Item[];
+  children?: SelectItem[];
 }

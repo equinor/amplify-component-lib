@@ -3,7 +3,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import styled from 'styled-components';
 import { Checkbox } from '@material-ui/core';
-import { Item } from '../types';
+import { SelectItem } from '../';
 
 interface StyledOptionProps {
   section: number;
@@ -30,7 +30,7 @@ const StyledIcon = styled(Icon)`
   right: 10px;
 `;
 
-interface OptionDrawerProps extends Item {
+interface OptionDrawerProps extends SelectItem {
   section?: number;
   onToggle: (value: string, toggle: boolean) => void;
   values: string[];

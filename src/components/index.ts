@@ -24,6 +24,7 @@ import SkeletonBase from './SkeletonBase';
 import Table from './Table';
 import TextEntry from './TextEntry';
 import TopBar from './TopBar';
+import * as utilities from './utilities';
 
 export {
   ConfirmationPopup,
@@ -52,4 +53,5 @@ export {
   Table,
   TextEntry,
   TopBar,
+  utilities,
 };

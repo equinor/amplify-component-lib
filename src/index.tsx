@@ -25,6 +25,7 @@ import {
   Table,
   TextEntry,
   TopBar,
+  utilities as utils,
 } from './components';
 
 export {
@@ -54,4 +55,5 @@ export {
   Table,
   TextEntry,
   TopBar,
+  utils,
 };
