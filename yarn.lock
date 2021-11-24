@@ -2730,7 +2730,7 @@
     react-docgen-typescript "^2.0.0"
     tslib "^2.0.0"
 
-"@storybook/react@^6.3.10":
+"@storybook/react@^6.3.12":
   version "6.3.12"
   resolved "https://registry.yarnpkg.com/@storybook/react/-/react-6.3.12.tgz#2e172cbfc06f656d2890743dcf49741a10fa1629"
   integrity sha512-c1Y/3/eNzye+ZRwQ3BXJux6pUMVt3lhv1/M9Qagl9JItP3jDSj5Ed3JHCgwEqpprP8mvNNXwEJ8+M7vEQyDuHg==

@@ -1,3 +1,3 @@
-import IConToggleButton from './IconToggleButton';
+import IConToggleButton from './IconToggleButton/IconToggleButton.stories';
 
 export { IConToggleButton };

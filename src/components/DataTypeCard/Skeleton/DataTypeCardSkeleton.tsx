@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import './animation.css';
-import { Card as EDSCard, CardProps } from '@equinor/eds-core-react';
+import { Card as EDSCard } from '@equinor/eds-core-react';
 
 const { colors, spacings, elevation, shape } = tokens;
 
