@@ -1,7 +1,7 @@
-import { image, date, size, favicon, string } from "./utilities";
-import { ApplicationIcon, FeedBackIcon } from "./icons";
-import { useDebounce, useSnackbar, useOnScreen } from "./hooks";
-import Providers from "./providers";
+import { image, date, size, favicon, string, coordinate } from './utilities';
+import { ApplicationIcon, FeedBackIcon } from './icons';
+import { useDebounce, useSnackbar, useOnScreen } from './hooks';
+import Providers from './providers';
 
 export {
   ApplicationIcon,
@@ -10,6 +10,7 @@ export {
   FeedBackIcon,
   image,
   Providers,
+  coordinate,
   size,
   string,
   useDebounce,

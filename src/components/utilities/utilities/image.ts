@@ -1,8 +1,7 @@
 import RandomSeed from 'random-seed';
 
 const CreateImageFromInitials = (name: string | undefined | null) => {
-  if (name === null) return undefined;
-  if (name === undefined) return undefined;
+  if (!name) return undefined;
 
   const size = 100;
 
