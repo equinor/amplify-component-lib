@@ -44,25 +44,26 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
-  if (items === undefined || items.length === 0) {
-    return [];
-  }
+// const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
+//   if (items === undefined || items.length === 0) {
+//     return [];
+//   }
 
-  let options: SelectItem[] = [];
+//   let options: SelectItem[] = [];
 
-  items.forEach((item) => {
-    const children = getAllItems(item.children);
-    options = [item, ...options, ...children];
-  });
+//   items.forEach((item) => {
+//     const children = getAllItems(item.children);
+//     options = [item, ...options, ...children];
+//   });
 
-  return options;
-};
+//   return options;
+// };
 
 export type MultiSelectDrawerProps = {
   items: SelectItem[];
-  onChange: (values: string[]) => void;
-} & Omit<MultiSelectProps, 'items'>;
+  onChange: (items: SelectItem[]) => void;
+  initialSelectedItems: SelectItem[];
+} & Omit<MultiSelectProps, 'items' | 'initialSelectedItems'>;
 
 const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
   (
@@ -80,13 +81,11 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
     },
     ref
   ) => {
-    const options = getAllItems(items);
+    // const options = getAllItems(items);
 
     const [inputItems, setInputItems] = useState<SelectItem[]>(items);
     const [value, setValue] = useState<string>(
-      initialSelectedItems
-        .map((value) => options.find((item) => item.value === value)?.label)
-        .join(', ')
+      initialSelectedItems.map((item) => item.label).join(', ')
     );
 
     useEffect(() => {
@@ -98,7 +97,7 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
       addSelectedItem,
       removeSelectedItem,
       selectedItems,
-    } = useMultipleSelection({
+    } = useMultipleSelection<SelectItem>({
       initialSelectedItems: initialSelectedItems,
     });
 
@@ -157,14 +156,14 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
           case useCombobox.stateChangeTypes.InputBlur:
             onChange(selectedItems);
             if (selectedItem) {
-              if (initialSelectedItems.includes(selectedItem.value)) {
+              if (initialSelectedItems.includes(selectedItem)) {
                 setInputItems(items);
               }
 
-              if (selectedItems.includes(selectedItem.value)) {
-                removeSelectedItem(selectedItem.value);
+              if (selectedItems.includes(selectedItem)) {
+                removeSelectedItem(selectedItem);
               } else {
-                addSelectedItem(selectedItem.value);
+                addSelectedItem(selectedItem);
               }
             }
             break;
@@ -176,23 +175,18 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
 
     const selectedValues =
       selectedItems.length > 0
-        ? `${selectedItems
-            .map(
-              (selected) =>
-                options.find((item) => item.value === selected)?.label
-            )
-            .join(', ')}`
+        ? `${selectedItems.map((item) => item?.label).join(', ')}`
         : undefined;
 
     const handleOpen = () => {
       if (!isOpen) openMenu();
     };
 
-    const handleToggle = (value: string, toggle: boolean) => {
+    const handleToggle = (item: SelectItem, toggle: boolean) => {
       if (toggle) {
-        addSelectedItem(value);
+        addSelectedItem(item);
       } else {
-        removeSelectedItem(value);
+        removeSelectedItem(item);
       }
     };
 

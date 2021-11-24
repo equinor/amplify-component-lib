@@ -60,8 +60,9 @@ const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
 
 export type SingleSelectDrawerProps = {
   items: SelectItem[];
-  onChange: (value: string) => void;
-} & Omit<SingleSelectProps, 'items'>;
+  onChange: (item: SelectItem | null) => void;
+  initialSelectedItem?: SelectItem;
+} & Omit<SingleSelectProps, 'items' | 'initialSelectedItem'>;
 
 const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
   (
@@ -69,7 +70,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
       className,
       disabled = false,
       onChange,
-      initialSelectedItem = '',
+      initialSelectedItem,
       items = [],
       label,
       meta,
@@ -78,7 +79,9 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
     },
     ref
   ) => {
-    const [selectedValue, setSelectedValue] = useState(initialSelectedItem);
+    const [selectedValue, setSelectedValue] = useState<SelectItem | undefined>(
+      initialSelectedItem
+    );
     const [inputItems, setInputItems] = useState<SelectItem[]>(items);
     const options = getAllItems(items);
 
@@ -99,7 +102,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
     } = useCombobox({
       items: inputItems,
       selectedItem:
-        options.find((item) => item.value === selectedValue) ?? null,
+        options.find((item) => item.value === selectedValue?.value) ?? null,
       itemToString: (item) => (item ? item?.label : ''),
       onInputValueChange: ({ inputValue, type }) => {
         switch (type) {
@@ -123,7 +126,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
         setInputItems(items);
       },
       initialSelectedItem: options.find(
-        (item) => item.value === initialSelectedItem
+        (item) => item.value === initialSelectedItem?.value
       ),
     });
 
@@ -131,13 +134,13 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
       if (!isOpen) openMenu();
     };
 
-    const handleToggle = (value: string, toggle: boolean) => {
+    const handleToggle = (value: SelectItem, toggle: boolean) => {
       if (toggle) {
         setSelectedValue(value);
         onChange(value);
       } else {
-        setSelectedValue('');
-        onChange('');
+        setSelectedValue(undefined);
+        onChange(null);
       }
     };
 
