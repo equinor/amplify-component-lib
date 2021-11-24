@@ -44,17 +44,17 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
       children,
       label,
       section = 0,
-      values,
+      values = [],
     }: OptionDrawerProps,
     ref
   ) => {
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(
-      !!values.find((val) => val.value === value)
+      values.findIndex((val) => val.value === value) !== -1
     );
 
     useEffect(() => {
-      setChecked(!!values.find((val) => val.value === value));
+      setChecked(values.findIndex((val) => val.value === value) !== -1);
     }, [values, value]);
 
     const handleClick = (e: MouseEvent) => {
