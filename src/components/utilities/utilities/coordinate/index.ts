@@ -30,4 +30,9 @@ function formatLatLng(coordinate: number, isLatitude: boolean): string {
   }
 }
 
-export default { formatLatLng };
+function formatUtm(coordinate: number, decimals = 2): string {
+  const strings = coordinate.toString().split('.');
+  return `${strings[0]}.${strings[1].substr(0, decimals)}m`;
+}
+
+export default { formatLatLng, formatUtm };

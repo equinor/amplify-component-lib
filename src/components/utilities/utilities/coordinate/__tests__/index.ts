@@ -1,7 +1,7 @@
 import coordinate from '..';
 import faker from 'faker';
 
-const { formatLatLng } = coordinate;
+const { formatLatLng, formatUtm } = coordinate;
 
 test('Formats random location without crashing', () => {
   const latitude = Number(faker.address.latitude());
@@ -51,4 +51,16 @@ test('Formats short coordinate correctly', () => {
   const latitude = 124.4;
   const formatted = formatLatLng(latitude, false);
   expect(formatted).toBe(`E 124° 40' 00.00"`);
+});
+
+test('Formats utm correctly', () => {
+  const easting = 234562.3457693845;
+  const formatted = formatUtm(easting);
+  expect(formatted).toBe('234562.34m');
+});
+
+test('Formats utm correctly with decimals', () => {
+  const easting = 234562.3457693845;
+  const formatted = formatUtm(easting, 4);
+  expect(formatted).toBe('234562.3457m');
 });
