@@ -1,7 +1,7 @@
 import RandomSeed from 'random-seed';
 
 const CreateImageFromInitials = (name: string | undefined) => {
-  if (name === null) return undefined;
+  if (!name) return undefined;
 
   const size = 100;
 
@@ -25,7 +25,7 @@ const CreateImageFromInitials = (name: string | undefined) => {
     '#800000',
   ];
   const color = backgrounds[rand(backgrounds.length)];
-  const splitName = name?.split(' ');
+  const splitName = name.split(' ');
 
   if (context) {
     context.fillStyle = color;
@@ -35,18 +35,14 @@ const CreateImageFromInitials = (name: string | undefined) => {
     context.textBaseline = 'middle';
     context.textAlign = 'center';
     context.font = `bold ${size / 2.2}px 'Segoe UI'`;
-    if (splitName && splitName.length > 1) {
+    if (splitName.length > 1) {
       context.fillText(
         splitName[0][0] + splitName[splitName.length - 1][0],
         size / 2,
         size / 2
       );
     } else {
-      context.fillText(
-        splitName ? splitName[0][0] : name![0],
-        size / 2,
-        size / 2
-      );
+      context.fillText(splitName[0][0], size / 2, size / 2);
     }
   }
 
