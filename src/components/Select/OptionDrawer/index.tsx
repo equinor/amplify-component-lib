@@ -32,8 +32,8 @@ const StyledIcon = styled(Icon)`
 
 interface OptionDrawerProps extends SelectItem {
   section?: number;
-  onToggle: (value: string, toggle: boolean) => void;
-  values: string[];
+  onToggle: (value: SelectItem, toggle: boolean) => void;
+  values: SelectItem[];
 }
 
 const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
@@ -50,11 +50,11 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
   ) => {
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(
-      !!values.find((val) => val === value)
+      !!values.find((val) => val.value === value)
     );
 
     useEffect(() => {
-      setChecked(!!values.find((val) => val === value));
+      setChecked(!!values.find((val) => val.value === value));
     }, [values, value]);
 
     const handleClick = (e: MouseEvent) => {
@@ -81,7 +81,7 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
     };
 
     const handleCheck = () => {
-      onToggle(value, !checked);
+      onToggle({ value, label }, !checked);
       setChecked((c) => !c);
     };
 
