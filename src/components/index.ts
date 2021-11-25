@@ -1,11 +1,10 @@
 import ConfirmationPopup from './ConfirmationPopup';
 import CopyText from './CopyText';
-import DataTypeCard from './DataTypeCard';
+import DataCard from './DataCard';
 import EditableField from './EditableField';
 import EquinorLogo from './EquinorLogo';
 import FieldSelector from './FieldSelector';
 import FileProgress from './FileProgress';
-import FileUpload from './FileUpload';
 import FileUploadArea from './FileUploadArea';
 import FullPageSpinner from './FullPageSpinner';
 import FullPageStatus from './FullPageStatus';
@@ -25,16 +24,30 @@ import Table from './Table';
 import TextEntry from './TextEntry';
 import TopBar from './TopBar';
 import * as utilities from './utilities';
+import {
+  ApplicationIcon,
+  DataAcquisition,
+  DataExperience,
+  DataSharing,
+  DataTracker,
+  Default,
+  FeedBackIcon,
+  NothingFilled,
+  NothingOutline,
+  Portal,
+  SomethingFilled,
+  SomethingOutline,
+  Welbore,
+} from './Icons';
 
 export {
   ConfirmationPopup,
   CopyText,
-  DataTypeCard,
+  DataCard,
   EditableField,
   EquinorLogo,
   FieldSelector,
   FileProgress,
-  FileUpload,
   FileUploadArea,
   FullPageSpinner,
   FullPageStatus,
@@ -54,4 +67,17 @@ export {
   TextEntry,
   TopBar,
   utilities,
+  ApplicationIcon,
+  DataAcquisition,
+  DataExperience,
+  DataSharing,
+  DataTracker,
+  Default,
+  FeedBackIcon,
+  NothingFilled,
+  NothingOutline,
+  Portal,
+  SomethingFilled,
+  SomethingOutline,
+  Welbore,
 };

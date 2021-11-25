@@ -3,7 +3,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import styled from 'styled-components';
 import { Checkbox } from '@material-ui/core';
-import { SelectItem } from '../';
+import { SelectItem } from '..';
 
 interface StyledOptionProps {
   section: number;
@@ -32,8 +32,8 @@ const StyledIcon = styled(Icon)`
 
 interface OptionDrawerProps extends SelectItem {
   section?: number;
-  onToggle: (value: string, toggle: boolean) => void;
-  values: string[];
+  onToggle: (value: SelectItem, toggle: boolean) => void;
+  values: SelectItem[];
 }
 
 const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
@@ -41,20 +41,20 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
     {
       value,
       onToggle,
-      children,
+      children = [],
       label,
       section = 0,
-      values,
+      values = [],
     }: OptionDrawerProps,
     ref
   ) => {
     const [open, setOpen] = useState(false);
     const [checked, setChecked] = useState(
-      !!values.find((val) => val === value)
+      values.findIndex((val) => val.value === value) !== -1
     );
 
     useEffect(() => {
-      setChecked(!!values.find((val) => val === value));
+      setChecked(values.findIndex((val) => val.value === value) !== -1);
     }, [values, value]);
 
     const handleClick = (e: MouseEvent) => {
@@ -81,7 +81,7 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
     };
 
     const handleCheck = () => {
-      onToggle(value, !checked);
+      onToggle({ value, label }, !checked);
       setChecked((c) => !c);
     };
 

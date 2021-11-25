@@ -62,12 +62,7 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
         <StyledDialog>
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.CustomContent>
-            {body && (
-              <Typography
-                variant="body_short"
-                dangerouslySetInnerHTML={{ __html: body! }}
-              />
-            )}
+            {body && <Typography variant="body_short">{body}</Typography>}
             {children}
           </Dialog.CustomContent>
           <StyledActions actionPosition={actionPosition}>

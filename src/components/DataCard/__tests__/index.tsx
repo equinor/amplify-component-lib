@@ -25,7 +25,7 @@ test('renders right side header element and body when given', () => {
   const { getByText } = render(
     <DataCard
       {...dummyData}
-      headerRightElement={<p>{headerTextToTest}</p>}
+      rightElement={<p>{headerTextToTest}</p>}
       body={<p>{bodyTextToTest}</p>}
     />
   );

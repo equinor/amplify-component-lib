@@ -10,7 +10,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useCombobox, useMultipleSelection } from 'downshift';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { SelectItem } from '../';
+import { SelectItem } from '..';
 import { OptionDrawer } from '..';
 
 const { colors, spacings, elevation } = tokens;
@@ -61,8 +61,9 @@ const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
 
 export type MultiSelectDrawerProps = {
   items: SelectItem[];
-  onChange: (values: string[]) => void;
-} & Omit<MultiSelectProps, 'items'>;
+  onChange: (items: SelectItem[]) => void;
+  initialSelectedItems: SelectItem[];
+} & Omit<MultiSelectProps, 'items' | 'initialSelectedItems' | 'onChange'>;
 
 const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
   (
@@ -84,9 +85,7 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
 
     const [inputItems, setInputItems] = useState<SelectItem[]>(items);
     const [value, setValue] = useState<string>(
-      initialSelectedItems
-        .map((value) => options.find((item) => item.value === value)?.label)
-        .join(', ')
+      initialSelectedItems.map((item) => item.label).join(', ')
     );
 
     useEffect(() => {
@@ -98,8 +97,8 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
       addSelectedItem,
       removeSelectedItem,
       selectedItems,
-    } = useMultipleSelection({
-      initialSelectedItems: initialSelectedItems,
+    } = useMultipleSelection<string>({
+      initialSelectedItems: initialSelectedItems.map((item) => item.value),
     });
 
     const {
@@ -155,9 +154,15 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
           case useCombobox.stateChangeTypes.InputKeyDownEnter:
           case useCombobox.stateChangeTypes.ItemClick:
           case useCombobox.stateChangeTypes.InputBlur:
-            onChange(selectedItems);
+            onChange(
+              options.filter((item) => selectedItems.includes(item.value))
+            );
             if (selectedItem) {
-              if (initialSelectedItems.includes(selectedItem.value)) {
+              if (
+                initialSelectedItems
+                  .map((item) => item.value)
+                  .includes(selectedItem.value)
+              ) {
                 setInputItems(items);
               }
 
@@ -188,11 +193,11 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
       if (!isOpen) openMenu();
     };
 
-    const handleToggle = (value: string, toggle: boolean) => {
+    const handleToggle = (item: SelectItem, toggle: boolean) => {
       if (toggle) {
-        addSelectedItem(value);
+        addSelectedItem(item.value);
       } else {
-        removeSelectedItem(value);
+        removeSelectedItem(item.value);
       }
     };
 
@@ -235,7 +240,9 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
                 key={item.value}
                 onToggle={handleToggle}
                 highlighted={highlightedIndex === index ? 'true' : 'false'}
-                values={selectedItems}
+                values={options.filter((item) =>
+                  selectedItems.includes(item.value)
+                )}
                 {...item}
                 {...getItemProps({
                   item: item,

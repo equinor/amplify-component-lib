@@ -5,10 +5,7 @@ import NothingFilled from './nothing-filled';
 import SomethingFilled from './something-filled';
 import SomethingOutline from './something-outline';
 import Default from './default';
-
-interface ISvgIconProps {
-  size?: 16 | 24 | 32 | 40 | 48;
-}
+import { ISvgIconProps } from '.';
 
 interface IFeedBackIconData {
   iconName: string;

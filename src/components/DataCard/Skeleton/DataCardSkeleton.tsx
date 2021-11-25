@@ -41,7 +41,7 @@ const Status = styled.div`
   margin-left: auto;
 `;
 
-const DataTypeCardSkeleton: React.FC = () => {
+const DataCardSkeleton: React.FC = () => {
   return (
     <Card>
       <Header>
@@ -64,4 +64,4 @@ const DataTypeCardSkeleton: React.FC = () => {
   );
 };
 
-export default DataTypeCardSkeleton;
+export default DataCardSkeleton;

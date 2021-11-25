@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { Snackbar, SnackbarProps } from '@equinor/eds-core-react';
 
 export interface State {
-  setSnackbarText: (val: string) => void;
   showSnackbar: (text?: string, customProps?: SnackbarProps) => void;
 }
 
 export const SnackbarContext = React.createContext<State>({
-  setSnackbarText: () => null,
   showSnackbar: () => null,
 });
 
@@ -31,7 +29,7 @@ const SnackbarContextProvider: React.FC<SnackbarProps> = (props) => {
   };
 
   return (
-    <SnackbarContext.Provider value={{ setSnackbarText, showSnackbar }}>
+    <SnackbarContext.Provider value={{ showSnackbar }}>
       {props.children}
       <Snackbar
         open={open}
