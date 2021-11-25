@@ -41,7 +41,7 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
     {
       value,
       onToggle,
-      children,
+      children = [],
       label,
       section = 0,
       values = [],

@@ -62,7 +62,7 @@ export type SingleSelectDrawerProps = {
   items: SelectItem[];
   onChange: (item: SelectItem | null) => void;
   initialSelectedItem?: SelectItem;
-} & Omit<SingleSelectProps, 'items' | 'initialSelectedItem'>;
+} & Omit<SingleSelectProps, 'items' | 'initialSelectedItem' | 'onChange'>;
 
 const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
   (
@@ -175,7 +175,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
                 key={item.value}
                 onToggle={handleToggle}
                 highlighted={highlightedIndex === index ? 'true' : 'false'}
-                values={[selectedValue]}
+                values={selectedValue ? [selectedValue] : []}
                 {...item}
                 {...getItemProps({
                   item,

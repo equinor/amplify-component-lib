@@ -44,26 +44,26 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-// const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
-//   if (items === undefined || items.length === 0) {
-//     return [];
-//   }
+const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
+  if (items === undefined || items.length === 0) {
+    return [];
+  }
 
-//   let options: SelectItem[] = [];
+  let options: SelectItem[] = [];
 
-//   items.forEach((item) => {
-//     const children = getAllItems(item.children);
-//     options = [item, ...options, ...children];
-//   });
+  items.forEach((item) => {
+    const children = getAllItems(item.children);
+    options = [item, ...options, ...children];
+  });
 
-//   return options;
-// };
+  return options;
+};
 
 export type MultiSelectDrawerProps = {
   items: SelectItem[];
   onChange: (items: SelectItem[]) => void;
   initialSelectedItems: SelectItem[];
-} & Omit<MultiSelectProps, 'items' | 'initialSelectedItems'>;
+} & Omit<MultiSelectProps, 'items' | 'initialSelectedItems' | 'onChange'>;
 
 const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
   (
@@ -81,7 +81,7 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
     },
     ref
   ) => {
-    // const options = getAllItems(items);
+    const options = getAllItems(items);
 
     const [inputItems, setInputItems] = useState<SelectItem[]>(items);
     const [value, setValue] = useState<string>(
@@ -97,8 +97,8 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
       addSelectedItem,
       removeSelectedItem,
       selectedItems,
-    } = useMultipleSelection<SelectItem>({
-      initialSelectedItems: initialSelectedItems,
+    } = useMultipleSelection<string>({
+      initialSelectedItems: initialSelectedItems.map((item) => item.value),
     });
 
     const {
@@ -154,16 +154,22 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
           case useCombobox.stateChangeTypes.InputKeyDownEnter:
           case useCombobox.stateChangeTypes.ItemClick:
           case useCombobox.stateChangeTypes.InputBlur:
-            onChange(selectedItems);
+            onChange(
+              options.filter((item) => selectedItems.includes(item.value))
+            );
             if (selectedItem) {
-              if (initialSelectedItems.includes(selectedItem)) {
+              if (
+                initialSelectedItems
+                  .map((item) => item.value)
+                  .includes(selectedItem.value)
+              ) {
                 setInputItems(items);
               }
 
-              if (selectedItems.includes(selectedItem)) {
-                removeSelectedItem(selectedItem);
+              if (selectedItems.includes(selectedItem.value)) {
+                removeSelectedItem(selectedItem.value);
               } else {
-                addSelectedItem(selectedItem);
+                addSelectedItem(selectedItem.value);
               }
             }
             break;
@@ -175,7 +181,12 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
 
     const selectedValues =
       selectedItems.length > 0
-        ? `${selectedItems.map((item) => item?.label).join(', ')}`
+        ? `${selectedItems
+            .map(
+              (selected) =>
+                options.find((item) => item.value === selected)?.label
+            )
+            .join(', ')}`
         : undefined;
 
     const handleOpen = () => {
@@ -184,9 +195,9 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
 
     const handleToggle = (item: SelectItem, toggle: boolean) => {
       if (toggle) {
-        addSelectedItem(item);
+        addSelectedItem(item.value);
       } else {
-        removeSelectedItem(item);
+        removeSelectedItem(item.value);
       }
     };
 
@@ -229,7 +240,9 @@ const MultiSelectDrawer = forwardRef<HTMLDivElement, MultiSelectDrawerProps>(
                 key={item.value}
                 onToggle={handleToggle}
                 highlighted={highlightedIndex === index ? 'true' : 'false'}
-                values={selectedItems}
+                values={options.filter((item) =>
+                  selectedItems.includes(item.value)
+                )}
                 {...item}
                 {...getItemProps({
                   item: item,
