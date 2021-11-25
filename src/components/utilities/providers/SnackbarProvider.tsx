@@ -3,7 +3,7 @@ import { Snackbar, SnackbarProps } from '@equinor/eds-core-react';
 
 export interface State {
   setSnackbarText: (val: string) => void;
-  showSnackbar: (customProps?: SnackbarProps) => void;
+  showSnackbar: (text?: string, customProps?: SnackbarProps) => void;
 }
 
 export const SnackbarContext = React.createContext<State>({
@@ -16,11 +16,15 @@ const SnackbarContextProvider: React.FC<SnackbarProps> = (props) => {
   const [snackbarText, setSnackbarText] = React.useState('');
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
 
-  const showSnackbar = (customProps?: SnackbarProps) => {
+  const showSnackbar = (text?: string, customProps?: SnackbarProps) => {
     if (customProps) {
       setSnackbarProps(customProps);
     } else {
       setSnackbarProps(props);
+    }
+
+    if (text) {
+      setSnackbarText(text);
     }
 
     setOpen(true);
