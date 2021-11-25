@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, RefObject, useEffect, useRef } from 'react';
+import React, { forwardRef, ReactElement, useEffect } from 'react';
 import {
   Card as EDSCard,
   Icon,
@@ -66,62 +66,64 @@ export interface DataCardProps {
   body?: ReactElement;
   className?: string;
   onClick?: React.MouseEventHandler;
-  onContextMenu?: (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    ref: RefObject<HTMLDivElement>
-  ) => void;
+  onContextMenu?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-const DataCard: FC<DataCardProps> = ({
-  headerText,
-  title,
-  rightIcon,
-  rightElement,
-  body,
-  className,
-  onClick,
-  onContextMenu,
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
+const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
+  (
+    {
+      headerText,
+      title,
+      rightIcon,
+      rightElement,
+      body,
+      className,
+      onClick,
+      onContextMenu,
+    },
+    ref
+  ) => {
+    useEffect(() => {
+      if (rightIcon && rightElement)
+        throw Error('Only use one; rightIcon or rightElement');
+    }, [rightIcon, rightElement]);
 
-  useEffect(() => {
-    if (rightIcon && rightElement)
-      throw Error('Only use one; rightIcon or rightElement');
-  }, [rightIcon, rightElement]);
+    return (
+      <Card
+        ref={ref}
+        className={className ?? ''}
+        onClick={onClick}
+        data-testid="dataCard"
+        onContextMenu={(event) =>
+          onContextMenu ? onContextMenu(event) : undefined
+        }
+      >
+        <Header>
+          <LeftContent>
+            <Typography group="paragraph" variant="overline">
+              {headerText}
+            </Typography>
+            <Tooltip title={title} placement="top">
+              <Title variant="h6">{title}</Title>
+            </Tooltip>
+          </LeftContent>
+          <RightContent>
+            {rightIcon && (
+              <StyledIcon
+                data={rightIcon}
+                size={24}
+                color={colors.interactive.primary__resting.hex}
+              />
+            )}
+            {rightElement && rightElement}
+          </RightContent>
+        </Header>
+        {body && body}
+      </Card>
+    );
+  }
+);
 
-  return (
-    <Card
-      ref={ref}
-      className={className ?? ''}
-      onClick={onClick}
-      data-testid="dataCard"
-      onContextMenu={(event) =>
-        onContextMenu ? onContextMenu(event, ref) : undefined
-      }
-    >
-      <Header>
-        <LeftContent>
-          <Typography group="paragraph" variant="overline">
-            {headerText}
-          </Typography>
-          <Tooltip title={title} placement="top">
-            <Title variant="h6">{title}</Title>
-          </Tooltip>
-        </LeftContent>
-        <RightContent>
-          {rightIcon && (
-            <StyledIcon
-              data={rightIcon}
-              size={24}
-              color={colors.interactive.primary__resting.hex}
-            />
-          )}
-          {rightElement && rightElement}
-        </RightContent>
-      </Header>
-      {body && body}
-    </Card>
-  );
-};
+DataCard.displayName = 'DataCard';
 
 export default DataCard;
