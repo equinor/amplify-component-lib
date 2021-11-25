@@ -24,7 +24,21 @@ import Table from './Table';
 import TextEntry from './TextEntry';
 import TopBar from './TopBar';
 import * as utilities from './utilities';
-import { SelectItem } from './Select';
+import {
+  ApplicationIcon,
+  DataAcquisition,
+  DataExperience,
+  DataSharing,
+  DataTracker,
+  Default,
+  FeedBackIcon,
+  NothingFilled,
+  NothingOutline,
+  Portal,
+  SomethingFilled,
+  SomethingOutline,
+  Welbore,
+} from './Icons';
 
 export {
   ConfirmationPopup,
@@ -53,6 +67,17 @@ export {
   TextEntry,
   TopBar,
   utilities,
+  ApplicationIcon,
+  DataAcquisition,
+  DataExperience,
+  DataSharing,
+  DataTracker,
+  Default,
+  FeedBackIcon,
+  NothingFilled,
+  NothingOutline,
+  Portal,
+  SomethingFilled,
+  SomethingOutline,
+  Welbore,
 };
-
-export type { SelectItem };

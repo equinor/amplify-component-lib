@@ -25,7 +25,19 @@ import {
   TextEntry,
   TopBar,
   utilities as utils,
-  SelectItem,
+  ApplicationIcon,
+  DataAcquisition,
+  DataExperience,
+  DataSharing,
+  DataTracker,
+  Default,
+  FeedBackIcon,
+  NothingFilled,
+  NothingOutline,
+  Portal,
+  SomethingFilled,
+  SomethingOutline,
+  Welbore,
 } from './components';
 
 export {
@@ -55,6 +67,17 @@ export {
   TextEntry,
   TopBar,
   utils,
+  ApplicationIcon,
+  DataAcquisition,
+  DataExperience,
+  DataSharing,
+  DataTracker,
+  Default,
+  FeedBackIcon,
+  NothingFilled,
+  NothingOutline,
+  Portal,
+  SomethingFilled,
+  SomethingOutline,
+  Welbore,
 };
-
-export type { SelectItem };

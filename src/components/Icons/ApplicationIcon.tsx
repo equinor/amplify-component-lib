@@ -6,10 +6,7 @@ import DataSharing from './data-sharing';
 import DataTracker from './data-tracker';
 import Default from './default';
 import Portal from './portal';
-
-interface ISvgIconProps {
-  size?: 16 | 24 | 32 | 40 | 48;
-}
+import { ISvgIconProps } from '.';
 
 interface IApplicationIconProps {
   name:
