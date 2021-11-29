@@ -28,4 +28,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/storybook-static /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 
+WORKDIR /usr/share/nginx/html
+USER 101
+
 CMD ["nginx -g \"daemon off;\""]
