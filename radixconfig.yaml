@@ -7,9 +7,6 @@ spec:
     - name: production
       build:
         from: main
-    - name: development
-      build:
-        from: development
   components:
     - name: client
       src: ./
