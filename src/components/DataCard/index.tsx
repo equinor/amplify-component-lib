@@ -32,7 +32,6 @@ const Header = styled.div`
   display: grid;
   grid-template-columns: 80% auto;
   overflow: hidden;
-  height: 48px;
 `;
 
 const LeftContent = styled.div`
@@ -42,20 +41,14 @@ const LeftContent = styled.div`
 
 const RightContent = styled.div`
   display: flex;
-  align-items: flex-end;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: -8px;
+  align-items: center;
+  justify-content: flex-end;
 `;
 
 const Title = styled(Typography)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-
-const StyledIcon = styled(Icon)`
-  margin-right: 12px;
 `;
 
 export interface DataCardProps {
@@ -109,7 +102,7 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
           </LeftContent>
           <RightContent>
             {rightIcon && (
-              <StyledIcon
+              <Icon
                 data={rightIcon}
                 size={24}
                 color={colors.interactive.primary__resting.hex}

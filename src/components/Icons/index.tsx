@@ -7,7 +7,7 @@ import DataAcquisition from './data-acquisition';
 import DataExperience from './data-experience';
 import DataSharing from './data-sharing';
 import DataTracker from './data-tracker';
-import Default from './default';
+import DefaultIcon from './defaultIcon';
 import FeedBackIcon from './feedBack';
 import NothingFilled from './nothing-filled';
 import NothingOutline from './nothing-outline';
@@ -22,7 +22,7 @@ export {
   DataExperience,
   DataSharing,
   DataTracker,
-  Default,
+  DefaultIcon,
   FeedBackIcon,
   NothingFilled,
   NothingOutline,

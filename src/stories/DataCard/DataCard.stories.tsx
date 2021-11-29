@@ -66,7 +66,7 @@ export const Body = Template.bind({});
 Body.args = {
   headerText: 'PETROPHYSICIST',
   title: 'Composite',
-  rightIcon: more_vertical,
+  rightElement: <Icon data={account_circle} style={{ marginRight: '12px' }} />,
   body: (
     <DataTypeCardBody>
       <Chip>{'Responsible user'}</Chip>

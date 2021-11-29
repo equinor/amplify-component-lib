@@ -4,7 +4,7 @@ import NothingOutline from './nothing-outline';
 import NothingFilled from './nothing-filled';
 import SomethingFilled from './something-filled';
 import SomethingOutline from './something-outline';
-import Default from './default';
+import DefaultIcon from './defaultIcon';
 import { ISvgIconProps } from '.';
 
 interface IFeedBackIconData {
@@ -19,7 +19,7 @@ export interface IFeedBackIconProps {
 }
 
 export const feedbackIcons: IFeedBackIconData[] = [
-  { iconName: 'default', component: Default },
+  { iconName: 'default', component: DefaultIcon },
   { iconName: 'nothing-outline', component: NothingOutline },
   { iconName: 'nothing-filled', component: NothingFilled },
   { iconName: 'something-filled', component: SomethingFilled },
