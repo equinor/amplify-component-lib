@@ -54,6 +54,7 @@ const Title = styled(Typography)`
 export interface DataCardProps {
   headerText: string;
   title: string;
+  tooltipOnTitle?: boolean;
   rightIcon?: IconData;
   rightElement?: ReactElement;
   body?: ReactElement;
@@ -67,6 +68,7 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
     {
       headerText,
       title,
+      tooltipOnTitle = false,
       rightIcon,
       rightElement,
       body,
@@ -96,9 +98,13 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
             <Typography group="paragraph" variant="overline">
               {headerText}
             </Typography>
-            <Tooltip title={title} placement="top">
+            {tooltipOnTitle ? (
+              <Tooltip title={title} placement="top">
+                <Title variant="h6">{title}</Title>
+              </Tooltip>
+            ) : (
               <Title variant="h6">{title}</Title>
-            </Tooltip>
+            )}
           </LeftContent>
           <RightContent>
             {rightIcon && (
