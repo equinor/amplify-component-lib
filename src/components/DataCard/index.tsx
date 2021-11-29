@@ -37,6 +37,7 @@ const Header = styled.div`
 const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 `;
 
 const RightContent = styled.div`
