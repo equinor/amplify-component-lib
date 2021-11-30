@@ -13,7 +13,7 @@ const DataTypeCardBody = styled.div`
 `;
 
 export default {
-  title: 'DataCard/Card',
+  title: 'DataCard',
   component: DataCard,
 } as Meta;
 
