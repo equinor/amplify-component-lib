@@ -34,6 +34,12 @@ const Header = styled.div`
   overflow: hidden;
 `;
 
+const HeaderText = styled(Typography)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -96,9 +102,9 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
       >
         <Header>
           <LeftContent>
-            <Typography group="paragraph" variant="overline">
+            <HeaderText group="paragraph" variant="overline">
               {headerText}
-            </Typography>
+            </HeaderText>
             {tooltipOnTitle ? (
               <Tooltip title={title} placement="top">
                 <Title variant="h6">{title}</Title>
