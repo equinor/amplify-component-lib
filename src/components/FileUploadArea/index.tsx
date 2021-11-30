@@ -18,8 +18,8 @@ const UploadWrapper = styled.div<UploadWrapperProps>`
   flex-direction: column;
   min-width: 300px;
   height: 152px;
-  border: ${(props) => `2px dotted ${props.theme.primary__resting}`};
-  border-radius: 12px;
+  border: 2px dotted ${colors.interactive.primary__resting.hex};
+  border-radius: 15px;
   margin-top: 10px;
   :hover {
     background-color: #deedee;
