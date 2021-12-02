@@ -17,7 +17,9 @@ test('renders textbox when clicked', () => {
 
 test('renders textbox when clicked', () => {
   const cb = jest.fn();
-  render(<EditableField editable={true} value="Test"></EditableField>);
+  render(
+    <EditableField editable={true} onChange={cb} value="Test"></EditableField>
+  );
 
   fireEvent.click(screen.getByRole('heading', { name: /test/i }));
 

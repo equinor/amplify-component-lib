@@ -56,7 +56,7 @@ export interface SingleFilterMenuProps {
   chipColor?: string;
 }
 
-const SingleFilterMenu = forwardRef<HTMLUListElement, SingleFilterMenuProps>(
+const SingleFilterMenu = forwardRef<HTMLDivElement, SingleFilterMenuProps>(
   (
     {
       onChange,

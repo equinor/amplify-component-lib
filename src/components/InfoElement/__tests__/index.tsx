@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, cleanup } from '../../../test-utils';
+import { render, screen } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import InfoElement from '../index';
 import { Button } from '@equinor/eds-core-react';
