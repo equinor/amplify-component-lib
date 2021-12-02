@@ -14,10 +14,11 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-const { elevation, colors } = tokens;
+const { elevation, colors, spacings } = tokens;
 
 const StyledCard = styled(Card)`
   box-shadow: ${elevation.raised};
+  padding-top: ${spacings.comfortable.medium};
   overflow: hidden;
   margin: 10px 0;
 `;
