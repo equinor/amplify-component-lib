@@ -5,9 +5,9 @@ export interface State {
   showSnackbar: (text?: string, customProps?: SnackbarProps) => void;
 }
 
-export const SnackbarContext = React.createContext<State>({
-  showSnackbar: () => null,
-});
+export const SnackbarContext = React.createContext<State | undefined>(
+  undefined
+);
 
 const SnackbarContextProvider: React.FC<SnackbarProps> = (props) => {
   const [open, setOpen] = React.useState(false);
