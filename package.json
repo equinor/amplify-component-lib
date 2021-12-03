@@ -66,7 +66,7 @@
   },
   "dependencies": {
     "@equinor/eds-core-react": "^0.14.0",
-    "@equinor/eds-icons": "^0.7.0",
+    "@equinor/eds-icons": "^0.8.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@material-ui/core": "^4.12.3",
     "chalk": "^4.1.2",
