@@ -128,7 +128,6 @@ const SingleFilterMenu = forwardRef<HTMLUListElement, SingleFilterMenuProps>(
           onClose={closeMenu}
           placement="bottom-end"
           data-testid="menuContainer"
-          ref={ref}
         >
           <MenuTitleContainer>
             <Typography group="navigation" variant="label">
