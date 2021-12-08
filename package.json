@@ -1,15 +1,16 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Frontend Typescript components for the Amplify team",
-  "main": "./dist/index.js",
   "files": [
     "dist/*"
   ],
+  "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "directories": {
     "dist": "dist"
   },
+  "sideEffects": false,
   "scripts": {
     "start": "yarn storybook",
     "build": "yarn build-storybook",
@@ -65,15 +66,16 @@
     "babel-loader": "8.1.0"
   },
   "dependencies": {
-    "@equinor/eds-core-react": "^0.16.0",
+    "@equinor/eds-core-react": "^0.16.1",
     "@equinor/eds-icons": "^0.8.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@material-ui/core": "^4.12.3",
-    "chalk": "^5.0.0",
+    "@types/lodash-es": "^4.17.5",
+    "chalk": "^4.1.2",
     "child_process": "^1.0.2",
     "downshift": "^6.1.7",
     "husky": "^7.0.2",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "ora": "^6.0.1",
     "random-seed": "^0.3.0",
     "react": "^17.0.2",
@@ -84,6 +86,7 @@
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^2.0.1",
+    "@optimize-lodash/rollup-plugin": "^2.1.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@storybook/addon-actions": "^6.4.4",
     "@storybook/addon-essentials": "^6.4.4",
@@ -98,7 +101,6 @@
     "@theo.gravity/version-bump": "^2.0.14",
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
-    "@types/lodash": "^4.14.176",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.11",
     "@types/random-seed": "^0.3.3",
@@ -116,6 +118,7 @@
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "rollup": "^2.60.2",
+    "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-generate-package-json": "^3.2.0",

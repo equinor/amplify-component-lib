@@ -3,7 +3,7 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import styled, { keyframes } from 'styled-components';
-import { delay } from 'lodash';
+import { delay } from 'lodash-es';
 
 const { colors, spacings } = tokens;
 

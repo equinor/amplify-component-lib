@@ -1,7 +1,7 @@
 import React from 'react';
 import DataAcquisition from './data-acquisition';
 import DataExperience from './data-experience';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 import DataSharing from './data-sharing';
 import DataTracker from './data-tracker';
 import DefaultIcon from './defaultIcon';
