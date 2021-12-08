@@ -65,6 +65,11 @@
   "resolutions": {
     "babel-loader": "8.1.0"
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!lodash-es)"
+    ]
+  },
   "dependencies": {
     "@equinor/eds-core-react": "^0.16.1",
     "@equinor/eds-icons": "^0.8.0",
