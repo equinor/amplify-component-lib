@@ -99,6 +99,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
       highlightedIndex,
       getItemProps,
       openMenu,
+      closeMenu,
     } = useCombobox({
       items: inputItems,
       selectedItem:
@@ -138,6 +139,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
       if (toggle) {
         setSelectedValue(value);
         onChange(value);
+        closeMenu();
       } else {
         setSelectedValue(undefined);
         onChange(null);
