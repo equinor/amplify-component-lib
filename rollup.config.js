@@ -43,6 +43,7 @@ export default [
       ProgressBar: './src/components/ProgressBar',
       SideBar: './src/components/SideBar',
       SingleFilterMenu: './src/components/SingleFilterMenu',
+      MultiSelectDrawer: './src/components/Select/MultiSelectDrawer',
       SingleSelectDrawer: './src/components/Select/SingleSelectDrawer',
       SkeletonBase: './src/components/SkeletonBase',
       Table: './src/components/Table',

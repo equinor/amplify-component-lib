@@ -19,6 +19,7 @@ export { default as OptionDrawer } from './Select/OptionDrawer';
 export { default as ProgressBar } from './ProgressBar';
 export { default as SideBar } from './SideBar';
 export { default as SingleFilterMenu } from './SingleFilterMenu';
+export { default as MultiSelectDrawer } from './Select/MultiSelectDrawer';
 export { default as SingleSelectDrawer } from './Select/SingleSelectDrawer';
 export { default as SkeletonBase } from './SkeletonBase';
 export { default as Table } from './Table';
