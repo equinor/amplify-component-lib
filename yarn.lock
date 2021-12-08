@@ -1493,17 +1493,16 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@equinor/eds-core-react@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@equinor/eds-core-react/-/eds-core-react-0.16.0.tgz#d0a0c3a584bd68ed32e955d397ed64322f33a56e"
-  integrity sha512-zbZG+1kQ4INiruTFjDYwAI/WecE6WvfHq8F3Aez4yvTGbPVYU5QZcuYSxAC5F9PuJd1dQaQD9NL4KkzA8WDsqw==
+"@equinor/eds-core-react@^0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@equinor/eds-core-react/-/eds-core-react-0.16.1.tgz#84d51f47af24667da9abdf456dc5eca04eed7b3a"
+  integrity sha512-7cFhJ4MRVO74JK4POtE3yaLAtJDnyX4VZlsUKzd/CyeBfPoqqN6e0z88GxcLTFzSaDIp9ZPpN3MOLh5kfjiedQ==
   dependencies:
     "@babel/runtime" "^7.16.3"
     "@equinor/eds-icons" "0.8.0"
     "@equinor/eds-tokens" "0.7.0"
     "@popperjs/core" "2.9.2"
     downshift "^6.1.7"
-    ramda "^0.27.1"
     react-fast-compare "3.2.0"
     react-popper "2.2.5"
 
@@ -12787,11 +12786,6 @@ ramda@^0.21.0:
   version "0.21.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.21.0.tgz#a001abedb3ff61077d4ff1d577d44de77e8d0a35"
   integrity sha1-oAGr7bP/YQd9T/HVd9RN536NCjU=
-
-ramda@^0.27.1:
-  version "0.27.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.27.1.tgz#66fc2df3ef873874ffc2da6aa8984658abacf5c9"
-  integrity sha512-PgIdVpn5y5Yns8vqb8FzBUEYn98V3xcPgawAkkgj0YJ0qDsnHCiNmZYfOGMgOvoB0eWFLpYbhxUR3mxfDIMvpw==
 
 random-seed@^0.3.0:
   version "0.3.0"
