@@ -5,7 +5,7 @@
   "files": [
     "dist/*"
   ],
-  "module": "dist/es/index.js",
+  "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "directories": {
     "dist": "dist"
@@ -88,6 +88,7 @@
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^2.0.1",
+    "@optimize-lodash/rollup-plugin": "^2.1.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@storybook/addon-actions": "^6.3.10",
     "@storybook/addon-essentials": "^6.3.10",
