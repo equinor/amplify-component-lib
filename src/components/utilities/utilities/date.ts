@@ -1,4 +1,4 @@
-import { isNaN } from 'lodash';
+import { isNaN } from 'lodash-es';
 
 const formatDate = (date?: string | null) => {
   if (date) {
