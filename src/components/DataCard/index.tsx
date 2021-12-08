@@ -9,7 +9,7 @@ import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-const { colors, elevation } = tokens;
+const { colors, elevation, spacings } = tokens;
 
 interface CardProps {
   onClick?: React.MouseEventHandler;
@@ -18,6 +18,7 @@ interface CardProps {
 const Card = styled(EDSCard)<CardProps>`
   box-shadow: ${elevation.raised};
   grid-gap: 0px;
+  padding: ${spacings.comfortable.medium};
   ${(props) => {
     if (props.onClick) {
       return `&:hover {

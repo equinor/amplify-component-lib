@@ -7,20 +7,20 @@ export default function useOnScreen(
 ) {
   const [isIntersecting, setIntersecting] = useState(false);
 
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      setIntersecting(entry.isIntersecting);
-    },
-    { rootMargin: '0px', threshold }
-  );
-
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIntersecting(entry.isIntersecting);
+      },
+      { rootMargin: '0px', threshold }
+    );
+
     if (ref.current) observer.observe(ref.current);
     // Remove the observer as soon as the component is unmounted
     return () => {
       observer.disconnect();
     };
-  }, [observer, ref]);
+  }, [ref, threshold]);
 
   return isIntersecting;
 }
