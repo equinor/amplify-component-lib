@@ -7,16 +7,15 @@ spec:
     - name: production
       build:
         from: main
-    - name: development
-      build:
-        from: development
+
   components:
     - name: client
       src: ./
       ports:
-        - name: http
-          port: 5000
-      publicPort: http
+        - name: https
+          port: 8080
+      publicPort: https
+
   dnsAppAlias:
     environment: production
     component: client

@@ -1,15 +1,12 @@
 import React from 'react';
-import DataAcquisition from '../utilities/icons/data-acquisition';
-import DataExperience from '../utilities/icons/data-experience';
+import DataAcquisition from './data-acquisition';
+import DataExperience from './data-experience';
 import { find } from 'lodash-es';
-import DataSharing from '../utilities/icons/data-sharing';
-import DataTracker from '../utilities/icons/data-tracker';
-import Default from '../utilities/icons/default';
-import Portal from '../utilities/icons/portal';
-
-interface ISvgIconProps {
-  size?: 16 | 24 | 32 | 40 | 48;
-}
+import DataSharing from './data-sharing';
+import DataTracker from './data-tracker';
+import DefaultIcon from './defaultIcon';
+import Portal from './portal';
+import { ISvgIconProps } from '.';
 
 interface IApplicationIconProps {
   name:
@@ -27,7 +24,7 @@ interface IApplicationIconData {
   component: React.FC<ISvgIconProps>;
 }
 const apps: IApplicationIconData[] = [
-  { appName: 'default', component: Default },
+  { appName: 'default', component: DefaultIcon },
   { appName: 'portal', component: Portal },
   { appName: 'data acquisition', component: DataAcquisition },
   { appName: 'data experience', component: DataExperience },

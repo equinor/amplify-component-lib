@@ -6,7 +6,7 @@ import OptionalTooltip from '../../OptionalTooltip';
 
 interface Tooltip {
   title: string;
-  placement: Placement;
+  placement: Placement | string;
 }
 
 interface Toggle {
@@ -41,7 +41,7 @@ const IconToggleButton = forwardRef<HTMLButtonElement, IconToggleButtonProps>(
     return toggle ? (
       <OptionalTooltip
         title={toggleOn.tooltip?.title}
-        placement={toggleOn.tooltip?.placement}
+        placement={toggleOn.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOff}>
           <Icon size={24} data={toggleOn.icon} />
@@ -50,7 +50,7 @@ const IconToggleButton = forwardRef<HTMLButtonElement, IconToggleButtonProps>(
     ) : (
       <OptionalTooltip
         title={toggleOff.tooltip?.title}
-        placement={toggleOff.tooltip?.placement}
+        placement={toggleOff.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOn}>
           <Icon size={24} data={toggleOff.icon} />

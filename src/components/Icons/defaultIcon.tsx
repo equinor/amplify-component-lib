@@ -1,7 +1,7 @@
 import React from 'react';
 import { ISvgIconProps } from '.';
 
-const Default: React.FC<ISvgIconProps> = ({ size }) => (
+const DefaultIcon: React.FC<ISvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -212,4 +212,4 @@ const Default: React.FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default Default;
+export default DefaultIcon;

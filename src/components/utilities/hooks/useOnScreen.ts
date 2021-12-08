@@ -20,7 +20,7 @@ export default function useOnScreen(
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [observer, ref]);
 
   return isIntersecting;
 }

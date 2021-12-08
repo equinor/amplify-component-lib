@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.2.2",
+  "version": "1.4.6",
   "description": "Frontend Typescript components for the Amplify team",
   "files": [
     "dist/*"
@@ -28,9 +28,7 @@
     "test:ci": "CI=true react-scripts test",
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
-    "clean": "run-script-os",
-    "clean:win32": "rmdir ./dist/* -r",
-    "clean:macos": "rm -rf lib dist",
+    "clean": "rm -rf lib dist",
     "build-components": "yarn clean && rollup -c rollup.config.js",
     "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.js",
     "version": "version-bump cli --bump",
@@ -69,7 +67,7 @@
   },
   "dependencies": {
     "@equinor/eds-core-react": "^0.16.0",
-    "@equinor/eds-icons": "^0.7.0",
+    "@equinor/eds-icons": "^0.8.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@material-ui/core": "^4.12.3",
     "@types/lodash-es": "^4.17.5",
@@ -95,7 +93,7 @@
     "@storybook/addon-links": "^6.3.10",
     "@storybook/node-logger": "^6.3.10",
     "@storybook/preset-create-react-app": "^3.1.7",
-    "@storybook/react": "^6.3.10",
+    "@storybook/react": "^6.3.12",
     "@testing-library/dom": "^8.10.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",

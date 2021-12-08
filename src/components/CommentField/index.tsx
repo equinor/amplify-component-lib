@@ -78,7 +78,7 @@ const CommentField: FC<CommentFieldProps> = ({
     if (debouncedBody !== value) {
       onChange(debouncedBody);
     }
-  }, [debouncedBody, value, onchange]);
+  }, [debouncedBody, value, onChange]);
 
   return (
     <CommentContainer>

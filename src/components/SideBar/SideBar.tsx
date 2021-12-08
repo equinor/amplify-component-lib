@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useState } from 'react';
+import React, { forwardRef, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import EquinorLogo from '../EquinorLogo';
