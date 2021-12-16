@@ -36,3 +36,14 @@ export const WithoutSelect: Story = () => {
     />
   );
 };
+
+export const HidingAccessITLink: Story = () => {
+  const fields = new Array(3).fill(0).map(() => FakeField());
+  return (
+    <FieldSelector
+      availableFields={fields}
+      onSelect={() => console.log('🎉')}
+      showAccessITLink={false}
+    />
+  );
+};

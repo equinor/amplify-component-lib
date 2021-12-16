@@ -114,65 +114,69 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
           onClose={closeMenu}
           placement="bottom"
         >
-          <MenuSection>
-            <MenuHeader>
-              <Typography variant="h6">Field selection</Typography>
-              <Button variant="ghost_icon" onClick={closeMenu}>
-                <Icon
-                  data={clear}
-                  size={24}
-                  color={colors.text.static_icons__secondary.hex}
-                />
-              </Button>
-            </MenuHeader>
-            {currentField && (
-              <MenuItem selected>
+          <>
+            <MenuSection>
+              <MenuHeader>
+                <Typography variant="h6">Field selection</Typography>
+                <Button variant="ghost_icon" onClick={closeMenu}>
+                  <Icon
+                    data={clear}
+                    size={24}
+                    color={colors.text.static_icons__secondary.hex}
+                  />
+                </Button>
+              </MenuHeader>
+              {currentField && (
+                <MenuItem selected>
+                  <TextContainer>
+                    <Typography variant="overline">
+                      Current selection:
+                    </Typography>
+                    <Typography variant="h6">
+                      {currentField.name.toLowerCase()}
+                    </Typography>
+                  </TextContainer>
+                  <Icon
+                    data={check}
+                    color={colors.interactive.primary__resting.hex}
+                    size={24}
+                  />
+                </MenuItem>
+              )}
+              {availableFields.map((field) => {
+                if (field.guid !== currentField?.guid) {
+                  return (
+                    <MenuItem key={field.guid} onClick={() => onSelect(field)}>
+                      <TextContainer>
+                        <Typography variant="overline">Switch to:</Typography>
+                        <Typography variant="h6">
+                          {field.name.toLowerCase()}
+                        </Typography>
+                      </TextContainer>
+                    </MenuItem>
+                  );
+                }
+                return undefined;
+              })}
+            </MenuSection>
+            {showAccessITLink && (
+              <MenuItem
+                onClick={() =>
+                  window.open('https://accessit.equinor.com/#', '_blank')
+                }
+              >
                 <TextContainer>
-                  <Typography variant="overline">Current selection:</Typography>
-                  <Typography variant="h6">
-                    {currentField.name.toLowerCase()}
-                  </Typography>
+                  <Typography variant="overline">Missing a field?</Typography>
+                  <Typography variant="h6">Go to AccessIT</Typography>
                 </TextContainer>
                 <Icon
-                  data={check}
+                  data={exit_to_app}
                   color={colors.interactive.primary__resting.hex}
                   size={24}
                 />
               </MenuItem>
             )}
-            {availableFields.map((field) => {
-              if (field.guid !== currentField?.guid) {
-                return (
-                  <MenuItem key={field.guid} onClick={() => onSelect(field)}>
-                    <TextContainer>
-                      <Typography variant="overline">Switch to:</Typography>
-                      <Typography variant="h6">
-                        {field.name.toLowerCase()}
-                      </Typography>
-                    </TextContainer>
-                  </MenuItem>
-                );
-              }
-              return undefined;
-            })}
-          </MenuSection>
-          {showAccessITLink && (
-            <MenuItem
-              onClick={() =>
-                window.open('https://accessit.equinor.com/#', '_blank')
-              }
-            >
-              <TextContainer>
-                <Typography variant="overline">Missing a field?</Typography>
-                <Typography variant="h6">Go to AccessIT</Typography>
-              </TextContainer>
-              <Icon
-                data={exit_to_app}
-                color={colors.interactive.primary__resting.hex}
-                size={24}
-              />
-            </MenuItem>
-          )}
+          </>
         </Menu>
       </>
     );
