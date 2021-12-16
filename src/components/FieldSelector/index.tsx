@@ -40,6 +40,8 @@ const MenuItem = styled(Menu.Item)<MenuItemProps>`
 
 const MenuSection = styled.div`
   border-bottom: 1px solid ${colors.ui.background__light.hex};
+  display: flex;
+  flex-direction: column;
 `;
 
 const MenuHeader = styled.li`
@@ -72,10 +74,14 @@ export type FieldSelectorType = {
   currentField?: Field;
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
+  showAccessITLink?: boolean;
 };
 
 const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
-  ({ currentField, availableFields, onSelect }, ref) => {
+  (
+    { currentField, availableFields, onSelect, showAccessITLink = true },
+    ref
+  ) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>();
     const [open, setOpen] = useState(false);
 
@@ -150,21 +156,23 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
               return undefined;
             })}
           </MenuSection>
-          <MenuItem
-            onClick={() =>
-              window.open('https://accessit.equinor.com/#', '_blank')
-            }
-          >
-            <TextContainer>
-              <Typography variant="overline">Missing a field?</Typography>
-              <Typography variant="h6">Go to AccessIT</Typography>
-            </TextContainer>
-            <Icon
-              data={exit_to_app}
-              color={colors.interactive.primary__resting.hex}
-              size={24}
-            />
-          </MenuItem>
+          {showAccessITLink && (
+            <MenuItem
+              onClick={() =>
+                window.open('https://accessit.equinor.com/#', '_blank')
+              }
+            >
+              <TextContainer>
+                <Typography variant="overline">Missing a field?</Typography>
+                <Typography variant="h6">Go to AccessIT</Typography>
+              </TextContainer>
+              <Icon
+                data={exit_to_app}
+                color={colors.interactive.primary__resting.hex}
+                size={24}
+              />
+            </MenuItem>
+          )}
         </Menu>
       </>
     );
