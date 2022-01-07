@@ -39,12 +39,7 @@ export interface IComponentProps {
   body?: string;
   actions?: Array<JSX.Element>;
   actionPosition?: 'left' | 'right';
-  onClose?:
-    | ((
-        event: React.MouseEvent<Element, MouseEvent> | KeyboardEvent,
-        open: boolean
-      ) => void)
-    | undefined;
+  onClose?: () => void | undefined;
 }
 
 const ConfirmationPopup: React.FC<IComponentProps> = ({
@@ -58,7 +53,7 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
 }) => {
   if (show) {
     return (
-      <Scrim onClose={onClose} isDismissable>
+      <Scrim onClose={onClose} isDismissable open>
         <StyledDialog>
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.CustomContent>

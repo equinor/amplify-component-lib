@@ -37,7 +37,7 @@ const FullPageSpinner: React.FC<IFullpageSpinnerProps> = ({
       {withoutScrim ? (
         <NoScrimContainer>{renderSpinner()}</NoScrimContainer>
       ) : (
-        <Scrim>{renderSpinner()}</Scrim>
+        <Scrim open>{renderSpinner()}</Scrim>
       )}
     </>
   );
