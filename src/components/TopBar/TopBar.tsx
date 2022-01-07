@@ -25,9 +25,14 @@ const Header = styled(EDSTopBar.Header)`
   > svg {
     justify-self: center;
   }
-  > h6 {
-    text-transform: capitalize;
-  }
+`;
+
+interface AppNameProps {
+  capitalize: boolean;
+}
+
+const AppName = styled(Typography)<AppNameProps>`
+  text-transform: ${(props) => (props.capitalize ? 'capitalize' : 'none')};
 `;
 interface CircularProgressProps {
   isFetching: boolean;
@@ -44,6 +49,7 @@ type TopBarType = {
   applicationIcon: IconData | ReactElement;
   applicationName: string;
   isFetching?: boolean;
+  capitalize?: boolean;
 } & React.HTMLAttributes<HTMLElement>;
 
 export const TopBar = forwardRef<HTMLElement, TopBarType>(
@@ -54,6 +60,7 @@ export const TopBar = forwardRef<HTMLElement, TopBarType>(
       applicationIcon,
       applicationName,
       isFetching = false,
+      capitalize = false,
     },
     ref
   ) => (
@@ -68,7 +75,9 @@ export const TopBar = forwardRef<HTMLElement, TopBarType>(
             color={colors.interactive.primary__resting.hsla}
           />
         )}
-        <Typography variant="h6">{applicationName.toLowerCase()}</Typography>
+        <AppName variant="h6" capitalize={capitalize}>
+          {capitalize ? applicationName.toLowerCase() : applicationName}
+        </AppName>
         <CircularProgress size={16} isFetching={isFetching} />
       </Header>
       {children}

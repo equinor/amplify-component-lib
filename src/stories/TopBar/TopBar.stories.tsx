@@ -29,7 +29,28 @@ export const Primary: Story = () => {
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
+      applicationName="Heinrich von schnellfahrer"
+    >
+      <TopBar.Actions>
+        <Button variant="ghost_icon" key="account">
+          <Icon
+            data={account_circle}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+        </Button>
+      </TopBar.Actions>
+    </TopBar>
+  );
+};
+
+export const Capitalized: Story = () => {
+  return (
+    <TopBar
+      onHeaderClick={() => console.log('Going to homepage 🏠')}
+      applicationIcon={car}
       applicationName="HEINRICH VON SCHNELLFAHRER"
+      capitalize
     >
       <TopBar.Actions>
         <Button variant="ghost_icon" key="account">
