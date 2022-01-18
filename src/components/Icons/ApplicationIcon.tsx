@@ -10,10 +10,10 @@ import { ISvgIconProps } from '.';
 
 interface IApplicationIconProps {
   name:
-    | 'data acquisition'
-    | 'data experience'
-    | 'data tracker'
-    | 'data sharing'
+    | 'acquire'
+    | '4dinsight'
+    | 'recap'
+    | 'dasha'
     | 'portal'
     | 'default'
     | string;
@@ -26,10 +26,10 @@ interface IApplicationIconData {
 const apps: IApplicationIconData[] = [
   { appName: 'default', component: DefaultIcon },
   { appName: 'portal', component: Portal },
-  { appName: 'data acquisition', component: DataAcquisition },
-  { appName: 'data experience', component: DataExperience },
-  { appName: 'data sharing', component: DataSharing },
-  { appName: 'data tracker', component: DataTracker },
+  { appName: 'acquire', component: DataAcquisition },
+  { appName: '4dinsight', component: DataExperience },
+  { appName: 'dasha', component: DataSharing },
+  { appName: 'recap', component: DataTracker },
 ];
 
 const ApplicationIcon: React.FC<IApplicationIconProps> = ({ name, size }) => {
