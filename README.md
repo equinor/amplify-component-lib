@@ -8,8 +8,6 @@ Build is done automatically when code is merged into the `development` branch.
 Publish is done automatically when code is merged into `main` branch, if the package.json version number is higher.
 To increase the version number use `yarn run version <type>` and specify what type of [versioning](https://github.com/theogravity/version-bump#quick-start-usage).
 
-    
-
 # Documentation
 
 ## CompactCard
@@ -88,3 +86,11 @@ We use this on other components to help make them more modular. Feel free to use
 ## TopBar
 
 ![TopBar Example](https://github.com/equinor/amplify-components/blob/main/repo/TopBar.PNG)
+
+## WorkflowStatusBar
+
+![WorkflowStatusBar Example](https://github.com/equinor/amplify-components/blob/main/repo/WorkflowStatusBar.PNG)
+
+## WorkflowDescription
+
+![WorkflowDescription Example](https://github.com/equinor/amplify-components/blob/main/repo/WorkflowDescription.PNG)
