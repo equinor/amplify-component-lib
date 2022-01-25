@@ -82,6 +82,7 @@ const Chip = styled.div<ChipProps>`
     justify-content: center;
     align-items: center;
     height: 100%;
+    line-height: normal;
     padding: 0 12px;
     color: ${(props) =>
       props.color ??
