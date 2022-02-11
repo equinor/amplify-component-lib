@@ -15,7 +15,7 @@ interface IFeedBackIconData {
 export interface IFeedBackIconProps {
   name: 'positive' | 'negative' | 'default';
   variant?: 'filled' | 'outline';
-  size?: 16 | 24 | 32 | 40 | 48;
+  size?: 16 | 24 | 32 | 40 | 48 | 96;
 }
 
 export const feedbackIcons: IFeedBackIconData[] = [
