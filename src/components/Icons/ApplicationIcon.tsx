@@ -17,7 +17,7 @@ interface IApplicationIconProps {
     | 'portal'
     | 'default'
     | string;
-  size?: 16 | 24 | 32 | 40 | 48;
+  size?: 16 | 24 | 32 | 40 | 48 | 96;
 }
 interface IApplicationIconData {
   appName: string;
