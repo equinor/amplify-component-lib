@@ -1,14 +1,17 @@
 import { Placement } from '@equinor/eds-core-react/dist/types/hooks';
+import { tokens } from '@equinor/eds-tokens';
 import { FC } from 'react';
 import styled from 'styled-components';
 import OptionalTooltip from '../../OptionalTooltip';
+const { colors } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  height: 22px;
 `;
 
-const colors = [
+const defaultColors = [
   '#0084C4',
   '#AD6200',
   '#AD6200',
@@ -44,14 +47,30 @@ const Circle = styled.div<CircleProps>`
   border: 2px solid
     ${(props) =>
       props.color ??
-      (props.index < colors.length ? colors[props.index] : '#0084C4')};
+      (props.index < defaultColors.length
+        ? defaultColors[props.index]
+        : '#0084C4')};
+  border-radius: 50%;
+  display: inline-block;
+  z-index: 100;
+  grid-row: 1;
+  grid-column: 1;
+`;
+
+const Alert = styled.div`
+  grid-row: 1;
+  grid-column: 1;
+  height: 10px;
+  width: 10px;
+  border: 6px solid ${colors.infographic.primary__energy_red_55.hex};
+  margin: -5px;
   border-radius: 50%;
   display: inline-block;
   z-index: 100;
 `;
 
 interface LineProps {
-  active: boolean;
+  active?: boolean;
 }
 
 const Line = styled.div<LineProps>`
@@ -67,6 +86,7 @@ type WorkflowStatusBarType = {
   backgroundColor?: string;
   active?: boolean;
   label?: string;
+  alert?: boolean;
 };
 
 export interface WorkflowStatusBarProps {
@@ -88,11 +108,14 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
             title={disableTooltip ? undefined : item.label}
             placement={tooltipPlacement ?? 'top'}
           >
-            <Circle
-              index={idx}
-              color={item.color}
-              backgroundColor={item.backgroundColor}
-            />
+            <div style={{ display: 'grid', placeItems: 'center' }}>
+              <Circle
+                index={idx}
+                color={item.color}
+                backgroundColor={item.backgroundColor}
+              />
+              {item.alert && <Alert />}
+            </div>
           </OptionalTooltip>
           {options.length !== idx + 1 && <Line active={item.active} />}
         </>

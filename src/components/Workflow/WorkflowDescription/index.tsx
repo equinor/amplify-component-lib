@@ -1,6 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { FC } from 'react';
 import styled from 'styled-components';
+import StatusChip from '../StatusChip';
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,48 +57,6 @@ const Line = styled.div<LineProps>`
   z-index: 10;
 `;
 
-interface ChipProps {
-  color?: string;
-  backgroundColor?: string;
-  index: number;
-}
-
-const Chip = styled.div<ChipProps>`
-  height: 24px;
-  min-width: 82px;
-  background-color: ${(props) =>
-    props.backgroundColor ??
-    (props.index < backgroudColors.length
-      ? backgroudColors[props.index]
-      : '#FFFFFF')};
-  border: 1px solid
-    ${(props) =>
-      props.color ??
-      (props.index < colors.length ? colors[props.index] : '#0084C4')};
-  border-radius: 25px;
-  display: inline-block;
-  z-index: 100;
-  p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    line-height: normal;
-    padding: 0 12px;
-    color: ${(props) =>
-      props.color ??
-      (props.index < colors.length ? colors[props.index] : '#0084C4')};
-  }
-`;
-
-const DisabledChip = styled(Chip)`
-  background-color: #eaeaea;
-  border: 1px solid #bebebe;
-  p {
-    color: #bebebe;
-  }
-`;
-
 type WorkflowDescriptionType = {
   color?: string;
   backgroundColor?: string;
@@ -126,30 +85,25 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
                   {item.approvedDate}
                 </Typography>
               </div>
-              <Chip
-                index={idx}
-                color={item.color}
-                backgroundColor={item.backgroundColor}
-              >
-                <Typography group="ui" variant="chip__badge">
-                  {item.label}
-                </Typography>
-              </Chip>
+              <StatusChip
+                color={
+                  item.color ?? (idx < colors.length ? colors[idx] : '#0084C4')
+                }
+                backgroundColor={
+                  item.backgroundColor ??
+                  (idx < backgroudColors.length
+                    ? backgroudColors[idx]
+                    : '#0084C4')
+                }
+                label={item.label}
+              />
             </Box>
           ) : (
             <DisabledBox>
               <Typography group="heading" variant="h6" color="#BEBEBE">
                 {item.notApprovedLabel}
               </Typography>
-              <DisabledChip
-                index={idx}
-                color={item.color}
-                backgroundColor={item.backgroundColor}
-              >
-                <Typography group="ui" variant="chip__badge">
-                  {item.label}
-                </Typography>
-              </DisabledChip>
+              <StatusChip disabled label={item.label} />
             </DisabledBox>
           )}
           {options.length !== idx + 1 && (
