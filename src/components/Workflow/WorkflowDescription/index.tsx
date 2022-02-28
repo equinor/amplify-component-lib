@@ -9,25 +9,6 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const colors = [
-  '#004088',
-  '#AD6200',
-  '#AD6200',
-  '#004088',
-  '#358132',
-  '#358132',
-  '#E24973',
-];
-const backgroudColors = [
-  '#FFFFFF',
-  '#FFFFFF',
-  '#FFE7D6',
-  '#D5EAF4',
-  '#FFFFFF',
-  '#E6FAEC',
-  '#FFE0E7',
-];
-
 const Box = styled.div`
   display: flex;
   justify-content: space-between;
@@ -86,15 +67,8 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
                 </Typography>
               </div>
               <StatusChip
-                color={
-                  item.color ?? (idx < colors.length ? colors[idx] : '#0084C4')
-                }
-                backgroundColor={
-                  item.backgroundColor ??
-                  (idx < backgroudColors.length
-                    ? backgroudColors[idx]
-                    : '#0084C4')
-                }
+                color={item.color ?? '#000000'}
+                backgroundColor={item.backgroundColor ?? '#ffffff'}
                 label={item.label}
               />
             </Box>

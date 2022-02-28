@@ -8,27 +8,8 @@ const { colors } = tokens;
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 22px;
+  height: 1.375rem;
 `;
-
-const defaultColors = [
-  '#0084C4',
-  '#AD6200',
-  '#AD6200',
-  '#0084C4',
-  '#358132',
-  '#358132',
-  '#E24973',
-];
-const backgroudColors = [
-  '#FFFFFF',
-  '#FFFFFF',
-  '#FFE7D6',
-  '#D5EAF4',
-  '#FFFFFF',
-  '#E6FAEC',
-  '#FFE0E7',
-];
 
 interface CircleProps {
   color?: string;
@@ -37,19 +18,10 @@ interface CircleProps {
 }
 
 const Circle = styled.div<CircleProps>`
-  height: 8px;
-  width: 8px;
-  background-color: ${(props) =>
-    props.backgroundColor ??
-    (props.index < backgroudColors.length
-      ? backgroudColors[props.index]
-      : '#FFFFFF')};
-  border: 2px solid
-    ${(props) =>
-      props.color ??
-      (props.index < defaultColors.length
-        ? defaultColors[props.index]
-        : '#0084C4')};
+  height: 0.5rem;
+  width: 0.5rem;
+  background-color: ${(props) => props.backgroundColor};
+  border: 0.125rem solid ${(props) => props.color};
   border-radius: 50%;
   display: inline-block;
   z-index: 100;
@@ -60,13 +32,17 @@ const Circle = styled.div<CircleProps>`
 const Alert = styled.div`
   grid-row: 1;
   grid-column: 1;
-  height: 10px;
-  width: 10px;
-  border: 6px solid ${colors.infographic.primary__energy_red_55.hex};
+  height: 0.5rem;
+  width: 0.5rem;
+  border: 0.5rem solid ${colors.infographic.primary__energy_red_55.hex};
   margin: -5px;
   border-radius: 50%;
   display: inline-block;
   z-index: 100;
+`;
+
+const Active = styled(Alert)`
+  border-color: ${colors.infographic.primary__moss_green_21.hex};
 `;
 
 interface LineProps {
@@ -74,50 +50,58 @@ interface LineProps {
 }
 
 const Line = styled.div<LineProps>`
-  height: 4px;
-  width: 38px;
+  height: 0.25rem;
+  width: 2.375rem;
   background-color: ${(props) => (props.active ? '#007079' : '#f7f7f7')};
   margin: 0 -1px;
   z-index: 10;
 `;
 
 type WorkflowStatusBarType = {
-  color?: string;
-  backgroundColor?: string;
-  active?: boolean;
-  label?: string;
-  alert?: boolean;
+  color: string;
+  backgroundColor: string;
+  label: string;
+  value: string;
 };
 
 export interface WorkflowStatusBarProps {
   options: WorkflowStatusBarType[];
   disableTooltip?: boolean;
   tooltipPlacement?: Placement;
+  activeNode: string;
+  highlightActiveNode: boolean;
+  showAlert: boolean;
 }
 
 const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
+  activeNode,
   options,
   disableTooltip,
   tooltipPlacement,
+  highlightActiveNode,
+  showAlert,
 }) => {
+  const activeIdx = options.findIndex((item) => item.value === activeNode);
+
   return (
     <Wrapper>
       {options.map((item, idx) => (
         <>
           <OptionalTooltip
-            title={disableTooltip ? undefined : item.label}
             placement={tooltipPlacement ?? 'top'}
+            title={disableTooltip ? undefined : item.label}
           >
             <div style={{ display: 'grid', placeItems: 'center' }}>
+              {activeIdx === idx && highlightActiveNode && <Active />}
+              {activeIdx === idx && showAlert && <Alert />}
               <Circle
                 index={idx}
                 color={item.color}
                 backgroundColor={item.backgroundColor}
               />
-              {item.alert && <Alert />}
             </div>
           </OptionalTooltip>
-          {options.length !== idx + 1 && <Line active={item.active} />}
+          {options.length !== idx + 1 && <Line active={activeIdx > idx} />}
         </>
       ))}
     </Wrapper>

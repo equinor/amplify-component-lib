@@ -12,68 +12,90 @@ const Template: Story<WorkflowStatusBarProps> = (args) => (
   <WorkflowStatusBar {...args} />
 );
 
+const options = [
+  {
+    label: 'Draft',
+    value: 'draft',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+  {
+    label: 'Awaiting QA',
+    value: 'awaitingQA',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+  {
+    label: 'Ready for QA',
+    value: 'readyForQA',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+  {
+    label: 'Author review',
+    value: 'authorReview',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+  {
+    label: 'Awaiting approval',
+    value: 'awaitingApproval',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+  {
+    label: 'Approved',
+    value: 'approved',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+  {
+    label: 'Published',
+    value: 'published',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+  },
+];
+
 export const Primary = Template.bind({});
 Primary.args = {
-  options: [
-    {
-      label: 'Draft',
-    },
-    {
-      label: 'Awaiting QA',
-    },
-    {
-      label: 'Ready for QA',
-    },
-    {
-      label: 'Author review',
-    },
-    {
-      label: 'Awaiting approval',
-    },
-    {
-      label: 'Approved',
-    },
-    {
-      label: 'Published',
-    },
-  ],
+  activeNode: 'draft',
+  showAlert: true,
+  options: options,
 };
 
 export const HalfActive = Template.bind({});
 HalfActive.args = {
-  options: [
-    { active: true },
-    { active: true },
-    { active: true },
-    {},
-    {},
-    {},
-    {},
-  ],
+  activeNode: 'authorReview',
+  options: options,
 };
 
 export const AllActive = Template.bind({});
 AllActive.args = {
-  options: [
-    { active: true },
-    { active: true },
-    { active: true },
-    { active: true },
-    { active: true },
-    { active: true },
-    { active: true },
-  ],
+  activeNode: 'published',
+  options: options,
 };
 
 export const DifferentColors = Template.bind({});
 DifferentColors.args = {
+  activeNode: '4',
   options: [
-    { active: true, color: '#ff0000', backgroundColor: '#ff8484' },
-    { active: true, color: '#008b2a', backgroundColor: '#77ff72' },
-    { active: true, color: '#0f0097', backgroundColor: '#7a7bce' },
-    { color: '#000000', backgroundColor: '#c7c7c7' },
-    { color: '#ffe600', backgroundColor: '#d6d18e' },
-    { color: '#ff00dd', backgroundColor: '#e489d8' },
-    { color: '#00ffff', backgroundColor: '#b1fcff' },
+    { label: 'One', value: '1', color: '#ff0000', backgroundColor: '#ff8484' },
+    { label: 'Two', value: '2', color: '#008b2a', backgroundColor: '#77ff72' },
+    {
+      label: 'Three',
+      value: '3',
+      color: '#0f0097',
+      backgroundColor: '#7a7bce',
+    },
+    { label: 'Four', value: '4', color: '#000000', backgroundColor: '#c7c7c7' },
+    { label: 'Five', value: '5', color: '#ffe600', backgroundColor: '#d6d18e' },
+    { label: 'Six', value: '6', color: '#ff00dd', backgroundColor: '#e489d8' },
+    {
+      label: 'Seven',
+      value: '7',
+      color: '#00ffff',
+      backgroundColor: '#b1fcff',
+    },
   ],
 };
