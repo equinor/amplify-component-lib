@@ -9,7 +9,9 @@ export default {
 } as Meta;
 
 const Template: Story<WorkflowStatusBarProps> = (args) => (
-  <WorkflowStatusBar {...args} />
+  <div style={{ fontSize: '16px' }}>
+    <WorkflowStatusBar {...args} />
+  </div>
 );
 
 const options = [

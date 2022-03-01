@@ -8,7 +8,7 @@ const { colors } = tokens;
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 1.375rem;
+  height: 1.375em;
 `;
 
 interface CircleProps {
@@ -18,10 +18,10 @@ interface CircleProps {
 }
 
 const Circle = styled.div<CircleProps>`
-  height: 0.5rem;
-  width: 0.5rem;
+  height: 0.5em;
+  width: 0.5em;
   background-color: ${(props) => props.backgroundColor};
-  border: 0.125rem solid ${(props) => props.color};
+  border: 0.125em solid ${(props) => props.color};
   border-radius: 50%;
   display: inline-block;
   z-index: 100;
@@ -32,10 +32,10 @@ const Circle = styled.div<CircleProps>`
 const Alert = styled.div`
   grid-row: 1;
   grid-column: 1;
-  height: 0.5rem;
-  width: 0.5rem;
-  border: 0.5rem solid ${colors.infographic.primary__energy_red_55.hex};
-  margin: -5px;
+  height: 0.5em;
+  width: 0.5em;
+  border: 0.5em solid ${colors.infographic.primary__energy_red_55.hex};
+  margin: -0.4em;
   border-radius: 50%;
   display: inline-block;
   z-index: 100;
@@ -50,8 +50,8 @@ interface LineProps {
 }
 
 const Line = styled.div<LineProps>`
-  height: 0.25rem;
-  width: 2.375rem;
+  height: 0.25em;
+  width: 2.375em;
   background-color: ${(props) => (props.active ? '#007079' : '#f7f7f7')};
   margin: 0 -1px;
   z-index: 10;
@@ -69,8 +69,8 @@ export interface WorkflowStatusBarProps {
   disableTooltip?: boolean;
   tooltipPlacement?: Placement;
   activeNode: string;
-  highlightActiveNode: boolean;
-  showAlert: boolean;
+  highlightActiveNode?: boolean;
+  showAlert?: boolean;
 }
 
 const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
