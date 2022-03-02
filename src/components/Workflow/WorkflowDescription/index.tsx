@@ -67,17 +67,25 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
                 </Typography>
               </div>
               <StatusChip
+                style={{ width: '120px' }}
                 color={item.color ?? '#000000'}
                 backgroundColor={item.backgroundColor ?? '#ffffff'}
-                label={item.label}
-              />
+              >
+                <Typography group="ui" variant="chip__badge">
+                  {item.label}
+                </Typography>
+              </StatusChip>
             </Box>
           ) : (
             <DisabledBox>
               <Typography group="heading" variant="h6" color="#BEBEBE">
                 {item.notApprovedLabel}
               </Typography>
-              <StatusChip disabled label={item.label} />
+              <StatusChip disabled style={{ width: '120px' }}>
+                <Typography group="ui" variant="chip__badge">
+                  {item.label}
+                </Typography>
+              </StatusChip>
             </DisabledBox>
           )}
           {options.length !== idx + 1 && (
