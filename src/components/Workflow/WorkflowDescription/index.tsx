@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import styled from 'styled-components';
 import StatusChip from '../StatusChip';
 
@@ -55,7 +55,7 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
   return (
     <Wrapper>
       {options.map((item, idx) => (
-        <>
+        <Fragment key={`${item.label}-${idx}`}>
           {item.approvedDate !== undefined ? (
             <Box>
               <div>
@@ -91,7 +91,7 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
           {options.length !== idx + 1 && (
             <Line active={item.approvedDate !== undefined} />
           )}
-        </>
+        </Fragment>
       ))}
     </Wrapper>
   );

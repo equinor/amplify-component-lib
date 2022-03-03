@@ -7,7 +7,7 @@ import {
 } from '@equinor/eds-core-react';
 import { IconData, filter_list } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import React, { forwardRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
@@ -56,102 +56,94 @@ export interface SingleFilterMenuProps {
   chipColor?: string;
 }
 
-const SingleFilterMenu = forwardRef<HTMLDivElement, SingleFilterMenuProps>(
-  (
-    {
-      onChange,
-      customIcon,
-      menuTitle,
-      data,
-      showChip = false,
-      chipColor = colors.ui.background__default.hex,
-    },
-    ref
+const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
+  onChange,
+  customIcon,
+  menuTitle,
+  data,
+  showChip = false,
+  chipColor = colors.ui.background__default.hex,
+}) => {
+  const [showMenu, setShowMenu] = useState(false);
+  const [buttonElement, setButtonElement] = useState<HTMLButtonElement>();
+  const [selectedName, setSelectedName] = useState<string | undefined | null>();
+
+  const openMenu = (
+    e:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.KeyboardEvent<HTMLButtonElement>
   ) => {
-    const [showMenu, setShowMenu] = useState(false);
-    const [buttonElement, setButtonElement] = useState<HTMLButtonElement>();
-    const [selectedName, setSelectedName] = useState<
-      string | undefined | null
-    >();
+    const target = e.target as HTMLButtonElement;
+    setButtonElement(target);
+    setShowMenu(!showMenu);
+  };
 
-    const openMenu = (
-      e:
-        | React.MouseEvent<HTMLButtonElement, MouseEvent>
-        | React.KeyboardEvent<HTMLButtonElement>
-    ) => {
-      const target = e.target as HTMLButtonElement;
-      setButtonElement(target);
-      setShowMenu(!showMenu);
-    };
-
-    const handleSelect = (selected: string | undefined | null) => {
-      setShowMenu(false);
-      if (selectedName === selected) {
-        setSelectedName(undefined);
-        onChange(undefined);
-      } else {
-        setSelectedName(selected);
-        onChange(selected);
-      }
-    };
-
-    const clearFilter = () => {
-      closeMenu();
-      onChange(undefined);
+  const handleSelect = (selected: string | undefined | null) => {
+    setShowMenu(false);
+    if (selectedName === selected) {
       setSelectedName(undefined);
-    };
+      onChange(undefined);
+    } else {
+      setSelectedName(selected);
+      onChange(selected);
+    }
+  };
 
-    const closeMenu = () => setShowMenu(false);
+  const clearFilter = () => {
+    closeMenu();
+    onChange(undefined);
+    setSelectedName(undefined);
+  };
 
-    return (
-      <Container>
-        {showChip && selectedName && (
-          <Chip
-            data-testid="chip"
-            onDelete={clearFilter}
-            variant="default"
-            backgroundColor={chipColor}
+  const closeMenu = () => setShowMenu(false);
+
+  return (
+    <Container>
+      {showChip && selectedName && (
+        <Chip
+          data-testid="chip"
+          onDelete={clearFilter}
+          variant="default"
+          backgroundColor={chipColor}
+        >
+          {selectedName}
+        </Chip>
+      )}
+      <FilterButton
+        data-testid="menuButton"
+        variant="ghost_icon"
+        onClick={(e) => openMenu(e)}
+      >
+        <Icon data={customIcon ?? filter_list} />
+      </FilterButton>
+      <Menu
+        open={showMenu}
+        anchorEl={buttonElement!}
+        onClose={closeMenu}
+        placement="bottom-end"
+        data-testid="menuContainer"
+      >
+        <MenuTitleContainer>
+          <Typography group="navigation" variant="label">
+            {menuTitle}
+          </Typography>
+        </MenuTitleContainer>
+        {data.map((item: string, index: number) => (
+          <MenuItem
+            key={item + index}
+            onClick={() => handleSelect(item)}
+            disabled={selectedName === item && showChip}
+            active={selectedName === item && !showChip}
           >
-            {selectedName}
-          </Chip>
-        )}
-        <FilterButton
-          data-testid="menuButton"
-          variant="ghost_icon"
-          onClick={(e) => openMenu(e)}
-        >
-          <Icon data={customIcon ?? filter_list} />
-        </FilterButton>
-        <Menu
-          open={showMenu}
-          anchorEl={buttonElement!}
-          onClose={closeMenu}
-          placement="bottom-end"
-          data-testid="menuContainer"
-        >
-          <MenuTitleContainer>
-            <Typography group="navigation" variant="label">
-              {menuTitle}
+            <Typography group="navigation" variant="menu_title" as="span">
+              {item}
             </Typography>
-          </MenuTitleContainer>
-          {data.map((item: string, index: number) => (
-            <MenuItem
-              key={item + index}
-              onClick={() => handleSelect(item)}
-              disabled={selectedName === item && showChip}
-              active={selectedName === item && !showChip}
-            >
-              <Typography group="navigation" variant="menu_title" as="span">
-                {item}
-              </Typography>
-            </MenuItem>
-          ))}
-        </Menu>
-      </Container>
-    );
-  }
-);
-
+          </MenuItem>
+        ))}
+      </Menu>
+    </Container>
+  );
+};
 SingleFilterMenu.displayName = 'FilterMenu';
 
 export default SingleFilterMenu;

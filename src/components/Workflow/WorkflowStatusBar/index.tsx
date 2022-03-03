@@ -1,6 +1,6 @@
 import { Placement } from '@equinor/eds-core-react/dist/types/hooks';
 import { tokens } from '@equinor/eds-tokens';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import styled from 'styled-components';
 import OptionalTooltip from '../../OptionalTooltip';
 const { colors } = tokens;
@@ -86,7 +86,7 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
   return (
     <Wrapper>
       {options.map((item, idx) => (
-        <>
+        <Fragment key={item.value}>
           <OptionalTooltip
             placement={tooltipPlacement ?? 'top'}
             title={disableTooltip ? undefined : item.label}
@@ -102,7 +102,7 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
             </div>
           </OptionalTooltip>
           {options.length !== idx + 1 && <Line active={activeIdx > idx} />}
-        </>
+        </Fragment>
       ))}
     </Wrapper>
   );
