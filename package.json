@@ -75,7 +75,7 @@
     "@equinor/eds-icons": "^0.10.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@material-ui/core": "^4.12.3",
-    "@types/lodash-es": "^4.17.5",
+    "@types/lodash-es": "^4.17.6",
     "chalk": "^4.1.2",
     "child_process": "^1.0.2",
     "downshift": "^6.1.7",
