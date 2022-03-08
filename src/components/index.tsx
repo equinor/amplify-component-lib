@@ -2,6 +2,7 @@ export { default as ConfirmationPopup } from './ConfirmationPopup';
 export { default as CopyText } from './CopyText';
 export { default as CommentField } from './CommentField';
 export { default as NewComment } from './CommentField/NewComment';
+export { default as ChippedMultiSelect } from './ChippedMultiSelect';
 export { default as DataCard } from './DataCard';
 export { default as EditableField } from './EditableField';
 export { default as EquinorLogo } from './EquinorLogo';
