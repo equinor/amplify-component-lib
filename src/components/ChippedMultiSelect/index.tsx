@@ -178,29 +178,27 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
           />
         </SelectElement>
       </Container>
-      {open && (
-        <Menu
-          open={open}
-          anchorEl={anchorRef.current}
-          placement="bottom"
-          maxHeight={maxHeight}
-          inDialog={inDialog}
-          ref={menuRef}
-          style={{
-            width: `${anchorRef.current?.offsetWidth}px`,
-          }}
-        >
-          {items.map((item) => (
-            <MenuItem key={item} onClick={() => handleClick(item)}>
-              <Icon
-                data={values.includes(item) ? checkbox : checkbox_outline}
-                color={colors.interactive.primary__resting.hex}
-              />
-              {formatter ? formatter(item) : item}
-            </MenuItem>
-          ))}
-        </Menu>
-      )}
+      <Menu
+        open={open}
+        anchorEl={anchorRef.current}
+        placement="bottom"
+        maxHeight={maxHeight}
+        inDialog={inDialog}
+        ref={menuRef}
+        style={{
+          width: `${anchorRef.current?.offsetWidth}px`,
+        }}
+      >
+        {items.map((item) => (
+          <MenuItem key={item} onClick={() => handleClick(item)}>
+            <Icon
+              data={values.includes(item) ? checkbox : checkbox_outline}
+              color={colors.interactive.primary__resting.hex}
+            />
+            {formatter ? formatter(item) : item}
+          </MenuItem>
+        ))}
+      </Menu>
     </div>
   );
 };
