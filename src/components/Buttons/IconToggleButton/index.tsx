@@ -1,8 +1,24 @@
 import { forwardRef, useState } from 'react';
 import { Button, Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
-import { Placement } from '@equinor/eds-core-react/dist/types/hooks';
 import OptionalTooltip from '../../OptionalTooltip';
+
+type Placement =
+  | 'auto'
+  | 'auto-start'
+  | 'auto-end'
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end';
 
 interface Tooltip {
   title: string;

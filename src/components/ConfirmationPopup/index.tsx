@@ -54,7 +54,7 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
   if (show) {
     return (
       <Scrim onClose={onClose} isDismissable open>
-        <StyledDialog>
+        <StyledDialog open={show}>
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.CustomContent>
             {body && <Typography variant="body_short">{body}</Typography>}
