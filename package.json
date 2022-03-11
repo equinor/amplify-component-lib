@@ -63,7 +63,11 @@
     ]
   },
   "resolutions": {
-    "babel-loader": "8.1.0"
+    "babel-loader": "8.1.0",
+    "glob-parent": "5.1.2",
+    "trim": "0.0.3",
+    "serialize-javascript": "3.1.0",
+    "nth-check": "2.0.1"
   },
   "jest": {
     "transformIgnorePatterns": [
