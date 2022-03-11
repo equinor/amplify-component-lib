@@ -1,5 +1,5 @@
 import { Story, Meta } from '@storybook/react';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import FieldSelector from '../../components/FieldSelector';
 

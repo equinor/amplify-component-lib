@@ -1,9 +1,25 @@
-import { Placement } from '@equinor/eds-core-react/dist/types/hooks';
 import { tokens } from '@equinor/eds-tokens';
 import { FC, Fragment } from 'react';
 import styled from 'styled-components';
 import OptionalTooltip from '../../OptionalTooltip';
 const { colors } = tokens;
+
+type Placement =
+  | 'auto'
+  | 'auto-start'
+  | 'auto-end'
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end';
 
 const Wrapper = styled.div`
   display: flex;

@@ -32,7 +32,7 @@ module.exports = {
     'jest-dom/prefer-to-have-attribute': 'error',
     'testing-library/await-async-query': 'error',
     'testing-library/no-await-sync-query': 'error',
-    'testing-library/no-debug': 'warn',
+    'testing-library/no-debugging-utils': 'warn',
     'testing-library/no-dom-import': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

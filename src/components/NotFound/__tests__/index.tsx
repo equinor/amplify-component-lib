@@ -1,5 +1,5 @@
 import { render, screen } from '../../../test-utils';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import NotFound from '..';
 import userEvent from '@testing-library/user-event';
 import { Icon } from '@equinor/eds-core-react';
