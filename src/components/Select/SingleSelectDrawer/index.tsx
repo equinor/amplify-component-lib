@@ -79,15 +79,20 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
     },
     ref
   ) => {
-    const options = getAllItems(items);
+    const [options, setOptions] = useState<SelectItem[]>(getAllItems(items));
     const [selectedValue, setSelectedValue] = useState<SelectItem | undefined>(
-      options.find((item) => item.value === initialSelectedItem)
+      getAllItems(items).find((item) => item.value === initialSelectedItem)
     );
     const [inputItems, setInputItems] = useState<SelectItem[]>(items);
 
     useEffect(() => {
+      const allItems = getAllItems(items);
+      setOptions(allItems);
+      setSelectedValue(
+        allItems.find((item) => item.value === initialSelectedItem)
+      );
       setInputItems(items);
-    }, [items]);
+    }, [items, initialSelectedItem]);
 
     const {
       isOpen,
