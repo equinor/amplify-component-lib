@@ -38,8 +38,9 @@ test("Doesn't render label when closed", () => {
   expect(screen.queryByText('Label')).not.toBeInTheDocument();
 });
 
-test('Fires onCreate when clicked', () => {
+test('Fires onCreate when clicked', async () => {
   const onCreateFn = jest.fn();
+  const user = userEvent.setup();
 
   render(
     <CreateItem
@@ -50,7 +51,7 @@ test('Fires onCreate when clicked', () => {
   );
 
   const btn = screen.getByRole('button');
-  userEvent.click(btn);
+  await user.click(btn);
 
   expect(onCreateFn).toHaveBeenCalledTimes(1);
 });

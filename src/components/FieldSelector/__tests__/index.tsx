@@ -25,24 +25,26 @@ test('Renders', () => {
   render(<FieldSelector {...props} />);
 });
 
-test('Runs onSelect function once when clicking an item', () => {
+test('Runs onSelect function once when clicking an item', async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} />);
+  const user = userEvent.setup();
 
   const secondItem = screen.getByText(
     new RegExp(props.availableFields[1].name, 'i')
   );
-  userEvent.click(secondItem);
+  await user.click(secondItem);
 
   expect(props.onSelect).toHaveBeenCalledWith(props.availableFields[1]);
   expect(props.onSelect).toHaveBeenCalledTimes(1);
 });
 
-test('Doesnt run onSelect function when clicking already selected item', () => {
+test('Doesnt run onSelect function when clicking already selected item', async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} />);
+  const user = userEvent.setup();
 
   const selected = screen.getByText(new RegExp(props.currentField.name, 'i'));
-  userEvent.click(selected);
+  await user.click(selected);
   expect(props.onSelect).toHaveBeenCalledTimes(0);
 });

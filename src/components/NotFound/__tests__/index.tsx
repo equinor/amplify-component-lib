@@ -41,12 +41,13 @@ test('Renders react element when given', () => {
   expect(icon).toBeInTheDocument();
 });
 
-test('Fires onBack correctly when clicking button', () => {
+test('Fires onBack correctly when clicking button', async () => {
   const props = fakeProps();
   render(<NotFound {...props} />);
+  const user = userEvent.setup();
 
   const button = screen.getByRole('button');
-  userEvent.click(button);
+  await user.click(button);
 
   expect(props.onBack).toHaveBeenCalledTimes(1);
 });

@@ -7,30 +7,32 @@ test('Renders without crashing', () => {
   render(<CopyText textToCopy="Test"></CopyText>);
 });
 
-test('Renders label on hover', () => {
+test('Renders label on hover', async () => {
   render(<CopyText textToCopy="Test"></CopyText>);
+  const user = userEvent.setup();
 
   const wrapper = screen.getByTestId('copyTextWrapper');
 
-  userEvent.hover(wrapper);
+  await user.hover(wrapper);
 
   expect(screen.getByText('Copy')).toBeInTheDocument();
 });
 
-test('Copies text to clipbard and displays success message', () => {
+test('Copies text to clipbard and displays success message', async () => {
   render(<CopyText textToCopy="Test"></CopyText>);
+  const user = userEvent.setup();
 
   let clipboard = '';
 
   // Mock navigator object
-  Object.assign(navigator, {
-    clipboard: {
+  Object.defineProperty(navigator, 'clipboard', {
+    value: {
       writeText: (val: string) => (clipboard = val),
     },
   });
 
   const wrapper = screen.getByTestId('copyTextWrapper');
-  userEvent.click(wrapper);
+  await user.click(wrapper);
 
   expect(clipboard).toBe('Test');
   expect(screen.getByText('Copied!')).toBeInTheDocument();

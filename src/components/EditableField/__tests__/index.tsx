@@ -15,34 +15,36 @@ test('renders textbox when clicked', () => {
   expect(screen.getByRole('textbox')).toBeInTheDocument();
 });
 
-test('renders textbox when clicked', () => {
+test('renders textbox when clicked', async () => {
   const cb = jest.fn();
   render(
     <EditableField editable={true} onChange={cb} value="Test"></EditableField>
   );
+  const user = userEvent.setup();
 
   fireEvent.click(screen.getByRole('heading', { name: /test/i }));
 
   const textbox = screen.getByRole('textbox') as HTMLTextAreaElement;
   textbox.value = '';
 
-  userEvent.type(textbox, 'A new test');
-  expect(textbox).toHaveValue('A new test');
+  await user.type(textbox, 'A new test');
+  expect(textbox.value).toBe('A new test');
 });
 
-test('Returns to display mode with onchange after write and deselect', () => {
+test('Returns to display mode with onchange after write and deselect', async () => {
   const cb = jest.fn();
   render(
     <EditableField editable={true} onChange={cb} value="Test"></EditableField>
   );
+  const user = userEvent.setup();
 
-  userEvent.click(screen.getByRole('heading', { name: /test/i }));
+  await user.click(screen.getByRole('heading', { name: /test/i }));
 
   const textbox = screen.getByRole('textbox') as HTMLTextAreaElement;
   textbox.value = '';
 
-  userEvent.type(textbox, 'A new test');
-  userEvent.click(document.body);
+  await user.type(textbox, 'A new test');
+  await user.click(document.body);
 
   expect(cb).toHaveBeenCalled();
   expect(

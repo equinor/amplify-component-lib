@@ -28,9 +28,10 @@ test('Renders tooltip when closed', async () => {
   render(<MenuItem {...defaultProps}></MenuItem>, {
     wrapper: ({ children }) => SideBarWrapper(children),
   });
+  const user = userEvent.setup();
   const link = screen.getByTestId('sidebar-menu-item');
 
-  userEvent.hover(link);
+  await user.hover(link);
 
   await waitFor(() => screen.getByRole('tooltip'));
   expect(screen.getByRole('tooltip')).toHaveTextContent('Home');
@@ -40,9 +41,10 @@ test('Does not render tooltip when open', async () => {
   render(<MenuItem {...defaultProps}></MenuItem>, {
     wrapper: ({ children }) => SideBarWrapper(children, true),
   });
+  const user = userEvent.setup();
   const link = screen.getByTestId('sidebar-menu-item');
 
-  userEvent.hover(link);
+  await user.hover(link);
 
   await waitFor(() =>
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
