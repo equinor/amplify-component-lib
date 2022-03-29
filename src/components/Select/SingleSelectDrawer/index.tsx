@@ -61,7 +61,7 @@ const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
 export type SingleSelectDrawerProps = {
   items: SelectItem[];
   onChange: (item: SelectItem | null) => void;
-  initialSelectedItem?: SelectItem;
+  initialSelectedItem?: string;
 } & Omit<SingleSelectProps, 'items' | 'initialSelectedItem' | 'onChange'>;
 
 const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
@@ -79,11 +79,11 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
     },
     ref
   ) => {
+    const options = getAllItems(items);
     const [selectedValue, setSelectedValue] = useState<SelectItem | undefined>(
-      initialSelectedItem
+      options.find((item) => item.value === initialSelectedItem)
     );
     const [inputItems, setInputItems] = useState<SelectItem[]>(items);
-    const options = getAllItems(items);
 
     useEffect(() => {
       setInputItems(items);
@@ -127,7 +127,7 @@ const SingleSelectDrawer = forwardRef<HTMLDivElement, SingleSelectDrawerProps>(
         setInputItems(items);
       },
       initialSelectedItem: options.find(
-        (item) => item.value === initialSelectedItem?.value
+        (item) => item.value === initialSelectedItem
       ),
     });
 

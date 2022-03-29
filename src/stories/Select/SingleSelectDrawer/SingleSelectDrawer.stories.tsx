@@ -40,7 +40,6 @@ export default {
         },
       ],
     },
-    initialSelectedItem: { control: 'string', defaultValue: '1' },
   },
 } as Meta;
 
@@ -52,3 +51,6 @@ const Template: Story<SingleSelectDrawerProps> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {};
+
+export const InitialValue = Template.bind({});
+InitialValue.args = { initialSelectedItem: '2' };
