@@ -1,9 +1,10 @@
-import { forwardRef, MouseEvent, useEffect, useState } from 'react';
-import { Icon } from '@equinor/eds-core-react';
+import { MouseEvent, forwardRef, useEffect, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import styled from 'styled-components';
-import { Checkbox } from '@material-ui/core';
+
+import { Checkbox } from '@mui/material';
+import { Icon } from '@equinor/eds-core-react';
 import { SelectItem } from '..';
+import styled from 'styled-components';
 
 interface StyledOptionProps {
   section: number;
