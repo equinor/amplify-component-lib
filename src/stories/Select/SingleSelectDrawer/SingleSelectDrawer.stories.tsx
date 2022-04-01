@@ -53,4 +53,4 @@ export const Primary = Template.bind({});
 Primary.args = {};
 
 export const InitialValue = Template.bind({});
-InitialValue.args = { initialSelectedItem: '2' };
+InitialValue.args = { initialSelectedItem: '22' };
