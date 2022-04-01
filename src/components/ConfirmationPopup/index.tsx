@@ -7,6 +7,7 @@ const { spacings } = tokens;
 
 const StyledDialog = styled(Dialog)`
   width: 400px;
+  /* padding: 50px; */
 `;
 
 interface IStyledActionsProps {
@@ -55,7 +56,7 @@ const ConfirmationPopup: React.FC<IComponentProps> = ({
     return (
       <Scrim onClose={onClose} isDismissable open>
         <StyledDialog open={show}>
-          <Dialog.Title>{title}</Dialog.Title>
+          <Dialog.Header>{title}</Dialog.Header>
           <Dialog.CustomContent>
             {body && <Typography variant="body_short">{body}</Typography>}
             {children}

@@ -12,14 +12,7 @@ export default {
 } as Meta;
 
 const Template: Story<IComponentProps> = (args) => {
-  return (
-    <ConfirmationPopup
-      show={args.show}
-      actions={args.actions}
-      body={args.body}
-      onClose={args.onClose}
-    />
-  );
+  return <ConfirmationPopup {...args} />;
 };
 
 export const Primary = Template.bind({});
