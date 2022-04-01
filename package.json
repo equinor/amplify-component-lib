@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.4.24",
+  "version": "1.4.25",
   "description": "Frontend Typescript components for the Amplify team",
   "files": [
     "dist/*"
@@ -74,10 +74,13 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
     "@equinor/eds-core-react": "^0.18.0",
     "@equinor/eds-icons": "^0.10.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@mui/material": "^5.5.3",
+    "@mui/styles": "^5.5.3",
     "downshift": "^6.1.7",
     "lodash-es": "^4.17.21",
     "random-seed": "^0.3.0",
