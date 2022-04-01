@@ -3,6 +3,7 @@ import { render, cleanup, fireEvent } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import ConfirmationPopup from '../index';
 import { Button } from '@equinor/eds-core-react';
+import { screen } from '@testing-library/dom';
 
 afterEach(cleanup);
 
@@ -12,7 +13,7 @@ test('renders without crashing', () => {
 
 test('renders when show is true', () => {
   render(<ConfirmationPopup show={true} />);
-  expect(document.getElementById('eds-dialog-title')).toBeInTheDocument();
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
 });
 
 test('renders title when value is given', () => {
