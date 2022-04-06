@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.4.25",
+  "version": "1.5.0",
   "description": "Frontend Typescript components for the Amplify team",
   "files": [
     "dist/*"
@@ -74,14 +74,16 @@
     ]
   },
   "dependencies": {
-    "@emotion/react": "^11.8.2",
+    "@azure/msal-browser": "^2.23.0",
+    "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@equinor/eds-core-react": "^0.18.0",
     "@equinor/eds-icons": "^0.10.0",
     "@equinor/eds-tokens": "^0.7.0",
-    "@mui/material": "^5.5.3",
-    "@mui/styles": "^5.5.3",
+    "@mui/material": "^5.6.0",
+    "@mui/styles": "^5.6.0",
     "downshift": "^6.1.7",
+    "jwt-decode": "^3.1.2",
     "lodash-es": "^4.17.21",
     "random-seed": "^0.3.0",
     "react-dropzone": "^12.0.4",
@@ -89,7 +91,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "^6.1.1",
+    "@faker-js/faker": "^6.1.2",
     "@open-wc/building-rollup": "^2.0.1",
     "@optimize-lodash/rollup-plugin": "^3.0.0",
     "@rollup/plugin-commonjs": "^21.0.3",
@@ -101,8 +103,8 @@
     "@storybook/node-logger": "^6.4.19",
     "@storybook/preset-create-react-app": "^4.1.0",
     "@storybook/react": "^6.4.19",
-    "@testing-library/dom": "^8.12.0",
-    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/dom": "^8.13.0",
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^14.0.0",
     "@theo.gravity/version-bump": "^2.0.14",
@@ -124,7 +126,7 @@
     "eslint-plugin-jest-dom": "^4.0.1",
     "husky": "^7.0.2",
     "ora": "^6.0.1",
-    "prettier": "^2.6.1",
+    "prettier": "^2.6.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-scripts": "5.0.0",
@@ -139,7 +141,7 @@
     "run-script-os": "^1.1.6",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.3",
-    "webpack": "^5.70.0"
+    "webpack": "^5.71.0"
   },
   "peerDependencies": {
     "react": ">=16.8",

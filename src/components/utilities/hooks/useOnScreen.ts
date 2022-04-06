@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // https://stackoverflow.com/a/65008608
-export default function useOnScreen(
+export function useOnScreen(
   ref: { current: HTMLDivElement | null },
   threshold: number | number[] | undefined
 ) {

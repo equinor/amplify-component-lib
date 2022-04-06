@@ -1,3 +1,4 @@
+import AuthProvider from './AuthProvider';
 import SnackbarProvider from './SnackbarProvider';
 
-export default { SnackbarProvider };
+export default { AuthProvider, SnackbarProvider };
