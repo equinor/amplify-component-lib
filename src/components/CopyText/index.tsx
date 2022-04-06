@@ -1,14 +1,16 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { copy } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+
+import { copy } from '@equinor/eds-icons';
 import { delay } from 'lodash-es';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 
 const Wrapper = styled.div`
   position: relative;
+  pointer-events: auto;
   &:hover {
     cursor: pointer;
   }
@@ -87,10 +89,9 @@ const CopyText: FC<CopyTextProps> = ({
 
   return (
     <Wrapper
-      data-testid="copyTextWrapper"
       onClick={handleCopy}
       onMouseOver={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
+      onMouseOut={() => setHovering(false)}
     >
       {children}
       {hovering && (
