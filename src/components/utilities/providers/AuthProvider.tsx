@@ -171,8 +171,9 @@ const AuthProvider: FC<AuthProviderProps> = ({
           authState,
           logout: () => msalApp.logoutRedirect(),
         }}
-        {...children}
-      />
+      >
+        {children}
+      </AuthContext.Provider>
     );
   }
 };
