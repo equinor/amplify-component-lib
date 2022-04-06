@@ -1,10 +1,9 @@
-import SingleSelectDrawer from './SingleSelectDrawer';
 import MultiSelectDrawer from './MultiSelectDrawer';
-import OptionDrawer from './OptionDrawer';
+import SingleSelectDrawer from './SingleSelectDrawer';
 export interface SelectItem {
   value: string;
   label: string;
   children?: SelectItem[];
 }
 
-export { SingleSelectDrawer, MultiSelectDrawer, OptionDrawer };
+export { SingleSelectDrawer, MultiSelectDrawer };

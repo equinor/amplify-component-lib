@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Snackbar, SnackbarProps } from '@equinor/eds-core-react';
 
 export interface State {
@@ -8,6 +8,16 @@ export interface State {
 export const SnackbarContext = React.createContext<State | undefined>(
   undefined
 );
+
+export const useSnackbar = () => {
+  const context = useContext(SnackbarContext);
+  if (context === undefined) {
+    throw new Error(
+      'useSnackbarContext must be used within a SnackbarContextProvider'
+    );
+  }
+  return context;
+};
 
 const SnackbarContextProvider: React.FC<SnackbarProps> = (props) => {
   const [open, setOpen] = React.useState(false);

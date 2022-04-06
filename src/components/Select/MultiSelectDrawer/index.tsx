@@ -1,4 +1,3 @@
-import { forwardRef, useEffect, useState } from 'react';
 import {
   Button,
   Icon,
@@ -6,12 +5,14 @@ import {
   Label,
   MultiSelectProps,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
-import { useCombobox, useMultipleSelection } from 'downshift';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
+import { forwardRef, useEffect, useState } from 'react';
+import { useCombobox, useMultipleSelection } from 'downshift';
+
+import OptionDrawer from '../OptionDrawer';
 import { SelectItem } from '..';
-import { OptionDrawer } from '..';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings, elevation } = tokens;
 

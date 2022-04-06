@@ -1,7 +1,7 @@
-import auth from './auth';
+import { auth, environment } from './auth_environment';
+
 import coordinate from './coordinate';
 import date from './date';
-import environment from './environment';
 import favicon from './favicon';
 import image from './image';
 import size from './size';

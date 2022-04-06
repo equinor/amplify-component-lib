@@ -1,8 +1,15 @@
 import { AccountInfo, AuthError } from '@azure/msal-browser';
-import { FC, createContext, useCallback, useEffect, useState } from 'react';
+import {
+  FC,
+  ReactElement,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
-import { FullPageSpinner } from '../..';
 import { auth } from '../utilities';
 
 const { GRAPH_ENDPOINTS, GRAPH_REQUESTS, fetchMsGraph, msalApp, acquireToken } =
@@ -26,7 +33,22 @@ export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
 
-const AuthProvider: FC = (props) => {
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within a AuthContext provider');
+  }
+  return context;
+};
+
+export interface AuthProviderProps {
+  loadingComponent: ReactElement;
+}
+
+const AuthProvider: FC<AuthProviderProps> = ({
+  children,
+  loadingComponent,
+}) => {
   const [account, setAccount] = useState<AccountInfo | undefined | null>(
     undefined
   );
@@ -138,7 +160,7 @@ const AuthProvider: FC = (props) => {
   }, [setAccount, handleSetAccountChanged]);
 
   if (authState === 'loading') {
-    return <FullPageSpinner variant="equinor" withoutScrim />;
+    return loadingComponent;
   } else {
     return (
       <AuthContext.Provider
@@ -149,7 +171,7 @@ const AuthProvider: FC = (props) => {
           authState,
           logout: () => msalApp.logoutRedirect(),
         }}
-        {...props}
+        {...children}
       />
     );
   }
