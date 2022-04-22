@@ -2,6 +2,7 @@ import { AccountInfo, AuthError } from '@azure/msal-browser';
 import {
   FC,
   ReactElement,
+  ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -43,6 +44,7 @@ export const useAuth = () => {
 
 export interface AuthProviderProps {
   loadingComponent: ReactElement;
+  children: ReactNode;
 }
 
 const AuthProvider: FC<AuthProviderProps> = ({

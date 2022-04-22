@@ -1,13 +1,14 @@
 import {
   CircularProgress as EDSCircularProgress,
-  Icon,
   TopBar as EDSTopBar,
+  Icon,
   Typography,
 } from '@equinor/eds-core-react';
+import React, { ReactElement, ReactNode, forwardRef } from 'react';
+
 import { IconData } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
-import React, { forwardRef, ReactElement } from 'react';
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;
 
@@ -50,6 +51,7 @@ type TopBarType = {
   applicationName: string;
   isFetching?: boolean;
   capitalize?: boolean;
+  children: ReactNode;
 } & React.HTMLAttributes<HTMLElement>;
 
 export const TopBar = forwardRef<HTMLElement, TopBarType>(

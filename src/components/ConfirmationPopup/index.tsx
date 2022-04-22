@@ -1,7 +1,8 @@
 import { Dialog, Scrim, Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import React from 'react';
+import React, { ReactNode } from 'react';
+
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { spacings } = tokens;
 
@@ -41,6 +42,7 @@ export interface IComponentProps {
   actions?: Array<JSX.Element>;
   actionPosition?: 'left' | 'right';
   onClose?: () => void | undefined;
+  children: ReactNode;
 }
 
 const ConfirmationPopup: React.FC<IComponentProps> = ({

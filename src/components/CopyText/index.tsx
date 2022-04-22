@@ -1,5 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import { copy } from '@equinor/eds-icons';
@@ -59,6 +59,7 @@ type IconText = 'Copy' | 'Copied!';
 export interface CopyTextProps {
   textToCopy: string;
   iconRightPos?: string;
+  children: ReactNode;
 }
 
 const CopyText: FC<CopyTextProps> = ({
