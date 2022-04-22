@@ -3,10 +3,11 @@ import {
   TextField as EdsTextField,
   Typography,
 } from '@equinor/eds-core-react';
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
+
 import { edit } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
-import React, { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { spacings, colors } = tokens;
 
@@ -62,6 +63,7 @@ export interface EditableFieldProps {
   inputField?: ReactElement;
   value?: string;
   onChange?: (value: string) => void;
+  children: ReactNode;
 }
 
 const EditableField: React.FC<EditableFieldProps> = ({

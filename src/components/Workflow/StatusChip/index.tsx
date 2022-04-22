@@ -1,4 +1,5 @@
-import { CSSProperties, FC } from 'react';
+import { CSSProperties, FC, ReactNode } from 'react';
+
 import styled from 'styled-components';
 
 interface ChipProps {
@@ -38,6 +39,7 @@ export interface StatusChipProps {
   color?: string;
   backgroundColor?: string;
   style?: CSSProperties;
+  children: ReactNode;
 }
 
 const StatusChip: FC<StatusChipProps> = ({

@@ -1,9 +1,10 @@
-import React, { forwardRef, useContext, useState } from 'react';
-import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
+import React, { ReactNode, forwardRef, useContext, useState } from 'react';
+
+import CreateItem from './CreateItem';
 import EquinorLogo from '../EquinorLogo';
 import ToggleOpen from './ToggleOpen';
-import CreateItem from './CreateItem';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 interface ContainerProps {
@@ -58,6 +59,7 @@ type SidebarType = {
   open?: boolean;
   maxHeight?: string;
   onToggle?: (state: boolean) => void;
+  children: ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
