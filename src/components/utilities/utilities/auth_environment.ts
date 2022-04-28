@@ -139,7 +139,6 @@ const acquireToken = async (request = GRAPH_REQUESTS.LOGIN) => {
         throw new Error('Redirecting');
       } else {
         console.error(`Non-interactive error: ${error.errorCode}`);
-        window.location.reload();
         throw new Error('Reloading');
       }
     });
