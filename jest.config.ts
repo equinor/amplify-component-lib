@@ -4,5 +4,6 @@ import type { Config } from '@jest/types';
 export default async (): Promise<Config.InitialOptions> => {
   return {
     automock: true,
+    transformIgnorePatterns: ['<rootDir>/node_modules/(?!lodash-es)'],
   };
 };
