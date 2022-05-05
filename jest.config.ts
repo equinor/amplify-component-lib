@@ -5,5 +5,8 @@ export default async (): Promise<Config.InitialOptions> => {
   return {
     automock: true,
     transformIgnorePatterns: ['/!node_modules\\/lodash-es/'],
+    moduleNameMapper: {
+      '^lodash-es$': 'lodash',
+    },
   };
 };
