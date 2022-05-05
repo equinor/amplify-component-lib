@@ -1,8 +1,9 @@
-import React from 'react';
-import { Typography, Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { file, folder, link } from '@equinor/eds-icons';
+
+import React from 'react';
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 
@@ -63,7 +64,7 @@ const TableItem: React.FC<TableItemProps> = ({
   onClick,
 }) => {
   return (
-    <GridItem hoverable={onClick ? 1 : 0} onClick={() => onClick!()}>
+    <GridItem hoverable={onClick ? 1 : 0} onClick={() => onClick?.()}>
       <NameItem>
         <Icon data={getIcon(icon)} />
         <StyledTypography variant="h6">{name}</StyledTypography>

@@ -1,14 +1,15 @@
-import React, { forwardRef } from 'react';
-import { tokens } from '@equinor/eds-tokens';
 import {
   Button,
   ButtonProps,
-  Icon,
   Tooltip as EDSTooltip,
+  Icon,
   Typography,
 } from '@equinor/eds-core-react';
-import styled from 'styled-components';
+import React, { forwardRef } from 'react';
+
 import { IconData } from '@equinor/eds-icons';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 import { useSideBar } from '../SideBar';
 
 const { colors, spacings } = tokens;
@@ -79,7 +80,7 @@ export type MenuItemProps = {
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   ({ currentUrl, icon, name, link, onClick }, ref) => {
-    const isCurrentUrl = () => currentUrl?.includes(link!);
+    const isCurrentUrl = () => (link ? currentUrl?.includes(link) : false);
     const { isOpen } = useSideBar();
 
     const getIconColor = () => {

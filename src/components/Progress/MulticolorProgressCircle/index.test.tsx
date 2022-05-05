@@ -1,14 +1,12 @@
 import '@testing-library/jest-dom/extend-expect';
 
 import MultiColorProgressCircle, { ColoredProgressCircle } from '.';
-import { cleanup, render } from '../../../test-utils';
 
 import React from 'react';
+import { render } from '../../../test-utils';
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;
-
-afterEach(cleanup);
 
 const testData: Array<ColoredProgressCircle> = [
   {
@@ -25,15 +23,6 @@ const testData: Array<ColoredProgressCircle> = [
   },
 ];
 
-test('renders without crashing', () => {
-  render(
-    <MultiColorProgressCircle
-      completed={0}
-      data={testData}
-    ></MultiColorProgressCircle>
-  );
-});
-
 test('renders correct background color', () => {
   const { getByTestId } = render(
     <MultiColorProgressCircle
@@ -43,7 +32,7 @@ test('renders correct background color', () => {
   );
 
   const svg = getByTestId('svgcontainer');
-  const backgroundCircle = svg.firstElementChild!;
+  const backgroundCircle = svg.firstElementChild;
 
   expect(backgroundCircle).toHaveAttribute(
     'stroke',

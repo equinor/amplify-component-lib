@@ -13,10 +13,6 @@ function fakeProps() {
   };
 }
 
-test('Renders', () => {
-  render(<NotFound {...fakeProps()} />);
-});
-
 test('Renders correct label', () => {
   const props = fakeProps();
   render(<NotFound {...props} />);

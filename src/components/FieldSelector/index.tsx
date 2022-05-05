@@ -1,13 +1,14 @@
-import { useState, MouseEvent, forwardRef } from 'react';
 import {
   Button,
-  Icon,
   Menu as EDSMenu,
+  Icon,
   Typography,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { MouseEvent, forwardRef, useState } from 'react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
+
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 
@@ -82,7 +83,7 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
     { currentField, availableFields, onSelect, showAccessITLink = true },
     ref
   ) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>();
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [open, setOpen] = useState(false);
 
     const openMenu = (e: MouseEvent<HTMLButtonElement>) => {
@@ -110,7 +111,7 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
         <Menu
           id="field-menu"
           open={open}
-          anchorEl={anchorEl!}
+          anchorEl={anchorEl}
           onClose={closeMenu}
           placement="bottom"
         >

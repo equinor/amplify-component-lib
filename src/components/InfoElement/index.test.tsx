@@ -6,10 +6,6 @@ import { Button } from '@equinor/eds-core-react';
 import InfoElement from '.';
 import React from 'react';
 
-test('renders without crashing', () => {
-  render(<InfoElement content="Testcontent" title="TestTitle"></InfoElement>);
-});
-
 test('renders title correctly', () => {
   const title = 'I am a title';
   render(<InfoElement content="Testcontent" title={title}></InfoElement>);

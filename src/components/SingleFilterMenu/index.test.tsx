@@ -1,9 +1,7 @@
-import { cleanup, fireEvent, render } from '../../test-utils';
+import { fireEvent, render } from '../../test-utils';
 
 import SingleFilterMenu from '.';
 import { filter_list } from '@equinor/eds-icons';
-
-afterEach(cleanup);
 
 const dummyData = {
   data: ['test', 'best', '123'],
@@ -11,10 +9,6 @@ const dummyData = {
   menuTitle: 'Select an item',
   onChange: () => undefined,
 };
-
-test('renders without crashing', () => {
-  render(<SingleFilterMenu {...dummyData}></SingleFilterMenu>);
-});
 
 test('renders a menu button with menu closed by default', () => {
   const { queryByTestId } = render(

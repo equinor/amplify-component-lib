@@ -5,10 +5,6 @@ import { fireEvent, render, screen } from '../../../test-utils';
 import NewCommentField from './index';
 import React from 'react';
 
-test('renders without crashing', () => {
-  render(<NewCommentField onPublish={() => undefined}></NewCommentField>);
-});
-
 test('Triggers publish on button press', async () => {
   let str = '';
   const handlePublish = (value: string) => {

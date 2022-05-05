@@ -6,18 +6,6 @@ import React from 'react';
 import TopBar from '.';
 import { car } from '@equinor/eds-icons';
 
-test('Renders TopBar', () => {
-  render(
-    <TopBar
-      applicationIcon={car}
-      applicationName="Car-go 🏎"
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
-      content
-    </TopBar>
-  );
-});
-
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
     <TopBar
@@ -26,7 +14,7 @@ test('Shows progress indicator only when isFetching={true}', () => {
       onHeaderClick={() => console.log('Going home 🏡')}
       isFetching={true}
     >
-      content{' '}
+      content
     </TopBar>
   );
 
@@ -39,7 +27,7 @@ test('Shows progress indicator only when isFetching={true}', () => {
       onHeaderClick={() => console.log('Going home 🏡')}
       isFetching={false}
     >
-      content{' '}
+      content
     </TopBar>
   );
 
@@ -54,7 +42,7 @@ test('Shows correct application name', () => {
       applicationName={appName}
       onHeaderClick={() => console.log('Going home 🏡')}
     >
-      content{' '}
+      content
     </TopBar>
   );
   expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();

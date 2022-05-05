@@ -9,10 +9,6 @@ const dummyData = {
   headerText: 'PETROPHYSICIST',
 };
 
-test('renders without crashing', () => {
-  render(<DataCard {...dummyData} />);
-});
-
 test('renders datatype discipline and type correctly', () => {
   const { getByText } = render(<DataCard {...dummyData} />);
 

@@ -21,11 +21,6 @@ function fakeProps(): FieldSelectorType {
   };
 }
 
-test('Renders', () => {
-  const props = fakeProps();
-  render(<FieldSelector {...props} />);
-});
-
 test('Runs onSelect function once when clicking an item', async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} />);

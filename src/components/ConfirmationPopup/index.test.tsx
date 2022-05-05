@@ -1,17 +1,11 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import { cleanup, fireEvent, render } from '../../test-utils';
+import { fireEvent, render } from '../../test-utils';
 
 import { Button } from '@equinor/eds-core-react';
 import ConfirmationPopup from '.';
 import React from 'react';
 import { screen } from '@testing-library/dom';
-
-afterEach(cleanup);
-
-test('renders without crashing', () => {
-  render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);
-});
 
 test('renders when show is true', () => {
   render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);

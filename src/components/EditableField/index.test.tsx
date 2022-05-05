@@ -5,11 +5,7 @@ import { fireEvent, render, screen, userEvent } from '../../test-utils';
 import EditableField from '.';
 import React from 'react';
 
-test('renders without crashing', () => {
-  render(<EditableField editable={true} value="Test"></EditableField>);
-});
-
-test('renders textbox when clicked', () => {
+test('renders textbox', () => {
   render(<EditableField editable={true} value="Test"></EditableField>);
 
   fireEvent.click(screen.getByRole('heading', { name: /test/i }));

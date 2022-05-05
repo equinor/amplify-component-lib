@@ -10,8 +10,8 @@ test('Renders with correct color when given prop', () => {
 
   const svgs = container.querySelectorAll('svg');
   for (const svg of svgs) {
-    expect(
-      svg.getAttribute('fill') === colors.interactive.primary__resting.hex
+    expect(svg.getAttribute('fill')).toBe(
+      colors.interactive.primary__resting.hex
     );
   }
 });

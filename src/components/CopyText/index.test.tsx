@@ -6,10 +6,6 @@ import CopyText from '.';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/react';
 
-test('Renders without crashing', () => {
-  render(<CopyText textToCopy="Test">testing text</CopyText>);
-});
-
 test('Renders label on hover', async () => {
   render(<CopyText textToCopy="Test">testing text</CopyText>);
   const user = userEvent.setup();

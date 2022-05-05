@@ -19,17 +19,6 @@ const defaultMenuItems: MenuItemType[] = [
   },
 ];
 
-test('Sidebar renders', () => {
-  const currentUrl = 'home';
-  render(
-    <SideBar>
-      {defaultMenuItems.map((m) => {
-        return <SideBar.Item key={m.name} currentUrl={currentUrl} {...m} />;
-      })}
-    </SideBar>
-  );
-});
-
 test('Renders create new button when onCreate prop is given', () => {
   render(
     <SideBar
