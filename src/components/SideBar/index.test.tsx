@@ -43,7 +43,7 @@ test('Renders closed width when closed', () => {
     </SideBar>
   );
 
-  expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '72px' });
+  expect(screen.getByTestId('sidebar').getAttribute('width')).toBe('72px');
 });
 
 test('Renders open width when open', () => {
