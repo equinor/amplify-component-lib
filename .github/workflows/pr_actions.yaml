@@ -25,11 +25,9 @@ jobs:
 
       - run: corepack enable
       - name: Install dependencies
-        working-directory: client
         run: yarn
 
       - name: Linting
-        working-directory: client
         run: yarn run lint
 
   test:
@@ -49,11 +47,9 @@ jobs:
 
       - run: corepack enable
       - name: Install dependencies
-        working-directory: client
         run: yarn
 
       - name: Unit tests
-        working-directory: client
         run: yarn run test:ci
 
   build:
@@ -73,9 +69,7 @@ jobs:
 
       - run: corepack enable
       - name: Install dependencies
-        working-directory: client
         run: yarn
 
       - name: Build
-        working-directory: client
         run: yarn run build
