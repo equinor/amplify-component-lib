@@ -17,7 +17,7 @@ test('Renders with correct color when given prop', () => {
 });
 
 test('Render correct size when given prop', () => {
-  const size = faker.random.arrayElement([
+  const size = faker.helpers.arrayElement([
     16, 24, 32, 40, 48,
   ]) as HourglassProgressProps['size'];
   const { container } = render(<HourglassProgress size={size} />);
