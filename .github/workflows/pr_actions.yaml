@@ -1,0 +1,81 @@
+name: PR actions
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**'
+      - '.github/workflows/client.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [17.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - name: Install dependencies
+        working-directory: client
+        run: yarn
+
+      - name: Linting
+        working-directory: client
+        run: yarn run lint
+
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [17.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - name: Install dependencies
+        working-directory: client
+        run: yarn
+
+      - name: Unit tests
+        working-directory: client
+        run: yarn run test:ci
+
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 17.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - name: Install dependencies
+        working-directory: client
+        run: yarn
+
+      - name: Build
+        working-directory: client
+        run: yarn run build
