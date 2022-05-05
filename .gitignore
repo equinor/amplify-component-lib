@@ -23,3 +23,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# yarn modern
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
