@@ -1,10 +1,12 @@
-import { Story, Meta } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
+import ProgressBar, {
+  ProgressBarProps,
+} from '../../../components/Progress/ProgressBar';
+
 import styled from 'styled-components';
 
-import ProgressBar, { ProgressBarProps } from '../../components/ProgressBar';
-
 export default {
-  title: 'ProgressBar',
+  title: 'Progress/ProgressBar',
   component: ProgressBar,
   argTypes: {
     progress: { control: 'number', defaultValue: 25 },

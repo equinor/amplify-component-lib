@@ -1,12 +1,11 @@
-import { Story, Meta } from '@storybook/react';
-
+import { Meta, Story } from '@storybook/react';
 import MulticolorProgressCircle, {
   ColoredProgressCircle,
   MulticolorProgressCircleProps,
-} from '../../components/MulticolorProgressCircle';
+} from '../../../components/Progress/MulticolorProgressCircle';
 
 export default {
-  title: 'MulticolorProgressCircle',
+  title: 'Progress/MulticolorProgressCircle',
   component: MulticolorProgressCircle,
   argTypes: {
     data: {

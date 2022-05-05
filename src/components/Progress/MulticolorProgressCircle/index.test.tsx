@@ -1,7 +1,9 @@
-import React from 'react';
-import { render, cleanup } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import MultiColorProgressCircle, { ColoredProgressCircle } from '../';
+
+import MultiColorProgressCircle, { ColoredProgressCircle } from '..';
+import { cleanup, render } from '../../../../test-utils';
+
+import React from 'react';
 import { tokens } from '@equinor/eds-tokens';
 const { colors } = tokens;
 

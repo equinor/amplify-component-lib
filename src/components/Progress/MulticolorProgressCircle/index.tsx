@@ -1,7 +1,7 @@
-import { Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import React from 'react';
+import { Typography } from '@equinor/eds-core-react';
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 const { colors, typography } = tokens;
 
 const Container = styled.div`
