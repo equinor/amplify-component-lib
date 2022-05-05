@@ -1,9 +1,10 @@
-import { render, screen } from '../../../test-utils';
-import { faker } from '@faker-js/faker';
-import NotFound from '..';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '../../test-utils';
+
 import { Icon } from '@equinor/eds-core-react';
+import NotFound from '.';
 import { car_wash } from '@equinor/eds-icons';
+import { faker } from '@faker-js/faker';
+import userEvent from '@testing-library/user-event';
 
 function fakeProps() {
   return {

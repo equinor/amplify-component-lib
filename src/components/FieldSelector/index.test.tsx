@@ -1,7 +1,8 @@
-import { render, screen } from '../../../test-utils';
-import userEvent from '@testing-library/user-event';
+import FieldSelector, { FieldSelectorType } from '.';
+import { render, screen } from '../../test-utils';
+
 import { faker } from '@faker-js/faker';
-import FieldSelector, { FieldSelectorType } from '../index';
+import userEvent from '@testing-library/user-event';
 
 function fakeField() {
   return {

@@ -1,30 +1,40 @@
-import React from 'react';
-import { render, cleanup, fireEvent } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import ConfirmationPopup from '../index';
+
+import { cleanup, fireEvent, render } from '../../test-utils';
+
 import { Button } from '@equinor/eds-core-react';
+import ConfirmationPopup from '.';
+import React from 'react';
 import { screen } from '@testing-library/dom';
 
 afterEach(cleanup);
 
 test('renders without crashing', () => {
-  render(<ConfirmationPopup show={true}></ConfirmationPopup>);
+  render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);
 });
 
 test('renders when show is true', () => {
-  render(<ConfirmationPopup show={true} />);
+  render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);
   expect(screen.getByRole('dialog')).toBeInTheDocument();
 });
 
 test('renders title when value is given', () => {
   const title = 'Alec Trevelyan';
-  const { getByText } = render(<ConfirmationPopup show={true} title={title} />);
+  const { getByText } = render(
+    <ConfirmationPopup show={true} title={title}>
+      content
+    </ConfirmationPopup>
+  );
   expect(getByText(title).innerHTML).toBe(title);
 });
 
 test('renders body when value is given', () => {
   const body = 'This is a popup body';
-  const { getByText } = render(<ConfirmationPopup show={true} body={body} />);
+  const { getByText } = render(
+    <ConfirmationPopup show={true} body={body}>
+      content
+    </ConfirmationPopup>
+  );
   expect(getByText(body).innerHTML).toBe(body);
 });
 
@@ -38,7 +48,9 @@ test('renders buttons when value is given', () => {
     </Button>,
   ];
   const { getByText } = render(
-    <ConfirmationPopup show={true} actions={buttons} />
+    <ConfirmationPopup show={true} actions={buttons}>
+      content
+    </ConfirmationPopup>
   );
   expect(getByText('Cancel')).toBeInTheDocument();
   expect(getByText('Ok')).toBeInTheDocument();
@@ -56,7 +68,9 @@ test('triggers callback functions on actions given', () => {
     </Button>,
   ];
   const { getByText } = render(
-    <ConfirmationPopup show={true} actions={buttons} />
+    <ConfirmationPopup show={true} actions={buttons}>
+      content
+    </ConfirmationPopup>
   );
 
   fireEvent.click(getByText('Cancel'));

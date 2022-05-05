@@ -1,6 +1,7 @@
+import { cleanup, render } from '../../test-utils';
+
+import OptionalTooltip from '.';
 import React from 'react';
-import { cleanup, render } from '../../../test-utils';
-import OptionalTooltip from '..';
 
 afterEach(cleanup);
 

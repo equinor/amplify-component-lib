@@ -1,6 +1,7 @@
+import { render, screen } from '../../test-utils';
+
+import EquinorLogo from '.';
 import { tokens } from '@equinor/eds-tokens';
-import { render, screen } from '../../../test-utils';
-import EquinorLogo from '../index';
 
 const { colors } = tokens;
 

@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import { render, screen } from '../../../test-utils';
+import { render, screen } from '../../test-utils';
 
-import CopyText from '../index';
+import CopyText from '.';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/react';
 
 test('Renders without crashing', () => {
-  render(<CopyText textToCopy="Test"></CopyText>);
+  render(<CopyText textToCopy="Test">testing text</CopyText>);
 });
 
 test('Renders label on hover', async () => {

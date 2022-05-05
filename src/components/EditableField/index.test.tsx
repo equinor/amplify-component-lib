@@ -1,7 +1,9 @@
-import React from 'react';
-import { render, fireEvent, screen, userEvent } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import EditableField from '../index';
+
+import { fireEvent, render, screen, userEvent } from '../../test-utils';
+
+import EditableField from '.';
+import React from 'react';
 
 test('renders without crashing', () => {
   render(<EditableField editable={true} value="Test"></EditableField>);

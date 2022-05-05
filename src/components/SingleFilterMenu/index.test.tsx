@@ -1,6 +1,7 @@
+import { cleanup, fireEvent, render } from '../../test-utils';
+
+import SingleFilterMenu from '.';
 import { filter_list } from '@equinor/eds-icons';
-import { render, cleanup, fireEvent } from '../../../test-utils';
-import SingleFilterMenu from '../index';
 
 afterEach(cleanup);
 

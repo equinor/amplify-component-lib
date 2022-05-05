@@ -1,7 +1,9 @@
-import React from 'react';
-import { render, cleanup, screen } from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import FullPageSpinner from '../index';
+
+import { cleanup, render, screen } from '../../test-utils';
+
+import FullPageSpinner from '.';
+import React from 'react';
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;

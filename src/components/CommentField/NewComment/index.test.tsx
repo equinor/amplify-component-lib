@@ -1,7 +1,9 @@
-import React from 'react';
-import { render, fireEvent, screen } from '../../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import NewCommentField from '../index';
+
+import { fireEvent, render, screen } from '../../../test-utils';
+
+import NewCommentField from './index';
+import React from 'react';
 
 test('renders without crashing', () => {
   render(<NewCommentField onPublish={() => undefined}></NewCommentField>);
