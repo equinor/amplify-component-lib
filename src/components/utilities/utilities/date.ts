@@ -1,10 +1,22 @@
 import { isNaN } from 'lodash-es';
 
-const formatDate = (date?: string | null) => {
+const formatDate = (
+  date?: string | null,
+  options?: {
+    format: 'DD.MM.YYYY' | 'DD. month YYYY';
+  }
+) => {
   if (date) {
     const dateObj = new Date(date);
     if (!isNaN(dateObj.getTime())) {
       // getMonth()+1 because January is 0 and so on
+      if (options?.format === 'DD. month YYYY') {
+        const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
+        return `${day}. ${dateObj.toLocaleString('en-GB', {
+          month: 'long',
+          year: 'numeric',
+        })}`;
+      }
       const day = dateObj.getDate();
       const month = dateObj.getMonth() + 1;
       const year = dateObj.getFullYear();

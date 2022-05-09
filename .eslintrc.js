@@ -1,5 +1,4 @@
 module.exports = {
-  root: true,
   env: {
     browser: true,
     es6: true,
@@ -7,8 +6,10 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:jest/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -18,34 +19,13 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'react-hooks',
-    'testing-library',
-    'jest-dom',
-  ],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jest'],
   rules: {
-    'jest-dom/prefer-checked': 'error',
-    'jest-dom/prefer-enabled-disabled': 'error',
-    'jest-dom/prefer-required': 'error',
-    'jest-dom/prefer-to-have-attribute': 'error',
-    'testing-library/await-async-query': 'error',
-    'testing-library/no-await-sync-query': 'error',
-    'testing-library/no-debugging-utils': 'warn',
-    'testing-library/no-dom-import': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'react/prop-types': 'off',
+    'react-hooks/exhaustive-deps': 'error',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-redeclare': 'warn',
-    'no-unused-expressions': 'off',
     eqeqeq: 'error',
-    '@typescript-eslint/no-unused-expressions': 'warn',
-    '@typescript-eslint/no-unused-vars': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'off',
     'react/jsx-curly-brace-presence': [
       'error',
       { props: 'never', children: 'never' },

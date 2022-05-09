@@ -8,7 +8,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 interface ContainerProps {
-  open: boolean;
+  width: string;
   maxHeight?: string;
 }
 
@@ -19,8 +19,8 @@ const Container = styled.div<ContainerProps>`
   flex-direction: column;
   padding-bottom: ${spacings.comfortable.large};
   overflow: hidden;
-  width: ${(props) => (props.open ? '256px' : '72px')};
-  min-width: ${(props) => (props.open ? '256px' : '72px')};
+  width: ${(props) => props.width};
+  min-width: ${(props) => props.width};
   ${(props) => props.maxHeight && `max-height: ${props.maxHeight}`};
 `;
 
@@ -76,7 +76,12 @@ export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
 
     return (
       <SideBarContext.Provider value={{ isOpen }}>
-        <Container open={isOpen} ref={ref} maxHeight={maxHeight}>
+        <Container
+          width={isOpen ? '256px' : '72px'}
+          ref={ref}
+          maxHeight={maxHeight}
+          data-testid="sidebar"
+        >
           <TopContainer>
             {onCreate && createLabel && (
               <CreateItem

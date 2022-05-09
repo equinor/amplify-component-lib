@@ -1,14 +1,15 @@
 import {
   Button,
   Chip as EDSChip,
-  Icon,
   Menu as EdsMenu,
+  Icon,
   Typography,
 } from '@equinor/eds-core-react';
 import { IconData, filter_list } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import React, { FC, useState } from 'react';
+
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 
@@ -65,7 +66,9 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
   chipColor = colors.ui.background__default.hex,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [buttonElement, setButtonElement] = useState<HTMLButtonElement>();
+  const [buttonElement, setButtonElement] = useState<HTMLButtonElement | null>(
+    null
+  );
   const [selectedName, setSelectedName] = useState<string | undefined | null>();
 
   const openMenu = (
@@ -118,7 +121,7 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
       </FilterButton>
       <Menu
         open={showMenu}
-        anchorEl={buttonElement!}
+        anchorEl={buttonElement}
         onClose={closeMenu}
         placement="bottom-end"
         data-testid="menuContainer"

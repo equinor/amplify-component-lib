@@ -1,13 +1,13 @@
+import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import { optimizeLodashImports } from '@optimize-lodash/rollup-plugin';
+import pkg from './package.json';
 /* eslint-disable import/no-default-export */
 import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import babel from '@rollup/plugin-babel';
+import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
 import { uglify } from 'rollup-plugin-uglify';
-import { terser } from 'rollup-plugin-terser';
-import { optimizeLodashImports } from '@optimize-lodash/rollup-plugin';
-import pkg from './package.json';
 
 const globals = {
   react: 'React',
@@ -36,11 +36,13 @@ export default [
       FullPageStatus: './src/components/FullPageStatus',
       IconToggleButton: './src/components/Buttons/IconToggleButton',
       InfoElement: './src/components/InfoElement',
-      MulticolorProgressCircle: './src/components/MulticolorProgressCircle',
+      MulticolorProgressCircle:
+        './src/components/Progress/MulticolorProgressCircle',
+      ProgressBar: './src/components/Progress/ProgressBar',
+      HourglassProgress: './src/components/Progress/HourglassProgress',
       NotFound: './src/components/NotFound',
       OptionalTooltip: './src/components/OptionalTooltip',
       OptionDrawer: './src/components/Select/OptionDrawer',
-      ProgressBar: './src/components/ProgressBar',
       SideBar: './src/components/SideBar',
       SingleFilterMenu: './src/components/SingleFilterMenu',
       MultiSelectDrawer: './src/components/Select/MultiSelectDrawer',

@@ -63,7 +63,7 @@ export interface EditableFieldProps {
   inputField?: ReactElement;
   value?: string;
   onChange?: (value: string) => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const EditableField: React.FC<EditableFieldProps> = ({
