@@ -53,7 +53,7 @@ const getAllItems = (items: SelectItem[] | undefined): SelectItem[] => {
   let options: SelectItem[] = [];
 
   items.forEach((item) => {
-    const children = getAllItems(item.children);
+    const children = getAllItems(item.items);
     options = [item, ...options, ...children];
   });
 
