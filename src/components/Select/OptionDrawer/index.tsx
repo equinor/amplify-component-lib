@@ -69,11 +69,11 @@ const getStatus = (
   return 'INTERMEDIATE';
 };
 
-export interface OptionDrawerProps extends SelectItem {
+export type OptionDrawerProps = {
   section?: number;
   onToggle: (value: string, toggle: boolean) => void;
   selectedItems: string[];
-}
+} & SelectItem;
 
 const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
   (

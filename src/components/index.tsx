@@ -45,5 +45,6 @@ export { default as SomethingFilled } from './Icons/something-filled';
 export { default as SomethingOutline } from './Icons/something-outline';
 export { default as Wellbore } from './Icons/wellbore';
 
+export type { SelectItem } from './Select';
 export type { SidebarType, ItemType } from './SideBar';
 export type { ColoredProgressCircle } from './Progress/MulticolorProgressCircle';
