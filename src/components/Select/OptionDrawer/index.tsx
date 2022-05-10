@@ -1,8 +1,7 @@
+import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { MouseEvent, forwardRef, useEffect, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
-import { Checkbox } from '@mui/material';
-import { Icon } from '@equinor/eds-core-react';
 import { SelectItem } from '..';
 import styled from 'styled-components';
 
@@ -31,32 +30,71 @@ const StyledIcon = styled(Icon)`
   right: 10px;
 `;
 
-interface OptionDrawerProps extends SelectItem {
+const getAllItems = (items: SelectItem[]): SelectItem[] => {
+  if (items.length === 0) {
+    return [];
+  }
+
+  let options: SelectItem[] = [];
+
+  items.forEach((item) => {
+    const children = getAllItems(item.items);
+    options = [item, ...options, ...children];
+  });
+
+  return options;
+};
+
+type StatusType = 'CHECKED' | 'INTERMEDIATE' | 'NONE';
+
+const getStatus = (
+  items: SelectItem[],
+  value: string,
+  selectedItems: string[]
+): StatusType => {
+  if (items.length === 0) {
+    return selectedItems.includes(value) ? 'CHECKED' : 'NONE';
+  }
+
+  const selected = getAllItems(items).map((item) =>
+    selectedItems.includes(item.value)
+  );
+
+  if (selected.every(Boolean)) {
+    return 'CHECKED';
+  } else if (selected.every((val) => val === false)) {
+    return 'NONE';
+  }
+
+  return 'INTERMEDIATE';
+};
+
+export type OptionDrawerProps = {
   section?: number;
-  onToggle: (value: SelectItem, toggle: boolean) => void;
-  values: SelectItem[];
-}
+  onToggle: (value: string, toggle: boolean) => void;
+  selectedItems: string[];
+} & SelectItem;
 
 const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
   (
     {
       value,
       onToggle,
-      children = [],
+      items = [],
       label,
       section = 0,
-      values = [],
+      selectedItems = [],
     }: OptionDrawerProps,
     ref
   ) => {
     const [open, setOpen] = useState(false);
-    const [checked, setChecked] = useState(
-      values.findIndex((val) => val.value === value) !== -1
+    const [status, setStatus] = useState<StatusType>(
+      getStatus(items, value, selectedItems)
     );
 
     useEffect(() => {
-      setChecked(values.findIndex((val) => val.value === value) !== -1);
-    }, [values, value]);
+      setStatus(getStatus(items, value, selectedItems));
+    }, [items, value, selectedItems]);
 
     const handleClick = (e: MouseEvent) => {
       const checkboxElement = e.target as SVGPathElement;
@@ -73,7 +111,7 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
         !(e.target instanceof HTMLInputElement) &&
         !(e.target instanceof HTMLSpanElement)
       ) {
-        if (children && children.length !== 0) {
+        if (items && items.length !== 0) {
           setOpen((o) => !o);
         } else if (e.target instanceof HTMLDivElement) {
           handleCheck();
@@ -82,30 +120,36 @@ const OptionDrawer = forwardRef<HTMLDivElement, OptionDrawerProps>(
     };
 
     const handleCheck = () => {
-      onToggle({ value, label }, !checked);
-      setChecked((c) => !c);
+      if (status === 'CHECKED') {
+        onToggle(value, false);
+        getAllItems(items).forEach((item) => onToggle(item.value, false));
+      } else if (status === 'NONE' || status === 'INTERMEDIATE') {
+        onToggle(value, true);
+        getAllItems(items).forEach((item) => onToggle(item.value, true));
+      }
     };
 
     return (
       <StyledOptionWrapper ref={ref} key={value} section={section}>
         <StyledOption section={section} onClick={handleClick}>
           <Checkbox
-            checked={checked}
+            indeterminate={status === 'INTERMEDIATE'}
+            checked={status === 'CHECKED'}
             onChange={handleCheck}
             color="secondary"
           />
           {label}
-          {children && children.length !== 0 && (
+          {items && items.length !== 0 && (
             <StyledIcon data={open ? arrow_drop_up : arrow_drop_down} />
           )}
         </StyledOption>
         {open &&
-          children?.map((item) => (
+          items?.map((item) => (
             <OptionDrawer
               key={item.value}
               section={section + 1}
               onToggle={onToggle}
-              values={values}
+              selectedItems={selectedItems}
               {...item}
             />
           ))}
