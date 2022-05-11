@@ -1,13 +1,13 @@
-import { Story, Meta } from '@storybook/react';
-
+import { Meta, Story } from '@storybook/react';
 import {
   dashboard,
   favorite_outlined,
   history,
   home,
 } from '@equinor/eds-icons';
-import SideBar from '../../components/SideBar';
+
 import { MenuItemType } from '../../components/SideBar/MenuItem';
+import SideBar from '../../components/SideBar';
 
 export default {
   title: 'SideBar',
@@ -24,19 +24,22 @@ export default {
 export const Primary: Story = () => {
   const menuItems: MenuItemType[] = [
     {
-      name: 'home',
-      icon: home,
-      link: 'home',
+      name: 'Dashboard',
+      icon: dashboard,
+      link: 'dashboard',
+      onClick: () => console.log('going to dashboard...'),
     },
     {
       name: 'history',
       icon: history,
       link: 'history',
+      onClick: () => console.log('going to history...'),
     },
     {
       name: 'favourites',
       icon: favorite_outlined,
       link: 'favourites',
+      onClick: () => console.log('going to favourites...'),
     },
   ];
 
@@ -60,16 +63,19 @@ export const NoCreateAction: Story = () => {
       name: 'Dashboard',
       icon: dashboard,
       link: 'dashboard',
+      onClick: () => console.log('going to dashboard...'),
     },
     {
       name: 'history',
       icon: history,
       link: 'history',
+      onClick: () => console.log('going to history...'),
     },
     {
       name: 'favourites',
       icon: favorite_outlined,
       link: 'favourites',
+      onClick: () => console.log('going to favourites...'),
     },
   ];
 
@@ -90,16 +96,19 @@ export const WithCreateAction: Story = () => {
       name: 'Dashboard',
       icon: dashboard,
       link: 'dashboard',
+      onClick: () => console.log('going to dashboard...'),
     },
     {
       name: 'history',
       icon: history,
       link: 'history',
+      onClick: () => console.log('going to history...'),
     },
     {
       name: 'favourites',
       icon: favorite_outlined,
       link: 'favourites',
+      onClick: () => console.log('going to favourites...'),
     },
   ];
 
@@ -123,16 +132,19 @@ export const WithCurrentUrlAndCreate: Story = () => {
       name: 'Dashboard',
       icon: dashboard,
       link: 'dashboard',
+      onClick: () => console.log('going to dashboard...'),
     },
     {
       name: 'history',
       icon: history,
       link: 'history',
+      onClick: () => console.log('going to history...'),
     },
     {
       name: 'favourites',
       icon: favorite_outlined,
       link: 'favourites',
+      onClick: () => console.log('going to favourites...'),
     },
   ];
 
@@ -141,6 +153,79 @@ export const WithCurrentUrlAndCreate: Story = () => {
       <SideBar
         createLabel="Create story"
         onCreate={() => console.log('Created 🖋')}
+      >
+        {menuItems.map((m) => (
+          <SideBar.Item key={m.name} {...m} />
+        ))}
+      </SideBar>
+    </div>
+  );
+};
+
+export const WithDisabledMenuItem: Story = () => {
+  const menuItems: MenuItemType[] = [
+    {
+      name: 'Dashboard',
+      icon: dashboard,
+      link: 'dashboard',
+      onClick: () => console.log('going to dashboard...'),
+    },
+    {
+      name: 'history',
+      icon: history,
+      link: 'history',
+      onClick: () => console.log('going to history...'),
+    },
+    {
+      name: 'favourites',
+      icon: favorite_outlined,
+      link: 'favourites',
+      onClick: () => console.log('going to favourites...'),
+    },
+  ];
+
+  return (
+    <div style={{ display: 'flex', height: '95vh' }}>
+      <SideBar
+        createLabel="Create story"
+        onCreate={() => console.log('Created 🖋')}
+      >
+        {menuItems.map((m) => (
+          <SideBar.Item key={m.name} {...m} disabled={m.link === 'history'} />
+        ))}
+      </SideBar>
+    </div>
+  );
+};
+
+export const WithDisabledCreateButton: Story = () => {
+  const menuItems: MenuItemType[] = [
+    {
+      name: 'Dashboard',
+      icon: dashboard,
+      link: 'dashboard',
+      onClick: () => console.log('going to dashboard...'),
+    },
+    {
+      name: 'history',
+      icon: history,
+      link: 'history',
+      onClick: () => console.log('going to history...'),
+    },
+    {
+      name: 'favourites',
+      icon: favorite_outlined,
+      link: 'favourites',
+      onClick: () => console.log('going to favourites...'),
+    },
+  ];
+
+  return (
+    <div style={{ display: 'flex', height: '95vh' }}>
+      <SideBar
+        createLabel="Create story"
+        onCreate={() => console.log('Created 🖋')}
+        createDisabled
       >
         {menuItems.map((m) => (
           <SideBar.Item key={m.name} {...m} />

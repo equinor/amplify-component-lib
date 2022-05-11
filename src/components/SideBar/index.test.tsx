@@ -6,16 +6,21 @@ import { render, screen } from '../../test-utils';
 import { MenuItemType } from './MenuItem';
 import React from 'react';
 import SideBar from '.';
+import { isExportDeclaration } from 'typescript';
 import userEvent from '@testing-library/user-event';
 
 const defaultMenuItems: MenuItemType[] = [
   {
     name: 'Home',
     icon: home,
+    link: 'home',
+    onClick: jest.fn(),
   },
   {
     name: 'Another Link',
     icon: star_half,
+    link: 'another',
+    onClick: jest.fn(),
   },
 ];
 
@@ -108,4 +113,44 @@ test('onToggle send correct state back', async () => {
 
   expect(toggle).toBeCalled();
   expect(toggle).toHaveBeenCalledWith(true); // Since we send in false to start with
+});
+
+test('Disabled create new button doesnt fire event', async () => {
+  const createNewFn = jest.fn();
+  render(
+    <SideBar
+      open
+      createLabel="Create new"
+      onCreate={createNewFn}
+      createDisabled
+    >
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>
+  );
+
+  const user = userEvent.setup();
+
+  const createNewButton = screen.getByText(/create new/i);
+  await user.click(createNewButton);
+
+  expect(createNewFn).not.toBeCalled();
+});
+
+test('Disabled menu item doesnt fire event', async () => {
+  render(
+    <SideBar open>
+      {defaultMenuItems.map((m, index) => (
+        <SideBar.Item key={m.name} {...m} disabled={index === 0} />
+      ))}
+    </SideBar>
+  );
+
+  const user = userEvent.setup();
+
+  const firstMenuItem = screen.getByText(defaultMenuItems[0].name);
+  await user.click(firstMenuItem);
+
+  expect(defaultMenuItems[0].onClick).not.toHaveBeenCalled();
 });
