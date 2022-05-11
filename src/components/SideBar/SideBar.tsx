@@ -56,6 +56,7 @@ export const SideBarContext = React.createContext<
 type SidebarType = {
   onCreate?: () => void;
   createLabel?: string;
+  createDisabled?: boolean;
   open?: boolean;
   maxHeight?: string;
   onToggle?: (state: boolean) => void;
@@ -64,7 +65,15 @@ type SidebarType = {
 
 export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
   (
-    { onCreate, createLabel, onToggle, open = false, maxHeight, children },
+    {
+      onCreate,
+      createLabel,
+      createDisabled = false,
+      onToggle,
+      open = false,
+      maxHeight,
+      children,
+    },
     ref
   ) => {
     const [isOpen, setIsOpen] = useState<boolean>(open);
@@ -88,6 +97,7 @@ export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
                 isOpen={isOpen}
                 createLabel={createLabel}
                 onCreate={onCreate}
+                disabled={createDisabled}
               />
             )}
             {children}

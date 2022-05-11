@@ -1,14 +1,15 @@
-import React from 'react';
 import {
   Button,
   ButtonProps,
+  Tooltip as EDSTooltip,
   Icon,
   Typography,
-  Tooltip as EDSTooltip,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
+
+import React from 'react';
 import { add } from '@equinor/eds-icons';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 const { colors, shape, spacings } = tokens;
 
@@ -41,9 +42,14 @@ const CreateNewButton = styled(Button)<CustomButtonProps>`
   margin-left: -2px; /* border size */
   `};
 
-  &:hover {
+  &:hover:not([disabled]) {
     border-radius: ${(props) => props.open && shape.icon_button.borderRadius};
     background: ${colors.interactive.primary__hover.hex};
+  }
+  &:disabled:hover,
+  &:disabled {
+    background: ${colors.interactive.disabled__border.hex};
+    border: 0px solid transparent;
   }
 `;
 
@@ -66,17 +72,24 @@ interface CreateItemProps {
   createLabel: string;
   onCreate: () => void;
   isOpen: boolean;
+  disabled?: boolean;
 }
 
 const CreateItem: React.FC<CreateItemProps> = ({
   createLabel,
   onCreate,
   isOpen,
+  disabled = false,
 }) => {
   if (isOpen) {
     return (
       <MenuButtonContainer open={isOpen}>
-        <CreateNewButton open variant="contained" onClick={onCreate}>
+        <CreateNewButton
+          open
+          variant="contained"
+          onClick={onCreate}
+          disabled={disabled}
+        >
           <Icon data={add} color={colors.ui.background__default.hsla} />
           <CreateNewButtonText
             color={colors.text.static_icons__primary_white.hsla}
@@ -92,7 +105,11 @@ const CreateItem: React.FC<CreateItemProps> = ({
   return (
     <Tooltip title={createLabel} placement="right">
       <MenuButtonContainer open={isOpen}>
-        <CreateNewButton variant="ghost_icon" onClick={onCreate}>
+        <CreateNewButton
+          variant="ghost_icon"
+          onClick={onCreate}
+          disabled={disabled}
+        >
           <Icon data={add} color={colors.ui.background__default.hsla} />
         </CreateNewButton>
       </MenuButtonContainer>

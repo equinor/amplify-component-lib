@@ -1,6 +1,4 @@
 import {
-  Button,
-  ButtonProps,
   Tooltip as EDSTooltip,
   Icon,
   Typography,
@@ -14,12 +12,13 @@ import { useSideBar } from '../SideBar';
 
 const { colors, spacings } = tokens;
 
-interface ContainerProps extends ButtonProps {
+interface ContainerProps {
   active?: boolean;
   open?: boolean;
+  disabled?: boolean;
 }
 
-const Container = styled(Button)<ContainerProps>`
+const Container = styled.a<ContainerProps>`
   background: ${(props) =>
     props.active
       ? colors.interactive.primary__selected_highlight.hsla
@@ -33,10 +32,19 @@ const Container = styled(Button)<ContainerProps>`
   text-decoration: none;
   min-height: 72px;
 
-  &:hover {
-    cursor: pointer;
-    background: ${colors.interactive.primary__selected_hover.hsla};
-  }
+  ${(props) =>
+    props.disabled
+      ? `
+    &:hover {
+      cursor: not-allowed;
+    }
+  `
+      : `
+    &:hover {
+      cursor: pointer;
+      background: ${colors.interactive.primary__selected_hover.hsla};
+    }
+  `}
 
   &:disabled {
     background: ${colors.interactive.disabled__fill.hsla};
@@ -67,10 +75,11 @@ const Tooltip = styled(EDSTooltip)`
 `;
 
 export type MenuItemType = {
-  icon?: IconData;
+  icon: IconData;
   name: string;
-  link?: string;
-  onClick?: () => void;
+  link: string;
+  onClick: () => void;
+  disabled?: boolean;
 };
 
 export type MenuItemProps = {
@@ -79,26 +88,32 @@ export type MenuItemProps = {
   React.HTMLAttributes<HTMLAnchorElement>;
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
-  ({ currentUrl, icon, name, link, onClick }, ref) => {
+  ({ currentUrl, icon, name, link, onClick, disabled }, ref) => {
     const isCurrentUrl = () => (link ? currentUrl?.includes(link) : false);
     const { isOpen } = useSideBar();
 
     const getIconColor = () => {
-      return isCurrentUrl()
-        ? colors.interactive.primary__resting.hsla
-        : colors.text.static_icons__default.hsla;
+      if (!disabled) {
+        return isCurrentUrl()
+          ? colors.interactive.primary__resting.hsla
+          : colors.text.static_icons__default.hsla;
+      }
+      return colors.interactive.disabled__text.hex;
+    };
+
+    const handleOnClick = () => {
+      if (!disabled) onClick();
     };
 
     if (isOpen) {
       return (
         <Container
-          as="a"
           active={isCurrentUrl()}
-          onClick={onClick}
-          variant="ghost"
+          onClick={handleOnClick}
           open
           ref={ref}
           data-testid="sidebar-menu-item"
+          disabled={disabled}
         >
           {icon && <ItemIcon data={icon} color={getIconColor()} />}
           <ItemText variant="cell_text" group="table" active={isCurrentUrl()}>
@@ -111,13 +126,12 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     return (
       <Tooltip title={name} placement="right">
         <Container
-          as="a"
           active={isCurrentUrl()}
-          onClick={onClick}
-          variant="ghost"
+          onClick={handleOnClick}
           open={isOpen}
           ref={ref}
           data-testid="sidebar-menu-item"
+          disabled={disabled}
         >
           {icon && <ItemIcon data={icon} color={getIconColor()} />}
         </Container>
