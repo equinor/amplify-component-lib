@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import ChippedMultiSelect from '..';
+import ChippedMultiSelect from '.';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 
