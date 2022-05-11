@@ -1,13 +1,14 @@
 import { Meta, Story } from '@storybook/react';
-import SingleSelectDrawer, {
-  SingleSelectDrawerProps,
-} from '../../../components/Select/SingleSelectDrawer';
+import OptionDrawer, {
+  OptionDrawerProps,
+} from '../../../components/Select/OptionDrawer';
 
 import { SelectItem } from '../../../components/Select';
+import { useState } from 'react';
 
 export default {
-  title: 'Select/SingleSelectDrawer',
-  component: SingleSelectDrawer,
+  title: 'Select/OptionDrawer',
+  component: OptionDrawer,
 } as Meta;
 
 type KeyValue = { key: string; value: number };
@@ -46,22 +47,31 @@ const items: SelectItem<KeyValue>[] = [
   },
 ];
 
-const Template: Story<SingleSelectDrawerProps<KeyValue>> = () => (
-  <div style={{ width: '300px' }}>
-    <SingleSelectDrawer
-      label="Test"
-      value="test"
-      items={items}
-      onChange={() => null}
-      compare={(item1, item2) => {
-        return item1?.key === item2?.key;
-      }}
-    />
-  </div>
-);
+const Template: Story<OptionDrawerProps<KeyValue>> = (args) => {
+  const [selected, setSelected] = useState<KeyValue[]>([]);
+
+  return (
+    <div style={{ width: '300px' }}>
+      <OptionDrawer
+        {...args}
+        label="test"
+        value={{ key: 'Test', value: 0 }}
+        onToggle={(value, toggle) =>
+          setSelected((s) =>
+            toggle
+              ? [...s, value]
+              : [...s.filter((val) => val.key !== value.key)]
+          )
+        }
+        compare={(item1, item2) => {
+          return item1.key === item2.key;
+        }}
+        items={items}
+        selectedItems={selected}
+      />
+    </div>
+  );
+};
 
 export const Primary = Template.bind({});
 Primary.args = {};
-
-export const InitialValue = Template.bind({});
-InitialValue.args = { initialSelectedItem: '22' };

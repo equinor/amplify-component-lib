@@ -17,9 +17,9 @@ export { default as ProgressBar } from './Progress/ProgressBar';
 export { default as HourglassProgress } from './Progress/HourglassProgress';
 export { default as NotFound } from './NotFound';
 export { default as OptionalTooltip } from './OptionalTooltip';
-export { default as OptionDrawer } from './Select/OptionDrawer';
 export { default as SideBar } from './SideBar';
 export { default as SingleFilterMenu } from './SingleFilterMenu';
+export { default as OptionDrawer } from './Select/OptionDrawer';
 export { default as MultiSelectDrawer } from './Select/MultiSelectDrawer';
 export { default as SingleSelectDrawer } from './Select/SingleSelectDrawer';
 export { default as SkeletonBase } from './SkeletonBase';
@@ -46,5 +46,6 @@ export { default as SomethingFilled } from './Icons/something-filled';
 export { default as SomethingOutline } from './Icons/something-outline';
 export { default as Wellbore } from './Icons/wellbore';
 
+export type { SelectItem } from './Select';
 export type { SidebarType, ItemType } from './SideBar';
 export type { ColoredProgressCircle } from './Progress/MulticolorProgressCircle';

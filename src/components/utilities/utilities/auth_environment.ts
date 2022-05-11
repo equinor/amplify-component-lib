@@ -153,7 +153,7 @@ const isReaderOnly = (roles: string[] | undefined) => {
   }
 };
 
-const auth = {
+export const auth = {
   fetchMsGraph,
   GRAPH_SCOPES,
   GRAPH_REQUESTS,
@@ -163,12 +163,10 @@ const auth = {
   isReaderOnly,
 };
 
-const environment = {
+export const environment = {
   getConfig,
   getAppName,
   getClientId,
   getApiUrl,
   getApiScope,
 };
-
-export { auth, environment };
