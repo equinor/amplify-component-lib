@@ -26,6 +26,7 @@ export default [
       NewComment: './src/components/CommentField/NewComment',
       ConfirmationPopup: './src/components/ConfirmationPopup',
       CopyText: './src/components/CopyText',
+      ChippedMultiSelect: './src/components/ChippedMultiSelect',
       DataCard: './src/components/DataCard',
       EditableField: './src/components/EditableField',
       EquinorLogo: './src/components/EquinorLogo',

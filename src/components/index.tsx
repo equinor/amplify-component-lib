@@ -29,6 +29,7 @@ export { default as TopBar } from './TopBar';
 export { default as StatusChip } from './Workflow/StatusChip';
 export { default as WorkflowDescription } from './Workflow/WorkflowDescription';
 export { default as WorkflowStatusBar } from './Workflow/WorkflowStatusBar';
+export { default as ChippedMultiSelect } from './ChippedMultiSelect';
 export * as utils from './utilities';
 
 export { default as ApplicationIcon } from './Icons/ApplicationIcon';
