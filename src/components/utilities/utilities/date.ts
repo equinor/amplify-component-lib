@@ -28,13 +28,16 @@ const formatDate = (
   return '';
 };
 
-const formatDateTime = (date?: string | null) => {
+const formatDateTime = (
+  date?: string | null,
+  options: { month: 'short' | 'long' } = { month: 'long' }
+) => {
   if (date) {
     const dateObj = new Date(date);
     if (!isNaN(dateObj.getTime())) {
       const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
       return `${day}. ${dateObj.toLocaleString('en-GB', {
-        month: 'short',
+        month: options.month,
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',

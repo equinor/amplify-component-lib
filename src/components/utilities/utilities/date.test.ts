@@ -34,7 +34,7 @@ test('formatDateTime works as expected', () => {
   const fakeDate = faker.date.past();
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
-    month: 'short',
+    month: 'long',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
@@ -70,7 +70,7 @@ test('formatRelativeDateTime works as expected with date older than a week', () 
   const fakeDate = faker.date.past(10);
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
-    month: 'short',
+    month: 'long',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
