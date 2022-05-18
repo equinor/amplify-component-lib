@@ -44,6 +44,22 @@ test('formatDateTime works as expected', () => {
   expect(formatted).toBe(expectedResult);
 });
 
+test('formatDateTime works as expected with options', () => {
+  const fakeDate = faker.date.past();
+  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
+  const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`;
+
+  const formatted = date.formatDateTime(fakeDate.toISOString(), {
+    month: 'short',
+  });
+  expect(formatted).toBe(expectedResult);
+});
+
 test('formatRelativeDateTime work as expected with yesterdays date', () => {
   const fakeDate = new Date();
   fakeDate.setDate(fakeDate.getDate() - 1);
