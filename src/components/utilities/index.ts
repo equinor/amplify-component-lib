@@ -6,6 +6,7 @@ import {
   favicon,
   image,
   size,
+  sort,
   string,
 } from './utilities';
 import { useAuth, useDebounce, useOnScreen, useSnackbar } from './hooks';
@@ -20,6 +21,7 @@ export {
   coordinate,
   size,
   string,
+  sort,
   environment,
   auth,
   useDebounce,
