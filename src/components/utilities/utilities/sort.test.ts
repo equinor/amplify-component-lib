@@ -11,7 +11,7 @@ test('sortByDate works as expected with date objects', () => {
   for (let i = 1; i < sortedList.length - 1; i++) {
     const firstDate = sortedList[i - 1];
     const secondDate = sortedList[i];
-    expect(firstDate.getTime()).toBeLessThanOrEqual(secondDate.getTime());
+    expect(firstDate.getTime()).toBeGreaterThanOrEqual(secondDate.getTime());
   }
 });
 
@@ -25,6 +25,6 @@ test('sortByDate works as expected with strings', () => {
   for (let i = 1; i < sortedList.length - 1; i++) {
     const firstDate = new Date(sortedList[i - 1]);
     const secondDate = new Date(sortedList[i]);
-    expect(firstDate.getTime()).toBeLessThanOrEqual(secondDate.getTime());
+    expect(firstDate.getTime()).toBeGreaterThanOrEqual(secondDate.getTime());
   }
 });
