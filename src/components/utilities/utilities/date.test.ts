@@ -95,3 +95,17 @@ test('formatRelativeDateTime works as expected with date older than a week', () 
   const formatted = date.formatRelativeDateTime(fakeDate.toISOString());
   expect(formatted).toBe(expectedResult);
 });
+
+test('formatRelativeDateTime works as expected with todays date', () => {
+  const today = new Date();
+  const past = new Date();
+  past.setHours(today.getHours() - 2);
+
+  const expectedResult = `Today at ${past.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`;
+
+  const formatted = date.formatRelativeDateTime(past.toISOString());
+  expect(formatted).toEqual(expectedResult);
+});

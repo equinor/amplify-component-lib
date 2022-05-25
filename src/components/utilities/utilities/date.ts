@@ -57,7 +57,9 @@ const formatRelativeDateTime = (date?: string | null) => {
       hour: '2-digit',
       minute: '2-digit',
     });
-    if (differenceInDays >= 1 && differenceInDays < 2) {
+    if (differenceInDays < 1) {
+      return `Today at ${time}`;
+    } else if (differenceInDays >= 1 && differenceInDays < 2) {
       // Yesterday
       return `Yesterday at ${time}`;
     } else if (differenceInDays > 2 && differenceInDays < 7) {
