@@ -4,7 +4,7 @@ import faker from '@faker-js/faker';
 test('formatDate works as expected with default format', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate.toString());
+  const formattedDate = date.formatDate(fakeDate);
 
   const day = fakeDate.getDate();
   const month = fakeDate.getMonth() + 1;
@@ -17,8 +17,8 @@ test('formatDate works as expected with default format', () => {
 test('formatDate works as expected with format = "DD. month YYYY"', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate.toString(), {
-    format: 'DD. month YYYY',
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'DD. month YYYY',
   });
 
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
@@ -28,6 +28,19 @@ test('formatDate works as expected with format = "DD. month YYYY"', () => {
   })}`;
 
   expect(formattedDate).toBe(testFormatted);
+});
+
+test('formatDate works as expected with format = "YYYY-MM-DD"', () => {
+  const fakeDate = faker.date.past();
+
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'YYYY-MM-DD',
+  });
+
+  const day = fakeDate.getDate();
+  const month = fakeDate.getMonth() + 1;
+  const year = fakeDate.getFullYear();
+  expect(formattedDate).toBe(`${year}-${month}-${day}`);
 });
 
 test('formatDateTime works as expected', () => {
@@ -40,7 +53,7 @@ test('formatDateTime works as expected', () => {
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatDateTime(fakeDate.toISOString());
+  const formatted = date.formatDateTime(fakeDate);
   expect(formatted).toBe(expectedResult);
 });
 
@@ -54,7 +67,7 @@ test('formatDateTime works as expected with options', () => {
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatDateTime(fakeDate.toISOString(), {
+  const formatted = date.formatDateTime(fakeDate, {
     month: 'short',
   });
   expect(formatted).toBe(expectedResult);
@@ -65,20 +78,20 @@ test('formatRelativeDateTime work as expected with yesterdays date', () => {
   fakeDate.setDate(fakeDate.getDate() - 1);
   // Fake date is yesterday;
 
-  const formatted = date.formatRelativeDateTime(fakeDate.toISOString());
+  const formatted = date.formatRelativeDateTime(fakeDate);
   expect(formatted).toContain('Yesterday');
 });
 
 test('formatRelativeDateTime work as expected with date older than yesterday, but not more than 1 week old', () => {
-  const yesterday = new Date().setDate(new Date().getDate() - 2);
-  const fakeDate = faker.date.recent(5, yesterday);
+  const TwoDaysAgo = new Date().setDate(new Date().getDate() - 2);
+  const fakeDate = faker.date.recent(5, TwoDaysAgo);
   // Fake date is not yesterday, but a date within a week of today
 
   const fakeDateDay = fakeDate.toLocaleString('en-GB', {
     weekday: 'long',
   });
 
-  const formatted = date.formatRelativeDateTime(fakeDate.toISOString());
+  const formatted = date.formatRelativeDateTime(fakeDate);
   expect(formatted).toContain(fakeDateDay);
 });
 
@@ -92,7 +105,7 @@ test('formatRelativeDateTime works as expected with date older than a week', () 
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatRelativeDateTime(fakeDate.toISOString());
+  const formatted = date.formatRelativeDateTime(fakeDate);
   expect(formatted).toBe(expectedResult);
 });
 
@@ -106,6 +119,22 @@ test('formatRelativeDateTime works as expected with todays date', () => {
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatRelativeDateTime(past.toISOString());
+  const formatted = date.formatRelativeDateTime(past);
   expect(formatted).toEqual(expectedResult);
+});
+
+test('isBetweenDates works as expected with todays date between yesterday and tomorrow', () => {
+  const today = new Date();
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+  const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
+
+  const formatted = date.isBetweenDates(today, [yesterday, tomorrow]);
+  expect(formatted).toEqual(true);
+});
+
+test('isBetweenDates works as expected with todays date between itself', () => {
+  const today = new Date();
+
+  const formatted = date.isBetweenDates(today, [today, today]);
+  expect(formatted).toEqual(true);
 });
