@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import sort from './sort';
 
 test('sortByDate works as expected with date objects', () => {

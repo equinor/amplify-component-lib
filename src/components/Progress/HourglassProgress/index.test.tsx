@@ -1,6 +1,6 @@
 import HourglassProgress, { HourglassProgressProps } from '.';
 
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { render } from '../../../test-utils';
 import { tokens } from '@equinor/eds-tokens';
 

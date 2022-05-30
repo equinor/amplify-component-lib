@@ -1,5 +1,5 @@
 import date from './date';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 test('formatDate works as expected with default format', () => {
   const fakeDate = faker.date.past();
