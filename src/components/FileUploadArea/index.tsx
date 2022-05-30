@@ -1,10 +1,11 @@
-import { FC } from 'react';
-import { Typography, Icon } from '@equinor/eds-core-react';
-import styled from 'styled-components';
-import { upload } from '@equinor/eds-icons';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
+import { Icon, Typography } from '@equinor/eds-core-react';
 
+import { FC } from 'react';
+import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+import { upload } from '@equinor/eds-icons';
+
 const { colors } = tokens;
 
 interface UploadWrapperProps {
@@ -58,7 +59,7 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
           </Typography>
           {props.accept && (
             <Typography group="paragraph" variant="meta">
-              Supported filetypes: {props.accept}
+              <>Supported filetypes: {props.accept}</>
             </Typography>
           )}
         </>
