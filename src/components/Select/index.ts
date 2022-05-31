@@ -5,7 +5,8 @@ import SingleSelectDrawer from './SingleSelectDrawer';
 export { SingleSelectDrawer, MultiSelectDrawer, OptionDrawer };
 
 type SelectItem<T> = {
-  value: T;
+  object: T;
+  id: string;
   label: string;
   items: SelectItem<T>[];
 };

@@ -4,6 +4,7 @@ import MultiSelectDrawer, {
 } from '../../../components/Select/MultiSelectDrawer';
 
 import { SelectItem } from '../../../components/Select';
+import { Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
 
 export default {
@@ -15,31 +16,75 @@ type KeyValue = { key: string; value: number };
 
 const items: SelectItem<KeyValue>[] = [
   {
-    value: { key: 'One', value: 1 },
+    id: '1',
+    object: { key: 'One', value: 1 },
     label: 'One',
     items: [
-      { value: { key: 'OneOne', value: 11 }, label: 'OneOne', items: [] },
-      { value: { key: 'OneTwo', value: 12 }, label: 'OneTwo', items: [] },
-      { value: { key: 'OneThree', value: 13 }, label: 'OneThree', items: [] },
+      {
+        id: '11',
+        object: { key: 'OneOne', value: 11 },
+        label: 'OneOne',
+        items: [],
+      },
+      {
+        id: '12',
+        object: { key: 'OneTwo', value: 12 },
+        label: 'OneTwo',
+        items: [],
+      },
+      {
+        id: '13',
+        object: { key: 'OneThree', value: 13 },
+        label: 'OneThree',
+        items: [],
+      },
     ],
   },
   {
-    value: { key: 'Two', value: 2 },
+    id: '2',
+    object: { key: 'Two', value: 2 },
     label: 'Two',
     items: [
-      { value: { key: 'TwoOne', value: 21 }, label: 'TwoOne', items: [] },
-      { value: { key: 'TwoTwo', value: 22 }, label: 'TwoTwo', items: [] },
-      { value: { key: 'TwoThree', value: 23 }, label: 'TwoThree', items: [] },
+      {
+        id: '21',
+        object: { key: 'TwoOne', value: 21 },
+        label: 'TwoOne',
+        items: [],
+      },
+      {
+        id: '22',
+        object: { key: 'TwoTwo', value: 22 },
+        label: 'TwoTwo',
+        items: [],
+      },
+      {
+        id: '23',
+        object: { key: 'TwoThree', value: 23 },
+        label: 'TwoThree',
+        items: [],
+      },
     ],
   },
   {
-    value: { key: 'Three', value: 3 },
+    id: '3',
+    object: { key: 'Three', value: 3 },
     label: 'Three',
     items: [
-      { value: { key: 'ThreeOne', value: 31 }, label: 'ThreeOne', items: [] },
-      { value: { key: 'ThreeTwo', value: 32 }, label: 'ThreeTwo', items: [] },
       {
-        value: { key: 'ThreeThree', value: 33 },
+        id: '31',
+        object: { key: 'ThreeOne', value: 31 },
+        label: 'ThreeOne',
+        items: [],
+      },
+      {
+        id: '32',
+        object: { key: 'ThreeTwo', value: 32 },
+        label: 'ThreeTwo',
+        items: [],
+      },
+      {
+        id: '33',
+        object: { key: 'ThreeThree', value: 33 },
         label: 'ThreeThree',
         items: [],
       },
@@ -47,48 +92,38 @@ const items: SelectItem<KeyValue>[] = [
   },
 ];
 
+const initialSelectedItems: string[] = ['22', '31'];
+
 const Template: Story<MultiSelectDrawerProps<KeyValue>> = () => {
-  const [selectedItems, setSelectedItems] = useState(items);
+  const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
 
   return (
-    <div style={{ width: '300px' }}>
-      <MultiSelectDrawer
-        items={selectedItems}
-        label="Test"
-        onChange={(values) => setSelectedItems(values)}
-        placeholder="Select..."
-        compare={(item1, item2) => {
-          return item1.key === item2.key;
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+      }}
+    >
+      <div
+        style={{
+          width: '300px',
         }}
-        initialSelectedItems={[
-          {
-            value: { key: 'Two', value: 2 },
-            label: 'Two',
-            items: [
-              {
-                value: { key: 'TwoOne', value: 21 },
-                label: 'TwoOne',
-                items: [],
-              },
-              {
-                value: { key: 'TwoTwo', value: 22 },
-                label: 'TwoTwo',
-                items: [],
-              },
-              {
-                value: { key: 'TwoThree', value: 23 },
-                label: 'TwoThree',
-                items: [],
-              },
-            ],
-          },
-          {
-            value: { key: 'ThreeOne', value: 31 },
-            label: 'ThreeOne',
-            items: [],
-          },
-        ]}
-      />
+      >
+        <MultiSelectDrawer
+          items={items}
+          label="Test"
+          onChange={(values) => setSelectedItems(values)}
+          placeholder="Select..."
+          initialSelectedItems={initialSelectedItems}
+        />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {selectedItems.map((value) => (
+          <Typography key={value} variant="h3">
+            {value}
+          </Typography>
+        ))}
+      </div>
     </div>
   );
 };

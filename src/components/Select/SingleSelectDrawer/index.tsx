@@ -12,7 +12,6 @@ import OptionDrawer from '../OptionDrawer';
 import { SelectItem } from '..';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
-import { useCombobox } from 'downshift';
 
 const { colors, spacings, elevation } = tokens;
 
@@ -45,28 +44,10 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-const getAllItems = <T,>(
-  items: SelectItem<T>[] | undefined
-): SelectItem<T>[] => {
-  if (items === undefined || items.length === 0) {
-    return [];
-  }
-
-  let options: SelectItem<T>[] = [];
-
-  items.forEach((item) => {
-    const children = getAllItems(item.items);
-    options = [item, ...options, ...children];
-  });
-
-  return options;
-};
-
 export type SingleSelectDrawerProps<T> = {
   items: SelectItem<T>[];
-  onChange: (item: SelectItem<T> | null) => void;
-  initialSelectedItem?: T;
-  compare: (item1?: T, item2?: T) => boolean;
+  onChange: (item: string | null) => void;
+  initialSelectedItem?: string;
 } & Omit<SingleSelectProps, 'items' | 'initialSelectedItem' | 'onChange'>;
 
 const SingleSelectDrawer = <T,>({
@@ -78,118 +59,66 @@ const SingleSelectDrawer = <T,>({
   label,
   meta,
   readOnly = false,
-  compare,
-  ...other
+  placeholder,
 }: SingleSelectDrawerProps<T>) => {
-  const [options, setOptions] = useState<SelectItem<T>[]>(getAllItems(items));
-  const [selectedValue, setSelectedValue] = useState<SelectItem<T> | undefined>(
-    getAllItems(items).find((item) => compare(item.value, initialSelectedItem))
+  const [selectedItem, setSelectedItem] = useState<string | undefined>(
+    initialSelectedItem
   );
   const [inputItems, setInputItems] = useState<SelectItem<T>[]>(items);
+  const [search, setSearch] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const allItems = getAllItems(items);
-    setOptions(allItems);
-    setSelectedValue(
-      allItems.find((item) => item.value === initialSelectedItem)
-    );
-    setInputItems(items);
-  }, [items, initialSelectedItem]);
-
-  const {
-    isOpen,
-    getToggleButtonProps,
-    getLabelProps,
-    getMenuProps,
-    getInputProps,
-    getComboboxProps,
-    highlightedIndex,
-    getItemProps,
-    openMenu,
-    closeMenu,
-  } = useCombobox({
-    items: inputItems,
-    selectedItem:
-      options.find((item) => item.value === selectedValue?.value) ?? null,
-    itemToString: (item) => (item ? item?.label : ''),
-    onInputValueChange: ({ inputValue, type }) => {
-      switch (type) {
-        case useCombobox.stateChangeTypes.InputChange:
-          setInputItems(
-            items.filter((item) =>
-              item.label.toLowerCase().includes(inputValue?.toLowerCase() ?? '')
-            )
-          );
-          break;
-        case useCombobox.stateChangeTypes.InputKeyDownEnter:
-        case useCombobox.stateChangeTypes.ItemClick:
-        case useCombobox.stateChangeTypes.InputBlur:
-          setInputItems(items);
-          break;
-      }
-    },
-    onIsOpenChange: () => {
-      setInputItems(items);
-    },
-    initialSelectedItem: options.find(
-      (item) => item.value === initialSelectedItem
-    ),
-  });
-
-  const handleOpen = () => {
-    if (!isOpen) openMenu();
-  };
-
-  const handleToggle = (value: SelectItem<T>, toggle: boolean) => {
-    if (toggle) {
-      setSelectedValue(value);
-      onChange(value);
-      closeMenu();
+    if (search !== '') {
+      setInputItems(
+        items.filter((item) =>
+          item.label.toLowerCase().includes(search.toLowerCase())
+        )
+      );
     } else {
-      setSelectedValue(undefined);
+      setInputItems(items);
+    }
+  }, [search, items]);
+
+  const handleToggle = (id: string, toggle: boolean) => {
+    if (toggle) {
+      setSelectedItem(id);
+      onChange(id);
+    } else {
+      setSelectedItem(undefined);
       onChange(null);
     }
   };
 
   return (
     <StyledWrapper className={className}>
-      <Label
-        {...getLabelProps()}
-        label={label}
-        meta={meta}
-        disabled={disabled}
-      />
-      <StyledInputWrapper {...getComboboxProps()}>
+      <Label label={label} meta={meta} disabled={disabled} />
+      <StyledInputWrapper>
         <Input
-          {...getInputProps({ disabled: disabled })}
+          value={search}
           readOnly={readOnly}
-          onFocus={handleOpen}
-          {...other}
+          onFocus={() => setOpen(true)}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={placeholder}
         />
         <StyledButton
           variant="ghost_icon"
-          {...getToggleButtonProps({ disabled: disabled || readOnly })}
           aria-label="toggle options"
           title="open"
+          onClick={() => setOpen((o) => !o)}
         >
-          <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
+          <Icon data={open ? arrow_drop_up : arrow_drop_down} />
         </StyledButton>
       </StyledInputWrapper>
-      <StyledList {...getMenuProps()}>
-        {isOpen &&
-          inputItems.map((item, index) => (
-            <OptionDrawer
-              key={item.value}
+      <StyledList>
+        {open &&
+          inputItems.map((item) => (
+            <OptionDrawer<T>
+              key={item.id}
               onToggle={handleToggle}
-              highlighted={highlightedIndex === index ? 'true' : 'false'}
-              values={selectedValue ? [selectedValue] : []}
-              compare={compare}
+              selectedItems={selectedItem ? [selectedItem] : []}
+              singleSelect
               {...item}
-              {...getItemProps({
-                item,
-                index,
-                disabled: disabled,
-              })}
             />
           ))}
       </StyledList>

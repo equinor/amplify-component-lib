@@ -3,6 +3,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import { SelectItem } from '..';
+import { stat } from 'fs';
 import styled from 'styled-components';
 
 interface StyledOptionProps {
@@ -49,18 +50,18 @@ type StatusType = 'CHECKED' | 'INTERMEDIATE' | 'NONE';
 
 const getStatus = <T,>(
   items: SelectItem<T>[],
-  value: T,
-  selectedItems: T[],
-  compare: (item1: T, item2: T) => boolean
+  id: string,
+  selectedItems: string[],
+  singleSelect?: boolean
 ): StatusType => {
-  if (items.length === 0) {
-    return selectedItems.find((si) => compare(si, value)) !== undefined
+  if (items.length === 0 || singleSelect) {
+    return selectedItems.find((si) => si === id) !== undefined
       ? 'CHECKED'
       : 'NONE';
   }
 
   const selected = getAllItems(items).map(
-    (item) => selectedItems.find((si) => compare(si, item.value)) !== undefined
+    (item) => selectedItems.find((si) => si === item.id) !== undefined
   );
 
   if (selected.every(Boolean)) {
@@ -74,28 +75,42 @@ const getStatus = <T,>(
 
 export type OptionDrawerProps<T> = {
   section?: number;
-  onToggle: (value: T, toggle: boolean) => void;
-  selectedItems: T[];
-  compare: (item1: T, item2: T) => boolean;
+  onToggle: (id: string, toggle: boolean) => void;
+  selectedItems: string[];
+  singleSelect?: boolean;
 } & SelectItem<T>;
 
 const OptionDrawer = <T,>({
-  value,
+  id,
   onToggle,
   items = [],
   label,
   section = 0,
   selectedItems = [],
-  compare,
+  singleSelect,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
-    getStatus(items, value, selectedItems, compare)
+    getStatus(items, id, selectedItems, singleSelect)
   );
 
   useEffect(() => {
-    setStatus(getStatus(items, value, selectedItems, compare));
-  }, [items, value, selectedItems, compare]);
+    setStatus(getStatus(items, id, selectedItems, singleSelect));
+  }, [items, id, selectedItems, singleSelect]);
+
+  useEffect(() => {
+    if (items.length > 0 && !singleSelect) {
+      const selected = getAllItems(items).map(
+        (item) => selectedItems.find((si) => si === item.id) !== undefined
+      );
+
+      if (selected.every(Boolean) && !selectedItems.includes(id)) {
+        onToggle(id, true);
+      } else if (!selected.every(Boolean) && selectedItems.includes(id)) {
+        onToggle(id, false);
+      }
+    }
+  }, [selectedItems]);
 
   const handleClick = (e: MouseEvent) => {
     const checkboxElement = e.target as SVGPathElement;
@@ -122,16 +137,24 @@ const OptionDrawer = <T,>({
 
   const handleCheck = () => {
     if (status === 'CHECKED') {
-      onToggle(value, false);
-      getAllItems(items).forEach((item) => onToggle(item.value, false));
+      onToggle(id, false);
+      if (!singleSelect) {
+        getAllItems(items).forEach(
+          (item) => selectedItems.includes(item.id) && onToggle(item.id, false)
+        );
+      }
     } else if (status === 'NONE' || status === 'INTERMEDIATE') {
-      onToggle(value, true);
-      getAllItems(items).forEach((item) => onToggle(item.value, true));
+      onToggle(id, true);
+      if (!singleSelect) {
+        getAllItems(items).forEach(
+          (item) => !selectedItems.includes(item.id) && onToggle(item.id, true)
+        );
+      }
     }
   };
 
   return (
-    <StyledOptionWrapper key={JSON.stringify(value)} section={section}>
+    <StyledOptionWrapper key={`StyledOptionWrapper-${id}`} section={section}>
       <StyledOption section={section} onClick={handleClick}>
         <Checkbox
           indeterminate={status === 'INTERMEDIATE'}
@@ -147,11 +170,10 @@ const OptionDrawer = <T,>({
       {open &&
         items?.map((item) => (
           <OptionDrawer
-            key={JSON.stringify(item.value)}
+            key={`OptionDrawer-${item.id}`}
             section={section + 1}
             onToggle={onToggle}
             selectedItems={selectedItems}
-            compare={compare}
             {...item}
           />
         ))}
