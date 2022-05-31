@@ -1,7 +1,9 @@
-import { Story, Meta } from '@storybook/react';
-import styled from 'styled-components';
+import FullPageSpinner, {
+  FullpageSpinnerProps,
+} from '../../components/FullPageSpinner';
+import { Meta, Story } from '@storybook/react';
 
-import FullPageSpinner from '../../components/FullPageSpinner';
+import styled from 'styled-components';
 
 export default {
   title: 'FullPageSpinner',
@@ -9,8 +11,10 @@ export default {
   argTypes: {
     variant: {
       description: 'Defaults to "equinor" star',
-      defaultValue: undefined,
     },
+  },
+  args: {
+    variant: undefined,
   },
 } as Meta;
 
@@ -25,7 +29,7 @@ const Container = styled.div`
   }
 `;
 
-const Template: Story = (args) => (
+const Template: Story<FullpageSpinnerProps> = (args) => (
   <Container>
     <FullPageSpinner {...args} />
   </Container>

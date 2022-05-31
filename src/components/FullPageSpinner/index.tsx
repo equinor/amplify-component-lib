@@ -1,7 +1,8 @@
 import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
+
 import styled from 'styled-components';
 
-interface IFullpageSpinnerProps {
+export interface FullpageSpinnerProps {
   variant?: 'equinor' | 'circle' | 'dots';
   withoutScrim?: boolean;
 }
@@ -18,7 +19,7 @@ const NoScrimContainer = styled.div`
   display: flex;
 `;
 
-const FullPageSpinner: React.FC<IFullpageSpinnerProps> = ({
+const FullPageSpinner: React.FC<FullpageSpinnerProps> = ({
   variant,
   withoutScrim,
 }) => {

@@ -1,12 +1,14 @@
-import { Story, Meta } from '@storybook/react';
-
+import { Meta, Story } from '@storybook/react';
 import TextEntry, { TextEntryProps } from '../../components/TextEntry';
 
 export default {
   title: 'TextEntry/TextEntry',
   component: TextEntry,
   argTypes: {
-    body: { control: 'text', defaultValue: 'Value' },
+    body: { control: 'text' },
+  },
+  args: {
+    body: 'Value',
   },
 } as Meta;
 
