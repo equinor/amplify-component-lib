@@ -1,5 +1,4 @@
-import { Story, Meta } from '@storybook/react';
-
+import { Meta, Story } from '@storybook/react';
 import SingleFilterMenu, {
   SingleFilterMenuProps,
 } from '../../components/SingleFilterMenu';
@@ -8,13 +7,16 @@ export default {
   title: 'SingleFilterMenu',
   component: SingleFilterMenu,
   argTypes: {
-    menuTitle: { control: 'text', defaultValue: 'Fruity filter' },
-    showChip: { control: 'boolean', defaultValue: false, required: false },
-    chipColor: { control: 'color', defaultValue: '#ffffff' },
+    menuTitle: { control: 'text' },
+    showChip: { control: 'boolean', required: false },
+    chipColor: { control: 'color' },
   },
   args: {
     data: ['Apples', 'Oranges', 'Bananas'],
     onChange: (val) => console.log(val),
+    menuTitle: 'Fruity filter',
+    showChip: false,
+    chipColor: '#ffffff',
   },
 } as Meta;
 

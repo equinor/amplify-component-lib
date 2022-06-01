@@ -1,6 +1,5 @@
-import { Story, Meta } from '@storybook/react';
-
 import EquinorLogo, { EquinorLogoProps } from '../../components/EquinorLogo';
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'EquinorLogo',
@@ -9,10 +8,14 @@ export default {
     color: {
       control: 'radio',
       options: ['red', 'white', 'black', undefined],
-      defaultValue: 'red',
     },
-    large: { control: 'boolean', defaultValue: false },
+    large: { control: 'boolean' },
     size: { control: 'radio', options: [16, 24, 32, 40, 48] },
+  },
+  args: {
+    color: 'red',
+    large: false,
+    size: 16,
   },
 } as Meta;
 

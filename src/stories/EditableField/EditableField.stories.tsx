@@ -1,16 +1,20 @@
-import { SingleSelect } from '@equinor/eds-core-react';
-import { Story, Meta } from '@storybook/react';
-
 import EditableField, {
   EditableFieldProps,
 } from '../../components/EditableField';
+import { Meta, Story } from '@storybook/react';
+
+import { SingleSelect } from '@equinor/eds-core-react';
 
 export default {
   title: 'EditableField',
   component: EditableField,
   argTypes: {
-    editable: { control: 'boolean', defaultValue: true },
-    value: { control: 'text', defaultValue: 'Initial value' },
+    editable: { control: 'boolean' },
+    value: { control: 'text' },
+  },
+  args: {
+    editable: true,
+    value: 'Initial value',
   },
 } as Meta;
 

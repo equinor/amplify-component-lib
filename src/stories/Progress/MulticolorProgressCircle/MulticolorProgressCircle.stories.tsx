@@ -7,15 +7,6 @@ import MulticolorProgressCircle, {
 export default {
   title: 'Progress/MulticolorProgressCircle',
   component: MulticolorProgressCircle,
-  argTypes: {
-    data: {
-      defaultValue: [
-        { fillPercent: 20, color: 'red' },
-        { fillPercent: 40, color: 'blue' },
-      ] as ColoredProgressCircle[],
-    },
-    completed: { defaultValue: 40 },
-  },
 } as Meta;
 
 const Template: Story<MulticolorProgressCircleProps> = (args) => (
@@ -24,5 +15,10 @@ const Template: Story<MulticolorProgressCircleProps> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {
+  completed: 40,
   size: '300',
+  data: [
+    { fillPercent: 20, color: 'red' },
+    { fillPercent: 40, color: 'blue' },
+  ] as ColoredProgressCircle[],
 };
