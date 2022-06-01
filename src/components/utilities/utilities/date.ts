@@ -59,12 +59,12 @@ const formatDateTime = (
 // formatRelativeDateTime(new Date()) => Today at 7:17
 // formatRelativeDateTime(new Date(2018, 11, 24, 10, 33)) => 24. November 2018, 10:33
 const formatRelativeDateTime = (
-  date: Date | string | null | undefined
+  date: Date | string | null | undefined,
+  currentDate: Date
 ): string => {
   if (date) {
     const dateObj = new Date(date);
     if (!isNaN(dateObj.getTime())) {
-      const currentDate = new Date();
       const differenceInMS = currentDate.getTime() - dateObj.getTime();
       const differenceInDays = differenceInMS / (1000 * 3600 * 24);
       const time = dateObj.toLocaleTimeString('en-GB', {
