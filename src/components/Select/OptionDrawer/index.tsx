@@ -3,7 +3,6 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import { SelectItem } from '..';
-import { stat } from 'fs';
 import styled from 'styled-components';
 
 interface StyledOptionProps {
@@ -110,7 +109,7 @@ const OptionDrawer = <T,>({
         onToggle(id, false);
       }
     }
-  }, [selectedItems]);
+  }, [selectedItems, id, onToggle, items, singleSelect]);
 
   const handleClick = (e: MouseEvent) => {
     const checkboxElement = e.target as SVGPathElement;

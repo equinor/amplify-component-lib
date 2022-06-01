@@ -6,12 +6,13 @@ import {
   SingleSelectProps,
 } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import OptionDrawer from '../OptionDrawer';
 import { SelectItem } from '..';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+import { useOutsideClick } from '@equinor/eds-utils';
 
 const { colors, spacings, elevation } = tokens;
 
@@ -67,6 +68,16 @@ const SingleSelectDrawer = <T,>({
   const [inputItems, setInputItems] = useState<SelectItem<T>[]>(items);
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  const inputWrapperRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(menuRef.current as HTMLElement, (e) => {
+    if (
+      !menuRef.current?.contains(e.target as Node) &&
+      !inputWrapperRef.current?.contains(e.target as Node)
+    ) {
+      setOpen(false);
+    }
+  });
 
   useEffect(() => {
     if (search !== '') {
@@ -93,7 +104,7 @@ const SingleSelectDrawer = <T,>({
   return (
     <StyledWrapper className={className}>
       <Label label={label} meta={meta} disabled={disabled} />
-      <StyledInputWrapper>
+      <StyledInputWrapper ref={inputWrapperRef}>
         <Input
           value={search}
           readOnly={readOnly}
@@ -110,7 +121,7 @@ const SingleSelectDrawer = <T,>({
           <Icon data={open ? arrow_drop_up : arrow_drop_down} />
         </StyledButton>
       </StyledInputWrapper>
-      <StyledList>
+      <StyledList ref={menuRef}>
         {open &&
           inputItems.map((item) => (
             <OptionDrawer<T>

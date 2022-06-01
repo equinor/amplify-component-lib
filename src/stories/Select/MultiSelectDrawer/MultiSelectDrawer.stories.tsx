@@ -112,9 +112,9 @@ const Template: Story<MultiSelectDrawerProps<KeyValue>> = () => {
         <MultiSelectDrawer
           items={items}
           label="Test"
-          onChange={(values) => setSelectedItems(values)}
+          setSelectedItems={setSelectedItems}
           placeholder="Select..."
-          initialSelectedItems={initialSelectedItems}
+          selectedItems={selectedItems}
         />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>

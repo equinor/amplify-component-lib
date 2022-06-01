@@ -5,13 +5,14 @@ import {
   Label,
   MultiSelectProps,
 } from '@equinor/eds-core-react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { useEffect, useState } from 'react';
 
 import OptionDrawer from '../OptionDrawer';
 import { SelectItem } from '..';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+import { useOutsideClick } from '@equinor/eds-utils';
 
 const { colors, spacings, elevation } = tokens;
 
@@ -46,38 +47,42 @@ const StyledList = styled.div`
 
 export type MultiSelectDrawerProps<T> = {
   items: SelectItem<T>[];
-  onChange: (items: string[]) => void;
-  initialSelectedItems: string[];
+  setSelectedItems: Dispatch<SetStateAction<string[]>>;
+  selectedItems: string[];
 } & Omit<MultiSelectProps, 'items' | 'initialSelectedItems' | 'onChange'>;
 
 const MultiSelectDrawer = <T,>({
   className,
   disabled = false,
-  initialSelectedItems = [],
+  selectedItems = [],
   items = [],
   label,
-  onChange,
   meta,
+  setSelectedItems,
   readOnly = false,
   placeholder,
 }: MultiSelectDrawerProps<T>) => {
   const [inputItems, setInputItems] = useState<SelectItem<T>[]>(items);
-  const [selectedItems, setSelectedItems] =
-    useState<string[]>(initialSelectedItems);
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  const inputWrapperRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(menuRef.current as HTMLElement, (e) => {
+    if (
+      !menuRef.current?.contains(e.target as Node) &&
+      !inputWrapperRef.current?.contains(e.target as Node)
+    ) {
+      setOpen(false);
+    }
+  });
 
   useEffect(() => {
     setInputItems(items);
   }, [items]);
 
-  useEffect(() => {
-    onChange(selectedItems);
-  }, [onChange, selectedItems]);
-
   const handleToggle = (id: string, toggle: boolean) => {
     if (toggle) {
-      setSelectedItems((items) => [...items, id]);
+      setSelectedItems((i) => [...i, id]);
     } else {
       setSelectedItems((items) => items.filter((i) => i !== id));
     }
@@ -86,7 +91,7 @@ const MultiSelectDrawer = <T,>({
   return (
     <StyledWrapper className={className}>
       <Label label={label} meta={meta} disabled={disabled} />
-      <StyledInputWrapper>
+      <StyledInputWrapper ref={inputWrapperRef}>
         <Input
           value={search}
           readOnly={readOnly}
@@ -103,7 +108,7 @@ const MultiSelectDrawer = <T,>({
           <Icon data={open ? arrow_drop_up : arrow_drop_down} />
         </StyledButton>
       </StyledInputWrapper>
-      <StyledList>
+      <StyledList ref={menuRef}>
         {open &&
           inputItems.map((item) => (
             <OptionDrawer<T>

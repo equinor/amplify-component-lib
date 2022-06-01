@@ -23,7 +23,7 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'react-hooks/exhaustive-deps': 'off', // Why do you want this on Marius? :D
+    'react-hooks/exhaustive-deps': 'error',
     '@typescript-eslint/no-explicit-any': 'off',
     eqeqeq: 'error',
     'react/jsx-curly-brace-presence': [
