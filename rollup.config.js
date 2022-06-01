@@ -2,7 +2,6 @@ import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import { optimizeLodashImports } from '@optimize-lodash/rollup-plugin';
 import pkg from './package.json';
-/* eslint-disable import/no-default-export */
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
@@ -47,8 +46,12 @@ export default [
       SingleFilterMenu: './src/components/SingleFilterMenu',
       Select: './src/components/Select',
       MultiSelectDrawer: './src/components/Select/MultiSelectDrawer',
+      MultiSelectDrawerWithValidation:
+        './src/components/Select/MultiSelectDrawerWithValidation',
       OptionDrawer: './src/components/Select/OptionDrawer',
       SingleSelectDrawer: './src/components/Select/SingleSelectDrawer',
+      SingleSelectDrawerWithValidation:
+        './src/components/Select/SingleSelectDrawerWithValidation',
       SkeletonBase: './src/components/SkeletonBase',
       Table: './src/components/Table',
       TextEntry: './src/components/TextEntry',
