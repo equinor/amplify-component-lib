@@ -1,8 +1,16 @@
 import MultiSelectDrawer from './MultiSelectDrawer';
+import MultiSelectDrawerWithValidation from './MultiSelectDrawerWithValidation';
 import OptionDrawer from './OptionDrawer';
 import SingleSelectDrawer from './SingleSelectDrawer';
+import SingleSelectDrawerWithValidation from './SingleSelectDrawerWithValidation';
 
-export { SingleSelectDrawer, MultiSelectDrawer, OptionDrawer };
+export {
+  SingleSelectDrawer,
+  SingleSelectDrawerWithValidation,
+  MultiSelectDrawer,
+  MultiSelectDrawerWithValidation,
+  OptionDrawer,
+};
 
 type SelectItem<T> = {
   object: T;

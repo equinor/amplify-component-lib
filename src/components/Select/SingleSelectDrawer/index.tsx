@@ -5,8 +5,15 @@ import {
   Label,
   SingleSelectProps,
 } from '@equinor/eds-core-react';
+import {
+  CSSProperties,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { useEffect, useRef, useState } from 'react';
 
 import OptionDrawer from '../OptionDrawer';
 import { SelectItem } from '..';
@@ -46,25 +53,30 @@ const StyledList = styled.div`
 `;
 
 export type SingleSelectDrawerProps<T> = {
+  disabled?: boolean;
+  id?: string;
   items: SelectItem<T>[];
-  onChange: (item: string | null) => void;
-  initialSelectedItem?: string;
-} & Omit<SingleSelectProps, 'items' | 'initialSelectedItem' | 'onChange'>;
+  label: string;
+  meta?: string;
+  onChange?: (value: string | undefined) => void;
+  placeholder?: string;
+  readOnly?: boolean;
+  selectedItem: string | undefined;
+  setSelectedItem: Dispatch<SetStateAction<string | undefined>>;
+  style?: CSSProperties;
+};
 
 const SingleSelectDrawer = <T,>({
-  className,
   disabled = false,
   onChange,
-  initialSelectedItem,
+  selectedItem,
+  setSelectedItem,
   items = [],
   label,
   meta,
   readOnly = false,
   placeholder,
 }: SingleSelectDrawerProps<T>) => {
-  const [selectedItem, setSelectedItem] = useState<string | undefined>(
-    initialSelectedItem
-  );
   const [inputItems, setInputItems] = useState<SelectItem<T>[]>(items);
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
@@ -94,15 +106,15 @@ const SingleSelectDrawer = <T,>({
   const handleToggle = (id: string, toggle: boolean) => {
     if (toggle) {
       setSelectedItem(id);
-      onChange(id);
+      onChange && onChange(id);
     } else {
       setSelectedItem(undefined);
-      onChange(null);
+      onChange && onChange(undefined);
     }
   };
 
   return (
-    <StyledWrapper className={className}>
+    <StyledWrapper>
       <Label label={label} meta={meta} disabled={disabled} />
       <StyledInputWrapper ref={inputWrapperRef}>
         <Input
