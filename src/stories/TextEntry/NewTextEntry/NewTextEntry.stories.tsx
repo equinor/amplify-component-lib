@@ -1,5 +1,4 @@
-import { Story, Meta } from '@storybook/react';
-
+import { Meta, Story } from '@storybook/react';
 import NewTextEntry, {
   NewTextEntryProps,
 } from '../../../components/TextEntry/NewTextEntry/NewTextEntry';
@@ -8,7 +7,10 @@ export default {
   title: 'TextEntry/NewTextEntry',
   component: NewTextEntry,
   argTypes: {
-    title: { control: 'text', defaultValue: 'comment' },
+    title: { control: 'text' },
+  },
+  args: {
+    title: 'comment',
   },
 } as Meta;
 

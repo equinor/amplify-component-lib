@@ -1,13 +1,16 @@
-import { Story, Meta } from '@storybook/react';
-
 import InfoElement, { InfoElementProps } from '../../components/InfoElement';
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'InfoElement',
   component: InfoElement,
   argTypes: {
-    title: { control: 'text', defaultValue: 'Title' },
-    content: { control: 'text', defaultValue: 'Content' },
+    title: { control: 'text' },
+    content: { control: 'text' },
+  },
+  args: {
+    title: 'Title',
+    content: 'Content',
   },
 } as Meta;
 

@@ -1,5 +1,4 @@
-import { Story, Meta } from '@storybook/react';
-
+import { Meta, Story } from '@storybook/react';
 import NewCommentField, {
   NewCommentFieldProps,
 } from '../../../components/CommentField/NewComment';
@@ -10,14 +9,17 @@ export default {
   argTypes: {
     placeholder: {
       control: 'text',
-      defaultValue: 'Publish comment with button or the Enter key',
     },
-    label: { control: 'text', defaultValue: 'Label' },
+    label: { control: 'text' },
     onPublish: {
       name: 'See console for publish output',
-      defaultValue: (value) =>
-        console.log('OnPublish triggered with value: ' + value),
     },
+  },
+  args: {
+    placeholder: 'Publish comment with button or the Enter key',
+    label: 'Label',
+    onPublish: (value) =>
+      console.log('OnPublish triggered with value: ' + value),
   },
 } as Meta;
 

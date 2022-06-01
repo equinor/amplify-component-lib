@@ -4,6 +4,8 @@ import SingleSelectDrawer, {
 } from '../../../components/Select/SingleSelectDrawer';
 
 import { SelectItem } from '../../../components/Select';
+import { Typography } from '@equinor/eds-core-react';
+import { useState } from 'react';
 
 export default {
   title: 'Select/SingleSelectDrawer',
@@ -14,31 +16,75 @@ type KeyValue = { key: string; value: number };
 
 const items: SelectItem<KeyValue>[] = [
   {
-    value: { key: 'One', value: 1 },
+    id: '1',
+    object: { key: 'One', value: 1 },
     label: 'One',
     items: [
-      { value: { key: 'OneOne', value: 11 }, label: 'OneOne', items: [] },
-      { value: { key: 'OneTwo', value: 12 }, label: 'OneTwo', items: [] },
-      { value: { key: 'OneThree', value: 13 }, label: 'OneThree', items: [] },
+      {
+        id: '11',
+        object: { key: 'OneOne', value: 11 },
+        label: 'OneOne',
+        items: [],
+      },
+      {
+        id: '12',
+        object: { key: 'OneTwo', value: 12 },
+        label: 'OneTwo',
+        items: [],
+      },
+      {
+        id: '13',
+        object: { key: 'OneThree', value: 13 },
+        label: 'OneThree',
+        items: [],
+      },
     ],
   },
   {
-    value: { key: 'Two', value: 2 },
+    id: '2',
+    object: { key: 'Two', value: 2 },
     label: 'Two',
     items: [
-      { value: { key: 'TwoOne', value: 21 }, label: 'TwoOne', items: [] },
-      { value: { key: 'TwoTwo', value: 22 }, label: 'TwoTwo', items: [] },
-      { value: { key: 'TwoThree', value: 23 }, label: 'TwoThree', items: [] },
+      {
+        id: '21',
+        object: { key: 'TwoOne', value: 21 },
+        label: 'TwoOne',
+        items: [],
+      },
+      {
+        id: '22',
+        object: { key: 'TwoTwo', value: 22 },
+        label: 'TwoTwo',
+        items: [],
+      },
+      {
+        id: '23',
+        object: { key: 'TwoThree', value: 23 },
+        label: 'TwoThree',
+        items: [],
+      },
     ],
   },
   {
-    value: { key: 'Three', value: 3 },
+    id: '3',
+    object: { key: 'Three', value: 3 },
     label: 'Three',
     items: [
-      { value: { key: 'ThreeOne', value: 31 }, label: 'ThreeOne', items: [] },
-      { value: { key: 'ThreeTwo', value: 32 }, label: 'ThreeTwo', items: [] },
       {
-        value: { key: 'ThreeThree', value: 33 },
+        id: '31',
+        object: { key: 'ThreeOne', value: 31 },
+        label: 'ThreeOne',
+        items: [],
+      },
+      {
+        id: '32',
+        object: { key: 'ThreeTwo', value: 32 },
+        label: 'ThreeTwo',
+        items: [],
+      },
+      {
+        id: '33',
+        object: { key: 'ThreeThree', value: 33 },
         label: 'ThreeThree',
         items: [],
       },
@@ -46,19 +92,36 @@ const items: SelectItem<KeyValue>[] = [
   },
 ];
 
-const Template: Story<SingleSelectDrawerProps<KeyValue>> = () => (
-  <div style={{ width: '300px' }}>
-    <SingleSelectDrawer
-      label="Test"
-      value="test"
-      items={items}
-      onChange={() => null}
-      compare={(item1, item2) => {
-        return item1?.key === item2?.key;
+const Template: Story<SingleSelectDrawerProps<KeyValue>> = () => {
+  const [selectedItem, setSelectedItem] = useState('1');
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
       }}
-    />
-  </div>
-);
+    >
+      <div
+        style={{
+          width: '300px',
+        }}
+      >
+        <SingleSelectDrawer<KeyValue>
+          label="Test"
+          value="test"
+          items={items}
+          initialSelectedItem={selectedItem}
+          placeholder="Select..."
+          onChange={(item) => setSelectedItem(item)}
+        />
+      </div>
+      <div>
+        <Typography variant="h3">{selectedItem}</Typography>
+      </div>
+    </div>
+  );
+};
 
 export const Primary = Template.bind({});
 Primary.args = {};
