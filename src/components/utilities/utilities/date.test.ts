@@ -76,10 +76,18 @@ test('formatDateTime works as expected with options', () => {
 test('formatRelativeDateTime work as expected with yesterdays date', () => {
   const fakeDate = new Date();
   fakeDate.setDate(fakeDate.getDate() - 1);
-  const currentDate = new Date();
   // Fake date is yesterday;
 
-  const formatted = date.formatRelativeDateTime(fakeDate, currentDate);
+  const formatted = date.formatRelativeDateTime(fakeDate);
+  expect(formatted).toContain('Yesterday');
+});
+
+test('formatRelativeDateTime work as expected with yesterdays date, but less than 24 hours', () => {
+  const fakeDate = new Date();
+  fakeDate.setHours(fakeDate.getHours() - fakeDate.getHours() - 2);
+  // Fake date is yesterday;
+
+  const formatted = date.formatRelativeDateTime(fakeDate);
   expect(formatted).toContain('Yesterday');
 });
 
@@ -87,13 +95,12 @@ test('formatRelativeDateTime work as expected with date older than yesterday, bu
   const TwoDaysAgo = new Date().setDate(new Date().getDate() - 2);
   const fakeDate = faker.date.recent(5, TwoDaysAgo);
   // Fake date is not yesterday, but a date within a week of today
-  const currentDate = new Date();
 
   const fakeDateDay = fakeDate.toLocaleString('en-GB', {
     weekday: 'long',
   });
 
-  const formatted = date.formatRelativeDateTime(fakeDate, currentDate);
+  const formatted = date.formatRelativeDateTime(fakeDate);
   expect(formatted).toContain(fakeDateDay);
 });
 
@@ -106,9 +113,8 @@ test('formatRelativeDateTime works as expected with date older than a week', () 
     hour: '2-digit',
     minute: '2-digit',
   })}`;
-  const currentDate = new Date();
 
-  const formatted = date.formatRelativeDateTime(fakeDate, currentDate);
+  const formatted = date.formatRelativeDateTime(fakeDate);
   expect(formatted).toBe(expectedResult);
 });
 
@@ -116,14 +122,13 @@ test('formatRelativeDateTime works as expected with todays date', () => {
   const today = new Date();
   const past = new Date();
   past.setHours(today.getHours() - 2);
-  const currentDate = new Date();
 
   const expectedResult = `Today at ${past.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatRelativeDateTime(past, currentDate);
+  const formatted = date.formatRelativeDateTime(past);
   expect(formatted).toEqual(expectedResult);
 });
 

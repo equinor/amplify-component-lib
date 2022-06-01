@@ -13,7 +13,6 @@ const formatDate = (
   if (date) {
     const dateObj = new Date(date);
     if (!isNaN(dateObj.getTime())) {
-      // getMonth()+1 because January is 0 and so on
       if (options?.format === 'DD. month YYYY') {
         const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
@@ -59,11 +58,11 @@ const formatDateTime = (
 // formatRelativeDateTime(new Date()) => Today at 7:17
 // formatRelativeDateTime(new Date(2018, 11, 24, 10, 33)) => 24. November 2018, 10:33
 const formatRelativeDateTime = (
-  date: Date | string | null | undefined,
-  currentDate: Date
+  date: Date | string | null | undefined
 ): string => {
   if (date) {
     const dateObj = new Date(date);
+    const currentDate = new Date();
     if (!isNaN(dateObj.getTime())) {
       const differenceInMS = currentDate.getTime() - dateObj.getTime();
       const differenceInDays = differenceInMS / (1000 * 3600 * 24);
@@ -71,9 +70,9 @@ const formatRelativeDateTime = (
         hour: '2-digit',
         minute: '2-digit',
       });
-      if (differenceInDays < 1) {
+      if (differenceInDays < 1 && currentDate.getDay() === dateObj.getDay()) {
         return `Today at ${time}`;
-      } else if (differenceInDays >= 1 && differenceInDays < 2) {
+      } else if (differenceInDays < 2) {
         // Yesterday
         return `Yesterday at ${time}`;
       } else if (differenceInDays > 2 && differenceInDays < 7) {
