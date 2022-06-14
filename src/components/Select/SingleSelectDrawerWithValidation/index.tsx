@@ -1,5 +1,4 @@
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
 
 import { SelectItem } from '..';
 import SelectLabel from '../SelectLabel';
@@ -28,23 +27,23 @@ const ErrorMessage = ({
 };
 
 export interface SingleSelectDrawerWithValidationProps<T> {
-  setSelectedItem: Dispatch<SetStateAction<string | undefined>>;
   items: SelectItem<T>[];
   rules?: RegisterOptions;
   label: string;
   placeholder: string;
-  selectedValue: string | undefined;
+  onChange: (values: SelectItem<T> | undefined) => void;
+  initialItem: string | undefined;
   id: string;
 }
 
 const SingleSelectDrawerWithValidation = <T,>({
   label,
   items,
-  selectedValue,
+  initialItem,
   rules,
   placeholder,
+  onChange,
   id,
-  setSelectedItem,
 }: SingleSelectDrawerWithValidationProps<T>) => {
   const {
     formState: { errors },
@@ -57,17 +56,17 @@ const SingleSelectDrawerWithValidation = <T,>({
         control={control}
         name={label}
         rules={rules}
-        defaultValue={
-          items.filter((item) => selectedValue?.includes(item.id)) ?? ['']
-        }
-        render={({ field: { onChange } }) => (
+        defaultValue={items.filter((item) => initialItem === item.id) ?? ['']}
+        render={({ field: { onChange: onControllerChange } }) => (
           <SingleSelectDrawer<T>
             style={{ width: '100%' }}
             label=""
             id={id}
-            setSelectedItem={setSelectedItem}
-            onChange={(items) => onChange(items)}
-            selectedItem={selectedValue}
+            onChange={(items) => {
+              onControllerChange(items);
+              onChange(items);
+            }}
+            initialItem={initialItem}
             items={items}
             placeholder={placeholder}
           />

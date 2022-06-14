@@ -1,18 +1,5 @@
-import {
-  Button,
-  Icon,
-  Input,
-  Label,
-  SingleSelectProps,
-} from '@equinor/eds-core-react';
-import {
-  CSSProperties,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { Button, Icon, Input, Label } from '@equinor/eds-core-react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import OptionDrawer from '../OptionDrawer';
@@ -56,27 +43,28 @@ export type SingleSelectDrawerProps<T> = {
   disabled?: boolean;
   id?: string;
   items: SelectItem<T>[];
+  initialItem: string | undefined;
   label: string;
   meta?: string;
-  onChange?: (value: string | undefined) => void;
+  onChange?: (value: SelectItem<T> | undefined) => void;
   placeholder?: string;
   readOnly?: boolean;
-  selectedItem: string | undefined;
-  setSelectedItem: Dispatch<SetStateAction<string | undefined>>;
   style?: CSSProperties;
 };
 
 const SingleSelectDrawer = <T,>({
   disabled = false,
   onChange,
-  selectedItem,
-  setSelectedItem,
   items = [],
   label,
+  initialItem,
   meta,
   readOnly = false,
   placeholder,
 }: SingleSelectDrawerProps<T>) => {
+  const [selectedItem, setSelectedItem] = useState<SelectItem<T> | undefined>(
+    items.find((item) => item.id === initialItem)
+  );
   const [inputItems, setInputItems] = useState<SelectItem<T>[]>(items);
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
@@ -103,10 +91,10 @@ const SingleSelectDrawer = <T,>({
     }
   }, [search, items]);
 
-  const handleToggle = (id: string, toggle: boolean) => {
+  const handleToggle = (item: SelectItem<T>, toggle: boolean) => {
     if (toggle) {
-      setSelectedItem(id);
-      onChange && onChange(id);
+      setSelectedItem(item);
+      onChange && onChange(item);
     } else {
       setSelectedItem(undefined);
       onChange && onChange(undefined);
@@ -141,7 +129,7 @@ const SingleSelectDrawer = <T,>({
               onToggle={handleToggle}
               selectedItems={selectedItem ? [selectedItem] : []}
               singleSelect
-              {...item}
+              item={item}
             />
           ))}
       </StyledList>

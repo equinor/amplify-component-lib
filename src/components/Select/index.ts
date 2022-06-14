@@ -16,7 +16,7 @@ type SelectItem<T> = {
   object: T;
   id: string;
   label: string;
-  items: SelectItem<T>[];
+  children: SelectItem<T>[];
 };
 
 export type { SelectItem };

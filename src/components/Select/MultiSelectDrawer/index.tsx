@@ -1,12 +1,5 @@
 import { Button, Icon, Input, Label } from '@equinor/eds-core-react';
-import {
-  CSSProperties,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import OptionDrawer from '../OptionDrawer';
@@ -52,11 +45,10 @@ export type MultiSelectDrawerProps<T> = {
   items: SelectItem<T>[];
   label: string;
   meta?: string;
-  onChange?: (value: string[]) => void;
+  onChange?: (values: SelectItem<T>[]) => void;
   placeholder?: string;
   readOnly?: boolean;
-  selectedItems: string[];
-  setSelectedItems: Dispatch<SetStateAction<string[]>>;
+  initialItems: string[];
   style?: CSSProperties;
 };
 
@@ -69,10 +61,12 @@ const MultiSelectDrawer = <T,>({
   onChange,
   placeholder,
   readOnly = false,
-  selectedItems = [],
-  setSelectedItems,
+  initialItems = [],
   style,
 }: MultiSelectDrawerProps<T>) => {
+  const [selectedItems, setSelectedItems] = useState<SelectItem<T>[]>(
+    items.filter((item) => initialItems.includes(item.id))
+  );
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
@@ -88,14 +82,13 @@ const MultiSelectDrawer = <T,>({
 
   useEffect(() => {
     onChange && onChange(selectedItems);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedItems]);
+  }, [onChange, selectedItems]);
 
-  const handleToggle = (id: string, toggle: boolean) => {
+  const handleToggle = (item: SelectItem<T>, toggle: boolean) => {
     if (toggle) {
-      setSelectedItems((items) => [...items, id]);
+      setSelectedItems((s) => (s ? [...s, item] : []));
     } else {
-      setSelectedItems((items) => items.filter((i) => i !== id));
+      setSelectedItems((s) => (s ? s.filter((i) => i.id !== item.id) : []));
     }
   };
 
@@ -128,7 +121,7 @@ const MultiSelectDrawer = <T,>({
               key={item.id}
               onToggle={handleToggle}
               selectedItems={selectedItems}
-              {...item}
+              item={item}
             />
           ))}
       </StyledList>

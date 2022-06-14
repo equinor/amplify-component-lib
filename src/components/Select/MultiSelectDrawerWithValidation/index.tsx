@@ -1,5 +1,4 @@
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
 
 import MultiSelectDrawer from '../MultiSelectDrawer';
 import { SelectItem } from '..';
@@ -28,23 +27,23 @@ const ErrorMessage = ({
 };
 
 export interface MultiSelectDrawerWithValidationProps<T> {
-  setSelectedItems: Dispatch<SetStateAction<string[]>>;
   items: SelectItem<T>[];
   rules?: RegisterOptions;
   label: string;
   placeholder: string;
-  selectedValues: string[];
+  onChange: (values: SelectItem<T>[]) => void;
+  initialItems: string[];
   id: string;
 }
 
 const MultiSelectDrawerWithValidation = <T,>({
   label,
   items,
-  selectedValues,
   rules,
+  onChange,
   placeholder,
   id,
-  setSelectedItems,
+  initialItems,
 }: MultiSelectDrawerWithValidationProps<T>) => {
   const {
     formState: { errors },
@@ -58,17 +57,21 @@ const MultiSelectDrawerWithValidation = <T,>({
         name={label}
         rules={rules}
         defaultValue={
-          items.filter((item) => selectedValues.includes(item.id)) ?? ['']
+          items.filter((item) => initialItems.find((s) => s === item.id)) ?? [
+            '',
+          ]
         }
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange: onControllerChange } }) => (
           <MultiSelectDrawer<T>
             style={{ width: '100%' }}
             label=""
             id={id}
-            setSelectedItems={setSelectedItems}
-            onChange={(items) => onChange(items)}
-            selectedItems={selectedValues}
+            onChange={(items) => {
+              onControllerChange(items);
+              onChange(items);
+            }}
             items={items}
+            initialItems={initialItems}
             placeholder={placeholder}
           />
         )}
