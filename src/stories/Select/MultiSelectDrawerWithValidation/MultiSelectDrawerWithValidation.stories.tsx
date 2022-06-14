@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import MultiSelectDrawerWithValidation, {
   MultiSelectDrawerWithValidationProps,
 } from '../../../components/Select/MultiSelectDrawerWithValidation';
+import { ValueType, items } from '../SelectUtils';
 
 import { SelectItem } from '../../../components/Select';
 import { Typography } from '@equinor/eds-core-react';
@@ -13,90 +14,12 @@ export default {
   component: MultiSelectDrawerWithValidation,
 } as Meta;
 
-type KeyValue = { key: string; value: number };
+const initialItems: string[] = ['22', '31'];
 
-const items: SelectItem<KeyValue>[] = [
-  {
-    id: '1',
-    object: { key: 'One', value: 1 },
-    label: 'One',
-    items: [
-      {
-        id: '11',
-        object: { key: 'OneOne', value: 11 },
-        label: 'OneOne',
-        items: [],
-      },
-      {
-        id: '12',
-        object: { key: 'OneTwo', value: 12 },
-        label: 'OneTwo',
-        items: [],
-      },
-      {
-        id: '13',
-        object: { key: 'OneThree', value: 13 },
-        label: 'OneThree',
-        items: [],
-      },
-    ],
-  },
-  {
-    id: '2',
-    object: { key: 'Two', value: 2 },
-    label: 'Two',
-    items: [
-      {
-        id: '21',
-        object: { key: 'TwoOne', value: 21 },
-        label: 'TwoOne',
-        items: [],
-      },
-      {
-        id: '22',
-        object: { key: 'TwoTwo', value: 22 },
-        label: 'TwoTwo',
-        items: [],
-      },
-      {
-        id: '23',
-        object: { key: 'TwoThree', value: 23 },
-        label: 'TwoThree',
-        items: [],
-      },
-    ],
-  },
-  {
-    id: '3',
-    object: { key: 'Three', value: 3 },
-    label: 'Three',
-    items: [
-      {
-        id: '31',
-        object: { key: 'ThreeOne', value: 31 },
-        label: 'ThreeOne',
-        items: [],
-      },
-      {
-        id: '32',
-        object: { key: 'ThreeTwo', value: 32 },
-        label: 'ThreeTwo',
-        items: [],
-      },
-      {
-        id: '33',
-        object: { key: 'ThreeThree', value: 33 },
-        label: 'ThreeThree',
-        items: [],
-      },
-    ],
-  },
-];
-
-const initialSelectedItems: string[] = ['22', '31'];
-
-const Template: Story<MultiSelectDrawerWithValidationProps<KeyValue>> = () => {
-  const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
+const Template: Story<MultiSelectDrawerWithValidationProps<ValueType>> = () => {
+  const [selectedItems, setSelectedItems] = useState<SelectItem<ValueType>[]>(
+    items.filter((item) => initialItems.includes(item.id))
+  );
   const methods = useForm({ reValidateMode: 'onChange', mode: 'onChange' });
 
   return (
@@ -116,16 +39,16 @@ const Template: Story<MultiSelectDrawerWithValidationProps<KeyValue>> = () => {
             id="test"
             items={items}
             label="Test"
+            onChange={(val) => setSelectedItems(val)}
             placeholder="Select..."
             rules={{ required: true }}
-            selectedValues={selectedItems}
-            setSelectedItems={setSelectedItems}
+            initialItems={initialItems}
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {selectedItems.map((value) => (
-            <Typography key={value} variant="h3">
-              {value}
+            <Typography key={value.id} variant="h3">
+              {value.label}
             </Typography>
           ))}
         </div>
