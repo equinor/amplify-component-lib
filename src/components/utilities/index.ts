@@ -9,7 +9,13 @@ import {
   sort,
   string,
 } from './utilities';
-import { useAuth, useDebounce, useOnScreen, useSnackbar } from './hooks';
+import {
+  useAuth,
+  useDebounce,
+  useOnScreen,
+  useSnackbar,
+  useSideBarState,
+} from './hooks';
 
 import Providers from './providers';
 
@@ -28,4 +34,5 @@ export {
   useOnScreen,
   useSnackbar,
   useAuth,
+  useSideBarState,
 };
