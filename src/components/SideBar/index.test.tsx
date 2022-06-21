@@ -6,7 +6,6 @@ import { render, screen } from '../../test-utils';
 import { MenuItemType } from './MenuItem';
 import React from 'react';
 import SideBar from '.';
-import { isExportDeclaration } from 'typescript';
 import userEvent from '@testing-library/user-event';
 
 const defaultMenuItems: MenuItemType[] = [

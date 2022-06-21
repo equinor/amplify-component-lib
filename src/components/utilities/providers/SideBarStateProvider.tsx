@@ -38,7 +38,7 @@ export const useSideBarState = (): ContextState => {
   const context = useContext(SidebarContext);
   if (context === undefined) {
     throw new Error(
-      'useDartSideBarState must be used within a DartSideBarStateProvider'
+      'useSideBarState must be used within a SideBarStateProvider'
     );
   }
   return context;
