@@ -1,7 +1,4 @@
-import Guidelines, {
-  IGuidelineProps,
-  IGuidelineSections,
-} from '../../components/Guidelines';
+import TopBar, { IGuidelineSections } from '../../components/TopBar';
 import { Story, Meta } from '@storybook/react';
 import {
   account_circle,
@@ -21,7 +18,7 @@ const { colors } = tokens;
 
 export default {
   title: 'Guidelines',
-  component: Guidelines,
+  component: TopBar.Guidelines,
 } as Meta;
 
 const sections: IGuidelineSections[] = [
@@ -89,9 +86,9 @@ const sections: IGuidelineSections[] = [
     ],
   },
 ];
-export const Primary: Story<IGuidelineProps> = () => {
+export const Primary: Story<IGuidelineSections> = () => {
   return (
-    <Guidelines
+    <TopBar.Guidelines
       open
       sections={sections.slice(0, 1)}
       onClose={() => console.log('closing guidelines.')}
@@ -99,9 +96,9 @@ export const Primary: Story<IGuidelineProps> = () => {
   );
 };
 
-export const WithDifferentIconColors: Story<IGuidelineProps> = () => {
+export const WithDifferentIconColors: Story<IGuidelineSections> = () => {
   return (
-    <Guidelines
+    <TopBar.Guidelines
       open
       sections={sections.slice(0, 2)}
       onClose={() => console.log('closing guidelines.')}
@@ -109,9 +106,9 @@ export const WithDifferentIconColors: Story<IGuidelineProps> = () => {
   );
 };
 
-export const WithColorBox: Story<IGuidelineProps> = () => {
+export const WithColorBox: Story<IGuidelineSections> = () => {
   return (
-    <Guidelines
+    <TopBar.Guidelines
       open
       sections={sections}
       onClose={() => console.log('closing guidelines.')}

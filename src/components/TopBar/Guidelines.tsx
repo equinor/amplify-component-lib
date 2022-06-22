@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { forwardRef, ReactNode } from 'react';
 import { Icon, SideSheet, Typography } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
@@ -54,10 +54,14 @@ export interface IGuidelineProps {
   sections: IGuidelineSections[];
 }
 
-const Guidelines: FC<IGuidelineProps> = ({ open, onClose, sections }) => {
-  return (
-    /// <reference path="" />
-    <StyledSideSheet open={open} title="Icons Guide" onClose={onClose}>
+export const Guidelines = forwardRef<HTMLDivElement, IGuidelineProps>(
+  ({ open, onClose, sections }, ref) => (
+    <StyledSideSheet
+      ref={ref}
+      open={open}
+      title="Icons Guide"
+      onClose={onClose}
+    >
       {sections.map((section) => (
         <>
           <Typography variant="overline">{section.sectionName}</Typography>
@@ -75,7 +79,6 @@ const Guidelines: FC<IGuidelineProps> = ({ open, onClose, sections }) => {
         </>
       ))}
     </StyledSideSheet>
-  );
-};
-
-export default Guidelines;
+  )
+);
+Guidelines.displayName = 'Topbar.Guidelines';

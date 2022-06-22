@@ -34,7 +34,6 @@ export default [
       FileUploadArea: './src/components/FileUploadArea',
       FullPageSpinner: './src/components/FullPageSpinner',
       FullPageStatus: './src/components/FullPageStatus',
-      Guidelines: './src/components/Guidelines',
       IconToggleButton: './src/components/Buttons/IconToggleButton',
       InfoElement: './src/components/InfoElement',
       MulticolorProgressCircle:
