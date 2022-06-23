@@ -36,7 +36,7 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   height: ${(props) => props.size}px;
   font-size: ${(props) => props.fontSize}px;
   font-family: ${typography.heading.h6.fontFamily};
-  font-weight: 800;
+  font-weight: ${typography.heading.h1_bold.fontWeight};
   border-radius: ${shape.circle.borderRadius};
   background: ${(props) => props.background};
   display: flex;

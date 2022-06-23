@@ -81,4 +81,4 @@ export const Guidelines = forwardRef<HTMLDivElement, IGuidelineProps>(
     </StyledSideSheet>
   )
 );
-Guidelines.displayName = 'Topbar.Guidelines';
+Guidelines.displayName = 'TopBar.Guidelines';

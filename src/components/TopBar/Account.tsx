@@ -14,11 +14,6 @@ const StyledMenu = styled(Menu)`
   padding: ${spacings.comfortable.medium};
 `;
 
-const StyledAvatar = styled(ProfileAvatar)`
-  border-radius: 50%;
-  margin-right: ${spacings.comfortable.medium};
-`;
-
 const FullWidthWrapper = styled.div`
   display: grid;
   margin-top: ${spacings.comfortable.large};
@@ -87,7 +82,7 @@ export const Account = forwardRef<HTMLDivElement, IAccountProps>(
               </Button>
             </Box>
             <Box display="flex" alignItems="center">
-              <StyledAvatar
+              <ProfileAvatar
                 size={size ? size : 'large'}
                 name={account?.name}
                 url={photo}
@@ -107,4 +102,4 @@ export const Account = forwardRef<HTMLDivElement, IAccountProps>(
   }
 );
 
-Account.displayName = 'Topbar.Account';
+Account.displayName = 'TopBar.Account';
