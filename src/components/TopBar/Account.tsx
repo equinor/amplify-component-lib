@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Icon,
-  Menu,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 
 import { account_circle, clear } from '@equinor/eds-icons';
 import { Box } from '@mui/material';
@@ -12,6 +6,7 @@ import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { forwardRef, useState } from 'react';
 import { AccountInfo } from '@azure/msal-common';
+import ProfileAvatar from '../ProfileAvatar';
 
 const { spacings, colors } = tokens;
 const StyledMenu = styled(Menu)`
@@ -19,7 +14,7 @@ const StyledMenu = styled(Menu)`
   padding: ${spacings.comfortable.medium};
 `;
 
-const StyledAvatar = styled(Avatar)`
+const StyledAvatar = styled(ProfileAvatar)`
   border-radius: 50%;
   margin-right: ${spacings.comfortable.medium};
 `;
@@ -36,10 +31,11 @@ export interface IAccountProps {
   account: AccountInfo | undefined;
   logout: () => void;
   photo: string | undefined;
+  size?: 'small' | 'medium' | 'large';
 }
 
 export const Account = forwardRef<HTMLDivElement, IAccountProps>(
-  ({ account, logout, photo }) => {
+  ({ account, logout, photo, size }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>();
     const isOpen = Boolean(anchorEl);
 
@@ -91,7 +87,11 @@ export const Account = forwardRef<HTMLDivElement, IAccountProps>(
               </Button>
             </Box>
             <Box display="flex" alignItems="center">
-              <StyledAvatar alt="user image" size={40} src={photo} />
+              <StyledAvatar
+                size={size ? size : 'large'}
+                name={account?.name}
+                url={photo}
+              />
               <div>
                 <Typography variant="h6">{account?.name}</Typography>
                 <Typography>{account?.username}</Typography>

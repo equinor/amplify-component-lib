@@ -70,6 +70,7 @@ export default [
       SomethingFilled: './src/components/Icons/something-filled.tsx',
       SomethingOutline: './src/components/Icons/something-outline.tsx',
       Wellbore: './src/components/Icons/wellbore.tsx',
+      ProfileAvatar: './src/components/ProfileAvatar',
     },
     external: peerDeps,
     plugins: [
