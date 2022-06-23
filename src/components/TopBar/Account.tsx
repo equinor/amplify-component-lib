@@ -39,7 +39,7 @@ export interface IAccountProps {
 }
 
 export const Account = forwardRef<HTMLDivElement, IAccountProps>(
-  ({ account, logout, photo }, ref) => {
+  ({ account, logout, photo }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>();
     const isOpen = Boolean(anchorEl);
 

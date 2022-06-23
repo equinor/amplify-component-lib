@@ -51,4 +51,4 @@ export { default as Wellbore } from './Icons/wellbore';
 export type { SelectItem } from './Select';
 export type { SidebarType, ItemType } from './SideBar';
 export type { ColoredProgressCircle } from './Progress/MulticolorProgressCircle';
-export type { TopBarType, IGuidelineSections } from './TopBar';
+export type { TopBarType, IGuidelineSections, ISettingsProps } from './TopBar';
