@@ -47,7 +47,10 @@ export { default as Portal } from './Icons/portal';
 export { default as SomethingFilled } from './Icons/something-filled';
 export { default as SomethingOutline } from './Icons/something-outline';
 export { default as Wellbore } from './Icons/wellbore';
+export { default as ProfileAvatar } from './ProfileAvatar';
 
 export type { SelectItem } from './Select';
 export type { SidebarType, ItemType } from './SideBar';
 export type { ColoredProgressCircle } from './Progress/MulticolorProgressCircle';
+export type { TopBarType, IGuidelineSections, ISettingsProps } from './TopBar';
+export type { ProfileAvatarProps } from './ProfileAvatar';
