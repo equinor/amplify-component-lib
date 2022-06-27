@@ -44,7 +44,7 @@ export interface ISettingsProps {
 
 export const Settings = forwardRef<HTMLDivElement, ISettingsProps>(
   ({ allSettings }) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>();
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const isOpen = Boolean(anchorEl);
 
     const openMenu = (
@@ -77,8 +77,7 @@ export const Settings = forwardRef<HTMLDivElement, ISettingsProps>(
             id="menu-on-button"
             aria-labelledby="menuButton"
             open={isOpen}
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            anchorEl={anchorEl!}
+            anchorEl={anchorEl}
             onClose={closeMenu}
             placement="bottom-start"
           >
