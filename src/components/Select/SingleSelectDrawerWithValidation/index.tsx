@@ -74,7 +74,7 @@ const SingleSelectDrawerWithValidation = <T,>({
       />
       <ErrorMessage
         message="This field is required"
-        error={errors[label] && errors[label].type === 'required'}
+        error={errors?.[label] && errors?.[label]?.type === 'required'}
       />
     </SelectLabel>
   );
