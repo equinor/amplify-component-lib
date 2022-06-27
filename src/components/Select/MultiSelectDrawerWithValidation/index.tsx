@@ -9,7 +9,7 @@ const ErrorMessage = ({
   error,
 }: {
   message: string;
-  error: boolean;
+  error?: boolean;
 }) => {
   return (
     <span

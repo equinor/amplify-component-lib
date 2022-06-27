@@ -77,6 +77,7 @@ export const Settings = forwardRef<HTMLDivElement, ISettingsProps>(
             id="menu-on-button"
             aria-labelledby="menuButton"
             open={isOpen}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             anchorEl={anchorEl!}
             onClose={closeMenu}
             placement="bottom-start"
