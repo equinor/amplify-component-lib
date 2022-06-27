@@ -62,21 +62,21 @@ export const Guidelines = forwardRef<HTMLDivElement, IGuidelineProps>(
       title="Icons Guide"
       onClose={onClose}
     >
-      {sections.map((section) => (
-        <>
+      {sections.map((section, ind) => (
+        <div key={ind}>
           <Typography variant="overline">{section.sectionName}</Typography>
           <Guides>
-            {section.items.map((item) => (
-              <>
+            {section.items.map((item, index) => (
+              <div key={index}>
                 <Guide key={item.title}>
                   {item.colorBox && <StyledColorBox color={item.color} />}
                   <Icon data={item.icon} color={item.color} />
                   <Typography variant="caption">{item.title}</Typography>
                 </Guide>
-              </>
+              </div>
             ))}
           </Guides>
-        </>
+        </div>
       ))}
     </StyledSideSheet>
   )

@@ -93,8 +93,8 @@ export const Settings = forwardRef<HTMLDivElement, ISettingsProps>(
                 <Icon data={clear} />
               </Button>
             </Box>
-            {allSettings.map((items) => (
-              <>
+            {allSettings.map((items, ind) => (
+              <div key={ind}>
                 <Typography variant="overline">{items.title}</Typography>
                 {items.items.map((item, index) => (
                   <Box paddingRight="40px" key={index}>
@@ -119,7 +119,7 @@ export const Settings = forwardRef<HTMLDivElement, ISettingsProps>(
                     </Box>
                   </Box>
                 ))}
-              </>
+              </div>
             ))}
           </StyledMenu>
         )}
