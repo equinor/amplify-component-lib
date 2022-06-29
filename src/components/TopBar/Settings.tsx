@@ -95,10 +95,10 @@ export const Settings = forwardRef<HTMLButtonElement, ISettingsProps>(
                 <Icon data={clear} />
               </Button>
             </Box>
-            {allSettings.map((items, ind) => (
+            {allSettings.map((section, ind) => (
               <div key={ind}>
-                <Typography variant="overline">{items.title}</Typography>
-                {items.items.map((item, index) => (
+                <Typography variant="overline">{section.title}</Typography>
+                {section.items.map((item, index) => (
                   <Box paddingRight="40px" key={index}>
                     <Box
                       display="flex"
@@ -110,8 +110,8 @@ export const Settings = forwardRef<HTMLButtonElement, ISettingsProps>(
                         label={item.label}
                         name={item.name}
                         value={item.value}
-                        checked={items.type === item.value}
-                        onChange={() => items.onChange?.(item.value)}
+                        checked={section.type === item.value}
+                        onChange={() => section.onChange?.(item.value)}
                       />
                       {item.colorBox && (
                         <StyledColorBox color={item.colorBox} />
