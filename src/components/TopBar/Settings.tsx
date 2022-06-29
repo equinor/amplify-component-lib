@@ -35,6 +35,7 @@ export interface ISettingsSections {
     value: string;
     colorBox?: string;
     element?: string;
+    disabled?: boolean;
   }[];
 }
 
@@ -105,6 +106,7 @@ export const Settings = forwardRef<HTMLButtonElement, ISettingsProps>(
                       alignItems="center"
                     >
                       <Radio
+                        disabled={item.disabled}
                         label={item.label}
                         name={item.name}
                         value={item.value}
