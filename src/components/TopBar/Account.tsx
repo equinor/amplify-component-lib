@@ -1,12 +1,12 @@
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
-
 import { account_circle, clear } from '@equinor/eds-icons';
+import { forwardRef, useState } from 'react';
+
+import { AccountInfo } from '@azure/msal-common';
 import { Box } from '@mui/material';
+import ProfileAvatar from '../ProfileAvatar';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
-import { forwardRef, useState } from 'react';
-import { AccountInfo } from '@azure/msal-common';
-import ProfileAvatar from '../ProfileAvatar';
 
 const { spacings, colors } = tokens;
 const StyledMenu = styled(Menu)`
@@ -29,8 +29,8 @@ export interface IAccountProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-export const Account = forwardRef<HTMLDivElement, IAccountProps>(
-  ({ account, logout, photo, size }) => {
+export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
+  ({ account, logout, photo, size }, ref) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const isOpen = Boolean(anchorEl);
 
@@ -52,6 +52,7 @@ export const Account = forwardRef<HTMLDivElement, IAccountProps>(
         <Button
           variant="ghost_icon"
           onClick={(e) => (isOpen ? closeMenu() : openMenu(e))}
+          ref={ref}
         >
           <Icon
             data={account_circle}
