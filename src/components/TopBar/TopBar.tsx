@@ -54,7 +54,7 @@ type TopBarType = {
   children: ReactNode;
 } & React.HTMLAttributes<HTMLElement>;
 
-export const TopBar = forwardRef<HTMLElement, TopBarType>(
+export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
   (
     {
       children,

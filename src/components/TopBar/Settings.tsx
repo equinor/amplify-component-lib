@@ -42,8 +42,8 @@ export interface ISettingsProps {
   allSettings: ISettingsSections[];
 }
 
-export const Settings = forwardRef<HTMLDivElement, ISettingsProps>(
-  ({ allSettings }) => {
+export const Settings = forwardRef<HTMLButtonElement, ISettingsProps>(
+  ({ allSettings }, ref) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const isOpen = Boolean(anchorEl);
 
@@ -65,6 +65,7 @@ export const Settings = forwardRef<HTMLDivElement, ISettingsProps>(
         <Button
           variant="ghost_icon"
           onClick={(e) => (isOpen ? closeMenu() : openMenu(e))}
+          ref={ref}
         >
           <Icon
             data={settings}
