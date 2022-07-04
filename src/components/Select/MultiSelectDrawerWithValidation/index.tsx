@@ -78,7 +78,7 @@ const MultiSelectDrawerWithValidation = <T,>({
       />
       <ErrorMessage
         message="This field is required"
-        error={errors?.[label] && errors?.[label]?.type === 'required'}
+        error={errors?.[label] !== undefined && errors?.[label]?.type === 'required'}
       />
     </SelectLabel>
   );
