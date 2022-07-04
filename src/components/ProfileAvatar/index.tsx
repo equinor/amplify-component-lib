@@ -29,6 +29,7 @@ type ContainerProps = {
 type InitialsContainerProps = {
   background: string;
   fontSize: number;
+  disabled: boolean;
 } & ContainerProps;
 
 const InitialsContainer = styled.div<InitialsContainerProps>`
@@ -38,7 +39,10 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   font-family: ${typography.heading.h6.fontFamily};
   font-weight: ${typography.heading.h1_bold.fontWeight};
   border-radius: ${shape.circle.borderRadius};
-  background: ${(props) => props.background};
+  background: ${(props) =>
+    props.disabled
+      ? colors.interactive.disabled__border.hex
+      : props.background};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,12 +64,14 @@ export interface ProfileAvatarProps {
   url?: string;
   name?: string;
   size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
 }
 
 const ProfileAvatar: FC<ProfileAvatarProps> = ({
   url,
   name,
   size = 'medium',
+  disabled = false,
 }) => {
   const initials = useMemo((): [string, string] => {
     const split = name?.split(' ');
@@ -103,7 +109,12 @@ const ProfileAvatar: FC<ProfileAvatarProps> = ({
 
   if (imageSrc !== '') {
     return (
-      <Avatar alt={`user-avatar-${name}`} size={sizeToPx()} src={imageSrc} />
+      <Avatar
+        alt={`user-avatar-${name}`}
+        size={sizeToPx()}
+        src={imageSrc}
+        disabled={disabled}
+      />
     );
   }
 
@@ -112,6 +123,7 @@ const ProfileAvatar: FC<ProfileAvatarProps> = ({
       background={nameToColor(name)}
       size={sizeToPx()}
       fontSize={sizeToFontsize()}
+      disabled={disabled}
     >
       {initials.join('')}
     </InitialsContainer>
