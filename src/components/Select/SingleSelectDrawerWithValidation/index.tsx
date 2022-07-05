@@ -3,6 +3,7 @@ import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 import { SelectItem } from '..';
 import SelectLabel from '../SelectLabel';
 import SingleSelectDrawer from '../SingleSelectDrawer';
+import { useMemo } from 'react';
 
 const ErrorMessage = ({
   message,
@@ -50,6 +51,14 @@ const SingleSelectDrawerWithValidation = <T,>({
     control,
   } = useFormContext();
 
+  const hasError = useMemo((): boolean => {
+    if (errors?.[label]?.type) {
+      const errorType: string = errors?.[label]?.type as unknown as string;
+      return errorType === 'required';
+    }
+    return false;
+  }, [errors, label]);
+
   return (
     <SelectLabel id={id} label={label} required={rules?.required !== undefined}>
       <Controller
@@ -72,10 +81,7 @@ const SingleSelectDrawerWithValidation = <T,>({
           />
         )}
       />
-      <ErrorMessage
-        message="This field is required"
-        error={errors?.[label]?.type !== undefined && errors?.[label]?.type === 'required'}
-      />
+      <ErrorMessage message="This field is required" error={hasError} />
     </SelectLabel>
   );
 };
