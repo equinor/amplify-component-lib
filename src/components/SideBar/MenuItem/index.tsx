@@ -115,7 +115,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           data-testid="sidebar-menu-item"
           disabled={disabled}
         >
-          {icon && <ItemIcon data={icon} color={getIconColor()} />}
+          {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
           <ItemText variant="cell_text" group="table" active={isCurrentUrl()}>
             {name}
           </ItemText>
@@ -133,7 +133,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           data-testid="sidebar-menu-item"
           disabled={disabled}
         >
-          {icon && <ItemIcon data={icon} color={getIconColor()} />}
+          {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
         </Container>
       </Tooltip>
     );
