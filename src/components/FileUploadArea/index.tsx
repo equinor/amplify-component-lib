@@ -59,7 +59,7 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
           </Typography>
           {props.accept && (
             <Typography group="paragraph" variant="meta">
-              <>Supported filetypes: {props.accept}</>
+              <>Supported filetypes: {Object.keys(props.accept).join(', ')}</>
             </Typography>
           )}
         </>
