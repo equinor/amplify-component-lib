@@ -42,7 +42,7 @@ export interface IComponentProps {
   actions?: Array<JSX.Element>;
   actionPosition?: 'left' | 'right';
   onClose?: () => void | undefined;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const ConfirmationPopup: React.FC<IComponentProps> = ({
