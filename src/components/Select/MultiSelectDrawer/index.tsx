@@ -3,7 +3,6 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import OptionDrawer from '../OptionDrawer';
-import { SelectItem } from '..';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
@@ -39,20 +38,24 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-export type MultiSelectDrawerProps<T> = {
+export type MultiSelectDrawerProps<
+  T extends { id: string; label: string; children?: T[] }
+> = {
   disabled?: boolean;
   id?: string;
-  items: SelectItem<T>[];
+  items: T[];
   label: string;
   meta?: string;
-  onChange?: (values: SelectItem<T>[]) => void;
+  onChange?: (values: T[]) => void;
   placeholder?: string;
   readOnly?: boolean;
-  initialItems: string[];
+  initialItems: T[];
   style?: CSSProperties;
 };
 
-const MultiSelectDrawer = <T,>({
+const MultiSelectDrawer = <
+  T extends { id: string; label: string; children?: T[] }
+>({
   disabled = false,
   id,
   items = [],
@@ -64,9 +67,7 @@ const MultiSelectDrawer = <T,>({
   initialItems = [],
   style,
 }: MultiSelectDrawerProps<T>) => {
-  const [selectedItems, setSelectedItems] = useState<SelectItem<T>[]>(
-    items.filter((item) => initialItems.includes(item.id))
-  );
+  const [selectedItems, setSelectedItems] = useState<T[]>(initialItems);
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
@@ -84,7 +85,7 @@ const MultiSelectDrawer = <T,>({
     onChange && onChange(selectedItems);
   }, [onChange, selectedItems]);
 
-  const handleToggle = (item: SelectItem<T>, toggle: boolean) => {
+  const handleToggle = (item: T, toggle: boolean) => {
     if (toggle) {
       setSelectedItems((s) => (s ? [...s, item] : []));
     } else {

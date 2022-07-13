@@ -1,7 +1,6 @@
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 
 import MultiSelectDrawer from '../MultiSelectDrawer';
-import { SelectItem } from '..';
 import SelectLabel from '../SelectLabel';
 import { useMemo } from 'react';
 
@@ -27,17 +26,21 @@ const ErrorMessage = ({
   );
 };
 
-export interface MultiSelectDrawerWithValidationProps<T> {
-  items: SelectItem<T>[];
+export interface MultiSelectDrawerWithValidationProps<
+  T extends { id: string; label: string; children?: T[] }
+> {
+  items: T[];
   rules?: RegisterOptions;
   label: string;
   placeholder: string;
-  onChange: (values: SelectItem<T>[]) => void;
-  initialItems: string[];
+  onChange: (values: T[]) => void;
+  initialItems: T[];
   id: string;
 }
 
-const MultiSelectDrawerWithValidation = <T,>({
+const MultiSelectDrawerWithValidation = <
+  T extends { id: string; label: string; children?: T[] }
+>({
   label,
   items,
   rules,
@@ -65,11 +68,7 @@ const MultiSelectDrawerWithValidation = <T,>({
         control={control}
         name={label}
         rules={rules}
-        defaultValue={
-          items.filter((item) => initialItems.find((s) => s === item.id)) ?? [
-            '',
-          ]
-        }
+        defaultValue={initialItems}
         render={({ field: { onChange: onControllerChange } }) => (
           <MultiSelectDrawer<T>
             style={{ width: '100%' }}

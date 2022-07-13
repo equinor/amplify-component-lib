@@ -3,7 +3,6 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import OptionDrawer from '../OptionDrawer';
-import { SelectItem } from '..';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
@@ -39,20 +38,20 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-export type SingleSelectDrawerProps<T> = {
+export type SingleSelectDrawerProps<T extends { id: string; label: string }> = {
   disabled?: boolean;
   id?: string;
-  items: SelectItem<T>[];
-  initialItem: string | undefined;
+  items: T[];
+  initialItem: T | undefined;
   label: string;
   meta?: string;
-  onChange?: (value: SelectItem<T> | undefined) => void;
+  onChange?: (value: T | undefined) => void;
   placeholder?: string;
   readOnly?: boolean;
   style?: CSSProperties;
 };
 
-const SingleSelectDrawer = <T,>({
+const SingleSelectDrawer = <T extends { id: string; label: string }>({
   disabled = false,
   onChange,
   items = [],
@@ -62,10 +61,10 @@ const SingleSelectDrawer = <T,>({
   readOnly = false,
   placeholder,
 }: SingleSelectDrawerProps<T>) => {
-  const [selectedItem, setSelectedItem] = useState<SelectItem<T> | undefined>(
-    items.find((item) => item.id === initialItem)
+  const [selectedItem, setSelectedItem] = useState<T | undefined>(
+    items.find((item) => item?.id === initialItem?.id)
   );
-  const [inputItems, setInputItems] = useState<SelectItem<T>[]>(items);
+  const [inputItems, setInputItems] = useState<T[]>(items);
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
@@ -91,7 +90,7 @@ const SingleSelectDrawer = <T,>({
     }
   }, [search, items]);
 
-  const handleToggle = (item: SelectItem<T>, toggle: boolean) => {
+  const handleToggle = (item: T, toggle: boolean) => {
     if (toggle) {
       setSelectedItem(item);
       onChange && onChange(item);

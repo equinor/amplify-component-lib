@@ -2,7 +2,6 @@ import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { MouseEvent, useEffect, useState } from 'react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
-import { SelectItem } from '..';
 import styled from 'styled-components';
 
 interface StyledOptionProps {
@@ -30,15 +29,17 @@ const StyledIcon = styled(Icon)`
   right: 10px;
 `;
 
-const getAllItems = <T,>(items: SelectItem<T>[]): SelectItem<T>[] => {
+const getAllItems = <T extends { id: string; label: string; children?: T[] }>(
+  items: T[]
+): T[] => {
   if (items.length === 0) {
     return [];
   }
 
-  let options: SelectItem<T>[] = [];
+  let options: T[] = [];
 
   items.forEach((item) => {
-    const children = getAllItems(item.children);
+    const children = getAllItems(item?.children ?? []);
     options = [item, ...options, ...children];
   });
 
@@ -47,18 +48,22 @@ const getAllItems = <T,>(items: SelectItem<T>[]): SelectItem<T>[] => {
 
 type StatusType = 'CHECKED' | 'INTERMEDIATE' | 'NONE';
 
-const getStatus = <T,>(
-  item: SelectItem<T>,
-  selectedItems: SelectItem<T>[],
+const getStatus = <T extends { id: string; label: string; children?: T[] }>(
+  item: T,
+  selectedItems: T[],
   singleSelect?: boolean
 ): StatusType => {
-  if (item.children.length === 0 || singleSelect) {
+  if (
+    item.children === undefined ||
+    item.children.length === 0 ||
+    singleSelect
+  ) {
     return selectedItems.find((s) => s.id === item.id) !== undefined
       ? 'CHECKED'
       : 'NONE';
   }
 
-  const selected = getAllItems(item.children).map(
+  const selected = getAllItems(item?.children ?? []).map(
     (i) => selectedItems.find((s) => s.id === i.id) !== undefined
   );
 
@@ -71,15 +76,17 @@ const getStatus = <T,>(
   return 'INTERMEDIATE';
 };
 
-export type OptionDrawerProps<T> = {
-  item: SelectItem<T>;
-  onToggle: (item: SelectItem<T>, toggle: boolean) => void;
+export type OptionDrawerProps<
+  T extends { id: string; label: string; children?: T[] }
+> = {
+  item: T;
+  onToggle: (item: T, toggle: boolean) => void;
   section?: number;
-  selectedItems?: SelectItem<T>[];
+  selectedItems?: T[];
   singleSelect?: boolean;
 };
 
-const OptionDrawer = <T,>({
+const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
   item,
   onToggle,
   section = 0,
@@ -96,7 +103,7 @@ const OptionDrawer = <T,>({
   }, [item, selectedItems, singleSelect]);
 
   useEffect(() => {
-    if (item.children.length > 0 && !singleSelect) {
+    if (item.children && item.children.length > 0 && !singleSelect) {
       const selected = getAllItems(item.children).map(
         (item) => selectedItems.find((s) => s.id === item.id) !== undefined
       );
@@ -141,7 +148,7 @@ const OptionDrawer = <T,>({
   const handleCheck = () => {
     if (status === 'CHECKED') {
       onToggle(item, false);
-      if (!singleSelect) {
+      if (!singleSelect && item.children) {
         getAllItems(item.children).forEach(
           (i) =>
             selectedItems.find((s) => s.id === i.id) !== undefined &&
@@ -150,7 +157,7 @@ const OptionDrawer = <T,>({
       }
     } else if (status === 'NONE' || status === 'INTERMEDIATE') {
       onToggle(item, true);
-      if (!singleSelect) {
+      if (!singleSelect && item.children) {
         getAllItems(item.children).forEach(
           (i) =>
             selectedItems.find((s) => s.id === i.id) === undefined &&

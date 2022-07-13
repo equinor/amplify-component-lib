@@ -2,10 +2,8 @@ import { Meta, Story } from '@storybook/react';
 import OptionDrawer, {
   OptionDrawerProps,
 } from '../../../components/Select/OptionDrawer';
+import React, { useState } from 'react';
 import { ValueType, items } from '../SelectUtils';
-
-import { SelectItem } from '../../../components/Select';
-import { useState } from 'react';
 
 export default {
   title: 'Select/OptionDrawer',
@@ -13,9 +11,7 @@ export default {
 } as Meta;
 
 const Template: Story<OptionDrawerProps<ValueType>> = () => {
-  const [selectedItems, setSelectedItems] = useState<SelectItem<ValueType>[]>(
-    []
-  );
+  const [selectedItems, setSelectedItems] = useState<ValueType[]>([]);
 
   return (
     <div style={{ width: '300px' }}>
