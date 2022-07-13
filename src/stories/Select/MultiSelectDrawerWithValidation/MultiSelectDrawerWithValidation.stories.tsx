@@ -3,23 +3,21 @@ import { Meta, Story } from '@storybook/react';
 import MultiSelectDrawerWithValidation, {
   MultiSelectDrawerWithValidationProps,
 } from '../../../components/Select/MultiSelectDrawerWithValidation';
+import React, { useState } from 'react';
 import { ValueType, items } from '../SelectUtils';
 
-import { SelectItem } from '../../../components/Select';
 import { Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
 
 export default {
   title: 'Select/MultiSelectDrawerWithValidation',
   component: MultiSelectDrawerWithValidation,
 } as Meta;
 
-const initialItems: string[] = ['22', '31'];
-
 const Template: Story<MultiSelectDrawerWithValidationProps<ValueType>> = () => {
-  const [selectedItems, setSelectedItems] = useState<SelectItem<ValueType>[]>(
-    items.filter((item) => initialItems.includes(item.id))
-  );
+  const [selectedItems, setSelectedItems] = useState<ValueType[]>([
+    items[0],
+    items[3],
+  ]);
   const methods = useForm({ reValidateMode: 'onChange', mode: 'onChange' });
 
   return (
@@ -42,7 +40,7 @@ const Template: Story<MultiSelectDrawerWithValidationProps<ValueType>> = () => {
             onChange={(val) => setSelectedItems(val)}
             placeholder="Select..."
             rules={{ required: true }}
-            initialItems={initialItems}
+            initialItems={[items[0], items[3]]}
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>

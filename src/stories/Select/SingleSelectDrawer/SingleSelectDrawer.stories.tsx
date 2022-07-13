@@ -1,24 +1,21 @@
 import { Meta, Story } from '@storybook/react';
+import React, { useState } from 'react';
 import SingleSelectDrawer, {
   SingleSelectDrawerProps,
 } from '../../../components/Select/SingleSelectDrawer';
 import { ValueType, items } from '../SelectUtils';
 
-import { SelectItem } from '../../../components/Select';
 import { Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
 
 export default {
   title: 'Select/SingleSelectDrawer',
   component: SingleSelectDrawer,
 } as Meta;
 
-const initialItem = '22';
-
 const Template: Story<SingleSelectDrawerProps<ValueType>> = () => {
-  const [selectedItem, setSelectedItem] = useState<
-    SelectItem<ValueType> | undefined
-  >(items.find((item) => item.id === initialItem));
+  const [selectedItem, setSelectedItem] = useState<ValueType | undefined>(
+    items[0]
+  );
 
   return (
     <div
@@ -35,7 +32,7 @@ const Template: Story<SingleSelectDrawerProps<ValueType>> = () => {
         <SingleSelectDrawer<ValueType>
           label="Test"
           items={items}
-          initialItem={initialItem}
+          initialItem={items[0]}
           placeholder="Select..."
           onChange={(item) => setSelectedItem(item)}
         />

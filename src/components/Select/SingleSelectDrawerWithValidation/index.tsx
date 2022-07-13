@@ -1,6 +1,5 @@
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 
-import { SelectItem } from '..';
 import SelectLabel from '../SelectLabel';
 import SingleSelectDrawer from '../SingleSelectDrawer';
 import { useMemo } from 'react';
@@ -27,17 +26,21 @@ const ErrorMessage = ({
   );
 };
 
-export interface SingleSelectDrawerWithValidationProps<T> {
-  items: SelectItem<T>[];
+export interface SingleSelectDrawerWithValidationProps<
+  T extends { id: string; label: string }
+> {
+  items: T[];
   rules?: RegisterOptions;
   label: string;
   placeholder: string;
-  onChange: (values: SelectItem<T> | undefined) => void;
-  initialItem: string | undefined;
+  onChange: (values: T | undefined) => void;
+  initialItem: T | undefined;
   id: string;
 }
 
-const SingleSelectDrawerWithValidation = <T,>({
+const SingleSelectDrawerWithValidation = <
+  T extends { id: string; label: string }
+>({
   label,
   items,
   initialItem,
@@ -65,7 +68,7 @@ const SingleSelectDrawerWithValidation = <T,>({
         control={control}
         name={label}
         rules={rules}
-        defaultValue={items.filter((item) => initialItem === item.id) ?? ['']}
+        defaultValue={initialItem}
         render={({ field: { onChange: onControllerChange } }) => (
           <SingleSelectDrawer<T>
             style={{ width: '100%' }}

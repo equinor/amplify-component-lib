@@ -2,23 +2,21 @@ import { Meta, Story } from '@storybook/react';
 import MultiSelectDrawer, {
   MultiSelectDrawerProps,
 } from '../../../components/Select/MultiSelectDrawer';
+import React, { useState } from 'react';
 import { ValueType, items } from '../SelectUtils';
 
-import { SelectItem } from '../../../components/Select';
 import { Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
 
 export default {
   title: 'Select/MultiSelectDrawer',
   component: MultiSelectDrawer,
 } as Meta;
 
-const initialItems: string[] = ['22', '31'];
-
 const Template: Story<MultiSelectDrawerProps<ValueType>> = () => {
-  const [selectedItems, setSelectedItems] = useState<SelectItem<ValueType>[]>(
-    items.filter((item) => initialItems.includes(item.id))
-  );
+  const [selectedItems, setSelectedItems] = useState<ValueType[]>([
+    items[0],
+    items[3],
+  ]);
 
   return (
     <div
@@ -37,7 +35,7 @@ const Template: Story<MultiSelectDrawerProps<ValueType>> = () => {
           label="Test"
           onChange={(val) => setSelectedItems(val)}
           placeholder="Select..."
-          initialItems={initialItems}
+          initialItems={[items[0], items[3]]}
         />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
