@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, forwardRef, useMemo } from 'react';
 
 import { Avatar as EDSAvatar } from '@equinor/eds-core-react';
 import styled from 'styled-components';
@@ -67,68 +67,66 @@ export interface ProfileAvatarProps {
   disabled?: boolean;
 }
 
-const ProfileAvatar: FC<ProfileAvatarProps> = ({
-  url,
-  name,
-  size = 'medium',
-  disabled = false,
-}) => {
-  const initials = useMemo((): [string, string] => {
-    const split = name?.split(' ');
-    const firstName: string = split?.at(0) ?? 'KARI';
-    const lastName: string = split?.at(split?.length - 1) ?? 'NORDMANN';
-    return [firstName[0].toUpperCase(), lastName[0].toUpperCase()];
-  }, [name]);
+const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
+  ({ url, name, size = 'medium', disabled = false }, ref) => {
+    const initials = useMemo((): [string, string] => {
+      const split = name?.split(' ');
+      const firstName: string = split?.at(0) ?? 'KARI';
+      const lastName: string = split?.at(split?.length - 1) ?? 'NORDMANN';
+      return [firstName[0].toUpperCase(), lastName[0].toUpperCase()];
+    }, [name]);
 
-  const sizeToPx = () => {
-    if (size === 'small') return 16;
-    else if (size === 'medium') return 32;
-    return 40;
-  };
+    const sizeToPx = () => {
+      if (size === 'small') return 16;
+      else if (size === 'medium') return 32;
+      return 40;
+    };
 
-  const sizeToFontsize = () => {
-    if (size === 'small') return 6;
-    else if (size === 'medium') return 10;
-    return 16;
-  };
+    const sizeToFontsize = () => {
+      if (size === 'small') return 6;
+      else if (size === 'medium') return 10;
+      return 16;
+    };
 
-  const imageSrc = useMemo((): string => {
-    const { btoa, atob } = window;
+    const imageSrc = useMemo((): string => {
+      const { btoa, atob } = window;
 
-    if (url) {
-      try {
-        if (btoa(atob(url)) === url) {
-          return `data:image/png;base64, ${url}`;
+      if (url) {
+        try {
+          if (btoa(atob(url)) === url) {
+            return `data:image/png;base64, ${url}`;
+          }
+        } catch {
+          return url;
         }
-      } catch {
-        return url;
       }
-    }
-    return '';
-  }, [url]);
+      return '';
+    }, [url]);
 
-  if (imageSrc !== '') {
+    if (imageSrc !== '') {
+      return (
+        <Avatar
+          alt={`user-avatar-${name}`}
+          size={sizeToPx()}
+          src={imageSrc}
+          disabled={disabled}
+        />
+      );
+    }
+
     return (
-      <Avatar
-        alt={`user-avatar-${name}`}
+      <InitialsContainer
+        background={nameToColor(name)}
         size={sizeToPx()}
-        src={imageSrc}
+        fontSize={sizeToFontsize()}
         disabled={disabled}
-      />
+        ref={ref}
+      >
+        {initials.join('')}
+      </InitialsContainer>
     );
   }
-
-  return (
-    <InitialsContainer
-      background={nameToColor(name)}
-      size={sizeToPx()}
-      fontSize={sizeToFontsize()}
-      disabled={disabled}
-    >
-      {initials.join('')}
-    </InitialsContainer>
-  );
-};
+);
 
 ProfileAvatar.displayName = 'ProfileAvatar';
 export default ProfileAvatar;
