@@ -130,4 +130,5 @@ const ProfileAvatar: FC<ProfileAvatarProps> = ({
   );
 };
 
+ProfileAvatar.displayName = 'ProfileAvatar';
 export default ProfileAvatar;
