@@ -91,7 +91,7 @@ const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
   onToggle,
   section = 0,
   selectedItems = [],
-  singleSelect,
+  singleSelect = false,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(

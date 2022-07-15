@@ -46,6 +46,8 @@ export default [
       SingleFilterMenu: './src/components/SingleFilterMenu',
       Select: './src/components/Select',
       MultiSelectDrawer: './src/components/Select/MultiSelectDrawer',
+      SimpleMultiSelectDrawer:
+        './src/components/Select/SimpleMultiSelectDrawer',
       MultiSelectDrawerWithValidation:
         './src/components/Select/MultiSelectDrawerWithValidation',
       OptionDrawer: './src/components/Select/OptionDrawer',
