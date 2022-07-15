@@ -1,4 +1,4 @@
-import { FC, forwardRef, useMemo } from 'react';
+import { forwardRef, useMemo } from 'react';
 
 import { Avatar as EDSAvatar } from '@equinor/eds-core-react';
 import styled from 'styled-components';
@@ -110,6 +110,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
           size={sizeToPx()}
           src={imageSrc}
           disabled={disabled}
+          ref={ref}
         />
       );
     }
