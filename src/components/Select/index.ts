@@ -1,6 +1,7 @@
 import MultiSelectDrawer from './MultiSelectDrawer';
 import MultiSelectDrawerWithValidation from './MultiSelectDrawerWithValidation';
 import OptionDrawer from './OptionDrawer';
+import SimpleMultiSelectDrawer from './SimpleMultiSelectDrawer';
 import SingleSelectDrawer from './SingleSelectDrawer';
 import SingleSelectDrawerWithValidation from './SingleSelectDrawerWithValidation';
 
@@ -8,6 +9,7 @@ export {
   SingleSelectDrawer,
   SingleSelectDrawerWithValidation,
   MultiSelectDrawer,
+  SimpleMultiSelectDrawer,
   MultiSelectDrawerWithValidation,
   OptionDrawer,
 };

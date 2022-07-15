@@ -21,6 +21,7 @@ export { default as SideBar } from './SideBar';
 export { default as SingleFilterMenu } from './SingleFilterMenu';
 export { default as OptionDrawer } from './Select/OptionDrawer';
 export { default as MultiSelectDrawer } from './Select/MultiSelectDrawer';
+export { default as SimpleMultiSelectDrawer } from './Select/SimpleMultiSelectDrawer';
 export { default as MultiSelectDrawerWithValidation } from './Select/MultiSelectDrawerWithValidation';
 export { default as SingleSelectDrawer } from './Select/SingleSelectDrawer';
 export { default as SingleSelectDrawerWithValidation } from './Select/SingleSelectDrawerWithValidation';
