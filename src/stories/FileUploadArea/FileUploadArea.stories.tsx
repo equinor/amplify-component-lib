@@ -1,7 +1,7 @@
-import { Story, Meta } from '@storybook/react';
 import FileUploadArea, {
   FileUploadAreaProps,
 } from '../../components/FileUploadArea';
+import { Meta, Story } from '@storybook/react';
 
 export default {
   title: 'FileUpload/FileUploadArea',
@@ -14,5 +14,13 @@ const Template: Story<FileUploadAreaProps> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {
-  accept: '.csv,.jpg,.jpeg,.pdf,.ppt,.docx,.xls,.xlsx',
+  accept: {
+    'application/pdf': ['.pdf'],
+    'image/png': ['.png'],
+    'image/jpeg': ['.jpeg', '.jpg'],
+    'text/csv': ['.csv'],
+    'application/vnd.ms-powerpoint': ['.ppt'],
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+      ['.pptx'],
+  },
 };
