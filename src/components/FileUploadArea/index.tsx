@@ -1,7 +1,7 @@
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
+import { FC, useMemo } from 'react';
 import { Icon, Typography } from '@equinor/eds-core-react';
 
-import { FC } from 'react';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { upload } from '@equinor/eds-icons';
@@ -36,6 +36,12 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
     ...props,
   });
 
+  const filetypes = useMemo((): string | undefined => {
+    if (props.accept) {
+      return Object.values(props.accept).join(', ');
+    }
+  }, [props.accept]);
+
   return (
     <UploadWrapper {...getRootProps()} isDragActive={isDragActive}>
       <input {...getInputProps()} />
@@ -59,7 +65,7 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
           </Typography>
           {props.accept && (
             <Typography group="paragraph" variant="meta">
-              <>Supported filetypes: {Object.keys(props.accept).join(', ')}</>
+              <>Supported filetypes: {filetypes}</>
             </Typography>
           )}
         </>
