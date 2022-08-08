@@ -3,7 +3,6 @@ import { account_circle, clear } from '@equinor/eds-icons';
 import { forwardRef, useState } from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
-import { Box } from '@mui/material';
 import ProfileAvatar from '../ProfileAvatar';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
@@ -12,6 +11,17 @@ const { spacings, colors } = tokens;
 const StyledMenu = styled(Menu)`
   width: 320px;
   padding: ${spacings.comfortable.medium};
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const FullWidthWrapper = styled.div`
@@ -69,19 +79,15 @@ export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
             onClose={closeMenu}
             placement="bottom-start"
           >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Header>
               <Typography variant="h6" as="span">
                 Account
               </Typography>
               <Button variant="ghost_icon" onClick={closeMenu}>
                 <Icon data={clear} />
               </Button>
-            </Box>
-            <Box display="flex" alignItems="center">
+            </Header>
+            <Info>
               <ProfileAvatar
                 size={size ? size : 'large'}
                 name={account?.name}
@@ -91,7 +97,7 @@ export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
                 <Typography variant="h6">{account?.name}</Typography>
                 <Typography>{account?.username}</Typography>
               </div>
-            </Box>
+            </Info>
             <FullWidthWrapper>
               <Button onClick={logout}>Log out</Button>
             </FullWidthWrapper>
