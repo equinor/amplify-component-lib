@@ -2,11 +2,23 @@ import { Button, Icon, Menu, Radio, Typography } from '@equinor/eds-core-react';
 import React, { forwardRef, useState } from 'react';
 import { clear, settings } from '@equinor/eds-icons';
 
-import { Box } from '@mui/material';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors, elevation } = tokens;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 40px;
+`;
 
 const StyledMenu = styled(Menu)`
   width: 320px;
@@ -83,44 +95,32 @@ export const Settings = forwardRef<HTMLButtonElement, ISettingsProps>(
             onClose={closeMenu}
             placement="bottom-start"
           >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Header>
               <Typography variant="h6" as="span">
                 Settings
               </Typography>
               <Button variant="ghost_icon" onClick={closeMenu}>
                 <Icon data={clear} />
               </Button>
-            </Box>
+            </Header>
             {allSettings.map((section, ind) => (
               <div key={ind}>
                 <Typography variant="overline">{section.title}</Typography>
                 {section.items.map((item, index) => (
-                  <Box paddingRight="40px" key={index}>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Radio
-                        disabled={item.disabled}
-                        label={item.label}
-                        name={item.name}
-                        value={item.value}
-                        checked={section.type === item.value}
-                        onChange={() => section.onChange?.(item.value)}
-                      />
-                      {item.colorBox && (
-                        <StyledColorBox color={item.colorBox} />
-                      )}
-                      {item.element && (
-                        <Typography variant="h6">{item.element}</Typography>
-                      )}
-                    </Box>
-                  </Box>
+                  <ContentWrapper key={index}>
+                    <Radio
+                      disabled={item.disabled}
+                      label={item.label}
+                      name={item.name}
+                      value={item.value}
+                      checked={section.type === item.value}
+                      onChange={() => section.onChange?.(item.value)}
+                    />
+                    {item.colorBox && <StyledColorBox color={item.colorBox} />}
+                    {item.element && (
+                      <Typography variant="h6">{item.element}</Typography>
+                    )}
+                  </ContentWrapper>
                 ))}
               </div>
             ))}

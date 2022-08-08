@@ -59,8 +59,6 @@
     "@equinor/eds-core-react": "^0.20.4",
     "@equinor/eds-icons": "^0.11.0",
     "@equinor/eds-tokens": "^0.7.1",
-    "@mui/material": "^5.8.6",
-    "@mui/styles": "^5.8.6",
     "downshift": "^6.1.7",
     "jwt-decode": "^3.1.2",
     "lodash-es": "^4.17.21",
