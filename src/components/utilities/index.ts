@@ -1,6 +1,7 @@
 import {
   auth,
   map,
+  exportComponent,
   coordinate,
   date,
   environment,
@@ -32,6 +33,7 @@ export {
   environment,
   auth,
   map,
+  exportComponent,
   useDebounce,
   useOnScreen,
   useSnackbar,

@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.9.1",
+  "version": "1.9.0",
   "description": "Frontend Typescript components for the Amplify team",
   "files": [
     "dist/*"
@@ -60,6 +60,7 @@
     "@equinor/eds-icons": "^0.12.0",
     "@equinor/eds-tokens": "^0.7.1",
     "downshift": "^6.1.7",
+    "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
     "leaflet": "^1.8.0",
     "lodash-es": "^4.17.21",
