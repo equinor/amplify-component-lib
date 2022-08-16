@@ -1,5 +1,6 @@
 import {
   auth,
+  map,
   coordinate,
   date,
   environment,
@@ -30,6 +31,7 @@ export {
   sort,
   environment,
   auth,
+  map,
   useDebounce,
   useOnScreen,
   useSnackbar,

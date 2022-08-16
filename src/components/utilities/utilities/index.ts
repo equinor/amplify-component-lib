@@ -7,8 +7,10 @@ import image from './image';
 import size from './size';
 import sort from './sort';
 import string from './string';
+import { map } from './map';
 
 export {
+  map,
   date,
   favicon,
   image,
