@@ -40,7 +40,7 @@ function convertLatLngToUtm(coordinate: LatLngLiteral): [number, number] {
   return [converted[0], converted[1]];
 }
 
-export const mapUtils = {
+export const map = {
   distanceLatLng,
   convertLatLngToUtm,
   convertUtmToLatLng,

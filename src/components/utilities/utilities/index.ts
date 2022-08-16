@@ -7,10 +7,10 @@ import image from './image';
 import size from './size';
 import sort from './sort';
 import string from './string';
-import { mapUtils } from './map-utils';
+import { map } from './map';
 
 export {
-  mapUtils,
+  map,
   date,
   favicon,
   image,
