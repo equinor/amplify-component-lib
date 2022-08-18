@@ -13,7 +13,6 @@
   "sideEffects": false,
   "scripts": {
     "start": "yarn storybook",
-    "build": "yarn build-storybook",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook",
     "setup": "yarn",
@@ -29,6 +28,7 @@
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "clean": "rm -rf lib dist",
+    "build": "yarn build-components",
     "build-components": "yarn clean && rollup -c rollup.config.js",
     "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.js",
     "version": "version-bump cli --bump",
@@ -54,8 +54,6 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^2.26.0",
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
     "@equinor/eds-core-react": "^0.20.4",
     "@equinor/eds-icons": "^0.11.0",
     "@equinor/eds-tokens": "^0.7.1",
