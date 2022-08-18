@@ -1,8 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import Settings, {
-  ISettingsProps,
-} from './Settings';
+import Settings, { ISettingsProps } from './Settings';
 import { render, screen, userEvent } from '../../../test-utils';
 
 test('Settings renders as expected', async () => {

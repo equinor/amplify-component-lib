@@ -19,10 +19,8 @@ test('renders a menu button with menu closed by default', () => {
 });
 
 test('renders the menu when button is clicked', async () => {
-  render(
-    <SingleFilterMenu {...dummyData}></SingleFilterMenu>
-  );
-  const user = userEvent.setup()
+  render(<SingleFilterMenu {...dummyData}></SingleFilterMenu>);
+  const user = userEvent.setup();
   const button = await screen.findByTestId('menuButton');
   await user.click(button);
 

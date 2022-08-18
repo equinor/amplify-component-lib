@@ -45,9 +45,7 @@ export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
     const isOpen = Boolean(anchorEl);
 
     const openMenu = (
-      e:
-        | MouseEvent<HTMLButtonElement>
-        | KeyboardEvent<HTMLButtonElement>
+      e: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
     ) => {
       const target = e.target as HTMLButtonElement;
       setAnchorEl(target);
