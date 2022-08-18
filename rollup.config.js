@@ -20,7 +20,7 @@ const extensions = ['.jsx', '.js', '.tsx', '.ts'];
 export default [
   {
     input: {
-      index: './src/components/index.tsx',
+      index: './src/index.ts',
       CommentField: './src/components/CommentField',
       NewComment: './src/components/CommentField/NewComment',
       ConfirmationPopup: './src/components/ConfirmationPopup',
@@ -58,7 +58,9 @@ export default [
       Table: './src/components/Table',
       TextEntry: './src/components/TextEntry',
       TopBar: './src/components/TopBar',
-      utils: './src/components/utilities',
+      utils: './src/utils',
+      hooks: './src/hooks',
+      providers: './src/providers',
       ApplicationIcon: './src/components/Icons/ApplicationIcon.tsx',
       DataAcquisition: './src/components/Icons/data-acquisition.tsx',
       DataExperience: './src/components/Icons/data-experience.tsx',

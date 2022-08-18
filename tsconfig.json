@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -21,12 +21,10 @@
     "importHelpers": true,
     "noEmit": true
   },
-  "include": ["src/components/index.tsx"],
+  "include": ["src/index.ts"],
   "exclude": [
     "node_modules",
-    "**/__tests__/*",
-    "**/stories/",
-    "*/Auth",
+    "**/*.test.tsx",
     "*/test-utils.tsx"
   ]
 }
