@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "1.9.0",
+  "version": "1.9.2",
   "description": "Frontend Typescript components for the Amplify team",
   "files": [
     "dist/*"
@@ -58,8 +58,11 @@
     "@equinor/eds-icons": "^0.12.0",
     "@equinor/eds-tokens": "^0.7.1",
     "downshift": "^6.1.9",
+    "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
+    "leaflet": "^1.8.0",
     "lodash-es": "^4.17.21",
+    "proj4": "^2.8.0",
     "random-seed": "^0.3.0",
     "react-dropzone": "^14.2.2",
     "react-hook-form": "^7.34.2",
@@ -86,9 +89,11 @@
     "@testing-library/user-event": "^14.4.3",
     "@theo.gravity/version-bump": "^2.0.14",
     "@types/jest": "^28.1.7",
+    "@types/leaflet": "^1.7.11",
     "@types/lodash-es": "^4.17.6",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.6",
+    "@types/proj4": "^2.5.2",
     "@types/random-seed": "^0.3.3",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
