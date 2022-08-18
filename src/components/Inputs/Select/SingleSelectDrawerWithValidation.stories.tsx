@@ -14,7 +14,7 @@ export default {
   component: SingleSelectDrawerWithValidation,
 } as Meta;
 
-const initialItem = items.find(item => item.id === "22");
+const initialItem = items.find((item) => item.id === '22');
 
 const Template: Story<
   SingleSelectDrawerWithValidationProps<ValueType>

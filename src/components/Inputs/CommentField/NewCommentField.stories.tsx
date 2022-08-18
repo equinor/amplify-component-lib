@@ -1,7 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import NewCommentField, {
-  NewCommentFieldProps,
-} from './NewCommentField';
+import NewCommentField, { NewCommentFieldProps } from './NewCommentField';
 
 export default {
   title: 'Inputs/CommentField/NewCommentField',

@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import ProgressBar from './index';
+import ProgressBar from './ProgressBar';
 import React from 'react';
-import { render } from 'src/test-utils';
+import { render } from '../../../test-utils';
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;

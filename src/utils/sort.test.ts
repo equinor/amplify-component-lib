@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import sort from 'src/utils/sort';
+import sort from './sort';
 
 test('sortByDate works as expected with date objects', () => {
   const listOfFakeDates: Date[] = faker.date

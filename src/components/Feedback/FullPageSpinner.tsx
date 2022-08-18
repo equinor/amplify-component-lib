@@ -1,4 +1,5 @@
 import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
+import { FC } from 'react';
 
 import styled from 'styled-components';
 
@@ -19,7 +20,7 @@ const NoScrimContainer = styled.div`
   display: flex;
 `;
 
-const FullPageSpinner: React.FC<FullpageSpinnerProps> = ({
+const FullPageSpinner: FC<FullpageSpinnerProps> = ({
   variant,
   withoutScrim,
 }) => {

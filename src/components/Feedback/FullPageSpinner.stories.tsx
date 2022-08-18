@@ -1,6 +1,4 @@
-import FullPageSpinner, {
-  FullpageSpinnerProps,
-} from './FullPageSpinner';
+import FullPageSpinner, { FullpageSpinnerProps } from './FullPageSpinner';
 import { Meta, Story } from '@storybook/react';
 
 import styled from 'styled-components';

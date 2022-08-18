@@ -1,5 +1,5 @@
 import { TopBar as EDSTopBar } from '@equinor/eds-core-react';
-import { forwardRef } from 'react';
+import { forwardRef, HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 const ActionsContainer = styled(EDSTopBar.Actions)`
@@ -11,7 +11,7 @@ const ActionsContainer = styled(EDSTopBar.Actions)`
 
 export const Actions = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  HTMLAttributes<HTMLDivElement>
 >(({ children }, ref) => (
   <ActionsContainer ref={ref}>{children}</ActionsContainer>
 ));

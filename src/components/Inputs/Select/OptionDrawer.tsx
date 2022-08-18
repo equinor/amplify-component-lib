@@ -69,7 +69,7 @@ const getStatus = <T extends { id: string; label: string; children?: T[] }>(
 
   if (selected.every(Boolean)) {
     return 'CHECKED';
-  } else if (selected.every((s) => s === false)) {
+  } else if (selected.every((s) => !s)) {
     return 'NONE';
   }
 

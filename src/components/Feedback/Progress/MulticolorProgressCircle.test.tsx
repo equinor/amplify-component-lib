@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import MultiColorProgressCircle, { ColoredProgressCircle } from './MulticolorProgressCircle';
+import MultiColorProgressCircle, {
+  ColoredProgressCircle,
+} from './MulticolorProgressCircle';
 
 import React from 'react';
 import { render } from '../../../test-utils';

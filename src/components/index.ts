@@ -52,5 +52,9 @@ export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
 export type { SelectItem } from './Inputs/Select';
 export type { SidebarType, ItemType } from './Navigation/SideBar';
 export type { ColoredProgressCircle } from './Feedback/Progress/MulticolorProgressCircle';
-export type { TopBarType, IGuidelineSections, ISettingsProps } from './Navigation/TopBar';
+export type {
+  TopBarType,
+  IGuidelineSections,
+  ISettingsProps,
+} from './Navigation/TopBar';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';

@@ -1,4 +1,4 @@
-import { Account } from './Account'
+import { Account } from './Account';
 import { Story, Meta } from '@storybook/react';
 import { AccountInfo } from '@azure/msal-common';
 

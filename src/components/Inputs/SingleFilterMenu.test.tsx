@@ -1,4 +1,4 @@
-import { fireEvent, render } from '../../test-utils';
+import { render, userEvent, screen } from '../../test-utils';
 
 import SingleFilterMenu from './SingleFilterMenu';
 import { filter_list } from '@equinor/eds-icons';
@@ -19,13 +19,14 @@ test('renders a menu button with menu closed by default', () => {
 });
 
 test('renders the menu when button is clicked', async () => {
-  const { findByTestId } = render(
+  render(
     <SingleFilterMenu {...dummyData}></SingleFilterMenu>
   );
-  const button = await findByTestId('menuButton');
-  fireEvent.click(button);
+  const user = userEvent.setup()
+  const button = await screen.findByTestId('menuButton');
+  await user.click(button);
 
-  const menu = await findByTestId('menuContainer');
+  const menu = await screen.findByTestId('menuContainer');
   expect(menu).toHaveStyle('visibility: visible');
 });
 
@@ -39,33 +40,30 @@ test('renders a the menu items', () => {
 });
 
 test('renders a the chip when menu item is selected and showChip = true', async () => {
-  const { findByTestId, queryByText } = render(
-    <SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>
-  );
+  render(<SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>);
   const menuItemText = dummyData.data[2];
+  const user = userEvent.setup();
 
-  const button = await findByTestId('menuButton');
-  fireEvent.click(button);
+  const button = await screen.findByTestId('menuButton');
+  await user.click(button);
 
-  const menuItem = queryByText(menuItemText);
-  fireEvent.click(menuItem);
+  const menuItem = screen.getByText(menuItemText);
+  await user.click(menuItem);
 
-  const chip = await findByTestId('chip');
+  const chip = await screen.findByTestId('chip');
   expect(chip.innerHTML).toContain(menuItemText);
 });
 
 test('triggers onchange when item is selected', async () => {
   const cb = jest.fn();
-  const data = dummyData;
-  data.onChange = cb;
+  dummyData.onChange = cb;
 
-  const { queryByText } = render(
-    <SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>
-  );
+  render(<SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>);
   const menuItemText = dummyData.data[2];
+  const user = userEvent.setup();
 
-  const menuItem = queryByText(menuItemText);
-  fireEvent.click(menuItem);
+  const menuItem = screen.getByText(menuItemText);
+  await user.click(menuItem);
 
   expect(cb).toHaveBeenCalled();
 });

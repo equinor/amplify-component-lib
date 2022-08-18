@@ -134,7 +134,7 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
   });
 
   const handleClick = (selectedItem: string) => {
-    let newSelectedItems: string[] = [];
+    let newSelectedItems: string[];
     // Select
     if (!values.includes(selectedItem)) {
       newSelectedItems = [...values, selectedItem];

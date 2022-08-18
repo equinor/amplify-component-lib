@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import { fireEvent, render, screen, userEvent } from 'src/test-utils';
+import { fireEvent, render, screen, userEvent } from '../../test-utils';
 
-import EditableField from 'src/components/Inputs/EditableField';
+import EditableField from './EditableField';
 import React from 'react';
 
 test('renders textbox', () => {

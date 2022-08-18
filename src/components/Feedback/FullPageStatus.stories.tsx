@@ -1,8 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 
-import FullPageStatus, {
-  FullPageStatusProps,
-} from './FullPageStatus';
+import FullPageStatus, { FullPageStatusProps } from './FullPageStatus';
 
 export default {
   title: 'Feedback/FullPageStatus',

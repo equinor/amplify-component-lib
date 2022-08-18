@@ -28,7 +28,7 @@ const EquinorLogo = forwardRef<SVGSVGElement, EquinorLogoProps>(
       {large ? (
         <svg
           width={size ? size * 2 : 24 * 2} // Size should be related to the Equinor Logo itself and not the text-size,
-          height={size ? size * 2 : 24 * 2} // Thats why we multiply be 2 here on the large version
+          height={size ? size * 2 : 24 * 2} // That's why we multiply be 2 here on the large version
           viewBox="0 0 75 30"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

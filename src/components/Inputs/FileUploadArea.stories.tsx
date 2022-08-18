@@ -1,6 +1,4 @@
-import FileUploadArea, {
-  FileUploadAreaProps,
-} from './FileUploadArea';
+import FileUploadArea, { FileUploadAreaProps } from './FileUploadArea';
 import { Meta, Story } from '@storybook/react';
 
 export default {

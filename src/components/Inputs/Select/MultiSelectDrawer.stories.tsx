@@ -1,7 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import MultiSelectDrawer, {
-  MultiSelectDrawerProps,
-} from './MultiSelectDrawer';
+import MultiSelectDrawer, { MultiSelectDrawerProps } from './MultiSelectDrawer';
 import React, { useState } from 'react';
 import { ValueType, items } from './SelectUtils';
 

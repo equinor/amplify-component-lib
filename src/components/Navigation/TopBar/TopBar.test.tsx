@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import { render, screen } from 'src/test-utils';
+import { render, screen } from '../../../test-utils';
 
 import React from 'react';
-import TopBar from 'src/components/Navigation/TopBar/index';
+import TopBar from '.';
 import { car } from '@equinor/eds-icons';
 
 test('Shows progress indicator only when isFetching={true}', () => {

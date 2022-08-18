@@ -1,9 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import { Story, Meta } from '@storybook/react';
 
-import ConfirmationPopup, {
-  IComponentProps,
-} from './ConfirmationPopup';
+import ConfirmationPopup, { IComponentProps } from './ConfirmationPopup';
 
 export default {
   title: 'Feedback/ConfirmationPopup',

@@ -1,7 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import ProgressBar, {
-  ProgressBarProps,
-} from './ProgressBar';
+import ProgressBar, { ProgressBarProps } from './ProgressBar';
 
 import styled from 'styled-components';
 

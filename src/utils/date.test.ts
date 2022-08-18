@@ -1,4 +1,4 @@
-import date from 'src/utils/date';
+import date from './date';
 import { faker } from '@faker-js/faker';
 
 test('formatDate works as expected with default format', () => {

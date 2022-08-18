@@ -1,7 +1,9 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import Settings, { ISettingsProps } from 'src/components/Navigation/TopBar/Settings';
-import { render, screen, userEvent } from 'src/test-utils';
+import Settings, {
+  ISettingsProps,
+} from './Settings';
+import { render, screen, userEvent } from '../../../test-utils';
 
 test('Settings renders as expected', async () => {
   const theme = 'light';

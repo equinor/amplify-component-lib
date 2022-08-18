@@ -1,7 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import OptionDrawer, {
-  OptionDrawerProps,
-} from './OptionDrawer';
+import OptionDrawer, { OptionDrawerProps } from './OptionDrawer';
 import React, { useState } from 'react';
 import { ValueType, items } from './SelectUtils';
 

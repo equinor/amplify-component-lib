@@ -149,10 +149,10 @@ const AuthProvider: FC<AuthProviderProps> = ({
 
     const activeAccount = msalApp.getActiveAccount();
     if (activeAccount !== undefined && activeAccount !== null) {
-      handleAccountChange();
+      await handleAccountChange();
       msalApp.setActiveAccount(activeAccount);
     } else {
-      handleLogin();
+      await handleLogin();
     }
     setAccount(activeAccount);
   }, [handleAccountChange, handleLogin]);

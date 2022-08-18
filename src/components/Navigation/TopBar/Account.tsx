@@ -1,6 +1,6 @@
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { account_circle, clear } from '@equinor/eds-icons';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useState, MouseEvent, KeyboardEvent } from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
@@ -46,8 +46,8 @@ export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
 
     const openMenu = (
       e:
-        | React.MouseEvent<HTMLButtonElement, MouseEvent>
-        | React.KeyboardEvent<HTMLButtonElement>
+        | MouseEvent<HTMLButtonElement>
+        | KeyboardEvent<HTMLButtonElement>
     ) => {
       const target = e.target as HTMLButtonElement;
       setAnchorEl(target);

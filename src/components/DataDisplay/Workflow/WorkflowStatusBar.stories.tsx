@@ -1,7 +1,5 @@
 import { Story, Meta } from '@storybook/react';
-import WorkflowStatusBar, {
-  WorkflowStatusBarProps,
-} from './WorkflowStatusBar';
+import WorkflowStatusBar, { WorkflowStatusBarProps } from './WorkflowStatusBar';
 
 export default {
   title: 'DataDisplay/Workflow/WorkflowStatusBar',
