@@ -3,31 +3,31 @@ export interface ISvgIconProps {
 }
 
 import ApplicationIcon from './ApplicationIcon';
-import DataAcquisition from './data-acquisition';
-import DataExperience from './data-experience';
-import DataSharing from './data-sharing';
-import DataTracker from './data-tracker';
-import DefaultIcon from './defaultIcon';
-import FeedBackIcon from './feedBack';
-import NothingFilled from './nothing-filled';
-import NothingOutline from './nothing-outline';
-import Portal from './portal';
-import SomethingFilled from './something-filled';
-import SomethingOutline from './something-outline';
-import Welbore from './wellbore';
+import Acquire from './Acquire';
+import FourDInsight from './FourDInsight';
+import Dasha from './Dasha';
+import Recap from './Recap';
+import Fallback from './Fallback';
+import FeedBackIcon from './FeedBack';
+import NothingFIlled from './NothingFIlled';
+import NothingOutlined from './NothingOutlined';
+import Portal from './Portal';
+import SomethingFilled from './SomethingFilled';
+import SomethingOutlined from './SomethingOutlined';
+import Wellbore from './Wellbore';
 
 export {
   ApplicationIcon,
-  DataAcquisition,
-  DataExperience,
-  DataSharing,
-  DataTracker,
-  DefaultIcon,
+  Acquire,
+  FourDInsight,
+  Dasha,
+  Recap,
+  Fallback,
   FeedBackIcon,
-  NothingFilled,
-  NothingOutline,
+  NothingFIlled,
+  NothingOutlined,
   Portal,
   SomethingFilled,
-  SomethingOutline,
-  Welbore,
+  SomethingOutlined,
+  Wellbore,
 };
