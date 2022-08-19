@@ -73,3 +73,25 @@ jobs:
 
       - name: Build
         run: yarn run build
+
+  build-storybook:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn run build-storybook
