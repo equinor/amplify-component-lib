@@ -17,7 +17,7 @@ import SideBar from '../SideBar';
 const { colors } = tokens;
 
 export default {
-  title: 'Navigation/TopBar',
+  title: 'Navigation/TopBar/TopBar',
   component: TopBar,
   argTypes: {
     backgroundColor: { control: 'color' },
@@ -91,21 +91,25 @@ export const ExampleWithSidebar: Story = () => {
     {
       link: '/home',
       name: 'home',
+      onClick: () => console.log('Clicked menu item'),
       icon: home,
     },
     {
       link: '/dashboard',
       name: 'dashboard',
+      onClick: () => console.log('Clicked menu item'),
       icon: dashboard,
     },
     {
       link: '/history',
       name: 'history',
+      onClick: () => console.log('Clicked menu item'),
       icon: history,
     },
     {
       link: '/favourites',
       name: 'favourites',
+      onClick: () => console.log('Clicked menu item'),
       icon: favorite_outlined,
     },
   ];
@@ -306,21 +310,25 @@ export const ExampleWithSidebarCustomIcon: Story = () => {
     {
       link: '/home',
       name: 'home',
+      onClick: () => console.log('Clicked menu item'),
       icon: home,
     },
     {
       link: '/dashboard',
       name: 'dashboard',
+      onClick: () => console.log('Clicked menu item'),
       icon: dashboard,
     },
     {
       link: '/history',
       name: 'history',
+      onClick: () => console.log('Clicked menu item'),
       icon: history,
     },
     {
       link: '/favourites',
       name: 'favourites',
+      onClick: () => console.log('Clicked menu item'),
       icon: favorite_outlined,
     },
   ];
