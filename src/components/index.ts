@@ -35,18 +35,18 @@ export { default as WorkflowStatusBar } from './DataDisplay/Workflow/WorkflowSta
 export { default as ChippedMultiSelect } from './Inputs/ChippedMultiSelect';
 
 export { default as ApplicationIcon } from './Icons/ApplicationIcon';
-export { default as DataAcquisition } from 'src/components/Icons/Acquire';
-export { default as DataExperience } from 'src/components/Icons/FourDInsight';
-export { default as DataSharing } from 'src/components/Icons/Dasha';
-export { default as DataTracker } from 'src/components/Icons/Recap';
-export { default as DefaultIcon } from 'src/components/Icons/Fallback';
-export { default as FeedBackIcon } from 'src/components/Icons/FeedBack';
-export { default as NothingFilled } from 'src/components/Icons/NothingFIlled';
-export { default as NothingOutline } from 'src/components/Icons/NothingOutlined';
-export { default as Portal } from 'src/components/Icons/Portal';
-export { default as SomethingFilled } from 'src/components/Icons/SomethingFilled';
-export { default as SomethingOutline } from 'src/components/Icons/SomethingOutlined';
-export { default as Wellbore } from 'src/components/Icons/Wellbore';
+export { default as DataAcquisition } from './Icons/Acquire';
+export { default as DataExperience } from './Icons/FourDInsight';
+export { default as DataSharing } from './Icons/Dasha';
+export { default as DataTracker } from './Icons/Recap';
+export { default as DefaultIcon } from './Icons/Fallback';
+export { default as FeedBackIcon } from './Icons/FeedBack';
+export { default as NothingFilled } from './Icons/NothingFIlled';
+export { default as NothingOutline } from './Icons/NothingOutlined';
+export { default as Portal } from './Icons/Portal';
+export { default as SomethingFilled } from './Icons/SomethingFilled';
+export { default as SomethingOutline } from './Icons/SomethingOutlined';
+export { default as Wellbore } from './Icons/Wellbore';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
 
 export type { SelectItem } from './Inputs/Select';
