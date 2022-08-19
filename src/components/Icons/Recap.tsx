@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import { ISvgIconProps } from '.';
 
-const DataTracker: React.FC<ISvgIconProps> = ({ size }) => (
+const Recap: FC<ISvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -151,4 +151,4 @@ const DataTracker: React.FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default DataTracker;
+export default Recap;

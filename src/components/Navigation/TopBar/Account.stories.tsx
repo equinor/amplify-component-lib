@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react';
 import { AccountInfo } from '@azure/msal-common';
 
 export default {
-  title: 'Navigation/Account',
+  title: 'Navigation/TopBar/Account',
   component: Account,
 } as Meta;
 
