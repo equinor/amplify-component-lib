@@ -35,18 +35,18 @@ export { default as WorkflowStatusBar } from './DataDisplay/Workflow/WorkflowSta
 export { default as ChippedMultiSelect } from './Inputs/ChippedMultiSelect';
 
 export { default as ApplicationIcon } from './Icons/ApplicationIcon';
-export { default as DataAcquisition } from './Icons/data-acquisition';
-export { default as DataExperience } from './Icons/data-experience';
-export { default as DataSharing } from './Icons/data-sharing';
-export { default as DataTracker } from './Icons/data-tracker';
-export { default as DefaultIcon } from './Icons/defaultIcon';
-export { default as FeedBackIcon } from './Icons/feedBack';
-export { default as NothingFilled } from './Icons/nothing-filled';
-export { default as NothingOutline } from './Icons/nothing-outline';
-export { default as Portal } from './Icons/portal';
-export { default as SomethingFilled } from './Icons/something-filled';
-export { default as SomethingOutline } from './Icons/something-outline';
-export { default as Wellbore } from './Icons/wellbore';
+export { default as DataAcquisition } from './Icons/Acquire';
+export { default as DataExperience } from './Icons/FourDInsight';
+export { default as DataSharing } from './Icons/Dasha';
+export { default as DataTracker } from './Icons/Recap';
+export { default as DefaultIcon } from './Icons/Fallback';
+export { default as FeedBackIcon } from './Icons/FeedBack';
+export { default as NothingFilled } from './Icons/NothingFIlled';
+export { default as NothingOutline } from './Icons/NothingOutlined';
+export { default as Portal } from './Icons/Portal';
+export { default as SomethingFilled } from './Icons/SomethingFilled';
+export { default as SomethingOutline } from './Icons/SomethingOutlined';
+export { default as Wellbore } from './Icons/Wellbore';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
 
 export type { SelectItem } from './Inputs/Select';

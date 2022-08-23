@@ -6,7 +6,7 @@ import { useState } from 'react';
 const { colors } = tokens;
 
 export default {
-  title: 'Navigation/Settings',
+  title: 'Navigation/TopBar/Settings',
   component: Settings,
 } as Meta;
 

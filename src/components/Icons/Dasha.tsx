@@ -1,7 +1,7 @@
 import React from 'react';
 import { ISvgIconProps } from '.';
 
-const DataSharing: React.FC<ISvgIconProps> = ({ size }) => (
+const Dasha: React.FC<ISvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -155,4 +155,4 @@ const DataSharing: React.FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default DataSharing;
+export default Dasha;

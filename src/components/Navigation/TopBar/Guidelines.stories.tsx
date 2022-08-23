@@ -17,7 +17,7 @@ import { tokens } from '@equinor/eds-tokens';
 const { colors } = tokens;
 
 export default {
-  title: 'Guidelines',
+  title: 'Navigation/TopBar/Guidelines',
   component: Guidelines,
 } as Meta;
 

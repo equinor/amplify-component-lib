@@ -1,15 +1,15 @@
-import DefaultIcon from './defaultIcon';
+import Fallback from './Fallback';
 import { ISvgIconProps } from '.';
-import NothingFilled from './nothing-filled';
-import NothingOutline from './nothing-outline';
-import React from 'react';
-import SomethingFilled from './something-filled';
-import SomethingOutline from './something-outline';
+import NothingFilled from './NothingFIlled';
+import NothingOutlined from './NothingOutlined';
+import { FC } from 'react';
+import SomethingFilled from './SomethingFilled';
+import SomethingOutlined from './SomethingOutlined';
 import { find } from 'lodash-es';
 
 interface IFeedBackIconData {
   iconName: string;
-  component: React.FC<ISvgIconProps>;
+  component: FC<ISvgIconProps>;
 }
 
 export interface IFeedBackIconProps {
@@ -19,18 +19,14 @@ export interface IFeedBackIconProps {
 }
 
 export const feedbackIcons: IFeedBackIconData[] = [
-  { iconName: 'default', component: DefaultIcon },
-  { iconName: 'nothing-outline', component: NothingOutline },
+  { iconName: 'default', component: Fallback },
+  { iconName: 'nothing-outline', component: NothingOutlined },
   { iconName: 'nothing-filled', component: NothingFilled },
   { iconName: 'something-filled', component: SomethingFilled },
-  { iconName: 'something-outline', component: SomethingOutline },
+  { iconName: 'something-outline', component: SomethingOutlined },
 ];
 
-const FeedBackIcon: React.FC<IFeedBackIconProps> = ({
-  name,
-  size,
-  variant,
-}) => {
+const FeedBackIcon: FC<IFeedBackIconProps> = ({ name, size, variant }) => {
   const DefaultComponent = feedbackIcons[0].component;
   if (name === 'default') {
     return <DefaultComponent size={size} />;

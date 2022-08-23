@@ -1,11 +1,11 @@
-import React from 'react';
-import DataAcquisition from './data-acquisition';
-import DataExperience from './data-experience';
+import { FC } from 'react';
+import Acquire from './Acquire';
+import FourDInsight from './FourDInsight';
 import { find } from 'lodash-es';
-import DataSharing from './data-sharing';
-import DataTracker from './data-tracker';
-import DefaultIcon from './defaultIcon';
-import Portal from './portal';
+import Dasha from './Dasha';
+import Recap from './Recap';
+import Fallback from './Fallback';
+import Portal from './Portal';
 import { ISvgIconProps } from '.';
 
 interface IApplicationIconProps {
@@ -21,18 +21,18 @@ interface IApplicationIconProps {
 }
 interface IApplicationIconData {
   appName: string;
-  component: React.FC<ISvgIconProps>;
+  component: FC<ISvgIconProps>;
 }
 const apps: IApplicationIconData[] = [
-  { appName: 'default', component: DefaultIcon },
+  { appName: 'default', component: Fallback },
   { appName: 'portal', component: Portal },
-  { appName: 'acquire', component: DataAcquisition },
-  { appName: '4dinsight', component: DataExperience },
-  { appName: 'dasha', component: DataSharing },
-  { appName: 'recap', component: DataTracker },
+  { appName: 'acquire', component: Acquire },
+  { appName: '4dinsight', component: FourDInsight },
+  { appName: 'dasha', component: Dasha },
+  { appName: 'recap', component: Recap },
 ];
 
-const ApplicationIcon: React.FC<IApplicationIconProps> = ({ name, size }) => {
+const ApplicationIcon: FC<IApplicationIconProps> = ({ name, size }) => {
   const Fallback = apps[0].component;
   if (name) {
     const appData = find(apps, { appName: name });

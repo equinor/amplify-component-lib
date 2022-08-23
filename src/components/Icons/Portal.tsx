@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import { ISvgIconProps } from '.';
 
-const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
+const Portal: FC<ISvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -10,7 +10,7 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <mask
-      id="data-acquisition-mask0"
+      id="portal-mask0"
       mask-type="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
@@ -18,51 +18,37 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
       width="48"
       height="48"
     >
-      <rect
-        x="48"
-        y="48"
-        width="48"
-        height="48"
-        rx="8"
-        transform="rotate(-180 48 48)"
-        fill="#C4C4C4"
-      />
+      <rect width="48" height="48" rx="8" fill="#C4C4C4" />
     </mask>
-    <g mask="url(#data-acquisition-mask0)">
+    <g mask="url(#portal-mask0)">
       <path
-        d="M58.3882 22.4755C80.0489 -22.8744 37.1875 -11.4475 13.0492 -0.0653701C-17.4634 12.1999 -9.62457 30.1465 -1.54353 38.0046C-1.25484 38.2853 -0.988633 38.5709 -0.733288 38.8823C10.3131 52.3518 36.9741 67.3091 58.3882 22.4755Z"
+        d="M-2.89582 25.1391C-25.9899 65.1393 16.8694 53.7046 41.1858 42.9873C71.7317 31.3191 64.7872 16.1547 57.1035 9.61188C56.7716 9.32926 56.4615 9.03855 56.1636 8.7203C45.6597 -2.5006 19.8755 -14.302 -2.89582 25.1391Z"
         fill="#004F55"
       />
-      <g filter="url(#data-acquisition-filter0_dd)">
+      <g filter="url(#portal-filter0_dd)">
         <path
-          d="M5.23093 -11.5923C-23.8604 2.96082 16.395 18.9384 35.9889 21.4114C59.7331 25.4941 52.933 7.7762 49.8436 0.910734C49.6559 0.493722 49.5052 0.0670877 49.3737 -0.3709C46.3547 -10.4302 33.6955 -25.8319 5.23093 -11.5923Z"
+          d="M40.3198 56.9535C68.244 40.8314 30.6801 25.2833 12.2382 23.275C-10.1177 19.6967 -4.15859 38.1389 -1.45047 45.2154C-1.29466 45.6226 -1.17365 46.0342 -1.07114 46.458C1.45802 56.912 12.9547 72.7527 40.3198 56.9535Z"
           fill="#007079"
         />
       </g>
-      <g filter="url(#data-acquisition-filter1_dd)">
+      <g filter="url(#portal-filter1_dd)">
         <path
-          d="M46.676 54.3199C74.0253 37.2408 43.8618 30.2339 25.3613 28.8653C2.21685 25.9786 -7.81213 40.711 -2.10191 51.2683C3.29105 61.2391 19.3267 71.399 46.676 54.3199Z"
+          d="M-5.14701 19.3673C-13.4924 50.5127 13.3422 35.0582 27.8026 23.4378C46.6944 9.75929 43.9767 -7.8543 32.5994 -11.6779C21.8542 -15.2891 3.19836 -11.7781 -5.14701 19.3673Z"
           fill="#007079"
         />
       </g>
       <path
-        d="M26.9412 18.0217L15 18.0217C14.4477 18.0217 14 18.4694 14 19.0217L14 30.9845C14 31.5368 14.4477 31.9845 15 31.9845L26.9412 31.9845C29.2941 31.9845 34 32.3724 34 29.2696M26.9412 18.0217L26.9412 15.045C26.9412 14.4754 27.4141 14.0246 27.9804 14.0852C29.9431 14.2955 34 14.986 34 17.1028C34 19.8951 34 25.5203 34 29.2696M26.9412 18.0217L26.9412 22.0942L26.9412 25.7546C26.9412 26.3453 27.4513 26.8124 28.0419 26.7978C30.0264 26.7489 34 26.9416 34 29.2696"
-        stroke="#F5F5F5"
-        strokeWidth="3"
-      />
-      <path
-        d="M32.5 22.7925V18.1786C32.5 17.2172 31.8892 16.362 30.9797 16.0502C29.5193 15.5495 28 16.6347 28 18.1786V22.7925C28 23.9363 28.8581 24.8981 29.9945 25.0279C31.3297 25.1805 32.5 24.1363 32.5 22.7925Z"
-        stroke="#F5F5F5"
-        strokeWidth="5"
+        d="M17.2803 19.4431L30.1086 12.1093C30.653 11.7984 31.3328 12.1878 31.3333 12.8114L31.333 27.5024C31.3336 27.9377 31.1138 28.3398 30.7339 28.5573L17.9053 35.8905C17.3611 36.2018 16.6672 35.8123 16.6667 35.1888V20.4978C16.6661 20.0625 16.9003 19.6603 17.2803 19.4431Z"
+        fill="white"
       />
     </g>
     <defs>
       <filter
-        id="data-acquisition-filter0_dd"
-        x="-12.1434"
-        y="-26.9844"
-        width="75.7525"
-        height="59.8771"
+        id="portal-filter0_dd"
+        x="-14.9994"
+        y="17.0001"
+        width="72.6091"
+        height="60.8741"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -109,11 +95,11 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
         />
       </filter>
       <filter
-        id="data-acquisition-filter1_dd"
-        x="-11"
-        y="20"
-        width="74.3179"
-        height="58.4825"
+        id="portal-filter1_dd"
+        x="-24.0004"
+        y="-22.0001"
+        width="78.0499"
+        height="70.8236"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -163,4 +149,4 @@ const DataAcquisition: React.FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default DataAcquisition;
+export default Portal;
