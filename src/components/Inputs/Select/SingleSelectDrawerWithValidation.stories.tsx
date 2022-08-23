@@ -10,7 +10,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
 
 export default {
-  title: 'Select/SingleSelectDrawerWithValidation',
+  title: 'Input/Select/SingleSelectDrawerWithValidation',
   component: SingleSelectDrawerWithValidation,
 } as Meta;
 
