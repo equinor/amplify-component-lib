@@ -39,6 +39,13 @@ export default [
       terser(),
       uglify(),
     ],
-    output: [{ dir: 'dist', format: 'es', name: pkg.name, globals }],
+    output: [
+      { 
+	dir: 'dist',
+	format: 'es',
+	name: pkg.name,
+	preserveModules: true,
+	globals
+      }],
   },
 ];
