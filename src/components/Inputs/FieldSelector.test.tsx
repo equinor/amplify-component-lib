@@ -40,7 +40,8 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
-  const selected = screen.getByText(new RegExp(props.currentField.name, 'i'));
+  const currentFieldName = props?.currentField?.name ?? 'name';
+  const selected = screen.getByText(new RegExp(currentFieldName, 'i'));
   await user.click(selected);
   expect(props.onSelect).toHaveBeenCalledTimes(0);
 });

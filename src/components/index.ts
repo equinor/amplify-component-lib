@@ -12,8 +12,6 @@ export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
 export { default as InfoElement } from './DataDisplay/InfoElement';
-export { default as MulticolorProgressCircle } from './Feedback/Progress/MulticolorProgressCircle';
-export { default as ProgressBar } from './Feedback/Progress/ProgressBar';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as NotFound } from './Feedback/NotFound';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
@@ -51,7 +49,6 @@ export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
 
 export type { SelectItem } from './Inputs/Select';
 export type { SidebarType, ItemType } from './Navigation/SideBar';
-export type { ColoredProgressCircle } from './Feedback/Progress/MulticolorProgressCircle';
 export type {
   TopBarType,
   IGuidelineSections,
