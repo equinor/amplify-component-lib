@@ -33,7 +33,7 @@
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "build": "yarn build-components",
     "build-components": "rollup -c rollup.config.js && tsc -p tsconfig.build.json",
-    "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.js",
+    "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.js && tsc -p tsconfig.build.json",
     "version": "version-bump cli --bump",
     "postversion": "git add package.json && git commit -m 'Upgraded package version'"
   },
