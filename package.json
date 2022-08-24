@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Frontend Typescript components for the Amplify team",
   "files": [
     "dist/*"
