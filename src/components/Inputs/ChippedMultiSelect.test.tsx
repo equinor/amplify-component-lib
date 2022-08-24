@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 import ChippedMultiSelect from './ChippedMultiSelect';
 import { faker } from '@faker-js/faker';

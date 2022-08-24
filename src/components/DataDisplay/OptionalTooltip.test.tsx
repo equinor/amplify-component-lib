@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 import OptionalTooltip from './OptionalTooltip';
 import React from 'react';
@@ -14,5 +15,6 @@ test('renders without crashing', () => {
     </OptionalTooltip>
   );
 
-  expect(screen.getByText('Test')).toBeInTheDocument();
+  const text = screen.getByText('Test');
+  expect(text).toBeInTheDocument();
 });

@@ -1,4 +1,7 @@
-import { PublicClientApplication, InteractionRequiredAuthError } from '@azure/msal-browser';
+import {
+  PublicClientApplication,
+  InteractionRequiredAuthError,
+} from '@azure/msal-browser';
 
 interface IConfig {
   CLIENT_ID: string;
@@ -131,9 +134,7 @@ const acquireToken = async (request = GRAPH_REQUESTS.LOGIN) => {
       console.log(`Token acquire error: ${JSON.stringify(error)}`);
       localStorage.clear();
       if (
-        InteractionRequiredAuthError.isInteractionRequiredError(
-          error.errorCode
-        )
+        InteractionRequiredAuthError.isInteractionRequiredError(error.errorCode)
       ) {
         msalApp.acquireTokenRedirect(request);
         throw new Error('Redirecting');

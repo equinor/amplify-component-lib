@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 import EquinorLogo from './EquinorLogo';
 import { tokens } from '@equinor/eds-tokens';

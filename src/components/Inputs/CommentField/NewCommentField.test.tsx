@@ -1,8 +1,6 @@
-import '@testing-library/jest-dom/extend-expect';
-
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
-
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 import NewCommentField from './NewCommentField';
 import React from 'react';
 
@@ -11,7 +9,7 @@ test('Triggers publish on button press', async () => {
   const handlePublish = (value: string) => {
     str = value;
   };
-  const user = userEvent.setup()
+  const user = userEvent.setup();
 
   render(
     <NewCommentField
@@ -31,7 +29,7 @@ test('Triggers publish on enter press', async () => {
   const handlePublish = (value: string) => {
     str = value;
   };
-  const user = userEvent.setup()
+  const user = userEvent.setup();
 
   render(
     <NewCommentField
@@ -41,12 +39,13 @@ test('Triggers publish on enter press', async () => {
   );
 
   const input = screen.getByRole('textbox');
-  user.type(input, '{Enter}')
+  await user.type(input, '{Enter}');
 
   expect(str).toBe('I am comment');
 });
 
 test('Clears text on clear button pressed', async () => {
+  const user = userEvent.setup();
   render(
     <NewCommentField
       defaultValue="I am comment"
@@ -56,7 +55,7 @@ test('Clears text on clear button pressed', async () => {
 
   const input = screen.getByRole('textbox') as HTMLTextAreaElement;
   const clear = screen.getByTestId('clearbutton');
-  fireEvent.click(clear);
+  await user.click(clear);
 
   expect(input).toHaveValue('');
 });

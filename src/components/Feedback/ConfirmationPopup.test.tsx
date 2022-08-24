@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event';
 
 import { Button } from '@equinor/eds-core-react';
 import ConfirmationPopup from './ConfirmationPopup';
@@ -62,7 +62,7 @@ test('triggers callback functions on actions given', async () => {
       Ok
     </Button>,
   ];
-  const user = userEvent.setup()
+  const user = userEvent.setup();
   const { getByText } = render(
     <ConfirmationPopup show={true} actions={buttons}>
       content

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import DataCard from './DataCard';
 import React from 'react';
-import {render} from "@testing-library/react";
+import { render } from '@testing-library/react';
 
 const dummyData = {
   title: 'Composite',

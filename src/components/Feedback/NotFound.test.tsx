@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 import { Icon } from '@equinor/eds-core-react';
 import NotFound from './NotFound';
