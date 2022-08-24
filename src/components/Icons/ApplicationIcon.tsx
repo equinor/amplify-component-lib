@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import Acquire from './Acquire';
 import FourDInsight from './FourDInsight';
-import { find } from 'lodash-es';
 import Dasha from './Dasha';
 import Recap from './Recap';
 import Fallback from './Fallback';
@@ -35,7 +34,7 @@ const apps: IApplicationIconData[] = [
 const ApplicationIcon: FC<IApplicationIconProps> = ({ name, size }) => {
   const Fallback = apps[0].component;
   if (name) {
-    const appData = find(apps, { appName: name });
+    const appData = apps.find((app) => app.appName === name);
     if (appData) {
       return <appData.component size={size} />;
     }

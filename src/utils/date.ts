@@ -1,5 +1,3 @@
-import { isNaN } from 'lodash-es';
-
 // formatDate(new Date()) => 16.06.2021
 // formatDate(new Date(), {format: 'DD.MM.YYYY'}) => 16.06.2021
 // formatDate(new Date(), {format: 'YYYY-MM-DD'}) => 2021-06-16
@@ -12,7 +10,7 @@ const formatDate = (
 ): string => {
   if (date) {
     const dateObj = new Date(date);
-    if (!isNaN(dateObj.getTime())) {
+    if (dateObj.getTime()) {
       if (options?.format === 'DD. month YYYY') {
         const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
@@ -42,7 +40,7 @@ const formatDateTime = (
 ): string => {
   if (date) {
     const dateObj = new Date(date);
-    if (!isNaN(dateObj.getTime())) {
+    if (dateObj.getTime()) {
       const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
       return `${day}. ${dateObj.toLocaleString('en-GB', {
         month: options.month,
@@ -63,7 +61,7 @@ const formatRelativeDateTime = (
   if (date) {
     const dateObj = new Date(date);
     const currentDate = new Date();
-    if (!isNaN(dateObj.getTime())) {
+    if (dateObj.getTime()) {
       const differenceInMS = currentDate.getTime() - dateObj.getTime();
       const differenceInDays = differenceInMS / (1000 * 3600 * 24);
       const time = dateObj.toLocaleTimeString('en-GB', {
@@ -95,7 +93,7 @@ const isBetweenDates = (
 ): boolean => {
   if (date) {
     const dateObj = new Date(date);
-    if (!isNaN(dateObj.getTime())) {
+    if (dateObj.getTime()) {
       return date >= dates[0] && date <= dates[1];
     }
   }

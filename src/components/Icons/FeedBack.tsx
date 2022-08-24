@@ -5,7 +5,6 @@ import NothingOutlined from './NothingOutlined';
 import { FC } from 'react';
 import SomethingFilled from './SomethingFilled';
 import SomethingOutlined from './SomethingOutlined';
-import { find } from 'lodash-es';
 
 interface IFeedBackIconData {
   iconName: string;
@@ -32,11 +31,13 @@ const FeedBackIcon: FC<IFeedBackIconProps> = ({ name, size, variant }) => {
     return <DefaultComponent size={size} />;
   }
 
-  const appData = find(feedbackIcons, {
-    iconName: `${name === 'positive' ? 'something' : 'nothing'}-${
-      variant ? variant : 'filled'
-    }`,
-  });
+  const appData = feedbackIcons.find(
+    (icon) =>
+      icon.iconName ===
+      `${name === 'positive' ? 'something' : 'nothing'}-${
+        variant ? variant : 'filled'
+      }`
+  );
   if (appData) {
     return <appData.component size={size} />;
   }

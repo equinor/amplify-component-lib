@@ -3,7 +3,6 @@ import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import { copy } from '@equinor/eds-icons';
-import { delay } from 'lodash-es';
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
@@ -74,7 +73,7 @@ const CopyText: FC<CopyTextProps> = ({
   const handleCopy = () => {
     navigator.clipboard.writeText(textToCopy);
     setIconText('Copied!');
-    delay(() => {
+    setTimeout(() => {
       if (isMounted.current) {
         setIconText('Copy');
       }
