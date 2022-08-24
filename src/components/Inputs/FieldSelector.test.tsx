@@ -1,5 +1,5 @@
 import FieldSelector, { FieldSelectorType } from './FieldSelector';
-import { render, screen } from '../../test-utils';
+import { render, screen } from '@testing-library/react';
 
 import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';

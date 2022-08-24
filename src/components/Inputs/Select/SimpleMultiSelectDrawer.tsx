@@ -1,5 +1,5 @@
 import { CSSProperties, useRef, useState } from 'react';
-import React, { Button, Icon, Input, Label } from '@equinor/eds-core-react';
+import { Button, Icon, Input, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import OptionDrawer from './OptionDrawer';

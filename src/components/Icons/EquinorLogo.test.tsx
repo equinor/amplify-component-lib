@@ -1,4 +1,4 @@
-import { render, screen } from '../../test-utils';
+import { render, screen } from '@testing-library/react';
 
 import EquinorLogo from './EquinorLogo';
 import { tokens } from '@equinor/eds-tokens';

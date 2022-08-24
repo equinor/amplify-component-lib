@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import { fireEvent, render, screen, userEvent } from '../../test-utils';
+import { fireEvent, render, screen, } from '@testing-library/react';
+import userEvent from "@testing-library/user-event";
 
 import EditableField from './EditableField';
 import React from 'react';

@@ -9,7 +9,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:jest/recommended',
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended'
+    'plugin:react-hooks/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -39,3 +39,4 @@ module.exports = {
     },
   },
 };
+

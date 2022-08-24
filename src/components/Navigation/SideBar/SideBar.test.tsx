@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 
 import { home, star_half } from '@equinor/eds-icons';
-import { render, screen } from '../../../test-utils';
+import { render, screen } from '@testing-library/react';
 
 import { MenuItemType } from './MenuItem';
 import React from 'react';

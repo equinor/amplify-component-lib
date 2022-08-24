@@ -1,8 +1,6 @@
 import { ComponentMeta, Story } from '@storybook/react';
 import HourglassProgress, { HourglassProgressProps } from './HourglassProgress';
 
-import React from 'react';
-
 export default {
   title: 'Feedback/Progress/Hourglass',
   component: HourglassProgress,

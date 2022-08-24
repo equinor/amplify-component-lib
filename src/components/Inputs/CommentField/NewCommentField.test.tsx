@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import { fireEvent, render, screen } from '../../../test-utils';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
 
 import NewCommentField from './NewCommentField';
 import React from 'react';
@@ -10,6 +11,7 @@ test('Triggers publish on button press', async () => {
   const handlePublish = (value: string) => {
     str = value;
   };
+  const user = userEvent.setup()
 
   render(
     <NewCommentField
@@ -19,7 +21,7 @@ test('Triggers publish on button press', async () => {
   );
 
   const postButton = screen.getByRole('button');
-  fireEvent.click(postButton);
+  await user.click(postButton);
 
   expect(str).toBe('I am comment');
 });
@@ -29,6 +31,7 @@ test('Triggers publish on enter press', async () => {
   const handlePublish = (value: string) => {
     str = value;
   };
+  const user = userEvent.setup()
 
   render(
     <NewCommentField
@@ -38,7 +41,7 @@ test('Triggers publish on enter press', async () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+  user.type(input, '{Enter}')
 
   expect(str).toBe('I am comment');
 });

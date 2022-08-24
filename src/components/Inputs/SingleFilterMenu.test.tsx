@@ -1,4 +1,5 @@
-import { render, userEvent, screen } from '../../test-utils';
+import { render,  screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
 
 import SingleFilterMenu from './SingleFilterMenu';
 import { filter_list } from '@equinor/eds-icons';

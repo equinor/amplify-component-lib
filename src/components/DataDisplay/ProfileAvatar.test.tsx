@@ -1,5 +1,5 @@
 import ProfileAvatar, { ProfileAvatarProps } from './ProfileAvatar';
-import { render, screen } from '../../test-utils';
+import { render, screen } from '@testing-library/react';
 import { faker } from '@faker-js/faker';
 
 function mockProfileAvatarProps(image: boolean): ProfileAvatarProps {

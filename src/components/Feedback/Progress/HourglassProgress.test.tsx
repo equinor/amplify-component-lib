@@ -1,7 +1,7 @@
 import HourglassProgress, { HourglassProgressProps } from './HourglassProgress';
 
 import { faker } from '@faker-js/faker';
-import { render } from '../../../test-utils';
+import { render } from '@testing-library/react';
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;

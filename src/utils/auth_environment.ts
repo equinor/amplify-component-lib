@@ -1,4 +1,4 @@
-import * as msal from '@azure/msal-browser';
+import { PublicClientApplication, InteractionRequiredAuthError } from '@azure/msal-browser';
 
 interface IConfig {
   CLIENT_ID: string;
@@ -98,7 +98,7 @@ const GRAPH_ENDPOINTS = {
   PHOTO: 'https://graph.microsoft.com/v1.0/me/photos/96x96/$value',
 };
 
-const msalApp = new msal.PublicClientApplication({
+const msalApp = new PublicClientApplication({
   auth: {
     clientId: getClientId(),
     authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
@@ -131,7 +131,7 @@ const acquireToken = async (request = GRAPH_REQUESTS.LOGIN) => {
       console.log(`Token acquire error: ${JSON.stringify(error)}`);
       localStorage.clear();
       if (
-        msal.InteractionRequiredAuthError.isInteractionRequiredError(
+        InteractionRequiredAuthError.isInteractionRequiredError(
           error.errorCode
         )
       ) {

@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 
-import { fireEvent, render } from '../../test-utils';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
 
 import { Button } from '@equinor/eds-core-react';
 import ConfirmationPopup from './ConfirmationPopup';
@@ -50,7 +51,7 @@ test('renders buttons when value is given', () => {
   expect(getByText('Ok')).toBeInTheDocument();
 });
 
-test('triggers callback functions on actions given', () => {
+test('triggers callback functions on actions given', async () => {
   const cb = jest.fn();
 
   const buttons = [
@@ -61,14 +62,15 @@ test('triggers callback functions on actions given', () => {
       Ok
     </Button>,
   ];
+  const user = userEvent.setup()
   const { getByText } = render(
     <ConfirmationPopup show={true} actions={buttons}>
       content
     </ConfirmationPopup>
   );
 
-  fireEvent.click(getByText('Cancel'));
+  await user.click(getByText('Cancel'));
   expect(cb).toHaveBeenCalledTimes(1);
-  fireEvent.click(getByText('Ok'));
+  await user.click(getByText('Ok'));
   expect(cb).toHaveBeenCalledTimes(2);
 });

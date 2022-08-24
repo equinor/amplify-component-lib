@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import MultiSelectDrawerWithValidation, {
   MultiSelectDrawerWithValidationProps,
 } from './MultiSelectDrawerWithValidation';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ValueType, items } from './SelectUtils';
 
 import { Typography } from '@equinor/eds-core-react';
