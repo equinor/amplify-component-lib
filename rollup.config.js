@@ -1,12 +1,9 @@
 import babel from '@rollup/plugin-babel';
+
 import commonjs from '@rollup/plugin-commonjs';
-import { optimizeLodashImports } from '@optimize-lodash/rollup-plugin';
+import typescript from 'rollup-plugin-typescript2';
 import pkg from './package.json';
 import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
-import typescript from 'rollup-plugin-typescript2';
-import { typescriptPaths } from 'rollup-plugin-typescript-paths';
-import { uglify } from 'rollup-plugin-uglify';
 
 const globals = {
   react: 'React',
@@ -25,27 +22,22 @@ export default [
     external: peerDeps,
     plugins: [
       resolve({ extensions }),
-      typescript({ useTsconfigDeclarationDir: true }),
-      typescriptPaths(),
-      optimizeLodashImports({ useLodashEs: true }),
+      typescript(),
       babel({
-        exclude: 'node_modules/**',
-        babelHelpers: 'bundled',
-        presets: ['@babel/preset-env', '@babel/preset-react'],
+        babelHelpers: 'runtime',
+	presets: ['@babel/preset-env', '@babel/preset-react'],
+	skipPreflightCheck: true,
         extensions,
-        plugins: ['babel-plugin-styled-components'],
       }),
       commonjs(),
-      terser(),
-      uglify(),
     ],
     output: [
       { 
-	dir: 'dist',
-	format: 'es',
-	name: pkg.name,
+	dir: 'dist/esm',
 	preserveModules: true,
-	globals
-      }],
+	preserveModulesRoot: 'src',
+	format: 'es',
+      },
+    ],
   },
 ];

@@ -1,11 +1,15 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Frontend Typescript components for the Amplify team",
   "files": [
     "dist/*"
   ],
   "module": "dist/index.js",
+  "publishConfig": {
+    "main": "dist/amplify-components.cjs.js",
+    "module": "dist/esm/index.js"
+  },
   "types": "dist/types/index.d.ts",
   "directories": {
     "dist": "dist"
@@ -29,7 +33,7 @@
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "clean": "rm -rf lib dist",
     "build": "yarn build-components",
-    "build-components": "yarn clean && rollup -c rollup.config.js",
+    "build-components": "yarn clean && rollup -c rollup.config.js && tsc -p tsconfig.build.json",
     "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.js",
     "version": "version-bump cli --bump",
     "postversion": "git add package.json && git commit -m 'Upgraded package version'"
@@ -46,17 +50,9 @@
       "last 1 safari version"
     ]
   },
-  "resolutions": {
-    "serialize-javascript": ">=3.1.0",
-    "trim": ">=0.0.3",
-    "glob-parent": ">=5.1.2",
-    "nth-check": ">=2.0.1"
-  },
   "dependencies": {
     "@azure/msal-browser": "^2.28.1",
     "@equinor/eds-core-react": "^0.20.4",
-    "@equinor/eds-icons": "^0.12.0",
-    "@equinor/eds-tokens": "^0.7.1",
     "downshift": "^6.1.9",
     "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
@@ -66,13 +62,11 @@
     "random-seed": "^0.3.0",
     "react-dropzone": "^14.2.2",
     "react-hook-form": "^7.34.2",
-    "styled-components": "^5.3.5",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
     "@open-wc/building-rollup": "^2.0.2",
-    "@optimize-lodash/rollup-plugin": "^3.0.0",
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@storybook/addon-actions": "^6.5.10",
@@ -124,10 +118,9 @@
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-generate-package-json": "^3.2.0",
-    "rollup-plugin-typescript-paths": "^1.4.0",
     "rollup-plugin-typescript2": "^0.32.1",
-    "rollup-plugin-uglify": "^6.0.4",
     "run-script-os": "^1.1.6",
+    "styled-components": "^5.3.5",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4",

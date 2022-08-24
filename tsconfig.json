@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -9,22 +9,19 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": true,
     "declarationDir": "./dist/types",
     "outDir": "./dist",
+    "baseUrl": ".",
     "importHelpers": true,
-    "noEmit": true
+    "noEmit": false
   },
-  "include": ["src/index.ts"],
-  "exclude": [
-    "node_modules",
-    "**/*.test.tsx",
-    "*/test-utils.tsx"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
