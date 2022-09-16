@@ -11,7 +11,6 @@ const FourDInsight: FC<ISvgIconProps> = ({ size }) => (
   >
     <mask
       id="data-experience-mask0"
-      mask-type="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"

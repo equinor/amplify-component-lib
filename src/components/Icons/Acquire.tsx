@@ -11,7 +11,6 @@ const Acquire: FC<ISvgIconProps> = ({ size }) => (
   >
     <mask
       id="data-acquisition-mask0"
-      mask-type="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"

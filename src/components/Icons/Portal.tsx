@@ -11,7 +11,6 @@ const Portal: FC<ISvgIconProps> = ({ size }) => (
   >
     <mask
       id="portal-mask0"
-      mask-type="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"

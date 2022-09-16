@@ -110,7 +110,7 @@ test('onToggle send correct state back', async () => {
   const expand = screen.getByRole('button');
   await user.click(expand);
 
-  expect(toggle).toBeCalled();
+  expect(toggle).toHaveBeenCalled();
   expect(toggle).toHaveBeenCalledWith(true); // Since we send in false to start with
 });
 
@@ -134,7 +134,7 @@ test('Disabled create new button doesnt fire event', async () => {
   const createNewButton = screen.getByText(/create new/i);
   await user.click(createNewButton);
 
-  expect(createNewFn).not.toBeCalled();
+  expect(createNewFn).not.toHaveBeenCalled();
 });
 
 test('Disabled menu item doesnt fire event', async () => {
