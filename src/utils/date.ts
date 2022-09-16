@@ -5,7 +5,7 @@
 const formatDate = (
   date: Date | string | null | undefined,
   options?: {
-    format: 'DD.MM.YYYY' | 'DD. month YYYY' | 'YYYY-MM-DD';
+    format: 'DD.MM.YYYY' | 'DD. month YYYY' | 'YYYY-MM-DD' | 'DD.MM.YY';
   }
 ): string => {
   if (date) {
@@ -23,6 +23,11 @@ const formatDate = (
       const year = dateObj.getFullYear();
       if (options?.format === 'YYYY-MM-DD') {
         return `${year}-${month}-${day}`;
+      }
+      if (options?.format === 'DD.MM.YY') {
+        return `${day < 10 ? '0' + day : day}.${
+          month < 10 ? '0' + month : month
+        }.${year.toString().slice(-2)}`;
       }
       return `${day < 10 ? '0' + day : day}.${
         month < 10 ? '0' + month : month

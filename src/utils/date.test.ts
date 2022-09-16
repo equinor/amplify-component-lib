@@ -43,6 +43,21 @@ test('formatDate works as expected with format = "YYYY-MM-DD"', () => {
   expect(formattedDate).toBe(`${year}-${month}-${day}`);
 });
 
+test('formatDate works as expected with format = "DD.MM.YY"', () => {
+  const fakeDate = faker.date.past();
+
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'DD.MM.YY',
+  });
+
+  const day = fakeDate.getDate();
+  const month = fakeDate.getMonth() + 1;
+  const year = fakeDate.getFullYear().toString().slice(-2);
+  expect(formattedDate).toBe(
+    `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`
+  );
+});
+
 test('formatDateTime works as expected', () => {
   const fakeDate = faker.date.past();
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
