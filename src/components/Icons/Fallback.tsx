@@ -11,7 +11,6 @@ const Fallback: FC<ISvgIconProps> = ({ size }) => (
   >
     <mask
       id="default-mask0"
-      mask-type="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"

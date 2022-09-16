@@ -2,7 +2,6 @@
   "compilerOptions": {
     "declaration": true,
     "declarationDir": "./dist/types",
-    "noEmit": false,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
     "outDir": "./dist",
@@ -19,7 +18,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
-    "sourceMap": false,
+    "sourceMap": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
