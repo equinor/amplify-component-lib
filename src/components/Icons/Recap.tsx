@@ -11,7 +11,6 @@ const Recap: FC<ISvgIconProps> = ({ size }) => (
   >
     <mask
       id="data-tracker-mask0"
-      mask-type="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"
