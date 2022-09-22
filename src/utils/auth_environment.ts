@@ -2,7 +2,6 @@ import {
   PublicClientApplication,
   InteractionRequiredAuthError,
   IPublicClientApplication,
-  AccountInfo,
 } from '@azure/msal-browser';
 
 interface IConfig {
