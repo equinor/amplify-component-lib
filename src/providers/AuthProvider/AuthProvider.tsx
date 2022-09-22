@@ -57,11 +57,13 @@ export const useAuth = () => {
 interface AuthProviderProps {
   children: ReactNode;
   loadingComponent: ReactElement;
+  unauthorizedComponent: ReactElement;
 }
 
 const AuthProvider: FC<AuthProviderProps> = ({
   children,
   loadingComponent,
+  unauthorizedComponent,
 }) => {
   const [account, setAccount] = useState<AccountInfo | undefined>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
@@ -75,6 +77,7 @@ const AuthProvider: FC<AuthProviderProps> = ({
       <MsalProvider instance={msalApp}>
         <AuthProviderInner
           loadingComponent={loadingComponent}
+          unauthorizedComponent={unauthorizedComponent}
           account={account}
           setAccount={setAccount}
           roles={roles}

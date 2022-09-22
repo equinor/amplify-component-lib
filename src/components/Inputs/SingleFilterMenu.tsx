@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { IconData, filter_list } from '@equinor/eds-icons';
-import React, { FC, useState } from 'react';
+import React, { FC, useState, MouseEvent } from 'react';
 
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
@@ -71,11 +71,7 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
   );
   const [selectedName, setSelectedName] = useState<string | undefined | null>();
 
-  const openMenu = (
-    e:
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-      | React.KeyboardEvent<HTMLButtonElement>
-  ) => {
+  const openMenu = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
     setButtonElement(target);
     setShowMenu(!showMenu);
@@ -115,7 +111,7 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
       <FilterButton
         data-testid="menuButton"
         variant="ghost_icon"
-        onClick={(e) => openMenu(e)}
+        onClick={(e: MouseEvent<HTMLButtonElement>) => openMenu(e)}
       >
         <Icon data={customIcon ?? filter_list} />
       </FilterButton>

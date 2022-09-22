@@ -15,6 +15,7 @@ const { GRAPH_ENDPOINTS, GRAPH_REQUESTS, fetchMsGraph, acquireToken } = auth;
 
 export interface AuthProviderInnerProps {
   loadingComponent: ReactElement;
+  unauthorizedComponent: ReactElement;
   children: ReactNode;
   account: AccountInfo | undefined;
   setAccount: (val: AccountInfo | undefined) => void;
@@ -29,6 +30,7 @@ export interface AuthProviderInnerProps {
 const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   children,
   loadingComponent,
+  unauthorizedComponent,
   account,
   setAccount,
   photo,
@@ -127,9 +129,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     setRoles,
   ]);
 
-  if (authState === 'loading') {
-    return loadingComponent;
-  }
+  if (authState === 'loading') return loadingComponent;
+
+  if (authState === 'unauthorized') return unauthorizedComponent;
 
   return <>{children}</>;
 };

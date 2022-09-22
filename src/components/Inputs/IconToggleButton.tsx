@@ -4,9 +4,6 @@ import { IconData } from '@equinor/eds-icons';
 import OptionalTooltip from '../DataDisplay/OptionalTooltip';
 
 type Placement =
-  | 'auto'
-  | 'auto-start'
-  | 'auto-end'
   | 'top'
   | 'top-start'
   | 'top-end'

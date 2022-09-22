@@ -5,9 +5,6 @@ import OptionalTooltip from '../OptionalTooltip';
 const { colors } = tokens;
 
 type Placement =
-  | 'auto'
-  | 'auto-start'
-  | 'auto-end'
   | 'top'
   | 'top-start'
   | 'top-end'
