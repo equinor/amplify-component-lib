@@ -1,6 +1,6 @@
 import Fallback from './Fallback';
 import { ISvgIconProps } from '.';
-import NothingFilled from './NothingFIlled';
+import NothingFilled from './NothingFilled';
 import NothingOutlined from './NothingOutlined';
 import { FC } from 'react';
 import SomethingFilled from './SomethingFilled';

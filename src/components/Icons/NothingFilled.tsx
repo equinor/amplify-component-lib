@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { ISvgIconProps } from '.';
 
-const NothingFIlled: FC<ISvgIconProps> = ({ size }) => (
+const NothingFilled: FC<ISvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -28,4 +28,4 @@ const NothingFIlled: FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default NothingFIlled;
+export default NothingFilled;
