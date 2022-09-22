@@ -1,6 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom';
+import { render, screen, userEvent } from '../../../test-utils';
 import NewCommentField from './NewCommentField';
 import React from 'react';
 

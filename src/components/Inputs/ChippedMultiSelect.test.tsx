@@ -1,9 +1,7 @@
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen, userEvent } from '../../test-utils';
 
 import ChippedMultiSelect from './ChippedMultiSelect';
 import { faker } from '@faker-js/faker';
-import userEvent from '@testing-library/user-event';
 
 function mockedProps(items?: string[], values?: string[]) {
   return {

@@ -1,6 +1,4 @@
-import '@testing-library/jest-dom/extend-expect';
-
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '../../test-utils';
 
 import FullPageSpinner from './FullPageSpinner';
 import React from 'react';
