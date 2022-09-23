@@ -19,7 +19,6 @@ import AuthProviderInner from './AuthProviderInner';
 
 const { msalApp } = auth;
 
-// Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalApp.getAllAccounts();
 if (accounts.length > 0) {
   msalApp.setActiveAccount(accounts[0]);

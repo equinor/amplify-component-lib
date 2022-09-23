@@ -1,0 +1,29 @@
+/*
+ * The fonts included in this stylesheet are to be used by Equinor ASA and its subsidiaries and appointed suppliers only.
+ * The fonts are protected under domestic and international trademark and copyright law.
+ * You are prohibited from modifying, reverse engineering, duplicating, or distributing this font software.
+ *
+ * Contact the EDS Core Team <fg_eds@equinor.com> for more information.
+ *
+ * (c) 2021 Equinor ASA
+ */
+
+@font-face {
+  font-family: EquinorMono;
+  src: local('ðŸ˜Š'),
+    url(https://eds-static.equinor.com/font/EquinorMono-Regular.woff2),
+    url(https://eds-static.equinor.com/font/EquinorMono-Regular.woff)
+      format('woff2');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Equinor Mono';
+  src: local('ðŸ˜Š'),
+    url(https://eds-static.equinor.com/font/EquinorMono-Regular.woff2),
+    url(https://eds-static.equinor.com/font/EquinorMono-Regular.woff)
+      format('woff2');
+  font-style: normal;
+  font-weight: 400;
+}

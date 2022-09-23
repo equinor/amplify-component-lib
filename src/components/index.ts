@@ -9,6 +9,7 @@ export { default as FieldSelector } from './Inputs/FieldSelector';
 export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
+export { default as FullPageUnauthorized } from './Feedback/FullPageUnauthorized';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
 export { default as InfoElement } from './DataDisplay/InfoElement';
