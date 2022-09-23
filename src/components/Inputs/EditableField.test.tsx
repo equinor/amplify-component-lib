@@ -1,15 +1,13 @@
-import '@testing-library/jest-dom/extend-expect';
-
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, userEvent } from '../../test-utils';
 
 import EditableField from './EditableField';
 import React from 'react';
 
-test('renders textbox', () => {
+test('renders textbox', async () => {
   render(<EditableField editable={true} value="Test"></EditableField>);
+  const user = userEvent.setup();
 
-  fireEvent.click(screen.getByRole('heading', { name: /test/i }));
+  await user.click(screen.getByRole('heading', { name: /test/i }));
 
   expect(screen.getByRole('textbox')).toBeInTheDocument();
 });
@@ -21,7 +19,7 @@ test('renders textbox when clicked', async () => {
   );
   const user = userEvent.setup();
 
-  fireEvent.click(screen.getByRole('heading', { name: /test/i }));
+  await user.click(screen.getByRole('heading', { name: /test/i }));
 
   const textbox = screen.getByRole('textbox') as HTMLTextAreaElement;
   textbox.value = '';

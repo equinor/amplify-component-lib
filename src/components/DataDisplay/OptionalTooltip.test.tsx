@@ -1,11 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen } from '../../test-utils';
 
 import OptionalTooltip from './OptionalTooltip';
 import React from 'react';
 
 const dummyData = {
-  title: 'TootltipText',
+  title: 'TooltipText',
 };
 
 test('renders without crashing', () => {

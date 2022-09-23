@@ -1,9 +1,7 @@
-import '@testing-library/jest-dom/extend-expect';
-
 import { Button } from '@equinor/eds-core-react';
 import InfoElement from './InfoElement';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '../../test-utils';
 
 test('renders title correctly', () => {
   const title = 'I am a title';

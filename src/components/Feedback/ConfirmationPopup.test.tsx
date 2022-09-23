@@ -1,12 +1,8 @@
-import '@testing-library/jest-dom/extend-expect';
-
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, userEvent } from '../../test-utils';
 
 import { Button } from '@equinor/eds-core-react';
 import ConfirmationPopup from './ConfirmationPopup';
 import React from 'react';
-import { screen } from '@testing-library/dom';
 
 test('renders when show is true', () => {
   render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);

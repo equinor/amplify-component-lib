@@ -1,4 +1,4 @@
-import { useAuth } from '../providers/AuthProvider';
+import { useAuth } from '../providers/AuthProvider/AuthProvider';
 import { useDebounce } from './useDebounce';
 import { useOnScreen } from './useOnScreen';
 import { useSnackbar } from '../providers/SnackbarProvider';

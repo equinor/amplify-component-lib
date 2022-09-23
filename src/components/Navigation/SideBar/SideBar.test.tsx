@@ -1,12 +1,9 @@
-import '@testing-library/jest-dom/extend-expect';
-
 import { home, star_half } from '@equinor/eds-icons';
-import { render, screen } from '@testing-library/react';
+import { render, screen, userEvent } from '../../../test-utils';
 
 import { MenuItemType } from './MenuItem';
 import React from 'react';
 import SideBar from '.';
-import userEvent from '@testing-library/user-event';
 
 const defaultMenuItems: MenuItemType[] = [
   {
