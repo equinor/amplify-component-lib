@@ -43,30 +43,26 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   const { instance, inProgress } = useMsal();
 
   useEffect(() => {
+    const accounts = instance.getAllAccounts();
+    if (
+      inProgress !== InteractionStatus.Startup &&
+      inProgress !== InteractionStatus.HandleRedirect &&
+      accounts.length === 0
+    ) {
+      instance.loginRedirect(GRAPH_REQUESTS.LOGIN);
+    }
+  }, [inProgress, instance]);
+
+  useEffect(() => {
+    const accounts = instance.getAllAccounts();
     if (
       !account &&
+      accounts.length > 0 &&
       inProgress === InteractionStatus.None &&
       authState === 'loading'
     ) {
-      const accounts = instance.getAllAccounts();
-      if (accounts.length > 0) {
-        setAccount(accounts[0]);
-        setAuthState('authorized');
-      } else {
-        instance
-          .handleRedirectPromise()
-          .then((response) => {
-            if (response !== null && response.account) {
-              setAccount(response.account);
-              instance.setActiveAccount(response.account);
-              setAuthState('authorized');
-            }
-          })
-          .catch((error) => {
-            console.log(`Redirect callback error: ${JSON.stringify(error)}`);
-            setAuthState('unauthorized');
-          });
-      }
+      setAccount(accounts[0]);
+      setAuthState('authorized');
     } else if (
       account &&
       inProgress === InteractionStatus.None &&
