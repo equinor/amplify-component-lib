@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { warning_filled } from '@equinor/eds-icons';
-import '../assets/EquinorMonoFont.css';
 
 const { colors, spacings } = tokens;
 
