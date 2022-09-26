@@ -112,7 +112,8 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           if (
             error.errorCode === 'consent_required' ||
             error.errorCode === 'interaction_required' ||
-            error.errorCode === 'login_required'
+            error.errorCode === 'login_required' ||
+            error.errorCode === 'no_tokens_found'
           ) {
             instance.loginRedirect(GRAPH_REQUESTS.LOGIN);
           } else {
