@@ -1,6 +1,5 @@
 import {
   PublicClientApplication,
-  InteractionRequiredAuthError,
   IPublicClientApplication,
 } from '@azure/msal-browser';
 
@@ -138,17 +137,7 @@ const acquireToken = async (
       .catch((error) => {
         console.log(`Token acquire error: ${JSON.stringify(error)}`);
         localStorage.clear();
-        if (
-          InteractionRequiredAuthError.isInteractionRequiredError(
-            error.errorCode
-          )
-        ) {
-          msalApp.acquireTokenRedirect(request);
-          throw new Error('Redirecting');
-        } else {
-          console.error(`Non-interactive error: ${error.errorCode}`);
-          throw new Error('Reloading');
-        }
+        return error;
       })
   );
 };
