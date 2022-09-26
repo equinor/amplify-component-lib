@@ -1,4 +1,4 @@
-import { InteractionStatus } from '@azure/msal-browser';
+import { AuthError, InteractionStatus } from '@azure/msal-browser';
 import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import { auth } from '../../utils';
@@ -108,8 +108,16 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
             setAuthState('authorized');
           }
         })
-        .catch(() => {
-          setAuthState('unauthorized');
+        .catch((error: AuthError) => {
+          if (
+            error.errorCode === 'consent_required' ||
+            error.errorCode === 'interaction_required' ||
+            error.errorCode === 'login_required'
+          ) {
+            instance.loginRedirect(GRAPH_REQUESTS.LOGIN);
+          } else {
+            setAuthState('unauthorized');
+          }
         });
     }
   }, [
