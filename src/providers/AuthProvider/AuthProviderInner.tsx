@@ -1,8 +1,12 @@
-import { AuthError, InteractionStatus } from '@azure/msal-browser';
+import {
+  AuthError,
+  InteractionStatus,
+  InteractionType,
+} from '@azure/msal-browser';
 import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import { auth } from '../../utils';
-import { useMsal } from '@azure/msal-react';
+import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 import { AccountInfo } from '@azure/msal-common';
 import { AuthState } from './AuthProvider';
@@ -41,17 +45,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   setAuthState,
 }) => {
   const { instance, inProgress } = useMsal();
-
-  useEffect(() => {
-    const accounts = instance.getAllAccounts();
-    if (
-      inProgress !== InteractionStatus.Startup &&
-      inProgress !== InteractionStatus.HandleRedirect &&
-      accounts.length === 0
-    ) {
-      instance.loginRedirect(GRAPH_REQUESTS.LOGIN);
-    }
-  }, [inProgress, instance]);
+  useMsalAuthentication(InteractionType.Redirect);
 
   useEffect(() => {
     const accounts = instance.getAllAccounts();
@@ -62,11 +56,10 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       authState === 'loading'
     ) {
       setAccount(accounts[0]);
-      setAuthState('authorized');
     } else if (
       account &&
       inProgress === InteractionStatus.None &&
-      authState === 'authorized' &&
+      authState === 'loading' &&
       !photo &&
       !roles
     ) {
