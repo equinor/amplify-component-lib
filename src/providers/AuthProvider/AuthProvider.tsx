@@ -71,7 +71,7 @@ const AuthProvider: FC<AuthProviderProps> = ({
 
   return (
     <AuthContext.Provider
-      value={{ roles, account, photo, logout: msalApp.logoutPopup }}
+      value={{ roles, account, photo, logout: () => msalApp.logoutRedirect() }}
     >
       <MsalProvider instance={msalApp}>
         <AuthProviderInner
