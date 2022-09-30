@@ -113,6 +113,9 @@ const msalApp = new PublicClientApplication({
     cacheLocation: 'localStorage',
     storeAuthStateInCookie: false,
   },
+  system: {
+    iframeHashTimeout: 10000,
+  },
 });
 
 const acquireToken = async (
