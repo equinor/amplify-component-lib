@@ -192,6 +192,7 @@ const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
             onToggle={onToggle}
             selectedItems={selectedItems}
             item={i}
+            singleSelect={singleSelect}
           />
         ))}
     </StyledOptionWrapper>
