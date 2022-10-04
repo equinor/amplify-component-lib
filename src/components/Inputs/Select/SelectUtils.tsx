@@ -15,6 +15,30 @@ export const items: ValueType[] = [
         id: '11',
         value: 11,
         label: 'OneOne',
+        children: [
+          {
+            id: '111',
+            value: 111,
+            label: 'OneOneOne',
+          },
+          {
+            id: '112',
+            value: 112,
+            label: 'OneOneTwo',
+            children: [
+              {
+                id: '1121',
+                value: 1121,
+                label: 'OneOneTwoOne',
+              },
+              {
+                id: '1122',
+                value: 1122,
+                label: 'OneOneTwoTwo',
+              },
+            ],
+          },
+        ],
       },
       {
         id: '12',
