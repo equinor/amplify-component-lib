@@ -1,4 +1,4 @@
-import { CSSProperties, useRef, useState } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { Button, Icon, Input, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
@@ -38,6 +38,30 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
+const SearchChildren = <
+  T extends { id: string; label: string; children?: T[] }
+>(
+  items: T[],
+  search: string
+): T[] => {
+  const values = items.map((item) => {
+    if (item.children && item.children.length > 0) {
+      const children = SearchChildren(item.children, search).filter((c) => c);
+      if (children.length > 0) {
+        return { ...item, children: children };
+      }
+      return item.label.toLowerCase().includes(search.toLowerCase())
+        ? { ...item, children: undefined }
+        : undefined;
+    }
+    return item.label.toLowerCase().includes(search.toLowerCase())
+      ? item
+      : undefined;
+  });
+
+  return values.filter((v) => v) as T[];
+};
+
 export type SimpleMultiSelectDrawerProps<
   T extends { id: string; label: string; children?: T[] }
 > = {
@@ -68,6 +92,7 @@ const SimpleMultiSelectDrawer = <
   style,
 }: SimpleMultiSelectDrawerProps<T>) => {
   const [search, setSearch] = useState<string>('');
+  const [inputItems, setInputItems] = useState<T[]>(items);
   const [open, setOpen] = useState<boolean>(false);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -87,6 +112,14 @@ const SimpleMultiSelectDrawer = <
       onChange(selectedItems.filter((i) => i.id !== item.id));
     }
   };
+
+  useEffect(() => {
+    if (search !== '') {
+      setInputItems(SearchChildren(items, search));
+    } else {
+      setInputItems(items);
+    }
+  }, [search, items]);
 
   return (
     <StyledWrapper style={style}>
@@ -112,7 +145,7 @@ const SimpleMultiSelectDrawer = <
       </StyledInputWrapper>
       <StyledList ref={menuRef}>
         {open &&
-          items.map((item) => (
+          inputItems.map((item) => (
             <OptionDrawer<T>
               key={item.id}
               onToggle={handleToggle}

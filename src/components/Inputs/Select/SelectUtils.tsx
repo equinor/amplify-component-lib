@@ -14,27 +14,27 @@ export const items: ValueType[] = [
       {
         id: '11',
         value: 11,
-        label: 'OneOne',
+        label: 'First',
         children: [
           {
             id: '111',
             value: 111,
-            label: 'OneOneOne',
+            label: 'Uno',
           },
           {
             id: '112',
             value: 112,
-            label: 'OneOneTwo',
+            label: 'Dos',
             children: [
               {
                 id: '1121',
                 value: 1121,
-                label: 'OneOneTwoOne',
+                label: 'En',
               },
               {
                 id: '1122',
                 value: 1122,
-                label: 'OneOneTwoTwo',
+                label: 'To',
               },
             ],
           },
@@ -43,12 +43,12 @@ export const items: ValueType[] = [
       {
         id: '12',
         value: 12,
-        label: 'OneTwo',
+        label: 'Second',
       },
       {
         id: '13',
         value: 13,
-        label: 'OneThree',
+        label: 'Third',
       },
     ],
   },
@@ -60,17 +60,17 @@ export const items: ValueType[] = [
       {
         id: '21',
         value: 21,
-        label: 'TwoOne',
+        label: 'Pablo',
       },
       {
         id: '22',
         value: 22,
-        label: 'TwoTwo',
+        label: 'Diago',
       },
       {
         id: '23',
         value: 23,
-        label: 'TwoThree',
+        label: 'Primo',
       },
     ],
   },
@@ -82,17 +82,17 @@ export const items: ValueType[] = [
       {
         id: '31',
         value: 31,
-        label: 'ThreeOne',
+        label: 'Alpha',
       },
       {
         id: '32',
         value: 32,
-        label: 'ThreeTwo',
+        label: 'Beta',
       },
       {
         id: '33',
         value: 33,
-        label: 'ThreeThree',
+        label: 'Charlie',
       },
     ],
   },
