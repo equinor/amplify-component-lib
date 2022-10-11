@@ -8,10 +8,12 @@ import size from './size';
 import sort from './sort';
 import string from './string';
 import * as map from './map';
+import url from './url';
 import exportComponent from './export';
 
 export {
   map,
+  url,
   exportComponent,
   date,
   favicon,

@@ -88,6 +88,22 @@ test('formatDateTime works as expected with options', () => {
   expect(formatted).toBe(expectedResult);
 });
 
+test('formatDateTime works as expected when isGMT is set', () => {
+  const fakeDate = faker.date.past();
+  const inputDate = new Date(fakeDate.getTime());
+  fakeDate.setTime(fakeDate.getTime() + fakeDate.getTimezoneOffset() * 60000);
+  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
+  const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`;
+
+  const formatted = date.formatDateTime(inputDate, { isGMT: true });
+  expect(formatted).toBe(expectedResult);
+});
+
 test('formatRelativeDateTime work as expected with yesterdays date', () => {
   const fakeDate = new Date();
   fakeDate.setDate(fakeDate.getDate() - 1);
@@ -95,6 +111,22 @@ test('formatRelativeDateTime work as expected with yesterdays date', () => {
 
   const formatted = date.formatRelativeDateTime(fakeDate);
   expect(formatted).toContain('Yesterday');
+});
+
+test('formatRelativeDateTime work as expected with isGMT set', () => {
+  const fakeDate = new Date();
+  fakeDate.setDate(fakeDate.getDate() - 1);
+  // Fake date is yesterday;
+
+  const inputDate = new Date(fakeDate.getTime());
+  fakeDate.setTime(fakeDate.getTime() + fakeDate.getTimezoneOffset() * 60000);
+
+  const time = fakeDate.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  const formatted = date.formatRelativeDateTime(inputDate, true);
+  expect(formatted).toContain(time);
 });
 
 test('formatRelativeDateTime work as expected with yesterdays date, but less than 24 hours', () => {

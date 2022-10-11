@@ -41,14 +41,22 @@ const formatDate = (
 // formatDateTime(new Date(), {month: 'short'}) => 19. Jan 2022, 01:32
 const formatDateTime = (
   date: Date | string | null | undefined,
-  options: { month: 'short' | 'long' } = { month: 'long' }
+  options: { month?: 'short' | 'long'; isGMT?: boolean } = {
+    month: 'long',
+    isGMT: false,
+  }
 ): string => {
   if (date) {
     const dateObj = new Date(date);
     if (dateObj.getTime()) {
+      if (options.isGMT ?? false) {
+        dateObj.setTime(
+          dateObj.getTime() + dateObj.getTimezoneOffset() * 60000
+        );
+      }
       const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
       return `${day}. ${dateObj.toLocaleString('en-GB', {
-        month: options.month,
+        month: options.month ?? 'long',
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
@@ -61,12 +69,18 @@ const formatDateTime = (
 // formatRelativeDateTime(new Date()) => Today at 7:17
 // formatRelativeDateTime(new Date(2018, 11, 24, 10, 33)) => 24. November 2018, 10:33
 const formatRelativeDateTime = (
-  date: Date | string | null | undefined
+  date: Date | string | null | undefined,
+  isGMT = false
 ): string => {
   if (date) {
     const dateObj = new Date(date);
     const currentDate = new Date();
     if (dateObj.getTime()) {
+      if (isGMT) {
+        dateObj.setTime(
+          dateObj.getTime() + dateObj.getTimezoneOffset() * 60000
+        );
+      }
       const differenceInMS = currentDate.getTime() - dateObj.getTime();
       const differenceInDays = differenceInMS / (1000 * 3600 * 24);
       const time = dateObj.toLocaleTimeString('en-GB', {
