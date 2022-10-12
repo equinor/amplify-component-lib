@@ -15,6 +15,8 @@ export { default as NotFound } from './Feedback/NotFound';
 export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
+export { default as SelectField } from './Feedback/SelectField/SelectField';
+export type { Field } from './Feedback/SelectField/SelectField';
 export { default as DataAcquisition } from './Icons/Acquire';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon';
 export { default as DataSharing } from './Icons/Dasha';
