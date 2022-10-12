@@ -17,8 +17,9 @@ interface CardProps {
 
 const Card = styled(EDSCard)<CardProps>`
   box-shadow: ${elevation.raised};
-  grid-gap: 0px;
+  grid-gap: 0;
   padding: ${spacings.comfortable.medium};
+  transition: box-shadow 400ms;
   ${(props) => {
     if (props.onClick) {
       return `&:hover {
