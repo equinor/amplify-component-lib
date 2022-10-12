@@ -10,7 +10,7 @@ const { spacings, colors, elevation, shape } = tokens;
 
 const Card = styled.div`
   padding: ${spacings.comfortable.medium};
-  width: 240px;
+  width: calc(240px - ${spacings.comfortable.medium} * 2);
   background: ${colors.ui.background__default.hex};
   box-shadow: ${elevation.raised};
   border-radius: ${shape.corners.borderRadius};
