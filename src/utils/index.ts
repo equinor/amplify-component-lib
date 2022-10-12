@@ -1,27 +1,26 @@
 import { auth, environment } from './auth_environment';
-
 import coordinate from './coordinate';
 import date from './date';
+import exportComponent from './export';
 import favicon from './favicon';
 import image from './image';
+import * as map from './map';
 import size from './size';
 import sort from './sort';
 import string from './string';
-import * as map from './map';
 import url from './url';
-import exportComponent from './export';
 
 export {
-  map,
-  url,
-  exportComponent,
+  auth,
+  coordinate,
   date,
+  environment,
+  exportComponent,
   favicon,
   image,
+  map,
   size,
-  string,
   sort,
-  coordinate,
-  environment,
-  auth,
+  string,
+  url,
 };

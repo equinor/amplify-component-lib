@@ -1,8 +1,8 @@
-import HourglassProgress, { HourglassProgressProps } from './HourglassProgress';
-
-import { faker } from '@faker-js/faker';
-import { render } from '../../../test-utils';
 import { tokens } from '@equinor/eds-tokens';
+import { faker } from '@faker-js/faker';
+
+import { render } from '../../../test-utils';
+import HourglassProgress, { HourglassProgressProps } from './HourglassProgress';
 
 const { colors } = tokens;
 test('Renders with correct color when given prop', () => {

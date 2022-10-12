@@ -1,13 +1,14 @@
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { Typography } from '@equinor/eds-core-react';
 import { Meta, Story } from '@storybook/react';
+
+import { items, ValueType } from './SelectUtils';
 import SingleSelectDrawerWithValidation, {
   SingleSelectDrawerWithValidationProps,
 } from './SingleSelectDrawerWithValidation';
-import { ValueType, items } from './SelectUtils';
-
 import { SelectItem } from '.';
-import { Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
 
 export default {
   title: 'Input/Select/SingleSelectDrawerWithValidation',

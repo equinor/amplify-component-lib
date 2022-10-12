@@ -1,5 +1,6 @@
-import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { MouseEvent, useEffect, useState } from 'react';
+
+import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import styled from 'styled-components';

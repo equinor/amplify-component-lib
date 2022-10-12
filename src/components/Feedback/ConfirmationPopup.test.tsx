@@ -1,8 +1,9 @@
-import { render, screen, userEvent } from '../../test-utils';
+import React from 'react';
 
 import { Button } from '@equinor/eds-core-react';
+
+import { render, screen, userEvent } from '../../test-utils';
 import ConfirmationPopup from './ConfirmationPopup';
-import React from 'react';
 
 test('renders when show is true', () => {
   render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);

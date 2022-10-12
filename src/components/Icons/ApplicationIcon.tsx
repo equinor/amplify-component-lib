@@ -1,10 +1,11 @@
 import { FC } from 'react';
+
 import Acquire from './Acquire';
-import FourDInsight from './FourDInsight';
 import Dasha from './Dasha';
-import Recap from './Recap';
 import Fallback from './Fallback';
+import FourDInsight from './FourDInsight';
 import Portal from './Portal';
+import Recap from './Recap';
 import { ISvgIconProps } from '.';
 
 interface IApplicationIconProps {

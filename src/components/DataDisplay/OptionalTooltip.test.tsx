@@ -1,7 +1,7 @@
-import { render, screen } from '../../test-utils';
-
-import OptionalTooltip from './OptionalTooltip';
 import React from 'react';
+
+import { render, screen } from '../../test-utils';
+import OptionalTooltip from './OptionalTooltip';
 
 const dummyData = {
   title: 'TooltipText',

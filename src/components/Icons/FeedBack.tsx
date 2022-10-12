@@ -1,10 +1,11 @@
+import { FC } from 'react';
+
 import Fallback from './Fallback';
-import { ISvgIconProps } from '.';
 import NothingFilled from './NothingFilled';
 import NothingOutlined from './NothingOutlined';
-import { FC } from 'react';
 import SomethingFilled from './SomethingFilled';
 import SomethingOutlined from './SomethingOutlined';
+import { ISvgIconProps } from '.';
 
 interface IFeedBackIconData {
   iconName: string;

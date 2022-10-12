@@ -1,5 +1,5 @@
 import AuthProvider from './AuthProvider/AuthProvider';
-import SnackbarProvider from './SnackbarProvider';
 import SideBarStateProvider from './SideBarStateProvider';
+import SnackbarProvider from './SnackbarProvider';
 
-export { AuthProvider, SnackbarProvider, SideBarStateProvider };
+export { AuthProvider, SideBarStateProvider, SnackbarProvider };

@@ -1,11 +1,12 @@
-import { Meta, Story } from '@storybook/react';
 import React, { useState } from 'react';
+
+import { Typography } from '@equinor/eds-core-react';
+import { Meta, Story } from '@storybook/react';
+
+import { items, ValueType } from './SelectUtils';
 import SimpleMultiSelectDrawer, {
   SimpleMultiSelectDrawerProps,
 } from './SimpleMultiSelectDrawer';
-import { ValueType, items } from './SelectUtils';
-
-import { Typography } from '@equinor/eds-core-react';
 
 export default {
   title: 'Inputs/Select/SimpleMultiSelectDrawer',

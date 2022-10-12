@@ -1,8 +1,9 @@
-import { Dialog, Scrim, Typography } from '@equinor/eds-core-react';
 import React, { ReactNode } from 'react';
 
-import styled from 'styled-components';
+import { Dialog, Scrim, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { spacings } = tokens;
 

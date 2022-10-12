@@ -1,15 +1,16 @@
+import React from 'react';
+
 import {
   Button,
   ButtonProps,
-  Tooltip as EDSTooltip,
   Icon,
+  Tooltip as EDSTooltip,
   Typography,
 } from '@equinor/eds-core-react';
-
-import React from 'react';
 import { add } from '@equinor/eds-icons';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { colors, shape, spacings } = tokens;
 

@@ -1,8 +1,10 @@
 import { FC } from 'react';
-import { Progress, Typography, Icon } from '@equinor/eds-core-react';
-import styled from 'styled-components';
+
+import { Icon, Progress, Typography } from '@equinor/eds-core-react';
 import { warning_filled } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 

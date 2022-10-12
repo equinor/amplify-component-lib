@@ -1,21 +1,22 @@
+import { FC, useRef, useState } from 'react';
+
 import {
   Chip as EDSChip,
-  Menu as EDSMenu,
   Icon,
   Label,
+  Menu as EDSMenu,
   Typography,
 } from '@equinor/eds-core-react';
-import { FC, useRef, useState } from 'react';
 import {
   arrow_drop_down,
   arrow_drop_up,
   checkbox,
   checkbox_outline,
 } from '@equinor/eds-icons';
-
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
+
+import styled from 'styled-components';
 
 const { spacings, colors, shape } = tokens;
 

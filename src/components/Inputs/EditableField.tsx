@@ -1,13 +1,14 @@
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
+
 import {
   Icon as EdsIcon,
   TextField as EdsTextField,
   Typography,
 } from '@equinor/eds-core-react';
-import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
-
 import { edit } from '@equinor/eds-icons';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { spacings, colors } = tokens;
 

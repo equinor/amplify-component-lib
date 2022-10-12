@@ -1,7 +1,10 @@
-import { tokens } from '@equinor/eds-tokens';
 import { FC, Fragment } from 'react';
-import styled from 'styled-components';
+
+import { tokens } from '@equinor/eds-tokens';
+
 import OptionalTooltip from '../OptionalTooltip';
+
+import styled from 'styled-components';
 const { colors } = tokens;
 
 type Placement =

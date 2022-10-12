@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;

@@ -1,8 +1,10 @@
 import { forwardRef, ReactNode } from 'react';
+
 import { Icon, SideSheet, Typography } from '@equinor/eds-core-react';
-import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
 import { IconData } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { elevation, spacings } = tokens;
 

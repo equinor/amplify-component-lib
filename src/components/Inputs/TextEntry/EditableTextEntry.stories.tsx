@@ -1,5 +1,6 @@
-import EditableTextEntry, { EditableTextEntryProps } from './EditableTextEntry';
 import { Meta, Story } from '@storybook/react';
+
+import EditableTextEntry, { EditableTextEntryProps } from './EditableTextEntry';
 
 export default {
   title: 'Inputs/TextEntry/EditableTextEntry',

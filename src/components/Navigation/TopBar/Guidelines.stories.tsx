@@ -1,5 +1,3 @@
-import { Guidelines, IGuidelineSections } from './Guidelines';
-import { Story, Meta } from '@storybook/react';
 import {
   account_circle,
   assignment,
@@ -11,8 +9,10 @@ import {
   notifications,
   settings,
 } from '@equinor/eds-icons';
-
 import { tokens } from '@equinor/eds-tokens';
+import { Meta, Story } from '@storybook/react';
+
+import { Guidelines, IGuidelineSections } from './Guidelines';
 
 const { colors } = tokens;
 

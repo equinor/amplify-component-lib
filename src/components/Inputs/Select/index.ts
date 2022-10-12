@@ -6,12 +6,12 @@ import SingleSelectDrawer from './SingleSelectDrawer';
 import SingleSelectDrawerWithValidation from './SingleSelectDrawerWithValidation';
 
 export {
-  SingleSelectDrawer,
-  SingleSelectDrawerWithValidation,
   MultiSelectDrawer,
-  SimpleMultiSelectDrawer,
   MultiSelectDrawerWithValidation,
   OptionDrawer,
+  SimpleMultiSelectDrawer,
+  SingleSelectDrawer,
+  SingleSelectDrawerWithValidation,
 };
 
 type SelectItem<T> = {

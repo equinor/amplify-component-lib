@@ -1,7 +1,7 @@
-import { render, screen, userEvent } from '../../test-utils';
-
-import CopyText from './CopyText';
 import { waitFor } from '@testing-library/react';
+
+import { render, screen, userEvent } from '../../test-utils';
+import CopyText from './CopyText';
 
 test('Renders label on hover', async () => {
   render(<CopyText textToCopy="Test">testing text</CopyText>);

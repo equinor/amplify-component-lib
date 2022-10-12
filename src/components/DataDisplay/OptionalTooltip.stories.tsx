@@ -1,9 +1,9 @@
-import { Story, Meta } from '@storybook/react';
 import { TooltipProps } from '@equinor/eds-core-react';
-
-import OptionalTooltip from './OptionalTooltip';
 import { Icon } from '@equinor/eds-core-react';
 import { folder } from '@equinor/eds-icons';
+import { Meta, Story } from '@storybook/react';
+
+import OptionalTooltip from './OptionalTooltip';
 
 export default {
   title: 'DataDisplay/OptionalTooltip',

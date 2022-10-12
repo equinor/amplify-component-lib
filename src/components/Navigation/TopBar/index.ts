@@ -1,8 +1,8 @@
-import { TopBar as BaseTopBar } from './TopBar';
+import { Account } from './Account';
 import { Actions } from './Actions';
 import { Guidelines, IGuidelineSections } from './Guidelines';
-import { Account } from './Account';
-import { Settings, ISettingsProps } from './Settings';
+import { ISettingsProps, Settings } from './Settings';
+import { TopBar as BaseTopBar } from './TopBar';
 
 type TopBarType = typeof BaseTopBar & {
   Account: typeof Account;
@@ -18,4 +18,4 @@ TopBar.Guidelines = Guidelines;
 TopBar.Settings = Settings;
 
 export default TopBar;
-export type { TopBarType, IGuidelineSections, ISettingsProps };
+export type { IGuidelineSections, ISettingsProps, TopBarType };

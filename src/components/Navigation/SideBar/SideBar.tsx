@@ -1,10 +1,12 @@
-import React, { ReactNode, forwardRef, useContext, useState } from 'react';
+import React, { forwardRef, ReactNode, useContext, useState } from 'react';
 
-import CreateItem from './CreateItem';
-import EquinorLogo from '../../Icons/EquinorLogo';
-import ToggleOpen from './ToggleOpen';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+
+import EquinorLogo from '../../Icons/EquinorLogo';
+import CreateItem from './CreateItem';
+import ToggleOpen from './ToggleOpen';
+
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 interface ContainerProps {

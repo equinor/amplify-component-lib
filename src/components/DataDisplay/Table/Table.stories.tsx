@@ -1,9 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Story, Meta } from '@storybook/react';
-import styled from 'styled-components';
+import { Meta, Story } from '@storybook/react';
 
 import Table, { TableProps } from './Table';
 import TableItem, { TableItemProps } from './TableItem';
+
+import styled from 'styled-components';
 
 export default {
   title: 'DataDisplay/Table',

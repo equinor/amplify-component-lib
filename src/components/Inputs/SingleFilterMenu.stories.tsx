@@ -1,4 +1,5 @@
 import { Meta, Story } from '@storybook/react';
+
 import SingleFilterMenu, { SingleFilterMenuProps } from './SingleFilterMenu';
 
 export default {

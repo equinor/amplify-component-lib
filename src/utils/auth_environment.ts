@@ -1,6 +1,6 @@
 import {
-  PublicClientApplication,
   IPublicClientApplication,
+  PublicClientApplication,
 } from '@azure/msal-browser';
 
 interface IConfig {

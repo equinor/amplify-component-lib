@@ -1,4 +1,5 @@
-import { FC, ReactNode, createContext, useContext, useState } from 'react';
+import { createContext, FC, ReactNode, useContext, useState } from 'react';
+
 import { Snackbar, SnackbarProps } from '@equinor/eds-core-react';
 
 export interface State {

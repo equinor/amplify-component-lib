@@ -1,7 +1,9 @@
-import { Meta, Story } from '@storybook/react';
-import OptionDrawer, { OptionDrawerProps } from './OptionDrawer';
 import { useState } from 'react';
-import { ValueType, items } from './SelectUtils';
+
+import { Meta, Story } from '@storybook/react';
+
+import OptionDrawer, { OptionDrawerProps } from './OptionDrawer';
+import { items, ValueType } from './SelectUtils';
 
 export default {
   title: 'Inputs/Select/OptionDrawer',

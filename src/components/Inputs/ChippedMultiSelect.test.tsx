@@ -1,7 +1,7 @@
-import { render, screen, userEvent } from '../../test-utils';
-
-import ChippedMultiSelect from './ChippedMultiSelect';
 import { faker } from '@faker-js/faker';
+
+import { render, screen, userEvent } from '../../test-utils';
+import ChippedMultiSelect from './ChippedMultiSelect';
 
 function mockedProps(items?: string[], values?: string[]) {
   return {

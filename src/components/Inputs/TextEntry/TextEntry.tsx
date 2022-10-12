@@ -1,6 +1,8 @@
 import { FC } from 'react';
+
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+
 import styled from 'styled-components';
 
 const { colors, spacings } = tokens;

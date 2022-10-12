@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { render, screen, userEvent } from '../../../test-utils';
 import NewCommentField from './NewCommentField';
-import React from 'react';
 
 test('Triggers publish on button press', async () => {
   let str = '';

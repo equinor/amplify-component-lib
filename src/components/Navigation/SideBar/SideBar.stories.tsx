@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
+import { Meta, Story } from '@storybook/react';
 
 import { MenuItemType } from './MenuItem';
 import SideBar from '.';

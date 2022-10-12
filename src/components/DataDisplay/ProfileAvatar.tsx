@@ -1,8 +1,9 @@
 import { forwardRef, useMemo } from 'react';
 
 import { Avatar as EDSAvatar } from '@equinor/eds-core-react';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { colors, shape, spacings, typography } = tokens;
 

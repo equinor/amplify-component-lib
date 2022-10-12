@@ -1,11 +1,13 @@
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
-import { account_circle, clear } from '@equinor/eds-icons';
-import { forwardRef, useState, MouseEvent, KeyboardEvent } from 'react';
+import { forwardRef, KeyboardEvent, MouseEvent, useState } from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
-import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
-import styled from 'styled-components';
+import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
+import { account_circle, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
+import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
+
+import styled from 'styled-components';
 
 const { spacings, colors } = tokens;
 const StyledMenu = styled(Menu)`

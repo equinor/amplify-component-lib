@@ -1,5 +1,6 @@
-import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
 import { FC } from 'react';
+
+import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
 

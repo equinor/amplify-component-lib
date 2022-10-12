@@ -1,9 +1,10 @@
-import { Button, Icon, Menu, Radio, Typography } from '@equinor/eds-core-react';
 import React, { forwardRef, useState } from 'react';
+
+import { Button, Icon, Menu, Radio, Typography } from '@equinor/eds-core-react';
 import { clear, settings } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
 
 const { colors, elevation } = tokens;
 

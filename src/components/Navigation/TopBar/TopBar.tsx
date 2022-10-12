@@ -1,14 +1,15 @@
+import React, { forwardRef, ReactElement, ReactNode } from 'react';
+
 import {
   CircularProgress as EDSCircularProgress,
-  TopBar as EDSTopBar,
   Icon,
+  TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
-import React, { ReactElement, ReactNode, forwardRef } from 'react';
-
 import { IconData } from '@equinor/eds-icons';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { colors } = tokens;
 

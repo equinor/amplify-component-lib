@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ISvgIconProps } from '.';
 
 const Dasha: React.FC<ISvgIconProps> = ({ size }) => (

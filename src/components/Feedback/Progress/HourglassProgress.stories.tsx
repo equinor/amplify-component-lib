@@ -1,4 +1,5 @@
 import { ComponentMeta, Story } from '@storybook/react';
+
 import HourglassProgress, { HourglassProgressProps } from './HourglassProgress';
 
 export default {

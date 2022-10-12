@@ -1,13 +1,15 @@
 import { ChangeEvent, FC, useState } from 'react';
+
 import {
   Button,
   Icon,
   TextField,
   TextFieldProps,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 import { add } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 

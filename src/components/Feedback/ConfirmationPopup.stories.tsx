@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { Story, Meta } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 
 import ConfirmationPopup, { IComponentProps } from './ConfirmationPopup';
 

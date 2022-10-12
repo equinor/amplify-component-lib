@@ -1,5 +1,6 @@
-import InfoElement, { InfoElementProps } from './InfoElement';
 import { Meta, Story } from '@storybook/react';
+
+import InfoElement, { InfoElementProps } from './InfoElement';
 
 export default {
   title: 'DataDisplay/InfoElement',

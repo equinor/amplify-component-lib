@@ -1,9 +1,10 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
 
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled, { keyframes } from 'styled-components';
 
 const { colors, spacings } = tokens;
 

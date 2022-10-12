@@ -1,5 +1,6 @@
-import EditableField, { EditableFieldProps } from './EditableField';
 import { Meta, Story } from '@storybook/react';
+
+import EditableField, { EditableFieldProps } from './EditableField';
 
 export default {
   title: 'Inputs/EditableField',

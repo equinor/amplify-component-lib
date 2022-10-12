@@ -1,8 +1,9 @@
-import { render, screen } from '../../../test-utils';
-
 import React from 'react';
-import TopBar from '.';
+
 import { car } from '@equinor/eds-icons';
+
+import { render, screen } from '../../../test-utils';
+import TopBar from '.';
 
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(

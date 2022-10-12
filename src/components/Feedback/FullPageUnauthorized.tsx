@@ -1,8 +1,10 @@
 import { FC, ReactElement } from 'react';
-import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
+
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { warning_filled } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 
