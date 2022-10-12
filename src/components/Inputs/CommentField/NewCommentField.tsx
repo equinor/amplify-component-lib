@@ -1,7 +1,9 @@
+import React, { useState } from 'react';
+
 import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import React, { useState } from 'react';
+
 import styled from 'styled-components';
 
 const { colors, spacings } = tokens;

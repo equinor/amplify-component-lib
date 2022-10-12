@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 
-import DataCard from '../../DataDisplay/DataCard';
-
 import { exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
+import DataCard from '../../DataDisplay/DataCard';
 
 import styled from 'styled-components';
 

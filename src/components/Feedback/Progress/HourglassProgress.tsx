@@ -1,13 +1,14 @@
+import { forwardRef } from 'react';
+
 import {
   CircularProgressProps,
   Icon,
   IconProps,
 } from '@equinor/eds-core-react';
 import { hourglass_empty, hourglass_full } from '@equinor/eds-icons';
-import styled, { keyframes } from 'styled-components';
-
-import { forwardRef } from 'react';
 import { tokens } from '@equinor/eds-tokens';
+
+import styled, { keyframes } from 'styled-components';
 
 const { colors } = tokens;
 

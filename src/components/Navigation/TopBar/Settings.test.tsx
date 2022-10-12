@@ -1,5 +1,5 @@
-import Settings, { ISettingsProps } from './Settings';
 import { render, screen, userEvent } from '../../../test-utils';
+import Settings, { ISettingsProps } from './Settings';
 
 test('Settings renders as expected', async () => {
   const theme = 'light';

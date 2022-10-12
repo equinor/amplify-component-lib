@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Button, Icon } from '@equinor/eds-core-react';
 import {
   account_circle,
@@ -10,9 +11,10 @@ import {
   notifications,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { Story, Meta } from '@storybook/react';
-import TopBar from '.';
+import { Meta, Story } from '@storybook/react';
+
 import SideBar from '../SideBar';
+import TopBar from '.';
 
 const { colors } = tokens;
 

@@ -1,7 +1,7 @@
-import CommentField, { CommentFieldProps } from './CommentField';
+import { Typography } from '@equinor/eds-core-react';
 import { Meta, Story } from '@storybook/react';
 
-import { Typography } from '@equinor/eds-core-react';
+import CommentField, { CommentFieldProps } from './CommentField';
 
 export default {
   title: 'Inputs/CommentField/CommentField',

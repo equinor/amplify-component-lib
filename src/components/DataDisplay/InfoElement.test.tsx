@@ -1,7 +1,9 @@
-import { Button } from '@equinor/eds-core-react';
-import InfoElement from './InfoElement';
 import React from 'react';
+
+import { Button } from '@equinor/eds-core-react';
+
 import { render, screen } from '../../test-utils';
+import InfoElement from './InfoElement';
 
 test('renders title correctly', () => {
   const title = 'I am a title';

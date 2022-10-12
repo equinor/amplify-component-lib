@@ -1,11 +1,4 @@
 import {
-  AccountInfo,
-  AuthenticationResult,
-  EventMessage,
-  EventType,
-} from '@azure/msal-browser';
-import { MsalProvider } from '@azure/msal-react';
-import {
   createContext,
   FC,
   ReactElement,
@@ -13,6 +6,14 @@ import {
   useContext,
   useState,
 } from 'react';
+
+import {
+  AccountInfo,
+  AuthenticationResult,
+  EventMessage,
+  EventType,
+} from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
 
 import { auth } from '../../utils';
 import AuthProviderInner from './AuthProviderInner';

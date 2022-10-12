@@ -1,4 +1,5 @@
 import React, { forwardRef, ReactElement, useEffect } from 'react';
+
 import {
   Card as EDSCard,
   Icon,
@@ -7,6 +8,7 @@ import {
 } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
 import styled from 'styled-components';
 
 const { colors, elevation, spacings } = tokens;

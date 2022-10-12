@@ -4,11 +4,11 @@ import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import FieldCard from './FieldCard/FieldCard';
+import FieldCardSkeleton from './FieldCard/Skeleton';
 import AccessITCard from './AccessITCard';
+import ChangingField from './ChangingField';
 
 import styled from 'styled-components';
-import ChangingField from './ChangingField';
-import FieldCardSkeleton from './FieldCard/Skeleton';
 
 const { spacings } = tokens;
 

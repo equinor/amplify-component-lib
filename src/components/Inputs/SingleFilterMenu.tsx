@@ -1,15 +1,16 @@
+import React, { FC, MouseEvent, useState } from 'react';
+
 import {
   Button,
   Chip as EDSChip,
-  Menu as EdsMenu,
   Icon,
+  Menu as EdsMenu,
   Typography,
 } from '@equinor/eds-core-react';
-import { IconData, filter_list } from '@equinor/eds-icons';
-import React, { FC, useState, MouseEvent } from 'react';
+import { filter_list, IconData } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 

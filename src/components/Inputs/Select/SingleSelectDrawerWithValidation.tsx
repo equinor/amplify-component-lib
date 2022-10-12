@@ -1,8 +1,8 @@
+import { useMemo } from 'react';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 
 import SelectLabel from './SelectLabel';
 import SingleSelectDrawer from './SingleSelectDrawer';
-import { useMemo } from 'react';
 
 const ErrorMessage = ({
   message,

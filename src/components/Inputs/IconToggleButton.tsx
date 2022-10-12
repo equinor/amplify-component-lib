@@ -1,6 +1,8 @@
 import { forwardRef, useState } from 'react';
+
 import { Button, Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
+
 import OptionalTooltip from '../DataDisplay/OptionalTooltip';
 
 type Placement =

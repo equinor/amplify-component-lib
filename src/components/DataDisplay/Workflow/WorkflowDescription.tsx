@@ -1,7 +1,10 @@
-import { Typography } from '@equinor/eds-core-react';
 import { FC, Fragment } from 'react';
-import styled from 'styled-components';
+
+import { Typography } from '@equinor/eds-core-react';
+
 import StatusChip from './StatusChip';
+
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;

@@ -1,17 +1,19 @@
 import { FC } from 'react';
+
 import {
+  Button,
   Card,
-  Typography,
   Icon,
   Progress,
-  Button,
   Tooltip,
+  Typography,
 } from '@equinor/eds-core-react';
 import {
   check_circle_outlined,
   close_circle_outlined,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
 import styled from 'styled-components';
 
 const { elevation, colors, spacings } = tokens;

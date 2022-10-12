@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { ISvgIconProps } from '.';
 
 const Fallback: FC<ISvgIconProps> = ({ size }) => (

@@ -1,5 +1,5 @@
-import proj4 from 'proj4';
 import { LatLngLiteral } from 'leaflet';
+import proj4 from 'proj4';
 
 function degrees2radians(degrees: number): number {
   return degrees * (Math.PI / 180);

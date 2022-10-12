@@ -1,7 +1,7 @@
-import { render, screen, userEvent } from '../../test-utils';
-
-import SingleFilterMenu from './SingleFilterMenu';
 import { filter_list } from '@equinor/eds-icons';
+
+import { render, screen, userEvent } from '../../test-utils';
+import SingleFilterMenu from './SingleFilterMenu';
 
 const dummyData = {
   data: ['test', 'best', '123'],

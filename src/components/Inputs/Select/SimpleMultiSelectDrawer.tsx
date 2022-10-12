@@ -1,11 +1,13 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
+
 import { Button, Icon, Input, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-
-import OptionDrawer from './OptionDrawer';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
+
+import OptionDrawer from './OptionDrawer';
+
+import styled from 'styled-components';
 
 const { colors, spacings, elevation } = tokens;
 

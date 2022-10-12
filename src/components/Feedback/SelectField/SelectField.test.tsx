@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { act, render, screen, userEvent, waitFor } from '../../../test-utils';
+
+import { render, screen, userEvent, waitFor } from '../../../test-utils';
 import SelectField, { Field } from './SelectField';
 
 function fakeFields(): Field[] {

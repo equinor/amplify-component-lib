@@ -1,7 +1,9 @@
 import { Button, Chip, Icon } from '@equinor/eds-core-react';
-import { Story, Meta } from '@storybook/react';
-import { more_vertical, account_circle } from '@equinor/eds-icons';
+import { account_circle, more_vertical } from '@equinor/eds-icons';
+import { Meta, Story } from '@storybook/react';
+
 import DataCard, { DataCardProps } from './DataCard';
+
 import styled from 'styled-components';
 
 export default {

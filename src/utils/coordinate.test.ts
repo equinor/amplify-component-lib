@@ -1,5 +1,6 @@
-import coordinate from './coordinate';
 import { faker } from '@faker-js/faker';
+
+import coordinate from './coordinate';
 
 const { formatLatLng, formatUtm } = coordinate;
 

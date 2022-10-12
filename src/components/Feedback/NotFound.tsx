@@ -1,8 +1,11 @@
 import { FC, ReactElement } from 'react';
+
 import { Button, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
+
 import FeedBackIcon from '../Icons/FeedBack';
+
+import styled from 'styled-components';
 
 const { spacings } = tokens;
 

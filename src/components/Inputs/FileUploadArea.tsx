@@ -1,10 +1,11 @@
-import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { FC, useMemo } from 'react';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
+
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { upload } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
-import { upload } from '@equinor/eds-icons';
 
 const { colors } = tokens;
 

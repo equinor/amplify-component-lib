@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import SkeletonBase from '../../SkeletonBase';
 import { tokens } from '@equinor/eds-tokens';
+
+import SkeletonBase from '../../SkeletonBase';
 
 import styled from 'styled-components';
 

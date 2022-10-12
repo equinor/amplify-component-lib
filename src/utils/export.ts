@@ -1,5 +1,6 @@
-import html2canvas from 'html2canvas';
 import { RefObject } from 'react';
+
+import html2canvas from 'html2canvas';
 
 // https://stackoverflow.com/a/12300351
 function dataURItoBlob(dataURI: string) {

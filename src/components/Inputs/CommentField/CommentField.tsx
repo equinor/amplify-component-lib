@@ -1,10 +1,13 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+
 import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
-import { date } from '../../../utils';
+
 import { useDebounce } from '../../../hooks';
+import { date } from '../../../utils';
+
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 

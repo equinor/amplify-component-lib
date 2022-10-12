@@ -1,8 +1,9 @@
-import { render, screen } from '../../test-utils';
-
-import FullPageSpinner from './FullPageSpinner';
 import React from 'react';
+
 import { tokens } from '@equinor/eds-tokens';
+
+import { render, screen } from '../../test-utils';
+import FullPageSpinner from './FullPageSpinner';
 
 const { colors } = tokens;
 

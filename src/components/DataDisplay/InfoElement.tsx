@@ -1,7 +1,10 @@
-import { Typography as EDSTypography } from '@equinor/eds-core-react';
 import React, { forwardRef, ReactElement } from 'react';
-import styled from 'styled-components';
+
+import { Typography as EDSTypography } from '@equinor/eds-core-react';
+
 import CopyText from '../Inputs/CopyText';
+
+import styled from 'styled-components';
 
 interface TypographyProps {
   capitalize?: boolean;

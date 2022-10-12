@@ -1,14 +1,15 @@
+import { forwardRef, MouseEvent, useState } from 'react';
+
 import {
   Button,
-  Menu as EDSMenu,
   Icon,
+  Menu as EDSMenu,
   Typography,
 } from '@equinor/eds-core-react';
-import { MouseEvent, forwardRef, useState } from 'react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
 
 const { colors, spacings } = tokens;
 

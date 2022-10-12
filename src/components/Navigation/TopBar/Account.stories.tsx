@@ -1,6 +1,7 @@
-import { Account } from './Account';
-import { Story, Meta } from '@storybook/react';
 import { AccountInfo } from '@azure/msal-common';
+import { Meta, Story } from '@storybook/react';
+
+import { Account } from './Account';
 
 export default {
   title: 'Navigation/TopBar/Account',

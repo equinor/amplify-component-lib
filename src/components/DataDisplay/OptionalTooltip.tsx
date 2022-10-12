@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+
 import { Tooltip, TooltipProps } from '@equinor/eds-core-react';
 
 const OptionalTooltip = forwardRef<HTMLDivElement, TooltipProps>(

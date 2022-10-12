@@ -1,8 +1,10 @@
-import { Story, Meta } from '@storybook/react';
 import { useEffect, useRef, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
+import { Meta, Story } from '@storybook/react';
 
 import SelectField, { Field } from './SelectField';
+
+import { v4 as uuidv4 } from 'uuid';
 
 const equinorFields = [
   'Gina Krog',
@@ -33,7 +35,7 @@ function generateFakeFields(): Field[] {
 }
 
 const getMyFields = (): Promise<Field[]> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(generateFakeFields());
     }, 1000);

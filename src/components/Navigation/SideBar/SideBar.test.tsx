@@ -1,8 +1,9 @@
-import { home, star_half } from '@equinor/eds-icons';
-import { render, screen, userEvent } from '../../../test-utils';
-
-import { MenuItemType } from './MenuItem';
 import React from 'react';
+
+import { home, star_half } from '@equinor/eds-icons';
+
+import { render, screen, userEvent } from '../../../test-utils';
+import { MenuItemType } from './MenuItem';
 import SideBar from '.';
 
 const defaultMenuItems: MenuItemType[] = [

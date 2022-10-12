@@ -1,7 +1,7 @@
-import { render, screen, userEvent } from '../../test-utils';
-
-import EditableField from './EditableField';
 import React from 'react';
+
+import { render, screen, userEvent } from '../../test-utils';
+import EditableField from './EditableField';
 
 test('renders textbox', async () => {
   render(<EditableField editable={true} value="Test"></EditableField>);

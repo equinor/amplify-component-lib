@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import DataCard from '../../../DataDisplay/DataCard';
 import { platform } from '@equinor/eds-icons';
+
+import DataCard from '../../../DataDisplay/DataCard';
 
 import styled from 'styled-components';
 

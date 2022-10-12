@@ -1,14 +1,16 @@
-import {
-  Tooltip as EDSTooltip,
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
 import React, { forwardRef } from 'react';
 
+import {
+  Icon,
+  Tooltip as EDSTooltip,
+  Typography,
+} from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+
 import { useSideBar } from './SideBar';
+
+import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 

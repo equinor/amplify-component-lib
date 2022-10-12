@@ -1,5 +1,7 @@
-import { Story, Meta } from '@storybook/react';
 import React from 'react';
+
+import { Meta, Story } from '@storybook/react';
+
 import CopyText, { CopyTextProps } from './CopyText';
 
 export default {

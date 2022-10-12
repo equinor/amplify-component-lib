@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+
 import url from './url';
 
 const { isValidUrl } = url;

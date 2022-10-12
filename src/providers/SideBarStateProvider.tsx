@@ -1,4 +1,4 @@
-import { FC, ReactNode, createContext, useReducer, useContext } from 'react';
+import { createContext, FC, ReactNode, useContext, useReducer } from 'react';
 
 const localStorageKey = 'sidebarstatecontext';
 type Dispatch<State> = (newState: State) => void;

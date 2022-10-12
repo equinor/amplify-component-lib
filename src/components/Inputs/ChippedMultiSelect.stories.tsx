@@ -1,9 +1,10 @@
+import React from 'react';
+
+import { Meta, Story } from '@storybook/react';
+
 import ChippedMultiSelect, {
   ChippedMultiSelectProps,
 } from './ChippedMultiSelect';
-import { Meta, Story } from '@storybook/react';
-
-import React from 'react';
 
 export default {
   title: 'Inputs/ChippedMultiSelect',

@@ -1,15 +1,17 @@
+import { FC, ReactElement, ReactNode, useEffect } from 'react';
+
 import {
   AuthError,
   InteractionStatus,
   InteractionType,
 } from '@azure/msal-browser';
-import { FC, ReactElement, ReactNode, useEffect } from 'react';
+import { AccountInfo } from '@azure/msal-common';
+import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { auth } from '../../utils';
-import { useMsal, useMsalAuthentication } from '@azure/msal-react';
-import jwt_decode, { JwtPayload } from 'jwt-decode';
-import { AccountInfo } from '@azure/msal-common';
 import { AuthState } from './AuthProvider';
+
+import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 interface ExtendedJwtPayload extends JwtPayload {
   roles: string[];

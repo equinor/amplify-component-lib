@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { first_page, last_page } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+
 import styled from 'styled-components';
 
 const { colors, spacings, shape } = tokens;

@@ -1,6 +1,7 @@
-import DataCard from './DataCard';
 import React from 'react';
+
 import { render } from '../../test-utils';
+import DataCard from './DataCard';
 
 const dummyData = {
   title: 'Composite',

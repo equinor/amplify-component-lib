@@ -1,7 +1,9 @@
-import { Story, Meta } from '@storybook/react';
-import { Settings, ISettingsProps } from './Settings';
-import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
+
+import { tokens } from '@equinor/eds-tokens';
+import { Meta, Story } from '@storybook/react';
+
+import { ISettingsProps, Settings } from './Settings';
 
 const { colors } = tokens;
 

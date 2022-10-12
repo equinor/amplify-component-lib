@@ -1,12 +1,13 @@
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { Typography } from '@equinor/eds-core-react';
 import { Meta, Story } from '@storybook/react';
+
 import MultiSelectDrawerWithValidation, {
   MultiSelectDrawerWithValidationProps,
 } from './MultiSelectDrawerWithValidation';
-import { useState } from 'react';
-import { ValueType, items } from './SelectUtils';
-
-import { Typography } from '@equinor/eds-core-react';
+import { items, ValueType } from './SelectUtils';
 
 export default {
   title: 'Inputs/Select/MultiSelectDrawerWithValidation',
