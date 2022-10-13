@@ -9,6 +9,8 @@ import {
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { Field } from '../../types/Field';
+
 import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
@@ -65,12 +67,6 @@ const TextContainer = styled.div`
     text-transform: capitalize;
   }
 `;
-
-type Field = {
-  guid: string;
-  name: string;
-  country: string;
-};
 
 export type FieldSelectorType = {
   currentField?: Field;
@@ -135,7 +131,7 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
                       Current selection:
                     </Typography>
                     <Typography variant="h6">
-                      {currentField.name.toLowerCase()}
+                      {currentField.name?.toLowerCase()}
                     </Typography>
                   </TextContainer>
                   <Icon
@@ -146,13 +142,13 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
                 </MenuItem>
               )}
               {availableFields.map((field) => {
-                if (field.guid !== currentField?.guid) {
+                if (field.uuid !== currentField?.uuid) {
                   return (
-                    <MenuItem key={field.guid} onClick={() => onSelect(field)}>
+                    <MenuItem key={field.uuid} onClick={() => onSelect(field)}>
                       <TextContainer>
                         <Typography variant="overline">Switch to:</Typography>
                         <Typography variant="h6">
-                          {field.name.toLowerCase()}
+                          {field.name?.toLowerCase()}
                         </Typography>
                       </TextContainer>
                     </MenuItem>

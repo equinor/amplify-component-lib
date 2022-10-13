@@ -3,6 +3,7 @@ import React, { FC, useRef, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { Field } from '../../../types/Field';
 import FieldCard from './FieldCard/FieldCard';
 import FieldCardSkeleton from './FieldCard/Skeleton';
 import AccessITCard from './AccessITCard';
@@ -24,12 +25,6 @@ const Container = styled.div`
     grid-column: 1 / 3;
   }
 `;
-
-export type Field = {
-  uuid: string | null | undefined;
-  name: string | null | undefined;
-  country: string | null | undefined;
-};
 
 interface SelectFieldProps {
   setField: (value: Field) => void;
