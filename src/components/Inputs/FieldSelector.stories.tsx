@@ -11,7 +11,7 @@ export default {
 function FakeField() {
   return {
     name: faker.lorem.word(),
-    guid: faker.datatype.uuid(),
+    uuid: faker.datatype.uuid(),
     country: faker.address.country(),
   };
 }

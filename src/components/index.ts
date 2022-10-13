@@ -1,3 +1,4 @@
+export type { Field } from '../types/Field';
 export { default as DataCard } from './DataDisplay/DataCard';
 export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
@@ -14,7 +15,6 @@ export { default as FullPageUnauthorized } from './Feedback/FullPageUnauthorized
 export { default as NotFound } from './Feedback/NotFound';
 export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
-export type { Field } from './Feedback/SelectField/SelectField';
 export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
 export { default as DataAcquisition } from './Icons/Acquire';

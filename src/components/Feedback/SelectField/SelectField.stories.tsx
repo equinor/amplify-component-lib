@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Meta, Story } from '@storybook/react';
 
-import SelectField, { Field } from './SelectField';
+import { Field } from '../../../types/Field';
+import SelectField from './SelectField';
 
 import { v4 as uuidv4 } from 'uuid';
 

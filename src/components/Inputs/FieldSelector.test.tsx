@@ -6,7 +6,7 @@ import FieldSelector, { FieldSelectorType } from './FieldSelector';
 function fakeField() {
   return {
     name: faker.name.firstName(),
-    guid: faker.datatype.uuid(),
+    uuid: faker.datatype.uuid(),
     country: faker.address.country(),
   };
 }
@@ -26,7 +26,7 @@ test('Runs onSelect function once when clicking an item', async () => {
   const user = userEvent.setup();
 
   const secondItem = screen.getByText(
-    new RegExp(props.availableFields[1].name, 'i')
+    new RegExp(props.availableFields[1].name ?? '', 'i')
   );
   await user.click(secondItem);
 
