@@ -2,6 +2,7 @@ import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import {
   AuthError,
+  InteractionRequiredAuthError,
   InteractionStatus,
   InteractionType,
 } from '@azure/msal-browser';
@@ -47,7 +48,16 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   setAuthState,
 }) => {
   const { instance, inProgress } = useMsal();
-  useMsalAuthentication(InteractionType.Redirect);
+  const { login, error } = useMsalAuthentication(
+    InteractionType.Silent,
+    GRAPH_REQUESTS.LOGIN
+  );
+
+  useEffect(() => {
+    if (error instanceof InteractionRequiredAuthError) {
+      login(InteractionType.Redirect, GRAPH_REQUESTS.LOGIN);
+    }
+  }, [error, login]);
 
   useEffect(() => {
     const accounts = instance.getAllAccounts();
