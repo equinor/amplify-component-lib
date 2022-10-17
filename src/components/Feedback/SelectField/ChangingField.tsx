@@ -3,6 +3,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { LinearProgress, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import string from '../../../utils/string';
+
 import styled, { keyframes } from 'styled-components';
 
 const { spacings, colors } = tokens;
@@ -106,7 +108,7 @@ const ChangingField: FC<ChangingFieldProps> = ({
       ) : (
         <>
           <StyledTypography variant="h3">
-            Changed to <span>{fieldName}</span>
+            Changed to <span>{string.capitalize(fieldName)}</span>
           </StyledTypography>
           <AnimatedCheckMarkIcon>
             <svg
