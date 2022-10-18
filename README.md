@@ -12,47 +12,47 @@ To increase the version number use `yarn run version <type>` and specify what ty
 
 ## CompactCard
 
-![CompactCard Example](https://github.com/equinor/amplify-components/blob/main/repo/CompactCard.PNG)
+![CompactCard Example](https://github.com/equinor/amplify-components/blob/main/static/CompactCard.PNG)
 
 ## ConfirmationPopup
 
-![ConfirmationPopup Example](https://github.com/equinor/amplify-components/blob/main/repo/ConfirmationPopup.PNG)
+![ConfirmationPopup Example](https://github.com/equinor/amplify-components/blob/main/static/ConfirmationPopup.PNG)
 
 ## CreateImageFromInitials
 
-![CreateImageFromInitials Example](https://github.com/equinor/amplify-components/blob/main/repo/CreateImageFromInitials.PNG)
+![CreateImageFromInitials Example](https://github.com/equinor/amplify-components/blob/main/static/CreateImageFromInitials.PNG)
 
 ## DataTypeCard
 
-![DataTypeCard Example](https://github.com/equinor/amplify-components/blob/main/repo/DataTypeCard.PNG)
+![DataTypeCard Example](https://github.com/equinor/amplify-components/blob/main/static/DataTypeCard.PNG)
 
 ## EditableField
 
-![EditableField Example](https://github.com/equinor/amplify-components/blob/main/repo/EditableField.PNG)
+![EditableField Example](https://github.com/equinor/amplify-components/blob/main/static/EditableField.PNG)
 
 ## EquinorLogo
 
-![EquinorLogo Example](https://github.com/equinor/amplify-components/blob/main/repo/EquinorLogo.PNG)
+![EquinorLogo Example](https://github.com/equinor/amplify-components/blob/main/static/EquinorLogo.PNG)
 
 ## FileProgress
 
-![FileProgress Example](https://github.com/equinor/amplify-components/blob/main/repo/FileProgress.PNG)
+![FileProgress Example](https://github.com/equinor/amplify-components/blob/main/static/FileProgress.PNG)
 
 ## FileUploadArea
 
-![FileUploadArea Example](https://github.com/equinor/amplify-components/blob/main/repo/FileUploadArea.PNG)
+![FileUploadArea Example](https://github.com/equinor/amplify-components/blob/main/static/FileUploadArea.PNG)
 
 ## FilterMenu
 
-![FilterMenu Example](https://github.com/equinor/amplify-components/blob/main/repo/FilterMenu.PNG)
+![FilterMenu Example](https://github.com/equinor/amplify-components/blob/main/static/FilterMenu.PNG)
 
 ## FullPageSpinner
 
-![FullPageSpinner Example](https://github.com/equinor/amplify-components/blob/main/repo/FullPageSpinner.PNG)
+![FullPageSpinner Example](https://github.com/equinor/amplify-components/blob/main/static/FullPageSpinner.PNG)
 
 ## FullPageStatus
 
-![FullPageStatus Example](https://github.com/equinor/amplify-components/blob/main/repo/FullPageStatus.PNG)
+![FullPageStatus Example](https://github.com/equinor/amplify-components/blob/main/static/FullPageStatus.PNG)
 
 ## IconToggleButton
 
@@ -60,11 +60,11 @@ Icon button that toggle icon.
 
 ## InfoElement
 
-![InfoElement Example](https://github.com/equinor/amplify-components/blob/main/repo/InfoElement.PNG)
+![InfoElement Example](https://github.com/equinor/amplify-components/blob/main/static/InfoElement.PNG)
 
 ## MulticolorProgressCircle
 
-![MulticolorProgressCircle Example](https://github.com/equinor/amplify-components/blob/main/repo/MultiColorProgressCircle.PNG)
+![MulticolorProgressCircle Example](https://github.com/equinor/amplify-components/blob/main/static/MultiColorProgressCircle.PNG)
 
 ## OptionalTooltip
 
@@ -73,24 +73,24 @@ We use this on other components to help make them more modular. Feel free to use
 
 ## ProgressBar
 
-![ProgressBar Example](https://github.com/equinor/amplify-components/blob/main/repo/ProgressBar.PNG)
+![ProgressBar Example](https://github.com/equinor/amplify-components/blob/main/static/ProgressBar.PNG)
 
 ## SideBar
 
-![SideBar Example](https://github.com/equinor/amplify-components/blob/main/repo/SideBar.PNG)
+![SideBar Example](https://github.com/equinor/amplify-components/blob/main/static/SideBar.PNG)
 
 ## Table
 
-![Table Example](https://github.com/equinor/amplify-components/blob/main/repo/Table.PNG)
+![Table Example](https://github.com/equinor/amplify-components/blob/main/static/Table.PNG)
 
 ## TopBar
 
-![TopBar Example](https://github.com/equinor/amplify-components/blob/main/repo/TopBar.PNG)
+![TopBar Example](https://github.com/equinor/amplify-components/blob/main/static/TopBar.PNG)
 
 ## WorkflowStatusBar
 
-![WorkflowStatusBar Example](https://github.com/equinor/amplify-components/blob/main/repo/WorkflowStatusBar.PNG)
+![WorkflowStatusBar Example](https://github.com/equinor/amplify-components/blob/main/static/WorkflowStatusBar.PNG)
 
 ## WorkflowDescription
 
-![WorkflowDescription Example](https://github.com/equinor/amplify-components/blob/main/repo/WorkflowDescription.PNG)
+![WorkflowDescription Example](https://github.com/equinor/amplify-components/blob/main/static/WorkflowDescription.PNG)
