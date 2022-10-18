@@ -139,7 +139,6 @@ const acquireToken = async (
       //Acquire token silent failure, and send an interactive request
       .catch((error) => {
         console.log(`Token acquire error: ${JSON.stringify(error)}`);
-        localStorage.clear();
         return error;
       })
   );

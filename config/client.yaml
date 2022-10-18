@@ -1,0 +1,124 @@
+name: Client actions
+
+on:
+  pull_request:
+    branches: [main, master, develop, development, staging]
+    paths:
+      - "client/**"
+      - ".github/workflows/client.yaml"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - name: Install dependencies
+        working-directory: client
+        run: yarn
+
+      - name: Linting
+        working-directory: client
+        run: yarn run lint
+
+
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - name: Install dependencies
+        working-directory: client
+        run: yarn
+
+      - name: Unit tests
+        working-directory: client
+        run: yarn run test:ci --passWithNoTests
+
+
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - name: Install dependencies
+        working-directory: client
+        run: yarn
+
+      - name: Build
+        working-directory: client
+        run: yarn run build
+
+
+  build-docker:
+    name: Build client docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the docker image
+        working-directory: client
+        run: docker build . --file Dockerfile
+
+
+  check_configs:
+    name: Compare local to remote config files
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create temporary /remote/ folder
+        working-director: client
+        run: mkdir remote
+
+      - name: Download remote config files
+        working-directory: client
+        run: wget -P ./remote/ -i https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_list.txt
+
+      - name: Compare remote .eslintrc.js to local
+        working-directory: client
+        run: cmp .eslintrc.js ./remote/.eslintrc.js
+
+      - name: Compare remote .prettierrc.js to local
+        working-directory: client
+        run: cmp .prettierrc.js ./remote/.prettierrc.js
+
+      - name: Compare remote .prettierignore to local
+        working-directory: client
+        run: cmp .prettierignore ./remote/.prettierignore
+
+      - name: Compare remote tsconfig.json to local
+        working-directory: client
+        run: cmp tsconfig.json ./remote/tsconfig.json
