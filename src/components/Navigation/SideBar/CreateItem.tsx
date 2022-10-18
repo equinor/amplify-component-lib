@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import {
   Button,
@@ -9,6 +9,8 @@ import {
 } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
+import { useSideBar } from '../../../providers/SideBarProvider';
 
 import styled from 'styled-components';
 
@@ -50,7 +52,7 @@ const CreateNewButton = styled(Button)<CustomButtonProps>`
   &:disabled:hover,
   &:disabled {
     background: ${colors.interactive.disabled__border.hex};
-    border: 0px solid transparent;
+    border: 0 solid transparent;
   }
 `;
 
@@ -72,16 +74,15 @@ const Tooltip = styled(EDSTooltip)`
 interface CreateItemProps {
   createLabel: string;
   onCreate: () => void;
-  isOpen: boolean;
   disabled?: boolean;
 }
 
-const CreateItem: React.FC<CreateItemProps> = ({
+const CreateItem: FC<CreateItemProps> = ({
   createLabel,
   onCreate,
-  isOpen,
   disabled = false,
 }) => {
+  const { isOpen } = useSideBar();
   if (isOpen) {
     return (
       <MenuButtonContainer open={isOpen}>

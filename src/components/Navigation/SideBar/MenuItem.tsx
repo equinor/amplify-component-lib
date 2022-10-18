@@ -8,7 +8,7 @@ import {
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { useSideBar } from './SideBar';
+import { useSideBar } from '../../../providers/SideBarProvider';
 
 import styled from 'styled-components';
 

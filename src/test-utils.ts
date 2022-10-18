@@ -15,3 +15,32 @@ export { customRender as render, userEvent };
 
 // Add ResizeObserver
 global.ResizeObserver = require('resize-observer-polyfill');
+
+// Mock localStorage
+const localStorageMock = (function () {
+  let store: any = {};
+
+  return {
+    getItem(key: string) {
+      return store[key];
+    },
+
+    setItem(key: string, value: string) {
+      store[key] = value;
+    },
+
+    clear() {
+      store = {};
+    },
+
+    removeItem(key: string) {
+      delete store[key];
+    },
+
+    getAll() {
+      return store;
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });

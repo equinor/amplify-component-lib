@@ -1,7 +1,8 @@
-import React, { forwardRef, ReactNode, useContext, useState } from 'react';
+import { forwardRef, ReactNode } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
+import { useSideBar } from '../../../providers/SideBarProvider';
 import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
 import ToggleOpen from './ToggleOpen';
@@ -9,9 +10,9 @@ import ToggleOpen from './ToggleOpen';
 import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
+
 interface ContainerProps {
   width: string;
-  maxHeight?: string;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -23,7 +24,9 @@ const Container = styled.div<ContainerProps>`
   overflow: hidden;
   width: ${(props) => props.width};
   min-width: ${(props) => props.width};
-  ${(props) => props.maxHeight && `max-height: ${props.maxHeight}`};
+  height: calc(100vh - 64px - 24px);
+  position: sticky;
+  top: 64px;
 `;
 
 const LogoContainer = styled.div`
@@ -39,77 +42,42 @@ const TopContainer = styled.div`
   align-items: center;
 `;
 
-interface SideBarContextType {
-  isOpen: boolean;
-}
-
-export function useSideBar() {
-  const context = useContext(SideBarContext);
-  if (context === undefined) {
-    throw new Error('Sidebar hook must be used within Provider');
-  }
-  return context;
-}
-
-export const SideBarContext = React.createContext<
-  SideBarContextType | undefined
->(undefined);
-
 type SidebarType = {
   onCreate?: () => void;
   createLabel?: string;
   createDisabled?: boolean;
-  open?: boolean;
-  maxHeight?: string;
-  onToggle?: (state: boolean) => void;
   children: ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
-  (
-    {
-      onCreate,
-      createLabel,
-      createDisabled = false,
-      onToggle,
-      open = false,
-      maxHeight,
-      children,
-    },
-    ref
-  ) => {
-    const [isOpen, setIsOpen] = useState<boolean>(open);
+  ({ onCreate, createLabel, createDisabled = false, children }, ref) => {
+    const { isOpen, setIsOpen } = useSideBar();
 
     const handleToggle = () => {
-      setIsOpen((o) => !o);
-      onToggle?.(!isOpen);
+      setIsOpen(!isOpen);
     };
 
     return (
-      <SideBarContext.Provider value={{ isOpen }}>
-        <Container
-          width={isOpen ? '256px' : '72px'}
-          ref={ref}
-          maxHeight={maxHeight}
-          data-testid="sidebar"
-        >
-          <TopContainer>
-            {onCreate && createLabel && (
-              <CreateItem
-                isOpen={isOpen}
-                createLabel={createLabel}
-                onCreate={onCreate}
-                disabled={createDisabled}
-              />
-            )}
-            {children}
-          </TopContainer>
-          <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
-          <LogoContainer>
-            <EquinorLogo />
-          </LogoContainer>
-        </Container>
-      </SideBarContext.Provider>
+      <Container
+        width={isOpen ? '256px' : '72px'}
+        ref={ref}
+        data-testid="sidebar"
+      >
+        <TopContainer>
+          {onCreate && createLabel && (
+            <CreateItem
+              createLabel={createLabel}
+              onCreate={onCreate}
+              disabled={createDisabled}
+            />
+          )}
+          {children}
+        </TopContainer>
+        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
+        <LogoContainer>
+          <EquinorLogo />
+        </LogoContainer>
+      </Container>
     );
   }
 );
