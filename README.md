@@ -8,6 +8,14 @@ Build is done automatically when code is merged into the `development` branch.
 Publish is done automatically when code is merged into `main` branch, if the package.json version number is higher.
 To increase the version number use `yarn run version <type>` and specify what type of [versioning](https://github.com/theogravity/version-bump#quick-start-usage).
 
+# Fetching remote config files (in clients using this package), using Bash
+
+Run `wget -O - https://raw.githubusercontent.com/equinor/amplify-components/main/config/install.sh | bash`
+
+
+This should have downloaded the `.eslintrc.js`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json` and `client.yaml` files
+
+
 # Documentation
 
 ## CompactCard
