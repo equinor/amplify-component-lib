@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { home, star_half } from '@equinor/eds-icons';
+import { add, home, star_half } from '@equinor/eds-icons';
 
+import SideBarProvider from '../../../providers/SideBarProvider';
 import { render, screen, userEvent } from '../../../test-utils';
 import { MenuItemType } from './MenuItem';
 import SideBar from '.';
@@ -23,108 +24,64 @@ const defaultMenuItems: MenuItemType[] = [
 
 test('Renders create new button when onCreate prop is given', () => {
   render(
-    <SideBar
-      onCreate={() => console.log('test')}
-      createLabel="createlabel"
-      open={true}
-    >
+    <SideBar onCreate={() => console.log('test')} createLabel="createlabel">
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>
+    </SideBar>,
+    {
+      wrapper: SideBarProvider,
+    }
   );
-  expect(screen.getByText('createlabel')).toBeInTheDocument();
+  const createIcon = screen.getAllByTestId('eds-icon-path')[0];
+  expect(createIcon).toHaveAttribute('d', add.svgPathData);
 });
 
-test('Renders closed width when closed', () => {
+test('Renders closed on initial render', () => {
   render(
-    <SideBar open={false}>
+    <SideBar>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>
+    </SideBar>,
+    {
+      wrapper: SideBarProvider,
+    }
   );
 
   expect(screen.getByTestId('sidebar').getAttribute('width')).toBe('72px');
 });
 
-test('Renders open width when open', () => {
+test('Renders open width when localStorage has it set to open', () => {
+  window.localStorage.setItem(
+    'amplify-sidebar-state',
+    JSON.stringify({ isOpen: true })
+  );
   render(
-    <SideBar open={true}>
+    <SideBar>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>
+    </SideBar>,
+    {
+      wrapper: SideBarProvider,
+    }
   );
 
   expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '256px' });
 });
 
-test('Triggers onToggle callback when closed', async () => {
-  const cb = jest.fn();
-  render(
-    <SideBar open={true} onToggle={cb}>
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item key={m.name} {...m} />
-      ))}
-    </SideBar>
-  );
-  const user = userEvent.setup();
-
-  const collapse = screen.getByRole('button', { name: /collapse/i });
-  await user.click(collapse);
-
-  expect(cb).toHaveBeenCalled();
-});
-
-test('Triggers onToggle callback when opened', async () => {
-  const cb = jest.fn();
-  render(
-    <SideBar open={false} onToggle={cb}>
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item key={m.name} {...m} />
-      ))}
-    </SideBar>
-  );
-  const user = userEvent.setup();
-
-  const expand = screen.getByRole('button');
-  await user.click(expand);
-
-  expect(cb).toHaveBeenCalled();
-});
-
-test('onToggle send correct state back', async () => {
-  const toggle = jest.fn();
-  render(
-    <SideBar open={false} onToggle={toggle}>
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item key={m.name} {...m} />
-      ))}
-    </SideBar>
-  );
-  const user = userEvent.setup();
-
-  const expand = screen.getByRole('button');
-  await user.click(expand);
-
-  expect(toggle).toHaveBeenCalled();
-  expect(toggle).toHaveBeenCalledWith(true); // Since we send in false to start with
-});
-
 test('Disabled create new button doesnt fire event', async () => {
   const createNewFn = jest.fn();
   render(
-    <SideBar
-      open
-      createLabel="Create new"
-      onCreate={createNewFn}
-      createDisabled
-    >
+    <SideBar createLabel="Create new" onCreate={createNewFn} createDisabled>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>
+    </SideBar>,
+    {
+      wrapper: SideBarProvider,
+    }
   );
 
   const user = userEvent.setup();
@@ -137,16 +94,19 @@ test('Disabled create new button doesnt fire event', async () => {
 
 test('Disabled menu item doesnt fire event', async () => {
   render(
-    <SideBar open>
+    <SideBar>
       {defaultMenuItems.map((m, index) => (
         <SideBar.Item key={m.name} {...m} disabled={index === 0} />
       ))}
-    </SideBar>
+    </SideBar>,
+    {
+      wrapper: SideBarProvider,
+    }
   );
 
   const user = userEvent.setup();
 
-  const firstMenuItem = screen.getByText(defaultMenuItems[0].name);
+  const firstMenuItem = screen.getAllByTestId('sidebar-menu-item')[0];
   await user.click(firstMenuItem);
 
   expect(defaultMenuItems[0].onClick).not.toHaveBeenCalled();
