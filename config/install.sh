@@ -11,9 +11,16 @@ then
 fi
 
 printf "Downloading config files...\n\n"
-wget -i https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_list.txt
+
+configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_list.txt")
+
+for line in $configList
+do
+  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
+  curl $line > $fileName
+done
 
 cd ..
 
 printf "Downloading client github action...\n\n"
-wget -P ./github/workflows https://raw.githubusercontent.com/equinor/amplify-components/main/config/client.yaml
+curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/client.yaml > .github/workflows/client.yaml
