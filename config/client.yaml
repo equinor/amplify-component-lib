@@ -99,26 +99,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Create temporary /remote/ folder
-        working-director: client
-        run: mkdir remote
-
-      - name: Download remote config files
-        working-directory: client
-        run: wget -P ./remote/ -i https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_list.txt
-
       - name: Compare remote .eslintrc.js to local
         working-directory: client
-        run: cmp .eslintrc.js ./remote/.eslintrc.js
+        run: diff .eslintrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.eslintrc.js)
 
       - name: Compare remote .prettierrc.js to local
         working-directory: client
-        run: cmp .prettierrc.js ./remote/.prettierrc.js
+        run: diff .prettierrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierrc.js)
 
       - name: Compare remote .prettierignore to local
         working-directory: client
-        run: cmp .prettierignore ./remote/.prettierignore
+        run: diff .prettierignore <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierignore)
 
       - name: Compare remote tsconfig.json to local
         working-directory: client
-        run: cmp tsconfig.json ./remote/tsconfig.json
+        run: diff tsconfig <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json)

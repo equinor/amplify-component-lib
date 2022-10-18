@@ -2,4 +2,3 @@ https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierignore
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierrc.js
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json
-
