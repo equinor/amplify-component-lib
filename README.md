@@ -10,7 +10,7 @@ To increase the version number use `yarn run version <type>` and specify what ty
 
 # Fetching remote config files (in clients using this package), using Bash
 
-Run `wget -O - https://raw.githubusercontent.com/equinor/amplify-components/main/config/install.sh | bash`
+Run `wget -q -O - https://raw.githubusercontent.com/equinor/amplify-components/main/config/install.sh | bash`
 
 
 This should have downloaded the `.eslintrc.js`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json` and `client.yaml` files
