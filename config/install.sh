@@ -1,16 +1,16 @@
 #!/bin/bash
 
-printf "Running frontend configuration script\n\n"
+printf -- "Running frontend configuration script"
 
 currentDir=$(basename "$PWD")
 
 if [ $currentDir != "client" ]
 then
-  printf "Not in ./client folder, moving to it..."
+  printf -- "Not in ./client folder, moving to it..."
   cd ./client || exit 1
 fi
 
-printf "Downloading config files...\n\n"
+printf -- "Downloading config files..."
 
 configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_list.txt")
 
@@ -22,5 +22,5 @@ done
 
 cd ..
 
-printf "Downloading client github action...\n\n"
+printf -- "Downloading client github action..."
 curl "https://raw.githubusercontent.com/equinor/amplify-components/main/config/client.yaml" > .github/workflows/client.yaml
