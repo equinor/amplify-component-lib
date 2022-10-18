@@ -23,4 +23,4 @@ done
 cd ..
 
 printf "Downloading client github action...\n\n"
-curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/client.yaml > .github/workflows/client.yaml
+curl "https://raw.githubusercontent.com/equinor/amplify-components/main/config/client.yaml" > .github/workflows/client.yaml
