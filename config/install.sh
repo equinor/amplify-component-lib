@@ -1,6 +1,7 @@
 #!/bin/bash
 
-printf -- "Running frontend configuration script\n\n"
+printf -- "Running frontend configuration script"
+printf -- "-------------------------------------\n\n"
 
 currentDir=$(basename "$PWD")
 
@@ -17,10 +18,16 @@ configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-componen
 for line in $configList
 do
   fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
-  curl $line > $fileName
+  curl -s $line > $fileName
 done
 
-cd ..
+printf -- "Downloading nginx.conf proxy config...\n"
+
+cd ./proxy || (mkdir proxy && cd ./proxy || return)
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf" > nginx.conf
+
+cd ../..
 
 printf -- "Downloading client github action...\n"
-curl "https://raw.githubusercontent.com/equinor/amplify-components/main/config/client.yaml" > .github/workflows/client.yaml
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/client.yaml" > .github/workflows/client.yaml
