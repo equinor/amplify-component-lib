@@ -5,7 +5,7 @@ import { Button, Dialog as EDSDialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
-import { IStep, Steps } from './Tutorial';
+import { IStep } from './Tutorial';
 
 import styled, { keyframes } from 'styled-components';
 const { colors, spacings } = tokens;
@@ -94,10 +94,10 @@ const TutorialSteps: FC<TutorialStepsProps> = ({ show, onClose, steps }) => {
   const handleNext = () => {
     if (stepNumber < steps.length - 1) {
       setStepNumber(stepNumber + 1);
-      setTutorialStep(steps[stepNumber + 1].name);
+      setTutorialStep(steps[stepNumber + 1].key);
     } else {
       onClose();
-      setTutorialStep(Steps.NOTSTARTED);
+      setTutorialStep('');
       setStepNumber(0);
     }
   };

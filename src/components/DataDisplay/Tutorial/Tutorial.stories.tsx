@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { Meta, Story } from '@storybook/react';
 
 import { TutorialStepsProvider } from '../../../providers';
-import Tutorial, { IStep, Steps, TutorialProps } from './Tutorial';
+import Tutorial, { IStep, TutorialProps } from './Tutorial';
 import TutorialComponent from './TutorialComponent';
 
 export default {
@@ -12,7 +12,7 @@ export default {
 
 const steps: IStep[] = [
   {
-    name: Steps.STEPONE,
+    key: 'step-one',
     title: 'Field',
     body: (
       <Typography group="table" variant="cell_text">
@@ -22,7 +22,7 @@ const steps: IStep[] = [
     button: 'Next',
   },
   {
-    name: Steps.STEPTWO,
+    key: 'step-two',
     title: 'Select wellbore',
     body: (
       <Typography group="table" variant="cell_text">
@@ -32,7 +32,7 @@ const steps: IStep[] = [
     button: 'Next',
   },
   {
-    name: Steps.LASTSTEP,
+    key: 'last-step',
     title: 'Save',
     body: (
       <Typography group="table" variant="cell_text">
@@ -55,6 +55,6 @@ export const Primary = Template.bind({});
 
 Primary.args = {
   steps: steps,
-  starterTitle: 'Get started!',
-  starterContent: "Let's start a tutorial for this form.",
+  tutorialTitle: 'Get started!',
+  tutorialIntro: "Let's start a tutorial for this form.",
 };

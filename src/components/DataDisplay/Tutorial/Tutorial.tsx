@@ -4,15 +4,8 @@ import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
 import TutorialStart from './TutorialStart';
 import TutorialSteps from './TutorialSteps';
 
-export enum Steps {
-  NOTSTARTED = 'not-started',
-  STEPONE = 'step-one',
-  STEPTWO = 'step-two',
-  LASTSTEP = 'last-step',
-}
-
 export interface IStep {
-  name: Steps;
+  key: string;
   title: string;
   body: ReactElement;
   button: string;
@@ -20,22 +13,20 @@ export interface IStep {
 
 export type TutorialProps = {
   steps: IStep[];
-  starterTitle: string;
+  tutorialTitle: string;
   imageSource?: string;
-  starterContent: string;
-  handleStartTour?: () => void;
-  handleDone?: () => void;
-  handleDeny?: () => void;
+  tutorialIntro: string;
 };
 
 const Tutorial = forwardRef<HTMLDivElement, TutorialProps>(
-  ({ steps, starterTitle, starterContent, imageSource }, ref) => {
-    const { showTutorialStarter, setTutorialStep, setShowTutorialStarter } =
+  ({ steps, tutorialTitle, tutorialIntro, imageSource }, ref) => {
+    const { showTutorialIntro, setTutorialStep, setShowTutorialIntro } =
       useTutorialSteps();
     const [showTour, setShowTour] = useState(false);
-    const handleStartTour = () => {
-      setTutorialStep(Steps.STEPONE);
-      setShowTutorialStarter(false);
+
+    const handleStartIntro = () => {
+      setTutorialStep(steps[0].key);
+      setShowTutorialIntro(false);
       setShowTour(true);
     };
 
@@ -44,18 +35,18 @@ const Tutorial = forwardRef<HTMLDivElement, TutorialProps>(
     };
 
     const handleDeny = () => {
-      setTutorialStep(Steps.NOTSTARTED);
-      setShowTutorialStarter(false);
+      setTutorialStep('');
+      setShowTutorialIntro(false);
     };
 
     return (
       <div ref={ref}>
         <TutorialStart
-          show={showTutorialStarter}
-          acceptTour={handleStartTour}
+          show={showTutorialIntro}
+          acceptTour={handleStartIntro}
           denyTour={handleDeny}
-          title={starterTitle}
-          content={starterContent}
+          title={tutorialTitle}
+          content={tutorialIntro}
           imageSource={imageSource}
         />
         <TutorialSteps steps={steps} show={showTour} onClose={handleDone} />

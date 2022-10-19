@@ -7,20 +7,18 @@ import React, {
   useState,
 } from 'react';
 
-import { Steps } from '../components/DataDisplay/Tutorial/Tutorial';
-
 const localStorageKey = 'tutorialstepscontext';
 
 type TutorialContextState = {
-  tutorialStep: Steps;
-  setTutorialStep: (val: Steps) => void;
-  showTutorialStarter: boolean;
-  setShowTutorialStarter: (val: boolean) => void;
+  tutorialStep: string;
+  setTutorialStep: (val: string) => void;
+  showTutorialIntro: boolean;
+  setShowTutorialIntro: (val: boolean) => void;
 };
 
 interface TutorialState {
-  step: Steps;
-  showTutorialStarter: boolean;
+  step: string;
+  showTutorialIntro: boolean;
 }
 
 const getDefaultState = (): TutorialState => {
@@ -29,7 +27,7 @@ const getDefaultState = (): TutorialState => {
   if (localStorageData) {
     return JSON.parse(localStorageData);
   }
-  return { step: Steps.NOTSTARTED, showTutorialStarter: false };
+  return { step: '', showTutorialIntro: false };
 };
 
 const updateLocalStorage = (state: TutorialState) => {
@@ -51,27 +49,27 @@ export const useTutorialSteps = (): TutorialContextState => {
 };
 
 const TutorialStepsProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [tutorialStep, setTutorialStep] = useState<Steps>(
+  const [tutorialStep, setTutorialStep] = useState<string>(
     getDefaultState().step
   );
-  const [showTutorialStarter, setShowTutorialStarter] = useState<boolean>(
-    getDefaultState().showTutorialStarter
+  const [showTutorialIntro, setShowTutorialIntro] = useState<boolean>(
+    getDefaultState().showTutorialIntro
   );
 
   useEffect(() => {
     updateLocalStorage({
       step: tutorialStep,
-      showTutorialStarter: showTutorialStarter,
+      showTutorialIntro: showTutorialIntro,
     });
-  }, [showTutorialStarter, tutorialStep]);
+  }, [showTutorialIntro, tutorialStep]);
 
   return (
     <TutorialStepsContext.Provider
       value={{
         tutorialStep,
         setTutorialStep,
-        showTutorialStarter,
-        setShowTutorialStarter,
+        showTutorialIntro,
+        setShowTutorialIntro,
       }}
     >
       {children}

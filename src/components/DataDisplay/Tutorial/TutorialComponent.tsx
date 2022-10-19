@@ -5,7 +5,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
 import HighlightBlocks from './HighlightBlocks/HighlightBlocks';
-import Tutorial, { Steps, TutorialProps } from './Tutorial';
+import Tutorial, { TutorialProps } from './Tutorial';
 
 import styled from 'styled-components';
 
@@ -37,12 +37,12 @@ const CircleHighlight = styled(HighlightBlocks)`
 `;
 
 const TutorialComponent: FC<TutorialProps> = (props) => {
-  const { tutorialStep, setShowTutorialStarter } = useTutorialSteps();
+  const { tutorialStep, setShowTutorialIntro } = useTutorialSteps();
 
   return (
     <div>
       <Container>
-        <HighlightBlocks active={tutorialStep === Steps.STEPONE}>
+        <HighlightBlocks active={tutorialStep === 'step-one'}>
           <ContentContainer>
             <div style={{ width: '300px' }}>
               <TextField
@@ -55,7 +55,7 @@ const TutorialComponent: FC<TutorialProps> = (props) => {
           </ContentContainer>
         </HighlightBlocks>
 
-        <HighlightBlocks active={tutorialStep === Steps.STEPTWO}>
+        <HighlightBlocks active={tutorialStep === 'step-two'}>
           <ContentContainer>
             <div style={{ width: '300px' }}>
               {['wellbore 1', 'wellbore 2'].map((item, index) => (
@@ -64,14 +64,12 @@ const TutorialComponent: FC<TutorialProps> = (props) => {
             </div>
           </ContentContainer>
         </HighlightBlocks>
-        <CircleHighlight active={tutorialStep === Steps.LASTSTEP}>
+        <CircleHighlight active={tutorialStep === 'last-step'}>
           <Button variant="ghost_icon">Save</Button>
         </CircleHighlight>
       </Container>
       <Tutorial {...props} />
-      <Button onClick={() => setShowTutorialStarter(true)}>
-        Start Tutorial
-      </Button>
+      <Button onClick={() => setShowTutorialIntro(true)}>Start Tutorial</Button>
     </div>
   );
 };
