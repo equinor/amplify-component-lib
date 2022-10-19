@@ -5,6 +5,8 @@ export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
 export { default as Table } from './DataDisplay/Table/Table';
+export { default as HighlightBlocks } from './DataDisplay/Tutorial/HighlightBlocks/HighlightBlocks';
+export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
 export { default as StatusChip } from './DataDisplay/Workflow/StatusChip';
 export { default as WorkflowDescription } from './DataDisplay/Workflow/WorkflowDescription';
 export { default as WorkflowStatusBar } from './DataDisplay/Workflow/WorkflowStatusBar';
