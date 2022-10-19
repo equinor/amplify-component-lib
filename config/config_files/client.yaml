@@ -114,3 +114,19 @@ jobs:
       - name: Compare remote tsconfig.json to local
         working-directory: client
         run: diff tsconfig.json <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json)
+
+      - name: Compare remote .yarnrc.yaml to local
+        working-directory: client
+        run: diff .yarnrc.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.yarnrc.yaml)
+
+      - name: Compare remote Dockerfile to local
+        working-directory: client
+        run: diff Dockerfile <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/Dockerfile)
+
+      - name: Compare remote env.sh to local
+        working-directory: client
+        run: diff env.sh <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/env.sh)
+
+      - name: Compare remote proxy/nginx.conf to local
+        working-directory: client/proxy
+        run: diff nginx.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf)
