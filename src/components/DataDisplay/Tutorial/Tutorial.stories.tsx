@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 
 import { TutorialStepsProvider } from '../../../providers';
 import Tutorial, { IStep, TutorialProps } from './Tutorial';
-import TutorialComponent from './TutorialComponent';
+import TutorialStoryComponent from './TutorialStoryComponent';
 
 export default {
   title: 'DataDisplay/Tutorial',
@@ -46,7 +46,7 @@ const steps: IStep[] = [
 const Template: Story<TutorialProps> = (args) => {
   return (
     <TutorialStepsProvider>
-      <TutorialComponent {...args} />
+      <TutorialStoryComponent {...args} />
     </TutorialStepsProvider>
   );
 };

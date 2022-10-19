@@ -36,7 +36,7 @@ const CircleHighlight = styled(HighlightBlocks)`
   height: 50px;
 `;
 
-const TutorialComponent: FC<TutorialProps> = (props) => {
+const TutorialStoryComponent: FC<TutorialProps> = (props) => {
   const { tutorialStep, setShowTutorialIntro } = useTutorialSteps();
 
   return (
@@ -74,4 +74,4 @@ const TutorialComponent: FC<TutorialProps> = (props) => {
   );
 };
 
-export default TutorialComponent;
+export default TutorialStoryComponent;

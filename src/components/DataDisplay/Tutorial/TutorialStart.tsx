@@ -74,16 +74,21 @@ type StarterProps = {
   denyTour: () => void;
 };
 
-const TutorialStart: FC<StarterProps> = ({ title, imageSource, content, show, acceptTour, denyTour }) => {
+const TutorialStart: FC<StarterProps> = ({
+  title,
+  imageSource,
+  content,
+  show,
+  acceptTour,
+  denyTour,
+}) => {
   return (
     <Dialog open={show}>
       <Container>
         <Title>
           <Typography variant="h5">{title}</Typography>
         </Title>
-        <Content variant="h5" >
-          {content}
-        </Content>
+        <Content variant="h5">{content}</Content>
         {imageSource && <Image src={imageSource} />}
         <Actions>
           {' '}
