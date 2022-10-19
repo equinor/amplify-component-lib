@@ -16,7 +16,7 @@ wget -q -O - https://raw.githubusercontent.com/equinor/amplify-components/main/c
 ```
 
 
-This should have downloaded the `.eslintrc.js`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json` and `client.yaml` files
+This should have downloaded the `.eslintrc.js`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json`, `.yarnrc.yml`, `env.sh`, `proxy/nginx.conf` and `client.yaml` files
 
 
 # Documentation

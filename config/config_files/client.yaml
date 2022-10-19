@@ -115,9 +115,9 @@ jobs:
         working-directory: client
         run: diff tsconfig.json <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json)
 
-      - name: Compare remote .yarnrc.yaml to local
+      - name: Compare remote .yarnrc.yml to local
         working-directory: client
-        run: diff .yarnrc.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.yarnrc.yaml)
+        run: diff .yarnrc.yml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.yarnrc.yml)
 
       - name: Compare remote Dockerfile to local
         working-directory: client
