@@ -17,7 +17,7 @@ function fakeFields(): Field[] {
   return fields;
 }
 
-jest.setTimeout(9000);
+jest.setTimeout(10000);
 
 test('selecting field works as expected', async () => {
   let field: Field | undefined = undefined;
