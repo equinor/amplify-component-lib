@@ -3,7 +3,6 @@ import coordinate from './coordinate';
 import date from './date';
 import exportComponent from './export';
 import favicon from './favicon';
-import image from './image';
 import * as map from './map';
 import size from './size';
 import sort from './sort';
@@ -17,7 +16,6 @@ export {
   environment,
   exportComponent,
   favicon,
-  image,
   map,
   size,
   sort,

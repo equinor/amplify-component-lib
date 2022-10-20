@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { ISvgIconProps } from '.';
+import { SvgIconProps } from '.';
 
-const Fallback: FC<ISvgIconProps> = ({ size }) => (
+const Fallback: FC<SvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}

@@ -11,7 +11,7 @@ import SingleSelectDrawerWithValidation, {
 import { SelectItem } from '.';
 
 export default {
-  title: 'Input/Select/SingleSelectDrawerWithValidation',
+  title: 'Inputs/Select/SingleSelectDrawerWithValidation',
   component: SingleSelectDrawerWithValidation,
 } as Meta;
 

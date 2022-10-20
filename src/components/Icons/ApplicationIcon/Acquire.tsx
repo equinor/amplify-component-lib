@@ -1,8 +1,8 @@
-import React from 'react';
+import { FC } from 'react';
 
-import { ISvgIconProps } from '.';
+import { SvgIconProps } from '../index';
 
-const Dasha: React.FC<ISvgIconProps> = ({ size }) => (
+const Acquire: FC<SvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -11,50 +11,58 @@ const Dasha: React.FC<ISvgIconProps> = ({ size }) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <mask
-      id="data-sharing-mask0"
+      id="data-acquisition-mask0"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"
       width="48"
       height="48"
     >
-      <rect width="48" height="48" rx="8" fill="#C4C4C4" />
+      <rect
+        x="48"
+        y="48"
+        width="48"
+        height="48"
+        rx="8"
+        transform="rotate(-180 48 48)"
+        fill="#C4C4C4"
+      />
     </mask>
-    <g mask="url(#data-sharing-mask0)">
+    <g mask="url(#data-acquisition-mask0)">
       <path
-        d="M-2.18548 30.3775C-25.2796 70.3777 17.5797 58.943 41.8961 48.2257C72.442 36.5575 65.4976 21.3931 57.8138 14.8503C57.4819 14.5677 57.1719 14.277 56.8739 13.9587C46.37 2.7378 20.5859 -9.06359 -2.18548 30.3775Z"
+        d="M58.3882 22.4755C80.0489 -22.8744 37.1875 -11.4475 13.0492 -0.0653701C-17.4634 12.1999 -9.62457 30.1465 -1.54353 38.0046C-1.25484 38.2853 -0.988633 38.5709 -0.733288 38.8823C10.3131 52.3518 36.9741 67.3091 58.3882 22.4755Z"
         fill="#004F55"
       />
-      <g filter="url(#data-sharing-filter0_dd)">
+      <g filter="url(#data-acquisition-filter0_dd)">
         <path
-          d="M41.5269 56.3417C68.8967 73.3878 64.9297 32.9273 58.0193 15.7114C50.6516 -5.6966 37.1864 8.24302 32.2181 13.9638C31.9322 14.2929 31.626 14.5935 31.3004 14.8834C23.268 22.0363 14.705 39.6368 41.5269 56.3417Z"
+          d="M5.23093 -11.5923C-23.8604 2.96082 16.395 18.9384 35.9889 21.4114C59.7331 25.4941 52.933 7.7762 49.8436 0.910734C49.6559 0.493722 49.5052 0.0670877 49.3737 -0.3709C46.3547 -10.4302 33.6955 -25.8319 5.23093 -11.5923Z"
           fill="#007079"
         />
       </g>
-      <g filter="url(#data-sharing-filter1_dd)">
+      <g filter="url(#data-acquisition-filter1_dd)">
         <path
-          d="M-19.9197 7.88152C-44.0705 31.8612 -12.6088 35.302 -2.0499 33.1231C-1.67304 33.0454 -1.31353 32.9837 -0.930958 32.9424C19.7675 30.7103 47.9148 12.7262 50.3026 0.762597C50.5841 -0.647805 50.0358 -2.07611 48.9597 -3.0303C39.0221 -11.8421 3.29925 -15.173 -19.9197 7.88152Z"
+          d="M46.676 54.3199C74.0253 37.2408 43.8618 30.2339 25.3613 28.8653C2.21685 25.9786 -7.81213 40.711 -2.10191 51.2683C3.29105 61.2391 19.3267 71.399 46.676 54.3199Z"
           fill="#007079"
         />
       </g>
       <path
-        d="M15 19.1667L24 14L33 19.1667M15 19.1667V29.8333L19 32L24 34.5M15 19.1667L19 21.5L24 24.5M24 34.5V24.5M24 34.5L29 32L33 29.8333V19.1667M33 19.1667L29 21.5L24 24.5"
+        d="M26.9412 18.0217L15 18.0217C14.4477 18.0217 14 18.4694 14 19.0217L14 30.9845C14 31.5368 14.4477 31.9845 15 31.9845L26.9412 31.9845C29.2941 31.9845 34 32.3724 34 29.2696M26.9412 18.0217L26.9412 15.045C26.9412 14.4754 27.4141 14.0246 27.9804 14.0852C29.9431 14.2955 34 14.986 34 17.1028C34 19.8951 34 25.5203 34 29.2696M26.9412 18.0217L26.9412 22.0942L26.9412 25.7546C26.9412 26.3453 27.4513 26.8124 28.0419 26.7978C30.0264 26.7489 34 26.9416 34 29.2696"
         stroke="#F5F5F5"
         strokeWidth="3"
       />
       <path
-        d="M33 29.3333L24 34.5L15 29.3333L15 18.6667L19 16.5L24 14L29 16.5L33 18.6667L33 29.3333Z"
+        d="M32.5 22.7925V18.1786C32.5 17.2172 31.8892 16.362 30.9797 16.0502C29.5193 15.5495 28 16.6347 28 18.1786V22.7925C28 23.9363 28.8581 24.8981 29.9945 25.0279C31.3297 25.1805 32.5 24.1363 32.5 22.7925Z"
         stroke="#F5F5F5"
-        strokeWidth="3"
+        strokeWidth="5"
       />
     </g>
     <defs>
       <filter
-        id="data-sharing-filter0_dd"
-        x="14"
-        y="0"
-        width="58.353"
-        height="72.8179"
+        id="data-acquisition-filter0_dd"
+        x="-12.1434"
+        y="-26.9844"
+        width="75.7525"
+        height="59.8771"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -101,11 +109,11 @@ const Dasha: React.FC<ISvgIconProps> = ({ size }) => (
         />
       </filter>
       <filter
-        id="data-sharing-filter1_dd"
-        x="-33.3372"
-        y="-14.4091"
-        width="88.1504"
-        height="58.0575"
+        id="data-acquisition-filter1_dd"
+        x="-11"
+        y="20"
+        width="74.3179"
+        height="58.4825"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -155,4 +163,4 @@ const Dasha: React.FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default Dasha;
+export default Acquire;

@@ -3,7 +3,7 @@ import { FC, ReactElement } from 'react';
 import { Button, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import FeedBackIcon from '../Icons/FeedBack';
+import FeedBackIcon from '../Icons/FeedBackIcon/FeedBackIcon';
 
 import styled from 'styled-components';
 
@@ -13,8 +13,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: auto;
-  margin-top: 20%;
+  margin: 20% auto auto;
 `;
 
 const NotFoundTitle = styled(Typography)`
