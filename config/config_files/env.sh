@@ -21,6 +21,4 @@ echo "  API_SCOPE: \"$value\"," >>./env-config.js
 echo "}" >>./env-config.js
 
 # Update nginx.conf with relevant environment variables
-envsubst '
-  ${API_URL}
-  ' </etc/nginx/conf.d/default.conf.template >/etc/nginx/conf.d/default.conf
+envsubst '${API_URL}' </etc/nginx/conf.d/default.conf.template >/etc/nginx/conf.d/default.conf
