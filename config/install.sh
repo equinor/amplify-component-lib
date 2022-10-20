@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf -- "Running frontend configuration script"
+printf -- "Running frontend configuration script\n"
 printf -- "-------------------------------------\n\n"
 
 currentDir=$(basename "$PWD")
