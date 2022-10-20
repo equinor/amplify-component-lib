@@ -1,14 +1,14 @@
 import { FC } from 'react';
 
+import Fallback from '../Fallback';
+import { SvgIconProps } from '../index';
 import Acquire from './Acquire';
 import Dasha from './Dasha';
-import Fallback from './Fallback';
 import FourDInsight from './FourDInsight';
 import Portal from './Portal';
 import Recap from './Recap';
-import { ISvgIconProps } from '.';
 
-interface IApplicationIconProps {
+export interface ApplicationIconProps {
   name:
     | 'acquire'
     | '4dinsight'
@@ -21,7 +21,7 @@ interface IApplicationIconProps {
 }
 interface IApplicationIconData {
   appName: string;
-  component: FC<ISvgIconProps>;
+  component: FC<SvgIconProps>;
 }
 const apps: IApplicationIconData[] = [
   { appName: 'default', component: Fallback },
@@ -32,7 +32,7 @@ const apps: IApplicationIconData[] = [
   { appName: 'recap', component: Recap },
 ];
 
-const ApplicationIcon: FC<IApplicationIconProps> = ({ name, size }) => {
+const ApplicationIcon: FC<ApplicationIconProps> = ({ name, size }) => {
   const Fallback = apps[0].component;
   if (name) {
     const appData = apps.find((app) => app.appName === name);

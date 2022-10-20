@@ -1,4 +1,4 @@
-const k = 1000; // using decimal to give a more realistic value from blobStorage
+const k = 1024; // using decimal to give a more realistic value from blobStorage
 
 const formatBytes = (bytes: number, decimals = 2): string => {
   if (bytes < 0) return '0 Bytes';

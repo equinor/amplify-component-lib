@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { ISvgIconProps } from '.';
+import { SvgIconProps } from '../index';
 
-const FourDInsight: FC<ISvgIconProps> = ({ size }) => (
+const FourDInsight: FC<SvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}

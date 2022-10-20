@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { ISvgIconProps } from '.';
+import { SvgIconProps } from '../index';
 
-const Acquire: FC<ISvgIconProps> = ({ size }) => (
+const Recap: FC<SvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -11,58 +11,46 @@ const Acquire: FC<ISvgIconProps> = ({ size }) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <mask
-      id="data-acquisition-mask0"
+      id="data-tracker-mask0"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"
       width="48"
       height="48"
     >
-      <rect
-        x="48"
-        y="48"
-        width="48"
-        height="48"
-        rx="8"
-        transform="rotate(-180 48 48)"
-        fill="#C4C4C4"
-      />
+      <rect width="48" height="48" rx="8" fill="#C4C4C4" />
     </mask>
-    <g mask="url(#data-acquisition-mask0)">
+    <g mask="url(#data-tracker-mask0)">
       <path
-        d="M58.3882 22.4755C80.0489 -22.8744 37.1875 -11.4475 13.0492 -0.0653701C-17.4634 12.1999 -9.62457 30.1465 -1.54353 38.0046C-1.25484 38.2853 -0.988633 38.5709 -0.733288 38.8823C10.3131 52.3518 36.9741 67.3091 58.3882 22.4755Z"
+        d="M-2.89611 25.1392C-25.9902 65.1395 16.8691 53.7048 41.1855 42.9874C71.7314 31.3192 64.7869 16.1548 57.1032 9.612C56.7713 9.32938 56.4612 9.03867 56.1633 8.72042C45.6594 -2.50048 19.8752 -14.3019 -2.89611 25.1392Z"
         fill="#004F55"
       />
-      <g filter="url(#data-acquisition-filter0_dd)">
+      <g filter="url(#data-tracker-filter0_dd)">
         <path
-          d="M5.23093 -11.5923C-23.8604 2.96082 16.395 18.9384 35.9889 21.4114C59.7331 25.4941 52.933 7.7762 49.8436 0.910734C49.6559 0.493722 49.5052 0.0670877 49.3737 -0.3709C46.3547 -10.4302 33.6955 -25.8319 5.23093 -11.5923Z"
+          d="M40.3192 56.9534C68.2434 40.8313 30.6795 25.2832 12.2375 23.2749C-10.1183 19.6966 -4.15923 38.1388 -1.45111 45.2153C-1.2953 45.6224 -1.17429 46.0341 -1.07178 46.4578C1.45738 56.9119 12.9541 72.7526 40.3192 56.9534Z"
           fill="#007079"
         />
       </g>
-      <g filter="url(#data-acquisition-filter1_dd)">
+      <g filter="url(#data-tracker-filter1_dd)">
         <path
-          d="M46.676 54.3199C74.0253 37.2408 43.8618 30.2339 25.3613 28.8653C2.21685 25.9786 -7.81213 40.711 -2.10191 51.2683C3.29105 61.2391 19.3267 71.399 46.676 54.3199Z"
+          d="M-5.14656 19.3673C-13.4919 50.5127 13.3426 35.0582 27.8031 23.4378C46.6949 9.75933 43.9772 -7.85427 32.5999 -11.6779C21.8546 -15.2891 3.19882 -11.7781 -5.14656 19.3673Z"
           fill="#007079"
         />
       </g>
       <path
-        d="M26.9412 18.0217L15 18.0217C14.4477 18.0217 14 18.4694 14 19.0217L14 30.9845C14 31.5368 14.4477 31.9845 15 31.9845L26.9412 31.9845C29.2941 31.9845 34 32.3724 34 29.2696M26.9412 18.0217L26.9412 15.045C26.9412 14.4754 27.4141 14.0246 27.9804 14.0852C29.9431 14.2955 34 14.986 34 17.1028C34 19.8951 34 25.5203 34 29.2696M26.9412 18.0217L26.9412 22.0942L26.9412 25.7546C26.9412 26.3453 27.4513 26.8124 28.0419 26.7978C30.0264 26.7489 34 26.9416 34 29.2696"
+        d="M16 24L21.3333 30L32 18"
         stroke="#F5F5F5"
-        strokeWidth="3"
-      />
-      <path
-        d="M32.5 22.7925V18.1786C32.5 17.2172 31.8892 16.362 30.9797 16.0502C29.5193 15.5495 28 16.6347 28 18.1786V22.7925C28 23.9363 28.8581 24.8981 29.9945 25.0279C31.3297 25.1805 32.5 24.1363 32.5 22.7925Z"
-        stroke="#F5F5F5"
-        strokeWidth="5"
+        strokeWidth="4"
+        strokeLinecap="round"
       />
     </g>
     <defs>
       <filter
-        id="data-acquisition-filter0_dd"
-        x="-12.1434"
-        y="-26.9844"
-        width="75.7525"
-        height="59.8771"
+        id="data-tracker-filter0_dd"
+        x="-15"
+        y="17"
+        width="72.6091"
+        height="60.8742"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -109,11 +97,11 @@ const Acquire: FC<ISvgIconProps> = ({ size }) => (
         />
       </filter>
       <filter
-        id="data-acquisition-filter1_dd"
-        x="-11"
-        y="20"
-        width="74.3179"
-        height="58.4825"
+        id="data-tracker-filter1_dd"
+        x="-10.7221"
+        y="-14.826"
+        width="56.288"
+        height="59.5365"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -163,4 +151,4 @@ const Acquire: FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default Acquire;
+export default Recap;

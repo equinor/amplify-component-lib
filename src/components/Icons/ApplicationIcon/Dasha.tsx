@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import React from 'react';
 
-import { ISvgIconProps } from '.';
+import { SvgIconProps } from '../index';
 
-const Portal: FC<ISvgIconProps> = ({ size }) => (
+const Dasha: React.FC<SvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
@@ -11,7 +11,7 @@ const Portal: FC<ISvgIconProps> = ({ size }) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <mask
-      id="portal-mask0"
+      id="data-sharing-mask0"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"
@@ -20,35 +20,41 @@ const Portal: FC<ISvgIconProps> = ({ size }) => (
     >
       <rect width="48" height="48" rx="8" fill="#C4C4C4" />
     </mask>
-    <g mask="url(#portal-mask0)">
+    <g mask="url(#data-sharing-mask0)">
       <path
-        d="M-2.89582 25.1391C-25.9899 65.1393 16.8694 53.7046 41.1858 42.9873C71.7317 31.3191 64.7872 16.1547 57.1035 9.61188C56.7716 9.32926 56.4615 9.03855 56.1636 8.7203C45.6597 -2.5006 19.8755 -14.302 -2.89582 25.1391Z"
+        d="M-2.18548 30.3775C-25.2796 70.3777 17.5797 58.943 41.8961 48.2257C72.442 36.5575 65.4976 21.3931 57.8138 14.8503C57.4819 14.5677 57.1719 14.277 56.8739 13.9587C46.37 2.7378 20.5859 -9.06359 -2.18548 30.3775Z"
         fill="#004F55"
       />
-      <g filter="url(#portal-filter0_dd)">
+      <g filter="url(#data-sharing-filter0_dd)">
         <path
-          d="M40.3198 56.9535C68.244 40.8314 30.6801 25.2833 12.2382 23.275C-10.1177 19.6967 -4.15859 38.1389 -1.45047 45.2154C-1.29466 45.6226 -1.17365 46.0342 -1.07114 46.458C1.45802 56.912 12.9547 72.7527 40.3198 56.9535Z"
+          d="M41.5269 56.3417C68.8967 73.3878 64.9297 32.9273 58.0193 15.7114C50.6516 -5.6966 37.1864 8.24302 32.2181 13.9638C31.9322 14.2929 31.626 14.5935 31.3004 14.8834C23.268 22.0363 14.705 39.6368 41.5269 56.3417Z"
           fill="#007079"
         />
       </g>
-      <g filter="url(#portal-filter1_dd)">
+      <g filter="url(#data-sharing-filter1_dd)">
         <path
-          d="M-5.14701 19.3673C-13.4924 50.5127 13.3422 35.0582 27.8026 23.4378C46.6944 9.75929 43.9767 -7.8543 32.5994 -11.6779C21.8542 -15.2891 3.19836 -11.7781 -5.14701 19.3673Z"
+          d="M-19.9197 7.88152C-44.0705 31.8612 -12.6088 35.302 -2.0499 33.1231C-1.67304 33.0454 -1.31353 32.9837 -0.930958 32.9424C19.7675 30.7103 47.9148 12.7262 50.3026 0.762597C50.5841 -0.647805 50.0358 -2.07611 48.9597 -3.0303C39.0221 -11.8421 3.29925 -15.173 -19.9197 7.88152Z"
           fill="#007079"
         />
       </g>
       <path
-        d="M17.2803 19.4431L30.1086 12.1093C30.653 11.7984 31.3328 12.1878 31.3333 12.8114L31.333 27.5024C31.3336 27.9377 31.1138 28.3398 30.7339 28.5573L17.9053 35.8905C17.3611 36.2018 16.6672 35.8123 16.6667 35.1888V20.4978C16.6661 20.0625 16.9003 19.6603 17.2803 19.4431Z"
-        fill="white"
+        d="M15 19.1667L24 14L33 19.1667M15 19.1667V29.8333L19 32L24 34.5M15 19.1667L19 21.5L24 24.5M24 34.5V24.5M24 34.5L29 32L33 29.8333V19.1667M33 19.1667L29 21.5L24 24.5"
+        stroke="#F5F5F5"
+        strokeWidth="3"
+      />
+      <path
+        d="M33 29.3333L24 34.5L15 29.3333L15 18.6667L19 16.5L24 14L29 16.5L33 18.6667L33 29.3333Z"
+        stroke="#F5F5F5"
+        strokeWidth="3"
       />
     </g>
     <defs>
       <filter
-        id="portal-filter0_dd"
-        x="-14.9994"
-        y="17.0001"
-        width="72.6091"
-        height="60.8741"
+        id="data-sharing-filter0_dd"
+        x="14"
+        y="0"
+        width="58.353"
+        height="72.8179"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -95,11 +101,11 @@ const Portal: FC<ISvgIconProps> = ({ size }) => (
         />
       </filter>
       <filter
-        id="portal-filter1_dd"
-        x="-24.0004"
-        y="-22.0001"
-        width="78.0499"
-        height="70.8236"
+        id="data-sharing-filter1_dd"
+        x="-33.3372"
+        y="-14.4091"
+        width="88.1504"
+        height="58.0575"
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
@@ -149,4 +155,4 @@ const Portal: FC<ISvgIconProps> = ({ size }) => (
   </svg>
 );
 
-export default Portal;
+export default Dasha;
