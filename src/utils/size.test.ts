@@ -2,20 +2,11 @@ import size from './size';
 
 const tests = [
   { value: 1, expected: '1 Byte' },
-  { value: 12, expected: '12 Bytes' },
-  { value: 123, expected: '123 Bytes' },
-  { value: 1234, expected: '1.23 KB' },
-  { value: 12345, expected: '12.35 KB' },
-  { value: 123456, expected: '123.46 KB' },
-  { value: 1234567, expected: '1.23 MB' },
-  { value: 12345678, expected: '12.35 MB' },
-  { value: 123456789, expected: '123.46 MB' },
-  { value: 1234567890, expected: '1.23 GB' },
-  { value: 1000, expected: '1 KB' },
-  { value: 10000, expected: '10 KB' },
-  { value: 100000, expected: '100 KB' },
-  { value: 1000000, expected: '1 MB' },
-  { value: 1000000000, expected: '1 GB' },
+  { value: 1024, expected: '1 KB' },
+  { value: 1024 * 10, expected: '10 KB' },
+  { value: 1024 * 100, expected: '100 KB' },
+  { value: Math.pow(1024, 2), expected: '1 MB' },
+  { value: Math.pow(1024, 3), expected: '1 GB' },
 ];
 
 test('testing multiple test cases', () => {
@@ -25,7 +16,9 @@ test('testing multiple test cases', () => {
 });
 
 test('testing with 6 decimals', () => {
-  expect(size.formatBytes(1234567890, 6)).toBe('1.234568 GB');
+  expect(size.formatBytes(Math.pow(1024, 3) + Math.pow(1024, 1), 6)).toBe(
+    '1.000001 GB'
+  );
 });
 
 test('testing with negative number', () => {
@@ -33,14 +26,9 @@ test('testing with negative number', () => {
 });
 
 test('testing with negative decimal', () => {
-  expect(size.formatBytes(1234567890, -2)).toBe('1 GB');
-});
-
-test('testing with decimals', () => {
-  expect(size.formatBytes(12344)).toBe('12.34 KB');
-  expect(size.formatBytes(12344.5)).toBe('12.34 KB');
+  expect(size.formatBytes(Math.pow(1024, 3), -2)).toBe('1 GB');
 });
 
 test('testing kiloBytes', () => {
-  expect(size.formatKiloBytes(1024000)).toBe('1.02 GB');
+  expect(size.formatKiloBytes(Math.pow(1024, 2))).toBe('1 GB');
 });
