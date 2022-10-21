@@ -43,7 +43,7 @@ test('renders the menu when button is clicked', async () => {
   expect(menu).toHaveStyle('visibility: visible');
 });
 
-test('renders a the menu items', () => {
+test('renders the menu items', () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props}></SingleFilterMenu>);
 
@@ -55,7 +55,7 @@ test('renders a the menu items', () => {
 test('renders a the chip when menu item is selected and showChip = true', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
-  const menuItemText = props.data[2];
+  const menuItemText = props.data[0];
   const user = userEvent.setup();
 
   const button = await screen.findByTestId('menuButton');
@@ -71,7 +71,7 @@ test('renders a the chip when menu item is selected and showChip = true', async 
 test('triggers onchange when item is selected', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
-  const menuItemText = props.data[2];
+  const menuItemText = props.data[0];
   const user = userEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
