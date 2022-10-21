@@ -1,6 +1,7 @@
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, Story } from '@storybook/react';
 
+import SideBarProvider from '../../../providers/SideBarProvider';
 import { MenuItemType } from './MenuItem';
 import SideBar from '.';
 
@@ -39,16 +40,18 @@ export const Primary: Story = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: '95vh' }}>
-      <SideBar
-        createLabel="Create story"
-        onCreate={() => console.log('Created 🖋')}
-      >
-        {menuItems.map((m) => (
-          <SideBar.Item key={m.name} {...m} />
-        ))}
-      </SideBar>
-    </div>
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '95vh' }}>
+        <SideBar
+          createLabel="Create story"
+          onCreate={() => console.log('Created 🖋')}
+        >
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
   );
 };
 
@@ -75,13 +78,15 @@ export const NoCreateAction: Story = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: '95vh' }}>
-      <SideBar>
-        {menuItems.map((m) => (
-          <SideBar.Item key={m.name} {...m} />
-        ))}
-      </SideBar>
-    </div>
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '95vh' }}>
+        <SideBar>
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
   );
 };
 
@@ -108,16 +113,18 @@ export const WithCreateAction: Story = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: '95vh' }}>
-      <SideBar
-        createLabel="Create a diamond"
-        onCreate={() => console.log('Created 💎')}
-      >
-        {menuItems.map((m) => (
-          <SideBar.Item key={m.name} {...m} />
-        ))}
-      </SideBar>
-    </div>
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '95vh' }}>
+        <SideBar
+          createLabel="Create a diamond"
+          onCreate={() => console.log('Created 💎')}
+        >
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
   );
 };
 
@@ -144,16 +151,18 @@ export const WithCurrentUrlAndCreate: Story = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: '95vh' }}>
-      <SideBar
-        createLabel="Create story"
-        onCreate={() => console.log('Created 🖋')}
-      >
-        {menuItems.map((m) => (
-          <SideBar.Item key={m.name} {...m} />
-        ))}
-      </SideBar>
-    </div>
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '95vh' }}>
+        <SideBar
+          createLabel="Create story"
+          onCreate={() => console.log('Created 🖋')}
+        >
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
   );
 };
 
@@ -180,16 +189,18 @@ export const WithDisabledMenuItem: Story = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: '95vh' }}>
-      <SideBar
-        createLabel="Create story"
-        onCreate={() => console.log('Created 🖋')}
-      >
-        {menuItems.map((m) => (
-          <SideBar.Item key={m.name} {...m} disabled={m.link === 'history'} />
-        ))}
-      </SideBar>
-    </div>
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '95vh' }}>
+        <SideBar
+          createLabel="Create story"
+          onCreate={() => console.log('Created 🖋')}
+        >
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} disabled={m.link === 'history'} />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
   );
 };
 
@@ -216,16 +227,18 @@ export const WithDisabledCreateButton: Story = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: '95vh' }}>
-      <SideBar
-        createLabel="Create story"
-        onCreate={() => console.log('Created 🖋')}
-        createDisabled
-      >
-        {menuItems.map((m) => (
-          <SideBar.Item key={m.name} {...m} />
-        ))}
-      </SideBar>
-    </div>
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '95vh' }}>
+        <SideBar
+          createLabel="Create story"
+          onCreate={() => console.log('Created 🖋')}
+          createDisabled
+        >
+          {menuItems.map((m) => (
+            <SideBar.Item key={m.name} {...m} />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
   );
 };

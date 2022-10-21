@@ -45,12 +45,7 @@ const TutorialStoryComponent: FC<TutorialProps> = (props) => {
         <HighlightBlocks active={tutorialStep === 'step-one'}>
           <ContentContainer>
             <div style={{ width: '300px' }}>
-              <TextField
-                id="field"
-                label="Field name"
-                variant="default"
-                placeholder="Field"
-              />
+              <TextField id="field" label="Field name" placeholder="Field" />
             </div>
           </ContentContainer>
         </HighlightBlocks>
