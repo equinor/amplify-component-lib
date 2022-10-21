@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { Button, Icon, Input, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
@@ -133,7 +133,9 @@ const SimpleMultiSelectDrawer = <
           value={search}
           readOnly={readOnly}
           onFocus={() => setOpen(true)}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setSearch(e.target.value)
+          }
           placeholder={placeholder}
         />
         <StyledButton

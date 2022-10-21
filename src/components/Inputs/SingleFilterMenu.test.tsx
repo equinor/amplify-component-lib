@@ -1,25 +1,39 @@
 import { filter_list } from '@equinor/eds-icons';
+import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../test-utils';
 import SingleFilterMenu from './SingleFilterMenu';
 
-const dummyData = {
-  data: ['test', 'best', '123'],
-  icon: filter_list,
-  menuTitle: 'Select an item',
-  onChange: () => undefined,
-};
+function getTestProps(): {
+  data: string[];
+  icon: any;
+  menuTitle: string;
+  onChange: any;
+} {
+  return {
+    data: faker.lorem
+      .words(faker.datatype.number({ min: 1, max: 25 }))
+      .split(' '),
+    icon: filter_list,
+    menuTitle: faker.lorem.word(),
+    onChange: jest.fn(),
+  };
+}
 
 test('renders a menu button with menu closed by default', () => {
-  const { queryByTestId } = render(
-    <SingleFilterMenu {...dummyData}></SingleFilterMenu>
-  );
-  expect(queryByTestId('menuButton')).toBeInTheDocument();
-  expect(queryByTestId('menuContainer')).toHaveStyle('visibility: hidden');
+  const props = getTestProps();
+  render(<SingleFilterMenu {...props}></SingleFilterMenu>);
+
+  const menuButton = screen.getByTestId('menuButton');
+  const menuContainer = screen.getByTestId('menuContainer');
+
+  expect(menuButton).toBeInTheDocument();
+  expect(menuContainer).not.toHaveAttribute('open');
 });
 
 test('renders the menu when button is clicked', async () => {
-  render(<SingleFilterMenu {...dummyData}></SingleFilterMenu>);
+  const props = getTestProps();
+  render(<SingleFilterMenu {...props}></SingleFilterMenu>);
   const user = userEvent.setup();
   const button = await screen.findByTestId('menuButton');
   await user.click(button);
@@ -29,17 +43,18 @@ test('renders the menu when button is clicked', async () => {
 });
 
 test('renders a the menu items', () => {
-  const { queryByText } = render(
-    <SingleFilterMenu {...dummyData}></SingleFilterMenu>
-  );
-  expect(queryByText('test')).toBeInTheDocument();
-  expect(queryByText('best')).toBeInTheDocument();
-  expect(queryByText('123')).toBeInTheDocument();
+  const props = getTestProps();
+  render(<SingleFilterMenu {...props}></SingleFilterMenu>);
+
+  for (const item of props.data) {
+    expect(screen.getByText(item)).toBeInTheDocument();
+  }
 });
 
 test('renders a the chip when menu item is selected and showChip = true', async () => {
-  render(<SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>);
-  const menuItemText = dummyData.data[2];
+  const props = getTestProps();
+  render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
+  const menuItemText = props.data[2];
   const user = userEvent.setup();
 
   const button = await screen.findByTestId('menuButton');
@@ -53,15 +68,13 @@ test('renders a the chip when menu item is selected and showChip = true', async 
 });
 
 test('triggers onchange when item is selected', async () => {
-  const cb = jest.fn();
-  dummyData.onChange = cb;
-
-  render(<SingleFilterMenu {...dummyData} showChip></SingleFilterMenu>);
-  const menuItemText = dummyData.data[2];
+  const props = getTestProps();
+  render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
+  const menuItemText = props.data[2];
   const user = userEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
   await user.click(menuItem);
 
-  expect(cb).toHaveBeenCalled();
+  expect(props.onChange).toHaveBeenCalled();
 });
