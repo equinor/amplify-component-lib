@@ -13,7 +13,8 @@ function getTestProps(): {
   return {
     data: faker.lorem
       .words(faker.datatype.number({ min: 1, max: 25 }))
-      .split(' '),
+      .split(' ')
+      .filter((v, i, a) => a.indexOf(v) === i),
     icon: filter_list,
     menuTitle: faker.lorem.word(),
     onChange: jest.fn(),
