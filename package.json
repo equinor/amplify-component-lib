@@ -145,10 +145,10 @@
     }
   },
   "peerDependencies": {
-    "@equinor/eds-core-react": "^0.20.4",
-    "react": ">=16.8",
-    "react-dom": ">=16.8",
-    "styled-components": ">=4.2",
+    "@equinor/eds-core-react": "0.25.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.6",
     "webpack": "*"
   },
   "repository": {
