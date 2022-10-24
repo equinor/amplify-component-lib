@@ -9,6 +9,7 @@ const NegativeFilled: FC<SvgIconProps> = ({ size }) => (
     viewBox="0 0 48 48"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    data-testid="negative-filled"
   >
     <rect x="0.5" y="0.5" width="47" height="47" rx="7.5" fill="#D5EAF4" />
     <path
