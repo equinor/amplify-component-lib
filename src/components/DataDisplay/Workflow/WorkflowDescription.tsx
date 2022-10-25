@@ -60,7 +60,7 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
       {options.map((item, idx) => (
         <Fragment key={`${item.label}-${idx}`}>
           {item.approvedDate !== undefined ? (
-            <Box>
+            <Box data-testid="approved">
               <div>
                 <Typography group="paragraph" variant="overline">
                   {item.approvedUser}
@@ -80,7 +80,7 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
               </StatusChip>
             </Box>
           ) : (
-            <DisabledBox>
+            <DisabledBox data-testid="not-approved">
               <Typography group="heading" variant="h6" color="#BEBEBE">
                 {item.notApprovedLabel}
               </Typography>
