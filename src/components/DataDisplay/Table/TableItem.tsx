@@ -45,7 +45,7 @@ export interface TableItemProps {
   onClick?: () => void;
 }
 
-const getIcon = (icon: string) => {
+export const getIcon = (icon: string) => {
   switch (icon) {
     case 'Link':
       return link;
@@ -65,7 +65,11 @@ const TableItem: React.FC<TableItemProps> = ({
   onClick,
 }) => {
   return (
-    <GridItem hoverable={onClick ? 1 : 0} onClick={() => onClick?.()}>
+    <GridItem
+      hoverable={onClick ? 1 : 0}
+      onClick={onClick ? onClick : undefined}
+      data-testid="table-item"
+    >
       <NameItem>
         <Icon data={getIcon(icon)} />
         <StyledTypography variant="h6">{name}</StyledTypography>

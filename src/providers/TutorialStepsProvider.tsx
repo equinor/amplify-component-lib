@@ -48,12 +48,15 @@ export const useTutorialSteps = (): TutorialContextState => {
   return context;
 };
 
-const TutorialStepsProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const TutorialStepsProvider: FC<{
+  children: ReactNode;
+  startOpen?: boolean;
+}> = ({ children, startOpen = false }) => {
   const [tutorialStep, setTutorialStep] = useState<string>(
     getDefaultState().step
   );
   const [showTutorialIntro, setShowTutorialIntro] = useState<boolean>(
-    getDefaultState().showTutorialIntro
+    startOpen ? startOpen : getDefaultState().showTutorialIntro
   );
 
   useEffect(() => {

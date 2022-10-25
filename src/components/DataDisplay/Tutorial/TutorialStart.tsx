@@ -89,7 +89,9 @@ const TutorialStart: FC<StarterProps> = ({
           <Typography variant="h5">{title}</Typography>
         </Title>
         <Content variant="h5">{content}</Content>
-        {imageSource && <Image src={imageSource} />}
+        {imageSource && (
+          <Image alt={`tutorial-${title}-image`} src={imageSource} />
+        )}
         <Actions>
           {' '}
           <ButtonWrapper variant="ghost" onClick={denyTour}>
