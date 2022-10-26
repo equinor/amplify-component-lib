@@ -1,8 +1,6 @@
-import { FormProvider, useForm } from 'react-hook-form';
-
 import { faker } from '@faker-js/faker';
 
-import { render, renderHook, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../test-utils';
 import SingleSelectDrawer, {
   SingleSelectDrawerProps,
 } from './SingleSelectDrawer';
@@ -36,14 +34,7 @@ function fakeProps(): SingleSelectDrawerProps<{
 test('Works as expected when opening and choosing an item', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  const { result } = renderHook(() =>
-    useForm({ reValidateMode: 'onChange', mode: 'onChange' })
-  );
-  render(
-    <FormProvider {...result.current}>
-      <SingleSelectDrawer {...props} />
-    </FormProvider>
-  );
+  render(<SingleSelectDrawer {...props} />);
 
   const toggleOptions = screen.getByRole('button', {
     name: /toggle options/i,
