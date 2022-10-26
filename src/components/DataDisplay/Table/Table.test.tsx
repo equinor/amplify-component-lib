@@ -8,7 +8,7 @@ function fakeItem(withSize: boolean): TableItemProps {
   return {
     icon: faker.helpers.arrayElement(['Link', 'File', 'Folder']),
     name: faker.system.fileName(),
-    owner: faker.animal.dog(),
+    owner: faker.internet.userName(),
     size: withSize ? faker.datatype.uuid() : undefined,
     publishedDate: faker.date.past().toISOString(),
   };
