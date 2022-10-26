@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Chip as EDSChip,
@@ -16,6 +16,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import ResizeObserver from 'resize-observer-polyfill';
 import styled from 'styled-components';
 
 const { spacings, colors, shape } = tokens;
@@ -94,6 +95,9 @@ const Chip = styled(EDSChip)`
   color: ${colors.interactive.primary__resting.hex};
   background: ${colors.ui.background__info.hex};
   line-height: normal;
+  > svg {
+    z-index: auto;
+  }
 `;
 
 export interface ChippedMultiSelectProps {
@@ -120,9 +124,9 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
   inDialog = false,
 }) => {
   const [open, setOpen] = useState(false);
-  const anchorRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(document.createElement('div'));
-  const menuRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useOutsideClick(containerRef.current, (e: MouseEvent) => {
     if (
@@ -146,6 +150,31 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
     onSelect(newSelectedItems);
   };
 
+  const handleScroll = useCallback(() => {
+    if (anchorRef.current && menuRef.current) {
+      const { top } = anchorRef.current.getBoundingClientRect();
+      // 4px is ${spacings.comfortable.x_small}
+      menuRef.current.style.top = `${
+        top + anchorRef.current?.clientHeight + 4
+      }px`;
+    }
+  }, []);
+
+  const handleSetRef = (ref: HTMLDivElement | null) => {
+    anchorRef.current = ref;
+    if (ref) {
+      const observer = new ResizeObserver(handleScroll);
+      observer.observe(ref);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, true);
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [handleScroll]);
+
   return (
     <div ref={containerRef}>
       <Container>
@@ -158,7 +187,7 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
               setOpen((o) => !o);
             }
           }}
-          ref={anchorRef}
+          ref={handleSetRef}
         >
           {values.length === 0 ? (
             <Placeholder>{placeholder}</Placeholder>
