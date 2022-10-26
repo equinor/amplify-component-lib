@@ -50,11 +50,20 @@ const StatusChip: FC<StatusChipProps> = ({
   children,
 }) => {
   if (disabled) {
-    return <DisabledChip style={style}>{children}</DisabledChip>;
+    return (
+      <DisabledChip style={style} data-testid="status-chip">
+        {children}
+      </DisabledChip>
+    );
   }
 
   return (
-    <Chip style={style} color={color} backgroundColor={backgroundColor}>
+    <Chip
+      style={style}
+      color={color}
+      backgroundColor={backgroundColor}
+      data-testid="status-chip"
+    >
       {children}
     </Chip>
   );

@@ -31,7 +31,7 @@ interface Toggle {
 }
 
 export interface IconToggleButtonProps {
-  initialState: boolean;
+  initialState?: boolean;
   toggleOn: Toggle;
   toggleOff: Toggle;
   onClick?: (toggle: boolean) => void;

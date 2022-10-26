@@ -83,7 +83,11 @@ export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
               <Typography variant="h6" as="span">
                 Account
               </Typography>
-              <Button variant="ghost_icon" onClick={closeMenu}>
+              <Button
+                variant="ghost_icon"
+                onClick={closeMenu}
+                data-testid="close-button"
+              >
                 <Icon data={clear} />
               </Button>
             </Header>

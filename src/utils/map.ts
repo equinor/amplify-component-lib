@@ -5,7 +5,7 @@ function degrees2radians(degrees: number): number {
   return degrees * (Math.PI / 180);
 }
 
-export function distanceLatLng(x: LatLngLiteral, y: LatLngLiteral): number {
+function distanceLatLng(x: LatLngLiteral, y: LatLngLiteral): number {
   const R = 6371; // Radius of the earth in km
   const dLat = degrees2radians(y.lat - x.lat);
   const dLon = degrees2radians(y.lng - x.lng);
@@ -19,10 +19,10 @@ export function distanceLatLng(x: LatLngLiteral, y: LatLngLiteral): number {
   return R * c; // Distance in km
 }
 
-export const utmProjection =
+const utmProjection =
   '+proj=utm +zone=31 +ellps=intl +towgs84=-90.365,-101.13,-123.384,0.333,0.077,0.894,1.994 +units=m +no_defs';
 
-export function convertUtmToLatLng(
+function convertUtmToLatLng(
   x: string | number,
   y: string | number
 ): LatLngLiteral {
@@ -33,12 +33,17 @@ export function convertUtmToLatLng(
   };
 }
 
-export function convertLatLngToUtm(
-  coordinate: LatLngLiteral
-): [number, number] {
+function convertLatLngToUtm(coordinate: LatLngLiteral): [number, number] {
   const converted = proj4('EPSG:4326', utmProjection, [
     coordinate.lng,
     coordinate.lat,
   ]);
   return [converted[0], converted[1]];
 }
+
+export default {
+  distanceLatLng,
+  utmProjection,
+  convertUtmToLatLng,
+  convertLatLngToUtm,
+};

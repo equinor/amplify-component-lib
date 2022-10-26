@@ -107,9 +107,14 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
             placement={tooltipPlacement ?? 'top'}
             title={disableTooltip ? undefined : item.label}
           >
-            <div style={{ display: 'grid', placeItems: 'center' }}>
-              {activeIdx === idx && highlightActiveNode && <Active />}
-              {activeIdx === idx && showAlert && <Alert />}
+            <div
+              style={{ display: 'grid', placeItems: 'center' }}
+              data-testid="workflow-option"
+            >
+              {activeIdx === idx && highlightActiveNode && (
+                <Active data-testid="active" />
+              )}
+              {activeIdx === idx && showAlert && <Alert data-testid="alert" />}
               <Circle
                 index={idx}
                 color={item.color}

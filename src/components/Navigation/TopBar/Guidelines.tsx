@@ -65,7 +65,7 @@ export const Guidelines = forwardRef<HTMLDivElement, IGuidelineProps>(
       onClose={onClose}
     >
       {sections.map((section, ind) => (
-        <div key={ind}>
+        <div key={ind} data-testid="guidelines-section">
           <Typography variant="overline">{section.sectionName}</Typography>
           <Guides>
             {section.items.map((item, index) => (
