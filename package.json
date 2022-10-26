@@ -161,5 +161,6 @@
   "bugs": {
     "url": "https://github.com/equinor/amplify-components/issues"
   },
-  "homepage": "https://github.com/equinor/amplify-components#readme"
+  "homepage": "https://github.com/equinor/amplify-components#readme",
+  "packageManager": "yarn@3.2.4"
 }
