@@ -58,7 +58,6 @@ test('Renders the flow correctly', async () => {
   const notApprovedOptions = props.options.filter(
     (option) => option.approvedDate === undefined
   );
-  console.log(notApprovedOptions);
   for (let i = 0; i < notApprovedOptions.length; i++) {
     expect(
       screen.getByText(notApprovedOptions[i].notApprovedLabel ?? 'failed')
