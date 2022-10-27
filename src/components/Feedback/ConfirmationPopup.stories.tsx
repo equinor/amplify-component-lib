@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import { Meta, Story } from '@storybook/react';
 
-import ConfirmationPopup, { IComponentProps } from './ConfirmationPopup';
+import ConfirmationPopup, { ConfirmationPopupProps } from './ConfirmationPopup';
 
 export default {
   title: 'Feedback/ConfirmationPopup',
@@ -9,7 +9,7 @@ export default {
   argTypes: {},
 } as Meta;
 
-const Template: Story<IComponentProps> = (args) => {
+const Template: Story<ConfirmationPopupProps> = (args) => {
   return <ConfirmationPopup {...args} />;
 };
 
