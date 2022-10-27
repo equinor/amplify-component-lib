@@ -12,6 +12,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { Meta, Story } from '@storybook/react';
 
+import { amplify_wellbore } from '../../Icons/AmplifyIcons';
 import { Guidelines, IGuidelineSections } from './Guidelines';
 
 const { colors } = tokens;
@@ -82,6 +83,12 @@ const sections: IGuidelineSections[] = [
         icon: external_link,
         color: '#77ff72',
         colorBox: '#77ff72',
+      },
+      {
+        title: 'Wellbore',
+        icon: amplify_wellbore,
+        color: '#ce72ff',
+        colorBox: '#ce72ff',
       },
     ],
   },
