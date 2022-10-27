@@ -1,7 +1,6 @@
 # Frontend specific git ignores
 
-.yarn/
-client/.yarn
+.yarn/*
 !.yarn/patches
 !.yarn/releases
 !.yarn/plugins

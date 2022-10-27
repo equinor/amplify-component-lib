@@ -12,7 +12,7 @@ function getTestProps(): {
 } {
   return {
     data: faker.lorem
-      .words(faker.datatype.number({ min: 1, max: 25 }))
+      .words(faker.datatype.number({ min: 1, max: 5 }))
       .split(' ')
       .filter((v, i, a) => a.indexOf(v) === i),
     icon: filter_list,

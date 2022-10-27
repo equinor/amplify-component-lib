@@ -19,7 +19,11 @@ export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
-export { amplify_wellbore } from './Icons/AmplifyIcons';
+export {
+  amplify_lwd,
+  amplify_wellbore,
+  amplify_wireline,
+} from './Icons/AmplifyIcons';
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as DataSharing } from './Icons/ApplicationIcon/Dasha';
