@@ -1,3 +1,7 @@
+import { tokens } from '@equinor/eds-tokens';
+
+const { colors } = tokens;
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
@@ -15,7 +19,7 @@ export const parameters = {
       },
       {
         name: 'Equinor off-white',
-        value: '#f7f7f7',
+        value: colors.ui.background__light.hex,
       },
     ],
   },

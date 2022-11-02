@@ -40,6 +40,7 @@ export { default as SomethingOutlined } from './Icons/FeedBackIcon/PositiveOutli
 export { default as ChippedMultiSelect } from './Inputs/ChippedMultiSelect';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
 export { default as NewComment } from './Inputs/CommentField/NewCommentField';
+export { default as ContentMenu } from './Inputs/ContentMenu';
 export { default as CopyText } from './Inputs/CopyText';
 export { default as EditableField } from './Inputs/EditableField';
 export { default as FieldSelector } from './Inputs/FieldSelector';
@@ -50,6 +51,8 @@ export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer'
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
 export { default as SimpleMultiSelectDrawer } from './Inputs/Select/SimpleMultiSelectDrawer';
 export { default as SingleSelectDrawer } from './Inputs/Select/SingleSelectDrawer';
+export type { Option, SieveValue } from './Inputs/Sieve/Sieve';
+export { default as Sieve } from './Inputs/Sieve/Sieve';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
 export { default as TextEntry } from './Inputs/TextEntry/TextEntry';
 export type { ItemType, SidebarType } from './Navigation/SideBar';

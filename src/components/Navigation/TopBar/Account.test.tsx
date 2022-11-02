@@ -32,7 +32,9 @@ test('Renders correctly without avatar', async () => {
   expect(screen.getByText(accountName)).toBeInTheDocument();
 
   const splitName = accountName.split(' ');
-  const expectedInitials = splitName[0][0] + splitName[splitName.length - 1][0];
+  const expectedInitials =
+    splitName[0][0].toUpperCase() +
+    splitName[splitName.length - 1][0].toUpperCase();
 
   expect(screen.getByText(expectedInitials)).toBeInTheDocument();
   expect(

@@ -1,22 +1,35 @@
 import styled, { keyframes } from 'styled-components';
 const loading = keyframes`
-  0% {
-    background-position: -25%;
-  }
-  50% {
-    background-position: -50%;
-  }
-  100% {
-    background-position: -150%;
+  to {
+    transform: translateX(100%);
   }
 `;
 
-const SkeletonBase = styled.div`
-  background: linear-gradient(90deg, #cacaca, #dcdcdc, #cacaca);
-  background-size: 600% 600%;
-  animation-name: ${loading};
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
+interface SkeletonBaseProps {
+  offset?: number;
+}
+
+const SkeletonBase = styled.div<SkeletonBaseProps>`
+  background: #cacaca;
+  overflow: hidden;
+  position: relative;
+  &:after {
+    background: linear-gradient(90deg, #cacaca 0%, #dcdcdc 50%, #cacaca 100%);
+    animation: ${loading} 1.5s infinite;
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(-100%);
+    z-index: 1;
+    ${(props) =>
+      props.offset &&
+      `
+    animation-delay: ${props.offset}ms;
+  `};
+  }
 `;
 
 export default SkeletonBase;
