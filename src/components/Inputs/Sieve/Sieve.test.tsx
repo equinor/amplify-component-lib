@@ -14,7 +14,7 @@ function fakeOption(): Option {
 function fakeOptions(): Option[] {
   const options: Option[] = [];
 
-  for (let i = 0; i < faker.datatype.number({ min: 1, max: 5 }); i++) {
+  for (let i = 0; i < faker.datatype.number({ min: 2, max: 5 }); i++) {
     options.push(fakeOption());
   }
   return options;
@@ -76,10 +76,12 @@ test('Users can sort', async () => {
   }
 
   const randomIndex = faker.datatype.number({
-    min: 0,
+    min: 1,
     max: props.sortOptions.length - 1,
   });
-  await user.click(screen.getByText(props.sortOptions[randomIndex].label));
+  await user.click(
+    screen.getByRole('menuitem', { name: props.sortOptions[randomIndex].label })
+  );
 
   expect(props.onUpdate).toHaveBeenCalledWith({
     sortValue: props.sortOptions[randomIndex],
@@ -111,7 +113,9 @@ test('Users can filter', async () => {
   });
 
   await user.click(
-    screen.getByText(props.filterOptions[randomFilterGroup].label)
+    screen.getByRole('menuitem', {
+      name: props.filterOptions[randomFilterGroup].label,
+    })
   );
 
   for (const option of props.filterOptions[randomFilterGroup].options) {
