@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Story } from '@storybook/react';
 
 import Stepper, { StepperProps } from './Stepper';

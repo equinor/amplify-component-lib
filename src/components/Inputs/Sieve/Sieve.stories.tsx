@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import { Story } from '@storybook/react';
 
-import { Meta, Story } from '@storybook/react';
-
-import Sieve, { SieveProps, SieveValue } from './Sieve';
+import Sieve, { SieveProps } from './Sieve';
 
 export default {
   title: 'Inputs/Sieve',
