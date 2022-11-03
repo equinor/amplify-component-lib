@@ -6,7 +6,7 @@ import Sieve, { Option, SieveProps } from './Sieve';
 
 function fakeOption(): Option {
   return {
-    label: faker.animal.fish(),
+    label: faker.datatype.uuid(),
     value: faker.datatype.uuid(),
   };
 }
@@ -14,7 +14,7 @@ function fakeOption(): Option {
 function fakeOptions(): Option[] {
   const options: Option[] = [];
 
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 5 }); i++) {
+  for (let i = 0; i < faker.datatype.number({ min: 2, max: 6 }); i++) {
     options.push(fakeOption());
   }
   return options;
@@ -22,9 +22,9 @@ function fakeOptions(): Option[] {
 
 function fakeFilterOptions(): FilterOption[] {
   const options: FilterOption[] = [];
-  for (let i = 0; i < faker.datatype.number({ min: 1, max: 5 }); i++) {
+  for (let i = 0; i < faker.datatype.number({ min: 1, max: 7 }); i++) {
     options.push({
-      label: faker.animal.dog(),
+      label: faker.datatype.uuid(),
       options: fakeOptions(),
     });
   }
