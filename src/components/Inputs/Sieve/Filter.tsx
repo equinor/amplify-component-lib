@@ -10,7 +10,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
-import { Chip, MenuItem, Option } from './Sieve';
+import { Chip, MenuItem, Option } from './Sieve.common';
 
 const { colors } = tokens;
 

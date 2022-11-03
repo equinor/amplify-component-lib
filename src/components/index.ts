@@ -19,6 +19,7 @@ export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
+export { default as Stepper } from './Feedback/Stepper/Stepper';
 export {
   amplify_lwd,
   amplify_wellbore,
@@ -51,8 +52,9 @@ export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer'
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
 export { default as SimpleMultiSelectDrawer } from './Inputs/Select/SimpleMultiSelectDrawer';
 export { default as SingleSelectDrawer } from './Inputs/Select/SingleSelectDrawer';
-export type { Option, SieveValue } from './Inputs/Sieve/Sieve';
+export type { SieveValue } from './Inputs/Sieve/Sieve';
 export { default as Sieve } from './Inputs/Sieve/Sieve';
+export type { Option } from './Inputs/Sieve/Sieve.common';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
 export { default as TextEntry } from './Inputs/TextEntry/TextEntry';
 export type { ItemType, SidebarType } from './Navigation/SideBar';

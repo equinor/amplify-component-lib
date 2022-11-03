@@ -1,13 +1,10 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
-import {
-  Chip as EDSChip,
-  Menu,
-  Search as EDSSearch,
-} from '@equinor/eds-core-react';
+import { Chip as EDSChip, Search as EDSSearch } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import Filter, { FilterOption } from './Filter';
+import { Option } from './Sieve.common';
 import Sort from './Sort';
 
 import styled from 'styled-components';
@@ -30,16 +27,6 @@ const FilterChip = styled(EDSChip)`
   background: ${colors.ui.background__default.hex};
 `;
 
-export const MenuItem = styled(Menu.Item)`
-  outline: none !important;
-  > div {
-    grid-template-columns: 1fr auto;
-  }
-`;
-
-export const Chip = styled(EDSChip)`
-  background: none;
-`;
 const Search = styled(EDSSearch)`
   min-width: 24rem;
   > div {
@@ -55,11 +42,6 @@ export type SieveValue = {
   searchValue: string | undefined;
   sortValue: Option | undefined;
   filterValues: Option[] | undefined;
-};
-
-export type Option = {
-  label: string;
-  value: string;
 };
 
 export interface SieveProps {
