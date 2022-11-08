@@ -1,0 +1,70 @@
+{
+	"React component in Equinor project": {
+		"prefix": [
+			"component",
+			"comp",
+			"cmp"
+		],
+		"body": [
+			"import { FC } from 'react';",
+			"\n",
+			"import { tokens } from '@equinor/eds-tokens';",
+			"\n",
+			"import styled from 'styled-components';",
+			"\n",
+			"const { spacings } = tokens;",
+			"\n",
+			"const Container = styled.div`",
+			"\tdisplay: flex;",
+			"\tflex-direction: column;",
+			"\tgap: ${spacings.comfortable.medium};",
+			"`;",
+			"\n",
+			"const $0: FC = () => {",
+			"\treturn <Container>content</Container>;",
+			"};",
+			"\n",
+			"export default $0"
+		]
+	},
+	"React component test": {
+		"prefix": [
+			"test-component",
+			"test",
+			"tcomp"
+		],
+		"body": [
+			"import { faker } from '@faker-js/faker';",
+			"\n",
+			"import { render, screen } from 'test-utils';",
+			"\n",
+			"test('$0', async () => {",
+			"\trender(<$1 />)",
+			"});"
+		]
+	},
+	"React component storybook story": {
+		"prefix": [
+			"story-component",
+			"story",
+			"scomp"
+		],
+		"body": [
+			"import { Story } from '@storybook/react';",
+			"export default {",
+			"\ttitle: 'PATH',",
+			"\tcomponent: $0,",
+			"\targTypes: {",
+			"\t\tlabel: { control: 'text' },",
+			"\t},",
+			"\targs: {",
+			"\t\tlabel: 'label text',",
+			"\t},",
+			"};",
+			"\n",
+			"export default Primary: Story<${1:ComponentProps}> = (args) => {",
+			"\treturn null;",
+			"};"
+		]
+	}
+}
