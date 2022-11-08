@@ -1,7 +1,7 @@
 import { ChangeEvent, CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { Button, Icon, Input, Label } from '@equinor/eds-core-react';
-import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
+import { arrow_drop_down, arrow_drop_up, close } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
@@ -22,6 +22,14 @@ const StyledInputWrapper = styled.div`
 export const StyledButton = styled(Button)`
   position: absolute;
   right: ${spacings.comfortable.small};
+  height: ${spacings.comfortable.large};
+  width: ${spacings.comfortable.large};
+  top: 6px;
+`;
+
+export const StyledCloseButton = styled(Button)`
+  position: absolute;
+  right: ${spacings.comfortable.x_large};
   height: ${spacings.comfortable.large};
   width: ${spacings.comfortable.large};
   top: 6px;
@@ -113,6 +121,7 @@ const SimpleMultiSelectDrawer = <
     } else {
       onChange(selectedItems.filter((i) => i.id !== item.id));
     }
+    setSearch('');
   };
 
   useEffect(() => {
@@ -138,6 +147,16 @@ const SimpleMultiSelectDrawer = <
           }
           placeholder={placeholder}
         />
+        {search !== '' && (
+          <StyledCloseButton
+            variant="ghost_icon"
+            aria-label="toggle options"
+            title="open"
+            onClick={() => setSearch('')}
+          >
+            <Icon data={close} size={16} />
+          </StyledCloseButton>
+        )}
         <StyledButton
           variant="ghost_icon"
           aria-label="toggle options"

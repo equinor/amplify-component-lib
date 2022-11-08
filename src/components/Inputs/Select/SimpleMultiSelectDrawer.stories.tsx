@@ -35,7 +35,11 @@ const Template: Story<SimpleMultiSelectDrawerProps<ValueType>> = () => {
           items={items}
           label="Test"
           onChange={(val) => setSelectedItems(val)}
-          placeholder="Select..."
+          placeholder={
+            selectedItems.length
+              ? selectedItems.map((s) => s.label).join(', ')
+              : 'Select...'
+          }
           selectedItems={selectedItems}
         />
       </div>
