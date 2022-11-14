@@ -24,10 +24,18 @@ export default {
       {
         value: 'slb',
         label: 'SLB',
+        children: [
+          { value: 'child 11', label: 'ch11' },
+          { value: 'child 21', label: 'ch22' },
+        ],
       },
       {
         value: 'halliburton',
         label: 'Halliburton',
+        children: [
+          { value: 'child 1', label: 'ch1' },
+          { value: 'child 2', label: 'ch2' },
+        ],
       },
     ],
     isLoading: false,
