@@ -105,7 +105,6 @@ const ContentMenu: FC<ContentMenuProps> = ({
     onChange(value);
   };
 
-  console.log(value);
   if (isLoading) {
     return (
       <Container data-testid="content-menu-container">
