@@ -13,6 +13,7 @@ const SkeletonBase = styled.div<SkeletonBaseProps>`
   background: #cacaca;
   overflow: hidden;
   position: relative;
+  z-index: 2;
   &:after {
     background: linear-gradient(90deg, #cacaca 0%, #dcdcdc 50%, #cacaca 100%);
     animation: ${loading} 1.5s infinite;
