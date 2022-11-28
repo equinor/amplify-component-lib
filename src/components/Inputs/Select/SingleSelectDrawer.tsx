@@ -92,13 +92,17 @@ const SingleSelectDrawer = <T extends { id: string; label: string }>({
     }
   }, [search, items]);
 
-  const handleToggle = (item: T, toggle: boolean) => {
+  const handleToggle = (items: T[], toggle: boolean) => {
     if (toggle) {
-      setSelectedItem(item);
-      onChange && onChange(item);
+      items.forEach((item) => {
+        setSelectedItem(item);
+        onChange && onChange(item);
+      });
     } else {
-      setSelectedItem(undefined);
-      onChange && onChange(undefined);
+      items.forEach(() => {
+        setSelectedItem(undefined);
+        onChange && onChange(undefined);
+      });
     }
   };
 
@@ -129,7 +133,7 @@ const SingleSelectDrawer = <T extends { id: string; label: string }>({
           inputItems.map((item) => (
             <OptionDrawer<T>
               key={item.id}
-              onToggle={handleToggle}
+              onToggle={(e) => handleToggle(e.items, e.toggle)}
               selectedItems={selectedItem ? [selectedItem] : []}
               singleSelect
               item={item}
