@@ -18,11 +18,13 @@ const Template: Story<OptionDrawerProps<ValueType>> = () => {
       {items.map((item) => (
         <OptionDrawer
           key={item.id}
-          onToggle={(object, toggle) =>
-            setSelectedItems((s) =>
-              toggle ? [...s, object] : [...s.filter((val) => val !== object)]
-            )
-          }
+          onToggle={(e) => {
+            e.items.forEach((item) => {
+              setSelectedItems((s) =>
+                e.toggle ? [...s, item] : [...s.filter((val) => val !== item)]
+              );
+            });
+          }}
           item={item}
           selectedItems={selectedItems}
         />

@@ -115,11 +115,15 @@ const SimpleMultiSelectDrawer = <
     }
   });
 
-  const handleToggle = (item: T, toggle: boolean) => {
+  const handleToggle = (items: T[], toggle: boolean) => {
     if (toggle) {
-      onChange([...selectedItems, item]);
+      items.forEach((item) => {
+        onChange([...selectedItems, item]);
+      });
     } else {
-      onChange(selectedItems.filter((i) => i.id !== item.id));
+      items.forEach((item) => {
+        onChange(selectedItems.filter((i) => i.id !== item.id));
+      });
     }
     setSearch('');
   };
@@ -171,7 +175,7 @@ const SimpleMultiSelectDrawer = <
           inputItems.map((item) => (
             <OptionDrawer<T>
               key={item.id}
-              onToggle={handleToggle}
+              onToggle={(e) => handleToggle(e.items, e.toggle)}
               selectedItems={selectedItems}
               item={item}
               singleSelect

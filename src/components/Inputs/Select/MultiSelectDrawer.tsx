@@ -87,11 +87,15 @@ const MultiSelectDrawer = <
     onChange && onChange(selectedItems);
   }, [onChange, selectedItems]);
 
-  const handleToggle = (item: T, toggle: boolean) => {
+  const handleToggle = (items: T[], toggle: boolean) => {
     if (toggle) {
-      setSelectedItems((s) => (s ? [...s, item] : []));
+      items.forEach((item) => {
+        setSelectedItems((s) => (s ? [...s, item] : []));
+      });
     } else {
-      setSelectedItems((s) => (s ? s.filter((i) => i.id !== item.id) : []));
+      items.forEach((item) => {
+        setSelectedItems((s) => (s ? s.filter((i) => i.id !== item.id) : []));
+      });
     }
   };
 
@@ -124,7 +128,7 @@ const MultiSelectDrawer = <
           items.map((item) => (
             <OptionDrawer<T>
               key={item.id}
-              onToggle={handleToggle}
+              onToggle={(e) => handleToggle(e.items, e.toggle)}
               selectedItems={selectedItems}
               item={item}
             />

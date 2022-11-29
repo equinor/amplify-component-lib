@@ -1,7 +1,10 @@
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../../test-utils';
-import OptionDrawer, { OptionDrawerProps } from './OptionDrawer';
+import OptionDrawer, {
+  OptionDrawerProps,
+  ToggleEventProps,
+} from './OptionDrawer';
 
 type FakeType = {
   id: string;
@@ -46,35 +49,65 @@ function fakeProps(
 test('Works correctly when clicking item with no children', async () => {
   const props = fakeProps(false, false);
   const user = userEvent.setup();
-  render(<OptionDrawer {...props} />);
+  let items: { id: string; label: string }[] = [{ id: '', label: '' }];
+  let toggle: boolean | undefined = undefined;
+  const handleOnToggle = (
+    event: ToggleEventProps<{ id: string; label: string }>
+  ) => {
+    items = event.items;
+    toggle = event.toggle;
+  };
+  render(<OptionDrawer {...props} onToggle={handleOnToggle} />);
 
   const parent = screen.getByText(props.item.label);
   await user.click(parent);
 
-  expect(props.onToggle).toHaveBeenCalledWith(props.item, true);
+  expect(items[0].id).toBe(props.item.id);
+  expect(toggle).toBe(true);
 });
 
 test('Works correctly when clicking children', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  render(<OptionDrawer {...props} />);
+  const counter = jest.fn();
+  let items: { id: string; label: string }[] = [{ id: '', label: '' }];
+  let toggle: boolean | undefined = undefined;
+  const handleOnToggle = (
+    event: ToggleEventProps<{ id: string; label: string }>
+  ) => {
+    items = event.items;
+    toggle = event.toggle;
+    counter();
+  };
+  render(<OptionDrawer {...props} onToggle={handleOnToggle} />);
 
   const parent = screen.getByText(props.item.label);
   await user.click(parent);
 
   for (const child of props.item.children ?? []) {
     await user.click(screen.getByText(child.label));
-    expect(props.onToggle).toHaveBeenCalledWith(child, true);
+    expect(items[0].id).toBe(child.id);
+    expect(toggle).toBe(true);
   }
-  expect(props.onToggle).toHaveBeenCalledTimes(
-    props.item.children?.length ?? 0
-  );
+
+  expect(counter).toHaveBeenCalledTimes(props.item.children?.length ?? 0);
 });
 
 test('Works correctly when clicking grand child', async () => {
   const props = fakeProps(false, true, true);
   const user = userEvent.setup();
-  render(<OptionDrawer {...props} />);
+  const counter = jest.fn();
+  let items: { id: string; label: string }[] = [{ id: '', label: '' }];
+  let toggle: boolean | undefined = undefined;
+  const handleOnToggle = (
+    event: ToggleEventProps<{ id: string; label: string }>
+  ) => {
+    items = event.items;
+    toggle = event.toggle;
+    counter();
+  };
+
+  render(<OptionDrawer {...props} onToggle={handleOnToggle} />);
 
   const parent = screen.getByText(props.item.label);
   await user.click(parent);
@@ -87,11 +120,28 @@ test('Works correctly when clicking grand child', async () => {
   expect(grandChildren.length).toBeGreaterThanOrEqual(1);
   for (const grandChild of grandChildren) {
     await user.click(screen.getByText(grandChild.label));
-    expect(props.onToggle).toHaveBeenCalledWith(
-      { id: grandChild.id, label: grandChild.label },
-      true
-    );
+    expect(items[0].id).toBe(grandChild.id);
+    expect(toggle).toBe(true);
   }
 
-  expect(props.onToggle).toHaveBeenCalledTimes(grandChildren.length);
+  expect(counter).toHaveBeenCalledTimes(grandChildren.length);
+});
+
+test('Animation working correctly when clicking item with no children', async () => {
+  const props = fakeProps(false, false);
+  const user = userEvent.setup();
+
+  render(<OptionDrawer {...props} onToggle={props.onToggle} />);
+
+  const parent = screen.getByText(props.item.label);
+  user.click(parent);
+
+  const animatedElement = parent.parentElement;
+  let style = window.getComputedStyle(parent);
+  if (animatedElement) {
+    style = window.getComputedStyle(animatedElement);
+  }
+  setTimeout(() => {
+    expect(style.opacity).toBe(0);
+  }, 450);
 });

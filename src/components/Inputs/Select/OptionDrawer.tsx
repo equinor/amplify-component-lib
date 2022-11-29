@@ -1,17 +1,38 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 
 import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 interface StyledOptionProps {
   section: number;
+  animationActive?: boolean;
 }
+
+const animateToggle = keyframes`
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+`;
 
 const StyledOptionWrapper = styled.div<StyledOptionProps>`
   margin-left: ${(props) => (props.section > 0 ? '22px' : '')};
   border-left: ${(props) => (props.section > 0 ? '1px solid #DCDCDC' : '')};
+  opacity: 1;
+  animation: ${(props) =>
+    props.animationActive
+      ? css`
+          ${animateToggle} 400ms ease-in
+        `
+      : 'none'};
 `;
 
 const StyledOption = styled.div<StyledOptionProps>`
@@ -77,27 +98,57 @@ const getStatus = <T extends { id: string; label: string; children?: T[] }>(
   return 'INTERMEDIATE';
 };
 
+export type ToggleEventProps<T> = {
+  items: T[];
+  toggle: boolean;
+  event: MouseEvent | ChangeEvent;
+};
+
 export type OptionDrawerProps<
-  T extends { id: string; label: string; children?: T[] }
+  T extends { id: string; label: string; parentId?: string; children?: T[] }
 > = {
   item: T;
-  onToggle: (item: T, toggle: boolean) => void;
+  onToggle: ({ items, toggle, event }: ToggleEventProps<T>) => void;
   section?: number;
   selectedItems?: T[];
   singleSelect?: boolean;
+  siblings?: number;
+  animateCheck?: boolean;
+  animateUncheck?: boolean;
+  animateParent?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
+const OptionDrawer = <
+  T extends { id: string; label: string; parentId?: string; children?: T[] }
+>({
   item,
   onToggle,
   section = 0,
   selectedItems = [],
   singleSelect = false,
+  siblings,
+  animateCheck,
+  animateUncheck,
+  animateParent,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
     getStatus(item, selectedItems, singleSelect)
   );
+  const [animationActive, setAnimationActive] = useState(false);
+
+  const shouldAnimateParent = () => {
+    if (siblings && animateParent) {
+      const siblingsSelected = selectedItems.filter((selected) =>
+        selected.id.includes(item.parentId ?? '')
+      ).length;
+
+      if (siblingsSelected === siblings - 1) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   useEffect(() => {
     setStatus(getStatus(item, selectedItems, singleSelect));
@@ -111,14 +162,14 @@ const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
 
       if (
         selected.every(Boolean) &&
-        selectedItems.find((s) => s.id === item.id) === undefined
+        selectedItems.some((s) => s.id === item.id)
       ) {
-        onToggle(item, true);
+        setStatus('CHECKED');
       } else if (
         !selected.every(Boolean) &&
-        selectedItems.find((s) => s.id === item.id) !== undefined
+        selectedItems.some((s) => s.id === item.id)
       ) {
-        onToggle(item, false);
+        setStatus('NONE');
       }
     }
   }, [selectedItems, item, onToggle, singleSelect]);
@@ -141,30 +192,58 @@ const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
       if (item.children && item.children.length !== 0) {
         setOpen((o) => !o);
       } else if (e.target instanceof HTMLDivElement) {
-        handleCheck();
+        handleCheck(e);
       }
     }
   };
 
-  const handleCheck = () => {
+  const handleToggle = (e: MouseEvent | ChangeEvent) => {
+    const items =
+      item.children?.length !== 0 &&
+      !singleSelect &&
+      item.children !== undefined
+        ? [...item.children]
+        : [item];
     if (status === 'CHECKED') {
-      onToggle(item, false);
-      if (!singleSelect && item.children) {
-        getAllItems(item.children).forEach(
-          (i) =>
-            selectedItems.find((s) => s.id === i.id) !== undefined &&
-            onToggle(i, false)
-        );
-      }
+      onToggle({ items: items, toggle: false, event: e });
     } else if (status === 'NONE' || status === 'INTERMEDIATE') {
-      onToggle(item, true);
-      if (!singleSelect && item.children) {
-        getAllItems(item.children).forEach(
-          (i) =>
-            selectedItems.find((s) => s.id === i.id) === undefined &&
-            onToggle(i, true)
-        );
-      }
+      onToggle({ items: items, toggle: true, event: e });
+    }
+    setAnimationActive(false);
+  };
+
+  const animate = (
+    e: MouseEvent | ChangeEvent,
+    shouldAnimateParent: boolean
+  ) => {
+    // Only animate whole group when everything is checked/unchecked
+    if (shouldAnimateParent && animateParent) {
+      animateParent(true);
+      setStatus(status === 'CHECKED' ? 'NONE' : 'CHECKED');
+      setTimeout(() => {
+        handleToggle(e);
+      }, 400);
+    } else if (!siblings) {
+      setAnimationActive(true);
+      setStatus(status === 'CHECKED' ? 'NONE' : 'CHECKED');
+      setTimeout(() => {
+        handleToggle(e);
+      }, 400);
+    } else {
+      handleToggle(e);
+    }
+  };
+
+  const handleCheck = (e: MouseEvent | ChangeEvent) => {
+    if (status === 'CHECKED' && animateUncheck) {
+      animate(e, shouldAnimateParent());
+    } else if (
+      (status === 'NONE' || status === 'INTERMEDIATE') &&
+      animateCheck
+    ) {
+      animate(e, shouldAnimateParent());
+    } else {
+      handleToggle(e);
     }
   };
 
@@ -172,12 +251,13 @@ const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
     <StyledOptionWrapper
       key={`StyledOptionWrapper-${item.id}`}
       section={section}
+      animationActive={animationActive}
     >
       <StyledOption section={section} onClick={handleClick}>
         <Checkbox
           indeterminate={status === 'INTERMEDIATE'}
           checked={status === 'CHECKED'}
-          onChange={handleCheck}
+          onChange={(e) => handleCheck(e)}
           color="secondary"
         />
         {item.label}
@@ -194,6 +274,10 @@ const OptionDrawer = <T extends { id: string; label: string; children?: T[] }>({
             selectedItems={selectedItems}
             item={i}
             singleSelect={singleSelect}
+            siblings={item.children?.length}
+            animateCheck={animateCheck}
+            animateUncheck={animateUncheck}
+            animateParent={setAnimationActive}
           />
         ))}
     </StyledOptionWrapper>
