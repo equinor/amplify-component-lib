@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const { spacings } = tokens;
 
 const StyledDialog = styled(Dialog)`
-  width: 400px;
+  min-width: 400px;
 `;
 
 interface IStyledActionsProps {
@@ -43,14 +43,27 @@ export interface ConfirmationPopupProps {
   actionPosition?: 'left' | 'right';
   onClose?: () => void | undefined;
   children?: ReactNode;
+  width?: string;
 }
 
 const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
-  ({ show, title, body, actions, actionPosition, onClose, children }, ref) => {
+  (
+    {
+      show,
+      title,
+      body,
+      actions,
+      actionPosition,
+      onClose,
+      children,
+      width = '400px',
+    },
+    ref
+  ) => {
     if (show) {
       return (
         <Scrim onClose={onClose} isDismissable open>
-          <StyledDialog ref={ref} open={show}>
+          <StyledDialog ref={ref} open={show} style={{ width }}>
             <Dialog.Header>{title}</Dialog.Header>
             <Dialog.CustomContent>
               {body && <Typography variant="body_short">{body}</Typography>}

@@ -1,31 +1,43 @@
 import { Button } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Story } from '@storybook/react';
 
 import ConfirmationPopup, { ConfirmationPopupProps } from './ConfirmationPopup';
 
 export default {
   title: 'Feedback/ConfirmationPopup',
   component: ConfirmationPopup,
-  argTypes: {},
-} as Meta;
-
-const Template: Story<ConfirmationPopupProps> = (args) => {
-  return <ConfirmationPopup {...args} />;
+  argTypes: {
+    show: { control: 'boolean' },
+    title: {
+      control: 'text',
+    },
+    body: {
+      control: 'text',
+    },
+    onClose: {
+      action: 'Ran onClose',
+    },
+    actions: {
+      control: 'array',
+    },
+    width: {
+      control: 'text',
+    },
+  },
+  args: {
+    show: true,
+    title: 'This is the title',
+    body: 'This is the body',
+    actions: [
+      <Button key="A1" variant="ghost">
+        Action
+      </Button>,
+      <Button key="A2">Action</Button>,
+    ],
+    width: '400px',
+  },
 };
 
-export const Primary = Template.bind({});
-
-Primary.args = {
-  show: true,
-  title: 'Title',
-  body: 'This is the body',
-  onClose: () => {
-    alert('onClose called');
-  },
-  actions: [
-    <Button key="A1" variant="ghost">
-      Action
-    </Button>,
-    <Button key="A2">Action</Button>,
-  ],
+export const Primary: Story<ConfirmationPopupProps> = (args) => {
+  return <ConfirmationPopup {...args} />;
 };

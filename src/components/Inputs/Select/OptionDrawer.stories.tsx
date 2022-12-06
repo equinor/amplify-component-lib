@@ -8,9 +8,25 @@ import { items, ValueType } from './SelectUtils';
 export default {
   title: 'Inputs/Select/OptionDrawer',
   component: OptionDrawer,
+  argTypes: {
+    animateCheck: {
+      control: 'boolean',
+    },
+    animateUncheck: {
+      control: 'boolean',
+    },
+    animateParent: {
+      control: 'boolean',
+    },
+  },
+  args: {
+    animateCheck: false,
+    animateUncheck: false,
+    animateParent: false,
+  },
 } as Meta;
 
-const Template: Story<OptionDrawerProps<ValueType>> = () => {
+export const Primary: Story<OptionDrawerProps<ValueType>> = (args) => {
   const [selectedItems, setSelectedItems] = useState<ValueType[]>([]);
 
   return (
@@ -27,11 +43,11 @@ const Template: Story<OptionDrawerProps<ValueType>> = () => {
           }}
           item={item}
           selectedItems={selectedItems}
+          animateCheck={args.animateCheck}
+          animateParent={args.animateParent}
+          animateUncheck={args.animateUncheck}
         />
       ))}
     </div>
   );
 };
-
-export const Primary = Template.bind({});
-Primary.args = {};
