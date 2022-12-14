@@ -1,45 +1,56 @@
-import React, { FC, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { Field } from '../../../types/Field';
-import FieldCard from './FieldCard/FieldCard';
-import FieldCardSkeleton from './FieldCard/Skeleton';
-import AccessITCard from './AccessITCard';
+import SelectorCard from './SelectorCard/SelectorCard';
+import SelectorSkeleton from './SelectorCard/Skeleton';
 import ChangingField from './ChangingField';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { spacings, colors } = tokens;
 
+const ImageWrapper = styled.img`
+  height: 100%;
+  width: 100%;
+`;
 const Container = styled.div`
   position: absolute;
   top: 35vh;
   left: 50%;
   transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: ${spacings.comfortable.medium_small};
-  > h3 {
-    grid-column: 1 / 3;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.comfortable.medium_small};
 `;
 
-interface SelectFieldProps {
+const Label = styled.div`
+  display: flex;
+  gap: ${spacings.comfortable.medium};
+  align-items: center; ;
+`;
+
+export type SelectFieldProps = {
+  photo?: string;
   setField: (value: Field) => void;
   fields: Field[];
   isLoading?: boolean;
   onChangedField: () => void;
+  showAccessITLink?: boolean;
   finishedText: string; // Example: 'Taking you to the dashboard'
-}
+};
 
 const SelectField: FC<SelectFieldProps> = ({
+  photo,
   setField,
   fields,
   isLoading,
   onChangedField,
   finishedText,
+  showAccessITLink = true,
 }) => {
   const [isChangingField, setIsChangingField] = useState(false);
   const fieldName = useRef<string>('');
@@ -68,29 +79,29 @@ const SelectField: FC<SelectFieldProps> = ({
     );
   }
 
-  if (isLoading) {
-    return (
-      <Container>
-        <Typography variant="h3">Please select a field</Typography>
-        {new Array(4).fill(0).map((item, index) => (
-          <FieldCardSkeleton key={`field-card-skeleton-${item + index}`} />
-        ))}
-      </Container>
-    );
-  }
-
   return (
-    <Container>
-      <Typography variant="h3">Please select a field</Typography>
-      {fields.map((field: Field) => (
-        <FieldCard
-          key={field.uuid}
-          fieldName={field.name ?? ''}
-          onClick={() => handleClick(field)}
-        />
-      ))}
-      {!isLoading && <AccessITCard />}
-    </Container>
+    <>
+      {photo && <ImageWrapper src={photo} />}
+      <Container>
+        <Label>
+          <Icon
+            data={platform}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+          <Typography variant="h4">Please select a field</Typography>
+        </Label>
+        {!isLoading ? (
+          <SelectorCard
+            availableFields={fields}
+            onSelect={handleClick}
+            showAccessITLink={showAccessITLink}
+          />
+        ) : (
+          <SelectorSkeleton />
+        )}
+      </Container>
+    </>
   );
 };
 

@@ -42,10 +42,6 @@ test('selecting field works as expected', async () => {
     />
   );
 
-  for (const el of screen.getAllByRole('busy')) {
-    expect(el).toBeInTheDocument();
-  }
-
   rerender(
     <SelectField
       setField={setField}
@@ -62,12 +58,18 @@ test('selecting field works as expected', async () => {
     expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
   }
 
-  const card = screen.getAllByTestId('dataCard')[0];
+  const card = screen.getAllByTestId('selectorCard')[0];
 
   expect(card).toBeInTheDocument();
 
   await user.click(card);
+  expect(screen.getByTestId('resultMenu')).toBeInTheDocument();
 
+  const selectedItem = screen.getByText(fields[0].name ?? '');
+  await user.click(selectedItem);
+
+  const nextButton = screen.getByTestId('nextButton');
+  await user.click(nextButton);
   await waitFor(() => screen.getByText(finishedText), { timeout: 10000 });
 
   await waitFor(() => expect(onChangedField).toHaveBeenCalledTimes(1), {

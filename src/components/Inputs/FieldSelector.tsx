@@ -18,7 +18,12 @@ const { colors, spacings } = tokens;
 const Menu = styled(EDSMenu)`
   width: 17rem;
 `;
-
+const ListContainer = styled.div`
+  max-height: 25vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+`;
 interface MenuItemProps {
   selected?: boolean;
 }
@@ -141,21 +146,26 @@ const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
                   />
                 </MenuItem>
               )}
-              {availableFields.map((field) => {
-                if (field.uuid !== currentField?.uuid) {
-                  return (
-                    <MenuItem key={field.uuid} onClick={() => onSelect(field)}>
-                      <TextContainer>
-                        <Typography variant="overline">Switch to:</Typography>
-                        <Typography variant="h6">
-                          {field.name?.toLowerCase()}
-                        </Typography>
-                      </TextContainer>
-                    </MenuItem>
-                  );
-                }
-                return undefined;
-              })}
+              <ListContainer>
+                {availableFields.map((field) => {
+                  if (field.uuid !== currentField?.uuid) {
+                    return (
+                      <MenuItem
+                        key={field.uuid}
+                        onClick={() => onSelect(field)}
+                      >
+                        <TextContainer>
+                          <Typography variant="overline">Switch to:</Typography>
+                          <Typography variant="h6">
+                            {field.name?.toLowerCase()}
+                          </Typography>
+                        </TextContainer>
+                      </MenuItem>
+                    );
+                  }
+                  return undefined;
+                })}
+              </ListContainer>
             </MenuSection>
             {showAccessITLink && (
               <MenuItem
