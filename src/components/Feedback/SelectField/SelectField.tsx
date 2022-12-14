@@ -14,8 +14,12 @@ import styled from 'styled-components';
 const { spacings, colors } = tokens;
 
 const ImageWrapper = styled.img`
-  height: 100%;
-  width: 100%;
+  height: calc(100% + 64px); // topbar 64px
+  width: calc(100% + 72px); //sidebar 72px
+  object-fit: cover;
+  position: absolute;
+  top: -64px;
+  left: -72px;
 `;
 const Container = styled.div`
   position: absolute;
