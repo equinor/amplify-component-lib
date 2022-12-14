@@ -63,6 +63,8 @@ const Filter: FC<FilterProps> = ({
 
   const handleChipClick = () => {
     setOpen(!open);
+    setSubMenuIndex(-1);
+    setSubMenuAnchor(null);
   };
 
   const handleMenuItemClick = (event: MouseEvent<Element>, index: number) => {
