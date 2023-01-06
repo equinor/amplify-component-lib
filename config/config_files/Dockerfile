@@ -1,5 +1,5 @@
 # Base
-FROM node:18-alpine as base
+FROM node:19-alpine as base
 WORKDIR /app
 RUN npm install -g http-server@14.0.0
 COPY package.json ./
