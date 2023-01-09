@@ -5,7 +5,13 @@
 const formatDate = (
   date: Date | string | null | undefined,
   options?: {
-    format: 'DD.MM.YYYY' | 'DD. month YYYY' | 'YYYY-MM-DD' | 'DD.MM.YY';
+    format:
+      | 'DD.MM.YYYY'
+      | 'DD. month YYYY'
+      | 'YYYY-MM-DD'
+      | 'DD.MM.YY'
+      | 'DD. month';
+    month?: 'short' | 'long';
   }
 ): string => {
   if (date) {
@@ -21,6 +27,12 @@ const formatDate = (
       const day = dateObj.getDate();
       const month = dateObj.getMonth() + 1;
       const year = dateObj.getFullYear();
+      if (options?.format === 'DD. month') {
+        const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
+        return `${day}. ${dateObj.toLocaleString('en-GB', {
+          month: options.month ?? 'long',
+        })}`;
+      }
       if (options?.format === 'YYYY-MM-DD') {
         return `${year}-${month}-${day}`;
       }

@@ -59,6 +59,22 @@ test('formatDate works as expected with format = "DD.MM.YY"', () => {
   );
 });
 
+test('formatDate works as expected with format = "DD. month"', () => {
+  const fakeDate = faker.date.past();
+
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'DD. month',
+    month: 'short',
+  });
+
+  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
+  const testFormatted = `${day}. ${fakeDate.toLocaleString('en-GB', {
+    month: 'short',
+  })}`;
+
+  expect(formattedDate).toBe(testFormatted);
+});
+
 test('formatDateTime works as expected', () => {
   const fakeDate = faker.date.past();
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
