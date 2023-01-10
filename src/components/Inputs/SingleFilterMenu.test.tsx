@@ -11,12 +11,11 @@ function getTestProps(): {
   onChange: any;
 } {
   return {
-    data: faker.lorem
-      .words(faker.datatype.number({ min: 1, max: 5 }))
-      .split(' ')
-      .filter((v, i, a) => a.indexOf(v) === i),
+    data: new Array(faker.datatype.number({ min: 1, max: 10 }))
+      .fill(0)
+      .map(() => faker.datatype.uuid()),
     icon: filter_list,
-    menuTitle: faker.lorem.word(),
+    menuTitle: faker.datatype.uuid(),
     onChange: jest.fn(),
   };
 }
