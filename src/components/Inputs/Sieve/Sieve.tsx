@@ -46,8 +46,8 @@ export type SieveValue = {
 
 export interface SieveProps {
   searchPlaceholder: string;
-  sortOptions: Option[];
-  filterOptions: FilterOption[];
+  sortOptions?: Option[];
+  filterOptions?: FilterOption[];
   onUpdate: (value: SieveValue) => void;
 }
 
@@ -59,12 +59,12 @@ const Sieve: FC<SieveProps> = ({
 }) => {
   const sieveValue = useRef<SieveValue>({
     searchValue: undefined,
-    sortValue: sortOptions.at(0),
+    sortValue: sortOptions?.at(0),
     filterValues: undefined,
   });
   const [filterValues, setFilterValues] = useState<Option[]>([]);
   const [sortValue, setSortValue] = useState<Option | undefined>(
-    sortOptions.at(0)
+    sortOptions?.at(0)
   );
 
   const handleOnSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -112,16 +112,20 @@ const Sieve: FC<SieveProps> = ({
           placeholder={searchPlaceholder}
           onChange={handleOnSearchInput}
         />
-        <Sort
-          options={sortOptions}
-          selectedOption={sortValue}
-          setSelectedOption={handleSetSortValue}
-        />
-        <Filter
-          options={filterOptions}
-          selectedOptions={filterValues}
-          setSelectedOptions={handleSetFilterValues}
-        />
+        {sortOptions !== undefined && (
+          <Sort
+            options={sortOptions}
+            selectedOption={sortValue}
+            setSelectedOption={handleSetSortValue}
+          />
+        )}
+        {filterOptions !== undefined && (
+          <Filter
+            options={filterOptions}
+            selectedOptions={filterValues}
+            setSelectedOptions={handleSetFilterValues}
+          />
+        )}
       </Container>
       <Container>
         {filterValues?.map((filter) => (
