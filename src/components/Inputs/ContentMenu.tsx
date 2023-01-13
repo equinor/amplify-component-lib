@@ -1,4 +1,11 @@
-import { FC, useState } from 'react';
+import {
+  FC,
+  ReactElement,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
@@ -93,17 +100,63 @@ const ContentMenu: FC<ContentMenuProps> = ({
   onChange,
   isLoading = false,
 }) => {
-  const [openedParents, setOpenedParents] = useState<string[]>([]);
+  const openedParents = useRef<string[]>([]);
 
-  const handleOnClick = (value: string, hasChildren: boolean) => {
-    if (hasChildren) {
-      const parentIndex = openedParents.findIndex((p) => p === value);
-      if (parentIndex >= 0)
-        setOpenedParents(openedParents?.filter((item) => item !== value));
-      else setOpenedParents([...openedParents, value]);
+  const handleOnClick = useCallback(
+    (value: string, hasChildren: boolean) => {
+      if (hasChildren) {
+        const parentIndex = openedParents.current.findIndex((p) => p === value);
+        if (parentIndex >= 0) {
+          openedParents.current = openedParents.current.filter(
+            (item) => item !== value
+          );
+        } else {
+          openedParents.current.push(value);
+        }
+      }
+      onChange(value);
+    },
+    [onChange, openedParents]
+  );
+
+  const elements = useMemo(() => {
+    const all: ReactElement[] = [];
+    for (const item of items) {
+      all.push(
+        <ContentMenuItem
+          key={`content-menu-item-${item.label}`}
+          active={value === item.value}
+          onClick={() => handleOnClick(item.value, !!item.children)}
+        >
+          {item.children && (
+            <Icon
+              data={
+                openedParents.current.includes(item.value)
+                  ? chevron_up
+                  : chevron_down
+              }
+            />
+          )}
+
+          {item.label}
+        </ContentMenuItem>
+      );
+      if (item.children && openedParents.current.includes(item.value)) {
+        for (const child of item.children) {
+          all.push(
+            <ContentMenuChildItem
+              key={`content-menu-item-${child.label}`}
+              active={value === child.value}
+              onClick={() => handleOnClick(child.value, false)}
+            >
+              {child.label}
+            </ContentMenuChildItem>
+          );
+        }
+      }
     }
-    onChange(value);
-  };
+    return all;
+  }, [handleOnClick, items, value]);
 
   if (isLoading) {
     return (
@@ -117,42 +170,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
       </Container>
     );
   }
-  return (
-    <Container data-testid="content-menu-container">
-      {items.map((item) => (
-        <>
-          <ContentMenuItem
-            key={`content-menu-item-${item.label}`}
-            active={value === item.value}
-            onClick={() =>
-              handleOnClick(item.value, item.children ? true : false)
-            }
-          >
-            {item.children && (
-              <Icon
-                data={
-                  openedParents.includes(item.value) ? chevron_up : chevron_down
-                }
-              />
-            )}
-
-            {item.label}
-          </ContentMenuItem>
-          {item.children &&
-            openedParents.includes(item.value) &&
-            item.children?.map((child) => (
-              <ContentMenuChildItem
-                key={`content-menu-item-${child.label}`}
-                active={value === child.value}
-                onClick={() => handleOnClick(child.value, false)}
-              >
-                {child.label}
-              </ContentMenuChildItem>
-            ))}
-        </>
-      ))}
-    </Container>
-  );
+  return <Container data-testid="content-menu-container">{elements}</Container>;
 };
 
 export default ContentMenu;
