@@ -1,11 +1,4 @@
-import {
-  FC,
-  ReactElement,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { FC, ReactElement, useCallback, useMemo, useRef } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
@@ -116,7 +109,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
       }
       onChange(value);
     },
-    [onChange, openedParents]
+    [onChange]
   );
 
   const elements = useMemo(() => {
