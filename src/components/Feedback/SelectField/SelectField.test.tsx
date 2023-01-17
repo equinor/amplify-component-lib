@@ -52,6 +52,9 @@ test('selecting field works as expected', async () => {
     />
   );
 
+  const textField = screen.getByRole('textbox');
+  await user.click(textField);
+
   expect(screen.queryAllByRole('busy')).toEqual([]);
 
   for (const field of fields) {
