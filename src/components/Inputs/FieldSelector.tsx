@@ -11,13 +11,20 @@ import styled from 'styled-components';
 
 const { colors, spacings, elevation, shape } = tokens;
 
-const Menu = styled.div`
+type MenuProps = {
+  placement: 'bottom-start' | 'bottom' | 'bottom-end';
+};
+
+const Menu = styled.div<MenuProps>`
   width: 17rem;
   background-color: white;
   box-shadow: ${elevation.raised};
   position: absolute;
-  top: 60px;
-  left: 8px;
+  transform: translate(
+    -${(props) => (props.placement === 'bottom' ? spacings.comfortable.xxx_large : props.placement === 'bottom-end' ? '15rem' : '0')},
+    ${spacings.comfortable.x_small}
+  );
+
   border-radius: ${shape.corners.borderRadius};
 `;
 
@@ -97,11 +104,18 @@ export type FieldSelectorType = {
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
   showAccessITLink?: boolean;
+  placement?: 'bottom-start' | 'bottom' | 'bottom-end';
 };
 
 const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
   (
-    { currentField, availableFields, onSelect, showAccessITLink = true },
+    {
+      currentField,
+      availableFields,
+      onSelect,
+      showAccessITLink = true,
+      placement = 'bottom',
+    },
     ref
   ) => {
     const [open, setOpen] = useState(false);
@@ -118,6 +132,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       if (open) closeMenu();
       else openMenu();
     };
+
     useOutsideClick(menuRef.current as HTMLElement, (event) => {
       const node = event.target as Node;
       if (
@@ -139,7 +154,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
           />
         </Button>
         {open && (
-          <Menu ref={menuRef} id="field-menu">
+          <Menu ref={menuRef} id="field-menu" placement={placement}>
             <>
               <MenuSection>
                 <MenuHeader>
