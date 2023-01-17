@@ -25,7 +25,7 @@ export default {
 
 function generateFakeFields(): Field[] {
   const fields: Field[] = [];
-  for (let i = 0; i < Math.random() * (equinorFields.length - 1 - 2) + 2; i++) {
+  for (let i = 0; i < Math.random() * (equinorFields.length - 1 - 2) + 5; i++) {
     fields.push({
       name: equinorFields[i],
       uuid: uuidv4(),

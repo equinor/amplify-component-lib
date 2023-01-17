@@ -25,6 +25,9 @@ test('Runs onSelect function once when clicking an item', async () => {
   render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
+  const button = screen.getByRole('button');
+  await user.click(button);
+
   const secondItem = screen.getByText(
     new RegExp(props.availableFields[1].name ?? '', 'i')
   );
@@ -38,6 +41,9 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   const props = fakeProps();
   render(<FieldSelector {...props} />);
   const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
 
   const currentFieldName = props?.currentField?.name ?? 'name';
   const selected = screen.getByText(new RegExp(currentFieldName, 'i'));

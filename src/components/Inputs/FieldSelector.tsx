@@ -1,23 +1,26 @@
-import { forwardRef, MouseEvent, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 
-import {
-  Button,
-  Icon,
-  Menu as EDSMenu,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+import { useOutsideClick } from '@equinor/eds-utils';
 
 import { Field } from '../../types/Field';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors, spacings, elevation, shape } = tokens;
 
-const Menu = styled(EDSMenu)`
+const Menu = styled.div`
   width: 17rem;
+  background-color: white;
+  box-shadow: ${elevation.raised};
+  position: absolute;
+  top: 60px;
+  left: 8px;
+  border-radius: ${shape.corners.borderRadius};
 `;
+
 const ListContainer = styled.div`
   max-height: 25vh;
   display: flex;
@@ -28,7 +31,22 @@ interface MenuItemProps {
   selected?: boolean;
 }
 
-const MenuItem = styled(Menu.Item)<MenuItemProps>`
+const MenuItem = styled.div<MenuItemProps>`
+  ${(props) =>
+    props.selected &&
+    `background: ${colors.interactive.primary__selected_highlight.hex};
+     border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
+    `};
+  &:hover {
+    background: ${colors.interactive.primary__selected_hover.hex};
+    cursor: pointer;
+  }
+  border-top: 1px solid ${colors.ui.background__light.hex};
+  outline: none !important;
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+`;
+
+const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
     props.selected &&
     `background: ${colors.interactive.primary__selected_highlight.hex};
@@ -42,11 +60,12 @@ const MenuItem = styled(Menu.Item)<MenuItemProps>`
   }
   &:hover {
     background: ${colors.interactive.primary__selected_hover.hex};
+    cursor: pointer;
   }
   border-top: 1px solid ${colors.ui.background__light.hex};
   outline: none !important;
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
 `;
-
 const MenuSection = styled.div`
   border-bottom: 1px solid ${colors.ui.background__light.hex};
   display: flex;
@@ -55,7 +74,7 @@ const MenuSection = styled.div`
 
 const MenuHeader = styled.li`
   padding: 0 ${spacings.comfortable.large};
-  margin-bottom: ${spacings.comfortable.small};
+  margin: ${spacings.comfortable.small} 0;
   align-items: center;
   display: grid;
   grid-template-columns: 1fr 24px;
@@ -80,113 +99,129 @@ export type FieldSelectorType = {
   showAccessITLink?: boolean;
 };
 
-const FieldSelector = forwardRef<HTMLButtonElement, FieldSelectorType>(
+const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
   (
     { currentField, availableFields, onSelect, showAccessITLink = true },
     ref
   ) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [open, setOpen] = useState(false);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
-    const openMenu = (e: MouseEvent<HTMLButtonElement>) => {
-      if (e.target instanceof HTMLButtonElement) {
-        setAnchorEl(e.target);
-        setOpen(true);
-      }
+    const openMenu = () => {
+      setOpen(true);
     };
 
     const closeMenu = () => setOpen(false);
 
+    const handleOnClick = () => {
+      if (open) closeMenu();
+      else openMenu();
+    };
+    useOutsideClick(menuRef.current as HTMLElement, (event) => {
+      const node = event.target as Node;
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(node) &&
+        !buttonRef.current?.contains(node)
+      ) {
+        closeMenu();
+      }
+    });
+
     return (
-      <>
-        <Button
-          variant="ghost_icon"
-          onClick={(e) => (open ? closeMenu() : openMenu(e))}
-          ref={ref}
-        >
+      <div ref={ref}>
+        <Button variant="ghost_icon" onClick={handleOnClick} ref={buttonRef}>
           <Icon
             data={platform}
             size={24}
             color={colors.interactive.primary__resting.hsla}
           />
         </Button>
-        <Menu
-          id="field-menu"
-          open={open}
-          anchorEl={anchorEl}
-          onClose={closeMenu}
-          placement="bottom"
-        >
-          <>
-            <MenuSection>
-              <MenuHeader>
-                <Typography variant="h6">Field selection</Typography>
-                <Button variant="ghost_icon" onClick={closeMenu}>
-                  <Icon
-                    data={clear}
-                    size={24}
-                    color={colors.text.static_icons__secondary.hex}
-                  />
-                </Button>
-              </MenuHeader>
-              {currentField && (
-                <MenuItem selected>
-                  <TextContainer>
-                    <Typography variant="overline">
-                      Current selection:
-                    </Typography>
-                    <Typography variant="h6">
-                      {currentField.name?.toLowerCase()}
-                    </Typography>
-                  </TextContainer>
-                  <Icon
-                    data={check}
-                    color={colors.interactive.primary__resting.hex}
-                    size={24}
-                  />
-                </MenuItem>
-              )}
-              <ListContainer>
-                {availableFields.map((field) => {
-                  if (field.uuid !== currentField?.uuid) {
-                    return (
-                      <MenuItem
-                        key={field.uuid}
-                        onClick={() => onSelect(field)}
-                      >
-                        <TextContainer>
-                          <Typography variant="overline">Switch to:</Typography>
-                          <Typography variant="h6">
-                            {field.name?.toLowerCase()}
-                          </Typography>
-                        </TextContainer>
-                      </MenuItem>
-                    );
+        {open && (
+          <Menu ref={menuRef} id="field-menu">
+            <>
+              <MenuSection>
+                <MenuHeader>
+                  <Typography variant="h6">Field selection</Typography>
+                  <Button variant="ghost_icon" onClick={closeMenu}>
+                    <Icon
+                      data={clear}
+                      size={24}
+                      color={colors.text.static_icons__secondary.hex}
+                    />
+                  </Button>
+                </MenuHeader>
+                {currentField && (
+                  <MenuFixedItem selected>
+                    <div>
+                      <TextContainer>
+                        <Typography variant="overline">
+                          Current selection:
+                        </Typography>
+                        <Typography variant="h6">
+                          {currentField.name?.toLowerCase()}
+                        </Typography>
+                      </TextContainer>
+                      <Icon
+                        data={check}
+                        color={colors.interactive.primary__resting.hex}
+                        size={24}
+                      />
+                    </div>
+                  </MenuFixedItem>
+                )}
+                <ListContainer>
+                  {availableFields.map((field) => {
+                    if (field.uuid !== currentField?.uuid) {
+                      return (
+                        <MenuItem
+                          key={field.uuid}
+                          onClick={() => {
+                            onSelect(field);
+                            closeMenu();
+                          }}
+                        >
+                          <TextContainer>
+                            <Typography variant="overline">
+                              Switch to:
+                            </Typography>
+                            <Typography variant="h6">
+                              {field.name?.toLowerCase()}
+                            </Typography>
+                          </TextContainer>
+                        </MenuItem>
+                      );
+                    }
+                    return undefined;
+                  })}
+                </ListContainer>
+              </MenuSection>
+              {showAccessITLink && (
+                <MenuFixedItem
+                  onClick={() =>
+                    window.open('https://accessit.equinor.com/#', '_blank')
                   }
-                  return undefined;
-                })}
-              </ListContainer>
-            </MenuSection>
-            {showAccessITLink && (
-              <MenuItem
-                onClick={() =>
-                  window.open('https://accessit.equinor.com/#', '_blank')
-                }
-              >
-                <TextContainer>
-                  <Typography variant="overline">Missing a field?</Typography>
-                  <Typography variant="h6">Go to AccessIT</Typography>
-                </TextContainer>
-                <Icon
-                  data={exit_to_app}
-                  color={colors.interactive.primary__resting.hex}
-                  size={24}
-                />
-              </MenuItem>
-            )}
-          </>
-        </Menu>
-      </>
+                >
+                  <div>
+                    <TextContainer>
+                      <Typography variant="overline">
+                        Missing a field?
+                      </Typography>
+                      <Typography variant="h6">Go to AccessIT</Typography>
+                    </TextContainer>
+                    <Icon
+                      data={exit_to_app}
+                      color={colors.interactive.primary__resting.hex}
+                      size={24}
+                    />
+                  </div>
+                </MenuFixedItem>
+              )}
+            </>
+          </Menu>
+        )}
+      </div>
     );
   }
 );

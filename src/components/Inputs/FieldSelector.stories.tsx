@@ -17,7 +17,7 @@ function FakeField() {
 }
 
 export const Primary: Story = () => {
-  const fields = new Array(3).fill(0).map(() => FakeField());
+  const fields = new Array(10).fill(0).map(() => FakeField());
   return (
     <FieldSelector
       availableFields={fields}
