@@ -49,7 +49,9 @@ const ResultMenu = styled.div`
   position: absolute;
   left: 24px;
   top: calc(
-     ${spacings.comfortable.large} + ${spacings.comfortable.medium_small} + 2 * ${shape.icon_button.minHeight});
+    ${spacings.comfortable.large} + ${spacings.comfortable.medium_small} + 2 *
+      ${shape.icon_button.minHeight}
+  );
   width: calc((25rem - 2 * ${spacings.comfortable.large}) * 0.8);
   box-shadow: ${elevation.raised};
   background-color: white;
