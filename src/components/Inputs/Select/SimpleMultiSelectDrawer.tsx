@@ -104,6 +104,7 @@ const SimpleMultiSelectDrawer = <
   const [search, setSearch] = useState<string>('');
   const [inputItems, setInputItems] = useState<T[]>(items);
   const [open, setOpen] = useState<boolean>(false);
+  const [openAll, setOpenAll] = useState<boolean>(false);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   useOutsideClick(menuRef.current as HTMLElement, (e) => {
@@ -131,8 +132,10 @@ const SimpleMultiSelectDrawer = <
   useEffect(() => {
     if (search !== '') {
       setInputItems(SearchChildren(items, search));
+      setOpenAll(true);
     } else {
       setInputItems(items);
+      setOpenAll(false);
     }
   }, [search, items]);
 
@@ -179,6 +182,7 @@ const SimpleMultiSelectDrawer = <
               selectedItems={selectedItems}
               item={item}
               singleSelect
+              openAll={openAll}
             />
           ))}
       </StyledList>
