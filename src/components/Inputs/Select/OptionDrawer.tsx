@@ -116,6 +116,7 @@ export type OptionDrawerProps<
   animateCheck?: boolean;
   animateUncheck?: boolean;
   animateParent?: React.Dispatch<React.SetStateAction<boolean>>;
+  openAll?: boolean;
 };
 
 const OptionDrawer = <
@@ -130,25 +131,13 @@ const OptionDrawer = <
   animateCheck,
   animateUncheck,
   animateParent,
+  openAll,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
     getStatus(item, selectedItems, singleSelect)
   );
   const [animationActive, setAnimationActive] = useState(false);
-
-  const shouldAnimateParent = () => {
-    if (siblings && animateParent) {
-      const siblingsSelected = selectedItems.filter((selected) =>
-        selected.id.includes(item.parentId ?? '')
-      ).length;
-
-      if (siblingsSelected === siblings - 1) {
-        return true;
-      }
-    }
-    return false;
-  };
 
   useEffect(() => {
     setStatus(getStatus(item, selectedItems, singleSelect));
@@ -173,6 +162,14 @@ const OptionDrawer = <
       }
     }
   }, [selectedItems, item, onToggle, singleSelect]);
+
+  useEffect(() => {
+    if (openAll) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [openAll]);
 
   const handleClick = (e: MouseEvent) => {
     const checkboxElement = e.target as SVGPathElement;
@@ -234,6 +231,19 @@ const OptionDrawer = <
     }
   };
 
+  const shouldAnimateParent = () => {
+    if (siblings && animateParent) {
+      const siblingsSelected = selectedItems.filter((selected) =>
+        selected.id.includes(item.parentId ?? '')
+      ).length;
+
+      if (siblingsSelected === siblings - 1) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const handleCheck = (e: MouseEvent | ChangeEvent) => {
     if (status === 'CHECKED' && animateUncheck) {
       animate(e, shouldAnimateParent());
@@ -278,6 +288,7 @@ const OptionDrawer = <
             animateCheck={animateCheck}
             animateUncheck={animateUncheck}
             animateParent={setAnimationActive}
+            openAll={openAll}
           />
         ))}
     </StyledOptionWrapper>
