@@ -34,7 +34,7 @@ const Container = styled.div`
 const Label = styled.div`
   display: flex;
   gap: ${spacings.comfortable.medium};
-  align-items: center; ;
+  align-items: center;
 `;
 
 export type SelectFieldProps = {
