@@ -122,26 +122,10 @@ const acquireToken = async (
   instance: IPublicClientApplication,
   request = GRAPH_REQUESTS.LOGIN
 ) => {
-  return (
-    instance
-      .acquireTokenSilent({
-        ...request,
-        redirectUri: `${window.location.origin}/auth.html`,
-      })
-      .then((token) => {
-        if (!token?.accessToken) {
-          console.log(`Token acquire is empty: ${JSON.stringify(token)}`);
-          msalApp.acquireTokenRedirect(request);
-          throw new Error('Redirecting');
-        }
-        return token;
-      })
-      //Acquire token silent failure, and send an interactive request
-      .catch((error) => {
-        console.log(`Token acquire error: ${JSON.stringify(error)}`);
-        return error;
-      })
-  );
+  return instance.acquireTokenSilent({
+    ...request,
+    redirectUri: `${window.location.origin}/auth.html`,
+  });
 };
 
 const isReaderOnly = (roles: string[] | undefined) => {
