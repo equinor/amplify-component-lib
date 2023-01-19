@@ -1,25 +1,21 @@
 import { FC, useRef, useState } from 'react';
 
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { Field } from '../../../types/Field';
 import SelectorCard from './SelectorCard/SelectorCard';
 import SelectorSkeleton from './SelectorCard/Skeleton';
 import ChangingField from './ChangingField';
+import Illustration from './Illustration';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { spacings } = tokens;
 
-const ImageWrapper = styled.img`
-  height: calc(100% + 64px); // topbar 64px
-  width: calc(100% + 72px); //sidebar 72px
-  object-fit: cover;
+const ImageWrapper = styled.div`
   position: absolute;
-  top: -64px;
-  left: -72px;
+  bottom: -10px;
+  left: 0;
 `;
 const Container = styled.div`
   position: absolute;
@@ -31,14 +27,7 @@ const Container = styled.div`
   gap: ${spacings.comfortable.medium_small};
 `;
 
-const Label = styled.div`
-  display: flex;
-  gap: ${spacings.comfortable.medium};
-  align-items: center;
-`;
-
 export type SelectFieldProps = {
-  photo?: string;
   setField: (value: Field) => void;
   fields: Field[];
   isLoading?: boolean;
@@ -48,7 +37,6 @@ export type SelectFieldProps = {
 };
 
 const SelectField: FC<SelectFieldProps> = ({
-  photo,
   setField,
   fields,
   isLoading,
@@ -85,16 +73,10 @@ const SelectField: FC<SelectFieldProps> = ({
 
   return (
     <>
-      {photo && <ImageWrapper src={photo} />}
+      <ImageWrapper>
+        <Illustration />
+      </ImageWrapper>
       <Container>
-        <Label>
-          <Icon
-            data={platform}
-            size={24}
-            color={colors.interactive.primary__resting.hsla}
-          />
-          <Typography variant="h4">Please select a field</Typography>
-        </Label>
         {!isLoading ? (
           <SelectorCard
             availableFields={fields}
