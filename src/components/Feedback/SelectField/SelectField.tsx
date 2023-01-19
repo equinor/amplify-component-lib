@@ -6,16 +6,15 @@ import { Field } from '../../../types/Field';
 import SelectorCard from './SelectorCard/SelectorCard';
 import SelectorSkeleton from './SelectorCard/Skeleton';
 import ChangingField from './ChangingField';
+import Illustration from './Illustration';
 
 import styled from 'styled-components';
 
 const { spacings } = tokens;
 
-const ImageWrapper = styled.img`
-  width: calc(100vw + 10px); //sidebar 72px
-  object-fit: contain;
+const ImageWrapper = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   left: 0;
 `;
 const Container = styled.div`
@@ -29,7 +28,6 @@ const Container = styled.div`
 `;
 
 export type SelectFieldProps = {
-  photo?: string;
   setField: (value: Field) => void;
   fields: Field[];
   isLoading?: boolean;
@@ -39,7 +37,6 @@ export type SelectFieldProps = {
 };
 
 const SelectField: FC<SelectFieldProps> = ({
-  photo,
   setField,
   fields,
   isLoading,
@@ -76,7 +73,9 @@ const SelectField: FC<SelectFieldProps> = ({
 
   return (
     <>
-      {photo && <ImageWrapper src={photo} />}
+      <ImageWrapper>
+        <Illustration />
+      </ImageWrapper>
       <Container>
         {!isLoading ? (
           <SelectorCard
