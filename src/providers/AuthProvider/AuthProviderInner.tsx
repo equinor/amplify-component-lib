@@ -55,6 +55,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
   useEffect(() => {
     if (error instanceof InteractionRequiredAuthError) {
+      console.error('Auth error!');
+      console.error(error);
+      console.log('Trying to log the user in with a redirect...');
       login(InteractionType.Redirect, GRAPH_REQUESTS.LOGIN);
     }
   }, [error, login]);
@@ -114,16 +117,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           }
         })
         .catch((error: AuthError) => {
-          if (
-            error.errorCode === 'consent_required' ||
-            error.errorCode === 'interaction_required' ||
-            error.errorCode === 'login_required' ||
-            error.errorCode === 'no_tokens_found'
-          ) {
-            instance.loginRedirect(GRAPH_REQUESTS.LOGIN);
-          } else {
-            setAuthState('unauthorized');
-          }
+          console.log('Token error when trying to get roles!');
+          console.error(error);
+          setAuthState('unauthorized');
         });
     }
   }, [
