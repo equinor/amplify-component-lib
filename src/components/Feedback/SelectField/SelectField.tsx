@@ -1,7 +1,5 @@
 import { FC, useRef, useState } from 'react';
 
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { Field } from '../../../types/Field';
@@ -11,15 +9,14 @@ import ChangingField from './ChangingField';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { spacings } = tokens;
 
 const ImageWrapper = styled.img`
-  height: calc(100% + 64px); // topbar 64px
-  width: calc(100% + 72px); //sidebar 72px
-  object-fit: cover;
+  width: calc(100vw + 10px); //sidebar 72px
+  object-fit: contain;
   position: absolute;
-  top: -64px;
-  left: -72px;
+  bottom: 0;
+  left: 0;
 `;
 const Container = styled.div`
   position: absolute;
@@ -29,12 +26,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.medium_small};
-`;
-
-const Label = styled.div`
-  display: flex;
-  gap: ${spacings.comfortable.medium};
-  align-items: center;
 `;
 
 export type SelectFieldProps = {
@@ -87,14 +78,6 @@ const SelectField: FC<SelectFieldProps> = ({
     <>
       {photo && <ImageWrapper src={photo} />}
       <Container>
-        <Label>
-          <Icon
-            data={platform}
-            size={24}
-            color={colors.interactive.primary__resting.hsla}
-          />
-          <Typography variant="h4">Please select a field</Typography>
-        </Label>
         {!isLoading ? (
           <SelectorCard
             availableFields={fields}

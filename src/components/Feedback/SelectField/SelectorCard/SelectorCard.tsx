@@ -24,6 +24,7 @@ const { spacings, elevation, colors, shape } = tokens;
 
 const Input = styled(EDSInput)`
   width: 80%;
+  background: white;
 `;
 
 const TextContainer = styled.div`
@@ -35,14 +36,22 @@ const TextContainer = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-  width: 25rem;
-  align-items: center;
+  width: 392px;
   padding: ${spacings.comfortable.large};
   box-shadow: ${elevation.raised};
-  border-radius: 16px;
+  border-radius: ${shape.corners.borderRadius};
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: ${spacings.comfortable.large};
+  > h3 {
+    color: ${colors.text.static_icons__default.hex};
+  }
+  > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const ResultMenu = styled.div`
@@ -150,47 +159,50 @@ const SelectorCard: FC<FieldSelectorType> = ({
   return (
     <div ref={containerRef}>
       <StyledCard data-testid="selectorCard">
-        <Input
-          ref={inputRef}
-          value={searchText}
-          onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
-            setSearchText(e.target.value)
-          }
-          placeholder="Select"
-          rightAdornments={
-            <>
-              {selectedOption && (
+        <Typography variant="h3">Please select a field</Typography>
+        <div>
+          <Input
+            ref={inputRef}
+            value={searchText}
+            onChange={(e: {
+              target: { value: React.SetStateAction<string> };
+            }) => setSearchText(e.target.value)}
+            placeholder="Select a field"
+            rightAdornments={
+              <>
+                {selectedOption && (
+                  <Button
+                    style={{ height: '24px', width: '24px' }}
+                    variant="ghost_icon"
+                    onClick={() => {
+                      setSelectedOption(undefined);
+                      setSearchText('');
+                    }}
+                  >
+                    <Icon size={18} data={clear} />
+                  </Button>
+                )}
                 <Button
                   style={{ height: '24px', width: '24px' }}
+                  onClick={() => (open ? closeMenu() : openMenu())}
                   variant="ghost_icon"
-                  onClick={() => {
-                    setSelectedOption(undefined);
-                    setSearchText('');
-                  }}
+                  data-testid="arrow_button"
                 >
-                  <Icon size={18} data={clear} />
+                  <Icon data={open ? arrow_drop_up : arrow_drop_down} />
                 </Button>
-              )}
-              <Button
-                style={{ height: '24px', width: '24px' }}
-                onClick={() => (open ? closeMenu() : openMenu())}
-                variant="ghost_icon"
-                data-testid="arrow_button"
-              >
-                <Icon data={open ? arrow_drop_up : arrow_drop_down} />
-              </Button>
-            </>
-          }
-          onClick={openMenu}
-        />
-        <Button
-          data-testid="nextButton"
-          variant="contained_icon"
-          disabled={selectedOption === undefined}
-          onClick={handleSelectField}
-        >
-          <Icon data={arrow_forward} />
-        </Button>
+              </>
+            }
+            onClick={openMenu}
+          />
+          <Button
+            data-testid="nextButton"
+            variant="contained_icon"
+            disabled={selectedOption === undefined}
+            onClick={handleSelectField}
+          >
+            <Icon data={arrow_forward} />
+          </Button>
+        </div>
       </StyledCard>
 
       {open && (
