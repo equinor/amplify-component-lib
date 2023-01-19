@@ -68,7 +68,7 @@ export const Template: Story = () => {
 
   return (
     <SelectField
-      photo="./field-selector.png"
+      photo="./field-selector.svg"
       setField={setField}
       fields={fields}
       isLoading={isLoading}
