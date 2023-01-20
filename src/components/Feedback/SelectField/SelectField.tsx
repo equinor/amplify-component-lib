@@ -14,17 +14,16 @@ const { spacings } = tokens;
 
 const ImageWrapper = styled.div`
   position: absolute;
-  bottom: -10px;
+  bottom: -20px;
   left: 0;
+  width: calc(100% + 20px);
 `;
+
 const Container = styled.div`
-  position: absolute;
-  top: 35vh;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.comfortable.medium_small};
+  background-color: white;
+  height: 100vh;
+  width: 100vw;
+  margin: -${spacings.comfortable.xxx_large};
 `;
 
 export type SelectFieldProps = {
@@ -72,22 +71,20 @@ const SelectField: FC<SelectFieldProps> = ({
   }
 
   return (
-    <>
+    <Container>
       <ImageWrapper>
         <Illustration />
       </ImageWrapper>
-      <Container>
-        {!isLoading ? (
-          <SelectorCard
-            availableFields={fields}
-            onSelect={handleClick}
-            showAccessITLink={showAccessITLink}
-          />
-        ) : (
-          <SelectorSkeleton />
-        )}
-      </Container>
-    </>
+      {!isLoading ? (
+        <SelectorCard
+          availableFields={fields}
+          onSelect={handleClick}
+          showAccessITLink={showAccessITLink}
+        />
+      ) : (
+        <SelectorSkeleton />
+      )}
+    </Container>
   );
 };
 

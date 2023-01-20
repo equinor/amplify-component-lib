@@ -15,13 +15,36 @@ import {
   exit_to_app,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useOutsideClick } from '@equinor/eds-utils';
 
 import { Field } from '../../../../types/Field';
 
-import styled from 'styled-components';
-const { spacings, elevation, colors, shape } = tokens;
+import styled, { keyframes } from 'styled-components';
 
+const { spacings, elevation, colors, shape } = tokens;
+const spawnOpen = keyframes`
+    from {
+     max-height: 0px;
+    } 
+    to {
+     max-height: calc(
+    60vh - 2 * ${spacings.comfortable.medium} - 2 *
+      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
+  );
+
+    }
+`;
+const spawnClose = keyframes`
+ from {
+     max-height: calc(
+    60vh - 2 * ${spacings.comfortable.medium} - 2 *
+      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
+  );
+    }
+    to {
+     max-height: 0px;
+    } 
+   
+`;
 const Input = styled(EDSInput)`
   width: 80%;
   background: white;
@@ -36,39 +59,54 @@ const TextContainer = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-  width: 392px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-height: 60vh;
+  min-height: 150px;
+  transform: translate(-50%, -50%);
+  width: 25rem;
+  height: auto;
   padding: ${spacings.comfortable.large};
   box-shadow: ${elevation.raised};
   border-radius: ${shape.corners.borderRadius};
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.large};
   > h3 {
     color: ${colors.text.static_icons__default.hex};
+    margin-bottom: ${spacings.comfortable.medium};
   }
-  > div {
+  > div:nth-child(2) {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
+  gap: 0;
 `;
-
-const ResultMenu = styled.div`
-  position: absolute;
-  left: 24px;
-  top: calc(
-    ${spacings.comfortable.large} + ${spacings.comfortable.medium_small} + 2 *
-      ${shape.icon_button.minHeight}
-  );
+type MenuProps = {
+  open?: boolean;
+};
+const ResultMenu = styled.div<MenuProps>`
   width: calc((25rem - 2 * ${spacings.comfortable.large}) * 0.8);
-  box-shadow: ${elevation.raised};
   background-color: white;
   border-radius: ${shape.corners.borderRadius};
+  height: ${(props) =>
+    props.open
+      ? `calc(
+    60vh - 2 * ${spacings.comfortable.medium} - 2 *
+      ${spacings.comfortable.large} - ${shape.button.minHeight} 
+  )`
+      : 0};
+  transition: height 500ms;
+  overflow: hidden;
 `;
 
 const ResultList = styled.div`
-  max-height: 25vh;
+  height: calc(
+    60vh - 2 * ${spacings.comfortable.medium} - 2 *
+      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
+  ); // max size of the card - gaps, margins, texts, etc.
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -77,19 +115,27 @@ const ResultList = styled.div`
 type MenuItemProps = { active?: boolean };
 const MenuItem = styled.div<MenuItemProps>`
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
-  > div {
-    display: grid;
-    grid-template-columns: 1fr 24px;
-    justify-content: space-between;
-  }
   &:hover {
     background: ${colors.interactive.primary__selected_highlight.hex};
     cursor: pointer;
   }
   background-color: ${(props) =>
     props.active ? `${colors.ui.background__medium.hex}` : 'none'};
-  border-top: 1px solid ${colors.ui.background__light.hex};
-  outline: none !important;
+`;
+
+const MissingAccess = styled.div`
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  height: calc(${spacings.comfortable.medium} + 40px);
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  justify-content: space-between;
+  align-items: center;
+  &:hover {
+    background: ${colors.interactive.primary__selected_highlight.hex};
+    cursor: pointer;
+  }
+
+  border-top: 1px solid ${colors.infographic.primary__moss_green_55.hex};
 `;
 
 export type FieldSelectorType = {
@@ -106,23 +152,9 @@ const SelectorCard: FC<FieldSelectorType> = ({
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Field>();
   const [searchText, setSearchText] = useState<string>('');
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+
   const closeMenu = () => setOpen(false);
   const openMenu = () => setOpen(true);
-
-  useOutsideClick(containerRef.current as HTMLElement, (event: MouseEvent) => {
-    const node = event.target as Node;
-    if (
-      open &&
-      menuRef.current &&
-      !menuRef.current.contains(node) &&
-      !inputRef.current?.contains(node)
-    ) {
-      closeMenu();
-    }
-  });
 
   const handleOnClick = (option: Field) => {
     if (option.name !== selectedOption?.name) {
@@ -157,12 +189,11 @@ const SelectorCard: FC<FieldSelectorType> = ({
   }, [availableFields, searchText, selectedOption]);
 
   return (
-    <div ref={containerRef}>
+    <div>
       <StyledCard data-testid="selectorCard">
         <Typography variant="h3">Please select a field</Typography>
         <div>
           <Input
-            ref={inputRef}
             value={searchText}
             onChange={(e: {
               target: { value: React.SetStateAction<string> };
@@ -203,10 +234,8 @@ const SelectorCard: FC<FieldSelectorType> = ({
             <Icon data={arrow_forward} />
           </Button>
         </div>
-      </StyledCard>
 
-      {open && (
-        <ResultMenu data-testid="resultMenu" ref={menuRef}>
+        <ResultMenu data-testid="resultMenu" open={open}>
           <ResultList>
             {options.map((field) => {
               return (
@@ -223,26 +252,24 @@ const SelectorCard: FC<FieldSelectorType> = ({
             })}
           </ResultList>
           {showAccessITLink && (
-            <MenuItem
+            <MissingAccess
               onClick={() =>
                 window.open('https://accessit.equinor.com/#', '_blank')
               }
             >
-              <div>
-                <TextContainer>
-                  <Typography variant="overline">Missing a field?</Typography>
-                  <Typography variant="h6">Go to AccessIT</Typography>
-                </TextContainer>
-                <Icon
-                  data={exit_to_app}
-                  color={colors.interactive.primary__resting.hex}
-                  size={24}
-                />
-              </div>
-            </MenuItem>
+              <TextContainer>
+                <Typography variant="overline">Missing a field?</Typography>
+                <Typography variant="h6">Go to AccessIT</Typography>
+              </TextContainer>
+              <Icon
+                data={exit_to_app}
+                color={colors.interactive.primary__resting.hex}
+                size={24}
+              />
+            </MissingAccess>
           )}
         </ResultMenu>
-      )}
+      </StyledCard>
     </div>
   );
 };
