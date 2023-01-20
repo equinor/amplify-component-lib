@@ -13,17 +13,21 @@ import styled from 'styled-components';
 const { spacings } = tokens;
 
 const ImageWrapper = styled.div`
-  position: absolute;
-  bottom: -20px;
-  left: 0;
-  width: calc(100% + 20px);
+  margin-top: auto;
+  > svg {
+    margin-bottom: -10px;
+  }
 `;
 
 const Container = styled.div`
   background-color: white;
-  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
   width: 100vw;
-  margin: -${spacings.comfortable.xxx_large};
+  margin: 0 -${spacings.comfortable.xxx_large};
 `;
 
 export type SelectFieldProps = {
