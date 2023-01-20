@@ -7,4 +7,24 @@ function sortByDate(a: Date | string, b: Date | string): number {
   return 0;
 }
 
-export default { sortByDate };
+type WellBore = {
+  wellboreName?: string | null;
+};
+
+function sortByWellboreName(
+  a: string | WellBore,
+  b: string | WellBore
+): number {
+  const firstWellbore = typeof a === 'string' ? a : a.wellboreName;
+  const secondWellbore = typeof b === 'string' ? b : b.wellboreName;
+
+  if (firstWellbore && secondWellbore) {
+    return firstWellbore.localeCompare(secondWellbore, undefined, {
+      numeric: true,
+      sensitivity: 'base',
+    });
+  }
+  return 0;
+}
+
+export default { sortByDate, sortByWellboreName };
