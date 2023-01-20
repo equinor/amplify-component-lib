@@ -1,5 +1,5 @@
 # Base
-FROM node:18 as base
+FROM node:19-alpine as base
 WORKDIR /app
 RUN yarn global add serve
 COPY package*.json ./
