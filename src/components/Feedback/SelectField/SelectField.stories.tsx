@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { Button, Icon } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
 import { Meta, Story } from '@storybook/react';
 
 import { Field } from '../../../types/Field';
+import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
+import TopBar from '../../Navigation/TopBar';
+import Template from '../../Template/Template';
 import SelectField from './SelectField';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -43,7 +48,7 @@ const getMyFields = (): Promise<Field[]> => {
   });
 };
 
-export const Template: Story = () => {
+export const Primary: Story = () => {
   const field = useRef<Field | undefined>(undefined);
   const [fields, setFields] = useState<Field[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -67,12 +72,31 @@ export const Template: Story = () => {
   }, []);
 
   return (
-    <SelectField
-      setField={setField}
-      fields={fields}
-      isLoading={isLoading}
-      onChangedField={onChangedField}
-      finishedText="Taking you to the storybook"
-    />
+    <Template>
+      <TopBar
+        onHeaderClick={function (): void {
+          throw new Error('Function not implemented.');
+        }}
+        applicationIcon={<ApplicationIcon name="acquire" size={40} />}
+        applicationName="App"
+      >
+        <TopBar.Actions>
+          <Button variant="ghost_icon">
+            <Icon data={info_circle} />
+          </Button>
+        </TopBar.Actions>
+      </TopBar>
+      <Template.Container>
+        <Template.Content open={false}>
+          <SelectField
+            setField={setField}
+            fields={fields}
+            isLoading={isLoading}
+            onChangedField={onChangedField}
+            finishedText="Taking you to the storybook"
+          />
+        </Template.Content>
+      </Template.Container>
+    </Template>
   );
 };

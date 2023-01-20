@@ -13,18 +13,21 @@ import styled from 'styled-components';
 const { spacings } = tokens;
 
 const ImageWrapper = styled.div`
-  position: absolute;
-  bottom: -10px;
-  left: 0;
+  margin-top: auto;
+  > svg {
+    margin-bottom: -10px;
+  }
 `;
+
 const Container = styled.div`
-  position: absolute;
-  top: 35vh;
-  left: 50%;
-  transform: translateX(-50%);
+  background-color: white;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium_small};
+  height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
+  width: 100vw;
+  margin: 0 -${spacings.comfortable.xxx_large};
 `;
 
 export type SelectFieldProps = {
@@ -72,22 +75,20 @@ const SelectField: FC<SelectFieldProps> = ({
   }
 
   return (
-    <>
+    <Container>
       <ImageWrapper>
         <Illustration />
       </ImageWrapper>
-      <Container>
-        {!isLoading ? (
-          <SelectorCard
-            availableFields={fields}
-            onSelect={handleClick}
-            showAccessITLink={showAccessITLink}
-          />
-        ) : (
-          <SelectorSkeleton />
-        )}
-      </Container>
-    </>
+      {!isLoading ? (
+        <SelectorCard
+          availableFields={fields}
+          onSelect={handleClick}
+          showAccessITLink={showAccessITLink}
+        />
+      ) : (
+        <SelectorSkeleton />
+      )}
+    </Container>
   );
 };
 
