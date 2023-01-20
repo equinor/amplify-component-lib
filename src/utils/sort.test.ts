@@ -29,3 +29,145 @@ test('sortByDate works as expected with strings', () => {
     expect(firstDate.getTime()).toBeGreaterThanOrEqual(secondDate.getTime());
   }
 });
+
+const allWellbores = [
+  {
+    wellboreName: 'NO 16/2-D-32 T2',
+  },
+  {
+    wellboreName: 'NO 16/2-D-2 T3',
+  },
+  {
+    wellboreName: 'NO 16/3-P-1 HT2',
+  },
+  {
+    wellboreName: 'NO 16/3-O-2 HT3',
+  },
+  {
+    wellboreName: 'NO 16/3-U-1',
+  },
+  {
+    wellboreName: 'NO 16/2-G-3 H',
+  },
+  {
+    wellboreName: 'NO 16/2-D-5',
+  },
+  {
+    wellboreName: 'NO 16/2-D-23',
+  },
+  {
+    wellboreName: 'NO 16/2-D-19',
+  },
+  {
+    wellboreName: 'NO 16/2-D-8',
+  },
+  {
+    wellboreName: 'NO 16/2-17 S',
+  },
+  {
+    wellboreName: 'NO 16/2-D-16',
+  },
+  {
+    wellboreName: 'NO 16/3-U-1 B',
+  },
+  {
+    wellboreName: 'NO 16/2-D-11 T2',
+  },
+  {
+    wellboreName: 'NO 16/2-6',
+  },
+  {
+    wellboreName: 'NO 16/2-7 A',
+  },
+  {
+    wellboreName: 'NO 16/2-D-10 T3',
+  },
+  {
+    wellboreName: 'NO 16/2-D-1',
+  },
+  {
+    wellboreName: 'NO 16/3-U-20',
+  },
+];
+
+const correctlySortedWellbores = [
+  {
+    wellboreName: 'NO 16/2-6',
+  },
+  {
+    wellboreName: 'NO 16/2-7 A',
+  },
+  {
+    wellboreName: 'NO 16/2-17 S',
+  },
+  {
+    wellboreName: 'NO 16/2-D-1',
+  },
+  {
+    wellboreName: 'NO 16/2-D-2 T3',
+  },
+  {
+    wellboreName: 'NO 16/2-D-5',
+  },
+  {
+    wellboreName: 'NO 16/2-D-8',
+  },
+  {
+    wellboreName: 'NO 16/2-D-10 T3',
+  },
+  {
+    wellboreName: 'NO 16/2-D-11 T2',
+  },
+  {
+    wellboreName: 'NO 16/2-D-16',
+  },
+  {
+    wellboreName: 'NO 16/2-D-19',
+  },
+  {
+    wellboreName: 'NO 16/2-D-23',
+  },
+  {
+    wellboreName: 'NO 16/2-D-32 T2',
+  },
+  {
+    wellboreName: 'NO 16/2-G-3 H',
+  },
+  {
+    wellboreName: 'NO 16/3-O-2 HT3',
+  },
+  {
+    wellboreName: 'NO 16/3-P-1 HT2',
+  },
+  {
+    wellboreName: 'NO 16/3-U-1',
+  },
+  {
+    wellboreName: 'NO 16/3-U-1 B',
+  },
+  {
+    wellboreName: 'NO 16/3-U-20',
+  },
+];
+
+test('sortByWellboreName works with wellbore objects', () => {
+  const sortedWellbores = allWellbores.sort(sort.sortByWellboreName);
+
+  for (const [index, wellbore] of sortedWellbores.entries()) {
+    expect(wellbore.wellboreName).toBe(
+      correctlySortedWellbores[index].wellboreName
+    );
+  }
+});
+
+test('sortByWellboreName works with wellbore strings', () => {
+  const allStrings = allWellbores.map((wellbore) => wellbore.wellboreName);
+  const correctlySortedStrings = correctlySortedWellbores.map(
+    (wellbore) => wellbore.wellboreName
+  );
+  const sortedWellbores = allStrings.sort(sort.sortByWellboreName);
+
+  for (const [index, wellbore] of sortedWellbores.entries()) {
+    expect(wellbore).toBe(correctlySortedStrings[index]);
+  }
+});
