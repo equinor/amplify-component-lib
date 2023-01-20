@@ -20,7 +20,7 @@ WORKDIR /app
 RUN yarn run build-storybook
 
 # STAGE 2 => SETUP NGINX and Run
-FROM nginxinc/nginx-unprivileged:stable
+FROM nginxinc/nginx-unprivileged:alpine
 USER 0
 # Clear default nginx html file
 RUN rm -rf /usr/share/nginx/html/*
