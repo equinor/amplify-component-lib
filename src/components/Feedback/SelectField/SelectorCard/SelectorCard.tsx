@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useRef, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import {
   Button,
@@ -18,33 +18,10 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { Field } from '../../../../types/Field';
 
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const { spacings, elevation, colors, shape } = tokens;
-const spawnOpen = keyframes`
-    from {
-     max-height: 0px;
-    } 
-    to {
-     max-height: calc(
-    60vh - 2 * ${spacings.comfortable.medium} - 2 *
-      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
-  );
 
-    }
-`;
-const spawnClose = keyframes`
- from {
-     max-height: calc(
-    60vh - 2 * ${spacings.comfortable.medium} - 2 *
-      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
-  );
-    }
-    to {
-     max-height: 0px;
-    } 
-   
-`;
 const Input = styled(EDSInput)`
   width: 80%;
   background: white;
