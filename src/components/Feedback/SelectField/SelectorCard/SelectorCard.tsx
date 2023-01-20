@@ -85,6 +85,10 @@ const ResultList = styled.div`
     60vh - 2 * ${spacings.comfortable.medium} - 2 *
       ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
   ); // max size of the card - gaps, margins, texts, etc.
+  height: calc(
+    60vh - 2 * ${spacings.comfortable.medium} - 2 *
+      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
+  );
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
