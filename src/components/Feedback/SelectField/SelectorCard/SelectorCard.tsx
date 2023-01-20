@@ -64,6 +64,7 @@ const StyledCard = styled(Card)`
 type MenuProps = {
   open?: boolean;
 };
+
 const ResultMenu = styled.div<MenuProps>`
   width: calc((25rem - 2 * ${spacings.comfortable.large}) * 0.8);
   background-color: white;
@@ -80,10 +81,14 @@ const ResultMenu = styled.div<MenuProps>`
 `;
 
 const ResultList = styled.div`
-  height: calc(
+  max-height: calc(
     60vh - 2 * ${spacings.comfortable.medium} - 2 *
       ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
   ); // max size of the card - gaps, margins, texts, etc.
+  height: calc(
+    60vh - 2 * ${spacings.comfortable.medium} - 2 *
+      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
+  );
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
