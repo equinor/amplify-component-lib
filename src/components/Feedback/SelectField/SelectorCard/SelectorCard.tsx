@@ -91,7 +91,7 @@ const ResultList = styled.div`
   );
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow: auto;
 `;
 
 type MenuItemProps = { active?: boolean };
