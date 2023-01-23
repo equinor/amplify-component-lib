@@ -79,17 +79,13 @@ const ResultMenu = styled.div<MenuProps>`
   transition: height 500ms;
   overflow: hidden;
   > div:first-child {
-    max-height: calc(
-      60vh - 2 * ${spacings.comfortable.medium} - 2 *
-        ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
-    ); // max size of the card - gaps, margins, texts, etc.
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
     height: calc(
       60vh - 2 * ${spacings.comfortable.medium} - 2 *
         ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
     );
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
   }
 `;
 
