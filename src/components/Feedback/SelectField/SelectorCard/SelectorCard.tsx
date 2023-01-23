@@ -78,20 +78,19 @@ const ResultMenu = styled.div<MenuProps>`
       : 0};
   transition: height 500ms;
   overflow: hidden;
-`;
-
-const ResultList = styled.div`
-  max-height: calc(
-    60vh - 2 * ${spacings.comfortable.medium} - 2 *
-      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
-  ); // max size of the card - gaps, margins, texts, etc.
-  height: calc(
-    60vh - 2 * ${spacings.comfortable.medium} - 2 *
-      ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
-  );
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
+  > div:first-child {
+    max-height: calc(
+      60vh - 2 * ${spacings.comfortable.medium} - 2 *
+        ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
+    ); // max size of the card - gaps, margins, texts, etc.
+    height: calc(
+      60vh - 2 * ${spacings.comfortable.medium} - 2 *
+        ${spacings.comfortable.large} - ${shape.button.minHeight} - 30px - 73px
+    );
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
 `;
 
 type MenuItemProps = { active?: boolean };
@@ -218,7 +217,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
         </div>
 
         <ResultMenu data-testid="resultMenu" open={open}>
-          <ResultList>
+          <div>
             {options.map((field) => {
               return (
                 <MenuItem
@@ -232,7 +231,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
                 </MenuItem>
               );
             })}
-          </ResultList>
+          </div>
           {showAccessITLink && (
             <MissingAccess
               onClick={() =>
