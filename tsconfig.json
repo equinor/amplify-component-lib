@@ -8,6 +8,7 @@
     "target": "ES2022",
     "module": "esnext",
     "lib": ["dom", "esnext"],
+    "types": ["node", "vite/client"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
