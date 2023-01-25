@@ -20,19 +20,6 @@ import AuthProviderInner from './AuthProviderInner';
 
 const { msalApp } = auth;
 
-const accounts = msalApp.getAllAccounts();
-if (accounts.length > 0) {
-  msalApp.setActiveAccount(accounts[0]);
-}
-
-msalApp.addEventCallback((event: EventMessage) => {
-  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-    const payload = event.payload as AuthenticationResult;
-    const account = payload.account;
-    msalApp.setActiveAccount(account);
-  }
-});
-
 export type AuthState = 'loading' | 'authorized' | 'unauthorized';
 
 export interface AuthContextType {
@@ -58,23 +45,43 @@ interface AuthProviderProps {
   children: ReactNode;
   loadingComponent: ReactElement;
   unauthorizedComponent: ReactElement;
+  environments: { apiScope: string; clientId: string };
 }
 
 const AuthProvider: FC<AuthProviderProps> = ({
   children,
   loadingComponent,
   unauthorizedComponent,
+  environments,
 }) => {
   const [account, setAccount] = useState<AccountInfo | undefined>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [photo, setPhoto] = useState<string | undefined>();
 
+  const accounts = msalApp(environments.clientId).getAllAccounts();
+  if (accounts.length > 0) {
+    msalApp(environments.clientId).setActiveAccount(accounts[0]);
+  }
+
+  msalApp(environments.clientId).addEventCallback((event: EventMessage) => {
+    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+      const payload = event.payload as AuthenticationResult;
+      const account = payload.account;
+      msalApp(environments.clientId).setActiveAccount(account);
+    }
+  });
+
   return (
     <AuthContext.Provider
-      value={{ roles, account, photo, logout: () => msalApp.logoutRedirect() }}
+      value={{
+        roles,
+        account,
+        photo,
+        logout: () => msalApp(environments.clientId).logoutRedirect(),
+      }}
     >
-      <MsalProvider instance={msalApp}>
+      <MsalProvider instance={msalApp(environments.clientId)}>
         <AuthProviderInner
           loadingComponent={loadingComponent}
           unauthorizedComponent={unauthorizedComponent}
@@ -86,6 +93,7 @@ const AuthProvider: FC<AuthProviderProps> = ({
           setPhoto={setPhoto}
           authState={authState}
           setAuthState={setAuthState}
+          apiScope={environments.apiScope}
         >
           {children}
         </AuthProviderInner>

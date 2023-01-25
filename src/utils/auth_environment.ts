@@ -22,52 +22,32 @@ const getConfig = (param: keyof IConfig): string => {
   return window._env_[param];
 };
 
-const getAppName = (): string => {
-  if (process.env.NODE_ENV === 'development') {
-    const appName = process.env.REACT_APP_NAME;
+const getAppName = (appName: string | undefined): string => {
     if (!appName) {
-      throw Error('REACT_APP_NAME missing from environment');
+       return getConfig('NAME');
     }
     return appName;
-  } else {
-    return getConfig('NAME');
-  }
 };
 
-const getClientId = (): string => {
-  if (process.env.NODE_ENV === 'development') {
-    const clientId = process.env.REACT_APP_CLIENT_ID;
+const getClientId = (clientId: string | undefined): string => {
     if (!clientId) {
-      throw Error('REACT_APP_CLIENT_ID missing from environment');
+      return getConfig('CLIENT_ID');
     }
     return clientId;
-  } else {
-    return getConfig('CLIENT_ID');
-  }
 };
 
-const getApiUrl = (): string => {
-  if (process.env.NODE_ENV === 'development') {
-    const apiUrl = process.env.REACT_APP_API_URL;
+const getApiUrl = (apiUrl: string | undefined): string => {
     if (!apiUrl) {
-      throw Error('REACT_APP_API_URL missing from environment');
+      return getConfig('API_URL');
     }
     return apiUrl;
-  } else {
-    return getConfig('API_URL');
-  }
 };
 
-const getApiScope = (): string => {
-  if (process.env.NODE_ENV === 'development') {
-    const apiUrl = process.env.REACT_APP_API_SCOPE;
-    if (!apiUrl) {
-      throw Error('REACT_APP_API_SCOPE missing from environment');
+const getApiScope = (apiScope: string | undefined): string => {
+    if (!apiScope) {
+      return getConfig('API_SCOPE');
     }
-    return apiUrl;
-  } else {
-    return getConfig('API_SCOPE');
-  }
+    return apiScope;
 };
 
 const GRAPH_ENDPOINTS = {
@@ -85,25 +65,24 @@ const fetchMsGraph = (url: string, accessToken: string) => {
 const GRAPH_SCOPES = {
   OPENID: 'openid',
   PROFILE: 'profile',
-  USER_READ: 'User.Read',
-  API_SCOPE: getApiScope(),
+  USER_READ: 'User.Read'
 };
 
-const GRAPH_REQUESTS = {
-  LOGIN: {
+const GRAPH_REQUESTS_LOGIN = {
     scopes: [GRAPH_SCOPES.OPENID, GRAPH_SCOPES.PROFILE, GRAPH_SCOPES.USER_READ],
-  },
-  PHOTO: {
-    scopes: [GRAPH_SCOPES.USER_READ],
-  },
-  BACKEND: {
-    scopes: [GRAPH_SCOPES.API_SCOPE],
-  },
 };
 
-const msalApp = new PublicClientApplication({
+const GRAPH_REQUESTS_PHOTO = {
+    scopes: [GRAPH_SCOPES.USER_READ],
+};
+
+const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
+    scopes: [apiScope],
+});
+
+const msalApp = (clientId: string) => new PublicClientApplication({
   auth: {
-    clientId: getClientId(),
+    clientId: clientId,
     authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
     redirectUri: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
@@ -120,7 +99,7 @@ const msalApp = new PublicClientApplication({
 
 const acquireToken = async (
   instance: IPublicClientApplication,
-  request = GRAPH_REQUESTS.LOGIN
+  request = GRAPH_REQUESTS_LOGIN
 ) => {
   return instance.acquireTokenSilent({
     ...request,
@@ -140,7 +119,9 @@ const isReaderOnly = (roles: string[] | undefined) => {
 export const auth = {
   fetchMsGraph,
   GRAPH_SCOPES,
-  GRAPH_REQUESTS,
+  GRAPH_REQUESTS_LOGIN,
+  GRAPH_REQUESTS_PHOTO,
+  GRAPH_REQUESTS_BACKEND,
   GRAPH_ENDPOINTS,
   msalApp,
   acquireToken,

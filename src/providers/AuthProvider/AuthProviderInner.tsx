@@ -18,7 +18,14 @@ interface ExtendedJwtPayload extends JwtPayload {
   roles: string[];
 }
 
-const { GRAPH_ENDPOINTS, GRAPH_REQUESTS, fetchMsGraph, acquireToken } = auth;
+const {
+  GRAPH_ENDPOINTS,
+  GRAPH_REQUESTS_LOGIN,
+  GRAPH_REQUESTS_PHOTO,
+  GRAPH_REQUESTS_BACKEND,
+  fetchMsGraph,
+  acquireToken,
+} = auth;
 
 export interface AuthProviderInnerProps {
   loadingComponent: ReactElement;
@@ -32,6 +39,7 @@ export interface AuthProviderInnerProps {
   setRoles: (val: string[] | undefined) => void;
   authState: AuthState;
   setAuthState: (val: AuthState) => void;
+  apiScope: string;
 }
 
 const AuthProviderInner: FC<AuthProviderInnerProps> = ({
@@ -46,11 +54,12 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   setRoles,
   authState,
   setAuthState,
+  apiScope,
 }) => {
   const { instance, inProgress } = useMsal();
   const { login, error } = useMsalAuthentication(
     InteractionType.Silent,
-    GRAPH_REQUESTS.LOGIN
+    GRAPH_REQUESTS_LOGIN
   );
 
   useEffect(() => {
@@ -58,7 +67,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       console.error('Auth error!');
       console.error(error);
       console.log('Trying to log the user in with a redirect...');
-      login(InteractionType.Redirect, GRAPH_REQUESTS.LOGIN);
+      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN);
     }
   }, [error, login]);
 
@@ -79,7 +88,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       !roles
     ) {
       // Get photo
-      acquireToken(instance, GRAPH_REQUESTS.PHOTO).then(
+      acquireToken(instance, GRAPH_REQUESTS_PHOTO).then(
         async (tokenResponse) => {
           if (tokenResponse) {
             const graphPhoto = await fetchMsGraph(
@@ -104,7 +113,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       );
 
       // Get roles
-      acquireToken(instance, GRAPH_REQUESTS.BACKEND)
+      acquireToken(instance, GRAPH_REQUESTS_BACKEND(apiScope))
         .then(async (tokenResponse) => {
           if (tokenResponse && tokenResponse.accessToken) {
             const accessToken: ExtendedJwtPayload = jwt_decode(
@@ -133,6 +142,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     setAuthState,
     setPhoto,
     setRoles,
+    apiScope,
   ]);
 
   if (authState === 'loading') return loadingComponent;
