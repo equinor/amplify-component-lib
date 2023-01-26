@@ -21,7 +21,7 @@ module.exports = {
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'jest', 'simple-import-sort'],
   rules: {
-    'no-console': 'warn',
+    'no-console': ["warn", { allow: ["warn", "error"] }],
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react-hooks/exhaustive-deps': 'error',
