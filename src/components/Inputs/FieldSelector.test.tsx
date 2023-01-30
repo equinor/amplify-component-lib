@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent, vi } from '../../test-utils';
 import FieldSelector, { FieldSelectorType } from './FieldSelector';
 
 function fakeField() {
@@ -16,7 +16,7 @@ function fakeProps(): FieldSelectorType {
   return {
     currentField: fields[0],
     availableFields: fields,
-    onSelect: jest.fn(),
+    onSelect: vi.fn(),
   };
 }
 

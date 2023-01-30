@@ -1,7 +1,7 @@
 import { filter_list } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent, vi } from '../../test-utils';
 import SingleFilterMenu from './SingleFilterMenu';
 
 function getTestProps(): {
@@ -16,7 +16,7 @@ function getTestProps(): {
       .map(() => faker.datatype.uuid()),
     icon: filter_list,
     menuTitle: faker.datatype.uuid(),
-    onChange: jest.fn(),
+    onChange: vi.fn(),
   };
 }
 

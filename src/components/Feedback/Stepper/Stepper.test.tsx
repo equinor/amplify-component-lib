@@ -1,13 +1,13 @@
 import { check } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import Stepper, { StepperProps } from './Stepper';
 
 function fakeProps(): StepperProps {
   return {
     current: 0,
-    setCurrent: jest.fn(),
+    setCurrent: vi.fn(),
     steps: faker.lorem
       .words(faker.datatype.number({ min: 2, max: 8 }))
       .split(' '),

@@ -1,14 +1,14 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import EditableTextEntry, { EditableTextEntryProps } from './EditableTextEntry';
 
 function fakeProps(): EditableTextEntryProps {
   return {
     id: faker.datatype.uuid(),
     body: faker.lorem.word(),
-    onSave: jest.fn(),
-    onDelete: jest.fn(),
+    onSave: vi.fn(),
+    onDelete: vi.fn(),
   };
 }
 

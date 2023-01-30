@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent, vi } from '../../test-utils';
 import ContentMenu, { ContentMenuProps } from './ContentMenu';
 
 function fakeItem(): { label: string; value: string } {
@@ -19,7 +19,7 @@ function fakeProps(): ContentMenuProps {
     items,
     value:
       items[faker.datatype.number({ min: 0, max: items.length - 1 })].value,
-    onChange: jest.fn(),
+    onChange: vi.fn(),
   };
 }
 

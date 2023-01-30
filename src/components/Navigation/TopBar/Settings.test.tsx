@@ -1,9 +1,9 @@
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import Settings, { ISettingsProps } from './Settings';
 
 test('Settings renders as expected', async () => {
   const theme = 'light';
-  const setTheme = jest.fn();
+  const setTheme = vi.fn();
   const settingsOptions: ISettingsProps = {
     allSettings: [
       {
@@ -42,7 +42,7 @@ test('Settings renders as expected', async () => {
 
 test('Radios are disabled according to prop', async () => {
   const theme = 'light';
-  const setTheme = jest.fn();
+  const setTheme = vi.fn();
   const settingsOptions: ISettingsProps = {
     allSettings: [
       {

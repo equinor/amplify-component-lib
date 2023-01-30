@@ -3,7 +3,7 @@ import React from 'react';
 import { add, home, star_half } from '@equinor/eds-icons';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import { MenuItemType } from './MenuItem';
 import SideBar from '.';
 
@@ -12,13 +12,13 @@ const defaultMenuItems: MenuItemType[] = [
     name: 'Home',
     icon: home,
     link: 'home',
-    onClick: jest.fn(),
+    onClick: vi.fn(),
   },
   {
     name: 'Another Link',
     icon: star_half,
     link: 'another',
-    onClick: jest.fn(),
+    onClick: vi.fn(),
   },
 ];
 
@@ -72,7 +72,7 @@ test('Renders open width when localStorage has it set to open', () => {
 });
 
 test('Disabled create new button doesnt fire event', async () => {
-  const createNewFn = jest.fn();
+  const createNewFn = vi.fn();
   render(
     <SideBar createLabel="Create new" onCreate={createNewFn} createDisabled>
       {defaultMenuItems.map((m) => (

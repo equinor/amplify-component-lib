@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent, waitFor } from '../../../test-utils';
+import { render, screen, userEvent, vi, waitFor } from '../../../test-utils';
 import { Field } from '../../../types/Field';
 import SelectField from './SelectField';
 
@@ -17,8 +17,6 @@ function fakeFields(): Field[] {
   return fields;
 }
 
-jest.setTimeout(20000);
-
 test('selecting field works as expected', async () => {
   let field: Field | undefined = undefined;
   const fields = fakeFields();
@@ -28,7 +26,7 @@ test('selecting field works as expected', async () => {
     field = value;
   };
 
-  const onChangedField = jest.fn();
+  const onChangedField = vi.fn();
 
   const user = userEvent.setup();
 
@@ -82,4 +80,4 @@ test('selecting field works as expected', async () => {
   expect(field).not.toBeUndefined();
   const uuid = (field as unknown as Field).uuid;
   expect(uuid).toBe(fields[0].uuid);
-});
+}, 15000); // Setting timeout for this test to be 15 seconds

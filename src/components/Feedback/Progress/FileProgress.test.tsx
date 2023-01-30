@@ -4,14 +4,14 @@ import {
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import FileProgress, { FileProgressProps } from './FileProgress';
 
 test('Shows progress bar loading as expected', async () => {
   const props: FileProgressProps = {
     name: faker.animal.fish(),
-    onDelete: jest.fn(),
-    onAbort: jest.fn(),
+    onDelete: vi.fn(),
+    onAbort: vi.fn(),
     loading: true,
   };
   render(<FileProgress {...props} />);
@@ -28,8 +28,8 @@ test('Calls onAbort when aborting in progress upload', async () => {
   const user = userEvent.setup();
   const props: FileProgressProps = {
     name: faker.animal.fish(),
-    onDelete: jest.fn(),
-    onAbort: jest.fn(),
+    onDelete: vi.fn(),
+    onAbort: vi.fn(),
     loading: true,
   };
   render(<FileProgress {...props} />);
@@ -43,8 +43,8 @@ test('Calls onAbort when aborting in progress upload', async () => {
 test('Shows progress bar loading as expected when giving progress number', async () => {
   const props: FileProgressProps = {
     name: faker.animal.fish(),
-    onDelete: jest.fn(),
-    onAbort: jest.fn(),
+    onDelete: vi.fn(),
+    onAbort: vi.fn(),
     loading: true,
     progress: faker.datatype.number({ min: 1, max: 99 }),
   };
@@ -59,8 +59,8 @@ test('Shows progress bar loading as expected when giving progress number', async
 test('Shows error message', async () => {
   const props: FileProgressProps = {
     name: faker.animal.fish(),
-    onDelete: jest.fn(),
-    onAbort: jest.fn(),
+    onDelete: vi.fn(),
+    onAbort: vi.fn(),
     loading: false,
     error: true,
     errorMsg: faker.lorem.sentence(),
@@ -73,8 +73,8 @@ test('Shows error message', async () => {
 test('Shows correct content when successful', async () => {
   const props: FileProgressProps = {
     name: faker.animal.fish(),
-    onDelete: jest.fn(),
-    onAbort: jest.fn(),
+    onDelete: vi.fn(),
+    onAbort: vi.fn(),
     loading: false,
   };
   render(<FileProgress {...props} />);
@@ -87,8 +87,8 @@ test('Calls onDelete correctly', async () => {
   const user = userEvent.setup();
   const props: FileProgressProps = {
     name: faker.animal.fish(),
-    onDelete: jest.fn(),
-    onAbort: jest.fn(),
+    onDelete: vi.fn(),
+    onAbort: vi.fn(),
     loading: false,
   };
   render(<FileProgress {...props} />);

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import OptionDrawer, {
   OptionDrawerProps,
   ToggleEventProps,
@@ -41,7 +41,7 @@ function fakeProps(
 
   return {
     item,
-    onToggle: jest.fn(),
+    onToggle: vi.fn(),
     singleSelect,
   };
 }
@@ -69,7 +69,7 @@ test('Works correctly when clicking item with no children', async () => {
 test('Works correctly when clicking children', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  const counter = jest.fn();
+  const counter = vi.fn();
   let items: { id: string; label: string }[] = [{ id: '', label: '' }];
   let toggle: boolean | undefined = undefined;
   const handleOnToggle = (
@@ -96,7 +96,7 @@ test('Works correctly when clicking children', async () => {
 test('Works correctly when clicking grand child', async () => {
   const props = fakeProps(false, true, true);
   const user = userEvent.setup();
-  const counter = jest.fn();
+  const counter = vi.fn();
   let items: { id: string; label: string }[] = [{ id: '', label: '' }];
   let toggle: boolean | undefined = undefined;
   const handleOnToggle = (

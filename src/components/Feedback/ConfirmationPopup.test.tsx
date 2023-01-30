@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@equinor/eds-core-react';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent, vi } from '../../test-utils';
 import ConfirmationPopup from './ConfirmationPopup';
 
 test('renders when show is true', () => {
@@ -49,7 +49,7 @@ test('renders buttons when value is given', () => {
 });
 
 test('triggers callback functions on actions given', async () => {
-  const cb = jest.fn();
+  const cb = vi.fn();
 
   const buttons = [
     <Button key="cancel" variant="ghost" onClick={cb}>

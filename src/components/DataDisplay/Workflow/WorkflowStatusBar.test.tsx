@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen } from '../../../test-utils';
+import { render, screen, test } from '../../../test-utils';
 import WorkflowStatusBar, { WorkflowStatusBarProps } from './WorkflowStatusBar';
 
 function fakeOption() {
