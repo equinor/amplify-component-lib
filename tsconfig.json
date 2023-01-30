@@ -13,13 +13,13 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
-    "sourceMap": false
+    "sourceMap": true,
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

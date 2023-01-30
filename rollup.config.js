@@ -1,35 +1,38 @@
-import { babel } from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 
 import pkg from './package.json';
 
 import del from 'rollup-plugin-delete';
 
-const peerDeps = Object.keys({ ...pkg.peerDependencies, ...pkg.dependencies });
-const extensions = ['.jsx', '.js', '.tsx', '.ts'];
+const externalDependencies = Object.keys({
+  ...pkg.peerDependencies,
+  ...pkg.dependencies,
+});
+
+const extensions = ['.tsx', '.ts'];
 
 export default [
   {
     input: ['./src/index.ts'],
-    external: [/@babel\/runtime/, 'react/jsx-runtime', ...peerDeps],
+    external: ['@babel/runtime', ...externalDependencies],
     plugins: [
       del({ targets: 'dist/*', runOnce: true }),
       resolve({ extensions }),
       commonjs(),
-      babel({
-        babelHelpers: 'runtime',
-        extensions,
+      typescript({
+        tsconfig: './tsconfig.build.json',
       }),
+      terser(),
     ],
     output: [
       {
-        dir: 'dist/esm',
-        preserveModules: true,
-        preserveModulesRoot: 'src',
+        dir: pkg.publishConfig.main,
         format: 'es',
+        sourcemap: true,
       },
-      { file: pkg.publishConfig.main, format: 'cjs' },
     ],
   },
 ];

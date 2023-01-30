@@ -23,31 +23,31 @@ const getConfig = (param: keyof IConfig): string => {
 };
 
 const getAppName = (appName: string | undefined): string => {
-    if (!appName) {
-       return getConfig('NAME');
-    }
-    return appName;
+  if (!appName) {
+    return getConfig('NAME');
+  }
+  return appName;
 };
 
 const getClientId = (clientId: string | undefined): string => {
-    if (!clientId) {
-      return getConfig('CLIENT_ID');
-    }
-    return clientId;
+  if (!clientId) {
+    return getConfig('CLIENT_ID');
+  }
+  return clientId;
 };
 
 const getApiUrl = (apiUrl: string | undefined): string => {
-    if (!apiUrl) {
-      return getConfig('API_URL');
-    }
-    return apiUrl;
+  if (!apiUrl) {
+    return getConfig('API_URL');
+  }
+  return apiUrl;
 };
 
 const getApiScope = (apiScope: string | undefined): string => {
-    if (!apiScope) {
-      return getConfig('API_SCOPE');
-    }
-    return apiScope;
+  if (!apiScope) {
+    return getConfig('API_SCOPE');
+  }
+  return apiScope;
 };
 
 const GRAPH_ENDPOINTS = {
@@ -65,37 +65,39 @@ const fetchMsGraph = (url: string, accessToken: string) => {
 const GRAPH_SCOPES = {
   OPENID: 'openid',
   PROFILE: 'profile',
-  USER_READ: 'User.Read'
+  USER_READ: 'User.Read',
 };
 
 const GRAPH_REQUESTS_LOGIN = {
-    scopes: [GRAPH_SCOPES.OPENID, GRAPH_SCOPES.PROFILE, GRAPH_SCOPES.USER_READ],
+  scopes: [GRAPH_SCOPES.OPENID, GRAPH_SCOPES.PROFILE, GRAPH_SCOPES.USER_READ],
 };
 
 const GRAPH_REQUESTS_PHOTO = {
-    scopes: [GRAPH_SCOPES.USER_READ],
+  scopes: [GRAPH_SCOPES.USER_READ],
 };
 
 const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
-    scopes: [apiScope],
+  scopes: [apiScope],
 });
 
-const msalApp = (clientId: string) => new PublicClientApplication({
-  auth: {
-    clientId: clientId,
-    authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
-    redirectUri: window.location.origin,
-    postLogoutRedirectUri: window.location.origin,
-    navigateToLoginRequestUrl: false,
-  },
-  cache: {
-    cacheLocation: 'localStorage',
-    storeAuthStateInCookie: false,
-  },
-  system: {
-    iframeHashTimeout: 10000,
-  },
-});
+const msalApp = (clientId: string) =>
+  new PublicClientApplication({
+    auth: {
+      clientId: clientId,
+      authority:
+        'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
+      redirectUri: window.location.origin,
+      postLogoutRedirectUri: window.location.origin,
+      navigateToLoginRequestUrl: false,
+    },
+    cache: {
+      cacheLocation: 'localStorage',
+      storeAuthStateInCookie: false,
+    },
+    system: {
+      iframeHashTimeout: 10000,
+    },
+  });
 
 const acquireToken = async (
   instance: IPublicClientApplication,
