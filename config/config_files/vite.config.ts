@@ -27,6 +27,7 @@ export default ({ mode }: { mode: string }) => {
       globals: true,
       environment: 'jsdom',
       passWithNoTests: true,
+      setupFiles: ['src/setupTests.ts'],
     },
   });
 };
