@@ -11,4 +11,8 @@ module.exports = {
   core: {
     builder: '@storybook/builder-vite',
   },
+  typescript: { reactDocgen: 'none' },
+  build: {
+    sourcemap: false,
+  },
 };
