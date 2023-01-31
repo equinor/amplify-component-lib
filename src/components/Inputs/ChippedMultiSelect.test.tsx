@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent, vi } from '../../test-utils';
 import ChippedMultiSelect from './ChippedMultiSelect';
 
 function mockedProps(items?: string[], values?: string[]) {
@@ -9,7 +9,7 @@ function mockedProps(items?: string[], values?: string[]) {
     placeholder: faker.internet.ipv6(),
     items:
       items ?? `${faker.internet.ipv6()}${faker.internet.ipv6()}`.split(':'),
-    onSelect: jest.fn(),
+    onSelect: vi.fn(),
     values: values ?? [],
   };
 }

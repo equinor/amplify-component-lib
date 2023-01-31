@@ -7,9 +7,8 @@ module.exports = {
     '@storybook/addon-docs',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/preset-create-react-app',
   ],
   core: {
-    builder: 'webpack5',
+    builder: '@storybook/builder-vite',
   },
 };

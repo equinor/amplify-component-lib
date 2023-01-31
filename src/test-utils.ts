@@ -1,8 +1,7 @@
-// test-utils.js
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import '@testing-library/jest-dom/extend-expect';
+import { test, vi } from 'vitest';
 
 const customRender = (ui: React.ReactElement, options?: any) =>
   render(ui, options);
@@ -12,6 +11,9 @@ export * from '@testing-library/react';
 
 // override render method
 export { customRender as render, userEvent };
+
+// re-export vitest stuff
+export { test, vi };
 
 // Add ResizeObserver
 global.ResizeObserver = require('resize-observer-polyfill');

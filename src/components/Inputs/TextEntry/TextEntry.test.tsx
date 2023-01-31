@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import TextEntry, { TextEntryProps } from './TextEntry';
 
 function fakeProps(): TextEntryProps {
   return {
     body: faker.lorem.sentences(1),
-    onClick: jest.fn(),
+    onClick: vi.fn(),
   };
 }
 

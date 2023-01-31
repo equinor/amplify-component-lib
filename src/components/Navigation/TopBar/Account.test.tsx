@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import { Account, IAccountProps } from './Account';
 
 function fakeProps(withAvatar = false): IAccountProps {
@@ -13,7 +13,7 @@ function fakeProps(withAvatar = false): IAccountProps {
       name: faker.animal.dog(),
       localAccountId: faker.datatype.uuid(),
     },
-    logout: jest.fn(),
+    logout: vi.fn(),
     photo: withAvatar ? faker.image.avatar() : undefined,
   };
 }

@@ -8,7 +8,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:jest/recommended',
     'plugin:react/recommended',
   ],
   parser: '@typescript-eslint/parser',
@@ -19,7 +18,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jest', 'simple-import-sort'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',

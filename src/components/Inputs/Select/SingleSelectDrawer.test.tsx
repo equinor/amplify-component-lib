@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent, vi } from '../../../test-utils';
 import SingleSelectDrawer, {
   SingleSelectDrawerProps,
 } from './SingleSelectDrawer';
@@ -25,7 +25,7 @@ function fakeProps(): SingleSelectDrawerProps<{
     items: fakeItems,
     label: faker.lorem.words(2),
     placeholder: faker.lorem.sentence(),
-    onChange: jest.fn(),
+    onChange: vi.fn(),
     id: faker.datatype.uuid(),
     initialItem: undefined,
   };

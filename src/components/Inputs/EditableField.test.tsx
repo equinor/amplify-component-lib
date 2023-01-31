@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent, vi } from '../../test-utils';
 import EditableField from './EditableField';
 
 test('renders textbox', async () => {
@@ -13,7 +13,7 @@ test('renders textbox', async () => {
 });
 
 test('renders textbox when clicked', async () => {
-  const cb = jest.fn();
+  const cb = vi.fn();
   render(
     <EditableField editable={true} onChange={cb} value="Test"></EditableField>
   );
@@ -29,7 +29,7 @@ test('renders textbox when clicked', async () => {
 });
 
 test('Returns to display mode with onchange after write and deselect', async () => {
-  const cb = jest.fn();
+  const cb = vi.fn();
   render(
     <EditableField editable={true} onChange={cb} value="Test"></EditableField>
   );
