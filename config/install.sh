@@ -21,6 +21,14 @@ do
   curl -s $line > $fileName
 done
 
+printf -- "Downloading setupLocalhost.mjs file...\n"
+
+cd ./src || return
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
+
+cd ..
+
 printf -- "Downloading nginx.conf proxy config...\n"
 
 cd ./proxy || (mkdir proxy && cd ./proxy || return)

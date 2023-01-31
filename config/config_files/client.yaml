@@ -127,6 +127,14 @@ jobs:
         working-directory: client
         run: diff env.sh <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/env.sh)
 
+      - name: Compare remote vite.config.ts to local
+        working-directory: client
+        run: diff vite.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite.config.ts)
+
       - name: Compare remote proxy/nginx.conf to local
         working-directory: client/proxy
         run: diff nginx.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf)
+
+      - name: Compare remote src/setupLocalhost.mjs to local
+        working-directory: client/src
+        run: diff setupLocalhost.mjs <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs)
