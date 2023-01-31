@@ -8,7 +8,8 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
+    "types": ["vite/client", "vite-plugin-svgr/client"],
+    "module": "ESNEXT",
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
@@ -16,7 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "target": "es6"
+    "target": "ESNEXT"
   },
   "include": ["src"]
 }

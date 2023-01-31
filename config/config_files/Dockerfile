@@ -1,35 +1,26 @@
 # Base
 FROM node:19-alpine as base
 WORKDIR /app
-RUN npm install -g http-server@14.0.0
 COPY package.json ./
 COPY yarn.lock ./
 COPY tsconfig.json ./
-COPY .eslintrc.js ./
+COPY vite.config.ts ./
+COPY index.html ./
+COPY src ./src
+COPY public ./public
 
 # Dependencies
-FROM base as dependencies
-WORKDIR /app
 RUN npm install --frozen-lockfile --ignore-scripts --legacy-peer-deps
-COPY src src
-COPY public public
-
-# Run tests
-FROM dependencies as test
-WORKDIR /app
-RUN CI=true yarn test
 
 # Build
-FROM dependencies as builder
-WORKDIR /app
-RUN yarn build -s
+RUN npm run build
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine
 USER 0
 # Clear default nginx html file
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=base /app/dist /usr/share/nginx/html
 COPY proxy/nginx.conf /etc/nginx/conf.d/default.conf.template
 
 EXPOSE 5001
