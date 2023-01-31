@@ -27,6 +27,10 @@ cd ./src || return
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
 
+printf -- "Downloading setupTests.ts file...\n"
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupTests.ts" > setupTests.ts
+
 cd ..
 
 printf -- "Downloading nginx.conf proxy config...\n"
