@@ -1,4 +1,4 @@
-import { render, screen, userEvent, vi } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../test-utils';
 import Settings, { ISettingsProps } from './Settings';
 
 test('Settings renders as expected', async () => {

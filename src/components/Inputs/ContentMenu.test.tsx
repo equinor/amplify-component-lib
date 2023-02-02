@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent, vi } from '../../test-utils';
+import { render, screen, userEvent } from '../../test-utils';
 import ContentMenu, { ContentMenuProps } from './ContentMenu';
 
 function fakeItem(): { label: string; value: string } {

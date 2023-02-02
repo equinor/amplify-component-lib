@@ -3,7 +3,7 @@ import React from 'react';
 import { add, home, star_half } from '@equinor/eds-icons';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
-import { render, screen, userEvent, vi } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../test-utils';
 import { MenuItemType } from './MenuItem';
 import SideBar from '.';
 
