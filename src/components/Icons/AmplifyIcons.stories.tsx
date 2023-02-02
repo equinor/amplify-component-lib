@@ -4,12 +4,14 @@ import { Meta, Story } from '@storybook/react';
 import {
   amplify_lwd,
   amplify_wellbore,
-  amplify_wireline,
+  amplify_wireline_cased_hole,
+  amplify_wireline_open_hole,
 } from './AmplifyIcons';
 
 const allIcons = {
   amplify_wellbore: amplify_wellbore,
-  amplify_wireline: amplify_wireline,
+  amplify_wireline_open_hole: amplify_wireline_open_hole,
+  amplify_wireline_cased_hole: amplify_wireline_cased_hole,
   amplify_lwd: amplify_lwd,
 };
 
@@ -30,7 +32,12 @@ export default {
     rotation: { control: 'radio', options: [0, 90, 180, 270] },
     data: {
       control: 'radio',
-      options: ['amplify_wellbore', 'amplify_wireline', 'amplify_lwd'],
+      options: [
+        'amplify_wellbore',
+        'amplify_wireline_open_hole',
+        'amplify_wireline_cased_hole',
+        'amplify_lwd',
+      ],
     },
   },
   args: {
