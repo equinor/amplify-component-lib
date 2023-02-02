@@ -4,7 +4,9 @@ import Fallback from '../Fallback';
 import { SvgIconProps } from '../index';
 import Acquire from './Acquire';
 import Dasha from './Dasha';
+import DepthConversion from './DepthConversion';
 import FourDInsight from './FourDInsight';
+import LoggingQualification from './LoggingQualification';
 import Portal from './Portal';
 import Recap from './Recap';
 
@@ -14,7 +16,9 @@ export interface ApplicationIconProps {
     | '4dinsight'
     | 'recap'
     | 'dasha'
+    | 'depth-conversion'
     | 'portal'
+    | 'logging-qualification'
     | 'default'
     | string;
   size?: 16 | 24 | 32 | 40 | 48 | 96;
@@ -29,6 +33,8 @@ const apps: IApplicationIconData[] = [
   { appName: 'acquire', component: Acquire },
   { appName: '4dinsight', component: FourDInsight },
   { appName: 'dasha', component: Dasha },
+  { appName: 'depth-conversion', component: DepthConversion },
+  { appName: 'logging-qualification', component: LoggingQualification },
   { appName: 'recap', component: Recap },
 ];
 

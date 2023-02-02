@@ -9,6 +9,8 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'recap',
   'dasha',
   'portal',
+  'logging-qualification',
+  'depth-conversion',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48, 96];
 
