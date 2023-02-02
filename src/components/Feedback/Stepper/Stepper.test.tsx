@@ -8,9 +8,9 @@ function fakeProps(): StepperProps {
   return {
     current: 0,
     setCurrent: vi.fn(),
-    steps: faker.lorem
-      .words(faker.datatype.number({ min: 2, max: 8 }))
-      .split(' '),
+    steps: new Array(faker.datatype.number({ min: 3 }))
+      .fill(0)
+      .map(() => faker.datatype.uuid()),
   };
 }
 
