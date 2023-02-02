@@ -1,8 +1,8 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { SvgIconProps } from '../index';
 
-const Dasha: React.FC<SvgIconProps> = ({ size }) => (
+const Dasha: FC<SvgIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}

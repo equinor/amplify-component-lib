@@ -8,7 +8,16 @@ export default {
   argTypes: {
     name: {
       control: 'radio',
-      options: ['4dinsight', 'acquire', 'dasha', 'recap', 'portal', undefined],
+      options: [
+        '4dinsight',
+        'acquire',
+        'dasha',
+        'depth-conversion',
+        'recap',
+        'portal',
+        'logging-qualification',
+        undefined,
+      ],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
   },
