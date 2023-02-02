@@ -14,7 +14,11 @@ export default ({ mode }: { mode: string }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: 'src/setupTests.ts',
+      setupFiles: [
+        'src/tests/setupTests.ts',
+        'src/tests/mockLocalStorage.ts',
+        'src/tests/mockResizeObserver.ts',
+      ],
     },
   });
 };

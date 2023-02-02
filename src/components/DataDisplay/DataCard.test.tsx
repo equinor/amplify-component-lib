@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '../../test-utils';
+import { render } from '../../tests/test-utils';
 import DataCard from './DataCard';
 
 const dummyData = {

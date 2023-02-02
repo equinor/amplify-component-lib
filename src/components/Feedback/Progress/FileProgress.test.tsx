@@ -4,7 +4,7 @@ import {
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../tests/test-utils';
 import FileProgress, { FileProgressProps } from './FileProgress';
 
 test('Shows progress bar loading as expected', async () => {

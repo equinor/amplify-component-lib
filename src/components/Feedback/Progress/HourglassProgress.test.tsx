@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import { render } from '../../../test-utils';
+import { render } from '../../../tests/test-utils';
 import HourglassProgress, { HourglassProgressProps } from './HourglassProgress';
 
 const { colors } = tokens;
