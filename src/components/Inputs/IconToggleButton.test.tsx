@@ -1,6 +1,6 @@
 import { power_button, power_button_off } from '@equinor/eds-icons';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent } from '../../tests/test-utils';
 import IconToggleButton, { IconToggleButtonProps } from './IconToggleButton';
 
 function fakeProps(): IconToggleButtonProps {

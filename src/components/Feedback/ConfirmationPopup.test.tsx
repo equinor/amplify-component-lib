@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@equinor/eds-core-react';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent } from '../../tests/test-utils';
 import ConfirmationPopup from './ConfirmationPopup';
 
 test('renders when show is true', () => {

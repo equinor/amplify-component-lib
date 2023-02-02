@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@equinor/eds-core-react';
 
-import { render, screen } from '../../test-utils';
+import { render, screen } from '../../tests/test-utils';
 import InfoElement from './InfoElement';
 
 test('renders title correctly', () => {
