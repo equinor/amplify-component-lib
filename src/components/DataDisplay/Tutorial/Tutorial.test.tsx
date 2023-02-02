@@ -82,7 +82,6 @@ test('Clicking skip closes tutorial', async () => {
   await user.click(screen.getByRole('button', { name: /skip/i }));
 
   // EDS dialog container should now be empty
-  expect(
-    container.children[container.children.length - 1]
-  ).toBeEmptyDOMElement();
+  const dialogContainer = container.nextSibling;
+  expect(dialogContainer).toBeEmptyDOMElement();
 });
