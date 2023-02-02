@@ -17,7 +17,7 @@ function fakeFields(): Field[] {
   return fields;
 }
 
-test('selecting field works as expected', async () => {
+test('Selecting field works as expected', async () => {
   let field: Field | undefined = undefined;
   const fields = fakeFields();
   const finishedText = faker.lorem.sentence();
