@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, userEvent, vi } from '../../test-utils';
+import { render, screen, userEvent } from '../../test-utils';
 import EditableField from './EditableField';
 
 test('renders textbox', async () => {

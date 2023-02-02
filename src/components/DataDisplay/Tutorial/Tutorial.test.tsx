@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import TutorialStepsProvider from '../../../providers/TutorialStepsProvider';
-import { render, screen, test, userEvent } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../test-utils';
 import Tutorial, { IStep, TutorialProps } from './Tutorial';
 
 function fakeStep(): IStep {

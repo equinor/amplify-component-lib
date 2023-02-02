@@ -1,16 +1,21 @@
 import { check } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent, vi } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../test-utils';
 import Stepper, { StepperProps } from './Stepper';
 
 function fakeProps(): StepperProps {
+  const steps: string[] = [];
+  let i = 0;
+  const stepAmount = faker.datatype.number({ min: 2, max: 30 });
+  while (i < stepAmount) {
+    i += 1;
+    steps.push(faker.datatype.uuid());
+  }
   return {
     current: 0,
     setCurrent: vi.fn(),
-    steps: new Array(faker.datatype.number({ min: 3 }))
-      .fill(0)
-      .map(() => faker.datatype.uuid()),
+    steps,
   };
 }
 

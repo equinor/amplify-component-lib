@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { act, render, screen, userEvent, vi } from '../../../test-utils';
+import { act, render, screen, userEvent } from '../../../test-utils';
 import CommentField, { CommentFieldProps } from './CommentField';
 
 function fakeProps(): CommentFieldProps {
