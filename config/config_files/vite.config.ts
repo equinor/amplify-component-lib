@@ -13,7 +13,6 @@ export default ({ mode }: { mode: string }) => {
   return defineConfig({
     plugins: [react(), viteTsconfigPaths()],
     server: {
-      open: true,
       port: 3000,
       proxy: {
         '/api': {
