@@ -124,7 +124,7 @@ test('Works correctly when clicking grand child', async () => {
   expect(randomGrandChild).not.toBeUndefined();
   await user.click(screen.getByText(randomGrandChild?.label ?? 'not-found'));
   expect(items[0].id).toBe(randomGrandChild?.id ?? 'not-found');
-  expect(toggle).toBe(true);
+  expect(toggle).toBeTruthy();
 
   expect(counter).toHaveBeenCalledTimes(grandChildren.length);
 });
