@@ -3,7 +3,7 @@ import React from 'react';
 import { add, home, star_half } from '@equinor/eds-icons';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
-import { render, screen, userEvent, vi } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../tests/test-utils';
 import { MenuItemType } from './MenuItem';
 import SideBar from '.';
 
@@ -67,8 +67,7 @@ test('Renders open width when localStorage has it set to open', () => {
       wrapper: SideBarProvider,
     }
   );
-
-  expect(screen.getAllByRole('generic')[2]).toHaveStyle({ width: '256px' });
+  expect(screen.getByTestId('sidebar')).toHaveStyle({ width: '256px' });
 });
 
 test('Disabled create new button doesnt fire event', async () => {

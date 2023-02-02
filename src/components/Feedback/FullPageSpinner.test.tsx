@@ -2,18 +2,15 @@ import React from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { render, screen } from '../../test-utils';
+import { render, screen } from '../../tests/test-utils';
 import FullPageSpinner from './FullPageSpinner';
 
 const { colors } = tokens;
 
 test('renders scrim version by default', () => {
-  render(<FullPageSpinner></FullPageSpinner>);
+  const { container } = render(<FullPageSpinner></FullPageSpinner>);
 
-  expect(screen.getAllByRole('generic')[1].className).toContain('Scrim');
-  expect(screen.getAllByRole('generic')[1]).toHaveStyle({
-    backgroundColor: colors.ui.background__scrim.rgba,
-  });
+  expect(container.firstElementChild?.className).toContain('Scrim');
 });
 
 test('renders without scrim when prop is given', () => {

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, test } from '../../../test-utils';
+import { render, screen } from '../../../tests/test-utils';
 import WorkflowDescription, {
   WorkflowDescriptionProps,
 } from './WorkflowDescription';

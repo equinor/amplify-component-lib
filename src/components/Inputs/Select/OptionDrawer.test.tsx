@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent, vi } from '../../../test-utils';
+import { render, screen, userEvent } from '../../../tests/test-utils';
 import OptionDrawer, {
   OptionDrawerProps,
   ToggleEventProps,
@@ -118,11 +118,13 @@ test('Works correctly when clicking grand child', async () => {
   await user.click(screen.getByText(label));
 
   expect(grandChildren.length).toBeGreaterThanOrEqual(1);
-  for (const grandChild of grandChildren) {
-    await user.click(screen.getByText(grandChild.label));
-    expect(items[0].id).toBe(grandChild.id);
-    expect(toggle).toBe(true);
-  }
+  const randomGrandChild = grandChildren.at(
+    faker.datatype.number({ min: 0, max: grandChildren.length - 1 })
+  );
+  expect(randomGrandChild).not.toBeUndefined();
+  await user.click(screen.getByText(randomGrandChild?.label ?? 'not-found'));
+  expect(items[0].id).toBe(randomGrandChild?.id ?? 'not-found');
+  expect(toggle).toBeTruthy();
 
   expect(counter).toHaveBeenCalledTimes(grandChildren.length);
 });

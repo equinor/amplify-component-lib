@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react';
 
-import { render, screen, userEvent } from '../../test-utils';
+import { render, screen, userEvent } from '../../tests/test-utils';
 import CopyText from './CopyText';
 
 test('Renders label on hover', async () => {

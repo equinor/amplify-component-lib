@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, test } from '../../test-utils';
+import { render, screen } from '../../tests/test-utils';
 import OptionalTooltip from './OptionalTooltip';
 
 const dummyData = {
