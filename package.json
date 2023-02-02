@@ -23,7 +23,7 @@
     "lint": "tsc && eslint ./src --ext .jsx,.ts,.tsx",
     "lint:fix": "eslint ./src --ext .jsx,.ts,.tsx --fix",
     "test": "vitest watch",
-    "test:ci": "vitest --threads=false run",
+    "test:ci": "vitest run",
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "build": "yarn build-components",
