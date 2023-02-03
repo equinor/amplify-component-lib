@@ -128,7 +128,7 @@ async function startLocalHost() {
   });
 
   // Add 1 second wait for the writeFile to swagger.json
-  await new Promise((resolve) => setTimeout(() => resolve(), 1000))
+  await new Promise((resolve) => setTimeout(() => resolve(), 1000));
 
   await runTask(generateTask);
 
