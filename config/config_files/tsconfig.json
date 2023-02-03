@@ -8,7 +8,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "vitest/globals"],
     "module": "ESNEXT",
     "moduleResolution": "node",
     "noEmit": true,
