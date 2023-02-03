@@ -127,6 +127,9 @@ async function startLocalHost() {
     name: chalk.hex('#CCE0E8')('Replacing local swagger.json with remote'),
   });
 
+  // Add 1 second wait for the writeFile to swagger.json
+  await new Promise((resolve) => setTimeout(() => resolve(), 1000))
+
   await runTask(generateTask);
 
   console.log(
