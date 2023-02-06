@@ -64,28 +64,42 @@ const Avatar = styled(EDSAvatar)`
 export interface ProfileAvatarProps {
   url?: string;
   name?: string;
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'small-medium' | 'medium' | 'large';
   disabled?: boolean;
 }
 
 const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
   ({ url, name, size = 'medium', disabled = false }, ref) => {
     const initials = useMemo((): [string, string] => {
-      const split = name?.split(' ');
-      const firstName: string = split?.at(0) ?? 'KARI';
-      const lastName: string = split?.at(split?.length - 1) ?? 'NORDMANN';
-      return [firstName[0].toUpperCase(), lastName[0].toUpperCase()];
+      const split = name?.trim()?.split(' ');
+      if (split && split.length === 1 && split[0].length >= 1) {
+        return [split[0][0].toUpperCase(), ''];
+      } else if (
+        split &&
+        split.length >= 2 &&
+        split[0].length >= 1 &&
+        split[split.length - 1].length >= 1
+      ) {
+        return [
+          split[0][0].toUpperCase(),
+          split[split.length - 1][0].toUpperCase(),
+        ];
+      }
+
+      return ['', ''];
     }, [name]);
 
     const sizeToPx = () => {
       if (size === 'small') return 16;
+      else if (size === 'small-medium') return 24;
       else if (size === 'medium') return 32;
       return 40;
     };
 
     const sizeToFontsize = () => {
       if (size === 'small') return 6;
-      else if (size === 'medium') return 10;
+      else if (size === 'small-medium') return 10;
+      else if (size === 'medium') return 14;
       return 16;
     };
 
