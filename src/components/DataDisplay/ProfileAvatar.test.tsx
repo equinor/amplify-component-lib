@@ -5,7 +5,7 @@ import ProfileAvatar, { ProfileAvatarProps } from './ProfileAvatar';
 
 function mockProfileAvatarProps(image: boolean): ProfileAvatarProps {
   return {
-    name: `${faker.name.firstName()} ${faker.name.middleName()} ${faker.name.lastName()}`,
+    name: faker.name.fullName(),
     url: image ? faker.image.imageUrl() : undefined,
   };
 }
