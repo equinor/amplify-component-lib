@@ -1,11 +1,5 @@
-import React from 'react';
-
-import { tokens } from '@equinor/eds-tokens';
-
 import { render, screen } from '../../tests/test-utils';
 import FullPageSpinner from './FullPageSpinner';
-
-const { colors } = tokens;
 
 test('renders scrim version by default', () => {
   const { container } = render(<FullPageSpinner></FullPageSpinner>);
