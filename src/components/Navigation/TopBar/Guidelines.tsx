@@ -40,7 +40,7 @@ const Guides = styled.div`
   margin-left: ${spacings.comfortable.medium_small};
 `;
 
-export interface IGuidelineSections {
+export interface GuidelineSections {
   sectionName: string;
   items: {
     title: string;
@@ -50,13 +50,13 @@ export interface IGuidelineSections {
   }[];
 }
 
-export interface IGuidelineProps {
+export interface GuidelineProps {
   open: boolean;
   onClose: () => void;
-  sections: IGuidelineSections[];
+  sections: GuidelineSections[];
 }
 
-export const Guidelines = forwardRef<HTMLDivElement, IGuidelineProps>(
+export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
   ({ open, onClose, sections }, ref) => (
     <StyledSideSheet
       ref={ref}

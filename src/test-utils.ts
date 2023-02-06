@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 const customRender = (ui: React.ReactElement, options?: any) =>
   render(ui, options);
@@ -13,7 +13,7 @@ export * from '@testing-library/react';
 export { customRender as render, userEvent };
 
 // re-export vitest stuff
-export { test, vi };
+export { describe, expect, it, test, vi };
 
 // Add ResizeObserver
 global.ResizeObserver = require('resize-observer-polyfill');
