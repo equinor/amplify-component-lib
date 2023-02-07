@@ -103,7 +103,6 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       !photo &&
       !roles
     ) {
-      const hasRefreshed = getHasRefreshed();
       // Get photo
       acquireToken(instance, GRAPH_REQUESTS_PHOTO).then(
         async (tokenResponse) => {
@@ -139,20 +138,21 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
             if (accessToken.roles) {
               setRoles(accessToken.roles as string[]);
             }
-            if (hasRefreshed) {
-              setHasRefreshed({ value: false });
-            }
+            setHasRefreshed({ value: false });
             setAuthState('authorized');
           }
         })
         .catch((error: AuthError) => {
           console.log('Token error when trying to get roles!');
           console.error(error);
+          const hasRefreshed = getHasRefreshed();
           if (hasRefreshed) {
             setAuthState('unauthorized');
           } else {
             // Hasn't refreshed automatically yet, refreshing...
             console.log('Trying an automatic refresh...');
+            window.localStorage.clear();
+            console.log('Clearing local storage...');
             setHasRefreshed({ value: true });
             window.location.reload();
           }
