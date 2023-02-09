@@ -14,6 +14,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { Meta, Story } from '@storybook/react';
 
 import SideBar from '../SideBar';
+import { EnvironmentType } from './TopBar';
 import TopBar from '.';
 
 const { colors } = tokens;
@@ -23,15 +24,20 @@ export default {
   component: TopBar,
   argTypes: {
     backgroundColor: { control: 'color' },
+    environment: {
+      options: [EnvironmentType.DEVELOP, EnvironmentType.STAGING, undefined],
+      control: { type: 'radio' },
+    },
   },
 } as Meta;
 
-export const Primary: Story = () => {
+export const Primary: Story = ({ ...args }) => {
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
       applicationName="Heinrich von schnellfahrer"
+      {...args}
     >
       <TopBar.Actions>
         <Button variant="ghost_icon" key="account">
@@ -46,13 +52,14 @@ export const Primary: Story = () => {
   );
 };
 
-export const Capitalized: Story = () => {
+export const Capitalized: Story = ({ ...args }) => {
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
       applicationName="HEINRICH VON SCHNELLFAHRER"
       capitalize
+      {...args}
     >
       <TopBar.Actions>
         <Button variant="ghost_icon" key="account">
@@ -67,13 +74,14 @@ export const Capitalized: Story = () => {
   );
 };
 
-export const WithFetchingSetToTrue: Story = () => {
+export const WithFetchingSetToTrue: Story = ({ ...args }) => {
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
       applicationIcon={car}
       applicationName="HEINRICH VON SCHNELLFAHRER"
       isFetching
+      {...args}
     >
       <TopBar.Actions>
         <Button variant="ghost_icon" key="account">
@@ -88,7 +96,7 @@ export const WithFetchingSetToTrue: Story = () => {
   );
 };
 
-export const ExampleWithSidebar: Story = () => {
+export const ExampleWithSidebar: Story = ({ ...args }) => {
   const menuItems = [
     {
       link: '/home',
@@ -281,6 +289,7 @@ export const ExampleWithSidebar: Story = () => {
         }
         applicationName="HEINRICH VON SCHNELLFAHRER"
         isFetching
+        {...args}
       >
         <TopBar.Actions>
           <Button variant="ghost_icon" key="account">
@@ -306,7 +315,7 @@ export const ExampleWithSidebar: Story = () => {
   );
 };
 
-export const ExampleWithSidebarCustomIcon: Story = () => {
+export const ExampleWithSidebarCustomIcon: Story = ({ ...args }) => {
   const menuItems = [
     {
       link: '/home',
@@ -341,6 +350,7 @@ export const ExampleWithSidebarCustomIcon: Story = () => {
         applicationIcon={car}
         applicationName="HEINRICH VON SCHNELLFAHRER"
         isFetching
+        {...args}
       >
         <TopBar.Actions>
           <Button variant="ghost_icon" key="account">

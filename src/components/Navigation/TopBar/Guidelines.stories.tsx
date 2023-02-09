@@ -13,7 +13,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { Meta, Story } from '@storybook/react';
 
 import { amplify_wellbore } from '../../Icons/AmplifyIcons';
-import { Guidelines, IGuidelineSections } from './Guidelines';
+import { Guidelines, GuidelineSections } from './Guidelines';
 
 const { colors } = tokens;
 
@@ -22,7 +22,7 @@ export default {
   component: Guidelines,
 } as Meta;
 
-const sections: IGuidelineSections[] = [
+const sections: GuidelineSections[] = [
   {
     sectionName: 'Top bar',
     items: [
@@ -93,7 +93,7 @@ const sections: IGuidelineSections[] = [
     ],
   },
 ];
-export const Primary: Story<IGuidelineSections> = () => {
+export const Primary: Story<GuidelineSections> = () => {
   return (
     <Guidelines
       open
@@ -103,7 +103,7 @@ export const Primary: Story<IGuidelineSections> = () => {
   );
 };
 
-export const WithDifferentIconColors: Story<IGuidelineSections> = () => {
+export const WithDifferentIconColors: Story<GuidelineSections> = () => {
   return (
     <Guidelines
       open
@@ -113,7 +113,7 @@ export const WithDifferentIconColors: Story<IGuidelineSections> = () => {
   );
 };
 
-export const WithColorBox: Story<IGuidelineSections> = () => {
+export const WithColorBox: Story<GuidelineSections> = () => {
   return (
     <Guidelines
       open

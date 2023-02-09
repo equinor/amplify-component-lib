@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
@@ -31,12 +33,29 @@ test('Renders correctly without avatar', async () => {
 
   expect(screen.getByText(accountName)).toBeInTheDocument();
 
-  const splitName = accountName.split(' ');
-  const expectedInitials =
-    splitName[0][0].toUpperCase() +
-    splitName[splitName.length - 1][0].toUpperCase();
+  const expectedInitials = (accountName: string) => {
+    const defaultName = 'XX';
+    if (!accountName) return defaultName;
 
-  expect(screen.getByText(expectedInitials)).toBeInTheDocument();
+    const nameWithoutParenthesis = accountName
+      .replace(/ *\([^)]*\) */g, '')
+      .toUpperCase();
+    const splitNames = nameWithoutParenthesis.split(' ');
+
+    if (splitNames.length === 1 && splitNames[0] !== '') {
+      return splitNames[0].charAt(0) + '.';
+    }
+
+    if (splitNames.length >= 2) {
+      return (
+        splitNames[0].charAt(0) + splitNames[splitNames.length - 1].charAt(0)
+      );
+    }
+
+    return defaultName;
+  };
+
+  expect(screen.getByText(expectedInitials(accountName))).toBeInTheDocument();
   expect(
     screen.getByText(props.account?.username ?? 'failed')
   ).toBeInTheDocument();

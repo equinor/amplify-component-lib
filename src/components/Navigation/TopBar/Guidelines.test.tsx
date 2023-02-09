@@ -8,10 +8,10 @@ import {
 import { faker } from '@faker-js/faker';
 
 import { render, screen } from '../../../tests/test-utils';
-import { Guidelines, IGuidelineProps, IGuidelineSections } from './Guidelines';
+import { GuidelineProps, Guidelines, GuidelineSections } from './Guidelines';
 
-function fakeSection(): IGuidelineSections {
-  const items: IGuidelineSections['items'] = [];
+function fakeSection(): GuidelineSections {
+  const items: GuidelineSections['items'] = [];
   for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
     items.push({
       title: faker.datatype.uuid(),
@@ -32,8 +32,8 @@ function fakeSection(): IGuidelineSections {
   };
 }
 
-function fakeProps(): IGuidelineProps {
-  const sections: IGuidelineSections[] = [];
+function fakeProps(): GuidelineProps {
+  const sections: GuidelineSections[] = [];
   for (let i = 0; i < faker.datatype.number({ min: 2, max: 5 }); i++) {
     sections.push(fakeSection());
   }
