@@ -1,9 +1,10 @@
-import ora from 'ora';
+/* eslint-disable no-console */
 import { exec } from 'child_process';
 import { promises as fsPromises } from 'fs';
+import ora from 'ora';
+import path from 'path';
 import { createInterface } from 'readline';
 import { fileURLToPath } from 'url';
-import path from 'path';
 
 const { readFile, writeFile } = fsPromises;
 import chalk from 'chalk';
@@ -16,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function execShell(command) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     exec(command, { cwd: process.cwd() }, (error, stdout, stderr) => {
       const status = {
         stdout: stdout,
@@ -29,6 +30,7 @@ async function execShell(command) {
 }
 
 function runTask(task, readingFile) {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
     const spinner = ora(task.name);
     spinner.spinner = 'aesthetic';
@@ -64,9 +66,7 @@ const readLocalTask = {
 };
 
 const downloadRemoteTask = {
-  command: execShell(
-    `curl -s ${process.env.VITE_API_URL}/swagger/v1.0/swagger.json`
-  ),
+  command: execShell(`curl -s ${process.env.VITE_SWAGGER_URL}`),
   name: chalk.hex('#CCE0E8')('Downloading remote swagger json file'),
 };
 

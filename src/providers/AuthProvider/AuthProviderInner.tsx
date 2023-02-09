@@ -27,6 +27,22 @@ const {
   acquireToken,
 } = auth;
 
+const localStorageKey = 'amplify-authentication-has-refreshed';
+
+type HasRefreshed = {
+  value: boolean;
+};
+
+function getHasRefreshed(): boolean {
+  const fromLocalStorage = window.localStorage.getItem(localStorageKey);
+  if (fromLocalStorage === null) return false;
+  return (JSON.parse(fromLocalStorage) as HasRefreshed).value;
+}
+
+function setHasRefreshed({ value }: HasRefreshed) {
+  window.localStorage.setItem(localStorageKey, JSON.stringify(value));
+}
+
 export interface AuthProviderInnerProps {
   loadingComponent: ReactElement;
   unauthorizedComponent: ReactElement;
@@ -122,13 +138,24 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
             if (accessToken.roles) {
               setRoles(accessToken.roles as string[]);
             }
+            setHasRefreshed({ value: false });
             setAuthState('authorized');
           }
         })
         .catch((error: AuthError) => {
           console.log('Token error when trying to get roles!');
           console.error(error);
-          setAuthState('unauthorized');
+          const hasRefreshed = getHasRefreshed();
+          if (hasRefreshed) {
+            setAuthState('unauthorized');
+          } else {
+            // Hasn't refreshed automatically yet, refreshing...
+            console.log('Trying an automatic refresh...');
+            window.localStorage.clear();
+            console.log('Clearing local storage...');
+            setHasRefreshed({ value: true });
+            window.location.reload();
+          }
         });
     }
   }, [

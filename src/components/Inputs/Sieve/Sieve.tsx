@@ -30,6 +30,7 @@ const FilterChip = styled(EDSChip)`
 const Search = styled(EDSSearch)`
   min-width: 24rem;
   > div {
+    box-shadow: none;
     outline: none !important;
     background: ${colors.ui.background__default.hex};
     > input:focus {

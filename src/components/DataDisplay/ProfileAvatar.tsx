@@ -65,16 +65,12 @@ const Avatar = styled(EDSAvatar)`
   margin-right: ${spacings.comfortable.medium};
 `;
 
-export interface ProfileAvatarProps {
-  url?: string;
-  name?: string;
-  size?: 'small' | 'small-medium' | 'medium' | 'large';
-  disabled?: boolean;
-}
 const getFirstCharacterAfterComma = (name: string) => {
   const nameSplitOnComma = name.split(',');
   return nameSplitOnComma[1].trim().charAt(0);
 };
+
+// Could this be a util to be used other places?
 const createInitialsFromName = (name: string | undefined) => {
   const defaultName = 'XX';
   if (!name) return defaultName;
@@ -104,6 +100,13 @@ const createInitialsFromName = (name: string | undefined) => {
 
   return defaultName;
 };
+
+export interface ProfileAvatarProps {
+  url?: string;
+  name?: string;
+  size?: 'small' | 'small-medium' | 'medium' | 'large';
+  disabled?: boolean;
+}
 
 const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
   ({ url, name, size = 'medium', disabled = false }, ref) => {
