@@ -38,7 +38,6 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   height: ${(props) => props.size}px;
   font-size: ${(props) => props.fontSize}px;
   font-family: ${typography.heading.h6.fontFamily};
-  // font-weight: ${typography.heading.h1_bold.fontWeight};
   border-radius: ${shape.circle.borderRadius};
   background: ${(props) =>
     props.disabled
@@ -69,36 +68,6 @@ const getFirstCharacterAfterComma = (name: string) => {
   return nameSplitOnComma[1].trim().charAt(0);
 };
 
-export const createInitialsFromName = (name: string | undefined) => {
-  const defaultName = 'XX';
-  if (!name) return defaultName;
-
-  const nameWithoutParenthesis = name
-    .replace(/ *\([^)]*\) */g, '')
-    .toUpperCase();
-  const lastNameCommaFirstName = nameWithoutParenthesis.includes(',');
-  const splitNames = nameWithoutParenthesis.split(' ');
-
-  if (splitNames.length === 1 && splitNames[0] !== '') {
-    return splitNames[0].charAt(0) + '.';
-  }
-
-  if (lastNameCommaFirstName) {
-    return (
-      getFirstCharacterAfterComma(nameWithoutParenthesis) +
-      splitNames[0].charAt(0)
-    );
-  }
-  if (splitNames.length >= 2) {
-    return (
-      splitNames[0].charAt(0).toUpperCase() +
-      splitNames[splitNames.length - 1].charAt(0)
-    );
-  }
-
-  return defaultName;
-};
-
 export interface ProfileAvatarProps {
   url?: string;
   name?: string;
@@ -109,7 +78,33 @@ export interface ProfileAvatarProps {
 const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
   ({ url, name, size = 'medium', disabled = false }, ref) => {
     const initials = useMemo(() => {
-      return createInitialsFromName(name);
+      const defaultName = 'XX';
+      if (!name) return defaultName;
+
+      const nameWithoutParenthesis = name
+        .replace(/ *\([^)]*\) */g, '')
+        .toUpperCase();
+      const splitNames = nameWithoutParenthesis.split(' ');
+      const lastNameCommaFirstName = nameWithoutParenthesis.includes(',');
+
+      if (splitNames.length === 1 && splitNames[0] !== '') {
+        return splitNames[0].charAt(0) + '.';
+      }
+
+      if (lastNameCommaFirstName) {
+        return (
+          getFirstCharacterAfterComma(nameWithoutParenthesis) +
+          splitNames[0].charAt(0)
+        );
+      }
+
+      if (splitNames.length >= 2) {
+        return (
+          splitNames[0].charAt(0) + splitNames[splitNames.length - 1].charAt(0)
+        );
+      }
+
+      return defaultName;
     }, [name]);
 
     const sizeToPx = () => {

@@ -175,12 +175,11 @@ export function useNotifications<
     return notifications.some((no) => no.Read === false);
   }, [notifications]);
 
-  const notificationOptions: NotificationOptionsType = {
+  return {
     notifications,
     hasUnreadNotifications,
     setNotificationAsRead,
     setAllNotificationsAsRead,
     deleteNotification,
-  };
-  return notificationOptions;
+  } as NotificationOptionsType;
 }

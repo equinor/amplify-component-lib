@@ -48,8 +48,7 @@ export const UnreadRedDot = styled.div`
   position: absolute;
   right: 7px;
   top: 7px;
-  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.14))
-    drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.12));
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12);
 `;
 
 interface NotificationsProps {
