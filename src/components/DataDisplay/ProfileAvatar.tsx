@@ -51,7 +51,6 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: ${spacings.comfortable.medium};
 `;
 
 const Avatar = styled(EDSAvatar)`

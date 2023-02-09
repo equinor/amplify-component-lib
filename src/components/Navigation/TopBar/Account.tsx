@@ -24,6 +24,7 @@ const Header = styled.div`
 const Info = styled.div`
   display: flex;
   align-items: center;
+  gap: 16px;
 `;
 
 const FullWidthWrapper = styled.div`
