@@ -38,12 +38,16 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   height: ${(props) => props.size}px;
   font-size: ${(props) => props.fontSize}px;
   font-family: ${typography.heading.h6.fontFamily};
-  font-weight: ${typography.heading.h1_bold.fontWeight};
+  // font-weight: ${typography.heading.h1_bold.fontWeight};
   border-radius: ${shape.circle.borderRadius};
   background: ${(props) =>
     props.disabled
       ? colors.interactive.disabled__border.hex
-      : props.background};
+      : colors.infographic.substitute__blue_overcast.hex};
+  color: ${(props) =>
+    props.disabled
+      ? colors.text.static_icons__default.hex
+      : colors.text.static_icons__primary_white.hex};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,26 +71,44 @@ export interface ProfileAvatarProps {
   size?: 'small' | 'small-medium' | 'medium' | 'large';
   disabled?: boolean;
 }
+const getFirstCharacterAfterComma = (name: string) => {
+  const nameSplitOnComma = name.split(',');
+  return nameSplitOnComma[1].trim().charAt(0);
+};
+const createInitialsFromName = (name: string | undefined) => {
+  const defaultName = 'XX';
+  if (!name) return defaultName;
+
+  const nameWithoutParenthesis = name
+    .replace(/ *\([^)]*\) */g, '')
+    .toUpperCase();
+  const lastNameCommaFirstName = nameWithoutParenthesis.includes(',');
+  const splitNames = nameWithoutParenthesis.split(' ');
+
+  if (splitNames.length === 1 && splitNames[0] !== '') {
+    return splitNames[0].charAt(0) + '.';
+  }
+
+  if (lastNameCommaFirstName) {
+    return (
+      getFirstCharacterAfterComma(nameWithoutParenthesis) +
+      splitNames[0].charAt(0)
+    );
+  }
+  if (splitNames.length >= 2) {
+    return (
+      splitNames[0].charAt(0).toUpperCase() +
+      splitNames[splitNames.length - 1].charAt(0)
+    );
+  }
+
+  return defaultName;
+};
 
 const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
   ({ url, name, size = 'medium', disabled = false }, ref) => {
-    const initials = useMemo((): [string, string] => {
-      const split = name?.trim()?.split(' ');
-      if (split && split.length === 1 && split[0].length >= 1) {
-        return [split[0][0].toUpperCase(), ''];
-      } else if (
-        split &&
-        split.length >= 2 &&
-        split[0].length >= 1 &&
-        split[split.length - 1].length >= 1
-      ) {
-        return [
-          split[0][0].toUpperCase(),
-          split[split.length - 1][0].toUpperCase(),
-        ];
-      }
-
-      return ['', ''];
+    const initials = useMemo(() => {
+      return createInitialsFromName(name);
     }, [name]);
 
     const sizeToPx = () => {
@@ -138,7 +160,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         disabled={disabled}
         ref={ref}
       >
-        {initials.join('')}
+        {initials}
       </InitialsContainer>
     );
   }
