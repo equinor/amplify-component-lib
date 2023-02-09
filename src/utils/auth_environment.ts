@@ -8,6 +8,7 @@ interface IConfig {
   NAME: string;
   API_URL: string;
   API_SCOPE: string;
+  ENVIRONMENT_NAME: string;
 }
 
 declare const window: any;
@@ -48,6 +49,13 @@ const getApiScope = (apiScope: string | undefined): string => {
     return getConfig('API_SCOPE');
   }
   return apiScope;
+};
+
+const getEnvironmentName = (environmentName: string | undefined): string => {
+  if (!environmentName) {
+    return getConfig('ENVIRONMENT_NAME');
+  }
+  return environmentName;
 };
 
 const GRAPH_ENDPOINTS = {
@@ -136,4 +144,5 @@ export const environment = {
   getClientId,
   getApiUrl,
   getApiScope,
+  getEnvironmentName,
 };
