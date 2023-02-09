@@ -63,7 +63,7 @@ export { default as TextEntry } from './Inputs/TextEntry/TextEntry';
 export type { ItemType, SidebarType } from './Navigation/SideBar';
 export { default as SideBar } from './Navigation/SideBar';
 export type {
-  IGuidelineSections,
+  GuidelineSections,
   ISettingsProps,
   TopBarType,
 } from './Navigation/TopBar';

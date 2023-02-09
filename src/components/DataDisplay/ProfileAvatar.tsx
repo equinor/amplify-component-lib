@@ -70,8 +70,7 @@ const getFirstCharacterAfterComma = (name: string) => {
   return nameSplitOnComma[1].trim().charAt(0);
 };
 
-// Could this be a util to be used other places?
-const createInitialsFromName = (name: string | undefined) => {
+export const createInitialsFromName = (name: string | undefined) => {
   const defaultName = 'XX';
   if (!name) return defaultName;
 

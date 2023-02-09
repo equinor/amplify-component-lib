@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
+import { createInitialsFromName } from '../../DataDisplay/ProfileAvatar';
 import { Account, IAccountProps } from './Account';
 
 function fakeProps(withAvatar = false): IAccountProps {
@@ -31,10 +32,7 @@ test('Renders correctly without avatar', async () => {
 
   expect(screen.getByText(accountName)).toBeInTheDocument();
 
-  const splitName = accountName.split(' ');
-  const expectedInitials =
-    splitName[0][0].toUpperCase() +
-    splitName[splitName.length - 1][0].toUpperCase();
+  const expectedInitials = createInitialsFromName(accountName);
 
   expect(screen.getByText(expectedInitials)).toBeInTheDocument();
   expect(
