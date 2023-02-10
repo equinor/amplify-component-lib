@@ -80,11 +80,13 @@ const EnvironmentTag = styled.div<EnvironmentTagProps>`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  text-transform: capitalize;
 `;
 
 export enum EnvironmentType {
-  DEVELOP = 'Development',
-  STAGING = 'Staging',
+  DEVELOP = 'development',
+  STAGING = 'staging',
+  PRODUCTION = 'production',
 }
 
 type TopBarType = {
@@ -126,7 +128,8 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
         </AppName>
         <CircularProgress size={16} isFetching={isFetching} />
       </Header>
-      {environment && (
+      {(environment === EnvironmentType.DEVELOP ||
+        environment === EnvironmentType.STAGING) && (
         <EnvironmentTag environmentType={environment}>
           <Typography group="heading" variant="h5">
             {environment}

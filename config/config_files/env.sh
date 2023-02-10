@@ -18,6 +18,9 @@ echo "  API_URL: \"$value\"," >>./env-config.js
 value=$(printf '%s\n' "${API_SCOPE}")
 echo "  API_SCOPE: \"$value\"," >>./env-config.js
 
+value=$(printf '%s\n' "${ENVIRONMENT_NAME}")
+echo "  ENVIRONMENT_NAME: \"$value\"," >>./env-config.js
+
 echo "}" >>./env-config.js
 
 # Update nginx.conf with relevant environment variables
