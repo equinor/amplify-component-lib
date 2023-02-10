@@ -25,7 +25,12 @@ export default {
   argTypes: {
     backgroundColor: { control: 'color' },
     environment: {
-      options: [EnvironmentType.DEVELOP, EnvironmentType.STAGING, undefined],
+      options: [
+        EnvironmentType.DEVELOP,
+        EnvironmentType.STAGING,
+        EnvironmentType.PRODUCTION,
+        undefined,
+      ],
       control: { type: 'radio' },
     },
   },
