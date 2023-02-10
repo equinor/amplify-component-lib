@@ -3,6 +3,8 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 
+import { EnvironmentType } from '../components';
+
 interface IConfig {
   CLIENT_ID: string;
   NAME: string;
@@ -51,11 +53,13 @@ const getApiScope = (apiScope: string | undefined): string => {
   return apiScope;
 };
 
-const getEnvironmentName = (environmentName: string | undefined): string => {
+const getEnvironmentName = (
+  environmentName: string | EnvironmentType | undefined
+): string => {
   if (!environmentName) {
-    return getConfig('ENVIRONMENT_NAME');
+    return getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
-  return environmentName;
+  return environmentName as EnvironmentType;
 };
 
 const GRAPH_ENDPOINTS = {
