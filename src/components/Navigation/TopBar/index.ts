@@ -1,3 +1,4 @@
+import Feedback from './Feedback/Feedback';
 import { Account } from './Account';
 import { Actions } from './Actions';
 import { Guidelines, GuidelineSections } from './Guidelines';
@@ -11,6 +12,7 @@ type TopBarType = typeof BaseTopBar & {
   Guidelines: typeof Guidelines;
   Settings: typeof Settings;
   Notifications: typeof Notifications;
+  Feedback: typeof Feedback;
 };
 
 const TopBar = BaseTopBar as TopBarType;
@@ -19,6 +21,7 @@ TopBar.Actions = Actions;
 TopBar.Guidelines = Guidelines;
 TopBar.Settings = Settings;
 TopBar.Notifications = Notifications;
+TopBar.Feedback = Feedback;
 
 export default TopBar;
 export type { GuidelineSections, ISettingsProps, TopBarType };

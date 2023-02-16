@@ -1,8 +1,7 @@
 import { FC, ReactNode, useRef, useState } from 'react';
 
 import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
-import { close } from '@equinor/eds-icons';
-import { notifications as notificationIcon } from '@equinor/eds-icons';
+import { close, notifications as notificationIcon } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
@@ -23,8 +22,7 @@ const SidePanel = styled.div<SidePanelProps>`
   bottom: 0;
   right: 0;
   overflow: auto;
-  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.14))
-    drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.12));
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12);
   ${(props) => !props.open && 'display: none;'}
 `;
 
