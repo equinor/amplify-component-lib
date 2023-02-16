@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { car } from '@equinor/eds-icons';
+import { faker } from '@faker-js/faker';
 
 import { render, screen } from '../../../tests/test-utils';
 import { EnvironmentType } from './TopBar';
@@ -49,15 +50,16 @@ test('Shows correct application name', () => {
 });
 
 test('Shows environment banner', () => {
+  const environmentName = faker.helpers.objectValue(EnvironmentType);
   render(
     <TopBar
       applicationIcon={car}
       applicationName="test"
       onHeaderClick={() => console.log('Going home 🏡')}
-      environment={EnvironmentType.STAGING}
+      environment={environmentName}
     >
       content
     </TopBar>
   );
-  expect(screen.queryByText(EnvironmentType.STAGING)).toBeInTheDocument();
+  expect(screen.queryByText(environmentName)).toBeInTheDocument();
 });
