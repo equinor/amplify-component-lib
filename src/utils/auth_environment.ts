@@ -55,7 +55,7 @@ const getApiScope = (apiScope: string | undefined): string => {
 
 const getEnvironmentName = (
   environmentName: string | EnvironmentType | undefined
-): string => {
+): EnvironmentType => {
   if (!environmentName) {
     return getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
