@@ -1,3 +1,4 @@
+import { person } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { render, screen } from '../../tests/test-utils';
@@ -40,4 +41,12 @@ test('Renders first and last letter of name when image is not given', () => {
   }
 
   expect(screen.getByText(initials.join(''))).toBeInTheDocument();
+});
+
+test('Renders default icon when no name or image is provided', () => {
+  render(<ProfileAvatar name="" url="" />);
+
+  const icons = screen.getAllByTestId('eds-icon-path');
+
+  expect(icons[0]).toHaveAttribute('d', person.svgPathData);
 });

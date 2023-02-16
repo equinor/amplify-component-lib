@@ -26,6 +26,7 @@ export default {
     backgroundColor: { control: 'color' },
     environment: {
       options: [
+        EnvironmentType.LOCALHOST,
         EnvironmentType.DEVELOP,
         EnvironmentType.STAGING,
         EnvironmentType.PRODUCTION,
