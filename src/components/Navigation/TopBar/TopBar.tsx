@@ -55,8 +55,23 @@ const EnvironmentTag = styled.div<EnvironmentTagProps>`
   width: 214px;
   height: 36px;
   border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-transform: capitalize;
   ${(props) => {
-    if (props.environmentType === EnvironmentType.DEVELOP) {
+    if (props.environmentType === EnvironmentType.LOCALHOST) {
+      return (
+        'background-color: ' +
+        colors.interactive.disabled__fill.hex +
+        '; border: 1px solid ' +
+        colors.interactive.disabled__text.hex +
+        ';'
+      );
+    } else if (props.environmentType === EnvironmentType.DEVELOP) {
       return (
         'background-color: ' +
         colors.ui.background__info.hex +
@@ -74,16 +89,10 @@ const EnvironmentTag = styled.div<EnvironmentTagProps>`
       );
     }
   }};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  text-transform: capitalize;
 `;
 
 export enum EnvironmentType {
+  LOCALHOST = 'localhost',
   DEVELOP = 'development',
   STAGING = 'staging',
   PRODUCTION = 'production',
@@ -129,7 +138,8 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
         <CircularProgress size={16} isFetching={isFetching} />
       </Header>
       {(environment === EnvironmentType.DEVELOP ||
-        environment === EnvironmentType.STAGING) && (
+        environment === EnvironmentType.STAGING ||
+        environment === EnvironmentType.LOCALHOST) && (
         <EnvironmentTag environmentType={environment}>
           <Typography group="heading" variant="h5">
             {environment}
