@@ -1,6 +1,7 @@
 import { forwardRef, useMemo } from 'react';
 
-import { Avatar as EDSAvatar } from '@equinor/eds-core-react';
+import { Avatar as EDSAvatar, Icon } from '@equinor/eds-core-react';
+import { person } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
@@ -63,6 +64,10 @@ const Avatar = styled(EDSAvatar)`
   margin-right: ${spacings.comfortable.medium};
 `;
 
+const FallbackIcon = styled(Icon)`
+  width: 70%;
+`;
+
 const getFirstCharacterAfterComma = (name: string) => {
   const nameSplitOnComma = name.split(',');
   return nameSplitOnComma[1].trim().charAt(0);
@@ -78,8 +83,8 @@ export interface ProfileAvatarProps {
 const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
   ({ url, name, size = 'medium', disabled = false }, ref) => {
     const initials = useMemo(() => {
-      const defaultName = 'XX';
-      if (!name) return defaultName;
+      const defaultIcon = <FallbackIcon data={person}></FallbackIcon>;
+      if (!name || name.trim().length === 0) return defaultIcon;
 
       const nameWithoutParenthesis = name
         .replace(/ *\([^)]*\) */g, '')
@@ -104,7 +109,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         );
       }
 
-      return defaultName;
+      return defaultIcon;
     }, [name]);
 
     const sizeToPx = () => {
