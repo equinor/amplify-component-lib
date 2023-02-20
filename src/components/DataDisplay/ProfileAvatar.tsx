@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-const { colors, shape, spacings, typography } = tokens;
+const { colors, shape, typography } = tokens;
 
 const availableColors: string[] = [
   colors.infographic.primary__energy_red_55.hex,
@@ -61,7 +61,6 @@ const Avatar = styled(EDSAvatar)`
       filter: grayscale(1);
     }
   `}
-  margin-right: ${spacings.comfortable.medium};
 `;
 
 const FallbackIcon = styled(Icon)`
