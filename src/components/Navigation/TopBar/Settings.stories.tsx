@@ -81,7 +81,7 @@ export const WithColorBox: Story<ISettingsProps> = () => {
           {
             label: 'Dark Mode',
             name: 'theme-group',
-            value: 'light',
+            value: 'dark',
             colorBox: colors.ui.background__overlay.hsla,
             disabled: true,
           },

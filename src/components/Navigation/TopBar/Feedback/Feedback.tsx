@@ -16,7 +16,7 @@ import FeedbackForm from './FeedbackForm/FeedbackForm';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const Feedback: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +37,7 @@ const Feedback: FC = () => {
         />
       </Button>
       <TopBarMenu
-        title="Amplify feedback Form"
+        title="Amplify feedback form"
         open={isOpen}
         onClose={() => setIsOpen(false)}
         anchorEl={buttonRef.current}
