@@ -29,8 +29,10 @@ const SidePanel = styled.div<SidePanelProps>`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.comfortable.medium_small};
+  padding: ${spacings.comfortable.small} ${spacings.comfortable.medium};
   align-items: center;
+  margin-bottom: ${spacings.comfortable.medium};
+  border-bottom: 1px solid ${colors.ui.background__medium.hex};
 `;
 
 const NoNotifications = styled.div`
@@ -104,7 +106,6 @@ const Notifications: FC<NotificationsProps> = ({
             <Icon data={close} color="secondary" />
           </Button>
         </Header>
-        <Divider />
         {children ? (
           children
         ) : (

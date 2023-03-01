@@ -1,41 +1,26 @@
-import { FC, useRef, useState } from 'react';
+import React, { FC, ReactDOM, useRef, useState } from 'react';
 
-import { Button, Icon } from '@equinor/eds-core-react';
-import { placeholder_icon } from '@equinor/eds-icons';
+import {
+  Button,
+  Divider,
+  Icon,
+  Menu,
+  Typography,
+} from '@equinor/eds-core-react';
+import { clear, thumbs_up_down } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+import { useOutsideClick } from '@equinor/eds-utils';
 
-import SelectAppAndType from './SelectAppAndType';
+import TopBarMenu from '../TopBarMenu';
+import FeedbackForm from './FeedbackForm/FeedbackForm';
 
 import styled from 'styled-components';
 
-const { colors } = tokens;
+const { colors, spacings } = tokens;
 
-interface FeedbackMenuProps {
-  open: boolean;
-}
-
-const FeedbackMenu = styled.div<FeedbackMenuProps>`
-  background-color: lightgrey;
-  padding: 16px;
-  width: 250px;
-  position: absolute;
-  top: 64px;
-  right: 0px;
-  ${(props) => !props.open && 'display: none;'}
-`;
-
-interface FeedbackProps {
-  test?: string;
-}
-
-const Feedback: FC<FeedbackProps> = ({ test }) => {
+const Feedback: FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const onClose = () => {
-    setFeedbackOpen(false);
-  };
 
   return (
     <>
@@ -43,17 +28,22 @@ const Feedback: FC<FeedbackProps> = ({ test }) => {
         variant="ghost_icon"
         key="topbar-feedback"
         ref={buttonRef}
-        onClick={() => setFeedbackOpen(!feedbackOpen)}
+        onClick={() => setIsOpen((open) => !open)}
       >
         <Icon
-          data={placeholder_icon}
+          data={thumbs_up_down}
           size={24}
           color={colors.interactive.primary__resting.hsla}
         />
       </Button>
-      <FeedbackMenu open={feedbackOpen} ref={menuRef}>
-        <SelectAppAndType></SelectAppAndType>
-      </FeedbackMenu>
+      <TopBarMenu
+        title="Amplify feedback Form"
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        anchorEl={buttonRef.current}
+      >
+        <FeedbackForm />
+      </TopBarMenu>
     </>
   );
 };

@@ -1,4 +1,11 @@
-import { forwardRef, KeyboardEvent, MouseEvent, useState } from 'react';
+import {
+  FC,
+  forwardRef,
+  KeyboardEvent,
+  MouseEvent,
+  useRef,
+  useState,
+} from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
@@ -6,6 +13,7 @@ import { account_circle, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
+import TopBarMenu from './TopBarMenu';
 
 import styled from 'styled-components';
 
@@ -42,75 +50,50 @@ export interface IAccountProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
-  ({ account, logout, photo, size }, ref) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const isOpen = Boolean(anchorEl);
+export const Account: FC<IAccountProps> = (
+  { account, logout, photo, size },
+  ref
+) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-    const openMenu = (
-      e: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
-    ) => {
-      const target = e.target as HTMLButtonElement;
-      setAnchorEl(target);
-    };
+  const buttonRef = useRef<HTMLDivElement | null>(null);
 
-    const closeMenu = () => {
-      setAnchorEl(null);
-    };
-
-    return (
-      <>
-        <Button
-          variant="ghost_icon"
-          onClick={(e) => (isOpen ? closeMenu() : openMenu(e))}
-          ref={ref}
-        >
-          <Icon
-            data={account_circle}
-            size={24}
-            color={colors.interactive.primary__resting.hsla}
+  return (
+    <>
+      <Button
+        variant="ghost_icon"
+        onClick={(e) => setIsOpen(!isOpen)}
+        ref={buttonRef}
+      >
+        <Icon
+          data={account_circle}
+          size={24}
+          color={colors.interactive.primary__resting.hsla}
+        />
+      </Button>
+      <TopBarMenu
+        open={isOpen}
+        title="Account"
+        onClose={() => setIsOpen(false)}
+        anchorEl={buttonRef.current}
+      >
+        <Info>
+          <ProfileAvatar
+            size={size ? size : 'large'}
+            name={account?.name}
+            url={photo}
           />
-        </Button>
-        {isOpen && (
-          <StyledMenu
-            id="menu-on-button"
-            aria-labelledby="menuButton"
-            open={isOpen}
-            anchorEl={anchorEl}
-            onClose={closeMenu}
-            placement="bottom-start"
-          >
-            <Header>
-              <Typography variant="h6" as="span">
-                Account
-              </Typography>
-              <Button
-                variant="ghost_icon"
-                onClick={closeMenu}
-                data-testid="close-button"
-              >
-                <Icon data={clear} />
-              </Button>
-            </Header>
-            <Info>
-              <ProfileAvatar
-                size={size ? size : 'large'}
-                name={account?.name}
-                url={photo}
-              />
-              <div>
-                <Typography variant="h6">{account?.name}</Typography>
-                <Typography>{account?.username}</Typography>
-              </div>
-            </Info>
-            <FullWidthWrapper>
-              <Button onClick={logout}>Log out</Button>
-            </FullWidthWrapper>
-          </StyledMenu>
-        )}
-      </>
-    );
-  }
-);
+          <div>
+            <Typography variant="h6">{account?.name}</Typography>
+            <Typography>{account?.username}</Typography>
+          </div>
+        </Info>
+        <FullWidthWrapper>
+          <Button onClick={logout}>Log out</Button>
+        </FullWidthWrapper>
+      </TopBarMenu>
+    </>
+  );
+};
 
 Account.displayName = 'TopBar.Account';
