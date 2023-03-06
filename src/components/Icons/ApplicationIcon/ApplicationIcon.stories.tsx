@@ -15,6 +15,7 @@ export default {
         'depth-conversion',
         'recap',
         'portal',
+        'pwex',
         'logging-qualification',
         undefined,
       ],
