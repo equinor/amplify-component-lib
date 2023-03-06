@@ -8,6 +8,7 @@ import DepthConversion from './DepthConversion';
 import FourDInsight from './FourDInsight';
 import LoggingQualification from './LoggingQualification';
 import Portal from './Portal';
+import PWEX from './PWEX';
 import Recap from './Recap';
 
 export interface ApplicationIconProps {
@@ -19,6 +20,7 @@ export interface ApplicationIconProps {
     | 'depth-conversion'
     | 'portal'
     | 'logging-qualification'
+    | 'pwex'
     | 'default'
     | string;
   size?: 16 | 24 | 32 | 40 | 48 | 96;
@@ -36,6 +38,7 @@ const apps: IApplicationIconData[] = [
   { appName: 'depth-conversion', component: DepthConversion },
   { appName: 'logging-qualification', component: LoggingQualification },
   { appName: 'recap', component: Recap },
+  { appName: 'pwex', component: PWEX },
 ];
 
 const ApplicationIcon: FC<ApplicationIconProps> = ({ name, size }) => {
