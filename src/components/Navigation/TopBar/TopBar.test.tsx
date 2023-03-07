@@ -61,5 +61,6 @@ test('Shows environment banner', () => {
       content
     </TopBar>
   );
-  expect(screen.queryByText(environmentName)).toBeInTheDocument();
+  const object = screen.queryByText(environmentName) ?? ({} as HTMLElement);
+  expect(object).toBeInTheDocument();
 });
