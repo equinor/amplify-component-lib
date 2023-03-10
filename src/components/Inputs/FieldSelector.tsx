@@ -1,6 +1,6 @@
-import { forwardRef, useRef, useState } from 'react';
+import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
@@ -28,12 +28,32 @@ const Menu = styled.div<MenuProps>`
   border-radius: ${shape.corners.borderRadius};
 `;
 
+const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.comfortable.small};
+  padding: ${spacings.comfortable.large};
+  div[role='search'] {
+    > div {
+      outline: none !important;
+    }
+    input:focus {
+      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex};
+    }
+  }
+`;
+
+const NoFieldsText = styled(Typography)`
+  margin: 0 auto;
+`;
+
 const ListContainer = styled.div`
   max-height: 25vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 `;
+
 interface MenuItemProps {
   selected?: boolean;
 }
@@ -77,6 +97,10 @@ const MenuSection = styled.div`
   border-bottom: 1px solid ${colors.ui.background__light.hex};
   display: flex;
   flex-direction: column;
+  > p {
+    margin-left: ${spacings.comfortable.large};
+    margin-bottom: ${spacings.comfortable.small};
+  }
 `;
 
 const MenuHeader = styled.li`
@@ -121,6 +145,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     const [open, setOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
+    const [searchValue, setSearchValue] = useState<string>('');
 
     const openMenu = () => {
       setOpen(true);
@@ -132,6 +157,17 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       if (open) closeMenu();
       else openMenu();
     };
+
+    const handleSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value);
+    };
+
+    const filteredFields = useMemo(() => {
+      if (searchValue === '') return availableFields;
+      return availableFields.filter((field) =>
+        field.name?.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }, [availableFields, searchValue]);
 
     useOutsideClick(menuRef.current as HTMLElement, (event) => {
       const node = event.target as Node;
@@ -167,13 +203,11 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                     />
                   </Button>
                 </MenuHeader>
+                <Typography variant="overline">Current selection</Typography>
                 {currentField && (
                   <MenuFixedItem selected>
                     <div>
                       <TextContainer>
-                        <Typography variant="overline">
-                          Current selection:
-                        </Typography>
                         <Typography variant="h6">
                           {currentField.name?.toLowerCase()}
                         </Typography>
@@ -186,30 +220,41 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                     </div>
                   </MenuFixedItem>
                 )}
+                <SearchContainer>
+                  <Typography variant="overline">Switch to</Typography>
+                  <Search
+                    placeholder="Search fields"
+                    value={searchValue}
+                    onChange={handleSearchOnChange}
+                  />
+                </SearchContainer>
                 <ListContainer>
-                  {availableFields.map((field) => {
-                    if (field.uuid !== currentField?.uuid) {
-                      return (
-                        <MenuItem
-                          key={field.uuid}
-                          onClick={() => {
-                            onSelect(field);
-                            closeMenu();
-                          }}
-                        >
-                          <TextContainer>
-                            <Typography variant="overline">
-                              Switch to:
-                            </Typography>
-                            <Typography variant="h6">
-                              {field.name?.toLowerCase()}
-                            </Typography>
-                          </TextContainer>
-                        </MenuItem>
-                      );
-                    }
-                    return undefined;
-                  })}
+                  {filteredFields.length === 0 ? (
+                    <NoFieldsText variant="body_short">
+                      No fields matching your search
+                    </NoFieldsText>
+                  ) : (
+                    filteredFields.map((field) => {
+                      if (field.uuid !== currentField?.uuid) {
+                        return (
+                          <MenuItem
+                            key={field.uuid}
+                            onClick={() => {
+                              onSelect(field);
+                              closeMenu();
+                            }}
+                          >
+                            <TextContainer>
+                              <Typography variant="h6">
+                                {field.name?.toLowerCase()}
+                              </Typography>
+                            </TextContainer>
+                          </MenuItem>
+                        );
+                      }
+                      return undefined;
+                    })
+                  )}
                 </ListContainer>
               </MenuSection>
               {showAccessITLink && (
