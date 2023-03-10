@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { FileWithPath } from 'react-dropzone';
 
 import { tokens } from '@equinor/eds-tokens';
 
@@ -15,11 +16,11 @@ export enum FeedbackType {
 }
 
 export type FeedbackContentType = {
-  title?: string;
-  description?: string;
-  severity?: SeverityOption;
+  title: string;
+  description: string;
+  severity: string;
   url?: string;
-  attachments?: string;
+  attachments?: FileWithPath;
 };
 
 interface FeedbackFormProps {
@@ -30,13 +31,15 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ test }) => {
   const [selectedType, setSelectedType] = useState<FeedbackType | undefined>(
     undefined
   );
-  const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>(
-    {}
-  );
+  const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
+    title: '',
+    description: '',
+    severity: '',
+  });
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption
+    newValue: string | SeverityOption | FileWithPath
   ) => {
     setFeedbackContent({ ...feedbackContent, [key]: newValue });
   };

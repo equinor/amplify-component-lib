@@ -1,4 +1,5 @@
 import { Dispatch, FC, FormEvent, SetStateAction } from 'react';
+import { FileRejection, FileWithPath } from 'react-dropzone';
 
 import {
   Autocomplete,
@@ -62,7 +63,7 @@ interface FeedbackDetailsProps {
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption
+    newValue: string | SeverityOption | FileWithPath
   ) => void;
 }
 
@@ -72,6 +73,17 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
   feedbackContent,
   updateFeedback,
 }) => {
+  const onDrop = (
+    acceptedFiles: FileWithPath[],
+    fileRejections: FileRejection[]
+  ) => {
+    const cleanedOfHiddenFiles = acceptedFiles.filter(
+      (file) => file.name[0] !== '.'
+    );
+    console.log(cleanedOfHiddenFiles);
+    updateFeedback('attachments', cleanedOfHiddenFiles[0]);
+  };
+
   return (
     <Wrapper>
       <MenuSectionTitle group="input" variant="label">
@@ -108,7 +120,7 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
             id="feedback-severity"
             label="Severity"
             meta="optional"
-            selectedOptions={[feedbackContent.severity]}
+            selectedOptions={[feedbackContent.severity as SeverityOption]}
             placeholder="Select error impact"
             onOptionsChange={(e: AutocompleteChanges<SeverityOption>) =>
               updateFeedback('severity', e.selectedItems[0])
@@ -121,6 +133,9 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
             meta="optional"
             value={feedbackContent.url}
             placeholder="URL of error location"
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              updateFeedback('url', e.currentTarget.value)
+            }
           />
         </>
       )}
@@ -134,6 +149,7 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
           </Typography>
         </LabelAndMeta>
         <FileUploadArea
+          onDrop={onDrop}
           accept={{
             'application/pdf': ['.pdf'],
             'application/vnd.ms-powerpoint': ['.ppt'],
@@ -141,6 +157,7 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
               ['.pptx'],
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
+            video: ['.vid'],
           }}
         />
       </FileUploadAreaWrapper>
