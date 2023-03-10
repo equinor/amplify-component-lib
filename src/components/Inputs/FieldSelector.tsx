@@ -44,7 +44,7 @@ const SearchContainer = styled.div`
 `;
 
 const NoFieldsText = styled(Typography)`
-  margin: 0 auto;
+  margin: 0 auto ${spacings.comfortable.medium};
 `;
 
 const ListContainer = styled.div`
@@ -163,11 +163,14 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     };
 
     const filteredFields = useMemo(() => {
-      if (searchValue === '') return availableFields;
-      return availableFields.filter((field) =>
+      const fieldItems = availableFields.filter(
+        (field) => currentField?.uuid !== field?.uuid
+      );
+      if (searchValue === '') return fieldItems;
+      return fieldItems.filter((field) =>
         field.name?.toLowerCase().includes(searchValue.toLowerCase())
       );
-    }, [availableFields, searchValue]);
+    }, [availableFields, currentField?.uuid, searchValue]);
 
     useOutsideClick(menuRef.current as HTMLElement, (event) => {
       const node = event.target as Node;
@@ -234,26 +237,21 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                       No fields matching your search
                     </NoFieldsText>
                   ) : (
-                    filteredFields.map((field) => {
-                      if (field.uuid !== currentField?.uuid) {
-                        return (
-                          <MenuItem
-                            key={field.uuid}
-                            onClick={() => {
-                              onSelect(field);
-                              closeMenu();
-                            }}
-                          >
-                            <TextContainer>
-                              <Typography variant="h6">
-                                {field.name?.toLowerCase()}
-                              </Typography>
-                            </TextContainer>
-                          </MenuItem>
-                        );
-                      }
-                      return undefined;
-                    })
+                    filteredFields.map((field) => (
+                      <MenuItem
+                        key={field.uuid}
+                        onClick={() => {
+                          onSelect(field);
+                          closeMenu();
+                        }}
+                      >
+                        <TextContainer>
+                          <Typography variant="h6">
+                            {field.name?.toLowerCase()}
+                          </Typography>
+                        </TextContainer>
+                      </MenuItem>
+                    ))
                   )}
                 </ListContainer>
               </MenuSection>
