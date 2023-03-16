@@ -17,7 +17,6 @@ export default {
         'portal',
         'pwex',
         'logging-qualification',
-        undefined,
       ],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
