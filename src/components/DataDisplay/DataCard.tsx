@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, useEffect } from 'react';
+import React, { forwardRef, ReactElement } from 'react';
 
 import {
   Card as EDSCard,
@@ -89,10 +89,10 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
     },
     ref
   ) => {
-    useEffect(() => {
-      if (rightIcon && rightElement)
-        throw Error('Only use one; rightIcon or rightElement');
-    }, [rightIcon, rightElement]);
+    if (rightIcon && rightElement) {
+      console.error('Only use one; rightIcon or rightElement');
+      return null;
+    }
 
     return (
       <Card

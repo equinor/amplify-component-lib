@@ -16,6 +16,7 @@ export default defineConfig({
     coverage: {
       provider: 'c8',
       include: ['src/**/*'],
+      exclude: ['src/tests', 'src/**/*.test.tsx'],
       reporter: ['text-summary', 'html'],
       statements: 100,
       branches: 100,
