@@ -15,9 +15,9 @@ test('Shows default values without props', () => {
       <ErrorPage.Action />
     </ErrorPage>
   );
-  expect(screen.getByTestId('title').textContent).toEqual(defaultError.title);
-  expect(screen.getByTestId('description').textContent).toEqual(
-    defaultError.description
+  expect(screen.getByTestId('title')).toHaveTextContent(defaultError.title);
+  expect(screen.getByTestId('description')).toHaveTextContent(
+    defaultError.description ?? ''
   );
 });
 
