@@ -19,19 +19,76 @@ test('renders button and panel correctly', async () => {
 });
 
 test('renders element children correctly', async () => {
-  const text = faker.animal.cow();
+  const texts = new Array(faker.datatype.number({ min: 2, max: 20 }))
+    .fill(0)
+    .map(() => faker.datatype.uuid());
   render(
     <Notifications setAllAsRead={() => null}>
-      <div>
-        <p>{text}</p>
-      </div>
-      <div>
-        <p>{text}</p>
-      </div>
-      <div>
-        <p>{text}</p>
-      </div>
+      {texts.map((text) => (
+        <p key={text}>{text}</p>
+      ))}
     </Notifications>
   );
-  expect(screen.getAllByText(text).length).toBe(3);
+  const user = userEvent.setup();
+
+  for (const text of texts) {
+    expect(screen.getByText(text)).not.toBeVisible();
+  }
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  for (const text of texts) {
+    expect(screen.getByText(text)).toBeVisible();
+  }
+});
+
+test('Calls setAllAsRead when pressing button twice', async () => {
+  const setAllAsRead = vi.fn();
+  render(<Notifications setAllAsRead={setAllAsRead} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  await user.click(button);
+
+  expect(setAllAsRead).toHaveBeenCalledTimes(1);
+});
+
+test('Calls setAllAsRead when pressing outside of panel', async () => {
+  const randomText = faker.animal.dog();
+  const setAllAsRead = vi.fn();
+  render(
+    <div>
+      <Notifications setAllAsRead={setAllAsRead} />
+      <button>{randomText}</button>
+    </div>
+  );
+  const user = userEvent.setup();
+
+  const buttons = screen.getAllByRole('button');
+
+  const notificationButton = buttons[0];
+
+  await user.click(notificationButton);
+
+  expect(screen.getByText('Notifications')).toBeVisible();
+
+  const elementOutsidePanel = screen.getByText(randomText);
+
+  await user.click(elementOutsidePanel);
+
+  expect(screen.getByText('Notifications')).not.toBeVisible();
+});
+test('Renders unread dot when unread = true', async () => {
+  render(<Notifications setAllAsRead={() => null} hasUnread />);
+
+  const button = screen.getByRole('button');
+  await userEvent.click(button);
+
+  expect(screen.getByTestId('unread-dot')).toBeInTheDocument();
+  expect(screen.getByTestId('unread-dot')).toBeVisible();
 });

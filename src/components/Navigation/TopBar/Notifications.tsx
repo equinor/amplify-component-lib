@@ -48,7 +48,7 @@ export const UnreadRedDot = styled.div`
   position: absolute;
   right: 7px;
   top: 7px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12);
 `;
 
 interface NotificationsProps {
@@ -66,9 +66,17 @@ const Notifications: FC<NotificationsProps> = ({
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
+  const handleButtonClick = () => {
+    if (notificationsOpen) {
+      onClose();
+    } else {
+      setNotificationsOpen(true);
+    }
+  };
+
   const onClose = () => {
     setAllAsRead();
-    setNotificationsOpen(!notificationsOpen);
+    setNotificationsOpen(false);
   };
 
   useOutsideClick(sidePanelRef.current, (event) => {
@@ -77,8 +85,7 @@ const Notifications: FC<NotificationsProps> = ({
       buttonRef.current !== null &&
       !buttonRef.current?.contains(event.target as Node)
     ) {
-      setAllAsRead();
-      setNotificationsOpen(false);
+      onClose();
     }
   });
 
@@ -88,16 +95,16 @@ const Notifications: FC<NotificationsProps> = ({
         variant="ghost_icon"
         key="topbar-notifications"
         ref={buttonRef}
-        onClick={() => setNotificationsOpen(!notificationsOpen)}
+        onClick={handleButtonClick}
       >
         <Icon
           data={notificationIcon}
           size={24}
           color={colors.interactive.primary__resting.hsla}
         />
-        {hasUnread && <UnreadRedDot />}
+        {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
       </Button>
-      <SidePanel className="test" ref={sidePanelRef} open={notificationsOpen}>
+      <SidePanel ref={sidePanelRef} open={notificationsOpen}>
         <Header>
           <Typography variant="h6" group="heading">
             Notifications

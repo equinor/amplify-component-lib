@@ -252,3 +252,117 @@ test('Clearing field works as expected', async () => {
     expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
   }
 }, 15000); // Setting timeout for this test to be 15 seconds
+
+test('Clicking the same field twice clears the selected field', async () => {
+  let field: Field | undefined;
+  const fields = fakeFields();
+  const finishedText = faker.lorem.sentence();
+  const setField = (value: Field) => {
+    field = value;
+  };
+
+  const onChangedField = vi.fn();
+
+  const user = userEvent.setup();
+
+  const { rerender } = render(
+    <SelectField
+      setField={setField}
+      fields={fields}
+      isLoading
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+    />
+  );
+
+  rerender(
+    <SelectField
+      setField={setField}
+      fields={fields}
+      isLoading={false}
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+    />
+  );
+
+  const textField = screen.getByRole('textbox');
+  await user.click(textField);
+
+  expect(screen.queryAllByRole('busy')).toEqual([]);
+
+  for (const field of fields) {
+    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
+  }
+
+  expect(screen.getByTestId('nextButton')).toBeDisabled();
+
+  await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
+
+  expect(screen.getByTestId('nextButton')).toBeEnabled();
+
+  await user.click(textField);
+
+  await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
+
+  expect(screen.getByTestId('nextButton')).toBeDisabled();
+
+  for (const field of fields) {
+    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
+  }
+
+  await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
+
+  await user.click(screen.getByTestId('nextButton'));
+
+  expect(field).toStrictEqual(fields[0]);
+}, 15000); // Setting timeout for this test to be 15 seconds
+
+test('Clicking missing access calls window.open with accessit link', async () => {
+  const fields = fakeFields();
+  const finishedText = faker.lorem.sentence();
+  window.open = vi.fn();
+
+  const setField = vi.fn();
+
+  const onChangedField = vi.fn();
+
+  const user = userEvent.setup();
+
+  const { rerender } = render(
+    <SelectField
+      setField={setField}
+      fields={fields}
+      isLoading
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+      showAccessITLink
+    />
+  );
+
+  rerender(
+    <SelectField
+      setField={setField}
+      fields={fields}
+      isLoading={false}
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+      showAccessITLink
+    />
+  );
+
+  const textField = screen.getByRole('textbox');
+  await user.click(textField);
+
+  expect(screen.queryAllByRole('busy')).toEqual([]);
+
+  for (const field of fields) {
+    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
+  }
+
+  await user.click(screen.getByTestId('missing-access'));
+
+  expect(window.open).toHaveBeenCalledWith(
+    'https://accessit.equinor.com/#',
+    '_blank'
+  );
+}, 15000); // Setting timeout for this test to be 15 seconds

@@ -27,7 +27,7 @@ function fakeSection(): GuidelineSections {
   }
 
   return {
-    sectionName: faker.animal.cow(),
+    sectionName: faker.datatype.uuid(),
     items,
   };
 }

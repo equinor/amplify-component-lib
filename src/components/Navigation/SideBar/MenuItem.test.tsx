@@ -27,7 +27,6 @@ test('MenuItem works as expected when not disabled', async () => {
   await user.click(button);
 
   expect(props.onClick).toHaveBeenCalledTimes(1);
-  screen.logTestingPlaygroundURL();
 });
 
 test('Expect correct icon color based on disabled/enabled state', () => {

@@ -1,17 +1,30 @@
 import { power_button, power_button_off } from '@equinor/eds-icons';
+import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../tests/test-utils';
 import IconToggleButton, { IconToggleButtonProps } from './IconToggleButton';
 
-function fakeProps(): IconToggleButtonProps {
+function fakeProps(withToolTip = false): IconToggleButtonProps {
   return {
     toggleOn: {
       icon: power_button,
       onClick: vi.fn(),
+      tooltip: withToolTip
+        ? {
+            title: faker.animal.bird(),
+            placement: 'top',
+          }
+        : undefined,
     },
     toggleOff: {
       icon: power_button_off,
       onClick: vi.fn(),
+      tooltip: withToolTip
+        ? {
+            title: faker.animal.cow(),
+            placement: 'top',
+          }
+        : undefined,
     },
   };
 }
@@ -31,4 +44,23 @@ test('Shows correct icon before and after click', async () => {
 
   expect(path).toHaveAttribute('d', props.toggleOn.icon.svgPathData);
   expect(props.toggleOff.onClick).toHaveBeenCalledTimes(1);
+});
+
+test('OnClick gets called when clicking the button', async () => {
+  const props = fakeProps();
+  const onClick = vi.fn();
+  render(<IconToggleButton {...props} onClick={onClick} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  expect(props.toggleOff.onClick).toHaveBeenCalledTimes(1);
+
+  await user.click(button);
+
+  expect(props.toggleOn.onClick).toHaveBeenCalledTimes(1);
+
+  expect(onClick).toHaveBeenCalledTimes(2);
 });

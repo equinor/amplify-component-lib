@@ -231,6 +231,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
           </div>
           {showAccessITLink && (
             <MissingAccess
+              data-testid="missing-access"
               onClick={() =>
                 window.open('https://accessit.equinor.com/#', '_blank')
               }
