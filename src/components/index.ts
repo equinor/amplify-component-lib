@@ -1,4 +1,6 @@
 export type { Field } from '../types/Field';
+export type { default as ErrorType } from '../utils/errors';
+export type { default as ErrorContentType } from '../utils/errors';
 export { default as DataCard } from './DataDisplay/DataCard';
 export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
@@ -12,6 +14,8 @@ export { default as StatusChip } from './DataDisplay/Workflow/StatusChip';
 export { default as WorkflowDescription } from './DataDisplay/Workflow/WorkflowDescription';
 export { default as WorkflowStatusBar } from './DataDisplay/Workflow/WorkflowStatusBar';
 export { default as ConfirmationPopup } from './Feedback/ConfirmationPopup';
+export { default as ErrorPage } from './Feedback/ErrorPage';
+export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as FullPageUnauthorized } from './Feedback/FullPageUnauthorized';
