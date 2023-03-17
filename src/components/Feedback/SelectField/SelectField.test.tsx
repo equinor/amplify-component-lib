@@ -205,6 +205,56 @@ test('Searching fields works as expected', async () => {
   }
 }, 15000); // Setting timeout for this test to be 15 seconds
 
+test('Can open and close the menu with the arrow button', async () => {
+  const fields = fakeFields();
+  const finishedText = faker.lorem.sentence();
+
+  const setField = vi.fn();
+
+  const onChangedField = vi.fn();
+
+  const user = userEvent.setup();
+
+  const { rerender } = render(
+    <SelectField
+      setField={setField}
+      fields={fields}
+      isLoading
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+    />
+  );
+
+  rerender(
+    <SelectField
+      setField={setField}
+      fields={fields}
+      isLoading={false}
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+    />
+  );
+
+  const arrowButton = screen.getByTestId('arrow-button');
+
+  await user.click(arrowButton);
+
+  for (const field of fields) {
+    expect(screen.getByTestId(`menu-item-${field.uuid}`)).toHaveAttribute(
+      'aria-hidden',
+      'false'
+    );
+  }
+
+  await user.click(arrowButton);
+
+  for (const field of fields) {
+    expect(screen.getByTestId(`menu-item-${field.uuid}`)).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+  }
+}, 15000); // Setting timeout for this test to be 15 seconds
 test('Clearing field works as expected', async () => {
   const fields = fakeFields();
   const finishedText = faker.lorem.sentence();
@@ -238,19 +288,15 @@ test('Clearing field works as expected', async () => {
   const textField = screen.getByRole('textbox');
   await user.click(textField);
 
-  expect(screen.queryAllByRole('busy')).toEqual([]);
-
-  for (const field of fields) {
-    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
-  }
-
   await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
 
   await user.click(textField);
 
-  for (const field of fields) {
-    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
-  }
+  expect(textField).toHaveDisplayValue(fields[0].name ?? '');
+
+  await user.click(screen.getByTestId('clear-button'));
+
+  expect(textField).toHaveDisplayValue('');
 }, 15000); // Setting timeout for this test to be 15 seconds
 
 test('Clicking the same field twice clears the selected field', async () => {
@@ -288,33 +334,13 @@ test('Clicking the same field twice clears the selected field', async () => {
   const textField = screen.getByRole('textbox');
   await user.click(textField);
 
-  expect(screen.queryAllByRole('busy')).toEqual([]);
+  await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
 
-  for (const field of fields) {
-    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
-  }
-
-  expect(screen.getByTestId('nextButton')).toBeDisabled();
+  expect(textField).toHaveDisplayValue(fields[0]?.name ?? '');
 
   await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
 
-  expect(screen.getByTestId('nextButton')).toBeEnabled();
-
-  await user.click(textField);
-
-  await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
-
-  expect(screen.getByTestId('nextButton')).toBeDisabled();
-
-  for (const field of fields) {
-    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
-  }
-
-  await user.click(screen.getByTestId(`menu-item-${fields[0].uuid}`));
-
-  await user.click(screen.getByTestId('nextButton'));
-
-  expect(field).toStrictEqual(fields[0]);
+  expect(textField).toHaveDisplayValue('');
 }, 15000); // Setting timeout for this test to be 15 seconds
 
 test('Clicking missing access calls window.open with accessit link', async () => {

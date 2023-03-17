@@ -133,10 +133,15 @@ const SelectorCard: FC<FieldSelectorType> = ({
   const closeMenu = () => setOpen(false);
   const openMenu = () => setOpen(true);
 
+  const handleClear = () => {
+    setSelectedOption(undefined);
+    setSearchText('');
+  };
+
   const handleOnClick = (option: Field) => {
-    if (option.name !== selectedOption?.name) {
+    if (option.name !== selectedOption?.name && option.name) {
       setSelectedOption(option);
-      setSearchText(option.name ?? '');
+      setSearchText(option.name);
       closeMenu();
     } else {
       setSelectedOption(undefined);
@@ -150,19 +155,12 @@ const SelectorCard: FC<FieldSelectorType> = ({
   };
 
   const options = useMemo(() => {
-    if (selectedOption === undefined) {
-      if (searchText !== '') {
-        return availableFields.filter((option) =>
-          option.name?.toLowerCase()?.includes(searchText.toLowerCase())
-        );
-      }
-      return availableFields;
-    } else {
-      if (searchText !== selectedOption.name) {
-        setSelectedOption(undefined);
-      }
-      return availableFields;
+    if (searchText !== '' && searchText !== selectedOption?.name) {
+      return availableFields.filter((option) =>
+        option.name?.toLowerCase()?.includes(searchText.toLowerCase())
+      );
     }
+    return availableFields;
   }, [availableFields, searchText, selectedOption]);
 
   return (
@@ -180,12 +178,10 @@ const SelectorCard: FC<FieldSelectorType> = ({
               <>
                 {selectedOption && (
                   <Button
+                    data-testid="clear-button"
                     style={{ height: '24px', width: '24px' }}
                     variant="ghost_icon"
-                    onClick={() => {
-                      setSelectedOption(undefined);
-                      setSearchText('');
-                    }}
+                    onClick={handleClear}
                   >
                     <Icon size={18} data={clear} />
                   </Button>
@@ -194,7 +190,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
                   style={{ height: '24px', width: '24px' }}
                   onClick={() => (open ? closeMenu() : openMenu())}
                   variant="ghost_icon"
-                  data-testid="arrow_button"
+                  data-testid="arrow-button"
                 >
                   <Icon data={open ? arrow_drop_up : arrow_drop_down} />
                 </Button>
@@ -220,6 +216,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
                   key={field.uuid}
                   onClick={() => handleOnClick(field)}
                   data-testid={`menu-item-${field.uuid}`}
+                  aria-hidden={!open}
                   active={selectedOption?.name === field.name}
                 >
                   <Typography group="navigation" variant="menu_title">
