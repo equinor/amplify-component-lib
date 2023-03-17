@@ -49,8 +49,12 @@ test('Shows correct application name', () => {
   expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();
 });
 
-test('Shows environment banner', () => {
-  const environmentName = faker.helpers.objectValue(EnvironmentType);
+test('Shows environment banner when not in production', () => {
+  const environmentName = faker.helpers.arrayElement([
+    'localhost',
+    'development',
+    'staging',
+  ]) as EnvironmentType;
   render(
     <TopBar
       applicationIcon={car}
@@ -61,6 +65,20 @@ test('Shows environment banner', () => {
       content
     </TopBar>
   );
-  const object = screen.queryByText(environmentName) ?? ({} as HTMLElement);
-  expect(object).toBeInTheDocument();
+  expect(screen.getByText(environmentName)).toBeInTheDocument();
+});
+
+test('Hides environment banner when in production', () => {
+  const environmentName = 'production' as EnvironmentType;
+  render(
+    <TopBar
+      applicationIcon={car}
+      applicationName="test"
+      onHeaderClick={() => console.log('Going home 🏡')}
+      environment={environmentName}
+    >
+      content
+    </TopBar>
+  );
+  expect(screen.queryByText(environmentName)).not.toBeInTheDocument();
 });

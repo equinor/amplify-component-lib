@@ -44,8 +44,6 @@ const TopProgress = styled(Progress.Linear)<TopProgressProps>`
   top: 0;
   div {
     background-color: ${(props) =>
-      props.paused ? colors.interactive.warning__resting.hsla : ''};
-    background-color: ${(props) =>
       props.error ? colors.interactive.danger__resting.hsla : ''};
   }
 `;
@@ -57,15 +55,10 @@ const TruncatedTypography = styled(Typography)`
   white-space: nowrap;
 `;
 
-const getTitle = (
-  status: 'loading' | 'paused' | 'error' | 'done',
-  errorMsg?: string
-) => {
+const getTitle = (status: 'loading' | 'error' | 'done', errorMsg?: string) => {
   switch (status) {
     case 'loading':
       return <Typography variant="overline">Uploading</Typography>;
-    case 'paused':
-      return <Typography variant="overline">Upload is paused</Typography>;
     case 'error':
       return (
         <Tooltip title={errorMsg} placement="top">

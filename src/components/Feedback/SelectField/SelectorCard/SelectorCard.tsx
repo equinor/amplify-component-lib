@@ -219,6 +219,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
                 <MenuItem
                   key={field.uuid}
                   onClick={() => handleOnClick(field)}
+                  data-testid={`menu-item-${field.uuid}`}
                   active={selectedOption?.name === field.name}
                 >
                   <Typography group="navigation" variant="menu_title">

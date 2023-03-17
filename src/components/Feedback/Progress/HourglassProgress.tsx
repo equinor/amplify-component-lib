@@ -115,7 +115,11 @@ const HourglassProgress = forwardRef<HTMLDivElement, HourglassProgressProps>(
     };
 
     return (
-      <Container ref={ref} seconds={secondsAnimation()}>
+      <Container
+        ref={ref}
+        seconds={secondsAnimation()}
+        data-testid={`hourglass-${speed}`}
+      >
         <Wrapper size={size}>
           <Icon data={hourglass_empty} size={size} color={iconColor()} />
         </Wrapper>
