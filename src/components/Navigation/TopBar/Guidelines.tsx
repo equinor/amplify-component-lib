@@ -71,7 +71,12 @@ export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
             {section.items.map((item, index) => (
               <div key={index}>
                 <Guide key={item.title}>
-                  {item.colorBox && <StyledColorBox color={item.color} />}
+                  {item.colorBox && (
+                    <StyledColorBox
+                      data-testid={`color-box-${item.title}`}
+                      color={item.color}
+                    />
+                  )}
                   <Icon data={item.icon} color={item.color} size={24} />
                   <Typography variant="caption">{item.title}</Typography>
                 </Guide>

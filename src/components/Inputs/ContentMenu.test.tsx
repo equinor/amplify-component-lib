@@ -12,7 +12,7 @@ function fakeItem(): { label: string; value: string } {
 
 function fakeProps(): ContentMenuProps {
   const items = [];
-  for (let i = 0; i < faker.datatype.number({ min: 1, max: 10 }); i++) {
+  for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
     items.push(fakeItem());
   }
   return {
@@ -60,4 +60,44 @@ test('Show isLoading correctly', async () => {
   expect(screen.getByTestId('content-menu-container').children.length).toBe(
     props.items.length
   );
+});
+
+test('Parents open and close as expected', async () => {
+  const user = userEvent.setup();
+  const child = fakeItem();
+  const props = fakeProps();
+  props.items[0].children = [child];
+  render(<ContentMenu {...props} />);
+
+  await user.click(screen.getByRole('button', { name: props.items[0].label }));
+
+  expect(screen.getByRole('button', { name: child.label })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: child.label })).toBeVisible();
+
+  await user.click(screen.getByRole('button', { name: props.items[0].label }));
+
+  expect(
+    screen.queryByRole('button', { name: child.label })
+  ).not.toBeInTheDocument();
+});
+
+test('Children render and function as they should', async () => {
+  const user = userEvent.setup();
+  const child = fakeItem();
+  const props = fakeProps();
+  props.items[0].children = [child];
+  render(<ContentMenu {...props} />);
+
+  await user.click(screen.getByRole('button', { name: props.items[0].label }));
+
+  const childButton = screen.getByRole('button', {
+    name: props.items[0].children[0].label,
+  });
+
+  expect(childButton).toBeInTheDocument();
+  expect(childButton).toBeVisible();
+
+  await user.click(childButton);
+
+  expect(props.onChange).toHaveBeenCalledWith(child.value);
 });
