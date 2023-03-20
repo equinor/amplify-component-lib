@@ -31,7 +31,7 @@ function fakeProps(): SingleSelectDrawerProps<{
   };
 }
 
-test('Works as expected when opening and choosing an item', async () => {
+test('Works as expected when opening and toggling an item', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
   render(<SingleSelectDrawer {...props} />);
@@ -50,7 +50,110 @@ test('Works as expected when opening and choosing an item', async () => {
   const randomItem = screen.getAllByRole('checkbox')[randomIndex];
 
   await user.click(randomItem);
-
   expect(props.onChange).toHaveBeenCalledTimes(1);
   expect(props.onChange).toHaveBeenCalledWith(props.items[randomIndex]);
+
+  await user.click(randomItem);
+  expect(props.onChange).toHaveBeenCalledTimes(2);
+  expect(props.onChange).toHaveBeenCalledWith(undefined);
+});
+
+test('Works as expected when clicking outside component when open', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<SingleSelectDrawer {...props} />);
+
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: props.items.length - 1,
+  });
+
+  const toggleOptions = screen.getByRole('button', {
+    name: /toggle options/i,
+  });
+
+  await user.click(toggleOptions);
+
+  expect(
+    screen.queryByText(props.items[randomIndex].label)
+  ).toBeInTheDocument();
+
+  await user.click(document.body);
+
+  expect(
+    screen.queryByText(props.items[randomIndex].label)
+  ).not.toBeInTheDocument();
+});
+
+test('Works as expected when entering search param in input field', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<SingleSelectDrawer {...props} />);
+
+  const toggleOptions = screen.getByRole('button', {
+    name: /toggle options/i,
+  });
+
+  await user.click(toggleOptions);
+
+  const input = screen.getByPlaceholderText(props.placeholder ?? '');
+
+  const searchParam = props.items[0].label;
+
+  const randomIndex = faker.datatype.number({
+    min: 1,
+    max: props.items.length - 1,
+  });
+
+  await user.type(input, searchParam);
+
+  expect(screen.getByText(searchParam)).toBeVisible();
+
+  expect(
+    screen.queryByText(props.items[randomIndex].label)
+  ).not.toBeInTheDocument();
+});
+
+test('Works as expected when tabbing to focus the input', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<SingleSelectDrawer {...props} />);
+
+  const input = screen.getByPlaceholderText(props.placeholder ?? '');
+
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: props.items.length - 1,
+  });
+
+  // We know that the first tab focuses the input field in this component
+  await user.tab();
+
+  expect(input).toHaveFocus();
+  expect(
+    screen.queryByText(props.items[randomIndex].label)
+  ).toBeInTheDocument();
+});
+
+test('Works as expected when passing an initialItem prop', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: props.items.length - 1,
+  });
+  const initialItem = props.items[randomIndex];
+
+  render(<SingleSelectDrawer {...props} initialItem={initialItem} />);
+
+  const toggleOptions = screen.getByRole('button', {
+    name: /toggle options/i,
+  });
+
+  await user.click(toggleOptions);
+
+  const initialItemInput = screen.getByText(initialItem.label).children[0]
+    .children[0];
+
+  expect(initialItemInput).toBeChecked();
 });
