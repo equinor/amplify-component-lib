@@ -37,7 +37,6 @@ test('Shows details after clicking on More details.', async () => {
       <ErrorPage.Details text={detailsText} />
     </ErrorPage>
   );
-  screen.logTestingPlaygroundURL();
   const showDetailsButton = screen.getByTestId('show-details');
   await user.click(showDetailsButton);
 
