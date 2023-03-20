@@ -6,18 +6,17 @@ import WorkflowDescription, {
 } from './WorkflowDescription';
 
 function fakeOption(undefinedApprovedDate = false) {
-  if (Math.random() > 0.5) {
+  if (Math.random() > 0.5 || undefinedApprovedDate) {
     return {
       label: faker.datatype.uuid(),
       notApprovedLabel: faker.datatype.uuid(),
+      approvedDate: undefined,
     };
   }
   return {
     label: faker.datatype.uuid(),
     approvedUser: faker.datatype.uuid(),
-    approvedDate: undefinedApprovedDate
-      ? undefined
-      : faker.date.past().toISOString(),
+    approvedDate: faker.date.past().toISOString(),
     color: Math.random() > 0.5 ? faker.color.rgb() : undefined,
     backgroundColor: Math.random() > 0.5 ? faker.color.rgb() : undefined,
   };
@@ -26,7 +25,7 @@ function fakeOption(undefinedApprovedDate = false) {
 function fakeProps(undefinedApprovedDate = false): WorkflowDescriptionProps {
   const fakeOptions: any = [];
   for (let i = 0; i < faker.datatype.number({ min: 2, max: 20 }); i++) {
-    fakeOptions.push(fakeOption());
+    fakeOptions.push(fakeOption(undefinedApprovedDate));
   }
   return {
     options: fakeOptions,
