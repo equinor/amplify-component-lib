@@ -147,7 +147,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
       }
     }
     return all;
-  }, [handleOnClick, items, value]);
+  }, [handleOnClick, items, openedParents, value]);
 
   if (isLoading) {
     return (
