@@ -93,25 +93,26 @@ test('Works as expected when entering search param in input field', async () => 
   const toggleOptions = screen.getByRole('button', {
     name: /toggle options/i,
   });
-
   await user.click(toggleOptions);
 
   const input = screen.getByPlaceholderText(props.placeholder ?? '');
 
-  const searchParam = props.items[0].label;
-
   const randomIndex = faker.datatype.number({
-    min: 1,
+    min: 0,
     max: props.items.length - 1,
   });
 
+  const searchParam = props.items[randomIndex].label;
+
   await user.type(input, searchParam);
 
-  expect(screen.getByText(searchParam)).toBeVisible();
+  const hiddenItems = props.items.filter((item) => item.label !== searchParam);
 
-  expect(
-    screen.queryByText(props.items[randomIndex].label)
-  ).not.toBeInTheDocument();
+  expect(screen.getByText(searchParam)).toBeInTheDocument();
+
+  hiddenItems.forEach((item) => {
+    expect(screen.queryByText(item.label)).not.toBeInTheDocument();
+  });
 });
 
 test('Works as expected when tabbing to focus the input', async () => {
