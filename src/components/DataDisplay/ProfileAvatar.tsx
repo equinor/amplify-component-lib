@@ -1,6 +1,6 @@
 import { forwardRef, useMemo } from 'react';
 
-import { Avatar as EDSAvatar, Icon } from '@equinor/eds-core-react';
+import { Avatar, Icon } from '@equinor/eds-core-react';
 import { person } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -14,6 +14,36 @@ const availableColors: string[] = [
   colors.infographic.substitute__green_mint.hex,
   colors.infographic.substitute__blue_overcast.hex,
 ];
+
+export function nameToInitials(name: string) {
+  const nameWithoutParenthesis = name
+    .replace(/ *\([^)]*\) */g, '')
+    .toUpperCase();
+  const splitNames = nameWithoutParenthesis.split(' ');
+  const lastNameCommaFirstName = nameWithoutParenthesis.includes(',');
+
+  const getFirstCharacterAfterComma = (name: string) => {
+    const nameSplitOnComma = name.split(',');
+    return nameSplitOnComma[1].trim().charAt(0);
+  };
+
+  if (splitNames.length === 1 && splitNames[0] !== '') {
+    return splitNames[0].charAt(0) + '.';
+  }
+
+  if (lastNameCommaFirstName) {
+    return (
+      getFirstCharacterAfterComma(nameWithoutParenthesis) +
+      splitNames[0].charAt(0)
+    );
+  }
+
+  if (splitNames.length >= 2) {
+    return (
+      splitNames[0].charAt(0) + splitNames[splitNames.length - 1].charAt(0)
+    );
+  }
+}
 
 function nameToColor(name?: string): string {
   let sum = 0;
@@ -31,7 +61,6 @@ type ContainerProps = {
 type InitialsContainerProps = {
   background: string;
   fontSize: number;
-  disabled: boolean;
 } & ContainerProps;
 
 const InitialsContainer = styled.div<InitialsContainerProps>`
@@ -40,75 +69,30 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   font-size: ${(props) => props.fontSize}px;
   font-family: ${typography.heading.h6.fontFamily};
   border-radius: ${shape.circle.borderRadius};
-  background: ${(props) =>
-    props.disabled
-      ? colors.interactive.disabled__border.hex
-      : colors.infographic.substitute__blue_overcast.hex};
-  color: ${(props) =>
-    props.disabled
-      ? colors.text.static_icons__default.hex
-      : colors.text.static_icons__primary_white.hex};
+  background: ${colors.infographic.substitute__blue_overcast.hex};
+  color: ${colors.text.static_icons__primary_white.hex};
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Avatar = styled(EDSAvatar)`
-  ${(props) =>
-    props.disabled &&
-    `
-    > img {
-      filter: grayscale(1);
-    }
-  `}
 `;
 
 const FallbackIcon = styled(Icon)`
   width: 70%;
 `;
 
-const getFirstCharacterAfterComma = (name: string) => {
-  const nameSplitOnComma = name.split(',');
-  return nameSplitOnComma[1].trim().charAt(0);
-};
-
 export interface ProfileAvatarProps {
   url?: string;
   name?: string;
   size?: 'small' | 'small-medium' | 'medium' | 'large';
-  disabled?: boolean;
 }
 
 const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
-  ({ url, name, size = 'medium', disabled = false }, ref) => {
+  ({ url, name, size = 'medium' }, ref) => {
     const initials = useMemo(() => {
       const defaultIcon = <FallbackIcon data={person}></FallbackIcon>;
       if (!name || name.trim().length === 0) return defaultIcon;
 
-      const nameWithoutParenthesis = name
-        .replace(/ *\([^)]*\) */g, '')
-        .toUpperCase();
-      const splitNames = nameWithoutParenthesis.split(' ');
-      const lastNameCommaFirstName = nameWithoutParenthesis.includes(',');
-
-      if (splitNames.length === 1 && splitNames[0] !== '') {
-        return splitNames[0].charAt(0) + '.';
-      }
-
-      if (lastNameCommaFirstName) {
-        return (
-          getFirstCharacterAfterComma(nameWithoutParenthesis) +
-          splitNames[0].charAt(0)
-        );
-      }
-
-      if (splitNames.length >= 2) {
-        return (
-          splitNames[0].charAt(0) + splitNames[splitNames.length - 1].charAt(0)
-        );
-      }
-
-      return defaultIcon;
+      return nameToInitials(name);
     }, [name]);
 
     const sizeToPx = () => {
@@ -146,7 +130,6 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
           alt={`user-avatar-${name}`}
           size={sizeToPx()}
           src={imageSrc}
-          disabled={disabled}
           ref={ref}
         />
       );
@@ -157,7 +140,6 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         background={nameToColor(name)}
         size={sizeToPx()}
         fontSize={sizeToFontsize()}
-        disabled={disabled}
         ref={ref}
       >
         {initials}

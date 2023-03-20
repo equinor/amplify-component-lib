@@ -9,7 +9,7 @@ import styled from 'styled-components';
 const { colors, spacings } = tokens;
 
 interface GridItemProps {
-  hoverable: number;
+  hoverable: boolean;
 }
 
 const GridItem = styled.div<GridItemProps>`
@@ -18,7 +18,7 @@ const GridItem = styled.div<GridItemProps>`
   border: 1px solid ${colors.interactive.table__header__fill_hover.hex};
   padding: ${spacings.comfortable.medium} 0;
   ${(props) =>
-    props.hoverable === 1 &&
+    props.hoverable &&
     `&:hover {
       background: ${colors.interactive.primary__hover_alt.hex};
       cursor: pointer;
@@ -66,7 +66,7 @@ const TableItem: React.FC<TableItemProps> = ({
 }) => {
   return (
     <GridItem
-      hoverable={onClick ? 1 : 0}
+      hoverable={!!onClick}
       onClick={onClick ? onClick : undefined}
       data-testid="table-item"
     >

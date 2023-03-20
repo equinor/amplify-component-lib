@@ -10,7 +10,7 @@ import { faker } from '@faker-js/faker';
 import { render, screen } from '../../../tests/test-utils';
 import { GuidelineProps, Guidelines, GuidelineSections } from './Guidelines';
 
-function fakeSection(): GuidelineSections {
+function fakeSection(withColorBoxes = false): GuidelineSections {
   const items: GuidelineSections['items'] = [];
   for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
     items.push({
@@ -23,19 +23,20 @@ function fakeSection(): GuidelineSections {
         hill_shading,
       ]),
       color: faker.color.rgb(),
+      colorBox: withColorBoxes ? faker.color.rgb() : undefined,
     });
   }
 
   return {
-    sectionName: faker.animal.cow(),
+    sectionName: faker.datatype.uuid(),
     items,
   };
 }
 
-function fakeProps(): GuidelineProps {
+function fakeProps(withColorBoxes = false): GuidelineProps {
   const sections: GuidelineSections[] = [];
   for (let i = 0; i < faker.datatype.number({ min: 2, max: 5 }); i++) {
-    sections.push(fakeSection());
+    sections.push(fakeSection(withColorBoxes));
   }
   return {
     open: true,
@@ -60,6 +61,18 @@ test('Renders content correctly', async () => {
       expect(section).toContainElement(screen.getByText(item.title));
       expect(section).toContainElement(allIcons[iconIndex]);
       iconIndex += 1;
+    }
+  }
+});
+
+test('Renders sections as expected with color boxes correctly', async () => {
+  const props = fakeProps(true);
+  render(<Guidelines {...props} />);
+
+  for (const section of props.sections) {
+    for (const item of section.items) {
+      expect(screen.getByTestId(`color-box-${item.title}`)).toBeInTheDocument();
+      expect(screen.getByTestId(`color-box-${item.title}`)).toBeVisible();
     }
   }
 });

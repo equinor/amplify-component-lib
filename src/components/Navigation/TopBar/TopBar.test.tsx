@@ -49,8 +49,39 @@ test('Shows correct application name', () => {
   expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();
 });
 
-test('Shows environment banner', () => {
-  const environmentName = faker.helpers.objectValue(EnvironmentType);
+test('Shows environment banner when not in production', () => {
+  const envs = [
+    EnvironmentType.LOCALHOST,
+    EnvironmentType.DEVELOP,
+    EnvironmentType.STAGING,
+  ];
+  const { rerender } = render(
+    <TopBar
+      applicationIcon={car}
+      applicationName="test"
+      onHeaderClick={() => console.log('Going home 🏡')}
+    >
+      content
+    </TopBar>
+  );
+
+  for (const envType of envs) {
+    rerender(
+      <TopBar
+        applicationIcon={car}
+        applicationName="test"
+        onHeaderClick={() => console.log('Going home 🏡')}
+        environment={envType}
+      >
+        content
+      </TopBar>
+    );
+    expect(screen.getByText(envType)).toBeInTheDocument();
+  }
+});
+
+test('Hides environment banner when in production', () => {
+  const environmentName = 'production' as EnvironmentType;
   render(
     <TopBar
       applicationIcon={car}
@@ -61,6 +92,34 @@ test('Shows environment banner', () => {
       content
     </TopBar>
   );
-  const object = screen.queryByText(environmentName) ?? ({} as HTMLElement);
-  expect(object).toBeInTheDocument();
+  expect(screen.queryByText(environmentName)).not.toBeInTheDocument();
+});
+
+test('Uses react element for icon if provided', () => {
+  const iconText = faker.animal.snake();
+  render(
+    <TopBar
+      applicationIcon={<p>{iconText}</p>}
+      applicationName="test"
+      onHeaderClick={() => console.log('Going home 🏡')}
+    >
+      content
+    </TopBar>
+  );
+  expect(screen.getByText(iconText)).toBeInTheDocument();
+});
+
+test('Capitalize app name works as expected', () => {
+  const name = faker.name.fullName();
+  render(
+    <TopBar
+      applicationIcon={car}
+      applicationName={name}
+      capitalize
+      onHeaderClick={() => console.log('Going home 🏡')}
+    >
+      content
+    </TopBar>
+  );
+  expect(screen.getByText(name.toLowerCase())).toBeInTheDocument();
 });

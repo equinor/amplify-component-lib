@@ -80,3 +80,22 @@ test('Renders correctly with avatar', async () => {
   await user.click(closeButton);
   expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 });
+
+test('Opens and closes as it should', async () => {
+  const props = fakeProps(true);
+  const user = userEvent.setup();
+  render(<Account {...props} />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  expect(
+    screen.getByAltText(`user-avatar-${props.account?.name}`)
+  ).toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(
+    screen.queryByAltText(`user-avatar-${props.account?.name}`)
+  ).not.toBeInTheDocument();
+});

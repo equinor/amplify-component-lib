@@ -91,12 +91,12 @@ export type MenuItemProps = {
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   ({ currentUrl, icon, name, link, onClick, disabled }, ref) => {
-    const isCurrentUrl = () => (link ? currentUrl?.includes(link) : false);
+    const isCurrentUrl = link ? currentUrl?.includes(link) : false;
     const { isOpen } = useSideBar();
 
     const getIconColor = () => {
       if (!disabled) {
-        return isCurrentUrl()
+        return isCurrentUrl
           ? colors.interactive.primary__resting.hsla
           : colors.text.static_icons__default.hsla;
       }
@@ -110,7 +110,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     if (isOpen) {
       return (
         <Container
-          active={isCurrentUrl()}
+          active={isCurrentUrl}
           onClick={handleOnClick}
           open
           ref={ref}
@@ -118,7 +118,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           disabled={disabled}
         >
           {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
-          <ItemText variant="cell_text" group="table" active={isCurrentUrl()}>
+          <ItemText variant="cell_text" group="table" active={isCurrentUrl}>
             {name}
           </ItemText>
         </Container>
@@ -128,7 +128,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     return (
       <Tooltip title={name} placement="right">
         <Container
-          active={isCurrentUrl()}
+          active={isCurrentUrl}
           onClick={handleOnClick}
           open={isOpen}
           ref={ref}

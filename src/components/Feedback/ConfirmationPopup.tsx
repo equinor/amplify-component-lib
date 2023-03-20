@@ -12,7 +12,7 @@ const StyledDialog = styled(Dialog)`
 `;
 
 interface IStyledActionsProps {
-  actionPosition?: 'left' | 'right';
+  actionPosition: 'left' | 'right';
 }
 
 const StyledActions = styled(Dialog.Actions)<IStyledActionsProps>`
@@ -53,7 +53,7 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
       title,
       body,
       actions,
-      actionPosition,
+      actionPosition = 'left',
       onClose,
       children,
       width = '400px',
@@ -69,7 +69,10 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
               {body && <Typography variant="body_short">{body}</Typography>}
               {children}
             </Dialog.CustomContent>
-            <StyledActions actionPosition={actionPosition}>
+            <StyledActions
+              data-testid={`confirmation-actions-${actionPosition}`}
+              actionPosition={actionPosition}
+            >
               {actions}
             </StyledActions>
           </StyledDialog>

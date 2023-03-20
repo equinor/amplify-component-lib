@@ -51,6 +51,25 @@ interface EnvironmentTagProps {
   environmentType: EnvironmentType;
 }
 
+function environmentStyling(envType: EnvironmentType): string {
+  let backgroundColor = 'none';
+  let borderColor = 'none';
+  if (envType === EnvironmentType.LOCALHOST) {
+    backgroundColor = colors.interactive.disabled__fill.hex;
+    borderColor = colors.interactive.disabled__text.hex;
+  } else if (envType === EnvironmentType.DEVELOP) {
+    backgroundColor = colors.ui.background__info.hex;
+    borderColor = colors.infographic.substitute__blue_overcast.hex;
+  } else if (envType === EnvironmentType.STAGING) {
+    backgroundColor = colors.ui.background__warning.hex;
+    borderColor = colors.interactive.warning__text.hex;
+  }
+  return `
+    background-color: ${backgroundColor};
+    border-color: 1px solid ${borderColor};
+  `;
+}
+
 const EnvironmentTag = styled.div<EnvironmentTagProps>`
   width: 214px;
   height: 36px;
@@ -62,33 +81,7 @@ const EnvironmentTag = styled.div<EnvironmentTagProps>`
   left: 50%;
   transform: translateX(-50%);
   text-transform: capitalize;
-  ${(props) => {
-    if (props.environmentType === EnvironmentType.LOCALHOST) {
-      return (
-        'background-color: ' +
-        colors.interactive.disabled__fill.hex +
-        '; border: 1px solid ' +
-        colors.interactive.disabled__text.hex +
-        ';'
-      );
-    } else if (props.environmentType === EnvironmentType.DEVELOP) {
-      return (
-        'background-color: ' +
-        colors.ui.background__info.hex +
-        '; border: 1px solid ' +
-        colors.infographic.substitute__blue_overcast.hex +
-        ';'
-      );
-    } else if (props.environmentType === EnvironmentType.STAGING) {
-      return (
-        'background-color: ' +
-        colors.ui.background__warning.hex +
-        '; border: 1px solid ' +
-        colors.interactive.warning__text.hex +
-        ';'
-      );
-    }
-  }};
+  ${(props) => environmentStyling(props.environmentType)}
 `;
 
 export enum EnvironmentType {

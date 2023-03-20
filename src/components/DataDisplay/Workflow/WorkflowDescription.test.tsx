@@ -5,11 +5,12 @@ import WorkflowDescription, {
   WorkflowDescriptionProps,
 } from './WorkflowDescription';
 
-function fakeOption() {
-  if (Math.random() > 0.5) {
+function fakeOption(undefinedApprovedDate = false) {
+  if (Math.random() > 0.5 || undefinedApprovedDate) {
     return {
       label: faker.datatype.uuid(),
       notApprovedLabel: faker.datatype.uuid(),
+      approvedDate: undefined,
     };
   }
   return {
@@ -21,10 +22,10 @@ function fakeOption() {
   };
 }
 
-function fakeProps(): WorkflowDescriptionProps {
+function fakeProps(undefinedApprovedDate = false): WorkflowDescriptionProps {
   const fakeOptions: any = [];
   for (let i = 0; i < faker.datatype.number({ min: 2, max: 20 }); i++) {
-    fakeOptions.push(fakeOption());
+    fakeOptions.push(fakeOption(undefinedApprovedDate));
   }
   return {
     options: fakeOptions,
@@ -54,6 +55,23 @@ test('Renders the flow correctly', async () => {
       approvedOptions[index].color ?? '#000000'
     );
   }
+
+  const notApprovedOptions = props.options.filter(
+    (option) => option.approvedDate === undefined
+  );
+  for (let i = 0; i < notApprovedOptions.length; i++) {
+    expect(
+      screen.getByText(notApprovedOptions[i].notApprovedLabel ?? 'failed')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(notApprovedOptions[i].label ?? 'failed')
+    ).toBeInTheDocument();
+  }
+});
+
+test('Renders undefined approved dates properly flow correctly', async () => {
+  const props = fakeProps(true);
+  render(<WorkflowDescription {...props} />);
 
   const notApprovedOptions = props.options.filter(
     (option) => option.approvedDate === undefined
