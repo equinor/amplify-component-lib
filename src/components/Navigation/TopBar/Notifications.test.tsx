@@ -85,9 +85,10 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
 });
 test('Renders unread dot when unread = true', async () => {
   render(<Notifications setAllAsRead={() => null} hasUnread />);
+  const user = userEvent.setup();
 
   const button = screen.getByRole('button');
-  await userEvent.click(button);
+  await user.click(button);
 
   expect(screen.getByTestId('unread-dot')).toBeInTheDocument();
   expect(screen.getByTestId('unread-dot')).toBeVisible();
