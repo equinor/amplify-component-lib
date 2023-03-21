@@ -20,10 +20,10 @@ export default defineConfig({
       reporter: ['text-summary', 'html'],
       perFile: true,
       thresholdAutoUpdate: true,
-      statements: 98.8,
+      statements: 98.93,
       branches: 93.83,
-      functions: 92.7,
-      lines: 98.8,
+      functions: 93.56,
+      lines: 98.93,
     },
   },
 });

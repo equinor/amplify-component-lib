@@ -21,25 +21,22 @@ test('distanceLatLng works as expected', () => {
   ).toBeLessThanOrEqual(10);
 });
 
+const utmCoordinate = {
+  x: 431400,
+  y: 6537900,
+};
+const latLng = { lat: 58.973227394399274, lng: 1.8052774673154197 };
+
 test('convertUtmToLatLng works as expected', () => {
-  const utmCoordinate = {
-    x: 431400,
-    y: 6537900,
-  };
   const converted = map.convertUtmToLatLng(utmCoordinate.x, utmCoordinate.y);
 
-  const expectedLatLng = { lat: 58.973227394399274, lng: 1.8052774673154197 };
-
-  expect(converted).toStrictEqual(expectedLatLng);
+  expect(converted).toStrictEqual(latLng);
 });
 
 test('convertLatLngToUtm works as expected', () => {
-  const latLng = { lat: 58.973227394399274, lng: 1.8052774673154197 };
   const converted = map.convertLatLngToUtm(latLng);
 
-  const expectedUtm = [431400, 6537900];
-
   /// The conversion includes a lot of decimals which is why we round it to the nearest whole number
-  expect(Math.round(converted[0])).toBe(expectedUtm[0]);
-  expect(Math.round(converted[1])).toBe(expectedUtm[1]);
+  expect(Math.round(converted[0])).toBe(utmCoordinate.x);
+  expect(Math.round(converted[1])).toBe(utmCoordinate.y);
 });
