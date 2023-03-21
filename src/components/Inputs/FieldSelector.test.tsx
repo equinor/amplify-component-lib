@@ -20,6 +20,28 @@ function fakeProps(): FieldSelectorType {
   };
 }
 
+test('Opens/closes as it should', async () => {
+  const props = fakeProps();
+  render(<FieldSelector {...props} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  for (const field of props.availableFields) {
+    const name = field?.name?.toLowerCase() ?? 'not-found';
+    expect(screen.getByText(name)).toBeInTheDocument();
+    expect(screen.getByText(name)).toBeVisible();
+  }
+
+  await user.click(button);
+
+  for (const field of props.availableFields) {
+    const name = field?.name?.toLowerCase() ?? 'not-found';
+    expect(screen.queryByText(name)).not.toBeInTheDocument();
+  }
+});
+
 test('Runs onSelect function once when clicking an item', async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} />);
@@ -77,4 +99,70 @@ test('Filters values when using search', async () => {
       ).not.toBeInTheDocument();
     }
   }
+});
+
+test("Shows 'No results' text when searching for something that doesn't exist", async () => {
+  const props = fakeProps();
+  render(<FieldSelector {...props} currentField={undefined} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const search = screen.getByRole('textbox');
+
+  const randomSearchValue = faker.internet.ipv4();
+  await user.type(search, randomSearchValue);
+  for (const field of props.availableFields) {
+    expect(
+      screen.queryByRole('heading', { name: field.name?.toLowerCase() })
+    ).not.toBeInTheDocument();
+  }
+  expect(
+    screen.getByText('No fields matching your search')
+  ).toBeInTheDocument();
+});
+
+test("Shows 'No results' text when searching for something that doesn't exist", async () => {
+  const props = fakeProps();
+  render(<FieldSelector {...props} currentField={undefined} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const search = screen.getByRole('textbox');
+
+  const randomSearchValue = faker.internet.ipv4();
+  await user.type(search, randomSearchValue);
+  for (const field of props.availableFields) {
+    expect(
+      screen.queryByRole('heading', { name: field.name?.toLowerCase() })
+    ).not.toBeInTheDocument();
+  }
+  expect(
+    screen.getByText('No fields matching your search')
+  ).toBeInTheDocument();
+});
+
+test('Runs window.open when clicking access it card', async () => {
+  const props = fakeProps();
+  render(<FieldSelector {...props} currentField={undefined} />);
+  window.open = vi.fn();
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const accessItMenuItem = screen.getByRole('menuitem', {
+    name: /missing a field\? go to accessit/i,
+  });
+
+  await user.click(accessItMenuItem);
+
+  expect(window.open).toHaveBeenCalledTimes(1);
+  expect(window.open).toHaveBeenCalledWith(
+    'https://accessit.equinor.com/#',
+    '_blank'
+  );
 });
