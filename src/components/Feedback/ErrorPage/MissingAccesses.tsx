@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 
-import { Icon, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
-const { spacings } = tokens;
+const { colors, spacings } = tokens;
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +33,16 @@ export const MissingAccesses = forwardRef<HTMLDivElement, MissingAccessesProps>(
           <Typography group="paragraph" variant="body_short">
             {access.title}
           </Typography>
-          <Icon data={external_link} onClick={() => window.open(access.url)} />
+          <Button
+            data-testid={`missing-access-button-${access.title}`}
+            variant="ghost_icon"
+            onClick={() => window.open(access.url, '_blank')}
+          >
+            <Icon
+              data={external_link}
+              color={colors.text.static_icons__default.hex}
+            />
+          </Button>
         </div>
       ))}
     </Container>
