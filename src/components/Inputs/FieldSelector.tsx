@@ -1,31 +1,23 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
-import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Icon,
+  Menu as EDSMenu,
+  Search,
+  Typography,
+} from '@equinor/eds-core-react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useOutsideClick } from '@equinor/eds-utils';
 
 import { Field } from '../../types/Field';
 
 import styled from 'styled-components';
 
-const { colors, spacings, elevation, shape } = tokens;
+const { colors, spacings } = tokens;
 
-type MenuProps = {
-  placement: 'bottom-start' | 'bottom' | 'bottom-end';
-};
-
-const Menu = styled.div<MenuProps>`
+const Menu = styled(EDSMenu)`
   width: 17rem;
-  background-color: white;
-  box-shadow: ${elevation.raised};
-  position: absolute;
-  transform: translate(
-    -${(props) => (props.placement === 'bottom' ? spacings.comfortable.xxx_large : props.placement === 'bottom-end' ? '15rem' : '0')},
-    ${spacings.comfortable.x_small}
-  );
-
-  border-radius: ${shape.corners.borderRadius};
 `;
 
 const SearchContainer = styled.div`
@@ -54,16 +46,7 @@ const ListContainer = styled.div`
   overflow-y: auto;
 `;
 
-interface MenuItemProps {
-  selected?: boolean;
-}
-
-const MenuItem = styled.div<MenuItemProps>`
-  ${(props) =>
-    props.selected &&
-    `background: ${colors.interactive.primary__selected_highlight.hex};
-     border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
-    `};
+const MenuItem = styled(Menu.Item)`
   &:hover {
     background: ${colors.interactive.primary__selected_hover.hex};
     cursor: pointer;
@@ -73,9 +56,9 @@ const MenuItem = styled.div<MenuItemProps>`
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
 `;
 
-const MenuFixedItem = styled.div<MenuItemProps>`
+const MenuFixedItem = styled(Menu.Item)`
   ${(props) =>
-    props.selected &&
+    props.active &&
     `background: ${colors.interactive.primary__selected_highlight.hex};
      border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
     `};
@@ -128,23 +111,15 @@ export type FieldSelectorType = {
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
   showAccessITLink?: boolean;
-  placement?: 'bottom-start' | 'bottom' | 'bottom-end';
 };
 
 const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
   (
-    {
-      currentField,
-      availableFields,
-      onSelect,
-      showAccessITLink = true,
-      placement = 'bottom',
-    },
+    { currentField, availableFields, onSelect, showAccessITLink = true },
     ref
   ) => {
     const [open, setOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const menuRef = useRef<HTMLDivElement>(null);
     const [searchValue, setSearchValue] = useState<string>('');
 
     const openMenu = () => {
@@ -172,20 +147,9 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 
-    useOutsideClick(menuRef.current as HTMLElement, (event) => {
-      const node = event.target as Node;
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(node) &&
-        !buttonRef.current?.contains(node)
-      ) {
-        closeMenu();
-      }
-    });
-
     return (
       <div ref={ref}>
-        <Button variant="ghost_icon" onClick={handleOnClick} ref={buttonRef}>
+        <Button variant="ghost_icon" ref={buttonRef} onClick={handleOnClick}>
           <Icon
             data={platform}
             size={24}
@@ -193,7 +157,12 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
           />
         </Button>
         {open && (
-          <Menu ref={menuRef} id="field-menu" placement={placement}>
+          <Menu
+            id="field-menu"
+            anchorEl={buttonRef.current}
+            open
+            onClose={closeMenu}
+          >
             <>
               <MenuSection>
                 <MenuHeader>
@@ -208,19 +177,17 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                 </MenuHeader>
                 <Typography variant="overline">Current selection</Typography>
                 {currentField && (
-                  <MenuFixedItem selected>
-                    <div>
-                      <TextContainer>
-                        <Typography variant="h6">
-                          {currentField.name?.toLowerCase()}
-                        </Typography>
-                      </TextContainer>
-                      <Icon
-                        data={check}
-                        color={colors.interactive.primary__resting.hex}
-                        size={24}
-                      />
-                    </div>
+                  <MenuFixedItem active>
+                    <TextContainer>
+                      <Typography variant="h6">
+                        {currentField.name?.toLowerCase()}
+                      </Typography>
+                    </TextContainer>
+                    <Icon
+                      data={check}
+                      color={colors.interactive.primary__resting.hex}
+                      size={24}
+                    />
                   </MenuFixedItem>
                 )}
                 <SearchContainer>
@@ -261,19 +228,15 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                     window.open('https://accessit.equinor.com/#', '_blank')
                   }
                 >
-                  <div>
-                    <TextContainer>
-                      <Typography variant="overline">
-                        Missing a field?
-                      </Typography>
-                      <Typography variant="h6">Go to AccessIT</Typography>
-                    </TextContainer>
-                    <Icon
-                      data={exit_to_app}
-                      color={colors.interactive.primary__resting.hex}
-                      size={24}
-                    />
-                  </div>
+                  <TextContainer>
+                    <Typography variant="overline">Missing a field?</Typography>
+                    <Typography variant="h6">Go to AccessIT</Typography>
+                  </TextContainer>
+                  <Icon
+                    data={exit_to_app}
+                    color={colors.interactive.primary__resting.hex}
+                    size={24}
+                  />
                 </MenuFixedItem>
               )}
             </>
