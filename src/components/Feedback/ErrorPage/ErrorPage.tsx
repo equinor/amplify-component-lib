@@ -13,8 +13,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
-  left: -72px; // size of the sidebar
-  top: -64px; // size of the topbar
   margin: auto;
   align-items: center;
   h3,
