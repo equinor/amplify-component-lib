@@ -85,9 +85,9 @@ export const getErrorContent = (
   }
   // default
   else {
-    return getListOfErrors(appName).filter(
+    return getListOfErrors(appName).find(
       (error) => error.type === ErrorType.DEFAULT
-    )[0];
+    ) as ErrorContentType;
   }
 };
 
