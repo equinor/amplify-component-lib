@@ -124,9 +124,7 @@ const Filter: FC<FilterProps> = ({
           ref={subMenuRef}
           placement="right-start"
         >
-          <Menu.Section
-            title={subMenuIndex !== -1 ? options[subMenuIndex].label : 'Title'}
-          >
+          <Menu.Section title={options[subMenuIndex].label}>
             {options[subMenuIndex]?.options.map((option) => (
               <MenuItem
                 key={`filter-option-${option.label}`}
