@@ -25,6 +25,10 @@ test('testing with negative number', () => {
   expect(size.formatBytes(-1234567890)).toBe('0 Bytes');
 });
 
+test('testing with 0', () => {
+  expect(size.formatBytes(0)).toBe('0 Bytes');
+});
+
 test('testing with negative decimal', () => {
   expect(size.formatBytes(Math.pow(1024, 3), -2)).toBe('1 GB');
 });
