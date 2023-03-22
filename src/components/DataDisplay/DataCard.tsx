@@ -90,8 +90,7 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
     ref
   ) => {
     if (rightIcon && rightElement) {
-      console.error('Only use one; rightIcon or rightElement');
-      return null;
+      throw new Error('Only use one; rightIcon or rightElement');
     }
 
     return (

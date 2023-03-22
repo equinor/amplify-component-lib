@@ -48,16 +48,15 @@ test('Runs onClick when pressed', async () => {
   expect(callback).toHaveBeenCalled();
 });
 
-// TODO: Decide if this is to be kept
-// This is a really silly test
-// test('Throws error when providing rightIcon and rightElement', () => {
-//   const props = fakeProps();
-//   render(
-//     <DataCard {...props} rightIcon={edit} rightElement={<div>test</div>} />
-//   );
-//
-//   expect(screen.queryByTestId('dataCard')).toBeNull();
-// });
+test('Throws error when providing rightIcon and rightElement', () => {
+  console.error = vi.fn();
+  const props = fakeProps();
+  expect(() =>
+    render(
+      <DataCard {...props} rightIcon={edit} rightElement={<div>test</div>} />
+    )
+  ).toThrow('Only use one; rightIcon or rightElement');
+});
 
 test('Runs onContextMenu when provided', async () => {
   const callback = vi.fn();
