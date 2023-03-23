@@ -22,7 +22,7 @@ function fakeProps(
   }
   return {
     options,
-    activeNode: options[0].value,
+    activeNode: options[1].value,
     showAlert,
     highlightActiveNode,
   };
@@ -41,6 +41,7 @@ test('Shows expected colors on nodes', async () => {
     );
   }
 });
+
 test('Shows expected active node', async () => {
   const props = fakeProps(true);
   render(<WorkflowStatusBar {...props} />);
@@ -55,4 +56,18 @@ test('Shows expected alert node', async () => {
 
   const alertEl = screen.getByTestId('alert');
   expect(alertEl).toBeInTheDocument();
+});
+
+test('Works with disabledTooltip = true ', async () => {
+  const props = fakeProps(false, false);
+  render(<WorkflowStatusBar {...props} disableTooltip />);
+
+  const options = screen.getAllByTestId('workflow-option');
+  for (const [index, option] of options.entries()) {
+    const colorIndex = option.children.length - 1;
+    expect(option.children[colorIndex]).toHaveAttribute(
+      'color',
+      props.options[index].color
+    );
+  }
 });
