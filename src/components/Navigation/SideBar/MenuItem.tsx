@@ -91,7 +91,7 @@ export type MenuItemProps = {
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   ({ currentUrl, icon, name, link, onClick, disabled }, ref) => {
-    const isCurrentUrl = link ? currentUrl?.includes(link) : false;
+    const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
     const getIconColor = () => {
