@@ -300,13 +300,10 @@ test('Clearing field works as expected', async () => {
 }, 15000); // Setting timeout for this test to be 15 seconds
 
 test('Clicking the same field twice clears the selected field', async () => {
-  let field: Field | undefined;
   const fields = fakeFields();
   const finishedText = faker.lorem.sentence();
-  const setField = (value: Field) => {
-    field = value;
-  };
 
+  const setField = vi.fn();
   const onChangedField = vi.fn();
 
   const user = userEvent.setup();

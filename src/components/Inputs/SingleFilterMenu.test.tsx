@@ -1,7 +1,7 @@
 import { filter_list } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../tests/test-utils';
+import { render, screen, userEvent, within } from '../../tests/test-utils';
 import SingleFilterMenu from './SingleFilterMenu';
 
 function getTestProps(): {
@@ -76,5 +76,41 @@ test('triggers onchange when item is selected', async () => {
   const menuItem = screen.getByText(menuItemText);
   await user.click(menuItem);
 
-  expect(props.onChange).toHaveBeenCalled();
+  expect(props.onChange).toHaveBeenCalledWith(menuItemText);
+});
+
+test('triggers onchange with undefined clicking selected item', async () => {
+  const props = getTestProps();
+  render(<SingleFilterMenu {...props}></SingleFilterMenu>);
+  const menuItemText = props.data[0];
+  const user = userEvent.setup();
+
+  const menuItem = screen.getByText(menuItemText);
+  await user.click(menuItem);
+
+  expect(props.onChange).toHaveBeenCalledWith(menuItemText);
+
+  await user.click(menuItem);
+
+  expect(props.onChange).toHaveBeenCalledWith(undefined);
+});
+
+test('triggers onchange with undefined clicking selected item', async () => {
+  const props = getTestProps();
+  render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
+  const menuItemText = props.data[0];
+  const user = userEvent.setup();
+
+  const menuItem = screen.getByText(menuItemText);
+
+  await user.click(menuItem);
+
+  expect(props.onChange).toHaveBeenCalledWith(menuItemText);
+
+  const chip = screen.getByTestId('chip');
+  const chipClose = within(chip).getByRole('img', { name: /close/i });
+
+  await user.click(chipClose);
+
+  expect(props.onChange).toHaveBeenCalledWith(undefined);
 });

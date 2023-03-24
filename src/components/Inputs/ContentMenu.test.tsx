@@ -1,7 +1,10 @@
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../tests/test-utils';
 import ContentMenu, { ContentMenuProps } from './ContentMenu';
+
+const { colors } = tokens;
 
 function fakeItem(): { label: string; value: string } {
   return {
@@ -86,7 +89,7 @@ test('Children render and function as they should', async () => {
   const child = fakeItem();
   const props = fakeProps();
   props.items[0].children = [child];
-  render(<ContentMenu {...props} />);
+  const { rerender } = render(<ContentMenu {...props} />);
 
   await user.click(screen.getByRole('button', { name: props.items[0].label }));
 
@@ -100,4 +103,9 @@ test('Children render and function as they should', async () => {
   await user.click(childButton);
 
   expect(props.onChange).toHaveBeenCalledWith(child.value);
+  rerender(<ContentMenu {...props} value={child.value} />);
+
+  expect(childButton).toHaveStyle(
+    `background: ${colors.interactive.primary__hover_alt.hex};`
+  );
 });

@@ -2,8 +2,40 @@ import { faker } from '@faker-js/faker';
 
 import date from './date';
 
+test('formatDate works as expected when not sending in a date', () => {
+  const formattedDate = date.formatDate(null);
+
+  expect(formattedDate).toBe('');
+});
+
 test('formatDate works as expected with default format', () => {
   const fakeDate = faker.date.past();
+
+  const formattedDate = date.formatDate(fakeDate);
+
+  const day = fakeDate.getDate();
+  const month = fakeDate.getMonth() + 1;
+  const year = fakeDate.getFullYear();
+  expect(formattedDate).toBe(
+    `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`
+  );
+});
+
+test('formatDate works as expected with default format that needs to be padded', () => {
+  const fakeDate = new Date('01.01.23');
+
+  const formattedDate = date.formatDate(fakeDate);
+
+  const day = fakeDate.getDate();
+  const month = fakeDate.getMonth() + 1;
+  const year = fakeDate.getFullYear();
+  expect(formattedDate).toBe(
+    `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`
+  );
+});
+
+test('formatDate works as expected with default format that does not need  to be padded', () => {
+  const fakeDate = new Date('10.10.23');
 
   const formattedDate = date.formatDate(fakeDate);
 
@@ -59,7 +91,52 @@ test('formatDate works as expected with format = "DD.MM.YY"', () => {
   );
 });
 
+test('formatDate works as expected with format = "DD.MM.YY" when date needs to be padded', () => {
+  const fakeDate = new Date('01.01.23');
+
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'DD.MM.YY',
+  });
+
+  const day = fakeDate.getDate();
+  const month = fakeDate.getMonth() + 1;
+  const year = fakeDate.getFullYear().toString().slice(-2);
+  expect(formattedDate).toBe(
+    `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`
+  );
+});
+
+test('formatDate works as expected with format = "DD.MM.YY" when date does not need to be padded', () => {
+  const fakeDate = new Date('10.10.23');
+
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'DD.MM.YY',
+  });
+
+  const day = fakeDate.getDate();
+  const month = fakeDate.getMonth() + 1;
+  const year = fakeDate.getFullYear().toString().slice(-2);
+  expect(formattedDate).toBe(
+    `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`
+  );
+});
+
 test('formatDate works as expected with format = "DD. month"', () => {
+  const fakeDate = faker.date.past();
+
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'DD. month',
+  });
+
+  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
+  const testFormatted = `${day}. ${fakeDate.toLocaleString('en-GB', {
+    month: 'long',
+  })}`;
+
+  expect(formattedDate).toBe(testFormatted);
+});
+
+test('formatDate works as expected with format = "DD. month" and month = "short"', () => {
   const fakeDate = faker.date.past();
 
   const formattedDate = date.formatDate(fakeDate, {
@@ -87,6 +164,11 @@ test('formatDateTime works as expected', () => {
 
   const formatted = date.formatDateTime(fakeDate);
   expect(formatted).toBe(expectedResult);
+});
+
+test('formatDateTime works as expected when not sending in a date', () => {
+  const formatted = date.formatDateTime(null);
+  expect(formatted).toBe('');
 });
 
 test('formatDateTime works as expected with options', () => {
@@ -119,6 +201,11 @@ test('formatDateTime works as expected when isGMT is set', () => {
 
   const formatted = date.formatDateTime(inputDate, { isGMT: true });
   expect(formatted).toBe(expectedResult);
+});
+
+test('formatRelativeDateTime work as expected with null', () => {
+  const formatted = date.formatRelativeDateTime(null);
+  expect(formatted).toContain('');
 });
 
 test('formatRelativeDateTime work as expected with yesterdays date', () => {
@@ -194,6 +281,14 @@ test('formatRelativeDateTime works as expected with todays date', () => {
 
   const formatted = date.formatRelativeDateTime(past);
   expect(formatted).toEqual(expectedResult);
+});
+
+test('isBetweenDates works as expected with null', () => {
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+  const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
+
+  const formatted = date.isBetweenDates(null, [yesterday, tomorrow]);
+  expect(formatted).toEqual(false);
 });
 
 test('isBetweenDates works as expected with todays date between yesterday and tomorrow', () => {

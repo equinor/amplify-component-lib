@@ -16,14 +16,13 @@ export default defineConfig({
     coverage: {
       provider: 'c8',
       include: ['src/**/*'],
-      exclude: ['src/tests', 'src/**/*.test.tsx'],
+      exclude: ['src/tests', 'src/**/*.test.ts', 'src/**/*.test.tsx'],
       reporter: ['text-summary', 'html'],
       perFile: true,
-      thresholdAutoUpdate: true,
-      statements: 99.28,
+      statements: 100,
       branches: 100,
       functions: 100,
-      lines: 99.28,
+      lines: 100,
     },
   },
 });

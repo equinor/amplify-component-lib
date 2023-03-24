@@ -46,6 +46,23 @@ test('Shows correct icon before and after click', async () => {
   expect(props.toggleOff.onClick).toHaveBeenCalledTimes(1);
 });
 
+test('Works with tooltip', async () => {
+  const props = fakeProps(true);
+  render(<IconToggleButton {...props} />);
+
+  const user = userEvent.setup();
+  const button = screen.getByRole('button');
+
+  const path = screen.getByTestId('eds-icon-path');
+
+  expect(path).toHaveAttribute('d', props.toggleOff.icon.svgPathData);
+
+  await user.click(button);
+
+  expect(path).toHaveAttribute('d', props.toggleOn.icon.svgPathData);
+  expect(props.toggleOff.onClick).toHaveBeenCalledTimes(1);
+});
+
 test('OnClick gets called when clicking the button', async () => {
   const props = fakeProps();
   const onClick = vi.fn();

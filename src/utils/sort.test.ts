@@ -12,7 +12,9 @@ test('sortByDate works as expected with date objects', () => {
   for (let i = 1; i < sortedList.length - 1; i++) {
     const firstDate = sortedList[i - 1];
     const secondDate = sortedList[i];
-    expect(firstDate.getTime()).toBeGreaterThanOrEqual(secondDate.getTime());
+    expect(sort.sortByDate(firstDate, secondDate)).toBe(-1);
+    expect(sort.sortByDate(secondDate, firstDate)).toBe(1);
+    expect(sort.sortByDate(firstDate, firstDate)).toBe(0);
   }
 });
 
@@ -170,4 +172,11 @@ test('sortByWellboreName works with wellbore strings', () => {
   for (const [index, wellbore] of sortedWellbores.entries()) {
     expect(wellbore).toBe(correctlySortedStrings[index]);
   }
+});
+
+test('sortByWellboreName works with undefined wellboreName', () => {
+  const wellBore = correctlySortedWellbores[0];
+  const undefinedNameWellbore = { wellboreName: undefined };
+
+  expect(sort.sortByWellboreName(wellBore, undefinedNameWellbore)).toBe(0);
 });
