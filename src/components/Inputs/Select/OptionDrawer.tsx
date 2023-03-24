@@ -1,4 +1,11 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 
 import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
@@ -85,7 +92,7 @@ const getStatus = <T extends { id: string; label: string; children?: T[] }>(
       : 'NONE';
   }
 
-  const selected = getAllItems(item?.children ?? []).map(
+  const selected = getAllItems(item?.children).map(
     (i) => selectedItems.find((s) => s.id === i.id) !== undefined
   );
 
@@ -115,7 +122,7 @@ export type OptionDrawerProps<
   siblings?: number;
   animateCheck?: boolean;
   animateUncheck?: boolean;
-  animateParent?: React.Dispatch<React.SetStateAction<boolean>>;
+  animateParent?: Dispatch<SetStateAction<boolean>>;
   openAll?: boolean;
 };
 
@@ -142,26 +149,6 @@ const OptionDrawer = <
   useEffect(() => {
     setStatus(getStatus(item, selectedItems, singleSelect));
   }, [item, selectedItems, singleSelect]);
-
-  useEffect(() => {
-    if (item.children && item.children.length > 0 && !singleSelect) {
-      const selected = getAllItems(item.children).map(
-        (item) => selectedItems.find((s) => s.id === item.id) !== undefined
-      );
-
-      if (
-        selected.every(Boolean) &&
-        selectedItems.some((s) => s.id === item.id)
-      ) {
-        setStatus('CHECKED');
-      } else if (
-        !selected.every(Boolean) &&
-        selectedItems.some((s) => s.id === item.id)
-      ) {
-        setStatus('NONE');
-      }
-    }
-  }, [selectedItems, item, onToggle, singleSelect]);
 
   useEffect(() => {
     if (openAll) {
@@ -231,13 +218,15 @@ const OptionDrawer = <
     }
   };
 
-  const shouldAnimateParent = () => {
+  const shouldAnimateParent = (checked: boolean) => {
     if (siblings && animateParent) {
       const siblingsSelected = selectedItems.filter((selected) =>
         selected.id.includes(item.parentId ?? '')
       ).length;
 
-      if (siblingsSelected === siblings - 1) {
+      if (!checked && animateCheck && siblingsSelected === siblings - 1) {
+        return true;
+      } else if (checked && animateUncheck && siblingsSelected === 1) {
         return true;
       }
     }
@@ -246,12 +235,12 @@ const OptionDrawer = <
 
   const handleCheck = (e: MouseEvent | ChangeEvent) => {
     if (status === 'CHECKED' && animateUncheck) {
-      animate(e, shouldAnimateParent());
+      animate(e, shouldAnimateParent(true));
     } else if (
       (status === 'NONE' || status === 'INTERMEDIATE') &&
       animateCheck
     ) {
-      animate(e, shouldAnimateParent());
+      animate(e, shouldAnimateParent(false));
     } else {
       handleToggle(e);
     }
@@ -259,9 +248,14 @@ const OptionDrawer = <
 
   return (
     <StyledOptionWrapper
-      key={`StyledOptionWrapper-${item.id}`}
+      key={
+        animationActive
+          ? `animated-StyledOptionWrapper-${item.id}`
+          : `StyledOptionWrapper-${item.id}`
+      }
       section={section}
       animationActive={animationActive}
+      data-testid={animationActive ? 'animated-' + item.id : item.id}
     >
       <StyledOption section={section} onClick={handleClick}>
         <Checkbox
