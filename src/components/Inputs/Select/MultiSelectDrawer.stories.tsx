@@ -33,8 +33,12 @@ const Template: Story<MultiSelectDrawerProps<ValueType>> = () => {
           items={items}
           label="Test"
           onChange={(val) => setSelectedItems(val)}
-          placeholder="Select..."
-          initialItems={[items[0], items[3]]}
+          placeholder={
+            selectedItems.length
+              ? selectedItems.map((s) => s.label).join(', ')
+              : 'Select...'
+          }
+          selectedItems={selectedItems}
         />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>

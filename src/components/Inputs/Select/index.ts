@@ -1,14 +1,8 @@
 import MultiSelectDrawer from './MultiSelectDrawer';
 import OptionDrawer from './OptionDrawer';
-import SimpleMultiSelectDrawer from './SimpleMultiSelectDrawer';
 import SingleSelectDrawer from './SingleSelectDrawer';
 
-export {
-  MultiSelectDrawer,
-  OptionDrawer,
-  SimpleMultiSelectDrawer,
-  SingleSelectDrawer,
-};
+export { MultiSelectDrawer, OptionDrawer, SingleSelectDrawer };
 
 type SelectItem<T> = {
   object: T;
