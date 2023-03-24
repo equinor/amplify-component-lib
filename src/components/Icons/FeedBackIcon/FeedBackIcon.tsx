@@ -30,7 +30,9 @@ const FeedBackIcon: FC<FeedBackIconProps> = ({ name, size, variant }) => {
   const DefaultComponent = feedbackIcons[0].component;
   if (
     name === 'default' ||
-    !feedbackIcons.some((icon) => icon.iconName.includes(name))
+    !feedbackIcons.some(
+      (icon) => icon.iconName === `${name}-${variant ? variant : 'filled'}`
+    )
   ) {
     return <DefaultComponent size={size} />;
   }

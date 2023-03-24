@@ -1,60 +1,72 @@
 import React from 'react';
 
+import { faker } from '@faker-js/faker';
+
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import NewCommentField from './NewCommentField';
 
 test('Triggers publish on button press', async () => {
-  let str = '';
-  const handlePublish = (value: string) => {
-    str = value;
-  };
+  const defaultValue = faker.animal.dog();
+  const handlePublish = vi.fn();
+
   const user = userEvent.setup();
 
   render(
-    <NewCommentField
-      defaultValue="I am comment"
-      onPublish={handlePublish}
-    ></NewCommentField>
+    <NewCommentField defaultValue={defaultValue} onPublish={handlePublish} />
   );
 
   const postButton = screen.getByRole('button');
   await user.click(postButton);
 
-  expect(str).toBe('I am comment');
+  expect(handlePublish).toHaveBeenCalledWith(defaultValue);
 });
 
 test('Triggers publish on enter press', async () => {
-  let str = '';
-  const handlePublish = (value: string) => {
-    str = value;
-  };
-  const user = userEvent.setup();
+  const onPublish = vi.fn();
+  const defaultValue = faker.animal.dog();
 
-  render(
-    <NewCommentField
-      defaultValue="I am comment"
-      onPublish={handlePublish}
-    ></NewCommentField>
-  );
+  render(<NewCommentField defaultValue={defaultValue} onPublish={onPublish} />);
+  const user = userEvent.setup();
 
   const input = screen.getByRole('textbox');
   await user.type(input, '{Enter}');
 
-  expect(str).toBe('I am comment');
+  expect(onPublish).toHaveBeenCalledWith(defaultValue);
 });
 
 test('Clears text on clear button pressed', async () => {
   const user = userEvent.setup();
-  render(
-    <NewCommentField
-      defaultValue="I am comment"
-      onPublish={() => undefined}
-    ></NewCommentField>
-  );
+  const onPublish = vi.fn();
+  const defaultValue = faker.animal.dog();
+  render(<NewCommentField defaultValue={defaultValue} onPublish={onPublish} />);
 
-  const input = screen.getByRole('textbox') as HTMLTextAreaElement;
-  const clear = screen.getByTestId('clearbutton');
-  await user.click(clear);
+  const clearButton = screen.getByTestId('clear-button');
+  await user.click(clearButton);
+
+  const input = screen.getByRole('textbox');
+  expect(input).toHaveValue('');
+});
+
+test('Not providing defaultValue prop works as expected', async () => {
+  const onPublish = vi.fn();
+  render(<NewCommentField onPublish={onPublish} />);
+  const user = userEvent.setup();
+
+  const input = screen.getByRole('textbox');
+  await user.type(input, '{Enter}');
 
   expect(input).toHaveValue('');
+  expect(onPublish).not.toHaveBeenCalledWith('');
+});
+
+test('Typing works as expected', async () => {
+  const onPublish = vi.fn();
+  render(<NewCommentField onPublish={onPublish} />);
+  const user = userEvent.setup();
+
+  const input = screen.getByRole('textbox');
+  const text = faker.animal.bird();
+
+  await user.type(input, text);
+  expect(input).toHaveValue(text);
 });

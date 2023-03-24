@@ -34,9 +34,9 @@ const updateLocalStorage = (state: TutorialState) => {
   localStorage.setItem(localStorageKey, JSON.stringify(state));
 };
 
-export const TutorialStepsContext = createContext<
-  TutorialContextState | undefined
->(undefined);
+const TutorialStepsContext = createContext<TutorialContextState | undefined>(
+  undefined
+);
 
 export const useTutorialSteps = (): TutorialContextState => {
   const context = useContext(TutorialStepsContext);

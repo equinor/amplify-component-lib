@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 
 import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
@@ -66,13 +66,32 @@ export interface NewCommentFieldProps {
   defaultValue?: string;
 }
 
-const NewCommentField: React.FC<NewCommentFieldProps> = ({
+const NewCommentField: FC<NewCommentFieldProps> = ({
   placeholder,
   label,
   onPublish,
   defaultValue,
 }) => {
   const [newComment, setNewComment] = useState(defaultValue ?? '');
+
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNewComment(event.target.value);
+  };
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.nativeEvent.key === 'Enter') {
+      if (newComment !== '') {
+        onPublish(newComment);
+      }
+    }
+  };
+
+  const handleClear = () => {
+    setNewComment('');
+  };
+
+  const handlePublishClick = () => {
+    onPublish(newComment);
+  };
 
   return (
     <NewCommentContainer>
@@ -83,31 +102,16 @@ const NewCommentField: React.FC<NewCommentFieldProps> = ({
         label={label}
         value={newComment}
         autoFocus
-        onInput={(
-          event:
-            | React.FormEvent<HTMLTextAreaElement>
-            | React.FormEvent<HTMLInputElement>
-        ) => {
-          setNewComment((event.target as HTMLInputElement).value);
-        }}
-        onKeyDown={(event: React.KeyboardEvent) => {
-          if (event.nativeEvent.key === 'Enter') {
-            if (newComment !== '') {
-              onPublish(newComment);
-            }
-          }
-        }}
+        onChange={handleOnChange}
+        onKeyDown={handleKeyDown}
       />
       {newComment.length > 0 && (
-        <ClearButton
-          data-testid="clearbutton"
-          onClick={() => setNewComment('')}
-        >
+        <ClearButton data-testid="clear-button" onClick={handleClear}>
           <Icon data={clear} size={32} />
         </ClearButton>
       )}
       <PostButton
-        onClick={() => onPublish(newComment)}
+        onClick={handlePublishClick}
         disabled={newComment.length === 0}
       >
         Post Comment

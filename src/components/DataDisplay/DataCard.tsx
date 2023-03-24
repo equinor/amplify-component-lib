@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement } from 'react';
+import { forwardRef, MouseEvent, MouseEventHandler, ReactElement } from 'react';
 
 import {
   Card as EDSCard,
@@ -14,7 +14,7 @@ import styled from 'styled-components';
 const { colors, elevation, spacings } = tokens;
 
 interface CardProps {
-  onClick?: React.MouseEventHandler;
+  onClick?: MouseEventHandler;
 }
 
 const Card = styled(EDSCard)<CardProps>`
@@ -70,8 +70,8 @@ export interface DataCardProps {
   rightElement?: ReactElement;
   body?: ReactElement;
   className?: string;
-  onClick?: React.MouseEventHandler;
-  onContextMenu?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick?: MouseEventHandler;
+  onContextMenu?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
 const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
@@ -90,9 +90,12 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
     ref
   ) => {
     if (rightIcon && rightElement) {
-      console.error('Only use one; rightIcon or rightElement');
-      return null;
+      throw new Error('Only use one; rightIcon or rightElement');
     }
+
+    const handleOnContextMenu: MouseEventHandler<HTMLDivElement> = (event) => {
+      onContextMenu?.(event);
+    };
 
     return (
       <Card
@@ -100,9 +103,7 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
         className={className ?? ''}
         onClick={onClick}
         data-testid="dataCard"
-        onContextMenu={(event) =>
-          onContextMenu ? onContextMenu(event) : undefined
-        }
+        onContextMenu={handleOnContextMenu}
       >
         <Header>
           <LeftContent>
