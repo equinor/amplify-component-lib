@@ -20,7 +20,6 @@ export const Primary: Story = () => {
   const fields = new Array(10).fill(0).map(() => FakeField());
   return (
     <FieldSelector
-      placement="bottom-start"
       availableFields={fields}
       currentField={fields[0]}
       onSelect={() => console.log('🎉')}
@@ -32,7 +31,6 @@ export const WithoutSelect: Story = () => {
   const fields = new Array(3).fill(0).map(() => FakeField());
   return (
     <FieldSelector
-      placement="bottom-start"
       availableFields={fields}
       onSelect={() => console.log('🎉')}
     />
@@ -43,7 +41,6 @@ export const HidingAccessITLink: Story = () => {
   const fields = new Array(3).fill(0).map(() => FakeField());
   return (
     <FieldSelector
-      placement="bottom-start"
       availableFields={fields}
       onSelect={() => console.log('🎉')}
       showAccessITLink={false}

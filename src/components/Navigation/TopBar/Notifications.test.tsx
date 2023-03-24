@@ -1,10 +1,13 @@
 import React from 'react';
 
 import { notifications } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
-import Notifications from './Notifications';
+import Notifications, { UnreadRedDot } from './Notifications';
+
+const { colors } = tokens;
 
 test('renders button and panel correctly', async () => {
   render(<Notifications setAllAsRead={() => null} />);
@@ -85,10 +88,20 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
 });
 test('Renders unread dot when unread = true', async () => {
   render(<Notifications setAllAsRead={() => null} hasUnread />);
+  const user = userEvent.setup();
 
   const button = screen.getByRole('button');
-  await userEvent.click(button);
+  await user.click(button);
 
-  expect(screen.getByTestId('unread-dot')).toBeInTheDocument();
-  expect(screen.getByTestId('unread-dot')).toBeVisible();
+  const unreadDot = screen.getByTestId('unread-dot');
+  expect(unreadDot).toBeInTheDocument();
+  expect(unreadDot).toBeVisible();
+});
+
+test('Unread dot renders as expected', () => {
+  const { container } = render(<UnreadRedDot />);
+  const unreadDot = container.children[0];
+  expect(unreadDot).toHaveStyle(
+    `background-color: ${colors.logo.fill_positive.hex};`
+  );
 });

@@ -63,7 +63,6 @@ export type { SieveValue } from './Inputs/Sieve/Sieve';
 export { default as Sieve } from './Inputs/Sieve/Sieve';
 export type { Option } from './Inputs/Sieve/Sieve.common';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
-export { default as TextEntry } from './Inputs/TextEntry/TextEntry';
 export type { ItemType, SidebarType } from './Navigation/SideBar';
 export { default as SideBar } from './Navigation/SideBar';
 export type {

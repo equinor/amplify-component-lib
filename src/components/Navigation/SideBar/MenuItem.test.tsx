@@ -32,13 +32,17 @@ test('MenuItem works as expected when not disabled', async () => {
 test('Expect correct icon color based on disabled/enabled state', () => {
   const props = fakeProps();
   let disabled = false;
+  window.localStorage.setItem(
+    'amplify-sidebar-state',
+    JSON.stringify({ isOpen: true })
+  );
   const { rerender } = render(<MenuItem {...props} disabled={disabled} />, {
     wrapper: SideBarProvider,
   });
 
   const getIconColor = () => {
     if (!disabled) {
-      return props.link === props.currentUrl
+      return props.currentUrl?.includes(props.link)
         ? colors.interactive.primary__resting.hsla
         : colors.text.static_icons__default.hsla;
     }
@@ -46,11 +50,19 @@ test('Expect correct icon color based on disabled/enabled state', () => {
   };
 
   const svg = screen.getByTestId('eds-icon-path').parentElement;
+  const text = screen.getByText(props.name);
+
   expect(svg).toHaveAttribute('fill', getIconColor());
 
-  props.currentUrl = props.link;
+  props.currentUrl = props.link + '/' + faker.datatype.uuid();
   rerender(<MenuItem {...props} disabled={disabled} />);
   expect(svg).toHaveAttribute('fill', getIconColor());
+  expect(text).toHaveStyle('font-weight: 500;');
+
+  props.currentUrl = faker.datatype.uuid();
+  rerender(<MenuItem {...props} disabled={disabled} />);
+  expect(svg).toHaveAttribute('fill', getIconColor());
+  expect(text).toHaveStyle('font-weight: 400;');
 
   disabled = true;
   rerender(<MenuItem {...props} disabled={disabled} />);

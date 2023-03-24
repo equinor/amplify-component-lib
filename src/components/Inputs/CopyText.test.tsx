@@ -40,3 +40,24 @@ test('Copies text to clipbard and displays success message', async () => {
   await waitFor(() => screen.getByText(/copy/i), { timeout: 3000 });
   expect(screen.getByText(/copy/i)).toBeInTheDocument();
 });
+
+test('iconRightPos prop works as expected', async () => {
+  const iconRightPos = '18rem';
+  render(
+    <CopyText textToCopy="Test" iconRightPos={iconRightPos}>
+      testing text
+    </CopyText>
+  );
+  const user = userEvent.setup();
+
+  const wrapper = screen.getByText('testing text');
+
+  await user.hover(wrapper);
+
+  await waitFor(() => screen.getByText(/copy/i));
+  expect(screen.getByText(/copy/i)).toBeInTheDocument();
+
+  expect(screen.getByText(/copy/i).parentElement).toHaveStyle(
+    `right: ${iconRightPos};`
+  );
+});

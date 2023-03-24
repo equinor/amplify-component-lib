@@ -17,9 +17,7 @@ export function useSideBar() {
   return context;
 }
 
-export const SideBarContext = createContext<SideBarContextType | undefined>(
-  undefined
-);
+const SideBarContext = createContext<SideBarContextType | undefined>(undefined);
 
 const localStorageKey = 'amplify-sidebar-state';
 
