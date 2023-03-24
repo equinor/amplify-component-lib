@@ -56,7 +56,6 @@ export { default as IconToggleButton } from './Inputs/IconToggleButton';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
-export { default as SimpleMultiSelectDrawer } from './Inputs/Select/SimpleMultiSelectDrawer';
 export { default as SingleSelectDrawer } from './Inputs/Select/SingleSelectDrawer';
 export { default as Filter } from './Inputs/Sieve/Filter';
 export type { SieveValue } from './Inputs/Sieve/Sieve';

@@ -19,7 +19,7 @@ const StyledInputWrapper = styled.div`
   position: relative;
 `;
 
-export const StyledButton = styled(Button)`
+const StyledButton = styled(Button)`
   position: absolute;
   right: ${spacings.comfortable.small};
   height: ${spacings.comfortable.large};

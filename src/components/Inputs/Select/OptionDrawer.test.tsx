@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../tests/test-utils';
+import { render, screen, userEvent, waitFor } from '../../../tests/test-utils';
 import OptionDrawer, {
   OptionDrawerProps,
   ToggleEventProps,
@@ -12,10 +12,22 @@ type FakeType = {
   children?: FakeType[];
 };
 
-function fakeItem(hasChildren: boolean): FakeType {
+function fakeItem(hasChildren: boolean, singleChild: boolean): FakeType {
   const children: FakeType[] = [];
+  if (hasChildren && singleChild) {
+    return {
+      id: faker.datatype.uuid(),
+      label: faker.datatype.uuid(),
+      children: [
+        {
+          id: faker.datatype.uuid(),
+          label: faker.datatype.uuid(),
+        },
+      ],
+    };
+  }
   if (hasChildren) {
-    for (let i = 0; i < faker.datatype.number({ min: 1, max: 10 }); i++) {
+    for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
       children.push({
         id: faker.datatype.uuid(),
         label: faker.datatype.uuid(),
@@ -32,11 +44,12 @@ function fakeItem(hasChildren: boolean): FakeType {
 function fakeProps(
   singleSelect = false,
   hasChildren = true,
+  singleChild = false,
   grandChildren = false
 ): OptionDrawerProps<FakeType> {
-  const item = fakeItem(hasChildren);
+  const item = fakeItem(hasChildren, singleChild);
   if (grandChildren && hasChildren && item.children && item.children[0]) {
-    item.children[0].children = [fakeItem(false)];
+    item.children[0].children = [fakeItem(false, false)];
   }
 
   return {
@@ -46,104 +59,262 @@ function fakeProps(
   };
 }
 
-test('Works correctly when clicking item with no children', async () => {
-  const props = fakeProps(false, false);
-  const user = userEvent.setup();
-  let items: { id: string; label: string }[] = [{ id: '', label: '' }];
-  let toggle: boolean | undefined = undefined;
-  const handleOnToggle = (
-    event: ToggleEventProps<{ id: string; label: string }>
-  ) => {
-    items = event.items;
-    toggle = event.toggle;
-  };
-  render(<OptionDrawer {...props} onToggle={handleOnToggle} />);
+type FakeSelectedItemType = { id: string; label: string };
 
-  const parent = screen.getByText(props.item.label);
-  await user.click(parent);
+let selectedItems: FakeSelectedItemType[] = [];
+const handleOnToggle = (e: ToggleEventProps<FakeSelectedItemType>) => {
+  let newItems: FakeSelectedItemType[] = [];
+  e.items.forEach((item) => {
+    const option: FakeSelectedItemType = {
+      id: item.id,
+      label: item.label,
+    };
+    newItems.push(option);
+  });
 
-  expect(items[0].id).toBe(props.item.id);
-  expect(toggle).toBe(true);
-});
+  if (e.toggle) {
+    newItems = newItems.filter(
+      (item) => !selectedItems.some((selItem) => selItem.id === item.id)
+    );
+    selectedItems = [...selectedItems, ...newItems];
+  } else {
+    let newSelectedItems = selectedItems;
+    newItems.forEach((item) => {
+      newSelectedItems = newSelectedItems.filter((m) => !(m.id === item.id));
+    });
+    selectedItems = newSelectedItems;
+  }
+};
 
-test('Works correctly when clicking children', async () => {
+test('Works correctly when toggling parent when one child is checked', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  const counter = vi.fn();
-  let items: { id: string; label: string }[] = [{ id: '', label: '' }];
-  let toggle: boolean | undefined = undefined;
-  const handleOnToggle = (
-    event: ToggleEventProps<{ id: string; label: string }>
-  ) => {
-    items = event.items;
-    toggle = event.toggle;
-    counter();
-  };
-  render(<OptionDrawer {...props} onToggle={handleOnToggle} />);
+  selectedItems = [];
 
-  const parent = screen.getByText(props.item.label);
-  await user.click(parent);
+  const children = props.item.children ?? [props.item];
+
+  const randomChild =
+    children[
+      faker.datatype.number({
+        min: 0,
+        max: children.length - 1,
+      })
+    ];
+
+  const { rerender } = render(
+    <OptionDrawer
+      {...props}
+      selectedItems={[randomChild]}
+      onToggle={handleOnToggle}
+    />
+  );
+
+  const parentCheckbox = screen.getByRole('checkbox');
+
+  await user.click(parentCheckbox);
+
+  rerender(
+    <OptionDrawer
+      {...props}
+      selectedItems={selectedItems}
+      onToggle={handleOnToggle}
+      openAll
+    />
+  );
 
   for (const child of props.item.children ?? []) {
-    await user.click(screen.getByText(child.label));
-    expect(items[0].id).toBe(child.id);
-    expect(toggle).toBe(true);
+    expect(screen.getByText(child.label).children[0].children[0]).toBeChecked();
   }
-
-  expect(counter).toHaveBeenCalledTimes(props.item.children?.length ?? 0);
 });
 
-test('Works correctly when clicking grand child', async () => {
-  const props = fakeProps(false, true, true);
+test('Works correctly when opening parent to show children', async () => {
+  const props = fakeProps();
   const user = userEvent.setup();
-  const counter = vi.fn();
-  let items: { id: string; label: string }[] = [{ id: '', label: '' }];
-  let toggle: boolean | undefined = undefined;
-  const handleOnToggle = (
-    event: ToggleEventProps<{ id: string; label: string }>
-  ) => {
-    items = event.items;
-    toggle = event.toggle;
-    counter();
-  };
-
-  render(<OptionDrawer {...props} onToggle={handleOnToggle} />);
+  render(<OptionDrawer {...props} />);
 
   const parent = screen.getByText(props.item.label);
+
   await user.click(parent);
-
-  // First child has grand child
-  const label = props.item.children?.[0].label ?? 'failed';
-  const grandChildren = props.item.children?.[0].children ?? [];
-  await user.click(screen.getByText(label));
-
-  expect(grandChildren.length).toBeGreaterThanOrEqual(1);
-  const randomGrandChild = grandChildren.at(
-    faker.datatype.number({ min: 0, max: grandChildren.length - 1 })
-  );
-  expect(randomGrandChild).not.toBeUndefined();
-  await user.click(screen.getByText(randomGrandChild?.label ?? 'not-found'));
-  expect(items[0].id).toBe(randomGrandChild?.id ?? 'not-found');
-  expect(toggle).toBeTruthy();
-
-  expect(counter).toHaveBeenCalledTimes(grandChildren.length);
+  for (const child of props.item.children ?? []) {
+    expect(screen.queryByText(child.label)).toBeVisible();
+  }
 });
 
-test('Animation working correctly when clicking item with no children', async () => {
+test('Animation works correctly when toggling parent with no child', async () => {
+  const props = fakeProps(false, false);
+  const user = userEvent.setup();
+  const { rerender } = render(<OptionDrawer {...props} animateCheck={true} />);
+
+  const parentElement = screen.getByText(props.item.label);
+
+  await user.click(parentElement);
+
+  await waitFor(
+    () =>
+      expect(
+        screen.getByTestId('animated-' + props.item.id).parentElement
+      ).toBeInTheDocument(),
+    { timeout: 500 }
+  );
+
+  rerender(
+    <OptionDrawer
+      {...props}
+      selectedItems={[props.item]}
+      animateUncheck={true}
+    />
+  );
+
+  await user.click(parentElement);
+
+  await waitFor(
+    () =>
+      expect(
+        screen.getByTestId('animated-' + props.item.id).parentElement
+      ).toBeInTheDocument(),
+    { timeout: 500 }
+  );
+});
+
+test('Children does not trigger animation if you check all but one sibling', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  const children = props.item.children ?? [props.item];
+  const childrenExpectLast = children.slice(0, -1);
+
+  render(<OptionDrawer {...props} animateCheck={true} openAll />);
+
+  for (const child of childrenExpectLast) {
+    await user.click(screen.getByText(child.label));
+  }
+
+  expect(screen.queryByTestId('animated-' + props.item.id)).toBeNull();
+  expect(props.onToggle).toHaveBeenCalledTimes(childrenExpectLast.length);
+});
+
+test('Children does not trigger animation if you uncheck all but one sibling', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  const children = props.item.children ?? [props.item];
+  const childrenExpectLast = children.slice(0, -1);
+
+  render(
+    <OptionDrawer
+      {...props}
+      selectedItems={children}
+      animateUncheck={true}
+      openAll
+    />
+  );
+
+  for (const child of childrenExpectLast) {
+    await user.click(screen.getByText(child.label));
+  }
+
+  expect(screen.queryByTestId('animated-' + props.item.id)).toBeNull();
+  expect(props.onToggle).toHaveBeenCalledTimes(childrenExpectLast.length);
+});
+
+test('Animation works correctly when checking all children', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  const children = props.item.children ?? [props.item];
+
+  const { rerender } = render(
+    <OptionDrawer
+      {...props}
+      selectedItems={[
+        ...children.filter(
+          (child) => child.id !== children[children.length - 1].id
+        ),
+      ]}
+      animateCheck={true}
+      openAll
+    />
+  );
+
+  await user.click(screen.getByText(children[children.length - 1].label));
+
+  await waitFor(
+    () =>
+      expect(
+        screen.getByTestId('animated-' + props.item.id).parentElement
+      ).toBeInTheDocument(),
+    { timeout: 500 }
+  );
+
+  rerender(
+    <OptionDrawer
+      {...props}
+      selectedItems={[...children]}
+      animateCheck={true}
+      openAll
+    />
+  );
+
+  expect(
+    screen.getByText(props.item.label).children[0].children[0]
+  ).toBeChecked();
+});
+
+test('Animation works correctly when unchecking all children', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  const children = props.item.children ?? [props.item];
+
+  const { rerender } = render(
+    <OptionDrawer
+      {...props}
+      selectedItems={[children[children.length - 1]]}
+      animateUncheck={true}
+      openAll
+    />
+  );
+  await user.click(screen.getByText(children[children.length - 1].label));
+
+  await waitFor(
+    () =>
+      expect(
+        screen.getByTestId('animated-' + props.item.id).parentElement
+      ).toBeInTheDocument(),
+    { timeout: 500 }
+  );
+
+  rerender(
+    <OptionDrawer {...props} selectedItems={[]} animateCheck={true} openAll />
+  );
+
+  expect(
+    screen.getByText(props.item.label).children[0].children[0]
+  ).not.toBeChecked();
+});
+
+test('onToggle is called after check animation', async () => {
   const props = fakeProps(false, false);
   const user = userEvent.setup();
 
-  render(<OptionDrawer {...props} onToggle={props.onToggle} />);
+  render(<OptionDrawer {...props} animateCheck={true} />);
 
-  const parent = screen.getByText(props.item.label);
-  user.click(parent);
+  await user.click(screen.getByText(props.item.label));
+  await waitFor(() => expect(props.onToggle).toHaveBeenCalledTimes(1), {
+    timeout: 800,
+  });
+});
 
-  const animatedElement = parent.parentElement;
-  let style = window.getComputedStyle(parent);
-  if (animatedElement) {
-    style = window.getComputedStyle(animatedElement);
-  }
-  setTimeout(() => {
-    expect(style.opacity).toBe(0);
-  }, 450);
+test('onToggle is called after uncheck animation', async () => {
+  const props = fakeProps(false, false);
+  const user = userEvent.setup();
+
+  render(
+    <OptionDrawer
+      {...props}
+      selectedItems={[props.item]}
+      animateUncheck={true}
+    />
+  );
+
+  await user.click(screen.getByText(props.item.label));
+  await waitFor(() => expect(props.onToggle).toHaveBeenCalledTimes(1), {
+    timeout: 800,
+  });
 });

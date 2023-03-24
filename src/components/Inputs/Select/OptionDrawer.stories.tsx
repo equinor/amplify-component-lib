@@ -9,20 +9,20 @@ export default {
   title: 'Inputs/Select/OptionDrawer',
   component: OptionDrawer,
   argTypes: {
+    singleSelect: {
+      control: 'boolean',
+    },
     animateCheck: {
       control: 'boolean',
     },
     animateUncheck: {
       control: 'boolean',
     },
-    animateParent: {
-      control: 'boolean',
-    },
   },
   args: {
+    singleSelect: false,
     animateCheck: false,
     animateUncheck: false,
-    animateParent: false,
   },
 } as Meta;
 
@@ -43,6 +43,7 @@ export const Primary: Story<OptionDrawerProps<ValueType>> = (args) => {
           }}
           item={item}
           selectedItems={selectedItems}
+          singleSelect={args.singleSelect}
           animateCheck={args.animateCheck}
           animateParent={args.animateParent}
           animateUncheck={args.animateUncheck}
