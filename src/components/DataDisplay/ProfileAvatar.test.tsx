@@ -69,6 +69,18 @@ test('Renders first and last letter of name when image is not given', () => {
 
   expect(screen.getByText(initials)).toBeInTheDocument();
 });
+
+test('Renders disabled initials when image is not given and disabled = true', () => {
+  const mockedProps = mockProfileAvatarProps(false);
+  render(<ProfileAvatar {...mockedProps} disabled />);
+
+  const initials = nameToInitials(mockedProps.name as string) as string;
+
+  expect(initials).not.toBeUndefined();
+
+  expect(screen.getByText(initials)).toBeInTheDocument();
+});
+
 test('Renders first and last letter of name when image is not given', () => {
   const mockedProps = mockProfileAvatarProps(false);
   const { rerender } = render(<ProfileAvatar {...mockedProps} />);
