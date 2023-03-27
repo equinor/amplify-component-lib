@@ -11,6 +11,7 @@ interface IConfig {
   API_URL: string;
   API_SCOPE: string;
   ENVIRONMENT_NAME: string;
+  IS_MOCK: boolean;
 }
 
 declare const window: any;
@@ -60,6 +61,13 @@ const getEnvironmentName = (
     return getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
   return environmentName as EnvironmentType;
+};
+
+const getIsMock = (isMock: boolean | undefined): boolean => {
+  if (isMock === undefined) {
+    return getConfig('IS_MOCK') as unknown as boolean;
+  }
+  return isMock;
 };
 
 const GRAPH_ENDPOINTS = {
@@ -149,4 +157,5 @@ export const environment = {
   getApiUrl,
   getApiScope,
   getEnvironmentName,
+  getIsMock,
 };
