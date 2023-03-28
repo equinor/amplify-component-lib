@@ -63,11 +63,12 @@ const getEnvironmentName = (
   return environmentName as EnvironmentType;
 };
 
-const getIsMock = (isMock: boolean | undefined): boolean => {
+const getIsMock = (isMock: string | undefined): boolean => {
   if (isMock === undefined) {
-    return getConfig('IS_MOCK') as unknown as boolean;
+    const envString = getConfig('IS_MOCK') as string;
+    return envString === 'true';
   }
-  return isMock;
+  return isMock === 'true';
 };
 
 const GRAPH_ENDPOINTS = {
