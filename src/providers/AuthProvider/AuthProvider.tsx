@@ -41,6 +41,7 @@ export const useAuth = () => {
 
 interface AuthProviderProps {
   children: ReactNode;
+  isMock?: boolean;
   loadingComponent: ReactElement;
   unauthorizedComponent: ReactElement;
   environments: { apiScope: string; clientId: string };
@@ -48,6 +49,7 @@ interface AuthProviderProps {
 
 const AuthProvider: FC<AuthProviderProps> = ({
   children,
+  isMock = false,
   loadingComponent,
   unauthorizedComponent,
   environments,
@@ -56,6 +58,28 @@ const AuthProvider: FC<AuthProviderProps> = ({
   const [roles, setRoles] = useState<string[] | undefined>();
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [photo, setPhoto] = useState<string | undefined>();
+
+  if (isMock) {
+    return (
+      <AuthContext.Provider
+        value={{
+          roles: ['mock'],
+          account: {
+            homeAccountId: 'mock-home-account-id',
+            environment: 'mock',
+            tenantId: 'mock-tenant-id',
+            username: 'MockUser@euquinor.com',
+            localAccountId: 'mock-local-account-id',
+            name: 'Mock mocksnes',
+          },
+          photo,
+          logout: () => console.log('Logged out the user!'),
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    );
+  }
 
   const accounts = msalApp(environments.clientId).getAllAccounts();
   if (accounts.length > 0) {

@@ -61,6 +61,7 @@ type ContainerProps = {
 type InitialsContainerProps = {
   background: string;
   fontSize: number;
+  disabled: boolean;
 } & ContainerProps;
 
 const InitialsContainer = styled.div<InitialsContainerProps>`
@@ -69,8 +70,14 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   font-size: ${(props) => props.fontSize}px;
   font-family: ${typography.heading.h6.fontFamily};
   border-radius: ${shape.circle.borderRadius};
-  background: ${colors.infographic.substitute__blue_overcast.hex};
-  color: ${colors.text.static_icons__primary_white.hex};
+  background: ${(props) =>
+    props.disabled
+      ? colors.interactive.disabled__border.hex
+      : props.background};
+  color: ${(props) =>
+    props.disabled
+      ? colors.text.static_icons__default.hex
+      : colors.text.static_icons__primary_white.hex};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,10 +91,11 @@ export interface ProfileAvatarProps {
   url?: string;
   name?: string;
   size?: 'small' | 'small-medium' | 'medium' | 'large';
+  disabled?: boolean;
 }
 
 const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
-  ({ url, name, size = 'medium' }, ref) => {
+  ({ url, name, size = 'medium', disabled = false }, ref) => {
     const initials = useMemo(() => {
       const defaultIcon = <FallbackIcon data={person}></FallbackIcon>;
       if (!name || name.trim().length === 0) return defaultIcon;
@@ -130,6 +138,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
           alt={`user-avatar-${name}`}
           size={sizeToPx()}
           src={imageSrc}
+          disabled={disabled}
           ref={ref}
         />
       );
@@ -140,6 +149,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         background={nameToColor(name)}
         size={sizeToPx()}
         fontSize={sizeToFontsize()}
+        disabled={disabled}
         ref={ref}
       >
         {initials}
