@@ -1,4 +1,3 @@
-import { getByTestId } from '@testing-library/dom';
 import React from 'react';
 
 import { Button } from '@equinor/eds-core-react';
@@ -13,7 +12,7 @@ test('renders when show is true', () => {
 
 test('renders title when value is given', () => {
   const title = 'Alec Trevelyan';
-  const { getByText } = render(
+  render(
     <ConfirmationPopup show={true} title={title}>
       content
     </ConfirmationPopup>
