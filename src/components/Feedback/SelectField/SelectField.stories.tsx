@@ -26,11 +26,19 @@ const equinorFields = [
 export default {
   title: 'Feedback/SelectField',
   component: SelectField,
+  argTypes: {
+    finishedText: { control: 'text' },
+    showAccessITLink: { control: 'boolean' },
+  },
+  args: {
+    finishedText: 'Taking you to the storybook',
+    showAccessITLink: true,
+  },
 } as Meta;
 
 function generateFakeFields(): Field[] {
   const fields: Field[] = [];
-  for (let i = 0; i < Math.random() * (equinorFields.length - 1 - 2) + 5; i++) {
+  for (let i = 0; i < equinorFields.length - 1; i++) {
     fields.push({
       name: equinorFields[i],
       uuid: uuidv4(),
@@ -48,7 +56,7 @@ const getMyFields = (): Promise<Field[]> => {
   });
 };
 
-export const Primary: Story = () => {
+export const Primary: Story = (args) => {
   const field = useRef<Field | undefined>(undefined);
   const [fields, setFields] = useState<Field[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,11 +97,12 @@ export const Primary: Story = () => {
       <Template.Container>
         <Template.Content open={false}>
           <SelectField
+            showAccessITLink={args.showAccessITLink}
             setField={setField}
             fields={fields}
             isLoading={isLoading}
             onChangedField={onChangedField}
-            finishedText="Taking you to the storybook"
+            finishedText={args.finishedText}
           />
         </Template.Content>
       </Template.Container>
