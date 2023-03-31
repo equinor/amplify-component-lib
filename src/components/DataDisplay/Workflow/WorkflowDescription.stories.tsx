@@ -36,55 +36,7 @@ Primary.args = {
       approvedUser: 'John Smith',
       approvedDate: '1. january, 2022',
     },
-    {
-      label: 'Awaiting approval',
-      approvedUser: 'John Smith',
-      approvedDate: '1. january, 2022',
-    },
-    {
-      label: 'Approved',
-      approvedUser: 'John Smith',
-      approvedDate: '1. january, 2022',
-    },
-    {
-      label: 'Published',
-      approvedUser: 'John Smith',
-      approvedDate: '1. january, 2022',
-    },
-  ],
-};
-
-export const Half = Template.bind({});
-Half.args = {
-  options: [
-    {
-      label: 'Draft',
-      notApprovedLabel: 'To be draft',
-      approvedUser: 'John Smith',
-      approvedDate: '1. january, 2022',
-    },
-    {
-      label: 'Awaiting QA',
-      notApprovedLabel: 'To be QA',
-      approvedUser: 'John Smith',
-      approvedDate: '1. january, 2022',
-    },
-    {
-      label: 'Ready for QA',
-      notApprovedLabel: 'To be ready',
-      approvedUser: 'John Smith',
-      approvedDate: '1. january, 2022',
-    },
-    {
-      label: 'Author review',
-      notApprovedLabel: 'To be reviewed',
-      approvedUser: 'John Smith',
-      approvedDate: '1. january, 2022',
-    },
-    {
-      label: 'Awaiting approval',
-      notApprovedLabel: 'To be approved',
-    },
+    { label: 'Awaiting approval', notApprovedLabel: 'To be approved' },
     {
       label: 'Approved',
       notApprovedLabel: 'To be approved',
