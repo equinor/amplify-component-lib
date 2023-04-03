@@ -32,6 +32,7 @@ export {
   amplify_wireline_open_hole,
 } from './Icons/AmplifyIcons';
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
+export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as DataSharing } from './Icons/ApplicationIcon/Dasha';
 export { default as DataExperience } from './Icons/ApplicationIcon/FourDInsight';
