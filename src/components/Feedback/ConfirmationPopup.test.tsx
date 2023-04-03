@@ -12,12 +12,12 @@ test('renders when show is true', () => {
 
 test('renders title when value is given', () => {
   const title = 'Alec Trevelyan';
-  const { getByText } = render(
+  render(
     <ConfirmationPopup show={true} title={title}>
       content
     </ConfirmationPopup>
   );
-  expect(getByText(title).innerHTML).toBe(title);
+  expect(screen.getByTestId('dialog-header')).toHaveTextContent(title);
 });
 
 test('renders body when value is given', () => {
@@ -107,7 +107,7 @@ test('Places actions correctly when given actionPosition prop', () => {
         content
       </ConfirmationPopup>
     );
-    const expectedId = `confirmation-actions-${position ?? 'left'}`;
+    const expectedId = `confirmation-actions-${position ?? 'right'}`;
     expect(screen.getByTestId(expectedId)).toBeInTheDocument();
   }
 });

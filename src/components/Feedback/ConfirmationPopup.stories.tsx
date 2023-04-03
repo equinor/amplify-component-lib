@@ -29,8 +29,8 @@ export default {
     title: 'This is the title',
     body: 'This is the body',
     actions: [
-      <Button key="A1" variant="ghost">
-        Action
+      <Button key="A1" variant="ghost" color="secondary">
+        Cancel
       </Button>,
       <Button key="A2">Action</Button>,
     ],
