@@ -118,12 +118,14 @@ const SingleSelectDrawer = <T extends { id: string; label: string }>({
             setSearch(e.target.value)
           }
           placeholder={placeholder}
+          disabled={disabled}
         />
         <StyledButton
           variant="ghost_icon"
           aria-label="toggle options"
           title="open"
           onClick={() => setOpen((o) => !o)}
+          disabled={disabled}
         >
           <Icon data={open ? arrow_drop_up : arrow_drop_down} />
         </StyledButton>

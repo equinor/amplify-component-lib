@@ -15,7 +15,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "start": "NODE_OPTIONS=--openssl-legacy-provider && start-storybook -p 6006 -s public",
+    "start": "start-storybook -p 6006 -s public",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider --max-old-space-size=2048' build-storybook",
     "setup": "yarn",
     "pretty": "prettier --check ./src",
