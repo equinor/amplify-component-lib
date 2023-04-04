@@ -23,7 +23,3 @@ export default {
 export const Primary: Story<EquinorLogoProps> = (args) => (
   <EquinorLogo {...args} />
 );
-
-export const LargeLogo: Story<EquinorLogoProps> = (args) => (
-  <EquinorLogo {...args} large size={48} />
-);

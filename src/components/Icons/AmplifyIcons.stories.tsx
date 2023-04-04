@@ -19,6 +19,7 @@ interface StoryProps {
   data: string;
   size: 16 | 18 | 24 | 32 | 40 | 48 | undefined;
   color?: string;
+  rotation: 0 | 90 | 180 | 270;
 }
 
 export default {
@@ -44,6 +45,7 @@ export default {
     data: 'amplify_wellbore',
     color: '#007979',
     size: 96,
+    rotation: 0,
   },
 } as Meta;
 
@@ -54,6 +56,7 @@ export const Primary: Story<StoryProps> = (args) => {
       color={args.color}
       data={(allIcons as any)[args.data]}
       fillRule="nonzero"
+      rotation={args.rotation}
     />
   );
 };

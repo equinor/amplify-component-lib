@@ -4,16 +4,26 @@ import { Typography } from '@equinor/eds-core-react';
 import { Meta, Story } from '@storybook/react';
 
 import { items, ValueType } from './SelectUtils';
-import SingleSelectDrawer, {
-  SingleSelectDrawerProps,
-} from './SingleSelectDrawer';
+import SingleSelectDrawer from './SingleSelectDrawer';
 
 export default {
   title: 'Inputs/Select/SingleSelectDrawer',
   component: SingleSelectDrawer,
+  argTypes: {
+    label: { control: 'text' },
+    meta: { control: 'text' },
+    placeholder: { control: 'text' },
+    disabled: { control: 'boolean' },
+  },
+  args: {
+    label: 'Test',
+    meta: 'Meta',
+    placeholder: 'Select...',
+    disabled: false,
+  },
 } as Meta;
 
-const Template: Story<SingleSelectDrawerProps<ValueType>> = () => {
+export const Primary: Story = (args) => {
   const [selectedItem, setSelectedItem] = useState<ValueType | undefined>(
     items[0]
   );
@@ -31,10 +41,12 @@ const Template: Story<SingleSelectDrawerProps<ValueType>> = () => {
         }}
       >
         <SingleSelectDrawer<ValueType>
-          label="Test"
+          label={args.label}
+          disabled={args.disabled}
+          meta={args.meta}
           items={items}
           initialItem={items[0]}
-          placeholder="Select..."
+          placeholder={args.placeholder}
           onChange={(item) => setSelectedItem(item)}
         />
       </div>
@@ -44,6 +56,3 @@ const Template: Story<SingleSelectDrawerProps<ValueType>> = () => {
     </div>
   );
 };
-
-export const Primary = Template.bind({});
-Primary.args = {};

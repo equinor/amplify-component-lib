@@ -10,16 +10,18 @@ import Portal from './Portal';
 import PWEX from './PWEX';
 import Recap from './Recap';
 
+export type ApplicationName =
+  | 'acquire'
+  | '4dinsight'
+  | 'recap'
+  | 'dasha'
+  | 'depth-conversion'
+  | 'portal'
+  | 'logging-qualification'
+  | 'pwex';
+
 export interface ApplicationIconProps {
-  name:
-    | 'acquire'
-    | '4dinsight'
-    | 'recap'
-    | 'dasha'
-    | 'depth-conversion'
-    | 'portal'
-    | 'logging-qualification'
-    | 'pwex';
+  name: ApplicationName;
   size?: 16 | 24 | 32 | 40 | 48 | 96;
 }
 interface IApplicationIconData {

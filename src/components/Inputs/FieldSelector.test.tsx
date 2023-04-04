@@ -73,6 +73,29 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   expect(props.onSelect).toHaveBeenCalledTimes(0);
 });
 
+test('Placement is as expected when bottom-end.', async () => {
+  const props = fakeProps();
+  const { rerender } = render(
+    <FieldSelector {...props} placement="bottom-end" />
+  );
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  expect(screen.getByTestId('field-menu')).toHaveStyle(
+    'transform: translate( -15rem, 4px )'
+  );
+
+  rerender(<FieldSelector {...props} placement="bottom-start" />);
+
+  await user.click(button);
+
+  expect(screen.getByTestId('field-menu')).toHaveStyle(
+    'transform: translate( -0, 4px )'
+  );
+});
+
 test('Filters values when using search', async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} currentField={undefined} />);
@@ -154,9 +177,7 @@ test('Runs window.open when clicking access it card', async () => {
   const button = screen.getByRole('button');
   await user.click(button);
 
-  const accessItMenuItem = screen.getByRole('menuitem', {
-    name: /missing a field\? go to accessit/i,
-  });
+  const accessItMenuItem = screen.getByTestId('access-it-link');
 
   await user.click(accessItMenuItem);
 

@@ -3,15 +3,27 @@ import React, { useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, Story } from '@storybook/react';
 
-import MultiSelectDrawer, { MultiSelectDrawerProps } from './MultiSelectDrawer';
+import MultiSelectDrawer from './MultiSelectDrawer';
 import { items, ValueType } from './SelectUtils';
 
 export default {
   title: 'Inputs/Select/MultiSelectDrawer',
   component: MultiSelectDrawer,
+  argTypes: {
+    label: { control: 'text' },
+    meta: { control: 'text' },
+    placeholder: { control: 'text' },
+    disabled: { control: 'boolean' },
+  },
+  args: {
+    label: 'Test',
+    meta: 'Meta',
+    placeholder: 'Select...',
+    disabled: false,
+  },
 } as Meta;
 
-const Template: Story<MultiSelectDrawerProps<ValueType>> = () => {
+export const Primary: Story = (args) => {
   const [selectedItems, setSelectedItems] = useState<ValueType[]>([
     items[0],
     items[3],
@@ -31,12 +43,14 @@ const Template: Story<MultiSelectDrawerProps<ValueType>> = () => {
       >
         <MultiSelectDrawer<ValueType>
           items={items}
-          label="Test"
+          disabled={args.disabled}
+          meta={args.meta}
+          label={args.label}
           onChange={(val) => setSelectedItems(val)}
           placeholder={
             selectedItems.length
               ? selectedItems.map((s) => s.label).join(', ')
-              : 'Select...'
+              : args.placeholder
           }
           selectedItems={selectedItems}
         />
@@ -51,6 +65,3 @@ const Template: Story<MultiSelectDrawerProps<ValueType>> = () => {
     </div>
   );
 };
-
-export const Primary = Template.bind({});
-Primary.args = {};

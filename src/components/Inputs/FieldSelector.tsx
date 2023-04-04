@@ -1,23 +1,28 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
-import {
-  Button,
-  Icon,
-  Menu as EDSMenu,
-  Search,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { Field } from '../../types/Field';
 
 import styled from 'styled-components';
+const { colors, spacings, elevation, shape } = tokens;
 
-const { colors, spacings } = tokens;
+type MenuProps = {
+  placement: 'bottom-start' | 'bottom' | 'bottom-end';
+};
 
-const Menu = styled(EDSMenu)`
+const Menu = styled.div<MenuProps>`
   width: 17rem;
+  background-color: white;
+  box-shadow: ${elevation.raised};
+  position: absolute;
+  transform: translate(
+    -${(props) => (props.placement === 'bottom' ? spacings.comfortable.xxx_large : props.placement === 'bottom-end' ? '15rem' : '0')},
+    ${spacings.comfortable.x_small}
+  );
+  border-radius: ${shape.corners.borderRadius};
 `;
 
 const SearchContainer = styled.div`
@@ -46,7 +51,11 @@ const ListContainer = styled.div`
   overflow-y: auto;
 `;
 
-const MenuItem = styled(Menu.Item)`
+interface MenuItemProps {
+  active?: boolean;
+}
+
+const MenuItem = styled.div<MenuItemProps>`
   &:hover {
     background: ${colors.interactive.primary__selected_hover.hex};
     cursor: pointer;
@@ -56,7 +65,7 @@ const MenuItem = styled(Menu.Item)`
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
 `;
 
-const MenuFixedItem = styled(Menu.Item)`
+const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
     props.active &&
     `background: ${colors.interactive.primary__selected_highlight.hex};
@@ -111,14 +120,22 @@ export type FieldSelectorType = {
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
   showAccessITLink?: boolean;
+  placement?: 'bottom-start' | 'bottom' | 'bottom-end';
 };
 
 const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
   (
-    { currentField, availableFields, onSelect, showAccessITLink = true },
+    {
+      currentField,
+      availableFields,
+      onSelect,
+      showAccessITLink = true,
+      placement = 'bottom',
+    },
     ref
   ) => {
     const [open, setOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [searchValue, setSearchValue] = useState<string>('');
 
@@ -156,13 +173,14 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
             color={colors.interactive.primary__resting.hsla}
           />
         </Button>
-        {open && (
-          <Menu
-            id="field-menu"
-            anchorEl={buttonRef.current}
-            open
-            onClose={closeMenu}
-          >
+
+        <Menu
+          data-testid="field-menu"
+          id="field-menu"
+          ref={menuRef}
+          placement={placement}
+        >
+          {open && (
             <>
               <MenuSection>
                 <MenuHeader>
@@ -178,16 +196,18 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                 <Typography variant="overline">Current selection</Typography>
                 {currentField && (
                   <MenuFixedItem active>
-                    <TextContainer>
-                      <Typography variant="h6">
-                        {currentField.name?.toLowerCase()}
-                      </Typography>
-                    </TextContainer>
-                    <Icon
-                      data={check}
-                      color={colors.interactive.primary__resting.hex}
-                      size={24}
-                    />
+                    <div>
+                      <TextContainer>
+                        <Typography variant="h6">
+                          {currentField.name?.toLowerCase()}
+                        </Typography>
+                      </TextContainer>
+                      <Icon
+                        data={check}
+                        color={colors.interactive.primary__resting.hex}
+                        size={24}
+                      />
+                    </div>
                   </MenuFixedItem>
                 )}
                 <SearchContainer>
@@ -224,24 +244,29 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
               </MenuSection>
               {showAccessITLink && (
                 <MenuFixedItem
+                  data-testid="access-it-link"
                   onClick={() =>
                     window.open('https://accessit.equinor.com/#', '_blank')
                   }
                 >
-                  <TextContainer>
-                    <Typography variant="overline">Missing a field?</Typography>
-                    <Typography variant="h6">Go to AccessIT</Typography>
-                  </TextContainer>
-                  <Icon
-                    data={exit_to_app}
-                    color={colors.interactive.primary__resting.hex}
-                    size={24}
-                  />
+                  <div>
+                    <TextContainer>
+                      <Typography variant="overline">
+                        Missing a field?
+                      </Typography>
+                      <Typography variant="h6">Go to AccessIT</Typography>
+                    </TextContainer>
+                    <Icon
+                      data={exit_to_app}
+                      color={colors.interactive.primary__resting.hex}
+                      size={24}
+                    />
+                  </div>
                 </MenuFixedItem>
               )}
             </>
-          </Menu>
-        )}
+          )}
+        </Menu>
       </div>
     );
   }
