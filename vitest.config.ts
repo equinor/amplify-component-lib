@@ -11,6 +11,7 @@ export default defineConfig({
       'src/tests/setupTests.ts',
       'src/tests/mockLocalStorage.ts',
       'src/tests/mockResizeObserver.ts',
+      'src/tests/mockInteractionObserver.ts',
     ],
     exclude: ['node_modules', 'src/tests', 'src/intro.stories.mdx'],
     coverage: {

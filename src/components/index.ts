@@ -54,6 +54,7 @@ export { default as EditableField } from './Inputs/EditableField';
 export { default as FieldSelector } from './Inputs/FieldSelector';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
+export { default as PageMenu } from './Inputs/PageMenu';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
