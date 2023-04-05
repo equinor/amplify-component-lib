@@ -8,7 +8,7 @@ const { colors } = tokens;
 
 function fakeItem(): { label: string; value: string } {
   return {
-    label: faker.animal.dog(),
+    label: faker.datatype.uuid(),
     value: faker.datatype.uuid(),
   };
 }
