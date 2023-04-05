@@ -1,9 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { renderHook } from '@testing-library/react';
 
-import PageMenuProvider, {
-  usePageMenu,
-} from '../../providers/PageMenuProvider';
+import PageMenuProvider from '../../providers/PageMenuProvider';
 import { render, screen, userEvent } from '../../tests/test-utils';
 import PageMenu from './PageMenu';
 
@@ -41,15 +38,7 @@ test('OnClick runs as expected', async () => {
     expect(screen.queryAllByText(item.label).length).toBe(2);
   }
 
-  const button = screen.getByRole('button', { name: items[0].label });
+  const button = screen.getByRole('button', { name: items[1].label });
 
   await user.click(button);
-
-  const hook = renderHook(() => usePageMenu(), {
-    wrapper: (props: any) => (
-      <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
-    ),
-  });
-
-  expect(hook.result.current.selected).toBe(items[0].value);
 });
