@@ -3,12 +3,10 @@ import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useOutsideClick } from '@equinor/eds-utils';
 
 import { Field } from '../../types/Field';
 
 import styled from 'styled-components';
-
 const { colors, spacings, elevation, shape } = tokens;
 
 type MenuProps = {
@@ -24,7 +22,6 @@ const Menu = styled.div<MenuProps>`
     -${(props) => (props.placement === 'bottom' ? spacings.comfortable.xxx_large : props.placement === 'bottom-end' ? '15rem' : '0')},
     ${spacings.comfortable.x_small}
   );
-
   border-radius: ${shape.corners.borderRadius};
 `;
 
@@ -55,15 +52,10 @@ const ListContainer = styled.div`
 `;
 
 interface MenuItemProps {
-  selected?: boolean;
+  active?: boolean;
 }
 
 const MenuItem = styled.div<MenuItemProps>`
-  ${(props) =>
-    props.selected &&
-    `background: ${colors.interactive.primary__selected_highlight.hex};
-     border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
-    `};
   &:hover {
     background: ${colors.interactive.primary__selected_hover.hex};
     cursor: pointer;
@@ -75,7 +67,7 @@ const MenuItem = styled.div<MenuItemProps>`
 
 const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
-    props.selected &&
+    props.active &&
     `background: ${colors.interactive.primary__selected_highlight.hex};
      border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
     `};
@@ -143,8 +135,8 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     ref
   ) => {
     const [open, setOpen] = useState(false);
-    const buttonRef = useRef<HTMLButtonElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
     const [searchValue, setSearchValue] = useState<string>('');
 
     const openMenu = () => {
@@ -172,28 +164,23 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 
-    useOutsideClick(menuRef.current as HTMLElement, (event) => {
-      const node = event.target as Node;
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(node) &&
-        !buttonRef.current?.contains(node)
-      ) {
-        closeMenu();
-      }
-    });
-
     return (
       <div ref={ref}>
-        <Button variant="ghost_icon" onClick={handleOnClick} ref={buttonRef}>
+        <Button variant="ghost_icon" ref={buttonRef} onClick={handleOnClick}>
           <Icon
             data={platform}
             size={24}
             color={colors.interactive.primary__resting.hsla}
           />
         </Button>
-        {open && (
-          <Menu ref={menuRef} id="field-menu" placement={placement}>
+
+        <Menu
+          data-testid="field-menu"
+          id="field-menu"
+          ref={menuRef}
+          placement={placement}
+        >
+          {open && (
             <>
               <MenuSection>
                 <MenuHeader>
@@ -208,7 +195,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                 </MenuHeader>
                 <Typography variant="overline">Current selection</Typography>
                 {currentField && (
-                  <MenuFixedItem selected>
+                  <MenuFixedItem active>
                     <div>
                       <TextContainer>
                         <Typography variant="h6">
@@ -257,6 +244,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
               </MenuSection>
               {showAccessITLink && (
                 <MenuFixedItem
+                  data-testid="access-it-link"
                   onClick={() =>
                     window.open('https://accessit.equinor.com/#', '_blank')
                   }
@@ -277,8 +265,8 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                 </MenuFixedItem>
               )}
             </>
-          </Menu>
-        )}
+          )}
+        </Menu>
       </div>
     );
   }

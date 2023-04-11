@@ -1,13 +1,26 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 
-import HourglassProgress, { HourglassProgressProps } from './HourglassProgress';
+import HourglassProgress from './HourglassProgress';
 
 export default {
   title: 'Feedback/Progress/Hourglass',
   component: HourglassProgress,
-  args: { color: 'primary', size: 32, speed: 'normal' },
-} as ComponentMeta<typeof HourglassProgress>;
+  argTypes: {
+    color: {
+      control: 'select',
+      options: ['primary', 'neutral'],
+    },
+    size: {
+      control: 'radio',
+      options: [16, 24, 32, 40, 48],
+    },
 
-export const Primary: Story<HourglassProgressProps> = (args) => {
+    speed: { control: 'radio', options: ['slow', 'normal', 'fast'] },
+  },
+
+  args: { color: 'primary', size: 32, speed: 'normal' },
+} as Meta;
+
+export const Primary: Story = (args) => {
   return <HourglassProgress {...args} />;
 };

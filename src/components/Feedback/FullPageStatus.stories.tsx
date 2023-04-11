@@ -11,8 +11,5 @@ const Template: Story<FullPageStatusProps> = (args) => (
   <FullPageStatus {...args} />
 );
 
-export const Loading = Template.bind({});
-Loading.args = { loading: true, error: true, errorMessage: 'ERROR' };
-
-export const Error = Template.bind({});
-Error.args = { error: true, errorMessage: 'ERROR' };
+export const Primary = Template.bind({});
+Primary.args = { loading: true, error: true, errorMessage: 'ERROR' };

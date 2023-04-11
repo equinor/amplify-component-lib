@@ -12,12 +12,12 @@ test('renders when show is true', () => {
 
 test('renders title when value is given', () => {
   const title = 'Alec Trevelyan';
-  const { getByText } = render(
+  render(
     <ConfirmationPopup show={true} title={title}>
       content
     </ConfirmationPopup>
   );
-  expect(getByText(title).innerHTML).toBe(title);
+  expect(screen.getByTestId('dialog-header')).toHaveTextContent(title);
 });
 
 test('renders body when value is given', () => {
@@ -70,4 +70,44 @@ test('triggers callback functions on actions given', async () => {
   expect(cb).toHaveBeenCalledTimes(1);
   await user.click(getByText('Ok'));
   expect(cb).toHaveBeenCalledTimes(2);
+});
+
+test('No element is shown when show=false', () => {
+  render(<ConfirmationPopup show={false} />);
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+});
+
+test('Places actions correctly when given actionPosition prop', () => {
+  const buttons = [
+    <Button key="cancel" variant="ghost" onClick={undefined}>
+      Cancel
+    </Button>,
+    <Button key="ok" variant="ghost" color="danger" onClick={undefined}>
+      Ok
+    </Button>,
+  ];
+  const actionPositions = [undefined, 'left', 'right'] as [
+    undefined,
+    'left',
+    'right'
+  ];
+  const { rerender } = render(
+    <ConfirmationPopup show={true} actions={buttons}>
+      content
+    </ConfirmationPopup>
+  );
+
+  for (const position of actionPositions) {
+    rerender(
+      <ConfirmationPopup
+        show={true}
+        actions={buttons}
+        actionPosition={position}
+      >
+        content
+      </ConfirmationPopup>
+    );
+    const expectedId = `confirmation-actions-${position ?? 'right'}`;
+    expect(screen.getByTestId(expectedId)).toBeInTheDocument();
+  }
 });

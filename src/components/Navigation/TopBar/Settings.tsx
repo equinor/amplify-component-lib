@@ -117,7 +117,12 @@ export const Settings = forwardRef<HTMLButtonElement, ISettingsProps>(
                       checked={section.type === item.value}
                       onChange={() => section.onChange?.(item.value)}
                     />
-                    {item.colorBox && <StyledColorBox color={item.colorBox} />}
+                    {item.colorBox && (
+                      <StyledColorBox
+                        color={item.colorBox}
+                        data-testid={`colorbox-${item.colorBox}`}
+                      />
+                    )}
                     {item.element && (
                       <Typography variant="h6">{item.element}</Typography>
                     )}

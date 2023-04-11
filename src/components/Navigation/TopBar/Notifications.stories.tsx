@@ -6,6 +6,8 @@ import Notifications, { UnreadRedDot } from './Notifications';
 export default {
   title: 'Navigation/TopBar/Notifications',
   component: Notifications,
+  argTypes: { hasUnread: { control: 'boolean' } },
+  args: { hasUnread: true },
 } as Meta;
 
 type StoryNotificationItem = {
@@ -32,13 +34,13 @@ const items: StoryNotificationItem[] = [
   },
 ];
 
-export const Primary: Story = () => {
+export const Primary: Story = (args) => {
   return (
-    <Notifications hasUnread={true} setAllAsRead={() => null}>
+    <Notifications hasUnread={args.hasUnread} setAllAsRead={() => null}>
       {items.map((item) => {
         return (
           <div key={item.SequenceNumber}>
-            <div>{item.Read && <UnreadRedDot />}</div>
+            <div>{!item.Read && <UnreadRedDot />}</div>
             <div>{'Sequence number: ' + item.SequenceNumber}</div>
             <div>{item.Text}</div>
             <Divider />

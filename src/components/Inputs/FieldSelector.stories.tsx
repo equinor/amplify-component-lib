@@ -1,11 +1,23 @@
+import { useState } from 'react';
+
 import { faker } from '@faker-js/faker';
 import { Meta, Story } from '@storybook/react';
 
+import { Field } from '../../types/Field';
 import FieldSelector from './FieldSelector';
+const fields = new Array(10).fill(0).map(() => FakeField());
 
 export default {
   title: 'Inputs/FieldSelector',
   component: FieldSelector,
+  argTypes: {
+    showAccessITLink: { control: 'boolean' },
+    placement: {
+      control: 'select',
+      options: ['bottom-start', 'bottom', 'bottom-end'],
+    },
+  },
+  args: { showAccessITLink: true, placement: 'bottom-start' },
 } as Meta;
 
 function FakeField() {
@@ -16,37 +28,15 @@ function FakeField() {
   };
 }
 
-export const Primary: Story = () => {
-  const fields = new Array(10).fill(0).map(() => FakeField());
+export const Primary: Story = (args) => {
+  const [field, setField] = useState<Field>(fields[0]);
   return (
     <FieldSelector
-      placement="bottom-start"
+      placement={args.placement}
       availableFields={fields}
-      currentField={fields[0]}
-      onSelect={() => console.log('🎉')}
-    />
-  );
-};
-
-export const WithoutSelect: Story = () => {
-  const fields = new Array(3).fill(0).map(() => FakeField());
-  return (
-    <FieldSelector
-      placement="bottom-start"
-      availableFields={fields}
-      onSelect={() => console.log('🎉')}
-    />
-  );
-};
-
-export const HidingAccessITLink: Story = () => {
-  const fields = new Array(3).fill(0).map(() => FakeField());
-  return (
-    <FieldSelector
-      placement="bottom-start"
-      availableFields={fields}
-      onSelect={() => console.log('🎉')}
-      showAccessITLink={false}
+      currentField={field}
+      onSelect={(selectedField: Field) => setField(selectedField)}
+      showAccessITLink={args.showAccessITLink}
     />
   );
 };

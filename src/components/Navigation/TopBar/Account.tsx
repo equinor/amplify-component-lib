@@ -39,32 +39,31 @@ export interface IAccountProps {
   account: AccountInfo | undefined;
   logout: () => void;
   photo: string | undefined;
-  size?: 'small' | 'medium' | 'large';
 }
 
 export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
-  ({ account, logout, photo, size }, ref) => {
+  ({ account, logout, photo }, ref) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const isOpen = Boolean(anchorEl);
 
-    const openMenu = (
-      e: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
-    ) => {
-      const target = e.target as HTMLButtonElement;
-      setAnchorEl(target);
+    const handleOnClose = () => {
+      setAnchorEl(null);
     };
 
-    const closeMenu = () => {
-      setAnchorEl(null);
+    const handleButtonClick = (
+      e: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
+    ) => {
+      if (!isOpen) {
+        const target = e.target as HTMLButtonElement;
+        setAnchorEl(target);
+      } else {
+        setAnchorEl(null);
+      }
     };
 
     return (
       <>
-        <Button
-          variant="ghost_icon"
-          onClick={(e) => (isOpen ? closeMenu() : openMenu(e))}
-          ref={ref}
-        >
+        <Button variant="ghost_icon" onClick={handleButtonClick} ref={ref}>
           <Icon
             data={account_circle}
             size={24}
@@ -77,7 +76,7 @@ export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
             aria-labelledby="menuButton"
             open={isOpen}
             anchorEl={anchorEl}
-            onClose={closeMenu}
+            onClose={handleOnClose}
             placement="bottom-start"
           >
             <Header>
@@ -86,18 +85,14 @@ export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
               </Typography>
               <Button
                 variant="ghost_icon"
-                onClick={closeMenu}
+                onClick={handleOnClose}
                 data-testid="close-button"
               >
                 <Icon data={clear} />
               </Button>
             </Header>
             <Info>
-              <ProfileAvatar
-                size={size ? size : 'large'}
-                name={account?.name}
-                url={photo}
-              />
+              <ProfileAvatar size="large" name={account?.name} url={photo} />
               <div>
                 <Typography variant="h6">{account?.name}</Typography>
                 <Typography>{account?.username}</Typography>

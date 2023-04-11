@@ -1,6 +1,13 @@
+import { checkbox } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../tests/test-utils';
+import {
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  within,
+} from '../../tests/test-utils';
 import ChippedMultiSelect from './ChippedMultiSelect';
 
 function mockedProps(items?: string[], values?: string[]) {
@@ -30,12 +37,12 @@ test('Runs onSelect with props as expected', async () => {
 });
 
 test('Remove item when clicking the chip', async () => {
-  const fackedItems = `${faker.internet.ipv6()}${faker.internet.ipv6()}`.split(
+  const fakedItems = `${faker.internet.ipv6()}${faker.internet.ipv6()}`.split(
     ':'
   );
-  const firstItem = fackedItems[0];
+  const firstItem = fakedItems[0];
   // First item is pre-selected
-  const props = mockedProps(fackedItems, [firstItem]);
+  const props = mockedProps(fakedItems, [firstItem]);
   const user = userEvent.setup();
 
   render(<ChippedMultiSelect {...props} />);
@@ -46,4 +53,123 @@ test('Remove item when clicking the chip', async () => {
 
   // Since we just removed the first item by clicking the chip, we should expect an empty array back from the onSelect
   expect(props.onSelect).toHaveBeenCalledWith([]);
+});
+
+test('Handle scrolling correctly', async () => {
+  const props = mockedProps();
+
+  const { container } = render(<ChippedMultiSelect {...props} />);
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  const scrollY = faker.datatype.number({ min: 10, max: 1000 });
+  fireEvent.scroll(document.body, { scrollY });
+
+  const expectedTop = 4;
+  // This is just a copy from the ChippedMultiSelect components handleScroll function
+  // menuRef.current.style.top = `${
+  //     top + anchorRef.current?.clientHeight + 4
+  // }px`;
+
+  const parent = container.parentElement as HTMLElement;
+  const menu = parent.querySelector('#eds-menu-container > div');
+
+  expect(menu).toHaveStyle(`top: ${expectedTop}px`);
+});
+
+test('InDialog prop works as expected', async () => {
+  const props = mockedProps();
+
+  const { container } = render(<ChippedMultiSelect inDialog {...props} />);
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  const parent = container.parentElement as HTMLElement;
+  const menu = parent.querySelector('#eds-menu-container > div');
+
+  expect(menu).toHaveStyle('z-index: 1400;');
+});
+
+test('maxHeight prop works as expected', async () => {
+  const props = mockedProps();
+
+  const { container } = render(
+    <ChippedMultiSelect maxHeight="18rem" {...props} />
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  const parent = container.parentElement as HTMLElement;
+  const menu = parent.querySelector('#eds-menu-container > div');
+
+  expect(menu).toHaveStyle('max-height: 18rem;');
+});
+
+test('Formatter prop works as expected in menu', async () => {
+  const props = mockedProps();
+
+  function fakeFormatter(str: string) {
+    return str + `-formatted`;
+  }
+
+  render(<ChippedMultiSelect formatter={fakeFormatter} {...props} />);
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  for (const item of props.items) {
+    expect(screen.getByText(fakeFormatter(item))).toBeInTheDocument();
+  }
+});
+
+test('Formatter prop works as expected in chips', async () => {
+  const props = mockedProps();
+
+  function fakeFormatter(str: string) {
+    return str + `-formatted`;
+  }
+
+  render(
+    <ChippedMultiSelect
+      formatter={fakeFormatter}
+      {...props}
+      values={[props.items[0]]}
+    />
+  );
+  expect(screen.getByText(fakeFormatter(props.items[0]))).toBeInTheDocument();
+});
+
+test("MenuItems get correct styling when they're selected", async () => {
+  const props = mockedProps();
+
+  render(<ChippedMultiSelect {...props} values={[props.items[0]]} />);
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  const menuItem = screen.getByRole('menuitem', { name: props.items[0] });
+  const icon = within(menuItem).getByTestId('eds-icon-path');
+  expect(icon).toHaveAttribute('d', checkbox.svgPathData);
+});
+
+test('useOutSideClick works as expected', async () => {
+  const props = mockedProps();
+
+  render(<ChippedMultiSelect {...props} />);
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  for (const item of props.items) {
+    expect(screen.getByText(item)).toBeInTheDocument();
+  }
+
+  await user.click(document.body);
+
+  for (const item of props.items) {
+    expect(screen.queryByText(item)).not.toBeInTheDocument();
+  }
 });

@@ -59,7 +59,7 @@ const SelectField: FC<SelectFieldProps> = ({
         name: field.name,
         country: field.country ?? '',
       });
-      fieldName.current = field.name ?? 'FieldName';
+      fieldName.current = field.name;
       setIsChangingField(true);
     }
   };

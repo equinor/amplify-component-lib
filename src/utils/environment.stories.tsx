@@ -40,3 +40,17 @@ export const getApiScope: Story = () => {
   `;
   return <UtilStory name="getApiScope" codeText={codeText} />;
 };
+
+export const getEnvironmentName: Story = () => {
+  const codeText = `
+  getEnvironmentName() => gets ENVIRONMENT_NAME env variable
+  `;
+  return <UtilStory name="getEnvironmentName" codeText={codeText} />;
+};
+
+export const getIsMock: Story = () => {
+  const codeText = `
+  getIsMock() => gets IS_MOCK env variable
+  `;
+  return <UtilStory name="getIsMock" codeText={codeText} />;
+};

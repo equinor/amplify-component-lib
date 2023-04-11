@@ -11,14 +11,5 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     plugins: [react()],
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: [
-        'src/tests/setupTests.ts',
-        'src/tests/mockLocalStorage.ts',
-        'src/tests/mockResizeObserver.ts',
-      ],
-    },
   });
 };

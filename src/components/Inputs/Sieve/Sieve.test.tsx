@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../tests/test-utils';
+import { render, screen, userEvent, within } from '../../../tests/test-utils';
 import { FilterOption } from './Filter';
 import Sieve, { SieveProps } from './Sieve';
 import { Option } from './Sieve.common';
@@ -57,6 +57,29 @@ test('Users can search', async () => {
   });
 });
 
+test('Users can clear search', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} />);
+
+  const searchField = screen.getByRole('textbox');
+
+  const fakeText = faker.animal.cetacean();
+  await user.type(searchField, fakeText);
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    searchValue: fakeText,
+    sortValue: props.sortOptions?.at(0),
+  });
+
+  await user.clear(searchField);
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    searchValue: undefined,
+    sortValue: props.sortOptions?.at(0),
+  });
+});
+
 test('Users can sort', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
@@ -89,6 +112,104 @@ test('Users can sort', async () => {
   expect(props.onUpdate).toHaveBeenCalledWith({
     sortValue: props.sortOptions?.[randomIndex],
   });
+});
+
+test('Sort by is hidden when sorting options = []', async () => {
+  const props = fakeProps();
+  render(<Sieve {...props} sortOptions={[]} />);
+
+  const sortByButton = screen.queryByRole('button', {
+    name: /sort by/i,
+  });
+
+  expect(sortByButton).not.toBeInTheDocument();
+});
+
+test('Users can open and close a filter group by clicking it twice', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} />);
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  for (const option of props?.filterOptions ?? []) {
+    expect(screen.getByText(option.label)).toBeInTheDocument();
+  }
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  for (const option of props.filterOptions?.[randomFilterGroup].options ?? []) {
+    expect(screen.getByText(option.label)).toBeInTheDocument();
+  }
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  for (const option of props.filterOptions?.[randomFilterGroup].options ?? []) {
+    expect(screen.queryByText(option.label)).not.toBeInTheDocument();
+  }
+});
+
+test('UseOutsideClick works as expected', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} />);
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  for (const option of props?.filterOptions ?? []) {
+    expect(screen.getByText(option.label)).toBeInTheDocument();
+  }
+
+  // Clicking outside and subMenu is still closed
+  await user.click(document.body);
+
+  for (const option of props?.filterOptions ?? []) {
+    expect(screen.queryByText(option.label)).not.toBeInTheDocument();
+  }
+
+  await user.click(filterByButton);
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  for (const option of props.filterOptions?.[randomFilterGroup].options ?? []) {
+    expect(screen.getByText(option.label)).toBeInTheDocument();
+  }
+
+  await user.click(document.body);
+
+  for (const option of props.filterOptions?.[randomFilterGroup].options ?? []) {
+    expect(screen.queryByText(option.label)).not.toBeInTheDocument();
+  }
 });
 
 test('Users can filter', async () => {
@@ -144,6 +265,71 @@ test('Users can filter', async () => {
   });
 });
 
+test('Filter not shown if the options are empty', async () => {
+  const props = fakeProps();
+  render(<Sieve {...props} filterOptions={[]} />);
+
+  const filterByButton = screen.queryByRole('button', {
+    name: /filter by/i,
+  });
+
+  expect(filterByButton).not.toBeInTheDocument();
+});
+
+test('Users can remove filter by clicking it twice', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} />);
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
+  });
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup]?.options[randomIndex]
+        ?.label,
+    })
+  );
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: [
+      props.filterOptions?.[randomFilterGroup].options[randomIndex],
+    ],
+    sortValue: props.sortOptions?.at(0),
+  });
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup]?.options[randomIndex]
+        ?.label,
+    })
+  );
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: undefined,
+    sortValue: props.sortOptions?.at(0),
+  });
+});
+
 test('Sorting chip doesnt show when sortOptions arent provided', () => {
   const props = fakeProps();
   render(<Sieve {...props} sortOptions={undefined} />);
@@ -156,4 +342,87 @@ test('Filtering chip doesnt show when filterOptions arent provided', () => {
   render(<Sieve {...props} filterOptions={undefined} />);
 
   expect(screen.queryByText(/'filter by'/i)).not.toBeInTheDocument();
+});
+
+test('Users can remove filters', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} />);
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
+  });
+  await user.click(
+    screen.getByText(
+      props.filterOptions?.[randomFilterGroup]?.options[randomIndex]?.label ??
+        'not-found'
+    )
+  );
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: [
+      props.filterOptions?.[randomFilterGroup].options[randomIndex],
+    ],
+    sortValue: props.sortOptions?.at(0),
+  });
+
+  await user.click(screen.getByRole('img', { name: /close/i }));
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: undefined,
+    sortValue: props.sortOptions?.at(0),
+  });
+});
+
+test('Users can remove all filters', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} />);
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[0].label,
+    })
+  );
+
+  for (const i of [0, 1]) {
+    await user.click(
+      screen.getByText(
+        props.filterOptions?.[0]?.options[i]?.label ?? 'not-found'
+      )
+    );
+  }
+
+  const removeAll = screen.getByText(/remove all/i);
+  const removeAllIcon = within(removeAll).getByRole('img', { name: /close/i });
+
+  await user.click(removeAllIcon);
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: undefined,
+    sortValue: props.sortOptions?.at(0),
+  });
 });

@@ -20,100 +20,82 @@ const { colors } = tokens;
 export default {
   title: 'Navigation/TopBar/Guidelines',
   component: Guidelines,
+  argTypes: { haveColorBoxes: { controls: 'boolean' } },
+  args: { haveColorBoxes: true },
 } as Meta;
 
-const sections: GuidelineSections[] = [
-  {
-    sectionName: 'Top bar',
-    items: [
-      {
-        title: 'Notifications',
-        icon: notifications,
-        color: colors.interactive.primary__resting.hex,
-      },
-      {
-        title: 'Guidelines',
-        icon: info_circle,
-        color: colors.interactive.primary__resting.hex,
-      },
-      {
-        title: 'Settings',
-        icon: settings,
-        color: colors.interactive.primary__resting.hex,
-      },
-      {
-        title: 'Account',
-        icon: account_circle,
-        color: colors.interactive.primary__resting.hex,
-      },
-    ],
-  },
-  {
-    sectionName: 'Status',
-    items: [
-      {
-        title: 'Yes',
-        icon: check,
-        color: '#77ff72',
-      },
-      {
-        title: 'No',
-        icon: minimize,
-        color: '#ff8484',
-      },
-    ],
-  },
-  {
-    sectionName: 'Navigation Rail',
-    items: [
-      {
-        title: 'Report',
-        icon: assignment,
-        color: '#ff8484',
-        colorBox: '#ff8484',
-      },
-      {
-        title: 'History',
-        icon: history,
-        color: '#7a7bce',
-        colorBox: '#7a7bce',
-      },
-      {
-        title: 'Links',
-        icon: external_link,
-        color: '#77ff72',
-        colorBox: '#77ff72',
-      },
-      {
-        title: 'Wellbore',
-        icon: amplify_wellbore,
-        color: '#ce72ff',
-        colorBox: '#ce72ff',
-      },
-    ],
-  },
-];
-export const Primary: Story<GuidelineSections> = () => {
-  return (
-    <Guidelines
-      open
-      sections={sections.slice(0, 1)}
-      onClose={() => console.log('closing guidelines.')}
-    />
-  );
-};
-
-export const WithDifferentIconColors: Story<GuidelineSections> = () => {
-  return (
-    <Guidelines
-      open
-      sections={sections.slice(0, 2)}
-      onClose={() => console.log('closing guidelines.')}
-    />
-  );
-};
-
-export const WithColorBox: Story<GuidelineSections> = () => {
+export const Primary: Story = (args) => {
+  const sections: GuidelineSections[] = [
+    {
+      sectionName: 'Top bar',
+      items: [
+        {
+          title: 'Notifications',
+          icon: notifications,
+          color: colors.interactive.primary__resting.hex,
+        },
+        {
+          title: 'Guidelines',
+          icon: info_circle,
+          color: colors.interactive.primary__resting.hex,
+        },
+        {
+          title: 'Settings',
+          icon: settings,
+          color: colors.interactive.primary__resting.hex,
+        },
+        {
+          title: 'Account',
+          icon: account_circle,
+          color: colors.interactive.primary__resting.hex,
+        },
+      ],
+    },
+    {
+      sectionName: 'Status',
+      items: [
+        {
+          title: 'Yes',
+          icon: check,
+          color: '#77ff72',
+        },
+        {
+          title: 'No',
+          icon: minimize,
+          color: '#ff8484',
+        },
+      ],
+    },
+    {
+      sectionName: 'Navigation Rail',
+      items: [
+        {
+          title: 'Report',
+          icon: assignment,
+          color: '#ff8484',
+          colorBox: args.haveColorBoxes && '#ff8484',
+        },
+        {
+          title: 'History',
+          icon: history,
+          color: '#7a7bce',
+          colorBox: args.haveColorBoxes && '#7a7bce',
+        },
+        {
+          title: 'Links',
+          icon: external_link,
+          color: '#77ff72',
+          colorBox: args.haveColorBoxes && '#77ff72',
+        },
+        {
+          title: 'Wellbore',
+          icon: amplify_wellbore,
+          color: '#ce72ff',
+          colorBox: args.haveColorBoxes && '#ce72ff',
+        },
+      ],
+    },
+  ];
   return (
     <Guidelines
       open

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-import Fallback from '../Fallback';
 import { SvgIconProps } from '../index';
 import Acquire from './Acquire';
 import Dasha from './Dasha';
@@ -11,18 +10,18 @@ import Portal from './Portal';
 import PWEX from './PWEX';
 import Recap from './Recap';
 
+export type ApplicationName =
+  | 'acquire'
+  | '4dinsight'
+  | 'recap'
+  | 'dasha'
+  | 'depth-conversion'
+  | 'portal'
+  | 'logging-qualification'
+  | 'pwex';
+
 export interface ApplicationIconProps {
-  name:
-    | 'acquire'
-    | '4dinsight'
-    | 'recap'
-    | 'dasha'
-    | 'depth-conversion'
-    | 'portal'
-    | 'logging-qualification'
-    | 'pwex'
-    | 'default'
-    | string;
+  name: ApplicationName;
   size?: 16 | 24 | 32 | 40 | 48 | 96;
 }
 interface IApplicationIconData {
@@ -30,7 +29,6 @@ interface IApplicationIconData {
   component: FC<SvgIconProps>;
 }
 const apps: IApplicationIconData[] = [
-  { appName: 'default', component: Fallback },
   { appName: 'portal', component: Portal },
   { appName: 'acquire', component: Acquire },
   { appName: '4dinsight', component: FourDInsight },
@@ -42,20 +40,10 @@ const apps: IApplicationIconData[] = [
 ];
 
 const ApplicationIcon: FC<ApplicationIconProps> = ({ name, size }) => {
-  const Fallback = apps[0].component;
-  if (name) {
-    const appData = apps.find((app) => app.appName === name);
-    if (appData) {
-      return <appData.component size={size} />;
-    }
-
-    return <Fallback size={size} />;
-  }
-
-  console.warn(
-    `Unable to find app icon with name ${name}, returning default icon`
-  );
-  return <Fallback size={size} />;
+  const appData = apps.find(
+    (app) => app.appName === name
+  ) as IApplicationIconData;
+  return <appData.component size={size} />;
 };
 
 export default ApplicationIcon;

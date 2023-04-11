@@ -26,6 +26,7 @@ export default ({ mode }: { mode: string }) => {
       environment: 'jsdom',
       passWithNoTests: true,
       setupFiles: ['src/setupTests.ts'],
+      exclude: ['node_modules', './tests'],
     },
   });
 };
