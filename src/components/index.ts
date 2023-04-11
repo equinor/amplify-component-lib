@@ -13,6 +13,7 @@ export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
 export { default as StatusChip } from './DataDisplay/Workflow/StatusChip';
 export { default as WorkflowDescription } from './DataDisplay/Workflow/WorkflowDescription';
 export { default as WorkflowStatusBar } from './DataDisplay/Workflow/WorkflowStatusBar';
+export { default as Feature } from './Feature/Feature';
 export { default as ConfirmationPopup } from './Feedback/ConfirmationPopup';
 export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
