@@ -4,7 +4,6 @@ import {
   ReactElement,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 
@@ -52,7 +51,6 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   }, [items]);
 
   const visible = useOnScreenMultiple(elements);
-  const scrollingToIndex = useRef<number>(-1);
 
   // If the user clicks on an item in the PageMenu that isn't visible now, we want to scroll to it
   const handleSetSelected = (value: string) => {
@@ -60,18 +58,13 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
     const element = elements[selectedIndex];
     if (!visible[selectedIndex] && element) {
       element.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      scrollingToIndex.current = selectedIndex;
     }
     setSelected(value);
   };
 
   // Handle change of selected when scrolling down the page
   useEffect(() => {
-    if (
-      visible.length === 0 ||
-      (scrollingToIndex.current !== -1 && !visible[scrollingToIndex.current])
-    )
-      return;
+    if (visible.length === 0) return;
 
     let newSelectedIndex = -1;
     for (let index = 0; index < visible.length; index++) {

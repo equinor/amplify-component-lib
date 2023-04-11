@@ -22,6 +22,7 @@ export default defineConfig({
         'src/tests',
         'src/**/*.test.ts',
         'src/**/*.test.tsx',
+        'src/**/index.ts',
         'src/utils/auth_environment.ts',
         'src/utils/export.ts',
         'src/providers/AuthProvider/**',
