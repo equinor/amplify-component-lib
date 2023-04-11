@@ -7,8 +7,8 @@ import OptionalTooltip from './OptionalTooltip';
 export default {
   title: 'DataDisplay/OptionalTooltip',
   component: OptionalTooltip,
-  argTypes:{title: {control: 'text'}},
-  args: {title: 'Optional tooltip title'},
+  argTypes: { title: { control: 'text' } },
+  args: { title: 'Optional tooltip title' },
 } as Meta;
 
 export const Primary: Story = (args) => (
