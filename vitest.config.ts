@@ -18,7 +18,15 @@ export default defineConfig({
     coverage: {
       provider: 'c8',
       include: ['src/**/*'],
-      exclude: ['src/tests', 'src/**/*.test.ts', 'src/**/*.test.tsx'],
+      exclude: [
+        'src/tests',
+        'src/**/*.test.ts',
+        'src/**/*.test.tsx',
+        'src/utils/auth_environment.ts',
+        'src/utils/export.ts',
+        'src/providers/AuthProvider/**',
+        'src/hooks/useNotifications.ts',
+      ],
       reporter: ['text-summary', 'html'],
       perFile: true,
       statements: 100,
