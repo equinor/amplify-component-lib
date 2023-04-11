@@ -5,7 +5,7 @@ import FieldSelector, { FieldSelectorType } from './FieldSelector';
 
 function fakeField() {
   return {
-    name: faker.name.uuid(),
+    name: faker.datatype.uuid(),
     uuid: faker.datatype.uuid(),
     country: faker.address.country(),
   };
