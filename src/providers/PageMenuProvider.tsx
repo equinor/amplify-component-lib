@@ -4,11 +4,11 @@ import {
   ReactElement,
   useContext,
   useEffect,
-  useMemo,
+  useRef,
   useState,
 } from 'react';
 
-import { useOnScreenMultiple, usePrevious } from '../hooks';
+import { useOnScreenMultiple } from '../hooks';
 
 export type PageMenuItemType = {
   label: string;
@@ -42,44 +42,47 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   if (items.length === 0) {
     throw new Error('items must have length greater than 0');
   }
-  const [selected, setSelected] = useState<string>(items[0].value);
 
-  const elements = useMemo((): (Element | null)[] => {
-    const all: (Element | null)[] = [];
-    for (const item of items) {
-      const element = document.querySelector(`#${item.value}`);
-      all.push(element);
-    }
-    return all;
+  const [selected, setSelected] = useState<string>(items[0].value);
+  const [elements, setElements] = useState<(Element | null)[]>([]);
+
+  // Since useEffect runs on re-render we ensure that the elements array is updated
+  useEffect(() => {
+    setElements(items.map((item) => document.querySelector(`#${item.value}`)));
   }, [items]);
 
   const visible = useOnScreenMultiple(elements);
-  const prevVisible = usePrevious(visible);
+  const scrollingToIndex = useRef<number>(-1);
 
   // If the user clicks on an item in the PageMenu that isn't visible now, we want to scroll to it
   const handleSetSelected = (value: string) => {
     const selectedIndex = items.findIndex((item) => item.value === value);
-
-    if (!visible[selectedIndex] && elements[selectedIndex] !== null) {
-      elements[selectedIndex]?.scrollIntoView({ behavior: 'smooth' });
+    const element = elements[selectedIndex];
+    if (!visible[selectedIndex] && element) {
+      element.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      scrollingToIndex.current = selectedIndex;
     }
+    setSelected(value);
   };
 
   // Handle change of selected when scrolling down the page
   useEffect(() => {
-    if (prevVisible === undefined) return;
+    if (
+      visible.length === 0 ||
+      (scrollingToIndex.current !== -1 && !visible[scrollingToIndex.current])
+    )
+      return;
 
     let newSelectedIndex = -1;
     for (let index = 0; index < visible.length; index++) {
-      if (prevVisible[index] !== visible[index]) {
+      if (visible[index]) {
         newSelectedIndex = index;
       }
     }
-
     if (newSelectedIndex !== -1) {
       setSelected(items[newSelectedIndex].value);
     }
-  }, [items, prevVisible, visible]);
+  }, [items, visible]);
 
   return (
     <PageMenuContext.Provider

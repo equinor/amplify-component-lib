@@ -26,6 +26,7 @@ export default defineConfig({
         'src/utils/export.ts',
         'src/providers/AuthProvider/**',
         'src/hooks/useNotifications.ts',
+        'src/hooks/useOnScreen.ts',
       ],
       reporter: ['text-summary', 'html'],
       perFile: true,

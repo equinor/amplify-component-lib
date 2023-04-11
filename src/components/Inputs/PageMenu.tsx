@@ -55,9 +55,9 @@ const PageMenu: FC = () => {
       {items.map((item) => (
         <PageMenuItem
           key={`page-menu-item-${item.value}`}
-          id={item.value}
           active={selected === item.value}
           onClick={() => handleOnClick(item.value)}
+          disabled={selected === item.value}
         >
           {item.label}
         </PageMenuItem>

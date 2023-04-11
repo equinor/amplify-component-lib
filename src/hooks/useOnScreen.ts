@@ -26,20 +26,24 @@ export function useOnScreen(
 }
 
 export function useOnScreenMultiple(elements: (Element | null)[]) {
-  const [isIntersecting, setIntersecting] = useState<boolean[]>(
+  const [isIntersecting, setIsIntersecting] = useState<boolean[]>(
     new Array(elements.length).fill(false)
   );
+
+  const updateIsIntersecting = (index: number, value: boolean) => {
+    setIsIntersecting((current) => {
+      const newIntersecting = [...current];
+      newIntersecting[index] = value;
+      return newIntersecting;
+    });
+  };
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
     for (const [index, element] of elements.entries()) {
       if (element === null) continue;
       const observer = new IntersectionObserver(([entry]) => {
-        setIntersecting((current) => {
-          const newIntersecting = [...current];
-          newIntersecting[index] = entry.isIntersecting;
-          return newIntersecting;
-        });
+        updateIsIntersecting(index, entry.isIntersecting);
       });
 
       observer.observe(element);
