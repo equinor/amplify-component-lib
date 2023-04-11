@@ -15,6 +15,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 
+// These three types (FeatureToggleDto, Feature, GraphUser) are from the swagger generated types in the portal API
+
 export type FeatureToggleDto = {
   applicationName?: string | null;
   features?: Array<Feature> | null;
@@ -64,15 +66,15 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
   const environment = getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME);
   const apiUrl = getApiUrl(import.meta.env.VITE_API_URL);
 
-  const { data: portalToken } = useQuery(
+  const { data: portalToken } = useQuery<string>(
     ['getPortalToken'],
     async () =>
       await fetch(`${apiUrl}/api/v1/Token/PortalToken`, {
         method: 'GET',
-      })
+      }).then((res) => res.json())
   );
 
-  const { data: featureToggle, isLoading } = useQuery(
+  const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>(
     ['getFeatureToggleFromAppName'],
     async () =>
       await fetch(
@@ -84,7 +86,7 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
             Authorization: `Bearer ${portalToken}`,
           },
         }
-      ).then((res) => res.json() as FeatureToggleDto)
+      ).then((res) => res.json())
   );
 
   useEffect(() => {
