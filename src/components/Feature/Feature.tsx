@@ -75,13 +75,16 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
   const { data: featureToggle, isLoading } = useQuery(
     ['getFeatureToggleFromAppName'],
     async () =>
-      await fetch(`${apiUrl}/api/v1/FeatureToggle/${applicationName}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${portalToken}`,
-        },
-      }).then((res) => res.json() as FeatureToggleDto)
+      await fetch(
+        `https://api-amplify-portal-production.radix.equinor.com/api/v1/FeatureToggle/${applicationName}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${portalToken}`,
+          },
+        }
+      ).then((res) => res.json() as FeatureToggleDto)
   );
 
   useEffect(() => {
