@@ -16,11 +16,11 @@ function fakeItems() {
 test('OnClick runs as expected', async () => {
   const items = fakeItems();
 
-  render(
+  const { rerender } = render(
     <div>
       <PageMenu />
       {items.map((item) => (
-        <h1 key={item.value} id={item.value}>
+        <h1 key={item.value} id={item.value} style={{ marginTop: '100vh' }}>
           {item.label}
         </h1>
       ))}
@@ -32,6 +32,17 @@ test('OnClick runs as expected', async () => {
     }
   );
 
+  rerender(
+    <div>
+      <PageMenu />
+      {items.map((item) => (
+        <h1 key={item.value} id={item.value} style={{ marginTop: '100vh' }}>
+          {item.label}
+        </h1>
+      ))}
+    </div>
+  );
+
   const user = userEvent.setup();
 
   for (const item of items) {
@@ -40,5 +51,10 @@ test('OnClick runs as expected', async () => {
 
   const button = screen.getByRole('button', { name: items[1].label });
 
+  const heading = document.querySelector(`#${items[1].value}`) as Element;
+  heading.scrollIntoView = vi.fn();
+
   await user.click(button);
+
+  expect(heading.scrollIntoView).toHaveBeenCalled();
 });
