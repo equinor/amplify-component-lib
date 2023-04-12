@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
-import { fourDInsight } from './ApplicationIconCollection';
+import { inPress } from './ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,8 +17,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const FourDInsight: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase size={size} iconData={fourDInsight} shapes={shapes} />
+const InPress: FC<SvgIconProps> = ({ size }) => (
+  <ApplicationIconBase size={size} iconData={inPress} shapes={shapes} />
 );
 
-export default FourDInsight;
+export default InPress;

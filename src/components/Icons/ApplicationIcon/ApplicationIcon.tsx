@@ -5,9 +5,10 @@ import Acquire from './Acquire';
 import Dasha from './Dasha';
 import DepthConversion from './DepthConversion';
 import FourDInsight from './FourDInsight';
+import InPress from './InPress';
 import LoggingQualification from './LoggingQualification';
 import Portal from './Portal';
-import PWEX from './PWEX';
+import Pwex from './Pwex';
 import Recap from './Recap';
 
 export type ApplicationName =
@@ -18,11 +19,12 @@ export type ApplicationName =
   | 'depth-conversion'
   | 'portal'
   | 'logging-qualification'
-  | 'pwex';
+  | 'pwex'
+  | 'inpress';
 
 export interface ApplicationIconProps {
   name: ApplicationName;
-  size?: 16 | 24 | 32 | 40 | 48 | 96;
+  size?: 16 | 18 | 24 | 32 | 40 | 48;
 }
 interface IApplicationIconData {
   appName: string;
@@ -36,7 +38,8 @@ const apps: IApplicationIconData[] = [
   { appName: 'depth-conversion', component: DepthConversion },
   { appName: 'logging-qualification', component: LoggingQualification },
   { appName: 'recap', component: Recap },
-  { appName: 'pwex', component: PWEX },
+  { appName: 'pwex', component: Pwex },
+  { appName: 'inpress', component: InPress },
 ];
 
 const ApplicationIcon: FC<ApplicationIconProps> = ({ name, size }) => {

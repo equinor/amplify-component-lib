@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
-import { fourDInsight } from './ApplicationIconCollection';
+import { pwex } from './ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,8 +17,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const FourDInsight: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase size={size} iconData={fourDInsight} shapes={shapes} />
+const Pwex: FC<SvgIconProps> = ({ size }) => (
+  <ApplicationIconBase size={size} iconData={pwex} shapes={shapes} />
 );
 
-export default FourDInsight;
+export default Pwex;
