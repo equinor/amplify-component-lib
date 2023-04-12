@@ -9,20 +9,10 @@ export default {
 
 const Template: Story<FileProgressProps> = (args) => <FileProgress {...args} />;
 
-export const Success = Template.bind({});
-Success.args = {
-  name: 'Fileimage.png',
-};
-
-export const Error = Template.bind({});
-Error.args = {
-  name: 'Fileimage.png',
-  error: true,
-  errorMsg: 'Failed to upload.',
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
+export const Primary = Template.bind({});
+Primary.args = {
   name: 'Fileimage.png',
   loading: true,
+  error: false,
+  errorMsg: 'Failed to upload.',
 };

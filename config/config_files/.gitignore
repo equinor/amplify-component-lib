@@ -10,3 +10,9 @@
 
 build/
 .idea/
+
+# Playwright
+.auth.json
+playwright-report
+playwright/.auth
+test-results

@@ -78,6 +78,8 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
     setShowMenu(!showMenu);
   };
 
+  const closeMenu = () => setShowMenu(false);
+
   const handleSelect = (selected: string | undefined | null) => {
     setShowMenu(false);
     if (selectedName === selected) {
@@ -94,8 +96,6 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
     onChange(undefined);
     setSelectedName(undefined);
   };
-
-  const closeMenu = () => setShowMenu(false);
 
   return (
     <Container>

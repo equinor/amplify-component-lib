@@ -1,4 +1,6 @@
 export type { Field } from '../types/Field';
+export type { default as ErrorType } from '../utils/errors';
+export type { default as ErrorContentType } from '../utils/errors';
 export { default as DataCard } from './DataDisplay/DataCard';
 export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
@@ -11,7 +13,10 @@ export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
 export { default as StatusChip } from './DataDisplay/Workflow/StatusChip';
 export { default as WorkflowDescription } from './DataDisplay/Workflow/WorkflowDescription';
 export { default as WorkflowStatusBar } from './DataDisplay/Workflow/WorkflowStatusBar';
+export { default as Feature } from './Feature/Feature';
 export { default as ConfirmationPopup } from './Feedback/ConfirmationPopup';
+export { default as ErrorPage } from './Feedback/ErrorPage';
+export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as FullPageUnauthorized } from './Feedback/FullPageUnauthorized';
@@ -28,6 +33,7 @@ export {
   amplify_wireline_open_hole,
 } from './Icons/AmplifyIcons';
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
+export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as DataSharing } from './Icons/ApplicationIcon/Dasha';
 export { default as DataExperience } from './Icons/ApplicationIcon/FourDInsight';
@@ -49,17 +55,16 @@ export { default as EditableField } from './Inputs/EditableField';
 export { default as FieldSelector } from './Inputs/FieldSelector';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
+export { default as PageMenu } from './Inputs/PageMenu';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
-export { default as SimpleMultiSelectDrawer } from './Inputs/Select/SimpleMultiSelectDrawer';
 export { default as SingleSelectDrawer } from './Inputs/Select/SingleSelectDrawer';
 export { default as Filter } from './Inputs/Sieve/Filter';
 export type { SieveValue } from './Inputs/Sieve/Sieve';
 export { default as Sieve } from './Inputs/Sieve/Sieve';
 export type { Option } from './Inputs/Sieve/Sieve.common';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
-export { default as TextEntry } from './Inputs/TextEntry/TextEntry';
 export type { ItemType, SidebarType } from './Navigation/SideBar';
 export { default as SideBar } from './Navigation/SideBar';
 export type {
@@ -68,6 +73,6 @@ export type {
   TopBarType,
 } from './Navigation/TopBar';
 export { default as TopBar } from './Navigation/TopBar';
-export type { EnvironmentType } from './Navigation/TopBar/TopBar';
+export { EnvironmentType } from './Navigation/TopBar/TopBar';
 export type { ContentProps, TemplateType } from './Template/Template';
 export { default as Template } from './Template/Template';

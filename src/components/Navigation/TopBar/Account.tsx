@@ -47,13 +47,9 @@ export interface IAccountProps {
   account: AccountInfo | undefined;
   logout: () => void;
   photo: string | undefined;
-  size?: 'small' | 'medium' | 'large';
 }
 
-export const Account: FC<IAccountProps> = (
-  { account, logout, photo, size },
-  ref
-) => {
+export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -78,11 +74,7 @@ export const Account: FC<IAccountProps> = (
         anchorEl={buttonRef.current}
       >
         <Info>
-          <ProfileAvatar
-            size={size ? size : 'large'}
-            name={account?.name}
-            url={photo}
-          />
+          <ProfileAvatar size="large" name={account?.name} url={photo} />
           <div>
             <Typography variant="h6">{account?.name}</Typography>
             <Typography>{account?.username}</Typography>

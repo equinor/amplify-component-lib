@@ -1,5 +1,3 @@
-import { faker } from '@faker-js/faker';
-
 import { render, screen } from '../../../tests/test-utils';
 import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
 
@@ -10,15 +8,20 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'dasha',
   'portal',
   'logging-qualification',
+  'pwex',
   'depth-conversion',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48, 96];
 
 test('Render correctly with corresponding props', async () => {
-  const { rerender } = render(<ApplicationIcon name="default" />);
+  const { rerender } = render(<ApplicationIcon name="acquire" />);
 
   // Check that it renders correctly with name options
   for (const name of nameOptions) {
+    rerender(<ApplicationIcon name={name} />);
+    const defaultSvgComponent = screen.getByTestId(name);
+    expect(defaultSvgComponent).toHaveAttribute('height', '48');
+    expect(defaultSvgComponent).toHaveAttribute('width', '48');
     for (const size of sizeOptions) {
       rerender(<ApplicationIcon name={name} size={size} />);
       const svgComponent = screen.getByTestId(name);
@@ -33,12 +36,4 @@ test('Render correctly with corresponding props', async () => {
       );
     }
   }
-});
-
-test('Renders fallback when given name which isnt any of the options', () => {
-  const randomName = faker.lorem.word();
-
-  render(<ApplicationIcon name={randomName} />);
-
-  expect(screen.getByTestId('fallback-icon')).toBeInTheDocument();
 });

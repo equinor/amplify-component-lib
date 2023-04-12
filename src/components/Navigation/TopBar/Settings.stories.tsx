@@ -10,41 +10,20 @@ const { colors } = tokens;
 export default {
   title: 'Navigation/TopBar/Settings',
   component: Settings,
+  argTypes: {
+    hasRightElements: { control: 'boolean' },
+    hasColorBoxes: { control: 'boolean' },
+    disabledItem: {
+      control: 'select',
+      options: ['fraction', 'decimal', 'light', 'dark'],
+    },
+  },
+  args: { hasRightElements: true, hasColorBoxes: true, disabledItem: 'dark' },
 } as Meta;
 
-export const Primary: Story<ISettingsProps> = () => {
+export const Primary: Story = (args) => {
   const [sectionMode, setSectionMode] = useState('decimal');
-
-  const settingsOptions: ISettingsProps = {
-    allSettings: [
-      {
-        title: 'Section Mode',
-        type: sectionMode,
-        onChange: setSectionMode,
-        items: [
-          {
-            label: 'Fraction',
-            name: 'sectionmode-group',
-            value: 'fraction',
-            element: '8½"',
-          },
-          {
-            label: 'Decimal',
-            name: 'sectionmode-group',
-            value: 'decimal',
-            element: '8.5"',
-          },
-        ],
-      },
-    ],
-  };
-
-  return <Settings allSettings={settingsOptions.allSettings} />;
-};
-
-export const WithColorBox: Story<ISettingsProps> = () => {
   const [theme, setTheme] = useState('light');
-  const [sectionMode, setSectionMode] = useState('decimal');
 
   const settingsOptions: ISettingsProps = {
     allSettings: [
@@ -57,13 +36,15 @@ export const WithColorBox: Story<ISettingsProps> = () => {
             label: 'Fraction',
             name: 'sectionmode-group',
             value: 'fraction',
-            element: '8½',
+            element: args.hasRightElements && '8½"',
+            disabled: args.disabledItem === 'fraction',
           },
           {
             label: 'Decimal',
             name: 'sectionmode-group',
             value: 'decimal',
-            element: '8.5',
+            element: args.hasRightElements && '8.5"',
+            disabled: args.disabledItem === 'decimal',
           },
         ],
       },
@@ -76,14 +57,15 @@ export const WithColorBox: Story<ISettingsProps> = () => {
             label: 'Light Mode',
             name: 'theme-group',
             value: 'light',
-            colorBox: colors.ui.background__default.hsla,
+            colorBox: args.hasColorBoxes && colors.ui.background__default.hsla,
+            disabled: args.disabledItem === 'light',
           },
           {
             label: 'Dark Mode',
             name: 'theme-group',
             value: 'dark',
-            colorBox: colors.ui.background__overlay.hsla,
-            disabled: true,
+            colorBox: args.hasColorBoxes && colors.ui.background__overlay.hsla,
+            disabled: args.disabledItem === 'dark',
           },
         ],
       },

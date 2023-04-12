@@ -1,14 +1,42 @@
 import { Button, Chip, Icon } from '@equinor/eds-core-react';
-import { account_circle, more_vertical } from '@equinor/eds-icons';
+import { account_circle, info_circle, more_vertical } from '@equinor/eds-icons';
+import { details } from '@equinor/eds-icons';
 import { Meta, Story } from '@storybook/react';
 
-import DataCard, { DataCardProps } from './DataCard';
+import DataCard from './DataCard';
 
 import styled from 'styled-components';
 
+const icons = [account_circle, info_circle, more_vertical, details];
 export default {
   title: 'DataDisplay/DataCard',
   component: DataCard,
+  argTypes: {
+    headerText: { control: 'text' },
+    title: { control: 'text' },
+    rightIcon: {
+      control: 'select',
+      options: ['account_circle', 'more_vertical', 'details', 'info_circle'],
+    },
+    tooltipOnTitle: { control: 'boolean' },
+    hasBodyChip: { control: 'boolean' },
+    hasBodyButton: { control: 'boolean' },
+    bodyChipText: { control: 'text' },
+    bodyButtonIcon: {
+      control: 'select',
+      options: ['more_vertical', 'details', 'info_circle'],
+    },
+  },
+  args: {
+    headerText: 'PETROPHYSICIST',
+    title: 'Composite',
+    rightIcon: 'account_circle',
+    tooltipOnTitle: true,
+    hasBodyChip: true,
+    bodyChipText: 'Responsible user',
+    hasBodyButton: true,
+    bodyButtonIcon: 'more_vertical',
+  },
 } as Meta;
 
 const DataTypeCardBody = styled.div`
@@ -18,62 +46,28 @@ const DataTypeCardBody = styled.div`
   height: 4em;
 `;
 
-const Template: Story<DataCardProps> = (args) => (
-  <div style={{ width: '300px' }}>
-    <DataCard {...args} />
-  </div>
-);
-
-export const Primary = Template.bind({});
-Primary.args = {
-  headerText: 'PETROPHYSICIST',
-  title: 'Composite',
-};
-
-export const Compact = Template.bind({});
-Compact.args = {
-  headerText: 'PETROPHYSICIST',
-  title: 'Composite',
-  rightIcon: account_circle,
-};
-
-export const IconLongText = Template.bind({});
-IconLongText.args = {
-  headerText: 'PETROMOST',
-  title: 'This is a long text and will be collapsed down.',
-  rightIcon: account_circle,
-};
-
-export const ButtonLongText = Template.bind({});
-ButtonLongText.args = {
-  headerText: 'PETROMOST',
-  title: 'This is a long text and will be collapsed down.',
-  rightElement: (
-    <Button variant="ghost_icon">
-      <Icon data={account_circle} />
-    </Button>
-  ),
-  body: (
+export const Primary: Story = (args) => {
+  const body = (
     <DataTypeCardBody>
-      <Chip>Responsible user</Chip>
-      <Button variant="ghost_icon">
-        <Icon data={account_circle} />
-      </Button>
+      {args.hasBodyChip && <Chip>{args.bodyChipText}</Chip>}
+      {args.hasBodyButton && (
+        <Button variant="ghost_icon">
+          <Icon
+            data={icons.find((item) => item.name === args.bodyButtonIcon)}
+          />
+        </Button>
+      )}
     </DataTypeCardBody>
-  ),
-};
-
-export const Body = Template.bind({});
-Body.args = {
-  headerText: 'PETROPHYSICIST',
-  title: 'Composite',
-  rightElement: <Icon data={account_circle} style={{ marginRight: '12px' }} />,
-  body: (
-    <DataTypeCardBody>
-      <Chip>Responsible user</Chip>
-      <Button variant="ghost_icon">
-        <Icon data={more_vertical} />
-      </Button>
-    </DataTypeCardBody>
-  ),
+  );
+  return (
+    <div style={{ width: '300px' }}>
+      <DataCard
+        headerText={args.headerText}
+        title={args.title}
+        rightIcon={icons.find((item) => item.name === args.rightIcon)}
+        tooltipOnTitle={args.tooltipOnTitle}
+        body={body}
+      />
+    </div>
+  );
 };

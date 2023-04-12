@@ -37,7 +37,7 @@ const DeleteButton = styled(Button)`
   width: ${spacings.comfortable.xxx_large};
   height: ${spacings.comfortable.xxx_large};
   &:hover {
-    border-radius: 0px;
+    border-radius: 0;
   }
 `;
 
@@ -91,8 +91,8 @@ const CommentField: FC<CommentFieldProps> = ({
           <CommentTextField
             id={`comment-${id}`}
             autoComplete="off"
-            label={createdDate && `Posted ${date.formatDateTime(createdDate)}`}
-            value={body ?? ''}
+            label={`Posted ${date.formatDateTime(createdDate)}`}
+            value={body}
             placeholder="Write comment here"
             onInput={(
               event:

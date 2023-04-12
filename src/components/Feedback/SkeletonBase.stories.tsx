@@ -8,6 +8,12 @@ import styled from 'styled-components';
 export default {
   title: 'Feedback/SkeletonBase',
   component: SkeletonBase,
+  argTypes: {
+    width: { control: 'text' },
+    height: { control: 'text' },
+    borderRadius: { control: 'text' },
+  },
+  args: { width: '100px', height: '10px', borderRadius: '4px' },
 } as Meta;
 
 const ExampleSkeleton = styled(SkeletonBase)`
@@ -15,9 +21,9 @@ const ExampleSkeleton = styled(SkeletonBase)`
   height: 24px;
 `;
 
-export const Template: Story = () => (
+export const Template: Story = (args) => (
   <div>
     <Typography variant="h5">Skeleton base example</Typography>
-    <ExampleSkeleton />
+    <ExampleSkeleton style={{ ...args }} />
   </div>
 );

@@ -13,11 +13,23 @@ export default {
   `,
   component: SideBar,
   argTypes: {
-    backgroundColor: { control: 'color' },
+    hasCreateButton: { control: 'boolean' },
+    disabledCreateButton: { control: 'boolean' },
+    createLabel: { control: 'text' },
+    disabledItem: {
+      control: 'select',
+      options: ['none', 'dashboard', 'history', 'favourites'],
+    },
+  },
+  args: {
+    hasCreateButton: true,
+    disabledCreateButton: false,
+    createLabel: 'Create story',
+    disabledItem: 'none',
   },
 } as Meta;
 
-export const Primary: Story = () => {
+export const Primary: Story = (args) => {
   const menuItems: MenuItemType[] = [
     {
       name: 'Dashboard',
@@ -43,199 +55,20 @@ export const Primary: Story = () => {
     <SideBarProvider>
       <div style={{ display: 'flex', height: '95vh' }}>
         <SideBar
-          createLabel="Create story"
-          onCreate={() => console.log('Created 🖋')}
+          createLabel={args.hasCreateButton && args.createLabel}
+          onCreate={
+            args.hasCreateButton ? () => console.log('Created 🖋') : undefined
+          }
+          createDisabled={args.disabledCreateButton}
         >
           {menuItems.map((m) => (
-            <SideBar.Item key={m.name} {...m} />
-          ))}
-        </SideBar>
-      </div>
-    </SideBarProvider>
-  );
-};
-
-export const NoCreateAction: Story = () => {
-  const menuItems: MenuItemType[] = [
-    {
-      name: 'Dashboard',
-      icon: dashboard,
-      link: 'dashboard',
-      onClick: () => console.log('going to dashboard...'),
-    },
-    {
-      name: 'history',
-      icon: history,
-      link: 'history',
-      onClick: () => console.log('going to history...'),
-    },
-    {
-      name: 'favourites',
-      icon: favorite_outlined,
-      link: 'favourites',
-      onClick: () => console.log('going to favourites...'),
-    },
-  ];
-
-  return (
-    <SideBarProvider>
-      <div style={{ display: 'flex', height: '95vh' }}>
-        <SideBar>
-          {menuItems.map((m) => (
-            <SideBar.Item key={m.name} {...m} />
-          ))}
-        </SideBar>
-      </div>
-    </SideBarProvider>
-  );
-};
-
-export const WithCreateAction: Story = () => {
-  const menuItems: MenuItemType[] = [
-    {
-      name: 'Dashboard',
-      icon: dashboard,
-      link: 'dashboard',
-      onClick: () => console.log('going to dashboard...'),
-    },
-    {
-      name: 'history',
-      icon: history,
-      link: 'history',
-      onClick: () => console.log('going to history...'),
-    },
-    {
-      name: 'favourites',
-      icon: favorite_outlined,
-      link: 'favourites',
-      onClick: () => console.log('going to favourites...'),
-    },
-  ];
-
-  return (
-    <SideBarProvider>
-      <div style={{ display: 'flex', height: '95vh' }}>
-        <SideBar
-          createLabel="Create a diamond"
-          onCreate={() => console.log('Created 💎')}
-        >
-          {menuItems.map((m) => (
-            <SideBar.Item key={m.name} {...m} />
-          ))}
-        </SideBar>
-      </div>
-    </SideBarProvider>
-  );
-};
-
-export const WithCurrentUrlAndCreate: Story = () => {
-  const menuItems: MenuItemType[] = [
-    {
-      name: 'Dashboard',
-      icon: dashboard,
-      link: 'dashboard',
-      onClick: () => console.log('going to dashboard...'),
-    },
-    {
-      name: 'history',
-      icon: history,
-      link: 'history',
-      onClick: () => console.log('going to history...'),
-    },
-    {
-      name: 'favourites',
-      icon: favorite_outlined,
-      link: 'favourites',
-      onClick: () => console.log('going to favourites...'),
-    },
-  ];
-
-  return (
-    <SideBarProvider>
-      <div style={{ display: 'flex', height: '95vh' }}>
-        <SideBar
-          createLabel="Create story"
-          onCreate={() => console.log('Created 🖋')}
-        >
-          {menuItems.map((m) => (
-            <SideBar.Item key={m.name} {...m} />
-          ))}
-        </SideBar>
-      </div>
-    </SideBarProvider>
-  );
-};
-
-export const WithDisabledMenuItem: Story = () => {
-  const menuItems: MenuItemType[] = [
-    {
-      name: 'Dashboard',
-      icon: dashboard,
-      link: 'dashboard',
-      onClick: () => console.log('going to dashboard...'),
-    },
-    {
-      name: 'history',
-      icon: history,
-      link: 'history',
-      onClick: () => console.log('going to history...'),
-    },
-    {
-      name: 'favourites',
-      icon: favorite_outlined,
-      link: 'favourites',
-      onClick: () => console.log('going to favourites...'),
-    },
-  ];
-
-  return (
-    <SideBarProvider>
-      <div style={{ display: 'flex', height: '95vh' }}>
-        <SideBar
-          createLabel="Create story"
-          onCreate={() => console.log('Created 🖋')}
-        >
-          {menuItems.map((m) => (
-            <SideBar.Item key={m.name} {...m} disabled={m.link === 'history'} />
-          ))}
-        </SideBar>
-      </div>
-    </SideBarProvider>
-  );
-};
-
-export const WithDisabledCreateButton: Story = () => {
-  const menuItems: MenuItemType[] = [
-    {
-      name: 'Dashboard',
-      icon: dashboard,
-      link: 'dashboard',
-      onClick: () => console.log('going to dashboard...'),
-    },
-    {
-      name: 'history',
-      icon: history,
-      link: 'history',
-      onClick: () => console.log('going to history...'),
-    },
-    {
-      name: 'favourites',
-      icon: favorite_outlined,
-      link: 'favourites',
-      onClick: () => console.log('going to favourites...'),
-    },
-  ];
-
-  return (
-    <SideBarProvider>
-      <div style={{ display: 'flex', height: '95vh' }}>
-        <SideBar
-          createLabel="Create story"
-          onCreate={() => console.log('Created 🖋')}
-          createDisabled
-        >
-          {menuItems.map((m) => (
-            <SideBar.Item key={m.name} {...m} />
+            <SideBar.Item
+              key={m.name}
+              {...m}
+              disabled={
+                args.disabledItem !== 'none' && m.link === args.disabledItem
+              }
+            />
           ))}
         </SideBar>
       </div>

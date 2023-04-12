@@ -83,5 +83,5 @@ test('Clicking skip closes tutorial', async () => {
 
   // EDS dialog container should now be empty
   const dialogContainer = container.previousSibling;
-  expect(dialogContainer).toBeEmptyDOMElement();
+  expect(dialogContainer).toBeNull();
 });

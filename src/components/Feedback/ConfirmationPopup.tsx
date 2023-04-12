@@ -1,6 +1,7 @@
 import React, { forwardRef, ReactNode } from 'react';
 
-import { Dialog, Scrim, Typography } from '@equinor/eds-core-react';
+import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
+import { close } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
@@ -11,8 +12,15 @@ const StyledDialog = styled(Dialog)`
   min-width: 400px;
 `;
 
+const DialogHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${spacings.comfortable.medium};
+  padding-bottom: 0;
+`;
 interface IStyledActionsProps {
-  actionPosition?: 'left' | 'right';
+  actionPosition: 'left' | 'right';
 }
 
 const StyledActions = styled(Dialog.Actions)<IStyledActionsProps>`
@@ -53,7 +61,7 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
       title,
       body,
       actions,
-      actionPosition,
+      actionPosition = 'right',
       onClose,
       children,
       width = '400px',
@@ -62,18 +70,24 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
   ) => {
     if (show) {
       return (
-        <Scrim onClose={onClose} isDismissable open>
-          <StyledDialog ref={ref} open={show} style={{ width }}>
-            <Dialog.Header>{title}</Dialog.Header>
-            <Dialog.CustomContent>
-              {body && <Typography variant="body_short">{body}</Typography>}
-              {children}
-            </Dialog.CustomContent>
-            <StyledActions actionPosition={actionPosition}>
-              {actions}
-            </StyledActions>
-          </StyledDialog>
-        </Scrim>
+        <StyledDialog ref={ref} open={show} style={{ width }}>
+          <DialogHeader data-testid="dialog-header">
+            {title}
+            <Button variant="ghost_icon">
+              <Icon data={close} onClick={onClose} />
+            </Button>
+          </DialogHeader>
+          <Dialog.CustomContent>
+            {body && <Typography variant="body_short">{body}</Typography>}
+            {children}
+          </Dialog.CustomContent>
+          <StyledActions
+            data-testid={`confirmation-actions-${actionPosition}`}
+            actionPosition={actionPosition}
+          >
+            {actions}
+          </StyledActions>
+        </StyledDialog>
       );
     }
 

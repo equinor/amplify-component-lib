@@ -110,3 +110,30 @@ test('Disabled menu item doesnt fire event', async () => {
 
   expect(defaultMenuItems[0].onClick).not.toHaveBeenCalled();
 });
+
+test('Opens and closes when pressing the toggle button', async () => {
+  window.localStorage.setItem(
+    'amplify-sidebar-state',
+    JSON.stringify({ isOpen: false })
+  );
+  render(
+    <SideBar>
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>,
+    { wrapper: SideBarProvider }
+  );
+  const user = userEvent.setup();
+
+  const sidebar = screen.getByTestId('sidebar');
+  expect(sidebar).toHaveAttribute('width', '72px');
+
+  expect(screen.queryByText('Collapse')).not.toBeInTheDocument();
+
+  const toggleButton = screen.getByRole('button');
+  await user.click(toggleButton);
+
+  expect(sidebar).toHaveAttribute('width', '256px');
+  expect(screen.getByText(/collapse/i)).toBeInTheDocument();
+});

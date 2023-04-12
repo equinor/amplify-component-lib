@@ -10,6 +10,11 @@ const hookList = [
     code: 'const debouncedValue = useDebounce(value)',
   },
   {
+    name: 'useLocalStorage',
+    body: 'A state that also saves to local storage',
+    code: 'const [value, setValue] = useLocalStorage(key, initialValue)',
+  },
+  {
     name: 'useOnScreen',
     body: 'Return isIntersecting boolean',
     code: 'const isOnScreen = useOnScreen(buttonRef)',

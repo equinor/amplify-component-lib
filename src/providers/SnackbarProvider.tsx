@@ -6,13 +6,13 @@ export interface State {
   showSnackbar: (text?: string, customProps?: SnackbarProps) => void;
 }
 
-export const SnackbarContext = createContext<State | undefined>(undefined);
+const SnackbarContext = createContext<State | undefined>(undefined);
 
 export const useSnackbar = () => {
   const context = useContext(SnackbarContext);
   if (context === undefined) {
     throw new Error(
-      'useSnackbarContext must be used within a SnackbarContextProvider'
+      'useSnackbar must be used within a SnackbarContextProvider'
     );
   }
   return context;

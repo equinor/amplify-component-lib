@@ -1,4 +1,4 @@
-import { FC, ReactElement, useCallback, useMemo, useRef } from 'react';
+import { FC, ReactElement, useCallback, useMemo, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
@@ -93,23 +93,23 @@ const ContentMenu: FC<ContentMenuProps> = ({
   onChange,
   isLoading = false,
 }) => {
-  const openedParents = useRef<string[]>([]);
+  const [openedParents, setOpenedParents] = useState<string[]>([]);
 
   const handleOnClick = useCallback(
     (value: string, hasChildren: boolean) => {
       if (hasChildren) {
-        const parentIndex = openedParents.current.findIndex((p) => p === value);
+        const parentIndex = openedParents.findIndex((p) => p === value);
         if (parentIndex >= 0) {
-          openedParents.current = openedParents.current.filter(
-            (item) => item !== value
+          setOpenedParents((current) =>
+            current.filter((item) => item !== value)
           );
         } else {
-          openedParents.current.push(value);
+          setOpenedParents((current) => [...current, value]);
         }
       }
       onChange(value);
     },
-    [onChange]
+    [onChange, openedParents]
   );
 
   const elements = useMemo(() => {
@@ -124,9 +124,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
           {item.children && (
             <Icon
               data={
-                openedParents.current.includes(item.value)
-                  ? chevron_up
-                  : chevron_down
+                openedParents.includes(item.value) ? chevron_up : chevron_down
               }
             />
           )}
@@ -134,7 +132,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
           {item.label}
         </ContentMenuItem>
       );
-      if (item.children && openedParents.current.includes(item.value)) {
+      if (item.children && openedParents.includes(item.value)) {
         for (const child of item.children) {
           all.push(
             <ContentMenuChildItem
@@ -149,7 +147,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
       }
     }
     return all;
-  }, [handleOnClick, items, value]);
+  }, [handleOnClick, items, openedParents, value]);
 
   if (isLoading) {
     return (

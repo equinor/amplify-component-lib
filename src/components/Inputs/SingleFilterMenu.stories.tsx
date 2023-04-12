@@ -19,10 +19,6 @@ export default {
   },
 } as Meta;
 
-const Template: Story<SingleFilterMenuProps> = (args) => (
+export const Primary: Story<SingleFilterMenuProps> = (args) => (
   <SingleFilterMenu {...args} />
 );
-
-export const Primary = Template.bind({});
-
-Primary.args = {};
