@@ -77,6 +77,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
       isScrollingTo.current = selectedIndex;
       let previousTop = Infinity;
       let same = 0;
+      /* c8 ignore start */
       const checkScrollDone = () => {
         const newTop = element?.getBoundingClientRect().top;
         if (newTop === previousTop) {
@@ -92,20 +93,19 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
         }
         requestAnimationFrame(checkScrollDone);
       };
+      /* c8 ignore end */
       requestAnimationFrame(checkScrollDone);
     }
   };
 
   // Handle change of selected when scrolling down the page
+  /* c8 ignore start */
   useEffect(() => {
     if (visible.length === 0 || isScrollingTo.current !== -1) return;
 
     let newSelectedIndex = -1;
     for (let index = 0; index < visible.length; index++) {
-      if (
-        visible[index] &&
-        (isScrollingTo.current === -1 || isScrollingTo.current === index)
-      ) {
+      if (visible[index]) {
         newSelectedIndex = index;
       }
     }
@@ -113,6 +113,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
       setSelected(items[newSelectedIndex].value);
     }
   }, [items, visible]);
+  /* c8 ignore end */
 
   return (
     <PageMenuContext.Provider

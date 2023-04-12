@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker';
 
-import PageMenuProvider from '../../providers/PageMenuProvider';
+import PageMenuProvider, {
+  usePageMenu,
+} from '../../providers/PageMenuProvider';
 import { render, screen, userEvent } from '../../tests/test-utils';
 import PageMenu from './PageMenu';
 
@@ -13,16 +15,31 @@ function fakeItems() {
     }));
 }
 
+function Section({ value, label }: { value: string; label: string }) {
+  const { setItemRef } = usePageMenu();
+  return (
+    <h1
+      id={value}
+      ref={(current) => {
+        if (current) {
+          current['scrollIntoView'] = vi.fn();
+          setItemRef(current, value);
+        }
+      }}
+    >
+      {label}
+    </h1>
+  );
+}
+
 test('OnClick runs as expected', async () => {
   const items = fakeItems();
 
-  const { rerender } = render(
+  render(
     <div>
       <PageMenu />
       {items.map((item) => (
-        <h1 key={item.value} id={item.value} style={{ marginTop: '100vh' }}>
-          {item.label}
-        </h1>
+        <Section key={item.value} {...item} />
       ))}
     </div>,
     {
@@ -30,17 +47,6 @@ test('OnClick runs as expected', async () => {
         <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
       ),
     }
-  );
-
-  rerender(
-    <div>
-      <PageMenu />
-      {items.map((item) => (
-        <h1 key={item.value} id={item.value} style={{ marginTop: '100vh' }}>
-          {item.label}
-        </h1>
-      ))}
-    </div>
   );
 
   const user = userEvent.setup();
@@ -51,10 +57,9 @@ test('OnClick runs as expected', async () => {
 
   const button = screen.getByRole('button', { name: items[1].label });
 
-  const heading = document.querySelector(`#${items[1].value}`) as Element;
-  heading.scrollIntoView = vi.fn();
-
   await user.click(button);
 
-  expect(heading.scrollIntoView).toHaveBeenCalled();
+  const section = document.querySelector(`#${items[1].value}`) as Element;
+
+  expect(section.scrollIntoView).toHaveBeenCalled();
 });
