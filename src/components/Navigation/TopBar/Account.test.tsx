@@ -94,7 +94,7 @@ test('Opens and closes as it should', async () => {
   ).toBeInTheDocument();
 
   await user.click(button);
-
+  screen.logTestingPlaygroundURL();
   expect(
     screen.queryByAltText(`user-avatar-${props.account?.name}`)
   ).not.toBeInTheDocument();

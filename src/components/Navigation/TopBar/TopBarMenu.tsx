@@ -1,4 +1,4 @@
-import React, { FC, ForwardedRef, forwardRef, ReactNode, useRef } from 'react';
+import React, { FC, ReactNode} from 'react';
 
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
@@ -44,7 +44,8 @@ const TopBarMenu: FC<TopBarMenuContentProps> = ({
   children,
   anchorEl,
 }) => {
-  const buttonRef = useRef<HTMLDivElement | null>(null);
+
+  if (!open) return null;
 
   return (
     <MenuWrapper open={open} onClose={onClose} anchorEl={anchorEl}>
