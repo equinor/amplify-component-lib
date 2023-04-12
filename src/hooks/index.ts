@@ -1,4 +1,5 @@
 import { useAuth } from '../providers/AuthProvider/AuthProvider';
+import { usePageMenu } from '../providers/PageMenuProvider';
 import { useSideBar } from '../providers/SideBarProvider';
 import { useSnackbar } from '../providers/SnackbarProvider';
 import { useTutorialSteps } from '../providers/TutorialStepsProvider';
@@ -15,6 +16,7 @@ export {
   useNotifications,
   useOnScreen,
   useOnScreenMultiple,
+  usePageMenu,
   usePrevious,
   useSideBar,
   useSnackbar,
