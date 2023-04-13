@@ -3,7 +3,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackType } from './FeedbackForm';
+import { FeedbackEnum } from './FeedbackForm';
 
 import styled from 'styled-components';
 
@@ -16,17 +16,17 @@ const Wrapper = styled.div`
 `;
 
 interface SelectTypeProps {
-  setSelectedType: Dispatch<SetStateAction<FeedbackType | undefined>>;
+  setSelectedType: Dispatch<SetStateAction<FeedbackEnum | undefined>>;
 }
 
 const SelectType: FC<SelectTypeProps> = ({ setSelectedType }) => {
   return (
     <div>
       <Wrapper>
-        <Button onClick={() => setSelectedType(FeedbackType.ERROR)}>
+        <Button onClick={() => setSelectedType(FeedbackEnum.ERROR)}>
           Report error
         </Button>
-        <Button onClick={() => setSelectedType(FeedbackType.INQUIRY)}>
+        <Button onClick={() => setSelectedType(FeedbackEnum.INQUIRY)}>
           General inquiry
         </Button>
       </Wrapper>

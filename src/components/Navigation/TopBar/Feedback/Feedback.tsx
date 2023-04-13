@@ -1,27 +1,19 @@
-import React, { FC, ReactDOM, useRef, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 
-import {
-  Button,
-  Divider,
-  Icon,
-  Menu,
-  Typography,
-} from '@equinor/eds-core-react';
-import { clear, thumbs_up_down } from '@equinor/eds-icons';
+import { Button, Icon } from '@equinor/eds-core-react';
+import { thumbs_up_down } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useOutsideClick } from '@equinor/eds-utils';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import TopBarMenu from '../TopBarMenu';
 import FeedbackForm from './FeedbackForm/FeedbackForm';
-
-import styled from 'styled-components';
 
 const { colors } = tokens;
 
 const Feedback: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement | null>(null);
-
+  const queryClient = new QueryClient();
   return (
     <>
       <Button
@@ -42,7 +34,9 @@ const Feedback: FC = () => {
         onClose={() => setIsOpen(false)}
         anchorEl={buttonRef.current}
       >
-        <FeedbackForm />
+        <QueryClientProvider client={queryClient}>
+          <FeedbackForm onClose={() => setIsOpen(false)} />
+        </QueryClientProvider>
       </TopBarMenu>
     </>
   );

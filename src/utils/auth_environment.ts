@@ -12,6 +12,7 @@ interface IConfig {
   API_SCOPE: string;
   ENVIRONMENT_NAME: string;
   IS_MOCK: boolean;
+  SLACK_WEBHOOK_URL: string;
 }
 
 declare const window: any;
@@ -61,6 +62,13 @@ const getEnvironmentName = (
     return getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
   return environmentName as EnvironmentType;
+};
+
+const getSlackWebhookUrl = (slackWebhookUrl: string | undefined) => {
+  if (!slackWebhookUrl) {
+    return getConfig('SLACK_WEBHOOK_URL');
+  }
+  return slackWebhookUrl;
 };
 
 const getIsMock = (isMock: string | undefined): boolean => {
@@ -159,4 +167,5 @@ export const environment = {
   getApiScope,
   getEnvironmentName,
   getIsMock,
+  getSlackWebhookUrl,
 };

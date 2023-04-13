@@ -1,23 +1,21 @@
 import { Dispatch, FC, FormEvent, SetStateAction } from 'react';
-import { FileRejection, FileWithPath } from 'react-dropzone';
+import { FileWithPath } from 'react-dropzone';
 
 import {
   Autocomplete,
   AutocompleteChanges,
   Button,
-  Icon,
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import { keyboard_backspace } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import FileUploadArea from '../../../../Inputs/FileUploadArea';
-import { FeedbackContentType, FeedbackType } from './FeedbackForm';
+import { FeedbackContentType, FeedbackEnum } from './FeedbackForm';
+import UploadFile from './UploadFile';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { spacings } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,22 +25,6 @@ const Wrapper = styled.div`
 
 const MenuSectionTitle = styled(Typography)`
   padding: ${spacings.comfortable.small} 0;
-`;
-
-const FileUploadAreaWrapper = styled.div`
-  position: relative;
-  top: -10px;
-`;
-
-const LabelAndMeta = styled.div`
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  top: 10px;
-  margin: 0 ${spacings.comfortable.small};
-  > p {
-    color: ${colors.text.static_icons__tertiary.hex};
-  }
 `;
 
 const Actions = styled.div`
@@ -58,13 +40,14 @@ export enum SeverityOption {
 }
 
 interface FeedbackDetailsProps {
-  selectedType: FeedbackType;
-  setSelectedType: Dispatch<SetStateAction<FeedbackType | undefined>>;
+  selectedType: FeedbackEnum;
+  setSelectedType: Dispatch<SetStateAction<FeedbackEnum | undefined>>;
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath
+    newValue: string | SeverityOption | FileWithPath[]
   ) => void;
+  handleSave: () => void;
 }
 
 const FeedbackDetails: FC<FeedbackDetailsProps> = ({
@@ -72,22 +55,23 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
   setSelectedType,
   feedbackContent,
   updateFeedback,
+  handleSave,
 }) => {
-  const onDrop = (
-    acceptedFiles: FileWithPath[],
-    fileRejections: FileRejection[]
-  ) => {
-    const cleanedOfHiddenFiles = acceptedFiles.filter(
-      (file) => file.name[0] !== '.'
-    );
-    console.log(cleanedOfHiddenFiles);
-    updateFeedback('attachments', cleanedOfHiddenFiles[0]);
+  const canSubmitFeedback = () => {
+    if (
+      feedbackContent.title.length > 0 &&
+      feedbackContent.description.length > 0
+    ) {
+      console.log('true');
+      return true;
+    }
+    return false;
   };
 
   return (
     <Wrapper>
       <MenuSectionTitle group="input" variant="label">
-        {selectedType === FeedbackType.ERROR
+        {selectedType === FeedbackEnum.ERROR
           ? 'Service now error report'
           : 'General inquiry'}
       </MenuSectionTitle>
@@ -113,7 +97,7 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
         }
         multiline
       />
-      {selectedType === FeedbackType.ERROR && (
+      {selectedType === FeedbackEnum.ERROR && (
         <>
           <Autocomplete
             options={Object.values(SeverityOption)}
@@ -139,33 +123,17 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
           />
         </>
       )}
-      <FileUploadAreaWrapper className="test">
-        <LabelAndMeta>
-          <Typography group="input" variant="label">
-            Attachments
-          </Typography>
-          <Typography group="input" variant="label">
-            optional
-          </Typography>
-        </LabelAndMeta>
-        <FileUploadArea
-          onDrop={onDrop}
-          accept={{
-            'application/pdf': ['.pdf'],
-            'application/vnd.ms-powerpoint': ['.ppt'],
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation':
-              ['.pptx'],
-            'image/jpeg': ['.jpeg', '.jpg'],
-            'image/png': ['.png'],
-            video: ['.vid'],
-          }}
-        />
-      </FileUploadAreaWrapper>
+      <UploadFile
+        feedbackContent={feedbackContent}
+        updateFeedback={updateFeedback}
+      />
       <Actions>
         <Button variant="ghost" onClick={() => setSelectedType(undefined)}>
           Back
         </Button>
-        <Button>Send report</Button>
+        <Button onClick={handleSave} disabled={!canSubmitFeedback()}>
+          Send report
+        </Button>
       </Actions>
     </Wrapper>
   );
