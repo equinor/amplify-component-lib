@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import Fallback from '../Fallback';
 import { SvgIconProps } from '../index';
 import Acquire from './Acquire';
 import Dasha from './Dasha';
@@ -43,6 +44,7 @@ const ApplicationIcon: FC<ApplicationIconProps> = ({ name, size }) => {
   const appData = apps.find(
     (app) => app.appName === name
   ) as IApplicationIconData;
+  if (!appData) return <Fallback size={size} />;
   return <appData.component size={size} />;
 };
 

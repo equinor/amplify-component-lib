@@ -9,6 +9,7 @@ export default {
     name: {
       control: 'radio',
       options: [
+        'default',
         '4dinsight',
         'acquire',
         'dasha',
