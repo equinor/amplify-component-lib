@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { car } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { render, screen } from '../../../tests/test-utils';
@@ -10,7 +9,7 @@ import TopBar from '.';
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
     <TopBar
-      applicationIcon={car}
+      applicationIcon="car"
       applicationName="Car-go 🏎"
       onHeaderClick={() => console.log('Going home 🏡')}
       isFetching={true}
@@ -23,7 +22,7 @@ test('Shows progress indicator only when isFetching={true}', () => {
 
   rerender(
     <TopBar
-      applicationIcon={car}
+      applicationIcon="car"
       applicationName="Car-go 🏎"
       onHeaderClick={() => console.log('Going home 🏡')}
       isFetching={false}
@@ -39,7 +38,7 @@ test('Shows correct application name', () => {
   const appName = 'Car-go 🏎';
   render(
     <TopBar
-      applicationIcon={car}
+      applicationIcon="car"
       applicationName={appName}
       onHeaderClick={() => console.log('Going home 🏡')}
     >
@@ -57,7 +56,7 @@ test('Shows environment banner when not in production', () => {
   ];
   const { rerender } = render(
     <TopBar
-      applicationIcon={car}
+      applicationIcon="car"
       applicationName="test"
       onHeaderClick={() => console.log('Going home 🏡')}
     >
@@ -68,7 +67,7 @@ test('Shows environment banner when not in production', () => {
   for (const envType of envs) {
     rerender(
       <TopBar
-        applicationIcon={car}
+        applicationIcon="car"
         applicationName="test"
         onHeaderClick={() => console.log('Going home 🏡')}
         environment={envType}
@@ -84,7 +83,7 @@ test('Hides environment banner when in production', () => {
   const environmentName = 'production' as EnvironmentType;
   render(
     <TopBar
-      applicationIcon={car}
+      applicationIcon="test"
       applicationName="test"
       onHeaderClick={() => console.log('Going home 🏡')}
       environment={environmentName}
@@ -95,7 +94,8 @@ test('Hides environment banner when in production', () => {
   expect(screen.queryByText(environmentName)).not.toBeInTheDocument();
 });
 
-test('Uses react element for icon if provided', () => {
+test('Uses react element for icon if provided and logs error', () => {
+  console.warn = vi.fn();
   const iconText = faker.animal.snake();
   render(
     <TopBar
@@ -106,6 +106,9 @@ test('Uses react element for icon if provided', () => {
       content
     </TopBar>
   );
+  expect(console.warn).toHaveBeenCalledWith(
+    'Sending an element as applicationIcon is the old way of setting the icon in the top bar! Switch to just sending the name of the app as applicationIcon.'
+  );
   expect(screen.getByText(iconText)).toBeInTheDocument();
 });
 
@@ -113,7 +116,7 @@ test('Capitalize app name works as expected', () => {
   const name = faker.name.fullName();
   render(
     <TopBar
-      applicationIcon={car}
+      applicationIcon="test"
       applicationName={name}
       capitalize
       onHeaderClick={() => console.log('Going home 🏡')}

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
@@ -8,7 +8,7 @@ const shapes: ShapeProps[] = [
   {
     top: -16,
     left: -17,
-    rotation: 343,
+    rotation: 328,
   },
   {
     top: 26,
@@ -17,8 +17,17 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const DepthConversion: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase size={size} iconData={depthConversion} shapes={shapes} />
+const DepthConversion = forwardRef<HTMLDivElement, SvgIconProps>(
+  ({ size }, ref) => (
+    <ApplicationIconBase
+      size={size}
+      iconData={depthConversion}
+      shapes={shapes}
+      ref={ref}
+    />
+  )
 );
+
+DepthConversion.displayName = 'DepthConversion';
 
 export default DepthConversion;

@@ -11,7 +11,7 @@ const shapes: ShapeProps[] = [
     rotation: 25,
   },
   {
-    top: 60,
+    top: 64,
     left: -5,
     rotation: 5,
   },

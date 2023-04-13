@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
@@ -17,12 +17,17 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const LoggingQualification: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase
-    size={size}
-    iconData={loggingQualification}
-    shapes={shapes}
-  />
+const LoggingQualification = forwardRef<HTMLDivElement, SvgIconProps>(
+  ({ size }, ref) => (
+    <ApplicationIconBase
+      ref={ref}
+      size={size}
+      iconData={loggingQualification}
+      shapes={shapes}
+    />
+  )
 );
+
+LoggingQualification.displayName = 'LoggingQualification';
 
 export default LoggingQualification;

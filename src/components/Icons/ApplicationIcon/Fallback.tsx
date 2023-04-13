@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
@@ -17,8 +17,15 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Fallback: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase size={size} iconData={fallback} shapes={shapes} />
-);
+const Fallback = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    size={size}
+    iconData={fallback}
+    shapes={shapes}
+  />
+));
+
+Fallback.displayName = 'Fallback';
 
 export default Fallback;

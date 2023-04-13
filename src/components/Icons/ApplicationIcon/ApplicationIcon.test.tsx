@@ -1,3 +1,5 @@
+import { IconData } from '@equinor/eds-icons';
+
 import { render, screen } from '../../../tests/test-utils';
 import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
 import {
@@ -25,7 +27,12 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'inpress',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
-const icons = {
+
+type IconsDict = {
+  [key: ApplicationIconProps['name']]: IconData;
+};
+
+const icons: IconsDict = {
   acquire: acquire,
   '4dinsight': fourDInsight,
   recap: recap,

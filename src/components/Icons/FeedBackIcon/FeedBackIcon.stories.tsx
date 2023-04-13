@@ -8,9 +8,9 @@ export default {
   argTypes: {
     name: {
       control: 'radio',
-      options: ['positive', 'negative', undefined],
+      options: ['positive', 'negative'],
     },
-    variant: { control: 'radio', options: ['filled', 'outlined', undefined] },
+    variant: { control: 'radio', options: ['filled', 'outlined'] },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
   },
   args: {

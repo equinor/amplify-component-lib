@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, forwardRef } from 'react';
 
 import { SvgIconProps } from '../index';
 import Acquire from './Acquire';
@@ -23,10 +23,6 @@ export type ApplicationName =
   | 'pwex'
   | 'inpress';
 
-export interface ApplicationIconProps {
-  name: ApplicationName;
-  size?: 16 | 18 | 24 | 32 | 40 | 48;
-}
 interface IApplicationIconData {
   appName: string;
   component: FC<SvgIconProps>;
@@ -43,11 +39,20 @@ const apps: IApplicationIconData[] = [
   { appName: 'inpress', component: InPress },
 ];
 
-const ApplicationIcon: FC<ApplicationIconProps> = ({ name, size }) => {
-  const appData = apps.find((app) => app.appName === name);
+export interface ApplicationIconProps {
+  name: ApplicationName | string;
+  size?: 16 | 18 | 24 | 32 | 40 | 48;
+}
 
-  if (appData === undefined) return <Fallback size={size} />;
-  return <appData.component size={size} />;
-};
+const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
+  ({ name, size = 48 }, ref) => {
+    const appData = apps.find((app) => app.appName === name);
+
+    if (appData === undefined) return <Fallback size={size} ref={ref} />;
+    return <appData.component size={size} />;
+  }
+);
+
+ApplicationIcon.displayName = 'ApplicationIcon';
 
 export default ApplicationIcon;

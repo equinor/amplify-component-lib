@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
@@ -31,17 +31,14 @@ const Container = styled.div`
   &:hover {
     > svg:first-child {
       transform: scale(0.9);
-      filter: drop-shadow(
-        0 0 2px ${colors.text.static_icons__primary_white.hex}
-      );
     }
     > div:nth-child(even) {
-      top: -60%;
-      left: 60%;
+      top: -80%;
+      left: 80%;
     }
     > div:nth-child(odd) {
-      top: 80%;
-      left: -80%;
+      top: 93%;
+      left: -93%;
     }
   }
 `;
@@ -66,7 +63,7 @@ const Shape = styled.div<ShapeElementProps>`
   height: 80%;
   box-shadow: ${elevation.raised};
   background: ${colors.interactive.primary__resting.hex};
-  transition: all 5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
   transform: rotate(${(props) => props.rotation}deg);
   pointer-events: none;
 `;
@@ -76,12 +73,11 @@ type ApplicationIconBaseProps = {
   shapes: ShapeProps[];
 } & SvgIconProps;
 
-const ApplicationIconBase: FC<ApplicationIconBaseProps> = ({
-  size = 48,
-  iconData,
-  shapes,
-}) => (
-  <Container>
+const ApplicationIconBase = forwardRef<
+  HTMLDivElement,
+  ApplicationIconBaseProps
+>(({ size = 48, iconData, shapes }, ref) => (
+  <Container ref={ref}>
     <Icon
       data={iconData}
       size={size}
@@ -91,6 +87,8 @@ const ApplicationIconBase: FC<ApplicationIconBaseProps> = ({
       <Shape key={`shape-${index}`} index={index} {...shape} />
     ))}
   </Container>
-);
+));
+
+ApplicationIconBase.displayName = 'ApplicationIconBase';
 
 export default ApplicationIconBase;

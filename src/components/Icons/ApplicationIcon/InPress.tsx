@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
@@ -6,19 +6,26 @@ import { inPress } from './ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
   {
-    top: -16,
+    top: -31,
     left: -17,
     rotation: 343,
   },
   {
-    top: 26,
-    left: 11,
-    rotation: 193,
+    top: 42,
+    left: 32,
+    rotation: 182,
   },
 ];
 
-const InPress: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase size={size} iconData={inPress} shapes={shapes} />
-);
+const InPress = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    size={size}
+    iconData={inPress}
+    shapes={shapes}
+  />
+));
+
+InPress.displayName = 'InPress';
 
 export default InPress;

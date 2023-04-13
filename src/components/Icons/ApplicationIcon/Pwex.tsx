@@ -6,7 +6,7 @@ import { pwex } from './ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
   {
-    top: -16,
+    top: -18,
     left: -17,
     rotation: 343,
   },

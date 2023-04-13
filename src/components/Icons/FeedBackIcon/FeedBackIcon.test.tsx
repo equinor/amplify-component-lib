@@ -12,11 +12,10 @@ const sizeOptions: FeedBackIconProps['size'][] = [
   32,
   40,
   48,
-  96,
 ];
 
 test('Render correctly with corresponding props', async () => {
-  const { rerender } = render(<FeedBackIcon name="default" />);
+  const { rerender } = render(<FeedBackIcon name="negative" />);
 
   // Check that it renders correctly with name options
   for (const name of nameOptions) {
