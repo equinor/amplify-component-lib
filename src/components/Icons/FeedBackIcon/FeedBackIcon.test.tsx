@@ -32,19 +32,19 @@ test('Render correctly with corresponding props', async () => {
   }
 });
 
-test('Renders fallback when given name which isnt any of the options', () => {
+test('Renders negative when given name which isnt any of the options', () => {
   const randomName = faker.lorem.word() as FeedBackIconProps['name'];
 
   const { rerender } = render(<FeedBackIcon name={randomName} />);
 
-  const defaultIcon = screen.getByTestId('fallback-icon');
+  const defaultIcon = screen.getByTestId('negative-outlined');
   expect(defaultIcon).toBeInTheDocument();
   expect(defaultIcon).toHaveAttribute('height', '48');
   expect(defaultIcon).toHaveAttribute('width', '48');
 
   for (const size of sizeOptions) {
     rerender(<FeedBackIcon name={randomName} size={size} />);
-    const icon = screen.getByTestId('fallback-icon');
+    const icon = screen.getByTestId('negative-outlined');
     const expectedSize = size ?? 48;
     expect(icon).toHaveAttribute('height', expectedSize.toString());
     expect(icon).toHaveAttribute('width', expectedSize.toString());
