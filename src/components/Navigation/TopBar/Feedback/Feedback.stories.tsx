@@ -1,4 +1,5 @@
 import { Meta, Story } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Feedback from './Feedback';
 
@@ -8,5 +9,10 @@ export default {
 } as Meta;
 
 export const Primary: Story = () => {
-  return <Feedback></Feedback>;
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Feedback />;
+    </QueryClientProvider>
+  );
 };
