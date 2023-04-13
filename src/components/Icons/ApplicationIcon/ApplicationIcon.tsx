@@ -4,6 +4,7 @@ import { SvgIconProps } from '../index';
 import Acquire from './Acquire';
 import Dasha from './Dasha';
 import DepthConversion from './DepthConversion';
+import Fallback from './Fallback';
 import FourDInsight from './FourDInsight';
 import InPress from './InPress';
 import LoggingQualification from './LoggingQualification';
@@ -43,9 +44,9 @@ const apps: IApplicationIconData[] = [
 ];
 
 const ApplicationIcon: FC<ApplicationIconProps> = ({ name, size }) => {
-  const appData = apps.find(
-    (app) => app.appName === name
-  ) as IApplicationIconData;
+  const appData = apps.find((app) => app.appName === name);
+
+  if (appData === undefined) return <Fallback size={size} />;
   return <appData.component size={size} />;
 };
 
