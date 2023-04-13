@@ -1,5 +1,8 @@
 import { render, screen } from '../../../tests/test-utils';
-import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
+import ApplicationIcon, {
+  ApplicationIconProps,
+  ApplicationName,
+} from './ApplicationIcon';
 
 const nameOptions: ApplicationIconProps['name'][] = [
   'acquire',
@@ -36,4 +39,9 @@ test('Render correctly with corresponding props', async () => {
       );
     }
   }
+});
+
+test('Render correctly when provided string does have a match', () => {
+  render(<ApplicationIcon name={'not a app name at all' as ApplicationName} />);
+  expect(screen.getByTestId('fallback-icon')).toBeInTheDocument();
 });
