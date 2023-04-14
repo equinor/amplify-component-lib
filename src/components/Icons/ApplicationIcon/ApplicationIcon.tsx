@@ -27,6 +27,7 @@ interface IApplicationIconData {
   appName: string;
   component: FC<SvgIconProps>;
 }
+
 const apps: IApplicationIconData[] = [
   { appName: 'portal', component: Portal },
   { appName: 'acquire', component: Acquire },
@@ -41,7 +42,7 @@ const apps: IApplicationIconData[] = [
 
 export interface ApplicationIconProps {
   name: ApplicationName | string;
-  size?: 16 | 18 | 24 | 32 | 40 | 48;
+  size?: 16 | 18 | 24 | 32 | 40 | 48 | 96;
 }
 
 const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
