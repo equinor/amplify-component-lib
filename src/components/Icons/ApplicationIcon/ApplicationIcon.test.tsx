@@ -26,7 +26,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'depth-conversion',
   'inpress',
 ];
-const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
+const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48, 96];
 
 type IconsDict = {
   [key: ApplicationIconProps['name']]: IconData;
