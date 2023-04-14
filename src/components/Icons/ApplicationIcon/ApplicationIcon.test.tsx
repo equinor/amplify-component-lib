@@ -1,5 +1,19 @@
+import { IconData } from '@equinor/eds-icons';
+
 import { render, screen } from '../../../tests/test-utils';
 import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
+import {
+  acquire,
+  dasha,
+  depthConversion,
+  fallback,
+  fourDInsight,
+  inPress,
+  loggingQualification,
+  portal,
+  pwex,
+  recap,
+} from './ApplicationIconCollection';
 
 const nameOptions: ApplicationIconProps['name'][] = [
   'acquire',
@@ -10,8 +24,25 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'logging-qualification',
   'pwex',
   'depth-conversion',
+  'inpress',
 ];
-const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48, 96];
+const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
+
+type IconsDict = {
+  [key: ApplicationIconProps['name']]: IconData;
+};
+
+const icons: IconsDict = {
+  acquire: acquire,
+  '4dinsight': fourDInsight,
+  recap: recap,
+  dasha: dasha,
+  portal: portal,
+  'logging-qualification': loggingQualification,
+  pwex: pwex,
+  'depth-conversion': depthConversion,
+  inpress: inPress,
+};
 
 test('Render correctly with corresponding props', async () => {
   const { rerender } = render(<ApplicationIcon name="acquire" />);
@@ -19,21 +50,25 @@ test('Render correctly with corresponding props', async () => {
   // Check that it renders correctly with name options
   for (const name of nameOptions) {
     rerender(<ApplicationIcon name={name} />);
-    const defaultSvgComponent = screen.getByTestId(name);
-    expect(defaultSvgComponent).toHaveAttribute('height', '48');
-    expect(defaultSvgComponent).toHaveAttribute('width', '48');
     for (const size of sizeOptions) {
       rerender(<ApplicationIcon name={name} size={size} />);
-      const svgComponent = screen.getByTestId(name);
+      const path = screen.getByTestId('eds-icon-path');
+      expect(path).toHaveAttribute('d', icons[name].svgPathData);
+      const svgComponent = path.parentElement;
       expect(svgComponent).toBeInTheDocument();
-      expect(svgComponent).toHaveAttribute(
-        'height',
-        (size as number).toString()
-      );
-      expect(svgComponent).toHaveAttribute(
-        'width',
-        (size as number).toString()
-      );
+      expect(svgComponent).toHaveAttribute('height', `${size}px`);
+      expect(svgComponent).toHaveAttribute('width', `${size}px`);
     }
   }
+});
+
+test("Renders fallback when name isn't found", () => {
+  render(
+    <ApplicationIcon name={'name not found' as ApplicationIconProps['name']} />
+  );
+
+  expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
+    'd',
+    fallback.svgPathData
+  );
 });

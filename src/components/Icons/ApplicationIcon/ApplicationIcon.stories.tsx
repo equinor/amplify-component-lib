@@ -9,6 +9,7 @@ export default {
     name: {
       control: 'radio',
       options: [
+        'fallback',
         '4dinsight',
         'acquire',
         'dasha',
@@ -17,6 +18,7 @@ export default {
         'portal',
         'pwex',
         'logging-qualification',
+        'inpress',
       ],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },

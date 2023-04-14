@@ -5,7 +5,6 @@ import { info_circle } from '@equinor/eds-icons';
 import { Meta, Story } from '@storybook/react';
 
 import { Field } from '../../../types/Field';
-import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
 import TopBar from '../../Navigation/TopBar';
 import Template from '../../Template/Template';
 import SelectField from './SelectField';
@@ -85,7 +84,7 @@ export const Primary: Story = (args) => {
         onHeaderClick={function (): void {
           throw new Error('Function not implemented.');
         }}
-        applicationIcon={<ApplicationIcon name="acquire" size={40} />}
+        applicationIcon="acquire"
         applicationName="App"
       >
         <TopBar.Actions>

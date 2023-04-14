@@ -2,30 +2,30 @@ import { forwardRef } from 'react';
 
 import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
-import { portal } from './ApplicationIconCollection';
+import { fallback } from './ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
   {
     top: -16,
-    left: -31,
-    rotation: 339,
+    left: -17,
+    rotation: 355,
   },
   {
-    top: 52,
-    left: -5,
-    rotation: 220,
+    top: 26,
+    left: 11,
+    rotation: 193,
   },
 ];
 
-const Portal = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
+const Fallback = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
   <ApplicationIconBase
     ref={ref}
     size={size}
-    iconData={portal}
+    iconData={fallback}
     shapes={shapes}
   />
 ));
 
-Portal.displayName = 'Portal';
+Fallback.displayName = 'Fallback';
 
-export default Portal;
+export default Fallback;
