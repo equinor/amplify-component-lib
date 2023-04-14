@@ -1,6 +1,6 @@
 import { FC, ReactNode, useRef, useState } from 'react';
 
-import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
+import { Button,  Icon, Typography } from '@equinor/eds-core-react';
 import { close, notifications as notificationIcon } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
@@ -22,7 +22,7 @@ const SidePanel = styled.div<SidePanelProps>`
   bottom: 0;
   right: 0;
   overflow: auto;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12);
   ${(props) => !props.open && 'display: none;'}
 `;
 
@@ -30,6 +30,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   padding: ${spacings.comfortable.small} ${spacings.comfortable.medium};
+  padding-right: ${spacings.comfortable.small};
   align-items: center;
   margin-bottom: ${spacings.comfortable.medium};
   border-bottom: 1px solid ${colors.ui.background__medium.hex};

@@ -22,7 +22,8 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 ${spacings.comfortable.medium};
+  padding-left: ${spacings.comfortable.medium};
+  padding-right: ${spacings.comfortable.small};
   border-bottom: 1px solid ${colors.ui.background__medium.hex};
   padding-bottom: ${spacings.comfortable.small};
   padding-top: 8px;

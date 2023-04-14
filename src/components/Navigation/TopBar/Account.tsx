@@ -1,15 +1,8 @@
-import {
-  FC,
-  forwardRef,
-  KeyboardEvent,
-  MouseEvent,
-  useRef,
-  useState,
-} from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
-import { account_circle, clear } from '@equinor/eds-icons';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { account_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
@@ -18,16 +11,6 @@ import TopBarMenu from './TopBarMenu';
 import styled from 'styled-components';
 
 const { spacings, colors } = tokens;
-const StyledMenu = styled(Menu)`
-  width: 320px;
-  padding: ${spacings.comfortable.medium};
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const Info = styled.div`
   display: flex;
@@ -58,7 +41,7 @@ export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
     <>
       <Button
         variant="ghost_icon"
-        onClick={(e) => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen(!isOpen)}
         ref={buttonRef}
       >
         <Icon

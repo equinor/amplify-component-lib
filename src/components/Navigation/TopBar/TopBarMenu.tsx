@@ -1,4 +1,4 @@
-import React, { FC, ReactNode} from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
@@ -12,16 +12,14 @@ const MenuWrapper = styled(Menu)`
   padding: 0 !important;
   width: 350px;
   border-radius: 5px;
-  left: revert !important;
-  right: 18px !important;
-  top: 60px !important;
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 ${spacings.comfortable.medium};
+  padding-left: ${spacings.comfortable.medium};
+  padding-right: ${spacings.comfortable.small};
   border-bottom: 1px solid ${colors.ui.background__medium.hex};
   padding-bottom: ${spacings.comfortable.small};
 `;
@@ -44,11 +42,15 @@ const TopBarMenu: FC<TopBarMenuContentProps> = ({
   children,
   anchorEl,
 }) => {
-
   if (!open) return null;
 
   return (
-    <MenuWrapper open={open} onClose={onClose} anchorEl={anchorEl}>
+    <MenuWrapper
+      open={open}
+      onClose={onClose}
+      anchorEl={anchorEl}
+      placement="top-end"
+    >
       <Header>
         <Typography group="ui" variant="accordion_header" as="span">
           {title}
