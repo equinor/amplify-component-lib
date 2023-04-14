@@ -65,7 +65,7 @@ function environmentStyling(envType: EnvironmentType): string {
   }
   return `
     background-color: ${backgroundColor};
-    border-color: 1px solid ${borderColor};
+    border: 1px solid ${borderColor};
   `;
 }
 
