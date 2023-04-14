@@ -57,9 +57,14 @@ const UploadFile: FC<UploadFileProps> = ({
     const cleanedOfHiddenFiles = acceptedFiles.filter(
       (file) => file.name[0] !== '.'
     );
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      console.log(reader.result);
+    };
+    reader.readAsDataURL(acceptedFiles[0]);
     setRejectedFiles(fileRejections);
-    const text = await acceptedFiles[0].text();
-    console.log(text); // Convert to base64 and send to slack
+    // const text = await acceptedFiles[0].text();
+    // console.log(text); // Convert to base64 and send to slack
     updateFeedback('attachments', cleanedOfHiddenFiles);
   };
 
@@ -92,6 +97,7 @@ const UploadFile: FC<UploadFileProps> = ({
             'application/vnd.openxmlformats-officedocument.presentationml.presentation':
               ['.pptx'],
             'image/jpeg': ['.jpeg', '.jpg'],
+            'image/png': ['.png'],
           }}
         />
       </FileUploadAreaWrapper>

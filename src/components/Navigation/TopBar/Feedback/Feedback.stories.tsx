@@ -12,7 +12,7 @@ export const Primary: Story = () => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <Feedback />;
+      <Feedback />
     </QueryClientProvider>
   );
 };
