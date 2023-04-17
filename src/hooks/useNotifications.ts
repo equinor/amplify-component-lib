@@ -4,7 +4,7 @@ import * as SignalR from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 
 export function useNotifications<
-  T extends { SequenceNumber: number; Read: boolean }
+  T extends { SequenceNumber?: number; Read?: boolean }
 >(topic: string, host: string, amplifyPortalToken: string) {
   const connectionRef = useRef<HubConnection | undefined>(undefined);
   const [notifications, setNotifications] = useState<T[]>([]);
