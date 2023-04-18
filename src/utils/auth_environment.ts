@@ -65,8 +65,7 @@ const getEnvironmentName = (
 
 const getIsMock = (isMock: string | undefined): boolean => {
   if (isMock === undefined) {
-    const envString = getConfig('IS_MOCK') as string;
-    return envString === 'true';
+    return false;
   }
   return isMock === 'true';
 };
