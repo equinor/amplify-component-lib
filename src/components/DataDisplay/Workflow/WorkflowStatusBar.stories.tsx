@@ -1,7 +1,9 @@
+import { tokens } from '@equinor/eds-tokens';
 import { Meta, Story } from '@storybook/react';
 
 import WorkflowStatusBar from './WorkflowStatusBar';
 
+const { colors } = tokens;
 export default {
   title: 'DataDisplay/Workflow/WorkflowStatusBar',
   component: WorkflowStatusBar,
@@ -9,6 +11,8 @@ export default {
     labels: { control: 'array' },
     options: { control: 'array' },
     activeNode: { control: 'text' },
+    lineActiveColor: { control: 'color' },
+    lineDefaultColor: { control: 'color' },
     showAlert: { control: 'boolean' },
     highlightActiveNode: { control: 'boolean' },
     tooltipPlacement: {
@@ -80,6 +84,8 @@ export default {
     highlightActiveNode: false,
     tooltipPlacement: 'bottom',
     disableTooltip: false,
+    lineActiveColor: colors.infographic.primary__moss_green_100.hex,
+    lineDefaultColor: colors.ui.background__light.hex,
   },
 } as Meta;
 
@@ -91,6 +97,8 @@ export const Primary: Story = (args) => (
       showAlert={args.showAlert}
       highlightActiveNode={args.highlightActiveNode}
       disableTooltip={args.disableTooltip}
+      lineActiveColor={args.lineActiveColor}
+      lineDefaultColor={args.lineDefaultColor}
     />
   </div>
 );
