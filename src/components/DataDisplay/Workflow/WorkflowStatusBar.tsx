@@ -63,12 +63,15 @@ const Active = styled(Alert)`
 
 interface LineProps {
   active?: boolean;
+  lineActiveColor: string;
+  lineDefaultColor: string;
 }
 
 const Line = styled.div<LineProps>`
   height: 0.25em;
   width: 2.375em;
-  background-color: ${(props) => (props.active ? '#007079' : '#f7f7f7')};
+  background-color: ${(props) =>
+    props.active ? props.lineActiveColor : props.lineDefaultColor};
   margin: 0 -1px;
   z-index: 10;
 `;
@@ -87,6 +90,8 @@ export interface WorkflowStatusBarProps {
   activeNode: string;
   highlightActiveNode?: boolean;
   showAlert?: boolean;
+  lineDefaultColor?: string;
+  lineActiveColor?: string;
 }
 
 const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
@@ -96,6 +101,8 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
   tooltipPlacement,
   highlightActiveNode,
   showAlert,
+  lineDefaultColor = colors.ui.background__light.hex,
+  lineActiveColor = colors.infographic.primary__moss_green_100.hex,
 }) => {
   const activeIdx = options.findIndex((item) => item.value === activeNode);
 
@@ -122,7 +129,14 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
               />
             </div>
           </OptionalTooltip>
-          {options.length !== idx + 1 && <Line active={activeIdx > idx} />}
+          {options.length !== idx + 1 && (
+            <Line
+              active={activeIdx > idx}
+              lineDefaultColor={lineDefaultColor}
+              lineActiveColor={lineActiveColor}
+              data-testid="line"
+            />
+          )}
         </Fragment>
       ))}
     </Wrapper>
