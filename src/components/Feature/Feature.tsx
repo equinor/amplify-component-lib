@@ -97,7 +97,6 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
     }
   );
 
-  console.log('4-', 'token: ', portalToken);
   const { mutate: getFeatureToggle, isLoading } = useMutation<FeatureToggleDto>(
     ['getFeatureToggleFromAppName'],
     async () =>
