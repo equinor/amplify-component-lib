@@ -7,12 +7,13 @@ import {
   useState,
 } from 'react';
 
-import { environment } from '../../utils';
+import { auth, environment } from '../../utils';
 
 const { getAppName, getEnvironmentName, getApiUrl, getPortalProdClientId } =
   environment;
-
-import { useQuery } from '@tanstack/react-query';
+const { GRAPH_REQUESTS_LOGIN, acquireToken } = auth;
+import { useMsal } from '@azure/msal-react';
+import { useMutation } from '@tanstack/react-query';
 
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 
@@ -60,7 +61,10 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
   const [showContent, setShowContent] = useState<boolean | undefined>(
     undefined
   );
+  const [featureToggle, setFeatureToggle] = useState<FeatureToggleDto>();
+  const [portalToken, setPortalToken] = useState<string>('');
 
+  const { instance } = useMsal();
   const account = useAuth().account;
   const username = `${account?.username}`;
   const applicationName = getAppName(import.meta.env.VITE_NAME);
@@ -70,15 +74,30 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
     import.meta.env.VITE_PORTAL_PROD_CLIENT_ID
   );
 
-  const { data: portalToken } = useQuery<string>(
-    ['getPortalToken'],
-    async () =>
+  const runRequests = async () => {
+    const token = await acquireToken(instance, GRAPH_REQUESTS_LOGIN);
+    getPortalToken(token.accessToken);
+  };
+
+  const { mutate: getPortalToken } = useMutation(
+    ['getPortalProdToken'],
+    async (token: string) =>
       await fetch(`${apiUrl}/api/v1/Token/${portalProdClientId}`, {
         method: 'GET',
-      }).then((res) => res.json())
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-type': 'application/json',
+        },
+      }).then((res) => res.json()),
+    {
+      onSuccess: (res) => {
+        setPortalToken(res);
+        getFeatureToggle();
+      },
+    }
   );
 
-  const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>(
+  const { mutate: getFeatureToggle, isLoading } = useMutation<FeatureToggleDto>(
     ['getFeatureToggleFromAppName'],
     async () =>
       await fetch(
@@ -86,12 +105,22 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
         {
           method: 'GET',
           headers: {
+            Authorization: 'Bearer ' + portalToken,
             'Content-type': 'application/json',
-            Authorization: `Bearer ${portalToken}`,
           },
         }
-      ).then((res) => res.json())
+      ).then((res) => res.json()),
+    {
+      onSuccess: (res) => {
+        setFeatureToggle(res);
+      },
+    }
   );
+
+  useEffect(() => {
+    runRequests();
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     const feature = featureToggle?.features?.find(
