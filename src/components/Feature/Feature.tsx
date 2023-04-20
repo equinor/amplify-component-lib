@@ -9,7 +9,8 @@ import {
 
 import { environment } from '../../utils';
 
-const { getAppName, getEnvironmentName, getApiUrl } = environment;
+const { getAppName, getEnvironmentName, getApiUrl, getPortalProdClientId } =
+  environment;
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -65,11 +66,14 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
   const applicationName = getAppName(import.meta.env.VITE_NAME);
   const environment = getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME);
   const apiUrl = getApiUrl(import.meta.env.VITE_API_URL);
+  const portalProdClientId = getPortalProdClientId(
+    import.meta.env.VITE_PORTAL_PROD_CLIENT_ID
+  );
 
   const { data: portalToken } = useQuery<string>(
     ['getPortalToken'],
     async () =>
-      await fetch(`${apiUrl}/api/v1/Token/PortalToken`, {
+      await fetch(`${apiUrl}/api/v1/Token/${portalProdClientId}`, {
         method: 'GET',
       }).then((res) => res.json())
   );

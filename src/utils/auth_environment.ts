@@ -11,6 +11,7 @@ interface IConfig {
   API_URL: string;
   API_SCOPE: string;
   ENVIRONMENT_NAME: string;
+  PORTAL_PROD_CLIENT_ID: string;
   IS_MOCK: boolean;
 }
 
@@ -61,6 +62,15 @@ const getEnvironmentName = (
     return getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
   return environmentName as EnvironmentType;
+};
+
+const getPortalProdClientId = (
+  portalProdClientId: string | undefined
+): string => {
+  if (!portalProdClientId) {
+    return getConfig('PORTAL_PROD_CLIENT_ID');
+  }
+  return portalProdClientId;
 };
 
 const getIsMock = (isMock: string | undefined): boolean => {
@@ -157,5 +167,6 @@ export const environment = {
   getApiUrl,
   getApiScope,
   getEnvironmentName,
+  getPortalProdClientId,
   getIsMock,
 };
