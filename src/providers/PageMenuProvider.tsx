@@ -101,7 +101,12 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   // Handle change of selected when scrolling down the page
   /* c8 ignore start */
   useEffect(() => {
-    if (visible.length === 0 || isScrollingTo.current !== -1) return;
+    if (
+      visible.length === 0 ||
+      visible.length !== items.length ||
+      isScrollingTo.current !== -1
+    )
+      return;
 
     let newSelectedIndex = -1;
     for (let index = 0; index < visible.length; index++) {
@@ -109,7 +114,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
         newSelectedIndex = index;
       }
     }
-    if (newSelectedIndex !== -1) {
+    if (newSelectedIndex !== -1 && items.at(newSelectedIndex) !== undefined) {
       setSelected(items[newSelectedIndex].value);
     }
   }, [items, visible]);
