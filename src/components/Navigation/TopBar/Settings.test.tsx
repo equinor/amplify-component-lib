@@ -211,7 +211,7 @@ test('Renders correctly with color boxes', async () => {
   }
 });
 
-test('Renders correctly with elements', async () => {
+test('Renders correctly with texts', async () => {
   const theme = 'light';
   const setTheme = vi.fn();
   const settingsOptions: ISettingsProps = {
@@ -224,13 +224,13 @@ test('Renders correctly with elements', async () => {
           {
             label: 'Light Mode',
             name: 'theme-group',
-            element: 'light-element',
+            text: 'light-text',
             value: 'light',
           },
           {
             label: 'Dark Mode',
             name: 'theme-group',
-            element: 'dark-element',
+            text: 'dark-text',
             value: 'dark',
           },
         ],
@@ -247,6 +247,46 @@ test('Renders correctly with elements', async () => {
   await user.click(menuButton);
 
   for (const item of settingsOptions.allSettings[0].items) {
-    expect(screen.getByText(item.element ?? '')).toBeInTheDocument();
+    expect(screen.getByText(item.text ?? '')).toBeInTheDocument();
+  }
+});
+
+test('Renders correctly with elements', async () => {
+  const theme = 'light';
+  const setTheme = vi.fn();
+  const settingsOptions: ISettingsProps = {
+    allSettings: [
+      {
+        title: 'Theme',
+        type: theme,
+        onChange: setTheme,
+        items: [
+          {
+            label: 'Light Mode',
+            name: 'theme-group',
+            element: <p>light-element</p>,
+            value: 'light',
+          },
+          {
+            label: 'Dark Mode',
+            name: 'theme-group',
+            element: <p>dark-element</p>,
+            value: 'dark',
+          },
+        ],
+      },
+    ],
+  };
+
+  render(<Settings allSettings={settingsOptions.allSettings} />);
+
+  const user = userEvent.setup();
+
+  const menuButton = screen.getByRole('button');
+
+  await user.click(menuButton);
+
+  for (const item of settingsOptions.allSettings[0].items) {
+    expect(screen.getByText(`${item.value}-element`)).toBeInTheDocument();
   }
 });
