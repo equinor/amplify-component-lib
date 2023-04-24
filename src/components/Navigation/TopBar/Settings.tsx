@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, ReactElement, useState } from 'react';
 
 import { Button, Icon, Menu, Radio, Typography } from '@equinor/eds-core-react';
 import { clear, settings } from '@equinor/eds-icons';
@@ -47,7 +47,8 @@ export interface ISettingsSections {
     name: string;
     value: string;
     colorBox?: string;
-    element?: string;
+    element?: ReactElement;
+    text?: string;
     disabled?: boolean;
   }[];
 }
@@ -123,9 +124,10 @@ export const Settings = forwardRef<HTMLButtonElement, ISettingsProps>(
                         data-testid={`colorbox-${item.colorBox}`}
                       />
                     )}
-                    {item.element && (
-                      <Typography variant="h6">{item.element}</Typography>
+                    {item.text && (
+                      <Typography variant="h6">{item.text}</Typography>
                     )}
+                    {item.element && item.element}
                   </ContentWrapper>
                 ))}
               </div>
