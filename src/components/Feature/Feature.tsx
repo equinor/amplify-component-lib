@@ -77,19 +77,28 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
     import.meta.env.VITE_PORTAL_PROD_CLIENT_ID
   );
 
-  const { data: portalToken } = useQuery(['getPortalProdToken'], async () => {
-    const token = await acquireToken(
-      instance,
-      GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
-    );
-    return await fetch(`${apiUrl}/api/v1/Token/${portalProdClientId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-type': 'application/json',
-      },
-    }).then((res) => res.json());
-  });
+  const { data: portalToken } = useQuery<string>(
+    ['getPortalProdToken'],
+    async () => {
+      const authResult = await acquireToken(
+        instance,
+        GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
+      );
+      return await fetch(`${apiUrl}/api/v1/Token/${portalProdClientId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + authResult.accessToken,
+          'Content-type': 'application/json',
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
+    }
+  );
 
   const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>(
     ['getFeatureToggleFromAppName'],
@@ -103,8 +112,12 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
             'Content-type': 'application/json',
           },
         }
-      ).then((res) => res.json()),
-    { enabled: portalToken }
+      )
+        .then((res) => res.json())
+        .catch((error) => {
+          throw new Error(error);
+        }),
+    { enabled: portalToken !== undefined }
   );
 
   useEffect(() => {
