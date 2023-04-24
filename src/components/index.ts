@@ -1,6 +1,6 @@
 export type { Field } from '../types/Field';
-export type { default as ErrorContentType } from '../utils/errors';
-export type { ErrorType } from '../utils/errors';
+export type { ErrorContentType } from '../utils/errors';
+export { ErrorType } from '../utils/errors';
 export { default as DataCard } from './DataDisplay/DataCard';
 export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
