@@ -5,7 +5,7 @@ import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 
 export function useNotifications<
   T extends { SequenceNumber?: number | null; Read?: boolean | null }
->(topic: string, host: string, amplifyPortalToken: string) {
+>(topic: string, host: string, amplifyPortalToken?: string) {
   const connectionRef = useRef<HubConnection | undefined>(undefined);
   const [notifications, setNotifications] = useState<T[]>([]);
   const [
@@ -24,7 +24,7 @@ export function useNotifications<
 
   useEffect(() => {
     const setupConnection = async () => {
-      if (!amplifyPortalToken) return;
+      if (amplifyPortalToken === undefined) return;
 
       const connection = new SignalR.HubConnectionBuilder()
         .withUrl(`${host}/hubs/notifications`, {
