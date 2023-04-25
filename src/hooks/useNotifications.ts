@@ -4,7 +4,7 @@ import * as SignalR from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 
 export function useNotifications<
-  T extends { SequenceNumber?: number; Read?: boolean }
+  T extends { SequenceNumber?: number | null; Read?: boolean | null }
 >(topic: string, host: string, amplifyPortalToken: string) {
   const connectionRef = useRef<HubConnection | undefined>(undefined);
   const [notifications, setNotifications] = useState<T[]>([]);
@@ -142,7 +142,11 @@ export function useNotifications<
 
   /* functions */
   async function deleteNotification(notification: T) {
-    if (connectionRef.current) {
+    if (
+      connectionRef.current &&
+      notification.SequenceNumber !== undefined &&
+      notification.SequenceNumber !== null
+    ) {
       await connectionRef.current.invoke(
         'DeleteMessage',
         notification.SequenceNumber
