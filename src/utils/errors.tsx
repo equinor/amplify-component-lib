@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import GlitchAnimation from '../components/Feedback/ErrorPage/illustrations/GlitchAnimation';
-import Robot2 from '../components/Feedback/ErrorPage/illustrations/Robot2';
+import QuestioningAnimation from '../components/Feedback/ErrorPage/illustrations/QuestioningAnimation';
 
 export enum ErrorType {
   ERROR_400 = '400',
@@ -24,14 +24,14 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
   return [
     {
       type: ErrorType.DEFAULT,
-      illustration: <Robot2 />,
+      illustration: <QuestioningAnimation />,
       title: 'Oops! Something went wrong.',
       description:
         'Try again later or use our feedback form if the problem persists.',
     },
     {
       type: ErrorType.ERROR_400,
-      illustration: <Robot2 />,
+      illustration: <QuestioningAnimation />,
       title: 'Bad Request, oh no!',
       description:
         'We got a little confused by your request. Try again later, or report the bug in the feedback form in the topbar if the problem persist.',
@@ -56,7 +56,7 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
     },
     {
       type: ErrorType.ERROR_404,
-      illustration: <Robot2 />,
+      illustration: <QuestioningAnimation />,
 
       title: 'Page not found!',
       description:

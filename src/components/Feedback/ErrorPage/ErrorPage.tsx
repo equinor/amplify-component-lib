@@ -2,7 +2,7 @@ import { forwardRef, ReactNode } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import Robot1 from './illustrations/Robot1';
+import GlitchAnimation from './illustrations/GlitchAnimation';
 
 import styled from 'styled-components';
 
@@ -29,7 +29,7 @@ export type ErrorContentProps = {
 };
 
 export const ErrorPage = forwardRef<HTMLDivElement, ErrorContentProps>(
-  ({ children, illustration = <Robot1 /> }, ref) => {
+  ({ children, illustration = <GlitchAnimation /> }, ref) => {
     return (
       <Container ref={ref}>
         {illustration}

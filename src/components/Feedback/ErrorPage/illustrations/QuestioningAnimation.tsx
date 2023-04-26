@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import styled, { keyframes } from 'styled-components';
 const animation = keyframes`
-  100% { background-position: calc(-32640px/1.8); }
+  100% { background-position: calc(-18942px/2); }
 `;
 const Container = styled.div`
   width: 400px;
@@ -11,18 +11,18 @@ const Container = styled.div`
 `;
 
 const Animation = styled.div`
-  height: 300px; // 540 / 1.8 size of the image
-  width: calc(32640px / (1.8 * 34));
+  height: 307px; // 614 / 2 size of the image
+  width: calc(18942px / (2 * 33));
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: url('https://raw.githubusercontent.com/equinor/amplify-components/main/static/Glitch_spritesheet.png')
+  background: url('https://raw.githubusercontent.com/equinor/amplify-components/main/static/Questioning_spritesheet.png')
     left center;
   background-size: cover;
-  animation: ${animation} 2.5s steps(34) infinite;
+  animation: ${animation} 1.5s steps(33) infinite;
 `;
-const GlitchAnimation: FC = () => {
+const QuestioningAnimation: FC = () => {
   return (
     <Container>
       <Animation />
@@ -30,4 +30,4 @@ const GlitchAnimation: FC = () => {
   );
 };
 
-export default GlitchAnimation;
+export default QuestioningAnimation;
