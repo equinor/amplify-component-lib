@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Robot1 from '../components/Feedback/ErrorPage/illustrations/Robot1';
+import GlitchAnimation from '../components/Feedback/ErrorPage/illustrations/GlitchAnimation';
 import Robot2 from '../components/Feedback/ErrorPage/illustrations/Robot2';
 
 export enum ErrorType {
@@ -38,7 +38,7 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
     },
     {
       type: ErrorType.ERROR_401,
-      illustration: <Robot1 />,
+      illustration: <GlitchAnimation />,
 
       title: `You don’t have access to ${appName}.`,
       description: `Beep boop, dont worry! You can apply for ${appName} in  AccessIT`,
@@ -49,7 +49,7 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
     },
     {
       type: ErrorType.ERROR_403,
-      illustration: <Robot1 />,
+      illustration: <GlitchAnimation />,
 
       title: "It looks like you don't have permission to access this page.",
       description: '',
@@ -64,7 +64,7 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
     },
     {
       type: ErrorType.ERROR_500,
-      illustration: <Robot1 />,
+      illustration: <GlitchAnimation />,
       title: 'Oops, our server just hiccuped!',
       description:
         "It looks like the page you're looking for has gone missing. Please check the URL and try again.",

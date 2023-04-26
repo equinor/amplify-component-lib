@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react';
 
 import { ErrorType, getErrorContent } from '../../../utils/errors';
 import Template from '../../Template/Template';
-import Robot1 from './illustrations/Robot1';
+import GlitchAnimation from './illustrations/GlitchAnimation';
 import Robot2 from './illustrations/Robot2';
 import ErrorPage from '.';
 
@@ -11,7 +11,7 @@ export default {
   component: ErrorPage,
   argTypes: {
     customized: { control: 'boolean' },
-    robot: { control: 'radio', options: ['Robot 1', 'Robot 2'] },
+    robot: { control: 'radio', options: ['Glitch', 'Robot 2'] },
     type: {
       control: 'radio',
       options: [
@@ -33,7 +33,7 @@ export default {
   },
   args: {
     customized: false,
-    robot: 'Robot 1',
+    robot: 'Glitch',
     type: ErrorType.DEFAULT,
     title: 'Error title...',
     description: 'Error description...',
@@ -60,8 +60,8 @@ export const Primary: Story = (args) => {
       <ErrorPage
         illustration={
           customized ? (
-            args.robot === 'Robot 1' ? (
-              <Robot1 />
+            args.robot === 'Glitch' ? (
+              <GlitchAnimation />
             ) : (
               <Robot2 />
             )
