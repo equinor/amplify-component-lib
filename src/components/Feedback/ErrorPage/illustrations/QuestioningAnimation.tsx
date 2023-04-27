@@ -20,7 +20,7 @@ const Animation = styled.div`
   background: url('https://raw.githubusercontent.com/equinor/amplify-components/main/static/Questioning_spritesheet.png')
     left center;
   background-size: cover;
-  animation: ${animation} 1.5s steps(33) infinite;
+  animation: ${animation} 2s steps(33) infinite;
 `;
 const QuestioningAnimation: FC = () => {
   return (

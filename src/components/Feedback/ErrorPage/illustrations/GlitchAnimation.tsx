@@ -20,7 +20,7 @@ const Animation = styled.div`
   background: url('https://raw.githubusercontent.com/equinor/amplify-components/main/static/Glitch_spritesheet.png')
     left center;
   background-size: cover;
-  animation: ${animation} 2.5s steps(34) infinite;
+  animation: ${animation} 4s steps(34) infinite;
 `;
 const GlitchAnimation: FC = () => {
   return (
