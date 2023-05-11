@@ -18,11 +18,13 @@ export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
+export { default as PageNotFound } from './Feedback/PageNotFound';
 export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
+export { default as Unauthorized } from './Feedback/Unauthorized';
 export {
   amplify_lwd,
   amplify_wellbore,
