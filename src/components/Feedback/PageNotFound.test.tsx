@@ -1,15 +1,12 @@
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { render, screen, userEvent } from '../../tests/test-utils';
-import { ErrorType, getErrorContent } from '../../utils/errors';
 import PageNotFound from './PageNotFound';
 
 test('Displays expected text', async () => {
   render(<PageNotFound />, {
     wrapper: (props: any) => <MemoryRouter>{props.children}</MemoryRouter>,
   });
-
-  const error = getErrorContent('AppName', ErrorType.ERROR_404);
 
   expect(screen.getByText(/page not found/i)).toBeInTheDocument();
   expect(
