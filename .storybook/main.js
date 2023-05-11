@@ -1,17 +1,25 @@
 module.exports = {
-  stories: ['../src/intro.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
-  addons: ['@storybook/addon-docs', '@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-mdx-gfm'],
+  stories: [
+    '../src/intro.stories.mdx',
+    '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+  ],
+  addons: [
+    '@storybook/addon-docs',
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-mdx-gfm',
+  ],
   typescript: {
-    reactDocgen: 'none'
+    reactDocgen: 'none',
   },
   build: {
-    sourcemap: false
+    sourcemap: false,
   },
   framework: {
     name: '@storybook/react-vite',
-    options: {}
+    options: {},
   },
   docs: {
-    autodocs: true
-  }
+    autodocs: true,
+  },
 };
