@@ -124,7 +124,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
           {React.isValidElement(applicationIcon) ? (
             applicationIcon
           ) : (
-            <ApplicationIcon name={applicationIcon} size={40} />
+            <ApplicationIcon name={applicationIcon as string} size={40} />
           )}
           <AppName variant="h6" capitalize={capitalize}>
             {capitalize ? applicationName.toLowerCase() : applicationName}
