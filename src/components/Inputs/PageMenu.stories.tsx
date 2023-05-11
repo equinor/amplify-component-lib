@@ -40,19 +40,27 @@ export default {
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
   position: relative;
-  > div:first-child {
-    position: fixed;
+  gap: 1rem;
+  width: 100%;
+  > div {
+    position: sticky;
     top: 12px;
     left: 12px;
+    height: fit-content;
   }
-  > div:not(:first-child) {
-    padding-bottom: 100vh;
-    width: calc(100% - 10rem);
-    margin-left: 10rem;
-    h1 {
-      color: white;
+  > section {
+    max-height: 50rem;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    > div {
+      padding-bottom: 100vh;
+      width: 100%;
+      h1 {
+        color: white;
+      }
     }
   }
 `;
@@ -86,9 +94,11 @@ export const Primary: Story = (args) => {
     <PageMenuProvider items={args.items}>
       <Container>
         <PageMenu />
-        {args.items.map((item: any) => (
-          <Section key={item.value} {...item} />
-        ))}
+        <section>
+          {args.items.map((item: any) => (
+            <Section key={item.value} {...item} />
+          ))}
+        </section>
       </Container>
     </PageMenuProvider>
   );

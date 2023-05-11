@@ -20,7 +20,7 @@ export default {
 
 const Container = styled.div`
   width: fit-content;
-  height: 100vh;
+  height: 20rem;
   display: flex;
   margin: 0 auto;
 `;

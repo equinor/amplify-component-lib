@@ -1,7 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 
 import { ErrorType, getErrorContent } from '../../../utils/errors';
-import Template from '../../Template/Template';
 import GlitchAnimation from './illustrations/GlitchAnimation';
 import QuestioningAnimation from './illustrations/QuestioningAnimation';
 import ErrorPage from '.';
@@ -56,33 +55,31 @@ export const Primary: Story = (args) => {
 
   const customized = args.customized;
   return (
-    <Template>
-      <ErrorPage
-        illustration={
-          customized ? (
-            args.robot === 'Glitch' ? (
-              <GlitchAnimation />
-            ) : (
-              <QuestioningAnimation />
-            )
+    <ErrorPage
+      illustration={
+        customized ? (
+          args.robot === 'Glitch' ? (
+            <GlitchAnimation />
           ) : (
-            error.illustration
+            <QuestioningAnimation />
           )
-        }
-      >
-        <ErrorPage.Title title={customized ? args.title : error.title} />
-        <ErrorPage.Description
-          text={customized ? args.description : error.description}
-        />
-        {args.haveMissingAccesses && (
-          <ErrorPage.MissingAccesses accesses={args.missingAccesses} />
-        )}
-        <ErrorPage.Action
-          buttonText={customized ? args.buttonText : error.button?.text}
-          onClick={() => console.log('Clicked!')}
-        />
-        {args.haveDetails && <ErrorPage.Details text={args.details} />}
-      </ErrorPage>
-    </Template>
+        ) : (
+          error.illustration
+        )
+      }
+    >
+      <ErrorPage.Title title={customized ? args.title : error.title} />
+      <ErrorPage.Description
+        text={customized ? args.description : error.description}
+      />
+      {args.haveMissingAccesses && (
+        <ErrorPage.MissingAccesses accesses={args.missingAccesses} />
+      )}
+      <ErrorPage.Action
+        buttonText={customized ? args.buttonText : error.button?.text}
+        onClick={() => console.log('Clicked!')}
+      />
+      {args.haveDetails && <ErrorPage.Details text={args.details} />}
+    </ErrorPage>
   );
 };
