@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
 
@@ -29,6 +29,6 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<ApplicationIconProps> = (args) => (
+export const Primary: StoryFn<ApplicationIconProps> = (args) => (
   <ApplicationIcon {...args} />
 );

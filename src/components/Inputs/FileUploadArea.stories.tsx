@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import FileUploadArea, { FileUploadAreaProps } from './FileUploadArea';
 
@@ -7,7 +7,7 @@ export default {
   component: FileUploadArea,
 } as Meta;
 
-const Template: Story<FileUploadAreaProps> = (args) => (
+const Template: StoryFn<FileUploadAreaProps> = (args) => (
   <FileUploadArea {...args} />
 );
 

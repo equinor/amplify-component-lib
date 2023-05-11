@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { Field } from '../../../types/Field';
 import TopBar from '../../Navigation/TopBar';
@@ -55,7 +55,7 @@ const getMyFields = (): Promise<Field[]> => {
   });
 };
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const field = useRef<Field | undefined>(undefined);
   const [fields, setFields] = useState<Field[]>([]);
   const [isLoading, setIsLoading] = useState(true);

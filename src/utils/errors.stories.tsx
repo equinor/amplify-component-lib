@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Error',
 } as Meta;
 
-export const getListOfErrors: Story = () => {
+export const GetListOfErrors: StoryFn = () => {
   const codeText = `
   getListOfErrors(
     appName: string,
@@ -20,7 +20,7 @@ export const getListOfErrors: Story = () => {
   `;
   return <UtilStory name="getListOfErrors" codeText={codeText} />;
 };
-export const getErrorContent: Story = () => {
+export const GetErrorContent: StoryFn = () => {
   const codeText = `
   getErrorContent(
     appName: string,

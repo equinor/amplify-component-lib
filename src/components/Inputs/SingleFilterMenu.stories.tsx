@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import SingleFilterMenu, { SingleFilterMenuProps } from './SingleFilterMenu';
 
@@ -19,6 +19,6 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<SingleFilterMenuProps> = (args) => (
+export const Primary: StoryFn<SingleFilterMenuProps> = (args) => (
   <SingleFilterMenu {...args} />
 );

@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import SkeletonBase from './SkeletonBase';
 
@@ -21,7 +21,7 @@ const ExampleSkeleton = styled(SkeletonBase)`
   height: 24px;
 `;
 
-export const Template: Story = (args) => (
+export const Template: StoryFn = (args) => (
   <div>
     <Typography variant="h5">Skeleton base example</Typography>
     <ExampleSkeleton style={{ ...args }} />

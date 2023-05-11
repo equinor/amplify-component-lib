@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { ErrorType, getErrorContent } from '../../../utils/errors';
 import GlitchAnimation from './illustrations/GlitchAnimation';
@@ -50,7 +50,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const error = getErrorContent('Amplify portal', args.type);
 
   const customized = args.customized;

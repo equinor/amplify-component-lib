@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import EquinorLogo, { EquinorLogoProps } from './EquinorLogo';
 
@@ -20,6 +20,6 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<EquinorLogoProps> = (args) => (
+export const Primary: StoryFn<EquinorLogoProps> = (args) => (
   <EquinorLogo {...args} />
 );

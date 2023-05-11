@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { ISettingsProps, Settings } from './Settings';
 
@@ -21,7 +21,7 @@ export default {
   args: { hasRightElements: true, hasColorBoxes: true, disabledItem: 'dark' },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const [sectionMode, setSectionMode] = useState('decimal');
   const [theme, setTheme] = useState('light');
 

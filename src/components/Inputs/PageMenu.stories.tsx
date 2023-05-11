@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import PageMenuProvider, {
   usePageMenu,
@@ -89,7 +89,7 @@ function Section({
   );
 }
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   return (
     <PageMenuProvider items={args.items}>
       <Container>

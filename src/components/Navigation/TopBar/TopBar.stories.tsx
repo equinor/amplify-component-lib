@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Icon } from '@equinor/eds-core-react';
 import { account_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { EnvironmentType } from './TopBar';
 import TopBar from '.';
@@ -58,7 +58,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = ({ ...args }) => {
+export const Primary: StoryFn = ({ ...args }) => {
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}

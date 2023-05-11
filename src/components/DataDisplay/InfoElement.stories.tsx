@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import InfoElement, { InfoElementProps } from './InfoElement';
 
@@ -15,7 +15,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<InfoElementProps> = (args) => <InfoElement {...args} />;
+const Template: StoryFn<InfoElementProps> = (args) => <InfoElement {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {};

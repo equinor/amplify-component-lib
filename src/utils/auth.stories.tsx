@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,14 +6,14 @@ export default {
   title: 'Other/Utils/AuthEnvironment/Auth',
 } as Meta;
 
-export const FetchMsGraph: Story = () => {
+export const FetchMsGraph: StoryFn = () => {
   const codeText = `
   fetchMsGraph(url: string, accessToken: string) => returns fetch with the accessToken appended to headers
   `;
   return <UtilStory name="fetchMsGraph" codeText={codeText} />;
 };
 
-export const GRAPH_SCOPES: Story = () => {
+export const GRAPH_SCOPES: StoryFn = () => {
   const codeText = `
 const GRAPH_SCOPES = {
   OPENID: 'openid',
@@ -25,7 +25,7 @@ const GRAPH_SCOPES = {
   return <UtilStory name="GRAPH_SCOPES" codeText={codeText} />;
 };
 
-export const GRAPH_REQUESTS: Story = () => {
+export const GRAPH_REQUESTS: StoryFn = () => {
   const codeText = `
 const GRAPH_REQUESTS = {
   LOGIN: {
@@ -42,7 +42,7 @@ const GRAPH_REQUESTS = {
   return <UtilStory name="GRAPH_REQUESTS" codeText={codeText} />;
 };
 
-export const GRAPH_ENDPOINTS: Story = () => {
+export const GRAPH_ENDPOINTS: StoryFn = () => {
   const codeText = `
 const GRAPH_ENDPOINTS = {
   PHOTO: 'https://graph.microsoft.com/v1.0/me/photos/96x96/$value',
@@ -51,21 +51,21 @@ const GRAPH_ENDPOINTS = {
   return <UtilStory name="GRAPH_ENDPOINTS" codeText={codeText} />;
 };
 
-export const msalApp: Story = () => {
+export const MsalApp: StoryFn = () => {
   const codeText = `
   msalApp => Msal instance we use in AuthProvider
   `;
   return <UtilStory name="msalApp" codeText={codeText} />;
 };
 
-export const acquireToken: Story = () => {
+export const AcquireToken: StoryFn = () => {
   const codeText = `
   acquireToken(msalInstance, request) => returns token for the requested scope
   `;
   return <UtilStory name="acquireToken" codeText={codeText} />;
 };
 
-export const isReaderOnly: Story = () => {
+export const IsReaderOnly: StoryFn = () => {
   const codeText = `
   isReaderOnly(roles: string[]) => returns true if none of the roles include 'WRITE'
   `;

@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import StatusChip from './StatusChip';
 
@@ -20,7 +20,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => (
+export const Primary: StoryFn = (args) => (
   <StatusChip {...args} style={{ width: args.width }}>
     <Typography group="ui" variant="chip__badge">
       {args.children}
