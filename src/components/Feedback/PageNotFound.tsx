@@ -12,15 +12,14 @@ const PageNotFound: FC = () => {
     getAppName(import.meta.env.VITE_NAME),
     ErrorType.ERROR_404
   );
+
   const navigate = useNavigate();
+
   return (
     <ErrorPage illustration={error.illustration}>
       <ErrorPage.Title title={error.title} />
       <ErrorPage.Description text={error.description} />
-      <ErrorPage.Action
-        buttonText={error.button?.text}
-        onClick={() => navigate(-1)}
-      />
+      <ErrorPage.Action onClick={() => navigate(-1)} />
     </ErrorPage>
   );
 };
