@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import EditableField, { EditableFieldProps } from './EditableField';
 
@@ -15,7 +15,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<EditableFieldProps> = (args) => (
+const Template: StoryFn<EditableFieldProps> = (args) => (
   <EditableField {...args} />
 );
 

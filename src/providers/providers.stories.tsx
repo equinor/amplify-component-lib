@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import styled from 'styled-components';
 
@@ -91,4 +91,4 @@ export default {
   component: List,
 } as Meta;
 
-export const Primary: Story = () => <List />;
+export const Primary: StoryFn = () => <List />;

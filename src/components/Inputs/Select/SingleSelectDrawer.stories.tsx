@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { items, ValueType } from './SelectUtils';
 import SingleSelectDrawer from './SingleSelectDrawer';
@@ -23,7 +23,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const [selectedItem, setSelectedItem] = useState<ValueType | undefined>(
     items[0]
   );

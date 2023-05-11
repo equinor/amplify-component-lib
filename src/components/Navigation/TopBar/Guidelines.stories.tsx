@@ -10,7 +10,7 @@ import {
   settings,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { amplify_wellbore } from '../../Icons/AmplifyIcons';
 import { Guidelines, GuidelineSections } from './Guidelines';
@@ -24,7 +24,7 @@ export default {
   args: { haveColorBoxes: true },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const sections: GuidelineSections[] = [
     {
       sectionName: 'Top bar',

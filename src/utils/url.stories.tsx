@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Url',
 } as Meta;
 
-export const isValidUrl: Story = () => {
+export const isValidUrl: StoryFn = () => {
   const codeText = `
   isValidUrl(
     url: string

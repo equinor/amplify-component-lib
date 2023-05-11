@@ -1,5 +1,5 @@
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
 import { MenuItemType } from './MenuItem';
@@ -29,7 +29,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const menuItems: MenuItemType[] = [
     {
       name: 'Dashboard',

@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { TutorialStepsProvider } from '../../../providers';
 import Tutorial, { IStep, TutorialProps } from './Tutorial';
@@ -43,7 +43,7 @@ const steps: IStep[] = [
   },
 ];
 
-const Template: Story<TutorialProps> = (args) => {
+const Template: StoryFn<TutorialProps> = (args) => {
   return (
     <TutorialStepsProvider>
       <TutorialStoryComponent {...args} />

@@ -110,8 +110,12 @@ const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
   scopes: [apiScope],
 });
 
-const msalApp = (clientId: string) =>
-  new PublicClientApplication({
+const msalApp = (clientId: string) => {
+  if (getIsMock(import.meta.env.VITE_IS_MOCK)) {
+    return {} as PublicClientApplication;
+  }
+
+  return new PublicClientApplication({
     auth: {
       clientId: clientId,
       authority:
@@ -128,6 +132,7 @@ const msalApp = (clientId: string) =>
       iframeHashTimeout: 10000,
     },
   });
+};
 
 const acquireToken = async (
   instance: IPublicClientApplication,

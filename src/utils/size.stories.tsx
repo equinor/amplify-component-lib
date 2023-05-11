@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Size',
 } as Meta;
 
-export const formatBytes: Story = () => {
+export const formatBytes: StoryFn = () => {
   const codeText = `
   formatBytes(
     bytes: number,
@@ -17,7 +17,7 @@ export const formatBytes: Story = () => {
   return <UtilStory name="formatBytes" codeText={codeText} />;
 };
 
-export const formatKiloBytes: Story = () => {
+export const formatKiloBytes: StoryFn = () => {
   const codeText = `
   formatKiloBytes(
     kiloBytes: number,

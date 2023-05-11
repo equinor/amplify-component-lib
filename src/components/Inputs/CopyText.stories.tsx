@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import CopyText, { CopyTextProps } from './CopyText';
 
@@ -9,7 +9,7 @@ export default {
   component: CopyText,
 } as Meta;
 
-const Template: Story<CopyTextProps> = (args) => (
+const Template: StoryFn<CopyTextProps> = (args) => (
   <CopyText {...args}>Some text</CopyText>
 );
 

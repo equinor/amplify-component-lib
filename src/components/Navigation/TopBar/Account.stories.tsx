@@ -1,5 +1,5 @@
 import { AccountInfo } from '@azure/msal-common';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { Account } from './Account';
 
@@ -19,7 +19,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const account: AccountInfo = {
     username: args.username,
     name: args.name,

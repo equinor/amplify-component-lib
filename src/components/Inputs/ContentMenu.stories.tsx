@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import ContentMenu, { ContentMenuProps } from './ContentMenu';
 
@@ -42,7 +42,7 @@ export default {
   },
 };
 
-export const Primary: Story<ContentMenuProps> = (args) => {
+export const Primary: StoryFn<ContentMenuProps> = (args) => {
   const [value, setValue] = useState(args.items.at(0)?.value ?? '');
 
   const handleOnChange = (newValue: string) => {

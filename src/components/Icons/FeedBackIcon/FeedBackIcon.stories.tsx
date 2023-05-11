@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import FeedBackIcon, { FeedBackIconProps } from './FeedBackIcon';
 
@@ -20,6 +20,6 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<FeedBackIconProps> = (args) => (
+export const Primary: StoryFn<FeedBackIconProps> = (args) => (
   <FeedBackIcon {...args} />
 );

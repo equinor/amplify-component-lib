@@ -1,4 +1,4 @@
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import Sieve, { SieveProps } from './Sieve';
 
@@ -60,7 +60,7 @@ export default {
   },
 };
 
-export const Primary: Story<SieveProps> = (args) => {
+export const Primary: StoryFn<SieveProps> = (args) => {
   return <Sieve {...args} />;
 };
 Primary.parameters = {

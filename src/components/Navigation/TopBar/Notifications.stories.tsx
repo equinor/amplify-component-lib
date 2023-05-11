@@ -1,5 +1,5 @@
 import { Divider } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import Notifications, { UnreadRedDot } from './Notifications';
 
@@ -10,13 +10,13 @@ export default {
   args: { hasUnread: true },
 } as Meta;
 
-type StoryNotificationItem = {
+type StoryFnNotificationItem = {
   Read: boolean;
   SequenceNumber: number;
   Text: string;
 };
 
-const items: StoryNotificationItem[] = [
+const items: StoryFnNotificationItem[] = [
   {
     Read: false,
     SequenceNumber: 1,
@@ -34,7 +34,7 @@ const items: StoryNotificationItem[] = [
   },
 ];
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   return (
     <Notifications hasUnread={args.hasUnread} setAllAsRead={() => null}>
       {items.map((item) => {

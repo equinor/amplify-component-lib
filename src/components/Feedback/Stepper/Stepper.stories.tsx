@@ -1,4 +1,4 @@
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import Stepper, { StepperProps } from './Stepper';
 
@@ -20,12 +20,12 @@ export default {
 
 const Container = styled.div`
   width: fit-content;
-  height: 100vh;
+  height: 20rem;
   display: flex;
   margin: 0 auto;
 `;
 
-export const Primary: Story<StepperProps> = (args) => {
+export const Primary: StoryFn<StepperProps> = (args) => {
   return (
     <Container>
       <Stepper {...args} />{' '}

@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import FullPageSpinner, { FullpageSpinnerProps } from './FullPageSpinner';
 
@@ -28,7 +28,7 @@ const Container = styled.div`
   }
 `;
 
-const Template: Story<FullpageSpinnerProps> = (args) => (
+const Template: StoryFn<FullpageSpinnerProps> = (args) => (
   <Container>
     <FullPageSpinner {...args} />
   </Container>

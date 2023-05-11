@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import WorkflowStatusBar from './WorkflowStatusBar';
 
@@ -89,7 +89,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => (
+export const Primary: StoryFn = (args) => (
   <div style={{ fontSize: '16px' }}>
     <WorkflowStatusBar
       options={args.options}

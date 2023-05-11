@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import CommentField, { CommentFieldProps } from './CommentField';
 
@@ -8,7 +8,7 @@ export default {
   component: CommentField,
 } as Meta;
 
-const Template: Story<CommentFieldProps> = (args) => (
+const Template: StoryFn<CommentFieldProps> = (args) => (
   <div>
     <Typography>See console for change and delete output</Typography>
     <CommentField {...args} />

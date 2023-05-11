@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import FullPageStatus, { FullPageStatusProps } from './FullPageStatus';
 
@@ -7,7 +7,7 @@ export default {
   component: FullPageStatus,
 } as Meta;
 
-const Template: Story<FullPageStatusProps> = (args) => (
+const Template: StoryFn<FullPageStatusProps> = (args) => (
   <FullPageStatus {...args} />
 );
 

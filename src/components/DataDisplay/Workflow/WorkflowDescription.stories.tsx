@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import WorkflowDescription, {
   WorkflowDescriptionProps,
@@ -9,7 +9,7 @@ export default {
   component: WorkflowDescription,
 } as Meta;
 
-const Template: Story<WorkflowDescriptionProps> = (args) => (
+const Template: StoryFn<WorkflowDescriptionProps> = (args) => (
   <WorkflowDescription {...args} />
 );
 

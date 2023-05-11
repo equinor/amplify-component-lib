@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Map',
 } as Meta;
 
-export const distanceLatLng: Story = () => {
+export const distanceLatLng: StoryFn = () => {
   const codeText = `
   distanceLatLng(
     x: LatLngLiteral,
@@ -17,14 +17,14 @@ export const distanceLatLng: Story = () => {
   return <UtilStory name="distanceLatLng" codeText={codeText} />;
 };
 
-export const utmProjection: Story = () => {
+export const utmProjection: StoryFn = () => {
   const codeText = `
   utmProjection => proj64 string for Johan Sverdrup map projection
   `;
   return <UtilStory name="utmProjection" codeText={codeText} />;
 };
 
-export const convertUtmToLatLng: Story = () => {
+export const convertUtmToLatLng: StoryFn = () => {
   const codeText = `
   convertUtmToLatLng(
     x: string | number,
@@ -35,7 +35,7 @@ export const convertUtmToLatLng: Story = () => {
   return <UtilStory name="convertUtmToLatLng" codeText={codeText} />;
 };
 
-export const convertLatLngToUtm: Story = () => {
+export const convertLatLngToUtm: StoryFn = () => {
   const codeText = `
   convertUtmToLatLng(
     coordinate: LatLngLiteral
