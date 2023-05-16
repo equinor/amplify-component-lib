@@ -1,10 +1,15 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Story } from '@storybook/react';
+import { tokens } from '@equinor/eds-tokens';
+import { StoryFn } from '@storybook/react';
 
-import PageMenuProvider from '../../providers/PageMenuProvider';
+import PageMenuProvider, {
+  usePageMenu,
+} from '../../providers/PageMenuProvider';
 import PageMenu from './PageMenu';
 
 import styled from 'styled-components';
+
+const { colors } = tokens;
 
 export default {
   title: 'Inputs/PageMenu',
@@ -17,14 +22,17 @@ export default {
       {
         label: 'First section',
         value: 'id-1',
+        color: colors.infographic.substitute__blue_ocean.hex,
       },
       {
         label: 'Second section',
         value: 'id-2',
+        color: colors.infographic.substitute__blue_sky.hex,
       },
       {
         label: 'Third section',
         value: 'id-3',
+        color: colors.infographic.substitute__blue_overcast.hex,
       },
     ],
   },
@@ -32,29 +40,65 @@ export default {
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
   position: relative;
-  > div:first-child {
-    position: fixed;
+  gap: 1rem;
+  width: 100%;
+  > div {
+    position: sticky;
     top: 12px;
     left: 12px;
+    height: fit-content;
   }
-  h1 {
-    margin-bottom: 50vh;
-    margin-left: 50%;
+  > section {
+    max-height: 50rem;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    > div {
+      padding-bottom: 100vh;
+      width: 100%;
+      h1 {
+        color: white;
+      }
+    }
   }
 `;
 
-export const Primary: Story = (args) => {
+function Section({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: string;
+  color: string;
+}) {
+  const { setItemRef } = usePageMenu();
+  return (
+    <div style={{ background: color }}>
+      <Typography
+        variant="h1"
+        ref={(current) => setItemRef(current, value)}
+        key={value}
+        id={value}
+      >
+        {label}
+      </Typography>
+    </div>
+  );
+}
+
+export const Primary: StoryFn = (args) => {
   return (
     <PageMenuProvider items={args.items}>
       <Container>
         <PageMenu />
-        {args.items.map((item: { value: string; label: string }) => (
-          <Typography variant="h1" key={item.value} id={item.value}>
-            {item.label}
-          </Typography>
-        ))}
+        <section>
+          {args.items.map((item: any) => (
+            <Section key={item.value} {...item} />
+          ))}
+        </section>
       </Container>
     </PageMenuProvider>
   );

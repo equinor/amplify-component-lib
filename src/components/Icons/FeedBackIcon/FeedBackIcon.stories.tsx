@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import FeedBackIcon, { FeedBackIconProps } from './FeedBackIcon';
 
@@ -8,9 +8,9 @@ export default {
   argTypes: {
     name: {
       control: 'radio',
-      options: ['positive', 'negative', undefined],
+      options: ['positive', 'negative'],
     },
-    variant: { control: 'radio', options: ['filled', 'outlined', undefined] },
+    variant: { control: 'radio', options: ['filled', 'outlined'] },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
   },
   args: {
@@ -20,6 +20,6 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<FeedBackIconProps> = (args) => (
+export const Primary: StoryFn<FeedBackIconProps> = (args) => (
   <FeedBackIcon {...args} />
 );

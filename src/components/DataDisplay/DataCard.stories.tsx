@@ -1,7 +1,7 @@
 import { Button, Chip, Icon } from '@equinor/eds-core-react';
 import { account_circle, info_circle, more_vertical } from '@equinor/eds-icons';
 import { details } from '@equinor/eds-icons';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import DataCard from './DataCard';
 
@@ -46,7 +46,7 @@ const DataTypeCardBody = styled.div`
   height: 4em;
 `;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const body = (
     <DataTypeCardBody>
       {args.hasBodyChip && <Chip>{args.bodyChipText}</Chip>}

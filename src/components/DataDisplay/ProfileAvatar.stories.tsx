@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import ProfileAvatar from './ProfileAvatar';
 
@@ -24,7 +24,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   return (
     <ProfileAvatar
       size={args.size}

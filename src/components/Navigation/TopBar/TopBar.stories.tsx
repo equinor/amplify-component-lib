@@ -1,25 +1,15 @@
 import React from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
-import {
-  account_circle,
-  car,
-  dashboard,
-  history,
-  home,
-} from '@equinor/eds-icons';
+import { account_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
-import ApplicationIcon, {
-  ApplicationName,
-} from '../../Icons/ApplicationIcon/ApplicationIcon';
 import { EnvironmentType } from './TopBar';
 import TopBar from '.';
 
 const { colors } = tokens;
 
-const icons = [car, dashboard, history, home];
 export default {
   title: 'Navigation/TopBar/TopBar',
   component: TopBar,
@@ -31,6 +21,7 @@ export default {
     applicationIcon: {
       control: 'select',
       options: [
+        'fallback',
         '4dinsight',
         'acquire',
         'dasha',
@@ -39,9 +30,12 @@ export default {
         'portal',
         'pwex',
         'logging-qualification',
+        'inpress',
       ],
     },
-    applicationName: { control: 'text' },
+    applicationName: {
+      control: 'text',
+    },
     isFetching: { control: 'boolean' },
     capitalized: { control: 'boolean' },
     environment: {
@@ -64,24 +58,12 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = ({ ...args }) => {
+export const Primary: StoryFn = ({ ...args }) => {
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
-      applicationIcon={
-        args.customIcon !== 'none' ? (
-          <Icon
-            color={colors.interactive.primary__resting.hsla}
-            data={icons.find((item) => item.name === args.customIcon)}
-          />
-        ) : (
-          <ApplicationIcon
-            name={args.applicationIcon as ApplicationName}
-            size={40}
-          />
-        )
-      }
       capitalize={args.capitalized}
+      applicationIcon={args.applicationIcon}
       applicationName={args.applicationName}
       isFetching={args.isFetching}
       environment={args.environment}

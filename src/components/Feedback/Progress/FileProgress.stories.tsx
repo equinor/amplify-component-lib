@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import FileProgress, { FileProgressProps } from './FileProgress';
 
@@ -7,7 +7,9 @@ export default {
   component: FileProgress,
 } as Meta;
 
-const Template: Story<FileProgressProps> = (args) => <FileProgress {...args} />;
+const Template: StoryFn<FileProgressProps> = (args) => (
+  <FileProgress {...args} />
+);
 
 export const Primary = Template.bind({});
 Primary.args = {

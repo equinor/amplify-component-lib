@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import ConfirmationPopup, { ConfirmationPopupProps } from './ConfirmationPopup';
 
@@ -38,6 +38,6 @@ export default {
   },
 };
 
-export const Primary: Story<ConfirmationPopupProps> = (args) => {
+export const Primary: StoryFn<ConfirmationPopupProps> = (args) => {
   return <ConfirmationPopup {...args} />;
 };

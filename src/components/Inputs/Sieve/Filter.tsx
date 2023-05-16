@@ -67,7 +67,7 @@ const Filter: FC<FilterProps> = ({
     setSubMenuAnchor(null);
   };
 
-  const handleMenuItemClick = (event: MouseEvent<Element>, index: number) => {
+  const handleMenuItemClick = (event: MouseEvent, index: number) => {
     if (subMenuIndex === index) {
       setSubMenuIndex(-1);
       setSubMenuAnchor(null);
@@ -104,7 +104,9 @@ const Filter: FC<FilterProps> = ({
               <MenuItem
                 key={`filter-menu-item-${option.label}`}
                 active={subMenuIndex === index}
-                onClick={(event) => handleMenuItemClick(event, index)}
+                onClick={(event: MouseEvent) =>
+                  handleMenuItemClick(event, index)
+                }
               >
                 {option.label}
                 <Icon

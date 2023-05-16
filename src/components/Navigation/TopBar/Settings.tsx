@@ -1,4 +1,4 @@
-import React, { FC, forwardRef, useRef, useState } from 'react';
+import React, { FC, useRef, ReactElement, useState } from 'react';
 
 import { Button, Icon, Menu, Radio, Typography } from '@equinor/eds-core-react';
 import { clear, settings } from '@equinor/eds-icons';
@@ -9,12 +9,6 @@ import TopBarMenu from './TopBarMenu';
 import styled from 'styled-components';
 
 const { colors, elevation } = tokens;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -49,7 +43,8 @@ export interface ISettingsSections {
     name: string;
     value: string;
     colorBox?: string;
-    element?: string;
+    element?: ReactElement;
+    text?: string;
     disabled?: boolean;
   }[];
 }
@@ -62,50 +57,57 @@ export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <>
-      <Button
-        variant="ghost_icon"
-        onClick={() => setIsOpen(!isOpen)}
-        ref={buttonRef}
-      >
-        <Icon
-          data={settings}
-          size={24}
-          color={colors.interactive.primary__resting.hsla}
-        />
-      </Button>
-      <TopBarMenu
-        open={isOpen}
-        title="Settings"
-        onClose={() => setIsOpen(false)}
-        anchorEl={buttonRef.current}
-      >
-        {allSettings.map((section, ind) => (
-          <div key={ind}>
-            <Typography variant="overline">{section.title}</Typography>
-            {section.items.map((item, index) => (
-              <ContentWrapper key={index}>
-                <Radio
-                  disabled={item.disabled}
-                  label={item.label}
-                  name={item.name}
-                  value={item.value}
-                  checked={section.type === item.value}
-                  onChange={() => section.onChange?.(item.value)}
-                />
-                {item.colorBox && <StyledColorBox color={item.colorBox} data-testid={`colorbox-${item.colorBox}`} />}
-                {item.element && (
-                  <Typography variant="h6">{item.element}</Typography>
-                )}
-              </ContentWrapper>
+    return (
+      <>
+        <Button
+          variant="ghost_icon"
+          onClick={() => setIsOpen(!isOpen)}
+          ref={buttonRef}
+        >
+          <Icon
+            data={settings}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+        </Button>
+        <TopBarMenu
+          open={isOpen}
+          title="Settings"
+          onClose={() => setIsOpen(false)}
+          anchorEl={buttonRef.current}
+        >
+            {allSettings.map((section, ind) => (
+              <div key={ind}>
+                <Typography variant="overline">{section.title}</Typography>
+                {section.items.map((item, index) => (
+                  <ContentWrapper key={index}>
+                    <Radio
+                      disabled={item.disabled}
+                      label={item.label}
+                      name={item.name}
+                      value={item.value}
+                      checked={section.type === item.value}
+                      onChange={() => section.onChange?.(item.value)}
+                    />
+                    {item.colorBox && (
+                      <StyledColorBox
+                        color={item.colorBox}
+                        data-testid={`colorbox-${item.colorBox}`}
+                      />
+                    )}
+                    {item.text && (
+                      <Typography variant="h6">{item.text}</Typography>
+                    )}
+                    {item.element && item.element}
+                  </ContentWrapper>
+                ))}
+              </div>
             ))}
-          </div>
-        ))}
-      </TopBarMenu>
-    </>
-  );
-};
+        </TopBarMenu>
+
+      </>
+    );
+  }
 
 export default Settings;
 Settings.displayName = 'TopBar.Settings';

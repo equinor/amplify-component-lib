@@ -7,12 +7,19 @@ module.exports = {
     '@storybook/addon-docs',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
+    '@storybook/addon-mdx-gfm',
   ],
-  core: {
-    builder: '@storybook/builder-vite',
+  typescript: {
+    reactDocgen: 'none',
   },
-  typescript: { reactDocgen: 'none' },
   build: {
     sourcemap: false,
+  },
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
+  },
+  docs: {
+    autodocs: true,
   },
 };

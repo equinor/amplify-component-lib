@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import Robot1 from '../components/Feedback/ErrorPage/illustrations/Robot1';
-import Robot2 from '../components/Feedback/ErrorPage/illustrations/Robot2';
+import GlitchAnimation from '../components/Feedback/ErrorPage/illustrations/GlitchAnimation';
+import QuestioningAnimation from '../components/Feedback/ErrorPage/illustrations/QuestioningAnimation';
 
 export enum ErrorType {
   ERROR_400 = '400',
@@ -24,21 +24,21 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
   return [
     {
       type: ErrorType.DEFAULT,
-      illustration: <Robot2 />,
+      illustration: <QuestioningAnimation />,
       title: 'Oops! Something went wrong.',
       description:
         'Try again later or use our feedback form if the problem persists.',
     },
     {
       type: ErrorType.ERROR_400,
-      illustration: <Robot2 />,
+      illustration: <QuestioningAnimation />,
       title: 'Bad Request, oh no!',
       description:
         'We got a little confused by your request. Try again later, or report the bug in the feedback form in the topbar if the problem persist.',
     },
     {
       type: ErrorType.ERROR_401,
-      illustration: <Robot1 />,
+      illustration: <GlitchAnimation />,
 
       title: `You don’t have access to ${appName}.`,
       description: `Beep boop, dont worry! You can apply for ${appName} in  AccessIT`,
@@ -49,14 +49,14 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
     },
     {
       type: ErrorType.ERROR_403,
-      illustration: <Robot1 />,
+      illustration: <GlitchAnimation />,
 
       title: "It looks like you don't have permission to access this page.",
       description: '',
     },
     {
       type: ErrorType.ERROR_404,
-      illustration: <Robot2 />,
+      illustration: <QuestioningAnimation />,
 
       title: 'Page not found!',
       description:
@@ -64,7 +64,7 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
     },
     {
       type: ErrorType.ERROR_500,
-      illustration: <Robot1 />,
+      illustration: <GlitchAnimation />,
       title: 'Oops, our server just hiccuped!',
       description:
         "It looks like the page you're looking for has gone missing. Please check the URL and try again.",

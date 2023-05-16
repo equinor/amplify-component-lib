@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import HourglassProgress from './HourglassProgress';
 
@@ -21,6 +21,6 @@ export default {
   args: { color: 'primary', size: 32, speed: 'normal' },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   return <HourglassProgress {...args} />;
 };

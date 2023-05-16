@@ -42,9 +42,12 @@ export function useOnScreenMultiple(elements: (Element | null)[]) {
     const observers: IntersectionObserver[] = [];
     for (const [index, element] of elements.entries()) {
       if (element === null) continue;
-      const observer = new IntersectionObserver(([entry]) => {
-        updateIsIntersecting(index, entry.isIntersecting);
-      });
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          updateIsIntersecting(index, entry.isIntersecting);
+        },
+        { threshold: 1 }
+      );
 
       observer.observe(element);
 

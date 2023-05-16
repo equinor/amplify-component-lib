@@ -1,9 +1,8 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { ErrorType, getErrorContent } from '../../../utils/errors';
-import Template from '../../Template/Template';
-import Robot1 from './illustrations/Robot1';
-import Robot2 from './illustrations/Robot2';
+import GlitchAnimation from './illustrations/GlitchAnimation';
+import QuestioningAnimation from './illustrations/QuestioningAnimation';
 import ErrorPage from '.';
 
 export default {
@@ -11,7 +10,7 @@ export default {
   component: ErrorPage,
   argTypes: {
     customized: { control: 'boolean' },
-    robot: { control: 'radio', options: ['Robot 1', 'Robot 2'] },
+    robot: { control: 'radio', options: ['Glitch', 'Questioning'] },
     type: {
       control: 'radio',
       options: [
@@ -33,7 +32,7 @@ export default {
   },
   args: {
     customized: false,
-    robot: 'Robot 1',
+    robot: 'Glitch',
     type: ErrorType.DEFAULT,
     title: 'Error title...',
     description: 'Error description...',
@@ -51,38 +50,36 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story = (args) => {
+export const Primary: StoryFn = (args) => {
   const error = getErrorContent('Amplify portal', args.type);
 
   const customized = args.customized;
   return (
-    <Template>
-      <ErrorPage
-        illustration={
-          customized ? (
-            args.robot === 'Robot 1' ? (
-              <Robot1 />
-            ) : (
-              <Robot2 />
-            )
+    <ErrorPage
+      illustration={
+        customized ? (
+          args.robot === 'Glitch' ? (
+            <GlitchAnimation />
           ) : (
-            error.illustration
+            <QuestioningAnimation />
           )
-        }
-      >
-        <ErrorPage.Title title={customized ? args.title : error.title} />
-        <ErrorPage.Description
-          text={customized ? args.description : error.description}
-        />
-        {args.haveMissingAccesses && (
-          <ErrorPage.MissingAccesses accesses={args.missingAccesses} />
-        )}
-        <ErrorPage.Action
-          buttonText={customized ? args.buttonText : error.button?.text}
-          onClick={() => console.log('Clicked!')}
-        />
-        {args.haveDetails && <ErrorPage.Details text={args.details} />}
-      </ErrorPage>
-    </Template>
+        ) : (
+          error.illustration
+        )
+      }
+    >
+      <ErrorPage.Title title={customized ? args.title : error.title} />
+      <ErrorPage.Description
+        text={customized ? args.description : error.description}
+      />
+      {args.haveMissingAccesses && (
+        <ErrorPage.MissingAccesses accesses={args.missingAccesses} />
+      )}
+      <ErrorPage.Action
+        buttonText={customized ? args.buttonText : error.button?.text}
+        onClick={() => console.log('Clicked!')}
+      />
+      {args.haveDetails && <ErrorPage.Details text={args.details} />}
+    </ErrorPage>
   );
 };

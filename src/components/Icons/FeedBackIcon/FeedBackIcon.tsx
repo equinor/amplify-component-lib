@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-import Fallback from '../Fallback';
 import { SvgIconProps } from '../index';
 import NegativeFilled from './NegativeFilled';
 import NegativeOutlined from './NegativeOutlined';
@@ -13,13 +12,12 @@ interface FeedBackIconData {
 }
 
 export interface FeedBackIconProps {
-  name: 'positive' | 'negative' | 'default';
+  name: 'positive' | 'negative';
   variant?: 'filled' | 'outlined';
-  size?: 16 | 24 | 32 | 40 | 48 | 96;
+  size?: 16 | 24 | 32 | 40 | 48;
 }
 
 const feedbackIcons: FeedBackIconData[] = [
-  { iconName: 'default', component: Fallback },
   { iconName: 'negative-outlined', component: NegativeOutlined },
   { iconName: 'negative-filled', component: NegativeFilled },
   { iconName: 'positive-filled', component: PositiveFilled },
@@ -29,7 +27,6 @@ const feedbackIcons: FeedBackIconData[] = [
 const FeedBackIcon: FC<FeedBackIconProps> = ({ name, size, variant }) => {
   const DefaultComponent = feedbackIcons[0].component;
   if (
-    name === 'default' ||
     !feedbackIcons.some(
       (icon) => icon.iconName === `${name}-${variant ? variant : 'filled'}`
     )

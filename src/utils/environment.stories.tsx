@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,49 +6,49 @@ export default {
   title: 'Other/Utils/AuthEnvironment/Environment',
 } as Meta;
 
-export const getConfig: Story = () => {
+export const GetConfig: StoryFn = () => {
   const codeText = `
   getConfig(param: env variable name) => helper function to get environment variables
   `;
   return <UtilStory name="getConfig" codeText={codeText} />;
 };
 
-export const getAppName: Story = () => {
+export const GetAppName: StoryFn = () => {
   const codeText = `
   getAppName() => gets APP_NAME env variable
   `;
   return <UtilStory name="getAppName" codeText={codeText} />;
 };
 
-export const getClientId: Story = () => {
+export const GetClientId: StoryFn = () => {
   const codeText = `
   getClientId() => gets CLIENT_ID env variable
   `;
   return <UtilStory name="getClientId" codeText={codeText} />;
 };
 
-export const getApiUrl: Story = () => {
+export const GetApiUrl: StoryFn = () => {
   const codeText = `
   getApiUrl() => gets API_URL env variable
   `;
   return <UtilStory name="getApiUrl" codeText={codeText} />;
 };
 
-export const getApiScope: Story = () => {
+export const GetApiScope: StoryFn = () => {
   const codeText = `
   getApiScope() => gets API_SCOPE env variable
   `;
   return <UtilStory name="getApiScope" codeText={codeText} />;
 };
 
-export const getEnvironmentName: Story = () => {
+export const GetEnvironmentName: StoryFn = () => {
   const codeText = `
   getEnvironmentName() => gets ENVIRONMENT_NAME env variable
   `;
   return <UtilStory name="getEnvironmentName" codeText={codeText} />;
 };
 
-export const getIsMock: Story = () => {
+export const GetIsMock: StoryFn = () => {
   const codeText = `
   getIsMock() => gets IS_MOCK env variable
   `;

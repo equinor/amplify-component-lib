@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Sort',
 } as Meta;
 
-export const sortByDate: Story = () => {
+export const sortByDate: StoryFn = () => {
   const codeText = `
   sortByDate(
     a: Date | string,
@@ -17,7 +17,7 @@ export const sortByDate: Story = () => {
   return <UtilStory name="sortByDate" codeText={codeText} />;
 };
 
-export const sortByWellboreName: Story = () => {
+export const sortByWellboreName: StoryFn = () => {
   const codeText = `
   sortByWellboreName(
     a: { wellboreName: string } | string,

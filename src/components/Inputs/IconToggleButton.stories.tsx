@@ -1,5 +1,5 @@
 import { list, view_module } from '@equinor/eds-icons';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import IconToggleButton, { IconToggleButtonProps } from './IconToggleButton';
 
@@ -8,7 +8,7 @@ export default {
   component: IconToggleButton,
 } as Meta;
 
-const Template: Story<IconToggleButtonProps> = (args) => (
+const Template: StoryFn<IconToggleButtonProps> = (args) => (
   <IconToggleButton {...args} />
 );
 

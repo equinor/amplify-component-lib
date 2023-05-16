@@ -11,6 +11,7 @@ interface IConfig {
   API_URL: string;
   API_SCOPE: string;
   ENVIRONMENT_NAME: string;
+  PORTAL_PROD_CLIENT_ID: string;
   IS_MOCK: boolean;
   SLACK_WEBHOOK_URL: string;
 }
@@ -64,6 +65,15 @@ const getEnvironmentName = (
   return environmentName as EnvironmentType;
 };
 
+const getPortalProdClientId = (
+  portalProdClientId: string | undefined
+): string => {
+  if (!portalProdClientId) {
+    return getConfig('PORTAL_PROD_CLIENT_ID');
+  }
+  return portalProdClientId;
+};
+
 const getSlackWebhookUrl = (slackWebhookUrl: string | undefined) => {
   if (!slackWebhookUrl) {
     return getConfig('SLACK_WEBHOOK_URL');
@@ -73,8 +83,7 @@ const getSlackWebhookUrl = (slackWebhookUrl: string | undefined) => {
 
 const getIsMock = (isMock: string | undefined): boolean => {
   if (isMock === undefined) {
-    const envString = getConfig('IS_MOCK') as string;
-    return envString === 'true';
+    return false;
   }
   return isMock === 'true';
 };
@@ -109,8 +118,12 @@ const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
   scopes: [apiScope],
 });
 
-const msalApp = (clientId: string) =>
-  new PublicClientApplication({
+const msalApp = (clientId: string) => {
+  if (getIsMock(import.meta.env.VITE_IS_MOCK)) {
+    return {} as PublicClientApplication;
+  }
+
+  return new PublicClientApplication({
     auth: {
       clientId: clientId,
       authority:
@@ -127,6 +140,7 @@ const msalApp = (clientId: string) =>
       iframeHashTimeout: 10000,
     },
   });
+};
 
 const acquireToken = async (
   instance: IPublicClientApplication,
@@ -166,6 +180,7 @@ export const environment = {
   getApiUrl,
   getApiScope,
   getEnvironmentName,
+  getPortalProdClientId,
   getIsMock,
   getSlackWebhookUrl,
 };

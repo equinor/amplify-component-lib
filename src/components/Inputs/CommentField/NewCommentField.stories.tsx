@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import NewCommentField, { NewCommentFieldProps } from './NewCommentField';
 
@@ -22,7 +22,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<NewCommentFieldProps> = (args) => {
+const Template: StoryFn<NewCommentFieldProps> = (args) => {
   return <NewCommentField {...args} />;
 };
 

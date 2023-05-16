@@ -1,5 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import {
   amplify_lwd,
@@ -15,7 +15,7 @@ const allIcons = {
   amplify_lwd: amplify_lwd,
 };
 
-interface StoryProps {
+interface StoryFnProps {
   data: string;
   size: 16 | 18 | 24 | 32 | 40 | 48 | undefined;
   color?: string;
@@ -49,7 +49,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<StoryProps> = (args) => {
+export const Primary: StoryFn<StoryFnProps> = (args) => {
   return (
     <Icon
       size={args.size}

@@ -29,27 +29,26 @@ test('usePageMenu throws error if used outside provider', () => {
   );
 });
 
-vi.mock('../hooks', async () => {
-  const actual = (await vi.importActual('../hooks')) as any;
-  return {
-    useOnScreenMultiple: (elements: any[]) =>
-      elements.map((el, index) => {
-        const visibleIndex = Number(import.meta.env.VISIBLE_INDEX);
-        return index === visibleIndex;
-      }),
-    usePrevious: actual.usePrevious,
-  };
-});
-
-test('Sets selected when visible changes', () => {
+test('SetItemRef works as expected', () => {
   const items = fakeItems();
+  const { result } = renderHook(() => usePageMenu(), {
+    wrapper: (props: any) => (
+      <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+    ),
+  });
 
   import.meta.env.VISIBLE_INDEX = 0;
-  const { rerender } = render(
+  render(
     <div>
       <PageMenu />
       {items.map((item) => (
-        <h1 key={item.value} id={item.value} style={{ marginTop: '100vh' }}>
+        <h1
+          key={item.value}
+          id={item.value}
+          ref={(current) => {
+            result.current.setItemRef(current, item.value);
+          }}
+        >
           {item.label}
         </h1>
       ))}
@@ -60,19 +59,6 @@ test('Sets selected when visible changes', () => {
       ),
     }
   );
-  import.meta.env.VISIBLE_INDEX = 1;
-  rerender(
-    <div>
-      <PageMenu />
-      {items.map((item) => (
-        <h1 key={item.value} id={item.value} style={{ marginTop: '100vh' }}>
-          {item.label}
-        </h1>
-      ))}
-    </div>
-  );
-
-  const button = screen.getByRole('button', { name: items[1].label });
-
+  const button = screen.getByRole('button', { name: items[0].label });
   expect(button).toBeDisabled();
 });

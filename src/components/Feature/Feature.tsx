@@ -7,10 +7,17 @@ import {
   useState,
 } from 'react';
 
-import { environment } from '../../utils';
+import { auth, environment } from '../../utils';
 
-const { getAppName, getEnvironmentName, getApiUrl } = environment;
-
+const {
+  getAppName,
+  getEnvironmentName,
+  getApiUrl,
+  getPortalProdClientId,
+  getApiScope,
+} = environment;
+const { GRAPH_REQUESTS_BACKEND, acquireToken } = auth;
+import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
 
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
@@ -60,18 +67,37 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
     undefined
   );
 
+  const { instance } = useMsal();
   const account = useAuth().account;
   const username = `${account?.username}`;
   const applicationName = getAppName(import.meta.env.VITE_NAME);
   const environment = getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME);
   const apiUrl = getApiUrl(import.meta.env.VITE_API_URL);
+  const portalProdClientId = getPortalProdClientId(
+    import.meta.env.VITE_PORTAL_PROD_CLIENT_ID
+  );
 
   const { data: portalToken } = useQuery<string>(
-    ['getPortalToken'],
-    async () =>
-      await fetch(`${apiUrl}/api/v1/Token/PortalToken`, {
+    ['getPortalProdToken'],
+    async () => {
+      const authResult = await acquireToken(
+        instance,
+        GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
+      );
+      return await fetch(`${apiUrl}/api/v1/Token/${portalProdClientId}`, {
         method: 'GET',
-      }).then((res) => res.json())
+        headers: {
+          Authorization: 'Bearer ' + authResult.accessToken,
+          'Content-type': 'application/json',
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
+    }
   );
 
   const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>(
@@ -82,11 +108,16 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
         {
           method: 'GET',
           headers: {
+            Authorization: 'Bearer ' + portalToken,
             'Content-type': 'application/json',
-            Authorization: `Bearer ${portalToken}`,
           },
         }
-      ).then((res) => res.json())
+      )
+        .then((res) => res.json())
+        .catch((error) => {
+          throw new Error(error);
+        }),
+    { enabled: portalToken !== undefined }
   );
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from './UtilStory';
 
@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Date',
 } as Meta;
 
-export const formatDate: Story = () => {
+export const FormatDate: StoryFn = () => {
   const codeText = `
   formateDate(
     date: Date | string | null | undefined,
@@ -23,7 +23,7 @@ export const formatDate: Story = () => {
   return <UtilStory name="formatDate" codeText={codeText} />;
 };
 
-export const formatDateTime: Story = () => {
+export const FormatDateTime: StoryFn = () => {
   const codeText = `
   formateDateTime(
     date: Date | string | null | undefined,
@@ -38,7 +38,7 @@ export const formatDateTime: Story = () => {
   return <UtilStory name="formatDateTime" codeText={codeText} />;
 };
 
-export const formatRelativeDateTime: Story = () => {
+export const FormatRelativeDateTime: StoryFn = () => {
   const codeText = `
   formatRelativeDateTime(
     date: Date | string | null | undefined,
@@ -50,7 +50,7 @@ export const formatRelativeDateTime: Story = () => {
   return <UtilStory name="formatRelativeDateTime" codeText={codeText} />;
 };
 
-export const isBetweenDates: Story = () => {
+export const IsBetweenDates: StoryFn = () => {
   const codeText = `
   isBetweenDates(
     date: Date | string | null | undefined,

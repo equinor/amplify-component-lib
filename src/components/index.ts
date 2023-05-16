@@ -1,12 +1,11 @@
 export type { Field } from '../types/Field';
-export type { default as ErrorType } from '../utils/errors';
-export type { default as ErrorContentType } from '../utils/errors';
+export type { ErrorContentType } from '../utils/errors';
+export { ErrorType } from '../utils/errors';
 export { default as DataCard } from './DataDisplay/DataCard';
 export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
-export { default as Table } from './DataDisplay/Table/Table';
 export { default as HighlightBlocks } from './DataDisplay/Tutorial/HighlightBlocks/HighlightBlocks';
 export type { IStep, TutorialProps } from './DataDisplay/Tutorial/Tutorial';
 export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
@@ -19,13 +18,13 @@ export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
-export { default as FullPageUnauthorized } from './Feedback/FullPageUnauthorized';
-export { default as NotFound } from './Feedback/NotFound';
+export { default as PageNotFound } from './Feedback/PageNotFound';
 export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
+export { default as Unauthorized } from './Feedback/Unauthorized';
 export {
   amplify_lwd,
   amplify_wellbore,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import OptionDrawer, { OptionDrawerProps } from './OptionDrawer';
 import { items, ValueType } from './SelectUtils';
@@ -26,7 +26,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<OptionDrawerProps<ValueType>> = (args) => {
+export const Primary: StoryFn<OptionDrawerProps<ValueType>> = (args) => {
   const [selectedItems, setSelectedItems] = useState<ValueType[]>([]);
 
   return (

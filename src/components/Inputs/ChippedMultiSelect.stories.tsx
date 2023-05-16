@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import ChippedMultiSelect, {
   ChippedMultiSelectProps,
@@ -24,7 +24,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<ChippedMultiSelectProps> = (args) => {
+export const Primary: StoryFn<ChippedMultiSelectProps> = (args) => {
   const [values, setValues] = useState(['Item 1']);
   return (
     <ChippedMultiSelect

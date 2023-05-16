@@ -50,7 +50,7 @@
 			"scomp"
 		],
 		"body": [
-			"import { Story } from '@storybook/react';",
+			"import { StoryFn } from '@storybook/react';",
 			"export default {",
 			"\ttitle: 'PATH',",
 			"\tcomponent: $0,",
@@ -62,7 +62,7 @@
 			"\t},",
 			"};",
 			"\n",
-			"export default Primary: Story<${1:ComponentProps}> = (args) => {",
+			"export default Primary: StoryFn<${1:ComponentProps}> = (args) => {",
 			"\treturn null;",
 			"};"
 		]

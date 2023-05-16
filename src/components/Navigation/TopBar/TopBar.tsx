@@ -2,12 +2,12 @@ import React, { forwardRef, ReactElement, ReactNode } from 'react';
 
 import {
   CircularProgress as EDSCircularProgress,
-  Icon,
   TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
-import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
+import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
 
 import styled from 'styled-components';
 
@@ -23,8 +23,7 @@ const Header = styled(EDSTopBar.Header)`
   cursor: pointer;
   position: relative;
   display: grid;
-  // 64px for application icon
-  grid-template-columns: 32px auto;
+  grid-template-columns: 40px auto;
   > svg {
     justify-self: center;
   }
@@ -66,7 +65,7 @@ function environmentStyling(envType: EnvironmentType): string {
   }
   return `
     background-color: ${backgroundColor};
-    border-color: 1px solid ${borderColor};
+    border: 1px solid ${borderColor};
   `;
 }
 
@@ -93,7 +92,7 @@ export enum EnvironmentType {
 
 type TopBarType = {
   onHeaderClick: () => void;
-  applicationIcon: IconData | ReactElement;
+  applicationIcon: string | ReactElement;
   applicationName: string;
   environment?: EnvironmentType;
   isFetching?: boolean;
@@ -113,35 +112,38 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
       capitalize = false,
     },
     ref
-  ) => (
-    <Bar ref={ref}>
-      <Header onClick={onHeaderClick}>
-        {React.isValidElement(applicationIcon) ? (
-          applicationIcon
-        ) : (
-          <Icon
-            data={applicationIcon}
-            size={24}
-            color={colors.interactive.primary__resting.hsla}
-          />
+  ) => {
+    if (React.isValidElement(applicationIcon)) {
+      console.warn(
+        'Sending an element as applicationIcon is the old way of setting the icon in the top bar! Switch to just sending the name of the app as applicationIcon.'
+      );
+    }
+    return (
+      <Bar ref={ref}>
+        <Header onClick={onHeaderClick}>
+          {React.isValidElement(applicationIcon) ? (
+            applicationIcon
+          ) : (
+            <ApplicationIcon name={applicationIcon as string} size={40} />
+          )}
+          <AppName variant="h6" capitalize={capitalize}>
+            {capitalize ? applicationName.toLowerCase() : applicationName}
+          </AppName>
+          <CircularProgress size={16} isFetching={isFetching} />
+        </Header>
+        {(environment === EnvironmentType.DEVELOP ||
+          environment === EnvironmentType.STAGING ||
+          environment === EnvironmentType.LOCALHOST) && (
+          <EnvironmentTag environmentType={environment}>
+            <Typography group="heading" variant="h5">
+              {environment}
+            </Typography>
+          </EnvironmentTag>
         )}
-        <AppName variant="h6" capitalize={capitalize}>
-          {capitalize ? applicationName.toLowerCase() : applicationName}
-        </AppName>
-        <CircularProgress size={16} isFetching={isFetching} />
-      </Header>
-      {(environment === EnvironmentType.DEVELOP ||
-        environment === EnvironmentType.STAGING ||
-        environment === EnvironmentType.LOCALHOST) && (
-        <EnvironmentTag environmentType={environment}>
-          <Typography group="heading" variant="h5">
-            {environment}
-          </Typography>
-        </EnvironmentTag>
-      )}
-      {children}
-    </Bar>
-  )
+        {children}
+      </Bar>
+    );
+  }
 );
 
 TopBar.displayName = 'TopBar';

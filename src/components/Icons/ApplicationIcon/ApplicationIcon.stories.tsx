@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
 
@@ -9,6 +9,7 @@ export default {
     name: {
       control: 'radio',
       options: [
+        'fallback',
         '4dinsight',
         'acquire',
         'dasha',
@@ -17,6 +18,7 @@ export default {
         'portal',
         'pwex',
         'logging-qualification',
+        'inpress',
       ],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
@@ -27,6 +29,6 @@ export default {
   },
 } as Meta;
 
-export const Primary: Story<ApplicationIconProps> = (args) => (
+export const Primary: StoryFn<ApplicationIconProps> = (args) => (
   <ApplicationIcon {...args} />
 );
