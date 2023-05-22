@@ -7,8 +7,11 @@ import {
   useState,
 } from 'react';
 
-import { auth, environment } from '../../utils';
+import { useMsal } from '@azure/msal-react';
+import { useQuery } from '@tanstack/react-query';
 
+import { useAuth } from '../../providers/AuthProvider/AuthProvider';
+import { auth, environment } from '../../utils';
 const {
   getAppName,
   getEnvironmentName,
@@ -17,10 +20,6 @@ const {
   getApiScope,
 } = environment;
 const { GRAPH_REQUESTS_BACKEND, acquireToken } = auth;
-import { useMsal } from '@azure/msal-react';
-import { useQuery } from '@tanstack/react-query';
-
-import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 
 // These three types (FeatureToggleDto, Feature, GraphUser) are from the swagger generated types in the portal API
 
@@ -44,7 +43,7 @@ export type GraphUser = {
   userPrincipalName?: string | null;
 };
 
-const isUserInActiveUserArray = (
+export const isUserInActiveUserArray = (
   username: string,
   activeUsers: GraphUser[] | undefined | null
 ) => {
