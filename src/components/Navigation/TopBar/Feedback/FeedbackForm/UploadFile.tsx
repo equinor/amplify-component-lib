@@ -54,6 +54,7 @@ const UploadFile: FC<UploadFileProps> = ({
     acceptedFiles: FileWithPath[],
     fileRejections: FileRejection[]
   ) => {
+    console.log(acceptedFiles);
     const cleanedOfHiddenFiles = acceptedFiles.filter(
       (file) => file.name[0] !== '.'
     );

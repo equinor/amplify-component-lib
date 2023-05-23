@@ -1,14 +1,15 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import { TokenService } from '../../../../../api/index';
 import { environment } from '../../../../../utils';
 import { createSlackMessage } from '../Feedback.utils';
 import FeedbackDetails, { SeverityOption } from './FeedbackDetails';
 import SelectType from './SelectType';
 
-const { getSlackWebhookUrl } = environment;
+const { getEnvironmentName } = environment;
 
 export enum FeedbackEnum {
   ERROR = 'error',
@@ -36,36 +37,35 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     description: '',
   });
 
-  const { mutate: slackMutate } = useMutation(
-    ['sendToSlack'],
-    async () =>
-      await fetch(getSlackWebhookUrl(import.meta.env.VITE_SLACK_WEBHOOK_URL), {
-        method: 'POST',
-        body: JSON.stringify(createSlackMessage(feedbackContent, selectedType)),
-      }),
-    {
-      onSuccess: () => {
-        console.log('success');
-      },
-      onError: (error) => {
-        console.log(error);
-      },
+  const { data: portalToken } = useQuery<string>(
+    ['getPortalToken'],
+    TokenService.getAmplifyPortalToken
+  );
+  console.log(portalToken);
+
+  const { mutate: slackFileUpload } = useMutation(
+    ['slackFileUpload'],
+    async () => {
+      const formData = new FormData();
+      if (feedbackContent.attachments && feedbackContent.attachments[0]) {
+        await formData.append('file', feedbackContent.attachments[0]);
+      }
+      await formData.append(
+        'comment',
+        createSlackMessage(feedbackContent, selectedType)
+      );
+
+      await fetch(
+        `https://api-amplify-portal-${getEnvironmentName(
+          import.meta.env.VITE_ENVIRONMENT_NAME
+        )}.radix.equinor.com/api/v1/Slack/fileUpload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
     }
   );
-
-  const { data } = useQuery(['getAllChannels'], async () => {
-    await fetch('https://slack.com/api/conversations.list', {
-      method: 'POST',
-      body: `token=xoxb-2632000640-4926453775744-xmxCWvfuKqXJ61RqRAusc7J1`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-  });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
@@ -75,7 +75,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   };
 
   const handleSave = () => {
-    slackMutate();
+    slackFileUpload();
     onClose();
   };
 

@@ -8,7 +8,7 @@ export const createSlackMessage = (
   selectedType: FeedbackEnum | undefined
 ) => {
   if (selectedType === FeedbackEnum.ERROR) {
-    return {
+    return JSON.stringify({
       blocks: [
         {
           type: 'section',
@@ -52,9 +52,9 @@ export const createSlackMessage = (
           type: 'divider',
         },
       ],
-    };
+    });
   } else {
-    return {
+    return JSON.stringify({
       blocks: [
         {
           type: 'section',
@@ -87,6 +87,6 @@ export const createSlackMessage = (
           type: 'divider',
         },
       ],
-    };
+    });
   }
 };
