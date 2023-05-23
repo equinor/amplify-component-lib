@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
@@ -47,7 +47,7 @@ type SidebarType = {
   createLabel?: string;
   createDisabled?: boolean;
   children: ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>;
+} & HTMLAttributes<HTMLDivElement>;
 
 export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
   ({ onCreate, createLabel, createDisabled = false, children }, ref) => {

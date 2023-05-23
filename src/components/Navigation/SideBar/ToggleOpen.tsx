@@ -36,7 +36,7 @@ const LargeButton = styled.button`
   background: none;
   border: none;
   border-radius: ${shape.button.borderRadius};
-  padding: ${spacings.comfortable.medium_small};
+  height: 40px;
   margin-left: -${spacings.comfortable.medium};
   margin-right: -${spacings.comfortable.medium};
   > p {
