@@ -16,6 +16,7 @@ export { default as Feature } from './Feature/Feature';
 export { default as ConfirmationPopup } from './Feedback/ConfirmationPopup';
 export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
+export { default as GlitchAnimation } from './Feedback/ErrorPage/illustrations/GlitchAnimation'
 export { default as QuestioningAnimaion } from './Feedback/ErrorPage/illustrations/QuestioningAnimation'
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
@@ -26,7 +27,6 @@ export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
 export { default as Unauthorized } from './Feedback/Unauthorized';
-export { default as GlitchAnimation } from './Feedback/ErrorPage/illustrations/GlitchAnimation'
 export {
   amplify_lwd,
   amplify_wellbore,
