@@ -23,6 +23,7 @@ const Container = styled.div`
   height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
   width: 100vw;
+  margin: 0 -48px;
 `;
 
 export type SelectFieldProps = {
