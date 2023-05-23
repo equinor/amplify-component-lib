@@ -34,6 +34,18 @@ export {
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
 export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
+export {
+  acquire,
+  dasha,
+  depthConversion,
+  fallback,
+  fourDInsight,
+  inPress,
+  loggingQualification,
+  portal,
+  pwex,
+  recap,
+} from './Icons/ApplicationIcon/ApplicationIconCollection';
 export { default as DataSharing } from './Icons/ApplicationIcon/Dasha';
 export { default as DataExperience } from './Icons/ApplicationIcon/FourDInsight';
 export { default as Portal } from './Icons/ApplicationIcon/Portal';
