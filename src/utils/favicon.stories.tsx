@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Favicon',
 } as Meta;
 
-export const setupIcons: StoryFn = () => {
+export const SetupIcons: StoryFn = () => {
   const codeText = `
   setupIcons(
     lightFaviconId: string,
