@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Size',
 } as Meta;
 
-export const formatBytes: StoryFn = () => {
+export const FormatBytes: StoryFn = () => {
   const codeText = `
   formatBytes(
     bytes: number,
@@ -17,7 +17,7 @@ export const formatBytes: StoryFn = () => {
   return <UtilStory name="formatBytes" codeText={codeText} />;
 };
 
-export const formatKiloBytes: StoryFn = () => {
+export const FormatKiloBytes: StoryFn = () => {
   const codeText = `
   formatKiloBytes(
     kiloBytes: number,

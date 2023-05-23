@@ -1,7 +1,5 @@
 import { FC, useRef, useState } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-
 import { Field } from '../../../types/Field';
 import SelectorCard from './SelectorCard/SelectorCard';
 import SelectorSkeleton from './SelectorCard/Skeleton';
@@ -9,8 +7,6 @@ import ChangingField from './ChangingField';
 import Illustration from './Illustration';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const ImageWrapper = styled.div`
   margin-top: auto;
@@ -27,7 +23,7 @@ const Container = styled.div`
   height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
   width: 100vw;
-  margin: 0 -${spacings.comfortable.xxx_large};
+  margin: 0 -48px;
 `;
 
 export type SelectFieldProps = {

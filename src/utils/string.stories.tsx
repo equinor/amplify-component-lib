@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/String',
 } as Meta;
 
-export const capitalize: StoryFn = () => {
+export const Capitalize: StoryFn = () => {
   const codeText = `
   capitalize(
     str: string
