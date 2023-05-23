@@ -17,6 +17,8 @@ export { default as AnimatedCheckmark } from './Feedback/AnimatedCheckmark';
 export { default as ConfirmationPopup } from './Feedback/ConfirmationPopup';
 export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
+export { default as GlitchAnimation } from './Feedback/ErrorPage/illustrations/GlitchAnimation'
+export { default as QuestioningAnimaion } from './Feedback/ErrorPage/illustrations/QuestioningAnimation'
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as PageNotFound } from './Feedback/PageNotFound';
