@@ -4,10 +4,11 @@ import { LinearProgress, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import string from '../../../utils/string';
+import AnimatedCheckmark from '../AnimatedCheckmark';
 
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { spacings } = tokens;
 
 const Container = styled.div`
   gap: ${spacings.comfortable.medium};
@@ -27,33 +28,6 @@ const Container = styled.div`
 const StyledTypography = styled(Typography)`
   span {
     text-transform: capitalize;
-  }
-`;
-
-const animateCheckmark = keyframes`
-  from {
-    stroke-dasharray: 130;
-    stroke-dashoffset: 130;
-  }
-  to {
-    stroke-dasharray: 130;
-    stroke-dashoffset: 260;
-  }
-`;
-
-const AnimatedCheckMarkIcon = styled.div`
-  padding-top: calc(24px * 3);
-  padding-bottom: calc(24px * 3);
-  svg {
-    width: 24px;
-    height: 24px;
-    transform: scale(6);
-  }
-  path {
-    fill: transparent;
-    stroke-width: 2;
-    stroke: ${colors.interactive.primary__resting.hex};
-    animation: ${animateCheckmark} 1.5s;
   }
 `;
 
@@ -110,17 +84,7 @@ const ChangingField: FC<ChangingFieldProps> = ({
           <StyledTypography variant="h3">
             Changed to <span>{string.capitalize(fieldName)}</span>
           </StyledTypography>
-          <AnimatedCheckMarkIcon>
-            <svg
-              width="43"
-              height="43"
-              viewBox="0 0 43 43"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M12 22L18 28L30 16M42 21.5C42 32.8218 32.8218 42 21.5 42C10.1782 42 1 32.8218 1 21.5C1 10.1782 10.1782 1 21.5 1C32.8218 1 42 10.1782 42 21.5Z" />
-            </svg>
-          </AnimatedCheckMarkIcon>
+          <AnimatedCheckmark />
           <Typography variant="h6">{finishedText}</Typography>
         </>
       )}

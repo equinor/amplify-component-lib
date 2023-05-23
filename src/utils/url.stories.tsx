@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Url',
 } as Meta;
 
-export const isValidUrl: StoryFn = () => {
+export const IsValidUrl: StoryFn = () => {
   const codeText = `
   isValidUrl(
     url: string

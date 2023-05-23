@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Sort',
 } as Meta;
 
-export const sortByDate: StoryFn = () => {
+export const SortByDate: StoryFn = () => {
   const codeText = `
   sortByDate(
     a: Date | string,
@@ -17,7 +17,7 @@ export const sortByDate: StoryFn = () => {
   return <UtilStory name="sortByDate" codeText={codeText} />;
 };
 
-export const sortByWellboreName: StoryFn = () => {
+export const SortByWellboreName: StoryFn = () => {
   const codeText = `
   sortByWellboreName(
     a: { wellboreName: string } | string,
