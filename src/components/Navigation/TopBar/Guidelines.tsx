@@ -11,6 +11,7 @@ const { elevation, spacings, colors } = tokens;
 const StyledSideSheet = styled.div`
   width: 320px;
   height: calc(100vh - 64px);
+  background-color: ${colors.ui.background__default.hex};
   box-shadow: ${elevation.raised};
   overflow-y: auto;
   position: absolute;
