@@ -124,18 +124,20 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
     const feature = featureToggle?.features?.find(
       (feature) => feature.featureKey === featureKey
     );
-
-    if (feature) {
-      if (isUserInActiveUserArray(username, feature.activeUsers)) {
-        setShowContent(true);
-      } else if (!feature.activeEnvironments?.includes(environment)) {
-        setShowContent(false);
-      } else {
-        setShowContent(true);
-      }
-    } else {
+    if (!feature) {
       setShowContent(true);
+      return;
     }
+
+    if (
+      !isUserInActiveUserArray(username, feature.activeUsers) &&
+      !feature.activeEnvironments?.includes(environment)
+    ) {
+      setShowContent(false);
+      return;
+    }
+
+    setShowContent(true);
   }, [environment, featureKey, featureToggle, username]);
 
   if (isLoading) return null;
