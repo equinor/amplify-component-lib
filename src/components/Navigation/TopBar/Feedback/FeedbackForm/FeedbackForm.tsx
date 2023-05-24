@@ -41,6 +41,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     ['getPortalToken'],
     TokenService.getAmplifyPortalToken
   );
+  // TODO: Remove console.log
   console.log(portalToken);
 
   const { mutate: slackFileUpload } = useMutation(

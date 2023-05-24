@@ -64,8 +64,6 @@ const UploadFile: FC<UploadFileProps> = ({
     };
     reader.readAsDataURL(acceptedFiles[0]);
     setRejectedFiles(fileRejections);
-    // const text = await acceptedFiles[0].text();
-    // console.log(text); // Convert to base64 and send to slack
     updateFeedback('attachments', cleanedOfHiddenFiles);
   };
 

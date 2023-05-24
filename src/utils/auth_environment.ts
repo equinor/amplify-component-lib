@@ -13,7 +13,6 @@ interface IConfig {
   ENVIRONMENT_NAME: string;
   PORTAL_PROD_CLIENT_ID: string;
   IS_MOCK: boolean;
-  SLACK_WEBHOOK_URL: string;
 }
 
 declare const window: any;
@@ -72,13 +71,6 @@ const getPortalProdClientId = (
     return getConfig('PORTAL_PROD_CLIENT_ID');
   }
   return portalProdClientId;
-};
-
-const getSlackWebhookUrl = (slackWebhookUrl: string | undefined) => {
-  if (!slackWebhookUrl) {
-    return getConfig('SLACK_WEBHOOK_URL');
-  }
-  return slackWebhookUrl;
 };
 
 const getIsMock = (isMock: string | undefined): boolean => {
@@ -182,5 +174,4 @@ export const environment = {
   getEnvironmentName,
   getPortalProdClientId,
   getIsMock,
-  getSlackWebhookUrl,
 };

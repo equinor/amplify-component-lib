@@ -21,16 +21,14 @@ interface SelectTypeProps {
 
 const SelectType: FC<SelectTypeProps> = ({ setSelectedType }) => {
   return (
-    <div>
-      <Wrapper>
-        <Button onClick={() => setSelectedType(FeedbackEnum.ERROR)}>
-          Report error
-        </Button>
-        <Button onClick={() => setSelectedType(FeedbackEnum.INQUIRY)}>
-          General inquiry
-        </Button>
-      </Wrapper>
-    </div>
+    <Wrapper>
+      <Button onClick={() => setSelectedType(FeedbackEnum.ERROR)}>
+        Report error
+      </Button>
+      <Button onClick={() => setSelectedType(FeedbackEnum.INQUIRY)}>
+        General inquiry
+      </Button>
+    </Wrapper>
   );
 };
 

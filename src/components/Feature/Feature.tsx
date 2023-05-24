@@ -121,21 +121,20 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
   );
 
   useEffect(() => {
-    if (featureToggle && featureToggle.features) {
-      const feature = featureToggle.features.find(
-        (feature) => feature.featureKey === featureKey
-      );
-      if (feature) {
-        if (isUserInActiveUserArray(username, feature.activeUsers)) {
-          setShowContent(true);
-        } else if (!feature.activeEnvironments?.includes(environment)) {
-          setShowContent(false);
-        } else {
-          setShowContent(true);
-        }
+    const feature = featureToggle?.features?.find(
+      (feature) => feature.featureKey === featureKey
+    );
+
+    if (feature) {
+      if (isUserInActiveUserArray(username, feature.activeUsers)) {
+        setShowContent(true);
+      } else if (!feature.activeEnvironments?.includes(environment)) {
+        setShowContent(false);
       } else {
         setShowContent(true);
       }
+    } else {
+      setShowContent(true);
     }
   }, [environment, featureKey, featureToggle, username]);
 

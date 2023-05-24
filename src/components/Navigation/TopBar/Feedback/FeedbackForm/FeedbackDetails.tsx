@@ -1,4 +1,4 @@
-import { Dispatch, FC, FormEvent, SetStateAction } from 'react';
+import { Dispatch, FC, FormEvent, SetStateAction, useMemo } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import {
@@ -57,7 +57,7 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
   updateFeedback,
   handleSave,
 }) => {
-  const canSubmitFeedback = () => {
+  const canSubmitFeedback = useMemo(() => {
     if (
       feedbackContent.title.length > 0 &&
       feedbackContent.description.length > 0
@@ -66,7 +66,7 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
       return true;
     }
     return false;
-  };
+  }, [feedbackContent.description.length, feedbackContent.title.length]);
 
   return (
     <Wrapper>
@@ -131,7 +131,7 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
         <Button variant="ghost" onClick={() => setSelectedType(undefined)}>
           Back
         </Button>
-        <Button onClick={handleSave} disabled={!canSubmitFeedback()}>
+        <Button onClick={handleSave} disabled={!canSubmitFeedback}>
           Send report
         </Button>
       </Actions>
