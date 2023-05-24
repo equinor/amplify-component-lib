@@ -24,7 +24,7 @@ test('Renders correctly without avatar', async () => {
   render(<Account {...props} />);
 
   const accountName = props.account?.name ?? 'failed failed';
-  expect(screen.queryByText(accountName)).not.toBeVisible();
+  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 
   const button = screen.getByRole('button');
   await user.click(button);
@@ -60,7 +60,7 @@ test('Renders correctly without avatar', async () => {
 
   const closeButton = screen.getByTestId('close-button');
   await user.click(closeButton);
-  expect(screen.queryByText(accountName)).not.toBeVisible();
+  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 });
 
 test('Renders correctly with avatar', async () => {
@@ -69,7 +69,7 @@ test('Renders correctly with avatar', async () => {
   render(<Account {...props} />);
 
   const accountName = props.account?.name ?? 'failed failed';
-  expect(screen.getByText(accountName)).not.toBeVisible();
+  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 
   const button = screen.getByRole('button');
   await user.click(button);
@@ -78,7 +78,7 @@ test('Renders correctly with avatar', async () => {
 
   const closeButton = screen.getByTestId('close-button');
   await user.click(closeButton);
-  expect(screen.getByText(accountName)).not.toBeVisible();
+  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 });
 
 test('Opens and closes as it should', async () => {
@@ -94,7 +94,7 @@ test('Opens and closes as it should', async () => {
   ).toBeInTheDocument();
 
   await user.click(button);
-  screen.logTestingPlaygroundURL();
+
   expect(
     screen.queryByAltText(`user-avatar-${props.account?.name}`)
   ).not.toBeInTheDocument();
