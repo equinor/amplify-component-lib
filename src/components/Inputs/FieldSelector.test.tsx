@@ -1,7 +1,10 @@
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../tests/test-utils';
-import FieldSelector, { FieldSelectorType } from './FieldSelector';
+import FieldSelector, {
+  FieldSelectorType,
+  PlacementOptions,
+} from './FieldSelector';
 
 function fakeField() {
   return {
@@ -76,7 +79,7 @@ test('Doesnt run onSelect function when clicking already selected item', async (
 test('Placement is as expected when bottom-end.', async () => {
   const props = fakeProps();
   const { rerender } = render(
-    <FieldSelector {...props} placement="bottom-end" />
+    <FieldSelector {...props} placement={PlacementOptions.BOTTOM_END} />
   );
   const user = userEvent.setup();
 
@@ -87,7 +90,9 @@ test('Placement is as expected when bottom-end.', async () => {
     'transform: translate( -15rem, 4px )'
   );
 
-  rerender(<FieldSelector {...props} placement="bottom-start" />);
+  rerender(
+    <FieldSelector {...props} placement={PlacementOptions.BOTTOM_END} />
+  );
 
   await user.click(button);
 

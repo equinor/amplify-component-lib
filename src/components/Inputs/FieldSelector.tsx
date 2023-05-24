@@ -10,6 +10,12 @@ import { Field } from '../../types/Field';
 import styled from 'styled-components';
 const { colors, spacings, elevation, shape } = tokens;
 
+export enum PlacementOptions {
+  BOTTOM_START = 'bottom-start',
+  BOTTOM = 'bottom',
+  BOTTOM_END = 'bottom-end',
+}
+
 type MenuProps = {
   placement: PlacementOptions;
 };
@@ -115,12 +121,6 @@ const TextContainer = styled.div`
     text-transform: capitalize;
   }
 `;
-
-enum PlacementOptions {
-  BOTTOM_START = 'bottom-start',
-  BOTTOM = 'bottom',
-  BOTTOM_END = 'bottom-end',
-}
 
 export type FieldSelectorType = {
   currentField?: Field;
