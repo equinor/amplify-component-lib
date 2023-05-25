@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
@@ -10,7 +10,7 @@ const { colors, spacings } = tokens;
 
 const MenuWrapper = styled(Menu)`
   padding: 0 !important;
-  width: 350px;
+  width: 300px;
   border-radius: 5px;
 `;
 
@@ -42,39 +42,38 @@ interface TopBarMenuContentProps {
   contentPadding?: boolean;
 }
 
-const TopBarMenu: FC<TopBarMenuContentProps> = ({
-  open,
-  title,
-  onClose,
-  children,
-  anchorEl,
-  contentPadding = true,
-}) => {
-  if (!open) return null;
-  return (
-    <MenuWrapper
-      open={open}
-      onClose={onClose}
-      anchorEl={anchorEl}
-      placement="top-end"
-      data-testid="top-bar-menu"
-    >
-      <Header>
-        <Typography group="ui" variant="accordion_header" as="span">
-          {title}
-        </Typography>
-        <Button
-          variant="ghost_icon"
-          onClick={onClose}
-          data-testid="close-button"
-        >
-          <Icon data={clear} />
-        </Button>
-      </Header>
-      <ContentWrapper contentPadding={contentPadding}>
-        {children}
-      </ContentWrapper>
-    </MenuWrapper>
-  );
-};
+const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
+  function TopBarRender(
+    { open, title, onClose, children, anchorEl, contentPadding = true },
+    ref
+  ) {
+    if (!open) return null;
+    return (
+      <MenuWrapper
+        open={open}
+        onClose={onClose}
+        anchorEl={anchorEl}
+        placement="top-end"
+        data-testid="top-bar-menu"
+        ref={ref}
+      >
+        <Header>
+          <Typography group="ui" variant="accordion_header" as="span">
+            {title}
+          </Typography>
+          <Button
+            variant="ghost_icon"
+            onClick={onClose}
+            data-testid="close-button"
+          >
+            <Icon data={clear} />
+          </Button>
+        </Header>
+        <ContentWrapper contentPadding={contentPadding}>
+          {children}
+        </ContentWrapper>
+      </MenuWrapper>
+    );
+  }
+);
 export default TopBarMenu;

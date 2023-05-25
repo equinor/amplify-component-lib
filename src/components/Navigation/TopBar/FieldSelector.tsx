@@ -130,9 +130,9 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     };
 
     useOutsideClick(menuRef.current, (e) => {
-      if (e.target !== buttonRef.current) {
-        setIsOpen(false);
-      }
+      if (buttonRef.current === e.target) return;
+
+      setIsOpen(false);
     });
 
     const filteredFields = useMemo(() => {
@@ -160,6 +160,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
           onClose={closeMenu}
           anchorEl={buttonRef.current}
           contentPadding={false}
+          ref={menuRef}
         >
           <>
             <MenuSection>

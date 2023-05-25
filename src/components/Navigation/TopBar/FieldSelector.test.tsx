@@ -20,7 +20,7 @@ function fakeProps(): FieldSelectorType {
   };
 }
 
-test('Opens/closes as it should', async () => {
+test('Opens/closes as it should, also with useOutsideClick', async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} />);
   const user = userEvent.setup();
@@ -35,6 +35,21 @@ test('Opens/closes as it should', async () => {
   }
 
   await user.click(button);
+
+  for (const field of props.availableFields) {
+    const name = field?.name?.toLowerCase() ?? 'not-found';
+    expect(screen.queryByText(name)).not.toBeInTheDocument();
+  }
+
+  await user.click(button);
+
+  for (const field of props.availableFields) {
+    const name = field?.name?.toLowerCase() ?? 'not-found';
+    expect(screen.getByText(name)).toBeInTheDocument();
+    expect(screen.getByText(name)).toBeVisible();
+  }
+
+  await user.click(document.body);
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
@@ -72,31 +87,6 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   await user.click(selected);
   expect(props.onSelect).toHaveBeenCalledTimes(0);
 });
-
-// test('Placement is as expected when bottom-end.', async () => {
-//   const props = fakeProps();
-//   const { rerender } = render(
-//     <FieldSelector {...props} placement={PlacementOptions.BOTTOM_END} />
-//   );
-//   const user = userEvent.setup();
-//
-//   const button = screen.getByRole('button');
-//   await user.click(button);
-//
-//   expect(screen.getByTestId('top-bar-menu')).toHaveStyle(
-//     'transform: translate( -15rem, 4px )'
-//   );
-//
-//   rerender(
-//     <FieldSelector {...props} placement={PlacementOptions.BOTTOM_END} />
-//   );
-//
-//   await user.click(button);
-//
-//   expect(screen.getByTestId('field-menu')).toHaveStyle(
-//     'transform: translate( -15rem, 4px )'
-//   );
-// });
 
 test('Filters values when using search', async () => {
   const props = fakeProps();
