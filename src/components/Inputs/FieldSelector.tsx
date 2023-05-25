@@ -3,14 +3,21 @@ import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
 import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+import { useOutsideClick } from '@equinor/eds-utils';
 
 import { Field } from '../../types/Field';
 
 import styled from 'styled-components';
 const { colors, spacings, elevation, shape } = tokens;
 
+export enum PlacementOptions {
+  BOTTOM_START = 'bottom-start',
+  BOTTOM = 'bottom',
+  BOTTOM_END = 'bottom-end',
+}
+
 type MenuProps = {
-  placement: 'bottom-start' | 'bottom' | 'bottom-end';
+  placement: PlacementOptions;
 };
 
 const Menu = styled.div<MenuProps>`
@@ -120,9 +127,12 @@ export type FieldSelectorType = {
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
   showAccessITLink?: boolean;
-  placement?: 'bottom-start' | 'bottom' | 'bottom-end';
+  placement?: PlacementOptions;
 };
 
+/**
+ * @deprecated Use the other FieldSelector available in TopBar.FieldSelector
+ */
 const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
   (
     {
@@ -130,13 +140,13 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       availableFields,
       onSelect,
       showAccessITLink = true,
-      placement = 'bottom',
+      placement = PlacementOptions.BOTTOM_END,
     },
     ref
   ) => {
     const [open, setOpen] = useState(false);
-    const menuRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const menuRef = useRef<HTMLDivElement | null>(null);
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
 
     const openMenu = () => {
@@ -153,6 +163,12 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     const handleSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value);
     };
+
+    useOutsideClick(menuRef.current, (e) => {
+      if (e.target !== buttonRef.current) {
+        setOpen(false);
+      }
+    });
 
     const filteredFields = useMemo(() => {
       const fieldItems = availableFields.filter(

@@ -7,6 +7,7 @@ import {
   info_circle,
   minimize,
   notifications,
+  placeholder_icon,
   settings,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
@@ -32,6 +33,11 @@ export const Primary: StoryFn = (args) => {
         {
           title: 'Notifications',
           icon: notifications,
+          color: colors.interactive.primary__resting.hex,
+        },
+        {
+          title: 'Feedback',
+          icon: placeholder_icon,
           color: colors.interactive.primary__resting.hex,
         },
         {

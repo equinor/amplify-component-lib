@@ -100,7 +100,7 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
     }
   );
 
-  const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>(
+  const { data: featureToggle, isLoading } = useQuery(
     ['getFeatureToggleFromAppName'],
     async () =>
       await fetch(
@@ -113,7 +113,7 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
           },
         }
       )
-        .then((res) => res.json())
+        .then((res) => res.json() as FeatureToggleDto)
         .catch((error) => {
           throw new Error(error);
         }),
@@ -124,18 +124,21 @@ const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
     const feature = featureToggle?.features?.find(
       (feature) => feature.featureKey === featureKey
     );
-    if (feature) {
-      if (isUserInActiveUserArray(username, feature.activeUsers)) {
-        setShowContent(true);
-      } else if (!feature.activeEnvironments?.includes(environment)) {
-        setShowContent(false);
-      } else {
-        setShowContent(true);
-      }
-    } else {
+    if (!feature) {
       setShowContent(true);
+      return;
     }
-  }, [environment, featureKey, featureToggle?.features, username]);
+
+    if (
+      !isUserInActiveUserArray(username, feature.activeUsers) &&
+      !feature.activeEnvironments?.includes(environment)
+    ) {
+      setShowContent(false);
+      return;
+    }
+
+    setShowContent(true);
+  }, [environment, featureKey, featureToggle, username]);
 
   if (isLoading) return null;
 
