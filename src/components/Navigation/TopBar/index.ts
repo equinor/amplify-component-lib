@@ -1,6 +1,7 @@
 import Feedback from './Feedback/Feedback';
 import { Account } from './Account';
 import { Actions } from './Actions';
+import FieldSelector from './FieldSelector';
 import { Guidelines, GuidelineSections } from './Guidelines';
 import Notifications from './Notifications';
 import { ISettingsProps, Settings } from './Settings';
@@ -13,6 +14,7 @@ type TopBarType = typeof BaseTopBar & {
   Settings: typeof Settings;
   Notifications: typeof Notifications;
   Feedback: typeof Feedback;
+  FieldSelector: typeof FieldSelector;
 };
 
 const TopBar = BaseTopBar as TopBarType;
@@ -22,6 +24,7 @@ TopBar.Guidelines = Guidelines;
 TopBar.Settings = Settings;
 TopBar.Notifications = Notifications;
 TopBar.Feedback = Feedback;
+TopBar.FieldSelector = FieldSelector;
 
 export default TopBar;
 export type { GuidelineSections, ISettingsProps, TopBarType };

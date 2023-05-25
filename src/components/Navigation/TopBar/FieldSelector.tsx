@@ -5,32 +5,11 @@ import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
-import { Field } from '../../types/Field';
+import { Field } from '../../../types/Field';
+import TopBarMenu from './TopBarMenu';
 
 import styled from 'styled-components';
-const { colors, spacings, elevation, shape } = tokens;
-
-export enum PlacementOptions {
-  BOTTOM_START = 'bottom-start',
-  BOTTOM = 'bottom',
-  BOTTOM_END = 'bottom-end',
-}
-
-type MenuProps = {
-  placement: PlacementOptions;
-};
-
-const Menu = styled.div<MenuProps>`
-  width: 17rem;
-  background-color: white;
-  box-shadow: ${elevation.raised};
-  position: absolute;
-  transform: translate(
-    -${(props) => (props.placement === 'bottom' ? spacings.comfortable.xxx_large : props.placement === 'bottom-end' ? '15rem' : '0')},
-    ${spacings.comfortable.x_small}
-  );
-  border-radius: ${shape.corners.borderRadius};
-`;
+const { colors, spacings } = tokens;
 
 const SearchContainer = styled.div`
   display: flex;
@@ -91,7 +70,11 @@ const MenuFixedItem = styled.div<MenuItemProps>`
   border-top: 1px solid ${colors.ui.background__light.hex};
   outline: none !important;
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  svg {
+    align-self: center;
+  }
 `;
+
 const MenuSection = styled.div`
   border-bottom: 1px solid ${colors.ui.background__light.hex};
   display: flex;
@@ -127,38 +110,20 @@ export type FieldSelectorType = {
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
   showAccessITLink?: boolean;
-  placement?: PlacementOptions;
 };
 
-/**
- * @deprecated Use the other FieldSelector available in TopBar.FieldSelector
- */
 const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
   (
-    {
-      currentField,
-      availableFields,
-      onSelect,
-      showAccessITLink = true,
-      placement = PlacementOptions.BOTTOM_END,
-    },
+    { currentField, availableFields, onSelect, showAccessITLink = true },
     ref
   ) => {
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
 
-    const openMenu = () => {
-      setOpen(true);
-    };
-
-    const closeMenu = () => setOpen(false);
-
-    const handleOnClick = () => {
-      if (open) closeMenu();
-      else openMenu();
-    };
+    const closeMenu = () => setIsOpen(false);
+    const toggleMenu = () => setIsOpen(!isOpen);
 
     const handleSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value);
@@ -166,7 +131,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
 
     useOutsideClick(menuRef.current, (e) => {
       if (e.target !== buttonRef.current) {
-        setOpen(false);
+        setIsOpen(false);
       }
     });
 
@@ -182,107 +147,103 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
 
     return (
       <div ref={ref}>
-        <Button variant="ghost_icon" ref={buttonRef} onClick={handleOnClick}>
+        <Button variant="ghost_icon" ref={buttonRef} onClick={toggleMenu}>
           <Icon
             data={platform}
             size={24}
             color={colors.interactive.primary__resting.hsla}
           />
         </Button>
-
-        <Menu
-          data-testid="field-menu"
-          id="field-menu"
-          ref={menuRef}
-          placement={placement}
+        <TopBarMenu
+          open={isOpen}
+          title="Field Selector"
+          onClose={closeMenu}
+          anchorEl={buttonRef.current}
+          contentPadding={false}
         >
-          {open && (
-            <>
-              <MenuSection>
-                <MenuHeader>
-                  <Typography variant="h6">Field selection</Typography>
-                  <Button variant="ghost_icon" onClick={closeMenu}>
-                    <Icon
-                      data={clear}
-                      size={24}
-                      color={colors.text.static_icons__secondary.hex}
-                    />
-                  </Button>
-                </MenuHeader>
-                <Typography variant="overline">Current selection</Typography>
-                {currentField && (
-                  <MenuFixedItem active>
-                    <div>
-                      <TextContainer>
-                        <Typography variant="h6">
-                          {currentField.name?.toLowerCase()}
-                        </Typography>
-                      </TextContainer>
-                      <Icon
-                        data={check}
-                        color={colors.interactive.primary__resting.hex}
-                        size={24}
-                      />
-                    </div>
-                  </MenuFixedItem>
-                )}
-                <SearchContainer>
-                  <Typography variant="overline">Switch to</Typography>
-                  <Search
-                    placeholder="Search fields"
-                    value={searchValue}
-                    onChange={handleSearchOnChange}
+          <>
+            <MenuSection>
+              <MenuHeader>
+                <Typography variant="h6">Field selection</Typography>
+                <Button variant="ghost_icon" onClick={closeMenu}>
+                  <Icon
+                    data={clear}
+                    size={24}
+                    color={colors.text.static_icons__secondary.hex}
                   />
-                </SearchContainer>
-                <ListContainer>
-                  {filteredFields.length === 0 ? (
-                    <NoFieldsText variant="body_short">
-                      No fields matching your search
-                    </NoFieldsText>
-                  ) : (
-                    filteredFields.map((field) => (
-                      <MenuItem
-                        key={field.uuid}
-                        onClick={() => {
-                          onSelect(field);
-                          closeMenu();
-                        }}
-                      >
-                        <TextContainer>
-                          <Typography variant="h6">
-                            {field.name?.toLowerCase()}
-                          </Typography>
-                        </TextContainer>
-                      </MenuItem>
-                    ))
-                  )}
-                </ListContainer>
-              </MenuSection>
-              {showAccessITLink && (
-                <MenuFixedItem
-                  data-testid="access-it-link"
-                  onClick={() =>
-                    window.open('https://accessit.equinor.com/#', '_blank')
-                  }
-                >
+                </Button>
+              </MenuHeader>
+              <Typography variant="overline">Current selection</Typography>
+              {currentField && (
+                <MenuFixedItem active>
                   <div>
                     <TextContainer>
-                      <Typography variant="overline">
-                        Missing a field?
+                      <Typography variant="h6">
+                        {currentField.name?.toLowerCase()}
                       </Typography>
-                      <Typography variant="h6">Go to AccessIT</Typography>
                     </TextContainer>
                     <Icon
-                      data={exit_to_app}
+                      data={check}
                       color={colors.interactive.primary__resting.hex}
                       size={24}
                     />
                   </div>
                 </MenuFixedItem>
               )}
-            </>
-          )}
-        </Menu>
+              <SearchContainer>
+                <Typography variant="overline">Switch to</Typography>
+                <Search
+                  placeholder="Search fields"
+                  value={searchValue}
+                  onChange={handleSearchOnChange}
+                />
+              </SearchContainer>
+              <ListContainer>
+                {filteredFields.length === 0 ? (
+                  <NoFieldsText variant="body_short">
+                    No fields matching your search
+                  </NoFieldsText>
+                ) : (
+                  filteredFields.map((field) => (
+                    <MenuItem
+                      key={field.uuid}
+                      onClick={() => {
+                        onSelect(field);
+                        closeMenu();
+                      }}
+                    >
+                      <TextContainer>
+                        <Typography variant="h6">
+                          {field.name?.toLowerCase()}
+                        </Typography>
+                      </TextContainer>
+                    </MenuItem>
+                  ))
+                )}
+              </ListContainer>
+            </MenuSection>
+            {showAccessITLink && (
+              <MenuFixedItem
+                data-testid="access-it-link"
+                onClick={() =>
+                  window.open('https://accessit.equinor.com/#', '_blank')
+                }
+              >
+                <div>
+                  <TextContainer>
+                    <Typography variant="overline">Missing a field?</Typography>
+                    <Typography variant="h6">Go to AccessIT</Typography>
+                  </TextContainer>
+                  <Icon
+                    data={exit_to_app}
+                    color={colors.interactive.primary__resting.hex}
+                    size={24}
+                  />
+                </div>
+              </MenuFixedItem>
+            )}
+          </>
+        </TopBarMenu>
       </div>
     );
   }

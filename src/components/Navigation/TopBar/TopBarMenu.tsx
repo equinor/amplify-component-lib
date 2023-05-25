@@ -24,15 +24,22 @@ const Header = styled.div`
   padding-bottom: ${spacings.comfortable.small};
 `;
 
-const ContentWrapper = styled.div`
-  padding: ${spacings.comfortable.medium};
+interface ContentWrapperProps {
+  contentPadding: boolean;
+}
+
+const ContentWrapper = styled.div<ContentWrapperProps>`
+  padding: ${(props) =>
+    props.contentPadding ? spacings.comfortable.medium : '0px'};
 `;
+
 interface TopBarMenuContentProps {
   open: boolean;
   title: string;
   onClose: () => void;
   children: ReactNode;
   anchorEl: HTMLElement | null;
+  contentPadding?: boolean;
 }
 
 const TopBarMenu: FC<TopBarMenuContentProps> = ({
@@ -41,6 +48,7 @@ const TopBarMenu: FC<TopBarMenuContentProps> = ({
   onClose,
   children,
   anchorEl,
+  contentPadding = true,
 }) => {
   if (!open) return null;
   return (
@@ -49,6 +57,7 @@ const TopBarMenu: FC<TopBarMenuContentProps> = ({
       onClose={onClose}
       anchorEl={anchorEl}
       placement="top-end"
+      data-testid="top-bar-menu"
     >
       <Header>
         <Typography group="ui" variant="accordion_header" as="span">
@@ -62,7 +71,9 @@ const TopBarMenu: FC<TopBarMenuContentProps> = ({
           <Icon data={clear} />
         </Button>
       </Header>
-      <ContentWrapper>{children}</ContentWrapper>
+      <ContentWrapper contentPadding={contentPadding}>
+        {children}
+      </ContentWrapper>
     </MenuWrapper>
   );
 };
