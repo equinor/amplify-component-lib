@@ -19,6 +19,7 @@ export default defineConfig({
       provider: 'c8',
       include: ['src/**/*'],
       exclude: [
+        'src/api/**',
         'src/tests',
         'src/**/*.test.ts',
         'src/**/*.test.tsx',
@@ -26,7 +27,7 @@ export default defineConfig({
         'src/utils/auth_environment.ts',
         'src/utils/export.ts',
         'src/providers/AuthProvider/**',
-        'src/hooks/useNotifications.ts',
+        'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreen.ts',
       ],
       reporter: ['text-summary', 'html'],
