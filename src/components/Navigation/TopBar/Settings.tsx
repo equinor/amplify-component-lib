@@ -51,20 +51,13 @@ export interface ISettingsProps {
 export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  // const handleToggle = () => {
-  //   setIsOpen(!isOpen);
-  // };
-  // const handleClose = () => {
-  //   setIsOpen(false);
-  // };
+
+  const closeMenu = () => setIsOpen(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <>
-      <Button
-        variant="ghost_icon"
-        onClick={() => setIsOpen(!isOpen)}
-        ref={buttonRef}
-      >
+      <Button variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
         <Icon
           data={settings}
           size={24}
@@ -74,7 +67,7 @@ export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
       <TopBarMenu
         open={isOpen}
         title="Settings"
-        onClose={() => setIsOpen(false)}
+        onClose={closeMenu}
         anchorEl={buttonRef.current}
       >
         {allSettings.map((section, ind) => (

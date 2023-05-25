@@ -37,13 +37,12 @@ export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
 
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
+  const closeMenu = () => setIsOpen(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
+
   return (
     <>
-      <Button
-        variant="ghost_icon"
-        onClick={() => setIsOpen(!isOpen)}
-        ref={buttonRef}
-      >
+      <Button variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
         <Icon
           data={account_circle}
           size={24}
@@ -53,7 +52,7 @@ export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
       <TopBarMenu
         open={isOpen}
         title="Account"
-        onClose={() => setIsOpen(false)}
+        onClose={closeMenu}
         anchorEl={buttonRef.current}
       >
         <Info>

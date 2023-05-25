@@ -13,13 +13,15 @@ const Feedback: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
+  const closeMenu = () => setIsOpen(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
   return (
     <>
       <Button
         variant="ghost_icon"
         key="topbar-feedback"
         ref={buttonRef}
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={toggleMenu}
       >
         <Icon
           data={thumbs_up_down}
@@ -33,7 +35,7 @@ const Feedback: FC = () => {
         onClose={() => setIsOpen(false)}
         anchorEl={buttonRef.current}
       >
-        <FeedbackForm onClose={() => setIsOpen(false)} />
+        <FeedbackForm onClose={closeMenu} />
       </TopBarMenu>
     </>
   );
