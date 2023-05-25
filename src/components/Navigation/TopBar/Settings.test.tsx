@@ -32,7 +32,6 @@ test('Settings renders as expected', async () => {
   const user = userEvent.setup();
 
   const menuButton = screen.getByRole('button');
-
   await user.click(menuButton);
 
   expect(screen.getByText('Settings')).toBeVisible();
@@ -71,11 +70,13 @@ test('Radios are disabled according to prop', async () => {
 
   const user = userEvent.setup();
 
-  const menuButton = screen.getByRole('button');
+  const menuButton = await screen.findByRole('button');
 
   await user.click(menuButton);
 
-  const darkRadioButton = screen.getByRole('radio', { name: /dark mode/i });
+  const darkRadioButton = await screen.findByRole('radio', {
+    name: /dark mode/i,
+  });
 
   expect(darkRadioButton).toBeDisabled();
 });

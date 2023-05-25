@@ -43,7 +43,6 @@ const TopBarMenu: FC<TopBarMenuContentProps> = ({
   anchorEl,
 }) => {
   if (!open) return null;
-
   return (
     <MenuWrapper
       open={open}

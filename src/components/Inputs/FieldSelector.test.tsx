@@ -97,7 +97,7 @@ test('Placement is as expected when bottom-end.', async () => {
   await user.click(button);
 
   expect(screen.getByTestId('field-menu')).toHaveStyle(
-    'transform: translate( -0, 4px )'
+    'transform: translate( -15rem, 4px )'
   );
 });
 

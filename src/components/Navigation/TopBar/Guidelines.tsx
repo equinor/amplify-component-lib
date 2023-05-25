@@ -17,6 +17,7 @@ const StyledSideSheet = styled.div`
   position: absolute;
   right: 0;
   top: 64px;
+  z-index: 100;
 `;
 
 const Header = styled.div`

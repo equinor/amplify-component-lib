@@ -51,6 +51,12 @@ export interface ISettingsProps {
 export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  // const handleToggle = () => {
+  //   setIsOpen(!isOpen);
+  // };
+  // const handleClose = () => {
+  //   setIsOpen(false);
+  // };
 
   return (
     <>
