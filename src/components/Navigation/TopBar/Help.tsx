@@ -1,33 +1,18 @@
-import React, { forwardRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import {
-  Button,
-  Icon,
-  Menu as EDSMenu,
-  Typography,
-} from '@equinor/eds-core-react';
-import {
-  clear,
   external_link,
   file_description,
   help_outline,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import TopBarMenu from './TopBarMenu';
+
 import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: ${spacings.comfortable.medium_small};
-`;
-
-const Menu = styled(EDSMenu)`
-  padding: ${spacings.comfortable.large};
-`;
 
 const MenuLinkItem = styled.a`
   display: grid;
@@ -53,83 +38,71 @@ export interface HelpProps {
   applicationName: string;
 }
 
-export const Help = forwardRef<HTMLButtonElement, HelpProps>(
-  ({ applicationName }) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const isOpen = Boolean(anchorEl);
+export const Help: FC<HelpProps> = ({ applicationName }) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const openMenu = (
-      e:
-        | React.MouseEvent<HTMLButtonElement, MouseEvent>
-        | React.KeyboardEvent<HTMLButtonElement>
-    ) => {
-      const target = e.target as HTMLButtonElement;
-      setAnchorEl(target);
-    };
+  const openMenu = (
+    e:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.KeyboardEvent<HTMLButtonElement>
+  ) => {
+    const target = e.target as HTMLButtonElement;
+    setAnchorEl(target);
+    setIsOpen(true);
+  };
 
-    const closeMenu = () => {
-      setAnchorEl(null);
-    };
+  const closeMenu = () => {
+    setAnchorEl(null);
+    setIsOpen(false);
+  };
 
-    return (
-      <>
-        <Button
-          variant="ghost_icon"
-          ref={setAnchorEl}
-          id="anchor-match"
-          aria-haspopup="true"
-          aria-expanded={isOpen}
-          aria-controls="menu-match"
-          onClick={(e) => (isOpen ? closeMenu() : openMenu(e))}
+  return (
+    <>
+      <Button
+        variant="ghost_icon"
+        ref={setAnchorEl}
+        id="anchor-match"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        aria-controls="menu-match"
+        onClick={(e) => (isOpen ? closeMenu() : openMenu(e))}
+      >
+        <Icon
+          data={help_outline}
+          color={colors.interactive.primary__resting.hsla}
+        />
+      </Button>
+
+      <TopBarMenu
+        open={isOpen}
+        title="Help"
+        onClose={closeMenu}
+        anchorEl={anchorEl}
+      >
+        <MenuLinkItem
+          as="a"
+          onClick={closeMenu}
+          href={`https://amplify.equinor.com/releasenotes?app=%5B"${applicationName}"%5D`}
+          target="_blank"
         >
-          <Icon
-            data={help_outline}
-            color={colors.interactive.primary__resting.hsla}
-          />
-        </Button>
-
-        <Menu
-          open={isOpen}
-          id="menu-match"
-          aria-labelledby="anchor-match"
-          onClose={closeMenu}
-          anchorEl={anchorEl}
-          matchAnchorWidth
-        >
-          <Header>
-            <Typography group="heading" variant="h6" as="span">
-              Help
-            </Typography>
-            <Button variant="ghost_icon" onClick={closeMenu}>
-              <Icon data={clear} />
-            </Button>
-          </Header>
-          <MenuLinkItem
-            as="a"
-            onClick={closeMenu}
-            href={`https://amplify.equinor.com/releasenotes?app=%5B"${applicationName}"%5D`}
-            target="_blank"
-          >
-            <ContentInfo>
-              <Icon
-                data={file_description}
-                size={24}
-                color={colors.interactive.primary__resting.hsla}
-              />
-              <Typography group="navigation" variant="menu_title" as="span">
-                Release notes
-              </Typography>
-            </ContentInfo>
+          <ContentInfo>
             <Icon
-              data={external_link}
+              data={file_description}
               size={24}
               color={colors.interactive.primary__resting.hsla}
             />
-          </MenuLinkItem>
-        </Menu>
-      </>
-    );
-  }
-);
-
-Help.displayName = 'TopBar.Help';
+            <Typography group="navigation" variant="menu_title" as="span">
+              Release notes
+            </Typography>
+          </ContentInfo>
+          <Icon
+            data={external_link}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+        </MenuLinkItem>
+      </TopBarMenu>
+    </>
+  );
+};
