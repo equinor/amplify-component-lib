@@ -27,6 +27,7 @@ test('Renders correctly without avatar', async () => {
   expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 
   const button = screen.getByRole('button');
+
   await user.click(button);
 
   expect(screen.getByText(accountName)).toBeInTheDocument();
@@ -59,7 +60,9 @@ test('Renders correctly without avatar', async () => {
   ).toBeInTheDocument();
 
   const closeButton = screen.getByTestId('close-button');
+
   await user.click(closeButton);
+
   expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 });
 
@@ -77,7 +80,9 @@ test('Renders correctly with avatar', async () => {
   expect(screen.getByAltText(`user-avatar-${accountName}`)).toBeInTheDocument();
 
   const closeButton = screen.getByTestId('close-button');
+
   await user.click(closeButton);
+
   expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 });
 

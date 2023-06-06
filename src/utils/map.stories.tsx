@@ -6,7 +6,7 @@ export default {
   title: 'Other/Utils/Map',
 } as Meta;
 
-export const distanceLatLng: StoryFn = () => {
+export const DistanceLatLng: StoryFn = () => {
   const codeText = `
   distanceLatLng(
     x: LatLngLiteral,
@@ -17,14 +17,14 @@ export const distanceLatLng: StoryFn = () => {
   return <UtilStory name="distanceLatLng" codeText={codeText} />;
 };
 
-export const utmProjection: StoryFn = () => {
+export const UtmProjection: StoryFn = () => {
   const codeText = `
   utmProjection => proj64 string for Johan Sverdrup map projection
   `;
   return <UtilStory name="utmProjection" codeText={codeText} />;
 };
 
-export const convertUtmToLatLng: StoryFn = () => {
+export const ConvertUtmToLatLng: StoryFn = () => {
   const codeText = `
   convertUtmToLatLng(
     x: string | number,
@@ -35,7 +35,7 @@ export const convertUtmToLatLng: StoryFn = () => {
   return <UtilStory name="convertUtmToLatLng" codeText={codeText} />;
 };
 
-export const convertLatLngToUtm: StoryFn = () => {
+export const ConvertLatLngToUtm: StoryFn = () => {
   const codeText = `
   convertUtmToLatLng(
     coordinate: LatLngLiteral
