@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import {
@@ -39,34 +39,21 @@ export interface HelpProps {
 }
 
 export const Help: FC<HelpProps> = ({ applicationName }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  const openMenu = (
-    e:
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-      | React.KeyboardEvent<HTMLButtonElement>
-  ) => {
-    const target = e.target as HTMLButtonElement;
-    setAnchorEl(target);
-    setIsOpen(true);
-  };
-
-  const closeMenu = () => {
-    setAnchorEl(null);
-    setIsOpen(false);
-  };
+  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const closeMenu = () => setIsOpen(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <>
       <Button
         variant="ghost_icon"
-        ref={setAnchorEl}
+        ref={buttonRef}
         id="anchor-match"
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-controls="menu-match"
-        onClick={(e) => (isOpen ? closeMenu() : openMenu(e))}
+        onClick={toggleMenu}
       >
         <Icon
           data={help_outline}
@@ -78,7 +65,7 @@ export const Help: FC<HelpProps> = ({ applicationName }) => {
         open={isOpen}
         title="Help"
         onClose={closeMenu}
-        anchorEl={anchorEl}
+        anchorEl={buttonRef.current}
       >
         <MenuLinkItem
           as="a"
