@@ -12,10 +12,10 @@ interface LineProps {
 
 const Line = styled.hr<LineProps>`
   height: 1px;
-  min-width: 8rem;
   width: 100%;
   background: ${(props) => props.background};
   border: none;
+  margin: 0;
 `;
 
 interface StepLineProps {
