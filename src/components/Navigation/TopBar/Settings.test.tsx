@@ -19,7 +19,7 @@ test('Settings renders as expected', async () => {
           {
             label: 'Dark Mode',
             name: 'theme-group',
-            value: 'light',
+            value: 'dark',
             disabled: true,
           },
         ],
@@ -32,9 +32,9 @@ test('Settings renders as expected', async () => {
   const user = userEvent.setup();
 
   const menuButton = screen.getByRole('button');
-
   await user.click(menuButton);
 
+  expect(screen.getByText('Settings')).toBeVisible();
   const lightRadioButton = screen.getByRole('radio', { name: /light mode/i });
 
   expect(lightRadioButton).toBeChecked();
@@ -70,11 +70,13 @@ test('Radios are disabled according to prop', async () => {
 
   const user = userEvent.setup();
 
-  const menuButton = screen.getByRole('button');
+  const menuButton = await screen.findByRole('button');
 
   await user.click(menuButton);
 
-  const darkRadioButton = screen.getByRole('radio', { name: /dark mode/i });
+  const darkRadioButton = await screen.findByRole('radio', {
+    name: /dark mode/i,
+  });
 
   expect(darkRadioButton).toBeDisabled();
 });

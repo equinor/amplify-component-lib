@@ -1,25 +1,16 @@
-import { forwardRef, KeyboardEvent, MouseEvent, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
-import { account_circle, clear } from '@equinor/eds-icons';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { account_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
+import TopBarMenu from './TopBarMenu';
 
 import styled from 'styled-components';
 
 const { spacings, colors } = tokens;
-const StyledMenu = styled(Menu)`
-  width: 320px;
-  padding: ${spacings.comfortable.medium};
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const Info = styled.div`
   display: flex;
@@ -41,71 +32,42 @@ export interface IAccountProps {
   photo: string | undefined;
 }
 
-export const Account = forwardRef<HTMLButtonElement, IAccountProps>(
-  ({ account, logout, photo }, ref) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const isOpen = Boolean(anchorEl);
+export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-    const handleOnClose = () => {
-      setAnchorEl(null);
-    };
+  const buttonRef = useRef<HTMLDivElement | null>(null);
 
-    const handleButtonClick = (
-      e: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
-    ) => {
-      if (!isOpen) {
-        const target = e.target as HTMLButtonElement;
-        setAnchorEl(target);
-      } else {
-        setAnchorEl(null);
-      }
-    };
+  const closeMenu = () => setIsOpen(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-    return (
-      <>
-        <Button variant="ghost_icon" onClick={handleButtonClick} ref={ref}>
-          <Icon
-            data={account_circle}
-            size={24}
-            color={colors.interactive.primary__resting.hsla}
-          />
-        </Button>
-        {isOpen && (
-          <StyledMenu
-            id="menu-on-button"
-            aria-labelledby="menuButton"
-            open={isOpen}
-            anchorEl={anchorEl}
-            onClose={handleOnClose}
-            placement="bottom-start"
-          >
-            <Header>
-              <Typography variant="h6" as="span">
-                Account
-              </Typography>
-              <Button
-                variant="ghost_icon"
-                onClick={handleOnClose}
-                data-testid="close-button"
-              >
-                <Icon data={clear} />
-              </Button>
-            </Header>
-            <Info>
-              <ProfileAvatar size="large" name={account?.name} url={photo} />
-              <div>
-                <Typography variant="h6">{account?.name}</Typography>
-                <Typography>{account?.username}</Typography>
-              </div>
-            </Info>
-            <FullWidthWrapper>
-              <Button onClick={logout}>Log out</Button>
-            </FullWidthWrapper>
-          </StyledMenu>
-        )}
-      </>
-    );
-  }
-);
+  return (
+    <>
+      <Button variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
+        <Icon
+          data={account_circle}
+          size={24}
+          color={colors.interactive.primary__resting.hsla}
+        />
+      </Button>
+      <TopBarMenu
+        open={isOpen}
+        title="Account"
+        onClose={closeMenu}
+        anchorEl={buttonRef.current}
+      >
+        <Info>
+          <ProfileAvatar size="large" name={account?.name} url={photo} />
+          <div>
+            <Typography variant="h6">{account?.name}</Typography>
+            <Typography>{account?.username}</Typography>
+          </div>
+        </Info>
+        <FullWidthWrapper>
+          <Button onClick={logout}>Log out</Button>
+        </FullWidthWrapper>
+      </TopBarMenu>
+    </>
+  );
+};
 
 Account.displayName = 'TopBar.Account';
