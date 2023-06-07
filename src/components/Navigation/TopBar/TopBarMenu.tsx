@@ -53,7 +53,7 @@ const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
         open={open}
         onClose={onClose}
         anchorEl={anchorEl}
-        placement="top-end"
+        placement="bottom-end"
         data-testid="top-bar-menu"
         ref={ref}
       >
