@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 
-import useFeatureToggling from '../../hooks/useFeatureToggling';
+import { useFeatureToggling } from '../../hooks';
 
 // These three types (FeatureToggleDto, Feature, GraphUser) are from the swagger generated types in the portal API
 
