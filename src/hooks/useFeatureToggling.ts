@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
 
@@ -40,8 +42,6 @@ interface useFeatureTogglingProps {
 }
 
 export function useFeatureToggling({ featureKey }: useFeatureTogglingProps) {
-  let showContent: boolean;
-
   const { instance } = useMsal();
   const { account } = useAuth();
   const username = `${account?.username}`;
@@ -111,14 +111,15 @@ export function useFeatureToggling({ featureKey }: useFeatureTogglingProps) {
     (feature) => feature.featureKey === featureKey
   );
 
-  if (feature) {
-    if (isUserInActiveUserArray(username, feature.activeUsers)) {
-      showContent = true;
-    } else
-      showContent = feature.activeEnvironments?.includes(environment) ?? true;
-  } else {
-    showContent = true;
-  }
+  const showContent = useMemo(() => {
+    if (feature) {
+      if (isUserInActiveUserArray(username, feature.activeUsers)) {
+        return true;
+      } else return feature.activeEnvironments?.includes(environment) ?? true;
+    } else {
+      return true;
+    }
+  }, [environment, feature, username]);
 
   return { showContent, isLoading };
 }
