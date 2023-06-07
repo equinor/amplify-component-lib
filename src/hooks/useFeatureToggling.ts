@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
 
@@ -18,7 +20,10 @@ interface useFeatureTogglingProps {
   featureKey: string;
 }
 
-export const useFeatureToggling = ({ featureKey }: useFeatureTogglingProps) => {
+export function useFeatureToggling({ featureKey }: useFeatureTogglingProps) {
+  const [showContent, setShowContent] = useState<boolean | undefined>(
+    undefined
+  );
   const { instance } = useMsal();
   const account = useAuth().account;
   const username = `${account?.username}`;
@@ -64,7 +69,7 @@ export const useFeatureToggling = ({ featureKey }: useFeatureTogglingProps) => {
     }
   );
 
-  const { data: featureToggle } = useQuery<FeatureToggleDto>(
+  const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>(
     ['getFeatureToggleFromAppName'],
     async () =>
       await fetch(
@@ -90,11 +95,11 @@ export const useFeatureToggling = ({ featureKey }: useFeatureTogglingProps) => {
 
   if (feature) {
     if (isUserInActiveUserArray(username, feature.activeUsers)) {
-      return true;
-    } else return feature.activeEnvironments?.includes(environment);
+      setShowContent(true);
+    } else setShowContent(feature.activeEnvironments?.includes(environment));
   } else {
-    return true;
+    setShowContent(true);
   }
-};
 
-export default useFeatureToggling;
+  return { showContent, isLoading };
+}
