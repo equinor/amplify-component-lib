@@ -4,6 +4,7 @@ import { useSideBar } from '../providers/SideBarProvider';
 import { useSnackbar } from '../providers/SnackbarProvider';
 import { useTutorialSteps } from '../providers/TutorialStepsProvider';
 import { useDebounce } from './useDebounce';
+import { useFeatureToggling } from './useFeatureToggling';
 import { useLocalStorage } from './useLocalStorage';
 import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
@@ -12,6 +13,7 @@ import { useSignalRMessages } from './useSignalRMessages';
 export {
   useAuth,
   useDebounce,
+  useFeatureToggling,
   useLocalStorage,
   useOnScreen,
   useOnScreenMultiple,
