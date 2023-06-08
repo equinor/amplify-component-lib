@@ -129,7 +129,7 @@ export type FieldSelectorType = {
   showAccessITLink?: boolean;
   placement?: PlacementOptions;
 };
-
+/* c8 ignore start */
 /**
  * @deprecated Use the other FieldSelector available in TopBar.FieldSelector
  */
@@ -291,3 +291,4 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
 FieldSelector.displayName = 'FieldSelector';
 
 export default FieldSelector;
+/* c8 ignore stop */
