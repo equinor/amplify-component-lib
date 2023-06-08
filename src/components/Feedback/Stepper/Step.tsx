@@ -114,7 +114,7 @@ const Step: FC<StepProps> = ({
       style={
         containerRef !== null && !onlyShowCurrentStepLabel
           ? {
-              width: `calc(${containerRef.clientWidth}px + ${spacings.comfortable.small})`,
+              width: `calc(${containerRef.clientWidth}px)`,
             }
           : undefined
       }
