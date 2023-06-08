@@ -26,6 +26,7 @@ export default defineConfig({
         'src/**/index.ts',
         'src/components/DataDisplay/Tutorial/HighlightBlocks/*',
         'src/components/Inputs/FieldSelector.tsx',
+        'src/components/Feature/*',
         'src/utils/auth_environment.ts',
         'src/utils/export.ts',
         'src/providers/AuthProvider/**',

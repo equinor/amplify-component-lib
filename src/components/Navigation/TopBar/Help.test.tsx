@@ -41,4 +41,9 @@ test('Opens and closes as expected', async () => {
   await user.click(button);
 
   expect(screen.queryByRole('link')).not.toBeInTheDocument();
+
+  await user.click(button);
+  await user.click(document.body);
+
+  expect(screen.queryByRole('link')).not.toBeInTheDocument();
 });
