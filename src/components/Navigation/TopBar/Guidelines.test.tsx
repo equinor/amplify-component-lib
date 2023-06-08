@@ -76,3 +76,11 @@ test('Renders sections as expected with color boxes correctly', async () => {
     }
   }
 });
+
+test('is not shown if open is false', async () => {
+  const props = fakeProps(true);
+  render(<Guidelines {...props} open={false} />);
+
+  const panelHeader = screen.queryByText('Guidelines');
+  expect(panelHeader).not.toBeInTheDocument();
+});

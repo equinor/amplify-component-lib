@@ -9,7 +9,7 @@ interface FeatureProps {
 }
 
 const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
-  const { showContent, isLoading } = useFeatureToggling({ featureKey });
+  const { showContent, isLoading } = useFeatureToggling(featureKey);
 
   if (isLoading) return null;
 

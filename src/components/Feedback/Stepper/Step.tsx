@@ -36,8 +36,6 @@ const IconWrapper = styled.span<IconWrapperProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 22px;
-  min-height: 22px;
   width: 22px;
   height: 22px;
   border-radius: ${shape.circle.borderRadius};
@@ -63,13 +61,15 @@ interface StepProps {
   currentIndex: number;
   setCurrentIndex: (value: number) => void;
   index: number;
-  children: string;
+  onlyShowCurrentStepLabel?: boolean;
+  children?: string;
 }
 
 const Step: FC<StepProps> = ({
   currentIndex,
   setCurrentIndex,
   index,
+  onlyShowCurrentStepLabel = false,
   children,
 }) => {
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
@@ -112,9 +112,9 @@ const Step: FC<StepProps> = ({
         }
       }}
       style={
-        containerRef !== null
+        containerRef !== null && !onlyShowCurrentStepLabel
           ? {
-              width: `${containerRef.clientWidth}px`,
+              width: `calc(${containerRef.clientWidth}px + ${spacings.comfortable.small})`,
             }
           : undefined
       }
@@ -122,9 +122,11 @@ const Step: FC<StepProps> = ({
       onClick={handleOnClick}
     >
       {StepIcon}
-      <Typography variant={textVariant} color={textColor}>
-        {children}
-      </Typography>
+      {(!onlyShowCurrentStepLabel || currentIndex === index) && (
+        <Typography variant={textVariant} color={textColor}>
+          {children}
+        </Typography>
+      )}
     </Container>
   );
 };

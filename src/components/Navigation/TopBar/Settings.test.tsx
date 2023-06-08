@@ -119,8 +119,13 @@ test('Settings renders as expected when opened/closed', async () => {
 
   expect(lightRadioButton).toBeChecked();
   expect(lightRadioButton).toBeInTheDocument();
-
   await user.click(menuButton);
+
+  expect(
+    screen.queryByRole('radio', { name: /light mode/i })
+  ).not.toBeInTheDocument();
+  await user.click(menuButton);
+  await user.click(document.body);
 
   expect(
     screen.queryByRole('radio', { name: /light mode/i })

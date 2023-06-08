@@ -29,7 +29,8 @@ test('Displays icon/number correctly', async () => {
   for (const step of props.steps.slice(1)) {
     expect(screen.getByText(step)).toHaveAttribute('color');
   }
-  rerender(<Stepper {...props} current={1} />);
+  rerender(<Stepper {...props} current={1} maxWidth="800px" />);
+
   expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
     'd',
     check.svgPathData
@@ -48,4 +49,21 @@ test('Fires onClick when clicking steps that are in the past', async () => {
   // 0 is the index of the element we clicked
   expect(props.setCurrent).toHaveBeenCalledWith(0);
   expect(props.setCurrent).toHaveBeenCalledTimes(1);
+});
+
+test('onlyShowCurrentStepLabel prop hides other labels', async () => {
+  const props = fakeProps();
+  render(<Stepper {...props} onlyShowCurrentStepLabel={true} />);
+
+  expect(screen.queryByText(props.steps[2])).toBeNull();
+});
+
+test('maxWidth props sets max-width style', () => {
+  const width = faker.datatype.number() + 'px';
+  const props = fakeProps();
+  render(<Stepper {...props} maxWidth={width} />);
+
+  const container = screen.getByTestId('stepper-container');
+  const style = window.getComputedStyle(container);
+  expect(style.maxWidth).toBe(width);
 });

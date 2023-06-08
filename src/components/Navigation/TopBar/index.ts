@@ -3,6 +3,7 @@ import { Account } from './Account';
 import { Actions } from './Actions';
 import FieldSelector from './FieldSelector';
 import { Guidelines, GuidelineSections } from './Guidelines';
+import { Help } from './Help';
 import Notifications from './Notifications';
 import { ISettingsProps, Settings } from './Settings';
 import { TopBar as BaseTopBar } from './TopBar';
@@ -15,6 +16,7 @@ type TopBarType = typeof BaseTopBar & {
   Notifications: typeof Notifications;
   Feedback: typeof Feedback;
   FieldSelector: typeof FieldSelector;
+  Help: typeof Help;
 };
 
 const TopBar = BaseTopBar as TopBarType;
@@ -25,6 +27,7 @@ TopBar.Settings = Settings;
 TopBar.Notifications = Notifications;
 TopBar.Feedback = Feedback;
 TopBar.FieldSelector = FieldSelector;
+TopBar.Help = Help;
 
 export default TopBar;
 export type { GuidelineSections, ISettingsProps, TopBarType };

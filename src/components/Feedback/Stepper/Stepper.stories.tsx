@@ -11,18 +11,20 @@ export default {
     current: { control: 'number' },
     setCurrent: { action: 'Called setCurrent' },
     steps: { control: 'array' },
+    onlyShowCurrentStepLabel: { control: 'boolean' },
+    maxWidth: { control: 'text' },
   },
   args: {
     current: 0,
     steps: ['Select conveyance', 'Select provider', 'Select service'],
+    onlyShowCurrentStepLabel: false,
   },
 };
 
 const Container = styled.div`
-  width: fit-content;
   height: 20rem;
   display: flex;
-  margin: 0 auto;
+  justify-content: center;
 `;
 
 export const Primary: StoryFn<StepperProps> = (args) => {

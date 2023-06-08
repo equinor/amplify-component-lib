@@ -45,7 +45,7 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
 
   return (
     <UploadWrapper {...getRootProps()} isDragActive={isDragActive}>
-      <input {...getInputProps()} />
+      <input data-testid="file-upload-area-input" {...getInputProps()} />
       {isDragActive ? (
         <Typography variant="h6">Drop to upload your files</Typography>
       ) : (

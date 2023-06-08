@@ -37,11 +37,7 @@ export type GraphUser = {
   userPrincipalName?: string | null;
 };
 
-interface useFeatureTogglingProps {
-  featureKey: string;
-}
-
-export function useFeatureToggling({ featureKey }: useFeatureTogglingProps) {
+export function useFeatureToggling(featureKey: string) {
   const { instance } = useMsal();
   const { account } = useAuth();
   const username = `${account?.username}`;
