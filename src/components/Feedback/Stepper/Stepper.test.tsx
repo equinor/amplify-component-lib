@@ -21,8 +21,7 @@ function fakeProps(): StepperProps {
 
 test('Displays icon/number correctly', async () => {
   const props = fakeProps();
-  // TODO: Actually test if maxwidth works
-  const { rerender } = render(<Stepper {...props} maxWidth="800px" />);
+  const { rerender } = render(<Stepper {...props} />);
 
   // Current does not have color attribute
   expect(screen.getByText(props.steps[0])).not.toHaveAttribute('color');
@@ -57,4 +56,14 @@ test('onlyShowCurrentStepLabel prop hides other labels', async () => {
   render(<Stepper {...props} onlyShowCurrentStepLabel={true} />);
 
   expect(screen.queryByText(props.steps[2])).toBeNull();
+});
+
+test('maxWidth props sets max-width style', () => {
+  const width = faker.datatype.number() + 'px';
+  const props = fakeProps();
+  render(<Stepper {...props} maxWidth={width} />);
+
+  const container = screen.getByTestId('stepper-container');
+  const style = window.getComputedStyle(container);
+  expect(style.maxWidth).toBe(width);
 });
