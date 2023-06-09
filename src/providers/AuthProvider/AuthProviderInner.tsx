@@ -43,6 +43,15 @@ function setHasRefreshed({ value }: HasRefreshed) {
   window.localStorage.setItem(localStorageKey, JSON.stringify(value));
 }
 
+function clearMsalLocalStorage() {
+  const clearKeys = Object.keys(window.localStorage).filter(
+    (key) => key.includes('msal') || key.includes('login.windows.net')
+  );
+  for (const key of clearKeys) {
+    window.localStorage.removeItem(key);
+  }
+}
+
 export interface AuthProviderInnerProps {
   loadingComponent: ReactElement;
   unauthorizedComponent: ReactElement;
@@ -151,7 +160,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           } else {
             // Hasn't refreshed automatically yet, refreshing...
             console.log('Trying an automatic refresh...');
-            window.localStorage.clear();
+            clearMsalLocalStorage();
             console.log('Clearing local storage...');
             setHasRefreshed({ value: true });
             window.location.reload();
