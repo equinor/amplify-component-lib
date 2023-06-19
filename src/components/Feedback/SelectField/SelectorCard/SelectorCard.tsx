@@ -98,7 +98,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
   };
 
   return (
-    <StyledCard data-testid="selectorCard">
+    <StyledCard>
       <Typography variant="h3">Please select a field</Typography>
       <section>
         <AutocompleteWrapper>
