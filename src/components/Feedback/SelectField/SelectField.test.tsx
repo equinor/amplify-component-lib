@@ -242,3 +242,31 @@ test('Shows skeleton as expected', async () => {
 
   expect(screen.getAllByRole('busy')).not.toBe([]);
 });
+
+test('Logs error and doesnt include fields which have no name', async () => {
+  const noNameField = { name: null, country: 'NORWAY', uuid: 'nearsnto' };
+  const fields = [...fakeFields(), noNameField];
+  const finishedText = faker.lorem.sentence();
+
+  const setField = vi.fn();
+
+  const onChangedField = vi.fn();
+
+  console.error = vi.fn();
+
+  render(
+    <SelectField
+      setField={setField}
+      fields={fields}
+      isLoading={false}
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+      showAccessITLink
+    />
+  );
+
+  expect(console.error).toHaveBeenCalledWith(
+    'Field with no name found!:',
+    noNameField
+  );
+});
