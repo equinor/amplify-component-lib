@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import {
   Autocomplete,
@@ -76,6 +76,10 @@ const MissingAccess = styled.div`
   }
 `;
 
+type StrictField = {
+  name: string;
+} & Field;
+
 export type FieldSelectorType = {
   availableFields: Array<Field>;
   onSelect: (selectedField: Field) => void;
@@ -97,6 +101,18 @@ const SelectorCard: FC<FieldSelectorType> = ({
     if (selectedOption !== undefined) onSelect(selectedOption);
   };
 
+  const options = useMemo(() => {
+    const all: StrictField[] = [];
+    for (const field of availableFields) {
+      if (!field.name) {
+        console.error('Field with no name found!:', field);
+      } else {
+        all.push(field as StrictField);
+      }
+    }
+    return all;
+  }, [availableFields]);
+
   return (
     <StyledCard>
       <Typography variant="h3">Please select a field</Typography>
@@ -104,11 +120,11 @@ const SelectorCard: FC<FieldSelectorType> = ({
         <AutocompleteWrapper>
           <Autocomplete
             autoWidth
-            options={availableFields}
+            options={options}
             label=""
             placeholder="Select a field"
             onOptionsChange={handleOnChange}
-            optionLabel={(option) => option.name ?? ''}
+            optionLabel={(option) => option.name}
           />
         </AutocompleteWrapper>
         <Button
