@@ -6,10 +6,22 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { Field } from '../../../types/Field';
 import TopBar from '../../Navigation/TopBar';
-import Template from '../../Template/Template';
 import SelectField from './SelectField';
 
+import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+
+const StoryContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 1000%;
+  min-width: 100%;
+  > div {
+    max-height: calc(100% - 64px);
+    height: calc(100% - 64px);
+    width: 100%;
+  }
+`;
 
 const equinorFields = [
   'Gina Krog',
@@ -79,7 +91,7 @@ export const Primary: StoryFn = (args) => {
   }, []);
 
   return (
-    <Template>
+    <StoryContainer>
       <TopBar
         onHeaderClick={function (): void {
           throw new Error('Function not implemented.');
@@ -93,18 +105,14 @@ export const Primary: StoryFn = (args) => {
           </Button>
         </TopBar.Actions>
       </TopBar>
-      <Template.Container>
-        <Template.Content open={false}>
-          <SelectField
-            showAccessITLink={args.showAccessITLink}
-            setField={setField}
-            fields={fields}
-            isLoading={isLoading}
-            onChangedField={onChangedField}
-            finishedText={args.finishedText}
-          />
-        </Template.Content>
-      </Template.Container>
-    </Template>
+      <SelectField
+        showAccessITLink={args.showAccessITLink}
+        setField={setField}
+        fields={fields}
+        isLoading={isLoading}
+        onChangedField={onChangedField}
+        finishedText={args.finishedText}
+      />
+    </StoryContainer>
   );
 };
