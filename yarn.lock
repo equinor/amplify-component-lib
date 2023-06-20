@@ -2194,8 +2194,6 @@ __metadata:
     "@azure/msal-browser": 2.37.1
     "@azure/msal-react": 1.5.8
     "@equinor/eds-core-react": 0.30.0
-    "@equinor/eds-tokens": ^0.9.1
-    "@equinor/eds-utils": ^0.7.0
     "@faker-js/faker": ^8.0.2
     "@microsoft/signalr": ^7.0.7
     "@rollup/plugin-babel": ^6.0.3
@@ -2309,14 +2307,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@equinor/eds-tokens@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "@equinor/eds-tokens@npm:0.9.1"
-  checksum: c166ac6d4959190917d620085bfe4ccff297a82b80cbfdd01651227aee8041c2227350287246a14f998a230798e7583086e5daf8bc774c914a6f9364a306ae5f
-  languageName: node
-  linkType: hard
-
-"@equinor/eds-utils@npm:0.7.0, @equinor/eds-utils@npm:^0.7.0":
+"@equinor/eds-utils@npm:0.7.0":
   version: 0.7.0
   resolution: "@equinor/eds-utils@npm:0.7.0"
   dependencies:
