@@ -1,10 +1,9 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "3.8.10",
+  "version": "3.8.11",
   "description": "Frontend Typescript components for the Amplify team",
-  "exports": "./dist/esm/index.js",
-  "type": "module",
-  "types": "dist/esm/types/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
   "author": "Amplify Team",
   "license": "ISC",
   "homepage": "https://github.com/equinor/amplify-components#readme",

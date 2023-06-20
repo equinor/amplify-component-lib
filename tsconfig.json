@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "./dist/esm/types",
+    "declarationDir": "./dist/types",
     "emitDeclarationOnly": true,
     "isolatedModules": true,
-    "outDir": "./dist/esm",
+    "outDir": "./dist",
     "target": "ES2022",
     "module": "esnext",
     "lib": ["dom", "esnext"],

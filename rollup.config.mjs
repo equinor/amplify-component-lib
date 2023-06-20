@@ -17,7 +17,7 @@ const extensions = ['.tsx', '.ts'];
 export default [
   {
     input: ['./src/index.ts'],
-    external: ['@babel/runtime', ...externalDependencies],
+    external: ['@babel/runtime', 'react/jsx-runtime',  ...externalDependencies],
     plugins: [
       del({ targets: 'dist/*', runOnce: true }),
       resolve({ extensions }),
@@ -29,9 +29,7 @@ export default [
     ],
     output: [
       {
-        dir: 'dist/esm',
-        preserveModules: true,
-        preserveModulesRoot: 'src',
+        dir: 'dist',
         format: 'es',
         sourcemap: true,
       },
