@@ -39,8 +39,8 @@ const ButtonBox = styled(SkeletonBase)`
 const SelectorSkeleton = () => {
   return (
     <StyledCard>
-      <InputBox />
-      <ButtonBox />
+      <InputBox role="busy" />
+      <ButtonBox role="busy" />
     </StyledCard>
   );
 };
