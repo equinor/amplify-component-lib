@@ -2,9 +2,10 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import del from 'rollup-plugin-delete';
 
 import pkg from './package.json' assert { type: 'json' };
+
+import del from 'rollup-plugin-delete';
 
 const externalDependencies = Object.keys({
   ...pkg.peerDependencies,
@@ -28,7 +29,9 @@ export default [
     ],
     output: [
       {
-        dir: pkg.publishConfig.main,
+        dir: 'dist/esm',
+        preserveModules: true,
+        preserveModulesRoot: 'src',
         format: 'es',
         sourcemap: true,
       },
