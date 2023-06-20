@@ -12,7 +12,7 @@ WORKDIR /app
 RUN yarn install
 COPY src src
 COPY .storybook .storybook
-COPY .eslintrc.js .eslintrc.js
+COPY .eslintrc.cjs .eslintrc.cjs
 
 # Build
 FROM dependencies as builder
