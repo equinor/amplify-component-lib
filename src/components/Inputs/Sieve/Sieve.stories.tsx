@@ -16,6 +16,7 @@ export default {
       control: 'array',
     },
     onUpdate: { action: 'Ran on update' },
+    showChips: { actions: 'boolean' },
   },
   args: {
     searchPlaceholder: 'Write to search for...',
@@ -57,6 +58,7 @@ export default {
         ],
       },
     ],
+    showChips: true,
   },
 };
 
