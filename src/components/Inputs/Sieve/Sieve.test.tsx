@@ -426,3 +426,61 @@ test('Users can remove all filters', async () => {
     sortValue: props.sortOptions?.at(0),
   });
 });
+
+test('Do not show filter chips when showChips is set to false', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} showChips={false} />);
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  for (const option of props?.filterOptions ?? []) {
+    expect(screen.getByText(option.label)).toBeInTheDocument();
+  }
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  for (const option of props.filterOptions?.[randomFilterGroup].options ?? []) {
+    expect(screen.getByText(option.label)).toBeInTheDocument();
+  }
+
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
+  });
+  await user.click(
+    screen.getByText(
+      props.filterOptions?.[randomFilterGroup]?.options[randomIndex]?.label ??
+        'not-found'
+    )
+  );
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: [
+      props.filterOptions?.[randomFilterGroup].options[randomIndex],
+    ],
+    sortValue: props.sortOptions?.at(0),
+  });
+
+  await user.click(filterByButton);
+
+  const filterChips = screen.queryByText(
+    props.filterOptions?.[randomFilterGroup]?.options[randomIndex]?.label ??
+      'not-found'
+  );
+
+  expect(filterChips).not.toBeInTheDocument();
+});

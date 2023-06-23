@@ -50,6 +50,7 @@ export interface SieveProps {
   sortOptions?: Option[];
   filterOptions?: FilterOption[];
   onUpdate: (value: SieveValue) => void;
+  showChips?: boolean;
 }
 
 const Sieve: FC<SieveProps> = ({
@@ -57,6 +58,7 @@ const Sieve: FC<SieveProps> = ({
   sortOptions,
   filterOptions,
   onUpdate,
+  showChips = true,
 }) => {
   const sieveValue = useRef<SieveValue>({
     searchValue: undefined,
@@ -128,19 +130,21 @@ const Sieve: FC<SieveProps> = ({
           />
         )}
       </Container>
-      <Container>
-        {filterValues?.map((filter) => (
-          <FilterChip
-            key={`filter-chip-${filter.value}`}
-            onDelete={() => handleRemoveFilter(filter)}
-          >
-            {filter.label}
-          </FilterChip>
-        ))}
-        {filterValues.length > 1 && (
-          <FilterChip onDelete={handleRemoveAll}>Remove all</FilterChip>
-        )}
-      </Container>
+      {showChips && (
+        <Container>
+          {filterValues?.map((filter) => (
+            <FilterChip
+              key={`filter-chip-${filter.value}`}
+              onDelete={() => handleRemoveFilter(filter)}
+            >
+              {filter.label}
+            </FilterChip>
+          ))}
+          {filterValues.length > 1 && (
+            <FilterChip onDelete={handleRemoveAll}>Remove all</FilterChip>
+          )}
+        </Container>
+      )}
     </Wrapper>
   );
 };
