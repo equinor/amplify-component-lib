@@ -124,6 +124,7 @@ const Sieve: FC<SieveProps> = ({
         )}
         {filterOptions !== undefined && (
           <Filter
+            test-id="filterObject"
             options={filterOptions}
             selectedOptions={filterValues}
             setSelectedOptions={handleSetFilterValues}

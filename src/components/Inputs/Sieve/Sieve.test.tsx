@@ -426,3 +426,34 @@ test('Users can remove all filters', async () => {
     sortValue: props.sortOptions?.at(0),
   });
 });
+
+test('Do not show filter chips when showChips is set to false', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Sieve {...props} showChips={false} />);
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[0].label,
+    })
+  );
+
+  for (const i of [0, 1]) {
+    await user.click(
+      screen.getByText(
+        props.filterOptions?.[0]?.options[i]?.label ?? 'not-found'
+      )
+    );
+  }
+
+  const filterChips = screen.queryByRole('filter chips', {
+    name: /filter chip/i,
+  });
+
+  expect(filterChips).not.toBeInTheDocument();
+});
