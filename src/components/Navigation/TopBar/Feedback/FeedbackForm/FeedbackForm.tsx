@@ -46,7 +46,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   });
 
   const { data: portalToken } = useQuery<string>(
-    ['getPortalProdToken'],
+    ['getPortalTokenForCurrentEnvironment'],
     async () => {
       const authResult = await acquireToken(
         instance,
