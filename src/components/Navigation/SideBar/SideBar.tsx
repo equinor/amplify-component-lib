@@ -12,7 +12,7 @@ import styled from 'styled-components';
 const { colors, spacings } = tokens;
 
 interface ContainerProps {
-  width: string;
+  $width: string;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -22,8 +22,8 @@ const Container = styled.div<ContainerProps>`
   flex-direction: column;
   padding-bottom: ${spacings.comfortable.large};
   overflow: hidden;
-  width: ${(props) => props.width};
-  min-width: ${(props) => props.width};
+  width: ${(props) => props.$width};
+  min-width: ${(props) => props.$width};
   height: calc(100vh - 64px - 24px);
   position: sticky;
   top: 64px;
@@ -59,7 +59,7 @@ export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
 
     return (
       <Container
-        width={isOpen ? '256px' : '72px'}
+        $width={isOpen ? '256px' : '72px'}
         ref={ref}
         data-testid="sidebar"
       >

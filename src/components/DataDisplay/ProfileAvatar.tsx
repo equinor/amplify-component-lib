@@ -55,19 +55,19 @@ function nameToColor(name?: string): string {
 }
 
 type ContainerProps = {
-  size: number;
+  $size: number;
 };
 
 type InitialsContainerProps = {
   background: string;
-  fontSize: number;
+  $fontSize: number;
   disabled: boolean;
 } & ContainerProps;
 
 const InitialsContainer = styled.div<InitialsContainerProps>`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  font-size: ${(props) => props.fontSize}px;
+  width: ${(props) => props.$size}px;
+  height: ${(props) => props.$size}px;
+  font-size: ${(props) => props.$fontSize}px;
   font-family: ${typography.heading.h6.fontFamily};
   border-radius: ${shape.circle.borderRadius};
   background: ${(props) =>
@@ -147,8 +147,8 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
     return (
       <InitialsContainer
         background={nameToColor(name)}
-        size={sizeToPx()}
-        fontSize={sizeToFontsize()}
+        $size={sizeToPx()}
+        $fontSize={sizeToFontsize()}
         disabled={disabled}
         ref={ref}
       >

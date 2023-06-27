@@ -7,13 +7,13 @@ import styled from 'styled-components';
 const { colors } = tokens;
 
 interface LineProps {
-  background: string;
+  $background: string;
 }
 
 const Line = styled.hr<LineProps>`
   height: 1px;
   width: 100%;
-  background: ${(props) => props.background};
+  background: ${(props) => props.$background};
   border: none;
   margin: 0;
 `;
@@ -27,7 +27,7 @@ const StepLine: FC<StepLineProps> = ({ done }) => {
     if (done) return colors.interactive.primary__resting.hex;
     return colors.interactive.disabled__text.hex;
   }, [done]);
-  return <Line background={background} />;
+  return <Line $background={background} />;
 };
 
 export default StepLine;

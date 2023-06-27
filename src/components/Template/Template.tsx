@@ -1,16 +1,16 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import styled, { StyledComponent } from 'styled-components';
+import styled, { IStyledComponent } from 'styled-components';
 
 const { colors, spacings } = tokens;
 
 interface ContentProps {
-  open: boolean;
+  $open: boolean;
 }
 
-type TemplateType = StyledComponent<'div', any, any, never> & {
-  Container: StyledComponent<'div', any, any, never>;
-  Content: StyledComponent<'div', any, ContentProps, never>;
+type TemplateType = IStyledComponent<'web', 'div', any> & {
+  Container: IStyledComponent<'web', 'div', any>;
+  Content: IStyledComponent<'web', 'div', ContentProps>;
 };
 
 const BaseTemplate = styled.div`
@@ -33,7 +33,7 @@ const Content = styled.div<ContentProps>`
   overflow: auto;
   /* 256px and 72px is width of Sidebar when open/closed, + 1px because of border */
   min-width: calc(
-    100% - ${(props) => (props.open ? '257px' : '73px')} -
+    100% - ${(props) => (props.$open ? '257px' : '73px')} -
       ${spacings.comfortable.xxx_large} * 2
   );
   padding: 0 ${spacings.comfortable.xxx_large};

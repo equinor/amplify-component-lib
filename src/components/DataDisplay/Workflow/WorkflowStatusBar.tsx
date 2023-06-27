@@ -28,16 +28,16 @@ const Wrapper = styled.div`
 `;
 
 interface CircleProps {
-  color?: string;
-  backgroundColor?: string;
+  $color?: string;
+  $backgroundColor?: string;
   index: number;
 }
 
 const Circle = styled.div<CircleProps>`
   height: 0.5em;
   width: 0.5em;
-  background-color: ${(props) => props.backgroundColor};
-  border: 0.125em solid ${(props) => props.color};
+  background-color: ${(props) => props.$backgroundColor};
+  border: 0.125em solid ${(props) => props.$color};
   border-radius: 50%;
   display: inline-block;
   z-index: 100;
@@ -77,8 +77,8 @@ const Line = styled.div<LineProps>`
 `;
 
 type WorkflowStatusBarType = {
-  color: string;
-  backgroundColor: string;
+  $color: string;
+  $backgroundColor: string;
   label: string;
   value: string;
 };
@@ -124,8 +124,8 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
               {activeIdx === idx && showAlert && <Alert data-testid="alert" />}
               <Circle
                 index={idx}
-                color={item.color}
-                backgroundColor={item.backgroundColor}
+                $color={item.$color}
+                $backgroundColor={item.$backgroundColor}
               />
             </div>
           </OptionalTooltip>

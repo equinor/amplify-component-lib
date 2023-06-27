@@ -24,11 +24,9 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: ${spacings.comfortable.medium};
-  padding-right: ${spacings.comfortable.small};
   border-bottom: 1px solid ${colors.ui.background__medium.hex};
-  padding-bottom: ${spacings.comfortable.small};
-  padding-top: 8px;
+  padding: 8px ${spacings.comfortable.small} ${spacings.comfortable.small}
+    ${spacings.comfortable.medium};
 `;
 
 const Content = styled.div`
@@ -36,12 +34,12 @@ const Content = styled.div`
 `;
 
 interface StyledColorBoxProps {
-  color: string;
+  $color: string;
 }
 const StyledColorBox = styled.div<StyledColorBoxProps>`
   width: 52px;
   height: 32px;
-  background-color: ${(props) => props.color};
+  background-color: ${(props) => props.$color};
   box-shadow: ${elevation.raised};
 `;
 const Guide = styled.div`
@@ -104,7 +102,7 @@ export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
                       {item.colorBox && (
                         <StyledColorBox
                           data-testid={`color-box-${item.title}`}
-                          color={item.color}
+                          $color={item.color}
                         />
                       )}
                       <Icon data={item.icon} color={item.color} size={24} />

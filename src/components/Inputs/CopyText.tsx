@@ -29,13 +29,13 @@ const spawn = keyframes`
 `;
 
 interface CopyIconProps {
-  iconRightPos?: string;
+  $iconRightPos?: string;
 }
 
 const CopyIcon = styled.div<CopyIconProps>`
   position: absolute;
   z-index: 1000;
-  right: ${(props) => props.iconRightPos && props.iconRightPos};
+  right: ${(props) => props.$iconRightPos && props.$iconRightPos};
   top: 50%;
   transform: translate(0, -50%);
   animation: ${spawn} 1s;
@@ -96,7 +96,7 @@ const CopyText: FC<CopyTextProps> = ({
     >
       {children}
       {hovering && (
-        <CopyIcon iconRightPos={iconRightPos}>
+        <CopyIcon $iconRightPos={iconRightPos}>
           <Icon data={copy} size={16} />
           <Typography variant="overline">{iconText}</Typography>
         </CopyIcon>

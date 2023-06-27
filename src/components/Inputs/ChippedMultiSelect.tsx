@@ -83,7 +83,7 @@ const Menu = styled(EDSMenu)<MenuProps>`
   overflow: auto !important;
 `;
 
-const MenuItem = styled(Menu.Item)`
+const MenuItem = styled(EDSMenu.Item)`
   display: grid;
   grid-template-columns: auto 1fr;
   &:focus {
