@@ -77,8 +77,8 @@ const Line = styled.div<LineProps>`
 `;
 
 type WorkflowStatusBarType = {
-  $color: string;
-  $backgroundColor: string;
+  color: string;
+  backgroundColor: string;
   label: string;
   value: string;
 };
@@ -124,8 +124,8 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
               {activeIdx === idx && showAlert && <Alert data-testid="alert" />}
               <Circle
                 index={idx}
-                $color={item.$color}
-                $backgroundColor={item.$backgroundColor}
+                $color={item.color}
+                $backgroundColor={item.backgroundColor}
               />
             </div>
           </OptionalTooltip>
