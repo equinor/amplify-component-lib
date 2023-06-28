@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC } from 'react';
 
 import { Chip as EDSChip, Search as EDSSearch } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -28,7 +28,6 @@ const FilterChip = styled(EDSChip)`
 `;
 
 const Search = styled(EDSSearch)`
-  min-width: 24rem;
   > div {
     box-shadow: none;
     outline: none !important;
@@ -39,6 +38,10 @@ const Search = styled(EDSSearch)`
   }
 `;
 
+/* type FilterValues = {
+  [key: string]: Option[];
+}
+ */
 export type SieveValue = {
   searchValue: string | undefined;
   sortValue: Option | undefined;
@@ -49,90 +52,93 @@ export interface SieveProps {
   searchPlaceholder: string;
   sortOptions?: Option[];
   filterOptions?: FilterOption[];
+  sieveValue: SieveValue;
   onUpdate: (value: SieveValue) => void;
   showChips?: boolean;
+  minSearchWidth?: string;
 }
 
 const Sieve: FC<SieveProps> = ({
   searchPlaceholder,
   sortOptions,
   filterOptions,
+  sieveValue,
   onUpdate,
   showChips = true,
+  minSearchWidth = '24rem',
 }) => {
-  const sieveValue = useRef<SieveValue>({
-    searchValue: undefined,
-    sortValue: sortOptions?.at(0),
-    filterValues: undefined,
-  });
-  const [filterValues, setFilterValues] = useState<Option[]>([]);
-  const [sortValue, setSortValue] = useState<Option | undefined>(
-    sortOptions?.at(0)
-  );
-
-  const handleOnSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.currentTarget.value !== '') {
-      sieveValue.current.searchValue = event.currentTarget.value;
-    } else {
-      sieveValue.current.searchValue = undefined;
-    }
-
-    onUpdate(sieveValue.current);
-  };
-
-  const handleSetFilterValues = (values: Option[]) => {
-    setFilterValues(values);
-  };
-
-  const handleSetSortValue = (value: Option) => {
-    setSortValue(value);
+  const handleUpdateSieveValue = <
+    K extends keyof SieveValue,
+    V extends SieveValue
+  >(
+    key: K,
+    value: V[K]
+  ) => {
+    const newSieveValue = {
+      ...sieveValue,
+      [key]: value,
+    };
+    onUpdate(newSieveValue);
   };
 
   const handleRemoveFilter = (option: Option) => {
-    setFilterValues(filterValues.filter((item) => item.value !== option.value));
+    const newFilters = sieveValue.filterValues?.filter(
+      (item) => item.value !== option.value
+    );
+    onUpdate({
+      ...sieveValue,
+      /* filterValues: Object.keys(option).filter((item) => item !== option.value) */
+      filterValues:
+        newFilters && newFilters.length > 0 ? newFilters : undefined,
+    });
   };
 
   const handleRemoveAll = () => {
-    setFilterValues([]);
+    onUpdate({
+      ...sieveValue,
+      filterValues: undefined,
+    });
   };
-
-  const initialRender = useRef<boolean>(false);
-  useEffect(() => {
-    if (initialRender.current) {
-      sieveValue.current.filterValues =
-        filterValues.length > 0 ? filterValues : undefined;
-      sieveValue.current.sortValue = sortValue;
-      onUpdate(sieveValue.current);
-    } else {
-      initialRender.current = true;
-    }
-  }, [filterValues, onUpdate, sortValue]);
 
   return (
     <Wrapper>
       <Container>
         <Search
+          style={{ minWidth: minSearchWidth }}
           placeholder={searchPlaceholder}
-          onChange={handleOnSearchInput}
+          value={sieveValue.searchValue ?? ''}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            handleUpdateSieveValue(
+              'searchValue',
+              event.target.value !== '' ? event.target.value : undefined
+            );
+          }}
         />
         {sortOptions !== undefined && (
           <Sort
             options={sortOptions}
-            selectedOption={sortValue}
-            setSelectedOption={handleSetSortValue}
+            selectedOption={sieveValue.sortValue}
+            setSelectedOption={(value) =>
+              handleUpdateSieveValue('sortValue', value)
+            }
           />
         )}
         {filterOptions !== undefined && (
           <Filter
             options={filterOptions}
-            selectedOptions={filterValues}
-            setSelectedOptions={handleSetFilterValues}
+            selectedOptions={sieveValue.filterValues ?? []}
+            setSelectedOptions={(value) =>
+              handleUpdateSieveValue(
+                'filterValues',
+                value.length > 0 ? value : undefined
+              )
+            }
           />
         )}
       </Container>
       {showChips && (
         <Container>
-          {filterValues?.map((filter) => (
+          {sieveValue.filterValues?.map((filter) => (
             <FilterChip
               key={`filter-chip-${filter.value}`}
               onDelete={() => handleRemoveFilter(filter)}
@@ -140,7 +146,7 @@ const Sieve: FC<SieveProps> = ({
               {filter.label}
             </FilterChip>
           ))}
-          {filterValues.length > 1 && (
+          {sieveValue.filterValues && sieveValue.filterValues.length > 1 && (
             <FilterChip onDelete={handleRemoveAll}>Remove all</FilterChip>
           )}
         </Container>
