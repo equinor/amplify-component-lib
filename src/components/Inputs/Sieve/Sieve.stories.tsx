@@ -72,6 +72,7 @@ export const Primary: StoryFn<SieveProps> = (args) => {
       label: 'Numeric',
     },
   });
+
   return <Sieve {...args} sieveValue={sieveValue} onUpdate={setSieveValue} />;
 };
 Primary.parameters = {

@@ -38,14 +38,14 @@ const Search = styled(EDSSearch)`
   }
 `;
 
-/* type FilterValues = {
+export type FilterValues = {
   [key: string]: Option[];
-}
- */
+};
+
 export type SieveValue = {
   searchValue: string | undefined;
   sortValue: Option | undefined;
-  filterValues: Option[] | undefined;
+  filterValues: FilterValues | undefined;
 };
 
 export interface SieveProps {
@@ -69,35 +69,39 @@ const Sieve: FC<SieveProps> = ({
 }) => {
   const handleUpdateSieveValue = <
     K extends keyof SieveValue,
-    V extends SieveValue
+    V extends SieveValue[K]
   >(
     key: K,
-    value: V[K]
+    value: V
   ) => {
-    const newSieveValue = {
+    const newSieveValue: SieveValue = {
       ...sieveValue,
       [key]: value,
     };
+
     onUpdate(newSieveValue);
   };
 
-  const handleRemoveFilter = (option: Option) => {
-    const newFilters = sieveValue.filterValues?.filter(
-      (item) => item.value !== option.value
+  const handleRemoveFilter = (parent: string, option: Option) => {
+    let newValues: FilterValues | undefined = { ...sieveValue.filterValues };
+
+    const index = newValues[parent].findIndex(
+      (item) => item.value === option.value
     );
-    onUpdate({
-      ...sieveValue,
-      /* filterValues: Object.keys(option).filter((item) => item !== option.value) */
-      filterValues:
-        newFilters && newFilters.length > 0 ? newFilters : undefined,
-    });
+    newValues[parent].splice(index, 1);
+
+    if (
+      Object.keys(newValues).flatMap((parent) => newValues?.[parent]).length ===
+      0
+    ) {
+      newValues = undefined;
+    }
+
+    handleUpdateSieveValue('filterValues', newValues);
   };
 
   const handleRemoveAll = () => {
-    onUpdate({
-      ...sieveValue,
-      filterValues: undefined,
-    });
+    handleUpdateSieveValue('filterValues', undefined);
   };
 
   return (
@@ -126,29 +130,31 @@ const Sieve: FC<SieveProps> = ({
         {filterOptions !== undefined && (
           <Filter
             options={filterOptions}
-            selectedOptions={sieveValue.filterValues ?? []}
-            setSelectedOptions={(value) =>
-              handleUpdateSieveValue(
-                'filterValues',
-                value.length > 0 ? value : undefined
-              )
+            filterValues={sieveValue.filterValues}
+            setFilterValues={(value) =>
+              handleUpdateSieveValue('filterValues', value)
             }
           />
         )}
       </Container>
       {showChips && (
         <Container>
-          {sieveValue.filterValues?.map((filter) => (
-            <FilterChip
-              key={`filter-chip-${filter.value}`}
-              onDelete={() => handleRemoveFilter(filter)}
-            >
-              {filter.label}
-            </FilterChip>
-          ))}
-          {sieveValue.filterValues && sieveValue.filterValues.length > 1 && (
-            <FilterChip onDelete={handleRemoveAll}>Remove all</FilterChip>
+          {Object.keys(sieveValue.filterValues ?? {}).map((parent: string) =>
+            sieveValue.filterValues?.[parent].map((option) => (
+              <FilterChip
+                key={`filter-chip-${option?.value}`}
+                onDelete={() => handleRemoveFilter(parent, option)}
+              >
+                {option?.label}
+              </FilterChip>
+            ))
           )}
+          {sieveValue.filterValues &&
+            Object.keys(sieveValue.filterValues).flatMap(
+              (key) => sieveValue.filterValues?.[key]
+            ).length > 1 && (
+              <FilterChip onDelete={handleRemoveAll}>Remove all</FilterChip>
+            )}
         </Container>
       )}
     </Wrapper>

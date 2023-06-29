@@ -270,9 +270,11 @@ test('Users can filter', async () => {
   );
 
   expect(props.onUpdate).toHaveBeenCalledWith({
-    filterValues: [
-      props.filterOptions?.[randomFilterGroup].options[randomIndex],
-    ],
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props.filterOptions?.[randomFilterGroup].options[randomIndex],
+      ],
+    },
     sortValue: props.sortOptions?.at(0),
   });
 });
@@ -307,9 +309,11 @@ test('Users can remove filter by clicking it', async () => {
       {...props}
       sieveValue={{
         ...props.sieveValue,
-        filterValues: [
-          props!.filterOptions![randomFilterGroup].options[randomIndex],
-        ],
+        filterValues: {
+          [props.filterOptions![randomFilterGroup].label]: [
+            props!.filterOptions![randomFilterGroup].options[randomIndex],
+          ],
+        },
       }}
     />
   );
@@ -357,9 +361,23 @@ test('Filtering chip doesnt show when filterOptions arent provided', () => {
 test('Users can remove filters', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
+  });
+
   const sieveValue: SieveValue = {
     ...props.sieveValue,
-    filterValues: [props.filterOptions![0].options[0]],
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props!.filterOptions![randomFilterGroup].options[randomIndex],
+      ],
+    },
   };
   render(<Sieve {...props} sieveValue={sieveValue} />);
 
@@ -374,9 +392,19 @@ test('Users can remove filters', async () => {
 test('Users can remove all filters', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
   const sieveValue: SieveValue = {
     ...props.sieveValue,
-    filterValues: props.filterOptions![0].options,
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props!.filterOptions![randomFilterGroup].options[0],
+        props!.filterOptions![randomFilterGroup].options[1],
+      ],
+    },
   };
   render(<Sieve {...props} sieveValue={sieveValue} />);
 
@@ -433,9 +461,11 @@ test('Do not show filter chips when showChips is set to false', async () => {
   );
 
   expect(props.onUpdate).toHaveBeenCalledWith({
-    filterValues: [
-      props.filterOptions?.[randomFilterGroup].options[randomIndex],
-    ],
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props.filterOptions?.[randomFilterGroup].options[randomIndex],
+      ],
+    },
     sortValue: props.sortOptions?.at(0),
   });
 
@@ -447,4 +477,104 @@ test('Do not show filter chips when showChips is set to false', async () => {
   );
 
   expect(filterChips).not.toBeInTheDocument();
+});
+
+test('handleUpdateSieveValue updates the sieve value correctly', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        ...props.sieveValue,
+        filterValues: {
+          [props.filterOptions![randomFilterGroup].label]: [
+            props!.filterOptions![randomFilterGroup].options[0],
+          ],
+        },
+      }}
+    />
+  );
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup]?.options[0]?.label,
+    })
+  );
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: undefined,
+    sortValue: props.sortOptions?.at(0),
+    searchValue: undefined,
+  });
+});
+
+test('User can select multiple filters in the same category ', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        ...props.sieveValue,
+        filterValues: {
+          [props.filterOptions![randomFilterGroup].label]: [
+            props!.filterOptions![randomFilterGroup].options[0],
+          ],
+        },
+      }}
+    />
+  );
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup]?.options[1]?.label,
+    })
+  );
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props!.filterOptions![randomFilterGroup].options[0],
+        props!.filterOptions![randomFilterGroup].options[1],
+      ],
+    },
+    sortValue: props.sortOptions?.at(0),
+    searchValue: undefined,
+  });
 });
