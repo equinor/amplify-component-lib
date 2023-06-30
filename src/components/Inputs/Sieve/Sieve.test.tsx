@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent, within } from '../../../tests/test-utils';
 import { FilterOption } from './Filter';
-import Sieve, { SieveProps } from './Sieve';
+import Sieve, { SieveProps, SieveValue } from './Sieve';
 import { Option } from './Sieve.common';
 
 function fakeOption(): Option {
@@ -33,10 +33,16 @@ function fakeFilterOptions(): FilterOption[] {
 }
 
 function fakeProps(): SieveProps {
+  const sortOptions = fakeOptions();
   return {
     searchPlaceholder: faker.lorem.sentence(),
-    sortOptions: fakeOptions(),
+    sortOptions,
     filterOptions: fakeFilterOptions(),
+    sieveValue: {
+      searchValue: undefined,
+      filterValues: undefined,
+      sortValue: sortOptions[0],
+    },
     onUpdate: vi.fn(),
   };
 }
@@ -44,33 +50,39 @@ function fakeProps(): SieveProps {
 test('Users can search', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  render(<Sieve {...props} />);
+
+  let text = '';
+  const customOnUpdate = (value: SieveValue) => {
+    text += value.searchValue;
+  };
+
+  render(<Sieve {...props} onUpdate={customOnUpdate} />);
 
   const searchField = screen.getByRole('textbox');
 
   const fakeText = faker.animal.cetacean();
   await user.type(searchField, fakeText);
 
-  expect(props.onUpdate).toHaveBeenCalledWith({
-    searchValue: fakeText,
-    sortValue: props.sortOptions?.at(0),
-  });
+  expect(text).toBe(fakeText);
 });
 
 test('Users can clear search', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  render(<Sieve {...props} />);
-
-  const searchField = screen.getByRole('textbox');
 
   const fakeText = faker.animal.cetacean();
-  await user.type(searchField, fakeText);
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        searchValue: fakeText,
+        filterValues: undefined,
+        sortValue: props.sortOptions?.at(0),
+      }}
+    />
+  );
 
-  expect(props.onUpdate).toHaveBeenCalledWith({
-    searchValue: fakeText,
-    sortValue: props.sortOptions?.at(0),
-  });
+  const searchField = screen.getByRole('textbox');
 
   await user.clear(searchField);
 
@@ -258,9 +270,11 @@ test('Users can filter', async () => {
   );
 
   expect(props.onUpdate).toHaveBeenCalledWith({
-    filterValues: [
-      props.filterOptions?.[randomFilterGroup].options[randomIndex],
-    ],
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props.filterOptions?.[randomFilterGroup].options[randomIndex],
+      ],
+    },
     sortValue: props.sortOptions?.at(0),
   });
 });
@@ -276,10 +290,33 @@ test('Filter not shown if the options are empty', async () => {
   expect(filterByButton).not.toBeInTheDocument();
 });
 
-test('Users can remove filter by clicking it twice', async () => {
+test('Users can remove filter by clicking it', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  render(<Sieve {...props} />);
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  const randomIndex = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
+  });
+
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        ...props.sieveValue,
+        filterValues: {
+          [props.filterOptions![randomFilterGroup].label]: [
+            props!.filterOptions![randomFilterGroup].options[randomIndex],
+          ],
+        },
+      }}
+    />
+  );
 
   const filterByButton = screen.getByRole('button', {
     name: /filter by/i,
@@ -287,22 +324,12 @@ test('Users can remove filter by clicking it twice', async () => {
 
   await user.click(filterByButton);
 
-  const randomFilterGroup = faker.datatype.number({
-    min: 0,
-    max: (props.filterOptions?.length ?? 0) - 1,
-  });
-
   await user.click(
     screen.getByRole('menuitem', {
       name: props.filterOptions?.[randomFilterGroup].label,
     })
   );
 
-  const randomIndex = faker.datatype.number({
-    min: 0,
-    max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
-  });
-
   await user.click(
     screen.getByRole('menuitem', {
       name: props.filterOptions?.[randomFilterGroup]?.options[randomIndex]
@@ -311,20 +338,7 @@ test('Users can remove filter by clicking it twice', async () => {
   );
 
   expect(props.onUpdate).toHaveBeenCalledWith({
-    filterValues: [
-      props.filterOptions?.[randomFilterGroup].options[randomIndex],
-    ],
-    sortValue: props.sortOptions?.at(0),
-  });
-
-  await user.click(
-    screen.getByRole('menuitem', {
-      name: props.filterOptions?.[randomFilterGroup]?.options[randomIndex]
-        ?.label,
-    })
-  );
-
-  expect(props.onUpdate).toHaveBeenCalledWith({
+    searchValue: undefined,
     filterValues: undefined,
     sortValue: props.sortOptions?.at(0),
   });
@@ -347,42 +361,25 @@ test('Filtering chip doesnt show when filterOptions arent provided', () => {
 test('Users can remove filters', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  render(<Sieve {...props} />);
-
-  const filterByButton = screen.getByRole('button', {
-    name: /filter by/i,
-  });
-
-  await user.click(filterByButton);
-
   const randomFilterGroup = faker.datatype.number({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
 
-  await user.click(
-    screen.getByRole('menuitem', {
-      name: props.filterOptions?.[randomFilterGroup].label,
-    })
-  );
-
   const randomIndex = faker.datatype.number({
     min: 0,
     max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
   });
-  await user.click(
-    screen.getByText(
-      props.filterOptions?.[randomFilterGroup]?.options[randomIndex]?.label ??
-        'not-found'
-    )
-  );
 
-  expect(props.onUpdate).toHaveBeenCalledWith({
-    filterValues: [
-      props.filterOptions?.[randomFilterGroup].options[randomIndex],
-    ],
-    sortValue: props.sortOptions?.at(0),
-  });
+  const sieveValue: SieveValue = {
+    ...props.sieveValue,
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props!.filterOptions![randomFilterGroup].options[randomIndex],
+      ],
+    },
+  };
+  render(<Sieve {...props} sieveValue={sieveValue} />);
 
   await user.click(screen.getByRole('img', { name: /close/i }));
 
@@ -395,26 +392,21 @@ test('Users can remove filters', async () => {
 test('Users can remove all filters', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  render(<Sieve {...props} />);
-
-  const filterByButton = screen.getByRole('button', {
-    name: /filter by/i,
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
   });
 
-  await user.click(filterByButton);
-  await user.click(
-    screen.getByRole('menuitem', {
-      name: props.filterOptions?.[0].label,
-    })
-  );
-
-  for (const i of [0, 1]) {
-    await user.click(
-      screen.getByText(
-        props.filterOptions?.[0]?.options[i]?.label ?? 'not-found'
-      )
-    );
-  }
+  const sieveValue: SieveValue = {
+    ...props.sieveValue,
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props!.filterOptions![randomFilterGroup].options[0],
+        props!.filterOptions![randomFilterGroup].options[1],
+      ],
+    },
+  };
+  render(<Sieve {...props} sieveValue={sieveValue} />);
 
   const removeAll = screen.getByText(/remove all/i);
   const removeAllIcon = within(removeAll).getByRole('img', { name: /close/i });
@@ -469,9 +461,11 @@ test('Do not show filter chips when showChips is set to false', async () => {
   );
 
   expect(props.onUpdate).toHaveBeenCalledWith({
-    filterValues: [
-      props.filterOptions?.[randomFilterGroup].options[randomIndex],
-    ],
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props.filterOptions?.[randomFilterGroup].options[randomIndex],
+      ],
+    },
     sortValue: props.sortOptions?.at(0),
   });
 
@@ -483,4 +477,104 @@ test('Do not show filter chips when showChips is set to false', async () => {
   );
 
   expect(filterChips).not.toBeInTheDocument();
+});
+
+test('handleUpdateSieveValue updates the sieve value correctly', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        ...props.sieveValue,
+        filterValues: {
+          [props.filterOptions![randomFilterGroup].label]: [
+            props!.filterOptions![randomFilterGroup].options[0],
+          ],
+        },
+      }}
+    />
+  );
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup]?.options[0]?.label,
+    })
+  );
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: undefined,
+    sortValue: props.sortOptions?.at(0),
+    searchValue: undefined,
+  });
+});
+
+test('User can select multiple filters in the same category ', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  const randomFilterGroup = faker.datatype.number({
+    min: 0,
+    max: (props.filterOptions?.length ?? 0) - 1,
+  });
+
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        ...props.sieveValue,
+        filterValues: {
+          [props.filterOptions![randomFilterGroup].label]: [
+            props!.filterOptions![randomFilterGroup].options[0],
+          ],
+        },
+      }}
+    />
+  );
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup].label,
+    })
+  );
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[randomFilterGroup]?.options[1]?.label,
+    })
+  );
+
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    filterValues: {
+      [props.filterOptions![randomFilterGroup].label]: [
+        props!.filterOptions![randomFilterGroup].options[0],
+        props!.filterOptions![randomFilterGroup].options[1],
+      ],
+    },
+    sortValue: props.sortOptions?.at(0),
+    searchValue: undefined,
+  });
 });

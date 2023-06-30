@@ -10,6 +10,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import { FilterValues } from './Sieve';
 import { Chip, MenuItem, Option } from './Sieve.common';
 
 const { colors } = tokens;
@@ -21,14 +22,14 @@ export type FilterOption = {
 
 interface FilterProps {
   options: FilterOption[];
-  selectedOptions: Option[];
-  setSelectedOptions: (values: Option[]) => void;
+  filterValues: FilterValues | undefined;
+  setFilterValues: (values: FilterValues | undefined) => void;
 }
 
 const Filter: FC<FilterProps> = ({
   options,
-  selectedOptions,
-  setSelectedOptions,
+  filterValues,
+  setFilterValues,
 }) => {
   const anchorRef = useRef<HTMLDivElement | null>(null);
   const [subMenuAnchor, setSubMenuAnchor] = useState<HTMLButtonElement | null>(
@@ -77,12 +78,31 @@ const Filter: FC<FilterProps> = ({
     }
   };
 
-  const handleFilterOptionClick = (option: Option) => {
-    let newValues = [...selectedOptions, option];
-    if (selectedOptions.map((i) => i.value).includes(option.value)) {
-      newValues = selectedOptions.filter((item) => item.value !== option.value);
+  const handleFilterOptionClick = (parent: string, option: Option) => {
+    let newValues: FilterValues | undefined = { ...filterValues };
+
+    if (
+      newValues[parent] !== undefined &&
+      newValues[parent].some((item) => item.value === option.value)
+    ) {
+      const index = newValues[parent].findIndex(
+        (item) => item.value === option.value
+      );
+      newValues[parent].splice(index, 1);
+    } else if (newValues[parent]) {
+      newValues[parent].push(option);
+    } else {
+      newValues[parent] = [option];
     }
-    setSelectedOptions(newValues);
+
+    if (
+      Object.keys(newValues).flatMap((parent) => newValues?.[parent]).length ===
+      0
+    ) {
+      newValues = undefined;
+    }
+
+    setFilterValues(newValues);
   };
 
   if (options.length === 0) return null;
@@ -130,14 +150,16 @@ const Filter: FC<FilterProps> = ({
             {options[subMenuIndex]?.options.map((option) => (
               <MenuItem
                 key={`filter-option-${option.label}`}
-                onClick={() => handleFilterOptionClick(option)}
+                onClick={() =>
+                  handleFilterOptionClick(options[subMenuIndex].label, option)
+                }
               >
                 {option.label}
                 <Icon
                   data={
-                    selectedOptions
-                      .map((item) => item.value)
-                      .includes(option.value)
+                    filterValues?.[options[subMenuIndex].label]?.some(
+                      (item) => item.value === option.value
+                    )
                       ? checkbox
                       : checkbox_outline
                   }
