@@ -77,7 +77,6 @@
     "@storybook/addon-docs": "^7.0.22",
     "@storybook/addon-essentials": "^7.0.22",
     "@storybook/addon-links": "^7.0.22",
-    "@storybook/addon-mdx-gfm": "^7.0.22",
     "@storybook/addons": "^7.0.22",
     "@storybook/node-logger": "^7.0.22",
     "@storybook/react": "^7.0.22",
