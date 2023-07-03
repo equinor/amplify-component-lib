@@ -13,6 +13,7 @@ export default defineConfig({
       'src/tests/mockResizeObserver.ts',
       'src/tests/mockInteractionObserver.ts',
       'src/tests/mockMatchMedia.ts',
+      'src/tests/mockUseSearchParams.ts'
     ],
     exclude: ['node_modules', 'src/tests', 'src/intro.stories.mdx'],
     coverage: {
