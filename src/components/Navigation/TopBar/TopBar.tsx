@@ -36,14 +36,10 @@ interface AppNameProps {
 const AppName = styled(Typography)<AppNameProps>`
   text-transform: ${(props) => (props.$capitalize ? 'capitalize' : 'none')};
 `;
-interface CircularProgressProps {
-  $isFetching: boolean;
-}
 
-const CircularProgress = styled(EDSCircularProgress)<CircularProgressProps>`
+const CircularProgress = styled(EDSCircularProgress)`
   position: absolute;
   right: -24px;
-  visibility: ${(props) => (props.$isFetching ? 'visible' : 'hidden')};
 `;
 
 interface EnvironmentTagProps {
@@ -129,9 +125,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
           <AppName variant="h6" $capitalize={capitalize}>
             {capitalize ? applicationName.toLowerCase() : applicationName}
           </AppName>
-          {isFetching && (
-            <CircularProgress size={16} $isFetching={isFetching} />
-          )}
+          {isFetching && <CircularProgress size={16} />}
         </Header>
         {(environment === EnvironmentType.DEVELOP ||
           environment === EnvironmentType.STAGING ||
