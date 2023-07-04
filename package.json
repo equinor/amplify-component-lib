@@ -110,6 +110,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-storybook": "^0.6.12",
+    "jest-styled-components": "^7.1.1",
     "jsdom": "^22.1.0",
     "ora": "^6.3.1",
     "prettier": "^2.8.8",

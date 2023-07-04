@@ -10,7 +10,7 @@ import styled from 'styled-components';
 const { colors } = tokens;
 
 interface UploadWrapperProps {
-  isDragActive: boolean;
+  $isDragActive: boolean;
 }
 
 const UploadWrapper = styled.div<UploadWrapperProps>`
@@ -27,7 +27,7 @@ const UploadWrapper = styled.div<UploadWrapperProps>`
     background-color: #deedee;
     cursor: pointer;
   }
-  background-color: ${(props) => (props.isDragActive ? `#deedee` : '')};
+  background-color: ${(props) => (props.$isDragActive ? `#deedee` : '')};
 `;
 
 export type FileUploadAreaProps = DropzoneOptions;
@@ -44,7 +44,7 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
   }, [props.accept]);
 
   return (
-    <UploadWrapper {...getRootProps()} isDragActive={isDragActive}>
+    <UploadWrapper {...getRootProps()} $isDragActive={isDragActive}>
       <input data-testid="file-upload-area-input" {...getInputProps()} />
       {isDragActive ? (
         <Typography variant="h6">Drop to upload your files</Typography>

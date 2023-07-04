@@ -86,8 +86,9 @@ test('Placement is as expected when bottom-end.', async () => {
   const button = screen.getByRole('button');
   await user.click(button);
 
-  expect(screen.getByTestId('field-menu')).toHaveStyle(
-    'transform: translate( -15rem, 4px )'
+  expect(screen.getByTestId('field-menu')).toHaveStyleRule(
+    'transform',
+    'translate( -15rem, 4px )'
   );
 
   rerender(

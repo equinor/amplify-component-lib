@@ -2239,6 +2239,7 @@ __metadata:
     eslint-plugin-simple-import-sort: ^10.0.0
     eslint-plugin-storybook: ^0.6.12
     html2canvas: ^1.4.1
+    jest-styled-components: ^7.1.1
     jsdom: ^22.1.0
     jwt-decode: ^3.1.2
     leaflet: ^1.9.4
@@ -9037,6 +9038,17 @@ __metadata:
   version: 29.4.3
   resolution: "jest-regex-util@npm:29.4.3"
   checksum: 96fc7fc28cd4dd73a63c13a526202c4bd8b351d4e5b68b1a2a2c88da3308c2a16e26feaa593083eb0bac38cca1aa9dd05025412e7de013ba963fb8e66af22b8a
+  languageName: node
+  linkType: hard
+
+"jest-styled-components@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "jest-styled-components@npm:7.1.1"
+  dependencies:
+    "@adobe/css-tools": ^4.0.1
+  peerDependencies:
+    styled-components: ">= 5"
+  checksum: 1376d1211855c459e59e6b030af7294519cd2dd78169a2cb0df185ff4390fff417ab51be3dd520f1e975d2f391f50ff266e803c168ff9f03f3ff7ebbb823d2d7
   languageName: node
   linkType: hard
 

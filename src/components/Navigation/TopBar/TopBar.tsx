@@ -30,24 +30,24 @@ const Header = styled(EDSTopBar.Header)`
 `;
 
 interface AppNameProps {
-  capitalize: boolean;
+  $capitalize: boolean;
 }
 
 const AppName = styled(Typography)<AppNameProps>`
-  text-transform: ${(props) => (props.capitalize ? 'capitalize' : 'none')};
+  text-transform: ${(props) => (props.$capitalize ? 'capitalize' : 'none')};
 `;
 interface CircularProgressProps {
-  isFetching: boolean;
+  $isFetching: boolean;
 }
 
 const CircularProgress = styled(EDSCircularProgress)<CircularProgressProps>`
   position: absolute;
   right: -24px;
-  visibility: ${(props) => (props.isFetching ? 'visible' : 'hidden')};
+  visibility: ${(props) => (props.$isFetching ? 'visible' : 'hidden')};
 `;
 
 interface EnvironmentTagProps {
-  environmentType: EnvironmentType;
+  $environmentType: EnvironmentType;
 }
 
 function environmentStyling(envType: EnvironmentType): string {
@@ -80,7 +80,7 @@ const EnvironmentTag = styled.div<EnvironmentTagProps>`
   left: 50%;
   transform: translateX(-50%);
   text-transform: capitalize;
-  ${(props) => environmentStyling(props.environmentType)}
+  ${(props) => environmentStyling(props.$environmentType)}
 `;
 
 export enum EnvironmentType {
@@ -126,15 +126,17 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
           ) : (
             <ApplicationIcon name={applicationIcon as string} size={40} />
           )}
-          <AppName variant="h6" capitalize={capitalize}>
+          <AppName variant="h6" $capitalize={capitalize}>
             {capitalize ? applicationName.toLowerCase() : applicationName}
           </AppName>
-          <CircularProgress size={16} isFetching={isFetching} />
+          {isFetching && (
+            <CircularProgress size={16} $isFetching={isFetching} />
+          )}
         </Header>
         {(environment === EnvironmentType.DEVELOP ||
           environment === EnvironmentType.STAGING ||
           environment === EnvironmentType.LOCALHOST) && (
-          <EnvironmentTag environmentType={environment}>
+          <EnvironmentTag $environmentType={environment}>
             <Typography group="heading" variant="h5">
               {environment}
             </Typography>
