@@ -96,13 +96,9 @@ const Sieve: FC<SieveProps> = ({
           searchParams.get(parent.toLowerCase()) ?? '[]'
         );
 
-        if (labels.length === 0) continue;
-
-        const selectedOptions = parentOptions?.filter((option) =>
+        filterValues[parent] = parentOptions?.filter((option) =>
           labels.includes(option.label)
         ) as Option[];
-
-        filterValues[parent] = selectedOptions;
       }
 
       onUpdate({
