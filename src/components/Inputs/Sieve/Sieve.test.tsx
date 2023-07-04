@@ -303,7 +303,7 @@ test('Users can add multiple filters from the same filter menu', async () => {
 
   await user.click(filterByButton);
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -354,12 +354,12 @@ test('Users can remove filter by clicking it', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
   });
@@ -453,7 +453,7 @@ test('Users can remove filters', async () => {
 test('Users can remove all filters', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -544,7 +544,7 @@ test('handleUpdateSieveValue updates the sieve value correctly', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -592,7 +592,7 @@ test('Add search params after what the user is choosing', async () => {
   const props = {
     ...fakeProps(),
   };
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -697,7 +697,7 @@ test('Init of search params works with "bad" search params', async () => {
   const props = {
     ...fakeProps(),
   };
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -732,7 +732,7 @@ test('Search params works with "bad" search params', async () => {
   const props = {
     ...fakeProps(),
   };
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
