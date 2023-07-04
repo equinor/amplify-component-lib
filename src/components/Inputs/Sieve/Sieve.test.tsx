@@ -7,15 +7,15 @@ import { Option } from './Sieve.common';
 
 function fakeOption(): Option {
   return {
-    label: faker.datatype.uuid(),
-    value: faker.datatype.uuid(),
+    label: faker.string.uuid(),
+    value: faker.string.uuid(),
   };
 }
 
 function fakeOptions(): Option[] {
   const options: Option[] = [];
 
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 6 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 6 }); i++) {
     options.push(fakeOption());
   }
   return options;
@@ -23,9 +23,9 @@ function fakeOptions(): Option[] {
 
 function fakeFilterOptions(): FilterOption[] {
   const options: FilterOption[] = [];
-  for (let i = 0; i < faker.datatype.number({ min: 1, max: 7 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 1, max: 7 }); i++) {
     options.push({
-      label: faker.datatype.uuid(),
+      label: faker.string.uuid(),
       options: fakeOptions(),
     });
   }
@@ -99,7 +99,7 @@ test('Users can sort', async () => {
     expect(screen.getByText(option.label)).toBeInTheDocument();
   }
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 1,
     max: (props.sortOptions?.length ?? 0) - 1,
   });
@@ -140,7 +140,7 @@ test('Users can open and close a filter group by clicking it twice', async () =>
     expect(screen.getByText(option.label)).toBeInTheDocument();
   }
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -190,7 +190,7 @@ test('UseOutsideClick works as expected', async () => {
 
   await user.click(filterByButton);
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -231,7 +231,7 @@ test('Users can filter', async () => {
     expect(screen.getByText(option.label)).toBeInTheDocument();
   }
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -246,7 +246,7 @@ test('Users can filter', async () => {
     expect(screen.getByText(option.label)).toBeInTheDocument();
   }
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
   });
@@ -287,7 +287,7 @@ test('Users can remove filter by clicking it twice', async () => {
 
   await user.click(filterByButton);
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -298,7 +298,7 @@ test('Users can remove filter by clicking it twice', async () => {
     })
   );
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
   });
@@ -355,7 +355,7 @@ test('Users can remove filters', async () => {
 
   await user.click(filterByButton);
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -366,7 +366,7 @@ test('Users can remove filters', async () => {
     })
   );
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
   });
@@ -442,7 +442,7 @@ test('Do not show filter chips when showChips is set to false', async () => {
     expect(screen.getByText(option.label)).toBeInTheDocument();
   }
 
-  const randomFilterGroup = faker.datatype.number({
+  const randomFilterGroup = faker.number.int({
     min: 0,
     max: (props.filterOptions?.length ?? 0) - 1,
   });
@@ -457,7 +457,7 @@ test('Do not show filter chips when showChips is set to false', async () => {
     expect(screen.getByText(option.label)).toBeInTheDocument();
   }
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: (props.filterOptions?.[randomFilterGroup].options.length ?? 0) - 1,
   });

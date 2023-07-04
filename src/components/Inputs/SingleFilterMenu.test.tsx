@@ -11,11 +11,11 @@ function getTestProps(): {
   onChange: any;
 } {
   return {
-    data: new Array(faker.datatype.number({ min: 1, max: 10 }))
+    data: new Array(faker.number.int({ min: 1, max: 10 }))
       .fill(0)
-      .map(() => faker.datatype.uuid()),
+      .map(() => faker.string.uuid()),
     icon: filter_list,
-    menuTitle: faker.datatype.uuid(),
+    menuTitle: faker.string.uuid(),
     onChange: vi.fn(),
   };
 }

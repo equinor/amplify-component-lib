@@ -8,7 +8,7 @@ function fakeOption() {
     color: faker.color.rgb(),
     backgroundColor: faker.color.rgb(),
     label: faker.animal.lion(),
-    value: faker.datatype.uuid(),
+    value: faker.string.uuid(),
   };
 }
 
@@ -17,7 +17,7 @@ function fakeProps(
   showAlert = false
 ): WorkflowStatusBarProps {
   const options: any = [];
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     options.push(fakeOption());
   }
   return {

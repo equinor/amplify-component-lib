@@ -23,8 +23,8 @@ export default {
 function FakeField() {
   return {
     name: faker.lorem.word(),
-    uuid: faker.datatype.uuid(),
-    country: faker.address.country(),
+    uuid: faker.string.uuid(),
+    country: faker.location.country(),
   };
 }
 

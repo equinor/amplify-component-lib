@@ -4,14 +4,14 @@ import map from './map';
 
 test('distanceLatLng works as expected', () => {
   const firstLocation = {
-    lat: Number(faker.address.latitude()),
-    lng: Number(faker.address.longitude()),
+    lat: Number(faker.location.latitude()),
+    lng: Number(faker.location.longitude()),
   };
-  const secondLocation = faker.address.nearbyGPSCoordinate(
-    [firstLocation.lat, firstLocation.lng],
-    10,
-    true
-  );
+  const secondLocation = faker.location.nearbyGPSCoordinate({
+    origin: [firstLocation.lat, firstLocation.lng],
+    radius: 10,
+    isMetric: true,
+  });
 
   expect(
     map.distanceLatLng(firstLocation, {

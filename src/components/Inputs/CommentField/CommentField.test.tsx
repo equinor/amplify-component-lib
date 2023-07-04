@@ -5,8 +5,8 @@ import CommentField, { CommentFieldProps } from './CommentField';
 
 function fakeProps(): CommentFieldProps {
   return {
-    id: faker.datatype.uuid(),
-    value: faker.lorem.words(faker.datatype.number({ min: 0, max: 5 })),
+    id: faker.string.uuid(),
+    value: faker.lorem.words(faker.number.int({ min: 0, max: 5 })),
     onChange: vi.fn(),
     onDelete: vi.fn(),
   };
@@ -19,9 +19,7 @@ test('Works as expected when writing', async () => {
 
   const textField = screen.getByRole('textbox');
 
-  const randomText = faker.lorem.words(
-    faker.datatype.number({ min: 1, max: 15 })
-  );
+  const randomText = faker.lorem.words(faker.number.int({ min: 1, max: 15 }));
   await user.clear(textField);
   await user.type(textField, randomText);
 

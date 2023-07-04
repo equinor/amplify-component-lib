@@ -22,9 +22,9 @@ test('renders button and panel correctly', async () => {
 });
 
 test('renders element children correctly', async () => {
-  const texts = new Array(faker.datatype.number({ min: 2, max: 20 }))
+  const texts = new Array(faker.number.int({ min: 2, max: 20 }))
     .fill(0)
-    .map(() => faker.datatype.uuid());
+    .map(() => faker.string.uuid());
   render(
     <Notifications setAllAsRead={() => null}>
       {texts.map((text) => (

@@ -4,7 +4,7 @@ import string from './string';
 
 test('capitalize function works as expected', () => {
   const templateString = faker.lorem.words(
-    faker.datatype.number({ min: 1, max: 10 })
+    faker.number.int({ min: 1, max: 10 })
   );
 
   const formatted = string.capitalize(templateString);

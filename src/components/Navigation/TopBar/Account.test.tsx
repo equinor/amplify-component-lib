@@ -6,12 +6,12 @@ import { Account, IAccountProps } from './Account';
 function fakeProps(withAvatar = false): IAccountProps {
   return {
     account: {
-      homeAccountId: faker.datatype.uuid(),
+      homeAccountId: faker.string.uuid(),
       environment: faker.lorem.word(),
-      tenantId: faker.datatype.uuid(),
+      tenantId: faker.string.uuid(),
       username: faker.internet.userName(),
       name: faker.animal.dog(),
-      localAccountId: faker.datatype.uuid(),
+      localAccountId: faker.string.uuid(),
     },
     logout: vi.fn(),
     photo: withAvatar ? faker.image.avatar() : undefined,

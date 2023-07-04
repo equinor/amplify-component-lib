@@ -19,8 +19,8 @@ const sizeOptions: ProfileAvatarProps['size'][] = [
 
 function mockProfileAvatarProps(image: boolean): ProfileAvatarProps {
   return {
-    name: faker.name.fullName(),
-    url: image ? faker.image.imageUrl() : undefined,
+    name: faker.person.fullName(),
+    url: image ? faker.image.url() : undefined,
   };
 }
 
@@ -113,8 +113,8 @@ test('Renders default icon when no name or image is provided', () => {
 });
 
 test('Name parser works as expected when given name with (company)', () => {
-  const firstName = faker.name.firstName();
-  const lastName = faker.name.lastName();
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
   const name = `${firstName} ${lastName} (Bouvet ASA)`;
 
   const initials = nameToInitials(name);
@@ -123,9 +123,9 @@ test('Name parser works as expected when given name with (company)', () => {
 });
 
 test('Name parser works as expected when given name with middle name', () => {
-  const firstName = faker.name.firstName();
-  const middleName = faker.name.middleName();
-  const lastName = faker.name.lastName();
+  const firstName = faker.person.firstName();
+  const middleName = faker.person.middleName();
+  const lastName = faker.person.lastName();
   const name = `${firstName} ${middleName} ${lastName}`;
 
   const initials = nameToInitials(name);
@@ -134,8 +134,8 @@ test('Name parser works as expected when given name with middle name', () => {
 });
 
 test('Name parser works as expected when given name with comma', () => {
-  const firstName = faker.name.firstName();
-  const lastName = faker.name.lastName();
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
   const name = `${lastName}, ${firstName}`;
 
   const initials = nameToInitials(name);
@@ -143,7 +143,7 @@ test('Name parser works as expected when given name with comma', () => {
   expect(initials).toBe(firstName[0] + lastName[0]);
 });
 test('Name parser works as expected when given name with 1 word', () => {
-  const firstName = faker.name.firstName();
+  const firstName = faker.person.firstName();
 
   const initials = nameToInitials(firstName);
 

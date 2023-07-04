@@ -12,9 +12,9 @@ import { GuidelineProps, Guidelines, GuidelineSections } from './Guidelines';
 
 function fakeSection(withColorBoxes = false): GuidelineSections {
   const items: GuidelineSections['items'] = [];
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     items.push({
-      title: faker.datatype.uuid(),
+      title: faker.string.uuid(),
       icon: faker.helpers.arrayElement([
         invert,
         fault,
@@ -28,14 +28,14 @@ function fakeSection(withColorBoxes = false): GuidelineSections {
   }
 
   return {
-    sectionName: faker.datatype.uuid(),
+    sectionName: faker.string.uuid(),
     items,
   };
 }
 
 function fakeProps(withColorBoxes = false): GuidelineProps {
   const sections: GuidelineSections[] = [];
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 5 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 5 }); i++) {
     sections.push(fakeSection(withColorBoxes));
   }
   return {
