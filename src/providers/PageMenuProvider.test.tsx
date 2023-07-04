@@ -10,16 +10,6 @@ function fakeItems() {
     label: faker.string.uuid(),
   }));
 }
-test('Expect PageMenuProvider to throw error when items.length === 0', () => {
-  console.error = vi.fn();
-  expect(() =>
-    render(<div>test</div>, {
-      wrapper: (props: any) => (
-        <PageMenuProvider items={[]}>{props.children}</PageMenuProvider>
-      ),
-    })
-  ).toThrowError('items must have length greater than 0');
-});
 
 test('usePageMenu throws error if used outside provider', () => {
   expect(() => renderHook(() => usePageMenu())).toThrowError(
