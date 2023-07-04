@@ -1,4 +1,5 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { Chip as EDSChip, Search as EDSSearch } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -56,6 +57,8 @@ export interface SieveProps {
   onUpdate: (value: SieveValue) => void;
   showChips?: boolean;
   minSearchWidth?: string;
+  syncWithSearchParams?: boolean;
+  isLoadingOptions?: boolean;
 }
 
 const Sieve: FC<SieveProps> = ({
@@ -66,7 +69,104 @@ const Sieve: FC<SieveProps> = ({
   onUpdate,
   showChips = true,
   minSearchWidth = '24rem',
+  syncWithSearchParams = false,
+  isLoadingOptions = false,
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initalizedSearchParams = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (
+      !initalizedSearchParams.current &&
+      syncWithSearchParams &&
+      !isLoadingOptions
+    ) {
+      const search = searchParams.get('search') ?? undefined;
+
+      const parents =
+        filterOptions?.map((filterOption) => filterOption.label) ?? [];
+
+      const filterValues: FilterValues = {};
+      for (const parent of parents) {
+        const parentOptions = filterOptions?.find(
+          (filterOption) => filterOption.label === parent
+        )?.options;
+
+        const labels = JSON.parse(
+          searchParams.get(parent.toLowerCase()) ?? '[]'
+        );
+
+        filterValues[parent] = parentOptions?.filter((option) =>
+          labels.includes(option.label)
+        ) as Option[];
+      }
+
+      onUpdate({
+        searchValue: search,
+        filterValues,
+        sortValue: sieveValue.sortValue,
+      });
+
+      initalizedSearchParams.current = true;
+    }
+  }, [
+    filterOptions,
+    initalizedSearchParams,
+    isLoadingOptions,
+    onUpdate,
+    searchParams,
+    sieveValue.sortValue,
+    syncWithSearchParams,
+  ]);
+
+  const previousSieveValue = useRef<string>('{}');
+  useEffect(() => {
+    if (
+      syncWithSearchParams &&
+      initalizedSearchParams.current &&
+      !isLoadingOptions &&
+      JSON.stringify(sieveValue) !== previousSieveValue.current
+    ) {
+      if (sieveValue.searchValue === undefined) {
+        searchParams.delete('search');
+      } else {
+        searchParams.set('search', sieveValue.searchValue);
+      }
+
+      const parents =
+        filterOptions?.map((filterOption) => filterOption.label) ?? [];
+      const filterValues = sieveValue.filterValues as FilterValues | undefined;
+
+      for (const parent of parents) {
+        if (
+          filterValues &&
+          filterValues[parent] &&
+          filterValues[parent].length > 0
+        ) {
+          searchParams.set(
+            parent.toLowerCase(),
+            JSON.stringify(filterValues[parent].map((option) => option.label))
+          );
+        } else {
+          searchParams.delete(parent.toLowerCase());
+        }
+      }
+
+      previousSieveValue.current = JSON.stringify(sieveValue);
+      setSearchParams(searchParams);
+      onUpdate(sieveValue);
+    }
+  }, [
+    filterOptions,
+    initalizedSearchParams,
+    isLoadingOptions,
+    onUpdate,
+    searchParams,
+    setSearchParams,
+    sieveValue,
+    syncWithSearchParams,
+  ]);
+
   const handleUpdateSieveValue = <
     K extends keyof SieveValue,
     V extends SieveValue[K]

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { StoryFn } from '@storybook/react';
 
@@ -73,7 +74,11 @@ export const Primary: StoryFn<SieveProps> = (args) => {
     },
   });
 
-  return <Sieve {...args} sieveValue={sieveValue} onUpdate={setSieveValue} />;
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <Sieve {...args} sieveValue={sieveValue} onUpdate={setSieveValue} />
+    </MemoryRouter>
+  );
 };
 Primary.parameters = {
   backgrounds: { default: 'Equinor off-white' },
