@@ -244,7 +244,7 @@ test('formatRelativeDateTime work as expected with yesterdays date, but less tha
 
 test('formatRelativeDateTime work as expected with date older than yesterday, but not more than 1 week old', () => {
   const TwoDaysAgo = new Date().setDate(new Date().getDate() - 2);
-  const fakeDate = faker.date.recent(5, TwoDaysAgo);
+  const fakeDate = faker.date.recent({ days: 5, refDate: TwoDaysAgo });
   // Fake date is not yesterday, but a date within a week of today
 
   const fakeDateDay = fakeDate.toLocaleString('en-GB', {
@@ -256,7 +256,7 @@ test('formatRelativeDateTime work as expected with date older than yesterday, bu
 });
 
 test('formatRelativeDateTime works as expected with date older than a week', () => {
-  const fakeDate = faker.date.past(10);
+  const fakeDate = faker.date.past({ years: 10 });
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
     month: 'long',

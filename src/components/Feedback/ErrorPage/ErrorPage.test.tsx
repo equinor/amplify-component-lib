@@ -61,7 +61,7 @@ test('Shows details after clicking on More details.', async () => {
 
 test('Shows missing access when 401 error', async () => {
   const error401 = getErrorContent('Amplify portal', ErrorType.ERROR_401);
-  const missingAccess = new Array(faker.datatype.number({ min: 1, max: 5 }))
+  const missingAccess = new Array(faker.number.int({ min: 1, max: 5 }))
     .fill(0)
     .map(() => ({
       title: faker.commerce.productName(),

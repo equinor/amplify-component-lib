@@ -49,7 +49,7 @@ test('Renders closed on initial render', () => {
     }
   );
 
-  expect(screen.getByTestId('sidebar').getAttribute('width')).toBe('72px');
+  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '72px');
 });
 
 test('Renders open width when localStorage has it set to open', () => {
@@ -67,7 +67,7 @@ test('Renders open width when localStorage has it set to open', () => {
       wrapper: SideBarProvider,
     }
   );
-  expect(screen.getByTestId('sidebar')).toHaveStyle({ width: '256px' });
+  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '256px');
 });
 
 test('Disabled create new button doesnt fire event', async () => {
@@ -127,13 +127,13 @@ test('Opens and closes when pressing the toggle button', async () => {
   const user = userEvent.setup();
 
   const sidebar = screen.getByTestId('sidebar');
-  expect(sidebar).toHaveAttribute('width', '72px');
+  expect(sidebar).toHaveStyleRule('width', '72px');
 
   expect(screen.queryByText('Collapse')).not.toBeInTheDocument();
 
   const toggleButton = screen.getByRole('button');
   await user.click(toggleButton);
 
-  expect(sidebar).toHaveAttribute('width', '256px');
+  expect(sidebar).toHaveStyleRule('width', '256px');
   expect(screen.getByText(/collapse/i)).toBeInTheDocument();
 });

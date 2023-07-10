@@ -5,8 +5,8 @@ import coordinate from './coordinate';
 const { formatLatLng, formatUtm } = coordinate;
 
 test('Formats random location without crashing', () => {
-  const latitude = Number(faker.address.latitude());
-  const longitude = Number(faker.address.longitude());
+  const latitude = Number(faker.location.latitude());
+  const longitude = Number(faker.location.longitude());
 
   expect(formatLatLng(latitude)).toBeTruthy();
   expect(formatLatLng(longitude)).toBeTruthy();

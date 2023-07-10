@@ -16,27 +16,27 @@ function fakeItem(hasChildren: boolean, singleChild: boolean): FakeType {
   const children: FakeType[] = [];
   if (hasChildren && singleChild) {
     return {
-      id: faker.datatype.uuid(),
-      label: faker.datatype.uuid(),
+      id: faker.string.uuid(),
+      label: faker.string.uuid(),
       children: [
         {
-          id: faker.datatype.uuid(),
-          label: faker.datatype.uuid(),
+          id: faker.string.uuid(),
+          label: faker.string.uuid(),
         },
       ],
     };
   }
   if (hasChildren) {
-    for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
+    for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
       children.push({
-        id: faker.datatype.uuid(),
-        label: faker.datatype.uuid(),
+        id: faker.string.uuid(),
+        label: faker.string.uuid(),
       });
     }
   }
   return {
-    id: faker.datatype.uuid(),
-    label: faker.datatype.uuid(),
+    id: faker.string.uuid(),
+    label: faker.string.uuid(),
     children: children.length > 0 ? children : undefined,
   };
 }
@@ -95,7 +95,7 @@ test('Works correctly when toggling parent when one child is checked', async () 
 
   const randomChild =
     children[
-      faker.datatype.number({
+      faker.number.int({
         min: 0,
         max: children.length - 1,
       })

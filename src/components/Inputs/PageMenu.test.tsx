@@ -7,12 +7,10 @@ import { render, screen, userEvent } from '../../tests/test-utils';
 import PageMenu from './PageMenu';
 
 function fakeItems() {
-  return new Array(faker.datatype.number({ min: 2, max: 8 }))
-    .fill(0)
-    .map(() => ({
-      value: 'a' + faker.datatype.uuid(),
-      label: faker.datatype.uuid(),
-    }));
+  return new Array(faker.number.int({ min: 2, max: 8 })).fill(0).map(() => ({
+    value: 'a' + faker.string.uuid(),
+    label: faker.string.uuid(),
+  }));
 }
 
 function Section({ value, label }: { value: string; label: string }) {

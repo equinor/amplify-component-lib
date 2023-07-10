@@ -8,9 +8,9 @@ import FieldSelector, {
 
 function fakeField() {
   return {
-    name: faker.datatype.uuid(),
-    uuid: faker.datatype.uuid(),
-    country: faker.address.country(),
+    name: faker.string.uuid(),
+    uuid: faker.string.uuid(),
+    country: faker.location.country(),
   };
 }
 
@@ -86,8 +86,9 @@ test('Placement is as expected when bottom-end.', async () => {
   const button = screen.getByRole('button');
   await user.click(button);
 
-  expect(screen.getByTestId('field-menu')).toHaveStyle(
-    'transform: translate( -15rem, 4px )'
+  expect(screen.getByTestId('field-menu')).toHaveStyleRule(
+    'transform',
+    'translate( -15rem, 4px )'
   );
 
   rerender(
@@ -113,7 +114,7 @@ test('Filters values when using search', async () => {
 
   const randomFieldName =
     props.availableFields[
-      faker.datatype.number({ min: 0, max: props.availableFields.length })
+      faker.number.int({ min: 0, max: props.availableFields.length })
     ]?.name ?? 'not-found';
   await user.type(search, randomFieldName);
   for (const field of props.availableFields) {

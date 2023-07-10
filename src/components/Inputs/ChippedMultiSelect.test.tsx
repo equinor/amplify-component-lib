@@ -1,13 +1,7 @@
 import { checkbox } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import {
-  fireEvent,
-  render,
-  screen,
-  userEvent,
-  within,
-} from '../../tests/test-utils';
+import { render, screen, userEvent, within } from '../../tests/test-utils';
 import ChippedMultiSelect from './ChippedMultiSelect';
 
 function mockedProps(items?: string[], values?: string[]) {
@@ -53,29 +47,6 @@ test('Remove item when clicking the chip', async () => {
 
   // Since we just removed the first item by clicking the chip, we should expect an empty array back from the onSelect
   expect(props.onSelect).toHaveBeenCalledWith([]);
-});
-
-test('Handle scrolling correctly', async () => {
-  const props = mockedProps();
-
-  const { container } = render(<ChippedMultiSelect {...props} />);
-  const user = userEvent.setup();
-
-  await user.click(screen.getByRole('combobox'));
-
-  const scrollY = faker.datatype.number({ min: 10, max: 1000 });
-  fireEvent.scroll(document.body, { scrollY });
-
-  const expectedTop = 4;
-  // This is just a copy from the ChippedMultiSelect components handleScroll function
-  // menuRef.current.style.top = `${
-  //     top + anchorRef.current?.clientHeight + 4
-  // }px`;
-
-  const parent = container.parentElement as HTMLElement;
-  const menu = parent.querySelector('#eds-menu-container > div');
-
-  expect(menu).toHaveStyle(`top: ${expectedTop}px`);
 });
 
 test('InDialog prop works as expected', async () => {

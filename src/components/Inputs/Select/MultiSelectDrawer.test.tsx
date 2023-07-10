@@ -10,15 +10,15 @@ type FakeType = {
 };
 function fakeItem(): FakeType {
   return {
-    id: faker.datatype.uuid(),
-    label: faker.datatype.uuid(),
+    id: faker.string.uuid(),
+    label: faker.string.uuid(),
   };
 }
 
 function fakeChildren(): FakeType[] {
   const children: FakeType[] = [];
 
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 5 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 5 }); i++) {
     children.push(fakeItem());
   }
   return children;
@@ -27,11 +27,11 @@ function fakeChildren(): FakeType[] {
 function fakeProps(): MultiSelectDrawerProps<FakeType> {
   const fakeItems: FakeType[] = [];
 
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     fakeItems.push(fakeItem());
   }
 
-  const randomItem = faker.datatype.number({
+  const randomItem = faker.number.int({
     min: 1,
     max: fakeItems.length - 1,
   });
@@ -44,7 +44,7 @@ function fakeProps(): MultiSelectDrawerProps<FakeType> {
     label: faker.lorem.words(2),
     placeholder: faker.lorem.sentence(),
     onChange: vi.fn(),
-    id: faker.datatype.uuid(),
+    id: faker.string.uuid(),
     selectedItems: [],
   };
 }
@@ -60,7 +60,7 @@ test('Works as expected when opening and toggling an item', async () => {
 
   await user.click(toggleOptions);
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });
@@ -85,7 +85,7 @@ test('Works as expected when clicking outside component when open', async () => 
   const user = userEvent.setup();
   render(<MultiSelectDrawer {...props} />);
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });

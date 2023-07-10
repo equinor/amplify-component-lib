@@ -6,8 +6,8 @@ import favicon from './favicon';
 const lightId = 'light';
 const darkId = 'dark';
 test('setupFavicon works as expected', async () => {
-  const lightImg = faker.image.food(64, 64);
-  const darkImg = faker.image.city(64, 64);
+  const lightImg = faker.image.url({ width: 64, height: 64 });
+  const darkImg = faker.image.url({ width: 64, height: 64 });
   render(
     <div>
       <link
@@ -40,8 +40,8 @@ test('setupFavicon works as expected', async () => {
 });
 
 test('setupFavicon works as expected when in dark mode', async () => {
-  const lightImg = faker.image.food(64, 64);
-  const darkImg = faker.image.city(64, 64);
+  const lightImg = faker.image.url({ width: 64, height: 64 });
+  const darkImg = faker.image.url({ width: 64, height: 64 });
   render(
     <div>
       <link

@@ -5,9 +5,9 @@ import FieldSelector, { FieldSelectorType } from './FieldSelector';
 
 function fakeField() {
   return {
-    name: faker.datatype.uuid(),
-    uuid: faker.datatype.uuid(),
-    country: faker.address.country(),
+    name: faker.string.uuid(),
+    uuid: faker.string.uuid(),
+    country: faker.location.country(),
   };
 }
 
@@ -100,7 +100,7 @@ test('Filters values when using search', async () => {
 
   const randomFieldName =
     props.availableFields[
-      faker.datatype.number({ min: 0, max: props.availableFields.length })
+      faker.number.int({ min: 0, max: props.availableFields.length })
     ]?.name ?? 'not-found';
   await user.type(search, randomFieldName);
   for (const field of props.availableFields) {

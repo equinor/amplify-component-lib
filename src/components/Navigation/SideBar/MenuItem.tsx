@@ -15,20 +15,20 @@ import styled from 'styled-components';
 const { colors, spacings } = tokens;
 
 interface ContainerProps {
-  active?: boolean;
-  open?: boolean;
+  $active?: boolean;
+  $open?: boolean;
   disabled?: boolean;
 }
 
 const Container = styled.a<ContainerProps>`
   background: ${(props) =>
-    props.active
+    props.$active
       ? colors.interactive.primary__selected_highlight.hsla
       : 'none'};
-  display: ${(props) => (props.open ? 'grid' : 'flex')};
+  display: ${(props) => (props.$open ? 'grid' : 'flex')};
   grid-template-columns: repeat(10, 1fr);
   grid-gap: ${spacings.comfortable.medium};
-  justify-content: ${(props) => !props.open && 'center'};
+  justify-content: ${(props) => !props.$open && 'center'};
   align-items: center;
   border-bottom: 1px solid ${colors.ui.background__medium.hsla};
   text-decoration: none;
@@ -60,11 +60,11 @@ const ItemIcon = styled(Icon)`
 `;
 
 interface ItemTextProps {
-  active?: boolean;
+  $active?: boolean;
 }
 
 const ItemText = styled(Typography)<ItemTextProps>`
-  font-weight: ${(props) => (props.active ? '500' : '400')};
+  font-weight: ${(props) => (props.$active ? '500' : '400')};
   grid-column: 3 / -1;
   color: ${colors.text.static_icons__default.hex};
   &::first-letter {
@@ -110,15 +110,15 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     if (isOpen) {
       return (
         <Container
-          active={isCurrentUrl}
+          $active={isCurrentUrl}
           onClick={handleOnClick}
-          open
+          $open
           ref={ref}
           data-testid="sidebar-menu-item"
           disabled={disabled}
         >
           {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
-          <ItemText variant="cell_text" group="table" active={isCurrentUrl}>
+          <ItemText variant="cell_text" group="table" $active={isCurrentUrl}>
             {name}
           </ItemText>
         </Container>
@@ -128,9 +128,9 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     return (
       <Tooltip title={name} placement="right">
         <Container
-          active={isCurrentUrl}
+          $active={isCurrentUrl}
           onClick={handleOnClick}
-          open={isOpen}
+          $open={isOpen}
           ref={ref}
           data-testid="sidebar-menu-item"
           disabled={disabled}

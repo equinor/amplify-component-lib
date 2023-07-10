@@ -7,8 +7,8 @@ import SingleSelectDrawer, {
 
 function fakeItem(): { id: string; label: string } {
   return {
-    id: faker.datatype.uuid(),
-    label: faker.lorem.words(faker.datatype.number({ min: 1, max: 5 })),
+    id: faker.string.uuid(),
+    label: faker.lorem.words(faker.number.int({ min: 1, max: 5 })),
   };
 }
 
@@ -18,7 +18,7 @@ function fakeProps(): SingleSelectDrawerProps<{
 }> {
   const fakeItems: { id: string; label: string }[] = [];
 
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     fakeItems.push(fakeItem());
   }
   return {
@@ -26,7 +26,7 @@ function fakeProps(): SingleSelectDrawerProps<{
     label: faker.lorem.words(2),
     placeholder: faker.lorem.sentence(),
     onChange: vi.fn(),
-    id: faker.datatype.uuid(),
+    id: faker.string.uuid(),
     initialItem: undefined,
   };
 }
@@ -42,7 +42,7 @@ test('Works as expected when opening and toggling an item', async () => {
 
   await user.click(toggleOptions);
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });
@@ -63,7 +63,7 @@ test('Works as expected when clicking outside component when open', async () => 
   const user = userEvent.setup();
   render(<SingleSelectDrawer {...props} />);
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });
@@ -97,7 +97,7 @@ test('Works as expected when entering search param in input field', async () => 
 
   const input = screen.getByPlaceholderText(props.placeholder ?? '');
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });
@@ -122,7 +122,7 @@ test('Works as expected when tabbing to focus the input', async () => {
 
   const input = screen.getByPlaceholderText(props.placeholder ?? '');
 
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });
@@ -139,7 +139,7 @@ test('Works as expected when tabbing to focus the input', async () => {
 test('Works as expected when passing an initialItem prop', async () => {
   const props = fakeProps();
   const user = userEvent.setup();
-  const randomIndex = faker.datatype.number({
+  const randomIndex = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });
