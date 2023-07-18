@@ -43,3 +43,6 @@ cd ../..
 
 printf -- "Downloading client github action...\n"
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/client.yaml" > .github/workflows/client.yaml
+
+printf -- "Downloading CODEOWNERS file...\n"
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS
