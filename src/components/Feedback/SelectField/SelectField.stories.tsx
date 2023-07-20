@@ -45,6 +45,9 @@ export default {
     finishedText: 'Taking you to the storybook',
     showAccessITLink: true,
   },
+  parameters: {
+    layout: 'fullscreen',
+  },
 } as Meta;
 
 function generateFakeFields(): Field[] {

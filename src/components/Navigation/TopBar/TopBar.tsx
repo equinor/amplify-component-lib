@@ -11,11 +11,11 @@ import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
 
 import styled from 'styled-components';
 
-const { colors } = tokens;
+const { colors, spacings } = tokens;
 
 const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.hsla};
-  padding-left: 20px;
+  padding-left: ${spacings.comfortable.medium};
   position: relative;
 `;
 
