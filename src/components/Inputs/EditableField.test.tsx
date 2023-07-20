@@ -44,18 +44,24 @@ test('renders inputField when given', async () => {
 
 test('renders textbox when clicked', async () => {
   const cb = vi.fn();
+  const startText = faker.animal.dog();
   render(
-    <EditableField editable={true} onChange={cb} value="Test"></EditableField>
+    <EditableField
+      editable={true}
+      onChange={cb}
+      value={startText}
+    ></EditableField>
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByRole('heading', { name: /test/i }));
+  await user.click(screen.getByRole('heading', { name: startText }));
 
   const textbox = screen.getByRole('textbox') as HTMLTextAreaElement;
-  textbox.value = '';
 
-  await user.type(textbox, 'A new test');
-  expect(textbox.value).toBe('A new test');
+  const typingText = faker.animal.dog();
+
+  await user.type(textbox, typingText);
+  expect(textbox.value).toBe(startText + typingText);
 });
 
 test('Closes textbox if editable is false', async () => {
@@ -74,22 +80,28 @@ test('Closes textbox if editable is false', async () => {
 });
 
 test('Returns to display mode with onchange after write and deselect', async () => {
+  const startText = faker.animal.dog();
   const cb = vi.fn();
   render(
-    <EditableField editable={true} onChange={cb} value="Test"></EditableField>
+    <EditableField
+      editable={true}
+      onChange={cb}
+      value={startText}
+    ></EditableField>
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByRole('heading', { name: /test/i }));
+  await user.click(screen.getByRole('heading', { name: startText }));
 
   const textbox = screen.getByRole('textbox') as HTMLTextAreaElement;
-  textbox.value = '';
 
-  await user.type(textbox, 'A new test');
+  const typingText = faker.animal.dog();
+
+  await user.type(textbox, typingText);
   await user.click(document.body);
 
   expect(cb).toHaveBeenCalled();
   expect(
-    screen.getByRole('heading', { name: /A new test/i })
+    screen.getByRole('heading', { name: startText + typingText })
   ).toBeInTheDocument();
 });
