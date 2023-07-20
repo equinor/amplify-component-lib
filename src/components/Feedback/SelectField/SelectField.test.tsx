@@ -6,12 +6,12 @@ import SelectField from './SelectField';
 
 function fakeFields(): Field[] {
   const fields: Field[] = [];
-  const amount = faker.datatype.number({ min: 2, max: 15 });
+  const amount = faker.number.int({ min: 2, max: 15 });
   for (let i = 0; i < amount; i++) {
     fields.push({
-      uuid: faker.datatype.uuid(),
-      name: faker.datatype.uuid(),
-      country: faker.address.country(),
+      uuid: faker.string.uuid(),
+      name: faker.string.uuid(),
+      country: faker.location.country(),
     });
   }
   return fields;

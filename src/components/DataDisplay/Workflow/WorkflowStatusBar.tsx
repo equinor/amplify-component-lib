@@ -62,16 +62,16 @@ const Active = styled(Alert)`
 `;
 
 interface LineProps {
-  active?: boolean;
-  lineActiveColor: string;
-  lineDefaultColor: string;
+  $active?: boolean;
+  $lineActiveColor: string;
+  $lineDefaultColor: string;
 }
 
 const Line = styled.div<LineProps>`
   height: 0.25em;
   width: 2.375em;
   background-color: ${(props) =>
-    props.active ? props.lineActiveColor : props.lineDefaultColor};
+    props.$active ? props.$lineActiveColor : props.$lineDefaultColor};
   margin: 0 -1px;
   z-index: 10;
 `;
@@ -131,9 +131,9 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
           </OptionalTooltip>
           {options.length !== idx + 1 && (
             <Line
-              active={activeIdx > idx}
-              lineDefaultColor={lineDefaultColor}
-              lineActiveColor={lineActiveColor}
+              $active={activeIdx > idx}
+              $lineDefaultColor={lineDefaultColor}
+              $lineActiveColor={lineActiveColor}
               data-testid="line"
             />
           )}

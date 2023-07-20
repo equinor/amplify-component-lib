@@ -6,7 +6,7 @@ import Tutorial, { IStep, TutorialProps } from './Tutorial';
 
 function fakeStep(): IStep {
   return {
-    key: faker.datatype.uuid(),
+    key: faker.string.uuid(),
     title: faker.animal.dog(),
     body: <p>{faker.animal.cat()}</p>,
     button: 'Next',
@@ -15,13 +15,13 @@ function fakeStep(): IStep {
 
 function fakeProps(withImage = false): TutorialProps {
   const steps: IStep[] = [];
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     steps.push(fakeStep());
   }
   return {
     steps,
     tutorialTitle: faker.lorem.word(),
-    imageSource: withImage ? faker.image.imageUrl() : undefined,
+    imageSource: withImage ? faker.image.url() : undefined,
     tutorialIntro: faker.lorem.sentences(steps.length),
   };
 }

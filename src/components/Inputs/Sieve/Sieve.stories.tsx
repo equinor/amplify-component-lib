@@ -1,6 +1,9 @@
+import { useState } from 'react';
+import { MemoryRouter } from 'react-router';
+
 import { StoryFn } from '@storybook/react';
 
-import Sieve, { SieveProps } from './Sieve';
+import Sieve, { SieveProps, SieveValue } from './Sieve';
 
 export default {
   title: 'Inputs/Sieve',
@@ -15,8 +18,7 @@ export default {
     filterOptions: {
       control: 'array',
     },
-    onUpdate: { action: 'Ran on update' },
-    showChips: { actions: 'boolean' },
+    showChips: { control: 'boolean' },
   },
   args: {
     searchPlaceholder: 'Write to search for...',
@@ -63,7 +65,20 @@ export default {
 };
 
 export const Primary: StoryFn<SieveProps> = (args) => {
-  return <Sieve {...args} />;
+  const [sieveValue, setSieveValue] = useState<SieveValue>({
+    searchValue: 'hei',
+    filterValues: undefined,
+    sortValue: {
+      value: '123',
+      label: 'Numeric',
+    },
+  });
+
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <Sieve {...args} sieveValue={sieveValue} onUpdate={setSieveValue} />
+    </MemoryRouter>
+  );
 };
 Primary.parameters = {
   backgrounds: { default: 'Equinor off-white' },

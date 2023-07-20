@@ -12,7 +12,7 @@ function fakeProps(): MenuItemProps {
     currentUrl: faker.internet.url(),
     link: faker.internet.url(),
     icon: home,
-    name: faker.name.jobTitle(),
+    name: faker.person.jobTitle(),
     onClick: vi.fn() as any,
   };
 }
@@ -54,12 +54,12 @@ test('Expect correct icon color based on disabled/enabled state', () => {
 
   expect(svg).toHaveAttribute('fill', getIconColor());
 
-  props.currentUrl = props.link + '/' + faker.datatype.uuid();
+  props.currentUrl = props.link + '/' + faker.string.uuid();
   rerender(<MenuItem {...props} disabled={disabled} />);
   expect(svg).toHaveAttribute('fill', getIconColor());
   expect(text).toHaveStyle('font-weight: 500;');
 
-  props.currentUrl = faker.datatype.uuid();
+  props.currentUrl = faker.string.uuid();
   rerender(<MenuItem {...props} disabled={disabled} />);
   expect(svg).toHaveAttribute('fill', getIconColor());
   expect(text).toHaveStyle('font-weight: 400;');

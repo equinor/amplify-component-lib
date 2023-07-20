@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "3.8.13",
+  "version": "4.1.1",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -77,7 +77,6 @@
     "@storybook/addon-docs": "^7.0.22",
     "@storybook/addon-essentials": "^7.0.22",
     "@storybook/addon-links": "^7.0.22",
-    "@storybook/addon-mdx-gfm": "^7.0.22",
     "@storybook/addons": "^7.0.22",
     "@storybook/node-logger": "^7.0.22",
     "@storybook/react": "^7.0.22",
@@ -110,6 +109,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-storybook": "^0.6.12",
+    "jest-styled-components": "^7.1.1",
     "jsdom": "^22.1.0",
     "ora": "^6.3.1",
     "prettier": "^2.8.8",

@@ -18,7 +18,7 @@ export type PageMenuItemType = {
 interface PageMenuContextType {
   items: PageMenuItemType[];
   setItemRef: (element: HTMLElement | null, value: string) => void;
-  selected: string;
+  selected: string | undefined;
   setSelected: (value: string) => void;
 }
 
@@ -40,11 +40,7 @@ interface PageMenuProviderProps {
 }
 
 const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
-  if (items.length === 0) {
-    throw new Error('items must have length greater than 0');
-  }
-
-  const [selected, setSelected] = useState<string>(items[0].value);
+  const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
   const itemRefs = useRef<Array<HTMLElement | null>>(
     new Array(items.length).fill(null)
@@ -69,6 +65,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   const handleSetSelected = (value: string) => {
     const selectedIndex = items.findIndex((item) => item.value === value);
     const element = itemRefs.current[selectedIndex];
+
     if (!visible[selectedIndex] && element) {
       element.scrollIntoView({
         block: 'start',

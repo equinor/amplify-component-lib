@@ -8,20 +8,19 @@ const { colors } = tokens;
 
 function fakeItem(): { label: string; value: string } {
   return {
-    label: faker.datatype.uuid(),
-    value: faker.datatype.uuid(),
+    label: faker.string.uuid(),
+    value: faker.string.uuid(),
   };
 }
 
 function fakeProps(): ContentMenuProps {
   const items = [];
-  for (let i = 0; i < faker.datatype.number({ min: 2, max: 10 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     items.push(fakeItem());
   }
   return {
     items,
-    value:
-      items[faker.datatype.number({ min: 0, max: items.length - 1 })].value,
+    value: items[faker.number.int({ min: 0, max: items.length - 1 })].value,
     onChange: vi.fn(),
   };
 }
@@ -40,7 +39,7 @@ test('Clicking menu item calls onChange', async () => {
   const props = fakeProps();
   render(<ContentMenu {...props} />);
 
-  const randomItem = faker.datatype.number({
+  const randomItem = faker.number.int({
     min: 0,
     max: props.items.length - 1,
   });

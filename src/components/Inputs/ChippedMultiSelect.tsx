@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import {
   Chip as EDSChip,
@@ -16,7 +16,6 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
-import ResizeObserver from 'resize-observer-polyfill';
 import styled from 'styled-components';
 
 const { spacings, colors, shape } = tokens;
@@ -28,13 +27,13 @@ const Container = styled.div`
 `;
 
 interface SelectElementProps {
-  open: boolean;
+  $open: boolean;
 }
 
 const SelectElement = styled.div<SelectElementProps>`
   background: ${colors.ui.background__light.hex};
   ${(props) =>
-    props.open
+    props.$open
       ? `box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex}`
       : `box-shadow: inset 0px -1px 0px 0px ${colors.text.static_icons__tertiary.hex}`};
   position: relative;
@@ -73,13 +72,8 @@ const Arrow = styled(Icon)`
   }
 `;
 
-interface MenuProps {
-  maxHeight?: string;
-}
-
-const Menu = styled(EDSMenu)<MenuProps>`
+const Menu = styled(EDSMenu)`
   z-index: 500;
-  max-height: ${(props) => (props.maxHeight ? props.maxHeight : '16rem')};
   overflow: auto !important;
 `;
 
@@ -150,44 +144,19 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
     onSelect(newSelectedItems);
   };
 
-  const handleScroll = useCallback(() => {
-    if (anchorRef.current && menuRef.current) {
-      const { top } = anchorRef.current.getBoundingClientRect();
-      // 4px is ${spacings.comfortable.x_small}
-      menuRef.current.style.top = `${
-        top + anchorRef.current?.clientHeight + 4
-      }px`;
-    }
-  }, []);
-
-  const handleSetRef = (ref: HTMLDivElement | null) => {
-    anchorRef.current = ref;
-    if (ref) {
-      const observer = new ResizeObserver(handleScroll);
-      observer.observe(ref);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, true);
-    return () => {
-      window.removeEventListener('scroll', handleScroll, true);
-    };
-  }, [handleScroll]);
-
   return (
     <div ref={containerRef}>
       <Container>
         <Label label={label} />
         <SelectElement
-          open={open}
+          ref={anchorRef}
+          $open={open}
           role="combobox"
           onClick={() => {
             if (!disabled) {
               setOpen((o) => !o);
             }
           }}
-          ref={handleSetRef}
         >
           {values.length === 0 ? (
             <Placeholder>{placeholder}</Placeholder>
@@ -211,9 +180,9 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
           open={open}
           anchorEl={anchorRef.current}
           placement="bottom"
-          maxHeight={maxHeight}
           ref={menuRef}
           style={{
+            maxHeight: maxHeight ? maxHeight : '16rem',
             width: `${anchorRef.current?.offsetWidth}px`,
             zIndex: inDialog ? 1400 : 'auto',
           }}

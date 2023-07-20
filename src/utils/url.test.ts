@@ -10,6 +10,6 @@ test('isValidUrl returns true on random url', () => {
 });
 
 test('isValidUrl returns false on random string', () => {
-  const notUrl = faker.name.fullName();
+  const notUrl = faker.person.fullName();
   expect(isValidUrl(notUrl)).toBe(false);
 });

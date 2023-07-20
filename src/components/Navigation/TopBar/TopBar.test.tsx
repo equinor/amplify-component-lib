@@ -113,7 +113,7 @@ test('Uses react element for icon if provided and logs error', () => {
 });
 
 test('Capitalize app name works as expected', () => {
-  const name = faker.name.fullName();
+  const name = faker.person.fullName();
   render(
     <TopBar
       applicationIcon="test"

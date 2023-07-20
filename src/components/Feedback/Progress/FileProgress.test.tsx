@@ -46,7 +46,7 @@ test('Shows progress bar loading as expected when giving progress number', async
     onDelete: vi.fn(),
     onAbort: vi.fn(),
     loading: true,
-    progress: faker.datatype.number({ min: 1, max: 99 }),
+    progress: faker.number.int({ min: 1, max: 99 }),
   };
   render(<FileProgress {...props} />);
 

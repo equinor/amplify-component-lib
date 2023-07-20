@@ -7,10 +7,10 @@ import Stepper, { StepperProps } from './Stepper';
 function fakeProps(): StepperProps {
   const steps: string[] = [];
   let i = 0;
-  const stepAmount = faker.datatype.number({ min: 2, max: 30 });
+  const stepAmount = faker.number.int({ min: 2, max: 30 });
   while (i < stepAmount) {
     i += 1;
-    steps.push(faker.datatype.uuid());
+    steps.push(faker.string.uuid());
   }
   return {
     current: 0,
@@ -59,7 +59,7 @@ test('onlyShowCurrentStepLabel prop hides other labels', async () => {
 });
 
 test('maxWidth props sets max-width style', () => {
-  const width = faker.datatype.number() + 'px';
+  const width = faker.number.int() + 'px';
   const props = fakeProps();
   render(<Stepper {...props} maxWidth={width} />);
 

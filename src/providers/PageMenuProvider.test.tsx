@@ -5,23 +5,11 @@ import { render, renderHook, screen } from '../tests/test-utils';
 import PageMenuProvider, { usePageMenu } from './PageMenuProvider';
 
 function fakeItems() {
-  return new Array(faker.datatype.number({ min: 3, max: 8 }))
-    .fill(0)
-    .map(() => ({
-      value: 'a' + faker.datatype.uuid(),
-      label: faker.datatype.uuid(),
-    }));
+  return new Array(faker.number.int({ min: 3, max: 8 })).fill(0).map(() => ({
+    value: 'a' + faker.string.uuid(),
+    label: faker.string.uuid(),
+  }));
 }
-test('Expect PageMenuProvider to throw error when items.length === 0', () => {
-  console.error = vi.fn();
-  expect(() =>
-    render(<div>test</div>, {
-      wrapper: (props: any) => (
-        <PageMenuProvider items={[]}>{props.children}</PageMenuProvider>
-      ),
-    })
-  ).toThrowError('items must have length greater than 0');
-});
 
 test('usePageMenu throws error if used outside provider', () => {
   expect(() => renderHook(() => usePageMenu())).toThrowError(
