@@ -5,7 +5,8 @@ const { getAppName } = environment;
 
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
-  selectedType: FeedbackEnum | undefined
+  selectedType: FeedbackEnum | undefined,
+  email: string | undefined
 ) => {
   if (selectedType === FeedbackEnum.ERROR) {
     return JSON.stringify({
@@ -73,6 +74,11 @@ export const createSlackMessage = (
             {
               type: 'mrkdwn',
               text: '*Application* \n ' + getAppName(import.meta.env.VITE_NAME),
+            },
+            {
+              type: 'mrkdwn',
+              text:
+                '*Email* \n ' + feedbackContent.consent ? email : 'Not given',
             },
           ],
         },

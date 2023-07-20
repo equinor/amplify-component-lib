@@ -16,7 +16,6 @@ const { spacings, colors } = tokens;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
 `;
 
 const FileUploadAreaWrapper = styled.div`
