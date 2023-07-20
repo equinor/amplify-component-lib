@@ -65,6 +65,9 @@ export default {
     capitalized: false,
     isFetching: false,
   },
+  parameters: {
+    layout: 'fullscreen',
+  },
 } as Meta;
 
 export const Primary: StoryFn = ({ ...args }) => {
