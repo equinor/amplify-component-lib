@@ -23,6 +23,7 @@ export type FeedbackContentType = {
   description: string;
   severity?: string;
   url?: string;
+  consent?: boolean;
   attachments?: FileWithPath[];
 };
 
@@ -33,7 +34,7 @@ interface FeedbackFormProps {
 const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   const { instance } = useMsal();
   const { account } = useAuth();
-  const userEmail = `${account?.username}@equinor.com`;
+  const userEmail = account?.username;
   const environment = getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME);
   const apiUrl = getApiUrl(import.meta.env.VITE_API_URL);
 
@@ -43,7 +44,9 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
     description: '',
+    consent: false,
   });
+  console.log(feedbackContent.consent);
 
   const { data: portalToken } = useQuery<string>(
     ['getPortalTokenForCurrentEnvironment'],
@@ -52,7 +55,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
         instance,
         GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
       );
-      return await fetch(`${apiUrl}/api/v1/Token/AmplifyPortal}`, {
+      return await fetch(`${apiUrl}/api/v1/Token/AmplifyPortal`, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + authResult.accessToken,
@@ -77,7 +80,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
       }
       await formData.append(
         'comment',
-        createSlackMessage(feedbackContent, selectedType)
+        createSlackMessage(feedbackContent, selectedType, userEmail)
       );
 
       await fetch(
@@ -102,6 +105,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           method: 'POST',
           headers: {
             Authorization: 'Bearer ' + portalToken,
+            'Content-type': 'application/json',
           },
           body: JSON.stringify({
             configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
@@ -116,7 +120,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[]
+    newValue: string | SeverityOption | FileWithPath[] | boolean
   ) => {
     setFeedbackContent({ ...feedbackContent, [key]: newValue });
   };
@@ -129,18 +133,16 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     onClose();
   };
 
-  if (selectedType) {
-    return (
-      <FeedbackDetails
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-        handleSave={handleSave}
-      />
-    );
-  }
-  return <SelectType setSelectedType={setSelectedType} />;
+  if (!selectedType) return <SelectType setSelectedType={setSelectedType} />;
+  return (
+    <FeedbackDetails
+      selectedType={selectedType}
+      setSelectedType={setSelectedType}
+      feedbackContent={feedbackContent}
+      updateFeedback={updateFeedback}
+      handleSave={handleSave}
+    />
+  );
 };
 
 export default FeedbackForm;
