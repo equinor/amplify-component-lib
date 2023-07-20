@@ -10,6 +10,7 @@ import {
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import ConsentCheckbox from './ConsentCheckbox';
 import { FeedbackContentType, FeedbackEnum } from './FeedbackForm';
 import UploadFile from './UploadFile';
 
@@ -21,6 +22,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
+  max-width: 350px;
 `;
 
 const MenuSectionTitle = styled(Typography)`
@@ -45,7 +47,7 @@ interface FeedbackDetailsProps {
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[]
+    newValue: string | SeverityOption | FileWithPath[] | boolean
   ) => void;
   handleSave: () => void;
 }
@@ -58,15 +60,12 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
   handleSave,
 }) => {
   const canSubmitFeedback = useMemo(() => {
-    if (
+    return (
       feedbackContent.title.length > 0 &&
-      feedbackContent.description.length > 0
-    ) {
-      console.log('true');
-      return true;
-    }
-    return false;
-  }, [feedbackContent.description.length, feedbackContent.title.length]);
+      feedbackContent.description.length > 0 &&
+      (feedbackContent.consent || selectedType === FeedbackEnum.INQUIRY)
+    );
+  }, [feedbackContent.title.length, feedbackContent.description.length, feedbackContent.consent, selectedType]);
 
   return (
     <Wrapper>
@@ -126,6 +125,11 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
       <UploadFile
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
+      />
+      <ConsentCheckbox
+        feedbackContent={feedbackContent}
+        updateFeedback={updateFeedback}
+        selectedType={selectedType}
       />
       <Actions>
         <Button variant="ghost" onClick={() => setSelectedType(undefined)}>

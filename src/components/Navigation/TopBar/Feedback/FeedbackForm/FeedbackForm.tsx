@@ -23,6 +23,7 @@ export type FeedbackContentType = {
   description: string;
   severity?: string;
   url?: string;
+  consent?: boolean;
   attachments?: FileWithPath[];
 };
 
@@ -43,7 +44,9 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
     description: '',
+    consent: false,
   });
+  console.log(feedbackContent.consent);
 
   const { data: portalToken } = useQuery<string>(
     ['getPortalTokenForCurrentEnvironment'],
@@ -77,7 +80,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
       }
       await formData.append(
         'comment',
-        createSlackMessage(feedbackContent, selectedType)
+        createSlackMessage(feedbackContent, selectedType, userEmail)
       );
 
       await fetch(
@@ -117,7 +120,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[]
+    newValue: string | SeverityOption | FileWithPath[] | boolean
   ) => {
     setFeedbackContent({ ...feedbackContent, [key]: newValue });
   };
@@ -130,18 +133,16 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     onClose();
   };
 
-  if (selectedType) {
-    return (
-      <FeedbackDetails
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-        handleSave={handleSave}
-      />
-    );
-  }
-  return <SelectType setSelectedType={setSelectedType} />;
+  if (!selectedType) return <SelectType setSelectedType={setSelectedType} />;
+  return (
+    <FeedbackDetails
+      selectedType={selectedType}
+      setSelectedType={setSelectedType}
+      feedbackContent={feedbackContent}
+      updateFeedback={updateFeedback}
+      handleSave={handleSave}
+    />
+  );
 };
 
 export default FeedbackForm;
