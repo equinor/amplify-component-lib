@@ -11,14 +11,12 @@ export default {
     },
     label: { control: 'text' },
     onPublish: {
-      name: 'See console for publish output',
+      action: 'Ran onPublish',
     },
   },
   args: {
     placeholder: 'Publish comment with button or the Enter key',
     label: 'Label',
-    onPublish: (value: string) =>
-      console.log('OnPublish triggered with value: ' + value),
   },
 } as Meta;
 
