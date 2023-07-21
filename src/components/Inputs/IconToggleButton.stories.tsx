@@ -6,17 +6,19 @@ import IconToggleButton, { IconToggleButtonProps } from './IconToggleButton';
 export default {
   title: 'Inputs/IconToggleButton',
   component: IconToggleButton,
+  argTypes: {
+    initialState: { control: 'boolean' },
+    onClick: { action: 'Fired onClick event' },
+  },
+  args: {
+    toggleOn: { icon: list, tooltip: { title: 'List', placement: 'right' } },
+    toggleOff: {
+      icon: view_module,
+      tooltip: { title: 'Grid', placement: 'right' },
+    },
+  },
 } as Meta;
 
-const Template: StoryFn<IconToggleButtonProps> = (args) => (
+export const Primary: StoryFn<IconToggleButtonProps> = (args) => (
   <IconToggleButton {...args} />
 );
-
-export const Primary = Template.bind({});
-Primary.args = {
-  toggleOn: { icon: list, tooltip: { title: 'List', placement: 'right' } },
-  toggleOff: {
-    icon: view_module,
-    tooltip: { title: 'Grid', placement: 'right' },
-  },
-};
