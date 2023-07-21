@@ -44,7 +44,7 @@ const DeleteButton = styled(Button)`
 const CommentTextField = styled(TextField)`
   background: none;
 
-  div {
+  div:focus-within {
     outline: none;
   }
 
