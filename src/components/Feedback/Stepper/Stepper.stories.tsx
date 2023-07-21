@@ -25,12 +25,13 @@ const Container = styled.div`
   height: 20rem;
   display: flex;
   justify-content: center;
+  padding: 0 10rem;
 `;
 
 export const Primary: StoryFn<StepperProps> = (args) => {
   return (
     <Container>
-      <Stepper {...args} />{' '}
+      <Stepper {...args} />
     </Container>
   );
 };
