@@ -39,23 +39,24 @@ interface ITextFieldProps {
 }
 
 const TextField = styled(EdsTextField)<ITextFieldProps>`
-  & > div > input {
-    ${(props) =>
-      props.editing &&
-      ` font-family: Equinor;
-        font-size: 1rem;
-        font-weight: 500;
-        padding: 0;
-        box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__border.hsla};
-      `}
-  }
+  ${(props) =>
+    props.editing &&
+    `
+   > div > input {
+     font-family: Equinor;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0;
+      box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__border.hsla};
+      &:focus {
+        box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hsla};
+      }
+   }
+   
+  `}
 
-  & > div > input:focus {
-    ${(props) =>
-      props.editing &&
-      ` outline: none;
-        box-shadow: inset 0 -1px 0 0 ${colors.interactive.primary__resting.hsla};
-      `}
+  div:focus-within {
+    outline: none;
   }
 `;
 
