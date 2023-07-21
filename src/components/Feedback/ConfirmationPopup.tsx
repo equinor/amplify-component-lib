@@ -73,8 +73,8 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
         <StyledDialog ref={ref} open={show} style={{ width }}>
           <DialogHeader data-testid="dialog-header">
             {title}
-            <Button variant="ghost_icon">
-              <Icon data={close} onClick={onClose} />
+            <Button variant="ghost_icon" onClick={onClose}>
+              <Icon data={close} />
             </Button>
           </DialogHeader>
           <Dialog.CustomContent>
