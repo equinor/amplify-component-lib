@@ -15,16 +15,18 @@ export default {
   args: {
     variant: undefined,
   },
+  parameters: {
+    layout: 'fullscreen',
+  },
 } as Meta;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
 
   & > div {
     width: 100%;
     height: 100%;
-    position: none;
   }
 `;
 
