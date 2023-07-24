@@ -9,6 +9,7 @@ import styled, { keyframes } from 'styled-components';
 const { colors, spacings } = tokens;
 
 const Wrapper = styled.div`
+  width: fit-content;
   position: relative;
   pointer-events: auto;
   &:hover {
