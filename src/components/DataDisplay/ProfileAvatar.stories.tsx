@@ -34,3 +34,9 @@ export const Primary: StoryFn = (args) => {
     />
   );
 };
+
+export const WithoutImage: StoryFn = (args) => {
+  return (
+    <ProfileAvatar size={args.size} name={args.name} disabled={args.disabled} />
+  );
+};
