@@ -5,7 +5,7 @@ import { Button, Dialog as EDSDialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
-import { IStep } from './Tutorial';
+import { Step } from './Tutorial';
 
 import styled, { keyframes } from 'styled-components';
 const { colors, spacings } = tokens;
@@ -13,7 +13,7 @@ const { colors, spacings } = tokens;
 type TutorialStepsProps = {
   show: boolean;
   onClose: () => void;
-  steps: IStep[];
+  steps: Step[];
 };
 
 const spawn = keyframes`
