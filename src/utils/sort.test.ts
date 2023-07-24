@@ -20,7 +20,11 @@ test('sortByDate works as expected with date objects', () => {
 
 test('sortByDate works as expected with strings', () => {
   const listOfFakeDates: string[] = faker.date
-    .betweens('2000', '2022', Number(faker.random.numeric(2)))
+    .betweens({
+      from: '2000',
+      to: '2022',
+      count: faker.number.int({ min: 2, max: 50 }),
+    })
     .map((item: Date) => item.toISOString());
 
   const sortedList = listOfFakeDates.sort(sort.sortByDate);
