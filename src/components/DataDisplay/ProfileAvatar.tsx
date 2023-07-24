@@ -28,7 +28,7 @@ export function nameToInitials(name: string) {
   };
 
   if (splitNames.length === 1 && splitNames[0] !== '') {
-    return splitNames[0].charAt(0) + '.';
+    return splitNames[0].charAt(0);
   }
 
   if (lastNameCommaFirstName) {

@@ -147,5 +147,5 @@ test('Name parser works as expected when given name with 1 word', () => {
 
   const initials = nameToInitials(firstName);
 
-  expect(initials).toBe(firstName[0] + '.');
+  expect(initials).toBe(firstName[0]);
 });
