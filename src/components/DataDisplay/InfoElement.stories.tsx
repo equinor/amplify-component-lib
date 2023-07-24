@@ -19,3 +19,6 @@ const Template: StoryFn<InfoElementProps> = (args) => <InfoElement {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {};
+
+export const WithCopyTextTrue = Template.bind({});
+WithCopyTextTrue.args = { copyableContent: true, copyBackground: '#ffffff' };
