@@ -16,7 +16,7 @@ export default defineConfig({
     ],
     exclude: ['node_modules', 'src/tests', 'src/intro.stories.mdx'],
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
       include: ['src/**/*'],
       exclude: [
         'src/api/**',
