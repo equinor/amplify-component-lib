@@ -12,6 +12,7 @@ WORKDIR /app
 RUN yarn install
 COPY src src
 COPY .storybook .storybook
+COPY static static
 COPY .eslintrc.cjs .eslintrc.cjs
 
 # Build
