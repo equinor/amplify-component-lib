@@ -5,6 +5,26 @@ import styled from 'styled-components';
 
 const hookList = [
   {
+    name: 'useSignalRMessages',
+    body: 'Returns service bus messages with wss given a topic + host + token',
+    code: `const { 
+     messages,
+     hasUnreadMessages,
+     setMessageAsRead,
+     setAllMessagesAsRead,
+     deleteMessage } = useSignalRMessages<MessageDto>('recap_notifications', 'url', 'token')`,
+  },
+  {
+    name: 'useFeatureToggling',
+    body: 'Returns if a given key should be feature toggled on/off',
+    code: 'const { showContent, isLoading } = useFeatureToggling("analytics")',
+  },
+  {
+    name: 'usePrevious',
+    body: 'Returns the previous of a given state',
+    code: 'const previousValue = usePrevious(value)',
+  },
+  {
     name: 'useDebounce',
     body: 'Debounces some state',
     code: 'const debouncedValue = useDebounce(value)',

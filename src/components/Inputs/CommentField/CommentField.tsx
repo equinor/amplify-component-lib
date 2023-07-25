@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, FormEvent, useEffect, useState } from 'react';
 
 import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
@@ -44,7 +44,7 @@ const DeleteButton = styled(Button)`
 const CommentTextField = styled(TextField)`
   background: none;
 
-  div {
+  div:focus-within {
     outline: none;
   }
 
@@ -78,6 +78,11 @@ const CommentField: FC<CommentFieldProps> = ({
   const [body, setBody] = useState(value);
   const debouncedBody = useDebounce(body, 600);
 
+  const handleOnInput = (event: FormEvent<HTMLInputElement>) => {
+    const eventValue = (event.target as HTMLInputElement).value;
+    setBody(eventValue);
+  };
+
   useEffect(() => {
     if (debouncedBody !== value) {
       onChange(debouncedBody);
@@ -94,14 +99,7 @@ const CommentField: FC<CommentFieldProps> = ({
             label={`Posted ${date.formatDateTime(createdDate)}`}
             value={body}
             placeholder="Write comment here"
-            onInput={(
-              event:
-                | React.FormEvent<HTMLInputElement>
-                | React.FormEvent<HTMLTextAreaElement>
-            ) => {
-              const target = event.target as HTMLInputElement;
-              setBody(target.value);
-            }}
+            onInput={handleOnInput}
           />
           <DeleteButton variant="ghost_icon" onClick={() => onDelete(id)}>
             <Icon name="delete" size={24} data={delete_to_trash} />

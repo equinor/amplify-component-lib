@@ -7,7 +7,7 @@ export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
 export { default as HighlightBlocks } from './DataDisplay/Tutorial/HighlightBlocks/HighlightBlocks';
-export type { IStep, TutorialProps } from './DataDisplay/Tutorial/Tutorial';
+export type { Step, TutorialProps } from './DataDisplay/Tutorial/Tutorial';
 export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
 export { default as StatusChip } from './DataDisplay/Workflow/StatusChip';
 export { default as WorkflowDescription } from './DataDisplay/Workflow/WorkflowDescription';
@@ -17,8 +17,8 @@ export { default as AnimatedCheckmark } from './Feedback/AnimatedCheckmark';
 export { default as ConfirmationPopup } from './Feedback/ConfirmationPopup';
 export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
-export { default as GlitchAnimation } from './Feedback/ErrorPage/illustrations/GlitchAnimation'
-export { default as QuestioningAnimaion } from './Feedback/ErrorPage/illustrations/QuestioningAnimation'
+export { default as GlitchAnimation } from './Feedback/ErrorPage/illustrations/GlitchAnimation';
+export { default as QuestioningAnimaion } from './Feedback/ErrorPage/illustrations/QuestioningAnimation';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as PageNotFound } from './Feedback/PageNotFound';

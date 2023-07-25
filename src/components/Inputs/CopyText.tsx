@@ -9,6 +9,7 @@ import styled, { keyframes } from 'styled-components';
 const { colors, spacings } = tokens;
 
 const Wrapper = styled.div`
+  width: fit-content;
   position: relative;
   pointer-events: auto;
   &:hover {
@@ -19,22 +20,24 @@ const Wrapper = styled.div`
 const spawn = keyframes`
   from {
     opacity: 0;
-    background: none;
   }
-
   to {
     opacity: 1;
-    background: ${colors.ui.background__light.hex};
   }
 `;
 
-const CopyIcon = styled.div`
+interface CopyIconProps {
+  $background: string;
+}
+
+const CopyIcon = styled.div<CopyIconProps>`
   position: absolute;
   z-index: 1000;
   top: 50%;
-  transform: translate(0, -50%);
+  right: 0;
+  transform: translate(calc(100% + ${spacings.comfortable.small}), -50%);
   animation: ${spawn} 1s;
-  background: ${colors.ui.background__light.hex};
+  background: ${({ $background }) => $background};
   p,
   svg {
     color: ${colors.interactive.primary__hover.hex};
@@ -52,15 +55,15 @@ const CopyIcon = styled.div`
 type IconText = 'Copy' | 'Copied!';
 
 export interface CopyTextProps {
-  textToCopy: string;
-  iconRightPos?: string;
   children: ReactNode;
+  textToCopy: string;
+  hoverBackground?: string;
 }
 
 const CopyText: FC<CopyTextProps> = ({
   children,
   textToCopy,
-  iconRightPos,
+  hoverBackground = colors.ui.background__light.hex,
 }) => {
   const isMounted = useRef(false);
   const [hovering, setHovering] = useState(false);
@@ -91,7 +94,7 @@ const CopyText: FC<CopyTextProps> = ({
     >
       {children}
       {hovering && (
-        <CopyIcon style={{ right: iconRightPos }}>
+        <CopyIcon $background={hoverBackground}>
           <Icon data={copy} size={16} />
           <Typography variant="overline">{iconText}</Typography>
         </CopyIcon>

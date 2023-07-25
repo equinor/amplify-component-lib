@@ -1,6 +1,6 @@
-import { waitFor } from '@testing-library/react';
+import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../tests/test-utils';
+import { render, screen, userEvent, waitFor } from '../../tests/test-utils';
 import CopyText from './CopyText';
 
 test('Renders label on hover', async () => {
@@ -41,10 +41,10 @@ test('Copies text to clipbard and displays success message', async () => {
   expect(screen.getByText(/copy/i)).toBeInTheDocument();
 });
 
-test('iconRightPos prop works as expected', async () => {
-  const iconRightPos = '18rem';
+test('hoverBackground prop works as expected', async () => {
+  const randomColor = faker.color.rgb();
   render(
-    <CopyText textToCopy="Test" iconRightPos={iconRightPos}>
+    <CopyText textToCopy="Test" hoverBackground={randomColor}>
       testing text
     </CopyText>
   );
@@ -58,6 +58,6 @@ test('iconRightPos prop works as expected', async () => {
   expect(screen.getByText(/copy/i)).toBeInTheDocument();
 
   expect(screen.getByText(/copy/i).parentElement).toHaveStyle(
-    `right: ${iconRightPos};`
+    `background: ${randomColor};`
   );
 });

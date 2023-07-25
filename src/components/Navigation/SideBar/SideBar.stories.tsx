@@ -27,6 +27,9 @@ export default {
     createLabel: 'Create story',
     disabledItem: 'none',
   },
+  parameters: {
+    layout: 'fullscreen',
+  },
 } as Meta;
 
 export const Primary: StoryFn = (args) => {

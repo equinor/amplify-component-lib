@@ -19,7 +19,7 @@ const NewCommentContainer = styled.div`
 const CommentTextField = styled(TextField)`
   background: none;
 
-  div {
+  div:focus-within {
     outline: none;
   }
 

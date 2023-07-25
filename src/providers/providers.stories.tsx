@@ -5,6 +5,11 @@ import styled from 'styled-components';
 
 const providersList = [
   {
+    name: 'PageMenuProvider',
+    body: 'Provider to make PageMenu component work',
+    code: `<PageMenuProvider items={...}>{children}</PageMenuProvider>`,
+  },
+  {
     name: 'AuthProvider',
     body: 'MSAL authentication provider',
     code: `<AuthProvider

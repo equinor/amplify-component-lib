@@ -2,9 +2,9 @@ import { faker } from '@faker-js/faker';
 
 import TutorialStepsProvider from '../../../providers/TutorialStepsProvider';
 import { render, screen, userEvent } from '../../../tests/test-utils';
-import Tutorial, { IStep, TutorialProps } from './Tutorial';
+import Tutorial, { Step, TutorialProps } from './Tutorial';
 
-function fakeStep(): IStep {
+function fakeStep(): Step {
   return {
     key: faker.string.uuid(),
     title: faker.animal.dog(),
@@ -14,7 +14,7 @@ function fakeStep(): IStep {
 }
 
 function fakeProps(withImage = false): TutorialProps {
-  const steps: IStep[] = [];
+  const steps: Step[] = [];
   for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     steps.push(fakeStep());
   }

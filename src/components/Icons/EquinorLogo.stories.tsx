@@ -16,7 +16,7 @@ export default {
   args: {
     color: 'red',
     large: false,
-    size: 16,
+    size: 48,
   },
 } as Meta;
 

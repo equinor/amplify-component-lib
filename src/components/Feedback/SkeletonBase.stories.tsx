@@ -13,7 +13,7 @@ export default {
     height: { control: 'text' },
     borderRadius: { control: 'text' },
   },
-  args: { width: '100px', height: '10px', borderRadius: '4px' },
+  args: { width: '100px', height: '24px', borderRadius: '4px' },
 } as Meta;
 
 const ExampleSkeleton = styled(SkeletonBase)`

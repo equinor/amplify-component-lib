@@ -4,7 +4,7 @@ import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
 import TutorialStart from './TutorialStart';
 import TutorialSteps from './TutorialSteps';
 
-export interface IStep {
+export interface Step {
   key: string;
   title: string;
   body: ReactElement;
@@ -12,7 +12,7 @@ export interface IStep {
 }
 
 export type TutorialProps = {
-  steps: IStep[];
+  steps: Step[];
   tutorialTitle: string;
   imageSource?: string;
   tutorialIntro: string;

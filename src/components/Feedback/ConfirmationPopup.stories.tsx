@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Button } from '@equinor/eds-core-react';
 import { StoryFn } from '@storybook/react';
 
@@ -7,7 +9,6 @@ export default {
   title: 'Feedback/ConfirmationPopup',
   component: ConfirmationPopup,
   argTypes: {
-    show: { control: 'boolean' },
     title: {
       control: 'text',
     },
@@ -18,26 +19,41 @@ export default {
       action: 'Ran onClose',
     },
     actions: {
-      control: 'array',
+      description: 'Array with buttons',
     },
     width: {
       control: 'text',
     },
   },
   args: {
-    show: true,
     title: 'This is the title',
     body: 'This is the body',
-    actions: [
-      <Button key="A1" variant="ghost" color="secondary">
-        Cancel
-      </Button>,
-      <Button key="A2">Action</Button>,
-    ],
     width: '400px',
   },
 };
 
 export const Primary: StoryFn<ConfirmationPopupProps> = (args) => {
-  return <ConfirmationPopup {...args} />;
+  const [show, setShow] = useState(false);
+
+  const handleOpen = () => setShow(true);
+  const handleOnClose = () => setShow(false);
+
+  return (
+    <>
+      <Button onClick={handleOpen}>Open confirmation popup</Button>
+      <ConfirmationPopup
+        {...args}
+        show={show}
+        onClose={handleOnClose}
+        actions={[
+          <Button key="cancel" variant="ghost" onClick={handleOnClose}>
+            Cancel
+          </Button>,
+          <Button key="continue " onClick={handleOnClose}>
+            Continue
+          </Button>,
+        ]}
+      />
+    </>
+  );
 };

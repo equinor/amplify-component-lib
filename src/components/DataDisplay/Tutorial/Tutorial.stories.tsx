@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { TutorialStepsProvider } from '../../../providers';
-import Tutorial, { IStep, TutorialProps } from './Tutorial';
+import Tutorial, { Step, TutorialProps } from './Tutorial';
 import TutorialStoryComponent from './TutorialStoryComponent';
 
 export default {
@@ -10,7 +10,7 @@ export default {
   component: Tutorial,
 } as Meta;
 
-const steps: IStep[] = [
+const steps: Step[] = [
   {
     key: 'step-one',
     title: 'Field',

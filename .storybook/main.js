@@ -3,14 +3,9 @@ module.exports = {
     '../src/intro.stories.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
-  addons: [
-    '@storybook/addon-docs',
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-mdx-gfm',
-  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   typescript: {
-    reactDocgen: 'none',
+    reactDocgen: 'react-docgen-typescript',
   },
   build: {
     sourcemap: false,
@@ -22,4 +17,5 @@ module.exports = {
   docs: {
     autodocs: true,
   },
+  staticDirs: ['../static'],
 };
