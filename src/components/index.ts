@@ -26,6 +26,7 @@ export { default as FileProgress } from './Feedback/Progress/FileProgress';
 export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/SkeletonBase';
+export { skeletonBaseloading } from './Feedback/SkeletonBase';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
 export { default as Unauthorized } from './Feedback/Unauthorized';
 export {

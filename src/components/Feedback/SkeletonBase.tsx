@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-const loading = keyframes`
+export const skeletonBaseloading = keyframes`
   to {
     transform: translateX(100%);
   }
@@ -16,7 +16,7 @@ const SkeletonBase = styled.div<SkeletonBaseProps>`
   z-index: 2;
   &:after {
     background: linear-gradient(90deg, #cacaca 0%, #dcdcdc 50%, #cacaca 100%);
-    animation: ${loading} 1.5s infinite;
+    animation: ${skeletonBaseloading} 1.5s infinite;
     content: '';
     height: 100%;
     left: 0;
