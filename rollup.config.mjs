@@ -29,9 +29,17 @@ export default [
     ],
     output: [
       {
-        dir: 'dist',
+        dir: 'dist/esm',
+        preserveModules: true,
+        preserveModulesRoot: 'src',
         format: 'es',
-        sourcemap: true,
+        sourcemap: false,
+      },
+      {
+        file: './dist/amplify-components.cjs',
+        format: 'cjs',
+        interop: 'auto',
+        sourcemap: false,
       },
     ],
   },

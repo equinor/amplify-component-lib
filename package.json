@@ -2,7 +2,8 @@
   "name": "@equinor/amplify-components",
   "version": "4.2.1",
   "description": "Frontend Typescript components for the Amplify team",
-  "main": "dist/index.js",
+  "main": "dist/amplify-components.cjs",
+  "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "author": "Amplify Team",
   "license": "ISC",
@@ -32,8 +33,8 @@
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "build": "yarn build-components",
-    "build-components": "rollup -c rollup.config.mjs && tsc -p tsconfig.build.json",
-    "build-components:ci": "rm -rf lib dist && rollup -c rollup.config.mjs && tsc -p tsconfig.build.json",
+    "build-components": "rollup -c --bundleConfigAsCjs && tsc --outDir dist --declarationDir dist/types --declaration true --project tsconfig.build.json",
+    "build-components:ci": "rm -rf lib dist && yarn build-components",
     "version": "version-bump cli --bump",
     "postversion": "git add package.json && git commit -m 'Upgraded package version'"
   },
@@ -68,7 +69,6 @@
   "devDependencies": {
     "@equinor/eds-core-react": "0.30.0",
     "@faker-js/faker": "^8.0.2",
-    "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
