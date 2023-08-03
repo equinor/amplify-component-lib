@@ -3,14 +3,11 @@ import { FileWithPath } from 'react-dropzone';
 
 import { useMutation } from '@tanstack/react-query';
 
-import {
-  PortalService,
-  ServiceNowIncidentRequestDto,
-} from 'src/api';
-import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { createSlackMessage } from '../Feedback.utils';
 import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
 import SelectType from './SelectType';
+import { PortalService, ServiceNowIncidentRequestDto } from 'src/api';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export enum FeedbackEnum {
   ERROR = 'error',
