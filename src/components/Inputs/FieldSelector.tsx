@@ -5,7 +5,7 @@ import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
-import { Field } from '../../types/Field';
+import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 const { colors, spacings, elevation, shape } = tokens;

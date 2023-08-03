@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./dist/types",
-    "emitDeclarationOnly": true,
+    "baseUrl": ".",
     "isolatedModules": true,
-    "outDir": "./dist",
     "target": "ES2022",
     "module": "esnext",
     "lib": ["dom", "esnext"],

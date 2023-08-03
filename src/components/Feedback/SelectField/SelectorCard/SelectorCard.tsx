@@ -11,7 +11,7 @@ import {
 import { arrow_forward, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { Field } from '../../../../types/Field';
+import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 

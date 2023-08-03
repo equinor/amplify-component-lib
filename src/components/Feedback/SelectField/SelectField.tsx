@@ -1,10 +1,10 @@
 import { FC, useRef, useState } from 'react';
 
-import { Field } from '../../../types/Field';
 import SelectorCard from './SelectorCard/SelectorCard';
 import SelectorSkeleton from './SelectorCard/Skeleton';
 import ChangingField from './ChangingField';
 import Illustration from './Illustration';
+import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 

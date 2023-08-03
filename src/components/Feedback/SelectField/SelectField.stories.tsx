@@ -4,9 +4,9 @@ import { Button, Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Field } from '../../../types/Field';
 import TopBar from '../../Navigation/TopBar';
 import SelectField from './SelectField';
+import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';

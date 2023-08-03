@@ -4,8 +4,8 @@ import { CSSTransition } from 'react-transition-group';
 import { Button, Dialog as EDSDialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
 import { Step } from './Tutorial';
+import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
 
 import styled, { keyframes } from 'styled-components';
 const { colors, spacings } = tokens;

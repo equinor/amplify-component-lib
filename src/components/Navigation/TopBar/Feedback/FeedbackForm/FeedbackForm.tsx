@@ -4,11 +4,11 @@ import { FileWithPath } from 'react-dropzone';
 import { useMsal } from '@azure/msal-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { useAuth } from '../../../../../providers/AuthProvider/AuthProvider';
-import { auth, environment } from '../../../../../utils';
 import { createSlackMessage } from '../Feedback.utils';
 import FeedbackDetails, { SeverityOption } from './FeedbackDetails';
 import SelectType from './SelectType';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
+import { auth, environment } from 'src/utils';
 
 const { getEnvironmentName, getApiUrl, getApiScope } = environment;
 const { GRAPH_REQUESTS_BACKEND, acquireToken } = auth;
