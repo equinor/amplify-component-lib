@@ -52,7 +52,7 @@ interface FeedbackDetailsProps {
   handleSave: () => void;
 }
 
-const FeedbackDetails: FC<FeedbackDetailsProps> = ({
+const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   selectedType,
   setSelectedType,
   feedbackContent,
@@ -65,7 +65,12 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
       feedbackContent.description.length > 0 &&
       (feedbackContent.consent || selectedType === FeedbackEnum.INQUIRY)
     );
-  }, [feedbackContent.title.length, feedbackContent.description.length, feedbackContent.consent, selectedType]);
+  }, [
+    feedbackContent.title.length,
+    feedbackContent.description.length,
+    feedbackContent.consent,
+    selectedType,
+  ]);
 
   return (
     <Wrapper>
@@ -143,4 +148,4 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
   );
 };
 
-export default FeedbackDetails;
+export default FeedbackFormInner;

@@ -6,8 +6,8 @@ import { tokens } from '@equinor/eds-tokens';
 
 import FileProgress from '../../../../Feedback/Progress/FileProgress';
 import FileUploadArea from '../../../../Inputs/FileUploadArea';
-import { SeverityOption } from './FeedbackDetails';
 import { FeedbackContentType } from './FeedbackForm';
+import { SeverityOption } from './FeedbackFormInner';
 
 import styled from 'styled-components';
 
@@ -53,14 +53,10 @@ const UploadFile: FC<UploadFileProps> = ({
     acceptedFiles: FileWithPath[],
     fileRejections: FileRejection[]
   ) => {
-    console.log(acceptedFiles);
     const cleanedOfHiddenFiles = acceptedFiles.filter(
       (file) => file.name[0] !== '.'
     );
     const reader = new FileReader();
-    reader.onloadend = () => {
-      console.log(reader.result);
-    };
     reader.readAsDataURL(acceptedFiles[0]);
     setRejectedFiles(fileRejections);
     updateFeedback('attachments', cleanedOfHiddenFiles);

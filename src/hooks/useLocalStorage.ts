@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const getLocalStorage = <T>(key: string, defaultState: T): T => {
+export const getLocalStorage = <T>(key: string, defaultState: T): T => {
   const localStorageData = localStorage.getItem(key);
 
   if (localStorageData) {
