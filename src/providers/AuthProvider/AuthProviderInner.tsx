@@ -9,8 +9,8 @@ import {
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
-import { auth } from '../../utils';
 import { AuthState } from './AuthProvider';
+import { auth } from 'src/utils';
 
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 

@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
-import { environment, auth } from '../../utils';
-import { CancelablePromise, TokenService } from '../.';
+import { environment, auth } from 'src/utils';
+import { CancelablePromise, TokenService } from 'src/api';
 import {
   getLocalStorage,
   updateLocalStorage,
-} from '../../hooks/useLocalStorage';
+} from 'src/hooks/useLocalStorage';
 import { JwtPayload } from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
 

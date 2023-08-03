@@ -2,10 +2,10 @@ import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { useSideBar } from '../../../providers/SideBarProvider';
 import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
 import ToggleOpen from './ToggleOpen';
+import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
 

@@ -42,7 +42,7 @@ test('Renders correctly without avatar', async () => {
     const splitNames = nameWithoutParenthesis.split(' ');
 
     if (splitNames.length === 1 && splitNames[0] !== '') {
-      return splitNames[0].charAt(0) + '.';
+      return splitNames[0].charAt(0);
     }
 
     if (splitNames.length >= 2) {

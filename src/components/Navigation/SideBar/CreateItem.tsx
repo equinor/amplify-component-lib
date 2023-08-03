@@ -10,7 +10,7 @@ import {
 import { add } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { useSideBar } from '../../../providers/SideBarProvider';
+import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
 

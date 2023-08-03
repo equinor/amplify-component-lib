@@ -6,8 +6,8 @@ import { useMutation } from '@tanstack/react-query';
 import {
   PortalService,
   ServiceNowIncidentRequestDto,
-} from '../../../../../api';
-import { useAuth } from '../../../../../providers/AuthProvider/AuthProvider';
+} from 'src/api';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { createSlackMessage } from '../Feedback.utils';
 import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
 import SelectType from './SelectType';
