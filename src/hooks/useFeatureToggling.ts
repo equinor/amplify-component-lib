@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { FeatureToggleDto, GraphUser, PortalService } from '../api';
-import { useAuth } from '../providers/AuthProvider/AuthProvider';
-import { environment } from '../utils';
+import { FeatureToggleDto, GraphUser, PortalService } from 'src/api';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
+import { environment } from 'src/utils';
 
 const { getAppName, getEnvironmentName } = environment;
 

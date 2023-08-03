@@ -4,10 +4,10 @@ import { FileRejection, FileWithPath } from 'react-dropzone';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import FileProgress from '../../../../Feedback/Progress/FileProgress';
-import FileUploadArea from '../../../../Inputs/FileUploadArea';
 import { FeedbackContentType } from './FeedbackForm';
 import { SeverityOption } from './FeedbackFormInner';
+import FileProgress from 'src/components/Feedback/Progress/FileProgress';
+import FileUploadArea from 'src/components/Inputs/FileUploadArea';
 
 import styled from 'styled-components';
 
