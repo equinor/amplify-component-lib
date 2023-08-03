@@ -18,6 +18,6 @@
     "jsx": "react-jsx",
     "sourceMap": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "vite.config.ts"],
   "exclude": ["node_modules"]
 }
