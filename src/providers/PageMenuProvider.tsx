@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { useOnScreenMultiple } from '../hooks/useOnScreen';
+import { useOnScreenMultiple } from 'src/hooks';
 
 export type PageMenuItemType = {
   label: string;

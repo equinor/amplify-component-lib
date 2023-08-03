@@ -15,8 +15,8 @@ import {
 } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
-import { auth } from '../../utils';
 import AuthProviderInner from './AuthProviderInner';
+import { auth } from 'src/utils';
 
 const { msalApp } = auth;
 

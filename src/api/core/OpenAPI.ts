@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
-import { environment, auth } from '../../utils/index';
+import { environment, auth } from 'src/utils';
 
 const { getApiUrl } = environment;
 const { GRAPH_REQUESTS_BACKEND, acquireToken, msalApp } = auth;

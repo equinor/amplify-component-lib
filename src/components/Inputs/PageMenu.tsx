@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { usePageMenu } from '../../providers/PageMenuProvider';
+import { usePageMenu } from 'src/providers/PageMenuProvider';
 
 import styled from 'styled-components';
 

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Field } from '../../../types/Field';
 import FieldSelector from './FieldSelector';
+import { Field } from 'src/types/Field';
 const fields = new Array(10).fill(0).map(() => FakeField());
 
 export default {

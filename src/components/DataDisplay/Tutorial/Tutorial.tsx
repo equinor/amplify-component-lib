@@ -1,8 +1,8 @@
 import { forwardRef, ReactElement, useState } from 'react';
 
-import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
 import TutorialStart from './TutorialStart';
 import TutorialSteps from './TutorialSteps';
+import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
 
 export interface Step {
   key: string;

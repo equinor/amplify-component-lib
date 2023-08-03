@@ -1,9 +1,9 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import { ErrorType, getErrorContent } from '../../../utils/errors';
 import GlitchAnimation from './illustrations/GlitchAnimation';
 import QuestioningAnimation from './illustrations/QuestioningAnimation';
 import ErrorPage from '.';
+import { ErrorType, getErrorContent } from 'src/utils/errors';
 
 export default {
   title: 'Feedback/ErrorPage',

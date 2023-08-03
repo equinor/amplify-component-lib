@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { Button, Checkbox, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { useTutorialSteps } from '../../../providers/TutorialStepsProvider';
 import HighlightBlocks from './HighlightBlocks/HighlightBlocks';
 import Tutorial, { TutorialProps } from './Tutorial';
+import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
 
 import styled from 'styled-components';
 
