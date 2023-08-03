@@ -65,7 +65,12 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
       feedbackContent.description.length > 0 &&
       (feedbackContent.consent || selectedType === FeedbackEnum.INQUIRY)
     );
-  }, [feedbackContent.title.length, feedbackContent.description.length, feedbackContent.consent, selectedType]);
+  }, [
+    feedbackContent.title.length,
+    feedbackContent.description.length,
+    feedbackContent.consent,
+    selectedType,
+  ]);
 
   return (
     <Wrapper>
