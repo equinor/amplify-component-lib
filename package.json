@@ -67,7 +67,7 @@
     "@azure/msal-common": "7.6.0"
   },
   "devDependencies": {
-    "@equinor/eds-core-react": "0.32.3",
+    "@equinor/eds-core-react": "0.30.0",
     "@faker-js/faker": "^8.0.2",
     "@rollup/plugin-commonjs": "^25.0.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
