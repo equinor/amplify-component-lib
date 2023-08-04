@@ -1,17 +1,13 @@
 import { FC, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
-import { useMsal } from '@azure/msal-react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { createSlackMessage } from '../Feedback.utils';
-import FeedbackDetails, { SeverityOption } from './FeedbackDetails';
+import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
 import SelectType from './SelectType';
+import { PortalService, ServiceNowIncidentRequestDto } from 'src/api';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
-import { auth, environment } from 'src/utils';
-
-const { getEnvironmentName, getApiUrl, getApiScope } = environment;
-const { GRAPH_REQUESTS_BACKEND, acquireToken } = auth;
 
 export enum FeedbackEnum {
   ERROR = 'error',
@@ -32,11 +28,8 @@ interface FeedbackFormProps {
 }
 
 const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
-  const { instance } = useMsal();
   const { account } = useAuth();
   const userEmail = account?.username;
-  const environment = getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME);
-  const apiUrl = getApiUrl(import.meta.env.VITE_API_URL);
 
   const [selectedType, setSelectedType] = useState<FeedbackEnum | undefined>(
     undefined
@@ -46,76 +39,16 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     description: '',
     consent: false,
   });
-  console.log(feedbackContent.consent);
 
-  const { data: portalToken } = useQuery<string>(
-    ['getPortalTokenForCurrentEnvironment'],
-    async () => {
-      const authResult = await acquireToken(
-        instance,
-        GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
-      );
-      return await fetch(`${apiUrl}/api/v1/Token/AmplifyPortal`, {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + authResult.accessToken,
-          'Content-type': 'application/json',
-        },
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
-    }
-  );
-
-  const { mutate: slackFileUpload } = useMutation(
+  const { mutateAsync: slackFileUpload } = useMutation(
     ['slackFileUpload', feedbackContent],
-    async () => {
-      const formData = new FormData();
-      if (feedbackContent.attachments && feedbackContent.attachments[0]) {
-        await formData.append('file', feedbackContent.attachments[0]);
-      }
-      await formData.append(
-        'comment',
-        createSlackMessage(feedbackContent, selectedType, userEmail)
-      );
-
-      await fetch(
-        `https://api-amplify-portal-${environment}.radix.equinor.com/api/v1/Slack/fileUpload`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + portalToken,
-          },
-          body: formData,
-        }
-      );
-    }
+    (formData: FormData) => PortalService.fileUpload(formData)
   );
 
-  const { mutate: serviceNowIncident } = useMutation(
+  const { mutateAsync: serviceNowIncident } = useMutation(
     ['serviceNowIncident', feedbackContent],
-    async () => {
-      await fetch(
-        `https://api-amplify-portal-${environment}.radix.equinor.com/api/v1/ServiceNow/incident`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + portalToken,
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
-            title: feedbackContent.title,
-            description: feedbackContent.description,
-            callerEmail: userEmail,
-          }),
-        }
-      );
-    }
+    async (serviceNowDto: ServiceNowIncidentRequestDto) =>
+      PortalService.createIncident(serviceNowDto)
   );
 
   const updateFeedback = (
@@ -125,17 +58,32 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     setFeedbackContent({ ...feedbackContent, [key]: newValue });
   };
 
-  const handleSave = () => {
-    if (selectedType === FeedbackEnum.ERROR) {
-      serviceNowIncident();
+  const handleSave = async () => {
+    if (selectedType === FeedbackEnum.ERROR && userEmail) {
+      const serviceNowObject: ServiceNowIncidentRequestDto = {
+        configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
+        title: feedbackContent.title,
+        description: feedbackContent.description,
+        callerEmail: userEmail,
+      };
+      await serviceNowIncident(serviceNowObject);
     }
-    slackFileUpload();
+
+    const formData = new FormData();
+    if (feedbackContent.attachments && feedbackContent.attachments[0]) {
+      formData.append('file', feedbackContent.attachments[0]);
+    }
+    formData.append(
+      'comment',
+      createSlackMessage(feedbackContent, selectedType, userEmail)
+    );
+    await slackFileUpload(formData);
     onClose();
   };
 
   if (!selectedType) return <SelectType setSelectedType={setSelectedType} />;
   return (
-    <FeedbackDetails
+    <FeedbackFormInner
       selectedType={selectedType}
       setSelectedType={setSelectedType}
       feedbackContent={feedbackContent}

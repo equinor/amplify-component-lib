@@ -52,7 +52,7 @@ interface FeedbackDetailsProps {
   handleSave: () => void;
 }
 
-const FeedbackDetails: FC<FeedbackDetailsProps> = ({
+const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   selectedType,
   setSelectedType,
   feedbackContent,
@@ -148,4 +148,4 @@ const FeedbackDetails: FC<FeedbackDetailsProps> = ({
   );
 };
 
-export default FeedbackDetails;
+export default FeedbackFormInner;
