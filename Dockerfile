@@ -1,7 +1,6 @@
 # Base
 FROM node:19-alpine as base
 WORKDIR /app
-RUN yarn global add serve
 COPY package*.json ./
 COPY yarn.lock ./
 COPY tsconfig*.json ./
@@ -14,6 +13,7 @@ COPY src src
 COPY .storybook .storybook
 COPY static static
 COPY .eslintrc.cjs .eslintrc.cjs
+COPY vite.config.ts vite.config.ts
 
 # Build
 FROM dependencies as builder

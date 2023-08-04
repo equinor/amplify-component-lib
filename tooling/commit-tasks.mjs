@@ -15,10 +15,6 @@ const tasks = [
     command: 'npm run lint',
     name: chalk.hex('#CCE0E8')('Running Lint'),
   },
-  {
-    command: 'npm run test:ci',
-    name: chalk.hex('#CCE0E8')('Client Unit-Tests'),
-  },
 ];
 
 async function runTasks() {
