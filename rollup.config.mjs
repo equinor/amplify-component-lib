@@ -16,7 +16,7 @@ const extensions = ['.tsx', '.ts'];
 
 export default [
   {
-    input: ['./src/index.ts'],
+    input: './src/index.ts',
     external: ['@babel/runtime', 'react/jsx-runtime',  ...externalDependencies],
     plugins: [
       del({ targets: 'dist/*', runOnce: true }),
@@ -33,12 +33,6 @@ export default [
         preserveModules: true,
         preserveModulesRoot: 'src',
         format: 'es',
-        sourcemap: false,
-      },
-      {
-        file: './dist/amplify-components.cjs',
-        format: 'cjs',
-        interop: 'auto',
         sourcemap: false,
       },
     ],
