@@ -203,24 +203,14 @@ test('formatDateTime works as expected when isGMT is set', () => {
   expect(formatted).toBe(expectedResult);
 });
 
-test('formatRelativeDateTime work as expected with null', () => {
+test('formatRelativeDateTime with null should be empty string', () => {
   const formatted = date.formatRelativeDateTime(null);
   expect(formatted).toContain('');
 });
 
-test('formatRelativeDateTime work as expected with yesterdays date', () => {
+test('formatRelativeDateTime with isGMT set should convert to local time', () => {
   const fakeDate = new Date();
   fakeDate.setDate(fakeDate.getDate() - 1);
-  // Fake date is yesterday;
-
-  const formatted = date.formatRelativeDateTime(fakeDate);
-  expect(formatted).toContain('Yesterday');
-});
-
-test('formatRelativeDateTime work as expected with isGMT set', () => {
-  const fakeDate = new Date();
-  fakeDate.setDate(fakeDate.getDate() - 1);
-  // Fake date is yesterday;
 
   const inputDate = new Date(fakeDate.getTime());
   fakeDate.setTime(fakeDate.getTime() + fakeDate.getTimezoneOffset() * 60000);
@@ -233,30 +223,79 @@ test('formatRelativeDateTime work as expected with isGMT set', () => {
   expect(formatted).toContain(time);
 });
 
-test('formatRelativeDateTime work as expected with yesterdays date, but less than 24 hours', () => {
-  const fakeDate = new Date();
-  fakeDate.setHours(fakeDate.getHours() - fakeDate.getHours() - 2);
-  // Fake date is yesterday;
+test('formatRelativeDateTime with todays date should display as Today including time', () => {
+  const twoHoursAgo = new Date();
+  twoHoursAgo.setHours(twoHoursAgo.getHours() - 2);
 
-  const formatted = date.formatRelativeDateTime(fakeDate);
+  const expectedResult = `Today at ${twoHoursAgo.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`;
+
+  const formatted = date.formatRelativeDateTime(twoHoursAgo);
+  expect(formatted).toEqual(expectedResult);
+});
+
+test('formatRelativeDateTime with yesterdays date should display as Yesterday including time', () => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const formattedYesterday = date.formatRelativeDateTime(yesterday);
+  expect(formattedYesterday).toContain('Yesterday');
+
+  const yesterdayLessThan24Hours = new Date();
+  yesterdayLessThan24Hours.setHours(
+    yesterdayLessThan24Hours.getHours() -
+      yesterdayLessThan24Hours.getHours() -
+      2
+  );
+
+  const formatted = date.formatRelativeDateTime(yesterdayLessThan24Hours);
   expect(formatted).toContain('Yesterday');
 });
 
-test('formatRelativeDateTime work as expected with date older than yesterday, but not more than 1 week old', () => {
-  const TwoDaysAgo = new Date().setDate(new Date().getDate() - 2);
-  const fakeDate = faker.date.recent({ days: 5, refDate: TwoDaysAgo });
-  // Fake date is not yesterday, but a date within a week of today
+test('formatRelativeDateTime with tomorrows date should display as Tomorrow including time', () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const fakeDateDay = fakeDate.toLocaleString('en-GB', {
+  const formattedTomorrow = date.formatRelativeDateTime(tomorrow);
+  expect(formattedTomorrow).toContain('Tomorrow');
+});
+
+test('formatRelativeDateTime with date within next week should display as weekday + time', () => {
+  const dateInNextWeek = new Date();
+  dateInNextWeek.setDate(dateInNextWeek.getDate() + 6);
+
+  const weekday = dateInNextWeek.toLocaleString('en-GB', {
     weekday: 'long',
   });
 
-  const formatted = date.formatRelativeDateTime(fakeDate);
-  expect(formatted).toContain(fakeDateDay);
+  const formatted = date.formatRelativeDateTime(dateInNextWeek);
+  expect(formatted).toContain(weekday);
 });
 
-test('formatRelativeDateTime works as expected with date older than a week', () => {
-  const fakeDate = faker.date.past({ years: 10 });
+test('formatRelativeDateTime with date before yesterday should display as full date not including year', () => {
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  const day = oneWeekAgo.toLocaleDateString('en-GB', { day: 'numeric' });
+  const expectedResult = `${day}. ${oneWeekAgo.toLocaleString('en-GB', {
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`;
+
+  const formatted = date.formatRelativeDateTime(oneWeekAgo);
+  expect(formatted).toBe(expectedResult);
+});
+
+test('formatRelativeDateTime with date in the previous year displays as full date including year', () => {
+  const lastDayOfPreviousYear = new Date();
+  lastDayOfPreviousYear.setFullYear(
+    lastDayOfPreviousYear.getFullYear() - 1,
+    11,
+    31
+  );
+  const fakeDate = faker.date.past(10, lastDayOfPreviousYear);
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
     month: 'long',
@@ -269,18 +308,34 @@ test('formatRelativeDateTime works as expected with date older than a week', () 
   expect(formatted).toBe(expectedResult);
 });
 
-test('formatRelativeDateTime works as expected with todays date', () => {
-  const today = new Date();
-  const past = new Date();
-  past.setHours(today.getHours() - 2);
-
-  const expectedResult = `Today at ${past.toLocaleTimeString('en-GB', {
+test('formatRelativeDateTime with date after next week displays as full date not including year', () => {
+  const afterNextWeek = new Date();
+  afterNextWeek.setDate(afterNextWeek.getDate() + 8);
+  const day = afterNextWeek.toLocaleDateString('en-GB', { day: 'numeric' });
+  const expectedResult = `${day}. ${afterNextWeek.toLocaleString('en-GB', {
+    month: 'long',
     hour: '2-digit',
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatRelativeDateTime(past);
-  expect(formatted).toEqual(expectedResult);
+  const formatted = date.formatRelativeDateTime(afterNextWeek);
+  expect(formatted).toBe(expectedResult);
+});
+
+test('formatRelativeDateTime with date not in current year displays as full date including year', () => {
+  const firstDayOfNextYear = new Date();
+  firstDayOfNextYear.setFullYear(firstDayOfNextYear.getFullYear() + 1, 0, 1);
+  const fakeDate = faker.date.future(10, firstDayOfNextYear);
+  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
+  const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`;
+
+  const formatted = date.formatRelativeDateTime(fakeDate);
+  expect(formatted).toBe(expectedResult);
 });
 
 test('isBetweenDates works as expected with null', () => {
