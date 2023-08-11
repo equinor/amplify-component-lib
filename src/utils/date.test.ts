@@ -288,26 +288,6 @@ test('formatRelativeDateTime with date before yesterday should display as full d
   expect(formatted).toBe(expectedResult);
 });
 
-test('formatRelativeDateTime with date in the previous year displays as full date including year', () => {
-  const lastDayOfPreviousYear = new Date();
-  lastDayOfPreviousYear.setFullYear(
-    lastDayOfPreviousYear.getFullYear() - 1,
-    11,
-    31
-  );
-  const fakeDate = faker.date.past(10, lastDayOfPreviousYear);
-  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
-  const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })}`;
-
-  const formatted = date.formatRelativeDateTime(fakeDate);
-  expect(formatted).toBe(expectedResult);
-});
-
 test('formatRelativeDateTime with date after next week displays as full date not including year', () => {
   const afterNextWeek = new Date();
   afterNextWeek.setDate(afterNextWeek.getDate() + 8);
@@ -323,19 +303,57 @@ test('formatRelativeDateTime with date after next week displays as full date not
 });
 
 test('formatRelativeDateTime with date not in current year displays as full date including year', () => {
+  const lastDayOfPreviousYear = new Date();
+  lastDayOfPreviousYear.setFullYear(
+    lastDayOfPreviousYear.getFullYear() - 1,
+    11,
+    31
+  );
+  const fakeDateBeforeCurrentYear = faker.date.past({
+    years: 10,
+    refDate: lastDayOfPreviousYear,
+  });
+  const dayOfMonth = fakeDateBeforeCurrentYear.toLocaleDateString('en-GB', {
+    day: 'numeric',
+  });
+  const expectedPreviousYearResult = `${dayOfMonth}. ${fakeDateBeforeCurrentYear.toLocaleString(
+    'en-GB',
+    {
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }
+  )}`;
+
+  const formattedDateInPreviousYear = date.formatRelativeDateTime(
+    fakeDateBeforeCurrentYear
+  );
+  expect(formattedDateInPreviousYear).toBe(expectedPreviousYearResult);
+
   const firstDayOfNextYear = new Date();
   firstDayOfNextYear.setFullYear(firstDayOfNextYear.getFullYear() + 1, 0, 1);
-  const fakeDate = faker.date.future(10, firstDayOfNextYear);
-  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
-  const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })}`;
+  const fakeDateAfterCurrentYear = faker.date.future({
+    years: 10,
+    refDate: firstDayOfNextYear,
+  });
+  const day = fakeDateAfterCurrentYear.toLocaleDateString('en-GB', {
+    day: 'numeric',
+  });
+  const expectedNextYearResult = `${day}. ${fakeDateAfterCurrentYear.toLocaleString(
+    'en-GB',
+    {
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }
+  )}`;
 
-  const formatted = date.formatRelativeDateTime(fakeDate);
-  expect(formatted).toBe(expectedResult);
+  const formattedDateInNextYear = date.formatRelativeDateTime(
+    fakeDateAfterCurrentYear
+  );
+  expect(formattedDateInNextYear).toBe(expectedNextYearResult);
 });
 
 test('isBetweenDates works as expected with null', () => {
