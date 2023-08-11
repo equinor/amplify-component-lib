@@ -53,8 +53,9 @@ const formatDate = (
 // formatDateTime(new Date(), {month: 'short'}) => 19. Jan 2022, 01:32
 const formatDateTime = (
   date: Date | string | null | undefined,
-  options: { month?: 'short' | 'long'; isGMT?: boolean } = {
+  options: { month?: 'short' | 'long'; hideYear?: boolean; isGMT?: boolean } = {
     month: 'long',
+    hideYear: false,
     isGMT: false,
   }
 ): string => {
@@ -69,7 +70,7 @@ const formatDateTime = (
       const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
       return `${day}. ${dateObj.toLocaleString('en-GB', {
         month: options.month ?? 'long',
-        year: 'numeric',
+        year: options.hideYear ? undefined : 'numeric',
         hour: '2-digit',
         minute: '2-digit',
       })}`;
@@ -93,7 +94,10 @@ const formatRelativeDateTime = (
           dateObj.getTime() + dateObj.getTimezoneOffset() * 60000
         );
       }
-      const differenceInMS = currentDate.getTime() - dateObj.getTime();
+      const differenceInMS =
+        dateObj < currentDate
+          ? currentDate.getTime() - dateObj.getTime()
+          : dateObj.getTime() - currentDate.getTime();
       const differenceInDays = differenceInMS / (1000 * 3600 * 24);
       const time = dateObj.toLocaleTimeString('en-GB', {
         hour: '2-digit',
@@ -101,9 +105,12 @@ const formatRelativeDateTime = (
       });
       if (differenceInDays < 1 && currentDate.getDay() === dateObj.getDay()) {
         return `Today at ${time}`;
-      } else if (differenceInDays < 2) {
+      } else if (differenceInDays < 2 && dateObj < currentDate) {
         // Yesterday
         return `Yesterday at ${time}`;
+      } else if (differenceInDays < 2 && dateObj > currentDate) {
+        // Tomorrow
+        return `Tomorrow at ${time}`;
       } else if (differenceInDays > 2 && differenceInDays < 7) {
         // Show day
         return `${dateObj.toLocaleString('en-GB', {
@@ -111,7 +118,9 @@ const formatRelativeDateTime = (
         })} at ${time}`;
       } else {
         // More than a week since, show normal formatDateTime
-        return formatDateTime(date);
+        return formatDateTime(date, {
+          hideYear: dateObj.getFullYear() === currentDate.getFullYear(),
+        });
       }
     }
   }
