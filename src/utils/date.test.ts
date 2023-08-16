@@ -153,7 +153,10 @@ test('formatDate works as expected with format = "DD. month" and month = "short"
 });
 
 test('formatDateTime works as expected', () => {
-  const fakeDate = faker.date.past();
+  const today = new Date();
+  const fakeDate = faker.date.past({
+    refDate: today.setDate(today.getDate() - 2),
+  });
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
     month: 'long',
@@ -172,7 +175,10 @@ test('formatDateTime works as expected when not sending in a date', () => {
 });
 
 test('formatDateTime works as expected with options', () => {
-  const fakeDate = faker.date.past();
+  const today = new Date();
+  const fakeDate = faker.date.past({
+    refDate: today.setDate(today.getDate() - 2),
+  });
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
     month: 'short',
@@ -260,6 +266,13 @@ test('formatRelativeDateTime with tomorrows date should display as Tomorrow incl
 
   const formattedTomorrow = date.formatRelativeDateTime(tomorrow);
   expect(formattedTomorrow).toContain('Tomorrow');
+
+  const tomorrowLessThan24Hours = new Date();
+  tomorrowLessThan24Hours.setDate(tomorrow.getDate());
+  tomorrowLessThan24Hours.setHours(0);
+
+  const formatted = date.formatRelativeDateTime(tomorrowLessThan24Hours);
+  expect(formatted).toContain('Tomorrow');
 });
 
 test('formatRelativeDateTime with date within next week should display as weekday + time', () => {
@@ -275,17 +288,37 @@ test('formatRelativeDateTime with date within next week should display as weekda
 });
 
 test('formatRelativeDateTime with date before yesterday should display as full date not including year', () => {
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+  const dayNumeric = threeDaysAgo.toLocaleDateString('en-GB', {
+    day: 'numeric',
+  });
+  const expectedResultThreeDaysAgo = `${dayNumeric}. ${threeDaysAgo.toLocaleString(
+    'en-GB',
+    {
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+    }
+  )}`;
+
+  const formattedThreeDaysAgo = date.formatRelativeDateTime(threeDaysAgo);
+  expect(formattedThreeDaysAgo).toBe(expectedResultThreeDaysAgo);
+
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   const day = oneWeekAgo.toLocaleDateString('en-GB', { day: 'numeric' });
-  const expectedResult = `${day}. ${oneWeekAgo.toLocaleString('en-GB', {
-    month: 'long',
-    hour: '2-digit',
-    minute: '2-digit',
-  })}`;
+  const expectedResultOneWeekAgo = `${day}. ${oneWeekAgo.toLocaleString(
+    'en-GB',
+    {
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+    }
+  )}`;
 
-  const formatted = date.formatRelativeDateTime(oneWeekAgo);
-  expect(formatted).toBe(expectedResult);
+  const formattedOneWeekAgo = date.formatRelativeDateTime(oneWeekAgo);
+  expect(formattedOneWeekAgo).toBe(expectedResultOneWeekAgo);
 });
 
 test('formatRelativeDateTime with date after next week displays as full date not including year', () => {
