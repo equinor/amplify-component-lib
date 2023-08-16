@@ -103,21 +103,31 @@ const formatRelativeDateTime = (
         hour: '2-digit',
         minute: '2-digit',
       });
-      if (differenceInDays < 1 && currentDate.getDay() === dateObj.getDay()) {
+      if (differenceInDays < 1 && dateObj.getDate() === currentDate.getDate()) {
         return `Today at ${time}`;
-      } else if (differenceInDays < 2 && dateObj < currentDate) {
+      } else if (
+        differenceInDays < 2 &&
+        dateObj.getDate() === currentDate.getDate() - 1
+      ) {
         // Yesterday
         return `Yesterday at ${time}`;
-      } else if (differenceInDays < 2 && dateObj > currentDate) {
+      } else if (
+        differenceInDays < 2 &&
+        dateObj.getDate() === currentDate.getDate() + 1
+      ) {
         // Tomorrow
         return `Tomorrow at ${time}`;
-      } else if (differenceInDays > 2 && differenceInDays < 7) {
-        // Show day
+      } else if (
+        differenceInDays > 2 &&
+        differenceInDays < 7 &&
+        dateObj > currentDate
+      ) {
+        // Show weekday
         return `${dateObj.toLocaleString('en-GB', {
           weekday: 'long',
         })} at ${time}`;
       } else {
-        // More than a week since, show normal formatDateTime
+        // Before yesterday or in more than a week, show normal formatDateTime
         return formatDateTime(date, {
           hideYear: dateObj.getFullYear() === currentDate.getFullYear(),
         });
