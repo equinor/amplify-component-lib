@@ -50,10 +50,18 @@ export default ({ mode }: { mode: string }) => {
               return 'proj4';
             } else if (id.includes('react-beautiful-dnd')) {
               return 'react-beautiful-dnd';
+            } else if (id.includes('mui')) {
+              return 'mui';
             } else if (id.includes('node_modules')) {
               return 'vendor';
             }
           },
+        },
+        onwarn(warning, warn) {
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return;
+          }
+          warn(warning);
         },
       },
     },
