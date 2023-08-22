@@ -36,14 +36,20 @@ export default ({ mode }: { mode: string }) => {
               return 'amplify';
             } else if (id.includes('eds')) {
               return 'eds';
-            } else if (id.includes('.gl')) {
+            } else if (id.includes('probe.gl')) {
+              return 'probegl';
+            } else if (id.includes('math.gl')) {
+              return 'mathgl';
+            } else if (id.includes('loaders.gl')) {
+              return 'loadersgl';
+            } else if (id.includes('luma.gl')) {
+              return 'lumagl';
+            } else if (id.includes('deck.gl')) {
               return 'deckgl';
             } else if (id.includes('d3')) {
               return 'd3';
             } else if (id.includes('azure') || id.includes('microsoft')) {
               return 'microsoft';
-            } else if (id.includes('html2canvas')) {
-              return 'html2canvas';
             } else if (id.includes('lodash')) {
               return 'lodash';
             } else if (id.includes('proj4')) {
