@@ -50,6 +50,8 @@ export default ({ mode }: { mode: string }) => {
               return 'd3';
             } else if (id.includes('azure') || id.includes('microsoft')) {
               return 'microsoft';
+            } else if (id.includes('html2canvas')) {
+              return 'html2canvas';
             } else if (id.includes('lodash')) {
               return 'lodash';
             } else if (id.includes('proj4')) {
