@@ -26,10 +26,12 @@ export function useFeatureToggling(featureKey: string) {
     return false;
   };
 
-  const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>(
-    ['getFeatureToggleFromAppName'],
-    async () =>
-      PortalService.getFeatureToggleFromApplicationName(applicationName)
+  const {
+    data: featureToggle,
+    isLoading,
+    isError,
+  } = useQuery<FeatureToggleDto>(['getFeatureToggleFromAppName'], async () =>
+    PortalService.getFeatureToggleFromApplicationName(applicationName)
   );
 
   const feature = featureToggle?.features?.find(
@@ -41,10 +43,8 @@ export function useFeatureToggling(featureKey: string) {
       if (isUserInActiveUserArray(username, feature.activeUsers)) {
         return true;
       } else return feature.activeEnvironments?.includes(environment);
-    } else {
-      return true;
-    }
-  }, [environment, feature, username]);
+    } else return !isError;
+  }, [environment, feature, isError, username]);
 
   return { showContent, isLoading };
 }
