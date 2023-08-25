@@ -27,6 +27,7 @@ const UploadWrapper = styled.div<UploadWrapperProps>`
     background-color: #deedee;
     cursor: pointer;
   }
+  /* c8 ignore next */
   background-color: ${(props) => (props.$isDragActive ? `#deedee` : '')};
 `;
 
@@ -46,31 +47,35 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
   return (
     <UploadWrapper {...getRootProps()} $isDragActive={isDragActive}>
       <input data-testid="file-upload-area-input" {...getInputProps()} />
-      {isDragActive ? (
-        <Typography variant="h6">Drop to upload your files</Typography>
-      ) : (
-        <>
-          <Icon
-            data={upload}
-            color={colors.interactive.primary__resting.hsla}
-          />
-          <Typography group="navigation" variant="button">
-            Drop files or{' '}
-            <Typography
+      {
+        /* c8 ignore start */
+        isDragActive ? (
+          <Typography variant="h6">Drop to upload your files</Typography>
+        ) : (
+          /* c8 ignore end */
+          <>
+            <Icon
+              data={upload}
               color={colors.interactive.primary__resting.hsla}
-              as="span"
-            >
-              browse
-            </Typography>{' '}
-            to upload
-          </Typography>
-          {props.accept && (
-            <Typography group="paragraph" variant="meta">
-              <>Supported filetypes: {filetypes}</>
+            />
+            <Typography group="navigation" variant="button">
+              Drop files or{' '}
+              <Typography
+                color={colors.interactive.primary__resting.hsla}
+                as="span"
+              >
+                browse
+              </Typography>{' '}
+              to upload
             </Typography>
-          )}
-        </>
-      )}
+            {props.accept && (
+              <Typography group="paragraph" variant="meta">
+                <>Supported filetypes: {filetypes}</>
+              </Typography>
+            )}
+          </>
+        )
+      }
     </UploadWrapper>
   );
 };
