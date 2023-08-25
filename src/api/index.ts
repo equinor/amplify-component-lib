@@ -7,9 +7,6 @@ export { OpenAPI, OpenAPI_Portal, OpenAPI_Portal_Prod } from './core/OpenAPI';
 export { request } from './core/request';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export { TokenService } from './services/TokenService';
-export { PortalService } from './services/PortalService';
-
 export type { Feature } from './models/Feature';
 export type { FeatureToggleDto } from './models/FeatureToggleDto';
 export type { GraphUser } from './models/GraphUser';
