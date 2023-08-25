@@ -3,7 +3,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackEnum } from './FeedbackForm';
+import { FeedbackEnum } from './FeedbackForm.types';
 
 import styled from 'styled-components';
 

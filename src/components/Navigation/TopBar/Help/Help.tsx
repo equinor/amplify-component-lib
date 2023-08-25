@@ -9,9 +9,8 @@ import {
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import FeedbackForm, {
-  FeedbackEnum,
-} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm';
+import FeedbackForm from './FeedbackForm/FeedbackForm';
+import { FeedbackEnum } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 

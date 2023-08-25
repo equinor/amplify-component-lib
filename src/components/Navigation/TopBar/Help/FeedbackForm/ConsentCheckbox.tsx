@@ -4,7 +4,7 @@ import { FileWithPath } from 'react-dropzone';
 import { Checkbox, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm';
+import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
 import { SeverityOption } from './FeedbackFormInner';
 
 import styled from 'styled-components';

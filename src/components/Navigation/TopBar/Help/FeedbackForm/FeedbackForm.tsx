@@ -3,25 +3,12 @@ import { FileWithPath } from 'react-dropzone';
 
 import { useMutation } from '@tanstack/react-query';
 
+import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
 import { createSlackMessage } from './FeedbackForm.utils';
 import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
 import { ServiceNowIncidentRequestDto } from 'src/api';
 import { PortalService } from 'src/api/services/PortalService';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
-
-export enum FeedbackEnum {
-  ERROR = 'error',
-  INQUIRY = 'inquiry',
-}
-
-export type FeedbackContentType = {
-  title: string;
-  description: string;
-  severity?: string;
-  url?: string;
-  consent?: boolean;
-  attachments?: FileWithPath[];
-};
 
 interface FeedbackFormProps {
   onClose: () => void;

@@ -10,7 +10,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import ConsentCheckbox from './ConsentCheckbox';
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm';
+import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
 import UploadFile from './UploadFile';
 
 import styled from 'styled-components';

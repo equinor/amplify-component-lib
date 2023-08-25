@@ -1,4 +1,4 @@
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm';
+import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
 import { environment } from 'src/utils';
 
 const { getAppName } = environment;
