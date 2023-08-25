@@ -3,11 +3,11 @@
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import { environment, auth } from 'src/utils';
-import { CancelablePromise } from 'src/api';
+import { CancelablePromise } from 'src/api/core/CancelablePromise';
+import { request as __request } from 'src/api/core/request';
 import { getLocalStorage, updateLocalStorage } from 'src/hooks/useLocalStorage';
 import { JwtPayload } from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
-import { TokenService } from 'src/api/services/TokenService';
 
 const { getApiUrl, getEnvironmentName } = environment;
 const { GRAPH_REQUESTS_BACKEND, acquireToken, msalApp } = auth;
@@ -43,6 +43,30 @@ const getApplicationToken = async () => {
     )
   ).accessToken;
 };
+
+export class TokenService {
+  /**
+   * @returns string Success
+   * @throws ApiError
+   */
+  public static getAmplifyPortalToken(): CancelablePromise<string> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/v1/Token/AmplifyPortal',
+    });
+  }
+
+  /**
+   * @returns string Success
+   * @throws ApiError
+   */
+  public static getAmplifyPortalProductionToken(): CancelablePromise<string> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/v1/Token/AmplifyPortal/Production',
+    });
+  }
+}
 
 const isJwtTokenExpired = (token: string) => {
   const decodedToken: JwtPayload = jwtDecode(token);

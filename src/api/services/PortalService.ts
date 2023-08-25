@@ -1,14 +1,15 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CancelablePromise } from '../.';
+import type { CancelablePromise } from '../';
 import {
-  OpenAPI_Portal,
   request as __request,
   ServiceNowIncidentRequestDto,
   FeatureToggleDto,
-  OpenAPI_Portal_Prod,
-} from '../.';
+} from '../';
+
+import { OpenAPI_Portal, OpenAPI_Portal_Prod } from '../core/OpenAPI';
+
 export class PortalService {
   /**
    * @param requestBody

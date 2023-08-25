@@ -3,7 +3,7 @@
 /* eslint-disable */
 export { ApiError } from './core/ApiError';
 export { CancelablePromise, CancelError } from './core/CancelablePromise';
-export { OpenAPI, OpenAPI_Portal, OpenAPI_Portal_Prod } from './core/OpenAPI';
+export { OpenAPI } from './core/OpenAPI';
 export { request } from './core/request';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
