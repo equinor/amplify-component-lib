@@ -1,4 +1,4 @@
-import { Dispatch, FC, FormEvent, SetStateAction, useMemo } from 'react';
+import { FC, FormEvent, useMemo } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import {
@@ -6,7 +6,6 @@ import {
   AutocompleteChanges,
   Button,
   TextField,
-  Typography,
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -23,10 +22,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
   max-width: 350px;
-`;
-
-const MenuSectionTitle = styled(Typography)`
-  padding: ${spacings.comfortable.small} 0;
+  padding: ${spacings.comfortable.medium};
+  padding-top: 0;
 `;
 
 const Actions = styled.div`
@@ -43,21 +40,21 @@ export enum SeverityOption {
 
 interface FeedbackDetailsProps {
   selectedType: FeedbackEnum;
-  setSelectedType: Dispatch<SetStateAction<FeedbackEnum | undefined>>;
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
     newValue: string | SeverityOption | FileWithPath[] | boolean
   ) => void;
   handleSave: () => void;
+  onClose: () => void;
 }
 
 const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   selectedType,
-  setSelectedType,
   feedbackContent,
   updateFeedback,
   handleSave,
+  onClose,
 }) => {
   const canSubmitFeedback = useMemo(() => {
     return (
@@ -74,11 +71,6 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
 
   return (
     <Wrapper>
-      <MenuSectionTitle group="input" variant="label">
-        {selectedType === FeedbackEnum.ERROR
-          ? 'Service now error report'
-          : 'General inquiry'}
-      </MenuSectionTitle>
       <TextField
         id="feedback-title"
         label="Title"
@@ -137,11 +129,11 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
         selectedType={selectedType}
       />
       <Actions>
-        <Button variant="ghost" onClick={() => setSelectedType(undefined)}>
-          Back
+        <Button variant="ghost" onClick={onClose}>
+          Cancel
         </Button>
         <Button onClick={handleSave} disabled={!canSubmitFeedback}>
-          Send report
+          Send
         </Button>
       </Actions>
     </Wrapper>

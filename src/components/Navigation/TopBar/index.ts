@@ -1,9 +1,8 @@
-import Feedback from './Feedback/Feedback';
+import { Help } from './Help/Help';
 import { Account } from './Account';
 import { Actions } from './Actions';
 import FieldSelector from './FieldSelector';
 import { Guidelines, GuidelineSections } from './Guidelines';
-import { Help } from './Help';
 import Notifications from './Notifications';
 import { ISettingsProps, Settings } from './Settings';
 import { TopBar as BaseTopBar } from './TopBar';
@@ -14,7 +13,6 @@ type TopBarType = typeof BaseTopBar & {
   Guidelines: typeof Guidelines;
   Settings: typeof Settings;
   Notifications: typeof Notifications;
-  Feedback: typeof Feedback;
   FieldSelector: typeof FieldSelector;
   Help: typeof Help;
 };
@@ -25,7 +23,6 @@ TopBar.Actions = Actions;
 TopBar.Guidelines = Guidelines;
 TopBar.Settings = Settings;
 TopBar.Notifications = Notifications;
-TopBar.Feedback = Feedback;
 TopBar.FieldSelector = FieldSelector;
 TopBar.Help = Help;
 

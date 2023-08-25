@@ -3,10 +3,10 @@ import { FileWithPath } from 'react-dropzone';
 
 import { useMutation } from '@tanstack/react-query';
 
-import { createSlackMessage } from '../Feedback.utils';
+import { createSlackMessage } from './FeedbackForm.utils';
 import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
-import SelectType from './SelectType';
-import { PortalService, ServiceNowIncidentRequestDto } from 'src/api';
+import { ServiceNowIncidentRequestDto } from 'src/api';
+import { PortalService } from 'src/api/services/PortalService';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export enum FeedbackEnum {
@@ -25,15 +25,13 @@ export type FeedbackContentType = {
 
 interface FeedbackFormProps {
   onClose: () => void;
+  selectedType?: FeedbackEnum;
 }
 
-const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
+const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const { account } = useAuth();
   const userEmail = account?.username;
 
-  const [selectedType, setSelectedType] = useState<FeedbackEnum | undefined>(
-    undefined
-  );
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
     description: '',
@@ -81,14 +79,15 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     onClose();
   };
 
-  if (!selectedType) return <SelectType setSelectedType={setSelectedType} />;
+  if (!selectedType) return null;
+
   return (
     <FeedbackFormInner
       selectedType={selectedType}
-      setSelectedType={setSelectedType}
       feedbackContent={feedbackContent}
       updateFeedback={updateFeedback}
       handleSave={handleSave}
+      onClose={onClose}
     />
   );
 };
