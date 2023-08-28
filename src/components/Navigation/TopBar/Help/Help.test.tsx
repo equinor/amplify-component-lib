@@ -134,6 +134,34 @@ test('hide props working as expected', async () => {
 //   expect(descLabel).toBeVisible();
 // });
 
+test('can close dialog by clicking outside', async () => {
+  render(
+    <>
+      <Help applicationName={applicationName} />
+    </>,
+    { wrapper: Wrappers }
+  );
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  const reportBug = screen.getByText('Report a bug');
+
+  await user.click(reportBug);
+
+  const titleInput = screen.queryByRole('textbox', { name: /title required/i });
+
+  expect(titleInput).toBeInTheDocument();
+
+  const cancelButton = screen.getByRole('button', { name: /cancel/i });
+
+  await user.click(cancelButton);
+
+  expect(titleInput).not.toBeInTheDocument();
+});
+
 test('can interact with text fields in suggest feature dialog', async () => {
   const title = faker.animal.cat();
   const description = faker.lorem.sentence();
