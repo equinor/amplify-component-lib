@@ -74,7 +74,11 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
   }, [icon, id, isHref, onClick, text]);
 
   if (isHref) {
-    return <HrefLink href={href}>{content}</HrefLink>;
+    return (
+      <HrefLink href={href} target="_blank" as="a">
+        {content}
+      </HrefLink>
+    );
   }
 
   return content;

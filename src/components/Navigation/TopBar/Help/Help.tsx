@@ -100,9 +100,12 @@ export const Help: FC<HelpProps> = ({
           </>
         )}
       </TopBarMenu>
-      {!hideFeedback && (
+      {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
-          open={feedbackType !== undefined}
+          open={
+            feedbackType === FeedbackEnum.ERROR ||
+            feedbackType === FeedbackEnum.INQUIRY
+          }
           onClose={handleOnDialogClose}
           isDismissable={true}
         >

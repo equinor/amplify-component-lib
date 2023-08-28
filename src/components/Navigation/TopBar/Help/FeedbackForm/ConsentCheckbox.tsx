@@ -41,6 +41,7 @@ const ConsentCheckbox: FC<ConsentCheckboxProps> = ({
   return (
     <Container>
       <StyledCheckbox
+        data-testid="consent_checkbox"
         checked={feedbackContent.consent}
         onChange={handleOnChange}
       />
