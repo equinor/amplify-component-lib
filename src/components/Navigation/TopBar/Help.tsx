@@ -107,9 +107,7 @@ export const Help = forwardRef<HTMLDivElement, HelpProps>(
             <Divider style={{ margin: 0 }} />
           )}
           {children && (
-            <ContentWrapper onClick={() => closeMenu()}>
-              {children}
-            </ContentWrapper>
+            <ContentWrapper onClick={closeMenu}>{children}</ContentWrapper>
           )}
         </TopBarMenu>
       </>
