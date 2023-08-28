@@ -12,6 +12,7 @@ import { tokens } from '@equinor/eds-tokens';
 import ConsentCheckbox from './ConsentCheckbox';
 import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
 import UploadFile from './UploadFile';
+import { useFeatureToggling } from 'src/hooks';
 
 import styled from 'styled-components';
 
@@ -56,6 +57,8 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   handleSave,
   onClose,
 }) => {
+  const { showContent, isLoading } = useFeatureToggling('feedback-upload-file');
+
   const canSubmitFeedback = useMemo(() => {
     return (
       feedbackContent.title.length > 0 &&
@@ -119,10 +122,12 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           />
         </>
       )}
-      <UploadFile
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-      />
+      {showContent && !isLoading && (
+        <UploadFile
+          feedbackContent={feedbackContent}
+          updateFeedback={updateFeedback}
+        />
+      )}
       <ConsentCheckbox
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}

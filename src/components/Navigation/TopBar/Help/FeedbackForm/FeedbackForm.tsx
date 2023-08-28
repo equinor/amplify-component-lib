@@ -4,20 +4,26 @@ import { FileWithPath } from 'react-dropzone';
 import { useMutation } from '@tanstack/react-query';
 
 import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
-import { createSlackMessage } from './FeedbackForm.utils';
+import {
+  createServiceNowDescription,
+  createSlackMessage,
+} from './FeedbackForm.utils';
 import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
 import { ServiceNowIncidentRequestDto } from 'src/api';
 import { PortalService } from 'src/api/services/PortalService';
+import { useFeatureToggling } from 'src/hooks';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 interface FeedbackFormProps {
   onClose: () => void;
-  selectedType?: FeedbackEnum;
+  selectedType: FeedbackEnum;
 }
 
 const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const { account } = useAuth();
   const userEmail = account?.username;
+
+  const { showContent } = useFeatureToggling('feedback-upload-file');
 
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
@@ -48,14 +54,18 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       const serviceNowObject: ServiceNowIncidentRequestDto = {
         configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
         title: feedbackContent.title,
-        description: feedbackContent.description,
+        description: createServiceNowDescription(feedbackContent),
         callerEmail: userEmail,
       };
       await serviceNowIncident(serviceNowObject);
     }
 
     const formData = new FormData();
-    if (feedbackContent.attachments && feedbackContent.attachments[0]) {
+    if (
+      feedbackContent.attachments &&
+      feedbackContent.attachments[0] &&
+      showContent
+    ) {
       formData.append('file', feedbackContent.attachments[0]);
     }
     formData.append(
@@ -65,8 +75,6 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     await slackFileUpload(formData);
     onClose();
   };
-
-  if (!selectedType) return null;
 
   return (
     <FeedbackFormInner
