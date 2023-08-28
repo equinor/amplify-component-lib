@@ -1,6 +1,6 @@
-import { FC, MouseEvent, useRef, useState } from 'react';
+import { FC, MouseEvent, ReactNode, useRef, useState } from 'react';
 
-import { Button, Dialog, Icon } from '@equinor/eds-core-react';
+import { Button, Dialog, Divider, Icon } from '@equinor/eds-core-react';
 import {
   file_description,
   help_outline,
@@ -16,22 +16,28 @@ import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 
 import styled from 'styled-components';
 
-const { colors } = tokens;
+const { colors, spacings } = tokens;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
+`;
+
+const ContentWrapper = styled.div`
+  padding: 0 ${spacings.comfortable.medium};
 `;
 
 export interface HelpProps {
   applicationName: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
+  children?: ReactNode;
 }
 
 export const Help: FC<HelpProps> = ({
   applicationName,
   hideFeedback = false,
   hideReleaseNotes = false,
+  children,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -98,6 +104,12 @@ export const Help: FC<HelpProps> = ({
               text="Suggest a feature"
             />
           </>
+        )}
+        {children && !hideFeedback && !hideReleaseNotes && (
+          <Divider style={{ margin: 0 }} />
+        )}
+        {children && (
+          <ContentWrapper onClick={closeMenu}>{children}</ContentWrapper>
         )}
       </TopBarMenu>
       {!hideFeedback && feedbackType !== undefined && (

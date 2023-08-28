@@ -42,7 +42,8 @@ const getSeverityOption = () => {
 const applicationName = faker.animal.cat();
 
 test('Behaves as expected', async () => {
-  render(<Help applicationName={applicationName} />);
+  const applicationName = faker.animal.cat();
+  render(<Help applicationName={applicationName}>Child</Help>);
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -52,12 +53,14 @@ test('Behaves as expected', async () => {
   const linkElement = screen.getByRole('link', {
     name: /release notes/i,
   });
+  const childElement = await screen.findByText('Child');
 
   expect(linkElement).toHaveAttribute(
     'href',
-    `https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
+    `https://amplify.equinor.com/releasenotes?app=%5B"${applicationName}"%5D`
   );
   expect(linkElement).toHaveAttribute('target', '_blank');
+  expect(childElement).toBeInTheDocument();
 });
 
 test('Opens and closes as expected', async () => {

@@ -36,7 +36,15 @@ export default ({ mode }: { mode: string }) => {
               return 'amplify';
             } else if (id.includes('eds')) {
               return 'eds';
-            } else if (id.includes('.gl')) {
+            } else if (id.includes('probe.gl')) {
+              return 'probegl';
+            } else if (id.includes('math.gl')) {
+              return 'mathgl';
+            } else if (id.includes('loaders.gl')) {
+              return 'loadersgl';
+            } else if (id.includes('luma.gl')) {
+              return 'lumagl';
+            } else if (id.includes('deck.gl')) {
               return 'deckgl';
             } else if (id.includes('d3')) {
               return 'd3';
@@ -50,10 +58,18 @@ export default ({ mode }: { mode: string }) => {
               return 'proj4';
             } else if (id.includes('react-beautiful-dnd')) {
               return 'react-beautiful-dnd';
+            } else if (id.includes('mui')) {
+              return 'mui';
             } else if (id.includes('node_modules')) {
               return 'vendor';
             }
           },
+        },
+        onwarn(warning, warn) {
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return;
+          }
+          warn(warning);
         },
       },
     },
