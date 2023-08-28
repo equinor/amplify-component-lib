@@ -41,13 +41,13 @@ const Spacer = styled.div`
   display: flex;
 `;
 
-export interface HelpProps {
+type HelpType = {
   applicationName: string;
   hideDefaultMenuItems?: boolean;
   children?: ReactNode;
-}
+} & React.HTMLAttributes<HTMLElement>;
 
-export const Help = forwardRef<HTMLDivElement, HelpProps>(
+export const Help = forwardRef<HTMLDivElement, HelpType>(
   ({ applicationName, hideDefaultMenuItems = false, children }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef<HTMLDivElement | null>(null);
