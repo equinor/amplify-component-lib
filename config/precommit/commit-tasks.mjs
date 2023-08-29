@@ -38,14 +38,13 @@ async function runTasks() {
     failed = true;
     console.log(chalk.red(`ESLint error: ${err}`));
     try {
-    await runTask({
-      command: 'npm run lint:fix',
-      name: chalk.green('Fixing lint errors'),
-      customIndent: 6,
-      ignoreStdErr: true
-    });
-    }
-    catch (error) {
+      await runTask({
+        command: 'npm run lint:fix',
+        name: chalk.green('Fixing lint errors'),
+        customIndent: 6,
+        ignoreStdErr: true
+      });
+    } catch (error) {
       console.log(error);
     }
   }
