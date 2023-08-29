@@ -12,4 +12,5 @@ export type FeedbackContentType = {
   url?: string;
   consent?: boolean;
   attachments?: FileWithPath[];
+  filePrivacyConsent?: boolean;
 };

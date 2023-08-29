@@ -17,9 +17,6 @@ const Container = styled.div`
   gap: ${spacings.comfortable.small};
 `;
 
-const StyledCheckbox = styled(Checkbox)``;
-const ConsentText = styled(Typography)``;
-
 interface ConsentCheckboxProps {
   selectedType: FeedbackEnum;
   feedbackContent: FeedbackContentType;
@@ -40,16 +37,16 @@ const ConsentCheckbox: FC<ConsentCheckboxProps> = ({
 
   return (
     <Container>
-      <StyledCheckbox
+      <Checkbox
         data-testid="consent_checkbox"
         checked={feedbackContent.consent}
         onChange={handleOnChange}
       />
-      <ConsentText variant="body_short">
+      <Typography variant="body_short">
         {selectedType === FeedbackEnum.ERROR
           ? 'I agree to my email being used in the service now report'
-          : 'I agree to my email being included in the inquiry in case there are any questions'}
-      </ConsentText>
+          : 'I agree to my email being included with the suggestion in case there are any questions'}
+      </Typography>
     </Container>
   );
 };

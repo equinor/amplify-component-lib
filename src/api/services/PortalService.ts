@@ -43,11 +43,27 @@ export class PortalService {
   }
 
   /**
+   * Posts a slack message to channel defined in config
+   * @param formData
+   * @returns any Success
+   * @throws ApiError
+   */
+
+  public static postmessage(formData?: FormData): CancelablePromise<any> {
+    return __request(OpenAPI_Portal, {
+      method: 'POST',
+      url: '/api/v1/Slack/postmessage',
+      body: formData,
+    });
+  }
+
+  /**
    * Gets a Feature Toggle from Application name
    * @param applicationName name
    * @returns FeatureToggleDto Success
    * @throws ApiError
    */
+
   public static getFeatureToggleFromApplicationName(
     applicationName: string
   ): CancelablePromise<FeatureToggleDto> {

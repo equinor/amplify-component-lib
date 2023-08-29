@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import { useMutation } from '@tanstack/react-query';
@@ -11,8 +11,10 @@ import {
 import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
 import { ServiceNowIncidentRequestDto } from 'src/api';
 import { PortalService } from 'src/api/services/PortalService';
-import { useFeatureToggling } from 'src/hooks';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
+import { useSnackbar } from 'src/providers/SnackbarProvider';
+
+
 
 interface FeedbackFormProps {
   onClose: () => void;
@@ -22,8 +24,7 @@ interface FeedbackFormProps {
 const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const { account } = useAuth();
   const userEmail = account?.username;
-
-  const { showContent } = useFeatureToggling('feedback-upload-file');
+  const { showSnackbar } = useSnackbar();
 
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
@@ -31,16 +32,39 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     consent: false,
   });
 
-  const { mutateAsync: slackFileUpload } = useMutation(
-    ['slackFileUpload', feedbackContent],
-    (formData: FormData) => PortalService.fileUpload(formData)
+  const {
+    mutateAsync: slackFileUpload,
+    isError: isFileUploadError,
+    isLoading: isFileUploadLoading,
+  } = useMutation(['slackFileUpload', feedbackContent], (formData: FormData) =>
+    PortalService.fileUpload(formData)
   );
 
-  const { mutateAsync: serviceNowIncident } = useMutation(
+  const {
+    mutateAsync: slackPostMessage,
+    isError: isPostMessageError,
+    isLoading: isPostMessageLoading,
+  } = useMutation(['slackPostMessage', feedbackContent], (formData: FormData) =>
+    PortalService.postmessage(formData)
+  );
+
+  const {
+    mutateAsync: serviceNowIncident,
+    isError: isServiceNowError,
+    isLoading: isServiceNowLoading,
+  } = useMutation(
     ['serviceNowIncident', feedbackContent],
     async (serviceNowDto: ServiceNowIncidentRequestDto) =>
       PortalService.createIncident(serviceNowDto)
   );
+
+  const requestHasError = useMemo(() => {
+    return isPostMessageError || isFileUploadError || isServiceNowError;
+  }, [isFileUploadError, isPostMessageError, isServiceNowError]);
+
+  const requestIsLoading = useMemo(() => {
+    return isPostMessageLoading || isFileUploadLoading || isServiceNowLoading;
+  }, [isFileUploadLoading, isPostMessageLoading, isServiceNowLoading]);
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
@@ -60,30 +84,36 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       await serviceNowIncident(serviceNowObject);
     }
 
-    const formData = new FormData();
-    if (
-      feedbackContent.attachments &&
-      feedbackContent.attachments[0] &&
-      showContent
-    ) {
-      formData.append('file', feedbackContent.attachments[0]);
-    }
-    formData.append(
+    const fileFormData = new FormData();
+    const contentFormData = new FormData();
+    contentFormData.append(
       'comment',
       createSlackMessage(feedbackContent, selectedType, userEmail)
     );
-    await slackFileUpload(formData);
-    onClose();
+    await slackPostMessage(contentFormData);
+    if (feedbackContent.attachments && feedbackContent.attachments[0]) {
+      fileFormData.append('file', feedbackContent.attachments[0]);
+      await slackFileUpload(fileFormData);
+    }
+    if (requestHasError) {
+      showSnackbar('There was an error sending your report');
+    } else {
+      showSnackbar('Report as been sent successfully');
+      onClose();
+    }
   };
 
   return (
-    <FeedbackFormInner
-      selectedType={selectedType}
-      feedbackContent={feedbackContent}
-      updateFeedback={updateFeedback}
-      handleSave={handleSave}
-      onClose={onClose}
-    />
+    <>
+      <FeedbackFormInner
+        selectedType={selectedType}
+        feedbackContent={feedbackContent}
+        updateFeedback={updateFeedback}
+        handleSave={handleSave}
+        onClose={onClose}
+        requestIsLoading={requestIsLoading}
+      />
+    </>
   );
 };
 

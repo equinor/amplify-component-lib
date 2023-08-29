@@ -1,10 +1,11 @@
-import { FC, FormEvent, useMemo } from 'react';
+import { FC, FocusEvent, FormEvent, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import {
   Autocomplete,
   AutocompleteChanges,
   Button,
+  CircularProgress,
   TextField,
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -12,7 +13,7 @@ import { tokens } from '@equinor/eds-tokens';
 import ConsentCheckbox from './ConsentCheckbox';
 import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
 import UploadFile from './UploadFile';
-import { useFeatureToggling } from 'src/hooks';
+import FilePrivacyCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/FilePrivacyCheckbox';
 
 import styled from 'styled-components';
 
@@ -33,6 +34,11 @@ const Actions = styled.div`
   gap: ${spacings.comfortable.medium};
 `;
 
+const LoadingSpinner = styled(CircularProgress)`
+  height: 60%;
+  margin: auto;
+`;
+
 export enum SeverityOption {
   NO_IMPACT = 'I am not impacted',
   IMPEDES = 'It impedes my progress',
@@ -48,6 +54,7 @@ interface FeedbackDetailsProps {
   ) => void;
   handleSave: () => void;
   onClose: () => void;
+  requestIsLoading: boolean;
 }
 
 const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
@@ -56,20 +63,55 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   updateFeedback,
   handleSave,
   onClose,
+  requestIsLoading,
 }) => {
-  const { showContent, isLoading } = useFeatureToggling('feedback-upload-file');
+  const [isWrongDomain, setIsWrongDomain] = useState(false);
+
+  const hasAttachment = useMemo(() => {
+    return (
+      feedbackContent.attachments !== undefined &&
+      feedbackContent.attachments.length > 0
+    );
+  }, [feedbackContent.attachments]);
+
+  const filePrivacyConsent = useMemo(() => {
+    if (hasAttachment) {
+      return feedbackContent.filePrivacyConsent;
+    }
+    return true;
+  }, [feedbackContent.filePrivacyConsent, hasAttachment]);
+
+  const handleOnUrlChange = (e: FormEvent<HTMLInputElement>) => {
+    updateFeedback('url', e.currentTarget.value);
+    if (e.currentTarget.value === '') {
+      setIsWrongDomain(false);
+    } else if (
+      isWrongDomain &&
+      e.currentTarget.value.includes('.equinor.com')
+    ) {
+      setIsWrongDomain(false);
+    }
+  };
+
+  const handleOnUrlBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (!e.currentTarget.value.includes('.equinor.com')) {
+      setIsWrongDomain(true);
+    }
+  };
 
   const canSubmitFeedback = useMemo(() => {
     return (
       feedbackContent.title.length > 0 &&
       feedbackContent.description.length > 0 &&
-      (feedbackContent.consent || selectedType === FeedbackEnum.INQUIRY)
+      (feedbackContent.consent || selectedType === FeedbackEnum.INQUIRY) &&
+      filePrivacyConsent
     );
   }, [
     feedbackContent.title.length,
     feedbackContent.description.length,
     feedbackContent.consent,
     selectedType,
+    filePrivacyConsent,
   ]);
 
   return (
@@ -116,18 +158,26 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
             meta="optional"
             value={feedbackContent.url}
             placeholder="URL of error location"
-            onChange={(e: FormEvent<HTMLInputElement>) =>
-              updateFeedback('url', e.currentTarget.value)
+            variant={isWrongDomain ? 'error' : undefined}
+            helperText={
+              isWrongDomain
+                ? 'The provided URL must from a .equinor.com domain'
+                : ''
             }
+            onChange={handleOnUrlChange}
+            onBlur={handleOnUrlBlur}
           />
         </>
       )}
-      {showContent && !isLoading && (
-        <UploadFile
-          feedbackContent={feedbackContent}
-          updateFeedback={updateFeedback}
-        />
-      )}
+      <UploadFile
+        feedbackContent={feedbackContent}
+        updateFeedback={updateFeedback}
+      />
+      <FilePrivacyCheckbox
+        feedbackContent={feedbackContent}
+        updateFeedback={updateFeedback}
+        hasAttachment={hasAttachment}
+      />
       <ConsentCheckbox
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
@@ -138,7 +188,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           Cancel
         </Button>
         <Button onClick={handleSave} disabled={!canSubmitFeedback}>
-          Send
+          {requestIsLoading ? <LoadingSpinner /> : 'Send'}
         </Button>
       </Actions>
     </Wrapper>

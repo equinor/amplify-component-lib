@@ -86,10 +86,6 @@ const UploadFile: FC<UploadFileProps> = ({
         <FileUploadArea
           onDrop={onDrop}
           accept={{
-            'application/pdf': ['.pdf'],
-            'application/vnd.ms-powerpoint': ['.ppt'],
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation':
-              ['.pptx'],
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
           }}
