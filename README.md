@@ -37,5 +37,17 @@ project
     │   ...
 ```
 
+# Installing pre-commit hook in an application
+
+1. Navigate to your projects root folder, `~/Projects/recap` for instance
+
+2. Copy and run the following command
+```bash
+wget -q -O - https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/install.sh | bash
+```
+
+This should have downloaded a `package.json` file in the root of the project, created (if it didn't exist) the `tooling` folder.
+You should also see a `.husky` folder in the root of the project with a file called `pre-commit` inside
+
 # Latest version
 [![main](https://img.shields.io/npm/v/@equinor/amplify-components?color=%23c3f3d2&label=%40equinor%2Famplify-components&logo=npm&)](https://www.npmjs.com/package/@equinor/amplify-components)
