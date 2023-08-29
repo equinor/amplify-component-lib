@@ -56,4 +56,8 @@ printf -- "Downloading pre-commit husky action..."
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/pre-commit" > pre-commit
 
+printf -- "Making the pre-commit file executable..."
+
+chmod +x pre-commit
+
 printf -- 'Pre-commit installed successfully! 🎉 '
