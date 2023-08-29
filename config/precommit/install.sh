@@ -50,7 +50,7 @@ then
   exit 1
 fi
 
-cd ./husky || exit 1
+cd ./.husky || exit 1
 
 printf -- "Downloading pre-commit husky action...\n"
 
