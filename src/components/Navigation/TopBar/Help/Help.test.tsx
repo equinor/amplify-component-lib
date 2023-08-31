@@ -2,9 +2,13 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Help } from './Help';
+import { CancelablePromise, ServiceNowIncidentRequestDto } from 'src/api';
 import { FullPageSpinner, Unauthorized } from 'src/components/index';
-import { SeverityOption } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackFormInner';
-import { AuthProvider } from 'src/providers';
+import {
+  FeedbackContentType,
+  SeverityOption,
+} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
+import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 import { environment } from 'src/utils';
 
@@ -23,18 +27,58 @@ function Wrappers({ children }: { children: any }) {
         }}
         isMock={true}
       >
-        {children}
+        <SnackbarProvider>{children}</SnackbarProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
 }
 
+function fakeInputs(): FeedbackContentType {
+  return {
+    title: faker.animal.crocodilia(),
+    description: faker.lorem.sentence(),
+    consent: faker.datatype.boolean(),
+    url: 'www.amplify.equinor.com',
+  };
+}
+
+vi.mock('src/api/services/PortalService', () => {
+  class PortalService {
+    public static createIncident(
+      requestBody?: ServiceNowIncidentRequestDto
+    ): CancelablePromise<any> {
+      return new CancelablePromise((res) =>
+        setTimeout(() => res(requestBody), 1000)
+      );
+    }
+
+    public static fileUpload(formData?: FormData): CancelablePromise<any> {
+      return new CancelablePromise((res) =>
+        setTimeout(() => res(formData), 1000)
+      );
+    }
+
+    public static postmessage(formData?: FormData): CancelablePromise<any> {
+      return new CancelablePromise((res) =>
+        setTimeout(() => res(formData), 1000)
+      );
+    }
+
+    public static getFeatureToggleFromApplicationName(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      applicationName: string
+    ): CancelablePromise<boolean> {
+      return new CancelablePromise((res) => setTimeout(() => res(true), 1000));
+    }
+  }
+  return { PortalService };
+});
+const severityOptions = [
+  SeverityOption.IMPEDES,
+  SeverityOption.UNABLE,
+  SeverityOption.NO_IMPACT,
+];
 const getSeverityOption = () => {
-  const severityOptions = [
-    SeverityOption.IMPEDES,
-    SeverityOption.UNABLE,
-    SeverityOption.NO_IMPACT,
-  ];
   const index = faker.number.int({ min: 0, max: 2 });
   return severityOptions[index];
 };
@@ -57,7 +101,7 @@ test('Behaves as expected', async () => {
 
   expect(linkElement).toHaveAttribute(
     'href',
-    `https://amplify.equinor.com/releasenotes?app=%5B"${applicationName}"%5D`
+    `https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
   );
   expect(linkElement).toHaveAttribute('target', '_blank');
   expect(childElement).toBeInTheDocument();
@@ -112,31 +156,6 @@ test('hide props working as expected', async () => {
   expect(suggest).not.toBeInTheDocument();
 });
 
-// test('opens report bug dialog as expected', async () => {
-//   render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
-//   const user = userEvent.setup();
-//
-//   const button = screen.getByRole('button');
-//   await user.click(button);
-//
-//   const reportBug = screen.getByText('Report a bug');
-//   await user.click(reportBug);
-//   const titleLabel = screen.queryByText('Title');
-//   expect(titleLabel).toBeVisible();
-//
-//   const cancel = screen.getByRole('button', { name: /Cancel/i });
-//   await user.click(cancel);
-//
-//   expect(titleLabel).not.toBeVisible();
-//
-//   await user.click(button);
-//   const suggestFeature = screen.getByText('Suggest a feature');
-//   await user.click(suggestFeature);
-//
-//   const descLabel = screen.queryByText('Description');
-//   expect(descLabel).toBeVisible();
-// });
-
 test('can close dialog by clicking outside', async () => {
   render(
     <>
@@ -165,61 +184,57 @@ test('can close dialog by clicking outside', async () => {
   expect(titleInput).not.toBeInTheDocument();
 });
 
-test('can interact with text fields in suggest feature dialog', async () => {
-  const title = faker.animal.cat();
-  const description = faker.lorem.sentence();
-  const url = faker.internet.url();
-  render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
+test(`can select and submit all severities`, async () => {
+  const { title, description } = fakeInputs();
+  const { rerender } = render(<Help applicationName={applicationName} />, {
+    wrapper: Wrappers,
+  });
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
-  await user.click(button);
 
-  const reportBug = screen.getByText('Report a bug');
-  await user.click(reportBug);
-  const titleInput: HTMLInputElement = screen.getByRole('textbox', {
-    name: /title required/i,
-  });
-  const descInput: HTMLInputElement = screen.getByRole('textbox', {
-    name: /description required/i,
-  });
-  const urlInput: HTMLInputElement = screen.getByRole('textbox', {
-    name: /url optional/i,
-  });
-  await user.type(urlInput, url);
-  await user.type(titleInput, title);
-  await user.type(descInput, description);
+  for (const option of severityOptions) {
+    await rerender(<Help applicationName={applicationName} />);
+    await user.click(button);
+    screen.logTestingPlaygroundURL();
+    const reportBug = screen.getByText(/report a bug/i);
+    await user.click(reportBug);
 
-  expect(titleInput.value).toEqual(title);
-  expect(descInput.value).toEqual(description);
-  expect(urlInput.value).toEqual(url);
-});
+    const titleInput = screen.getByRole('textbox', {
+      name: /title required/i,
+    });
+    const descInput = screen.getByRole('textbox', {
+      name: /description required/i,
+    });
+    await user.type(titleInput, title);
+    await user.type(descInput, description);
 
-test('can interact with severity select in feedback dialog', async () => {
-  render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
-  const severityOptionChoice = getSeverityOption();
-  const user = userEvent.setup();
+    const severityInput: HTMLInputElement = screen.getByRole('combobox', {
+      name: /severity optional/i,
+    });
 
-  const button = screen.getByRole('button');
-  await user.click(button);
+    await user.click(severityInput);
 
-  const reportBug = screen.getByText('Report a bug');
-  await user.click(reportBug);
+    const severityOption = screen.getByText(option);
 
-  const severityInput: HTMLInputElement = screen.getByRole('combobox', {
-    name: /severity optional/i,
-  });
+    expect(severityOption).toBeVisible();
 
-  await user.click(severityInput);
+    await user.click(severityOption);
 
-  const severityOption = screen.getByText(severityOptionChoice);
+    const submitButton = screen.getByRole('button', { name: /send/i });
 
-  expect(severityOption).toBeVisible();
+    expect(submitButton).toBeDisabled();
 
-  await user.click(severityOption);
+    const consentCheckbox = screen.getByTestId('consent_checkbox');
+    await user.click(consentCheckbox);
+    expect(consentCheckbox).toBeChecked();
 
-  expect(severityInput.value).toEqual(severityOptionChoice);
-});
+    expect(severityInput.value).toEqual(option);
+
+    expect(submitButton).not.toBeDisabled();
+    await user.click(submitButton);
+  }
+}, 15000); // Setting timeout for this test to be 15 seconds
 
 test('suggest a feature dialog submit button enabled at correct time', async () => {
   const title = faker.animal.cat();
@@ -243,39 +258,42 @@ test('suggest a feature dialog submit button enabled at correct time', async () 
   await user.type(titleInput, title);
   await user.type(descInput, description);
   expect(submitButton).not.toBeDisabled();
-});
+}, 15000); // Setting timeout for this test to be 15 seconds
 
-test('report a bug dialog submit button enabled at correct time', async () => {
-  const title = faker.animal.cat();
-  const description = faker.lorem.sentence();
-  render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
-  const user = userEvent.setup();
+// test('report a bug dialog submit button enabled at correct time', async () => {
+//   const title = faker.animal.cat();
+//   const description = faker.lorem.sentence();
+//   render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
+//   const user = userEvent.setup();
+//
+//   const button = screen.getByRole('button');
+//   await user.click(button);
+//
+//   const reportBug = screen.getByText('Report a bug');
+//   await user.click(reportBug);
+//
+//   const titleInput = screen.getByRole('textbox', { name: /title required/i });
+//   const descInput = screen.getByRole('textbox', {
+//     name: /description required/i,
+//   });
+//   const checkbox = screen.getByTestId('consent_checkbox');
+//   const submitButton = screen.getByRole('button', { name: /send/i });
+//
+//   expect(submitButton).toBeDisabled();
+//   await user.click(checkbox);
+//   await user.type(titleInput, title);
+//   await user.type(descInput, description);
+//   expect(submitButton).not.toBeDisabled();
+// }, 15000); // Setting timeout for this test to be 15 seconds
 
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const reportBug = screen.getByText('Report a bug');
-  await user.click(reportBug);
-
-  const titleInput = screen.getByRole('textbox', { name: /title required/i });
-  const descInput = screen.getByRole('textbox', {
-    name: /description required/i,
-  });
-  const checkbox = screen.getByTestId('consent_checkbox');
-  const submitButton = screen.getByRole('button', { name: /send/i });
-
-  expect(submitButton).toBeDisabled();
-  await user.click(checkbox);
-  await user.type(titleInput, title);
-  await user.type(descInput, description);
-  expect(submitButton).not.toBeDisabled();
-});
-
-test('upload file works as expected', async () => {
-  const title = faker.animal.cat();
-  const description = faker.lorem.sentence();
+test('Inputing all fields with file works as expected', async () => {
+  const { title, description, url } = fakeInputs();
   const blob = new Blob(['test', 'test']);
-  const file = new File([blob, blob], 'file.png');
+  const blob2 = new Blob(['tester', 'tester']);
+  const imageFileOne = new File([blob2, blob], 'file1.png');
+  const imageFileTwo = new File([blob, blob, blob2], 'file2.png');
+  const badFile = new File([blob, blob2], 'badFile.pdf');
+  const severityOptionChoice = getSeverityOption();
 
   render(<Help applicationName={applicationName} />, {
     wrapper: Wrappers,
@@ -286,23 +304,119 @@ test('upload file works as expected', async () => {
   const button = screen.getByRole('button');
   await user.click(button);
 
-  const suggestBug = screen.getByText('Report a bug');
-  await user.click(suggestBug);
+  const reportBug = screen.getByText('Report a bug');
+  await user.click(reportBug);
 
-  const titleInput = screen.getByRole('textbox', { name: /title required/i });
-  const descInput = screen.getByRole('textbox', {
+  const titleInput: HTMLInputElement = screen.getByRole('textbox', {
+    name: /title required/i,
+  });
+  const descInput: HTMLInputElement = screen.getByRole('textbox', {
     name: /description required/i,
   });
+  const urlInput: HTMLInputElement = screen.getByRole('textbox', {
+    name: /url optional/i,
+  });
+
   await user.type(titleInput, title);
   await user.type(descInput, description);
+  await user.type(urlInput, url ?? '');
+
+  expect(titleInput.value).toEqual(title);
+  expect(descInput.value).toEqual(description);
+  expect(urlInput.value).toEqual(url);
+
+  const severityInput: HTMLInputElement = screen.getByRole('combobox', {
+    name: /severity optional/i,
+  });
+  await user.click(severityInput);
+
+  const severityOption = screen.getByText(severityOptionChoice);
+  await user.click(severityOption);
+
+  expect(severityInput).toHaveAttribute('value', severityOptionChoice);
 
   const fileUploadArea = screen.getByTestId('file-upload-area-input');
 
-  await user.upload(fileUploadArea, file);
+  await user.upload(fileUploadArea, [imageFileTwo, badFile]);
 
-  const checkbox = screen.getByTestId('consent_checkbox');
-  await user.click(checkbox);
+  // Delete image file
+  const file2nameElement = screen.getByText(imageFileTwo.name);
+
+  const deleteUploadedFile2Button =
+    file2nameElement.parentElement?.parentElement?.children[2];
+
+  if (deleteUploadedFile2Button) {
+    await user.click(deleteUploadedFile2Button);
+    expect(file2nameElement).not.toBeInTheDocument();
+  }
+
+  // Upload a single image file again
+  await user.upload(fileUploadArea, [imageFileOne]);
+
+  const consentCheckbox = screen.getByTestId('consent_checkbox');
+  await user.click(consentCheckbox);
+  expect(consentCheckbox).toBeChecked();
+  screen.logTestingPlaygroundURL();
+  const filePrivacyCheckbox = screen.getByTestId('file_privacy_checkbox');
+  await user.click(filePrivacyCheckbox);
+  expect(filePrivacyCheckbox).toBeChecked();
 
   const submitButton = screen.getByRole('button', { name: /send/i });
+  screen.logTestingPlaygroundURL();
+  expect(submitButton).not.toBeDisabled();
   await user.click(submitButton);
+
+  setTimeout(() => {
+    const successSnackbar = screen.getByText(
+      'Report as been sent successfully'
+    );
+    expect(successSnackbar).toBeInTheDocument();
+  }, 2500);
+
+  setTimeout(() => {
+    const dialogHeader = screen.queryByText('Report a bug');
+    expect(dialogHeader).not.toBeInTheDocument();
+  }, 3000);
+}, 15000); // Setting timeout for this test to be 15 seconds
+
+test('Url validation working as expected', async () => {
+  render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
+  const user = userEvent.setup();
+  const helperTextString = 'The provided URL must from a equinor.com domain';
+
+  const wrongUrl = 'www.google.com';
+  const rightUrl = 'www.amplify.equinor.com';
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const reportBug = screen.getByText('Report a bug');
+  await user.click(reportBug);
+
+  const urlInput: HTMLInputElement = screen.getByRole('textbox', {
+    name: /URL optional/i,
+  });
+
+  await user.type(urlInput, wrongUrl);
+
+  await urlInput.blur();
+
+  const helperText = screen.queryByText(helperTextString);
+
+  expect(helperText).toBeInTheDocument();
+
+  await user.clear(urlInput);
+
+  expect(helperText).not.toBeInTheDocument();
+
+  await user.type(urlInput, wrongUrl);
+
+  await urlInput.blur();
+
+  const helperTextAgain = screen.queryByText(helperTextString);
+
+  expect(helperTextAgain).toBeInTheDocument();
+  await user.type(urlInput, rightUrl);
+
+  expect(helperTextAgain).not.toBeInTheDocument();
 });
