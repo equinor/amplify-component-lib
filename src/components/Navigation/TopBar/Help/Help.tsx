@@ -92,13 +92,13 @@ export const Help: FC<HelpProps> = ({
         {!hideFeedback && (
           <>
             <HelpMenuItem
-              id={FeedbackEnum.ERROR}
+              id={FeedbackEnum.BUG}
               onClick={handleOnFeedbackClick}
               icon={report_bug}
               text="Report a bug"
             />
             <HelpMenuItem
-              id={FeedbackEnum.INQUIRY}
+              id={FeedbackEnum.SUGGESTION}
               onClick={handleOnFeedbackClick}
               icon={move_to_inbox}
               text="Suggest a feature"
@@ -115,14 +115,14 @@ export const Help: FC<HelpProps> = ({
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={
-            feedbackType === FeedbackEnum.ERROR ||
-            feedbackType === FeedbackEnum.INQUIRY
+            feedbackType === FeedbackEnum.BUG ||
+            feedbackType === FeedbackEnum.SUGGESTION
           }
           onClose={handleOnDialogClose}
           isDismissable={true}
         >
           <Dialog.Header>
-            {feedbackType === FeedbackEnum.ERROR
+            {feedbackType === FeedbackEnum.BUG
               ? 'Report a bug'
               : 'Suggest a feature'}
           </Dialog.Header>

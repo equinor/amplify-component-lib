@@ -3,18 +3,20 @@ import { FileWithPath } from 'react-dropzone';
 
 import { useMutation } from '@tanstack/react-query';
 
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
+import {
+  FeedbackContentType,
+  FeedbackEnum,
+  SeverityOption,
+} from './FeedbackForm.types';
 import {
   createServiceNowDescription,
   createSlackMessage,
 } from './FeedbackForm.utils';
-import FeedbackFormInner, { SeverityOption } from './FeedbackFormInner';
+import FeedbackFormInner from './FeedbackFormInner';
 import { ServiceNowIncidentRequestDto } from 'src/api';
 import { PortalService } from 'src/api/services/PortalService';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
-
-
 
 interface FeedbackFormProps {
   onClose: () => void;
@@ -74,7 +76,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   };
 
   const handleSave = async () => {
-    if (selectedType === FeedbackEnum.ERROR && userEmail) {
+    if (selectedType === FeedbackEnum.BUG && userEmail) {
       const serviceNowObject: ServiceNowIncidentRequestDto = {
         configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
         title: feedbackContent.title,

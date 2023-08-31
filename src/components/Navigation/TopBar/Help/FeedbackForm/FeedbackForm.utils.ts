@@ -1,9 +1,22 @@
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
-import { SeverityOption } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackFormInner';
+import {
+  FeedbackContentType,
+  FeedbackEnum,
+  SeverityOption,
+} from './FeedbackForm.types';
 import { date, environment } from 'src/utils';
 
 const { formatDate } = date;
 const { getAppName } = environment;
+
+const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
+  if (feedbackContent.severity === SeverityOption.NO_IMPACT) {
+    return ':large_yellow_circle:';
+  }
+  if (feedbackContent.severity === SeverityOption.IMPEDES) {
+    return ':large_orange_circle:';
+  }
+  return ':red_circle:';
+};
 
 export const createServiceNowDescription = (
   feedbackContent: FeedbackContentType
@@ -21,18 +34,8 @@ export const createSlackMessage = (
   selectedType: FeedbackEnum | undefined,
   email: string | undefined
 ) => {
-  const isBugReport = selectedType === FeedbackEnum.ERROR;
+  const isBugReport = selectedType === FeedbackEnum.BUG;
   const typeText = isBugReport ? ':bug: Bug report' : ':bulb: Suggestion';
-
-  const getSeverityEmoji = () => {
-    if (feedbackContent.severity === SeverityOption.NO_IMPACT) {
-      return ':large_yellow_circle:';
-    }
-    if (feedbackContent.severity === SeverityOption.IMPEDES) {
-      return ':large_orange_circle:';
-    }
-    return ':red_circle:';
-  };
 
   const dateAndUrlSectionArray = [];
   const titleAndSeveritySectionArray = [];
@@ -58,7 +61,9 @@ export const createSlackMessage = (
   if (feedbackContent.severity) {
     titleAndSeveritySectionArray.push({
       type: 'mrkdwn',
-      text: `*Severity* \n ${getSeverityEmoji()} ${feedbackContent.severity}`,
+      text: `*Severity* \n ${getSeverityEmoji(feedbackContent)} ${
+        feedbackContent.severity
+      }`,
     });
   }
 

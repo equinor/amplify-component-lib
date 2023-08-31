@@ -4,8 +4,10 @@ import { FileWithPath } from 'react-dropzone';
 import { Checkbox, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackContentType } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
-import { SeverityOption } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackFormInner';
+import {
+  FeedbackContentType,
+  SeverityOption,
+} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 
 import styled from 'styled-components';
 
@@ -18,14 +20,15 @@ const Container = styled.div`
 `;
 
 interface TextProps {
-  disabled: boolean;
+  $disabled: boolean;
 }
 
 const Text = styled(Typography)<TextProps>`
-  color: ${({ disabled }) =>
-    disabled
+  color: ${({ $disabled }) =>
+    $disabled
       ? colors.interactive.disabled__text.hex
       : colors.text.static_icons__default.hex};
+  font-size: 14px;
 `;
 
 interface FilePrivacyCheckboxProps {
@@ -48,12 +51,12 @@ const FilePrivacyCheckbox: FC<FilePrivacyCheckboxProps> = ({
   return (
     <Container>
       <Checkbox
-        data-testid="consent_checkbox"
+        data-testid="file_privacy_checkbox"
         checked={feedbackContent.filePrivacyConsent}
         disabled={!hasAttachment}
         onChange={handleOnChange}
       />
-      <Text variant="body_short" disabled={!hasAttachment}>
+      <Text variant="body_short" $disabled={!hasAttachment}>
         I confirm that the images included as attachments do not contain private
         information. <br />
         (Equinor email and shortname is allowed)

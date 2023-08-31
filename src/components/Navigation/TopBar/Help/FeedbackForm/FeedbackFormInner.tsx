@@ -11,7 +11,11 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import ConsentCheckbox from './ConsentCheckbox';
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm.types';
+import {
+  FeedbackContentType,
+  FeedbackEnum,
+  SeverityOption,
+} from './FeedbackForm.types';
 import UploadFile from './UploadFile';
 import FilePrivacyCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/FilePrivacyCheckbox';
 
@@ -38,12 +42,6 @@ const LoadingSpinner = styled(CircularProgress)`
   height: 60%;
   margin: auto;
 `;
-
-export enum SeverityOption {
-  NO_IMPACT = 'I am not impacted',
-  IMPEDES = 'It impedes my progress',
-  UNABLE = 'I am unable to work',
-}
 
 interface FeedbackDetailsProps {
   selectedType: FeedbackEnum;
@@ -75,11 +73,11 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   }, [feedbackContent.attachments]);
 
   const filePrivacyConsent = useMemo(() => {
-    if (hasAttachment) {
+    if (hasAttachment && selectedType === FeedbackEnum.BUG) {
       return feedbackContent.filePrivacyConsent;
     }
     return true;
-  }, [feedbackContent.filePrivacyConsent, hasAttachment]);
+  }, [feedbackContent.filePrivacyConsent, hasAttachment, selectedType]);
 
   const handleOnUrlChange = (e: FormEvent<HTMLInputElement>) => {
     updateFeedback('url', e.currentTarget.value);
@@ -103,8 +101,9 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
     return (
       feedbackContent.title.length > 0 &&
       feedbackContent.description.length > 0 &&
-      (feedbackContent.consent || selectedType === FeedbackEnum.INQUIRY) &&
-      filePrivacyConsent
+      (feedbackContent.consent || selectedType === FeedbackEnum.SUGGESTION) &&
+      filePrivacyConsent &&
+      !isWrongDomain
     );
   }, [
     feedbackContent.title.length,
@@ -112,6 +111,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
     feedbackContent.consent,
     selectedType,
     filePrivacyConsent,
+    isWrongDomain,
   ]);
 
   return (
@@ -138,7 +138,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
         }
         multiline
       />
-      {selectedType === FeedbackEnum.ERROR && (
+      {selectedType === FeedbackEnum.BUG && (
         <>
           <Autocomplete
             options={Object.values(SeverityOption)}
@@ -161,7 +161,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
             variant={isWrongDomain ? 'error' : undefined}
             helperText={
               isWrongDomain
-                ? 'The provided URL must from a .equinor.com domain'
+                ? 'The provided URL must from a equinor.com domain'
                 : ''
             }
             onChange={handleOnUrlChange}
