@@ -3,6 +3,8 @@
     "type": "module",
     "scripts": {
         "setup": "cd client && yarn",
+        "pretty": "cd client && yarn pretty",
+        "lint": "cd client && yarn lint",
         "pretty": "cd client && yarn pretty:fix",
         "lint": "cd client && yarn lint:fix",
         "postinstall": "husky install",
