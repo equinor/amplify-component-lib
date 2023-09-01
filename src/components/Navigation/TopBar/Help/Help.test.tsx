@@ -2,14 +2,17 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Help } from './Help';
-import { CancelablePromise, ServiceNowIncidentRequestDto } from 'src/api';
+import {
+  CancelablePromise,
+  ServiceNowIncidentRequestDto,
+} from 'src/api';
 import { FullPageSpinner, Unauthorized } from 'src/components/index';
 import {
   FeedbackContentType,
   SeverityOption,
 } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 import { environment } from 'src/utils';
 
 const { getClientId, getApiScope } = environment;
@@ -33,6 +36,12 @@ function Wrappers({ children }: { children: any }) {
   );
 }
 
+async function fakeImageFile(bad: boolean = false) {
+  const extension = bad ? '.tiff' : '.png';
+  const blob = await fetch(faker.image.url()).then((resp) => resp.blob());
+  return new File([blob], faker.animal.cow() + extension);
+}
+
 function fakeInputs(): FeedbackContentType {
   return {
     title: faker.animal.crocodilia(),
@@ -42,46 +51,51 @@ function fakeInputs(): FeedbackContentType {
   };
 }
 
+let mockServiceHasError = false;
+
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
     public static createIncident(
       requestBody?: ServiceNowIncidentRequestDto
     ): CancelablePromise<any> {
-      return new CancelablePromise((res) =>
-        setTimeout(() => res(requestBody), 1000)
+      return new CancelablePromise((res, reject) =>
+        setTimeout(() => {
+          if (mockServiceHasError) {
+            return reject('error incident');
+          }
+          return res(requestBody);
+        }, 500)
       );
     }
 
     public static fileUpload(formData?: FormData): CancelablePromise<any> {
-      return new CancelablePromise((res) =>
-        setTimeout(() => res(formData), 1000)
+      return new CancelablePromise((res, reject) =>
+        setTimeout(() => {
+          if (mockServiceHasError) {
+            return reject('error fileUpload');
+          }
+          return res(formData);
+        }, 500)
       );
     }
 
-    public static postmessage(formData?: FormData): CancelablePromise<any> {
-      return new CancelablePromise((res) =>
-        setTimeout(() => res(formData), 1000)
-      );
-    }
-
-    public static getFeatureToggleFromApplicationName(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      applicationName: string
-    ): CancelablePromise<boolean> {
-      return new CancelablePromise((res) => setTimeout(() => res(true), 1000));
+    public static postmessage(formData?: FormData): Promise<any> {
+      return new CancelablePromise((res, reject) => {
+        if (mockServiceHasError) {
+          return reject('error fileUpload');
+        }
+        return res(formData);
+      });
     }
   }
   return { PortalService };
 });
+
 const severityOptions = [
   SeverityOption.IMPEDES,
   SeverityOption.UNABLE,
   SeverityOption.NO_IMPACT,
 ];
-const getSeverityOption = () => {
-  const index = faker.number.int({ min: 0, max: 2 });
-  return severityOptions[index];
-};
 
 const applicationName = faker.animal.cat();
 
@@ -184,19 +198,19 @@ test('can close dialog by clicking outside', async () => {
   expect(titleInput).not.toBeInTheDocument();
 });
 
-test(`can select and submit all severities`, async () => {
-  const { title, description } = fakeInputs();
-  const { rerender } = render(<Help applicationName={applicationName} />, {
-    wrapper: Wrappers,
-  });
-  const user = userEvent.setup();
+for (const option of severityOptions) {
+  test(`can select and submit "${option}" severity`, async () => {
+    mockServiceHasError = false;
+    const { title, description } = fakeInputs();
+    render(<Help applicationName={applicationName} />, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
 
-  const button = screen.getByRole('button');
+    const button = screen.getByRole('button');
 
-  for (const option of severityOptions) {
-    await rerender(<Help applicationName={applicationName} />);
+    // await rerender(<Help applicationName={applicationName} />);
     await user.click(button);
-    screen.logTestingPlaygroundURL();
     const reportBug = screen.getByText(/report a bug/i);
     await user.click(reportBug);
 
@@ -233,10 +247,11 @@ test(`can select and submit all severities`, async () => {
 
     expect(submitButton).not.toBeDisabled();
     await user.click(submitButton);
-  }
-}, 15000); // Setting timeout for this test to be 15 seconds
+  }, 10000); // Setting timeout for this test to be 15 seconds
+}
 
 test('suggest a feature dialog submit button enabled at correct time', async () => {
+  mockServiceHasError = false;
   const title = faker.animal.cat();
   const description = faker.lorem.sentence();
   render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
@@ -260,40 +275,11 @@ test('suggest a feature dialog submit button enabled at correct time', async () 
   expect(submitButton).not.toBeDisabled();
 }, 15000); // Setting timeout for this test to be 15 seconds
 
-// test('report a bug dialog submit button enabled at correct time', async () => {
-//   const title = faker.animal.cat();
-//   const description = faker.lorem.sentence();
-//   render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
-//   const user = userEvent.setup();
-//
-//   const button = screen.getByRole('button');
-//   await user.click(button);
-//
-//   const reportBug = screen.getByText('Report a bug');
-//   await user.click(reportBug);
-//
-//   const titleInput = screen.getByRole('textbox', { name: /title required/i });
-//   const descInput = screen.getByRole('textbox', {
-//     name: /description required/i,
-//   });
-//   const checkbox = screen.getByTestId('consent_checkbox');
-//   const submitButton = screen.getByRole('button', { name: /send/i });
-//
-//   expect(submitButton).toBeDisabled();
-//   await user.click(checkbox);
-//   await user.type(titleInput, title);
-//   await user.type(descInput, description);
-//   expect(submitButton).not.toBeDisabled();
-// }, 15000); // Setting timeout for this test to be 15 seconds
-
-test('Inputing all fields with file works as expected', async () => {
+test('Inputting all fields with file works as expected', async () => {
+  mockServiceHasError = false;
   const { title, description, url } = fakeInputs();
-  const blob = new Blob(['test', 'test']);
-  const blob2 = new Blob(['tester', 'tester']);
-  const imageFileOne = new File([blob2, blob], 'file1.png');
-  const imageFileTwo = new File([blob, blob, blob2], 'file2.png');
-  const badFile = new File([blob, blob2], 'badFile.pdf');
-  const severityOptionChoice = getSeverityOption();
+  const imageOne = await fakeImageFile();
+  const imageTwo = await fakeImageFile();
 
   render(<Help applicationName={applicationName} />, {
     wrapper: Wrappers,
@@ -325,22 +311,12 @@ test('Inputing all fields with file works as expected', async () => {
   expect(descInput.value).toEqual(description);
   expect(urlInput.value).toEqual(url);
 
-  const severityInput: HTMLInputElement = screen.getByRole('combobox', {
-    name: /severity optional/i,
-  });
-  await user.click(severityInput);
-
-  const severityOption = screen.getByText(severityOptionChoice);
-  await user.click(severityOption);
-
-  expect(severityInput).toHaveAttribute('value', severityOptionChoice);
-
   const fileUploadArea = screen.getByTestId('file-upload-area-input');
 
-  await user.upload(fileUploadArea, [imageFileTwo, badFile]);
+  await user.upload(fileUploadArea, [imageTwo]);
 
   // Delete image file
-  const file2nameElement = screen.getByText(imageFileTwo.name);
+  const file2nameElement = screen.getByText(imageTwo.name);
 
   const deleteUploadedFile2Button =
     file2nameElement.parentElement?.parentElement?.children[2];
@@ -351,32 +327,28 @@ test('Inputing all fields with file works as expected', async () => {
   }
 
   // Upload a single image file again
-  await user.upload(fileUploadArea, [imageFileOne]);
+  await user.upload(fileUploadArea, [imageOne]);
 
   const consentCheckbox = screen.getByTestId('consent_checkbox');
   await user.click(consentCheckbox);
   expect(consentCheckbox).toBeChecked();
-  screen.logTestingPlaygroundURL();
+
   const filePrivacyCheckbox = screen.getByTestId('file_privacy_checkbox');
   await user.click(filePrivacyCheckbox);
   expect(filePrivacyCheckbox).toBeChecked();
 
   const submitButton = screen.getByRole('button', { name: /send/i });
-  screen.logTestingPlaygroundURL();
+
   expect(submitButton).not.toBeDisabled();
   await user.click(submitButton);
 
-  setTimeout(() => {
-    const successSnackbar = screen.getByText(
-      'Report as been sent successfully'
-    );
-    expect(successSnackbar).toBeInTheDocument();
-  }, 2500);
-
-  setTimeout(() => {
-    const dialogHeader = screen.queryByText('Report a bug');
-    expect(dialogHeader).not.toBeInTheDocument();
-  }, 3000);
+  await waitFor(
+    () =>
+      expect(
+        screen.getByText(/report has been sent successfully/i)
+      ).toBeInTheDocument(),
+    { timeout: 10000 }
+  );
 }, 15000); // Setting timeout for this test to be 15 seconds
 
 test('Url validation working as expected', async () => {
@@ -420,3 +392,48 @@ test('Url validation working as expected', async () => {
 
   expect(helperTextAgain).not.toBeInTheDocument();
 });
+
+test('shows error snackbar on request error', async () => {
+  mockServiceHasError = true;
+  console.error = vi.fn();
+  const { title, description } = fakeInputs();
+
+  render(<Help applicationName={applicationName} />, {
+    wrapper: Wrappers,
+  });
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+  const suggest = screen.getByText(/suggest/i);
+  await user.click(suggest);
+
+  const titleInput = screen.getByRole('textbox', {
+    name: /title required/i,
+  });
+  const descInput = screen.getByRole('textbox', {
+    name: /description required/i,
+  });
+  await user.type(titleInput, title);
+
+  await user.type(descInput, description);
+
+  const submitButton = screen.getByRole('button', { name: /send/i });
+
+  await user.click(submitButton);
+
+  expect(
+    screen.getByRole('textbox', {
+      name: /title required/i,
+    })
+  ).toBeInTheDocument();
+
+  await waitFor(
+    () =>
+      expect(
+        screen.getByText(/There was an error sending your report/i)
+      ).toBeInTheDocument(),
+    { timeout: 5000 }
+  );
+}, 10000); // Setting timeout for this test to be 10 seconds
