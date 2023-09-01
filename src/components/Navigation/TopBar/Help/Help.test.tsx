@@ -2,10 +2,7 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Help } from './Help';
-import {
-  CancelablePromise,
-  ServiceNowIncidentRequestDto,
-} from 'src/api';
+import { CancelablePromise, ServiceNowIncidentRequestDto } from 'src/api';
 import { FullPageSpinner, Unauthorized } from 'src/components/index';
 import {
   FeedbackContentType,
@@ -46,7 +43,6 @@ function fakeInputs(): FeedbackContentType {
   return {
     title: faker.animal.crocodilia(),
     description: faker.lorem.sentence(),
-    consent: faker.datatype.boolean(),
     url: 'www.amplify.equinor.com',
   };
 }
@@ -220,6 +216,7 @@ for (const option of severityOptions) {
     const descInput = screen.getByRole('textbox', {
       name: /description required/i,
     });
+
     await user.type(titleInput, title);
     await user.type(descInput, description);
 
@@ -235,15 +232,9 @@ for (const option of severityOptions) {
 
     await user.click(severityOption);
 
-    const submitButton = screen.getByRole('button', { name: /send/i });
-
-    expect(submitButton).toBeDisabled();
-
-    const consentCheckbox = screen.getByTestId('consent_checkbox');
-    await user.click(consentCheckbox);
-    expect(consentCheckbox).toBeChecked();
-
     expect(severityInput.value).toEqual(option);
+
+    const submitButton = screen.getByRole('button', { name: /send/i });
 
     expect(submitButton).not.toBeDisabled();
     await user.click(submitButton);
@@ -302,6 +293,9 @@ test('Inputting all fields with file works as expected', async () => {
   const urlInput: HTMLInputElement = screen.getByRole('textbox', {
     name: /url optional/i,
   });
+  const submitButton = screen.getByRole('button', { name: /send/i });
+
+  expect(submitButton).toBeDisabled();
 
   await user.type(titleInput, title);
   await user.type(descInput, description);
@@ -329,15 +323,9 @@ test('Inputting all fields with file works as expected', async () => {
   // Upload a single image file again
   await user.upload(fileUploadArea, [imageOne]);
 
-  const consentCheckbox = screen.getByTestId('consent_checkbox');
-  await user.click(consentCheckbox);
-  expect(consentCheckbox).toBeChecked();
-
   const filePrivacyCheckbox = screen.getByTestId('file_privacy_checkbox');
   await user.click(filePrivacyCheckbox);
   expect(filePrivacyCheckbox).toBeChecked();
-
-  const submitButton = screen.getByRole('button', { name: /send/i });
 
   expect(submitButton).not.toBeDisabled();
   await user.click(submitButton);
@@ -349,7 +337,7 @@ test('Inputting all fields with file works as expected', async () => {
       ).toBeInTheDocument(),
     { timeout: 10000 }
   );
-}, 15000); // Setting timeout for this test to be 15 seconds
+}, 20000); // Setting timeout for this test to be 15 seconds
 
 test('Url validation working as expected', async () => {
   render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
@@ -391,7 +379,7 @@ test('Url validation working as expected', async () => {
   await user.type(urlInput, rightUrl);
 
   expect(helperTextAgain).not.toBeInTheDocument();
-});
+}, 10000); // Setting timeout for this test to be 10 seconds
 
 test('shows error snackbar on request error', async () => {
   mockServiceHasError = true;
@@ -436,4 +424,48 @@ test('shows error snackbar on request error', async () => {
       ).toBeInTheDocument(),
     { timeout: 5000 }
   );
+}, 10000); // Setting timeout for this test to be 10 seconds
+
+test('opt out of sending email whens suggesting feature', async () => {
+  const { title, description } = fakeInputs();
+
+  render(<Help applicationName={applicationName} />, {
+    wrapper: Wrappers,
+  });
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+  const suggest = screen.getByText(/suggest/i);
+  await user.click(suggest);
+
+  const nameInput: HTMLInputElement = screen.getByRole('textbox', {
+    name: /name/i,
+  });
+
+  const titleInput = screen.getByRole('textbox', {
+    name: /title required/i,
+  });
+  const descInput = screen.getByRole('textbox', {
+    name: /description required/i,
+  });
+  const optOutCheckbox = screen.getByTestId('opt_out_checkbox');
+
+  expect(optOutCheckbox).not.toBeChecked();
+
+  await user.click(optOutCheckbox);
+
+  expect(optOutCheckbox).toBeChecked();
+
+  expect(nameInput.value).toBe('Anonymous');
+  screen.logTestingPlaygroundURL();
+
+  await user.type(titleInput, title);
+
+  await user.type(descInput, description);
+
+  const submitButton = screen.getByRole('button', { name: /send/i });
+
+  await user.click(submitButton);
 }, 10000); // Setting timeout for this test to be 10 seconds

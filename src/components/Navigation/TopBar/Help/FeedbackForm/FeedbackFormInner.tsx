@@ -10,18 +10,19 @@ import {
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import ConsentCheckbox from './ConsentCheckbox';
 import {
   FeedbackContentType,
   FeedbackEnum,
   SeverityOption,
 } from './FeedbackForm.types';
 import UploadFile from './UploadFile';
+import ConsentCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/ConsentCheckbox';
 import FilePrivacyCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/FilePrivacyCheckbox';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { spacings, colors } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,6 +42,10 @@ const Actions = styled.div`
 const LoadingSpinner = styled(CircularProgress)`
   height: 60%;
   margin: auto;
+`;
+
+const UserNameInput = styled(TextField)`
+  //color: ${colors.text.static_icons__default.hex};
 `;
 
 interface FeedbackDetailsProps {
@@ -63,6 +68,8 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   onClose,
   requestIsLoading,
 }) => {
+  const { account } = useAuth();
+  const userEmail = account?.username;
   const [isWrongDomain, setIsWrongDomain] = useState(false);
 
   const hasAttachment = useMemo(() => {
@@ -101,21 +108,25 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
     return (
       feedbackContent.title.length > 0 &&
       feedbackContent.description.length > 0 &&
-      (feedbackContent.consent || selectedType === FeedbackEnum.SUGGESTION) &&
       filePrivacyConsent &&
       !isWrongDomain
     );
   }, [
     feedbackContent.title.length,
     feedbackContent.description.length,
-    feedbackContent.consent,
-    selectedType,
     filePrivacyConsent,
     isWrongDomain,
   ]);
 
   return (
     <Wrapper>
+      <UserNameInput
+        id="usernamee"
+        label="Name"
+        value={feedbackContent.optOutEmail ? 'Anonymous' : userEmail}
+        disabled
+      />
+
       <TextField
         id="feedback-title"
         label="Title"
@@ -169,6 +180,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           />
         </>
       )}
+
       <UploadFile
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
@@ -178,11 +190,12 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
         updateFeedback={updateFeedback}
         hasAttachment={hasAttachment}
       />
-      <ConsentCheckbox
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-        selectedType={selectedType}
-      />
+      {selectedType === FeedbackEnum.SUGGESTION && (
+        <ConsentCheckbox
+          feedbackContent={feedbackContent}
+          updateFeedback={updateFeedback}
+        />
+      )}
       <Actions>
         <Button variant="ghost" onClick={onClose}>
           Cancel

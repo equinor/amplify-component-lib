@@ -31,7 +31,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
     description: '',
-    consent: false,
+    optOutEmail: false,
   });
 
   const { mutateAsync: slackFileUpload, isLoading: isFileUploadLoading } =
