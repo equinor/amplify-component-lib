@@ -88,6 +88,7 @@ export type {
   TopBarType,
 } from './Navigation/TopBar';
 export { default as TopBar } from './Navigation/TopBar';
+export { default as HelpMenuItem } from './Navigation/TopBar/Help/HelpMenuItem';
 export { EnvironmentType } from './Navigation/TopBar/TopBar';
 export type { ContentProps, TemplateType } from './Template/Template';
 export { default as Template } from './Template/Template';

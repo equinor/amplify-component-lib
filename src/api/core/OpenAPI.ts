@@ -3,11 +3,9 @@
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import { environment, auth } from 'src/utils';
-import { CancelablePromise, TokenService } from 'src/api';
-import {
-  getLocalStorage,
-  updateLocalStorage,
-} from 'src/hooks/useLocalStorage';
+import { CancelablePromise } from 'src/api/core/CancelablePromise';
+import { request as __request } from 'src/api/core/request';
+import { getLocalStorage, updateLocalStorage } from 'src/hooks/useLocalStorage';
 import { JwtPayload } from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
 
@@ -46,10 +44,34 @@ const getApplicationToken = async () => {
   ).accessToken;
 };
 
+export class TokenService {
+  /**
+   * @returns string Success
+   * @throws ApiError
+   */
+  public static getAmplifyPortalToken(): CancelablePromise<string> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/v1/Token/AmplifyPortal',
+    });
+  }
+
+  /**
+   * @returns string Success
+   * @throws ApiError
+   */
+  public static getAmplifyPortalProductionToken(): CancelablePromise<string> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/v1/Token/AmplifyPortal/Production',
+    });
+  }
+}
+
 const isJwtTokenExpired = (token: string) => {
   const decodedToken: JwtPayload = jwtDecode(token);
   const todayInSecUnix = new Date().getTime() / 1000;
-  return decodedToken.exp && todayInSecUnix < decodedToken.exp;
+  return decodedToken.exp && todayInSecUnix > decodedToken.exp;
 };
 
 const getToken = async (
@@ -57,7 +79,7 @@ const getToken = async (
   tokenRequest: () => CancelablePromise<string>
 ) => {
   const localStorageToken = getLocalStorage(localStorageKey, '');
-  if (localStorageToken.length !== 0 && isJwtTokenExpired(localStorageToken)) {
+  if (localStorageToken.length !== 0 && !isJwtTokenExpired(localStorageToken)) {
     return localStorageToken;
   } else {
     const requestToken = await tokenRequest();

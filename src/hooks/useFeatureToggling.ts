@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { FeatureToggleDto, GraphUser, PortalService } from 'src/api';
+import { FeatureToggleDto, GraphUser } from 'src/api';
+import { PortalService } from 'src/api/services/PortalService';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { environment } from 'src/utils';
 

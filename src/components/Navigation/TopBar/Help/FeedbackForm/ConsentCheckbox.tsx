@@ -4,8 +4,11 @@ import { FileWithPath } from 'react-dropzone';
 import { Checkbox, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm';
-import { SeverityOption } from './FeedbackFormInner';
+import {
+  FeedbackContentType,
+  FeedbackEnum,
+  SeverityOption,
+} from './FeedbackForm.types';
 
 import styled from 'styled-components';
 
@@ -17,8 +20,9 @@ const Container = styled.div`
   gap: ${spacings.comfortable.small};
 `;
 
-const StyledCheckbox = styled(Checkbox)``;
-const ConsentText = styled(Typography)``;
+const Text = styled(Typography)`
+  font-size: 14px;
+`;
 
 interface ConsentCheckboxProps {
   selectedType: FeedbackEnum;
@@ -40,15 +44,16 @@ const ConsentCheckbox: FC<ConsentCheckboxProps> = ({
 
   return (
     <Container>
-      <StyledCheckbox
+      <Checkbox
+        data-testid="consent_checkbox"
         checked={feedbackContent.consent}
         onChange={handleOnChange}
       />
-      <ConsentText variant="body_short">
-        {selectedType === FeedbackEnum.ERROR
-          ? 'I agree to my email being used in the service now report'
-          : 'I agree to my email being included in the inquiry in case there are any questions'}
-      </ConsentText>
+      <Text variant="body_short">
+        {selectedType === FeedbackEnum.BUG
+          ? 'I agree to my email being included with the report (and the service now report) in case there are any questions'
+          : 'I agree to my email being included with the suggestion in case there are any questions'}
+      </Text>
     </Container>
   );
 };

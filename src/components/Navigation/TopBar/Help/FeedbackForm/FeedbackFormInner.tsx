@@ -1,18 +1,23 @@
-import { Dispatch, FC, FormEvent, SetStateAction, useMemo } from 'react';
+import { FC, FocusEvent, FormEvent, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import {
   Autocomplete,
   AutocompleteChanges,
   Button,
+  CircularProgress,
   TextField,
-  Typography,
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import ConsentCheckbox from './ConsentCheckbox';
-import { FeedbackContentType, FeedbackEnum } from './FeedbackForm';
+import {
+  FeedbackContentType,
+  FeedbackEnum,
+  SeverityOption,
+} from './FeedbackForm.types';
 import UploadFile from './UploadFile';
+import FilePrivacyCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/FilePrivacyCheckbox';
 
 import styled from 'styled-components';
 
@@ -23,10 +28,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
   max-width: 350px;
-`;
-
-const MenuSectionTitle = styled(Typography)`
-  padding: ${spacings.comfortable.small} 0;
+  padding: ${spacings.comfortable.medium};
+  padding-top: 0;
 `;
 
 const Actions = styled.div`
@@ -35,50 +38,84 @@ const Actions = styled.div`
   gap: ${spacings.comfortable.medium};
 `;
 
-export enum SeverityOption {
-  NO_IMPACT = 'I am not impacted',
-  IMPEDES = 'It impedes my progress',
-  UNABLE = 'I am unable to work',
-}
+const LoadingSpinner = styled(CircularProgress)`
+  height: 60%;
+  margin: auto;
+`;
 
 interface FeedbackDetailsProps {
   selectedType: FeedbackEnum;
-  setSelectedType: Dispatch<SetStateAction<FeedbackEnum | undefined>>;
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
     newValue: string | SeverityOption | FileWithPath[] | boolean
   ) => void;
   handleSave: () => void;
+  onClose: () => void;
+  requestIsLoading: boolean;
 }
 
 const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   selectedType,
-  setSelectedType,
   feedbackContent,
   updateFeedback,
   handleSave,
+  onClose,
+  requestIsLoading,
 }) => {
+  const [isWrongDomain, setIsWrongDomain] = useState(false);
+
+  const hasAttachment = useMemo(() => {
+    return (
+      feedbackContent.attachments !== undefined &&
+      feedbackContent.attachments.length > 0
+    );
+  }, [feedbackContent.attachments]);
+
+  const filePrivacyConsent = useMemo(() => {
+    if (hasAttachment && selectedType === FeedbackEnum.BUG) {
+      return feedbackContent.filePrivacyConsent;
+    }
+    return true;
+  }, [feedbackContent.filePrivacyConsent, hasAttachment, selectedType]);
+
+  const handleOnUrlChange = (e: FormEvent<HTMLInputElement>) => {
+    updateFeedback('url', e.currentTarget.value);
+    if (e.currentTarget.value === '') {
+      setIsWrongDomain(false);
+    } else if (
+      isWrongDomain &&
+      e.currentTarget.value.includes('.equinor.com')
+    ) {
+      setIsWrongDomain(false);
+    }
+  };
+
+  const handleOnUrlBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (!e.currentTarget.value.includes('.equinor.com')) {
+      setIsWrongDomain(true);
+    }
+  };
+
   const canSubmitFeedback = useMemo(() => {
     return (
       feedbackContent.title.length > 0 &&
       feedbackContent.description.length > 0 &&
-      (feedbackContent.consent || selectedType === FeedbackEnum.INQUIRY)
+      (feedbackContent.consent || selectedType === FeedbackEnum.SUGGESTION) &&
+      filePrivacyConsent &&
+      !isWrongDomain
     );
   }, [
     feedbackContent.title.length,
     feedbackContent.description.length,
     feedbackContent.consent,
     selectedType,
+    filePrivacyConsent,
+    isWrongDomain,
   ]);
 
   return (
     <Wrapper>
-      <MenuSectionTitle group="input" variant="label">
-        {selectedType === FeedbackEnum.ERROR
-          ? 'Service now error report'
-          : 'General inquiry'}
-      </MenuSectionTitle>
       <TextField
         id="feedback-title"
         label="Title"
@@ -101,7 +138,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
         }
         multiline
       />
-      {selectedType === FeedbackEnum.ERROR && (
+      {selectedType === FeedbackEnum.BUG && (
         <>
           <Autocomplete
             options={Object.values(SeverityOption)}
@@ -121,9 +158,14 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
             meta="optional"
             value={feedbackContent.url}
             placeholder="URL of error location"
-            onChange={(e: FormEvent<HTMLInputElement>) =>
-              updateFeedback('url', e.currentTarget.value)
+            variant={isWrongDomain ? 'error' : undefined}
+            helperText={
+              isWrongDomain
+                ? 'The provided URL must from a equinor.com domain'
+                : ''
             }
+            onChange={handleOnUrlChange}
+            onBlur={handleOnUrlBlur}
           />
         </>
       )}
@@ -131,17 +173,22 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
       />
+      <FilePrivacyCheckbox
+        feedbackContent={feedbackContent}
+        updateFeedback={updateFeedback}
+        hasAttachment={hasAttachment}
+      />
       <ConsentCheckbox
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
         selectedType={selectedType}
       />
       <Actions>
-        <Button variant="ghost" onClick={() => setSelectedType(undefined)}>
-          Back
+        <Button variant="ghost" onClick={onClose}>
+          Cancel
         </Button>
         <Button onClick={handleSave} disabled={!canSubmitFeedback}>
-          Send report
+          {requestIsLoading ? <LoadingSpinner /> : 'Send'}
         </Button>
       </Actions>
     </Wrapper>

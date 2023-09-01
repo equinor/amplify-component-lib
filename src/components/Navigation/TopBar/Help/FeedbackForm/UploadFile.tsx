@@ -4,8 +4,7 @@ import { FileRejection, FileWithPath } from 'react-dropzone';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackContentType } from './FeedbackForm';
-import { SeverityOption } from './FeedbackFormInner';
+import { FeedbackContentType, SeverityOption } from './FeedbackForm.types';
 import FileProgress from 'src/components/Feedback/Progress/FileProgress';
 import FileUploadArea from 'src/components/Inputs/FileUploadArea';
 
@@ -53,23 +52,35 @@ const UploadFile: FC<UploadFileProps> = ({
     acceptedFiles: FileWithPath[],
     fileRejections: FileRejection[]
   ) => {
-    const cleanedOfHiddenFiles = acceptedFiles.filter(
-      (file) => file.name[0] !== '.'
-    );
-    const reader = new FileReader();
-    reader.readAsDataURL(acceptedFiles[0]);
+    if (acceptedFiles.length >= 1) {
+      const cleanedOfHiddenFiles = acceptedFiles.filter(
+        (file) => file.name[0] !== '.'
+      );
+      const reader = new FileReader();
+      reader.readAsDataURL(acceptedFiles[0]);
+      updateFeedback('attachments', cleanedOfHiddenFiles);
+    }
     setRejectedFiles(fileRejections);
-    updateFeedback('attachments', cleanedOfHiddenFiles);
   };
 
   const handleOnDelete = (file: FileWithPath) => {
     const newAttachmentsList =
       feedbackContent.attachments?.filter(
         (attachment) =>
-          attachment.name === file.name && attachment.size !== file.size
+          attachment.name !== file.name && attachment.size !== file.size
       ) ?? [];
 
     updateFeedback('attachments', newAttachmentsList);
+  };
+
+  const handleOnDeleteRejected = (rejection: FileRejection) => {
+    setRejectedFiles(
+      rejectedFiles?.filter(
+        (attachment) =>
+          attachment.file.name === rejection.file.name &&
+          attachment.file.size !== rejection.file.size
+      ) ?? []
+    );
   };
 
   return (
@@ -86,10 +97,6 @@ const UploadFile: FC<UploadFileProps> = ({
         <FileUploadArea
           onDrop={onDrop}
           accept={{
-            'application/pdf': ['.pdf'],
-            'application/vnd.ms-powerpoint': ['.ppt'],
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation':
-              ['.pptx'],
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
           }}
@@ -111,7 +118,7 @@ const UploadFile: FC<UploadFileProps> = ({
             <FileProgress
               key={rejection.file.name + rejection.file.size}
               name={rejection.file.name}
-              onDelete={() => null}
+              onDelete={() => handleOnDeleteRejected(rejection)}
               onAbort={() => null}
               error={true}
               errorMsg={

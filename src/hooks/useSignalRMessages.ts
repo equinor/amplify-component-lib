@@ -2,33 +2,36 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import * as SignalR from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
+import { useQuery } from '@tanstack/react-query';
 
-import { usePrevious } from './usePrevious';
+import { TokenService } from 'src/api/core/OpenAPI';
+import { usePrevious } from 'src/hooks/usePrevious';
 
 export function useSignalRMessages<
   T extends {
     SequenceNumber?: number | null;
     Read?: boolean | null;
     Subject?: string | null;
-  }
->(topic: string, host: string, amplifyPortalToken?: string) {
+  },
+>(topic: string, host: string) {
   const connectionRef = useRef<HubConnection | undefined>(undefined);
   const [messages, setMessages] = useState<T[]>([]);
   const [deletedMessageSequenceNumber, setDeletedMessageSequenceNumber] =
     useState<number>();
   const [updateMessage, setUpdateMessage] = useState<T>();
+
+  const { data: amplifyPortalToken } = useQuery(
+    ['get-amplify-portal-token'],
+    () => TokenService.getAmplifyPortalToken(),
+    {
+      staleTime: Infinity,
+      cacheTime: 1000 * 60 * 60 * 2, // 2 hours
+    }
+  );
+
   const previousTopic = usePrevious(topic);
   const previousHost = usePrevious(host);
   const previousAmplifyPortalToken = usePrevious(amplifyPortalToken);
-
-  useEffect(() => {
-    return () => {
-      if (connectionRef.current) {
-        connectionRef.current.stop();
-      }
-    };
-  }, []);
-
   useEffect(() => {
     async function setupConnection() {
       if (
@@ -65,17 +68,7 @@ export function useSignalRMessages<
       try {
         await connection.start();
 
-        /* connect to a topic */
-        await connection.invoke('Subscribe', topic);
-
-        connection.on('Connected', () => {
-          connection.invoke('PeekMessages'); // get all active messages from bus
-        });
-
-        /* connect to a topic */
-        connection.onreconnected(() => connection.invoke('Subscribe', topic));
-
-        /* receive all active messages */
+        /* receive messages */
         connection.on(
           'ActiveMessages',
           (subject: string, activeMessages: T[]) => {
@@ -84,6 +77,9 @@ export function useSignalRMessages<
             );
           }
         );
+
+        /* connect to a topic */
+        connection.onreconnected(() => connection.invoke('Subscribe', topic));
 
         /* receive one new message from the servicebus */
         connection.on('NewMessage', (subject: string, message: T) => {
@@ -117,6 +113,12 @@ export function useSignalRMessages<
         connection.on('Error', (msg: string) => {
           throw new Error('Connection error: ' + msg);
         });
+
+        /* connect to a topic */
+        await connection.invoke('Subscribe', topic);
+
+        /* Get all active messages */
+        await connection.invoke('PeekMessages');
       } catch (e: any) {
         throw new Error('Connection failed: ', e);
       }
@@ -201,11 +203,19 @@ export function useSignalRMessages<
     return messages.some((no) => no.Read === false);
   }, [messages]);
 
+  const closeConnection = async () => {
+    if (connectionRef.current) {
+      return await connectionRef.current.stop();
+    }
+    return;
+  };
+
   return {
     messages,
     hasUnreadMessages,
     setMessageAsRead,
     setAllMessagesAsRead,
     deleteMessage,
+    closeConnection,
   };
 }
