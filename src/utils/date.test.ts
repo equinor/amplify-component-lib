@@ -267,8 +267,7 @@ test('formatRelativeDateTime with tomorrows date should display as Tomorrow incl
   const formattedTomorrow = date.formatRelativeDateTime(tomorrow);
   expect(formattedTomorrow).toContain('Tomorrow');
 
-  const tomorrowLessThan24Hours = new Date();
-  tomorrowLessThan24Hours.setDate(tomorrow.getDate());
+  const tomorrowLessThan24Hours = new Date(tomorrow);
   tomorrowLessThan24Hours.setHours(0);
 
   const formatted = date.formatRelativeDateTime(tomorrowLessThan24Hours);
