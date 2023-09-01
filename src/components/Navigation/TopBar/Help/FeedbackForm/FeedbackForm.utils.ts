@@ -94,7 +94,7 @@ export const createSlackMessage = (
         {
           type: 'mrkdwn',
           text: `*User* \n ${
-            feedbackContent.consent ? email : 'No email Provided'
+            feedbackContent.optOutEmail ? 'Anonymous' : email
           }`,
         },
       ],

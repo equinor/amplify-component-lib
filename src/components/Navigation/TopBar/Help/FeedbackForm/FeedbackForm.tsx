@@ -31,38 +31,25 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
     description: '',
-    consent: false,
+    optOutEmail: false,
   });
 
-  const {
-    mutateAsync: slackFileUpload,
-    isError: isFileUploadError,
-    isLoading: isFileUploadLoading,
-  } = useMutation(['slackFileUpload', feedbackContent], (formData: FormData) =>
-    PortalService.fileUpload(formData)
-  );
+  const { mutateAsync: slackFileUpload, isLoading: isFileUploadLoading } =
+    useMutation(['slackFileUpload', feedbackContent], (formData: FormData) =>
+      PortalService.fileUpload(formData)
+    );
 
-  const {
-    mutateAsync: slackPostMessage,
-    isError: isPostMessageError,
-    isLoading: isPostMessageLoading,
-  } = useMutation(['slackPostMessage', feedbackContent], (formData: FormData) =>
-    PortalService.postmessage(formData)
-  );
+  const { mutateAsync: slackPostMessage, isLoading: isPostMessageLoading } =
+    useMutation(['slackPostMessage', feedbackContent], (formData: FormData) =>
+      PortalService.postmessage(formData)
+    );
 
-  const {
-    mutateAsync: serviceNowIncident,
-    isError: isServiceNowError,
-    isLoading: isServiceNowLoading,
-  } = useMutation(
-    ['serviceNowIncident', feedbackContent],
-    async (serviceNowDto: ServiceNowIncidentRequestDto) =>
-      PortalService.createIncident(serviceNowDto)
-  );
-
-  const requestHasError = useMemo(() => {
-    return isPostMessageError || isFileUploadError || isServiceNowError;
-  }, [isFileUploadError, isPostMessageError, isServiceNowError]);
+  const { mutateAsync: serviceNowIncident, isLoading: isServiceNowLoading } =
+    useMutation(
+      ['serviceNowIncident', feedbackContent],
+      async (serviceNowDto: ServiceNowIncidentRequestDto) =>
+        PortalService.createIncident(serviceNowDto)
+    );
 
   const requestIsLoading = useMemo(() => {
     return isPostMessageLoading || isFileUploadLoading || isServiceNowLoading;
@@ -76,32 +63,35 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   };
 
   const handleSave = async () => {
-    if (selectedType === FeedbackEnum.BUG && userEmail) {
-      const serviceNowObject: ServiceNowIncidentRequestDto = {
-        configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
-        title: feedbackContent.title,
-        description: createServiceNowDescription(feedbackContent),
-        callerEmail: userEmail,
-      };
-      await serviceNowIncident(serviceNowObject);
-    }
+    try {
+      if (selectedType === FeedbackEnum.BUG && userEmail) {
+        const serviceNowObject: ServiceNowIncidentRequestDto = {
+          configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
+          title: feedbackContent.title,
+          description: createServiceNowDescription(feedbackContent),
+          callerEmail: userEmail,
+        };
+        await serviceNowIncident(serviceNowObject);
+      }
 
-    const fileFormData = new FormData();
-    const contentFormData = new FormData();
-    contentFormData.append(
-      'comment',
-      createSlackMessage(feedbackContent, selectedType, userEmail)
-    );
-    await slackPostMessage(contentFormData);
-    if (feedbackContent.attachments && feedbackContent.attachments[0]) {
-      fileFormData.append('file', feedbackContent.attachments[0]);
-      await slackFileUpload(fileFormData);
-    }
-    if (requestHasError) {
-      showSnackbar('There was an error sending your report');
-    } else {
-      showSnackbar('Report as been sent successfully');
+      const fileFormData = new FormData();
+      const contentFormData = new FormData();
+      contentFormData.append(
+        'comment',
+        createSlackMessage(feedbackContent, selectedType, userEmail)
+      );
+
+      await slackPostMessage(contentFormData);
+
+      if (feedbackContent.attachments && feedbackContent.attachments[0]) {
+        fileFormData.append('file', feedbackContent.attachments[0]);
+        await slackFileUpload(fileFormData);
+      }
+
+      showSnackbar('Report has been sent successfully');
       onClose();
+    } catch (err) {
+      showSnackbar('There was an error sending your report');
     }
   };
 

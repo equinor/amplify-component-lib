@@ -57,9 +57,8 @@ const FilePrivacyCheckbox: FC<FilePrivacyCheckboxProps> = ({
         onChange={handleOnChange}
       />
       <Text variant="body_short" $disabled={!hasAttachment}>
-        I confirm that the images included as attachments do not contain private
-        information. <br />
-        (Equinor email and shortname is allowed)
+        I confirm that the images included as attachments do not contain
+        information classified as confidential
       </Text>
     </Container>
   );

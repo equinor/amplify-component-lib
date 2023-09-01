@@ -87,7 +87,7 @@ const formatRelativeDateTime = (
 ): string => {
   if (date) {
     const dateObj = new Date(date);
-    const currentDate = new Date();
+    const today = new Date();
     if (dateObj.getTime()) {
       if (isGMT) {
         dateObj.setTime(
@@ -95,32 +95,26 @@ const formatRelativeDateTime = (
         );
       }
       const differenceInMS =
-        dateObj < currentDate
-          ? currentDate.getTime() - dateObj.getTime()
-          : dateObj.getTime() - currentDate.getTime();
+        dateObj < today
+          ? today.getTime() - dateObj.getTime()
+          : dateObj.getTime() - today.getTime();
       const differenceInDays = differenceInMS / (1000 * 3600 * 24);
       const time = dateObj.toLocaleTimeString('en-GB', {
         hour: '2-digit',
         minute: '2-digit',
       });
-      if (differenceInDays < 1 && dateObj.getDate() === currentDate.getDate()) {
+      if (differenceInDays < 1 && dateObj.getDate() === today.getDate()) {
         return `Today at ${time}`;
-      } else if (
-        differenceInDays < 2 &&
-        dateObj.getDate() === currentDate.getDate() - 1
-      ) {
+      } else if (differenceInDays < 2 && dateObj < today) {
         // Yesterday
         return `Yesterday at ${time}`;
-      } else if (
-        differenceInDays < 2 &&
-        dateObj.getDate() === currentDate.getDate() + 1
-      ) {
+      } else if (differenceInDays < 2 && differenceInDays >= 0) {
         // Tomorrow
         return `Tomorrow at ${time}`;
       } else if (
         differenceInDays > 2 &&
         differenceInDays < 7 &&
-        dateObj > currentDate
+        dateObj > today
       ) {
         // Show weekday
         return `${dateObj.toLocaleString('en-GB', {
@@ -129,7 +123,7 @@ const formatRelativeDateTime = (
       } else {
         // Before yesterday or in more than a week, show normal formatDateTime
         return formatDateTime(date, {
-          hideYear: dateObj.getFullYear() === currentDate.getFullYear(),
+          hideYear: dateObj.getFullYear() === today.getFullYear(),
         });
       }
     }
