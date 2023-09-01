@@ -22,7 +22,7 @@ import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { spacings } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,10 +42,6 @@ const Actions = styled.div`
 const LoadingSpinner = styled(CircularProgress)`
   height: 60%;
   margin: auto;
-`;
-
-const UserNameInput = styled(TextField)`
-  //color: ${colors.text.static_icons__default.hex};
 `;
 
 interface FeedbackDetailsProps {
@@ -120,7 +116,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
 
   return (
     <Wrapper>
-      <UserNameInput
+      <TextField
         id="usernamee"
         label="Name"
         value={feedbackContent.optOutEmail ? 'Anonymous' : userEmail}
