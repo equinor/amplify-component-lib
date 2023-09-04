@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import * as SignalR from '@microsoft/signalr';
+import { LogLevel } from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 import { useQuery } from '@tanstack/react-query';
 
@@ -56,6 +57,7 @@ export function useSignalRMessages<
       }
 
       const connection = new SignalR.HubConnectionBuilder()
+        .configureLogging(LogLevel.Error)
         .withUrl(`${host}/hubs/notifications`, {
           accessTokenFactory: () => amplifyPortalToken,
           withCredentials: false,
