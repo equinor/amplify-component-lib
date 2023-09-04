@@ -5,7 +5,9 @@ import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 import { useQuery } from '@tanstack/react-query';
 
 import { TokenService } from 'src/api/core/OpenAPI';
+import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
 import { usePrevious } from 'src/hooks/usePrevious';
+import { environment } from 'src/utils/auth_environment';
 
 export function useSignalRMessages<
   T extends {
@@ -13,7 +15,7 @@ export function useSignalRMessages<
     Read?: boolean | null;
     Subject?: string | null;
   },
->(topic: string, host: string) {
+>(topic: string) {
   const connectionRef = useRef<HubConnection | undefined>(undefined);
   const [messages, setMessages] = useState<T[]>([]);
   const [deletedMessageSequenceNumber, setDeletedMessageSequenceNumber] =
@@ -29,15 +31,26 @@ export function useSignalRMessages<
     }
   );
 
+  const host = useMemo(() => {
+    const environmentName = environment.getEnvironmentName(
+      import.meta.env.VITE_ENVIRONMENT_NAME
+    );
+
+    const environmentNameForUrl =
+      environmentName === EnvironmentType.LOCALHOST
+        ? EnvironmentType.DEVELOP
+        : environmentName;
+
+    return `wss://api-amplify-portal-${environmentNameForUrl}.radix.equinor.com`;
+  }, []);
+
   const previousTopic = usePrevious(topic);
-  const previousHost = usePrevious(host);
   const previousAmplifyPortalToken = usePrevious(amplifyPortalToken);
   useEffect(() => {
     async function setupConnection() {
       if (
         amplifyPortalToken === undefined ||
         (previousTopic === topic &&
-          previousHost === host &&
           previousAmplifyPortalToken === amplifyPortalToken)
       ) {
         return;
@@ -46,10 +59,8 @@ export function useSignalRMessages<
       if (
         connectionRef.current !== undefined &&
         previousTopic &&
-        previousHost &&
         previousAmplifyPortalToken &&
         (previousTopic !== topic ||
-          previousHost !== host ||
           previousAmplifyPortalToken !== amplifyPortalToken)
       ) {
         await connectionRef.current.stop();
@@ -131,7 +142,6 @@ export function useSignalRMessages<
     topic,
     amplifyPortalToken,
     previousTopic,
-    previousHost,
     previousAmplifyPortalToken,
   ]);
 
