@@ -1,8 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import PageMenuProvider, {
-  usePageMenu,
-} from '../../providers/PageMenuProvider';
+import PageMenuProvider from '../../providers/PageMenuProvider';
 import { render, screen, userEvent } from '../../tests/test-utils';
 import PageMenu from './PageMenu';
 
@@ -14,14 +12,12 @@ function fakeItems() {
 }
 
 function Section({ value, label }: { value: string; label: string }) {
-  const { setItemRef } = usePageMenu();
   return (
     <h1
       id={value}
       ref={(current) => {
         if (current) {
           current['scrollIntoView'] = vi.fn();
-          setItemRef(current, value);
         }
       }}
     >
