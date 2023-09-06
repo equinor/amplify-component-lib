@@ -2,6 +2,7 @@ import {
   createContext,
   FC,
   ReactElement,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -17,7 +18,6 @@ export type PageMenuItemType = {
 
 interface PageMenuContextType {
   items: PageMenuItemType[];
-  setItemRef: (element: HTMLElement | null, value: string) => void;
   selected: string | undefined;
   setSelected: (value: string) => void;
 }
@@ -42,16 +42,6 @@ interface PageMenuProviderProps {
 const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
-  const itemRefs = useRef<Array<HTMLElement | null>>(
-    new Array(items.length).fill(null)
-  );
-
-  const setItemRef = (element: HTMLElement | null, value: string) => {
-    const index = items.findIndex((item) => item.value === value);
-    if (index >= 0) {
-      itemRefs.current[index] = element;
-    }
-  };
 
   // Since useEffect runs on re-render we ensure that the elements array is updated
   useEffect(() => {
@@ -62,11 +52,11 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   const isScrollingTo = useRef<number>(-1);
 
   // If the user clicks on an item in the PageMenu that isn't visible now, we want to scroll to it
-  const handleSetSelected = (value: string) => {
+  const handleSetSelected = useCallback((value: string) => {
     const selectedIndex = items.findIndex((item) => item.value === value);
-    const element = itemRefs.current[selectedIndex];
+    const element = elements[selectedIndex];
 
-    if (!visible[selectedIndex] && element) {
+    if (element) {
       element.scrollIntoView({
         block: 'start',
         behavior: 'smooth',
@@ -93,7 +83,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
       /* c8 ignore end */
       requestAnimationFrame(checkScrollDone);
     }
-  };
+  }, [elements, items]);
 
   // Handle change of selected when scrolling down the page
   /* c8 ignore start */
@@ -119,7 +109,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
 
   return (
     <PageMenuContext.Provider
-      value={{ items, setItemRef, selected, setSelected: handleSetSelected }}
+      value={{ items,  selected, setSelected: handleSetSelected }}
     >
       {children}
     </PageMenuContext.Provider>
@@ -127,3 +117,4 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
 };
 
 export default PageMenuProvider;
+

@@ -2,9 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { StoryFn } from '@storybook/react';
 
-import PageMenuProvider, {
-  usePageMenu,
-} from '../../providers/PageMenuProvider';
+import PageMenuProvider from '../../providers/PageMenuProvider';
 import PageMenu from './PageMenu';
 
 import styled from 'styled-components';
@@ -74,12 +72,10 @@ function Section({
   value: string;
   color: string;
 }) {
-  const { setItemRef } = usePageMenu();
   return (
     <div style={{ background: color }}>
       <Typography
         variant="h1"
-        ref={(current) => setItemRef(current, value)}
         key={value}
         id={value}
       >

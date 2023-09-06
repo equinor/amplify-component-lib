@@ -19,11 +19,6 @@ test('usePageMenu throws error if used outside provider', () => {
 
 test('SetItemRef works as expected', () => {
   const items = fakeItems();
-  const { result } = renderHook(() => usePageMenu(), {
-    wrapper: (props: any) => (
-      <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
-    ),
-  });
 
   import.meta.env.VISIBLE_INDEX = 0;
   render(
@@ -33,9 +28,6 @@ test('SetItemRef works as expected', () => {
         <h1
           key={item.value}
           id={item.value}
-          ref={(current) => {
-            result.current.setItemRef(current, item.value);
-          }}
         >
           {item.label}
         </h1>
