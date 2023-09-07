@@ -1,6 +1,5 @@
 import ora from 'ora';
 import { exec } from 'child_process';
-import chalk from 'chalk';
 
 // Project used to be TS, keeping
 // types here for object prop reference
