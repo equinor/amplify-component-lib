@@ -26,7 +26,8 @@ USER 0
 # Clear default nginx html file
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/storybook-static /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+COPY proxy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY proxy/securityheaders.conf /etc/nginx/securityheaders.conf
 
 WORKDIR /usr/share/nginx/html
 USER 101
