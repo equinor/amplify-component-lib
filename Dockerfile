@@ -29,6 +29,9 @@ COPY --from=builder /app/storybook-static /usr/share/nginx/html
 COPY proxy/nginx.conf /etc/nginx/conf.d/default.conf
 COPY proxy/securityheaders.conf /etc/nginx/securityheaders.conf
 
+RUN chown -R nginx /etc/nginx/conf.d \
+    && chown -R nginx /usr/share/nginx/html
+
 WORKDIR /usr/share/nginx/html
 USER 101
 
