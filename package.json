@@ -34,6 +34,7 @@
     "build": "yarn build-components",
     "build-components": "rollup -c && tsc --outDir dist --declarationDir dist/types --declaration true --emitDeclarationOnly --project tsconfig.build.json",
     "build-components:ci": "rm -rf lib dist && yarn build-components",
+    "build-and-use": "node tooling/build-and-use.mjs",
     "version": "version-bump cli --bump",
     "postversion": "git add package.json && git commit -m 'Upgraded package version'"
   },

@@ -1,6 +1,5 @@
 import ora from 'ora';
 import { exec } from 'child_process';
-import chalk from 'chalk';
 
 // Project used to be TS, keeping
 // types here for object prop reference
@@ -10,6 +9,7 @@ import chalk from 'chalk';
 //   command: string;
 //   cwd?: string;
 //   ignoreStdErr?: boolean;
+//   customIndent?: number;
 // };
 
 // type ExecStatus = {
@@ -17,16 +17,6 @@ import chalk from 'chalk';
 //   error: ExecException | null;
 //   stderr: string | null;
 // };
-
-class Queue {
-  _store = [];
-  push(val) {
-    this._store.push(val);
-  }
-  pop() {
-    return this._store.shift();
-  }
-}
 
 const execShell = async (task) => {
   return new Promise((resolve, reject) => {
@@ -52,39 +42,27 @@ const execShell = async (task) => {
   });
 };
 
-function taskFactory(task) {
-  return function () {
-    return new Promise(async (resolve, reject) => {
-      const spinner = ora(task.name);
-      spinner.spinner = 'earth';
-      spinner.indent = 4;
-      spinner.start();
+export function runTask(task) {
+  return new Promise(async (resolve, reject) => {
+    const spinner = ora(task.name);
+    spinner.spinner = 'earth';
+    spinner.indent = task?.customIndent ? task.customIndent : 4;
+    spinner.start();
 
-      const status = await execShell(task);
+    const status = await execShell(task);
 
-      if (status.error) {
-        spinner.fail();
-        reject(status.error.message);
-      }
+    if (status.error) {
+      spinner.fail();
+      reject(status.error.message);
+    }
 
-      if (status.stderr && status.stderr !== '' && !task.ignoreStdErr) {
-        spinner.fail();
-        reject(status.stderr);
-      }
+    if (status.stderr && status.stderr !== '' && !task.ignoreStdErr) {
+      spinner.fail();
+      reject(status.stderr);
+      return;
+    }
 
-      spinner.succeed();
-      resolve();
-    });
-  };
-}
-
-export async function processCmdTasks(tasks) {
-  const queue = new Queue();
-
-  tasks.forEach((task) => queue.push(taskFactory(task)));
-
-  while (queue._store.length > 0) {
-    const test = queue.pop();
-    await test().catch((err) => console.log('\n' + chalk.red(err)));
-  }
+    spinner.succeed();
+    resolve();
+  });
 }

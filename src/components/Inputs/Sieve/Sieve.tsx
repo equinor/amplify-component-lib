@@ -169,7 +169,7 @@ const Sieve: FC<SieveProps> = ({
 
   const handleUpdateSieveValue = <
     K extends keyof SieveValue,
-    V extends SieveValue[K]
+    V extends SieveValue[K],
   >(
     key: K,
     value: V
@@ -239,15 +239,16 @@ const Sieve: FC<SieveProps> = ({
       </Container>
       {showChips && (
         <Container>
-          {Object.keys(sieveValue.filterValues ?? {}).map((parent: string) =>
-            sieveValue.filterValues?.[parent].map((option) => (
-              <FilterChip
-                key={`filter-chip-${option?.value}`}
-                onDelete={() => handleRemoveFilter(parent, option)}
-              >
-                {option?.label}
-              </FilterChip>
-            ))
+          {Object.keys(sieveValue.filterValues ?? {}).map(
+            (parent: string) =>
+              sieveValue.filterValues?.[parent].map((option) => (
+                <FilterChip
+                  key={`filter-chip-${option?.value}`}
+                  onDelete={() => handleRemoveFilter(parent, option)}
+                >
+                  {option?.label}
+                </FilterChip>
+              ))
           )}
           {sieveValue.filterValues &&
             Object.keys(sieveValue.filterValues).flatMap(
