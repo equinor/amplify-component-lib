@@ -112,7 +112,7 @@ export type ToggleEventProps<T> = {
 };
 
 export type OptionDrawerProps<
-  T extends { id: string; label: string; parentId?: string; children?: T[] }
+  T extends { id: string; label: string; parentId?: string; children?: T[] },
 > = {
   item: T;
   onToggle: ({ items, toggle, event }: ToggleEventProps<T>) => void;
@@ -127,7 +127,7 @@ export type OptionDrawerProps<
 };
 
 const OptionDrawer = <
-  T extends { id: string; label: string; parentId?: string; children?: T[] }
+  T extends { id: string; label: string; parentId?: string; children?: T[] },
 >({
   item,
   onToggle,

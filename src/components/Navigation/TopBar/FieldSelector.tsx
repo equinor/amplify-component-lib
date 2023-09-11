@@ -140,8 +140,8 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         (field) => currentField?.uuid !== field?.uuid
       );
       if (searchValue === '') return fieldItems;
-      return fieldItems.filter((field) =>
-        field.name?.toLowerCase().includes(searchValue.toLowerCase())
+      return fieldItems.filter(
+        (field) => field.name?.toLowerCase().includes(searchValue.toLowerCase())
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 

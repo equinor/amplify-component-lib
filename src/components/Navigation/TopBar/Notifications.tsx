@@ -22,7 +22,9 @@ const SidePanel = styled.div<SidePanelProps>`
   bottom: 0;
   right: 0;
   overflow: auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.14),
+    0 3px 4px rgba(0, 0, 0, 0.12);
   ${(props) => !props.open && 'display: none;'}
 `;
 
@@ -49,7 +51,9 @@ export const UnreadRedDot = styled.div`
   position: absolute;
   right: 7px;
   top: 7px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.14),
+    0 3px 4px rgba(0, 0, 0, 0.12);
 `;
 
 interface NotificationsProps {

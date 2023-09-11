@@ -49,7 +49,7 @@ const StyledList = styled.div`
 `;
 
 const SearchChildren = <
-  T extends { id: string; label: string; children?: T[] }
+  T extends { id: string; label: string; children?: T[] },
 >(
   items: T[],
   search: string
@@ -73,7 +73,7 @@ const SearchChildren = <
 };
 
 export type MultiSelectDrawerProps<
-  T extends { id: string; label: string; children?: T[] }
+  T extends { id: string; label: string; children?: T[] },
 > = {
   disabled?: boolean;
   id?: string;
@@ -88,7 +88,7 @@ export type MultiSelectDrawerProps<
 };
 
 const MultiSelectDrawer = <
-  T extends { id: string; label: string; children?: T[] }
+  T extends { id: string; label: string; children?: T[] },
 >({
   disabled = false,
   id,

@@ -79,7 +79,9 @@ const StepIndicator = styled.div<StepIndicatorProps>`
     ${colors.interactive.primary__hover_alt.hex} 51%
   );
 
-  background-size: 400% 10px, 400%;
+  background-size:
+    400% 10px,
+    400%;
   ${(props) =>
     props.active
       ? 'background-position: 0%'

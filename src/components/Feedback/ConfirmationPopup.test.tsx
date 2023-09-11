@@ -89,7 +89,7 @@ test('Places actions correctly when given actionPosition prop', () => {
   const actionPositions = [undefined, 'left', 'right'] as [
     undefined,
     'left',
-    'right'
+    'right',
   ];
   const { rerender } = render(
     <ConfirmationPopup show={true} actions={buttons}>
