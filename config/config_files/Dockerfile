@@ -22,6 +22,7 @@ USER 0
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=base /app/dist /usr/share/nginx/html
 COPY proxy/nginx.conf /etc/nginx/conf.d/default.conf.template
+COPY proxy/securityheaders.conf /etc/nginx/conf.d/securityheaders.conf.template
 
 EXPOSE 5001
 ENV APPSETTING_ENV=local
