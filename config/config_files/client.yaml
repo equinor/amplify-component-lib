@@ -135,7 +135,7 @@ jobs:
         working-directory: client/proxy
         run: diff nginx.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf)
 
-      - name: Compare remote proxy/nginx.conf to local
+      - name: Compare remote proxy/securityheaders.conf to local
         working-directory: client/proxy
         run: diff securityheaders.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/securityheaders.conf)
 
