@@ -9,12 +9,6 @@ then
   exit 1
 fi
 
-if [ ! -d "server" ]
-then
-  printf -- "Couldn't find ./server folder, are you in the root folder of the project? 🤖\n"
-  exit 1
-fi
-
 if [ ! -d "tooling" ]
 then
   mkdir tooling
