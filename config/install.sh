@@ -39,6 +39,8 @@ cd ./proxy || (mkdir proxy && cd ./proxy || return)
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf" > nginx.conf
 
+printf -- "Downloading securityheaders.conf proxy config...\n"
+
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/securityheaders.conf" > securityheaders.conf
 
 cd ../..
