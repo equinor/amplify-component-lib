@@ -73,7 +73,7 @@ test('formatDate works as expected with format = "YYYY-MM-DD"', () => {
   const day = fakeDate.getDate();
   const month = fakeDate.getMonth() + 1;
   const year = fakeDate.getFullYear();
-  expect(formattedDate).toBe(`${year}-${month}-${day}`);
+  expect(formattedDate).toBe(`${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`);
 });
 
 test('formatDate works as expected with format = "DD.MM.YY"', () => {
