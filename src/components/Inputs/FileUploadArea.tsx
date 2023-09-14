@@ -2,6 +2,7 @@ import { FC, useMemo } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { add } from '@equinor/eds-icons';
 import { upload } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -31,18 +32,45 @@ const UploadWrapper = styled.div<UploadWrapperProps>`
   background-color: ${(props) => (props.$isDragActive ? `#deedee` : '')};
 `;
 
-export type FileUploadAreaProps = DropzoneOptions;
+const CompactUploadWrapper = styled.div<UploadWrapperProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border: 1px dashed ${colors.interactive.primary__resting.hsla};
+  border-radius: 4px;
+  :hover {
+    background-color: #deedee;
+    cursor: pointer;
+  }
+  /* c8 ignore next */
+  background-color: ${(props) => (props.$isDragActive ? `#deedee` : '')};
+`;
 
-const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
+export type FileUploadAreaProps = {
+  compact?: boolean;
+} & DropzoneOptions;
+
+const FileUploadArea: FC<FileUploadAreaProps> = ({ compact, ...options }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    ...props,
+    ...options,
   });
 
   const filetypes = useMemo((): string | undefined => {
-    if (props.accept) {
-      return Object.values(props.accept).join(', ');
+    if (options.accept) {
+      return Object.values(options.accept).join(', ');
     }
-  }, [props.accept]);
+  }, [options.accept]);
+
+  if (compact) {
+    return (
+      <CompactUploadWrapper {...getRootProps()} $isDragActive={isDragActive}>
+        <input data-testid="file-upload-area-input" {...getInputProps()} />
+        <Icon data={add} color={colors.interactive.primary__resting.hsla} />
+      </CompactUploadWrapper>
+    );
+  }
 
   return (
     <UploadWrapper {...getRootProps()} $isDragActive={isDragActive}>
@@ -68,7 +96,7 @@ const FileUploadArea: FC<FileUploadAreaProps> = (props) => {
               </Typography>{' '}
               to upload
             </Typography>
-            {props.accept && (
+            {options.accept && (
               <Typography group="paragraph" variant="meta">
                 <>Supported filetypes: {filetypes}</>
               </Typography>
