@@ -47,6 +47,8 @@ const IconWrapper = styled.span<IconWrapperProps>`
   background: ${(props) =>
     props.filled ? colors.interactive.primary__resting.hex : 'none'};
   > p {
+    // Ensure text icons are not squished
+    padding: 8px;
     color: ${(props) =>
       props.filled
         ? colors.text.static_icons__primary_white.hex
