@@ -1,4 +1,4 @@
-import { upload } from '@equinor/eds-icons';
+import { add, upload } from '@equinor/eds-icons';
 
 import { render, screen } from '../../tests/test-utils';
 import { FileUploadArea } from '../index';
@@ -26,4 +26,15 @@ test('Renders text and icon as it should', () => {
 
   expect(icons[0]).toHaveAttribute('d', upload.svgPathData);
   expect(text).toBeVisible();
+});
+
+test('Renders compact style as it should', () => {
+  const props = fakeProps();
+  render(<FileUploadArea compact {...props} />);
+
+  const icons = screen.getAllByTestId('eds-icon-path');
+  const text = screen.queryByText('browse');
+
+  expect(icons[0]).toHaveAttribute('d', add.svgPathData);
+  expect(text).toBeNull();
 });
