@@ -51,7 +51,7 @@ async function runTasks() {
 
   if (failed) {
     await runTask({
-      command: 'git add $(git diff --name-only --cached)',
+      command: 'git add $(git diff --name-only --cached --diff-filter=d)',
       name: chalk.hex(runColor)('Re-adding staged files that were fixed by eslint/prettier'),
     });
   }
