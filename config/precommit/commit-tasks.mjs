@@ -7,10 +7,10 @@ async function runTasks() {
   console.log(chalk.hex('#E0FEFF')('Running Pre-Commit Tasks'));
   let failed = false;
 
-  await runTask({ 
+  await runTask({
     command: 'npm run setup',
     name: chalk.hex(runColor)('Client setup'),
-    ignoreStdErr: true
+    ignoreStdErr: true,
   });
 
   try {
@@ -25,7 +25,7 @@ async function runTasks() {
       command: 'npm run pretty:fix',
       name: chalk.green('Fixing prettier errors'),
       customIndent: 6,
-      ignoreStdErr: true
+      ignoreStdErr: true,
     });
   }
 
@@ -42,7 +42,7 @@ async function runTasks() {
         command: 'npm run lint:fix',
         name: chalk.green('Fixing lint errors'),
         customIndent: 6,
-        ignoreStdErr: true
+        ignoreStdErr: true,
       });
     } catch (error) {
       console.log(error);
@@ -52,7 +52,9 @@ async function runTasks() {
   if (failed) {
     await runTask({
       command: 'git add $(git diff --name-only --cached --diff-filter=d)',
-      name: chalk.hex(runColor)('Re-adding staged files that were fixed by eslint/prettier'),
+      name: chalk.hex(runColor)(
+        'Re-adding staged files that were fixed by eslint/prettier'
+      ),
     });
   }
 
