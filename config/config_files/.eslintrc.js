@@ -20,7 +20,7 @@ module.exports = {
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort'],
   rules: {
-    'no-console': ["warn", { allow: ["warn", "error"] }],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react-hooks/exhaustive-deps': 'error',
@@ -34,33 +34,40 @@ module.exports = {
       { props: 'never', children: 'never' },
     ],
   },
-  "overrides": [
+  overrides: [
     {
-      "files": ["**/*.js", "**/*.ts", "**/*.tsx"],
-      "rules": {
-        "simple-import-sort/imports": [
-          "error",
+      files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+      rules: {
+        'simple-import-sort/imports': [
+          'error',
           {
-            "groups": [
+            groups: [
               // `react` first
-              ["^react?(.+)"],
+              ['^react?(.+)'],
               // Packages starting with `@`
-              ["^@"],
+              ['^@'],
               // Packages starting with `~`
-              ["^~"],
+              ['^~'],
               // Imports starting with `./`, `../` `src`
-              ["^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$", "src"],
+              [
+                '^\\.\\.(?!/?$)',
+                '^\\.\\./?$',
+                '^\\./(?=.*/)(?!/?$)',
+                '^\\.(?!/?$)',
+                '^\\./?$',
+                'src',
+              ],
               // Imports starting with a character
-              ["^[a-z]"],
+              ['^[a-z]'],
               // Style imports
-              ["^.+\\.s?css$"],
+              ['^.+\\.s?css$'],
               // Side effect imports
-              ["^\\u0000"]
-            ]
-          }
-        ]
-      }
-    }
+              ['^\\u0000'],
+            ],
+          },
+        ],
+      },
+    },
   ],
   settings: {
     react: {

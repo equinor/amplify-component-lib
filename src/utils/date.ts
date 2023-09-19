@@ -34,12 +34,18 @@ const formatDate = (
         })}`;
       }
       if (options?.format === 'YYYY-MM-DD') {
-        return `${year}-${month.toString().padStart(2,'0')}-${day.toString().padStart(2,'0')}`;
+        return `${year}-${month.toString().padStart(2, '0')}-${day
+          .toString()
+          .padStart(2, '0')}`;
       }
       if (options?.format === 'DD.MM.YY') {
-        return `${day.toString().padStart(2,'0')}.${month.toString().padStart(2,'0')}.${year.toString().slice(-2)}`;
+        return `${day.toString().padStart(2, '0')}.${month
+          .toString()
+          .padStart(2, '0')}.${year.toString().slice(-2)}`;
       }
-      return `${day.toString().padStart(2,'0')}.${month.toString().padStart(2,'0')}.${year}`;
+      return `${day.toString().padStart(2, '0')}.${month
+        .toString()
+        .padStart(2, '0')}.${year}`;
     }
   }
   return '';

@@ -25,10 +25,7 @@ test('SetItemRef works as expected', () => {
     <div>
       <PageMenu />
       {items.map((item) => (
-        <h1
-          key={item.value}
-          id={item.value}
-        >
+        <h1 key={item.value} id={item.value}>
           {item.label}
         </h1>
       ))}

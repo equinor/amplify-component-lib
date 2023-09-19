@@ -74,11 +74,7 @@ function Section({
 }) {
   return (
     <div style={{ background: color }}>
-      <Typography
-        variant="h1"
-        key={value}
-        id={value}
-      >
+      <Typography variant="h1" key={value} id={value}>
         {label}
       </Typography>
     </div>
