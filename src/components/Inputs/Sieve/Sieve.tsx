@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, useEffect, useRef } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Chip as EDSChip, Search as EDSSearch } from '@equinor/eds-core-react';
@@ -8,6 +15,7 @@ import Filter, { FilterOption } from './Filter';
 import { Option } from './Sieve.common';
 import Sort from './Sort';
 
+import { debounce } from 'lodash';
 import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
@@ -59,6 +67,8 @@ export interface SieveProps {
   minSearchWidth?: string;
   syncWithSearchParams?: boolean;
   isLoadingOptions?: boolean;
+  debounceSearchValue?: boolean;
+  onIsTyping?: (value: boolean) => void;
 }
 
 const Sieve: FC<SieveProps> = ({
@@ -71,13 +81,19 @@ const Sieve: FC<SieveProps> = ({
   minSearchWidth = '24rem',
   syncWithSearchParams = false,
   isLoadingOptions = false,
+  debounceSearchValue = false,
+  onIsTyping,
 }) => {
+  const [localSearchString, setLocalSearchString] = useState(
+    sieveValue.searchValue ?? ''
+  );
+  const previousOnIsTyping = useRef<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const initalizedSearchParams = useRef<boolean>(false);
+  const initializedSearchParams = useRef<boolean>(false);
 
   useEffect(() => {
     if (
-      !initalizedSearchParams.current &&
+      !initializedSearchParams.current &&
       syncWithSearchParams &&
       !isLoadingOptions
     ) {
@@ -107,11 +123,11 @@ const Sieve: FC<SieveProps> = ({
         sortValue: sieveValue.sortValue,
       });
 
-      initalizedSearchParams.current = true;
+      initializedSearchParams.current = true;
     }
   }, [
     filterOptions,
-    initalizedSearchParams,
+    initializedSearchParams,
     isLoadingOptions,
     onUpdate,
     searchParams,
@@ -123,7 +139,7 @@ const Sieve: FC<SieveProps> = ({
   useEffect(() => {
     if (
       syncWithSearchParams &&
-      initalizedSearchParams.current &&
+      initializedSearchParams.current &&
       !isLoadingOptions &&
       JSON.stringify(sieveValue) !== previousSieveValue.current
     ) {
@@ -158,7 +174,7 @@ const Sieve: FC<SieveProps> = ({
     }
   }, [
     filterOptions,
-    initalizedSearchParams,
+    initializedSearchParams,
     isLoadingOptions,
     onUpdate,
     searchParams,
@@ -167,20 +183,33 @@ const Sieve: FC<SieveProps> = ({
     syncWithSearchParams,
   ]);
 
-  const handleUpdateSieveValue = <
-    K extends keyof SieveValue,
-    V extends SieveValue[K],
-  >(
-    key: K,
-    value: V
-  ) => {
-    const newSieveValue: SieveValue = {
-      ...sieveValue,
-      [key]: value,
-    };
+  const handleUpdateSieveValue = useCallback(
+    <K extends keyof SieveValue, V extends SieveValue[K]>(key: K, value: V) => {
+      const newSieveValue: SieveValue = {
+        ...sieveValue,
+        [key]: value,
+      };
 
-    onUpdate(newSieveValue);
-  };
+      onUpdate(newSieveValue);
+    },
+    [onUpdate, sieveValue]
+  );
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedUpdateSieveValue = useCallback(
+    debounce(
+      <K extends keyof SieveValue, V extends SieveValue[K]>(
+        key: K,
+        value: V
+      ) => {
+        handleUpdateSieveValue(key, value);
+        onIsTyping?.(false);
+        previousOnIsTyping.current = false;
+      },
+      800
+    ),
+    [handleUpdateSieveValue, onIsTyping]
+  );
 
   const handleRemoveFilter = (parent: string, option: Option) => {
     let newValues: FilterValues | undefined = { ...sieveValue.filterValues };
@@ -204,19 +233,41 @@ const Sieve: FC<SieveProps> = ({
     handleUpdateSieveValue('filterValues', undefined);
   };
 
+  const handleOnSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    if (debounceSearchValue) {
+      setLocalSearchString(event.target.value);
+      if (event.target.value === '') {
+        debouncedUpdateSieveValue.cancel();
+        handleUpdateSieveValue('searchValue', undefined);
+        onIsTyping?.(false);
+        previousOnIsTyping.current = false;
+      } else {
+        debouncedUpdateSieveValue('searchValue', event.target.value);
+        if (!previousOnIsTyping.current) {
+          onIsTyping?.(true);
+          previousOnIsTyping.current = true;
+        }
+      }
+    } else {
+      handleUpdateSieveValue(
+        'searchValue',
+        event.target.value !== '' ? event.target.value : undefined
+      );
+    }
+  };
+
   return (
     <Wrapper>
       <Container>
         <Search
           style={{ minWidth: minSearchWidth }}
           placeholder={searchPlaceholder}
-          value={sieveValue.searchValue ?? ''}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            handleUpdateSieveValue(
-              'searchValue',
-              event.target.value !== '' ? event.target.value : undefined
-            );
-          }}
+          value={
+            debounceSearchValue
+              ? localSearchString
+              : sieveValue.searchValue ?? ''
+          }
+          onChange={handleOnSearch}
         />
         {sortOptions !== undefined && (
           <Sort

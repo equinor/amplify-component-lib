@@ -13,10 +13,10 @@ function Wrappers({ children }: { children: any }) {
   return <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>;
 }
 
-function fakeOption(): Option {
+function fakeOption(num: number): Option {
   return {
-    label: faker.string.uuid(),
-    value: faker.string.uuid(),
+    label: faker.animal.dog() + num,
+    value: faker.animal.dog() + num,
   };
 }
 
@@ -24,7 +24,8 @@ function fakeOptions(): Option[] {
   const options: Option[] = [];
 
   for (let i = 0; i < faker.number.int({ min: 2, max: 6 }); i++) {
-    options.push(fakeOption());
+    const option = fakeOption(i);
+    options.push(option);
   }
   return options;
 }
@@ -314,11 +315,23 @@ test('Users can add multiple filters from the same filter menu', async () => {
     })
   );
 
-  const selectedFilters = [];
+  let called = 1;
 
-  for (const option of props.filterOptions![randomFilterGroup].options) {
+  const options = props.filterOptions![randomFilterGroup].options;
+
+  for (const [index, option] of options.entries()) {
+    const selectedFilters = options.slice(0, index + 1);
     await user.click(screen.getByText(option.label));
-    selectedFilters.push(option);
+
+    expect(props.onUpdate).toHaveBeenCalledWith({
+      ...props.sieveValue,
+      filterValues: {
+        [props.filterOptions![randomFilterGroup].label]: selectedFilters,
+      },
+    });
+    expect(props.onUpdate).toHaveBeenCalledTimes(called);
+    called += 1;
+
     rerender(
       <Sieve
         {...props}
@@ -330,12 +343,6 @@ test('Users can add multiple filters from the same filter menu', async () => {
         }}
       />
     );
-    expect(props.onUpdate).toHaveBeenCalledWith({
-      ...props.sieveValue,
-      filterValues: {
-        [props.filterOptions![randomFilterGroup].label]: selectedFilters,
-      },
-    });
   }
 });
 
@@ -788,4 +795,89 @@ test('Search params works with "bad" search params', async () => {
   expect(
     screen.queryByText(props.filterOptions![randomFilterGroup].options[0].label)
   ).not.toBeInTheDocument();
+});
+
+test('debounced search value works as expected', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  let text = '';
+  const customOnUpdate = (value: SieveValue) => {
+    text += value.searchValue;
+  };
+
+  render(
+    <Sieve {...props} onUpdate={customOnUpdate} debounceSearchValue={true} />,
+    { wrapper: Wrappers }
+  );
+
+  const searchField = screen.getByRole('textbox');
+
+  const fakeText = faker.animal.cetacean();
+  await user.type(searchField, fakeText);
+
+  expect(text).toBe('');
+
+  await waitFor(() => expect(text).toBe(fakeText), { timeout: 1000 });
+});
+
+test('debounced search value works as expected when clearing after starting to type', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  let text = undefined;
+  const customOnUpdate = (value: SieveValue) => {
+    text = value.searchValue;
+  };
+
+  render(
+    <Sieve {...props} onUpdate={customOnUpdate} debounceSearchValue={true} />,
+    { wrapper: Wrappers }
+  );
+
+  const searchField = screen.getByRole('textbox');
+
+  const fakeText = faker.animal.cetacean();
+  await user.type(searchField, fakeText);
+
+  expect(text).toBeUndefined();
+
+  await user.clear(searchField);
+
+  expect(text).toBeUndefined();
+});
+
+test('debounced search calls onIsTyping as expected', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  const handleOnIsTyping = vi.fn();
+
+  render(
+    <Sieve
+      {...props}
+      debounceSearchValue={true}
+      onIsTyping={handleOnIsTyping}
+    />,
+    { wrapper: Wrappers }
+  );
+
+  const searchField = screen.getByRole('textbox');
+
+  const fakeText = faker.animal.cetacean();
+  await user.type(searchField, fakeText);
+  expect(handleOnIsTyping).toHaveBeenCalledWith(true);
+
+  // Debounce is 800ms, give 100ms of leeway in the test
+  await waitFor(() => expect(handleOnIsTyping).toHaveBeenCalledWith(false), {
+    timeout: 900,
+  });
+
+  await user.type(searchField, fakeText);
+  expect(handleOnIsTyping).toHaveBeenCalledWith(true);
+
+  // Clear the text before debounce is done
+  await user.clear(searchField);
+
+  expect(handleOnIsTyping).toHaveBeenCalledWith(false);
 });
