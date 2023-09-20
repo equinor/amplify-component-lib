@@ -459,7 +459,6 @@ test('opt out of sending email whens suggesting feature', async () => {
   expect(optOutCheckbox).toBeChecked();
 
   expect(nameInput.value).toBe('Anonymous');
-  screen.logTestingPlaygroundURL();
 
   await user.type(titleInput, title);
 
