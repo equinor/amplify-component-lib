@@ -86,20 +86,6 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   const userEmail = account?.username;
   const [isWrongDomain, setIsWrongDomain] = useState(false);
 
-  const hasAttachment = useMemo(() => {
-    return (
-      feedbackContent.attachments !== undefined &&
-      feedbackContent.attachments.length > 0
-    );
-  }, [feedbackContent.attachments]);
-
-  const filePrivacyConsent = useMemo(() => {
-    if (hasAttachment && selectedType === FeedbackEnum.BUG) {
-      return feedbackContent.filePrivacyConsent;
-    }
-    return true;
-  }, [feedbackContent.filePrivacyConsent, hasAttachment, selectedType]);
-
   const handleOnUrlChange = (e: FormEvent<HTMLInputElement>) => {
     updateFeedback('url', e.currentTarget.value);
     if (e.currentTarget.value === '') {
@@ -122,13 +108,11 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
     return (
       feedbackContent.title.length > 0 &&
       feedbackContent.description.length > 0 &&
-      filePrivacyConsent &&
       !isWrongDomain
     );
   }, [
     feedbackContent.title.length,
     feedbackContent.description.length,
-    filePrivacyConsent,
     isWrongDomain,
   ]);
 
@@ -146,14 +130,15 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
       />
       <OptionalTooltip
         title={
-          FeedbackEnum.BUG
+          selectedType === FeedbackEnum.BUG
             ? 'Your email is required when submitting a bug report to service now'
             : 'You may opt out of including your email when suggesting a feature'
         }
       >
         <TextField
           id="usernamee"
-          label="Name"
+          label="Email"
+          meta={selectedType === FeedbackEnum.BUG ? 'Required' : 'Optional'}
           value={feedbackContent.optOutEmail ? 'Anonymous' : userEmail}
           disabled
         />
@@ -213,11 +198,6 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
       />
-      {/*<FilePrivacyCheckbox*/}
-      {/*  feedbackContent={feedbackContent}*/}
-      {/*  updateFeedback={updateFeedback}*/}
-      {/*  hasAttachment={hasAttachment}*/}
-      {/*/>*/}
       {selectedType === FeedbackEnum.SUGGESTION && (
         <ConsentCheckbox
           feedbackContent={feedbackContent}

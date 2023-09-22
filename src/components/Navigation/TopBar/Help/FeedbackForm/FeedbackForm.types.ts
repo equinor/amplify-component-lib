@@ -18,5 +18,4 @@ export type FeedbackContentType = {
   url?: string;
   optOutEmail?: boolean;
   attachments?: FileWithPath[];
-  filePrivacyConsent?: boolean;
 };
