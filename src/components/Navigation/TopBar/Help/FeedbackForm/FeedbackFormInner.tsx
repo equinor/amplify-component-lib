@@ -31,9 +31,8 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: ${spacings.comfortable.medium};
-  width: 700px;
-  padding: ${spacings.comfortable.medium};
-  padding-top: 0;
+  height: 100%;
+  width: 100%;
 `;
 
 const Actions = styled.div`
@@ -139,7 +138,7 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           id="usernamee"
           label="Email"
           meta={selectedType === FeedbackEnum.BUG ? 'Required' : 'Optional'}
-          value={feedbackContent.optOutEmail ? 'Anonymous' : userEmail}
+          value={feedbackContent.anonymous ? 'Anonymous' : userEmail}
           disabled
         />
       </OptionalTooltip>

@@ -16,6 +16,6 @@ export type FeedbackContentType = {
   description: string;
   severity?: string;
   url?: string;
-  optOutEmail?: boolean;
+  anonymous?: boolean;
   attachments?: FileWithPath[];
 };

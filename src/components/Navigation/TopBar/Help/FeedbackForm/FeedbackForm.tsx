@@ -1,6 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
+import { tokens } from '@equinor/eds-tokens';
 import { useMutation } from '@tanstack/react-query';
 
 import {
@@ -15,8 +16,20 @@ import {
 import FeedbackFormInner from './FeedbackFormInner';
 import { ServiceNowIncidentRequestDto } from 'src/api';
 import { PortalService } from 'src/api/services/PortalService';
+import Success from 'src/components/Navigation/TopBar/Help/FeedbackForm/Success';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
+
+import styled from 'styled-components';
+
+const { spacings } = tokens;
+
+const Container = styled.div`
+  width: 700px;
+  height: 580px;
+  padding: 0 ${spacings.comfortable.medium} ${spacings.comfortable.medium}
+    ${spacings.comfortable.medium};
+`;
 
 interface FeedbackFormProps {
   onClose: () => void;
@@ -31,25 +44,56 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
     description: '',
-    optOutEmail: false,
+    anonymous: false,
   });
 
-  const { mutateAsync: slackFileUpload, isLoading: isFileUploadLoading } =
-    useMutation(['slackFileUpload', feedbackContent], (formData: FormData) =>
-      PortalService.fileUpload(formData)
-    );
+  const {
+    mutateAsync: slackFileUpload,
+    isLoading: isFileUploadLoading,
+    isSuccess: isFileUploadSuccess,
+  } = useMutation(['slackFileUpload', feedbackContent], (formData: FormData) =>
+    PortalService.fileUpload(formData)
+  );
 
-  const { mutateAsync: slackPostMessage, isLoading: isPostMessageLoading } =
-    useMutation(['slackPostMessage', feedbackContent], (formData: FormData) =>
-      PortalService.postmessage(formData)
-    );
+  const {
+    mutateAsync: slackPostMessage,
+    isLoading: isPostMessageLoading,
+    isSuccess: isPostMessageSuccess,
+  } = useMutation(['slackPostMessage', feedbackContent], (formData: FormData) =>
+    PortalService.postmessage(formData)
+  );
 
-  const { mutateAsync: serviceNowIncident, isLoading: isServiceNowLoading } =
-    useMutation(
-      ['serviceNowIncident', feedbackContent],
-      async (serviceNowDto: ServiceNowIncidentRequestDto) =>
-        PortalService.createIncident(serviceNowDto)
-    );
+  const {
+    mutateAsync: serviceNowIncident,
+    isLoading: isServiceNowLoading,
+    isSuccess: isServiceNowSuccess,
+    data: response,
+  } = useMutation(
+    ['serviceNowIncident', feedbackContent],
+    async (serviceNowDto: ServiceNowIncidentRequestDto) =>
+      PortalService.createIncident(serviceNowDto)
+  );
+
+  const relevantRequestsIsSuccess = useMemo(() => {
+    const isSuccess: boolean[] = [];
+    if (
+      feedbackContent?.attachments &&
+      feedbackContent?.attachments?.length > 0
+    ) {
+      isSuccess.push(isFileUploadSuccess);
+    }
+    if (selectedType === FeedbackEnum.BUG) {
+      isSuccess.push(isServiceNowSuccess);
+    }
+    isSuccess.push(isPostMessageSuccess);
+    return !isSuccess.includes(false);
+  }, [
+    feedbackContent?.attachments,
+    isFileUploadSuccess,
+    isPostMessageSuccess,
+    isServiceNowSuccess,
+    selectedType,
+  ]);
 
   const requestIsLoading = useMemo(() => {
     return isPostMessageLoading || isFileUploadLoading || isServiceNowLoading;
@@ -89,14 +133,24 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       }
 
       showSnackbar('Report has been sent successfully');
-      onClose();
     } catch (err) {
       showSnackbar('There was an error sending your report');
     }
   };
+  if (relevantRequestsIsSuccess && response)
+    return (
+      <Container>
+        <Success
+          onClose={onClose}
+          serviceNowId={
+            selectedType === FeedbackEnum.BUG ? response : undefined
+          }
+        />
+      </Container>
+    );
 
   return (
-    <>
+    <Container>
       <FeedbackFormInner
         selectedType={selectedType}
         feedbackContent={feedbackContent}
@@ -105,7 +159,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
         onClose={onClose}
         requestIsLoading={requestIsLoading}
       />
-    </>
+    </Container>
   );
 };
 

@@ -33,14 +33,14 @@ const ConsentCheckbox: FC<ConsentCheckboxProps> = ({
   updateFeedback,
 }) => {
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateFeedback('optOutEmail', e.target.checked);
+    updateFeedback('anonymous', e.target.checked);
   };
 
   return (
     <Container>
       <Checkbox
         data-testid="opt_out_checkbox"
-        checked={feedbackContent.optOutEmail}
+        checked={feedbackContent.anonymous}
         onChange={handleOnChange}
       />
       <Text variant="body_short">Suggest this feature anonymously</Text>
