@@ -5,33 +5,34 @@ import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { FeedbackContentType, SeverityOption } from './FeedbackForm.types';
-import FileProgress from 'src/components/Feedback/Progress/FileProgress';
 import FileUploadArea from 'src/components/Inputs/FileUploadArea';
+import ImageFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/ImageFile';
 
 import styled from 'styled-components';
 
 const { spacings, colors } = tokens;
 
 const Wrapper = styled.div`
+  grid-column: 1/3;
   display: flex;
   flex-direction: column;
 `;
-
-const FileUploadAreaWrapper = styled.div`
-  position: relative;
-  top: -10px;
+const Title = styled(Typography)`
+  margin: ${spacings.comfortable.small} ${spacings.comfortable.small} 0
+    ${spacings.comfortable.small};
+  color: ${colors.text.static_icons__tertiary.hex};
 `;
 
-const FilesUploadedList = styled.div``;
-
-const LabelAndMeta = styled.div`
+const FileUploadAreaWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  position: relative;
-  top: 10px;
-  margin: 0 ${spacings.comfortable.small};
-  > p {
-    color: ${colors.text.static_icons__tertiary.hex};
+  flex-wrap: wrap;
+  align-items: start;
+  gap: ${spacings.comfortable.medium_small};
+  height: 140px;
+  overflow-x: visible;
+  overflow-y: auto;
+  > :first-child {
+    margin-top: ${spacings.comfortable.medium_small};
   }
 `;
 
@@ -89,40 +90,35 @@ const UploadFile: FC<UploadFileProps> = ({
 
   return (
     <Wrapper>
+      <Title group="input" variant="label">
+        Attachments
+      </Title>
       <FileUploadAreaWrapper className="test">
-        <LabelAndMeta>
-          <Typography group="input" variant="label">
-            Attachments
-          </Typography>
-          <Typography group="input" variant="label">
-            optional
-          </Typography>
-        </LabelAndMeta>
         <FileUploadArea
+          compact
           onDrop={onDrop}
           accept={{
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
           }}
         />
-      </FileUploadAreaWrapper>
-      <FilesUploadedList>
         {feedbackContent.attachments?.map((file) => {
           return (
-            <FileProgress
+            <ImageFile
               key={file.name + file.size}
-              name={file.name}
               onDelete={() => handleOnDelete(file)}
               onAbort={() => null}
+              file={file}
             />
           );
         })}
         {rejectedFiles.map((rejection) => {
+          console.log(rejection);
           /* c8 ignore start */
           return (
-            <FileProgress
+            <ImageFile
+              rejection={rejection}
               key={rejection.file.name + rejection.file.size}
-              name={rejection.file.name}
               onDelete={() => handleOnDeleteRejected(rejection)}
               onAbort={() => null}
               error={true}
@@ -133,7 +129,7 @@ const UploadFile: FC<UploadFileProps> = ({
           );
           /* c8 ignore end */
         })}
-      </FilesUploadedList>
+      </FileUploadAreaWrapper>
     </Wrapper>
   );
 };

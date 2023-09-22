@@ -17,7 +17,7 @@ const ContentInfo = styled.div`
   flex-direction: row;
   align-items: center;
   gap: ${spacings.comfortable.medium_small};
-  padding-right: 50px;
+  padding-right: 20px;
 `;
 
 const Wrapper = styled.div`

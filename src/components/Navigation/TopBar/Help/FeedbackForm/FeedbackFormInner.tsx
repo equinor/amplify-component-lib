@@ -6,8 +6,11 @@ import {
   AutocompleteChanges,
   Button,
   CircularProgress,
+  Icon,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
@@ -16,19 +19,19 @@ import {
   SeverityOption,
 } from './FeedbackForm.types';
 import UploadFile from './UploadFile';
+import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
 import ConsentCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/ConsentCheckbox';
-import FilePrivacyCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/FilePrivacyCheckbox';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { spacings, colors, shape } = tokens;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: ${spacings.comfortable.medium};
-  max-width: 350px;
+  width: 700px;
   padding: ${spacings.comfortable.medium};
   padding-top: 0;
 `;
@@ -37,11 +40,26 @@ const Actions = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: ${spacings.comfortable.medium};
+  grid-column: 2/3;
 `;
 
 const LoadingSpinner = styled(CircularProgress)`
   height: 60%;
   margin: auto;
+`;
+
+const UploadInfo = styled.div`
+  grid-column: 1/3;
+  display: flex;
+  gap: ${spacings.comfortable.small};
+  align-items: center;
+  background-color: ${colors.ui.background__info.hex};
+  padding: ${spacings.comfortable.medium_small};
+  border-radius: ${shape.button.borderRadius};
+`;
+
+const Description = styled(TextField)`
+  grid-column: 1/3;
 `;
 
 interface FeedbackDetailsProps {
@@ -117,13 +135,6 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   return (
     <Wrapper>
       <TextField
-        id="usernamee"
-        label="Name"
-        value={feedbackContent.optOutEmail ? 'Anonymous' : userEmail}
-        disabled
-      />
-
-      <TextField
         id="feedback-title"
         label="Title"
         meta="Required"
@@ -133,18 +144,21 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           updateFeedback('title', e.currentTarget.value)
         }
       />
-      <TextField
-        id="feedback-description"
-        label="Description"
-        meta="Required"
-        value={feedbackContent.description}
-        placeholder={'Describe the ' + selectedType + '...'}
-        rows={3}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          updateFeedback('description', e.currentTarget.value)
+      <OptionalTooltip
+        title={
+          FeedbackEnum.BUG
+            ? 'Your email is required when submitting a bug report to service now'
+            : 'You may opt out of including your email when suggesting a feature'
         }
-        multiline
-      />
+      >
+        <TextField
+          id="usernamee"
+          label="Name"
+          value={feedbackContent.optOutEmail ? 'Anonymous' : userEmail}
+          disabled
+        />
+      </OptionalTooltip>
+
       {selectedType === FeedbackEnum.BUG && (
         <>
           <Autocomplete
@@ -176,16 +190,34 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           />
         </>
       )}
-
+      <Description
+        id="feedback-description"
+        label="Description"
+        meta="Required"
+        value={feedbackContent.description}
+        placeholder={'Describe the ' + selectedType + '...'}
+        rows={4}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          updateFeedback('description', e.currentTarget.value)
+        }
+        multiline
+      />
+      <UploadInfo>
+        <Icon data={info_circle} />
+        <Typography>
+          Please make sure the uploaded files do not contain confidential or
+          personal information
+        </Typography>
+      </UploadInfo>
       <UploadFile
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
       />
-      <FilePrivacyCheckbox
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-        hasAttachment={hasAttachment}
-      />
+      {/*<FilePrivacyCheckbox*/}
+      {/*  feedbackContent={feedbackContent}*/}
+      {/*  updateFeedback={updateFeedback}*/}
+      {/*  hasAttachment={hasAttachment}*/}
+      {/*/>*/}
       {selectedType === FeedbackEnum.SUGGESTION && (
         <ConsentCheckbox
           feedbackContent={feedbackContent}
