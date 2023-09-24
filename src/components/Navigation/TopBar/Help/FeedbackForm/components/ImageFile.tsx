@@ -104,7 +104,7 @@ const ImageFile: FC<ImageFileProps> = ({
     <Wrapper $error={error !== undefined}>
       <Tooltip
         title={`
-          ${fileName}: ${error && errorMsg}
+          ${fileName}${error ? ': ' + errorMsg : ''}
         `}
       >
         {error ? (

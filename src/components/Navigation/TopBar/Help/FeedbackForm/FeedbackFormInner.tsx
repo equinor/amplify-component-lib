@@ -16,11 +16,11 @@ import { tokens } from '@equinor/eds-tokens';
 import {
   FeedbackContentType,
   FeedbackEnum,
-  SeverityOption,
+  UrgencyOption,
 } from './FeedbackForm.types';
-import UploadFile from './UploadFile';
 import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
-import ConsentCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/ConsentCheckbox';
+import ConsentCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ConsentCheckbox';
+import UploadFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/UploadFile';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
@@ -61,19 +61,19 @@ const Description = styled(TextField)`
   grid-column: 1/3;
 `;
 
-interface FeedbackDetailsProps {
+interface FeedbackFormInnerProps {
   selectedType: FeedbackEnum;
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[] | boolean
+    newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => void;
   handleSave: () => void;
   onClose: () => void;
   requestIsLoading: boolean;
 }
 
-const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
+const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
   selectedType,
   feedbackContent,
   updateFeedback,
@@ -146,14 +146,14 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
       {selectedType === FeedbackEnum.BUG && (
         <>
           <Autocomplete
-            options={Object.values(SeverityOption)}
+            options={Object.values(UrgencyOption)}
             id="feedback-severity"
             label="Severity"
             meta="optional"
-            selectedOptions={[feedbackContent.severity as SeverityOption]}
+            selectedOptions={[feedbackContent.urgency as UrgencyOption]}
             placeholder="Select error impact"
-            onOptionsChange={(e: AutocompleteChanges<SeverityOption>) =>
-              updateFeedback('severity', e.selectedItems[0])
+            onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
+              updateFeedback('urgency', e.selectedItems[0])
             }
             autoWidth
           />

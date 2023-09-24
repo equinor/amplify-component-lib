@@ -3,7 +3,7 @@ import { FileWithPath } from 'react-dropzone';
 import {
   FeedbackContentType,
   FeedbackEnum,
-  SeverityOption,
+  UrgencyOption,
 } from './FeedbackForm.types';
 import { date, environment } from 'src/utils';
 
@@ -11,10 +11,10 @@ const { formatDate } = date;
 const { getAppName } = environment;
 
 const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
-  if (feedbackContent.severity === SeverityOption.NO_IMPACT) {
+  if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
     return ':large_yellow_circle:';
   }
-  if (feedbackContent.severity === SeverityOption.IMPEDES) {
+  if (feedbackContent.urgency === UrgencyOption.IMPEDES) {
     return ':large_orange_circle:';
   }
   return ':red_circle:';
@@ -42,10 +42,10 @@ export const createServiceNowDescription = (
   feedbackContent: FeedbackContentType
 ) => {
   const locationText = `Url location of bug: ${feedbackContent.url} \n`;
-  const severityText = `Severity of bug: ${feedbackContent.severity} \n`;
+  const severityText = `Severity of bug: ${feedbackContent.urgency} \n`;
 
   return `${feedbackContent.url ? locationText : ''}${
-    feedbackContent.severity ? severityText : ''
+    feedbackContent.urgency ? severityText : ''
   }${feedbackContent.description}`;
 };
 
@@ -78,11 +78,11 @@ export const createSlackMessage = (
     });
   }
 
-  if (feedbackContent.severity) {
+  if (feedbackContent.urgency) {
     titleAndSeveritySectionArray.push({
       type: 'mrkdwn',
       text: `*Severity* \n ${getSeverityEmoji(feedbackContent)} ${
-        feedbackContent.severity
+        feedbackContent.urgency
       }`,
     });
   }

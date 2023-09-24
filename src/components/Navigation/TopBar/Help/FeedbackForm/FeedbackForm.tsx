@@ -7,16 +7,16 @@ import { useMutation } from '@tanstack/react-query';
 import {
   FeedbackContentType,
   FeedbackEnum,
-  SeverityOption,
+  UrgencyOption,
 } from './FeedbackForm.types';
 import {
   createServiceNowDescription,
   createSlackMessage,
 } from './FeedbackForm.utils';
 import FeedbackFormInner from './FeedbackFormInner';
-import { ServiceNowIncidentRequestDto } from 'src/api';
+import { ServiceNowUrgency } from 'src/api/models/ServiceNowUrgency';
 import { PortalService } from 'src/api/services/PortalService';
-import Success from 'src/components/Navigation/TopBar/Help/FeedbackForm/Success';
+import Success from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/Success';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
 
@@ -70,8 +70,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     data: response,
   } = useMutation(
     ['serviceNowIncident', feedbackContent],
-    async (serviceNowDto: ServiceNowIncidentRequestDto) =>
-      PortalService.createIncident(serviceNowDto)
+    async (formData: FormData) => PortalService.createIncident(formData)
   );
 
   const relevantRequestsIsSuccess = useMemo(() => {
@@ -101,21 +100,74 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[] | boolean
+    newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => {
-    setFeedbackContent({ ...feedbackContent, [key]: newValue });
+    if (key === 'attachments' && feedbackContent.attachments) {
+      setFeedbackContent((prev) => {
+        const newAttachmentWithoutDuplicates = (
+          newValue as FileWithPath[]
+        ).filter(
+          (value) =>
+            !prev?.attachments?.some(
+              (prevValue) =>
+                prevValue.name === value.name && prevValue.size === value.size
+            )
+        );
+        return {
+          ...prev,
+          [key]: [
+            ...(prev.attachments ?? []),
+            ...newAttachmentWithoutDuplicates,
+          ],
+        };
+      });
+    } else {
+      setFeedbackContent({ ...feedbackContent, [key]: newValue });
+    }
+  };
+
+  const getUrgencyNumber = (urgency: UrgencyOption) => {
+    switch (urgency) {
+      case UrgencyOption.UNABLE:
+        return ServiceNowUrgency._1;
+      case UrgencyOption.IMPEDES:
+        return ServiceNowUrgency._2;
+      case UrgencyOption.NO_IMPACT:
+        return ServiceNowUrgency._3;
+    }
   };
 
   const handleSave = async () => {
     try {
       if (selectedType === FeedbackEnum.BUG && userEmail) {
-        const serviceNowObject: ServiceNowIncidentRequestDto = {
-          configurationItem: '117499', // TODO: use individual IDs for all apps with this as a fallback for "Amplify Applications"
-          title: feedbackContent.title,
-          description: createServiceNowDescription(feedbackContent),
-          callerEmail: userEmail,
-        };
-        await serviceNowIncident(serviceNowObject);
+        const serviceNowFormData = new FormData();
+        serviceNowFormData.append('ConfigurationItem', '117499');
+        serviceNowFormData.append('Title', feedbackContent.title);
+        serviceNowFormData.append(
+          'Description',
+          createServiceNowDescription(feedbackContent)
+        );
+        serviceNowFormData.append('CallerEmail', userEmail);
+        if (feedbackContent.urgency) {
+          serviceNowFormData.append(
+            'urgency',
+            getUrgencyNumber(
+              feedbackContent.urgency as UrgencyOption
+            ).toString()
+          );
+        }
+        if (
+          feedbackContent.attachments &&
+          feedbackContent.attachments.length > 0
+        ) {
+          serviceNowFormData.append('Image', feedbackContent.attachments[0]); // TODO multiple attachments
+        }
+        console.log(serviceNowFormData.get('ConfigurationItem'));
+        console.log(serviceNowFormData.get('Title'));
+        console.log(serviceNowFormData.get('Description'));
+        console.log(serviceNowFormData.get('CallerEmail'));
+        console.log(serviceNowFormData.get('urgency'));
+        await serviceNowIncident(serviceNowFormData);
       }
 
       const fileFormData = new FormData();
@@ -128,7 +180,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       await slackPostMessage(contentFormData);
 
       if (feedbackContent.attachments && feedbackContent.attachments[0]) {
-        fileFormData.append('file', feedbackContent.attachments[0]);
+        fileFormData.append('file', feedbackContent.attachments[0]); // TODO multiple attachments
         await slackFileUpload(fileFormData);
       }
 

@@ -2,11 +2,11 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Help } from './Help';
-import { CancelablePromise, ServiceNowIncidentRequestDto } from 'src/api';
+import { CancelablePromise } from 'src/api';
 import { FullPageSpinner, Unauthorized } from 'src/components/index';
 import {
   FeedbackContentType,
-  SeverityOption,
+  UrgencyOption,
 } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
@@ -51,15 +51,13 @@ let mockServiceHasError = false;
 
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
-    public static createIncident(
-      requestBody?: ServiceNowIncidentRequestDto
-    ): CancelablePromise<any> {
+    public static createIncident(formData?: FormData): CancelablePromise<any> {
       return new CancelablePromise((res, reject) =>
         setTimeout(() => {
           if (mockServiceHasError) {
             return reject('error incident');
           }
-          return res(requestBody);
+          return res(formData);
         }, 500)
       );
     }
@@ -88,9 +86,9 @@ vi.mock('src/api/services/PortalService', () => {
 });
 
 const severityOptions = [
-  SeverityOption.IMPEDES,
-  SeverityOption.UNABLE,
-  SeverityOption.NO_IMPACT,
+  UrgencyOption.IMPEDES,
+  UrgencyOption.UNABLE,
+  UrgencyOption.NO_IMPACT,
 ];
 
 const applicationName = faker.animal.cat();

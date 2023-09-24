@@ -4,9 +4,12 @@ import { FileRejection, FileWithPath } from 'react-dropzone';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackContentType, SeverityOption } from './FeedbackForm.types';
 import FileUploadArea from 'src/components/Inputs/FileUploadArea';
-import ImageFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/ImageFile';
+import ImageFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ImageFile';
+import {
+  FeedbackContentType,
+  UrgencyOption,
+} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 
 import styled from 'styled-components';
 
@@ -40,7 +43,7 @@ interface UploadFileProps {
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[]
+    newValue: string | UrgencyOption | FileWithPath[]
   ) => void;
 }
 
@@ -91,7 +94,7 @@ const UploadFile: FC<UploadFileProps> = ({
   return (
     <Wrapper>
       <Title group="input" variant="label">
-        Attachments
+        Attachments (.jpg, .jpeg, .png)
       </Title>
       <FileUploadAreaWrapper className="test">
         <FileUploadArea
