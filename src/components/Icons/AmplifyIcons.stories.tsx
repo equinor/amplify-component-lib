@@ -2,7 +2,9 @@ import { Icon } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import {
+  amplify_failure,
   amplify_lwd,
+  amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,
   amplify_wireline_open_hole,
@@ -13,6 +15,8 @@ const allIcons = {
   amplify_wireline_open_hole: amplify_wireline_open_hole,
   amplify_wireline_cased_hole: amplify_wireline_cased_hole,
   amplify_lwd: amplify_lwd,
+  amplify_success: amplify_success,
+  amplify_failure: amplify_failure,
 };
 
 interface StoryFnProps {
@@ -38,6 +42,8 @@ export default {
         'amplify_wireline_open_hole',
         'amplify_wireline_cased_hole',
         'amplify_lwd',
+        'amplify_success',
+        'amplify_failure',
       ],
     },
   },
