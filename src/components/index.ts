@@ -30,7 +30,9 @@ export { skeletonBaseloading } from './Feedback/SkeletonBase';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
 export { default as Unauthorized } from './Feedback/Unauthorized';
 export {
+  amplify_failure,
   amplify_lwd,
+  amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,
   amplify_wireline_open_hole,
