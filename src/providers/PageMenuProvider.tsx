@@ -52,38 +52,41 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   const isScrollingTo = useRef<number>(-1);
 
   // If the user clicks on an item in the PageMenu that isn't visible now, we want to scroll to it
-  const handleSetSelected = useCallback((value: string) => {
-    const selectedIndex = items.findIndex((item) => item.value === value);
-    const element = elements[selectedIndex];
+  const handleSetSelected = useCallback(
+    (value: string) => {
+      const selectedIndex = items.findIndex((item) => item.value === value);
+      const element = elements[selectedIndex];
 
-    if (element) {
-      element.scrollIntoView({
-        block: 'start',
-        behavior: 'smooth',
-      });
-      isScrollingTo.current = selectedIndex;
-      let previousTop = Infinity;
-      let same = 0;
-      /* c8 ignore start */
-      const checkScrollDone = () => {
-        const newTop = element?.getBoundingClientRect().top;
-        if (newTop === previousTop) {
-          same += 1;
-          if (same > 1) {
-            setSelected(items[selectedIndex].value);
-            isScrollingTo.current = -1;
-            return;
+      if (element) {
+        element.scrollIntoView({
+          block: 'start',
+          behavior: 'smooth',
+        });
+        isScrollingTo.current = selectedIndex;
+        let previousTop = Infinity;
+        let same = 0;
+        /* c8 ignore start */
+        const checkScrollDone = () => {
+          const newTop = element?.getBoundingClientRect().top;
+          if (newTop === previousTop) {
+            same += 1;
+            if (same > 1) {
+              setSelected(items[selectedIndex].value);
+              isScrollingTo.current = -1;
+              return;
+            }
+          } else {
+            same = 0;
+            previousTop = newTop;
           }
-        } else {
-          same = 0;
-          previousTop = newTop;
-        }
+          requestAnimationFrame(checkScrollDone);
+        };
+        /* c8 ignore end */
         requestAnimationFrame(checkScrollDone);
-      };
-      /* c8 ignore end */
-      requestAnimationFrame(checkScrollDone);
-    }
-  }, [elements, items]);
+      }
+    },
+    [elements, items]
+  );
 
   // Handle change of selected when scrolling down the page
   /* c8 ignore start */
@@ -109,7 +112,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
 
   return (
     <PageMenuContext.Provider
-      value={{ items,  selected, setSelected: handleSetSelected }}
+      value={{ items, selected, setSelected: handleSetSelected }}
     >
       {children}
     </PageMenuContext.Provider>
@@ -117,4 +120,3 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
 };
 
 export default PageMenuProvider;
-

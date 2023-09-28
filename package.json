@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "4.4.2",
+  "version": "4.5.3",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
@@ -22,8 +22,8 @@
     "start": "NODE_OPTIONS=--openssl-legacy-provider && storybook dev -p 6006",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider --max-old-space-size=2048' storybook build",
     "setup": "yarn",
-    "pretty": "prettier --check ./src",
-    "pretty:fix": "prettier --write ./src",
+    "pretty": "prettier --check ./config ./src",
+    "pretty:fix": "prettier --write ./config ./src",
     "lint": "eslint ./src --ext .ts,.tsx",
     "lint:fix": "eslint ./src --ext .ts,.tsx --fix",
     "test": "vitest watch",

@@ -1,20 +1,20 @@
 {
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "setup": "cd client && yarn",
-        "pretty": "cd client && yarn pretty",
-        "lint": "cd client && yarn lint",
-        "pretty:fix": "cd client && yarn pretty:fix",
-        "lint:fix": "cd client && yarn lint:fix",
-        "postinstall": "husky install",
-        "prepare": "husky install",
-        "precommit": "node tooling/commit-tasks.mjs"
-    },
-    "devDependencies": {
-        "chalk": "^5.0.0",
-        "child_process": "^1.0.2",
-        "husky": "^7.0.0",
-        "ora": "^6.0.1"
-    }
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "cd client && yarn",
+    "pretty": "cd client && yarn pretty",
+    "lint": "cd client && yarn lint",
+    "pretty:fix": "cd client && yarn pretty:fix",
+    "lint:fix": "cd client && yarn lint:fix",
+    "postinstall": "husky install",
+    "prepare": "husky install",
+    "precommit": "node tooling/commit-tasks.mjs"
+  },
+  "devDependencies": {
+    "chalk": "^5.0.0",
+    "child_process": "^1.0.2",
+    "husky": "^7.0.0",
+    "ora": "^6.0.1"
+  }
 }

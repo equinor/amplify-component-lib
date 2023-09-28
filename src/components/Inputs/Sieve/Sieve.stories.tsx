@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
 import Sieve, { SieveProps, SieveValue } from './Sieve';
@@ -19,6 +20,7 @@ export default {
       control: 'array',
     },
     showChips: { control: 'boolean' },
+    debounceSearchValue: { control: 'boolean' },
   },
   args: {
     searchPlaceholder: 'Write to search for...',
@@ -61,6 +63,7 @@ export default {
       },
     ],
     showChips: true,
+    debounceSearchValue: false,
   },
 };
 
@@ -74,9 +77,25 @@ export const Primary: StoryFn<SieveProps> = (args) => {
     },
   });
 
+  const handleOnIsTyping = (value: boolean) => {
+    if (args.debounceSearchValue) {
+      actions('onIsTyping').onIsTyping(value);
+    }
+  };
+
+  const handleOnUpdate = (value: SieveValue) => {
+    actions('onUpdate').onUpdate(value);
+    setSieveValue(value);
+  };
+
   return (
     <MemoryRouter initialEntries={['/']}>
-      <Sieve {...args} sieveValue={sieveValue} onUpdate={setSieveValue} />
+      <Sieve
+        {...args}
+        sieveValue={sieveValue}
+        onUpdate={handleOnUpdate}
+        onIsTyping={handleOnIsTyping}
+      />
     </MemoryRouter>
   );
 };
