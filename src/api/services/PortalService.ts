@@ -5,6 +5,7 @@ import type { CancelablePromise } from '../';
 import { request as __request, FeatureToggleDto } from '../';
 
 import { OpenAPI_Portal, OpenAPI_Portal_Prod } from '../core/OpenAPI';
+import { ServiceNowIncidentResponse } from 'src/api/models/ServiceNowIncidentResponse';
 
 export class PortalService {
   // ConfigurationItem: string;
@@ -20,11 +21,13 @@ export class PortalService {
    * @returns any Success
    * @throws ApiError
    */
-  public static createIncident(formData?: FormData): CancelablePromise<any> {
+  public static createIncident(
+    formData?: FormData
+  ): CancelablePromise<ServiceNowIncidentResponse> {
     return __request(OpenAPI_Portal, {
       method: 'POST',
       url: '/api/v1/ServiceNow/incident',
-      formData: formData,
+      body: formData,
     });
   }
 

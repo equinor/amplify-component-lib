@@ -1,9 +1,10 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import { tokens } from '@equinor/eds-tokens';
 import { useMutation } from '@tanstack/react-query';
 
+import Success from './components/Success';
 import {
   FeedbackContentType,
   FeedbackEnum,
@@ -16,7 +17,6 @@ import {
 import FeedbackFormInner from './FeedbackFormInner';
 import { ServiceNowUrgency } from 'src/api/models/ServiceNowUrgency';
 import { PortalService } from 'src/api/services/PortalService';
-import Success from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/Success';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
 
@@ -46,6 +46,8 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     description: '',
     anonymous: false,
   });
+  const [relevantRequestsIsSuccess, setRelevantRequestsIsSuccess] =
+    useState(false);
 
   const {
     mutateAsync: slackFileUpload,
@@ -73,7 +75,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     async (formData: FormData) => PortalService.createIncident(formData)
   );
 
-  const relevantRequestsIsSuccess = useMemo(() => {
+  useEffect(() => {
     const isSuccess: boolean[] = [];
     if (
       feedbackContent?.attachments &&
@@ -85,7 +87,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       isSuccess.push(isServiceNowSuccess);
     }
     isSuccess.push(isPostMessageSuccess);
-    return !isSuccess.includes(false);
+    setRelevantRequestsIsSuccess(!isSuccess.includes(false));
   }, [
     feedbackContent?.attachments,
     isFileUploadSuccess,
@@ -129,11 +131,11 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const getUrgencyNumber = (urgency: UrgencyOption) => {
     switch (urgency) {
       case UrgencyOption.UNABLE:
-        return ServiceNowUrgency._1;
+        return ServiceNowUrgency.CRITICAL;
       case UrgencyOption.IMPEDES:
-        return ServiceNowUrgency._2;
+        return ServiceNowUrgency.MODERATE;
       case UrgencyOption.NO_IMPACT:
-        return ServiceNowUrgency._3;
+        return ServiceNowUrgency.NORMAL;
     }
   };
 
@@ -162,15 +164,9 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
         ) {
           serviceNowFormData.append('Image', feedbackContent.attachments[0]); // TODO multiple attachments
         }
-        console.log(serviceNowFormData.get('ConfigurationItem'));
-        console.log(serviceNowFormData.get('Title'));
-        console.log(serviceNowFormData.get('Description'));
-        console.log(serviceNowFormData.get('CallerEmail'));
-        console.log(serviceNowFormData.get('urgency'));
         await serviceNowIncident(serviceNowFormData);
       }
 
-      const fileFormData = new FormData();
       const contentFormData = new FormData();
       contentFormData.append(
         'comment',
@@ -180,22 +176,24 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       await slackPostMessage(contentFormData);
 
       if (feedbackContent.attachments && feedbackContent.attachments[0]) {
+        const fileFormData = new FormData();
         fileFormData.append('file', feedbackContent.attachments[0]); // TODO multiple attachments
         await slackFileUpload(fileFormData);
       }
-
-      showSnackbar('Report has been sent successfully');
     } catch (err) {
       showSnackbar('There was an error sending your report');
     }
   };
-  if (relevantRequestsIsSuccess && response)
+
+  if (relevantRequestsIsSuccess)
     return (
       <Container>
         <Success
           onClose={onClose}
           serviceNowId={
-            selectedType === FeedbackEnum.BUG ? response : undefined
+            selectedType === FeedbackEnum.BUG && response
+              ? response.number ?? 'Not found'
+              : undefined
           }
         />
       </Container>

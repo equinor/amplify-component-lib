@@ -51,6 +51,8 @@ const UploadInfo = styled.div`
   grid-column: 1/3;
   display: flex;
   gap: ${spacings.comfortable.small};
+  height: fit-content;
+  align-self: flex-end;
   align-items: center;
   background-color: ${colors.ui.background__info.hex};
   padding: ${spacings.comfortable.medium_small};
