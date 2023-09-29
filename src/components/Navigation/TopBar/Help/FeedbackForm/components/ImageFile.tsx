@@ -117,7 +117,7 @@ const ImageFile: FC<ImageFileProps> = ({
           </Rejection>
         ) : (
           <ImageWrapper>
-            <img src={src} alt="uploaded file" />
+            <img src={src} alt={`Uploaded file: ${fileName}`} />
           </ImageWrapper>
         )}
       </Tooltip>

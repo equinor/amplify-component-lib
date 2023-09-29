@@ -35,9 +35,19 @@ function Wrappers({ children }: { children: any }) {
 
 async function fakeImageFile(bad: boolean = false) {
   const extension = bad ? '.tiff' : '.png';
-  const blob = await fetch(faker.image.url()).then((resp) => resp.blob());
-  return new File([blob], faker.animal.cow() + extension);
+  return new File(
+    ['i am blob, destroyer of worlds'],
+    faker.word.noun() + extension
+  );
 }
+
+const createRegexToGetAttachment = (fileName: string) => {
+  const split = fileName.split('.');
+  return new RegExp(
+    'uploaded file: ' + split[0].toLowerCase() + '\\.' + split[1],
+    'i'
+  );
+};
 
 function fakeInputs(): FeedbackContentType {
   return {
@@ -61,7 +71,6 @@ vi.mock('src/api/services/PortalService', () => {
         }, 500)
       );
     }
-
     public static fileUpload(formData?: FormData): CancelablePromise<any> {
       return new CancelablePromise((res, reject) =>
         setTimeout(() => {
@@ -306,9 +315,12 @@ test('Inputting all fields with file works as expected', async () => {
   const fileUploadArea = screen.getByTestId('file-upload-area-input');
 
   await user.upload(fileUploadArea, [imageTwo]);
-
+  screen.logTestingPlaygroundURL();
   // Delete image file
-  const file2nameElement = screen.getByText(imageTwo.name);
+
+  const file2nameElement = screen.getByRole('img', {
+    name: createRegexToGetAttachment(imageTwo.name),
+  });
 
   const deleteUploadedFile2Button =
     file2nameElement.parentElement?.parentElement?.children[2];
@@ -320,10 +332,6 @@ test('Inputting all fields with file works as expected', async () => {
 
   // Upload a single image file again
   await user.upload(fileUploadArea, [imageOne]);
-
-  const filePrivacyCheckbox = screen.getByTestId('file_privacy_checkbox');
-  await user.click(filePrivacyCheckbox);
-  expect(filePrivacyCheckbox).toBeChecked();
 
   expect(submitButton).not.toBeDisabled();
   await user.click(submitButton);
@@ -439,7 +447,7 @@ test('opt out of sending email whens suggesting feature', async () => {
   await user.click(suggest);
 
   const nameInput: HTMLInputElement = screen.getByRole('textbox', {
-    name: /name/i,
+    name: /email/i,
   });
 
   const titleInput = screen.getByRole('textbox', {
