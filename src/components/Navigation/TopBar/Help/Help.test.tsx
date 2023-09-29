@@ -315,7 +315,7 @@ test('Inputting all fields with file works as expected', async () => {
   const fileUploadArea = screen.getByTestId('file-upload-area-input');
 
   await user.upload(fileUploadArea, [imageTwo]);
-  screen.logTestingPlaygroundURL();
+
   // Delete image file
 
   const file2nameElement = screen.getByRole('img', {
