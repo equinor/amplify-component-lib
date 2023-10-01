@@ -39,6 +39,24 @@ const FileUploadAreaWrapper = styled.div`
   }
 `;
 
+function removeDuplicates(
+  a: FileWithPath[],
+  fn: (a: FileWithPath, b: FileWithPath) => boolean
+) {
+  if (a.length === 0 || a.length === 1) {
+    return a;
+  }
+
+  for (let i = 0; i < a.length; i++) {
+    for (let j = i + 1; j < a.length; j++) {
+      if (fn(a[i], a[j])) {
+        a.splice(i, 1);
+      }
+    }
+  }
+  return a;
+}
+
 interface UploadFileProps {
   feedbackContent: FeedbackContentType;
   updateFeedback: (
@@ -62,20 +80,28 @@ const UploadFile: FC<UploadFileProps> = ({
       );
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);
-      updateFeedback('attachments', cleanedOfHiddenFiles);
+      const oldAttachments: FileWithPath[] = [];
+
+      if (feedbackContent.attachments) {
+        oldAttachments.push(...feedbackContent.attachments);
+      }
+      const combinedNewAndPrev = [...cleanedOfHiddenFiles, ...oldAttachments];
+      const newAttachments = removeDuplicates(
+        combinedNewAndPrev,
+        (a, b) => a.name === b.name && a.size === b.size
+      );
+      updateFeedback('attachments', newAttachments);
     }
     setRejectedFiles(fileRejections);
   };
 
   const handleOnDelete = (file: FileWithPath) => {
     const newAttachmentsList =
-      feedbackContent.attachments?.filter(
-        (attachment) =>
-          /* c8 ignore start */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
-          attachment.name !== file.name && attachment.size !== file.size
-      ) ?? [];
+      feedbackContent.attachments?.filter((attachment) => {
+        /* c8 ignore start */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
+        return attachment.name !== file.name && attachment.size !== file.size;
+      }) ?? [];
     /* c8 ignore end */
-
     updateFeedback('attachments', newAttachmentsList);
   };
 
@@ -110,20 +136,17 @@ const UploadFile: FC<UploadFileProps> = ({
             <ImageFile
               key={file.name + file.size}
               onDelete={() => handleOnDelete(file)}
-              onAbort={() => null}
               file={file}
             />
           );
         })}
         {rejectedFiles.map((rejection) => {
-          console.log(rejection);
           /* c8 ignore start */
           return (
             <ImageFile
               rejection={rejection}
               key={rejection.file.name + rejection.file.size}
               onDelete={() => handleOnDeleteRejected(rejection)}
-              onAbort={() => null}
               error={true}
               errorMsg={
                 rejection.errors[0].code + ' - ' + rejection.errors[0].message

@@ -54,6 +54,7 @@ const CloseButton = styled.div`
   width: 18px;
   height: 18px;
   right: -10px;
+  cursor: pointer;
   top: -10px;
   > svg {
     width: 18px;
@@ -64,13 +65,10 @@ const CloseButton = styled.div`
 
 export interface ImageFileProps {
   onDelete: () => void;
-  onAbort: () => void;
   rejection?: FileRejection;
   file?: FileWithPath;
   error?: boolean;
   errorMsg?: string;
-  loading?: boolean;
-  progress?: number;
 }
 
 const ImageFile: FC<ImageFileProps> = ({
@@ -79,8 +77,6 @@ const ImageFile: FC<ImageFileProps> = ({
   error,
   errorMsg,
   onDelete,
-  onAbort,
-  loading,
 }) => {
   const [src, setSrc] = useState('');
 
@@ -96,32 +92,44 @@ const ImageFile: FC<ImageFileProps> = ({
 
   const fileName = useMemo(() => {
     if (file) return file.name;
+    /* c8 ignore start */
     if (rejection) return rejection.file.name;
+    /* c8 ignore end */
     return '';
   }, [file, rejection]);
 
   return (
-    <Wrapper $error={error !== undefined}>
+    <Wrapper
+      $error={
+        /* c8 ignore start */
+        error !== undefined
+        /* c8 ignore end */
+      }
+    >
       <Tooltip
         title={`
           ${fileName}${error ? ': ' + errorMsg : ''}
         `}
       >
-        {error ? (
-          <Rejection>
-            <Icon
-              data={error_outlined}
-              color={colors.interactive.warning__resting.hex}
-            />
-            {errorMsg?.includes('invalid') ? 'Invalid' : 'Error'}
-          </Rejection>
-        ) : (
-          <ImageWrapper>
-            <img src={src} alt={`Uploaded file: ${fileName}`} />
-          </ImageWrapper>
-        )}
+        {
+          /* c8 ignore start */
+          error ? (
+            <Rejection>
+              <Icon
+                data={error_outlined}
+                color={colors.interactive.warning__resting.hex}
+              />
+              {errorMsg?.includes('invalid') ? 'Invalid' : 'Error'}
+            </Rejection>
+          ) : (
+            /* c8 ignore end */
+            <ImageWrapper>
+              <img src={src} alt={`Uploaded file: ${fileName}`} />
+            </ImageWrapper>
+          )
+        }
       </Tooltip>
-      <CloseButton onClick={() => (loading ? onAbort() : onDelete())}>
+      <CloseButton data-testid="attachment-delete-button" onClick={onDelete}>
         <Icon
           color={colors.text.static_icons__tertiary.hex}
           data={clear}

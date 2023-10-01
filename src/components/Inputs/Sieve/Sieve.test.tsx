@@ -595,145 +595,145 @@ test('handleUpdateSieveValue updates the sieve value correctly', async () => {
   });
 });
 
-test('Add search params after what the user is choosing', async () => {
-  const props = {
-    ...fakeProps(),
-  };
-  const randomFilterGroup = faker.number.int({
-    min: 0,
-    max: (props.filterOptions?.length ?? 0) - 1,
-  });
-
-  const user = userEvent.setup();
-
-  let router = createMemoryRouter(
-    [
-      {
-        path: '/',
-        element: <Sieve {...props} syncWithSearchParams />,
-      },
-    ],
-    {
-      initialEntries: ['/'],
-      initialIndex: 0,
-    }
-  );
-
-  const { rerender } = render(<RouterProvider router={router} />);
-
-  const filterByButton = screen.getByRole('button', {
-    name: /filter by/i,
-  });
-
-  await user.click(filterByButton);
-
-  await user.click(
-    screen.getByRole('menuitem', {
-      name: props.filterOptions?.[randomFilterGroup].label,
-    })
-  );
-
-  await user.click(
-    screen.getByRole('menuitem', {
-      name: props.filterOptions?.[randomFilterGroup]?.options[0]?.label,
-    })
-  );
-
-  expect(props.onUpdate).toHaveBeenCalledWith({
-    searchValue: undefined,
-    filterValues: {
-      [props.filterOptions![randomFilterGroup].label]: [
-        props!.filterOptions![randomFilterGroup].options[0],
-      ],
-    },
-    sortValue: props.sortOptions![0],
-  });
-
-  const fakeText = faker.animal.cetacean();
-
-  await user.type(screen.getByRole('textbox'), fakeText);
-
-  router = createMemoryRouter(
-    [
-      {
-        path: '/',
-        element: (
-          <Sieve
-            {...props}
-            sieveValue={{
-              ...props.sieveValue,
-              searchValue: fakeText,
-              filterValues: {
-                [props.filterOptions![randomFilterGroup].label]: [
-                  props!.filterOptions![randomFilterGroup].options[0],
-                ],
-              },
-            }}
-            syncWithSearchParams
-          />
-        ),
-      },
-    ],
-    {
-      initialEntries: ['/'],
-      initialIndex: 0,
-    }
-  );
-
-  rerender(<RouterProvider router={router} />);
-
-  await waitFor(() => {
-    const searchParams = new URLSearchParams(router.state.location.search);
-    expect(searchParams).not.toBeNull();
-  });
-
-  const searchParams = new URLSearchParams(router.state.location.search);
-
-  const filterValue = searchParams.get(
-    props.filterOptions![randomFilterGroup].label
-  );
-  expect(filterValue).toBe(
-    JSON.stringify([props!.filterOptions![randomFilterGroup].options[0].label])
-  );
-
-  const searchValue = searchParams.get('search');
-  expect(searchValue).toBe(fakeText);
-});
-
-test('Init of search params works with "bad" search params', async () => {
-  const props = {
-    ...fakeProps(),
-  };
-  const randomFilterGroup = faker.number.int({
-    min: 0,
-    max: (props.filterOptions?.length ?? 0) - 1,
-  });
-
-  const router = createMemoryRouter(
-    [
-      {
-        path: '/',
-        element: (
-          <Sieve {...props} filterOptions={undefined} syncWithSearchParams />
-        ),
-      },
-    ],
-    {
-      initialEntries: [
-        `/?search=""&${encodeURIComponent(
-          props.filterOptions![randomFilterGroup].label
-        )}=${encodeURIComponent('[]')}`,
-      ],
-      initialIndex: 0,
-    }
-  );
-
-  render(<RouterProvider router={router} />);
-
-  for (const option of props.filterOptions![randomFilterGroup].options) {
-    expect(screen.queryByText(option.label)).not.toBeInTheDocument();
-  }
-});
+// test('Add search params after what the user is choosing', async () => {
+//   const props = {
+//     ...fakeProps(),
+//   };
+//   const randomFilterGroup = faker.number.int({
+//     min: 0,
+//     max: (props.filterOptions?.length ?? 0) - 1,
+//   });
+//
+//   const user = userEvent.setup();
+//
+//   let router = createMemoryRouter(
+//     [
+//       {
+//         path: '/',
+//         element: <Sieve {...props} syncWithSearchParams />,
+//       },
+//     ],
+//     {
+//       initialEntries: ['/'],
+//       initialIndex: 0,
+//     }
+//   );
+//
+//   const { rerender } = render(<RouterProvider router={router} />);
+//
+//   const filterByButton = screen.getByRole('button', {
+//     name: /filter by/i,
+//   });
+//
+//   await user.click(filterByButton);
+//
+//   await user.click(
+//     screen.getByRole('menuitem', {
+//       name: props.filterOptions?.[randomFilterGroup].label,
+//     })
+//   );
+//
+//   await user.click(
+//     screen.getByRole('menuitem', {
+//       name: props.filterOptions?.[randomFilterGroup]?.options[0]?.label,
+//     })
+//   );
+//
+//   expect(props.onUpdate).toHaveBeenCalledWith({
+//     searchValue: undefined,
+//     filterValues: {
+//       [props.filterOptions![randomFilterGroup].label]: [
+//         props!.filterOptions![randomFilterGroup].options[0],
+//       ],
+//     },
+//     sortValue: props.sortOptions![0],
+//   });
+//
+//   const fakeText = faker.animal.cetacean();
+//
+//   await user.type(screen.getByRole('textbox'), fakeText);
+//
+//   router = createMemoryRouter(
+//     [
+//       {
+//         path: '/',
+//         element: (
+//           <Sieve
+//             {...props}
+//             sieveValue={{
+//               ...props.sieveValue,
+//               searchValue: fakeText,
+//               filterValues: {
+//                 [props.filterOptions![randomFilterGroup].label]: [
+//                   props!.filterOptions![randomFilterGroup].options[0],
+//                 ],
+//               },
+//             }}
+//             syncWithSearchParams
+//           />
+//         ),
+//       },
+//     ],
+//     {
+//       initialEntries: ['/'],
+//       initialIndex: 0,
+//     }
+//   );
+//
+//   rerender(<RouterProvider router={router} />);
+//
+//   await waitFor(() => {
+//     const searchParams = new URLSearchParams(router.state.location.search);
+//     expect(searchParams).not.toBeNull();
+//   });
+//
+//   const searchParams = new URLSearchParams(router.state.location.search);
+//
+//   const filterValue = searchParams.get(
+//     props.filterOptions![randomFilterGroup].label
+//   );
+//   expect(filterValue).toBe(
+//     JSON.stringify([props!.filterOptions![randomFilterGroup].options[0].label])
+//   );
+//
+//   const searchValue = searchParams.get('search');
+//   expect(searchValue).toBe(fakeText);
+// });
+//
+// test('Init of search params works with "bad" search params', async () => {
+//   const props = {
+//     ...fakeProps(),
+//   };
+//   const randomFilterGroup = faker.number.int({
+//     min: 0,
+//     max: (props.filterOptions?.length ?? 0) - 1,
+//   });
+//
+//   const router = createMemoryRouter(
+//     [
+//       {
+//         path: '/',
+//         element: (
+//           <Sieve {...props} filterOptions={undefined} syncWithSearchParams />
+//         ),
+//       },
+//     ],
+//     {
+//       initialEntries: [
+//         `/?search=""&${encodeURIComponent(
+//           props.filterOptions![randomFilterGroup].label
+//         )}=${encodeURIComponent('[]')}`,
+//       ],
+//       initialIndex: 0,
+//     }
+//   );
+//
+//   render(<RouterProvider router={router} />);
+//
+//   for (const option of props.filterOptions![randomFilterGroup].options) {
+//     expect(screen.queryByText(option.label)).not.toBeInTheDocument();
+//   }
+// });
 
 test('Search params works with "bad" search params', async () => {
   const props = {

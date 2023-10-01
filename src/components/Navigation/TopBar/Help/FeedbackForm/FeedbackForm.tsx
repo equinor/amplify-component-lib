@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import { tokens } from '@equinor/eds-tokens';
@@ -46,8 +46,6 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     description: '',
     anonymous: false,
   });
-  const [relevantRequestsIsSuccess, setRelevantRequestsIsSuccess] =
-    useState(false);
 
   const {
     mutateAsync: slackFileUpload,
@@ -75,19 +73,19 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     async (formData: FormData) => PortalService.createIncident(formData)
   );
 
-  useEffect(() => {
-    const isSuccess: boolean[] = [];
+  const relevantRequestsIsSuccess = useMemo(() => {
+    const booleanArray: boolean[] = [];
     if (
       feedbackContent?.attachments &&
       feedbackContent?.attachments?.length > 0
     ) {
-      isSuccess.push(isFileUploadSuccess);
+      booleanArray.push(isFileUploadSuccess);
     }
     if (selectedType === FeedbackEnum.BUG) {
-      isSuccess.push(isServiceNowSuccess);
+      booleanArray.push(isServiceNowSuccess);
     }
-    isSuccess.push(isPostMessageSuccess);
-    setRelevantRequestsIsSuccess(!isSuccess.includes(false));
+    booleanArray.push(isPostMessageSuccess);
+    return !booleanArray.includes(false) && booleanArray.length > 0;
   }, [
     feedbackContent?.attachments,
     isFileUploadSuccess,
@@ -106,21 +104,9 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   ) => {
     if (key === 'attachments' && feedbackContent.attachments) {
       setFeedbackContent((prev) => {
-        const newAttachmentWithoutDuplicates = (
-          newValue as FileWithPath[]
-        ).filter(
-          (value) =>
-            !prev?.attachments?.some(
-              (prevValue) =>
-                prevValue.name === value.name && prevValue.size === value.size
-            )
-        );
         return {
           ...prev,
-          [key]: [
-            ...(prev.attachments ?? []),
-            ...newAttachmentWithoutDuplicates,
-          ],
+          [key]: [...(newValue as FileWithPath[])],
         };
       });
     } else {
@@ -141,6 +127,14 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
   const handleSave = async () => {
     try {
+      const contentFormData = new FormData();
+      contentFormData.append(
+        'comment',
+        createSlackMessage(feedbackContent, selectedType, userEmail)
+      );
+
+      await slackPostMessage(contentFormData);
+
       if (selectedType === FeedbackEnum.BUG && userEmail) {
         const serviceNowFormData = new FormData();
         serviceNowFormData.append('ConfigurationItem', '117499');
@@ -162,22 +156,18 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
           feedbackContent.attachments &&
           feedbackContent.attachments.length > 0
         ) {
-          serviceNowFormData.append('Image', feedbackContent.attachments[0]); // TODO multiple attachments
+          feedbackContent.attachments.forEach((attachment) =>
+            serviceNowFormData.append('Image', attachment)
+          );
         }
         await serviceNowIncident(serviceNowFormData);
       }
 
-      const contentFormData = new FormData();
-      contentFormData.append(
-        'comment',
-        createSlackMessage(feedbackContent, selectedType, userEmail)
-      );
-
-      await slackPostMessage(contentFormData);
-
       if (feedbackContent.attachments && feedbackContent.attachments[0]) {
         const fileFormData = new FormData();
-        fileFormData.append('file', feedbackContent.attachments[0]); // TODO multiple attachments
+        feedbackContent.attachments.forEach((attachment) =>
+          fileFormData.append('file', attachment)
+        );
         await slackFileUpload(fileFormData);
       }
     } catch (err) {
