@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 `;
 
 interface ColorBoxProps {
-  color: string;
+  $color: string;
 }
 
 const ColorBox = styled.div<ColorBoxProps>`
@@ -26,7 +26,7 @@ const ColorBox = styled.div<ColorBoxProps>`
   height: 200px;
   margin: 5px;
   border: 1px solid black;
-  background-color: ${(props) => props.color};
+  background-color: ${(props) => props.$color};
 `;
 
 interface colorType {
@@ -50,7 +50,7 @@ const ColorModule: FC<ColorModuleProps> = ({ title, colors }) => (
     <Wrapper>
       {Object.entries(colors).map(([key, value]) => {
         return (
-          <ColorBox key={key} color={value.hsla}>
+          <ColorBox key={key} $color={value.hsla}>
             <Typography variant="cell_text_bold" group="table">
               {key}
             </Typography>

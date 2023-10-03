@@ -31,12 +31,12 @@ const rotateContainer = keyframes`
 `;
 
 type ContainerProps = {
-  seconds: number;
+  $seconds: number;
 };
 
 const Container = styled.div<ContainerProps>`
   position: relative;
-  animation: ${rotateContainer} ${(props) => props.seconds}s infinite;
+  animation: ${rotateContainer} ${(props) => props.$seconds}s infinite;
 `;
 
 const outlineAnimation = keyframes`
@@ -58,7 +58,7 @@ const outlineAnimation = keyframes`
 `;
 
 interface WrapperProps {
-  size: number;
+  $size: number;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -66,8 +66,8 @@ const Wrapper = styled.div<WrapperProps>`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
+  width: ${(props) => props.$size}px;
+  height: ${(props) => props.$size}px;
 `;
 
 type EmptyProps = IconProps & ContainerProps;
@@ -83,7 +83,7 @@ const Empty = styled(Icon)<EmptyProps>`
     rgba(255, 255, 255, 0) 100%
   );
   mask-size: 100% 300%;
-  animation: ${outlineAnimation} ${(props) => props.seconds}s infinite;
+  animation: ${outlineAnimation} ${(props) => props.$seconds}s infinite;
 `;
 
 export interface HourglassProgressProps {
@@ -117,18 +117,18 @@ const HourglassProgress = forwardRef<HTMLDivElement, HourglassProgressProps>(
     return (
       <Container
         ref={ref}
-        seconds={secondsAnimation()}
+        $seconds={secondsAnimation()}
         data-testid={`hourglass-${speed}`}
       >
-        <Wrapper size={size}>
+        <Wrapper $size={size}>
           <Icon data={hourglass_empty} size={size} color={iconColor()} />
         </Wrapper>
-        <Wrapper size={size}>
+        <Wrapper $size={size}>
           <Empty
             data={hourglass_full}
             size={size}
             color={iconColor()}
-            seconds={secondsAnimation()}
+            $seconds={secondsAnimation()}
           />
         </Wrapper>
       </Container>

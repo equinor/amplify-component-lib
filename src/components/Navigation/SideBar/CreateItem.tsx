@@ -17,10 +17,10 @@ import styled from 'styled-components';
 const { colors, shape, spacings } = tokens;
 
 interface ContainerProps {
-  open: boolean;
+  $open: boolean;
 }
 const MenuButtonContainer = styled.div<ContainerProps>`
-  display: ${(props) => (props.open ? 'grid' : 'flex')};
+  display: ${(props) => (props.$open ? 'grid' : 'flex')};
   grid-template-columns: repeat(9, 1fr);
   justify-content: center;
   align-items: center;
@@ -29,24 +29,24 @@ const MenuButtonContainer = styled.div<ContainerProps>`
   box-sizing: border-box;
 `;
 interface CustomButtonProps extends ButtonProps {
-  open?: boolean;
+  $open?: boolean;
 }
 
 const CreateNewButton = styled(Button)<CustomButtonProps>`
-  width: ${(props) => (props.open ? 'fit-content' : '40px')};
-  height: ${(props) => (props.open ? '36px' : '40px')};
+  width: ${(props) => (props.$open ? 'fit-content' : '40px')};
+  height: ${(props) => (props.$open ? '36px' : '40px')};
   background: ${colors.interactive.primary__resting.hsla};
-  border-radius: ${(props) => props.open && shape.icon_button.borderRadius};
+  border-radius: ${(props) => props.$open && shape.icon_button.borderRadius};
   grid-column: 3;
   ${(props) =>
-    props.open &&
+    props.$open &&
     `
   padding-right: ${spacings.comfortable.large};
   margin-left: -2px; /* border size */
   `};
 
   &:hover:not([disabled]) {
-    border-radius: ${(props) => props.open && shape.icon_button.borderRadius};
+    border-radius: ${(props) => props.$open && shape.icon_button.borderRadius};
     background: ${colors.interactive.primary__hover.hex};
   }
   &:disabled:hover,
@@ -85,7 +85,7 @@ const CreateItem: FC<CreateItemProps> = ({
   const { isOpen } = useSideBar();
   if (isOpen) {
     return (
-      <MenuButtonContainer open={isOpen}>
+      <MenuButtonContainer $open={isOpen}>
         <CreateNewButton
           open
           variant="contained"
@@ -106,7 +106,7 @@ const CreateItem: FC<CreateItemProps> = ({
   }
   return (
     <Tooltip title={createLabel} placement="right">
-      <MenuButtonContainer open={isOpen}>
+      <MenuButtonContainer $open={isOpen}>
         <CreateNewButton
           variant="ghost_icon"
           onClick={onCreate}

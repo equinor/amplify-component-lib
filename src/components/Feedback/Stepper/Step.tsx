@@ -108,7 +108,7 @@ const Step: FC<StepProps> = ({
   return (
     <Container
       data-testid="step"
-      ref={(ref) => {
+      ref={(ref: HTMLDivElement | null) => {
         if (containerRef === null && ref !== null) {
           setContainerRef(ref);
         }
