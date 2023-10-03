@@ -8,9 +8,9 @@ interface ContentProps {
   $open: boolean;
 }
 
-type TemplateType = IStyledComponent<'web', 'div', any> & {
-  Container: IStyledComponent<'web', 'div', any>;
-  Content: IStyledComponent<'web', 'div', ContentProps>;
+type TemplateType = IStyledComponent<'web', any> & {
+  Container: IStyledComponent<'web', any>;
+  Content: IStyledComponent<'web', ContentProps>;
 };
 
 const BaseTemplate = styled.div`
