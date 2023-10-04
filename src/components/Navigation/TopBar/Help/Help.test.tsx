@@ -329,9 +329,6 @@ test('Inputting all fields with file works as expected', async () => {
   expect(file2nameElement).toBeInTheDocument();
 
   await user.hover(file2nameElement);
-  setTimeout(() => {
-    screen.logTestingPlaygroundURL();
-  }, 500);
 
   const fileNameRegex = new RegExp(imageTwo.name.split('.')[0], 'i');
 
@@ -510,7 +507,6 @@ test('opt out of sending email whens suggesting feature', async () => {
 
   await user.click(submitButton);
 
-  setTimeout(() => screen.logTestingPlaygroundURL(), 510);
   await waitFor(
     () =>
       expect(
