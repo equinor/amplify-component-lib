@@ -55,7 +55,7 @@ test('onlyShowCurrentStepLabel prop hides other labels', async () => {
   const props = fakeProps();
   render(<Stepper {...props} onlyShowCurrentStepLabel={true} />);
 
-  expect(screen.queryByText(props.steps[2])).toBeNull();
+  expect(screen.queryByText(props.steps[1])).toBeNull();
 });
 
 test('maxWidth props sets max-width style', () => {

@@ -84,3 +84,18 @@ test('is not shown if open is false', async () => {
   const panelHeader = screen.queryByText('Guidelines');
   expect(panelHeader).not.toBeInTheDocument();
 });
+
+test('Shows custom elements', () => {
+  const props = fakeProps(false);
+  const text = faker.animal.lion();
+  const itemElement = {
+    title: faker.animal.insect(),
+    element: <p>{text}</p>,
+  };
+  props.sections[0].items.push(itemElement);
+
+  render(<Guidelines {...props} open />);
+
+  expect(screen.getByText(text)).toBeInTheDocument();
+  expect(screen.getByText(itemElement.title)).toBeInTheDocument();
+});

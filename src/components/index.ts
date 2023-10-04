@@ -1,4 +1,5 @@
 export type { Field } from '../types/Field';
+export type { GuidelineItem } from '../types/Guidelines';
 export type { ErrorContentType } from '../utils/errors';
 export { ErrorType } from '../utils/errors';
 export { default as DataCard } from './DataDisplay/DataCard';
