@@ -90,12 +90,16 @@ const ImageFile: FC<ImageFileProps> = ({
     }
   }, [file]);
 
-  const fileName = useMemo(() => {
-    if (file) return file.name;
-    /* c8 ignore start */ // TODO: Fix rejection testing
-    if (rejection) return rejection.file.name;
-    /* c8 ignore end */
-    return '';
+  const fileName = useMemo<string>(() => {
+    if (file && file.name) {
+      return file.name;
+      /* c8 ignore start */ // TODO: Fix rejection testing
+    } else if (rejection) {
+      return rejection.file.name;
+      /* c8 ignore end */
+    } else {
+      return '';
+    }
   }, [file, rejection]);
 
   return (
