@@ -12,4 +12,4 @@ export type { FeatureToggleDto } from './models/FeatureToggleDto';
 export type { GraphUser } from './models/GraphUser';
 export type { ServiceNowIncidentResponse } from './models/ServiceNowIncidentResponse';
 export type { ServiceNowIncidentAttachmentResponse } from './models/ServiceNowIncidentAttachmentResponse';
-export type { ServiceNowUrgency } from './models/ServiceNowUrgency';
+export { ServiceNowUrgency } from './models/ServiceNowUrgency';

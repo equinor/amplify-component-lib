@@ -13,9 +13,9 @@ import {
 import {
   createServiceNowDescription,
   createSlackMessage,
+  getUrgencyNumber,
 } from './FeedbackForm.utils';
 import FeedbackFormInner from './FeedbackFormInner';
-import { ServiceNowUrgency } from 'src/api/models/ServiceNowUrgency';
 import { PortalService } from 'src/api/services/PortalService';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
@@ -118,17 +118,6 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       });
     } else {
       setFeedbackContent({ ...feedbackContent, [key]: newValue });
-    }
-  };
-
-  const getUrgencyNumber = (urgency: UrgencyOption) => {
-    switch (urgency) {
-      case UrgencyOption.UNABLE:
-        return ServiceNowUrgency.CRITICAL;
-      case UrgencyOption.IMPEDES:
-        return ServiceNowUrgency.MODERATE;
-      case UrgencyOption.NO_IMPACT:
-        return ServiceNowUrgency.NORMAL;
     }
   };
 

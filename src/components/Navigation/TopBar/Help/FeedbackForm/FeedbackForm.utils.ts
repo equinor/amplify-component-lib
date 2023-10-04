@@ -5,6 +5,7 @@ import {
   FeedbackEnum,
   UrgencyOption,
 } from './FeedbackForm.types';
+import { ServiceNowUrgency } from 'src/api';
 import { date, environment } from 'src/utils';
 
 const { formatDate } = date;
@@ -37,6 +38,17 @@ export const readUploadedFileAsText = (
     };
     temporaryFileReader.readAsDataURL(inputFile);
   });
+};
+
+export const getUrgencyNumber = (urgency: UrgencyOption) => {
+  switch (urgency) {
+    case UrgencyOption.UNABLE:
+      return ServiceNowUrgency.CRITICAL;
+    case UrgencyOption.IMPEDES:
+      return ServiceNowUrgency.MODERATE;
+    case UrgencyOption.NO_IMPACT:
+      return ServiceNowUrgency.NORMAL;
+  }
 };
 
 export const createServiceNowDescription = (
