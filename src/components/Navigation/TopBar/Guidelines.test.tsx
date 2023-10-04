@@ -84,3 +84,16 @@ test('is not shown if open is false', async () => {
   const panelHeader = screen.queryByText('Guidelines');
   expect(panelHeader).not.toBeInTheDocument();
 });
+
+test('Shows ItemElement types in the guidelines', async () => {
+  const props = fakeProps(false);
+  const itemElement = {
+    title: faker.animal.fish(),
+    element: <p>custom element</p>,
+  };
+  props.sections[0].items.push(itemElement);
+  render(<Guidelines {...props} open />);
+
+  expect(screen.getByText('custom element')).toBeInTheDocument();
+  expect(screen.getByText(itemElement.title)).toBeInTheDocument();
+});

@@ -57,7 +57,7 @@ test('hoverBackground prop works as expected', async () => {
   await waitFor(() => screen.getByText(/copy/i));
   expect(screen.getByText(/copy/i)).toBeInTheDocument();
 
-  expect(screen.getByText(/copy/i).parentElement).toHaveStyle(
+  expect(screen.getByText(/copy/i).parentElement).toHaveStyleRule(
     `background: ${randomColor};`
   );
 });

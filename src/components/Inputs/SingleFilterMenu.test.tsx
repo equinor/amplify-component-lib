@@ -39,7 +39,7 @@ test('renders the menu when button is clicked', async () => {
   await user.click(button);
 
   const menu = await screen.findByTestId('menuContainer');
-  expect(menu).toHaveStyle('visibility: visible');
+  expect(menu).toHaveStyleRule('visibility: visible');
 });
 
 test('renders the menu items', () => {

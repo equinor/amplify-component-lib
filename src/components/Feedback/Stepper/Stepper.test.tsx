@@ -64,6 +64,5 @@ test('maxWidth props sets max-width style', () => {
   render(<Stepper {...props} maxWidth={width} />);
 
   const container = screen.getByTestId('stepper-container');
-  const style = window.getComputedStyle(container);
-  expect(style.maxWidth).toBe(width);
+  expect(container).toHaveStyleRule('max-width', width);
 });

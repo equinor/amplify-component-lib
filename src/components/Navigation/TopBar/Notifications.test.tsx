@@ -101,7 +101,7 @@ test('Renders unread dot when unread = true', async () => {
 test('Unread dot renders as expected', () => {
   const { container } = render(<UnreadRedDot />);
   const unreadDot = container.children[0];
-  expect(unreadDot).toHaveStyle(
+  expect(unreadDot).toHaveStyleRule(
     `background-color: ${colors.logo.fill_positive.hex};`
   );
 });

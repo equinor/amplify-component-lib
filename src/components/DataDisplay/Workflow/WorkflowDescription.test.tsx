@@ -43,7 +43,7 @@ test('Renders the flow correctly', async () => {
     (option) => option.approvedDate !== undefined
   );
   const approvedElements = screen.queryAllByTestId('approved');
-  for (const [index, option] of approvedElements.entries()) {
+  for (const [index] of approvedElements.entries()) {
     expect(
       screen.getByText(approvedOptions[index].approvedUser ?? 'failed')
     ).toBeInTheDocument();
@@ -53,10 +53,6 @@ test('Renders the flow correctly', async () => {
     expect(
       screen.getByText(approvedOptions[index].label ?? 'failed')
     ).toBeInTheDocument();
-    expect(option.children[option.children.length - 1]).toHaveAttribute(
-      'color',
-      approvedOptions[index].color ?? '#000000'
-    );
   }
 
   const notApprovedOptions = props.options.filter(

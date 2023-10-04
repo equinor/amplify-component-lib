@@ -58,7 +58,7 @@ test('InDialog prop works as expected', async () => {
   await user.click(screen.getByRole('combobox'));
 
   const parent = container.parentElement as HTMLElement;
-  const menu = parent.querySelector('#eds-menu-container > div');
+  const menu = parent.querySelector('#eds-menu-container > div > div');
 
   expect(menu).toHaveStyle('z-index: 1400;');
 });
@@ -76,7 +76,7 @@ test('maxHeight prop works as expected', async () => {
   const parent = container.parentElement as HTMLElement;
   const menu = parent.querySelector('#eds-menu-container > div');
 
-  expect(menu).toHaveStyle('max-height: 18rem;');
+  expect(menu).toHaveStyleRule('max-height: 18rem;');
 });
 
 test('Formatter prop works as expected in menu', async () => {
