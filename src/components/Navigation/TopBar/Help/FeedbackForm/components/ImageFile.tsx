@@ -92,7 +92,7 @@ const ImageFile: FC<ImageFileProps> = ({
 
   const fileName = useMemo(() => {
     if (file) return file.name;
-    /* c8 ignore start */
+    /* c8 ignore start */ // TODO: Fix rejection testing
     if (rejection) return rejection.file.name;
     /* c8 ignore end */
     return '';

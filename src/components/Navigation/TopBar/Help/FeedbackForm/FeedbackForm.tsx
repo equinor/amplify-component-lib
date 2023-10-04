@@ -98,6 +98,13 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     return isPostMessageLoading || isFileUploadLoading || isServiceNowLoading;
   }, [isFileUploadLoading, isPostMessageLoading, isServiceNowLoading]);
 
+  const serviceNowNumber = useMemo(() => {
+    if (selectedType === FeedbackEnum.BUG) {
+      if (!response?.number) return 'Not found';
+      return response.number;
+    }
+  }, [response?.number, selectedType]);
+
   const updateFeedback = (
     key: keyof FeedbackContentType,
     newValue: string | UrgencyOption | FileWithPath[] | boolean
@@ -135,6 +142,14 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
       await slackPostMessage(contentFormData);
 
+      if (feedbackContent.attachments && feedbackContent.attachments[0]) {
+        const fileFormData = new FormData();
+        feedbackContent.attachments.forEach((attachment) =>
+          fileFormData.append('file', attachment)
+        );
+        await slackFileUpload(fileFormData);
+      }
+
       if (selectedType === FeedbackEnum.BUG && userEmail) {
         const serviceNowFormData = new FormData();
         serviceNowFormData.append('ConfigurationItem', '117499');
@@ -162,14 +177,6 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
         }
         await serviceNowIncident(serviceNowFormData);
       }
-
-      if (feedbackContent.attachments && feedbackContent.attachments[0]) {
-        const fileFormData = new FormData();
-        feedbackContent.attachments.forEach((attachment) =>
-          fileFormData.append('file', attachment)
-        );
-        await slackFileUpload(fileFormData);
-      }
     } catch (err) {
       showSnackbar('There was an error sending your report');
     }
@@ -178,14 +185,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   if (relevantRequestsIsSuccess)
     return (
       <Container>
-        <Success
-          onClose={onClose}
-          serviceNowId={
-            selectedType === FeedbackEnum.BUG && response
-              ? response.number ?? 'Not found'
-              : undefined
-          }
-        />
+        <Success onClose={onClose} serviceNowId={serviceNowNumber} />
       </Container>
     );
 

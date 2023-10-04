@@ -56,42 +56,42 @@ function fakeInputs(): FeedbackContentType {
 
 let mockServiceHasError = false;
 
-const createIncidentResponseNumber = 'EQ123';
+let createIncidentResponseNumber: string = 'EQ123';
 
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
-    public static createIncident(
-      formData?: FormData
-    ): CancelablePromise<ServiceNowIncidentResponse> {
-      return new CancelablePromise((res, reject) =>
+    public static createIncident(): CancelablePromise<ServiceNowIncidentResponse> {
+      return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
-          console.log('in create inc');
           if (mockServiceHasError) {
-            return reject('error incident');
+            reject('error incident');
+          } else {
+            resolve({ number: createIncidentResponseNumber });
           }
-          return { number: createIncidentResponseNumber };
         }, 500)
       );
     }
+
     public static fileUpload(formData?: FormData): CancelablePromise<any> {
-      return new CancelablePromise((res, reject) =>
+      return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
-          console.log('in upload');
           if (mockServiceHasError) {
-            return reject('error fileUpload');
+            reject('error fileUpload');
+          } else {
+            resolve(formData);
           }
-          return res(formData);
         }, 500)
       );
     }
 
     public static postmessage(formData?: FormData): Promise<any> {
-      return new CancelablePromise((res, reject) => {
+      return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {
-            return reject('error postMessage');
+            reject('error postMessage');
+          } else {
+            resolve(formData);
           }
-          return formData;
         }, 500);
       });
     }
@@ -249,7 +249,7 @@ for (const option of severityOptions) {
 
     expect(submitButton).not.toBeDisabled();
     await user.click(submitButton);
-  }, 10000); // Setting timeout for this test to be 10 seconds
+  }, 15000); // Setting timeout for this test to be 15 seconds
 }
 
 test('suggest a feature dialog submit button enabled at correct time', async () => {
@@ -327,6 +327,25 @@ test('Inputting all fields with file works as expected', async () => {
   });
 
   expect(file2nameElement).toBeInTheDocument();
+
+  await user.hover(file2nameElement);
+  setTimeout(() => {
+    screen.logTestingPlaygroundURL();
+  }, 500);
+
+  const fileNameRegex = new RegExp(imageTwo.name.split('.')[0], 'i');
+
+  await waitFor(
+    () =>
+      expect(
+        screen.getByRole('tooltip', {
+          name: fileNameRegex,
+        })
+      ).toBeInTheDocument(),
+    {
+      timeout: 1000,
+    }
+  );
 
   const removeAttachmentButton = screen.getByTestId('attachment-delete-button');
 
@@ -448,6 +467,7 @@ test('shows error snackbar on request error', async () => {
 }, 10000); // Setting timeout for this test to be 10 seconds
 
 test('opt out of sending email whens suggesting feature', async () => {
+  mockServiceHasError = false;
   const { title, description } = fakeInputs();
 
   render(<Help applicationName={applicationName} />, {
@@ -468,6 +488,7 @@ test('opt out of sending email whens suggesting feature', async () => {
   const titleInput = screen.getByRole('textbox', {
     name: /title required/i,
   });
+
   const descInput = screen.getByRole('textbox', {
     name: /description required/i,
   });
@@ -488,4 +509,48 @@ test('opt out of sending email whens suggesting feature', async () => {
   const submitButton = screen.getByRole('button', { name: /send/i });
 
   await user.click(submitButton);
+
+  setTimeout(() => screen.logTestingPlaygroundURL(), 510);
+  await waitFor(
+    () =>
+      expect(
+        screen.getByText(/Your suggestion has been sent successfully/i)
+      ).toBeInTheDocument(),
+    { timeout: 5000 }
+  );
 }, 10000); // Setting timeout for this test to be 10 seconds
+
+test('undefined service now number working', async () => {
+  createIncidentResponseNumber = '';
+  mockServiceHasError = false;
+  const { title, description } = fakeInputs();
+
+  render(<Help applicationName={applicationName} />, {
+    wrapper: Wrappers,
+  });
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const reportBug = screen.getByText('Report a bug');
+  await user.click(reportBug);
+
+  const titleInput = screen.getByRole('textbox', {
+    name: /title required/i,
+  });
+  const descInput = screen.getByRole('textbox', {
+    name: /description required/i,
+  });
+
+  await user.type(titleInput, title);
+  await user.type(descInput, description);
+
+  const submitButton = screen.getByRole('button', { name: /send/i });
+
+  await user.click(submitButton);
+  await waitFor(
+    () => expect(screen.getByText(/Not found/i)).toBeInTheDocument(),
+    { timeout: 18000 }
+  );
+}, 20000); // Setting timeout for this test to be 15 seconds
