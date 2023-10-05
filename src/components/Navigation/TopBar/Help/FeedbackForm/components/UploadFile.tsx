@@ -4,42 +4,64 @@ import { FileRejection, FileWithPath } from 'react-dropzone';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackContentType, SeverityOption } from './FeedbackForm.types';
-import FileProgress from 'src/components/Feedback/Progress/FileProgress';
 import FileUploadArea from 'src/components/Inputs/FileUploadArea';
+import ImageFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ImageFile';
+import {
+  FeedbackContentType,
+  UrgencyOption,
+} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 
 import styled from 'styled-components';
 
 const { spacings, colors } = tokens;
 
 const Wrapper = styled.div`
+  grid-column: 1/3;
   display: flex;
   flex-direction: column;
 `;
+const Title = styled(Typography)`
+  margin: ${spacings.comfortable.small} ${spacings.comfortable.small} 0
+    ${spacings.comfortable.small};
+  color: ${colors.text.static_icons__tertiary.hex};
+`;
 
 const FileUploadAreaWrapper = styled.div`
-  position: relative;
-  top: -10px;
-`;
-
-const FilesUploadedList = styled.div``;
-
-const LabelAndMeta = styled.div`
   display: flex;
-  justify-content: space-between;
-  position: relative;
-  top: 10px;
-  margin: 0 ${spacings.comfortable.small};
-  > p {
-    color: ${colors.text.static_icons__tertiary.hex};
+  flex-wrap: wrap;
+  align-items: start;
+  gap: ${spacings.comfortable.medium_small};
+  height: 140px;
+  overflow-x: visible;
+  overflow-y: auto;
+  > :first-child {
+    margin-top: ${spacings.comfortable.medium_small};
   }
 `;
+
+function removeDuplicates(
+  a: FileWithPath[],
+  fn: (a: FileWithPath, b: FileWithPath) => boolean
+) {
+  if (a.length === 0 || a.length === 1) {
+    return a;
+  }
+
+  for (let i = 0; i < a.length; i++) {
+    for (let j = i + 1; j < a.length; j++) {
+      if (fn(a[i], a[j])) {
+        a.splice(i, 1);
+      }
+    }
+  }
+  return a;
+}
 
 interface UploadFileProps {
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[]
+    newValue: string | UrgencyOption | FileWithPath[]
   ) => void;
 }
 
@@ -58,20 +80,28 @@ const UploadFile: FC<UploadFileProps> = ({
       );
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);
-      updateFeedback('attachments', cleanedOfHiddenFiles);
+      const oldAttachments: FileWithPath[] = [];
+
+      if (feedbackContent.attachments) {
+        oldAttachments.push(...feedbackContent.attachments);
+      }
+      const combinedNewAndPrev = [...cleanedOfHiddenFiles, ...oldAttachments];
+      const newAttachments = removeDuplicates(
+        combinedNewAndPrev,
+        (a, b) => a.name === b.name && a.size === b.size
+      );
+      updateFeedback('attachments', newAttachments);
     }
     setRejectedFiles(fileRejections);
   };
 
   const handleOnDelete = (file: FileWithPath) => {
     const newAttachmentsList =
-      feedbackContent.attachments?.filter(
-        (attachment) =>
-          /* c8 ignore start */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
-          attachment.name !== file.name && attachment.size !== file.size
-      ) ?? [];
+      feedbackContent.attachments?.filter((attachment) => {
+        /* c8 ignore start */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
+        return attachment.name !== file.name && attachment.size !== file.size;
+      }) ?? [];
     /* c8 ignore end */
-
     updateFeedback('attachments', newAttachmentsList);
   };
 
@@ -89,42 +119,34 @@ const UploadFile: FC<UploadFileProps> = ({
 
   return (
     <Wrapper>
+      <Title group="input" variant="label">
+        Attachments (.jpg, .jpeg, .png)
+      </Title>
       <FileUploadAreaWrapper className="test">
-        <LabelAndMeta>
-          <Typography group="input" variant="label">
-            Attachments
-          </Typography>
-          <Typography group="input" variant="label">
-            optional
-          </Typography>
-        </LabelAndMeta>
         <FileUploadArea
+          compact
           onDrop={onDrop}
           accept={{
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
           }}
         />
-      </FileUploadAreaWrapper>
-      <FilesUploadedList>
         {feedbackContent.attachments?.map((file) => {
           return (
-            <FileProgress
+            <ImageFile
               key={file.name + file.size}
-              name={file.name}
               onDelete={() => handleOnDelete(file)}
-              onAbort={() => null}
+              file={file}
             />
           );
         })}
         {rejectedFiles.map((rejection) => {
           /* c8 ignore start */
           return (
-            <FileProgress
+            <ImageFile
+              rejection={rejection}
               key={rejection.file.name + rejection.file.size}
-              name={rejection.file.name}
               onDelete={() => handleOnDeleteRejected(rejection)}
-              onAbort={() => null}
               error={true}
               errorMsg={
                 rejection.errors[0].code + ' - ' + rejection.errors[0].message
@@ -133,7 +155,7 @@ const UploadFile: FC<UploadFileProps> = ({
           );
           /* c8 ignore end */
         })}
-      </FilesUploadedList>
+      </FileUploadAreaWrapper>
     </Wrapper>
   );
 };

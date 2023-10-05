@@ -16,7 +16,8 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
-    "sourceMap": true
+    "sourceMap": true,
+
   },
   "include": ["src/**/*", "vite.config.ts"],
   "exclude": ["node_modules"]
