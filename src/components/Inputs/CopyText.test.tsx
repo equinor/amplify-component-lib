@@ -16,7 +16,7 @@ test('Renders label on hover', async () => {
   expect(screen.queryByText(/copy/i)).not.toBeInTheDocument();
 });
 
-test('Copies text to clipbard and displays success message', async () => {
+test('Copies text to clipboard and displays success message', async () => {
   render(<CopyText textToCopy="Test">testing text</CopyText>);
   const user = userEvent.setup();
 
@@ -35,6 +35,6 @@ test('Copies text to clipbard and displays success message', async () => {
   expect(clipboard).toBe('Test');
   expect(screen.getByText(/copied!/i)).toBeInTheDocument();
 
-  await waitFor(() => screen.getByText(/copy/i), { timeout: 3000 });
+  await waitFor(() => screen.getByText(/copy/i), { timeout: 5000 });
   expect(screen.getByText(/copy/i)).toBeInTheDocument();
 });

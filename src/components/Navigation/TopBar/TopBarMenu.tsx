@@ -25,12 +25,12 @@ const Header = styled.div`
 `;
 
 interface ContentWrapperProps {
-  contentPadding: boolean;
+  $contentPadding: boolean;
 }
 
 const ContentWrapper = styled.div<ContentWrapperProps>`
   padding: ${(props) =>
-    props.contentPadding ? spacings.comfortable.medium : '0px'};
+    props.$contentPadding ? spacings.comfortable.medium : '0px'};
 `;
 
 interface TopBarMenuContentProps {
@@ -69,7 +69,7 @@ const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
             <Icon data={clear} />
           </Button>
         </Header>
-        <ContentWrapper contentPadding={contentPadding}>
+        <ContentWrapper $contentPadding={contentPadding}>
           {children}
         </ContentWrapper>
       </MenuWrapper>

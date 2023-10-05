@@ -7,7 +7,7 @@ import CopyText from 'src/components/Inputs/CopyText';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { spacings } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,10 +55,7 @@ const Success: FC<SuccessProps> = ({ onClose, serviceNowId }) => {
           <Typography group="heading" variant="h4">
             Click to copy your service now report number:
           </Typography>
-          <CopyText
-            textToCopy={serviceNowId}
-            hoverBackground={colors.text.static_icons__primary_white.hex}
-          >
+          <CopyText textToCopy={serviceNowId}>
             <Number group="heading" variant="h1">
               {serviceNowId}
             </Number>
