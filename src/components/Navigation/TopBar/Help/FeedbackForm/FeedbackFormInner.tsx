@@ -6,37 +6,40 @@ import {
   AutocompleteChanges,
   Button,
   CircularProgress,
+  Icon,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
   FeedbackContentType,
   FeedbackEnum,
-  SeverityOption,
+  UrgencyOption,
 } from './FeedbackForm.types';
-import UploadFile from './UploadFile';
-import ConsentCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/ConsentCheckbox';
-import FilePrivacyCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/FilePrivacyCheckbox';
+import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
+import ConsentCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ConsentCheckbox';
+import UploadFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/UploadFile';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { spacings, colors, shape } = tokens;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: ${spacings.comfortable.medium};
-  max-width: 350px;
-  padding: ${spacings.comfortable.medium};
-  padding-top: 0;
+  height: 100%;
+  width: 100%;
 `;
 
 const Actions = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: ${spacings.comfortable.medium};
+  grid-column: 2/3;
 `;
 
 const LoadingSpinner = styled(CircularProgress)`
@@ -44,19 +47,35 @@ const LoadingSpinner = styled(CircularProgress)`
   margin: auto;
 `;
 
-interface FeedbackDetailsProps {
+const UploadInfo = styled.div`
+  grid-column: 1/3;
+  display: flex;
+  gap: ${spacings.comfortable.small};
+  height: fit-content;
+  align-self: flex-end;
+  align-items: center;
+  background-color: ${colors.ui.background__info.hex};
+  padding: ${spacings.comfortable.medium_small};
+  border-radius: ${shape.button.borderRadius};
+`;
+
+const Description = styled(TextField)`
+  grid-column: 1/3;
+`;
+
+interface FeedbackFormInnerProps {
   selectedType: FeedbackEnum;
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[] | boolean
+    newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => void;
   handleSave: () => void;
   onClose: () => void;
   requestIsLoading: boolean;
 }
 
-const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
+const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
   selectedType,
   feedbackContent,
   updateFeedback,
@@ -67,20 +86,6 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
   const { account } = useAuth();
   const userEmail = account?.username;
   const [isWrongDomain, setIsWrongDomain] = useState(false);
-
-  const hasAttachment = useMemo(() => {
-    return (
-      feedbackContent.attachments !== undefined &&
-      feedbackContent.attachments.length > 0
-    );
-  }, [feedbackContent.attachments]);
-
-  const filePrivacyConsent = useMemo(() => {
-    if (hasAttachment && selectedType === FeedbackEnum.BUG) {
-      return feedbackContent.filePrivacyConsent;
-    }
-    return true;
-  }, [feedbackContent.filePrivacyConsent, hasAttachment, selectedType]);
 
   const handleOnUrlChange = (e: FormEvent<HTMLInputElement>) => {
     updateFeedback('url', e.currentTarget.value);
@@ -104,25 +109,16 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
     return (
       feedbackContent.title.length > 0 &&
       feedbackContent.description.length > 0 &&
-      filePrivacyConsent &&
       !isWrongDomain
     );
   }, [
     feedbackContent.title.length,
     feedbackContent.description.length,
-    filePrivacyConsent,
     isWrongDomain,
   ]);
 
   return (
     <Wrapper>
-      <TextField
-        id="usernamee"
-        label="Name"
-        value={feedbackContent.optOutEmail ? 'Anonymous' : userEmail}
-        disabled
-      />
-
       <TextField
         id="feedback-title"
         label="Title"
@@ -133,29 +129,33 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           updateFeedback('title', e.currentTarget.value)
         }
       />
-      <TextField
-        id="feedback-description"
-        label="Description"
-        meta="Required"
-        value={feedbackContent.description}
-        placeholder={'Describe the ' + selectedType + '...'}
-        rows={3}
-        onChange={(e: FormEvent<HTMLInputElement>) =>
-          updateFeedback('description', e.currentTarget.value)
+      <OptionalTooltip
+        title={
+          selectedType === FeedbackEnum.BUG
+            ? 'Your email is required when submitting a bug report to service now'
+            : 'You may opt out of including your email when suggesting a feature'
         }
-        multiline
-      />
+      >
+        <TextField
+          id="usernamee"
+          label="Email"
+          meta={selectedType === FeedbackEnum.BUG ? 'Required' : 'Optional'}
+          value={feedbackContent.anonymous ? 'Anonymous' : userEmail}
+          disabled
+        />
+      </OptionalTooltip>
+
       {selectedType === FeedbackEnum.BUG && (
         <>
           <Autocomplete
-            options={Object.values(SeverityOption)}
+            options={Object.values(UrgencyOption)}
             id="feedback-severity"
             label="Severity"
             meta="optional"
-            selectedOptions={[feedbackContent.severity as SeverityOption]}
+            selectedOptions={[feedbackContent.urgency as UrgencyOption]}
             placeholder="Select error impact"
-            onOptionsChange={(e: AutocompleteChanges<SeverityOption>) =>
-              updateFeedback('severity', e.selectedItems[0])
+            onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
+              updateFeedback('urgency', e.selectedItems[0])
             }
             autoWidth
           />
@@ -176,15 +176,28 @@ const FeedbackFormInner: FC<FeedbackDetailsProps> = ({
           />
         </>
       )}
-
+      <Description
+        id="feedback-description"
+        label="Description"
+        meta="Required"
+        value={feedbackContent.description}
+        placeholder={'Describe the ' + selectedType + '...'}
+        rows={4}
+        onChange={(e: FormEvent<HTMLInputElement>) =>
+          updateFeedback('description', e.currentTarget.value)
+        }
+        multiline
+      />
+      <UploadInfo>
+        <Icon data={info_circle} />
+        <Typography>
+          Please make sure the uploaded files do not contain confidential or
+          personal information
+        </Typography>
+      </UploadInfo>
       <UploadFile
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
-      />
-      <FilePrivacyCheckbox
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-        hasAttachment={hasAttachment}
       />
       {selectedType === FeedbackEnum.SUGGESTION && (
         <ConsentCheckbox

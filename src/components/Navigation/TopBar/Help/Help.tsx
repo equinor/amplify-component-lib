@@ -123,7 +123,7 @@ export const Help: FC<HelpProps> = ({
         >
           <Dialog.Header>
             {feedbackType === FeedbackEnum.BUG
-              ? 'Report a bug'
+              ? 'Report a bug - ServiceNow'
               : 'Suggest a feature'}
           </Dialog.Header>
           <FeedbackForm

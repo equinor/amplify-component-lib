@@ -10,4 +10,6 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export type { Feature } from './models/Feature';
 export type { FeatureToggleDto } from './models/FeatureToggleDto';
 export type { GraphUser } from './models/GraphUser';
-export type { ServiceNowIncidentRequestDto } from './models/ServiceNowIncidentRequestDto';
+export type { ServiceNowIncidentResponse } from './models/ServiceNowIncidentResponse';
+export type { ServiceNowIncidentAttachmentResponse } from './models/ServiceNowIncidentAttachmentResponse';
+export { ServiceNowUrgency } from './models/ServiceNowUrgency';

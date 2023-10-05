@@ -1,31 +1,64 @@
+import { FileWithPath } from 'react-dropzone';
+
 import {
   FeedbackContentType,
   FeedbackEnum,
-  SeverityOption,
+  UrgencyOption,
 } from './FeedbackForm.types';
+import { ServiceNowUrgency } from 'src/api';
 import { date, environment } from 'src/utils';
 
 const { formatDate } = date;
 const { getAppName } = environment;
 
 const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
-  if (feedbackContent.severity === SeverityOption.NO_IMPACT) {
+  if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
     return ':large_yellow_circle:';
   }
-  if (feedbackContent.severity === SeverityOption.IMPEDES) {
+  if (feedbackContent.urgency === UrgencyOption.IMPEDES) {
     return ':large_orange_circle:';
   }
   return ':red_circle:';
+};
+
+export const readUploadedFileAsText = (
+  inputFile: FileWithPath
+): Promise<string> => {
+  const temporaryFileReader = new FileReader();
+
+  /* c8 ignore start */ // Rejection files not working
+  return new Promise((resolve, reject) => {
+    temporaryFileReader.onerror = () => {
+      temporaryFileReader.abort();
+      reject(new DOMException('Problem parsing input file.'));
+    };
+    /* c8 ignore end */
+    temporaryFileReader.onload = () => {
+      resolve(temporaryFileReader.result as string);
+    };
+    temporaryFileReader.readAsDataURL(inputFile);
+  });
+};
+
+export const getUrgencyNumber = (urgency: UrgencyOption) => {
+  switch (urgency) {
+    case UrgencyOption.UNABLE:
+      return ServiceNowUrgency.CRITICAL;
+    case UrgencyOption.IMPEDES:
+      return ServiceNowUrgency.MODERATE;
+    case UrgencyOption.NO_IMPACT:
+      return ServiceNowUrgency.NORMAL;
+  }
 };
 
 export const createServiceNowDescription = (
   feedbackContent: FeedbackContentType
 ) => {
   const locationText = `Url location of bug: ${feedbackContent.url} \n`;
-  const severityText = `Severity of bug: ${feedbackContent.severity} \n`;
+  const severityText = `Severity of bug: ${feedbackContent.urgency} \n`;
 
   return `${feedbackContent.url ? locationText : ''}${
-    feedbackContent.severity ? severityText : ''
+    feedbackContent.urgency ? severityText : ''
   }${feedbackContent.description}`;
 };
 
@@ -58,11 +91,11 @@ export const createSlackMessage = (
     });
   }
 
-  if (feedbackContent.severity) {
+  if (feedbackContent.urgency) {
     titleAndSeveritySectionArray.push({
       type: 'mrkdwn',
       text: `*Severity* \n ${getSeverityEmoji(feedbackContent)} ${
-        feedbackContent.severity
+        feedbackContent.urgency
       }`,
     });
   }
@@ -93,9 +126,7 @@ export const createSlackMessage = (
         },
         {
           type: 'mrkdwn',
-          text: `*User* \n ${
-            feedbackContent.optOutEmail ? 'Anonymous' : email
-          }`,
+          text: `*User* \n ${feedbackContent.anonymous ? 'Anonymous' : email}`,
         },
       ],
     },

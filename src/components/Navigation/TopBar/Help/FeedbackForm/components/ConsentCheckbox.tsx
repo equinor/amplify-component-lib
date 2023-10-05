@@ -4,7 +4,10 @@ import { FileWithPath } from 'react-dropzone';
 import { Checkbox, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedbackContentType, SeverityOption } from './FeedbackForm.types';
+import {
+  FeedbackContentType,
+  UrgencyOption,
+} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 
 import styled from 'styled-components';
 
@@ -24,7 +27,7 @@ interface ConsentCheckboxProps {
   feedbackContent: FeedbackContentType;
   updateFeedback: (
     key: keyof FeedbackContentType,
-    newValue: string | SeverityOption | FileWithPath[] | boolean
+    newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => void;
 }
 
@@ -33,14 +36,14 @@ const ConsentCheckbox: FC<ConsentCheckboxProps> = ({
   updateFeedback,
 }) => {
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateFeedback('optOutEmail', e.target.checked);
+    updateFeedback('anonymous', e.target.checked);
   };
 
   return (
     <Container>
       <Checkbox
         data-testid="opt_out_checkbox"
-        checked={feedbackContent.optOutEmail}
+        checked={feedbackContent.anonymous}
         onChange={handleOnChange}
       />
       <Text variant="body_short">Suggest this feature anonymously</Text>

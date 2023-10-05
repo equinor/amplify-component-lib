@@ -2,28 +2,32 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CancelablePromise } from '../';
-import {
-  request as __request,
-  ServiceNowIncidentRequestDto,
-  FeatureToggleDto,
-} from '../';
+import { request as __request, FeatureToggleDto } from '../';
 
 import { OpenAPI_Portal, OpenAPI_Portal_Prod } from '../core/OpenAPI';
+import { ServiceNowIncidentResponse } from 'src/api/models/ServiceNowIncidentResponse';
 
 export class PortalService {
+  // ConfigurationItem: string;
+  // Title: string;
+  // Description: string;
+  // CallerEmail: string;
+  // urgency?: ServiceNowUrgency;
+  // Image?: Blob;
+
   /**
-   * @param requestBody
+   * Creates a incident report in service now
+   * @param formData
    * @returns any Success
    * @throws ApiError
    */
   public static createIncident(
-    requestBody?: ServiceNowIncidentRequestDto
-  ): CancelablePromise<any> {
+    formData?: FormData
+  ): CancelablePromise<ServiceNowIncidentResponse> {
     return __request(OpenAPI_Portal, {
       method: 'POST',
       url: '/api/v1/ServiceNow/incident',
-      body: requestBody,
-      mediaType: 'application/json-patch+json',
+      body: formData,
     });
   }
 
