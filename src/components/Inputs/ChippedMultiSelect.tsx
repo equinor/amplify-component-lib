@@ -73,7 +73,6 @@ const Arrow = styled(Icon)`
 `;
 
 const Menu = styled(EDSMenu)`
-  z-index: 500;
   overflow: auto !important;
 `;
 

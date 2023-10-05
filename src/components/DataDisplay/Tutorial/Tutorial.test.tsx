@@ -39,18 +39,18 @@ test('Work as expected when clicking through', async () => {
   expect(screen.getByText(props.tutorialTitle)).toBeInTheDocument();
   expect(screen.getByText(props.tutorialIntro)).toBeInTheDocument();
 
-  await user.click(screen.getByRole('button', { name: /start tour/i }));
+  await user.click(screen.getByTestId('start-tour'));
 
   // Click through all steps
   for (const step of props.steps) {
     expect(screen.getByText(step.title)).toBeInTheDocument();
     expect(screen.getByText(step.body.props.children)).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: step.button }));
+    await user.click(screen.getByTestId(step.button));
   }
 
   // EDS dialog container should now be empty
   expect(
-    container.children[container.children.length - 1]
+    container.children[0].children[container.children.length - 1]
   ).toBeEmptyDOMElement();
 });
 
@@ -79,7 +79,7 @@ test('Clicking skip closes tutorial', async () => {
     </TutorialStepsProvider>
   );
 
-  await user.click(screen.getByRole('button', { name: /skip/i }));
+  await user.click(screen.getByTestId('skip'));
 
   // EDS dialog container should now be empty
   const dialogContainer = container.previousSibling;

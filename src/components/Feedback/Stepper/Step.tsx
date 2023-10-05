@@ -10,7 +10,7 @@ import styled from 'styled-components';
 const { colors, spacings, shape } = tokens;
 
 interface ContainerProps {
-  clickable: boolean;
+  $clickable: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -19,7 +19,7 @@ const Container = styled.div<ContainerProps>`
   align-items: center;
   white-space: nowrap;
   ${(props) =>
-    props.clickable &&
+    props.$clickable &&
     `
     &:hover {
         cursor: pointer;
@@ -28,8 +28,8 @@ const Container = styled.div<ContainerProps>`
 `;
 
 interface IconWrapperProps {
-  filled?: boolean;
-  outlined?: boolean;
+  $filled?: boolean;
+  $outlined?: boolean;
 }
 
 const IconWrapper = styled.span<IconWrapperProps>`
@@ -41,16 +41,16 @@ const IconWrapper = styled.span<IconWrapperProps>`
   border-radius: ${shape.circle.borderRadius};
   border: 2px solid
     ${(props) =>
-      props.filled || props.outlined
+      props.$filled || props.$outlined
         ? colors.interactive.primary__resting.hex
         : colors.interactive.disabled__text.hex};
   background: ${(props) =>
-    props.filled ? colors.interactive.primary__resting.hex : 'none'};
+    props.$filled ? colors.interactive.primary__resting.hex : 'none'};
   > p {
     // Ensure text icons are not squished
     padding: 8px;
     color: ${(props) =>
-      props.filled
+      props.$filled
         ? colors.text.static_icons__primary_white.hex
         : colors.interactive.disabled__text.hex};
   }
@@ -78,13 +78,13 @@ const Step: FC<StepProps> = ({
   const StepIcon = useMemo((): ReactElement => {
     if (index >= currentIndex) {
       return (
-        <IconWrapper filled={index === currentIndex}>
+        <IconWrapper $filled={index === currentIndex}>
           <Typography variant="caption">{index + 1}</Typography>
         </IconWrapper>
       );
     }
     return (
-      <IconWrapper outlined data-testid="wrapper">
+      <IconWrapper $outlined data-testid="wrapper">
         <Icon data={check} color={colors.interactive.primary__resting.hex} />
       </IconWrapper>
     );
@@ -97,6 +97,7 @@ const Step: FC<StepProps> = ({
 
   const textColor = useMemo((): string | undefined => {
     if (index > currentIndex) return colors.interactive.disabled__text.hex;
+    return colors.text.static_icons__default.hex;
   }, [currentIndex, index]);
 
   const handleOnClick = () => {
@@ -120,7 +121,7 @@ const Step: FC<StepProps> = ({
             }
           : undefined
       }
-      clickable={index < currentIndex}
+      $clickable={index < currentIndex}
       onClick={handleOnClick}
     >
       {StepIcon}

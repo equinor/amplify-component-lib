@@ -46,7 +46,8 @@ test('Renders image when given and in correct sizing', () => {
     rerender(<ProfileAvatar {...mockedProps} size={size} />);
     const avatar = screen.getByRole('img').parentElement;
     const expectedSize = sizeToFontsize(size);
-    expect(avatar).toHaveAttribute('size', expectedSize.toString());
+    expect(avatar).toHaveStyleRule('width', `${expectedSize}px`);
+    expect(avatar).toHaveStyleRule('height', `${expectedSize}px`);
   }
 });
 
@@ -97,9 +98,9 @@ test('Renders first and last letter of name when image is not given', () => {
     rerender(<ProfileAvatar {...mockedProps} size={size} />);
     const expectedFontSize = sizeToFontsize(size);
 
-    expect(screen.getByText(initials)).toHaveAttribute(
+    expect(screen.getByText(initials)).toHaveStyleRule(
       'font-size',
-      expectedFontSize.toString()
+      `${expectedFontSize}px`
     );
   }
 });

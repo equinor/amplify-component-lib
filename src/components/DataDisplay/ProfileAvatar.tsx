@@ -54,15 +54,12 @@ function nameToColor(name?: string): string {
   return availableColors[sum % availableColors.length];
 }
 
-type ContainerProps = {
-  $size: number;
-};
-
 type InitialsContainerProps = {
-  background: string;
   $fontSize: number;
+  $size: number;
+  $background: string;
   disabled: boolean;
-} & ContainerProps;
+};
 
 const InitialsContainer = styled.div<InitialsContainerProps>`
   width: ${(props) => props.$size}px;
@@ -73,7 +70,7 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   background: ${(props) =>
     props.disabled
       ? colors.interactive.disabled__border.hex
-      : props.background};
+      : props.$background};
   color: ${(props) =>
     props.disabled
       ? colors.text.static_icons__default.hex
@@ -146,7 +143,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
 
     return (
       <InitialsContainer
-        background={nameToColor(name)}
+        $background={nameToColor(name)}
         $size={sizeToPx()}
         $fontSize={sizeToFontsize()}
         disabled={disabled}

@@ -63,9 +63,9 @@ const StepContainer = styled.div`
 `;
 
 interface StepIndicatorProps {
-  active: boolean;
-  num: number;
-  activeNum: number;
+  $active: boolean;
+  $num: number;
+  $activeNum: number;
 }
 
 const StepIndicator = styled.div<StepIndicatorProps>`
@@ -83,9 +83,11 @@ const StepIndicator = styled.div<StepIndicatorProps>`
     400% 10px,
     400%;
   ${(props) =>
-    props.active
+    props.$active
       ? 'background-position: 0%'
-      : `background-position: ${props.num < props.activeNum ? '-50' : '100'}%`}
+      : `background-position: ${
+          props.$num < props.$activeNum ? '-50' : '100'
+        }%`}
 `;
 
 const TutorialSteps: FC<TutorialStepsProps> = ({ show, onClose, steps }) => {
@@ -121,15 +123,19 @@ const TutorialSteps: FC<TutorialStepsProps> = ({ show, onClose, steps }) => {
                 return (
                   <StepIndicator
                     key={item.title}
-                    active={index === stepNumber}
-                    activeNum={stepNumber}
-                    num={index}
+                    $active={index === stepNumber}
+                    $activeNum={stepNumber}
+                    $num={index}
                   />
                 );
               })}
             </StepContainer>
             <DialogActions>
-              <Button variant="ghost" onClick={handleNext}>
+              <Button
+                variant="ghost"
+                onClick={handleNext}
+                data-testid={steps[stepNumber].button}
+              >
                 {steps[stepNumber].button}
               </Button>
             </DialogActions>

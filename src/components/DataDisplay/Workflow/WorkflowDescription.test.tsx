@@ -53,9 +53,9 @@ test('Renders the flow correctly', async () => {
     expect(
       screen.getByText(approvedOptions[index].label ?? 'failed')
     ).toBeInTheDocument();
-    expect(option.children[option.children.length - 1]).toHaveAttribute(
-      'color',
-      approvedOptions[index].color ?? '#000000'
+    expect(option.children[option.children.length - 1]).toHaveStyleRule(
+      'background',
+      approvedOptions[index].backgroundColor
     );
   }
 
@@ -107,9 +107,9 @@ test('Renders with color approved dates properly flow correctly', async () => {
     expect(
       screen.getByText(approvedOptions[index].label ?? 'failed')
     ).toBeInTheDocument();
-    expect(option.children[option.children.length - 1]).toHaveAttribute(
-      'color',
-      approvedOptions[index].color ?? '#000000'
+    expect(option.children[option.children.length - 1]).toHaveStyleRule(
+      'border',
+      `0.063em solid ${approvedOptions[index].color}`
     );
   }
 });

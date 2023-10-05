@@ -1,8 +1,11 @@
 import { check } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import Stepper, { StepperProps } from './Stepper';
+
+const { colors } = tokens;
 
 function fakeProps(): StepperProps {
   const steps: string[] = [];
@@ -24,10 +27,17 @@ test('Displays icon/number correctly', async () => {
   const { rerender } = render(<Stepper {...props} />);
 
   // Current does not have color attribute
-  expect(screen.getByText(props.steps[0])).not.toHaveAttribute('color');
+  const firstElement = screen.getByText(props.steps[0]);
+  expect(firstElement).toHaveStyleRule(
+    'color',
+    colors.text.static_icons__default.hex
+  );
 
   for (const step of props.steps.slice(1)) {
-    expect(screen.getByText(step)).toHaveAttribute('color');
+    expect(screen.getByText(step)).toHaveStyleRule(
+      'color',
+      colors.interactive.disabled__text.hex
+    );
   }
   rerender(<Stepper {...props} current={1} maxWidth="800px" />);
 
@@ -64,6 +74,5 @@ test('maxWidth props sets max-width style', () => {
   render(<Stepper {...props} maxWidth={width} />);
 
   const container = screen.getByTestId('stepper-container');
-  const style = window.getComputedStyle(container);
-  expect(style.maxWidth).toBe(width);
+  expect(container).toHaveStyleRule('max-width', width);
 });

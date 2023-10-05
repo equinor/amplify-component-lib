@@ -10,7 +10,7 @@ import styled from 'styled-components';
 const { colors, spacings } = tokens;
 
 interface SidePanelProps {
-  open: boolean;
+  $open: boolean;
 }
 
 const SidePanel = styled.div<SidePanelProps>`
@@ -25,7 +25,7 @@ const SidePanel = styled.div<SidePanelProps>`
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.14),
     0 3px 4px rgba(0, 0, 0, 0.12);
-  ${(props) => !props.open && 'display: none;'}
+  display: ${({ $open }) => ($open ? 'initial' : 'none')};
 `;
 
 const Header = styled.div`
@@ -85,6 +85,7 @@ const Notifications: FC<NotificationsProps> = ({
   };
 
   useOutsideClick(sidePanelRef.current, (event) => {
+    console.log('outside clcik');
     if (
       notificationsOpen &&
       buttonRef.current !== null &&
@@ -101,6 +102,7 @@ const Notifications: FC<NotificationsProps> = ({
         key="topbar-notifications"
         ref={buttonRef}
         onClick={handleButtonClick}
+        data-testid="show-hide-button"
       >
         <Icon
           data={notificationIcon}
@@ -109,7 +111,11 @@ const Notifications: FC<NotificationsProps> = ({
         />
         {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
       </Button>
-      <SidePanel ref={sidePanelRef} open={notificationsOpen}>
+      <SidePanel
+        ref={sidePanelRef}
+        $open={notificationsOpen}
+        data-testid="side-panel"
+      >
         <Header>
           <Typography variant="h6" group="heading">
             Notifications

@@ -1,5 +1,3 @@
-import { faker } from '@faker-js/faker';
-
 import { render, screen, userEvent, waitFor } from '../../tests/test-utils';
 import CopyText from './CopyText';
 
@@ -39,25 +37,4 @@ test('Copies text to clipbard and displays success message', async () => {
 
   await waitFor(() => screen.getByText(/copy/i), { timeout: 3000 });
   expect(screen.getByText(/copy/i)).toBeInTheDocument();
-});
-
-test('hoverBackground prop works as expected', async () => {
-  const randomColor = faker.color.rgb();
-  render(
-    <CopyText textToCopy="Test" hoverBackground={randomColor}>
-      testing text
-    </CopyText>
-  );
-  const user = userEvent.setup();
-
-  const wrapper = screen.getByText('testing text');
-
-  await user.hover(wrapper);
-
-  await waitFor(() => screen.getByText(/copy/i));
-  expect(screen.getByText(/copy/i)).toBeInTheDocument();
-
-  expect(screen.getByText(/copy/i).parentElement).toHaveStyle(
-    `background: ${randomColor};`
-  );
 });

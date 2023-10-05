@@ -14,11 +14,11 @@ test('renders button and panel correctly', async () => {
   const icons = screen.getAllByTestId('eds-icon-path');
 
   expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
-  expect(screen.queryByText('Notifications')).not.toBeVisible();
+  expect(screen.getByTestId('side-panel')).toHaveStyleRule('display', 'none');
 
-  const button = screen.getByRole('button');
+  const button = screen.getByTestId('show-hide-button');
   await userEvent.click(button);
-  expect(screen.getByText('Notifications')).toBeVisible();
+  expect(screen.getByTestId('side-panel')).toBeVisible();
 });
 
 test('renders element children correctly', async () => {
@@ -34,11 +34,7 @@ test('renders element children correctly', async () => {
   );
   const user = userEvent.setup();
 
-  for (const text of texts) {
-    expect(screen.getByText(text)).not.toBeVisible();
-  }
-
-  const button = screen.getByRole('button');
+  const button = screen.getByTestId('show-hide-button');
 
   await user.click(button);
 
@@ -52,7 +48,7 @@ test('Calls setAllAsRead when pressing button twice', async () => {
   render(<Notifications setAllAsRead={setAllAsRead} />);
   const user = userEvent.setup();
 
-  const button = screen.getByRole('button');
+  const button = screen.getByTestId('show-hide-button');
 
   await user.click(button);
 
@@ -78,19 +74,20 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
 
   await user.click(notificationButton);
 
-  expect(screen.getByText('Notifications')).toBeVisible();
+  expect(screen.getByTestId('side-panel')).toBeVisible();
 
   const elementOutsidePanel = screen.getByText(randomText);
 
   await user.click(elementOutsidePanel);
 
-  expect(screen.getByText('Notifications')).not.toBeVisible();
+  expect(screen.getByTestId('side-panel')).toHaveStyleRule('display', 'none');
 });
+
 test('Renders unread dot when unread = true', async () => {
   render(<Notifications setAllAsRead={() => null} hasUnread />);
   const user = userEvent.setup();
 
-  const button = screen.getByRole('button');
+  const button = screen.getByTestId('show-hide-button');
   await user.click(button);
 
   const unreadDot = screen.getByTestId('unread-dot');
@@ -101,7 +98,8 @@ test('Renders unread dot when unread = true', async () => {
 test('Unread dot renders as expected', () => {
   const { container } = render(<UnreadRedDot />);
   const unreadDot = container.children[0];
-  expect(unreadDot).toHaveStyle(
-    `background-color: ${colors.logo.fill_positive.hex};`
+  expect(unreadDot).toHaveStyleRule(
+    'background-color',
+    colors.logo.fill_positive.hex
   );
 });

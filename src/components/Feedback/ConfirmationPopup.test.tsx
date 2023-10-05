@@ -7,7 +7,8 @@ import ConfirmationPopup from './ConfirmationPopup';
 
 test('renders when show is true', () => {
   render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);
-  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  screen.logTestingPlaygroundURL();
+  expect(screen.getByTestId('dialog-header')).toBeInTheDocument();
 });
 
 test('renders title when value is given', () => {
@@ -74,7 +75,7 @@ test('triggers callback functions on actions given', async () => {
 
 test('No element is shown when show=false', () => {
   render(<ConfirmationPopup show={false} />);
-  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('dialog-header')).not.toBeInTheDocument();
 });
 
 test('Places actions correctly when given actionPosition prop', () => {

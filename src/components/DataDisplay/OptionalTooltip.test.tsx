@@ -22,21 +22,22 @@ test('Renders correctly with title', () => {
 
   expect(screen.getByText(props.content)).toBeInTheDocument();
 
-  const tooltipContainer = container.parentElement?.children[1];
-
-  expect(tooltipContainer).toBeInTheDocument();
-  expect(container.parentElement?.children.length).toBe(2);
+  expect(
+    container.parentElement!.querySelector('#eds-tooltip-container')
+  ).toBeInTheDocument();
 });
 
 test('Renders correctly without title', () => {
   const props = fakeProps();
   const { container } = render(
-    <OptionalTooltip>
+    <OptionalTooltip title={undefined}>
       <p>{props.content}</p>
     </OptionalTooltip>
   );
 
   expect(screen.getByText(props.content)).toBeInTheDocument();
 
-  expect(container.parentElement?.children.length).toBe(1);
+  expect(
+    container.parentElement!.querySelector('#eds-tooltip-container')
+  ).not.toBeInTheDocument();
 });

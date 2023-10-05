@@ -19,25 +19,25 @@ const DialogHeader = styled.div`
   padding: ${spacings.comfortable.medium};
   padding-bottom: 0;
 `;
-interface IStyledActionsProps {
-  actionPosition: 'left' | 'right';
+interface StyledActionsProps {
+  $actionPosition: 'left' | 'right';
 }
 
-const StyledActions = styled(Dialog.Actions)<IStyledActionsProps>`
+const StyledActions = styled(Dialog.Actions)<StyledActionsProps>`
   display: flex;
   gap: ${spacings.comfortable.small};
   justify-self: ${(props) =>
-    props.actionPosition === 'left' ? 'flex-start' : 'flex-end'};
+    props.$actionPosition === 'left' ? 'flex-start' : 'flex-end'};
   align-items: center;
 
   & > * {
     margin-left: ${(props) =>
-      props.actionPosition === 'right' || !props.actionPosition
+      props.$actionPosition === 'right'
         ? spacings.comfortable.x_small
         : undefined};
 
     margin-right: ${(props) =>
-      props.actionPosition === 'left'
+      props.$actionPosition === 'left'
         ? spacings.comfortable.x_small
         : undefined};
   }
@@ -83,7 +83,7 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
           </Dialog.CustomContent>
           <StyledActions
             data-testid={`confirmation-actions-${actionPosition}`}
-            actionPosition={actionPosition}
+            $actionPosition={actionPosition}
           >
             {actions}
           </StyledActions>
