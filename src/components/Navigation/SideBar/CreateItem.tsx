@@ -28,6 +28,7 @@ const MenuButtonContainer = styled.div<ContainerProps>`
   border-bottom: 1px solid ${colors.ui.background__medium.hex};
   box-sizing: border-box;
 `;
+
 interface CustomButtonProps extends ButtonProps {
   $open?: boolean;
 }
@@ -87,7 +88,7 @@ const CreateItem: FC<CreateItemProps> = ({
     return (
       <MenuButtonContainer $open={isOpen}>
         <CreateNewButton
-          open
+          $open
           variant="contained"
           onClick={onCreate}
           disabled={disabled}
