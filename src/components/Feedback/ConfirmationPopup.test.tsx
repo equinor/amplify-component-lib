@@ -7,7 +7,6 @@ import ConfirmationPopup from './ConfirmationPopup';
 
 test('renders when show is true', () => {
   render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);
-  screen.logTestingPlaygroundURL();
   expect(screen.getByTestId('dialog-header')).toBeInTheDocument();
 });
 

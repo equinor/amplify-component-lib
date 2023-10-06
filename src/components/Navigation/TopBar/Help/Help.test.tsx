@@ -319,20 +319,6 @@ test('Inputting all fields with file works as expected', async () => {
 
   await user.hover(file2nameElement);
 
-  // const fileNameRegex = new RegExp(imageTwo.name.split('.')[0], 'i');
-  //
-  // await waitFor(
-  //   () =>
-  //     expect(
-  //       screen.getByRole('tooltip', {
-  //         name: fileNameRegex,
-  //       })
-  //     ).toBeInTheDocument(),
-  //   {
-  //     timeout: 1000,
-  //   }
-  // );
-
   const removeAttachmentButton = screen.getByTestId('attachment-delete-button');
 
   expect(removeAttachmentButton).toBeInTheDocument();
