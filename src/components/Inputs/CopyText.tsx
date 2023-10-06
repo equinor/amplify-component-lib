@@ -28,16 +28,12 @@ const spawn = keyframes`
   }
 `;
 
-interface CopyIconProps {
-  $iconRightPos?: string;
-}
-
-const CopyIcon = styled.div<CopyIconProps>`
+const CopyIcon = styled.div`
   position: absolute;
   z-index: 1000;
-  right: ${(props) => props.$iconRightPos && props.$iconRightPos};
   top: 50%;
-  transform: translate(0, -50%);
+  right: -${spacings.comfortable.x_small};
+  transform: translate(100%, -50%);
   animation: ${spawn} 1s;
   background: ${colors.ui.background__light.hex};
   p,
@@ -58,15 +54,10 @@ type IconText = 'Copy' | 'Copied!';
 
 export interface CopyTextProps {
   textToCopy: string;
-  iconRightPos?: string;
   children: ReactNode;
 }
 
-const CopyText: FC<CopyTextProps> = ({
-  children,
-  textToCopy,
-  iconRightPos,
-}) => {
+const CopyText: FC<CopyTextProps> = ({ children, textToCopy }) => {
   const isMounted = useRef(false);
   const [hovering, setHovering] = useState(false);
   const [iconText, setIconText] = useState<IconText>('Copy');
@@ -96,7 +87,7 @@ const CopyText: FC<CopyTextProps> = ({
     >
       {children}
       {hovering && (
-        <CopyIcon $iconRightPos={iconRightPos}>
+        <CopyIcon>
           <Icon data={copy} size={16} />
           <Typography variant="overline">{iconText}</Typography>
         </CopyIcon>
