@@ -104,7 +104,8 @@ test('Children render and function as they should', async () => {
   expect(props.onChange).toHaveBeenCalledWith(child.value);
   rerender(<ContentMenu {...props} value={child.value} />);
 
-  expect(childButton).toHaveStyle(
-    `background: ${colors.interactive.primary__hover_alt.hex};`
+  expect(childButton).toHaveStyleRule(
+    'background',
+    colors.interactive.primary__hover_alt.hex
   );
 });

@@ -22,11 +22,11 @@ const Container = styled.div`
 `;
 
 interface ChipProps {
-  backgroundColor: string;
+  $backgroundColor: string;
 }
 
 const Chip = styled(EDSChip)<ChipProps>`
-  background: ${(props) => props.backgroundColor};
+  background: ${(props) => props.$backgroundColor};
 `;
 
 const FilterButton = styled(Button)`
@@ -42,7 +42,7 @@ const MenuTitleContainer = styled.div`
   padding-left: ${spacings.comfortable.large};
 `;
 
-const MenuItem = styled(Menu.Item)`
+const MenuItem = styled(EdsMenu.Item)`
   &:focus {
     outline: none;
     background: ${colors.ui.background__light.hsla};
@@ -104,7 +104,7 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
           data-testid="chip"
           onDelete={clearFilter}
           variant="default"
-          backgroundColor={chipColor}
+          $backgroundColor={chipColor}
         >
           {selectedName}
         </Chip>

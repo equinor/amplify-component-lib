@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { add, home, star_half } from '@equinor/eds-icons';
+import { faker } from '@faker-js/faker';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
 import { render, screen, userEvent } from '../../../tests/test-utils';
@@ -136,4 +137,32 @@ test('Opens and closes when pressing the toggle button', async () => {
 
   expect(sidebar).toHaveStyleRule('width', '256px');
   expect(screen.getByText(/collapse/i)).toBeInTheDocument();
+});
+
+test('Render Create button correctly when open', async () => {
+  const createLabel = faker.animal.dog();
+  const handleOnCreate = vi.fn();
+  window.localStorage.setItem(
+    'amplify-sidebar-state',
+    JSON.stringify({ isOpen: false })
+  );
+  render(
+    <SideBar createLabel={createLabel} onCreate={handleOnCreate}>
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>,
+    { wrapper: SideBarProvider }
+  );
+  const user = userEvent.setup();
+
+  expect(screen.queryByText(createLabel)).not.toBeInTheDocument();
+
+  const toggleButton = screen.getAllByRole('button')[1];
+
+  await user.click(toggleButton);
+
+  expect(screen.getByText(createLabel)).toBeInTheDocument();
+  const createButton = screen.getAllByRole('button')[0];
+  expect(createButton).toHaveStyleRule('height', '36px');
 });

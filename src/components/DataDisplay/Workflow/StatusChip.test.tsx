@@ -21,7 +21,7 @@ test('Renders correctly when not disabled', async () => {
   );
 
   const chip = screen.getByTestId('status-chip');
-  expect(chip).toHaveAttribute('color', props.color);
+  expect(chip).toHaveStyleRule('border', `0.063em solid ${props.color}`);
   expect(screen.getByText(props.childText)).toBeInTheDocument();
 });
 

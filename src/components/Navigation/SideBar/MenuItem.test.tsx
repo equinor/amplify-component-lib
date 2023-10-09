@@ -51,18 +51,23 @@ test('Expect correct icon color based on disabled/enabled state', () => {
 
   const svg = screen.getByTestId('eds-icon-path').parentElement;
   const text = screen.getByText(props.name);
+  const button = screen.getByTestId('sidebar-menu-item');
 
   expect(svg).toHaveAttribute('fill', getIconColor());
 
   props.currentUrl = props.link + '/' + faker.string.uuid();
   rerender(<MenuItem {...props} disabled={disabled} />);
   expect(svg).toHaveAttribute('fill', getIconColor());
-  expect(text).toHaveStyle('font-weight: 500;');
+  expect(text).toHaveStyleRule('font-weight', '500');
+  expect(button).toHaveStyleRule(
+    'background',
+    colors.interactive.primary__selected_highlight.hsla
+  );
 
   props.currentUrl = faker.string.uuid();
   rerender(<MenuItem {...props} disabled={disabled} />);
   expect(svg).toHaveAttribute('fill', getIconColor());
-  expect(text).toHaveStyle('font-weight: 400;');
+  expect(text).toHaveStyleRule('font-weight', '400');
 
   disabled = true;
   rerender(<MenuItem {...props} disabled={disabled} />);

@@ -9,14 +9,10 @@ export interface InfoElementProps {
   content: ReactElement | string;
   capitalizeContent?: boolean;
   copyableContent?: boolean;
-  copyBackground?: string;
 }
 
 const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
-  (
-    { title, content, copyableContent, capitalizeContent, copyBackground },
-    ref
-  ) => {
+  ({ title, content, copyableContent, capitalizeContent }, ref) => {
     const contentElement =
       capitalizeContent && typeof content === 'string'
         ? content.toUpperCase()
@@ -28,7 +24,7 @@ const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
         </Typography>
         {typeof content === 'string' ? (
           copyableContent ? (
-            <CopyText hoverBackground={copyBackground} textToCopy={content}>
+            <CopyText textToCopy={content}>
               <Typography variant="h6">{contentElement}</Typography>
             </CopyText>
           ) : (

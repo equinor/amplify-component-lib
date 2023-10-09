@@ -10,8 +10,9 @@ test('renders scrim version by default', () => {
 test('renders without scrim when prop is given', () => {
   render(<FullPageSpinner withoutScrim></FullPageSpinner>);
 
-  expect(screen.getAllByRole('generic')[1]).toHaveStyle(
-    'background-color: rgba(0, 0, 0, 0);'
+  expect(screen.getAllByRole('generic')[1]).toHaveStyleRule(
+    'background-color',
+    undefined
   );
 });
 

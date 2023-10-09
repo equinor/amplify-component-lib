@@ -9,16 +9,18 @@ import styled from 'styled-components';
 
 const { spacings } = tokens;
 interface ContainerProps {
-  stepAmount: number;
-  maxWidth?: string;
+  $stepAmount: number;
+  $maxWidth?: string;
 }
 const Container = styled.div<ContainerProps>`
   display: grid;
-  grid-template-columns: repeat(${({ stepAmount }) => stepAmount - 1}, auto 1fr) auto;
+  grid-template-columns:
+    repeat(${({ $stepAmount }) => $stepAmount - 1}, auto 1fr)
+    auto;
   grid-gap: ${spacings.comfortable.small};
   align-items: center;
   width: 100%;
-  ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}`}
+  ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}`}
 `;
 
 export interface StepperProps {
@@ -62,8 +64,8 @@ const Stepper: FC<StepperProps> = ({
 
   return (
     <Container
-      stepAmount={steps.length}
-      maxWidth={maxWidth}
+      $stepAmount={steps.length}
+      $maxWidth={maxWidth}
       data-testid="stepper-container"
     >
       {children}

@@ -50,13 +50,16 @@ export interface ShapeProps {
 }
 
 type ShapeElementProps = {
+  $top: number;
+  $left: number;
+  $rotation: number;
   index: number;
-} & ShapeProps;
+};
 
 const Shape = styled.div<ShapeElementProps>`
   position: absolute;
-  top: ${(props) => props.top}%;
-  left: ${(props) => props.left}%;
+  top: ${(props) => props.$top}%;
+  left: ${(props) => props.$left}%;
   border-radius: 55% 50% 80% 50%;
   z-index: ${(props) => 200 - props.index};
   width: 120%;
@@ -64,7 +67,7 @@ const Shape = styled.div<ShapeElementProps>`
   box-shadow: ${elevation.raised};
   background: ${colors.interactive.primary__resting.hex};
   transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
-  transform: rotate(${(props) => props.rotation}deg);
+  transform: rotate(${(props) => props.$rotation}deg);
   pointer-events: none;
 `;
 
@@ -84,7 +87,13 @@ const ApplicationIconBase = forwardRef<
       color={colors.text.static_icons__primary_white.hex}
     />
     {shapes.map((shape, index) => (
-      <Shape key={`shape-${index}`} index={index} {...shape} />
+      <Shape
+        key={`shape-${index}`}
+        index={index}
+        $top={shape.top}
+        $left={shape.left}
+        $rotation={shape.rotation}
+      />
     ))}
   </Container>
 ));

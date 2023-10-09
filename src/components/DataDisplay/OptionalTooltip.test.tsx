@@ -14,7 +14,7 @@ function fakeProps() {
 
 test('Renders correctly with title', () => {
   const props = fakeProps();
-  const { container } = render(
+  const { baseElement } = render(
     <OptionalTooltip {...props}>
       <p>{props.content}</p>
     </OptionalTooltip>
@@ -22,21 +22,23 @@ test('Renders correctly with title', () => {
 
   expect(screen.getByText(props.content)).toBeInTheDocument();
 
-  const tooltipContainer = container.parentElement?.children[1];
-
-  expect(tooltipContainer).toBeInTheDocument();
-  expect(container.parentElement?.children.length).toBe(2);
+  expect(
+    baseElement.querySelector('#eds-tooltip-container')
+  ).toBeInTheDocument();
 });
 
 test('Renders correctly without title', () => {
   const props = fakeProps();
-  const { container } = render(
-    <OptionalTooltip>
+  const { baseElement } = render(
+    <OptionalTooltip title={undefined}>
       <p>{props.content}</p>
-    </OptionalTooltip>
+    </OptionalTooltip>,
+    { wrapper: (props: any) => <div>{props.children}</div> }
   );
 
   expect(screen.getByText(props.content)).toBeInTheDocument();
 
-  expect(container.parentElement?.children.length).toBe(1);
+  expect(
+    baseElement.querySelector('#eds-tooltip-container')
+  ).toBeEmptyDOMElement();
 });

@@ -18,13 +18,13 @@ const ContentWrapper = styled.div`
 `;
 
 interface StyledColorBoxProps {
-  color: string;
+  $color: string;
 }
 
 const StyledColorBox = styled.div<StyledColorBoxProps>`
   width: 64px;
   height: 32px;
-  background-color: ${(props) => props.color};
+  background-color: ${(props) => props.$color};
   box-shadow: ${elevation.raised};
   border-radius: 4px;
 `;
@@ -85,7 +85,7 @@ export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
                 />
                 {item.colorBox && (
                   <StyledColorBox
-                    color={item.colorBox}
+                    $color={item.colorBox}
                     data-testid={`colorbox-${item.colorBox}`}
                   />
                 )}

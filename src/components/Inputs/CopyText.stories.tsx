@@ -15,7 +15,6 @@ export default {
   component: CopyText,
   args: {
     textToCopy: 'Some text',
-    hoverBackground: colors.ui.background__light.hex,
   },
   parameters: {
     backgrounds: {

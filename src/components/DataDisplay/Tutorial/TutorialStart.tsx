@@ -65,16 +65,16 @@ const ButtonWrapper = styled(Button)`
   padding: 0 ${spacings.comfortable.large};
 `;
 
-type StarterProps = {
+interface TutorialStartProps {
   title: string;
   imageSource?: string;
   content: string;
   show: boolean;
   acceptTour: () => void;
   denyTour: () => void;
-};
+}
 
-const TutorialStart: FC<StarterProps> = ({
+const TutorialStart: FC<TutorialStartProps> = ({
   title,
   imageSource,
   content,
@@ -94,10 +94,12 @@ const TutorialStart: FC<StarterProps> = ({
         )}
         <Actions>
           {' '}
-          <ButtonWrapper variant="ghost" onClick={denyTour}>
+          <ButtonWrapper variant="ghost" onClick={denyTour} data-testid="skip">
             Skip
           </ButtonWrapper>
-          <ButtonWrapper onClick={acceptTour}>Start tour</ButtonWrapper>
+          <ButtonWrapper onClick={acceptTour} data-testid="start-tour">
+            Start tour
+          </ButtonWrapper>
         </Actions>
       </Container>
     </Dialog>
