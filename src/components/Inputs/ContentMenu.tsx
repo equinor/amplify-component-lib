@@ -155,7 +155,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
         {new Array(5).fill(0).map((skeleton, index) => (
           <ContentMenuItemSkeleton
             key={`content-menu-item-skeleton-${skeleton + index}`}
-            offset={index * 100}
+            $offset={index * 100}
           />
         ))}
       </Container>
