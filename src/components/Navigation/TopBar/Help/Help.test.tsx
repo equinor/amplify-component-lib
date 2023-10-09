@@ -309,8 +309,6 @@ test('Inputting all fields with file works as expected', async () => {
   await user.upload(fileUploadArea, [imageTwo]);
 
   // Delete image file
-
-  screen.logTestingPlaygroundURL();
   const file2nameElement = screen.getByAltText(
     createRegexToGetAttachment(imageTwo.name)
   );
