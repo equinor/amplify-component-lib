@@ -29,11 +29,7 @@ const DisabledBox = styled(Box)`
   background-color: #f7f7f7;
 `;
 
-interface LineProps {
-  active: boolean;
-}
-
-const Line = styled.div<LineProps>`
+const Line = styled.div`
   height: 56px;
   width: 1px;
   background-color: #dcdcdc;
@@ -91,9 +87,7 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
               </StatusChip>
             </DisabledBox>
           )}
-          {options.length !== idx + 1 && (
-            <Line active={item.approvedDate !== undefined} />
-          )}
+          {options.length !== idx + 1 && <Line />}
         </Fragment>
       ))}
     </Wrapper>

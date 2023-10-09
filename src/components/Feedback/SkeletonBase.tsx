@@ -6,7 +6,7 @@ export const skeletonBaseloading = keyframes`
 `;
 
 interface SkeletonBaseProps {
-  offset?: number;
+  $offset?: number;
 }
 
 const SkeletonBase = styled.div<SkeletonBaseProps>`
@@ -26,9 +26,9 @@ const SkeletonBase = styled.div<SkeletonBaseProps>`
     transform: translateX(-100%);
     z-index: 1;
     ${(props) =>
-      props.offset &&
+      props.$offset &&
       `
-    animation-delay: ${props.offset}ms;
+    animation-delay: ${props.$offset}ms;
   `};
   }
 `;

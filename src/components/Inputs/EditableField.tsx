@@ -13,14 +13,14 @@ import styled from 'styled-components';
 const { spacings, colors } = tokens;
 
 interface ContainerProps {
-  editable: boolean;
+  $editable: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
   display: flex;
 
   &:hover {
-    cursor: ${(props) => (props.editable ? 'pointer' : undefined)};
+    cursor: ${(props) => (props.$editable ? 'pointer' : undefined)};
   }
 
   & > div {
@@ -35,12 +35,12 @@ const Icon = styled(EdsIcon)`
 `;
 
 interface ITextFieldProps {
-  editing: boolean;
+  $editing: boolean;
 }
 
 const TextField = styled(EdsTextField)<ITextFieldProps>`
   ${(props) =>
-    props.editing &&
+    props.$editing &&
     `
    > div > input {
      font-family: Equinor;
@@ -111,7 +111,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
 
   return (
     <Container
-      editable={editable}
+      $editable={editable}
       data-testid="editablefield"
       onClick={handleFieldClick}
     >
@@ -124,12 +124,12 @@ const EditableField: React.FC<EditableFieldProps> = ({
           ) : (
             <TextField
               autoFocus
-              editing={editing}
+              $editing={editing}
               id={`edit-${initValue}`}
               onBlur={handleBlur}
               onChange={handleChange}
               value={value}
-            ></TextField>
+            />
           )}
         </>
       )}
