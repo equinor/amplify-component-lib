@@ -53,7 +53,7 @@ type ShapeElementProps = {
   $top: number;
   $left: number;
   $rotation: number;
-  index: number;
+  $index: number;
 };
 
 const Shape = styled.div<ShapeElementProps>`
@@ -61,7 +61,7 @@ const Shape = styled.div<ShapeElementProps>`
   top: ${(props) => props.$top}%;
   left: ${(props) => props.$left}%;
   border-radius: 55% 50% 80% 50%;
-  z-index: ${(props) => 200 - props.index};
+  z-index: ${(props) => 200 - props.$index};
   width: 120%;
   height: 80%;
   box-shadow: ${elevation.raised};
@@ -71,10 +71,10 @@ const Shape = styled.div<ShapeElementProps>`
   pointer-events: none;
 `;
 
-type ApplicationIconBaseProps = {
+interface ApplicationIconBaseProps extends SvgIconProps {
   iconData: IconData;
   shapes: ShapeProps[];
-} & SvgIconProps;
+}
 
 const ApplicationIconBase = forwardRef<
   HTMLDivElement,
@@ -89,7 +89,7 @@ const ApplicationIconBase = forwardRef<
     {shapes.map((shape, index) => (
       <Shape
         key={`shape-${index}`}
-        index={index}
+        $index={index}
         $top={shape.top}
         $left={shape.left}
         $rotation={shape.rotation}
