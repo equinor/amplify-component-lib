@@ -4,15 +4,6 @@ import styled, { IStyledComponent } from 'styled-components';
 
 const { colors, spacings } = tokens;
 
-interface ContentProps {
-  $open: boolean;
-}
-
-type TemplateType = IStyledComponent<'web', any> & {
-  Container: IStyledComponent<'web', any>;
-  Content: IStyledComponent<'web', ContentProps>;
-};
-
 const BaseTemplate = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,6 +15,10 @@ const BaseTemplate = styled.div`
 const Container = styled.div`
   display: flex;
 `;
+
+interface ContentProps {
+  $open: boolean;
+}
 
 const Content = styled.div<ContentProps>`
   display: flex;
@@ -38,6 +33,11 @@ const Content = styled.div<ContentProps>`
   );
   padding: 0 ${spacings.comfortable.xxx_large};
 `;
+
+type TemplateType = IStyledComponent<'web', any> & {
+  Container: IStyledComponent<'web', any>;
+  Content: typeof Content;
+};
 
 const Template = BaseTemplate as unknown as TemplateType;
 Template.Container = Container;

@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 interface ContentMenuItemProps {
-  active: boolean;
+  $active: boolean;
 }
 
 const ContentMenuItem = styled.button<ContentMenuItemProps>`
@@ -32,7 +32,7 @@ const ContentMenuItem = styled.button<ContentMenuItemProps>`
   padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
   text-align: left;
   background: ${(props) =>
-    props.active ? colors.interactive.primary__hover_alt.hex : 'none'};
+    props.$active ? colors.interactive.primary__hover_alt.hex : 'none'};
   transition: background 400ms;
   &:hover {
     background: ${colors.interactive.primary__hover_alt.hex};
@@ -55,7 +55,7 @@ const ContentMenuChildItem = styled.button<ContentMenuItemProps>`
   padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
   text-align: left;
   background: ${(props) =>
-    props.active ? colors.interactive.primary__hover_alt.hex : 'none'};
+    props.$active ? colors.interactive.primary__hover_alt.hex : 'none'};
   transition: background 400ms;
   &:hover {
     background: ${colors.interactive.primary__hover_alt.hex};
@@ -118,7 +118,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
       all.push(
         <ContentMenuItem
           key={`content-menu-item-${item.label}`}
-          active={value === item.value}
+          $active={value === item.value}
           onClick={() => handleOnClick(item.value, !!item.children)}
         >
           {item.children && (
@@ -137,7 +137,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
           all.push(
             <ContentMenuChildItem
               key={`content-menu-item-${child.label}`}
-              active={value === child.value}
+              $active={value === child.value}
               onClick={() => handleOnClick(child.value, false)}
             >
               {child.label}
@@ -155,7 +155,7 @@ const ContentMenu: FC<ContentMenuProps> = ({
         {new Array(5).fill(0).map((skeleton, index) => (
           <ContentMenuItemSkeleton
             key={`content-menu-item-skeleton-${skeleton + index}`}
-            offset={index * 100}
+            $offset={index * 100}
           />
         ))}
       </Container>
