@@ -13,8 +13,8 @@ import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import styled, { css, keyframes } from 'styled-components';
 
 interface StyledOptionProps {
-  section: number;
-  animationActive?: boolean;
+  $section: number;
+  $animationActive?: boolean;
 }
 
 const animateToggle = keyframes`
@@ -31,11 +31,11 @@ const animateToggle = keyframes`
 `;
 
 const StyledOptionWrapper = styled.div<StyledOptionProps>`
-  margin-left: ${(props) => (props.section > 0 ? '22px' : '')};
-  border-left: ${(props) => (props.section > 0 ? '1px solid #DCDCDC' : '')};
+  margin-left: ${({$section}) => ($section > 0 ? '22px' : '')};
+  border-left: ${({$section}) => ($section > 0 ? '1px solid #DCDCDC' : '')};
   opacity: 1;
-  animation: ${(props) =>
-    props.animationActive
+  animation: ${({$animationActive}) =>
+      $animationActive
       ? css`
           ${animateToggle} 400ms ease-in
         `
@@ -253,11 +253,11 @@ const OptionDrawer = <
           ? `animated-StyledOptionWrapper-${item.id}`
           : `StyledOptionWrapper-${item.id}`
       }
-      section={section}
-      animationActive={animationActive}
+      $section={section}
+      $animationActive={animationActive}
       data-testid={animationActive ? 'animated-' + item.id : item.id}
     >
-      <StyledOption section={section} onClick={handleClick}>
+      <StyledOption $section={section} onClick={handleClick}>
         <Checkbox
           indeterminate={status === 'INTERMEDIATE'}
           checked={status === 'CHECKED'}
