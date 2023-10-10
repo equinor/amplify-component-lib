@@ -85,7 +85,6 @@ const Notifications: FC<NotificationsProps> = ({
   };
 
   useOutsideClick(sidePanelRef.current, (event) => {
-    console.log('outside clcik');
     if (
       notificationsOpen &&
       buttonRef.current !== null &&
