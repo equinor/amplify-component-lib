@@ -18,8 +18,7 @@ const allIcons = {
   amplify_lwd: amplify_lwd,
   amplify_success: amplify_success,
   amplify_failure: amplify_failure,
-  amplify_snail: amplify_snail, 
-  
+  amplify_snail: amplify_snail,
 };
 
 interface StoryFnProps {
@@ -47,7 +46,7 @@ export default {
         'amplify_lwd',
         'amplify_success',
         'amplify_failure',
-        'amplify_snail'
+        'amplify_snail',
       ],
     },
   },
