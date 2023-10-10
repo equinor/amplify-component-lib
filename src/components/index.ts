@@ -33,6 +33,7 @@ export { default as Unauthorized } from './Feedback/Unauthorized';
 export {
   amplify_failure,
   amplify_lwd,
+  amplify_snail,
   amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,

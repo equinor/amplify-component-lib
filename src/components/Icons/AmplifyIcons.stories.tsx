@@ -4,6 +4,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import {
   amplify_failure,
   amplify_lwd,
+  amplify_snail,
   amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,
@@ -17,6 +18,7 @@ const allIcons = {
   amplify_lwd: amplify_lwd,
   amplify_success: amplify_success,
   amplify_failure: amplify_failure,
+  amplify_snail: amplify_snail,
 };
 
 interface StoryFnProps {
@@ -44,6 +46,7 @@ export default {
         'amplify_lwd',
         'amplify_success',
         'amplify_failure',
+        'amplify_snail',
       ],
     },
   },
