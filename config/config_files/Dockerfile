@@ -10,10 +10,10 @@ COPY src ./src
 COPY public ./public
 
 # Dependencies
-RUN npm install --frozen-lockfile --ignore-scripts --legacy-peer-deps
+RUN yarn install --immutable
 
 # Build
-RUN npm run build
+RUN yarn build
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine
