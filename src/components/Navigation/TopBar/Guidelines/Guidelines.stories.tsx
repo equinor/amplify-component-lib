@@ -13,8 +13,11 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { amplify_wellbore } from '../../Icons/AmplifyIcons';
-import { Guidelines, GuidelineSections } from './Guidelines';
+import { amplify_wellbore } from 'src/components/Icons/AmplifyIcons';
+import {
+  Guidelines,
+  GuidelineSections,
+} from 'src/components/Navigation/TopBar/Guidelines/Guidelines';
 
 const { colors } = tokens;
 
