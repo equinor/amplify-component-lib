@@ -16,7 +16,7 @@ test('Renders Section correctly with 1 child', async () => {
   expect(screen.getByText(childText)).toBeInTheDocument();
 });
 
-test('Renders Section correctly with multiple childen', async () => {
+test('Renders Section correctly with multiple children', async () => {
   const title = faker.animal.bear();
   const childrenText = new Array(faker.number.int({ min: 2, max: 10 }))
     .fill(0)
