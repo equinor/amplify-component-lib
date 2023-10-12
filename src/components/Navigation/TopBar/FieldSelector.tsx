@@ -38,7 +38,7 @@ const ListContainer = styled.div`
 `;
 
 interface MenuItemProps {
-  active?: boolean;
+  $active?: boolean;
 }
 
 const MenuItem = styled.div<MenuItemProps>`
@@ -53,7 +53,7 @@ const MenuItem = styled.div<MenuItemProps>`
 
 const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
-    props.active &&
+    props.$active &&
     `background: ${colors.interactive.primary__selected_highlight.hex};
      border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
     `};
@@ -176,7 +176,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
               </MenuHeader>
               <Typography variant="overline">Current selection</Typography>
               {currentField && (
-                <MenuFixedItem active>
+                <MenuFixedItem $active>
                   <div>
                     <TextContainer>
                       <Typography variant="h6">
