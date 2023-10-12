@@ -75,7 +75,7 @@ export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
           </Button>
         </Header>
         <Content>
-          {sections.map((section, index) => (
+          {sections?.map((section, index) => (
             <Section
               key={`section-${section.sectionName}`}
               title={section.sectionName}
