@@ -31,11 +31,11 @@ const animateToggle = keyframes`
 `;
 
 const StyledOptionWrapper = styled.div<StyledOptionProps>`
-  margin-left: ${({$section}) => ($section > 0 ? '22px' : '')};
-  border-left: ${({$section}) => ($section > 0 ? '1px solid #DCDCDC' : '')};
+  margin-left: ${({ $section }) => ($section > 0 ? '22px' : '')};
+  border-left: ${({ $section }) => ($section > 0 ? '1px solid #DCDCDC' : '')};
   opacity: 1;
-  animation: ${({$animationActive}) =>
-      $animationActive
+  animation: ${({ $animationActive }) =>
+    $animationActive
       ? css`
           ${animateToggle} 400ms ease-in
         `

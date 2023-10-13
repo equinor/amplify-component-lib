@@ -7,8 +7,12 @@ import {
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { render, screen } from '../../../tests/test-utils';
-import { GuidelineProps, Guidelines, GuidelineSections } from './Guidelines';
+import {
+  GuidelineProps,
+  Guidelines,
+  GuidelineSections,
+} from 'src/components/Navigation/TopBar/Guidelines/Guidelines';
+import { render, screen } from 'src/tests/test-utils';
 
 function fakeSection(withColorBoxes = false): GuidelineSections {
   const items: GuidelineSections['items'] = [];
