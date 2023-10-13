@@ -14,8 +14,7 @@ const Container = styled.div`
   > section {
     display: flex;
     flex-direction: column;
-    margin-top: ${spacings.comfortable.large};
-    margin-bottom: ${spacings.comfortable.xxx_large};
+    margin-bottom: ${spacings.comfortable.large};
     gap: ${spacings.comfortable.medium};
     margin-left: ${spacings.comfortable.medium_small};
   }
