@@ -54,7 +54,7 @@ export interface GuidelineProps {
    * @deprecated Use Guideline.Section and Guideline.Item as children instead.
    */
   sections?: GuidelineSections[];
-  children?: ReactElement[];
+  children?: ReactElement | ReactElement[];
 }
 
 export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(

@@ -1,115 +1,71 @@
+import { Icon } from '@equinor/eds-core-react';
 import {
-  account_circle,
   assignment,
   check,
-  external_link,
-  history,
   info_circle,
   minimize,
   notifications,
-  placeholder_icon,
-  settings,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { amplify_wellbore } from 'src/components/Icons/AmplifyIcons';
-import {
-  Guidelines,
-  GuidelineSections,
-} from 'src/components/Navigation/TopBar/Guidelines/Guidelines';
+import Guidelines from './index';
 
 const { colors } = tokens;
+
+const Wrapper = styled.div`
+  height: 35rem;
+  > div {
+    top: 0;
+    height: 100%;
+  }
+`;
 
 export default {
   title: 'Navigation/TopBar/Guidelines',
   component: Guidelines,
-  argTypes: { haveColorBoxes: { controls: 'boolean' } },
-  args: { haveColorBoxes: true },
 } as Meta;
 
-export const Primary: StoryFn = (args) => {
-  const sections: GuidelineSections[] = [
-    {
-      sectionName: 'Top bar',
-      items: [
-        {
-          title: 'Notifications',
-          icon: notifications,
-          color: colors.interactive.primary__resting.hex,
-        },
-        {
-          title: 'Feedback',
-          icon: placeholder_icon,
-          color: colors.interactive.primary__resting.hex,
-        },
-        {
-          title: 'Guidelines',
-          icon: info_circle,
-          color: colors.interactive.primary__resting.hex,
-        },
-        {
-          title: 'Settings',
-          icon: settings,
-          color: colors.interactive.primary__resting.hex,
-        },
-        {
-          title: 'Account',
-          icon: account_circle,
-          color: colors.interactive.primary__resting.hex,
-        },
-      ],
-    },
-    {
-      sectionName: 'Status',
-      items: [
-        {
-          title: 'Yes',
-          icon: check,
-          color: '#77ff72',
-        },
-        {
-          title: 'No',
-          icon: minimize,
-          color: '#ff8484',
-        },
-      ],
-    },
-    {
-      sectionName: 'Navigation Rail',
-      items: [
-        {
-          title: 'Report',
-          icon: assignment,
-          color: '#ff8484',
-          colorBox: args.haveColorBoxes && '#ff8484',
-        },
-        {
-          title: 'History',
-          icon: history,
-          color: '#7a7bce',
-          colorBox: args.haveColorBoxes && '#7a7bce',
-        },
-        {
-          title: 'Links',
-          icon: external_link,
-          color: '#77ff72',
-          colorBox: args.haveColorBoxes && '#77ff72',
-        },
-        {
-          title: 'Wellbore',
-          icon: amplify_wellbore,
-          color: '#ce72ff',
-          colorBox: args.haveColorBoxes && '#ce72ff',
-        },
-      ],
-    },
-  ];
+import { actions } from '@storybook/addon-actions';
+
+import styled from 'styled-components';
+export const Primary: StoryFn = () => {
+  const handleOnClose = () => {
+    actions('onClose').onClose('Ran on close');
+  };
+
   return (
-    <Guidelines
-      open
-      sections={sections}
-      onClose={() => console.log('closing guidelines.')}
-    />
+    <Wrapper>
+      <Guidelines open onClose={handleOnClose}>
+        <Guidelines.Section title="Top bar">
+          <Guidelines.Item title="Notifications">
+            <Icon
+              data={notifications}
+              color={colors.interactive.primary__resting.hex}
+            />
+          </Guidelines.Item>
+          <Guidelines.Item title="Guidelines">
+            <Icon
+              data={info_circle}
+              color={colors.interactive.primary__resting.hex}
+            />
+          </Guidelines.Item>
+        </Guidelines.Section>
+        <Guidelines.Section title="Status">
+          <Guidelines.Item title="Yes">
+            <Icon data={check} color="#77ff72" />
+          </Guidelines.Item>
+          <Guidelines.Item title="No">
+            <Icon data={minimize} color="#ff8484" />
+          </Guidelines.Item>
+        </Guidelines.Section>
+        <Guidelines.Section title="Navigation rail">
+          <Guidelines.Item title="Report">
+            <Guidelines.Colorbox $color="#ff8484" />
+            <Icon data={assignment} color="#ff8484" />
+          </Guidelines.Item>
+        </Guidelines.Section>
+      </Guidelines>
+    </Wrapper>
   );
 };
