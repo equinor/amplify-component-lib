@@ -15,7 +15,7 @@ const Container = styled.div`
 `;
 
 interface PageMenuItemProps {
-  active: boolean;
+  $active: boolean;
 }
 
 const PageMenuItem = styled.button<PageMenuItemProps>`
@@ -30,7 +30,7 @@ const PageMenuItem = styled.button<PageMenuItemProps>`
   padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
   text-align: left;
   background: ${(props) =>
-    props.active ? colors.interactive.primary__hover_alt.hex : 'none'};
+    props.$active ? colors.interactive.primary__hover_alt.hex : 'none'};
   transition: background 400ms;
   &:hover {
     background: ${colors.interactive.primary__hover_alt.hex};
@@ -55,7 +55,7 @@ const PageMenu: FC = () => {
       {items.map((item) => (
         <PageMenuItem
           key={`page-menu-item-${item.value}`}
-          active={selected === item.value}
+          $active={selected === item.value}
           onClick={() => handleOnClick(item.value)}
           disabled={selected === item.value}
         >
