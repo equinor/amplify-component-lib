@@ -30,7 +30,6 @@ const Wrapper = styled.div`
 interface CircleProps {
   $color?: string;
   $backgroundColor?: string;
-  index: number;
 }
 
 const Circle = styled.div<CircleProps>`
@@ -123,7 +122,6 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
               )}
               {activeIdx === idx && showAlert && <Alert data-testid="alert" />}
               <Circle
-                index={idx}
                 $color={item.color}
                 $backgroundColor={item.backgroundColor}
               />

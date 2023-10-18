@@ -35,8 +35,7 @@ const StyledButton = styled(Button)`
 `;
 
 interface TopProgressProps {
-  paused?: boolean;
-  error?: boolean;
+  $error?: boolean;
 }
 
 const TopProgress = styled(Progress.Linear)<TopProgressProps>`
@@ -44,7 +43,7 @@ const TopProgress = styled(Progress.Linear)<TopProgressProps>`
   top: 0;
   div {
     background-color: ${(props) =>
-      props.error ? colors.interactive.danger__resting.hsla : ''};
+      props.$error ? colors.interactive.danger__resting.hsla : ''};
   }
 `;
 
@@ -104,7 +103,7 @@ const FileProgress: FC<FileProgressProps> = ({
             : 'indeterminate'
         }
         value={error || !loading ? 100 : progress ? progress : undefined}
-        error={error}
+        $error={error}
       />
       <CardHeader>
         <Card.HeaderTitle>

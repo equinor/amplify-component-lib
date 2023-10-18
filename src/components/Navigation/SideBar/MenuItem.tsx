@@ -17,7 +17,7 @@ const { colors, spacings } = tokens;
 interface ContainerProps {
   $active?: boolean;
   $open?: boolean;
-  disabled?: boolean;
+  $disabled?: boolean;
 }
 
 const Container = styled.a<ContainerProps>`
@@ -35,7 +35,7 @@ const Container = styled.a<ContainerProps>`
   min-height: 72px;
 
   ${(props) =>
-    props.disabled
+    props.$disabled
       ? `
     &:hover {
       cursor: not-allowed;
@@ -115,7 +115,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           $open
           ref={ref}
           data-testid="sidebar-menu-item"
-          disabled={disabled}
+          $disabled={disabled}
         >
           {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
           <ItemText variant="cell_text" group="table" $active={isCurrentUrl}>
@@ -133,7 +133,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           $open={isOpen}
           ref={ref}
           data-testid="sidebar-menu-item"
-          disabled={disabled}
+          $disabled={disabled}
         >
           {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
         </Container>

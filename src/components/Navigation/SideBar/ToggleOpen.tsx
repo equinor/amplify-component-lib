@@ -8,18 +8,18 @@ import styled from 'styled-components';
 
 const { colors, spacings, shape } = tokens;
 interface ContainerProps {
-  open?: boolean;
+  $open?: boolean;
 }
 
 const ToggleContainer = styled.div<ContainerProps>`
-  display: ${(props) => (props.open ? 'grid' : 'flex')};
+  display: ${(props) => (props.$open ? 'grid' : 'flex')};
   grid-template-columns: repeat(10, 1fr);
   grid-gap: ${spacings.comfortable.medium};
   justify-content: center;
   margin-top: auto;
   margin-bottom: ${spacings.comfortable.medium};
   ${(props) =>
-    !props.open &&
+    !props.$open &&
     `
     > button {
       margin-left: -4px;
@@ -61,7 +61,7 @@ interface ToggleOpenProps {
 const ToggleOpen: React.FC<ToggleOpenProps> = ({ isOpen, toggle }) => {
   if (isOpen) {
     return (
-      <ToggleContainer open={isOpen}>
+      <ToggleContainer $open={isOpen}>
         <LargeButton onClick={toggle}>
           <Icon
             size={24}
@@ -76,7 +76,7 @@ const ToggleOpen: React.FC<ToggleOpenProps> = ({ isOpen, toggle }) => {
     );
   }
   return (
-    <ToggleContainer open={isOpen}>
+    <ToggleContainer $open={isOpen}>
       <Tooltip title="Expand" placement="right">
         <Button onClick={toggle} color="secondary" variant="ghost_icon">
           <Icon

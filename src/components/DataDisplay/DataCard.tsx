@@ -13,11 +13,7 @@ import styled from 'styled-components';
 
 const { colors, elevation, spacings } = tokens;
 
-interface CardProps {
-  onClick?: MouseEventHandler;
-}
-
-const Card = styled(EDSCard)<CardProps>`
+const Card = styled(EDSCard)`
   box-shadow: ${elevation.raised};
   grid-gap: 0;
   padding: ${spacings.comfortable.medium};
