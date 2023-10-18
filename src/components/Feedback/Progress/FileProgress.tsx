@@ -35,7 +35,6 @@ const StyledButton = styled(Button)`
 `;
 
 interface TopProgressProps {
-  $paused?: boolean;
   $error?: boolean;
 }
 
