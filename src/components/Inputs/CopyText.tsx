@@ -11,6 +11,7 @@ const { colors, spacings } = tokens;
 const Wrapper = styled.div`
   position: relative;
   pointer-events: auto;
+  width: fit-content;
   &:hover {
     cursor: pointer;
   }

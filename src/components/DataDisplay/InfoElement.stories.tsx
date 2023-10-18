@@ -8,6 +8,8 @@ export default {
   argTypes: {
     title: { control: 'text' },
     content: { control: 'text' },
+    copyableContent: { control: 'boolean' },
+    capitalizedContent: { control: 'boolean' },
   },
   args: {
     title: 'Title',
@@ -21,4 +23,4 @@ export const Primary = Template.bind({});
 Primary.args = {};
 
 export const WithCopyTextTrue = Template.bind({});
-WithCopyTextTrue.args = { copyableContent: true, copyBackground: '#ffffff' };
+WithCopyTextTrue.args = { copyableContent: true, capitalizeContent: false };
