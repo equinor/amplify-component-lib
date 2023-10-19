@@ -129,13 +129,13 @@
     "vitest": "^0.34.6"
   },
   "peerDependencies": {
-    "@equinor/eds-core-react": "^0.31.1",
+    "@equinor/eds-core-react": "*",
     "@tanstack/react-query": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.11.1",
     "react-router-dom": "^6.11.1",
-    "styled-components": "^5.3.10"
+    "styled-components": "*"
   },
   "packageManager": "yarn@3.2.4"
 }
