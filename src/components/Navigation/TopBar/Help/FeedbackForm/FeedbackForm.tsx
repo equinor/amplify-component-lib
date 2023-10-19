@@ -49,29 +49,32 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
   const {
     mutateAsync: slackFileUpload,
-    isLoading: isFileUploadLoading,
+    isPending: isFileUploadLoading,
     isSuccess: isFileUploadSuccess,
-  } = useMutation(['slackFileUpload', feedbackContent], (formData: FormData) =>
-    PortalService.fileUpload(formData)
-  );
+  } = useMutation({
+    mutationKey: ['slackFileUpload', feedbackContent],
+    mutationFn: (formData: FormData) => PortalService.fileUpload(formData),
+  });
 
   const {
     mutateAsync: slackPostMessage,
-    isLoading: isPostMessageLoading,
+    isPending: isPostMessageLoading,
     isSuccess: isPostMessageSuccess,
-  } = useMutation(['slackPostMessage', feedbackContent], (formData: FormData) =>
-    PortalService.postmessage(formData)
-  );
+  } = useMutation({
+    mutationKey: ['slackPostMessage', feedbackContent],
+    mutationFn: (formData: FormData) => PortalService.postmessage(formData),
+  });
 
   const {
     mutateAsync: serviceNowIncident,
-    isLoading: isServiceNowLoading,
+    isPending: isServiceNowLoading,
     isSuccess: isServiceNowSuccess,
     data: response,
-  } = useMutation(
-    ['serviceNowIncident', feedbackContent],
-    async (formData: FormData) => PortalService.createIncident(formData)
-  );
+  } = useMutation({
+    mutationKey: ['serviceNowIncident', feedbackContent],
+    mutationFn: async (formData: FormData) =>
+      PortalService.createIncident(formData),
+  });
 
   const relevantRequestsIsSuccess = useMemo(() => {
     const booleanArray: boolean[] = [];
