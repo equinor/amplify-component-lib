@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import styled, { IStyledComponent } from 'styled-components';
+import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
 
 const { colors, spacings } = tokens;
 
@@ -34,14 +34,54 @@ const Content = styled.div<ContentProps>`
   padding: 0 ${spacings.comfortable.xxx_large};
 `;
 
+const GlobalStyles = createGlobalStyle`
+  button {
+    border: none;
+    background: none;
+    cursor: pointer; 
+  }
+  
+  hr {
+    margin: 0;
+    border: none;
+    background: ${colors.ui.background__medium.hex};
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Equinor', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code {
+    font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco,
+    monospace;
+  }
+
+  input[type='text']:focus,
+  input[type='number']:focus,
+  textarea:focus {
+    outline: none;
+    /* Primary resting color from EDS */
+    box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
+  }
+  
+  div:focus-within {
+    outline: none !important;
+  }
+`;
+
 type TemplateType = IStyledComponent<'web', any> & {
   Container: IStyledComponent<'web', any>;
   Content: typeof Content;
+  GlobalStyles: typeof GlobalStyles;
 };
 
 const Template = BaseTemplate as unknown as TemplateType;
 Template.Container = Container;
 Template.Content = Content;
+Template.GlobalStyles = GlobalStyles;
 
 export default Template;
 export type { ContentProps, TemplateType };
