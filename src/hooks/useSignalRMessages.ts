@@ -23,14 +23,12 @@ export function useSignalRMessages<
     useState<number>();
   const [updateMessage, setUpdateMessage] = useState<T>();
 
-  const { data: amplifyPortalToken } = useQuery(
-    ['get-amplify-portal-token'],
-    () => TokenService.getAmplifyPortalToken(),
-    {
-      staleTime: Infinity,
-      cacheTime: 1000 * 60 * 60 * 2, // 2 hours
-    }
-  );
+  const { data: amplifyPortalToken } = useQuery({
+    queryKey: ['get-amplify-portal-token'],
+    queryFn: () => TokenService.getAmplifyPortalToken(),
+    staleTime: Infinity,
+    gcTime: 1000 * 60 * 60 * 2, // 2 hours
+  });
 
   const host = useMemo(() => {
     const environmentName = environment.getEnvironmentName(

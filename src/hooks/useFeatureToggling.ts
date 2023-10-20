@@ -31,9 +31,11 @@ export function useFeatureToggling(featureKey: string) {
     data: featureToggle,
     isLoading,
     isError,
-  } = useQuery<FeatureToggleDto>(['getFeatureToggleFromAppName'], async () =>
-    PortalService.getFeatureToggleFromApplicationName(applicationName)
-  );
+  } = useQuery<FeatureToggleDto>({
+    queryKey: ['getFeatureToggleFromAppName'],
+    queryFn: async () =>
+      PortalService.getFeatureToggleFromApplicationName(applicationName),
+  });
 
   const feature = featureToggle?.features?.find(
     (feature) => feature.featureKey === featureKey
