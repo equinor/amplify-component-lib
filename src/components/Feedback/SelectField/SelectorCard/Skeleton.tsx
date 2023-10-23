@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import SkeletonBase from '../../SkeletonBase';
+import SkeletonBase from '../../Skeleton/SkeletonBase/SkeletonBase';
 
 import styled from 'styled-components';
 const { spacings, elevation, shape } = tokens;

@@ -28,6 +28,7 @@ export default defineConfig({
         'src/components/DataDisplay/Tutorial/HighlightBlocks/*',
         'src/components/Inputs/FieldSelector.tsx',
         'src/components/Feature/*',
+        'src/components/Feedback/Skeleton/**',
         'src/utils/auth_environment.ts',
         'src/utils/export.ts',
         'src/providers/AuthProvider/**',

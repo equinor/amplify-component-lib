@@ -1,3 +1,5 @@
+import { COLORS } from '../Skeleton.styles';
+
 import styled, { keyframes } from 'styled-components';
 export const skeletonBaseloading = keyframes`
   to {
@@ -10,12 +12,17 @@ interface SkeletonBaseProps {
 }
 
 const SkeletonBase = styled.div<SkeletonBaseProps>`
-  background: #cacaca;
+  background: ${COLORS.START};
   overflow: hidden;
   position: relative;
   z-index: 2;
   &:after {
-    background: linear-gradient(90deg, #cacaca 0%, #dcdcdc 50%, #cacaca 100%);
+    background: linear-gradient(
+      90deg,
+      ${COLORS.START} 0%,
+      ${COLORS.END} 50%,
+      ${COLORS.START} 100%
+    );
     animation: ${skeletonBaseloading} 1.5s infinite;
     content: '';
     height: 100%;

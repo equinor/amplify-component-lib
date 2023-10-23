@@ -4,7 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import SkeletonBase from '../Feedback/SkeletonBase';
+import SkeletonBase from '../Feedback/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled from 'styled-components';
 

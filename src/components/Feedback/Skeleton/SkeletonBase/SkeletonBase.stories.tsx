@@ -6,7 +6,7 @@ import SkeletonBase from './SkeletonBase';
 import styled from 'styled-components';
 
 export default {
-  title: 'Feedback/SkeletonBase',
+  title: 'Feedback/Skeleton/SkeletonBase',
   component: SkeletonBase,
   argTypes: {
     width: { control: 'text' },
