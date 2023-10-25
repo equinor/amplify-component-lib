@@ -60,6 +60,13 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco,
     monospace;
   }
+
+  div:focus-within:has(input[role=combobox]) {
+    outline: none;
+    > input {
+      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
+    }
+  }
 `;
 
 type TemplateType = IStyledComponent<'web', any> & {
