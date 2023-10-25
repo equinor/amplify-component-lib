@@ -31,7 +31,9 @@ const Content = styled.div<ContentProps>`
     100% - ${(props) => (props.$open ? '257px' : '73px')} -
       ${spacings.comfortable.xxx_large} * 2
   );
-  padding: 0 ${spacings.comfortable.xxx_large};
+  &:not(:has(.select-field)) {
+    padding: 0 ${spacings.comfortable.xxx_large};
+  }
 `;
 
 const GlobalStyles = createGlobalStyle`
@@ -57,18 +59,6 @@ const GlobalStyles = createGlobalStyle`
   code {
     font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco,
     monospace;
-  }
-
-  input[type='text']:focus,
-  input[type='number']:focus,
-  textarea:focus {
-    outline: none;
-    /* Primary resting color from EDS */
-    box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
-  }
-  
-  div:focus-within {
-    outline: none !important;
   }
 `;
 

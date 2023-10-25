@@ -170,6 +170,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
         await serviceNowIncident(serviceNowFormData);
       }
     } catch (err) {
+      console.error(err);
       showSnackbar('There was an error sending your report');
     }
   };

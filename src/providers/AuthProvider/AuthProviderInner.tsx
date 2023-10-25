@@ -1,16 +1,18 @@
 import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import {
-  AuthError,
+  AuthenticationResult,
   InteractionRequiredAuthError,
-  InteractionStatus,
   InteractionType,
 } from '@azure/msal-browser';
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
-import { auth } from 'src/utils';
+import { OpenAPI, OpenAPIConfig } from 'src/api';
+import FullPageSpinner from 'src/components/Feedback/FullPageSpinner';
+import Unauthorized from 'src/components/Feedback/Unauthorized';
+import { auth, environment } from 'src/utils';
 
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
@@ -24,38 +26,13 @@ const {
   GRAPH_REQUESTS_PHOTO,
   GRAPH_REQUESTS_BACKEND,
   fetchMsGraph,
-  acquireToken,
 } = auth;
 
-const localStorageKey = 'amplify-authentication-has-refreshed';
-
-type HasRefreshed = {
-  value: boolean;
-};
-
-function getHasRefreshed(): boolean {
-  const fromLocalStorage = window.localStorage.getItem(localStorageKey);
-  if (fromLocalStorage === null) return false;
-  return (JSON.parse(fromLocalStorage) as HasRefreshed).value;
-}
-
-function setHasRefreshed({ value }: HasRefreshed) {
-  window.localStorage.setItem(localStorageKey, JSON.stringify(value));
-}
-
-function clearMsalLocalStorage() {
-  const clearKeys = Object.keys(window.localStorage).filter(
-    (key) => key.includes('msal') || key.includes('login.windows.net')
-  );
-  for (const key of clearKeys) {
-    window.localStorage.removeItem(key);
-  }
-}
+const { getApiScope } = environment;
 
 export interface AuthProviderInnerProps {
-  loadingComponent: ReactElement;
-  unauthorizedComponent: ReactElement;
   children: ReactNode;
+  openApiConfig: OpenAPIConfig;
   account: AccountInfo | undefined;
   setAccount: (val: AccountInfo | undefined) => void;
   photo: string | undefined;
@@ -64,13 +41,13 @@ export interface AuthProviderInnerProps {
   setRoles: (val: string[] | undefined) => void;
   authState: AuthState;
   setAuthState: (val: AuthState) => void;
-  apiScope: string;
+  loadingComponent?: ReactElement;
+  unauthorizedComponent?: ReactElement;
 }
 
 const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   children,
-  loadingComponent,
-  unauthorizedComponent,
+  openApiConfig,
   account,
   setAccount,
   photo,
@@ -79,111 +56,118 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   setRoles,
   authState,
   setAuthState,
-  apiScope,
+  loadingComponent,
+  unauthorizedComponent,
 }) => {
-  const { instance, inProgress } = useMsal();
-  const { login, error } = useMsalAuthentication(
+  const { instance } = useMsal();
+  const { login, result, error, acquireToken } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
   );
 
   useEffect(() => {
     if (error instanceof InteractionRequiredAuthError) {
-      console.error('Auth error!');
-      console.error(error);
-      console.log('Trying to log the user in with a redirect...');
+      console.log('logging in....');
       login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN);
     }
-  }, [error, login]);
+  }, [login, error]);
 
   useEffect(() => {
-    const accounts = instance.getAllAccounts();
-    if (
-      !account &&
-      accounts.length > 0 &&
-      inProgress === InteractionStatus.None &&
-      authState === 'loading'
-    ) {
-      setAccount(accounts[0]);
-    } else if (
-      account &&
-      inProgress === InteractionStatus.None &&
-      authState === 'loading' &&
-      !photo &&
-      !roles
-    ) {
-      // Get photo
-      acquireToken(instance, GRAPH_REQUESTS_PHOTO).then(
-        async (tokenResponse) => {
-          if (tokenResponse) {
-            const graphPhoto = await fetchMsGraph(
-              GRAPH_ENDPOINTS.PHOTO,
-              tokenResponse.accessToken
-            )
-              .then((response) => {
-                if (response.status === 200) return response.blob();
-                if (response.status === 404) return null;
-              })
-              .catch((error) =>
-                console.error('Failed to fetch profile photo', error)
-              );
-
-            if (graphPhoto) {
-              const url = window.URL ?? window.webkitURL;
-              const blobUrl = url.createObjectURL(graphPhoto);
-              setPhoto(blobUrl);
-            }
-          }
-        }
-      );
-
-      // Get roles
-      acquireToken(instance, GRAPH_REQUESTS_BACKEND(apiScope))
-        .then(async (tokenResponse) => {
-          if (tokenResponse && tokenResponse.accessToken) {
-            const accessToken: ExtendedJwtPayload = jwt_decode(
-              tokenResponse.accessToken
-            );
-            if (accessToken.roles) {
-              setRoles(accessToken.roles as string[]);
-            }
-            setHasRefreshed({ value: false });
-            setAuthState('authorized');
-          }
-        })
-        .catch((error: AuthError) => {
-          console.log('Token error when trying to get roles!');
-          console.error(error);
-          const hasRefreshed = getHasRefreshed();
-          if (hasRefreshed) {
-            setAuthState('unauthorized');
-          } else {
-            // Hasn't refreshed automatically yet, refreshing...
-            console.log('Trying an automatic refresh...');
-            clearMsalLocalStorage();
-            console.log('Clearing local storage...');
-            setHasRefreshed({ value: true });
-            window.location.reload();
-          }
-        });
+    if (result?.account && account === undefined) {
+      instance.setActiveAccount(result.account);
+      setAccount(result.account);
+      const getToken = async () => {
+        // Since we already have an account we know that acquireToken will return AuthenticationResult
+        const response = (await acquireToken(
+          InteractionType.Silent,
+          GRAPH_REQUESTS_BACKEND(import.meta.env.VITE_API_SCOPE)
+        )) as AuthenticationResult;
+        return response.accessToken;
+      };
+      // Setting the OpenAPI config that has been sent from the given app (src/api)
+      openApiConfig.TOKEN = getToken;
+      // Setting the amplify-components specific OpenAPI config
+      OpenAPI.TOKEN = getToken;
     }
   }, [
     account,
-    authState,
-    inProgress,
+    acquireToken,
+    instance,
+    openApiConfig,
+    result?.account,
+    setAccount,
+  ]);
+
+  useEffect(() => {
+    if (!account || photo || roles) return;
+
+    // Get photo
+    const getPhoto = async () => {
+      try {
+        const tokenResponse = await acquireToken(
+          InteractionType.Silent,
+          GRAPH_REQUESTS_PHOTO
+        );
+        if (tokenResponse) {
+          const graphResponse = await fetchMsGraph(
+            GRAPH_ENDPOINTS.PHOTO,
+            tokenResponse.accessToken
+          );
+          if (graphResponse.status === 404) return null;
+
+          const graphPhoto = await graphResponse.blob();
+          const url = window.URL ?? window.webkitURL;
+          const blobUrl = url.createObjectURL(graphPhoto);
+          setPhoto(blobUrl);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getPhoto();
+
+    // Get roles
+    const getRoles = async () => {
+      try {
+        const tokenResponse = await acquireToken(
+          InteractionType.Silent,
+          GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
+        );
+
+        if (tokenResponse && tokenResponse.accessToken) {
+          const accessToken: ExtendedJwtPayload = jwt_decode(
+            tokenResponse.accessToken
+          );
+          if (accessToken.roles) {
+            setRoles(accessToken.roles as string[]);
+          }
+          setAuthState('authorized');
+        }
+      } catch (error) {
+        console.log('Token error when trying to get roles!');
+        console.error(error);
+        setAuthState('unauthorized');
+      }
+    };
+    getRoles();
+  }, [
+    account,
+    acquireToken,
     instance,
     photo,
     roles,
-    setAccount,
     setAuthState,
     setPhoto,
     setRoles,
-    apiScope,
   ]);
 
-  if (authState === 'loading') return loadingComponent;
+  if (authState === 'loading')
+    return (
+      loadingComponent || <FullPageSpinner variant="equinor" withoutScrim />
+    );
 
-  if (authState === 'unauthorized') return unauthorizedComponent;
+  if (authState === 'unauthorized')
+    return unauthorizedComponent || <Unauthorized />;
 
   return <>{children}</>;
 };

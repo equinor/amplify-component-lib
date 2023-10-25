@@ -1,7 +1,4 @@
-import {
-  IPublicClientApplication,
-  PublicClientApplication,
-} from '@azure/msal-browser';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 import { EnvironmentType } from '../components';
 
@@ -110,7 +107,7 @@ const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
   scopes: [apiScope],
 });
 
-const msalApp = (clientId: string) => {
+const createMsalApp = (clientId: string) => {
   if (getIsMock(import.meta.env.VITE_IS_MOCK)) {
     return {} as PublicClientApplication;
   }
@@ -121,26 +118,11 @@ const msalApp = (clientId: string) => {
       authority:
         'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
       redirectUri: window.location.origin,
-      postLogoutRedirectUri: window.location.origin,
-      navigateToLoginRequestUrl: false,
     },
     cache: {
-      cacheLocation: 'localStorage',
+      cacheLocation: 'sessionStorage',
       storeAuthStateInCookie: false,
     },
-    system: {
-      iframeHashTimeout: 10000,
-    },
-  });
-};
-
-const acquireToken = async (
-  instance: IPublicClientApplication,
-  request = GRAPH_REQUESTS_LOGIN
-) => {
-  return instance.acquireTokenSilent({
-    ...request,
-    redirectUri: `${window.location.origin}/auth.html`,
   });
 };
 
@@ -160,8 +142,7 @@ export const auth = {
   GRAPH_REQUESTS_PHOTO,
   GRAPH_REQUESTS_BACKEND,
   GRAPH_ENDPOINTS,
-  msalApp,
-  acquireToken,
+  createMsalApp,
   isReaderOnly,
 };
 

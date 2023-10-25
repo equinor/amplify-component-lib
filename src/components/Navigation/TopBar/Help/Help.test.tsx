@@ -3,30 +3,33 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Help } from './Help';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
-import { FullPageSpinner, Unauthorized } from 'src/components/index';
 import {
   FeedbackContentType,
   UrgencyOption,
 } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
-import { environment } from 'src/utils';
 
-const { getClientId, getApiScope } = environment;
+vi.mock('@azure/msal-react', () => ({
+  MsalProvider: (children: any) => <div>{children}</div>,
+}));
+
+vi.mock('@azure/msal-browser', () => {
+  return {
+    PublicClientApplication: class PublicClientApplication {
+      constructor() {
+        console.log('created');
+      }
+    },
+    AccountInfo: { username: 'mock' } as any,
+  };
+});
 
 function Wrappers({ children }: { children: any }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider
-        loadingComponent={<FullPageSpinner variant="equinor" withoutScrim />}
-        unauthorizedComponent={<Unauthorized />}
-        environments={{
-          apiScope: getApiScope(''),
-          clientId: getClientId(''),
-        }}
-        isMock={true}
-      >
+      <AuthProvider isMock>
         <SnackbarProvider>{children}</SnackbarProvider>
       </AuthProvider>
     </QueryClientProvider>

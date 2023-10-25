@@ -70,7 +70,7 @@ const SelectField: FC<SelectFieldProps> = ({
   }
 
   return (
-    <Container>
+    <Container className="select-field">
       <ImageWrapper>
         <Illustration />
       </ImageWrapper>
