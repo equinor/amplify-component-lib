@@ -2,7 +2,6 @@ import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import {
   AuthenticationResult,
-  AuthError,
   InteractionRequiredAuthError,
   InteractionType,
 } from '@azure/msal-browser';
@@ -100,54 +99,57 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   ]);
 
   useEffect(() => {
-    if (account && !photo && !roles) {
-      // Get photo
-      acquireToken(InteractionType.Silent, GRAPH_REQUESTS_PHOTO).then(
-        async (tokenResponse) => {
-          if (tokenResponse) {
-            const graphPhoto = await fetchMsGraph(
-              GRAPH_ENDPOINTS.PHOTO,
-              tokenResponse.accessToken
-            )
-              .then((response) => {
-                if (response.status === 200) return response.blob();
-                if (response.status === 404) return null;
-              })
-              .catch((error) =>
-                console.error('Failed to fetch profile photo', error)
-              );
+    if (!account || photo || roles) return;
 
-            if (graphPhoto) {
-              const url = window.URL ?? window.webkitURL;
-              const blobUrl = url.createObjectURL(graphPhoto);
-              setPhoto(blobUrl);
-            }
-          }
+    // Get photo
+    const getPhoto = async () => {
+      try {
+        const tokenResponse = await acquireToken(
+          InteractionType.Silent,
+          GRAPH_REQUESTS_PHOTO
+        );
+        if (tokenResponse) {
+          const graphResponse = await fetchMsGraph(
+            GRAPH_ENDPOINTS.PHOTO,
+            tokenResponse.accessToken
+          );
+          if (graphResponse.status === 404) return null;
+
+          const graphPhoto = await graphResponse.blob();
+          const url = window.URL ?? window.webkitURL;
+          const blobUrl = url.createObjectURL(graphPhoto);
+          setPhoto(blobUrl);
         }
-      );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getPhoto();
 
-      // Get roles
-      acquireToken(
-        InteractionType.Silent,
-        GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
-      )
-        .then(async (tokenResponse) => {
-          if (tokenResponse && tokenResponse.accessToken) {
-            const accessToken: ExtendedJwtPayload = jwt_decode(
-              tokenResponse.accessToken
-            );
-            if (accessToken.roles) {
-              setRoles(accessToken.roles as string[]);
-            }
-            setAuthState('authorized');
+    // Get roles
+    const getRoles = async () => {
+      try {
+        const tokenResponse = await acquireToken(
+          InteractionType.Silent,
+          GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
+        );
+
+        if (tokenResponse && tokenResponse.accessToken) {
+          const accessToken: ExtendedJwtPayload = jwt_decode(
+            tokenResponse.accessToken
+          );
+          if (accessToken.roles) {
+            setRoles(accessToken.roles as string[]);
           }
-        })
-        .catch((error: AuthError) => {
-          console.log('Token error when trying to get roles!');
-          console.error(error);
-          setAuthState('unauthorized');
-        });
-    }
+          setAuthState('authorized');
+        }
+      } catch (error) {
+        console.log('Token error when trying to get roles!');
+        console.error(error);
+        setAuthState('unauthorized');
+      }
+    };
+    getRoles();
   }, [
     account,
     acquireToken,
