@@ -60,18 +60,6 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco,
     monospace;
   }
-
-  input[type='text']:focus,
-  input[type='number']:focus,
-  textarea:focus {
-    outline: none;
-    /* Primary resting color from EDS */
-    box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
-  }
-  
-  div:focus-within {
-    outline: none !important;
-  }
 `;
 
 type TemplateType = IStyledComponent<'web', any> & {

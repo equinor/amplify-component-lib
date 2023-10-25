@@ -66,6 +66,7 @@ export { default as NothingFilled } from './Icons/FeedBackIcon/NegativeFilled';
 export { default as NothingOutlined } from './Icons/FeedBackIcon/NegativeOutlined';
 export { default as SomethingFilled } from './Icons/FeedBackIcon/PositiveFilled';
 export { default as SomethingOutlined } from './Icons/FeedBackIcon/PositiveOutlined';
+export { default as AmplifyTextField } from './Inputs/AmplifyTextField';
 export { default as ChippedMultiSelect } from './Inputs/ChippedMultiSelect';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
 export { default as NewComment } from './Inputs/CommentField/NewCommentField';
