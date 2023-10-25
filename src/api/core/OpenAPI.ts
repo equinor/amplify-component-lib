@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
-import { environment, auth } from 'src/utils';
+import { environment } from 'src/utils';
 import { CancelablePromise } from 'src/api/core/CancelablePromise';
 import { request as __request } from 'src/api/core/request';
 import { getLocalStorage, updateLocalStorage } from 'src/hooks/useLocalStorage';
@@ -10,7 +10,6 @@ import { JwtPayload } from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
 
 const { getApiUrl, getEnvironmentName } = environment;
-const { GRAPH_REQUESTS_BACKEND, acquireToken, createMsalApp } = auth;
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
@@ -31,17 +30,6 @@ export type OpenAPIConfig = {
   PASSWORD?: string | Resolver<string>;
   HEADERS?: Headers | Resolver<Headers>;
   ENCODE_PATH?: (path: string) => string;
-};
-
-const getApplicationToken = async () => {
-  return (
-    await acquireToken(
-      createMsalApp(environment.getClientId(import.meta.env.VITE_CLIENT_ID)),
-      GRAPH_REQUESTS_BACKEND(
-        environment.getApiScope(import.meta.env.VITE_API_SCOPE)
-      )
-    )
-  ).accessToken;
 };
 
 export class TokenService {
@@ -107,7 +95,7 @@ export const OpenAPI: OpenAPIConfig = {
   VERSION: '1.0',
   WITH_CREDENTIALS: false,
   CREDENTIALS: 'include',
-  TOKEN: getApplicationToken,
+  TOKEN: undefined,
   USERNAME: undefined,
   PASSWORD: undefined,
   HEADERS: undefined,

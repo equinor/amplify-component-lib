@@ -1,7 +1,4 @@
-import {
-  IPublicClientApplication,
-  PublicClientApplication,
-} from '@azure/msal-browser';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 import { EnvironmentType } from '../components';
 
@@ -129,16 +126,6 @@ const createMsalApp = (clientId: string) => {
   });
 };
 
-const acquireToken = async (
-  instance: IPublicClientApplication,
-  request = GRAPH_REQUESTS_LOGIN
-) => {
-  return instance.acquireTokenSilent({
-    ...request,
-    redirectUri: `${window.location.origin}/auth.html`,
-  });
-};
-
 const isReaderOnly = (roles: string[] | undefined) => {
   if (roles) {
     const enrolledToWriterRole = roles.some((r) => r.includes('WRITE'));
@@ -156,7 +143,6 @@ export const auth = {
   GRAPH_REQUESTS_BACKEND,
   GRAPH_ENDPOINTS,
   createMsalApp,
-  acquireToken,
   isReaderOnly,
 };
 

@@ -1,6 +1,7 @@
 import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import {
+  AuthenticationResult,
   AuthError,
   InteractionRequiredAuthError,
   InteractionType,
@@ -9,7 +10,7 @@ import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
-import { OpenAPIConfig } from 'src/api';
+import { OpenAPI, OpenAPIConfig } from 'src/api';
 import FullPageSpinner from 'src/components/Feedback/FullPageSpinner';
 import Unauthorized from 'src/components/Feedback/Unauthorized';
 import { auth, environment } from 'src/utils';
@@ -26,7 +27,6 @@ const {
   GRAPH_REQUESTS_PHOTO,
   GRAPH_REQUESTS_BACKEND,
   fetchMsGraph,
-  acquireToken,
 } = auth;
 
 const { getApiScope } = environment;
@@ -61,13 +61,14 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   unauthorizedComponent,
 }) => {
   const { instance } = useMsal();
-  const { login, result, error } = useMsalAuthentication(
+  const { login, result, error, acquireToken } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
   );
 
   useEffect(() => {
     if (error instanceof InteractionRequiredAuthError) {
+      console.log('logging in....');
       login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN);
     }
   }, [login, error]);
@@ -76,19 +77,32 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     if (result?.account && account === undefined) {
       instance.setActiveAccount(result.account);
       setAccount(result.account);
-      openApiConfig.TOKEN = async () => {
-        const response = await instance.acquireTokenSilent(
+      const getToken = async () => {
+        // Since we already have an account we know that acquireToken will return AuthenticationResult
+        const response = (await acquireToken(
+          InteractionType.Silent,
           GRAPH_REQUESTS_BACKEND(import.meta.env.VITE_API_SCOPE)
-        );
+        )) as AuthenticationResult;
         return response.accessToken;
       };
+      // Setting the OpenAPI config that has been sent from the given app (src/api)
+      openApiConfig.TOKEN = getToken;
+      // Setting the amplify-components specific OpenAPI config
+      OpenAPI.TOKEN = getToken;
     }
-  }, [account, instance, openApiConfig, result?.account, setAccount]);
+  }, [
+    account,
+    acquireToken,
+    instance,
+    openApiConfig,
+    result?.account,
+    setAccount,
+  ]);
 
   useEffect(() => {
     if (account && !photo && !roles) {
       // Get photo
-      acquireToken(instance, GRAPH_REQUESTS_PHOTO).then(
+      acquireToken(InteractionType.Silent, GRAPH_REQUESTS_PHOTO).then(
         async (tokenResponse) => {
           if (tokenResponse) {
             const graphPhoto = await fetchMsGraph(
@@ -114,7 +128,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
       // Get roles
       acquireToken(
-        instance,
+        InteractionType.Silent,
         GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
       )
         .then(async (tokenResponse) => {
@@ -134,7 +148,16 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           setAuthState('unauthorized');
         });
     }
-  }, [account, instance, photo, roles, setAuthState, setPhoto, setRoles]);
+  }, [
+    account,
+    acquireToken,
+    instance,
+    photo,
+    roles,
+    setAuthState,
+    setPhoto,
+    setRoles,
+  ]);
 
   if (authState === 'loading')
     return (
