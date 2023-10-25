@@ -31,7 +31,9 @@ const Content = styled.div<ContentProps>`
     100% - ${(props) => (props.$open ? '257px' : '73px')} -
       ${spacings.comfortable.xxx_large} * 2
   );
-  padding: 0 ${spacings.comfortable.xxx_large};
+  &:not(:has(.select-field)) {
+    padding: 0 ${spacings.comfortable.xxx_large};
+  }
 `;
 
 const GlobalStyles = createGlobalStyle`
