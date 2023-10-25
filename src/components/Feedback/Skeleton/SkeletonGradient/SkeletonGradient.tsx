@@ -23,9 +23,7 @@ const SkeletonGradient: FC<SkeletonGradientProps> = ({ duration = '1.5s' }) => {
         begin="0s"
         dur={duration}
         repeatCount="indefinite"
-        calcMode="spline"
         values="-1; 1; 1"
-        keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"
       />
     </linearGradient>
   );
