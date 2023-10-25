@@ -44,22 +44,22 @@ interface AuthProviderProps {
   openApiConfig: OpenAPIConfig;
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
-  isMock?: boolean;
+  isMock?: undefined;
 }
 
-const AuthProvider: FC<AuthProviderProps> = ({
-  children,
-  openApiConfig,
-  loadingComponent,
-  unauthorizedComponent,
-  isMock = false,
-}) => {
+interface MockAuthProviderProps {
+  children: ReactNode;
+  isMock: true;
+}
+
+const AuthProvider: FC<AuthProviderProps | MockAuthProviderProps> = (props) => {
+  const { children } = props;
   const [account, setAccount] = useState<AccountInfo | undefined>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [photo, setPhoto] = useState<string | undefined>();
 
-  if (isMock) {
+  if (props.isMock) {
     return (
       <AuthContext.Provider
         value={{
@@ -92,9 +92,9 @@ const AuthProvider: FC<AuthProviderProps> = ({
     >
       <MsalProvider instance={msalApp}>
         <AuthProviderInner
-          openApiConfig={openApiConfig}
-          loadingComponent={loadingComponent}
-          unauthorizedComponent={unauthorizedComponent}
+          openApiConfig={props.openApiConfig}
+          loadingComponent={props.loadingComponent}
+          unauthorizedComponent={props.unauthorizedComponent}
           account={account}
           setAccount={setAccount}
           roles={roles}
