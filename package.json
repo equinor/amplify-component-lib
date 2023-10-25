@@ -51,8 +51,8 @@
     ]
   },
   "dependencies": {
-    "@azure/msal-browser": "2.38.2",
-    "@azure/msal-react": "1.5.11",
+    "@azure/msal-browser": "3.3.0",
+    "@azure/msal-react": "2.0.5",
     "@microsoft/signalr": "^7.0.12",
     "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
