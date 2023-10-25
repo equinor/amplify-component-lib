@@ -110,7 +110,7 @@ const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
   scopes: [apiScope],
 });
 
-const msalApp = (clientId: string) => {
+const createMsalApp = (clientId: string) => {
   if (getIsMock(import.meta.env.VITE_IS_MOCK)) {
     return {} as PublicClientApplication;
   }
@@ -121,15 +121,10 @@ const msalApp = (clientId: string) => {
       authority:
         'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
       redirectUri: window.location.origin,
-      postLogoutRedirectUri: window.location.origin,
-      navigateToLoginRequestUrl: false,
     },
     cache: {
-      cacheLocation: 'localStorage',
+      cacheLocation: 'sessionStorage',
       storeAuthStateInCookie: false,
-    },
-    system: {
-      iframeHashTimeout: 10000,
     },
   });
 };
@@ -160,7 +155,7 @@ export const auth = {
   GRAPH_REQUESTS_PHOTO,
   GRAPH_REQUESTS_BACKEND,
   GRAPH_ENDPOINTS,
-  msalApp,
+  createMsalApp,
   acquireToken,
   isReaderOnly,
 };

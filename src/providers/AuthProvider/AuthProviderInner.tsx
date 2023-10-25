@@ -3,14 +3,16 @@ import { FC, ReactElement, ReactNode, useEffect } from 'react';
 import {
   AuthError,
   InteractionRequiredAuthError,
-  InteractionStatus,
   InteractionType,
 } from '@azure/msal-browser';
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
-import { auth } from 'src/utils';
+import { OpenAPIConfig } from 'src/api';
+import FullPageSpinner from 'src/components/Feedback/FullPageSpinner';
+import Unauthorized from 'src/components/Feedback/Unauthorized';
+import { auth, environment } from 'src/utils';
 
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
@@ -27,35 +29,11 @@ const {
   acquireToken,
 } = auth;
 
-const localStorageKey = 'amplify-authentication-has-refreshed';
-
-type HasRefreshed = {
-  value: boolean;
-};
-
-function getHasRefreshed(): boolean {
-  const fromLocalStorage = window.localStorage.getItem(localStorageKey);
-  if (fromLocalStorage === null) return false;
-  return (JSON.parse(fromLocalStorage) as HasRefreshed).value;
-}
-
-function setHasRefreshed({ value }: HasRefreshed) {
-  window.localStorage.setItem(localStorageKey, JSON.stringify(value));
-}
-
-function clearMsalLocalStorage() {
-  const clearKeys = Object.keys(window.localStorage).filter(
-    (key) => key.includes('msal') || key.includes('login.windows.net')
-  );
-  for (const key of clearKeys) {
-    window.localStorage.removeItem(key);
-  }
-}
+const { getApiScope } = environment;
 
 export interface AuthProviderInnerProps {
-  loadingComponent: ReactElement;
-  unauthorizedComponent: ReactElement;
   children: ReactNode;
+  openApiConfig: OpenAPIConfig;
   account: AccountInfo | undefined;
   setAccount: (val: AccountInfo | undefined) => void;
   photo: string | undefined;
@@ -64,13 +42,13 @@ export interface AuthProviderInnerProps {
   setRoles: (val: string[] | undefined) => void;
   authState: AuthState;
   setAuthState: (val: AuthState) => void;
-  apiScope: string;
+  loadingComponent?: ReactElement;
+  unauthorizedComponent?: ReactElement;
 }
 
 const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   children,
-  loadingComponent,
-  unauthorizedComponent,
+  openApiConfig,
   account,
   setAccount,
   photo,
@@ -79,39 +57,36 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   setRoles,
   authState,
   setAuthState,
-  apiScope,
+  loadingComponent,
+  unauthorizedComponent,
 }) => {
-  const { instance, inProgress } = useMsal();
-  const { login, error } = useMsalAuthentication(
+  const { instance } = useMsal();
+  const { login, result, error } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
   );
 
   useEffect(() => {
     if (error instanceof InteractionRequiredAuthError) {
-      console.error('Auth error!');
-      console.error(error);
-      console.log('Trying to log the user in with a redirect...');
       login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN);
     }
-  }, [error, login]);
+  }, [login, error]);
 
   useEffect(() => {
-    const accounts = instance.getAllAccounts();
-    if (
-      !account &&
-      accounts.length > 0 &&
-      inProgress === InteractionStatus.None &&
-      authState === 'loading'
-    ) {
-      setAccount(accounts[0]);
-    } else if (
-      account &&
-      inProgress === InteractionStatus.None &&
-      authState === 'loading' &&
-      !photo &&
-      !roles
-    ) {
+    if (result?.account && account === undefined) {
+      instance.setActiveAccount(result.account);
+      setAccount(result.account);
+      openApiConfig.TOKEN = async () => {
+        const response = await instance.acquireTokenSilent(
+          GRAPH_REQUESTS_BACKEND(import.meta.env.VITE_API_SCOPE)
+        );
+        return response.accessToken;
+      };
+    }
+  }, [account, instance, openApiConfig, result?.account, setAccount]);
+
+  useEffect(() => {
+    if (account && !photo && !roles) {
       // Get photo
       acquireToken(instance, GRAPH_REQUESTS_PHOTO).then(
         async (tokenResponse) => {
@@ -138,7 +113,10 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       );
 
       // Get roles
-      acquireToken(instance, GRAPH_REQUESTS_BACKEND(apiScope))
+      acquireToken(
+        instance,
+        GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
+      )
         .then(async (tokenResponse) => {
           if (tokenResponse && tokenResponse.accessToken) {
             const accessToken: ExtendedJwtPayload = jwt_decode(
@@ -147,43 +125,24 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
             if (accessToken.roles) {
               setRoles(accessToken.roles as string[]);
             }
-            setHasRefreshed({ value: false });
             setAuthState('authorized');
           }
         })
         .catch((error: AuthError) => {
           console.log('Token error when trying to get roles!');
           console.error(error);
-          const hasRefreshed = getHasRefreshed();
-          if (hasRefreshed) {
-            setAuthState('unauthorized');
-          } else {
-            // Hasn't refreshed automatically yet, refreshing...
-            console.log('Trying an automatic refresh...');
-            clearMsalLocalStorage();
-            console.log('Clearing local storage...');
-            setHasRefreshed({ value: true });
-            window.location.reload();
-          }
+          setAuthState('unauthorized');
         });
     }
-  }, [
-    account,
-    authState,
-    inProgress,
-    instance,
-    photo,
-    roles,
-    setAccount,
-    setAuthState,
-    setPhoto,
-    setRoles,
-    apiScope,
-  ]);
+  }, [account, instance, photo, roles, setAuthState, setPhoto, setRoles]);
 
-  if (authState === 'loading') return loadingComponent;
+  if (authState === 'loading')
+    return (
+      loadingComponent || <FullPageSpinner variant="equinor" withoutScrim />
+    );
 
-  if (authState === 'unauthorized') return unauthorizedComponent;
+  if (authState === 'unauthorized')
+    return unauthorizedComponent || <Unauthorized />;
 
   return <>{children}</>;
 };

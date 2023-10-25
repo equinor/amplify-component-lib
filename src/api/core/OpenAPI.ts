@@ -10,7 +10,7 @@ import { JwtPayload } from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
 
 const { getApiUrl, getEnvironmentName } = environment;
-const { GRAPH_REQUESTS_BACKEND, acquireToken, msalApp } = auth;
+const { GRAPH_REQUESTS_BACKEND, acquireToken, createMsalApp } = auth;
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
@@ -36,7 +36,7 @@ export type OpenAPIConfig = {
 const getApplicationToken = async () => {
   return (
     await acquireToken(
-      msalApp(environment.getClientId(import.meta.env.VITE_CLIENT_ID)),
+      createMsalApp(environment.getClientId(import.meta.env.VITE_CLIENT_ID)),
       GRAPH_REQUESTS_BACKEND(
         environment.getApiScope(import.meta.env.VITE_API_SCOPE)
       )
