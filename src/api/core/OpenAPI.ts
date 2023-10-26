@@ -2,13 +2,14 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
-import { environment } from 'src/utils';
+import { auth, environment } from 'src/utils';
 import { CancelablePromise } from 'src/api/core/CancelablePromise';
 import { request as __request } from 'src/api/core/request';
 import { getLocalStorage, updateLocalStorage } from 'src/hooks/useLocalStorage';
 import { JwtPayload } from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
 
+const { getToken: getApplicationToken } = auth;
 const { getApiUrl, getEnvironmentName } = environment;
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
@@ -95,7 +96,7 @@ export const OpenAPI: OpenAPIConfig = {
   VERSION: '1.0',
   WITH_CREDENTIALS: false,
   CREDENTIALS: 'include',
-  TOKEN: undefined,
+  TOKEN: getApplicationToken,
   USERNAME: undefined,
   PASSWORD: undefined,
   HEADERS: undefined,

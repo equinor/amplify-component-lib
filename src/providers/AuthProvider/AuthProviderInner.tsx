@@ -9,7 +9,6 @@ import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
-import { OpenAPI, OpenAPIConfig } from 'src/api';
 import FullPageSpinner from 'src/components/Feedback/FullPageSpinner';
 import Unauthorized from 'src/components/Feedback/Unauthorized';
 import { auth, environment } from 'src/utils';
@@ -32,7 +31,6 @@ const { getApiScope } = environment;
 
 export interface AuthProviderInnerProps {
   children: ReactNode;
-  openApiConfig: OpenAPIConfig;
   account: AccountInfo | undefined;
   setAccount: (val: AccountInfo | undefined) => void;
   photo: string | undefined;
@@ -47,7 +45,6 @@ export interface AuthProviderInnerProps {
 
 const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   children,
-  openApiConfig,
   account,
   setAccount,
   photo,
@@ -91,23 +88,10 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     const currentAccount = result?.account || instance.getActiveAccount();
 
     if (currentAccount && account === undefined) {
-      console.log('Setting getToken function in open api configs!');
-      // Setting the OpenAPI config that has been sent from the given app (src/api)
-      openApiConfig.TOKEN = getToken;
-      // Setting the amplify-components specific OpenAPI config
-      OpenAPI.TOKEN = getToken;
       // Set AuthProvider account
       setAccount(currentAccount);
     }
-  }, [
-    account,
-    acquireToken,
-    getToken,
-    instance,
-    openApiConfig,
-    result?.account,
-    setAccount,
-  ]);
+  }, [account, acquireToken, getToken, instance, result?.account, setAccount]);
 
   useEffect(() => {
     if (!account || photo || roles) return;

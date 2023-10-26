@@ -107,23 +107,34 @@ const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
   scopes: [apiScope],
 });
 
-const createMsalApp = (clientId: string) => {
-  if (getIsMock(import.meta.env.VITE_IS_MOCK)) {
-    return {} as PublicClientApplication;
+const msalApp = new PublicClientApplication({
+  auth: {
+    clientId: getClientId(import.meta.env.VITE_CLIENT_ID),
+    authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
+    redirectUri: window.location.origin,
+  },
+  cache: {
+    cacheLocation: 'localStorage',
+    storeAuthStateInCookie: false,
+  },
+});
+
+const getToken = async () => {
+  const activeAccount = msalApp.getActiveAccount(); // This will only return a non-null value if you have logic somewhere else that calls the setActiveAccount API
+  const accounts = msalApp.getAllAccounts();
+
+  if (!activeAccount && accounts.length === 0) {
+    /*
+     * User is not signed in. Throw error or wait for user to login.
+     * Do not attempt to log a user in outside of the context of MsalProvider
+     */
   }
 
-  return new PublicClientApplication({
-    auth: {
-      clientId: clientId,
-      authority:
-        'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
-      redirectUri: window.location.origin,
-    },
-    cache: {
-      cacheLocation: 'localStorage',
-      storeAuthStateInCookie: false,
-    },
-  });
+  const authResult = await msalApp.acquireTokenSilent(
+    GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
+  );
+
+  return authResult.accessToken;
 };
 
 const isReaderOnly = (roles: string[] | undefined) => {
@@ -142,7 +153,8 @@ export const auth = {
   GRAPH_REQUESTS_PHOTO,
   GRAPH_REQUESTS_BACKEND,
   GRAPH_ENDPOINTS,
-  createMsalApp,
+  msalApp,
+  getToken,
   isReaderOnly,
 };
 
