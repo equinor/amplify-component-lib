@@ -72,17 +72,16 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     } else if (accounts.length > 0 && account === undefined) {
       console.log('Found account, setting that one as active');
       instance.setActiveAccount(accounts[0]);
+      setAccount(accounts[0]);
     }
-  }, [account, accounts, error, instance, login]);
+  }, [account, accounts, error, instance, login, setAccount]);
 
   useEffect(() => {
-    const currentAccount = result?.account || instance.getActiveAccount();
-
-    if (currentAccount && account === undefined) {
+    if (result?.account && account === undefined) {
       // Set AuthProvider account
-      setAccount(currentAccount);
+      setAccount(result?.account);
     }
-  }, [account, instance, result?.account, setAccount]);
+  }, [account, result?.account, setAccount]);
 
   useEffect(() => {
     if (!account || photo || roles) return;
