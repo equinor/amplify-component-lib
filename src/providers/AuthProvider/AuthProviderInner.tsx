@@ -76,16 +76,14 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     } else if (accounts.length > 0 && account === undefined) {
       console.log('Found account, setting that one as active');
       instance.setActiveAccount(accounts[0]);
-      setAccount(accounts[0]);
     }
   }, [login, error, accounts, account, instance, setAccount]);
 
   useEffect(() => {
-    if (result?.account) {
-      if (account === undefined) {
-        instance.setActiveAccount(result.account);
-        setAccount(result.account);
-      }
+    const currentAccount = result?.account || instance.getActiveAccount();
+
+    if (currentAccount && account === undefined) {
+      console.log('Setting getToken function in open api configs!');
       const getToken = async () => {
         // Since we already have an account we know that acquireToken will return AuthenticationResult
         const response = (await acquireToken(
@@ -98,6 +96,8 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       openApiConfig.TOKEN = getToken;
       // Setting the amplify-components specific OpenAPI config
       OpenAPI.TOKEN = getToken;
+      // Set AuthProvider account
+      setAccount(currentAccount);
     }
   }, [
     account,
@@ -171,7 +171,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     setRoles,
   ]);
 
-  if (authState === 'loading')
+  if (authState === 'loading' || account === undefined)
     return (
       loadingComponent || <FullPageSpinner variant="equinor" withoutScrim />
     );
