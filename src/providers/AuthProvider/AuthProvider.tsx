@@ -11,14 +11,9 @@ import { AccountInfo } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
 import AuthProviderInner from './AuthProviderInner';
-import { OpenAPIConfig } from 'src/api';
-import { auth, environment } from 'src/utils';
+import { auth } from 'src/utils';
 
-const { createMsalApp } = auth;
-
-const msalApp = createMsalApp(
-  environment.getClientId(import.meta.env.VITE_CLIENT_ID)
-);
+const { msalApp } = auth;
 
 export type AuthState = 'loading' | 'authorized' | 'unauthorized';
 
@@ -41,7 +36,6 @@ export const useAuth = () => {
 
 interface AuthProviderProps {
   children: ReactNode;
-  openApiConfig: OpenAPIConfig;
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
   isMock?: undefined;
@@ -92,7 +86,6 @@ const AuthProvider: FC<AuthProviderProps | MockAuthProviderProps> = (props) => {
     >
       <MsalProvider instance={msalApp}>
         <AuthProviderInner
-          openApiConfig={props.openApiConfig}
           loadingComponent={props.loadingComponent}
           unauthorizedComponent={props.unauthorizedComponent}
           account={account}
