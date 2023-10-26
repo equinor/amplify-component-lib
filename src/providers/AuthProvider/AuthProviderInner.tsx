@@ -59,23 +59,33 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   loadingComponent,
   unauthorizedComponent,
 }) => {
-  const { instance } = useMsal();
+  const { instance, accounts } = useMsal();
   const { login, result, error, acquireToken } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
   );
 
   useEffect(() => {
-    if (error instanceof InteractionRequiredAuthError) {
-      console.log('logging in....');
+    if (
+      error instanceof InteractionRequiredAuthError &&
+      accounts.length === 0
+    ) {
+      console.error(error);
+      console.log('No account found, need to login via. redirect');
       login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN);
+    } else if (accounts.length > 0 && account === undefined) {
+      console.log('Found account, setting that one as active');
+      instance.setActiveAccount(accounts[0]);
+      setAccount(accounts[0]);
     }
-  }, [login, error]);
+  }, [login, error, accounts, account, instance, setAccount]);
 
   useEffect(() => {
-    if (result?.account && account === undefined) {
-      instance.setActiveAccount(result.account);
-      setAccount(result.account);
+    if (result?.account) {
+      if (account === undefined) {
+        instance.setActiveAccount(result.account);
+        setAccount(result.account);
+      }
       const getToken = async () => {
         // Since we already have an account we know that acquireToken will return AuthenticationResult
         const response = (await acquireToken(

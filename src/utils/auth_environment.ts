@@ -120,7 +120,7 @@ const createMsalApp = (clientId: string) => {
       redirectUri: window.location.origin,
     },
     cache: {
-      cacheLocation: 'sessionStorage',
+      cacheLocation: 'localStorage',
       storeAuthStateInCookie: false,
     },
   });
