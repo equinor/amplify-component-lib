@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode, useEffect } from 'react';
+import { FC, ReactElement, ReactNode, useCallback, useEffect } from 'react';
 
 import {
   AuthenticationResult,
@@ -65,6 +65,14 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     GRAPH_REQUESTS_LOGIN
   );
 
+  const getToken = useCallback(async () => {
+    const response = (await acquireToken(
+      InteractionType.Silent,
+      GRAPH_REQUESTS_BACKEND(import.meta.env.VITE_API_SCOPE)
+    )) as AuthenticationResult;
+    return response.accessToken;
+  }, [acquireToken]);
+
   useEffect(() => {
     if (
       error instanceof InteractionRequiredAuthError &&
@@ -84,14 +92,6 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
     if (currentAccount && account === undefined) {
       console.log('Setting getToken function in open api configs!');
-      const getToken = async () => {
-        // Since we already have an account we know that acquireToken will return AuthenticationResult
-        const response = (await acquireToken(
-          InteractionType.Silent,
-          GRAPH_REQUESTS_BACKEND(import.meta.env.VITE_API_SCOPE)
-        )) as AuthenticationResult;
-        return response.accessToken;
-      };
       // Setting the OpenAPI config that has been sent from the given app (src/api)
       openApiConfig.TOKEN = getToken;
       // Setting the amplify-components specific OpenAPI config
@@ -102,6 +102,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   }, [
     account,
     acquireToken,
+    getToken,
     instance,
     openApiConfig,
     result?.account,
