@@ -1,7 +1,6 @@
-import { FC, ReactElement, ReactNode, useCallback, useEffect } from 'react';
+import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import {
-  AuthenticationResult,
   InteractionRequiredAuthError,
   InteractionType,
 } from '@azure/msal-browser';
@@ -62,14 +61,6 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     GRAPH_REQUESTS_LOGIN
   );
 
-  const getToken = useCallback(async () => {
-    const response = (await acquireToken(
-      InteractionType.Silent,
-      GRAPH_REQUESTS_BACKEND(import.meta.env.VITE_API_SCOPE)
-    )) as AuthenticationResult;
-    return response.accessToken;
-  }, [acquireToken]);
-
   useEffect(() => {
     if (
       error instanceof InteractionRequiredAuthError &&
@@ -82,7 +73,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       console.log('Found account, setting that one as active');
       instance.setActiveAccount(accounts[0]);
     }
-  }, [login, error, accounts, account, instance, setAccount]);
+  }, [account, accounts, error, instance, login]);
 
   useEffect(() => {
     const currentAccount = result?.account || instance.getActiveAccount();
@@ -91,7 +82,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       // Set AuthProvider account
       setAccount(currentAccount);
     }
-  }, [account, acquireToken, getToken, instance, result?.account, setAccount]);
+  }, [account, instance, result?.account, setAccount]);
 
   useEffect(() => {
     if (!account || photo || roles) return;
