@@ -1,3 +1,5 @@
+import { MemoryRouter } from 'react-router';
+
 import { Meta, StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -21,7 +23,9 @@ export const Primary: StoryFn = (args) => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider isMock>
         <SnackbarProvider>
-          <Help applicationName={args.applicationName} />
+          <MemoryRouter initialEntries={['/']}>
+            <Help applicationName={args.applicationName} />
+          </MemoryRouter>
         </SnackbarProvider>
       </AuthProvider>
     </QueryClientProvider>

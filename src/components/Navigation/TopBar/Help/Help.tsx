@@ -10,6 +10,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import FeedbackForm from './FeedbackForm/FeedbackForm';
+import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import { FeedbackEnum } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
@@ -34,7 +35,6 @@ export interface HelpProps {
 }
 
 export const Help: FC<HelpProps> = ({
-  applicationName,
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
@@ -45,11 +45,17 @@ export const Help: FC<HelpProps> = ({
   const [feedbackType, setFeedbackType] = useState<FeedbackEnum | undefined>(
     undefined
   );
+  const [showReleaseNotes, setShowReleaseNotes] = useState(false);
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleOnFeedbackClick = (event?: MouseEvent<HTMLDivElement>) => {
     setFeedbackType(event?.currentTarget.id as FeedbackEnum);
+    closeMenu();
+  };
+
+  const handleOnReleaseNotesClick = () => {
+    setShowReleaseNotes(true);
     closeMenu();
   };
 
@@ -83,10 +89,9 @@ export const Help: FC<HelpProps> = ({
         {!hideReleaseNotes && (
           <HelpMenuItem
             id="release-notes"
-            onClick={closeMenu}
             icon={file_description}
+            onClick={handleOnReleaseNotesClick}
             text="Release notes"
-            href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}
           />
         )}
         {!hideFeedback && (
@@ -112,6 +117,9 @@ export const Help: FC<HelpProps> = ({
           <ContentWrapper onClick={closeMenu}>{children}</ContentWrapper>
         )}
       </TopBarMenu>
+      {showReleaseNotes && 
+        <ReleaseNotes show={showReleaseNotes} setShow={setShowReleaseNotes} />
+      }
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={
