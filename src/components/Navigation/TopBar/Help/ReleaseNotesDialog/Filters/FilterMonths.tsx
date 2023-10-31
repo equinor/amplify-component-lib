@@ -12,13 +12,13 @@ import styled from 'styled-components';
 const { spacings } = tokens;
 
 interface ButtonProps {
-  isActive?: boolean;
+  $isActive?: boolean;
 }
 
 const Button = styled(EDSButton)<ButtonProps>`
   color: black;
   font-weight: 700;
-  background-color: ${(props) => (props.isActive ? '#deedee' : 'none')};
+  background-color: ${({ $isActive }) => ($isActive ? '#deedee' : 'none')};
   margin-bottom: ${spacings.comfortable.medium};
 `;
 
@@ -72,7 +72,7 @@ const FilterMonths: FC = () => {
               color="primary"
               variant="ghost"
               onClick={() => handleYearClick(index)}
-              isActive={year.value === openYearValue}
+              $isActive={year.value === openYearValue}
             >
               {year.label}
             </Button>
@@ -84,7 +84,7 @@ const FilterMonths: FC = () => {
                   key={month.value.toISOString()}
                   variant="ghost"
                   onClick={() => handleMonthClick(month.value)}
-                  isActive={selected === monthValueToString(month.value)}
+                  $isActive={selected === monthValueToString(month.value)}
                 >
                   {month.label}
                 </Button>

@@ -21,15 +21,15 @@ const ChipContainer = styled.div`
 `;
 
 interface ChipProps {
-  active: boolean;
+  $active: boolean;
 }
 
 const StyledChip = styled.span<ChipProps>`
   font-family: 'Equionor', sans-serif;
   font-size: 12px;
   border-radius: ${shape.rounded.borderRadius};
-  background-color: ${(props) =>
-    props.active
+  background-color: ${({ $active}) =>
+    $active
       ? colors.ui.background__light.hex
       : colors.ui.background__default.hex};
   color: black;
@@ -47,14 +47,14 @@ const StyledChip = styled.span<ChipProps>`
 `;
 
 interface DotProps {
-  dotColor: string;
+  $dotColor: string;
 }
 
 const Dot = styled.span<DotProps>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: ${(props) => props.dotColor};
+  background-color: ${({ $dotColor }) => $dotColor};
   position: relative;
 `;
 
@@ -102,8 +102,8 @@ const ReleaseNotesTypes: FC<ReleaseNotesTypesProps> = ({
   return (
     <Container>
       <ChipContainer>
-        <StyledChip onClick={onClick} active={active}>
-          <Dot dotColor={releaseNoteInfo.dotColor} />
+        <StyledChip onClick={onClick} $active={active}>
+          <Dot $dotColor={releaseNoteInfo.dotColor} />
           <Typography group="ui" variant="chip__badge">
             {name}
           </Typography>
