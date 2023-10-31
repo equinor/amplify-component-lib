@@ -93,7 +93,9 @@ test('Calls onDelete correctly', async () => {
   };
   render(<FileProgress {...props} />);
 
-  const deleteButton = screen.getAllByRole('button')[1];
+  
+
+  const deleteButton = screen.getByRole('button');
   await user.click(deleteButton);
 
   expect(props.onDelete).toHaveBeenCalledTimes(1);
