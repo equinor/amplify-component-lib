@@ -1,3 +1,5 @@
+import { MemoryRouter } from 'react-router';
+
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -9,6 +11,20 @@ import {
 } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+
+const releaseNotes = [{
+  releaseId: "221d87d1-7aef-4be5-a0c6-15cb73e3fwefa2",
+  applicationName: "PWEX",
+  version: null,
+  title: "Improved task board and reporting overview June",
+  body: "<h1>Release notes body text</h1>",
+  tags: [
+      "Feature",
+      "Improvement",
+      "Bug fix"
+  ],
+  createdDate: "2023-06-29T10:48:49.6883+00:00"
+}];
 
 vi.mock('@azure/msal-react', () => ({
   MsalProvider: (children: any) => <div>{children}</div>,
@@ -102,6 +118,23 @@ vi.mock('src/api/services/PortalService', () => {
   return { PortalService };
 });
 
+vi.mock('src/api/services/ReleaseNotesService', () => {
+  class ReleaseNotesService {
+    public static getReleasenoteList(): CancelablePromise<any> {
+      return new CancelablePromise((resolve, reject) => {
+        setTimeout(() => {
+          if (mockServiceHasError) {
+            reject('error release notes');
+          } else {
+            resolve(releaseNotes);
+          }
+        }, 500);
+      });
+    }
+  }
+  return { ReleaseNotesService };
+});
+
 const severityOptions = [
   UrgencyOption.IMPEDES,
   UrgencyOption.UNABLE,
@@ -162,6 +195,28 @@ describe('Help', () => {
     expect(releaseNotes).not.toBeInTheDocument();
     expect(reportBug).not.toBeInTheDocument();
     expect(suggest).not.toBeInTheDocument();
+  });
+
+  describe('Release notes', () => {
+    test('show a release note', async () => {
+      mockServiceHasError = false;
+      render(<MemoryRouter initialEntries={['/']}><Help applicationName={applicationName} /></MemoryRouter>, { wrapper: Wrappers });
+      const user = userEvent.setup();
+    
+      const button = screen.getByRole('button');
+      await user.click(button);
+      const releaseNotes = screen.getByText('Release notes');
+      await user.click(releaseNotes);
+      await waitFor(
+        () => {
+          const actualText = screen.getByText('Release notes body text');
+          return expect(actualText).toBeInTheDocument();
+        },
+        { timeout: 500 }
+      );
+      
+
+    });
   });
   
   describe('Report bug and feedback', () => {
