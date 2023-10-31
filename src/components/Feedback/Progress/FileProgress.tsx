@@ -30,8 +30,13 @@ const CardHeader = styled(Card.Header)`
   grid-template-columns: 1fr auto auto;
 `;
 
+const CheckIcon = styled(Icon) `
+margin-right: ${spacings.comfortable.x_small}; 
+`
+
 const StyledButton = styled(Button)`
   margin-left: 0 !important;
+
 `;
 
 interface TopProgressProps {
@@ -115,9 +120,7 @@ const FileProgress: FC<FileProgressProps> = ({
           </Tooltip>
         </Card.HeaderTitle>
         {!error && !loading ? (
-          <StyledButton variant="ghost_icon" color="primary">
-            <Icon data={check_circle_outlined} size={24} />
-          </StyledButton>
+            <CheckIcon data={check_circle_outlined} size={24} color={colors.interactive.primary__resting.hex}/>
         ) : (
           <div />
         )}
@@ -137,3 +140,5 @@ const FileProgress: FC<FileProgressProps> = ({
 };
 
 export default FileProgress;
+
+
