@@ -126,7 +126,6 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
   const handleSave = async () => {
     try {
-
       // Slack message request
       const contentFormData = new FormData();
       contentFormData.append(
@@ -136,11 +135,11 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       await slackPostMessage(contentFormData);
 
       // Slack attachments requests
-      if (feedbackContent.attachments && feedbackContent.attachments[0]) {
-        for (const attachment in feedbackContent.attachments) {
+      if (feedbackContent.attachments && feedbackContent.attachments.length > 0) {
+        for (let i = 0; i < feedbackContent.attachments.length; i++){
           const fileFormData = new FormData();
           fileFormData.append('comment', `Title: ${feedbackContent.title}`)
-          fileFormData.append('file', attachment)
+          fileFormData.append('file', feedbackContent.attachments[i])
           await slackFileUpload(fileFormData);
         }
       }
