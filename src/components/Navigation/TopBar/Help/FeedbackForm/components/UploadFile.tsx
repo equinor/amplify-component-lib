@@ -6,6 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import FileUploadArea from 'src/components/Inputs/FileUploadArea';
 import ImageFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ImageFile';
+import { MAX_FILE_SIZE_BYTES } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.const';
 import {
   FeedbackContentType,
   UrgencyOption,
@@ -120,16 +121,17 @@ const UploadFile: FC<UploadFileProps> = ({
   return (
     <Wrapper>
       <Title group="input" variant="label">
-        Attachments (.jpg, .jpeg, .png)
+        Attachments (.jpg, .jpeg, .png) (max 1 MB)
       </Title>
-      <FileUploadAreaWrapper className="test">
+      <FileUploadAreaWrapper>
         <FileUploadArea
-          compact
+          maxSize={MAX_FILE_SIZE_BYTES}
           onDrop={onDrop}
           accept={{
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
           }}
+          compact
         />
         {feedbackContent.attachments?.map((file) => {
           return (
@@ -144,13 +146,10 @@ const UploadFile: FC<UploadFileProps> = ({
           /* c8 ignore start */
           return (
             <ImageFile
-              rejection={rejection}
+              {...rejection}
               key={rejection.file.name + rejection.file.size}
               onDelete={() => handleOnDeleteRejected(rejection)}
-              error={true}
-              errorMsg={
-                rejection.errors[0].code + ' - ' + rejection.errors[0].message
-              }
+              error
             />
           );
           /* c8 ignore end */

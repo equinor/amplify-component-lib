@@ -136,10 +136,10 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
       // Slack attachments requests
       if (feedbackContent.attachments && feedbackContent.attachments.length > 0) {
-        for (let i = 0; i < feedbackContent.attachments.length; i++){
+        for (const attachment of feedbackContent.attachments) {
           const fileFormData = new FormData();
           fileFormData.append('comment', `Title: ${feedbackContent.title}`)
-          fileFormData.append('file', feedbackContent.attachments[i])
+          fileFormData.append('file', attachment)
           await slackFileUpload(fileFormData);
         }
       }
