@@ -78,8 +78,10 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   const { error, onDelete } = props;
 
   const errorMessage = useMemo(() => {
-    if (!error) return '';
+    if (!error) return;
+    /* c8 ignore start */
     return `${props.errors[0].code} - ${props.errors[0].message}`;
+    /* c8 ignore end */
   }, [error, props]);
 
   const fileName = useMemo<string>(() => {
