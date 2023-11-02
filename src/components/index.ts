@@ -23,8 +23,6 @@ export { default as QuestioningAnimaion } from './Feedback/ErrorPage/illustratio
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as PageNotFound } from './Feedback/PageNotFound';
-export { default as FileProgress } from './Feedback/Progress/FileProgress';
-export { default as HourglassProgress } from './Feedback/Progress/HourglassProgress';
 export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/Skeleton/SkeletonBase/SkeletonBase';
 export { skeletonBaseloading } from './Feedback/Skeleton/SkeletonBase/SkeletonBase';
