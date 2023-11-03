@@ -11,11 +11,7 @@ import styled from 'styled-components';
 
 const { colors, spacings } = tokens;
 
-interface WrapperProps {
-  $error: boolean;
-}
-
-const Wrapper = styled.div<WrapperProps>`
+const Wrapper = styled.div`
   border-radius: 4px;
   margin: 10px 0;
   width: 82px;
@@ -41,9 +37,8 @@ const Rejection = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-  > p {
-    word-wrap: break-word;
-  }
+  font-size: 14px;
+  text-align: center;
 `;
 
 const CloseButton = styled.div`
@@ -63,56 +58,68 @@ const CloseButton = styled.div`
   }
 `;
 
-export interface ImageFileProps {
+interface ImageFileProps {
   onDelete: () => void;
-  rejection?: FileRejection;
-  file?: FileWithPath;
-  error?: boolean;
-  errorMsg?: string;
 }
 
-const ImageFile: FC<ImageFileProps> = ({
-  rejection,
-  file,
-  error,
-  errorMsg,
-  onDelete,
-}) => {
+interface RejectionImageFileProps extends ImageFileProps, FileRejection {
+  error: true;
+}
+interface SuccessImageFileProps extends ImageFileProps {
+  file: FileWithPath;
+  error?: false;
+}
+
+const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
+  props
+) => {
   const [src, setSrc] = useState('');
+
+  const { error, onDelete } = props;
+
+  const errorMessage = useMemo(() => {
+    /* c8 ignore start */
+    if (!error) return;
+    return `${props.errors[0].code} - ${props.errors[0].message}`;
+    /* c8 ignore end */
+  }, [error, props]);
+
+  const fileName = useMemo<string>(() => {
+    /* c8 ignore start */ // TODO: Fix rejection testing
+    if (error) {
+      return props.file.name;
+      /* c8 ignore end */
+    } else {
+      return props.file.name;
+    }
+  }, [error, props]);
+
+  const shortError = useMemo(() => {
+    if (!error) return '';
+    if (props.errors.find((error) => error.code.includes('invalid'))) {
+      return 'Invalid type';
+    }
+    if (props.errors.find((error) => error.code.includes('large'))) {
+      return 'Invalid size';
+    }
+    return 'Error';
+  }, [error, props]);
 
   useEffect(() => {
     const getSrc = async (file: FileWithPath) => {
       const src = await readUploadedFileAsText(file);
       setSrc(src);
     };
-    if (file) {
-      getSrc(file);
+    if (!error) {
+      getSrc(props.file);
     }
-  }, [file]);
-
-  const fileName = useMemo<string>(() => {
-    if (file && file.name) {
-      return file.name;
-      /* c8 ignore start */ // TODO: Fix rejection testing
-    } else if (rejection) {
-      return rejection.file.name;
-      /* c8 ignore end */
-    } else {
-      return '';
-    }
-  }, [file, rejection]);
+  }, [error, props]);
 
   return (
-    <Wrapper
-      $error={
-        /* c8 ignore start */
-        error !== undefined
-        /* c8 ignore end */
-      }
-    >
+    <Wrapper>
       <Tooltip
         title={`
-          ${fileName}${error ? ': ' + errorMsg : ''}
+          ${fileName}${error ? ': ' + errorMessage : ''}
         `}
       >
         {
@@ -123,7 +130,7 @@ const ImageFile: FC<ImageFileProps> = ({
                 data={error_outlined}
                 color={colors.interactive.warning__resting.hex}
               />
-              {errorMsg?.includes('invalid') ? 'Invalid' : 'Error'}
+              {shortError}
             </Rejection>
           ) : (
             /* c8 ignore end */

@@ -28,7 +28,7 @@ const Container = styled.div`
   width: 700px;
   height: 580px;
   padding: 0 ${spacings.comfortable.medium} ${spacings.comfortable.medium}
-    ${spacings.comfortable.medium};
+  ${spacings.comfortable.medium};
 `;
 
 interface FeedbackFormProps {
@@ -73,14 +73,14 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   } = useMutation({
     mutationKey: ['serviceNowIncident', feedbackContent],
     mutationFn: async (formData: FormData) =>
-      PortalService.createIncident(formData),
+        PortalService.createIncident(formData),
   });
 
   const relevantRequestsIsSuccess = useMemo(() => {
     const booleanArray: boolean[] = [];
     if (
-      feedbackContent?.attachments &&
-      feedbackContent?.attachments?.length > 0
+        feedbackContent?.attachments &&
+        feedbackContent?.attachments?.length > 0
     ) {
       booleanArray.push(isFileUploadSuccess);
     }
@@ -109,8 +109,8 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   }, [response?.number, selectedType]);
 
   const updateFeedback = (
-    key: keyof FeedbackContentType,
-    newValue: string | UrgencyOption | FileWithPath[] | boolean
+      key: keyof FeedbackContentType,
+      newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => {
     if (key === 'attachments' && feedbackContent.attachments) {
       setFeedbackContent((prev) => {
@@ -126,49 +126,53 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
   const handleSave = async () => {
     try {
+      // Slack message request
       const contentFormData = new FormData();
       contentFormData.append(
-        'comment',
-        createSlackMessage(feedbackContent, selectedType, userEmail)
+          'comment',
+          createSlackMessage(feedbackContent, selectedType, userEmail)
       );
-
       await slackPostMessage(contentFormData);
 
-      if (feedbackContent.attachments && feedbackContent.attachments[0]) {
-        const fileFormData = new FormData();
-        feedbackContent.attachments.forEach((attachment) =>
+      // Slack attachments requests
+      if (feedbackContent.attachments && feedbackContent.attachments.length > 0) {
+        for (const attachment of feedbackContent.attachments) {
+          const fileFormData = new FormData();
+          fileFormData.append('comment', `Title: ${feedbackContent.title}`)
           fileFormData.append('file', attachment)
-        );
-        await slackFileUpload(fileFormData);
+          await slackFileUpload(fileFormData);
+        }
       }
 
+      // Service now request
       if (selectedType === FeedbackEnum.BUG && userEmail) {
         const serviceNowFormData = new FormData();
         serviceNowFormData.append('ConfigurationItem', '117499');
         serviceNowFormData.append('Title', feedbackContent.title);
         serviceNowFormData.append(
-          'Description',
-          createServiceNowDescription(feedbackContent)
+            'Description',
+            createServiceNowDescription(feedbackContent)
         );
         serviceNowFormData.append('CallerEmail', userEmail);
         if (feedbackContent.urgency) {
           serviceNowFormData.append(
-            'urgency',
-            getUrgencyNumber(
-              feedbackContent.urgency as UrgencyOption
-            ).toString()
+              'urgency',
+              getUrgencyNumber(
+                  feedbackContent.urgency as UrgencyOption
+              ).toString()
           );
         }
         if (
-          feedbackContent.attachments &&
-          feedbackContent.attachments.length > 0
+            feedbackContent.attachments &&
+            feedbackContent.attachments.length > 0
         ) {
           feedbackContent.attachments.forEach((attachment) =>
-            serviceNowFormData.append('Image', attachment)
+              serviceNowFormData.append('Images', attachment)
           );
         }
         await serviceNowIncident(serviceNowFormData);
       }
+
     } catch (err) {
       console.error(err);
       showSnackbar('There was an error sending your report');
@@ -177,22 +181,22 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
 
   if (relevantRequestsIsSuccess)
     return (
-      <Container>
-        <Success onClose={onClose} serviceNowId={serviceNowNumber} />
-      </Container>
+        <Container>
+          <Success onClose={onClose} serviceNowId={serviceNowNumber} />
+        </Container>
     );
 
   return (
-    <Container>
-      <FeedbackFormInner
-        selectedType={selectedType}
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-        handleSave={handleSave}
-        onClose={onClose}
-        requestIsLoading={requestIsLoading}
-      />
-    </Container>
+      <Container>
+        <FeedbackFormInner
+            selectedType={selectedType}
+            feedbackContent={feedbackContent}
+            updateFeedback={updateFeedback}
+            handleSave={handleSave}
+            onClose={onClose}
+            requestIsLoading={requestIsLoading}
+        />
+      </Container>
   );
 };
 
