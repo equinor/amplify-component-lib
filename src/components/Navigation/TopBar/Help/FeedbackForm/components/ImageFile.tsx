@@ -78,8 +78,8 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   const { error, onDelete } = props;
 
   const errorMessage = useMemo(() => {
-    if (!error) return;
     /* c8 ignore start */
+    if (!error) return;
     return `${props.errors[0].code} - ${props.errors[0].message}`;
     /* c8 ignore end */
   }, [error, props]);
@@ -104,7 +104,6 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
     }
     return 'Error';
   }, [error, props]);
-  console.log(shortError);
 
   useEffect(() => {
     const getSrc = async (file: FileWithPath) => {
