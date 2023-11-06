@@ -1,13 +1,14 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import { tokens } from '@equinor/eds-tokens';
-import { useMutation } from '@tanstack/react-query';
 
-import Success from './components/Success';
+import RequestStatus from './components/RequestStatus';
 import {
+  AttachmentStatus,
   FeedbackContentType,
   FeedbackEnum,
+  StatusEnum,
   UrgencyOption,
 } from './FeedbackForm.types';
 import {
@@ -16,7 +17,11 @@ import {
   getUrgencyNumber,
 } from './FeedbackForm.utils';
 import FeedbackFormInner from './FeedbackFormInner';
-import { PortalService } from 'src/api/services/PortalService';
+import {
+  useServiceNowIncidentMutation,
+  useSlackFileUploadMutation,
+  useSlackPostMessageMutation,
+} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.hooks';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
 
@@ -28,7 +33,7 @@ const Container = styled.div`
   width: 700px;
   height: 580px;
   padding: 0 ${spacings.comfortable.medium} ${spacings.comfortable.medium}
-  ${spacings.comfortable.medium};
+    ${spacings.comfortable.medium};
 `;
 
 interface FeedbackFormProps {
@@ -47,70 +52,40 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     anonymous: false,
   });
 
-  const {
-    mutateAsync: slackFileUpload,
-    isPending: isFileUploadLoading,
-    isSuccess: isFileUploadSuccess,
-  } = useMutation({
-    mutationKey: ['slackFileUpload', feedbackContent],
-    mutationFn: (formData: FormData) => PortalService.fileUpload(formData),
-  });
+  const [slackAttachmentStatus, setSlackAttachmentStatus] = useState<
+    AttachmentStatus[]
+  >([]);
+
+  const { mutateAsync: slackFileUpload, isPending: isFileUploadLoading } =
+    useSlackFileUploadMutation(feedbackContent);
 
   const {
     mutateAsync: slackPostMessage,
-    isPending: isPostMessageLoading,
-    isSuccess: isPostMessageSuccess,
-  } = useMutation({
-    mutationKey: ['slackPostMessage', feedbackContent],
-    mutationFn: (formData: FormData) => PortalService.postmessage(formData),
-  });
+    status: postMessageStatus,
+    error: postMessageError,
+  } = useSlackPostMessageMutation(feedbackContent);
 
   const {
     mutateAsync: serviceNowIncident,
-    isPending: isServiceNowLoading,
-    isSuccess: isServiceNowSuccess,
-    data: response,
-  } = useMutation({
-    mutationKey: ['serviceNowIncident', feedbackContent],
-    mutationFn: async (formData: FormData) =>
-        PortalService.createIncident(formData),
-  });
+    status: serviceNowStatus,
+    error: serviceNowError,
+  } = useServiceNowIncidentMutation(feedbackContent);
 
-  const relevantRequestsIsSuccess = useMemo(() => {
-    const booleanArray: boolean[] = [];
-    if (
-        feedbackContent?.attachments &&
-        feedbackContent?.attachments?.length > 0
-    ) {
-      booleanArray.push(isFileUploadSuccess);
-    }
-    if (selectedType === FeedbackEnum.BUG) {
-      booleanArray.push(isServiceNowSuccess);
-    }
-    booleanArray.push(isPostMessageSuccess);
-    return !booleanArray.includes(false) && booleanArray.length > 0;
-  }, [
-    feedbackContent?.attachments,
-    isFileUploadSuccess,
-    isPostMessageSuccess,
-    isServiceNowSuccess,
-    selectedType,
-  ]);
+  const showRequestStatus = useMemo(() => {
+    return serviceNowStatus !== 'idle' || postMessageStatus !== 'idle';
+  }, [postMessageStatus, serviceNowStatus]);
 
   const requestIsLoading = useMemo(() => {
-    return isPostMessageLoading || isFileUploadLoading || isServiceNowLoading;
-  }, [isFileUploadLoading, isPostMessageLoading, isServiceNowLoading]);
-
-  const serviceNowNumber = useMemo(() => {
-    if (selectedType === FeedbackEnum.BUG) {
-      if (!response?.number) return 'Not found';
-      return response.number;
-    }
-  }, [response?.number, selectedType]);
+    return (
+      postMessageStatus === 'pending' ||
+      serviceNowStatus === 'pending' ||
+      isFileUploadLoading
+    );
+  }, [isFileUploadLoading, postMessageStatus, serviceNowStatus]);
 
   const updateFeedback = (
-      key: keyof FeedbackContentType,
-      newValue: string | UrgencyOption | FileWithPath[] | boolean
+    key: keyof FeedbackContentType,
+    newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => {
     if (key === 'attachments' && feedbackContent.attachments) {
       setFeedbackContent((prev) => {
@@ -124,23 +99,55 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     }
   };
 
+  useEffect(() => {
+    if (!feedbackContent.attachments) return;
+    setSlackAttachmentStatus(
+      feedbackContent.attachments.map((attachment) => {
+        return {
+          fileName: attachment.name,
+          status: StatusEnum.PENDING,
+        };
+      })
+    );
+  }, [feedbackContent.attachments]);
+
+  const updateStatus = (status: StatusEnum, filename: string) => {
+    const index = slackAttachmentStatus.findIndex(
+      (attachment) => attachment.fileName === filename
+    );
+    if (index === -1) return;
+    setSlackAttachmentStatus((prev) => [
+      ...prev.slice(0, index),
+      { ...prev[index], status: status },
+      ...prev.slice(index + 1, prev.length),
+    ]);
+  };
+
   const handleSave = async () => {
     try {
       // Slack message request
       const contentFormData = new FormData();
       contentFormData.append(
-          'comment',
-          createSlackMessage(feedbackContent, selectedType, userEmail)
+        'comment',
+        createSlackMessage(feedbackContent, selectedType, userEmail)
       );
       await slackPostMessage(contentFormData);
 
       // Slack attachments requests
-      if (feedbackContent.attachments && feedbackContent.attachments.length > 0) {
+      if (
+        feedbackContent.attachments &&
+        feedbackContent.attachments.length > 0
+      ) {
         for (const attachment of feedbackContent.attachments) {
           const fileFormData = new FormData();
-          fileFormData.append('comment', `Title: ${feedbackContent.title}`)
-          fileFormData.append('file', attachment)
-          await slackFileUpload(fileFormData);
+          fileFormData.append('comment', `Title: ${feedbackContent.title}`);
+          fileFormData.append('file', attachment);
+          try {
+            await slackFileUpload(fileFormData);
+            updateStatus(StatusEnum.SUCCESS, attachment.name);
+          } catch (e) {
+            updateStatus(StatusEnum.ERROR, attachment.name);
+          }
         }
       }
 
@@ -150,53 +157,61 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
         serviceNowFormData.append('ConfigurationItem', '117499');
         serviceNowFormData.append('Title', feedbackContent.title);
         serviceNowFormData.append(
-            'Description',
-            createServiceNowDescription(feedbackContent)
+          'Description',
+          createServiceNowDescription(feedbackContent)
         );
         serviceNowFormData.append('CallerEmail', userEmail);
         if (feedbackContent.urgency) {
           serviceNowFormData.append(
-              'urgency',
-              getUrgencyNumber(
-                  feedbackContent.urgency as UrgencyOption
-              ).toString()
+            'urgency',
+            getUrgencyNumber(
+              feedbackContent.urgency as UrgencyOption
+            ).toString()
           );
         }
         if (
-            feedbackContent.attachments &&
-            feedbackContent.attachments.length > 0
+          feedbackContent.attachments &&
+          feedbackContent.attachments.length > 0
         ) {
           feedbackContent.attachments.forEach((attachment) =>
-              serviceNowFormData.append('Images', attachment)
+            serviceNowFormData.append('Images', attachment)
           );
         }
         await serviceNowIncident(serviceNowFormData);
       }
-
     } catch (err) {
       console.error(err);
       showSnackbar('There was an error sending your report');
     }
   };
 
-  if (relevantRequestsIsSuccess)
+  if (showRequestStatus)
     return (
-        <Container>
-          <Success onClose={onClose} serviceNowId={serviceNowNumber} />
-        </Container>
+      <RequestStatus
+        feedbackType={selectedType}
+        serviceNowRequest={{
+          status: serviceNowStatus as StatusEnum,
+          errorText: serviceNowError?.message,
+        }}
+        slackRequest={{
+          status: postMessageStatus as StatusEnum,
+          errorText: postMessageError?.message,
+        }}
+        slackAttachments={slackAttachmentStatus}
+      />
     );
 
   return (
-      <Container>
-        <FeedbackFormInner
-            selectedType={selectedType}
-            feedbackContent={feedbackContent}
-            updateFeedback={updateFeedback}
-            handleSave={handleSave}
-            onClose={onClose}
-            requestIsLoading={requestIsLoading}
-        />
-      </Container>
+    <Container>
+      <FeedbackFormInner
+        selectedType={selectedType}
+        feedbackContent={feedbackContent}
+        updateFeedback={updateFeedback}
+        handleSave={handleSave}
+        onClose={onClose}
+        requestIsLoading={requestIsLoading}
+      />
+    </Container>
   );
 };
 

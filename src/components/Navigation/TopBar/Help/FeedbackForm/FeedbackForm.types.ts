@@ -19,3 +19,20 @@ export type FeedbackContentType = {
   anonymous?: boolean;
   attachments?: FileWithPath[];
 };
+
+export enum StatusEnum {
+  ERROR = 'error',
+  IDLE = 'idle',
+  PENDING = 'pending',
+  SUCCESS = 'success',
+}
+
+export type Status = {
+  status: StatusEnum;
+  // status: 'error' | 'idle' | 'pending' | 'success';
+  errorText?: string;
+};
+
+export type AttachmentStatus = Status & {
+  fileName: string;
+};
