@@ -42,44 +42,53 @@ const TopContainer = styled.div`
   align-items: center;
 `;
 
-type SidebarType = {
-  onCreate?: () => void;
-  createLabel?: string;
-  createDisabled?: boolean;
+interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-} & HTMLAttributes<HTMLDivElement>;
+}
 
-export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
-  ({ onCreate, createLabel, createDisabled = false, children }, ref) => {
-    const { isOpen, setIsOpen } = useSideBar();
+interface SideBarWithoutCreate extends SidebarProps {
+  onCreate: undefined;
+}
 
-    const handleToggle = () => {
-      setIsOpen(!isOpen);
-    };
+interface SidebarWithCreate extends SidebarProps {
+  onCreate: () => void;
+  createLabel: string;
+  createDisabled?: boolean;
+}
 
-    return (
-      <Container
-        $width={isOpen ? '256px' : '72px'}
-        ref={ref}
-        data-testid="sidebar"
-      >
-        <TopContainer>
-          {onCreate && createLabel && (
-            <CreateItem
-              createLabel={createLabel}
-              onCreate={onCreate}
-              disabled={createDisabled}
-            />
-          )}
-          {children}
-        </TopContainer>
-        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
-        <LogoContainer>
-          <EquinorLogo />
-        </LogoContainer>
-      </Container>
-    );
-  }
-);
+export const SideBar = forwardRef<
+  HTMLDivElement,
+  SidebarWithCreate | SideBarWithoutCreate
+>((props, ref) => {
+  const { children } = props;
+  const { isOpen, setIsOpen } = useSideBar();
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <Container
+      $width={isOpen ? '256px' : '72px'}
+      ref={ref}
+      data-testid="sidebar"
+    >
+      <TopContainer>
+        {props.onCreate && (
+          <CreateItem
+            createLabel={props.createLabel}
+            onCreate={props.onCreate}
+            disabled={props.createDisabled}
+          />
+        )}
+        {children}
+      </TopContainer>
+      <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
+      <LogoContainer>
+        <EquinorLogo />
+      </LogoContainer>
+    </Container>
+  );
+});
 
 SideBar.displayName = 'SideBar';
