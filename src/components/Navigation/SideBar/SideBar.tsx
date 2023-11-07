@@ -4,20 +4,24 @@ import { tokens } from '@equinor/eds-tokens';
 
 import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
+import { borderBottomColor } from './MenuItem.utils';
+import { SidebarTheme } from './SideBar.types';
+import { backgroundColor, borderColor } from './SideBar.utils';
 import ToggleOpen from './ToggleOpen';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { spacings } = tokens;
 
 interface ContainerProps {
+  $theme: SidebarTheme;
   $width: string;
 }
 
 const Container = styled.div<ContainerProps>`
-  border-right: 1px solid ${colors.ui.background__medium.hsla};
-  background-color: ${colors.ui.background__default.hsla};
+  border-right: 1px solid ${({ $theme }) => borderColor($theme)};
+  background-color: ${({ $theme }) => backgroundColor($theme)};
   display: flex;
   flex-direction: column;
   padding-bottom: ${spacings.comfortable.large};
@@ -29,10 +33,14 @@ const Container = styled.div<ContainerProps>`
   top: 64px;
 `;
 
-const LogoContainer = styled.div`
+interface LogoContainerProps {
+  $theme: SidebarTheme;
+}
+
+const LogoContainer = styled.div<LogoContainerProps>`
   display: flex;
   justify-content: center;
-  border-top: 1px solid ${colors.ui.background__medium.hex};
+  border-top: 1px solid ${({ $theme }) => borderBottomColor($theme)};
   padding-top: ${spacings.comfortable.large};
 `;
 
@@ -43,6 +51,7 @@ const TopContainer = styled.div`
 `;
 
 interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
+  theme?: SidebarTheme;
   children: ReactNode;
 }
 
@@ -60,7 +69,7 @@ export const SideBar = forwardRef<
   HTMLDivElement,
   SidebarWithCreate | SideBarWithoutCreate
 >((props, ref) => {
-  const { children } = props;
+  const { theme = SidebarTheme.light, children } = props;
   const { isOpen, setIsOpen } = useSideBar();
 
   const handleToggle = () => {
@@ -69,6 +78,7 @@ export const SideBar = forwardRef<
 
   return (
     <Container
+      $theme={theme}
       $width={isOpen ? '256px' : '72px'}
       ref={ref}
       data-testid="sidebar"
@@ -76,6 +86,7 @@ export const SideBar = forwardRef<
       <TopContainer>
         {props.onCreate && (
           <CreateItem
+            theme={theme}
             createLabel={props.createLabel}
             onCreate={props.onCreate}
             disabled={props.createDisabled}
@@ -83,9 +94,9 @@ export const SideBar = forwardRef<
         )}
         {children}
       </TopContainer>
-      <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
-      <LogoContainer>
-        <EquinorLogo />
+      <ToggleOpen theme={theme} isOpen={isOpen} toggle={handleToggle} />
+      <LogoContainer $theme={theme}>
+        <EquinorLogo color={theme === SidebarTheme.light ? 'red' : 'white'} />
       </LogoContainer>
     </Container>
   );

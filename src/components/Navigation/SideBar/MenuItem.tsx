@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef, HTMLAttributes } from 'react';
 
 import {
   Icon,
@@ -8,6 +8,13 @@ import {
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import {
+  activeColor,
+  borderBottomColor,
+  hoverColor,
+  textColor,
+} from './MenuItem.utils';
+import { SidebarTheme } from './SideBar.types';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
@@ -15,43 +22,39 @@ import styled from 'styled-components';
 const { colors, spacings } = tokens;
 
 interface ContainerProps {
+  $theme: SidebarTheme;
   $active?: boolean;
   $open?: boolean;
   $disabled?: boolean;
 }
 
 const Container = styled.a<ContainerProps>`
-  background: ${(props) =>
-    props.$active
-      ? colors.interactive.primary__selected_highlight.hsla
-      : 'none'};
-  display: ${(props) => (props.$open ? 'grid' : 'flex')};
+  background: ${({ $active, $theme }) =>
+    $active ? activeColor($theme) : 'none'};
+  display: ${({ $open }) => ($open ? 'grid' : 'flex')};
   grid-template-columns: repeat(10, 1fr);
   grid-gap: ${spacings.comfortable.medium};
-  justify-content: ${(props) => !props.$open && 'center'};
+  justify-content: ${({ $open }) => !$open && 'center'};
   align-items: center;
-  border-bottom: 1px solid ${colors.ui.background__medium.hsla};
+  border-bottom: 1px solid ${({ $theme }) => borderBottomColor($theme)};
+  box-sizing: border-box;
   text-decoration: none;
-  min-height: 72px;
+  height: 72px;
 
-  ${(props) =>
-    props.$disabled
+  ${({ $theme, $disabled, $active }) =>
+    $disabled
       ? `
     &:hover {
       cursor: not-allowed;
     }
   `
-      : `
+      : !$active &&
+        `
     &:hover {
       cursor: pointer;
-      background: ${colors.interactive.primary__selected_hover.hsla};
+      background: ${hoverColor($theme)};
     }
   `}
-
-  &:disabled {
-    background: ${colors.interactive.disabled__fill.hsla};
-    color: ${colors.interactive.disabled__text.hsla};
-  }
 `;
 
 const ItemIcon = styled(Icon)`
@@ -60,13 +63,14 @@ const ItemIcon = styled(Icon)`
 `;
 
 interface ItemTextProps {
+  $theme: SidebarTheme;
   $active?: boolean;
 }
 
 const ItemText = styled(Typography)<ItemTextProps>`
-  font-weight: ${(props) => (props.$active ? '500' : '400')};
+  font-weight: ${({ $active }) => ($active ? '500' : '400')};
   grid-column: 3 / -1;
-  color: ${colors.text.static_icons__default.hex};
+  color: ${({ $theme }) => textColor($theme)};
   &::first-letter {
     text-transform: capitalize;
   }
@@ -85,22 +89,34 @@ export type MenuItemType = {
 };
 
 export type MenuItemProps = {
+  theme?: SidebarTheme;
   currentUrl?: string;
 } & MenuItemType &
-  React.HTMLAttributes<HTMLAnchorElement>;
+  HTMLAttributes<HTMLAnchorElement>;
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
-  ({ currentUrl, icon, name, link, onClick, disabled }, ref) => {
+  (
+    {
+      theme = SidebarTheme.light,
+      currentUrl,
+      icon,
+      name,
+      link,
+      onClick,
+      disabled,
+    },
+    ref
+  ) => {
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
     const getIconColor = () => {
-      if (!disabled) {
+      if (!disabled && theme === SidebarTheme.light) {
         return isCurrentUrl
           ? colors.interactive.primary__resting.hsla
           : colors.text.static_icons__default.hsla;
       }
-      return colors.interactive.disabled__text.hex;
+      return textColor(theme);
     };
 
     const handleOnClick = () => {
@@ -110,6 +126,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     if (isOpen) {
       return (
         <Container
+          $theme={theme}
           $active={isCurrentUrl}
           onClick={handleOnClick}
           $open
@@ -118,7 +135,12 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           $disabled={disabled}
         >
           {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
-          <ItemText variant="cell_text" group="table" $active={isCurrentUrl}>
+          <ItemText
+            $theme={theme}
+            variant="cell_text"
+            group="table"
+            $active={isCurrentUrl}
+          >
             {name}
           </ItemText>
         </Container>
@@ -128,6 +150,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     return (
       <Tooltip title={name} placement="right">
         <Container
+          $theme={theme}
           $active={isCurrentUrl}
           onClick={handleOnClick}
           $open={isOpen}
