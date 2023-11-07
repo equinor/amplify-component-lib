@@ -1,11 +1,11 @@
 import { FC, useMemo } from 'react';
 
-import { Dialog, Typography } from '@equinor/eds-core-react';
+import { Dialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import FilterHeader from './Filters/FilterHeader';
 import FilterMonths from './Filters/FilterMonths';
 import ReleasePosts from './ReleasePosts/ReleasePosts';
+import ReleaseNotesHeader from './ReleaseNotesHeader';
 import { useReleaseNoteYears } from 'src/hooks';
 import { PageMenuProvider } from 'src/providers';
 import { monthValueToString } from 'src/utils/releaseNotes';
@@ -15,28 +15,30 @@ import styled from 'styled-components';
 const { spacings, colors } = tokens;
 
 const StyledDialog = styled(Dialog)`
-background-color: ${colors.ui.background__light.hex};
+  background-color: ${colors.ui.background__light.hex};
   width: 100%;
   height: 85vh;
   display: flex;
-  padding: 0 ${spacings.comfortable.large};
-  overflow-y: hidden;
+  flex-direction: column;
+  padding-left: ${spacings.comfortable.large}; // Due to where we've put the scroll bar, we will fix the right padding in a different element
+  overflow: hidden;
 `;
 
 const Wrapper = styled.div`
   min-width: calc(100% - 73px - 48px);
-  padding-bottom: 50px;
+  padding-bottom: 64px;
   justify-content: center;
-  display: grid;
-  grid-template-columns: 2fr 5fr;
+  display: flex;
   column-gap: ${spacings.comfortable.xx_large};
 `;
+
 const LeftContainer = styled.div`
   // Remove padding when setting height
   height: calc(70vh - 48px);
 
   top: 0px;
-  padding-top: ${spacings.comfortable.xxx_large};
+  position: sticky;
+  height: fit-content;
   grid-column: 1 / 1;
   display: flex;
   flex-direction: column;
@@ -54,33 +56,15 @@ const LeftContainer = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  height: 85vh;
-  grid-template-columns: 2 / 3;
   padding-right: ${spacings.comfortable.xx_large};
 `;
 const ScrollWrapper = styled.div`
   height: fit-content;
   overflow-y: auto;
-  padding-bottom: ${spacings.comfortable.x_large};
+  padding-bottom: ${spacings.comfortable.xxx_large};
 `;
 
-const HeadingContainer = styled.div`
-  display: flex;
-  padding-bottom: ${spacings.comfortable.xx_large};
-`;
 
-const FilterContainer = styled.div`
-  display: flex;
-  position: sticky;
-  flex-direction: column;
-  top: 0px;
-  background-color: ${colors.ui.background__light.hex};
-  margin: 0 -${spacings.comfortable.small};
-  padding: 50px ${spacings.comfortable.small} ${spacings.comfortable.large};
-  z-index: 100;
-  height: auto;
-  gap: ${spacings.comfortable.large};
-`;
 
 interface ReleaseNotesProps {
   setShow: (show: boolean) => void;
@@ -103,27 +87,18 @@ const ReleaseNotes: FC<ReleaseNotesProps> = ({ setShow, show }) => {
 
   return (
     <StyledDialog open={show} onClose={() => setShow(false)} isDismissable>
+      <ReleaseNotesHeader />
       <PageMenuProvider items={pageMenuItems}>
-        <Wrapper>
-          <LeftContainer>
-              <HeadingContainer>
-                <Typography group="heading" variant="h4">
-                  Release Notes
-                </Typography>
-              </HeadingContainer>
-            <ScrollWrapper>
+        <ScrollWrapper>
+          <Wrapper>
+            <LeftContainer>
               <FilterMonths />
-            </ScrollWrapper>
-          </LeftContainer>
-          <Content>
-            <FilterContainer>
-              <FilterHeader />
-            </FilterContainer>
-            <ScrollWrapper>
+            </LeftContainer>
+            <Content>
               <ReleasePosts />
-            </ScrollWrapper>
-          </Content>
-        </Wrapper>
+            </Content>
+          </Wrapper>
+        </ScrollWrapper>
       </PageMenuProvider>
     </StyledDialog>
   );
