@@ -12,19 +12,17 @@ import {
 import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
-const releaseNotes = [{
-  releaseId: "221d87d1-7aef-4be5-a0c6-15cb73e3fwefa2",
-  applicationName: "PWEX",
-  version: null,
-  title: "Improved task board and reporting overview June",
-  body: "<h1>Release notes body text</h1>",
-  tags: [
-      "Feature",
-      "Improvement",
-      "Bug fix"
-  ],
-  createdDate: "2023-06-29T10:48:49.6883+00:00"
-}];
+const releaseNotes = [
+  {
+    releaseId: '221d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
+    applicationName: 'PWEX',
+    version: null,
+    title: 'Improved task board and reporting overview June',
+    body: '<h1>Release notes body text</h1>',
+    tags: ['Feature', 'Improvement', 'Bug fix'],
+    createdDate: '2023-06-29T10:48:49.6883+00:00',
+  },
+];
 
 vi.mock('@azure/msal-react', () => ({
   MsalProvider: (children: any) => <div>{children}</div>,
@@ -148,32 +146,32 @@ describe('Help', () => {
     const applicationName = faker.animal.cat();
     render(<Help applicationName={applicationName}>Child</Help>);
     const user = userEvent.setup();
-  
+
     const button = screen.getByRole('button');
-  
+
     await user.click(button);
-  
+
     const childElement = await screen.findByText('Child');
 
     expect(childElement).toBeInTheDocument();
   });
-  
+
   test('Opens and closes as expected', async () => {
     render(<Help applicationName={applicationName} />);
     const user = userEvent.setup();
-  
+
     const button = screen.getByRole('button');
-  
+
     await user.click(button);
-  
+
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
-  
+
     await user.click(button);
     await user.click(document.body);
-  
+
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
-  
+
   test('hide props working as expected', async () => {
     render(
       <Help
@@ -183,15 +181,15 @@ describe('Help', () => {
       />
     );
     const user = userEvent.setup();
-  
+
     const button = screen.getByRole('button');
-  
+
     await user.click(button);
-  
+
     const releaseNotes = screen.queryByText('Release notes');
     const reportBug = screen.queryByText('Report a bug');
     const suggest = screen.queryByText('Suggest a feature');
-  
+
     expect(releaseNotes).not.toBeInTheDocument();
     expect(reportBug).not.toBeInTheDocument();
     expect(suggest).not.toBeInTheDocument();
@@ -200,9 +198,14 @@ describe('Help', () => {
   describe('Release notes', () => {
     test('show a release note', async () => {
       mockServiceHasError = false;
-      render(<MemoryRouter initialEntries={['/']}><Help applicationName={applicationName} /></MemoryRouter>, { wrapper: Wrappers });
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <Help applicationName={applicationName} />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
       const user = userEvent.setup();
-    
+
       const button = screen.getByRole('button');
       await user.click(button);
       const releaseNotes = screen.getByText('Release notes');
@@ -214,11 +217,9 @@ describe('Help', () => {
         },
         { timeout: 500 }
       );
-      
-
     });
   });
-  
+
   describe('Report bug and feedback', () => {
     test('can close dialog by clicking outside', async () => {
       render(
@@ -228,91 +229,94 @@ describe('Help', () => {
         { wrapper: Wrappers }
       );
       const user = userEvent.setup();
-    
+
       const button = screen.getByRole('button');
-    
+
       await user.click(button);
-    
+
       const reportBug = screen.getByText('Report a bug');
-    
+
       await user.click(reportBug);
-    
+
       const titleInput = screen.getByLabelText(/title/i);
-    
+
       expect(titleInput).toBeInTheDocument();
-    
+
       const cancelButton = screen.getByText(/cancel/i);
-    
+
       await user.click(cancelButton);
-    
+
       expect(titleInput).not.toBeInTheDocument();
     });
-    
+
     for (const option of severityOptions) {
       test(`can select and submit "${option}" severity`, async () => {
         mockServiceHasError = false;
         const { title, description } = fakeInputs();
-        const { container } = render(<Help applicationName={applicationName} />, {
-          wrapper: Wrappers,
-        });
+        const { container } = render(
+          <Help applicationName={applicationName} />,
+          {
+            wrapper: Wrappers,
+          }
+        );
         const user = userEvent.setup();
-    
+
         const button = screen.getByRole('button');
-    
+
         await user.click(button);
         const reportBug = screen.getByText(/report a bug/i);
         await user.click(reportBug);
         const titleInput = screen.getByLabelText(/title/i);
-    
+
         const descInput = screen.getByLabelText(/description/i);
-    
+
         await user.type(titleInput, title);
         await user.type(descInput, description);
-    
+
         const severityInput = container.querySelector(
           '#feedback-severity'
         ) as HTMLInputElement;
-    
+
         await user.click(severityInput);
-    
+
         const severityOption = screen.getByText(option);
-    
+
         expect(severityOption).toBeInTheDocument();
-    
+
         await user.click(severityOption);
-    
+
         expect(severityInput.value).toEqual(option);
-    
+
         const submitButton = screen.getByText(/send/i);
-    
+
         expect(submitButton).not.toBeDisabled();
         await user.click(submitButton);
       }, 15000); // Setting timeout for this test to be 15 seconds
     }
-    
+
     test('suggest a feature dialog submit button enabled at correct time', async () => {
       mockServiceHasError = false;
       const title = faker.animal.cat();
       const description = faker.lorem.sentence();
       render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
       const user = userEvent.setup();
-    
+
       const button = screen.getByRole('button');
       await user.click(button);
-    
+
       const suggestFeature = screen.getByText('Suggest a feature');
       await user.click(suggestFeature);
-    
+
       const titleInput = screen.getByLabelText(/title/i);
       const descInput = screen.getByLabelText(/description/i);
       const submitButton = screen.getByText(/send/i).parentElement;
-    
+
       expect(submitButton).toBeDisabled();
       await user.type(titleInput, title);
       await user.type(descInput, description);
       expect(submitButton).not.toBeDisabled();
     }, 15000); // Setting timeout for this test to be 15 seconds
-    
+
     test('Inputting all fields with file works as expected', async () => {
       mockServiceHasError = false;
       const { title, description, url } = fakeInputs();
@@ -322,26 +326,26 @@ describe('Help', () => {
       render(<Help applicationName={applicationName} />, {
         wrapper: Wrappers,
       });
-    
+
       const user = userEvent.setup();
-    
+
       const button = screen.getByRole('button');
       await user.click(button);
-    
+
       const reportBug = screen.getByText('Report a bug');
       await user.click(reportBug);
-    
+
       const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
       const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
       const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
       const submitButton = screen.getByText(/send/i).parentElement as Element;
-    
+
       expect(submitButton).toBeDisabled();
-    
+
       await user.type(titleInput, title);
       await user.type(descInput, description);
       await user.type(urlInput, url ?? '');
-    
+
       expect(titleInput.value).toEqual(title);
       expect(descInput.value).toEqual(description);
       expect(urlInput.value).toEqual(url);
@@ -379,7 +383,7 @@ describe('Help', () => {
     
       expect(submitButton).not.toBeDisabled();
       await user.click(submitButton);
-    
+
       await waitFor(
         () =>
           expect(
@@ -390,75 +394,76 @@ describe('Help', () => {
         }
       );
     }, 20000); // Setting timeout for this test to be 20 seconds
-    
+
     test('Url validation working as expected', async () => {
       render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
       const user = userEvent.setup();
-      const helperTextString = 'The provided URL must from a equinor.com domain';
-    
+      const helperTextString =
+        'The provided URL must from a equinor.com domain';
+
       const wrongUrl = 'www.google.com';
       const rightUrl = 'www.amplify.equinor.com';
-    
+
       const button = screen.getByRole('button');
       await user.click(button);
-    
+
       const reportBug = screen.getByText('Report a bug');
       await user.click(reportBug);
-    
+
       const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
-    
+
       await user.type(urlInput, wrongUrl);
-    
+
       await urlInput.blur();
-    
+
       const helperText = screen.queryByText(helperTextString);
-    
+
       expect(helperText).toBeInTheDocument();
-    
+
       await user.clear(urlInput);
-    
+
       expect(helperText).not.toBeInTheDocument();
-    
+
       await user.type(urlInput, wrongUrl);
-    
+
       await urlInput.blur();
-    
+
       const helperTextAgain = screen.queryByText(helperTextString);
-    
+
       expect(helperTextAgain).toBeInTheDocument();
       await user.type(urlInput, rightUrl);
-    
+
       expect(helperTextAgain).not.toBeInTheDocument();
     }, 10000); // Setting timeout for this test to be 10 seconds
-    
+
     test('shows error snackbar on request error', async () => {
       mockServiceHasError = true;
       console.error = vi.fn();
       const { title, description } = fakeInputs();
-    
+
       render(<Help applicationName={applicationName} />, {
         wrapper: Wrappers,
       });
       const user = userEvent.setup();
-    
+
       const button = screen.getByRole('button');
-    
+
       await user.click(button);
       const suggest = screen.getByText(/suggest/i);
       await user.click(suggest);
-    
+
       const titleInput = screen.getByLabelText(/title/i);
       const descInput = screen.getByLabelText(/description/i);
       await user.type(titleInput, title);
-    
+
       await user.type(descInput, description);
-    
+
       const submitButton = screen.getByText(/send/i);
-    
+
       await user.click(submitButton);
-    
+
       expect(titleInput).toBeInTheDocument();
-    
+
       await waitFor(
         () =>
           expect(
@@ -467,45 +472,45 @@ describe('Help', () => {
         { timeout: 5000 }
       );
     }, 10000); // Setting timeout for this test to be 10 seconds
-    
+
     test('opt out of sending email whens suggesting feature', async () => {
       mockServiceHasError = false;
       const { title, description } = fakeInputs();
-    
+
       render(<Help applicationName={applicationName} />, {
         wrapper: Wrappers,
       });
       const user = userEvent.setup();
-    
+
       const button = screen.getByRole('button');
-    
+
       await user.click(button);
       const suggest = screen.getByText(/suggest/i);
       await user.click(suggest);
-    
+
       const nameInput: HTMLInputElement = screen.getByLabelText(/email/i);
-    
+
       const titleInput = screen.getByLabelText(/title/i);
-    
+
       const descInput = screen.getByLabelText(/description/i);
       const optOutCheckbox = screen.getByTestId('opt_out_checkbox');
-    
+
       expect(optOutCheckbox).not.toBeChecked();
-    
+
       await user.click(optOutCheckbox);
-    
+
       expect(optOutCheckbox).toBeChecked();
-    
+
       expect(nameInput.value).toBe('Anonymous');
-    
+
       await user.type(titleInput, title);
-    
+
       await user.type(descInput, description);
-    
+
       const submitButton = screen.getByText(/send/i);
-    
+
       await user.click(submitButton);
-    
+
       await waitFor(
         () =>
           expect(
@@ -514,31 +519,31 @@ describe('Help', () => {
         { timeout: 5000 }
       );
     }, 10000); // Setting timeout for this test to be 10 seconds
-    
+
     test('undefined service now number working', async () => {
       createIncidentResponseNumber = '';
       mockServiceHasError = false;
       const { title, description } = fakeInputs();
-    
+
       render(<Help applicationName={applicationName} />, {
         wrapper: Wrappers,
       });
       const user = userEvent.setup();
-    
+
       const button = screen.getByRole('button');
       await user.click(button);
-    
+
       const reportBug = screen.getByText('Report a bug');
       await user.click(reportBug);
-    
+
       const titleInput = screen.getByLabelText(/title/i);
       const descInput = screen.getByLabelText(/description/i);
-    
+
       await user.type(titleInput, title);
       await user.type(descInput, description);
-    
+
       const submitButton = screen.getByText(/send/i).parentElement as Element;
-    
+
       await user.click(submitButton);
       await waitFor(
         () => expect(screen.getByText(/Not found/i)).toBeInTheDocument(),
@@ -547,4 +552,3 @@ describe('Help', () => {
     }, 20000); // Setting timeout for this test to be 15 seconds
   });
 });
-

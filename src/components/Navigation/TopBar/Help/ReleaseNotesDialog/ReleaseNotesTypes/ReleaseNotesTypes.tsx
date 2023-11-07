@@ -28,7 +28,7 @@ const StyledChip = styled.span<ChipProps>`
   font-family: 'Equionor', sans-serif;
   font-size: 12px;
   border-radius: ${shape.rounded.borderRadius};
-  background-color: ${({ $active}) =>
+  background-color: ${({ $active }) =>
     $active
       ? colors.ui.background__light.hex
       : colors.ui.background__default.hex};

@@ -1,8 +1,16 @@
-import { extractYearsData, monthToString, monthValueToString, yearValueToString } from './releaseNotes';
+import {
+  extractYearsData,
+  monthToString,
+  monthValueToString,
+  yearValueToString,
+} from './releaseNotes';
 
-const dateObject = new Date("2023-06-29T10:50:22.8210567+00:00");
-const dates = [{ createdDate: "2023-06-29T10:50:22.8210567+00:00" }, { createdDate: "2022-06-29T10:50:22.8210567+00:00" }, { createdDate: "2022-05-29T10:50:22.8210567+00:00" }];
-
+const dateObject = new Date('2023-06-29T10:50:22.8210567+00:00');
+const dates = [
+  { createdDate: '2023-06-29T10:50:22.8210567+00:00' },
+  { createdDate: '2022-06-29T10:50:22.8210567+00:00' },
+  { createdDate: '2022-05-29T10:50:22.8210567+00:00' },
+];
 
 describe('release notes utils', () => {
   test('extract years and months from list containing createdDate attribute', () => {

@@ -6,7 +6,10 @@ import ReleaseNotesTypes, {
   RELEASENOTETYPES_INFORMATION,
 } from '../ReleaseNotesTypes/ReleaseNotesTypes';
 import { FilterOption } from 'src/components/Inputs/Sieve/Filter';
-import Sieve, { FilterValues,SieveValue } from 'src/components/Inputs/Sieve/Sieve';
+import Sieve, {
+  FilterValues,
+  SieveValue,
+} from 'src/components/Inputs/Sieve/Sieve';
 
 import styled from 'styled-components';
 
@@ -104,18 +107,16 @@ const FilterHeader: FC = () => {
       <section>
         <ChipContainer>
           {Object.keys(sieveValue.filterValues ?? {}).map((parent: string) => {
-            return sieveValue.filterValues?.[parent].map(
-              (releaseNoteType) => (
-                <ReleaseNotesTypes
-                  key={releaseNoteType.label}
-                  name={releaseNoteType.label}
-                  showIcon={true}
-                  onClick={() =>
-                    onHandleActiveFiltersRemove(parent, releaseNoteType.value)
-                  }
-                />
-              )
-            );
+            return sieveValue.filterValues?.[parent].map((releaseNoteType) => (
+              <ReleaseNotesTypes
+                key={releaseNoteType.label}
+                name={releaseNoteType.label}
+                showIcon={true}
+                onClick={() =>
+                  onHandleActiveFiltersRemove(parent, releaseNoteType.value)
+                }
+              />
+            ));
           })}
         </ChipContainer>
       </section>

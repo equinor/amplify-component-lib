@@ -117,9 +117,9 @@ export const Help: FC<HelpProps> = ({
           <ContentWrapper onClick={closeMenu}>{children}</ContentWrapper>
         )}
       </TopBarMenu>
-      {showReleaseNotes && 
+      {showReleaseNotes && (
         <ReleaseNotes show={showReleaseNotes} setShow={setShowReleaseNotes} />
-      }
+      )}
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={

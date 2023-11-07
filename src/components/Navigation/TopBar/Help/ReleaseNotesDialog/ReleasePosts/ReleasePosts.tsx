@@ -72,8 +72,7 @@ const ReleasePosts: FC = () => {
       return (
         <ContainerNoResults>
           <Typography group="heading" variant="h4" color="#3D3D3D">
-            Nothing matching{' '}
-            {`" ${search} ${selectedReleaseNoteTypes} "`}
+            Nothing matching {`" ${search} ${selectedReleaseNoteTypes} "`}
           </Typography>
         </ContainerNoResults>
       );

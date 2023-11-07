@@ -48,7 +48,10 @@ export class ReleaseNotesService {
    * @returns any Success
    * @throws ApiError
    */
-  public static getReleasenote(applicationName: string, releaseId: string): CancelablePromise<any> {
+  public static getReleasenote(
+    applicationName: string,
+    releaseId: string
+  ): CancelablePromise<any> {
     return __request(OpenAPI_Portal, {
       method: 'GET',
       url: '/api/v1/ReleaseNotes/{applicationName}/{releaseId}',
