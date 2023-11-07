@@ -25,14 +25,14 @@ export enum StatusEnum {
   IDLE = 'idle',
   PENDING = 'pending',
   SUCCESS = 'success',
+  PARTIAL = 'partial',
 }
 
-export type Status = {
+export type RequestStatusType = {
   status: StatusEnum;
-  // status: 'error' | 'idle' | 'pending' | 'success';
   errorText?: string;
 };
 
-export type AttachmentStatus = Status & {
+export type AttachmentStatus = RequestStatusType & {
   fileName: string;
 };
