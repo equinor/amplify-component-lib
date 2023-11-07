@@ -47,7 +47,6 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
     title: '',
     description: '',
-    anonymous: false,
   });
   const [showResponsePage, setShowResponsePage] = useState(true);
   const [slackAttachmentStatus, setSlackAttachmentStatus] = useState<

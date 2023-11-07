@@ -16,7 +16,6 @@ export type FeedbackContentType = {
   description: string;
   urgency?: string;
   url?: string;
-  anonymous?: boolean;
   attachments?: FileWithPath[];
 };
 

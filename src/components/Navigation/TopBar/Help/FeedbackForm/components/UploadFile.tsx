@@ -32,7 +32,7 @@ const FileUploadAreaWrapper = styled.div`
   flex-wrap: wrap;
   align-items: start;
   gap: ${spacings.comfortable.medium_small};
-  height: 140px;
+  height: 120px;
   overflow-x: visible;
   overflow-y: auto;
   > :first-child {

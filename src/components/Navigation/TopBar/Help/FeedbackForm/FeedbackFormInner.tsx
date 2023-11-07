@@ -5,7 +5,6 @@ import {
   Autocomplete,
   AutocompleteChanges,
   Button,
-  CircularProgress,
   Icon,
   TextField,
   Typography,
@@ -18,10 +17,7 @@ import {
   FeedbackEnum,
   UrgencyOption,
 } from './FeedbackForm.types';
-import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
-import ConsentCheckbox from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ConsentCheckbox';
 import UploadFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/UploadFile';
-import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
 
@@ -33,18 +29,9 @@ const Wrapper = styled.div`
   gap: ${spacings.comfortable.medium};
   height: 100%;
   width: 100%;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: ${spacings.comfortable.medium};
-  grid-column: 2/3;
-`;
-
-const LoadingSpinner = styled(CircularProgress)`
-  height: 60%;
-  margin: auto;
+  :first-child {
+    grid-column: 1 / 3;
+  }
 `;
 
 const UploadInfo = styled.div`
@@ -60,6 +47,17 @@ const UploadInfo = styled.div`
 `;
 
 const Description = styled(TextField)`
+  grid-column: 1/3;
+`;
+
+const ReportLocationText = styled(Typography)`
+  grid-column: 1/3;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: ${spacings.comfortable.medium};
   grid-column: 1/3;
 `;
 
@@ -83,8 +81,6 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
   onClose,
   requestIsLoading,
 }) => {
-  const { account } = useAuth();
-  const userEmail = account?.username;
   const [isWrongDomain, setIsWrongDomain] = useState(false);
 
   const handleOnUrlChange = (e: FormEvent<HTMLInputElement>) => {
@@ -129,21 +125,6 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
           updateFeedback('title', e.currentTarget.value)
         }
       />
-      <OptionalTooltip
-        title={
-          selectedType === FeedbackEnum.BUG
-            ? 'Your email is required when submitting a bug report to service now'
-            : 'You may opt out of including your email when suggesting a feature'
-        }
-      >
-        <TextField
-          id="usernamee"
-          label="Email"
-          meta={selectedType === FeedbackEnum.BUG ? 'Required' : 'Optional'}
-          value={feedbackContent.anonymous ? 'Anonymous' : userEmail}
-          disabled
-        />
-      </OptionalTooltip>
 
       {selectedType === FeedbackEnum.BUG && (
         <>
@@ -168,7 +149,7 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
             variant={isWrongDomain ? 'error' : undefined}
             helperText={
               isWrongDomain
-                ? 'The provided URL must from a equinor.com domain'
+                ? 'The provided URL must be from a equinor.com domain'
                 : ''
             }
             onChange={handleOnUrlChange}
@@ -199,18 +180,20 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}
       />
-      {selectedType === FeedbackEnum.SUGGESTION && (
-        <ConsentCheckbox
-          feedbackContent={feedbackContent}
-          updateFeedback={updateFeedback}
-        />
-      )}
+      <ReportLocationText>
+        {selectedType === FeedbackEnum.BUG
+          ? ' Bug reports gets sent to our Slack-channel, #amplify-feedback and to ServiceNow'
+          : ' Bug reports gets sent to our Slack-channel, #amplify-feedback'}
+      </ReportLocationText>
       <Actions>
         <Button variant="ghost" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={handleSave} disabled={!canSubmitFeedback || requestIsLoading}> 
-          {requestIsLoading ? <LoadingSpinner /> : 'Send'}
+        <Button
+          onClick={handleSave}
+          disabled={!canSubmitFeedback || requestIsLoading}
+        >
+          Send
         </Button>
       </Actions>
     </Wrapper>

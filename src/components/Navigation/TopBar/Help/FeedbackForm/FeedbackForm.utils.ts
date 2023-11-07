@@ -126,7 +126,7 @@ export const createSlackMessage = (
         },
         {
           type: 'mrkdwn',
-          text: `*User* \n ${feedbackContent.anonymous ? 'Anonymous' : email}`,
+          text: `*User* \n ${email}`,
         },
       ],
     },
