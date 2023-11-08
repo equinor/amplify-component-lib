@@ -34,7 +34,7 @@ const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 -${spacings.comfortable.small};
-  padding: 50px ${spacings.comfortable.small} 0px 0px;
+  padding: 50px ${spacings.comfortable.small} 0px ${spacings.comfortable.small};
 `;
 
 const ReleaseNotesHeader: FC = () => {

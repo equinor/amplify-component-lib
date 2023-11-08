@@ -37,6 +37,7 @@ const ChipContainer = styled.div`
   font-size: 12px;
   align-items: center;
   grid-gap: ${spacings.comfortable.small};
+  height: 24px;
   justify-items: start;
   flex-wrap: wrap;
   width: 77%;
