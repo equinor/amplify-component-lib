@@ -1605,6 +1605,7 @@ __metadata:
     "@azure/msal-browser": 3.3.0
     "@azure/msal-react": 2.0.5
     "@equinor/eds-core-react": 0.33.1
+    "@equinor/eds-icons": ^0.19.3
     "@faker-js/faker": ^8.2.0
     "@mantine/core": ^7.1.5
     "@mantine/hooks": ^7.1.5
@@ -1683,6 +1684,7 @@ __metadata:
     vitest: ^0.34.6
   peerDependencies:
     "@equinor/eds-core-react": "*"
+    "@equinor/eds-icons": "*"
     "@tanstack/react-query": "*"
     react: ^18.2.0
     react-dom: ^18.2.0

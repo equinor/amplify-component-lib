@@ -1,5 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 
+import { Button, Icon } from '@equinor/eds-core-react';
+import { external_link } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import ReleaseNotesTypes, {
@@ -10,8 +12,11 @@ import Sieve, {
   FilterValues,
   SieveValue,
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
+import { environment } from 'src/utils';
 
 import styled from 'styled-components';
+
+const { getAppName } = environment;
 
 const { spacings } = tokens;
 
@@ -66,6 +71,7 @@ export type ActiveFilter = {
 };
 
 const FilterHeader: FC = () => {
+  const applicationName = getAppName(import.meta.env.VITE_NAME);
   const { setSearch } = useReleaseNotes();
   const [sieveValue, setSieveValue] = useState<SieveValue>({
     searchValue: undefined,
@@ -119,6 +125,9 @@ const FilterHeader: FC = () => {
           showChips={false}
           minSearchWidth="70%"
         />
+        <Button variant='ghost_icon' href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}>
+          <Icon data={external_link} />
+        </Button>
       </SieveWrapper>
       <section>
         <ChipWrapper>

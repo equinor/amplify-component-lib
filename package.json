@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@equinor/eds-core-react": "0.33.1",
+    "@equinor/eds-icons": "^0.19.3",
     "@faker-js/faker": "^8.2.0",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -135,6 +136,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-core-react": "*",
+    "@equinor/eds-icons": "*",
     "@tanstack/react-query": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
