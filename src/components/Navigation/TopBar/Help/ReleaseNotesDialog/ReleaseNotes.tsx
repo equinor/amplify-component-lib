@@ -6,8 +6,8 @@ import { tokens } from '@equinor/eds-tokens';
 import FilterMonths from './Filters/FilterMonths';
 import ReleasePosts from './ReleasePosts/ReleasePosts';
 import ReleaseNotesHeader from './ReleaseNotesHeader';
-import { useReleaseNoteYears } from 'src/hooks';
 import { PageMenuProvider } from 'src/providers';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { monthValueToString } from 'src/utils/releaseNotes';
 
 import styled from 'styled-components';
@@ -64,26 +64,24 @@ const ScrollWrapper = styled.div`
   padding-bottom: ${spacings.comfortable.xxx_large};
 `;
 
-
-
 interface ReleaseNotesProps {
   setShow: (show: boolean) => void;
   show: boolean;
 }
 
 const ReleaseNotes: FC<ReleaseNotesProps> = ({ setShow, show }) => {
-  const yearsData = useReleaseNoteYears();
+  const { releaseNotesYears } = useReleaseNotes();
 
   const pageMenuItems = useMemo(() => {
     return (
-      yearsData?.flatMap((year) => {
+      releaseNotesYears?.flatMap((year) => {
         return year.months.map((yearMonth) => ({
           value: monthValueToString(yearMonth.value),
           label: monthValueToString(yearMonth.value),
         }));
       }) ?? []
     );
-  }, [yearsData]);
+  }, [releaseNotesYears]);
 
   return (
     <StyledDialog open={show} onClose={() => setShow(false)} isDismissable>

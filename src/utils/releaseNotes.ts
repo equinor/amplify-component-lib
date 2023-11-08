@@ -1,13 +1,13 @@
-type MonthData = {
+interface MonthData {
   label: string;
   value: Date;
-};
+}
 
-type YearData = {
+interface YearData {
   label: string;
   value: string;
   months: MonthData[];
-};
+}
 
 export const extractYearsData = (getReleaseNoteList: any[]): YearData[] => {
   const years: YearData[] = [];
@@ -82,3 +82,5 @@ export function yearValueToString(yearValue: Date): string {
     year: 'numeric',
   })}`;
 }
+
+export type { MonthData, YearData };

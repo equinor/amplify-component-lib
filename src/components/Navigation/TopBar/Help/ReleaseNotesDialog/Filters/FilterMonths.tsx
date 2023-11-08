@@ -4,7 +4,7 @@ import { Button as EDSButton } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { usePageMenu } from 'src/hooks';
-import { useReleaseNoteYears } from 'src/hooks/useReleaseNoteYears';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { monthValueToString } from 'src/utils/releaseNotes';
 
 import styled from 'styled-components';
@@ -44,8 +44,7 @@ const YearContainer = styled.div`
 
 const FilterMonths: FC = () => {
   const { selected, setSelected } = usePageMenu();
-
-  const yearsData = useReleaseNoteYears();
+  const { releaseNotesYears } = useReleaseNotes();
 
   const openYearValue = useMemo(() => {
     if (selected) {
@@ -58,14 +57,17 @@ const FilterMonths: FC = () => {
   };
 
   const handleYearClick = (index: number) => {
-    if (yearsData?.[index] && yearsData[index].months.length > 0) {
-      setSelected(monthValueToString(yearsData[index].months[0].value));
+    if (
+      releaseNotesYears?.[index] &&
+      releaseNotesYears[index].months.length > 0
+    ) {
+      setSelected(monthValueToString(releaseNotesYears[index].months[0].value));
     }
   };
 
   return (
     <>
-      {yearsData?.map((year, index) => (
+      {releaseNotesYears?.map((year, index) => (
         <Container key={year.value}>
           <YearContainer>
             <Button

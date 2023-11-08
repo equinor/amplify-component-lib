@@ -9,7 +9,11 @@ import {
   FeedbackContentType,
   UrgencyOption,
 } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
-import { AuthProvider, SnackbarProvider } from 'src/providers';
+import {
+  AuthProvider,
+  ReleaseNotesProvider,
+  SnackbarProvider,
+} from 'src/providers';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
 const releaseNotes = [
@@ -44,7 +48,9 @@ function Wrappers({ children }: { children: any }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider isMock>
-        <SnackbarProvider>{children}</SnackbarProvider>
+        <ReleaseNotesProvider>
+          <SnackbarProvider>{children}</SnackbarProvider>
+        </ReleaseNotesProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

@@ -19,6 +19,13 @@ const providersList = [
 </AuthProvider>`,
   },
   {
+    name: 'ReleaseNotesProvider',
+    body: 'Provider needed for ReleaseNotes isOpen state',
+    code: `<ReleaseNotesProvider>
+    {children}
+</ReleaseNotesProvider>`,
+  },
+  {
     name: 'SideBarProvider',
     body: 'Provider needed for Sidebar isOpen state',
     code: `<SideBarProvider>

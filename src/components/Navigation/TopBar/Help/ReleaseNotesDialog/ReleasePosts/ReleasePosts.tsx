@@ -4,8 +4,8 @@ import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import ReleasePost from './ReleasePost';
-import { useReleaseNotes } from 'src/hooks/useReleaseNotes';
-import { useReleaseNoteYears } from 'src/hooks/useReleaseNoteYears';
+import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import {
   monthToString,
   monthValueToString,
@@ -42,13 +42,12 @@ const LoadingWrapper = styled.div`
 `;
 
 const ReleasePosts: FC = () => {
-  const yearsData = useReleaseNoteYears();
-
+  const { isLoading } = useReleaseNotesQuery();
   const {
-    data: releaseNotes,
-    isLoading,
     search,
     selectedReleaseNoteTypes,
+    filteredData: releaseNotes,
+    releaseNotesYears,
   } = useReleaseNotes();
 
   if (isLoading) {
@@ -81,7 +80,7 @@ const ReleasePosts: FC = () => {
 
   return (
     <Container>
-      {yearsData?.map((year) => {
+      {releaseNotesYears?.map((year) => {
         const releaseNotesInYear = releaseNotes?.filter(
           (releaseNote) =>
             releaseNote.createdDate &&

@@ -9,7 +9,7 @@ import { FilterOption } from 'src/components/Inputs/Sieve/Filter';
 import Sieve, {
   FilterValues,
   SieveValue,
-} from 'src/components/Inputs/Sieve/Sieve';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 import styled from 'styled-components';
 
@@ -54,6 +54,7 @@ export type ActiveFilter = {
 };
 
 const FilterHeader: FC = () => {
+  const { setSearch } = useReleaseNotes();
   const [sieveValue, setSieveValue] = useState<SieveValue>({
     searchValue: undefined,
     filterValues: undefined,
@@ -76,6 +77,7 @@ const FilterHeader: FC = () => {
 
   const handleOnUpdate = (value: SieveValue) => {
     setSieveValue(value);
+    setSearch(value);
   };
 
   const onHandleActiveFiltersRemove = (parent: string, value: string) => {
@@ -91,6 +93,7 @@ const FilterHeader: FC = () => {
       newValues = undefined;
     }
     setSieveValue((prev) => ({ ...prev, filterValues: newValues }));
+    setSearch((prev) => ({ ...prev, filterValues: newValues }));
   };
 
   return (
