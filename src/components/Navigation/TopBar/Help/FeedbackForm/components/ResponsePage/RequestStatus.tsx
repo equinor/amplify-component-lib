@@ -37,21 +37,21 @@ interface RequestStatusProps {
 const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
   const statusText = useMemo(() => {
     switch (requestStatus.status) {
-      case StatusEnum.PARTIAL:
+      case StatusEnum.partial:
         return 'Partially Failed';
-      case StatusEnum.IDLE:
-      case StatusEnum.PENDING:
+      case StatusEnum.idle:
+      case StatusEnum.pending:
         return 'Sending...';
-      case StatusEnum.SUCCESS:
+      case StatusEnum.success:
         return 'Success';
       default:
         return '';
     }
   }, [requestStatus]);
 
-  const partial = requestStatus.status === StatusEnum.PARTIAL;
+  const partial = requestStatus.status === StatusEnum.partial;
 
-  if (requestStatus.status === StatusEnum.ERROR)
+  if (requestStatus.status === StatusEnum.error)
     return (
       <ErrorStatus title={title} errorText={requestStatus.errorText ?? ''} />
     );
@@ -69,7 +69,7 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
         >
           {statusText}
         </Typography>
-        {(partial || requestStatus.status === StatusEnum.SUCCESS) && (
+        {(partial || requestStatus.status === StatusEnum.success) && (
           <Icon
             color={
               partial

@@ -9,7 +9,7 @@ import { readUploadedFileAsText } from 'src/components/Navigation/TopBar/Help/Fe
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const Wrapper = styled.div`
   border-radius: 4px;
@@ -17,12 +17,12 @@ const Wrapper = styled.div`
   width: 82px;
   height: 82px;
   position: relative;
-  border: 2px solid ${colors.ui.background__light.hex};
 `;
 
 const ImageWrapper = styled.div`
   height: 100%;
   overflow: hidden;
+  border: 1px solid ${colors.ui.background__light.hex};
   > img {
     width: 100%;
     overflow: hidden;
@@ -30,15 +30,25 @@ const ImageWrapper = styled.div`
 `;
 
 const Rejection = styled.div`
-  display: flex;
-  gap: ${spacings.comfortable.small};
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
-  font-size: 14px;
+  font-size: 11px;
+  justify-items: center;
   text-align: center;
+  border-radius: 4px;
+  border: 1px dashed ${colors.interactive.warning__text.hex};
+  gap: 0;
+  > svg {
+    grid-row: 2/3;
+  }
+  > div {
+    grid-row: 3/4;
+    color: ${colors.interactive.warning__text.hex};
+  }
 `;
 
 const CloseButton = styled.div`
@@ -57,6 +67,8 @@ const CloseButton = styled.div`
     fill: ${colors.text.static_icons__primary_white.rgba};
   }
 `;
+
+const FileTooltip = styled(Tooltip)``;
 
 interface ImageFileProps {
   onDelete: () => void;
@@ -80,7 +92,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   const errorMessage = useMemo(() => {
     /* c8 ignore start */
     if (!error) return;
-    return `${props.errors[0].code} - ${props.errors[0].message}`;
+    return `${props.errors[0].code} \n ${props.errors[0].message}`;
     /* c8 ignore end */
   }, [error, props]);
 
@@ -97,10 +109,10 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   const shortError = useMemo(() => {
     if (!error) return '';
     if (props.errors.find((error) => error.code.includes('invalid'))) {
-      return 'Invalid type';
+      return 'Invalid file type';
     }
     if (props.errors.find((error) => error.code.includes('large'))) {
-      return 'Invalid size';
+      return 'Invalid file size';
     }
     return 'Error';
   }, [error, props]);
@@ -117,7 +129,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
 
   return (
     <Wrapper>
-      <Tooltip
+      <FileTooltip
         title={`
           ${fileName}${error ? ': ' + errorMessage : ''}
         `}
@@ -128,9 +140,9 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
             <Rejection>
               <Icon
                 data={error_outlined}
-                color={colors.interactive.warning__resting.hex}
+                color={colors.interactive.warning__text.hex}
               />
-              {shortError}
+              <div>{shortError}</div>
             </Rejection>
           ) : (
             /* c8 ignore end */
@@ -139,7 +151,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
             </ImageWrapper>
           )
         }
-      </Tooltip>
+      </FileTooltip>
       <CloseButton data-testid="attachment-delete-button" onClick={onDelete}>
         <Icon
           color={colors.text.static_icons__tertiary.hex}

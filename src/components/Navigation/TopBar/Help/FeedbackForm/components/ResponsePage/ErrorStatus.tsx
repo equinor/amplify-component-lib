@@ -22,6 +22,7 @@ const StatusWrapper = styled.div`
 const ErrorText = styled(Typography)`
   align-self: flex-end;
   color: ${colors.interactive.warning__text.hex};
+  text-align: end;
 `;
 
 const RetryButton = styled.button`

@@ -45,23 +45,22 @@ const ResponsePage: FC<ResponsePageProps> = ({
       slackRequest.status,
       ...slackAttachments.map((attachment) => attachment.status),
     ];
-    console.log(allStatuses);
-    if (allStatuses.every((status) => status === StatusEnum.SUCCESS))
-      return StatusEnum.SUCCESS;
-
-    if (allStatuses.includes(StatusEnum.ERROR)) {
-      return StatusEnum.PARTIAL;
+    if (allStatuses.every((status) => status === StatusEnum.success)) {
+      return StatusEnum.success;
     }
-    if (allStatuses.includes(StatusEnum.PENDING)) {
-      return StatusEnum.PENDING;
+    if (allStatuses.includes(StatusEnum.error)) {
+      return StatusEnum.partial;
     }
-    return StatusEnum.IDLE;
+    if (allStatuses.includes(StatusEnum.pending)) {
+      return StatusEnum.pending;
+    }
+    return StatusEnum.idle;
   }, [slackAttachments, slackRequest.status]);
   console.log(allSlackRequestStatus);
   const showAllSlackRequests = useMemo(() => {
     return (
-      allSlackRequestStatus === StatusEnum.ERROR ||
-      allSlackRequestStatus === StatusEnum.PARTIAL
+      allSlackRequestStatus === StatusEnum.error ||
+      allSlackRequestStatus === StatusEnum.partial
     );
   }, [allSlackRequestStatus]);
 

@@ -10,56 +10,20 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
+import UploadFile from './components/UploadFile';
+import {
+  Actions,
+  FeedbackDescription,
+  ReportLocationText,
+  UploadInfo,
+  Wrapper,
+} from './FeedbackForm.styles';
 import {
   FeedbackContentType,
   FeedbackEnum,
   UrgencyOption,
 } from './FeedbackForm.types';
-import UploadFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/UploadFile';
-
-import styled from 'styled-components';
-
-const { spacings, colors, shape } = tokens;
-
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: ${spacings.comfortable.medium};
-  height: 100%;
-  width: 100%;
-  :first-child {
-    grid-column: 1 / 3;
-  }
-`;
-
-const UploadInfo = styled.div`
-  grid-column: 1/3;
-  display: flex;
-  gap: ${spacings.comfortable.small};
-  height: fit-content;
-  align-self: flex-end;
-  align-items: center;
-  background-color: ${colors.ui.background__info.hex};
-  padding: ${spacings.comfortable.medium_small};
-  border-radius: ${shape.button.borderRadius};
-`;
-
-const Description = styled(TextField)`
-  grid-column: 1/3;
-`;
-
-const ReportLocationText = styled(Typography)`
-  grid-column: 1/3;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: ${spacings.comfortable.medium};
-  grid-column: 1/3;
-`;
 
 interface FeedbackFormInnerProps {
   selectedType: FeedbackEnum;
@@ -157,7 +121,7 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
           />
         </>
       )}
-      <Description
+      <FeedbackDescription
         id="feedback-description"
         label="Description"
         meta="Required"
@@ -182,8 +146,8 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
       />
       <ReportLocationText>
         {selectedType === FeedbackEnum.BUG
-          ? ' Bug reports gets sent to our Slack-channel, #amplify-feedback and to ServiceNow'
-          : ' Bug reports gets sent to our Slack-channel, #amplify-feedback'}
+          ? 'Bug reports are sent to our internal Slack-channel, #amplify-feedback, and to ServiceNow'
+          : 'Feature suggestions are sent to our internal Slack-channel: #amplify-feedback'}
       </ReportLocationText>
       <Actions>
         <Button variant="ghost" onClick={onClose}>

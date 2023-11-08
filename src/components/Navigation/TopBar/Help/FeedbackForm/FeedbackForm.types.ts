@@ -20,11 +20,11 @@ export type FeedbackContentType = {
 };
 
 export enum StatusEnum {
-  ERROR = 'error',
-  IDLE = 'idle',
-  PENDING = 'pending',
-  SUCCESS = 'success',
-  PARTIAL = 'partial',
+  error = 'error',
+  idle = 'idle',
+  pending = 'pending',
+  success = 'success',
+  partial = 'partial',
 }
 
 export type RequestStatusType = {
