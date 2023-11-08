@@ -1,12 +1,12 @@
 import { home } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import MenuItem, { MenuItemProps } from './MenuItem';
+import { activeColor } from './MenuItem.utils';
+import { SidebarTheme } from './SideBar.types';
 
-const { colors } = tokens;
 function fakeProps(): MenuItemProps {
   return {
     currentUrl: faker.internet.url(),
@@ -17,7 +17,7 @@ function fakeProps(): MenuItemProps {
   };
 }
 
-test('MenuItem works as expected when not disabled', async () => {
+test('MenuItem works as expected', async () => {
   const props = fakeProps();
   render(<MenuItem {...props} />, { wrapper: SideBarProvider });
   const user = userEvent.setup();
@@ -29,47 +29,50 @@ test('MenuItem works as expected when not disabled', async () => {
   expect(props.onClick).toHaveBeenCalledTimes(1);
 });
 
-test('Expect correct icon color based on disabled/enabled state', () => {
+test('MenuItem renders as expected when active in light mode', async () => {
   const props = fakeProps();
-  let disabled = false;
+  render(<MenuItem {...props} currentUrl={props.link} />, {
+    wrapper: SideBarProvider,
+  });
+  const button = screen.getByTestId('sidebar-menu-item');
+
+  expect(button).toHaveStyleRule('background', activeColor(SidebarTheme.light));
+});
+
+test('MenuItem renders as expected when active in dark mode', async () => {
+  const props = fakeProps();
+  render(<MenuItem {...props} currentUrl={props.link} theme="dark" />, {
+    wrapper: SideBarProvider,
+  });
+  const button = screen.getByTestId('sidebar-menu-item');
+
+  expect(button).toHaveStyleRule('background', activeColor(SidebarTheme.dark));
+});
+
+test('MenuItem text renders as correctly when open and active', async () => {
   window.localStorage.setItem(
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: true })
   );
-  const { rerender } = render(<MenuItem {...props} disabled={disabled} />, {
+  const props = fakeProps();
+  render(<MenuItem {...props} currentUrl={props.link} />, {
     wrapper: SideBarProvider,
   });
+  const itemText = screen.getByText(props.name);
 
-  const getIconColor = () => {
-    if (!disabled) {
-      return props.currentUrl?.includes(props.link)
-        ? colors.interactive.primary__resting.hsla
-        : colors.text.static_icons__default.hsla;
-    }
-    return colors.interactive.disabled__text.hex;
-  };
+  expect(itemText).toHaveStyleRule('font-weight', '500');
+});
 
-  const svg = screen.getByTestId('eds-icon-path').parentElement;
-  const text = screen.getByText(props.name);
+test('Active MenuItem doesnt fire onClick when pressed', async () => {
+  const props = fakeProps();
+  render(<MenuItem {...props} currentUrl={props.link} />, {
+    wrapper: SideBarProvider,
+  });
+  const user = userEvent.setup();
+
   const button = screen.getByTestId('sidebar-menu-item');
 
-  expect(svg).toHaveAttribute('fill', getIconColor());
+  await user.click(button);
 
-  props.currentUrl = props.link + '/' + faker.string.uuid();
-  rerender(<MenuItem {...props} disabled={disabled} />);
-  expect(svg).toHaveAttribute('fill', getIconColor());
-  expect(text).toHaveStyleRule('font-weight', '500');
-  expect(button).toHaveStyleRule(
-    'background',
-    colors.interactive.primary__selected_highlight.hsla
-  );
-
-  props.currentUrl = faker.string.uuid();
-  rerender(<MenuItem {...props} disabled={disabled} />);
-  expect(svg).toHaveAttribute('fill', getIconColor());
-  expect(text).toHaveStyleRule('font-weight', '400');
-
-  disabled = true;
-  rerender(<MenuItem {...props} disabled={disabled} />);
-  expect(svg).toHaveAttribute('fill', getIconColor());
+  expect(props.onClick).toHaveBeenCalledTimes(0);
 });

@@ -5,7 +5,9 @@ import { faker } from '@faker-js/faker';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
 import { render, screen, userEvent } from '../../../tests/test-utils';
+import { backgroundColor } from './CreateItem.utils';
 import { MenuItemType } from './MenuItem';
+import { SidebarTheme } from './SideBar.types';
 import SideBar from '.';
 
 const defaultMenuItems: MenuItemType[] = [
@@ -36,6 +38,28 @@ test('Renders create new button when onCreate prop is given', () => {
   );
   const createIcon = screen.getAllByTestId('eds-icon-path')[0];
   expect(createIcon).toHaveAttribute('d', add.svgPathData);
+});
+
+test('Renders dark mode correctly', () => {
+  render(
+    <SideBar
+      theme="dark"
+      onCreate={() => console.log('test')}
+      createLabel="createlabel"
+    >
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item theme="dark" key={m.name} {...m} />
+      ))}
+    </SideBar>,
+    {
+      wrapper: SideBarProvider,
+    }
+  );
+  const createButton = screen.getAllByRole('button')[0];
+  expect(createButton).toHaveStyleRule(
+    'background',
+    backgroundColor(SidebarTheme.dark)
+  );
 });
 
 test('Renders closed on initial render', () => {
@@ -90,26 +114,6 @@ test('Disabled create new button doesnt fire event', async () => {
   await user.click(createNewButton);
 
   expect(createNewFn).not.toHaveBeenCalled();
-});
-
-test('Disabled menu item doesnt fire event', async () => {
-  render(
-    <SideBar>
-      {defaultMenuItems.map((m, index) => (
-        <SideBar.Item key={m.name} {...m} disabled={index === 0} />
-      ))}
-    </SideBar>,
-    {
-      wrapper: SideBarProvider,
-    }
-  );
-
-  const user = userEvent.setup();
-
-  const firstMenuItem = screen.getAllByTestId('sidebar-menu-item')[0];
-  await user.click(firstMenuItem);
-
-  expect(defaultMenuItems[0].onClick).not.toHaveBeenCalled();
 });
 
 test('Opens and closes when pressing the toggle button', async () => {

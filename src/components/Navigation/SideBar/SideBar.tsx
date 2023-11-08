@@ -4,20 +4,24 @@ import { tokens } from '@equinor/eds-tokens';
 
 import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
+import { borderBottomColor } from './MenuItem.utils';
+import { SidebarTheme } from './SideBar.types';
+import { backgroundColor, borderColor } from './SideBar.utils';
 import ToggleOpen from './ToggleOpen';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { spacings } = tokens;
 
 interface ContainerProps {
+  $theme: SidebarTheme;
   $width: string;
 }
 
 const Container = styled.div<ContainerProps>`
-  border-right: 1px solid ${colors.ui.background__medium.hsla};
-  background-color: ${colors.ui.background__default.hsla};
+  border-right: 1px solid ${({ $theme }) => borderColor($theme)};
+  background-color: ${({ $theme }) => backgroundColor($theme)};
   display: flex;
   flex-direction: column;
   padding-bottom: ${spacings.comfortable.large};
@@ -29,10 +33,14 @@ const Container = styled.div<ContainerProps>`
   top: 64px;
 `;
 
-const LogoContainer = styled.div`
+interface LogoContainerProps {
+  $theme: SidebarTheme;
+}
+
+const LogoContainer = styled.div<LogoContainerProps>`
   display: flex;
   justify-content: center;
-  border-top: 1px solid ${colors.ui.background__medium.hex};
+  border-top: 1px solid ${({ $theme }) => borderBottomColor($theme)};
   padding-top: ${spacings.comfortable.large};
 `;
 
@@ -42,44 +50,60 @@ const TopContainer = styled.div`
   align-items: center;
 `;
 
-type SidebarType = {
-  onCreate?: () => void;
-  createLabel?: string;
-  createDisabled?: boolean;
+interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
+  theme?: keyof typeof SidebarTheme;
   children: ReactNode;
-} & HTMLAttributes<HTMLDivElement>;
+}
 
-export const SideBar = forwardRef<HTMLDivElement, SidebarType>(
-  ({ onCreate, createLabel, createDisabled = false, children }, ref) => {
-    const { isOpen, setIsOpen } = useSideBar();
+interface SideBarWithoutCreate extends SidebarProps {
+  onCreate?: undefined;
+}
 
-    const handleToggle = () => {
-      setIsOpen(!isOpen);
-    };
+interface SidebarWithCreate extends SidebarProps {
+  onCreate: () => void;
+  createLabel: string;
+  createDisabled?: boolean;
+}
 
-    return (
-      <Container
-        $width={isOpen ? '256px' : '72px'}
-        ref={ref}
-        data-testid="sidebar"
-      >
-        <TopContainer>
-          {onCreate && createLabel && (
-            <CreateItem
-              createLabel={createLabel}
-              onCreate={onCreate}
-              disabled={createDisabled}
-            />
-          )}
-          {children}
-        </TopContainer>
-        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
-        <LogoContainer>
-          <EquinorLogo />
-        </LogoContainer>
-      </Container>
-    );
-  }
-);
+export const SideBar = forwardRef<
+  HTMLDivElement,
+  SidebarWithCreate | SideBarWithoutCreate
+>((props, ref) => {
+  const { theme = SidebarTheme.light, children } = props;
+  const { isOpen, setIsOpen } = useSideBar();
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <Container
+      $theme={SidebarTheme[theme]}
+      $width={isOpen ? '256px' : '72px'}
+      ref={ref}
+      data-testid="sidebar"
+    >
+      <TopContainer>
+        {props.onCreate && (
+          <CreateItem
+            theme={SidebarTheme[theme]}
+            createLabel={props.createLabel}
+            onCreate={props.onCreate}
+            disabled={props.createDisabled}
+          />
+        )}
+        {children}
+      </TopContainer>
+      <ToggleOpen
+        theme={SidebarTheme[theme]}
+        isOpen={isOpen}
+        toggle={handleToggle}
+      />
+      <LogoContainer $theme={SidebarTheme[theme]}>
+        <EquinorLogo color={theme === SidebarTheme.light ? 'red' : 'white'} />
+      </LogoContainer>
+    </Container>
+  );
+});
 
 SideBar.displayName = 'SideBar';
