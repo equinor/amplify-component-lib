@@ -15,10 +15,11 @@ import styled from 'styled-components';
 
 const { spacings } = tokens;
 
-const Container = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
+  padding-right: ${spacings.comfortable.x_large};
   flex-wrap: wrap;
   > section {
     display: flex;
@@ -30,7 +31,18 @@ const Container = styled.div`
   }
 `;
 
-const ChipContainer = styled.div`
+const SieveWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: ${spacings.comfortable.small};
+  
+  .sieve-container {
+    flex: 1;
+  }
+`;
+
+const ChipWrapper = styled.div`
   display: flex;
   flex-direction: row;
   font-family: 'Equionor', sans-serif;
@@ -97,19 +109,19 @@ const FilterHeader: FC = () => {
   };
 
   return (
-    <Container>
-      <Sieve
-        searchPlaceholder="Search for specific bugs or features, e.g. ´Recall´"
-        sieveValue={sieveValue}
-        onUpdate={handleOnUpdate}
-        filterOptions={filterOptions}
-        showChips={false}
-        minSearchWidth="70%"
-        syncWithSearchParams
-      />
-
+    <Wrapper>
+      <SieveWrapper>
+        <Sieve
+          searchPlaceholder="Search for specific bugs or features, e.g. ´Recall´"
+          sieveValue={sieveValue}
+          onUpdate={handleOnUpdate}
+          filterOptions={filterOptions}
+          showChips={false}
+          minSearchWidth="70%"
+        />
+      </SieveWrapper>
       <section>
-        <ChipContainer>
+        <ChipWrapper>
           {Object.keys(sieveValue.filterValues ?? {}).map((parent: string) => {
             return sieveValue.filterValues?.[parent].map((releaseNoteType) => (
               <ReleaseNotesTypes
@@ -122,9 +134,9 @@ const FilterHeader: FC = () => {
               />
             ));
           })}
-        </ChipContainer>
+        </ChipWrapper>
       </section>
-    </Container>
+    </Wrapper>
   );
 };
 
