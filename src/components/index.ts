@@ -79,9 +79,8 @@ export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer'
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
 export { default as SingleSelectDrawer } from './Inputs/Select/SingleSelectDrawer';
 export { default as Filter } from './Inputs/Sieve/Filter';
-export type { SieveValue } from './Inputs/Sieve/Sieve';
 export { default as Sieve } from './Inputs/Sieve/Sieve';
-export type { Option } from './Inputs/Sieve/Sieve.common';
+export type { Option, SieveValue } from './Inputs/Sieve/Sieve.types';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
 export { default as PageMenu } from './Navigation/PageMenu/PageMenu';
 export type { ItemType, SidebarType } from './Navigation/SideBar';

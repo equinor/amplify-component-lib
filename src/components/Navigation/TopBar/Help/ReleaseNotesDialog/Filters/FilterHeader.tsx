@@ -8,9 +8,11 @@ import ReleaseNotesTypes, {
   RELEASENOTETYPES_INFORMATION,
 } from '../ReleaseNotesTypes/ReleaseNotesTypes';
 import { FilterOption } from 'src/components/Inputs/Sieve/Filter';
-import Sieve, {
+import Sieve from 'src/components/Inputs/Sieve/Sieve';
+import {
   FilterValues,
   SieveValue,
+} from 'src/components/Inputs/Sieve/Sieve.types';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { environment } from 'src/utils';
 
