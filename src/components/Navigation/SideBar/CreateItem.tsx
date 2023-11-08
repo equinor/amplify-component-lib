@@ -121,7 +121,7 @@ const CreateItem: FC<CreateItemProps> = ({
           onClick={onCreate}
           disabled={disabled}
         >
-          <Icon data={add} color={colors.ui.background__default.hsla} />
+          <Icon data={add} />
           <CreateNewButtonText
             color={colors.text.static_icons__primary_white.hsla}
             variant="button"
@@ -142,7 +142,7 @@ const CreateItem: FC<CreateItemProps> = ({
           onClick={onCreate}
           disabled={disabled}
         >
-          <Icon data={add} color={colors.ui.background__default.hsla} />
+          <Icon data={add} />
         </CreateNewButton>
       </MenuButtonContainer>
     </Tooltip>

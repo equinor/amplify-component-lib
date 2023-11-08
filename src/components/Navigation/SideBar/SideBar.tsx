@@ -51,12 +51,12 @@ const TopContainer = styled.div`
 `;
 
 interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
-  theme?: SidebarTheme;
+  theme?: keyof typeof SidebarTheme;
   children: ReactNode;
 }
 
 interface SideBarWithoutCreate extends SidebarProps {
-  onCreate: undefined;
+  onCreate?: undefined;
 }
 
 interface SidebarWithCreate extends SidebarProps {
@@ -78,7 +78,7 @@ export const SideBar = forwardRef<
 
   return (
     <Container
-      $theme={theme}
+      $theme={SidebarTheme[theme]}
       $width={isOpen ? '256px' : '72px'}
       ref={ref}
       data-testid="sidebar"
@@ -86,7 +86,7 @@ export const SideBar = forwardRef<
       <TopContainer>
         {props.onCreate && (
           <CreateItem
-            theme={theme}
+            theme={SidebarTheme[theme]}
             createLabel={props.createLabel}
             onCreate={props.onCreate}
             disabled={props.createDisabled}
@@ -94,8 +94,12 @@ export const SideBar = forwardRef<
         )}
         {children}
       </TopContainer>
-      <ToggleOpen theme={theme} isOpen={isOpen} toggle={handleToggle} />
-      <LogoContainer $theme={theme}>
+      <ToggleOpen
+        theme={SidebarTheme[theme]}
+        isOpen={isOpen}
+        toggle={handleToggle}
+      />
+      <LogoContainer $theme={SidebarTheme[theme]}>
         <EquinorLogo color={theme === SidebarTheme.light ? 'red' : 'white'} />
       </LogoContainer>
     </Container>

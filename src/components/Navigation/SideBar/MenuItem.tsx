@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes } from 'react';
+import { forwardRef, HTMLAttributes, useMemo } from 'react';
 
 import {
   Icon,
@@ -25,7 +25,6 @@ interface ContainerProps {
   $theme: SidebarTheme;
   $active?: boolean;
   $open?: boolean;
-  $disabled?: boolean;
 }
 
 const Container = styled.a<ContainerProps>`
@@ -41,15 +40,9 @@ const Container = styled.a<ContainerProps>`
   text-decoration: none;
   height: 72px;
 
-  ${({ $theme, $disabled, $active }) =>
-    $disabled
-      ? `
-    &:hover {
-      cursor: not-allowed;
-    }
-  `
-      : !$active &&
-        `
+  ${({ $theme, $active }) =>
+    !$active &&
+    `
     &:hover {
       cursor: pointer;
       background: ${hoverColor($theme)};
@@ -85,58 +78,50 @@ export type MenuItemType = {
   name: string;
   link: string;
   onClick: () => void;
-  disabled?: boolean;
 };
 
 export type MenuItemProps = {
-  theme?: SidebarTheme;
+  theme?: keyof typeof SidebarTheme;
   currentUrl?: string;
 } & MenuItemType &
   HTMLAttributes<HTMLAnchorElement>;
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   (
-    {
-      theme = SidebarTheme.light,
-      currentUrl,
-      icon,
-      name,
-      link,
-      onClick,
-      disabled,
-    },
+    { theme = SidebarTheme.light, currentUrl, icon, name, link, onClick },
     ref
   ) => {
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
-    const getIconColor = () => {
-      if (!disabled && theme === SidebarTheme.light) {
+    const iconColor = useMemo(() => {
+      if (theme === SidebarTheme.light) {
         return isCurrentUrl
-          ? colors.interactive.primary__resting.hsla
-          : colors.text.static_icons__default.hsla;
+          ? colors.interactive.primary__resting.hex
+          : colors.text.static_icons__default.hex;
       }
-      return textColor(theme);
-    };
+      return textColor(SidebarTheme[theme]);
+    }, [isCurrentUrl, theme]);
 
     const handleOnClick = () => {
-      if (!disabled) onClick();
+      if (!isCurrentUrl) {
+        onClick();
+      }
     };
 
     if (isOpen) {
       return (
         <Container
-          $theme={theme}
+          $theme={SidebarTheme[theme]}
           $active={isCurrentUrl}
           onClick={handleOnClick}
           $open
           ref={ref}
           data-testid="sidebar-menu-item"
-          $disabled={disabled}
         >
-          {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
+          {icon && <ItemIcon data={icon} size={24} color={iconColor} />}
           <ItemText
-            $theme={theme}
+            $theme={SidebarTheme[theme]}
             variant="cell_text"
             group="table"
             $active={isCurrentUrl}
@@ -150,15 +135,14 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     return (
       <Tooltip title={name} placement="right">
         <Container
-          $theme={theme}
+          $theme={SidebarTheme[theme]}
           $active={isCurrentUrl}
           onClick={handleOnClick}
           $open={isOpen}
           ref={ref}
           data-testid="sidebar-menu-item"
-          $disabled={disabled}
         >
-          {icon && <ItemIcon data={icon} size={24} color={getIconColor()} />}
+          {icon && <ItemIcon data={icon} size={24} color={iconColor} />}
         </Container>
       </Tooltip>
     );
