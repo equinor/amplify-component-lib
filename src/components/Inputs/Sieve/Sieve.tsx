@@ -10,11 +10,10 @@ import { useSearchParams } from 'react-router-dom';
 
 import Filter from './Filter';
 import { Container, FilterChip, Search, Wrapper } from './Sieve.styles';
-import { FilterValues, Option,SieveProps, SieveValue } from './Sieve.types';
+import { FilterValues, Option, SieveProps, SieveValue } from './Sieve.types';
 import Sort from './Sort';
 
 import { debounce } from 'lodash';
-
 
 const Sieve: FC<SieveProps> = ({
   searchPlaceholder,
@@ -202,7 +201,7 @@ const Sieve: FC<SieveProps> = ({
   };
 
   return (
-    <Wrapper className='sieve-container'>
+    <Wrapper className="sieve-container">
       <Container>
         <Search
           style={{ minWidth: minSearchWidth }}

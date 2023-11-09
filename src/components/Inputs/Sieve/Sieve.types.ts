@@ -1,4 +1,4 @@
-import { FilterOption } from "./Filter";
+import { FilterOption } from './Filter';
 
 type Option = {
   label: string;
@@ -29,4 +29,4 @@ interface SieveProps {
   onIsTyping?: (value: boolean) => void;
 }
 
-export type { FilterValues, Option,SieveProps, SieveValue };
+export type { FilterValues, Option, SieveProps, SieveValue };

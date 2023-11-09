@@ -1,7 +1,5 @@
 import { renderHook } from '../tests/test-utils';
-import ReleaseNotesProvider, {
-  useReleaseNotes,
-} from './ReleaseNotesProvider';
+import ReleaseNotesProvider, { useReleaseNotes } from './ReleaseNotesProvider';
 
 test('open = false works as expected', () => {
   const { result } = renderHook(() => useReleaseNotes(), {
@@ -10,7 +8,6 @@ test('open = false works as expected', () => {
 
   expect(result.current.open).toBe(false);
 });
-
 
 test("'useReleaseNotes' hook throws error if using outside of context", () => {
   // Hides console errors since this test explicitly tests for thrown errors

@@ -1,5 +1,8 @@
-
-import { Chip as EDSChip, Menu,Search as EDSSearch } from '@equinor/eds-core-react';
+import {
+  Chip as EDSChip,
+  Menu,
+  Search as EDSSearch,
+} from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
@@ -43,6 +46,5 @@ const MenuItem = styled(Menu.Item)`
 const Chip = styled(EDSChip)`
   background: none;
 `;
-
 
 export { Chip, Container, FilterChip, MenuItem, Search, Wrapper };

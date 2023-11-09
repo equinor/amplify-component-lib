@@ -5,12 +5,19 @@ import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import ReleaseNotesTypes from '../ReleaseNotesTypes/ReleaseNotesTypes';
 import TextContent from '../TextContent';
-import { BtnContainer, Button, Container, ReleaseNoteTypeContainer, RightContainer, TitleContainer, TopContainer } from './ReleasePost.styles';
+import {
+  BtnContainer,
+  Button,
+  Container,
+  ReleaseNoteTypeContainer,
+  RightContainer,
+  TitleContainer,
+  TopContainer,
+} from './ReleasePost.styles';
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { date } from 'src/utils';
 
 import { AnimatePresence, motion } from 'framer-motion';
-
 
 const ReleasePost: FC<ReleaseNote> = ({
   createdDate,

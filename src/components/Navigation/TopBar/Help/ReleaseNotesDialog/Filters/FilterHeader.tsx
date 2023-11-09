@@ -43,7 +43,7 @@ const SieveWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   gap: ${spacings.comfortable.small};
-  
+
   .sieve-container {
     flex: 1;
   }
@@ -127,7 +127,10 @@ const FilterHeader: FC = () => {
           showChips={false}
           minSearchWidth="70%"
         />
-        <Button variant='ghost_icon' href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}>
+        <Button
+          variant="ghost_icon"
+          href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}
+        >
           <Icon data={external_link} />
         </Button>
       </SieveWrapper>

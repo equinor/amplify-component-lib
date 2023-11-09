@@ -86,4 +86,12 @@ const Button = styled(EDSbutton)`
   }
 `;
 
-export { BtnContainer, Button,Container, ReleaseNoteTypeContainer, RightContainer, TitleContainer, TopContainer };
+export {
+  BtnContainer,
+  Button,
+  Container,
+  ReleaseNoteTypeContainer,
+  RightContainer,
+  TitleContainer,
+  TopContainer,
+};

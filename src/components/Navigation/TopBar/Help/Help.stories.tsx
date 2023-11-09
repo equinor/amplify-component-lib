@@ -4,7 +4,11 @@ import { Meta, StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Help } from './Help';
-import { AuthProvider, ReleaseNotesProvider, SnackbarProvider } from 'src/providers';
+import {
+  AuthProvider,
+  ReleaseNotesProvider,
+  SnackbarProvider,
+} from 'src/providers';
 
 export default {
   title: 'Navigation/TopBar/Help',
