@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { debounce } from 'lodash';
 
-const LAST_UPDATED_KEY_SUFFIX = '-last-updated';
+export const LAST_UPDATED_KEY_SUFFIX = '-last-updated';
 
 export const getLocalStorage = <T>(
   key: string,
