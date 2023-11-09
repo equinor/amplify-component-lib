@@ -7,7 +7,7 @@ export const LAST_UPDATED_KEY_SUFFIX = '-last-updated';
 export const getLocalStorage = <T>(
   key: string,
   defaultState: T,
-  keepAlive?: number
+  keepAliveMS?: number
 ): T => {
   const localStorageData = localStorage.getItem(key);
   const localStorageLastEdited = localStorage.getItem(
@@ -16,9 +16,9 @@ export const getLocalStorage = <T>(
 
   if (
     localStorageData &&
-    (!keepAlive ||
+    (!keepAliveMS ||
       (localStorageLastEdited &&
-        Number(localStorageLastEdited) + keepAlive > new Date().getTime()))
+        Number(localStorageLastEdited) + keepAliveMS > new Date().getTime()))
   ) {
     return JSON.parse(localStorageData);
   }
