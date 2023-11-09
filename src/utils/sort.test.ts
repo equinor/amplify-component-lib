@@ -4,7 +4,11 @@ import sort from './sort';
 
 test('sortByDate works as expected with date objects', () => {
   const listOfFakeDates: Date[] = faker.date
-    .betweens('2000', '2022', Number(faker.random.numeric(2)))
+    .betweens({
+      from: '2000',
+      to: '2022',
+      count: Number(faker.string.numeric(2)),
+    })
     .map((item) => new Date(item));
 
   const sortedList = listOfFakeDates.sort(sort.sortByDate);
