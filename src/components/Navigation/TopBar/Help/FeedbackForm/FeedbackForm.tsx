@@ -36,20 +36,20 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     title: '',
     description: '',
   });
-  const [showResponsePage, setShowResponsePage] = useState(false);
+  const [showResponsePage, setShowResponsePage] = useState(true);
   const [slackAttachmentStatus, setSlackAttachmentStatus] = useState<
     AttachmentStatus[]
   >([
-    // { fileName: 'test', status: StatusEnum.SUCCESS },
-    // {
-    //   fileName: 'test2',
-    //   status: StatusEnum.ERROR,
-    //   errorText: 'Something went wrong insert fitting error message',
-    // },
-    // { fileName: 'test3', status: StatusEnum.SUCCESS },
+    { fileName: 'test', status: StatusEnum.success },
+    {
+      fileName: 'test2',
+      status: StatusEnum.error,
+      errorText: 'Something went wrong insert fitting error message',
+    },
+    { fileName: 'test3', status: StatusEnum.success },
   ]);
 
-  const { mutateAsync: slackFileUploadd, isPending: isFileUploadLoading } =
+  const { mutateAsync: slackFileUpload, isPending: isFileUploadLoading } =
     useSlackFileUploadMutation(feedbackContent);
 
   const {
@@ -57,12 +57,6 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     status: postMessageStatus,
     error: postMessageError,
   } = useSlackPostMessageMutation(feedbackContent);
-
-  const slackFileUpload = (formData: FormData) => {
-    return new Promise((resolve, reject) => {
-      reject(new Error('error'));
-    });
-  };
 
   const {
     mutateAsync: serviceNowIncident,

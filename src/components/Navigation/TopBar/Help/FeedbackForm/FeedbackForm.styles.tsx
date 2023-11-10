@@ -25,6 +25,8 @@ export const Wrapper = styled.div`
   }
 `;
 
+export const BugReportQuestions = styled.div``;
+
 export const UploadInfo = styled.div`
   grid-column: 1/3;
   display: flex;

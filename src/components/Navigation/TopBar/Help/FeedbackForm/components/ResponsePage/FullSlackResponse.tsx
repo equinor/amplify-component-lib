@@ -36,19 +36,16 @@ const FullSlackResponse: FC<SlackResponseProps> = ({
   return (
     <Container>
       <RequestStatus
-        title="Sending to slack channel"
+        title="Sending to development team"
         requestStatus={allSlackRequestStatus}
       />
       <SlackRequestsWrapper>
-        <RequestStatus
-          title="Posting text to slack"
-          requestStatus={slackRequest}
-        />
+        <RequestStatus title="Posting text " requestStatus={slackRequest} />
         {attachments.map((attachment) => {
           return (
             <RequestStatus
               key={attachment.fileName}
-              title={`Posting ${attachment.fileName} to slack`}
+              title={`Posting ${attachment.fileName}`}
               requestStatus={attachment}
             />
           );

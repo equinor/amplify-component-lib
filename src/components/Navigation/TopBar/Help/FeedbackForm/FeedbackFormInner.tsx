@@ -14,6 +14,7 @@ import { info_circle } from '@equinor/eds-icons';
 import UploadFile from './components/UploadFile';
 import {
   Actions,
+  BugReportQuestions,
   FeedbackDescription,
   ReportLocationText,
   UploadInfo,
@@ -121,12 +122,32 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
           />
         </>
       )}
+      {selectedType === FeedbackEnum.BUG && (
+        <BugReportQuestions>
+          <Typography group="input" variant="text">
+            What is the actual bug?
+          </Typography>
+          <Typography group="input" variant="text">
+            What is expected results?
+          </Typography>
+          <Typography group="input" variant="text">
+            How to reproduce the steps?
+          </Typography>
+          <Typography group="input" variant="text">
+            Is there a workaround?
+          </Typography>
+        </BugReportQuestions>
+      )}
       <FeedbackDescription
         id="feedback-description"
         label="Description"
         meta="Required"
         value={feedbackContent.description}
-        placeholder={'Describe the ' + selectedType + '...'}
+        placeholder={
+          selectedType === FeedbackEnum.BUG
+            ? 'Describe the feature. What would be the value for you?'
+            : 'Describe the bug, reproduction steps, potential workaround?'
+        }
         rows={4}
         onChange={(e: FormEvent<HTMLInputElement>) =>
           updateFeedback('description', e.currentTarget.value)
@@ -147,8 +168,8 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
       />
       <ReportLocationText>
         {selectedType === FeedbackEnum.BUG
-          ? 'Bug reports are sent to our internal Slack-channel, #amplify-feedback, and to ServiceNow'
-          : 'Feature suggestions are sent to our internal Slack-channel: #amplify-feedback'}
+          ? 'Bug reports are sent to Service Now and to the development team directly'
+          : 'Feature suggestions are sent to the development team directly'}
       </ReportLocationText>
       <Actions>
         <Button variant="ghost" onClick={onClose}>

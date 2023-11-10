@@ -77,7 +77,7 @@ const ResponsePage: FC<ResponsePageProps> = ({
         />
       ) : (
         <RequestStatus
-          title="Slack"
+          title="Development team"
           requestStatus={{ status: allSlackRequestStatus }}
         />
       )}
