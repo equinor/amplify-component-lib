@@ -7,7 +7,7 @@ export const LAST_UPDATED_KEY_SUFFIX = '-last-updated';
 export const getLocalStorage = <T>(
   key: string,
   defaultState: T,
-  keepAliveMS?: number
+  keepAliveMs?: number
 ): T => {
   const localStorageData = localStorage.getItem(key);
   const localStorageLastEdited = localStorage.getItem(
@@ -16,9 +16,9 @@ export const getLocalStorage = <T>(
 
   if (
     localStorageData &&
-    (!keepAliveMS ||
+    (!keepAliveMs ||
       (localStorageLastEdited &&
-        Number(localStorageLastEdited) + keepAliveMS > new Date().getTime()))
+        Number(localStorageLastEdited) + keepAliveMs > new Date().getTime()))
   ) {
     return JSON.parse(localStorageData);
   }
@@ -33,10 +33,10 @@ export const updateLocalStorage = <T>(key: string, state: T) => {
 export const useLocalStorage = <T>(
   key: string,
   defaultState: T,
-  keepAlive?: number
+  keepAliveMs?: number
 ) => {
   const [state, setState] = useState<T>(
-    getLocalStorage<T>(key, defaultState, keepAlive)
+    getLocalStorage<T>(key, defaultState, keepAliveMs)
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
