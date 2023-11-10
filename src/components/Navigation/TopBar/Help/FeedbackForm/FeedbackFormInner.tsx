@@ -140,6 +140,7 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
           personal information
         </Typography>
       </UploadInfo>
+
       <UploadFile
         feedbackContent={feedbackContent}
         updateFeedback={updateFeedback}

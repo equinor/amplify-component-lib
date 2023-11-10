@@ -21,8 +21,10 @@ const Wrapper = styled.div`
 
 const ImageWrapper = styled.div`
   height: 100%;
+  width: 100%;
   overflow: hidden;
   border: 1px solid ${colors.ui.background__light.hex};
+  position: relative;
   > img {
     width: 100%;
     overflow: hidden;
@@ -86,7 +88,6 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   props
 ) => {
   const [src, setSrc] = useState('');
-
   const { error, onDelete } = props;
 
   const errorMessage = useMemo(() => {
@@ -130,6 +131,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   return (
     <Wrapper>
       <FileTooltip
+        // placement="right"
         title={`
           ${fileName}${error ? ': ' + errorMessage : ''}
         `}
