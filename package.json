@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "5.3.11",
+  "version": "5.3.12",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
