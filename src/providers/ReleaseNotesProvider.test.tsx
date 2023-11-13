@@ -141,14 +141,14 @@ describe('Release notes provider', () => {
     expect(result.current.search.searchValue).toBe(undefined);
     expect(result.current.search.sortValue).toBe(undefined);
 
+    result.current.setSearch({
+      filterValues: {},
+      searchValue: '',
+      sortValue: { label: '', value: '' },
+    });
     await waitFor(
       () => {
         expect(result.current.filteredData.length).toBe(1);
-        result.current.setSearch({
-          filterValues: {},
-          searchValue: '',
-          sortValue: { label: '', value: '' },
-        });
       },
       { timeout: 550 }
     );
