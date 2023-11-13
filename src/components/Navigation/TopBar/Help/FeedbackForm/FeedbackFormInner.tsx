@@ -209,7 +209,10 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
         <Button variant="ghost" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={handleSave} disabled={!canSubmitFeedback || requestIsLoading}> 
+        <Button
+          onClick={handleSave}
+          disabled={!canSubmitFeedback || requestIsLoading}
+        >
           {requestIsLoading ? <LoadingSpinner /> : 'Send'}
         </Button>
       </Actions>
