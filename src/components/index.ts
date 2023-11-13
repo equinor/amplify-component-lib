@@ -3,6 +3,7 @@ export type { GuidelineItem } from '../types/Guidelines';
 export type { ErrorContentType } from '../utils/errors';
 export { ErrorType } from '../utils/errors';
 export { default as DataCard } from './DataDisplay/DataCard';
+export { default as HeaderDrawer } from './DataDisplay/HeaderDrawer';
 export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
