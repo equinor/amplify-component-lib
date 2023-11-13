@@ -14,13 +14,8 @@ import { PageMenuProvider } from 'src/providers';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { monthValueToString } from 'src/utils/releaseNotes';
 
-interface ReleaseNotesProps {
-  setShow: (show: boolean) => void;
-  show: boolean;
-}
-
-const ReleaseNotes: FC<ReleaseNotesProps> = ({ setShow, show }) => {
-  const { releaseNotesYears } = useReleaseNotes();
+const ReleaseNotes: FC = () => {
+  const { releaseNotesYears, setOpen, open } = useReleaseNotes();
 
   const pageMenuItems = useMemo(() => {
     return (
@@ -34,7 +29,7 @@ const ReleaseNotes: FC<ReleaseNotesProps> = ({ setShow, show }) => {
   }, [releaseNotesYears]);
 
   return (
-    <StyledDialog open={show} onClose={() => setShow(false)} isDismissable>
+    <StyledDialog open={open} onClose={() => setOpen(false)} isDismissable>
       <ReleaseNotesHeader />
       <PageMenuProvider items={pageMenuItems}>
         <ScrollWrapper>

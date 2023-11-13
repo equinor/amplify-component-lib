@@ -14,6 +14,7 @@ import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import { FeedbackEnum } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 import styled from 'styled-components';
 
@@ -39,13 +40,14 @@ export const Help: FC<HelpProps> = ({
   hideReleaseNotes = false,
   children,
 }) => {
+  const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
+    useReleaseNotes();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
   const [feedbackType, setFeedbackType] = useState<FeedbackEnum | undefined>(
     undefined
   );
-  const [showReleaseNotes, setShowReleaseNotes] = useState(false);
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -55,7 +57,7 @@ export const Help: FC<HelpProps> = ({
   };
 
   const handleOnReleaseNotesClick = () => {
-    setShowReleaseNotes(true);
+    toggleReleaseNotes();
     closeMenu();
   };
 
@@ -117,9 +119,7 @@ export const Help: FC<HelpProps> = ({
           <ContentWrapper onClick={closeMenu}>{children}</ContentWrapper>
         )}
       </TopBarMenu>
-      {showReleaseNotes && (
-        <ReleaseNotes show={showReleaseNotes} setShow={setShowReleaseNotes} />
-      )}
+      {showReleaseNotes && <ReleaseNotes />}
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={
