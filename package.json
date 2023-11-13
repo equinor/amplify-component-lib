@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "5.3.11",
+  "version": "5.3.12",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
@@ -54,6 +54,7 @@
     "@azure/msal-browser": "3.3.0",
     "@azure/msal-react": "2.0.5",
     "@microsoft/signalr": "^7.0.12",
+    "framer-motion": "^10.16.4",
     "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
     "leaflet": "^1.9.4",
