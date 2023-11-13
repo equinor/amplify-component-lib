@@ -1,95 +1,19 @@
 import { FC } from 'react';
 
-import { Icon as EDSIcon, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import styled from 'styled-components';
-
-const { spacings, shape, colors } = tokens;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.comfortable.medium};
-`;
-
-const ChipContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-interface ChipProps {
-  $active: boolean;
-}
-
-const StyledChip = styled.span<ChipProps>`
-  font-family: 'Equionor', sans-serif;
-  font-size: 12px;
-  border-radius: ${shape.rounded.borderRadius};
-  background-color: ${({ $active }) =>
-    $active
-      ? colors.ui.background__light.hex
-      : colors.ui.background__default.hex};
-  color: black;
-  padding: 4px 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  grid-gap: ${spacings.comfortable.small};
-
-  > p {
-    line-height: normal;
-    height: min-content;
-    font-size: 12px;
-  }
-`;
-
-interface DotProps {
-  $dotColor: string;
-}
-
-const Dot = styled.span<DotProps>`
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: ${({ $dotColor }) => $dotColor};
-  position: relative;
-`;
-
-const Icon = styled(EDSIcon)`
-  &:hover {
-    cursor: pointer !important;
-    background: ${colors.interactive.primary__hover_alt.hex};
-    border-radius: ${shape.rounded.borderRadius};
-  }
-`;
-
-type ReleaseNoteTypeInformation = {
-  [key: string]: {
-    dotColor: string;
-  };
-};
-
-export const RELEASENOTETYPES_INFORMATION: ReleaseNoteTypeInformation = {
-  Feature: {
-    dotColor: '#0084C4',
-  },
-  Improvement: {
-    dotColor: '#FF9200',
-  },
-  'Bug fix': {
-    dotColor: '#EB0000',
-  },
-};
-
-interface ReleaseNotesTypesProps {
-  name: string;
-  onClick?: () => void;
-  active?: boolean;
-  showIcon: boolean;
-}
+import {
+  ChipContainer,
+  Container,
+  Dot,
+  Icon,
+  StyledChip,
+} from './ReleaseNotesTypes.styles';
+import {
+  ReleaseNotesTypesProps,
+  RELEASENOTETYPES_INFORMATION,
+} from './ReleaseNotesTypes.types';
 
 const ReleaseNotesTypes: FC<ReleaseNotesTypesProps> = ({
   name,

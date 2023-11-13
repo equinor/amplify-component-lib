@@ -2,11 +2,14 @@ import { FC, useMemo, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import ReleaseNotesTypes, {
+import { Wrapper } from '../ReleaseNotes.styles';
+import ReleaseNotesTypes from '../ReleaseNotesTypes/ReleaseNotesTypes';
+import {
+  ReleaseNoteType,
   RELEASENOTETYPES_INFORMATION,
-} from '../ReleaseNotesTypes/ReleaseNotesTypes';
+} from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
+import { ChipWrapper, SieveWrapper } from './FilterHeader.styles';
 import { FilterOption } from 'src/components/Inputs/Sieve/Filter';
 import Sieve from 'src/components/Inputs/Sieve/Sieve';
 import {
@@ -16,61 +19,7 @@ import {
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { environment } from 'src/utils';
 
-import styled from 'styled-components';
-
 const { getAppName } = environment;
-
-const { spacings } = tokens;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.comfortable.medium};
-  padding-right: ${spacings.comfortable.x_large};
-  flex-wrap: wrap;
-  > section {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    @media (max-width: 1060px) {
-      flex-wrap: nowrap;
-    }
-  }
-`;
-
-const SieveWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: ${spacings.comfortable.small};
-
-  .sieve-container {
-    flex: 1;
-  }
-`;
-
-const ChipWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-family: 'Equionor', sans-serif;
-  font-size: 12px;
-  align-items: center;
-  grid-gap: ${spacings.comfortable.small};
-  height: 24px;
-  justify-items: start;
-  flex-wrap: wrap;
-  width: 77%;
-  > p {
-    line-height: normal;
-    height: min-content;
-    font-size: 12px;
-  }
-`;
-
-export type ActiveFilter = {
-  value: string;
-  parent: string;
-};
 
 const FilterHeader: FC = () => {
   const applicationName = getAppName(import.meta.env.VITE_NAME);
@@ -129,6 +78,7 @@ const FilterHeader: FC = () => {
         />
         <Button
           variant="ghost_icon"
+          // TODO: this url should be built from the current environment instead of simply pointing to the portal's prod environment
           href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}
         >
           <Icon data={external_link} />
@@ -140,7 +90,7 @@ const FilterHeader: FC = () => {
             return sieveValue.filterValues?.[parent].map((releaseNoteType) => (
               <ReleaseNotesTypes
                 key={releaseNoteType.label}
-                name={releaseNoteType.label}
+                name={releaseNoteType.label as ReleaseNoteType}
                 showIcon={true}
                 onClick={() =>
                   onHandleActiveFiltersRemove(parent, releaseNoteType.value)

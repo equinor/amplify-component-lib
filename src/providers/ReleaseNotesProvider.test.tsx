@@ -14,7 +14,7 @@ const releaseNotes = [
     title: 'Lorem ipsum',
     body: '<h1>Release notes body text</h1>',
     tags: ['Feature', 'Improvement', 'Bug fix'],
-    createdDate: '2023-06-29T10:48:49.6883+00:00',
+    createdDate: '2023-05-31T22:00:00.000Z',
   },
 ];
 

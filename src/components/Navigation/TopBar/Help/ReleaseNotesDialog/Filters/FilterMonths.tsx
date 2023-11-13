@@ -1,46 +1,14 @@
 import { FC, useMemo } from 'react';
 
-import { Button as EDSButton } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-
+import {
+  Button,
+  Container,
+  MonthContainer,
+  YearContainer,
+} from './FilterMonths.styles';
 import { usePageMenu } from 'src/hooks';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { monthValueToString } from 'src/utils/releaseNotes';
-
-import styled from 'styled-components';
-
-const { spacings } = tokens;
-
-interface ButtonProps {
-  $isActive?: boolean;
-}
-
-const Button = styled(EDSButton)<ButtonProps>`
-  color: black;
-  font-weight: 700;
-  background-color: ${({ $isActive }) => ($isActive ? '#deedee' : 'none')};
-  margin-bottom: ${spacings.comfortable.medium};
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  position: sticky;
-`;
-
-const MonthContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-left: 40px;
-`;
-
-const YearContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`;
 
 const FilterMonths: FC = () => {
   const { selected, setSelected } = usePageMenu();
