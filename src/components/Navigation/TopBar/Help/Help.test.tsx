@@ -150,7 +150,9 @@ const applicationName = faker.animal.cat();
 describe('Help', () => {
   test('Behaves as expected', async () => {
     const applicationName = faker.animal.cat();
-    render(<Help applicationName={applicationName}>Child</Help>);
+    render(<Help applicationName={applicationName}>Child</Help>, {
+      wrapper: Wrappers,
+    });
     const user = userEvent.setup();
 
     const button = screen.getByRole('button');
@@ -163,7 +165,7 @@ describe('Help', () => {
   });
 
   test('Opens and closes as expected', async () => {
-    render(<Help applicationName={applicationName} />);
+    render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
     const user = userEvent.setup();
 
     const button = screen.getByRole('button');
@@ -184,7 +186,8 @@ describe('Help', () => {
         applicationName={applicationName}
         hideFeedback={true}
         hideReleaseNotes={true}
-      />
+      />,
+      { wrapper: Wrappers }
     );
     const user = userEvent.setup();
 
@@ -214,8 +217,14 @@ describe('Help', () => {
 
       const button = screen.getByRole('button');
       await user.click(button);
-      const releaseNotes = screen.getByText('Release notes');
-      await user.click(releaseNotes);
+      const releaseButton = document.querySelector('#release-notes');
+      // const releaseNotes = screen.getByText('Release notes');
+      screen.logTestingPlaygroundURL();
+      if (releaseButton) {
+        await user.click(releaseButton);
+      }
+      const releaseNoteText = screen.getByText('Release Notes');
+      expect(releaseNoteText).toBeInTheDocument();
       await waitFor(
         () => {
           const actualText = screen.getByText('Release notes body text');
@@ -304,7 +313,9 @@ describe('Help', () => {
       mockServiceHasError = false;
       const title = faker.animal.cat();
       const description = faker.lorem.sentence();
-      render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
+      render(<Help applicationName={applicationName} />, {
+        wrapper: Wrappers,
+      });
       const user = userEvent.setup();
 
       const button = screen.getByRole('button');
@@ -402,7 +413,9 @@ describe('Help', () => {
     }, 20000); // Setting timeout for this test to be 20 seconds
 
     test('Url validation working as expected', async () => {
-      render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
+      render(<Help applicationName={applicationName} />, {
+        wrapper: Wrappers,
+      });
       const user = userEvent.setup();
       const helperTextString =
         'The provided URL must from a equinor.com domain';
