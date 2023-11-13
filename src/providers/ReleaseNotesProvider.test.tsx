@@ -42,7 +42,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
           } else {
             resolve(releaseNotes);
           }
-        }, 500);
+        }, 200);
       });
     }
   }
@@ -118,7 +118,7 @@ describe('Release notes provider', () => {
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
-        expect(result.current.filteredData.length).toBe(1);
+        return expect(result.current.filteredData.length).toBe(1);
       },
       { timeout: 550 }
     );
@@ -133,7 +133,7 @@ describe('Release notes provider', () => {
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
-        expect(result.current.filteredData.length).toBe(1);
+        return expect(result.current.filteredData.length).toBe(1);
       },
       { timeout: 550 }
     );
@@ -148,7 +148,7 @@ describe('Release notes provider', () => {
     });
     await waitFor(
       () => {
-        expect(result.current.filteredData.length).toBe(1);
+        return expect(result.current.filteredData.length).toBe(1);
       },
       { timeout: 550 }
     );
@@ -168,7 +168,7 @@ describe('Release notes provider', () => {
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
-        expect(result.current.filteredData.length).toBe(1);
+        return expect(result.current.filteredData.length).toBe(1);
       },
       { timeout: 550 }
     );
@@ -189,7 +189,7 @@ describe('Release notes provider', () => {
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
-        expect(result.current.filteredData.length).toBe(0);
+        return expect(result.current.filteredData.length).toBe(0);
       },
       { timeout: 550 }
     );
@@ -210,7 +210,7 @@ describe('Release notes provider', () => {
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
-        expect(result.current.filteredData.length).toBe(0);
+        return expect(result.current.filteredData.length).toBe(0);
       },
       { timeout: 550 }
     );
