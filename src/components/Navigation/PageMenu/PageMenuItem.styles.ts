@@ -29,11 +29,17 @@ export const Button = styled.button<ButtonProps>`
   font-size: 14px;
 `;
 
-export const Container = styled.div`
+interface ContainerProps {
+  $layer: number;
+}
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.x_small};
   > button:not(:first-child) {
     margin-left: ${spacings.comfortable.medium};
   }
+  margin-left: ${({ $layer }) =>
+    `calc(${$layer} * ${spacings.comfortable.medium})`};
 `;

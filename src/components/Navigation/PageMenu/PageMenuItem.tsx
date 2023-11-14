@@ -5,6 +5,7 @@ import { PageMenuItemType, usePageMenu } from 'src/providers/PageMenuProvider';
 
 interface PageMenuItemProps extends PageMenuItemType {
   onlyShowSelectedChildren: boolean;
+  layer?: number;
 }
 
 const PageMenuItem: FC<PageMenuItemProps> = ({
@@ -12,6 +13,7 @@ const PageMenuItem: FC<PageMenuItemProps> = ({
   value,
   children,
   onlyShowSelectedChildren,
+  layer = 0,
 }) => {
   const { isActive, setSelected } = usePageMenu();
 
@@ -26,7 +28,7 @@ const PageMenuItem: FC<PageMenuItemProps> = ({
 
   if (children) {
     return (
-      <Container>
+      <Container $layer={layer}>
         <Button $active={active} onClick={handleOnClick} disabled={active}>
           {label}
         </Button>
@@ -35,6 +37,7 @@ const PageMenuItem: FC<PageMenuItemProps> = ({
             <PageMenuItem
               key={`${value}-child-${child.value}`}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
+              layer={layer + 1}
               {...child}
             />
           ))}
