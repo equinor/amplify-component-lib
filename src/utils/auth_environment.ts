@@ -126,11 +126,15 @@ const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
   scopes: [apiScope],
 });
 
+const isInIframe = (): boolean => {
+  return window.self !== window.top;
+};
+
 const msalApp = new PublicClientApplication({
   auth: {
     clientId: getClientId(import.meta.env.VITE_CLIENT_ID),
     authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
-    redirectUri: window.location.origin,
+    redirectUri: isInIframe() ? '/redirect' : window.location.origin,
   },
   cache: {
     cacheLocation: 'localStorage',
@@ -201,6 +205,7 @@ export const auth = {
   msalApp,
   getToken,
   isReaderOnly,
+  isInIframe,
 };
 
 export const environment = {
