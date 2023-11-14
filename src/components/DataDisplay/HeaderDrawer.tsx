@@ -1,4 +1,11 @@
-import { forwardRef, ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  HTMLAttributes,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
@@ -35,14 +42,14 @@ const IconWrapper = styled.div`
   border-radius: ${shape.circle.borderRadius};
 `;
 
-export interface HeaderDrawerProps {
+export interface HeaderDrawerProps extends HTMLAttributes<'h6'> {
   title: string;
-  openByDefault?: boolean;
   children: ReactNode;
+  openByDefault?: boolean;
 }
 
 const HeaderDrawer = forwardRef<HTMLHeadingElement, HeaderDrawerProps>(
-  ({ title, openByDefault = false, children }, ref) => {
+  ({ title, openByDefault = false, id, children }, ref) => {
     const [isOpen, setIsOpen] = useState<boolean>(openByDefault);
     const initialHeight = useRef<number | string>(
       openByDefault ? 'fit-content' : 0
@@ -57,7 +64,7 @@ const HeaderDrawer = forwardRef<HTMLHeadingElement, HeaderDrawerProps>(
     return (
       <div>
         <Header onClick={() => setIsOpen((o) => !o)}>
-          <Typography variant="h6" ref={ref}>
+          <Typography variant="h6" ref={ref} id={id}>
             {title}
           </Typography>
           <IconWrapper>
