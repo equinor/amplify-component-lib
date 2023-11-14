@@ -19,7 +19,6 @@ export default {
   component: PageMenu,
   argTypes: {
     items: { control: 'array' },
-    collapsableChildren: { control: 'boolean' },
     onlyShowSelectedChildren: { control: 'boolean' },
   },
   args: {
@@ -40,7 +39,6 @@ export default {
         color: colors.infographic.substitute__blue_overcast.hex,
       },
     ],
-    collapsableChildren: false,
     onlyShowSelectedChildren: false,
   },
 };
