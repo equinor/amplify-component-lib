@@ -74,7 +74,6 @@ export { default as CopyText } from './Inputs/CopyText';
 export { default as EditableField } from './Inputs/EditableField';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
-export { default as PageMenu } from './Inputs/PageMenu';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
@@ -84,6 +83,7 @@ export type { SieveValue } from './Inputs/Sieve/Sieve';
 export { default as Sieve } from './Inputs/Sieve/Sieve';
 export type { Option } from './Inputs/Sieve/Sieve.common';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
+export { default as PageMenu } from './Navigation/PageMenu/PageMenu';
 export type { ItemType, SidebarType } from './Navigation/SideBar';
 export { default as SideBar } from './Navigation/SideBar';
 export type {

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import PageMenu from '../components/Inputs/PageMenu';
+import PageMenu from '../components/Navigation/PageMenu/PageMenu';
 import { render, renderHook, screen } from '../tests/test-utils';
 import PageMenuProvider, { usePageMenu } from './PageMenuProvider';
 
