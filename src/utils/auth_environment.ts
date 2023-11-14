@@ -145,23 +145,21 @@ const allowedParentDomains = getAllowedParentDomains(
 // This code is needed to be able to embed our FE into another FE
 // Msal documentation here:
 // https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/iframe-usage.md#:%7E:text=Using%20MSAL%20in%20iframed%20apps%20By%20default%2C%20MSAL,redirect%20APIs%20for%20user%20interaction%20with%20the%20IdP%3A
-window.addEventListener('message', (event: MessageEvent) => {
+window.addEventListener('message', async (event: MessageEvent) => {
   // Check that the origin is allowed
   if (allowedParentDomains.includes(event.origin)) {
     const sid = event.data;
     if (sid) {
-      msalApp
-        .ssoSilent({
-          sid,
-        })
-        .then((response) => {
-          console.log('postMessage successfully logged in user!');
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error('Something went wrong with postMessage');
-          console.error(error);
-        });
+      await msalApp.initialize();
+
+      try {
+        const response = await msalApp.ssoSilent({ sid });
+        console.log('postMessage successfully logged in user!');
+        console.log(response);
+      } catch (error) {
+        console.error('Something went wrong with postMessage');
+        console.error(error);
+      }
     }
   }
 });
