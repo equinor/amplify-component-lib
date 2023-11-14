@@ -64,7 +64,8 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   useEffect(() => {
     if (
       error instanceof InteractionRequiredAuthError &&
-      accounts.length === 0
+      accounts.length === 0 &&
+      window.self === window.top // Not in iframe
     ) {
       console.error(error);
       console.log('No account found, need to login via. redirect');
