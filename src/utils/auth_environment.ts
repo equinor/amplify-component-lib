@@ -2,23 +2,33 @@ import { PublicClientApplication } from '@azure/msal-browser';
 
 import { EnvironmentType } from '../components';
 
-interface IConfig {
+interface RequiredEnvVariables {
   CLIENT_ID: string;
   NAME: string;
   API_URL: string;
   API_SCOPE: string;
   ENVIRONMENT_NAME: string;
   PORTAL_PROD_CLIENT_ID: string;
-  IS_MOCK: boolean;
 }
 
-declare const window: any;
+interface OptionalEnvVariables {
+  ALLOWED_PARENT_DOMAINS: string;
+}
 
-const getConfig = (param: keyof IConfig): string => {
+const OPTIONAL_ENV_VARIABLES = ['IS_MOCK', 'ALLOWED_PARENT_DOMAINS'];
+
+type EnvVariables = RequiredEnvVariables & OptionalEnvVariables;
+
+declare const window: { _env_: EnvVariables | undefined } & Window;
+
+const getConfig = (param: keyof EnvVariables) => {
   if (!window._env_) {
     return '';
   }
-  if (!window._env_[param]) {
+  if (
+    window._env_[param] === undefined &&
+    !OPTIONAL_ENV_VARIABLES.includes(param)
+  ) {
     throw new Error('Missing required environment variable: ' + param);
   }
   return window._env_[param];
@@ -77,6 +87,15 @@ const getIsMock = (isMock: string | undefined): boolean => {
   return isMock === 'true';
 };
 
+const getAllowedParentDomains = (
+  parentDomains: string | undefined
+): string[] => {
+  if (!parentDomains) {
+    return getConfig('ALLOWED_PARENT_DOMAINS').split(';');
+  }
+  return parentDomains.split(';');
+};
+
 const GRAPH_ENDPOINTS = {
   PHOTO: 'https://graph.microsoft.com/v1.0/me/photos/96x96/$value',
 };
@@ -117,6 +136,34 @@ const msalApp = new PublicClientApplication({
     cacheLocation: 'localStorage',
     storeAuthStateInCookie: false,
   },
+});
+
+const allowedParentDomains = getAllowedParentDomains(
+  import.meta.env.ALLOWED_PARENT_DOMAINS
+);
+
+// This code is needed to be able to embed our FE into another FE
+// Msal documentation here:
+// https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/iframe-usage.md#:%7E:text=Using%20MSAL%20in%20iframed%20apps%20By%20default%2C%20MSAL,redirect%20APIs%20for%20user%20interaction%20with%20the%20IdP%3A
+window.addEventListener('message', (event: MessageEvent) => {
+  // Check that the origin is allowed
+  if (allowedParentDomains.includes(event.origin)) {
+    const sid = event.data;
+    if (sid) {
+      msalApp
+        .ssoSilent({
+          sid,
+        })
+        .then((response) => {
+          console.log('postMessage successfully logged in user!');
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error('Something went wrong with postMessage');
+          console.error(error);
+        });
+    }
+  }
 });
 
 const getToken = async () => {
