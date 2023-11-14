@@ -24,6 +24,7 @@ const {
   GRAPH_REQUESTS_PHOTO,
   GRAPH_REQUESTS_BACKEND,
   fetchMsGraph,
+  isInIframe,
 } = auth;
 
 const { getApiScope } = environment;
@@ -65,7 +66,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     if (
       error instanceof InteractionRequiredAuthError &&
       accounts.length === 0 &&
-      window.self === window.top // Not in iframe
+      !isInIframe()
     ) {
       console.error(error);
       console.log('No account found, need to login via. redirect');
