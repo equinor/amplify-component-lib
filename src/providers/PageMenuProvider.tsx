@@ -54,7 +54,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
 
   // Since useEffect runs on re-render we ensure that the elements array is updated
   useEffect(() => {
-    setElements(values.map((value) => document.querySelector(`#${value}`)));
+    setElements(values.map((value) => document.getElementById(value)));
   }, [values]);
 
   const isActive = useCallback(
