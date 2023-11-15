@@ -1,10 +1,13 @@
 import { MemoryRouter } from 'react-router';
 
+import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
 import FilterHeader from './FilterHeader';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen } from 'src/tests/test-utils';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
+import { render, renderHook, screen, userEvent } from 'src/tests/test-utils';
 
 const Wrappers = ({ children }: { children: any }) => {
   const queryClient = new QueryClient();
@@ -27,4 +30,87 @@ test('should render filter header correctly', () => {
   const actual = screen.getByText('Filter by');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
+});
+
+test('should confirm that there is a link button', () => {
+  render(<FilterHeader />, {
+    wrapper: Wrappers,
+  });
+
+  const actual = screen.getByRole('link');
+  expect(actual).toBeInTheDocument();
+  expect(actual).toBeVisible();
+});
+
+test('should check that typing a value in the sieve input is indeed present', async () => {
+  render(<FilterHeader />, {
+    wrapper: Wrappers,
+  });
+
+  const user = userEvent.setup();
+
+  const inputText = faker.animal.bird();
+  const actual = screen.getByRole('textbox');
+  await user.type(actual, inputText);
+  const clearSearch = screen.getByRole('button', { name: /clear search/ });
+  const text = screen.getByDisplayValue(inputText);
+  expect(text).toBeInTheDocument();
+  expect(clearSearch).toBeInTheDocument();
+  expect(actual).toBeVisible();
+});
+
+test('check that Type is available as a filter option', async () => {
+  render(<FilterHeader />, {
+    wrapper: Wrappers,
+  });
+  const user = userEvent.setup();
+
+  const filterButton = screen.getByRole('button', { name: 'Filter by' });
+  await user.click(filterButton);
+
+  const typeButton = screen.getByRole('menuitem', { name: 'Type' });
+  expect(typeButton).toBeInTheDocument();
+  await user.click(typeButton);
+
+  const featureType = screen.getByRole('menuitem', {
+    name: ReleaseNoteType.FEATURE,
+  });
+  expect(featureType).toBeInTheDocument();
+
+  await user.click(featureType);
+
+  const featureText = document.getElementsByClassName(
+    `release-notes-chip-${ReleaseNoteType.FEATURE}`
+  )[0];
+  expect(featureText).toBeInTheDocument();
+});
+
+test('should remove filter chip when clicked on', async () => {
+  render(<FilterHeader />, {
+    wrapper: Wrappers,
+  });
+  const user = userEvent.setup();
+
+  const filterButton = screen.getByRole('button', { name: 'Filter by' });
+  await user.click(filterButton);
+
+  const typeButton = screen.getByRole('menuitem', { name: 'Type' });
+  expect(typeButton).toBeInTheDocument();
+  await user.click(typeButton);
+
+  const featureType = screen.getByRole('menuitem', {
+    name: ReleaseNoteType.FEATURE,
+  });
+  expect(featureType).toBeInTheDocument();
+
+  await user.click(featureType);
+
+  const featureButton = screen.getByRole('button', {
+    name: ReleaseNoteType.FEATURE,
+  });
+  expect(featureButton).toBeInTheDocument();
+
+  await user.click(featureButton);
+  screen.logTestingPlaygroundURL();
+  expect(featureButton).not.toBeInTheDocument();
 });
