@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 
-import { Dot, StyledChip } from './ReleaseNotesTypes.styles';
+import { Dot, StyledChip, StyledChipButton } from './ReleaseNotesTypes.styles';
 import {
   ReleaseNotesTypesProps,
   RELEASENOTETYPES_INFORMATION,
@@ -17,11 +17,22 @@ const ReleaseNotesTypes: FC<ReleaseNotesTypesProps> = ({
 }) => {
   const releaseNoteInfo = RELEASENOTETYPES_INFORMATION[name];
 
+  if (active) {
+    return (
+      <StyledChip onClick={onClick} className={`release-notes-chip-${name}`}>
+        <Dot $dotColor={releaseNoteInfo.dotColor} />
+        <Typography group="ui" variant="chip__badge">
+          {name}
+        </Typography>
+        {showIcon && <Icon data={clear} size={16} />}
+      </StyledChip>
+    );
+  }
+
   return (
-    <StyledChip
+    <StyledChipButton
       variant="ghost"
       onClick={onClick}
-      $active={active}
       className={`release-notes-chip-${name}`}
     >
       <Dot $dotColor={releaseNoteInfo.dotColor} />
@@ -29,7 +40,7 @@ const ReleaseNotesTypes: FC<ReleaseNotesTypesProps> = ({
         {name}
       </Typography>
       {showIcon && <Icon data={clear} size={16} />}
-    </StyledChip>
+    </StyledChipButton>
   );
 };
 

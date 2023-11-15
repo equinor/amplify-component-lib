@@ -3,21 +3,30 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-const { shape, colors } = tokens;
+const { spacings, shape, colors } = tokens;
 
-interface ChipProps {
-  $active: boolean;
-}
+const StyledChipButton = styled(Button)`
+  border-radius: ${shape.rounded.borderRadius};
+  background-color: ${colors.ui.background__default.hex};
+  color: black;
+  padding: 4px 10px;
 
-const StyledChip = styled(Button)<ChipProps>`
+  > p {
+    line-height: normal;
+    height: min-content;
+    font-size: 12px;
+  }
+`;
+
+const StyledChip = styled.div`
+  display: flex;
+  align-items: center;
+  grid-gap: ${spacings.comfortable.small};
   border-radius: ${shape.rounded.borderRadius};
   &:hover {
     border-radius: ${shape.rounded.borderRadius};
   }
-  background-color: ${({ $active }) =>
-    $active
-      ? colors.ui.background__light.hex
-      : colors.ui.background__default.hex};
+  background-color: ${colors.ui.background__light.hex};
   color: black;
   padding: 4px 10px;
 
@@ -40,4 +49,4 @@ const Dot = styled.span<DotProps>`
   position: relative;
 `;
 
-export { Dot, StyledChip };
+export { Dot, StyledChip, StyledChipButton };
