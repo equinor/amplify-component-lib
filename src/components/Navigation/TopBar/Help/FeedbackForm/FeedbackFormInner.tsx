@@ -188,17 +188,21 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
         }
         multiline
       />
-      <UploadInfo>
-        <Icon data={info_circle} />
-        <Typography>
-          Please make sure the uploaded files do not contain confidential or
-          personal information
-        </Typography>
-      </UploadInfo>
-      <UploadFile
-        feedbackContent={feedbackContent}
-        updateFeedback={updateFeedback}
-      />
+      {selectedType === FeedbackEnum.SUGGESTION && (
+        <>
+          <UploadInfo>
+            <Icon data={info_circle} />
+            <Typography>
+              Please make sure the uploaded files do not contain confidential or
+              personal information
+            </Typography>
+          </UploadInfo>
+          <UploadFile
+            feedbackContent={feedbackContent}
+            updateFeedback={updateFeedback}
+          />
+        </>
+      )}
       {selectedType === FeedbackEnum.SUGGESTION && (
         <ConsentCheckbox
           feedbackContent={feedbackContent}

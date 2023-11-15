@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   justify-content: center;
   height: 100%;
   position: relative;
+  padding: ${spacings.comfortable.xx_large};
 `;
 
 const Number = styled(Typography)`
