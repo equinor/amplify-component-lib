@@ -20,9 +20,20 @@ const Wrappers = ({ children }: { children: any }) => {
   );
 };
 
-test('Render release note types', () => {
+test('Render release note chip type as button', () => {
   const name = ReleaseNoteType.FEATURE;
   render(<ReleaseNotesTypes name={name} showIcon />, {
+    wrapper: Wrappers,
+  });
+
+  const actual = screen.getByRole('button', { name });
+  expect(actual).toBeInTheDocument();
+  expect(actual).toBeVisible();
+});
+
+test('Should render release note chip type as plain element', () => {
+  const name = ReleaseNoteType.FEATURE;
+  render(<ReleaseNotesTypes name={name} active showIcon />, {
     wrapper: Wrappers,
   });
 
