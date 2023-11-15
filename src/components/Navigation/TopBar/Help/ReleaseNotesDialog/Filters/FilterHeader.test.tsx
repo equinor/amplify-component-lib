@@ -110,6 +110,5 @@ test('should remove filter chip when clicked on', async () => {
   expect(featureButton).toBeInTheDocument();
 
   await user.click(featureButton);
-  screen.logTestingPlaygroundURL();
   expect(featureButton).not.toBeInTheDocument();
 });
