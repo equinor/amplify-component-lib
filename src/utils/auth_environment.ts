@@ -91,7 +91,7 @@ const getAllowedParentDomains = (
   parentDomains: string | undefined
 ): string[] => {
   if (!parentDomains) {
-    return getConfig('ALLOWED_PARENT_DOMAINS').split(';');
+    return getConfig('ALLOWED_PARENT_DOMAINS')?.split(';') || [];
   }
   return parentDomains.split(';');
 };
