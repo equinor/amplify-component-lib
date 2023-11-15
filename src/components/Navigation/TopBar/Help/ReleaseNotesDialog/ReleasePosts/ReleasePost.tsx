@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
@@ -7,9 +7,12 @@ import ReleaseNotesTypes from '../ReleaseNotesTypes/ReleaseNotesTypes';
 import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
 import TextContent from '../TextContent';
 import {
+  AccordionText,
+  BodyContainer,
   BtnContainer,
   Button,
   Container,
+  HeadingContainer,
   ReleaseNoteTypeContainer,
   RightContainer,
   TitleContainer,
@@ -28,16 +31,14 @@ const ReleasePost: FC<ReleaseNote> = ({
   body,
 }) => {
   const [showFullContent, setShowFullContent] = useState<boolean>(false);
-  const [contentHeight, setContentHeigt] = useState<number>(0);
+  const [needsShowMoreButton, setNeedsShowMoreButton] = useState(false);
 
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    if (contentRef.current) {
-      const height = contentRef.current.clientHeight;
-      setContentHeigt(height);
+  const handleOnNewRef = (element: HTMLDivElement | null) => {
+    if (element) {
+      const { clientHeight } = element;
+      setNeedsShowMoreButton(clientHeight > 108);
     }
-  }, [showFullContent]);
+  };
 
   const toggleContent = () => {
     setShowFullContent((prev) => !prev);
@@ -55,7 +56,7 @@ const ReleasePost: FC<ReleaseNote> = ({
           }}
         >
           <TopContainer>
-            <TitleContainer>
+            <HeadingContainer>
               <Typography group="paragraph" variant="overline">
                 {date.formatDate(createdDate, {
                   format: 'DD. month YYYY',
@@ -64,7 +65,7 @@ const ReleasePost: FC<ReleaseNote> = ({
               <Typography group="paragraph" variant="overline">
                 {version}
               </Typography>
-            </TitleContainer>
+            </HeadingContainer>
 
             <RightContainer>
               {tags?.map((tag) => {
@@ -80,29 +81,25 @@ const ReleasePost: FC<ReleaseNote> = ({
               })}
             </RightContainer>
           </TopContainer>
-          <div style={{ marginBottom: '48px' }}>
+          <TitleContainer>
             <Typography group="heading" variant="h3">
               {title}
             </Typography>
-          </div>
-          <div ref={contentRef} style={{ marginBottom: '50px' }}>
+          </TitleContainer>
+          <BodyContainer ref={handleOnNewRef}>
             <TextContent text={body ?? ''} />
-          </div>
-          <BtnContainer $open={contentHeight > 250}>
-            {contentHeight > 250 && (
+          </BodyContainer>
+          <BtnContainer $open={needsShowMoreButton}>
+            {needsShowMoreButton && (
               <Button variant="ghost_icon" onClick={toggleContent}>
                 {showFullContent ? (
                   <>
-                    <Typography style={{ fontSize: '14px' }} color=" #007079">
-                      Read less
-                    </Typography>
+                    <AccordionText>Read less</AccordionText>
                     <Icon data={arrow_drop_up} />
                   </>
                 ) : (
                   <>
-                    <Typography style={{ fontSize: '14px' }} color=" #007079;">
-                      Read more
-                    </Typography>
+                    <AccordionText>Read more</AccordionText>
                     <Icon data={arrow_drop_down} />
                   </>
                 )}

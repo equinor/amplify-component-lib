@@ -571,3 +571,337 @@ describe('Help', () => {
     }, 20000); // Setting timeout for this test to be 15 seconds
   });
 });
+
+describe('Report bug and feedback', () => {
+  test('can close dialog by clicking outside', async () => {
+    render(
+      <>
+        <Help applicationName={applicationName} />
+      </>,
+      { wrapper: Wrappers }
+    );
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    const reportBug = screen.getByText('Report a bug');
+
+    await user.click(reportBug);
+
+    const titleInput = screen.getByLabelText(/title/i);
+
+    expect(titleInput).toBeInTheDocument();
+
+    const cancelButton = screen.getByText(/cancel/i);
+
+    await user.click(cancelButton);
+
+    expect(titleInput).not.toBeInTheDocument();
+  });
+
+  for (const option of severityOptions) {
+    test(`can select and submit "${option}" severity`, async () => {
+      mockServiceHasError = false;
+      const { title, description } = fakeInputs();
+      const { container } = render(<Help applicationName={applicationName} />, {
+        wrapper: Wrappers,
+      });
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+      const reportBug = screen.getByText(/report a bug/i);
+      await user.click(reportBug);
+      const titleInput = screen.getByLabelText(/title/i);
+
+      const descInput = screen.getByLabelText(/description/i);
+
+      await user.type(titleInput, title);
+      await user.type(descInput, description);
+
+      const severityInput = container.querySelector(
+        '#feedback-severity'
+      ) as HTMLInputElement;
+
+      await user.click(severityInput);
+
+      const severityOption = screen.getByText(option);
+
+      expect(severityOption).toBeInTheDocument();
+
+      await user.click(severityOption);
+
+      expect(severityInput.value).toEqual(option);
+
+      const submitButton = screen.getByText(/send/i);
+
+      expect(submitButton).not.toBeDisabled();
+      await user.click(submitButton);
+    }, 15000); // Setting timeout for this test to be 15 seconds
+  }
+
+  test('suggest a feature dialog submit button enabled at correct time', async () => {
+    mockServiceHasError = false;
+    const title = faker.animal.cat();
+    const description = faker.lorem.sentence();
+    render(<Help applicationName={applicationName} />, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+    await user.click(button);
+
+    const suggestFeature = screen.getByText('Suggest a feature');
+    await user.click(suggestFeature);
+
+    const titleInput = screen.getByLabelText(/title/i);
+    const descInput = screen.getByLabelText(/description/i);
+    const submitButton = screen.getByText(/send/i).parentElement;
+
+    expect(submitButton).toBeDisabled();
+    await user.type(titleInput, title);
+    await user.type(descInput, description);
+    expect(submitButton).not.toBeDisabled();
+  }, 15000); // Setting timeout for this test to be 15 seconds
+
+  test('Inputting all fields with file works as expected', async () => {
+    mockServiceHasError = false;
+    const { title, description, url } = fakeInputs();
+    const imageOne = await fakeImageFile();
+    const imageTwo = await fakeImageFile();
+
+    render(<Help applicationName={applicationName} />, {
+      wrapper: Wrappers,
+    });
+
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+    await user.click(button);
+
+    const reportBug = screen.getByText('Report a bug');
+    await user.click(reportBug);
+
+    const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
+    const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
+    const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
+    const submitButton = screen.getByText(/send/i).parentElement as Element;
+
+    expect(submitButton).toBeDisabled();
+
+    await user.type(titleInput, title);
+    await user.type(descInput, description);
+    await user.type(urlInput, url ?? '');
+
+    expect(titleInput.value).toEqual(title);
+    expect(descInput.value).toEqual(description);
+    expect(urlInput.value).toEqual(url);
+
+    const fileUploadArea = screen.getByTestId('file-upload-area-input');
+
+    await user.upload(fileUploadArea, [imageTwo]);
+
+    // Delete image file
+    const file2nameElement = screen.getByAltText(
+      createRegexToGetAttachment(imageTwo.name)
+    );
+
+    expect(file2nameElement).toBeInTheDocument();
+
+    await user.hover(file2nameElement);
+
+    const removeAttachmentButton = screen.getByTestId(
+      'attachment-delete-button'
+    );
+
+    expect(removeAttachmentButton).toBeInTheDocument();
+
+    if (removeAttachmentButton) {
+      await user.click(removeAttachmentButton);
+      expect(file2nameElement).not.toBeInTheDocument();
+    }
+
+    // Upload three files, two being duplicates, so expect only two files to be shown
+    await user.upload(fileUploadArea, [imageOne]);
+    await user.upload(fileUploadArea, [imageTwo]);
+    await user.upload(fileUploadArea, [imageOne]);
+
+    const allDeleteButtons = screen.getAllByTestId('attachment-delete-button');
+
+    expect(allDeleteButtons.length).toBe(2);
+
+    expect(submitButton).not.toBeDisabled();
+    await user.click(submitButton);
+
+    await waitFor(
+      () =>
+        expect(
+          screen.getByText(createIncidentResponseNumber)
+        ).toBeInTheDocument(),
+      {
+        timeout: 5000,
+      }
+    );
+  }, 20000); // Setting timeout for this test to be 20 seconds
+
+  test('Url validation working as expected', async () => {
+    render(<Help applicationName={applicationName} />, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
+    const helperTextString = 'The provided URL must from a equinor.com domain';
+
+    const wrongUrl = 'www.google.com';
+    const rightUrl = 'www.amplify.equinor.com';
+
+    const button = screen.getByRole('button');
+    await user.click(button);
+
+    const reportBug = screen.getByText('Report a bug');
+    await user.click(reportBug);
+
+    const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
+
+    await user.type(urlInput, wrongUrl);
+
+    await urlInput.blur();
+
+    const helperText = screen.queryByText(helperTextString);
+
+    expect(helperText).toBeInTheDocument();
+
+    await user.clear(urlInput);
+
+    expect(helperText).not.toBeInTheDocument();
+
+    await user.type(urlInput, wrongUrl);
+
+    await urlInput.blur();
+
+    const helperTextAgain = screen.queryByText(helperTextString);
+
+    expect(helperTextAgain).toBeInTheDocument();
+    await user.type(urlInput, rightUrl);
+
+    expect(helperTextAgain).not.toBeInTheDocument();
+  }, 10000); // Setting timeout for this test to be 10 seconds
+
+  test('shows error snackbar on request error', async () => {
+    mockServiceHasError = true;
+    console.error = vi.fn();
+    const { title, description } = fakeInputs();
+
+    render(<Help applicationName={applicationName} />, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+    const suggest = screen.getByText(/suggest/i);
+    await user.click(suggest);
+
+    const titleInput = screen.getByLabelText(/title/i);
+    const descInput = screen.getByLabelText(/description/i);
+    await user.type(titleInput, title);
+
+    await user.type(descInput, description);
+
+    const submitButton = screen.getByText(/send/i);
+
+    await user.click(submitButton);
+
+    expect(titleInput).toBeInTheDocument();
+
+    await waitFor(
+      () =>
+        expect(
+          screen.getByText(/There was an error sending your report/i)
+        ).toBeInTheDocument(),
+      { timeout: 5000 }
+    );
+  }, 10000); // Setting timeout for this test to be 10 seconds
+
+  test('opt out of sending email whens suggesting feature', async () => {
+    mockServiceHasError = false;
+    const { title, description } = fakeInputs();
+
+    render(<Help applicationName={applicationName} />, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+    const suggest = screen.getByText(/suggest/i);
+    await user.click(suggest);
+
+    const nameInput: HTMLInputElement = screen.getByLabelText(/email/i);
+
+    const titleInput = screen.getByLabelText(/title/i);
+
+    const descInput = screen.getByLabelText(/description/i);
+    const optOutCheckbox = screen.getByTestId('opt_out_checkbox');
+
+    expect(optOutCheckbox).not.toBeChecked();
+
+    await user.click(optOutCheckbox);
+
+    expect(optOutCheckbox).toBeChecked();
+
+    expect(nameInput.value).toBe('Anonymous');
+
+    await user.type(titleInput, title);
+
+    await user.type(descInput, description);
+
+    const submitButton = screen.getByText(/send/i);
+
+    await user.click(submitButton);
+
+    await waitFor(
+      () =>
+        expect(
+          screen.getByText(/Your suggestion has been sent successfully/i)
+        ).toBeInTheDocument(),
+      { timeout: 5000 }
+    );
+  }, 10000); // Setting timeout for this test to be 10 seconds
+
+  test('undefined service now number working', async () => {
+    createIncidentResponseNumber = '';
+    mockServiceHasError = false;
+    const { title, description } = fakeInputs();
+
+    render(<Help applicationName={applicationName} />, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+    await user.click(button);
+
+    const reportBug = screen.getByText('Report a bug');
+    await user.click(reportBug);
+
+    const titleInput = screen.getByLabelText(/title/i);
+    const descInput = screen.getByLabelText(/description/i);
+
+    await user.type(titleInput, title);
+    await user.type(descInput, description);
+
+    const submitButton = screen.getByText(/send/i).parentElement as Element;
+
+    await user.click(submitButton);
+    await waitFor(
+      () => expect(screen.getByText(/Not found/i)).toBeInTheDocument(),
+      { timeout: 18000 }
+    );
+  }, 20000); // Setting timeout for this test to be 15 seconds
+});

@@ -1,4 +1,4 @@
-import { Button as EDSbutton } from '@equinor/eds-core-react';
+import { Button as EDSbutton, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
@@ -26,11 +26,19 @@ const TopContainer = styled.div`
   padding-bottom: ${spacings.comfortable.medium_small};
 `;
 
-const TitleContainer = styled.div`
+const HeadingContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: ${spacings.comfortable.medium};
+`;
+
+const TitleContainer = styled.div`
+  margin-bottom: 48px;
+`;
+
+const BodyContainer = styled.div`
+  margin-bottom: 50px;
 `;
 
 const RightContainer = styled.div`
@@ -86,10 +94,18 @@ const Button = styled(EDSbutton)`
   }
 `;
 
+const AccordionText = styled(Typography)`
+  font-size: 14px;
+  color: #007079;
+`;
+
 export {
+  AccordionText,
+  BodyContainer,
   BtnContainer,
   Button,
   Container,
+  HeadingContainer,
   ReleaseNoteTypeContainer,
   RightContainer,
   TitleContainer,
