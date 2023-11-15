@@ -4,14 +4,14 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { check_circle_outlined, info_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import ErrorStatus from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ResponsePage/ErrorStatus';
-import {
-  RequestStatusType,
-  StatusEnum,
-} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
+import { environment } from '../../../../../../../utils';
+import { EnvironmentType } from '../../../../TopBar';
+import { RequestStatusType, StatusEnum } from '../../FeedbackForm.types';
+import ErrorStatus from './ErrorStatus';
 
 import styled from 'styled-components';
 
+const { getEnvironmentName } = environment;
 const { colors } = tokens;
 
 const Wrapper = styled.div`
@@ -27,6 +27,10 @@ const Status = styled.div`
   p {
     font-weight: 500;
   }
+`;
+
+const ServiceNowLink = styled.a`
+  text-decoration: none;
 `;
 
 interface RequestStatusProps {
@@ -51,15 +55,29 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
 
   const partial = requestStatus.status === StatusEnum.partial;
 
+  const serviceNowUrl = useMemo(() => {
+    if (requestStatus.serviceNowId && requestStatus.serviceNowId.length !== 0) {
+      const environment = getEnvironmentName(
+        import.meta.env.VITE_ENVIRONMENT_NAME
+      );
+      return `https://equinor${
+        environment === EnvironmentType.PRODUCTION ? '' : 'test'
+      }.service-now.com/now/nav/ui/classic/params/target/incident.do%3Fsys_id${
+        requestStatus.serviceNowId
+      }`;
+    }
+  }, [requestStatus.serviceNowId]);
+
   if (requestStatus.status === StatusEnum.error)
     return (
       <ErrorStatus title={title} errorText={requestStatus.errorText ?? ''} />
     );
-
+  console.log(serviceNowUrl);
   return (
     <Wrapper>
       <Typography group="ui" variant="accordion_header">
         {title}
+        {serviceNowUrl && <ServiceNowLink href={serviceNowUrl} />}
       </Typography>
       <Status>
         <Typography

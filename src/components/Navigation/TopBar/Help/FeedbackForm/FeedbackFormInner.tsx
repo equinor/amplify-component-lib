@@ -6,11 +6,11 @@ import {
   AutocompleteChanges,
   Button,
   Icon,
-  TextField,
   Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 
+import { AmplifyTextField } from '../../../../index';
 import UploadFile from './components/UploadFile';
 import {
   Actions,
@@ -33,6 +33,8 @@ interface FeedbackFormInnerProps {
     key: keyof FeedbackContentType,
     newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => void;
+  serviceNowSuccess: boolean;
+  resetForm: () => void;
   handleSave: () => void;
   onClose: () => void;
   requestIsLoading: boolean;
@@ -43,7 +45,9 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
   feedbackContent,
   updateFeedback,
   handleSave,
+  serviceNowSuccess,
   onClose,
+  resetForm,
   requestIsLoading,
 }) => {
   const [isWrongDomain, setIsWrongDomain] = useState(false);
@@ -61,7 +65,9 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
   };
 
   const handleOnUrlBlur = (e: FocusEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.value.includes('.equinor.com')) {
+    const value = e.currentTarget.value;
+
+    if (!value.includes('.equinor.com') && value.length !== 0) {
       setIsWrongDomain(true);
     }
   };
@@ -80,10 +86,11 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
 
   return (
     <Wrapper>
-      <TextField
+      <AmplifyTextField
         id="feedback-title"
         label="Title"
         meta="Required"
+        disabled={serviceNowSuccess}
         value={feedbackContent.title}
         placeholder="Write a title..."
         onChange={(e: FormEvent<HTMLInputElement>) =>
@@ -98,6 +105,7 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
             id="feedback-severity"
             label="Severity"
             meta="optional"
+            disabled={serviceNowSuccess}
             selectedOptions={[feedbackContent.urgency as UrgencyOption]}
             placeholder="Select error impact"
             onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
@@ -105,9 +113,10 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
             }
             autoWidth
           />
-          <TextField
+          <AmplifyTextField
             id="feedback-url"
             label="URL"
+            disabled={serviceNowSuccess}
             meta="optional"
             value={feedbackContent.url}
             placeholder="URL of error location"
@@ -141,12 +150,13 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
       <FeedbackDescription
         id="feedback-description"
         label="Description"
+        disabled={serviceNowSuccess}
         meta="Required"
         value={feedbackContent.description}
         placeholder={
           selectedType === FeedbackEnum.BUG
-            ? 'Describe the feature. What would be the value for you?'
-            : 'Describe the bug, reproduction steps, potential workaround?'
+            ? 'Describe the bug, reproduction steps, potential workaround?'
+            : 'Describe the feature. What would be the value for you?'
         }
         rows={4}
         onChange={(e: FormEvent<HTMLInputElement>) =>
@@ -172,6 +182,10 @@ const FeedbackFormInner: FC<FeedbackFormInnerProps> = ({
           : 'Feature suggestions are sent to the development team directly'}
       </ReportLocationText>
       <Actions>
+        <Button variant="ghost" onClick={resetForm}>
+          Reset
+        </Button>
+
         <Button variant="ghost" onClick={onClose}>
           Cancel
         </Button>

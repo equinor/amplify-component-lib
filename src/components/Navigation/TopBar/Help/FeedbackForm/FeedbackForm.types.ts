@@ -10,15 +10,6 @@ export enum FeedbackEnum {
   BUG = 'bug',
   SUGGESTION = 'suggestion',
 }
-
-export type FeedbackContentType = {
-  title: string;
-  description: string;
-  urgency?: string;
-  url?: string;
-  attachments?: FileWithPath[];
-};
-
 export enum StatusEnum {
   error = 'error',
   idle = 'idle',
@@ -27,11 +18,34 @@ export enum StatusEnum {
   partial = 'partial',
 }
 
+export type FeedbackContentLocalStorage = {
+  title: string;
+  description: string;
+  urgency?: string;
+  url?: string;
+};
+
+export type FeedbackContentType = FeedbackContentLocalStorage & {
+  attachments?: FileWithPath[];
+};
+
 export type RequestStatusType = {
   status: StatusEnum;
+  serviceNowId?: string;
   errorText?: string;
 };
 
 export type AttachmentStatus = RequestStatusType & {
   fileName: string;
 };
+
+export type FeedbackLocalStorage = {
+  feedbackContent: FeedbackContentLocalStorage;
+  serviceNowRequestResponse: RequestStatusType;
+};
+
+export type SlackStatus = {
+  slackRequestResponse: RequestStatusType;
+  slackAttachmentsResponse: AttachmentStatus[];
+};
+export type FeedbackRequestStatus = FeedbackLocalStorage & SlackStatus;

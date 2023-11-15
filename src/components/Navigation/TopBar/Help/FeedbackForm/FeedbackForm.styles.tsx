@@ -1,5 +1,7 @@
-import { TextField, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+
+import { AmplifyTextField } from '../../../../index';
 
 import styled from 'styled-components';
 
@@ -39,7 +41,7 @@ export const UploadInfo = styled.div`
   border-radius: ${shape.button.borderRadius};
 `;
 
-export const FeedbackDescription = styled(TextField)`
+export const FeedbackDescription = styled(AmplifyTextField)`
   grid-column: 1/3;
 `;
 

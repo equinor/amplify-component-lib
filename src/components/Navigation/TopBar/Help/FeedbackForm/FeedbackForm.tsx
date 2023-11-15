@@ -1,10 +1,25 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
+import { ServiceNowIncidentResponse } from '../../../../../api';
+import { useLocalStorage } from '../../../../../hooks';
+import { useAuth } from '../../../../../providers/AuthProvider/AuthProvider';
+import ResponsePage from './components/ResponsePage/ResponsePage';
 import {
-  AttachmentStatus,
+  DEFAULT_FEEDBACK_LOCAL_STORAGE,
+  DEFAULT_SLACK_STATUS,
+} from './FeedbackForm.const';
+import {
+  useServiceNowIncidentMutation,
+  useSlackFileUploadMutation,
+  useSlackPostMessageMutation,
+} from './FeedbackForm.hooks';
+import { Container } from './FeedbackForm.styles';
+import {
   FeedbackContentType,
   FeedbackEnum,
+  FeedbackLocalStorage,
+  SlackStatus,
   StatusEnum,
   UrgencyOption,
 } from './FeedbackForm.types';
@@ -14,14 +29,6 @@ import {
   getUrgencyNumber,
 } from './FeedbackForm.utils';
 import FeedbackFormInner from './FeedbackFormInner';
-import ResponsePage from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ResponsePage/ResponsePage';
-import {
-  useServiceNowIncidentMutation,
-  useSlackFileUploadMutation,
-  useSlackPostMessageMutation,
-} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.hooks';
-import { Container } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.styles';
-import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 interface FeedbackFormProps {
   onClose: () => void;
@@ -32,22 +39,23 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
   const { account } = useAuth();
   const userEmail = account?.username;
 
-  const [feedbackContent, setFeedbackContent] = useState<FeedbackContentType>({
-    title: '',
-    description: '',
-  });
-  const [showResponsePage, setShowResponsePage] = useState(true);
-  const [slackAttachmentStatus, setSlackAttachmentStatus] = useState<
-    AttachmentStatus[]
-  >([
-    { fileName: 'test', status: StatusEnum.success },
-    {
-      fileName: 'test2',
-      status: StatusEnum.error,
-      errorText: 'Something went wrong insert fitting error message',
-    },
-    { fileName: 'test3', status: StatusEnum.success },
-  ]);
+  const [feedbackLocalStorage, setFeedbackLocalStorage] =
+    useLocalStorage<FeedbackLocalStorage>(
+      selectedType + '-feedbackContentAndRequestStatus',
+      { ...DEFAULT_FEEDBACK_LOCAL_STORAGE },
+      3600000 // One hour
+    );
+
+  const { feedbackContent } = feedbackLocalStorage;
+
+  const [feedbackAttachments, setFeedbackAttachments] = useState<
+    FileWithPath[]
+  >([]);
+
+  const [slackStatus, setSlackStatus] =
+    useState<SlackStatus>(DEFAULT_SLACK_STATUS);
+
+  const [showResponsePage, setShowResponsePage] = useState(false);
 
   const { mutateAsync: slackFileUpload, isPending: isFileUploadLoading } =
     useSlackFileUploadMutation(feedbackContent);
@@ -68,82 +76,72 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
     setShowResponsePage((prev) => !prev);
   };
 
-  const requestIsLoading = useMemo(() => {
-    return (
-      postMessageStatus === 'pending' ||
-      serviceNowStatus === 'pending' ||
-      isFileUploadLoading
-    );
-  }, [isFileUploadLoading, postMessageStatus, serviceNowStatus]);
-
   const updateFeedback = (
-    key: keyof FeedbackContentType,
+    key: keyof FeedbackContentType | 'attachments',
     newValue: string | UrgencyOption | FileWithPath[] | boolean
   ) => {
-    if (key === 'attachments' && feedbackContent.attachments) {
-      setFeedbackContent((prev) => {
-        return {
-          ...prev,
-          [key]: [...(newValue as FileWithPath[])],
-        };
-      });
+    if (key === 'attachments') {
+      setFeedbackAttachments([
+        ...feedbackAttachments,
+        ...(newValue as FileWithPath[]),
+      ]);
     } else {
-      setFeedbackContent({ ...feedbackContent, [key]: newValue });
+      setFeedbackLocalStorage({
+        ...feedbackLocalStorage,
+        feedbackContent: { ...feedbackContent, [key]: newValue },
+      });
     }
   };
 
-  // useEffect(() => {
-  //   if (!feedbackContent.attachments) return;
-  //   setSlackAttachmentStatus(
-  //     feedbackContent.attachments.map((attachment) => {
-  //       return {
-  //         fileName: attachment.name,
-  //         status: StatusEnum.PENDING,
-  //       };
-  //     })
-  //   );
-  // }, [feedbackContent.attachments]);
+  const updateServiceNowStatus = (
+    status: StatusEnum,
+    response?: ServiceNowIncidentResponse
+  ) => {
+    console.log('in updSNS', response);
+    setFeedbackLocalStorage({
+      ...feedbackLocalStorage,
+      serviceNowRequestResponse: {
+        status: status,
+        errorText: serviceNowError?.message ?? undefined,
+        serviceNowId: response?.sysId ?? undefined,
+      },
+    });
+  };
 
-  const updateStatus = (status: StatusEnum, filename: string) => {
-    const index = slackAttachmentStatus.findIndex(
+  const updateSlackAttachmentStatus = (
+    status: StatusEnum,
+    filename: string
+  ) => {
+    const index = slackStatus.slackAttachmentsResponse.findIndex(
       (attachment) => attachment.fileName === filename
     );
     if (index === -1) return;
-    setSlackAttachmentStatus((prev) => [
-      ...prev.slice(0, index),
-      { ...prev[index], status: status },
-      ...prev.slice(index + 1, prev.length),
-    ]);
+    setSlackStatus({
+      ...slackStatus,
+      slackAttachmentsResponse: [
+        ...slackStatus.slackAttachmentsResponse.slice(0, index),
+        { ...slackStatus.slackAttachmentsResponse[index], status: status },
+        ...slackStatus.slackAttachmentsResponse.slice(
+          index + 1,
+          slackStatus.slackAttachmentsResponse.length
+        ),
+      ],
+    });
+  };
+
+  const updatePostMessageStatus = (status: StatusEnum) => {
+    setSlackStatus({
+      ...slackStatus,
+      slackRequestResponse: {
+        status: status,
+        errorText: postMessageError?.message ?? undefined,
+      },
+    });
   };
 
   const handleSave = async () => {
-    // try {
-    // Slack message request
-    toggleShowResponsePage();
-    const contentFormData = new FormData();
-    contentFormData.append(
-      'comment',
-      createSlackMessage(feedbackContent, selectedType, userEmail)
-    );
-    await slackPostMessage(contentFormData);
-
-    // Slack attachments requests
-    if (feedbackContent.attachments && feedbackContent.attachments.length > 0) {
-      for (const attachment of feedbackContent.attachments) {
-        const fileFormData = new FormData();
-        fileFormData.append('comment', `Title: ${feedbackContent.title}`);
-        fileFormData.append('file', attachment);
-        try {
-          await slackFileUpload(fileFormData);
-          updateStatus(StatusEnum.success, attachment.name);
-        } catch (e) {
-          console.log('in catch');
-          updateStatus(StatusEnum.error, attachment.name);
-        }
-      }
-    }
-
     // Service now request
+    toggleShowResponsePage();
     if (selectedType === FeedbackEnum.BUG && userEmail) {
       const serviceNowFormData = new FormData();
       serviceNowFormData.append('ConfigurationItem', '117499');
@@ -159,20 +157,113 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
           getUrgencyNumber(feedbackContent.urgency as UrgencyOption).toString()
         );
       }
-      if (
-        feedbackContent.attachments &&
-        feedbackContent.attachments.length > 0
-      ) {
-        feedbackContent.attachments.forEach((attachment) =>
+      if (feedbackAttachments && feedbackAttachments.length > 0) {
+        feedbackAttachments.forEach((attachment) =>
           serviceNowFormData.append('Images', attachment)
         );
       }
-      await serviceNowIncident(serviceNowFormData);
+      try {
+        console.log('in serviceNow try');
+        const response = await serviceNowIncident(serviceNowFormData);
+        updateServiceNowStatus(StatusEnum.success, response);
+      } catch (e) {
+        updateServiceNowStatus(StatusEnum.error);
+      }
     }
-    // } catch (err) {
-    //   console.error(err);
-    //   showSnackbar('There was an error sending your report');
-    // }
+
+    // Slack message request
+
+    const contentFormData = new FormData();
+    contentFormData.append(
+      'comment',
+      createSlackMessage(feedbackContent, selectedType, userEmail)
+    );
+    try {
+      console.log('in postMessage try');
+      await slackPostMessage(contentFormData);
+      updatePostMessageStatus(StatusEnum.success);
+    } catch (e) {
+      updatePostMessageStatus(StatusEnum.error);
+    }
+
+    // Slack attachments requests
+    if (feedbackAttachments && feedbackAttachments.length > 0) {
+      for (const attachment of feedbackAttachments) {
+        const fileFormData = new FormData();
+        fileFormData.append('comment', `Title: ${feedbackContent.title}`);
+        fileFormData.append('file', attachment);
+        try {
+          console.log('in fileUpload try');
+          await slackFileUpload(fileFormData);
+          updateSlackAttachmentStatus(StatusEnum.success, attachment.name);
+        } catch (e) {
+          updateSlackAttachmentStatus(StatusEnum.error, attachment.name);
+        }
+      }
+    }
+  };
+
+  const requestIsLoading = useMemo(() => {
+    return (
+      postMessageStatus === 'pending' ||
+      serviceNowStatus === 'pending' ||
+      isFileUploadLoading
+    );
+  }, [isFileUploadLoading, postMessageStatus, serviceNowStatus]);
+
+  const allRequestsSuccess = useMemo(() => {
+    const allStatuses = [
+      slackStatus.slackRequestResponse.status,
+      ...slackStatus.slackAttachmentsResponse.map(
+        (response) => response.status
+      ),
+    ];
+    if (selectedType === FeedbackEnum.BUG) {
+      allStatuses.push(feedbackLocalStorage.serviceNowRequestResponse.status);
+    }
+    return allStatuses.every((status) => status === StatusEnum.success);
+  }, [
+    feedbackLocalStorage.serviceNowRequestResponse.status,
+    selectedType,
+    slackStatus,
+  ]);
+
+  const resetForm = useCallback(() => {
+    console.log('in reset form');
+    setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
+    setFeedbackAttachments([]);
+    setSlackStatus(DEFAULT_SLACK_STATUS);
+  }, [setFeedbackLocalStorage]);
+
+  useEffect(() => {
+    return () => {
+      if (allRequestsSuccess) {
+        resetForm();
+      }
+    };
+  }, [allRequestsSuccess, resetForm]);
+
+  useEffect(() => {
+    if (
+      slackStatus.slackAttachmentsResponse.length !== feedbackAttachments.length
+    ) {
+      setSlackStatus((prev) => {
+        return {
+          ...prev,
+          slackAttachmentsResponse: feedbackAttachments.map((attachment) => {
+            return { status: StatusEnum.idle, fileName: attachment.name };
+          }),
+        };
+      });
+    }
+  }, [feedbackAttachments, slackStatus.slackAttachmentsResponse.length]);
+
+  const handleResponsePageOnClose = () => {
+    if (allRequestsSuccess) {
+      onClose();
+    } else {
+      toggleShowResponsePage();
+    }
   };
 
   if (showResponsePage)
@@ -180,40 +271,25 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose, selectedType }) => {
       <Container>
         <ResponsePage
           feedbackType={selectedType}
-          serviceNowRequest={{
-            status: StatusEnum[serviceNowStatus],
-            errorText: serviceNowError?.message,
+          feedbackLocalStorage={{
+            ...feedbackLocalStorage,
+            ...slackStatus,
           }}
-          slackRequest={{
-            status: StatusEnum[postMessageStatus],
-            errorText: postMessageError?.message,
-          }}
-          slackAttachments={slackAttachmentStatus}
-          toggleResponsePage={toggleShowResponsePage}
+          onClose={handleResponsePageOnClose}
         />
       </Container>
     );
-  // if (showRequestStatus)
-  //   return (
-  //     <ResponsePage
-  //       feedbackType={selectedType}
-  //       serviceNowRequest={{
-  //         status: serviceNowStatus as StatusEnum,
-  //         errorText: serviceNowError?.message,
-  //       }}
-  //       slackRequest={{
-  //         status: postMessageStatus as StatusEnum,
-  //         errorText: postMessageError?.message,
-  //       }}
-  //       slackAttachments={slackAttachmentStatus}
-  //     />
-  //   );
-
+  console.log('feedbackLS', feedbackLocalStorage);
   return (
     <Container>
       <FeedbackFormInner
         selectedType={selectedType}
-        feedbackContent={feedbackContent}
+        feedbackContent={{
+          ...feedbackContent,
+          attachments: feedbackAttachments,
+        }}
+        serviceNowSuccess={serviceNowStatus === StatusEnum.success}
+        resetForm={resetForm}
         updateFeedback={updateFeedback}
         handleSave={handleSave}
         onClose={onClose}

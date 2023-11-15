@@ -6,9 +6,8 @@ import { tokens } from '@equinor/eds-tokens';
 import FullSlackResponse from './FullSlackResponse';
 import RequestStatus from './RequestStatus';
 import {
-  AttachmentStatus,
   FeedbackEnum,
-  RequestStatusType,
+  FeedbackRequestStatus,
   StatusEnum,
 } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 
@@ -27,24 +26,27 @@ const Container = styled.div`
 
 interface ResponsePageProps {
   feedbackType: FeedbackEnum;
-  serviceNowRequest: RequestStatusType;
-  slackRequest: RequestStatusType;
-  slackAttachments: AttachmentStatus[];
-  toggleResponsePage: () => void;
+  feedbackLocalStorage: FeedbackRequestStatus;
+  onClose: () => void;
 }
 
 const ResponsePage: FC<ResponsePageProps> = ({
   feedbackType,
-  serviceNowRequest,
-  slackRequest,
-  slackAttachments,
-  toggleResponsePage,
+  feedbackLocalStorage,
+  onClose,
 }) => {
+  const {
+    slackRequestResponse,
+    slackAttachmentsResponse,
+    serviceNowRequestResponse,
+  } = feedbackLocalStorage;
+
   const allSlackRequestStatus = useMemo<StatusEnum>(() => {
     const allStatuses: StatusEnum[] = [
-      slackRequest.status,
-      ...slackAttachments.map((attachment) => attachment.status),
+      slackRequestResponse.status,
+      ...slackAttachmentsResponse.map((attachment) => attachment.status),
     ];
+    console.log('allstatuses ', allStatuses);
     if (allStatuses.every((status) => status === StatusEnum.success)) {
       return StatusEnum.success;
     }
@@ -55,24 +57,27 @@ const ResponsePage: FC<ResponsePageProps> = ({
       return StatusEnum.pending;
     }
     return StatusEnum.idle;
-  }, [slackAttachments, slackRequest.status]);
-  console.log(allSlackRequestStatus);
+  }, [slackAttachmentsResponse, slackRequestResponse.status]);
+
   const showAllSlackRequests = useMemo(() => {
     return (
       allSlackRequestStatus === StatusEnum.error ||
       allSlackRequestStatus === StatusEnum.partial
     );
   }, [allSlackRequestStatus]);
-
+  console.log('show all slack', showAllSlackRequests);
   return (
     <Container>
       {feedbackType === FeedbackEnum.BUG && (
-        <RequestStatus title="Service Now" requestStatus={serviceNowRequest} />
+        <RequestStatus
+          title="Service Now"
+          requestStatus={serviceNowRequestResponse}
+        />
       )}
       {showAllSlackRequests ? (
         <FullSlackResponse
-          attachments={slackAttachments}
-          slackRequest={slackRequest}
+          attachments={slackAttachmentsResponse}
+          slackRequest={slackRequestResponse}
           allSlackRequestStatus={{ status: allSlackRequestStatus }}
         />
       ) : (
@@ -81,7 +86,7 @@ const ResponsePage: FC<ResponsePageProps> = ({
           requestStatus={{ status: allSlackRequestStatus }}
         />
       )}
-      <Button onClick={toggleResponsePage}>Close</Button>
+      <Button onClick={onClose}>Close</Button>
     </Container>
   );
 };
