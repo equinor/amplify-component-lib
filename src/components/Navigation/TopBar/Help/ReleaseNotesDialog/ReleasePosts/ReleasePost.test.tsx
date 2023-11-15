@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
 import ReleasePost from './ReleasePost';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen, waitFor } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/test-utils';
 
 const Wrappers = ({ children }: { children: any }) => {
   const queryClient = new QueryClient();
