@@ -1,15 +1,9 @@
 import { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 
-import {
-  ChipContainer,
-  Container,
-  Dot,
-  Icon,
-  StyledChip,
-} from './ReleaseNotesTypes.styles';
+import { Dot, StyledChip } from './ReleaseNotesTypes.styles';
 import {
   ReleaseNotesTypesProps,
   RELEASENOTETYPES_INFORMATION,
@@ -24,17 +18,18 @@ const ReleaseNotesTypes: FC<ReleaseNotesTypesProps> = ({
   const releaseNoteInfo = RELEASENOTETYPES_INFORMATION[name];
 
   return (
-    <Container>
-      <ChipContainer>
-        <StyledChip onClick={onClick} $active={active}>
-          <Dot $dotColor={releaseNoteInfo.dotColor} />
-          <Typography group="ui" variant="chip__badge">
-            {name}
-          </Typography>
-          {showIcon && <Icon data={clear} size={16} />}
-        </StyledChip>
-      </ChipContainer>
-    </Container>
+    <StyledChip
+      variant="ghost"
+      onClick={onClick}
+      $active={active}
+      className={`release-notes-chip-${name}`}
+    >
+      <Dot $dotColor={releaseNoteInfo.dotColor} />
+      <Typography group="ui" variant="chip__badge">
+        {name}
+      </Typography>
+      {showIcon && <Icon data={clear} size={16} />}
+    </StyledChip>
   );
 };
 
