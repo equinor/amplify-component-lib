@@ -36,18 +36,18 @@ function Wrappers({ children }: { children: any }) {
   );
 }
 
-async function fakeImageFile(bad: boolean = false) {
-  const extension = bad ? '.tiff' : '.png';
-  return new File([faker.lorem.sentence()], faker.word.noun() + extension);
-}
+// async function fakeImageFile(bad: boolean = false) {
+//   const extension = bad ? '.tiff' : '.png';
+//   return new File([faker.lorem.sentence()], faker.word.noun() + extension);
+// }
 
-const createRegexToGetAttachment = (fileName: string) => {
-  const split = fileName.split('.');
-  return new RegExp(
-    'uploaded file: ' + split[0].toLowerCase() + '\\.' + split[1],
-    'i'
-  );
-};
+// const createRegexToGetAttachment = (fileName: string) => {
+//   const split = fileName.split('.');
+//   return new RegExp(
+//     'uploaded file: ' + split[0].toLowerCase() + '\\.' + split[1],
+//     'i'
+//   );
+// };
 
 function fakeInputs(): FeedbackContentType {
   return {
@@ -277,8 +277,8 @@ test('suggest a feature dialog submit button enabled at correct time', async () 
 test('Inputting all fields with file works as expected', async () => {
   mockServiceHasError = false;
   const { title, description, url } = fakeInputs();
-  const imageOne = await fakeImageFile();
-  const imageTwo = await fakeImageFile();
+  // const imageOne = await fakeImageFile();
+  // const imageTwo = await fakeImageFile();
 
   render(<Help applicationName={applicationName} />, {
     wrapper: Wrappers,
