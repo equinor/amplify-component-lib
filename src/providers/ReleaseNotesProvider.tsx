@@ -12,7 +12,11 @@ import {
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { Option, SieveValue } from 'src/components';
 import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
-import { extractYearsData, YearData } from 'src/utils/releaseNotes';
+import {
+  extractYearsData,
+  sortReleaseNotesByDate,
+  YearData,
+} from 'src/utils/releaseNotes';
 
 interface ReleaseNotesContextState {
   search: SieveValue;
@@ -65,7 +69,6 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   const selectedReleaseNoteTypes = search.filterValues?.Type;
 
   const filteredData = useMemo(() => {
-    const selectedReleaseNoteTypes = search?.filterValues?.Type;
     let filteredList = data || [];
 
     if (selectedReleaseNoteTypes && selectedReleaseNoteTypes.length > 0) {
@@ -86,14 +89,10 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
           .includes(searchTerms.join(' '));
       });
     }
-    filteredList.sort((a, b) => {
-      const dateA = new Date(a.createdDate ?? '');
-      const dateB = new Date(b.createdDate ?? '');
-      return dateB.getTime() - dateA.getTime();
-    });
+    sortReleaseNotesByDate(filteredList);
 
     return filteredList;
-  }, [data, search]);
+  }, [data, search.searchValue, selectedReleaseNoteTypes]);
 
   const contextValue: ReleaseNotesContextState = {
     search,

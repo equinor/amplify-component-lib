@@ -2,6 +2,7 @@ import {
   extractYearsData,
   monthToString,
   monthValueToString,
+  sortReleaseNotesByDate,
   yearValueToString,
 } from './releaseNotes';
 
@@ -10,6 +11,14 @@ const dates = [
   { createdDate: '2023-06-29T10:50:22.8210567+00:00' },
   { createdDate: '2022-06-29T10:50:22.8210567+00:00' },
   { createdDate: '2022-05-29T10:50:22.8210567+00:00' },
+];
+
+const notes = [
+  { createdDate: '2023-06-29' },
+  { createdDate: '2020-06-29' },
+  { createdDate: '2022-06-29' },
+  {},
+  {},
 ];
 
 describe('release notes utils', () => {
@@ -38,5 +47,17 @@ describe('release notes utils', () => {
     const actual = yearValueToString(dateObject);
     console.log({ actual });
     expect(actual).toEqual(expectedYear);
+  });
+
+  test('sort release notes by created date in descending order', () => {
+    const sorted = sortReleaseNotesByDate(notes);
+    const expected = [
+      { createdDate: '2023-06-29' },
+      { createdDate: '2022-06-29' },
+      { createdDate: '2020-06-29' },
+      {},
+      {},
+    ];
+    expect(sorted).toStrictEqual(expected);
   });
 });

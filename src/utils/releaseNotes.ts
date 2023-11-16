@@ -1,3 +1,5 @@
+import { ReleaseNote } from 'src/api/models/ReleaseNote';
+
 interface MonthData {
   label: string;
   value: Date;
@@ -9,7 +11,7 @@ interface YearData {
   months: MonthData[];
 }
 
-export const extractYearsData = (getReleaseNoteList: any[]): YearData[] => {
+const extractYearsData = (getReleaseNoteList: any[]): YearData[] => {
   const years: YearData[] = [];
 
   for (const note of getReleaseNoteList) {
@@ -65,22 +67,39 @@ export const extractYearsData = (getReleaseNoteList: any[]): YearData[] => {
   return years;
 };
 
-export function monthValueToString(monthValue: Date): string {
+const monthValueToString = (monthValue: Date) => {
   return `${monthValue.toLocaleDateString('en-GB', {
     month: 'long',
   })}_${monthValue.getFullYear()}`.toLowerCase();
-}
+};
 
-export function monthToString(monthValue: Date) {
+const monthToString = (monthValue: Date) => {
   return `${monthValue.toLocaleDateString('en-GB', {
     month: 'long',
   })}`;
-}
+};
 
-export function yearValueToString(yearValue: Date): string {
+const yearValueToString = (yearValue: Date) => {
   return `year-${yearValue.toLocaleDateString('en-GB', {
     year: 'numeric',
   })}`;
-}
+};
+
+const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
+  return notes.sort((a, b) => {
+    const dateA = new Date(a.createdDate ?? '').getTime();
+    const dateB = new Date(b.createdDate ?? '').getTime();
+    const numberDateA = !Number.isNaN(dateA) ? dateA : 0;
+    const numberDateB = !Number.isNaN(dateB) ? dateB : 0;
+    return numberDateB - numberDateA;
+  });
+};
 
 export type { MonthData, YearData };
+export {
+  extractYearsData,
+  monthToString,
+  monthValueToString,
+  sortReleaseNotesByDate,
+  yearValueToString,
+};
