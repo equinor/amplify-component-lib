@@ -36,18 +36,18 @@ function Wrappers({ children }: { children: any }) {
   );
 }
 
-async function fakeImageFile(bad: boolean = false) {
-  const extension = bad ? '.tiff' : '.png';
-  return new File([faker.lorem.sentence()], faker.word.noun() + extension);
-}
+// async function fakeImageFile(bad: boolean = false) {
+//   const extension = bad ? '.tiff' : '.png';
+//   return new File([faker.lorem.sentence()], faker.word.noun() + extension);
+// }
 
-const createRegexToGetAttachment = (fileName: string) => {
-  const split = fileName.split('.');
-  return new RegExp(
-    'uploaded file: ' + split[0].toLowerCase() + '\\.' + split[1],
-    'i'
-  );
-};
+// const createRegexToGetAttachment = (fileName: string) => {
+//   const split = fileName.split('.');
+//   return new RegExp(
+//     'uploaded file: ' + split[0].toLowerCase() + '\\.' + split[1],
+//     'i'
+//   );
+// };
 
 function fakeInputs(): FeedbackContentType {
   return {
@@ -277,8 +277,8 @@ test('suggest a feature dialog submit button enabled at correct time', async () 
 test('Inputting all fields with file works as expected', async () => {
   mockServiceHasError = false;
   const { title, description, url } = fakeInputs();
-  const imageOne = await fakeImageFile();
-  const imageTwo = await fakeImageFile();
+  // const imageOne = await fakeImageFile();
+  // const imageTwo = await fakeImageFile();
 
   render(<Help applicationName={applicationName} />, {
     wrapper: Wrappers,
@@ -307,36 +307,38 @@ test('Inputting all fields with file works as expected', async () => {
   expect(descInput.value).toEqual(description);
   expect(urlInput.value).toEqual(url);
 
-  const fileUploadArea = screen.getByTestId('file-upload-area-input');
-
-  await user.upload(fileUploadArea, [imageTwo]);
-
-  // Delete image file
-  const file2nameElement = screen.getByAltText(
-    createRegexToGetAttachment(imageTwo.name)
-  );
-
-  expect(file2nameElement).toBeInTheDocument();
-
-  await user.hover(file2nameElement);
-
-  const removeAttachmentButton = screen.getByTestId('attachment-delete-button');
-
-  expect(removeAttachmentButton).toBeInTheDocument();
-
-  if (removeAttachmentButton) {
-    await user.click(removeAttachmentButton);
-    expect(file2nameElement).not.toBeInTheDocument();
-  }
-
-  // Upload three files, two being duplicates, so expect only two files to be shown
-  await user.upload(fileUploadArea, [imageOne]);
-  await user.upload(fileUploadArea, [imageTwo]);
-  await user.upload(fileUploadArea, [imageOne]);
-
-  const allDeleteButtons = screen.getAllByTestId('attachment-delete-button');
-
-  expect(allDeleteButtons.length).toBe(2);
+  // Commenting out this because for the time being file upload is
+  // not available when reporting a bug
+  // const fileUploadArea = screen.getByTestId('file-upload-area-input');
+  //
+  // await user.upload(fileUploadArea, [imageTwo]);
+  //
+  // // Delete image file
+  // const file2nameElement = screen.getByAltText(
+  //   createRegexToGetAttachment(imageTwo.name)
+  // );
+  //
+  // expect(file2nameElement).toBeInTheDocument();
+  //
+  // await user.hover(file2nameElement);
+  //
+  // const removeAttachmentButton = screen.getByTestId('attachment-delete-button');
+  //
+  // expect(removeAttachmentButton).toBeInTheDocument();
+  //
+  // if (removeAttachmentButton) {
+  //   await user.click(removeAttachmentButton);
+  //   expect(file2nameElement).not.toBeInTheDocument();
+  // }
+  //
+  // // Upload three files, two being duplicates, so expect only two files to be shown
+  // await user.upload(fileUploadArea, [imageOne]);
+  // await user.upload(fileUploadArea, [imageTwo]);
+  // await user.upload(fileUploadArea, [imageOne]);
+  //
+  // const allDeleteButtons = screen.getAllByTestId('attachment-delete-button');
+  //
+  // expect(allDeleteButtons.length).toBe(2);
 
   expect(submitButton).not.toBeDisabled();
   await user.click(submitButton);

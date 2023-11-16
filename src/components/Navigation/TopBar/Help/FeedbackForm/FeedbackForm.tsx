@@ -26,7 +26,7 @@ const { spacings } = tokens;
 
 const Container = styled.div`
   width: 700px;
-  height: 580px;
+  height: fit-content;
   padding: 0 ${spacings.comfortable.medium} ${spacings.comfortable.medium}
     ${spacings.comfortable.medium};
 `;
