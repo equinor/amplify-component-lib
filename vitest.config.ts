@@ -37,6 +37,7 @@ export default defineConfig({
         'src/hooks/useSignalRMessages.ts',
         'src/hooks/useFeatureToggling.ts',
         'src/hooks/useOnScreen.ts',
+        'src/components/Navigation/TopBar/Help/FeedbackForm/**',
       ],
       reporter: ['text-summary', 'html'],
       perFile: true,
