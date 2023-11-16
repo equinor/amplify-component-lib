@@ -134,7 +134,7 @@ const msalApp = new PublicClientApplication({
   auth: {
     clientId: getClientId(import.meta.env.VITE_CLIENT_ID),
     authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
-    redirectUri: isInIframe() ? '/redirect' : window.location.origin,
+    redirectUri: window.location.origin,
   },
   cache: {
     cacheLocation: 'localStorage',
