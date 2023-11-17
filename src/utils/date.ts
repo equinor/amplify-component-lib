@@ -20,7 +20,7 @@ const formatDate = (
       if (options?.format === 'DD. month YYYY') {
         const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
-          month: 'long',
+          month: options?.month || 'long',
           year: 'numeric',
         })}`;
       }
@@ -30,7 +30,7 @@ const formatDate = (
       if (options?.format === 'DD. month') {
         const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
-          month: options.month ?? 'long',
+          month: options.month || 'long',
         })}`;
       }
       if (options?.format === 'YYYY-MM-DD') {

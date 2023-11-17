@@ -63,6 +63,23 @@ test('formatDate works as expected with format = "DD. month YYYY"', () => {
   expect(formattedDate).toBe(testFormatted);
 });
 
+test('formatDate works as expected with format = "DD. month YYYY" and month = short', () => {
+  const fakeDate = faker.date.past();
+
+  const formattedDate = date.formatDate(fakeDate, {
+    format: 'DD. month YYYY',
+    month: 'short',
+  });
+
+  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
+  const testFormatted = `${day}. ${fakeDate.toLocaleString('en-GB', {
+    month: 'short',
+    year: 'numeric',
+  })}`;
+
+  expect(formattedDate).toBe(testFormatted);
+});
+
 test('formatDate works as expected with format = "YYYY-MM-DD"', () => {
   const fakeDate = faker.date.past();
 
