@@ -157,9 +157,8 @@ window.addEventListener('message', async (event: MessageEvent) => {
       await msalApp.initialize();
 
       try {
-        const response = await msalApp.ssoSilent({ sid });
+        await msalApp.ssoSilent({ sid });
         console.log('postMessage successfully logged in user!');
-        console.log(response);
       } catch (error) {
         console.error('Something went wrong with postMessage');
         console.error(error);
