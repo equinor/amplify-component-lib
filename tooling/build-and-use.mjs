@@ -8,11 +8,16 @@ async function runTasks() {
     console.clear()
     console.log(chalk.bold.yellow('Running build and use tasks...\n'))
 
-    await runTask({
-        command: 'yarn build',
-        name: `${chalk.white('Building')} ${chalk.bold.magenta('amplify-components')}`,
-        ignoreStdErr: true
-    })
+    try {
+        await runTask({
+            command: 'yarn build',
+            name: `${chalk.white('Building')} ${chalk.bold.magenta('amplify-components')}`,
+            ignoreStdErr: true
+        })
+    } catch(err) {
+        console.error(err)
+        return
+    }
 
     const dirents = await readdir('..', { withFileTypes: true })
     const dirs = dirents.filter(dirent => dirent.isDirectory()).map((dirent) => dirent.name)
