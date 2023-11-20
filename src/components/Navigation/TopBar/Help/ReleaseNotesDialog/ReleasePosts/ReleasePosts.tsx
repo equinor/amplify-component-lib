@@ -13,7 +13,7 @@ import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { monthValueToString, yearValueToString } from 'src/utils/releaseNotes';
 
 const ReleasePosts: FC = () => {
-  const { isLoading } = useReleaseNotesQuery();
+  const { isLoading, data } = useReleaseNotesQuery();
   const {
     search,
     selectedReleaseNoteTypes,
@@ -35,6 +35,20 @@ const ReleasePosts: FC = () => {
       <ContainerNoResults>
         <Typography group="heading" variant="h4" color="#3D3D3D">
           There are no posts at the moment
+        </Typography>
+      </ContainerNoResults>
+    );
+  }
+
+  // Display this if there are release posts, but none of them match the current search/filter criterias
+  if (releaseNotes?.length === 0) {
+    return (
+      <ContainerNoResults>
+        <Typography group="heading" variant="h4" color="#3D3D3D">
+          Nothing matching{' '}
+          {`" ${search.searchValue ?? ''} ${
+            selectedReleaseNoteTypes?.map((t) => t.value).join(', ') ?? ''
+          } "`}
         </Typography>
       </ContainerNoResults>
     );

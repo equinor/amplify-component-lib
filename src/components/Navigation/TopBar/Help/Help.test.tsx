@@ -14,7 +14,13 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from 'src/tests/test-utils';
 
 const releaseNotes = [
   {
@@ -132,7 +138,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
           } else {
             resolve(releaseNotes);
           }
-        }, 500);
+        }, 300);
       });
     }
   }
@@ -214,7 +220,6 @@ describe('Help', () => {
         { wrapper: Wrappers }
       );
       const user = userEvent.setup();
-
       const button = screen.getByRole('button');
       await user.click(button);
       const releaseButton = document.querySelector('#release-notes');
@@ -232,6 +237,39 @@ describe('Help', () => {
         },
         { timeout: 500 }
       );
+    });
+    test('should show Nothing matching "SearchTerm" when no matching release notes', async () => {
+      mockServiceHasError = false;
+      const { container } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <Help applicationName={applicationName} />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
+      const user = userEvent.setup();
+      const toggleHelpButton = screen.getByRole('button');
+      await user.click(toggleHelpButton);
+      const toggleReleaseNotesButton = screen.getByRole('menuitem', {
+        name: /Release notes/,
+      });
+      expect(toggleReleaseNotesButton).toBeInTheDocument();
+      await user.click(toggleReleaseNotesButton);
+      await waitFor(
+        () => {
+          const releaseNoteText = screen.getByText('Release notes body text');
+          expect(releaseNoteText).toBeInTheDocument();
+        },
+        { timeout: 600 }
+      );
+
+      const dialog = within(container.children[1] as HTMLElement);
+      const searchInput = dialog.getByRole('textbox', {
+        hidden: true,
+      });
+      expect(searchInput).toBeInTheDocument();
+      await user.type(searchInput, 'qwerty');
+      const nothingMatchinText = dialog.getByText(/Nothing matching/);
+      expect(nothingMatchinText).toBeInTheDocument();
     });
   });
 
@@ -339,7 +377,7 @@ describe('Help', () => {
       const { title, description, url } = fakeInputs();
       // const imageOne = await fakeImageFile();
       // const imageTwo = await fakeImageFile();
-    
+
       render(<Help applicationName={applicationName} />, {
         wrapper: Wrappers,
       });
@@ -366,38 +404,38 @@ describe('Help', () => {
       expect(titleInput.value).toEqual(title);
       expect(descInput.value).toEqual(description);
       expect(urlInput.value).toEqual(url);
-    
+
       // const fileUploadArea = screen.getByTestId('file-upload-area-input');
-    
+
       // await user.upload(fileUploadArea, [imageTwo]);
-    
+
       // // Delete image file
       // const file2nameElement = screen.getByAltText(
       //   createRegexToGetAttachment(imageTwo.name)
       // );
-    
+
       // expect(file2nameElement).toBeInTheDocument();
-    
+
       // await user.hover(file2nameElement);
-    
+
       // const removeAttachmentButton = screen.getByTestId('attachment-delete-button');
-    
+
       // expect(removeAttachmentButton).toBeInTheDocument();
-    
+
       // if (removeAttachmentButton) {
       //   await user.click(removeAttachmentButton);
       //   expect(file2nameElement).not.toBeInTheDocument();
       // }
-    
+
       // // Upload three files, two being duplicates, so expect only two files to be shown
       // await user.upload(fileUploadArea, [imageOne]);
       // await user.upload(fileUploadArea, [imageTwo]);
       // await user.upload(fileUploadArea, [imageOne]);
-    
+
       // const allDeleteButtons = screen.getAllByTestId('attachment-delete-button');
-    
+
       // expect(allDeleteButtons.length).toBe(2);
-    
+
       expect(submitButton).not.toBeDisabled();
       await user.click(submitButton);
 
