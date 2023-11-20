@@ -14,7 +14,6 @@ const Container = styled.div`
   box-shadow: ${elevation.raised};
   border-radius: ${shape.corners.borderRadius};
   overflow: hidden;
-  max-width: 1100px;
   width: calc(100% - ${spacings.comfortable.xx_large} * 2);
 `;
 
