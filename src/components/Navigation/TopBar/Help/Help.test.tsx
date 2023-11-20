@@ -211,6 +211,34 @@ describe('Help', () => {
   });
 
   describe('Release notes', () => {
+    test('can close dialog by clicking outside', async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <Help applicationName={applicationName} />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      const releaseNotesButton = screen.getByRole('menuitem', {
+        name: 'Release notes',
+      });
+
+      await user.click(releaseNotesButton);
+
+      const title = screen.getByText('Release Notes');
+
+      expect(title).toBeInTheDocument();
+      const dialog = screen.getByRole('dialog', { hidden: true });
+      await user.click(dialog);
+      const titleHeader = screen.queryByText('Release Notes');
+
+      expect(titleHeader).not.toBeInTheDocument();
+    });
     test('show a release note', async () => {
       mockServiceHasError = false;
       render(
@@ -223,8 +251,6 @@ describe('Help', () => {
       const button = screen.getByRole('button');
       await user.click(button);
       const releaseButton = document.querySelector('#release-notes');
-      // const releaseNotes = screen.getByText('Release notes');
-      screen.logTestingPlaygroundURL();
       if (releaseButton) {
         await user.click(releaseButton);
       }
