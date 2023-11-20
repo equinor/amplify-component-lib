@@ -16,8 +16,12 @@ import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 const ReleaseNotes: FC = () => {
   const { releaseNotesYears, setOpen, open } = useReleaseNotes();
 
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
   return (
-    <StyledDialog open={open} onClose={() => setOpen(false)} isDismissable>
+    <StyledDialog open={open} onClose={handleCloseModal} isDismissable>
       <ReleaseNotesHeader />
       <PageMenuProvider items={releaseNotesYears}>
         <ScrollWrapper>

@@ -29,7 +29,7 @@ const releaseNotes = [
     version: null,
     title: 'Improved task board and reporting overview June',
     body: '<h1>Release notes body text</h1>',
-    tags: ['Feature', 'Improvement', 'Bug fix'],
+    tags: ['Improvement', 'Bug fix'],
     createdDate: '2023-06-29T10:48:49.6883+00:00',
   },
 ];
@@ -264,7 +264,7 @@ describe('Help', () => {
         { timeout: 500 }
       );
     });
-    test('should show Nothing matching "SearchTerm" when no matching release notes', async () => {
+    test('should show Nothing matching "SearchTerm" when no matching release notes given only entered a search and no filter', async () => {
       mockServiceHasError = false;
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
@@ -293,8 +293,60 @@ describe('Help', () => {
         hidden: true,
       });
       expect(searchInput).toBeInTheDocument();
-      await user.type(searchInput, 'qwerty');
-      const nothingMatchinText = dialog.getByText(/Nothing matching/);
+      const searchTerm = faker.animal.crocodilia();
+      await user.type(searchInput, searchTerm);
+
+      const nothingMatchinText = dialog.getByText(
+        `Nothing matching "${searchTerm} "`
+      );
+      expect(nothingMatchinText).toBeInTheDocument();
+    });
+    test('should show Nothing matching " Feature" when no matching release notes given only selected type', async () => {
+      mockServiceHasError = false;
+      const { container } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <Help applicationName={applicationName} />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
+      const user = userEvent.setup();
+      const toggleHelpButton = screen.getByRole('button');
+      await user.click(toggleHelpButton);
+      const toggleReleaseNotesButton = screen.getByRole('menuitem', {
+        name: /Release notes/,
+      });
+      expect(toggleReleaseNotesButton).toBeInTheDocument();
+      await user.click(toggleReleaseNotesButton);
+      await waitFor(
+        () => {
+          const releaseNoteText = screen.getByText('Release notes body text');
+          expect(releaseNoteText).toBeInTheDocument();
+        },
+        { timeout: 600 }
+      );
+
+      const dialog = within(container.children[1] as HTMLElement);
+      const filterButton = dialog.getByRole('button', {
+        hidden: true,
+        name: 'Filter by',
+      });
+      expect(filterButton).toBeInTheDocument();
+      await user.click(filterButton);
+      const typeButton = dialog.getByRole('menuitem', {
+        hidden: true,
+        name: 'Type',
+      });
+      await user.click(typeButton);
+      expect(typeButton).toBeInTheDocument();
+      const featureButton = dialog.getByRole('menuitem', {
+        hidden: true,
+        name: 'Feature',
+      });
+      await user.click(featureButton);
+
+      const nothingMatchinText = dialog.getByText(
+        `Nothing matching " Feature"`
+      );
       expect(nothingMatchinText).toBeInTheDocument();
     });
   });

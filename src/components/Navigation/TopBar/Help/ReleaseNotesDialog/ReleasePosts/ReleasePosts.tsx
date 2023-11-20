@@ -45,10 +45,9 @@ const ReleasePosts: FC = () => {
     return (
       <ContainerNoResults>
         <Typography group="heading" variant="h4" color="#3D3D3D">
-          Nothing matching{' '}
-          {`" ${search.searchValue ?? ''} ${
+          {`Nothing matching "${search.searchValue ?? ''} ${
             selectedReleaseNoteTypes?.map((t) => t.value).join(', ') ?? ''
-          } "`}
+          }"`}
         </Typography>
       </ContainerNoResults>
     );
