@@ -30,7 +30,7 @@ const ReleasePosts: FC = () => {
   }
 
   // Display this if no release posts are present whatsoever
-  if (data?.length === 0) {
+  if (!data || data?.length === 0) {
     return (
       <ContainerNoResults>
         <Typography group="heading" variant="h4" color="#3D3D3D">
