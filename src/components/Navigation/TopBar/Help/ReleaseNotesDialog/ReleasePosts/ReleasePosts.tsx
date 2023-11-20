@@ -33,24 +33,15 @@ const ReleasePosts: FC = () => {
     );
   }
 
-  if (releaseNotes?.length === 0) {
-    if (releaseNotes?.length === 0) {
-      return (
-        <ContainerNoResults>
-          <Typography group="heading" variant="h4" color="#3D3D3D">
-            There are no posts at the moment
-          </Typography>
-        </ContainerNoResults>
-      );
-    } else {
-      return (
-        <ContainerNoResults>
-          <Typography group="heading" variant="h4" color="#3D3D3D">
-            Nothing matching {`" ${search} ${selectedReleaseNoteTypes} "`}
-          </Typography>
-        </ContainerNoResults>
-      );
-    }
+  // Display this if no release posts are present whatsoever
+  if (data?.length === 0) {
+    return (
+      <ContainerNoResults>
+        <Typography group="heading" variant="h4" color="#3D3D3D">
+          There are no posts at the moment
+        </Typography>
+      </ContainerNoResults>
+    );
   }
 
   return (
@@ -79,8 +70,9 @@ const ReleasePosts: FC = () => {
               if (
                 releaseNotesInMonth === undefined ||
                 releaseNotesInMonth.length === 0
-              )
+              ) {
                 return null;
+              }
 
               return [
                 <Typography
