@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
-  padding-right: ${spacings.comfortable.x_large};
+  padding-right: ${spacings.comfortable.xxx_large};
   flex-wrap: wrap;
   > section {
     display: flex;

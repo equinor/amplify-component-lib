@@ -3,12 +3,12 @@ import { FC, useMemo, useState } from 'react';
 import { Button, Icon } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 
-import { Wrapper } from '../ReleaseNotes.styles';
 import ReleaseNotesTypes from '../ReleaseNotesTypes/ReleaseNotesTypes';
 import {
   ReleaseNoteType,
   RELEASENOTETYPES_INFORMATION,
 } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
+import { Wrapper } from './FilterHeader.styles';
 import { ChipWrapper, SieveWrapper } from './FilterHeader.styles';
 import { FilterOption } from 'src/components/Inputs/Sieve/Filter';
 import Sieve from 'src/components/Inputs/Sieve/Sieve';
