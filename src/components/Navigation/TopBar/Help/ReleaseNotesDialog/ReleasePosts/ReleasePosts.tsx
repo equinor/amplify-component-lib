@@ -10,7 +10,7 @@ import {
 } from './ReleasePosts.styles';
 import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
-import { monthValueToString, yearValueToString } from 'src/utils/releaseNotes';
+import { monthValueToString } from 'src/utils/releaseNotes';
 
 const ReleasePosts: FC = () => {
   const { isLoading, data } = useReleaseNotesQuery();
@@ -56,14 +56,6 @@ const ReleasePosts: FC = () => {
   return (
     <Container>
       {releaseNotesYears?.map((year, idx) => {
-        const releaseNotesInYear = releaseNotes?.filter(
-          (releaseNote) =>
-            releaseNote.createdDate &&
-            yearValueToString(new Date(releaseNote.createdDate)) === year.value
-        );
-
-        if (releaseNotesInYear?.length === 0) return null;
-
         return (
           <Container key={`year-${year.value}-${idx}`}>
             <Typography variant="h4" id={year.value}>
@@ -76,13 +68,6 @@ const ReleasePosts: FC = () => {
                   monthValueToString(new Date(releaseNote.createdDate)) ===
                     month.value
               );
-
-              if (
-                releaseNotesInMonth === undefined ||
-                releaseNotesInMonth.length === 0
-              ) {
-                return null;
-              }
 
               return [
                 <Typography
