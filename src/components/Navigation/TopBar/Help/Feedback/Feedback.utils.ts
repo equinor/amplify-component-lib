@@ -3,9 +3,9 @@ import { FileWithPath } from 'react-dropzone';
 import { EnvironmentType } from '../../TopBar';
 import {
   FeedbackContentType,
-  FeedbackEnum,
+  FeedbackType,
   UrgencyOption,
-} from './FeedbackForm.types';
+} from './Feedback.types';
 import { ServiceNowUrgency } from 'src/api';
 import { date, environment } from 'src/utils';
 
@@ -76,10 +76,10 @@ export const createServiceNowURL = (sysId: string) => {
 
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
-  selectedType: FeedbackEnum | undefined,
+  selectedType: FeedbackType | undefined,
   email: string | undefined
 ) => {
-  const isBugReport = selectedType === FeedbackEnum.BUG;
+  const isBugReport = selectedType === FeedbackType.BUG;
   const typeText = isBugReport ? ':bug: Bug report' : ':bulb: Suggestion';
 
   const dateAndUrlSectionArray = [];

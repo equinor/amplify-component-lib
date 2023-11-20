@@ -4,13 +4,10 @@ import { FileRejection, FileWithPath } from 'react-dropzone';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import FileUploadArea from 'src/components/Inputs/FileUploadArea';
-import ImageFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ImageFile';
-import { MAX_FILE_SIZE_BYTES } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.const';
-import {
-  FeedbackContentType,
-  UrgencyOption,
-} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
+import FileUploadArea from '../../../../../Inputs/FileUploadArea';
+import { MAX_FILE_SIZE_BYTES } from '../Feedback.const';
+import { useFeedbackContext } from '../hooks/useFeedbackContext';
+import ImageFile from './ImageFile';
 
 import styled from 'styled-components';
 
@@ -57,18 +54,10 @@ function removeDuplicates(
   return a;
 }
 
-interface UploadFileProps {
-  feedbackContent: FeedbackContentType;
-  updateFeedback: (
-    key: keyof FeedbackContentType,
-    newValue: string | UrgencyOption | FileWithPath[]
-  ) => void;
-}
+interface UploadFileProps {}
 
-const UploadFile: FC<UploadFileProps> = ({
-  feedbackContent,
-  updateFeedback,
-}) => {
+const UploadFile: FC<UploadFileProps> = () => {
+  const { feedbackAttachments, updateFeedback } = useFeedbackContext();
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const onDrop = async (
     acceptedFiles: FileWithPath[],
@@ -82,8 +71,8 @@ const UploadFile: FC<UploadFileProps> = ({
       reader.readAsDataURL(acceptedFiles[0]);
       const oldAttachments: FileWithPath[] = [];
 
-      if (feedbackContent.attachments) {
-        oldAttachments.push(...feedbackContent.attachments);
+      if (feedbackAttachments) {
+        oldAttachments.push(...feedbackAttachments);
       }
       const combinedNewAndPrev = [...cleanedOfHiddenFiles, ...oldAttachments];
       const newAttachments = removeDuplicates(
@@ -97,7 +86,7 @@ const UploadFile: FC<UploadFileProps> = ({
 
   const handleOnDelete = (file: FileWithPath) => {
     const newAttachmentsList =
-      feedbackContent.attachments?.filter((attachment) => {
+      feedbackAttachments?.filter((attachment) => {
         /* c8 ignore start */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
         return attachment.name !== file.name && attachment.size !== file.size;
       }) ?? [];
@@ -132,7 +121,7 @@ const UploadFile: FC<UploadFileProps> = ({
           }}
           compact
         />
-        {feedbackContent.attachments?.map((file) => {
+        {feedbackAttachments?.map((file) => {
           return (
             <ImageFile
               key={file.name + file.size}

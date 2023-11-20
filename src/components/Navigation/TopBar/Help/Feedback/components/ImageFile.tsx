@@ -5,7 +5,7 @@ import { Icon, Tooltip } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { readUploadedFileAsText } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.utils';
+import { readUploadedFileAsText } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.utils';
 
 import styled from 'styled-components';
 

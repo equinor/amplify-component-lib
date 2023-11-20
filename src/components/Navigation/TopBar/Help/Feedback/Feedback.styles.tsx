@@ -1,22 +1,22 @@
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { AmplifyTextField } from '../../../../index';
+import AmplifyTextField from '../../../../Inputs/AmplifyTextField';
 
 import styled from 'styled-components';
 
 const { spacings, colors, shape } = tokens;
 
-// FeedbackForm.tsx
-export const Container = styled.div`
+// General
+export const ContentWrapper = styled.div`
   width: 700px;
   height: fit-content;
   padding: 0 ${spacings.comfortable.medium} ${spacings.comfortable.medium}
     ${spacings.comfortable.medium};
 `;
 
-// FeedbackFormInner.tsx
-export const Wrapper = styled.div`
+// FeedbackForm.tsx
+export const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: ${spacings.comfortable.medium};

@@ -6,7 +6,7 @@ export enum UrgencyOption {
   UNABLE = 'I am unable to work',
 }
 
-export enum FeedbackEnum {
+export enum FeedbackType {
   BUG = 'bug',
   SUGGESTION = 'suggestion',
 }

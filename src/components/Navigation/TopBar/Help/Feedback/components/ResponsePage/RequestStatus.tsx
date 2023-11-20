@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { environment } from '../../../../../../../utils';
 import { EnvironmentType } from '../../../../TopBar';
-import { RequestStatusType, StatusEnum } from '../../FeedbackForm.types';
+import { RequestStatusType, StatusEnum } from '../../Feedback.types';
 import ErrorStatus from './ErrorStatus';
 
 import styled from 'styled-components';
@@ -54,7 +54,7 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
   }, [requestStatus]);
 
   const partial = requestStatus.status === StatusEnum.partial;
-
+  console.log('req stat: ', requestStatus);
   const serviceNowUrl = useMemo(() => {
     if (requestStatus.serviceNowId && requestStatus.serviceNowId.length !== 0) {
       const environment = getEnvironmentName(
@@ -68,11 +68,11 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
     }
   }, [requestStatus.serviceNowId]);
 
+  console.log(serviceNowUrl);
   if (requestStatus.status === StatusEnum.error)
     return (
       <ErrorStatus title={title} errorText={requestStatus.errorText ?? ''} />
     );
-  console.log(serviceNowUrl);
   return (
     <Wrapper>
       <Typography group="ui" variant="accordion_header">

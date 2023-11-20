@@ -2,7 +2,8 @@ import { FC } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { AttachmentStatus, RequestStatusType } from '../../FeedbackForm.types';
+import { RequestStatusType } from '../../Feedback.types';
+import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import RequestStatus from './RequestStatus';
 
 import styled from 'styled-components';
@@ -23,16 +24,15 @@ const SlackRequestsWrapper = styled.div`
 `;
 
 interface SlackResponseProps {
-  attachments: AttachmentStatus[];
-  slackRequest: RequestStatusType;
   allSlackRequestStatus: RequestStatusType;
 }
 
 const FullSlackResponse: FC<SlackResponseProps> = ({
-  attachments,
-  slackRequest,
   allSlackRequestStatus,
 }) => {
+  const { slackRequestResponse, slackAttachmentsRequestResponse } =
+    useFeedbackContext();
+
   return (
     <Container>
       <RequestStatus
@@ -40,8 +40,11 @@ const FullSlackResponse: FC<SlackResponseProps> = ({
         requestStatus={allSlackRequestStatus}
       />
       <SlackRequestsWrapper>
-        <RequestStatus title="Posting text " requestStatus={slackRequest} />
-        {attachments.map((attachment) => {
+        <RequestStatus
+          title="Posting text "
+          requestStatus={slackRequestResponse}
+        />
+        {slackAttachmentsRequestResponse.map((attachment) => {
           return (
             <RequestStatus
               key={attachment.fileName}

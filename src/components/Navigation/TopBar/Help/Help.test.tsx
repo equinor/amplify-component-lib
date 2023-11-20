@@ -6,7 +6,7 @@ import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import {
   FeedbackContentType,
   UrgencyOption,
-} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
+} from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
