@@ -9,13 +9,13 @@ import {
   useState,
 } from 'react';
 
+import { PageMenuItemType } from './PageMenuProvider';
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { Option, SieveValue } from 'src/components';
 import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
 import {
-  extractYearsData,
+  extractDatesFromReleasNotes,
   sortReleaseNotesByDate,
-  YearData,
 } from 'src/utils/releaseNotes';
 
 interface ReleaseNotesContextState {
@@ -26,7 +26,7 @@ interface ReleaseNotesContextState {
   setOpen: (open: boolean) => void;
   toggle: () => void;
   filteredData: ReleaseNote[];
-  releaseNotesYears: YearData[];
+  releaseNotesYears: PageMenuItemType[];
 }
 
 const defaultSearchState: SieveValue = {
@@ -64,7 +64,10 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
     setOpen((previous) => !previous);
   };
 
-  const releaseNotesYears = useMemo(() => extractYearsData(data || []), [data]);
+  const releaseNotesYears = useMemo(
+    () => extractDatesFromReleasNotes(data || []),
+    [data]
+  );
 
   const selectedReleaseNoteTypes = search.filterValues?.Type;
 

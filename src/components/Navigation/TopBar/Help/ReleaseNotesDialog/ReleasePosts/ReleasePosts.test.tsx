@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ReleasePosts from './ReleasePosts';
 import { CancelablePromise } from 'src/api';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen, waitFor } from 'src/tests/test-utils';
 
 const releaseNotes = [
   {
@@ -144,4 +144,3 @@ describe('Empty release notes', () => {
     returnEmptyArray = false;
   });
 });
-

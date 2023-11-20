@@ -1,4 +1,5 @@
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
+import { PageMenuItemType } from 'src/providers/PageMenuProvider';
 
 interface MonthData {
   label: string;
@@ -11,66 +12,83 @@ interface YearData {
   months: MonthData[];
 }
 
-const extractYearsData = (getReleaseNoteList: any[]): YearData[] => {
-  const years: YearData[] = [];
+const extractDatesFromReleasNotes = (
+  releaseNotes: ReleaseNote[]
+): PageMenuItemType[] => {
+  const pageMenuItemFormattedNotes: PageMenuItemType[] = [];
 
-  for (const note of getReleaseNoteList) {
-    const createdDate = new Date(note.createdDate);
+  const releaseNotesWithDate = releaseNotes.filter((n) => n.createdDate);
+
+  const releaseNotesDates = releaseNotesWithDate.map((n) => {
+    const date = new Date(n.createdDate as string);
+
+    return { date, year: date.getFullYear(), month: date.getMonth() };
+  });
+
+  for (const note of releaseNotesWithDate) {
+    const createdDate = new Date(note.createdDate as string);
     const yearLabel = createdDate.toLocaleString('en-US', {
       year: 'numeric',
     });
-    const yearValue = createdDate.toLocaleString('en-US', {
+    const yearValue = `year${createdDate.toLocaleString('en-US', {
       year: 'numeric',
-    });
-
-    const existingYear = years.find((year) => year.value === yearValue);
-    if (!existingYear) {
-      const year: YearData = {
-        label: yearLabel,
-        value: yearValue,
-        months: [],
-      };
-      years.push(year);
+    })}`;
+    // Check if the year already exists, move on if it does
+    const existingYear = pageMenuItemFormattedNotes.find(
+      (p) => p.value === yearValue
+    );
+    if (existingYear) {
+      continue;
     }
 
-    const monthLabel = createdDate.toLocaleString('en-US', {
-      month: 'long',
-      year: 'numeric',
-    });
-    const monthValue = new Date(monthLabel);
+    const matchingDatesOnYear = releaseNotesDates.filter(
+      (d) => d.year === createdDate.getFullYear()
+    );
 
-    const foundYear = years.find((year) => year.value === yearValue);
-    if (foundYear) {
-      const existingMonth = foundYear.months.find(
-        (month) => month.value.toISOString() === monthValue.toISOString()
-      );
-      if (!existingMonth) {
-        foundYear.months.push({
-          label: monthLabel,
-          value: monthValue,
-        });
-      }
-      foundYear.months.sort((a, b) => {
-        const dateA = new Date(a.value);
-        const dateB = new Date(b.value);
-        return dateB.getTime() - dateA.getTime();
+    const uniqueMonths = [
+      ...new Map(matchingDatesOnYear.map((m) => [m.month, m])).values(),
+    ];
+
+    const months = uniqueMonths.map((d) => {
+      const monthLabel = d.date.toLocaleString('en-US', {
+        month: 'long',
       });
-    }
+      const monthValue = `${yearValue}--${monthLabel}`;
+      return {
+        label: monthLabel,
+        value: monthValue,
+      };
+    });
+
+    months.sort((a, b) => {
+      const dateA = new Date(a.label);
+      const dateB = new Date(b.label);
+      return dateB.getTime() - dateA.getTime();
+    });
+
+    pageMenuItemFormattedNotes.push({
+      label: yearLabel,
+      value: yearValue,
+      children: months,
+    });
   }
 
-  years.sort((a, b) => {
-    const yearA = parseInt(a.value);
-    const yearB = parseInt(b.value);
+  pageMenuItemFormattedNotes.sort((a, b) => {
+    const yearA = parseInt(a.label);
+    const yearB = parseInt(b.label);
     return yearB - yearA;
   });
 
-  return years;
+  return pageMenuItemFormattedNotes;
 };
 
 const monthValueToString = (monthValue: Date) => {
-  return `${monthValue.toLocaleDateString('en-GB', {
-    month: 'long',
-  })}_${monthValue.getFullYear()}`.toLowerCase();
+  return `year${monthValue.getFullYear()}--${monthValue.toLocaleDateString(
+    'en-GB',
+    {
+      month: 'long',
+    }
+  )}`;
 };
 
 const monthToString = (monthValue: Date) => {
@@ -80,7 +98,7 @@ const monthToString = (monthValue: Date) => {
 };
 
 const yearValueToString = (yearValue: Date) => {
-  return `year-${yearValue.toLocaleDateString('en-GB', {
+  return `year${yearValue.toLocaleDateString('en-GB', {
     year: 'numeric',
   })}`;
 };
@@ -97,7 +115,7 @@ const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
 
 export type { MonthData, YearData };
 export {
-  extractYearsData,
+  extractDatesFromReleasNotes,
   monthToString,
   monthValueToString,
   sortReleaseNotesByDate,

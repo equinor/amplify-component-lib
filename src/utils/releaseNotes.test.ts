@@ -1,5 +1,5 @@
 import {
-  extractYearsData,
+  extractDatesFromReleasNotes,
   monthToString,
   monthValueToString,
   sortReleaseNotesByDate,
@@ -24,10 +24,10 @@ const notes = [
 describe('release notes utils', () => {
   test('extract years and months from list containing createdDate attribute', () => {
     const expectedYear = '2023';
-    const expectedMonthAndYear = 'June 2023';
-    const actual = extractYearsData(dates);
+    const expectedMonth = 'June';
+    const actual = extractDatesFromReleasNotes(dates);
     expect(actual[0].label).toEqual(expectedYear);
-    expect(actual[0].months[0].label).toEqual(expectedMonthAndYear);
+    expect((actual[0].children || [])[0].label).toEqual(expectedMonth);
   });
 
   test('transform date to month string', () => {
@@ -36,14 +36,14 @@ describe('release notes utils', () => {
     console.log({ actual });
     expect(actual).toEqual(expectedYear);
   });
-  test('transform date to a string in the format of month_year: june_2023', () => {
-    const expectedYear = 'june_2023';
+  test('transform date to a string in the format of month_year: year2023--June', () => {
+    const expectedYear = 'year2023--June';
     const actual = monthValueToString(dateObject);
     console.log({ actual });
     expect(actual).toEqual(expectedYear);
   });
-  test('transform date to string formatted with a year_ prefix to the year: year-2023', () => {
-    const expectedYear = 'year-2023';
+  test('transform date to string formatted with a year_ prefix to the year: year2023', () => {
+    const expectedYear = 'year2023';
     const actual = yearValueToString(dateObject);
     console.log({ actual });
     expect(actual).toEqual(expectedYear);

@@ -10,11 +10,7 @@ import {
 } from './ReleasePosts.styles';
 import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
-import {
-  monthToString,
-  monthValueToString,
-  yearValueToString,
-} from 'src/utils/releaseNotes';
+import { monthValueToString, yearValueToString } from 'src/utils/releaseNotes';
 
 const ReleasePosts: FC = () => {
   const { isLoading } = useReleaseNotesQuery();
@@ -46,25 +42,26 @@ const ReleasePosts: FC = () => {
 
   return (
     <Container>
-      {releaseNotesYears?.map((year) => {
+      {releaseNotesYears?.map((year, idx) => {
         const releaseNotesInYear = releaseNotes?.filter(
           (releaseNote) =>
             releaseNote.createdDate &&
-            yearValueToString(new Date(releaseNote.createdDate)) ===
-              yearValueToString(new Date(year.value))
+            yearValueToString(new Date(releaseNote.createdDate)) === year.value
         );
 
         if (releaseNotesInYear?.length === 0) return null;
 
         return (
-          <Container key={`year-${year.value}`}>
-            <Typography variant="h4">{year.value}</Typography>
-            {year.months.flatMap((month) => {
+          <Container key={`year-${year.value}-${idx}`}>
+            <Typography variant="h4" id={year.value}>
+              {year.label}
+            </Typography>
+            {year.children?.flatMap((month) => {
               const releaseNotesInMonth = releaseNotes?.filter(
                 (releaseNote) =>
                   releaseNote.createdDate &&
                   monthValueToString(new Date(releaseNote.createdDate)) ===
-                    monthValueToString(month.value)
+                    month.value
               );
 
               if (
@@ -78,9 +75,9 @@ const ReleasePosts: FC = () => {
                 <Typography
                   key={`month-${month.label}`}
                   variant="h5"
-                  id={monthValueToString(month.value)}
+                  id={month.value}
                 >
-                  {monthToString(month.value)}
+                  {month.label}
                 </Typography>,
                 ...releaseNotesInMonth.map((releaseNote) => (
                   <ReleasePost
