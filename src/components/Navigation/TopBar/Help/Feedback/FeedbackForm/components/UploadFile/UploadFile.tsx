@@ -4,9 +4,9 @@ import { FileRejection, FileWithPath } from 'react-dropzone';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import FileUploadArea from '../../../../../../Inputs/FileUploadArea';
-import { MAX_FILE_SIZE_BYTES } from '../../Feedback.const';
-import { useFeedbackContext } from '../../hooks/useFeedbackContext';
+import FileUploadArea from '../../../../../../../Inputs/FileUploadArea';
+import { MAX_FILE_SIZE_BYTES } from '../../../Feedback.const';
+import { useFeedbackContext } from '../../../hooks/useFeedbackContext';
 import ImageFile from './ImageFile';
 
 import styled from 'styled-components';

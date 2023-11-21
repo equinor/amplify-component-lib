@@ -1,8 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import LockedInputTooltip from './components/FeedbackForm/LockedInputTooltip';
-
 import styled from 'styled-components';
 
 const { spacings, colors, shape } = tokens;
@@ -24,10 +22,6 @@ export const Container = styled.div`
   width: 100%;
 `;
 
-export const BugReportQuestions = styled.div`
-  grid-column: 1 / 3;
-`;
-
 export const UploadInfo = styled.div`
   grid-column: 1/3;
   display: flex;
@@ -38,13 +32,6 @@ export const UploadInfo = styled.div`
   background-color: ${colors.ui.background__info.hex};
   padding: ${spacings.comfortable.medium_small};
   border-radius: ${shape.button.borderRadius};
-`;
-
-export const FeedbackTitleTooltip = styled(LockedInputTooltip)`
-  grid-column: 1/3;
-`;
-export const FeedbackDescriptionTooltip = styled(LockedInputTooltip)`
-  grid-column: 1/3;
 `;
 
 export const ReportLocationText = styled(Typography)`

@@ -4,9 +4,9 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { check_circle_outlined, info_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { environment } from '../../../../../../../utils';
-import { EnvironmentType } from '../../../../TopBar';
-import { RequestStatusType, StatusEnum } from '../../Feedback.types';
+import { environment } from '../../../../../../utils';
+import { EnvironmentType } from '../../../TopBar';
+import { RequestStatusType, StatusEnum } from '../Feedback.types';
 import { ServiceNowLink, Status } from './ResponsePage.styles';
 
 import styled from 'styled-components';

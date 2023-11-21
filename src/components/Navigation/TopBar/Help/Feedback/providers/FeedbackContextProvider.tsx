@@ -1,7 +1,9 @@
 import {
   createContext,
+  Dispatch,
   FC,
   ReactNode,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -42,6 +44,8 @@ export interface FeedbackContext {
   feedbackAttachments: FileWithPath[];
   showResponsePage: boolean;
   toggleShowResponsePage: () => void;
+  isWrongDomain: boolean;
+  setIsWrongDomain: Dispatch<SetStateAction<boolean>>;
   handleSave: () => void;
   updateFeedback: (
     key: keyof FeedbackContentType | 'attachments',
@@ -52,6 +56,7 @@ export interface FeedbackContext {
   onDialogClose: () => void;
   resetForm: () => void;
   requestIsLoading: boolean;
+  serviceNowSuccess: boolean;
 }
 
 export const FeedbackContext = createContext<FeedbackContext | undefined>(
@@ -92,6 +97,8 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
 
   const [showResponsePage, setShowResponsePage] = useState(false);
 
+  const [isWrongDomain, setIsWrongDomain] = useState(false);
+
   const { mutateAsync: slackFileUpload, isPending: isFileUploadLoading } =
     useSlackFileUpload(feedbackContent);
 
@@ -130,6 +137,11 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     slackAttachmentsRequestResponse,
     slackRequestResponse.status,
   ]);
+
+  const serviceNowSuccess = useMemo(
+    () => serviceNowRequestResponse.status === StatusEnum.success,
+    [serviceNowRequestResponse.status]
+  );
 
   const toggleShowResponsePage = () => {
     setShowResponsePage((prev) => !prev);
@@ -301,15 +313,17 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
         slackAttachmentsRequestResponse,
         slackRequestResponse,
         updateFeedback,
-        feedbackContent: feedbackLocalStorage.feedbackContent,
-        serviceNowRequestResponse:
-          feedbackLocalStorage.serviceNowRequestResponse,
+        feedbackContent,
+        serviceNowRequestResponse,
         handleResponsePageOnClose,
         toggleShowResponsePage,
         onDialogClose: onClose,
         handleSave,
         resetForm,
         requestIsLoading,
+        serviceNowSuccess,
+        isWrongDomain,
+        setIsWrongDomain,
       }}
     >
       {children}

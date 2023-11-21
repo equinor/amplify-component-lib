@@ -3,9 +3,9 @@ import { FC, useMemo } from 'react';
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { ContentWrapper } from '../../Feedback.styles';
-import { FeedbackType, StatusEnum } from '../../Feedback.types';
-import { useFeedbackContext } from '../../hooks/useFeedbackContext';
+import { ContentWrapper } from '../Feedback.styles';
+import { FeedbackType, StatusEnum } from '../Feedback.types';
+import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import FullSlackResponse from './FullSlackResponse';
 import RequestStatus from './RequestStatus';
 

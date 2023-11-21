@@ -2,8 +2,8 @@ import { FC } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { RequestStatusType } from '../../Feedback.types';
-import { useFeedbackContext } from '../../hooks/useFeedbackContext';
+import { RequestStatusType } from '../Feedback.types';
+import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import RequestStatus from './RequestStatus';
 import { SlackRequestsWrapper } from './ResponsePage.styles';
 
