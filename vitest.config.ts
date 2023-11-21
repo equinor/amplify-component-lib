@@ -39,7 +39,12 @@ export default defineConfig({
         'src/hooks/useOnScreen.ts',
         'src/components/Navigation/TopBar/Help/FeedbackForm/**',
       ],
-      reporter: ['text-summary', 'html'],
+      reporter: [
+        'text-summary',
+        'html',
+        ['json-summary', { file: 'coverage.json' }],
+      ],
+      reportOnFailure: true,
       perFile: true,
       statements: 100,
       branches: 100,

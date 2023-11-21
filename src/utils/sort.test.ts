@@ -7,7 +7,7 @@ test('sortByDate works as expected with date objects', () => {
     .betweens({
       from: '2000',
       to: '2022',
-      count: Number(faker.string.numeric(2)),
+      count: faker.number.int({ min: 10, max: 50 }),
     })
     .map((item) => new Date(item));
 
@@ -27,7 +27,7 @@ test('sortByDate works as expected with strings', () => {
     .betweens({
       from: '2000',
       to: '2022',
-      count: faker.number.int({ min: 2, max: 50 }),
+      count: faker.number.int({ min: 10, max: 50 }),
     })
     .map((item: Date) => item.toISOString());
 
