@@ -113,3 +113,28 @@ test('Renders with color approved dates properly flow correctly', async () => {
     );
   }
 });
+
+test('Renders with fallback color', async () => {
+  const props = fakeProps(false, false);
+  render(<WorkflowDescription {...props} />);
+
+  const approvedOptions = props.options.filter(
+    (option) => option.approvedDate !== undefined
+  );
+  const approvedElements = screen.queryAllByTestId('approved');
+  for (const [index, option] of approvedElements.entries()) {
+    expect(
+      screen.getByText(approvedOptions[index].approvedUser ?? 'failed')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(approvedOptions[index].approvedDate ?? 'failed')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(approvedOptions[index].label ?? 'failed')
+    ).toBeInTheDocument();
+    expect(option.children[option.children.length - 1]).toHaveStyleRule(
+      'border',
+      `0.063em solid #000000`
+    );
+  }
+});
