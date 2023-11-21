@@ -211,6 +211,32 @@ describe('Help', () => {
   });
 
   describe('Release notes', () => {
+    test('should close the dialog by clicking the close button inside', async () => {
+      const { container } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <Help applicationName={applicationName} />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
+      const user = userEvent.setup();
+      const toggleHelpButton = screen.getByRole('button');
+      await user.click(toggleHelpButton);
+      const toggleReleaseNotesButton = screen.getByRole('menuitem', {
+        name: /Release notes/,
+      });
+      expect(toggleReleaseNotesButton).toBeInTheDocument();
+      await user.click(toggleReleaseNotesButton);
+
+      const dialog = within(container.children[1] as HTMLElement);
+      const closeButton = dialog.getByRole('button', {
+        hidden: true,
+        name: 'close modal',
+      });
+      expect(closeButton).toBeInTheDocument();
+      await user.click(closeButton);
+      const title = screen.queryByText('Release Notes');
+      expect(title).not.toBeInTheDocument();
+    });
     test('can close dialog by clicking outside', async () => {
       render(
         <MemoryRouter initialEntries={['/']}>

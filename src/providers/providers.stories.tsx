@@ -20,7 +20,7 @@ const providersList = [
   },
   {
     name: 'ReleaseNotesProvider',
-    body: 'Provider needed for ReleaseNotes isOpen state',
+    body: 'Provider to make ReleaseNotes work',
     code: `<ReleaseNotesProvider>
     {children}
 </ReleaseNotesProvider>`,

@@ -1,14 +1,14 @@
 import { FC, useMemo, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
+import { close, external_link } from '@equinor/eds-icons';
 
 import ReleaseNotesTypes from '../ReleaseNotesTypes/ReleaseNotesTypes';
 import {
   ReleaseNoteType,
   RELEASENOTETYPES_INFORMATION,
 } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
-import { Wrapper } from './FilterHeader.styles';
+import { ButtonContainer, Wrapper } from './FilterHeader.styles';
 import { ChipWrapper, SieveWrapper } from './FilterHeader.styles';
 import { FilterOption } from 'src/components/Inputs/Sieve/Filter';
 import Sieve from 'src/components/Inputs/Sieve/Sieve';
@@ -23,7 +23,7 @@ const { getAppName } = environment;
 
 const FilterHeader: FC = () => {
   const applicationName = getAppName(import.meta.env.VITE_NAME);
-  const { setSearch } = useReleaseNotes();
+  const { setSearch, setOpen } = useReleaseNotes();
   const [sieveValue, setSieveValue] = useState<SieveValue>({
     searchValue: undefined,
     filterValues: undefined,
@@ -65,6 +65,10 @@ const FilterHeader: FC = () => {
     setSearch((prev) => ({ ...prev, filterValues: newValues }));
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Wrapper>
       <SieveWrapper>
@@ -76,13 +80,22 @@ const FilterHeader: FC = () => {
           showChips={false}
           minSearchWidth="70%"
         />
-        <Button
-          variant="ghost_icon"
-          // TODO: this url should be built from the current environment instead of simply pointing to the portal's prod environment
-          href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}
-        >
-          <Icon data={external_link} />
-        </Button>
+        <ButtonContainer>
+          <Button
+            variant="ghost_icon"
+            // TODO: this url should be built from the current environment instead of simply pointing to the portal's prod environment
+            href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}
+          >
+            <Icon data={external_link} />
+          </Button>
+          <Button
+            variant="ghost_icon"
+            onClick={handleClose}
+            aria-label="close modal"
+          >
+            <Icon data={close} />
+          </Button>
+        </ButtonContainer>
       </SieveWrapper>
       <section>
         <ChipWrapper>
