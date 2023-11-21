@@ -13,9 +13,7 @@ const ReleaseNotesHeader: FC = () => {
   return (
     <HeaderWrapper>
       <HeadingContainer className="release-notes-header-container">
-        <Typography group="heading" variant="h4">
-          Release Notes
-        </Typography>
+        <Typography variant="h4">Release Notes</Typography>
       </HeadingContainer>
       <FilterContainer>
         <FilterHeader />

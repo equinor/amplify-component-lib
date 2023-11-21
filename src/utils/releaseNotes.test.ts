@@ -17,8 +17,8 @@ const notes = [
   { createdDate: '2023-06-29' },
   { createdDate: '2020-06-29' },
   { createdDate: '2022-06-29' },
-  {},
-  {},
+  { createdDate: undefined },
+  { createdDate: undefined },
 ];
 
 describe('release notes utils', () => {
@@ -55,8 +55,8 @@ describe('release notes utils', () => {
       { createdDate: '2023-06-29' },
       { createdDate: '2022-06-29' },
       { createdDate: '2020-06-29' },
-      {},
-      {},
+      { createdDate: undefined },
+      { createdDate: undefined },
     ];
     expect(sorted).toStrictEqual(expected);
   });

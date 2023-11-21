@@ -21,7 +21,7 @@ import {
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { date } from 'src/utils';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const ReleasePost: FC<ReleaseNote> = ({
   createdDate,
@@ -50,68 +50,66 @@ const ReleasePost: FC<ReleaseNote> = ({
 
   return (
     <Container>
-      <AnimatePresence>
-        <motion.div
-          initial={{
-            height: '250px',
-          }}
-          animate={{
-            height: showFullContent ? 'auto' : '250px',
-          }}
-        >
-          <TopContainer>
-            <HeadingContainer>
-              <Typography group="paragraph" variant="overline">
-                {date.formatDate(createdDate, {
-                  format: 'DD. month YYYY',
-                })}
-              </Typography>
-              <Typography group="paragraph" variant="overline">
-                {version}
-              </Typography>
-            </HeadingContainer>
-
-            <RightContainer>
-              {tags?.map((tag) => {
-                return (
-                  <ReleaseNoteTypeContainer key={tag}>
-                    <ReleaseNotesTypes
-                      name={tag as ReleaseNoteType}
-                      active={true}
-                      showIcon={false}
-                    />
-                  </ReleaseNoteTypeContainer>
-                );
+      <motion.div
+        initial={{
+          height: '250px',
+        }}
+        animate={{
+          height: showFullContent ? 'auto' : '250px',
+        }}
+      >
+        <TopContainer>
+          <HeadingContainer>
+            <Typography group="paragraph" variant="overline">
+              {date.formatDate(createdDate, {
+                format: 'DD. month YYYY',
               })}
-            </RightContainer>
-          </TopContainer>
-          <TitleContainer>
-            <Typography group="heading" variant="h3">
-              {title}
             </Typography>
-          </TitleContainer>
-          <BodyContainer ref={handleOnNewRef}>
-            <TextContent text={body ?? ''} />
-          </BodyContainer>
-          <BtnContainer $open={needsShowMoreButton}>
-            {needsShowMoreButton && (
-              <Button variant="ghost_icon" onClick={toggleContent}>
-                {showFullContent ? (
-                  <>
-                    <AccordionText>{buttonText}</AccordionText>
-                    <Icon data={arrow_drop_up} />
-                  </>
-                ) : (
-                  <>
-                    <AccordionText>{buttonText}</AccordionText>
-                    <Icon data={arrow_drop_down} />
-                  </>
-                )}
-              </Button>
-            )}
-          </BtnContainer>
-        </motion.div>
-      </AnimatePresence>
+            <Typography group="paragraph" variant="overline">
+              {version}
+            </Typography>
+          </HeadingContainer>
+
+          <RightContainer>
+            {tags?.map((tag) => {
+              return (
+                <ReleaseNoteTypeContainer key={tag}>
+                  <ReleaseNotesTypes
+                    name={tag as ReleaseNoteType}
+                    active={true}
+                    showIcon={false}
+                  />
+                </ReleaseNoteTypeContainer>
+              );
+            })}
+          </RightContainer>
+        </TopContainer>
+        <TitleContainer>
+          <Typography group="heading" variant="h3">
+            {title}
+          </Typography>
+        </TitleContainer>
+        <BodyContainer ref={handleOnNewRef}>
+          <TextContent text={body ?? ''} />
+        </BodyContainer>
+        <BtnContainer $open={needsShowMoreButton}>
+          {needsShowMoreButton && (
+            <Button variant="ghost_icon" onClick={toggleContent}>
+              {showFullContent ? (
+                <>
+                  <AccordionText>{buttonText}</AccordionText>
+                  <Icon data={arrow_drop_up} />
+                </>
+              ) : (
+                <>
+                  <AccordionText>{buttonText}</AccordionText>
+                  <Icon data={arrow_drop_down} />
+                </>
+              )}
+            </Button>
+          )}
+        </BtnContainer>
+      </motion.div>
     </Container>
   );
 };

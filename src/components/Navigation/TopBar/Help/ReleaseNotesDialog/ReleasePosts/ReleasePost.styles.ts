@@ -27,7 +27,6 @@ const TopContainer = styled.div`
 
 const HeadingContainer = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: ${spacings.comfortable.medium};
 `;
