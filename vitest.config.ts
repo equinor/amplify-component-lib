@@ -44,6 +44,7 @@ export default defineConfig({
         'html',
         ['json-summary', { file: 'coverage.json' }],
       ],
+      reportOnFailure: true,
       perFile: true,
       statements: 100,
       branches: 100,
