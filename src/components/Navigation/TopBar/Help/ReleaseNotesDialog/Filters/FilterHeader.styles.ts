@@ -31,6 +31,11 @@ const SieveWrapper = styled.div`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: ${spacings.comfortable.medium};
+`;
+
 const ChipWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -49,4 +54,4 @@ const ChipWrapper = styled.div`
   }
 `;
 
-export { ChipWrapper, SieveWrapper, Wrapper };
+export { ButtonContainer, ChipWrapper, SieveWrapper, Wrapper };
