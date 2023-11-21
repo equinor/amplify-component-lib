@@ -1,5 +1,6 @@
 import { useAuth } from '../providers/AuthProvider/AuthProvider';
 import { usePageMenu } from '../providers/PageMenuProvider';
+import { useReleaseNotes } from '../providers/ReleaseNotesProvider';
 import { useSideBar } from '../providers/SideBarProvider';
 import { useSnackbar } from '../providers/SnackbarProvider';
 import { useTutorialSteps } from '../providers/TutorialStepsProvider';
@@ -20,6 +21,7 @@ export {
   useOnScreenMultiple,
   usePageMenu,
   usePrevious,
+  useReleaseNotes,
   useReleaseNotesQuery,
   useSideBar,
   useSignalRMessages,
