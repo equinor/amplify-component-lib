@@ -10,8 +10,8 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
-import { FilterValues } from './Sieve';
-import { Chip, MenuItem, Option } from './Sieve.common';
+import { Chip, MenuItem } from './Sieve.styles';
+import { FilterValues, Option } from './Sieve.types';
 
 const { colors } = tokens;
 

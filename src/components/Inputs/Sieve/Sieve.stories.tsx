@@ -4,7 +4,8 @@ import { MemoryRouter } from 'react-router';
 import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
-import Sieve, { SieveProps, SieveValue } from './Sieve';
+import Sieve from './Sieve';
+import { SieveProps, SieveValue } from './Sieve.types';
 
 export default {
   title: 'Inputs/Sieve',

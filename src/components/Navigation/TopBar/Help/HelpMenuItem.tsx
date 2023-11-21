@@ -52,7 +52,7 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
 
   const content = useMemo(() => {
     return (
-      <Wrapper id={id} onClick={onClick}>
+      <Wrapper id={id} onClick={onClick} role="menuitem">
         <ContentInfo>
           <Icon
             data={icon}

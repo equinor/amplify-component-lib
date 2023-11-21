@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "5.3.22",
+  "version": "5.4.0",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
@@ -53,6 +53,10 @@
   "dependencies": {
     "@azure/msal-browser": "3.3.0",
     "@azure/msal-react": "2.0.5",
+    "@mantine/core": "^7.1.5",
+    "@mantine/hooks": "^7.1.5",
+    "@mantine/rte": "^5.10.5",
+    "@mantine/tiptap": "^7.1.5",
     "@microsoft/signalr": "^7.0.12",
     "framer-motion": "^10.16.4",
     "html2canvas": "^1.4.1",
@@ -61,11 +65,14 @@
     "proj4": "^2.9.2",
     "random-seed": "^0.3.0",
     "react-dropzone": "^14.2.3",
+    "react-markdown": "^9.0.0",
     "react-transition-group": "^4.4.5",
+    "rehype-raw": "^7.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@equinor/eds-core-react": "0.33.1",
+    "@equinor/eds-icons": "^0.19.3",
     "@faker-js/faker": "^8.2.0",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -129,6 +136,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-core-react": "*",
+    "@equinor/eds-icons": "*",
     "@tanstack/react-query": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
