@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
+import FeedbackForm from './components/FeedbackForm/FeedbackForm';
 import ResponsePage from './components/ResponsePage/ResponsePage';
 import { useFeedbackContext } from './hooks/useFeedbackContext';
-import FeedbackForm from './FeedbackForm';
 
 interface FeedbackInnerProps {}
 

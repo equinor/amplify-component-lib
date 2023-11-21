@@ -9,19 +9,21 @@ import {
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 
-import AmplifyTextField from '../../../../Inputs/AmplifyTextField';
-import UploadFile from './components/UploadFile';
-import { useFeedbackContext } from './hooks/useFeedbackContext';
+import AmplifyTextField from '../../../../../../Inputs/AmplifyTextField';
 import {
   Actions,
   BugReportQuestions,
   Container,
   ContentWrapper,
-  FeedbackDescription,
+  FeedbackDescriptionTooltip,
+  FeedbackTitleTooltip,
   ReportLocationText,
   UploadInfo,
-} from './Feedback.styles';
-import { FeedbackType, StatusEnum, UrgencyOption } from './Feedback.types';
+} from '../../Feedback.styles';
+import { FeedbackType, StatusEnum, UrgencyOption } from '../../Feedback.types';
+import { useFeedbackContext } from '../../hooks/useFeedbackContext';
+import LockedInputTooltip from './LockedInputTooltip';
+import UploadFile from './UploadFile';
 
 interface FeedbackFormProps {}
 
@@ -77,49 +79,55 @@ const FeedbackForm: FC<FeedbackFormProps> = () => {
   return (
     <ContentWrapper>
       <Container>
-        <AmplifyTextField
-          id="feedback-title"
-          label="Title"
-          meta="Required"
-          disabled={serviceNowSuccess}
-          value={feedbackContent.title}
-          placeholder="Write a title..."
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            updateFeedback('title', e.currentTarget.value)
-          }
-        />
+        <FeedbackTitleTooltip show={serviceNowSuccess}>
+          <AmplifyTextField
+            id="feedback-title"
+            label="Title"
+            meta="Required"
+            disabled={serviceNowSuccess}
+            value={feedbackContent.title}
+            placeholder="Write a title..."
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              updateFeedback('title', e.currentTarget.value)
+            }
+          />
+        </FeedbackTitleTooltip>
 
         {selectedType === FeedbackType.BUG && (
           <>
-            <Autocomplete
-              options={Object.values(UrgencyOption)}
-              id="feedback-severity"
-              label="Severity"
-              meta="optional"
-              disabled={serviceNowSuccess}
-              selectedOptions={[feedbackContent.urgency as UrgencyOption]}
-              placeholder="Select error impact"
-              onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
-                updateFeedback('urgency', e.selectedItems[0])
-              }
-              autoWidth
-            />
-            <AmplifyTextField
-              id="feedback-url"
-              label="URL"
-              disabled={serviceNowSuccess}
-              meta="optional"
-              value={feedbackContent.url}
-              placeholder="URL of error location"
-              variant={isWrongDomain ? 'error' : undefined}
-              helperText={
-                isWrongDomain
-                  ? 'The provided URL must be from a equinor.com domain'
-                  : ''
-              }
-              onChange={handleOnUrlChange}
-              onBlur={handleOnUrlBlur}
-            />
+            <LockedInputTooltip show={serviceNowSuccess}>
+              <Autocomplete
+                options={Object.values(UrgencyOption)}
+                id="feedback-severity"
+                label="Severity"
+                meta="optional"
+                disabled={serviceNowSuccess}
+                selectedOptions={[feedbackContent.urgency as UrgencyOption]}
+                placeholder="Select error impact"
+                onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
+                  updateFeedback('urgency', e.selectedItems[0])
+                }
+                autoWidth
+              />
+            </LockedInputTooltip>
+            <LockedInputTooltip show={serviceNowSuccess}>
+              <AmplifyTextField
+                id="feedback-url"
+                label="URL"
+                disabled={serviceNowSuccess}
+                meta="optional"
+                value={feedbackContent.url}
+                placeholder="URL of error location"
+                variant={isWrongDomain ? 'error' : undefined}
+                helperText={
+                  isWrongDomain
+                    ? 'The provided URL must be from a equinor.com domain'
+                    : ''
+                }
+                onChange={handleOnUrlChange}
+                onBlur={handleOnUrlBlur}
+              />
+            </LockedInputTooltip>
           </>
         )}
         {selectedType === FeedbackType.BUG && (
@@ -138,23 +146,25 @@ const FeedbackForm: FC<FeedbackFormProps> = () => {
             </Typography>
           </BugReportQuestions>
         )}
-        <FeedbackDescription
-          id="feedback-description"
-          label="Description"
-          disabled={serviceNowSuccess}
-          meta="Required"
-          value={feedbackContent.description}
-          placeholder={
-            selectedType === FeedbackType.BUG
-              ? 'Describe the bug, reproduction steps, potential workaround?'
-              : 'Describe the feature. What would be the value for you?'
-          }
-          rows={4}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            updateFeedback('description', e.currentTarget.value)
-          }
-          multiline
-        />
+        <FeedbackDescriptionTooltip show={serviceNowSuccess}>
+          <AmplifyTextField
+            id="feedback-description"
+            label="Description"
+            disabled={serviceNowSuccess}
+            meta="Required"
+            value={feedbackContent.description}
+            placeholder={
+              selectedType === FeedbackType.BUG
+                ? 'Describe the bug, including expectations, reproductions steps, any workarounds...'
+                : 'Describe the feature. What would be the value for you?'
+            }
+            rows={4}
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              updateFeedback('description', e.currentTarget.value)
+            }
+            multiline
+          />
+        </FeedbackDescriptionTooltip>
         <UploadInfo>
           <Icon data={info_circle} />
           <Typography>

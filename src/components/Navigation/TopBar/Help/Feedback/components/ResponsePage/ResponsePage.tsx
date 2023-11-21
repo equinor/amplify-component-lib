@@ -30,7 +30,7 @@ const ResponsePage: FC<ResponsePageProps> = () => {
     slackRequestResponse,
     slackAttachmentsRequestResponse,
     selectedType,
-    onDialogClose,
+    handleResponsePageOnClose,
   } = useFeedbackContext();
 
   const allSlackRequestStatus = useMemo<StatusEnum>(() => {
@@ -56,7 +56,7 @@ const ResponsePage: FC<ResponsePageProps> = () => {
       allSlackRequestStatus === StatusEnum.partial
     );
   }, [allSlackRequestStatus]);
-  console.log('in ResponsePage.tsx');
+
   return (
     <ContentWrapper>
       <Container>
@@ -76,7 +76,7 @@ const ResponsePage: FC<ResponsePageProps> = () => {
             requestStatus={{ status: allSlackRequestStatus }}
           />
         )}
-        <Button onClick={onDialogClose}>Close</Button>
+        <Button onClick={handleResponsePageOnClose}>Close</Button>
       </Container>
     </ContentWrapper>
   );

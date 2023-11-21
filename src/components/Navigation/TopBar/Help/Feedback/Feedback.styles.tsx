@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import AmplifyTextField from '../../../../Inputs/AmplifyTextField';
+import LockedInputTooltip from './components/FeedbackForm/LockedInputTooltip';
 
 import styled from 'styled-components';
 
@@ -22,12 +22,11 @@ export const Container = styled.div`
   gap: ${spacings.comfortable.medium};
   height: 100%;
   width: 100%;
-  :first-child {
-    grid-column: 1 / 3;
-  }
 `;
 
-export const BugReportQuestions = styled.div``;
+export const BugReportQuestions = styled.div`
+  grid-column: 1 / 3;
+`;
 
 export const UploadInfo = styled.div`
   grid-column: 1/3;
@@ -41,7 +40,10 @@ export const UploadInfo = styled.div`
   border-radius: ${shape.button.borderRadius};
 `;
 
-export const FeedbackDescription = styled(AmplifyTextField)`
+export const FeedbackTitleTooltip = styled(LockedInputTooltip)`
+  grid-column: 1/3;
+`;
+export const FeedbackDescriptionTooltip = styled(LockedInputTooltip)`
   grid-column: 1/3;
 `;
 

@@ -5,6 +5,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { RequestStatusType } from '../../Feedback.types';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import RequestStatus from './RequestStatus';
+import { SlackRequestsWrapper } from './ResponsePage.styles';
 
 import styled from 'styled-components';
 
@@ -13,14 +14,6 @@ const { spacings, colors } = tokens;
 const Container = styled.div`
   padding: ${spacings.comfortable.small};
   background-color: ${colors.ui.background__light.hex};
-`;
-
-const SlackRequestsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: ${spacings.comfortable.medium};
-  gap: ${spacings.comfortable.large};
-  margin-left: ${spacings.comfortable.large};
 `;
 
 interface SlackResponseProps {

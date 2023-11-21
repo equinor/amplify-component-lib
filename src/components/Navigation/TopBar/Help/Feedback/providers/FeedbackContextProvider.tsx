@@ -12,7 +12,10 @@ import { FileWithPath } from 'react-dropzone';
 import { ServiceNowIncidentResponse } from '../../../../../../api';
 import { useLocalStorage } from '../../../../../../hooks';
 import { useAuth } from '../../../../../../providers/AuthProvider/AuthProvider';
-import { DEFAULT_FEEDBACK_LOCAL_STORAGE } from '../Feedback.const';
+import {
+  DEFAULT_FEEDBACK_LOCAL_STORAGE,
+  ONE_HOUR_IN_MS,
+} from '../Feedback.const';
 import {
   AttachmentStatus,
   FeedbackContentType,
@@ -31,7 +34,7 @@ import { useServiceNowIncident } from '../hooks/useServiceNowIncident';
 import { useSlackFileUpload } from '../hooks/useSlackFileUpload';
 import { useSlackPostMessage } from '../hooks/useSlackPostMessage';
 
-interface FeedbackContext {
+export interface FeedbackContext {
   feedbackContent: FeedbackContentType;
   serviceNowRequestResponse: RequestStatusType;
   slackRequestResponse: RequestStatusType;
@@ -61,7 +64,7 @@ interface FeedbackContextProviderProps {
   children: ReactNode;
 }
 
-const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
+const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   children,
   selectedType,
   onClose,
@@ -73,10 +76,10 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
     useLocalStorage<FeedbackLocalStorage>(
       selectedType + '-feedbackContentAndRequestStatus',
       { ...DEFAULT_FEEDBACK_LOCAL_STORAGE },
-      3600000 // One hour
+      ONE_HOUR_IN_MS
     );
 
-  const { feedbackContent } = feedbackLocalStorage;
+  const { feedbackContent, serviceNowRequestResponse } = feedbackLocalStorage;
 
   const [feedbackAttachments, setFeedbackAttachments] = useState<
     FileWithPath[]
@@ -136,7 +139,6 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
     status: StatusEnum,
     response?: ServiceNowIncidentResponse
   ) => {
-    console.log('in updSNS', response);
     setFeedbackLocalStorage({
       ...feedbackLocalStorage,
       serviceNowRequestResponse: {
@@ -172,6 +174,7 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
   };
 
   const handleResponsePageOnClose = () => {
+    console.log(allRequestsSuccess, 'in close or back');
     if (allRequestsSuccess) {
       onClose();
     } else {
@@ -199,7 +202,11 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
   const handleSave = async () => {
     // Service now request
     toggleShowResponsePage();
-    if (selectedType === FeedbackType.BUG && userEmail) {
+    if (
+      selectedType === FeedbackType.BUG &&
+      userEmail &&
+      serviceNowRequestResponse.status !== StatusEnum.success
+    ) {
       const serviceNowFormData = new FormData();
       serviceNowFormData.append('ConfigurationItem', '117499');
       serviceNowFormData.append('Title', feedbackContent.title);
@@ -220,7 +227,6 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
         );
       }
       try {
-        console.log('in serviceNow try');
         const response = await serviceNowIncident(serviceNowFormData);
         updateServiceNowStatus(StatusEnum.success, response);
       } catch (e) {
@@ -236,7 +242,6 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
       createSlackMessage(feedbackContent, selectedType, userEmail)
     );
     try {
-      console.log('in postMessage try');
       await slackPostMessage(contentFormData);
       updatePostMessageStatus(StatusEnum.success);
     } catch (e) {
@@ -250,7 +255,6 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
         fileFormData.append('comment', `Title: ${feedbackContent.title}`);
         fileFormData.append('file', attachment);
         try {
-          console.log('in fileUpload try');
           await slackFileUpload(fileFormData);
           updateSlackAttachmentStatus(StatusEnum.success, attachment.name);
         } catch (e) {
@@ -270,9 +274,9 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
 
   useEffect(() => {
     return () => {
-      console.log('in cleaning useEffect - before if');
+      console.log('in reset outside if');
       if (allRequestsSuccess) {
-        console.log('in cleaning useEffect - in if');
+        console.log('in reset in if');
         setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
       }
     };
@@ -313,4 +317,4 @@ const AdminWellboresContextProvider: FC<FeedbackContextProviderProps> = ({
   );
 };
 
-export default AdminWellboresContextProvider;
+export default FeedbackContextProvider;

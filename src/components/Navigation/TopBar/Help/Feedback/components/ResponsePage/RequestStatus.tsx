@@ -7,30 +7,17 @@ import { tokens } from '@equinor/eds-tokens';
 import { environment } from '../../../../../../../utils';
 import { EnvironmentType } from '../../../../TopBar';
 import { RequestStatusType, StatusEnum } from '../../Feedback.types';
-import ErrorStatus from './ErrorStatus';
+import { ServiceNowLink, Status } from './ResponsePage.styles';
 
 import styled from 'styled-components';
 
 const { getEnvironmentName } = environment;
 const { colors } = tokens;
 
-const Wrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-`;
-
-const Status = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  p {
-    font-weight: 500;
-  }
-`;
-
-const ServiceNowLink = styled.a`
-  text-decoration: none;
 `;
 
 interface RequestStatusProps {
@@ -53,8 +40,10 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
     }
   }, [requestStatus]);
 
-  const partial = requestStatus.status === StatusEnum.partial;
-  console.log('req stat: ', requestStatus);
+  const isPartialOrError =
+    requestStatus.status === StatusEnum.partial ||
+    requestStatus.status === StatusEnum.error;
+
   const serviceNowUrl = useMemo(() => {
     if (requestStatus.serviceNowId && requestStatus.serviceNowId.length !== 0) {
       const environment = getEnvironmentName(
@@ -68,37 +57,39 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
     }
   }, [requestStatus.serviceNowId]);
 
-  console.log(serviceNowUrl);
-  if (requestStatus.status === StatusEnum.error)
-    return (
-      <ErrorStatus title={title} errorText={requestStatus.errorText ?? ''} />
-    );
   return (
-    <Wrapper>
+    <Container>
       <Typography group="ui" variant="accordion_header">
         {title}
-        {serviceNowUrl && <ServiceNowLink href={serviceNowUrl} />}
+        {serviceNowUrl && (
+          <ServiceNowLink href={serviceNowUrl}>
+            See ticket in ServiceNow
+          </ServiceNowLink>
+        )}
       </Typography>
       <Status>
         <Typography
-          color={partial ? colors.interactive.warning__text.hex : ''}
+          color={isPartialOrError ? colors.interactive.warning__text.hex : ''}
           group="ui"
           variant="snackbar"
         >
-          {statusText}
+          {requestStatus.status === StatusEnum.error
+            ? requestStatus.errorText
+            : statusText}
         </Typography>
-        {(partial || requestStatus.status === StatusEnum.success) && (
+
+        {(isPartialOrError || requestStatus.status === StatusEnum.success) && (
           <Icon
             color={
-              partial
+              isPartialOrError
                 ? colors.interactive.warning__text.hex
                 : colors.interactive.success__resting.hex
             }
-            data={partial ? info_circle : check_circle_outlined}
+            data={isPartialOrError ? info_circle : check_circle_outlined}
           />
         )}
       </Status>
-    </Wrapper>
+    </Container>
   );
 };
 
