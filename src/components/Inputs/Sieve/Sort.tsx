@@ -8,7 +8,8 @@ import {
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { Chip, MenuItem, Option } from './Sieve.common';
+import { Chip, MenuItem } from './Sieve.styles';
+import { Option } from './Sieve.types';
 
 const { colors } = tokens;
 

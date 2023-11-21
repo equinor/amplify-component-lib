@@ -1,8 +1,14 @@
+import { MemoryRouter } from 'react-router';
+
 import { Meta, StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Help } from './Help';
-import { AuthProvider, SnackbarProvider } from 'src/providers';
+import {
+  AuthProvider,
+  ReleaseNotesProvider,
+  SnackbarProvider,
+} from 'src/providers';
 
 export default {
   title: 'Navigation/TopBar/Help',
@@ -21,7 +27,11 @@ export const Primary: StoryFn = (args) => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider isMock>
         <SnackbarProvider>
-          <Help applicationName={args.applicationName} />
+          <ReleaseNotesProvider>
+            <MemoryRouter initialEntries={['/']}>
+              <Help applicationName={args.applicationName} />
+            </MemoryRouter>
+          </ReleaseNotesProvider>
         </SnackbarProvider>
       </AuthProvider>
     </QueryClientProvider>

@@ -6,8 +6,8 @@ import { waitFor } from '@testing-library/react';
 
 import { render, screen, userEvent, within } from '../../../tests/test-utils';
 import { FilterOption } from './Filter';
-import Sieve, { SieveProps, SieveValue } from './Sieve';
-import { Option } from './Sieve.common';
+import Sieve from './Sieve';
+import { Option, SieveProps, SieveValue } from './Sieve.types';
 
 function Wrappers({ children }: { children: any }) {
   return <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>;

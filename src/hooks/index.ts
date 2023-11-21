@@ -8,6 +8,7 @@ import { useFeatureToggling } from './useFeatureToggling';
 import { useLocalStorage } from './useLocalStorage';
 import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
+import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
 
 export {
@@ -19,6 +20,7 @@ export {
   useOnScreenMultiple,
   usePageMenu,
   usePrevious,
+  useReleaseNotesQuery,
   useSideBar,
   useSignalRMessages,
   useSnackbar,
