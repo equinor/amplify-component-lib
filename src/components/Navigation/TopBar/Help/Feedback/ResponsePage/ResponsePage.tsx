@@ -31,6 +31,7 @@ const ResponsePage: FC<ResponsePageProps> = () => {
     slackAttachmentsRequestResponse,
     selectedType,
     handleResponsePageOnClose,
+    requestIsLoading,
   } = useFeedbackContext();
 
   const allSlackRequestStatus = useMemo<StatusEnum>(() => {
@@ -57,6 +58,13 @@ const ResponsePage: FC<ResponsePageProps> = () => {
     );
   }, [allSlackRequestStatus]);
 
+  const requestHasError = useMemo(() => {
+    return (
+      showAllSlackRequests ||
+      serviceNowRequestResponse.status === StatusEnum.error
+    );
+  }, [serviceNowRequestResponse.status, showAllSlackRequests]);
+
   return (
     <ContentWrapper>
       <Container>
@@ -76,7 +84,9 @@ const ResponsePage: FC<ResponsePageProps> = () => {
             requestStatus={{ status: allSlackRequestStatus }}
           />
         )}
-        <Button onClick={handleResponsePageOnClose}>Close</Button>
+        <Button disabled={requestIsLoading} onClick={handleResponsePageOnClose}>
+          {requestHasError ? 'Retry' : 'Close'}
+        </Button>
       </Container>
     </ContentWrapper>
   );

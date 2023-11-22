@@ -1,6 +1,7 @@
-import { FC, FormEvent } from 'react';
+import { FC, FormEvent, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 
 import AmplifyTextField from '../../../../../../Inputs/AmplifyTextField';
 import { FeedbackType } from '../../Feedback.types';
@@ -9,9 +10,12 @@ import LockedInputTooltip from './LockedInputTooltip';
 
 import styled from 'styled-components';
 
+const { colors, spacings } = tokens;
+
 const Container = styled.div`
   grid-column: 1/3;
   display: flex;
+  gap: ${spacings.comfortable.medium};
   flex-direction: column;
 `;
 
@@ -19,20 +23,27 @@ const Description: FC = () => {
   const { serviceNowSuccess, feedbackContent, selectedType, updateFeedback } =
     useFeedbackContext();
 
+  const questionColor = useMemo(() => {
+    if (serviceNowSuccess) {
+      return colors.interactive.disabled__text.hex;
+    }
+    return colors.text.static_icons__default.hex;
+  }, [serviceNowSuccess]);
+
   return (
     <Container>
       {selectedType === FeedbackType.BUG && (
         <div>
-          <Typography group="input" variant="text">
+          <Typography group="input" variant="text" color={questionColor}>
             What is the actual bug?
           </Typography>
-          <Typography group="input" variant="text">
+          <Typography group="input" variant="text" color={questionColor}>
             What is expected results?
           </Typography>
-          <Typography group="input" variant="text">
+          <Typography group="input" variant="text" color={questionColor}>
             How to reproduce the steps?
           </Typography>
-          <Typography group="input" variant="text">
+          <Typography group="input" variant="text" color={questionColor}>
             Is there a workaround?
           </Typography>
         </div>

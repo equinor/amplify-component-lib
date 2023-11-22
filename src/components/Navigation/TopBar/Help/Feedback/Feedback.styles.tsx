@@ -33,14 +33,28 @@ export const UploadInfo = styled.div`
   padding: ${spacings.comfortable.medium_small};
   border-radius: ${shape.button.borderRadius};
 `;
+export const LockedFormWarning = styled.div`
+  grid-column: 1/3;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: ${spacings.comfortable.small};
+  height: fit-content;
+  align-items: center;
+  background-color: ${colors.ui.background__warning.hex};
+  padding: ${spacings.comfortable.medium_small};
+  border-radius: ${shape.button.borderRadius};
+`;
 
 export const ReportLocationText = styled(Typography)`
   grid-column: 1/3;
 `;
 
 export const Actions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: ${spacings.comfortable.medium};
   grid-column: 1/3;
+  display: flex;
+  justify-content: space-between;
+  > div {
+    display: flex;
+    gap: ${spacings.comfortable.medium};
+  }
 `;

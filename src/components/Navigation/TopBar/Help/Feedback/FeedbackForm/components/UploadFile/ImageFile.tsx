@@ -70,7 +70,9 @@ const CloseButton = styled.div`
   }
 `;
 
-const FileTooltip = styled(Tooltip)``;
+const FileTooltip = styled(Tooltip)`
+  white-space: break-spaces;
+`;
 
 interface ImageFileProps {
   onDelete: () => void;

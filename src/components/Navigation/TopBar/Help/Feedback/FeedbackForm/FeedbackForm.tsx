@@ -7,6 +7,7 @@ import {
   Actions,
   Container,
   ContentWrapper,
+  LockedFormWarning,
   ReportLocationText,
   UploadInfo,
 } from '../Feedback.styles';
@@ -27,6 +28,7 @@ const FeedbackForm: FC<FeedbackFormProps> = () => {
     resetForm,
     feedbackContent,
     onDialogClose,
+    serviceNowSuccess,
     handleSave,
     requestIsLoading,
   } = useFeedbackContext();
@@ -67,20 +69,32 @@ const FeedbackForm: FC<FeedbackFormProps> = () => {
             ? 'Bug reports are sent to Service Now and to the development team directly'
             : 'Feature suggestions are sent to the development team directly'}
         </ReportLocationText>
+        {serviceNowSuccess && (
+          <LockedFormWarning>
+            <Icon data={info_circle} />
+            <Typography>
+              The report has already been sent to service now, and part of the
+              form is locked if you want to retry sending it to the development
+              team. Otherwise you can reset the form with the &quot;Reset
+              form&quot; button in the bottom left corner.
+            </Typography>
+          </LockedFormWarning>
+        )}
         <Actions>
           <Button variant="ghost" onClick={resetForm}>
-            Reset
+            Reset form
           </Button>
-
-          <Button variant="ghost" onClick={onDialogClose}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSave}
-            disabled={!canSubmitFeedback || requestIsLoading}
-          >
-            Send
-          </Button>
+          <div>
+            <Button variant="ghost" onClick={onDialogClose}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSave}
+              disabled={!canSubmitFeedback || requestIsLoading}
+            >
+              {serviceNowSuccess ? 'Send again' : 'Send'}
+            </Button>
+          </div>
         </Actions>
       </Container>
     </ContentWrapper>
