@@ -32,7 +32,7 @@ function fakeOptions(): Option[] {
 
 function fakeFilterOptions(): FilterOption[] {
   const options: FilterOption[] = [];
-  for (let i = 0; i < faker.number.int({ min: 1, max: 7 }); i++) {
+  for (let i = 0; i < faker.number.int({ min: 2, max: 7 }); i++) {
     options.push({
       label: faker.string.uuid(),
       options: fakeOptions(),
@@ -408,6 +408,94 @@ test('Users can remove filter by clicking it', async () => {
   expect(props.onUpdate).toHaveBeenCalledWith({
     searchValue: undefined,
     filterValues: undefined,
+    sortValue: props.sortOptions?.at(0),
+  });
+});
+
+test('Removing the last filter in a filter group works as expected (from menu)', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        ...props.sieveValue,
+        filterValues: {
+          [props.filterOptions![0].label]: [
+            props!.filterOptions![0].options[0],
+          ],
+          [props.filterOptions![1].label]: [
+            props!.filterOptions![1].options[0],
+          ],
+        },
+      }}
+    />,
+    { wrapper: Wrappers }
+  );
+
+  const filterByButton = screen.getByRole('button', {
+    name: /filter by/i,
+  });
+
+  await user.click(filterByButton);
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[1].label,
+    })
+  );
+
+  await user.click(
+    screen.getByRole('menuitem', {
+      name: props.filterOptions?.[1]?.options[0]?.label,
+    })
+  );
+
+  // Expecting filter group that doesn't have any items to not be in the filterValues
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    searchValue: undefined,
+    filterValues: {
+      [props.filterOptions![0].label]: [props!.filterOptions![0].options[0]],
+    },
+    sortValue: props.sortOptions?.at(0),
+  });
+});
+
+test('Removing the last filter in a filter group works as expected (from chip)', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  render(
+    <Sieve
+      {...props}
+      sieveValue={{
+        ...props.sieveValue,
+        filterValues: {
+          [props.filterOptions![0].label]: [
+            props!.filterOptions![0].options[0],
+          ],
+          [props.filterOptions![1].label]: [
+            props!.filterOptions![1].options[0],
+          ],
+        },
+      }}
+    />,
+    { wrapper: Wrappers }
+  );
+
+  const optionChipClose = within(
+    screen.getByText(props.filterOptions![1].options[0].label)
+  ).getByRole('img', { name: /close/i });
+
+  await user.click(optionChipClose);
+
+  // Expecting filter group that doesn't have any items to not be in the filterValues
+  expect(props.onUpdate).toHaveBeenCalledWith({
+    searchValue: undefined,
+    filterValues: {
+      [props.filterOptions![0].label]: [props!.filterOptions![0].options[0]],
+    },
     sortValue: props.sortOptions?.at(0),
   });
 });

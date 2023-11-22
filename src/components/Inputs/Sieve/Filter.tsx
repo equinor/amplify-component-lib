@@ -89,6 +89,9 @@ const Filter: FC<FilterProps> = ({
         (item) => item.value === option.value
       );
       newValues[parent].splice(index, 1);
+      if (newValues[parent].length === 0) {
+        delete newValues[parent];
+      }
     } else if (newValues[parent]) {
       newValues[parent].push(option);
     } else {
