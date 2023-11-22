@@ -163,6 +163,10 @@ const Sieve: FC<SieveProps> = ({
     );
     newValues[parent].splice(index, 1);
 
+    if (newValues[parent].length === 0) {
+      delete newValues[parent];
+    }
+
     if (
       Object.keys(newValues).flatMap((parent) => newValues?.[parent]).length ===
       0
