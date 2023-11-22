@@ -27,6 +27,21 @@ test('useLocalStorage works as expected', async () => {
   );
 }, 10000);
 
+test('clear() removes local storage', async () => {
+  const key = faker.animal.dog();
+  const defaultValue = faker.science.chemicalElement().name;
+  const newValue = faker.color.human();
+
+  const { result } = renderHook(() =>
+    useLocalStorage<string>(key, defaultValue, 20000)
+  );
+  const [, setState, clear] = result.current;
+  setState(newValue);
+  clear();
+
+  expect(localStorage.getItem(key) as string).toBe(undefined);
+});
+
 test('setting state to undefined removes local storage', async () => {
   const key = faker.animal.dog();
   const defaultValue = faker.science.chemicalElement().name;
@@ -34,6 +49,20 @@ test('setting state to undefined removes local storage', async () => {
 
   const { result } = renderHook(() =>
     useLocalStorage<string | undefined>(key, defaultValue, 20000)
+  );
+  const [, setState] = result.current;
+  setState(newValue);
+
+  expect(localStorage.getItem(key) as string).toBe(undefined);
+});
+
+test('setting state to null removes local storage', async () => {
+  const key = faker.animal.dog();
+  const defaultValue = faker.science.chemicalElement().name;
+  const newValue = null;
+
+  const { result } = renderHook(() =>
+    useLocalStorage<string | undefined | null>(key, defaultValue, 20000)
   );
   const [, setState] = result.current;
   setState(newValue);
