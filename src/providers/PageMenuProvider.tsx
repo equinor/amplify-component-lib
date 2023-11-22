@@ -5,21 +5,25 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 
+import { getValues } from './PageMenuProvider.utils';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
 
 export type PageMenuItemType = {
   label: string;
   value: string;
+  children?: PageMenuItemType[];
 };
 
 interface PageMenuContextType {
   items: PageMenuItemType[];
   selected: string | undefined;
   setSelected: (value: string) => void;
+  isActive: (item: PageMenuItemType) => boolean;
 }
 
 const PageMenuContext = createContext<PageMenuContextType | undefined>(
@@ -43,18 +47,39 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
 
+  const values: string[] = useMemo(
+    () => items.flatMap((item) => getValues([], item)),
+    [items]
+  );
+
   // Since useEffect runs on re-render we ensure that the elements array is updated
   useEffect(() => {
-    setElements(items.map((item) => document.querySelector(`#${item.value}`)));
-  }, [items]);
+    setElements(values.map((value) => document.getElementById(value)));
+  }, [values]);
+
+  const isActive = useCallback(
+    (item: PageMenuItemType) => {
+      if (item.value === selected) return true;
+
+      if (item.children && selected) {
+        const childValues = getValues([], item);
+        return childValues.includes(selected);
+      }
+      return false;
+    },
+    [selected]
+  );
 
   const visible = useOnScreenMultiple(elements);
+
   const isScrollingTo = useRef<number>(-1);
 
   // If the user clicks on an item in the PageMenu that isn't visible now, we want to scroll to it
   const handleSetSelected = useCallback(
     (value: string) => {
-      const selectedIndex = items.findIndex((item) => item.value === value);
+      const selectedIndex = values.findIndex(
+        (itemValue) => itemValue === value
+      );
       const element = elements[selectedIndex];
 
       if (element) {
@@ -71,7 +96,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
           if (newTop === previousTop) {
             same += 1;
             if (same > 1) {
-              setSelected(items[selectedIndex].value);
+              setSelected(values[selectedIndex]);
               isScrollingTo.current = -1;
               return;
             }
@@ -85,7 +110,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
         requestAnimationFrame(checkScrollDone);
       }
     },
-    [elements, items]
+    [elements, values]
   );
 
   // Handle change of selected when scrolling down the page
@@ -93,26 +118,26 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   useEffect(() => {
     if (
       visible.length === 0 ||
-      visible.length !== items.length ||
+      visible.length !== values.length ||
       isScrollingTo.current !== -1
     )
       return;
 
     let newSelectedIndex = -1;
-    for (let index = 0; index < visible.length; index++) {
+    for (let index = visible.length - 1; index >= 0; index--) {
       if (visible[index]) {
         newSelectedIndex = index;
       }
     }
-    if (newSelectedIndex !== -1 && items.at(newSelectedIndex) !== undefined) {
-      setSelected(items[newSelectedIndex].value);
+    if (newSelectedIndex !== -1 && values.at(newSelectedIndex) !== undefined) {
+      setSelected(values[newSelectedIndex]);
     }
-  }, [items, visible]);
+  }, [values, visible]);
   /* c8 ignore end */
 
   return (
     <PageMenuContext.Provider
-      value={{ items, selected, setSelected: handleSetSelected }}
+      value={{ items, selected, setSelected: handleSetSelected, isActive }}
     >
       {children}
     </PageMenuContext.Provider>

@@ -7,7 +7,7 @@ const hookList = [
   {
     name: 'useSignalRMessages',
     body: 'Returns service bus messages with wss given a topic + host + token',
-    code: `const { 
+    code: `const {
      messages,
      hasUnreadMessages,
      setMessageAsRead,
@@ -53,10 +53,15 @@ const hookList = [
     name: 'useSnackbar',
     body: 'Returns showSnackbar function',
     code: `const { showSnackbar } = useSnackbar();
-    
+
 ...
 
 showSnackbar(text: string, customProps?: SnackbarProps)`,
+  },
+  {
+    name: 'useReleaseNotes',
+    body: 'Returns release notes object from ReleaseNotesProvider',
+    code: 'const { open, setOpen, toggle, search, setSearch, selectedReleaseNoteTypes, filteredData, releaseNotesYears } = useReleaseNotes()',
   },
 ];
 

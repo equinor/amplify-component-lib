@@ -8,68 +8,12 @@ import {
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { Chip as EDSChip, Search as EDSSearch } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-
-import Filter, { FilterOption } from './Filter';
-import { Option } from './Sieve.common';
+import Filter from './Filter';
+import { Container, FilterChip, Search, Wrapper } from './Sieve.styles';
+import { FilterValues, Option, SieveProps, SieveValue } from './Sieve.types';
 import Sort from './Sort';
 
 import { debounce } from 'lodash';
-import styled from 'styled-components';
-
-const { colors, spacings } = tokens;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.comfortable.medium};
-`;
-
-const Container = styled.div`
-  display: flex;
-  gap: ${spacings.comfortable.medium};
-  align-items: center;
-`;
-
-const FilterChip = styled(EDSChip)`
-  background: ${colors.ui.background__default.hex};
-`;
-
-const Search = styled(EDSSearch)`
-  > div {
-    box-shadow: none;
-    outline: none !important;
-    background: ${colors.ui.background__default.hex};
-    > input:focus {
-      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex};
-    }
-  }
-`;
-
-export type FilterValues = {
-  [key: string]: Option[];
-};
-
-export type SieveValue = {
-  searchValue: string | undefined;
-  sortValue: Option | undefined;
-  filterValues: FilterValues | undefined;
-};
-
-export interface SieveProps {
-  searchPlaceholder: string;
-  sortOptions?: Option[];
-  filterOptions?: FilterOption[];
-  sieveValue: SieveValue;
-  onUpdate: (value: SieveValue) => void;
-  showChips?: boolean;
-  minSearchWidth?: string;
-  syncWithSearchParams?: boolean;
-  isLoadingOptions?: boolean;
-  debounceSearchValue?: boolean;
-  onIsTyping?: (value: boolean) => void;
-}
 
 const Sieve: FC<SieveProps> = ({
   searchPlaceholder,
@@ -219,6 +163,10 @@ const Sieve: FC<SieveProps> = ({
     );
     newValues[parent].splice(index, 1);
 
+    if (newValues[parent].length === 0) {
+      delete newValues[parent];
+    }
+
     if (
       Object.keys(newValues).flatMap((parent) => newValues?.[parent]).length ===
       0
@@ -257,7 +205,7 @@ const Sieve: FC<SieveProps> = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper className="sieve-container">
       <Container>
         <Search
           style={{ minWidth: minSearchWidth }}

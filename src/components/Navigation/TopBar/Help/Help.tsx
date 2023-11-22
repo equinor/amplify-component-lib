@@ -10,9 +10,11 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import Feedback from './Feedback/Feedback';
+import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 import styled from 'styled-components';
 
@@ -34,11 +36,12 @@ export interface HelpProps {
 }
 
 export const Help: FC<HelpProps> = ({
-  applicationName,
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
 }) => {
+  const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
+    useReleaseNotes();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
@@ -50,6 +53,11 @@ export const Help: FC<HelpProps> = ({
 
   const handleOnFeedbackClick = (event?: MouseEvent<HTMLDivElement>) => {
     setFeedbackType(event?.currentTarget.id as FeedbackType);
+    closeMenu();
+  };
+
+  const handleOnReleaseNotesClick = () => {
+    toggleReleaseNotes();
     closeMenu();
   };
 
@@ -83,10 +91,9 @@ export const Help: FC<HelpProps> = ({
         {!hideReleaseNotes && (
           <HelpMenuItem
             id="release-notes"
-            onClick={closeMenu}
             icon={file_description}
+            onClick={handleOnReleaseNotesClick}
             text="Release notes"
-            href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}
           />
         )}
         {!hideFeedback && (
@@ -112,6 +119,7 @@ export const Help: FC<HelpProps> = ({
           <ContentWrapper onClick={closeMenu}>{children}</ContentWrapper>
         )}
       </TopBarMenu>
+      {showReleaseNotes && <ReleaseNotes />}
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={

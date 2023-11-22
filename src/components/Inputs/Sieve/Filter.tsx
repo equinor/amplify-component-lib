@@ -10,8 +10,8 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
-import { FilterValues } from './Sieve';
-import { Chip, MenuItem, Option } from './Sieve.common';
+import { Chip, MenuItem } from './Sieve.styles';
+import { FilterValues, Option } from './Sieve.types';
 
 const { colors } = tokens;
 
@@ -89,6 +89,9 @@ const Filter: FC<FilterProps> = ({
         (item) => item.value === option.value
       );
       newValues[parent].splice(index, 1);
+      if (newValues[parent].length === 0) {
+        delete newValues[parent];
+      }
     } else if (newValues[parent]) {
       newValues[parent].push(option);
     } else {

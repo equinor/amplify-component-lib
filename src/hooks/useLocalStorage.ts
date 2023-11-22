@@ -39,6 +39,12 @@ export const useLocalStorage = <T>(
     getLocalStorage<T>(key, defaultState, keepAliveMs)
   );
 
+  const clear = () => {
+    setState(defaultState);
+    localStorage.removeItem(key);
+    localStorage.removeItem(key + LAST_UPDATED_KEY_SUFFIX);
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedUpdateLocalStorage = useCallback(
     debounce((key: string, state: T) => {
@@ -50,13 +56,12 @@ export const useLocalStorage = <T>(
 
   const handleSetState = (state: T) => {
     setState(state);
-    if (state === undefined) {
-      localStorage.removeItem(key);
-      localStorage.removeItem(key + LAST_UPDATED_KEY_SUFFIX);
+    if (state === undefined || state === null) {
+      clear();
     } else {
       debouncedUpdateLocalStorage(key, state);
     }
   };
 
-  return [state, handleSetState] as const;
+  return [state, handleSetState, clear] as const;
 };

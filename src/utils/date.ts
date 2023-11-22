@@ -20,7 +20,7 @@ const formatDate = (
       if (options?.format === 'DD. month YYYY') {
         const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
-          month: 'long',
+          month: options?.month || 'long',
           year: 'numeric',
         })}`;
       }
@@ -30,22 +30,22 @@ const formatDate = (
       if (options?.format === 'DD. month') {
         const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
-          month: options.month ?? 'long',
+          month: options.month || 'long',
         })}`;
       }
       if (options?.format === 'YYYY-MM-DD') {
-        return `${year}-${month.toString().padStart(2, '0')}-${day
+        return `${year.toString().padStart(4, '0')}-${month
           .toString()
-          .padStart(2, '0')}`;
+          .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
       }
       if (options?.format === 'DD.MM.YY') {
         return `${day.toString().padStart(2, '0')}.${month
           .toString()
-          .padStart(2, '0')}.${year.toString().slice(-2)}`;
+          .padStart(2, '0')}.${year.toString().padStart(4, '0').slice(-2)}`;
       }
       return `${day.toString().padStart(2, '0')}.${month
         .toString()
-        .padStart(2, '0')}.${year}`;
+        .padStart(2, '0')}.${year.toString().padStart(4, '0')}`;
     }
   }
   return '';
