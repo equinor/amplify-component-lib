@@ -56,6 +56,7 @@
     "@azure/msal-react": "2.0.5",
     "@microsoft/signalr": "^7.0.12",
     "framer-motion": "^10.16.4",
+    "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
     "leaflet": "^1.9.4",
     "proj4": "^2.9.2",
