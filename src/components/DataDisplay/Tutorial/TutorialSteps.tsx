@@ -1,5 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
-import { CSSTransition } from 'react-transition-group';
+import { FC, useState } from 'react';
 
 import { Button, Dialog as EDSDialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -9,12 +8,6 @@ import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
 
 import styled, { keyframes } from 'styled-components';
 const { colors, spacings } = tokens;
-
-type TutorialStepsProps = {
-  show: boolean;
-  onClose: () => void;
-  steps: Step[];
-};
 
 const spawn = keyframes`
     from {
@@ -90,8 +83,13 @@ const StepIndicator = styled.div<StepIndicatorProps>`
         }%`}
 `;
 
+interface TutorialStepsProps {
+  show: boolean;
+  onClose: () => void;
+  steps: Step[];
+}
+
 const TutorialSteps: FC<TutorialStepsProps> = ({ show, onClose, steps }) => {
-  const nodeRef = useRef(null);
   const [stepNumber, setStepNumber] = useState(0);
   const { setTutorialStep } = useTutorialSteps();
 
@@ -107,14 +105,8 @@ const TutorialSteps: FC<TutorialStepsProps> = ({ show, onClose, steps }) => {
   };
   return (
     <>
-      <Dialog open={show}>
-        <CSSTransition
-          in={true}
-          unmountOnExit
-          timeout={400}
-          classNames="tutorial-dialog"
-          nodeRef={nodeRef}
-        >
+      {show && (
+        <Dialog open>
           <Container>
             <div id="title">{steps[stepNumber].title}</div>
             <DialogContent>{steps[stepNumber].body}</DialogContent>
@@ -140,8 +132,8 @@ const TutorialSteps: FC<TutorialStepsProps> = ({ show, onClose, steps }) => {
               </Button>
             </DialogActions>
           </Container>
-        </CSSTransition>
-      </Dialog>
+        </Dialog>
+      )}
     </>
   );
 };
