@@ -1,6 +1,5 @@
 import { FileWithPath } from 'react-dropzone';
 
-import { EnvironmentType } from '../../TopBar';
 import {
   FeedbackContentType,
   FeedbackType,
@@ -10,7 +9,7 @@ import { ServiceNowUrgency } from 'src/api';
 import { date, environment } from 'src/utils';
 
 const { formatDate } = date;
-const { getAppName, getEnvironmentName } = environment;
+const { getAppName } = environment;
 
 const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
   if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
@@ -61,17 +60,6 @@ export const createServiceNowDescription = (
   return `${feedbackContent.url ? locationText : ''}${
     feedbackContent.urgency ? severityText : ''
   }${feedbackContent.description}`;
-};
-
-export const createServiceNowURL = (sysId: string) => {
-  const environment = getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME);
-  if (sysId.length === 0) return '';
-  // if (environment === EnvironmentType.PRODUCTION) {
-  //   return `https://equinor.service-now.com/now/nav/ui/classic/params/target/incident.do%3Fsys_id%${sysId}`;
-  // }
-  return `https://equinor${
-    environment === EnvironmentType.PRODUCTION ? '' : 'test'
-  }.service-now.com/now/nav/ui/classic/params/target/incident.do%3Fsys_id${sysId}`;
 };
 
 export const createSlackMessage = (

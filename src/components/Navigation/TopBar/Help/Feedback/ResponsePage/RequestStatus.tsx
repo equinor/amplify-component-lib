@@ -6,6 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { environment } from '../../../../../../utils';
 import { EnvironmentType } from '../../../TopBar';
+import { DEFAULT_REQUEST_ERROR_MESSAGE } from '../Feedback.const';
 import { RequestStatusType, StatusEnum } from '../Feedback.types';
 import { ServiceNowLink, Status } from './ResponsePage.styles';
 
@@ -50,7 +51,9 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
         import.meta.env.VITE_ENVIRONMENT_NAME
       );
       return `https://equinor${
+        /* c8 ignore start*/
         environment === EnvironmentType.PRODUCTION ? '' : 'test'
+        /* c8 ignore end */
       }.service-now.com/now/nav/ui/classic/params/target/incident.do%3Fsys_id${
         requestStatus.serviceNowId
       }`;
@@ -74,7 +77,7 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
           variant="snackbar"
         >
           {requestStatus.status === StatusEnum.error
-            ? requestStatus.errorText
+            ? requestStatus.errorText ?? DEFAULT_REQUEST_ERROR_MESSAGE
             : statusText}
         </Typography>
 

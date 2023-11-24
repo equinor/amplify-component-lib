@@ -81,7 +81,11 @@ const FeedbackForm: FC<FeedbackFormProps> = () => {
           </LockedFormWarning>
         )}
         <Actions>
-          <Button variant="ghost" onClick={resetForm}>
+          <Button
+            variant="ghost"
+            onClick={resetForm}
+            data-testid="reset-form-button"
+          >
             Reset form
           </Button>
           <div>
@@ -91,6 +95,7 @@ const FeedbackForm: FC<FeedbackFormProps> = () => {
             <Button
               onClick={handleSave}
               disabled={!canSubmitFeedback || requestIsLoading}
+              data-testid="submit-button"
             >
               {serviceNowSuccess ? 'Send again' : 'Send'}
             </Button>

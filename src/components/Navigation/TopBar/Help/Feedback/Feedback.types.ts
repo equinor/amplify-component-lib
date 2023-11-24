@@ -1,5 +1,7 @@
 import { FileWithPath } from 'react-dropzone';
 
+import { ApiError, ServiceNowIncidentResponse } from '../../../../../api';
+
 export enum UrgencyOption {
   NO_IMPACT = 'I am not impacted',
   IMPEDES = 'It impedes my progress',
@@ -49,3 +51,15 @@ export type SlackStatus = {
   slackAttachmentsResponse: AttachmentStatus[];
 };
 export type FeedbackRequestStatus = FeedbackLocalStorage & SlackStatus;
+
+export type UpdateRequestStatusHandler = ({
+  status,
+  response,
+  error,
+  filename,
+}: {
+  status: StatusEnum;
+  response?: ServiceNowIncidentResponse;
+  error?: ApiError;
+  filename?: string;
+}) => void;

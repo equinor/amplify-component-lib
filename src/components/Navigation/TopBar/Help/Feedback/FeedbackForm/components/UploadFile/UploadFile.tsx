@@ -57,7 +57,7 @@ function removeDuplicates(
 interface UploadFileProps {}
 
 const UploadFile: FC<UploadFileProps> = () => {
-  const { feedbackAttachments, updateFeedback } = useFeedbackContext();
+  const { feedbackAttachments, setFeedbackAttachments } = useFeedbackContext();
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const onDrop = async (
     acceptedFiles: FileWithPath[],
@@ -79,7 +79,7 @@ const UploadFile: FC<UploadFileProps> = () => {
         combinedNewAndPrev,
         (a, b) => a.name === b.name && a.size === b.size
       );
-      updateFeedback('attachments', newAttachments);
+      setFeedbackAttachments(newAttachments);
     }
     setRejectedFiles(fileRejections);
   };
@@ -91,7 +91,8 @@ const UploadFile: FC<UploadFileProps> = () => {
         return attachment.name !== file.name && attachment.size !== file.size;
       }) ?? [];
     /* c8 ignore end */
-    updateFeedback('attachments', newAttachmentsList);
+
+    setFeedbackAttachments(newAttachmentsList);
   };
 
   /* c8 ignore start */

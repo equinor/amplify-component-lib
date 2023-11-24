@@ -29,7 +29,6 @@ const ContentWrapper = styled.div`
 `;
 
 export interface HelpProps {
-  applicationName: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
   children?: ReactNode;

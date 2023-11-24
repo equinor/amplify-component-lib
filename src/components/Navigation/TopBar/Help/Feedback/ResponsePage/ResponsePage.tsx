@@ -45,9 +45,6 @@ const ResponsePage: FC<ResponsePageProps> = () => {
     if (allStatuses.includes(StatusEnum.error)) {
       return StatusEnum.partial;
     }
-    if (allStatuses.includes(StatusEnum.pending)) {
-      return StatusEnum.pending;
-    }
     return StatusEnum.idle;
   }, [slackAttachmentsRequestResponse, slackRequestResponse.status]);
 

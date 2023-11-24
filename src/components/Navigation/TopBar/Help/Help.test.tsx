@@ -8,7 +8,7 @@ import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import {
   FeedbackContentType,
   UrgencyOption,
-} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
+} from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -21,6 +21,8 @@ import {
   waitFor,
   within,
 } from 'src/tests/test-utils';
+
+import { expect } from 'vitest';
 
 const releaseNotes = [
   {
@@ -62,18 +64,22 @@ function Wrappers({ children }: { children: any }) {
   );
 }
 
-// async function fakeImageFile(bad: boolean = false) {
-//   const extension = bad ? '.tiff' : '.png';
-//   return new File([faker.lorem.sentence()], faker.word.noun() + extension);
-// }
+const waitForMS = (timeout: number) => {
+  return new Promise((r) => setTimeout(r, timeout));
+};
 
-// const createRegexToGetAttachment = (fileName: string) => {
-//   const split = fileName.split('.');
-//   return new RegExp(
-//     'uploaded file: ' + split[0].toLowerCase() + '\\.' + split[1],
-//     'i'
-//   );
-// };
+async function fakeImageFile(bad: boolean = false) {
+  const extension = bad ? '.tiff' : '.png';
+  return new File([faker.lorem.sentence()], faker.word.noun() + extension);
+}
+
+const createRegexToGetAttachment = (fileName: string) => {
+  const split = fileName.split('.');
+  return new RegExp(
+    'uploaded file: ' + split[0].toLowerCase() + '\\.' + split[1],
+    'i'
+  );
+};
 
 function fakeInputs(): FeedbackContentType {
   return {
@@ -83,19 +89,22 @@ function fakeInputs(): FeedbackContentType {
   };
 }
 
-let mockServiceHasError = false;
+const SERVICE_NOW_ERROR = 'service now error';
+const SLACK_POST_ERROR = 'slack post error';
+const SLACK_FILE_ERROR = 'slack file error';
 
-let createIncidentResponseNumber: string = 'EQ123';
+let mockServiceHasError = false;
+let mockServicePartialError = false;
 
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
     public static createIncident(): CancelablePromise<ServiceNowIncidentResponse> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
-          if (mockServiceHasError) {
-            reject('error incident');
+          if (mockServiceHasError && !mockServicePartialError) {
+            reject({ message: SERVICE_NOW_ERROR });
           } else {
-            resolve({ number: createIncidentResponseNumber });
+            resolve({ sysId: 'kljsdflk-fsd-asdf-fsddf' });
           }
         }, 500)
       );
@@ -104,8 +113,8 @@ vi.mock('src/api/services/PortalService', () => {
     public static fileUpload(formData?: FormData): CancelablePromise<any> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
-          if (mockServiceHasError) {
-            reject('error fileUpload');
+          if (mockServiceHasError && !mockServicePartialError) {
+            reject({ message: SLACK_FILE_ERROR });
           } else {
             resolve(formData);
           }
@@ -114,15 +123,15 @@ vi.mock('src/api/services/PortalService', () => {
     }
 
     public static postmessage(formData?: FormData): Promise<any> {
-      return new CancelablePromise((resolve, reject) => {
+      return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
-          if (mockServiceHasError) {
-            reject('error postMessage');
+          if (mockServiceHasError || mockServicePartialError) {
+            reject({ message: SLACK_POST_ERROR });
           } else {
             resolve(formData);
           }
-        }, 500);
-      });
+        }, 500)
+      );
     }
   }
   return { PortalService };
@@ -151,12 +160,9 @@ const severityOptions = [
   UrgencyOption.NO_IMPACT,
 ];
 
-const applicationName = faker.animal.cat();
-
 describe('Help', () => {
   test('Behaves as expected', async () => {
-    const applicationName = faker.animal.cat();
-    render(<Help applicationName={applicationName}>Child</Help>, {
+    render(<Help>Child</Help>, {
       wrapper: Wrappers,
     });
     const user = userEvent.setup();
@@ -171,7 +177,7 @@ describe('Help', () => {
   });
 
   test('Opens and closes as expected', async () => {
-    render(<Help applicationName={applicationName} />, { wrapper: Wrappers });
+    render(<Help />, { wrapper: Wrappers });
     const user = userEvent.setup();
 
     const button = screen.getByRole('button');
@@ -187,14 +193,9 @@ describe('Help', () => {
   });
 
   test('hide props working as expected', async () => {
-    render(
-      <Help
-        applicationName={applicationName}
-        hideFeedback={true}
-        hideReleaseNotes={true}
-      />,
-      { wrapper: Wrappers }
-    );
+    render(<Help hideFeedback={true} hideReleaseNotes={true} />, {
+      wrapper: Wrappers,
+    });
     const user = userEvent.setup();
 
     const button = screen.getByRole('button');
@@ -214,7 +215,7 @@ describe('Help', () => {
     test('should close the dialog by clicking the close button inside', async () => {
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
-          <Help applicationName={applicationName} />
+          <Help />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -240,7 +241,7 @@ describe('Help', () => {
     test('can close dialog by clicking outside', async () => {
       render(
         <MemoryRouter initialEntries={['/']}>
-          <Help applicationName={applicationName} />
+          <Help />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -269,7 +270,7 @@ describe('Help', () => {
       mockServiceHasError = false;
       render(
         <MemoryRouter initialEntries={['/']}>
-          <Help applicationName={applicationName} />
+          <Help />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -294,7 +295,7 @@ describe('Help', () => {
       mockServiceHasError = false;
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
-          <Help applicationName={applicationName} />
+          <Help />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -331,7 +332,7 @@ describe('Help', () => {
       mockServiceHasError = false;
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
-          <Help applicationName={applicationName} />
+          <Help />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -378,10 +379,13 @@ describe('Help', () => {
   });
 
   describe('Report bug and feedback', () => {
+    beforeEach(() => {
+      window.localStorage.clear();
+    });
     test('can close dialog by clicking outside', async () => {
       render(
         <>
-          <Help applicationName={applicationName} />
+          <Help />
         </>,
         { wrapper: Wrappers }
       );
@@ -410,12 +414,9 @@ describe('Help', () => {
       test(`can select and submit "${option}" severity`, async () => {
         mockServiceHasError = false;
         const { title, description } = fakeInputs();
-        const { container } = render(
-          <Help applicationName={applicationName} />,
-          {
-            wrapper: Wrappers,
-          }
-        );
+        const { container } = render(<Help />, {
+          wrapper: Wrappers,
+        });
         const user = userEvent.setup();
 
         const button = screen.getByRole('button');
@@ -455,7 +456,7 @@ describe('Help', () => {
       mockServiceHasError = false;
       const title = faker.animal.cat();
       const description = faker.lorem.sentence();
-      render(<Help applicationName={applicationName} />, {
+      render(<Help />, {
         wrapper: Wrappers,
       });
       const user = userEvent.setup();
@@ -479,10 +480,10 @@ describe('Help', () => {
     test('Inputting all fields with file works as expected', async () => {
       mockServiceHasError = false;
       const { title, description, url } = fakeInputs();
-      // const imageOne = await fakeImageFile();
-      // const imageTwo = await fakeImageFile();
+      const imageOne = await fakeImageFile();
+      const imageTwo = await fakeImageFile();
 
-      render(<Help applicationName={applicationName} />, {
+      render(<Help />, {
         wrapper: Wrappers,
       });
 
@@ -497,7 +498,8 @@ describe('Help', () => {
       const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
       const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
       const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
-      const submitButton = screen.getByText(/send/i).parentElement as Element;
+
+      const submitButton = screen.getByTestId('submit-button');
 
       expect(submitButton).toBeDisabled();
 
@@ -509,58 +511,59 @@ describe('Help', () => {
       expect(descInput.value).toEqual(description);
       expect(urlInput.value).toEqual(url);
 
-      // const fileUploadArea = screen.getByTestId('file-upload-area-input');
+      const fileUploadArea = screen.getByTestId('file-upload-area-input');
 
-      // await user.upload(fileUploadArea, [imageTwo]);
+      await user.upload(fileUploadArea, [imageTwo]);
 
-      // // Delete image file
-      // const file2nameElement = screen.getByAltText(
-      //   createRegexToGetAttachment(imageTwo.name)
-      // );
+      // Delete image file
+      const file2nameElement = screen.getByAltText(
+        createRegexToGetAttachment(imageTwo.name)
+      );
 
-      // expect(file2nameElement).toBeInTheDocument();
+      expect(file2nameElement).toBeInTheDocument();
 
-      // await user.hover(file2nameElement);
+      await user.hover(file2nameElement);
 
-      // const removeAttachmentButton = screen.getByTestId('attachment-delete-button');
+      const removeAttachmentButton = screen.getByTestId(
+        'attachment-delete-button'
+      );
 
-      // expect(removeAttachmentButton).toBeInTheDocument();
+      expect(removeAttachmentButton).toBeInTheDocument();
 
-      // if (removeAttachmentButton) {
-      //   await user.click(removeAttachmentButton);
-      //   expect(file2nameElement).not.toBeInTheDocument();
-      // }
+      if (removeAttachmentButton) {
+        await user.click(removeAttachmentButton);
+        expect(file2nameElement).not.toBeInTheDocument();
+      }
 
-      // // Upload three files, two being duplicates, so expect only two files to be shown
-      // await user.upload(fileUploadArea, [imageOne]);
-      // await user.upload(fileUploadArea, [imageTwo]);
-      // await user.upload(fileUploadArea, [imageOne]);
+      // Upload three files, two being duplicates, so expect only two files to be shown
+      await user.upload(fileUploadArea, [imageOne]);
+      await user.upload(fileUploadArea, [imageTwo]);
+      await user.upload(fileUploadArea, [imageOne]);
 
-      // const allDeleteButtons = screen.getAllByTestId('attachment-delete-button');
+      const allDeleteButtons = screen.getAllByTestId(
+        'attachment-delete-button'
+      );
 
-      // expect(allDeleteButtons.length).toBe(2);
+      expect(allDeleteButtons.length).toBe(2);
 
       expect(submitButton).not.toBeDisabled();
       await user.click(submitButton);
 
-      await waitFor(
-        () =>
-          expect(
-            screen.getByText(createIncidentResponseNumber)
-          ).toBeInTheDocument(),
-        {
-          timeout: 5000,
-        }
-      );
+      await waitForMS(3000);
+      expect(screen.getAllByText(/success/i).length).toBe(2);
+
+      const closeButton = screen.getByText(/close/i);
+      await user.click(closeButton);
+      await new Promise((r) => setTimeout(r, 1000));
+      expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
     }, 20000); // Setting timeout for this test to be 20 seconds
 
     test('Url validation working as expected', async () => {
-      render(<Help applicationName={applicationName} />, {
+      mockServiceHasError = false;
+      render(<Help />, {
         wrapper: Wrappers,
       });
       const user = userEvent.setup();
-      const helperTextString =
-        'The provided URL must from a equinor.com domain';
 
       const wrongUrl = 'www.google.com';
       const rightUrl = 'www.amplify.equinor.com';
@@ -572,14 +575,13 @@ describe('Help', () => {
       await user.click(reportBug);
 
       const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
-
       await user.type(urlInput, wrongUrl);
 
-      await urlInput.blur();
+      urlInput.blur();
+      await waitForMS(1000);
+      const helperText = screen.queryByText(/URL must be from a equinor/i);
 
-      const helperText = screen.queryByText(helperTextString);
-
-      expect(helperText).toBeInTheDocument();
+      expect(helperText as HTMLElement).toBeInTheDocument();
 
       await user.clear(urlInput);
 
@@ -587,129 +589,117 @@ describe('Help', () => {
 
       await user.type(urlInput, wrongUrl);
 
-      await urlInput.blur();
+      urlInput.blur();
+      await waitForMS(1000);
+      const helperTextAgain = screen.queryByText(/URL must be from a equinor/i);
 
-      const helperTextAgain = screen.queryByText(helperTextString);
-
-      expect(helperTextAgain).toBeInTheDocument();
+      expect(helperTextAgain as HTMLElement).toBeInTheDocument();
       await user.type(urlInput, rightUrl);
 
       expect(helperTextAgain).not.toBeInTheDocument();
     }, 10000); // Setting timeout for this test to be 10 seconds
 
-    test('shows error snackbar on request error', async () => {
+    test('shows more details if slack request fails, and can return to form to retry', async () => {
       mockServiceHasError = true;
-      console.error = vi.fn();
+      mockServicePartialError = true;
       const { title, description } = fakeInputs();
+      const imageOne = await fakeImageFile();
 
-      render(<Help applicationName={applicationName} />, {
+      render(<Help />, {
         wrapper: Wrappers,
       });
-      const user = userEvent.setup();
 
-      const button = screen.getByRole('button');
-
-      await user.click(button);
-      const suggest = screen.getByText(/suggest/i);
-      await user.click(suggest);
-
-      const titleInput = screen.getByLabelText(/title/i);
-      const descInput = screen.getByLabelText(/description/i);
-      await user.type(titleInput, title);
-
-      await user.type(descInput, description);
-
-      const submitButton = screen.getByText(/send/i);
-
-      await user.click(submitButton);
-
-      expect(titleInput).toBeInTheDocument();
-
-      await waitFor(
-        () =>
-          expect(
-            screen.getByText(/There was an error sending your report/i)
-          ).toBeInTheDocument(),
-        { timeout: 5000 }
-      );
-    }, 10000); // Setting timeout for this test to be 10 seconds
-
-    test('opt out of sending email whens suggesting feature', async () => {
-      mockServiceHasError = false;
-      const { title, description } = fakeInputs();
-
-      render(<Help applicationName={applicationName} />, {
-        wrapper: Wrappers,
-      });
-      const user = userEvent.setup();
-
-      const button = screen.getByRole('button');
-
-      await user.click(button);
-      const suggest = screen.getByText(/suggest/i);
-      await user.click(suggest);
-
-      const nameInput: HTMLInputElement = screen.getByLabelText(/email/i);
-
-      const titleInput = screen.getByLabelText(/title/i);
-
-      const descInput = screen.getByLabelText(/description/i);
-      const optOutCheckbox = screen.getByTestId('opt_out_checkbox');
-
-      expect(optOutCheckbox).not.toBeChecked();
-
-      await user.click(optOutCheckbox);
-
-      expect(optOutCheckbox).toBeChecked();
-
-      expect(nameInput.value).toBe('Anonymous');
-
-      await user.type(titleInput, title);
-
-      await user.type(descInput, description);
-
-      const submitButton = screen.getByText(/send/i);
-
-      await user.click(submitButton);
-
-      await waitFor(
-        () =>
-          expect(
-            screen.getByText(/Your suggestion has been sent successfully/i)
-          ).toBeInTheDocument(),
-        { timeout: 5000 }
-      );
-    }, 10000); // Setting timeout for this test to be 10 seconds
-
-    test('undefined service now number working', async () => {
-      createIncidentResponseNumber = '';
-      mockServiceHasError = false;
-      const { title, description } = fakeInputs();
-
-      render(<Help applicationName={applicationName} />, {
-        wrapper: Wrappers,
-      });
       const user = userEvent.setup();
 
       const button = screen.getByRole('button');
       await user.click(button);
 
-      const reportBug = screen.getByText('Report a bug');
+      const reportBug = screen.getByText(/report a bug/i);
       await user.click(reportBug);
 
-      const titleInput = screen.getByLabelText(/title/i);
-      const descInput = screen.getByLabelText(/description/i);
+      const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
+      const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
+
+      const submitButton = screen.getByTestId('submit-button');
+
+      expect(submitButton).toBeDisabled();
 
       await user.type(titleInput, title);
       await user.type(descInput, description);
 
-      const submitButton = screen.getByText(/send/i).parentElement as Element;
+      expect(titleInput.value).toEqual(title);
+      expect(descInput.value).toEqual(description);
+
+      const fileUploadArea = screen.getByTestId('file-upload-area-input');
+
+      await user.upload(fileUploadArea, [imageOne]);
 
       await user.click(submitButton);
-      await waitFor(
-        () => expect(screen.getByText(/Not found/i)).toBeInTheDocument(),
-        { timeout: 18000 }
-      );
-    }, 20000); // Setting timeout for this test to be 15 seconds
+
+      await waitForMS(2500);
+
+      expect(screen.getByText(`Posting ${imageOne.name}`)).toBeInTheDocument();
+
+      const retryButton = screen.getByText(/retry/i);
+      expect(retryButton).not.toBeDisabled();
+
+      await user.click(retryButton);
+
+      expect(
+        screen.getByText(/The report has already been sent to service now/i)
+      ).toBeInTheDocument();
+      const resetForm = screen.getByTestId('reset-form-button');
+
+      const titleInputAgain: HTMLInputElement = screen.getByLabelText(/title/i);
+      expect(titleInputAgain.value).toBe(title);
+      await user.click(resetForm);
+      await waitForMS(1000);
+      expect(titleInputAgain.value).not.toBe(title);
+    });
+    test('shows error message when everything fails', async () => {
+      mockServiceHasError = true;
+      mockServicePartialError = false;
+      const { title, description } = fakeInputs();
+      const imageOne = await fakeImageFile();
+      console.error = vi.fn();
+      render(<Help />, {
+        wrapper: Wrappers,
+      });
+
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+      await user.click(button);
+
+      const reportBug = screen.getByText(/report a bug/i);
+      await user.click(reportBug);
+
+      const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
+      const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
+
+      const submitButton = screen.getByTestId('submit-button');
+
+      expect(submitButton).toBeDisabled();
+
+      await user.type(titleInput, title);
+      await user.type(descInput, description);
+
+      expect(titleInput.value).toEqual(title);
+      expect(descInput.value).toEqual(description);
+
+      const fileUploadArea = screen.getByTestId('file-upload-area-input');
+
+      await user.upload(fileUploadArea, [imageOne]);
+
+      await user.click(submitButton);
+
+      await waitForMS(2500);
+
+      expect(screen.getByText(`Posting ${imageOne.name}`)).toBeInTheDocument();
+
+      expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
+      expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
+      expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
+    });
   });
 });
