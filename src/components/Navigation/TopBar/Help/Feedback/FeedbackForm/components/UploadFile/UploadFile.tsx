@@ -1,39 +1,18 @@
 import { FC, useState } from 'react';
 import { FileRejection, FileWithPath } from 'react-dropzone';
 
-import { Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-
 import { MAX_FILE_SIZE_BYTES } from '../../../Feedback.const';
 import { useFeedbackContext } from '../../../hooks/useFeedbackContext';
 import ImageFile from './ImageFile';
+import { FileUploadAreaWrapper, Title } from './UploadFile.styles';
 import FileUploadArea from 'src/components/Inputs/FileUploadArea';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
-
-const Wrapper = styled.div`
+export const Container = styled.div`
   grid-column: 1/3;
   display: flex;
   flex-direction: column;
-`;
-const Title = styled(Typography)`
-  margin: ${spacings.comfortable.small} ${spacings.comfortable.small} 0
-    ${spacings.comfortable.small};
-  color: ${colors.text.static_icons__tertiary.hex};
-`;
-
-const FileUploadAreaWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: start;
-  gap: ${spacings.comfortable.medium_small};
-  height: fit-content;
-  position: relative;
-  > :first-child {
-    margin-top: ${spacings.comfortable.medium_small};
-  }
 `;
 
 function removeDuplicates(
@@ -106,7 +85,7 @@ const UploadFile: FC = () => {
   /* c8 ignore end */
 
   return (
-    <Wrapper>
+    <Container>
       <Title group="input" variant="label">
         Attachments (.jpg, .jpeg, .png) (max 1 MB)
       </Title>
@@ -142,7 +121,7 @@ const UploadFile: FC = () => {
           /* c8 ignore end */
         })}
       </FileUploadAreaWrapper>
-    </Wrapper>
+    </Container>
   );
 };
 
