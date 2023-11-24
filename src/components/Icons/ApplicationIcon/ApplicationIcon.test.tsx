@@ -4,10 +4,12 @@ import { render, screen } from '../../../tests/test-utils';
 import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
 import {
   acquire,
+  bravos,
   dasha,
   depthConversion,
   fallback,
   fourDInsight,
+  IconDataWithColor,
   inPress,
   loggingQualification,
   portal,
@@ -25,11 +27,12 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'pwex',
   'depth-conversion',
   'inpress',
+  'bravos',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
 type IconsDict = {
-  [key: ApplicationIconProps['name']]: IconData;
+  [key: ApplicationIconProps['name']]: IconData | IconDataWithColor[];
 };
 
 const icons: IconsDict = {
@@ -42,6 +45,7 @@ const icons: IconsDict = {
   pwex: pwex,
   'depth-conversion': depthConversion,
   inpress: inPress,
+  bravos: bravos,
 };
 
 test('Render correctly with corresponding props', async () => {
@@ -52,12 +56,24 @@ test('Render correctly with corresponding props', async () => {
     rerender(<ApplicationIcon name={name} />);
     for (const size of sizeOptions) {
       rerender(<ApplicationIcon name={name} size={size} />);
-      const path = screen.getByTestId('eds-icon-path');
-      expect(path).toHaveAttribute('d', icons[name].svgPathData);
-      const svgComponent = path.parentElement;
-      expect(svgComponent).toBeInTheDocument();
-      expect(svgComponent).toHaveAttribute('height', `${size}px`);
-      expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      const currentIcon = icons[name];
+      if (Array.isArray(currentIcon)) {
+        const paths = screen.getAllByTestId('eds-icon-path');
+        for (const [index, path] of paths.entries()) {
+          expect(path).toHaveAttribute('d', currentIcon[index].svgPathData);
+        }
+        const svgComponent = paths[0].parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      } else {
+        const path = screen.getByTestId('eds-icon-path');
+        expect(path).toHaveAttribute('d', currentIcon.svgPathData);
+        const svgComponent = path.parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      }
     }
   }
 });
