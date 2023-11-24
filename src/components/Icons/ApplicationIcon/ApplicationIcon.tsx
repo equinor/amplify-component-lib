@@ -2,6 +2,7 @@ import { FC, forwardRef } from 'react';
 
 import { SvgIconProps } from '../index';
 import Acquire from './Acquire';
+import Bravos from './Bravos';
 import Dasha from './Dasha';
 import DepthConversion from './DepthConversion';
 import Fallback from './Fallback';
@@ -21,7 +22,8 @@ export type ApplicationName =
   | 'portal'
   | 'logging-qualification'
   | 'pwex'
-  | 'inpress';
+  | 'inpress'
+  | 'bravos';
 
 interface IApplicationIconData {
   appName: string;
@@ -37,6 +39,7 @@ const apps: IApplicationIconData[] = [
   { appName: 'recap', component: Recap },
   { appName: 'pwex', component: Pwex },
   { appName: 'inpress', component: InPress },
+  { appName: 'bravos', component: Bravos },
 ];
 
 export interface ApplicationIconProps {
