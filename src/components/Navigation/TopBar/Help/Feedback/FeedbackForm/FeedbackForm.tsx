@@ -19,9 +19,7 @@ import Title from './components/Title';
 import UploadFile from './components/UploadFile/UploadFile';
 import Url from './components/Url';
 
-interface FeedbackFormProps {}
-
-const FeedbackForm: FC<FeedbackFormProps> = () => {
+const FeedbackForm: FC = () => {
   const {
     isWrongDomain,
     selectedType,

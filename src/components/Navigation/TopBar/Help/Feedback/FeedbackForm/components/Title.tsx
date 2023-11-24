@@ -10,9 +10,7 @@ const Container = styled.div`
   grid-column: 1/3;
 `;
 
-interface TitleProps {}
-
-const Title: FC<TitleProps> = () => {
+const Title: FC = () => {
   const { serviceNowSuccess, feedbackContent, updateFeedback } =
     useFeedbackContext();
   return (

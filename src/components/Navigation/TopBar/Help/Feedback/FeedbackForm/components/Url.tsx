@@ -1,8 +1,8 @@
 import { FC, FocusEvent, FormEvent } from 'react';
 
-import AmplifyTextField from '../../../../../../Inputs/AmplifyTextField';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
+import AmplifyTextField from 'src/components/Inputs/AmplifyTextField';
 
 import styled from 'styled-components';
 

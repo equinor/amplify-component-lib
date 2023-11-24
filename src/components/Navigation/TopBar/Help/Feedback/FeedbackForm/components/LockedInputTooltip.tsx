@@ -1,6 +1,6 @@
 import { forwardRef, ReactNode, useMemo } from 'react';
 
-import OptionalTooltip from '../../../../../../DataDisplay/OptionalTooltip';
+import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
 
 import styled from 'styled-components';
 

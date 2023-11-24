@@ -4,9 +4,7 @@ import FeedbackForm from './FeedbackForm/FeedbackForm';
 import { useFeedbackContext } from './hooks/useFeedbackContext';
 import ResponsePage from './ResponsePage/ResponsePage';
 
-interface FeedbackInnerProps {}
-
-const FeedbackInner: FC<FeedbackInnerProps> = () => {
+const FeedbackInner: FC = () => {
   const { showResponsePage } = useFeedbackContext();
 
   if (showResponsePage) return <ResponsePage />;

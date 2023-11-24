@@ -3,10 +3,10 @@ import { FC, FormEvent, useMemo } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import AmplifyTextField from '../../../../../../Inputs/AmplifyTextField';
 import { FeedbackType } from '../../Feedback.types';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
+import AmplifyTextField from 'src/components/Inputs/AmplifyTextField';
 
 import styled from 'styled-components';
 
