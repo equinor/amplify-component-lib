@@ -1,61 +1,28 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { FileRejection, FileWithPath } from 'react-dropzone';
 
-import { Icon, Tooltip } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { readUploadedFileAsText } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.utils';
+import {
+  CloseButton,
+  FileTooltip,
+  ImageWrapper,
+  Rejection,
+} from './UploadFile.styles';
+import { readUploadedFileAsText } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.utils';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
-const Wrapper = styled.div`
+const Container = styled.div`
   border-radius: 4px;
   margin: 10px 0;
   width: 82px;
   height: 82px;
   position: relative;
-  border: 2px solid ${colors.ui.background__light.hex};
-`;
-
-const ImageWrapper = styled.div`
-  height: 100%;
-  overflow: hidden;
-  > img {
-    width: 100%;
-    overflow: hidden;
-  }
-`;
-
-const Rejection = styled.div`
-  display: flex;
-  gap: ${spacings.comfortable.small};
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  font-size: 14px;
-  text-align: center;
-`;
-
-const CloseButton = styled.div`
-  background-color: ${colors.text.static_icons__tertiary.hex};
-  border-radius: 50%;
-  border: 2px solid ${colors.text.static_icons__primary_white.rgba};
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  right: -10px;
-  cursor: pointer;
-  top: -10px;
-  > svg {
-    width: 18px;
-    height: 18px;
-    fill: ${colors.text.static_icons__primary_white.rgba};
-  }
 `;
 
 interface ImageFileProps {
@@ -74,13 +41,12 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   props
 ) => {
   const [src, setSrc] = useState('');
-
   const { error, onDelete } = props;
 
   const errorMessage = useMemo(() => {
     /* c8 ignore start */
     if (!error) return;
-    return `${props.errors[0].code} - ${props.errors[0].message}`;
+    return `${props.errors[0].code} \n ${props.errors[0].message}`;
     /* c8 ignore end */
   }, [error, props]);
 
@@ -97,10 +63,10 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   const shortError = useMemo(() => {
     if (!error) return '';
     if (props.errors.find((error) => error.code.includes('invalid'))) {
-      return 'Invalid type';
+      return 'Invalid file type';
     }
     if (props.errors.find((error) => error.code.includes('large'))) {
-      return 'Invalid size';
+      return 'Invalid file size';
     }
     return 'Error';
   }, [error, props]);
@@ -116,8 +82,9 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   }, [error, props]);
 
   return (
-    <Wrapper>
-      <Tooltip
+    <Container>
+      <FileTooltip
+        // placement="right"
         title={`
           ${fileName}${error ? ': ' + errorMessage : ''}
         `}
@@ -128,9 +95,9 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
             <Rejection>
               <Icon
                 data={error_outlined}
-                color={colors.interactive.warning__resting.hex}
+                color={colors.interactive.warning__text.hex}
               />
-              {shortError}
+              <div>{shortError}</div>
             </Rejection>
           ) : (
             /* c8 ignore end */
@@ -139,7 +106,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
             </ImageWrapper>
           )
         }
-      </Tooltip>
+      </FileTooltip>
       <CloseButton data-testid="attachment-delete-button" onClick={onDelete}>
         <Icon
           color={colors.text.static_icons__tertiary.hex}
@@ -147,7 +114,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
           size={24}
         />
       </CloseButton>
-    </Wrapper>
+    </Container>
   );
 };
 

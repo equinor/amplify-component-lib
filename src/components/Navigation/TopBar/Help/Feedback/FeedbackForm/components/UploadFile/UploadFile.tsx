@@ -1,43 +1,18 @@
 import { FC, useState } from 'react';
 import { FileRejection, FileWithPath } from 'react-dropzone';
 
-import { Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-
+import { MAX_FILE_SIZE_BYTES } from '../../../Feedback.const';
+import { useFeedbackContext } from '../../../hooks/useFeedbackContext';
+import ImageFile from './ImageFile';
+import { FileUploadAreaWrapper, Title } from './UploadFile.styles';
 import FileUploadArea from 'src/components/Inputs/FileUploadArea';
-import ImageFile from 'src/components/Navigation/TopBar/Help/FeedbackForm/components/ImageFile';
-import { MAX_FILE_SIZE_BYTES } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.const';
-import {
-  FeedbackContentType,
-  UrgencyOption,
-} from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
-
-const Wrapper = styled.div`
+export const Container = styled.div`
   grid-column: 1/3;
   display: flex;
   flex-direction: column;
-`;
-const Title = styled(Typography)`
-  margin: ${spacings.comfortable.small} ${spacings.comfortable.small} 0
-    ${spacings.comfortable.small};
-  color: ${colors.text.static_icons__tertiary.hex};
-`;
-
-const FileUploadAreaWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: start;
-  gap: ${spacings.comfortable.medium_small};
-  height: 140px;
-  overflow-x: visible;
-  overflow-y: auto;
-  > :first-child {
-    margin-top: ${spacings.comfortable.medium_small};
-  }
 `;
 
 function removeDuplicates(
@@ -58,18 +33,8 @@ function removeDuplicates(
   return a;
 }
 
-interface UploadFileProps {
-  feedbackContent: FeedbackContentType;
-  updateFeedback: (
-    key: keyof FeedbackContentType,
-    newValue: string | UrgencyOption | FileWithPath[]
-  ) => void;
-}
-
-const UploadFile: FC<UploadFileProps> = ({
-  feedbackContent,
-  updateFeedback,
-}) => {
+const UploadFile: FC = () => {
+  const { feedbackAttachments, setFeedbackAttachments } = useFeedbackContext();
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const onDrop = async (
     acceptedFiles: FileWithPath[],
@@ -83,27 +48,28 @@ const UploadFile: FC<UploadFileProps> = ({
       reader.readAsDataURL(acceptedFiles[0]);
       const oldAttachments: FileWithPath[] = [];
 
-      if (feedbackContent.attachments) {
-        oldAttachments.push(...feedbackContent.attachments);
+      if (feedbackAttachments) {
+        oldAttachments.push(...feedbackAttachments);
       }
       const combinedNewAndPrev = [...cleanedOfHiddenFiles, ...oldAttachments];
       const newAttachments = removeDuplicates(
         combinedNewAndPrev,
         (a, b) => a.name === b.name && a.size === b.size
       );
-      updateFeedback('attachments', newAttachments);
+      setFeedbackAttachments(newAttachments);
     }
     setRejectedFiles(fileRejections);
   };
 
   const handleOnDelete = (file: FileWithPath) => {
     const newAttachmentsList =
-      feedbackContent.attachments?.filter((attachment) => {
+      feedbackAttachments?.filter((attachment) => {
         /* c8 ignore start */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
         return attachment.name !== file.name && attachment.size !== file.size;
       }) ?? [];
     /* c8 ignore end */
-    updateFeedback('attachments', newAttachmentsList);
+
+    setFeedbackAttachments(newAttachmentsList);
   };
 
   /* c8 ignore start */
@@ -119,7 +85,7 @@ const UploadFile: FC<UploadFileProps> = ({
   /* c8 ignore end */
 
   return (
-    <Wrapper>
+    <Container>
       <Title group="input" variant="label">
         Attachments (.jpg, .jpeg, .png) (max 1 MB)
       </Title>
@@ -133,7 +99,7 @@ const UploadFile: FC<UploadFileProps> = ({
           }}
           compact
         />
-        {feedbackContent.attachments?.map((file) => {
+        {feedbackAttachments?.map((file) => {
           return (
             <ImageFile
               key={file.name + file.size}
@@ -155,7 +121,7 @@ const UploadFile: FC<UploadFileProps> = ({
           /* c8 ignore end */
         })}
       </FileUploadAreaWrapper>
-    </Wrapper>
+    </Container>
   );
 };
 

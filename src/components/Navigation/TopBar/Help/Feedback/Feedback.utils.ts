@@ -2,9 +2,9 @@ import { FileWithPath } from 'react-dropzone';
 
 import {
   FeedbackContentType,
-  FeedbackEnum,
+  FeedbackType,
   UrgencyOption,
-} from './FeedbackForm.types';
+} from './Feedback.types';
 import { ServiceNowUrgency } from 'src/api';
 import { date, environment } from 'src/utils';
 
@@ -64,10 +64,10 @@ export const createServiceNowDescription = (
 
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
-  selectedType: FeedbackEnum | undefined,
+  selectedType: FeedbackType | undefined,
   email: string | undefined
 ) => {
-  const isBugReport = selectedType === FeedbackEnum.BUG;
+  const isBugReport = selectedType === FeedbackType.BUG;
   const typeText = isBugReport ? ':bug: Bug report' : ':bulb: Suggestion';
 
   const dateAndUrlSectionArray = [];
@@ -126,7 +126,7 @@ export const createSlackMessage = (
         },
         {
           type: 'mrkdwn',
-          text: `*User* \n ${feedbackContent.anonymous ? 'Anonymous' : email}`,
+          text: `*User* \n ${email}`,
         },
       ],
     },

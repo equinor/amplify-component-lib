@@ -9,9 +9,9 @@ import {
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import FeedbackForm from './FeedbackForm/FeedbackForm';
+import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
-import { FeedbackEnum } from 'src/components/Navigation/TopBar/Help/FeedbackForm/FeedbackForm.types';
+import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
@@ -29,7 +29,6 @@ const ContentWrapper = styled.div`
 `;
 
 export interface HelpProps {
-  applicationName: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
   children?: ReactNode;
@@ -45,14 +44,14 @@ export const Help: FC<HelpProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
-  const [feedbackType, setFeedbackType] = useState<FeedbackEnum | undefined>(
+  const [feedbackType, setFeedbackType] = useState<FeedbackType | undefined>(
     undefined
   );
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleOnFeedbackClick = (event?: MouseEvent<HTMLDivElement>) => {
-    setFeedbackType(event?.currentTarget.id as FeedbackEnum);
+    setFeedbackType(event?.currentTarget.id as FeedbackType);
     closeMenu();
   };
 
@@ -99,13 +98,13 @@ export const Help: FC<HelpProps> = ({
         {!hideFeedback && (
           <>
             <HelpMenuItem
-              id={FeedbackEnum.BUG}
+              id={FeedbackType.BUG}
               onClick={handleOnFeedbackClick}
               icon={report_bug}
               text="Report a bug"
             />
             <HelpMenuItem
-              id={FeedbackEnum.SUGGESTION}
+              id={FeedbackType.SUGGESTION}
               onClick={handleOnFeedbackClick}
               icon={move_to_inbox}
               text="Suggest a feature"
@@ -123,21 +122,18 @@ export const Help: FC<HelpProps> = ({
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={
-            feedbackType === FeedbackEnum.BUG ||
-            feedbackType === FeedbackEnum.SUGGESTION
+            feedbackType === FeedbackType.BUG ||
+            feedbackType === FeedbackType.SUGGESTION
           }
           onClose={handleOnDialogClose}
           isDismissable={true}
         >
           <Dialog.Header>
-            {feedbackType === FeedbackEnum.BUG
+            {feedbackType === FeedbackType.BUG
               ? 'Report a bug - ServiceNow'
               : 'Suggest a feature'}
           </Dialog.Header>
-          <FeedbackForm
-            selectedType={feedbackType}
-            onClose={handleOnDialogClose}
-          />
+          <Feedback selectedType={feedbackType} onClose={handleOnDialogClose} />
         </FeedbackFormDialog>
       )}
     </>
