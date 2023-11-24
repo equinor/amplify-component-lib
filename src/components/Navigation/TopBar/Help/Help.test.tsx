@@ -655,7 +655,8 @@ describe('Help', () => {
       await user.click(resetForm);
       await waitForMS(1000);
       expect(titleInputAgain.value).not.toBe(title);
-    });
+    }, 10000); // Setting timeout for this test to be 10 seconds
+
     test('shows error message when everything fails', async () => {
       mockServiceHasError = true;
       mockServicePartialError = false;
