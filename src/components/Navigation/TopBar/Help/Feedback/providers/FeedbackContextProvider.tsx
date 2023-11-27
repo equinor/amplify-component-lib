@@ -206,6 +206,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   const handleSave = async () => {
     // Service now request
     toggleShowResponsePage();
+    let sysId = '';
     if (
       selectedType === FeedbackType.BUG &&
       userEmail &&
@@ -232,6 +233,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       }
       try {
         const response = await serviceNowIncident(serviceNowFormData);
+        sysId = response.sysId ?? '';
         updateServiceNowStatus({
           status: StatusEnum.success,
           response: response,
@@ -245,11 +247,10 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     }
 
     // Slack message request
-
     const contentFormData = new FormData();
     contentFormData.append(
       'comment',
-      createSlackMessage(feedbackContent, selectedType, userEmail)
+      createSlackMessage(feedbackContent, selectedType, userEmail, sysId)
     );
     try {
       await slackPostMessage(contentFormData);

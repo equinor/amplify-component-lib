@@ -1,5 +1,6 @@
 import { FileWithPath } from 'react-dropzone';
 
+import { EnvironmentType } from '../../TopBar';
 import {
   FeedbackContentType,
   FeedbackType,
@@ -9,7 +10,7 @@ import { ServiceNowUrgency } from 'src/api';
 import { date, environment } from 'src/utils';
 
 const { formatDate } = date;
-const { getAppName } = environment;
+const { getAppName, getEnvironmentName } = environment;
 
 const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
   if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
@@ -62,10 +63,25 @@ export const createServiceNowDescription = (
   }${feedbackContent.description}`;
 };
 
+export const createServiceNowUrl = (sysId: string, selfService?: boolean) => {
+  const path = selfService
+    ? 'selfservice?id=ticket&table=incident&sys_id='
+    : 'now/nav/ui/classic/params/target/incident.do%3Fsys_id%3D';
+  /* c8 ignore start*/
+  const isProd =
+    getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) ===
+    EnvironmentType.PRODUCTION;
+  /* c8 ignore end */
+  return `https://equinor${
+    isProd ? '' : 'test'
+  }.service-now.com/${path}${sysId}`;
+};
+
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
   selectedType: FeedbackType | undefined,
-  email: string | undefined
+  email: string | undefined,
+  sysId?: string
 ) => {
   const isBugReport = selectedType === FeedbackType.BUG;
   const typeText = isBugReport ? ':bug: Bug report' : ':bulb: Suggestion';
@@ -137,6 +153,17 @@ export const createSlackMessage = (
         text: '*Description* \n' + feedbackContent.description,
       },
     },
+    sysId
+      ? {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `*<${createServiceNowUrl(
+              sysId
+            )}|:link: Click to open the ticket in Service Now>*`,
+          },
+        }
+      : {},
     {
       type: 'divider',
     },
