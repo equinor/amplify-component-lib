@@ -13,15 +13,9 @@ import {
 export default {
   title: 'Navigation/TopBar/Help',
   component: Help,
-  argTypes: {
-    applicationName: { control: 'text' },
-  },
-  args: {
-    applicationName: 'test.com/',
-  },
 } as Meta;
 
-export const Primary: StoryFn = (args) => {
+export const Primary: StoryFn = () => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -29,7 +23,7 @@ export const Primary: StoryFn = (args) => {
         <SnackbarProvider>
           <ReleaseNotesProvider>
             <MemoryRouter initialEntries={['/']}>
-              <Help applicationName={args.applicationName} />
+              <Help />
             </MemoryRouter>
           </ReleaseNotesProvider>
         </SnackbarProvider>
