@@ -54,7 +54,7 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
         /* c8 ignore start*/
         environment === EnvironmentType.PRODUCTION ? '' : 'test'
         /* c8 ignore end */
-      }.service-now.com/now/nav/ui/classic/params/target/incident.do%3Fsys_id${
+      }.service-now.com/selfservice?id=ticket&table=incident&sys_id=${
         requestStatus.serviceNowId
       }`;
     }
