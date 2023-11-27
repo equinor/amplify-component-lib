@@ -32,13 +32,14 @@ export { default as Stepper } from './Feedback/Stepper/Stepper';
 export { default as Unauthorized } from './Feedback/Unauthorized';
 export {
   amplify_failure,
+  amplify_h1, 
+  amplify_h2,
   amplify_lwd,
   amplify_snail,
   amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,
-  amplify_wireline_open_hole,
-} from './Icons/AmplifyIcons';
+  amplify_wireline_open_hole} from './Icons/AmplifyIcons';
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
 export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
