@@ -9,15 +9,13 @@ interface FeatureProps {
 }
 
 const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
-  const { showContent, isLoading } = useFeatureToggling(featureKey);
-
-  if (isLoading) return null;
+  const { showContent } = useFeatureToggling(featureKey);
 
   if (showContent) {
     return <>{children}</>;
-  } else {
-    return <>{fallback ?? null}</>;
   }
+
+  return <>{fallback ?? null}</>;
 };
 
 export default Feature;

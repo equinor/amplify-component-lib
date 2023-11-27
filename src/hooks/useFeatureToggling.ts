@@ -46,8 +46,8 @@ export function useFeatureToggling(featureKey: string) {
       if (isUserInActiveUserArray(username, feature.activeUsers)) {
         return true;
       } else return feature.activeEnvironments?.includes(environment);
-    } else return !isError;
-  }, [environment, feature, isError, username]);
+    } else return isLoading ? false : !isError;
+  }, [environment, feature, isError, isLoading, username]);
 
   return { showContent, isLoading };
 }
