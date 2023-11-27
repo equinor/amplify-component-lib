@@ -3,13 +3,14 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import {
   amplify_failure,
+  amplify_h1,
+  amplify_h2, 
   amplify_lwd,
   amplify_snail,
   amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,
-  amplify_wireline_open_hole,
-} from './AmplifyIcons';
+  amplify_wireline_open_hole} from './AmplifyIcons';
 
 const allIcons = {
   amplify_wellbore: amplify_wellbore,
@@ -19,6 +20,8 @@ const allIcons = {
   amplify_success: amplify_success,
   amplify_failure: amplify_failure,
   amplify_snail: amplify_snail,
+  amplify_h1: amplify_h1, 
+  amplify_h2: amplify_h2, 
 };
 
 interface StoryFnProps {
@@ -47,6 +50,8 @@ export default {
         'amplify_success',
         'amplify_failure',
         'amplify_snail',
+        'amplify_h1', 
+        'amplify_h2'
       ],
     },
   },
