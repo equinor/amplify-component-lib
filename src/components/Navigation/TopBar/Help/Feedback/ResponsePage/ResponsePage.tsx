@@ -22,9 +22,7 @@ const Container = styled.div`
   }
 `;
 
-interface ResponsePageProps {}
-
-const ResponsePage: FC<ResponsePageProps> = () => {
+const ResponsePage: FC = () => {
   const {
     serviceNowRequestResponse,
     slackRequestResponse,
