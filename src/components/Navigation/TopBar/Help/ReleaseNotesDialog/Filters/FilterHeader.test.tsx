@@ -55,6 +55,20 @@ test('should link to correct environment given that it is not prod or empty', ()
     `https://client-amplify-portal-${EnvironmentType.STAGING}.radix.equinor.com/releasenotes?applications=%5B"Amplify components"%5D`
   );
 });
+
+test('should link to development environment given that its environment is localhost', () => {
+  vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.LOCALHOST);
+  render(<FilterHeader />, {
+    wrapper: Wrappers,
+  });
+  const actual = screen.getByRole('link');
+  expect(actual).toBeInTheDocument();
+  expect(actual).toBeVisible();
+  screen.logTestingPlaygroundURL();
+  expect(actual.getAttribute('href')).toBe(
+    `https://client-amplify-portal-${EnvironmentType.DEVELOP}.radix.equinor.com/releasenotes?applications=%5B"Amplify components"%5D`
+  );
+});
 test('should link to production environment using the external dns, amplify.equinor.com given environment is set to production', () => {
   vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.PRODUCTION);
   render(<FilterHeader />, {

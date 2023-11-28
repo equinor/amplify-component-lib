@@ -27,6 +27,10 @@ const FilterHeader: FC = () => {
   const environmentName = getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
   );
+  const environmentNameWithoutLocalHost =
+    environmentName === EnvironmentType.LOCALHOST
+      ? EnvironmentType.DEVELOP
+      : environmentName;
   const { setSearch, setOpen } = useReleaseNotes();
   const [sieveValue, setSieveValue] = useState<SieveValue>({
     searchValue: undefined,
@@ -88,8 +92,9 @@ const FilterHeader: FC = () => {
           <Button
             variant="ghost_icon"
             href={
-              environmentName && environmentName !== EnvironmentType.PRODUCTION
-                ? `https://client-amplify-portal-${environmentName}.radix.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
+              environmentNameWithoutLocalHost &&
+              environmentNameWithoutLocalHost !== EnvironmentType.PRODUCTION
+                ? `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
                 : `https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
             }
           >
