@@ -61,4 +61,18 @@ export class ReleaseNotesService {
       },
     });
   }
+
+    /**
+   * @returns string Success
+   * @throws ApiError
+   */
+    public static getContainerSasUri(): CancelablePromise<string> {
+      return __request(OpenAPI_Portal, {
+        method: 'GET',
+        url: '/api/v1/ReleaseNotes/GetContainerSasUri',
+        errors: {
+          401: `Unauthorized`,
+        },
+      });
+    }
 }

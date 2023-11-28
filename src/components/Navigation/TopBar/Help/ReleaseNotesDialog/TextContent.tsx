@@ -1,7 +1,9 @@
-import { FC } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { FC, useCallback } from 'react';
+import ReactMarkdown, { defaultUrlTransform,UrlTransform } from 'react-markdown';
 
 import { tokens } from '@equinor/eds-tokens';
+
+import { useTokenReleaseNote } from './ReleasePosts/hooks/useTokenReleaseNote';
 
 import rehypeRaw from 'rehype-raw';
 import styled from 'styled-components';
@@ -42,8 +44,20 @@ interface TextContentProps {
 }
 
 const TextContent: FC<TextContentProps> = ({ text }) => {
+  const { data: token } = useTokenReleaseNote();
+
+  const transformUrl = useCallback<UrlTransform>(
+    (url) => {
+      const transformed = `${defaultUrlTransform(url)}?${token}`;
+
+      return transformed;
+    },
+    [token]
+  );
+
+
   return (
-    <StyledReactMarkdown rehypePlugins={[rehypeRaw]}>
+    <StyledReactMarkdown rehypePlugins={[rehypeRaw]}  urlTransform={transformUrl}>
       {text}
     </StyledReactMarkdown>
   );
