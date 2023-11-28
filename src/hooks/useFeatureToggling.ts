@@ -42,11 +42,27 @@ export function useFeatureToggling(featureKey: string) {
   );
 
   const showContent = useMemo(() => {
+    console.log({
+      feature,
+      isError,
+      username,
+      environment,
+      isUserInActiveUserArray: isUserInActiveUserArray(
+        username,
+        feature?.activeUsers
+      ),
+      inverseError: !isError,
+      isEnvironmentWhiteListed:
+        feature?.activeEnvironments?.includes(environment),
+    });
     if (feature) {
       if (isUserInActiveUserArray(username, feature.activeUsers)) {
         return true;
-      } else return feature.activeEnvironments?.includes(environment);
-    } else return !isError;
+      }
+      return feature.activeEnvironments?.includes(environment);
+    }
+    // return !isError;
+    return false;
   }, [environment, feature, isError, username]);
 
   return { showContent, isLoading };
