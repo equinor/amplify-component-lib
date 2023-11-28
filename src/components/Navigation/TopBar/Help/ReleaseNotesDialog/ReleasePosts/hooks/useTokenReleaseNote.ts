@@ -2,9 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { ReleaseNotesService } from 'src/api/services/ReleaseNotesService';
 
-
-
-
 export function useTokenReleaseNote() {
   return useQuery({
     queryKey: ['get-token-release-note'],

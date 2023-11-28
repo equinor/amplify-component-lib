@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 
+import { useTokenReleaseNote } from './hooks/useTokenReleaseNote';
 import ReleasePost from './ReleasePost';
 import {
   Container,
@@ -21,7 +22,10 @@ const ReleasePosts: FC = () => {
     releaseNotesYears,
   } = useReleaseNotes();
 
-  if (isLoading) {
+  const { data: token } = useTokenReleaseNote();
+
+
+  if (isLoading || token === undefined) {
     return (
       <LoadingWrapper>
         <CircularProgress />
@@ -61,6 +65,7 @@ const ReleasePosts: FC = () => {
             <Typography variant="h4" id={year.value}>
               {year.label}
             </Typography>
+            heipå deg
             {year.children?.flatMap((month) => {
               const releaseNotesInMonth = releaseNotes?.filter(
                 (releaseNote) =>
