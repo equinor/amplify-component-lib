@@ -25,7 +25,7 @@ const ReleasePosts: FC = () => {
   const { data: token } = useTokenReleaseNote();
 
 
-  if (isLoading || token === undefined) {
+  if (isLoading   || token === undefined ) {
     return (
       <LoadingWrapper>
         <CircularProgress />
@@ -65,7 +65,6 @@ const ReleasePosts: FC = () => {
             <Typography variant="h4" id={year.value}>
               {year.label}
             </Typography>
-            heipå deg
             {year.children?.flatMap((month) => {
               const releaseNotesInMonth = releaseNotes?.filter(
                 (releaseNote) =>
