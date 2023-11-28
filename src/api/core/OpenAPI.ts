@@ -77,7 +77,7 @@ const getToken = async (
   }
 };
 
-const getPortalToken = async () => {
+export const getPortalToken = async () => {
   return getToken(
     `amplify-portal-${environmentName}`,
     TokenService.getAmplifyPortalToken

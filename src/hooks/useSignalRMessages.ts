@@ -5,7 +5,7 @@ import { LogLevel } from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 import { useQuery } from '@tanstack/react-query';
 
-import { TokenService } from 'src/api/core/OpenAPI';
+import { getPortalToken } from 'src/api/core/OpenAPI';
 import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
 import { usePrevious } from 'src/hooks/usePrevious';
 import { environment } from 'src/utils/auth_environment';
@@ -25,9 +25,7 @@ export function useSignalRMessages<
 
   const { data: amplifyPortalToken } = useQuery({
     queryKey: ['get-amplify-portal-token'],
-    queryFn: () => TokenService.getAmplifyPortalToken(),
-    staleTime: Infinity,
-    gcTime: 1000 * 60 * 60 * 2, // 2 hours
+    queryFn: () => getPortalToken(),
   });
 
   const host = useMemo(() => {
