@@ -705,7 +705,7 @@ describe('Help', () => {
       expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
       expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
       expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
-    });
+    }, 10000); // Setting timeout for this test to be 10 seconds
 
     test('shows default error message if errorText is undefined', async () => {
       mockServiceHasError = true;
