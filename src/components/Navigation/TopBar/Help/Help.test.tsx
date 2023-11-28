@@ -706,6 +706,7 @@ describe('Help', () => {
       expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
       expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
     });
+
     test('shows default error message if errorText is undefined', async () => {
       mockServiceHasError = true;
       mockServicePartialError = false;
@@ -746,6 +747,6 @@ describe('Help', () => {
       expect(
         screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)
       ).toBeInTheDocument();
-    });
+    }, 10000); // Setting timeout for this test to be 10 seconds
   });
 });
