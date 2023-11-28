@@ -4,15 +4,13 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { check_circle_outlined, info_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { environment } from '../../../../../../utils';
-import { EnvironmentType } from '../../../TopBar';
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from '../Feedback.const';
 import { RequestStatusType, StatusEnum } from '../Feedback.types';
+import { createServiceNowUrl } from '../Feedback.utils';
 import { ServiceNowLink, Status } from './ResponsePage.styles';
 
 import styled from 'styled-components';
 
-const { getEnvironmentName } = environment;
 const { colors } = tokens;
 
 const Container = styled.div`
@@ -47,16 +45,7 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
 
   const serviceNowUrl = useMemo(() => {
     if (requestStatus.serviceNowId && requestStatus.serviceNowId.length !== 0) {
-      const environment = getEnvironmentName(
-        import.meta.env.VITE_ENVIRONMENT_NAME
-      );
-      return `https://equinor${
-        /* c8 ignore start*/
-        environment === EnvironmentType.PRODUCTION ? '' : 'test'
-        /* c8 ignore end */
-      }.service-now.com/now/nav/ui/classic/params/target/incident.do%3Fsys_id${
-        requestStatus.serviceNowId
-      }`;
+      return createServiceNowUrl(requestStatus.serviceNowId, true);
     }
   }, [requestStatus.serviceNowId]);
 
