@@ -206,7 +206,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   const handleSave = async () => {
     // Service now request
     toggleShowResponsePage();
-    let sysId = '';
+    let sysId: string | undefined | null = '';
     if (
       selectedType === FeedbackType.BUG &&
       userEmail &&
@@ -233,7 +233,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       }
       try {
         const response = await serviceNowIncident(serviceNowFormData);
-        sysId = response.sysId ?? '';
+        sysId = response.sysId;
         updateServiceNowStatus({
           status: StatusEnum.success,
           response: response,

@@ -79,9 +79,9 @@ export const createServiceNowUrl = (sysId: string, selfService?: boolean) => {
 
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
-  selectedType: FeedbackType | undefined,
-  email: string | undefined,
-  sysId?: string
+  selectedType?: FeedbackType,
+  email?: string,
+  sysId?: string | null
 ) => {
   const isBugReport = selectedType === FeedbackType.BUG;
   const typeText = isBugReport ? ':bug: Bug report' : ':bulb: Suggestion';
