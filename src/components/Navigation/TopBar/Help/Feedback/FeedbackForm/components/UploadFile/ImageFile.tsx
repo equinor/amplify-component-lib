@@ -17,6 +17,9 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
+const FILE_SIZE_ERROR_CODE = 'file-too-large';
+const FILE_TYPE_ERROR_CODE = 'file-invalid-type';
+
 const Container = styled.div`
   border-radius: 4px;
   margin: 10px 0;
@@ -46,7 +49,14 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   const errorMessage = useMemo(() => {
     /* c8 ignore start */
     if (!error) return;
-    return `${props.errors[0].code} \n ${props.errors[0].message}`;
+    const code = props.errors[0].code;
+    let message = props.errors[0].message;
+    if (code === FILE_SIZE_ERROR_CODE) {
+      message = message.replace(/(\d+ bytes)/, '1MB');
+    } else if (code === FILE_TYPE_ERROR_CODE) {
+      message = message.replace(/(\w+\/\w+,)/g, '').replaceAll(',', ', ');
+    }
+    return `${props.errors[0].code} \n${message}`;
     /* c8 ignore end */
   }, [error, props]);
 
@@ -85,9 +95,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
     <Container>
       <FileTooltip
         // placement="right"
-        title={`
-          ${fileName}${error ? ': ' + errorMessage : ''}
-        `}
+        title={`${fileName}${error ? ': ' + errorMessage : ''}`}
       >
         {
           /* c8 ignore start */
