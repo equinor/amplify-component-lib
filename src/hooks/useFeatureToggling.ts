@@ -27,11 +27,7 @@ export function useFeatureToggling(featureKey: string) {
     return false;
   };
 
-  const {
-    data: featureToggle,
-    isLoading,
-    isError,
-  } = useQuery<FeatureToggleDto>({
+  const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>({
     queryKey: ['getFeatureToggleFromAppName'],
     queryFn: async () =>
       PortalService.getFeatureToggleFromApplicationName(applicationName),
@@ -45,9 +41,11 @@ export function useFeatureToggling(featureKey: string) {
     if (feature) {
       if (isUserInActiveUserArray(username, feature.activeUsers)) {
         return true;
-      } else return feature.activeEnvironments?.includes(environment);
-    } else return !isError;
-  }, [environment, feature, isError, username]);
+      }
+      return feature.activeEnvironments?.includes(environment);
+    }
+    return false;
+  }, [environment, feature, username]);
 
   return { showContent, isLoading };
 }
