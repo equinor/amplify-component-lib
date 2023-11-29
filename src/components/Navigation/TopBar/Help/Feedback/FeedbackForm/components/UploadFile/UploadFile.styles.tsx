@@ -76,5 +76,5 @@ export const CloseButton = styled.div`
 `;
 
 export const FileTooltip = styled(Tooltip)`
-  white-space: break-spaces;
+  white-space: pre;
 `;
