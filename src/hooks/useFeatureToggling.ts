@@ -27,11 +27,7 @@ export function useFeatureToggling(featureKey: string) {
     return false;
   };
 
-  const {
-    data: featureToggle,
-    isLoading,
-    isError,
-  } = useQuery<FeatureToggleDto>({
+  const { data: featureToggle, isLoading } = useQuery<FeatureToggleDto>({
     queryKey: ['getFeatureToggleFromAppName'],
     queryFn: async () =>
       PortalService.getFeatureToggleFromApplicationName(applicationName),
@@ -42,28 +38,14 @@ export function useFeatureToggling(featureKey: string) {
   );
 
   const showContent = useMemo(() => {
-    console.log({
-      feature,
-      isError,
-      username,
-      environment,
-      isUserInActiveUserArray: isUserInActiveUserArray(
-        username,
-        feature?.activeUsers
-      ),
-      inverseError: !isError,
-      isEnvironmentWhiteListed:
-        feature?.activeEnvironments?.includes(environment),
-    });
     if (feature) {
       if (isUserInActiveUserArray(username, feature.activeUsers)) {
         return true;
       }
       return feature.activeEnvironments?.includes(environment);
     }
-    // return !isError;
     return false;
-  }, [environment, feature, isError, username]);
+  }, [environment, feature, username]);
 
   return { showContent, isLoading };
 }
