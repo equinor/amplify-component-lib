@@ -16,13 +16,21 @@ import {
   FilterValues,
   SieveValue,
 } from 'src/components/Inputs/Sieve/Sieve.types';
+import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { environment } from 'src/utils';
 
-const { getAppName } = environment;
+const { getEnvironmentName, getAppName } = environment;
 
 const FilterHeader: FC = () => {
   const applicationName = getAppName(import.meta.env.VITE_NAME);
+  const environmentName = getEnvironmentName(
+    import.meta.env.VITE_ENVIRONMENT_NAME
+  );
+  const environmentNameWithoutLocalHost =
+    environmentName === EnvironmentType.LOCALHOST
+      ? EnvironmentType.DEVELOP
+      : environmentName;
   const { setSearch, setOpen } = useReleaseNotes();
   const [sieveValue, setSieveValue] = useState<SieveValue>({
     searchValue: undefined,
@@ -83,8 +91,12 @@ const FilterHeader: FC = () => {
         <ButtonContainer>
           <Button
             variant="ghost_icon"
-            // TODO: this url should be built from the current environment instead of simply pointing to the portal's prod environment
-            href={`https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`}
+            href={
+              environmentNameWithoutLocalHost &&
+              environmentNameWithoutLocalHost !== EnvironmentType.PRODUCTION
+                ? `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
+                : `https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
+            }
           >
             <Icon data={external_link} />
           </Button>
