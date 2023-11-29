@@ -137,6 +137,7 @@ vi.mock('src/api/services/PortalService', () => {
         }, 500)
       );
     }
+    
   }
   return { PortalService };
 });
@@ -153,6 +154,13 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
           }
         }, 300);
       });
+    }
+    public static getContainerSasUri() : CancelablePromise<any> {
+      return new CancelablePromise((resolve) => {
+        setTimeout(() => {
+          resolve(`PORTALURL?FAKE_TOKEN`)
+      }, 100)
+      })
     }
   }
   return { ReleaseNotesService };
