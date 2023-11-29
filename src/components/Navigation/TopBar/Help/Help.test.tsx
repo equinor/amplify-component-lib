@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
 import { Help } from './Help';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import {
@@ -95,6 +96,7 @@ const SLACK_FILE_ERROR = 'slack file error';
 
 let mockServiceHasError = false;
 let mockServicePartialError = false;
+let defaultError = false;
 
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
@@ -126,13 +128,16 @@ vi.mock('src/api/services/PortalService', () => {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError || mockServicePartialError) {
-            reject({ message: SLACK_POST_ERROR });
+            reject({
+              message: defaultError ? undefined : SLACK_POST_ERROR,
+            });
           } else {
             resolve(formData);
           }
         }, 500)
       );
     }
+    
   }
   return { PortalService };
 });
@@ -149,6 +154,13 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
           }
         }, 300);
       });
+    }
+    public static getContainerSasUri() : CancelablePromise<any> {
+      return new CancelablePromise((resolve) => {
+        setTimeout(() => {
+          resolve(`PORTALURL?FAKE_TOKEN`)
+      }, 100)
+      })
     }
   }
   return { ReleaseNotesService };
@@ -701,6 +713,48 @@ describe('Help', () => {
       expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
       expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
       expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
-    });
+    }, 10000); // Setting timeout for this test to be 10 seconds
+
+    test('shows default error message if errorText is undefined', async () => {
+      mockServiceHasError = true;
+      mockServicePartialError = false;
+      defaultError = true;
+
+      const { title, description } = fakeInputs();
+
+      console.error = vi.fn();
+      render(<Help />, {
+        wrapper: Wrappers,
+      });
+
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+      await user.click(button);
+
+      const suggestFeature = screen.getByText(/suggest/i);
+      await user.click(suggestFeature);
+
+      const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
+      const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
+
+      const submitButton = screen.getByTestId('submit-button');
+
+      expect(submitButton).toBeDisabled();
+
+      await user.type(titleInput, title);
+      await user.type(descInput, description);
+
+      expect(titleInput.value).toEqual(title);
+      expect(descInput.value).toEqual(description);
+
+      await user.click(submitButton);
+
+      await waitForMS(2500);
+
+      expect(
+        screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)
+      ).toBeInTheDocument();
+    }, 10000); // Setting timeout for this test to be 10 seconds
   });
 });

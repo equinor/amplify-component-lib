@@ -19,17 +19,19 @@ export function useFeatureToggling(featureKey: string) {
     (feature) => feature.featureKey === featureKey
   );
 
-  const showContent = useMemo(() => {
-    if (feature) {
-      if (isUserInActiveUserArray(username, feature.activeUsers)) {
-        return true;
-      } else if (feature.activeEnvironments) {
-        return feature.activeEnvironments.includes(environment);
-      } else {
-        return false;
-      }
-    } else return !isError;
-  }, [environment, feature, isError, username]);
+    const showContent = useMemo(() => {
+        if (feature) {
+            if (isUserInActiveUserArray(username, feature.activeUsers)) {
+                return true;
+            } else if (feature.activeEnvironments) {
+                return feature.activeEnvironments.includes(environment);
+            } else {
+                return false;
+            }
+        }
+        if(isError) return false
+       return true
+    }, [environment, feature, isError, username]);
 
   return { showContent };
 }
