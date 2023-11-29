@@ -6,10 +6,16 @@ interface FeatureProps {
   featureKey: string;
   children: ReactNode;
   fallback?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+  showIfKeyMissing?: boolean;
 }
 
-const Feature: FC<FeatureProps> = ({ featureKey, children, fallback }) => {
-  const { showContent } = useFeatureToggling(featureKey);
+const Feature: FC<FeatureProps> = ({
+  featureKey,
+  children,
+  fallback,
+  showIfKeyMissing = true,
+}) => {
+  const { showContent } = useFeatureToggling(featureKey, showIfKeyMissing);
 
   if (showContent) {
     return <>{children}</>;
