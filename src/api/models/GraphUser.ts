@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type GraphUser = {
-  id?: string | null;
-  displayName?: string | null;
-  mail?: string | null;
-  userPrincipalName?: string | null;
+  id: string;
+  displayName: string;
+  mail: string;
+  userPrincipalName: string;
 };

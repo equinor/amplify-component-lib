@@ -16,24 +16,24 @@ export function useFeatureToggling(
   const fallback = showIfKeyMissing === undefined ? true : showIfKeyMissing;
   const { account } = useAuth();
   const username = `${account?.username}`;
+
   const environment = getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME);
   const { features, isError } = useFeatureToggleContext();
 
   const feature = features?.find(
     (feature) => feature.featureKey === featureKey
   );
-
   const showContent = useMemo(() => {
     if (feature) {
       if (isUserInActiveUserArray(username, feature.activeUsers)) {
         return true;
-      } else if (feature.activeEnvironments) {
-        return feature.activeEnvironments.includes(environment);
-      } else {
-        return false;
       }
+      return feature.activeEnvironments.includes(environment);
     }
-    if (isError) return false;
+    if (isError) {
+      return false;
+    }
+
     return fallback;
   }, [fallback, environment, feature, isError, username]);
 

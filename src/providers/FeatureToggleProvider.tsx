@@ -14,9 +14,9 @@ export const isUserInActiveUserArray = (
   activeUsers: GraphUser[] | undefined | null
 ) => {
   if (activeUsers && activeUsers.length > 0) {
-    return activeUsers.filter((user) =>
-      (user.mail ?? '').toLowerCase().includes(username.toLowerCase())
-    );
+    return activeUsers
+      .map((user) => user.mail.toLowerCase())
+      .includes(username.toLowerCase());
   }
   return false;
 };
