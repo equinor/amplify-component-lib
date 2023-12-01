@@ -9,7 +9,7 @@ import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
-  activeColor,
+  backgroundColor,
   borderBottomColor,
   hoverColor,
   textColor,
@@ -19,17 +19,18 @@ import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { spacings } = tokens;
 
 interface ContainerProps {
   $theme: SidebarTheme;
   $active?: boolean;
   $open?: boolean;
+  $disabled?: boolean;
 }
 
 const Container = styled.a<ContainerProps>`
   background: ${({ $active, $theme }) =>
-    $active ? activeColor($theme) : 'none'};
+    $active ? backgroundColor($theme) : 'none'};
   display: ${({ $open }) => ($open ? 'grid' : 'flex')};
   grid-template-columns: repeat(10, 1fr);
   grid-gap: ${spacings.comfortable.medium};
@@ -40,8 +41,9 @@ const Container = styled.a<ContainerProps>`
   text-decoration: none;
   height: 72px;
 
-  ${({ $theme, $active }) =>
+  ${({ $theme, $active, $disabled }) =>
     !$active &&
+    !$disabled &&
     `
     &:hover {
       cursor: pointer;
@@ -57,13 +59,15 @@ const ItemIcon = styled(Icon)`
 
 interface ItemTextProps {
   $theme: SidebarTheme;
-  $active?: boolean;
+  $active: boolean;
+  $disabled: boolean;
 }
 
 const ItemText = styled(Typography)<ItemTextProps>`
   font-weight: ${({ $active }) => ($active ? '500' : '400')};
   grid-column: 3 / -1;
-  color: ${({ $theme }) => textColor($theme)};
+  color: ${({ $theme, $active, $disabled }) =>
+    textColor($theme, $active, $disabled)};
   &::first-letter {
     text-transform: capitalize;
   }
@@ -83,28 +87,32 @@ export type MenuItemType = {
 export type MenuItemProps = {
   theme?: keyof typeof SidebarTheme;
   currentUrl?: string;
+  disabled?: boolean;
 } & MenuItemType &
   HTMLAttributes<HTMLAnchorElement>;
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   (
-    { theme = SidebarTheme.light, currentUrl, icon, name, link, onClick },
+    {
+      theme = SidebarTheme.light,
+      currentUrl,
+      icon,
+      name,
+      link,
+      onClick,
+      disabled = false,
+    },
     ref
   ) => {
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
     const iconColor = useMemo(() => {
-      if (theme === SidebarTheme.light) {
-        return isCurrentUrl
-          ? colors.interactive.primary__resting.hex
-          : colors.text.static_icons__default.hex;
-      }
-      return textColor(SidebarTheme[theme]);
-    }, [isCurrentUrl, theme]);
+      return textColor(SidebarTheme[theme], isCurrentUrl, disabled);
+    }, [disabled, isCurrentUrl, theme]);
 
     const handleOnClick = () => {
-      if (!isCurrentUrl) {
+      if (!isCurrentUrl && !disabled) {
         onClick();
       }
     };
@@ -114,6 +122,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
         <Container
           $theme={SidebarTheme[theme]}
           $active={isCurrentUrl}
+          $disabled={disabled}
           onClick={handleOnClick}
           $open
           ref={ref}
@@ -122,9 +131,10 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           {icon && <ItemIcon data={icon} size={24} color={iconColor} />}
           <ItemText
             $theme={SidebarTheme[theme]}
+            $active={isCurrentUrl}
+            $disabled={disabled}
             variant="cell_text"
             group="table"
-            $active={isCurrentUrl}
           >
             {name}
           </ItemText>
@@ -137,6 +147,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
         <Container
           $theme={SidebarTheme[theme]}
           $active={isCurrentUrl}
+          $disabled={disabled}
           onClick={handleOnClick}
           $open={isOpen}
           ref={ref}
