@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import SideBarProvider from '../../../providers/SideBarProvider';
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import MenuItem, { MenuItemProps } from './MenuItem';
-import { activeColor } from './MenuItem.utils';
+import { backgroundColor } from './MenuItem.utils';
 import { SidebarTheme } from './SideBar.types';
 
 function fakeProps(): MenuItemProps {
@@ -17,9 +17,21 @@ function fakeProps(): MenuItemProps {
   };
 }
 
-test('MenuItem works as expected', async () => {
+test('MenuItem works as expected in light mode', async () => {
   const props = fakeProps();
   render(<MenuItem {...props} />, { wrapper: SideBarProvider });
+  const user = userEvent.setup();
+
+  const button = screen.getByTestId('sidebar-menu-item');
+
+  await user.click(button);
+
+  expect(props.onClick).toHaveBeenCalledTimes(1);
+});
+
+test('MenuItem works as expected in dark mode', async () => {
+  const props = fakeProps();
+  render(<MenuItem theme="dark" {...props} />, { wrapper: SideBarProvider });
   const user = userEvent.setup();
 
   const button = screen.getByTestId('sidebar-menu-item');
@@ -36,7 +48,10 @@ test('MenuItem renders as expected when active in light mode', async () => {
   });
   const button = screen.getByTestId('sidebar-menu-item');
 
-  expect(button).toHaveStyleRule('background', activeColor(SidebarTheme.light));
+  expect(button).toHaveStyleRule(
+    'background',
+    backgroundColor(SidebarTheme.light)
+  );
 });
 
 test('MenuItem renders as expected when active in dark mode', async () => {
@@ -46,7 +61,10 @@ test('MenuItem renders as expected when active in dark mode', async () => {
   });
   const button = screen.getByTestId('sidebar-menu-item');
 
-  expect(button).toHaveStyleRule('background', activeColor(SidebarTheme.dark));
+  expect(button).toHaveStyleRule(
+    'background',
+    backgroundColor(SidebarTheme.dark)
+  );
 });
 
 test('MenuItem text renders as correctly when open and active', async () => {
@@ -71,6 +89,26 @@ test('Active MenuItem doesnt fire onClick when pressed', async () => {
   const user = userEvent.setup();
 
   const button = screen.getByTestId('sidebar-menu-item');
+
+  await user.click(button);
+
+  expect(props.onClick).toHaveBeenCalledTimes(0);
+});
+
+test('Disabled MenuItem doesnt fire onClick when pressed', async () => {
+  const props = fakeProps();
+  const { rerender } = render(<MenuItem {...props} disabled />, {
+    wrapper: SideBarProvider,
+  });
+  const user = userEvent.setup();
+
+  const button = screen.getByTestId('sidebar-menu-item');
+
+  await user.click(button);
+
+  expect(props.onClick).toHaveBeenCalledTimes(0);
+
+  rerender(<MenuItem theme="dark" {...props} disabled />);
 
   await user.click(button);
 

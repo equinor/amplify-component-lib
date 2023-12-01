@@ -13,7 +13,7 @@ export function hoverColor(theme: SidebarTheme) {
   }
 }
 
-export function activeColor(theme: SidebarTheme) {
+export function backgroundColor(theme: SidebarTheme) {
   switch (theme) {
     case SidebarTheme.light:
       return colors.interactive.primary__selected_highlight.hex;
@@ -22,7 +22,29 @@ export function activeColor(theme: SidebarTheme) {
   }
 }
 
-export function textColor(theme: SidebarTheme) {
+export function textColor(
+  theme: SidebarTheme,
+  isCurrentUrl: boolean,
+  disabled: boolean
+) {
+  if (isCurrentUrl) {
+    switch (theme) {
+      case SidebarTheme.light:
+        return colors.interactive.primary__resting.hex;
+      case SidebarTheme.dark:
+        return colors.text.static_icons__primary_white.hex;
+    }
+  }
+
+  if (disabled) {
+    switch (theme) {
+      case SidebarTheme.light:
+        return colors.interactive.disabled__text.hex;
+      case SidebarTheme.dark:
+        return colors.text.static_icons__secondary.hex;
+    }
+  }
+
   switch (theme) {
     case SidebarTheme.light:
       return colors.text.static_icons__default.hex;
