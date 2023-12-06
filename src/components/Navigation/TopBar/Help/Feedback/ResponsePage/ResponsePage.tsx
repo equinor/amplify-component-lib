@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -23,6 +23,7 @@ const Container = styled.div`
 `;
 
 const ResponsePage: FC = () => {
+  const [showSuccessPage, setShowSuccessPage] = useState(false);
   const {
     serviceNowRequestResponse,
     slackRequestResponse,
@@ -30,6 +31,7 @@ const ResponsePage: FC = () => {
     selectedType,
     handleResponsePageOnClose,
     requestIsLoading,
+    resetForm,
   } = useFeedbackContext();
 
   const allSlackRequestStatus = useMemo<StatusEnum>(() => {
@@ -59,6 +61,31 @@ const ResponsePage: FC = () => {
       serviceNowRequestResponse.status === StatusEnum.error
     );
   }, [serviceNowRequestResponse.status, showAllSlackRequests]);
+
+  const allRequestsHaveBeenSuccess: boolean = useMemo(() => {
+    const allStatuses = [
+      allSlackRequestStatus,
+      serviceNowRequestResponse.status,
+    ];
+    console.log('allStat', allStatuses);
+    return allStatuses.every((status) => {
+      return status === StatusEnum.success;
+    });
+  }, [allSlackRequestStatus, serviceNowRequestResponse]);
+  console.log(allRequestsHaveBeenSuccess);
+
+  useEffect(() => {
+    console.log('in useEffect');
+    if (!showSuccessPage && allRequestsHaveBeenSuccess) {
+      console.log('in UE if');
+      setTimeout(() => {
+        setShowSuccessPage(true);
+        resetForm();
+      }, 1000);
+    }
+  }, [allRequestsHaveBeenSuccess, resetForm, showSuccessPage]);
+
+  if (showSuccessPage) return <div>truth</div>;
 
   return (
     <ContentWrapper>
