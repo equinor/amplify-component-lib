@@ -1,5 +1,6 @@
 import { FC, FocusEvent, FormEvent } from 'react';
 
+import { EQUINOR_EMAIL_SUFFIX } from '../../Feedback.const';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
 import AmplifyTextField from 'src/components/Inputs/AmplifyTextField';
@@ -25,7 +26,7 @@ const Url: FC = () => {
       setIsWrongDomain(false);
     } else if (
       isWrongDomain &&
-      e.currentTarget.value.includes('.equinor.com')
+      e.currentTarget.value.includes(EQUINOR_EMAIL_SUFFIX)
     ) {
       setIsWrongDomain(false);
     }
@@ -33,8 +34,10 @@ const Url: FC = () => {
 
   const handleOnUrlBlur = (e: FocusEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
-
-    if (!value.includes('.equinor.com') && value.length !== 0) {
+    console.log(value);
+    console.log('include ', value.includes(EQUINOR_EMAIL_SUFFIX));
+    console.log('length', value.length !== 0);
+    if (!value.includes(EQUINOR_EMAIL_SUFFIX) && value.length !== 0) {
       setIsWrongDomain(true);
     }
   };
@@ -52,7 +55,7 @@ const Url: FC = () => {
           variant={isWrongDomain ? 'error' : undefined}
           helperText={
             isWrongDomain
-              ? 'The provided URL must be from a equinor.com domain'
+              ? `The provided URL must be from a ${EQUINOR_EMAIL_SUFFIX} domain`
               : ''
           }
           onChange={handleOnUrlChange}
