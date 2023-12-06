@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const DisabledTooltip = styled(OptionalTooltip)`
   white-space: break-spaces;
   text-align: center;
-  width: 480px;
+  width: 400px;
 `;
 
 export interface LockedInputTooltipProps {

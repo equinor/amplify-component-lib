@@ -115,8 +115,7 @@ export const createSlackMessage = (
       }`,
     });
   }
-
-  return JSON.stringify([
+  const blockArray = [
     {
       type: 'header',
       text: {
@@ -153,19 +152,22 @@ export const createSlackMessage = (
         text: '*Description* \n' + feedbackContent.description,
       },
     },
-    sysId
-      ? {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: `*<${createServiceNowUrl(
-              sysId
-            )}|:link: Click to open the ticket in Service Now>*`,
-          },
-        }
-      : {},
-    {
-      type: 'divider',
-    },
-  ]);
+  ];
+
+  if (sysId) {
+    blockArray.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*<${createServiceNowUrl(
+          sysId
+        )}|:link: Click to open the ticket in Service Now>*`,
+      },
+    });
+  }
+  // @ts-expect-error typing error for slack block kit maker
+  blockArray.push({
+    type: 'divider',
+  });
+  return JSON.stringify(blockArray);
 };

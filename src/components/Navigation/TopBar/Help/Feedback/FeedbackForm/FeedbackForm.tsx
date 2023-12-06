@@ -72,7 +72,7 @@ const FeedbackForm: FC = () => {
             <Icon data={info_circle} />
             <Typography>
               The report has already been sent to service now, and part of the
-              form is locked if you want to retry sending it to the development
+              form is locked, so you can retry sending it to the development
               team. Otherwise you can reset the form with the &quot;Reset
               form&quot; button in the bottom left corner.
             </Typography>
