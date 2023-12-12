@@ -122,6 +122,9 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
           ) : (
             <ApplicationIcon name={applicationIcon as string} size={40} />
           )}
+          <AppName variant="h6" $capitalize={capitalize}>
+            {capitalize ? applicationName.toLowerCase() : applicationName}
+          </AppName>
           {isFetching && <CircularProgress size={16} />}
         </Header>
         {(environment === EnvironmentType.DEVELOP ||
