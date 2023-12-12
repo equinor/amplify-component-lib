@@ -66,7 +66,7 @@ export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
       </Button>
       <TopBarMenu
         open={isOpen}
-        title="Settings"
+        title="Resources"
         onClose={closeMenu}
         anchorEl={buttonRef.current}
       >
