@@ -1,7 +1,7 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
 import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
-import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
+import { check,  exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
@@ -85,17 +85,17 @@ const MenuSection = styled.div`
   }
 `;
 
-const MenuHeader = styled.li`
-  padding: 0 ${spacings.comfortable.large};
-  margin: ${spacings.comfortable.small} 0;
-  align-items: center;
-  display: grid;
-  grid-template-columns: 1fr 24px;
-  justify-content: space-between;
-  > button {
-    margin-left: -${spacings.comfortable.medium_small};
-  }
-`;
+// const MenuHeader = styled.li`
+//   padding: 0 ${spacings.comfortable.large};
+//   margin: ${spacings.comfortable.small} 0;
+//   align-items: center;
+//   display: grid;
+//   grid-template-columns: 1fr 24px;
+//   justify-content: space-between;
+//   > button {
+//     margin-left: -${spacings.comfortable.medium_small};
+//   }
+// `;
 
 const TextContainer = styled.div`
   display: flex;
@@ -147,16 +147,17 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
 
     return (
       <div ref={ref}>
-        <Button variant="ghost_icon" ref={buttonRef} onClick={toggleMenu}>
+        <Button variant='ghost' ref={buttonRef} onClick={toggleMenu}>
           <Icon
             data={platform}
             size={24}
             color={colors.interactive.primary__resting.hsla}
           />
+          {currentField?.name?.toLowerCase()}
         </Button>
         <TopBarMenu
           open={isOpen}
-          title="Field Selector"
+          title="Project Selection"
           onClose={closeMenu}
           anchorEl={buttonRef.current}
           contentPadding={false}
@@ -164,21 +165,11 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         >
           <>
             <MenuSection>
-              <MenuHeader>
-                <Typography variant="h6">Field selection</Typography>
-                <Button variant="ghost_icon" onClick={closeMenu}>
-                  <Icon
-                    data={clear}
-                    size={24}
-                    color={colors.text.static_icons__secondary.hex}
-                  />
-                </Button>
-              </MenuHeader>
-              <Typography variant="overline">Current selection</Typography>
               {currentField && (
                 <MenuFixedItem $active>
                   <div>
                     <TextContainer>
+                      <Typography variant="overline">Current selection</Typography>
                       <Typography variant="h6">
                         {currentField.name?.toLowerCase()}
                       </Typography>
