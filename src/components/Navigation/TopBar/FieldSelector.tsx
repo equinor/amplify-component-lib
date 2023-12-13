@@ -145,6 +145,17 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 
+
+
+    const transformedFieldName = useMemo(() => {
+      if(currentField?.name){
+        return  currentField?.name?.charAt(0).toUpperCase() + currentField?.name?.slice(1)
+
+      }
+
+    },[currentField?.name])
+
+
     return (
       <div ref={ref}>
         <Button variant='ghost' ref={buttonRef} onClick={toggleMenu}>
@@ -153,7 +164,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
             size={24}
             color={colors.interactive.primary__resting.hsla}
           />
-          {currentField?.name?.toLowerCase()}
+          {transformedFieldName}
         </Button>
         <TopBarMenu
           open={isOpen}
@@ -170,7 +181,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                   <div>
                     <TextContainer>
                       <Typography variant="overline">Current selection</Typography>
-                      <Typography variant="h6">
+                      <Typography variant="h6" data-testid='field-name'>
                         {currentField.name?.toLowerCase()}
                       </Typography>
                     </TextContainer>

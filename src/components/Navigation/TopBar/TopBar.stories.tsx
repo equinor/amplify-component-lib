@@ -151,7 +151,7 @@ export const FullPageExample: StoryFn = ({ ...args }) => {
             ))}
           </SideBar>
         </SideBarProvider>
-        <Template.Content open={false}>
+        <Template.Content $open={false}>
           <h1>Content goes here</h1>
         </Template.Content>
       </Template.Container>
