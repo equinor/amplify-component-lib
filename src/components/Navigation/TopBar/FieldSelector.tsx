@@ -181,7 +181,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                   <div>
                     <TextContainer>
                       <Typography variant="overline">Current selection</Typography>
-                      <Typography variant="h6" data-testid='field-name'>
+                      <Typography variant="h6">
                         {currentField.name?.toLowerCase()}
                       </Typography>
                     </TextContainer>

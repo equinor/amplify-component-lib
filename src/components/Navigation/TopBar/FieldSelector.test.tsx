@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import FieldSelector, { FieldSelectorType } from './FieldSelector';
+import {within} from "@testing-library/dom";
 
 function fakeField() {
   return {
@@ -30,31 +31,35 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-     expect(screen.getByTestId('field-name')).toBeInTheDocument();
-    expect(screen.getByTestId('field-name')).toBeVisible();
+    const contextMenu = within(screen.getByRole('menu'))
+
+    expect(contextMenu.getByText(name)).toBeInTheDocument();
+    expect(contextMenu.getByText(name)).toBeVisible();
+  }
+
+  await user.click(button);
+
+  for (const field of props.availableFields) {
+
+    expect(screen.queryByText('Field Selection')).not.toBeInTheDocument();
   }
 
   await user.click(button);
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.queryByText('field-name')).not.toBeInTheDocument();
-  }
-
-  await user.click(button);
-
-  for (const field of props.availableFields) {
-    const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.getByTestId('field-name')).toBeInTheDocument();
-    expect(screen.getByTestId('field-name')).toBeVisible();
+    const contextMenu = within(screen.getByRole('menu'))
+    expect(contextMenu.getByText(name)).toBeInTheDocument();
+    expect(contextMenu.getByText(name)).toBeVisible();
   }
 
   await user.click(document.body);
 
   for (const field of props.availableFields) {
-    const name = field?.name?.toLowerCase() ?? 'not-found';
+
     expect(screen.queryByText('field-name')).not.toBeInTheDocument();
   }
+  screen.logTestingPlaygroundURL()
 });
 
 test('Runs onSelect function once when clicking an item', async () => {
@@ -84,7 +89,8 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   await user.click(button);
 
   const currentFieldName = props?.currentField?.name ?? 'name';
-  const selected = screen.getByTestId('field-name');
+  const contextMenu = within(screen.getByRole('menu'))
+  const selected = contextMenu.getByText(currentFieldName);
   await user.click(selected);
   expect(props.onSelect).toHaveBeenCalledTimes(0);
 });
