@@ -38,22 +38,22 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.queryByText(name)).not.toBeInTheDocument();
+    expect(screen.queryByText('field-name')).not.toBeInTheDocument();
   }
 
   await user.click(button);
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.getByText(name)).toBeInTheDocument();
-    expect(screen.getByText(name)).toBeVisible();
+    expect(screen.getByTestId('field-name')).toBeInTheDocument();
+    expect(screen.getByTestId('field-name')).toBeVisible();
   }
 
   await user.click(document.body);
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.queryByText(name)).not.toBeInTheDocument();
+    expect(screen.queryByText('field-name')).not.toBeInTheDocument();
   }
 });
 
@@ -84,9 +84,9 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   await user.click(button);
 
   const currentFieldName = props?.currentField?.name ?? 'name';
-  // const selected = screen.getByText(new RegExp(currentFieldName, 'i'));
-  // await user.click(selected);
-  // expect(props.onSelect).toHaveBeenCalledTimes(0);
+  const selected = screen.getByTestId('field-name');
+  await user.click(selected);
+  expect(props.onSelect).toHaveBeenCalledTimes(0);
 });
 
 test('Filters values when using search', async () => {

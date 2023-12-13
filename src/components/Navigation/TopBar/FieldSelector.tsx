@@ -168,7 +168,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         </Button>
         <TopBarMenu
           open={isOpen}
-          title="Project Selection"
+          title="Field Selection"
           onClose={closeMenu}
           anchorEl={buttonRef.current}
           contentPadding={false}
