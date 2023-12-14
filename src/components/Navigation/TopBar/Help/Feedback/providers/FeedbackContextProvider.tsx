@@ -30,6 +30,7 @@ import {
 } from '../Feedback.types';
 import {
   createServiceNowDescription,
+  createServiceNowUrl,
   createSlackMessage,
   getUrgencyNumber,
 } from '../Feedback.utils';
@@ -59,6 +60,11 @@ export interface FeedbackContext {
   resetForm: () => void;
   requestIsLoading: boolean;
   serviceNowSuccess: boolean;
+  allRequestsHaveBeenSuccess: boolean;
+  requestHasError: boolean;
+  showAllSlackRequests: boolean;
+  allSlackRequestStatus: StatusEnum;
+  serviceNowUrl: string;
 }
 
 export const FeedbackContext = createContext<FeedbackContext | undefined>(
@@ -110,6 +116,8 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   const { mutateAsync: serviceNowIncident, status: serviceNowStatus } =
     useServiceNowIncident(feedbackContent);
 
+  const [serviceNowUrl, setServiceNowUrl] = useState('');
+
   const requestIsLoading = useMemo(() => {
     return (
       postMessageStatus === 'pending' ||
@@ -138,6 +146,45 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     () => serviceNowRequestResponse.status === StatusEnum.success,
     [serviceNowRequestResponse.status]
   );
+
+  const allSlackRequestStatus = useMemo<StatusEnum>(() => {
+    const allStatuses: StatusEnum[] = [
+      slackRequestResponse.status,
+      ...slackAttachmentsRequestResponse.map((attachment) => attachment.status),
+    ];
+    if (allStatuses.every((status) => status === StatusEnum.success)) {
+      return StatusEnum.success;
+    }
+    if (allStatuses.includes(StatusEnum.error)) {
+      return StatusEnum.partial;
+    }
+    return StatusEnum.idle;
+  }, [slackAttachmentsRequestResponse, slackRequestResponse.status]);
+
+  const showAllSlackRequests = useMemo(() => {
+    return (
+      allSlackRequestStatus === StatusEnum.error ||
+      allSlackRequestStatus === StatusEnum.partial
+    );
+  }, [allSlackRequestStatus]);
+
+  const requestHasError = useMemo(() => {
+    return (
+      showAllSlackRequests ||
+      serviceNowRequestResponse.status === StatusEnum.error
+    );
+  }, [serviceNowRequestResponse.status, showAllSlackRequests]);
+
+  const allRequestsHaveBeenSuccess: boolean = useMemo(() => {
+    const allStatuses = [
+      allSlackRequestStatus,
+      serviceNowRequestResponse.status,
+    ];
+
+    return allStatuses.every((status) => {
+      return status === StatusEnum.success;
+    });
+  }, [allSlackRequestStatus, serviceNowRequestResponse]);
 
   const toggleShowResponsePage = () => {
     setShowResponsePage((prev) => !prev);
@@ -310,6 +357,17 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     }
   }, [feedbackAttachments, slackAttachmentsRequestResponse.length]);
 
+  useEffect(() => {
+    if (
+      serviceNowRequestResponse.serviceNowId &&
+      serviceNowRequestResponse.serviceNowId.length !== 0
+    ) {
+      setServiceNowUrl(
+        createServiceNowUrl(serviceNowRequestResponse.serviceNowId, true)
+      );
+    }
+  }, [serviceNowRequestResponse.serviceNowId]);
+
   return (
     <FeedbackContext.Provider
       value={{
@@ -331,6 +389,11 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
         isWrongDomain,
         setIsWrongDomain,
         setFeedbackAttachments,
+        allRequestsHaveBeenSuccess,
+        requestHasError,
+        showAllSlackRequests,
+        allSlackRequestStatus,
+        serviceNowUrl,
       }}
     >
       {children}
