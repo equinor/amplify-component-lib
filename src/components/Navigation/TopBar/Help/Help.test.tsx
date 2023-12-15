@@ -408,7 +408,6 @@ describe('Help', () => {
       const reportBug = screen.getByText('Report a bug');
 
       await user.click(reportBug);
-      screen.logTestingPlaygroundURL();
 
       const titleInput = screen.getByLabelText(/title/i);
 
@@ -609,7 +608,6 @@ describe('Help', () => {
       urlInput.blur();
       await waitForMS(1000);
       const helperText = screen.queryByText(/URL must be from a .equinor/i);
-      screen.logTestingPlaygroundURL();
       expect(helperText as HTMLElement).toBeInTheDocument();
 
       await user.clear(urlInput);
