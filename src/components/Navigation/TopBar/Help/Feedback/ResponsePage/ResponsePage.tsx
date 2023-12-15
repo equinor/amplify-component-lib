@@ -30,18 +30,18 @@ const ResponsePage: FC = () => {
     handleResponsePageOnClose,
     requestIsLoading,
     resetForm,
-    allRequestsHaveBeenSuccess,
     requestHasError,
+    shouldCloseDialog,
   } = useFeedbackContext();
 
   useEffect(() => {
-    if (!showSuccessPage && allRequestsHaveBeenSuccess) {
+    if (!showSuccessPage && shouldCloseDialog) {
       setTimeout(() => {
         setShowSuccessPage(true);
         resetForm();
       }, 1000);
     }
-  }, [allRequestsHaveBeenSuccess, resetForm, showSuccessPage]);
+  }, [shouldCloseDialog, resetForm, showSuccessPage]);
 
   return (
     <ContentWrapper>

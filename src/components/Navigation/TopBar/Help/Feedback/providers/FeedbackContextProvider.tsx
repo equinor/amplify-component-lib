@@ -11,9 +11,6 @@ import {
 } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
-import { ApiError } from '../../../../../../api';
-import { useLocalStorage } from '../../../../../../hooks';
-import { useAuth } from '../../../../../../providers/AuthProvider/AuthProvider';
 import {
   DEFAULT_FEEDBACK_LOCAL_STORAGE,
   ONE_HOUR_IN_MS,
@@ -37,6 +34,9 @@ import {
 import { useServiceNowIncident } from '../hooks/useServiceNowIncident';
 import { useSlackFileUpload } from '../hooks/useSlackFileUpload';
 import { useSlackPostMessage } from '../hooks/useSlackPostMessage';
+import { ApiError } from 'src/api';
+import { useLocalStorage } from 'src/hooks';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export interface FeedbackContext {
   feedbackContent: FeedbackContentType;
@@ -60,11 +60,12 @@ export interface FeedbackContext {
   resetForm: () => void;
   requestIsLoading: boolean;
   serviceNowSuccess: boolean;
-  allRequestsHaveBeenSuccess: boolean;
+  // allRequestsHaveBeenSuccess: boolean;
   requestHasError: boolean;
   showAllSlackRequests: boolean;
   allSlackRequestStatus: StatusEnum;
   serviceNowUrl: string;
+  shouldCloseDialog: boolean;
 }
 
 export const FeedbackContext = createContext<FeedbackContext | undefined>(
@@ -117,6 +118,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     useServiceNowIncident(feedbackContent);
 
   const [serviceNowUrl, setServiceNowUrl] = useState('');
+  const [shouldCloseDialog, setShouldCloseDialog] = useState(false);
 
   const requestIsLoading = useMemo(() => {
     return (
@@ -126,21 +128,21 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     );
   }, [isFileUploadLoading, postMessageStatus, serviceNowStatus]);
 
-  const allRequestsSuccess = useMemo(() => {
-    const allStatuses = [
-      slackRequestResponse.status,
-      ...slackAttachmentsRequestResponse.map((response) => response.status),
-    ];
-    if (selectedType === FeedbackType.BUG) {
-      allStatuses.push(feedbackLocalStorage.serviceNowRequestResponse.status);
-    }
-    return allStatuses.every((status) => status === StatusEnum.success);
-  }, [
-    feedbackLocalStorage.serviceNowRequestResponse.status,
-    selectedType,
-    slackAttachmentsRequestResponse,
-    slackRequestResponse.status,
-  ]);
+  // const allRequestsHaveBeenSuccess = useMemo(() => {
+  //   const allStatuses = [
+  //     slackRequestResponse.status,
+  //     ...slackAttachmentsRequestResponse.map((response) => response.status),
+  //   ];
+  //   if (selectedType === FeedbackType.BUG) {
+  //     allStatuses.push(feedbackLocalStorage.serviceNowRequestResponse.status);
+  //   }
+  //   return allStatuses.every((status) => status === StatusEnum.success);
+  // }, [
+  //   feedbackLocalStorage.serviceNowRequestResponse.status,
+  //   selectedType,
+  //   slackAttachmentsRequestResponse,
+  //   slackRequestResponse.status,
+  // ]);
 
   const serviceNowSuccess = useMemo(
     () => serviceNowRequestResponse.status === StatusEnum.success,
@@ -174,17 +176,6 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       serviceNowRequestResponse.status === StatusEnum.error
     );
   }, [serviceNowRequestResponse.status, showAllSlackRequests]);
-
-  const allRequestsHaveBeenSuccess: boolean = useMemo(() => {
-    const allStatuses = [
-      allSlackRequestStatus,
-      serviceNowRequestResponse.status,
-    ];
-
-    return allStatuses.every((status) => {
-      return status === StatusEnum.success;
-    });
-  }, [allSlackRequestStatus, serviceNowRequestResponse]);
 
   const toggleShowResponsePage = () => {
     setShowResponsePage((prev) => !prev);
@@ -233,7 +224,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   };
 
   const handleResponsePageOnClose = () => {
-    if (allRequestsSuccess) {
+    if (shouldCloseDialog) {
       onClose();
     } else {
       toggleShowResponsePage();
@@ -341,11 +332,21 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
 
   useEffect(() => {
     return () => {
-      if (allRequestsSuccess) {
-        setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
+      if (
+        serviceNowRequestResponse.status === StatusEnum.success &&
+        allSlackRequestStatus === StatusEnum.success
+      ) {
+        setTimeout(() => {
+          // Wait with resetting until "Thank you" text is shown.
+          setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
+        }, 1100);
       }
     };
-  }, [allRequestsSuccess, setFeedbackLocalStorage]);
+  }, [
+    allSlackRequestStatus,
+    serviceNowRequestResponse.status,
+    setFeedbackLocalStorage,
+  ]);
 
   useEffect(() => {
     if (slackAttachmentsRequestResponse.length !== feedbackAttachments.length) {
@@ -356,7 +357,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       );
     }
   }, [feedbackAttachments, slackAttachmentsRequestResponse.length]);
-
+  console.log(serviceNowRequestResponse);
   useEffect(() => {
     if (
       serviceNowRequestResponse.serviceNowId &&
@@ -367,6 +368,15 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       );
     }
   }, [serviceNowRequestResponse.serviceNowId]);
+
+  useEffect(() => {
+    if (
+      serviceNowRequestResponse.status === StatusEnum.success &&
+      allSlackRequestStatus === StatusEnum.success
+    ) {
+      setShouldCloseDialog(true);
+    }
+  }, [allSlackRequestStatus, serviceNowRequestResponse.status]);
 
   return (
     <FeedbackContext.Provider
@@ -389,11 +399,12 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
         isWrongDomain,
         setIsWrongDomain,
         setFeedbackAttachments,
-        allRequestsHaveBeenSuccess,
         requestHasError,
         showAllSlackRequests,
         allSlackRequestStatus,
         serviceNowUrl,
+        // allRequestsHaveBeenSuccess,
+        shouldCloseDialog,
       }}
     >
       {children}
