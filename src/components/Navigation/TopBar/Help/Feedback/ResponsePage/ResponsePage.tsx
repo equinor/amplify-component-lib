@@ -1,84 +1,54 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { ContentWrapper } from '../Feedback.styles';
-import { FeedbackType, StatusEnum } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
-import FullSlackResponse from './FullSlackResponse';
-import RequestStatus from './RequestStatus';
+import { AnimateChangeInHeight } from './AnimateChangeInHeight';
+import ResponseStatus from './ResponseStatus';
+import Success from './Success';
 
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 const { spacings } = tokens;
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   display: flex;
   gap: ${spacings.comfortable.large};
+  height: auto;
   flex-direction: column;
   button {
-    align-self: flex-end;
+    align-self: end;
   }
 `;
 
 const ResponsePage: FC = () => {
+  const [showSuccessPage, setShowSuccessPage] = useState(false);
   const {
-    serviceNowRequestResponse,
-    slackRequestResponse,
-    slackAttachmentsRequestResponse,
-    selectedType,
     handleResponsePageOnClose,
     requestIsLoading,
+    resetForm,
+    requestHasError,
+    relevantRequestsHaveBeenSuccess,
   } = useFeedbackContext();
 
-  const allSlackRequestStatus = useMemo<StatusEnum>(() => {
-    const allStatuses: StatusEnum[] = [
-      slackRequestResponse.status,
-      ...slackAttachmentsRequestResponse.map((attachment) => attachment.status),
-    ];
-    if (allStatuses.every((status) => status === StatusEnum.success)) {
-      return StatusEnum.success;
+  useEffect(() => {
+    if (!showSuccessPage && relevantRequestsHaveBeenSuccess) {
+      setTimeout(() => {
+        setShowSuccessPage(true);
+        resetForm();
+      }, 1000);
     }
-    if (allStatuses.includes(StatusEnum.error)) {
-      return StatusEnum.partial;
-    }
-    return StatusEnum.idle;
-  }, [slackAttachmentsRequestResponse, slackRequestResponse.status]);
-
-  const showAllSlackRequests = useMemo(() => {
-    return (
-      allSlackRequestStatus === StatusEnum.error ||
-      allSlackRequestStatus === StatusEnum.partial
-    );
-  }, [allSlackRequestStatus]);
-
-  const requestHasError = useMemo(() => {
-    return (
-      showAllSlackRequests ||
-      serviceNowRequestResponse.status === StatusEnum.error
-    );
-  }, [serviceNowRequestResponse.status, showAllSlackRequests]);
+  }, [relevantRequestsHaveBeenSuccess, resetForm, showSuccessPage]);
 
   return (
     <ContentWrapper>
       <Container>
-        {selectedType === FeedbackType.BUG && (
-          <RequestStatus
-            title="Service Now"
-            requestStatus={serviceNowRequestResponse}
-          />
-        )}
-        {showAllSlackRequests ? (
-          <FullSlackResponse
-            allSlackRequestStatus={{ status: allSlackRequestStatus }}
-          />
-        ) : (
-          <RequestStatus
-            title="Development team"
-            requestStatus={{ status: allSlackRequestStatus }}
-          />
-        )}
+        <AnimateChangeInHeight>
+          {showSuccessPage ? <Success /> : <ResponseStatus />}
+        </AnimateChangeInHeight>
         <Button disabled={requestIsLoading} onClick={handleResponsePageOnClose}>
           {requestHasError ? 'Retry' : 'Close'}
         </Button>
