@@ -31,17 +31,17 @@ const ResponsePage: FC = () => {
     requestIsLoading,
     resetForm,
     requestHasError,
-    shouldCloseDialog,
+    relevantRequestsHaveBeenSuccess,
   } = useFeedbackContext();
 
   useEffect(() => {
-    if (!showSuccessPage && shouldCloseDialog) {
+    if (!showSuccessPage && relevantRequestsHaveBeenSuccess) {
       setTimeout(() => {
         setShowSuccessPage(true);
         resetForm();
       }, 1000);
     }
-  }, [shouldCloseDialog, resetForm, showSuccessPage]);
+  }, [relevantRequestsHaveBeenSuccess, resetForm, showSuccessPage]);
 
   return (
     <ContentWrapper>

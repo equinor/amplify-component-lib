@@ -60,12 +60,11 @@ export interface FeedbackContext {
   resetForm: () => void;
   requestIsLoading: boolean;
   serviceNowSuccess: boolean;
-  // allRequestsHaveBeenSuccess: boolean;
   requestHasError: boolean;
   showAllSlackRequests: boolean;
   allSlackRequestStatus: StatusEnum;
   serviceNowUrl: string;
-  shouldCloseDialog: boolean;
+  relevantRequestsHaveBeenSuccess: boolean;
 }
 
 export const FeedbackContext = createContext<FeedbackContext | undefined>(
@@ -118,7 +117,8 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     useServiceNowIncident(feedbackContent);
 
   const [serviceNowUrl, setServiceNowUrl] = useState('');
-  const [shouldCloseDialog, setShouldCloseDialog] = useState(false);
+  const [relevantRequestsHaveBeenSuccess, setRelevantRequestsHaveBeenSuccess] =
+    useState(false);
 
   const requestIsLoading = useMemo(() => {
     return (
@@ -224,7 +224,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   };
 
   const handleResponsePageOnClose = () => {
-    if (shouldCloseDialog) {
+    if (relevantRequestsHaveBeenSuccess) {
       onClose();
     } else {
       toggleShowResponsePage();
@@ -357,7 +357,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       );
     }
   }, [feedbackAttachments, slackAttachmentsRequestResponse.length]);
-  console.log(serviceNowRequestResponse);
+
   useEffect(() => {
     if (
       serviceNowRequestResponse.serviceNowId &&
@@ -371,12 +371,17 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
 
   useEffect(() => {
     if (
+      selectedType === FeedbackType.SUGGESTION &&
+      allSlackRequestStatus === StatusEnum.success
+    ) {
+      setRelevantRequestsHaveBeenSuccess(true);
+    } else if (
       serviceNowRequestResponse.status === StatusEnum.success &&
       allSlackRequestStatus === StatusEnum.success
     ) {
-      setShouldCloseDialog(true);
+      setRelevantRequestsHaveBeenSuccess(true);
     }
-  }, [allSlackRequestStatus, serviceNowRequestResponse.status]);
+  }, [allSlackRequestStatus, selectedType, serviceNowRequestResponse.status]);
 
   return (
     <FeedbackContext.Provider
@@ -403,8 +408,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
         showAllSlackRequests,
         allSlackRequestStatus,
         serviceNowUrl,
-        // allRequestsHaveBeenSuccess,
-        shouldCloseDialog,
+        relevantRequestsHaveBeenSuccess: relevantRequestsHaveBeenSuccess,
       }}
     >
       {children}
