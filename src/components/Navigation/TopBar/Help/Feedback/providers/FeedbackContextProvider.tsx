@@ -128,22 +128,6 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     );
   }, [isFileUploadLoading, postMessageStatus, serviceNowStatus]);
 
-  // const allRequestsHaveBeenSuccess = useMemo(() => {
-  //   const allStatuses = [
-  //     slackRequestResponse.status,
-  //     ...slackAttachmentsRequestResponse.map((response) => response.status),
-  //   ];
-  //   if (selectedType === FeedbackType.BUG) {
-  //     allStatuses.push(feedbackLocalStorage.serviceNowRequestResponse.status);
-  //   }
-  //   return allStatuses.every((status) => status === StatusEnum.success);
-  // }, [
-  //   feedbackLocalStorage.serviceNowRequestResponse.status,
-  //   selectedType,
-  //   slackAttachmentsRequestResponse,
-  //   slackRequestResponse.status,
-  // ]);
-
   const serviceNowSuccess = useMemo(
     () => serviceNowRequestResponse.status === StatusEnum.success,
     [serviceNowRequestResponse.status]

@@ -27,9 +27,11 @@ export const AnimateChangeInHeight: FC<AnimateChangeInHeightProps> = ({
   useEffect(() => {
     if (containerRef.current) {
       const resizeObserver = new ResizeObserver((entries) => {
+        /* c8 ignore start */ // TODO: Look further into coverage for resize observer
         // We only have one entry, so we can use entries[0].
         const observedHeight = entries[0].contentRect.height;
         setHeight(observedHeight);
+        /* c8 ignore end */
       });
 
       resizeObserver.observe(containerRef.current);

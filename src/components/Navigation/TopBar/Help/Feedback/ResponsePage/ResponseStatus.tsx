@@ -19,7 +19,7 @@ const ResponseStatus: FC<ResponseStatusProps> = () => {
       {selectedType === FeedbackType.BUG && (
         <RequestStatus
           title="Service Now"
-          requestStatus={{ status: serviceNowRequestResponse.status }}
+          requestStatus={serviceNowRequestResponse}
         />
       )}
       {showAllSlackRequests ? (

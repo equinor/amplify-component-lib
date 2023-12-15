@@ -137,7 +137,6 @@ vi.mock('src/api/services/PortalService', () => {
         }, 500)
       );
     }
-    
   }
   return { PortalService };
 });
@@ -155,12 +154,12 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
         }, 300);
       });
     }
-    public static getContainerSasUri() : CancelablePromise<any> {
+    public static getContainerSasUri(): CancelablePromise<any> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
-          resolve(`PORTALURL?FAKE_TOKEN`)
-      }, 100)
-      })
+          resolve(`PORTALURL?FAKE_TOKEN`);
+        }, 100);
+      });
     }
   }
   return { ReleaseNotesService };
@@ -406,10 +405,10 @@ describe('Help', () => {
       const button = screen.getByRole('button');
 
       await user.click(button);
-
       const reportBug = screen.getByText('Report a bug');
 
       await user.click(reportBug);
+      screen.logTestingPlaygroundURL();
 
       const titleInput = screen.getByLabelText(/title/i);
 
@@ -466,6 +465,7 @@ describe('Help', () => {
 
     test('suggest a feature dialog submit button enabled at correct time', async () => {
       mockServiceHasError = false;
+      mockServicePartialError = false;
       const title = faker.animal.cat();
       const description = faker.lorem.sentence();
       render(<Help />, {
@@ -481,12 +481,23 @@ describe('Help', () => {
 
       const titleInput = screen.getByLabelText(/title/i);
       const descInput = screen.getByLabelText(/description/i);
-      const submitButton = screen.getByText(/send/i).parentElement;
+      const submitButton = screen.getByTestId('submit-button');
 
       expect(submitButton).toBeDisabled();
       await user.type(titleInput, title);
       await user.type(descInput, description);
       expect(submitButton).not.toBeDisabled();
+
+      await user.click(submitButton);
+
+      await waitFor(
+        () => expect(screen.getByText(/success/i)).toBeInTheDocument(),
+        { timeout: 2000 }
+      );
+      await waitFor(
+        () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
+        { timeout: 2000 }
+      );
     }, 15000); // Setting timeout for this test to be 15 seconds
 
     test('Inputting all fields with file works as expected', async () => {
@@ -564,10 +575,16 @@ describe('Help', () => {
       await waitForMS(3000);
       expect(screen.getAllByText(/success/i).length).toBe(2);
 
+      await waitFor(
+        () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
+        { timeout: 2000 }
+      );
+
       const closeButton = screen.getByText(/close/i);
       await user.click(closeButton);
-      await new Promise((r) => setTimeout(r, 1000));
+      await waitForMS(1000);
       expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
+      await waitFor(() => {});
     }, 20000); // Setting timeout for this test to be 20 seconds
 
     test('Url validation working as expected', async () => {
@@ -591,8 +608,8 @@ describe('Help', () => {
 
       urlInput.blur();
       await waitForMS(1000);
-      const helperText = screen.queryByText(/URL must be from a equinor/i);
-
+      const helperText = screen.queryByText(/URL must be from a .equinor/i);
+      screen.logTestingPlaygroundURL();
       expect(helperText as HTMLElement).toBeInTheDocument();
 
       await user.clear(urlInput);
@@ -603,7 +620,9 @@ describe('Help', () => {
 
       urlInput.blur();
       await waitForMS(1000);
-      const helperTextAgain = screen.queryByText(/URL must be from a equinor/i);
+      const helperTextAgain = screen.queryByText(
+        /URL must be from a .equinor/i
+      );
 
       expect(helperTextAgain as HTMLElement).toBeInTheDocument();
       await user.type(urlInput, rightUrl);
