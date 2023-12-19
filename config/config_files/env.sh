@@ -21,9 +21,6 @@ echo "  API_SCOPE: \"$value\"," >>./env-config.js
 value=$(printf '%s\n' "${ENVIRONMENT_NAME}")
 echo "  ENVIRONMENT_NAME: \"$value\"," >>./env-config.js
 
-value=$(printf '%s\n' "${PORTAL_PROD_CLIENT_ID}")
-echo "  PORTAL_PROD_CLIENT_ID: \"$value\"," >>./env-config.js
-
 value=$(printf '%s\n' "${SERVICE_NOW_CONFIGURATION_ITEM}")
 echo "  SERVICE_NOW_CONFIGURATION_ITEM: \"$value\"," >>./env-config.js
 

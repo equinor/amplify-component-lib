@@ -8,7 +8,6 @@ interface RequiredEnvVariables {
   API_URL: string;
   API_SCOPE: string;
   ENVIRONMENT_NAME: string;
-  PORTAL_PROD_CLIENT_ID: string;
   SERVICE_NOW_CONFIGURATION_ITEM: string;
 }
 
@@ -70,15 +69,6 @@ const getEnvironmentName = (
     return getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
   return environmentName as EnvironmentType;
-};
-
-const getPortalProdClientId = (
-  portalProdClientId: string | undefined
-): string => {
-  if (!portalProdClientId) {
-    return getConfig('PORTAL_PROD_CLIENT_ID');
-  }
-  return portalProdClientId;
 };
 
 const getServiceNowConfigurationItem = (
@@ -224,7 +214,6 @@ export const environment = {
   getApiUrl,
   getApiScope,
   getEnvironmentName,
-  getPortalProdClientId,
   getIsMock,
   getServiceNowConfigurationItem,
 };
