@@ -85,7 +85,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   selectedType,
   onClose,
 }) => {
-  const configurationItem = getServiceNowConfigurationItem(import.meta.env.VITE_SERVICE_NOW_CONFIGURATION_ITEM || '117499');
+  const configurationItem = getServiceNowConfigurationItem(import.meta.env.VITE_SERVICE_NOW_CONFIGURATION_ITEM) || '117499';
   const { account } = useAuth();
   const userEmail = account?.username;
 
