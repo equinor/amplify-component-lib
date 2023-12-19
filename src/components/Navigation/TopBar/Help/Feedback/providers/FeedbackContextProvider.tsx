@@ -37,6 +37,9 @@ import { useSlackPostMessage } from '../hooks/useSlackPostMessage';
 import { ApiError } from 'src/api';
 import { useLocalStorage } from 'src/hooks';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
+import { environment } from 'src/utils';
+
+const { getServiceNowConfigurationItem } = environment;
 
 export interface FeedbackContext {
   feedbackContent: FeedbackContentType;
@@ -82,6 +85,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   selectedType,
   onClose,
 }) => {
+  const configurationItem = getServiceNowConfigurationItem(import.meta.env.VITE_SERVICE_NOW_CONFIGURATION_ITEM || '117499');
   const { account } = useAuth();
   const userEmail = account?.username;
 
@@ -235,7 +239,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       serviceNowRequestResponse.status !== StatusEnum.success
     ) {
       const serviceNowFormData = new FormData();
-      serviceNowFormData.append('ConfigurationItem', '117499');
+      serviceNowFormData.append('ConfigurationItem', configurationItem);
       serviceNowFormData.append('Title', feedbackContent.title);
       serviceNowFormData.append(
         'Description',
