@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
+import { within } from '@testing-library/dom';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import FieldSelector, { FieldSelectorType } from './FieldSelector';
-import {within} from "@testing-library/dom";
 
 function fakeField() {
   return {
@@ -31,35 +31,27 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    const contextMenu = within(screen.getByRole('menu'))
+    const contextMenu = within(screen.getByRole('menu'));
 
     expect(contextMenu.getByText(name)).toBeInTheDocument();
     expect(contextMenu.getByText(name)).toBeVisible();
   }
 
   await user.click(button);
-
-  for (const field of props.availableFields) {
-
-    expect(screen.queryByText('Field Selection')).not.toBeInTheDocument();
-  }
+  expect(screen.queryByText('Field Selection')).not.toBeInTheDocument();
 
   await user.click(button);
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    const contextMenu = within(screen.getByRole('menu'))
+    const contextMenu = within(screen.getByRole('menu'));
     expect(contextMenu.getByText(name)).toBeInTheDocument();
     expect(contextMenu.getByText(name)).toBeVisible();
   }
 
   await user.click(document.body);
 
-  for (const field of props.availableFields) {
-
-    expect(screen.queryByText('field-name')).not.toBeInTheDocument();
-  }
-  screen.logTestingPlaygroundURL()
+  expect(screen.queryByText('field-name')).not.toBeInTheDocument();
 });
 
 test('Runs onSelect function once when clicking an item', async () => {
@@ -77,7 +69,6 @@ test('Runs onSelect function once when clicking an item', async () => {
 
   expect(props.onSelect).toHaveBeenCalledWith(props.availableFields[1]);
   expect(props.onSelect).toHaveBeenCalledTimes(1);
-
 });
 
 test('Doesnt run onSelect function when clicking already selected item', async () => {
@@ -89,7 +80,7 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   await user.click(button);
 
   const currentFieldName = props?.currentField?.name ?? 'name';
-  const contextMenu = within(screen.getByRole('menu'))
+  const contextMenu = within(screen.getByRole('menu'));
   const selected = contextMenu.getByText(currentFieldName);
   await user.click(selected);
   expect(props.onSelect).toHaveBeenCalledTimes(0);
