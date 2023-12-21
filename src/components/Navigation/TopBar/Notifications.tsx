@@ -1,7 +1,11 @@
 import { FC, ReactNode, useRef, useState } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { close, notifications as notificationIcon } from '@equinor/eds-icons';
+import { Button, Chip, Icon, Typography } from '@equinor/eds-core-react';
+import {
+  close,
+  notifications as notificationIcon,
+  settings,
+} from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
@@ -123,6 +127,20 @@ const Notifications: FC<NotificationsProps> = ({
             <Icon data={close} color="secondary" />
           </Button>
         </Header>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingBottom: '10px',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <Chip>Sort by </Chip>
+            <Chip>Sort by </Chip>
+          </div>
+          <Icon data={settings} />
+        </div>
         {children ? (
           children
         ) : (
