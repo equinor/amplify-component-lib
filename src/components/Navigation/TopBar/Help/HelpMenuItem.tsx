@@ -39,6 +39,7 @@ interface HelpMenuItemProps {
   onClick: (event?: MouseEvent<HTMLDivElement>) => void;
   id?: string;
   href?: string;
+  lastItem?: boolean;
 }
 
 const HelpMenuItem: FC<HelpMenuItemProps> = ({
@@ -47,6 +48,7 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
   href,
   onClick,
   id,
+  lastItem = false,
 }) => {
   const isHref = href && href.length > 0;
 
@@ -63,15 +65,18 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
             {text}
           </Typography>
         </ContentInfo>
-
-        <Icon
-          data={isHref ? external_link : arrow_forward}
-          size={24}
-          color={colors.interactive.primary__resting.hsla}
-        />
+        {lastItem ? (
+          <></>
+        ) : (
+          <Icon
+            data={isHref ? external_link : arrow_forward}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+        )}
       </Wrapper>
     );
-  }, [icon, id, isHref, onClick, text]);
+  }, [icon, id, isHref, lastItem, onClick, text]);
 
   if (isHref) {
     return (
