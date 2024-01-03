@@ -17,12 +17,21 @@ const animateCheckmark = keyframes`
   }
 `;
 
-const Container = styled.div`
+interface ContainerProps {
+  $isApplication?: boolean;
+}
+
+const Container = styled.div<ContainerProps>`
   height: fit-content;
   width: fit-content;
+
   svg {
-    width: calc(24px * 6);
-    height: calc(24px * 6);
+    //width: calc(24px * 6);
+    //height: calc(24px * 6);
+    width: ${({ $isApplication }) =>
+      $isApplication ? '84px' : 'calc(24px * 6)'};
+    height: ${({ $isApplication }) =>
+      $isApplication ? '84px' : 'calc(24px * 6)'};
   }
   path {
     fill: transparent;
@@ -31,10 +40,15 @@ const Container = styled.div`
     animation: ${animateCheckmark} 1.5s;
   }
 `;
-
-const AnimatedCheckmark: FC = () => (
-  <Container>
+interface AnimatedCheckmarkProps {
+  portal?: boolean;
+}
+const AnimatedCheckmark: FC<AnimatedCheckmarkProps> = ({ portal }) => (
+  <Container $isApplication={portal}>
     <svg
+      // width={portal ? '84' : '43'}
+      // height={portal ? '84' : '43'}
+      // viewBox={portal ? '-10 0 84 84' : '0 0 43 43'}
       width="43"
       height="43"
       viewBox="0 0 43 43"
