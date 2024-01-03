@@ -1,35 +1,90 @@
-import { FC } from 'react';
+import { FC, useRef, useState } from 'react';
 
-import { Menu } from '@equinor/eds-core-react';
+import { Button, Icon, Menu } from '@equinor/eds-core-react';
+import { more_vertical } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+
+import { applicationsProps } from './ApplicationDrawer';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { shape, colors } = tokens;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+const OptionsIcon = styled(Icon)`
+  //display: none;
+  &:hover {
+    border-radius: ${shape.circle.borderRadius};
+    background: ${colors.interactive.secondary__highlight.hex};
+    //padding: 5px;
+  }
+  // :hover & {
+  //   display: initial;
+  // }
 `;
+
 interface ShortcutOptionsProps {
-  open: boolean;
-  anchorEl: HTMLElement | null;
-  onClose: () => void;
+  applicationsItem: applicationsProps;
 }
-const ShortcutOptions: FC<ShortcutOptionsProps> = ({
-  open,
-  anchorEl,
-  onClose,
-}) => {
+const ShortcutOptions: FC<ShortcutOptionsProps> = ({ applicationsItem }) => {
+  const [shortcutOptions, setShortcutOptions] = useState(false);
+  const [isFavorite, setIsFavorite] = useState<applicationsProps[]>([]);
+  const [hideApplication, setHideApplication] = useState<applicationsProps[]>(
+    []
+  );
+  const shortcutRef = useRef<HTMLButtonElement | null>(null);
+
+  const showShortcutOptions = () => {
+    setShortcutOptions(true);
+  };
+
+  const closeShortcutOptions = () => {
+    setShortcutOptions(false);
+  };
+
+  const handleAddFavorite = (value: applicationsProps) => {
+    setIsFavorite((prev) => {
+      const newFavoriteList = Array.from(prev);
+      newFavoriteList.push(value);
+      return newFavoriteList;
+    });
+  };
+  console.log(isFavorite, 'favorite');
+  const handleHideApplication = (value: applicationsProps) => {
+    setHideApplication((prev) => {
+      const newHideList = Array.from(prev);
+      newHideList.push(value);
+
+      return newHideList;
+    });
+  };
+
+  console.log(hideApplication, 'hide');
+
   return (
     <>
-      <Menu open={open} anchorEl={anchorEl} onClose={onClose}>
-        <Menu.Item onClick={() => console.log('Hide')}> Hide </Menu.Item>
-        <Menu.Item onClick={() => console.log('favorite ')}>
-          Add to Favorite{' '}
-        </Menu.Item>
-      </Menu>
+      <Button
+        onClick={showShortcutOptions}
+        variant="ghost_icon"
+        ref={shortcutRef}
+      >
+        <OptionsIcon data={more_vertical} />
+      </Button>
+      {shortcutOptions && (
+        <Menu
+          open={shortcutOptions}
+          anchorEl={shortcutRef.current}
+          onClose={closeShortcutOptions}
+          placement="bottom-start"
+        >
+          <Menu.Item onClick={() => handleHideApplication(applicationsItem)}>
+            {' '}
+            Hide{' '}
+          </Menu.Item>
+          <Menu.Item onClick={() => handleAddFavorite(applicationsItem)}>
+            Add to Favorite{' '}
+          </Menu.Item>
+        </Menu>
+      )}
     </>
   );
 };
