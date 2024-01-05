@@ -16,10 +16,10 @@ import {
   amplify_small_portal,
   amplify_tutorials,
 } from '../../../Icons/AmplifyIcons';
+import PortalTransit from './ApplicationTransit/PortalTransit';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
-import Tutorial from './Tutorials/TutorialDialog';
-import PortalTransit from './PortalTransit';
+import Tutorial, { tutorialOptions } from './Tutorials/TutorialDialog';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
@@ -33,11 +33,6 @@ const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
 `;
 
-const PortalDialog = styled(Dialog)`
-  width: 400px;
-  height: 323px;
-`;
-
 const ContentWrapper = styled.div`
   padding: 0 ${spacings.comfortable.medium};
 `;
@@ -46,18 +41,15 @@ export interface HelpProps {
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
   children?: ReactNode;
-  tutorialDescription?: string;
-  tutorialSteps?: string;
-  tutorialDuration?: string;
+  tutorialOptions?: tutorialOptions[];
 }
 
 export const Help: FC<HelpProps> = ({
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
-  tutorialDescription,
-  tutorialDuration,
-  tutorialSteps,
+
+  tutorialOptions,
 }) => {
   const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
     useReleaseNotes();
@@ -117,17 +109,24 @@ export const Help: FC<HelpProps> = ({
   };
 
   const handleOpenPortal = () => {
-    setOpenPortal(true);
-    setShowLearnMore(false);
-    setShowFeedback(false);
-    setIsOpen(false);
+    if (openPortal) {
+      setOpenPortal(false);
+    } else {
+      setOpenPortal(true);
+      setShowLearnMore(false);
+      setShowFeedback(false);
+      setIsOpen(false);
+    }
   };
 
   const handleOpenTutorials = () => {
-    setOpenTutorials(true);
+    if (openTutorials) {
+      setOpenTutorials(false);
+    } else {
+      setOpenTutorials(true);
+    }
   };
 
-  console.log(openPortal);
   return (
     <>
       <Button
@@ -196,16 +195,13 @@ export const Help: FC<HelpProps> = ({
             onClick={handleLearnMoreClick}
           />
         )}
-        {openTutorials &&
-          tutorialSteps &&
-          tutorialDuration &&
-          tutorialDescription && (
-            <Tutorial
-              description={tutorialDescription}
-              duration={tutorialDuration}
-              steps={tutorialSteps}
-            />
-          )}
+        {openTutorials && tutorialOptions && (
+          <Tutorial
+            options={tutorialOptions}
+            open={openTutorials}
+            onClose={handleOpenTutorials}
+          />
+        )}
         {showLearnMore && (
           <>
             {!openTutorials && (
@@ -217,7 +213,7 @@ export const Help: FC<HelpProps> = ({
                   lastItem
                 />
                 <HelpMenuItem
-                  text="Active tutorials"
+                  text="Tutorials"
                   icon={amplify_tutorials}
                   onClick={handleOpenTutorials}
                   lastItem
@@ -227,8 +223,7 @@ export const Help: FC<HelpProps> = ({
 
             <div style={{ paddingTop: '5px' }}>
               <Button variant="outlined" onClick={handleLearnMoreClick}>
-                {' '}
-                <Icon data={arrow_back} /> Back{' '}
+                <Icon data={arrow_back} /> Back
               </Button>
             </div>
           </>
@@ -261,10 +256,7 @@ export const Help: FC<HelpProps> = ({
       )}
 
       {openPortal && (
-        <PortalDialog open={openPortal} onClose={handleOnDialogClose}>
-          <Dialog.Header> Open link</Dialog.Header>
-          <PortalTransit />
-        </PortalDialog>
+        <PortalTransit open={openPortal} onClose={handleOpenPortal} />
       )}
     </>
   );

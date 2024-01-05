@@ -1,3 +1,4 @@
+import ApplicationDrawer from './ApplicationDrawer/ApplicationDrawer';
 import { GuidelineSections } from './Guidelines/Guidelines';
 import { Help } from './Help/Help';
 import { Account } from './Account';
@@ -16,6 +17,7 @@ type TopBarType = typeof BaseTopBar & {
   Notifications: typeof Notifications;
   FieldSelector: typeof FieldSelector;
   Help: typeof Help;
+  ApplicationDrawer: typeof ApplicationDrawer;
 };
 
 const TopBar = BaseTopBar as TopBarType;
@@ -26,6 +28,7 @@ TopBar.Settings = Settings;
 TopBar.Notifications = Notifications;
 TopBar.FieldSelector = FieldSelector;
 TopBar.Help = Help;
+TopBar.ApplicationDrawer = ApplicationDrawer;
 
 export default TopBar;
 export type { GuidelineSections, ISettingsProps, TopBarType };
