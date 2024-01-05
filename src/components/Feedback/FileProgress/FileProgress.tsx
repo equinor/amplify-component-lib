@@ -9,7 +9,6 @@ interface FileProgressBaseProps {
   file: FileWithPath | File;
   isDone?: boolean;
   progressPercent?: number;
-  compact?: boolean;
   onCancel?: () => void;
   isError?: boolean;
 }
@@ -45,6 +44,7 @@ const FileProgress: FC<
 
   const handleOnClick = () => {
     if (!showCompleteState && props.onCancel) {
+      console.log('on cancel');
       props.onCancel();
     } else {
       props.onDelete();

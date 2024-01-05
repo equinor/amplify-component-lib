@@ -34,8 +34,6 @@ interface RegularFileProgressProps
   extends RegularFileProgressBaseProps,
     FileProgressPropsExtension {}
 const RegularFileProgress: FC<RegularFileProgressProps> = ({
-  onDelete,
-  onCancel,
   onRetry,
   file,
   progressPercent,
@@ -44,6 +42,7 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
   isError,
   fullErrorText,
   showCompleteState,
+  handleOnClick,
 }) => {
   const fileSizeProgress = useMemo(() => {
     if (!file?.size || !progressPercent) return 1;
@@ -66,14 +65,6 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
     isError,
   ]);
 
-  const handleOnClick = () => {
-    if (!showCompleteState && onCancel) {
-      onCancel();
-    } else {
-      onDelete();
-    }
-  };
-
   return (
     <Container $isError={isError}>
       <Icon
@@ -87,7 +78,7 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
       />
       <RegularFileProgressWrapper>
         <FileName>
-          <Typography variant="caption">{file?.name ?? 'filename'}</Typography>
+          <Typography variant="caption">{file.name}</Typography>
           <div>
             <Button variant="ghost_icon" onClick={handleOnClick}>
               <Icon
