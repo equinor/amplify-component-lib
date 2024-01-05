@@ -6,6 +6,7 @@ import { request as __request, FeatureToggleDto } from '../';
 
 import { OpenAPI_Portal, OpenAPI_Portal_Prod } from '../core/OpenAPI';
 import { ServiceNowIncidentResponse } from 'src/api/models/ServiceNowIncidentResponse';
+import { AmplifyApplication } from '../models/Applications';
 
 export class PortalService {
   // ConfigurationItem: string;
@@ -80,6 +81,18 @@ export class PortalService {
       errors: {
         400: `Bad Request`,
         404: `Not Found`,
+        500: `Server Error`,
+      },
+    });
+  }
+  public static userApplications(): CancelablePromise<
+    Array<AmplifyApplication>
+  > {
+    return __request(OpenAPI_Portal, {
+      method: 'GET',
+      url: '/api/v1/AmplifyApplication/userapplications',
+      errors: {
+        400: `Bad Request`,
         500: `Server Error`,
       },
     });
