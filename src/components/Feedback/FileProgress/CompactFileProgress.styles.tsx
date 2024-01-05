@@ -97,6 +97,10 @@ export const CloseButton = styled.div`
 
 export const AdditionalText = styled(Typography)`
   font-size: 10px;
+  padding-top: ${spacings.comfortable.x_small};
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const FileTooltip = styled(Tooltip)`
