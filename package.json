@@ -79,6 +79,7 @@
     "@storybook/addon-essentials": "^7.5.0",
     "@storybook/addon-links": "^7.5.0",
     "@storybook/addons": "^7.5.0",
+    "@storybook/builder-vite": "^7.6.7",
     "@storybook/node-logger": "^7.5.0",
     "@storybook/react": "^7.5.0",
     "@storybook/react-vite": "^7.5.0",
