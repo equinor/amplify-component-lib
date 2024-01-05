@@ -186,7 +186,6 @@ test('Renders compact loading state without progress precent, and click onDelete
   const progressBar = screen.getByRole('progressbar');
 
   expect(progressBar).toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
 
   const deleteButton = screen.getByTestId('eds-icon-path');
 
@@ -264,13 +263,6 @@ test('Renders compact error state', async () => {
   expect(allIcons[0]).toHaveAttribute('d', error_outlined.svgPathData);
 
   expect(shortErrorText).toBeInTheDocument();
-
-  const user = userEvent.setup();
-  await user.hover(shortErrorText);
-  await new Promise((r) => setTimeout(r, 1000));
-  // const tooltipErrorText = screen.getByText(fakeFullErrorText);
-  //
-  // expect(tooltipErrorText).toBeInTheDocument();
 });
 test('Renders compact default error messages', async () => {
   const { file, onDelete } = fakeProps();
@@ -282,10 +274,4 @@ test('Renders compact default error messages', async () => {
   const shortDefaultErrorText = screen.getByText('Error occurred');
 
   expect(shortDefaultErrorText).toBeInTheDocument();
-
-  // const longDefaultErrorText = screen.getByText(
-  //   'An error has occurred with the file'
-  // );
-
-  // const user = userEvent.setup();
 });

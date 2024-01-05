@@ -44,7 +44,6 @@ const FileProgress: FC<
 
   const handleOnClick = () => {
     if (!showCompleteState && props.onCancel) {
-      console.log('on cancel');
       props.onCancel();
     } else {
       props.onDelete();
