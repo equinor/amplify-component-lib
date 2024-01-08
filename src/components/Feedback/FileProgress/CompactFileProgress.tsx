@@ -5,7 +5,6 @@ import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { readUploadedFileAsText } from '../../Navigation/TopBar/Help/Feedback/Feedback.utils';
 import {
   AdditionalText,
   CloseButton,
@@ -19,6 +18,7 @@ import {
   CompactFileProgressBaseProps,
   FileProgressPropsExtension,
 } from './FileProgress';
+import { readUploadedFileAsText } from './FileProgress.utils';
 
 const { colors } = tokens;
 

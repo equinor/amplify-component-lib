@@ -18,9 +18,10 @@ export const CompactFileProgressContainer = styled.div<ContainerProps>`
   position: relative;
   transition: 0.3s;
   ${({ $isError }) =>
-    $isError
-      ? '&:hover { background-color: ' + colors.ui.background__warning.hex + '}'
-      : ''}
+    $isError &&
+    `&:hover { 
+        background: ${colors.ui.background__warning.hex}
+    }`}
 `;
 
 export const Title = styled(Typography)`
