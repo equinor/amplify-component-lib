@@ -21,6 +21,7 @@ export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
 export { default as GlitchAnimation } from './Feedback/ErrorPage/illustrations/GlitchAnimation';
 export { default as QuestioningAnimaion } from './Feedback/ErrorPage/illustrations/QuestioningAnimation';
+export { default as FileProgress } from './Feedback/FileProgress/FileProgress';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as PageNotFound } from './Feedback/PageNotFound';

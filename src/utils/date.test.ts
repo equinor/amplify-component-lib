@@ -306,8 +306,18 @@ test('formatRelativeDateTime with date within next week should display as weekda
 });
 
 test('formatRelativeDateTime with date before yesterday should display as full date not including year', () => {
-  const threeDaysAgo = new Date();
+  let threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+  let oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  // Check if we changed year within a week ago, and sets the check to 1st of jan current year if so
+  if (oneWeekAgo.getFullYear() !== new Date().getFullYear()) {
+    const firstJanThisYear = new Date(new Date().getFullYear(), 0, 1);
+    threeDaysAgo = firstJanThisYear;
+    oneWeekAgo = firstJanThisYear;
+  }
+
   const dayNumeric = threeDaysAgo.toLocaleDateString('en-GB', {
     day: 'numeric',
   });
@@ -323,8 +333,6 @@ test('formatRelativeDateTime with date before yesterday should display as full d
   const formattedThreeDaysAgo = date.formatRelativeDateTime(threeDaysAgo);
   expect(formattedThreeDaysAgo).toBe(expectedResultThreeDaysAgo);
 
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   const day = oneWeekAgo.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResultOneWeekAgo = `${day}. ${oneWeekAgo.toLocaleString(
     'en-GB',
