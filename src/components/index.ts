@@ -38,6 +38,7 @@ export {
   amplify_lwd,
   amplify_sharepoint,
   amplify_snail,
+  amplify_sort_small,
   amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,
