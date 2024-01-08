@@ -35,6 +35,7 @@ export {
   amplify_failure,
   amplify_h1,
   amplify_h2,
+  amplify_info_small,
   amplify_lwd,
   amplify_sharepoint,
   amplify_snail,
