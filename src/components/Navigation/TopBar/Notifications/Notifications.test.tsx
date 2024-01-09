@@ -4,7 +4,7 @@ import { notifications } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../tests/test-utils';
+import { render, screen, userEvent } from '../../../../tests/test-utils';
 import Notifications, { UnreadRedDot } from './Notifications';
 
 const { colors } = tokens;

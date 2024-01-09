@@ -41,7 +41,7 @@ const PortalTransit: FC<PortalTransitProps> = ({ open, onClose }) => {
   //   console.log('skip');
   // };
 
-  //  change from menuitem to it's on href thing or update menuitem
+  //  change from menuitem to it's on href thing or update menuitem, const
 
   // if (skip) return;
 

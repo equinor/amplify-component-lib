@@ -1,9 +1,15 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import { Chip, Divider, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { ProfileAvatar } from '../../index';
+import { ProfileAvatar } from '../../../index';
+import DeafultNotification from './NotificationElements/DeafultNotification';
+import ExperienceDue3Weeks from './NotificationElements/ExperienceDue3Weeks';
+import NoNotifications from './NotificationElements/NoNotifications';
+import ReadyToReportNotification from './NotificationElements/ReadyToReportNotification';
+import ReviewQANotification from './NotificationElements/ReviewQANotification';
+import SystemUserDefault from './NotificationElements/SystemUserDefault';
 
 import styled from 'styled-components';
 
@@ -65,26 +71,59 @@ export type userNotification = {
   image: string;
 };
 
-export type NotificationDto = {
-  notificationId?: string | null;
-  message: string;
-  fromUser: userNotification;
-  toUser: userNotification;
+type SignalRMessage = {
   SequenceNumber: number;
   Read: boolean;
   Subject?: string | null;
-  applicationName: string;
-  time: string;
 };
 
-const NotificationTemplate: FC<NotificationDto> = ({
+export type NotificationDto = {
+  notificationId?: string | null;
+  fromUser: userNotification;
+  toUser: userNotification;
+  applicationName: string;
+  time: string;
+  footer?: boolean;
+  notificationType: NotificationsTypes;
+} & SignalRMessage;
+
+enum NotificationsTypes {
+  READY_TO_REPORT = 'readytoreport',
+  DEFAULT = 'default',
+}
+
+type ReadyToReportNotificationProps = {
+  dataType: string;
+  wellbore: string;
+  notificationType: NotificationsTypes.READY_TO_REPORT;
+} & NotificationDto;
+
+type DefaultNotificationProps = {
+  notificationType: NotificationsTypes.DEFAULT;
+} & NotificationDto;
+
+const NotificationTemplate: FC<
+  ReadyToReportNotificationProps | DefaultNotificationProps
+> = ({
   fromUser,
-  message,
+  notificationType,
   applicationName,
   Read,
+
   time,
+  footer = true,
 }) => {
   console.log(Read, 'read');
+
+  const content = useMemo(() => {
+    switch (notificationType) {
+      case NotificationsTypes.READY_TO_REPORT:
+        return <ReadyToReportNotification />;
+      case NotificationsTypes.DEFAULT:
+        return <DeafultNotification />;
+    }
+  }, [notificationType]);
+
   return (
     <Wrapper>
       <GridContainer>
@@ -117,28 +156,31 @@ const NotificationTemplate: FC<NotificationDto> = ({
             {time}
           </Typography>
         </TopContainer>
+        {/*<Content>{content}</Content>*/}
         <Content>
-          <Typography group="table" variant="cell_text">
-            {message}
-          </Typography>
+          <ReadyToReportNotification />
         </Content>
-        <FooterContainer>
-          <Typography
-            group="navigation"
-            variant="label"
-            color={colors.text.static_icons__tertiary.hex}
-          >
-            Application
-          </Typography>
+        {footer && (
+          <FooterContainer>
+            <Typography
+              group="navigation"
+              variant="label"
+              color={colors.text.static_icons__tertiary.hex}
+            >
+              {/*This is which application it is , make a check */}
+              Application
+            </Typography>
 
-          <Typography
-            group="navigation"
-            variant="label"
-            color={colors.text.static_icons__tertiary.hex}
-          >
-            {applicationName}
-          </Typography>
-        </FooterContainer>
+            <Typography
+              group="navigation"
+              variant="label"
+              color={colors.text.static_icons__tertiary.hex}
+            >
+              {/*Should be field */}
+              {applicationName}
+            </Typography>
+          </FooterContainer>
+        )}
       </GridContainer>
     </Wrapper>
   );

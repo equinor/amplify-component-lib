@@ -19,6 +19,7 @@ type StoryFnNotificationItem = {
   toUser: userNotification;
   application: string;
   time: string;
+  notificationType: string;
 };
 
 const items: StoryFnNotificationItem[] = [
@@ -41,6 +42,7 @@ const items: StoryFnNotificationItem[] = [
     },
     application: 'Dasha',
     time: ' 2 seconds ago',
+    notificationType: 'default',
   },
   {
     Read: true,
@@ -61,6 +63,7 @@ const items: StoryFnNotificationItem[] = [
     },
     application: 'PWEX',
     time: ' yesterday',
+    notificationType: 'default',
   },
   {
     Read: true,
@@ -81,6 +84,7 @@ const items: StoryFnNotificationItem[] = [
     },
     application: 'Recap',
     time: ' yesterday',
+    notificationType: 'default',
   },
 ];
 

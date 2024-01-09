@@ -55,6 +55,7 @@ interface TutorialDialogProps {
   onClose: () => void;
 }
 
+// TODO: check up on url - uselocation
 const TutorialDialog: FC<TutorialDialogProps> = ({
   options,
   open,
