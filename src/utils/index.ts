@@ -8,6 +8,7 @@ import map from './map';
 import size from './size';
 import sort from './sort';
 import string from './string';
+import getTokens from './theme';
 import url from './url';
 
 export {
@@ -18,9 +19,10 @@ export {
   errors,
   exportComponent,
   favicon,
+  getTokens,
   map,
   size,
   sort,
   string,
-  url,
+  url
 };

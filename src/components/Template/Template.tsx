@@ -37,6 +37,7 @@ const Content = styled.div<ContentProps>`
 `;
 
 const GlobalStyles = createGlobalStyle`
+@use 'src/style/themer';
   button {
     border: none;
     background: none;
