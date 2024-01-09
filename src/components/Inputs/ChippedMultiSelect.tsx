@@ -31,11 +31,11 @@ interface SelectElementProps {
 }
 
 const SelectElement = styled.div<SelectElementProps>`
-  background: ${colors.ui.background__light.hex};
+  background: ${colors.ui.background__light.rgba};
   ${(props) =>
     props.$open
-      ? `box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex}`
-      : `box-shadow: inset 0px -1px 0px 0px ${colors.text.static_icons__tertiary.hex}`};
+      ? `box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba}`
+      : `box-shadow: inset 0px -1px 0px 0px ${colors.text.static_icons__tertiary.rgba}`};
   position: relative;
   &:hover {
     cursor: pointer;
@@ -52,7 +52,7 @@ const SelectElement = styled.div<SelectElementProps>`
 `;
 
 const Placeholder = styled(Typography)`
-  color: ${colors.text.static_icons__secondary.hex};
+  color: ${colors.text.static_icons__secondary.rgba};
   height: 36px;
   display: flex;
   align-items: center;
@@ -68,7 +68,7 @@ const Arrow = styled(Icon)`
   width: 24px;
   &:hover {
     border-radius: ${shape.circle.borderRadius};
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;
 
@@ -85,11 +85,23 @@ const MenuItem = styled(EDSMenu.Item)`
 `;
 
 const Chip = styled(EDSChip)`
-  color: ${colors.interactive.primary__resting.hex};
-  background: ${colors.ui.background__info.hex};
+  color: ${colors.text.static_icons__default.rgba};
+  background: ${colors.ui.background__light.rgba};
+  border: 1px solid ${colors.ui.background__medium.rgba};
   line-height: normal;
+  transition: background 0.15s ease-in;
   > svg {
     z-index: auto;
+    fill: ${colors.text.static_icons__default.rgba};
+    &:hover {
+      fill: ${colors.interactive.primary__hover.rgba};
+    }
+  }
+
+  &:hover {
+    color: ${colors.interactive.primary__hover.rgba};
+
+    background: ${colors.ui.background__medium.rgba};
   }
 `;
 
@@ -170,7 +182,7 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
           )}
           <Arrow
             data={open ? arrow_drop_up : arrow_drop_down}
-            color={colors.interactive.primary__resting.hex}
+            color={colors.interactive.primary__resting.rgba}
           />
         </SelectElement>
       </Container>
@@ -190,7 +202,7 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
             <MenuItem key={item} onClick={() => handleClick(item)}>
               <Icon
                 data={values.includes(item) ? checkbox : checkbox_outline}
-                color={colors.interactive.primary__resting.hex}
+                color={colors.interactive.primary__resting.rgba}
               />
               {formatter ? formatter(item) : item}
             </MenuItem>

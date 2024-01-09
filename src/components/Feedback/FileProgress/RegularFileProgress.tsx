@@ -3,7 +3,6 @@ import { FC, useMemo } from 'react';
 import {
   Button,
   Icon,
-  LinearProgress,
   Typography,
 } from '@equinor/eds-core-react';
 import {
@@ -22,10 +21,10 @@ import {
 import {
   Container,
   FileName,
+  LinearProgress,
   ProgressWrapper,
   RegularFileProgressDetails,
-  RegularFileProgressWrapper,
-} from './RegularFileProgress.styles';
+  RegularFileProgressWrapper} from './RegularFileProgress.styles';
 
 const { colors } = tokens;
 const { formatBytes } = size;
@@ -71,8 +70,8 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
         data={file_icon}
         color={
           isError
-            ? colors.interactive.danger__hover.hex
-            : colors.interactive.primary__resting.hex
+            ? colors.interactive.danger__hover.rgba
+            : colors.interactive.primary__resting.rgba
         }
         size={32}
       />
@@ -85,7 +84,7 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
                 data={
                   showCompleteState ? delete_to_trash : close_circle_outlined
                 }
-                color={colors.text.static_icons__tertiary.hex}
+                color={colors.text.static_icons__tertiary.rgba}
                 size={24}
               />
             </Button>
@@ -93,7 +92,7 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
               <Button variant="ghost_icon" onClick={onRetry}>
                 <Icon
                   data={refresh}
-                  color={colors.text.static_icons__tertiary.hex}
+                  color={colors.text.static_icons__tertiary.rgba}
                   size={24}
                 />
               </Button>

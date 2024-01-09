@@ -21,7 +21,7 @@ const UploadWrapper = styled.div<UploadWrapperProps>`
   flex-direction: column;
   min-width: 300px;
   height: 152px;
-  border: 2px dotted ${colors.interactive.primary__resting.hex};
+  border: 2px dotted ${colors.interactive.primary__resting.rgba};
   border-radius: 15px;
   margin-top: 10px;
   :hover {
@@ -38,7 +38,7 @@ const CompactUploadWrapper = styled.div<UploadWrapperProps>`
   justify-content: center;
   width: 88px;
   height: 88px;
-  border: 1px dashed ${colors.interactive.primary__resting.hsla};
+  border: 1px dashed ${colors.interactive.primary__resting.rgba};
   border-radius: 4px;
   :hover {
     background-color: #deedee;
@@ -67,7 +67,7 @@ const FileUploadArea: FC<FileUploadAreaProps> = ({ compact, ...options }) => {
     return (
       <CompactUploadWrapper {...getRootProps()} $isDragActive={isDragActive}>
         <input data-testid="file-upload-area-input" {...getInputProps()} />
-        <Icon data={add} color={colors.interactive.primary__resting.hsla} />
+        <Icon data={add} color={colors.interactive.primary__resting.rgba} />
       </CompactUploadWrapper>
     );
   }
@@ -84,12 +84,12 @@ const FileUploadArea: FC<FileUploadAreaProps> = ({ compact, ...options }) => {
           <>
             <Icon
               data={upload}
-              color={colors.interactive.primary__resting.hsla}
+              color={colors.interactive.primary__resting.rgba}
             />
             <Typography group="navigation" variant="button">
               Drop files or{' '}
               <Typography
-                color={colors.interactive.primary__resting.hsla}
+                color={colors.interactive.primary__resting.rgba}
                 as="span"
               >
                 browse

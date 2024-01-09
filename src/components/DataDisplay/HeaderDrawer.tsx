@@ -70,7 +70,7 @@ const HeaderDrawer = forwardRef<HTMLHeadingElement, HeaderDrawerProps>(
           <IconWrapper>
             <Icon
               data={isOpen ? chevron_up : chevron_down}
-              color={colors.interactive.primary__resting.hex}
+              color={colors.interactive.primary__resting.rgba}
             />
           </IconWrapper>
         </Header>

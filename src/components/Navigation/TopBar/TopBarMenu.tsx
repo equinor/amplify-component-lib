@@ -2,13 +2,11 @@ import React, { forwardRef, ReactNode } from 'react';
 
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
-
-import { getTokens } from 'src/utils';
+import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-
-const { colors, spacings } = getTokens();
+const { colors, spacings } = tokens;
 
 const MenuWrapper = styled(Menu)`
   padding: 0 !important;
@@ -22,7 +20,7 @@ const Header = styled.div`
   align-items: center;
   padding-left: ${spacings.comfortable.medium};
   padding-right: ${spacings.comfortable.small};
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+  border-bottom: 1px solid ${colors.ui.background__medium.hex};
   padding-bottom: ${spacings.comfortable.small};
 `;
 

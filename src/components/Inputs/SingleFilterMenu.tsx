@@ -45,7 +45,7 @@ const MenuTitleContainer = styled.div`
 const MenuItem = styled(EdsMenu.Item)`
   &:focus {
     outline: none;
-    background: ${colors.ui.background__light.hsla};
+    background: ${colors.ui.background__light.rgba};
   }
 `;
 

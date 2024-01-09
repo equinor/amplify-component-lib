@@ -1,3 +1,4 @@
+import { LinearProgress as EDSLinearProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
@@ -18,8 +19,8 @@ export const Container = styled.div<ContainerProps>`
   border: 1px solid
     ${({ $isError }) =>
       $isError
-        ? colors.ui.background__danger.hex
-        : colors.ui.background__medium.hex};
+        ? colors.ui.background__danger.rgba
+        : colors.ui.background__medium.rgba};
   border-radius: 4px;
 `;
 
@@ -44,4 +45,12 @@ export const RegularFileProgressDetails = styled.div`
 
 export const ProgressWrapper = styled.div`
   min-height: 4px;
+`;
+
+export const LinearProgress = styled(EDSLinearProgress)`
+  background-color: ${colors.interactive.primary__hover_alt.rgba};
+
+  div {
+    background-color: ${colors.interactive.primary__resting.rgba};
+  }
 `;

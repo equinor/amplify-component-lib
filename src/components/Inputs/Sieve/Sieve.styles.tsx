@@ -22,14 +22,28 @@ const Container = styled.div`
 `;
 
 const FilterChip = styled(EDSChip)`
-  background: ${colors.ui.background__default.hex};
+
+  color: ${colors.text.static_icons__default.rgba};
+  background: ${colors.ui.background__light.rgba};
+  border: 1px solid ${colors.ui.background__medium.rgba};
+  line-height: normal;
+  transition: background 0.15s ease-in;
+   
+  svg {
+    z-index: auto;
+    fill: ${colors.text.static_icons__default.rgba};
+  }
+
 `;
 
 const Search = styled(EDSSearch)`
   > div {
     box-shadow: none;
     outline: none !important;
-    background: ${colors.ui.background__default.hex};
+    background: ${colors.ui.background__default.rgba};
+    > input {
+      color: ${colors.text.static_icons__default.rgba};
+    }
     > input:focus {
       box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex};
     }

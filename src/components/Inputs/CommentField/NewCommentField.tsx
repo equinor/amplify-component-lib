@@ -27,10 +27,11 @@ const CommentTextField = styled(TextField)`
     background: none;
     outline: none;
     box-shadow: none;
+    color: ${colors.text.static_icons__default.rgba};
 
     &:focus {
       outline: none;
-      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
+      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
 `;
@@ -44,7 +45,7 @@ const ClearButton = styled.div`
   position: absolute;
   right: 1%;
   top: calc(34px / 2);
-  color: ${colors.text.static_icons__default.hex};
+  color: ${colors.text.static_icons__default.rgba};
   height: 32px;
   width: 32px;
   padding: 5px;
@@ -55,7 +56,7 @@ const ClearButton = styled.div`
   &:hover {
     cursor: pointer;
     color: ${colors.interactive.primary__resting.hex};
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;
 
@@ -107,7 +108,7 @@ const NewCommentField: FC<NewCommentFieldProps> = ({
       />
       {newComment.length > 0 && (
         <ClearButton data-testid="clear-button" onClick={handleClear}>
-          <Icon data={clear} size={32} />
+          <Icon data={clear} size={32} color={colors.interactive.primary__resting.rgba}/>
         </ClearButton>
       )}
       <PostButton

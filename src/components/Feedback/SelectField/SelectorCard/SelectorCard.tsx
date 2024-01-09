@@ -41,7 +41,7 @@ const StyledCard = styled(Card)`
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
   > h3 {
-    color: ${colors.text.static_icons__default.hex};
+    color: ${colors.text.static_icons__default.rgba};
     margin-bottom: ${spacings.comfortable.medium};
   }
   > section {
@@ -55,12 +55,13 @@ const StyledCard = styled(Card)`
 const AutocompleteWrapper = styled.div`
   * {
     background: none !important;
+    color: ${colors.text.static_icons__default.rgba};
   }
   *:focus-within {
     outline: none !important;
   }
   input:focus {
-    box-shadow: inset 0 -2px ${colors.interactive.primary__resting.hex};
+    box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
   }
 `;
 
@@ -71,7 +72,7 @@ const MissingAccess = styled.div`
   justify-content: space-between;
   align-items: center;
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
     cursor: pointer;
   }
 `;
@@ -149,7 +150,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
           </TextContainer>
           <Icon
             data={exit_to_app}
-            color={colors.interactive.primary__resting.hex}
+            color={colors.interactive.primary__resting.rgba}
             size={24}
           />
         </MissingAccess>

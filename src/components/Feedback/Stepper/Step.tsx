@@ -42,17 +42,17 @@ const IconWrapper = styled.span<IconWrapperProps>`
   border: 2px solid
     ${(props) =>
       props.$filled || props.$outlined
-        ? colors.interactive.primary__resting.hex
-        : colors.interactive.disabled__text.hex};
+        ? colors.interactive.primary__resting.rgba
+        : colors.interactive.disabled__text.rgba};
   background: ${(props) =>
-    props.$filled ? colors.interactive.primary__resting.hex : 'none'};
+    props.$filled ? colors.interactive.primary__resting.rgba : 'none'};
   > p {
     // Ensure text icons are not squished
     padding: 8px;
     color: ${(props) =>
       props.$filled
-        ? colors.text.static_icons__primary_white.hex
-        : colors.interactive.disabled__text.hex};
+        ? colors.text.static_icons__primary_white.rgba
+        : colors.interactive.disabled__text.rgba};
   }
   > svg {
     transform: scale(0.9);
@@ -85,7 +85,7 @@ const Step: FC<StepProps> = ({
     }
     return (
       <IconWrapper $outlined data-testid="wrapper">
-        <Icon data={check} color={colors.interactive.primary__resting.hex} />
+        <Icon data={check} color={colors.interactive.primary__resting.rgba} />
       </IconWrapper>
     );
   }, [index, currentIndex]);
@@ -96,8 +96,8 @@ const Step: FC<StepProps> = ({
   }, [currentIndex, index]);
 
   const textColor = useMemo((): string | undefined => {
-    if (index > currentIndex) return colors.interactive.disabled__text.hex;
-    return colors.text.static_icons__default.hex;
+    if (index > currentIndex) return colors.interactive.disabled__text.rgba;
+    return colors.text.static_icons__default.rgba;
   }, [currentIndex, index]);
 
   const handleOnClick = () => {

@@ -5,13 +5,13 @@ import {
   TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 
 import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
-import { getTokens } from 'src/utils';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = getTokens();
+const { colors, spacings } = tokens;
 
 const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.hsla};
@@ -26,8 +26,7 @@ const Header = styled(EDSTopBar.Header)`
   grid-template-columns: 40px auto;
   > svg {
     justify-self: center;
-  }  
-
+  }
 `;
 
 interface AppNameProps {
@@ -110,8 +109,6 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
     },
     ref
   ) => {
-    console.log(colors);
-    
     if (React.isValidElement(applicationIcon)) {
       console.warn(
         'Sending an element as applicationIcon is the old way of setting the icon in the top bar! Switch to just sending the name of the app as applicationIcon.'

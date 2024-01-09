@@ -1,12 +1,13 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
   AdditionalText,
+  CircularProgress,
   CloseButton,
   CompactFileProgressContainer,
   FileTooltip,

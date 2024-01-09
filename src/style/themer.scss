@@ -58,7 +58,8 @@ html[data-theme='dark'] {
         --eds_interactive_primary__selected_hover: rgba(0, 95, 87, 1);
         --eds_interactive_primary__resting: rgba(151, 202, 206, 1);
         --eds_interactive_primary__hover: rgba(173, 226, 230, 1);
-        --eds_interactive_primary__hover_alt: rgba(173, 226, 230, 1);
+        --eds_interactive_primary__hover_alt: rgb(96, 125, 127);
+       /* --eds_interactive_primary__hover_alt: rgba(173, 226, 230, 1);   OLD */
         --eds_interactive_secondary__highlight: rgba(255, 255, 255, 0.1);
         --eds_interactive_secondary__resting: rgba(222, 229, 231, 1);
         --eds_interactive_secondary__link_hover: rgba(23, 36, 47, 1);
@@ -74,17 +75,29 @@ html[data-theme='dark'] {
         --eds_interactive_success__resting: rgba(75, 183, 72, 1);
         --eds_interactive_success__hover: rgba(193, 231, 193, 1);
         --eds_interactive_success__text: rgba(161, 218, 160, 1);
+        
+        /* Not adapted for dark mode*/
         --eds_interactive_table__cell__fill_resting: rgba(255, 255, 255, 1);
         --eds_interactive_table__cell__fill_hover: rgba(234, 234, 234, 1);
         --eds_interactive_table__cell__fill_activated: rgba(230, 250, 236, 1);
         --eds_interactive_table__header__fill_activated: rgba(234, 234, 234, 1);
-        --eds_interactive_table__header__fill_hover: rgba(220, 220, 220, 1);
+        --eds_interactive_table__header__fill_hover: rgba(220, 220, 220, 0.1); 
         --eds_interactive_table__header__fill_resting: rgba(247, 247, 247, 1);
+        /* ^^^^^^^ */
+        
         --eds_interactive_disabled__text: rgba(99, 117, 131, 1);
+        --eds_interactive__disabled__text: rgba(99, 117, 131, 1);
+
+        
+        --eds_interactive_disabled__border: rgba(64, 84, 98, 1);
+        --eds_interactive__disabled__border: rgba(64, 84, 98, 1);
+        
+        --eds_interactive_disabled__fill: rgba(52, 68, 80, 1);
+        --eds_interactive__disabled__fill: rgba(52, 68, 80, 1);
+        
         --eds_interactive_text_highlight: rgba(213, 234, 244, 1);
         --eds_interactive_focus: rgba(0, 112, 121, 1);
-        --eds_interactive_disabled__border: rgba(64, 84, 98, 1);
-        --eds_interactive_disabled__fill: rgba(52, 68, 80, 1);
+
         --eds_interactive_link_on_interactive_colors: rgba(255, 255, 255, 1);
         --eds_interactive_icon_on_interactive_colors: rgba(255, 255, 255, 1);
         --eds_interactive_link_in_snackbars: rgba(151, 202, 206, 1);
@@ -174,6 +187,8 @@ html[data-theme='dark'] {
         --eds_paragraph__caption_color: rgba(255, 255, 255, 1);
         --eds_paragraph__body_short_color: rgba(255, 255, 255, 1);
         --eds_paragraph__meta_color: rgba(255, 255, 255, 1);
+
+        --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1);
 
         
 
