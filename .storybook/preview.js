@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import 'src/style/themer.scss';
+import 'src/style/themer.css';
 
 const { colors } = tokens;
 
