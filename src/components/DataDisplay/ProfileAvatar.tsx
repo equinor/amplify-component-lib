@@ -87,7 +87,7 @@ const FallbackIcon = styled(Icon)`
 export interface ProfileAvatarProps {
   url?: string;
   name?: string;
-  size?: 'small' | 'small-medium' | 'medium' | 'large';
+  size?: 'small' | 'small-medium' | 'medium' | 'large' | 'x-large';
   disabled?: boolean;
 }
 
@@ -100,19 +100,35 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
       return nameToInitials(name);
     }, [name]);
 
-    const sizeToPx = () => {
-      if (size === 'small') return 16;
-      else if (size === 'small-medium') return 24;
-      else if (size === 'medium') return 32;
-      return 40;
-    };
+    const sizeToPx = useMemo(() => {
+      switch (size) {
+        case 'small':
+          return 16;
+        case 'small-medium':
+          return 24;
+        case 'medium':
+          return 32;
+        case 'large':
+          return 40;
+        case 'x-large':
+          return 48;
+      }
+    }, [size]);
 
-    const sizeToFontsize = () => {
-      if (size === 'small') return 6;
-      else if (size === 'small-medium') return 10;
-      else if (size === 'medium') return 14;
-      return 16;
-    };
+    const sizeToFontsize = useMemo(() => {
+      switch (size) {
+        case 'small':
+          return 6;
+        case 'small-medium':
+          return 10;
+        case 'medium':
+          return 14;
+        case 'large':
+          return 16;
+        case 'x-large':
+          return 18;
+      }
+    }, [size]);
 
     const imageSrc = useMemo((): string => {
       const { btoa, atob } = window;
@@ -133,7 +149,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
       return (
         <Avatar
           alt={`user-avatar-${name}`}
-          size={sizeToPx()}
+          size={sizeToPx}
           src={imageSrc}
           disabled={disabled}
           ref={ref}
@@ -144,8 +160,8 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
     return (
       <InitialsContainer
         $background={nameToColor(name)}
-        $size={sizeToPx()}
-        $fontSize={sizeToFontsize()}
+        $size={sizeToPx}
+        $fontSize={sizeToFontsize}
         disabled={disabled}
         ref={ref}
       >
