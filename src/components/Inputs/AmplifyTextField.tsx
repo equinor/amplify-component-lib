@@ -19,11 +19,13 @@ const AmplifyTextField = styled(TextField)`
           }
         }
         `;
-    } else { return `
+    } else {
+      return `
     input {
       color: ${colors.text.static_icons__default.rgba}
       }
-    `}
+    `;
+    }
   }}
 `;
 

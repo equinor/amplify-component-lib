@@ -22,5 +22,5 @@ export {
   size,
   sort,
   string,
-  url
+  url,
 };

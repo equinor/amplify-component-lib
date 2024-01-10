@@ -8,7 +8,7 @@ const { spacings, colors, shape } = tokens;
 // General
 export const ContentWrapper = styled.div`
   width: 700px;
-  height: fit-content; 
+  height: fit-content;
   padding: 0 ${spacings.comfortable.medium} ${spacings.comfortable.medium}
     ${spacings.comfortable.medium};
 `;

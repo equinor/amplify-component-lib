@@ -70,7 +70,9 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
               <StatusChip
                 style={{ width: '120px' }}
                 color={item.color ?? colors.text.static_icons__secondary.rgba}
-                backgroundColor={item.backgroundColor ?? colors.ui.background__light.rgba}
+                backgroundColor={
+                  item.backgroundColor ?? colors.ui.background__light.rgba
+                }
               >
                 <Typography group="ui" variant="chip__badge">
                   {item.label}

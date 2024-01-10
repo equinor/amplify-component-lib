@@ -26,9 +26,9 @@ const ToggleContainer = styled.div<ContainerProps>`
       margin-left: -4px;
     }
     `}
-    button {
-      transition: background .1s ease-in;
-    }
+  button {
+    transition: background 0.1s ease-in;
+  }
   > button:hover {
     background: ${colors.interactive.primary__hover_alt.rgba};
   }
@@ -65,13 +65,21 @@ interface ToggleOpenProps {
   toggle: () => void;
 }
 
-const ToggleOpen: FC<ToggleOpenProps> = ({isOpen, toggle }) => {
+const ToggleOpen: FC<ToggleOpenProps> = ({ isOpen, toggle }) => {
   if (isOpen) {
     return (
       <ToggleContainer $open={isOpen}>
         <LargeButton onClick={toggle}>
-          <Icon size={24} data={first_page} color={colors.text.static_icons__default.rgba} />
-          <Text variant="cell_text" group="table" color={colors.text.static_icons__default.rgba}>
+          <Icon
+            size={24}
+            data={first_page}
+            color={colors.text.static_icons__default.rgba}
+          />
+          <Text
+            variant="cell_text"
+            group="table"
+            color={colors.text.static_icons__default.rgba}
+          >
             Collapse
           </Text>
         </LargeButton>
@@ -82,7 +90,11 @@ const ToggleOpen: FC<ToggleOpenProps> = ({isOpen, toggle }) => {
     <ToggleContainer $open={isOpen}>
       <Tooltip title="Expand" placement="right">
         <Button onClick={toggle} color="secondary" variant="ghost_icon">
-          <Icon size={24} data={last_page} color={colors.text.static_icons__default.rgba} />
+          <Icon
+            size={24}
+            data={last_page}
+            color={colors.text.static_icons__default.rgba}
+          />
         </Button>
       </Tooltip>
     </ToggleContainer>

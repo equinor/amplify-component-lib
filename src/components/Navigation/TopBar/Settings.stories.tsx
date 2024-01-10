@@ -1,11 +1,8 @@
 import { useState } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { ISettingsProps, Settings } from './Settings';
-
-const { colors } = tokens;
 
 export default {
   title: 'Navigation/TopBar/Settings',
@@ -57,14 +54,14 @@ export const Primary: StoryFn = (args) => {
             label: 'Light Mode',
             name: 'theme-group',
             value: 'light',
-            colorBox: args.hasColorBoxes && "#F7F7F7",
+            colorBox: args.hasColorBoxes && '#F7F7F7',
             disabled: args.disabledItem === 'light',
           },
           {
             label: 'Dark Mode',
             name: 'theme-group',
             value: 'dark',
-            colorBox: args.hasColorBoxes && "#243746",
+            colorBox: args.hasColorBoxes && '#243746',
             disabled: args.disabledItem === 'dark',
           },
         ],

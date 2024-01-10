@@ -32,9 +32,9 @@ const Container = styled.a<ContainerProps>`
   box-sizing: border-box;
   text-decoration: none;
   height: 72px;
-  transition: background .1s ease-in;
+  transition: background 0.1s ease-in;
 
-  ${({$active, $disabled }) =>
+  ${({ $active, $disabled }) =>
     !$active &&
     !$disabled &&
     `
@@ -44,7 +44,7 @@ const Container = styled.a<ContainerProps>`
     }
   `}
 
-${({$active, $disabled }) =>
+  ${({ $active, $disabled }) =>
     $active &&
     !$disabled &&
     `
@@ -68,7 +68,10 @@ interface ItemTextProps {
 const ItemText = styled(Typography)<ItemTextProps>`
   font-weight: ${({ $active }) => ($active ? '500' : '400')};
   grid-column: 3 / -1;
-  color: ${({ $disabled }) => ($disabled ? colors.interactive.disabled__text.rgba : colors.text.static_icons__default.rgba)};
+  color: ${({ $disabled }) =>
+    $disabled
+      ? colors.interactive.disabled__text.rgba
+      : colors.text.static_icons__default.rgba};
   &::first-letter {
     text-transform: capitalize;
   }
@@ -92,26 +95,16 @@ export type MenuItemProps = {
   HTMLAttributes<HTMLAnchorElement>;
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
-  (
-    {
-      currentUrl,
-      icon,
-      name,
-      link,
-      onClick,
-      disabled = false,
-    },
-    ref
-  ) => {
+  ({ currentUrl, icon, name, link, onClick, disabled = false }, ref) => {
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
- /*   const iconColor = useMemo(() => {
+    /*   const iconColor = useMemo(() => {
       return textColor(SidebarTheme[theme], isCurrentUrl, disabled);
     }, [disabled, isCurrentUrl, theme]);*/
-    
+
     const iconColor = useMemo(() => {
-      if(disabled){
+      if (disabled) {
         return colors.interactive.disabled__text.rgba;
       } else if (currentUrl) {
         return colors.interactive.primary__resting.rgba;

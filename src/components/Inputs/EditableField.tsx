@@ -133,7 +133,13 @@ const EditableField: React.FC<EditableFieldProps> = ({
           )}
         </>
       )}
-      {editable && !editing && <Icon data-testid="editableicon" color={colors.interactive.primary__resting.rgba} data={edit} />}
+      {editable && !editing && (
+        <Icon
+          data-testid="editableicon"
+          color={colors.interactive.primary__resting.rgba}
+          data={edit}
+        />
+      )}
     </Container>
   );
 };

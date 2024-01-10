@@ -1,4 +1,8 @@
-import { CircularProgress as EDSCircularProgress, Tooltip, Typography } from '@equinor/eds-core-react';
+import {
+  CircularProgress as EDSCircularProgress,
+  Tooltip,
+  Typography,
+} from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
@@ -109,11 +113,10 @@ export const FileTooltip = styled(Tooltip)`
 `;
 
 export const CircularProgress = styled(EDSCircularProgress)`
-
-circle {
+  circle {
     stroke: ${colors.interactive.primary__resting.rgba};
   }
-circle:first-child {
+  circle:first-child {
     stroke: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;

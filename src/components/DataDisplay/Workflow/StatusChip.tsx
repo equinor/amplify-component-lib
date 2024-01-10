@@ -10,11 +10,12 @@ interface ChipProps {
   $backgroundColor?: string;
 }
 
-
 const Chip = styled.div<ChipProps>`
   height: 1.5em;
-  background-color: ${(props) => props.$backgroundColor ?? colors.ui.background__light.rgba};
-  border: 0.063em solid ${(props) => props.$color ?? colors.text.static_icons__secondary.rgba};
+  background-color: ${(props) =>
+    props.$backgroundColor ?? colors.ui.background__light.rgba};
+  border: 0.063em solid
+    ${(props) => props.$color ?? colors.text.static_icons__secondary.rgba};
   border-radius: 1.563em;
   display: inline-flex;
   justify-content: center;

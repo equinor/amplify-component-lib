@@ -44,7 +44,7 @@ const CircularProgress = styled(EDSCircularProgress)`
   circle {
     stroke: ${colors.interactive.primary__resting.rgba};
   }
-circle:first-child {
+  circle:first-child {
     stroke: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;

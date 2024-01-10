@@ -102,7 +102,12 @@ const CommentField: FC<CommentFieldProps> = ({
             onInput={handleOnInput}
           />
           <DeleteButton variant="ghost_icon" onClick={() => onDelete(id)}>
-            <Icon name="delete" size={24} color={colors.interactive.primary__resting.rgba} data={delete_to_trash} />
+            <Icon
+              name="delete"
+              size={24}
+              color={colors.interactive.primary__resting.rgba}
+              data={delete_to_trash}
+            />
           </DeleteButton>
         </CommentTextContainer>
       </CommentContentContainer>

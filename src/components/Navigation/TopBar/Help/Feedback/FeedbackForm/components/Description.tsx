@@ -18,7 +18,6 @@ const Container = styled.div`
   gap: ${spacings.comfortable.medium};
   flex-direction: column;
   textarea {
-    
     color: ${colors.text.static_icons__default.rgba};
   }
 `;

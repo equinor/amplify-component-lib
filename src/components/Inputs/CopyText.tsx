@@ -31,15 +31,15 @@ const spawn = keyframes`
 
 const CopyIcon = styled.div`
   position: absolute;
-  padding:${spacings.comfortable.xx_small};
+  padding: ${spacings.comfortable.xx_small};
   z-index: 1000;
   top: 50%;
   right: -${spacings.comfortable.x_small};
   transform: translate(100%, -50%);
-  animation: ${spawn} .25s;
+  animation: ${spawn} 0.25s;
   background: ${colors.ui.background__light.rgba};
   border: 1px solid ${colors.ui.background__medium.rgba};
-  border-radius:2px;
+  border-radius: 2px;
   p,
   svg {
     color: ${colors.interactive.primary__hover.rgba};

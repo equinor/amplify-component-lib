@@ -1,5 +1,8 @@
 import { FC, useCallback } from 'react';
-import ReactMarkdown, { defaultUrlTransform,UrlTransform } from 'react-markdown';
+import ReactMarkdown, {
+  defaultUrlTransform,
+  UrlTransform,
+} from 'react-markdown';
 
 import { tokens } from '@equinor/eds-tokens';
 
@@ -55,9 +58,11 @@ const TextContent: FC<TextContentProps> = ({ text }) => {
     [token]
   );
 
-
   return (
-    <StyledReactMarkdown rehypePlugins={[rehypeRaw]}  urlTransform={transformUrl}>
+    <StyledReactMarkdown
+      rehypePlugins={[rehypeRaw]}
+      urlTransform={transformUrl}
+    >
       {text}
     </StyledReactMarkdown>
   );

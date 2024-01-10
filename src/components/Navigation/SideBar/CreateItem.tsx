@@ -31,7 +31,6 @@ const MenuButtonContainer = styled.div<ContainerProps>`
 `;
 
 interface CustomButtonProps extends ButtonProps {
-
   $open?: boolean;
 }
 
@@ -129,7 +128,7 @@ const CreateItem: FC<CreateItemProps> = ({
   }
   return (
     <Tooltip title={createLabel} placement="right">
-      <MenuButtonContainer  $open={isOpen}>
+      <MenuButtonContainer $open={isOpen}>
         <CreateNewButton
           variant="ghost_icon"
           onClick={onCreate}

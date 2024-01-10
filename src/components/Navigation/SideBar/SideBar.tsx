@@ -83,10 +83,7 @@ export const SideBar = forwardRef<
         )}
         {children}
       </TopContainer>
-      <ToggleOpen
-        isOpen={isOpen}
-        toggle={handleToggle}
-      />
+      <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
       <LogoContainer>
         <EquinorLogo />
       </LogoContainer>

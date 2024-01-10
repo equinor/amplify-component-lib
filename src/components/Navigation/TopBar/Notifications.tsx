@@ -120,7 +120,10 @@ const Notifications: FC<NotificationsProps> = ({
             Notifications
           </Typography>
           <Button variant="ghost_icon" onClick={onClose}>
-            <Icon data={close} color={colors.interactive.primary__resting.rgba} />
+            <Icon
+              data={close}
+              color={colors.interactive.primary__resting.rgba}
+            />
           </Button>
         </Header>
         {children ? (

@@ -40,7 +40,7 @@ const CompactUploadWrapper = styled.div<UploadWrapperProps>`
   height: 88px;
   border: 1px dashed ${colors.interactive.primary__resting.rgba};
   border-radius: 4px;
-  transition: background-color .1s ease-in;
+  transition: background-color 0.1s ease-in;
   &:hover {
     background-color: ${colors.interactive.primary__hover_alt.rgba};
     cursor: pointer;

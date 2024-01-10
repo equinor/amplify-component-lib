@@ -101,7 +101,7 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
   highlightActiveNode,
   showAlert,
   lineDefaultColor = colors.ui.background__light.rgba,
-  lineActiveColor = colors.interactive.primary__resting.rgba
+  lineActiveColor = colors.interactive.primary__resting.rgba,
 }) => {
   const activeIdx = options.findIndex((item) => item.value === activeNode);
 

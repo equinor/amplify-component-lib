@@ -24,11 +24,10 @@ const NoScrimContainer = styled.div`
   display: flex;
 `;
 const CircularProgress = styled(Progress.Circular)`
-
-circle {
+  circle {
     stroke: ${colors.interactive.primary__resting.rgba};
   }
-circle:first-child {
+  circle:first-child {
     stroke: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;

@@ -1,10 +1,6 @@
 import { FC, useMemo } from 'react';
 
-import {
-  Button,
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import {
   close_circle_outlined,
   delete_to_trash,
@@ -24,7 +20,8 @@ import {
   LinearProgress,
   ProgressWrapper,
   RegularFileProgressDetails,
-  RegularFileProgressWrapper} from './RegularFileProgress.styles';
+  RegularFileProgressWrapper,
+} from './RegularFileProgress.styles';
 
 const { colors } = tokens;
 const { formatBytes } = size;

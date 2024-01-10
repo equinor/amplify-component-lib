@@ -26,19 +26,19 @@ const Severity: FC = () => {
     <Container>
       <LockedInputTooltip show={serviceNowSuccess}>
         <AutocompleteWrapper>
-        <Autocomplete
-          options={Object.values(UrgencyOption)}
-          id="feedback-severity"
-          label="Severity"
-          meta="optional"
-          disabled={serviceNowSuccess}
-          selectedOptions={[feedbackContent.urgency as UrgencyOption]}
-          placeholder="Select error impact"
-          onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
-            updateFeedback('urgency', e.selectedItems[0])
-          }
-          autoWidth
-        />
+          <Autocomplete
+            options={Object.values(UrgencyOption)}
+            id="feedback-severity"
+            label="Severity"
+            meta="optional"
+            disabled={serviceNowSuccess}
+            selectedOptions={[feedbackContent.urgency as UrgencyOption]}
+            placeholder="Select error impact"
+            onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
+              updateFeedback('urgency', e.selectedItems[0])
+            }
+            autoWidth
+          />
         </AutocompleteWrapper>
       </LockedInputTooltip>
     </Container>

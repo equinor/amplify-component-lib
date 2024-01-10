@@ -7,13 +7,12 @@ import CopyText, { CopyTextProps } from './CopyText';
 
 import styled from 'styled-components';
 
-
 export default {
   title: 'Inputs/CopyText',
   component: CopyText,
   args: {
     textToCopy: 'Some text',
-  }
+  },
 } as Meta;
 
 const Container = styled.div`

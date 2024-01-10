@@ -27,8 +27,7 @@ const ReleasePosts: FC = () => {
 
   const { data: token } = useTokenReleaseNote();
 
-
-  if (isLoading   || token === undefined ) {
+  if (isLoading || token === undefined) {
     return (
       <LoadingWrapper>
         <CircularProgress />
@@ -40,7 +39,11 @@ const ReleasePosts: FC = () => {
   if (!data || data?.length === 0) {
     return (
       <ContainerNoResults>
-        <Typography group="heading" variant="h4" color={colors.text.static_icons__default.rgba}>
+        <Typography
+          group="heading"
+          variant="h4"
+          color={colors.text.static_icons__default.rgba}
+        >
           There are no posts at the moment
         </Typography>
       </ContainerNoResults>
@@ -51,7 +54,11 @@ const ReleasePosts: FC = () => {
   if (releaseNotes?.length === 0) {
     return (
       <ContainerNoResults>
-        <Typography group="heading" variant="h4" color={colors.text.static_icons__default.rgba}>
+        <Typography
+          group="heading"
+          variant="h4"
+          color={colors.text.static_icons__default.rgba}
+        >
           {`Nothing matching "${search.searchValue ?? ''} ${
             selectedReleaseNoteTypes?.map((t) => t.value).join(', ') ?? ''
           }"`}

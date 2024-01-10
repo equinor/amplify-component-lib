@@ -108,7 +108,11 @@ const NewCommentField: FC<NewCommentFieldProps> = ({
       />
       {newComment.length > 0 && (
         <ClearButton data-testid="clear-button" onClick={handleClear}>
-          <Icon data={clear} size={32} color={colors.interactive.primary__resting.rgba}/>
+          <Icon
+            data={clear}
+            size={32}
+            color={colors.interactive.primary__resting.rgba}
+          />
         </ClearButton>
       )}
       <PostButton

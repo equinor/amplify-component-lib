@@ -30,7 +30,7 @@ export const ImageWrapper = styled.div`
   overflow: hidden;
   height: 88px;
   width: 88px;
-  margin-top:2px;
+  margin-top: 2px;
   border-radius: 4px;
   border: 1px solid ${colors.ui.background__medium.rgba};
   position: relative;
@@ -40,7 +40,7 @@ export const ImageWrapper = styled.div`
     overflow: hidden;
   }
   &:hover {
-  background-color: ${colors.ui.background__semitransparent.rgba};
+    background-color: ${colors.ui.background__semitransparent.rgba};
   }
 `;
 
@@ -51,14 +51,14 @@ export const Rejection = styled.div`
   justify-content: center;
   height: 88px;
   width: 88px;
-  margin-top:2px;
+  margin-top: 2px;
   font-size: 11px;
   justify-items: center;
   text-align: center;
   border-radius: 4px;
   border: 1px dashed ${colors.interactive.warning__text.rgba};
   gap: 0;
-  transition: .1s ease-in;
+  transition: 0.1s ease-in;
   > svg {
     grid-row: 2/3;
   }
@@ -67,9 +67,8 @@ export const Rejection = styled.div`
     color: ${colors.interactive.warning__text.rgba};
   }
   &:hover {
-  background-color: ${colors.interactive.warning__highlight.rgba};
+    background-color: ${colors.interactive.warning__highlight.rgba};
   }
-
 `;
 
 export const CloseButton = styled.div`
@@ -90,12 +89,8 @@ export const CloseButton = styled.div`
   }
 
   &:hover {
-  background-color: ${colors.text.static_icons__default.rgba};
+    background-color: ${colors.text.static_icons__default.rgba};
   }
-
-
-
-  
 `;
 
 export const FileTooltip = styled(Tooltip)`

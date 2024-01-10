@@ -22,18 +22,16 @@ const Container = styled.div`
 `;
 
 const FilterChip = styled(EDSChip)`
-
   color: ${colors.text.static_icons__default.rgba};
   background: ${colors.ui.background__light.rgba};
   border: 1px solid ${colors.ui.background__medium.rgba};
   line-height: normal;
   transition: background 0.15s ease-in;
-   
+
   svg {
     z-index: auto;
     fill: ${colors.text.static_icons__default.rgba};
   }
-
 `;
 
 const Search = styled(EDSSearch)`
