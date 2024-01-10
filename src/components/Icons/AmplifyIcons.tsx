@@ -98,3 +98,12 @@ export const amplify_sort_small: IconData = {
   svgPathData:
     'M 1.0039 6 H 6.3448 V 7.5 H 1.0039 V 6 Z M 1.0039 2.5 H 9.01 V 4 H 1.0039 V 2.5 Z',
 };
+
+export const amplify_info_small: IconData = {
+  name: 'info',
+  prefix: 'amplify',
+  height: '10',
+  width: '10',
+  svgPathData:
+    'M 4.1013 0.5 L 5.9013 0.5 L 5.9013 2.3 H 4.1013 L 4.1013 0.5 Z M 4.1013 4.1001 H 5.9013 L 5.9013 9.5001 H 4.1013 L 4.1013 4.1001 Z',
+};

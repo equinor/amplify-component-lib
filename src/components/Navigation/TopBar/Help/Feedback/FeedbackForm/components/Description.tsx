@@ -39,16 +39,16 @@ const Description: FC = () => {
       {selectedType === FeedbackType.BUG && (
         <div>
           <Typography group="input" variant="text" color={questionColor}>
-            What is the actual bug?
+            What is the specific bug?
           </Typography>
           <Typography group="input" variant="text" color={questionColor}>
-            What is expected results?
+            What are the expected results?
           </Typography>
           <Typography group="input" variant="text" color={questionColor}>
-            How to reproduce the steps?
+            How can we reproduce the issue?
           </Typography>
           <Typography group="input" variant="text" color={questionColor}>
-            Is there a workaround?
+            Is there a known workaround?
           </Typography>
         </div>
       )}
