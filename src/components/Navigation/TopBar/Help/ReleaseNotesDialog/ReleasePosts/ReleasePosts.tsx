@@ -1,6 +1,9 @@
 import { FC } from 'react';
 
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+
+const { colors } = tokens;
 
 import { useTokenReleaseNote } from './hooks/useTokenReleaseNote';
 import ReleasePost from './ReleasePost';
@@ -37,7 +40,7 @@ const ReleasePosts: FC = () => {
   if (!data || data?.length === 0) {
     return (
       <ContainerNoResults>
-        <Typography group="heading" variant="h4" color="#3D3D3D">
+        <Typography group="heading" variant="h4" color={colors.text.static_icons__default.rgba}>
           There are no posts at the moment
         </Typography>
       </ContainerNoResults>
@@ -48,7 +51,7 @@ const ReleasePosts: FC = () => {
   if (releaseNotes?.length === 0) {
     return (
       <ContainerNoResults>
-        <Typography group="heading" variant="h4" color="#3D3D3D">
+        <Typography group="heading" variant="h4" color={colors.text.static_icons__default.rgba}>
           {`Nothing matching "${search.searchValue ?? ''} ${
             selectedReleaseNoteTypes?.map((t) => t.value).join(', ') ?? ''
           }"`}

@@ -103,7 +103,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
             <Rejection>
               <Icon
                 data={error_outlined}
-                color={colors.interactive.warning__text.hex}
+                color={colors.interactive.warning__text.rgba}
               />
               <div>{shortError}</div>
             </Rejection>
@@ -117,7 +117,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
       </FileTooltip>
       <CloseButton data-testid="attachment-delete-button" onClick={onDelete}>
         <Icon
-          color={colors.text.static_icons__tertiary.hex}
+          color={colors.text.static_icons__tertiary.rgba}
           data={clear}
           size={24}
         />

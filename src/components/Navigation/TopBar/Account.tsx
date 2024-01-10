@@ -46,7 +46,7 @@ export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
         <Icon
           data={account_circle}
           size={24}
-          color={colors.interactive.primary__resting.hsla}
+          color={colors.interactive.primary__resting.rgba}
         />
       </Button>
       <TopBarMenu

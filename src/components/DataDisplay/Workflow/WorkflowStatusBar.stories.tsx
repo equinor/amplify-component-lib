@@ -84,8 +84,8 @@ export default {
     highlightActiveNode: false,
     tooltipPlacement: 'bottom',
     disableTooltip: false,
-    lineActiveColor: colors.infographic.primary__moss_green_100.hex,
-    lineDefaultColor: colors.ui.background__light.hex,
+    lineActiveColor: colors.interactive.primary__resting.rgba,
+    lineDefaultColor: colors.ui.background__medium.rgba,
   },
 } as Meta;
 

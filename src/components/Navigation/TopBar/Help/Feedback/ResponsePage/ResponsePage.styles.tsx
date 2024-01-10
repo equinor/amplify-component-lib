@@ -24,7 +24,7 @@ export const SlackRequestsWrapper = styled.div`
 
 export const ErrorText = styled(Typography)`
   align-self: flex-end;
-  color: ${colors.interactive.warning__text.hex};
+  color: ${colors.interactive.warning__text.rgba};
   font-size: 16px;
   font-weight: 500;
   text-align: end;

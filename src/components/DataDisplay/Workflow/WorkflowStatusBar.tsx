@@ -49,7 +49,7 @@ const Alert = styled.div`
   grid-column: 1;
   height: 0.5em;
   width: 0.5em;
-  border: 0.5em solid ${colors.infographic.primary__energy_red_55.hex};
+  border: 0.5em solid ${colors.infographic.primary__energy_red_55.rgba};
   margin: -0.4em;
   border-radius: 50%;
   display: inline-block;
@@ -57,7 +57,7 @@ const Alert = styled.div`
 `;
 
 const Active = styled(Alert)`
-  border-color: ${colors.infographic.primary__moss_green_21.hex};
+  border-color: ${colors.infographic.primary__moss_green_21.rgba};
 `;
 
 interface LineProps {
@@ -100,8 +100,8 @@ const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
   tooltipPlacement,
   highlightActiveNode,
   showAlert,
-  lineDefaultColor = colors.ui.background__light.hex,
-  lineActiveColor = colors.infographic.primary__moss_green_100.hex,
+  lineDefaultColor = colors.ui.background__light.rgba,
+  lineActiveColor = colors.interactive.primary__resting.rgba
 }) => {
   const activeIdx = options.findIndex((item) => item.value === activeNode);
 

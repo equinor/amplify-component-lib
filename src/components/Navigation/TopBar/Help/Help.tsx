@@ -77,7 +77,7 @@ export const Help: FC<HelpProps> = ({
       >
         <Icon
           data={help_outline}
-          color={colors.interactive.primary__resting.hsla}
+          color={colors.interactive.primary__resting.rgba}
         />
       </Button>
 

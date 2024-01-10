@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const { spacings, colors } = tokens;
 
 const StyledDialog = styled(Dialog)`
-  background-color: ${colors.ui.background__light.hex};
+  background-color: ${colors.ui.background__light.rgba};
   width: 85vw;
   height: 85vh;
   display: flex;

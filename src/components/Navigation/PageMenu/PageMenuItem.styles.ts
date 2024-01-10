@@ -12,17 +12,17 @@ export const Button = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
   gap: ${spacings.comfortable.xx_small};
-  color: ${colors.text.static_icons__default.hex};
+  color: ${colors.text.static_icons__default.rgba};
   border: none;
   border-radius: ${shape.corners.borderRadius};
   padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
   text-align: left;
   background: ${({ $active }) =>
-    $active ? colors.interactive.primary__hover_alt.hex : 'none'};
-  transition: background 200ms;
+    $active ? colors.interactive.primary__hover_alt.rgba : 'none'};
+  transition: background 150ms;
   cursor: pointer;
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
   font-family: 'Equinor', sans-serif;
   font-weight: 700;

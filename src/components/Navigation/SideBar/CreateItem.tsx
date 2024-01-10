@@ -10,9 +10,6 @@ import {
 import { add } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { backgroundColor, hoverColor, textColor } from './CreateItem.utils';
-import { borderBottomColor } from './MenuItem.utils';
-import { SidebarTheme } from './SideBar.types';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
@@ -20,7 +17,6 @@ import styled from 'styled-components';
 const { colors, shape, spacings } = tokens;
 
 interface ContainerProps {
-  $theme: SidebarTheme;
   $open: boolean;
 }
 
@@ -30,23 +26,25 @@ const MenuButtonContainer = styled.div<ContainerProps>`
   justify-content: center;
   align-items: center;
   height: 100%;
-  border-bottom: 1px solid ${({ $theme }) => borderBottomColor($theme)};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   box-sizing: border-box;
 `;
 
 interface CustomButtonProps extends ButtonProps {
-  $theme: SidebarTheme;
+
   $open?: boolean;
 }
 
 const CreateNewButton = styled(Button)<CustomButtonProps>`
   width: ${(props) => (props.$open ? 'fit-content' : '40px')};
   height: ${(props) => (props.$open ? '36px' : '40px')};
-  background: ${({ $theme }) => backgroundColor($theme)};
-  border-color: ${({ $theme }) => backgroundColor($theme)};
+  background: ${colors.interactive.primary__resting.rgba};
+  border-color: ${colors.interactive.primary__resting.rgba};
   border-radius: ${(props) => props.$open && shape.icon_button.borderRadius};
   grid-column: 3;
   box-sizing: border-box;
+  transition: .1s ease-in;
+
   ${(props) =>
     props.$open &&
     `
@@ -54,31 +52,30 @@ const CreateNewButton = styled(Button)<CustomButtonProps>`
   margin-left: -2px; /* border size */
   `};
   p {
-    color: ${({ $theme }) => textColor($theme)};
+    color: ${colors.text.static_icons__primary_white.rgba};
   }
   svg {
-    fill: ${({ $theme }) => textColor($theme)};
+    fill: ${colors.text.static_icons__primary_white.rgba}
   }
 
   &:hover:not([disabled]) {
     border-radius: ${(props) => props.$open && shape.icon_button.borderRadius};
-    background: ${({ $theme }) => hoverColor($theme, false)};
+    background: ${colors.interactive.primary__hover.rgba};
   }
   &:disabled:hover,
   &:disabled {
     border-radius: ${(props) => props.$open && shape.icon_button.borderRadius};
-    background: ${({ $theme }) => hoverColor($theme, true)};
     border: 0 solid transparent;
-    ${({ $theme }) =>
-      $theme === SidebarTheme.dark &&
-      `
-    p {
-      color: #637583;
-    }
-    svg { 
-      fill: #637583;
-    };
-    `}
+
+    & span {
+      p {
+        color: ${colors.interactive.disabled__text.rgba};}
+      }
+      svg {
+        fill: ${colors.interactive.disabled__text.rgba};}
+
+      }
+
   }
 `;
 
@@ -98,14 +95,12 @@ const Tooltip = styled(EDSTooltip)`
 `;
 
 interface CreateItemProps {
-  theme: SidebarTheme;
   createLabel: string;
   onCreate: () => void;
   disabled?: boolean;
 }
 
 const CreateItem: FC<CreateItemProps> = ({
-  theme,
   createLabel,
   onCreate,
   disabled = false,
@@ -113,17 +108,16 @@ const CreateItem: FC<CreateItemProps> = ({
   const { isOpen } = useSideBar();
   if (isOpen) {
     return (
-      <MenuButtonContainer $theme={theme} $open={isOpen}>
+      <MenuButtonContainer $open={isOpen}>
         <CreateNewButton
           $open
-          $theme={theme}
           variant="contained"
           onClick={onCreate}
           disabled={disabled}
         >
           <Icon data={add} />
           <CreateNewButtonText
-            color={colors.text.static_icons__primary_white.hsla}
+            color={colors.interactive.primary__resting.rgba}
             variant="button"
             group="navigation"
           >
@@ -135,9 +129,8 @@ const CreateItem: FC<CreateItemProps> = ({
   }
   return (
     <Tooltip title={createLabel} placement="right">
-      <MenuButtonContainer $theme={theme} $open={isOpen}>
+      <MenuButtonContainer  $open={isOpen}>
         <CreateNewButton
-          $theme={theme}
           variant="ghost_icon"
           onClick={onCreate}
           disabled={disabled}

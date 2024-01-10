@@ -8,46 +8,49 @@ import {
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import {
-  backgroundColor,
-  borderBottomColor,
-  hoverColor,
-  textColor,
-} from './MenuItem.utils';
-import { SidebarTheme } from './SideBar.types';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { spacings, colors } = tokens;
 
 interface ContainerProps {
-  $theme: SidebarTheme;
   $active?: boolean;
   $open?: boolean;
   $disabled?: boolean;
 }
 
 const Container = styled.a<ContainerProps>`
-  background: ${({ $active, $theme }) =>
-    $active ? backgroundColor($theme) : 'none'};
+  background: ${({ $active }) =>
+    $active ? colors.interactive.primary__selected_highlight.rgba : 'none'};
   display: ${({ $open }) => ($open ? 'grid' : 'flex')};
   grid-template-columns: repeat(10, 1fr);
   grid-gap: ${spacings.comfortable.medium};
   justify-content: ${({ $open }) => !$open && 'center'};
   align-items: center;
-  border-bottom: 1px solid ${({ $theme }) => borderBottomColor($theme)};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   box-sizing: border-box;
   text-decoration: none;
   height: 72px;
+  transition: background .1s ease-in;
 
-  ${({ $theme, $active, $disabled }) =>
+  ${({$active, $disabled }) =>
     !$active &&
     !$disabled &&
     `
     &:hover {
       cursor: pointer;
-      background: ${hoverColor($theme)};
+      background: ${colors.interactive.primary__hover_alt.rgba};
+    }
+  `}
+
+${({$active, $disabled }) =>
+    $active &&
+    !$disabled &&
+    `
+    &:hover {
+      cursor: pointer;
+      background: ${colors.interactive.primary__selected_hover.rgba};
     }
   `}
 `;
@@ -58,7 +61,6 @@ const ItemIcon = styled(Icon)`
 `;
 
 interface ItemTextProps {
-  $theme: SidebarTheme;
   $active: boolean;
   $disabled: boolean;
 }
@@ -66,8 +68,7 @@ interface ItemTextProps {
 const ItemText = styled(Typography)<ItemTextProps>`
   font-weight: ${({ $active }) => ($active ? '500' : '400')};
   grid-column: 3 / -1;
-  color: ${({ $theme, $active, $disabled }) =>
-    textColor($theme, $active, $disabled)};
+  color: ${({ $disabled }) => ($disabled ? colors.interactive.disabled__text.rgba : colors.text.static_icons__default.rgba)};
   &::first-letter {
     text-transform: capitalize;
   }
@@ -85,7 +86,6 @@ export type MenuItemType = {
 };
 
 export type MenuItemProps = {
-  theme?: keyof typeof SidebarTheme;
   currentUrl?: string;
   disabled?: boolean;
 } & MenuItemType &
@@ -94,7 +94,6 @@ export type MenuItemProps = {
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   (
     {
-      theme = SidebarTheme.light,
       currentUrl,
       icon,
       name,
@@ -107,9 +106,19 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
-    const iconColor = useMemo(() => {
+ /*   const iconColor = useMemo(() => {
       return textColor(SidebarTheme[theme], isCurrentUrl, disabled);
-    }, [disabled, isCurrentUrl, theme]);
+    }, [disabled, isCurrentUrl, theme]);*/
+    
+    const iconColor = useMemo(() => {
+      if(disabled){
+        return colors.interactive.disabled__text.rgba;
+      } else if (currentUrl) {
+        return colors.interactive.primary__resting.rgba;
+      } else {
+        return colors.interactive.primary__resting.rgba;
+      }
+    }, [currentUrl, disabled]);
 
     const handleOnClick = () => {
       if (!isCurrentUrl && !disabled) {
@@ -120,7 +129,6 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     if (isOpen) {
       return (
         <Container
-          $theme={SidebarTheme[theme]}
           $active={isCurrentUrl}
           $disabled={disabled}
           onClick={handleOnClick}
@@ -130,7 +138,6 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
         >
           {icon && <ItemIcon data={icon} size={24} color={iconColor} />}
           <ItemText
-            $theme={SidebarTheme[theme]}
             $active={isCurrentUrl}
             $disabled={disabled}
             variant="cell_text"
@@ -145,7 +152,6 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     return (
       <Tooltip title={name} placement="right">
         <Container
-          $theme={SidebarTheme[theme]}
           $active={isCurrentUrl}
           $disabled={disabled}
           onClick={handleOnClick}

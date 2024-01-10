@@ -17,6 +17,10 @@ const Container = styled.div`
   display: flex;
   gap: ${spacings.comfortable.medium};
   flex-direction: column;
+  textarea {
+    
+    color: ${colors.text.static_icons__default.rgba};
+  }
 `;
 
 const Description: FC = () => {
@@ -25,9 +29,9 @@ const Description: FC = () => {
 
   const questionColor = useMemo(() => {
     if (serviceNowSuccess) {
-      return colors.interactive.disabled__text.hex;
+      return colors.interactive.disabled__text.rgba;
     }
-    return colors.text.static_icons__default.hex;
+    return colors.text.static_icons__default.rgba;
   }, [serviceNowSuccess]);
 
   return (

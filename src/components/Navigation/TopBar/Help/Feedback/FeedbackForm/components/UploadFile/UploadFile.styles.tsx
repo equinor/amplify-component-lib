@@ -8,7 +8,7 @@ const { spacings, colors } = tokens;
 export const Title = styled(Typography)`
   margin: ${spacings.comfortable.small} ${spacings.comfortable.small} 0
     ${spacings.comfortable.small};
-  color: ${colors.text.static_icons__tertiary.hex};
+  color: ${colors.text.static_icons__tertiary.rgba};
 `;
 
 export const FileUploadAreaWrapper = styled.div`
@@ -28,11 +28,19 @@ export const ImageWrapper = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  border: 1px solid ${colors.ui.background__light.hex};
+  height: 88px;
+  width: 88px;
+  margin-top:2px;
+  border-radius: 4px;
+  border: 1px solid ${colors.ui.background__medium.rgba};
   position: relative;
+  transition: 0.1s ease-in;
   > img {
     width: 100%;
     overflow: hidden;
+  }
+  &:hover {
+  background-color: ${colors.ui.background__semitransparent.rgba};
   }
 `;
 
@@ -41,38 +49,53 @@ export const Rejection = styled.div`
   grid-template-rows: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
+  height: 88px;
+  width: 88px;
+  margin-top:2px;
   font-size: 11px;
   justify-items: center;
   text-align: center;
   border-radius: 4px;
-  border: 1px dashed ${colors.interactive.warning__text.hex};
+  border: 1px dashed ${colors.interactive.warning__text.rgba};
   gap: 0;
+  transition: .1s ease-in;
   > svg {
     grid-row: 2/3;
   }
   > div {
     grid-row: 3/4;
-    color: ${colors.interactive.warning__text.hex};
+    color: ${colors.interactive.warning__text.rgba};
   }
+  &:hover {
+  background-color: ${colors.interactive.warning__highlight.rgba};
+  }
+
 `;
 
 export const CloseButton = styled.div`
-  background-color: ${colors.text.static_icons__tertiary.hex};
+  background-color: ${colors.text.static_icons__tertiary.rgba};
   border-radius: 50%;
-  border: 2px solid ${colors.text.static_icons__primary_white.rgba};
+  border: 2px solid ${colors.ui.background__default.rgba};
   position: absolute;
   width: 18px;
   height: 18px;
-  right: -10px;
+  right: -20px;
+  top: -8px;
+  transition: 0.1s ease-in;
   cursor: pointer;
-  top: -10px;
   > svg {
     width: 18px;
     height: 18px;
-    fill: ${colors.text.static_icons__primary_white.rgba};
+    fill: ${colors.ui.background__default.rgba};
   }
+
+  &:hover {
+  background-color: ${colors.text.static_icons__default.rgba};
+  }
+
+
+
+  
 `;
 
 export const FileTooltip = styled(Tooltip)`

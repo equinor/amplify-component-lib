@@ -9,10 +9,10 @@ import styled from 'styled-components';
 const { colors, shape, typography } = tokens;
 
 const availableColors: string[] = [
-  colors.infographic.primary__energy_red_55.hex,
-  colors.infographic.primary__moss_green_55.hex,
-  colors.infographic.substitute__green_mint.hex,
-  colors.infographic.substitute__blue_overcast.hex,
+  colors.infographic.primary__energy_red_55.rgba,
+  colors.infographic.primary__moss_green_55.rgba,
+  colors.infographic.substitute__green_mint.rgba,
+  colors.infographic.substitute__blue_overcast.rgba,
 ];
 
 export function nameToInitials(name: string) {
@@ -69,12 +69,12 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   border-radius: ${shape.circle.borderRadius};
   background: ${(props) =>
     props.disabled
-      ? colors.interactive.disabled__border.hex
+      ? colors.interactive.disabled__border.rgba
       : props.$background};
   color: ${(props) =>
     props.disabled
-      ? colors.text.static_icons__default.hex
-      : colors.text.static_icons__primary_white.hex};
+      ? colors.text.static_icons__default.rgba
+      : colors.text.static_icons__primary_white.rgba};
   display: flex;
   justify-content: center;
   align-items: center;

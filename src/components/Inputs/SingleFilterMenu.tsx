@@ -64,7 +64,7 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
   menuTitle,
   data,
   showChip = false,
-  chipColor = colors.ui.background__default.hex,
+  chipColor = colors.ui.background__default.rgba,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [buttonElement, setButtonElement] = useState<HTMLButtonElement | null>(

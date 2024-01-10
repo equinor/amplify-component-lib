@@ -30,13 +30,13 @@ test('Displays icon/number correctly', async () => {
   const firstElement = screen.getByText(props.steps[0]);
   expect(firstElement).toHaveStyleRule(
     'color',
-    colors.text.static_icons__default.hex
+    colors.text.static_icons__default.rgba
   );
 
   for (const step of props.steps.slice(1)) {
     expect(screen.getByText(step)).toHaveStyleRule(
       'color',
-      colors.interactive.disabled__text.hex
+      colors.interactive.disabled__text.rgba
     );
   }
   rerender(<Stepper {...props} current={1} maxWidth="800px" />);

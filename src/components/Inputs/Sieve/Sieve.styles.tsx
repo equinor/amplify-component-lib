@@ -45,7 +45,7 @@ const Search = styled(EDSSearch)`
       color: ${colors.text.static_icons__default.rgba};
     }
     > input:focus {
-      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex};
+      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba};
     }
   }
 `;

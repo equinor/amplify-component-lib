@@ -14,7 +14,7 @@ import styled from 'styled-components';
 const { colors, spacings } = tokens;
 
 const Bar = styled(EDSTopBar)`
-  border-bottom: 1px solid ${colors.ui.background__medium.hsla};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   padding-left: ${spacings.comfortable.medium};
   position: relative;
 `;
@@ -40,6 +40,13 @@ const AppName = styled(Typography)<AppNameProps>`
 const CircularProgress = styled(EDSCircularProgress)`
   position: absolute;
   right: -24px;
+
+  circle {
+    stroke: ${colors.interactive.primary__resting.rgba};
+  }
+circle:first-child {
+    stroke: ${colors.interactive.primary__hover_alt.rgba};
+  }
 `;
 
 interface EnvironmentTagProps {
@@ -50,14 +57,14 @@ function environmentStyling(envType: EnvironmentType): string {
   let backgroundColor = 'none';
   let borderColor = 'none';
   if (envType === EnvironmentType.LOCALHOST) {
-    backgroundColor = colors.interactive.disabled__fill.hex;
-    borderColor = colors.interactive.disabled__text.hex;
+    backgroundColor = colors.interactive.disabled__fill.rgba;
+    borderColor = colors.interactive.disabled__text.rgba;
   } else if (envType === EnvironmentType.DEVELOP) {
-    backgroundColor = colors.ui.background__info.hex;
-    borderColor = colors.infographic.substitute__blue_overcast.hex;
+    backgroundColor = colors.ui.background__info.rgba;
+    borderColor = colors.infographic.substitute__blue_overcast.rgba;
   } else if (envType === EnvironmentType.STAGING) {
-    backgroundColor = colors.ui.background__warning.hex;
-    borderColor = colors.interactive.warning__text.hex;
+    backgroundColor = colors.ui.background__warning.rgba;
+    borderColor = colors.interactive.warning__text.rgba;
   }
   return `
     background-color: ${backgroundColor};

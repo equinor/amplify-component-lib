@@ -2,6 +2,9 @@ import { FC, useMemo } from 'react';
 
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
+
+const {colors} = tokens;
 
 import {
   Actions,

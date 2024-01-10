@@ -8,7 +8,7 @@ const { spacings, colors, shape } = tokens;
 // General
 export const ContentWrapper = styled.div`
   width: 700px;
-  height: fit-content;
+  height: fit-content; 
   padding: 0 ${spacings.comfortable.medium} ${spacings.comfortable.medium}
     ${spacings.comfortable.medium};
 `;
@@ -29,7 +29,7 @@ export const UploadInfo = styled.div`
   height: fit-content;
   align-self: flex-end;
   align-items: center;
-  background-color: ${colors.ui.background__info.hex};
+  background-color: ${colors.ui.background__info.rgba};
   padding: ${spacings.comfortable.medium_small};
   border-radius: ${shape.button.borderRadius};
 `;
@@ -40,7 +40,7 @@ export const LockedFormWarning = styled.div`
   gap: ${spacings.comfortable.small};
   height: fit-content;
   align-items: center;
-  background-color: ${colors.ui.background__warning.hex};
+  background-color: ${colors.ui.background__warning.rgba};
   padding: ${spacings.comfortable.medium_small};
   border-radius: ${shape.button.borderRadius};
 `;

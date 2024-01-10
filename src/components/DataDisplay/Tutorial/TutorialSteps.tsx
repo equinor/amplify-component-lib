@@ -68,8 +68,8 @@ const StepIndicator = styled.div<StepIndicatorProps>`
   transition: all 1000ms;
   background: linear-gradient(
     90deg,
-    ${colors.interactive.primary__resting.hex} 49%,
-    ${colors.interactive.primary__hover_alt.hex} 51%
+    ${colors.interactive.primary__resting.rgba} 49%,
+    ${colors.interactive.primary__hover_alt.rgba} 51%
   );
 
   background-size:

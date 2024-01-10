@@ -49,7 +49,7 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
       </Typography>
       <Status>
         <Typography
-          color={isPartialOrError ? colors.interactive.warning__text.hex : ''}
+          color={isPartialOrError ? colors.interactive.warning__text.rgba : ''}
           group="ui"
           variant="snackbar"
         >
@@ -62,8 +62,8 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
           <Icon
             color={
               isPartialOrError
-                ? colors.interactive.warning__text.hex
-                : colors.interactive.success__resting.hex
+                ? colors.interactive.warning__text.rgba
+                : colors.interactive.success__resting.rgba
             }
             data={isPartialOrError ? info_circle : check_circle_outlined}
           />

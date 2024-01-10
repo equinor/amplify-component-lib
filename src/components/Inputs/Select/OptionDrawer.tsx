@@ -9,8 +9,11 @@ import {
 
 import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 
 import styled, { css, keyframes } from 'styled-components';
+
+const {colors} = tokens;
 
 interface StyledOptionProps {
   $section: number;
@@ -32,8 +35,9 @@ const animateToggle = keyframes`
 
 const StyledOptionWrapper = styled.div<StyledOptionProps>`
   margin-left: ${({ $section }) => ($section > 0 ? '22px' : '')};
-  border-left: ${({ $section }) => ($section > 0 ? '1px solid #DCDCDC' : '')};
+  border-left: ${({ $section }) => ($section > 0 ? '1px solid ' + colors.ui.background__medium.rgba : '')};
   opacity: 1;
+  color:  ${colors.text.static_icons__default.rgba};
   animation: ${({ $animationActive }) =>
     $animationActive
       ? css`
@@ -47,8 +51,13 @@ const StyledOption = styled.div<StyledOptionProps>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  :hover {
-    background-color: #f7f7f7;
+  transition: background-color .1s ease-in;
+  &:hover {
+    background-color: ${colors.interactive.primary__hover_alt.rgba};
+  }
+
+  svg {
+    fill: ${colors.interactive.primary__resting.rgba};
   }
 `;
 

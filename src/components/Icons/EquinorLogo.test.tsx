@@ -14,20 +14,20 @@ const largeOptions: EquinorLogoProps['large'][] = [undefined, true];
 function expectedColors(color?: 'red' | 'white' | 'black') {
   switch (color) {
     case 'red':
-      return colors.logo.fill_positive.hex;
+      return colors.logo.fill_positive.rgba;
     case 'white':
-      return colors.logo.fill_negative.hex;
+      return colors.logo.fill_negative.rgba;
     case 'black':
       return '#000';
     default:
-      return colors.logo.fill_positive.hex;
+      return colors.logo.fill_positive.rgba;
   }
 }
 
 test('EquinorLogo renders default red version', () => {
   render(<EquinorLogo />);
   const path = screen.getByTestId('path');
-  expect(path).toHaveAttribute('fill', colors.logo.fill_positive.hex);
+  expect(path).toHaveAttribute('fill', colors.logo.fill_positive.rgba);
 });
 
 test('EquinorLogo renders expected colors when prop is given', () => {

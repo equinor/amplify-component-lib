@@ -62,7 +62,7 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
         <Rejection>
           <Icon
             data={error_outlined}
-            color={colors.interactive.warning__text.hex}
+            color={colors.interactive.warning__text.rgba}
           />
           <div>
             {shortErrorText && shortErrorText.length > 0
@@ -116,7 +116,7 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
         onClick={handleOnClick}
       >
         <Icon
-          color={colors.text.static_icons__tertiary.hex}
+          color={colors.text.static_icons__tertiary.rgba}
           data={clear}
           size={24}
         />

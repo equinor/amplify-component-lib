@@ -15,21 +15,21 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
     font-size: ${typography.paragraph.body_long.fontSize};
     font-weight: ${typography.paragraph.body_long.fontWeight};
     line-height: ${typography.paragraph.body_long.lineHeight};
-    color: ${colors.text.static_icons__default.hex};
+    color: ${colors.text.static_icons__default.rgba};
     font-family: ${typography.paragraph.body_long.fontFamily};
   }
   h1 {
     font-size: ${typography.heading.h4.fontSize};
     font-weight: ${typography.heading.h4.fontWeight};
     line-height: ${typography.heading.h4.lineHeight};
-    color: ${colors.text.static_icons__default.hex};
+    color: ${colors.text.static_icons__default.rgba};
     font-family: ${typography.heading.h4.fontFamily};
   }
   h2 {
     font-size: ${typography.heading.h5.fontSize};
     font-weight: ${typography.heading.h5.fontWeight};
     line-height: ${typography.heading.h5.lineHeight};
-    color: ${colors.text.static_icons__default.hex};
+    color: ${colors.text.static_icons__default.rgba};
     font-family: ${typography.heading.h5.fontFamily};
   }
   img {

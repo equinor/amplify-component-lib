@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: #f7f7f7;
+    background-color: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;
 
@@ -57,7 +57,7 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
           <Icon
             data={icon}
             size={24}
-            color={colors.interactive.primary__resting.hsla}
+            color={colors.interactive.primary__resting.rgba}
           />
           <Typography group="navigation" variant="menu_title" as="span">
             {text}
@@ -67,7 +67,7 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
         <Icon
           data={isHref ? external_link : arrow_forward}
           size={24}
-          color={colors.interactive.primary__resting.hsla}
+          color={colors.interactive.primary__resting.rgba}
         />
       </Wrapper>
     );

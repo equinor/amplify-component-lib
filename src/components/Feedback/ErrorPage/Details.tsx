@@ -15,18 +15,18 @@ const Container = styled.div<DetailsContainerProps>`
   width: 400px;
   > div:first-child {
     border-bottom: ${(props) =>
-      !props.open && `1px solid ${colors.ui.background__medium.hex}`};
+      !props.open && `1px solid ${colors.ui.background__medium.rgba}`};
     > p {
       color: ${(props) =>
         props.open
-          ? colors.interactive.primary__resting.hex
-          : colors.text.static_icons__default.hex};
+          ? colors.interactive.primary__resting.rgba
+          : colors.text.static_icons__default.rgba};
     }
     > button > span > svg {
       fill: ${(props) =>
         props.open
-          ? colors.interactive.primary__resting.hex
-          : colors.text.static_icons__default.hex};
+          ? colors.interactive.primary__resting.rgba
+          : colors.text.static_icons__default.rgba};
     }
   }
   > p {

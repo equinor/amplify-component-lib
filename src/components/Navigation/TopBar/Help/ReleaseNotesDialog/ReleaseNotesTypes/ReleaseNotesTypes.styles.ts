@@ -7,14 +7,23 @@ const { spacings, shape, colors } = tokens;
 
 const StyledChipButton = styled(Button)`
   border-radius: ${shape.rounded.borderRadius};
-  background-color: ${colors.ui.background__default.hex};
-  color: black;
+  color: ${colors.text.static_icons__default.rgba};
+  background: ${colors.ui.background__light.rgba};
+  border: 1px solid ${colors.ui.background__medium.rgba};
   padding: 4px 10px;
-
-  > p {
+  
+  span > p {
+    color: ${colors.text.static_icons__default.rgba};
     line-height: normal;
     height: min-content;
     font-size: 12px;
+  }
+  
+  &:hover {
+    background: ${colors.ui.background__medium.rgba};
+    border-radius: ${shape.rounded.borderRadius};
+  color: ${colors.interactive.primary__hover.rgba};
+
   }
 `;
 
@@ -23,11 +32,12 @@ const StyledChip = styled.div`
   align-items: center;
   grid-gap: ${spacings.comfortable.small};
   border-radius: ${shape.rounded.borderRadius};
+
+  
   &:hover {
-    border-radius: ${shape.rounded.borderRadius};
   }
-  background-color: ${colors.ui.background__light.hex};
-  color: black;
+  background-color: ${colors.ui.background__warning.rgba};
+  color: ${colors.text.static_icons__default.rgba};
   padding: 4px 10px;
 
   > p {

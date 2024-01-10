@@ -16,7 +16,7 @@ const { elevation, spacings, colors } = tokens;
 const StyledSideSheet = styled.div`
   width: 320px;
   height: calc(100vh - 64px);
-  background-color: ${colors.ui.background__default.hex};
+  background-color: ${colors.ui.background__default.rgba};
   box-shadow: ${elevation.raised};
   overflow: hidden;
   position: fixed;
@@ -29,7 +29,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${colors.ui.background__medium.hex};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   padding: ${spacings.comfortable.small} ${spacings.comfortable.small}
     ${spacings.comfortable.small} ${spacings.comfortable.medium};
 `;

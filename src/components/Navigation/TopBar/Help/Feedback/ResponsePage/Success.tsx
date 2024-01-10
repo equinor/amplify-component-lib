@@ -15,7 +15,7 @@ const Container = styled.div`
 `;
 
 export const ServiceNowLink = styled.a`
-  color: ${colors.interactive.primary__resting.hex};
+  color: ${colors.interactive.primary__resting.rgba};
   padding-left: ${spacings.comfortable.large};
   font-weight: 400;
   font-size: 16px;

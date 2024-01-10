@@ -3,7 +3,6 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
 import { MenuItemType } from './MenuItem';
-import { SidebarTheme } from './SideBar.types';
 import SideBar from '.';
 
 export default {
@@ -14,10 +13,6 @@ export default {
   `,
   component: SideBar,
   argTypes: {
-    theme: {
-      control: 'select',
-      options: [SidebarTheme.light, SidebarTheme.dark],
-    },
     hasCreateButton: { control: 'boolean' },
     disabledCreateButton: { control: 'boolean' },
     createLabel: { control: 'text' },
@@ -27,7 +22,6 @@ export default {
     },
   },
   args: {
-    theme: SidebarTheme.light,
     hasCreateButton: true,
     disabledCreateButton: false,
     createLabel: 'Create story',
@@ -64,7 +58,6 @@ export const Primary: StoryFn = (args) => {
     <SideBarProvider>
       <div style={{ display: 'flex', height: '95vh' }}>
         <SideBar
-          theme={args.theme}
           createLabel={args.hasCreateButton && args.createLabel}
           onCreate={
             args.hasCreateButton ? () => console.log('Created 🖋') : undefined
@@ -74,7 +67,6 @@ export const Primary: StoryFn = (args) => {
           {menuItems.map((m, index) => (
             <SideBar.Item
               key={m.name}
-              theme={args.theme}
               currentUrl={index === 0 ? m.link : undefined}
               {...m}
               disabled={

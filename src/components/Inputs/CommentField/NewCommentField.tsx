@@ -55,7 +55,7 @@ const ClearButton = styled.div`
 
   &:hover {
     cursor: pointer;
-    color: ${colors.interactive.primary__resting.hex};
+    color: ${colors.interactive.primary__resting.rgba};
     background: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;
