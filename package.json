@@ -28,6 +28,7 @@
     "lint:fix": "eslint ./src --ext .ts,.tsx --fix",
     "test": "vitest watch",
     "test:ci": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "setup-husky": "husky install",
     "precommit": "yarn && node tooling/commit-tasks.mjs",
     "build": "yarn build-components",
