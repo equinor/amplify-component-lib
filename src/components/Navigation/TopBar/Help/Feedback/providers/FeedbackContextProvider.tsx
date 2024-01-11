@@ -78,14 +78,19 @@ interface FeedbackContextProviderProps {
   selectedType: FeedbackType;
   onClose: () => void;
   children: ReactNode;
+  field?: string;
 }
 
 const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   children,
   selectedType,
   onClose,
+  field,
 }) => {
-  const configurationItem = getServiceNowConfigurationItem(import.meta.env.VITE_SERVICE_NOW_CONFIGURATION_ITEM) || '117499';
+  const configurationItem =
+    getServiceNowConfigurationItem(
+      import.meta.env.VITE_SERVICE_NOW_CONFIGURATION_ITEM
+    ) || '117499';
   const { account } = useAuth();
   const userEmail = account?.username;
 
@@ -243,7 +248,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       serviceNowFormData.append('Title', feedbackContent.title);
       serviceNowFormData.append(
         'Description',
-        createServiceNowDescription(feedbackContent)
+        createServiceNowDescription(feedbackContent, field)
       );
       serviceNowFormData.append('CallerEmail', userEmail);
       if (feedbackContent.urgency) {
@@ -276,7 +281,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     const contentFormData = new FormData();
     contentFormData.append(
       'comment',
-      createSlackMessage(feedbackContent, selectedType, userEmail, sysId)
+      createSlackMessage(feedbackContent, field, selectedType, userEmail, sysId)
     );
     try {
       await slackPostMessage(contentFormData);
