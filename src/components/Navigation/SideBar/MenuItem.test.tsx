@@ -27,44 +27,6 @@ test('MenuItem works as expected in light mode', async () => {
   expect(props.onClick).toHaveBeenCalledTimes(1);
 });
 
-/*test('MenuItem works as expected in dark mode', async () => {
-  const props = fakeProps();
-  render(<MenuItem them {...props} />, { wrapper: SideBarProvider });
-  const user = userEvent.setup();
-
-  const button = screen.getByTestId('sidebar-menu-item');
-
-  await user.click(button);
-
-  expect(props.onClick).toHaveBeenCalledTimes(1);
-});*/
-
-/*test('MenuItem renders as expected when active in light mode', async () => {
-  const props = fakeProps();
-  render(<MenuItem {...props} currentUrl={props.link} />, {
-    wrapper: SideBarProvider,
-  });
-  const button = screen.getByTestId('sidebar-menu-item');
-
-  expect(button).toHaveStyleRule(
-    'background',
-    backgroundColor(SidebarTheme.light)
-  );
-});*/
-
-/*test('MenuItem renders as expected when active in dark mode', async () => {
-  const props = fakeProps();
-  render(<MenuItem {...props} currentUrl={props.link} theme="dark" />, {
-    wrapper: SideBarProvider,
-  });
-  const button = screen.getByTestId('sidebar-menu-item');
-
-  expect(button).toHaveStyleRule(
-    'background',
-    backgroundColor(SidebarTheme.dark)
-  );
-});*/
-
 test('MenuItem text renders as correctly when open and active', async () => {
   window.localStorage.setItem(
     'amplify-sidebar-state',

@@ -99,10 +99,6 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
-    /*   const iconColor = useMemo(() => {
-      return textColor(SidebarTheme[theme], isCurrentUrl, disabled);
-    }, [disabled, isCurrentUrl, theme]);*/
-
     const iconColor = useMemo(() => {
       if (disabled) {
         return colors.interactive.disabled__text.rgba;

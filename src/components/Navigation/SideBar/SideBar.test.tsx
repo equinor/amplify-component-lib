@@ -38,28 +38,6 @@ test('Renders create new button when onCreate prop is given', () => {
   expect(createIcon).toHaveAttribute('d', add.svgPathData);
 });
 
-/*test('Renders dark mode correctly', () => {
-  render(
-    <SideBar
-      theme="dark"
-      onCreate={() => console.log('test')}
-      createLabel="createlabel"
-    >
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item theme="dark" key={m.name} {...m} />
-      ))}
-    </SideBar>,
-    {
-      wrapper: SideBarProvider,
-    }
-  );
-  const createButton = screen.getAllByRole('button')[0];
-  expect(createButton).toHaveStyleRule(
-    'background',
-    backgroundColor(SidebarTheme.dark)
-  );
-});*/
-
 test('Renders closed on initial render', () => {
   render(
     <SideBar>
