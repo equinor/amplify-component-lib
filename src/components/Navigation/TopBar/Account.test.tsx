@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
-import { Account, IAccountProps } from './Account';
+import { Account, AccountProps } from './Account';
 
-function fakeProps(withAvatar = false): IAccountProps {
+function fakeProps(withAvatar = false): AccountProps {
   return {
     account: {
       homeAccountId: faker.string.uuid(),
@@ -99,6 +99,38 @@ test('Opens and closes as it should', async () => {
   ).toBeInTheDocument();
 
   await user.click(button);
+
+  expect(
+    screen.queryByAltText(`user-avatar-${props.account?.name}`)
+  ).not.toBeInTheDocument();
+});
+
+test('Rendering custom button works as expected', async () => {
+  const props = fakeProps(true);
+  const customButtonText = faker.animal.cetacean();
+  const user = userEvent.setup();
+  render(
+    <Account
+      {...props}
+      renderCustomButton={(buttonRef, handleToggle) => (
+        <button ref={buttonRef} onClick={handleToggle}>
+          {customButtonText}
+        </button>
+      )}
+    />
+  );
+
+  const customButton = screen.getByText(customButtonText);
+
+  expect(customButton).toBeInTheDocument();
+
+  await user.click(customButton);
+
+  expect(
+    screen.getByAltText(`user-avatar-${props.account?.name}`)
+  ).toBeInTheDocument();
+
+  await user.click(customButton);
 
   expect(
     screen.queryByAltText(`user-avatar-${props.account?.name}`)
