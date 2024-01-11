@@ -66,7 +66,7 @@ const Sort: FC<SortProps> = ({
                       ? radio_button_selected
                       : radio_button_unselected
                   }
-                  color={colors.interactive.primary__resting.hex}
+                  color={colors.interactive.primary__resting.rgba}
                 />
               </MenuItem>
             ))}

@@ -7,13 +7,13 @@ const { colors } = tokens;
 const colorSwitch = (color?: 'red' | 'white' | 'black') => {
   switch (color) {
     case 'red':
-      return colors.logo.fill_positive.hex;
+      return colors.logo.fill_positive.rgba;
     case 'white':
-      return colors.logo.fill_negative.hex;
+      return colors.logo.fill_negative.rgba;
     case 'black':
       return '#000';
     default:
-      return colors.logo.fill_positive.hex;
+      return colors.logo.fill_positive.rgba;
   }
 };
 

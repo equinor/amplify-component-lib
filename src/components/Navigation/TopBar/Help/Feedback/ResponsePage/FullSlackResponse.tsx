@@ -13,7 +13,7 @@ const { spacings, colors } = tokens;
 
 const Container = styled.div`
   padding: ${spacings.comfortable.small};
-  background-color: ${colors.ui.background__light.hex};
+  background-color: ${colors.ui.background__light.rgba};
 `;
 
 interface SlackResponseProps {

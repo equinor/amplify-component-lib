@@ -20,8 +20,11 @@ const SearchContainer = styled.div`
     > div {
       outline: none !important;
     }
+    input {
+      color: ${colors.text.static_icons__default.rgba};
+    }
     input:focus {
-      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex};
+      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba};
     }
   }
 `;
@@ -43,10 +46,10 @@ interface MenuItemProps {
 
 const MenuItem = styled.div<MenuItemProps>`
   &:hover {
-    background: ${colors.interactive.primary__selected_hover.hex};
+    background: ${colors.interactive.primary__selected_hover.rgba};
     cursor: pointer;
   }
-  border-top: 1px solid ${colors.ui.background__light.hex};
+  border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
 `;
@@ -54,8 +57,8 @@ const MenuItem = styled.div<MenuItemProps>`
 const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
     props.$active &&
-    `background: ${colors.interactive.primary__selected_highlight.hex};
-     border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
+    `background: ${colors.interactive.primary__selected_highlight.rgba};
+     border-bottom: 1px solid ${colors.interactive.primary__resting.rgba};
     `};
   > div {
     display: grid;
@@ -64,10 +67,10 @@ const MenuFixedItem = styled.div<MenuItemProps>`
     width: 100%;
   }
   &:hover {
-    background: ${colors.interactive.primary__selected_hover.hex};
+    background: ${colors.interactive.primary__selected_hover.rgba};
     cursor: pointer;
   }
-  border-top: 1px solid ${colors.ui.background__light.hex};
+  border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
   svg {
@@ -76,7 +79,7 @@ const MenuFixedItem = styled.div<MenuItemProps>`
 `;
 
 const MenuSection = styled.div`
-  border-bottom: 1px solid ${colors.ui.background__light.hex};
+  border-bottom: 1px solid ${colors.ui.background__light.rgba};
   display: flex;
   flex-direction: column;
   > p {
@@ -151,7 +154,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
           <Icon
             data={platform}
             size={24}
-            color={colors.interactive.primary__resting.hsla}
+            color={colors.interactive.primary__resting.rgba}
           />
         </Button>
         <TopBarMenu
@@ -170,7 +173,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                   <Icon
                     data={clear}
                     size={24}
-                    color={colors.text.static_icons__secondary.hex}
+                    color={colors.text.static_icons__secondary.rgba}
                   />
                 </Button>
               </MenuHeader>
@@ -185,7 +188,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                     </TextContainer>
                     <Icon
                       data={check}
-                      color={colors.interactive.primary__resting.hex}
+                      color={colors.interactive.primary__resting.rgba}
                       size={24}
                     />
                   </div>
@@ -237,7 +240,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                   </TextContainer>
                   <Icon
                     data={exit_to_app}
-                    color={colors.interactive.primary__resting.hex}
+                    color={colors.interactive.primary__resting.rgba}
                     size={24}
                   />
                 </div>

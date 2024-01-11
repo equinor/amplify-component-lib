@@ -1,12 +1,13 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
   AdditionalText,
+  CircularProgress,
   CloseButton,
   CompactFileProgressContainer,
   FileTooltip,
@@ -61,7 +62,7 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
         <Rejection>
           <Icon
             data={error_outlined}
-            color={colors.interactive.warning__text.hex}
+            color={colors.interactive.warning__text.rgba}
           />
           <div>
             {shortErrorText && shortErrorText.length > 0
@@ -115,7 +116,7 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
         onClick={handleOnClick}
       >
         <Icon
-          color={colors.text.static_icons__tertiary.hex}
+          color={colors.text.static_icons__tertiary.rgba}
           data={clear}
           size={24}
         />

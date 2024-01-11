@@ -17,6 +17,9 @@ const StyledWrapper = styled.div`
 
 const StyledInputWrapper = styled.div`
   position: relative;
+  input {
+    color: ${colors.text.static_icons__default.rgba};
+  }
 `;
 
 const StyledButton = styled(Button)`

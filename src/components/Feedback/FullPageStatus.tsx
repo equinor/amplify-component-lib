@@ -29,6 +29,15 @@ const ErrorWrapper = styled.div`
   gap: ${spacings.comfortable.large};
 `;
 
+const CircularProgress = styled(Progress.Circular)`
+  circle {
+    stroke: ${colors.interactive.primary__resting.rgba};
+  }
+  circle:first-child {
+    stroke: ${colors.interactive.primary__hover_alt.rgba};
+  }
+`;
+
 const FullPageStatus: FC<FullPageStatusProps> = ({
   loading,
   error,
@@ -36,13 +45,13 @@ const FullPageStatus: FC<FullPageStatusProps> = ({
 }) => {
   return (
     <Center>
-      {loading && <Progress.Circular />}
+      {loading && <CircularProgress />}
       {error && !loading && (
         <ErrorWrapper>
           <Icon
             data={warning_filled}
             size={48}
-            color={colors.interactive.warning__resting.hex}
+            color={colors.interactive.warning__resting.rgba}
           />
           <Typography variant="h5">{errorMessage}</Typography>
         </ErrorWrapper>

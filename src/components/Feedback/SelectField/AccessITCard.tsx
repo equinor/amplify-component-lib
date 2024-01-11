@@ -15,7 +15,7 @@ const Card = styled(DataCard)`
   box-shadow: none;
   transition: background 100ms;
   &:hover {
-    background: ${colors.ui.background__medium.hex};
+    background: ${colors.ui.background__medium.rgba};
     box-shadow: none;
   }
 `;

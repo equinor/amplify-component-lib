@@ -134,7 +134,7 @@ const Filter: FC<FilterProps> = ({
                 {option.label}
                 <Icon
                   data={arrow_drop_right}
-                  color={colors.text.static_icons__tertiary.hex}
+                  color={colors.text.static_icons__tertiary.rgba}
                 />
               </MenuItem>
             ))}
@@ -166,7 +166,7 @@ const Filter: FC<FilterProps> = ({
                       ? checkbox
                       : checkbox_outline
                   }
-                  color={colors.interactive.primary__resting.hex}
+                  color={colors.interactive.primary__resting.rgba}
                 />
               </MenuItem>
             ))}

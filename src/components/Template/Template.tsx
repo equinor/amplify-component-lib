@@ -9,7 +9,7 @@ const BaseTemplate = styled.div`
   flex-direction: column;
   min-height: 100vh;
   min-width: 100vw;
-  background: ${colors.ui.background__light.hex};
+  background: ${colors.ui.background__light.rgba};
 `;
 
 const Container = styled.div`
@@ -37,6 +37,7 @@ const Content = styled.div<ContentProps>`
 `;
 
 const GlobalStyles = createGlobalStyle`
+@use 'src/style/themer';
   button {
     border: none;
     background: none;
@@ -46,7 +47,7 @@ const GlobalStyles = createGlobalStyle`
   hr {
     margin: 0;
     border: none;
-    background: ${colors.ui.background__medium.hex};
+    background: ${colors.ui.background__medium.rgba};
   }
   
   body {
@@ -64,7 +65,7 @@ const GlobalStyles = createGlobalStyle`
   div:focus-within:has(input[role=combobox]) {
     outline: none;
     > input {
-      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
+      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
 `;

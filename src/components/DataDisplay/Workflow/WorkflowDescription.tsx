@@ -1,10 +1,12 @@
 import { FC, Fragment } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 
 import StatusChip from './StatusChip';
 
 import styled from 'styled-components';
+const { colors } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,20 +21,20 @@ const Box = styled.div`
   height: 78px;
   width: 278px;
   padding: 0 16px;
-  background-color: #ffffff;
-  border: 1px solid #dcdcdc;
+  background-color: ${colors.ui.background__default.rgba};
+  border: 1px solid ${colors.ui.background__medium.rgba};
   border-radius: 4px;
   z-index: 100;
 `;
 
 const DisabledBox = styled(Box)`
-  background-color: #f7f7f7;
+  background-color: ${colors.interactive.disabled__fill.rgba};
 `;
 
 const Line = styled.div`
   height: 56px;
   width: 1px;
-  background-color: #dcdcdc;
+  background-color: ${colors.ui.background__medium.rgba};
   /* margin: 0 -1px; */
   z-index: 10;
 `;
@@ -67,8 +69,10 @@ const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
               </div>
               <StatusChip
                 style={{ width: '120px' }}
-                color={item.color ?? '#000000'}
-                backgroundColor={item.backgroundColor ?? '#ffffff'}
+                color={item.color ?? colors.text.static_icons__secondary.rgba}
+                backgroundColor={
+                  item.backgroundColor ?? colors.ui.background__light.rgba
+                }
               >
                 <Typography group="ui" variant="chip__badge">
                   {item.label}

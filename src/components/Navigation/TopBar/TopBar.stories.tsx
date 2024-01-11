@@ -85,7 +85,7 @@ export const Primary: StoryFn = ({ ...args }) => {
           <Icon
             data={account_circle}
             size={24}
-            color={colors.interactive.primary__resting.hsla}
+            color={colors.interactive.primary__resting.rgba}
           />
         </Button>
       </TopBar.Actions>

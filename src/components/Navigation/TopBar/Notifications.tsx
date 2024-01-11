@@ -17,7 +17,7 @@ const SidePanel = styled.div<SidePanelProps>`
   height: calc(100vh - 64px);
   width: 320px;
   z-index: 100;
-  background-color: ${colors.ui.background__default.hex};
+  background-color: ${colors.ui.background__default.rgba};
   position: fixed;
   bottom: 0;
   right: 0;
@@ -35,16 +35,16 @@ const Header = styled.div`
   padding-right: ${spacings.comfortable.small};
   align-items: center;
   margin-bottom: ${spacings.comfortable.medium};
-  border-bottom: 1px solid ${colors.ui.background__medium.hex};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
 `;
 
 const NoNotifications = styled.div`
-  color: ${colors.text.static_icons__tertiary.hex};
+  color: ${colors.text.static_icons__tertiary.rgba};
   text-align: center;
 `;
 
 export const UnreadRedDot = styled.div`
-  background-color: ${colors.logo.fill_positive.hex};
+  background-color: ${colors.logo.fill_positive.rgba};
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -106,7 +106,7 @@ const Notifications: FC<NotificationsProps> = ({
         <Icon
           data={notificationIcon}
           size={24}
-          color={colors.interactive.primary__resting.hsla}
+          color={colors.interactive.primary__resting.rgba}
         />
         {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
       </Button>
@@ -120,7 +120,10 @@ const Notifications: FC<NotificationsProps> = ({
             Notifications
           </Typography>
           <Button variant="ghost_icon" onClick={onClose}>
-            <Icon data={close} color="secondary" />
+            <Icon
+              data={close}
+              color={colors.interactive.primary__resting.rgba}
+            />
           </Button>
         </Header>
         {children ? (

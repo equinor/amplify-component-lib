@@ -1,6 +1,11 @@
 import React, { forwardRef, ReactNode } from 'react';
 
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
+import {
+  Button as EDSButton,
+  Icon,
+  Menu,
+  Typography,
+} from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -13,6 +18,11 @@ const MenuWrapper = styled(Menu)`
   width: 300px;
   border-radius: 5px;
 `;
+const Button = styled(EDSButton)`
+  span > svg {
+    fill: ${colors.interactive.primary__resting.rgba};
+  }
+`;
 
 const Header = styled.div`
   display: flex;
@@ -20,7 +30,7 @@ const Header = styled.div`
   align-items: center;
   padding-left: ${spacings.comfortable.medium};
   padding-right: ${spacings.comfortable.small};
-  border-bottom: 1px solid ${colors.ui.background__medium.hex};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   padding-bottom: ${spacings.comfortable.small};
 `;
 
@@ -66,7 +76,10 @@ const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
             onClick={onClose}
             data-testid="close-button"
           >
-            <Icon data={clear} />
+            <Icon
+              data={clear}
+              color={colors.interactive.primary__resting.rgba}
+            />
           </Button>
         </Header>
         <ContentWrapper $contentPadding={contentPadding}>

@@ -4,14 +4,11 @@ import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import { first_page, last_page } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { SidebarTheme } from './SideBar.types';
-
 import styled from 'styled-components';
 
 const { colors, spacings, shape } = tokens;
 
 interface ContainerProps {
-  $theme: SidebarTheme;
   $open?: boolean;
 }
 
@@ -28,12 +25,12 @@ const ToggleContainer = styled.div<ContainerProps>`
     > button {
       margin-left: -4px;
     }
-  `}
+    `}
+  button {
+    transition: background 0.1s ease-in;
+  }
   > button:hover {
-    background: ${({ $theme }) =>
-      $theme === SidebarTheme.light
-        ? colors.interactive.secondary__highlight.hex
-        : '#324D62'};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;
 
@@ -55,7 +52,7 @@ const LargeButton = styled.button`
   }
   cursor: pointer;
   &:hover {
-    background: ${colors.interactive.secondary__highlight.hex};
+    background: ${colors.interactive.secondary__highlight.rgba};
   }
 `;
 
@@ -64,23 +61,25 @@ const Text = styled(Typography)`
 `;
 
 interface ToggleOpenProps {
-  theme: SidebarTheme;
   isOpen: boolean;
   toggle: () => void;
 }
 
-const ToggleOpen: FC<ToggleOpenProps> = ({ theme, isOpen, toggle }) => {
-  const textColor =
-    theme === SidebarTheme.light
-      ? colors.text.static_icons__default.hex
-      : colors.text.static_icons__primary_white.hex;
-
+const ToggleOpen: FC<ToggleOpenProps> = ({ isOpen, toggle }) => {
   if (isOpen) {
     return (
-      <ToggleContainer $theme={theme} $open={isOpen}>
+      <ToggleContainer $open={isOpen}>
         <LargeButton onClick={toggle}>
-          <Icon size={24} data={first_page} color={textColor} />
-          <Text variant="cell_text" group="table" color={textColor}>
+          <Icon
+            size={24}
+            data={first_page}
+            color={colors.text.static_icons__default.rgba}
+          />
+          <Text
+            variant="cell_text"
+            group="table"
+            color={colors.text.static_icons__default.rgba}
+          >
             Collapse
           </Text>
         </LargeButton>
@@ -88,10 +87,14 @@ const ToggleOpen: FC<ToggleOpenProps> = ({ theme, isOpen, toggle }) => {
     );
   }
   return (
-    <ToggleContainer $theme={theme} $open={isOpen}>
+    <ToggleContainer $open={isOpen}>
       <Tooltip title="Expand" placement="right">
         <Button onClick={toggle} color="secondary" variant="ghost_icon">
-          <Icon size={24} data={last_page} color={textColor} />
+          <Icon
+            size={24}
+            data={last_page}
+            color={colors.text.static_icons__default.rgba}
+          />
         </Button>
       </Tooltip>
     </ToggleContainer>

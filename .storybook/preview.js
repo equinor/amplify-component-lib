@@ -1,7 +1,18 @@
 import { tokens } from '@equinor/eds-tokens';
+import 'src/style/themer.css';
 
 const { colors } = tokens;
 
+export const globalTypes = {
+  dataThemes: {
+    defaultValue: {
+      list: [
+        { name: "Light", dataTheme: "light", color: "#FFFFFF" },
+        { name: "Dark", dataTheme: "dark", color: "#243746" },
+      ],
+    },
+  },
+};
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
@@ -11,15 +22,15 @@ export const parameters = {
     },
   },
   backgrounds: {
-    default: 'white',
+    default: 'Equinor UI Light (off-white/off-dark)',
     values: [
       {
-        name: 'white',
-        value: '#ffffff',
+        name: 'Equinor UI Light (off-white/off-dark)',
+        value: colors.ui.background__light.rgba,
       },
       {
-        name: 'Equinor off-white',
-        value: colors.ui.background__light.hex,
+        name: 'Equinor UI Default (white/dark)',
+        value: colors.ui.background__default.rgba,
       },
     ],
   },

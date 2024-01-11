@@ -40,7 +40,7 @@ export const MissingAccesses = forwardRef<HTMLDivElement, MissingAccessesProps>(
           >
             <Icon
               data={external_link}
-              color={colors.text.static_icons__default.hex}
+              color={colors.text.static_icons__default.rgba}
             />
           </Button>
         </div>

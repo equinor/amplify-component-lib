@@ -1,7 +1,10 @@
 import { CSSProperties, FC, ReactNode } from 'react';
 
+import { tokens } from '@equinor/eds-tokens';
+
 import styled from 'styled-components';
 
+const { colors } = tokens;
 interface ChipProps {
   $color?: string;
   $backgroundColor?: string;
@@ -9,8 +12,10 @@ interface ChipProps {
 
 const Chip = styled.div<ChipProps>`
   height: 1.5em;
-  background-color: ${(props) => props.$backgroundColor ?? '#ffffff'};
-  border: 0.063em solid ${(props) => props.$color ?? '#000000'};
+  background-color: ${(props) =>
+    props.$backgroundColor ?? colors.ui.background__light.rgba};
+  border: 0.063em solid
+    ${(props) => props.$color ?? colors.text.static_icons__secondary.rgba};
   border-radius: 1.563em;
   display: inline-flex;
   justify-content: center;
@@ -27,10 +32,10 @@ const Chip = styled.div<ChipProps>`
 `;
 
 const DisabledChip = styled(Chip)`
-  background-color: #eaeaea;
-  border: 0.063em solid #bebebe;
+  background-color: ${colors.interactive.disabled__fill.rgba};
+  border: 0.063em solid ${colors.interactive.disabled__border.rgba};
   p {
-    color: #bebebe;
+    color: ${colors.interactive.disabled__text.rgba};
   }
 `;
 

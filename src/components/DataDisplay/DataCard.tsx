@@ -119,7 +119,7 @@ const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
               <Icon
                 data={rightIcon}
                 size={24}
-                color={colors.interactive.primary__resting.hex}
+                color={colors.interactive.primary__resting.rgba}
               />
             )}
             {rightElement && rightElement}

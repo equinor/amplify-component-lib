@@ -106,6 +106,6 @@ test('Children render and function as they should', async () => {
 
   expect(childButton).toHaveStyleRule(
     'background',
-    colors.interactive.primary__hover_alt.hex
+    colors.interactive.primary__hover_alt.rgba
   );
 });

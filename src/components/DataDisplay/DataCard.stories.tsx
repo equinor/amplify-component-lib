@@ -1,11 +1,14 @@
 import { Button, Chip, Icon } from '@equinor/eds-core-react';
 import { account_circle, info_circle, more_vertical } from '@equinor/eds-icons';
 import { details } from '@equinor/eds-icons';
+import { tokens } from '@equinor/eds-tokens';
 import { Meta, StoryFn } from '@storybook/react';
 
 import DataCard from './DataCard';
 
 import styled from 'styled-components';
+
+const { colors } = tokens;
 
 const icons = [account_circle, info_circle, more_vertical, details];
 export default {
@@ -53,6 +56,7 @@ export const Primary: StoryFn = (args) => {
       {args.hasBodyButton && (
         <Button variant="ghost_icon">
           <Icon
+            color={colors.interactive.primary__resting.rgba}
             data={icons.find((item) => item.name === args.bodyButtonIcon)}
           />
         </Button>
