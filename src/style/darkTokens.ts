@@ -1,79 +1,7 @@
-import { tokens } from '@equinor/eds-tokens';
+export const darkTokens = `
 
-import {darkTokens} from 'src/style/darkTokens';
-
-import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
-
-const { colors, spacings } = tokens;
-
-const BaseTemplate = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  min-width: 100vw;
-  background: ${colors.ui.background__light.rgba};
-`;
-
-const Container = styled.div`
-  display: flex;
-`;
-
-interface ContentProps {
-  $open: boolean;
-}
-
-const Content = styled.div<ContentProps>`
-  display: flex;
-  /* 64px is height of TopBar */
-  min-height: calc(100vh - 64px);
-  max-height: calc(100vh - 64px);
-  overflow: auto;
-  /* 256px and 72px is width of Sidebar when open/closed, + 1px because of border */
-  min-width: calc(
-    100% - ${(props) => (props.$open ? '257px' : '73px')} -
-      ${spacings.comfortable.xxx_large} * 2
-  );
-  &:not(:has(.select-field)) {
-    padding: 0 ${spacings.comfortable.xxx_large};
-  }
-`;
-
-const GlobalStyles = createGlobalStyle`
-  ${darkTokens}
-
-  button {
-    border: none;
-    background: none;
-    cursor: pointer; 
-  }
-  
-  hr {
-    margin: 0;
-    border: none;
-    background: ${colors.ui.background__medium.rgba};
-  }
-  
-  body {
-    margin: 0;
-    font-family: 'Equinor', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  code {
-    font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco,
-    monospace;
-  }
-
-  div:focus-within:has(input[role=combobox]) {
-    outline: none;
-    > input {
-      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
-    }
-  }
-
-  /*Dark Theme*/
-/* html[data-theme='dark'] {
+/*Dark Theme*/
+html[data-theme='dark'] {
   --eds_clickbound_jumbo__base: 88px;
   --eds_clickbound_default__base: 48px;
   --eds_clickbound_default__input: 56px;
@@ -132,6 +60,7 @@ const GlobalStyles = createGlobalStyle`
   --eds_interactive_primary__resting: rgba(151, 202, 206, 1);
   --eds_interactive_primary__hover: rgba(173, 226, 230, 1);
   --eds_interactive_primary__hover_alt: rgb(96, 125, 127);
+  /* --eds_interactive_primary__hover_alt: rgba(173, 226, 230, 1);   OLD */
   --eds_interactive_secondary__highlight: rgba(255, 255, 255, 0.1);
   --eds_interactive_secondary__resting: rgba(222, 229, 231, 1);
   --eds_interactive_secondary__link_hover: rgba(23, 36, 47, 1);
@@ -148,12 +77,14 @@ const GlobalStyles = createGlobalStyle`
   --eds_interactive_success__hover: rgba(193, 231, 193, 1);
   --eds_interactive_success__text: rgba(161, 218, 160, 1);
 
+  /* Not adapted for dark mode*/
   --eds_interactive_table__cell__fill_resting: rgba(255, 255, 255, 1);
   --eds_interactive_table__cell__fill_hover: rgba(234, 234, 234, 1);
   --eds_interactive_table__cell__fill_activated: rgba(230, 250, 236, 1);
   --eds_interactive_table__header__fill_activated: rgba(234, 234, 234, 1);
   --eds_interactive_table__header__fill_hover: rgba(220, 220, 220, 0.1);
   --eds_interactive_table__header__fill_resting: rgba(247, 247, 247, 1);
+  /* ^^^^^^^ */
 
   --eds_interactive_disabled__text: rgba(99, 117, 131, 1);
   --eds_interactive__disabled__text: rgba(99, 117, 131, 1);
@@ -260,21 +191,8 @@ const GlobalStyles = createGlobalStyle`
   --eds_paragraph__body_short_color: rgba(255, 255, 255, 1);
   --eds_paragraph__meta_color: rgba(255, 255, 255, 1);
 
-  --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1); */
+  --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1);
 }
 
+
 `;
-
-type TemplateType = IStyledComponent<'web', any> & {
-  Container: IStyledComponent<'web', any>;
-  Content: typeof Content;
-  GlobalStyles: typeof GlobalStyles;
-};
-
-const Template = BaseTemplate as unknown as TemplateType;
-Template.Container = Container;
-Template.Content = Content;
-Template.GlobalStyles = GlobalStyles;
-
-export default Template;
-export type { ContentProps, TemplateType };

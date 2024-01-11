@@ -116,6 +116,7 @@ export const FullPageExample: StoryFn = ({ ...args }) => {
   ];
   return (
     <Template>
+    <Template.GlobalStyles/>
       <TopBar
         onHeaderClick={() => console.log('Going to homepage')}
         capitalize={args.capitalized}
