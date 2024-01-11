@@ -10,7 +10,6 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import Feedback from './Feedback/Feedback';
-import { getBrowserInfo } from './Feedback/Feedback.utils';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
@@ -67,8 +66,6 @@ export const Help: FC<HelpProps> = ({
     setFeedbackType(undefined);
   };
 
-  const browser = getBrowserInfo();
-  console.log(browser);
   return (
     <>
       <Button
