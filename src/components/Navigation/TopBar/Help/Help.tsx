@@ -10,6 +10,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import Feedback from './Feedback/Feedback';
+import { getBrowserInfo } from './Feedback/Feedback.utils';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
@@ -29,12 +30,14 @@ const ContentWrapper = styled.div`
 `;
 
 export interface HelpProps {
+  field?: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
   children?: ReactNode;
 }
 
 export const Help: FC<HelpProps> = ({
+  field,
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
@@ -64,6 +67,8 @@ export const Help: FC<HelpProps> = ({
     setFeedbackType(undefined);
   };
 
+  const browser = getBrowserInfo();
+  console.log(browser);
   return (
     <>
       <Button
@@ -133,7 +138,11 @@ export const Help: FC<HelpProps> = ({
               ? 'Report a bug - ServiceNow'
               : 'Suggest a feature'}
           </Dialog.Header>
-          <Feedback selectedType={feedbackType} onClose={handleOnDialogClose} />
+          <Feedback
+            field={field}
+            selectedType={feedbackType}
+            onClose={handleOnDialogClose}
+          />
         </FeedbackFormDialog>
       )}
     </>

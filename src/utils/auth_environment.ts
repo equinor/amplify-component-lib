@@ -15,7 +15,11 @@ interface OptionalEnvVariables {
   ALLOWED_PARENT_DOMAINS: string;
 }
 
-const OPTIONAL_ENV_VARIABLES = ['IS_MOCK', 'ALLOWED_PARENT_DOMAINS'];
+const OPTIONAL_ENV_VARIABLES = [
+  'IS_MOCK',
+  'ALLOWED_PARENT_DOMAINS',
+  'SERVICE_NOW_CONFIGURATION_ITEM',
+];
 
 type EnvVariables = RequiredEnvVariables & OptionalEnvVariables;
 
