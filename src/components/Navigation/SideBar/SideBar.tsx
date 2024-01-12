@@ -17,7 +17,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   border-right: 1px solid ${colors.ui.background__medium.rgba};
-  background-color: ${colors.ui.background__light.rgba};
+  background-color: ${colors.ui.background__default.rgba};
   display: flex;
   flex-direction: column;
   padding-bottom: ${spacings.comfortable.large};
