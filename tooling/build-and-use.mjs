@@ -6,7 +6,7 @@ import { stdin as input, stdout as output } from 'node:process';
 
 async function runTasks() {
   console.clear();
-  const presetApp = process.argv.at(2).match(/--(\w+-?)+/)?.[1];
+  const presetApp = process.argv.at(2)?.match(/--(\w+-?)+/)?.[1];
   if (presetApp) {
     console.log(
       chalk.bold.yellow('Running build and use tasks with ') +
