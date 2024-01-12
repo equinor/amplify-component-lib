@@ -72,8 +72,6 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 
-}
-
 `;
 
 type TemplateType = IStyledComponent<'web', any> & {
