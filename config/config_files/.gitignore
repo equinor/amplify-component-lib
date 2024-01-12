@@ -1,5 +1,8 @@
 # Frontend specific git ignores
 
+# Webstorm user specific settings
+.idea/workspace.xml
+
 .yarn/*
 !.yarn/patches
 !.yarn/releases
