@@ -1,5 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
-import 'src/style/themer.css';
+
+import {darkTokens} from 'src/style/darkTokens';
 
 const { colors } = tokens;
 
@@ -13,6 +14,20 @@ export const globalTypes = {
     },
   },
 };
+
+
+export const decorators = [
+  (Story) => {
+    // Apply styles using the darkTokens variable
+    const styleElement = document.createElement('style');
+    styleElement.innerHTML = darkTokens;
+    document.head.appendChild(styleElement);
+
+    return (<Story />);
+  },
+]; 
+
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {

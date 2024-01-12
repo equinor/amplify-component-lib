@@ -1,5 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { darkTokens } from 'src/style/darkTokens';
+
 import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
 
 const { colors, spacings } = tokens;
@@ -37,7 +39,8 @@ const Content = styled.div<ContentProps>`
 `;
 
 const GlobalStyles = createGlobalStyle`
-@use 'src/style/themer';
+  ${darkTokens}
+
   button {
     border: none;
     background: none;
@@ -68,6 +71,7 @@ const GlobalStyles = createGlobalStyle`
       box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
+
 `;
 
 type TemplateType = IStyledComponent<'web', any> & {
