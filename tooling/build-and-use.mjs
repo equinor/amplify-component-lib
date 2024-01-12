@@ -6,7 +6,15 @@ import { stdin as input, stdout as output, } from 'node:process'
 
 async function runTasks() {
     console.clear()
-    console.log(chalk.bold.yellow('Running build and use tasks...\n'))
+    const presetApp = process.argv.at(2).slice(2)
+    if (presetApp) {
+        console.log(chalk.bold.yellow('Running build and use tasks with ')
+            + chalk.bold.magentaBright(presetApp)
+            + chalk.bold.yellow(' as preset app...\n'))
+    } else {
+        console.log(chalk.bold.yellow('Running build and use tasks...\n'))
+    }
+
 
     try {
         await runTask({
@@ -26,6 +34,13 @@ async function runTasks() {
 
     let selectedDir = undefined
     let failed = false
+
+    if (dirs.find((dir) => presetApp.toLowerCase() === dir.toLowerCase())) {
+        selectedDir = presetApp
+    } else {
+        console.log(chalk.red('Unable to find directory with the preset name: ') + chalk.greenBright.bold(presetApp))
+    }
+
     while (selectedDir === undefined) {
         console.clear()
         console.log(chalk.bold('Found these directories in parent folder:'))
