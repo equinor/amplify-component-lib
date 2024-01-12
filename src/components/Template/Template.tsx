@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import {darkTokens} from 'src/style/darkTokens';
+import { darkTokens } from 'src/style/darkTokens';
 
 import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
 
