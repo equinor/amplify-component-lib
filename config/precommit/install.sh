@@ -9,25 +9,6 @@ then
   exit 1
 fi
 
-if [ ! -d "tooling" ]
-then
-  mkdir tooling
-fi
-
-cd ./tooling || exit 1
-
-printf -- "Downloading files needed to run pre-commit...\n"
-
-configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/config_list.txt")
-
-for line in $configList
-do
-  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
-  curl -s $line > $fileName
-done
-
-cd ..
-
 printf -- "Downloading root package.json file used for pre-commit...\n"
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/package.json" > package.json
