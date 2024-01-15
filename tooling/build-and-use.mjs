@@ -48,7 +48,7 @@ async function runTasks() {
 
   console.clear();
 
-  if (dirs.find((dir) => presetApp.toLowerCase() === dir.toLowerCase())) {
+  if (dirs.find((dir) => presetApp?.toLowerCase() === dir.toLowerCase())) {
     selectedDir = presetApp;
   } else if (presetApp) {
     console.log(
