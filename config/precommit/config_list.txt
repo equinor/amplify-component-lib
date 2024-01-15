@@ -1,3 +1,0 @@
-https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/commit-tasks.mjs
-https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/postinstall.js
-https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/taskrunner.mjs

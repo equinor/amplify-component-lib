@@ -1,5 +1,7 @@
 # Frontend specific git ignores
 
+.idea/workspace.xml
+
 .yarn/*
 !.yarn/patches
 !.yarn/releases
