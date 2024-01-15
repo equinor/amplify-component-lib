@@ -1,1 +1,1 @@
-"*.{js,tsx,ts,tsx,css}": ['eslint --fix', 'prettier --write']
+"*.{js,tsx,ts,tsx,css}": ['npm run lint:fix', 'npm run pretty:fix']
