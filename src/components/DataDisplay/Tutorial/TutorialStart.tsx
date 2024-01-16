@@ -6,8 +6,6 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 
-import { darkTokens } from '../../../style/darkTokens';
-import { spacingTokens } from '../../../style/spacingTokens';
 import { spacings } from 'src/style';
 
 import styled, { keyframes } from 'styled-components';
@@ -83,9 +81,6 @@ const TutorialStart: FC<TutorialStartProps> = ({
   acceptTour,
   denyTour,
 }) => {
-  console.log(darkTokens);
-  console.log(spacingTokens);
-
   return (
     <Dialog open={show}>
       <Container>

@@ -1647,6 +1647,7 @@ __metadata:
     storybook: ^7.5.0
     storybook-addon-data-theme-switcher: ^0.1.7
     storybook-addon-react-router-v6: ^2.0.8
+    storybook-addon-root-attribute: ^1.0.2
     styled-components: ^6.1.0
     typescript: ^5.2.2
     uuid: ^9.0.1
@@ -2104,14 +2105,14 @@ __metadata:
   linkType: hard
 
 "@floating-ui/react-dom@npm:^2.0.0, @floating-ui/react-dom@npm:^2.0.2":
-  version: 2.0.5
-  resolution: "@floating-ui/react-dom@npm:2.0.5"
+  version: 2.0.6
+  resolution: "@floating-ui/react-dom@npm:2.0.6"
   dependencies:
     "@floating-ui/dom": ^1.5.4
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 24cadf4626ae860b59cd3b86e0d8e9a51f1120f52aaa89cbed9425d78d0e0034e097a16bb022628996eb2386783c44b10aeb3c2988083fc046e0480e573d575d
+  checksum: 3608537be6cae5f0442d3f826379b8e4a9ce5c4bdecf1d2b34e6709842d80444be1a00eca3641d680e2e6405d833092f58005d1b120a9d39ffd341c60b0c017c
   languageName: node
   linkType: hard
 
@@ -3331,7 +3332,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addons@npm:^7.5.0":
+"@storybook/addons@npm:>=5.0.0, @storybook/addons@npm:^7.5.0":
   version: 7.6.8
   resolution: "@storybook/addons@npm:7.6.8"
   dependencies:
@@ -3533,7 +3534,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/components@npm:7.6.8":
+"@storybook/components@npm:7.6.8, @storybook/components@npm:>=5.0.0":
   version: 7.6.8
   resolution: "@storybook/components@npm:7.6.8"
   dependencies:
@@ -3595,7 +3596,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/core-events@npm:7.6.8":
+"@storybook/core-events@npm:7.6.8, @storybook/core-events@npm:>=5.0.0":
   version: 7.6.8
   resolution: "@storybook/core-events@npm:7.6.8"
   dependencies:
@@ -3898,7 +3899,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/theming@npm:7.6.8":
+"@storybook/theming@npm:7.6.8, @storybook/theming@npm:>=5.0.0":
   version: 7.6.8
   resolution: "@storybook/theming@npm:7.6.8"
   dependencies:
@@ -12934,6 +12935,20 @@ __metadata:
     react-dom:
       optional: true
   checksum: 94479b8a7838e8a9694fbfce23f21801b618b0d28cc10d76e12b3d4162c978b15c8f100407dabf25164a5d7cdeeaeca00c55205b46c9f3d0e3ddda9d5d87ae19
+  languageName: node
+  linkType: hard
+
+"storybook-addon-root-attribute@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "storybook-addon-root-attribute@npm:1.0.2"
+  dependencies:
+    "@storybook/addons": ">=5.0.0"
+    "@storybook/components": ">=5.0.0"
+    "@storybook/core-events": ">=5.0.0"
+    "@storybook/theming": ">=5.0.0"
+  peerDependencies:
+    react: "*"
+  checksum: 71a107d025f4561a01f919e78146b2d47c05d79cf0499587935fc54bd60e7b347fd766564c2fbb9a06550074b8af109819e9ad4be0c63659f2c6439e6ad09755
   languageName: node
   linkType: hard
 

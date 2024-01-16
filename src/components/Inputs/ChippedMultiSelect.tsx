@@ -16,9 +16,11 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, colors, shape } = tokens;
+const { colors, shape } = tokens;
 
 const Container = styled.div`
   display: flex;

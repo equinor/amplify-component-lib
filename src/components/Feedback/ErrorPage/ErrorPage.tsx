@@ -1,7 +1,5 @@
 import { forwardRef, ReactNode } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-
 import GlitchAnimation from './illustrations/GlitchAnimation';
 import { spacings } from 'src/style';
 

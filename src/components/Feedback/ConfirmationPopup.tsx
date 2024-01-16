@@ -2,11 +2,10 @@ import React, { forwardRef, ReactNode } from 'react';
 
 import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
-
-import styled from 'styled-components';
 
 import { spacings } from 'src/style';
+
+import styled from 'styled-components';
 
 const StyledDialog = styled(Dialog)`
   min-width: 400px;

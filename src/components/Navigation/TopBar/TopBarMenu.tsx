@@ -13,7 +13,7 @@ import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const MenuWrapper = styled(Menu)`
   padding: 0 !important;
