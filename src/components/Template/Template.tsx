@@ -1,6 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 
 import { darkTokens } from 'src/style/darkTokens';
+import { spacingTokens } from 'src/style/spacingTokens';
 
 import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
 
@@ -40,6 +41,7 @@ const Content = styled.div<ContentProps>`
 
 const GlobalStyles = createGlobalStyle`
   ${darkTokens}
+  ${spacingTokens}
 
   button {
     border: none;
