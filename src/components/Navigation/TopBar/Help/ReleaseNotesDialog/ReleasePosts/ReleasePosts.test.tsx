@@ -6,9 +6,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ReleasePosts from './ReleasePosts';
 import { CancelablePromise } from 'src/api';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen, waitFor } from 'src/tests/test-utils';
+import { render, screen, waitFor, within } from 'src/tests/test-utils';
 
 const releaseNotes = [
+  {
+    releaseId: '231d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
+    applicationName: 'PWEX',
+    version: null,
+    title: 'Yet other August',
+    body: faker.lorem.paragraphs(1),
+    tags: ['Feature', 'Improvement', 'Bug fix'],
+    createdDate: '2023-08-15T10:05:01.6920+00:00',
+  },
   {
     releaseId: '221d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
     applicationName: 'PWEX',
@@ -19,13 +28,40 @@ const releaseNotes = [
     createdDate: '2023-06-29T10:48:49.6883+00:00',
   },
   {
-    releaseId: '221d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
+    releaseId: '271d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
     applicationName: 'PWEX',
     version: null,
-    title: 'Iqwee',
-    body: faker.lorem.paragraphs(10),
+    title: 'Other August',
+    body: faker.lorem.paragraphs(1),
     tags: ['Feature', 'Improvement', 'Bug fix'],
-    createdDate: '2023-06-29T10:48:49.6883+00:00',
+    createdDate: '2023-08-29T10:05:01.6920+00:00',
+  },
+  {
+    releaseId: '281d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
+    applicationName: 'PWEX',
+    version: null,
+    title: 'Post from January',
+    body: faker.lorem.paragraphs(1),
+    tags: ['Feature', 'Improvement', 'Bug fix'],
+    createdDate: '2023-01-10T22:31:15.1927+00:00',
+  },
+  {
+    releaseId: '211d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
+    applicationName: 'PWEX',
+    version: null,
+    title: 'Old August',
+    body: faker.lorem.paragraphs(1),
+    tags: ['Feature', 'Improvement', 'Bug fix'],
+    createdDate: '2023-08-01T10:05:01.6920+00:00',
+  },
+  {
+    releaseId: '251d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
+    applicationName: 'PWEX',
+    version: null,
+    title: 'Latest August',
+    body: faker.lorem.paragraphs(1),
+    tags: ['Feature', 'Improvement', 'Bug fix'],
+    createdDate: '2023-08-31T21:05:01.6920+00:00',
   },
 ];
 
@@ -107,6 +143,34 @@ test('show release note', async () => {
     { timeout: 500 }
   );
 });
+
+test('sort release notes descending', async () => {
+  render(<ReleasePosts />, {
+    wrapper: Wrappers,
+  });
+  await waitFor(
+    () => {
+      screen.logTestingPlaygroundURL();
+      const posts = screen.getAllByTestId('release-post');
+
+      const date0 = within(posts[0]).getByText(/31\. august 2023/i);
+      const date1 = within(posts[1]).getByText(/29\. august 2023/i);
+      const date2 = within(posts[2]).getByText(/15\. august 2023/i);
+      const date3 = within(posts[3]).getByText(/1\. august 2023/i);
+      const date4 = within(posts[4]).getByText(/29\. june 2023/i);
+      const date5 = within(posts[5]).getByText(/10\. january 2023/i);
+
+      expect(date0).toBeInTheDocument();
+      expect(date1).toBeInTheDocument();
+      expect(date2).toBeInTheDocument();
+      expect(date3).toBeInTheDocument();
+      expect(date4).toBeInTheDocument();
+      expect(date5).toBeInTheDocument();
+    },
+    { timeout: 500 }
+  );
+});
+
 describe('release notes without created date', () => {
   beforeEach(() => {
     returnWithEmptyDate = true;

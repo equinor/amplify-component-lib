@@ -76,12 +76,19 @@ const ReleasePosts: FC = () => {
               {year.label}
             </Typography>
             {year.children?.flatMap((month) => {
-              const releaseNotesInMonth = releaseNotes?.filter(
-                (releaseNote) =>
-                  releaseNote.createdDate &&
-                  monthValueToString(new Date(releaseNote.createdDate)) ===
-                    month.value
-              );
+              const releaseNotesInMonth = releaseNotes
+                ?.filter(
+                  (releaseNote) =>
+                    releaseNote.createdDate &&
+                    monthValueToString(new Date(releaseNote.createdDate)) ===
+                      month.value
+                )
+                .sort((a, b) =>
+                  a.createdDate && b.createdDate
+                    ? new Date(b.createdDate).getTime() -
+                      new Date(a.createdDate).getTime()
+                    : -1
+                );
 
               return [
                 <Typography
