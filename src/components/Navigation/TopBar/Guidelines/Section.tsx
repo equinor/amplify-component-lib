@@ -1,22 +1,21 @@
 import { FC, ReactNode } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   > section {
     display: flex;
     flex-direction: column;
-    margin-bottom: ${spacings.comfortable.large};
-    gap: ${spacings.comfortable.medium};
-    margin-left: ${spacings.comfortable.medium_small};
+    margin-bottom: ${spacings.large};
+    gap: ${spacings.medium};
+    margin-left: ${spacings.medium_small};
   }
 `;
 

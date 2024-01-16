@@ -1,9 +1,11 @@
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, shape, colors } = tokens;
+const { shape, colors } = tokens;
 
 const StyledChipButton = styled(Button)`
   border-radius: ${shape.rounded.borderRadius};
@@ -29,7 +31,7 @@ const StyledChipButton = styled(Button)`
 const StyledChip = styled.div`
   display: flex;
   align-items: center;
-  grid-gap: ${spacings.comfortable.small};
+  grid-gap: ${spacings.small};
   border-radius: ${shape.rounded.borderRadius};
 
   &:hover {

@@ -15,10 +15,11 @@ import { tokens } from '@equinor/eds-tokens';
 
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
 import TopBarMenu from './TopBarMenu';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 const Info = styled.div`
   display: flex;
@@ -28,10 +29,10 @@ const Info = styled.div`
 
 const FullWidthWrapper = styled.div`
   display: grid;
-  margin-top: ${spacings.comfortable.large};
+  margin-top: ${spacings.large};
   justify-content: stretch;
   flex-direction: column;
-  grid-gap: ${spacings.comfortable.medium};
+  grid-gap: ${spacings.medium};
 `;
 
 export interface AccountProps {

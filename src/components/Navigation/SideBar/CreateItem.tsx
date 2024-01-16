@@ -11,10 +11,11 @@ import { add } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { useSideBar } from 'src/providers/SideBarProvider';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, shape, spacings } = tokens;
+const { colors, shape } = tokens;
 
 interface ContainerProps {
   $open: boolean;
@@ -47,7 +48,7 @@ const CreateNewButton = styled(Button)<CustomButtonProps>`
   ${(props) =>
     props.$open &&
     `
-  padding-right: ${spacings.comfortable.large};
+  padding-right: ${spacings.large};
   margin-left: -2px; /* border size */
   `};
   p {

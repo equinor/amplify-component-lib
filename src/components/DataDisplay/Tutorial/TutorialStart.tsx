@@ -6,14 +6,11 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 
-import {darkTokens} from '../../../style/darkTokens'
-import {spacings} from '../../../style/spacings.json'
-import {spacingTokens} from '../../../style/spacingTokens'
+import { darkTokens } from '../../../style/darkTokens';
+import { spacingTokens } from '../../../style/spacingTokens';
+import { spacings } from 'src/style';
 
 import styled, { keyframes } from 'styled-components';
-
-/* const { spacings } = tokens; */
-
 
 const spawn = keyframes`
     from {

@@ -23,7 +23,7 @@ const { spacings, colors, shape } = tokens;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.xx_small};
+  gap: ${spacings.xx_small};
 `;
 
 interface SelectElementProps {
@@ -43,9 +43,9 @@ const SelectElement = styled.div<SelectElementProps>`
   > div {
     min-height: 36px;
     align-items: center;
-    padding: ${spacings.comfortable.x_small};
-    margin-right: ${spacings.comfortable.xx_large};
-    gap: ${spacings.comfortable.x_small};
+    padding: ${spacings.x_small};
+    margin-right: ${spacings.xx_large};
+    gap: ${spacings.x_small};
     display: flex;
     flex-wrap: wrap;
   }
@@ -56,12 +56,12 @@ const Placeholder = styled(Typography)`
   height: 36px;
   display: flex;
   align-items: center;
-  padding-left: ${spacings.comfortable.small};
+  padding-left: ${spacings.small};
 `;
 
 const Arrow = styled(Icon)`
   position: absolute;
-  right: ${spacings.comfortable.small};
+  right: ${spacings.small};
   top: 50%;
   transform: translateY(-50%);
   height: 24px;

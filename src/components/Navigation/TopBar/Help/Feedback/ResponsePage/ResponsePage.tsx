@@ -1,22 +1,20 @@
 import { FC, useEffect, useState } from 'react';
 
 import { Button } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 
 import { ContentWrapper } from '../Feedback.styles';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import { AnimateChangeInHeight } from './AnimateChangeInHeight';
 import ResponseStatus from './ResponseStatus';
 import Success from './Success';
+import { spacings } from 'src/style';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-const { spacings } = tokens;
-
 const Container = styled(motion.div)`
   display: flex;
-  gap: ${spacings.comfortable.large};
+  gap: ${spacings.large};
   height: auto;
   flex-direction: column;
   button {
