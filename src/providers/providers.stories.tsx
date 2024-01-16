@@ -1,6 +1,9 @@
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
+import TutorialProvider from './TutorialProvider/TutorialProvider';
+import { TutorialProviderStory } from './TutorialProvider/TutorialProviderStory';
+
 import styled from 'styled-components';
 
 const providersList = [
@@ -101,6 +104,9 @@ const List = () => (
 export default {
   title: 'Other/Providers',
   component: List,
+  decorators: [(storyFn) => <TutorialProvider>{storyFn()}</TutorialProvider>],
 } as Meta;
 
 export const Primary: StoryFn = () => <List />;
+
+export { TutorialProviderStory as TutorialProvider };
