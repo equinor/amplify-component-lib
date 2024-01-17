@@ -6,6 +6,7 @@ import { account_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
+import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
 
 import styled from 'styled-components';
@@ -42,13 +43,18 @@ export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
 
   return (
     <>
-      <Button variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
+      <TopBarButton
+        variant="ghost_icon"
+        onClick={toggleMenu}
+        ref={buttonRef}
+        $isSelected={isOpen}
+      >
         <Icon
           data={account_circle}
           size={24}
           color={colors.interactive.primary__resting.hsla}
         />
-      </Button>
+      </TopBarButton>
       <TopBarMenu
         open={isOpen}
         title="Account"

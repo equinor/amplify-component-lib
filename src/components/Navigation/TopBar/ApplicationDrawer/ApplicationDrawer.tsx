@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { environment } from '../../../../utils';
 import ApplicationIcon from '../../../Icons/ApplicationIcon/ApplicationIcon';
 import PortalTransit from '../Help/ApplicationTransit/PortalTransit';
+import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';
 import { PortalService } from 'src/api/services/PortalService';
 
@@ -103,13 +104,18 @@ const ApplicationDrawer: FC = () => {
 
   return (
     <>
-      <Button variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
+      <TopBarButton
+        variant="ghost_icon"
+        onClick={toggleMenu}
+        ref={buttonRef}
+        $isSelected={isOpen}
+      >
         <Icon
           data={apps}
           size={24}
           color={colors.interactive.primary__resting.hsla}
         />
-      </Button>
+      </TopBarButton>
       <TopBarMenu
         open={isOpen}
         title="Your available applications"

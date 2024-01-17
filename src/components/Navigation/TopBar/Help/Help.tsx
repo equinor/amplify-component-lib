@@ -16,6 +16,7 @@ import {
   amplify_small_portal,
   amplify_tutorials,
 } from '../../../Icons/AmplifyIcons';
+import { TopBarButton } from '../TopBar.styles';
 import PortalTransit from './ApplicationTransit/PortalTransit';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
@@ -129,7 +130,7 @@ export const Help: FC<HelpProps> = ({
 
   return (
     <>
-      <Button
+      <TopBarButton
         variant="ghost_icon"
         ref={buttonRef}
         id="anchor-match"
@@ -137,12 +138,13 @@ export const Help: FC<HelpProps> = ({
         aria-expanded={isOpen}
         aria-controls="menu-match"
         onClick={toggleMenu}
+        $isSelected={isOpen}
       >
         <Icon
           data={help_outline}
           color={colors.interactive.primary__resting.hsla}
         />
-      </Button>
+      </TopBarButton>
 
       <TopBarMenu
         open={isOpen}

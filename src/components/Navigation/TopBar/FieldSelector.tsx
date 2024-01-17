@@ -1,10 +1,11 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
 import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
-import { check,  exit_to_app, platform } from '@equinor/eds-icons';
+import { check, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
 import { Field } from 'src/types/Field';
 
@@ -145,27 +146,30 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 
-
-
     const transformedFieldName = useMemo(() => {
-      if(currentField?.name){
-        return  currentField?.name?.charAt(0).toUpperCase() + currentField?.name?.slice(1)
-
+      if (currentField?.name) {
+        return (
+          currentField?.name?.charAt(0).toUpperCase() +
+          currentField?.name?.slice(1)
+        );
       }
-
-    },[currentField?.name])
-
+    }, [currentField?.name]);
 
     return (
       <div ref={ref}>
-        <Button variant='ghost' ref={buttonRef} onClick={toggleMenu}>
+        <TopBarButton
+          variant="ghost"
+          ref={buttonRef}
+          onClick={toggleMenu}
+          $isSelected={isOpen}
+        >
           <Icon
             data={platform}
             size={24}
             color={colors.interactive.primary__resting.hsla}
           />
           {transformedFieldName}
-        </Button>
+        </TopBarButton>
         <TopBarMenu
           open={isOpen}
           title="Field Selection"
@@ -180,7 +184,9 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                 <MenuFixedItem $active>
                   <div>
                     <TextContainer>
-                      <Typography variant="overline">Current selection</Typography>
+                      <Typography variant="overline">
+                        Current selection
+                      </Typography>
                       <Typography variant="h6">
                         {currentField.name?.toLowerCase()}
                       </Typography>
