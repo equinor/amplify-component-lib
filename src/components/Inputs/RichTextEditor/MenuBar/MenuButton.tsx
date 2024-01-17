@@ -10,7 +10,11 @@ const { colors, spacings, shape } = tokens;
 
 interface ButtonProps {
   $active: boolean;
-  $customSvgFill?: string;
+  $customColors?: {
+    resting: string;
+    hover: string;
+    backgroundHover: string;
+  };
 }
 
 const Button = styled.button<ButtonProps>`
@@ -24,8 +28,8 @@ const Button = styled.button<ButtonProps>`
   border-radius: ${shape.button.borderRadius};
   transition: 200ms background;
   > svg {
-    fill: ${({ $customSvgFill, $active }) => {
-      if ($customSvgFill) return $customSvgFill;
+    fill: ${({ $customColors, $active }) => {
+      if ($customColors) return $customColors.resting;
 
       if ($active) {
         return colors.ui.background__light.rgba;
@@ -35,11 +39,14 @@ const Button = styled.button<ButtonProps>`
     transition: 200ms fill;
   }
   &:hover:not(:disabled) {
-    background: ${colors.interactive.primary__resting.rgba};
+    background: ${({ $customColors }) =>
+      $customColors
+        ? $customColors.backgroundHover
+        : colors.interactive.primary__resting.rgba};
 
     > svg {
-      fill: ${({ $customSvgFill }) => {
-        if ($customSvgFill) return $customSvgFill;
+      fill: ${({ $customColors }) => {
+        if ($customColors) return $customColors.hover;
         return colors.ui.background__light.rgba;
       }};
     }
@@ -57,20 +64,21 @@ const Button = styled.button<ButtonProps>`
 interface MenuButtonProps {
   icon: IconData;
   onClick: () => void;
-  customIconColor?: string;
+  customColors?: {
+    resting: string;
+    hover: string;
+    backgroundHover: string;
+  };
   active?: boolean;
   disabled?: boolean;
 }
 
 const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
-  (
-    { icon, onClick, customIconColor, active = false, disabled = false },
-    ref
-  ) => (
+  ({ icon, onClick, customColors, active = false, disabled = false }, ref) => (
     <Button
       ref={ref}
       $active={active}
-      $customSvgFill={customIconColor}
+      $customColors={customColors}
       onClick={onClick}
       disabled={disabled}
     >

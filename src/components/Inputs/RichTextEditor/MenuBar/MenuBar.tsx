@@ -167,7 +167,11 @@ const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
           <MenuButton
             icon={format_clear}
             onClick={clearFormatting}
-            customIconColor={colors.interactive.warning__resting.hex}
+            customColors={{
+              resting: colors.interactive.warning__resting.rgba,
+              hover: colors.interactive.warning__hover.rgba,
+              backgroundHover: colors.ui.background__warning.rgba,
+            }}
           />
         </>
       )}
