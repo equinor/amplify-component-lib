@@ -150,7 +150,6 @@ test('sort release notes descending', async () => {
   });
   await waitFor(
     () => {
-      screen.logTestingPlaygroundURL();
       const posts = screen.getAllByTestId('release-post');
 
       const date0 = within(posts[0]).getByText(/31\. august 2023/i);

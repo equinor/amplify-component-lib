@@ -83,11 +83,10 @@ const ReleasePosts: FC = () => {
                     monthValueToString(new Date(releaseNote.createdDate)) ===
                       month.value
                 )
-                .sort((a, b) =>
-                  a.createdDate && b.createdDate
-                    ? new Date(b.createdDate).getTime() -
-                      new Date(a.createdDate).getTime()
-                    : -1
+                .sort(
+                  (a, b) =>
+                    new Date(b.createdDate!).getTime() -
+                    new Date(a.createdDate!).getTime()
                 );
 
               return [
