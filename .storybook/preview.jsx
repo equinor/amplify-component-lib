@@ -1,6 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
+import Template from 'src/components/Template/Template';
 
-import {darkTokens} from 'src/style/darkTokens';
+import { darkTokens } from 'src/style/darkTokens';
 
 const { colors } = tokens;
 
@@ -8,13 +9,12 @@ export const globalTypes = {
   dataThemes: {
     defaultValue: {
       list: [
-        { name: "Light", dataTheme: "light", color: "#FFFFFF" },
-        { name: "Dark", dataTheme: "dark", color: "#243746" },
+        { name: 'Light', dataTheme: 'light', color: '#FFFFFF' },
+        { name: 'Dark', dataTheme: 'dark', color: '#243746' },
       ],
     },
   },
 };
-
 
 export const decorators = [
   (Story) => {
@@ -23,10 +23,14 @@ export const decorators = [
     styleElement.innerHTML = darkTokens;
     document.head.appendChild(styleElement);
 
-    return (<Story />);
+    return (
+      <>
+        <Template.GlobalStyles />
+        <Story />
+      </>
+    );
   },
-]; 
-
+];
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
