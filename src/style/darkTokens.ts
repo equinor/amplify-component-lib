@@ -22,10 +22,10 @@ html[data-theme='dark'] {
 
   --eds_ui_background__default: rgba(19, 38, 52, 1);
   --eds_ui_background__semitransparent: rgba(255, 255, 255, 0.2);
-  --eds_ui_background__light: rgba(36, 55, 70, 1);
+  --eds_ui_background__light: rgba(38, 55, 68, 1);
   --eds_ui_background__scrim: rgba(0, 0, 0, 0.4);
   --eds_ui_background__overlay: rgba(0, 0, 0, 0.8);
-  --eds_ui_background__medium: rgba(46, 63, 77, 1);
+  --eds_ui_background__medium: rgba(44, 64, 79, 1);
   --eds_ui_background__info: rgba(43, 126, 166, 1);
   --eds_ui_background__warning: rgba(157, 105, 63, 1);
   --eds_ui_background__danger: rgba(183, 87, 87, 1);
@@ -77,14 +77,12 @@ html[data-theme='dark'] {
   --eds_interactive_success__hover: rgba(193, 231, 193, 1);
   --eds_interactive_success__text: rgba(161, 218, 160, 1);
 
-  /* Not adapted for dark mode*/
-  --eds_interactive_table__cell__fill_resting: rgba(255, 255, 255, 1);
-  --eds_interactive_table__cell__fill_hover: rgba(234, 234, 234, 1);
-  --eds_interactive_table__cell__fill_activated: rgba(230, 250, 236, 1);
-  --eds_interactive_table__header__fill_activated: rgba(234, 234, 234, 1);
-  --eds_interactive_table__header__fill_hover: rgba(220, 220, 220, 0.1);
-  --eds_interactive_table__header__fill_resting: rgba(247, 247, 247, 1);
-  /* ^^^^^^^ */
+  --eds_interactive_table__header__fill_activated: rgba(46, 63, 77, 1);
+  --eds_interactive_table__header__fill_resting: rgba(36, 55, 70, 1);
+  --eds_interactive_table__header__fill_hover: rgba(50, 77, 98, 1);
+  --eds_interactive_table__cell__fill_activated: rgba(36, 55, 70, 1);
+  --eds_interactive_table__cell__fill_resting: rgba(19, 38, 52, 1);
+  --eds_interactive_table__cell__fill_hover: rgba(30, 60, 82, 1);
 
   --eds_interactive_disabled__text: rgba(99, 117, 131, 1);
   --eds_interactive__disabled__text: rgba(99, 117, 131, 1);
