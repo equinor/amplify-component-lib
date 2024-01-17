@@ -65,6 +65,7 @@ const Links: FC = () => {
           ref={buttonRef}
           icon={link}
           onClick={handleOnToggleOpen}
+          data-testid="link-button"
         />
         <MenuButton icon={link_off} onClick={onUnsetLink} />
       </Section>

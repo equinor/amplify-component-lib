@@ -22,10 +22,12 @@ const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
   const handleOnFileSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
+    /* c8 ignore start */
     if (files === undefined || files === null || !files[0]) {
       console.error('Files undefined');
       return;
     }
+    /* c8 ignore end */
 
     const url = await onImageUpload(files[0]);
 

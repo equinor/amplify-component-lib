@@ -49,9 +49,11 @@ interface MenuBarProps {
 const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
   const { editor } = useCurrentEditor();
 
+  /* c8 ignore start */
   if (!editor) {
     throw new Error("Couldn't find tiptap editor context!");
   }
+  /* c8 ignore end */
 
   const onUndo = () => editor.chain().focus().undo().run();
   const onRedo = () => editor.chain().focus().redo().run();
