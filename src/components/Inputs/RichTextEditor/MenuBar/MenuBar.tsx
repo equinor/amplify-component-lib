@@ -65,7 +65,7 @@ const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
     editor.chain().focus().toggleBulletList().run();
   const toggleOrderedList = () =>
     editor.chain().focus().toggleOrderedList().run();
-  const toggleCode = () => editor.chain().focus().toggleCode().run();
+  const toggleCode = () => editor.chain().focus().toggleCodeBlock().run();
   const alignLeft = () => editor.chain().focus().setTextAlign('left').run();
   const alignCenter = () => editor.chain().focus().setTextAlign('center').run();
   const alignRight = () => editor.chain().focus().setTextAlign('right').run();
@@ -133,7 +133,7 @@ const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
       {features.includes(RichTextEditorFeatures.TEXT_COLOR) && <TextColor />}
       {features.includes(RichTextEditorFeatures.CODE) && (
         <MenuButton
-          active={editor.isActive('code')}
+          active={editor.isActive('codeBlock')}
           icon={code}
           onClick={toggleCode}
         />

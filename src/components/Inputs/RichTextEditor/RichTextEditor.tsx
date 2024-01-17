@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 
 import Bold from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
-import { Code } from '@tiptap/extension-code';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { Color } from '@tiptap/extension-color';
 import Document from '@tiptap/extension-document';
 import DropCursor from '@tiptap/extension-dropcursor';
@@ -27,6 +27,10 @@ import {
   DEFAULT_FEATURES,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
+
+import { common, createLowlight } from 'lowlight';
+
+const lowlight = createLowlight(common);
 
 export interface RichTextEditorProps {
   value: string | null | undefined;
@@ -78,7 +82,9 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     () => [
       BulletList,
       Bold,
-      Code,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
       Color,
       Document,
       DropCursor,

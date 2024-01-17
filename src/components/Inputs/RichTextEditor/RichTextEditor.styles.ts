@@ -2,6 +2,8 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
+import 'highlight.js/styles/github-dark-dimmed.css';
+
 const { colors, typography, spacings } = tokens;
 
 export const Wrapper = styled.div`
@@ -35,8 +37,19 @@ export const Wrapper = styled.div`
       max-height: 100%;
       border-radius: 5px;
     }
-    code {
+    pre {
+      background: #0d0d0d;
+      border-radius: 0.5rem;
+      color: #fff;
       font-family: 'Equinor Mono', monospace;
+      padding: 0.75rem 1rem;
+
+      code {
+        background: none;
+        color: inherit;
+        font-size: 0.8rem;
+        padding: 0;
+      }
     }
 
     &:focus-visible {
