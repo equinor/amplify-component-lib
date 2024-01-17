@@ -5,9 +5,11 @@ import { close, notifications as notificationIcon } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 interface SidePanelProps {
   $open: boolean;
@@ -31,10 +33,10 @@ const SidePanel = styled.div<SidePanelProps>`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.comfortable.small} ${spacings.comfortable.medium};
-  padding-right: ${spacings.comfortable.small};
+  padding: ${spacings.small} ${spacings.medium};
+  padding-right: ${spacings.small};
   align-items: center;
-  margin-bottom: ${spacings.comfortable.medium};
+  margin-bottom: ${spacings.medium};
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
 `;
 

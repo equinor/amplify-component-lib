@@ -6,10 +6,11 @@ import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
 import ToggleOpen from './ToggleOpen';
 import { useSideBar } from 'src/providers/SideBarProvider';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 interface ContainerProps {
   $width: string;
@@ -20,7 +21,7 @@ const Container = styled.div<ContainerProps>`
   background-color: ${colors.ui.background__default.rgba};
   display: flex;
   flex-direction: column;
-  padding-bottom: ${spacings.comfortable.large};
+  padding-bottom: ${spacings.large};
   overflow: hidden;
   width: ${(props) => props.$width};
   min-width: ${(props) => props.$width};
@@ -33,7 +34,7 @@ const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
   border-top: 1px solid ${colors.ui.background__medium.rgba};
-  padding-top: ${spacings.comfortable.large};
+  padding-top: ${spacings.large};
 `;
 
 const TopContainer = styled.div`

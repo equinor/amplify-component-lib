@@ -1,8 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, shape } = tokens;
+const { shape } = tokens;
 
 const ContainerNoResults = styled.div`
   display: flex;
@@ -20,7 +22,7 @@ const ContainerNoResults = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
 `;
 
 const LoadingWrapper = styled.div`

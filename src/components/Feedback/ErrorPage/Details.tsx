@@ -4,8 +4,10 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 type DetailsContainerProps = { open: boolean };
 
@@ -30,7 +32,7 @@ const Container = styled.div<DetailsContainerProps>`
     }
   }
   > p {
-    padding: 0 ${spacings.comfortable.large};
+    padding: 0 ${spacings.large};
     text-align: justify;
   }
 `;
@@ -39,7 +41,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: ${spacings.comfortable.medium};
+  padding-left: ${spacings.medium};
 `;
 
 type DetailsProps = {

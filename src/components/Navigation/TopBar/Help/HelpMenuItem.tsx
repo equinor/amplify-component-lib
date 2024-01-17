@@ -4,9 +4,11 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_forward, external_link, IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const HrefLink = styled.a`
   text-decoration: none;
@@ -16,7 +18,7 @@ const ContentInfo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: ${spacings.comfortable.medium_small};
+  gap: ${spacings.medium_small};
   padding-right: 20px;
 `;
 
@@ -25,7 +27,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   padding: 16px 8px;
   text-decoration: none;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   cursor: pointer;
 
   &:hover {

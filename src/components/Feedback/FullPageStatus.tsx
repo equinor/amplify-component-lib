@@ -6,7 +6,9 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
+
+import { spacings } from 'src/style';
 
 export interface FullPageStatusProps {
   loading: boolean;
@@ -26,7 +28,7 @@ const ErrorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: ${spacings.comfortable.large};
+  gap: ${spacings.large};
 `;
 
 const CircularProgress = styled(Progress.Circular)`

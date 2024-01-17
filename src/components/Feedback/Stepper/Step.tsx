@@ -5,9 +5,11 @@ import { TypographyVariants } from '@equinor/eds-core-react/dist/types/component
 import { check } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings, shape } = tokens;
+const { colors, shape } = tokens;
 
 interface ContainerProps {
   $clickable: boolean;
@@ -15,7 +17,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   display: flex;
-  gap: ${spacings.comfortable.small};
+  gap: ${spacings.small};
   align-items: center;
   white-space: nowrap;
   ${(props) =>

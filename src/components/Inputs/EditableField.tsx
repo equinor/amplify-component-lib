@@ -8,9 +8,11 @@ import {
 import { edit } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 interface ContainerProps {
   $editable: boolean;
@@ -29,7 +31,7 @@ const Container = styled.div<ContainerProps>`
 `;
 
 const Icon = styled(EdsIcon)`
-  margin-left: ${spacings.comfortable.small};
+  margin-left: ${spacings.small};
   height: 20px;
 `;
 

@@ -5,11 +5,10 @@ import {
   Dialog as EDSDialog,
   Typography,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+
+import { spacings } from 'src/style';
 
 import styled, { keyframes } from 'styled-components';
-
-const { spacings } = tokens;
 
 const spawn = keyframes`
     from {
@@ -32,7 +31,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   align-items: center;
   align-content: center;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   width: 25vw;
 `;
 
@@ -41,28 +40,28 @@ const Image = styled.img`
   max-width: 100%;
   height: auto;
   object-fit: cover;
-  margin-bottom: ${spacings.comfortable.xx_small};
+  margin-bottom: ${spacings.xx_small};
 `;
 
 const Title = styled.div`
-  margin-top: ${spacings.comfortable.large};
+  margin-top: ${spacings.large};
 `;
 
 const Content = styled(Typography)`
   text-align: center;
   width: 80%;
-  margin-bottom: ${spacings.comfortable.xx_small};
+  margin-bottom: ${spacings.xx_small};
 `;
 
 const Actions = styled.div`
   display: flex;
-  gap: ${spacings.comfortable.small};
-  margin-bottom: ${spacings.comfortable.large};
+  gap: ${spacings.small};
+  margin-bottom: ${spacings.large};
 `;
 
 const ButtonWrapper = styled(Button)`
-  margin: ${spacings.comfortable.small} 0;
-  padding: 0 ${spacings.comfortable.large};
+  margin: ${spacings.small} 0;
+  padding: 0 ${spacings.large};
 `;
 
 interface TutorialStartProps {

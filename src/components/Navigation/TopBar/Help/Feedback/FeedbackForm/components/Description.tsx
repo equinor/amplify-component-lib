@@ -7,15 +7,16 @@ import { FeedbackType } from '../../Feedback.types';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
 import AmplifyTextField from 'src/components/Inputs/AmplifyTextField';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const Container = styled.div`
   grid-column: 1/3;
   display: flex;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   flex-direction: column;
   textarea {
     color: ${colors.text.static_icons__default.rgba};

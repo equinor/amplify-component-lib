@@ -157,15 +157,6 @@ html[data-theme='dark'] {
   font-size: 16px;
   font-family: Equinor;
 
-  --eds_spacing_xxx_large: 48px;
-  --eds_spacing_xx_large: 40px;
-  --eds_spacing_x_large: 32px;
-  --eds_spacing_large: 24px;
-  --eds_spacing_medium: 16px;
-  --eds_spacing_medium_small: 12px;
-  --eds_spacing_small: 8px;
-  --eds_spacing_x_small: 4px;
-  --eds_spacing_xx_small: 2px;
 
   --eds_heading__h1_color: rgba(255, 255, 255, 1);
   --eds_heading__h2_color: rgba(255, 255, 255, 1);
