@@ -22,7 +22,7 @@ import Links from './Links';
 import { Section } from './MenuBar.styles';
 import MenuButton from './MenuButton';
 import TextColor from './TextColor';
-import { amplify_h2 } from 'src/components/Icons/AmplifyIcons';
+import { amplify_h2, amplify_h3 } from 'src/components/Icons/AmplifyIcons';
 
 import styled from 'styled-components';
 
@@ -111,7 +111,7 @@ const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
           />
           <MenuButton
             active={editor.isActive('heading', { level: 3 })}
-            icon={amplify_h2}
+            icon={amplify_h3}
             onClick={toggleH3}
           />
         </Section>

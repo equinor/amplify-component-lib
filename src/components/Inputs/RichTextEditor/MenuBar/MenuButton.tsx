@@ -42,10 +42,13 @@ const Button = styled.button<ButtonProps>`
         if ($customSvgFill) return $customSvgFill;
         return colors.ui.background__light.rgba;
       }};
+    }
   }
+
   &:hover:disabled {
     cursor: not-allowed;
   }
+
   &:disabled > svg {
     fill: ${colors.interactive.disabled__text.rgba};
   }
