@@ -16,6 +16,7 @@ const Container = styled.div`
   position: relative;
   background: ${colors.ui.background__light.rgba};
   border-radius: ${shape.button.borderRadius};
+  transition: 200ms background;
   > input {
     border-radius: ${shape.button.borderRadius};
     width: calc(24px + (${spacings.comfortable.x_small}) * 2);
@@ -28,6 +29,17 @@ const Container = styled.div`
       border: none;
     }
   }
+  svg {
+    fill: ${colors.interactive.primary__resting.rgba};
+    transition: 200ms fill;
+  }
+  &:hover {
+    background: ${colors.interactive.primary__resting.rgba};
+
+    svg {
+      fill: ${colors.ui.background__light.rgba};
+    }
+  }
 `;
 
 const IconWrapper = styled.span`
@@ -36,6 +48,17 @@ const IconWrapper = styled.span`
   top: calc(50% + ${spacings.comfortable.x_small} / 2);
   transform: translate(-50%, -50%);
   pointer-events: none;
+`;
+
+const ColorBar = styled.span`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 5px;
+  height: 4px;
+  width: 24px;
+  box-sizing: border-box;
+  border: 1px solid ${colors.text.static_icons__default.hex};
 `;
 
 const TextColor: FC = () => {
@@ -56,14 +79,15 @@ const TextColor: FC = () => {
         }
       />
       <IconWrapper>
-        <Icon
-          data={format_color_text}
-          color={
-            editor?.getAttributes('textStyle')?.color ||
-            colors.text.static_icons__default.hex
-          }
-        />
+        <Icon data={format_color_text} />
       </IconWrapper>
+      <ColorBar
+        style={{
+          background:
+            editor?.getAttributes('textStyle').color ||
+            colors.text.static_icons__default.hex,
+        }}
+      />
     </Container>
   );
 };
