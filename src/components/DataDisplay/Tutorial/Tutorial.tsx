@@ -17,7 +17,11 @@ export type TutorialProps = {
   imageSource?: string;
   tutorialIntro: string;
 };
-
+/**
+ * @deprecated since version 5.10. We use TutorialProvider instead, and add tutorials to a database on amplify-portal.
+ * You can read a small guide in the front-end docs on the JS devops (JS devops -> Overview -> Wiki -> Documentation ->
+ * Front-end docs -> Guides -> Creating tutorial for TutorialProvider)
+ */
 const Tutorial = forwardRef<HTMLDivElement, TutorialProps>(
   ({ steps, tutorialTitle, tutorialIntro, imageSource }, ref) => {
     const { showTutorialIntro, setTutorialStep, setShowTutorialIntro } =

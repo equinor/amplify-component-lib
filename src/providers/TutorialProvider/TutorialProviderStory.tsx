@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import { StoryFn } from '@storybook/react';
 
-import { Tutorial } from './TutorialProvider';
+import { Tutorial } from './TutorialProvider.types';
 
 import styled from 'styled-components';
 
@@ -44,25 +44,36 @@ const OrangeSquare = styled.div`
   background-color: darkorange;
 `;
 
+const Wide = styled.div`
+  grid-column: 1/3;
+  height: 200px;
+  width: 100%;
+  background-color: darksalmon;
+`;
+
 export const tutorialForTesting: Tutorial = {
   name: 'Storybook tutorial',
-  shortName: 'story-tut',
+  shortName: 'kanban-drag',
   path: '/test-path',
   steps: [
     {
-      title: 'step 1',
-      body: 'step 1 body ',
+      title: 'A beautiful tutorial story',
+      body: 'You can not interact with anything (even highlighted area) apart from this dialog',
     },
     {
-      title: 'step 2',
-      body: 'step 2 body ',
+      title: 'The story continues',
+      body: 'A blue square',
     },
     {
-      title: 'step 3',
-      body: 'step 3 body ',
+      title: 'A twist!',
+      body: 'The green circle',
     },
     {
       key: 'customKey',
+    },
+    {
+      title: 'Wide boi.',
+      body: 'A wide element to force overlaps for bottom left and right',
     },
   ],
 };
@@ -74,14 +85,15 @@ const handleOnClick = () => {
 export const TutorialProviderStory: StoryFn = () => {
   return (
     <Wrapper>
-      <RedSquare className="story-tut-0">
+      <RedSquare className="kanban-drag-0">
         <Button variant="outlined" onClick={handleOnClick}>
           U cant touch this
         </Button>
       </RedSquare>
-      <BlueSquare className="story-tut-1"></BlueSquare>
-      <GreenCircle className="story-tut-2"></GreenCircle>
-      <OrangeSquare className="story-tut-3"></OrangeSquare>
+      <BlueSquare className="kanban-drag-1"></BlueSquare>
+      <GreenCircle className="kanban-drag-2"></GreenCircle>
+      <OrangeSquare className="kanban-drag-3"></OrangeSquare>
+      <Wide className="kanban-drag-4"></Wide>
     </Wrapper>
   );
 };
