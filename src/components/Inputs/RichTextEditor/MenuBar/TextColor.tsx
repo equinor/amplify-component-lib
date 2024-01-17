@@ -57,8 +57,6 @@ const ColorBar = styled.span`
   bottom: 5px;
   height: 4px;
   width: 24px;
-  box-sizing: border-box;
-  border: 1px solid ${colors.text.static_icons__default.hex};
 `;
 
 const TextColor: FC = () => {
