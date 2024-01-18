@@ -2,6 +2,11 @@ export const darkTokens = `
 
 /*Dark Theme*/
 html[data-theme='dark'] {
+
+  textarea, input {
+    color: var(--eds_text_static_icons__default);
+  }
+
   --eds_clickbound_jumbo__base: 88px;
   --eds_clickbound_default__base: 48px;
   --eds_clickbound_default__input: 56px;
@@ -17,15 +22,15 @@ html[data-theme='dark'] {
   --eds_text_static_icons__tertiary: rgba(156, 166, 172, 1);
   --eds_text__static_icons__tertiary: rgba(156, 166, 172, 1);
 
-  --eds_text_static_icons__primary_white: rgba(255, 255, 255, 1);
-  --eds_text__static_icons__primary_white: rgba(255, 255, 255, 1);
+  --eds_text_static_icons__primary_white: rgba(61, 61, 61, 1);
+  --eds_text__static_icons__primary_white: rgba(61, 61, 61, 1);
 
   --eds_ui_background__default: rgba(19, 38, 52, 1);
   --eds_ui_background__semitransparent: rgba(255, 255, 255, 0.2);
-  --eds_ui_background__light: rgba(36, 55, 70, 1);
+  --eds_ui_background__light: rgba(38, 55, 68, 1);
   --eds_ui_background__scrim: rgba(0, 0, 0, 0.4);
   --eds_ui_background__overlay: rgba(0, 0, 0, 0.8);
-  --eds_ui_background__medium: rgba(46, 63, 77, 1);
+  --eds_ui_background__medium: rgba(44, 64, 79, 1);
   --eds_ui_background__info: rgba(43, 126, 166, 1);
   --eds_ui_background__warning: rgba(157, 105, 63, 1);
   --eds_ui_background__danger: rgba(183, 87, 87, 1);
@@ -60,7 +65,6 @@ html[data-theme='dark'] {
   --eds_interactive_primary__resting: rgba(151, 202, 206, 1);
   --eds_interactive_primary__hover: rgba(173, 226, 230, 1);
   --eds_interactive_primary__hover_alt: rgb(96, 125, 127);
-  /* --eds_interactive_primary__hover_alt: rgba(173, 226, 230, 1);   OLD */
   --eds_interactive_secondary__highlight: rgba(255, 255, 255, 0.1);
   --eds_interactive_secondary__resting: rgba(222, 229, 231, 1);
   --eds_interactive_secondary__link_hover: rgba(23, 36, 47, 1);
@@ -77,14 +81,12 @@ html[data-theme='dark'] {
   --eds_interactive_success__hover: rgba(193, 231, 193, 1);
   --eds_interactive_success__text: rgba(161, 218, 160, 1);
 
-  /* Not adapted for dark mode*/
-  --eds_interactive_table__cell__fill_resting: rgba(255, 255, 255, 1);
-  --eds_interactive_table__cell__fill_hover: rgba(234, 234, 234, 1);
-  --eds_interactive_table__cell__fill_activated: rgba(230, 250, 236, 1);
-  --eds_interactive_table__header__fill_activated: rgba(234, 234, 234, 1);
-  --eds_interactive_table__header__fill_hover: rgba(220, 220, 220, 0.1);
-  --eds_interactive_table__header__fill_resting: rgba(247, 247, 247, 1);
-  /* ^^^^^^^ */
+  --eds_interactive_table__header__fill_activated: rgba(46, 63, 77, 1);
+  --eds_interactive_table__header__fill_resting: rgba(36, 55, 70, 1);
+  --eds_interactive_table__header__fill_hover: rgba(50, 77, 98, 1);
+  --eds_interactive_table__cell__fill_activated: rgba(36, 55, 70, 1);
+  --eds_interactive_table__cell__fill_resting: rgba(19, 38, 52, 1);
+  --eds_interactive_table__cell__fill_hover: rgba(30, 60, 82, 1);
 
   --eds_interactive_disabled__text: rgba(99, 117, 131, 1);
   --eds_interactive__disabled__text: rgba(99, 117, 131, 1);
@@ -96,6 +98,8 @@ html[data-theme='dark'] {
   --eds_interactive__disabled__fill: rgba(52, 68, 80, 1);
 
   --eds_interactive_text_highlight: rgba(213, 234, 244, 1);
+  --eds_interactive__text_highlight: rgba(213, 234, 244, 1);
+
   --eds_interactive_focus: rgba(0, 112, 121, 1);
 
   --eds_interactive_link_on_interactive_colors: rgba(255, 255, 255, 1);
@@ -116,48 +120,6 @@ html[data-theme='dark'] {
   --eds_elevation_above_scrim: 0 11px 15px rgba(0, 0, 0, 0.2),
     0 9px 46px rgba(0, 0, 0, 0.12), 0 24px 38px rgba(0, 0, 0, 0.14);
 
-  --eds_shape_toggle_straight_border_min_height: 36px;
-  --eds_shape_toggle_straight_border_min_width: 36px;
-
-  --eds_shape_toggle_rounded_border_min_height: 36px;
-  --eds_shape_toggle_rounded_border_min_width: 36px;
-
-  --eds_shape_circle_min_height: 40px;
-  --eds_shape_circle_min_width: 40px;
-  --eds_shape_circle_border_radius: 100px;
-
-  --eds_shape_rounded_min_height: 40px;
-  --eds_shape_rounded_min_width: 40px;
-  --eds_shape_rounded_border_radius: 100px;
-
-  --eds_shape_button_min_height: 36px;
-  --eds_shape_button_min_width: 36px;
-  --eds_shape_button_border_radius: 4px;
-
-  --eds_shape_toggle_min_height: 36px;
-  --eds_shape_toggle_min_width: 36px;
-  --eds_shape_toggle_border_radius: 4px;
-
-  --eds_shape_corners_min_height: 36px;
-  --eds_shape_corners_min_width: 36px;
-  --eds_shape_corners_border_radius: 4px;
-
-  --eds_shape_icon_button_min_height: 40px;
-  --eds_shape_icon_button_min_width: 40px;
-  --eds_shape_icon_button_border_radius: 100px;
-
-  --eds_shape_field_min_height: 56px;
-  --eds_shape_field_min_width: 56px;
-
-  --eds_shape_straight_min_height: 36px;
-  --eds_shape_straight_min_width: 36px;
-
-  --eds_shape_caret_min_height: 8px;
-  --eds_shape_caret_min_width: 8px;
-  font-size: 16px;
-  font-family: Equinor;
-
-
   --eds_heading__h1_color: rgba(255, 255, 255, 1);
   --eds_heading__h2_color: rgba(255, 255, 255, 1);
   --eds_heading__h3_color: rgba(255, 255, 255, 1);
@@ -168,10 +130,12 @@ html[data-theme='dark'] {
   --eds_navigation__label_color: rgba(255, 255, 255, 1);
   --eds_navigation__button_color: rgba(255, 255, 255, 1);
   --eds_input__label_color: rgba(255, 255, 255, 1);
+  --eds_input__text_color: var(--eds_text_static_icons__default);
   --eds_paragraph__body_short_color: rgba(255, 255, 255, 1);
   --eds_paragraph__body_long_link_color: rgba(255, 255, 255, 1);
   --eds_table__cell_header_color: rgba(255, 255, 255, 1);
   --eds_table__cell_text_color: rgba(255, 255, 255, 1);
+  --eds_table__cell_text_bold_color: rgba(255, 255, 255, 1);
   --eds_table__cell_numeric_monospaced_color: rgba(255, 255, 255, 1);
 
   --eds_navigation__menu_title_color: rgba(255, 255, 255, 1);
@@ -180,9 +144,15 @@ html[data-theme='dark'] {
   --eds_paragraph__overline_color: rgba(255, 255, 255, 1);
   --eds_paragraph__caption_color: rgba(255, 255, 255, 1);
   --eds_paragraph__body_short_color: rgba(255, 255, 255, 1);
+  --eds_paragraph__body_long_color: rgba(255, 255, 255, 1);
   --eds_paragraph__meta_color: rgba(255, 255, 255, 1);
 
   --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1);
+
+  --eds_ui__chip__badge_color: var(--eds_text_static_icons__default);
+  
+
+  
 }
 
 

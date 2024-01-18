@@ -20,7 +20,7 @@ const ImageWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: white;
+  background-color: ${colors.ui.background__light.rgba};
   overflow: hidden;
   display: flex;
   flex-direction: column;
