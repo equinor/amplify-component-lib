@@ -80,6 +80,7 @@ const ItemText = styled(Typography)<ItemTextProps>`
 
 const Tooltip = styled(EDSTooltip)`
   text-transform: capitalize;
+  color: white;
 `;
 
 export type MenuItemType = {
