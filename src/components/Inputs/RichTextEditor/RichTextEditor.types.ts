@@ -9,6 +9,7 @@ export enum RichTextEditorFeatures {
   LINKS = 'links',
   IMAGES = 'images',
   CLEAR_FORMATTING = 'clear-formatting',
+  TABLE = 'table',
 }
 
 export const DEFAULT_FEATURES = [

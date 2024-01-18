@@ -4,6 +4,8 @@ import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import OptionalTooltip from '../../../DataDisplay/OptionalTooltip';
+
 import styled from 'styled-components';
 
 const { colors, spacings, shape } = tokens;
@@ -71,19 +73,25 @@ interface MenuButtonProps {
   };
   active?: boolean;
   disabled?: boolean;
+  tooltip?: string;
 }
 
 const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
-  ({ icon, onClick, customColors, active = false, disabled = false }, ref) => (
-    <Button
-      ref={ref}
-      $active={active}
-      $customColors={customColors}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      <Icon data={icon} />
-    </Button>
+  (
+    { icon, onClick, customColors, active = false, disabled = false, tooltip },
+    ref
+  ) => (
+    <OptionalTooltip title={tooltip} placement="bottom">
+      <Button
+        ref={ref}
+        $active={active}
+        $customColors={customColors}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        <Icon data={icon} />
+      </Button>
+    </OptionalTooltip>
   )
 );
 

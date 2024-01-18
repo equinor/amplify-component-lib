@@ -1,7 +1,10 @@
 import { StoryFn } from '@storybook/react';
 
 import RichTextEditor, { RichTextEditorProps } from './RichTextEditor';
-import { DEFAULT_FEATURES } from './RichTextEditor.types';
+import {
+  DEFAULT_FEATURES,
+  RichTextEditorFeatures,
+} from './RichTextEditor.types';
 
 export default {
   title: 'Inputs/RichTextEditor',
@@ -76,6 +79,15 @@ export const Link: StoryFn<RichTextEditorProps> = (args) => {
     <RichTextEditor
       {...args}
       value={`<p>This text contains a <a target="_blank" rel="noopener noreferrer nofollow" href="https://vg.no">link</a></p>`}
+    />
+  );
+};
+
+export const Table: StoryFn<RichTextEditorProps> = (args) => {
+  return (
+    <RichTextEditor
+      {...args}
+      features={[...DEFAULT_FEATURES, RichTextEditorFeatures.TABLE]}
     />
   );
 };

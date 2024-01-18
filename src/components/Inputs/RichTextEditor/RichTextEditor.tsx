@@ -6,6 +6,8 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { Color } from '@tiptap/extension-color';
 import Document from '@tiptap/extension-document';
 import DropCursor from '@tiptap/extension-dropcursor';
+import GapCursor from '@tiptap/extension-gapcursor';
+import { HardBreak } from '@tiptap/extension-hard-break';
 import Heading from '@tiptap/extension-heading';
 import History from '@tiptap/extension-history';
 import Image from '@tiptap/extension-image';
@@ -15,6 +17,10 @@ import { ListItem } from '@tiptap/extension-list-item';
 import { OrderedList } from '@tiptap/extension-ordered-list';
 import Paragraph from '@tiptap/extension-paragraph';
 import Placeholder from '@tiptap/extension-placeholder';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
 import Text from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
@@ -88,6 +94,8 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       Color,
       Document,
       DropCursor,
+      GapCursor,
+      HardBreak,
       Heading,
       History,
       Image,
@@ -99,6 +107,12 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       Placeholder.configure({
         placeholder,
       }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableCell,
+      TableHeader,
+      TableRow,
       Text,
       Typography,
       TextStyle,

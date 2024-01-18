@@ -31,20 +31,7 @@ export { skeletonBaseloading } from './Feedback/Skeleton/SkeletonBase/SkeletonBa
 export { default as SkeletonGradient } from './Feedback/Skeleton/SkeletonGradient/SkeletonGradient';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
 export { default as Unauthorized } from './Feedback/Unauthorized';
-export {
-  amplify_failure,
-  amplify_h1,
-  amplify_h2,
-  amplify_info_small,
-  amplify_lwd,
-  amplify_sharepoint,
-  amplify_snail,
-  amplify_sort_small,
-  amplify_success,
-  amplify_wellbore,
-  amplify_wireline_cased_hole,
-  amplify_wireline_open_hole,
-} from './Icons/AmplifyIcons';
+export * from './Icons/AmplifyIcons';
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
 export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
