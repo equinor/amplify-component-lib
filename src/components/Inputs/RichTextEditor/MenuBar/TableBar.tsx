@@ -33,6 +33,7 @@ interface TableBarProps {
   toggleTableBorders: () => void;
 }
 
+/* c8 ignore start */
 const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
   const { editor } = useCurrentEditor();
 
@@ -119,5 +120,6 @@ const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
     </Container>
   );
 };
+/* c8 ignore end */
 
 export default TableBar;

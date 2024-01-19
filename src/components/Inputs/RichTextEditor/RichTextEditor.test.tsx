@@ -239,3 +239,18 @@ test('Open file dialog', async () => {
 
   await user.click(uploadButton);
 });
+
+test('Creating table works as expected', async () => {
+  const props = fakeProps();
+
+  render(
+    <RichTextEditor {...props} features={[RichTextEditorFeatures.TABLE]} />
+  );
+  const user = userEvent.setup();
+
+  const tableButton = screen.getByRole('button');
+
+  await user.click(tableButton);
+
+  expect(screen.getByRole('table')).toBeInTheDocument();
+});

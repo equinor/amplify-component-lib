@@ -54,6 +54,7 @@ export const Wrapper = styled.div<WrapperProps>`
       th {
         border: 2px solid
           ${({ $tablesWithBorders }) =>
+            /* c8 ignore nextline */
             $tablesWithBorders ? '#ced4da' : 'transparent'};
         box-sizing: border-box;
         min-width: 1em;

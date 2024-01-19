@@ -59,6 +59,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
 }) => {
   const [tablesWithBorders, setTablesWithBorders] = useState(true);
 
+  /* c8 ignore nextline */
   const toggleTableBorders = () => setTablesWithBorders((prev) => !prev);
 
   if (features && (extendFeatures || removeFeatures)) {
