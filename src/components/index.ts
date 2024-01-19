@@ -35,6 +35,7 @@ export {
   amplify_h1,
   amplify_h2,
   amplify_lwd,
+  amplify_sharepoint,
   amplify_snail,
   amplify_success,
   amplify_wellbore,

@@ -14,13 +14,6 @@ export const Status = styled.div`
   }
 `;
 
-export const ServiceNowLink = styled.a`
-  color: ${colors.interactive.primary__resting.hex};
-  padding-left: ${spacings.comfortable.large};
-  font-weight: 400;
-  font-size: 16px;
-`;
-
 export const SlackRequestsWrapper = styled.div`
   display: flex;
   flex-direction: column;

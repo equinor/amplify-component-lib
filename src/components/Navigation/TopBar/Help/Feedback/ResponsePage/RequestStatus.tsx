@@ -6,8 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from '../Feedback.const';
 import { RequestStatusType, StatusEnum } from '../Feedback.types';
-import { createServiceNowUrl } from '../Feedback.utils';
-import { ServiceNowLink, Status } from './ResponsePage.styles';
+import { Status } from './ResponsePage.styles';
 
 import styled from 'styled-components';
 
@@ -43,21 +42,10 @@ const RequestStatus: FC<RequestStatusProps> = ({ requestStatus, title }) => {
     requestStatus.status === StatusEnum.partial ||
     requestStatus.status === StatusEnum.error;
 
-  const serviceNowUrl = useMemo(() => {
-    if (requestStatus.serviceNowId && requestStatus.serviceNowId.length !== 0) {
-      return createServiceNowUrl(requestStatus.serviceNowId, true);
-    }
-  }, [requestStatus.serviceNowId]);
-
   return (
     <Container>
       <Typography group="ui" variant="accordion_header">
         {title}
-        {serviceNowUrl && (
-          <ServiceNowLink href={serviceNowUrl}>
-            See ticket in ServiceNow
-          </ServiceNowLink>
-        )}
       </Typography>
       <Status>
         <Typography
