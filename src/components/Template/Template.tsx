@@ -56,6 +56,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Equinor', sans-serif;
+    color: ${colors.text.static_icons__default.rgba};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
