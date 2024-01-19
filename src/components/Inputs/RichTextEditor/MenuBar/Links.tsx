@@ -76,6 +76,7 @@ const Links: FC = () => {
               autoFocus
               id="link"
               placeholder="Insert link"
+              autoComplete="off"
               inputIcon={<Icon data={link} />}
               onChange={handleOnChange}
               variant={failedToSave ? 'error' : undefined}
