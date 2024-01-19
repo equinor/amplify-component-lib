@@ -1,8 +1,23 @@
+import { Fragment } from 'react';
+
 import { Divider } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
+import MergedBranchOrca from './NotificationsTemplate/NotificationElements/MergedBranchOrca';
+import {
+  DefaultNotificationProps,
+  Due3WeeksProps,
+  ExperienceReadyToPublishProps,
+  MergeBranchOrcaProps,
+  NotificationsTypes,
+  ReadyToReportNotificationProps,
+  RequestChangeOrcaProps,
+  RequestReviewOrcaProps,
+  ReviewQANotificationsProps,
+  userNotification,
+} from './NotificationsTemplate/Notifications.types';
+import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
 import Notifications, { UnreadRedDot } from './Notifications';
-import NotificationTemplate, { userNotification } from './NotificationTemplate';
 
 export default {
   title: 'Navigation/TopBar/Notifications',
@@ -11,106 +26,133 @@ export default {
   args: { hasUnread: true },
 } as Meta;
 
-type StoryFnNotificationItem = {
-  Read: boolean;
-  SequenceNumber: number;
-  Text: string;
-  fromUser: userNotification;
-  toUser: userNotification;
-  application: string;
-  time: string;
-  notificationType: string;
-};
-
-const items: StoryFnNotificationItem[] = [
+const items: (
+  | ReadyToReportNotificationProps
+  | RequestChangeOrcaProps
+  | MergeBranchOrcaProps
+  | Due3WeeksProps
+  | ExperienceReadyToPublishProps
+  | ReviewQANotificationsProps
+  | DefaultNotificationProps
+  | RequestReviewOrcaProps
+)[] = [
   {
     Read: false,
     SequenceNumber: 1,
-    Text: 'Notification item 1',
+
+    field: 'Johan',
+    user: {
+      userRole: 'Admins',
+      shortName: 'Captains',
+      displayName: 'Amanda',
+      image: 'placeholder',
+    },
     fromUser: {
       userRole: 'Admin',
-      shortName: 'Captain',
-      displayName: 'Mr Captain',
+      shortName: 'Captain@equinor.com',
+      displayName: 'Amanda',
       image: 'placeholder',
     },
 
+    branchName: 'Test branch 2 ',
     toUser: {
       userRole: 'Admins',
       shortName: 'Captains',
-      displayName: 'Mrs Captain',
+      displayName: 'Amanda',
       image: 'placeholder',
     },
-    application: 'Dasha',
-    time: ' 2 seconds ago',
-    notificationType: 'default',
-  },
+    applicationName: 'Dasha',
+    time: 2,
+    notificationType: NotificationsTypes.MERGE_BRANCH,
+  } as MergeBranchOrcaProps,
   {
     Read: true,
     SequenceNumber: 2,
-    Text: 'Notification item 2',
+
+    field: 'Johan',
+
     fromUser: {
       userRole: 'Admin',
-      shortName: 'Captain',
-      displayName: 'Mr Captain',
+      shortName: 'Captain@equinor.com',
+      displayName: 'Amanda',
       image: 'placeholder',
     },
-
+    branchName: 'Harry potter',
+    user: {
+      userRole: 'Admins',
+      shortName: 'Captains',
+      displayName: 'Birte',
+      image: 'placeholder',
+    },
     toUser: {
       userRole: 'Admins',
       shortName: 'Captains',
-      displayName: 'Mrs Captain',
+      displayName: 'Birte',
       image: 'placeholder',
     },
-    application: 'PWEX',
-    time: ' yesterday',
-    notificationType: 'default',
-  },
+    applicationName: 'PWEX',
+    time: 8,
+    notificationType: NotificationsTypes.REQUESTED_CHANGES,
+  } as RequestChangeOrcaProps,
   {
     Read: true,
     SequenceNumber: 3,
-    Text: 'Notification item 3 test test test test test test test test test test test test test test test ',
-    fromUser: {
+    field: 'Johan',
+
+    user: {
       userRole: 'Admin',
-      shortName: 'Captain',
-      displayName: 'Mr Captain',
+      shortName: 'Captain@equinor.com',
+      displayName: 'Calle',
       image: 'placeholder',
     },
 
     toUser: {
       userRole: 'Admins',
       shortName: 'Captains',
-      displayName: 'Mrs Captain',
+      displayName: 'Calle',
       image: 'placeholder',
     },
-    application: 'Recap',
-    time: ' yesterday',
-    notificationType: 'default',
-  },
+    applicationName: 'Recap',
+    time: 5,
+    wellbore: 'test hej ',
+    dataType: 'Borr',
+
+    notificationType: NotificationsTypes.READY_TO_REPORT,
+  } as ReadyToReportNotificationProps,
+  {
+    Read: false,
+    SequenceNumber: 4,
+    field: 'Johan',
+
+    user: {
+      userRole: 'Admin',
+      shortName: 'Captain@equinor.com',
+      displayName: 'Darin',
+      image: 'placeholder',
+    },
+
+    toUser: {
+      userRole: 'Admins',
+      shortName: 'Captains',
+      displayName: 'Darin',
+      image: 'placeholder',
+    },
+    applicationName: 'Recap',
+    time: 1,
+    well: 'test hej ',
+    commentsCount: 2,
+
+    notificationType: NotificationsTypes.DUE_3_WEEKS,
+  } as Due3WeeksProps,
 ];
 
 export const Primary: StoryFn = (args) => {
   return (
-    <Notifications hasUnread={args.hasUnread} setAllAsRead={() => null}>
-      {items.map((item) => {
-        return (
-          <div key={item.SequenceNumber}>
-            {/*TODO: fix*/}
-            {/*<div>{!item.Read && <UnreadRedDot />}</div>*/}
-            {/*<div>{'Sequence number: ' + item.SequenceNumber}</div>*/}
-            {/*<div>{item.Text}</div>*/}
-            {/*<Divider />*/}
-            <NotificationTemplate
-              message={item.Text}
-              fromUser={item.fromUser}
-              toUser={item.toUser}
-              SequenceNumber={item.SequenceNumber}
-              Read={item.Read}
-              applicationName={item.application}
-              time={item.time}
-            />
-          </div>
-        );
-      })}
-    </Notifications>
+    <Notifications
+      hasUnread={args.hasUnread}
+      setAllAsRead={() => null}
+      addFilters={true}
+      notifications={items}
+    />
   );
 };

@@ -1,13 +1,25 @@
-import { FC, ReactNode, useRef, useState } from 'react';
+import { FC, ReactNode, useMemo, useRef, useState } from 'react';
 
-import { Button, Chip, Icon, Typography } from '@equinor/eds-core-react';
-import {
-  close,
-  notifications as notificationIcon,
-  settings,
-} from '@equinor/eds-icons';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { close, notifications as notificationIcon } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
+
+import { TopBarButton } from '../TopBar.styles';
+import {
+  DefaultNotificationProps,
+  Due3WeeksProps,
+  ExperienceReadyToPublishProps,
+  MergeBranchOrcaProps,
+  notificationFilter,
+  notificationSort,
+  ReadyToReportNotificationProps,
+  RequestChangeOrcaProps,
+  RequestReviewOrcaProps,
+  ReviewQANotificationsProps,
+} from './NotificationsTemplate/Notifications.types';
+import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
+import FilterOptions from './FilterOptions';
 
 import styled from 'styled-components';
 
@@ -19,7 +31,7 @@ interface SidePanelProps {
 
 const SidePanel = styled.div<SidePanelProps>`
   height: calc(100vh - 64px);
-  width: 320px;
+  width: 350px;
   z-index: 100;
   background-color: ${colors.ui.background__default.hex};
   position: fixed;
@@ -38,17 +50,12 @@ const Header = styled.div`
   padding: ${spacings.comfortable.small} ${spacings.comfortable.medium};
   padding-right: ${spacings.comfortable.small};
   align-items: center;
-  margin-bottom: ${spacings.comfortable.medium};
+  padding-bottom: ${spacings.comfortable.medium};
   border-bottom: 1px solid ${colors.ui.background__medium.hex};
 `;
 
-const NoNotifications = styled.div`
-  color: ${colors.text.static_icons__tertiary.hex};
-  text-align: center;
-`;
-
 export const UnreadRedDot = styled.div`
-  background-color: ${colors.logo.fill_positive.hex};
+  background-color: ${colors.interactive.danger__hover.hex};
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -58,22 +65,81 @@ export const UnreadRedDot = styled.div`
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.14),
     0 3px 4px rgba(0, 0, 0, 0.12);
+  border: 1.5px solid ${colors.text.static_icons__primary_white.hex};
+`;
+
+const FilterOptionsContainer = styled.div`
+  display: flex;
 `;
 
 interface NotificationsProps {
   setAllAsRead: () => void;
   hasUnread?: boolean;
+  addFilters?: boolean;
   children?: ReactNode;
+  notifications?: (
+    | ReadyToReportNotificationProps
+    | RequestChangeOrcaProps
+    | MergeBranchOrcaProps
+    | Due3WeeksProps
+    | ExperienceReadyToPublishProps
+    | ReviewQANotificationsProps
+    | DefaultNotificationProps
+    | RequestReviewOrcaProps
+  )[];
+  hasChildren?: boolean;
 }
 
 const Notifications: FC<NotificationsProps> = ({
   children,
   hasUnread = false,
   setAllAsRead,
+  addFilters = false,
+  notifications,
+  hasChildren,
 }) => {
   const sidePanelRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
+  const filterMenuRef = useRef<HTMLDivElement | null>(null);
+  const sortMenuRef = useRef<HTMLDivElement | null>(null);
+
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  const [filteringOn, setFilteringOn] = useState<notificationFilter[]>([]);
+
+  const [sortingOn, setSortingOn] = useState<notificationSort[]>([]);
+
+  const filteredAndSortedNotifications = useMemo(() => {
+    if (!notifications) return [];
+    let copy = [...notifications];
+
+    if (filteringOn.length > 0) {
+      copy = copy.filter((notification) => {
+        if (filteringOn.includes(notificationFilter.UNREAD)) {
+          return !notification.Read;
+        } else if (filteringOn.includes(notificationFilter.USER)) {
+          return notification.user;
+        } else if (filteringOn.includes(notificationFilter.SYSTEM)) {
+          return !notification.user;
+        }
+      });
+    }
+    if (sortingOn.length > 0) {
+      copy = copy.sort((a, b) => {
+        if (sortingOn.includes(notificationSort.OLD_NEWEST)) {
+          return b.time - a.time;
+        } else if (sortingOn.includes(notificationSort.UNREAD)) {
+          return a.Read === b.Read ? 0 : a.Read ? 1 : -1;
+        } else {
+          return a.time - b.time;
+        }
+      });
+    }
+
+    return copy;
+  }, [filteringOn, notifications, sortingOn]);
+
+  console.log(filteredAndSortedNotifications, 'filter');
 
   const handleButtonClick = () => {
     if (notificationsOpen) {
@@ -92,7 +158,9 @@ const Notifications: FC<NotificationsProps> = ({
     if (
       notificationsOpen &&
       buttonRef.current !== null &&
-      !buttonRef.current?.contains(event.target as Node)
+      !buttonRef.current?.contains(event.target as Node) &&
+      !filterMenuRef.current?.contains(event.target as Node) &&
+      !sortMenuRef.current?.contains(event.target as Node)
     ) {
       onClose();
     }
@@ -100,12 +168,13 @@ const Notifications: FC<NotificationsProps> = ({
 
   return (
     <>
-      <Button
+      <TopBarButton
         variant="ghost_icon"
         key="topbar-notifications"
         ref={buttonRef}
         onClick={handleButtonClick}
         data-testid="show-hide-button"
+        $isSelected={notificationsOpen}
       >
         <Icon
           data={notificationIcon}
@@ -113,7 +182,7 @@ const Notifications: FC<NotificationsProps> = ({
           color={colors.interactive.primary__resting.hsla}
         />
         {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
-      </Button>
+      </TopBarButton>
       <SidePanel
         ref={sidePanelRef}
         $open={notificationsOpen}
@@ -127,24 +196,26 @@ const Notifications: FC<NotificationsProps> = ({
             <Icon data={close} color="secondary" />
           </Button>
         </Header>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingBottom: '10px',
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <Chip>Sort by </Chip>
-            <Chip>Sort by </Chip>
-          </div>
-          <Icon data={settings} />
-        </div>
-        {children ? (
+        {addFilters && (
+          <FilterOptionsContainer>
+            <FilterOptions
+              onFilter={setFilteringOn}
+              onSort={setSortingOn}
+              sortMenuRef={sortMenuRef}
+              filterMenuRef={filterMenuRef}
+            />
+          </FilterOptionsContainer>
+        )}
+        {hasChildren ? (
           children
         ) : (
-          <NoNotifications>No notifications</NoNotifications>
+          <>
+            {filteredAndSortedNotifications.map((item) => {
+              return (
+                <NotificationTemplate {...item} key={item.SequenceNumber} />
+              );
+            })}
+          </>
         )}
       </SidePanel>
     </>

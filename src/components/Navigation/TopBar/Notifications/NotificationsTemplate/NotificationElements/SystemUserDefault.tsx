@@ -15,13 +15,20 @@ const Container = styled.div`
   padding-top: ${spacings.comfortable.medium_small};
 `;
 
-const SystemUserDefault: FC = () => {
+const StyledButton = styled(Button)`
+  width: fit-content;
+`;
+
+interface SystemUserDefaultProps {
+  onClick: () => void;
+}
+const SystemUserDefault: FC<SystemUserDefaultProps> = ({ onClick }) => {
   return (
     <Container>
       <Typography group="table" variant="cell_text">
-        New Release available! Explore the latest fatures and improvemnt
+        New Release available! Explore the latest features and improvemnts
       </Typography>
-      <StyledButton variant="outlined">
+      <StyledButton variant="outlined" onClick={onClick}>
         Go to Location <Icon data={external_link} />
       </StyledButton>
     </Container>
@@ -29,7 +36,3 @@ const SystemUserDefault: FC = () => {
 };
 
 export default SystemUserDefault;
-
-const StyledButton = styled(Button)`
-  width: fit-content;
-`;
