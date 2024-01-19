@@ -1,16 +1,15 @@
 import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   code {
     background: #3d3d3d;
     padding: 24px;

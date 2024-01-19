@@ -1,9 +1,11 @@
 import { LinearProgress as EDSLinearProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 interface ContainerProps {
   $isError?: boolean;
@@ -11,11 +13,11 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   max-width: 555px;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  padding: ${spacings.medium} ${spacings.large};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   border: 1px solid
     ${({ $isError }) =>
       $isError
@@ -40,7 +42,7 @@ export const RegularFileProgressDetails = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding-top: ${spacings.comfortable.small};
+  padding-top: ${spacings.small};
 `;
 
 export const ProgressWrapper = styled.div`

@@ -1,18 +1,15 @@
 import { FC } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-
 import PageMenuItem from './PageMenuItem';
 import { usePageMenu } from 'src/providers/PageMenuProvider';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.small};
+  gap: ${spacings.small};
 `;
 
 interface PageMenuProps {

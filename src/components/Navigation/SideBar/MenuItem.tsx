@@ -9,10 +9,11 @@ import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { useSideBar } from 'src/providers/SideBarProvider';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 interface ContainerProps {
   $active?: boolean;
@@ -25,7 +26,7 @@ const Container = styled.a<ContainerProps>`
     $active ? colors.interactive.primary__selected_highlight.rgba : 'none'};
   display: ${({ $open }) => ($open ? 'grid' : 'flex')};
   grid-template-columns: repeat(10, 1fr);
-  grid-gap: ${spacings.comfortable.medium};
+  grid-gap: ${spacings.medium};
   justify-content: ${({ $open }) => !$open && 'center'};
   align-items: center;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
@@ -79,6 +80,7 @@ const ItemText = styled(Typography)<ItemTextProps>`
 
 const Tooltip = styled(EDSTooltip)`
   text-transform: capitalize;
+  color: white;
 `;
 
 export type MenuItemType = {

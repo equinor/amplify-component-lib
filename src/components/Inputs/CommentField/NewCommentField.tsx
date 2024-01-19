@@ -4,16 +4,18 @@ import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const NewCommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: ${spacings.comfortable.large};
-  margin-bottom: ${spacings.comfortable.x_large};
-  gap: ${spacings.comfortable.large};
+  margin-top: ${spacings.large};
+  margin-bottom: ${spacings.x_large};
+  gap: ${spacings.large};
 `;
 
 const CommentTextField = styled(TextField)`

@@ -2,11 +2,10 @@ import React, { forwardRef, ReactNode } from 'react';
 
 import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
+
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const StyledDialog = styled(Dialog)`
   min-width: 400px;
@@ -16,7 +15,7 @@ const DialogHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${spacings.comfortable.medium};
+  padding: ${spacings.medium};
   padding-bottom: 0;
 `;
 interface StyledActionsProps {
@@ -25,21 +24,17 @@ interface StyledActionsProps {
 
 const StyledActions = styled(Dialog.Actions)<StyledActionsProps>`
   display: flex;
-  gap: ${spacings.comfortable.small};
+  gap: ${spacings.small};
   justify-self: ${(props) =>
     props.$actionPosition === 'left' ? 'flex-start' : 'flex-end'};
   align-items: center;
 
   & > * {
     margin-left: ${(props) =>
-      props.$actionPosition === 'right'
-        ? spacings.comfortable.x_small
-        : undefined};
+      props.$actionPosition === 'right' ? spacings.x_small : undefined};
 
     margin-right: ${(props) =>
-      props.$actionPosition === 'left'
-        ? spacings.comfortable.x_small
-        : undefined};
+      props.$actionPosition === 'left' ? spacings.x_small : undefined};
   }
 `;
 

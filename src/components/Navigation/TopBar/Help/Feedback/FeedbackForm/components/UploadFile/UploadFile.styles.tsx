@@ -1,13 +1,14 @@
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 export const Title = styled(Typography)`
-  margin: ${spacings.comfortable.small} ${spacings.comfortable.small} 0
-    ${spacings.comfortable.small};
+  margin: ${spacings.small} ${spacings.small} 0 ${spacings.small};
   color: ${colors.text.static_icons__tertiary.rgba};
 `;
 
@@ -15,11 +16,11 @@ export const FileUploadAreaWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: start;
-  gap: ${spacings.comfortable.medium_small};
+  gap: ${spacings.medium_small};
   height: fit-content;
   position: relative;
   > :first-child {
-    margin-top: ${spacings.comfortable.medium_small};
+    margin-top: ${spacings.medium_small};
   }
 `;
 

@@ -9,9 +9,11 @@ import {
 import { clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const MenuWrapper = styled(Menu)`
   padding: 0 !important;
@@ -28,10 +30,10 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: ${spacings.comfortable.medium};
-  padding-right: ${spacings.comfortable.small};
+  padding-left: ${spacings.medium};
+  padding-right: ${spacings.small};
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  padding-bottom: ${spacings.comfortable.small};
+  padding-bottom: ${spacings.small};
 `;
 
 interface ContentWrapperProps {
@@ -39,8 +41,7 @@ interface ContentWrapperProps {
 }
 
 const ContentWrapper = styled.div<ContentWrapperProps>`
-  padding: ${(props) =>
-    props.$contentPadding ? spacings.comfortable.medium : '0px'};
+  padding: ${(props) => (props.$contentPadding ? spacings.medium : '0px')};
 `;
 
 interface TopBarMenuContentProps {

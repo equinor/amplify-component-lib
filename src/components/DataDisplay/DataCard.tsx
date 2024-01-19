@@ -11,12 +11,14 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-const { colors, elevation, spacings } = tokens;
+const { colors, elevation } = tokens;
+
+import { spacings } from 'src/style';
 
 const Card = styled(EDSCard)`
   box-shadow: ${elevation.raised};
   grid-gap: 0;
-  padding: ${spacings.comfortable.medium};
+  padding: ${spacings.medium};
   transition: box-shadow 400ms;
   ${(props) => {
     if (props.onClick) {

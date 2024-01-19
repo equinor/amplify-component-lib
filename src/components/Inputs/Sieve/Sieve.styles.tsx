@@ -5,19 +5,21 @@ import {
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
 `;
 
 const Container = styled.div`
   display: flex;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   align-items: center;
 `;
 

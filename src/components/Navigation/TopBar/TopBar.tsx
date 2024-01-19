@@ -8,14 +8,15 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  padding-left: ${spacings.comfortable.medium};
+  padding-left: ${spacings.medium};
   position: relative;
 `;
 

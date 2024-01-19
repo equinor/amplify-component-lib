@@ -6,10 +6,11 @@ import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import OptionDrawer from './OptionDrawer';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings, elevation } = tokens;
+const { colors, elevation } = tokens;
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -21,17 +22,17 @@ const StyledInputWrapper = styled.div`
 
 const StyledButton = styled(Button)`
   position: absolute;
-  right: ${spacings.comfortable.small};
-  height: ${spacings.comfortable.large};
-  width: ${spacings.comfortable.large};
+  right: ${spacings.small};
+  height: ${spacings.large};
+  width: ${spacings.large};
   top: 6px;
 `;
 
 const StyledCloseButton = styled(Button)`
   position: absolute;
-  right: ${spacings.comfortable.x_large};
-  height: ${spacings.comfortable.large};
-  width: ${spacings.comfortable.large};
+  right: ${spacings.x_large};
+  height: ${spacings.large};
+  width: ${spacings.large};
   top: 6px;
 `;
 
