@@ -16,14 +16,16 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, colors, shape } = tokens;
+const { colors, shape } = tokens;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.xx_small};
+  gap: ${spacings.xx_small};
 `;
 
 interface SelectElementProps {
@@ -31,11 +33,11 @@ interface SelectElementProps {
 }
 
 const SelectElement = styled.div<SelectElementProps>`
-  background: ${colors.ui.background__light.hex};
+  background: ${colors.ui.background__light.rgba};
   ${(props) =>
     props.$open
-      ? `box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex}`
-      : `box-shadow: inset 0px -1px 0px 0px ${colors.text.static_icons__tertiary.hex}`};
+      ? `box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba}`
+      : `box-shadow: inset 0px -1px 0px 0px ${colors.text.static_icons__tertiary.rgba}`};
   position: relative;
   &:hover {
     cursor: pointer;
@@ -43,32 +45,32 @@ const SelectElement = styled.div<SelectElementProps>`
   > div {
     min-height: 36px;
     align-items: center;
-    padding: ${spacings.comfortable.x_small};
-    margin-right: ${spacings.comfortable.xx_large};
-    gap: ${spacings.comfortable.x_small};
+    padding: ${spacings.x_small};
+    margin-right: ${spacings.xx_large};
+    gap: ${spacings.x_small};
     display: flex;
     flex-wrap: wrap;
   }
 `;
 
 const Placeholder = styled(Typography)`
-  color: ${colors.text.static_icons__secondary.hex};
+  color: ${colors.text.static_icons__secondary.rgba};
   height: 36px;
   display: flex;
   align-items: center;
-  padding-left: ${spacings.comfortable.small};
+  padding-left: ${spacings.small};
 `;
 
 const Arrow = styled(Icon)`
   position: absolute;
-  right: ${spacings.comfortable.small};
+  right: ${spacings.small};
   top: 50%;
   transform: translateY(-50%);
   height: 24px;
   width: 24px;
   &:hover {
     border-radius: ${shape.circle.borderRadius};
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;
 
@@ -85,11 +87,23 @@ const MenuItem = styled(EDSMenu.Item)`
 `;
 
 const Chip = styled(EDSChip)`
-  color: ${colors.interactive.primary__resting.hex};
-  background: ${colors.ui.background__info.hex};
+  color: ${colors.text.static_icons__default.rgba};
+  background: ${colors.ui.background__light.rgba};
+  border: 1px solid ${colors.ui.background__medium.rgba};
   line-height: normal;
+  transition: background 0.15s ease-in;
   > svg {
     z-index: auto;
+    fill: ${colors.text.static_icons__default.rgba};
+    &:hover {
+      fill: ${colors.interactive.primary__hover.rgba};
+    }
+  }
+
+  &:hover {
+    color: ${colors.interactive.primary__hover.rgba};
+
+    background: ${colors.ui.background__medium.rgba};
   }
 `;
 
@@ -170,7 +184,7 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
           )}
           <Arrow
             data={open ? arrow_drop_up : arrow_drop_down}
-            color={colors.interactive.primary__resting.hex}
+            color={colors.interactive.primary__resting.rgba}
           />
         </SelectElement>
       </Container>
@@ -190,7 +204,7 @@ const ChippedMultiSelect: FC<ChippedMultiSelectProps> = ({
             <MenuItem key={item} onClick={() => handleClick(item)}>
               <Icon
                 data={values.includes(item) ? checkbox : checkbox_outline}
-                color={colors.interactive.primary__resting.hex}
+                color={colors.interactive.primary__resting.rgba}
               />
               {formatter ? formatter(item) : item}
             </MenuItem>

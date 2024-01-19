@@ -134,7 +134,7 @@ test('Renders with fallback color', async () => {
     ).toBeInTheDocument();
     expect(option.children[option.children.length - 1]).toHaveStyleRule(
       'border',
-      `0.063em solid #000000`
+      `0.063em solid var(--eds_text__static_icons__secondary, rgba(86, 86, 86, 1))`
     );
   }
 });

@@ -9,10 +9,10 @@ import styled from 'styled-components';
 const { colors, shape, typography } = tokens;
 
 const availableColors: string[] = [
-  colors.infographic.primary__energy_red_55.hex,
-  colors.infographic.primary__moss_green_55.hex,
-  colors.infographic.substitute__green_mint.hex,
-  colors.infographic.substitute__blue_overcast.hex,
+  colors.infographic.primary__energy_red_55.rgba,
+  colors.infographic.primary__moss_green_55.rgba,
+  colors.infographic.substitute__green_mint.rgba,
+  colors.infographic.substitute__blue_overcast.rgba,
 ];
 
 export function nameToInitials(name: string) {
@@ -69,12 +69,12 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   border-radius: ${shape.circle.borderRadius};
   background: ${(props) =>
     props.disabled
-      ? colors.interactive.disabled__border.hex
+      ? colors.interactive.disabled__border.rgba
       : props.$background};
   color: ${(props) =>
     props.disabled
-      ? colors.text.static_icons__default.hex
-      : colors.text.static_icons__primary_white.hex};
+      ? colors.text.static_icons__default.rgba
+      : colors.text.static_icons__primary_white.rgba};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,7 +87,7 @@ const FallbackIcon = styled(Icon)`
 export interface ProfileAvatarProps {
   url?: string;
   name?: string;
-  size?: 'small' | 'small-medium' | 'medium' | 'large';
+  size?: 'small' | 'small-medium' | 'medium' | 'large' | 'x-large';
   disabled?: boolean;
 }
 
@@ -100,19 +100,35 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
       return nameToInitials(name);
     }, [name]);
 
-    const sizeToPx = () => {
-      if (size === 'small') return 16;
-      else if (size === 'small-medium') return 24;
-      else if (size === 'medium') return 32;
-      return 40;
-    };
+    const sizeToPx = useMemo(() => {
+      switch (size) {
+        case 'small':
+          return 16;
+        case 'small-medium':
+          return 24;
+        case 'medium':
+          return 32;
+        case 'large':
+          return 40;
+        case 'x-large':
+          return 48;
+      }
+    }, [size]);
 
-    const sizeToFontsize = () => {
-      if (size === 'small') return 6;
-      else if (size === 'small-medium') return 10;
-      else if (size === 'medium') return 14;
-      return 16;
-    };
+    const sizeToFontsize = useMemo(() => {
+      switch (size) {
+        case 'small':
+          return 6;
+        case 'small-medium':
+          return 10;
+        case 'medium':
+          return 14;
+        case 'large':
+          return 16;
+        case 'x-large':
+          return 18;
+      }
+    }, [size]);
 
     const imageSrc = useMemo((): string => {
       const { btoa, atob } = window;
@@ -133,7 +149,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
       return (
         <Avatar
           alt={`user-avatar-${name}`}
-          size={sizeToPx()}
+          size={sizeToPx}
           src={imageSrc}
           disabled={disabled}
           ref={ref}
@@ -144,8 +160,8 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
     return (
       <InitialsContainer
         $background={nameToColor(name)}
-        $size={sizeToPx()}
-        $fontSize={sizeToFontsize()}
+        $size={sizeToPx}
+        $fontSize={sizeToFontsize}
         disabled={disabled}
         ref={ref}
       >

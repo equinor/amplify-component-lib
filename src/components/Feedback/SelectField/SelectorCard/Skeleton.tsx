@@ -4,9 +4,10 @@ import { Card } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import SkeletonBase from '../../Skeleton/SkeletonBase/SkeletonBase';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-const { spacings, elevation, shape } = tokens;
+const { elevation, shape } = tokens;
 
 const StyledCard = styled(Card)`
   position: absolute;
@@ -17,7 +18,7 @@ const StyledCard = styled(Card)`
   transform: translate(-50%, -50%);
   width: 25rem;
   align-items: center;
-  padding: ${spacings.comfortable.large};
+  padding: ${spacings.large};
   box-shadow: ${elevation.raised};
   border-radius: ${shape.corners.borderRadius};
   display: flex;
@@ -26,7 +27,7 @@ const StyledCard = styled(Card)`
 `;
 
 const InputBox = styled(SkeletonBase)`
-  width: calc((25rem - 2 * ${spacings.comfortable.large}) * 0.8);
+  width: calc((25rem - 2 * ${spacings.large}) * 0.8);
   height: calc(${shape.button.minHeight});
 `;
 const ButtonBox = styled(SkeletonBase)`

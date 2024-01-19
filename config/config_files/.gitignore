@@ -1,5 +1,7 @@
 # Frontend specific git ignores
 
+.idea/workspace.xml
+
 .yarn/*
 !.yarn/patches
 !.yarn/releases
@@ -10,7 +12,6 @@
 
 dist/
 build/
-.idea/
 
 # Playwright
 .auth.json

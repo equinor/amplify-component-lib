@@ -100,6 +100,6 @@ test('Unread dot renders as expected', () => {
   const unreadDot = container.children[0];
   expect(unreadDot).toHaveStyleRule(
     'background-color',
-    colors.logo.fill_positive.hex
+    colors.logo.fill_positive.rgba
   );
 });

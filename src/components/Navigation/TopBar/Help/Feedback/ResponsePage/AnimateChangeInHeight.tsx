@@ -1,15 +1,13 @@
 import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
+import { spacings } from 'src/style';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-const { spacings } = tokens;
-
 const AnimationWrapper = styled(motion.div)`
   display: flex;
-  gap: ${spacings.comfortable.large};
+  gap: ${spacings.large};
   height: auto;
   flex-direction: column;
   min-height: 30px;

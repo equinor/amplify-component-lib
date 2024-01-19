@@ -36,7 +36,7 @@ const Container = styled.div<ContainerProps>`
   path {
     fill: transparent;
     stroke-width: 2;
-    stroke: ${colors.interactive.primary__resting.hex};
+    stroke: ${colors.interactive.primary__resting.rgba};
     animation: ${animateCheckmark} 1.5s;
   }
 `;

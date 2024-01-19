@@ -49,7 +49,7 @@ const ReleasePost: FC<ReleaseNote> = ({
   const buttonText = showFullContent ? 'Read less' : 'Read more';
 
   return (
-    <Container>
+    <Container data-testid="release-post">
       <motion.div
         initial={{
           height: '250px',

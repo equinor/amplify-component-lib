@@ -5,9 +5,7 @@ import { faker } from '@faker-js/faker';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
 import { render, screen, userEvent } from '../../../tests/test-utils';
-import { backgroundColor } from './CreateItem.utils';
 import { MenuItemType } from './MenuItem';
-import { SidebarTheme } from './SideBar.types';
 import SideBar from '.';
 
 const defaultMenuItems: MenuItemType[] = [
@@ -38,28 +36,6 @@ test('Renders create new button when onCreate prop is given', () => {
   );
   const createIcon = screen.getAllByTestId('eds-icon-path')[0];
   expect(createIcon).toHaveAttribute('d', add.svgPathData);
-});
-
-test('Renders dark mode correctly', () => {
-  render(
-    <SideBar
-      theme="dark"
-      onCreate={() => console.log('test')}
-      createLabel="createlabel"
-    >
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item theme="dark" key={m.name} {...m} />
-      ))}
-    </SideBar>,
-    {
-      wrapper: SideBarProvider,
-    }
-  );
-  const createButton = screen.getAllByRole('button')[0];
-  expect(createButton).toHaveStyleRule(
-    'background',
-    backgroundColor(SidebarTheme.dark)
-  );
 });
 
 test('Renders closed on initial render', () => {

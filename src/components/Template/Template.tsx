@@ -1,15 +1,19 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+import { darkTokens } from 'src/style/darkTokens';
+import { spacingTokens } from 'src/style/spacingTokens';
+
 import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const BaseTemplate = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   min-width: 100vw;
-  background: ${colors.ui.background__light.hex};
+  background: ${colors.ui.background__light.rgba};
 `;
 
 const Container = styled.div`
@@ -29,14 +33,17 @@ const Content = styled.div<ContentProps>`
   /* 256px and 72px is width of Sidebar when open/closed, + 1px because of border */
   min-width: calc(
     100% - ${(props) => (props.$open ? '257px' : '73px')} -
-      ${spacings.comfortable.xxx_large} * 2
+      ${spacings.xxx_large} * 2
   );
   &:not(:has(.select-field)) {
-    padding: 0 ${spacings.comfortable.xxx_large};
+    padding: 0 ${spacings.xxx_large};
   }
 `;
 
 const GlobalStyles = createGlobalStyle`
+  ${darkTokens}
+  ${spacingTokens}
+
   button {
     border: none;
     background: none;
@@ -46,7 +53,7 @@ const GlobalStyles = createGlobalStyle`
   hr {
     margin: 0;
     border: none;
-    background: ${colors.ui.background__medium.hex};
+    background: ${colors.ui.background__medium.rgba};
   }
   
   body {
@@ -64,9 +71,10 @@ const GlobalStyles = createGlobalStyle`
   div:focus-within:has(input[role=combobox]) {
     outline: none;
     > input {
-      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
+      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
+
 `;
 
 type TemplateType = IStyledComponent<'web', any> & {

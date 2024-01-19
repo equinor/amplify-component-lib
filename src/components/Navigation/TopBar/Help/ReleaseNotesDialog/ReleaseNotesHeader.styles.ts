@@ -1,14 +1,12 @@
-import { tokens } from '@equinor/eds-tokens';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const HeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   grid-template-columns: 1fr 5fr;
-  column-gap: ${spacings.comfortable.xx_large};
+  column-gap: ${spacings.xx_large};
   .release-notes-header-container {
     display: flex;
     flex-direction: column;
@@ -28,8 +26,8 @@ const FilterContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 0 -${spacings.comfortable.small};
-  padding: 50px ${spacings.comfortable.small} 0px ${spacings.comfortable.small};
+  margin: 0 -${spacings.small};
+  padding: 50px ${spacings.small} 0px ${spacings.small};
 `;
 
 export { FilterContainer, HeaderWrapper, HeadingContainer };

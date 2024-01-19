@@ -5,9 +5,11 @@ import { TypographyVariants } from '@equinor/eds-core-react/dist/types/component
 import { check } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings, shape } = tokens;
+const { colors, shape } = tokens;
 
 interface ContainerProps {
   $clickable: boolean;
@@ -15,7 +17,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   display: flex;
-  gap: ${spacings.comfortable.small};
+  gap: ${spacings.small};
   align-items: center;
   white-space: nowrap;
   ${(props) =>
@@ -42,17 +44,17 @@ const IconWrapper = styled.span<IconWrapperProps>`
   border: 2px solid
     ${(props) =>
       props.$filled || props.$outlined
-        ? colors.interactive.primary__resting.hex
-        : colors.interactive.disabled__text.hex};
+        ? colors.interactive.primary__resting.rgba
+        : colors.interactive.disabled__text.rgba};
   background: ${(props) =>
-    props.$filled ? colors.interactive.primary__resting.hex : 'none'};
+    props.$filled ? colors.interactive.primary__resting.rgba : 'none'};
   > p {
     // Ensure text icons are not squished
     padding: 8px;
     color: ${(props) =>
       props.$filled
-        ? colors.text.static_icons__primary_white.hex
-        : colors.interactive.disabled__text.hex};
+        ? colors.text.static_icons__primary_white.rgba
+        : colors.interactive.disabled__text.rgba};
   }
   > svg {
     transform: scale(0.9);
@@ -85,7 +87,7 @@ const Step: FC<StepProps> = ({
     }
     return (
       <IconWrapper $outlined data-testid="wrapper">
-        <Icon data={check} color={colors.interactive.primary__resting.hex} />
+        <Icon data={check} color={colors.interactive.primary__resting.rgba} />
       </IconWrapper>
     );
   }, [index, currentIndex]);
@@ -96,8 +98,8 @@ const Step: FC<StepProps> = ({
   }, [currentIndex, index]);
 
   const textColor = useMemo((): string | undefined => {
-    if (index > currentIndex) return colors.interactive.disabled__text.hex;
-    return colors.text.static_icons__default.hex;
+    if (index > currentIndex) return colors.interactive.disabled__text.rgba;
+    return colors.text.static_icons__default.rgba;
   }, [currentIndex, index]);
 
   const handleOnClick = () => {

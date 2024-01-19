@@ -5,18 +5,19 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { FeedbackType } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 const Container = styled.div`
   display: flex;
   align-items: center;
 `;
 
 export const ServiceNowLink = styled.a`
-  color: ${colors.interactive.primary__resting.hex};
-  padding-left: ${spacings.comfortable.large};
+  color: ${colors.interactive.primary__resting.rgba};
+  padding-left: ${spacings.large};
   font-weight: 400;
   font-size: 16px;
 `;

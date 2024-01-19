@@ -1,18 +1,15 @@
 import { forwardRef, ReactNode } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-
 import GlitchAnimation from './illustrations/GlitchAnimation';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   margin: auto;
   align-items: center;
   h3,

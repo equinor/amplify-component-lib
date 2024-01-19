@@ -5,12 +5,13 @@ import { external_link } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
-const { colors, spacings } = tokens;
+const { colors } = tokens;
+import { spacings } from 'src/style';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.small};
+  gap: ${spacings.small};
   > div {
     display: flex;
     justify-content: space-between;
@@ -40,7 +41,7 @@ export const MissingAccesses = forwardRef<HTMLDivElement, MissingAccessesProps>(
           >
             <Icon
               data={external_link}
-              color={colors.text.static_icons__default.hex}
+              color={colors.text.static_icons__default.rgba}
             />
           </Button>
         </div>

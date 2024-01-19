@@ -5,15 +5,16 @@ import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import SkeletonBase from '../Feedback/Skeleton/SkeletonBase/SkeletonBase';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings, shape } = tokens;
+const { colors, shape } = tokens;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.small};
+  gap: ${spacings.small};
 `;
 
 interface ContentMenuItemProps {
@@ -23,19 +24,19 @@ interface ContentMenuItemProps {
 const ContentMenuItem = styled.button<ContentMenuItemProps>`
   display: flex;
   align-items: center;
-  gap: ${spacings.comfortable.xx_small};
-  color: ${colors.text.static_icons__default.hex};
+  gap: ${spacings.xx_small};
+  color: ${colors.text.static_icons__default.rgba};
   border: none;
   border-radius: ${shape.corners.borderRadius};
   min-width: 150px;
   width: fit-content;
-  padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
+  padding: ${spacings.medium_small} ${spacings.medium};
   text-align: left;
   background: ${(props) =>
-    props.$active ? colors.interactive.primary__hover_alt.hex : 'none'};
-  transition: background 400ms;
+    props.$active ? colors.interactive.primary__hover_alt.rgba : 'none'};
+  transition: background 150ms;
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
     cursor: pointer;
   }
   font-family: 'Equinor', sans-serif;
@@ -45,20 +46,20 @@ const ContentMenuItem = styled.button<ContentMenuItemProps>`
 const ContentMenuChildItem = styled.button<ContentMenuItemProps>`
   display: flex;
   align-items: center;
-  gap: ${spacings.comfortable.xx_small};
-  color: ${colors.text.static_icons__default.hex};
+  gap: ${spacings.xx_small};
+  color: ${colors.text.static_icons__default.rgba};
   border: none;
-  margin-left: ${spacings.comfortable.medium_small};
+  margin-left: ${spacings.medium_small};
   border-radius: ${shape.corners.borderRadius};
-  min-width: calc(150px - ${spacings.comfortable.medium_small});
+  min-width: calc(150px - ${spacings.medium_small});
   width: fit-content;
-  padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
+  padding: ${spacings.medium_small} ${spacings.medium};
   text-align: left;
   background: ${(props) =>
-    props.$active ? colors.interactive.primary__hover_alt.hex : 'none'};
+    props.$active ? colors.interactive.primary__hover_alt.rgba : 'none'};
   transition: background 400ms;
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
     cursor: pointer;
   }
   font-family: 'Equinor', sans-serif;
@@ -71,7 +72,7 @@ const ContentMenuItemSkeleton = styled(SkeletonBase)`
   border-radius: ${shape.corners.borderRadius};
   width: 150px;
   height: 1rem;
-  padding: ${spacings.comfortable.medium_small} 0;
+  padding: ${spacings.medium_small} 0;
 `;
 
 type ContentMenuItemType = {

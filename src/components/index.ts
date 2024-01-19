@@ -20,7 +20,8 @@ export { default as ConfirmationPopup } from './Feedback/ConfirmationPopup';
 export { default as ErrorPage } from './Feedback/ErrorPage';
 export type { ErrorContentProps } from './Feedback/ErrorPage/ErrorPage';
 export { default as GlitchAnimation } from './Feedback/ErrorPage/illustrations/GlitchAnimation';
-export { default as QuestioningAnimaion } from './Feedback/ErrorPage/illustrations/QuestioningAnimation';
+export { default as QuestioningAnimation } from './Feedback/ErrorPage/illustrations/QuestioningAnimation';
+export { default as FileProgress } from './Feedback/FileProgress/FileProgress';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as PageNotFound } from './Feedback/PageNotFound';
@@ -34,9 +35,11 @@ export {
   amplify_failure,
   amplify_h1,
   amplify_h2,
+  amplify_info_small,
   amplify_lwd,
   amplify_sharepoint,
   amplify_snail,
+  amplify_sort_small,
   amplify_success,
   amplify_wellbore,
   amplify_wireline_cased_hole,
@@ -86,6 +89,7 @@ export { default as Sieve } from './Inputs/Sieve/Sieve';
 export type { Option, SieveValue } from './Inputs/Sieve/Sieve.types';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
 export { default as PageMenu } from './Navigation/PageMenu/PageMenu';
+export { default as PageWithTitle } from './Navigation/PageWithTitle';
 export type { ItemType, SidebarType } from './Navigation/SideBar';
 export { default as SideBar } from './Navigation/SideBar';
 export type {

@@ -1,5 +1,7 @@
 import { FC, useRef, useState } from 'react';
 
+import { tokens } from '@equinor/eds-tokens';
+
 import SelectorCard from './SelectorCard/SelectorCard';
 import SelectorSkeleton from './SelectorCard/Skeleton';
 import ChangingField from './ChangingField';
@@ -8,15 +10,17 @@ import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 
+const { colors } = tokens;
 const ImageWrapper = styled.div`
   margin-top: auto;
   > svg {
     margin-bottom: -10px;
+    background-color: ${colors.ui.background__light.rgba};
   }
 `;
 
 const Container = styled.div`
-  background-color: white;
+  background-color: ${colors.ui.background__light.rgba};
   overflow: hidden;
   display: flex;
   flex-direction: column;

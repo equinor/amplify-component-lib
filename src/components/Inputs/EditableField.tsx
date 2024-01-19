@@ -8,9 +8,11 @@ import {
 import { edit } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 interface ContainerProps {
   $editable: boolean;
@@ -29,9 +31,8 @@ const Container = styled.div<ContainerProps>`
 `;
 
 const Icon = styled(EdsIcon)`
-  margin-left: ${spacings.comfortable.small};
+  margin-left: ${spacings.small};
   height: 20px;
-  color: ${colors.interactive.primary__resting.hsla};
 `;
 
 interface ITextFieldProps {
@@ -47,9 +48,10 @@ const TextField = styled(EdsTextField)<ITextFieldProps>`
       font-size: 1rem;
       font-weight: 500;
       padding: 0;
-      box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__border.hsla};
+      color: ${colors.text.static_icons__default.rgba};
+      box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__border.rgba};
       &:focus {
-        box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hsla};
+        box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
       }
    }
    
@@ -133,7 +135,13 @@ const EditableField: React.FC<EditableFieldProps> = ({
           )}
         </>
       )}
-      {editable && !editing && <Icon data-testid="editableicon" data={edit} />}
+      {editable && !editing && (
+        <Icon
+          data-testid="editableicon"
+          color={colors.interactive.primary__resting.rgba}
+          data={edit}
+        />
+      )}
     </Container>
   );
 };

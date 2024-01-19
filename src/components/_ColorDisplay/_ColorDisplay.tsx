@@ -50,7 +50,7 @@ const ColorModule: FC<ColorModuleProps> = ({ title, colors }) => (
     <Wrapper>
       {Object.entries(colors).map(([key, value]) => {
         return (
-          <ColorBox key={key} $color={value.hsla}>
+          <ColorBox key={key} $color={value.rgba}>
             <Typography variant="cell_text_bold" group="table">
               {key}
             </Typography>
@@ -58,7 +58,7 @@ const ColorModule: FC<ColorModuleProps> = ({ title, colors }) => (
               {value.hsla}
             </Typography>
             <Typography variant="cell_text" group="table">
-              {value.hex}
+              {value.rgba}
             </Typography>
           </ColorBox>
         );

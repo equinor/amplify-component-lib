@@ -1,4 +1,12 @@
-import { FC, useRef, useState } from 'react';
+import {
+  FC,
+  MutableRefObject,
+  ReactElement,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
@@ -6,12 +14,12 @@ import { account_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
-import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 const Info = styled.div`
   display: flex;
@@ -21,40 +29,55 @@ const Info = styled.div`
 
 const FullWidthWrapper = styled.div`
   display: grid;
-  margin-top: ${spacings.comfortable.large};
+  margin-top: ${spacings.large};
   justify-content: stretch;
   flex-direction: column;
-  grid-gap: ${spacings.comfortable.medium};
+  grid-gap: ${spacings.medium};
 `;
 
-export interface IAccountProps {
+export interface AccountProps {
   account: AccountInfo | undefined;
   logout: () => void;
   photo: string | undefined;
+  renderCustomButton?: (
+    buttonRef: MutableRefObject<HTMLButtonElement | null>,
+    handleToggle: () => void
+  ) => ReactElement;
 }
 
-export const Account: FC<IAccountProps> = ({ account, logout, photo }) => {
+export const Account: FC<AccountProps> = ({
+  account,
+  logout,
+  photo,
+  renderCustomButton,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const closeMenu = () => setIsOpen(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
+
+  const customButton = useMemo(() => {
+    if (renderCustomButton) {
+      return renderCustomButton(buttonRef, toggleMenu);
+    }
+    return null;
+  }, [renderCustomButton, toggleMenu]);
 
   return (
     <>
-      <TopBarButton
-        variant="ghost_icon"
-        onClick={toggleMenu}
-        ref={buttonRef}
-        $isSelected={isOpen}
-      >
-        <Icon
-          data={account_circle}
-          size={24}
-          color={colors.interactive.primary__resting.hsla}
-        />
-      </TopBarButton>
+      {customButton ? (
+        customButton
+      ) : (
+        <Button variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
+          <Icon
+            data={account_circle}
+            size={24}
+            color={colors.interactive.primary__resting.rgba}
+          />
+        </Button>
+      )}
       <TopBarMenu
         open={isOpen}
         title="Account"

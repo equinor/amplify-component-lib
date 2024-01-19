@@ -1,27 +1,39 @@
 import React, { forwardRef, ReactNode } from 'react';
 
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
+import {
+  Button as EDSButton,
+  Icon,
+  Menu,
+  Typography,
+} from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const MenuWrapper = styled(Menu)`
   padding: 0 !important;
   width: 300px;
   border-radius: 5px;
 `;
+const Button = styled(EDSButton)`
+  span > svg {
+    fill: ${colors.interactive.primary__resting.rgba};
+  }
+`;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: ${spacings.comfortable.medium};
-  padding-right: ${spacings.comfortable.small};
-  border-bottom: 1px solid ${colors.ui.background__medium.hex};
-  padding-bottom: ${spacings.comfortable.small};
+  padding-left: ${spacings.medium};
+  padding-right: ${spacings.small};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+  padding-bottom: ${spacings.small};
 `;
 
 interface ContentWrapperProps {
@@ -29,8 +41,7 @@ interface ContentWrapperProps {
 }
 
 const ContentWrapper = styled.div<ContentWrapperProps>`
-  padding: ${(props) =>
-    props.$contentPadding ? spacings.comfortable.medium : '0px'};
+  padding: ${(props) => (props.$contentPadding ? spacings.medium : '0px')};
 `;
 
 interface TopBarMenuContentProps {
@@ -66,7 +77,10 @@ const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
             onClick={onClose}
             data-testid="close-button"
           >
-            <Icon data={clear} />
+            <Icon
+              data={clear}
+              color={colors.interactive.primary__resting.rgba}
+            />
           </Button>
         </Header>
         <ContentWrapper $contentPadding={contentPadding}>

@@ -6,14 +6,15 @@ import { RequestStatusType } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import RequestStatus from './RequestStatus';
 import { SlackRequestsWrapper } from './ResponsePage.styles';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 const Container = styled.div`
-  padding: ${spacings.comfortable.small};
-  background-color: ${colors.ui.background__light.hex};
+  padding: ${spacings.small};
+  background-color: ${colors.ui.background__light.rgba};
 `;
 
 interface SlackResponseProps {

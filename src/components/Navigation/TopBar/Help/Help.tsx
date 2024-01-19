@@ -25,17 +25,18 @@ import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Fee
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
 `;
 
 const ContentWrapper = styled.div`
-  padding: 0 ${spacings.comfortable.medium};
+  padding: 0 ${spacings.medium};
 `;
 
 const BackButton = styled.div`
@@ -43,6 +44,7 @@ const BackButton = styled.div`
 `;
 
 export interface HelpProps {
+  field?: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
   children?: ReactNode;
@@ -50,6 +52,7 @@ export interface HelpProps {
 }
 
 export const Help: FC<HelpProps> = ({
+  field,
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
@@ -146,7 +149,7 @@ export const Help: FC<HelpProps> = ({
       >
         <Icon
           data={help_outline}
-          color={colors.interactive.primary__resting.hsla}
+          color={colors.interactive.primary__resting.rgba}
         />
       </TopBarButton>
 
@@ -257,7 +260,11 @@ export const Help: FC<HelpProps> = ({
               ? 'Report a bug - ServiceNow'
               : 'Suggest a feature'}
           </Dialog.Header>
-          <Feedback selectedType={feedbackType} onClose={handleOnDialogClose} />
+          <Feedback
+            field={field}
+            selectedType={feedbackType}
+            onClose={handleOnDialogClose}
+          />
         </FeedbackFormDialog>
       )}
 

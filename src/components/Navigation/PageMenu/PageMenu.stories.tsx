@@ -26,17 +26,17 @@ export default {
       {
         label: 'First section',
         value: 'id-1',
-        color: colors.infographic.substitute__blue_ocean.hex,
+        color: colors.infographic.substitute__blue_ocean.rgba,
       },
       {
         label: 'Second section',
         value: 'id-2',
-        color: colors.infographic.substitute__blue_sky.hex,
+        color: colors.infographic.substitute__blue_sky.rgba,
       },
       {
         label: 'Third section',
         value: 'id-3',
-        color: colors.infographic.substitute__blue_overcast.hex,
+        color: colors.infographic.substitute__blue_overcast.rgba,
       },
     ],
     onlyShowSelectedChildren: false,

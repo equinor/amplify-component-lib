@@ -2,13 +2,15 @@ import { FileWithPath } from 'react-dropzone';
 
 import { EnvironmentType } from '../../TopBar';
 import {
+  Browsers,
   FeedbackContentType,
   FeedbackType,
   UrgencyOption,
 } from './Feedback.types';
 import { ServiceNowUrgency } from 'src/api';
-import { date, environment } from 'src/utils';
+import { date, environment, string } from 'src/utils';
 
+const { capitalize } = string;
 const { formatDate } = date;
 const { getAppName, getEnvironmentName } = environment;
 
@@ -53,14 +55,21 @@ export const getUrgencyNumber = (urgency: UrgencyOption) => {
 };
 
 export const createServiceNowDescription = (
-  feedbackContent: FeedbackContentType
+  feedbackContent: FeedbackContentType,
+  field: string | undefined
 ) => {
   const locationText = `Url location of bug: ${feedbackContent.url} \n`;
   const severityText = `Severity of bug: ${feedbackContent.urgency} \n`;
+  const fieldText = `Field: ${capitalize(field ?? '')} \n`;
+  const browserText = `Browser: ${getBrowserInfo()} \n`;
 
-  return `${feedbackContent.url ? locationText : ''}${
-    feedbackContent.urgency ? severityText : ''
-  }${feedbackContent.description}`;
+  return `${feedbackContent.url ? locationText : ''}
+  ${feedbackContent.urgency ? severityText : ''}
+  ${field ? fieldText : ''}
+  ${browserText}
+  ${feedbackContent.description} \n \n User agent string: ${
+    navigator.userAgent
+  }`;
 };
 
 export const createServiceNowUrl = (sysId: string, selfService?: boolean) => {
@@ -77,8 +86,40 @@ export const createServiceNowUrl = (sysId: string, selfService?: boolean) => {
   }.service-now.com/${path}${sysId}`;
 };
 
+const getBrowserName = () => {
+  if (navigator.userAgent.indexOf(Browsers.EDGE_SHORT) !== -1) {
+    return Browsers.EDGE;
+  } else if (navigator.userAgent.indexOf(Browsers.CHROME) !== -1) {
+    return Browsers.CHROME;
+  } else if (navigator.userAgent.indexOf(Browsers.SAFARI) !== -1) {
+    return Browsers.SAFARI;
+  } else if (navigator.userAgent.indexOf(Browsers.FIREFOX) !== -1) {
+    return Browsers.FIREFOX;
+  } else {
+    return;
+  }
+};
+
+const getBrowserVersion = (browserName: Browsers) => {
+  let browserNameToUse = browserName;
+  if (browserName === Browsers.EDGE) {
+    browserNameToUse = Browsers.EDGE_SHORT;
+  }
+  const regex = new RegExp(`${browserNameToUse}/(\\d+(?:\\.\\d+)+)`);
+  return navigator.userAgent.match(regex)?.[1];
+};
+
+export const getBrowserInfo = () => {
+  const browserName = getBrowserName();
+  if (browserName) {
+    return `${browserName} (${getBrowserVersion(browserName)})`;
+  }
+  return 'Not found';
+};
+
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
+  field?: string,
   selectedType?: FeedbackType,
   email?: string,
   sysId?: string | null
@@ -142,6 +183,19 @@ export const createSlackMessage = (
         {
           type: 'mrkdwn',
           text: `*User* \n ${email}`,
+        },
+      ],
+    },
+    {
+      type: 'section',
+      fields: [
+        {
+          type: 'mrkdwn',
+          text: '*Browser* \n ' + getBrowserInfo(),
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Field* \n ${capitalize(field ?? 'Not found')}`,
         },
       ],
     },

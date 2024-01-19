@@ -4,27 +4,24 @@ import { tokens } from '@equinor/eds-tokens';
 
 import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
-import { borderBottomColor } from './MenuItem.utils';
-import { SidebarTheme } from './SideBar.types';
-import { backgroundColor, borderColor } from './SideBar.utils';
 import ToggleOpen from './ToggleOpen';
 import { useSideBar } from 'src/providers/SideBarProvider';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { colors } = tokens;
 
 interface ContainerProps {
-  $theme: SidebarTheme;
   $width: string;
 }
 
 const Container = styled.div<ContainerProps>`
-  border-right: 1px solid ${({ $theme }) => borderColor($theme)};
-  background-color: ${({ $theme }) => backgroundColor($theme)};
+  border-right: 1px solid ${colors.ui.background__medium.rgba};
+  background-color: ${colors.ui.background__default.rgba};
   display: flex;
   flex-direction: column;
-  padding-bottom: ${spacings.comfortable.large};
+  padding-bottom: ${spacings.large};
   overflow: hidden;
   width: ${(props) => props.$width};
   min-width: ${(props) => props.$width};
@@ -33,15 +30,11 @@ const Container = styled.div<ContainerProps>`
   top: 64px;
 `;
 
-interface LogoContainerProps {
-  $theme: SidebarTheme;
-}
-
-const LogoContainer = styled.div<LogoContainerProps>`
+const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
-  border-top: 1px solid ${({ $theme }) => borderBottomColor($theme)};
-  padding-top: ${spacings.comfortable.large};
+  border-top: 1px solid ${colors.ui.background__medium.rgba};
+  padding-top: ${spacings.large};
 `;
 
 const TopContainer = styled.div`
@@ -51,7 +44,6 @@ const TopContainer = styled.div`
 `;
 
 interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
-  theme?: keyof typeof SidebarTheme;
   children: ReactNode;
 }
 
@@ -69,7 +61,7 @@ export const SideBar = forwardRef<
   HTMLDivElement,
   SidebarWithCreate | SideBarWithoutCreate
 >((props, ref) => {
-  const { theme = SidebarTheme.light, children } = props;
+  const { children } = props;
   const { isOpen, setIsOpen } = useSideBar();
 
   const handleToggle = () => {
@@ -78,7 +70,6 @@ export const SideBar = forwardRef<
 
   return (
     <Container
-      $theme={SidebarTheme[theme]}
       $width={isOpen ? '256px' : '72px'}
       ref={ref}
       data-testid="sidebar"
@@ -86,7 +77,6 @@ export const SideBar = forwardRef<
       <TopContainer>
         {props.onCreate && (
           <CreateItem
-            theme={SidebarTheme[theme]}
             createLabel={props.createLabel}
             onCreate={props.onCreate}
             disabled={props.createDisabled}
@@ -94,13 +84,9 @@ export const SideBar = forwardRef<
         )}
         {children}
       </TopContainer>
-      <ToggleOpen
-        theme={SidebarTheme[theme]}
-        isOpen={isOpen}
-        toggle={handleToggle}
-      />
-      <LogoContainer $theme={SidebarTheme[theme]}>
-        <EquinorLogo color={theme === SidebarTheme.light ? 'red' : 'white'} />
+      <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
+      <LogoContainer>
+        <EquinorLogo />
       </LogoContainer>
     </Container>
   );

@@ -1,18 +1,19 @@
 import { Dialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
 
 const StyledDialog = styled(Dialog)`
-  background-color: ${colors.ui.background__light.hex};
+  background-color: ${colors.ui.background__light.rgba};
   width: 85vw;
   height: 85vh;
   display: flex;
   flex-direction: column;
-  padding-left: ${spacings.comfortable
-    .large}; // Due to where we've put the scroll bar, we will fix the right padding in a different element
+  padding-left: ${spacings.large}; // Due to where we've put the scroll bar, we will fix the right padding in a different element
   overflow: hidden;
 `;
 
@@ -20,7 +21,7 @@ const Wrapper = styled.div`
   min-width: calc(100% - 73px - 48px);
   padding-bottom: 64px;
   display: flex;
-  column-gap: ${spacings.comfortable.xx_large};
+  column-gap: ${spacings.xx_large};
 `;
 
 const LeftContainer = styled.div`
@@ -43,13 +44,13 @@ const LeftContainer = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  padding-right: ${spacings.comfortable.xx_large};
+  padding-right: ${spacings.xx_large};
   width: 100%;
 `;
 const ScrollWrapper = styled.div`
   height: fit-content;
   overflow-y: auto;
-  padding-bottom: ${spacings.comfortable.xxx_large};
+  padding-bottom: ${spacings.xxx_large};
 `;
 
 export { Content, LeftContainer, ScrollWrapper, StyledDialog, Wrapper };

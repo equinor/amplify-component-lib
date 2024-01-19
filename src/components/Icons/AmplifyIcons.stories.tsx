@@ -4,16 +4,16 @@ import { Meta, StoryFn } from '@storybook/react';
 import {
   amplify_failure,
   amplify_h1,
-  amplify_h2, 
+  amplify_h2,
+  amplify_info_small,
   amplify_lwd,
   amplify_sharepoint,
   amplify_snail,
+  amplify_sort_small,
   amplify_success,
-  amplify_tutorials,
   amplify_wellbore,
   amplify_wireline_cased_hole,
-    amplify_wireline_open_hole,
-    amplify_small_portal,
+  amplify_wireline_open_hole,
 } from './AmplifyIcons';
 
 const allIcons = {
@@ -29,6 +29,8 @@ const allIcons = {
   amplify_tutorials: amplify_tutorials,
   amplify_small_portal: amplify_small_portal,
   amplify_sharepoint: amplify_sharepoint,
+  amplify_sort_small: amplify_sort_small,
+  amplify_info_small: amplify_info_small,
 };
 
 interface StoryFnProps {
@@ -62,6 +64,8 @@ export default {
         'amplify_sharepoint',
         'amplify_tutorials',
           'amplify_small_portal',
+        'amplify_sort_small',
+        'amplify_info_small',
       ],
     },
   },

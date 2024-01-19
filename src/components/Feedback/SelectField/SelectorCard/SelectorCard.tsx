@@ -11,11 +11,12 @@ import {
 import { arrow_forward, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
 import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 
-const { spacings, elevation, colors, shape } = tokens;
+const { elevation, colors, shape } = tokens;
 
 const TextContainer = styled.div`
   display: flex;
@@ -34,44 +35,45 @@ const StyledCard = styled(Card)`
   transform: translate(-50%, -50%);
   width: 25rem;
   height: auto;
-  padding: ${spacings.comfortable.large};
+  padding: ${spacings.large};
   box-shadow: ${elevation.above_scrim};
   border-radius: ${shape.corners.borderRadius};
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   > h3 {
-    color: ${colors.text.static_icons__default.hex};
-    margin-bottom: ${spacings.comfortable.medium};
+    color: ${colors.text.static_icons__default.rgba};
+    margin-bottom: ${spacings.medium};
   }
   > section {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: flex-end;
-    grid-gap: ${spacings.comfortable.medium};
+    grid-gap: ${spacings.medium};
   }
 `;
 
 const AutocompleteWrapper = styled.div`
   * {
     background: none !important;
+    color: ${colors.text.static_icons__default.rgba};
   }
   *:focus-within {
     outline: none !important;
   }
   input:focus {
-    box-shadow: inset 0 -2px ${colors.interactive.primary__resting.hex};
+    box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
   }
 `;
 
 const MissingAccess = styled.div`
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  padding: ${spacings.medium} ${spacings.large};
   display: grid;
   grid-template-columns: 1fr 24px;
   justify-content: space-between;
   align-items: center;
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
     cursor: pointer;
   }
 `;
@@ -149,7 +151,7 @@ const SelectorCard: FC<FieldSelectorType> = ({
           </TextContainer>
           <Icon
             data={exit_to_app}
-            color={colors.interactive.primary__resting.hex}
+            color={colors.interactive.primary__resting.rgba}
             size={24}
           />
         </MissingAccess>

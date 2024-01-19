@@ -7,28 +7,32 @@ import { useOutsideClick } from '@equinor/eds-utils';
 
 import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
+import { spacings } from 'src/style';
 import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.small};
-  padding: ${spacings.comfortable.large};
+  gap: ${spacings.small};
+  padding: ${spacings.large};
   div[role='search'] {
     > div {
       outline: none !important;
     }
+    input {
+      color: ${colors.text.static_icons__default.rgba};
+    }
     input:focus {
-      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.hex};
+      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba};
     }
   }
 `;
 
 const NoFieldsText = styled(Typography)`
-  margin: 0 auto ${spacings.comfortable.medium};
+  margin: 0 auto ${spacings.medium};
 `;
 
 const ListContainer = styled.div`
@@ -44,19 +48,19 @@ interface MenuItemProps {
 
 const MenuItem = styled.div<MenuItemProps>`
   &:hover {
-    background: ${colors.interactive.primary__selected_hover.hex};
+    background: ${colors.interactive.primary__selected_hover.rgba};
     cursor: pointer;
   }
-  border-top: 1px solid ${colors.ui.background__light.hex};
+  border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  padding: ${spacings.medium} ${spacings.large};
 `;
 
 const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
     props.$active &&
-    `background: ${colors.interactive.primary__selected_highlight.hex};
-     border-bottom: 1px solid ${colors.interactive.primary__resting.hex};
+    `background: ${colors.interactive.primary__selected_highlight.rgba};
+     border-bottom: 1px solid ${colors.interactive.primary__resting.rgba};
     `};
   > div {
     display: grid;
@@ -65,24 +69,24 @@ const MenuFixedItem = styled.div<MenuItemProps>`
     width: 100%;
   }
   &:hover {
-    background: ${colors.interactive.primary__selected_hover.hex};
+    background: ${colors.interactive.primary__selected_hover.rgba};
     cursor: pointer;
   }
-  border-top: 1px solid ${colors.ui.background__light.hex};
+  border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  padding: ${spacings.medium} ${spacings.large};
   svg {
     align-self: center;
   }
 `;
 
 const MenuSection = styled.div`
-  border-bottom: 1px solid ${colors.ui.background__light.hex};
+  border-bottom: 1px solid ${colors.ui.background__light.rgba};
   display: flex;
   flex-direction: column;
   > p {
-    margin-left: ${spacings.comfortable.large};
-    margin-bottom: ${spacings.comfortable.small};
+    margin-left: ${spacings.large};
+    margin-bottom: ${spacings.small};
   }
 `;
 
@@ -141,8 +145,8 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         (field) => currentField?.uuid !== field?.uuid
       );
       if (searchValue === '') return fieldItems;
-      return fieldItems.filter(
-        (field) => field.name?.toLowerCase().includes(searchValue.toLowerCase())
+      return fieldItems.filter((field) =>
+        field.name?.toLowerCase().includes(searchValue.toLowerCase())
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 
@@ -166,7 +170,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
           <Icon
             data={platform}
             size={24}
-            color={colors.interactive.primary__resting.hsla}
+            color={colors.interactive.primary__resting.rgba}
           />
           {transformedFieldName}
         </TopBarButton>
@@ -193,7 +197,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                     </TextContainer>
                     <Icon
                       data={check}
-                      color={colors.interactive.primary__resting.hex}
+                      color={colors.interactive.primary__resting.rgba}
                       size={24}
                     />
                   </div>
@@ -245,7 +249,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                   </TextContainer>
                   <Icon
                     data={exit_to_app}
-                    color={colors.interactive.primary__resting.hex}
+                    color={colors.interactive.primary__resting.rgba}
                     size={24}
                   />
                 </div>

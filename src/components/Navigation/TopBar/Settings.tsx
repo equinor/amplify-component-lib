@@ -16,6 +16,7 @@ const ContentWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-right: 40px;
+  color: ${colors.text.static_icons__default.rgba};
 `;
 
 interface StyledColorBoxProps {
@@ -67,7 +68,7 @@ export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
         <Icon
           data={settings}
           size={24}
-          color={colors.interactive.primary__resting.hsla}
+          color={colors.interactive.primary__resting.rgba}
         />
       </TopBarButton>
       <TopBarMenu

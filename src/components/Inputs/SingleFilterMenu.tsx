@@ -10,9 +10,11 @@ import {
 import { filter_list, IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const Container = styled.div`
   margin-left: auto;
@@ -38,14 +40,14 @@ const Menu = styled(EdsMenu)`
 `;
 
 const MenuTitleContainer = styled.div`
-  padding: ${spacings.comfortable.medium};
-  padding-left: ${spacings.comfortable.large};
+  padding: ${spacings.medium};
+  padding-left: ${spacings.large};
 `;
 
 const MenuItem = styled(EdsMenu.Item)`
   &:focus {
     outline: none;
-    background: ${colors.ui.background__light.hsla};
+    background: ${colors.ui.background__light.rgba};
   }
 `;
 
@@ -64,7 +66,7 @@ const SingleFilterMenu: FC<SingleFilterMenuProps> = ({
   menuTitle,
   data,
   showChip = false,
-  chipColor = colors.ui.background__default.hex,
+  chipColor = colors.ui.background__default.rgba,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [buttonElement, setButtonElement] = useState<HTMLButtonElement | null>(

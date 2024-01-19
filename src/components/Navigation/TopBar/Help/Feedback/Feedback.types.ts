@@ -63,3 +63,11 @@ export type UpdateRequestStatusHandler = ({
   error?: ApiError;
   filename?: string;
 }) => void;
+
+export enum Browsers {
+  EDGE = 'Edge',
+  EDGE_SHORT = 'Edg',
+  FIREFOX = 'Firefox',
+  CHROME = 'Chrome',
+  SAFARI = 'Safari',
+}

@@ -41,13 +41,13 @@ export const Primary: StoryFn = () => {
           <Guidelines.Item title="Notifications">
             <Icon
               data={notifications}
-              color={colors.interactive.primary__resting.hex}
+              color={colors.interactive.primary__resting.rgba}
             />
           </Guidelines.Item>
           <Guidelines.Item title="Guidelines">
             <Icon
               data={info_circle}
-              color={colors.interactive.primary__resting.hex}
+              color={colors.interactive.primary__resting.rgba}
             />
           </Guidelines.Item>
         </Guidelines.Section>

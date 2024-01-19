@@ -1,8 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { colors, spacings, shape } = tokens;
+const { colors, shape } = tokens;
 
 interface ButtonProps {
   $active: boolean;
@@ -11,18 +13,18 @@ interface ButtonProps {
 export const Button = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
-  gap: ${spacings.comfortable.xx_small};
-  color: ${colors.text.static_icons__default.hex};
+  gap: ${spacings.xx_small};
+  color: ${colors.text.static_icons__default.rgba};
   border: none;
   border-radius: ${shape.corners.borderRadius};
-  padding: ${spacings.comfortable.medium_small} ${spacings.comfortable.medium};
+  padding: ${spacings.medium_small} ${spacings.medium};
   text-align: left;
   background: ${({ $active }) =>
-    $active ? colors.interactive.primary__hover_alt.hex : 'none'};
-  transition: background 200ms;
+    $active ? colors.interactive.primary__hover_alt.rgba : 'none'};
+  transition: background 150ms;
   cursor: pointer;
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
   font-family: 'Equinor', sans-serif;
   font-weight: 700;
@@ -36,10 +38,9 @@ interface ContainerProps {
 export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.x_small};
+  gap: ${spacings.x_small};
   > button:not(:first-child) {
-    margin-left: ${spacings.comfortable.medium};
+    margin-left: ${spacings.medium};
   }
-  margin-left: ${({ $layer }) =>
-    `calc(${$layer} * ${spacings.comfortable.medium})`};
+  margin-left: ${({ $layer }) => `calc(${$layer} * ${spacings.medium})`};
 `;

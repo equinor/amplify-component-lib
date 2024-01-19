@@ -14,7 +14,8 @@ import { tokens } from '@equinor/eds-tokens';
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
-const { colors, spacings, elevation, shape } = tokens;
+const { colors, elevation, shape } = tokens;
+import { spacings } from 'src/style';
 
 const Content = styled(motion.div)`
   overflow: hidden;
@@ -22,7 +23,7 @@ const Content = styled(motion.div)`
 
 const Header = styled.button`
   display: flex;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   width: fit-content;
   border: none;
   background: none;
@@ -70,7 +71,7 @@ const HeaderDrawer = forwardRef<HTMLHeadingElement, HeaderDrawerProps>(
           <IconWrapper>
             <Icon
               data={isOpen ? chevron_up : chevron_down}
-              color={colors.interactive.primary__resting.hex}
+              color={colors.interactive.primary__resting.rgba}
             />
           </IconWrapper>
         </Header>

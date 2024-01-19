@@ -17,7 +17,7 @@ const spawn = keyframes`
 
 const HighlightedArea = styled.div`
   background: white;
-  outline: 4px solid ${colors.interactive.primary__resting.hex};
+  outline: 4px solid ${colors.interactive.primary__resting.rgba};
   animation: ${spawn} 500ms;
   border-radius: 4px;
   z-index: 1600;

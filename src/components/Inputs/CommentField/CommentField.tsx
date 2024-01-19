@@ -6,14 +6,15 @@ import { tokens } from '@equinor/eds-tokens';
 
 import date from '../../../utils/date';
 import { useDebounce } from 'src/hooks';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const CommentContainer = styled.div`
-  padding-left: ${spacings.comfortable.small};
-  margin-bottom: ${spacings.comfortable.small};
+  padding-left: ${spacings.small};
+  margin-bottom: ${spacings.small};
   padding-top: 1em;
 `;
 
@@ -32,10 +33,10 @@ const CommentTextContainer = styled.div`
 `;
 
 const DeleteButton = styled(Button)`
-  color: ${colors.text.static_icons__tertiary.hex};
+  color: ${colors.text.static_icons__tertiary.rgba};
   margin-top: 4px;
-  width: ${spacings.comfortable.xxx_large};
-  height: ${spacings.comfortable.xxx_large};
+  width: ${spacings.xxx_large};
+  height: ${spacings.xxx_large};
   &:hover {
     border-radius: 0;
   }
@@ -52,10 +53,10 @@ const CommentTextField = styled(TextField)`
     background: none;
     outline: none;
     box-shadow: none;
-
+    color: ${colors.text.static_icons__default.rgba};
     &:focus {
       outline: none;
-      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.hex};
+      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
 `;
@@ -102,7 +103,12 @@ const CommentField: FC<CommentFieldProps> = ({
             onInput={handleOnInput}
           />
           <DeleteButton variant="ghost_icon" onClick={() => onDelete(id)}>
-            <Icon name="delete" size={24} data={delete_to_trash} />
+            <Icon
+              name="delete"
+              size={24}
+              color={colors.interactive.primary__resting.rgba}
+              data={delete_to_trash}
+            />
           </DeleteButton>
         </CommentTextContainer>
       </CommentContentContainer>

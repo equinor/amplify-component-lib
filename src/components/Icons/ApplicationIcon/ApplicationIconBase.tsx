@@ -73,7 +73,7 @@ const Shape = styled.div<ShapeElementProps>`
   width: 120%;
   height: 80%;
   box-shadow: ${elevation.raised};
-  background: ${colors.interactive.primary__resting.hex};
+  background: ${colors.interactive.primary__resting.rgba};
   transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
   transform: rotate(${(props) => props.$rotation}deg);
   pointer-events: none;
@@ -102,7 +102,7 @@ const ApplicationIconBase = forwardRef<
       <Icon
         data={iconData}
         size={size}
-        color={colors.text.static_icons__primary_white.hex}
+        color='#ffffff'
       />
     )}
     {shapes.map((shape, index) => (
