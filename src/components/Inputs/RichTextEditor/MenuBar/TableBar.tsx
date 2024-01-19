@@ -58,14 +58,20 @@ const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
         icon={table_chart}
         onClick={onRemoveTable}
       />
-      <MenuButton icon={border_clear} onClick={toggleTableBorders} />
+      <MenuButton
+        tooltip="Show/hide table borders"
+        icon={border_clear}
+        onClick={toggleTableBorders}
+      />
       <Section>
         <MenuButton
+          tooltip="Toggle header row"
           icon={amplify_table_row_heading}
           onClick={onHeaderRow}
           disabled={!editor?.can().toggleHeaderRow()}
         />
         <MenuButton
+          tooltip="Toggle header column"
           icon={amplify_table_column_heading}
           onClick={onHeaderColumn}
           disabled={!editor?.can().toggleHeaderColumn()}
@@ -73,16 +79,19 @@ const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
       </Section>
       <Section>
         <MenuButton
+          tooltip="Add column left"
           icon={amplify_table_add_column_left}
           onClick={onAddColumnLeft}
           disabled={!editor?.can().addColumnBefore()}
         />
         <MenuButton
+          tooltip="Add column right"
           icon={amplify_table_add_column_right}
           onClick={onAddColumnRight}
           disabled={!editor?.can().addColumnAfter()}
         />
         <MenuButton
+          tooltip="Remove column"
           icon={amplify_table_remove_column}
           onClick={onRemoveColumn}
           disabled={!editor?.can().deleteColumn()}
@@ -90,16 +99,19 @@ const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
       </Section>
       <Section>
         <MenuButton
+          tooltip="Add row below"
           icon={amplify_table_add_row_below}
           onClick={onAddRowBelow}
           disabled={!editor?.can().addRowAfter()}
         />
         <MenuButton
+          tooltip="Add row above"
           icon={amplify_table_add_row_above}
           onClick={onAddRowAbove}
           disabled={!editor?.can().addRowBefore()}
         />
         <MenuButton
+          tooltip="Remove row"
           icon={amplify_table_remove_row}
           onClick={onRemoveRow}
           disabled={!editor?.can().deleteRow()}
@@ -107,11 +119,13 @@ const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
       </Section>
       <Section>
         <MenuButton
+          tooltip="Merge selected cells"
           icon={amplify_table_merge_cells}
           onClick={onMergeCells}
           disabled={!editor?.can().mergeCells()}
         />
         <MenuButton
+          tooltip="Split selected cell"
           icon={amplify_table_split_cell}
           onClick={onSplitCell}
           disabled={!editor?.can().splitCell()}
