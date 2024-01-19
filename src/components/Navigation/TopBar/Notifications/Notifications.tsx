@@ -7,16 +7,16 @@ import { useOutsideClick } from '@equinor/eds-utils';
 
 import { TopBarButton } from '../TopBar.styles';
 import {
-  DefaultNotificationProps,
-  Due3WeeksProps,
-  ExperienceReadyToPublishProps,
-  MergeBranchOrcaProps,
+  DefaultNotificationTypes,
+  Due3WeeksTypes,
+  ExperienceReadyToPublishTypes,
+  MergeBranchOrcaTypes,
   FilterNotification,
   SortNotification,
   ReadyToReportNotificationTypes,
-  RequestChangeOrcaProps,
-  RequestReviewOrcaProps,
-  ReviewQANotificationsProps,
+  RequestChangeOrcaTypes,
+  RequestReviewOrcaTypes,
+  ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
 import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
 import FilterOptions from './FilterOptions';
@@ -79,13 +79,13 @@ interface NotificationsProps {
   children?: ReactNode;
   notifications?: (
     | ReadyToReportNotificationTypes
-    | RequestChangeOrcaProps
-    | MergeBranchOrcaProps
-    | Due3WeeksProps
-    | ExperienceReadyToPublishProps
-    | ReviewQANotificationsProps
-    | DefaultNotificationProps
-    | RequestReviewOrcaProps
+    | RequestChangeOrcaTypes
+    | MergeBranchOrcaTypes
+    | Due3WeeksTypes
+    | ExperienceReadyToPublishTypes
+    | ReviewQANotificationsTypes
+    | DefaultNotificationTypes
+    | RequestReviewOrcaTypes
   )[];
   hasChildren?: boolean;
 }

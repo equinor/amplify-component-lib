@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { ExperienceReadyToPublishProps } from '../Notifications.types';
+import { ExperienceReadyToPublishTypes } from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -15,7 +15,7 @@ const Container = styled.div`
   gap: ${spacings.comfortable.medium};
 `;
 
-interface ReadyToBePublishedProps extends ExperienceReadyToPublishProps {
+interface ReadyToBePublishedProps extends ExperienceReadyToPublishTypes {
   onClick: () => void;
 }
 

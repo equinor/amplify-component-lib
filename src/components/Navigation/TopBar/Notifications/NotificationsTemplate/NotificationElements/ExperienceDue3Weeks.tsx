@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { Due3WeeksProps } from '../Notifications.types';
+import { Due3WeeksTypes } from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const Container = styled.div`
   padding-top: ${spacings.comfortable.medium_small};
 `;
 
-interface ExperienceDue3WeeksProps extends Due3WeeksProps {
+interface ExperienceDue3WeeksProps extends Due3WeeksTypes {
   onClick: () => void;
 }
 const ExperienceDue3Weeks: FC<ExperienceDue3WeeksProps> = ({

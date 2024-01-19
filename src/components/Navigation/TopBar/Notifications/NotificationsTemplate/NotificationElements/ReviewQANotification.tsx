@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { ReviewQANotificationsProps } from '../Notifications.types';
+import { ReviewQANotificationsTypes } from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const Container = styled.div`
   padding-top: ${spacings.comfortable.medium_small};
 `;
 
-interface ReviewQANotificationProps extends ReviewQANotificationsProps {
+interface ReviewQANotificationProps extends ReviewQANotificationsTypes {
   onClick: () => void;
 }
 

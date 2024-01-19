@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { DefaultNotificationProps } from '../Notifications.types';
+import { DefaultNotificationTypes } from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const Container = styled.div`
   padding-top: ${spacings.comfortable.medium_small};
 `;
 
-const DeafultNotification: FC<DefaultNotificationProps> = ({ message }) => {
+const DeafultNotification: FC<DefaultNotificationTypes> = ({ message }) => {
   return (
     <Container>
       <Typography group="table" variant="cell_text">

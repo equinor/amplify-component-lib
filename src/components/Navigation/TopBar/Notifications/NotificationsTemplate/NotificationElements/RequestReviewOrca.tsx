@@ -4,7 +4,7 @@ import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import OptionalTooltip from '../../../../../DataDisplay/OptionalTooltip';
-import { RequestReviewOrcaProps } from '../Notifications.types';
+import { RequestReviewOrcaTypes } from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -18,7 +18,7 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-interface RequestReviewProps extends RequestReviewOrcaProps {
+interface RequestReviewProps extends RequestReviewOrcaTypes {
   onClick: () => void;
 }
 

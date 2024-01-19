@@ -16,15 +16,15 @@ import RequestChangeOrca from './NotificationElements/RequestChangeOrca';
 import RequestReviewOrca from './NotificationElements/RequestReviewOrca';
 import ReviewQANotification from './NotificationElements/ReviewQANotification';
 import {
-  DefaultNotificationProps,
-  Due3WeeksProps,
-  ExperienceReadyToPublishProps,
-  MergeBranchOrcaProps,
+  DefaultNotificationTypes,
+  Due3WeeksTypes,
+  ExperienceReadyToPublishTypes,
+  MergeBranchOrcaTypes,
   NotificationsTypes,
   ReadyToReportNotificationTypes,
-  RequestChangeOrcaProps,
-  RequestReviewOrcaProps,
-  ReviewQANotificationsProps,
+  RequestChangeOrcaTypes,
+  RequestReviewOrcaTypes,
+  ReviewQANotificationsTypes,
 } from './Notifications.types';
 
 import styled from 'styled-components';
@@ -101,13 +101,13 @@ const DeleteButton = styled(Button)`
 
 const NotificationTemplate: FC<
   | ReadyToReportNotificationTypes
-  | DefaultNotificationProps
-  | RequestReviewOrcaProps
-  | RequestChangeOrcaProps
-  | MergeBranchOrcaProps
-  | ExperienceReadyToPublishProps
-  | ReviewQANotificationsProps
-  | Due3WeeksProps
+  | DefaultNotificationTypes
+  | RequestReviewOrcaTypes
+  | RequestChangeOrcaTypes
+  | MergeBranchOrcaTypes
+  | ExperienceReadyToPublishTypes
+  | ReviewQANotificationsTypes
+  | Due3WeeksTypes
 > = (props) => {
   const {
     user,

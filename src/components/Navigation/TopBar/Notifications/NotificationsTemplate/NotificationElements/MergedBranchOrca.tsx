@@ -4,7 +4,7 @@ import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import OptionalTooltip from '../../../../../DataDisplay/OptionalTooltip';
-import { MergeBranchOrcaProps } from '../Notifications.types';
+import { MergeBranchOrcaTypes } from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -18,7 +18,7 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-interface MergedBranchOrcaProps extends MergeBranchOrcaProps {
+interface MergedBranchOrcaProps extends MergeBranchOrcaTypes {
   onClick: () => void;
 }
 

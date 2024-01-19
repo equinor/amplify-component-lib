@@ -5,15 +5,15 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import MergedBranchOrca from './NotificationsTemplate/NotificationElements/MergedBranchOrca';
 import {
-  DefaultNotificationProps,
-  Due3WeeksProps,
-  ExperienceReadyToPublishProps,
-  MergeBranchOrcaProps,
+  DefaultNotificationTypes,
+  Due3WeeksTypes,
+  ExperienceReadyToPublishTypes,
+  MergeBranchOrcaTypes,
   NotificationsTypes,
   ReadyToReportNotificationProps,
-  RequestChangeOrcaProps,
-  RequestReviewOrcaProps,
-  ReviewQANotificationsProps,
+  RequestChangeOrcaTypes,
+  RequestReviewOrcaTypes,
+  ReviewQANotificationsTypes,
   userNotification,
 } from './NotificationsTemplate/Notifications.types';
 import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
@@ -28,13 +28,13 @@ export default {
 
 const items: (
   | ReadyToReportNotificationProps
-  | RequestChangeOrcaProps
-  | MergeBranchOrcaProps
-  | Due3WeeksProps
-  | ExperienceReadyToPublishProps
-  | ReviewQANotificationsProps
-  | DefaultNotificationProps
-  | RequestReviewOrcaProps
+  | RequestChangeOrcaTypes
+  | MergeBranchOrcaTypes
+  | Due3WeeksTypes
+  | ExperienceReadyToPublishTypes
+  | ReviewQANotificationsTypes
+  | DefaultNotificationTypes
+  | RequestReviewOrcaTypes
 )[] = [
   {
     Read: false,
@@ -64,7 +64,7 @@ const items: (
     applicationName: 'Dasha',
     time: 2,
     notificationType: NotificationsTypes.MERGE_BRANCH,
-  } as MergeBranchOrcaProps,
+  } as MergeBranchOrcaTypes,
   {
     Read: true,
     SequenceNumber: 2,
@@ -93,7 +93,7 @@ const items: (
     applicationName: 'PWEX',
     time: 8,
     notificationType: NotificationsTypes.REQUESTED_CHANGES,
-  } as RequestChangeOrcaProps,
+  } as RequestChangeOrcaTypes,
   {
     Read: true,
     SequenceNumber: 3,
@@ -143,7 +143,7 @@ const items: (
     commentsCount: 2,
 
     notificationType: NotificationsTypes.DUE_3_WEEKS,
-  } as Due3WeeksProps,
+  } as Due3WeeksTypes,
 ];
 
 export const Primary: StoryFn = (args) => {

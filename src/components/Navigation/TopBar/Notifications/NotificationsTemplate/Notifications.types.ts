@@ -52,24 +52,24 @@ export type ReadyToReportNotificationTypes = {
   notificationType: NotificationsTypes.READY_TO_REPORT;
 } & NotificationDto;
 
-export type DefaultNotificationProps = {
+export type DefaultNotificationTypes = {
   message: string;
   notificationType: NotificationsTypes.DEFAULT;
 } & NotificationDto;
 
-export type RequestReviewOrcaProps = {
+export type RequestReviewOrcaTypes = {
   fromUser: userNotification;
   branchName: string;
   notificationType: NotificationsTypes.REQUESTED_REVIEW;
 } & NotificationDto;
 
-export type RequestChangeOrcaProps = {
+export type RequestChangeOrcaTypes = {
   fromUser: userNotification;
   branchName: string;
   notificationType: NotificationsTypes.REQUESTED_CHANGES;
 } & NotificationDto;
 
-export type MergeBranchOrcaProps = {
+export type MergeBranchOrcaTypes = {
   fromUser: userNotification;
   branchName: string;
   notificationType: NotificationsTypes.MERGE_BRANCH;
@@ -85,20 +85,20 @@ export type TagDto = {
   displayName?: string | null;
 };
 
-export type ReviewQANotificationsProps = {
+export type ReviewQANotificationsTypes = {
   well: TagDto;
   experience: NotificationExperienceDto;
   experienceComments: number;
   notificationType: NotificationsTypes.QA_COMMENTS;
 } & NotificationDto;
 
-export type Due3WeeksProps = {
+export type Due3WeeksTypes = {
   well: TagDto;
   commentsCount: number;
   notificationType: NotificationsTypes.DUE_3_WEEKS;
 } & NotificationDto;
 
-export type ExperienceReadyToPublishProps = {
+export type ExperienceReadyToPublishTypes = {
   well: TagDto;
   experienceCount: number;
   notificationType: NotificationsTypes.EXPERIENCE_READY_TO_PUBLISH;
