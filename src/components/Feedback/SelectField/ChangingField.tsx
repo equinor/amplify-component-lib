@@ -1,6 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { LinearProgress as EDSLinearProgress, Typography } from '@equinor/eds-core-react';
+import {
+  LinearProgress as EDSLinearProgress,
+  Typography,
+} from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import string from '../../../utils/string';
@@ -31,7 +34,7 @@ export const LinearProgress = styled(EDSLinearProgress)`
   div {
     background-color: ${colors.interactive.primary__resting.rgba};
   }
-  `
+`;
 
 const StyledTypography = styled(Typography)`
   span {

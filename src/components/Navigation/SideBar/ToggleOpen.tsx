@@ -1,6 +1,11 @@
 import { FC } from 'react';
 
-import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Icon,
+  Tooltip as EDSTooltip,
+  Typography,
+} from '@equinor/eds-core-react';
 import { first_page, last_page } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -55,6 +60,13 @@ const LargeButton = styled.button`
   cursor: pointer;
   &:hover {
     background: ${colors.interactive.secondary__highlight.rgba};
+  }
+`;
+
+const Tooltip = styled(EDSTooltip)`
+  color: white;
+  &::first-letter {
+    text-transform: uppercase;
   }
 `;
 

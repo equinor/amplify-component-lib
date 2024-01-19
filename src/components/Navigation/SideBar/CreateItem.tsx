@@ -89,6 +89,7 @@ const CreateNewButtonText = styled(Typography)`
 `;
 
 const Tooltip = styled(EDSTooltip)`
+  color: white;
   &::first-letter {
     text-transform: uppercase;
   }
