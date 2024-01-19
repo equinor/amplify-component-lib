@@ -16,13 +16,13 @@ export enum NotificationsTypes {
   EXPERIENCE_READY_TO_PUBLISH = 'WellReadyForPublishing ',
 }
 
-export enum notificationFilter {
+export enum FilterNotification {
   UNREAD = 'unread',
   SYSTEM = 'systemUser',
   USER = 'user',
 }
 
-export enum notificationSort {
+export enum SortNotification {
   NEW_OLDEST = 'newtoold',
   OLD_NEWEST = 'oldtonew',
   UNREAD = 'unread',

@@ -11,8 +11,8 @@ import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import {
-  notificationFilter,
-  notificationSort,
+  FilterNotification,
+  SortNotification,
 } from './NotificationsTemplate/Notifications.types';
 
 import styled from 'styled-components';
@@ -79,8 +79,8 @@ const StyledChip = styled.span<ChipProps>`
 `;
 
 interface FilterOptionsProps {
-  onFilter: (value: notificationFilter[]) => void;
-  onSort: (value: notificationSort[]) => void;
+  onFilter: (value: FilterNotification[]) => void;
+  onSort: (value: SortNotification[]) => void;
   sortMenuRef: MutableRefObject<HTMLDivElement | null>;
   filterMenuRef: MutableRefObject<HTMLDivElement | null>;
 }
@@ -97,15 +97,15 @@ const FilterOptions: FC<FilterOptionsProps> = ({
   const sortRef = useRef<HTMLButtonElement | null>(null);
 
   const [selectedSort, setSelectedSort] = useState({
-    [notificationSort.UNREAD]: false,
-    [notificationSort.OLD_NEWEST]: false,
-    [notificationSort.NEW_OLDEST]: false,
+    [SortNotification.UNREAD]: false,
+    [SortNotification.OLD_NEWEST]: false,
+    [SortNotification.NEW_OLDEST]: false,
   });
 
   const [selectedFilter, setSelectedFilter] = useState({
-    [notificationFilter.SYSTEM]: false,
-    [notificationFilter.USER]: false,
-    [notificationFilter.UNREAD]: false,
+    [FilterNotification.SYSTEM]: false,
+    [FilterNotification.USER]: false,
+    [FilterNotification.UNREAD]: false,
   });
 
   const onClickOpenFilter = () => {
@@ -125,7 +125,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
     setOpenSort(false);
   };
 
-  const handleFilterUnread = (value: notificationFilter) => {
+  const handleFilterUnread = (value: FilterNotification) => {
     onFilter(selectedFilter[value] ? [] : [value]);
     setSelectedFilter((prevState) => ({
       ...prevState,
@@ -133,7 +133,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
     }));
   };
 
-  const handleSortingTest = (value: notificationSort) => {
+  const handleSortingTest = (value: SortNotification) => {
     onSort(selectedSort[value] ? [] : [value]);
     setSelectedSort((prevState) => ({
       ...prevState,
@@ -201,10 +201,10 @@ const FilterOptions: FC<FilterOptionsProps> = ({
               Filter notifications
             </Typography>
           </Heading>
-          <MenuItem onClick={() => handleFilterUnread(notificationFilter.USER)}>
+          <MenuItem onClick={() => handleFilterUnread(FilterNotification.USER)}>
             <Icon
               data={
-                selectedFilter[notificationFilter.USER]
+                selectedFilter[FilterNotification.USER]
                   ? checkbox
                   : checkbox_outline
               }
@@ -212,11 +212,11 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             <Typography> User messages </Typography>
           </MenuItem>
           <MenuItem
-            onClick={() => handleFilterUnread(notificationFilter.SYSTEM)}
+            onClick={() => handleFilterUnread(FilterNotification.SYSTEM)}
           >
             <Icon
               data={
-                selectedFilter[notificationFilter.SYSTEM]
+                selectedFilter[FilterNotification.SYSTEM]
                   ? checkbox
                   : checkbox_outline
               }
@@ -224,11 +224,11 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             <Typography> System messages </Typography>
           </MenuItem>
           <MenuItem
-            onClick={() => handleFilterUnread(notificationFilter.UNREAD)}
+            onClick={() => handleFilterUnread(FilterNotification.UNREAD)}
           >
             <Icon
               data={
-                selectedFilter[notificationFilter.UNREAD]
+                selectedFilter[FilterNotification.UNREAD]
                   ? checkbox
                   : checkbox_outline
               }
@@ -250,11 +250,11 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             </Typography>
           </Heading>
           <MenuItem
-            onClick={() => handleSortingTest(notificationSort.NEW_OLDEST)}
+            onClick={() => handleSortingTest(SortNotification.NEW_OLDEST)}
           >
             <Icon
               data={
-                selectedSort[notificationSort.NEW_OLDEST]
+                selectedSort[SortNotification.NEW_OLDEST]
                   ? checkbox
                   : checkbox_outline
               }
@@ -262,21 +262,21 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             <Typography> Newest to oldest </Typography>
           </MenuItem>
           <MenuItem
-            onClick={() => handleSortingTest(notificationSort.OLD_NEWEST)}
+            onClick={() => handleSortingTest(SortNotification.OLD_NEWEST)}
           >
             <Icon
               data={
-                selectedSort[notificationSort.OLD_NEWEST]
+                selectedSort[SortNotification.OLD_NEWEST]
                   ? checkbox
                   : checkbox_outline
               }
             />
             <Typography> Oldest to newest </Typography>
           </MenuItem>
-          <MenuItem onClick={() => handleSortingTest(notificationSort.UNREAD)}>
+          <MenuItem onClick={() => handleSortingTest(SortNotification.UNREAD)}>
             <Icon
               data={
-                selectedSort[notificationSort.UNREAD]
+                selectedSort[SortNotification.UNREAD]
                   ? checkbox
                   : checkbox_outline
               }

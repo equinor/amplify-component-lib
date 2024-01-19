@@ -40,7 +40,7 @@ const ContentWrapper = styled.div`
 `;
 
 const BackButton = styled.div`
-  padding-top: ${spacings.comfortable.medium};
+  padding-top: ${spacings.medium};
 `;
 
 export interface HelpProps {
@@ -227,6 +227,15 @@ export const Help: FC<HelpProps> = ({
                   onClick={handleOpenTutorials}
                   lastItem
                 />
+                {/*TODO: Remove children ?*/}
+                {children && !hideFeedback && !hideReleaseNotes && (
+                  <Divider style={{ margin: 0 }} />
+                )}
+                {children && (
+                  <ContentWrapper onClick={closeMenu}>
+                    {children}
+                  </ContentWrapper>
+                )}
               </>
             )}
 
@@ -236,13 +245,6 @@ export const Help: FC<HelpProps> = ({
               </Button>
             </BackButton>
           </>
-        )}
-        {/*TODO: Remove children ?*/}
-        {children && !hideFeedback && !hideReleaseNotes && (
-          <Divider style={{ margin: 0 }} />
-        )}
-        {children && (
-          <ContentWrapper onClick={closeMenu}>{children}</ContentWrapper>
         )}
       </TopBarMenu>
       {showReleaseNotes && <ReleaseNotes />}

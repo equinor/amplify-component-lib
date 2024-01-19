@@ -11,9 +11,9 @@ import {
   Due3WeeksProps,
   ExperienceReadyToPublishProps,
   MergeBranchOrcaProps,
-  notificationFilter,
-  notificationSort,
-  ReadyToReportNotificationProps,
+  FilterNotification,
+  SortNotification,
+  ReadyToReportNotificationTypes,
   RequestChangeOrcaProps,
   RequestReviewOrcaProps,
   ReviewQANotificationsProps,
@@ -78,7 +78,7 @@ interface NotificationsProps {
   addFilters?: boolean;
   children?: ReactNode;
   notifications?: (
-    | ReadyToReportNotificationProps
+    | ReadyToReportNotificationTypes
     | RequestChangeOrcaProps
     | MergeBranchOrcaProps
     | Due3WeeksProps
@@ -105,9 +105,9 @@ const Notifications: FC<NotificationsProps> = ({
 
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
-  const [filteringOn, setFilteringOn] = useState<notificationFilter[]>([]);
+  const [filteringOn, setFilteringOn] = useState<FilterNotification[]>([]);
 
-  const [sortingOn, setSortingOn] = useState<notificationSort[]>([]);
+  const [sortingOn, setSortingOn] = useState<SortNotification[]>([]);
 
   const filteredAndSortedNotifications = useMemo(() => {
     if (!notifications) return [];
@@ -115,20 +115,20 @@ const Notifications: FC<NotificationsProps> = ({
 
     if (filteringOn.length > 0) {
       copy = copy.filter((notification) => {
-        if (filteringOn.includes(notificationFilter.UNREAD)) {
+        if (filteringOn.includes(FilterNotification.UNREAD)) {
           return !notification.Read;
-        } else if (filteringOn.includes(notificationFilter.USER)) {
+        } else if (filteringOn.includes(FilterNotification.USER)) {
           return notification.user;
-        } else if (filteringOn.includes(notificationFilter.SYSTEM)) {
+        } else if (filteringOn.includes(FilterNotification.SYSTEM)) {
           return !notification.user;
         }
       });
     }
     if (sortingOn.length > 0) {
       copy = copy.sort((a, b) => {
-        if (sortingOn.includes(notificationSort.OLD_NEWEST)) {
+        if (sortingOn.includes(SortNotification.OLD_NEWEST)) {
           return b.time - a.time;
-        } else if (sortingOn.includes(notificationSort.UNREAD)) {
+        } else if (sortingOn.includes(SortNotification.UNREAD)) {
           return a.Read === b.Read ? 0 : a.Read ? 1 : -1;
         } else {
           return a.time - b.time;
