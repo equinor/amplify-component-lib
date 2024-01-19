@@ -1,6 +1,6 @@
 import { FC, ReactElement, useRef, useState } from 'react';
 
-import { Button, Icon, Radio, Typography } from '@equinor/eds-core-react';
+import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 

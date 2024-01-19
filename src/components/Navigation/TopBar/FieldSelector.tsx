@@ -1,6 +1,6 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
-import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
+import { Icon, Search, Typography } from '@equinor/eds-core-react';
 import { check, exit_to_app, platform } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';

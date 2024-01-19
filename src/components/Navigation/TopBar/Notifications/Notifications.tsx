@@ -10,13 +10,13 @@ import {
   DefaultNotificationTypes,
   Due3WeeksTypes,
   ExperienceReadyToPublishTypes,
-  MergeBranchOrcaTypes,
   FilterNotification,
-  SortNotification,
+  MergeBranchOrcaTypes,
   ReadyToReportNotificationTypes,
   RequestChangeOrcaTypes,
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
+  SortNotification,
 } from './NotificationsTemplate/Notifications.types';
 import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
 import FilterOptions from './FilterOptions';
@@ -75,7 +75,7 @@ const FilterOptionsContainer = styled.div`
 interface NotificationsProps {
   setAllAsRead: () => void;
   hasUnread?: boolean;
-  addFilters?: boolean;
+  showFilterOptions?: boolean;
   children?: ReactNode;
   notifications?: (
     | ReadyToReportNotificationTypes
@@ -94,7 +94,7 @@ const Notifications: FC<NotificationsProps> = ({
   children,
   hasUnread = false,
   setAllAsRead,
-  addFilters = false,
+  showFilterOptions = false,
   notifications,
   hasChildren,
 }) => {
@@ -196,7 +196,7 @@ const Notifications: FC<NotificationsProps> = ({
             <Icon data={close} color="secondary" />
           </Button>
         </Header>
-        {addFilters && (
+        {showFilterOptions && (
           <FilterOptionsContainer>
             <FilterOptions
               onFilter={setFilteringOn}

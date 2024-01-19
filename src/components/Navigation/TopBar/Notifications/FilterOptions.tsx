@@ -1,4 +1,4 @@
-import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { FC, MutableRefObject, useRef, useState } from 'react';
 
 import { Icon, Menu, Typography } from '@equinor/eds-core-react';
 import {

@@ -1,23 +1,17 @@
-import { Fragment } from 'react';
-
-import { Divider } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
-import MergedBranchOrca from './NotificationsTemplate/NotificationElements/MergedBranchOrca';
 import {
   DefaultNotificationTypes,
   Due3WeeksTypes,
   ExperienceReadyToPublishTypes,
   MergeBranchOrcaTypes,
   NotificationsTypes,
-  ReadyToReportNotificationProps,
+  ReadyToReportNotificationTypes,
   RequestChangeOrcaTypes,
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
-  userNotification,
 } from './NotificationsTemplate/Notifications.types';
-import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
-import Notifications, { UnreadRedDot } from './Notifications';
+import Notifications from './Notifications';
 
 export default {
   title: 'Navigation/TopBar/Notifications',
@@ -27,7 +21,7 @@ export default {
 } as Meta;
 
 const items: (
-  | ReadyToReportNotificationProps
+  | ReadyToReportNotificationTypes
   | RequestChangeOrcaTypes
   | MergeBranchOrcaTypes
   | Due3WeeksTypes
@@ -118,7 +112,7 @@ const items: (
     dataType: 'Borr',
 
     notificationType: NotificationsTypes.READY_TO_REPORT,
-  } as ReadyToReportNotificationProps,
+  } as ReadyToReportNotificationTypes,
   {
     Read: false,
     SequenceNumber: 4,
@@ -151,7 +145,7 @@ export const Primary: StoryFn = (args) => {
     <Notifications
       hasUnread={args.hasUnread}
       setAllAsRead={() => null}
-      addFilters={true}
+      showFilterOptions={true}
       notifications={items}
     />
   );

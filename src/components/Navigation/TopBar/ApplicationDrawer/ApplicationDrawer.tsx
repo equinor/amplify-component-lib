@@ -63,15 +63,15 @@ export type applicationsProps = {
   isSelected?: boolean;
 };
 
-const applications: applicationsProps[] = [
-  { name: 'Dasha', icon: 'dasha', isSelected: true },
-  { name: 'PWEX', icon: 'pwex', isSelected: false },
-  { name: 'Inpress', icon: 'inpress', isSelected: false },
-  { name: 'Orca', icon: 'orca', isSelected: false },
-  { name: 'Acquire', icon: 'acquire', isSelected: false },
-  { name: 'dasha', icon: 'dasha', isSelected: false },
-  { name: 'dasha', icon: 'dasha', isSelected: false },
-];
+// const applications: applicationsProps[] = [
+//   { name: 'Dasha', icon: 'dasha', isSelected: true },
+//   { name: 'PWEX', icon: 'pwex', isSelected: false },
+//   { name: 'Inpress', icon: 'inpress', isSelected: false },
+//   { name: 'Orca', icon: 'orca', isSelected: false },
+//   { name: 'Acquire', icon: 'acquire', isSelected: false },
+//   { name: 'dasha', icon: 'dasha', isSelected: false },
+//   { name: 'dasha', icon: 'dasha', isSelected: false },
+// ];
 
 const ApplicationDrawer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);

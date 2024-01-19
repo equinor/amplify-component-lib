@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import OptionalTooltip from '../../../../../DataDisplay/OptionalTooltip';
 import { MergeBranchOrcaTypes } from '../Notifications.types';
 
 import styled from 'styled-components';

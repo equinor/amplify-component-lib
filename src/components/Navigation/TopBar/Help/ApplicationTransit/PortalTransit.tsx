@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { Button, Dialog, Icon } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
