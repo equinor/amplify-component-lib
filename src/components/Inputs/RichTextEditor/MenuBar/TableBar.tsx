@@ -29,7 +29,11 @@ const Container = styled.div`
   padding: ${spacings.comfortable.small};
 `;
 
-const TableBar: FC = () => {
+interface TableBarProps {
+  toggleTableBorders: () => void;
+}
+
+const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
   const { editor } = useCurrentEditor();
 
   const onRemoveTable = () => editor?.chain().focus().deleteTable().run();
@@ -53,7 +57,7 @@ const TableBar: FC = () => {
         icon={table_chart}
         onClick={onRemoveTable}
       />
-      {/*<MenuButton icon={border_clear} onClick={onBorderClear} />*/}
+      <MenuButton icon={border_clear} onClick={toggleTableBorders} />
       <Section>
         <MenuButton
           icon={amplify_table_row_heading}

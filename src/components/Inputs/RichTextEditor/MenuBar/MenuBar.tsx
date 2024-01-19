@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import {
   code,
@@ -50,10 +50,15 @@ const Divider = styled.hr`
 
 interface MenuBarProps {
   features: RichTextEditorFeatures[];
+  toggleTableBorders: () => void;
   onImageUpload?: (file: File) => Promise<string>;
 }
 
-const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
+const MenuBar: FC<MenuBarProps> = ({
+  features,
+  toggleTableBorders,
+  onImageUpload,
+}) => {
   const { editor } = useCurrentEditor();
 
   /* c8 ignore start */
@@ -196,7 +201,9 @@ const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
           </>
         )}
       </Container>
-      {editor.isActive('table') && <TableBar />}
+      {editor.isActive('table') && (
+        <TableBar toggleTableBorders={toggleTableBorders} />
+      )}
     </Wrapper>
   );
 };

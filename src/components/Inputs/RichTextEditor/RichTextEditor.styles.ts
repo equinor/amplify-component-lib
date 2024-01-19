@@ -6,7 +6,11 @@ import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings } = tokens;
 
-export const Wrapper = styled.div`
+interface WrapperProps {
+  $tablesWithBorders: boolean;
+}
+
+export const Wrapper = styled.div<WrapperProps>`
   background: white;
   .tiptap {
     height: 100%;
@@ -48,7 +52,9 @@ export const Wrapper = styled.div`
 
       td,
       th {
-        border: 2px solid #ced4da;
+        border: 2px solid
+          ${({ $tablesWithBorders }) =>
+            $tablesWithBorders ? '#ced4da' : 'transparent'};
         box-sizing: border-box;
         min-width: 1em;
         padding: 3px 5px;

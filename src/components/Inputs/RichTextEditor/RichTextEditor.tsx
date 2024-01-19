@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import Bold from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
@@ -57,6 +57,10 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   extendFeatures,
   removeFeatures,
 }) => {
+  const [tablesWithBorders, setTablesWithBorders] = useState(true);
+
+  const toggleTableBorders = () => setTablesWithBorders((prev) => !prev);
+
   if (features && (extendFeatures || removeFeatures)) {
     throw new Error(
       `Can't specify both 'features' and 'extend/remove' features!
@@ -128,10 +132,14 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper $tablesWithBorders={tablesWithBorders}>
       <EditorProvider
         slotBefore={
-          <MenuBar features={usingFeatures} onImageUpload={onImageUpload} />
+          <MenuBar
+            features={usingFeatures}
+            toggleTableBorders={toggleTableBorders}
+            onImageUpload={onImageUpload}
+          />
         }
         content={value}
         extensions={extensions}
