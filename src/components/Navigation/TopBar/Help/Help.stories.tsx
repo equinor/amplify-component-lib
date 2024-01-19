@@ -27,32 +27,31 @@ export const Primary: StoryFn = () => {
       description: 'lorem',
       duration: '2 min ',
       steps: 'Step by Step',
-      currentPage: true,
-      otherPages: false,
+      pathName: 'search',
       onClick: onClick,
     },
     {
       description: 'lorem 2 ',
       duration: '2 min ',
+      pathName: 'search',
       steps: 'Step by Step',
-      currentPage: true,
-      otherPages: false,
+
       onClick: onClick,
     },
     {
       description: 'lorem 3 ',
       duration: '2 min ',
       steps: 'Step by Step',
-      currentPage: false,
-      otherPages: true,
+      pathName: 'test',
+
       onClick: onClick,
     },
     {
       description: 'lorem 4 ',
       duration: '2 min ',
       steps: 'Step by Step',
-      currentPage: false,
-      otherPages: true,
+      pathName: 'search',
+
       onClick: onClick,
     },
   ];

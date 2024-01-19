@@ -1,20 +1,15 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useLocation } from 'react-router';
 
-import {
-  Button,
-  Dialog,
-  Divider,
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
-import { arrow_forward, close } from '@equinor/eds-icons';
+import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
+import { close } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { fallback } from '../../../../Icons/ApplicationIcon/ApplicationIconCollection';
+import TutorialItem from './TutorialItem';
 
 import styled from 'styled-components';
 
-const { spacings, colors, shape } = tokens;
+const { spacings } = tokens;
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,17 +22,13 @@ const Wrapper = styled.div`
   margin-bottom: ${spacings.comfortable.medium};
 `;
 
-const ContentInfo = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  width: 100%;
-  align-items: center;
-  gap: ${spacings.comfortable.medium_small};
-  padding: ${spacings.comfortable.small};
-  &:hover {
-    background-color: #f7f7f7;
-    border-radius: ${shape.corners.borderRadius};
-  }
+const DialogTutorial = styled(Dialog)`
+  width: 400px;
+  height: fit-content;
+`;
+
+const DialogCustomContent = styled(Dialog.CustomContent)`
+  padding: ${spacings.comfortable.medium};
 `;
 
 export type tutorialOptions = {
@@ -45,8 +36,7 @@ export type tutorialOptions = {
   steps: string;
   duration: string;
   onClick: () => void;
-  currentPage?: boolean;
-  otherPages?: boolean;
+  pathName: string;
 };
 
 interface TutorialDialogProps {
@@ -55,12 +45,13 @@ interface TutorialDialogProps {
   onClose: () => void;
 }
 
-// TODO: check up on url - uselocation
 const TutorialDialog: FC<TutorialDialogProps> = ({
   options,
   open,
   onClose,
 }) => {
+  const location = useLocation();
+
   return (
     <DialogTutorial open={open}>
       <Dialog.Header>
@@ -73,76 +64,29 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
         <Wrapper>
           <Typography style={{ fontSize: '10px' }}>ON CURRENT PAGE </Typography>
           {options.map((item, index) => {
-            if (item.currentPage)
+            if (item.pathName === location.pathname) {
               return (
-                <ContentInfo key={index} onClick={item.onClick}>
-                  <Icon data={fallback} />
-                  <div>
-                    <Typography group="paragraph" variant="caption">
-                      {item.description}
-                    </Typography>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <Typography
-                        group="navigation"
-                        variant="label"
-                        color={colors.text.static_icons__secondary.hex}
-                      >
-                        {item.steps}
-                      </Typography>
-                      <Typography
-                        group="navigation"
-                        variant="label"
-                        color={colors.text.static_icons__secondary.hex}
-                      >
-                        {item.duration}
-                      </Typography>
-                    </div>
-                  </div>
-                  <Icon
-                    data={arrow_forward}
-                    size={24}
-                    color={colors.interactive.primary__resting.hsla}
-                  />
-                </ContentInfo>
+                <TutorialItem
+                  key={index}
+                  description={item.description}
+                  steps={item.steps}
+                  duration={item.duration}
+                  onClick={item.onClick}
+                  pathName={item.pathName}
+                />
               );
-          })}
-        </Wrapper>
-        <Wrapper>
-          <Typography style={{ fontSize: '10px' }}>ON OTHER PAGES </Typography>
-
-          {options.map((item, index) => {
-            if (item.otherPages)
+            } else {
               return (
-                <ContentInfo key={index} onClick={item.onClick}>
-                  <Icon data={fallback} />
-                  <div>
-                    <Typography group="paragraph" variant="caption">
-                      {item.description}
-                    </Typography>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <Typography
-                        group="navigation"
-                        variant="label"
-                        color={colors.text.static_icons__secondary.hex}
-                      >
-                        {item.steps}
-                      </Typography>
-                      <Typography
-                        group="navigation"
-                        variant="label"
-                        color={colors.text.static_icons__secondary.hex}
-                      >
-                        {item.duration}
-                      </Typography>
-                    </div>
-                  </div>
-                  <Icon
-                    data={arrow_forward}
-                    size={24}
-                    color={colors.interactive.primary__resting.hsla}
-                  />
-                </ContentInfo>
+                <TutorialItem
+                  key={index}
+                  description={item.description}
+                  steps={item.steps}
+                  duration={item.duration}
+                  onClick={item.onClick}
+                  pathName={item.pathName}
+                />
               );
+            }
           })}
         </Wrapper>
       </DialogCustomContent>
@@ -154,12 +98,3 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
 };
 
 export default TutorialDialog;
-
-const DialogTutorial = styled(Dialog)`
-  width: 400px;
-  height: fit-content;
-`;
-
-const DialogCustomContent = styled(Dialog.CustomContent)`
-  padding: ${spacings.comfortable.medium};
-`;

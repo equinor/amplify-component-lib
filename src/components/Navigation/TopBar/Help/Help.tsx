@@ -38,6 +38,10 @@ const ContentWrapper = styled.div`
   padding: 0 ${spacings.comfortable.medium};
 `;
 
+const BackButton = styled.div`
+  padding-top: ${spacings.comfortable.medium};
+`;
+
 export interface HelpProps {
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
@@ -171,7 +175,7 @@ export const Help: FC<HelpProps> = ({
             )}
 
             {showFeedback && (
-              <FeedbackItems>
+              <>
                 <HelpMenuItem
                   id={FeedbackType.BUG}
                   onClick={handleOnFeedbackClick}
@@ -186,7 +190,7 @@ export const Help: FC<HelpProps> = ({
                   text="Suggest a feature"
                   lastItem
                 />
-              </FeedbackItems>
+              </>
             )}
           </>
         )}
@@ -223,11 +227,11 @@ export const Help: FC<HelpProps> = ({
               </>
             )}
 
-            <div style={{ paddingTop: '5px' }}>
+            <BackButton>
               <Button variant="outlined" onClick={handleLearnMoreClick}>
                 <Icon data={arrow_back} /> Back
               </Button>
-            </div>
+            </BackButton>
           </>
         )}
         {/*TODO: Remove children ?*/}
@@ -263,5 +267,3 @@ export const Help: FC<HelpProps> = ({
     </>
   );
 };
-
-const FeedbackItems = styled.div``;
