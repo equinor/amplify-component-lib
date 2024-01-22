@@ -38,6 +38,38 @@ const ApplicationContent = styled.div`
   justify-items: center;
 `;
 
+const MenuFixedItem = styled.div`
+  > div {
+    display: grid;
+    grid-template-columns: 1fr 24px;
+    justify-content: space-between;
+    width: 100%;
+  }
+  &:hover {
+    background: ${colors.interactive.primary__selected_hover.hex};
+    cursor: pointer;
+  }
+  border-top: 1px solid ${colors.ui.background__light.hex};
+  outline: none !important;
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  svg {
+    align-self: center;
+  }
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  > h6 {
+    text-transform: capitalize;
+  }
+`;
+
+const NoApplications = styled.div`
+  display: flex;
+  padding: ${spacings.comfortable.medium};
+`;
+
 interface ApplicationBoxProps {
   $isSelected?: boolean;
 }
@@ -63,15 +95,15 @@ export type applicationsProps = {
   isSelected?: boolean;
 };
 
-// const applications: applicationsProps[] = [
-//   { name: 'Dasha', icon: 'dasha', isSelected: true },
-//   { name: 'PWEX', icon: 'pwex', isSelected: false },
-//   { name: 'Inpress', icon: 'inpress', isSelected: false },
-//   { name: 'Orca', icon: 'orca', isSelected: false },
-//   { name: 'Acquire', icon: 'acquire', isSelected: false },
-//   { name: 'dasha', icon: 'dasha', isSelected: false },
-//   { name: 'dasha', icon: 'dasha', isSelected: false },
-// ];
+export const applications: applicationsProps[] = [
+  { name: 'Dasha', icon: 'dasha', isSelected: true },
+  { name: 'PWEX', icon: 'pwex', isSelected: false },
+  { name: 'Inpress', icon: 'inpress', isSelected: false },
+  { name: 'Orca', icon: 'orca', isSelected: false },
+  { name: 'Acquire', icon: 'acquire', isSelected: false },
+  { name: 'dasha', icon: 'dasha', isSelected: false },
+  { name: 'dasha', icon: 'dasha', isSelected: false },
+];
 
 const ApplicationDrawer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -123,7 +155,7 @@ const ApplicationDrawer: FC = () => {
         anchorEl={buttonRef.current}
       >
         <MenuSection>
-          {data?.length === 0 ? (
+          {applications?.length === 0 ? (
             <NoApplications>
               <Typography
                 group="paragraph"
@@ -141,7 +173,7 @@ const ApplicationDrawer: FC = () => {
           )}
 
           <ApplicationContent>
-            {data?.map((item, index) => {
+            {applications?.map((item, index) => {
               const isSelected =
                 getAppName(import.meta.env.VITE_NAME) === item.name;
               return (
@@ -149,6 +181,7 @@ const ApplicationDrawer: FC = () => {
                   <Button
                     variant="ghost_icon"
                     onClick={() => handleOnApplicationClick(item.url)}
+                    data-testid={`ApplicationButton-${item.name}`}
                   >
                     <ApplicationIcon name={item.name.toLowerCase()} />
                   </Button>
@@ -185,35 +218,3 @@ const ApplicationDrawer: FC = () => {
 };
 
 export default ApplicationDrawer;
-
-const MenuFixedItem = styled.div`
-  > div {
-    display: grid;
-    grid-template-columns: 1fr 24px;
-    justify-content: space-between;
-    width: 100%;
-  }
-  &:hover {
-    background: ${colors.interactive.primary__selected_hover.hex};
-    cursor: pointer;
-  }
-  border-top: 1px solid ${colors.ui.background__light.hex};
-  outline: none !important;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
-  svg {
-    align-self: center;
-  }
-`;
-
-const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  > h6 {
-    text-transform: capitalize;
-  }
-`;
-
-const NoApplications = styled.div`
-  display: flex;
-  padding: ${spacings.comfortable.medium};
-`;
