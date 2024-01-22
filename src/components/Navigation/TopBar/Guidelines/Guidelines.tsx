@@ -7,11 +7,12 @@ import { tokens } from '@equinor/eds-tokens';
 import Colorbox from './Colorbox';
 import Item from './Item';
 import Section from './Section';
+import { spacings } from 'src/style';
 import { GuidelineItem } from 'src/types/Guidelines';
 
 import styled from 'styled-components';
 
-const { elevation, spacings, colors } = tokens;
+const { elevation, colors } = tokens;
 
 const StyledSideSheet = styled.div`
   width: 320px;
@@ -30,15 +31,15 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  padding: ${spacings.comfortable.small} ${spacings.comfortable.small}
-    ${spacings.comfortable.small} ${spacings.comfortable.medium};
+  padding: ${spacings.small} ${spacings.small} ${spacings.small}
+    ${spacings.medium};
 `;
 
 const Content = styled.div`
   height: calc(
     100vh - 64px - 57px
   ); // 64px is height of top bar, 57 is height of header in side sheet
-  padding: ${spacings.comfortable.medium};
+  padding: ${spacings.medium};
   overflow: auto;
 `;
 

@@ -1,13 +1,11 @@
 import { FC, ReactElement, useMemo } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-
 import Step from './Step';
 import StepLine from './StepLine';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
 interface ContainerProps {
   $stepAmount: number;
   $maxWidth?: string;
@@ -17,7 +15,7 @@ const Container = styled.div<ContainerProps>`
   grid-template-columns:
     repeat(${({ $stepAmount }) => $stepAmount - 1}, auto 1fr)
     auto;
-  grid-gap: ${spacings.comfortable.small};
+  grid-gap: ${spacings.small};
   align-items: center;
   width: 100%;
   ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}`}

@@ -71,8 +71,8 @@ const downloadRemoteTask = {
 };
 
 const generateTask = {
-  command: execShell('yarn generate'),
-  name: chalk.hex('#CCE0E8')('Running yarn generate'),
+  command: execShell('npm run generate'),
+  name: chalk.hex('#CCE0E8')('Running npm run generate'),
 };
 
 async function startLocalHost() {

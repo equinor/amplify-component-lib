@@ -9,7 +9,7 @@ This package contains components, utils, providers and hooks developed and used 
 # Building amplify-components
 
 Build and publish is done automatically when code is merged into `main` branch, if the package.json version number is higher.
-To increase the version number use `yarn run version <type>` and specify what type of [versioning](https://github.com/theogravity/version-bump#quick-start-usage).
+To increase the version number use `npm run version <type>` and specify what type of [versioning](https://github.com/theogravity/version-bump#quick-start-usage).
 
 # Using config files from amplify-components
 
@@ -21,7 +21,7 @@ wget -q -O - https://raw.githubusercontent.com/equinor/amplify-components/main/c
 ```
 
 
-This should have downloaded the `.eslintrc.cjs`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json`, `.yarnrc.yml`, `env.sh`, `Dockerfile`, `proxy/nginx.conf`, `proxy/securityheaders.conf` and `client.yaml` files
+This should have downloaded the `.eslintrc.cjs`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json`, `env.sh`, `Dockerfile`, `proxy/nginx.conf`, `proxy/securityheaders.conf` and `client.yaml` files
 
 ## Notes
 

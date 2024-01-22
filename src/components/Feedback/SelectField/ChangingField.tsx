@@ -1,17 +1,20 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { LinearProgress, Typography } from '@equinor/eds-core-react';
+import {
+  LinearProgress as EDSLinearProgress,
+  Typography,
+} from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import string from '../../../utils/string';
 import AnimatedCheckmark from '../AnimatedCheckmark';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
+const { colors } = tokens;
 
 const Container = styled.div`
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   position: absolute;
   top: 50%;
   left: 50%;
@@ -20,9 +23,17 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - (${spacings.comfortable.xxx_large} * 4));
+  min-height: calc(100vh - (${spacings.xxx_large} * 4));
   width: 100%;
   max-width: 370px;
+`;
+
+export const LinearProgress = styled(EDSLinearProgress)`
+  background-color: ${colors.interactive.primary__hover_alt.rgba};
+
+  div {
+    background-color: ${colors.interactive.primary__resting.rgba};
+  }
 `;
 
 const StyledTypography = styled(Typography)`

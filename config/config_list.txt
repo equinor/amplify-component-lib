@@ -1,8 +1,8 @@
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.eslintrc.js
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierignore
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierrc.js
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.lintstagedrc.yaml
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json
-https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.yarnrc.yml
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.gitignore
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/Dockerfile
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/env.sh

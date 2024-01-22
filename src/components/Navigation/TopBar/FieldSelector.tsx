@@ -6,16 +6,17 @@ import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import TopBarMenu from './TopBarMenu';
+import { spacings } from 'src/style';
 import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.small};
-  padding: ${spacings.comfortable.large};
+  gap: ${spacings.small};
+  padding: ${spacings.large};
   div[role='search'] {
     > div {
       outline: none !important;
@@ -30,7 +31,7 @@ const SearchContainer = styled.div`
 `;
 
 const NoFieldsText = styled(Typography)`
-  margin: 0 auto ${spacings.comfortable.medium};
+  margin: 0 auto ${spacings.medium};
 `;
 
 const ListContainer = styled.div`
@@ -51,7 +52,7 @@ const MenuItem = styled.div<MenuItemProps>`
   }
   border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  padding: ${spacings.medium} ${spacings.large};
 `;
 
 const MenuFixedItem = styled.div<MenuItemProps>`
@@ -72,7 +73,7 @@ const MenuFixedItem = styled.div<MenuItemProps>`
   }
   border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  padding: ${spacings.medium} ${spacings.large};
   svg {
     align-self: center;
   }
@@ -83,20 +84,20 @@ const MenuSection = styled.div`
   display: flex;
   flex-direction: column;
   > p {
-    margin-left: ${spacings.comfortable.large};
-    margin-bottom: ${spacings.comfortable.small};
+    margin-left: ${spacings.large};
+    margin-bottom: ${spacings.small};
   }
 `;
 
 const MenuHeader = styled.li`
-  padding: 0 ${spacings.comfortable.large};
-  margin: ${spacings.comfortable.small} 0;
+  padding: 0 ${spacings.large};
+  margin: ${spacings.small} 0;
   align-items: center;
   display: grid;
   grid-template-columns: 1fr 24px;
   justify-content: space-between;
   > button {
-    margin-left: -${spacings.comfortable.medium_small};
+    margin-left: -${spacings.medium_small};
   }
 `;
 
@@ -143,8 +144,8 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         (field) => currentField?.uuid !== field?.uuid
       );
       if (searchValue === '') return fieldItems;
-      return fieldItems.filter(
-        (field) => field.name?.toLowerCase().includes(searchValue.toLowerCase())
+      return fieldItems.filter((field) =>
+        field.name?.toLowerCase().includes(searchValue.toLowerCase())
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 

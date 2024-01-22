@@ -1,20 +1,22 @@
 import { Button as EDSbutton, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const { spacings, shape, elevation } = tokens;
+const { shape, elevation } = tokens;
 
 const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: ${spacings.comfortable.xx_large};
+  padding: ${spacings.xx_large};
   background-color: #fff;
   box-shadow: ${elevation.raised};
   border-radius: ${shape.corners.borderRadius};
   overflow: hidden;
-  width: calc(100% - ${spacings.comfortable.xx_large} * 2);
+  width: calc(100% - ${spacings.xx_large} * 2);
 `;
 
 const TopContainer = styled.div`
@@ -22,13 +24,13 @@ const TopContainer = styled.div`
   grid-template-columns: auto 1fr;
   justify-items: end;
   padding-top: 0;
-  padding-bottom: ${spacings.comfortable.medium_small};
+  padding-bottom: ${spacings.medium_small};
 `;
 
 const HeadingContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
 `;
 
 const TitleContainer = styled.div`
@@ -42,7 +44,7 @@ const BodyContainer = styled.div`
 const RightContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: ${spacings.comfortable.small};
+  gap: ${spacings.small};
   align-items: center;
 `;
 
@@ -71,20 +73,20 @@ const BtnContainer = styled.div<BtnContainerProps>`
   position: absolute;
   bottom: 0;
   left: 0;
-  padding: ${spacings.comfortable.large};
+  padding: ${spacings.large};
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0%,
     rgba(255, 255, 255, 1) 20%
   );
   // Remove padding when setting width
-  width: calc(100% - (${spacings.comfortable.large}) * 2);
+  width: calc(100% - (${spacings.large}) * 2);
 `;
 
 const Button = styled(EDSbutton)`
   width: auto;
   font-size: 14px;
-  padding: ${spacings.comfortable.small};
+  padding: ${spacings.small};
   border-radius: 5px;
   &:hover {
     border-radius: 5px;

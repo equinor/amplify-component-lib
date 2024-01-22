@@ -15,17 +15,18 @@ import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Fee
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
 `;
 
 const ContentWrapper = styled.div`
-  padding: 0 ${spacings.comfortable.medium};
+  padding: 0 ${spacings.medium};
 `;
 
 export interface HelpProps {

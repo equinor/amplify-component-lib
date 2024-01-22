@@ -5,9 +5,10 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { Step } from './Tutorial';
 import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
+import { spacings } from 'src/style';
 
 import styled, { keyframes } from 'styled-components';
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const spawn = keyframes`
     from {
@@ -26,9 +27,9 @@ const Dialog = styled(EDSDialog)`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
-  padding: ${spacings.comfortable.large} ${spacings.comfortable.large};
-  padding-bottom: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
+  padding: ${spacings.large} ${spacings.large};
+  padding-bottom: ${spacings.medium};
 `;
 
 const DialogContent = styled.div`
@@ -48,9 +49,9 @@ const StepContainer = styled.div`
   position: relative;
   transform: translate(0, -65%);
   display: flex;
-  gap: ${spacings.comfortable.small};
-  margin-bottom: -${spacings.comfortable.small};
-  margin-top: ${spacings.comfortable.medium_small};
+  gap: ${spacings.small};
+  margin-bottom: -${spacings.small};
+  margin-top: ${spacings.medium_small};
   width: 100%;
   justify-content: center;
 `;
@@ -62,8 +63,8 @@ interface StepIndicatorProps {
 }
 
 const StepIndicator = styled.div<StepIndicatorProps>`
-  width: ${spacings.comfortable.large};
-  height: ${spacings.comfortable.small};
+  width: ${spacings.large};
+  height: ${spacings.small};
   border-radius: 24px;
   transition: all 1000ms;
   background: linear-gradient(

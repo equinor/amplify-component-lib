@@ -7,7 +7,8 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-const { spacings, colors } = tokens;
+const { colors } = tokens;
+import { spacings } from 'src/style';
 
 interface ContainerProps {
   $isError?: boolean;
@@ -29,8 +30,7 @@ export const CompactFileProgressContainer = styled.div<ContainerProps>`
 `;
 
 export const Title = styled(Typography)`
-  margin: ${spacings.comfortable.small} ${spacings.comfortable.small} 0
-    ${spacings.comfortable.small};
+  margin: ${spacings.small} ${spacings.small} 0 ${spacings.small};
   color: ${colors.text.static_icons__tertiary.rgba};
 `;
 
@@ -102,7 +102,7 @@ export const CloseButton = styled.div`
 
 export const AdditionalText = styled(Typography)`
   font-size: 10px;
-  padding-top: ${spacings.comfortable.x_small};
+  padding-top: ${spacings.x_small};
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -6,14 +6,15 @@ import { tokens } from '@equinor/eds-tokens';
 
 import date from '../../../utils/date';
 import { useDebounce } from 'src/hooks';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
+const { colors } = tokens;
 
 const CommentContainer = styled.div`
-  padding-left: ${spacings.comfortable.small};
-  margin-bottom: ${spacings.comfortable.small};
+  padding-left: ${spacings.small};
+  margin-bottom: ${spacings.small};
   padding-top: 1em;
 `;
 
@@ -34,8 +35,8 @@ const CommentTextContainer = styled.div`
 const DeleteButton = styled(Button)`
   color: ${colors.text.static_icons__tertiary.rgba};
   margin-top: 4px;
-  width: ${spacings.comfortable.xxx_large};
-  height: ${spacings.comfortable.xxx_large};
+  width: ${spacings.xxx_large};
+  height: ${spacings.xxx_large};
   &:hover {
     border-radius: 0;
   }

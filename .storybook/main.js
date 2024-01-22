@@ -4,7 +4,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-actions',
-    'storybook-addon-data-theme-switcher'
+    'storybook-addon-data-theme-switcher',
   ],
   typescript: {
     reactDocgen: 'react-docgen-typescript',

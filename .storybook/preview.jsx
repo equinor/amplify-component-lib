@@ -1,6 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
+import Template from 'src/components/Template/Template';
 
 import {darkTokens} from 'src/style/darkTokens';
+import {spacingTokens} from 'src/style/spacingTokens';
 
 const { colors } = tokens;
 
@@ -8,8 +10,8 @@ export const globalTypes = {
   dataThemes: {
     defaultValue: {
       list: [
-        { name: "Light", dataTheme: "light", color: "#FFFFFF" },
-        { name: "Dark", dataTheme: "dark", color: "#243746" },
+        { name: 'Light', dataTheme: 'light', color: '#FFFFFF' },
+        { name: 'Dark', dataTheme: 'dark', color: '#243746' },
       ],
     },
   },
@@ -19,14 +21,22 @@ export const globalTypes = {
 export const decorators = [
   (Story) => {
     // Apply styles using the darkTokens variable
-    const styleElement = document.createElement('style');
-    styleElement.innerHTML = darkTokens;
-    document.head.appendChild(styleElement);
+    const darkStyleElement = document.createElement('style');
+    darkStyleElement.innerHTML = darkTokens;
+    document.head.appendChild(darkStyleElement);
 
-    return (<Story />);
+    const spacingStyleElement = document.createElement('style');
+    spacingStyleElement.innerHTML = spacingTokens;
+    document.head.appendChild(spacingStyleElement);
+
+    return (
+      <>
+        <Template.GlobalStyles />
+        <Story />
+      </>
+    );
   },
-]; 
-
+];
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
