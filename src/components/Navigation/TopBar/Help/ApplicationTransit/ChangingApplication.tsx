@@ -91,14 +91,14 @@ const ChangingApplication: FC<ChangingApplicationProps> = ({
     <Container>
       {!finished ? (
         <Loading>
-          <Typography variant="h3">
+          <Typography variant="h3" data-testid="transfer">
             Transferring you to application.{'.'.repeat(progress / 35)}
           </Typography>
           <LinearProgress variant="determinate" value={progress} />
         </Loading>
       ) : (
         <TransferringContainer>
-          <StyledTypography variant="h3">
+          <StyledTypography variant="h3" data-testid="finish">
             Transferring to <span>{string.capitalize(applicationName)}</span>
           </StyledTypography>
 

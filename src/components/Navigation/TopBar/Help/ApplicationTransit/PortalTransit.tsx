@@ -46,7 +46,7 @@ const PortalTransit: FC<PortalTransitProps> = ({ open, onClose }) => {
   // if (skip) return;
 
   return (
-    <PortalDialog open={open} onClose={onClose}>
+    <PortalDialog open={open} onClose={onClose} data-testid="DialogHeadertest">
       <Dialog.Header>
         {' '}
         Open link
