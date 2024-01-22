@@ -2,7 +2,7 @@
 FROM node:21-alpine as base
 WORKDIR /app
 COPY package.json ./
-COPY yarn.lock ./
+COPY package-lock.json ./
 COPY tsconfig.json ./
 COPY vite.config.ts ./
 COPY index.html ./
@@ -10,10 +10,10 @@ COPY src ./src
 COPY public ./public
 
 # Dependencies
-RUN yarn install --immutable
+RUN npm ci --ignore-scripts
 
 # Build
-RUN yarn build
+RUN npm run build
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine

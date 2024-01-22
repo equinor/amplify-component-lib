@@ -18,13 +18,13 @@ jobs:
           node-version: 19.x
 
       - name: Install dependencies
-        run: yarn install
+        run: npm ci
 
       - name: Run Tests
-        run: yarn run test:ci
+        run: npm run test:ci
 
       - name: Build Components
-        run: yarn run build-components:ci
+        run: npm run build-components:ci
 
       - uses: JS-DevTools/npm-publish@v1
         with:
