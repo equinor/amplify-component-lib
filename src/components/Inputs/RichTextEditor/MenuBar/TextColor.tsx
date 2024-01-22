@@ -34,10 +34,10 @@ const Container = styled.div`
     transition: 200ms fill;
   }
   &:hover {
-    background: ${colors.interactive.primary__resting.rgba};
+    background: ${colors.interactive.primary__hover_alt.rgba};
 
     svg {
-      fill: ${colors.ui.background__light.rgba};
+      fill: ${colors.interactive.primary__hover.rgba};
     }
   }
 `;
