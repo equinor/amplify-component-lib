@@ -2,13 +2,12 @@
 FROM node:21-alpine as base
 WORKDIR /app
 COPY package*.json ./
-COPY yarn.lock ./
 COPY tsconfig*.json ./
 
 # Dependencies
 FROM base as dependencies
 WORKDIR /app
-RUN yarn install
+RUN npm ci --ignore-scripts
 COPY src src
 COPY .storybook .storybook
 COPY static static
@@ -18,7 +17,7 @@ COPY vite.config.ts vite.config.ts
 # Build
 FROM dependencies as builder
 WORKDIR /app
-RUN yarn run build-storybook
+RUN npm run build-storybook
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine

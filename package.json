@@ -21,7 +21,7 @@
   "scripts": {
     "start": "NODE_OPTIONS=--openssl-legacy-provider && storybook dev -p 6006",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider --max-old-space-size=2048' storybook build",
-    "setup": "yarn",
+    "setup": "npm install",
     "pretty": "prettier --check ./config ./src",
     "pretty:fix": "prettier --write ./config ./src",
     "lint": "eslint ./src --ext .ts,.tsx",
@@ -31,9 +31,9 @@
     "test:coverage": "vitest run --coverage",
     "setup-husky": "husky install",
     "precommit": "npx lint-staged",
-    "build": "yarn build-components",
+    "build": "npm run build-components",
     "build-components": "rollup -c && tsc --outDir dist --declarationDir dist/types --declaration true --emitDeclarationOnly --project tsconfig.build.json",
-    "build-components:ci": "rm -rf lib dist && yarn build-components",
+    "build-components:ci": "rm -rf lib dist && npm run build-components",
     "build-and-use": "node tooling/build-and-use.mjs",
     "brute-coverage": "node tooling/brute-coverage.mjs",
     "version": "version-bump cli --bump",
@@ -172,6 +172,5 @@
     "react-router": "^6.11.1",
     "react-router-dom": "^6.11.1",
     "styled-components": "*"
-  },
-  "packageManager": "yarn@3.2.4"
+  }
 }

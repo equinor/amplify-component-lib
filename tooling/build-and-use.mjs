@@ -25,7 +25,7 @@ async function runTasks() {
 
   try {
     await runTask({
-      command: 'yarn build',
+      command: 'npm run build',
       name: `${chalk.white('Building')} ${chalk.bold.magenta(
         'amplify-components'
       )}`,
