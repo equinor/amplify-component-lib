@@ -14,9 +14,9 @@ async function runTasks() {
         chalk.bold.yellow(' as preset app...\n')
     );
   } else if (process.argv.at(2)) {
-    // Provided arg but didn't prefix app name with "--"
+    // Provided arg but didn't match regex
     console.log(
-      chalk.bold.red("App name not prefixed with '--'!\n") +
+      chalk.bold.red('App name didnt match /(w+-?)+/ regex') +
         chalk.bold.yellow('Running the normal build and use tasks...\n')
     );
   } else {
