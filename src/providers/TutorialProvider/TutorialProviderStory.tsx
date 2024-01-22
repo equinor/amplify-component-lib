@@ -8,9 +8,10 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   max-width: 80%;
   margin: auto;
-  height: 100%;
+  height: 120%;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   gap: 16px;
   align-items: center;
   justify-content: center;
@@ -54,10 +55,11 @@ const Wide = styled.div`
 export const tutorialForTesting: Tutorial = {
   name: 'Storybook tutorial',
   shortName: 'kanban-drag',
-  path: '/test-path',
+  path: '/',
+  dynamicPositioning: true,
   steps: [
     {
-      title: 'A beautiful tutorial story',
+      title: 'A story',
       body: 'You can not interact with anything (even highlighted area) apart from this dialog',
     },
     {
@@ -74,6 +76,9 @@ export const tutorialForTesting: Tutorial = {
     {
       title: 'Wide boi.',
       body: 'A wide element to force overlaps for bottom left and right',
+    },
+    {
+      key: 'anotherCustomKey',
     },
   ],
 };
@@ -94,6 +99,7 @@ export const TutorialProviderStory: StoryFn = () => {
       <GreenCircle className="kanban-drag-2"></GreenCircle>
       <OrangeSquare className="kanban-drag-3"></OrangeSquare>
       <Wide className="kanban-drag-4"></Wide>
+      <Wide className="kanban-drag-5"></Wide>
     </Wrapper>
   );
 };

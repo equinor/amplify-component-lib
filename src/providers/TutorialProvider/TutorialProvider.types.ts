@@ -1,7 +1,10 @@
+import { ReactElement } from 'react';
+
 export type Tutorial = {
   name: string;
   shortName: string;
   path: string;
+  dynamicPositioning?: boolean;
   steps: Array<GenericTutorialStep | CustomTutorialStep>;
 };
 
@@ -33,4 +36,9 @@ export type HighlightingInfo = {
   left: number;
   width: number;
   height: number;
+};
+
+export type CustomTutorialComponent = {
+  key: string;
+  element: ReactElement;
 };

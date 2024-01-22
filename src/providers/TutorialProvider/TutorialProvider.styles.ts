@@ -88,3 +88,19 @@ export const NavigateSteps = styled.div`
   display: flex;
   gap: ${spacings.comfortable.medium};
 `;
+
+export const BrokenTutorialDialog = styled.dialog`
+  box-shadow: ${elevation.above_scrim};
+  border: none;
+  width: 300px;
+  border-radius: ${shape.corners.borderRadius};
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.comfortable.large};
+  > button {
+    align-self: flex-end;
+  }
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+  }
+`;
