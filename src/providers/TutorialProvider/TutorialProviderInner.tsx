@@ -5,21 +5,20 @@ import { Button, Typography } from '@equinor/eds-core-react';
 
 import TutorialDialog from './TutorialDialog';
 import { useTutorial } from './TutorialProvider';
-import { HIGHLIGHT_PADDING } from './TutorialProvider.const';
+import {
+  HIGHLIGHT_PADDING,
+  LOCALSTORAGE_VALUE_STRING,
+} from './TutorialProvider.const';
 import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { BrokenTutorialDialog, Highlighter } from './TutorialProvider.styles';
-import {
-  CustomTutorialComponent,
-  HighlightingInfo,
-  Tutorial,
-} from './TutorialProvider.types';
+import { HighlightingInfo, Tutorial } from './TutorialProvider.types';
 
 interface TutorialProviderInnerProps {
-  customStepComponents?: Array<CustomTutorialComponent>;
+  tutorialsForStory?: Tutorial[];
 }
 
 const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
-  customStepComponents,
+  tutorialsForStory,
 }) => {
   const { pathname } = useLocation();
   const brokenTutorialDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -29,12 +28,13 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
     dialogRef,
     elementToHighlight,
     tutorialShortNameFromParams,
+    customStepComponents,
   } = useTutorial();
   const hasStartedTutorial = useRef(false);
-  const appTutorials = useGetTutorialsForApp();
+  const appTutorials = useGetTutorialsForApp(tutorialsForStory);
 
   const hasRelevantCustomSteps = useMemo(() => {
-    if (!activeTutorial) return;
+    if (!activeTutorial) return true;
     const customKeysFromSteps = activeTutorial.steps
       .filter((step) => step.key !== undefined)
       .map((customStep) => customStep.key ?? '');
@@ -60,7 +60,7 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
   }, [activeTutorial, customStepComponents]);
 
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
-    if (!elementToHighlight) return;
+    if (!elementToHighlight || !activeTutorial) return;
 
     const highlighterBoundingClient =
       elementToHighlight.getBoundingClientRect();
@@ -71,7 +71,7 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
       height: highlighterBoundingClient.height + HIGHLIGHT_PADDING * 2,
       width: highlighterBoundingClient.width + HIGHLIGHT_PADDING * 2,
     };
-  }, [elementToHighlight]);
+  }, [activeTutorial, elementToHighlight]);
 
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
@@ -83,7 +83,10 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
       setActiveTutorial(tutorialToRun);
       hasStartedTutorial.current = true;
       dialogRef.current?.showModal();
-      localStorage.setItem(tutorialShortNameFromParams, 'true');
+      localStorage.setItem(
+        tutorialShortNameFromParams,
+        LOCALSTORAGE_VALUE_STRING
+      );
       // TODO: keep this when deploying
       // searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
       // setSearchParams(searchParams);
@@ -93,6 +96,9 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
 
   useEffect(() => {
     if (!hasRelevantCustomSteps) {
+      console.error(
+        'The tutorial that tried to run did could not find the relevant custom step components passed into the TutorialProvider. Please check that the key for the step match the relevant key in the customStepComponents array passed to the TutorialProvider'
+      );
       brokenTutorialDialogRef.current?.showModal();
     }
   }, [hasRelevantCustomSteps, setActiveTutorial]);
@@ -117,7 +123,8 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
     if (tutorialsForPath.length < 1) return;
 
     const tutorialToRun = tutorialsForPath.find(
-      (item) => localStorage.getItem(item.shortName) !== 'true'
+      (item) =>
+        localStorage.getItem(item.shortName) !== LOCALSTORAGE_VALUE_STRING
     );
     if (tutorialToRun) {
       runTutorial(tutorialToRun);
@@ -134,8 +141,7 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
     return (
       <BrokenTutorialDialog ref={brokenTutorialDialogRef}>
         <Typography>
-          The tutorial you tried to open is broken. Please submit this feedback
-          using the Resources menu in the topbar
+          There was a problem getting the custom components for this tutorial.
         </Typography>
         <Button variant="outlined" onClick={handleOnClickBrokenTutorial}>
           Close

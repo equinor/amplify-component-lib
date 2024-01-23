@@ -25,7 +25,12 @@ export const tutorialForTestingInRecap: Tutorial = {
   ],
 };
 
-export const useGetTutorialsForApp = () => {
+export const useGetTutorialsForApp = (
+  extraTutorials: Tutorial[] | undefined
+) => {
   // TODO: Change to use backend call to get tutorials
+  if (extraTutorials) {
+    return [tutorialForTestingInRecap, ...extraTutorials];
+  }
   return [tutorialForTestingInRecap];
 };

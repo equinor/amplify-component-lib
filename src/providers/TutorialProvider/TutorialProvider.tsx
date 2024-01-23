@@ -27,7 +27,8 @@ interface TutorialContextType {
   setActiveTutorial: Dispatch<SetStateAction<Tutorial | undefined>>;
   currentStep: number;
   setCurrentStep: Dispatch<SetStateAction<number>>;
-  elementToHighlight: HTMLElement | undefined | null;
+  elementToHighlight: HTMLElement | undefined;
+  setElementToHighlight: Dispatch<SetStateAction<HTMLElement | undefined>>;
   customStepComponents: CustomTutorialComponent[] | undefined;
   currentStepObject: GenericTutorialStep | CustomTutorialStep | undefined;
   isLastStep: boolean;
@@ -55,11 +56,13 @@ export const useTutorial = () => {
 interface TutorialProviderProps {
   children: ReactNode;
   customStepComponents?: Array<CustomTutorialComponent>;
+  tutorialsForStory?: Tutorial[];
 }
 
 const TutorialProvider: FC<TutorialProviderProps> = ({
   children,
   customStepComponents,
+  tutorialsForStory,
 }) => {
   const [activeTutorial, setActiveTutorial] = useState<Tutorial | undefined>(
     undefined
@@ -82,7 +85,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     );
     const handleTryToGetElement = async () => {
       // Wait before trying to get the element
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       const elementInTimeout = document.getElementById(
         `${activeTutorial.shortName}-${currentStep}`
@@ -120,6 +123,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         currentStep,
         setCurrentStep,
         elementToHighlight,
+        setElementToHighlight,
         customStepComponents,
         isLastStep,
         dialogRef,
@@ -128,7 +132,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         tutorialShortNameFromParams,
       }}
     >
-      <TutorialProviderInner />
+      <TutorialProviderInner tutorialsForStory={tutorialsForStory} />
 
       {children}
     </TutorialContext.Provider>

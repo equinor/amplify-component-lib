@@ -28,6 +28,7 @@ const TutorialDialog: FC = () => {
     customStepComponents,
     isLastStep,
     currentStepObject,
+    setElementToHighlight,
   } = useTutorial();
 
   const dialogContent = useMemo(() => {
@@ -84,6 +85,7 @@ const TutorialDialog: FC = () => {
     dialogRef.current?.close();
     setActiveTutorial(undefined);
     setCurrentStep(0);
+    setElementToHighlight(undefined);
   };
   const handleOnSkip = () => {
     stopTutorial();
@@ -100,6 +102,8 @@ const TutorialDialog: FC = () => {
     }
     setCurrentStep((prev) => prev + 1);
   };
+
+  // TODO: Add image
 
   return (
     <DialogWrapper>

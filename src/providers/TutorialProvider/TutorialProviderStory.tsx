@@ -52,7 +52,7 @@ const Wide = styled.div`
   background-color: darksalmon;
 `;
 
-export const tutorialForTesting: Tutorial = {
+export const tutorialForStory: Tutorial = {
   name: 'Storybook tutorial',
   shortName: 'kanban-drag',
   path: '/',
@@ -87,7 +87,18 @@ const handleOnClick = () => {
   console.log('Nevermind');
 };
 
+vi.mock('./TutorialProvider.hooks', () => {
+  const useGetTutorialsForApp = () => {
+    return [tutorialForStory];
+  };
+  return { useGetTutorialsForApp };
+});
+
 export const TutorialProviderStory: StoryFn = () => {
+  // const { setActiveTutorial } = useTutorial();
+  //
+  // setActiveTutorial(tutorialForStory);
+
   return (
     <Wrapper>
       <RedSquare className="kanban-drag-0">

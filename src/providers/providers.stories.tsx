@@ -1,9 +1,14 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import TutorialProvider from './TutorialProvider/TutorialProvider';
 import { CustomTutorialComponent } from './TutorialProvider/TutorialProvider.types';
-import { TutorialProviderStory } from './TutorialProvider/TutorialProviderStory';
+import {
+  tutorialForStory,
+  TutorialProviderStory,
+} from './TutorialProvider/TutorialProviderStory';
 
 import styled, { keyframes } from 'styled-components';
 
@@ -153,9 +158,11 @@ export default {
   component: List,
   decorators: [
     (storyFn) => (
-      <TutorialProvider customStepComponents={customStepComponents}>
-        {storyFn()}
-      </TutorialProvider>
+      <BrowserRouter>
+        <TutorialProvider customStepComponents={customStepComponents}>
+          {storyFn()}
+        </TutorialProvider>
+      </BrowserRouter>
     ),
   ],
 } as Meta;
