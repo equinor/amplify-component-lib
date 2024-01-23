@@ -8,6 +8,7 @@ import {
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
 import { spacings } from 'src/style';
 
@@ -78,10 +79,6 @@ const ItemText = styled(Typography)<ItemTextProps>`
   }
 `;
 
-const Tooltip = styled(EDSTooltip)`
-  text-transform: capitalize;
-  color: white;
-`;
 
 export type MenuItemType = {
   icon: IconData;
@@ -141,7 +138,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     }
 
     return (
-      <Tooltip title={name} placement="right">
+      <OptionalTooltip title={name + "asd"} placement="right" texttransform="capitalize">
         <Container
           $active={isCurrentUrl}
           $disabled={disabled}
@@ -152,7 +149,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
         >
           {icon && <ItemIcon data={icon} size={24} color={iconColor} />}
         </Container>
-      </Tooltip>
+      </OptionalTooltip>
     );
   }
 );
