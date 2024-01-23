@@ -15,6 +15,7 @@ export default {
       options: [...DEFAULT_FEATURES],
     },
     onChange: { action: 'Fired onChange fn' },
+    onImageUpload: { action: 'Fired onImageUpload fn' },
   },
   args: {
     features: [...DEFAULT_FEATURES],
@@ -22,12 +23,7 @@ export default {
 };
 
 export const Primary: StoryFn<RichTextEditorProps> = (args) => {
-  const handleOnImageUpload = async (file: File) => {
-    console.log(file);
-    return '';
-  };
-
-  return <RichTextEditor {...args} onImageUpload={handleOnImageUpload} />;
+  return <RichTextEditor {...args} />;
 };
 
 export const FormattedText: StoryFn<RichTextEditorProps> = (args) => {
