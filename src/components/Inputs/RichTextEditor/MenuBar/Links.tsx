@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useRef, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useRef, useState } from 'react';
 
 import { Button, Icon, Popover } from '@equinor/eds-core-react';
 import { link, link_off } from '@equinor/eds-icons';
@@ -28,14 +28,24 @@ const Links: FC = () => {
   const linkText = useRef<string>('');
   const [failedToSave, setFailedToSave] = useState(false);
 
-  const handleOnToggleOpen = () => setOpen((prev) => !prev);
+  const handleOnToggleOpen = () => {
+    setOpen((prev) => !prev);
+    editor?.chain().focus().setHighlight({ color: '#accef7' }).run();
+  };
   const handleOnClose = () => {
     setOpen(false);
     linkText.current = '';
+    editor?.chain().focus().unsetHighlight().run();
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     linkText.current = event.target.value;
+  };
+
+  const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onSetLink();
+    }
   };
 
   const onSetLink = () => {
@@ -65,20 +75,28 @@ const Links: FC = () => {
           ref={buttonRef}
           icon={link}
           onClick={handleOnToggleOpen}
+          disabled={editor?.state.selection.empty}
           data-testid="link-button"
         />
-        <MenuButton icon={link_off} onClick={onUnsetLink} />
+        <MenuButton
+          icon={link_off}
+          onClick={onUnsetLink}
+          disabled={!editor?.isActive('link')}
+        />
       </Section>
       {open && (
         <Popover open anchorEl={buttonRef.current} onClose={handleOnClose}>
           <Container>
             <AmplifyTextField
-              autoFocus
+              inputRef={(element) => {
+                element?.focus();
+              }}
               id="link"
               placeholder="Insert link"
               autoComplete="off"
               inputIcon={<Icon data={link} />}
               onChange={handleOnChange}
+              onKeyDown={handleOnKeyDown}
               variant={failedToSave ? 'error' : undefined}
             />
             <Button variant="outlined" onClick={onSetLink}>

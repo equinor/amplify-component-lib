@@ -22,7 +22,12 @@ export default {
 };
 
 export const Primary: StoryFn<RichTextEditorProps> = (args) => {
-  return <RichTextEditor {...args} />;
+  const handleOnImageUpload = async (file: File) => {
+    console.log(file);
+    return '';
+  };
+
+  return <RichTextEditor {...args} onImageUpload={handleOnImageUpload} />;
 };
 
 export const FormattedText: StoryFn<RichTextEditorProps> = (args) => {
