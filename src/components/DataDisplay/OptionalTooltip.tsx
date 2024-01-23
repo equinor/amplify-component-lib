@@ -8,6 +8,11 @@ type OptionalTooltipProps = {
   texttransform?: string;
 } & TooltipProps;
 
+    const Tooltip = styled(EDSTooltip)<OptionalTooltipProps>`
+      color: white;
+
+      text-transform: ${(props) => props.texttransform};
+    `;
 
 
 const OptionalTooltip = forwardRef<HTMLDivElement, OptionalTooltipProps>(
@@ -15,12 +20,6 @@ const OptionalTooltip = forwardRef<HTMLDivElement, OptionalTooltipProps>(
     if (title === undefined) {
       return <>{children}</>;
     }
-
-    const Tooltip = styled(EDSTooltip)<OptionalTooltipProps>`
-      color: white;
-
-      text-transform: ${(props) => props.texttransform};
-    `;
 
     return (
       <Tooltip className="bobo" ref={ref} title={title} {...rest}>
