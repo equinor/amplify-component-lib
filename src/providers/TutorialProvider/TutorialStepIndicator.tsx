@@ -2,7 +2,10 @@ import { FC } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { CustomTutorialStep, GenericTutorialStep } from './TutorialProvider';
+import {
+  CustomTutorialStep,
+  GenericTutorialStep,
+} from './TutorialProvider.types';
 
 import styled from 'styled-components';
 

@@ -1,4 +1,5 @@
 import AuthProvider from './AuthProvider/AuthProvider';
+import TutorialProvider from './TutorialProvider/TutorialProvider';
 import FeatureToggleProvider from './FeatureToggleProvider';
 import PageMenuProvider from './PageMenuProvider';
 import ReleaseNotesProvider from './ReleaseNotesProvider';
@@ -12,5 +13,6 @@ export {
   ReleaseNotesProvider,
   SideBarProvider,
   SnackbarProvider,
+  TutorialProvider,
   TutorialStepsProvider,
 };

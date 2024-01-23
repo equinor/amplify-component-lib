@@ -1,31 +1,18 @@
 import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { useLocation, useParams } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { Button, Typography } from '@equinor/eds-core-react';
 
-import { useTutorial } from '../../hooks/useTutorial';
+import TutorialDialog from './TutorialDialog';
+import { useTutorial } from './TutorialProvider';
 import { HIGHLIGHT_PADDING } from './TutorialProvider.const';
-import {
-  BrokenTutorialDialog,
-  DialogActions,
-  DialogContent,
-  DialogWrapper,
-  Highlighter,
-  NavigateSteps,
-  TutorialDialog,
-} from './TutorialProvider.styles';
+import { useGetTutorialsForApp } from './TutorialProvider.hooks';
+import { BrokenTutorialDialog, Highlighter } from './TutorialProvider.styles';
 import {
   CustomTutorialComponent,
   HighlightingInfo,
   Tutorial,
-  TutorialDialogPosition,
 } from './TutorialProvider.types';
-import {
-  getBestPositionWithoutOverlap,
-  getMarginCss,
-} from './TutorialProvider.utils';
-import { tutorialForTesting } from './TutorialProviderStory';
-import TutorialStepIndicator from './TutorialStepIndicator';
 
 interface TutorialProviderInnerProps {
   customStepComponents?: Array<CustomTutorialComponent>;
@@ -34,29 +21,17 @@ interface TutorialProviderInnerProps {
 const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
   customStepComponents,
 }) => {
-  // const [localStorage, setLocalStorage] = useLocalStorage<string[]>('', []);
   const { pathname } = useLocation();
-  const { tutorial } = useParams();
-  console.log('pathname: ', pathname);
-  console.log('tutorialFromParam', tutorial);
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
   const brokenTutorialDialogRef = useRef<HTMLDialogElement | null>(null);
-  const { activeTutorial, setActiveTutorial, currentStep, setCurrentStep } =
-    useTutorial();
-  const queryParams = useMemo(() => new URLSearchParams(location.search), []);
-  const appTutorials = useMemo(() => [tutorialForTesting], []);
-  const elementToHighlight = useMemo(() => {
-    if (!activeTutorial) return;
-    const elementCollection = document.getElementsByClassName(
-      `${activeTutorial.shortName}-${currentStep}`
-    );
-    return elementCollection.item(0);
-  }, [activeTutorial, currentStep]);
-
-  const currentStepObject = useMemo(() => {
-    if (!activeTutorial) return;
-    return activeTutorial.steps.at(currentStep);
-  }, [activeTutorial, currentStep]);
+  const {
+    activeTutorial,
+    setActiveTutorial,
+    dialogRef,
+    elementToHighlight,
+    tutorialShortNameFromParams,
+  } = useTutorial();
+  const hasStartedTutorial = useRef(false);
+  const appTutorials = useGetTutorialsForApp();
 
   const hasRelevantCustomSteps = useMemo(() => {
     if (!activeTutorial) return;
@@ -71,8 +46,8 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
     if (!customKeysFromComponents || customKeysFromComponents.length === 0)
       return false;
 
-    const stepsHaveComponents = customKeysFromSteps.map(
-      (keyFromStep) => customKeysFromComponents?.includes(keyFromStep)
+    const stepsHaveComponents = customKeysFromSteps.map((keyFromStep) =>
+      customKeysFromComponents?.includes(keyFromStep)
     );
 
     const canShowTutorial = stepsHaveComponents.every((step) => step === true);
@@ -83,39 +58,6 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
       return false;
     }
   }, [activeTutorial, customStepComponents]);
-
-  const dialogPosition: TutorialDialogPosition | undefined = useMemo(() => {
-    if (!activeTutorial) return;
-    if (!elementToHighlight || !dialogRef.current)
-      return TutorialDialogPosition.BOTTOM_RIGHT;
-    if (activeTutorial?.steps[currentStep].position)
-      return (
-        activeTutorial.steps[currentStep].position ??
-        TutorialDialogPosition.BOTTOM_RIGHT
-      );
-    if (activeTutorial.dynamicPositioning) {
-      return getBestPositionWithoutOverlap(
-        elementToHighlight.getBoundingClientRect(),
-        dialogRef.current.getBoundingClientRect()
-      );
-    }
-    return TutorialDialogPosition.BOTTOM_RIGHT;
-  }, [activeTutorial, currentStep, elementToHighlight]);
-
-  const dialogPositionCss = useMemo(() => {
-    switch (dialogPosition) {
-      case TutorialDialogPosition.TOP_LEFT:
-        return `${getMarginCss('top')}${getMarginCss('left')}`;
-      case TutorialDialogPosition.TOP_RIGHT:
-        return `${getMarginCss('top')}${getMarginCss('right')}`;
-      case TutorialDialogPosition.BOTTOM_LEFT:
-        return `${getMarginCss('bottom')}${getMarginCss('left')}`;
-      case TutorialDialogPosition.BOTTOM_RIGHT:
-        return `${getMarginCss('bottom')}${getMarginCss('right')}`;
-      default:
-        return '';
-    }
-  }, [dialogPosition]);
 
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
     if (!elementToHighlight) return;
@@ -131,41 +73,22 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
     };
   }, [elementToHighlight]);
 
-  const dialogContent = useMemo(() => {
-    if (!currentStepObject) return;
-
-    if (currentStepObject.key && customStepComponents) {
-      return customStepComponents.find(
-        (step) => step.key === currentStepObject.key
-      )?.element;
-    } else if (currentStepObject.key === undefined) {
-      return (
-        <>
-          <Typography>{currentStepObject.title}</Typography>
-          <Typography>{currentStepObject.body}</Typography>
-        </>
-      );
-    }
-  }, [currentStepObject, customStepComponents]);
-
-  const isLastStep = useMemo(() => {
-    if (!activeTutorial) return false;
-    return currentStep >= activeTutorial?.steps.length - 1;
-  }, [activeTutorial, currentStep]);
-
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
   }, [appTutorials, pathname]);
 
   const runTutorial = useCallback(
     (tutorialToRun: Tutorial) => {
-      if (!tutorial) return;
+      if (!tutorialShortNameFromParams || hasStartedTutorial.current) return;
       setActiveTutorial(tutorialToRun);
+      hasStartedTutorial.current = true;
       dialogRef.current?.showModal();
-      localStorage.setItem(tutorial, 'true');
-      queryParams.delete(tutorial);
+      localStorage.setItem(tutorialShortNameFromParams, 'true');
+      // TODO: keep this when deploying
+      // searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
+      // setSearchParams(searchParams);
     },
-    [queryParams, setActiveTutorial, tutorial]
+    [dialogRef, setActiveTutorial, tutorialShortNameFromParams]
   );
 
   useEffect(() => {
@@ -175,11 +98,20 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
   }, [hasRelevantCustomSteps, setActiveTutorial]);
 
   useEffect(() => {
-    // TODO: check for tutorial in list from backend
-    if (tutorial && appTutorials.some((item) => item.shortName === tutorial)) {
-      localStorage.removeItem(tutorial);
+    if (
+      tutorialShortNameFromParams &&
+      appTutorials.some(
+        (item) => item.shortName === tutorialShortNameFromParams
+      )
+    ) {
+      localStorage.removeItem(tutorialShortNameFromParams);
     }
-  }, [activeTutorial, appTutorials, setActiveTutorial, tutorial]);
+  }, [
+    activeTutorial,
+    appTutorials,
+    setActiveTutorial,
+    tutorialShortNameFromParams,
+  ]);
 
   useEffect(() => {
     if (tutorialsForPath.length < 1) return;
@@ -192,36 +124,11 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
     }
   }, [runTutorial, tutorialsForPath]);
 
-  const stopTutorial = () => {
-    dialogRef.current?.close();
-    setActiveTutorial(undefined);
-    setCurrentStep(0);
-  };
-
-  const handleOnSkip = () => {
-    stopTutorial();
-  };
-
-  const handleOnPrev = () => {
-    setCurrentStep((prev) => prev - 1);
-  };
-
-  const handleOnNext = () => {
-    if (isLastStep) {
-      stopTutorial();
-      return;
-    }
-    setCurrentStep((prev) => prev + 1);
-  };
-
   const handleOnClickBrokenTutorial = () => {
     brokenTutorialDialogRef.current?.close();
 
     setActiveTutorial(undefined);
   };
-
-  console.log('app : ', appTutorials);
-  console.log('path : ', tutorialsForPath);
 
   if (!hasRelevantCustomSteps && activeTutorial) {
     return (
@@ -239,52 +146,17 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
 
   return (
     <>
-      <Button
-        onClick={() => {
-          dialogRef.current?.showModal();
-          setActiveTutorial(tutorialForTesting);
-        }}
-      >
-        Start tutorial
-      </Button>
       {highlightingInfo && (
-        <Highlighter
-          $top={highlightingInfo.top}
-          $left={highlightingInfo.left}
-          $width={highlightingInfo.width}
-          $height={highlightingInfo.height}
-        />
+        <>
+          <Highlighter
+            $top={highlightingInfo.top}
+            $left={highlightingInfo.left}
+            $width={highlightingInfo.width}
+            $height={highlightingInfo.height}
+          />
+        </>
       )}
-      <DialogWrapper>
-        <TutorialDialog
-          open={activeTutorial !== undefined}
-          ref={dialogRef}
-          $positionCss={dialogPositionCss ?? ''}
-        >
-          <DialogContent>
-            {dialogContent}
-            <TutorialStepIndicator
-              steps={activeTutorial?.steps ?? []}
-              currentStep={currentStep}
-            />
-            <DialogActions>
-              <Button variant="ghost" onClick={handleOnSkip}>
-                Skip
-              </Button>
-              <NavigateSteps>
-                {currentStep && currentStep !== 0 ? (
-                  <Button variant="ghost" onClick={handleOnPrev}>
-                    Previous
-                  </Button>
-                ) : null}
-                <Button variant="outlined" onClick={handleOnNext}>
-                  {isLastStep ? 'Done' : 'Next'}
-                </Button>
-              </NavigateSteps>
-            </DialogActions>
-          </DialogContent>
-        </TutorialDialog>
-      </DialogWrapper>
+      <TutorialDialog />
     </>
   );
 };

@@ -1,5 +1,3 @@
-import { BrowserRouter } from 'react-router-dom';
-
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
@@ -155,11 +153,9 @@ export default {
   component: List,
   decorators: [
     (storyFn) => (
-      <BrowserRouter>
-        <TutorialProvider customStepComponents={customStepComponents}>
-          {storyFn()}
-        </TutorialProvider>
-      </BrowserRouter>
+      <TutorialProvider customStepComponents={customStepComponents}>
+        {storyFn()}
+      </TutorialProvider>
     ),
   ],
 } as Meta;

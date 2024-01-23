@@ -23,7 +23,7 @@ const fadeinBoxShadowAnimation = keyframes`
 
 export const Highlighter = styled.div<HighlighterProps>`
   position: absolute;
-  z-index: 1000;
+  z-index: 10000;
   pointer-events: none;
   transition: top, left, width, height;
   transition-duration: 300ms;
@@ -59,7 +59,7 @@ const fadeinOpacityAnimation = keyframes`
   }
 
 `;
-export const TutorialDialog = styled.dialog<TutorialDialogProps>`
+export const StyledTutorialDialog = styled.dialog<TutorialDialogProps>`
   border: none;
   box-shadow: ${elevation.above_scrim};
   border-radius: ${shape.corners.borderRadius};
