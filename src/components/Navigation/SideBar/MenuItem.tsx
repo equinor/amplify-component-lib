@@ -2,7 +2,6 @@ import { forwardRef, HTMLAttributes, useMemo } from 'react';
 
 import {
   Icon,
-  Tooltip as EDSTooltip,
   Typography,
 } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';

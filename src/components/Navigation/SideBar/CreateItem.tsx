@@ -89,11 +89,6 @@ const CreateNewButtonText = styled(Typography)`
   }
 `;
 
-const Tooltip = styled(EDSTooltip)`
-  &::first-letter {
-    text-transform: uppercase;
-  }
-`;
 
 interface CreateItemProps {
   createLabel: string;
