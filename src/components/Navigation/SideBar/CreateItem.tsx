@@ -1,11 +1,6 @@
 import { FC } from 'react';
 
-import {
-  Button,
-  ButtonProps,
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, ButtonProps, Icon, Typography } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -87,7 +82,6 @@ const CreateNewButtonText = styled(Typography)`
     text-transform: uppercase;
   }
 `;
-
 
 interface CreateItemProps {
   createLabel: string;

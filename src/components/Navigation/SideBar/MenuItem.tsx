@@ -1,9 +1,6 @@
 import { forwardRef, HTMLAttributes, useMemo } from 'react';
 
-import {
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -78,7 +75,6 @@ const ItemText = styled(Typography)<ItemTextProps>`
   }
 `;
 
-
 export type MenuItemType = {
   icon: IconData;
   name: string;
@@ -137,7 +133,11 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     }
 
     return (
-      <OptionalTooltip title={name + "asd"} placement="right" texttransform="capitalize">
+      <OptionalTooltip
+        title={name + 'asd'}
+        placement="right"
+        texttransform="capitalize"
+      >
         <Container
           $active={isCurrentUrl}
           $disabled={disabled}
