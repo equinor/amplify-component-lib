@@ -4,7 +4,6 @@ import {
   Button,
   ButtonProps,
   Icon,
-  Tooltip as EDSTooltip,
   Typography,
 } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
