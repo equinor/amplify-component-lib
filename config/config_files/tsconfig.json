@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "target": "ESNEXT"
+    "target": "ESNEXT",
   },
-  "include": ["src"]
+  "include": ["src"],
 }

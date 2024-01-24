@@ -1,15 +1,26 @@
 import { forwardRef } from 'react';
 
-import { Tooltip, TooltipProps } from '@equinor/eds-core-react';
+import { Tooltip as EDSTooltip, TooltipProps } from '@equinor/eds-core-react';
 
-const OptionalTooltip = forwardRef<HTMLDivElement, TooltipProps>(
+import styled from 'styled-components';
+
+type OptionalTooltipProps = {
+  texttransform?: string;
+} & TooltipProps;
+
+const Tooltip = styled(EDSTooltip)<OptionalTooltipProps>`
+  color: white;
+  text-transform: ${(props) => props.texttransform};
+`;
+
+const OptionalTooltip = forwardRef<HTMLDivElement, OptionalTooltipProps>(
   ({ title, children, ...rest }, ref) => {
     if (title === undefined) {
       return <>{children}</>;
     }
 
     return (
-      <Tooltip ref={ref} title={title} {...rest}>
+      <Tooltip className="bobo" ref={ref} title={title} {...rest}>
         {children}
       </Tooltip>
     );
