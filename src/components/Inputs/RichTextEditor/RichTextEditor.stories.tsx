@@ -15,9 +15,14 @@ export default {
       options: [...DEFAULT_FEATURES],
     },
     onChange: { action: 'Fired onChange fn' },
+    onImageUpload: { action: 'Fired onImageUpload fn' },
   },
   args: {
     features: [...DEFAULT_FEATURES],
+    onImageUpload: async (file: File) => {
+      console.log(file.name);
+      return '';
+    },
   },
 };
 

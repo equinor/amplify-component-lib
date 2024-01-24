@@ -50,15 +50,10 @@ const Divider = styled.hr`
 
 interface MenuBarProps {
   features: RichTextEditorFeatures[];
-  toggleTableBorders: () => void;
   onImageUpload?: (file: File) => Promise<string>;
 }
 
-const MenuBar: FC<MenuBarProps> = ({
-  features,
-  toggleTableBorders,
-  onImageUpload,
-}) => {
+const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {
   const { editor } = useCurrentEditor();
 
   /* c8 ignore start */
@@ -85,12 +80,13 @@ const MenuBar: FC<MenuBarProps> = ({
   const alignRight = () => editor.chain().focus().setTextAlign('right').run();
   const clearFormatting = () =>
     editor.chain().focus().clearNodes().unsetAllMarks().run();
-  const createTable = () =>
+  const createTable = () => {
     editor
       .chain()
       .focus()
       .insertTable({ rows: 1, cols: 3, withHeaderRow: false })
       .run();
+  };
 
   return (
     <Wrapper>
@@ -201,9 +197,7 @@ const MenuBar: FC<MenuBarProps> = ({
           </>
         )}
       </Container>
-      {editor.isActive('table') && (
-        <TableBar toggleTableBorders={toggleTableBorders} />
-      )}
+      {editor.isActive('table') && <TableBar />}
     </Wrapper>
   );
 };

@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "5.11.1",
+  "version": "5.11.2",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
@@ -66,6 +66,7 @@
     "@tiptap/extension-gapcursor": "^2.1.16",
     "@tiptap/extension-hard-break": "^2.1.16",
     "@tiptap/extension-heading": "^2.1.16",
+    "@tiptap/extension-highlight": "^2.1.16",
     "@tiptap/extension-history": "^2.1.16",
     "@tiptap/extension-image": "^2.1.16",
     "@tiptap/extension-italic": "^2.1.16",

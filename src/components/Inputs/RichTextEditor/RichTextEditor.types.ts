@@ -21,5 +21,7 @@ export const DEFAULT_FEATURES = [
   RichTextEditorFeatures.CODE,
   RichTextEditorFeatures.ALIGNMENT,
   RichTextEditorFeatures.LINKS,
+  RichTextEditorFeatures.IMAGES,
+  RichTextEditorFeatures.TABLE,
   RichTextEditorFeatures.CLEAR_FORMATTING,
 ];

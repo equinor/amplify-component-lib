@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { border_clear, table_chart } from '@equinor/eds-icons';
+import { table_chart } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useCurrentEditor } from '@tiptap/react';
 
@@ -21,20 +21,17 @@ import MenuButton from './MenuButton';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
+const { colors, spacings } = tokens;
 
 const Container = styled.div`
   display: flex;
   gap: ${spacings.comfortable.small};
   padding: ${spacings.comfortable.small};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
 `;
 
-interface TableBarProps {
-  toggleTableBorders: () => void;
-}
-
 /* c8 ignore start */
-const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
+const TableBar: FC = () => {
   const { editor } = useCurrentEditor();
 
   const onRemoveTable = () => editor?.chain().focus().deleteTable().run();
@@ -57,11 +54,6 @@ const TableBar: FC<TableBarProps> = ({ toggleTableBorders }) => {
         active
         icon={table_chart}
         onClick={onRemoveTable}
-      />
-      <MenuButton
-        tooltip="Show/hide table borders"
-        icon={border_clear}
-        onClick={toggleTableBorders}
       />
       <Section>
         <MenuButton
