@@ -6,6 +6,7 @@ import { useTutorial } from './TutorialProvider';
 import {
   DialogActions,
   DialogContent,
+  DialogImage,
   DialogWrapper,
   NavigateSteps,
   StyledTutorialDialog,
@@ -43,6 +44,9 @@ const TutorialDialog: FC = () => {
         <>
           <Typography>{currentStepObject.title}</Typography>
           <Typography>{currentStepObject.body}</Typography>
+          {currentStepObject.imgUrl && (
+            <DialogImage src={currentStepObject.imgUrl} />
+          )}
         </>
       );
     }

@@ -80,6 +80,12 @@ export const DialogContent = styled.div`
   width: 300px;
 `;
 
+export const DialogImage = styled.img`
+  max-height: 300px;
+  min-height: 50px;
+  object-fit: cover;
+`;
+
 export const DialogActions = styled.div`
   display: flex;
   justify-content: space-between;

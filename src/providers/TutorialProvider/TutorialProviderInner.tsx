@@ -13,13 +13,7 @@ import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { BrokenTutorialDialog, Highlighter } from './TutorialProvider.styles';
 import { HighlightingInfo, Tutorial } from './TutorialProvider.types';
 
-interface TutorialProviderInnerProps {
-  tutorialsForStory?: Tutorial[];
-}
-
-const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
-  tutorialsForStory,
-}) => {
+const TutorialProviderInner: FC = () => {
   const { pathname } = useLocation();
   const brokenTutorialDialogRef = useRef<HTMLDialogElement | null>(null);
   const {
@@ -29,9 +23,10 @@ const TutorialProviderInner: FC<TutorialProviderInnerProps> = ({
     elementToHighlight,
     tutorialShortNameFromParams,
     customStepComponents,
+    tutorialsFromProps,
   } = useTutorial();
   const hasStartedTutorial = useRef(false);
-  const appTutorials = useGetTutorialsForApp(tutorialsForStory);
+  const appTutorials = useGetTutorialsForApp(tutorialsFromProps);
 
   const hasRelevantCustomSteps = useMemo(() => {
     if (!activeTutorial) return true;

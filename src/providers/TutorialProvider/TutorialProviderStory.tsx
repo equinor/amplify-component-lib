@@ -5,6 +5,8 @@ import { Tutorial } from './TutorialProvider.types';
 
 import styled from 'styled-components';
 
+const STORYBOOK_TUTORIAL_SHORT_NAME = 'storybook-tutorial';
+
 const Wrapper = styled.div`
   max-width: 80%;
   margin: auto;
@@ -54,28 +56,31 @@ const Wide = styled.div`
 
 export const tutorialForStory: Tutorial = {
   name: 'Storybook tutorial',
-  shortName: 'kanban-drag',
-  path: '/',
+  shortName: STORYBOOK_TUTORIAL_SHORT_NAME,
+  path: '/iframe.html',
   dynamicPositioning: true,
   steps: [
     {
       title: 'A story',
-      body: 'You can not interact with anything (even highlighted area) apart from this dialog',
+      body: 'Interesting stuff',
     },
     {
       title: 'The story continues',
-      body: 'A blue square',
+      body: 'A very tall image that is limited by "max-height: 300px"',
+      imgUrl: 'https://placehold.co/200x7000/png',
     },
     {
       title: 'A twist!',
-      body: 'The green circle',
+      body: 'A short image!',
+      imgUrl: 'https://placehold.co/200x40/png',
     },
     {
       key: 'customKey',
     },
     {
       title: 'Wide boi.',
-      body: 'A wide element to force overlaps for bottom left and right',
+      body: 'A wide image for a wide element. It is cut of by "min-height: 50px"',
+      imgUrl: 'https://placehold.co/2000x40/png',
     },
     {
       key: 'anotherCustomKey',
@@ -87,30 +92,26 @@ const handleOnClick = () => {
   console.log('Nevermind');
 };
 
-vi.mock('./TutorialProvider.hooks', () => {
-  const useGetTutorialsForApp = () => {
-    return [tutorialForStory];
-  };
-  return { useGetTutorialsForApp };
-});
-
 export const TutorialProviderStory: StoryFn = () => {
-  // const { setActiveTutorial } = useTutorial();
-  //
-  // setActiveTutorial(tutorialForStory);
+  const handleOnStartClick = () => {
+    window.location.reload();
+  };
 
   return (
-    <Wrapper>
-      <RedSquare className="kanban-drag-0">
-        <Button variant="outlined" onClick={handleOnClick}>
-          U cant touch this
-        </Button>
-      </RedSquare>
-      <BlueSquare className="kanban-drag-1"></BlueSquare>
-      <GreenCircle className="kanban-drag-2"></GreenCircle>
-      <OrangeSquare className="kanban-drag-3"></OrangeSquare>
-      <Wide className="kanban-drag-4"></Wide>
-      <Wide className="kanban-drag-5"></Wide>
-    </Wrapper>
+    <>
+      <Button onClick={handleOnStartClick}>Refresh page</Button>
+      <Wrapper>
+        <RedSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-0`}>
+          <Button variant="outlined" onClick={handleOnClick}>
+            U cant touch this
+          </Button>
+        </RedSquare>
+        <BlueSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-1`}></BlueSquare>
+        <GreenCircle id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-2`}></GreenCircle>
+        <OrangeSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-3`}></OrangeSquare>
+        <Wide id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-4`}></Wide>
+        <Wide id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-5`}></Wide>
+      </Wrapper>
+    </>
   );
 };

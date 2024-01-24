@@ -114,6 +114,8 @@ const infiniteShaking = keyframes`
   75% { transform: translate(-5px, 5px) rotate(-5deg); }
   100% { transform: translate(0, 0) rotate(0deg); }`;
 
+// Custom component CSS for TutorialProvider story
+
 const CustomComponentWrapper = styled.div`
   display: grid;
   grid-template-columns: 24px 1fr;
@@ -126,6 +128,13 @@ const SmallOrangeLine = styled.div`
 
   animation: ${infiniteShaking} 2s infinite;
   background-color: darkorange;
+`;
+const SmallBlueLine = styled.div`
+  width: 24px;
+  height: 76px;
+
+  animation: ${infiniteShaking} 2s infinite;
+  background-color: deepskyblue;
 `;
 
 const customStepComponents: CustomTutorialComponent[] = [
@@ -144,10 +153,8 @@ const customStepComponents: CustomTutorialComponent[] = [
     key: 'anotherCustomKey',
     element: (
       <CustomComponentWrapper>
-        <SmallOrangeLine />
-        <Typography>
-          That is some eye catching custom content right there!
-        </Typography>
+        <SmallBlueLine />
+        <Typography>The gift that keeps on giving!</Typography>
       </CustomComponentWrapper>
     ),
   },
@@ -159,7 +166,10 @@ export default {
   decorators: [
     (storyFn) => (
       <BrowserRouter>
-        <TutorialProvider customStepComponents={customStepComponents}>
+        <TutorialProvider
+          tutorials={[tutorialForStory]}
+          customStepComponents={customStepComponents}
+        >
           {storyFn()}
         </TutorialProvider>
       </BrowserRouter>

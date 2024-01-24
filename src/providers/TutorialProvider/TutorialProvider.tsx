@@ -36,6 +36,7 @@ interface TutorialContextType {
   searchParams: URLSearchParams;
   setSearchParams: Dispatch<SetStateAction<URLSearchParams>>;
   tutorialShortNameFromParams: string | null;
+  tutorialsFromProps: Tutorial[];
 }
 
 export const TutorialContext = createContext<TutorialContextType | undefined>(
@@ -56,13 +57,13 @@ export const useTutorial = () => {
 interface TutorialProviderProps {
   children: ReactNode;
   customStepComponents?: Array<CustomTutorialComponent>;
-  tutorialsForStory?: Tutorial[];
+  tutorials?: Tutorial[];
 }
 
 const TutorialProvider: FC<TutorialProviderProps> = ({
   children,
   customStepComponents,
-  tutorialsForStory,
+  tutorials,
 }) => {
   const [activeTutorial, setActiveTutorial] = useState<Tutorial | undefined>(
     undefined
@@ -130,9 +131,10 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         searchParams,
         setSearchParams,
         tutorialShortNameFromParams,
+        tutorialsFromProps: tutorials ?? [],
       }}
     >
-      <TutorialProviderInner tutorialsForStory={tutorialsForStory} />
+      <TutorialProviderInner />
 
       {children}
     </TutorialContext.Provider>
