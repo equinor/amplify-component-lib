@@ -19,6 +19,10 @@ export default {
   },
   args: {
     features: [...DEFAULT_FEATURES],
+    onImageUpload: async (file: File) => {
+      console.log(file.name);
+      return '';
+    },
   },
 };
 

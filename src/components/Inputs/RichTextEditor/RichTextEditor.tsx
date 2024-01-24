@@ -11,7 +11,6 @@ import { HardBreak } from '@tiptap/extension-hard-break';
 import Heading from '@tiptap/extension-heading';
 import { Highlight } from '@tiptap/extension-highlight';
 import History from '@tiptap/extension-history';
-import Image from '@tiptap/extension-image';
 import Italic from '@tiptap/extension-italic';
 import Link from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
@@ -28,6 +27,7 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import { EditorEvents, EditorProvider } from '@tiptap/react';
 
+import ExtendedImage from './custom-extensions/ExtendedImage';
 import MenuBar from './MenuBar/MenuBar';
 import { Wrapper } from './RichTextEditor.styles';
 import {
@@ -97,12 +97,14 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       Color,
       Document,
       DropCursor,
+      ExtendedImage.configure({
+        onImageUpload,
+      }),
       GapCursor,
       HardBreak,
       Heading,
       Highlight.configure({ multicolor: true }),
       History,
-      Image,
       Italic,
       Link,
       ListItem,
@@ -124,7 +126,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
         types: ['heading', 'paragraph', 'img'],
       }),
     ],
-    [placeholder]
+    [onImageUpload, placeholder]
   );
 
   const handleOnUpdate = (props: EditorEvents['update']) => {
