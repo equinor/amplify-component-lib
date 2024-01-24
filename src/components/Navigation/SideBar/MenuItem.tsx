@@ -134,7 +134,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
 
     return (
       <OptionalTooltip
-        title={name + 'asd'}
+        title={name}
         placement="right"
         texttransform="capitalize"
       >
