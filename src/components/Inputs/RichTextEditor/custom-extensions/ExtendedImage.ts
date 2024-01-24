@@ -32,7 +32,6 @@ export default Image.extend({
                 event.dataTransfer.files &&
                 event.dataTransfer.files.length;
 
-              console.log(this);
               if (!hasFiles || onImageUpload === undefined) {
                 return;
               }
