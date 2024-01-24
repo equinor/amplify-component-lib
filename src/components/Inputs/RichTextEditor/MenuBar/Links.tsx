@@ -21,6 +21,9 @@ const Container = styled.div`
   width: 15rem;
 `;
 
+//💡 Wasn't able to test this component due to tiptap not setting the selected text
+// as expected when inside a test, thus the link buttons are always disabled - Marius 24. Jan 2024
+/* c8 ignore start */
 const Links: FC = () => {
   const { editor } = useCurrentEditor();
   const [open, setOpen] = useState(false);
@@ -110,3 +113,4 @@ const Links: FC = () => {
 };
 
 export default Links;
+/* c8 ignore end */
