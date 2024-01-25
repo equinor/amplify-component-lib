@@ -165,6 +165,9 @@
     "vite-tsconfig-paths": "^4.3.1",
     "vitest": "^1.2.1"
   },
+  "resolutions": {
+    "prosemirror-state": "1.4.3"
+  },
   "peerDependencies": {
     "@equinor/eds-core-react": "*",
     "@equinor/eds-icons": "*",
