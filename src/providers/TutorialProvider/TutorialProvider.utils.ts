@@ -1,5 +1,5 @@
 import { DIALOG_EDGE_MARGIN } from './TutorialProvider.const';
-import { TutorialDialogPosition } from './TutorialProvider.types';
+import { Tutorial, TutorialDialogPosition } from './TutorialProvider.types';
 
 export const getMarginCss = (type: string) => {
   return `margin-${type}: ${DIALOG_EDGE_MARGIN}px; `;
@@ -88,4 +88,10 @@ export const getBestPositionWithoutOverlap = (
     return TutorialDialogPosition.TOP_LEFT;
   }
   return TutorialDialogPosition.CENTER;
+};
+
+export const getAllElementsToHighlight = (activeTutorial: Tutorial) => {
+  return activeTutorial.steps.map((_, index) =>
+    document.getElementById(`${activeTutorial.shortName}-${index}`)
+  );
 };

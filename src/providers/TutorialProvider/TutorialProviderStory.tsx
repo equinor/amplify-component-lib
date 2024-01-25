@@ -67,7 +67,7 @@ export const tutorialForStory: Tutorial = {
     {
       title: 'The story continues',
       body: 'A very tall image that is limited by "max-height: 300px"',
-      imgUrl: 'https://placehold.co/200x7000/png',
+      imgUrl: 'https://placehold.co/200x4000/png',
     },
     {
       title: 'A twist!',
@@ -94,12 +94,13 @@ const handleOnClick = () => {
 
 export const TutorialProviderStory: StoryFn = () => {
   const handleOnStartClick = () => {
+    window.localStorage.removeItem(STORYBOOK_TUTORIAL_SHORT_NAME);
     window.location.reload();
   };
 
   return (
     <>
-      <Button onClick={handleOnStartClick}>Refresh page</Button>
+      <Button onClick={handleOnStartClick}>Run tutorial</Button>
       <Wrapper>
         <RedSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-0`}>
           <Button variant="outlined" onClick={handleOnClick}>

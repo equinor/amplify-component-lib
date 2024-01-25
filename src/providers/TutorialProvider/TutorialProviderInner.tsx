@@ -8,6 +8,7 @@ import { useTutorial } from './TutorialProvider';
 import {
   HIGHLIGHT_PADDING,
   LOCALSTORAGE_VALUE_STRING,
+  TUTORIAL_SEARCH_PARAM_KEY,
 } from './TutorialProvider.const';
 import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { BrokenTutorialDialog, Highlighter } from './TutorialProvider.styles';
@@ -20,45 +21,24 @@ const TutorialProviderInner: FC = () => {
     activeTutorial,
     setActiveTutorial,
     dialogRef,
-    elementToHighlight,
+    allElementsToHighlight,
     tutorialShortNameFromParams,
-    customStepComponents,
+    tutorialError,
     tutorialsFromProps,
+    tutorialWasStartedFromParam,
+    currentStep,
+    searchParams,
+    setSearchParams,
   } = useTutorial();
+
   const hasStartedTutorial = useRef(false);
   const appTutorials = useGetTutorialsForApp(tutorialsFromProps);
 
-  const hasRelevantCustomSteps = useMemo(() => {
-    if (!activeTutorial) return true;
-    const customKeysFromSteps = activeTutorial.steps
-      .filter((step) => step.key !== undefined)
-      .map((customStep) => customStep.key ?? '');
-    if (customKeysFromSteps.length === 0) return true;
-
-    const customKeysFromComponents = customStepComponents?.map(
-      (stepComponent) => stepComponent.key
-    );
-    if (!customKeysFromComponents || customKeysFromComponents.length === 0)
-      return false;
-
-    const stepsHaveComponents = customKeysFromSteps.map((keyFromStep) =>
-      customKeysFromComponents?.includes(keyFromStep)
-    );
-
-    const canShowTutorial = stepsHaveComponents.every((step) => step === true);
-    if (canShowTutorial) {
-      return true;
-    } else {
-      brokenTutorialDialogRef.current?.showModal();
-      return false;
-    }
-  }, [activeTutorial, customStepComponents]);
-
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
-    if (!elementToHighlight || !activeTutorial) return;
+    if (!allElementsToHighlight || !activeTutorial) return;
 
     const highlighterBoundingClient =
-      elementToHighlight.getBoundingClientRect();
+      allElementsToHighlight[currentStep].getBoundingClientRect();
 
     return {
       top: highlighterBoundingClient.top - HIGHLIGHT_PADDING + window.scrollY,
@@ -66,7 +46,7 @@ const TutorialProviderInner: FC = () => {
       height: highlighterBoundingClient.height + HIGHLIGHT_PADDING * 2,
       width: highlighterBoundingClient.width + HIGHLIGHT_PADDING * 2,
     };
-  }, [activeTutorial, elementToHighlight]);
+  }, [activeTutorial, allElementsToHighlight, currentStep]);
 
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
@@ -74,29 +54,24 @@ const TutorialProviderInner: FC = () => {
 
   const runTutorial = useCallback(
     (tutorialToRun: Tutorial) => {
-      if (!tutorialShortNameFromParams || hasStartedTutorial.current) return;
+      if (hasStartedTutorial.current) return;
       setActiveTutorial(tutorialToRun);
       hasStartedTutorial.current = true;
       dialogRef.current?.showModal();
-      localStorage.setItem(
-        tutorialShortNameFromParams,
-        LOCALSTORAGE_VALUE_STRING
-      );
       // TODO: keep this when deploying
-      // searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
-      // setSearchParams(searchParams);
+      searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
+      setSearchParams(searchParams);
     },
-    [dialogRef, setActiveTutorial, tutorialShortNameFromParams]
+    [dialogRef, searchParams, setActiveTutorial, setSearchParams]
   );
 
-  useEffect(() => {
-    if (!hasRelevantCustomSteps) {
-      console.error(
-        'The tutorial that tried to run did could not find the relevant custom step components passed into the TutorialProvider. Please check that the key for the step match the relevant key in the customStepComponents array passed to the TutorialProvider'
-      );
+  const shouldShowErrorDialog = useMemo(() => {
+    const shouldShow = tutorialError && tutorialWasStartedFromParam.current;
+    if (shouldShow) {
       brokenTutorialDialogRef.current?.showModal();
     }
-  }, [hasRelevantCustomSteps, setActiveTutorial]);
+    return shouldShow;
+  }, [tutorialError, tutorialWasStartedFromParam]);
 
   useEffect(() => {
     if (
@@ -105,13 +80,15 @@ const TutorialProviderInner: FC = () => {
         (item) => item.shortName === tutorialShortNameFromParams
       )
     ) {
-      localStorage.removeItem(tutorialShortNameFromParams);
+      tutorialWasStartedFromParam.current = true;
+      window.localStorage.removeItem(tutorialShortNameFromParams);
     }
   }, [
     activeTutorial,
     appTutorials,
     setActiveTutorial,
     tutorialShortNameFromParams,
+    tutorialWasStartedFromParam,
   ]);
 
   useEffect(() => {
@@ -119,8 +96,10 @@ const TutorialProviderInner: FC = () => {
 
     const tutorialToRun = tutorialsForPath.find(
       (item) =>
-        localStorage.getItem(item.shortName) !== LOCALSTORAGE_VALUE_STRING
+        window.localStorage.getItem(item.shortName) !==
+        LOCALSTORAGE_VALUE_STRING
     );
+
     if (tutorialToRun) {
       runTutorial(tutorialToRun);
     }
@@ -128,15 +107,16 @@ const TutorialProviderInner: FC = () => {
 
   const handleOnClickBrokenTutorial = () => {
     brokenTutorialDialogRef.current?.close();
-
     setActiveTutorial(undefined);
   };
 
-  if (!hasRelevantCustomSteps && activeTutorial) {
+  // Show error dialog if the user was expecting a tutorial (opened a link that had tutorial name as parameter)
+  if (shouldShowErrorDialog) {
     return (
       <BrokenTutorialDialog ref={brokenTutorialDialogRef}>
         <Typography>
           There was a problem getting the custom components for this tutorial.
+          Please report this in using the feedback function in the Top Bar.
         </Typography>
         <Button variant="outlined" onClick={handleOnClickBrokenTutorial}>
           Close
@@ -144,6 +124,9 @@ const TutorialProviderInner: FC = () => {
       </BrokenTutorialDialog>
     );
   }
+
+  // Show nothing if tutorial has error, but user did not know that a tutorial tried to play (There is a console.error when tutorial error is set to true)
+  if (tutorialError) return null;
 
   return (
     <>

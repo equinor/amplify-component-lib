@@ -20,6 +20,7 @@ import {
   GenericTutorialStep,
   Tutorial,
 } from './TutorialProvider.types';
+import { getAllElementsToHighlight } from './TutorialProvider.utils';
 import TutorialProviderInner from './TutorialProviderInner';
 
 interface TutorialContextType {
@@ -27,8 +28,10 @@ interface TutorialContextType {
   setActiveTutorial: Dispatch<SetStateAction<Tutorial | undefined>>;
   currentStep: number;
   setCurrentStep: Dispatch<SetStateAction<number>>;
-  elementToHighlight: HTMLElement | undefined;
-  setElementToHighlight: Dispatch<SetStateAction<HTMLElement | undefined>>;
+  allElementsToHighlight: HTMLElement[] | undefined;
+  setAllElementsToHighlight: Dispatch<
+    SetStateAction<HTMLElement[] | undefined>
+  >;
   customStepComponents: CustomTutorialComponent[] | undefined;
   currentStepObject: GenericTutorialStep | CustomTutorialStep | undefined;
   isLastStep: boolean;
@@ -37,6 +40,9 @@ interface TutorialContextType {
   setSearchParams: Dispatch<SetStateAction<URLSearchParams>>;
   tutorialShortNameFromParams: string | null;
   tutorialsFromProps: Tutorial[];
+  tutorialError: boolean;
+  setTutorialError: Dispatch<SetStateAction<boolean>>;
+  tutorialWasStartedFromParam: MutableRefObject<boolean>;
 }
 
 export const TutorialContext = createContext<TutorialContextType | undefined>(
@@ -68,42 +74,17 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   const [activeTutorial, setActiveTutorial] = useState<Tutorial | undefined>(
     undefined
   );
+  const tutorialWasStartedFromParam = useRef(false);
+  const [tutorialError, setTutorialError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const tutorialShortNameFromParams = searchParams.get(
     TUTORIAL_SEARCH_PARAM_KEY
   );
   const [currentStep, setCurrentStep] = useState(0);
-  const [elementToHighlight, setElementToHighlight] = useState<
-    HTMLElement | undefined
+  const [allElementsToHighlight, setAllElementsToHighlight] = useState<
+    HTMLElement[] | undefined
   >(undefined);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-
-  useEffect(() => {
-    if (!tutorialShortNameFromParams || !activeTutorial) return;
-
-    const element = document.getElementById(
-      `${activeTutorial.shortName}-${currentStep}`
-    );
-    const handleTryToGetElement = async () => {
-      // Wait before trying to get the element
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const elementInTimeout = document.getElementById(
-        `${activeTutorial.shortName}-${currentStep}`
-      );
-      if (elementInTimeout) {
-        setElementToHighlight(elementInTimeout);
-      } else {
-        // TODO: handleError
-      }
-    };
-
-    if (element && activeTutorial) {
-      setElementToHighlight(element);
-    } else {
-      handleTryToGetElement();
-    }
-  }, [activeTutorial, currentStep, tutorialShortNameFromParams]);
 
   const currentStepObject = useMemo(() => {
     if (!activeTutorial) return;
@@ -115,6 +96,77 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     return currentStep >= activeTutorial?.steps.length - 1;
   }, [activeTutorial, currentStep]);
 
+  // Try to find all elements to highlight, and set it to a state for further use.
+  // If not found, set error state to true
+  useEffect(() => {
+    if (!activeTutorial || tutorialError) return;
+
+    const handleTryToGetElementAgain = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const allElementsToHighlightInTimeout =
+        getAllElementsToHighlight(activeTutorial);
+      if (allElementsToHighlightInTimeout.every((item) => item !== null)) {
+        setAllElementsToHighlight(
+          allElementsToHighlightInTimeout as HTMLElement[]
+        );
+      } else {
+        console.error(
+          'Could not find all elements to highlight for the tutorial. Here is an array with all elements that were found: ',
+          allElementsToHighlightInTimeout
+        );
+        setTutorialError(true);
+      }
+    };
+
+    const allElementsToHighlight = getAllElementsToHighlight(activeTutorial);
+
+    if (allElementsToHighlight.every((item) => item !== null)) {
+      setAllElementsToHighlight(allElementsToHighlight as HTMLElement[]);
+    } else {
+      handleTryToGetElementAgain();
+    }
+  }, [activeTutorial, currentStep, tutorialError, tutorialShortNameFromParams]);
+
+  // Check to see if the tutorial has the custom components for any custom steps it has, and set error state if not found
+  useEffect(() => {
+    if (!activeTutorial || tutorialError) return;
+    const customKeysFromSteps = activeTutorial.steps
+      .filter((step) => step.key !== undefined)
+      .map((customStep) => customStep.key ?? '');
+    if (customKeysFromSteps.length === 0) return;
+
+    const customKeysFromComponents = customStepComponents?.map(
+      (stepComponent) => stepComponent.key
+    );
+    if (!customKeysFromComponents || customKeysFromComponents.length === 0) {
+      console.error(
+        'Could not find any custom components, but expected these keys: ',
+        customKeysFromSteps
+      );
+      setTutorialError(true);
+    }
+
+    const stepsHaveComponents = customKeysFromSteps.map((keyFromStep) =>
+      customKeysFromComponents?.includes(keyFromStep)
+    );
+
+    if (stepsHaveComponents.some((step) => step !== true)) {
+      console.error(
+        'Could not find the custom components related to the active tutorial'
+      );
+      console.error(
+        'The active tutorial expected these keys:  ',
+        customKeysFromSteps
+      );
+      console.error(
+        'We found these related keys from the custom components',
+        customKeysFromComponents
+      );
+      setTutorialError(true);
+    }
+  }, [activeTutorial, customStepComponents, tutorialError]);
+
   return (
     <TutorialContext.Provider
       value={{
@@ -123,8 +175,8 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         setActiveTutorial,
         currentStep,
         setCurrentStep,
-        elementToHighlight,
-        setElementToHighlight,
+        allElementsToHighlight,
+        setAllElementsToHighlight,
         customStepComponents,
         isLastStep,
         dialogRef,
@@ -132,6 +184,9 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         setSearchParams,
         tutorialShortNameFromParams,
         tutorialsFromProps: tutorials ?? [],
+        tutorialError,
+        setTutorialError,
+        tutorialWasStartedFromParam,
       }}
     >
       <TutorialProviderInner />

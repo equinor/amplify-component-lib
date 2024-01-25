@@ -3,6 +3,7 @@ import { FC, useMemo } from 'react';
 import { Button, Typography } from '@equinor/eds-core-react';
 
 import { useTutorial } from './TutorialProvider';
+import { LOCALSTORAGE_VALUE_STRING } from './TutorialProvider.const';
 import {
   DialogActions,
   DialogContent,
@@ -25,11 +26,11 @@ const TutorialDialog: FC = () => {
     setCurrentStep,
     setActiveTutorial,
     dialogRef,
-    elementToHighlight,
+    allElementsToHighlight,
     customStepComponents,
     isLastStep,
     currentStepObject,
-    setElementToHighlight,
+    setAllElementsToHighlight,
   } = useTutorial();
 
   const dialogContent = useMemo(() => {
@@ -54,7 +55,7 @@ const TutorialDialog: FC = () => {
 
   const dialogPosition: TutorialDialogPosition | undefined = useMemo(() => {
     if (!activeTutorial) return;
-    if (!elementToHighlight || !dialogRef.current)
+    if (!allElementsToHighlight || !dialogRef.current)
       return TutorialDialogPosition.BOTTOM_RIGHT;
     if (activeTutorial?.steps[currentStep].position)
       return (
@@ -63,12 +64,12 @@ const TutorialDialog: FC = () => {
       );
     if (activeTutorial.dynamicPositioning) {
       return getBestPositionWithoutOverlap(
-        elementToHighlight.getBoundingClientRect(),
+        allElementsToHighlight[currentStep].getBoundingClientRect(),
         dialogRef.current.getBoundingClientRect()
       );
     }
     return TutorialDialogPosition.BOTTOM_RIGHT;
-  }, [activeTutorial, currentStep, dialogRef, elementToHighlight]);
+  }, [activeTutorial, currentStep, dialogRef, allElementsToHighlight]);
 
   const dialogPositionCss = useMemo(() => {
     switch (dialogPosition) {
@@ -86,10 +87,16 @@ const TutorialDialog: FC = () => {
   }, [dialogPosition]);
 
   const stopTutorial = () => {
-    dialogRef.current?.close();
-    setActiveTutorial(undefined);
-    setCurrentStep(0);
-    setElementToHighlight(undefined);
+    if (activeTutorial) {
+      window.localStorage.setItem(
+        activeTutorial?.shortName,
+        LOCALSTORAGE_VALUE_STRING
+      );
+      setActiveTutorial(undefined);
+      dialogRef.current?.close();
+      setCurrentStep(0);
+      setAllElementsToHighlight(undefined);
+    }
   };
   const handleOnSkip = () => {
     stopTutorial();
