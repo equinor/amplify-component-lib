@@ -69,6 +69,7 @@ export { default as EditableField } from './Inputs/EditableField';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
 export { default as RichTextEditor } from './Inputs/RichTextEditor/RichTextEditor';
+export type { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
