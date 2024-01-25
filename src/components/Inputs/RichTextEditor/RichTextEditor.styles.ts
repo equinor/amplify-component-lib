@@ -7,7 +7,16 @@ import 'highlight.js/styles/base16/solarized-dark.css';
 const { colors, spacings } = tokens;
 
 export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex-grow: 1;
   background: white;
+  > div:last-child {
+    display: grid;
+    height: 100%;
+    flex-grow: 1;
+  }
   .tiptap {
     height: 100%;
     min-height: 200px;
