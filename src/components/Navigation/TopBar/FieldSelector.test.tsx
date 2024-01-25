@@ -52,6 +52,7 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
   await user.click(document.body);
 
   expect(screen.queryByText('field-name')).not.toBeInTheDocument();
+  screen.logTestingPlaygroundURL();
 });
 
 test('Runs onSelect function once when clicking an item', async () => {
@@ -136,27 +137,29 @@ test("Shows 'No results' text when searching for something that doesn't exist", 
   ).toBeInTheDocument();
 });
 
-test("Shows 'No results' text when searching for something that doesn't exist", async () => {
-  const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
-  const user = userEvent.setup();
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const search = screen.getByRole('textbox');
-
-  const randomSearchValue = faker.internet.ipv4();
-  await user.type(search, randomSearchValue);
-  for (const field of props.availableFields) {
-    expect(
-      screen.queryByRole('heading', { name: field.name?.toLowerCase() })
-    ).not.toBeInTheDocument();
-  }
-  expect(
-    screen.getByText('No fields matching your search')
-  ).toBeInTheDocument();
-});
+// test("Shows 'No results' text when searching for something that doesn't exist", async () => {
+//   const props = fakeProps();
+//   render(<FieldSelector {...props} currentField={undefined} />);
+//   const user = userEvent.setup();
+//
+//   const button = screen.getByRole('button');
+//   await user.click(button);
+//
+//   const search = screen.getByRole('textbox');
+//
+//   const randomSearchValue = faker.internet.ipv4();
+//   await user.type(search, randomSearchValue);
+//   for (const field of props.availableFields) {
+//     expect(
+//       screen.queryByRole('heading', { name: field.name?.toLowerCase() })
+//     ).not.toBeInTheDocument();
+//   }
+//   expect(
+//     screen.getByText('No fields matching your search')
+//   ).toBeInTheDocument();
+//
+//
+// });
 
 test('Runs window.open when clicking access it card', async () => {
   const props = fakeProps();

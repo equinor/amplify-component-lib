@@ -1,7 +1,13 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
 import { Icon, Search, Typography } from '@equinor/eds-core-react';
-import { check, exit_to_app, platform } from '@equinor/eds-icons';
+import {
+  arrow_drop_down,
+  arrow_drop_up,
+  check,
+  exit_to_app,
+  platform,
+} from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
@@ -16,8 +22,8 @@ const { colors } = tokens;
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.small};
-  padding: ${spacings.large};
+  //gap: ${spacings.small};
+  padding: ${spacings.medium_small} ${spacings.medium};
   div[role='search'] {
     > div {
       outline: none !important;
@@ -60,7 +66,7 @@ const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
     props.$active &&
     `background: ${colors.interactive.primary__selected_highlight.rgba};
-     border-bottom: 1px solid ${colors.interactive.primary__resting.rgba};
+     // border-bottom: 1px solid ${colors.interactive.primary__resting.rgba};
     `};
   > div {
     display: grid;
@@ -90,17 +96,12 @@ const MenuSection = styled.div`
   }
 `;
 
-// const MenuHeader = styled.li`
-//   padding: 0 ${spacings.comfortable.large};
-//   margin: ${spacings.comfortable.small} 0;
-//   align-items: center;
-//   display: grid;
-//   grid-template-columns: 1fr 24px;
-//   justify-content: space-between;
-//   > button {
-//     margin-left: -${spacings.comfortable.medium_small};
-//   }
-// `;
+const NoSearchResultsContainer = styled.div`
+  padding-top: ${spacings.small};
+  display: flex;
+  align-items: center;
+  padding-bottom: ${spacings.xxx_large};
+`;
 
 const TextContainer = styled.div`
   display: flex;
@@ -150,6 +151,10 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       );
     }, [availableFields, currentField?.uuid, searchValue]);
 
+    const noSearchResult = useMemo(() => {
+      return filteredFields.length === 0;
+    }, [filteredFields.length]);
+
     const transformedFieldName = useMemo(() => {
       if (currentField?.name) {
         return (
@@ -158,6 +163,14 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         );
       }
     }, [currentField?.name]);
+
+    const showSearchInput = useMemo(() => {
+      const hasMatch = filteredFields.filter((field) =>
+        field.name?.toLowerCase().includes(searchValue.toLowerCase())
+      );
+
+      return (filteredFields.length >= 4 && !hasMatch) || hasMatch;
+    }, [filteredFields, searchValue]);
 
     return (
       <div ref={ref}>
@@ -173,6 +186,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
             color={colors.interactive.primary__resting.rgba}
           />
           {transformedFieldName}
+          <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
         </TopBarButton>
         <TopBarMenu
           open={isOpen}
@@ -184,38 +198,44 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         >
           <>
             <MenuSection>
-              {currentField && (
-                <MenuFixedItem $active>
-                  <div>
-                    <TextContainer>
-                      <Typography variant="overline">
-                        Current selection
-                      </Typography>
-                      <Typography variant="h6">
-                        {currentField.name?.toLowerCase()}
-                      </Typography>
-                    </TextContainer>
-                    <Icon
-                      data={check}
-                      color={colors.interactive.primary__resting.rgba}
-                      size={24}
-                    />
-                  </div>
-                </MenuFixedItem>
+              {showSearchInput || noSearchResult ? (
+                <SearchContainer>
+                  <Search
+                    placeholder="Search fields"
+                    value={searchValue}
+                    onChange={handleSearchOnChange}
+                  />
+                </SearchContainer>
+              ) : (
+                <></>
               )}
-              <SearchContainer>
-                <Typography variant="overline">Switch to</Typography>
-                <Search
-                  placeholder="Search fields"
-                  value={searchValue}
-                  onChange={handleSearchOnChange}
-                />
-              </SearchContainer>
+
               <ListContainer>
+                {currentField && !noSearchResult && (
+                  <MenuFixedItem $active>
+                    <div>
+                      <TextContainer>
+                        <Typography variant="h6">
+                          {currentField.name?.toLowerCase()}
+                        </Typography>
+                      </TextContainer>
+                      <Icon
+                        data={check}
+                        color={colors.interactive.primary__resting.rgba}
+                        size={24}
+                      />
+                    </div>
+                  </MenuFixedItem>
+                )}
                 {filteredFields.length === 0 ? (
-                  <NoFieldsText variant="body_short">
-                    No fields matching your search
-                  </NoFieldsText>
+                  <NoSearchResultsContainer>
+                    <NoFieldsText
+                      variant="body_short"
+                      color={colors.text.static_icons__tertiary.rgba}
+                    >
+                      No fields matching your search
+                    </NoFieldsText>
+                  </NoSearchResultsContainer>
                 ) : (
                   filteredFields.map((field) => (
                     <MenuItem
@@ -235,7 +255,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                 )}
               </ListContainer>
             </MenuSection>
-            {showAccessITLink && (
+            {showAccessITLink && !noSearchResult && (
               <MenuFixedItem
                 data-testid="access-it-link"
                 onClick={() =>

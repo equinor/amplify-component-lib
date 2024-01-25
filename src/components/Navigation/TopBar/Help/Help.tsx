@@ -12,10 +12,12 @@ import {
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { environment } from '../../../../utils';
 import {
   amplify_small_portal,
   amplify_tutorials,
 } from '../../../Icons/AmplifyIcons';
+import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
 import PortalTransit from './ApplicationTransit/PortalTransit';
 import Feedback from './Feedback/Feedback';
@@ -30,6 +32,7 @@ import { spacings } from 'src/style';
 import styled from 'styled-components';
 
 const { colors } = tokens;
+const { getEnvironmentName } = environment;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
@@ -68,10 +71,22 @@ export const Help: FC<HelpProps> = ({
   const [openTutorials, setOpenTutorials] = useState(false);
 
   const buttonRef = useRef<HTMLDivElement | null>(null);
+  const goToUrl = useRef<string | undefined>(undefined);
 
   const [feedbackType, setFeedbackType] = useState<FeedbackType | undefined>(
     undefined
   );
+
+  const environmentName = getEnvironmentName(
+    import.meta.env.VITE_ENVIRONMENT_NAME
+  );
+
+  console.log(environmentName, 'en');
+
+  const environmentNameWithoutLocalHost =
+    environmentName === EnvironmentType.LOCALHOST
+      ? EnvironmentType.DEVELOP
+      : environmentName;
   const closeMenu = () => {
     setIsOpen(false);
     setShowFeedback(false);
@@ -135,6 +150,10 @@ export const Help: FC<HelpProps> = ({
     }
   };
 
+  const handleMoreAccess = () => {
+    goToUrl.current = `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/dashboard`;
+  };
+
   return (
     <>
       <TopBarButton
@@ -190,9 +209,14 @@ export const Help: FC<HelpProps> = ({
                   id={FeedbackType.SUGGESTION}
                   onClick={handleOnFeedbackClick}
                   icon={move_to_inbox}
-                  text="Suggest a feature"
+                  text="Suggest a idea"
                   lastItem
                 />
+                <BackButton>
+                  <Button variant="outlined" onClick={handleFeedbackClick}>
+                    <Icon data={arrow_back} /> Back
+                  </Button>
+                </BackButton>
               </>
             )}
           </>
@@ -227,7 +251,7 @@ export const Help: FC<HelpProps> = ({
                   onClick={handleOpenTutorials}
                   lastItem
                 />
-                {/*TODO: Remove children ?*/}
+                {/*// TODO: Remove children when PWEX has change layout in topbar */}
                 {children && !hideFeedback && !hideReleaseNotes && (
                   <Divider style={{ margin: 0 }} />
                 )}
@@ -271,7 +295,11 @@ export const Help: FC<HelpProps> = ({
       )}
 
       {openPortal && (
-        <PortalTransit open={openPortal} onClose={handleOpenPortal} />
+        <PortalTransit
+          open={openPortal}
+          onClose={handleOpenPortal}
+          onClick={handleMoreAccess}
+        />
       )}
     </>
   );

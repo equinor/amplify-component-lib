@@ -25,7 +25,7 @@ const ContentInfo = styled.div`
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 16px 8px;
+  padding: ${spacings.medium} ${spacings.large};
   text-decoration: none;
   gap: ${spacings.medium};
   cursor: pointer;
@@ -67,9 +67,7 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
             {text}
           </Typography>
         </ContentInfo>
-        {lastItem ? (
-          <></>
-        ) : (
+        {!lastItem && (
           <Icon
             data={isHref ? external_link : arrow_forward}
             size={24}

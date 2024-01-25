@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useLocation } from 'react-router';
 
 import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-right: 8px;
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large};
   text-decoration: none;
   gap: ${spacings.comfortable.medium};
   cursor: pointer;
@@ -52,6 +52,16 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
 }) => {
   const location = useLocation();
 
+  const onCurrentPage = useMemo(() => {
+    const result = options.map((item) => item.pathName === location.pathname);
+    console.log('onCurrentPage:', result);
+    return result;
+  }, [location.pathname, options]);
+
+  const onOtherPages = useMemo(() => {
+    return options.map((item) => item.pathName !== location.pathname);
+  }, [location.pathname, options]);
+
   return (
     <DialogTutorial open={open}>
       <Dialog.Header>
@@ -62,7 +72,11 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
       </Dialog.Header>
       <DialogCustomContent>
         <Wrapper>
-          <Typography style={{ fontSize: '10px' }}>ON CURRENT PAGE </Typography>
+          {onCurrentPage.includes(true) && (
+            <Typography style={{ fontSize: '10px' }}>
+              ON CURRENT PAGE{' '}
+            </Typography>
+          )}
           {options.map((item, index) => {
             if (item.pathName === location.pathname) {
               return (
@@ -75,7 +89,17 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
                   pathName={item.pathName}
                 />
               );
-            } else {
+            }
+          })}
+        </Wrapper>
+        <Wrapper>
+          {onOtherPages.includes(true) && (
+            <Typography style={{ fontSize: '10px' }}>
+              ON CURRENT PAGE{' '}
+            </Typography>
+          )}
+          {options.map((item, index) => {
+            if (item.pathName !== location.pathname) {
               return (
                 <TutorialItem
                   key={index}
@@ -91,7 +115,10 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
         </Wrapper>
       </DialogCustomContent>
       <Dialog.Actions>
-        <Button variant="outlined"> Back</Button>
+        <Button variant="outlined" onClick={onClose}>
+          {' '}
+          Back
+        </Button>
       </Dialog.Actions>
     </DialogTutorial>
   );

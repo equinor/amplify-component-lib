@@ -4,6 +4,7 @@ import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from '../../../style';
 import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
 
@@ -29,6 +30,12 @@ const StyledColorBox = styled.div<StyledColorBoxProps>`
   background-color: ${(props) => props.$color};
   box-shadow: ${elevation.raised};
   border-radius: 4px;
+`;
+
+const SettingsItems = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.medium};
 `;
 
 export interface ISettingsSections {
@@ -77,31 +84,35 @@ export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
         onClose={closeMenu}
         anchorEl={buttonRef.current}
       >
-        {allSettings.map((section, ind) => (
-          <div key={ind}>
-            <Typography variant="overline">{section.title}</Typography>
-            {section.items.map((item, index) => (
-              <ContentWrapper key={index}>
-                <Radio
-                  disabled={item.disabled}
-                  label={item.label}
-                  name={item.name}
-                  value={item.value}
-                  checked={section.type === item.value}
-                  onChange={() => section.onChange?.(item.value)}
-                />
-                {item.colorBox && (
-                  <StyledColorBox
-                    $color={item.colorBox}
-                    data-testid={`colorbox-${item.colorBox}`}
+        <SettingsItems>
+          {allSettings.map((section, ind) => (
+            <div key={ind}>
+              <Typography variant="overline">{section.title}</Typography>
+              {section.items.map((item, index) => (
+                <ContentWrapper key={index}>
+                  <Radio
+                    disabled={item.disabled}
+                    label={item.label}
+                    name={item.name}
+                    value={item.value}
+                    checked={section.type === item.value}
+                    onChange={() => section.onChange?.(item.value)}
                   />
-                )}
-                {item.text && <Typography variant="h6">{item.text}</Typography>}
-                {item.element && item.element}
-              </ContentWrapper>
-            ))}
-          </div>
-        ))}
+                  {item.colorBox && (
+                    <StyledColorBox
+                      $color={item.colorBox}
+                      data-testid={`colorbox-${item.colorBox}`}
+                    />
+                  )}
+                  {item.text && (
+                    <Typography variant="h6">{item.text}</Typography>
+                  )}
+                  {item.element && item.element}
+                </ContentWrapper>
+              ))}
+            </div>
+          ))}
+        </SettingsItems>
       </TopBarMenu>
     </>
   );
