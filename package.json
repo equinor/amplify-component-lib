@@ -52,9 +52,9 @@
     ]
   },
   "dependencies": {
-    "@azure/msal-browser": "3.7.1",
-    "@azure/msal-react": "2.0.10",
-    "@microsoft/signalr": "^8.0.0",
+    "@azure/msal-browser": "3.3.0",
+    "@azure/msal-react": "2.0.5",
+    "@microsoft/signalr": "^7.0.12",
     "@tiptap/core": "^2.1.16",
     "@tiptap/extension-bold": "^2.1.16",
     "@tiptap/extension-bullet-list": "^2.1.16",
