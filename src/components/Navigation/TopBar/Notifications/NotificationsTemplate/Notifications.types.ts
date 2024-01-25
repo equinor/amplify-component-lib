@@ -36,10 +36,10 @@ export type SignalRMessage = {
 
 export type NotificationDto = {
   notificationId?: string | null;
-  user: userNotification;
+  user: userNotification | null;
   toUser: userNotification;
   applicationName: string;
-  time: number;
+  time: string;
   footer?: boolean;
   field: string;
   notificationType: NotificationsTypes;

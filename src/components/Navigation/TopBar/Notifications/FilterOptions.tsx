@@ -18,7 +18,6 @@ import {
 import styled from 'styled-components';
 
 const { spacings, colors, shape } = tokens;
-// const { sortByDate } = utils;
 
 const MenuItem = styled(Menu.Item)`
   display: flex;

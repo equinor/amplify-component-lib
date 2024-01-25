@@ -55,7 +55,7 @@ const Header = styled.div`
 `;
 
 export const UnreadRedDot = styled.div`
-  background-color: ${colors.interactive.danger__hover.hex};
+  background-color: ${colors.interactive.danger__hover.rgba};
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -126,20 +126,21 @@ const Notifications: FC<NotificationsProps> = ({
     }
     if (sortingOn.length > 0) {
       copy = copy.sort((a, b) => {
+        const aUnixTime = new Date(a.time).getTime();
+        const bUnixTime = new Date(b.time).getTime();
+
         if (sortingOn.includes(SortNotification.OLD_NEWEST)) {
-          return b.time - a.time;
+          return bUnixTime - aUnixTime;
         } else if (sortingOn.includes(SortNotification.UNREAD)) {
           return a.Read === b.Read ? 0 : a.Read ? 1 : -1;
         } else {
-          return a.time - b.time;
+          return aUnixTime - bUnixTime;
         }
       });
     }
 
     return copy;
   }, [filteringOn, notifications, sortingOn]);
-
-  console.log(filteredAndSortedNotifications, 'filter');
 
   const handleButtonClick = () => {
     if (notificationsOpen) {

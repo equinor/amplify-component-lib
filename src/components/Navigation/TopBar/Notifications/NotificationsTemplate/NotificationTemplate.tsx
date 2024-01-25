@@ -4,6 +4,7 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { date } from '../../../../../utils';
 import OptionalTooltip from '../../../../DataDisplay/OptionalTooltip';
 import ApplicationIcon from '../../../../Icons/ApplicationIcon/ApplicationIcon';
 import { ProfileAvatar } from '../../../../index';
@@ -157,8 +158,18 @@ const NotificationTemplate: FC<
                 size="large"
               />
               <div>
-                <Typography>{user?.displayName}</Typography>
-                <Typography group="paragraph" variant="meta">
+                <Typography
+                  color={colors.text.static_icons__default.rgba}
+                  group="heading"
+                  variant="h6"
+                >
+                  {user?.displayName}
+                </Typography>
+                <Typography
+                  group="paragraph"
+                  variant="caption"
+                  color={colors.text.static_icons__secondary.rgba}
+                >
                   {user?.shortName}
                 </Typography>
               </div>
@@ -182,8 +193,9 @@ const NotificationTemplate: FC<
                 ? colors.text.static_icons__secondary.hex
                 : colors.infographic.substitute__blue_overcast.hex
             }
+            data-testid="notification-date"
           >
-            {time}
+            {date.formatRelativeDateTime(time)}
           </Typography>
         </TopContainer>
         <Content>{content}</Content>

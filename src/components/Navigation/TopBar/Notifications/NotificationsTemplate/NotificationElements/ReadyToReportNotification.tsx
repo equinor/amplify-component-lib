@@ -3,7 +3,10 @@ import { FC } from 'react';
 import { Chip, Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { ReadyToReportNotificationTypes } from '../Notifications.types';
+import {
+  NotificationsTypes,
+  ReadyToReportNotificationTypes,
+} from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -41,7 +44,10 @@ const ReadyToReportNotification: FC<ReadyToReportNotificationsProps> = ({
 }) => {
   return (
     <Tooltip title={`Go to ${dataType}`}>
-      <Container onClick={onClick}>
+      <Container
+        onClick={onClick}
+        data-testid={NotificationsTypes.READY_TO_REPORT}
+      >
         <SmallContainers>
           <Typography group="paragraph" variant="overline">
             Field

@@ -62,12 +62,14 @@ interface NotificationsProps {
   setAllAsRead: () => void;
   hasUnread?: boolean;
   children?: ReactNode;
+  hasChildren?: boolean;
 }
 
 const Notifications: FC<NotificationsProps> = ({
   children,
   hasUnread = false,
   setAllAsRead,
+  hasChildren,
 }) => {
   const sidePanelRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -128,7 +130,7 @@ const Notifications: FC<NotificationsProps> = ({
             />
           </Button>
         </Header>
-        {children ? (
+        {hasChildren ? (
           children
         ) : (
           <NoNotifications>No notifications</NoNotifications>
