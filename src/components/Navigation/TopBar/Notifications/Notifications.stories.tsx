@@ -16,8 +16,11 @@ import Notifications from './Notifications';
 export default {
   title: 'Navigation/TopBar/Notifications',
   component: Notifications,
-  argTypes: { hasUnread: { control: 'boolean' } },
-  args: { hasUnread: true },
+  argTypes: {
+    hasUnread: { control: 'boolean' },
+    hasChildren: { control: 'boolean' },
+  },
+  args: { hasUnread: true, hasChildren: true },
 } as Meta;
 
 const items: (
@@ -147,6 +150,7 @@ export const Primary: StoryFn = (args) => {
       setAllAsRead={() => null}
       showFilterOptions={true}
       notifications={items}
+      // hasChildren={args.hasChildren}
     />
   );
 };
