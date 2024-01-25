@@ -1,6 +1,5 @@
 import Image from '@tiptap/extension-image';
-
-import { Plugin } from 'prosemirror-state';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
 
 declare module '@tiptap/extension-image' {
   interface ImageOptions {
@@ -24,6 +23,7 @@ export default Image.extend({
 
     return [
       new Plugin({
+        key: new PluginKey('extendedImageHandler'),
         props: {
           handleDOMEvents: {
             drop(view, event) {
