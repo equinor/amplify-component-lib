@@ -234,7 +234,7 @@ describe('Help', () => {
       const toggleHelpButton = screen.getByRole('button');
       await user.click(toggleHelpButton);
       const toggleReleaseNotesButton = screen.getByRole('menuitem', {
-        name: /Release notes/,
+        name: /Open release notes/,
       });
       expect(toggleReleaseNotesButton).toBeInTheDocument();
       await user.click(toggleReleaseNotesButton);
@@ -263,7 +263,7 @@ describe('Help', () => {
       await user.click(button);
 
       const releaseNotesButton = screen.getByRole('menuitem', {
-        name: 'Release notes',
+        name: 'Open release notes',
       });
 
       await user.click(releaseNotesButton);
@@ -314,7 +314,7 @@ describe('Help', () => {
       const toggleHelpButton = screen.getByRole('button');
       await user.click(toggleHelpButton);
       const toggleReleaseNotesButton = screen.getByRole('menuitem', {
-        name: /Release notes/,
+        name: /Open release notes/,
       });
       expect(toggleReleaseNotesButton).toBeInTheDocument();
       await user.click(toggleReleaseNotesButton);
@@ -351,7 +351,7 @@ describe('Help', () => {
       const toggleHelpButton = screen.getByRole('button');
       await user.click(toggleHelpButton);
       const toggleReleaseNotesButton = screen.getByRole('menuitem', {
-        name: /Release notes/,
+        name: /Open release notes/,
       });
       expect(toggleReleaseNotesButton).toBeInTheDocument();
       await user.click(toggleReleaseNotesButton);
