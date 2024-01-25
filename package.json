@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "5.11.3",
+  "version": "5.11.4",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
@@ -153,6 +153,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "rollup": "^3.29.4",
     "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-import-css": "^3.4.0",
     "storybook": "^7.5.0",
     "storybook-addon-data-theme-switcher": "^0.1.7",
     "storybook-addon-react-router-v6": "^2.0.8",
