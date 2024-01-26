@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router';
 import { Meta, StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Help } from './Help';
+import { Resources } from './Resources';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -11,8 +11,8 @@ import {
 } from 'src/providers';
 
 export default {
-  title: 'Navigation/TopBar/Help',
-  component: Help,
+  title: 'Navigation/TopBar/Resources',
+  component: Resources,
   argTypes: {
     hideFeedback: { control: 'boolean' },
     hideReleaseNotes: {
@@ -21,7 +21,7 @@ export default {
     children: {
       control: 'text',
       description:
-        'You can import HelpMenuItem to use as one or more children to get a similar look to existing menu items',
+        'You can import ResourceMenuItem to use as one or more children to get a similar look to existing menu items',
     },
     field: {
       description: 'The field prop is used as metadata on feedback reports',
@@ -81,7 +81,7 @@ export const Primary: StoryFn = (args) => {
         <SnackbarProvider>
           <ReleaseNotesProvider>
             <MemoryRouter initialEntries={['/']}>
-              <Help tutorialOptions={tutorialOptions} {...args}></Help>
+              <Resources tutorialOptions={tutorialOptions} {...args} />
             </MemoryRouter>
           </ReleaseNotesProvider>
         </SnackbarProvider>

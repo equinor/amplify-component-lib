@@ -11,7 +11,7 @@ import {
   ImageWrapper,
   Rejection,
 } from './UploadFile.styles';
-import { readUploadedFileAsText } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.utils';
+import { readUploadedFileAsText } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.utils';
 
 import styled from 'styled-components';
 

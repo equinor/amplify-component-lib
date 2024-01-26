@@ -16,7 +16,7 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from '../../../../providers';
-import ChangingApplication from '../Help/ApplicationTransit/ChangingApplication';
+import ChangingApplication from '../Resources/ApplicationTransit/ChangingApplication';
 import ApplicationDrawer from './ApplicationDrawer';
 
 import { expect } from 'vitest';

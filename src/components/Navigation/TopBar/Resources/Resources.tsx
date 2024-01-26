@@ -23,8 +23,8 @@ import PortalTransit from './ApplicationTransit/PortalTransit';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import Tutorial, { tutorialOptions } from './Tutorials/TutorialDialog';
-import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
-import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
+import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
+import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { spacings } from 'src/style';
@@ -42,7 +42,7 @@ const BackButton = styled.div`
   padding-top: ${spacings.medium};
 `;
 
-export interface HelpProps {
+export interface ResourcesProps {
   field?: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
@@ -50,7 +50,7 @@ export interface HelpProps {
   tutorialOptions?: tutorialOptions[];
 }
 
-export const Help: FC<HelpProps> = ({
+export const Resources: FC<ResourcesProps> = ({
   field,
   hideFeedback = false,
   hideReleaseNotes = false,
@@ -175,7 +175,7 @@ export const Help: FC<HelpProps> = ({
         anchorEl={buttonRef.current}
       >
         {!hideReleaseNotes && !showFeedback && !showLearnMore && (
-          <HelpMenuItem
+          <ResourceMenuItem
             id="release-notes"
             icon={file_description}
             onClick={handleOnReleaseNotesClick}
@@ -185,7 +185,7 @@ export const Help: FC<HelpProps> = ({
         {!hideFeedback && (
           <>
             {!showFeedback && !showLearnMore && (
-              <HelpMenuItem
+              <ResourceMenuItem
                 text="Submit feedback"
                 icon={thumbs_up_down}
                 onClick={handleFeedbackClick}
@@ -194,14 +194,14 @@ export const Help: FC<HelpProps> = ({
 
             {showFeedback && (
               <>
-                <HelpMenuItem
+                <ResourceMenuItem
                   id={FeedbackType.BUG}
                   onClick={handleOnFeedbackClick}
                   icon={report_bug}
                   text="Report a bug"
                   lastItem
                 />
-                <HelpMenuItem
+                <ResourceMenuItem
                   id={FeedbackType.SUGGESTION}
                   onClick={handleOnFeedbackClick}
                   icon={move_to_inbox}
@@ -218,7 +218,7 @@ export const Help: FC<HelpProps> = ({
           </>
         )}
         {!showLearnMore && !showFeedback && (
-          <HelpMenuItem
+          <ResourceMenuItem
             text="Learn more"
             icon={info_circle}
             onClick={handleLearnMoreClick}
@@ -235,13 +235,13 @@ export const Help: FC<HelpProps> = ({
           <>
             {!openTutorials && (
               <>
-                <HelpMenuItem
+                <ResourceMenuItem
                   text="Open Application portal"
                   icon={amplify_small_portal}
                   onClick={handleOpenPortal}
                   lastItem
                 />
-                <HelpMenuItem
+                <ResourceMenuItem
                   text="Tutorials"
                   icon={amplify_tutorials}
                   onClick={handleOpenTutorials}

@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   }
 `;
 
-interface HelpMenuItemProps {
+interface ResourceMenuItemProps {
   text: string;
   icon: IconData;
   onClick: (event?: MouseEvent<HTMLDivElement>) => void;
@@ -44,7 +44,7 @@ interface HelpMenuItemProps {
   lastItem?: boolean;
 }
 
-const HelpMenuItem: FC<HelpMenuItemProps> = ({
+const ResourceMenuItem: FC<ResourceMenuItemProps> = ({
   text,
   icon,
   href,
@@ -89,4 +89,4 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
   return content;
 };
 
-export default HelpMenuItem;
+export default ResourceMenuItem;

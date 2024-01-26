@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { environment } from '../../../../utils';
 import ApplicationIcon from '../../../Icons/ApplicationIcon/ApplicationIcon';
-import PortalTransit from '../Help/ApplicationTransit/PortalTransit';
+import PortalTransit from '../Resources/ApplicationTransit/PortalTransit';
 import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';

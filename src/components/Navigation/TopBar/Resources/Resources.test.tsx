@@ -4,12 +4,12 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
-import { Help } from './Help';
+import { Resources } from './Resources';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import {
   FeedbackContentType,
   UrgencyOption,
-} from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
+} from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -171,9 +171,9 @@ const severityOptions = [
   UrgencyOption.NO_IMPACT,
 ];
 
-describe('Help', () => {
+describe('Resources', () => {
   test('Behaves as expected', async () => {
-    render(<Help>Child</Help>, {
+    render(<Resources>Child</Resources>, {
       wrapper: Wrappers,
     });
     const user = userEvent.setup();
@@ -192,7 +192,7 @@ describe('Help', () => {
   });
 
   test('Opens and closes as expected', async () => {
-    render(<Help />, { wrapper: Wrappers });
+    render(<Resources />, { wrapper: Wrappers });
     const user = userEvent.setup();
 
     const button = screen.getByRole('button');
@@ -208,7 +208,7 @@ describe('Help', () => {
   });
 
   test('hide props working as expected', async () => {
-    render(<Help hideFeedback={true} hideReleaseNotes={true} />, {
+    render(<Resources hideFeedback={true} hideReleaseNotes={true} />, {
       wrapper: Wrappers,
     });
     const user = userEvent.setup();
@@ -228,7 +228,7 @@ describe('Help', () => {
     test('should close the dialog by clicking the close button inside', async () => {
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
-          <Help />
+          <Resources />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -254,7 +254,7 @@ describe('Help', () => {
     test('can close dialog by clicking outside', async () => {
       render(
         <MemoryRouter initialEntries={['/']}>
-          <Help />
+          <Resources />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -283,7 +283,7 @@ describe('Help', () => {
       mockServiceHasError = false;
       render(
         <MemoryRouter initialEntries={['/']}>
-          <Help />
+          <Resources />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -308,7 +308,7 @@ describe('Help', () => {
       mockServiceHasError = false;
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
-          <Help />
+          <Resources />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -345,7 +345,7 @@ describe('Help', () => {
       mockServiceHasError = false;
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
-          <Help />
+          <Resources />
         </MemoryRouter>,
         { wrapper: Wrappers }
       );
@@ -393,7 +393,7 @@ describe('Help', () => {
 
   describe('Feedback: open menu', () => {
     beforeEach(async () => {
-      render(<Help />, { wrapper: Wrappers });
+      render(<Resources />, { wrapper: Wrappers });
       const user = userEvent.setup();
 
       const resourceMenuButton = screen.getByRole('button');
