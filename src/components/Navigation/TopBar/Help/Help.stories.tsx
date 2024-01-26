@@ -13,9 +13,28 @@ import {
 export default {
   title: 'Navigation/TopBar/Help',
   component: Help,
+  argTypes: {
+    hideFeedback: { control: 'boolean' },
+    hideReleaseNotes: {
+      control: 'boolean',
+    },
+    children: {
+      control: 'text',
+      description:
+        'You can import HelpMenuItem to use as one or more children to get a similar look to existing menu items',
+    },
+    field: {
+      description: 'The field prop is used as metadata on feedback reports',
+    },
+  },
+  args: {
+    hideFeedback: false,
+    hideReleaseNotes: false,
+    children: 'Custom child, no style',
+  },
 } as Meta;
 
-export const Primary: StoryFn = () => {
+export const Primary: StoryFn = (args) => {
   const queryClient = new QueryClient();
 
   const onClick = () => {
@@ -62,7 +81,7 @@ export const Primary: StoryFn = () => {
         <SnackbarProvider>
           <ReleaseNotesProvider>
             <MemoryRouter initialEntries={['/']}>
-              <Help tutorialOptions={tutorialOptions} />
+              <Help tutorialOptions={tutorialOptions} {...args}></Help>
             </MemoryRouter>
           </ReleaseNotesProvider>
         </SnackbarProvider>

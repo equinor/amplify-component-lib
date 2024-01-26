@@ -38,10 +38,6 @@ const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
 `;
 
-const ContentWrapper = styled.div`
-  padding: 0 ${spacings.medium};
-`;
-
 const BackButton = styled.div`
   padding-top: ${spacings.medium};
 `;
@@ -255,11 +251,7 @@ export const Help: FC<HelpProps> = ({
                 {children && !hideFeedback && !hideReleaseNotes && (
                   <Divider style={{ margin: 0 }} />
                 )}
-                {children && (
-                  <ContentWrapper onClick={closeMenu}>
-                    {children}
-                  </ContentWrapper>
-                )}
+                {children && <div onClick={closeMenu}>{children}</div>}
               </>
             )}
 
