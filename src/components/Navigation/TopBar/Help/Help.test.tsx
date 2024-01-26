@@ -23,7 +23,7 @@ import {
   within,
 } from 'src/tests/test-utils';
 
-import { expect } from 'vitest';
+import { beforeEach, describe, expect } from 'vitest';
 
 const releaseNotes = [
   {
@@ -182,6 +182,10 @@ describe('Help', () => {
 
     await user.click(button);
 
+    const learnMoreButton = screen.getByText(/learn more/i);
+
+    await user.click(learnMoreButton);
+
     const childElement = await screen.findByText('Child');
 
     expect(childElement).toBeInTheDocument();
@@ -214,11 +218,9 @@ describe('Help', () => {
     await user.click(button);
 
     const releaseNotes = screen.queryByText('Release notes');
-    const reportBug = screen.queryByText('Report a bug');
-    const suggest = screen.queryByText('Suggest a feature');
+    const suggest = screen.queryByText('Submit feedback');
 
     expect(releaseNotes).not.toBeInTheDocument();
-    expect(reportBug).not.toBeInTheDocument();
     expect(suggest).not.toBeInTheDocument();
   });
 
@@ -389,389 +391,314 @@ describe('Help', () => {
     });
   });
 
-  describe('Report bug and feedback', () => {
-    beforeEach(() => {
-      window.localStorage.clear();
-    });
-    test('can close dialog by clicking outside', async () => {
-      render(
-        <>
-          <Help />
-        </>,
-        { wrapper: Wrappers }
-      );
+  describe('Feedback: open menu', () => {
+    beforeEach(async () => {
+      render(<Help />, { wrapper: Wrappers });
       const user = userEvent.setup();
 
-      const button = screen.getByRole('button');
+      const resourceMenuButton = screen.getByRole('button');
 
-      await user.click(button);
-      const reportBug = screen.getByText('Report a bug');
+      await user.click(resourceMenuButton);
 
-      await user.click(reportBug);
+      const submitFeedbackButton = screen.getByText('Submit feedback');
 
-      const titleInput = screen.getByLabelText(/title/i);
-
-      expect(titleInput).toBeInTheDocument();
-
-      const cancelButton = screen.getByText(/cancel/i);
-
-      await user.click(cancelButton);
-
-      expect(titleInput).not.toBeInTheDocument();
+      await user.click(submitFeedbackButton);
+      window.localStorage.clear();
     });
 
-    for (const option of severityOptions) {
-      test(`can select and submit "${option}" severity`, async () => {
-        mockServiceHasError = false;
-        const { title, description } = fakeInputs();
-        const { container } = render(<Help />, {
-          wrapper: Wrappers,
-        });
+    describe('Click "Report a bug" menu item', () => {
+      beforeEach(async () => {
+        const user = userEvent.setup();
+        const reportBug = screen.getByText('Report a bug');
+
+        await user.click(reportBug);
+      });
+
+      test('can close dialog by clicking cancel', async () => {
         const user = userEvent.setup();
 
-        const button = screen.getByRole('button');
-
-        await user.click(button);
-        const reportBug = screen.getByText(/report a bug/i);
-        await user.click(reportBug);
         const titleInput = screen.getByLabelText(/title/i);
 
-        const descInput = screen.getByLabelText(/description/i);
+        expect(titleInput).toBeInTheDocument();
+
+        const cancelButton = screen.getByText(/cancel/i);
+
+        await user.click(cancelButton);
+
+        expect(titleInput).not.toBeInTheDocument();
+      });
+
+      test('Url validation working as expected', async () => {
+        mockServiceHasError = false;
+        const user = userEvent.setup();
+
+        const wrongUrl = 'www.google.com';
+        const rightUrl = 'www.amplify.equinor.com';
+
+        const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
+        await user.type(urlInput, wrongUrl);
+
+        urlInput.blur();
+        await waitForMS(1000);
+        const helperText = screen.queryByText(/URL must be from a .equinor/i);
+        expect(helperText as HTMLElement).toBeInTheDocument();
+
+        await user.clear(urlInput);
+
+        expect(helperText).not.toBeInTheDocument();
+
+        await user.type(urlInput, wrongUrl);
+
+        urlInput.blur();
+        await waitForMS(1000);
+        const helperTextAgain = screen.queryByText(
+          /URL must be from a .equinor/i
+        );
+
+        expect(helperTextAgain as HTMLElement).toBeInTheDocument();
+        await user.type(urlInput, rightUrl);
+
+        expect(helperTextAgain).not.toBeInTheDocument();
+      }, 10000); // Setting timeout for this test to be 10 seconds
+
+      describe('Input title, description and url', () => {
+        beforeEach(async () => {
+          const { title, description, url } = fakeInputs();
+          const user = userEvent.setup();
+
+          const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
+          const descInput: HTMLInputElement =
+            screen.getByLabelText(/description/i);
+          const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
+
+          const submitButton = screen.getByTestId('submit-button');
+
+          expect(submitButton).toBeDisabled();
+
+          await user.type(titleInput, title);
+          await user.type(descInput, description);
+          await user.type(urlInput, url ?? '');
+
+          expect(titleInput.value).toEqual(title);
+          expect(descInput.value).toEqual(description);
+          expect(urlInput.value).toEqual(url);
+        });
+
+        describe('Severity options', () => {
+          for (const option of severityOptions) {
+            test(`can select and submit "${option}" severity`, async () => {
+              mockServiceHasError = false;
+              const user = userEvent.setup();
+
+              const severityInput = screen.getByTestId(
+                'feedback-severity-input'
+              ) as HTMLInputElement;
+
+              await user.click(severityInput);
+
+              const severityOption = screen.getByText(option);
+
+              expect(severityOption).toBeInTheDocument();
+
+              await user.click(severityOption);
+
+              expect(severityInput.value).toEqual(option);
+
+              const submitButton = screen.getByText(/send/i);
+
+              expect(submitButton).not.toBeDisabled();
+              await user.click(submitButton);
+            }, 15000); // Setting timeout for this test to be 15 seconds
+          }
+        });
+
+        test('shows error message when everything fails', async () => {
+          mockServiceHasError = true;
+          mockServicePartialError = false;
+
+          const imageOne = await fakeImageFile();
+          const user = userEvent.setup();
+
+          const fileUploadArea = screen.getByTestId('file-upload-area-input');
+          await user.upload(fileUploadArea, [imageOne]);
+
+          const submitButton = screen.getByTestId('submit-button');
+          await user.click(submitButton);
+
+          await waitForMS(2500);
+
+          expect(
+            screen.getByText(`Posting ${imageOne.name}`)
+          ).toBeInTheDocument();
+
+          expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
+          expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
+          expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
+        }, 10000); // Setting timeout for this test to be 10 seconds
+
+        test('shows more details if slack request fails, and can return to form to retry', async () => {
+          mockServiceHasError = true;
+          mockServicePartialError = true;
+
+          const imageOne = await fakeImageFile();
+
+          const user = userEvent.setup();
+
+          const fileUploadArea = screen.getByTestId('file-upload-area-input');
+
+          await user.upload(fileUploadArea, [imageOne]);
+
+          const submitButton = screen.getByTestId('submit-button');
+          await user.click(submitButton);
+
+          await waitForMS(2500);
+
+          expect(
+            screen.getByText(`Posting ${imageOne.name}`)
+          ).toBeInTheDocument();
+
+          const retryButton = screen.getByText(/retry/i);
+          expect(retryButton).not.toBeDisabled();
+
+          await user.click(retryButton);
+
+          const titleInputAgain: HTMLInputElement =
+            screen.getByLabelText(/title/i);
+          const currentTitleInputValue = titleInputAgain.value;
+
+          expect(
+            screen.getByText(/The report has already been sent to service now/i)
+          ).toBeInTheDocument();
+          const resetForm = screen.getByTestId('reset-form-button');
+
+          expect(titleInputAgain.value).toBe(currentTitleInputValue);
+          await user.click(resetForm);
+          await waitForMS(1000);
+          expect(titleInputAgain.value).not.toBe(currentTitleInputValue);
+        }, 10000); // Setting timeout for this test to be 10 seconds
+
+        test('Inputting all fields with file works as expected', async () => {
+          mockServiceHasError = false;
+          mockServicePartialError = false;
+          defaultError = false;
+          const imageOne = await fakeImageFile();
+          const imageTwo = await fakeImageFile();
+
+          const user = userEvent.setup();
+
+          const fileUploadArea = screen.getByTestId('file-upload-area-input');
+
+          await user.upload(fileUploadArea, [imageTwo]);
+
+          // Delete image file
+          const file2nameElement = screen.getByAltText(
+            createRegexToGetAttachment(imageTwo.name)
+          );
+
+          expect(file2nameElement).toBeInTheDocument();
+
+          await user.hover(file2nameElement);
+
+          const removeAttachmentButton = screen.getByTestId(
+            'attachment-delete-button'
+          );
+
+          expect(removeAttachmentButton).toBeInTheDocument();
+
+          if (removeAttachmentButton) {
+            await user.click(removeAttachmentButton);
+            expect(file2nameElement).not.toBeInTheDocument();
+          }
+
+          // Upload three files, two being duplicates, so expect only two files to be shown
+          await user.upload(fileUploadArea, [imageOne]);
+          await user.upload(fileUploadArea, [imageTwo]);
+          await user.upload(fileUploadArea, [imageOne]);
+
+          const allDeleteButtons = screen.getAllByTestId(
+            'attachment-delete-button'
+          );
+
+          expect(allDeleteButtons.length).toBe(2);
+
+          const submitButton = screen.getByTestId('submit-button');
+          expect(submitButton).not.toBeDisabled();
+          await user.click(submitButton);
+          await waitForMS(2500);
+          screen.logTestingPlaygroundURL();
+
+          await waitFor(
+            () => expect(screen.getAllByText(/success/i).length).toBe(2),
+            { timeout: 4000 }
+          );
+
+          await waitFor(
+            () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
+            { timeout: 3000 }
+          );
+
+          const closeButton = screen.getByText(/close/i);
+          await user.click(closeButton);
+          await waitForMS(1000);
+          expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
+          await waitFor(() => {});
+        }, 20000); // Setting timeout for this test to be 20 seconds
+      });
+    });
+
+    describe('Click "Suggest a feature" menu item, and fill info', () => {
+      beforeEach(async () => {
+        const user = userEvent.setup();
+
+        const { title, description } = fakeInputs();
+        const suggestFeature = screen.getByText(/suggest a idea/i);
+        await user.click(suggestFeature);
+
+        const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
+        const descInput: HTMLInputElement =
+          screen.getByLabelText(/description/i);
+
+        const submitButton = screen.getByTestId('submit-button');
+
+        expect(submitButton).toBeDisabled();
 
         await user.type(titleInput, title);
         await user.type(descInput, description);
 
-        const severityInput = container.querySelector(
-          '#feedback-severity'
-        ) as HTMLInputElement;
+        expect(titleInput.value).toEqual(title);
+        expect(descInput.value).toEqual(description);
+      });
 
-        await user.click(severityInput);
+      test('shows default error message if errorText is undefined', async () => {
+        mockServiceHasError = true;
+        mockServicePartialError = false;
+        defaultError = true;
 
-        const severityOption = screen.getByText(option);
-
-        expect(severityOption).toBeInTheDocument();
-
-        await user.click(severityOption);
-
-        expect(severityInput.value).toEqual(option);
-
-        const submitButton = screen.getByText(/send/i);
-
-        expect(submitButton).not.toBeDisabled();
+        const submitButton = screen.getByTestId('submit-button');
+        const user = userEvent.setup();
         await user.click(submitButton);
+        await waitForMS(2500);
+
+        expect(
+          screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)
+        ).toBeInTheDocument();
+      }, 10000); // Setting timeout for this test to be 10 seconds
+
+      test('suggest a feature dialog submit button enabled at correct time', async () => {
+        mockServiceHasError = false;
+        mockServicePartialError = false;
+        const submitButton = screen.getByTestId('submit-button');
+        const user = userEvent.setup();
+        await user.click(submitButton);
+        await waitFor(
+          () => expect(screen.getByText(/success/i)).toBeInTheDocument(),
+          { timeout: 2000 }
+        );
+        await waitFor(
+          () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
+          { timeout: 2000 }
+        );
       }, 15000); // Setting timeout for this test to be 15 seconds
-    }
-
-    test('suggest a feature dialog submit button enabled at correct time', async () => {
-      mockServiceHasError = false;
-      mockServicePartialError = false;
-      const title = faker.animal.cat();
-      const description = faker.lorem.sentence();
-      render(<Help />, {
-        wrapper: Wrappers,
-      });
-      const user = userEvent.setup();
-
-      const button = screen.getByRole('button');
-      await user.click(button);
-
-      const suggestFeature = screen.getByText('Suggest a feature');
-      await user.click(suggestFeature);
-
-      const titleInput = screen.getByLabelText(/title/i);
-      const descInput = screen.getByLabelText(/description/i);
-      const submitButton = screen.getByTestId('submit-button');
-
-      expect(submitButton).toBeDisabled();
-      await user.type(titleInput, title);
-      await user.type(descInput, description);
-      expect(submitButton).not.toBeDisabled();
-
-      await user.click(submitButton);
-
-      await waitFor(
-        () => expect(screen.getByText(/success/i)).toBeInTheDocument(),
-        { timeout: 2000 }
-      );
-      await waitFor(
-        () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
-        { timeout: 2000 }
-      );
-    }, 15000); // Setting timeout for this test to be 15 seconds
-
-    test('Inputting all fields with file works as expected', async () => {
-      mockServiceHasError = false;
-      const { title, description, url } = fakeInputs();
-      const imageOne = await fakeImageFile();
-      const imageTwo = await fakeImageFile();
-
-      render(<Help />, {
-        wrapper: Wrappers,
-      });
-
-      const user = userEvent.setup();
-
-      const button = screen.getByRole('button');
-      await user.click(button);
-
-      const reportBug = screen.getByText('Report a bug');
-      await user.click(reportBug);
-
-      const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
-      const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
-      const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
-
-      const submitButton = screen.getByTestId('submit-button');
-
-      expect(submitButton).toBeDisabled();
-
-      await user.type(titleInput, title);
-      await user.type(descInput, description);
-      await user.type(urlInput, url ?? '');
-
-      expect(titleInput.value).toEqual(title);
-      expect(descInput.value).toEqual(description);
-      expect(urlInput.value).toEqual(url);
-
-      const fileUploadArea = screen.getByTestId('file-upload-area-input');
-
-      await user.upload(fileUploadArea, [imageTwo]);
-
-      // Delete image file
-      const file2nameElement = screen.getByAltText(
-        createRegexToGetAttachment(imageTwo.name)
-      );
-
-      expect(file2nameElement).toBeInTheDocument();
-
-      await user.hover(file2nameElement);
-
-      const removeAttachmentButton = screen.getByTestId(
-        'attachment-delete-button'
-      );
-
-      expect(removeAttachmentButton).toBeInTheDocument();
-
-      if (removeAttachmentButton) {
-        await user.click(removeAttachmentButton);
-        expect(file2nameElement).not.toBeInTheDocument();
-      }
-
-      // Upload three files, two being duplicates, so expect only two files to be shown
-      await user.upload(fileUploadArea, [imageOne]);
-      await user.upload(fileUploadArea, [imageTwo]);
-      await user.upload(fileUploadArea, [imageOne]);
-
-      const allDeleteButtons = screen.getAllByTestId(
-        'attachment-delete-button'
-      );
-
-      expect(allDeleteButtons.length).toBe(2);
-
-      expect(submitButton).not.toBeDisabled();
-      await user.click(submitButton);
-
-      await waitForMS(3000);
-      expect(screen.getAllByText(/success/i).length).toBe(2);
-
-      await waitFor(
-        () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
-        { timeout: 2000 }
-      );
-
-      const closeButton = screen.getByText(/close/i);
-      await user.click(closeButton);
-      await waitForMS(1000);
-      expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
-      await waitFor(() => {});
-    }, 20000); // Setting timeout for this test to be 20 seconds
-
-    test('Url validation working as expected', async () => {
-      mockServiceHasError = false;
-      render(<Help />, {
-        wrapper: Wrappers,
-      });
-      const user = userEvent.setup();
-
-      const wrongUrl = 'www.google.com';
-      const rightUrl = 'www.amplify.equinor.com';
-
-      const button = screen.getByRole('button');
-      await user.click(button);
-
-      const reportBug = screen.getByText('Report a bug');
-      await user.click(reportBug);
-
-      const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
-      await user.type(urlInput, wrongUrl);
-
-      urlInput.blur();
-      await waitForMS(1000);
-      const helperText = screen.queryByText(/URL must be from a .equinor/i);
-      expect(helperText as HTMLElement).toBeInTheDocument();
-
-      await user.clear(urlInput);
-
-      expect(helperText).not.toBeInTheDocument();
-
-      await user.type(urlInput, wrongUrl);
-
-      urlInput.blur();
-      await waitForMS(1000);
-      const helperTextAgain = screen.queryByText(
-        /URL must be from a .equinor/i
-      );
-
-      expect(helperTextAgain as HTMLElement).toBeInTheDocument();
-      await user.type(urlInput, rightUrl);
-
-      expect(helperTextAgain).not.toBeInTheDocument();
-    }, 10000); // Setting timeout for this test to be 10 seconds
-
-    test('shows more details if slack request fails, and can return to form to retry', async () => {
-      mockServiceHasError = true;
-      mockServicePartialError = true;
-      const { title, description } = fakeInputs();
-      const imageOne = await fakeImageFile();
-
-      render(<Help />, {
-        wrapper: Wrappers,
-      });
-
-      const user = userEvent.setup();
-
-      const button = screen.getByRole('button');
-      await user.click(button);
-
-      const reportBug = screen.getByText(/report a bug/i);
-      await user.click(reportBug);
-
-      const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
-      const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
-
-      const submitButton = screen.getByTestId('submit-button');
-
-      expect(submitButton).toBeDisabled();
-
-      await user.type(titleInput, title);
-      await user.type(descInput, description);
-
-      expect(titleInput.value).toEqual(title);
-      expect(descInput.value).toEqual(description);
-
-      const fileUploadArea = screen.getByTestId('file-upload-area-input');
-
-      await user.upload(fileUploadArea, [imageOne]);
-
-      await user.click(submitButton);
-
-      await waitForMS(2500);
-
-      expect(screen.getByText(`Posting ${imageOne.name}`)).toBeInTheDocument();
-
-      const retryButton = screen.getByText(/retry/i);
-      expect(retryButton).not.toBeDisabled();
-
-      await user.click(retryButton);
-
-      expect(
-        screen.getByText(/The report has already been sent to service now/i)
-      ).toBeInTheDocument();
-      const resetForm = screen.getByTestId('reset-form-button');
-
-      const titleInputAgain: HTMLInputElement = screen.getByLabelText(/title/i);
-      expect(titleInputAgain.value).toBe(title);
-      await user.click(resetForm);
-      await waitForMS(1000);
-      expect(titleInputAgain.value).not.toBe(title);
-    }, 10000); // Setting timeout for this test to be 10 seconds
-
-    test('shows error message when everything fails', async () => {
-      mockServiceHasError = true;
-      mockServicePartialError = false;
-      const { title, description } = fakeInputs();
-      const imageOne = await fakeImageFile();
-      console.error = vi.fn();
-      render(<Help />, {
-        wrapper: Wrappers,
-      });
-
-      const user = userEvent.setup();
-
-      const button = screen.getByRole('button');
-      await user.click(button);
-
-      const reportBug = screen.getByText(/report a bug/i);
-      await user.click(reportBug);
-
-      const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
-      const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
-
-      const submitButton = screen.getByTestId('submit-button');
-
-      expect(submitButton).toBeDisabled();
-
-      await user.type(titleInput, title);
-      await user.type(descInput, description);
-
-      expect(titleInput.value).toEqual(title);
-      expect(descInput.value).toEqual(description);
-
-      const fileUploadArea = screen.getByTestId('file-upload-area-input');
-
-      await user.upload(fileUploadArea, [imageOne]);
-
-      await user.click(submitButton);
-
-      await waitForMS(2500);
-
-      expect(screen.getByText(`Posting ${imageOne.name}`)).toBeInTheDocument();
-
-      expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
-      expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
-      expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
-    }, 10000); // Setting timeout for this test to be 10 seconds
-
-    test('shows default error message if errorText is undefined', async () => {
-      mockServiceHasError = true;
-      mockServicePartialError = false;
-      defaultError = true;
-
-      const { title, description } = fakeInputs();
-
-      console.error = vi.fn();
-      render(<Help />, {
-        wrapper: Wrappers,
-      });
-
-      const user = userEvent.setup();
-
-      const button = screen.getByRole('button');
-      await user.click(button);
-
-      const suggestFeature = screen.getByText(/suggest/i);
-      await user.click(suggestFeature);
-
-      const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
-      const descInput: HTMLInputElement = screen.getByLabelText(/description/i);
-
-      const submitButton = screen.getByTestId('submit-button');
-
-      expect(submitButton).toBeDisabled();
-
-      await user.type(titleInput, title);
-      await user.type(descInput, description);
-
-      expect(titleInput.value).toEqual(title);
-      expect(descInput.value).toEqual(description);
-
-      await user.click(submitButton);
-
-      await waitForMS(2500);
-
-      expect(
-        screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)
-      ).toBeInTheDocument();
-    }, 10000); // Setting timeout for this test to be 10 seconds
+    });
   });
 });

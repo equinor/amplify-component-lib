@@ -29,6 +29,7 @@ const Severity: FC = () => {
           <Autocomplete
             options={Object.values(UrgencyOption)}
             id="feedback-severity"
+            data-testid="feedback-severity-input"
             label="Severity"
             meta="optional"
             disabled={serviceNowSuccess}
