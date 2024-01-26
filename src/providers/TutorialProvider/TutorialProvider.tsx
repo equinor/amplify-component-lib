@@ -156,11 +156,11 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         'Could not find the custom components related to the active tutorial'
       );
       console.error(
-        'The active tutorial expected these keys:  ',
+        'The active tutorial expected to find these keys:  ',
         customKeysFromSteps
       );
       console.error(
-        'We found these related keys from the custom components',
+        'However in the custom components we only found these keys: ',
         customKeysFromComponents
       );
       setTutorialError(true);
