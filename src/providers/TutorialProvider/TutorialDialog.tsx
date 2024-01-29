@@ -121,8 +121,6 @@ const TutorialDialog: FC = () => {
     setCurrentStep((prev) => prev + 1);
   };
 
-  // TODO: Add image
-
   return (
     <DialogWrapper>
       <StyledTutorialDialog
