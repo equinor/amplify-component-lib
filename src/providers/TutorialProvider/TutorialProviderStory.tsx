@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   justify-content: center;
   justify-items: center;
   padding-top: 60px;
+  padding-bottom: 2rem;
 `;
 
 const RedSquare = styled.div`
@@ -67,7 +68,7 @@ export const tutorialForStory: Tutorial = {
     {
       title: 'The story continues',
       body: 'A very tall image that is limited by "max-height: 300px"',
-      imgUrl: 'https://placehold.co/200x4000/png',
+      imgUrl: 'https://placehold.co/200x700/png',
     },
     {
       title: 'A twist!',
@@ -80,7 +81,7 @@ export const tutorialForStory: Tutorial = {
     {
       title: 'Wide boi.',
       body: 'A wide image for a wide element. It is cut of by "min-height: 50px"',
-      imgUrl: 'https://placehold.co/2000x40/png',
+      imgUrl: 'https://placehold.co/800x200/png',
     },
     {
       key: 'anotherCustomKey',

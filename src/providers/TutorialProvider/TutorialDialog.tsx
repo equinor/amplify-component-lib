@@ -31,6 +31,7 @@ const TutorialDialog: FC = () => {
     isLastStep,
     currentStepObject,
     setAllElementsToHighlight,
+    viewportWidth,
   } = useTutorial();
 
   const dialogContent = useMemo(() => {
@@ -54,7 +55,7 @@ const TutorialDialog: FC = () => {
   }, [currentStepObject, customStepComponents]);
 
   const dialogPosition: TutorialDialogPosition | undefined = useMemo(() => {
-    if (!activeTutorial) return;
+    if (!activeTutorial || !viewportWidth) return;
     if (!allElementsToHighlight || !dialogRef.current)
       return TutorialDialogPosition.BOTTOM_RIGHT;
     if (activeTutorial?.steps[currentStep].position)
@@ -69,7 +70,13 @@ const TutorialDialog: FC = () => {
       );
     }
     return TutorialDialogPosition.BOTTOM_RIGHT;
-  }, [activeTutorial, currentStep, dialogRef, allElementsToHighlight]);
+  }, [
+    activeTutorial,
+    viewportWidth,
+    allElementsToHighlight,
+    dialogRef,
+    currentStep,
+  ]);
 
   const dialogPositionCss = useMemo(() => {
     switch (dialogPosition) {

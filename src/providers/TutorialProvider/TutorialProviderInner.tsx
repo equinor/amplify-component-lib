@@ -29,16 +29,22 @@ const TutorialProviderInner: FC = () => {
     currentStep,
     searchParams,
     setSearchParams,
+    viewportWidth,
   } = useTutorial();
 
   const hasStartedTutorial = useRef(false);
   const appTutorials = useGetTutorialsForApp(tutorialsFromProps);
 
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
-    if (!allElementsToHighlight || !activeTutorial) return;
+    if (!allElementsToHighlight || !activeTutorial || !viewportWidth) return;
 
     const highlighterBoundingClient =
       allElementsToHighlight[currentStep].getBoundingClientRect();
+
+    allElementsToHighlight[currentStep].scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
 
     return {
       top: highlighterBoundingClient.top - HIGHLIGHT_PADDING + window.scrollY,
@@ -46,7 +52,7 @@ const TutorialProviderInner: FC = () => {
       height: highlighterBoundingClient.height + HIGHLIGHT_PADDING * 2,
       width: highlighterBoundingClient.width + HIGHLIGHT_PADDING * 2,
     };
-  }, [activeTutorial, allElementsToHighlight, currentStep]);
+  }, [activeTutorial, allElementsToHighlight, currentStep, viewportWidth]);
 
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
@@ -74,6 +80,7 @@ const TutorialProviderInner: FC = () => {
   }, [tutorialError, tutorialWasStartedFromParam]);
 
   useEffect(() => {
+    if (!activeTutorial) return;
     if (
       tutorialShortNameFromParams &&
       appTutorials.some(

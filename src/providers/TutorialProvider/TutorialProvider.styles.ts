@@ -30,7 +30,6 @@ export const Highlighter = styled.div<HighlighterProps>`
   border-radius: 4px;
   animation: ${fadeinBoxShadowAnimation} 300ms;
   animation-fill-mode: forwards;
-
   ${({ $width, $height, $top, $left }) => `
     top: ${$top}px;
     left: ${$left}px;
@@ -83,7 +82,7 @@ export const DialogContent = styled.div`
 export const DialogImage = styled.img`
   max-height: 300px;
   min-height: 50px;
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 export const DialogActions = styled.div`

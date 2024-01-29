@@ -87,7 +87,7 @@ export const getBestPositionWithoutOverlap = (
   ) {
     return TutorialDialogPosition.TOP_LEFT;
   }
-  return TutorialDialogPosition.CENTER;
+  return TutorialDialogPosition.BOTTOM_RIGHT;
 };
 
 export const getAllElementsToHighlight = (activeTutorial: Tutorial) => {

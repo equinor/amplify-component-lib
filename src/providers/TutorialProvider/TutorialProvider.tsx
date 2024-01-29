@@ -43,6 +43,7 @@ interface TutorialContextType {
   tutorialError: boolean;
   setTutorialError: Dispatch<SetStateAction<boolean>>;
   tutorialWasStartedFromParam: MutableRefObject<boolean>;
+  viewportWidth: number;
 }
 
 export const TutorialContext = createContext<TutorialContextType | undefined>(
@@ -84,6 +85,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   const [allElementsToHighlight, setAllElementsToHighlight] = useState<
     HTMLElement[] | undefined
   >(undefined);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   const currentStepObject = useMemo(() => {
@@ -96,12 +98,24 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     return currentStep >= activeTutorial?.steps.length - 1;
   }, [activeTutorial, currentStep]);
 
+  useEffect(() => {
+    const setViewportWidthHandler = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', setViewportWidthHandler);
+
+    return () => {
+      window.removeEventListener('resize', setViewportWidthHandler);
+    };
+  }, []);
+
   // Try to find all elements to highlight, and set it to a state for further use.
   // If not found, set error state to true
   useEffect(() => {
     if (!activeTutorial || tutorialError) return;
 
-    const handleTryToGetElementAgain = async () => {
+    const handleTryToGetElementsAgain = async () => {
       await new Promise((resolve) => setTimeout(resolve, 300));
 
       const allElementsToHighlightInTimeout =
@@ -124,11 +138,12 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     if (allElementsToHighlight.every((item) => item !== null)) {
       setAllElementsToHighlight(allElementsToHighlight as HTMLElement[]);
     } else {
-      handleTryToGetElementAgain();
+      handleTryToGetElementsAgain();
     }
   }, [activeTutorial, currentStep, tutorialError, tutorialShortNameFromParams]);
 
-  // Check to see if the tutorial has the custom components for any custom steps it has, and set error state if not found
+  // Check to see if the tutorial has the custom components for any custom steps it has.
+  // Sets tutorialError to true if it does not find a match for all potential custom steps
   useEffect(() => {
     if (!activeTutorial || tutorialError) return;
     const customKeysFromSteps = activeTutorial.steps
@@ -187,6 +202,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         tutorialError,
         setTutorialError,
         tutorialWasStartedFromParam,
+        viewportWidth,
       }}
     >
       <TutorialProviderInner />
