@@ -25,7 +25,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'portal',
   'logging-qualification',
   'pwex',
-  'depth-conversion',
+  'orca',
   'inpress',
   'bravos',
 ];
@@ -43,7 +43,7 @@ const icons: IconsDict = {
   portal: portal,
   'logging-qualification': loggingQualification,
   pwex: pwex,
-  'depth-conversion': depthConversion,
+  orca: depthConversion,
   inpress: inPress,
   bravos: bravos,
 };
@@ -56,6 +56,36 @@ test('Render correctly with corresponding props', async () => {
     rerender(<ApplicationIcon name={name} />);
     for (const size of sizeOptions) {
       rerender(<ApplicationIcon name={name} size={size} />);
+      const currentIcon = icons[name];
+      if (Array.isArray(currentIcon)) {
+        const paths = screen.getAllByTestId('eds-icon-path');
+        for (const [index, path] of paths.entries()) {
+          expect(path).toHaveAttribute('d', currentIcon[index].svgPathData);
+        }
+        const svgComponent = paths[0].parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      } else {
+        const path = screen.getByTestId('eds-icon-path');
+        expect(path).toHaveAttribute('d', currentIcon.svgPathData);
+        const svgComponent = path.parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      }
+    }
+  }
+});
+
+test('Renders correct icon, even with wrong casing', async () => {
+  const { rerender } = render(<ApplicationIcon name="AcQuIre" />);
+
+  // Check that it renders correctly with name options
+  for (const name of nameOptions) {
+    rerender(<ApplicationIcon name={name.toUpperCase()} />);
+    for (const size of sizeOptions) {
+      rerender(<ApplicationIcon name={name.toUpperCase()} size={size} />);
       const currentIcon = icons[name];
       if (Array.isArray(currentIcon)) {
         const paths = screen.getAllByTestId('eds-icon-path');
