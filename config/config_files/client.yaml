@@ -19,18 +19,14 @@ jobs:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
 
-      - run: corepack enable
       - name: Install dependencies
         working-directory: client
-        run: yarn
+        run: npm ci
 
       - name: Linting
         working-directory: client
-        run: yarn run lint
+        run: npm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -43,18 +39,14 @@ jobs:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
 
-      - run: corepack enable
       - name: Install dependencies
         working-directory: client
-        run: yarn
+        run: npm ci
 
       - name: Unit tests
         working-directory: client
-        run: yarn run test:ci --passWithNoTests
+        run: npm run test:ci --passWithNoTests
 
   build:
     runs-on: ubuntu-latest
@@ -67,18 +59,14 @@ jobs:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
 
-      - run: corepack enable
       - name: Install dependencies
         working-directory: client
-        run: yarn
+        run: npm ci
 
       - name: Build
         working-directory: client
-        run: yarn run build
+        run: npm run build
 
   build-docker:
     name: Build client docker image
@@ -110,10 +98,6 @@ jobs:
       - name: Compare remote tsconfig.json to local
         working-directory: client
         run: diff tsconfig.json <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json)
-
-      - name: Compare remote .yarnrc.yml to local
-        working-directory: client
-        run: diff .yarnrc.yml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.yarnrc.yml)
 
       - name: Compare remote Dockerfile to local
         working-directory: client

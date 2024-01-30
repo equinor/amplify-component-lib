@@ -99,11 +99,7 @@ const ApplicationIconBase = forwardRef<
         />
       ))
     ) : (
-      <Icon
-        data={iconData}
-        size={size}
-        color='#ffffff'
-      />
+      <Icon data={iconData} size={size} color="#ffffff" />
     )}
     {shapes.map((shape, index) => (
       <Shape

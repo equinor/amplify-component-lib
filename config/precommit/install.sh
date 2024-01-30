@@ -15,13 +15,13 @@ curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/confi
 
 printf -- "Running husky setup...\n"
 
-yarn install
+npm install
 
-yarn prepare
+npm run prepare
 
 if [ ! -d ".husky" ]
 then
-  printf -- "Couldn't find ./husky folder, did 'yarn prepare' run successfully? 🤖\n"
+  printf -- "Couldn't find ./husky folder, did 'npm prepare' run successfully? 🤖\n"
   exit 1
 fi
 

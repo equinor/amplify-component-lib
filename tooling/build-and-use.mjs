@@ -6,7 +6,7 @@ import { stdin as input, stdout as output } from 'node:process';
 
 async function runTasks() {
   console.clear();
-  const presetApp = process.argv.at(2)?.match(/--(\w+-?)+/)?.[1];
+  const presetApp = process.argv.at(2)?.match(/(\w+-?)+/)?.[0];
   if (presetApp) {
     console.log(
       chalk.bold.yellow('Running build and use tasks with ') +
@@ -14,9 +14,9 @@ async function runTasks() {
         chalk.bold.yellow(' as preset app...\n')
     );
   } else if (process.argv.at(2)) {
-    // Provided arg but didn't prefix app name with "--"
+    // Provided arg but didn't match regex
     console.log(
-      chalk.bold.red("App name not prefixed with '--'!\n") +
+      chalk.bold.red('App name didnt match /(w+-?)+/ regex') +
         chalk.bold.yellow('Running the normal build and use tasks...\n')
     );
   } else {
@@ -25,7 +25,7 @@ async function runTasks() {
 
   try {
     await runTask({
-      command: 'yarn build',
+      command: 'npm run build',
       name: `${chalk.white('Building')} ${chalk.bold.magenta(
         'amplify-components'
       )}`,

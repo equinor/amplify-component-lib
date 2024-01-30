@@ -8,6 +8,7 @@ export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
+export { default as RichTextDisplay } from './DataDisplay/RichTextDisplay';
 export { default as HighlightBlocks } from './DataDisplay/Tutorial/HighlightBlocks/HighlightBlocks';
 export type { Step, TutorialProps } from './DataDisplay/Tutorial/Tutorial';
 export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
@@ -31,20 +32,7 @@ export { skeletonBaseloading } from './Feedback/Skeleton/SkeletonBase/SkeletonBa
 export { default as SkeletonGradient } from './Feedback/Skeleton/SkeletonGradient/SkeletonGradient';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
 export { default as Unauthorized } from './Feedback/Unauthorized';
-export {
-  amplify_failure,
-  amplify_h1,
-  amplify_h2,
-  amplify_info_small,
-  amplify_lwd,
-  amplify_sharepoint,
-  amplify_snail,
-  amplify_sort_small,
-  amplify_success,
-  amplify_wellbore,
-  amplify_wireline_cased_hole,
-  amplify_wireline_open_hole,
-} from './Icons/AmplifyIcons';
+export * from './Icons/AmplifyIcons';
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
 export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
@@ -80,6 +68,8 @@ export { default as CopyText } from './Inputs/CopyText';
 export { default as EditableField } from './Inputs/EditableField';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
+export { default as RichTextEditor } from './Inputs/RichTextEditor/RichTextEditor';
+export type { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';

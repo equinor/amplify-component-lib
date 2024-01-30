@@ -1,4 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
+import Template from 'src/components/Template/Template';
 
 import {darkTokens} from 'src/style/darkTokens';
 import {spacingTokens} from 'src/style/spacingTokens';
@@ -9,8 +10,8 @@ export const globalTypes = {
   dataThemes: {
     defaultValue: {
       list: [
-        { name: "Light", dataTheme: "light", color: "#FFFFFF" },
-        { name: "Dark", dataTheme: "dark", color: "#243746" },
+        { name: 'Light', dataTheme: 'light', color: '#FFFFFF' },
+        { name: 'Dark', dataTheme: 'dark', color: '#243746' },
       ],
     },
   },
@@ -28,10 +29,14 @@ export const decorators = [
     spacingStyleElement.innerHTML = spacingTokens;
     document.head.appendChild(spacingStyleElement);
 
-    return (<Story />);
+    return (
+      <>
+        <Template.GlobalStyles />
+        <Story />
+      </>
+    );
   },
-]; 
-
+];
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

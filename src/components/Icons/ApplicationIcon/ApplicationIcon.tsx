@@ -18,7 +18,7 @@ export type ApplicationName =
   | '4dinsight'
   | 'recap'
   | 'dasha'
-  | 'depth-conversion'
+  | 'orca'
   | 'portal'
   | 'logging-qualification'
   | 'pwex'
@@ -34,7 +34,7 @@ const apps: IApplicationIconData[] = [
   { appName: 'acquire', component: Acquire },
   { appName: '4dinsight', component: FourDInsight },
   { appName: 'dasha', component: Dasha },
-  { appName: 'depth-conversion', component: DepthConversion },
+  { appName: 'orca', component: DepthConversion },
   { appName: 'logging-qualification', component: LoggingQualification },
   { appName: 'recap', component: Recap },
   { appName: 'pwex', component: Pwex },
@@ -49,7 +49,7 @@ export interface ApplicationIconProps {
 
 const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
   ({ name, size = 48 }, ref) => {
-    const appData = apps.find((app) => app.appName === name);
+    const appData = apps.find((app) => app.appName === name.toLowerCase());
 
     if (appData === undefined) return <Fallback size={size} ref={ref} />;
     return <appData.component size={size} />;

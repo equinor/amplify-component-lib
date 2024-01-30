@@ -1,15 +1,10 @@
 import { FC } from 'react';
 
-import {
-  Button,
-  ButtonProps,
-  Icon,
-  Tooltip as EDSTooltip,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, ButtonProps, Icon, Typography } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
 import { spacings } from 'src/style';
 
@@ -88,12 +83,6 @@ const CreateNewButtonText = styled(Typography)`
   }
 `;
 
-const Tooltip = styled(EDSTooltip)`
-  &::first-letter {
-    text-transform: uppercase;
-  }
-`;
-
 interface CreateItemProps {
   createLabel: string;
   onCreate: () => void;
@@ -128,7 +117,7 @@ const CreateItem: FC<CreateItemProps> = ({
     );
   }
   return (
-    <Tooltip title={createLabel} placement="right">
+    <OptionalTooltip title={createLabel} placement="right">
       <MenuButtonContainer $open={isOpen}>
         <CreateNewButton
           variant="ghost_icon"
@@ -138,7 +127,7 @@ const CreateItem: FC<CreateItemProps> = ({
           <Icon data={add} />
         </CreateNewButton>
       </MenuButtonContainer>
-    </Tooltip>
+    </OptionalTooltip>
   );
 };
 

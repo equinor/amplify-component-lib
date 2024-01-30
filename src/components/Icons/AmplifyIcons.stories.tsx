@@ -5,6 +5,8 @@ import {
   amplify_failure,
   amplify_h1,
   amplify_h2,
+  amplify_h3,
+  amplify_h4,
   amplify_info_small,
   amplify_lwd,
   amplify_sharepoint,
@@ -14,6 +16,7 @@ import {
   amplify_wellbore,
   amplify_wireline_cased_hole,
   amplify_wireline_open_hole,
+  amplify_tutorials, amplify_small_portal
 } from './AmplifyIcons';
 
 const allIcons = {
@@ -28,6 +31,8 @@ const allIcons = {
   amplify_h2: amplify_h2,
   amplify_tutorials: amplify_tutorials,
   amplify_small_portal: amplify_small_portal,
+  amplify_h3: amplify_h3,
+  amplify_h4: amplify_h4,
   amplify_sharepoint: amplify_sharepoint,
   amplify_sort_small: amplify_sort_small,
   amplify_info_small: amplify_info_small,
@@ -61,6 +66,8 @@ export default {
         'amplify_snail',
         'amplify_h1',
         'amplify_h2',
+        'amplify_h3',
+        'amplify_h4',
         'amplify_sharepoint',
         'amplify_tutorials',
           'amplify_small_portal',

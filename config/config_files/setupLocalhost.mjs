@@ -71,8 +71,8 @@ const downloadRemoteTask = {
 };
 
 const generateTask = {
-  command: execShell('yarn generate'),
-  name: chalk.hex('#CCE0E8')('Running yarn generate'),
+  command: execShell('npm run generate'),
+  name: chalk.hex('#CCE0E8')('Running npm run generate'),
 };
 
 async function startLocalHost() {
@@ -99,6 +99,7 @@ async function startLocalHost() {
         )
     );
     checkSpinner.stop();
+    process.exit();
     return;
   }
   checkSpinner.stop();
@@ -116,6 +117,7 @@ async function startLocalHost() {
 
   if (answer.toString().toLowerCase() !== 'y') {
     console.log('\n' + chalk.green('Starting localhost...'));
+    process.exit();
     return;
   }
 
@@ -140,6 +142,8 @@ async function startLocalHost() {
       '\n' +
       chalk.green('Starting localhost...')
   );
+
+  process.exit();
 }
 
 startLocalHost();

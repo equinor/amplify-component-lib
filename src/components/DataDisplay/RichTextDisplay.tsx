@@ -1,0 +1,78 @@
+import { FC } from 'react';
+
+import Bold from '@tiptap/extension-bold';
+import { BulletList } from '@tiptap/extension-bullet-list';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { Color } from '@tiptap/extension-color';
+import Document from '@tiptap/extension-document';
+import DropCursor from '@tiptap/extension-dropcursor';
+import GapCursor from '@tiptap/extension-gapcursor';
+import { HardBreak } from '@tiptap/extension-hard-break';
+import Heading from '@tiptap/extension-heading';
+import History from '@tiptap/extension-history';
+import Image from '@tiptap/extension-image';
+import Italic from '@tiptap/extension-italic';
+import Link from '@tiptap/extension-link';
+import { ListItem } from '@tiptap/extension-list-item';
+import { OrderedList } from '@tiptap/extension-ordered-list';
+import Paragraph from '@tiptap/extension-paragraph';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
+import Text from '@tiptap/extension-text';
+import { TextAlign } from '@tiptap/extension-text-align';
+import { TextStyle } from '@tiptap/extension-text-style';
+import Typography from '@tiptap/extension-typography';
+import { EditorContent, useEditor } from '@tiptap/react';
+
+import { common, createLowlight } from 'lowlight';
+
+const lowlight = createLowlight(common);
+
+const extensions = [
+  BulletList,
+  Bold,
+  CodeBlockLowlight.configure({
+    lowlight,
+  }),
+  Color,
+  Document,
+  DropCursor,
+  GapCursor,
+  HardBreak,
+  Heading,
+  History,
+  Image,
+  Italic,
+  Link,
+  ListItem,
+  OrderedList,
+  Paragraph,
+  Table.configure({
+    resizable: true,
+  }),
+  TableCell,
+  TableHeader,
+  TableRow,
+  Text,
+  Typography,
+  TextStyle,
+  TextAlign.configure({
+    types: ['heading', 'paragraph', 'img'],
+  }),
+];
+
+export interface RichTextDisplayProps {
+  value: string | null | undefined;
+}
+const RichTextDisplay: FC<RichTextDisplayProps> = ({ value }) => {
+  const editor = useEditor({
+    extensions: extensions,
+    content: value,
+    editable: false,
+  });
+  return <EditorContent editor={editor} readOnly />;
+};
+
+export default RichTextDisplay;
