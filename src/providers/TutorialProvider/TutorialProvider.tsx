@@ -53,9 +53,7 @@ export const TutorialContext = createContext<TutorialContextType | undefined>(
 export const useTutorial = () => {
   const context = useContext(TutorialContext);
   if (context === undefined) {
-    throw new Error(
-      'useTutorial must be used within a TutorialContext provider'
-    );
+    throw new Error("'useTutorial' must be used within a TutorialProvider");
   }
 
   return context;
@@ -81,6 +79,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   const tutorialShortNameFromParams = searchParams.get(
     TUTORIAL_SEARCH_PARAM_KEY
   );
+  // console.log('search param', searchParams.get('tutorial'));
   const [currentStep, setCurrentStep] = useState(0);
   const [allElementsToHighlight, setAllElementsToHighlight] = useState<
     HTMLElement[] | undefined
@@ -160,6 +159,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         customKeysFromSteps
       );
       setTutorialError(true);
+      return;
     }
 
     const stepsHaveComponents = customKeysFromSteps.map((keyFromStep) =>

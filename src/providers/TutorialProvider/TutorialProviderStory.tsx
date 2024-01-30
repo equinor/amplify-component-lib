@@ -76,7 +76,7 @@ export const tutorialForStory: Tutorial = {
       imgUrl: 'https://placehold.co/200x40/png',
     },
     {
-      key: 'customKey',
+      key: 'customKefsdy',
     },
     {
       title: 'Wide boi.',

@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react';
 import { Button, Typography } from '@equinor/eds-core-react';
 
 import { useTutorial } from './TutorialProvider';
-import { LOCALSTORAGE_VALUE_STRING } from './TutorialProvider.const';
+import { TUTORIAL_LOCALSTORAGE_VALUE_STRING } from './TutorialProvider.const';
 import {
   DialogActions,
   DialogContent,
@@ -47,7 +47,7 @@ const TutorialDialog: FC = () => {
           <Typography>{currentStepObject.title}</Typography>
           <Typography>{currentStepObject.body}</Typography>
           {currentStepObject.imgUrl && (
-            <DialogImage src={currentStepObject.imgUrl} />
+            <DialogImage alt="tutorial-image" src={currentStepObject.imgUrl} />
           )}
         </>
       );
@@ -97,7 +97,7 @@ const TutorialDialog: FC = () => {
     if (activeTutorial) {
       window.localStorage.setItem(
         activeTutorial?.shortName,
-        LOCALSTORAGE_VALUE_STRING
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
       );
       setActiveTutorial(undefined);
       dialogRef.current?.close();
@@ -124,9 +124,10 @@ const TutorialDialog: FC = () => {
   return (
     <DialogWrapper>
       <StyledTutorialDialog
+        data-testid="tutorial-dialog"
         open={activeTutorial !== undefined}
         ref={dialogRef}
-        $positionCss={dialogPositionCss ?? ''}
+        $positionCss={dialogPositionCss}
       >
         <DialogContent>
           {dialogContent}

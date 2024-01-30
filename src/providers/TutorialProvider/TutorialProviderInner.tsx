@@ -7,7 +7,8 @@ import TutorialDialog from './TutorialDialog';
 import { useTutorial } from './TutorialProvider';
 import {
   HIGHLIGHT_PADDING,
-  LOCALSTORAGE_VALUE_STRING,
+  TUTORIAL_HIGHLIGHTER_DATATEST_ID,
+  TUTORIAL_LOCALSTORAGE_VALUE_STRING,
   TUTORIAL_SEARCH_PARAM_KEY,
 } from './TutorialProvider.const';
 import { useGetTutorialsForApp } from './TutorialProvider.hooks';
@@ -37,14 +38,16 @@ const TutorialProviderInner: FC = () => {
 
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
     if (!allElementsToHighlight || !activeTutorial || !viewportWidth) return;
+    const currentElementToHighlight = allElementsToHighlight[currentStep];
 
     const highlighterBoundingClient =
-      allElementsToHighlight[currentStep].getBoundingClientRect();
-
-    allElementsToHighlight[currentStep].scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
+      currentElementToHighlight.getBoundingClientRect();
+    if (currentElementToHighlight) {
+      currentElementToHighlight.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
 
     return {
       top: highlighterBoundingClient.top - HIGHLIGHT_PADDING + window.scrollY,
@@ -104,7 +107,7 @@ const TutorialProviderInner: FC = () => {
     const tutorialToRun = tutorialsForPath.find(
       (item) =>
         window.localStorage.getItem(item.shortName) !==
-        LOCALSTORAGE_VALUE_STRING
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
     );
 
     if (tutorialToRun) {
@@ -140,6 +143,7 @@ const TutorialProviderInner: FC = () => {
       {highlightingInfo && (
         <>
           <Highlighter
+            data-testid={TUTORIAL_HIGHLIGHTER_DATATEST_ID}
             $top={highlightingInfo.top}
             $left={highlightingInfo.left}
             $width={highlightingInfo.width}
