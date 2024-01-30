@@ -60,26 +60,21 @@ function runTask(task, readingFile) {
   });
 }
 
-const readLocalTask = {
-  command: readFile(path.resolve(__dirname, 'api/swagger.json')),
-  name: chalk.hex('#CCE0E8')('Reading local swagger.json'),
-};
-
-const downloadRemoteTask = {
-  command: execShell(`curl -s ${process.env.VITE_SWAGGER_URL}`),
-  name: chalk.hex('#CCE0E8')('Downloading remote swagger json file'),
-};
-
-const generateTask = {
-  command: execShell('npm run generate'),
-  name: chalk.hex('#CCE0E8')('Running npm run generate'),
-};
-
 async function startLocalHost() {
-  const readLocal = await runTask(readLocalTask, true);
+  const readLocal = await runTask(
+    {
+      command: readFile(path.resolve(__dirname, 'api/swagger.json')),
+      name: chalk.hex('#CCE0E8')('Reading local swagger.json'),
+    },
+
+    true
+  );
   const localSwaggerContent = JSON.parse(readLocal);
 
-  const remoteSwagger = await runTask(downloadRemoteTask);
+  const remoteSwagger = await runTask({
+    command: execShell(`curl -s ${process.env.VITE_SWAGGER_URL}`),
+    name: chalk.hex('#CCE0E8')('Downloading remote swagger json file'),
+  });
   const remoteSwaggerContent = JSON.parse(remoteSwagger);
 
   const checkSpinner = ora(
@@ -100,8 +95,9 @@ async function startLocalHost() {
     );
     checkSpinner.stop();
     process.exit();
-    return;
   }
+
+  console.log('herererere');
   checkSpinner.stop();
   console.log(
     '\n' + chalk.red('Local and remote swagger.json does not match!')
@@ -118,7 +114,6 @@ async function startLocalHost() {
   if (answer.toString().toLowerCase() !== 'y') {
     console.log('\n' + chalk.green('Starting localhost...'));
     process.exit();
-    return;
   }
 
   await runTask({
@@ -132,7 +127,10 @@ async function startLocalHost() {
   // Add 1 second wait for the writeFile to swagger.json
   await new Promise((resolve) => setTimeout(() => resolve(), 1000));
 
-  await runTask(generateTask);
+  await runTask({
+    command: execShell('npm run generate'),
+    name: chalk.hex('#CCE0E8')('Running npm run generate'),
+  });
 
   console.log(
     '\n' +
