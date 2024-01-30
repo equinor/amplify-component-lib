@@ -1,10 +1,10 @@
 import ApplicationDrawer from './ApplicationDrawer/ApplicationDrawer';
 import { GuidelineSections } from './Guidelines/Guidelines';
+import Notifications from './Notifications/Notifications';
 import { Resources } from './Resources/Resources';
 import { Account } from './Account';
 import { Actions } from './Actions';
 import FieldSelector from './FieldSelector';
-import Notifications from './Notifications';
 import { ISettingsProps, Settings } from './Settings';
 import { TopBar as BaseTopBar } from './TopBar';
 import Guidelines from 'src/components/Navigation/TopBar/Guidelines';

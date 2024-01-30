@@ -1,7 +1,10 @@
+import { useState } from 'react';
+import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook } from '@testing-library/react';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
 import { Resources } from './Resources';

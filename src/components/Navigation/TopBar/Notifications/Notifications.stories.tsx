@@ -14,7 +14,7 @@ import {
 import Notifications from './Notifications';
 
 export default {
-  title: 'Navigation/TopBar/Notifications',
+  title: 'Navigation/TopBar/Notifications/Notifications',
   component: Notifications,
   argTypes: {
     hasUnread: { control: 'boolean' },

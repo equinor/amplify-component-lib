@@ -39,7 +39,7 @@ function fakeNotifications():
     applicationName: faker.animal.crocodilia(),
     Read: faker.datatype.boolean(),
     field: faker.animal.horse(),
-    time: new Date(faker.date.past()).getTime(),
+    time: faker.date.past().toString(),
     onDelete: vi.fn(),
     message: faker.lorem.sentence(),
     SequenceNumber: faker.number.int(),
@@ -125,4 +125,30 @@ test('calls onDelete when delete button is clicked', async () => {
   // expect(screen.getByRole('button')).toBeVisible();
 
   // expect(defaultProps.onDelete).toHaveBeenCalled();
+});
+
+test('renders ReadyToReportNotification correctly', async () => {
+  const options = {
+    notifications: [
+      {
+        Read: true,
+        notificationType: NotificationsTypes.READY_TO_REPORT,
+        // other necessary props
+      } as ReadyToReportNotificationTypes,
+    ],
+    showFilterOptions: true,
+    hasChildren: false,
+  };
+
+  render(<NotificationTemplate {...options} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByTestId('show-hide-button');
+  await user.click(button);
+
+  // Add assertions specific to ReadyToReportNotification
+  expect(
+    screen.getByTestId('ready-to-report-notification')
+  ).toBeInTheDocument();
+  // Add more assertions based on your component's structure and behavior
 });
