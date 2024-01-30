@@ -97,7 +97,6 @@ async function startLocalHost() {
     process.exit();
   }
 
-  console.log('herererere');
   checkSpinner.stop();
   console.log(
     '\n' + chalk.red('Local and remote swagger.json does not match!')
