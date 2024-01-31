@@ -4,6 +4,8 @@ import { within } from '@testing-library/dom';
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import FieldSelector, { FieldSelectorType } from './FieldSelector';
 
+import { expect } from 'vitest';
+
 function fakeField() {
   return {
     name: faker.string.uuid(),
@@ -137,29 +139,17 @@ test("Shows 'No results' text when searching for something that doesn't exist", 
   ).toBeInTheDocument();
 });
 
-// test("Shows 'No results' text when searching for something that doesn't exist", async () => {
-//   const props = fakeProps();
-//   render(<FieldSelector {...props} currentField={undefined} />);
-//   const user = userEvent.setup();
-//
-//   const button = screen.getByRole('button');
-//   await user.click(button);
-//
-//   const search = screen.getByRole('textbox');
-//
-//   const randomSearchValue = faker.internet.ipv4();
-//   await user.type(search, randomSearchValue);
-//   for (const field of props.availableFields) {
-//     expect(
-//       screen.queryByRole('heading', { name: field.name?.toLowerCase() })
-//     ).not.toBeInTheDocument();
-//   }
-//   expect(
-//     screen.getByText('No fields matching your search')
-//   ).toBeInTheDocument();
-//
-//
-// });
+test("Show serach input if it's 4 or more fields ", async () => {
+  const props = fakeProps();
+  render(<FieldSelector {...props} currentField={undefined} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+  const searchFields = screen.getByRole('textbox');
+
+  expect(searchFields).toBeInTheDocument();
+});
 
 test('Runs window.open when clicking access it card', async () => {
   const props = fakeProps();

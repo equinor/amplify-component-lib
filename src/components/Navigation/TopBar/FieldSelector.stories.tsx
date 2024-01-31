@@ -5,7 +5,7 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import FieldSelector from './FieldSelector';
 import { Field } from 'src/types/Field';
-const fields = new Array(3).fill(0).map(() => FakeField());
+const fields = new Array(5).fill(0).map(() => FakeField());
 
 export default {
   title: 'Navigation/TopBar/FieldSelector',

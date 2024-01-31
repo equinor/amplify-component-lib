@@ -142,14 +142,16 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     });
 
     const filteredFields = useMemo(() => {
-      const fieldItems = availableFields.filter(
-        (field) => currentField?.uuid !== field?.uuid
-      );
-      if (searchValue === '') return fieldItems;
-      return fieldItems.filter((field) =>
+      if (searchValue === '')
+        return availableFields.filter(
+          (field) =>
+            field.name?.toLowerCase() !== currentField?.name?.toLowerCase()
+        );
+
+      return availableFields.filter((field) =>
         field.name?.toLowerCase().includes(searchValue.toLowerCase())
       );
-    }, [availableFields, currentField?.uuid, searchValue]);
+    }, [availableFields, searchValue, currentField]);
 
     const noSearchResult = useMemo(() => {
       return filteredFields.length === 0;
@@ -165,11 +167,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     }, [currentField?.name]);
 
     const showSearchInput = useMemo(() => {
-      const hasMatch = filteredFields.filter((field) =>
-        field.name?.toLowerCase().includes(searchValue.toLowerCase())
-      );
-
-      return (filteredFields.length >= 4 && !hasMatch) || hasMatch;
+      return filteredFields.length >= 4 || searchValue !== '';
     }, [filteredFields, searchValue]);
 
     return (
@@ -198,7 +196,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         >
           <>
             <MenuSection>
-              {showSearchInput || noSearchResult ? (
+              {showSearchInput && (
                 <SearchContainer>
                   <Search
                     placeholder="Search fields"
@@ -206,12 +204,10 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                     onChange={handleSearchOnChange}
                   />
                 </SearchContainer>
-              ) : (
-                <></>
               )}
 
               <ListContainer>
-                {currentField && !noSearchResult && (
+                {currentField && !noSearchResult && searchValue === '' && (
                   <MenuFixedItem $active>
                     <div>
                       <TextContainer>
