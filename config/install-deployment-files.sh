@@ -11,7 +11,7 @@ then
   cd ./client || exit 1
 fi
 
-cd ../..
+cd ..
 
 printf -- "Downloading client github actions specific to deployment from github to radix...\n"
 workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/github_actions_deployment_list.txt")
