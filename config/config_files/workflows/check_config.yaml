@@ -1,0 +1,53 @@
+name: Check Config files
+on:
+  workflow_call:
+jobs:
+  check_configs:
+    name: Compare local to remote config files
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Compare remote .eslintrc.js to local
+        working-directory: client
+        run: diff .eslintrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.eslintrc.js)
+
+      - name: Compare remote .prettierrc.js to local
+        working-directory: client
+        run: diff .prettierrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierrc.js)
+
+      - name: Compare remote .prettierignore to local
+        working-directory: client
+        run: diff .prettierignore <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierignore)
+
+      - name: Compare remote tsconfig.json to local
+        working-directory: client
+        run: diff tsconfig.json <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json)
+
+      - name: Compare remote Dockerfile to local
+        working-directory: client
+        run: diff Dockerfile <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/Dockerfile)
+
+      - name: Compare remote env.sh to local
+        working-directory: client
+        run: diff env.sh <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/env.sh)
+
+      - name: Compare remote vite.config.ts to local
+        working-directory: client
+        run: diff vite.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite.config.ts)
+
+      - name: Compare remote proxy/nginx.conf to local
+        working-directory: client/proxy
+        run: diff nginx.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf)
+
+      - name: Compare remote proxy/securityheaders.conf to local
+        working-directory: client/proxy
+        run: diff securityheaders.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/securityheaders.conf)
+
+      - name: Compare remote src/setupLocalhost.mjs to local
+        working-directory: client/src
+        run: diff setupLocalhost.mjs <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs)
+
+      - name: Compare remote src/setupTests.ts to local
+        working-directory: client/src
+        run: diff setupTests.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupTests.ts)
