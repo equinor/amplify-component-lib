@@ -1,0 +1,29 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+jobs:
+  lint:
+    name: Lint
+    uses: ./.github/workflows/lint.yaml
+
+  test:
+    name: Test
+    uses: ./.github/workflows/test.yaml
+
+  code-coverage:
+    name: Code coverage
+    uses: ./.github/workflows/code_coverage.yaml
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yaml
+
+  build-storybook:
+    name: Build storybook
+    uses: ./.github/workflows/build_storybook.yaml
