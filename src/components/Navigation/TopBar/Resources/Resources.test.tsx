@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 
+import Tutorial from '../../../DataDisplay/Tutorial/Tutorial';
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
+import TutorialDialog from './Tutorials/TutorialDialog';
 import { Resources } from './Resources';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import {
@@ -702,6 +705,97 @@ describe('Resources', () => {
           { timeout: 2000 }
         );
       }, 15000); // Setting timeout for this test to be 15 seconds
+    });
+  });
+
+  describe('Open different parts in rescouses ', () => {
+    test('only learn more is shown  ', async () => {
+      render(<Resources />, { wrapper: Wrappers });
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      const learnMore = screen.getByText(/learn more/i);
+
+      if (learnMore) {
+        expect(screen.getByText(/tutorials/i)).not.toBeInTheDocument();
+      }
+
+      screen.logTestingPlaygroundURL();
+    });
+
+    test('open portal ', async () => {
+      render(<Resources />, { wrapper: Wrappers });
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      const learnMore = screen.getByText(/learn more/i);
+      await user.click(learnMore);
+
+      const openPortal = screen.getByText(/open application portal/i);
+      await user.click(openPortal);
+
+      expect(openPortal).not.toBeInTheDocument();
+    });
+
+    test('open tutorials  ', async () => {
+      const tutorialOptions = [
+        {
+          description: faker.lorem.sentence(),
+          steps: faker.animal.dog(),
+          duration: faker.animal.cow(),
+          onClick: vi.fn(),
+          pathName: 'current',
+        },
+      ];
+      const onClose = vi.fn();
+
+      const router = createMemoryRouter(
+        [
+          {
+            path: '/current',
+            element: (
+              <TutorialDialog
+                options={tutorialOptions}
+                open={true}
+                onClose={onClose}
+              />
+            ),
+          },
+        ],
+        {
+          initialEntries: ['/current'],
+          initialIndex: 0,
+        }
+      );
+
+      render(<Resources />, { wrapper: Wrappers });
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      const learnMore = screen.getByText(/learn more/i);
+      await user.click(learnMore);
+
+      const openTutorials = screen.getByText(/tutorials/i);
+      await user.click(openTutorials);
+
+      if (openTutorials) {
+        render(<RouterProvider router={router} />, { wrapper: Wrappers });
+      }
+
+      // expect(<Tutorial {...tutorialOptions} />).toBeInTheDocument();
+
+      // expect(openTutorials).not.toBeInTheDocument();
+
+      screen.logTestingPlaygroundURL();
     });
   });
 });

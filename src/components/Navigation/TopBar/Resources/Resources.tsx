@@ -48,6 +48,7 @@ export interface ResourcesProps {
   hideReleaseNotes?: boolean;
   children?: ReactNode;
   tutorialOptions?: tutorialOptions[];
+  hasChildren?: boolean;
 }
 
 export const Resources: FC<ResourcesProps> = ({
@@ -55,7 +56,7 @@ export const Resources: FC<ResourcesProps> = ({
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
-
+  hasChildren = false,
   tutorialOptions,
 }) => {
   const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
@@ -76,8 +77,6 @@ export const Resources: FC<ResourcesProps> = ({
   const environmentName = getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
   );
-
-  console.log(environmentName, 'en');
 
   const environmentNameWithoutLocalHost =
     environmentName === EnvironmentType.LOCALHOST
@@ -229,7 +228,9 @@ export const Resources: FC<ResourcesProps> = ({
             options={tutorialOptions}
             open={openTutorials}
             onClose={handleOpenTutorials}
-          />
+          >
+            {children}
+          </Tutorial>
         )}
         {showLearnMore && (
           <>
@@ -248,10 +249,10 @@ export const Resources: FC<ResourcesProps> = ({
                   lastItem
                 />
                 {/*// TODO: Remove children when PWEX has change layout in topbar */}
-                {children && !hideFeedback && !hideReleaseNotes && (
-                  <Divider style={{ margin: 0 }} />
-                )}
-                {children && <div onClick={closeMenu}>{children}</div>}
+                {/*{hasChildren && !hideFeedback && !hideReleaseNotes && (*/}
+                {/*  <Divider style={{ margin: 0 }} />*/}
+                {/*)}*/}
+                {/*{hasChildren && <div onClick={closeMenu}>{children}</div>}*/}
               </>
             )}
 
@@ -287,11 +288,7 @@ export const Resources: FC<ResourcesProps> = ({
       )}
 
       {openPortal && (
-        <PortalTransit
-          open={openPortal}
-          onClose={handleOpenPortal}
-          onClick={handleMoreAccess}
-        />
+        <PortalTransit onClose={handleOpenPortal} onClick={handleMoreAccess} />
       )}
     </>
   );

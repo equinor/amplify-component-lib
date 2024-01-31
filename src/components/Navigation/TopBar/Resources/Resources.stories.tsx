@@ -81,7 +81,11 @@ export const Primary: StoryFn = (args) => {
         <SnackbarProvider>
           <ReleaseNotesProvider>
             <MemoryRouter initialEntries={['/']}>
-              <Resources tutorialOptions={tutorialOptions} {...args} />
+              <Resources
+                tutorialOptions={tutorialOptions}
+                {...args}
+                children={false}
+              />
             </MemoryRouter>
           </ReleaseNotesProvider>
         </SnackbarProvider>

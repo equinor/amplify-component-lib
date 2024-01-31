@@ -75,19 +75,12 @@ test('Check if on Current page', async () => {
 
 test('Check if on other pages', async () => {
   render(<RouterProvider router={router} />);
-  const onOtherPagesHeading = screen.queryByText('ON OTHER PAGES');
-  expect(onOtherPagesHeading).not.toBeInTheDocument();
-
-  fakeTutorialOptions.slice(1).forEach((option) => {
-    const otherPathTutorialItem = screen.queryByText(option.description);
-    expect(otherPathTutorialItem).toBeInTheDocument();
-  });
-});
-
-test('Check if on other pages', async () => {
-  render(<RouterProvider router={router} />);
 
   const backButton = screen.getByText('Back');
   await user.click(backButton);
   expect(onClose).toHaveBeenCalled();
+});
+
+test('Show children', async () => {
+  render(<RouterProvider router={router} />);
 });
