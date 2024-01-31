@@ -26,6 +26,8 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import { EditorContent, useEditor } from '@tiptap/react';
 
+import { Wrapper } from '../Inputs/RichTextEditor/RichTextEditor.styles';
+
 import { common, createLowlight } from 'lowlight';
 
 const lowlight = createLowlight(common);
@@ -65,14 +67,27 @@ const extensions = [
 
 export interface RichTextDisplayProps {
   value: string | null | undefined;
+  imgReadToken?: string;
 }
-const RichTextDisplay: FC<RichTextDisplayProps> = ({ value }) => {
+
+const RichTextDisplay: FC<RichTextDisplayProps> = ({ value, imgReadToken }) => {
   const editor = useEditor({
     extensions: extensions,
-    content: value,
+    content: imgReadToken
+      ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
+      : value,
     editable: false,
   });
-  return <EditorContent editor={editor} readOnly />;
+
+  console.log(
+    value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
+  );
+
+  return (
+    <Wrapper>
+      <EditorContent editor={editor} readOnly />
+    </Wrapper>
+  );
 };
 
 export default RichTextDisplay;

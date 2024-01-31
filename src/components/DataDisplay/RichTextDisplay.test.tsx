@@ -26,3 +26,21 @@ test('RichTextDisplay shows value as expected', async () => {
 
   expect(screen.getByText(randomText)).toBeInTheDocument();
 });
+
+test('Image read token prop works as expected', async () => {
+  const randomUrl =
+    'https://images.unsplash.com/photo-1682687221363-72518513620e';
+  const randomToken = 'sv=2023-08-03';
+
+  render(
+    <RichTextDisplay
+      value={`<img src="${randomUrl}"/>`}
+      imgReadToken={randomToken}
+    />
+  );
+
+  expect(screen.getByRole('img')).toHaveAttribute(
+    'src',
+    `${randomUrl}?${randomToken}`
+  );
+});
