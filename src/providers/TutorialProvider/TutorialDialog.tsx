@@ -125,7 +125,6 @@ const TutorialDialog: FC = () => {
     <DialogWrapper>
       <StyledTutorialDialog
         data-testid="tutorial-dialog"
-        open={activeTutorial !== undefined}
         ref={dialogRef}
         $positionCss={dialogPositionCss}
       >

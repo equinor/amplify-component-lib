@@ -59,6 +59,7 @@ interface GetMemoryRouterProps {
   withoutSearchParam?: boolean;
   withMissingCustomComponent?: boolean;
   withMissingElementToHighlight?: boolean;
+  withWrongCustomComponentKeyString?: boolean;
 }
 
 const getMemoryRouter = (props: GetMemoryRouterProps) => {
@@ -67,6 +68,7 @@ const getMemoryRouter = (props: GetMemoryRouterProps) => {
     withoutSearchParam,
     withMissingCustomComponent,
     withMissingElementToHighlight,
+    withWrongCustomComponentKeyString,
   } = props;
   return createMemoryRouter(
     [
@@ -80,7 +82,9 @@ const getMemoryRouter = (props: GetMemoryRouterProps) => {
                 ? []
                 : [
                     {
-                      key: TEST_TUTORIAL_CUSTOM_STEP_KEY,
+                      key: withWrongCustomComponentKeyString
+                        ? 'thisIsTheWrongKey'
+                        : TEST_TUTORIAL_CUSTOM_STEP_KEY,
                       element: <div>{TEST_TUTORIAL_CUSTOM_STEP_KEY}</div>,
                     },
                   ]
@@ -229,7 +233,7 @@ describe('TutorialProvider', () => {
     expect(stepOneTitleAgainAgain).toBeInTheDocument();
   });
 
-  test('shows error dialog if tutorial started from searchparam', async () => {
+  test('shows error dialog when missing custom component, if tutorial started from searchparam', async () => {
     const tutorial = fakeTutorial();
     const spy = vi.spyOn(console, 'error');
     render(
@@ -240,8 +244,31 @@ describe('TutorialProvider', () => {
         })}
       />
     );
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    const errorDialogText = screen.getByText(
+      /There was a problem starting this tutorial./i
+    );
+
+    expect(errorDialogText).toBeInTheDocument();
+  });
+
+  test('shows error dialog when having wrong custom components, if tutorial started from searchparam', async () => {
+    const tutorial = fakeTutorial();
+    const spy = vi.spyOn(console, 'error');
+    render(
+      <RouterProvider
+        router={getMemoryRouter({
+          tutorial,
+          withWrongCustomComponentKeyString: true,
+        })}
+      />
+    );
+    expect(spy).toHaveBeenCalledTimes(2);
     screen.logTestingPlaygroundURL();
-    expect(spy).toHaveBeenCalledTimes(4);
+    const errorDialogText = screen.getByText(/problem starting/i);
+
+    expect(errorDialogText).toBeInTheDocument();
   });
 
   // describe('can define dialog position for individual steps', () => {

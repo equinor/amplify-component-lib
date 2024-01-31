@@ -1,9 +1,10 @@
+import { Dialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled, { keyframes } from 'styled-components';
 
-const { spacings, elevation, shape } = tokens;
-
+const { elevation, shape } = tokens;
+import { spacings } from 'src/style';
 interface HighlighterProps {
   $top: number;
   $left: number;
@@ -75,7 +76,7 @@ export const StyledTutorialDialog = styled.dialog<TutorialDialogProps>`
 export const DialogContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.large};
+  gap: ${spacings.large};
   width: 300px;
 `;
 
@@ -91,21 +92,17 @@ export const DialogActions = styled.div`
 `;
 export const NavigateSteps = styled.div`
   display: flex;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
 `;
 
-export const BrokenTutorialDialog = styled.dialog`
-  box-shadow: ${elevation.above_scrim};
-  border: none;
+export const TutorialErrorDialog = styled(Dialog)`
   width: 300px;
-  border-radius: ${shape.corners.borderRadius};
+  height: fit-content;
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.large};
-  > button {
+  padding: ${spacings.medium};
+  gap: ${spacings.large};
+  button {
     align-self: flex-end;
-  }
-  &::backdrop {
-    background: rgba(0, 0, 0, 0.3);
   }
 `;

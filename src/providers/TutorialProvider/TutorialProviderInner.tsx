@@ -9,28 +9,25 @@ import {
   HIGHLIGHT_PADDING,
   TUTORIAL_HIGHLIGHTER_DATATEST_ID,
   TUTORIAL_LOCALSTORAGE_VALUE_STRING,
-  TUTORIAL_SEARCH_PARAM_KEY,
 } from './TutorialProvider.const';
 import { useGetTutorialsForApp } from './TutorialProvider.hooks';
-import { BrokenTutorialDialog, Highlighter } from './TutorialProvider.styles';
+import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
 import { HighlightingInfo, Tutorial } from './TutorialProvider.types';
 
 const TutorialProviderInner: FC = () => {
   const { pathname } = useLocation();
-  const brokenTutorialDialogRef = useRef<HTMLDialogElement | null>(null);
   const {
     activeTutorial,
     setActiveTutorial,
     dialogRef,
     allElementsToHighlight,
-    tutorialShortNameFromParams,
+    shortNameFromParams,
     tutorialError,
     tutorialsFromProps,
-    tutorialWasStartedFromParam,
     currentStep,
-    searchParams,
-    setSearchParams,
+    clearSearchParam,
     viewportWidth,
+    setTutorialError,
   } = useTutorial();
 
   const hasStartedTutorial = useRef(false);
@@ -42,20 +39,27 @@ const TutorialProviderInner: FC = () => {
 
     const highlighterBoundingClient =
       currentElementToHighlight.getBoundingClientRect();
+
     if (currentElementToHighlight) {
       currentElementToHighlight.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
       });
     }
-
+    clearSearchParam();
     return {
       top: highlighterBoundingClient.top - HIGHLIGHT_PADDING + window.scrollY,
       left: highlighterBoundingClient.left - HIGHLIGHT_PADDING,
       height: highlighterBoundingClient.height + HIGHLIGHT_PADDING * 2,
       width: highlighterBoundingClient.width + HIGHLIGHT_PADDING * 2,
     };
-  }, [activeTutorial, allElementsToHighlight, currentStep, viewportWidth]);
+  }, [
+    activeTutorial,
+    allElementsToHighlight,
+    clearSearchParam,
+    currentStep,
+    viewportWidth,
+  ]);
 
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
@@ -66,40 +70,32 @@ const TutorialProviderInner: FC = () => {
       if (hasStartedTutorial.current) return;
       setActiveTutorial(tutorialToRun);
       hasStartedTutorial.current = true;
-      dialogRef.current?.showModal();
-      // TODO: keep this when deploying
-      searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
-      setSearchParams(searchParams);
     },
-    [dialogRef, searchParams, setActiveTutorial, setSearchParams]
+    [setActiveTutorial]
   );
 
-  const shouldShowErrorDialog = useMemo(() => {
-    const shouldShow = tutorialError && tutorialWasStartedFromParam.current;
-    if (shouldShow) {
-      brokenTutorialDialogRef.current?.showModal();
-    }
-    return shouldShow;
-  }, [tutorialError, tutorialWasStartedFromParam]);
-
   useEffect(() => {
-    if (!activeTutorial) return;
+    if (activeTutorial) return;
     if (
-      tutorialShortNameFromParams &&
-      appTutorials.some(
-        (item) => item.shortName === tutorialShortNameFromParams
+      shortNameFromParams.current &&
+      tutorialsForPath.some(
+        (item) => item.shortName === shortNameFromParams.current
       )
     ) {
-      tutorialWasStartedFromParam.current = true;
-      window.localStorage.removeItem(tutorialShortNameFromParams);
+      window.localStorage.removeItem(shortNameFromParams.current);
     }
   }, [
     activeTutorial,
     appTutorials,
     setActiveTutorial,
-    tutorialShortNameFromParams,
-    tutorialWasStartedFromParam,
+    shortNameFromParams,
+    tutorialsForPath,
   ]);
+
+  useEffect(() => {
+    if (!highlightingInfo || dialogRef.current?.open) return;
+    dialogRef.current?.showModal();
+  }, [dialogRef, highlightingInfo]);
 
   useEffect(() => {
     if (tutorialsForPath.length < 1) return;
@@ -115,23 +111,28 @@ const TutorialProviderInner: FC = () => {
     }
   }, [runTutorial, tutorialsForPath]);
 
-  const handleOnClickBrokenTutorial = () => {
-    brokenTutorialDialogRef.current?.close();
+  const handleOnCloseBrokenTutorial = () => {
+    setTutorialError(false);
     setActiveTutorial(undefined);
+    clearSearchParam();
   };
 
   // Show error dialog if the user was expecting a tutorial (opened a link that had tutorial name as parameter)
-  if (shouldShowErrorDialog) {
+  if (tutorialError && shortNameFromParams.current) {
     return (
-      <BrokenTutorialDialog ref={brokenTutorialDialogRef}>
+      <TutorialErrorDialog
+        open
+        isDismissable
+        onClose={handleOnCloseBrokenTutorial}
+      >
         <Typography>
-          There was a problem getting the custom components for this tutorial.
-          Please report this in using the feedback function in the Top Bar.
+          There was a problem starting this tutorial. Please report this in
+          using the feedback function in the Top Bar.
         </Typography>
-        <Button variant="outlined" onClick={handleOnClickBrokenTutorial}>
+        <Button variant="outlined" onClick={handleOnCloseBrokenTutorial}>
           Close
         </Button>
-      </BrokenTutorialDialog>
+      </TutorialErrorDialog>
     );
   }
 
@@ -141,15 +142,13 @@ const TutorialProviderInner: FC = () => {
   return (
     <>
       {highlightingInfo && (
-        <>
-          <Highlighter
-            data-testid={TUTORIAL_HIGHLIGHTER_DATATEST_ID}
-            $top={highlightingInfo.top}
-            $left={highlightingInfo.left}
-            $width={highlightingInfo.width}
-            $height={highlightingInfo.height}
-          />
-        </>
+        <Highlighter
+          data-testid={TUTORIAL_HIGHLIGHTER_DATATEST_ID}
+          $top={highlightingInfo.top}
+          $left={highlightingInfo.left}
+          $width={highlightingInfo.width}
+          $height={highlightingInfo.height}
+        />
       )}
       <TutorialDialog />
     </>

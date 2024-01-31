@@ -5,6 +5,7 @@ import {
   MutableRefObject,
   ReactNode,
   SetStateAction,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -36,13 +37,11 @@ interface TutorialContextType {
   currentStepObject: GenericTutorialStep | CustomTutorialStep | undefined;
   isLastStep: boolean;
   dialogRef: MutableRefObject<HTMLDialogElement | null>;
-  searchParams: URLSearchParams;
-  setSearchParams: Dispatch<SetStateAction<URLSearchParams>>;
-  tutorialShortNameFromParams: string | null;
+  clearSearchParam: () => void;
+  shortNameFromParams: MutableRefObject<string | null>;
   tutorialsFromProps: Tutorial[];
   tutorialError: boolean;
   setTutorialError: Dispatch<SetStateAction<boolean>>;
-  tutorialWasStartedFromParam: MutableRefObject<boolean>;
   viewportWidth: number;
 }
 
@@ -73,20 +72,18 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   const [activeTutorial, setActiveTutorial] = useState<Tutorial | undefined>(
     undefined
   );
-  const tutorialWasStartedFromParam = useRef(false);
   const [tutorialError, setTutorialError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const tutorialShortNameFromParams = searchParams.get(
-    TUTORIAL_SEARCH_PARAM_KEY
-  );
-  // console.log('search param', searchParams.get('tutorial'));
+  // const [shortNameFromParams, setShortNameFromParams] = useState<
+  //   string | undefined
+  // >(undefined);
+  const shortNameFromParams = useRef<string | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [allElementsToHighlight, setAllElementsToHighlight] = useState<
     HTMLElement[] | undefined
   >(undefined);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-
   const currentStepObject = useMemo(() => {
     if (!activeTutorial) return;
     return activeTutorial.steps.at(currentStep);
@@ -96,6 +93,20 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     if (!activeTutorial) return false;
     return currentStep >= activeTutorial?.steps.length - 1;
   }, [activeTutorial, currentStep]);
+
+  const clearSearchParam = useCallback(() => {
+    searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
+    setSearchParams(searchParams);
+    shortNameFromParams.current = null;
+  }, [searchParams, setSearchParams]);
+
+  useEffect(() => {
+    if (shortNameFromParams.current) return;
+    const nameFromSearchParam = searchParams.get(TUTORIAL_SEARCH_PARAM_KEY);
+    if (nameFromSearchParam) {
+      shortNameFromParams.current = nameFromSearchParam;
+    }
+  }, [searchParams, shortNameFromParams]);
 
   useEffect(() => {
     const setViewportWidthHandler = () => {
@@ -115,6 +126,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     if (!activeTutorial || tutorialError) return;
 
     const handleTryToGetElementsAgain = async () => {
+      // Wait for 300ms before trying again
       await new Promise((resolve) => setTimeout(resolve, 300));
 
       const allElementsToHighlightInTimeout =
@@ -125,7 +137,8 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         );
       } else {
         console.error(
-          'Could not find all elements to highlight for the tutorial. Here is an array with all elements that were found: ',
+          'Could not find all elements to highlight for the tutorial. \n ' +
+            'This is a list of elements that were found for each step: ',
           allElementsToHighlightInTimeout
         );
         setTutorialError(true);
@@ -139,7 +152,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     } else {
       handleTryToGetElementsAgain();
     }
-  }, [activeTutorial, currentStep, tutorialError, tutorialShortNameFromParams]);
+  }, [activeTutorial, currentStep, tutorialError, shortNameFromParams]);
 
   // Check to see if the tutorial has the custom components for any custom steps it has.
   // Sets tutorialError to true if it does not find a match for all potential custom steps
@@ -155,7 +168,8 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     );
     if (!customKeysFromComponents || customKeysFromComponents.length === 0) {
       console.error(
-        'Could not find any custom components, but expected these keys: ',
+        'Could not find any custom components passed to the TutorialProvider \n' +
+          'Expected these keys for the active tutorial: ',
         customKeysFromSteps
       );
       setTutorialError(true);
@@ -168,16 +182,20 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
 
     if (stepsHaveComponents.some((step) => step !== true)) {
       console.error(
-        'Could not find the custom components related to the active tutorial'
-      );
-      console.error(
-        'The active tutorial expected to find these keys:  ',
-        customKeysFromSteps
-      );
-      console.error(
-        'However in the custom components we only found these keys: ',
+        'Could not find the custom components related to the active tutorial. ' +
+          '\n The active tutorial expected to find these keys:  ',
+        customKeysFromSteps,
+        '\n However in the custom components we only found these keys: ',
         customKeysFromComponents
       );
+      // console.error(
+      //   'The active tutorial expected to find these keys:  ',
+      //   customKeysFromSteps
+      // );
+      // console.error(
+      //   'However in the custom components we only found these keys: ',
+      //   customKeysFromComponents
+      // );
       setTutorialError(true);
     }
   }, [activeTutorial, customStepComponents, tutorialError]);
@@ -195,13 +213,11 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         customStepComponents,
         isLastStep,
         dialogRef,
-        searchParams,
-        setSearchParams,
-        tutorialShortNameFromParams,
+        clearSearchParam,
+        shortNameFromParams,
         tutorialsFromProps: tutorials ?? [],
         tutorialError,
         setTutorialError,
-        tutorialWasStartedFromParam,
         viewportWidth,
       }}
     >

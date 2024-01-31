@@ -22,6 +22,9 @@ export const tutorialForTestingInRecap: Tutorial = {
       title: 'woop',
       body: 'body step 3',
     },
+    {
+      key: 'recap-custom-key',
+    },
   ],
 };
 
