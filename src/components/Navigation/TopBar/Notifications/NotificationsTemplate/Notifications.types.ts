@@ -14,6 +14,7 @@ export enum NotificationsTypes {
   QA_COMMENTS = ' TaskInReview',
   DUE_3_WEEKS = 'WellDueForReport',
   EXPERIENCE_READY_TO_PUBLISH = 'WellReadyForPublishing ',
+  SYSTEM_USER = 'systemUser',
 }
 
 export enum FilterNotification {
@@ -102,4 +103,8 @@ export type ExperienceReadyToPublishTypes = {
   well: TagDto;
   experienceCount: number;
   notificationType: NotificationsTypes.EXPERIENCE_READY_TO_PUBLISH;
+} & NotificationDto;
+
+export type SystemUserTypes = {
+  notificationType: NotificationsTypes.SYSTEM_USER;
 } & NotificationDto;

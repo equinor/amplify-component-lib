@@ -6,6 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import { TopBarButton } from '../TopBar.styles';
+import NoNotifications from './NotificationsTemplate/NotificationElements/NoNotifications';
 import {
   DefaultNotificationTypes,
   Due3WeeksTypes,
@@ -207,15 +208,21 @@ const Notifications: FC<NotificationsProps> = ({
             />
           </FilterOptionsContainer>
         )}
+
         {hasChildren ? (
           children
         ) : (
           <>
-            {filteredAndSortedNotifications.map((item) => {
-              return (
-                <NotificationTemplate {...item} key={item.SequenceNumber} />
-              );
-            })}
+            {filteredAndSortedNotifications &&
+            filteredAndSortedNotifications?.length > 0 ? (
+              <NoNotifications />
+            ) : (
+              filteredAndSortedNotifications.map((item) => {
+                return (
+                  <NotificationTemplate {...item} key={item.SequenceNumber} />
+                );
+              })
+            )}
           </>
         )}
       </SidePanel>

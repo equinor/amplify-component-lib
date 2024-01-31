@@ -289,6 +289,20 @@ describe('Sorting notifications ', () => {
 
     const title = screen.getByText(/newest to oldest/i);
     expect(title).toBeInTheDocument();
+    await user.click(title);
+
+    const outsideClick = screen.getByRole('heading', {
+      name: /notifications/i,
+    });
+    await user.click(outsideClick);
+    expect(title).not.toBeInTheDocument();
+  });
+  test('Sort closing when click on sort again   ', async () => {
+    const user = userEvent.setup();
+
+    const title = screen.getByText(/newest to oldest/i);
+    expect(title).toBeInTheDocument();
+    await user.click(title);
 
     const sortButton = screen.getByText(/Sort by/);
     await user.click(sortButton);
@@ -355,8 +369,8 @@ describe('Filtering notifications ', () => {
     const user = userEvent.setup();
     const button = screen.getByTestId('show-hide-button');
     await user.click(button);
-    const sortButton = screen.getByText(/Filter by/);
-    await user.click(sortButton);
+    const filterButton = screen.getByText(/Filter by/);
+    await user.click(filterButton);
   });
 
   test('Filtering closing when clicking outside  ', async () => {
@@ -364,9 +378,24 @@ describe('Filtering notifications ', () => {
 
     const title = screen.getByText(/user messages/i);
     expect(title).toBeInTheDocument();
+    await user.click(title);
 
-    const sortButton = screen.getByText(/Filter by/);
-    await user.click(sortButton);
+    const outsideClick = screen.getByRole('heading', {
+      name: /notifications/i,
+    });
+    await user.click(outsideClick);
+    expect(title).not.toBeInTheDocument();
+  });
+
+  test('Filtering closing when click on sort again   ', async () => {
+    const user = userEvent.setup();
+
+    const title = screen.getByText(/user messages/i);
+    expect(title).toBeInTheDocument();
+    await user.click(title);
+
+    const filterButton = screen.getByText(/Filter by/);
+    await user.click(filterButton);
     expect(title).not.toBeInTheDocument();
   });
 
@@ -411,4 +440,14 @@ describe('Filtering notifications ', () => {
       date.formatRelativeDateTime(notificationsData[2].time)
     );
   });
+});
+
+test('Show no notifications ', async () => {
+  const texts = new Array(faker.number.int({ min: 4, max: 8 }))
+    .fill(0)
+    .map(() => faker.string.uuid());
+  render(<Notifications setAllAsRead={() => null} {...texts}></Notifications>);
+  screen.logTestingPlaygroundURL();
+  // const noNotications = screen.getByText('no notifications');
+  // expect(noNotications).toBeInTheDocument();
 });

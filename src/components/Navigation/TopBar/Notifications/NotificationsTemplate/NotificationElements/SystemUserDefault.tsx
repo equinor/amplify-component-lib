@@ -4,6 +4,8 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { NotificationsTypes, SystemUserTypes } from '../Notifications.types';
+
 import styled from 'styled-components';
 
 const { spacings } = tokens;
@@ -19,12 +21,12 @@ const StyledButton = styled(Button)`
   width: fit-content;
 `;
 
-interface SystemUserDefaultProps {
+interface SystemUserDefaultProps extends SystemUserTypes {
   onClick: () => void;
 }
 const SystemUserDefault: FC<SystemUserDefaultProps> = ({ onClick }) => {
   return (
-    <Container>
+    <Container data-testid={NotificationsTypes.SYSTEM_USER}>
       <Typography group="table" variant="cell_text">
         New Release available! Explore the latest features and improvemnts
       </Typography>

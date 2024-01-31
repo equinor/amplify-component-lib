@@ -59,7 +59,7 @@ const items: (
       image: 'placeholder',
     },
     applicationName: 'Dasha',
-    time: 2,
+    time: '2',
     notificationType: NotificationsTypes.MERGE_BRANCH,
   } as MergeBranchOrcaTypes,
   {
@@ -88,7 +88,7 @@ const items: (
       image: 'placeholder',
     },
     applicationName: 'PWEX',
-    time: 8,
+    time: '8',
     notificationType: NotificationsTypes.REQUESTED_CHANGES,
   } as RequestChangeOrcaTypes,
   {
@@ -110,7 +110,7 @@ const items: (
       image: 'placeholder',
     },
     applicationName: 'Recap',
-    time: 5,
+    time: '5',
     wellbore: 'test hej ',
     dataType: 'Borr',
 
@@ -135,7 +135,7 @@ const items: (
       image: 'placeholder',
     },
     applicationName: 'Recap',
-    time: 1,
+    time: '1',
     well: 'test hej ',
     commentsCount: 2,
 

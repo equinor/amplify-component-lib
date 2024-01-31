@@ -26,8 +26,8 @@ const ExperienceDue3Weeks: FC<ExperienceDue3WeeksProps> = ({
 }) => {
   return (
     <Container>
-      <Tooltip title={`Go to ${well.displayName}`} onClick={onClick}>
-        <div>
+      <Tooltip title={`Go to ${well.displayName}`}>
+        <div onClick={onClick}>
           <Typography group="table" variant="cell_text" bold>
             Experience report are due in 3 weeks
           </Typography>

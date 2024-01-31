@@ -30,8 +30,8 @@ const MergedBranchOrca: FC<MergedBranchOrcaProps> = ({
     <Container onClick={onClick}>
       <Tooltip title={`Go to ${branchName}`}>
         <Typography group="table" variant="cell_text">
-          {fromUser.displayName ?? ''} has merged your branch {branchName} to
-          the master
+          {fromUser.displayName} has merged your branch {branchName} to the
+          master
         </Typography>
       </Tooltip>
     </Container>

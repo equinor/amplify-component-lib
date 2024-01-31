@@ -4,7 +4,10 @@ import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import OptionalTooltip from '../../../../../DataDisplay/OptionalTooltip';
-import { RequestReviewOrcaTypes } from '../Notifications.types';
+import {
+  NotificationsTypes,
+  RequestReviewOrcaTypes,
+} from '../Notifications.types';
 
 import styled from 'styled-components';
 
@@ -29,7 +32,10 @@ const RequestReviewOrca: FC<RequestReviewProps> = ({
 }) => {
   return (
     <Tooltip title={`Go to ${branchName}`}>
-      <Container onClick={onClick}>
+      <Container
+        onClick={onClick}
+        data-testid={NotificationsTypes.REQUESTED_REVIEW}
+      >
         <OptionalTooltip title={`Go to ${branchName}`}>
           <Typography group="table" variant="cell_text">
             {fromUser.displayName} has requested review for branch {branchName}
