@@ -49,6 +49,10 @@ const extractDatesFromReleasNotes = (
       ...new Map(matchingDatesOnYear.map((m) => [m.month, m])).values(),
     ];
 
+    uniqueMonths.sort((a, b) => {
+      return b.date.getTime() - a.date.getTime();
+    });
+
     const months = uniqueMonths.map((d) => {
       const monthLabel = d.date.toLocaleString('en-US', {
         month: 'long',
@@ -58,12 +62,6 @@ const extractDatesFromReleasNotes = (
         label: monthLabel,
         value: monthValue,
       };
-    });
-
-    months.sort((a, b) => {
-      const dateA = new Date(a.label);
-      const dateB = new Date(b.label);
-      return dateB.getTime() - dateA.getTime();
     });
 
     pageMenuItemFormattedNotes.push({
