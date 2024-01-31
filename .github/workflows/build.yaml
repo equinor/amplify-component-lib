@@ -15,9 +15,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Install dependencies
-        working-directory: client
         run: npm ci
 
       - name: Build
-        working-directory: client
         run: npm run build
