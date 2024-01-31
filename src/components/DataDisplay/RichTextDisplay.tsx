@@ -79,10 +79,6 @@ const RichTextDisplay: FC<RichTextDisplayProps> = ({ value, imgReadToken }) => {
     editable: false,
   });
 
-  console.log(
-    value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
-  );
-
   return (
     <Wrapper>
       <EditorContent editor={editor} readOnly />
