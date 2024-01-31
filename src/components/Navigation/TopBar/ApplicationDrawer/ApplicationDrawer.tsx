@@ -5,6 +5,8 @@ import { apps, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from '@tanstack/react-query';
 
+import { AccessRoles } from '../../../../api/models/AccessRole';
+import { AmplifyApplication } from '../../../../api/models/Applications';
 import { environment } from '../../../../utils';
 import ApplicationIcon from '../../../Icons/ApplicationIcon/ApplicationIcon';
 import PortalTransit from '../Resources/ApplicationTransit/PortalTransit';
@@ -105,25 +107,120 @@ export const ApplicationBox = styled.div<ApplicationBoxProps>`
     border-radius: ${shape.corners.borderRadius};
   }
 `;
-export type applicationsProps = {
-  name: string;
-  icon: string;
-  isSelected?: boolean;
-};
 
-const applications: applicationsProps[] = [
-  { name: 'Dasha', icon: 'dasha', isSelected: true },
-  { name: 'PWEX', icon: 'pwex', isSelected: false },
-  { name: 'Inpress', icon: 'inpress', isSelected: false },
-  { name: 'Orca', icon: 'orca', isSelected: false },
-  { name: 'Acquire', icon: 'acquire', isSelected: false },
-  { name: 'Recap', icon: 'dasha', isSelected: false },
-  { name: 'dasha', icon: 'dasha', isSelected: false },
+const applications: AmplifyApplication[] = [
+  {
+    id: '1',
+    name: 'Dasha',
+    adGroups: ['admin', 'user'],
+    url: 'vg.no',
+    accessRoles: [
+      {
+        role: 'string',
+        description: 'string',
+      },
+    ],
+    description: 'string',
+    longDescription: 'string',
+    category: 'string',
+    version: 'string',
+    applicationInsightAPI: 'string',
+    apI_Id: 'string',
+    apiurl: 'string',
+    monitored: true,
+    productOwners: ['admin', 'user'],
+  },
+  {
+    id: '2',
+    name: 'Inpress',
+    adGroups: ['admin', 'user'],
+    url: 'vg.no',
+    accessRoles: [
+      {
+        role: 'string',
+        description: 'string',
+      },
+    ],
+    description: 'string',
+    longDescription: 'string',
+    category: 'string',
+    version: 'string',
+    applicationInsightAPI: 'string',
+    apI_Id: 'string',
+    apiurl: 'string',
+    monitored: true,
+    productOwners: ['admin', 'user'],
+  },
+  {
+    id: '3',
+    name: 'Orca',
+    adGroups: ['admin', 'user'],
+    url: 'vg.no',
+    accessRoles: [
+      {
+        role: 'string',
+        description: 'string',
+      },
+    ],
+    description: 'string',
+    longDescription: 'string',
+    category: 'string',
+    version: 'string',
+    applicationInsightAPI: 'string',
+    apI_Id: 'string',
+    apiurl: 'string',
+    monitored: true,
+    productOwners: ['admin', 'user'],
+  },
+  {
+    id: '4',
+    name: 'Acquire',
+    adGroups: ['admin', 'user'],
+    url: 'vg.no',
+    accessRoles: [
+      {
+        role: 'string',
+        description: 'string',
+      },
+    ],
+    description: 'string',
+    longDescription: 'string',
+    category: 'string',
+    version: 'string',
+    applicationInsightAPI: 'string',
+    apI_Id: 'string',
+    apiurl: 'string',
+    monitored: true,
+    productOwners: ['admin', 'user'],
+  },
+  {
+    id: '5',
+    name: 'Recap',
+    adGroups: ['admin', 'user'],
+    url: 'vg.no',
+    accessRoles: [
+      {
+        role: 'string',
+        description: 'string',
+      },
+    ],
+    description: 'string',
+    longDescription: 'string',
+    category: 'string',
+    version: 'string',
+    applicationInsightAPI: 'string',
+    apI_Id: 'string',
+    apiurl: 'string',
+    monitored: true,
+    productOwners: ['admin', 'user'],
+  },
 ];
 
 const ApplicationDrawer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [openApplication, setOpenApplication] = useState(false);
+  const [openApplication, setOpenApplication] = useState<
+    AmplifyApplication | undefined
+  >(undefined);
   const [openPortal, setOpenPortal] = useState(false);
   const environmentName = getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
@@ -146,12 +243,14 @@ const ApplicationDrawer: FC = () => {
 
   const closeMenu = () => {
     setIsOpen(false);
-    setOpenApplication(false);
+    setOpenApplication(undefined);
   };
 
-  const handleOnApplicationClick = (value: string) => {
-    setOpenApplication(true);
+  const handleOpenApplication = (value: AmplifyApplication) => {
+    setOpenApplication(value);
+  };
 
+  const handleGoToUrl = (value: string) => {
     goToUrl.current = value;
   };
 
@@ -218,7 +317,7 @@ const ApplicationDrawer: FC = () => {
       >
         <>
           <MenuSection>
-            {data.length === 0 ? (
+            {applications.length === 0 ? (
               <NoApplications>
                 <Typography
                   group="paragraph"
@@ -236,14 +335,14 @@ const ApplicationDrawer: FC = () => {
 
             <ApplicationContent>
               <>
-                {data.map((item, index) => {
+                {applications.map((item, index) => {
                   const isSelected =
                     getAppName(import.meta.env.VITE_NAME) === item.name;
                   return (
                     <ApplicationBox key={index} $isSelected={isSelected}>
                       <Button
                         variant="ghost_icon"
-                        onClick={() => handleOnApplicationClick(item.url)}
+                        onClick={() => handleOpenApplication(item)}
                         data-testid={item.name}
                       >
                         <ApplicationIcon name={item.name.toLowerCase()} />
@@ -253,16 +352,6 @@ const ApplicationDrawer: FC = () => {
                           {item.name}
                         </Typography>
                       </ApplicationName>
-
-                      {openApplication && (
-                        <PortalTransit
-                          open={openApplication}
-                          onClose={closeMenu}
-                          portal={false}
-                          applicationName={item.name}
-                          onClick={() => handleOnApplicationClick(item.url)}
-                        />
-                      )}
                     </ApplicationBox>
                   );
                 })}
@@ -291,11 +380,14 @@ const ApplicationDrawer: FC = () => {
         </>
       </TopBarMenu>
       {openPortal && (
+        <PortalTransit onClose={closeMenu} portal onClick={handleMoreAccess} />
+      )}
+      {openApplication && (
         <PortalTransit
-          open={openApplication}
           onClose={closeMenu}
-          portal
-          onClick={handleMoreAccess}
+          portal={false}
+          applicationName={openApplication.name}
+          onClick={() => handleGoToUrl(openApplication.url)}
         />
       )}
     </>

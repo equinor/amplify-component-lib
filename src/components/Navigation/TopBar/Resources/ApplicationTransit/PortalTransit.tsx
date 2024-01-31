@@ -13,7 +13,6 @@ const PortalDialog = styled(Dialog)`
 `;
 
 interface PortalTransitProps {
-  open: boolean;
   onClose: () => void;
   portal?: boolean;
   applicationName?: string;
@@ -21,14 +20,13 @@ interface PortalTransitProps {
 }
 
 const PortalTransit: FC<PortalTransitProps> = ({
-  open,
   onClose,
   portal = true,
   applicationName,
   onClick,
 }) => {
   return (
-    <PortalDialog open={open} onClose={onClose}>
+    <PortalDialog open onClose={onClose}>
       <Dialog.Header>
         Open link
         <Button variant="ghost_icon" onClick={onClose}>
