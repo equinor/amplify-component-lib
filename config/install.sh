@@ -51,7 +51,7 @@ workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-compo
 for line in $workflowsList
 do
   fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
-  curl -s $line > "./github/workflows/$fileName"
+  curl -s $line > ".github/workflows/$fileName"
 done
 
 printf -- "Downloading CODEOWNERS file...\n"
