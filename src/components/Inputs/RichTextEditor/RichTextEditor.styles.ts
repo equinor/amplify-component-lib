@@ -9,19 +9,27 @@ const { colors, spacings } = tokens;
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   flex-grow: 1;
   background: white;
+
+  &:has(div[contenteditable='true']) {
+    height: inherit;
+  }
+
   > div:last-child {
     display: grid;
-    height: 100%;
     flex-grow: 1;
   }
   .tiptap {
-    height: 100%;
+    height: fit-content;
     min-height: 200px;
-    box-shadow: inset 0 -1px ${colors.ui.background__medium.rgba};
-    padding: 0 ${spacings.comfortable.medium};
+    background: white;
+
+    &[contenteditable='true'] {
+      height: 100%;
+      box-shadow: inset 0 -1px ${colors.ui.background__medium.rgba};
+    }
+    padding: ${spacings.comfortable.medium};
 
     a {
       color: ${colors.interactive.primary__resting.rgba};
@@ -58,7 +66,6 @@ export const Wrapper = styled.div`
 
     table {
       border-collapse: collapse;
-      margin: 1rem 0;
       overflow: hidden;
       table-layout: fixed;
       width: 100%;
