@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 interface MergedBranchOrcaProps extends MergeBranchOrcaTypes {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const MergedBranchOrca: FC<MergedBranchOrcaProps> = ({

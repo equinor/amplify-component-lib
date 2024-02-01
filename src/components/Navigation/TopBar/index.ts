@@ -1,13 +1,13 @@
 import ApplicationDrawer from './ApplicationDrawer/ApplicationDrawer';
 import { GuidelineSections } from './Guidelines/Guidelines';
-import Notifications from './Notifications/Notifications';
+import { Notifications } from './Notifications/Notifications';
 import { Resources } from './Resources/Resources';
 import { Account } from './Account';
 import { Actions } from './Actions';
 import FieldSelector from './FieldSelector';
+import Guidelines from './Guidelines';
 import { ISettingsProps, Settings } from './Settings';
 import { TopBar as BaseTopBar } from './TopBar';
-import Guidelines from 'src/components/Navigation/TopBar/Guidelines';
 
 type TopBarType = typeof BaseTopBar & {
   Account: typeof Account;

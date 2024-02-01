@@ -124,7 +124,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
     setOpenSort(false);
   };
 
-  const handleFilterUnread = (value: FilterNotification) => {
+  const handleFilter = (value: FilterNotification) => {
     onFilter(selectedFilter[value] ? [] : [value]);
     setSelectedFilter((prevState) => ({
       ...prevState,
@@ -132,7 +132,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
     }));
   };
 
-  const handleSortingTest = (value: SortNotification) => {
+  const handleSorting = (value: SortNotification) => {
     onSort(selectedSort[value] ? [] : [value]);
     setSelectedSort((prevState) => ({
       ...prevState,
@@ -200,7 +200,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
               Filter notifications
             </Typography>
           </Heading>
-          <MenuItem onClick={() => handleFilterUnread(FilterNotification.USER)}>
+          <MenuItem onClick={() => handleFilter(FilterNotification.USER)}>
             <Icon
               data={
                 selectedFilter[FilterNotification.USER]
@@ -210,9 +210,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> User messages </Typography>
           </MenuItem>
-          <MenuItem
-            onClick={() => handleFilterUnread(FilterNotification.SYSTEM)}
-          >
+          <MenuItem onClick={() => handleFilter(FilterNotification.SYSTEM)}>
             <Icon
               data={
                 selectedFilter[FilterNotification.SYSTEM]
@@ -222,9 +220,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> System messages </Typography>
           </MenuItem>
-          <MenuItem
-            onClick={() => handleFilterUnread(FilterNotification.UNREAD)}
-          >
+          <MenuItem onClick={() => handleFilter(FilterNotification.UNREAD)}>
             <Icon
               data={
                 selectedFilter[FilterNotification.UNREAD]
@@ -248,9 +244,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
               Sort notifications
             </Typography>
           </Heading>
-          <MenuItem
-            onClick={() => handleSortingTest(SortNotification.NEW_OLDEST)}
-          >
+          <MenuItem onClick={() => handleSorting(SortNotification.NEW_OLDEST)}>
             <Icon
               data={
                 selectedSort[SortNotification.NEW_OLDEST]
@@ -260,9 +254,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> Newest to oldest </Typography>
           </MenuItem>
-          <MenuItem
-            onClick={() => handleSortingTest(SortNotification.OLD_NEWEST)}
-          >
+          <MenuItem onClick={() => handleSorting(SortNotification.OLD_NEWEST)}>
             <Icon
               data={
                 selectedSort[SortNotification.OLD_NEWEST]
@@ -272,7 +264,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> Oldest to newest </Typography>
           </MenuItem>
-          <MenuItem onClick={() => handleSortingTest(SortNotification.UNREAD)}>
+          <MenuItem onClick={() => handleSorting(SortNotification.UNREAD)}>
             <Icon
               data={
                 selectedSort[SortNotification.UNREAD]

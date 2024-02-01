@@ -54,7 +54,7 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
 
   const onCurrentPage = useMemo(() => {
     const result = options.map((item) => item.pathName === location.pathname);
-    console.log('onCurrentPage:', result);
+
     return result;
   }, [location.pathname, options]);
 
@@ -71,48 +71,50 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
         </Button>
       </Dialog.Header>
       <DialogCustomContent>
-        <Wrapper>
-          {onCurrentPage.includes(true) && (
+        {onCurrentPage.includes(true) && (
+          <Wrapper>
             <Typography style={{ fontSize: '10px' }}>
               ON CURRENT PAGE{' '}
             </Typography>
-          )}
-          {options.map((item, index) => {
-            if (item.pathName === location.pathname) {
-              return (
-                <TutorialItem
-                  key={index}
-                  description={item.description}
-                  steps={item.steps}
-                  duration={item.duration}
-                  onClick={item.onClick}
-                  pathName={item.pathName}
-                />
-              );
-            }
-          })}
-        </Wrapper>
-        <Wrapper>
-          {onOtherPages.includes(true) && (
+
+            {options.map((item, index) => {
+              if (item.pathName === location.pathname) {
+                return (
+                  <TutorialItem
+                    key={index}
+                    description={item.description}
+                    steps={item.steps}
+                    duration={item.duration}
+                    onClick={item.onClick}
+                    pathName={item.pathName}
+                  />
+                );
+              }
+            })}
+          </Wrapper>
+        )}
+        {onOtherPages.includes(true) && (
+          <Wrapper>
             <Typography style={{ fontSize: '10px' }}>
               ON CURRENT PAGE{' '}
             </Typography>
-          )}
-          {options.map((item, index) => {
-            if (item.pathName !== location.pathname) {
-              return (
-                <TutorialItem
-                  key={index}
-                  description={item.description}
-                  steps={item.steps}
-                  duration={item.duration}
-                  onClick={item.onClick}
-                  pathName={item.pathName}
-                />
-              );
-            }
-          })}
-        </Wrapper>
+
+            {options.map((item, index) => {
+              if (item.pathName !== location.pathname) {
+                return (
+                  <TutorialItem
+                    key={index}
+                    description={item.description}
+                    steps={item.steps}
+                    duration={item.duration}
+                    onClick={item.onClick}
+                    pathName={item.pathName}
+                  />
+                );
+              }
+            })}
+          </Wrapper>
+        )}
       </DialogCustomContent>
       <Dialog.Actions>
         <Button variant="outlined" onClick={onClose}>

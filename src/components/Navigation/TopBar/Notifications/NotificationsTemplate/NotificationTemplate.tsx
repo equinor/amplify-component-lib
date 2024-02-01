@@ -123,25 +123,21 @@ const NotificationTemplate: FC<
   const content = useMemo(() => {
     switch (notificationType) {
       case NotificationsTypes.READY_TO_REPORT:
-        return (
-          <ReadyToReportNotification {...props} onClick={() => console.log()} />
-        );
+        return <ReadyToReportNotification {...props} />;
       case NotificationsTypes.DEFAULT:
         return <DeafultNotification {...props} />;
       case NotificationsTypes.REQUESTED_REVIEW:
-        return <RequestReviewOrca {...props} onClick={() => console.log()} />;
+        return <RequestReviewOrca {...props} />;
       case NotificationsTypes.REQUESTED_CHANGES:
-        return <RequestChangeOrca {...props} onClick={() => console.log()} />;
+        return <RequestChangeOrca {...props} />;
       case NotificationsTypes.MERGE_BRANCH:
-        return <MergedBranchOrca {...props} onClick={() => console.log()} />;
+        return <MergedBranchOrca {...props} />;
       case NotificationsTypes.QA_COMMENTS:
-        return (
-          <ReviewQANotification {...props} onClick={() => console.log()} />
-        );
+        return <ReviewQANotification {...props} />;
       case NotificationsTypes.EXPERIENCE_READY_TO_PUBLISH:
-        return <ReadyToBePublished {...props} onClick={() => console.log()} />;
+        return <ReadyToBePublished {...props} />;
       case NotificationsTypes.DUE_3_WEEKS:
-        return <ExperienceDue3Weeks {...props} onClick={() => console.log()} />;
+        return <ExperienceDue3Weeks {...props} />;
     }
   }, [props, notificationType]);
 
@@ -153,8 +149,8 @@ const NotificationTemplate: FC<
             <UserInformation>
               {!Read && <Dot />}
               <ProfileAvatar
-                url={user?.image ?? ''}
-                name={user?.shortName ?? 'display name'}
+                url={user?.image}
+                name={user?.shortName}
                 size="large"
               />
               <div>
@@ -177,7 +173,7 @@ const NotificationTemplate: FC<
           ) : (
             <UserInformation $systemUser>
               {!Read && <Dot />}
-              <ApplicationIcon name="pwex" />
+              <ApplicationIcon name={applicationName} />
 
               <Typography group="heading" variant="h6">
                 {applicationName}

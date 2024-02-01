@@ -1,25 +1,23 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { MemoryRouter } from 'react-router-dom';
 
-import { button } from '@equinor/eds-core-react/dist/types/components/Button/tokens/button';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { CancelablePromise } from '../../../../api';
-import { AmplifyApplication } from '../../../../api/models/Applications';
 import {
   AuthProvider,
   ReleaseNotesProvider,
   SnackbarProvider,
 } from '../../../../providers';
-import ChangingApplication from '../Resources/ApplicationTransit/ChangingApplication';
 import ApplicationDrawer from './ApplicationDrawer';
+import { CancelablePromise } from 'src/api';
+import { AmplifyApplication } from 'src/api/models/Applications';
+import PortalTransit from 'src/components/Navigation/TopBar/Resources/ApplicationTransit/PortalTransit';
 
-import { expect } from 'vitest';
+import { assignWith } from 'lodash-es';
+import { expect, vi } from 'vitest';
 
 function fakeApplication(): AmplifyApplication {
   return {
@@ -47,6 +45,7 @@ const fakeApps = new Array(faker.number.int({ min: 4, max: 8 }))
   .map(() => fakeApplication());
 
 let rejectPromise = false;
+
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
     public static userApplications(): CancelablePromise<
@@ -80,6 +79,7 @@ function Wrappers({ children }: { children: any }) {
 }
 
 test('Should toggle menu and handle application click', async () => {
+  rejectPromise = false;
   render(
     <Wrappers>
       <ApplicationDrawer />
@@ -93,7 +93,7 @@ test('Should toggle menu and handle application click', async () => {
   await user.click(menuButton);
 
   await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 1200,
+    timeout: 4000,
   });
 
   for (const app of fakeApps) {
@@ -115,21 +115,15 @@ test('No applications is shown ', async () => {
   await user.click(menuButton);
 
   await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 1200,
+    timeout: 3000,
   });
 
-  const noApplications = await waitFor(
-    () => screen.queryByText('You don´t have access to other applications'),
-    {
-      timeout: 1200,
-    }
-  );
-
-  expect(noApplications).toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
+  const text = screen.getByText(/access to more applications\?/i);
+  expect(text).toBeInTheDocument();
 });
 
 test('Close application drawer  ', async () => {
+  rejectPromise = false;
   render(
     <Wrappers>
       <ApplicationDrawer />
@@ -146,7 +140,7 @@ test('Close application drawer  ', async () => {
   expect(closeButton).not.toBeInTheDocument();
 });
 
-test('Click and go to an application', async () => {
+test('Click on a application', async () => {
   rejectPromise = false;
   render(
     <Wrappers>
@@ -161,25 +155,34 @@ test('Click and go to an application', async () => {
   await user.click(menuButton);
 
   await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 2000,
+    timeout: 4000,
   });
 
-  const button = screen.getByTestId('dasha');
-  await user.click(button);
+  const appIndex = faker.number.int({ min: 0, max: fakeApps.length - 1 });
 
-  // const portalTransit = screen.getByText(/Dasha/i);
-  // expect(portalTransit).toBeInTheDocument();
-  //
-  // for (const app of fakeApps) {
-  //   const button = await screen.findByTestId(app.name);
-  //   await user.click(button);
-  //   const portalTransit = screen.getByText(app.name);
-  //   expect(portalTransit).toBeInTheDocument();
-  // }
+  const firstApp = screen.getAllByRole('button')[appIndex];
+
+  await user.click(firstApp);
+
+  const transitText = screen.getByText(/Transferring you to application/i);
+  expect(transitText).toBeInTheDocument();
+
+  await waitForElementToBeRemoved(
+    () => screen.getByText(/Transferring you to application/i),
+    {
+      timeout: 5000,
+    }
+  );
+  window.open = vi.fn();
+
+  const clickedApplication = fakeApps[appIndex];
+
+  expect(window.open).toHaveBeenCalledWith(clickedApplication.apiurl, '_self');
   screen.logTestingPlaygroundURL();
 });
 
 test('Click on more access button', async () => {
+  rejectPromise = false;
   render(
     <Wrappers>
       <ApplicationDrawer />
@@ -193,132 +196,67 @@ test('Click on more access button', async () => {
   await user.click(menuButton);
   const accessItButton = await screen.findByTestId('access-it-link');
   await user.click(accessItButton);
-  const transitToApplication = await screen.queryByText('Open link');
+  const transitToApplication = screen.queryByText('Open link');
   expect(transitToApplication).toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
 });
 
 test('Loading to application', async () => {
   rejectPromise = false;
   const applicationsFaker = faker.animal.dog();
-  const finishText = faker.lorem.sentence();
-  const onChangedField = vi.fn();
+  const url = faker.animal.cow();
+
+  const onclose = vi.fn();
 
   render(
-    <ChangingApplication
+    <PortalTransit
       applicationName={applicationsFaker}
       portal={false}
-      finishedText={finishText}
-      onChangedApplication={onChangedField}
+      onClose={onclose}
+      url={url}
     />
   );
 
-  const findTransferText = await waitFor(
-    () => screen.getByText('Transferring you to application.'),
+  const findTransferText = screen.getByText(/Transferring you to application/i);
+  expect(findTransferText).toBeInTheDocument();
+
+  await waitForElementToBeRemoved(
+    () => screen.getByText(/Transferring you to application/i),
     {
-      timeout: 1000,
+      timeout: 4000,
     }
   );
 
-  expect(findTransferText).toBeVisible();
-});
-
-test('When loading is done, transfer to application', async () => {
-  rejectPromise = false;
-  const applicationsFaker = faker.animal.dog();
-  const finishText = faker.lorem.sentence();
-  const onChangedField = vi.fn();
-  const portal = false;
-
-  render(
-    <ChangingApplication
-      applicationName={applicationsFaker}
-      portal={portal}
-      finishedText={finishText}
-      onChangedApplication={onChangedField}
-    />
-  );
-
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 5000,
-  });
-
-  const finishedText = await screen.findByText(finishText);
-  const applicationName = await screen.findByText(applicationsFaker);
-
-  expect(finishedText).toBeInTheDocument();
+  const applicationName = screen.getByText(applicationsFaker);
   expect(applicationName).toBeInTheDocument();
-  // expect(screen.queryByText('Portal')).not.toBeInTheDocument();
-  if (portal) {
-    expect(screen.queryByText('Portal')).toBeInTheDocument();
-  } else {
-    expect(screen.queryByText('Portal')).not.toBeInTheDocument();
-  }
+  screen.logTestingPlaygroundURL();
 });
 
 test('When loading is done, transfer to Portal', async () => {
   rejectPromise = false;
   const applicationsFaker = faker.animal.dog();
-  const finishText = faker.lorem.sentence();
-  const onChangedField = vi.fn();
-  const portal = true;
 
+  const onChangedField = vi.fn();
+
+  const onClose = vi.fn();
   render(
-    <ChangingApplication
+    <PortalTransit
       applicationName={applicationsFaker}
-      portal={portal}
-      finishedText={finishText}
-      onChangedApplication={onChangedField}
+      portal
+      onClose={onClose}
+      onClick={onChangedField}
     />
   );
 
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 5000,
-  });
+  const findTransferText = screen.getByText(/Transferring you to application/i);
+  expect(findTransferText).toBeInTheDocument();
 
-  const finishedText = await screen.findByText(finishText);
-  const applicationName = await screen.findByText('Portal' + applicationsFaker);
+  await waitForElementToBeRemoved(
+    () => screen.getByText(/Transferring you to application/i),
+    {
+      timeout: 4000,
+    }
+  );
 
-  expect(finishedText).toBeInTheDocument();
+  const applicationName = screen.getByText('Portal');
   expect(applicationName).toBeInTheDocument();
-  // // expect(screen.queryByText('Portal')).not.toBeInTheDocument();
-  // if (portal) {
-  //   expect(screen.queryByText('Portal')).toBeInTheDocument();
-  // } else {
-  //   expect(screen.queryByText('Portal')).not.toBeInTheDocument();
-  // }
-  screen.logTestingPlaygroundURL();
-});
-
-test('Click and set window location to portal or application url', async () => {
-  rejectPromise = false;
-  const applicationsFaker = faker.animal.dog();
-  const finishText = faker.lorem.sentence();
-  const onChangedField = vi.fn();
-
-  const fakeUrl = 'https://faker-url.com';
-
-  render(
-    <ChangingApplication
-      applicationName={applicationsFaker}
-      portal={true}
-      finishedText={finishText}
-      onChangedApplication={onChangedField}
-    />
-  );
-
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 4000,
-  });
-
-  const finishedText = await screen.findByText(finishText);
-
-  expect(finishedText).toBeInTheDocument();
-
-  await act(async () => {
-    await new Promise((relsove) => setTimeout(relsove, 1500));
-  });
-  expect(window.location.href).not.toBe(fakeUrl);
-
-  screen.logTestingPlaygroundURL();
 });

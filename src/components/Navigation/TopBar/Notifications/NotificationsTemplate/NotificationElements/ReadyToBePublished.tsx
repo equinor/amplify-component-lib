@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 
 interface ReadyToBePublishedProps extends ExperienceReadyToPublishTypes {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const ReadyToBePublished: FC<ReadyToBePublishedProps> = ({

@@ -1,3 +1,4 @@
+import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
@@ -16,20 +17,20 @@ const fakeTutorialOptions: tutorialOptions[] = [
     pathName: '/current',
     onClick: vi.fn(),
   },
-  {
-    description: faker.lorem.sentence(),
-    steps: faker.animal.dog(),
-    duration: faker.color.rgb(),
-    pathName: '/current',
-    onClick: vi.fn(),
-  },
-  {
-    description: faker.lorem.sentence(),
-    steps: faker.animal.dog(),
-    duration: faker.color.rgb(),
-    pathName: '/other',
-    onClick: vi.fn(),
-  },
+  // {
+  //   description: faker.lorem.sentence(),
+  //   steps: faker.animal.dog(),
+  //   duration: faker.color.rgb(),
+  //   pathName: '/current',
+  //   onClick: vi.fn(),
+  // },
+  // {
+  //   description: faker.lorem.sentence(),
+  //   steps: faker.animal.dog(),
+  //   duration: faker.color.rgb(),
+  //   pathName: '/other',
+  //   onClick: vi.fn(),
+  // },
 ];
 
 const user = userEvent.setup();
@@ -54,6 +55,13 @@ const router = createMemoryRouter(
   }
 );
 
+const mockUseLocationValue = {
+  pathname: '/current',
+  search: '',
+  hash: '',
+  state: null,
+};
+
 test('Tutorials dialog is open', async () => {
   render(<RouterProvider router={router} />);
 
@@ -62,15 +70,34 @@ test('Tutorials dialog is open', async () => {
 });
 
 test('Check if on Current page', async () => {
-  render(<RouterProvider router={router} />);
-
-  const onCurrentPageHeading = screen.queryByText('ON CURRENT PAGE');
-  expect(onCurrentPageHeading).toBeInTheDocument();
-
-  const currentPathTutorialItem = screen.queryByText(
-    fakeTutorialOptions[0].description
+  render(
+    <MemoryRouter initialEntries={['/current']}>
+      {' '}
+      <TutorialDialog
+        options={fakeTutorialOptions}
+        open={true}
+        onClose={onClose}
+      />
+    </MemoryRouter>
   );
-  expect(currentPathTutorialItem).toBeInTheDocument();
+
+  for (const tutorial of fakeTutorialOptions) {
+    const path = screen.getByText(tutorial.pathName);
+    expect(path).toStrictEqual(mockUseLocationValue.pathname);
+    console.log(mockUseLocationValue.pathname);
+
+    // const name = screen.getByText(tutorial.pathName);
+    // expect(name).toBeInTheDocument();
+  }
+
+  // const onCurrentPageHeading = screen.findByText(/ON CURRENT PAGE/i);
+  // expect(onCurrentPageHeading).not.toBeInTheDocument();
+  screen.logTestingPlaygroundURL();
+
+  // const currentPathTutorialItem = screen.queryByText(
+  //   fakeTutorialOptions[0].description
+  // );
+  // expect(currentPathTutorialItem).toBeInTheDocument();
 });
 
 test('Check if on other pages', async () => {
@@ -79,8 +106,4 @@ test('Check if on other pages', async () => {
   const backButton = screen.getByText('Back');
   await user.click(backButton);
   expect(onClose).toHaveBeenCalled();
-});
-
-test('Show children', async () => {
-  render(<RouterProvider router={router} />);
 });

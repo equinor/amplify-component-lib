@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 interface RequestChangeProps extends RequestChangeOrcaTypes {
-  onClick: () => void;
+  onClick?: () => void;
 }
 const RequestChangeOrca: FC<RequestChangeProps> = ({
   fromUser,

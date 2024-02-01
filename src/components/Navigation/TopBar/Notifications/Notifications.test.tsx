@@ -4,8 +4,6 @@ import { notifications } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../../tests/test-utils';
-import { date } from '../../../../utils';
 import {
   DefaultNotificationTypes,
   Due3WeeksTypes,
@@ -17,7 +15,9 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
-import Notifications, { UnreadRedDot } from './Notifications';
+import { Notifications, UnreadRedDot } from './Notifications';
+import { render, screen, userEvent } from 'src/tests/test-utils';
+import { date } from 'src/utils';
 
 import { beforeEach, describe, expect } from 'vitest';
 
@@ -160,7 +160,7 @@ test('renders element children correctly', async () => {
     .fill(0)
     .map(() => faker.string.uuid());
   render(
-    <Notifications setAllAsRead={() => null} hasChildren={true}>
+    <Notifications setAllAsRead={() => null}>
       {texts.map((text) => (
         <p key={text}>{text}</p>
       ))}
@@ -248,7 +248,6 @@ test('renders button and panel with filter options correctly', async () => {
   const button = screen.getByTestId('show-hide-button');
   await userEvent.click(button);
   expect(screen.getByTestId('side-panel')).toBeVisible();
-  screen.logTestingPlaygroundURL();
 });
 
 test('renders filtered and sorted notifications correctly with children', async () => {
@@ -257,8 +256,6 @@ test('renders filtered and sorted notifications correctly with children', async 
     showFilterOptions: true,
     hasChildren: false,
   };
-
-  console.log(notificationsData, 'not');
 
   render(<Notifications setAllAsRead={() => null} {...options} />);
   const user = userEvent.setup();
@@ -318,6 +315,7 @@ describe('Sorting notifications ', () => {
     const user = userEvent.setup();
     const newToOldSort = screen.getByText(/oldest to newest/i);
     await user.click(newToOldSort);
+
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
       date.formatRelativeDateTime(notificationsData[3].time)
@@ -434,20 +432,11 @@ describe('Filtering notifications ', () => {
     );
     const user = userEvent.setup();
     const userMessages = screen.getByText(/unread/i);
+
     await user.click(userMessages);
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
       date.formatRelativeDateTime(notificationsData[2].time)
     );
   });
-});
-
-test('Show no notifications ', async () => {
-  const texts = new Array(faker.number.int({ min: 4, max: 8 }))
-    .fill(0)
-    .map(() => faker.string.uuid());
-  render(<Notifications setAllAsRead={() => null} {...texts}></Notifications>);
-  screen.logTestingPlaygroundURL();
-  // const noNotications = screen.getByText('no notifications');
-  // expect(noNotications).toBeInTheDocument();
 });

@@ -41,10 +41,11 @@ export type NotificationDto = {
   toUser: userNotification;
   applicationName: string;
   time: string;
-  footer?: boolean;
   field: string;
   notificationType: NotificationsTypes;
+  footer?: boolean;
   onDelete?: () => void;
+  onClick?: () => void;
 } & SignalRMessage;
 
 export type ReadyToReportNotificationTypes = {

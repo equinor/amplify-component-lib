@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode, useRef, useState } from 'react';
+import { FC, MouseEvent, ReactNode, useMemo, useRef, useState } from 'react';
 
 import { Button, Dialog, Divider, Icon } from '@equinor/eds-core-react';
 import {
@@ -23,6 +23,7 @@ import PortalTransit from './ApplicationTransit/PortalTransit';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import Tutorial, { tutorialOptions } from './Tutorials/TutorialDialog';
+import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
@@ -41,6 +42,8 @@ const FeedbackFormDialog = styled(Dialog)`
 const BackButton = styled.div`
   padding-top: ${spacings.medium};
 `;
+
+type ResourceSection = 'learn-more' | 'feedback';
 
 export interface ResourcesProps {
   field?: string;
@@ -62,10 +65,12 @@ export const Resources: FC<ResourcesProps> = ({
   const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
     useReleaseNotes();
   const [isOpen, setIsOpen] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [showLearnMore, setShowLearnMore] = useState(false);
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
   const [openPortal, setOpenPortal] = useState(false);
   const [openTutorials, setOpenTutorials] = useState(false);
+  const [showingResourceSection, setShowingResourceSection] = useState<
+    ResourceSection | undefined
+  >(undefined);
 
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const goToUrl = useRef<string | undefined>(undefined);
@@ -82,72 +87,97 @@ export const Resources: FC<ResourcesProps> = ({
     environmentName === EnvironmentType.LOCALHOST
       ? EnvironmentType.DEVELOP
       : environmentName;
+
   const closeMenu = () => {
+    setShowingResourceSection(undefined);
     setIsOpen(false);
-    setShowFeedback(false);
-    setShowLearnMore(false);
   };
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
 
-  const handleOnFeedbackClick = (event?: MouseEvent<HTMLDivElement>) => {
+  const handleOnOpenFeedbackDialog = (event?: MouseEvent<HTMLDivElement>) => {
     setFeedbackType(event?.currentTarget.id as FeedbackType);
-    closeMenu();
+    setShowFeedbackDialog(true);
   };
 
-  const handleOnReleaseNotesClick = () => {
-    toggleReleaseNotes();
-    closeMenu();
-  };
+  const handleOnCloseFeedbackDialog = () => setFeedbackType(undefined);
 
-  const handleOnDialogClose = () => {
-    setFeedbackType(undefined);
-    if (openPortal) {
-      setOpenPortal(false);
-    }
-  };
+  const handleGoBack = () => setShowingResourceSection(undefined);
 
-  const handleFeedbackClick = () => {
-    if (showFeedback) {
-      setShowFeedback(false);
-      setShowLearnMore(false);
-    } else {
-      setShowFeedback(true);
-    }
-  };
+  const handleFeedbackClick = () => setShowingResourceSection('feedback');
+  const handleLearnMoreClick = () => setShowingResourceSection('learn-more');
 
-  const handleLearnMoreClick = () => {
-    if (showLearnMore) {
-      setShowLearnMore(false);
-      setShowFeedback(false);
-      setOpenTutorials(false);
-    } else {
-      setShowLearnMore(true);
-    }
-  };
+  const handlePortalClick = () => setOpenPortal(true);
 
-  const handleOpenPortal = () => {
-    if (openPortal) {
-      setOpenPortal(false);
-    } else {
-      setOpenPortal(true);
-      setShowLearnMore(false);
-      setShowFeedback(false);
-      setIsOpen(false);
-    }
-  };
-
-  const handleOpenTutorials = () => {
-    if (openTutorials) {
-      setOpenTutorials(false);
-    } else {
-      setOpenTutorials(true);
-    }
-  };
+  const handleTutorialClick = () => setOpenTutorials((prev) => !prev);
 
   const handleMoreAccess = () => {
     goToUrl.current = `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/dashboard`;
   };
+
+  const resourceSectionContent = useMemo(() => {
+    switch (showingResourceSection) {
+      case 'learn-more':
+        return (
+          <>
+            <ResourceMenuItem
+              text="Open Application portal"
+              icon={amplify_small_portal}
+              onClick={handlePortalClick}
+              lastItem
+            />
+            <ResourceMenuItem
+              text="Tutorials"
+              icon={amplify_tutorials}
+              onClick={handleTutorialClick}
+              lastItem
+            />
+            {/*// TODO: Remove children when PWEX has change layout in topbar */}
+            {hasChildren && !hideFeedback && !hideReleaseNotes && (
+              <Divider style={{ margin: 0 }} />
+            )}
+            {hasChildren && <div onClick={closeMenu}>{children}</div>}
+            <BackButton>
+              <Button variant="outlined" onClick={handleGoBack}>
+                <Icon data={arrow_back} /> Back
+              </Button>
+            </BackButton>
+          </>
+        );
+      case 'feedback':
+        return (
+          <>
+            <ResourceMenuItem
+              id={FeedbackType.BUG}
+              onClick={handleOnOpenFeedbackDialog}
+              icon={report_bug}
+              text="Report a bug"
+              lastItem
+            />
+            <ResourceMenuItem
+              id={FeedbackType.SUGGESTION}
+              onClick={handleOnOpenFeedbackDialog}
+              icon={move_to_inbox}
+              text="Suggest a idea"
+              lastItem
+            />
+            <BackButton>
+              <Button variant="outlined" onClick={handleGoBack}>
+                <Icon data={arrow_back} /> Back
+              </Button>
+            </BackButton>
+          </>
+        );
+      default:
+        return null;
+    }
+  }, [
+    children,
+    hasChildren,
+    hideFeedback,
+    hideReleaseNotes,
+    showingResourceSection,
+  ]);
 
   return (
     <>
@@ -168,22 +198,25 @@ export const Resources: FC<ResourcesProps> = ({
       </TopBarButton>
 
       <TopBarMenu
-        open={isOpen}
+        open={isOpen && !showReleaseNotes && !showFeedbackDialog}
         title="Resources"
         onClose={closeMenu}
         anchorEl={buttonRef.current}
       >
-        {!hideReleaseNotes && !showFeedback && !showLearnMore && (
-          <ResourceMenuItem
-            id="release-notes"
-            icon={file_description}
-            onClick={handleOnReleaseNotesClick}
-            text="Open release notes"
-          />
-        )}
-        {!hideFeedback && (
+        {resourceSectionContent ? (
+          resourceSectionContent
+        ) : (
           <>
-            {!showFeedback && !showLearnMore && (
+            {!hideReleaseNotes && (
+              <ResourceMenuItem
+                id="release-notes"
+                icon={file_description}
+                onClick={toggleReleaseNotes}
+                text="Open release notes"
+              />
+            )}
+
+            {!hideFeedback && (
               <ResourceMenuItem
                 text="Submit feedback"
                 icon={thumbs_up_down}
@@ -191,79 +224,21 @@ export const Resources: FC<ResourcesProps> = ({
               />
             )}
 
-            {showFeedback && (
-              <>
-                <ResourceMenuItem
-                  id={FeedbackType.BUG}
-                  onClick={handleOnFeedbackClick}
-                  icon={report_bug}
-                  text="Report a bug"
-                  lastItem
-                />
-                <ResourceMenuItem
-                  id={FeedbackType.SUGGESTION}
-                  onClick={handleOnFeedbackClick}
-                  icon={move_to_inbox}
-                  text="Suggest a idea"
-                  lastItem
-                />
-                <BackButton>
-                  <Button variant="outlined" onClick={handleFeedbackClick}>
-                    <Icon data={arrow_back} /> Back
-                  </Button>
-                </BackButton>
-              </>
-            )}
-          </>
-        )}
-        {!showLearnMore && !showFeedback && (
-          <ResourceMenuItem
-            text="Learn more"
-            icon={info_circle}
-            onClick={handleLearnMoreClick}
-          />
-        )}
-        {openTutorials && tutorialOptions && (
-          <Tutorial
-            options={tutorialOptions}
-            open={openTutorials}
-            onClose={handleOpenTutorials}
-          >
-            {children}
-          </Tutorial>
-        )}
-        {showLearnMore && (
-          <>
-            {!openTutorials && (
-              <>
-                <ResourceMenuItem
-                  text="Open Application portal"
-                  icon={amplify_small_portal}
-                  onClick={handleOpenPortal}
-                  lastItem
-                />
-                <ResourceMenuItem
-                  text="Tutorials"
-                  icon={amplify_tutorials}
-                  onClick={handleOpenTutorials}
-                  lastItem
-                />
-                {/*// TODO: Remove children when PWEX has change layout in topbar */}
-                {/*{hasChildren && !hideFeedback && !hideReleaseNotes && (*/}
-                {/*  <Divider style={{ margin: 0 }} />*/}
-                {/*)}*/}
-                {/*{hasChildren && <div onClick={closeMenu}>{children}</div>}*/}
-              </>
-            )}
-
-            <BackButton>
-              <Button variant="outlined" onClick={handleLearnMoreClick}>
-                <Icon data={arrow_back} /> Back
-              </Button>
-            </BackButton>
+            <ResourceMenuItem
+              text="Learn more"
+              icon={info_circle}
+              onClick={handleLearnMoreClick}
+            />
           </>
         )}
       </TopBarMenu>
+      {openTutorials && tutorialOptions && (
+        <Tutorial
+          options={tutorialOptions}
+          open={openTutorials}
+          onClose={handleTutorialClick}
+        />
+      )}
       {showReleaseNotes && <ReleaseNotes />}
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
@@ -271,7 +246,7 @@ export const Resources: FC<ResourcesProps> = ({
             feedbackType === FeedbackType.BUG ||
             feedbackType === FeedbackType.SUGGESTION
           }
-          onClose={handleOnDialogClose}
+          onClose={handleOnCloseFeedbackDialog}
           isDismissable={true}
         >
           <Dialog.Header>
@@ -282,13 +257,17 @@ export const Resources: FC<ResourcesProps> = ({
           <Feedback
             field={field}
             selectedType={feedbackType}
-            onClose={handleOnDialogClose}
+            onClose={handleOnCloseFeedbackDialog}
           />
         </FeedbackFormDialog>
       )}
 
       {openPortal && (
-        <PortalTransit onClose={handleOpenPortal} onClick={handleMoreAccess} />
+        <PortalTransit
+          onClose={handlePortalClick}
+          url={PORTAL_URL}
+          applicationName="Portal"
+        />
       )}
     </>
   );

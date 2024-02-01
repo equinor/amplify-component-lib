@@ -1,5 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 
+import TopBar from '..';
 import {
   DefaultNotificationTypes,
   Due3WeeksTypes,
@@ -11,11 +12,10 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
-import Notifications from './Notifications';
 
 export default {
-  title: 'Navigation/TopBar/Notifications/Notifications',
-  component: Notifications,
+  title: 'Navigation/TopBar/Notifications',
+  component: TopBar.Notifications,
   argTypes: {
     hasUnread: { control: 'boolean' },
     hasChildren: { control: 'boolean' },
@@ -121,12 +121,7 @@ const items: (
     SequenceNumber: 4,
     field: 'Johan',
 
-    user: {
-      userRole: 'Admin',
-      shortName: 'Captain@equinor.com',
-      displayName: 'Darin',
-      image: 'placeholder',
-    },
+    user: null,
 
     toUser: {
       userRole: 'Admins',
@@ -145,7 +140,7 @@ const items: (
 
 export const Primary: StoryFn = (args) => {
   return (
-    <Notifications
+    <TopBar.Notifications
       hasUnread={args.hasUnread}
       setAllAsRead={() => null}
       showFilterOptions={true}

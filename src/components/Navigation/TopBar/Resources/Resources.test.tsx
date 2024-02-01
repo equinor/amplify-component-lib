@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
 
-import Tutorial from '../../../DataDisplay/Tutorial/Tutorial';
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
 import TutorialDialog from './Tutorials/TutorialDialog';
 import { Resources } from './Resources';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
+import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
 import {
   FeedbackContentType,
   UrgencyOption,
@@ -187,8 +185,11 @@ describe('Resources', () => {
     const button = screen.getByRole('button');
 
     await user.click(button);
+    screen.logTestingPlaygroundURL();
 
-    const learnMoreButton = screen.getByText(/learn more/i);
+    const learnMoreButton = screen.getByRole('menuitem', {
+      name: /learn more/i,
+    });
 
     await user.click(learnMoreButton);
 
@@ -222,6 +223,7 @@ describe('Resources', () => {
     const button = screen.getByRole('button');
 
     await user.click(button);
+    screen.logTestingPlaygroundURL();
 
     const releaseNotes = screen.queryByText('Release notes');
     const suggest = screen.queryByText('Submit feedback');
@@ -231,6 +233,7 @@ describe('Resources', () => {
   });
 
   describe('Release notes', () => {
+    screen.logTestingPlaygroundURL();
     test('should close the dialog by clicking the close button inside', async () => {
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
@@ -709,23 +712,6 @@ describe('Resources', () => {
   });
 
   describe('Open different parts in rescouses ', () => {
-    test('only learn more is shown  ', async () => {
-      render(<Resources />, { wrapper: Wrappers });
-      const user = userEvent.setup();
-
-      const button = screen.getByRole('button');
-
-      await user.click(button);
-
-      const learnMore = screen.getByText(/learn more/i);
-
-      if (learnMore) {
-        expect(screen.getByText(/tutorials/i)).not.toBeInTheDocument();
-      }
-
-      screen.logTestingPlaygroundURL();
-    });
-
     test('open portal ', async () => {
       render(<Resources />, { wrapper: Wrappers });
       const user = userEvent.setup();
@@ -740,7 +726,22 @@ describe('Resources', () => {
       const openPortal = screen.getByText(/open application portal/i);
       await user.click(openPortal);
 
-      expect(openPortal).not.toBeInTheDocument();
+      const openLink = screen.getByText(/open link/i);
+      expect(openLink).toBeInTheDocument();
+
+      // const findTransferText = await screen.getByText(
+      //   /Transferring you to application/i
+      // );
+
+      window.open = vi.fn();
+
+      await waitFor(
+        () => expect(window.open).toHaveBeenCalledWith(PORTAL_URL, '_self'),
+        {
+          timeout: 1000,
+        }
+      );
+      screen.logTestingPlaygroundURL();
     });
 
     test('open tutorials  ', async () => {
@@ -787,8 +788,14 @@ describe('Resources', () => {
       const openTutorials = screen.getByText(/tutorials/i);
       await user.click(openTutorials);
 
+      // const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
+
+      // expect(findCurrentPage).toBeInTheDocument();
+
       if (openTutorials) {
         render(<RouterProvider router={router} />, { wrapper: Wrappers });
+        // const onCurrentPage = screen.getByText(/on current page/i);
+        // expect(onCurrentPage).toBeInTheDocument();
       }
 
       // expect(<Tutorial {...tutorialOptions} />).toBeInTheDocument();

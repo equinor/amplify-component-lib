@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 interface RequestReviewProps extends RequestReviewOrcaTypes {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const RequestReviewOrca: FC<RequestReviewProps> = ({

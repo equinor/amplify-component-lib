@@ -15,16 +15,20 @@ const PortalDialog = styled(Dialog)`
 interface PortalTransitProps {
   onClose: () => void;
   portal?: boolean;
-  applicationName?: string;
-  onClick: () => void;
+  applicationName: string;
+  url: string;
 }
 
 const PortalTransit: FC<PortalTransitProps> = ({
   onClose,
   portal = true,
   applicationName,
-  onClick,
+  url,
 }) => {
+  const handleOnChangeApplication = (url: string) => {
+    window.open(url, '_self');
+  };
+
   return (
     <PortalDialog open onClose={onClose}>
       <Dialog.Header>
@@ -35,10 +39,11 @@ const PortalTransit: FC<PortalTransitProps> = ({
       </Dialog.Header>
       <Dialog.CustomContent>
         <ChangingApplication
-          applicationName={portal ? 'Portal ' : applicationName ?? ''}
-          onChangedApplication={onClick}
+          applicationName={portal ? 'Portal ' : applicationName}
+          onChangedApplication={handleOnChangeApplication}
           finishedText=""
           portal
+          url={url}
         />
       </Dialog.CustomContent>
     </PortalDialog>

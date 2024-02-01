@@ -33,7 +33,7 @@ const LastContainer = styled.div`
 
 interface ReadyToReportNotificationsProps
   extends ReadyToReportNotificationTypes {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const ReadyToReportNotification: FC<ReadyToReportNotificationsProps> = ({

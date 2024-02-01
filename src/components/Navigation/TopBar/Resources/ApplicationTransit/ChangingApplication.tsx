@@ -49,8 +49,9 @@ const TransferringContainer = styled.div`
 interface ChangingApplicationProps {
   applicationName: string;
   portal: boolean;
-  onChangedApplication: () => void;
+  onChangedApplication: (value: string) => void;
   finishedText: string;
+  url: string;
 }
 
 const ChangingApplication: FC<ChangingApplicationProps> = ({
@@ -58,6 +59,7 @@ const ChangingApplication: FC<ChangingApplicationProps> = ({
   onChangedApplication,
   finishedText,
   portal,
+  url,
 }) => {
   const [finished, setFinished] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -82,10 +84,10 @@ const ChangingApplication: FC<ChangingApplicationProps> = ({
   useEffect(() => {
     if (finished) {
       setTimeout(() => {
-        onChangedApplication();
+        onChangedApplication(url);
       }, 4000);
     }
-  }, [finished, onChangedApplication]);
+  }, [finished, onChangedApplication, url]);
 
   return (
     <Container>

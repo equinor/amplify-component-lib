@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 interface ReviewQANotificationProps extends ReviewQANotificationsTypes {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const ReviewQANotification: FC<ReviewQANotificationProps> = ({

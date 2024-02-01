@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 interface ExperienceDue3WeeksProps extends Due3WeeksTypes {
-  onClick: () => void;
+  onClick?: () => void;
 }
 const ExperienceDue3Weeks: FC<ExperienceDue3WeeksProps> = ({
   well,

@@ -216,20 +216,23 @@ const applications: AmplifyApplication[] = [
   },
 ];
 
+const environmentName = getEnvironmentName(
+  import.meta.env.VITE_ENVIRONMENT_NAME
+);
+
+const environmentNameWithoutLocalHost =
+  environmentName === EnvironmentType.LOCALHOST
+    ? EnvironmentType.DEVELOP
+    : environmentName;
+
+export const PORTAL_URL = `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/dashboard`;
+
 const ApplicationDrawer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openApplication, setOpenApplication] = useState<
     AmplifyApplication | undefined
   >(undefined);
   const [openPortal, setOpenPortal] = useState(false);
-  const environmentName = getEnvironmentName(
-    import.meta.env.VITE_ENVIRONMENT_NAME
-  );
-
-  const environmentNameWithoutLocalHost =
-    environmentName === EnvironmentType.LOCALHOST
-      ? EnvironmentType.DEVELOP
-      : environmentName;
 
   const { data = [], isLoading } = useQuery({
     queryKey: [`userApplications`],
@@ -237,7 +240,6 @@ const ApplicationDrawer: FC = () => {
   });
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const goToUrl = useRef<string | undefined>(undefined);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -250,13 +252,8 @@ const ApplicationDrawer: FC = () => {
     setOpenApplication(value);
   };
 
-  const handleGoToUrl = (value: string) => {
-    goToUrl.current = value;
-  };
-
   const handleMoreAccess = () => {
     setOpenPortal(true);
-    goToUrl.current = `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/dashboard`;
   };
 
   if (isLoading)
@@ -317,7 +314,7 @@ const ApplicationDrawer: FC = () => {
       >
         <>
           <MenuSection>
-            {applications.length === 0 ? (
+            {data.length === 0 ? (
               <NoApplications>
                 <Typography
                   group="paragraph"
@@ -335,7 +332,7 @@ const ApplicationDrawer: FC = () => {
 
             <ApplicationContent>
               <>
-                {applications.map((item, index) => {
+                {data.map((item, index) => {
                   const isSelected =
                     getAppName(import.meta.env.VITE_NAME) === item.name;
                   return (
@@ -380,14 +377,19 @@ const ApplicationDrawer: FC = () => {
         </>
       </TopBarMenu>
       {openPortal && (
-        <PortalTransit onClose={closeMenu} portal onClick={handleMoreAccess} />
+        <PortalTransit
+          onClose={closeMenu}
+          portal
+          applicationName="Portal"
+          url={PORTAL_URL}
+        />
       )}
       {openApplication && (
         <PortalTransit
           onClose={closeMenu}
           portal={false}
           applicationName={openApplication.name}
-          onClick={() => handleGoToUrl(openApplication.url)}
+          url={openApplication.url}
         />
       )}
     </>

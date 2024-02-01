@@ -88,16 +88,14 @@ interface NotificationsProps {
     | DefaultNotificationTypes
     | RequestReviewOrcaTypes
   )[];
-  hasChildren?: boolean;
 }
 
-const Notifications: FC<NotificationsProps> = ({
+export const Notifications: FC<NotificationsProps> = ({
   children,
   hasUnread = false,
   setAllAsRead,
   showFilterOptions = false,
   notifications,
-  hasChildren,
 }) => {
   const sidePanelRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -209,19 +207,19 @@ const Notifications: FC<NotificationsProps> = ({
           </FilterOptionsContainer>
         )}
 
-        {hasChildren ? (
+        {children ? (
           children
         ) : (
           <>
             {filteredAndSortedNotifications &&
             filteredAndSortedNotifications?.length > 0 ? (
-              <NoNotifications />
-            ) : (
               filteredAndSortedNotifications.map((item) => {
                 return (
                   <NotificationTemplate {...item} key={item.SequenceNumber} />
                 );
               })
+            ) : (
+              <NoNotifications />
             )}
           </>
         )}
@@ -230,5 +228,3 @@ const Notifications: FC<NotificationsProps> = ({
   );
 };
 Notifications.displayName = 'TopBar.Notifications';
-
-export default Notifications;
