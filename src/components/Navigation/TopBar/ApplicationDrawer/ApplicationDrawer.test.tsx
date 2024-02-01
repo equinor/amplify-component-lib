@@ -14,7 +14,7 @@ import {
 import ApplicationDrawer from './ApplicationDrawer';
 import { CancelablePromise } from 'src/api';
 import { AmplifyApplication } from 'src/api/models/Applications';
-import PortalTransit from 'src/components/Navigation/TopBar/Resources/ApplicationTransit/PortalTransit';
+import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
 import { waitFor } from 'src/tests/test-utils';
 
 import { expect, vi } from 'vitest';
@@ -212,7 +212,7 @@ test(
     const onclose = vi.fn();
 
     render(
-      <PortalTransit
+      <TransferToAppDialog
         applicationName={applicationsFaker}
         portal={false}
         onClose={onclose}
@@ -253,7 +253,7 @@ test(
 
     const onClose = vi.fn();
     render(
-      <PortalTransit
+      <TransferToAppDialog
         applicationName={applicationsFaker}
         portal
         onClose={onClose}

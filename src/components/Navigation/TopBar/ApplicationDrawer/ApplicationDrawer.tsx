@@ -9,11 +9,11 @@ import { AccessRoles } from '../../../../api/models/AccessRole';
 import { AmplifyApplication } from '../../../../api/models/Applications';
 import { environment } from '../../../../utils';
 import ApplicationIcon from '../../../Icons/ApplicationIcon/ApplicationIcon';
-import PortalTransit from '../Resources/ApplicationTransit/PortalTransit';
 import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';
 import { PortalService } from 'src/api/services/PortalService';
+import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
 
 import styled from 'styled-components';
 
@@ -377,7 +377,7 @@ const ApplicationDrawer: FC = () => {
         </>
       </TopBarMenu>
       {openPortal && (
-        <PortalTransit
+        <TransferToAppDialog
           onClose={closeMenu}
           portal
           applicationName="Portal"
@@ -385,7 +385,7 @@ const ApplicationDrawer: FC = () => {
         />
       )}
       {openApplication && (
-        <PortalTransit
+        <TransferToAppDialog
           onClose={closeMenu}
           portal={false}
           applicationName={openApplication.name}

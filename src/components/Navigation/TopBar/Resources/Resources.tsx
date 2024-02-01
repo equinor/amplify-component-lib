@@ -19,13 +19,13 @@ import {
 } from '../../../Icons/AmplifyIcons';
 import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
-import PortalTransit from './ApplicationTransit/PortalTransit';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import Tutorial, { tutorialOptions } from './Tutorials/TutorialDialog';
 import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
+import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { spacings } from 'src/style';
@@ -244,7 +244,7 @@ export const Resources: FC<ResourcesProps> = ({
       )}
 
       {openPortal && (
-        <PortalTransit
+        <TransferToAppDialog
           onClose={handlePortalClick}
           url={PORTAL_URL}
           applicationName="Portal"
