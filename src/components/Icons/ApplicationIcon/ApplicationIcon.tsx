@@ -1,14 +1,14 @@
 import { FC, forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import Acquire from './Acquire';
 import Bravos from './Bravos';
 import Dasha from './Dasha';
-import DepthConversion from './DepthConversion';
 import Fallback from './Fallback';
 import FourDInsight from './FourDInsight';
 import InPress from './InPress';
 import LoggingQualification from './LoggingQualification';
+import Orca from './Orca';
 import Portal from './Portal';
 import Pwex from './Pwex';
 import Recap from './Recap';
@@ -25,16 +25,16 @@ export type ApplicationName =
   | 'inpress'
   | 'bravos';
 
-interface IApplicationIconData {
+type ApplicationIconData = {
   appName: string;
-  component: FC<SvgIconProps>;
-}
-const apps: IApplicationIconData[] = [
+  component: FC<AppIconProps>;
+};
+const apps: ApplicationIconData[] = [
   { appName: 'portal', component: Portal },
   { appName: 'acquire', component: Acquire },
   { appName: '4dinsight', component: FourDInsight },
   { appName: 'dasha', component: Dasha },
-  { appName: 'orca', component: DepthConversion },
+  { appName: 'orca', component: Orca },
   { appName: 'logging-qualification', component: LoggingQualification },
   { appName: 'recap', component: Recap },
   { appName: 'pwex', component: Pwex },
@@ -44,15 +44,17 @@ const apps: IApplicationIconData[] = [
 
 export interface ApplicationIconProps {
   name: ApplicationName | string;
-  size?: 16 | 18 | 24 | 32 | 40 | 48;
+  size?: 16 | 18 | 24 | 32 | 40 | 48 | number;
+  iconOnly?: boolean;
 }
 
 const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
-  ({ name, size = 48 }, ref) => {
+  ({ name, size = 48, iconOnly = false }, ref) => {
     const appData = apps.find((app) => app.appName === name.toLowerCase());
 
-    if (appData === undefined) return <Fallback size={size} ref={ref} />;
-    return <appData.component size={size} />;
+    if (appData === undefined)
+      return <Fallback size={size} ref={ref} iconOnly={iconOnly} />;
+    return <appData.component size={size} iconOnly={iconOnly} />;
   }
 );
 

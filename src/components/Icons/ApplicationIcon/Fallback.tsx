@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
+import EquinorLogo from '../EquinorLogo';
+import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { fallback } from './ApplicationIconCollection';
 
@@ -17,14 +18,21 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Fallback = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
-  <ApplicationIconBase
-    ref={ref}
-    size={size}
-    iconData={fallback}
-    shapes={shapes}
-  />
-));
+const Fallback = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly }, ref) => {
+    if (iconOnly) {
+      return <EquinorLogo size={size as any} color="white" />;
+    }
+    return (
+      <ApplicationIconBase
+        ref={ref}
+        size={size}
+        iconData={fallback}
+        shapes={shapes}
+      />
+    );
+  }
+);
 
 Fallback.displayName = 'Fallback';
 

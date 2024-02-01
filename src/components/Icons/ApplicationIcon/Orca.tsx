@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { depthConversion } from './ApplicationIconCollection';
 
@@ -17,10 +17,11 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const DepthConversion = forwardRef<HTMLDivElement, SvgIconProps>(
-  ({ size }, ref) => (
+const Orca = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly }, ref) => (
     <ApplicationIconBase
       size={size}
+      iconOnly={iconOnly}
       iconData={depthConversion}
       shapes={shapes}
       ref={ref}
@@ -28,6 +29,6 @@ const DepthConversion = forwardRef<HTMLDivElement, SvgIconProps>(
   )
 );
 
-DepthConversion.displayName = 'DepthConversion';
+Orca.displayName = 'Orca';
 
-export default DepthConversion;
+export default Orca;

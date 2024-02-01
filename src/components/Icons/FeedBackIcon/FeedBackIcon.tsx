@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import NegativeFilled from './NegativeFilled';
 import NegativeOutlined from './NegativeOutlined';
 import PositiveFilled from './PositiveFilled';
@@ -8,7 +8,7 @@ import PositiveOutlined from './PositiveOutlined';
 
 interface FeedBackIconData {
   iconName: string;
-  component: FC<SvgIconProps>;
+  component: FC<AppIconProps>;
 }
 
 export interface FeedBackIconProps {
