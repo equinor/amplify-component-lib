@@ -11,13 +11,15 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from '../../../../providers';
-import ApplicationDrawer from './ApplicationDrawer';
+import ApplicationDrawer, { PORTAL_URL } from './ApplicationDrawer';
 import { CancelablePromise } from 'src/api';
 import { AmplifyApplication } from 'src/api/models/Applications';
 import PortalTransit from 'src/components/Navigation/TopBar/Resources/ApplicationTransit/PortalTransit';
+import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
+import { waitFor } from 'src/tests/test-utils';
 
 import { assignWith } from 'lodash-es';
-import { expect, vi } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, vi } from 'vitest';
 
 function fakeApplication(): AmplifyApplication {
   return {
@@ -235,7 +237,7 @@ test('When loading is done, transfer to Portal', async () => {
   rejectPromise = false;
   const applicationsFaker = faker.animal.dog();
 
-  const onChangedField = vi.fn();
+  const portalUrl = faker.animal.cetacean();
 
   const onClose = vi.fn();
   render(
@@ -243,7 +245,7 @@ test('When loading is done, transfer to Portal', async () => {
       applicationName={applicationsFaker}
       portal
       onClose={onClose}
-      onClick={onChangedField}
+      url={portalUrl}
     />
   );
 
