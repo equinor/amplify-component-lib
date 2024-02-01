@@ -51,7 +51,6 @@ export interface ResourcesProps {
   hideReleaseNotes?: boolean;
   children?: ReactNode;
   tutorialOptions?: tutorialOptions[];
-  hasChildren?: boolean;
 }
 
 export const Resources: FC<ResourcesProps> = ({
@@ -59,7 +58,7 @@ export const Resources: FC<ResourcesProps> = ({
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
-  hasChildren = false,
+
   tutorialOptions,
 }) => {
   const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
@@ -73,20 +72,10 @@ export const Resources: FC<ResourcesProps> = ({
   >(undefined);
 
   const buttonRef = useRef<HTMLDivElement | null>(null);
-  const goToUrl = useRef<string | undefined>(undefined);
 
   const [feedbackType, setFeedbackType] = useState<FeedbackType | undefined>(
     undefined
   );
-
-  const environmentName = getEnvironmentName(
-    import.meta.env.VITE_ENVIRONMENT_NAME
-  );
-
-  const environmentNameWithoutLocalHost =
-    environmentName === EnvironmentType.LOCALHOST
-      ? EnvironmentType.DEVELOP
-      : environmentName;
 
   const closeMenu = () => {
     setShowingResourceSection(undefined);
@@ -111,9 +100,7 @@ export const Resources: FC<ResourcesProps> = ({
 
   const handleTutorialClick = () => setOpenTutorials((prev) => !prev);
 
-  const handleMoreAccess = () => {
-    goToUrl.current = `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/dashboard`;
-  };
+  console.log(tutorialOptions, 'tutoria');
 
   const resourceSectionContent = useMemo(() => {
     switch (showingResourceSection) {
@@ -133,10 +120,10 @@ export const Resources: FC<ResourcesProps> = ({
               lastItem
             />
             {/*// TODO: Remove children when PWEX has change layout in topbar */}
-            {hasChildren && !hideFeedback && !hideReleaseNotes && (
+            {children && !hideFeedback && !hideReleaseNotes && (
               <Divider style={{ margin: 0 }} />
             )}
-            {hasChildren && <div onClick={closeMenu}>{children}</div>}
+            {children && <div onClick={closeMenu}>{children}</div>}
             <BackButton>
               <Button variant="outlined" onClick={handleGoBack}>
                 <Icon data={arrow_back} /> Back
@@ -171,13 +158,7 @@ export const Resources: FC<ResourcesProps> = ({
       default:
         return null;
     }
-  }, [
-    children,
-    hasChildren,
-    hideFeedback,
-    hideReleaseNotes,
-    showingResourceSection,
-  ]);
+  }, [children, hideFeedback, hideReleaseNotes, showingResourceSection]);
 
   return (
     <>

@@ -7,7 +7,7 @@ import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { wait } from '@testing-library/user-event/utils/misc/wait';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
-import TutorialDialog from './Tutorials/TutorialDialog';
+import TutorialDialog, { tutorialOptions } from './Tutorials/TutorialDialog';
 import { Resources } from './Resources';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
@@ -186,13 +186,13 @@ describe('Resources', () => {
     const button = screen.getByRole('button');
 
     await user.click(button);
-    screen.logTestingPlaygroundURL();
 
     const learnMoreButton = screen.getByRole('menuitem', {
       name: /learn more/i,
     });
 
     await user.click(learnMoreButton);
+    expect(screen.getByText(/tutorials/i)).toBeInTheDocument();
 
     const childElement = await screen.findByText('Child');
 
@@ -713,6 +713,25 @@ describe('Resources', () => {
   });
 
   describe('Open different parts in rescouses ', () => {
+    test('click on back button ', async () => {
+      render(<Resources />, { wrapper: Wrappers });
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+      const learnMore = screen.getByText(/learn more/i);
+      await user.click(learnMore);
+
+      const tutorial = screen.getByText(/tutorials/i);
+      expect(tutorial).toBeInTheDocument();
+
+      const backButton = screen.getByRole('button', { name: /back/i });
+      await user.click(backButton);
+
+      screen.logTestingPlaygroundURL();
+    });
+
     test(
       'open portal ',
       async () => {
@@ -753,28 +772,21 @@ describe('Resources', () => {
     );
 
     test('open tutorials  ', async () => {
-      const tutorialOptions = [
+      const fakeTutorialOptions: tutorialOptions[] = [
         {
           description: faker.lorem.sentence(),
           steps: faker.animal.dog(),
-          duration: faker.animal.cow(),
+          duration: faker.color.rgb(),
+          pathName: '/current',
           onClick: vi.fn(),
-          pathName: 'current',
         },
       ];
-      const onClose = vi.fn();
 
       const router = createMemoryRouter(
         [
           {
             path: '/current',
-            element: (
-              <TutorialDialog
-                options={tutorialOptions}
-                open={true}
-                onClose={onClose}
-              />
-            ),
+            element: <Resources tutorialOptions={fakeTutorialOptions} />,
           },
         ],
         {
@@ -783,7 +795,9 @@ describe('Resources', () => {
         }
       );
 
-      render(<Resources />, { wrapper: Wrappers });
+      render(<RouterProvider router={router} />, {
+        wrapper: Wrappers,
+      });
       const user = userEvent.setup();
 
       const button = screen.getByRole('button');
@@ -793,22 +807,12 @@ describe('Resources', () => {
       const learnMore = screen.getByText(/learn more/i);
       await user.click(learnMore);
 
-      const openTutorials = screen.getByText(/tutorials/i);
+      const openTutorials = screen.getByRole('menuitem', {
+        name: 'Tutorials',
+      });
       await user.click(openTutorials);
 
-      // const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
-
-      // expect(findCurrentPage).toBeInTheDocument();
-
-      if (openTutorials) {
-        render(<RouterProvider router={router} />, { wrapper: Wrappers });
-        // const onCurrentPage = screen.getByText(/on current page/i);
-        // expect(onCurrentPage).toBeInTheDocument();
-      }
-
-      // expect(<Tutorial {...tutorialOptions} />).toBeInTheDocument();
-
-      // expect(openTutorials).not.toBeInTheDocument();
+      const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
 
       screen.logTestingPlaygroundURL();
     });

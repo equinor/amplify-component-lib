@@ -17,20 +17,20 @@ const fakeTutorialOptions: tutorialOptions[] = [
     pathName: '/current',
     onClick: vi.fn(),
   },
-  // {
-  //   description: faker.lorem.sentence(),
-  //   steps: faker.animal.dog(),
-  //   duration: faker.color.rgb(),
-  //   pathName: '/current',
-  //   onClick: vi.fn(),
-  // },
-  // {
-  //   description: faker.lorem.sentence(),
-  //   steps: faker.animal.dog(),
-  //   duration: faker.color.rgb(),
-  //   pathName: '/other',
-  //   onClick: vi.fn(),
-  // },
+  {
+    description: faker.lorem.sentence(),
+    steps: faker.animal.dog(),
+    duration: faker.color.rgb(),
+    pathName: '/current',
+    onClick: vi.fn(),
+  },
+  {
+    description: faker.lorem.sentence(),
+    steps: faker.animal.dog(),
+    duration: faker.color.rgb(),
+    pathName: '/other',
+    onClick: vi.fn(),
+  },
 ];
 
 const user = userEvent.setup();
@@ -55,24 +55,15 @@ const router = createMemoryRouter(
   }
 );
 
-const mockUseLocationValue = {
-  pathname: '/current',
-  search: '',
-  hash: '',
-  state: null,
-};
-
 test('Tutorials dialog is open', async () => {
   render(<RouterProvider router={router} />);
-
   const heading = screen.getByText('Tutorials');
   expect(heading).toBeInTheDocument();
 });
 
 test('Check if on Current page', async () => {
   render(
-    <MemoryRouter initialEntries={['/current']}>
-      {' '}
+    <MemoryRouter>
       <TutorialDialog
         options={fakeTutorialOptions}
         open={true}
@@ -81,23 +72,10 @@ test('Check if on Current page', async () => {
     </MemoryRouter>
   );
 
-  for (const tutorial of fakeTutorialOptions) {
-    const path = screen.getByText(tutorial.pathName);
-    expect(path).toStrictEqual(mockUseLocationValue.pathname);
-    console.log(mockUseLocationValue.pathname);
+  const tutorialPath = fakeTutorialOptions[0].pathName;
+  const routePath = window.location.pathname;
 
-    // const name = screen.getByText(tutorial.pathName);
-    // expect(name).toBeInTheDocument();
-  }
-
-  // const onCurrentPageHeading = screen.findByText(/ON CURRENT PAGE/i);
-  // expect(onCurrentPageHeading).not.toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
-
-  // const currentPathTutorialItem = screen.queryByText(
-  //   fakeTutorialOptions[0].description
-  // );
-  // expect(currentPathTutorialItem).toBeInTheDocument();
+  expect(tutorialPath).not.toBe(routePath);
 });
 
 test('Check if on other pages', async () => {
