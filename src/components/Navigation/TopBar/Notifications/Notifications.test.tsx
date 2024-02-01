@@ -62,8 +62,9 @@ const notificationsData: (
     time: '2024-03-24T11:05:47.4372699+00:00',
     notificationType: NotificationsTypes.MERGE_BRANCH,
   } as MergeBranchOrcaTypes,
+
   {
-    Read: true,
+    Read: false,
     SequenceNumber: 2,
 
     field: 'Johan',
@@ -350,8 +351,25 @@ describe('Sorting notifications ', () => {
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[2].time)
+      date.formatRelativeDateTime(notificationsData[1].time)
     );
+  });
+  test('Sort unread and reset unread filter   ', async () => {
+    const allNotificationsBeforeSort =
+      screen.getAllByTestId('notification-date');
+    expect(allNotificationsBeforeSort[0].textContent).not.toBe(
+      notificationsData[2].Read
+    );
+    const user = userEvent.setup();
+    const unread = screen.getByText(/unread/i);
+    await user.click(unread);
+
+    const allNotifications = screen.getAllByTestId('notification-date');
+    expect(allNotifications[0].textContent).toBe(
+      date.formatRelativeDateTime(notificationsData[1].time)
+    );
+    await user.click(unread);
+    expect(allNotifications[0].textContent).not.toBe(notificationsData[2].Read);
   });
 });
 
@@ -410,7 +428,7 @@ describe('Filtering notifications ', () => {
     expect(allNotifications).toBe(allNotifications);
   });
 
-  test('System Messages  ', async () => {
+  test('System Messages and reset filter  ', async () => {
     const allNotificationsBeforeFilter =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
@@ -421,6 +439,10 @@ describe('Filtering notifications ', () => {
     await user.click(userMessages);
     expect(allNotificationsBeforeFilter).not.toBe(
       allNotificationsBeforeFilter[0].textContent
+    );
+    await user.click(userMessages);
+    expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
+      date.formatRelativeDateTime(notificationsData[3].time)
     );
   });
 
@@ -434,9 +456,11 @@ describe('Filtering notifications ', () => {
     const userMessages = screen.getByText(/unread/i);
 
     await user.click(userMessages);
+
+    screen.logTestingPlaygroundURL();
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[2].time)
+      date.formatRelativeDateTime(notificationsData[1].time)
     );
   });
 });

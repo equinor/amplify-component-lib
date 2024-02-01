@@ -11,15 +11,13 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from '../../../../providers';
-import ApplicationDrawer, { PORTAL_URL } from './ApplicationDrawer';
+import ApplicationDrawer from './ApplicationDrawer';
 import { CancelablePromise } from 'src/api';
 import { AmplifyApplication } from 'src/api/models/Applications';
 import PortalTransit from 'src/components/Navigation/TopBar/Resources/ApplicationTransit/PortalTransit';
-import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
 import { waitFor } from 'src/tests/test-utils';
 
-import { assignWith } from 'lodash-es';
-import { beforeAll, beforeEach, describe, expect, vi } from 'vitest';
+import { expect, vi } from 'vitest';
 
 function fakeApplication(): AmplifyApplication {
   return {
@@ -142,46 +140,48 @@ test('Close application drawer  ', async () => {
   expect(closeButton).not.toBeInTheDocument();
 });
 
-test('Click on a application', async () => {
-  rejectPromise = false;
-  render(
-    <Wrappers>
-      <ApplicationDrawer />
-    </Wrappers>
-  );
+test(
+  'Click on a application',
+  async () => {
+    rejectPromise = false;
+    window.open = vi.fn();
+    render(
+      <Wrappers>
+        <ApplicationDrawer />
+      </Wrappers>
+    );
 
-  const user = userEvent.setup();
+    const user = userEvent.setup();
 
-  const menuButton = await screen.findByRole('button');
+    const menuButton = await screen.findByRole('button');
 
-  await user.click(menuButton);
+    await user.click(menuButton);
 
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 4000,
-  });
+    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
+      timeout: 4000,
+    });
 
-  const appIndex = faker.number.int({ min: 0, max: fakeApps.length - 1 });
+    const appIndex = faker.number.int({ min: 0, max: fakeApps.length - 1 });
 
-  const firstApp = screen.getAllByRole('button')[appIndex];
+    const firstApp = screen.getAllByRole('button')[appIndex];
 
-  await user.click(firstApp);
+    await user.click(firstApp);
 
-  const transitText = screen.getByText(/Transferring you to application/i);
-  expect(transitText).toBeInTheDocument();
+    const openLink = screen.getByText(/open link/i);
+    expect(openLink).toBeInTheDocument();
 
-  await waitForElementToBeRemoved(
-    () => screen.getByText(/Transferring you to application/i),
-    {
-      timeout: 5000,
-    }
-  );
-  window.open = vi.fn();
-
-  const clickedApplication = fakeApps[appIndex];
-
-  expect(window.open).toHaveBeenCalledWith(clickedApplication.apiurl, '_self');
-  screen.logTestingPlaygroundURL();
-});
+    await waitFor(
+      () =>
+        expect(
+          screen.getByText(/Transferring you to application/i)
+        ).toBeInTheDocument(),
+      {
+        timeout: 8000,
+      }
+    );
+  },
+  { timeout: 10000 }
+);
 
 test('Click on more access button', async () => {
   rejectPromise = false;
@@ -202,63 +202,81 @@ test('Click on more access button', async () => {
   expect(transitToApplication).toBeInTheDocument();
 });
 
-test('Loading to application', async () => {
-  rejectPromise = false;
-  const applicationsFaker = faker.animal.dog();
-  const url = faker.animal.cow();
+test(
+  'Loading to application',
+  async () => {
+    rejectPromise = false;
+    const applicationsFaker = faker.animal.dog();
+    const url = faker.animal.cow();
+    window.open = vi.fn();
+    const onclose = vi.fn();
 
-  const onclose = vi.fn();
+    render(
+      <PortalTransit
+        applicationName={applicationsFaker}
+        portal={false}
+        onClose={onclose}
+        url={url}
+      />
+    );
 
-  render(
-    <PortalTransit
-      applicationName={applicationsFaker}
-      portal={false}
-      onClose={onclose}
-      url={url}
-    />
-  );
+    const findTransferText = screen.getByText(
+      /Transferring you to application/i
+    );
+    expect(findTransferText).toBeInTheDocument();
 
-  const findTransferText = screen.getByText(/Transferring you to application/i);
-  expect(findTransferText).toBeInTheDocument();
+    await waitForElementToBeRemoved(
+      () => screen.getByText(/Transferring you to application/i),
+      {
+        timeout: 8000,
+      }
+    );
 
-  await waitForElementToBeRemoved(
-    () => screen.getByText(/Transferring you to application/i),
-    {
-      timeout: 4000,
-    }
-  );
+    await waitFor(
+      () => expect(window.open).toHaveBeenCalledWith(url, '_self'),
+      {
+        timeout: 5000,
+      }
+    );
+  },
+  { timeout: 10000 }
+);
 
-  const applicationName = screen.getByText(applicationsFaker);
-  expect(applicationName).toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
-});
+test(
+  'When loading is done, transfer to Portal',
+  async () => {
+    rejectPromise = false;
+    const applicationsFaker = faker.animal.dog();
+    window.open = vi.fn();
 
-test('When loading is done, transfer to Portal', async () => {
-  rejectPromise = false;
-  const applicationsFaker = faker.animal.dog();
+    const portalUrl = faker.animal.cetacean();
 
-  const portalUrl = faker.animal.cetacean();
+    const onClose = vi.fn();
+    render(
+      <PortalTransit
+        applicationName={applicationsFaker}
+        portal
+        onClose={onClose}
+        url={portalUrl}
+      />
+    );
 
-  const onClose = vi.fn();
-  render(
-    <PortalTransit
-      applicationName={applicationsFaker}
-      portal
-      onClose={onClose}
-      url={portalUrl}
-    />
-  );
+    const openLink = screen.getByText(/open link/i);
+    expect(openLink).toBeInTheDocument();
 
-  const findTransferText = screen.getByText(/Transferring you to application/i);
-  expect(findTransferText).toBeInTheDocument();
+    await waitFor(
+      () => expect(screen.getByText(/transferring to/i)).toBeInTheDocument(),
+      {
+        timeout: 8000,
+      }
+    );
 
-  await waitForElementToBeRemoved(
-    () => screen.getByText(/Transferring you to application/i),
-    {
-      timeout: 4000,
-    }
-  );
-
-  const applicationName = screen.getByText('Portal');
-  expect(applicationName).toBeInTheDocument();
-});
+    await waitFor(
+      () => expect(window.open).toHaveBeenCalledWith(portalUrl, '_self'),
+      {
+        timeout: 5000,
+      }
+    );
+  },
+  { timeout: 10000 }
+);
