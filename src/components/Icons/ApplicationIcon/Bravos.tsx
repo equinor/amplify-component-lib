@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { bravos } from './ApplicationIconCollection';
 
@@ -17,8 +17,15 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Bravos: FC<SvgIconProps> = ({ size }) => {
-  return <ApplicationIconBase size={size} iconData={bravos} shapes={shapes} />;
+const Bravos: FC<AppIconProps> = ({ size, iconOnly }) => {
+  return (
+    <ApplicationIconBase
+      size={size}
+      iconData={bravos}
+      iconOnly={iconOnly}
+      shapes={shapes}
+    />
+  );
 };
 
 export default Bravos;

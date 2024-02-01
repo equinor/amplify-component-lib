@@ -118,3 +118,18 @@ test("Renders fallback when name isn't found", () => {
     fallback.svgPathData
   );
 });
+
+test('Renders without shapes when iconOnly=true when single icon', async () => {
+  const { rerender } = render(<ApplicationIcon name="acquire" iconOnly />);
+
+  for (const name of nameOptions) {
+    rerender(<ApplicationIcon name={name} iconOnly />);
+    expect(screen.queryAllByTestId('shape').length).toBe(0);
+  }
+});
+
+test('Renders equinor logo as fallback when iconOnly=true', () => {
+  render(<ApplicationIcon name="hei" iconOnly />);
+
+  expect(screen.getByTestId('logo')).toBeInTheDocument();
+});

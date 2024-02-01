@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { pwex } from './ApplicationIconCollection';
 
@@ -17,8 +17,13 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Pwex: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase size={size} iconData={pwex} shapes={shapes} />
+const Pwex: FC<AppIconProps> = ({ size, iconOnly }) => (
+  <ApplicationIconBase
+    size={size}
+    iconData={pwex}
+    iconOnly={iconOnly}
+    shapes={shapes}
+  />
 );
 
 export default Pwex;

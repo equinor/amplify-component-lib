@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { loggingQualification } from './ApplicationIconCollection';
 
@@ -17,12 +17,13 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const LoggingQualification = forwardRef<HTMLDivElement, SvgIconProps>(
-  ({ size }, ref) => (
+const LoggingQualification = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly }, ref) => (
     <ApplicationIconBase
       ref={ref}
       size={size}
       iconData={loggingQualification}
+      iconOnly={iconOnly}
       shapes={shapes}
     />
   )

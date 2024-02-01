@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 
-const NegativeOutlined: FC<SvgIconProps> = ({ size }) => (
+const NegativeOutlined: FC<AppIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { recap } from './ApplicationIconCollection';
 
@@ -17,8 +17,13 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Recap: FC<SvgIconProps> = ({ size }) => (
-  <ApplicationIconBase size={size} iconData={recap} shapes={shapes} />
+const Recap: FC<AppIconProps> = ({ size, iconOnly }) => (
+  <ApplicationIconBase
+    size={size}
+    iconData={recap}
+    iconOnly={iconOnly}
+    shapes={shapes}
+  />
 );
 
 export default Recap;
