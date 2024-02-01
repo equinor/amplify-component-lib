@@ -1,0 +1,50 @@
+name: 🛠️ Radix Build & Deploy
+on:
+  workflow_call:
+    inputs:
+      environment-name:
+        description: "The GitHub environment to use this workflow in"
+        type: string
+        required: true
+    secrets:
+      webhook-url:
+        required: true
+jobs:
+  build:
+    environment:
+      name: ${{ inputs.environment-name }}
+    name: 🛠️ Build & Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Login Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ vars.CLIENT_ID }}
+          tenant-id: 3aa4a235-b6e2-48d5-9195-7fcf05b459b0
+          allow-no-subscriptions: true
+      - name: Get token
+        run: |
+          token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv)
+          echo "::add-mask::$token"
+          echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
+      - name: Create build-deploy pipeline
+        uses: equinor/radix-github-actions@v1
+        with:
+          args: >
+            create pipeline-job
+            build-deploy
+            --application ${{ vars.RADIX_APPLICATION_NAME }}
+            --branch ${{ github.event.repository.default_branch }}
+            --follow
+            --token-environment
+  notify:
+    name: Notify on slack
+    needs: [build]
+    uses: ./.github/workflows/notify.yaml
+    with:
+      environment-name: ${{ inputs.environment-name }}
+    secrets:
+      webhook-url: ${{ secrets.webhook-url }}

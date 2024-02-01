@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { dasha } from './ApplicationIconCollection';
 
@@ -17,9 +17,17 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Dasha = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
-  <ApplicationIconBase size={size} iconData={dasha} shapes={shapes} ref={ref} />
-));
+const Dasha = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly }, ref) => (
+    <ApplicationIconBase
+      size={size}
+      iconData={dasha}
+      shapes={shapes}
+      iconOnly={iconOnly}
+      ref={ref}
+    />
+  )
+);
 
 Dasha.displayName = 'Dasha';
 

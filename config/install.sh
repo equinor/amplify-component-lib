@@ -45,8 +45,14 @@ curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/confi
 
 cd ../..
 
-printf -- "Downloading client github action...\n"
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/client.yaml" > .github/workflows/client.yaml
+printf -- "Downloading client github actions...\n"
+workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/github_actions_list.txt")
+
+for line in $workflowsList
+do
+  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
+  curl -s $line > ".github/workflows/$fileName"
+done
 
 printf -- "Downloading CODEOWNERS file...\n"
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS

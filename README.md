@@ -21,7 +21,20 @@ wget -q -O - https://raw.githubusercontent.com/equinor/amplify-components/main/c
 ```
 
 
-This should have downloaded the `.eslintrc.cjs`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json`, `env.sh`, `Dockerfile`, `proxy/nginx.conf`, `proxy/securityheaders.conf` and `client.yaml` files
+This should have downloaded the `.eslintrc.cjs`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json`, `env.sh`, `Dockerfile`, `proxy/nginx.conf`, `proxy/securityheaders.conf` and github actions workflow files
+
+# Using github action workflows related to deploying from github from amplify-components
+
+1. Navigate to your projects root folder, `~/Projects/recap` for instance
+
+2. Copy and run the following command
+```bash
+wget -q -O - https://raw.githubusercontent.com/equinor/amplify-components/main/config/install-deployment-files.sh | bash
+```
+
+This should have downloaded the `build_deploy_radix.yaml`, `promote.yaml`, `notify.yaml`, `push.yaml`
+
+NOTE: These files should eventually be served from the same install script we use for getting other config files. We serve it from a different script so that applications which are not ready for the change in deployment process don't have to rush.
 
 ## Notes
 

@@ -1,0 +1,40 @@
+name: Push
+on:
+  push:
+    branch: [main]
+  workflow_dispatch:
+jobs:
+  lint:
+    name: 🚑 Lint
+    uses: ./.github/workflows/lint.yaml
+  test:
+    name: 🧪 Test
+    uses: ./.github/workflows/test.yaml
+  build_deploy_dev:
+    name: 🛠️ Build and 🚀 Deploy development to radix
+    needs: [test, lint]
+    uses: ./.github/workflows/build_deploy_radix.yaml
+    with:
+      environment-name: development
+    secrets:
+      webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+  deploy_staging:
+    name: 🚀 Promote to staging
+    needs: [build_deploy_dev]
+    uses: ./.github/workflows/promote.yaml
+    with:
+      environment-name: staging
+      from-environment: development
+      to-environment: staging
+    secrets:
+      webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+  deploy_production:
+    name: 🚀 Promote to production
+    needs: [deploy_staging]
+    uses: ./.github/workflows/promote.yaml
+    with:
+      environment-name: production
+      from-environment: staging
+      to-environment: production
+    secrets:
+      webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}

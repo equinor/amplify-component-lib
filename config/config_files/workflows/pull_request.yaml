@@ -1,0 +1,29 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches: [main, master, develop, development, staging]
+    paths:
+      - "client/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+jobs:
+  lint:
+    name: Lint
+    uses: ./.github/workflows/lint.yaml
+
+  test:
+    name: Test
+    uses: ./.github/workflows/test.yaml
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yaml
+
+  build-docker:
+    name: Build docker image
+    uses: ./.github/workflows/build_docker.yaml
+
+  check_configs:
+    name: Check Config files
+    uses: ./.github/workflows/check_config.yaml

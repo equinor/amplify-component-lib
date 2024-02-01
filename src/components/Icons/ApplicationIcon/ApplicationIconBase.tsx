@@ -4,7 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from '../index';
 import { IconDataWithColor } from './ApplicationIconCollection';
 
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ const { colors, elevation } = tokens;
 
 interface ContainerProps {
   $size: number;
+  $iconOnly: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -21,7 +22,7 @@ const Container = styled.div<ContainerProps>`
   justify-content: center;
   align-items: center;
   border-radius: 15%;
-  background: #004f55;
+  background: ${({ $iconOnly }) => ($iconOnly ? 'transparent' : '#004f55')};
   width: ${({ $size }) => `${$size}px`};
   height: ${({ $size }) => `${$size}px`};
   z-index: 100;
@@ -79,39 +80,63 @@ const Shape = styled.div<ShapeElementProps>`
   pointer-events: none;
 `;
 
-interface ApplicationIconBaseProps extends SvgIconProps {
+interface ApplicationIconBaseProps extends AppIconProps {
   iconData: IconData | IconDataWithColor[];
   shapes: ShapeProps[];
+  iconOnly?: boolean;
 }
 
+// Icon component from EDS can take whatever size we want in numbers, so casting size to any here is safe
+// Size type is specified on the other higher level components
 const ApplicationIconBase = forwardRef<
   HTMLDivElement,
   ApplicationIconBaseProps
->(({ size = 48, iconData, shapes }, ref) => (
-  <Container ref={ref} $size={size}>
-    {Array.isArray(iconData) ? (
-      iconData.map((icon, index) => (
-        <Icon
-          key={`icon-${index}`}
-          data={icon}
-          size={size}
-          color={icon.color}
+>(({ size = 48 as any, iconData, shapes, iconOnly = false }, ref) => {
+  if (iconOnly) {
+    return (
+      <Container ref={ref} $size={size} $iconOnly={iconOnly}>
+        {Array.isArray(iconData) ? (
+          iconData.map((icon, index) => (
+            <Icon
+              key={`icon-${index}`}
+              data={icon}
+              size={size}
+              color={icon.color}
+            />
+          ))
+        ) : (
+          <Icon data={iconData} size={size} color="#ffffff" />
+        )}
+      </Container>
+    );
+  }
+  return (
+    <Container ref={ref} $size={size} $iconOnly={iconOnly}>
+      {Array.isArray(iconData) ? (
+        iconData.map((icon, index) => (
+          <Icon
+            key={`icon-${index}`}
+            data={icon}
+            size={size}
+            color={icon.color}
+          />
+        ))
+      ) : (
+        <Icon data={iconData} size={size} color="#ffffff" />
+      )}
+      {shapes.map((shape, index) => (
+        <Shape
+          key={`shape-${index}`}
+          data-testid="shape"
+          $index={index}
+          $top={shape.top}
+          $left={shape.left}
+          $rotation={shape.rotation}
         />
-      ))
-    ) : (
-      <Icon data={iconData} size={size} color="#ffffff" />
-    )}
-    {shapes.map((shape, index) => (
-      <Shape
-        key={`shape-${index}`}
-        $index={index}
-        $top={shape.top}
-        $left={shape.left}
-        $rotation={shape.rotation}
-      />
-    ))}
-  </Container>
-));
+      ))}
+    </Container>
+  );
+});
 
 ApplicationIconBase.displayName = 'ApplicationIconBase';
 
