@@ -4,6 +4,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { wait } from '@testing-library/user-event/utils/misc/wait';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
 import TutorialDialog from './Tutorials/TutorialDialog';
@@ -712,37 +713,44 @@ describe('Resources', () => {
   });
 
   describe('Open different parts in rescouses ', () => {
-    test('open portal ', async () => {
-      render(<Resources />, { wrapper: Wrappers });
-      const user = userEvent.setup();
+    test(
+      'open portal ',
+      async () => {
+        window.open = vi.fn();
 
-      const button = screen.getByRole('button');
+        render(<Resources />, { wrapper: Wrappers });
+        const user = userEvent.setup();
 
-      await user.click(button);
+        const button = screen.getByRole('button');
 
-      const learnMore = screen.getByText(/learn more/i);
-      await user.click(learnMore);
+        await user.click(button);
 
-      const openPortal = screen.getByText(/open application portal/i);
-      await user.click(openPortal);
+        const learnMore = screen.getByText(/learn more/i);
+        await user.click(learnMore);
 
-      const openLink = screen.getByText(/open link/i);
-      expect(openLink).toBeInTheDocument();
+        const openPortal = screen.getByText(/open application portal/i);
+        await user.click(openPortal);
 
-      // const findTransferText = await screen.getByText(
-      //   /Transferring you to application/i
-      // );
+        const openLink = screen.getByText(/open link/i);
+        expect(openLink).toBeInTheDocument();
 
-      window.open = vi.fn();
+        await waitFor(
+          () =>
+            expect(screen.getByText(/transferring to/i)).toBeInTheDocument(),
+          {
+            timeout: 8000,
+          }
+        );
 
-      await waitFor(
-        () => expect(window.open).toHaveBeenCalledWith(PORTAL_URL, '_self'),
-        {
-          timeout: 1000,
-        }
-      );
-      screen.logTestingPlaygroundURL();
-    });
+        await waitFor(
+          () => expect(window.open).toHaveBeenCalledWith(PORTAL_URL, '_self'),
+          {
+            timeout: 5000,
+          }
+        );
+      },
+      { timeout: 10000 }
+    );
 
     test('open tutorials  ', async () => {
       const tutorialOptions = [

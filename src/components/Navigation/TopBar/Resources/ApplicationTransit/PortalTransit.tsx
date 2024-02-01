@@ -26,6 +26,7 @@ const PortalTransit: FC<PortalTransitProps> = ({
   url,
 }) => {
   const handleOnChangeApplication = (url: string) => {
+    console.log('woho!');
     window.open(url, '_self');
   };
 

@@ -107,7 +107,7 @@ export const Resources: FC<ResourcesProps> = ({
   const handleFeedbackClick = () => setShowingResourceSection('feedback');
   const handleLearnMoreClick = () => setShowingResourceSection('learn-more');
 
-  const handlePortalClick = () => setOpenPortal(true);
+  const handlePortalClick = () => setOpenPortal((prev) => !prev);
 
   const handleTutorialClick = () => setOpenTutorials((prev) => !prev);
 
