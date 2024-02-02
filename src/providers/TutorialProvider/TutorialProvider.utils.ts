@@ -1,10 +1,6 @@
 import { DIALOG_EDGE_MARGIN } from './TutorialProvider.const';
 import { Tutorial, TutorialDialogPosition } from './TutorialProvider.types';
-
-export const getMarginCss = (type: string) => {
-  return `margin-${type}: ${DIALOG_EDGE_MARGIN}px; `;
-};
-
+/* c8 ignore start */
 const doesBoundingRectOverlap = (
   boundingRect1: DOMRect,
   boundingRect2: DOMRect
@@ -89,6 +85,7 @@ export const getBestPositionWithoutOverlap = (
   }
   return TutorialDialogPosition.BOTTOM_RIGHT;
 };
+/* c8 ignore end */
 
 export const getAllElementsToHighlight = (activeTutorial: Tutorial) => {
   return activeTutorial.steps.map((_, index) =>

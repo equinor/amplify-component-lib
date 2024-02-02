@@ -5,12 +5,6 @@ import styled, { keyframes } from 'styled-components';
 
 const { elevation, shape } = tokens;
 import { spacings } from 'src/style';
-interface HighlighterProps {
-  $top: number;
-  $left: number;
-  $width: number;
-  $height: number;
-}
 
 const fadeinBoxShadowAnimation = keyframes`
   from {
@@ -22,7 +16,7 @@ const fadeinBoxShadowAnimation = keyframes`
 
 `;
 
-export const Highlighter = styled.div<HighlighterProps>`
+export const Highlighter = styled.div`
   position: absolute;
   z-index: 10000;
   pointer-events: none;
@@ -31,12 +25,6 @@ export const Highlighter = styled.div<HighlighterProps>`
   border-radius: 4px;
   animation: ${fadeinBoxShadowAnimation} 300ms;
   animation-fill-mode: forwards;
-  ${({ $width, $height, $top, $left }) => `
-    top: ${$top}px;
-    left: ${$left}px;
-    width: ${$width}px;
-    height: ${$height}px;
-  `}
 `;
 
 export const DialogWrapper = styled.div`
@@ -45,10 +33,6 @@ export const DialogWrapper = styled.div`
   bottom: 24px;
   background: transparent;
 `;
-
-interface TutorialDialogProps {
-  $positionCss: string;
-}
 
 const fadeinOpacityAnimation = keyframes`
   from {
@@ -59,7 +43,7 @@ const fadeinOpacityAnimation = keyframes`
   }
 
 `;
-export const StyledTutorialDialog = styled.dialog<TutorialDialogProps>`
+export const StyledTutorialDialog = styled.dialog`
   border: none;
   box-shadow: ${elevation.above_scrim};
   border-radius: ${shape.corners.borderRadius};
@@ -68,7 +52,6 @@ export const StyledTutorialDialog = styled.dialog<TutorialDialogProps>`
   transition-duration: 300ms;
   animation: ${fadeinOpacityAnimation} 300ms;
   animation-fill-mode: forwards;
-  ${({ $positionCss }) => $positionCss}
   &::backdrop {
     background: transparent;
   }

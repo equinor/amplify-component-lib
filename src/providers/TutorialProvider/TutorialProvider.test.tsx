@@ -1,11 +1,16 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
+import { waitFor } from '@testing-library/react';
 
 import { render, renderHook, screen, userEvent } from '../../tests/test-utils';
 import { TutorialProvider } from '../index';
 import { useTutorial } from './TutorialProvider';
-import { TUTORIAL_HIGHLIGHTER_DATATEST_ID } from './TutorialProvider.const';
+import {
+  DIALOG_EDGE_MARGIN,
+  TUTORIAL_HIGHLIGHTER_DATATEST_ID,
+  TUTORIAL_LOCALSTORAGE_VALUE_STRING,
+} from './TutorialProvider.const';
 import {
   CustomTutorialStep,
   GenericTutorialStep,
@@ -17,6 +22,25 @@ import { beforeEach, describe, expect } from 'vitest';
 
 const TEST_TUTORIAL_SHORT_NAME = 'test-tutorial';
 const TEST_TUTORIAL_CUSTOM_STEP_KEY = 'custom-step';
+
+const getMarginCss = (type: string) => {
+  return `margin-${type}: ${DIALOG_EDGE_MARGIN}px;`;
+};
+
+export const getStyleStringForPosition = (position: TutorialDialogPosition) => {
+  switch (position) {
+    case TutorialDialogPosition.TOP_LEFT:
+      return `${getMarginCss('top')} ${getMarginCss('left')}`;
+    case TutorialDialogPosition.TOP_RIGHT:
+      return `${getMarginCss('top')} ${getMarginCss('right')}`;
+    case TutorialDialogPosition.BOTTOM_LEFT:
+      return `${getMarginCss('bottom')} ${getMarginCss('left')}`;
+    case TutorialDialogPosition.BOTTOM_RIGHT:
+      return `${getMarginCss('bottom')} ${getMarginCss('right')}`;
+    default:
+      return undefined;
+  }
+};
 
 const extraFakeSteps = () => {
   const numberOfExtraSteps = faker.number.int({ min: 2, max: 5 });
@@ -31,15 +55,22 @@ const extraFakeSteps = () => {
   return extraSteps;
 };
 
-const fakeTutorial = (position?: TutorialDialogPosition) => {
+interface FakeTutorialProps {
+  position?: TutorialDialogPosition;
+  withDynamicPositioning?: boolean;
+
+  withNoCustomSteps?: boolean;
+}
+
+const fakeTutorial = (props?: FakeTutorialProps) => {
   return {
     name: 'Storybook tutorial',
     shortName: TEST_TUTORIAL_SHORT_NAME,
     path: '/path',
-    dynamicPositioning: true,
+    dynamicPositioning: props?.withDynamicPositioning,
     steps: [
       {
-        position: position ?? undefined,
+        position: props?.position ?? undefined,
         title: faker.animal.cat(),
         body: faker.animal.crocodilia(),
         imgUrl: 'https://placehold.co/200x700/png',
@@ -48,7 +79,9 @@ const fakeTutorial = (position?: TutorialDialogPosition) => {
         title: faker.animal.cetacean(),
         body: faker.animal.dog(),
       },
-      { key: TEST_TUTORIAL_CUSTOM_STEP_KEY },
+      props?.withNoCustomSteps
+        ? { title: faker.animal.snake(), body: faker.animal.rodent() }
+        : { key: TEST_TUTORIAL_CUSTOM_STEP_KEY },
       ...extraFakeSteps(),
     ],
   } as Tutorial;
@@ -56,24 +89,26 @@ const fakeTutorial = (position?: TutorialDialogPosition) => {
 
 interface GetMemoryRouterProps {
   tutorial: Tutorial;
-  withoutSearchParam?: boolean;
+  withNoSearchParams?: boolean;
   withMissingCustomComponent?: boolean;
   withMissingElementToHighlight?: boolean;
   withWrongCustomComponentKeyString?: boolean;
+  withNoTutorialsOnPath?: boolean;
 }
 
 const getMemoryRouter = (props: GetMemoryRouterProps) => {
   const {
     tutorial,
-    withoutSearchParam,
+    withNoSearchParams,
     withMissingCustomComponent,
     withMissingElementToHighlight,
     withWrongCustomComponentKeyString,
+    withNoTutorialsOnPath,
   } = props;
   return createMemoryRouter(
     [
       {
-        path: '/path',
+        path: withNoTutorialsOnPath ? '/thisIsTheWrongPath' : '/path',
         element: (
           <TutorialProvider
             tutorials={[tutorial]}
@@ -111,9 +146,9 @@ const getMemoryRouter = (props: GetMemoryRouterProps) => {
     ],
     {
       initialEntries: [
-        withoutSearchParam
+        withNoSearchParams
           ? '/path'
-          : `/path?tutorial=${TEST_TUTORIAL_SHORT_NAME}`,
+          : `/path?tutorial=${encodeURIComponent(TEST_TUTORIAL_SHORT_NAME)}`,
       ],
       initialIndex: 0,
     }
@@ -128,9 +163,9 @@ const getStepTitleOrKey = (step: GenericTutorialStep | CustomTutorialStep) => {
   }
 };
 
-// scrollIntoView is not implemented in jsdom
+// scrollIntoView is not implemented in JSDOM
 // GitHub issue: https://github.com/jsdom/jsdom/issues/1695
-window.HTMLElement.prototype.scrollIntoView = function () {};
+window.HTMLElement.prototype.scrollIntoView = () => null;
 
 describe('TutorialProvider', () => {
   beforeEach(() => {
@@ -144,9 +179,15 @@ describe('TutorialProvider', () => {
   });
 
   test('can skip tutorial', async () => {
+    window.localStorage.setItem(
+      TEST_TUTORIAL_SHORT_NAME,
+      TUTORIAL_LOCALSTORAGE_VALUE_STRING
+    );
+
     const tutorial = fakeTutorial();
     const user = userEvent.setup();
-    render(<RouterProvider router={getMemoryRouter({ tutorial })} />);
+    const router = getMemoryRouter({ tutorial });
+    render(<RouterProvider router={router} />);
 
     const highlighterElement = screen.queryByTestId(
       TUTORIAL_HIGHLIGHTER_DATATEST_ID
@@ -202,7 +243,10 @@ describe('TutorialProvider', () => {
   });
 
   test('can click "prev" to go back one step', async () => {
-    const tutorial = fakeTutorial();
+    const tutorial = fakeTutorial({
+      withDynamicPositioning: true,
+      withNoCustomSteps: true,
+    });
     const user = userEvent.setup();
     render(<RouterProvider router={getMemoryRouter({ tutorial })} />);
 
@@ -233,61 +277,170 @@ describe('TutorialProvider', () => {
     expect(stepOneTitleAgainAgain).toBeInTheDocument();
   });
 
-  test('shows error dialog when missing custom component, if tutorial started from searchparam', async () => {
-    const tutorial = fakeTutorial();
-    const spy = vi.spyOn(console, 'error');
-    render(
-      <RouterProvider
-        router={getMemoryRouter({
-          tutorial,
-          withMissingCustomComponent: true,
-        })}
-      />
-    );
-    expect(spy).toHaveBeenCalledTimes(1);
-
-    const errorDialogText = screen.getByText(
-      /There was a problem starting this tutorial./i
-    );
-
-    expect(errorDialogText).toBeInTheDocument();
-  });
-
-  test('shows error dialog when having wrong custom components, if tutorial started from searchparam', async () => {
-    const tutorial = fakeTutorial();
-    const spy = vi.spyOn(console, 'error');
-    render(
-      <RouterProvider
-        router={getMemoryRouter({
-          tutorial,
-          withWrongCustomComponentKeyString: true,
-        })}
-      />
-    );
-    expect(spy).toHaveBeenCalledTimes(2);
-    screen.logTestingPlaygroundURL();
-    const errorDialogText = screen.getByText(/problem starting/i);
-
-    expect(errorDialogText).toBeInTheDocument();
-  });
-
-  // describe('can define dialog position for individual steps', () => {
-  //   for (const position of Object.keys(TutorialDialogPosition)) {
-  //     test(`can define first step with position: '${position}'`, async () => {
-  //       const tutorial = fakeTutorial(position as TutorialDialogPosition);
-  //       render(<RouterProvider router={router(tutorial)} />);
+  // TODO: look into testing this "can find elements to highlight when trying again"
+  // test('can find elements to highlight when trying again', async () => {
+  //   const tutorial = fakeTutorial();
+  //   const router = getMemoryRouter({
+  //     tutorial,
+  //     withMissingElementToHighlight: true,
+  //   });
+  //   const { rerender } = render(<RouterProvider router={router} />);
   //
-  //       // await new Promise((resolve) => setTimeout(resolve, 1000));
-  //       const dialog = screen.getByTestId('tutorial-dialog');
-  //       // expect(dialog).toHaveAttribute(
-  //       //   `style`,
-  //       //   `margin-right: ${DIALOG_EDGE_MARGIN}px`
-  //       // );
-  //       expect(dialog).toHaveStyle('margin-left: 24px');
-  //       // expect(dialog).toHaveStyleRule(
-  //       //   'margin',
-  //       //   `${DIALOG_EDGE_MARGIN}px`
-  //     });
-  //   }
+  //   await new Promise((resolve) => setTimeout(resolve, 100));
+  //   const newRouter = getMemoryRouter({
+  //     tutorial,
+  //   });
+  //
+  //   screen.logTestingPlaygroundURL();
+  //   rerender(<RouterProvider router={newRouter} />);
+  //
+  //   screen.logTestingPlaygroundURL();
+  //   const highlighterElement = screen.queryByTestId(
+  //     TUTORIAL_HIGHLIGHTER_DATATEST_ID
+  //   );
+  //
+  //   expect(highlighterElement).toBeInTheDocument();
   // });
+
+  describe('TutorialProvider error handling', () => {
+    test('shows and can close error dialog when missing custom component, if tutorial started from searchparam', async () => {
+      window.localStorage.setItem(
+        TEST_TUTORIAL_SHORT_NAME,
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      );
+
+      const user = userEvent.setup();
+      const tutorial = fakeTutorial();
+      const spy = vi.spyOn(console, 'error');
+      render(
+        <RouterProvider
+          router={getMemoryRouter({
+            tutorial,
+            withMissingCustomComponent: true,
+          })}
+        />
+      );
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      const errorDialogText = screen.getByText(
+        /There was a problem starting this tutorial./i
+      );
+      expect(errorDialogText).toBeInTheDocument();
+
+      const closeButton = screen.getByText(/close/i);
+      expect(closeButton).toBeInTheDocument();
+
+      await user.click(closeButton);
+
+      expect(closeButton).not.toBeInTheDocument();
+    });
+
+    test('shows error dialog when having wrong custom components, if tutorial started from searchparam', async () => {
+      window.localStorage.setItem(
+        TEST_TUTORIAL_SHORT_NAME,
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      );
+      const tutorial = fakeTutorial();
+      const spy = vi.spyOn(console, 'error');
+      render(
+        <RouterProvider
+          router={getMemoryRouter({
+            tutorial,
+            withWrongCustomComponentKeyString: true,
+          })}
+        />
+      );
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      const errorDialogText = screen.getByText(
+        /There was a problem starting this tutorial./i
+      );
+      expect(errorDialogText).toBeInTheDocument();
+    });
+
+    test('shows error dialog when not finding all elements to highlight, if tutorial started from searchparam', async () => {
+      window.localStorage.setItem(
+        TEST_TUTORIAL_SHORT_NAME,
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      );
+      const tutorial = fakeTutorial();
+      const spy = vi.spyOn(console, 'error');
+      render(
+        <RouterProvider
+          router={getMemoryRouter({
+            tutorial,
+            withMissingElementToHighlight: true,
+          })}
+        />
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      expect(spy).toHaveBeenCalledTimes(2); // One extra for act() warning
+
+      const errorDialogText = screen.getByText(
+        /There was a problem starting this tutorial./i
+      );
+      expect(errorDialogText).toBeInTheDocument();
+    });
+
+    test('shows nothing if tutorial has error when trying to run without search param', async () => {
+      window.localStorage.clear();
+      const tutorial = fakeTutorial();
+      const spy = vi.spyOn(console, 'error');
+      render(
+        <RouterProvider
+          router={getMemoryRouter({
+            tutorial,
+            withNoSearchParams: true,
+            withMissingElementToHighlight: true,
+          })}
+        />
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      expect(spy).toHaveBeenCalledTimes(2); // One extra for act() warning
+
+      const errorDialogText = screen.queryByText(
+        /There was a problem starting this tutorial./i
+      );
+      expect(errorDialogText).not.toBeInTheDocument();
+
+      const highlighterElement = screen.queryByTestId(
+        TUTORIAL_HIGHLIGHTER_DATATEST_ID
+      );
+      expect(highlighterElement).not.toBeInTheDocument();
+
+      if (tutorial.steps[0].key === undefined) {
+        const stepOneTitle = screen.queryByText(tutorial.steps[0].title);
+        expect(stepOneTitle).not.toBeInTheDocument();
+      }
+    });
+  });
+
+  describe('can define dialog position for individual steps', () => {
+    for (const position of Object.values(TutorialDialogPosition)) {
+      test(`can define first step with position: '${position}'`, async () => {
+        const tutorial = fakeTutorial({
+          position: position,
+        });
+
+        render(<RouterProvider router={getMemoryRouter({ tutorial })} />);
+
+        const dialog = screen.getByTestId('tutorial-dialog');
+
+        if (position === TutorialDialogPosition.CENTER) {
+          expect(dialog).not.toHaveAttribute(`style`);
+        } else {
+          await waitFor(
+            () =>
+              expect(dialog).toHaveAttribute(
+                `style`,
+                getStyleStringForPosition(position as TutorialDialogPosition)
+              ),
+            { timeout: 1000 }
+          );
+        }
+      });
+    }
+  });
 });

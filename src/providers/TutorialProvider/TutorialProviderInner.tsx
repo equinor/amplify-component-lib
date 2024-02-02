@@ -25,9 +25,9 @@ const TutorialProviderInner: FC = () => {
     tutorialError,
     tutorialsFromProps,
     currentStep,
-    clearSearchParam,
     viewportWidth,
     setTutorialError,
+    clearSearchParam,
   } = useTutorial();
 
   const hasStartedTutorial = useRef(false);
@@ -46,20 +46,13 @@ const TutorialProviderInner: FC = () => {
         block: 'center',
       });
     }
-    clearSearchParam();
     return {
       top: highlighterBoundingClient.top - HIGHLIGHT_PADDING + window.scrollY,
       left: highlighterBoundingClient.left - HIGHLIGHT_PADDING,
       height: highlighterBoundingClient.height + HIGHLIGHT_PADDING * 2,
       width: highlighterBoundingClient.width + HIGHLIGHT_PADDING * 2,
     };
-  }, [
-    activeTutorial,
-    allElementsToHighlight,
-    clearSearchParam,
-    currentStep,
-    viewportWidth,
-  ]);
+  }, [activeTutorial, allElementsToHighlight, currentStep, viewportWidth]);
 
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
@@ -77,12 +70,10 @@ const TutorialProviderInner: FC = () => {
   useEffect(() => {
     if (activeTutorial) return;
     if (
-      shortNameFromParams.current &&
-      tutorialsForPath.some(
-        (item) => item.shortName === shortNameFromParams.current
-      )
+      shortNameFromParams &&
+      tutorialsForPath.some((item) => item.shortName === shortNameFromParams)
     ) {
-      window.localStorage.removeItem(shortNameFromParams.current);
+      window.localStorage.removeItem(shortNameFromParams);
     }
   }, [
     activeTutorial,
@@ -112,13 +103,13 @@ const TutorialProviderInner: FC = () => {
   }, [runTutorial, tutorialsForPath]);
 
   const handleOnCloseBrokenTutorial = () => {
+    clearSearchParam();
     setTutorialError(false);
     setActiveTutorial(undefined);
-    clearSearchParam();
   };
 
   // Show error dialog if the user was expecting a tutorial (opened a link that had tutorial name as parameter)
-  if (tutorialError && shortNameFromParams.current) {
+  if (tutorialError && shortNameFromParams) {
     return (
       <TutorialErrorDialog
         open
@@ -144,10 +135,12 @@ const TutorialProviderInner: FC = () => {
       {highlightingInfo && (
         <Highlighter
           data-testid={TUTORIAL_HIGHLIGHTER_DATATEST_ID}
-          $top={highlightingInfo.top}
-          $left={highlightingInfo.left}
-          $width={highlightingInfo.width}
-          $height={highlightingInfo.height}
+          style={{
+            top: `${highlightingInfo.top}px`,
+            left: `${highlightingInfo.left}px`,
+            width: `${highlightingInfo.width}px`,
+            height: `${highlightingInfo.height}px`,
+          }}
         />
       )}
       <TutorialDialog />

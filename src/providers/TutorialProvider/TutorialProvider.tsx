@@ -38,7 +38,8 @@ interface TutorialContextType {
   isLastStep: boolean;
   dialogRef: MutableRefObject<HTMLDialogElement | null>;
   clearSearchParam: () => void;
-  shortNameFromParams: MutableRefObject<string | null>;
+  shortNameFromParams: string | undefined;
+  setShortNameFromParams: Dispatch<SetStateAction<string | undefined>>;
   tutorialsFromProps: Tutorial[];
   tutorialError: boolean;
   setTutorialError: Dispatch<SetStateAction<boolean>>;
@@ -74,16 +75,17 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   );
   const [tutorialError, setTutorialError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [shortNameFromParams, setShortNameFromParams] = useState<
-  //   string | undefined
-  // >(undefined);
-  const shortNameFromParams = useRef<string | null>(null);
+  // const shortNameFromParams = useRef<string | null>(null);
+  const [shortNameFromParams, setShortNameFromParams] = useState<
+    string | undefined
+  >(undefined);
   const [currentStep, setCurrentStep] = useState(0);
   const [allElementsToHighlight, setAllElementsToHighlight] = useState<
     HTMLElement[] | undefined
   >(undefined);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
+
   const currentStepObject = useMemo(() => {
     if (!activeTutorial) return;
     return activeTutorial.steps.at(currentStep);
@@ -97,14 +99,14 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   const clearSearchParam = useCallback(() => {
     searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
     setSearchParams(searchParams);
-    shortNameFromParams.current = null;
+    setShortNameFromParams(undefined);
   }, [searchParams, setSearchParams]);
 
   useEffect(() => {
-    if (shortNameFromParams.current) return;
+    if (shortNameFromParams) return;
     const nameFromSearchParam = searchParams.get(TUTORIAL_SEARCH_PARAM_KEY);
     if (nameFromSearchParam) {
-      shortNameFromParams.current = nameFromSearchParam;
+      setShortNameFromParams(nameFromSearchParam);
     }
   }, [searchParams, shortNameFromParams]);
 
@@ -121,7 +123,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   }, []);
 
   // Try to find all elements to highlight, and set it to a state for further use.
-  // If not found, set error state to true
+  // If not found, set error state to true, and give console.error
   useEffect(() => {
     if (!activeTutorial || tutorialError) return;
 
@@ -160,7 +162,8 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     if (!activeTutorial || tutorialError) return;
     const customKeysFromSteps = activeTutorial.steps
       .filter((step) => step.key !== undefined)
-      .map((customStep) => customStep.key ?? '');
+      // Writing 'customStep.key as string' for coverage, we know its string since we filter out right before the map
+      .map((customStep) => customStep.key as string);
     if (customKeysFromSteps.length === 0) return;
 
     const customKeysFromComponents = customStepComponents?.map(
@@ -188,14 +191,6 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         '\n However in the custom components we only found these keys: ',
         customKeysFromComponents
       );
-      // console.error(
-      //   'The active tutorial expected to find these keys:  ',
-      //   customKeysFromSteps
-      // );
-      // console.error(
-      //   'However in the custom components we only found these keys: ',
-      //   customKeysFromComponents
-      // );
       setTutorialError(true);
     }
   }, [activeTutorial, customStepComponents, tutorialError]);
@@ -215,6 +210,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         dialogRef,
         clearSearchParam,
         shortNameFromParams,
+        setShortNameFromParams,
         tutorialsFromProps: tutorials ?? [],
         tutorialError,
         setTutorialError,

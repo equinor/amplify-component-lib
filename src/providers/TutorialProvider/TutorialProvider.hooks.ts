@@ -1,4 +1,4 @@
-import { Tutorial } from './TutorialProvider.types';
+import { Tutorial, TutorialDialogPosition } from './TutorialProvider.types';
 
 export const tutorialForTestingInRecap: Tutorial = {
   name: 'Dashboard tutorial',
@@ -13,17 +13,21 @@ export const tutorialForTestingInRecap: Tutorial = {
     {
       title: 'The story continues',
       body: 'body step 1',
+      position: TutorialDialogPosition.TOP_RIGHT,
     },
     {
       title: 'A twist!',
       body: 'body step 2',
+      position: TutorialDialogPosition.CENTER,
     },
     {
       title: 'woop',
       body: 'body step 3',
+      position: TutorialDialogPosition.TOP_LEFT,
     },
     {
       key: 'recap-custom-key',
+      position: TutorialDialogPosition.BOTTOM_LEFT,
     },
   ],
 };
