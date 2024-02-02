@@ -18,7 +18,7 @@ const shapes: ShapeProps[] = [
 ];
 
 const Orca = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly, withHover }, ref) => (
+  ({ size, iconOnly = false, withHover = true }, ref) => (
     <ApplicationIconBase
       size={size}
       iconOnly={iconOnly}

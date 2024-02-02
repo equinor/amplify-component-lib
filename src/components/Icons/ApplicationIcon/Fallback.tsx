@@ -18,7 +18,7 @@ const shapes: ShapeProps[] = [
 ];
 
 const Fallback = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly, withHover }, ref) => {
+  ({ size, iconOnly = false, withHover = true }, ref) => {
     return (
       <ApplicationIconBase
         ref={ref}

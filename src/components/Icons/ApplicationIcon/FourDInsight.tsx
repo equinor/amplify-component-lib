@@ -18,7 +18,7 @@ const shapes: ShapeProps[] = [
 ];
 
 const FourDInsight = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly, withHover }, ref) => (
+  ({ size, iconOnly = false, withHover = true }, ref) => (
     <ApplicationIconBase
       ref={ref}
       size={size}
