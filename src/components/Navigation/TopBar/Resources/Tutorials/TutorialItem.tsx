@@ -5,7 +5,7 @@ import { arrow_forward } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import FeedBackIcon from '../../../../Icons/FeedBackIcon/FeedBackIcon';
-import { tutorialOptions } from './TutorialDialog';
+import { tutorialOptions } from 'src/components/Navigation/TopBar/Resources/Tutorials/TutorialInfoDialog';
 
 import styled from 'styled-components';
 

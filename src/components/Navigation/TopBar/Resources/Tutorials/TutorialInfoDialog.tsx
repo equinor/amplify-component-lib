@@ -45,7 +45,7 @@ interface TutorialDialogProps {
   onClose: () => void;
 }
 
-const TutorialDialog: FC<TutorialDialogProps> = ({
+const TutorialInfoDialog: FC<TutorialDialogProps> = ({
   options,
   open,
   onClose,
@@ -53,9 +53,7 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
   const location = useLocation();
 
   const onCurrentPage = useMemo(() => {
-    const result = options.map((item) => item.pathName === location.pathname);
-
-    return result;
+    return options.map((item) => item.pathName === location.pathname);
   }, [location.pathname, options]);
 
   const onOtherPages = useMemo(() => {
@@ -126,4 +124,4 @@ const TutorialDialog: FC<TutorialDialogProps> = ({
   );
 };
 
-export default TutorialDialog;
+export default TutorialInfoDialog;

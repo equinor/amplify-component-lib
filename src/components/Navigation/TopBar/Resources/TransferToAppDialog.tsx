@@ -58,14 +58,13 @@ const TransferringContainer = styled.div`
 
 interface PortalTransitProps {
   onClose: () => void;
-  portal?: boolean;
   applicationName: string;
   url: string;
 }
 
 const TransferToAppDialog: FC<PortalTransitProps> = ({
   onClose,
-  portal = true,
+
   applicationName,
   url,
 }) => {
@@ -125,7 +124,7 @@ const TransferToAppDialog: FC<PortalTransitProps> = ({
                   <span>{string.capitalize(applicationName)}</span>
                 </StyledTypography>
 
-                <AnimatedCheckmark portal={portal} />
+                <AnimatedCheckmark portal />
               </TransferringContainer>
             )}
           </Container>

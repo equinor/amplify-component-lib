@@ -12,20 +12,20 @@ import {
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { environment } from '../../../../utils';
-import {
-  amplify_small_portal,
-  amplify_tutorials,
-} from '../../../Icons/AmplifyIcons';
-import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
-import Tutorial, { tutorialOptions } from './Tutorials/TutorialDialog';
+import {
+  amplify_small_portal,
+  amplify_tutorials,
+} from 'src/components/Icons/AmplifyIcons';
 import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
+import Tutorial, {
+  tutorialOptions,
+} from 'src/components/Navigation/TopBar/Resources/Tutorials/TutorialInfoDialog';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { spacings } from 'src/style';
@@ -33,7 +33,6 @@ import { spacings } from 'src/style';
 import styled from 'styled-components';
 
 const { colors } = tokens;
-const { getEnvironmentName } = environment;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
@@ -50,6 +49,7 @@ export interface ResourcesProps {
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
   children?: ReactNode;
+  showTutorials?: boolean;
   tutorialOptions?: tutorialOptions[];
 }
 
@@ -58,8 +58,8 @@ export const Resources: FC<ResourcesProps> = ({
   hideFeedback = false,
   hideReleaseNotes = false,
   children,
-
   tutorialOptions,
+  showTutorials,
 }) => {
   const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
     useReleaseNotes();
@@ -100,8 +100,6 @@ export const Resources: FC<ResourcesProps> = ({
 
   const handleTutorialClick = () => setOpenTutorials((prev) => !prev);
 
-  console.log(tutorialOptions, 'tutoria');
-
   const resourceSectionContent = useMemo(() => {
     switch (showingResourceSection) {
       case 'learn-more':
@@ -113,12 +111,15 @@ export const Resources: FC<ResourcesProps> = ({
               onClick={handlePortalClick}
               lastItem
             />
-            <ResourceMenuItem
-              text="Tutorials"
-              icon={amplify_tutorials}
-              onClick={handleTutorialClick}
-              lastItem
-            />
+            {showTutorials && (
+              <ResourceMenuItem
+                text="Tutorials"
+                icon={amplify_tutorials}
+                onClick={handleTutorialClick}
+                lastItem
+              />
+            )}
+
             {/*// TODO: Remove children when PWEX has change layout in topbar */}
             {children && !hideFeedback && !hideReleaseNotes && (
               <Divider style={{ margin: 0 }} />
@@ -158,7 +159,13 @@ export const Resources: FC<ResourcesProps> = ({
       default:
         return null;
     }
-  }, [children, hideFeedback, hideReleaseNotes, showingResourceSection]);
+  }, [
+    children,
+    hideFeedback,
+    hideReleaseNotes,
+    showTutorials,
+    showingResourceSection,
+  ]);
 
   return (
     <>

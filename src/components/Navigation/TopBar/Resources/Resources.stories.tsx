@@ -84,7 +84,7 @@ export const Primary: StoryFn = (args) => {
               <Resources
                 tutorialOptions={tutorialOptions}
                 {...args}
-                children={false}
+                showTutorials
               />
             </MemoryRouter>
           </ReleaseNotesProvider>

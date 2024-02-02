@@ -1,19 +1,18 @@
-import { FC, useMemo, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { Button, DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { apps, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from '@tanstack/react-query';
 
-import { AccessRoles } from '../../../../api/models/AccessRole';
-import { AmplifyApplication } from '../../../../api/models/Applications';
-import { environment } from '../../../../utils';
-import ApplicationIcon from '../../../Icons/ApplicationIcon/ApplicationIcon';
 import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';
+import { AmplifyApplication } from 'src/api/models/Applications';
 import { PortalService } from 'src/api/services/PortalService';
+import { ApplicationIcon } from 'src/components/index';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
+import { environment } from 'src/utils';
 
 import styled from 'styled-components';
 
@@ -24,13 +23,11 @@ const MenuSection = styled.div`
   border-bottom: 1px solid ${colors.ui.background__light.hex};
   display: flex;
   flex-direction: column;
-  // padding-bottom: 0;
-  // padding-top: ${spacings.comfortable.medium};
+
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large} 0
     ${spacings.comfortable.large};
   > p {
     margin-left: ${spacings.comfortable.small};
-    //margin-bottom: ${spacings.comfortable.small};
   }
 `;
 
@@ -108,113 +105,14 @@ export const ApplicationBox = styled.div<ApplicationBoxProps>`
   }
 `;
 
-const applications: AmplifyApplication[] = [
-  {
-    id: '1',
-    name: 'Dasha',
-    adGroups: ['admin', 'user'],
-    url: 'vg.no',
-    accessRoles: [
-      {
-        role: 'string',
-        description: 'string',
-      },
-    ],
-    description: 'string',
-    longDescription: 'string',
-    category: 'string',
-    version: 'string',
-    applicationInsightAPI: 'string',
-    apI_Id: 'string',
-    apiurl: 'string',
-    monitored: true,
-    productOwners: ['admin', 'user'],
-  },
-  {
-    id: '2',
-    name: 'Inpress',
-    adGroups: ['admin', 'user'],
-    url: 'vg.no',
-    accessRoles: [
-      {
-        role: 'string',
-        description: 'string',
-      },
-    ],
-    description: 'string',
-    longDescription: 'string',
-    category: 'string',
-    version: 'string',
-    applicationInsightAPI: 'string',
-    apI_Id: 'string',
-    apiurl: 'string',
-    monitored: true,
-    productOwners: ['admin', 'user'],
-  },
-  {
-    id: '3',
-    name: 'Orca',
-    adGroups: ['admin', 'user'],
-    url: 'vg.no',
-    accessRoles: [
-      {
-        role: 'string',
-        description: 'string',
-      },
-    ],
-    description: 'string',
-    longDescription: 'string',
-    category: 'string',
-    version: 'string',
-    applicationInsightAPI: 'string',
-    apI_Id: 'string',
-    apiurl: 'string',
-    monitored: true,
-    productOwners: ['admin', 'user'],
-  },
-  {
-    id: '4',
-    name: 'Acquire',
-    adGroups: ['admin', 'user'],
-    url: 'vg.no',
-    accessRoles: [
-      {
-        role: 'string',
-        description: 'string',
-      },
-    ],
-    description: 'string',
-    longDescription: 'string',
-    category: 'string',
-    version: 'string',
-    applicationInsightAPI: 'string',
-    apI_Id: 'string',
-    apiurl: 'string',
-    monitored: true,
-    productOwners: ['admin', 'user'],
-  },
-  {
-    id: '5',
-    name: 'Recap',
-    adGroups: ['admin', 'user'],
-    url: 'vg.no',
-    accessRoles: [
-      {
-        role: 'string',
-        description: 'string',
-      },
-    ],
-    description: 'string',
-    longDescription: 'string',
-    category: 'string',
-    version: 'string',
-    applicationInsightAPI: 'string',
-    apI_Id: 'string',
-    apiurl: 'string',
-    monitored: true,
-    productOwners: ['admin', 'user'],
-  },
-];
+const ApplicationButton = styled(Button)`
+  height: 96px;
+  width: 64px;
+  > span {
+    display: flex;
+    flex-direction: column;
+  }
+`;
 
 const environmentName = getEnvironmentName(
   import.meta.env.VITE_ENVIRONMENT_NAME
@@ -337,18 +235,19 @@ const ApplicationDrawer: FC = () => {
                     getAppName(import.meta.env.VITE_NAME) === item.name;
                   return (
                     <ApplicationBox key={index} $isSelected={isSelected}>
-                      <Button
+                      <ApplicationButton
                         variant="ghost_icon"
                         onClick={() => handleOpenApplication(item)}
                         data-testid={item.name}
                       >
                         <ApplicationIcon name={item.name.toLowerCase()} />
-                      </Button>
-                      <ApplicationName>
-                        <Typography group="paragraph" variant="caption">
-                          {item.name}
-                        </Typography>
-                      </ApplicationName>
+
+                        <ApplicationName>
+                          <Typography group="paragraph" variant="caption">
+                            {item.name}
+                          </Typography>
+                        </ApplicationName>
+                      </ApplicationButton>
                     </ApplicationBox>
                   );
                 })}
@@ -379,7 +278,6 @@ const ApplicationDrawer: FC = () => {
       {openPortal && (
         <TransferToAppDialog
           onClose={closeMenu}
-          portal
           applicationName="Portal"
           url={PORTAL_URL}
         />
@@ -387,7 +285,6 @@ const ApplicationDrawer: FC = () => {
       {openApplication && (
         <TransferToAppDialog
           onClose={closeMenu}
-          portal={false}
           applicationName={openApplication.name}
           url={openApplication.url}
         />
