@@ -83,7 +83,7 @@ test('Should toggle menu and handle application click', async () => {
 
   const user = userEvent.setup();
 
-  const menuButton = await screen.findByRole('button');
+  const menuButton = await screen.getByRole('button');
 
   await user.click(menuButton);
 

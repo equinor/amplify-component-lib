@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from 'react';
 
-import { Button, DotProgress, Icon, Typography } from '@equinor/eds-core-react';
+import { DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { apps, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -11,108 +11,23 @@ import TopBarMenu from '../TopBarMenu';
 import { AmplifyApplication } from 'src/api/models/Applications';
 import { PortalService } from 'src/api/services/PortalService';
 import { ApplicationIcon } from 'src/components/index';
+import {
+  ApplicationBox,
+  ApplicationButton,
+  ApplicationContent,
+  ApplicationName,
+  LoadingApplications,
+  MenuFixedItem,
+  MenuSection,
+  NoApplications,
+  TextContainer,
+} from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer.styles';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
 import { environment } from 'src/utils';
 
-import styled from 'styled-components';
+const { colors } = tokens;
 
 const { getAppName, getEnvironmentName } = environment;
-const { spacings, colors, shape } = tokens;
-
-const MenuSection = styled.div`
-  border-bottom: 1px solid ${colors.ui.background__light.hex};
-  display: flex;
-  flex-direction: column;
-
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large} 0
-    ${spacings.comfortable.large};
-  > p {
-    margin-left: ${spacings.comfortable.small};
-  }
-`;
-
-const ApplicationName = styled.div`
-  display: flex;
-  align-items: flex-start;
-`;
-
-const ApplicationContent = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding-top: ${spacings.comfortable.small};
-  justify-items: center;
-`;
-
-const MenuFixedItem = styled.div`
-  > div {
-    display: grid;
-    grid-template-columns: 1fr 24px;
-    justify-content: space-between;
-    width: 100%;
-  }
-  &:hover {
-    background: ${colors.interactive.primary__selected_hover.hex};
-    cursor: pointer;
-  }
-  border-top: 1px solid ${colors.ui.background__light.hex};
-  outline: none !important;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large}
-    ${spacings.comfortable.medium} ${spacings.comfortable.large};
-  svg {
-    align-self: center;
-  }
-`;
-
-const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  > h6 {
-    text-transform: capitalize;
-  }
-`;
-
-const NoApplications = styled.div`
-  display: flex;
-  padding: ${spacings.comfortable.medium};
-`;
-
-const LoadingApplications = styled.div`
-  display: flex;
-  padding: ${spacings.comfortable.large};
-  align-items: center;
-  grid-column: span 3;
-`;
-
-interface ApplicationBoxProps {
-  $isSelected?: boolean;
-}
-
-export const ApplicationBox = styled.div<ApplicationBoxProps>`
-  display: flex;
-  height: 96px;
-  width: 64px;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 ${spacings.comfortable.medium};
-  gap: ${spacings.comfortable.medium};
-  align-items: center;
-  background: ${({ $isSelected }) =>
-    $isSelected ? colors.interactive.primary__selected_highlight.hex : 'none'};
-  border-radius: ${shape.corners.borderRadius};
-  &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
-    border-radius: ${shape.corners.borderRadius};
-  }
-`;
-
-const ApplicationButton = styled(Button)`
-  height: 96px;
-  width: 64px;
-  > span {
-    display: flex;
-    flex-direction: column;
-  }
-`;
 
 const environmentName = getEnvironmentName(
   import.meta.env.VITE_ENVIRONMENT_NAME
