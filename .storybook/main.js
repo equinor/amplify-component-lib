@@ -20,12 +20,4 @@ module.exports = {
     autodocs: true,
   },
   staticDirs: ['../static'],
-  viteFinal: async (config) => {
-    console.log('config');
-
-    config.resolve.alias['src/api/services/PortalService'] = require.resolve(
-      '../__mocks__/src/api/services/PortalService'
-    );
-    return config;
-  },
 };
