@@ -39,11 +39,11 @@ export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationI
 export {
   acquire,
   dasha,
-  depthConversion,
   fallback,
   fourDInsight,
   inPress,
   loggingQualification,
+  orca,
   portal,
   pwex,
   recap,

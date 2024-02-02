@@ -17,11 +17,16 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Pwex: FC<AppIconProps> = ({ size, iconOnly }) => (
+const Pwex: FC<AppIconProps> = ({
+  size,
+  iconOnly = false,
+  withHover = true,
+}) => (
   <ApplicationIconBase
     size={size}
     iconData={pwex}
     iconOnly={iconOnly}
+    withHover={withHover}
     shapes={shapes}
   />
 );

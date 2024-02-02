@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
-import { depthConversion } from './ApplicationIconCollection';
+import { orca } from './ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
   {
@@ -18,12 +18,13 @@ const shapes: ShapeProps[] = [
 ];
 
 const Orca = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly }, ref) => (
+  ({ size, iconOnly = false, withHover = true }, ref) => (
     <ApplicationIconBase
       size={size}
       iconOnly={iconOnly}
-      iconData={depthConversion}
+      iconData={orca}
       shapes={shapes}
+      withHover={withHover}
       ref={ref}
     />
   )
