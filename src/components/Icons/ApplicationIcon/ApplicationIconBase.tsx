@@ -14,6 +14,7 @@ const { colors, elevation } = tokens;
 interface ContainerProps {
   $size: number;
   $iconOnly: boolean;
+  $withHover: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -36,6 +37,9 @@ const Container = styled.div<ContainerProps>`
     z-index: 300;
     transform: scale(0.8);
   }
+  ${({ $withHover }) =>
+    $withHover &&
+    `
   cursor: pointer;
   &:hover {
     > svg {
@@ -50,6 +54,7 @@ const Container = styled.div<ContainerProps>`
       left: -93%;
     }
   }
+  `};
 `;
 
 export interface ShapeProps {
@@ -83,7 +88,8 @@ const Shape = styled.div<ShapeElementProps>`
 interface ApplicationIconBaseProps extends AppIconProps {
   iconData: IconData | IconDataWithColor[];
   shapes: ShapeProps[];
-  iconOnly?: boolean;
+  iconOnly: boolean;
+  withHover: boolean;
 }
 
 // Icon component from EDS can take whatever size we want in numbers, so casting size to any here is safe
@@ -91,10 +97,16 @@ interface ApplicationIconBaseProps extends AppIconProps {
 const ApplicationIconBase = forwardRef<
   HTMLDivElement,
   ApplicationIconBaseProps
->(({ size = 48 as any, iconData, shapes, iconOnly = false }, ref) => {
+>(({ size = 48 as any, iconData, shapes, iconOnly, withHover }, ref) => {
   if (iconOnly) {
     return (
-      <Container ref={ref} $size={size} $iconOnly={iconOnly}>
+      <Container
+        data-testid="application-icon"
+        ref={ref}
+        $size={size}
+        $iconOnly={iconOnly}
+        $withHover={withHover}
+      >
         {Array.isArray(iconData) ? (
           iconData.map((icon, index) => (
             <Icon
@@ -111,7 +123,13 @@ const ApplicationIconBase = forwardRef<
     );
   }
   return (
-    <Container ref={ref} $size={size} $iconOnly={iconOnly}>
+    <Container
+      data-testid="application-icon"
+      ref={ref}
+      $size={size}
+      $iconOnly={iconOnly}
+      $withHover={withHover}
+    >
       {Array.isArray(iconData) ? (
         iconData.map((icon, index) => (
           <Icon

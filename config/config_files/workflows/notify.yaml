@@ -10,6 +10,7 @@ on:
         required: true
 jobs:
   slack_notification:
+    environment: ${{ inputs.environment-name }}
     name: 💬 Slack notification
     runs-on: ubuntu-latest
     steps:

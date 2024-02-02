@@ -17,11 +17,16 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Recap: FC<AppIconProps> = ({ size, iconOnly }) => (
+const Recap: FC<AppIconProps> = ({
+  size,
+  iconOnly = false,
+  withHover = true,
+}) => (
   <ApplicationIconBase
     size={size}
     iconData={recap}
     iconOnly={iconOnly}
+    withHover={withHover}
     shapes={shapes}
   />
 );

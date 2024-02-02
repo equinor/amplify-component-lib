@@ -1,7 +1,7 @@
 name: Push
 on:
   push:
-    branch: [main]
+    branches: [main]
   workflow_dispatch:
 jobs:
   lint:

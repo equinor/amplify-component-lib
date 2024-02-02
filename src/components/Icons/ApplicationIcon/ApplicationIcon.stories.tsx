@@ -13,7 +13,7 @@ export default {
         '4dinsight',
         'acquire',
         'dasha',
-        'depth-conversion',
+        'orca',
         'recap',
         'portal',
         'pwex',

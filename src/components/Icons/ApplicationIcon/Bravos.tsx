@@ -17,12 +17,17 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Bravos: FC<AppIconProps> = ({ size, iconOnly }) => {
+const Bravos: FC<AppIconProps> = ({
+  size,
+  iconOnly = false,
+  withHover = true,
+}) => {
   return (
     <ApplicationIconBase
       size={size}
       iconData={bravos}
       iconOnly={iconOnly}
+      withHover={withHover}
       shapes={shapes}
     />
   );
