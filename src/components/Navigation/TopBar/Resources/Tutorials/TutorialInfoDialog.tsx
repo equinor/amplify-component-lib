@@ -72,7 +72,7 @@ const TutorialInfoDialog: FC<TutorialDialogProps> = ({
         {onCurrentPage.includes(true) && (
           <Wrapper>
             <Typography style={{ fontSize: '10px' }}>
-              ON CURRENT PAGE{' '}
+              ON CURRENT PAGE
             </Typography>
 
             {options.map((item, index) => {
@@ -94,7 +94,7 @@ const TutorialInfoDialog: FC<TutorialDialogProps> = ({
         {onOtherPages.includes(true) && (
           <Wrapper>
             <Typography style={{ fontSize: '10px' }}>
-              ON CURRENT PAGE{' '}
+              ON CURRENT PAGE
             </Typography>
 
             {options.map((item, index) => {
@@ -116,7 +116,6 @@ const TutorialInfoDialog: FC<TutorialDialogProps> = ({
       </DialogCustomContent>
       <Dialog.Actions>
         <Button variant="outlined" onClick={onClose}>
-          {' '}
           Back
         </Button>
       </Dialog.Actions>

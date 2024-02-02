@@ -3,11 +3,11 @@ import { FC } from 'react';
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import OptionalTooltip from '../../../../../DataDisplay/OptionalTooltip';
 import {
   NotificationsTypes,
   RequestReviewOrcaTypes,
 } from '../Notifications.types';
+import { OptionalTooltip } from 'src/components/index';
 
 import styled from 'styled-components';
 

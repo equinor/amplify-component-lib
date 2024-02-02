@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { fireEvent } from '@testing-library/dom';
 
-import { render, screen, userEvent } from '../../../../../../tests/test-utils';
 import {
   DefaultNotificationTypes,
   ExperienceReadyToPublishTypes,
@@ -13,6 +12,7 @@ import DeafultNotification from './DeafultNotification';
 import ReadyToBePublished from './ReadyToBePublished';
 import RequestReviewOrca from './RequestReviewOrca';
 import SystemUserDefault from './SystemUserDefault';
+import { render, screen, userEvent } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
 
@@ -117,13 +117,13 @@ const systemUserNotification: SystemUserTypes = {
   },
 };
 
-test(' DefaultNotification ', () => {
+test('DefaultNotification ', () => {
   render(<DeafultNotification {...defaultProps} />);
 
   expect(screen.getByTestId(NotificationsTypes.DEFAULT)).toBeInTheDocument();
   expect(screen.getByText(defaultProps.message)).toBeInTheDocument();
 });
-test(' SystemUser ', async () => {
+test('SystemUser ', async () => {
   const onClick = vi.fn();
   render(<SystemUserDefault {...systemUserNotification} onClick={onClick} />);
 
@@ -134,7 +134,7 @@ test(' SystemUser ', async () => {
   expect(onClick).toHaveBeenCalled();
 });
 
-test(' ReadyToBePublished ', () => {
+test('ReadyToBePublished ', () => {
   const onClick = vi.fn();
 
   render(<ReadyToBePublished {...readyToBePublished} onClick={onClick} />);
@@ -152,7 +152,7 @@ test(' ReadyToBePublished ', () => {
   expect(onClick).toHaveBeenCalled();
 });
 
-test(' RequestReviewOrca ', () => {
+test('RequestReviewOrca ', () => {
   const onClick = vi.fn();
 
   render(<RequestReviewOrca {...requestReviewOrca} onClick={onClick} />);

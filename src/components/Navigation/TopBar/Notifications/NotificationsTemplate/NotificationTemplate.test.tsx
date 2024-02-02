@@ -82,33 +82,6 @@ const systemNotifications:
   wellbore: faker.color.rgb(),
 };
 
-const system:
-  | ReadyToReportNotificationTypes
-  | RequestChangeOrcaTypes
-  | MergeBranchOrcaTypes
-  | Due3WeeksTypes
-  | ExperienceReadyToPublishTypes
-  | ReviewQANotificationsTypes
-  | DefaultNotificationTypes
-  | RequestReviewOrcaTypes = {
-  user: null,
-  notificationType: NotificationsTypes.DEFAULT,
-  applicationName: faker.animal.crocodilia(),
-  Read: faker.datatype.boolean(),
-  field: faker.animal.horse(),
-  time: faker.date.past().toString(),
-  onDelete: vi.fn(),
-
-  SequenceNumber: faker.number.int(),
-  toUser: {
-    displayName: faker.animal.rabbit(),
-    shortName: faker.animal.crocodilia(),
-    image: 'path/to/image.jpg',
-    userRole: faker.animal.fish(),
-  },
-  message: faker.lorem.sentence(),
-};
-
 const readyToBePublished: ExperienceReadyToPublishTypes = {
   user: {
     displayName: faker.animal.dog(),
@@ -299,15 +272,6 @@ test('renders user information correctly', () => {
     screen.getByText(fakeNotifications.user?.displayName ?? '')
   ).toBeInTheDocument();
   expect(screen.getByTestId(NotificationsTypes.DEFAULT)).toBeInTheDocument();
-});
-
-test('renders system user information correctly', () => {
-  render(<NotificationTemplate {...system} />);
-  // const applicationName = screen.getByText(system.applicationName);
-  // expect(applicationName).toBeInTheDocument();
-  console.log();
-  // expect(screen.getByText(system.applicationName)).toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
 });
 
 test('renders footer correctly', () => {

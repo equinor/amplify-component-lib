@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { FeedBackIcon } from '../../../../../index';
+import { FeedBackIcon } from 'src/index';
 
 import styled from 'styled-components';
 

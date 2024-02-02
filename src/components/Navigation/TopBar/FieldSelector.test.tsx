@@ -139,7 +139,7 @@ test("Shows 'No results' text when searching for something that doesn't exist", 
   ).toBeInTheDocument();
 });
 
-test("Show serach input if it's 4 or more fields ", async () => {
+test("Show search input if it's 4 or more fields ", async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} currentField={undefined} />);
   const user = userEvent.setup();

@@ -134,7 +134,7 @@ const ApplicationDrawer: FC = () => {
                   variant="body_short"
                   style={{ color: colors.text.static_icons__tertiary.hex }}
                 >
-                  You don´t have access to other applications
+                  You don&apos;t have access to other applications
                 </Typography>
               </NoApplications>
             ) : (

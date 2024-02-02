@@ -145,7 +145,6 @@ export const Primary: StoryFn = (args) => {
       setAllAsRead={() => null}
       showFilterOptions={true}
       notifications={items}
-      // hasChildren={args.hasChildren}
     />
   );
 };

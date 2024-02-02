@@ -22,7 +22,7 @@ const { colors } = tokens;
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
-  //gap: ${spacings.small};
+
   padding: ${spacings.medium_small} ${spacings.medium};
   div[role='search'] {
     > div {
@@ -32,7 +32,7 @@ const SearchContainer = styled.div`
       color: ${colors.text.static_icons__default.rgba};
     }
     input:focus {
-      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba};
+      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
 `;
@@ -66,7 +66,6 @@ const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
     props.$active &&
     `background: ${colors.interactive.primary__selected_highlight.rgba};
-     // border-bottom: 1px solid ${colors.interactive.primary__resting.rgba};
     `};
   > div {
     display: grid;

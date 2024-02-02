@@ -4,10 +4,6 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { date } from '../../../../../utils';
-import OptionalTooltip from '../../../../DataDisplay/OptionalTooltip';
-import ApplicationIcon from '../../../../Icons/ApplicationIcon/ApplicationIcon';
-import { ProfileAvatar } from '../../../../index';
 import DeafultNotification from './NotificationElements/DeafultNotification';
 import ExperienceDue3Weeks from './NotificationElements/ExperienceDue3Weeks';
 import MergedBranchOrca from './NotificationElements/MergedBranchOrca';
@@ -27,6 +23,10 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './Notifications.types';
+import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
+import ApplicationIcon from 'src/components/Icons/ApplicationIcon/ApplicationIcon';
+import { ProfileAvatar } from 'src/components/index';
+import { date } from 'src/utils';
 
 import styled from 'styled-components';
 

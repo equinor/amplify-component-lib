@@ -84,7 +84,6 @@ test('Shows fields selector instead of application name when field is send in to
 
   const button = screen.getByRole('button', { name: currentFiled.name ?? '' });
   expect(button).toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
 });
 
 test('Shows environment banner when not in production', () => {

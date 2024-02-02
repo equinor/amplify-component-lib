@@ -1,5 +1,4 @@
 import { tokens } from '@equinor/eds-tokens';
-import { decorator } from '../__mocks__/src/api/services/PortalService';
 
 const { colors } = tokens;
 
@@ -25,8 +24,3 @@ export const parameters = {
     ],
   },
 };
-
-const preview = {
-  decorators: [decorator],
-};
-export default preview;
