@@ -122,6 +122,26 @@ const notificationsData: (
     SequenceNumber: 4,
     field: 'Johan',
 
+    user: null,
+
+    toUser: {
+      userRole: 'Admins',
+      shortName: 'Captains',
+      displayName: 'Darin',
+      image: 'placeholder',
+    },
+    applicationName: 'Recap',
+    time: '2024-05-24T11:05:47.4372699+00:00',
+    well: 'test hej ',
+    commentsCount: 2,
+
+    notificationType: NotificationsTypes.DUE_3_WEEKS,
+  } as Due3WeeksTypes,
+  {
+    Read: true,
+    SequenceNumber: 4,
+    field: 'Johan',
+
     user: {
       userRole: 'Admin',
       shortName: 'Captain@equinor.com',
@@ -219,7 +239,9 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
 });
 
 test('Renders unread dot when unread = true', async () => {
-  render(<Notifications setAllAsRead={() => null} hasUnread />);
+  render(
+    <Notifications setAllAsRead={() => null} hasUnread {...notificationsData} />
+  );
   const user = userEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
@@ -228,6 +250,7 @@ test('Renders unread dot when unread = true', async () => {
   const unreadDot = screen.getByTestId('unread-dot');
   expect(unreadDot).toBeInTheDocument();
   expect(unreadDot).toBeVisible();
+  screen.logTestingPlaygroundURL();
 });
 
 test('Unread dot renders as expected', () => {
@@ -271,7 +294,7 @@ describe('Sorting notifications ', () => {
     const options = {
       notifications: notificationsData,
       showFilterOptions: true,
-      hasChildren: false,
+      children: false,
     };
 
     render(<Notifications setAllAsRead={() => null} {...options} />);
@@ -378,7 +401,7 @@ describe('Filtering notifications ', () => {
     const options = {
       notifications: notificationsData,
       showFilterOptions: true,
-      hasChildren: false,
+      children: false,
     };
 
     render(<Notifications setAllAsRead={() => null} {...options} />);

@@ -1,11 +1,12 @@
-import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import TutorialDialog, { tutorialOptions } from './TutorialDialog';
+import TutorialInfoDialog, {
+  tutorialOptions,
+} from 'src/components/Navigation/TopBar/Resources/Tutorials/TutorialInfoDialog';
 
 import { expect } from 'vitest';
 
@@ -41,7 +42,7 @@ const router = createMemoryRouter(
     {
       path: '/current',
       element: (
-        <TutorialDialog
+        <TutorialInfoDialog
           options={fakeTutorialOptions}
           open={true}
           onClose={onClose}
@@ -62,15 +63,7 @@ test('Tutorials dialog is open', async () => {
 });
 
 test('Check if on Current page', async () => {
-  render(
-    <MemoryRouter>
-      <TutorialDialog
-        options={fakeTutorialOptions}
-        open={true}
-        onClose={onClose}
-      />
-    </MemoryRouter>
-  );
+  render(<RouterProvider router={router} />);
 
   const tutorialPath = fakeTutorialOptions[0].pathName;
   const routePath = window.location.pathname;

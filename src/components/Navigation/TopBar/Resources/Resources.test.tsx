@@ -3,11 +3,8 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { wait } from '@testing-library/user-event/utils/misc/wait';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
-import TutorialDialog, { tutorialOptions } from './Tutorials/TutorialDialog';
 import { Resources } from './Resources';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
@@ -15,6 +12,7 @@ import {
   FeedbackContentType,
   UrgencyOption,
 } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
+import { tutorialOptions } from 'src/components/Navigation/TopBar/Resources/Tutorials/TutorialInfoDialog';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -178,7 +176,7 @@ const severityOptions = [
 
 describe('Resources', () => {
   test('Behaves as expected', async () => {
-    render(<Resources>Child</Resources>, {
+    render(<Resources showTutorials>Child</Resources>, {
       wrapper: Wrappers,
     });
     const user = userEvent.setup();
@@ -210,9 +208,28 @@ describe('Resources', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
 
     await user.click(button);
+
     await user.click(document.body);
 
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
+  });
+  test('Closes when click on close button ', async () => {
+    render(<Resources />, { wrapper: Wrappers });
+
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    const learnMore = screen.getByText(/Learn more/i);
+    expect(learnMore).toBeInTheDocument();
+
+    const menu = screen.getByRole('menu');
+
+    const closeButton = within(menu).getByRole('button');
+    await user.click(closeButton);
+    expect(learnMore).not.toBeInTheDocument();
   });
 
   test('hide props working as expected', async () => {
@@ -224,7 +241,6 @@ describe('Resources', () => {
     const button = screen.getByRole('button');
 
     await user.click(button);
-    screen.logTestingPlaygroundURL();
 
     const releaseNotes = screen.queryByText('Release notes');
     const suggest = screen.queryByText('Submit feedback');
@@ -234,7 +250,6 @@ describe('Resources', () => {
   });
 
   describe('Release notes', () => {
-    screen.logTestingPlaygroundURL();
     test('should close the dialog by clicking the close button inside', async () => {
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
@@ -635,7 +650,6 @@ describe('Resources', () => {
           expect(submitButton).not.toBeDisabled();
           await user.click(submitButton);
           await waitForMS(2500);
-          screen.logTestingPlaygroundURL();
 
           await waitFor(
             () => expect(screen.getAllByText(/success/i).length).toBe(2),
@@ -712,9 +726,9 @@ describe('Resources', () => {
     });
   });
 
-  describe('Open different parts in rescouses ', () => {
+  describe('Learn more ', () => {
     test('click on back button ', async () => {
-      render(<Resources />, { wrapper: Wrappers });
+      render(<Resources showTutorials />, { wrapper: Wrappers });
       const user = userEvent.setup();
 
       const button = screen.getByRole('button');
@@ -728,12 +742,10 @@ describe('Resources', () => {
 
       const backButton = screen.getByRole('button', { name: /back/i });
       await user.click(backButton);
-
-      screen.logTestingPlaygroundURL();
     });
 
     test(
-      'open portal ',
+      'open portal  ',
       async () => {
         window.open = vi.fn();
 
@@ -755,12 +767,14 @@ describe('Resources', () => {
 
         await waitFor(
           () =>
-            expect(screen.getByText(/transferring to/i)).toBeInTheDocument(),
+            expect(
+              screen.getByText(/Transferring you to application/i)
+            ).toBeInTheDocument(),
           {
             timeout: 8000,
           }
         );
-
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         await waitFor(
           () => expect(window.open).toHaveBeenCalledWith(PORTAL_URL, '_self'),
           {
@@ -771,7 +785,7 @@ describe('Resources', () => {
       { timeout: 10000 }
     );
 
-    test('open tutorials  ', async () => {
+    test('open tutorials from resources  ', async () => {
       const fakeTutorialOptions: tutorialOptions[] = [
         {
           description: faker.lorem.sentence(),
@@ -786,7 +800,9 @@ describe('Resources', () => {
         [
           {
             path: '/current',
-            element: <Resources tutorialOptions={fakeTutorialOptions} />,
+            element: (
+              <Resources tutorialOptions={fakeTutorialOptions} showTutorials />
+            ),
           },
         ],
         {
@@ -813,8 +829,7 @@ describe('Resources', () => {
       await user.click(openTutorials);
 
       const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
-
-      screen.logTestingPlaygroundURL();
+      expect(findCurrentPage).toBeInTheDocument();
     });
   });
 });

@@ -14,7 +14,6 @@ import {
 import ApplicationDrawer from './ApplicationDrawer';
 import { CancelablePromise } from 'src/api';
 import { AmplifyApplication } from 'src/api/models/Applications';
-import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
 import { waitFor } from 'src/tests/test-utils';
 
 import { expect, vi } from 'vitest';
@@ -22,7 +21,7 @@ import { expect, vi } from 'vitest';
 function fakeApplication(): AmplifyApplication {
   return {
     id: faker.string.uuid(),
-    name: faker.animal.dog(),
+    name: faker.animal.dog() + faker.animal.fish(),
     adGroups: [faker.animal.cat()],
     url: faker.animal.bird(),
     accessRoles: [
@@ -80,11 +79,7 @@ function Wrappers({ children }: { children: any }) {
 
 test('Should toggle menu and handle application click', async () => {
   rejectPromise = false;
-  render(
-    <Wrappers>
-      <ApplicationDrawer />
-    </Wrappers>
-  );
+  render(<ApplicationDrawer />, { wrapper: Wrappers });
 
   const user = userEvent.setup();
 
@@ -103,11 +98,7 @@ test('Should toggle menu and handle application click', async () => {
 
 test('No applications is shown ', async () => {
   rejectPromise = true;
-  render(
-    <Wrappers>
-      <ApplicationDrawer />
-    </Wrappers>
-  );
+  render(<ApplicationDrawer />, { wrapper: Wrappers });
   const user = userEvent.setup();
 
   const menuButton = await screen.findByRole('button');
@@ -124,11 +115,7 @@ test('No applications is shown ', async () => {
 
 test('Close application drawer  ', async () => {
   rejectPromise = false;
-  render(
-    <Wrappers>
-      <ApplicationDrawer />
-    </Wrappers>
-  );
+  render(<ApplicationDrawer />, { wrapper: Wrappers });
   const user = userEvent.setup();
 
   const menuButton = await screen.findByRole('button');
@@ -141,15 +128,11 @@ test('Close application drawer  ', async () => {
 });
 
 test(
-  'Click on a application',
+  'Click on a application ',
   async () => {
     rejectPromise = false;
     window.open = vi.fn();
-    render(
-      <Wrappers>
-        <ApplicationDrawer />
-      </Wrappers>
-    );
+    render(<ApplicationDrawer />, { wrapper: Wrappers });
 
     const user = userEvent.setup();
 
@@ -163,7 +146,9 @@ test(
 
     const appIndex = faker.number.int({ min: 0, max: fakeApps.length - 1 });
 
-    const firstApp = screen.getAllByRole('button')[appIndex];
+    const firstApp = screen.getByRole('button', {
+      name: fakeApps[appIndex].name,
+    });
 
     await user.click(firstApp);
 
@@ -179,17 +164,25 @@ test(
         timeout: 8000,
       }
     );
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await waitFor(
+      () =>
+        expect(window.open).toHaveBeenCalledWith(
+          fakeApps[appIndex].url,
+          '_self'
+        ),
+      {
+        timeout: 7000,
+      }
+    );
   },
-  { timeout: 10000 }
+  { timeout: 20000 }
 );
 
 test('Click on more access button', async () => {
   rejectPromise = false;
-  render(
-    <Wrappers>
-      <ApplicationDrawer />
-    </Wrappers>
-  );
+  render(<ApplicationDrawer />, { wrapper: Wrappers });
 
   const user = userEvent.setup();
 
@@ -201,82 +194,3 @@ test('Click on more access button', async () => {
   const transitToApplication = screen.queryByText('Open link');
   expect(transitToApplication).toBeInTheDocument();
 });
-
-test(
-  'Loading to application',
-  async () => {
-    rejectPromise = false;
-    const applicationsFaker = faker.animal.dog();
-    const url = faker.animal.cow();
-    window.open = vi.fn();
-    const onclose = vi.fn();
-
-    render(
-      <TransferToAppDialog
-        applicationName={applicationsFaker}
-        portal={false}
-        onClose={onclose}
-        url={url}
-      />
-    );
-
-    const findTransferText = screen.getByText(
-      /Transferring you to application/i
-    );
-    expect(findTransferText).toBeInTheDocument();
-
-    await waitForElementToBeRemoved(
-      () => screen.getByText(/Transferring you to application/i),
-      {
-        timeout: 8000,
-      }
-    );
-
-    await waitFor(
-      () => expect(window.open).toHaveBeenCalledWith(url, '_self'),
-      {
-        timeout: 5000,
-      }
-    );
-  },
-  { timeout: 10000 }
-);
-
-test(
-  'When loading is done, transfer to Portal',
-  async () => {
-    rejectPromise = false;
-    const applicationsFaker = faker.animal.dog();
-    window.open = vi.fn();
-
-    const portalUrl = faker.animal.cetacean();
-
-    const onClose = vi.fn();
-    render(
-      <TransferToAppDialog
-        applicationName={applicationsFaker}
-        portal
-        onClose={onClose}
-        url={portalUrl}
-      />
-    );
-
-    const openLink = screen.getByText(/open link/i);
-    expect(openLink).toBeInTheDocument();
-
-    await waitFor(
-      () => expect(screen.getByText(/transferring to/i)).toBeInTheDocument(),
-      {
-        timeout: 8000,
-      }
-    );
-
-    await waitFor(
-      () => expect(window.open).toHaveBeenCalledWith(portalUrl, '_self'),
-      {
-        timeout: 5000,
-      }
-    );
-  },
-  { timeout: 10000 }
-);
