@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 
 import {
   Button,
@@ -10,6 +10,7 @@ import {
 import { close } from '@equinor/eds-icons';
 
 import AnimatedCheckmark from 'src/components/Feedback/AnimatedCheckmark';
+import { useFakeProgress } from 'src/hooks';
 import { spacings } from 'src/style';
 import string from 'src/utils/string';
 
@@ -64,41 +65,12 @@ interface PortalTransitProps {
 
 const TransferToAppDialog: FC<PortalTransitProps> = ({
   onClose,
-
   applicationName,
   url,
 }) => {
-  const [finished, setFinished] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  const handleOnChangeApplication = useCallback((url: string) => {
-    window.open(url, '_self');
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          setFinished(true);
-          return 100;
-        }
-        const diff = Math.random() * 15;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 250);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (finished) {
-      setTimeout(() => {
-        handleOnChangeApplication(url);
-      }, 4000);
-    }
-  }, [finished, handleOnChangeApplication, url]);
+  const { finished, progress } = useFakeProgress({
+    onDone: () => window.open(url, '_self'),
+  });
 
   return (
     <>
