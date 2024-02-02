@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 
 import {
   LinearProgress as EDSLinearProgress,
@@ -6,9 +6,10 @@ import {
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import string from '../../../utils/string';
 import AnimatedCheckmark from '../AnimatedCheckmark';
+import { useFakeProgress } from 'src/hooks';
 import { spacings } from 'src/style';
+import string from 'src/utils/string';
 
 import styled from 'styled-components';
 const { colors } = tokens;
@@ -53,33 +54,7 @@ const ChangingField: FC<ChangingFieldProps> = ({
   onChangedField,
   finishedText,
 }) => {
-  const [finished, setFinished] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          setFinished(true);
-          return 100;
-        }
-        const diff = Math.random() * 15;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 250);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (finished) {
-      setTimeout(() => {
-        onChangedField();
-      }, 4000);
-    }
-  }, [finished, onChangedField]);
+  const { finished, progress } = useFakeProgress({ onDone: onChangedField });
 
   return (
     <Container>
