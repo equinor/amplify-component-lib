@@ -1,57 +1,36 @@
-import { useEffect, useState } from 'react';
-
 import { faker } from '@faker-js/faker';
 
 import { useFakeProgress } from './useFakeProgress';
-import { render, waitFor } from 'src/tests/test-utils';
+import { renderHook } from 'src/tests/test-utils';
 
-function FakeComponent({
-  changeFinishMs,
-  changeProgressMs,
-}: {
-  changeFinishMs: boolean;
-  changeProgressMs: boolean;
-}) {
-  const [fakeFinishMs, setFinishMs] = useState(
-    faker.number.int({ min: 1000, max: 4000 })
-  );
-  const [fakeProgressMs, setProgressMs] = useState(
-    faker.number.int({ min: 100, max: 500 })
+test('Throws error when changing progressMs prop', () => {
+  const onDone = vi.fn();
+  const fakeProgressMs = faker.number.int({ min: 200, max: 1000 });
+  const { rerender } = renderHook(
+    ({ progressDelayMs }) => useFakeProgress({ onDone, progressDelayMs }),
+    { initialProps: { progressDelayMs: fakeProgressMs } }
   );
 
-  const { progress } = useFakeProgress({
-    onDone: () => null,
-    progressDelayMs: fakeProgressMs,
-    finishedTimeoutMs: fakeFinishMs,
-  });
-
-  useEffect(() => {
-    if (changeProgressMs) {
-      setTimeout(() => {
-        setProgressMs((prev) => prev + 10);
-      }, 100);
-    }
-  }, [changeProgressMs]);
-
-  useEffect(() => {
-    if (changeFinishMs) {
-      setTimeout(() => {
-        setFinishMs((prev) => prev + 10);
-      }, 100);
-    }
-  }, [changeFinishMs]);
-
-  return <div>{progress}</div>;
-}
-
-test('Throws error if changing finish ms during run', async () => {
-  console.error = vi.fn();
-  render(<FakeComponent changeFinishMs={true} changeProgressMs={false} />);
-  await waitFor(() => expect(console.error).toHaveBeenCalled());
+  expect(() =>
+    rerender({
+      progressDelayMs:
+        fakeProgressMs + faker.number.int({ min: 100, max: 1000 }),
+    })
+  ).toThrowError();
 });
 
-test('Throws error if changing progress ms during run', async () => {
-  console.error = vi.fn();
-  render(<FakeComponent changeFinishMs={false} changeProgressMs={true} />);
-  await waitFor(() => expect(console.error).toHaveBeenCalled());
+test('Throws error when changing finishMs prop', () => {
+  const onDone = vi.fn();
+  const fakeFinishMs = faker.number.int({ min: 200, max: 1000 });
+  const { rerender } = renderHook(
+    ({ finishedTimeoutMs }) => useFakeProgress({ onDone, finishedTimeoutMs }),
+    { initialProps: { finishedTimeoutMs: fakeFinishMs } }
+  );
+
+  expect(() =>
+    rerender({
+      finishedTimeoutMs:
+        fakeFinishMs + faker.number.int({ min: 100, max: 1000 }),
+    })
+  ).toThrowError();
 });
