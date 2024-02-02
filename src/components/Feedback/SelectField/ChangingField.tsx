@@ -56,8 +56,6 @@ const ChangingField: FC<ChangingFieldProps> = ({
 }) => {
   const { finished, progress } = useFakeProgress({ onDone: onChangedField });
 
-  console.log('finished', finished);
-
   return (
     <Container>
       {!finished ? (
