@@ -26,8 +26,6 @@ const Container = styled.div<ContainerProps>`
   width: fit-content;
 
   svg {
-    //width: calc(24px * 6);
-    //height: calc(24px * 6);
     width: ${({ $isApplication }) =>
       $isApplication ? '84px' : 'calc(24px * 6)'};
     height: ${({ $isApplication }) =>
@@ -46,9 +44,6 @@ interface AnimatedCheckmarkProps {
 const AnimatedCheckmark: FC<AnimatedCheckmarkProps> = ({ portal }) => (
   <Container $isApplication={portal}>
     <svg
-      // width={portal ? '84' : '43'}
-      // height={portal ? '84' : '43'}
-      // viewBox={portal ? '-10 0 84 84' : '0 0 43 43'}
       width="43"
       height="43"
       viewBox="0 0 43 43"
