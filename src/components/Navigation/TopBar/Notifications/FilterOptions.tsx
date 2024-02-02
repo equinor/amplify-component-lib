@@ -8,7 +8,6 @@ import {
   sort,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useOutsideClick } from '@equinor/eds-utils';
 
 import {
   FilterNotification,
@@ -140,26 +139,6 @@ const FilterOptions: FC<FilterOptionsProps> = ({
     }));
   };
 
-  useOutsideClick(filterMenuRef.current, (event) => {
-    if (
-      openFilter &&
-      filterRef.current !== null &&
-      !filterRef.current?.contains(event.target as Node)
-    ) {
-      onClickCloseFilter();
-    }
-  });
-
-  useOutsideClick(sortMenuRef.current, (event) => {
-    if (
-      openSort &&
-      sortRef.current !== null &&
-      !sortRef.current?.contains(event.target as Node)
-    ) {
-      onClickCloseSort();
-    }
-  });
-
   return (
     <>
       <FilterContainer>
@@ -194,13 +173,17 @@ const FilterOptions: FC<FilterOptionsProps> = ({
           anchorEl={filterRef.current}
           placement="bottom-start"
           ref={filterMenuRef}
+          onClose={onClickCloseFilter}
         >
           <Heading>
             <Typography group="navigation" variant="label">
               Filter notifications
             </Typography>
           </Heading>
-          <MenuItem onClick={() => handleFilter(FilterNotification.USER)}>
+          <MenuItem
+            onClick={() => handleFilter(FilterNotification.USER)}
+            closeMenuOnClick={false}
+          >
             <Icon
               data={
                 selectedFilter[FilterNotification.USER]
@@ -210,7 +193,10 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> User messages </Typography>
           </MenuItem>
-          <MenuItem onClick={() => handleFilter(FilterNotification.SYSTEM)}>
+          <MenuItem
+            onClick={() => handleFilter(FilterNotification.SYSTEM)}
+            closeMenuOnClick={false}
+          >
             <Icon
               data={
                 selectedFilter[FilterNotification.SYSTEM]
@@ -220,7 +206,10 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> System messages </Typography>
           </MenuItem>
-          <MenuItem onClick={() => handleFilter(FilterNotification.UNREAD)}>
+          <MenuItem
+            onClick={() => handleFilter(FilterNotification.UNREAD)}
+            closeMenuOnClick={false}
+          >
             <Icon
               data={
                 selectedFilter[FilterNotification.UNREAD]
@@ -238,13 +227,17 @@ const FilterOptions: FC<FilterOptionsProps> = ({
           anchorEl={sortRef.current}
           placement="bottom-start"
           ref={sortMenuRef}
+          onClose={onClickCloseSort}
         >
           <Heading>
             <Typography group="navigation" variant="label">
               Sort notifications
             </Typography>
           </Heading>
-          <MenuItem onClick={() => handleSorting(SortNotification.NEW_OLDEST)}>
+          <MenuItem
+            onClick={() => handleSorting(SortNotification.NEW_OLDEST)}
+            closeMenuOnClick={false}
+          >
             <Icon
               data={
                 selectedSort[SortNotification.NEW_OLDEST]
@@ -254,7 +247,10 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> Newest to oldest </Typography>
           </MenuItem>
-          <MenuItem onClick={() => handleSorting(SortNotification.OLD_NEWEST)}>
+          <MenuItem
+            onClick={() => handleSorting(SortNotification.OLD_NEWEST)}
+            closeMenuOnClick={false}
+          >
             <Icon
               data={
                 selectedSort[SortNotification.OLD_NEWEST]
@@ -264,7 +260,10 @@ const FilterOptions: FC<FilterOptionsProps> = ({
             />
             <Typography> Oldest to newest </Typography>
           </MenuItem>
-          <MenuItem onClick={() => handleSorting(SortNotification.UNREAD)}>
+          <MenuItem
+            onClick={() => handleSorting(SortNotification.UNREAD)}
+            closeMenuOnClick={false}
+          >
             <Icon
               data={
                 selectedSort[SortNotification.UNREAD]
