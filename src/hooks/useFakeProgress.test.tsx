@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { waitFor } from '@testing-library/react';
 
 import { useFakeProgress } from './useFakeProgress';
 import { renderHook } from 'src/tests/test-utils';
@@ -17,6 +18,7 @@ test('Throws error when changing progressMs prop', () => {
         fakeProgressMs + faker.number.int({ min: 100, max: 1000 }),
     })
   ).toThrowError();
+  expect(onDone).not.toHaveBeenCalled();
 });
 
 test('Throws error when changing finishMs prop', () => {
@@ -33,4 +35,20 @@ test('Throws error when changing finishMs prop', () => {
         fakeFinishMs + faker.number.int({ min: 100, max: 1000 }),
     })
   ).toThrowError();
+  expect(onDone).not.toHaveBeenCalled();
+});
+
+test('Calls onDone when finished', async () => {
+  const onDone = vi.fn();
+  renderHook(() =>
+    useFakeProgress({
+      onDone: onDone,
+      progressDelayMs: 100,
+      finishedTimeoutMs: 100,
+    })
+  );
+
+  await waitFor(() => expect(onDone).toHaveBeenCalledTimes(1), {
+    timeout: 2000,
+  });
 });
