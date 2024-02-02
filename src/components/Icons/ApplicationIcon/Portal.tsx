@@ -18,12 +18,13 @@ const shapes: ShapeProps[] = [
 ];
 
 const Portal = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly }, ref) => (
+  ({ size, iconOnly, withHover }, ref) => (
     <ApplicationIconBase
       ref={ref}
       size={size}
       iconOnly={iconOnly}
       iconData={portal}
+      withHover={withHover}
       shapes={shapes}
     />
   )

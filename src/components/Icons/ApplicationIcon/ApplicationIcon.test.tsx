@@ -1,21 +1,23 @@
 import { IconData } from '@equinor/eds-icons';
 
-import { render, screen } from '../../../tests/test-utils';
 import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
 import {
   acquire,
   bravos,
   dasha,
-  depthConversion,
   fallback,
   fourDInsight,
   IconDataWithColor,
   inPress,
   loggingQualification,
+  orca,
   portal,
   pwex,
   recap,
 } from './ApplicationIconCollection';
+import { render, screen, userEvent } from 'src/tests/test-utils';
+
+import { expect, test } from 'vitest';
 
 const nameOptions: ApplicationIconProps['name'][] = [
   'acquire',
@@ -43,7 +45,7 @@ const icons: IconsDict = {
   portal: portal,
   'logging-qualification': loggingQualification,
   pwex: pwex,
-  orca: depthConversion,
+  orca: orca,
   inpress: inPress,
   bravos: bravos,
 };
@@ -131,5 +133,27 @@ test('Renders without shapes when iconOnly=true when single icon', async () => {
 test('Renders equinor logo as fallback when iconOnly=true', () => {
   render(<ApplicationIcon name="hei" iconOnly />);
 
-  expect(screen.getByTestId('logo')).toBeInTheDocument();
+  const path = screen.getByTestId('eds-icon-path');
+
+  expect(path).toHaveAttribute('d', fallback.svgPathData);
+});
+
+test('Shows hover effects when withHover=true', async () => {
+  render(<ApplicationIcon name="acquire" withHover />);
+  const user = userEvent.setup();
+
+  const applicationIcon = screen.getByTestId('application-icon');
+
+  await user.hover(applicationIcon);
+  expect(applicationIcon).toHaveStyleRule('cursor', 'pointer');
+});
+
+test("Doesn't hover effects when withHover=false", async () => {
+  render(<ApplicationIcon name="acquire" withHover={false} />);
+  const user = userEvent.setup();
+
+  const applicationIcon = screen.getByTestId('application-icon');
+
+  await user.hover(applicationIcon);
+  expect(applicationIcon).not.toHaveStyleRule('cursor');
 });

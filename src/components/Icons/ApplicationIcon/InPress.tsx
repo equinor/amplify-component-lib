@@ -18,12 +18,13 @@ const shapes: ShapeProps[] = [
 ];
 
 const InPress = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly }, ref) => (
+  ({ size, iconOnly, withHover }, ref) => (
     <ApplicationIconBase
       ref={ref}
       size={size}
       iconData={inPress}
       iconOnly={iconOnly}
+      withHover={withHover}
       shapes={shapes}
     />
   )

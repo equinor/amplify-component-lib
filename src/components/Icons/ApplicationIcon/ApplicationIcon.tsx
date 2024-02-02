@@ -46,15 +46,29 @@ export interface ApplicationIconProps {
   name: ApplicationName | string;
   size?: 16 | 18 | 24 | 32 | 40 | 48 | number;
   iconOnly?: boolean;
+  withHover?: boolean;
 }
 
 const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
-  ({ name, size = 48, iconOnly = false }, ref) => {
+  ({ name, size = 48, iconOnly = false, withHover = false }, ref) => {
     const appData = apps.find((app) => app.appName === name.toLowerCase());
 
     if (appData === undefined)
-      return <Fallback size={size} ref={ref} iconOnly={iconOnly} />;
-    return <appData.component size={size} iconOnly={iconOnly} />;
+      return (
+        <Fallback
+          size={size}
+          ref={ref}
+          iconOnly={iconOnly}
+          withHover={withHover}
+        />
+      );
+    return (
+      <appData.component
+        size={size}
+        iconOnly={iconOnly}
+        withHover={withHover}
+      />
+    );
   }
 );
 
