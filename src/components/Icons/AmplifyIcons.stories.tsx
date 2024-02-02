@@ -10,13 +10,14 @@ import {
   amplify_info_small,
   amplify_lwd,
   amplify_sharepoint,
+  amplify_small_portal,
   amplify_snail,
   amplify_sort_small,
   amplify_success,
+  amplify_tutorials,
   amplify_wellbore,
   amplify_wireline_cased_hole,
   amplify_wireline_open_hole,
-  amplify_tutorials, amplify_small_portal
 } from './AmplifyIcons';
 
 const allIcons = {
@@ -70,7 +71,7 @@ export default {
         'amplify_h4',
         'amplify_sharepoint',
         'amplify_tutorials',
-          'amplify_small_portal',
+        'amplify_small_portal',
         'amplify_sort_small',
         'amplify_info_small',
       ],
