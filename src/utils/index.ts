@@ -5,7 +5,6 @@ import errors from './errors';
 import exportComponent from './export';
 import favicon from './favicon';
 import map from './map';
-import portal from './portal';
 import size from './size';
 import sort from './sort';
 import string from './string';
@@ -20,7 +19,6 @@ export {
   exportComponent,
   favicon,
   map,
-  portal,
   size,
   sort,
   string,

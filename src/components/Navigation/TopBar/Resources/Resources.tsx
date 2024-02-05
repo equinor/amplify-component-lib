@@ -28,11 +28,11 @@ import Tutorial, {
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { spacings } from 'src/style';
-import portal from 'src/utils/portal';
+import { environment } from 'src/utils';
 
 import styled from 'styled-components';
 
-const { PORTAL_URL_WITHOUT_LOCALHOST } = portal;
+const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
 const { colors } = tokens;
 
 const FeedbackFormDialog = styled(Dialog)`

@@ -5,9 +5,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
 import FilterHeader from './FilterHeader';
-import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, userEvent } from 'src/tests/test-utils';
+import { EnvironmentType } from 'src/types/Environment';
 
 const Wrappers = ({ children }: { children: any }) => {
   const queryClient = new QueryClient();

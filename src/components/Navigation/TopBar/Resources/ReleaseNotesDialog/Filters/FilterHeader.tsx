@@ -16,8 +16,8 @@ import {
   FilterValues,
   SieveValue,
 } from 'src/components/Inputs/Sieve/Sieve.types';
-import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
+import { EnvironmentType } from 'src/types/Environment';
 import { environment } from 'src/utils';
 
 const { getEnvironmentName, getAppName } = environment;

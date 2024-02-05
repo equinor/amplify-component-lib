@@ -14,7 +14,13 @@ export default defineConfig({
       'src/tests/mockInteractionObserver.ts',
       'src/tests/mockMatchMedia.ts',
     ],
-    exclude: ['dist', 'node_modules', 'src/tests', 'src/intro.stories.mdx'],
+    exclude: [
+      'dist',
+      'node_modules',
+      'src/tests',
+      'src/intro.stories.mdx',
+      'src/utils/portal.ts',
+    ],
     coverage: {
       enabled: true,
       provider: 'v8',

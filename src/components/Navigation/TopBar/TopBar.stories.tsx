@@ -14,8 +14,8 @@ import SideBarProvider from '../../../providers/SideBarProvider';
 import Template from '../../Template/Template';
 import SideBar from '../SideBar';
 import { MenuItemType } from '../SideBar/MenuItem';
-import { EnvironmentType } from './TopBar';
 import TopBar from '.';
+import { EnvironmentType } from 'src/types/Environment';
 
 const { colors } = tokens;
 
