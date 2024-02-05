@@ -74,6 +74,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   const [shortNameFromParams, setShortNameFromParams] = useState<
     string | undefined
   >(undefined);
+
   const [currentStep, setCurrentStep] = useState(0);
   const [allElementsToHighlight, setAllElementsToHighlight] = useState<
     HTMLElement[] | undefined

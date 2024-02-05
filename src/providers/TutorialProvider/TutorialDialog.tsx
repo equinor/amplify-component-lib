@@ -15,9 +15,9 @@ import {
   NavigateSteps,
   StyledTutorialDialog,
 } from './TutorialProvider.styles';
-import { TutorialDialogPosition } from './TutorialProvider.types';
 import { getBestPositionWithoutOverlap } from './TutorialProvider.utils';
 import TutorialStepIndicator from './TutorialStepIndicator';
+import { TutorialPosition } from 'src/api';
 
 const TutorialDialog: FC = () => {
   const {
@@ -56,7 +56,7 @@ const TutorialDialog: FC = () => {
     }
   }, [currentStepObject, customStepComponents]);
 
-  const dialogPosition: TutorialDialogPosition | undefined = useMemo(() => {
+  const dialogPosition: TutorialPosition | undefined = useMemo(() => {
     if (
       !activeTutorial ||
       !viewportWidth ||
@@ -72,7 +72,7 @@ const TutorialDialog: FC = () => {
         dialogRef.current.getBoundingClientRect()
       );
     }
-    return TutorialDialogPosition.BOTTOM_RIGHT;
+    return TutorialPosition.BOTTOM_RIGHT;
   }, [
     activeTutorial,
     viewportWidth,
@@ -82,25 +82,24 @@ const TutorialDialog: FC = () => {
   ]);
 
   const dialogPositionStyle: CSSProperties | undefined = useMemo(() => {
-    if (!dialogPosition || dialogPosition === TutorialDialogPosition.CENTER)
-      return;
-    switch (dialogPosition as TutorialDialogPosition) {
-      case TutorialDialogPosition.TOP_LEFT:
+    if (!dialogPosition || dialogPosition === TutorialPosition.CENTER) return;
+    switch (dialogPosition as TutorialPosition) {
+      case TutorialPosition.TOP_LEFT:
         return {
           marginTop: `${DIALOG_EDGE_MARGIN}px`,
           marginLeft: `${DIALOG_EDGE_MARGIN}px`,
         };
-      case TutorialDialogPosition.TOP_RIGHT:
+      case TutorialPosition.TOP_RIGHT:
         return {
           marginTop: `${DIALOG_EDGE_MARGIN}px`,
           marginRight: `${DIALOG_EDGE_MARGIN}px`,
         };
-      case TutorialDialogPosition.BOTTOM_LEFT:
+      case TutorialPosition.BOTTOM_LEFT:
         return {
           marginBottom: `${DIALOG_EDGE_MARGIN}px`,
           marginLeft: `${DIALOG_EDGE_MARGIN}px`,
         };
-      case TutorialDialogPosition.BOTTOM_RIGHT:
+      case TutorialPosition.BOTTOM_RIGHT:
       default:
         return {
           marginBottom: `${DIALOG_EDGE_MARGIN}px`,

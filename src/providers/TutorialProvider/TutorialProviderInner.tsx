@@ -3,6 +3,8 @@ import { useLocation } from 'react-router';
 
 import { Button, Typography } from '@equinor/eds-core-react';
 
+import { EnvironmentType } from '../../components';
+import { environment } from '../../utils';
 import TutorialDialog from './TutorialDialog';
 import { useTutorial } from './TutorialProvider';
 import {
@@ -14,6 +16,8 @@ import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
 import { HighlightingInfo } from './TutorialProvider.types';
 import { Tutorial } from 'src/api';
+
+const { getEnvironmentName } = environment;
 
 const TutorialProviderInner: FC = () => {
   const { pathname } = useLocation();
@@ -86,6 +90,7 @@ const TutorialProviderInner: FC = () => {
       shortNameFromParams &&
       tutorialsForPath.some((item) => item.shortName === shortNameFromParams)
     ) {
+      console.log('remove item');
       window.localStorage.removeItem(shortNameFromParams);
     }
   }, [
@@ -103,7 +108,7 @@ const TutorialProviderInner: FC = () => {
 
   useEffect(() => {
     if (tutorialsForPath.length < 1) return;
-
+    console.log('run useEf');
     const tutorialToRun = tutorialsForPath.find(
       (item) =>
         window.localStorage.getItem(item.shortName) !==
@@ -120,6 +125,15 @@ const TutorialProviderInner: FC = () => {
     setTutorialError(false);
     setActiveTutorial(undefined);
   };
+
+  if (
+    !activeTutorial?.showInProd &&
+    getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) ===
+      EnvironmentType.LOCALHOST
+  )
+    return null;
+
+  if (!activeTutorial?.willPopUp && !shortNameFromParams) return null;
 
   // Show error dialog if the user was expecting a tutorial (opened a link that had tutorial name as parameter)
   if (tutorialError && shortNameFromParams) {
@@ -154,7 +168,9 @@ const TutorialProviderInner: FC = () => {
             width: `${highlightingInfo.width}px`,
             height: `${highlightingInfo.height}px`,
           }}
-        />
+        >
+          this is the highlighter
+        </Highlighter>
       )}
       <TutorialDialog />
     </>

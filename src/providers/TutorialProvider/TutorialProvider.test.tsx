@@ -62,11 +62,19 @@ interface FakeTutorialProps {
   withNoCustomSteps?: boolean;
 }
 
+vi.mock('src/providers/TutorialProvider/TutorialProvider.hooks.ts', () => {
+  return { useGetTutorialsForApp: () => [] };
+});
+
 const fakeTutorial = (props?: FakeTutorialProps) => {
   return {
+    id: 'testid',
     name: 'Storybook tutorial',
     shortName: TEST_TUTORIAL_SHORT_NAME,
     path: '/path',
+    application: 'test',
+    showInProd: false,
+    willPopUp: false,
     dynamicPositioning: props?.withDynamicPositioning,
     steps: [
       {
@@ -189,9 +197,12 @@ describe('TutorialProvider', () => {
     const router = getMemoryRouter({ tutorial });
     render(<RouterProvider router={router} />);
 
+    screen.logTestingPlaygroundURL();
     const highlighterElement = screen.queryByTestId(
       TUTORIAL_HIGHLIGHTER_DATATEST_ID
     );
+
+    console.log(highlighterElement);
 
     expect(highlighterElement).toBeInTheDocument();
 
