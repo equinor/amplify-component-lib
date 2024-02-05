@@ -14,13 +14,7 @@ export default defineConfig({
       'src/tests/mockInteractionObserver.ts',
       'src/tests/mockMatchMedia.ts',
     ],
-    exclude: [
-      'dist',
-      'node_modules',
-      'src/tests',
-      'src/intro.stories.mdx',
-      'src/utils/portal.ts',
-    ],
+    exclude: ['dist', 'node_modules', 'src/tests', 'src/intro.stories.mdx'],
     coverage: {
       enabled: true,
       provider: 'v8',
@@ -39,7 +33,6 @@ export default defineConfig({
         'src/components/Feedback/Skeleton/**',
         'src/utils/auth_environment.ts',
         'src/utils/export.ts',
-        'src/utils/portal.ts',
         'src/providers/AuthProvider/**',
         'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreen.ts',

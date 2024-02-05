@@ -119,8 +119,6 @@ export const Resources: FC<ResourcesProps> = ({
     closeMenu();
   };
 
-  // const handleTutorialClick = () => setOpenTutorials((prev) => !prev);
-
   const resourceSectionContent = useMemo(() => {
     switch (showingResourceSection) {
       case 'learn-more':
