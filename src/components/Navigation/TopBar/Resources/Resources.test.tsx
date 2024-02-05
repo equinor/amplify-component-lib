@@ -24,11 +24,11 @@ import {
   waitFor,
   within,
 } from 'src/tests/test-utils';
-import portal from 'src/utils/portal';
+import { environment } from 'src/utils';
 
 import { beforeEach, describe, expect } from 'vitest';
 
-const { PORTAL_URL_WITHOUT_LOCALHOST } = portal;
+const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
 
 const releaseNotes = [
   {
@@ -790,6 +790,7 @@ describe('Resources', () => {
       },
       { timeout: 15000 }
     );
+
     test('Close open portal by clicking cancel ', async () => {
       render(<Resources />, { wrapper: Wrappers });
 
@@ -815,7 +816,7 @@ describe('Resources', () => {
       expect(openLink).not.toBeInTheDocument();
     });
 
-    test('open tutorials from resources  ', async () => {
+    test('open tutorials from resources and close tutorials  ', async () => {
       const fakeTutorialOptions: tutorialOptions[] = [
         {
           description: faker.lorem.sentence(),
@@ -860,6 +861,11 @@ describe('Resources', () => {
 
       const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
       expect(findCurrentPage).toBeInTheDocument();
+
+      const closeButton = screen.getByTestId('close-tutorial-dialog');
+      await user.click(closeButton);
+
+      expect(findCurrentPage).not.toBeInTheDocument();
     });
   });
 });
