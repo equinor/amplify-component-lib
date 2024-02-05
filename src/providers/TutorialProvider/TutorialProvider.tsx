@@ -75,7 +75,6 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   );
   const [tutorialError, setTutorialError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const shortNameFromParams = useRef<string | null>(null);
   const [shortNameFromParams, setShortNameFromParams] = useState<
     string | undefined
   >(undefined);
