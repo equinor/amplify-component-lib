@@ -6,5 +6,5 @@
 import type { TutorialPosition } from './TutorialPosition';
 
 export type TutorialStepBase = {
-  position: TutorialPosition;
+  position?: TutorialPosition;
 };

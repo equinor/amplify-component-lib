@@ -15,8 +15,8 @@ import {
   CustomTutorialStep,
   GenericTutorialStep,
   Tutorial,
-  TutorialDialogPosition,
-} from './TutorialProvider.types';
+  TutorialPosition,
+} from 'src/api';
 
 import { beforeEach, describe, expect } from 'vitest';
 
@@ -27,15 +27,15 @@ const getMarginCss = (type: string) => {
   return `margin-${type}: ${DIALOG_EDGE_MARGIN}px;`;
 };
 
-export const getStyleStringForPosition = (position: TutorialDialogPosition) => {
+export const getStyleStringForPosition = (position: TutorialPosition) => {
   switch (position) {
-    case TutorialDialogPosition.TOP_LEFT:
+    case TutorialPosition.TOP_LEFT:
       return `${getMarginCss('top')} ${getMarginCss('left')}`;
-    case TutorialDialogPosition.TOP_RIGHT:
+    case TutorialPosition.TOP_RIGHT:
       return `${getMarginCss('top')} ${getMarginCss('right')}`;
-    case TutorialDialogPosition.BOTTOM_LEFT:
+    case TutorialPosition.BOTTOM_LEFT:
       return `${getMarginCss('bottom')} ${getMarginCss('left')}`;
-    case TutorialDialogPosition.BOTTOM_RIGHT:
+    case TutorialPosition.BOTTOM_RIGHT:
       return `${getMarginCss('bottom')} ${getMarginCss('right')}`;
     default:
       return undefined;
@@ -56,7 +56,7 @@ const extraFakeSteps = () => {
 };
 
 interface FakeTutorialProps {
-  position?: TutorialDialogPosition;
+  position?: TutorialPosition;
   withDynamicPositioning?: boolean;
 
   withNoCustomSteps?: boolean;
@@ -418,7 +418,7 @@ describe('TutorialProvider', () => {
   });
 
   describe('can define dialog position for individual steps', () => {
-    for (const position of Object.values(TutorialDialogPosition)) {
+    for (const position of Object.values(TutorialPosition)) {
       test(`can define first step with position: '${position}'`, async () => {
         const tutorial = fakeTutorial({
           position: position,
@@ -428,14 +428,14 @@ describe('TutorialProvider', () => {
 
         const dialog = screen.getByTestId('tutorial-dialog');
 
-        if (position === TutorialDialogPosition.CENTER) {
+        if (position === TutorialPosition.CENTER) {
           expect(dialog).not.toHaveAttribute(`style`);
         } else {
           await waitFor(
             () =>
               expect(dialog).toHaveAttribute(
                 `style`,
-                getStyleStringForPosition(position as TutorialDialogPosition)
+                getStyleStringForPosition(position as TutorialPosition)
               ),
             { timeout: 1000 }
           );

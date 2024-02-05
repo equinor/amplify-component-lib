@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import { StoryFn } from '@storybook/react';
 
-import { Tutorial } from './TutorialProvider.types';
+import { Tutorial } from 'src/api';
 
 import styled from 'styled-components';
 
@@ -56,9 +56,13 @@ const Wide = styled.div`
 `;
 
 export const tutorialForStory: Tutorial = {
+  id: 'id thing',
   name: 'Storybook tutorial',
   shortName: STORYBOOK_TUTORIAL_SHORT_NAME,
+  application: 'storybook',
   path: '/iframe.html',
+  willPopUp: false,
+  showInProd: false,
   dynamicPositioning: true,
   steps: [
     {

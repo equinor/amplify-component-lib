@@ -12,7 +12,8 @@ import {
 } from './TutorialProvider.const';
 import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
-import { HighlightingInfo, Tutorial } from './TutorialProvider.types';
+import { HighlightingInfo } from './TutorialProvider.types';
+import { Tutorial } from 'src/api';
 
 const TutorialProviderInner: FC = () => {
   const { pathname } = useLocation();
@@ -31,7 +32,19 @@ const TutorialProviderInner: FC = () => {
   } = useTutorial();
 
   const hasStartedTutorial = useRef(false);
-  const appTutorials = useGetTutorialsForApp(tutorialsFromProps);
+  const { data: tutorialsFromBackend } = useGetTutorialsForApp();
+
+  const appTutorials = useMemo(() => {
+    if (!tutorialsFromBackend && !tutorialsFromProps) return [];
+    const allTutorials = [];
+    if (tutorialsFromProps) {
+      allTutorials.push(...tutorialsFromProps);
+    }
+    if (tutorialsFromBackend) {
+      allTutorials.push(...tutorialsFromBackend);
+    }
+    return allTutorials;
+  }, [tutorialsFromBackend, tutorialsFromProps]);
 
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
     if (!allElementsToHighlight || !activeTutorial || !viewportWidth) return;

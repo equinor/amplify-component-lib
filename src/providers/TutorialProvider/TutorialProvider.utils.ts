@@ -1,5 +1,5 @@
 import { DIALOG_EDGE_MARGIN } from './TutorialProvider.const';
-import { Tutorial, TutorialDialogPosition } from './TutorialProvider.types';
+import { Tutorial, TutorialPosition } from 'src/api';
 /* c8 ignore start */
 const doesBoundingRectOverlap = (
   boundingRect1: DOMRect,
@@ -15,15 +15,15 @@ const doesBoundingRectOverlap = (
 
 const getDialogBoundingRectForPosition = (
   dialogBoundingRect: DOMRect,
-  position: TutorialDialogPosition
+  position: TutorialPosition
 ) => {
   const isBottomPosition =
-    position === TutorialDialogPosition.BOTTOM_RIGHT ||
-    position === TutorialDialogPosition.BOTTOM_LEFT;
+    position === TutorialPosition.BOTTOM_RIGHT ||
+    position === TutorialPosition.BOTTOM_LEFT;
 
   const isRightPosition =
-    position === TutorialDialogPosition.TOP_RIGHT ||
-    position === TutorialDialogPosition.BOTTOM_RIGHT;
+    position === TutorialPosition.TOP_RIGHT ||
+    position === TutorialPosition.BOTTOM_RIGHT;
 
   const rightPositionX =
     innerWidth - DIALOG_EDGE_MARGIN - dialogBoundingRect.width;
@@ -47,43 +47,43 @@ export const getBestPositionWithoutOverlap = (
       highlightedBoundingRect,
       getDialogBoundingRectForPosition(
         dialogBoundingRect,
-        TutorialDialogPosition.BOTTOM_RIGHT
+        TutorialPosition.BOTTOM_RIGHT
       )
     )
   ) {
-    return TutorialDialogPosition.BOTTOM_RIGHT;
+    return TutorialPosition.BOTTOM_RIGHT;
   } else if (
     !doesBoundingRectOverlap(
       highlightedBoundingRect,
       getDialogBoundingRectForPosition(
         dialogBoundingRect,
-        TutorialDialogPosition.BOTTOM_LEFT
+        TutorialPosition.BOTTOM_LEFT
       )
     )
   ) {
-    return TutorialDialogPosition.BOTTOM_LEFT;
+    return TutorialPosition.BOTTOM_LEFT;
   } else if (
     !doesBoundingRectOverlap(
       highlightedBoundingRect,
       getDialogBoundingRectForPosition(
         dialogBoundingRect,
-        TutorialDialogPosition.TOP_RIGHT
+        TutorialPosition.TOP_RIGHT
       )
     )
   ) {
-    return TutorialDialogPosition.TOP_RIGHT;
+    return TutorialPosition.TOP_RIGHT;
   } else if (
     !doesBoundingRectOverlap(
       highlightedBoundingRect,
       getDialogBoundingRectForPosition(
         dialogBoundingRect,
-        TutorialDialogPosition.TOP_LEFT
+        TutorialPosition.TOP_LEFT
       )
     )
   ) {
-    return TutorialDialogPosition.TOP_LEFT;
+    return TutorialPosition.TOP_LEFT;
   }
-  return TutorialDialogPosition.BOTTOM_RIGHT;
+  return TutorialPosition.BOTTOM_RIGHT;
 };
 /* c8 ignore end */
 

@@ -15,14 +15,10 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { TUTORIAL_SEARCH_PARAM_KEY } from './TutorialProvider.const';
-import {
-  CustomTutorialComponent,
-  CustomTutorialStep,
-  GenericTutorialStep,
-  Tutorial,
-} from './TutorialProvider.types';
+import { CustomTutorialComponent } from './TutorialProvider.types';
 import { getAllElementsToHighlight } from './TutorialProvider.utils';
 import TutorialProviderInner from './TutorialProviderInner';
+import { CustomTutorialStep, GenericTutorialStep, Tutorial } from 'src/api';
 
 interface TutorialContextType {
   activeTutorial: Tutorial | undefined;
