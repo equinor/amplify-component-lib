@@ -23,10 +23,12 @@ import {
 } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer.styles';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
 import { environment } from 'src/utils';
+import portal from 'src/utils/portal';
 
 const { colors } = tokens;
 
-const { PORTAL_URL_WITHOUT_LOCALHOST, getAppName } = environment;
+const { PORTAL_URL_WITHOUT_LOCALHOST } = portal;
+const { getAppName } = environment;
 
 const ApplicationDrawer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -100,26 +100,6 @@ const getAllowedParentDomains = (
   return parentDomains.split(';');
 };
 
-const getPortalUrlWithoutLocalhost = () => {
-  try {
-    const environmentName = getEnvironmentName(
-      import.meta.env.VITE_ENVIRONMENT_NAME
-    );
-
-    const environmentNameWithoutLocalHost =
-      environmentName === EnvironmentType.LOCALHOST
-        ? EnvironmentType.DEVELOP
-        : environmentName;
-
-    return `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com`;
-  } catch (e) {
-    console.error(e);
-    return '';
-  }
-};
-
-const PORTAL_URL_WITHOUT_LOCALHOST = getPortalUrlWithoutLocalhost();
-
 const GRAPH_ENDPOINTS = {
   PHOTO: 'https://graph.microsoft.com/v1.0/me/photos/96x96/$value',
 };
@@ -240,5 +220,4 @@ export const environment = {
   getEnvironmentName,
   getIsMock,
   getServiceNowConfigurationItem,
-  PORTAL_URL_WITHOUT_LOCALHOST,
 };

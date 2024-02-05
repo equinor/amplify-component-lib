@@ -24,11 +24,11 @@ import {
   waitFor,
   within,
 } from 'src/tests/test-utils';
-import { environment } from 'src/utils';
+import portal from 'src/utils/portal';
 
 import { beforeEach, describe, expect } from 'vitest';
 
-const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
+const { PORTAL_URL_WITHOUT_LOCALHOST } = portal;
 
 const releaseNotes = [
   {
