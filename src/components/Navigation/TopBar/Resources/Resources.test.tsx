@@ -774,15 +774,15 @@ describe('Resources', () => {
             timeout: 8000,
           }
         );
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+
         await waitFor(
           () => expect(window.open).toHaveBeenCalledWith(PORTAL_URL, '_self'),
           {
-            timeout: 5000,
+            timeout: 9000,
           }
         );
       },
-      { timeout: 10000 }
+      { timeout: 15000 }
     );
 
     test('open tutorials from resources  ', async () => {

@@ -165,7 +165,6 @@ test(
       }
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     await waitFor(
       () =>
         expect(window.open).toHaveBeenCalledWith(
@@ -173,11 +172,11 @@ test(
           '_self'
         ),
       {
-        timeout: 7000,
+        timeout: 9000,
       }
     );
   },
-  { timeout: 20000 }
+  { timeout: 15000 }
 );
 
 test('Click on more access button', async () => {
