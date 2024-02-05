@@ -89,16 +89,34 @@ export const Resources: FC<ResourcesProps> = ({
     setShowFeedbackDialog(true);
   };
 
-  const handleOnCloseFeedbackDialog = () => setFeedbackType(undefined);
+  const handleOnCloseFeedbackDialog = () => {
+    setFeedbackType(undefined);
+    closeMenu();
+    setShowFeedbackDialog(false);
+  };
 
   const handleGoBack = () => setShowingResourceSection(undefined);
 
   const handleFeedbackClick = () => setShowingResourceSection('feedback');
   const handleLearnMoreClick = () => setShowingResourceSection('learn-more');
 
-  const handlePortalClick = () => setOpenPortal((prev) => !prev);
+  const handleOnOpenPortal = () => {
+    setOpenPortal(true);
+  };
 
-  const handleTutorialClick = () => setOpenTutorials((prev) => !prev);
+  const handleOnClosePortal = () => {
+    setOpenPortal(false);
+    closeMenu();
+  };
+
+  const handleOnOpenTutorialDialog = () => {
+    setOpenTutorials(true);
+  };
+
+  const handleOnCloseTutorialDailog = () => {
+    setOpenTutorials(false);
+    closeMenu();
+  };
 
   const resourceSectionContent = useMemo(() => {
     switch (showingResourceSection) {
@@ -108,14 +126,14 @@ export const Resources: FC<ResourcesProps> = ({
             <ResourceMenuItem
               text="Open Application portal"
               icon={amplify_small_portal}
-              onClick={handlePortalClick}
+              onClick={handleOnOpenPortal}
               lastItem
             />
             {showTutorials && (
               <ResourceMenuItem
                 text="Tutorials"
                 icon={amplify_tutorials}
-                onClick={handleTutorialClick}
+                onClick={handleOnOpenTutorialDialog}
                 lastItem
               />
             )}
@@ -224,7 +242,7 @@ export const Resources: FC<ResourcesProps> = ({
         <Tutorial
           options={tutorialOptions}
           open={openTutorials}
-          onClose={handleTutorialClick}
+          onClose={handleOnCloseTutorialDailog}
         />
       )}
       {showReleaseNotes && <ReleaseNotes />}
@@ -252,7 +270,7 @@ export const Resources: FC<ResourcesProps> = ({
 
       {openPortal && (
         <TransferToAppDialog
-          onClose={handlePortalClick}
+          onClose={handleOnClosePortal}
           url={PORTAL_URL}
           applicationName="Portal"
         />
