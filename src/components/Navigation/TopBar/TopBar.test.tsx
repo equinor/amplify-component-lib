@@ -5,6 +5,9 @@ import { faker } from '@faker-js/faker';
 import { render, screen } from '../../../tests/test-utils';
 import { EnvironmentType } from './TopBar';
 import TopBar from '.';
+import { Field } from 'src/types/Field';
+
+import { expect } from 'vitest';
 
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
@@ -46,6 +49,41 @@ test('Shows correct application name', () => {
     </TopBar>
   );
   expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();
+});
+
+test('Shows fields selector instead of application name when field is send in to top bar ', () => {
+  const appName = 'Car-go 🏎';
+  const availableFields: Field[] = [
+    {
+      uuid: faker.animal.cow(),
+      name: faker.animal.cetacean(),
+      country: faker.animal.rodent(),
+    },
+    {
+      uuid: faker.animal.cat(),
+      name: faker.animal.crocodilia(),
+      country: faker.animal.rodent(),
+    },
+  ];
+  const onSelectedField = vi.fn();
+  const currentFiled: Field = availableFields[0];
+
+  render(
+    <TopBar
+      applicationIcon="car"
+      applicationName={appName}
+      onHeaderClick={() => console.log('Going home 🏡')}
+      onSelectField={onSelectedField}
+      currentField={currentFiled}
+      showAccessITLink={true}
+      availableFields={availableFields}
+    >
+      content
+    </TopBar>
+  );
+
+  const button = screen.getByRole('button', { name: currentFiled.name ?? '' });
+  expect(button).toBeInTheDocument();
 });
 
 test('Shows environment banner when not in production', () => {

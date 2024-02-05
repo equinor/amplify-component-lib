@@ -36,7 +36,7 @@ export default defineConfig({
         'src/providers/AuthProvider/**',
         'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreen.ts',
-        'src/components/Navigation/TopBar/Help/FeedbackForm/**',
+        'src/components/Navigation/TopBar/Resources/FeedbackForm/**',
       ],
       reporter: [
         'text-summary',

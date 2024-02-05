@@ -8,7 +8,9 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
+import FieldSelector from 'src/components/Navigation/TopBar/FieldSelector';
 import { spacings } from 'src/style';
+import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 
@@ -102,6 +104,10 @@ type TopBarType = {
   isFetching?: boolean;
   capitalize?: boolean;
   children: ReactNode;
+  availableFields?: Field[];
+  onSelectField?: (selectedField: Field) => void;
+  currentField?: Field;
+  showAccessITLink?: boolean;
 } & React.HTMLAttributes<HTMLElement>;
 
 export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
@@ -114,6 +120,10 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
       environment,
       isFetching = false,
       capitalize = false,
+      availableFields,
+      onSelectField,
+      currentField,
+      showAccessITLink,
     },
     ref
   ) => {
@@ -130,9 +140,20 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
           ) : (
             <ApplicationIcon name={applicationIcon as string} size={40} />
           )}
-          <AppName variant="h6" $capitalize={capitalize}>
-            {capitalize ? applicationName.toLowerCase() : applicationName}
-          </AppName>
+
+          {availableFields && onSelectField ? (
+            <FieldSelector
+              availableFields={availableFields}
+              onSelect={onSelectField}
+              currentField={currentField}
+              showAccessITLink={showAccessITLink}
+            />
+          ) : (
+            <AppName variant="h6" $capitalize={capitalize}>
+              {capitalize ? applicationName.toLowerCase() : applicationName}
+            </AppName>
+          )}
+
           {isFetching && <CircularProgress size={16} />}
         </Header>
         {(environment === EnvironmentType.DEVELOP ||

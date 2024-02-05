@@ -25,7 +25,7 @@ const ContentInfo = styled.div`
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 16px 8px;
+  padding: ${spacings.medium} ${spacings.large};
   text-decoration: none;
   gap: ${spacings.medium};
   cursor: pointer;
@@ -35,20 +35,22 @@ const Wrapper = styled.div`
   }
 `;
 
-interface HelpMenuItemProps {
+interface ResourceMenuItemProps {
   text: string;
   icon: IconData;
   onClick: (event?: MouseEvent<HTMLDivElement>) => void;
   id?: string;
   href?: string;
+  lastItem?: boolean;
 }
 
-const HelpMenuItem: FC<HelpMenuItemProps> = ({
+const ResourceMenuItem: FC<ResourceMenuItemProps> = ({
   text,
   icon,
   href,
   onClick,
   id,
+  lastItem = false,
 }) => {
   const isHref = href && href.length > 0;
 
@@ -65,15 +67,16 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
             {text}
           </Typography>
         </ContentInfo>
-
-        <Icon
-          data={isHref ? external_link : arrow_forward}
-          size={24}
-          color={colors.interactive.primary__resting.rgba}
-        />
+        {!lastItem && (
+          <Icon
+            data={isHref ? external_link : arrow_forward}
+            size={24}
+            color={colors.interactive.primary__resting.hsla}
+          />
+        )}
       </Wrapper>
     );
-  }, [icon, id, isHref, onClick, text]);
+  }, [icon, id, isHref, lastItem, onClick, text]);
 
   if (isHref) {
     return (
@@ -86,4 +89,4 @@ const HelpMenuItem: FC<HelpMenuItemProps> = ({
   return content;
 };
 
-export default HelpMenuItem;
+export default ResourceMenuItem;
