@@ -74,10 +74,14 @@ const TransferToAppDialog: FC<PortalTransitProps> = ({
 
   return (
     <>
-      <PortalDialog open onClose={onClose}>
+      <PortalDialog open>
         <Dialog.Header>
           Open link
-          <Button variant="ghost_icon" onClick={onClose}>
+          <Button
+            variant="ghost_icon"
+            onClick={onClose}
+            data-testid="close-transfer-app"
+          >
             <Icon data={close} />
           </Button>
         </Dialog.Header>

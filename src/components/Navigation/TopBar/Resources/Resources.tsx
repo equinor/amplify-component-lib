@@ -19,7 +19,6 @@ import {
   amplify_small_portal,
   amplify_tutorials,
 } from 'src/components/Icons/AmplifyIcons';
-import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
@@ -29,10 +28,12 @@ import Tutorial, {
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { spacings } from 'src/style';
+import { environment } from 'src/utils';
 
 import styled from 'styled-components';
 
 const { colors } = tokens;
+const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
@@ -113,10 +114,12 @@ export const Resources: FC<ResourcesProps> = ({
     setOpenTutorials(true);
   };
 
-  const handleOnCloseTutorialDailog = () => {
+  const handleOnCloseTutorialDialog = () => {
     setOpenTutorials(false);
     closeMenu();
   };
+
+  // const handleTutorialClick = () => setOpenTutorials((prev) => !prev);
 
   const resourceSectionContent = useMemo(() => {
     switch (showingResourceSection) {
@@ -242,7 +245,7 @@ export const Resources: FC<ResourcesProps> = ({
         <Tutorial
           options={tutorialOptions}
           open={openTutorials}
-          onClose={handleOnCloseTutorialDailog}
+          onClose={handleOnCloseTutorialDialog}
         />
       )}
       {showReleaseNotes && <ReleaseNotes />}
@@ -271,7 +274,7 @@ export const Resources: FC<ResourcesProps> = ({
       {openPortal && (
         <TransferToAppDialog
           onClose={handleOnClosePortal}
-          url={PORTAL_URL}
+          url={PORTAL_URL_WITHOUT_LOCALHOST}
           applicationName="Portal"
         />
       )}

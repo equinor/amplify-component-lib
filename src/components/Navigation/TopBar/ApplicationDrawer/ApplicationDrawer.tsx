@@ -5,7 +5,6 @@ import { apps, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from '@tanstack/react-query';
 
-import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';
 import { AmplifyApplication } from 'src/api/models/Applications';
@@ -27,18 +26,7 @@ import { environment } from 'src/utils';
 
 const { colors } = tokens;
 
-const { getAppName, getEnvironmentName } = environment;
-
-const environmentName = getEnvironmentName(
-  import.meta.env.VITE_ENVIRONMENT_NAME
-);
-
-const environmentNameWithoutLocalHost =
-  environmentName === EnvironmentType.LOCALHOST
-    ? EnvironmentType.DEVELOP
-    : environmentName;
-
-export const PORTAL_URL = `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/dashboard`;
+const { PORTAL_URL_WITHOUT_LOCALHOST, getAppName } = environment;
 
 const ApplicationDrawer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -194,7 +182,7 @@ const ApplicationDrawer: FC = () => {
         <TransferToAppDialog
           onClose={closeMenu}
           applicationName="Portal"
-          url={PORTAL_URL}
+          url={PORTAL_URL_WITHOUT_LOCALHOST}
         />
       )}
       {openApplication && (
