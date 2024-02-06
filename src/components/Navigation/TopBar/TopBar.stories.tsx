@@ -7,11 +7,8 @@ import SideBarProvider from '../../../providers/SideBarProvider';
 import Template from '../../Template/Template';
 import SideBar from '../SideBar';
 import { MenuItemType } from '../SideBar/MenuItem';
+import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './Account/stories/data';
 import TopBar from '.';
-import {
-  FAKE_ACCOUNT,
-  FAKE_ACCOUNT_PHOTO,
-} from 'src/components/Navigation/TopBar/Account/stories/data';
 import { EnvironmentType } from 'src/types/Environment';
 
 export default {

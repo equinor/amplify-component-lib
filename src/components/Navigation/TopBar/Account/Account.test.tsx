@@ -1,9 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import {
-  Account,
-  AccountProps,
-} from 'src/components/Navigation/TopBar/Account/Account';
+import { Account, AccountProps } from './Account';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeProps(withAvatar = false): AccountProps {

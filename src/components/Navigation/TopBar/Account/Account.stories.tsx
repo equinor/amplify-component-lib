@@ -2,7 +2,7 @@ import { AccountInfo } from '@azure/msal-common';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './stories/data';
-import { Account } from 'src/components/Navigation/TopBar/Account/Account';
+import { Account } from './Account';
 
 export default {
   title: 'Navigation/TopBar/Account',
