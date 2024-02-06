@@ -17,6 +17,7 @@ function fakeProps(withAvatar = false): AccountProps {
       localAccountId: faker.string.uuid(),
     },
     logout: vi.fn(),
+    roles: [faker.animal.fish()],
     photo: withAvatar ? faker.image.avatar() : undefined,
   };
 }
@@ -59,6 +60,8 @@ test('Renders correctly without avatar', async () => {
 
   expect(screen.getByText(accountName)).toBeInTheDocument();
 
+  expect(screen.getByText(props.roles?.[0] || '')).toBeInTheDocument();
+
   expect(
     screen.getByText(props.account?.username ?? 'failed')
   ).toBeInTheDocument();
@@ -84,6 +87,7 @@ test('Renders correctly with avatar', async () => {
 
   await user.click(button);
 
+  expect(screen.getByText(props.roles?.[0] || '')).toBeInTheDocument();
   expect(screen.getAllByAltText(`user-avatar-${accountName}`).length).toBe(2);
 
   const closeButton = screen.getByTestId('close-button');
