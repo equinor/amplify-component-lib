@@ -120,6 +120,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         case 'small-medium':
           return 24;
         case 'medium':
+        case undefined:
           return 32;
         case 'large':
           return 40;
@@ -137,6 +138,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         case 'small-medium':
           return 10;
         case 'medium':
+        case undefined:
           return 14;
         case 'large':
           return 16;
@@ -164,7 +166,7 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
 
     if (imageSrc !== '') {
       return (
-        <AvatarWrapper $size={sizeToPx}>
+        <AvatarWrapper $size={sizeToPx} data-testid="avatar-wrapper">
           <Avatar
             alt={`user-avatar-${name}`}
             src={imageSrc}
