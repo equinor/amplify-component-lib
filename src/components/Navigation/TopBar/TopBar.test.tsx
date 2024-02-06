@@ -132,24 +132,6 @@ test('Hides environment banner when in production', () => {
   expect(screen.queryByText(environmentName)).not.toBeInTheDocument();
 });
 
-test('Uses react element for icon if provided and logs error', () => {
-  console.warn = vi.fn();
-  const iconText = faker.animal.snake();
-  render(
-    <TopBar
-      applicationIcon={<p>{iconText}</p>}
-      applicationName="test"
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
-      content
-    </TopBar>
-  );
-  expect(console.warn).toHaveBeenCalledWith(
-    'Sending an element as applicationIcon is the old way of setting the icon in the top bar! Switch to just sending the name of the app as applicationIcon.'
-  );
-  expect(screen.getByText(iconText)).toBeInTheDocument();
-});
-
 test('Capitalize app name works as expected', () => {
   const name = faker.person.fullName();
   render(

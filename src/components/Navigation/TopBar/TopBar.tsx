@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, ReactNode } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 
 import {
   CircularProgress as EDSCircularProgress,
@@ -26,8 +26,13 @@ const Bar = styled(EDSTopBar)`
 const Header = styled(EDSTopBar.Header)`
   cursor: pointer;
   position: relative;
-  display: grid;
-  grid-template-columns: 40px auto;
+  display: flex;
+  align-items: center;
+  > header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
   > svg {
     justify-self: center;
   }
@@ -92,7 +97,7 @@ const EnvironmentTag = styled.div<EnvironmentTagProps>`
 
 type TopBarType = {
   onHeaderClick: () => void;
-  applicationIcon: string | ReactElement;
+  applicationIcon: string;
   applicationName: string;
   environment?: EnvironmentType;
   isFetching?: boolean;
@@ -121,33 +126,23 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
     },
     ref
   ) => {
-    if (React.isValidElement(applicationIcon)) {
-      console.warn(
-        'Sending an element as applicationIcon is the old way of setting the icon in the top bar! Switch to just sending the name of the app as applicationIcon.'
-      );
-    }
     return (
       <Bar ref={ref}>
-        <Header onClick={onHeaderClick}>
-          {React.isValidElement(applicationIcon) ? (
-            applicationIcon
-          ) : (
-            <ApplicationIcon name={applicationIcon as string} size={40} />
-          )}
-
-          {availableFields && onSelectField ? (
+        <Header>
+          <header onClick={onHeaderClick}>
+            <ApplicationIcon name={applicationIcon} size={40} withHover />
+            <AppName variant="h6" $capitalize={capitalize}>
+              {capitalize ? applicationName.toLowerCase() : applicationName}
+            </AppName>
+          </header>
+          {availableFields && onSelectField && (
             <FieldSelector
               availableFields={availableFields}
               onSelect={onSelectField}
               currentField={currentField}
               showAccessITLink={showAccessITLink}
             />
-          ) : (
-            <AppName variant="h6" $capitalize={capitalize}>
-              {capitalize ? applicationName.toLowerCase() : applicationName}
-            </AppName>
           )}
-
           {isFetching && <CircularProgress size={16} />}
         </Header>
         {(environment === EnvironmentType.DEVELOP ||
