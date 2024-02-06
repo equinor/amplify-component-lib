@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
@@ -17,6 +18,8 @@ import { AmplifyApplication } from 'src/api/models/Applications';
 import { waitFor } from 'src/tests/test-utils';
 
 import { expect, vi } from 'vitest';
+
+const { colors } = tokens;
 
 function fakeApplication(): AmplifyApplication {
   return {
@@ -114,9 +117,13 @@ test('background color is shown for the app you are in', async () => {
   await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
     timeout: 4000,
   });
-  const firstAppContainer = screen.getByText(fakeApps[0].name);
+  const firstAppContainer = screen.getByTestId(
+    `application-box-${fakeApps[0].name}`
+  );
+  screen.logTestingPlaygroundURL();
   expect(firstAppContainer).toHaveStyleRule(
-    'background-color: colors.interactive.primary__selected_highlight.hex'
+    'background',
+    colors.interactive.primary__selected_highlight.rgba
   );
 });
 
