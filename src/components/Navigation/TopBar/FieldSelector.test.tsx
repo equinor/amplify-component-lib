@@ -57,6 +57,19 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
   screen.logTestingPlaygroundURL();
 });
 
+test('field selector do not shown when field isnt selected', async () => {
+  const noSelectedField = {
+    currentField: undefined,
+    availableFields: fakeProps().availableFields,
+    onSelect: vi.fn(),
+  };
+  render(<FieldSelector {...noSelectedField} />);
+  screen.logTestingPlaygroundURL();
+  expect(
+    screen.queryByTestId('field-selector-top-bar-button')
+  ).not.toBeInTheDocument();
+});
+
 test('Runs onSelect function once when clicking an item', async () => {
   const props = fakeProps();
   render(<FieldSelector {...props} />);
@@ -91,7 +104,7 @@ test('Doesnt run onSelect function when clicking already selected item', async (
 
 test('Filters values when using search', async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -119,7 +132,7 @@ test('Filters values when using search', async () => {
 
 test("Shows 'No results' text when searching for something that doesn't exist", async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -141,7 +154,7 @@ test("Shows 'No results' text when searching for something that doesn't exist", 
 
 test("Show search input if it's 4 or more fields ", async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -153,7 +166,7 @@ test("Show search input if it's 4 or more fields ", async () => {
 
 test('Runs window.open when clicking access it card', async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   window.open = vi.fn();
   const user = userEvent.setup();
 
