@@ -69,7 +69,10 @@ const GlobalStyles = createGlobalStyle`
     monospace;
   }
 
-  div:focus-within:has(input[role=combobox]) {
+  div:focus-within:has(input[role=combobox]),
+  div:focus-within:has(input[type=text]),
+  div:focus-within:has(input[type=date]),
+  div:focus-within:has(textarea){
     outline: none;
     > input {
       box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
