@@ -1,23 +1,15 @@
 import React from 'react';
 
-import { Button, Icon } from '@equinor/eds-core-react';
-import {
-  account_circle,
-  dashboard,
-  favorite_outlined,
-  history,
-} from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
+import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
 import SideBarProvider from '../../../providers/SideBarProvider';
 import Template from '../../Template/Template';
 import SideBar from '../SideBar';
 import { MenuItemType } from '../SideBar/MenuItem';
+import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './Account/stories/data';
 import TopBar from '.';
 import { EnvironmentType } from 'src/types/Environment';
-
-const { colors } = tokens;
 
 export default {
   title: 'Navigation/TopBar/TopBar',
@@ -81,13 +73,12 @@ export const Primary: StoryFn = ({ ...args }) => {
       environment={args.environment}
     >
       <TopBar.Actions>
-        <Button variant="ghost_icon" key="account">
-          <Icon
-            data={account_circle}
-            size={24}
-            color={colors.interactive.primary__resting.rgba}
-          />
-        </Button>
+        <TopBar.Account
+          account={FAKE_ACCOUNT}
+          photo={FAKE_ACCOUNT_PHOTO}
+          roles={['Admin']}
+          logout={() => console.log('logged out')}
+        />
       </TopBar.Actions>
     </TopBar>
   );
@@ -125,13 +116,12 @@ export const FullPageExample: StoryFn = ({ ...args }) => {
         environment={args.environment}
       >
         <TopBar.Actions>
-          <Button variant="ghost_icon" key="account">
-            <Icon
-              data={account_circle}
-              size={24}
-              color={colors.interactive.primary__resting.hsla}
-            />
-          </Button>
+          <TopBar.Account
+            account={FAKE_ACCOUNT}
+            photo={FAKE_ACCOUNT_PHOTO}
+            roles={['Admin']}
+            logout={() => console.log('logged out')}
+          />
         </TopBar.Actions>
       </TopBar>
       <Template.Container>

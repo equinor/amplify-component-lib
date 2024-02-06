@@ -50,7 +50,6 @@ test('should link to correct environment given that it is not prod or empty', ()
   const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
-  screen.logTestingPlaygroundURL();
   expect(actual.getAttribute('href')).toBe(
     `https://client-amplify-portal-${EnvironmentType.STAGING}.radix.equinor.com/releasenotes?applications=%5B"Amplify components"%5D`
   );
@@ -64,7 +63,6 @@ test('should link to development environment given that its environment is local
   const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
-  screen.logTestingPlaygroundURL();
   expect(actual.getAttribute('href')).toBe(
     `https://client-amplify-portal-${EnvironmentType.DEVELOP}.radix.equinor.com/releasenotes?applications=%5B"Amplify components"%5D`
   );
@@ -77,7 +75,6 @@ test('should link to production environment using the external dns, amplify.equi
   const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
-  screen.logTestingPlaygroundURL();
   expect(actual.getAttribute('href')).toBe(
     'https://amplify.equinor.com/releasenotes?applications=%5B"Amplify components"%5D'
   );
@@ -90,7 +87,6 @@ test('should link to production environment using the external dns, amplify.equi
   const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
-  screen.logTestingPlaygroundURL();
   expect(actual.getAttribute('href')).toBe(
     'https://amplify.equinor.com/releasenotes?applications=%5B"Amplify components"%5D'
   );

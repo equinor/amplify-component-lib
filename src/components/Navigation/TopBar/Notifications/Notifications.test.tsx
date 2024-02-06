@@ -240,7 +240,6 @@ test('Renders unread dot when unread = true', async () => {
   const unreadDot = screen.getByTestId('unread-dot');
   expect(unreadDot).toBeInTheDocument();
   expect(unreadDot).toBeVisible();
-  screen.logTestingPlaygroundURL();
 });
 
 test('Unread dot renders as expected', () => {
@@ -487,7 +486,6 @@ describe('Filtering notifications ', () => {
 
     await user.click(userMessages);
 
-    screen.logTestingPlaygroundURL();
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
       date.formatRelativeDateTime(notificationsData[1].time)
