@@ -1,6 +1,5 @@
 import { FC, forwardRef } from 'react';
 
-import { AppIconProps } from '../index';
 import Acquire from './Acquire';
 import Bravos from './Bravos';
 import Dasha from './Dasha';
@@ -12,6 +11,7 @@ import Orca from './Orca';
 import Portal from './Portal';
 import Pwex from './Pwex';
 import Recap from './Recap';
+import { AppIconProps } from 'src/types/AppIcon';
 
 export type ApplicationName =
   | 'acquire'

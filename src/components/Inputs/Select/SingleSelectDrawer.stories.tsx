@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { items, ValueType } from './SelectUtils';
 import SingleSelectDrawer from './SingleSelectDrawer';
+import { items, ValueType } from 'src/components/Inputs/Select/stories/data';
 
 export default {
   title: 'Inputs/Select/SingleSelectDrawer',

@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 
-import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { loggingQualification } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const shapes: ShapeProps[] = [
   {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import Fallback from './Fallback';
-import { AppIconProps } from './index';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const sizeOptions: AppIconProps['size'][] = [undefined, 16, 24, 32, 40, 48];
 
