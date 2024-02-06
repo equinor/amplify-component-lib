@@ -4,8 +4,8 @@ import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { AppIconProps } from '../index';
 import { IconDataWithColor } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 import styled from 'styled-components';
 

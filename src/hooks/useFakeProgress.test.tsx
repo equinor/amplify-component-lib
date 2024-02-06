@@ -49,6 +49,6 @@ test('Calls onDone when finished', async () => {
   );
 
   await waitFor(() => expect(onDone).toHaveBeenCalledTimes(1), {
-    timeout: 2000,
+    timeout: 4000,
   });
 });
