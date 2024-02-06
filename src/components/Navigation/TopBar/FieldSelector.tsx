@@ -153,8 +153,8 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     }, [availableFields, searchValue, currentField]);
 
     const noSearchResult = useMemo(() => {
-      return filteredFields.length === 0;
-    }, [filteredFields.length]);
+      return filteredFields.length === 0 && availableFields.length > 1;
+    }, [availableFields.length, filteredFields.length]);
 
     const transformedFieldName = useMemo(() => {
       if (currentField?.name) {
@@ -169,6 +169,8 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
       return filteredFields.length >= 4 || searchValue !== '';
     }, [filteredFields, searchValue]);
 
+    if (currentField === undefined) return null;
+
     return (
       <div ref={ref}>
         <TopBarButton
@@ -176,6 +178,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
           ref={buttonRef}
           onClick={toggleMenu}
           $isSelected={isOpen}
+          data-testid="field-selector-top-bar-button"
         >
           <Icon
             data={platform}
@@ -222,7 +225,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                     </div>
                   </MenuFixedItem>
                 )}
-                {filteredFields.length === 0 ? (
+                {noSearchResult ? (
                   <NoSearchResultsContainer>
                     <NoFieldsText
                       variant="body_short"
