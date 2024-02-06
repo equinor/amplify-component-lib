@@ -9,6 +9,7 @@ import {
   amplify_h4,
   amplify_info_small,
   amplify_lwd,
+  amplify_resources,
   amplify_sharepoint,
   amplify_small_portal,
   amplify_snail,
@@ -37,6 +38,7 @@ const allIcons = {
   amplify_sharepoint: amplify_sharepoint,
   amplify_sort_small: amplify_sort_small,
   amplify_info_small: amplify_info_small,
+  amplify_resources: amplify_resources,
 };
 
 interface StoryFnProps {
@@ -74,6 +76,7 @@ export default {
         'amplify_small_portal',
         'amplify_sort_small',
         'amplify_info_small',
+        'amplify_resources',
       ],
     },
   },
