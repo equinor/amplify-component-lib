@@ -43,6 +43,10 @@ const fakeApps = new Array(faker.number.int({ min: 4, max: 8 }))
   .fill(0)
   .map(() => fakeApplication());
 
+vi.mock('path-to-getappName-file', () => ({
+  getAppName: vi.fn(() => fakeApps[0].name),
+}));
+
 let rejectPromise = false;
 
 vi.mock('src/api/services/PortalService', () => {
@@ -94,6 +98,26 @@ test('Should toggle menu and handle application click', async () => {
   for (const app of fakeApps) {
     expect(screen.getByText(app.name)).toBeInTheDocument();
   }
+});
+
+test('background color is shown for the app you are in', async () => {
+  rejectPromise = false;
+  vi.stubEnv('VITE_NAME', fakeApps[0].name);
+  render(<ApplicationDrawer />, { wrapper: Wrappers });
+
+  const user = userEvent.setup();
+
+  const menuButton = await screen.getByRole('button');
+
+  await user.click(menuButton);
+
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
+    timeout: 4000,
+  });
+  const firstAppContainer = screen.getByText(fakeApps[0].name);
+  expect(firstAppContainer).toHaveStyleRule(
+    'background-color: colors.interactive.primary__selected_highlight.hex'
+  );
 });
 
 test('No applications is shown ', async () => {
