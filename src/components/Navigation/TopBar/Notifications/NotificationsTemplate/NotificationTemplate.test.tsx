@@ -283,8 +283,6 @@ test('renders footer correctly', () => {
 test('renders ReadyToReportNotification correctly', async () => {
   render(<NotificationTemplate {...systemNotifications} />);
   expect(screen.getByText(systemNotifications.wellbore)).toBeInTheDocument();
-
-  screen.logTestingPlaygroundURL();
 });
 
 test(' MergeBranchOrca ', () => {
