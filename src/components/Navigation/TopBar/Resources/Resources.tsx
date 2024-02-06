@@ -4,7 +4,6 @@ import { Button, Dialog, Divider, Icon } from '@equinor/eds-core-react';
 import {
   arrow_back,
   file_description,
-  help_outline,
   info_circle,
   move_to_inbox,
   report_bug,
@@ -16,6 +15,7 @@ import { TopBarButton } from '../TopBar.styles';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import {
+  amplify_resources,
   amplify_small_portal,
   amplify_tutorials,
 } from 'src/components/Icons/AmplifyIcons';
@@ -199,7 +199,7 @@ export const Resources: FC<ResourcesProps> = ({
         $isSelected={isOpen}
       >
         <Icon
-          data={help_outline}
+          data={amplify_resources}
           color={colors.interactive.primary__resting.rgba}
         />
       </TopBarButton>
