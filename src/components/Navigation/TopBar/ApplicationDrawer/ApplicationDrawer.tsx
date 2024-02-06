@@ -9,7 +9,7 @@ import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';
 import { AmplifyApplication } from 'src/api/models/Applications';
 import { PortalService } from 'src/api/services/PortalService';
-import { ApplicationIcon } from 'src/components/index';
+import ApplicationIcon from 'src/components/Icons/ApplicationIcon/ApplicationIcon';
 import {
   ApplicationBox,
   ApplicationButton,

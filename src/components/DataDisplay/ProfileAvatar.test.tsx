@@ -16,6 +16,7 @@ const sizeOptions: ProfileAvatarProps['size'][] = [
   'large',
   'x-large',
   undefined,
+  60,
 ];
 
 function mockProfileAvatarProps(image: boolean): ProfileAvatarProps {
@@ -35,18 +36,27 @@ test('Renders image when given', () => {
 test('Renders image when given and in correct sizing', () => {
   const mockedProps = mockProfileAvatarProps(true);
   const { rerender } = render(<ProfileAvatar {...mockedProps} />);
-  const sizeToPx = (size: string | undefined) => {
-    if (size === 'small') return 16;
-    else if (size === 'small-medium') return 24;
-    else if (size === 'medium') return 32;
-    else if (size === 'large') return 40;
-    else if (size === 'x-large') return 48;
-    return 32;
+  const sizeToPx = (size: ProfileAvatarProps['size']) => {
+    switch (size) {
+      case 'small':
+        return 16;
+      case 'small-medium':
+        return 24;
+      case 'medium':
+      case undefined:
+        return 32;
+      case 'large':
+        return 40;
+      case 'x-large':
+        return 48;
+      default:
+        return size;
+    }
   };
 
   for (const size of sizeOptions) {
     rerender(<ProfileAvatar {...mockedProps} size={size} />);
-    const avatar = screen.getByRole('img').parentElement;
+    const avatar = screen.getByTestId('avatar-wrapper');
     const expectedSize = sizeToPx(size);
     expect(avatar).toHaveStyleRule('width', `${expectedSize}px`);
     expect(avatar).toHaveStyleRule('height', `${expectedSize}px`);
@@ -88,13 +98,13 @@ test('Renders first and last letter of name when image is not given', () => {
   const mockedProps = mockProfileAvatarProps(false);
   const { rerender } = render(<ProfileAvatar {...mockedProps} />);
 
-  const sizeToFontsize = (size: string | undefined) => {
+  const sizeToFontsize = (size: ProfileAvatarProps['size']) => {
     if (size === 'small') return 6;
     else if (size === 'small-medium') return 10;
-    else if (size === 'medium') return 14;
+    else if (size === 'medium' || size === undefined) return 14;
     else if (size === 'large') return 16;
     else if (size === 'x-large') return 18;
-    return 14;
+    return size / 2;
   };
   const initials = nameToInitials(mockedProps.name as string) as string;
   for (const size of sizeOptions) {

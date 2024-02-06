@@ -13,8 +13,8 @@ import { Button, Chip, Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
-import TopBarMenu from './TopBarMenu';
+import ProfileAvatar from 'src/components/DataDisplay/ProfileAvatar';
+import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { spacings } from 'src/style';
 
 import styled from 'styled-components';
@@ -24,7 +24,6 @@ const { colors } = tokens;
 const ProfileButton = styled.button`
   border-radius: 50%;
   background: none;
-  border: none;
   cursor: pointer;
 `;
 
@@ -34,6 +33,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${spacings.small};
+  > div:first-child {
+    border: 1px solid ${colors.text.static_icons__primary_white.rgba};
+    border-radius: 50%;
+  }
 `;
 
 const TextContent = styled.div`

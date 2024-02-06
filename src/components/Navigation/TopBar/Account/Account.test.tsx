@@ -1,7 +1,10 @@
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../tests/test-utils';
-import { Account, AccountProps } from './Account';
+import {
+  Account,
+  AccountProps,
+} from 'src/components/Navigation/TopBar/Account/Account';
+import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeProps(withAvatar = false): AccountProps {
   return {
@@ -28,10 +31,6 @@ test('Renders correctly without avatar', async () => {
 
   const button = screen.getByRole('button');
 
-  await user.click(button);
-
-  expect(screen.getByText(accountName)).toBeInTheDocument();
-
   const expectedInitials = (accountName: string) => {
     const defaultName = 'XX';
     if (!accountName) return defaultName;
@@ -55,6 +54,11 @@ test('Renders correctly without avatar', async () => {
   };
 
   expect(screen.getByText(expectedInitials(accountName))).toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(screen.getByText(accountName)).toBeInTheDocument();
+
   expect(
     screen.getByText(props.account?.username ?? 'failed')
   ).toBeInTheDocument();
@@ -75,9 +79,12 @@ test('Renders correctly with avatar', async () => {
   expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 
   const button = screen.getByRole('button');
-  await user.click(button);
 
   expect(screen.getByAltText(`user-avatar-${accountName}`)).toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(screen.getAllByAltText(`user-avatar-${accountName}`).length).toBe(2);
 
   const closeButton = screen.getByTestId('close-button');
 
@@ -92,17 +99,22 @@ test('Opens and closes as it should', async () => {
   render(<Account {...props} />);
 
   const button = screen.getByRole('button');
+
+  expect(
+    screen.getAllByAltText(`user-avatar-${props.account?.name}`).length
+  ).toBe(1);
+
   await user.click(button);
 
   expect(
-    screen.getByAltText(`user-avatar-${props.account?.name}`)
-  ).toBeInTheDocument();
+    screen.getAllByAltText(`user-avatar-${props.account?.name}`).length
+  ).toBe(2);
 
   await user.click(button);
 
   expect(
-    screen.queryByAltText(`user-avatar-${props.account?.name}`)
-  ).not.toBeInTheDocument();
+    screen.getAllByAltText(`user-avatar-${props.account?.name}`).length
+  ).toBe(1);
 });
 
 test('Rendering custom button works as expected', async () => {
