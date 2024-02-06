@@ -64,7 +64,11 @@ const TutorialInfoDialog: FC<TutorialDialogProps> = ({
     <DialogTutorial open={open}>
       <Dialog.Header>
         Tutorials
-        <Button variant="ghost_icon" onClick={onClose}>
+        <Button
+          variant="ghost_icon"
+          onClick={onClose}
+          data-testid="close-tutorial-dialog"
+        >
           <Icon data={close} />
         </Button>
       </Dialog.Header>

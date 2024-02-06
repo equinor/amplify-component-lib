@@ -3,8 +3,8 @@ import React from 'react';
 import { faker } from '@faker-js/faker';
 
 import { render, screen } from '../../../tests/test-utils';
-import { EnvironmentType } from './TopBar';
 import TopBar from '.';
+import { EnvironmentType } from 'src/types/Environment';
 import { Field } from 'src/types/Field';
 
 import { expect } from 'vitest';

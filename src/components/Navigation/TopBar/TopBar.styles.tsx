@@ -11,5 +11,5 @@ interface ButtonProps {
 
 export const TopBarButton = styled(Button)<ButtonProps>`
   background: ${({ $isSelected }) =>
-    $isSelected ? colors.interactive.primary__hover_alt.hex : 'none'};
+    $isSelected ? colors.interactive.primary__hover_alt.rgba : 'none'};
 `;

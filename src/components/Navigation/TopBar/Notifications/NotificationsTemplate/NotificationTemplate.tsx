@@ -111,7 +111,7 @@ const NotificationTemplate: FC<
             </UserInformation>
           ) : (
             <UserInformation $systemUser>
-              {!Read && <Dot />}
+              {!Read && <Dot data-testid="unread-dot-system" />}
               <ApplicationIcon name={applicationName} />
 
               <Typography group="heading" variant="h6">
@@ -125,8 +125,8 @@ const NotificationTemplate: FC<
             variant="label"
             color={
               Read
-                ? colors.text.static_icons__secondary.hex
-                : colors.infographic.substitute__blue_overcast.hex
+                ? colors.text.static_icons__secondary.rgba
+                : colors.infographic.substitute__blue_overcast.rgba
             }
             data-testid="notification-date"
           >
@@ -141,7 +141,7 @@ const NotificationTemplate: FC<
               <Typography
                 group="navigation"
                 variant="label"
-                color={colors.text.static_icons__tertiary.hex}
+                color={colors.text.static_icons__tertiary.rgba}
               >
                 {applicationName}
               </Typography>
@@ -149,7 +149,7 @@ const NotificationTemplate: FC<
               <Typography
                 group="navigation"
                 variant="label"
-                color={colors.text.static_icons__tertiary.hex}
+                color={colors.text.static_icons__tertiary.rgba}
               >
                 {field}
               </Typography>

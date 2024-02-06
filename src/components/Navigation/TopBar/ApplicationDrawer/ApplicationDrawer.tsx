@@ -5,7 +5,6 @@ import { apps, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from '@tanstack/react-query';
 
-import { EnvironmentType } from '../TopBar';
 import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';
 import { AmplifyApplication } from 'src/api/models/Applications';
@@ -27,18 +26,7 @@ import { environment } from 'src/utils';
 
 const { colors } = tokens;
 
-const { getAppName, getEnvironmentName } = environment;
-
-const environmentName = getEnvironmentName(
-  import.meta.env.VITE_ENVIRONMENT_NAME
-);
-
-const environmentNameWithoutLocalHost =
-  environmentName === EnvironmentType.LOCALHOST
-    ? EnvironmentType.DEVELOP
-    : environmentName;
-
-export const PORTAL_URL = `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/dashboard`;
+const { getAppName, PORTAL_URL_WITHOUT_LOCALHOST } = environment;
 
 const ApplicationDrawer: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -132,7 +120,7 @@ const ApplicationDrawer: FC = () => {
                 <Typography
                   group="paragraph"
                   variant="body_short"
-                  style={{ color: colors.text.static_icons__tertiary.hex }}
+                  style={{ color: colors.text.static_icons__tertiary.rgba }}
                 >
                   You don&apos;t have access to other applications
                 </Typography>
@@ -149,7 +137,11 @@ const ApplicationDrawer: FC = () => {
                   const isSelected =
                     getAppName(import.meta.env.VITE_NAME) === item.name;
                   return (
-                    <ApplicationBox key={index} $isSelected={isSelected}>
+                    <ApplicationBox
+                      key={index}
+                      $isSelected={isSelected}
+                      data-testid={`application-box-${item.name}`}
+                    >
                       <ApplicationButton
                         variant="ghost_icon"
                         onClick={() => handleOpenApplication(item)}
@@ -183,7 +175,7 @@ const ApplicationDrawer: FC = () => {
               </TextContainer>
               <Icon
                 data={exit_to_app}
-                color={colors.interactive.primary__resting.hex}
+                color={colors.interactive.primary__resting.rgba}
                 size={24}
               />
             </div>
@@ -194,7 +186,7 @@ const ApplicationDrawer: FC = () => {
         <TransferToAppDialog
           onClose={closeMenu}
           applicationName="Portal"
-          url={PORTAL_URL}
+          url={PORTAL_URL_WITHOUT_LOCALHOST}
         />
       )}
       {openApplication && (

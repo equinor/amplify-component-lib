@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
 import { Resources } from './Resources';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
-import { PORTAL_URL } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer';
 import {
   FeedbackContentType,
   UrgencyOption,
@@ -25,8 +24,11 @@ import {
   waitFor,
   within,
 } from 'src/tests/test-utils';
+import { environment } from 'src/utils';
 
 import { beforeEach, describe, expect } from 'vitest';
+
+const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
 
 const releaseNotes = [
   {
@@ -776,7 +778,11 @@ describe('Resources', () => {
         );
 
         await waitFor(
-          () => expect(window.open).toHaveBeenCalledWith(PORTAL_URL, '_self'),
+          () =>
+            expect(window.open).toHaveBeenCalledWith(
+              PORTAL_URL_WITHOUT_LOCALHOST,
+              '_self'
+            ),
           {
             timeout: 9000,
           }
@@ -785,7 +791,32 @@ describe('Resources', () => {
       { timeout: 15000 }
     );
 
-    test('open tutorials from resources  ', async () => {
+    test('Close open portal by clicking cancel ', async () => {
+      render(<Resources />, { wrapper: Wrappers });
+
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      const learnMore = screen.getByText(/learn more/i);
+      await user.click(learnMore);
+
+      const openPortal = screen.getByText(/open application portal/i);
+      await user.click(openPortal);
+
+      const openLink = screen.getByText(/open link/i);
+      expect(openLink).toBeInTheDocument();
+
+      const cancelButton = screen.getByTestId('close-transfer-app');
+
+      await user.click(cancelButton);
+
+      expect(openLink).not.toBeInTheDocument();
+    });
+
+    test('open tutorials from resources and close tutorials  ', async () => {
       const fakeTutorialOptions: tutorialOptions[] = [
         {
           description: faker.lorem.sentence(),
@@ -830,6 +861,11 @@ describe('Resources', () => {
 
       const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
       expect(findCurrentPage).toBeInTheDocument();
+
+      const closeButton = screen.getByTestId('close-tutorial-dialog');
+      await user.click(closeButton);
+
+      expect(findCurrentPage).not.toBeInTheDocument();
     });
   });
 });

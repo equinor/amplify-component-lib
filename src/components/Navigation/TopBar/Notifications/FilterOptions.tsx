@@ -46,12 +46,12 @@ const StyledChip = styled.span<ChipProps>`
   border-radius: ${shape.rounded.borderRadius};
   border: ${({ $active }) =>
     $active
-      ? `solid 1px ${colors.interactive.primary__selected_hover.hex}`
-      : `solid 1px ${colors.ui.background__medium.hex}`};
+      ? `solid 1px ${colors.interactive.primary__selected_hover.rgba}`
+      : `solid 1px ${colors.ui.background__medium.rgba}`};
   background-color: ${({ $active }) =>
     $active
-      ? colors.interactive.primary__selected_highlight.hex
-      : colors.ui.background__default.hex};
+      ? colors.interactive.primary__selected_highlight.rgba
+      : colors.ui.background__default.rgba};
   color: black;
   padding: ${spacings.comfortable.x_small} ${spacings.comfortable.small};
   display: flex;
@@ -60,7 +60,7 @@ const StyledChip = styled.span<ChipProps>`
   grid-gap: ${spacings.comfortable.small};
   cursor: pointer;
   &:hover {
-    background: ${colors.interactive.primary__selected_highlight.hex};
+    background: ${colors.interactive.primary__selected_highlight.rgba};
   }
 
   > p {
@@ -71,8 +71,8 @@ const StyledChip = styled.span<ChipProps>`
   > svg {
     color: ${({ $active }) =>
       $active
-        ? colors.text.static_icons__default.hex
-        : colors.interactive.primary__resting.hex};
+        ? colors.text.static_icons__default.rgba
+        : colors.interactive.primary__resting.rgba};
   }
 `;
 

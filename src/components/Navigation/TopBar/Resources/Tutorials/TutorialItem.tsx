@@ -41,14 +41,14 @@ const TutorialItem: FC<tutorialOptions> = ({
           <Typography
             group="navigation"
             variant="label"
-            color={colors.text.static_icons__secondary.hex}
+            color={colors.text.static_icons__secondary.rgba}
           >
             {steps}
           </Typography>
           <Typography
             group="navigation"
             variant="label"
-            color={colors.text.static_icons__secondary.hex}
+            color={colors.text.static_icons__secondary.rgba}
           >
             {duration}
           </Typography>
@@ -57,7 +57,7 @@ const TutorialItem: FC<tutorialOptions> = ({
       <Icon
         data={arrow_forward}
         size={24}
-        color={colors.interactive.primary__resting.hsla}
+        color={colors.interactive.primary__resting.rgba}
       />
     </ContentInfo>
   );

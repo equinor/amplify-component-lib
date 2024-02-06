@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
@@ -17,6 +18,8 @@ import { AmplifyApplication } from 'src/api/models/Applications';
 import { waitFor } from 'src/tests/test-utils';
 
 import { expect, vi } from 'vitest';
+
+const { colors } = tokens;
 
 function fakeApplication(): AmplifyApplication {
   return {
@@ -42,6 +45,10 @@ function fakeApplication(): AmplifyApplication {
 const fakeApps = new Array(faker.number.int({ min: 4, max: 8 }))
   .fill(0)
   .map(() => fakeApplication());
+
+vi.mock('path-to-getappName-file', () => ({
+  getAppName: vi.fn(() => fakeApps[0].name),
+}));
 
 let rejectPromise = false;
 
@@ -94,6 +101,30 @@ test('Should toggle menu and handle application click', async () => {
   for (const app of fakeApps) {
     expect(screen.getByText(app.name)).toBeInTheDocument();
   }
+});
+
+test('background color is shown for the app you are in', async () => {
+  rejectPromise = false;
+  vi.stubEnv('VITE_NAME', fakeApps[0].name);
+  render(<ApplicationDrawer />, { wrapper: Wrappers });
+
+  const user = userEvent.setup();
+
+  const menuButton = await screen.getByRole('button');
+
+  await user.click(menuButton);
+
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
+    timeout: 4000,
+  });
+  const firstAppContainer = screen.getByTestId(
+    `application-box-${fakeApps[0].name}`
+  );
+  screen.logTestingPlaygroundURL();
+  expect(firstAppContainer).toHaveStyleRule(
+    'background',
+    colors.interactive.primary__selected_highlight.rgba
+  );
 });
 
 test('No applications is shown ', async () => {

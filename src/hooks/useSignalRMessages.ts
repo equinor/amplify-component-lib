@@ -6,8 +6,8 @@ import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 import { useQuery } from '@tanstack/react-query';
 
 import { getPortalToken } from 'src/api/core/OpenAPI';
-import { EnvironmentType } from 'src/components/Navigation/TopBar/TopBar';
 import { usePrevious } from 'src/hooks/usePrevious';
+import { EnvironmentType } from 'src/types/Environment';
 import { environment } from 'src/utils/auth_environment';
 
 export function useSignalRMessages<

@@ -7,7 +7,7 @@ const { spacings, colors } = tokens;
 
 export const Wrapper = styled.div`
   padding: ${spacings.comfortable.medium};
-  border-bottom: 1px solid ${colors.ui.background__medium.hex};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   &:hover {
     background: #f2f2f2;
   }
@@ -32,7 +32,7 @@ export const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${colors.infographic.substitute__blue_overcast.hex};
+  background-color: ${colors.infographic.substitute__blue_overcast.rgba};
   position: relative;
 `;
 

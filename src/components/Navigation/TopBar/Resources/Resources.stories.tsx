@@ -30,7 +30,6 @@ export default {
   args: {
     hideFeedback: false,
     hideReleaseNotes: false,
-    children: 'Custom child, no style',
   },
 } as Meta;
 

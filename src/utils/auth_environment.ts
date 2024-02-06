@@ -1,6 +1,6 @@
 import { PublicClientApplication } from '@azure/msal-browser';
 
-import { EnvironmentType } from '../components';
+import { EnvironmentType } from 'src/types/Environment';
 
 interface RequiredEnvVariables {
   CLIENT_ID: string;
@@ -99,6 +99,22 @@ const getAllowedParentDomains = (
   }
   return parentDomains.split(';');
 };
+function getPortalWithoutLocalhost() {
+  let environmentName: string | EnvironmentType | undefined = import.meta.env
+    .VITE_ENVIRONMENT_NAME;
+  if (!environmentName) {
+    environmentName = getConfig('ENVIRONMENT_NAME') as EnvironmentType;
+  }
+
+  const environmentNameWithoutLocalHost =
+    environmentName === EnvironmentType.LOCALHOST
+      ? EnvironmentType.DEVELOP
+      : environmentName;
+
+  return `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com`;
+}
+
+const PORTAL_URL_WITHOUT_LOCALHOST = getPortalWithoutLocalhost();
 
 const GRAPH_ENDPOINTS = {
   PHOTO: 'https://graph.microsoft.com/v1.0/me/photos/96x96/$value',
@@ -220,4 +236,5 @@ export const environment = {
   getEnvironmentName,
   getIsMock,
   getServiceNowConfigurationItem,
+  PORTAL_URL_WITHOUT_LOCALHOST,
 };

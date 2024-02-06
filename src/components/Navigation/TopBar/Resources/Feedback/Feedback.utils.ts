@@ -1,6 +1,5 @@
 import { FileWithPath } from 'react-dropzone';
 
-import { EnvironmentType } from '../../TopBar';
 import {
   Browsers,
   FeedbackContentType,
@@ -8,6 +7,7 @@ import {
   UrgencyOption,
 } from './Feedback.types';
 import { ServiceNowUrgency } from 'src/api';
+import { EnvironmentType } from 'src/types/Environment';
 import { date, environment, string } from 'src/utils';
 
 const { capitalize } = string;

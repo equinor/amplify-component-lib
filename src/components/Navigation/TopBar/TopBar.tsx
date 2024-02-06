@@ -10,6 +10,7 @@ import { tokens } from '@equinor/eds-tokens';
 import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
 import FieldSelector from 'src/components/Navigation/TopBar/FieldSelector';
 import { spacings } from 'src/style';
+import { EnvironmentType } from 'src/types/Environment';
 import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
@@ -88,13 +89,6 @@ const EnvironmentTag = styled.div<EnvironmentTagProps>`
   text-transform: capitalize;
   ${(props) => environmentStyling(props.$environmentType)}
 `;
-
-export enum EnvironmentType {
-  LOCALHOST = 'localhost',
-  DEVELOP = 'development',
-  STAGING = 'staging',
-  PRODUCTION = 'production',
-}
 
 type TopBarType = {
   onHeaderClick: () => void;

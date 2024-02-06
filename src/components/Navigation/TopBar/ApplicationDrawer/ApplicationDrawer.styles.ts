@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const { spacings, colors, shape } = tokens;
 
 export const MenuSection = styled.div`
-  border-bottom: 1px solid ${colors.ui.background__light.hex};
+  border-bottom: 1px solid ${colors.ui.background__light.rgba};
   display: flex;
   flex-direction: column;
 
@@ -37,10 +37,10 @@ export const MenuFixedItem = styled.div`
     width: 100%;
   }
   &:hover {
-    background: ${colors.interactive.primary__selected_hover.hex};
+    background: ${colors.interactive.primary__selected_hover.rgba};
     cursor: pointer;
   }
-  border-top: 1px solid ${colors.ui.background__light.hex};
+  border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
   padding: ${spacings.comfortable.medium} ${spacings.comfortable.large}
     ${spacings.comfortable.medium} ${spacings.comfortable.large};
@@ -83,10 +83,10 @@ export const ApplicationBox = styled.div<ApplicationBoxProps>`
   gap: ${spacings.comfortable.medium};
   align-items: center;
   background: ${({ $isSelected }) =>
-    $isSelected ? colors.interactive.primary__selected_highlight.hex : 'none'};
+    $isSelected ? colors.interactive.primary__selected_highlight.rgba : 'none'};
   border-radius: ${shape.corners.borderRadius};
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.hex};
+    background: ${colors.interactive.primary__hover_alt.rgba};
     border-radius: ${shape.corners.borderRadius};
   }
 `;
