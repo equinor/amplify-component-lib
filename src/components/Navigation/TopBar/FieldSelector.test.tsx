@@ -54,7 +54,6 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
   await user.click(document.body);
 
   expect(screen.queryByText('field-name')).not.toBeInTheDocument();
-  screen.logTestingPlaygroundURL();
 });
 
 test('field selector do not shown when field isnt selected', async () => {
@@ -64,7 +63,6 @@ test('field selector do not shown when field isnt selected', async () => {
     onSelect: vi.fn(),
   };
   render(<FieldSelector {...noSelectedField} />);
-  screen.logTestingPlaygroundURL();
   expect(
     screen.queryByTestId('field-selector-top-bar-button')
   ).not.toBeInTheDocument();
