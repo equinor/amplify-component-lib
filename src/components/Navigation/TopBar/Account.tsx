@@ -9,8 +9,8 @@ import {
 } from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { account_circle } from '@equinor/eds-icons';
+import { Button, Chip, Icon, Typography } from '@equinor/eds-core-react';
+import { log_out } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import ProfileAvatar from '../../DataDisplay/ProfileAvatar';
@@ -21,24 +21,50 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
+const ProfileButton = styled.button`
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
-const FullWidthWrapper = styled.div`
-  display: grid;
-  margin-top: ${spacings.large};
-  justify-content: stretch;
+const Container = styled.div`
+  padding-top: ${spacings.medium};
+  display: flex;
   flex-direction: column;
-  grid-gap: ${spacings.medium};
+  align-items: center;
+  gap: ${spacings.small};
+`;
+
+const TextContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const RolesContainer = styled.section`
+  display: flex;
+  gap: ${spacings.small};
+  margin-top: ${spacings.small};
+`;
+
+const RoleChip = styled(Chip)`
+  background: ${colors.ui.background__light.rgba};
+  border: 1px solid ${colors.ui.background__medium.rgba};
+  color: ${colors.text.static_icons__default.rgba};
+`;
+
+const ButtonWrapper = styled.div`
+  display: grid;
+  margin-top: ${spacings.x_large};
+  justify-content: center;
 `;
 
 export interface AccountProps {
   account: AccountInfo | undefined;
   logout: () => void;
   photo: string | undefined;
+  roles: string[] | undefined;
   renderCustomButton?: (
     buttonRef: MutableRefObject<HTMLButtonElement | null>,
     handleToggle: () => void
@@ -49,6 +75,7 @@ export const Account: FC<AccountProps> = ({
   account,
   logout,
   photo,
+  roles,
   renderCustomButton,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,13 +97,9 @@ export const Account: FC<AccountProps> = ({
       {customButton ? (
         customButton
       ) : (
-        <Button variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
-          <Icon
-            data={account_circle}
-            size={24}
-            color={colors.interactive.primary__resting.rgba}
-          />
-        </Button>
+        <ProfileButton ref={buttonRef} onClick={toggleMenu}>
+          <ProfileAvatar size={36} name={account?.name} url={photo} />
+        </ProfileButton>
       )}
       <TopBarMenu
         open={isOpen}
@@ -84,16 +107,26 @@ export const Account: FC<AccountProps> = ({
         onClose={closeMenu}
         anchorEl={buttonRef.current}
       >
-        <Info>
-          <ProfileAvatar size="large" name={account?.name} url={photo} />
-          <div>
+        <Container>
+          <ProfileAvatar size={64} name={account?.name} url={photo} />
+          <TextContent>
             <Typography variant="h6">{account?.name}</Typography>
             <Typography>{account?.username}</Typography>
-          </div>
-        </Info>
-        <FullWidthWrapper>
-          <Button onClick={logout}>Log out</Button>
-        </FullWidthWrapper>
+          </TextContent>
+          {roles && (
+            <RolesContainer>
+              {roles.map((role) => (
+                <RoleChip key={role}>{role}</RoleChip>
+              ))}
+            </RolesContainer>
+          )}
+        </Container>
+        <ButtonWrapper>
+          <Button variant="ghost" onClick={logout}>
+            <Icon data={log_out} />
+            Log out
+          </Button>
+        </ButtonWrapper>
       </TopBarMenu>
     </>
   );
