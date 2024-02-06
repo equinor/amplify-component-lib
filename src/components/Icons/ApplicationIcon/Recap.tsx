@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { AppIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { recap } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const shapes: ShapeProps[] = [
   {

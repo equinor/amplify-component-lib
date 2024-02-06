@@ -23,6 +23,7 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/api/**',
         'src/tests',
+        'src/types',
         'src/**/*.test.ts',
         'src/**/*.types.ts',
         'src/**/*.test.tsx',

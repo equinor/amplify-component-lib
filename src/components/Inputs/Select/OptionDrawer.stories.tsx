@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import OptionDrawer, { OptionDrawerProps } from './OptionDrawer';
-import { items, ValueType } from './SelectUtils';
+import { items, ValueType } from 'src/components/Inputs/Select/stories/data';
 
 export default {
   title: 'Inputs/Select/OptionDrawer',

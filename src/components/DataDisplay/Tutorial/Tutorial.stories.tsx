@@ -3,7 +3,7 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { TutorialStepsProvider } from '../../../providers';
 import Tutorial, { Step, TutorialProps } from './Tutorial';
-import TutorialStoryComponent from './TutorialStoryComponent';
+import TutorialStoryComponent from 'src/components/DataDisplay/Tutorial/stories/TutorialStoryComponent';
 
 export default {
   title: 'DataDisplay/Tutorial',
