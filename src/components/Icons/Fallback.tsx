@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { AppIconProps } from '.';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const Fallback: FC<AppIconProps> = ({ size }) => (
   <svg
