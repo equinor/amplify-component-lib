@@ -120,7 +120,7 @@ const ApplicationDrawer: FC = () => {
                 <Typography
                   group="paragraph"
                   variant="body_short"
-                  style={{ color: colors.text.static_icons__tertiary.hex }}
+                  style={{ color: colors.text.static_icons__tertiary.rgba }}
                 >
                   You don&apos;t have access to other applications
                 </Typography>
@@ -137,7 +137,11 @@ const ApplicationDrawer: FC = () => {
                   const isSelected =
                     getAppName(import.meta.env.VITE_NAME) === item.name;
                   return (
-                    <ApplicationBox key={index} $isSelected={isSelected}>
+                    <ApplicationBox
+                      key={index}
+                      $isSelected={isSelected}
+                      data-testid={`application-box-${item.name}`}
+                    >
                       <ApplicationButton
                         variant="ghost_icon"
                         onClick={() => handleOpenApplication(item)}
@@ -171,7 +175,7 @@ const ApplicationDrawer: FC = () => {
               </TextContainer>
               <Icon
                 data={exit_to_app}
-                color={colors.interactive.primary__resting.hex}
+                color={colors.interactive.primary__resting.rgba}
                 size={24}
               />
             </div>

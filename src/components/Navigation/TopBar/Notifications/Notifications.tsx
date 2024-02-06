@@ -34,7 +34,7 @@ const SidePanel = styled.div<SidePanelProps>`
   height: calc(100vh - 64px);
   width: 350px;
   z-index: 100;
-  background-color: ${colors.ui.background__default.hex};
+  background-color: ${colors.ui.background__default.rgba};
   position: fixed;
   bottom: 0;
   right: 0;
@@ -52,7 +52,7 @@ const Header = styled.div`
   padding-right: ${spacings.comfortable.small};
   align-items: center;
   padding-bottom: ${spacings.comfortable.medium};
-  border-bottom: 1px solid ${colors.ui.background__medium.hex};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
 `;
 
 export const UnreadRedDot = styled.div`
@@ -66,7 +66,7 @@ export const UnreadRedDot = styled.div`
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.14),
     0 3px 4px rgba(0, 0, 0, 0.12);
-  border: 1.5px solid ${colors.text.static_icons__primary_white.hex};
+  border: 1.5px solid ${colors.text.static_icons__primary_white.rgba};
 `;
 
 const FilterOptionsContainer = styled.div`
