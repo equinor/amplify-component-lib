@@ -38,12 +38,7 @@ const notificationsData: (
     SequenceNumber: 1,
 
     field: 'Johan',
-    user: {
-      userRole: 'Admins',
-      shortName: 'Captains',
-      displayName: 'Amanda',
-      image: 'placeholder',
-    },
+    user: null,
     fromUser: {
       userRole: 'Admin',
       shortName: 'Captain@equinor.com',
@@ -97,12 +92,7 @@ const notificationsData: (
     SequenceNumber: 3,
     field: 'Johan',
 
-    user: {
-      userRole: 'Admin',
-      shortName: 'Captain@equinor.com',
-      displayName: 'Calle',
-      image: 'placeholder',
-    },
+    user: null,
 
     toUser: {
       userRole: 'Admins',
@@ -139,7 +129,7 @@ const notificationsData: (
   } as Due3WeeksTypes,
   {
     Read: true,
-    SequenceNumber: 4,
+    SequenceNumber: 5,
     field: 'Johan',
 
     user: {
@@ -287,6 +277,23 @@ test('renders filtered and sorted notifications correctly with children', async 
   const button = screen.getByTestId('show-hide-button');
 
   await user.click(button);
+});
+
+test('show unread dot when unread=true from system user ', async () => {
+  const options = {
+    notifications: notificationsData,
+    showFilterOptions: true,
+    children: false,
+  };
+
+  render(<Notifications setAllAsRead={() => null} {...options} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByTestId('show-hide-button');
+
+  await user.click(button);
+  const unreadDot = screen.getByTestId('unread-dot-system');
+  expect(unreadDot).toBeInTheDocument();
 });
 
 describe('Sorting notifications ', () => {

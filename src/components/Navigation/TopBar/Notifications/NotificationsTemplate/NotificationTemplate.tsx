@@ -111,7 +111,7 @@ const NotificationTemplate: FC<
             </UserInformation>
           ) : (
             <UserInformation $systemUser>
-              {!Read && <Dot />}
+              {!Read && <Dot data-testid="unread-dot-system" />}
               <ApplicationIcon name={applicationName} />
 
               <Typography group="heading" variant="h6">
