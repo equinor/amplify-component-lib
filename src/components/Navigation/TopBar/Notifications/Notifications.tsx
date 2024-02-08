@@ -48,11 +48,13 @@ const SidePanel = styled.div<SidePanelProps>`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.comfortable.small} ${spacings.comfortable.medium};
-  padding-right: ${spacings.comfortable.small};
+  padding: ${spacings.comfortable.medium};
   align-items: center;
-  padding-bottom: ${spacings.comfortable.medium};
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+  position: sticky;
+  top: 0;
+  background-color: ${colors.ui.background__default.rgba};
+  z-index: 3000;
 `;
 
 export const UnreadRedDot = styled.div`
