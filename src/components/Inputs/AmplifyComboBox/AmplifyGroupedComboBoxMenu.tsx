@@ -48,13 +48,19 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption>(
 
   if ('values' in props) {
     return filteredGroups.map((group, groupIndex) => (
-      <Menu.Section key={`${group.title}-${groupIndex}`} title={group.title}>
+      <Menu.Section
+        key={`${group.title}-${groupIndex}`}
+        index={groupIndex}
+        title={group.title}
+      >
         {group.items.map((item, index) => (
           <MenuItemMultiselect
             key={`${group.title}-${groupIndex}-item-${item.value}`}
             ref={(element: HTMLButtonElement) => {
               itemRefs.current[index + filteredGroupSum[groupIndex]] = element;
             }}
+            index={index + filteredGroupSum[groupIndex]}
+            tabIndex={index + filteredGroupSum[groupIndex]}
             closeMenuOnClick={false}
             onKeyDownCapture={onItemKeyDown}
             onClick={() => onItemSelect(item)}
@@ -86,6 +92,8 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption>(
           ref={(element) => {
             itemRefs.current[index + filteredGroupSum[groupIndex]] = element;
           }}
+          index={index + filteredGroupSum[groupIndex]}
+          tabIndex={index + filteredGroupSum[groupIndex]}
           onKeyDownCapture={onItemKeyDown}
           onClick={() => onItemSelect(item)}
         >

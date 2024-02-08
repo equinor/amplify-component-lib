@@ -136,7 +136,7 @@ const AmplifyComboBox = <T extends ComboBoxOption>(
 
   return (
     <>
-      <Container ref={anchorRef} onClick={handleOnOpen}>
+      <Container ref={anchorRef} onClick={handleOnOpen} aria-expanded={open}>
         <Section>
           {selectedValues.map((value) => (
             <StyledChip
@@ -149,6 +149,7 @@ const AmplifyComboBox = <T extends ComboBoxOption>(
           <input
             ref={searchRef}
             type="search"
+            role="combobox"
             value={search}
             onChange={handleOnSearchChange}
             onKeyDownCapture={handleOnSearchKeyDown}
@@ -162,11 +163,12 @@ const AmplifyComboBox = <T extends ComboBoxOption>(
       {open && (
         <Menu
           open
+          id="combobox-menu"
           anchorEl={anchorRef.current}
           onClose={handleOnClose}
           placement="bottom"
+          matchAnchorWidth
           style={{
-            width: `${anchorRef.current?.clientWidth}px`,
             maxHeight: '20rem',
             overflow: 'auto',
           }}
