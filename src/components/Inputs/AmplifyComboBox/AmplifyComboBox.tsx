@@ -44,8 +44,15 @@ const Section = styled.section`
   }
 `;
 
-const StyledChip = styled(Chip)`
-  background: ${colors.ui.background__default.rgba};
+interface StyledChipProps {
+  $tryingToRemove: boolean;
+}
+
+const StyledChip = styled(Chip)<StyledChipProps>`
+  background: ${({ $tryingToRemove }) =>
+    $tryingToRemove
+      ? colors.interactive.primary__hover_alt.rgba
+      : colors.ui.background__default.rgba};
 `;
 
 export type AmplifyComboBoxComponentProps<T extends ComboBoxOption> = {
@@ -61,6 +68,9 @@ const AmplifyComboBox = <T extends ComboBoxOption>(
   const searchRef = useRef<HTMLInputElement | null>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const focusingItemIndex = useRef<number>(-1);
+  const [tryingToRemoveItem, setTryingToRemoveItem] = useState<T | undefined>(
+    undefined
+  );
 
   const selectedValues: T[] = useMemo(() => {
     if ('values' in props) return props.values;
@@ -118,6 +128,11 @@ const AmplifyComboBox = <T extends ComboBoxOption>(
         itemRefs.current[0]?.focus();
         focusingItemIndex.current = 0;
       }
+    } else if (event.key === 'Backspace' && tryingToRemoveItem === undefined) {
+      setTryingToRemoveItem(selectedValues?.at(-1));
+    } else if (event.key === 'Backspace' && tryingToRemoveItem) {
+      handleOnRemoveItem(tryingToRemoveItem);
+      setTryingToRemoveItem(undefined);
     }
   };
 
@@ -142,6 +157,7 @@ const AmplifyComboBox = <T extends ComboBoxOption>(
             <StyledChip
               key={value.value}
               onDelete={() => handleOnRemoveItem(value)}
+              $tryingToRemove={tryingToRemoveItem?.value === value.value}
             >
               {value.label}
             </StyledChip>
