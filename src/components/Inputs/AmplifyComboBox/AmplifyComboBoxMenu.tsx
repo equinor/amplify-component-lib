@@ -1,22 +1,24 @@
 import { useMemo } from 'react';
 
-import { Icon, Menu } from '@equinor/eds-core-react';
-import { checkbox, checkbox_outline } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
-
-import { MenuItemMultiselect } from './AmplifyComboBox.styles';
 import {
   AmplifyComboBoxMenuProps,
   AmplifyComboBoxProps,
   ComboBoxOption,
 } from './AmplifyComboBox.types';
+import { getChildOffset } from './AmplifyComboBox.utils';
+import AmplifyComboBoxMenuItem from './AmplifyComboBoxMenuItem';
 
-const { colors } = tokens;
-
-const AmplifyComboBoxMenu = <T extends ComboBoxOption>(
+const AmplifyComboBoxMenu = <T extends ComboBoxOption<T>>(
   props: AmplifyComboBoxProps<T> & AmplifyComboBoxMenuProps<T>
 ) => {
-  const { search, items, onItemSelect, itemRefs, onItemKeyDown } = props;
+  const {
+    search,
+    items,
+    onItemSelect,
+    itemRefs,
+    onItemKeyDown,
+    selectableParent,
+  } = props;
 
   const filteredItems = useMemo(() => {
     if (search === '') return items;
@@ -30,43 +32,32 @@ const AmplifyComboBoxMenu = <T extends ComboBoxOption>(
 
   if ('values' in props) {
     return filteredItems.map((item, index) => (
-      <MenuItemMultiselect
-        ref={(element: HTMLButtonElement) => {
-          itemRefs.current[index] = element;
-        }}
+      <AmplifyComboBoxMenuItem
+        key={`menu-item-${index}-${item.value}`}
+        childOffset={getChildOffset(filteredItems, index)}
         index={index}
-        tabIndex={index}
-        key={`${item.value}-${index}`}
-        closeMenuOnClick={false}
-        onClick={() => onItemSelect(item)}
-        onKeyDownCapture={onItemKeyDown}
-      >
-        <Icon
-          color={colors.interactive.primary__resting.rgba}
-          data={
-            props.values.find((value) => value.value === item.value)
-              ? checkbox
-              : checkbox_outline
-          }
-        />
-        {item.label}
-      </MenuItemMultiselect>
+        multiselect
+        item={item}
+        itemRefs={itemRefs}
+        onItemKeyDown={onItemKeyDown}
+        onItemSelect={onItemSelect}
+        values={props.values}
+        selectableParent={selectableParent}
+      />
     ));
   }
 
   return filteredItems.map((item, index) => (
-    <Menu.Item
-      ref={(element: HTMLButtonElement) => {
-        itemRefs.current[index] = element;
-      }}
+    <AmplifyComboBoxMenuItem
+      key={`menu-item-${index}-${item.value}`}
+      childOffset={getChildOffset(filteredItems, index)}
       index={index}
-      tabIndex={index}
-      key={`${item.value}-${index}`}
-      onClick={() => onItemSelect(item)}
-      onKeyDownCapture={onItemKeyDown}
-    >
-      {item.label}
-    </Menu.Item>
+      item={item}
+      itemRefs={itemRefs}
+      onItemKeyDown={onItemKeyDown}
+      onItemSelect={onItemSelect}
+      selectableParent={selectableParent}
+    />
   ));
 };
 

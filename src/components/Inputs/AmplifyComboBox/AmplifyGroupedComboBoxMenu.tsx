@@ -1,19 +1,15 @@
 import { useMemo } from 'react';
 
-import { Icon, Menu } from '@equinor/eds-core-react';
-import { checkbox, checkbox_outline } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
+import { Menu } from '@equinor/eds-core-react';
 
-import { MenuItemMultiselect } from './AmplifyComboBox.styles';
 import {
   AmplifyComboBoxMenuProps,
   AmplifyGroupedComboboxProps,
   ComboBoxOption,
 } from './AmplifyComboBox.types';
+import AmplifyComboBoxMenuItem from './AmplifyComboBoxMenuItem';
 
-const { colors } = tokens;
-
-const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption>(
+const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
   props: AmplifyGroupedComboboxProps<T> & AmplifyComboBoxMenuProps<T>
 ) => {
   const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;
@@ -54,27 +50,17 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption>(
         title={group.title}
       >
         {group.items.map((item, index) => (
-          <MenuItemMultiselect
+          <AmplifyComboBoxMenuItem
             key={`${group.title}-${groupIndex}-item-${item.value}`}
-            ref={(element: HTMLButtonElement) => {
-              itemRefs.current[index + filteredGroupSum[groupIndex]] = element;
-            }}
             index={index + filteredGroupSum[groupIndex]}
-            tabIndex={index + filteredGroupSum[groupIndex]}
-            closeMenuOnClick={false}
-            onKeyDownCapture={onItemKeyDown}
-            onClick={() => onItemSelect(item)}
-          >
-            <Icon
-              color={colors.interactive.primary__resting.rgba}
-              data={
-                props.values.find((value) => value.value === item.value)
-                  ? checkbox
-                  : checkbox_outline
-              }
-            />
-            {item.label}
-          </MenuItemMultiselect>
+            childOffset={0}
+            item={item}
+            multiselect
+            itemRefs={itemRefs}
+            onItemKeyDown={onItemKeyDown}
+            onItemSelect={onItemSelect}
+            values={props.values}
+          />
         ))}
       </Menu.Section>
     ));
@@ -87,18 +73,15 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption>(
       title={group.title}
     >
       {group.items.map((item, index) => (
-        <Menu.Item
+        <AmplifyComboBoxMenuItem
           key={`${group.title}-${groupIndex}-item-${item.value}`}
-          ref={(element) => {
-            itemRefs.current[index + filteredGroupSum[groupIndex]] = element;
-          }}
           index={index + filteredGroupSum[groupIndex]}
-          tabIndex={index + filteredGroupSum[groupIndex]}
-          onKeyDownCapture={onItemKeyDown}
-          onClick={() => onItemSelect(item)}
-        >
-          {item.label}
-        </Menu.Item>
+          childOffset={0}
+          item={item}
+          itemRefs={itemRefs}
+          onItemKeyDown={onItemKeyDown}
+          onItemSelect={onItemSelect}
+        />
       ))}
     </Menu.Section>
   ));
