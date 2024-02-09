@@ -7,6 +7,9 @@ spec:
     - name: production
       build:
         from: main
+    - name: feature
+      build:
+        from: feature-release/**
 
   components:
     - name: client
