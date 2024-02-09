@@ -1,9 +1,15 @@
 import { ChangeEvent, KeyboardEvent, useMemo, useRef, useState } from 'react';
 
-import { Chip, Icon, Label, Menu } from '@equinor/eds-core-react';
+import { Icon, Label, Menu } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import {
+  Container,
+  PlaceholderText,
+  Section,
+  StyledChip,
+} from './AmplifyComboBox.styles';
 import {
   AmplifyComboBoxProps,
   AmplifyGroupedComboboxProps,
@@ -11,64 +17,12 @@ import {
 } from './AmplifyComboBox.types';
 import AmplifyComboBoxMenu from './AmplifyComboBoxMenu';
 import AmplifyGroupedComboBoxMenu from './AmplifyGroupedComboBoxMenu';
-import { spacings } from 'src/style/spacings';
-
-import styled from 'styled-components';
 
 const { colors } = tokens;
 
-const Container = styled.div`
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
-  padding: ${spacings.medium_small} ${spacings.medium};
-  &[aria-expanded='true'] {
-    box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
-  }
-  margin-top: 0.75rem;
-  > label {
-    position: absolute;
-    top: -0.75rem;
-    left: 0;
-  }
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${spacings.x_small};
-  input[type='search'] {
-    background: transparent;
-    width: 0;
-    flex-grow: 1;
-    padding: 0;
-    font-family: 'Equinor', sans-serif;
-    outline: none;
-    border: none;
-  }
-  input[type='search']::-webkit-search-decoration,
-  input[type='search']::-webkit-search-cancel-button,
-  input[type='search']::-webkit-search-results-button,
-  input[type='search']::-webkit-search-results-decoration {
-    appearance: none;
-  }
-`;
-
-interface StyledChipProps {
-  $tryingToRemove: boolean;
-}
-
-const StyledChip = styled(Chip)<StyledChipProps>`
-  background: ${({ $tryingToRemove }) =>
-    $tryingToRemove
-      ? colors.interactive.primary__hover_alt.rgba
-      : colors.ui.background__default.rgba};
-`;
-
 export type AmplifyComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   label: string;
+  placeholder?: string;
 } & (AmplifyComboBoxProps<T> | AmplifyGroupedComboboxProps<T>);
 
 const AmplifyComboBox = <T extends ComboBoxOption<T>>(
@@ -83,6 +37,10 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   const [tryingToRemoveItem, setTryingToRemoveItem] = useState<T | undefined>(
     undefined
   );
+
+  if ('groups' in props && 'items' in props) {
+    throw new Error("Can't use both items and groups!");
+  }
 
   const selectedValues: T[] = useMemo(() => {
     if ('values' in props) return props.values;
@@ -104,7 +62,11 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === ' ') return;
     setSearch(event.target.value);
+    if (!open) {
+      setOpen(true);
+    }
   };
 
   const handleOnItemSelect = (item: T) => {
@@ -153,7 +115,10 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
       props.onSelect([...props.values, ...newValues], item);
     }
 
-    if (search !== '') setSearch('');
+    if (search !== '') {
+      setSearch('');
+    }
+    searchRef.current?.focus();
   };
 
   const handleOnRemoveItem = (item: T) => {
@@ -167,7 +132,9 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleOnSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Escape') {
+    if (event.key === 'Space' || event.key === 'Enter') {
+      handleOnOpen();
+    } else if (event.key === 'Escape') {
       searchRef.current?.blur();
       handleOnClose();
     } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
@@ -205,15 +172,21 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
       <Container ref={anchorRef} onClick={handleOnOpen} aria-expanded={open}>
         <Label label={props.label} htmlFor="amplify-combobox" />
         <Section>
-          {selectedValues.map((value) => (
-            <StyledChip
-              key={value.value}
-              onDelete={() => handleOnRemoveItem(value)}
-              $tryingToRemove={tryingToRemoveItem?.value === value.value}
-            >
-              {value.label}
-            </StyledChip>
-          ))}
+          {selectedValues.length > 0 || search !== '' ? (
+            selectedValues.map((value) => (
+              <StyledChip
+                key={value.value}
+                onDelete={() => handleOnRemoveItem(value)}
+                $tryingToRemove={tryingToRemoveItem?.value === value.value}
+              >
+                {value.label}
+              </StyledChip>
+            ))
+          ) : (
+            <PlaceholderText>
+              {props.placeholder ? props.placeholder : 'Select...'}
+            </PlaceholderText>
+          )}
           <input
             id="amplify-combobox"
             ref={searchRef}

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { NoItemsFoundText } from './AmplifyComboBox.styles';
 import {
   AmplifyComboBoxMenuProps,
   AmplifyComboBoxProps,
@@ -27,7 +28,7 @@ const AmplifyComboBoxMenu = <T extends ComboBoxOption<T>>(
   }, [items, search]);
 
   if (filteredItems.length === 0) {
-    return <p>No items found</p>;
+    return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
   if ('values' in props) {
