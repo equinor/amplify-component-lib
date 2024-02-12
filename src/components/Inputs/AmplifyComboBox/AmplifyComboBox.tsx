@@ -1,4 +1,11 @@
-import { ChangeEvent, KeyboardEvent, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { Icon, Label, Menu } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
@@ -38,6 +45,8 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   const [tryingToRemoveItem, setTryingToRemoveItem] = useState<T | undefined>(
     undefined
   );
+  const internalUpdateOfValues = useRef<boolean>(false);
+  const previousAmountOfValues = useRef<number>(0);
 
   if ('groups' in props && 'items' in props) {
     throw new Error("Can't use both items and groups!");
@@ -74,6 +83,17 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
     });
   }, [props]);
 
+  useEffect(() => {
+    if (
+      internalUpdateOfValues.current &&
+      previousAmountOfValues.current !== selectedValues.length
+    ) {
+      previousAmountOfValues.current = selectedValues.length;
+      internalUpdateOfValues.current = false;
+      searchRef.current?.focus();
+    }
+  }, [selectedValues.length]);
+
   const handleOnOpen = () => {
     if (!open) {
       searchRef.current?.focus();
@@ -85,6 +105,14 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
     setOpen(false);
     setSearch('');
     focusingItemIndex.current = 0;
+  };
+
+  const handleToggleOpen = () => {
+    if (open) {
+      handleOnClose();
+    } else {
+      handleOnOpen();
+    }
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +172,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
     if (search !== '') {
       setSearch('');
     }
-    searchRef.current?.focus();
+    internalUpdateOfValues.current = true;
   };
 
   const handleOnRemoveItem = (item: T) => {
@@ -190,6 +218,9 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
     } else if (event.key === 'ArrowUp' && focusingItemIndex.current > 0) {
       focusingItemIndex.current -= 1;
       itemRefs.current.at(focusingItemIndex.current)?.focus();
+    } else if (event.key === 'ArrowUp' && focusingItemIndex.current === 0) {
+      focusingItemIndex.current = -1;
+      searchRef.current?.focus();
     }
   };
 
@@ -225,6 +256,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
           />
         </Section>
         <Icon
+          onClick={handleToggleOpen}
           data={open ? arrow_drop_up : arrow_drop_down}
           color={colors.text.static_icons__default.rgba}
         />

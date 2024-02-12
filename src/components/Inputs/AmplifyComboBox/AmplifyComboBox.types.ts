@@ -14,10 +14,9 @@ export type ComboBoxOption<T> = {
 interface AmplifySingleComboBoxCommon<T extends ComboBoxOption<T>> {
   value: T | undefined;
   onSelect: (value: T | undefined) => void;
-  selectableParent?: undefined;
 }
 
-interface AmplifyMultiComboBoxCommon<T extends ComboBoxOption<T>> {
+export interface AmplifyMultiComboBoxCommon<T extends ComboBoxOption<T>> {
   values: T[];
   onSelect: (values: T[], selectedValue: T) => void;
   selectableParent?: boolean;

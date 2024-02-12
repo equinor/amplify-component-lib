@@ -7,7 +7,11 @@ import { StoryFn } from '@storybook/react';
 import AmplifyComboBox, {
   AmplifyComboBoxComponentProps,
 } from './AmplifyComboBox';
-import { AmplifyComboBoxProps, ComboBoxOption } from './AmplifyComboBox.types';
+import {
+  AmplifyComboBoxProps,
+  AmplifyMultiComboBoxCommon,
+  ComboBoxOption,
+} from './AmplifyComboBox.types';
 
 export default {
   title: 'Inputs/AmplifyComboBox',
@@ -169,7 +173,9 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
   return (
     <AmplifyComboBox
       label={args.label}
-      selectableParent={args.selectableParent}
+      selectableParent={
+        (args as AmplifyMultiComboBoxCommon<Item>)?.selectableParent || false
+      }
       items={FAKE_ITEMS_WITH_CHILDREN}
       values={values}
       onSelect={handleOnSelect}
