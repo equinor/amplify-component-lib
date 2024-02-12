@@ -135,7 +135,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
         item
       );
     } else if (props.values.find((i) => i.value === item.value)) {
-      // Remove parent with all children/grandchildren etc.
+      // Remove parent with all children
       const copiedItem = JSON.parse(JSON.stringify(item));
       const removingValues: string[] = [copiedItem.value];
       const childItems = copiedItem.children || [];
@@ -153,7 +153,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
     } else if ('groups' in props || props.selectableParent === false) {
       props.onSelect([...props.values, item], item);
     } else {
-      // Add parent with all children/grandchildren etc.
+      // Add parent with all children
       const copiedItem = JSON.parse(JSON.stringify(item));
       const newValues = [copiedItem];
       const childItems = copiedItem.children || [];
