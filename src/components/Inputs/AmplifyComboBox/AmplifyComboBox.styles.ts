@@ -23,6 +23,13 @@ export const Container = styled.div`
     top: -0.75rem;
     left: 0;
   }
+  > svg {
+    cursor: pointer;
+    &:hover {
+      background: ${colors.interactive.primary__hover_alt.rgba};
+      border-radius: 50%;
+    }
+  }
 `;
 
 export const Section = styled.section`
