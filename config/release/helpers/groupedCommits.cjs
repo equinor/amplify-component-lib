@@ -1,11 +1,11 @@
-const groupMappings = require("../groupMapping.cjs");
-const gitmojis = require("gitmojis").gitmojis;
+const gitmojis = require('gitmojis').gitmojis;
 
-const maleConstructionWorker = "👷‍♂️";
-const maleTechnologist = "🧑‍💻";
+const groupMappings = require('../groupMapping.cjs');
+
+const maleConstructionWorker = '👷‍♂️';
 
 const transformToGroupedCommitList = (commits, options) => {
-  let commitlist = [];
+  const commitlist = [];
   const keys = Object.keys(commits);
   if (Object.keys(commits).length > 0) {
     for (const gitmojiIndex in keys) {
@@ -13,16 +13,13 @@ const transformToGroupedCommitList = (commits, options) => {
         gitmojis.find((g) => {
           // The gitcomji package does not handle gender or skin color
           if (keys[gitmojiIndex] === maleConstructionWorker) {
-            return g.name === "construction-worker";
-          }
-          if (keys[gitmojiIndex] === maleTechnologist) {
-            return g.name === "technologist";
+            return g.name === 'construction-worker';
           }
           return g.emoji === keys[gitmojiIndex];
         }) || {};
 
       const group = groupMappings.find((g) => {
-        return g.emojis.includes((emoji.code || "").replaceAll(":", ""));
+        return g.emojis.includes((emoji.code || '').replaceAll(':', ''));
       });
       if (group) {
         const exist = commitlist.findIndex(
@@ -34,7 +31,11 @@ const transformToGroupedCommitList = (commits, options) => {
             ...commits[keys[gitmojiIndex]],
           ];
         } else {
-          commitlist.push({ ...group, cList: commits[keys[gitmojiIndex]] });
+          commitlist.push({
+            group: group.group,
+            label: group.label,
+            cList: commits[keys[gitmojiIndex]],
+          });
         }
       } else {
         console.log(
@@ -42,7 +43,7 @@ const transformToGroupedCommitList = (commits, options) => {
         );
       }
     }
-    options.data.root["commits"] = commitlist;
+    options.data.root['commits'] = commitlist;
   }
 };
 
