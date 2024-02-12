@@ -23,6 +23,7 @@ const { colors } = tokens;
 export type AmplifyComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   label: string;
   placeholder?: string;
+  sortValues?: boolean;
 } & (AmplifyComboBoxProps<T> | AmplifyGroupedComboboxProps<T>);
 
 const AmplifyComboBox = <T extends ComboBoxOption<T>>(
@@ -43,9 +44,34 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   }
 
   const selectedValues: T[] = useMemo(() => {
-    if ('values' in props) return props.values;
-    if (props.value) return [props.value];
-    return [];
+    let selected: T[] = [];
+    if ('values' in props) {
+      selected = props.values;
+    } else if (props.value) {
+      selected = [props.value];
+    }
+
+    if (props.sortValues === false) return selected;
+
+    let flattenedItems: T[];
+    if ('groups' in props) {
+      flattenedItems = props.groups.flatMap((group) => group.items);
+    } else {
+      flattenedItems = props.items.flatMap((item) => [
+        { ...item },
+        ...((item.children as T[]) || []),
+      ]);
+    }
+
+    return selected.sort((a, b) => {
+      const firstIndex = flattenedItems.findIndex(
+        (item) => item.value === a.value
+      );
+      const secondIndex = flattenedItems.findIndex(
+        (item) => item.value === b.value
+      );
+      return firstIndex - secondIndex;
+    });
   }, [props]);
 
   const handleOnOpen = () => {

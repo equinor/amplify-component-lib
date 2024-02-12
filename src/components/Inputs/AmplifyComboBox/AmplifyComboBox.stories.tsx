@@ -15,10 +15,12 @@ export default {
   argTypes: {
     label: { control: 'text' },
     selectableParent: { control: 'boolean' },
+    sortValues: { control: 'boolean' },
   },
   args: {
     label: 'Label here',
     selectableParent: true,
+    sortValues: true,
   },
 };
 
@@ -75,6 +77,7 @@ export const ComboBoxWithSingleSelect: StoryFn<
       items={FAKE_ITEMS}
       value={value}
       onSelect={handleOnSelect}
+      sortValues={args.sortValues}
     />
   );
 };
@@ -98,6 +101,7 @@ export const ComboBoxWithMultiSelect: StoryFn<
       items={FAKE_ITEMS}
       values={values}
       onSelect={handleOnSelect}
+      sortValues={args.sortValues}
     />
   );
 };
@@ -120,6 +124,7 @@ export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
       value={value}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
+      sortValues={args.sortValues}
     />
   );
 };
@@ -143,6 +148,7 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
       values={values}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
+      sortValues={args.sortValues}
     />
   );
 };
@@ -167,6 +173,7 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
       items={FAKE_ITEMS_WITH_CHILDREN}
       values={values}
       onSelect={handleOnSelect}
+      sortValues={args.sortValues}
     />
   );
 };
