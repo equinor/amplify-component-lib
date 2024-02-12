@@ -43,3 +43,24 @@ export interface AmplifyComboBoxMenuProps<T extends ComboBoxOption<T>> {
   onItemSelect: (item: T) => void;
   selectableParent?: boolean;
 }
+
+interface AmplifyComboBoxMenuItemProps<T> {
+  item: T;
+  index: number;
+  childOffset: number;
+  depth?: number;
+}
+
+export type AmplifyComboBoxSingleSelectMenuItemProps<
+  T extends ComboBoxOption<T>,
+> = {
+  multiselect?: undefined;
+} & Omit<AmplifyComboBoxMenuProps<T>, 'search'> &
+  AmplifyComboBoxMenuItemProps<T>;
+export type AmplifyComboBoxMultiSelectMenuItemProps<
+  T extends ComboBoxOption<T>,
+> = {
+  multiselect: true;
+  values: T[];
+} & Omit<AmplifyComboBoxMenuProps<T>, 'search'> &
+  AmplifyComboBoxMenuItemProps<T>;

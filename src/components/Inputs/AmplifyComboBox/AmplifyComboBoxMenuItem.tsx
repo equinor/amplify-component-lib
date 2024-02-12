@@ -16,30 +16,13 @@ import {
   MenuItemSpacer,
 } from './AmplifyComboBox.styles';
 import {
-  AmplifyComboBoxMenuProps,
+  AmplifyComboBoxMultiSelectMenuItemProps,
+  AmplifyComboBoxSingleSelectMenuItemProps,
   ComboBoxOption,
 } from './AmplifyComboBox.types';
 import { getChildOffset } from './AmplifyComboBox.utils';
 
 const { colors } = tokens;
-
-interface AmplifyComboBoxMenuItemProps<T> {
-  item: T;
-  index: number;
-  childOffset: number;
-  depth?: number;
-}
-
-type AmplifyComboBoxSingleSelectMenuItemProps<T extends ComboBoxOption<T>> = {
-  multiselect?: undefined;
-} & Omit<AmplifyComboBoxMenuProps<T>, 'search'> &
-  AmplifyComboBoxMenuItemProps<T>;
-
-type AmplifyComboBoxMultiSelectMenuItemProps<T extends ComboBoxOption<T>> = {
-  multiselect: true;
-  values: T[];
-} & Omit<AmplifyComboBoxMenuProps<T>, 'search'> &
-  AmplifyComboBoxMenuItemProps<T>;
 
 const AmplifyComboBoxMenuItem = <T extends ComboBoxOption<T>>(
   props:
