@@ -38,7 +38,6 @@ const SidePanel = styled.div<SidePanelProps>`
   position: fixed;
   bottom: 0;
   right: 0;
-  overflow: auto;
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.14),
     0 3px 4px rgba(0, 0, 0, 0.12);
@@ -48,7 +47,8 @@ const SidePanel = styled.div<SidePanelProps>`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.comfortable.medium};
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.medium} 0
+    ${spacings.comfortable.medium};
   align-items: center;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   position: sticky;
@@ -70,6 +70,12 @@ export const UnreadRedDot = styled.div`
 
 const FilterOptionsContainer = styled.div`
   display: flex;
+`;
+
+const Content = styled.div`
+  overflow: auto;
+  height: calc(100vh - 64px);
+  width: 350px;
 `;
 
 interface NotificationsProps {
@@ -211,9 +217,9 @@ export const Notifications: FC<NotificationsProps> = ({
         )}
 
         {children ? (
-          children
+          <Content>{children}</Content>
         ) : (
-          <>
+          <Content>
             {filteredAndSortedNotifications &&
             filteredAndSortedNotifications?.length > 0 ? (
               filteredAndSortedNotifications.map((item) => {
@@ -224,7 +230,7 @@ export const Notifications: FC<NotificationsProps> = ({
             ) : (
               <NoNotifications />
             )}
-          </>
+          </Content>
         )}
       </SidePanel>
     </>
