@@ -1,7 +1,9 @@
 name: NPM Publish
 on:
   workflow_call:
-
+    secrets:
+      npm-token:
+        required: true
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -22,4 +24,4 @@ jobs:
 
       - uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ secrets.NPM_TOKEN }}
+          token: ${{ secrets.npm-token }}

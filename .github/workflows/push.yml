@@ -10,8 +10,10 @@ on:
 
 jobs:
   publish:
-    name: Publsih to NPM
+    name: Publish to NPM
     uses: ./.github/workflows/npm_publish.yaml
+    secrets:
+      npm-token: ${{ secrets.NPM_TOKEN }}
   release:
     name: Create release notes
     needs: [publish]
