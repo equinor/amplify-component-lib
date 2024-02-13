@@ -247,7 +247,7 @@ test('Unread dot renders as expected', () => {
   const unreadDot = container.children[0];
   expect(unreadDot).toHaveStyleRule(
     'background-color',
-    colors.interactive.danger__hover.rgba
+    colors.interactive.danger__resting.rgba
   );
 });
 
