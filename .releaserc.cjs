@@ -9,10 +9,13 @@ const commitFile = path.resolve(
   __dirname,
   "./config/release/templates/commit-template.hbs"
 );
+const groupedCommitsFile = path.resolve(
+  __dirname,
+  "./config/release/helpers/groupedCommits.js"
+);
 const template = fs.readFileSync(tplFile, "utf-8");
 const commitTemplate = fs.readFileSync(commitFile, "utf-8");
-
-const groupedCommits = require("./config/release/helpers/groupedCommits.js");
+const groupedCommits = fs.readFileSync(groupedCommitsFile, "utf-8");
 
 // Use of Gitmojis to create rules
 const gitmojis = require("gitmojis").gitmojis;
