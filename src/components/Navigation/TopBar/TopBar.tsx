@@ -130,7 +130,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
       <Bar ref={ref}>
         <Header>
           <header onClick={onHeaderClick}>
-            <ApplicationIcon name={applicationIcon} size={40} withHover />
+            <ApplicationIcon name={applicationIcon} size={32} withHover />
             <AppName variant="h6" $capitalize={capitalize}>
               {capitalize ? applicationName.toLowerCase() : applicationName}
             </AppName>
