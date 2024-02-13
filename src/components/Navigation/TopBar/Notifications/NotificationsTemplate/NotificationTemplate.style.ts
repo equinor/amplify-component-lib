@@ -1,4 +1,4 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button, Divider as EDSDivider } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
@@ -7,7 +7,7 @@ const { spacings, colors } = tokens;
 
 export const Wrapper = styled.div`
   padding: ${spacings.comfortable.medium};
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+  //border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   &:hover {
     background: #f2f2f2;
   }
@@ -71,4 +71,9 @@ export const DeleteButton = styled(Button)`
   ${GridContainer}:hover & {
     display: initial;
   }
+`;
+
+export const Divider = styled(EDSDivider)`
+  display: flex;
+  margin: 0 ${spacings.comfortable.medium_small};
 `;

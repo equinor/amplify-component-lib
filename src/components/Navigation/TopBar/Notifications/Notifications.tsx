@@ -58,17 +58,17 @@ const Header = styled.div`
 `;
 
 export const UnreadRedDot = styled.div`
-  background-color: ${colors.interactive.danger__hover.rgba};
-  width: 12px;
-  height: 12px;
+  background-color: ${colors.interactive.danger__resting.rgba};
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   position: absolute;
-  right: 7px;
-  top: 7px;
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.14),
-    0 3px 4px rgba(0, 0, 0, 0.12);
-  border: 1.5px solid ${colors.text.static_icons__primary_white.rgba};
+  right: 2px;
+  top: 4px;
+  //box-shadow:
+  //  0 2px 4px rgba(0, 0, 0, 0.14),
+  //  0 3px 4px rgba(0, 0, 0, 0.12);
+  border: 2px solid ${colors.text.static_icons__primary_white.rgba};
 `;
 
 const FilterOptionsContainer = styled.div`
@@ -171,7 +171,7 @@ export const Notifications: FC<NotificationsProps> = ({
   return (
     <>
       <TopBarButton
-        variant="ghost_icon"
+        variant="ghost"
         key="topbar-notifications"
         ref={buttonRef}
         onClick={handleButtonClick}
@@ -181,7 +181,11 @@ export const Notifications: FC<NotificationsProps> = ({
         <Icon
           data={notificationIcon}
           size={24}
-          color={colors.interactive.primary__resting.hsla}
+          color={
+            notificationsOpen
+              ? '#132E31'
+              : colors.interactive.primary__resting.hsla
+          }
         />
         {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
       </TopBarButton>

@@ -4,9 +4,9 @@ import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from '../../../style';
 import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
+import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
@@ -67,16 +67,12 @@ export const Settings: FC<ISettingsProps> = ({ allSettings }) => {
   return (
     <>
       <TopBarButton
-        variant="ghost_icon"
+        variant="ghost"
         onClick={toggleMenu}
         ref={buttonRef}
         $isSelected={isOpen}
       >
-        <Icon
-          data={settings}
-          size={24}
-          color={colors.interactive.primary__resting.rgba}
-        />
+        <Icon data={settings} size={24} />
       </TopBarButton>
       <TopBarMenu
         open={isOpen}
