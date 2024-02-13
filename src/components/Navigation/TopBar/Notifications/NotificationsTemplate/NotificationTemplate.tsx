@@ -29,6 +29,7 @@ import { ProfileAvatar } from 'src/components/index';
 import {
   Content,
   DeleteButton,
+  Divider,
   Dot,
   FooterContainer,
   GridContainer,
@@ -81,88 +82,91 @@ const NotificationTemplate: FC<
   }, [props, notificationType]);
 
   return (
-    <Wrapper>
-      <GridContainer>
-        <TopContainer>
-          {user ? (
-            <UserInformation>
-              {!Read && <Dot />}
-              <ProfileAvatar
-                url={user?.image}
-                name={user?.shortName}
-                size="large"
-              />
-              <div>
-                <Typography
-                  color={colors.text.static_icons__default.rgba}
-                  group="heading"
-                  variant="h6"
-                >
-                  {user?.displayName}
+    <>
+      <Wrapper>
+        <GridContainer>
+          <TopContainer>
+            {user ? (
+              <UserInformation>
+                {!Read && <Dot />}
+                <ProfileAvatar
+                  url={user?.image}
+                  name={user?.shortName}
+                  size="large"
+                />
+                <div>
+                  <Typography
+                    color={colors.text.static_icons__default.rgba}
+                    group="heading"
+                    variant="h6"
+                  >
+                    {user?.displayName}
+                  </Typography>
+                  <Typography
+                    group="paragraph"
+                    variant="caption"
+                    color={colors.text.static_icons__secondary.rgba}
+                  >
+                    {user?.shortName}
+                  </Typography>
+                </div>
+              </UserInformation>
+            ) : (
+              <UserInformation $systemUser>
+                {!Read && <Dot data-testid="unread-dot-system" />}
+                <ApplicationIcon name={applicationName} />
+
+                <Typography group="heading" variant="h6">
+                  {applicationName}
                 </Typography>
+              </UserInformation>
+            )}
+
+            <Typography
+              group="navigation"
+              variant="label"
+              color={
+                Read
+                  ? colors.text.static_icons__secondary.rgba
+                  : colors.infographic.substitute__blue_overcast.rgba
+              }
+              data-testid="notification-date"
+            >
+              {date.formatRelativeDateTime(time)}
+            </Typography>
+          </TopContainer>
+          <Content>{content}</Content>
+
+          {footer && (
+            <FooterContainer>
+              <div style={{ display: 'flex', gap: '5px' }}>
                 <Typography
-                  group="paragraph"
-                  variant="caption"
-                  color={colors.text.static_icons__secondary.rgba}
+                  group="navigation"
+                  variant="label"
+                  color={colors.text.static_icons__tertiary.rgba}
                 >
-                  {user?.shortName}
+                  {applicationName}
+                </Typography>
+
+                <Typography
+                  group="navigation"
+                  variant="label"
+                  color={colors.text.static_icons__tertiary.rgba}
+                >
+                  {field}
                 </Typography>
               </div>
-            </UserInformation>
-          ) : (
-            <UserInformation $systemUser>
-              {!Read && <Dot data-testid="unread-dot-system" />}
-              <ApplicationIcon name={applicationName} />
-
-              <Typography group="heading" variant="h6">
-                {applicationName}
-              </Typography>
-            </UserInformation>
+              <OptionalTooltip title="Delete notification">
+                <DeleteButton onClick={onDelete} variant="ghost_icon">
+                  <Icon data={delete_to_trash} />
+                </DeleteButton>
+              </OptionalTooltip>
+            </FooterContainer>
           )}
-
-          <Typography
-            group="navigation"
-            variant="label"
-            color={
-              Read
-                ? colors.text.static_icons__secondary.rgba
-                : colors.infographic.substitute__blue_overcast.rgba
-            }
-            data-testid="notification-date"
-          >
-            {date.formatRelativeDateTime(time)}
-          </Typography>
-        </TopContainer>
-        <Content>{content}</Content>
-
-        {footer && (
-          <FooterContainer>
-            <div style={{ display: 'flex', gap: '5px' }}>
-              <Typography
-                group="navigation"
-                variant="label"
-                color={colors.text.static_icons__tertiary.rgba}
-              >
-                {applicationName}
-              </Typography>
-
-              <Typography
-                group="navigation"
-                variant="label"
-                color={colors.text.static_icons__tertiary.rgba}
-              >
-                {field}
-              </Typography>
-            </div>
-            <OptionalTooltip title="Delete notification">
-              <DeleteButton onClick={onDelete} variant="ghost_icon">
-                <Icon data={delete_to_trash} />
-              </DeleteButton>
-            </OptionalTooltip>
-          </FooterContainer>
-        )}
-      </GridContainer>
-    </Wrapper>
+        </GridContainer>
+      </Wrapper>
+      <Divider />
+    </>
   );
 };
 

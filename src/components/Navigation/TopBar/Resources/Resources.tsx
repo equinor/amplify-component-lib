@@ -9,7 +9,6 @@ import {
   report_bug,
   thumbs_up_down,
 } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
 import { TopBarButton } from '../TopBar.styles';
 import Feedback from './Feedback/Feedback';
@@ -33,7 +32,6 @@ import { environment } from 'src/utils';
 import styled from 'styled-components';
 
 const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
-const { colors } = tokens;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
@@ -189,7 +187,7 @@ export const Resources: FC<ResourcesProps> = ({
   return (
     <>
       <TopBarButton
-        variant="ghost_icon"
+        variant="ghost"
         ref={buttonRef}
         id="anchor-match"
         aria-haspopup="true"
@@ -198,10 +196,7 @@ export const Resources: FC<ResourcesProps> = ({
         onClick={toggleMenu}
         $isSelected={isOpen}
       >
-        <Icon
-          data={amplify_resources}
-          color={colors.interactive.primary__resting.rgba}
-        />
+        <Icon data={amplify_resources} />
       </TopBarButton>
 
       <TopBarMenu

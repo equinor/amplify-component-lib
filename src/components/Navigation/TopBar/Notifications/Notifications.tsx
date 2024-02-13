@@ -38,7 +38,6 @@ const SidePanel = styled.div<SidePanelProps>`
   position: fixed;
   bottom: 0;
   right: 0;
-  overflow: auto;
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.14),
     0 3px 4px rgba(0, 0, 0, 0.12);
@@ -48,7 +47,8 @@ const SidePanel = styled.div<SidePanelProps>`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.comfortable.medium};
+  padding: ${spacings.comfortable.medium} ${spacings.comfortable.medium} 0
+    ${spacings.comfortable.medium};
   align-items: center;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   position: sticky;
@@ -58,21 +58,24 @@ const Header = styled.div`
 `;
 
 export const UnreadRedDot = styled.div`
-  background-color: ${colors.interactive.danger__hover.rgba};
-  width: 12px;
-  height: 12px;
+  background-color: ${colors.interactive.danger__resting.rgba};
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   position: absolute;
-  right: 7px;
-  top: 7px;
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.14),
-    0 3px 4px rgba(0, 0, 0, 0.12);
-  border: 1.5px solid ${colors.text.static_icons__primary_white.rgba};
+  right: 2px;
+  top: 4px;
+  border: 2px solid ${colors.text.static_icons__primary_white.rgba};
 `;
 
 const FilterOptionsContainer = styled.div`
   display: flex;
+`;
+
+const Content = styled.div`
+  overflow: auto;
+  height: calc(100vh - 64px);
+  width: 350px;
 `;
 
 interface NotificationsProps {
@@ -171,7 +174,7 @@ export const Notifications: FC<NotificationsProps> = ({
   return (
     <>
       <TopBarButton
-        variant="ghost_icon"
+        variant="ghost"
         key="topbar-notifications"
         ref={buttonRef}
         onClick={handleButtonClick}
@@ -181,7 +184,11 @@ export const Notifications: FC<NotificationsProps> = ({
         <Icon
           data={notificationIcon}
           size={24}
-          color={colors.interactive.primary__resting.hsla}
+          color={
+            notificationsOpen
+              ? '#132E31'
+              : colors.interactive.primary__resting.hsla
+          }
         />
         {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
       </TopBarButton>
@@ -210,9 +217,9 @@ export const Notifications: FC<NotificationsProps> = ({
         )}
 
         {children ? (
-          children
+          <Content>{children}</Content>
         ) : (
-          <>
+          <Content>
             {filteredAndSortedNotifications &&
             filteredAndSortedNotifications?.length > 0 ? (
               filteredAndSortedNotifications.map((item) => {
@@ -223,7 +230,7 @@ export const Notifications: FC<NotificationsProps> = ({
             ) : (
               <NoNotifications />
             )}
-          </>
+          </Content>
         )}
       </SidePanel>
     </>
