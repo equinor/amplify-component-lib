@@ -65,9 +65,6 @@ export const UnreadRedDot = styled.div`
   position: absolute;
   right: 2px;
   top: 4px;
-  //box-shadow:
-  //  0 2px 4px rgba(0, 0, 0, 0.14),
-  //  0 3px 4px rgba(0, 0, 0, 0.12);
   border: 2px solid ${colors.text.static_icons__primary_white.rgba};
 `;
 
