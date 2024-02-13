@@ -52,7 +52,7 @@ jobs:
     uses: ./.github/workflows/release.yaml
   notify_production:
     name: Notify on slack
-    needs: [release]
+    needs: [release_production]
     uses: ./.github/workflows/notify.yaml
     with:
       environment-name: production
