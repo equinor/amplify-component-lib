@@ -13,6 +13,15 @@ fi
 
 cd ..
 
+printf -- "Downloading client github actions specific to deployment from github to radix...\n"
+workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/github_actions_deployment_list.txt")
+
+for line in $workflowsList
+do
+  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
+  curl -s $line > ".github/workflows/$fileName"
+done
+
 printf -- "Downloading .releaserc.cjs file...\n"
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/release/.releaserc.cjs" > .releaserc.cjs
 
