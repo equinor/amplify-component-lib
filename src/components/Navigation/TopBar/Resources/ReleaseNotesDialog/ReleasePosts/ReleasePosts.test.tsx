@@ -119,17 +119,8 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
   return { ReleaseNotesService };
 });
 
-test('should render a loader when waiting for data', () => {
-  render(<ReleasePosts />, {
-    wrapper: Wrappers,
-  });
-  const actual = screen.getByRole('progressbar');
-  expect(actual).toBeInTheDocument();
-  expect(actual).toBeVisible();
-});
-
 test('show release note', async () => {
-  render(<ReleasePosts />, {
+  render(<ReleasePosts posts={releaseNotes} />, {
     wrapper: Wrappers,
   });
   await waitFor(
@@ -145,7 +136,7 @@ test('show release note', async () => {
 });
 
 test('sort release notes descending', async () => {
-  render(<ReleasePosts />, {
+  render(<ReleasePosts posts={releaseNotes} />, {
     wrapper: Wrappers,
   });
   await waitFor(
@@ -178,7 +169,7 @@ describe('release notes without created date', () => {
     returnWithEmptyDate = false;
   });
   test('show release note without created date', async () => {
-    render(<ReleasePosts />, {
+    render(<ReleasePosts posts={releaseNotes} />, {
       wrapper: Wrappers,
     });
     await waitFor(
@@ -200,7 +191,7 @@ describe('Empty release notes', () => {
     returnEmptyArray = false;
   });
   test('show "There are no posts at the moment" when no available release notes', async () => {
-    render(<ReleasePosts />, {
+    render(<ReleasePosts posts={[]} />, {
       wrapper: Wrappers,
     });
     await waitFor(
