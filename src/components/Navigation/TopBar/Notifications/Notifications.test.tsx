@@ -159,11 +159,12 @@ test('renders button and panel correctly', async () => {
   const icons = screen.getAllByTestId('eds-icon-path');
 
   expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
-  expect(screen.getByTestId('side-panel')).toHaveStyleRule('display', 'none');
+
+  expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 
   const button = screen.getByTestId('show-hide-button');
   await userEvent.click(button);
-  expect(screen.getByTestId('side-panel')).toBeVisible();
+  expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 });
 
 test('renders element children correctly', async () => {
@@ -219,13 +220,13 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
 
   await user.click(notificationButton);
 
-  expect(screen.getByTestId('side-panel')).toBeVisible();
+  expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 
   const elementOutsidePanel = screen.getByText(randomText);
 
   await user.click(elementOutsidePanel);
 
-  expect(screen.getByTestId('side-panel')).toHaveStyleRule('display', 'none');
+  expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 });
 
 test('Renders unread dot when unread = true', async () => {
@@ -256,11 +257,11 @@ test('renders button and panel with filter options correctly', async () => {
   const icons = screen.getAllByTestId('eds-icon-path');
 
   expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
-  expect(screen.getByTestId('side-panel')).toHaveStyleRule('display', 'none');
+  expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 
   const button = screen.getByTestId('show-hide-button');
   await userEvent.click(button);
-  expect(screen.getByTestId('side-panel')).toBeVisible();
+  expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 });
 
 test('renders filtered and sorted notifications correctly with children', async () => {
@@ -318,9 +319,7 @@ describe('Sorting notifications ', () => {
     expect(title).toBeInTheDocument();
     await user.click(title);
 
-    const outsideClick = screen.getByRole('heading', {
-      name: /notifications/i,
-    });
+    const outsideClick = screen.getByTestId('top-bar-menu');
     await user.click(outsideClick);
     expect(title).not.toBeInTheDocument();
   });
@@ -425,9 +424,7 @@ describe('Filtering notifications ', () => {
     expect(title).toBeInTheDocument();
     await user.click(title);
 
-    const outsideClick = screen.getByRole('heading', {
-      name: /notifications/i,
-    });
+    const outsideClick = screen.getByTestId('top-bar-menu');
     await user.click(outsideClick);
     expect(title).not.toBeInTheDocument();
   });

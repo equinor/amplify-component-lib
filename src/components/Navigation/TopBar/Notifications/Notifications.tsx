@@ -179,10 +179,10 @@ export const Notifications: FC<NotificationsProps> = ({
       </TopBarButton>
       <TopBarMenu
         open={notificationsOpen}
-        data-testid="side-pan el"
         anchorEl={buttonRef.current}
         contentPadding={false}
         isNotification
+        onClose={onClose}
       >
         {showFilterOptions && (
           <FilterOptionsContainer>
