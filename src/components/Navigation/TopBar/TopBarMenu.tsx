@@ -46,16 +46,26 @@ const ContentWrapper = styled.div<ContentWrapperProps>`
 
 interface TopBarMenuContentProps {
   open: boolean;
-  title: string;
-  onClose: () => void;
+  title?: string;
+  onClose?: () => void;
   children: ReactNode;
   anchorEl: HTMLElement | null;
   contentPadding?: boolean;
+  isNotification?: boolean;
 }
 
 const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
   function TopBarRender(
-    { open, title, onClose, children, anchorEl, contentPadding = true },
+    {
+      open,
+      title,
+      onClose,
+      children,
+      anchorEl,
+      contentPadding = true,
+      isNotification,
+    },
+
     ref
   ) {
     if (!open) return null;
@@ -64,25 +74,28 @@ const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
         open={open}
         onClose={onClose}
         anchorEl={anchorEl}
-        placement="bottom-end"
+        placement={isNotification ? 'bottom' : 'bottom-end'}
         data-testid="top-bar-menu"
         ref={ref}
       >
-        <Header>
-          <Typography group="ui" variant="accordion_header" as="span">
-            {title}
-          </Typography>
-          <Button
-            variant="ghost_icon"
-            onClick={onClose}
-            data-testid="close-button"
-          >
-            <Icon
-              data={clear}
-              color={colors.interactive.primary__resting.rgba}
-            />
-          </Button>
-        </Header>
+        {title && (
+          <Header>
+            <Typography group="ui" variant="accordion_header" as="span">
+              {title}
+            </Typography>
+            <Button
+              variant="ghost_icon"
+              onClick={onClose}
+              data-testid="close-button"
+            >
+              <Icon
+                data={clear}
+                color={colors.interactive.primary__resting.rgba}
+              />
+            </Button>
+          </Header>
+        )}
+
         <ContentWrapper $contentPadding={contentPadding}>
           {children}
         </ContentWrapper>
