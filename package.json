@@ -155,6 +155,8 @@
     "rollup": "^4.9.6",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-import-css": "^3.4.0",
+    "semantic-release": "^22.0.12",
+    "semantic-release-gitmoji": "^1.6.5",
     "storybook": "^7.6.10",
     "storybook-addon-data-theme-switcher": "^0.1.7",
     "storybook-addon-react-router-v6": "^2.0.10",
