@@ -165,9 +165,7 @@ const AmplifyComboBoxMenuItem = <T extends ComboBoxOption<T>>(
             <AmplifyComboBoxMenuItem
               key={`child-${childIndex}-${child.value}-${item.value}`}
               index={childOffset + childIndex}
-              childOffset={
-                childOffset + getChildOffset(item.children || [], childIndex)
-              }
+              childOffset={childOffset + getChildOffset([], childIndex)}
               depth={depth + 1}
               multiselect
               item={child}

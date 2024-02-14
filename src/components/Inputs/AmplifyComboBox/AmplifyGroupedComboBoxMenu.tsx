@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { Menu } from '@equinor/eds-core-react';
 
+import { NoItemsFoundText } from './AmplifyComboBox.styles';
 import {
   AmplifyComboBoxMenuProps,
   AmplifyGroupedComboboxProps,
@@ -39,7 +40,7 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
   }, [filteredGroups]);
 
   if (filteredGroups.length === 0) {
-    return <p>No items found</p>;
+    return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
   if ('values' in props) {

@@ -141,9 +141,6 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
       const childItems = copiedItem.children || [];
       while (childItems.length > 0) {
         const child = childItems.splice(0, 1)[0];
-        if (child.children) {
-          childItems.push(...child.children);
-        }
         removingValues.push(child.value);
       }
       props.onSelect(
@@ -159,9 +156,6 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
       const childItems = copiedItem.children || [];
       while (childItems.length > 0) {
         const child = childItems.splice(0, 1)[0];
-        if (child.children) {
-          childItems.push(...child.children);
-        }
         if (!props.values.find((value) => value.value === child.value)) {
           newValues.push(child);
         }
