@@ -1,7 +1,7 @@
 import { FC, ReactNode, useMemo, useRef, useState } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { close, notifications as notificationIcon } from '@equinor/eds-icons';
+import {  Icon } from '@equinor/eds-core-react';
+import {  notifications as notificationIcon } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
@@ -21,41 +21,11 @@ import {
 } from './NotificationsTemplate/Notifications.types';
 import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
 import FilterOptions from './FilterOptions';
+import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 
 import styled from 'styled-components';
 
-const { colors, spacings } = tokens;
-
-interface SidePanelProps {
-  $open: boolean;
-}
-
-const SidePanel = styled.div<SidePanelProps>`
-  height: calc(100vh - 64px);
-  width: 350px;
-  z-index: 100;
-  background-color: ${colors.ui.background__default.rgba};
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.14),
-    0 3px 4px rgba(0, 0, 0, 0.12);
-  display: ${({ $open }) => ($open ? 'initial' : 'none')};
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.medium} 0
-    ${spacings.comfortable.medium};
-  align-items: center;
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  position: sticky;
-  top: 0;
-  background-color: ${colors.ui.background__default.rgba};
-  z-index: 3000;
-`;
+const { colors,  } = tokens;
 
 export const UnreadRedDot = styled.div`
   background-color: ${colors.interactive.danger__resting.rgba};
@@ -74,7 +44,7 @@ const FilterOptionsContainer = styled.div`
 
 const Content = styled.div`
   overflow: auto;
-  height: calc(100vh - 64px);
+  height: 66vh;
   width: 350px;
 `;
 
@@ -171,6 +141,21 @@ export const Notifications: FC<NotificationsProps> = ({
     }
   });
 
+  // Close open window if user resize the screen.
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (notificationsOpen) {
+  //       onClose();
+  //     }
+  //   };
+  //
+  //   window.addEventListener('resize', handleResize);
+  //
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, [notificationsOpen, onClose]);
+
   return (
     <>
       <TopBarButton
@@ -192,19 +177,13 @@ export const Notifications: FC<NotificationsProps> = ({
         />
         {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
       </TopBarButton>
-      <SidePanel
-        ref={sidePanelRef}
-        $open={notificationsOpen}
-        data-testid="side-panel"
+      <TopBarMenu
+        open={notificationsOpen}
+        data-testid="side-pan el"
+        anchorEl={buttonRef.current}
+        contentPadding={false}
+        isNotification
       >
-        <Header>
-          <Typography variant="h6" group="heading">
-            Notifications
-          </Typography>
-          <Button variant="ghost_icon" onClick={onClose}>
-            <Icon data={close} color="secondary" />
-          </Button>
-        </Header>
         {showFilterOptions && (
           <FilterOptionsContainer>
             <FilterOptions
@@ -232,7 +211,7 @@ export const Notifications: FC<NotificationsProps> = ({
             )}
           </Content>
         )}
-      </SidePanel>
+      </TopBarMenu>
     </>
   );
 };
