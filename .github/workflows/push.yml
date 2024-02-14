@@ -18,3 +18,5 @@ jobs:
     name: Create release notes
     needs: [publish]
     uses: ./.github/workflows/release.yaml
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
