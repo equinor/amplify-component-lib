@@ -1,7 +1,7 @@
 import { FC, ReactNode, useMemo, useRef, useState } from 'react';
 
-import {  Icon } from '@equinor/eds-core-react';
-import {  notifications as notificationIcon } from '@equinor/eds-icons';
+import { Icon } from '@equinor/eds-core-react';
+import { notifications as notificationIcon } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
@@ -25,7 +25,7 @@ import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 
 import styled from 'styled-components';
 
-const { colors,  } = tokens;
+const { colors } = tokens;
 
 export const UnreadRedDot = styled.div`
   background-color: ${colors.interactive.danger__resting.rgba};
