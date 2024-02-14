@@ -179,12 +179,9 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
           onClick={toggleMenu}
           $isSelected={isOpen}
           data-testid="field-selector-top-bar-button"
+          $fieldSelector
         >
-          <Icon
-            data={platform}
-            size={24}
-            color={colors.interactive.primary__resting.rgba}
-          />
+          <Icon data={platform} size={24} />
           {transformedFieldName}
           <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
         </TopBarButton>
