@@ -1,6 +1,9 @@
 name: Create release
 on:
   workflow_call:
+    secrets:
+      github-token:
+        required: true
 jobs:
   release:
     name: Release
@@ -19,12 +22,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "lts/*"
+          node-version: 'lts/*'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github-token }}
         run: npx semantic-release
