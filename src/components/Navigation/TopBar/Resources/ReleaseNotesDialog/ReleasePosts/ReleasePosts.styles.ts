@@ -25,11 +25,4 @@ const Container = styled.div`
   gap: ${spacings.medium};
 `;
 
-const LoadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 168px;
-`;
-
-export { Container, ContainerNoResults, LoadingWrapper };
+export { Container, ContainerNoResults };

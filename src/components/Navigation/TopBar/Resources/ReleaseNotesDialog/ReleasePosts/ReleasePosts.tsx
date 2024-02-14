@@ -1,39 +1,26 @@
 import { FC } from 'react';
 
-import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 const { colors } = tokens;
 
-import { useTokenReleaseNote } from './hooks/useTokenReleaseNote';
 import ReleasePost from './ReleasePost';
-import {
-  Container,
-  ContainerNoResults,
-  LoadingWrapper,
-} from './ReleasePosts.styles';
-import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
+import { Container, ContainerNoResults } from './ReleasePosts.styles';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { monthValueToString } from 'src/utils/releaseNotes';
 
-const ReleasePosts: FC = () => {
-  const { isLoading, data } = useReleaseNotesQuery();
+interface ReleasePostsProps {
+  posts: any;
+}
+
+const ReleasePosts: FC<ReleasePostsProps> = ({ posts: data }) => {
   const {
     search,
     selectedReleaseNoteTypes,
     filteredData: releaseNotes,
     releaseNotesYears,
   } = useReleaseNotes();
-
-  const { data: token } = useTokenReleaseNote();
-
-  if (isLoading || token === undefined) {
-    return (
-      <LoadingWrapper>
-        <CircularProgress />
-      </LoadingWrapper>
-    );
-  }
 
   // Display this if no release posts are present whatsoever
   if (!data || data?.length === 0) {
@@ -76,13 +63,12 @@ const ReleasePosts: FC = () => {
               {year.label}
             </Typography>
             {year.children?.flatMap((month) => {
-              const releaseNotesInMonth = releaseNotes
-                ?.filter(
-                  (releaseNote) =>
-                    releaseNote.createdDate &&
-                    monthValueToString(new Date(releaseNote.createdDate)) ===
-                      month.value
-                );
+              const releaseNotesInMonth = releaseNotes?.filter(
+                (releaseNote) =>
+                  releaseNote.createdDate &&
+                  monthValueToString(new Date(releaseNote.createdDate)) ===
+                    month.value
+              );
 
               return [
                 <Typography
