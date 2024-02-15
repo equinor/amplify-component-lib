@@ -2,8 +2,9 @@ import React from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import { render, screen } from '../../../tests/test-utils';
+import { render, screen, userEvent } from '../../../tests/test-utils';
 import TopBar from '.';
+import { waitFor } from 'src/tests/test-utils';
 import { EnvironmentType } from 'src/types/Environment';
 import { Field } from 'src/types/Field';
 
@@ -145,4 +146,34 @@ test('Capitalize app name works as expected', () => {
     </TopBar>
   );
   expect(screen.getByText(name.toLowerCase())).toBeInTheDocument();
+});
+
+test('close on resize ', async () => {
+  const name = faker.person.fullName();
+  const setAllAsRead = vi.fn();
+  render(
+    <TopBar
+      onHeaderClick={() => console.log('Going home 🏡')}
+      applicationIcon="test"
+      applicationName={name}
+    >
+      <TopBar.Notifications setAllAsRead={setAllAsRead} />
+    </TopBar>
+  );
+  const user = userEvent.setup();
+
+  const button = screen.getByTestId('show-hide-button');
+
+  await user.click(button);
+  expect(screen.getByTestId('top-bar-menu')).toBeInTheDocument();
+
+  vi.stubGlobal(800, 600);
+  global.dispatchEvent(new Event('resize'));
+
+  await waitFor(
+    () => expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument(),
+    {
+      timeout: 2000,
+    }
+  );
 });
