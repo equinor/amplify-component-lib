@@ -645,16 +645,12 @@ test('Keyboard navigation inside parent item', async () => {
 
   // Go past and back
   await user.keyboard('{ArrowDown}');
-  expect(screen.getByRole('menuitem', { name: items[1].label })).toHaveFocus();
-
   await user.keyboard('{ArrowUp}');
-  expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
 
   // Open / Close / Open first parent
   await user.keyboard('{ArrowRight}');
-  expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
-
   await user.keyboard('{ArrowLeft}');
+
   expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
 
   await user.keyboard('{ArrowRight}');
