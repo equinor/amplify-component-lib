@@ -17,6 +17,7 @@ export const Container = styled.div`
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
   }
+
   margin-top: 0.75rem;
   > label {
     position: absolute;
@@ -28,6 +29,21 @@ export const Container = styled.div`
     &:hover {
       background: ${colors.interactive.primary__hover_alt.rgba};
       border-radius: 50%;
+    }
+  }
+
+  &:has(input:disabled) {
+    cursor: not-allowed;
+    box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__text.rgba};
+    > svg {
+      cursor: not-allowed;
+      fill: ${colors.interactive.disabled__text.rgba};
+      &:hover {
+        background: transparent;
+      }
+    }
+    > label {
+      color: ${colors.interactive.disabled__text.rgba};
     }
   }
 `;
@@ -51,6 +67,11 @@ export const Section = styled.section`
   input[type='search']::-webkit-search-results-button,
   input[type='search']::-webkit-search-results-decoration {
     appearance: none;
+  }
+  &:has(input:disabled) {
+    > p {
+      color: ${colors.interactive.disabled__text.rgba};
+    }
   }
 `;
 

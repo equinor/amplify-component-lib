@@ -31,6 +31,7 @@ export type AmplifyComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   label: string;
   placeholder?: string;
   sortValues?: boolean;
+  disabled?: boolean;
 } & (AmplifyComboBoxProps<T> | AmplifyGroupedComboboxProps<T>);
 
 const AmplifyComboBox = <T extends ComboBoxOption<T>>(
@@ -95,7 +96,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (!open) {
+    if (!open && !props.disabled) {
       searchRef.current?.focus();
       setOpen(true);
     }
@@ -108,6 +109,8 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleToggleOpen = () => {
+    if (props.disabled) return;
+
     if (open) {
       handleOnClose();
     } else {
@@ -240,6 +243,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
           )}
           <input
             id="amplify-combobox"
+            disabled={props.disabled}
             ref={searchRef}
             type="search"
             role="combobox"

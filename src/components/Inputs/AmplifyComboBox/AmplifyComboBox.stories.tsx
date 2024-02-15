@@ -78,6 +78,7 @@ export const ComboBoxWithSingleSelect: StoryFn<
   return (
     <AmplifyComboBox
       label={args.label}
+      disabled={args.disabled}
       items={FAKE_ITEMS}
       value={value}
       onSelect={handleOnSelect}
@@ -102,6 +103,7 @@ export const ComboBoxWithMultiSelect: StoryFn<
   return (
     <AmplifyComboBox
       label={args.label}
+      disabled={args.disabled}
       items={FAKE_ITEMS}
       values={values}
       onSelect={handleOnSelect}
@@ -125,6 +127,7 @@ export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
   return (
     <AmplifyComboBox
       label={args.label}
+      disabled={args.disabled}
       value={value}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
@@ -149,6 +152,7 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
   return (
     <AmplifyComboBox
       label={args.label}
+      disabled={args.disabled}
       values={values}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
@@ -176,6 +180,7 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
       selectableParent={
         (args as AmplifyMultiComboBoxCommon<Item>)?.selectableParent || false
       }
+      disabled={args.disabled}
       items={FAKE_ITEMS_WITH_CHILDREN}
       values={values}
       onSelect={handleOnSelect}

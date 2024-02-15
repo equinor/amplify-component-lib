@@ -696,3 +696,29 @@ test('Keyboard navigation inside parent item', async () => {
     ).not.toBeInTheDocument();
   }
 });
+
+test('Disabled works as expected', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const items = fakeItems();
+
+  render(
+    <AmplifyComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={undefined}
+      disabled
+    />
+  );
+
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  for (const item of items) {
+    expect(
+      screen.queryByRole('menuitem', { name: item.label })
+    ).not.toBeInTheDocument();
+  }
+});
