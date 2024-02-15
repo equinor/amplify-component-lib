@@ -24,6 +24,9 @@ test('RichTextDisplay shows value as expected', async () => {
   const randomText = faker.animal.dog();
   render(<RichTextDisplay value={`<p>${randomText}</p>`} />);
 
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   expect(screen.getByText(randomText)).toBeInTheDocument();
 });
 
@@ -38,6 +41,9 @@ test('Image read token prop works as expected', async () => {
       imgReadToken={randomToken}
     />
   );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   expect(screen.getByRole('img')).toHaveAttribute(
     'src',
