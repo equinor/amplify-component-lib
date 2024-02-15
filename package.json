@@ -99,7 +99,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@equinor/eds-core-react": "0.36.0",
+    "@equinor/eds-core-react": "0.35.1",
     "@equinor/eds-icons": "^0.21.0",
     "@faker-js/faker": "^8.4.1",
     "@rollup/plugin-commonjs": "^25.0.7",
