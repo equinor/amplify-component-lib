@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode } from 'react';
+import React, { forwardRef, ReactNode, useEffect } from 'react';
 
 import {
   Button as EDSButton,
@@ -47,7 +47,7 @@ const ContentWrapper = styled.div<ContentWrapperProps>`
 interface TopBarMenuContentProps {
   open: boolean;
   title?: string;
-  onClose?: () => void;
+  onClose: () => void;
   children: ReactNode;
   anchorEl: HTMLElement | null;
   contentPadding?: boolean;
@@ -68,6 +68,21 @@ const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
 
     ref
   ) {
+    // Close open window if user resize the screen.//
+    useEffect(() => {
+      const handleResize = () => {
+        if (open) {
+          onClose();
+        }
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, [open, onClose]);
+
     if (!open) return null;
     return (
       <MenuWrapper
