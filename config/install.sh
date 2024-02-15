@@ -29,17 +29,16 @@ curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/confi
 
 printf -- "Downloading setupTests folder...\n"
 
-cd ./setupTests || (mkdir setupTests && cd ./setupTests || return)
+cd ./test-utils || (mkdir test-utils && cd ./test-utils || return)
 
 printf -- "Downloading setupTests.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupTests/setupTests.ts" > setupTests.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/setupTests.ts" > setupTests.ts
 
 printf -- "Downloading mockLocalStorage.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupTests/mockLocalStorage.ts" > setupTests.ts
-
-cd ..
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts" > mockLocalStorage.ts
+cd ../..
 
 printf -- "Downloading nginx.conf proxy config...\n"
 
