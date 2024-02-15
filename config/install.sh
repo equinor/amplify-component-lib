@@ -27,7 +27,7 @@ cd ./src || return
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
 
-printf -- "Downloading setupTests folder...\n"
+printf -- "Going into test-utils folder...\n"
 
 cd ./test-utils || (mkdir test-utils && cd ./test-utils || return)
 
