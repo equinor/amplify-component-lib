@@ -676,6 +676,16 @@ test('Keyboard navigation inside parent item', async () => {
       screen.queryByRole('menuitem', { name: child.label })
     ).not.toBeInTheDocument();
   }
+
+  // Go back to search field
+  await user.keyboard('{ArrowUp}');
+  await user.keyboard('{ArrowUp}');
+
+  await user.keyboard(items[0].label);
+
+  expect(
+    screen.queryByRole('menuitem', { name: items[1].label })
+  ).not.toBeInTheDocument();
 });
 
 test('Disabled works as expected', async () => {
