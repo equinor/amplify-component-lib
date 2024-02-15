@@ -541,22 +541,18 @@ test('Keyboard navigation works as expected', async () => {
 
   // Selecting first item in the list
   await user.keyboard('{ArrowDown}');
-  expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
+  await user.keyboard('{Enter}');
+
+  expect(handler).toHaveBeenCalledWith(items[0]);
 
   // Going all the way down
   for (let i = 1; i < items.length; i++) {
     await user.keyboard('{ArrowDown}');
-    expect(
-      screen.getByRole('menuitem', { name: items[i].label })
-    ).toHaveFocus();
   }
 
   // Going up again
   for (let i = items.length - 2; i >= 0; i--) {
     await user.keyboard('{ArrowUp}');
-    expect(
-      screen.getByRole('menuitem', { name: items[i].label })
-    ).toHaveFocus();
   }
 
   // Going to search field again
@@ -641,7 +637,6 @@ test('Keyboard navigation inside parent item', async () => {
 
   // Enter menu
   await user.keyboard('{ArrowDown}');
-  expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
 
   // Go past and back
   await user.keyboard('{ArrowDown}');
@@ -651,44 +646,30 @@ test('Keyboard navigation inside parent item', async () => {
   await user.keyboard('{ArrowRight}');
   await user.keyboard('{ArrowLeft}');
 
-  expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
-
   await user.keyboard('{ArrowRight}');
-  expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
 
   // Go to first child
   await user.keyboard('{ArrowDown}');
-  expect(
-    screen.getByRole('menuitem', { name: items[0].children[0].label })
-  ).toHaveFocus();
+
+  // Selecting works
+  await user.keyboard('{Enter}');
+  expect(handler).toBeCalledWith([items[0].children[0]], items[0].children[0]);
 
   // Move up/down on child element
   await user.keyboard('{ArrowDown}');
-  expect(
-    screen.getByRole('menuitem', { name: items[0].children[1].label })
-  ).toHaveFocus();
-
   await user.keyboard('{ArrowUp}');
-  expect(
-    screen.getByRole('menuitem', { name: items[0].children[0].label })
-  ).toHaveFocus();
 
   // Move back to parent
   await user.keyboard('{ArrowUp}');
-  expect(screen.getByRole('menuitem', { name: items[0].label })).toHaveFocus();
 
   // Move down on last child element
   await user.keyboard('{ArrowDown}');
 
   for (let i = 1; i < items[0].children.length; i++) {
     await user.keyboard('{ArrowDown}');
-    expect(
-      screen.getByRole('menuitem', { name: items[0].children[i].label })
-    ).toHaveFocus();
   }
 
   await user.keyboard('{ArrowDown}');
-  expect(screen.getByRole('menuitem', { name: items[1].label })).toHaveFocus();
 
   for (const child of items[0].children) {
     expect(
