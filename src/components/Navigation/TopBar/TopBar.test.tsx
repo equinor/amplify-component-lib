@@ -2,9 +2,8 @@ import React from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../../tests/test-utils';
 import TopBar from '.';
-import { waitFor } from 'src/tests/test-utils';
+import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 import { EnvironmentType } from 'src/types/Environment';
 import { Field } from 'src/types/Field';
 
