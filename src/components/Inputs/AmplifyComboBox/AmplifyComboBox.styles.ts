@@ -81,6 +81,8 @@ export const MenuItemMultiselect = styled(Menu.Item)<CustomMenuItemProps>`
 export const MenuItemParentSelect = styled(Menu.Item)<CustomMenuItemProps>`
   > div {
     display: grid;
+    /* This is tested but the code coverage doesn't recognize it */
+    /* c8 ignore next */
     grid-template-columns:
       ${({ $depth }) => ($depth > 0 ? '24px '.repeat($depth) : '')}
       auto 1fr auto;
