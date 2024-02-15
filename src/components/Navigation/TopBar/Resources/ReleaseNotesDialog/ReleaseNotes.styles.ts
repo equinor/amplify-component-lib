@@ -53,4 +53,18 @@ const ScrollWrapper = styled.div`
   padding-bottom: ${spacings.xxx_large};
 `;
 
-export { Content, LeftContainer, ScrollWrapper, StyledDialog, Wrapper };
+const LoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 168px;
+`;
+
+export {
+  Content,
+  LeftContainer,
+  LoadingWrapper,
+  ScrollWrapper,
+  StyledDialog,
+  Wrapper,
+};
