@@ -3,7 +3,6 @@ import { FC, ReactNode, useMemo, useRef, useState } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { notifications as notificationIcon } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useOutsideClick } from '@equinor/eds-utils';
 
 import { TopBarButton } from '../TopBar.styles';
 import NoNotifications from './NotificationsTemplate/NotificationElements/NoNotifications';
@@ -36,6 +35,8 @@ export const UnreadRedDot = styled.div`
   right: 2px;
   top: 4px;
   border: 2px solid ${colors.text.static_icons__primary_white.rgba};
+  // Box-sizing is a quickfix for use in PWEX because of global styling
+  box-sizing: content-box;
 `;
 
 const FilterOptionsContainer = styled.div`
@@ -72,7 +73,6 @@ export const Notifications: FC<NotificationsProps> = ({
   showFilterOptions = false,
   notifications,
 }) => {
-  const sidePanelRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const filterMenuRef = useRef<HTMLDivElement | null>(null);
   const sortMenuRef = useRef<HTMLDivElement | null>(null);
@@ -129,33 +129,6 @@ export const Notifications: FC<NotificationsProps> = ({
     setNotificationsOpen(false);
   };
 
-  useOutsideClick(sidePanelRef.current, (event) => {
-    if (
-      notificationsOpen &&
-      buttonRef.current !== null &&
-      !buttonRef.current?.contains(event.target as Node) &&
-      !filterMenuRef.current?.contains(event.target as Node) &&
-      !sortMenuRef.current?.contains(event.target as Node)
-    ) {
-      onClose();
-    }
-  });
-
-  // Close open window if user resize the screen.
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     if (notificationsOpen) {
-  //       onClose();
-  //     }
-  //   };
-  //
-  //   window.addEventListener('resize', handleResize);
-  //
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, [notificationsOpen, onClose]);
-
   return (
     <>
       <TopBarButton
@@ -166,15 +139,7 @@ export const Notifications: FC<NotificationsProps> = ({
         data-testid="show-hide-button"
         $isSelected={notificationsOpen}
       >
-        <Icon
-          data={notificationIcon}
-          size={24}
-          color={
-            notificationsOpen
-              ? '#132E31'
-              : colors.interactive.primary__resting.hsla
-          }
-        />
+        <Icon data={notificationIcon} size={24} />
         {hasUnread && <UnreadRedDot data-testid="unread-dot" />}
       </TopBarButton>
       <TopBarMenu
