@@ -715,6 +715,7 @@ test('Disabled works as expected', async () => {
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
+  await user.click(screen.getByTestId('eds-icon-path'));
 
   for (const item of items) {
     expect(
