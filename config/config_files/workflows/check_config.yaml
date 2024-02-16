@@ -50,8 +50,8 @@ jobs:
 
       - name: Compare remote src/setupTests/setupTests.ts to local
         working-directory: client/src/test-utils
-        run: diff setupTests.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupTests/setupTests.ts)
+        run: diff setupTests.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/setupTests.ts)
 
       - name: Compare remote src/setupTests/mockLocalStorage.ts to local
         working-directory: client/src/test-utils
-        run: diff mockLocalStorage.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupTests/mockLocalStorage.ts)
+        run: diff mockLocalStorage.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts)
