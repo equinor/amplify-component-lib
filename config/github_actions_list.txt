@@ -1,0 +1,6 @@
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/build_docker.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/build.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/test.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/lint.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/check_config.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/pull_request.yaml

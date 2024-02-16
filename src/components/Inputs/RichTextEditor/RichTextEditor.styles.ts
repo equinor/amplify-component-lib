@@ -6,18 +6,38 @@ import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings } = tokens;
 
-interface WrapperProps {
-  $tablesWithBorders: boolean;
-}
-
-export const Wrapper = styled.div<WrapperProps>`
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   background: white;
-  .tiptap {
-    height: 100%;
-    min-height: 200px;
-    box-shadow: inset 0 -1px ${colors.ui.background__medium.rgba};
-    padding: 0 ${spacings.comfortable.medium};
 
+  &:has(div[contenteditable='true']) {
+    height: inherit;
+  }
+
+  > div:last-child {
+    display: grid;
+    flex-grow: 1;
+  }
+  .tiptap {
+    height: fit-content;
+    min-height: 200px;
+    background: white;
+
+    &[contenteditable='true'] {
+      height: 100%;
+      box-shadow: inset 0 -1px ${colors.ui.background__medium.rgba};
+    }
+    padding: ${spacings.comfortable.medium};
+
+    a {
+      color: ${colors.interactive.primary__resting.rgba};
+    }
+    a:hover {
+      cursor: pointer;
+      color: ${colors.interactive.primary__hover.rgba};
+    }
     p {
       font-size: 16px;
       font-family: 'Equinor', sans-serif;
@@ -34,6 +54,7 @@ export const Wrapper = styled.div<WrapperProps>`
       color: #fff;
       font-family: 'Equinor Mono', monospace;
       padding: 0.75rem 1rem;
+      margin: 0;
 
       code {
         background: none;
@@ -45,17 +66,13 @@ export const Wrapper = styled.div<WrapperProps>`
 
     table {
       border-collapse: collapse;
-      margin: 0;
       overflow: hidden;
       table-layout: fixed;
       width: 100%;
 
       td,
       th {
-        border: 2px solid
-          ${({ $tablesWithBorders }) =>
-            /* c8 ignore nextline */
-            $tablesWithBorders ? '#ced4da' : 'transparent'};
+        border: 2px solid #ced4da;
         box-sizing: border-box;
         min-width: 1em;
         padding: 3px 5px;

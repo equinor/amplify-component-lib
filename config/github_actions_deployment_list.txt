@@ -1,0 +1,5 @@
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/build_deploy_radix.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/promote.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/notify.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/release.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/push.yaml

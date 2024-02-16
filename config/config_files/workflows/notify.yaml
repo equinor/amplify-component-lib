@@ -1,0 +1,36 @@
+name: 💬 Notify
+on:
+  workflow_call:
+    inputs:
+      environment-name:
+        type: string
+        required: true
+    secrets:
+      webhook-url:
+        required: true
+jobs:
+  slack_notification:
+    environment: ${{ inputs.environment-name }}
+    name: 💬 Slack notification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "🚀 New version deployed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚀 ${{ vars.RADIX_APPLICATION_NAME }} - Deployed new version to ${{ inputs.environment-name }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.webhook-url }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 
 import Bold from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
@@ -9,8 +9,8 @@ import DropCursor from '@tiptap/extension-dropcursor';
 import GapCursor from '@tiptap/extension-gapcursor';
 import { HardBreak } from '@tiptap/extension-hard-break';
 import Heading from '@tiptap/extension-heading';
+import { Highlight } from '@tiptap/extension-highlight';
 import History from '@tiptap/extension-history';
-import Image from '@tiptap/extension-image';
 import Italic from '@tiptap/extension-italic';
 import Link from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
@@ -27,6 +27,7 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import { EditorEvents, EditorProvider } from '@tiptap/react';
 
+import ExtendedImage from './custom-extensions/ExtendedImage';
 import MenuBar from './MenuBar/MenuBar';
 import { Wrapper } from './RichTextEditor.styles';
 import {
@@ -57,10 +58,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   extendFeatures,
   removeFeatures,
 }) => {
-  const [tablesWithBorders, setTablesWithBorders] = useState(true);
-
   /* c8 ignore nextline */
-  const toggleTableBorders = () => setTablesWithBorders((prev) => !prev);
 
   if (features && (extendFeatures || removeFeatures)) {
     throw new Error(
@@ -99,11 +97,14 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       Color,
       Document,
       DropCursor,
+      ExtendedImage.configure({
+        onImageUpload,
+      }),
       GapCursor,
       HardBreak,
       Heading,
+      Highlight.configure({ multicolor: true }),
       History,
-      Image,
       Italic,
       Link,
       ListItem,
@@ -125,7 +126,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
         types: ['heading', 'paragraph', 'img'],
       }),
     ],
-    [placeholder]
+    [onImageUpload, placeholder]
   );
 
   const handleOnUpdate = (props: EditorEvents['update']) => {
@@ -133,14 +134,10 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   };
 
   return (
-    <Wrapper $tablesWithBorders={tablesWithBorders}>
+    <Wrapper>
       <EditorProvider
         slotBefore={
-          <MenuBar
-            features={usingFeatures}
-            toggleTableBorders={toggleTableBorders}
-            onImageUpload={onImageUpload}
-          />
+          <MenuBar features={usingFeatures} onImageUpload={onImageUpload} />
         }
         content={value}
         extensions={extensions}

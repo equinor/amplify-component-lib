@@ -4,7 +4,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import MultiSelectDrawer from './MultiSelectDrawer';
-import { items, ValueType } from './SelectUtils';
+import { items, ValueType } from 'src/components/Inputs/Select/stories/data';
 
 export default {
   title: 'Inputs/Select/MultiSelectDrawer',

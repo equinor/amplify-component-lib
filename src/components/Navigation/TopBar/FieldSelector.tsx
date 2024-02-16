@@ -1,10 +1,17 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
-import { Button, Icon, Search, Typography } from '@equinor/eds-core-react';
-import { check, clear, exit_to_app, platform } from '@equinor/eds-icons';
+import { Icon, Search, Typography } from '@equinor/eds-core-react';
+import {
+  arrow_drop_down,
+  arrow_drop_up,
+  check,
+  exit_to_app,
+  platform,
+} from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
 import { spacings } from 'src/style';
 import { Field } from 'src/types/Field';
@@ -15,8 +22,8 @@ const { colors } = tokens;
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.small};
-  padding: ${spacings.large};
+
+  padding: ${spacings.medium_small} ${spacings.medium};
   div[role='search'] {
     > div {
       outline: none !important;
@@ -25,7 +32,7 @@ const SearchContainer = styled.div`
       color: ${colors.text.static_icons__default.rgba};
     }
     input:focus {
-      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba};
+      box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
 `;
@@ -59,7 +66,6 @@ const MenuFixedItem = styled.div<MenuItemProps>`
   ${(props) =>
     props.$active &&
     `background: ${colors.interactive.primary__selected_highlight.rgba};
-     border-bottom: 1px solid ${colors.interactive.primary__resting.rgba};
     `};
   > div {
     display: grid;
@@ -89,16 +95,11 @@ const MenuSection = styled.div`
   }
 `;
 
-const MenuHeader = styled.li`
-  padding: 0 ${spacings.large};
-  margin: ${spacings.small} 0;
+const NoSearchResultsContainer = styled.div`
+  padding-top: ${spacings.small};
+  display: flex;
   align-items: center;
-  display: grid;
-  grid-template-columns: 1fr 24px;
-  justify-content: space-between;
-  > button {
-    margin-left: -${spacings.medium_small};
-  }
+  padding-bottom: ${spacings.xxx_large};
 `;
 
 const TextContainer = styled.div`
@@ -140,27 +141,53 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
     });
 
     const filteredFields = useMemo(() => {
-      const fieldItems = availableFields.filter(
-        (field) => currentField?.uuid !== field?.uuid
-      );
-      if (searchValue === '') return fieldItems;
-      return fieldItems.filter((field) =>
+      if (searchValue === '')
+        return availableFields.filter(
+          (field) =>
+            field.name?.toLowerCase() !== currentField?.name?.toLowerCase()
+        );
+
+      return availableFields.filter((field) =>
         field.name?.toLowerCase().includes(searchValue.toLowerCase())
       );
-    }, [availableFields, currentField?.uuid, searchValue]);
+    }, [availableFields, searchValue, currentField]);
+
+    const noSearchResult = useMemo(() => {
+      return filteredFields.length === 0 && availableFields.length > 1;
+    }, [availableFields.length, filteredFields.length]);
+
+    const transformedFieldName = useMemo(() => {
+      if (currentField?.name) {
+        return (
+          currentField?.name?.charAt(0).toUpperCase() +
+          currentField?.name?.slice(1)
+        );
+      }
+    }, [currentField?.name]);
+
+    const showSearchInput = useMemo(() => {
+      return filteredFields.length >= 4 || searchValue !== '';
+    }, [filteredFields, searchValue]);
+
+    if (currentField === undefined) return null;
 
     return (
       <div ref={ref}>
-        <Button variant="ghost_icon" ref={buttonRef} onClick={toggleMenu}>
-          <Icon
-            data={platform}
-            size={24}
-            color={colors.interactive.primary__resting.rgba}
-          />
-        </Button>
+        <TopBarButton
+          variant="ghost"
+          ref={buttonRef}
+          onClick={toggleMenu}
+          $isSelected={isOpen}
+          data-testid="field-selector-top-bar-button"
+          $fieldSelector
+        >
+          <Icon data={platform} size={24} />
+          {transformedFieldName}
+          <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
+        </TopBarButton>
         <TopBarMenu
           open={isOpen}
-          title="Field Selector"
+          title="Field Selection"
           onClose={closeMenu}
           anchorEl={buttonRef.current}
           contentPadding={false}
@@ -168,46 +195,42 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
         >
           <>
             <MenuSection>
-              <MenuHeader>
-                <Typography variant="h6">Field selection</Typography>
-                <Button variant="ghost_icon" onClick={closeMenu}>
-                  <Icon
-                    data={clear}
-                    size={24}
-                    color={colors.text.static_icons__secondary.rgba}
+              {showSearchInput && (
+                <SearchContainer>
+                  <Search
+                    placeholder="Search fields"
+                    value={searchValue}
+                    onChange={handleSearchOnChange}
                   />
-                </Button>
-              </MenuHeader>
-              <Typography variant="overline">Current selection</Typography>
-              {currentField && (
-                <MenuFixedItem $active>
-                  <div>
-                    <TextContainer>
-                      <Typography variant="h6">
-                        {currentField.name?.toLowerCase()}
-                      </Typography>
-                    </TextContainer>
-                    <Icon
-                      data={check}
-                      color={colors.interactive.primary__resting.rgba}
-                      size={24}
-                    />
-                  </div>
-                </MenuFixedItem>
+                </SearchContainer>
               )}
-              <SearchContainer>
-                <Typography variant="overline">Switch to</Typography>
-                <Search
-                  placeholder="Search fields"
-                  value={searchValue}
-                  onChange={handleSearchOnChange}
-                />
-              </SearchContainer>
+
               <ListContainer>
-                {filteredFields.length === 0 ? (
-                  <NoFieldsText variant="body_short">
-                    No fields matching your search
-                  </NoFieldsText>
+                {currentField && !noSearchResult && searchValue === '' && (
+                  <MenuFixedItem $active>
+                    <div>
+                      <TextContainer>
+                        <Typography variant="h6">
+                          {currentField.name?.toLowerCase()}
+                        </Typography>
+                      </TextContainer>
+                      <Icon
+                        data={check}
+                        color={colors.interactive.primary__resting.rgba}
+                        size={24}
+                      />
+                    </div>
+                  </MenuFixedItem>
+                )}
+                {noSearchResult ? (
+                  <NoSearchResultsContainer>
+                    <NoFieldsText
+                      variant="body_short"
+                      color={colors.text.static_icons__tertiary.rgba}
+                    >
+                      No fields matching your search
+                    </NoFieldsText>
+                  </NoSearchResultsContainer>
                 ) : (
                   filteredFields.map((field) => (
                     <MenuItem
@@ -227,7 +250,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
                 )}
               </ListContainer>
             </MenuSection>
-            {showAccessITLink && (
+            {showAccessITLink && !noSearchResult && (
               <MenuFixedItem
                 data-testid="access-it-link"
                 onClick={() =>

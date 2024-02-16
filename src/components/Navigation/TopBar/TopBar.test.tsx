@@ -2,9 +2,12 @@ import React from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import { render, screen } from '../../../tests/test-utils';
-import { EnvironmentType } from './TopBar';
 import TopBar from '.';
+import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import { EnvironmentType } from 'src/types/Environment';
+import { Field } from 'src/types/Field';
+
+import { expect } from 'vitest';
 
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
@@ -46,6 +49,41 @@ test('Shows correct application name', () => {
     </TopBar>
   );
   expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();
+});
+
+test('Shows fields selector instead of application name when field is send in to top bar ', () => {
+  const appName = 'Car-go 🏎';
+  const availableFields: Field[] = [
+    {
+      uuid: faker.animal.cow(),
+      name: faker.animal.cetacean(),
+      country: faker.animal.rodent(),
+    },
+    {
+      uuid: faker.animal.cat(),
+      name: faker.animal.crocodilia(),
+      country: faker.animal.rodent(),
+    },
+  ];
+  const onSelectedField = vi.fn();
+  const currentFiled: Field = availableFields[0];
+
+  render(
+    <TopBar
+      applicationIcon="car"
+      applicationName={appName}
+      onHeaderClick={() => console.log('Going home 🏡')}
+      onSelectField={onSelectedField}
+      currentField={currentFiled}
+      showAccessITLink={true}
+      availableFields={availableFields}
+    >
+      content
+    </TopBar>
+  );
+
+  const button = screen.getByRole('button', { name: currentFiled.name ?? '' });
+  expect(button).toBeInTheDocument();
 });
 
 test('Shows environment banner when not in production', () => {
@@ -94,24 +132,6 @@ test('Hides environment banner when in production', () => {
   expect(screen.queryByText(environmentName)).not.toBeInTheDocument();
 });
 
-test('Uses react element for icon if provided and logs error', () => {
-  console.warn = vi.fn();
-  const iconText = faker.animal.snake();
-  render(
-    <TopBar
-      applicationIcon={<p>{iconText}</p>}
-      applicationName="test"
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
-      content
-    </TopBar>
-  );
-  expect(console.warn).toHaveBeenCalledWith(
-    'Sending an element as applicationIcon is the old way of setting the icon in the top bar! Switch to just sending the name of the app as applicationIcon.'
-  );
-  expect(screen.getByText(iconText)).toBeInTheDocument();
-});
-
 test('Capitalize app name works as expected', () => {
   const name = faker.person.fullName();
   render(
@@ -125,4 +145,34 @@ test('Capitalize app name works as expected', () => {
     </TopBar>
   );
   expect(screen.getByText(name.toLowerCase())).toBeInTheDocument();
+});
+
+test('close on resize ', async () => {
+  const name = faker.person.fullName();
+  const setAllAsRead = vi.fn();
+  render(
+    <TopBar
+      onHeaderClick={() => console.log('Going home 🏡')}
+      applicationIcon="test"
+      applicationName={name}
+    >
+      <TopBar.Notifications setAllAsRead={setAllAsRead} />
+    </TopBar>
+  );
+  const user = userEvent.setup();
+
+  const button = screen.getByTestId('show-hide-button');
+
+  await user.click(button);
+  expect(screen.getByTestId('top-bar-menu')).toBeInTheDocument();
+
+  vi.stubGlobal(800, 600);
+  global.dispatchEvent(new Event('resize'));
+
+  await waitFor(
+    () => expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument(),
+    {
+      timeout: 2000,
+    }
+  );
 });

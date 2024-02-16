@@ -1,0 +1,22 @@
+# This is a basic workflow to help you get started with Actions
+
+name: NPM Publish
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    name: Publish to NPM
+    uses: ./.github/workflows/npm_publish.yaml
+    secrets:
+      npm-token: ${{ secrets.NPM_TOKEN }}
+  release:
+    name: Create release notes
+    needs: [publish]
+    uses: ./.github/workflows/release.yaml
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}

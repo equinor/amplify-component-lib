@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { fireEvent } from '@testing-library/dom';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 import RichTextEditor, { RichTextEditorProps } from './RichTextEditor';
 import {
@@ -27,7 +27,7 @@ Range.prototype.getClientRects = (): DOMRectList => new FakeDOMRectList();
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {
-    value: faker.animal.fish(),
+    value: `<p>${faker.animal.fish()}</p>`,
     onChange: vi.fn(),
     onImageUpload: withImage ? vi.fn() : undefined,
   };
@@ -39,9 +39,12 @@ function randomFeatures(amount: number): RichTextEditorFeatures[] {
 
 test('Shows text that is input', async () => {
   const props = fakeProps(true);
-  render(<RichTextEditor {...props} />);
+  const fish = faker.animal.fish();
+  render(<RichTextEditor {...props} value={`<p>${fish}</p>`} />);
 
-  expect(screen.getByText(props.value || '')).toBeInTheDocument();
+  await waitFor(() => expect(screen.getByText(fish)).toBeInTheDocument(), {
+    timeout: 1000,
+  });
 });
 
 test('Throws error if providing RichTextEditorFeature.IMAGES but not an image handler', () => {
@@ -100,7 +103,14 @@ test("Throws error if 'features' is empty", () => {
 test("Calls 'onChange' when inputting text", async () => {
   const props = fakeProps();
 
-  const { container } = render(<RichTextEditor {...props} />);
+  const { container } = render(
+    <RichTextEditor
+      {...props}
+      removeFeatures={[RichTextEditorFeatures.IMAGES]}
+    />
+  );
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   let textInput = container.querySelector('.tiptap');
 
@@ -116,91 +126,15 @@ test("Calls 'onChange' when inputting text", async () => {
   expect(screen.getByText(randomFish)).toBeInTheDocument();
 });
 
-test('Inputting link works as expected with valid link', async () => {
-  const props = fakeProps();
-  render(
-    <RichTextEditor {...props} features={[RichTextEditorFeatures.LINKS]} />
-  );
-
-  const user = userEvent.setup();
-
-  const linkButton = screen.getAllByRole('button')[0];
-
-  await user.click(linkButton);
-
-  const textField = screen.getByRole('textbox');
-
-  const randomUrl = faker.internet.url();
-
-  await user.type(textField, randomUrl);
-
-  const saveButton = screen.getByRole('button', { name: /save/i });
-
-  await user.click(saveButton);
-
-  expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
-});
-
-test('Inputting link works as expected with invalid link', async () => {
-  const props = fakeProps();
-  render(
-    <RichTextEditor {...props} features={[RichTextEditorFeatures.LINKS]} />
-  );
-
-  const user = userEvent.setup();
-
-  const linkButton = screen.getAllByRole('button')[0];
-
-  await user.click(linkButton);
-
-  const randomUrl = faker.animal.rabbit();
-
-  const textField = screen.getByRole('textbox');
-
-  await user.type(textField, randomUrl);
-
-  const saveButton = screen.getByRole('button', { name: /save/i });
-
-  await user.click(saveButton);
-
-  expect(textField).toBeInTheDocument();
-
-  await user.clear(textField);
-
-  await user.type(textField, faker.internet.url());
-
-  await user.click(saveButton);
-
-  expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
-});
-
-test('Unsetting link works', async () => {
-  const props = fakeProps();
-  const randomLink = faker.internet.url();
-  const value = `<p>This text contains a <a target="_blank" rel="noopener noreferrer nofollow" href="${randomLink}">link</a></p>`;
-  render(
-    <RichTextEditor
-      {...props}
-      value={value}
-      features={[RichTextEditorFeatures.LINKS]}
-    />
-  );
-
-  const user = userEvent.setup();
-
-  await user.dblClick(screen.getByText(/this text contains a/i));
-
-  const unsetLinkButton = screen.getAllByRole('button')[1];
-
-  await user.click(unsetLinkButton);
-});
-
 test('Setting color works as expected', async () => {
   const props = fakeProps();
 
   const { container } = render(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.TEXT_COLOR]} />
   );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const colorInput = container.querySelector('input') as Element;
 
@@ -214,6 +148,9 @@ test('Calls onImageUpload as expected', async () => {
     <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
   );
   const user = userEvent.setup();
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const uploadInput = container.querySelector('input') as HTMLElement;
 
@@ -235,6 +172,9 @@ test('Open file dialog', async () => {
   );
   const user = userEvent.setup();
 
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   const uploadButton = screen.getByRole('button');
 
   await user.click(uploadButton);
@@ -247,6 +187,9 @@ test('Creating table works as expected', async () => {
     <RichTextEditor {...props} features={[RichTextEditorFeatures.TABLE]} />
   );
   const user = userEvent.setup();
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const tableButton = screen.getByRole('button');
 

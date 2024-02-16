@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { fourDInsight } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,12 +17,14 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const FourDInsight = forwardRef<HTMLDivElement, SvgIconProps>(
-  ({ size }, ref) => (
+const FourDInsight = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly = false, withHover = true }, ref) => (
     <ApplicationIconBase
       ref={ref}
       size={size}
       iconData={fourDInsight}
+      iconOnly={iconOnly}
+      withHover={withHover}
       shapes={shapes}
     />
   )

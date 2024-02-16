@@ -27,11 +27,18 @@ cd ./src || return
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
 
+printf -- "Going into test-utils folder...\n"
+
+cd ./test-utils || (mkdir test-utils && cd ./test-utils || return)
+
 printf -- "Downloading setupTests.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupTests.ts" > setupTests.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/setupTests.ts" > setupTests.ts
 
-cd ..
+printf -- "Downloading mockLocalStorage.ts file...\n"
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts" > mockLocalStorage.ts
+cd ../..
 
 printf -- "Downloading nginx.conf proxy config...\n"
 
@@ -45,8 +52,14 @@ curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/confi
 
 cd ../..
 
-printf -- "Downloading client github action...\n"
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/client.yaml" > .github/workflows/client.yaml
+printf -- "Downloading client github actions...\n"
+workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/github_actions_list.txt")
+
+for line in $workflowsList
+do
+  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
+  curl -s $line > ".github/workflows/$fileName"
+done
 
 printf -- "Downloading CODEOWNERS file...\n"
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS

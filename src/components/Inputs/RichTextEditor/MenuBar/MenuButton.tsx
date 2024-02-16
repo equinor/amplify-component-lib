@@ -40,16 +40,17 @@ const Button = styled.button<ButtonProps>`
     }};
     transition: 200ms fill;
   }
+
   &:hover:not(:disabled) {
     background: ${({ $customColors }) =>
       $customColors
         ? $customColors.backgroundHover
-        : colors.interactive.primary__resting.rgba};
+        : colors.interactive.primary__hover_alt.rgba};
 
     > svg {
       fill: ${({ $customColors }) => {
         if ($customColors) return $customColors.hover;
-        return colors.ui.background__light.rgba;
+        return colors.interactive.primary__hover.rgba;
       }};
     }
   }

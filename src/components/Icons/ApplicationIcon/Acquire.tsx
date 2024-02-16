@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { acquire } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,8 +17,20 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Acquire: FC<SvgIconProps> = ({ size }) => {
-  return <ApplicationIconBase size={size} iconData={acquire} shapes={shapes} />;
+const Acquire: FC<AppIconProps> = ({
+  size,
+  iconOnly = false,
+  withHover = true,
+}) => {
+  return (
+    <ApplicationIconBase
+      size={size}
+      iconData={acquire}
+      iconOnly={iconOnly}
+      withHover={withHover}
+      shapes={shapes}
+    />
+  );
 };
 
 export default Acquire;

@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '../tests/test-utils';
 import ReleaseNotesProvider, { useReleaseNotes } from './ReleaseNotesProvider';
 import { CancelablePromise } from 'src/api';
-import { ReleaseNoteType } from 'src/components/Navigation/TopBar/Help/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
+import { ReleaseNoteType } from 'src/components/Navigation/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
 
 const releaseNotes = [
   {

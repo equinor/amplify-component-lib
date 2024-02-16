@@ -1,25 +1,23 @@
 import { FC, MouseEvent, ReactNode, useRef, useState } from 'react';
 
-import { Button, Dialog, Divider, Icon } from '@equinor/eds-core-react';
+import { Dialog, Divider, Icon } from '@equinor/eds-core-react';
 import {
   file_description,
   help_outline,
   move_to_inbox,
   report_bug,
 } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
 import Feedback from './Feedback/Feedback';
-import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Help/Feedback/Feedback.types';
 import HelpMenuItem from 'src/components/Navigation/TopBar/Help/HelpMenuItem';
+import ReleaseNotes from 'src/components/Navigation/TopBar/Resources/ReleaseNotesDialog/ReleaseNotes';
+import { TopBarButton } from 'src/components/Navigation/TopBar/TopBar.styles';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { spacings } from 'src/style';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
 
 const FeedbackFormDialog = styled(Dialog)`
   width: fit-content;
@@ -69,20 +67,18 @@ export const Help: FC<HelpProps> = ({
 
   return (
     <>
-      <Button
-        variant="ghost_icon"
+      <TopBarButton
+        variant="ghost"
         ref={buttonRef}
         id="anchor-match"
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-controls="menu-match"
         onClick={toggleMenu}
+        $isSelected={isOpen}
       >
-        <Icon
-          data={help_outline}
-          color={colors.interactive.primary__resting.rgba}
-        />
-      </Button>
+        <Icon data={help_outline} />
+      </TopBarButton>
 
       <TopBarMenu
         open={isOpen}

@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { portal } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,14 +17,18 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Portal = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
-  <ApplicationIconBase
-    ref={ref}
-    size={size}
-    iconData={portal}
-    shapes={shapes}
-  />
-));
+const Portal = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly = false, withHover = true }, ref) => (
+    <ApplicationIconBase
+      ref={ref}
+      size={size}
+      iconOnly={iconOnly}
+      iconData={portal}
+      withHover={withHover}
+      shapes={shapes}
+    />
+  )
+);
 
 Portal.displayName = 'Portal';
 

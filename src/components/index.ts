@@ -8,6 +8,7 @@ export { default as InfoElement } from './DataDisplay/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
+export { default as RichTextDisplay } from './DataDisplay/RichTextDisplay';
 export { default as HighlightBlocks } from './DataDisplay/Tutorial/HighlightBlocks/HighlightBlocks';
 export type { Step, TutorialProps } from './DataDisplay/Tutorial/Tutorial';
 export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
@@ -38,11 +39,11 @@ export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationI
 export {
   acquire,
   dasha,
-  depthConversion,
   fallback,
   fourDInsight,
   inPress,
   loggingQualification,
+  orca,
   portal,
   pwex,
   recap,
@@ -58,6 +59,7 @@ export { default as NothingFilled } from './Icons/FeedBackIcon/NegativeFilled';
 export { default as NothingOutlined } from './Icons/FeedBackIcon/NegativeOutlined';
 export { default as SomethingFilled } from './Icons/FeedBackIcon/PositiveFilled';
 export { default as SomethingOutlined } from './Icons/FeedBackIcon/PositiveOutlined';
+export { default as AmplifyComboBox } from './Inputs/AmplifyComboBox/AmplifyComboBox';
 export { default as AmplifyTextField } from './Inputs/AmplifyTextField';
 export { default as ChippedMultiSelect } from './Inputs/ChippedMultiSelect';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
@@ -67,6 +69,8 @@ export { default as CopyText } from './Inputs/CopyText';
 export { default as EditableField } from './Inputs/EditableField';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
+export { default as RichTextEditor } from './Inputs/RichTextEditor/RichTextEditor';
+export type { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
@@ -85,7 +89,6 @@ export type {
   TopBarType,
 } from './Navigation/TopBar';
 export { default as TopBar } from './Navigation/TopBar';
-export { default as HelpMenuItem } from './Navigation/TopBar/Help/HelpMenuItem';
-export { EnvironmentType } from './Navigation/TopBar/TopBar';
+export { default as ResourceMenuItem } from './Navigation/TopBar/Resources/ResourceMenuItem';
 export type { ContentProps, TemplateType } from './Template/Template';
 export { default as Template } from './Template/Template';

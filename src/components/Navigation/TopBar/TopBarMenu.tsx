@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode } from 'react';
+import React, { forwardRef, ReactNode, useEffect } from 'react';
 
 import {
   Button as EDSButton,
@@ -46,43 +46,71 @@ const ContentWrapper = styled.div<ContentWrapperProps>`
 
 interface TopBarMenuContentProps {
   open: boolean;
-  title: string;
+  title?: string;
   onClose: () => void;
   children: ReactNode;
   anchorEl: HTMLElement | null;
   contentPadding?: boolean;
+  isNotification?: boolean;
 }
 
 const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
   function TopBarRender(
-    { open, title, onClose, children, anchorEl, contentPadding = true },
+    {
+      open,
+      title,
+      onClose,
+      children,
+      anchorEl,
+      contentPadding = true,
+      isNotification,
+    },
+
     ref
   ) {
+    // Close open window if user resize the screen.//
+    useEffect(() => {
+      const handleResize = () => {
+        if (open) {
+          onClose();
+        }
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, [open, onClose]);
+
     if (!open) return null;
     return (
       <MenuWrapper
         open={open}
         onClose={onClose}
         anchorEl={anchorEl}
-        placement="bottom-end"
+        placement={isNotification ? 'bottom' : 'bottom-end'}
         data-testid="top-bar-menu"
         ref={ref}
       >
-        <Header>
-          <Typography group="ui" variant="accordion_header" as="span">
-            {title}
-          </Typography>
-          <Button
-            variant="ghost_icon"
-            onClick={onClose}
-            data-testid="close-button"
-          >
-            <Icon
-              data={clear}
-              color={colors.interactive.primary__resting.rgba}
-            />
-          </Button>
-        </Header>
+        {title && (
+          <Header>
+            <Typography group="ui" variant="accordion_header" as="span">
+              {title}
+            </Typography>
+            <Button
+              variant="ghost_icon"
+              onClick={onClose}
+              data-testid="close-button"
+            >
+              <Icon
+                data={clear}
+                color={colors.interactive.primary__resting.rgba}
+              />
+            </Button>
+          </Header>
+        )}
+
         <ContentWrapper $contentPadding={contentPadding}>
           {children}
         </ContentWrapper>

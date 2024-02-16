@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { inPress } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,14 +17,18 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const InPress = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
-  <ApplicationIconBase
-    ref={ref}
-    size={size}
-    iconData={inPress}
-    shapes={shapes}
-  />
-));
+const InPress = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly = false, withHover = true }, ref) => (
+    <ApplicationIconBase
+      ref={ref}
+      size={size}
+      iconData={inPress}
+      iconOnly={iconOnly}
+      withHover={withHover}
+      shapes={shapes}
+    />
+  )
+);
 
 InPress.displayName = 'InPress';
 

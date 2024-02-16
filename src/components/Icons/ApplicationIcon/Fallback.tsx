@@ -1,14 +1,14 @@
 import { forwardRef } from 'react';
 
-import { SvgIconProps } from '../index';
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { fallback } from './ApplicationIconCollection';
+import { AppIconProps } from 'src/types/AppIcon';
 
 const shapes: ShapeProps[] = [
   {
     top: -16,
     left: -17,
-    rotation: 355,
+    rotation: 325,
   },
   {
     top: 26,
@@ -17,14 +17,20 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Fallback = forwardRef<HTMLDivElement, SvgIconProps>(({ size }, ref) => (
-  <ApplicationIconBase
-    ref={ref}
-    size={size}
-    iconData={fallback}
-    shapes={shapes}
-  />
-));
+const Fallback = forwardRef<HTMLDivElement, AppIconProps>(
+  ({ size, iconOnly = false, withHover = true }, ref) => {
+    return (
+      <ApplicationIconBase
+        ref={ref}
+        size={size}
+        iconData={fallback}
+        iconOnly={iconOnly}
+        withHover={withHover}
+        shapes={shapes}
+      />
+    );
+  }
+);
 
 Fallback.displayName = 'Fallback';
 

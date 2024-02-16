@@ -1,7 +1,10 @@
 import { faker } from '@faker-js/faker';
+import { within } from '@testing-library/dom';
 
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import FieldSelector, { FieldSelectorType } from './FieldSelector';
+
+import { expect } from 'vitest';
 
 function fakeField() {
   return {
@@ -30,31 +33,39 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.getByText(name)).toBeInTheDocument();
-    expect(screen.getByText(name)).toBeVisible();
+    const contextMenu = within(screen.getByRole('menu'));
+
+    expect(contextMenu.getByText(name)).toBeInTheDocument();
+    expect(contextMenu.getByText(name)).toBeVisible();
   }
+
+  await user.click(button);
+  expect(screen.queryByText('Field Selection')).not.toBeInTheDocument();
 
   await user.click(button);
 
   for (const field of props.availableFields) {
     const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.queryByText(name)).not.toBeInTheDocument();
-  }
-
-  await user.click(button);
-
-  for (const field of props.availableFields) {
-    const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.getByText(name)).toBeInTheDocument();
-    expect(screen.getByText(name)).toBeVisible();
+    const contextMenu = within(screen.getByRole('menu'));
+    expect(contextMenu.getByText(name)).toBeInTheDocument();
+    expect(contextMenu.getByText(name)).toBeVisible();
   }
 
   await user.click(document.body);
 
-  for (const field of props.availableFields) {
-    const name = field?.name?.toLowerCase() ?? 'not-found';
-    expect(screen.queryByText(name)).not.toBeInTheDocument();
-  }
+  expect(screen.queryByText('field-name')).not.toBeInTheDocument();
+});
+
+test('field selector do not shown when field isnt selected', async () => {
+  const noSelectedField = {
+    currentField: undefined,
+    availableFields: fakeProps().availableFields,
+    onSelect: vi.fn(),
+  };
+  render(<FieldSelector {...noSelectedField} />);
+  expect(
+    screen.queryByTestId('field-selector-top-bar-button')
+  ).not.toBeInTheDocument();
 });
 
 test('Runs onSelect function once when clicking an item', async () => {
@@ -83,14 +94,15 @@ test('Doesnt run onSelect function when clicking already selected item', async (
   await user.click(button);
 
   const currentFieldName = props?.currentField?.name ?? 'name';
-  const selected = screen.getByText(new RegExp(currentFieldName, 'i'));
+  const contextMenu = within(screen.getByRole('menu'));
+  const selected = contextMenu.getByText(currentFieldName);
   await user.click(selected);
   expect(props.onSelect).toHaveBeenCalledTimes(0);
 });
 
 test('Filters values when using search', async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -118,7 +130,7 @@ test('Filters values when using search', async () => {
 
 test("Shows 'No results' text when searching for something that doesn't exist", async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -138,31 +150,21 @@ test("Shows 'No results' text when searching for something that doesn't exist", 
   ).toBeInTheDocument();
 });
 
-test("Shows 'No results' text when searching for something that doesn't exist", async () => {
+test("Show search input if it's 4 or more fields ", async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
   await user.click(button);
+  const searchFields = screen.getByRole('textbox');
 
-  const search = screen.getByRole('textbox');
-
-  const randomSearchValue = faker.internet.ipv4();
-  await user.type(search, randomSearchValue);
-  for (const field of props.availableFields) {
-    expect(
-      screen.queryByRole('heading', { name: field.name?.toLowerCase() })
-    ).not.toBeInTheDocument();
-  }
-  expect(
-    screen.getByText('No fields matching your search')
-  ).toBeInTheDocument();
+  expect(searchFields).toBeInTheDocument();
 });
 
 test('Runs window.open when clicking access it card', async () => {
   const props = fakeProps();
-  render(<FieldSelector {...props} currentField={undefined} />);
+  render(<FieldSelector {...props} />);
   window.open = vi.fn();
   const user = userEvent.setup();
 

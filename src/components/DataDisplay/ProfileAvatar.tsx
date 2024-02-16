@@ -84,10 +84,23 @@ const FallbackIcon = styled(Icon)`
   width: 70%;
 `;
 
+interface AvatarWrapperProps {
+  $size: number;
+}
+
+const AvatarWrapper = styled.div<AvatarWrapperProps>`
+  width: ${({ $size }) => $size}px;
+  height: ${({ $size }) => $size}px;
+  > div {
+    width: inherit;
+    height: inherit;
+  }
+`;
+
 export interface ProfileAvatarProps {
   url?: string;
   name?: string;
-  size?: 'small' | 'small-medium' | 'medium' | 'large' | 'x-large';
+  size?: 'small' | 'small-medium' | 'medium' | 'large' | 'x-large' | number;
   disabled?: boolean;
 }
 
@@ -107,11 +120,14 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         case 'small-medium':
           return 24;
         case 'medium':
+        case undefined:
           return 32;
         case 'large':
           return 40;
         case 'x-large':
           return 48;
+        default:
+          return size;
       }
     }, [size]);
 
@@ -122,11 +138,14 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         case 'small-medium':
           return 10;
         case 'medium':
+        case undefined:
           return 14;
         case 'large':
           return 16;
         case 'x-large':
           return 18;
+        default:
+          return size / 2;
       }
     }, [size]);
 
@@ -147,13 +166,14 @@ const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
 
     if (imageSrc !== '') {
       return (
-        <Avatar
-          alt={`user-avatar-${name}`}
-          size={sizeToPx}
-          src={imageSrc}
-          disabled={disabled}
-          ref={ref}
-        />
+        <AvatarWrapper $size={sizeToPx} data-testid="avatar-wrapper">
+          <Avatar
+            alt={`user-avatar-${name}`}
+            src={imageSrc}
+            disabled={disabled}
+            ref={ref}
+          />
+        </AvatarWrapper>
       );
     }
 

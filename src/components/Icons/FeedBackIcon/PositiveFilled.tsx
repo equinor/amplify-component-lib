@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { SvgIconProps } from '../index';
+import { AppIconProps } from 'src/types/AppIcon';
 
-const PositiveFilled: FC<SvgIconProps> = ({ size }) => (
+const PositiveFilled: FC<AppIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}
