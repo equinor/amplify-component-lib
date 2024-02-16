@@ -2,6 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import TutorialProvider from './TutorialProvider/TutorialProvider';
 import { CustomTutorialComponent } from './TutorialProvider/TutorialProvider.types';
@@ -110,7 +111,7 @@ const List = () => (
 const infiniteShaking = keyframes`
   0% { transform: translate(0, 0) rotate(0deg); }
   25% { transform: translate(5px, 5px) rotate(5deg); }
-  50% { transform: translate(0, 0) rotate(0eg); }
+  50% { transform: translate(0, 0) rotate(0deg); }
   75% { transform: translate(-5px, 5px) rotate(-5deg); }
   100% { transform: translate(0, 0) rotate(0deg); }`;
 
@@ -164,16 +165,21 @@ export default {
   title: 'Other/Providers',
   component: List,
   decorators: [
-    (storyFn) => (
-      <BrowserRouter>
-        <TutorialProvider
-          tutorials={[tutorialForStory]}
-          customStepComponents={customStepComponents}
-        >
-          {storyFn()}
-        </TutorialProvider>
-      </BrowserRouter>
-    ),
+    (storyFn) => {
+      const queryClient = new QueryClient();
+      return (
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <TutorialProvider
+              tutorials={[tutorialForStory]}
+              customStepComponents={customStepComponents}
+            >
+              {storyFn()}
+            </TutorialProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
+      );
+    },
   ],
 } as Meta;
 

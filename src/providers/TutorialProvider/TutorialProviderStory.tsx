@@ -61,7 +61,7 @@ export const tutorialForStory: Tutorial = {
   shortName: STORYBOOK_TUTORIAL_SHORT_NAME,
   application: 'storybook',
   path: '/iframe.html',
-  willPopUp: false,
+  willPopUp: true,
   showInProd: false,
   dynamicPositioning: true,
   steps: [
