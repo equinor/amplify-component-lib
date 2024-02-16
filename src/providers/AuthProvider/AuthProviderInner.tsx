@@ -64,13 +64,15 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    if (isInitialized) return;
+
     const handleInit = async () => {
       await instance.initialize();
       setIsInitialized(true);
     };
 
     handleInit();
-  }, [instance]);
+  }, [instance, isInitialized]);
 
   useEffect(() => {
     if (!isInitialized) return;
