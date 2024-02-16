@@ -14,7 +14,7 @@ import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
 import { HighlightingInfo } from './TutorialProvider.types';
 import { Tutorial } from 'src/api';
-import { EnvironmentType } from 'src/components';
+import { EnvironmentType } from 'src/types/Environment';
 import { environment } from 'src/utils';
 
 const { getEnvironmentName } = environment;
@@ -34,7 +34,8 @@ const TutorialProviderInner: FC = () => {
     setTutorialError,
     clearSearchParam,
   } = useTutorial();
-
+  console.log('pathname', pathname);
+  console.log('current url', window.location.search);
   const hasStartedTutorial = useRef(false);
   const { data: tutorialsFromBackend } = useGetTutorialsForApp();
 
@@ -49,7 +50,7 @@ const TutorialProviderInner: FC = () => {
     }
     return allTutorials;
   }, [tutorialsFromBackend, tutorialsFromProps]);
-
+  console.log('app tuts', appTutorials);
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
     if (!allElementsToHighlight || !activeTutorial || !viewportWidth) return;
     const currentElementToHighlight = allElementsToHighlight[currentStep];
@@ -89,6 +90,7 @@ const TutorialProviderInner: FC = () => {
       shortNameFromParams &&
       tutorialsForPath.some((item) => item.shortName === shortNameFromParams)
     ) {
+      console.log('will remove item');
       window.localStorage.removeItem(shortNameFromParams);
     }
   }, [

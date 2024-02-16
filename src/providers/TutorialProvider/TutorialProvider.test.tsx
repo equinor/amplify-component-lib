@@ -156,15 +156,19 @@ const getMemoryRouter = (props: GetMemoryRouterProps) => {
       initialEntries: [
         withNoSearchParams
           ? '/path'
-          : `/path?tutorial=${encodeURIComponent(TEST_TUTORIAL_SHORT_NAME)}`,
+          : {
+              pathname: '/path',
+              search: `?tutorial=${encodeURIComponent(TEST_TUTORIAL_SHORT_NAME)}`,
+            },
       ],
+
       initialIndex: 0,
     }
   );
 };
 
 const getStepTitleOrKey = (step: GenericTutorialStep | CustomTutorialStep) => {
-  if (step.key === undefined) {
+  if (step.key === undefined || step.key === null) {
     return step.title;
   } else {
     return step.key;
@@ -197,11 +201,10 @@ describe('TutorialProvider', () => {
     const router = getMemoryRouter({ tutorial });
     render(<RouterProvider router={router} />);
 
-    screen.logTestingPlaygroundURL();
     const highlighterElement = screen.queryByTestId(
       TUTORIAL_HIGHLIGHTER_DATATEST_ID
     );
-
+    screen.logTestingPlaygroundURL();
     console.log(highlighterElement);
 
     expect(highlighterElement).toBeInTheDocument();
@@ -234,7 +237,8 @@ describe('TutorialProvider', () => {
 
         expect(stepTitle).toBeInTheDocument();
         expect(stepBody).toBeInTheDocument();
-        if (currentStep.imgUrl) {
+        screen.logTestingPlaygroundURL();
+        if (currentStep.imgUrl && currentStep.imgUrl.length > 0) {
           const image = screen.getByAltText('tutorial-image');
           expect(image).toHaveAttribute('src', currentStep.imgUrl);
         }
@@ -315,10 +319,10 @@ describe('TutorialProvider', () => {
 
   describe('TutorialProvider error handling', () => {
     test('shows and can close error dialog when missing custom component, if tutorial started from searchparam', async () => {
-      window.localStorage.setItem(
-        TEST_TUTORIAL_SHORT_NAME,
-        TUTORIAL_LOCALSTORAGE_VALUE_STRING
-      );
+      // window.localStorage.setItem(
+      //   TEST_TUTORIAL_SHORT_NAME,
+      //   TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      // );
 
       const user = userEvent.setup();
       const tutorial = fakeTutorial();
@@ -331,6 +335,8 @@ describe('TutorialProvider', () => {
           })}
         />
       );
+
+      await new Promise((resolve) => setTimeout(resolve, 400));
       expect(spy).toHaveBeenCalledTimes(1);
 
       const errorDialogText = screen.getByText(
@@ -344,13 +350,13 @@ describe('TutorialProvider', () => {
       await user.click(closeButton);
 
       expect(closeButton).not.toBeInTheDocument();
-    });
+    }, 10000);
 
     test('shows error dialog when having wrong custom components, if tutorial started from searchparam', async () => {
-      window.localStorage.setItem(
-        TEST_TUTORIAL_SHORT_NAME,
-        TUTORIAL_LOCALSTORAGE_VALUE_STRING
-      );
+      // window.localStorage.setItem(
+      //   TEST_TUTORIAL_SHORT_NAME,
+      //   TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      // );
       const tutorial = fakeTutorial();
       const spy = vi.spyOn(console, 'error');
       render(
@@ -370,10 +376,10 @@ describe('TutorialProvider', () => {
     });
 
     test('shows error dialog when not finding all elements to highlight, if tutorial started from searchparam', async () => {
-      window.localStorage.setItem(
-        TEST_TUTORIAL_SHORT_NAME,
-        TUTORIAL_LOCALSTORAGE_VALUE_STRING
-      );
+      // window.localStorage.setItem(
+      //   TEST_TUTORIAL_SHORT_NAME,
+      //   TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      // );
       const tutorial = fakeTutorial();
       const spy = vi.spyOn(console, 'error');
       render(

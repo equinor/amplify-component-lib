@@ -74,7 +74,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   const [shortNameFromParams, setShortNameFromParams] = useState<
     string | undefined
   >(undefined);
-
+  console.log('search params', searchParams.get('tutorial'));
   const [currentStep, setCurrentStep] = useState(0);
   const [allElementsToHighlight, setAllElementsToHighlight] = useState<
     HTMLElement[] | undefined
@@ -92,6 +92,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   }, [activeTutorial, currentStep]);
 
   const clearSearchParam = useCallback(() => {
+    console.log('in clear');
     searchParams.delete(TUTORIAL_SEARCH_PARAM_KEY);
     setSearchParams(searchParams);
     setShortNameFromParams(undefined);
@@ -105,6 +106,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     }
   }, [searchParams, shortNameFromParams]);
 
+  console.log('shortnameFromParams', shortNameFromParams);
   useEffect(() => {
     const setViewportWidthHandler = () => {
       setViewportWidth(window.innerWidth);
@@ -117,6 +119,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     };
   }, []);
 
+  // ELEMENTS TO HIGHLIGHT CHECK
   // Try to find all elements to highlight, and set it to a state for further use.
   // If not found, set error state to true, and give console.error
   useEffect(() => {
@@ -151,9 +154,12 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     }
   }, [activeTutorial, currentStep, tutorialError, shortNameFromParams]);
 
+  // CUSTOM COMPONENT CHECK
   // Check to see if the tutorial has the custom components for any custom steps it has.
   // Sets tutorialError to true if it does not find a match for all potential custom steps
   useEffect(() => {
+    console.log('active tut', activeTutorial);
+    console.log('tut error', tutorialError);
     if (!activeTutorial || tutorialError) return;
     const customKeysFromSteps = activeTutorial.steps
       .filter((step) => step.key !== undefined && step.key !== null)
@@ -164,6 +170,8 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     const customKeysFromComponents = customStepComponents?.map(
       (stepComponent) => stepComponent.key
     );
+    console.log('keys from steps', customKeysFromSteps);
+    console.log('keys from prov', customKeysFromComponents);
     if (!customKeysFromComponents || customKeysFromComponents.length === 0) {
       console.error(
         'Could not find any custom components passed to the TutorialProvider \n' +
