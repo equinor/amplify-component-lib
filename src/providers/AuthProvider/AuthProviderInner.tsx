@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode, useEffect } from 'react';
+import { FC, ReactElement, ReactNode, useEffect, useState } from 'react';
 
 import {
   InteractionRequiredAuthError,
@@ -61,8 +61,20 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
   );
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    const handleInit = async () => {
+      await instance.initialize();
+      setIsInitialized(true);
+    };
+
+    handleInit();
+  }, [instance]);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+
     if (
       error instanceof InteractionRequiredAuthError &&
       accounts.length === 0 &&
@@ -76,7 +88,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       instance.setActiveAccount(accounts[0]);
       setAccount(accounts[0]);
     }
-  }, [account, accounts, error, instance, login, setAccount]);
+  }, [account, accounts, error, instance, isInitialized, login, setAccount]);
 
   useEffect(() => {
     if (result?.account && account === undefined) {
@@ -86,7 +98,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   }, [account, result?.account, setAccount]);
 
   useEffect(() => {
-    if (!account || photo || roles) return;
+    if (!account || photo || roles || !isInitialized) return;
 
     // Get photo
     const getPhoto = async () => {
@@ -141,6 +153,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     account,
     acquireToken,
     instance,
+    isInitialized,
     photo,
     roles,
     setAuthState,
