@@ -8,4 +8,12 @@ module.exports = {
   bracketSpacing: true,
   bracketSameLine: false,
   arrowParens: 'always',
+  overrides: [
+    {
+      files: '**/*.hbs',
+      options: {
+        parser: 'html',
+      },
+    },
+  ],
 };
