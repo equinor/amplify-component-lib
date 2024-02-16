@@ -6,8 +6,7 @@ import { auth, environment } from 'src/utils';
 import { CancelablePromise } from 'src/api/core/CancelablePromise';
 import { request as __request } from 'src/api/core/request';
 import { getLocalStorage, updateLocalStorage } from 'src/hooks/useLocalStorage';
-import { JwtPayload } from 'jwt-decode';
-import jwtDecode from 'jwt-decode';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 const { getToken: getApplicationToken } = auth;
 const { getApiUrl, getEnvironmentName } = environment;
