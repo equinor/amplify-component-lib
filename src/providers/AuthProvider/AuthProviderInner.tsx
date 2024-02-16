@@ -12,7 +12,7 @@ import FullPageSpinner from 'src/components/Feedback/FullPageSpinner';
 import Unauthorized from 'src/components/Feedback/Unauthorized';
 import { auth, environment } from 'src/utils';
 
-import jwt_decode, { JwtPayload } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 interface ExtendedJwtPayload extends JwtPayload {
   roles: string[];
@@ -122,7 +122,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         );
 
         if (tokenResponse && tokenResponse.accessToken) {
-          const accessToken: ExtendedJwtPayload = jwt_decode(
+          const accessToken: ExtendedJwtPayload = jwtDecode(
             tokenResponse.accessToken
           );
           if (accessToken.roles) {
