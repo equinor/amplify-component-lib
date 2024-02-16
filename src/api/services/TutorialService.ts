@@ -22,40 +22,6 @@ export class TutorialService {
   }
 
   /**
-   * Creates a tutorial
-   * @param requestBody
-   * @returns Tutorial Success
-   * @throws ApiError
-   */
-  public static createTutorial(
-    requestBody?: Tutorial
-  ): CancelablePromise<Tutorial> {
-    return __request(OpenAPI_Portal, {
-      method: 'POST',
-      url: '/api/v1/Tutorial',
-      body: requestBody,
-      mediaType: 'application/json-patch+json',
-    });
-  }
-
-  /**
-   * Edits or Creates a tutorial if it doesnt exist
-   * @param requestBody
-   * @returns Tutorial Success
-   * @throws ApiError
-   */
-  public static putTutorial(
-    requestBody?: Tutorial
-  ): CancelablePromise<Tutorial> {
-    return __request(OpenAPI_Portal, {
-      method: 'PUT',
-      url: '/api/v1/Tutorial',
-      body: requestBody,
-      mediaType: 'application/json-patch+json',
-    });
-  }
-
-  /**
    * Gets all tutorials for Application
    * @param applicationName
    * @returns Tutorial Success
@@ -73,21 +39,10 @@ export class TutorialService {
     });
   }
 
-  /**
-   * Deletes a tutorial by its id
-   * @param tutorialId
-   * @returns Tutorial Success
-   * @throws ApiError
-   */
-  public static deleteTutorial(
-    tutorialId: string
-  ): CancelablePromise<Tutorial> {
+  public static getTutorialSasToken(): CancelablePromise<string> {
     return __request(OpenAPI_Portal, {
-      method: 'DELETE',
-      url: '/api/v1/Tutorial/{tutorialId}',
-      path: {
-        tutorialId: tutorialId,
-      },
+      method: 'GET',
+      url: '/api/v1/Tutorial/SASToken',
     });
   }
 }

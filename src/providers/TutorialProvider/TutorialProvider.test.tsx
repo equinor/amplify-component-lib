@@ -63,7 +63,7 @@ interface FakeTutorialProps {
 }
 
 vi.mock('src/providers/TutorialProvider/TutorialProvider.hooks.ts', () => {
-  return { useGetTutorialsForApp: () => [] };
+  return { useGetTutorialsForApp: () => [], useGetTutorialSasToken: () => '' };
 });
 
 const fakeTutorial = (props?: FakeTutorialProps) => {

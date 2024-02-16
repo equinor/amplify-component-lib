@@ -7,6 +7,7 @@ import {
   DIALOG_EDGE_MARGIN,
   TUTORIAL_LOCALSTORAGE_VALUE_STRING,
 } from './TutorialProvider.const';
+import { useGetTutorialSasToken } from './TutorialProvider.hooks';
 import {
   DialogActions,
   DialogContent,
@@ -20,6 +21,8 @@ import TutorialStepIndicator from './TutorialStepIndicator';
 import { TutorialPosition } from 'src/api';
 
 const TutorialDialog: FC = () => {
+  const { data: sasToken } = useGetTutorialSasToken();
+
   const {
     activeTutorial,
     currentStep,
@@ -35,26 +38,30 @@ const TutorialDialog: FC = () => {
     viewportWidth,
     clearSearchParam,
   } = useTutorial();
-
   const dialogContent = useMemo(() => {
     if (!currentStepObject) return;
-
     if (currentStepObject.key && customStepComponents) {
       return customStepComponents.find(
         (step) => step.key === currentStepObject.key
       )?.element;
-    } else if (currentStepObject.key === undefined) {
+    } else if (
+      currentStepObject.key === undefined ||
+      currentStepObject.key === null
+    ) {
       return (
         <>
           <Typography>{currentStepObject.title}</Typography>
           <Typography>{currentStepObject.body}</Typography>
-          {currentStepObject.imgUrl && (
-            <DialogImage alt="tutorial-image" src={currentStepObject.imgUrl} />
+          {currentStepObject.imgUrl && sasToken && (
+            <DialogImage
+              alt="tutorial-image"
+              src={`${currentStepObject.imgUrl}?${sasToken}`}
+            />
           )}
         </>
       );
     }
-  }, [currentStepObject, customStepComponents]);
+  }, [currentStepObject, customStepComponents, sasToken]);
 
   const dialogPosition: TutorialPosition | undefined = useMemo(() => {
     if (

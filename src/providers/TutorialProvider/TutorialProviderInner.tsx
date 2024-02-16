@@ -3,8 +3,6 @@ import { useLocation } from 'react-router';
 
 import { Button, Typography } from '@equinor/eds-core-react';
 
-import { EnvironmentType } from '../../components';
-import { environment } from '../../utils';
 import TutorialDialog from './TutorialDialog';
 import { useTutorial } from './TutorialProvider';
 import {
@@ -16,6 +14,8 @@ import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
 import { HighlightingInfo } from './TutorialProvider.types';
 import { Tutorial } from 'src/api';
+import { EnvironmentType } from 'src/components';
+import { environment } from 'src/utils';
 
 const { getEnvironmentName } = environment;
 
@@ -70,7 +70,6 @@ const TutorialProviderInner: FC = () => {
       width: highlighterBoundingClient.width + HIGHLIGHT_PADDING * 2,
     };
   }, [activeTutorial, allElementsToHighlight, currentStep, viewportWidth]);
-
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
   }, [appTutorials, pathname]);
@@ -90,7 +89,6 @@ const TutorialProviderInner: FC = () => {
       shortNameFromParams &&
       tutorialsForPath.some((item) => item.shortName === shortNameFromParams)
     ) {
-      console.log('remove item');
       window.localStorage.removeItem(shortNameFromParams);
     }
   }, [
@@ -108,13 +106,11 @@ const TutorialProviderInner: FC = () => {
 
   useEffect(() => {
     if (tutorialsForPath.length < 1) return;
-    console.log('run useEf');
     const tutorialToRun = tutorialsForPath.find(
       (item) =>
         window.localStorage.getItem(item.shortName) !==
         TUTORIAL_LOCALSTORAGE_VALUE_STRING
     );
-
     if (tutorialToRun) {
       runTutorial(tutorialToRun);
     }
@@ -129,7 +125,7 @@ const TutorialProviderInner: FC = () => {
   if (
     !activeTutorial?.showInProd &&
     getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) ===
-      EnvironmentType.LOCALHOST
+      EnvironmentType.PRODUCTION
   )
     return null;
 
@@ -168,9 +164,7 @@ const TutorialProviderInner: FC = () => {
             width: `${highlightingInfo.width}px`,
             height: `${highlightingInfo.height}px`,
           }}
-        >
-          this is the highlighter
-        </Highlighter>
+        />
       )}
       <TutorialDialog />
     </>

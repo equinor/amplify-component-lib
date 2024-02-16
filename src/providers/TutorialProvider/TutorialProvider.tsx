@@ -81,7 +81,6 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   >(undefined);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-
   const currentStepObject = useMemo(() => {
     if (!activeTutorial) return;
     return activeTutorial.steps.at(currentStep);
@@ -157,7 +156,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
   useEffect(() => {
     if (!activeTutorial || tutorialError) return;
     const customKeysFromSteps = activeTutorial.steps
-      .filter((step) => step.key !== undefined)
+      .filter((step) => step.key !== undefined && step.key !== null)
       // Writing 'customStep.key as string' for coverage, we know its string since we filter out right before the map
       .map((customStep) => customStep.key as string);
     if (customKeysFromSteps.length === 0) return;
