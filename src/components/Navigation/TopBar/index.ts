@@ -1,6 +1,6 @@
 import ApplicationDrawer from './ApplicationDrawer/ApplicationDrawer';
 import { GuidelineSections } from './Guidelines/Guidelines';
-import { Notifications } from './Notifications/Notifications';
+import Notifications from './Notifications/Notifications';
 import { Resources } from './Resources/Resources';
 import { Actions } from './Actions';
 import FieldSelector from './FieldSelector';
