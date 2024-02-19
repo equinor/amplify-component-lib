@@ -12,6 +12,7 @@ import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
+import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationContextProvider';
 
 export {
   useAuth,
@@ -19,6 +20,7 @@ export {
   useFakeProgress,
   useFeatureToggling,
   useLocalStorage,
+  useNotification,
   useOnScreen,
   useOnScreenMultiple,
   usePageMenu,

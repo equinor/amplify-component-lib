@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { UnreadRedDot } from './Notifications/Notifications';
+import { UnreadRedDot } from 'src/components/Navigation/TopBar/Notifications/NotificationsInner';
 
 import styled from 'styled-components';
 

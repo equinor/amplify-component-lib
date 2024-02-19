@@ -15,7 +15,11 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
-import { Notifications, UnreadRedDot } from './Notifications';
+import Notifications from 'src/components/Navigation/TopBar/Notifications/Notifications';
+import {
+  NotificationsInner,
+  UnreadRedDot,
+} from 'src/components/Navigation/TopBar/Notifications/NotificationsInner';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 import { date } from 'src/utils';
 
@@ -155,7 +159,7 @@ const notificationsData: (
 ];
 
 test('renders button and panel correctly', async () => {
-  render(<Notifications setAllAsRead={() => null} />);
+  render(<NotificationsInner setAllAsRead={() => null} />);
   const icons = screen.getAllByTestId('eds-icon-path');
 
   expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
@@ -191,7 +195,7 @@ test('renders element children correctly', async () => {
 
 test('Calls setAllAsRead when pressing button twice', async () => {
   const setAllAsRead = vi.fn();
-  render(<Notifications setAllAsRead={setAllAsRead} />);
+  render(<NotificationsInner setAllAsRead={setAllAsRead} />);
   const user = userEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
@@ -208,7 +212,7 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
   const setAllAsRead = vi.fn();
   render(
     <div>
-      <Notifications setAllAsRead={setAllAsRead} />
+      <NotificationsInner setAllAsRead={setAllAsRead} />
       <button>{randomText}</button>
     </div>
   );
@@ -231,7 +235,11 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
 
 test('Renders unread dot when unread = true', async () => {
   render(
-    <Notifications setAllAsRead={() => null} hasUnread {...notificationsData} />
+    <NotificationsInner
+      setAllAsRead={() => null}
+      hasUnread
+      {...notificationsData}
+    />
   );
   const user = userEvent.setup();
 
@@ -253,7 +261,7 @@ test('Unread dot renders as expected', () => {
 });
 
 test('renders button and panel with filter options correctly', async () => {
-  render(<Notifications setAllAsRead={() => null} showFilterOptions />);
+  render(<NotificationsInner setAllAsRead={() => null} showFilterOptions />);
   const icons = screen.getAllByTestId('eds-icon-path');
 
   expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
@@ -271,7 +279,7 @@ test('renders filtered and sorted notifications correctly with children', async 
     hasChildren: false,
   };
 
-  render(<Notifications setAllAsRead={() => null} {...options} />);
+  render(<NotificationsInner setAllAsRead={() => null} {...options} />);
   const user = userEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
@@ -286,7 +294,7 @@ test('show unread dot when unread=true from system user ', async () => {
     children: false,
   };
 
-  render(<Notifications setAllAsRead={() => null} {...options} />);
+  render(<NotificationsInner setAllAsRead={() => null} {...options} />);
   const user = userEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
@@ -304,7 +312,7 @@ describe('Sorting notifications ', () => {
       children: false,
     };
 
-    render(<Notifications setAllAsRead={() => null} {...options} />);
+    render(<NotificationsInner setAllAsRead={() => null} {...options} />);
     const user = userEvent.setup();
     const button = screen.getByTestId('show-hide-button');
     await user.click(button);
@@ -409,7 +417,7 @@ describe('Filtering notifications ', () => {
       children: false,
     };
 
-    render(<Notifications setAllAsRead={() => null} {...options} />);
+    render(<NotificationsInner setAllAsRead={() => null} {...options} />);
     const user = userEvent.setup();
     const button = screen.getByTestId('show-hide-button');
     await user.click(button);
