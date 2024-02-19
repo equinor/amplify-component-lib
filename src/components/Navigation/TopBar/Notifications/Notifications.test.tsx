@@ -3,6 +3,7 @@ import React from 'react';
 import { notifications } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
+import { renderHook } from '@testing-library/react';
 
 import {
   DefaultNotificationTypes,
@@ -15,11 +16,9 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
+import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationContextProvider';
 import Notifications from 'src/components/Navigation/TopBar/Notifications/Notifications';
-import {
-  NotificationsInner,
-  UnreadRedDot,
-} from 'src/components/Navigation/TopBar/Notifications/NotificationsInner';
+import { UnreadRedDot } from 'src/components/Navigation/TopBar/Notifications/NotificationsInner';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 import { date } from 'src/utils';
 
@@ -158,8 +157,15 @@ const notificationsData: (
   } as Due3WeeksTypes,
 ];
 
+test('useNotification hook throws error if using outside of context', () => {
+  console.error = vi.fn();
+  expect(() => renderHook(() => useNotification())).toThrow(
+    'useNotificationContext must be used within a Notification provider'
+  );
+});
+
 test('renders button and panel correctly', async () => {
-  render(<NotificationsInner setAllAsRead={() => null} />);
+  render(<Notifications setAllAsRead={() => null} />);
   const icons = screen.getAllByTestId('eds-icon-path');
 
   expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
@@ -195,7 +201,7 @@ test('renders element children correctly', async () => {
 
 test('Calls setAllAsRead when pressing button twice', async () => {
   const setAllAsRead = vi.fn();
-  render(<NotificationsInner setAllAsRead={setAllAsRead} />);
+  render(<Notifications setAllAsRead={setAllAsRead} />);
   const user = userEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
@@ -212,7 +218,7 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
   const setAllAsRead = vi.fn();
   render(
     <div>
-      <NotificationsInner setAllAsRead={setAllAsRead} />
+      <Notifications setAllAsRead={setAllAsRead} />
       <button>{randomText}</button>
     </div>
   );
@@ -235,11 +241,7 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
 
 test('Renders unread dot when unread = true', async () => {
   render(
-    <NotificationsInner
-      setAllAsRead={() => null}
-      hasUnread
-      {...notificationsData}
-    />
+    <Notifications setAllAsRead={() => null} hasUnread {...notificationsData} />
   );
   const user = userEvent.setup();
 
@@ -261,7 +263,7 @@ test('Unread dot renders as expected', () => {
 });
 
 test('renders button and panel with filter options correctly', async () => {
-  render(<NotificationsInner setAllAsRead={() => null} showFilterOptions />);
+  render(<Notifications setAllAsRead={() => null} showFilterOptions />);
   const icons = screen.getAllByTestId('eds-icon-path');
 
   expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
@@ -279,7 +281,7 @@ test('renders filtered and sorted notifications correctly with children', async 
     hasChildren: false,
   };
 
-  render(<NotificationsInner setAllAsRead={() => null} {...options} />);
+  render(<Notifications setAllAsRead={() => null} {...options} />);
   const user = userEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
@@ -294,7 +296,7 @@ test('show unread dot when unread=true from system user ', async () => {
     children: false,
   };
 
-  render(<NotificationsInner setAllAsRead={() => null} {...options} />);
+  render(<Notifications setAllAsRead={() => null} {...options} />);
   const user = userEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
@@ -312,7 +314,7 @@ describe('Sorting notifications ', () => {
       children: false,
     };
 
-    render(<NotificationsInner setAllAsRead={() => null} {...options} />);
+    render(<Notifications setAllAsRead={() => null} {...options} />);
     const user = userEvent.setup();
     const button = screen.getByTestId('show-hide-button');
     await user.click(button);
@@ -417,7 +419,7 @@ describe('Filtering notifications ', () => {
       children: false,
     };
 
-    render(<NotificationsInner setAllAsRead={() => null} {...options} />);
+    render(<Notifications setAllAsRead={() => null} {...options} />);
     const user = userEvent.setup();
     const button = screen.getByTestId('show-hide-button');
     await user.click(button);
