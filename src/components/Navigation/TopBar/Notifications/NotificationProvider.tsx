@@ -13,9 +13,9 @@ interface NotificationContext {
   isOpen: boolean;
 }
 
-export const NotificationContext = createContext<
-  NotificationContext | undefined
->(undefined);
+const NotificationContext = createContext<NotificationContext | undefined>(
+  undefined
+);
 
 export const useNotification = () => {
   const context = useContext(NotificationContext);
