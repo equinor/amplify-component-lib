@@ -27,13 +27,11 @@ export const useNotification = () => {
   return context;
 };
 
-interface NotificationContextProviderProps {
+interface NotificationProviderProps {
   children: ReactNode;
 }
 
-const NotificationContextProvider: FC<NotificationContextProviderProps> = ({
-  children,
-}) => {
+const NotificationProvider: FC<NotificationProviderProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -43,4 +41,4 @@ const NotificationContextProvider: FC<NotificationContextProviderProps> = ({
   );
 };
 
-export default NotificationContextProvider;
+export default NotificationProvider;

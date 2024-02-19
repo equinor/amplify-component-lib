@@ -16,7 +16,7 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
-import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationContextProvider';
+import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
 import Notifications from 'src/components/Navigation/TopBar/Notifications/Notifications';
 import { UnreadRedDot } from 'src/components/Navigation/TopBar/Notifications/NotificationsInner';
 import { render, screen, userEvent } from 'src/tests/test-utils';

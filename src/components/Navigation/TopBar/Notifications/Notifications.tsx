@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import NotificationContextProvider from 'src/components/Navigation/TopBar/Notifications/NotificationContextProvider';
+import NotificationProvider from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
 import {
   NotificationsInner,
   NotificationsProps,
@@ -8,9 +8,9 @@ import {
 
 const Notifications: FC<NotificationsProps> = (props) => {
   return (
-    <NotificationContextProvider>
+    <NotificationProvider>
       <NotificationsInner {...props} />
-    </NotificationContextProvider>
+    </NotificationProvider>
   );
 };
 

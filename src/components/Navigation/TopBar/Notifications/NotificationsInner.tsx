@@ -20,7 +20,7 @@ import {
 } from './NotificationsTemplate/Notifications.types';
 import NotificationTemplate from './NotificationsTemplate/NotificationTemplate';
 import FilterOptions from './FilterOptions';
-import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationContextProvider';
+import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 
 import styled from 'styled-components';
