@@ -10,6 +10,8 @@ import { CustomTutorialComponent } from 'src/providers/TutorialProvider/Tutorial
 
 import styled, { keyframes } from 'styled-components';
 
+const STORYBOOK_TUTORIAL_SHORT_NAME = 'storybook-tutorial';
+
 const infiniteShaking = keyframes`
   0% { transform: translate(0, 0) rotate(0deg); }
   25% { transform: translate(5px, 5px) rotate(5deg); }
@@ -37,31 +39,6 @@ const SmallBlueLine = styled.div`
   animation: ${infiniteShaking} 2s infinite;
   background-color: deepskyblue;
 `;
-
-const customStepComponents: CustomTutorialComponent[] = [
-  {
-    key: 'customKey',
-    element: (
-      <CustomComponentWrapper>
-        <SmallOrangeLine />
-        <Typography>
-          That is some eye catching custom content right there!
-        </Typography>
-      </CustomComponentWrapper>
-    ),
-  },
-  {
-    key: 'anotherCustomKey',
-    element: (
-      <CustomComponentWrapper>
-        <SmallBlueLine />
-        <Typography>The gift that keeps on giving!</Typography>
-      </CustomComponentWrapper>
-    ),
-  },
-];
-
-const STORYBOOK_TUTORIAL_SHORT_NAME = 'storybook-tutorial';
 
 const Wrapper = styled.div`
   max-width: 80%;
@@ -110,6 +87,29 @@ const Wide = styled.div`
   width: 100%;
   background-color: darksalmon;
 `;
+
+const customStepComponents: CustomTutorialComponent[] = [
+  {
+    key: 'customKey',
+    element: (
+      <CustomComponentWrapper>
+        <SmallOrangeLine />
+        <Typography>
+          That is some eye catching custom content right there!
+        </Typography>
+      </CustomComponentWrapper>
+    ),
+  },
+  {
+    key: 'anotherCustomKey',
+    element: (
+      <CustomComponentWrapper>
+        <SmallBlueLine />
+        <Typography>The gift that keeps on giving!</Typography>
+      </CustomComponentWrapper>
+    ),
+  },
+];
 
 const tutorialForStory: Tutorial = {
   id: 'id thing',

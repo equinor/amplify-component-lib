@@ -98,8 +98,6 @@ export const Docs = () => (
   </Container>
 );
 
-// Custom component CSS for TutorialProvider story
-
 export default {
   title: 'Other/Providers',
   component: Docs,
