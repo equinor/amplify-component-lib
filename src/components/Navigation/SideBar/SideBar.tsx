@@ -45,6 +45,7 @@ const TopContainer = styled.div`
 
 interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
+  showCreate?: boolean;
 }
 
 interface SideBarWithoutCreate extends SidebarProps {
@@ -61,7 +62,7 @@ export const SideBar = forwardRef<
   HTMLDivElement,
   SidebarWithCreate | SideBarWithoutCreate
 >((props, ref) => {
-  const { children } = props;
+  const { children, showCreate = true } = props;
   const { isOpen, setIsOpen } = useSideBar();
 
   const handleToggle = () => {
@@ -75,7 +76,7 @@ export const SideBar = forwardRef<
       data-testid="sidebar"
     >
       <TopContainer>
-        {props.onCreate && (
+        {props.onCreate && showCreate && (
           <CreateItem
             createLabel={props.createLabel}
             onCreate={props.onCreate}

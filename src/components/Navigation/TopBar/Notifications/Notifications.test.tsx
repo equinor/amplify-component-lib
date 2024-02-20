@@ -3,6 +3,7 @@ import React from 'react';
 import { notifications } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
+import { renderHook } from '@testing-library/react';
 
 import {
   DefaultNotificationTypes,
@@ -15,7 +16,9 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
-import { Notifications, UnreadRedDot } from './Notifications';
+import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
+import Notifications from 'src/components/Navigation/TopBar/Notifications/Notifications';
+import { UnreadRedDot } from 'src/components/Navigation/TopBar/Notifications/NotificationsInner';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 import { date } from 'src/utils';
 
@@ -153,6 +156,13 @@ const notificationsData: (
     notificationType: NotificationsTypes.DUE_3_WEEKS,
   } as Due3WeeksTypes,
 ];
+
+test('useNotification hook throws error if using outside of context', () => {
+  console.error = vi.fn();
+  expect(() => renderHook(() => useNotification())).toThrow(
+    'useNotificationContext must be used within a Notification provider'
+  );
+});
 
 test('renders button and panel correctly', async () => {
   render(<Notifications setAllAsRead={() => null} />);
