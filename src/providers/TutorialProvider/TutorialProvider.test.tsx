@@ -1,6 +1,7 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitFor } from '@testing-library/react';
 
 import { render, renderHook, screen, userEvent } from '../../tests/test-utils';
@@ -12,16 +13,19 @@ import {
   TUTORIAL_LOCALSTORAGE_VALUE_STRING,
 } from './TutorialProvider.const';
 import {
+  CancelablePromise,
   CustomTutorialStep,
   GenericTutorialStep,
   Tutorial,
   TutorialPosition,
 } from 'src/api';
 
-import { beforeEach, describe, expect } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 const TEST_TUTORIAL_SHORT_NAME = 'test-tutorial';
+const TEST_TUTORIAL_FROM_BACKEND_SHORT_NAME = 'test-tutorial';
 const TEST_TUTORIAL_CUSTOM_STEP_KEY = 'custom-step';
+const TEST_TUTORIAL_SAS_TOKEN = 'thisIsASasToken';
 
 const getMarginCss = (type: string) => {
   return `margin-${type}: ${DIALOG_EDGE_MARGIN}px;`;
@@ -58,23 +62,22 @@ const extraFakeSteps = () => {
 interface FakeTutorialProps {
   position?: TutorialPosition;
   withDynamicPositioning?: boolean;
-
   withNoCustomSteps?: boolean;
+  tutorialFromBackendHook?: boolean;
+  willPopup?: boolean;
 }
-
-vi.mock('src/providers/TutorialProvider/TutorialProvider.hooks.ts', () => {
-  return { useGetTutorialsForApp: () => [], useGetTutorialSasToken: () => '' };
-});
 
 const fakeTutorial = (props?: FakeTutorialProps) => {
   return {
     id: 'testid',
     name: 'Storybook tutorial',
-    shortName: TEST_TUTORIAL_SHORT_NAME,
-    path: '/path',
+    shortName: props?.tutorialFromBackendHook
+      ? TEST_TUTORIAL_FROM_BACKEND_SHORT_NAME
+      : TEST_TUTORIAL_SHORT_NAME,
+    path: props?.tutorialFromBackendHook ? '/anotherPath' : '/path',
     application: 'test',
     showInProd: false,
-    willPopUp: false,
+    willPopUp: props?.willPopup ?? false,
     dynamicPositioning: props?.withDynamicPositioning,
     steps: [
       {
@@ -82,10 +85,12 @@ const fakeTutorial = (props?: FakeTutorialProps) => {
         title: faker.animal.cat(),
         body: faker.animal.crocodilia(),
         imgUrl: 'https://placehold.co/200x700/png',
+        key: undefined,
       },
       {
         title: faker.animal.cetacean(),
         body: faker.animal.dog(),
+        key: null,
       },
       props?.withNoCustomSteps
         ? { title: faker.animal.snake(), body: faker.animal.rodent() }
@@ -95,13 +100,46 @@ const fakeTutorial = (props?: FakeTutorialProps) => {
   } as Tutorial;
 };
 
+let requestsHaveError = false;
+vi.mock('src/api/services/TutorialService', () => {
+  class TutorialService {
+    public static getTutorialsForApplication(): CancelablePromise<
+      Array<Tutorial>
+    > {
+      return new CancelablePromise((resolve, reject) =>
+        setTimeout(() => {
+          if (requestsHaveError) {
+            reject({ message: 'getTutorialsError' });
+          } else {
+            resolve([fakeTutorial({ tutorialFromBackendHook: true })]);
+          }
+        }, 500)
+      );
+    }
+
+    public static getTutorialSasToken(): CancelablePromise<string> {
+      return new CancelablePromise((resolve, reject) =>
+        setTimeout(() => {
+          if (requestsHaveError) {
+            reject({ message: 'getSasTokenError' });
+          } else {
+            resolve(TEST_TUTORIAL_SAS_TOKEN);
+          }
+        }, 500)
+      );
+    }
+  }
+  return { TutorialService };
+});
+
 interface GetMemoryRouterProps {
-  tutorial: Tutorial;
+  tutorial?: Tutorial;
   withNoSearchParams?: boolean;
   withMissingCustomComponent?: boolean;
   withMissingElementToHighlight?: boolean;
   withWrongCustomComponentKeyString?: boolean;
   withNoTutorialsOnPath?: boolean;
+  withPathForTutorialFromHook?: boolean;
 }
 
 const getMemoryRouter = (props: GetMemoryRouterProps) => {
@@ -112,54 +150,54 @@ const getMemoryRouter = (props: GetMemoryRouterProps) => {
     withMissingElementToHighlight,
     withWrongCustomComponentKeyString,
     withNoTutorialsOnPath,
+    withPathForTutorialFromHook,
   } = props;
+  const queryClient = new QueryClient();
+
+  const pathBase = withPathForTutorialFromHook ? '/anotherPath' : '/path';
+
+  // For when tutorial is not defined, and the tutorial is coming from useGetTutorialsFromApplication hook
+  const tutorialSteps = Array.from(Array(10).keys());
+
   return createMemoryRouter(
     [
       {
-        path: withNoTutorialsOnPath ? '/thisIsTheWrongPath' : '/path',
+        path: withNoTutorialsOnPath ? '/thisIsTheWrongPath' : pathBase,
         element: (
-          <TutorialProvider
-            tutorials={[tutorial]}
-            customStepComponents={
-              withMissingCustomComponent
-                ? []
-                : [
-                    {
-                      key: withWrongCustomComponentKeyString
-                        ? 'thisIsTheWrongKey'
-                        : TEST_TUTORIAL_CUSTOM_STEP_KEY,
-                      element: <div>{TEST_TUTORIAL_CUSTOM_STEP_KEY}</div>,
-                    },
-                  ]
-            }
-          >
-            {tutorial.steps.map((step, index) => {
-              if (
-                withMissingElementToHighlight &&
-                index > tutorial.steps.length - 3
-              )
-                return null;
-              return (
-                <div
-                  key={step.key === undefined ? step.body : step.key}
-                  id={`${TEST_TUTORIAL_SHORT_NAME}-${index}`}
-                >
-                  {`Element-${index}`}
-                </div>
-              );
-            })}
-          </TutorialProvider>
+          <QueryClientProvider client={queryClient}>
+            <TutorialProvider
+              tutorials={tutorial ? [tutorial] : []}
+              customStepComponents={
+                withMissingCustomComponent
+                  ? []
+                  : [
+                      {
+                        key: withWrongCustomComponentKeyString
+                          ? 'thisIsTheWrongKey'
+                          : TEST_TUTORIAL_CUSTOM_STEP_KEY,
+                        element: <div>{TEST_TUTORIAL_CUSTOM_STEP_KEY}</div>,
+                      },
+                    ]
+              }
+            >
+              {tutorialSteps.map((step, index) => {
+                if (withMissingElementToHighlight && index > 3) return null;
+                return (
+                  <div key={step} id={`${TEST_TUTORIAL_SHORT_NAME}-${step}`}>
+                    {`Element-${index}`}
+                  </div>
+                );
+              })}
+            </TutorialProvider>
+          </QueryClientProvider>
         ),
       },
     ],
     {
       initialEntries: [
         withNoSearchParams
-          ? '/path'
-          : {
-              pathname: '/path',
-              search: `?tutorial=${encodeURIComponent(TEST_TUTORIAL_SHORT_NAME)}`,
-            },
+          ? pathBase
+          : `${pathBase}?tutorial=${encodeURIComponent(TEST_TUTORIAL_SHORT_NAME)}`,
       ],
 
       initialIndex: 0,
@@ -175,6 +213,10 @@ const getStepTitleOrKey = (step: GenericTutorialStep | CustomTutorialStep) => {
   }
 };
 
+const waitForBackendCall = async () => {
+  return new Promise((resolve) => setTimeout(resolve, 600));
+};
+
 // scrollIntoView is not implemented in JSDOM
 // GitHub issue: https://github.com/jsdom/jsdom/issues/1695
 window.HTMLElement.prototype.scrollIntoView = () => null;
@@ -182,6 +224,9 @@ window.HTMLElement.prototype.scrollIntoView = () => null;
 describe('TutorialProvider', () => {
   beforeEach(() => {
     window.localStorage.clear();
+    import.meta.env.VITE_ENVIRONMENT_NAME = 'development';
+
+    requestsHaveError = false;
   });
 
   test('useTutorial throws error if used outside provider', () => {
@@ -195,7 +240,6 @@ describe('TutorialProvider', () => {
       TEST_TUTORIAL_SHORT_NAME,
       TUTORIAL_LOCALSTORAGE_VALUE_STRING
     );
-
     const tutorial = fakeTutorial();
     const user = userEvent.setup();
     const router = getMemoryRouter({ tutorial });
@@ -204,7 +248,6 @@ describe('TutorialProvider', () => {
     const highlighterElement = screen.queryByTestId(
       TUTORIAL_HIGHLIGHTER_DATATEST_ID
     );
-    screen.logTestingPlaygroundURL();
     console.log(highlighterElement);
 
     expect(highlighterElement).toBeInTheDocument();
@@ -229,18 +272,22 @@ describe('TutorialProvider', () => {
     expect(highlighterElement).toBeInTheDocument();
     const steps = tutorial.steps;
 
+    await waitForBackendCall();
     for (let i = 0; i < steps.length - 1; i++) {
       const currentStep = steps[i];
-      if (currentStep.key === undefined) {
+      if (currentStep.key === undefined || currentStep.key === null) {
         const stepTitle = screen.queryByText(currentStep.title);
         const stepBody = screen.queryByText(currentStep.body);
 
         expect(stepTitle).toBeInTheDocument();
         expect(stepBody).toBeInTheDocument();
-        screen.logTestingPlaygroundURL();
+
         if (currentStep.imgUrl && currentStep.imgUrl.length > 0) {
-          const image = screen.getByAltText('tutorial-image');
-          expect(image).toHaveAttribute('src', currentStep.imgUrl);
+          const image = screen.getByTestId('tutorial-image');
+          expect(image).toHaveAttribute(
+            'src',
+            `${currentStep.imgUrl}?${TEST_TUTORIAL_SAS_TOKEN}`
+          );
         }
       } else {
         const customContent = screen.queryByText(TEST_TUTORIAL_CUSTOM_STEP_KEY);
@@ -292,37 +339,52 @@ describe('TutorialProvider', () => {
     expect(stepOneTitleAgainAgain).toBeInTheDocument();
   });
 
-  // TODO: look into testing this "can find elements to highlight when trying again"
-  // test('can find elements to highlight when trying again', async () => {
-  //   const tutorial = fakeTutorial();
-  //   const router = getMemoryRouter({
-  //     tutorial,
-  //     withMissingElementToHighlight: true,
-  //   });
-  //   const { rerender } = render(<RouterProvider router={router} />);
-  //
-  //   await new Promise((resolve) => setTimeout(resolve, 100));
-  //   const newRouter = getMemoryRouter({
-  //     tutorial,
-  //   });
-  //
-  //   screen.logTestingPlaygroundURL();
-  //   rerender(<RouterProvider router={newRouter} />);
-  //
-  //   screen.logTestingPlaygroundURL();
-  //   const highlighterElement = screen.queryByTestId(
-  //     TUTORIAL_HIGHLIGHTER_DATATEST_ID
-  //   );
-  //
-  //   expect(highlighterElement).toBeInTheDocument();
-  // });
+  test('will not show highlighter/dialog if no tutorials exist on path', async () => {
+    render(<RouterProvider router={getMemoryRouter({})} />);
+
+    const highlighterElement = screen.queryByTestId(
+      TUTORIAL_HIGHLIGHTER_DATATEST_ID
+    );
+
+    expect(highlighterElement).not.toBeInTheDocument();
+  });
+  test('will show tutorial from useGetTutorialsForApp hook', async () => {
+    render(
+      <RouterProvider
+        router={getMemoryRouter({ withPathForTutorialFromHook: true })}
+      />
+    );
+    await waitForBackendCall();
+    const highlighterElement = screen.queryByTestId(
+      TUTORIAL_HIGHLIGHTER_DATATEST_ID
+    );
+
+    expect(highlighterElement).toBeInTheDocument();
+  });
+
+  test('does not show active tutorial in prod if "showInProd" is false', async () => {
+    import.meta.env.VITE_ENVIRONMENT_NAME = 'production';
+    const tutorial = fakeTutorial();
+    const router = getMemoryRouter({ tutorial });
+    render(<RouterProvider router={router} />);
+
+    const highlighterElement = screen.queryByTestId(
+      TUTORIAL_HIGHLIGHTER_DATATEST_ID
+    );
+    console.log(highlighterElement);
+
+    expect(highlighterElement).not.toBeInTheDocument();
+
+    const skipDialogButton = screen.queryByText(/test/i);
+    expect(skipDialogButton).not.toBeInTheDocument();
+  });
 
   describe('TutorialProvider error handling', () => {
     test('shows and can close error dialog when missing custom component, if tutorial started from searchparam', async () => {
-      // window.localStorage.setItem(
-      //   TEST_TUTORIAL_SHORT_NAME,
-      //   TUTORIAL_LOCALSTORAGE_VALUE_STRING
-      // );
+      window.localStorage.setItem(
+        TEST_TUTORIAL_SHORT_NAME,
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      );
 
       const user = userEvent.setup();
       const tutorial = fakeTutorial();
@@ -353,10 +415,10 @@ describe('TutorialProvider', () => {
     }, 10000);
 
     test('shows error dialog when having wrong custom components, if tutorial started from searchparam', async () => {
-      // window.localStorage.setItem(
-      //   TEST_TUTORIAL_SHORT_NAME,
-      //   TUTORIAL_LOCALSTORAGE_VALUE_STRING
-      // );
+      window.localStorage.setItem(
+        TEST_TUTORIAL_SHORT_NAME,
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      );
       const tutorial = fakeTutorial();
       const spy = vi.spyOn(console, 'error');
       render(
@@ -376,10 +438,10 @@ describe('TutorialProvider', () => {
     });
 
     test('shows error dialog when not finding all elements to highlight, if tutorial started from searchparam', async () => {
-      // window.localStorage.setItem(
-      //   TEST_TUTORIAL_SHORT_NAME,
-      //   TUTORIAL_LOCALSTORAGE_VALUE_STRING
-      // );
+      window.localStorage.setItem(
+        TEST_TUTORIAL_SHORT_NAME,
+        TUTORIAL_LOCALSTORAGE_VALUE_STRING
+      );
       const tutorial = fakeTutorial();
       const spy = vi.spyOn(console, 'error');
       render(
@@ -391,8 +453,8 @@ describe('TutorialProvider', () => {
         />
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      expect(spy).toHaveBeenCalledTimes(2); // One extra for act() warning
+      await waitForBackendCall();
+      expect(spy).toHaveBeenCalledTimes(3); // Two extra for act() warnings
 
       const errorDialogText = screen.getByText(
         /There was a problem starting this tutorial./i
@@ -401,8 +463,7 @@ describe('TutorialProvider', () => {
     });
 
     test('shows nothing if tutorial has error when trying to run without search param', async () => {
-      window.localStorage.clear();
-      const tutorial = fakeTutorial();
+      const tutorial = fakeTutorial({ willPopup: true });
       const spy = vi.spyOn(console, 'error');
       render(
         <RouterProvider
@@ -414,8 +475,8 @@ describe('TutorialProvider', () => {
         />
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      expect(spy).toHaveBeenCalledTimes(2); // One extra for act() warning
+      await waitForBackendCall();
+      expect(spy).toHaveBeenCalledTimes(3); // Two extra for act() warnings
 
       const errorDialogText = screen.queryByText(
         /There was a problem starting this tutorial./i
@@ -459,5 +520,22 @@ describe('TutorialProvider', () => {
         }
       });
     }
+  });
+
+  test('shows nothing if there are no tutorials for app', async () => {
+    requestsHaveError = true;
+    render(<RouterProvider router={getMemoryRouter({})} />);
+
+    await waitForBackendCall();
+
+    const errorDialogText = screen.queryByText(
+      /There was a problem starting this tutorial./i
+    );
+    expect(errorDialogText).not.toBeInTheDocument();
+
+    const highlighterElement = screen.queryByTestId(
+      TUTORIAL_HIGHLIGHTER_DATATEST_ID
+    );
+    expect(highlighterElement).not.toBeInTheDocument();
   });
 });

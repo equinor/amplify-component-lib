@@ -38,6 +38,7 @@ const TutorialDialog: FC = () => {
     viewportWidth,
     clearSearchParam,
   } = useTutorial();
+
   const dialogContent = useMemo(() => {
     if (!currentStepObject) return;
     if (currentStepObject.key && customStepComponents) {
@@ -54,6 +55,7 @@ const TutorialDialog: FC = () => {
           <Typography>{currentStepObject.body}</Typography>
           {currentStepObject.imgUrl && sasToken && (
             <DialogImage
+              data-testid="tutorial-image"
               alt="tutorial-image"
               src={`${currentStepObject.imgUrl}?${sasToken}`}
             />

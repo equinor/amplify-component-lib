@@ -8,7 +8,6 @@ import { useTutorial } from './TutorialProvider';
 import {
   HIGHLIGHT_PADDING,
   TUTORIAL_HIGHLIGHTER_DATATEST_ID,
-  TUTORIAL_LOCALSTORAGE_VALUE_STRING,
 } from './TutorialProvider.const';
 import { useGetTutorialsForApp } from './TutorialProvider.hooks';
 import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
@@ -34,13 +33,16 @@ const TutorialProviderInner: FC = () => {
     setTutorialError,
     clearSearchParam,
   } = useTutorial();
-  console.log('pathname', pathname);
-  console.log('current url', window.location.search);
+
   const hasStartedTutorial = useRef(false);
   const { data: tutorialsFromBackend } = useGetTutorialsForApp();
 
   const appTutorials = useMemo(() => {
-    if (!tutorialsFromBackend && !tutorialsFromProps) return [];
+    if (
+      !tutorialsFromBackend &&
+      (!tutorialsFromProps || tutorialsFromProps.length === 0)
+    )
+      return [];
     const allTutorials = [];
     if (tutorialsFromProps) {
       allTutorials.push(...tutorialsFromProps);
@@ -50,7 +52,7 @@ const TutorialProviderInner: FC = () => {
     }
     return allTutorials;
   }, [tutorialsFromBackend, tutorialsFromProps]);
-  console.log('app tuts', appTutorials);
+
   const highlightingInfo: HighlightingInfo | undefined = useMemo(() => {
     if (!allElementsToHighlight || !activeTutorial || !viewportWidth) return;
     const currentElementToHighlight = allElementsToHighlight[currentStep];
@@ -71,6 +73,7 @@ const TutorialProviderInner: FC = () => {
       width: highlighterBoundingClient.width + HIGHLIGHT_PADDING * 2,
     };
   }, [activeTutorial, allElementsToHighlight, currentStep, viewportWidth]);
+
   const tutorialsForPath = useMemo(() => {
     return appTutorials.filter((item) => item.path === pathname);
   }, [appTutorials, pathname]);
@@ -85,23 +88,6 @@ const TutorialProviderInner: FC = () => {
   );
 
   useEffect(() => {
-    if (activeTutorial) return;
-    if (
-      shortNameFromParams &&
-      tutorialsForPath.some((item) => item.shortName === shortNameFromParams)
-    ) {
-      console.log('will remove item');
-      window.localStorage.removeItem(shortNameFromParams);
-    }
-  }, [
-    activeTutorial,
-    appTutorials,
-    setActiveTutorial,
-    shortNameFromParams,
-    tutorialsForPath,
-  ]);
-
-  useEffect(() => {
     if (!highlightingInfo || dialogRef.current?.open) return;
     dialogRef.current?.showModal();
   }, [dialogRef, highlightingInfo]);
@@ -110,13 +96,16 @@ const TutorialProviderInner: FC = () => {
     if (tutorialsForPath.length < 1) return;
     const tutorialToRun = tutorialsForPath.find(
       (item) =>
-        window.localStorage.getItem(item.shortName) !==
-        TUTORIAL_LOCALSTORAGE_VALUE_STRING
+        !window.localStorage.getItem(item.shortName) ||
+        (shortNameFromParams &&
+          tutorialsForPath.some(
+            (item) => item.shortName === shortNameFromParams
+          ))
     );
     if (tutorialToRun) {
       runTutorial(tutorialToRun);
     }
-  }, [runTutorial, tutorialsForPath]);
+  }, [runTutorial, shortNameFromParams, tutorialsForPath]);
 
   const handleOnCloseBrokenTutorial = () => {
     clearSearchParam();

@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { TutorialService } from '../../api/services/TutorialService';
-import { environment } from '../../utils';
 import {
   GET_TUTORIALS_FOR_APP,
   GET_TUTORIALS_SAS_TOKEN,
 } from './TutorialProvider.const';
+import { TutorialService } from 'src/api/services/TutorialService';
+import { environment } from 'src/utils';
 
 const { getAppName } = environment;
 
