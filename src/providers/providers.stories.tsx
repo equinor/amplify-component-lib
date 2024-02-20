@@ -1,17 +1,7 @@
-import { BrowserRouter } from 'react-router-dom';
-
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Meta } from '@storybook/react';
 
-import TutorialProvider from './TutorialProvider/TutorialProvider';
-import { CustomTutorialComponent } from './TutorialProvider/TutorialProvider.types';
-import {
-  tutorialForStory,
-  TutorialProviderStory,
-} from './TutorialProvider/TutorialProviderStory';
-
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const providersList = [
   {
@@ -90,7 +80,7 @@ const Divider = styled.hr`
   border: none;
 `;
 
-const List = () => (
+export const Docs = () => (
   <Container>
     <div>
       <Typography variant="h1">List of all providers</Typography>
@@ -108,81 +98,9 @@ const List = () => (
   </Container>
 );
 
-const infiniteShaking = keyframes`
-  0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(5px, 5px) rotate(5deg); }
-  50% { transform: translate(0, 0) rotate(0deg); }
-  75% { transform: translate(-5px, 5px) rotate(-5deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }`;
-
 // Custom component CSS for TutorialProvider story
-
-const CustomComponentWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 24px;
-`;
-
-const SmallOrangeLine = styled.div`
-  width: 24px;
-  height: 76px;
-
-  animation: ${infiniteShaking} 2s infinite;
-  background-color: darkorange;
-`;
-const SmallBlueLine = styled.div`
-  width: 24px;
-  height: 76px;
-
-  animation: ${infiniteShaking} 2s infinite;
-  background-color: deepskyblue;
-`;
-
-const customStepComponents: CustomTutorialComponent[] = [
-  {
-    key: 'customKey',
-    element: (
-      <CustomComponentWrapper>
-        <SmallOrangeLine />
-        <Typography>
-          That is some eye catching custom content right there!
-        </Typography>
-      </CustomComponentWrapper>
-    ),
-  },
-  {
-    key: 'anotherCustomKey',
-    element: (
-      <CustomComponentWrapper>
-        <SmallBlueLine />
-        <Typography>The gift that keeps on giving!</Typography>
-      </CustomComponentWrapper>
-    ),
-  },
-];
 
 export default {
   title: 'Other/Providers',
-  component: List,
-  decorators: [
-    (storyFn) => {
-      const queryClient = new QueryClient();
-      return (
-        <BrowserRouter>
-          <QueryClientProvider client={queryClient}>
-            <TutorialProvider
-              tutorials={[tutorialForStory]}
-              customStepComponents={customStepComponents}
-            >
-              {storyFn()}
-            </TutorialProvider>
-          </QueryClientProvider>
-        </BrowserRouter>
-      );
-    },
-  ],
+  component: Docs,
 } as Meta;
-
-export const Primary: StoryFn = () => <List />;
-
-export { TutorialProviderStory as TutorialProvider };

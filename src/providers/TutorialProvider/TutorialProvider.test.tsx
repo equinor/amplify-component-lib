@@ -402,7 +402,7 @@ describe('TutorialProvider', () => {
       expect(spy).toHaveBeenCalledTimes(1);
 
       const errorDialogText = screen.getByText(
-        /There was a problem starting this tutorial./i
+        /there was a problem starting this tutorial./i
       );
       expect(errorDialogText).toBeInTheDocument();
 
@@ -432,7 +432,7 @@ describe('TutorialProvider', () => {
       expect(spy).toHaveBeenCalledTimes(1);
 
       const errorDialogText = screen.getByText(
-        /There was a problem starting this tutorial./i
+        /there was a problem starting this tutorial./i
       );
       expect(errorDialogText).toBeInTheDocument();
     });
@@ -457,7 +457,7 @@ describe('TutorialProvider', () => {
       expect(spy).toHaveBeenCalledTimes(3); // Two extra for act() warnings
 
       const errorDialogText = screen.getByText(
-        /There was a problem starting this tutorial./i
+        /there was a problem starting this tutorial./i
       );
       expect(errorDialogText).toBeInTheDocument();
     });
@@ -479,7 +479,7 @@ describe('TutorialProvider', () => {
       expect(spy).toHaveBeenCalledTimes(3); // Two extra for act() warnings
 
       const errorDialogText = screen.queryByText(
-        /There was a problem starting this tutorial./i
+        /there was a problem starting this tutorial./i
       );
       expect(errorDialogText).not.toBeInTheDocument();
 
@@ -529,7 +529,7 @@ describe('TutorialProvider', () => {
     await waitForBackendCall();
 
     const errorDialogText = screen.queryByText(
-      /There was a problem starting this tutorial./i
+      /there was a problem starting this tutorial./i
     );
     expect(errorDialogText).not.toBeInTheDocument();
 

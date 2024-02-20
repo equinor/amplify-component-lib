@@ -42,7 +42,7 @@ export default defineConfig({
         'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreen.ts',
         'src/components/Navigation/TopBar/Resources/FeedbackForm/**',
-        'src/providers/TutorialProvider/TutorialProviderStory.tsx',
+        'src/providers/TutorialProvider/TutorialProvider.stories.tsx',
       ],
       reporter: [
         'text-summary',

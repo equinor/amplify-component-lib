@@ -47,7 +47,6 @@ export const StyledTutorialDialog = styled.dialog`
   border: none;
   box-shadow: ${elevation.above_scrim};
   border-radius: ${shape.corners.borderRadius};
-  // TODO: figure out why transition does not work with margin change
   transition: all;
   transition-duration: 300ms;
   animation: ${fadeinOpacityAnimation} 300ms;
