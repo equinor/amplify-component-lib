@@ -146,3 +146,34 @@ test('Render Create button correctly when open', async () => {
   const createButton = screen.getAllByRole('button')[0];
   expect(createButton).toHaveStyleRule('height', '36px');
 });
+
+test('Hides create button when showCreate=false', async () => {
+  const createLabel = faker.animal.dog();
+  const handleOnCreate = vi.fn();
+  window.localStorage.setItem(
+    'amplify-sidebar-state',
+    JSON.stringify({ isOpen: false })
+  );
+  render(
+    <SideBar
+      createLabel={createLabel}
+      onCreate={handleOnCreate}
+      showCreate={false}
+    >
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>,
+    { wrapper: SideBarProvider }
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getAllByRole('button')[0]);
+
+  const icons = screen.getAllByTestId('eds-icon-path');
+  for (const icon of icons) {
+    expect(icon).not.toHaveAttribute('d', add.svgPathData);
+  }
+
+  expect(screen.queryByText(createLabel)).not.toBeInTheDocument();
+});
