@@ -5,22 +5,10 @@
 import type { Tutorial } from '../models/Tutorial';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI_Portal } from '../core/OpenAPI';
+import { OpenAPI_Portal_Prod } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class TutorialService {
-  /**
-   * Gets All Tutorials across applications
-   * @returns Tutorial Success
-   * @throws ApiError
-   */
-  public static getAllTutorials(): CancelablePromise<Array<Tutorial>> {
-    return __request(OpenAPI_Portal, {
-      method: 'GET',
-      url: '/api/v1/Tutorial',
-    });
-  }
-
   /**
    * Gets all tutorials for Application
    * @param applicationName
@@ -30,7 +18,7 @@ export class TutorialService {
   public static getTutorialsForApplication(
     applicationName: string
   ): CancelablePromise<Array<Tutorial>> {
-    return __request(OpenAPI_Portal, {
+    return __request(OpenAPI_Portal_Prod, {
       method: 'GET',
       url: '/api/v1/Tutorial/{applicationName}',
       path: {
@@ -40,7 +28,7 @@ export class TutorialService {
   }
 
   public static getTutorialSasToken(): CancelablePromise<string> {
-    return __request(OpenAPI_Portal, {
+    return __request(OpenAPI_Portal_Prod, {
       method: 'GET',
       url: '/api/v1/Tutorial/SASToken',
     });
