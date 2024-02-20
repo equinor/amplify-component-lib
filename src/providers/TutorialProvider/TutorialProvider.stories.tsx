@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { Button, Typography } from '@equinor/eds-core-react';
@@ -32,6 +33,7 @@ const SmallOrangeLine = styled.div`
   animation: ${infiniteShaking} 2s infinite;
   background-color: darkorange;
 `;
+
 const SmallBlueLine = styled.div`
   width: 24px;
   height: 76px;
@@ -149,12 +151,13 @@ const tutorialForStory: Tutorial = {
   ],
 };
 
-const handleOnClick = () => {
-  console.log('Nevermind');
-};
-
 export const Primary: StoryFn = () => {
   const queryClient = new QueryClient();
+
+  const [primaryColor, setPrimaryColor] = useState(false);
+  const handleOnClick = () => {
+    setPrimaryColor((prev) => !prev);
+  };
   const handleOnStartClick = () => {
     window.localStorage.removeItem(STORYBOOK_TUTORIAL_SHORT_NAME);
     window.location.reload();
@@ -170,8 +173,11 @@ export const Primary: StoryFn = () => {
           <Button onClick={handleOnStartClick}>Run tutorial</Button>
           <Wrapper>
             <RedSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-0`}>
-              <Button variant="outlined" onClick={handleOnClick}>
-                U cant touch this
+              <Button
+                onClick={handleOnClick}
+                color={primaryColor ? 'primary' : 'secondary'}
+              >
+                Toggle button color
               </Button>
             </RedSquare>
             <BlueSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-1`}></BlueSquare>
