@@ -198,6 +198,7 @@ const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
               {showSearchInput && (
                 <SearchContainer>
                   <Search
+                    autoFocus
                     placeholder="Search fields"
                     value={searchValue}
                     onChange={handleSearchOnChange}
