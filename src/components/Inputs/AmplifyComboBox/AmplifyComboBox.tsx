@@ -233,6 +233,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
             selectedValues.map((value) => (
               <StyledChip
                 key={value.value}
+                className="amplify-combo-box-chip"
                 onDelete={() => handleOnRemoveItem(value)}
                 $tryingToRemove={tryingToRemoveItem?.value === value.value}
               >

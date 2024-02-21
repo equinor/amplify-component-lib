@@ -65,6 +65,9 @@ export const Section = styled.section`
     outline: none;
     border: none;
   }
+  input[type='search']:disabled {
+    cursor: not-allowed;
+  }
   input[type='search']::-webkit-search-decoration,
   input[type='search']::-webkit-search-cancel-button,
   input[type='search']::-webkit-search-results-button,
@@ -74,6 +77,18 @@ export const Section = styled.section`
   &:has(input:disabled) {
     > p {
       color: ${colors.interactive.disabled__text.rgba};
+    }
+    > .amplify-combo-box-chip {
+      cursor: not-allowed;
+      background: ${colors.interactive.disabled__fill.rgba};
+      color: ${colors.interactive.disabled__text.rgba};
+      > svg {
+        fill: ${colors.interactive.disabled__text.rgba};
+        &:hover {
+          cursor: not-allowed;
+          background: none;
+        }
+      }
     }
   }
 `;
