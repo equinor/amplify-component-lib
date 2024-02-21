@@ -62,7 +62,6 @@ export { default as SomethingOutlined } from './Icons/FeedBackIcon/PositiveOutli
 export { default as AmplifyComboBox } from './Inputs/AmplifyComboBox/AmplifyComboBox';
 export type { ComboBoxOption } from './Inputs/AmplifyComboBox/AmplifyComboBox.types';
 export { default as AmplifyTextField } from './Inputs/AmplifyTextField';
-export { default as ChippedMultiSelect } from './Inputs/ChippedMultiSelect';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
 export { default as NewComment } from './Inputs/CommentField/NewCommentField';
 export { default as ContentMenu } from './Inputs/ContentMenu';
