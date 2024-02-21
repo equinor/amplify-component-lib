@@ -6,7 +6,6 @@ import { waitFor } from '@testing-library/react';
 
 import { render, renderHook, screen, userEvent } from '../../tests/test-utils';
 import { TutorialProvider } from '../index';
-import { useTutorial } from './TutorialProvider';
 import {
   DIALOG_EDGE_MARGIN,
   TUTORIAL_HIGHLIGHTER_DATATEST_ID,
@@ -19,6 +18,7 @@ import {
   Tutorial,
   TutorialPosition,
 } from 'src/api';
+import { useTutorial } from 'src/providers/TutorialProvider/TutorialProvider.hooks';
 
 import { beforeEach, describe, expect, test } from 'vitest';
 

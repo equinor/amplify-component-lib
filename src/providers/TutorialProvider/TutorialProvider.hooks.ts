@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import { useQuery } from '@tanstack/react-query';
 
 import {
@@ -5,6 +7,7 @@ import {
   GET_TUTORIALS_SAS_TOKEN,
 } from './TutorialProvider.const';
 import { TutorialService } from 'src/api/services/TutorialService';
+import { TutorialContext } from 'src/providers/TutorialProvider/TutorialProvider';
 import { environment } from 'src/utils';
 
 const { getAppName } = environment;
@@ -16,9 +19,19 @@ export const useGetTutorialsForApp = () => {
     queryFn: () => TutorialService.getTutorialsForApplication(appName),
   });
 };
+
 export const useGetTutorialSasToken = () => {
   return useQuery({
     queryKey: [GET_TUTORIALS_SAS_TOKEN],
     queryFn: () => TutorialService.getTutorialSasToken(),
   });
+};
+
+export const useTutorial = () => {
+  const context = useContext(TutorialContext);
+  if (context === undefined) {
+    throw new Error("'useTutorial' must be used within a TutorialProvider");
+  }
+
+  return context;
 };

@@ -6,7 +6,6 @@ import {
   ReactNode,
   SetStateAction,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -20,7 +19,7 @@ import { getAllElementsToHighlight } from './TutorialProvider.utils';
 import TutorialProviderInner from './TutorialProviderInner';
 import { CustomTutorialStep, GenericTutorialStep, Tutorial } from 'src/api';
 
-interface TutorialContextType {
+export interface TutorialContextType {
   activeTutorial: Tutorial | undefined;
   setActiveTutorial: Dispatch<SetStateAction<Tutorial | undefined>>;
   currentStep: number;
@@ -45,15 +44,6 @@ interface TutorialContextType {
 export const TutorialContext = createContext<TutorialContextType | undefined>(
   undefined
 );
-
-export const useTutorial = () => {
-  const context = useContext(TutorialContext);
-  if (context === undefined) {
-    throw new Error("'useTutorial' must be used within a TutorialProvider");
-  }
-
-  return context;
-};
 
 interface TutorialProviderProps {
   children: ReactNode;

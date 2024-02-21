@@ -2,9 +2,8 @@ import { FC, ReactNode, useMemo, useRef, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { notifications as notificationIcon } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import { TopBarButton } from '../TopBar.styles';
+import { TopBarButton, UnreadRedDot } from '../TopBar.styles';
 import NoNotifications from './NotificationsTemplate/NotificationElements/NoNotifications';
 import {
   DefaultNotificationTypes,
@@ -24,21 +23,6 @@ import { useNotification } from 'src/components/Navigation/TopBar/Notifications/
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
-
-export const UnreadRedDot = styled.div`
-  background-color: ${colors.interactive.danger__resting.rgba};
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  position: absolute;
-  right: 2px;
-  top: 4px;
-  border: 2px solid ${colors.text.static_icons__primary_white.rgba};
-  // Box-sizing is a quickfix for use in PWEX because of global styling
-  box-sizing: content-box;
-`;
 
 const FilterOptionsContainer = styled.div`
   display: flex;

@@ -2,12 +2,11 @@ import { CSSProperties, FC, useMemo } from 'react';
 
 import { Button, Typography } from '@equinor/eds-core-react';
 
-import { useTutorial } from './TutorialProvider';
 import {
   DIALOG_EDGE_MARGIN,
   TUTORIAL_LOCALSTORAGE_VALUE_STRING,
 } from './TutorialProvider.const';
-import { useGetTutorialSasToken } from './TutorialProvider.hooks';
+import { useGetTutorialSasToken, useTutorial } from './TutorialProvider.hooks';
 import {
   DialogActions,
   DialogContent,

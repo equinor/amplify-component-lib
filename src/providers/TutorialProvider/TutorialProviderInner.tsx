@@ -4,17 +4,16 @@ import { useLocation } from 'react-router';
 import { Button, Typography } from '@equinor/eds-core-react';
 
 import TutorialDialog from './TutorialDialog';
-import { useTutorial } from './TutorialProvider';
 import {
   HIGHLIGHT_PADDING,
   TUTORIAL_HIGHLIGHTER_DATATEST_ID,
 } from './TutorialProvider.const';
-import { useGetTutorialsForApp } from './TutorialProvider.hooks';
+import { useGetTutorialsForApp, useTutorial } from './TutorialProvider.hooks';
 import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
 import { HighlightingInfo } from './TutorialProvider.types';
 import { Tutorial } from 'src/api';
 import { EnvironmentType } from 'src/types/Environment';
-import { environment } from 'src/utils';
+import { environment } from 'src/utils/auth_environment';
 
 const { getEnvironmentName } = environment;
 
