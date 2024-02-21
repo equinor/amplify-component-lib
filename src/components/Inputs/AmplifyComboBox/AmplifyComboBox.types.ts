@@ -5,7 +5,7 @@ type ComboBoxOptionWithoutChildren<T> = {
   label: string;
 } & T;
 
-export type ComboBoxOption<T> = {
+export type ComboBoxOption<T = { value: string; label: string }> = {
   value: string;
   label: string;
   children?: Array<ComboBoxOptionWithoutChildren<T>>;
