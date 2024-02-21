@@ -1,4 +1,5 @@
-import { ErrorType, getErrorContent, getListOfErrors } from './errors';
+import { getErrorContent, getListOfErrors } from './errors';
+import { ErrorType } from 'src/types/Errors';
 
 test('Shows default values without props', () => {
   const defaultError = getErrorContent('Amplify portal', ErrorType.DEFAULT);
