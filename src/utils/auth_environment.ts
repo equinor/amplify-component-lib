@@ -2,26 +2,21 @@ import { PublicClientApplication } from '@azure/msal-browser';
 
 import { EnvironmentType } from 'src/types/Environment';
 
-interface RequiredEnvVariables {
-  CLIENT_ID: string;
-  NAME: string;
-  API_URL: string;
-  API_SCOPE: string;
-  ENVIRONMENT_NAME: string;
-  SERVICE_NOW_CONFIGURATION_ITEM: string;
-}
-
-interface OptionalEnvVariables {
-  ALLOWED_PARENT_DOMAINS: string;
-}
-
 const OPTIONAL_ENV_VARIABLES = [
   'IS_MOCK',
   'ALLOWED_PARENT_DOMAINS',
   'SERVICE_NOW_CONFIGURATION_ITEM',
 ];
 
-type EnvVariables = RequiredEnvVariables & OptionalEnvVariables;
+interface EnvVariables {
+  CLIENT_ID: string;
+  NAME: string;
+  API_URL: string;
+  API_SCOPE: string;
+  ENVIRONMENT_NAME: string;
+  SERVICE_NOW_CONFIGURATION_ITEM: string;
+  ALLOWED_PARENT_DOMAINS: string;
+}
 
 declare const window: { _env_: EnvVariables | undefined } & Window;
 

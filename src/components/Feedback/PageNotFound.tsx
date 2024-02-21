@@ -2,8 +2,9 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router';
 
 import ErrorPage from './ErrorPage';
+import { ErrorType } from 'src/types/Errors';
 import { environment } from 'src/utils';
-import { ErrorType, getErrorContent } from 'src/utils/errors';
+import { getErrorContent } from 'src/utils/errors';
 
 const { getAppName } = environment;
 

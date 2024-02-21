@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# Webstorm user specific settings
+.idea/workspace.xml
+
 # production
 /build
 /storybook-static
