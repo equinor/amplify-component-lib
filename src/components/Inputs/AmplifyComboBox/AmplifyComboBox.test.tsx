@@ -749,3 +749,40 @@ test('Loading works as expected', async () => {
 
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
+
+test('Not able to remove item when disabled/loading', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const items = fakeItems();
+
+  const { rerender } = render(
+    <AmplifyComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={items[0]}
+      disabled
+    />
+  );
+  const user = userEvent.setup();
+
+  const chip = screen.getByRole('img', { name: /close/i });
+
+  await user.click(chip);
+
+  expect(handler).not.toHaveBeenCalled();
+
+  rerender(
+    <AmplifyComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={items[0]}
+      loading
+    />
+  );
+
+  await user.click(chip);
+
+  expect(handler).not.toHaveBeenCalled();
+});
