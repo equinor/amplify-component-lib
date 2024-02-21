@@ -705,7 +705,11 @@ test('Disabled works as expected', async () => {
 
   const user = userEvent.setup();
 
-  await user.click(screen.getByRole('combobox'));
+  const combobox = screen.getByRole('combobox');
+
+  await user.type(combobox, items[0].label);
+  await user.click(combobox);
+
   await user.click(screen.getByTestId('eds-icon-path'));
 
   for (const item of items) {
@@ -713,4 +717,35 @@ test('Disabled works as expected', async () => {
       screen.queryByRole('menuitem', { name: item.label })
     ).not.toBeInTheDocument();
   }
+});
+
+test('Loading works as expected', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const items = fakeItems();
+
+  render(
+    <AmplifyComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={undefined}
+      loading
+    />
+  );
+
+  const user = userEvent.setup();
+
+  const combobox = screen.getByRole('combobox');
+  await user.click(combobox);
+
+  await user.type(combobox, items[0].label);
+
+  for (const item of items) {
+    expect(
+      screen.queryByRole('menuitem', { name: item.label })
+    ).not.toBeInTheDocument();
+  }
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });

@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 
-import { Icon, Label, Menu } from '@equinor/eds-core-react';
+import { CircularProgress, Icon, Label, Menu } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -28,10 +28,11 @@ import AmplifyGroupedComboBoxMenu from './AmplifyGroupedComboBoxMenu';
 const { colors } = tokens;
 
 export type AmplifyComboBoxComponentProps<T extends ComboBoxOption<T>> = {
-  label: string;
+  label?: string;
   placeholder?: string;
   sortValues?: boolean;
   disabled?: boolean;
+  loading?: boolean;
 } & (AmplifyComboBoxProps<T> | AmplifyGroupedComboboxProps<T>);
 
 const AmplifyComboBox = <T extends ComboBoxOption<T>>(
@@ -96,7 +97,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (!open && !props.disabled) {
+    if (!open && !(props.disabled || props.loading)) {
       searchRef.current?.focus();
       setOpen(true);
     }
@@ -109,7 +110,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleToggleOpen = () => {
-    if (props.disabled) return;
+    if (props.disabled || props.loading) return;
 
     if (open) {
       handleOnClose();
@@ -119,7 +120,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === ' ') return;
+    if (event.target.value === ' ' || props.loading || props.disabled) return;
     setSearch(event.target.value);
     if (!open) {
       setOpen(true);
@@ -224,7 +225,9 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
   return (
     <>
       <Container ref={anchorRef} onClick={handleOnOpen} aria-expanded={open}>
-        <Label label={props.label} htmlFor="amplify-combobox" />
+        {props.label && (
+          <Label label={props.label} htmlFor="amplify-combobox" />
+        )}
         <Section>
           {selectedValues.length > 0 || search !== '' ? (
             selectedValues.map((value) => (
@@ -243,7 +246,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
           )}
           <input
             id="amplify-combobox"
-            disabled={props.disabled}
+            disabled={props.disabled || props.loading}
             ref={searchRef}
             type="search"
             role="combobox"
@@ -253,11 +256,15 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
             onKeyDownCapture={handleOnSearchKeyDown}
           />
         </Section>
-        <Icon
-          onClick={handleToggleOpen}
-          data={open ? arrow_drop_up : arrow_drop_down}
-          color={colors.text.static_icons__default.rgba}
-        />
+        {props.loading ? (
+          <CircularProgress size={16} />
+        ) : (
+          <Icon
+            onClick={handleToggleOpen}
+            data={open ? arrow_drop_up : arrow_drop_down}
+            color={colors.text.static_icons__default.rgba}
+          />
+        )}
       </Container>
       {open && (
         <Menu

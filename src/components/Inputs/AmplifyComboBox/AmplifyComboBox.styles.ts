@@ -24,7 +24,10 @@ export const Container = styled.div`
     top: -0.75rem;
     left: 0;
   }
-  > svg {
+  > svg[role='progressbar'] {
+    overflow: unset;
+  }
+  > svg:not([role='progressbar']) {
     cursor: pointer;
     &:hover {
       background: ${colors.interactive.primary__hover_alt.rgba};
@@ -35,7 +38,7 @@ export const Container = styled.div`
   &:has(input:disabled) {
     cursor: not-allowed;
     box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__text.rgba};
-    > svg {
+    > svg:not([role='progressbar']) {
       cursor: not-allowed;
       fill: ${colors.interactive.disabled__text.rgba};
       &:hover {
