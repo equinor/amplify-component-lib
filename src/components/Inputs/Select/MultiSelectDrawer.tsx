@@ -88,6 +88,9 @@ export type MultiSelectDrawerProps<
   style?: CSSProperties;
 };
 
+/**
+ * @deprecated Use AmplifyComboBox instead
+ */
 const MultiSelectDrawer = <
   T extends { id: string; label: string; children?: T[] },
 >({

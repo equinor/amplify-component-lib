@@ -136,6 +136,9 @@ export type OptionDrawerProps<
   openAll?: boolean;
 };
 
+/**
+ * @deprecated Use AmplifyComboBox instead
+ */
 const OptionDrawer = <
   T extends { id: string; label: string; parentId?: string; children?: T[] },
 >({
