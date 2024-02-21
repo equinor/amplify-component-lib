@@ -154,9 +154,9 @@ const tutorialForStory: Tutorial = {
 export const Primary: StoryFn = () => {
   const queryClient = new QueryClient();
 
-  const [primaryColor, setPrimaryColor] = useState(false);
+  const [buttonVariant, setButtonVariant] = useState(true);
   const handleOnClick = () => {
-    setPrimaryColor((prev) => !prev);
+    setButtonVariant((prev) => !prev);
   };
   const handleOnStartClick = () => {
     window.localStorage.removeItem(STORYBOOK_TUTORIAL_SHORT_NAME);
@@ -175,9 +175,9 @@ export const Primary: StoryFn = () => {
             <RedSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-0`}>
               <Button
                 onClick={handleOnClick}
-                color={primaryColor ? 'primary' : 'secondary'}
+                variant={buttonVariant ? 'contained' : 'outlined'}
               >
-                Toggle button color
+                Click to toggle button variant
               </Button>
             </RedSquare>
             <BlueSquare id={`${STORYBOOK_TUTORIAL_SHORT_NAME}-1`}></BlueSquare>
