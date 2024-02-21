@@ -18,7 +18,7 @@ import {
 } from './NotificationsTemplate/Notifications.types';
 import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
 import Notifications from 'src/components/Navigation/TopBar/Notifications/Notifications';
-import { UnreadRedDot } from 'src/components/Navigation/TopBar/Notifications/NotificationsInner';
+import { UnreadRedDot } from 'src/components/Navigation/TopBar/TopBar.styles';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 import { date } from 'src/utils';
 

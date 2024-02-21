@@ -24,8 +24,8 @@ import {
   ReviewQANotificationsTypes,
 } from './Notifications.types';
 import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
+import ProfileAvatar from 'src/components/DataDisplay/ProfileAvatar';
 import ApplicationIcon from 'src/components/Icons/ApplicationIcon/ApplicationIcon';
-import { ProfileAvatar } from 'src/components/index';
 import {
   Content,
   DeleteButton,

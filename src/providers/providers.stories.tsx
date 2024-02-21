@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta } from '@storybook/react';
 
 import styled from 'styled-components';
 
@@ -80,7 +80,7 @@ const Divider = styled.hr`
   border: none;
 `;
 
-const List = () => (
+export const Docs = () => (
   <Container>
     <div>
       <Typography variant="h1">List of all providers</Typography>
@@ -100,7 +100,5 @@ const List = () => (
 
 export default {
   title: 'Other/Providers',
-  component: List,
+  component: Docs,
 } as Meta;
-
-export const Primary: StoryFn = () => <List />;
