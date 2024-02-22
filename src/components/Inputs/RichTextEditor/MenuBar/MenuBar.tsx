@@ -17,7 +17,10 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useCurrentEditor } from '@tiptap/react';
 
-import { RichTextEditorFeatures } from '../RichTextEditor.types';
+import {
+  OnImageUploadFn,
+  RichTextEditorFeatures,
+} from '../RichTextEditor.types';
 import AddImage from './AddImage';
 import Links from './Links';
 import { Section } from './MenuBar.styles';
@@ -50,7 +53,7 @@ const Divider = styled.hr`
 
 interface MenuBarProps {
   features: RichTextEditorFeatures[];
-  onImageUpload?: (file: File) => Promise<string>;
+  onImageUpload?: OnImageUploadFn;
 }
 
 const MenuBar: FC<MenuBarProps> = ({ features, onImageUpload }) => {

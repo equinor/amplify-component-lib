@@ -4,9 +4,10 @@ import { camera_add_photo } from '@equinor/eds-icons';
 import { useCurrentEditor } from '@tiptap/react';
 
 import MenuButton from './MenuButton';
+import { OnImageUploadFn } from 'src/components/Inputs/RichTextEditor/RichTextEditor.types';
 
 interface AddImageProps {
-  onImageUpload: (file: File) => Promise<string>;
+  onImageUpload: OnImageUploadFn;
 }
 
 const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
@@ -29,9 +30,9 @@ const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
     }
     /* c8 ignore end */
 
-    const url = await onImageUpload(files[0]);
+    const image = await onImageUpload(files[0]);
 
-    editor?.chain().focus().setImage({ src: url }).run();
+    editor?.chain().focus().setImage({ src: image.b64, alt: image.url }).run();
   };
 
   return (

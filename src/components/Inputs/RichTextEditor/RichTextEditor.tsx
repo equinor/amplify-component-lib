@@ -32,6 +32,7 @@ import MenuBar from './MenuBar/MenuBar';
 import { Wrapper } from './RichTextEditor.styles';
 import {
   DEFAULT_FEATURES,
+  OnImageUploadFn,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 
@@ -43,7 +44,7 @@ export interface RichTextEditorProps {
   value: string | null | undefined;
   onChange: (value: string) => void;
   imgReadToken?: string;
-  onImageUpload?: (file: File) => Promise<string>;
+  onImageUpload?: OnImageUploadFn;
   placeholder?: string;
   features?: RichTextEditorFeatures[];
   extendFeatures?: RichTextEditorFeatures[];
