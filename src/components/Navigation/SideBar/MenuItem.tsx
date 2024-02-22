@@ -136,7 +136,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       <OptionalTooltip
         title={name}
         placement="right"
-        texttransform="capitalize"
+        textTransform="capitalize"
       >
         <Container
           $active={isCurrentUrl}

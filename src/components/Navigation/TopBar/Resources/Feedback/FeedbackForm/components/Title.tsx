@@ -1,8 +1,8 @@
 import { FC, FormEvent } from 'react';
 
-import AmplifyTextField from '../../../../../../Inputs/AmplifyTextField';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
+import { TextField } from 'src/components/Inputs/TextField/TextField';
 
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const Title: FC = () => {
   return (
     <Container>
       <LockedInputTooltip show={serviceNowSuccess}>
-        <AmplifyTextField
+        <TextField
           id="feedback-title"
           label="Title"
           meta="Required"

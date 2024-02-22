@@ -58,7 +58,7 @@ export type SingleSelectDrawerProps<T extends { id: string; label: string }> = {
 };
 
 /**
- * @deprecated Use AmplifyComboBox instead
+ * @deprecated Use ComboBox instead
  */
 const SingleSelectDrawer = <T extends { id: string; label: string }>({
   disabled = false,

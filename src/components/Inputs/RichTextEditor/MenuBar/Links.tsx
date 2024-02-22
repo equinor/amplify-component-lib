@@ -7,7 +7,7 @@ import { useCurrentEditor } from '@tiptap/react';
 
 import { Section } from './MenuBar.styles';
 import MenuButton from './MenuButton';
-import AmplifyTextField from 'src/components/Inputs/AmplifyTextField';
+import { TextField } from 'src/components/Inputs/TextField/TextField';
 import url from 'src/utils/url';
 
 import styled from 'styled-components';
@@ -90,7 +90,7 @@ const Links: FC = () => {
       {open && (
         <Popover open anchorEl={buttonRef.current} onClose={handleOnClose}>
           <Container>
-            <AmplifyTextField
+            <TextField
               inputRef={(element) => {
                 element?.focus();
               }}

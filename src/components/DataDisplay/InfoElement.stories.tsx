@@ -3,7 +3,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import InfoElement, { InfoElementProps } from './InfoElement';
 
 export default {
-  title: 'DataDisplay/InfoElement',
+  title: 'Data Display/InfoElement',
   component: InfoElement,
   argTypes: {
     title: { control: 'text' },

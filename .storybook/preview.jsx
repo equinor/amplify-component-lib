@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import Template from 'src/components/Template/Template';
 
-import {darkTokens} from 'src/style/darkTokens';
-import {spacingTokens} from 'src/style/spacingTokens';
+import { darkTokens } from 'src/style/darkTokens';
+import { spacingTokens } from 'src/style/spacingTokens';
 
 const { colors } = tokens;
 
@@ -16,7 +16,6 @@ export const globalTypes = {
     },
   },
 };
-
 
 export const decorators = [
   (Story) => {
@@ -40,12 +39,7 @@ export const decorators = [
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
-    },
-  },
+  viewMode: 'docs',
   backgrounds: {
     default: 'Equinor UI Light (off-white/off-dark)',
     values: [

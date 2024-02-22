@@ -3,7 +3,7 @@ import { FC, FocusEvent, FormEvent } from 'react';
 import { EQUINOR_EMAIL_SUFFIX } from '../../Feedback.const';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
-import AmplifyTextField from 'src/components/Inputs/AmplifyTextField';
+import { TextField } from 'src/components/Inputs/TextField/TextField';
 
 import styled from 'styled-components';
 
@@ -45,7 +45,7 @@ const Url: FC = () => {
   return (
     <Container>
       <LockedInputTooltip show={serviceNowSuccess}>
-        <AmplifyTextField
+        <TextField
           id="feedback-url"
           label="URL"
           disabled={serviceNowSuccess}

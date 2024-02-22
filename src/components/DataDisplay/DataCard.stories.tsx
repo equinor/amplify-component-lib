@@ -12,7 +12,7 @@ const { colors } = tokens;
 
 const icons = [account_circle, info_circle, more_vertical, details];
 export default {
-  title: 'DataDisplay/DataCard',
+  title: 'Data Display/DataCard',
   component: DataCard,
   argTypes: {
     headerText: { control: 'text' },

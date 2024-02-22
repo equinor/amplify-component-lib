@@ -1,0 +1,127 @@
+import { Links, PropsTable } from 'src/storybook';
+import { Primary, Canvas } from '@storybook/blocks';
+import * as ComponentStories from './Dialog.stories';
+
+# Dialog
+
+**Component from EDS**
+
+Informs users about a task and can contain critical information, requires decisions, or involves multiple tasks, in a layer above the page.
+
+<Links
+  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17620%3A721"
+  documentationUrl="https://eds.equinor.com/0b0c666ab/p/059c0e-dialog/b/087c3e"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Dialog/Dialog.tsx"
+  npmUrl="https://www.npmjs.com/package/@equinor/eds-core-react"
+/>
+
+<Primary />
+<PropsTable />
+
+## Usage
+
+Dialogs disable all app functionality when they appear, and remain on screen until confirmed, dismissed, or a required action has been taken.
+Dialogs are purposefully interruptive, so they should be used sparingly.
+
+<ul>
+  <li>
+    Dialogs **focus** user attention to ensure their content is addressed.
+  </li>
+  <li>
+    Dialogs should be **direct** in communicating information and dedicated to
+    completing a assignment.
+  </li>
+  <li>
+    Dialogs should appear in response to a user task or an action, with suitable
+    or contextual information.
+  </li>
+</ul>
+
+```tsx
+import { Dialog } from '@equinor/amplify-components';
+
+const Demo = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <>
+      <Button aria-haspopup="dialog" onClick={handleOpen}>
+        Trigger Dialog
+      </Button>
+      <Dialog open={isOpen} isDismissable onClose={handleClose}>
+        <Dialog.Header>
+          <Dialog.Title>Title</Dialog.Title>
+        </Dialog.Header>
+        <Dialog.CustomContent>
+          <Typography variant="body_short">Small description here.</Typography>
+        </Dialog.CustomContent>
+        <Dialog.Actions>
+          <Button onClick={handleClose}>OK</Button>
+          <Button variant="ghost" onClick={handleClose}>
+            Cancel
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
+    </>
+  );
+};
+```
+
+## Examples
+
+### Dismissable
+
+`isDismissable={true}` closes dialog on click outside and escape key. Defaults to `false`.
+
+<Canvas of={ComponentStories.Dismissable} />
+
+### Text plus action
+
+<ul>
+  <li> A dialog can have one or two actions, but never a third.</li>
+  <li>Actions should always be related to the message. </li>
+</ul>
+
+<Canvas of={ComponentStories.TextPlusAction} />
+
+### Placeholder plus action
+
+<Canvas of={ComponentStories.PlaceholderPlusAction} />
+
+### Placeholder only
+
+Simple dialogs can display items that are immediately actionable when selected.
+
+<Canvas of={ComponentStories.PlaceholderOnly} />
+
+### Scrollable plus actions
+
+Most dialog content should avoid scrolling.
+
+<ul>
+  <li>
+    {' '}
+    When scrolling is required, the dialog title is pinned at the top, with action
+    buttons pinned at the bottom. This ensures selected content stays visible alongside
+    the title and buttons, even upon scroll.
+  </li>
+  <li>
+    Dialog does not scroll with elements outside of the dialog, such as the
+    background.
+  </li>
+</ul>
+
+<Canvas of={ComponentStories.ScrollablePlusActions} />
+
+### No title
+
+Title is optional.
+
+<Canvas of={ComponentStories.NoTitle} />
