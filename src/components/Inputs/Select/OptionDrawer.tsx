@@ -137,7 +137,7 @@ export type OptionDrawerProps<
 };
 
 /**
- * @deprecated Use AmplifyComboBox instead
+ * @deprecated Use ComboBox instead
  */
 const OptionDrawer = <
   T extends { id: string; label: string; parentId?: string; children?: T[] },

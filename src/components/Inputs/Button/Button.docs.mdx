@@ -1,0 +1,149 @@
+import { Links } from 'src/storybook';
+import { Primary, Canvas, Controls, Source } from '@storybook/blocks';
+import * as ComponentStories from './Button.stories';
+
+# Button
+
+**Components from EDS**
+
+Allows users to take action with a single click or tap.
+
+<Links
+  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17394%3A47297"
+  sourceUrl="https://github.com/equinor/design-system/tree/develop/packages/eds-core-react/src/components/Button"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/inputs-button-button--docs"
+/>
+
+<Primary />
+<Controls />
+<Source />
+
+## Usage
+
+```tsx
+import { Button } from '@equinor/amplify-components';
+
+<Button>Click me!</Button>;
+```
+
+### Using the 'as' prop to render as another component
+
+The `as` prop allows you to render the `Button` as another html element or even react component.
+
+```tsx
+<Button as="a" href="/about" target="_blank" rel="noreferrer">
+  About
+</Button>
+```
+
+This is especially useful if you want to use the `Button` as as a navigation component for a third party routing library such as react-router.
+
+```tsx
+import { Link } from 'react-router-dom';
+import { Button } from '@equinor/amplify-components';
+
+<Button as={Link} to="/about">
+  About
+</Button>;
+```
+
+A special note about **nextLink**: The `href` type from this component conflicts with the native href type, therefore it is recommended to use the legacy behavior in this case, or alternatively ts-ignore.
+
+```tsx
+import NextLink from 'next/link'
+import { Button } from '@equinor/eds-core-react'
+
+<NextLink href="/about" passHref legacyBehavior>
+  <Button>About</Button>
+</NextLink>
+
+/* Or */
+
+ <Button
+   as={NextLink}
+   /* @ts-ignore */
+   href={{ pathname: "/foo/bar", query: { id: assetId } }}
+>
+   Bar
+</Button>
+```
+
+## Accessibility
+
+The `aria-disabled` attribute makes it possible to semantically disable the `Button` without hiding it from assistive technologies, such as screen readers.
+In EDS, the `Button` will be visually styled as disabled, but it is up to the developer to actually disable the button.
+
+<Canvas of={ComponentStories.Accessibility} />
+
+## Examples
+
+### Basic
+
+The `Button` come with five variants; `contained`, `contained_icon`, `outlined`, `ghost` and `ghost_icon`.
+
+<Canvas of={ComponentStories.Basic} />
+
+### Icon button
+
+The `ghost_icon` & `contained_icon`variant is meant for standalone icon buttons using the `<Icon>` component.
+Make sure to define `aria-label` with descriptive text of `Button` interaction.
+
+<Canvas of={ComponentStories.IconButton} />
+
+### Color
+
+<Canvas of={ComponentStories.Color} />
+
+### Hierarchy
+
+Use variants to differentiate the hierarchy.
+
+<ul>
+  <li>
+    <code>Contained</code> - being high-emphasis.
+  </li>
+  <li>
+    <code>Outlined</code> - being medium-emphasis.
+  </li>
+  <li>
+    <code>Ghost</code> - being low-emphasis.
+  </li>
+</ul>
+
+<Canvas of={ComponentStories.Hierarchy} />
+
+### Compact
+
+Compact mode is toggled using [EdsProvider](?path=/docs/edsprovider--introduction).
+
+Note that compact mode should come with the possibility to switch to normal mode for accessibility reasons.
+
+<Canvas of={ComponentStories.Compact} />
+
+### Progress button
+
+Use the `Progress` component if you need progress indication on a button.
+
+<Canvas of={ComponentStories.ProgressButton} />
+
+### Disabled buttons and tooltip
+
+Due to inconsistent browser support for mouse events on disabled buttons, `Tooltip`
+should not be used in combination with `disabled` on `Button`. Instead use `aria-disabled`
+and disable the `onClick` in the code. This has the added benefit of making the
+Tooltip accessible for people using keyboard navigation, as the button is still focusable.
+
+<Canvas of={ComponentStories.WithTooltip} />
+
+### Full width
+
+When stretching a button beyond its intrinsic width, the `fullWidth` prop can be used to position icon at the edge.
+
+<Canvas of={ComponentStories.FullWidth} />
+
+### All
+
+All button combinations.
+
+<Canvas of={ComponentStories.All} />

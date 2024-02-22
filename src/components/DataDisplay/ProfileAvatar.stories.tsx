@@ -3,7 +3,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import ProfileAvatar from './ProfileAvatar';
 
 export default {
-  title: 'DataDisplay/ProfileAvatar',
+  title: 'Data Display/ProfileAvatar',
   component: ProfileAvatar,
   argTypes: {
     disabled: { control: 'boolean' },

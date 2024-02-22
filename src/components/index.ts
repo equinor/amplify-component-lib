@@ -1,3 +1,4 @@
+export { Chip } from './DataDisplay/Chip/Chip';
 export { default as DataCard } from './DataDisplay/DataCard';
 export { default as HeaderDrawer } from './DataDisplay/HeaderDrawer';
 export { default as InfoElement } from './DataDisplay/InfoElement';
@@ -22,7 +23,6 @@ export { default as FileProgress } from './Feedback/FileProgress/FileProgress';
 export { default as FullPageSpinner } from './Feedback/FullPageSpinner';
 export { default as FullPageStatus } from './Feedback/FullPageStatus';
 export { default as PageNotFound } from './Feedback/PageNotFound';
-export { default as SelectField } from './Feedback/SelectField/SelectField';
 export { default as SkeletonBase } from './Feedback/Skeleton/SkeletonBase/SkeletonBase';
 export { skeletonBaseloading } from './Feedback/Skeleton/SkeletonBase/SkeletonBase';
 export { default as SkeletonGradient } from './Feedback/Skeleton/SkeletonGradient/SkeletonGradient';
@@ -55,9 +55,7 @@ export { default as NothingFilled } from './Icons/FeedBackIcon/NegativeFilled';
 export { default as NothingOutlined } from './Icons/FeedBackIcon/NegativeOutlined';
 export { default as SomethingFilled } from './Icons/FeedBackIcon/PositiveFilled';
 export { default as SomethingOutlined } from './Icons/FeedBackIcon/PositiveOutlined';
-export { default as AmplifyComboBox } from './Inputs/AmplifyComboBox/AmplifyComboBox';
-export type { ComboBoxOption } from './Inputs/AmplifyComboBox/AmplifyComboBox.types';
-export { default as AmplifyTextField } from './Inputs/AmplifyTextField';
+export { ComboBox } from './Inputs/ComboBox/ComboBox';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
 export { default as NewComment } from './Inputs/CommentField/NewCommentField';
 export { default as ContentMenu } from './Inputs/ContentMenu';
@@ -67,6 +65,7 @@ export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
 export { default as RichTextEditor } from './Inputs/RichTextEditor/RichTextEditor';
 export type { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
+export { Search } from './Inputs/Search/Search';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/Select/OptionDrawer';
@@ -75,8 +74,10 @@ export { default as Filter } from './Inputs/Sieve/Filter';
 export { default as Sieve } from './Inputs/Sieve/Sieve';
 export type { Option, SieveValue } from './Inputs/Sieve/Sieve.types';
 export { default as SingleFilterMenu } from './Inputs/SingleFilterMenu';
+export { TextField } from './Inputs/TextField/TextField';
 export { default as PageMenu } from './Navigation/PageMenu/PageMenu';
 export { default as PageWithTitle } from './Navigation/PageWithTitle';
+export { default as SelectField } from './Navigation/SelectField/SelectField';
 export type { ItemType, SidebarType } from './Navigation/SideBar';
 export { default as SideBar } from './Navigation/SideBar';
 export type {
@@ -88,3 +89,53 @@ export { default as TopBar } from './Navigation/TopBar';
 export { default as ResourceMenuItem } from './Navigation/TopBar/Resources/ResourceMenuItem';
 export type { ContentProps, TemplateType } from './Template/Template';
 export { default as Template } from './Template/Template';
+export type { ComboBoxOption } from 'src/components/Inputs/ComboBox/ComboBox.types';
+// EDS re-exports
+export type {
+  BreadcrumbProps,
+  BreadcrumbsProps,
+  ButtonProps,
+  CheckboxProps,
+  CircularProgressProps,
+  DialogActionsProps,
+  DialogContentProps,
+  DialogHeaderProps,
+  DialogProps,
+  DialogTitleProps,
+  DotProgressProps,
+  IconProps,
+  LinearProgressProps,
+  MenuItemProps,
+  MenuProps,
+  MenuSectionProps,
+  PopoverActionsProps,
+  PopoverContentProps,
+  PopoverHeaderProps,
+  PopoverProps,
+  PopoverTitleProps,
+  RadioProps,
+  StarProgressProps,
+  SwitchProps,
+  TabListProps,
+  TabPanelProps,
+  TabPanelsProps,
+  TabsProps,
+  TypographyProps,
+} from '@equinor/eds-core-react';
+export {
+  Breadcrumbs,
+  Button,
+  Checkbox,
+  CircularProgress,
+  Dialog,
+  DotProgress,
+  Icon,
+  LinearProgress,
+  Menu,
+  Popover,
+  Radio,
+  StarProgress,
+  Switch,
+  Tabs,
+  Typography,
+} from '@equinor/eds-core-react';

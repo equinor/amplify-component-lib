@@ -6,7 +6,7 @@ import Tutorial, { Step, TutorialProps } from './Tutorial';
 import TutorialStoryComponent from 'src/components/DataDisplay/Tutorial/stories/TutorialStoryComponent';
 
 export default {
-  title: 'DataDisplay/Tutorial',
+  title: 'Data Display/Tutorial',
   component: Tutorial,
 } as Meta;
 
