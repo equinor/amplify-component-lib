@@ -197,3 +197,26 @@ test('Creating table works as expected', async () => {
 
   expect(screen.getByRole('table')).toBeInTheDocument();
 });
+
+test('Image read token prop works as expected', async () => {
+  const randomUrl =
+    'https://images.unsplash.com/photo-1682687221363-72518513620e';
+  const randomToken = 'sv=2023-08-03';
+  const props = fakeProps(true);
+
+  render(
+    <RichTextEditor
+      {...props}
+      value={`<img src="${randomUrl}"/>`}
+      imgReadToken={randomToken}
+    />
+  );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(screen.getByRole('img')).toHaveAttribute(
+    'src',
+    `${randomUrl}?${randomToken}`
+  );
+});
