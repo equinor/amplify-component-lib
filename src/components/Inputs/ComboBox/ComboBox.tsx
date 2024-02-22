@@ -16,27 +16,27 @@ import {
   PlaceholderText,
   Section,
   StyledChip,
-} from './AmplifyComboBox.styles';
+} from './ComboBox.styles';
 import {
-  AmplifyComboBoxProps,
-  AmplifyGroupedComboboxProps,
   ComboBoxOption,
-} from './AmplifyComboBox.types';
-import AmplifyComboBoxMenu from './AmplifyComboBoxMenu';
-import AmplifyGroupedComboBoxMenu from './AmplifyGroupedComboBoxMenu';
+  ComboBoxProps,
+  GroupedComboboxProps,
+} from './ComboBox.types';
+import { ComboBoxMenu } from './ComboBoxMenu';
+import { GroupedComboBoxMenu } from './GroupedComboBoxMenu';
 
 const { colors } = tokens;
 
-export type AmplifyComboBoxComponentProps<T extends ComboBoxOption<T>> = {
+export type ComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   label?: string;
   placeholder?: string;
   sortValues?: boolean;
   disabled?: boolean;
   loading?: boolean;
-} & (AmplifyComboBoxProps<T> | AmplifyGroupedComboboxProps<T>);
+} & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
-const AmplifyComboBox = <T extends ComboBoxOption<T>>(
-  props: AmplifyComboBoxComponentProps<T>
+export const ComboBox = <T extends ComboBoxOption<T>>(
+  props: ComboBoxComponentProps<T>
 ) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -285,7 +285,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
           }}
         >
           {'groups' in props ? (
-            <AmplifyGroupedComboBoxMenu
+            <GroupedComboBoxMenu
               {...props}
               search={search}
               itemRefs={itemRefs}
@@ -293,7 +293,7 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
               onItemKeyDown={handleOnItemKeyDown}
             />
           ) : (
-            <AmplifyComboBoxMenu
+            <ComboBoxMenu
               {...props}
               search={search}
               itemRefs={itemRefs}
@@ -309,5 +309,3 @@ const AmplifyComboBox = <T extends ComboBoxOption<T>>(
     </>
   );
 };
-
-export default AmplifyComboBox;

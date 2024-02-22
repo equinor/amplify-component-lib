@@ -1,4 +1,4 @@
-import { ComboBoxOption } from './AmplifyComboBox.types';
+import { ComboBoxOption } from './ComboBox.types';
 
 export function getChildOffset<T extends ComboBoxOption<T>>(
   allItems: T[],

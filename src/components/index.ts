@@ -55,8 +55,7 @@ export { default as NothingFilled } from './Icons/FeedBackIcon/NegativeFilled';
 export { default as NothingOutlined } from './Icons/FeedBackIcon/NegativeOutlined';
 export { default as SomethingFilled } from './Icons/FeedBackIcon/PositiveFilled';
 export { default as SomethingOutlined } from './Icons/FeedBackIcon/PositiveOutlined';
-export { default as AmplifyComboBox } from './Inputs/AmplifyComboBox/AmplifyComboBox';
-export type { ComboBoxOption } from './Inputs/AmplifyComboBox/AmplifyComboBox.types';
+export { ComboBox } from './Inputs/ComboBox/ComboBox';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
 export { default as NewComment } from './Inputs/CommentField/NewCommentField';
 export { default as ContentMenu } from './Inputs/ContentMenu';
@@ -90,6 +89,7 @@ export { default as TopBar } from './Navigation/TopBar';
 export { default as ResourceMenuItem } from './Navigation/TopBar/Resources/ResourceMenuItem';
 export type { ContentProps, TemplateType } from './Template/Template';
 export { default as Template } from './Template/Template';
+export type { ComboBoxOption } from 'src/components/Inputs/ComboBox/ComboBox.types';
 // EDS re-exports
 export type {
   BreadcrumbProps,

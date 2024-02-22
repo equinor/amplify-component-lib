@@ -14,20 +14,20 @@ import {
   MenuItemMultiselect,
   MenuItemParentSelect,
   MenuItemSpacer,
-} from './AmplifyComboBox.styles';
+} from './ComboBox.styles';
 import {
-  AmplifyComboBoxMultiSelectMenuItemProps,
-  AmplifyComboBoxSingleSelectMenuItemProps,
+  ComboBoxMultiSelectMenuItemProps,
   ComboBoxOption,
-} from './AmplifyComboBox.types';
-import { getChildOffset } from './AmplifyComboBox.utils';
+  ComboBoxSingleSelectMenuItemProps,
+} from './ComboBox.types';
+import { getChildOffset } from './ComboBox.utils';
 
 const { colors } = tokens;
 
-const AmplifyComboBoxMenuItem = <T extends ComboBoxOption<T>>(
+export const ComboBoxMenuItem = <T extends ComboBoxOption<T>>(
   props:
-    | AmplifyComboBoxSingleSelectMenuItemProps<T>
-    | AmplifyComboBoxMultiSelectMenuItemProps<T>
+    | ComboBoxSingleSelectMenuItemProps<T>
+    | ComboBoxMultiSelectMenuItemProps<T>
 ) => {
   const {
     index,
@@ -162,7 +162,7 @@ const AmplifyComboBoxMenuItem = <T extends ComboBoxOption<T>>(
         </MenuItemParentSelect>
         {openParent &&
           item.children.map((child, childIndex) => (
-            <AmplifyComboBoxMenuItem
+            <ComboBoxMenuItem
               key={`child-${childIndex}-${child.value}-${item.value}`}
               index={childOffset + childIndex}
               childOffset={childOffset + getChildOffset([], childIndex)}
@@ -221,5 +221,3 @@ const AmplifyComboBoxMenuItem = <T extends ComboBoxOption<T>>(
     </Menu.Item>
   );
 };
-
-export default AmplifyComboBoxMenuItem;

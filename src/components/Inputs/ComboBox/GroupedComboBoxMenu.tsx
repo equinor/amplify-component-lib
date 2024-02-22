@@ -2,16 +2,16 @@ import { useMemo } from 'react';
 
 import { Menu } from '@equinor/eds-core-react';
 
-import { NoItemsFoundText } from './AmplifyComboBox.styles';
+import { NoItemsFoundText } from './ComboBox.styles';
 import {
-  AmplifyComboBoxMenuProps,
-  AmplifyGroupedComboboxProps,
+  ComboBoxMenuProps,
   ComboBoxOption,
-} from './AmplifyComboBox.types';
-import AmplifyComboBoxMenuItem from './AmplifyComboBoxMenuItem';
+  GroupedComboboxProps,
+} from './ComboBox.types';
+import { ComboBoxMenuItem } from './ComboBoxMenuItem';
 
-const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
-  props: AmplifyGroupedComboboxProps<T> & AmplifyComboBoxMenuProps<T>
+export const GroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
+  props: GroupedComboboxProps<T> & ComboBoxMenuProps<T>
 ) => {
   const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;
 
@@ -51,7 +51,7 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
         title={group.title}
       >
         {group.items.map((item, index) => (
-          <AmplifyComboBoxMenuItem
+          <ComboBoxMenuItem
             key={`${group.title}-${groupIndex}-item-${item.value}`}
             index={index + filteredGroupSum[groupIndex]}
             childOffset={0}
@@ -74,7 +74,7 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
       title={group.title}
     >
       {group.items.map((item, index) => (
-        <AmplifyComboBoxMenuItem
+        <ComboBoxMenuItem
           key={`${group.title}-${groupIndex}-item-${item.value}`}
           index={index + filteredGroupSum[groupIndex]}
           childOffset={0}
@@ -87,5 +87,3 @@ const AmplifyGroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
     </Menu.Section>
   ));
 };
-
-export default AmplifyGroupedComboBoxMenu;

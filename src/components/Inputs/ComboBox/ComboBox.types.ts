@@ -11,32 +11,32 @@ export type ComboBoxOption<T = { value: string; label: string }> = {
   children?: Array<ComboBoxOptionWithoutChildren<T>>;
 };
 
-interface AmplifySingleComboBoxCommon<T extends ComboBoxOption<T>> {
+interface SingleComboBoxCommon<T extends ComboBoxOption<T>> {
   value: T | undefined;
   onSelect: (value: T | undefined) => void;
 }
 
-export interface AmplifyMultiComboBoxCommon<T extends ComboBoxOption<T>> {
+export interface MultiComboBoxCommon<T extends ComboBoxOption<T>> {
   values: T[];
   onSelect: (values: T[], selectedValue: T) => void;
   selectableParent?: boolean;
 }
 
 type AmplifyComboboxCommon<T extends ComboBoxOption<T>> =
-  | AmplifySingleComboBoxCommon<T>
-  | AmplifyMultiComboBoxCommon<T>;
+  | SingleComboBoxCommon<T>
+  | MultiComboBoxCommon<T>;
 
-export type AmplifyGroupedComboboxProps<T extends ComboBoxOption<T>> =
+export type GroupedComboboxProps<T extends ComboBoxOption<T>> =
   AmplifyComboboxCommon<T> & {
     groups: Array<{ title: string; items: Array<T> }>;
   };
 
-export type AmplifyComboBoxProps<T extends ComboBoxOption<T>> =
+export type ComboBoxProps<T extends ComboBoxOption<T>> =
   AmplifyComboboxCommon<T> & {
     items: Array<T>;
   };
 
-export interface AmplifyComboBoxMenuProps<T extends ComboBoxOption<T>> {
+export interface ComboBoxMenuProps<T extends ComboBoxOption<T>> {
   search: string;
   itemRefs: MutableRefObject<(HTMLButtonElement | null)[]>;
   onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
@@ -44,23 +44,19 @@ export interface AmplifyComboBoxMenuProps<T extends ComboBoxOption<T>> {
   selectableParent?: boolean;
 }
 
-interface AmplifyComboBoxMenuItemProps<T> {
+interface ComboBoxMenuItemProps<T> {
   item: T;
   index: number;
   childOffset: number;
   depth?: number;
 }
 
-export type AmplifyComboBoxSingleSelectMenuItemProps<
-  T extends ComboBoxOption<T>,
-> = {
+export type ComboBoxSingleSelectMenuItemProps<T extends ComboBoxOption<T>> = {
   multiselect?: undefined;
-} & Omit<AmplifyComboBoxMenuProps<T>, 'search'> &
-  AmplifyComboBoxMenuItemProps<T>;
-export type AmplifyComboBoxMultiSelectMenuItemProps<
-  T extends ComboBoxOption<T>,
-> = {
+} & Omit<ComboBoxMenuProps<T>, 'search'> &
+  ComboBoxMenuItemProps<T>;
+export type ComboBoxMultiSelectMenuItemProps<T extends ComboBoxOption<T>> = {
   multiselect: true;
   values: T[];
-} & Omit<AmplifyComboBoxMenuProps<T>, 'search'> &
-  AmplifyComboBoxMenuItemProps<T>;
+} & Omit<ComboBoxMenuProps<T>, 'search'> &
+  ComboBoxMenuItemProps<T>;

@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
 
-import { NoItemsFoundText } from './AmplifyComboBox.styles';
+import { NoItemsFoundText } from './ComboBox.styles';
 import {
-  AmplifyComboBoxMenuProps,
-  AmplifyComboBoxProps,
+  ComboBoxMenuProps,
   ComboBoxOption,
-} from './AmplifyComboBox.types';
-import { getChildOffset } from './AmplifyComboBox.utils';
-import AmplifyComboBoxMenuItem from './AmplifyComboBoxMenuItem';
+  ComboBoxProps,
+} from './ComboBox.types';
+import { getChildOffset } from './ComboBox.utils';
+import { ComboBoxMenuItem } from './ComboBoxMenuItem';
 
-const AmplifyComboBoxMenu = <T extends ComboBoxOption<T>>(
-  props: AmplifyComboBoxProps<T> & AmplifyComboBoxMenuProps<T>
+export const ComboBoxMenu = <T extends ComboBoxOption<T>>(
+  props: ComboBoxProps<T> & ComboBoxMenuProps<T>
 ) => {
   const {
     search,
@@ -33,7 +33,7 @@ const AmplifyComboBoxMenu = <T extends ComboBoxOption<T>>(
 
   if ('values' in props) {
     return filteredItems.map((item, index) => (
-      <AmplifyComboBoxMenuItem
+      <ComboBoxMenuItem
         key={`menu-item-${index}-${item.value}`}
         childOffset={getChildOffset(filteredItems, index)}
         index={index}
@@ -49,7 +49,7 @@ const AmplifyComboBoxMenu = <T extends ComboBoxOption<T>>(
   }
 
   return filteredItems.map((item, index) => (
-    <AmplifyComboBoxMenuItem
+    <ComboBoxMenuItem
       key={`menu-item-${index}-${item.value}`}
       childOffset={getChildOffset(filteredItems, index)}
       index={index}
@@ -61,5 +61,3 @@ const AmplifyComboBoxMenu = <T extends ComboBoxOption<T>>(
     />
   ));
 };
-
-export default AmplifyComboBoxMenu;

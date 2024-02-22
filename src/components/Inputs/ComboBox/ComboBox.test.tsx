@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import AmplifyComboBox from './AmplifyComboBox';
+import { ComboBox } from './ComboBox';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeItem() {
@@ -39,7 +39,7 @@ test('Basic single select', async () => {
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       value={undefined}
@@ -64,7 +64,7 @@ test('Basic single select', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith(randomItem);
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       value={randomItem}
@@ -80,7 +80,7 @@ test('Basic multi select', async () => {
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       values={[]}
@@ -110,7 +110,7 @@ test('Parent multi select with selectableParent = false', async () => {
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       values={[]}
@@ -142,7 +142,7 @@ test('Parent multi select with selectableParent = false', async () => {
   expect(handleOnSelect).toHaveBeenCalledTimes(randomItem.children.length);
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       values={[randomItem.children[0]]}
@@ -163,7 +163,7 @@ test('Parent multi select with selectableParent = true', async () => {
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       values={[]}
@@ -193,7 +193,7 @@ test('Parent multi select with selectableParent = true', async () => {
   );
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       values={[randomItem, ...randomItem.children]}
@@ -205,7 +205,7 @@ test('Parent multi select with selectableParent = true', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith([], randomItem);
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handleOnSelect}
       values={[itemWithoutChildren]}
@@ -224,7 +224,7 @@ test('Basic group single select', async () => {
   const handler = vi.fn();
   const groups = fakeGroups();
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       groups={groups}
@@ -262,7 +262,7 @@ test('Basic group multi select with preselected item', async () => {
     faker.helpers.arrayElement(groups).items
   );
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       groups={groups}
@@ -285,7 +285,7 @@ test('Throws error if providing groups and items', async () => {
   console.error = vi.fn();
   expect(() =>
     render(
-      <AmplifyComboBox
+      <ComboBox
         label="hei"
         onSelect={handle}
         items={[]}
@@ -304,12 +304,7 @@ test('Sorts items as expected', async () => {
   const handler = vi.fn();
 
   const { rerender } = render(
-    <AmplifyComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      values={values}
-    />
+    <ComboBox label={label} onSelect={handler} items={items} values={values} />
   );
 
   for (let i = 1; i < sortedValues.length; i++) {
@@ -322,7 +317,7 @@ test('Sorts items as expected', async () => {
   }
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -346,7 +341,7 @@ test('Can open/close by clicking icon', async () => {
   const handler = vi.fn();
   const items = fakeItems();
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -377,7 +372,7 @@ test('Searching works as expected', async () => {
   const items = fakeItems();
 
   const { rerender } = render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -415,7 +410,7 @@ test('Searching works as expected', async () => {
   }
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -442,12 +437,7 @@ test("Clicking 'x' on chip works as expected", async () => {
   const handler = vi.fn();
 
   const { rerender } = render(
-    <AmplifyComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      value={items[0]}
-    />
+    <ComboBox label={label} onSelect={handler} items={items} value={items[0]} />
   );
   const user = userEvent.setup();
 
@@ -458,7 +448,7 @@ test("Clicking 'x' on chip works as expected", async () => {
   expect(handler).toHaveBeenCalledWith(undefined);
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -477,12 +467,7 @@ test('Removing with backspace', async () => {
   const handler = vi.fn();
 
   render(
-    <AmplifyComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      value={items[0]}
-    />
+    <ComboBox label={label} onSelect={handler} items={items} value={items[0]} />
   );
   const user = userEvent.setup();
 
@@ -503,7 +488,7 @@ test('Keyboard navigation works as expected', async () => {
   const handler = vi.fn();
 
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -566,7 +551,7 @@ test('Placeholder prop works as expected', async () => {
   const handler = vi.fn();
 
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       value={undefined}
@@ -584,7 +569,7 @@ test('Filtering with no results', async () => {
   const handler = vi.fn();
 
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       value={undefined}
@@ -604,7 +589,7 @@ test('Filtering with no results in groups', async () => {
   const handler = vi.fn();
 
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       value={undefined}
@@ -624,12 +609,7 @@ test('Keyboard navigation inside parent item', async () => {
   const handler = vi.fn();
 
   render(
-    <AmplifyComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      values={[]}
-    />
+    <ComboBox label={label} onSelect={handler} items={items} values={[]} />
   );
   const user = userEvent.setup();
 
@@ -694,7 +674,7 @@ test('Disabled works as expected', async () => {
   const items = fakeItems();
 
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -725,7 +705,7 @@ test('Loading works as expected', async () => {
   const items = fakeItems();
 
   render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -756,7 +736,7 @@ test('Not able to remove item when disabled/loading', async () => {
   const items = fakeItems();
 
   const { rerender } = render(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}
@@ -773,7 +753,7 @@ test('Not able to remove item when disabled/loading', async () => {
   expect(handler).not.toHaveBeenCalled();
 
   rerender(
-    <AmplifyComboBox
+    <ComboBox
       label={label}
       onSelect={handler}
       items={items}

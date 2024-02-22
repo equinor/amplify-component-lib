@@ -4,18 +4,16 @@ import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
-import AmplifyComboBox, {
-  AmplifyComboBoxComponentProps,
-} from './AmplifyComboBox';
+import ComboBox, { ComboBoxComponentProps } from './ComboBox';
 import {
-  AmplifyComboBoxProps,
-  AmplifyMultiComboBoxCommon,
   ComboBoxOption,
-} from './AmplifyComboBox.types';
+  ComboBoxProps,
+  MultiComboBoxCommon,
+} from './ComboBox.types';
 
 export default {
-  title: 'Inputs/AmplifyComboBox',
-  component: AmplifyComboBox,
+  title: 'Inputs/ComboBox',
+  component: ComboBox,
   argTypes: {
     label: { control: 'text' },
     selectableParent: { control: 'boolean' },
@@ -63,9 +61,9 @@ const FAKE_ITEMS_WITH_CHILDREN = [
   })),
 ];
 
-export const ComboBoxWithSingleSelect: StoryFn<
-  AmplifyComboBoxComponentProps<Item>
-> = (args) => {
+export const ComboBoxWithSingleSelect: StoryFn<ComboBoxComponentProps<Item>> = (
+  args
+) => {
   const [value, setValue] = useState<ComboBoxOption<Item> | undefined>(
     undefined
   );
@@ -76,7 +74,7 @@ export const ComboBoxWithSingleSelect: StoryFn<
   };
 
   return (
-    <AmplifyComboBox
+    <ComboBox
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
@@ -88,9 +86,9 @@ export const ComboBoxWithSingleSelect: StoryFn<
   );
 };
 
-export const ComboBoxWithMultiSelect: StoryFn<
-  AmplifyComboBoxComponentProps<Item>
-> = (args) => {
+export const ComboBoxWithMultiSelect: StoryFn<ComboBoxComponentProps<Item>> = (
+  args
+) => {
   const [values, setValues] = useState<ComboBoxOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -102,7 +100,7 @@ export const ComboBoxWithMultiSelect: StoryFn<
   };
 
   return (
-    <AmplifyComboBox
+    <ComboBox
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
@@ -115,7 +113,7 @@ export const ComboBoxWithMultiSelect: StoryFn<
 };
 
 export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
-  AmplifyComboBoxComponentProps<Item>
+  ComboBoxComponentProps<Item>
 > = (args) => {
   const [value, setValue] = useState<ComboBoxOption<Item> | undefined>(
     undefined
@@ -127,7 +125,7 @@ export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
   };
 
   return (
-    <AmplifyComboBox
+    <ComboBox
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
@@ -140,7 +138,7 @@ export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
 };
 
 export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
-  AmplifyComboBoxComponentProps<Item>
+  ComboBoxComponentProps<Item>
 > = (args) => {
   const [values, setValues] = useState<ComboBoxOption<Item>[]>([]);
 
@@ -153,7 +151,7 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
   };
 
   return (
-    <AmplifyComboBox
+    <ComboBox
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
@@ -166,7 +164,7 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
 };
 
 export const ComboBoxParentedWithMultiSelect: StoryFn<
-  AmplifyComboBoxComponentProps<Item> & AmplifyComboBoxProps<Item>
+  ComboBoxComponentProps<Item> & ComboBoxProps<Item>
 > = (args) => {
   const [values, setValues] = useState<ComboBoxOption<Item>[]>([]);
 
@@ -179,10 +177,10 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
   };
 
   return (
-    <AmplifyComboBox
+    <ComboBox
       label={args.label}
       selectableParent={
-        (args as AmplifyMultiComboBoxCommon<Item>)?.selectableParent || false
+        (args as MultiComboBoxCommon<Item>)?.selectableParent || false
       }
       disabled={args.disabled}
       loading={args.loading}
