@@ -5,7 +5,7 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { Chip } from './Chip';
 import page from './Chips.docs.mdx';
-import { Stack } from 'src/.storybook_components';
+import { Stack } from 'src/storybook';
 
 const icons = {
   save,

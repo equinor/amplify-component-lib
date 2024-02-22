@@ -5,12 +5,12 @@ import { Tooltip as EDSTooltip, TooltipProps } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
 type OptionalTooltipProps = {
-  texttransform?: string;
+  textTransform?: string;
 } & TooltipProps;
 
 const Tooltip = styled(EDSTooltip)<OptionalTooltipProps>`
   color: white;
-  text-transform: ${(props) => props.texttransform};
+  text-transform: ${(props) => props.textTransform};
 `;
 
 const OptionalTooltip = forwardRef<HTMLDivElement, OptionalTooltipProps>(
@@ -20,7 +20,7 @@ const OptionalTooltip = forwardRef<HTMLDivElement, OptionalTooltipProps>(
     }
 
     return (
-      <Tooltip className="bobo" ref={ref} title={title} {...rest}>
+      <Tooltip ref={ref} title={title} {...rest}>
         {children}
       </Tooltip>
     );

@@ -6,6 +6,7 @@ const config = {
     '@storybook/addon-actions',
     '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
+    'storybook-addon-react-docgen',
   ],
   build: {
     sourcemap: false,

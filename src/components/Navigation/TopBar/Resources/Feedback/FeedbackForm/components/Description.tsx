@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { FeedbackType } from '../../Feedback.types';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
-import AmplifyTextField from 'src/components/Inputs/AmplifyTextField';
+import { TextField } from 'src/components/Inputs/TextField/TextField';
 import { spacings } from 'src/style';
 
 import styled from 'styled-components';
@@ -53,7 +53,7 @@ const Description: FC = () => {
         </div>
       )}
       <LockedInputTooltip show={serviceNowSuccess}>
-        <AmplifyTextField
+        <TextField
           id="feedback-description"
           label="Description"
           disabled={serviceNowSuccess}

@@ -1,0 +1,55 @@
+import { Links } from 'src/storybook'
+import { Primary, Canvas, Controls } from '@storybook/blocks'
+import * as ComponentStories from './Dots.stories'
+
+# Dot Progress
+
+**Component from EDS**
+
+Animated helper that indicate waiting time as content loads.
+
+<Links
+  ariaUrl="https://www.w3.org/TR/2017/REC-wai-aria-1.1-20171214/#progressbar"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17622%3A3"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Progress/Dots/DotProgress.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/feedback-progress-indicators-dots--docs"
+/>
+
+<Primary />
+<Controls />
+
+## Usage
+
+`Dot progress` indicators are for use within buttons.
+
+<ul>
+  <li>Progress indicators inform users about the current loading state giving them insight into the process.</li>
+  <li>Progress indicators look and animate in ways that reflect the status of a process. They are never simply decorative.</li>
+  <li>Progress indicators should be applied to all cases of a process in a consistent format.</li>
+</ul>
+
+```tsx
+import { DotProgress } from '@equinor/amplify-components';
+
+<DotProgress />
+```
+
+## Examples
+
+### Colors
+
+<Canvas of={ComponentStories.Colors} />
+
+### Sizes
+
+<Canvas of={ComponentStories.Sizes} />
+
+### Inside button
+
+<Canvas of={ComponentStories.InsideButton} />
+
+### Acessibility
+`Dot progress` have `role="progressbar"` and therefore either `aria-describedby` or `aria-label` should be included.
+Click the button with keyboard and a screen reader activated to test.
+
+<Canvas of={ComponentStories.Accessibility} />

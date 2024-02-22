@@ -1,0 +1,139 @@
+import { Links, PropsTable } from 'src/storybook'
+import { Primary, Canvas } from '@storybook/blocks'
+import * as ComponentStories from './Popover.stories'
+
+# Popover
+
+**Component from EDS**
+
+Is a floating card that provides more information or actions on hover or click.
+
+<Links
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17515%3A0"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Popover/Popover.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/data-display-popover--docs"
+/>
+
+<Primary />
+<PropsTable />
+
+## Usage
+
+`Popover` provides excess or additional information that does not fit in the main content area.
+<ul>
+  <li>A popover displays rich content in a non-modal dialog to describe or add additional
+    information when users hover over, focus on, or click an interactive element.</li>
+  <li>User can interact with popover content.</li>
+  <li>Use sparingly.</li>
+</ul>
+
+  ```tsx
+import { Popover } from '@equinor/amplify-components'
+
+const Demo = () => {
+    const [isOpen, setIsOpen] = useState(false)
+    const handleOpen = () => {
+      setIsOpen(true)
+    }
+    const handleClose = () => {
+      setIsOpen(false)
+    }
+
+    const referenceElement = useRef<HTMLButtonElement>(null)
+
+    return (
+        <>
+      <Button
+        aria-haspopup
+        id="default-popover-anchor"
+        aria-controls="default-popover"
+        aria-expanded={isOpen}
+        ref={referenceElement}
+        onClick={handleOpen}
+      >
+        Trigger Popover
+      </Button>
+
+      <Popover
+        open={isOpen}
+        id="default-popover"
+        anchorEl={referenceElement.current}
+        onClose={handleClose}
+        trapFocus
+      >
+        <Popover.Header>
+          <Popover.Title>Title</Popover.Title>
+          <Button
+            style={{ height: '32px', width: '32px' }}
+            variant="ghost_icon"
+            aria-label="Close popover"
+            onClick={handleClose}
+          >
+            <Icon name="close" data={close} size={24} />
+          </Button>
+        </Popover.Header>
+        <Popover.Content>
+          <Typography variant="body_short">Content</Typography>
+        </Popover.Content>
+      </Popover>
+    </>
+  )
+}
+```
+
+## Accessibility
+
+### `trapFocus`
+
+It is recommended to use <code>trapFocus</code> in every Popover which contains active elements.
+
+<ul>
+  <li>While using a keyboard <code>trapFocus</code> brings focus onto the first active element in a Popover.</li>
+</ul>
+
+## Examples
+
+### Activate `onClick`
+
+<ul>
+  <li>Popovers can be activated by hover or click.</li>
+  <li>To dismiss a popover, use the close icon, press the ESC key, open another popover or click outside the popover.</li>
+  <li>If there are no actions in the popover, then the close icon should be the first focusable element.</li>
+</ul>
+
+<Canvas of={ComponentStories.ActivateOnClick} />
+
+### Activate `onHover`
+
+<ul>
+  <li>Remember to use both <code>onMouseEnter</code> and <code>onFocus</code> attributes to your trigger element to be able to open the popover.</li>
+  <li>A timeout delay (300ms) on <code>onMouseEnter</code> is recommended to avoid unwanted trigger while browsing.</li>
+  <li>Using activ elemnets inside a Popover when <code>onHover</code>, is not recommended.</li>
+</ul>
+
+<Canvas of={ComponentStories.ActivateOnHover} />
+
+### With close button
+
+In some cases an explicit close button is recommended.
+
+<Canvas of={ComponentStories.WithCloseButton} />
+
+### Persistent Popover
+
+To prevent dismissing `Popover` with click outside or escape key, simply leave out the `onClose` callback.
+
+<Canvas of={ComponentStories.PersistentPopover} />
+
+### App launcher
+
+Provides navigation for applications related to the application the user is currently viewing.
+
+<ul>
+  <li>An app launcher is used to organise navigation across different applications related or relevant to the current application.</li>
+  <li>The current application shows as active in the app launcher.</li>
+  <li>Each application displayed has a <code>Product icon</code> as well as a <code>label</code> that gives clear and concise direction.</li>
+  <li>Note that if the label is longer than the maximum width, it will be truncated and should have a tooltip provided.</li>
+</ul>
+
+<Canvas of={ComponentStories.AppLauncher} />

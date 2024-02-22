@@ -1,0 +1,40 @@
+import { Links } from 'src/storybook'
+import { Primary, Canvas, Controls } from '@storybook/blocks'
+import * as ComponentStories from './Label.stories'
+
+# Label
+
+Is intended to use if you need to more flexibility than the wrapped TextField or select components give.
+
+<Links
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Label/Label.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/inputs-label--docs"
+/>
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Label } from '@equinor/amplify-components';
+
+<Label label="label text" />
+```
+
+## Examples
+
+### With `meta` text
+
+<Canvas of={ComponentStories.WithMeta} />
+
+### Disabled
+
+<Canvas of={ComponentStories.Disabled} />
+
+### Accessiblity
+
+It's important to link the `Label` to the corresponding input element.
+Use the React version of the html for attribute htmlFor as `Label` does not support to wrap the input field.
+
+<Canvas of={ComponentStories.Accessiblity} />

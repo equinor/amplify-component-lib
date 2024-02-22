@@ -1,0 +1,72 @@
+import { Links } from 'src/storybook'
+import { Primary, Canvas, Controls } from '@storybook/blocks'
+import * as ComponentStories from './Radio.stories'
+
+# Radio
+
+**Component from EDS**
+
+Allow users to select only one option from a list.
+
+<Links
+  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=18442%3A38197"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Radio/Radio.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/inputs-selection-controls-radio--docs"
+/>
+
+<Primary />
+<Controls />
+
+## Usage
+
+**Selection controls**
+
+<ul>
+  <li>Allow users to select options, make decisions and set preferences.</li>
+  <li>Are to be visible and understandable at a quick glance.</li>
+  <li>Are always accompanied with a clear label.</li>
+</ul>
+
+**Radio**
+
+<ul>
+  <li>Exposes all available options.</li>
+  <li>Makes it easy to compare available options.</li>
+</ul>
+
+```tsx
+import { Radio } from '@equinor/amplify-components';
+
+<Radio label="Label text" />
+```
+
+## Examples
+
+### Single radio
+
+<Canvas of={ComponentStories.SingleRadio} />
+
+### Multiple radio buttons in a group
+
+<Canvas of={ComponentStories.GroupedRadio} />
+
+### Alternative to label
+
+To comply with accessibility, a `label` is always required on inputs. In some cases though, a visual label is not desirable. <br />
+In such cases `aria-label` or `aria-labelledby` should be used.
+
+<Canvas of={ComponentStories.AlternativeToLabel} />
+
+### Custom label
+
+Example of `Label` usage with `Radio`. <br />
+By using `Label` component, you can add more flexibility to displaying a `label`.
+
+<Canvas of={ComponentStories.CustomLabel} />
+
+### Compact
+
+Compact `Radio` using `EdsProvider`.
+
+<Canvas of={ComponentStories.Compact} />

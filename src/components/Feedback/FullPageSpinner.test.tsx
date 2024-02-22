@@ -36,6 +36,6 @@ test('renders dots when prop is given', () => {
   render(<FullPageSpinner withoutScrim variant="dots"></FullPageSpinner>);
 
   expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-    'DotProgress'
+    'Dots'
   );
 });
