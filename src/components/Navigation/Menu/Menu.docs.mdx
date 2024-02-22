@@ -1,6 +1,6 @@
-import { Links, PropsTable } from 'src/storybook'
-import { Primary, Canvas } from '@storybook/blocks'
-import * as ComponentStories from './Menu.stories'
+import { Links, PropsTable } from 'src/storybook';
+import { Primary, Canvas } from '@storybook/blocks';
+import * as ComponentStories from './Menu.stories';
 
 # Menu
 
@@ -32,19 +32,19 @@ A `Menu` displays a list of choices on a temporary surface. They appear when use
 import { Menu } from '@equinor/amplify-components';
 
 const Demo = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const openMenu = () => {
-    setIsOpen(true)
-  }
+    setIsOpen(true);
+  };
   const closeMenu = () => {
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
-    return (
-        <>
-     <Button
+  return (
+    <>
+      <Button
         ref={setAnchorEl}
         id="anchor-default"
         aria-haspopup="true"
@@ -66,8 +66,8 @@ const Demo = () => {
         <Menu.Item onClick={onClick}>Cable</Menu.Item>
       </Menu>
     </>
-  )
-}
+  );
+};
 ```
 
 ## Examples
@@ -81,7 +81,6 @@ const Demo = () => {
 Compact `Menu` using `EdsProvider`.
 
 <Canvas of={ComponentStories.Compact} />
-
 
 ### Match width
 
@@ -100,4 +99,3 @@ Adding `closeMenuOnClick={false}` to `Menu.Item` makes the Menu stay open on cli
 Use the `as` prop to override component type of `Menu.Item`.
 
 <Canvas of={ComponentStories.AsLink} />
-

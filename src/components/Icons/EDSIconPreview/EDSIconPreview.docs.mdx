@@ -1,20 +1,17 @@
-import { Story } from '@storybook/blocks'
-import {Links} from 'src/storybook'
-import * as ComponentStories from './EDSIconPreview.stories'
+import { Story } from '@storybook/blocks';
+import { Links } from 'src/storybook';
+import * as ComponentStories from './EDSIconPreview.stories';
 
 # Icons
 
 **Story from EDS**
 
-<Links
-  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/icons-preview--docs"
-/>
-
+<Links edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/icons-preview--docs" />
 
 Icons included in the EDS icon library.
 
 Hover over an icon to download as svg or use the name for lookup in the `@equinor/eds-icons` package.
 
-**Note:** in the npm-package, icons ending with _small do not exist individually but are stored within the regular icon under `icon.sizes.small` and used automatically when Icon size is set to 16 or 18.
+**Note:** in the npm-package, icons ending with \_small do not exist individually but are stored within the regular icon under `icon.sizes.small` and used automatically when Icon size is set to 16 or 18.
 
 <Story of={ComponentStories.Preview} />

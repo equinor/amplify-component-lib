@@ -1,6 +1,6 @@
-import { Links } from 'src/storybook'
-import { Primary, Canvas, Controls } from '@storybook/blocks'
-import * as ComponentStories from './Checkbox.stories'
+import { Links } from 'src/storybook';
+import { Primary, Canvas, Controls } from '@storybook/blocks';
+import * as ComponentStories from './Checkbox.stories';
 
 # Checkbox
 
@@ -32,13 +32,15 @@ Allow users to select one or more items from a set, and can turn an option on or
 
 <ul>
   <li>Make it easy to compare available options.</li>
-  <li>Have been in user interfaces for a long time and should be used as expected.</li>
+  <li>
+    Have been in user interfaces for a long time and should be used as expected.
+  </li>
 </ul>
 
 ```tsx
 import { Checkbox } from '@equinor/amplify-components';
 
-<Checkbox label="Label text" />
+<Checkbox label="Label text" />;
 ```
 
 ## Examples
@@ -56,7 +58,6 @@ import { Checkbox } from '@equinor/amplify-components';
 Compact `Checkbox` using `EdsProvider`.
 
 <Canvas of={ComponentStories.Compact} />
-
 
 ### Alternative to label
 

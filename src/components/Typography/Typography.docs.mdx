@@ -1,6 +1,6 @@
-import { Links } from 'src/storybook'
-import { Primary, Canvas, Controls } from '@storybook/blocks'
-import * as ComponentStories from './Typography.stories'
+import { Links } from 'src/storybook';
+import { Primary, Canvas, Controls } from '@storybook/blocks';
+import * as ComponentStories from './Typography.stories';
 
 # Typography
 
@@ -29,7 +29,10 @@ The `Equinor` typeface is not included in `EDS` by default. It is available from
 </ul>
 
 ```tsx
-<link rel="stylesheet" href="https://cdn.eds.equinor.com/font/equinor-font.css" />
+<link
+  rel="stylesheet"
+  href="https://cdn.eds.equinor.com/font/equinor-font.css"
+/>
 ```
 
 <ul>
@@ -37,17 +40,30 @@ The `Equinor` typeface is not included in `EDS` by default. It is available from
 </ul>
 
 ```tsx
-<link rel="stylesheet" href="https://cdn.eds.equinor.com/font/equinor-regular.css" />
+<link
+  rel="stylesheet"
+  href="https://cdn.eds.equinor.com/font/equinor-regular.css"
+/>
 ```
 
 The `Equinor` typeface is the primary typeface and is available in four weights:
 
 <ul>
-  <li><code>light</code>,</li>
-  <li><code>regular</code>,</li>
-  <li><code>medium</code>,</li>
-  <li><code>bold</code>,</li>
-  <li>with accompanying <code>italics</code>.</li>
+  <li>
+    <code>light</code>,
+  </li>
+  <li>
+    <code>regular</code>,
+  </li>
+  <li>
+    <code>medium</code>,
+  </li>
+  <li>
+    <code>bold</code>,
+  </li>
+  <li>
+    with accompanying <code>italics</code>.
+  </li>
 </ul>
 
 Please do not use <code>light</code> in digital interfaces except in special cases where the font size is over <code>48px</code>.
@@ -55,7 +71,10 @@ Please do not use <code>light</code> in digital interfaces except in special cas
 **Paragraph**
 
 <ul>
-  <li>Paragraph length is the number of characters in a line of text, this includes spaces.</li>
+  <li>
+    Paragraph length is the number of characters in a line of text, this
+    includes spaces.
+  </li>
   <li>To ensure readability, line length should be 55-80 characters.</li>
 </ul>
 
@@ -64,7 +83,7 @@ Please do not use <code>light</code> in digital interfaces except in special cas
 ```tsx
 import { Typography } from '@equinor/amplify-components';
 
-<Typography>Sample text</Typography>
+<Typography>Sample text</Typography>;
 ```
 
 ## Overview
@@ -90,18 +109,18 @@ The `token` property allows you to set the token used in `Typography` instead of
 
 ```tsx
 const myToken = {
-    textAlign,
-    textDecoration,
-    textTransform,
-    fontFamily,
-    fontSize,
-    fontStyle,
-    fontWeight,
-    fontFeature,
-    color,
-    lineHeight,
-    letterSpacing,
-}
+  textAlign,
+  textDecoration,
+  textTransform,
+  fontFamily,
+  fontSize,
+  fontStyle,
+  fontWeight,
+  fontFeature,
+  color,
+  lineHeight,
+  letterSpacing,
+};
 ```
 
 <Canvas of={ComponentStories.TokenProperty} />
@@ -111,6 +130,7 @@ const myToken = {
 <Canvas of={ComponentStories.Lines} />
 
 ### Link
+
 Link used in body of text.
 
 <Canvas of={ComponentStories.Link} />
@@ -124,8 +144,10 @@ The `as` prop allows you to render `Typography` as another html element or even 
 This is useful if you want to use `Typography` with a third party routing library such as react-router.
 
 ```tsx
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { Typography } from '@equinor/amplify-components';
 
-<Typography as={Link} to="/about" link>About</Typography>
+<Typography as={Link} to="/about" link>
+  About
+</Typography>;
 ```

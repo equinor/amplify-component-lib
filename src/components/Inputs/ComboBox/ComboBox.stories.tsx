@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
-import ComboBox, { ComboBoxComponentProps } from './ComboBox';
+import { ComboBox, ComboBoxComponentProps } from './ComboBox';
 import {
   ComboBoxOption,
   ComboBoxProps,

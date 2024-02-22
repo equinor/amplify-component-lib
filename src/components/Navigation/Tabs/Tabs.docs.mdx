@@ -1,6 +1,6 @@
-import { Links, PropsTable } from 'src/storybook'
-import { Primary, Canvas } from '@storybook/blocks'
-import * as ComponentStories from './Tabs.stories'
+import { Links, PropsTable } from 'src/storybook';
+import { Primary, Canvas } from '@storybook/blocks';
+import * as ComponentStories from './Tabs.stories';
 
 # Tabs
 
@@ -26,23 +26,25 @@ Tabs allow for navigation between content that is related and has an equal hiera
   <li>Each tab's content should be noticeably different from the other.</li>
   <li>Tabs allow for information to be presented in a space-saving layout.</li>
   <li>Tab labels should provide clear and concise direction.</li>
-  <li>Note that if the label is longer than the maximum width it will be truncated and should have a tooltip provided.</li>
+  <li>
+    Note that if the label is longer than the maximum width it will be truncated
+    and should have a tooltip provided.
+  </li>
 </ul>
 
 ```tsx
 import { Tabs } from '@equinor/amplify-components';
 
 <Tabs>
-    <Tabs.List>
-      <Tabs.Tab>One</Tabs.Tab>
-      <Tabs.Tab>Two</Tabs.Tab>
-    </Tabs.List>
-    <Tabs.Panels>
-      <Tabs.Panel>Panel one</Tabs.Panel>
-      <Tabs.Panel>Panel two</Tabs.Panel>
-    </Tabs.Panels>
-</Tabs>
-
+  <Tabs.List>
+    <Tabs.Tab>One</Tabs.Tab>
+    <Tabs.Tab>Two</Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panels>
+    <Tabs.Panel>Panel one</Tabs.Panel>
+    <Tabs.Panel>Panel two</Tabs.Panel>
+  </Tabs.Panels>
+</Tabs>;
 ```
 
 ## Examples
@@ -54,10 +56,17 @@ import { Tabs } from '@equinor/amplify-components';
 ### Widths
 
 Tab width can be decided by three factors:
+
 <ol>
-  <li>The width of the space available being equally divided by the number of tabs. This method is only to be used for four tabs or less.</li>
-  <li>The width of the widest tab determining the width of all the tabs to provide visual balance.
-    This should be used with caution ensuring all tabs will be seen in smaller layouts.</li>
+  <li>
+    The width of the space available being equally divided by the number of
+    tabs. This method is only to be used for four tabs or less.
+  </li>
+  <li>
+    The width of the widest tab determining the width of all the tabs to provide
+    visual balance. This should be used with caution ensuring all tabs will be
+    seen in smaller layouts.
+  </li>
   <li>Each tab having its own minimum width to conserve space.</li>
 </ol>
 
@@ -66,10 +75,18 @@ Tab width can be decided by three factors:
 ### With panels
 
 To navigate using the keyboard use:
+
 <ul>
-  <li><code>TAB</code> to move from tab to tab panel.</li>
-  <li><code>SHIFT + TAB</code> to go backwards.</li>
-  <li><code>LEFT / RIGHT ARROW</code> to move from between tabs (active tab must be focused).</li>
+  <li>
+    <code>TAB</code> to move from tab to tab panel.
+  </li>
+  <li>
+    <code>SHIFT + TAB</code> to go backwards.
+  </li>
+  <li>
+    <code>LEFT / RIGHT ARROW</code> to move from between tabs (active tab must
+    be focused).
+  </li>
 </ul>
 
 Focus outline is only visible when navigating using the keyboard.
@@ -79,20 +96,28 @@ The non-active `Tabs.Panels` are by default hidden with `display: none`, but can
 <Canvas of={ComponentStories.WithPanels} />
 
 ### With third party routers
+
 `Tabs.Tab` can be rendered as another component using the `as` prop.
+
 ```tsx
 import { Tabs } from '@equinor/amplify-components';
 import { Link, Outlet } from 'react-router-dom';
 
-  <Tabs activeTab="/foo/bar">
+<Tabs activeTab="/foo/bar">
   <Tabs.List>
-      <Tabs.Tab as={Link} value="/foo/bar" to="/foo/bar">bar</Tabs.Tab>
-      <Tabs.Tab as={Link} value="/foo/baz" to="/foo/baz">baz</Tabs.Tab>
+    <Tabs.Tab as={Link} value="/foo/bar" to="/foo/bar">
+      bar
+    </Tabs.Tab>
+    <Tabs.Tab as={Link} value="/foo/baz" to="/foo/baz">
+      baz
+    </Tabs.Tab>
   </Tabs.List>
   <Outlet />
-  </Tabs>
+</Tabs>;
 ```
+
 Routes can of course be entered by other means than clicking tabs. Therefore, we can not reliably use `onChange` to send a new index to `activeTab`. Instead `activeTab` can take a string value that sets the correct active tab if it matches the `value` prop on a tab. In the below example we use `react-router-dom` and its provided functions to match the current path to the correct tab.
+
 <Canvas of={ComponentStories.Router} />
 
 ### With search

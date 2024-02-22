@@ -1,6 +1,6 @@
-import { Links } from 'src/storybook'
-import { Primary, Canvas } from '@storybook/blocks'
-import * as ComponentStories from './Search.stories'
+import { Links } from 'src/storybook';
+import { Primary, Canvas } from '@storybook/blocks';
+import * as ComponentStories from './Search.stories';
 
 # Search
 
@@ -23,14 +23,14 @@ Allows users to locate or refine content based on simple words or phrases.
 import { Search } from '@equinor/amplify-components';
 
 <form>
-  <Search aria-label="Search for something"/>
-</form>
+  <Search aria-label="Search for something" />
+</form>;
 ```
 
 ## Accessibility
 
-* Use either a `label` or `aria-label` for description of whats being searched
-* `Search` should be used inside a `form`
+- Use either a `label` or `aria-label` for description of whats being searched
+- `Search` should be used inside a `form`
 
 <Canvas of={ComponentStories.Accessibility} />
 
