@@ -5,7 +5,7 @@ import WorkflowDescription, {
 } from './WorkflowDescription';
 
 export default {
-  title: 'DataDisplay/Workflow/WorkflowDescription',
+  title: 'Data Display/Workflow/WorkflowDescription',
   component: WorkflowDescription,
 } as Meta;
 

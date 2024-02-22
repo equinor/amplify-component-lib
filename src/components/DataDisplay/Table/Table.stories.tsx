@@ -7,7 +7,7 @@ import { data } from './stories/data';
 import Table from './Table';
 
 const meta: Meta = {
-  title: 'DataDisplay/Table',
+  title: 'Data Display/Table',
   component: Table,
 };
 

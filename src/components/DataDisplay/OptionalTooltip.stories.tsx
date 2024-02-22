@@ -5,7 +5,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import OptionalTooltip from './OptionalTooltip';
 
 export default {
-  title: 'DataDisplay/OptionalTooltip',
+  title: 'Data Display/OptionalTooltip',
   component: OptionalTooltip,
   argTypes: { title: { control: 'text' } },
   args: { title: 'Optional tooltip title' },

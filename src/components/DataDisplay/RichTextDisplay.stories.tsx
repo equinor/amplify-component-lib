@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import RichTextDisplay, { RichTextDisplayProps } from './RichTextDisplay';
 
 export default {
-  title: 'DataDisplay/RichTextDisplay',
+  title: 'Data Display/RichTextDisplay',
   component: RichTextDisplay,
   argTypes: {
     value: { control: 'text' },
