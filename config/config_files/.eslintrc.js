@@ -33,7 +33,7 @@ module.exports = {
       'error',
       { props: 'never', children: 'never' },
     ],
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": ["error", { "destructuredArrayIgnorePattern": "^_" }],
   },
   overrides: [
     {
