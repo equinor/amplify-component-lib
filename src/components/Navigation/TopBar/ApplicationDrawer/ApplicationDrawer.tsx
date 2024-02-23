@@ -91,7 +91,7 @@ const ApplicationDrawer: FC = () => {
   return (
     <>
       <TopBarButton
-        variant="ghost_icon"
+        variant="ghost"
         onClick={toggleMenu}
         ref={buttonRef}
         $isSelected={isOpen}
