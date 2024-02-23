@@ -2,6 +2,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import {
+  amplify_aml,
   amplify_failure,
   amplify_h1,
   amplify_h2,
@@ -26,6 +27,7 @@ const allIcons = {
   amplify_wireline_open_hole: amplify_wireline_open_hole,
   amplify_wireline_cased_hole: amplify_wireline_cased_hole,
   amplify_lwd: amplify_lwd,
+  amplify_aml: amplify_aml,
   amplify_success: amplify_success,
   amplify_failure: amplify_failure,
   amplify_snail: amplify_snail,
@@ -64,6 +66,7 @@ export default {
         'amplify_wireline_open_hole',
         'amplify_wireline_cased_hole',
         'amplify_lwd',
+        'amplify_aml',
         'amplify_success',
         'amplify_failure',
         'amplify_snail',
