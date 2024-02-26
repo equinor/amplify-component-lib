@@ -11,7 +11,7 @@ const StyledBase = styled(Base)`
   ${(props) => {
     if (!props.variant) {
       return `
-      input, area {
+      input, textarea {
       color: ${colors.text.static_icons__default.rgba}
       }
         div:focus-within {
