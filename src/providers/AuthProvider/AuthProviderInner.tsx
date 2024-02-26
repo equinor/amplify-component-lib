@@ -71,7 +71,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       setIsInitialized(true);
     };
 
-    handleInit();
+    handleInit().catch((error) => {
+      console.error('Error during initialization', error);
+    });
   }, [instance, isInitialized]);
 
   useEffect(() => {
@@ -84,7 +86,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     ) {
       console.error(error);
       console.log('No account found, need to login via. redirect');
-      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN);
+      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
+        console.error('Error during login', error);
+      });
     } else if (accounts.length > 0 && account === undefined) {
       console.log('Found account, setting that one as active');
       instance.setActiveAccount(accounts[0]);
@@ -125,7 +129,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         console.error(error);
       }
     };
-    getPhoto();
+    getPhoto().catch((error) => {
+      console.error('Error getting photo', error);
+    });
 
     // Get roles
     const getRoles = async () => {
@@ -145,12 +151,13 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           setAuthState('authorized');
         }
       } catch (error) {
-        console.log('Token error when trying to get roles!');
-        console.error(error);
+        console.error('Token error when trying to get roles!', error);
         setAuthState('unauthorized');
       }
     };
-    getRoles();
+    getRoles().catch((error) => {
+      console.error('Error getting roles', error);
+    });
   }, [
     account,
     acquireToken,

@@ -141,7 +141,9 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     if (allElementsToHighlight.every((item) => item !== null)) {
       setAllElementsToHighlight(allElementsToHighlight as HTMLElement[]);
     } else {
-      handleTryToGetElementsAgain();
+      handleTryToGetElementsAgain().catch((error) => {
+        console.error('Error trying to get elements to highlight', error);
+      });
     }
   }, [activeTutorial, currentStep, tutorialError, shortNameFromParams]);
 

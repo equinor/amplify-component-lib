@@ -55,16 +55,20 @@ export default Image.extend({
               if (!coordinates) return;
 
               for (const image of images) {
-                onImageUpload(image).then((src) => {
-                  const node = schema.nodes.image.create({
-                    src,
+                onImageUpload(image)
+                  .then((src) => {
+                    const node = schema.nodes.image.create({
+                      src,
+                    });
+                    const transaction = view.state.tr.insert(
+                      coordinates.pos,
+                      node
+                    );
+                    view.dispatch(transaction);
+                  })
+                  .catch((error) => {
+                    console.error('Error uploading image', error);
                   });
-                  const transaction = view.state.tr.insert(
-                    coordinates.pos,
-                    node
-                  );
-                  view.dispatch(transaction);
-                });
               }
             },
             paste(view, event) {
@@ -90,13 +94,18 @@ export default Image.extend({
               const { schema } = view.state;
 
               for (const image of images) {
-                onImageUpload(image).then((src) => {
-                  const node = schema.nodes.image.create({
-                    src,
+                onImageUpload(image)
+                  .then((src) => {
+                    const node = schema.nodes.image.create({
+                      src,
+                    });
+                    const transaction =
+                      view.state.tr.replaceSelectionWith(node);
+                    view.dispatch(transaction);
+                  })
+                  .catch((error) => {
+                    console.error('Error uploading image', error);
                   });
-                  const transaction = view.state.tr.replaceSelectionWith(node);
-                  view.dispatch(transaction);
-                });
               }
             },
           },

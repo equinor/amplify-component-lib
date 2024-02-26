@@ -44,7 +44,9 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
       setSrc(src);
     };
     if (!isError) {
-      getSrc(file);
+      getSrc(file).catch((error) => {
+        console.error('Error reading file', error);
+      });
     }
   }, [isError, file]);
 

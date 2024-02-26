@@ -69,7 +69,9 @@ const CopyText: FC<CopyTextProps> = ({ children, textToCopy }) => {
   const [iconText, setIconText] = useState<IconText>('Copy');
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(textToCopy);
+    navigator.clipboard.writeText(textToCopy).catch((error) => {
+      console.error('Failed to copy text', error);
+    });
     setIconText('Copied!');
     setTimeout(() => {
       if (isMounted.current) {

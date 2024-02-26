@@ -90,7 +90,9 @@ export const Primary: StoryFn = (args) => {
       setFields(fetched);
       setIsLoading(false);
     };
-    getFields();
+    getFields().catch((error) => {
+      console.error('Error fetching fields', error);
+    });
   }, []);
 
   return (

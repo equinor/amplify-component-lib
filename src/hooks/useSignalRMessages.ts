@@ -134,7 +134,9 @@ export function useSignalRMessages<
       connectionRef.current = connection;
     }
 
-    setupConnection();
+    setupConnection().catch((error) => {
+      console.error('Error setting up connection', error);
+    });
   }, [
     host,
     topic,
@@ -191,11 +193,11 @@ export function useSignalRMessages<
   const setMessageAsRead = (message: T) => {
     if (connectionRef.current) {
       message.Read = !message.Read;
-      connectionRef.current.invoke(
-        'PatchMessage',
-        message.SequenceNumber,
-        message
-      );
+      connectionRef.current
+        .invoke('PatchMessage', message.SequenceNumber, message)
+        .catch((error) => {
+          console.error('Error setting message as read', error);
+        });
     }
   };
 
