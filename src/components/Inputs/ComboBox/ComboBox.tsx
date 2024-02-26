@@ -97,7 +97,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (!open && !(props.disabled || props.loading)) {
+    if (!open && !(props.disabled ?? props.loading)) {
       searchRef.current?.focus();
       setOpen(true);
     }
@@ -110,7 +110,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleToggleOpen = () => {
-    if (props.disabled || props.loading) return;
+    if (props.disabled ?? props.loading) return;
 
     if (open) {
       handleOnClose();
@@ -120,7 +120,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === ' ' || props.loading || props.disabled) return;
+    if (event.target.value === ' ' ?? props.loading ?? props.disabled) return;
     setSearch(event.target.value);
     if (!open) {
       setOpen(true);
@@ -251,7 +251,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
           )}
           <input
             id="amplify-combobox"
-            disabled={props.disabled || props.loading}
+            disabled={props.disabled ?? props.loading}
             ref={searchRef}
             type="search"
             role="combobox"

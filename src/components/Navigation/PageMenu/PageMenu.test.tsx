@@ -97,12 +97,12 @@ test('Hides children when onlyShowSelectedChildren = true', async () => {
     }
   );
 
-  for (const child of items[0].children || []) {
+  for (const child of items[0].children ?? []) {
     expect(screen.getByText(child.label)).toBeInTheDocument();
   }
 
   for (const item of items.slice(1)) {
-    for (const child of item.children || []) {
+    for (const child of item.children ?? []) {
       expect(screen.queryByText(child.label)).not.toBeInTheDocument();
     }
   }

@@ -100,7 +100,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   }, [account, result?.account, setAccount]);
 
   useEffect(() => {
-    if (!account || photo || roles || !isInitialized) return;
+    if (!account ?? photo ?? roles ?? !isInitialized) return;
 
     // Get photo
     const getPhoto = async () => {
@@ -165,11 +165,11 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
   if (authState === 'loading' || account === undefined)
     return (
-      loadingComponent || <FullPageSpinner variant="equinor" withoutScrim />
+      loadingComponent ?? <FullPageSpinner variant="equinor" withoutScrim />
     );
 
   if (authState === 'unauthorized')
-    return unauthorizedComponent || <Unauthorized />;
+    return unauthorizedComponent ?? <Unauthorized />;
 
   return <>{children}</>;
 };

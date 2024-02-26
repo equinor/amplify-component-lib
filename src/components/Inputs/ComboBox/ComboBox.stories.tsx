@@ -180,7 +180,7 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
     <ComboBox
       label={args.label}
       selectableParent={
-        (args as MultiComboBoxCommon<Item>)?.selectableParent || false
+        (args as MultiComboBoxCommon<Item>)?.selectableParent ?? false
       }
       disabled={args.disabled}
       loading={args.loading}

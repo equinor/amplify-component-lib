@@ -17,11 +17,11 @@ const StyledStack = styled.div<StyledStackProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: ${({ $align }) => $align || 'center'};
+  align-items: ${({ $align }) => $align ?? 'center'};
   gap: 1rem;
   flex-wrap: wrap;
   @media screen and (min-width: 600px) {
-    flex-direction: ${({ $direction }) => $direction || 'row'};
+    flex-direction: ${({ $direction }) => $direction ?? 'row'};
   }
 `;
 

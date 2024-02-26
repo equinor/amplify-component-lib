@@ -65,14 +65,14 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   };
 
   const releaseNotesYears = useMemo(
-    () => extractDatesFromReleasNotes(data || []),
+    () => extractDatesFromReleasNotes(data ?? []),
     [data]
   );
 
   const selectedReleaseNoteTypes = search.filterValues?.Type;
 
   const filteredData = useMemo(() => {
-    let filteredList = data || [];
+    let filteredList = data ?? [];
 
     if (selectedReleaseNoteTypes && selectedReleaseNoteTypes.length > 0) {
       filteredList = filteredList.filter((item) =>
