@@ -11,19 +11,19 @@ const StyledBase = styled(Base)`
   ${(props) => {
     if (!props.variant) {
       return `
-      input {
+      input, area {
       color: ${colors.text.static_icons__default.rgba}
       }
         div:focus-within {
           outline: none !important;
-          input {
+          input, textarea{
               box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
           }
         }
         `;
     } else {
       return `
-    input {
+    input, textarea {
       color: ${colors.text.static_icons__default.rgba}
       }
     `;
