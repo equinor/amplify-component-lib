@@ -35,7 +35,7 @@ function fakeProps(
   };
 }
 
-test('Renders the flow correctly', async () => {
+test('Renders the flow correctly', () => {
   const props = fakeProps();
   render(<WorkflowDescription {...props} />);
 
@@ -72,7 +72,7 @@ test('Renders the flow correctly', async () => {
   }
 });
 
-test('Renders undefined approved dates properly flow correctly', async () => {
+test('Renders undefined approved dates properly flow correctly', () => {
   const props = fakeProps(true);
   render(<WorkflowDescription {...props} />);
 
@@ -89,7 +89,7 @@ test('Renders undefined approved dates properly flow correctly', async () => {
   }
 });
 
-test('Renders with color approved dates properly flow correctly', async () => {
+test('Renders with color approved dates properly flow correctly', () => {
   const props = fakeProps(false, true);
   render(<WorkflowDescription {...props} />);
 
@@ -114,7 +114,7 @@ test('Renders with color approved dates properly flow correctly', async () => {
   }
 });
 
-test('Renders with fallback color', async () => {
+test('Renders with fallback color', () => {
   const props = fakeProps(false, false);
   render(<WorkflowDescription {...props} />);
 

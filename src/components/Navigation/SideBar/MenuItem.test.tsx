@@ -27,7 +27,7 @@ test('MenuItem works as expected in light mode', async () => {
   expect(props.onClick).toHaveBeenCalledTimes(1);
 });
 
-test('MenuItem text renders as correctly when open and active', async () => {
+test('MenuItem text renders as correctly when open and active', () => {
   window.localStorage.setItem(
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: true })

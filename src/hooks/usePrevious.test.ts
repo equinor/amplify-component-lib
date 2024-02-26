@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { renderHook } from '../tests/test-utils';
 import { usePrevious } from './usePrevious';
 
-test('Returns previous value', async () => {
+test('Returns previous value', () => {
   const initial = faker.animal.cow();
   const { result } = renderHook(() => {
     const [value, setValue] = useState(initial);

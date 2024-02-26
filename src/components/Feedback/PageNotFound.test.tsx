@@ -3,7 +3,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { render, screen, userEvent } from '../../tests/test-utils';
 import PageNotFound from './PageNotFound';
 
-test('Displays expected text', async () => {
+test('Displays expected text', () => {
   render(<PageNotFound />, {
     wrapper: (props: any) => <MemoryRouter>{props.children}</MemoryRouter>,
   });

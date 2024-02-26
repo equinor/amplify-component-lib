@@ -14,7 +14,7 @@ test('renders textbox', async () => {
   expect(screen.getByRole('textbox')).toBeInTheDocument();
 });
 
-test('renders child', async () => {
+test('renders child', () => {
   const text = faker.animal.dog();
   render(
     <EditableField editable={true} value="Test">

@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import Section from './Section';
 import { render, screen } from 'src/tests/test-utils';
 
-test('Renders Section correctly with 1 child', async () => {
+test('Renders Section correctly with 1 child', () => {
   const title = faker.animal.fish();
   const childText = faker.animal.snake();
   render(
@@ -16,7 +16,7 @@ test('Renders Section correctly with 1 child', async () => {
   expect(screen.getByText(childText)).toBeInTheDocument();
 });
 
-test('Renders Section correctly with multiple children', async () => {
+test('Renders Section correctly with multiple children', () => {
   const title = faker.animal.bear();
   const childrenText = new Array(faker.number.int({ min: 2, max: 10 }))
     .fill(0)

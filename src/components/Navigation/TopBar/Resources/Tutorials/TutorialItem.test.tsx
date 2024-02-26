@@ -5,7 +5,7 @@ import { render, screen } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
 
-test('Render tutorial Item correctly ', async () => {
+test('Render tutorial Item correctly ', () => {
   const description = faker.lorem.sentence();
 
   const steps = faker.animal.dog();

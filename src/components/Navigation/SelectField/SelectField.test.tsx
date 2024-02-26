@@ -221,7 +221,7 @@ test('Clicking missing access calls window.open with accessit link', async () =>
   );
 }, 15000); // Setting timeout for this test to be 15 seconds
 
-test('Shows skeleton as expected', async () => {
+test('Shows skeleton as expected', () => {
   const fields = fakeFields();
   const finishedText = faker.lorem.sentence();
 
@@ -243,7 +243,7 @@ test('Shows skeleton as expected', async () => {
   expect(screen.getAllByRole('busy')).not.toBe([]);
 });
 
-test('Logs error and doesnt include fields which have no name', async () => {
+test('Logs error and doesnt include fields which have no name', () => {
   const noNameField = { name: null, country: 'NORWAY', uuid: 'nearsnto' };
   const fields = [...fakeFields(), noNameField];
   const finishedText = faker.lorem.sentence();

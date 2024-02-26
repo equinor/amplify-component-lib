@@ -28,7 +28,7 @@ function fakeProps(
   };
 }
 
-test('Shows expected colors on nodes', async () => {
+test('Shows expected colors on nodes', () => {
   const props = fakeProps(true);
   render(<WorkflowStatusBar {...props} />);
 
@@ -46,7 +46,7 @@ test('Shows expected colors on nodes', async () => {
   }
 });
 
-test('Shows expected active node', async () => {
+test('Shows expected active node', () => {
   const props = fakeProps(true);
   render(<WorkflowStatusBar {...props} />);
 
@@ -54,7 +54,7 @@ test('Shows expected active node', async () => {
   expect(activeEl).toBeInTheDocument();
 });
 
-test('Shows expected alert node', async () => {
+test('Shows expected alert node', () => {
   const props = fakeProps(false, true);
   render(<WorkflowStatusBar {...props} />);
 
@@ -62,7 +62,7 @@ test('Shows expected alert node', async () => {
   expect(alertEl).toBeInTheDocument();
 });
 
-test('Works with disabledTooltip = true ', async () => {
+test('Works with disabledTooltip = true ', () => {
   const props = fakeProps(false, false);
   render(<WorkflowStatusBar {...props} disableTooltip />);
 

@@ -280,7 +280,7 @@ test('Basic group multi select with preselected item', async () => {
   expect(handler).toBeCalledWith([], randomItem);
 });
 
-test('Throws error if providing groups and items', async () => {
+test('Throws error if providing groups and items', () => {
   const handle = vi.fn();
   console.error = vi.fn();
   expect(() =>
@@ -296,7 +296,7 @@ test('Throws error if providing groups and items', async () => {
   ).toThrowError();
 });
 
-test('Sorts items as expected', async () => {
+test('Sorts items as expected', () => {
   const label = faker.animal.bear();
   const items = fakeItems();
   const values = [items[3], items[1], items[0]];
@@ -544,7 +544,7 @@ test('Keyboard navigation works as expected', async () => {
   await user.keyboard('{ArrowUp}');
 });
 
-test('Placeholder prop works as expected', async () => {
+test('Placeholder prop works as expected', () => {
   const placeholder = faker.airline.airport().name;
   const label = faker.animal.bear();
   const items = fakeItems();

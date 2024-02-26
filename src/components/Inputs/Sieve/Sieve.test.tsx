@@ -136,7 +136,7 @@ test('Users can sort', async () => {
   });
 });
 
-test('Sort by is hidden when sorting options = []', async () => {
+test('Sort by is hidden when sorting options = []', () => {
   const props = fakeProps();
   render(<Sieve {...props} sortOptions={[]} />, { wrapper: Wrappers });
 
@@ -346,7 +346,7 @@ test('Users can add multiple filters from the same filter menu', async () => {
   }
 });
 
-test('Filter not shown if the options are empty', async () => {
+test('Filter not shown if the options are empty', () => {
   const props = fakeProps();
   render(<Sieve {...props} filterOptions={[]} />, { wrapper: Wrappers });
 
@@ -422,12 +422,8 @@ test('Removing the last filter in a filter group works as expected (from menu)',
       sieveValue={{
         ...props.sieveValue,
         filterValues: {
-          [props.filterOptions![0].label]: [
-            props.filterOptions![0].options[0],
-          ],
-          [props.filterOptions![1].label]: [
-            props.filterOptions![1].options[0],
-          ],
+          [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
+          [props.filterOptions![1].label]: [props.filterOptions![1].options[0]],
         },
       }}
     />,
@@ -472,12 +468,8 @@ test('Removing the last filter in a filter group works as expected (from chip)',
       sieveValue={{
         ...props.sieveValue,
         filterValues: {
-          [props.filterOptions![0].label]: [
-            props.filterOptions![0].options[0],
-          ],
-          [props.filterOptions![1].label]: [
-            props.filterOptions![1].options[0],
-          ],
+          [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
+          [props.filterOptions![1].label]: [props.filterOptions![1].options[0]],
         },
       }}
     />,
@@ -788,7 +780,7 @@ test('Add search params after what the user is choosing', async () => {
   expect(searchValue).toBe(fakeText);
 });
 
-test('Init of search params works with "bad" search params', async () => {
+test('Init of search params works with "bad" search params', () => {
   const props = {
     ...fakeProps(),
   };
@@ -823,7 +815,7 @@ test('Init of search params works with "bad" search params', async () => {
   }
 });
 
-test('Search params works with "bad" search params', async () => {
+test('Search params works with "bad" search params', () => {
   const props = {
     ...fakeProps(),
   };

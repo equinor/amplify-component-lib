@@ -5,7 +5,7 @@ import { render, screen } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
 
-test('Renders Item correctly', async () => {
+test('Renders Item correctly', () => {
   const title = faker.animal.lion();
   const childText = faker.animal.dog();
   render(

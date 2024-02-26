@@ -36,7 +36,7 @@ function removeDuplicates(
 const UploadFile: FC = () => {
   const { feedbackAttachments, setFeedbackAttachments } = useFeedbackContext();
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
-  const onDrop = async (
+  const onDrop = (
     acceptedFiles: FileWithPath[],
     fileRejections: FileRejection[]
   ) => {

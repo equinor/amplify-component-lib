@@ -54,7 +54,7 @@ test('Work as expected when clicking through', async () => {
   ).toBeEmptyDOMElement();
 });
 
-test('Shows image if it has been provided', async () => {
+test('Shows image if it has been provided', () => {
   const props = fakeProps(true);
   render(
     <TutorialStepsProvider startOpen>

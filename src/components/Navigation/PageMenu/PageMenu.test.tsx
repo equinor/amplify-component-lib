@@ -74,7 +74,7 @@ test('OnClick runs as expected', async () => {
   expect(section.scrollIntoView).toHaveBeenCalled();
 });
 
-test('Hides children when onlyShowSelectedChildren = true', async () => {
+test('Hides children when onlyShowSelectedChildren = true', () => {
   const items = fakeItems(true);
 
   render(

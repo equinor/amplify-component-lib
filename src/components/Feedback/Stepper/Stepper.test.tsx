@@ -22,7 +22,7 @@ function fakeProps(): StepperProps {
   };
 }
 
-test('Displays icon/number correctly', async () => {
+test('Displays icon/number correctly', () => {
   const props = fakeProps();
   const { rerender } = render(<Stepper {...props} />);
 
@@ -61,7 +61,7 @@ test('Fires onClick when clicking steps that are in the past', async () => {
   expect(props.setCurrent).toHaveBeenCalledTimes(1);
 });
 
-test('onlyShowCurrentStepLabel prop hides other labels', async () => {
+test('onlyShowCurrentStepLabel prop hides other labels', () => {
   const props = fakeProps();
   render(<Stepper {...props} onlyShowCurrentStepLabel={true} />);
 

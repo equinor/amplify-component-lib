@@ -26,7 +26,7 @@ function fakeProps():
   };
 }
 
-test('Renders regular loading state', async () => {
+test('Renders regular loading state', () => {
   const { file, onDelete } = fakeProps();
   render(
     <FileProgress
@@ -78,7 +78,7 @@ test('Renders regular custom loading text without progressValue, and click cance
   expect(mockOnCancel).toHaveBeenCalledTimes(1);
 });
 
-test('Renders regular complete state default text', async () => {
+test('Renders regular complete state default text', () => {
   const { file, onDelete } = fakeProps();
 
   render(
@@ -97,7 +97,7 @@ test('Renders regular complete state default text', async () => {
   expect(completeText).toBeInTheDocument();
 });
 
-test('Renders regular complete state custom text', async () => {
+test('Renders regular complete state custom text', () => {
   const { file, onDelete } = fakeProps();
   const customCompleteText = faker.animal.crocodilia();
 
@@ -116,7 +116,7 @@ test('Renders regular complete state custom text', async () => {
   expect(completeText).toBeInTheDocument();
 });
 
-test('Renders regular error state retry button and error text', async () => {
+test('Renders regular error state retry button and error text', () => {
   const { file, onDelete } = fakeProps();
   const fakeErrorText = faker.animal.cetacean();
 
@@ -140,7 +140,7 @@ test('Renders regular error state retry button and error text', async () => {
   expect(errorText).toBeInTheDocument();
 });
 
-test('Renders regular error state with default error text', async () => {
+test('Renders regular error state with default error text', () => {
   const { file, onDelete } = fakeProps();
 
   render(
@@ -159,7 +159,7 @@ test('Renders regular error state with default error text', async () => {
   expect(errorText).toBeInTheDocument();
 });
 
-test('Renders compact loading state with progress bar', async () => {
+test('Renders compact loading state with progress bar', () => {
   const { file, onDelete } = fakeProps();
 
   render(
@@ -197,7 +197,7 @@ test('Renders compact loading state without progress precent, and click onDelete
   expect(mockOnDelete).toHaveBeenCalledTimes(1);
 });
 
-test('Renders compact complete state', async () => {
+test('Renders compact complete state', () => {
   const { file, onDelete } = fakeProps();
 
   render(
@@ -217,7 +217,7 @@ test('Renders compact complete state', async () => {
   expect(progressBar).not.toBeInTheDocument();
 });
 
-test('Renders compact complete state when isDone is undefined', async () => {
+test('Renders compact complete state when isDone is undefined', () => {
   const { file, onDelete } = fakeProps();
 
   render(
@@ -237,7 +237,7 @@ test('Renders compact complete state when isDone is undefined', async () => {
   expect(progressBar).not.toBeInTheDocument();
 });
 
-test('Renders compact error state', async () => {
+test('Renders compact error state', () => {
   const { file, onDelete } = fakeProps();
 
   const fakeShortErrorText = faker.animal.rabbit();
@@ -264,7 +264,7 @@ test('Renders compact error state', async () => {
 
   expect(shortErrorText).toBeInTheDocument();
 });
-test('Renders compact default error messages', async () => {
+test('Renders compact default error messages', () => {
   const { file, onDelete } = fakeProps();
 
   render(

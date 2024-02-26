@@ -5,7 +5,7 @@ import favicon from './favicon';
 
 const lightId = 'light';
 const darkId = 'dark';
-test('setupFavicon works as expected', async () => {
+test('setupFavicon works as expected', () => {
   const lightImg = faker.image.url({ width: 64, height: 64 });
   const darkImg = faker.image.url({ width: 64, height: 64 });
   render(
@@ -39,7 +39,7 @@ test('setupFavicon works as expected', async () => {
   expect(document.head.querySelector(`#${lightId}`)).toBeInTheDocument();
 });
 
-test('setupFavicon works as expected when in dark mode', async () => {
+test('setupFavicon works as expected when in dark mode', () => {
   const lightImg = faker.image.url({ width: 64, height: 64 });
   const darkImg = faker.image.url({ width: 64, height: 64 });
   render(

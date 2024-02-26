@@ -74,7 +74,7 @@ const waitForMS = (timeout: number) => {
   return new Promise((r) => setTimeout(r, timeout));
 };
 
-async function fakeImageFile(bad = false) {
+function fakeImageFile(bad = false) {
   const extension = bad ? '.tiff' : '.png';
   return new File([faker.lorem.sentence()], faker.word.noun() + extension);
 }

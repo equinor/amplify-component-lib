@@ -56,7 +56,7 @@ test('Opens/closes as it should, also with useOutsideClick', async () => {
   expect(screen.queryByText('field-name')).not.toBeInTheDocument();
 });
 
-test('field selector do not shown when field isnt selected', async () => {
+test('field selector do not shown when field isnt selected', () => {
   const noSelectedField = {
     currentField: undefined,
     availableFields: fakeProps().availableFields,
