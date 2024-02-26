@@ -2,58 +2,86 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
-    node: true
+    node: true,
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react-hooks/recommended', 'plugin:react/recommended', 'plugin:storybook/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 12,
-    sourceType: 'module'
+    sourceType: 'module',
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
+  ignorePatterns: [
+    'vite.config.ts',
+    '.eslintrc.js',
+    'tsconfig.json',
+    'package.json',
+    'vitest.config.ts',
+    'playwright.config.ts',
+    'src/api',
+  ],
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort'],
   rules: {
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-unused-vars': 'off',
     'react/react-in-jsx-scope': 'off',
-    'react/prop-types': 'off',
-    'react-hooks/exhaustive-deps': 'error',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
-    eqeqeq: 'error',
-    'react/jsx-curly-brace-presence': ['error', {
-      props: 'never',
-      children: 'never'
-    }]
+    // '@typescript-eslint/no-explicit-any': 'off', // use 'unknown' instead if the type is not known
+    // '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      { checksVoidReturn: false },
+    ],
+    '@typescript-eslint/no-unused-vars': 'off',
   },
-  "overrides": [{
-    "files": ["**/*.js", "**/*.ts", "**/*.tsx"],
-    "rules": {
-      "simple-import-sort/imports": ["error", {
-        "groups": [
-        // `react` first
-        ["^react?(.+)"],
-        // Packages starting with `@`
-        ["^@"],
-        // Packages starting with `~`
-        ["^~"],
-        // Imports starting with `./`, `../` `src`
-        ["^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$", "src"],
-        // Imports starting with a character
-        ["^[a-z]"],
-        // Style imports
-        ["^.+\\.s?css$"],
-        // Side effect imports
-        ["^\\u0000"]]
-      }]
-    }
-  }],
+  overrides: [
+    {
+      files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+      rules: {
+        'simple-import-sort/imports': [
+          'error',
+          {
+            groups: [
+              // `react` first
+              ['^react?(.+)'],
+              // Packages starting with `@`
+              ['^@'],
+              // Packages starting with `~`
+              ['^~'],
+              // Imports starting with `./`, `../` `src`
+              [
+                '^\\.\\.(?!/?$)',
+                '^\\.\\./?$',
+                '^\\./(?=.*/)(?!/?$)',
+                '^\\.(?!/?$)',
+                '^\\./?$',
+                'src',
+              ],
+              // Imports starting with a character
+              ['^[a-z]'],
+              // Style imports
+              ['^.+\\.s?css$'],
+              // Side effect imports
+              ['^\\u0000'],
+            ],
+          },
+        ],
+      },
+    },
+  ],
   settings: {
     react: {
       pragma: 'React',
-      version: 'detect'
-    }
-  }
+      version: 'detect',
+    },
+  },
 };
