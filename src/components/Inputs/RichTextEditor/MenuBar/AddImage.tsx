@@ -32,6 +32,8 @@ const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
 
     const image = await onImageUpload(files[0]);
 
+    if (!image) return;
+
     editor?.chain().focus().setImage({ src: image.b64, alt: image.url }).run();
   };
 

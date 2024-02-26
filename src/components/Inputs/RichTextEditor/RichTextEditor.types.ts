@@ -28,4 +28,4 @@ export const DEFAULT_FEATURES = [
 
 export type OnImageUploadFn = (
   file: File
-) => Promise<{ b64: string; url: string }>;
+) => Promise<{ b64: string; url: string } | undefined>;

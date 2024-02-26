@@ -58,8 +58,10 @@ export default Image.extend({
 
               for (const image of images) {
                 onImageUpload(image).then((item) => {
+                  if (!item) return;
                   const node = schema.nodes.image.create({
-                    item,
+                    src: item.b64,
+                    alt: item.url,
                   });
                   const transaction = view.state.tr.insert(
                     coordinates.pos,
@@ -93,8 +95,10 @@ export default Image.extend({
 
               for (const image of images) {
                 onImageUpload(image).then((item) => {
+                  if (!item) return;
                   const node = schema.nodes.image.create({
-                    item,
+                    src: item.b64,
+                    alt: item.url,
                   });
                   const transaction = view.state.tr.replaceSelectionWith(node);
                   view.dispatch(transaction);

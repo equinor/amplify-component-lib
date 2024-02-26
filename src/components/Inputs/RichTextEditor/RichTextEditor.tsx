@@ -43,7 +43,6 @@ const lowlight = createLowlight(common);
 export interface RichTextEditorProps {
   value: string | null | undefined;
   onChange: (value: string) => void;
-  imgReadToken?: string;
   onImageUpload?: OnImageUploadFn;
   placeholder?: string;
   features?: RichTextEditorFeatures[];
@@ -54,7 +53,6 @@ export interface RichTextEditorProps {
 const RichTextEditor: FC<RichTextEditorProps> = ({
   value,
   onChange,
-  imgReadToken,
   onImageUpload,
   placeholder = 'Add text and content here...',
   features,
@@ -101,6 +99,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       Document,
       DropCursor,
       ExtendedImage.configure({
+        allowBase64: true,
         onImageUpload,
       }),
       GapCursor,
@@ -136,22 +135,13 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     onChange?.(props.editor.getHTML());
   };
 
-  const content = useMemo(() => {
-    if (imgReadToken)
-      return value?.replaceAll(
-        /(<img src=")(.+)("\/>)/g,
-        `$1$2?${imgReadToken}$3`
-      );
-    return value;
-  }, [imgReadToken, value]);
-
   return (
     <Wrapper>
       <EditorProvider
         slotBefore={
           <MenuBar features={usingFeatures} onImageUpload={onImageUpload} />
         }
-        content={content}
+        content={value}
         extensions={extensions}
         onUpdate={handleOnUpdate}
       >
