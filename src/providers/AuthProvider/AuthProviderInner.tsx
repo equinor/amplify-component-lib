@@ -140,7 +140,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
             tokenResponse.accessToken
           );
           if (accessToken.roles) {
-            setRoles(accessToken.roles as string[]);
+            setRoles(accessToken.roles);
           }
           setAuthState('authorized');
         }

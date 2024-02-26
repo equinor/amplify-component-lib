@@ -27,9 +27,9 @@ test('setupFavicon works as expected', async () => {
     </div>
   );
 
-  const light = document.querySelector(`#${lightId}`) as Element;
+  const light = document.querySelector(`#${lightId}`)!;
   document.head.appendChild(light);
-  const dark = document.querySelector(`#${darkId}`) as Element;
+  const dark = document.querySelector(`#${darkId}`)!;
   document.head.appendChild(dark);
 
   import.meta.env.DARK = 'false';
@@ -61,9 +61,9 @@ test('setupFavicon works as expected when in dark mode', async () => {
     </div>
   );
 
-  const light = document.querySelector(`#${lightId}`) as Element;
+  const light = document.querySelector(`#${lightId}`)!;
   document.head.appendChild(light);
-  const dark = document.querySelector(`#${darkId}`) as Element;
+  const dark = document.querySelector(`#${darkId}`)!;
   document.head.appendChild(dark);
 
   import.meta.env.DARK = 'true';

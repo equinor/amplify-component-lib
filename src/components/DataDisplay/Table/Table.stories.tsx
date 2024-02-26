@@ -11,12 +11,12 @@ const meta: Meta = {
   component: Table,
 };
 
-type StoryBookData = {
+interface StoryBookData {
   id: string;
   albumId: string;
   title: string;
   url: string;
-};
+}
 
 const helper = createColumnHelper<StoryBookData>();
 

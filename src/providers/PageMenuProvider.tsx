@@ -13,11 +13,11 @@ import {
 import { getValues } from './PageMenuProvider.utils';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
 
-export type PageMenuItemType = {
+export interface PageMenuItemType {
   label: string;
   value: string;
   children?: PageMenuItemType[];
-};
+}
 
 interface PageMenuContextType {
   items: PageMenuItemType[];

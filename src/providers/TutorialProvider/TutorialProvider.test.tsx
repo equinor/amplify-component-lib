@@ -104,7 +104,7 @@ let requestsHaveError = false;
 vi.mock('src/api/services/TutorialService', () => {
   class TutorialService {
     public static getTutorialsForApplication(): CancelablePromise<
-      Array<Tutorial>
+      Tutorial[]
     > {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {

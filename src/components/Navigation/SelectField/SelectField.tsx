@@ -29,14 +29,14 @@ const Container = styled.div`
   width: 100vw;
 `;
 
-export type SelectFieldProps = {
+export interface SelectFieldProps {
   setField: (value: Field) => void;
   fields: Field[];
   isLoading?: boolean;
   onChangedField: () => void;
   showAccessITLink?: boolean;
   finishedText: string; // Example: 'Taking you to the dashboard'
-};
+}
 
 const SelectField: FC<SelectFieldProps> = ({
   setField,

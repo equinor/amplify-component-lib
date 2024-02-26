@@ -11,12 +11,12 @@ export interface Step {
   button: string;
 }
 
-export type TutorialProps = {
+export interface TutorialProps {
   steps: Step[];
   tutorialTitle: string;
   imageSource?: string;
   tutorialIntro: string;
-};
+}
 /**
  * @deprecated since version 6.3.0. We use TutorialProvider instead, and add tutorials to a database on amplify-portal.
  * You can read a small guide in the front-end docs on the JS devops (JS devops -> Overview -> Wiki -> Documentation ->

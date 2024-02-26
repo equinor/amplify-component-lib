@@ -3,11 +3,11 @@ import { faker } from '@faker-js/faker';
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import MultiSelectDrawer, { MultiSelectDrawerProps } from './MultiSelectDrawer';
 
-type FakeType = {
+interface FakeType {
   id: string;
   label: string;
   children?: FakeType[];
-};
+}
 function fakeItem(): FakeType {
   return {
     id: faker.string.uuid(),

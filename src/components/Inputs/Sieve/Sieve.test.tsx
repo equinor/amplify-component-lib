@@ -378,7 +378,7 @@ test('Users can remove filter by clicking it', async () => {
         ...props.sieveValue,
         filterValues: {
           [props.filterOptions![randomFilterGroup].label]: [
-            props!.filterOptions![randomFilterGroup].options[randomIndex],
+            props.filterOptions![randomFilterGroup].options[randomIndex],
           ],
         },
       }}
@@ -423,10 +423,10 @@ test('Removing the last filter in a filter group works as expected (from menu)',
         ...props.sieveValue,
         filterValues: {
           [props.filterOptions![0].label]: [
-            props!.filterOptions![0].options[0],
+            props.filterOptions![0].options[0],
           ],
           [props.filterOptions![1].label]: [
-            props!.filterOptions![1].options[0],
+            props.filterOptions![1].options[0],
           ],
         },
       }}
@@ -456,7 +456,7 @@ test('Removing the last filter in a filter group works as expected (from menu)',
   expect(props.onUpdate).toHaveBeenCalledWith({
     searchValue: undefined,
     filterValues: {
-      [props.filterOptions![0].label]: [props!.filterOptions![0].options[0]],
+      [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
     },
     sortValue: props.sortOptions?.at(0),
   });
@@ -473,10 +473,10 @@ test('Removing the last filter in a filter group works as expected (from chip)',
         ...props.sieveValue,
         filterValues: {
           [props.filterOptions![0].label]: [
-            props!.filterOptions![0].options[0],
+            props.filterOptions![0].options[0],
           ],
           [props.filterOptions![1].label]: [
-            props!.filterOptions![1].options[0],
+            props.filterOptions![1].options[0],
           ],
         },
       }}
@@ -494,7 +494,7 @@ test('Removing the last filter in a filter group works as expected (from chip)',
   expect(props.onUpdate).toHaveBeenCalledWith({
     searchValue: undefined,
     filterValues: {
-      [props.filterOptions![0].label]: [props!.filterOptions![0].options[0]],
+      [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
     },
     sortValue: props.sortOptions?.at(0),
   });
@@ -531,7 +531,7 @@ test('Users can remove filters', async () => {
     ...props.sieveValue,
     filterValues: {
       [props.filterOptions![randomFilterGroup].label]: [
-        props!.filterOptions![randomFilterGroup].options[randomIndex],
+        props.filterOptions![randomFilterGroup].options[randomIndex],
       ],
     },
   };
@@ -557,8 +557,8 @@ test('Users can remove all filters', async () => {
     ...props.sieveValue,
     filterValues: {
       [props.filterOptions![randomFilterGroup].label]: [
-        props!.filterOptions![randomFilterGroup].options[0],
-        props!.filterOptions![randomFilterGroup].options[1],
+        props.filterOptions![randomFilterGroup].options[0],
+        props.filterOptions![randomFilterGroup].options[1],
       ],
     },
   };
@@ -651,7 +651,7 @@ test('handleUpdateSieveValue updates the sieve value correctly', async () => {
         ...props.sieveValue,
         filterValues: {
           [props.filterOptions![randomFilterGroup].label]: [
-            props!.filterOptions![randomFilterGroup].options[0],
+            props.filterOptions![randomFilterGroup].options[0],
           ],
         },
       }}
@@ -731,7 +731,7 @@ test('Add search params after what the user is choosing', async () => {
     searchValue: undefined,
     filterValues: {
       [props.filterOptions![randomFilterGroup].label]: [
-        props!.filterOptions![randomFilterGroup].options[0],
+        props.filterOptions![randomFilterGroup].options[0],
       ],
     },
     sortValue: props.sortOptions![0],
@@ -753,7 +753,7 @@ test('Add search params after what the user is choosing', async () => {
               searchValue: fakeText,
               filterValues: {
                 [props.filterOptions![randomFilterGroup].label]: [
-                  props!.filterOptions![randomFilterGroup].options[0],
+                  props.filterOptions![randomFilterGroup].options[0],
                 ],
               },
             }}
@@ -781,7 +781,7 @@ test('Add search params after what the user is choosing', async () => {
     props.filterOptions![randomFilterGroup].label
   );
   expect(filterValue).toBe(
-    JSON.stringify([props!.filterOptions![randomFilterGroup].options[0].label])
+    JSON.stringify([props.filterOptions![randomFilterGroup].options[0].label])
   );
 
   const searchValue = searchParams.get('search');

@@ -70,7 +70,7 @@ export const getErrorContent = (
   else {
     return getListOfErrors(appName).find(
       (error) => error.type === ErrorType.DEFAULT
-    ) as ErrorContentType;
+    )!;
   }
 };
 

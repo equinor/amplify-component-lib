@@ -33,9 +33,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
-type IconsDict = {
-  [key: ApplicationIconProps['name']]: IconData | IconDataWithColor[];
-};
+type IconsDict = Record<ApplicationIconProps['name'], IconData | IconDataWithColor[]>;
 
 const icons: IconsDict = {
   acquire: acquire,

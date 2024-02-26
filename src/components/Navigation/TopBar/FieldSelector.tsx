@@ -110,12 +110,12 @@ const TextContainer = styled.div`
   }
 `;
 
-export type FieldSelectorType = {
+export interface FieldSelectorType {
   currentField?: Field;
-  availableFields: Array<Field>;
+  availableFields: Field[];
   onSelect: (selectedField: Field) => void;
   showAccessITLink?: boolean;
-};
+}
 
 const FieldSelector = forwardRef<HTMLDivElement, FieldSelectorType>(
   (

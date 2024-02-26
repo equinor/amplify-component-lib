@@ -63,12 +63,12 @@ export interface ShapeProps {
   rotation: number;
 }
 
-type ShapeElementProps = {
+interface ShapeElementProps {
   $top: number;
   $left: number;
   $rotation: number;
   $index: number;
-};
+}
 
 const Shape = styled.div<ShapeElementProps>`
   position: absolute;

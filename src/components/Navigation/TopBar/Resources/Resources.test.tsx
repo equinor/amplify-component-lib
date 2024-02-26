@@ -74,7 +74,7 @@ const waitForMS = (timeout: number) => {
   return new Promise((r) => setTimeout(r, timeout));
 };
 
-async function fakeImageFile(bad: boolean = false) {
+async function fakeImageFile(bad = false) {
   const extension = bad ? '.tiff' : '.png';
   return new File([faker.lorem.sentence()], faker.word.noun() + extension);
 }
@@ -468,7 +468,7 @@ describe('Resources', () => {
         urlInput.blur();
         await waitForMS(1000);
         const helperText = screen.queryByText(/URL must be from a .equinor/i);
-        expect(helperText as HTMLElement).toBeInTheDocument();
+        expect(helperText!).toBeInTheDocument();
 
         await user.clear(urlInput);
 
@@ -482,7 +482,7 @@ describe('Resources', () => {
           /URL must be from a .equinor/i
         );
 
-        expect(helperTextAgain as HTMLElement).toBeInTheDocument();
+        expect(helperTextAgain!).toBeInTheDocument();
         await user.type(urlInput, rightUrl);
 
         expect(helperTextAgain).not.toBeInTheDocument();
@@ -519,7 +519,7 @@ describe('Resources', () => {
 
               const severityInput = screen.getByTestId(
                 'feedback-severity-input'
-              ) as HTMLInputElement;
+              );
 
               await user.click(severityInput);
 

@@ -82,11 +82,11 @@ type StrictField = {
   name: string;
 } & Field;
 
-export type FieldSelectorType = {
-  availableFields: Array<Field>;
+export interface FieldSelectorType {
+  availableFields: Field[];
   onSelect: (selectedField: Field) => void;
   showAccessITLink?: boolean;
-};
+}
 
 const SelectorCard: FC<FieldSelectorType> = ({
   availableFields,

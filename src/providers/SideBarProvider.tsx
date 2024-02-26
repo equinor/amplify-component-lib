@@ -5,9 +5,9 @@ interface SideBarContextType {
   setIsOpen: (value: boolean) => void;
 }
 
-type SideBarState = {
+interface SideBarState {
   isOpen: boolean;
-};
+}
 
 export function useSideBar() {
   const context = useContext(SideBarContext);

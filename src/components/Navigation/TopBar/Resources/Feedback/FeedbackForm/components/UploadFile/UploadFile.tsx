@@ -42,7 +42,7 @@ const UploadFile: FC = () => {
   ) => {
     if (acceptedFiles.length >= 1) {
       const cleanedOfHiddenFiles = acceptedFiles.filter(
-        (file) => file.name[0] !== '.'
+        (file) => !file.name.startsWith('.')
       );
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);

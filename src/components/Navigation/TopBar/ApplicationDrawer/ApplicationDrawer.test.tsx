@@ -55,7 +55,7 @@ let rejectPromise = false;
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
     public static userApplications(): CancelablePromise<
-      Array<AmplifyApplication>
+      AmplifyApplication[]
     > {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {

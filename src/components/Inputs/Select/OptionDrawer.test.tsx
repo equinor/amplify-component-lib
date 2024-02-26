@@ -6,11 +6,11 @@ import OptionDrawer, {
   ToggleEventProps,
 } from './OptionDrawer';
 
-type FakeType = {
+interface FakeType {
   id: string;
   label: string;
   children?: FakeType[];
-};
+}
 
 function fakeItem(hasChildren: boolean, singleChild: boolean): FakeType {
   const children: FakeType[] = [];
@@ -48,7 +48,7 @@ function fakeProps(
   grandChildren = false
 ): OptionDrawerProps<FakeType> {
   const item = fakeItem(hasChildren, singleChild);
-  if (grandChildren && hasChildren && item.children && item.children[0]) {
+  if (grandChildren && hasChildren && item.children?.[0]) {
     item.children[0].children = [fakeItem(false, false)];
   }
 
@@ -59,7 +59,7 @@ function fakeProps(
   };
 }
 
-type FakeSelectedItemType = { id: string; label: string };
+interface FakeSelectedItemType { id: string; label: string }
 
 let selectedItems: FakeSelectedItemType[] = [];
 const handleOnToggle = (e: ToggleEventProps<FakeSelectedItemType>) => {

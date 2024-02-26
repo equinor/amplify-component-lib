@@ -69,7 +69,7 @@ const waitForMS = (timeout: number) => {
   return new Promise((r) => setTimeout(r, timeout));
 };
 
-async function fakeImageFile(bad: boolean = false) {
+async function fakeImageFile(bad = false) {
   const extension = bad ? '.tiff' : '.png';
   return new File([faker.lorem.sentence()], faker.word.noun() + extension);
 }
@@ -443,7 +443,7 @@ describe('Help', () => {
 
         const severityInput = container.querySelector(
           '#feedback-severity'
-        ) as HTMLInputElement;
+        )!;
 
         await user.click(severityInput);
 
@@ -608,7 +608,7 @@ describe('Help', () => {
       urlInput.blur();
       await waitForMS(1000);
       const helperText = screen.queryByText(/URL must be from a .equinor/i);
-      expect(helperText as HTMLElement).toBeInTheDocument();
+      expect(helperText!).toBeInTheDocument();
 
       await user.clear(urlInput);
 
@@ -622,7 +622,7 @@ describe('Help', () => {
         /URL must be from a .equinor/i
       );
 
-      expect(helperTextAgain as HTMLElement).toBeInTheDocument();
+      expect(helperTextAgain!).toBeInTheDocument();
       await user.type(urlInput, rightUrl);
 
       expect(helperTextAgain).not.toBeInTheDocument();

@@ -20,7 +20,7 @@ export class ClipboardEventMock extends Event {
 }
 
 export class DataTransferMock {
-  data: { [key: string]: string };
+  data: Record<string, string>;
 
   constructor() {
     this.data = {};

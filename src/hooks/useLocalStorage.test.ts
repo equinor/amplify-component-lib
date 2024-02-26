@@ -20,7 +20,7 @@ test('useLocalStorage works as expected', async () => {
 
   await waitFor(
     () =>
-      expect(JSON.parse(localStorage.getItem(key) as string)).toBe(newValue),
+      expect(JSON.parse(localStorage.getItem(key)!)).toBe(newValue),
     {
       timeout: 2000,
     }
@@ -39,7 +39,7 @@ test('clear() removes local storage', async () => {
   setState(newValue);
   clear();
 
-  expect(localStorage.getItem(key) as string).toBe(undefined);
+  expect(localStorage.getItem(key)!).toBe(undefined);
 });
 
 test('setting state to undefined removes local storage', async () => {
@@ -53,7 +53,7 @@ test('setting state to undefined removes local storage', async () => {
   const [, setState] = result.current;
   setState(newValue);
 
-  expect(localStorage.getItem(key) as string).toBe(undefined);
+  expect(localStorage.getItem(key)!).toBe(undefined);
 });
 
 test('setting state to null removes local storage', async () => {
@@ -67,7 +67,7 @@ test('setting state to null removes local storage', async () => {
   const [, setState] = result.current;
   setState(newValue);
 
-  expect(localStorage.getItem(key) as string).toBe(undefined);
+  expect(localStorage.getItem(key)!).toBe(undefined);
 });
 
 test('useLocalStorage checks localstorage for value before using default', async () => {
@@ -85,5 +85,5 @@ test('useLocalStorage checks localstorage for value before using default', async
     useLocalStorage<string | undefined>(key, defaultValue, 20000)
   );
 
-  expect(JSON.parse(localStorage.getItem(key) as string)).toBe(oldValue);
+  expect(JSON.parse(localStorage.getItem(key)!)).toBe(oldValue);
 });

@@ -48,7 +48,7 @@ const StepIndicator = styled.div<StepIndicatorProps>`
 `;
 
 interface TutorialStepIndicatorProps {
-  steps: Array<GenericTutorialStep | CustomTutorialStep>;
+  steps: (GenericTutorialStep | CustomTutorialStep)[];
   currentStep: number;
 }
 

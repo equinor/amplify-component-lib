@@ -39,14 +39,14 @@ const Line = styled.div`
   z-index: 10;
 `;
 
-type WorkflowDescriptionType = {
+interface WorkflowDescriptionType {
   color?: string;
   backgroundColor?: string;
   label: string;
   notApprovedLabel?: string;
   approvedUser?: string;
   approvedDate?: string;
-};
+}
 
 export interface WorkflowDescriptionProps {
   options: WorkflowDescriptionType[];

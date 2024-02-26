@@ -20,36 +20,36 @@ export enum StatusEnum {
   partial = 'partial',
 }
 
-export type FeedbackContentLocalStorage = {
+export interface FeedbackContentLocalStorage {
   title: string;
   description: string;
   urgency?: string;
   url?: string;
-};
+}
 
 export type FeedbackContentType = FeedbackContentLocalStorage & {
   attachments?: FileWithPath[];
 };
 
-export type RequestStatusType = {
+export interface RequestStatusType {
   status: StatusEnum;
   serviceNowId?: string;
   errorText?: string;
-};
+}
 
 export type AttachmentStatus = RequestStatusType & {
   fileName: string;
 };
 
-export type FeedbackLocalStorage = {
+export interface FeedbackLocalStorage {
   feedbackContent: FeedbackContentLocalStorage;
   serviceNowRequestResponse: RequestStatusType;
-};
+}
 
-export type SlackStatus = {
+export interface SlackStatus {
   slackRequestResponse: RequestStatusType;
   slackAttachmentsResponse: AttachmentStatus[];
-};
+}
 export type FeedbackRequestStatus = FeedbackLocalStorage & SlackStatus;
 
 export type UpdateRequestStatusHandler = ({

@@ -4,10 +4,10 @@ function degrees2radians(degrees: number): number {
   return degrees * (Math.PI / 180);
 }
 
-type Point = {
+interface Point {
   lat: number;
   lng: number;
-};
+}
 
 function distanceLatLng(x: Point, y: Point): number {
   const R = 6371; // Radius of the earth in km

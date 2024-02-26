@@ -42,7 +42,7 @@ export interface ConfirmationPopupProps {
   show: boolean;
   title?: string;
   body?: string;
-  actions?: Array<JSX.Element>;
+  actions?: JSX.Element[];
   actionPosition?: 'left' | 'right';
   onClose?: () => void | undefined;
   children?: ReactNode;

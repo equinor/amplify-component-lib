@@ -9,7 +9,7 @@ import { spacings } from 'src/style';
 import styled from 'styled-components';
 const { colors } = tokens;
 
-type DetailsContainerProps = { open: boolean };
+interface DetailsContainerProps { open: boolean }
 
 const Container = styled.div<DetailsContainerProps>`
   display: flex;
@@ -44,9 +44,9 @@ const Header = styled.div`
   padding-left: ${spacings.medium};
 `;
 
-type DetailsProps = {
+interface DetailsProps {
   text?: string;
-};
+}
 export const Details = forwardRef<HTMLDivElement, DetailsProps>(
   ({ text }, ref) => {
     const [show, setShow] = useState(false);

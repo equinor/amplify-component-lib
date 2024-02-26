@@ -8,10 +8,10 @@ type StackProps = {
   children: ReactNode;
 } & HTMLAttributes<HTMLDivElement>;
 
-type StyledStackProps = {
+interface StyledStackProps {
   $direction?: CSSObject['flexDirection'];
   $align?: CSSObject['alignItems'];
-};
+}
 
 const StyledStack = styled.div<StyledStackProps>`
   display: flex;

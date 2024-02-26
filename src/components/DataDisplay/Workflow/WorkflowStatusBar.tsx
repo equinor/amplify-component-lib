@@ -75,12 +75,12 @@ const Line = styled.div<LineProps>`
   z-index: 10;
 `;
 
-type WorkflowStatusBarType = {
+interface WorkflowStatusBarType {
   color: string;
   backgroundColor: string;
   label: string;
   value: string;
-};
+}
 
 export interface WorkflowStatusBarProps {
   options: WorkflowStatusBarType[];

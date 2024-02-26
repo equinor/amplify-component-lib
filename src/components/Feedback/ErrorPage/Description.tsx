@@ -2,9 +2,9 @@ import { forwardRef } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
-type DescriptionProps = {
+interface DescriptionProps {
   text?: string;
-};
+}
 export const Description = forwardRef<HTMLDivElement, DescriptionProps>(
   (
     {

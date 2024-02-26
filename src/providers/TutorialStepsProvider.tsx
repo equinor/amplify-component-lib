@@ -9,12 +9,12 @@ import React, {
 
 const localStorageKey = 'tutorialstepscontext';
 
-type TutorialContextState = {
+interface TutorialContextState {
   tutorialStep: string;
   setTutorialStep: (val: string) => void;
   showTutorialIntro: boolean;
   setShowTutorialIntro: (val: boolean) => void;
-};
+}
 
 interface TutorialState {
   step: string;

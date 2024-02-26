@@ -73,9 +73,9 @@ const SearchChildren = <
   return values.filter((v) => v) as T[];
 };
 
-export type MultiSelectDrawerProps<
+export interface MultiSelectDrawerProps<
   T extends { id: string; label: string; children?: T[] },
-> = {
+> {
   disabled?: boolean;
   id?: string;
   items: T[];
@@ -86,7 +86,7 @@ export type MultiSelectDrawerProps<
   placeholder?: string;
   readOnly?: boolean;
   style?: CSSProperties;
-};
+}
 
 /**
  * @deprecated Use ComboBox instead

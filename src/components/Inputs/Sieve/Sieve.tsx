@@ -58,7 +58,7 @@ const Sieve: FC<SieveProps> = ({
 
         filterValues[parent] = parentOptions?.filter((option) =>
           labels.includes(option.label)
-        ) as Option[];
+        )!;
       }
 
       onUpdate({
@@ -95,12 +95,11 @@ const Sieve: FC<SieveProps> = ({
 
       const parents =
         filterOptions?.map((filterOption) => filterOption.label) ?? [];
-      const filterValues = sieveValue.filterValues as FilterValues | undefined;
+      const filterValues = sieveValue.filterValues;
 
       for (const parent of parents) {
         if (
-          filterValues &&
-          filterValues[parent] &&
+          filterValues?.[parent] &&
           filterValues[parent].length > 0
         ) {
           searchParams.set(

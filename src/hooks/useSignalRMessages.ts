@@ -147,7 +147,7 @@ export function useSignalRMessages<
   useEffect(() => {
     if (updateMessage) {
       const updateMessageIndex = messages.findIndex(
-        (x) => x.SequenceNumber === updateMessage!.SequenceNumber
+        (x) => x.SequenceNumber === updateMessage.SequenceNumber
       );
       const tempNotifications = [...messages];
       if (updateMessageIndex > -1) {

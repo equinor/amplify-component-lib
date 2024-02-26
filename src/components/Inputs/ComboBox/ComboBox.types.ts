@@ -5,11 +5,11 @@ type ComboBoxOptionWithoutChildren<T> = {
   label: string;
 } & T;
 
-export type ComboBoxOption<T = { value: string; label: string }> = {
+export interface ComboBoxOption<T = { value: string; label: string }> {
   value: string;
   label: string;
-  children?: Array<ComboBoxOptionWithoutChildren<T>>;
-};
+  children?: ComboBoxOptionWithoutChildren<T>[];
+}
 
 interface SingleComboBoxCommon<T extends ComboBoxOption<T>> {
   value: T | undefined;
@@ -28,12 +28,12 @@ type AmplifyComboboxCommon<T extends ComboBoxOption<T>> =
 
 export type GroupedComboboxProps<T extends ComboBoxOption<T>> =
   AmplifyComboboxCommon<T> & {
-    groups: Array<{ title: string; items: Array<T> }>;
+    groups: { title: string; items: T[] }[];
   };
 
 export type ComboBoxProps<T extends ComboBoxOption<T>> =
   AmplifyComboboxCommon<T> & {
-    items: Array<T>;
+    items: T[];
   };
 
 export interface ComboBoxMenuProps<T extends ComboBoxOption<T>> {

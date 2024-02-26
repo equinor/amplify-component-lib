@@ -31,7 +31,7 @@ function Section({
         id={value}
         ref={(current) => {
           if (current) {
-            current['scrollIntoView'] = vi.fn();
+            current.scrollIntoView = vi.fn();
           }
         }}
       >
@@ -69,7 +69,7 @@ test('OnClick runs as expected', async () => {
 
   await user.click(button);
 
-  const section = document.querySelector(`#${items[1].value}`) as Element;
+  const section = document.querySelector(`#${items[1].value}`)!;
 
   expect(section.scrollIntoView).toHaveBeenCalled();
 });

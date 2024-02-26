@@ -20,10 +20,10 @@ const Container = styled.div`
   width: 500px;
 `;
 
-export type ErrorContentProps = {
+export interface ErrorContentProps {
   illustration?: ReactNode;
   children: ReactNode;
-};
+}
 
 export const ErrorPage = forwardRef<HTMLDivElement, ErrorContentProps>(
   ({ children, illustration = <GlitchAnimation /> }, ref) => {

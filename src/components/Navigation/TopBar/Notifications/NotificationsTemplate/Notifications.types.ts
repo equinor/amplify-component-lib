@@ -1,9 +1,9 @@
-export type userNotification = {
+export interface userNotification {
   userRole: string;
   shortName: string;
   displayName: string;
   image: string;
-};
+}
 
 export enum NotificationsTypes {
   READY_TO_REPORT = 'readytoreport',
@@ -29,11 +29,11 @@ export enum SortNotification {
   UNREAD = 'unread',
 }
 
-export type SignalRMessage = {
+export interface SignalRMessage {
   SequenceNumber: number;
   Read: boolean;
   Subject?: string | null;
-};
+}
 
 export type NotificationDto = {
   notificationId?: string | null;
@@ -77,15 +77,15 @@ export type MergeBranchOrcaTypes = {
   notificationType: NotificationsTypes.MERGE_BRANCH;
 } & NotificationDto;
 
-export type NotificationExperienceDto = {
+export interface NotificationExperienceDto {
   id?: string | null;
   title?: string | null;
   topic?: TagDto;
-};
-export type TagDto = {
+}
+export interface TagDto {
   shortName?: string | null;
   displayName?: string | null;
-};
+}
 
 export type ReviewQANotificationsTypes = {
   well: TagDto;

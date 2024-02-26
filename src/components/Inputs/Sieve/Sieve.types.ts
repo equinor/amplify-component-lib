@@ -1,19 +1,17 @@
 import { FilterOption } from './Filter';
 
-type Option = {
+interface Option {
   label: string;
   value: string;
-};
+}
 
-type FilterValues = {
-  [key: string]: Option[];
-};
+type FilterValues = Record<string, Option[]>;
 
-type SieveValue = {
+interface SieveValue {
   searchValue: string | undefined;
   sortValue: Option | undefined;
   filterValues: FilterValues | undefined;
-};
+}
 
 interface SieveProps {
   searchPlaceholder: string;
