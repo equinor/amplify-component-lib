@@ -21,15 +21,6 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  ignorePatterns: [
-    'vite.config.ts',
-    '.eslintrc.js',
-    'tsconfig.json',
-    'package.json',
-    'vitest.config.ts',
-    'playwright.config.ts',
-    'src/api',
-  ],
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort'],
   rules: {
     'no-console': ['warn', { allow: ['warn', 'error'] }],
