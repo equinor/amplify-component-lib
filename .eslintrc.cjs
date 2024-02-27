@@ -23,7 +23,8 @@ module.exports = {
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort'],
   rules: {
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    // 'no-console': ['warn', { allow: ['warn', 'error'] }],
+    '@typescript-eslint/no-redundant-type-constituents': 'off',
     'no-unused-vars': 'off',
     'react/react-in-jsx-scope': 'off',
     // '@typescript-eslint/no-explicit-any': 'off', // use 'unknown' instead if the type is not known
