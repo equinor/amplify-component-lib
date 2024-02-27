@@ -81,7 +81,7 @@ const RichTextDisplay: FC<RichTextDisplayProps> = ({ value, imgReadToken }) => {
     editable: false,
   });
 
-  const previousValue = useRef<string>(value || '');
+  const previousValue = useRef(value);
 
   useEffect(() => {
     if (editor && value && value !== previousValue.current) {
