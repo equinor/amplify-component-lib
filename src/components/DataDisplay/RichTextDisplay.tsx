@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 import Bold from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
@@ -45,7 +45,9 @@ const extensions = [
   HardBreak,
   Heading,
   History,
-  Image,
+  Image.configure({
+    allowBase64: true,
+  }),
   Italic,
   Link,
   ListItem,
@@ -78,6 +80,15 @@ const RichTextDisplay: FC<RichTextDisplayProps> = ({ value, imgReadToken }) => {
       : value,
     editable: false,
   });
+
+  const previousValue = useRef<string>(value || '');
+
+  useEffect(() => {
+    if (editor && value && value !== previousValue.current) {
+      editor.commands.setContent(value);
+      previousValue.current = value;
+    }
+  }, [editor, value]);
 
   return (
     <Wrapper>
