@@ -75,7 +75,7 @@ function Wrappers({ children }: { children: any }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <ReleaseNotesProvider>
           <SnackbarProvider>{children}</SnackbarProvider>
         </ReleaseNotesProvider>
@@ -83,6 +83,8 @@ function Wrappers({ children }: { children: any }) {
     </QueryClientProvider>
   );
 }
+
+vi.stubEnv('VITE_IS_MOCK', 'true');
 
 test('Should toggle menu and handle application click', async () => {
   rejectPromise = false;
