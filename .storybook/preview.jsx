@@ -40,12 +40,6 @@ export const decorators = [
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   viewMode: 'docs',
-  // controls: {
-  //   matchers: {
-  //     color: /(background|color)$/i,
-  //     date: /Date$/,
-  //   },
-  // },
   backgrounds: {
     default: 'Equinor UI Light (off-white/off-dark)',
     values: [
