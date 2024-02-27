@@ -12,7 +12,7 @@ interface YearData {
   months: MonthData[];
 }
 
-const extractDatesFromReleasNotes = (
+const extractDatesFromReleaseNotes = (
   releaseNotes: ReleaseNote[]
 ): PageMenuItemType[] => {
   const pageMenuItemFormattedNotes: PageMenuItemType[] = [];
@@ -113,7 +113,7 @@ const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
 
 export type { MonthData, YearData };
 export {
-  extractDatesFromReleasNotes,
+  extractDatesFromReleaseNotes,
   monthToString,
   monthValueToString,
   sortReleaseNotesByDate,

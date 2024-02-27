@@ -1,5 +1,5 @@
 import {
-  extractDatesFromReleasNotes,
+  extractDatesFromReleaseNotes,
   monthToString,
   monthValueToString,
   sortReleaseNotesByDate,
@@ -29,7 +29,7 @@ describe('release notes utils', () => {
   test('extract years and months from list containing createdDate attribute', () => {
     const expectedYear = '2023';
     const expectedMonth = 'June';
-    const actual = extractDatesFromReleasNotes(dates);
+    const actual = extractDatesFromReleaseNotes(dates);
     expect(actual[0].label).toEqual(expectedYear);
     expect((actual[0].children ?? [])[0].label).toEqual(expectedMonth);
   });
@@ -37,7 +37,7 @@ describe('release notes utils', () => {
   test('should sort years and months in page menu descending', () => {
     const expectedYearOrder = ['2023', '2022'];
     const expectedMonthOrder = ['July', 'June', 'May', 'January'];
-    const actual = extractDatesFromReleasNotes(dates);
+    const actual = extractDatesFromReleaseNotes(dates);
     const months = actual[1].children ?? [];
     console.log(`Sorted: ${months.map((c) => c.label).join(', ')}`);
 

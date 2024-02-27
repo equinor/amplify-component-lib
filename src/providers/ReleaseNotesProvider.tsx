@@ -14,7 +14,7 @@ import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { Option, SieveValue } from 'src/components';
 import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
 import {
-  extractDatesFromReleasNotes,
+  extractDatesFromReleaseNotes,
   sortReleaseNotesByDate,
 } from 'src/utils/releaseNotes';
 
@@ -65,7 +65,7 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   };
 
   const releaseNotesYears = useMemo(
-    () => extractDatesFromReleasNotes(data ?? []),
+    () => extractDatesFromReleaseNotes(data ?? []),
     [data]
   );
 
