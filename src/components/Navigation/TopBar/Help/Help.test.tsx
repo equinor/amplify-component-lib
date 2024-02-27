@@ -171,8 +171,6 @@ const severityOptions = [
   UrgencyOption.NO_IMPACT,
 ];
 
-vi.stubEnv('VITE_IS_MOCK', 'true');
-
 describe('Help', () => {
   test('Behaves as expected', async () => {
     render(<Help>Child</Help>, {

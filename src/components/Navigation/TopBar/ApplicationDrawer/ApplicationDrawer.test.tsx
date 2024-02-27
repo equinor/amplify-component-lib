@@ -84,8 +84,6 @@ function Wrappers({ children }: { children: any }) {
   );
 }
 
-vi.stubEnv('VITE_IS_MOCK', 'true');
-
 test('Should toggle menu and handle application click', async () => {
   rejectPromise = false;
   render(<ApplicationDrawer />, { wrapper: Wrappers });

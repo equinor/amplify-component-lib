@@ -103,8 +103,6 @@ let mockServiceHasError = false;
 let mockServicePartialError = false;
 let defaultError = false;
 
-vi.stubEnv('VITE_IS_MOCK', 'true');
-
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
     public static createIncident(): CancelablePromise<ServiceNowIncidentResponse> {

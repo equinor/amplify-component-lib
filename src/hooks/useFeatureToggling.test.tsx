@@ -94,7 +94,7 @@ function Wrappers({ children }: { children: any }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <FeatureToggleProvider>{children}</FeatureToggleProvider>
       </AuthProvider>
     </QueryClientProvider>
@@ -104,7 +104,7 @@ function WrappersWithoutFeatureToggleProvider({ children }: { children: any }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>{children}</AuthProvider>
+      <AuthProvider>{children}</AuthProvider>
     </QueryClientProvider>
   );
 }

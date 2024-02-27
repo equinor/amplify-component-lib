@@ -76,7 +76,7 @@ export const Primary: StoryFn = (args) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <SnackbarProvider>
           <ReleaseNotesProvider>
             <MemoryRouter initialEntries={['/']}>
