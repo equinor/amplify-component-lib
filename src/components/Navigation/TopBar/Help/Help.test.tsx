@@ -56,7 +56,7 @@ function Wrappers({ children }: { children: any }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <ReleaseNotesProvider>
           <SnackbarProvider>{children}</SnackbarProvider>
         </ReleaseNotesProvider>
@@ -170,6 +170,8 @@ const severityOptions = [
   UrgencyOption.UNABLE,
   UrgencyOption.NO_IMPACT,
 ];
+
+vi.stubEnv('VITE_IS_MOCK', 'true');
 
 describe('Help', () => {
   test('Behaves as expected', async () => {

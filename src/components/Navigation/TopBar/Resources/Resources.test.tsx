@@ -61,7 +61,7 @@ function Wrappers({ children }: { children: any }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <ReleaseNotesProvider>
           <SnackbarProvider>{children}</SnackbarProvider>
         </ReleaseNotesProvider>
@@ -102,6 +102,8 @@ const SLACK_FILE_ERROR = 'slack file error';
 let mockServiceHasError = false;
 let mockServicePartialError = false;
 let defaultError = false;
+
+vi.stubEnv('VITE_IS_MOCK', 'true');
 
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
