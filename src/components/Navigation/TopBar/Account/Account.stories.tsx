@@ -1,8 +1,15 @@
-import { AccountInfo } from '@azure/msal-common';
+import { AccountInfo } from '@azure/msal-browser';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './stories/data';
-import { Account } from './Account';
+import { Account, AccountProps } from './Account';
+
+interface AccountPropsStory extends AccountProps {
+  username: string;
+  name: string;
+  photo: string;
+  roles: string[];
+}
 
 export default {
   title: 'Navigation/TopBar/Account',
@@ -21,7 +28,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: StoryFn = (args) => {
+export const Primary: StoryFn<AccountPropsStory> = (args) => {
   const account: AccountInfo = {
     ...FAKE_ACCOUNT,
     username: args.username,
@@ -38,7 +45,7 @@ export const Primary: StoryFn = (args) => {
   );
 };
 
-export const WithoutImage: StoryFn = (args) => {
+export const WithoutImage: StoryFn<AccountPropsStory> = (args) => {
   const account: AccountInfo = {
     ...FAKE_ACCOUNT,
     username: args.username,

@@ -38,7 +38,7 @@ export function usePageMenu() {
   return context;
 }
 
-interface PageMenuProviderProps {
+export interface PageMenuProviderProps {
   items: PageMenuItemType[];
   children: ReactElement;
 }

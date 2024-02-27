@@ -25,7 +25,7 @@ test('Copies text to clipboard and displays success message', async () => {
   // Mock navigator object
   Object.defineProperty(navigator, 'clipboard', {
     value: {
-      writeText: (val: string) => (clipboard = val),
+      writeText: (val: string) => new Promise(() => (clipboard = val)),
     },
   });
 
