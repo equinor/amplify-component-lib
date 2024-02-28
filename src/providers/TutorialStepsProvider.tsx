@@ -25,7 +25,7 @@ const getDefaultState = (): TutorialState => {
   const localStorageData = localStorage.getItem(localStorageKey);
 
   if (localStorageData) {
-    return JSON.parse(localStorageData);
+    return JSON.parse(localStorageData) as TutorialState;
   }
   return { step: '', showTutorialIntro: false };
 };

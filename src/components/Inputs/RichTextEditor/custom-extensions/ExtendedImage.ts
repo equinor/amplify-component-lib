@@ -27,10 +27,7 @@ export default Image.extend({
         props: {
           handleDOMEvents: {
             drop(view, event) {
-              const hasFiles =
-                event.dataTransfer &&
-                event.dataTransfer.files &&
-                event.dataTransfer.files.length;
+              const hasFiles = event.dataTransfer?.files?.length;
 
               if (!hasFiles || onImageUpload === undefined) {
                 return;
@@ -72,10 +69,7 @@ export default Image.extend({
               }
             },
             paste(view, event) {
-              const hasFiles =
-                event.clipboardData &&
-                event.clipboardData.files &&
-                event.clipboardData.files.length;
+              const hasFiles = event.clipboardData?.files?.length;
 
               if (!hasFiles || onImageUpload === undefined) {
                 return;

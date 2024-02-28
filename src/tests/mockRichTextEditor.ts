@@ -1,8 +1,8 @@
 import { Mock } from 'vitest';
 
 export class ClipboardDataMock {
-  getData: Mock<any, [string]>;
-  setData: Mock<any, [string, string]>;
+  getData: Mock<string[], [string]>;
+  setData: Mock<string[], [string, string]>;
 
   constructor() {
     this.getData = vi.fn();

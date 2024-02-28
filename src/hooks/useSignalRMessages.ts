@@ -177,11 +177,7 @@ export function useSignalRMessages<
   }, [deletedMessageSequenceNumber, messages]);
 
   async function deleteMessage(message: T) {
-    if (
-      connectionRef.current &&
-      message.SequenceNumber !== undefined &&
-      message.SequenceNumber !== null
-    ) {
+    if (connectionRef.current && message.SequenceNumber !== null) {
       await connectionRef.current.invoke(
         'DeleteMessage',
         message.SequenceNumber

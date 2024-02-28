@@ -77,7 +77,9 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
     if (selectedReleaseNoteTypes && selectedReleaseNoteTypes.length > 0) {
       filteredList = filteredList.filter((item) =>
         item.tags?.some((tag) =>
-          selectedReleaseNoteTypes.map((t: any) => t.value).includes(tag)
+          selectedReleaseNoteTypes
+            .map((option: Option) => option.value)
+            .includes(tag)
         )
       );
     }
