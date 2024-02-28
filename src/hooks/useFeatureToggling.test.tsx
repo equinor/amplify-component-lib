@@ -72,6 +72,8 @@ vi.mock('src/api/services/PortalService', () => {
   class PortalService {
     public static getFeatureToggleFromApplicationName(
       key: string
+      // TODO: replace <any> with the actual type
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): CancelablePromise<any> {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {

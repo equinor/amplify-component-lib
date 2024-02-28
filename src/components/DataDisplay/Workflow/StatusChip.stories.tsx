@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
-import StatusChip from './StatusChip';
+import StatusChip, { StatusChipProps } from './StatusChip';
 
 export default {
   title: 'Data Display/Workflow/StatusChip',

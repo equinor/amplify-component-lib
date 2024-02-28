@@ -62,13 +62,11 @@ test('Renders the flow correctly', () => {
   const notApprovedOptions = props.options.filter(
     (option) => option.approvedDate === undefined
   );
-  for (let i = 0; i < notApprovedOptions.length; i++) {
+  for (const option of notApprovedOptions) {
     expect(
-      screen.getByText(notApprovedOptions[i].notApprovedLabel ?? 'failed')
+      screen.getByText(option.notApprovedLabel ?? 'failed')
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(notApprovedOptions[i].label ?? 'failed')
-    ).toBeInTheDocument();
+    expect(screen.getByText(option.label ?? 'failed')).toBeInTheDocument();
   }
 });
 
@@ -79,13 +77,11 @@ test('Renders undefined approved dates properly flow correctly', () => {
   const notApprovedOptions = props.options.filter(
     (option) => option.approvedDate === undefined
   );
-  for (let i = 0; i < notApprovedOptions.length; i++) {
+  for (const options of notApprovedOptions) {
     expect(
-      screen.getByText(notApprovedOptions[i].notApprovedLabel ?? 'failed')
+      screen.getByText(options.notApprovedLabel ?? 'failed')
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(notApprovedOptions[i].label ?? 'failed')
-    ).toBeInTheDocument();
+    expect(screen.getByText(options.label ?? 'failed')).toBeInTheDocument();
   }
 });
 

@@ -1,5 +1,6 @@
 import { MemoryRouter } from 'react-router';
 
+import { AccountInfo } from '@azure/msal-browser';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -38,7 +39,7 @@ const releaseNotes = [
 ];
 
 vi.mock('@azure/msal-react', () => ({
-  MsalProvider: (children: any) => <div>{children}</div>,
+  MsalProvider: (children: React.ReactElement) => <div>{children}</div>,
 }));
 
 vi.mock('@azure/msal-browser', () => {
@@ -48,7 +49,7 @@ vi.mock('@azure/msal-browser', () => {
         console.log('created');
       }
     },
-    AccountInfo: { username: 'mock' } as any,
+    AccountInfo: { username: 'mock' } as AccountInfo,
   };
 });
 
@@ -112,7 +113,7 @@ vi.mock('src/api/services/PortalService', () => {
       );
     }
 
-    public static fileUpload(formData?: FormData): CancelablePromise<any> {
+    public static fileUpload(formData?: FormData): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError && !mockServicePartialError) {
