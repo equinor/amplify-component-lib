@@ -140,9 +140,9 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       );
     } else if (props.values.find((i) => i.value === item.value)) {
       // Remove parent with all children
-      const copiedItem = JSON.parse(JSON.stringify(item));
+      const copiedItem = JSON.parse(JSON.stringify(item)) as T;
       const removingValues: string[] = [copiedItem.value];
-      const childItems = copiedItem.children || [];
+      const childItems = copiedItem.children ?? [];
       while (childItems.length > 0) {
         const child = childItems.splice(0, 1)[0];
         removingValues.push(child.value);
@@ -155,9 +155,9 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       props.onSelect([...props.values, item], item);
     } else {
       // Add parent with all children
-      const copiedItem = JSON.parse(JSON.stringify(item));
+      const copiedItem = JSON.parse(JSON.stringify(item)) as T;
       const newValues = [copiedItem];
-      const childItems = copiedItem.children || [];
+      const childItems = copiedItem.children ?? [];
       while (childItems.length > 0) {
         const child = childItems.splice(0, 1)[0];
         if (!props.values.find((value) => value.value === child.value)) {

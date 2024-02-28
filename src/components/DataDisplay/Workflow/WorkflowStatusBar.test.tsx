@@ -16,7 +16,7 @@ function fakeProps(
   highlightActiveNode = false,
   showAlert = false
 ): WorkflowStatusBarProps {
-  const options: any = [];
+  const options = [];
   for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     options.push(fakeOption());
   }

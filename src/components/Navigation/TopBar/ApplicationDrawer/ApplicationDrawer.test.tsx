@@ -88,7 +88,7 @@ test('Should toggle menu and handle application click', async () => {
 
   const user = userEvent.setup();
 
-  const menuButton = await screen.getByRole('button');
+  const menuButton = screen.getByRole('button');
 
   await user.click(menuButton);
 
@@ -108,7 +108,7 @@ test('background color is shown for the app you are in', async () => {
 
   const user = userEvent.setup();
 
-  const menuButton = await screen.getByRole('button');
+  const menuButton = screen.getByRole('button');
 
   await user.click(menuButton);
 
