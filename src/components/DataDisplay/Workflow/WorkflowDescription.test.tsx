@@ -26,7 +26,7 @@ function fakeProps(
   undefinedApprovedDate = false,
   withColor = false
 ): WorkflowDescriptionProps {
-  const fakeOptions: any = [];
+  const fakeOptions = [];
   for (let i = 0; i < faker.number.int({ min: 2, max: 20 }); i++) {
     fakeOptions.push(fakeOption(undefinedApprovedDate, withColor));
   }

@@ -9,7 +9,9 @@ import { spacings } from 'src/style';
 import styled from 'styled-components';
 const { colors } = tokens;
 
-interface DetailsContainerProps { open: boolean }
+interface DetailsContainerProps {
+  open: boolean;
+}
 
 const Container = styled.div<DetailsContainerProps>`
   display: flex;

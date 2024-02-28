@@ -44,7 +44,9 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-export interface SingleSelectDrawerProps<T extends { id: string; label: string }> {
+export interface SingleSelectDrawerProps<
+  T extends { id: string; label: string },
+> {
   disabled?: boolean;
   id?: string;
   items: T[];

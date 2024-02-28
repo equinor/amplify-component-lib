@@ -1,3 +1,6 @@
+import { ReactElement, ReactNode } from 'react';
+
+import { AccountInfo } from '@azure/msal-browser';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -8,7 +11,7 @@ import { CancelablePromise } from 'src/api';
 import { AuthProvider, FeatureToggleProvider } from 'src/providers';
 
 vi.mock('@azure/msal-react', () => ({
-  MsalProvider: (children: any) => <div>{children}</div>,
+  MsalProvider: (children: ReactElement) => <div>{children}</div>,
 }));
 
 vi.mock('@azure/msal-browser', () => {
@@ -18,7 +21,7 @@ vi.mock('@azure/msal-browser', () => {
         console.log('created');
       }
     },
-    AccountInfo: { username: 'mock' } as any,
+    AccountInfo: { username: 'mock' } as AccountInfo,
   };
 });
 const ENVIRONMENT = 'test';
@@ -71,10 +74,8 @@ const mockedAppFeatures = [
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
     public static getFeatureToggleFromApplicationName(
-      key: string
-      // TODO: replace <any> with the actual type
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ): CancelablePromise<any> {
+      key: Scenarios
+    ): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {
@@ -92,7 +93,7 @@ vi.mock('src/api/services/PortalService', () => {
 
 let mockServiceHasError = false;
 
-function Wrappers({ children }: { children: any }) {
+function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -102,7 +103,11 @@ function Wrappers({ children }: { children: any }) {
     </QueryClientProvider>
   );
 }
-function WrappersWithoutFeatureToggleProvider({ children }: { children: any }) {
+function WrappersWithoutFeatureToggleProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

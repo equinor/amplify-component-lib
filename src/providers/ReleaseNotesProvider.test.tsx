@@ -53,9 +53,7 @@ const mockServiceHasError = false;
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    // TODO: replace any with the actual type returned by the API request
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public static getReleasenoteList(): CancelablePromise<any> {
+    public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {

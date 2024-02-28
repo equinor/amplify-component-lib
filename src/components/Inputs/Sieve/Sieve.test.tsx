@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ import { FilterOption } from './Filter';
 import Sieve from './Sieve';
 import { Option, SieveProps, SieveValue } from './Sieve.types';
 
-function Wrappers({ children }: { children: any }) {
+function Wrappers({ children }: { children: ReactNode }) {
   return <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>;
 }
 

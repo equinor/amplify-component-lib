@@ -1,4 +1,4 @@
-import { createContext, FC, ReactElement, useContext } from 'react';
+import { createContext, FC, ReactElement, ReactNode, useContext } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -40,7 +40,7 @@ export function useFeatureToggleContext() {
 }
 
 interface FeatureToggleProviderProps {
-  children: ReactElement;
+  children: ReactNode;
 }
 const FeatureToggleProvider: FC<FeatureToggleProviderProps> = ({
   children,

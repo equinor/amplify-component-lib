@@ -1,3 +1,4 @@
+import { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { AccountInfo } from '@azure/msal-browser';
@@ -39,7 +40,7 @@ const releaseNotes = [
 ];
 
 vi.mock('@azure/msal-react', () => ({
-  MsalProvider: (children: React.ReactElement) => <div>{children}</div>,
+  MsalProvider: (children: ReactElement) => <div>{children}</div>,
 }));
 
 vi.mock('@azure/msal-browser', () => {
@@ -53,7 +54,7 @@ vi.mock('@azure/msal-browser', () => {
   };
 });
 
-function Wrappers({ children }: { children: any }) {
+function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -125,7 +126,7 @@ vi.mock('src/api/services/PortalService', () => {
       );
     }
 
-    public static postmessage(formData?: FormData): Promise<any> {
+    public static postmessage(formData?: FormData): Promise<unknown> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError || mockServicePartialError) {
@@ -144,7 +145,7 @@ vi.mock('src/api/services/PortalService', () => {
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<any> {
+    public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {
@@ -155,7 +156,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
         }, 300);
       });
     }
-    public static getContainerSasUri(): CancelablePromise<any> {
+    public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           resolve(`PORTALURL?FAKE_TOKEN`);
