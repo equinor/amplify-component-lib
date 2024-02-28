@@ -56,7 +56,7 @@ function Wrappers({ children }: { children: any }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <ReleaseNotesProvider>
           <SnackbarProvider>{children}</SnackbarProvider>
         </ReleaseNotesProvider>

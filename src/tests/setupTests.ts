@@ -10,6 +10,7 @@ afterEach(() => {
 });
 
 beforeAll(() => {
+  vi.stubEnv('VITE_IS_MOCK', 'true');
   HTMLDialogElement.prototype.show = vi.fn();
   HTMLDialogElement.prototype.showModal = vi.fn();
   HTMLDialogElement.prototype.close = vi.fn();

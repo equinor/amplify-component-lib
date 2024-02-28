@@ -36,6 +36,9 @@ const config = {
       },
     };
   },
+  env: () => ({
+    VITE_IS_MOCK: 'true',
+  }),
 };
 
 export default config;
