@@ -6,6 +6,7 @@ export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
 export { default as RichTextDisplay } from './DataDisplay/RichTextDisplay';
+export { Table } from './DataDisplay/Table/Table';
 export { default as HighlightBlocks } from './DataDisplay/Tutorial/HighlightBlocks/HighlightBlocks';
 export type { Step, TutorialProps } from './DataDisplay/Tutorial/Tutorial';
 export { default as Tutorial } from './DataDisplay/Tutorial/Tutorial';
