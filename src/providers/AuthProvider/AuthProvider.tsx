@@ -4,6 +4,7 @@ import {
   ReactElement,
   ReactNode,
   useContext,
+  useMemo,
   useState,
 } from 'react';
 
@@ -11,9 +12,10 @@ import { AccountInfo } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
 import AuthProviderInner from './AuthProviderInner';
-import { auth } from 'src/utils';
+import { auth, environment } from 'src/utils';
 
 const { msalApp } = auth;
+const { getIsMock } = environment;
 
 export type AuthState = 'loading' | 'authorized' | 'unauthorized';
 
@@ -38,22 +40,20 @@ interface AuthProviderProps {
   children: ReactNode;
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
-  isMock?: undefined;
 }
 
-interface MockAuthProviderProps {
-  children: ReactNode;
-  isMock: true;
-}
-
-const AuthProvider: FC<AuthProviderProps | MockAuthProviderProps> = (props) => {
-  const { children } = props;
+const AuthProvider: FC<AuthProviderProps> = ({
+  children,
+  loadingComponent,
+  unauthorizedComponent,
+}) => {
   const [account, setAccount] = useState<AccountInfo | undefined>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [photo, setPhoto] = useState<string | undefined>();
+  const isMock = useMemo(() => getIsMock(import.meta.env.VITE_IS_MOCK), []);
 
-  if (props.isMock) {
+  if (isMock) {
     return (
       <AuthContext.Provider
         value={{
@@ -86,8 +86,8 @@ const AuthProvider: FC<AuthProviderProps | MockAuthProviderProps> = (props) => {
     >
       <MsalProvider instance={msalApp}>
         <AuthProviderInner
-          loadingComponent={props.loadingComponent}
-          unauthorizedComponent={props.unauthorizedComponent}
+          loadingComponent={loadingComponent}
+          unauthorizedComponent={unauthorizedComponent}
           account={account}
           setAccount={setAccount}
           roles={roles}

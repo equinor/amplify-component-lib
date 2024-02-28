@@ -11,7 +11,7 @@ const Wrappers = ({ children }: { children: any }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <MemoryRouter>
           <ReleaseNotesProvider>{children}</ReleaseNotesProvider>
         </MemoryRouter>

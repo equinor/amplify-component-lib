@@ -19,7 +19,7 @@ export const Primary: StoryFn = () => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <SnackbarProvider>
           <ReleaseNotesProvider>
             <MemoryRouter initialEntries={['/']}>
