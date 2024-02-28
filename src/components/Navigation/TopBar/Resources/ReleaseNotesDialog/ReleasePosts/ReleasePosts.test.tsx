@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
@@ -77,7 +78,7 @@ const releaseNotesWithoutDate = [
   },
 ];
 
-const Wrappers = ({ children }: { children: any }) => {
+const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -95,7 +96,7 @@ let returnWithEmptyDate = false;
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<any> {
+    public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           if (returnEmptyArray) {
@@ -108,7 +109,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
         }, 300);
       });
     }
-    public static getContainerSasUri(): CancelablePromise<any> {
+    public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           resolve(`PORTALURL?FAKE_TOKEN`);

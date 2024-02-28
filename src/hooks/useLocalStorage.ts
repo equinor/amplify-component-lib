@@ -20,7 +20,7 @@ export const getLocalStorage = <T>(
       (localStorageLastEdited &&
         Number(localStorageLastEdited) + keepAliveMs > new Date().getTime()))
   ) {
-    return JSON.parse(localStorageData);
+    return JSON.parse(localStorageData) as T;
   }
 
   return defaultState;

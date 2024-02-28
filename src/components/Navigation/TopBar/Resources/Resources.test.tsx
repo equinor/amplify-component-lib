@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
@@ -59,7 +59,7 @@ vi.mock('@azure/msal-browser', () => {
   };
 });
 
-function Wrappers({ children }: { children: JSX.Element }) {
+function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -131,7 +131,7 @@ vi.mock('src/api/services/PortalService', () => {
       );
     }
 
-    public static postmessage(formData?: FormData): Promise<any> {
+    public static postmessage(formData?: FormData): Promise<unknown> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError || mockServicePartialError) {
@@ -150,7 +150,7 @@ vi.mock('src/api/services/PortalService', () => {
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<any> {
+    public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {
@@ -161,7 +161,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
         }, 300);
       });
     }
-    public static getContainerSasUri(): CancelablePromise<any> {
+    public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           resolve(`PORTALURL?FAKE_TOKEN`);
@@ -545,7 +545,7 @@ describe('Resources', () => {
           mockServiceHasError = true;
           mockServicePartialError = false;
 
-          const imageOne = await fakeImageFile();
+          const imageOne = fakeImageFile();
           const user = userEvent.setup();
 
           const fileUploadArea = screen.getByTestId('file-upload-area-input');
@@ -569,7 +569,7 @@ describe('Resources', () => {
           mockServiceHasError = true;
           mockServicePartialError = true;
 
-          const imageOne = await fakeImageFile();
+          const imageOne = fakeImageFile();
 
           const user = userEvent.setup();
 
@@ -610,8 +610,8 @@ describe('Resources', () => {
           mockServiceHasError = false;
           mockServicePartialError = false;
           defaultError = false;
-          const imageOne = await fakeImageFile();
-          const imageTwo = await fakeImageFile();
+          const imageOne = fakeImageFile();
+          const imageTwo = fakeImageFile();
 
           const user = userEvent.setup();
 
@@ -669,7 +669,6 @@ describe('Resources', () => {
           await user.click(closeButton);
           await waitForMS(1000);
           expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
-          await waitFor(() => {});
         }, 20000); // Setting timeout for this test to be 20 seconds
       });
     });

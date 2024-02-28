@@ -502,8 +502,8 @@ describe('Help', () => {
     test('Inputting all fields with file works as expected', async () => {
       mockServiceHasError = false;
       const { title, description, url } = fakeInputs();
-      const imageOne = await fakeImageFile();
-      const imageTwo = await fakeImageFile();
+      const imageOne = fakeImageFile();
+      const imageTwo = fakeImageFile();
 
       render(<Help />, {
         wrapper: Wrappers,
@@ -583,7 +583,6 @@ describe('Help', () => {
       await user.click(closeButton);
       await waitForMS(1000);
       expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
-      await waitFor(() => {});
     }, 20000); // Setting timeout for this test to be 20 seconds
 
     test('Url validation working as expected', async () => {
@@ -632,7 +631,7 @@ describe('Help', () => {
       mockServiceHasError = true;
       mockServicePartialError = true;
       const { title, description } = fakeInputs();
-      const imageOne = await fakeImageFile();
+      const imageOne = fakeImageFile();
 
       render(<Help />, {
         wrapper: Wrappers,
@@ -690,7 +689,7 @@ describe('Help', () => {
       mockServiceHasError = true;
       mockServicePartialError = false;
       const { title, description } = fakeInputs();
-      const imageOne = await fakeImageFile();
+      const imageOne = fakeImageFile();
       console.error = vi.fn();
       render(<Help />, {
         wrapper: Wrappers,

@@ -47,15 +47,15 @@ const GlobalStyles = createGlobalStyle`
   button {
     border: none;
     background: none;
-    cursor: pointer; 
+    cursor: pointer;
   }
-  
+
   hr {
     margin: 0;
     border: none;
     background: ${colors.ui.background__medium.rgba};
   }
-  
+
   body {
     margin: 0;
     font-family: 'Equinor', sans-serif;

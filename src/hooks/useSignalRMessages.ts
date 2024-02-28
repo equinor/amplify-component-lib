@@ -128,8 +128,8 @@ export function useSignalRMessages<
 
         /* Get all active messages */
         await connection.invoke('PeekMessages');
-      } catch (e: any) {
-        throw new Error('Connection failed: ', e);
+      } catch (error) {
+        console.error('Connection failed', error);
       }
       connectionRef.current = connection;
     }
