@@ -28,7 +28,7 @@ module.exports = {
     'no-unused-vars': 'off',
     'react/react-in-jsx-scope': 'off',
     // '@typescript-eslint/no-explicit-any': 'off', // use 'unknown' instead if the type is not known
-    // '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-misused-promises': [
       'error',
       { checksVoidReturn: false },

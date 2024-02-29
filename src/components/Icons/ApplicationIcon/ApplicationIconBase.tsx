@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, IconProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -112,12 +112,16 @@ const ApplicationIconBase = forwardRef<
             <Icon
               key={`icon-${index}`}
               data={icon}
-              size={size}
+              size={size as IconProps['size']}
               color={icon.color}
             />
           ))
         ) : (
-          <Icon data={iconData} size={size} color="#ffffff" />
+          <Icon
+            data={iconData}
+            size={size as IconProps['size']}
+            color="#ffffff"
+          />
         )}
       </Container>
     );
@@ -135,12 +139,16 @@ const ApplicationIconBase = forwardRef<
           <Icon
             key={`icon-${index}`}
             data={icon}
-            size={size}
+            size={size as IconProps['size']}
             color={icon.color}
           />
         ))
       ) : (
-        <Icon data={iconData} size={size} color="#ffffff" />
+        <Icon
+          data={iconData}
+          size={size as IconProps['size']}
+          color="#ffffff"
+        />
       )}
       {shapes.map((shape, index) => (
         <Shape
