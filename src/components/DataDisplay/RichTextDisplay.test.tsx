@@ -50,3 +50,21 @@ test('Image read token prop works as expected', async () => {
     `${randomUrl}?${randomToken}`
   );
 });
+
+test('Shows content when sending in new value', async () => {
+  const content = faker.animal.dog();
+  const { rerender } = render(<RichTextDisplay value={content} />);
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(screen.getByText(content)).toBeInTheDocument();
+
+  const newContent = faker.airline.airplane().name;
+  rerender(<RichTextDisplay value={newContent} />);
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(screen.getByText(newContent)).toBeInTheDocument();
+
+  expect(screen.queryByText(content)).not.toBeInTheDocument();
+});

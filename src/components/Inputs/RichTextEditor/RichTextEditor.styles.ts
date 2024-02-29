@@ -16,10 +16,6 @@ export const Wrapper = styled.div`
     height: inherit;
   }
 
-  > div:last-child {
-    display: grid;
-    flex-grow: 1;
-  }
   .tiptap {
     height: fit-content;
     min-height: 200px;

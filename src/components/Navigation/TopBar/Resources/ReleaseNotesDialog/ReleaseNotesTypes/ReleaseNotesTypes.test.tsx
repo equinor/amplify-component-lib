@@ -12,7 +12,7 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider isMock>
+      <AuthProvider>
         <MemoryRouter>
           <ReleaseNotesProvider>{children}</ReleaseNotesProvider>
         </MemoryRouter>

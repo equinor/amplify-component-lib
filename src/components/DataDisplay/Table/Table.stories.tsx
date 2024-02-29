@@ -4,7 +4,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { data } from './stories/data';
-import Table from './Table';
+import { Table } from './Table';
 
 const meta: Meta = {
   title: 'Data Display/Table',

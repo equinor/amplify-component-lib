@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { data } from './stories/data';
-import Table from './Table';
+import { Table } from './Table';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 const columns = [

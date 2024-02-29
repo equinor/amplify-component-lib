@@ -56,7 +56,7 @@ const Wrapper = styled.div<WrapperProps>`
     `}
 `;
 
-const Table = <T,>(props: EdsDataGridProps<T>) => {
+export const Table = <T,>(props: EdsDataGridProps<T>) => {
   return (
     <Wrapper
       $enableSorting={props.enableSorting ?? false}
@@ -66,5 +66,3 @@ const Table = <T,>(props: EdsDataGridProps<T>) => {
     </Wrapper>
   );
 };
-
-export default Table;
