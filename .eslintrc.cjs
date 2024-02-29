@@ -23,18 +23,14 @@ module.exports = {
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort'],
   rules: {
-    // 'no-console': ['warn', { allow: ['warn', 'error'] }],
-    '@typescript-eslint/no-redundant-type-constituents': 'off',
-    'no-unused-vars': 'off',
     'react/react-in-jsx-scope': 'off',
-    // '@typescript-eslint/no-explicit-any': 'off', // use 'unknown' instead if the type is not known
+    '@typescript-eslint/no-redundant-type-constituents': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-floating-promises': 'off', // we don't always care about unhandles promises
     '@typescript-eslint/no-misused-promises': [
       'error',
       { checksVoidReturn: false },
     ],
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-floating-promises': 'off',
   },
   overrides: [
     {
@@ -69,6 +65,13 @@ module.exports = {
           },
         ],
       },
+    },
+    {
+      files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+      excludedFiles: ['*.test.*', '*.stories.*'],
+      rules: {
+        'no-console': ['warn', { allow: ['warn', 'error'] }],
+      }
     },
   ],
   settings: {
