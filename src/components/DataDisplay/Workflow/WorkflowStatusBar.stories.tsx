@@ -89,7 +89,22 @@ export default {
   },
 } as Meta;
 
-export const Primary: StoryFn = (args) => (
+interface WorkflowStatusBarStoryProps {
+  options: {
+    label: string;
+    value: string;
+    color: string;
+    backgroundColor: string;
+  }[];
+  activeNode: string;
+  showAlert: boolean;
+  highlightActiveNode: boolean;
+  disableTooltip: boolean;
+  lineActiveColor: string;
+  lineDefaultColor: string;
+}
+
+export const Primary: StoryFn<WorkflowStatusBarStoryProps> = (args) => (
   <div style={{ fontSize: '16px' }}>
     <WorkflowStatusBar
       options={args.options}

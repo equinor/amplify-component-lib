@@ -19,7 +19,7 @@ export class ReleaseNotesService {
     applicationName?: string,
     version?: string,
     tags?: Array<string>
-  ): CancelablePromise<unknown> {
+  ): CancelablePromise<any> {
     return __request(OpenAPI_Portal, {
       method: 'GET',
       url: '/api/v1/ReleaseNotes',
@@ -35,7 +35,7 @@ export class ReleaseNotesService {
    * @returns any Success
    * @throws ApiError
    */
-  public static getMyReleasenotes(): CancelablePromise<unknown> {
+  public static getMyReleasenotes(): CancelablePromise<any> {
     return __request(OpenAPI_Portal, {
       method: 'GET',
       url: '/api/v1/ReleaseNotes/myreleasenotes',
@@ -51,7 +51,7 @@ export class ReleaseNotesService {
   public static getReleasenote(
     applicationName: string,
     releaseId: string
-  ): CancelablePromise<unknown> {
+  ): CancelablePromise<any> {
     return __request(OpenAPI_Portal, {
       method: 'GET',
       url: '/api/v1/ReleaseNotes/{applicationName}/{releaseId}',

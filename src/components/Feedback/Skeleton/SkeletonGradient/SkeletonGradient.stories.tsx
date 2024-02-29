@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import SkeletonGradient from './SkeletonGradient';
+import SkeletonGradient, { SkeletonGradientProps } from './SkeletonGradient';
 
 import styled from 'styled-components';
 
@@ -17,7 +17,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-export const Template: StoryFn = (args) => {
+export const Template: StoryFn<SkeletonGradientProps> = (args) => {
   return (
     <Container>
       <svg width={400} height={160}>

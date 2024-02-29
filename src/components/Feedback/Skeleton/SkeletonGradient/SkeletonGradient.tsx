@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { COLORS } from '../Skeleton.styles';
 
-interface SkeletonGradientProps {
+export interface SkeletonGradientProps {
   duration?: string;
 }
 

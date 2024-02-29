@@ -51,7 +51,20 @@ export default {
   },
 } as Meta;
 
-export const Primary: StoryFn = (args) => {
+interface ErrorPageStoryProps {
+  customized: boolean;
+  robot: string;
+  type: ErrorType;
+  title: string;
+  description: string;
+  haveMissingAccesses: boolean;
+  missingAccesses: { title: string; url: string }[];
+  buttonText: string;
+  haveDetails: boolean;
+  details: string;
+}
+
+export const Primary: StoryFn<ErrorPageStoryProps> = (args) => {
   const error = getErrorContent('Amplify portal', args.type);
 
   const customized = args.customized;
