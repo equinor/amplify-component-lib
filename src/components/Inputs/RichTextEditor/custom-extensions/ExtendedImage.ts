@@ -53,14 +53,19 @@ export default Image.extend({
               if (!coordinates) return;
 
               for (const image of images) {
-                onImageUpload(image).then((item) => {
-                  if (!item) return;
-                  const node = schema.nodes.image.create({
-                    src: item.b64,
-                    alt: item.url,
+                onImageUpload(image)
+                  .then((item) => {
+                    if (!item) return;
+                    const node = schema.nodes.image.create({
+                      src: item.b64,
+                      alt: item.url,
+                    });
+                  })
+                  .catch((error) => {
+                    console.log(error);
                   });
               }
-            },
+            }, // drop
             paste(view, event) {
               const hasFiles = event.clipboardData?.files?.length;
 
@@ -81,11 +86,16 @@ export default Image.extend({
               const { schema } = view.state;
 
               for (const image of images) {
-                onImageUpload(image).then((item) => {
-                  if (!item) return;
-                  const node = schema.nodes.image.create({
-                    src: item.b64,
-                    alt: item.url,
+                onImageUpload(image)
+                  .then((item) => {
+                    if (!item) return;
+                    const node = schema.nodes.image.create({
+                      src: item.b64,
+                      alt: item.url,
+                    });
+                  })
+                  .catch((error) => {
+                    console.log(error);
                   });
               }
             },
