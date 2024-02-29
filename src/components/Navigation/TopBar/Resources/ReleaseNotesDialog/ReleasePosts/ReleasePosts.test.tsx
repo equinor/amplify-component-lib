@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import ReleasePosts from './ReleasePosts';
 import { CancelablePromise } from 'src/api';
+import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, waitFor, within } from 'src/tests/test-utils';
 
@@ -64,7 +65,7 @@ const releaseNotes = [
     tags: ['Feature', 'Improvement', 'Bug fix'],
     createdDate: '2023-08-31T21:05:01.6920+00:00',
   },
-];
+] as ReleaseNote[];
 
 const releaseNotesWithoutDate = [
   {

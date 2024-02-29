@@ -5,9 +5,7 @@ import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import FullSlackResponse from './FullSlackResponse';
 import RequestStatus from './RequestStatus';
 
-interface ResponseStatusProps {}
-
-const ResponseStatus: FC<ResponseStatusProps> = () => {
+const ResponseStatus: FC = () => {
   const {
     serviceNowRequestResponse,
     selectedType,

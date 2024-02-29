@@ -29,7 +29,7 @@ export const GroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
   const filteredGroupSum = useMemo(() => {
     const itemsCount = filteredGroups.map((group) => group.items.length);
 
-    const sum = new Array(itemsCount.length).fill(0);
+    const sum = new Array(itemsCount.length).fill(0) as number[];
 
     for (const [index, itemCount] of itemsCount.entries()) {
       if (index === 0) continue;

@@ -72,7 +72,7 @@ const TextColor: FC = () => {
         type="color"
         onInput={handleOnInput}
         value={
-          editor?.getAttributes('textStyle')?.color ||
+          (editor?.getAttributes('textStyle')?.color as string) ||
           colors.text.static_icons__default.hex
         }
       />
@@ -82,7 +82,7 @@ const TextColor: FC = () => {
       <ColorBar
         style={{
           background:
-            editor?.getAttributes('textStyle').color ||
+            (editor?.getAttributes('textStyle')?.color as string) ||
             colors.text.static_icons__default.hex,
         }}
       />

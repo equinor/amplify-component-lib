@@ -420,9 +420,14 @@ test('Searching works as expected', async () => {
 
   // Opens when typing again
 
+  interface Item {
+    label: string;
+    value: string;
+  }
+
   const nextRandom = items.at(
     items.findIndex((i) => i.value === randomItem.value) - 1
-  ) as any;
+  ) as Item;
 
   await user.keyboard(nextRandom.label);
 
