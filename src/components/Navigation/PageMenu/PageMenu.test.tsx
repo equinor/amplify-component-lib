@@ -71,6 +71,8 @@ test('OnClick runs as expected', async () => {
 
   const section = document.querySelector(`#${items[1].value}`)!;
 
+  // TODO: fix this?
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   expect(section.scrollIntoView).toHaveBeenCalled();
 });
 

@@ -12,6 +12,7 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
+import { NotificationsProps } from './NotificationsInner';
 
 export default {
   title: 'Navigation/TopBar/Notifications',
@@ -138,7 +139,7 @@ const items: (
   } as Due3WeeksTypes,
 ];
 
-export const Primary: StoryFn = (args) => {
+export const Primary: StoryFn<NotificationsProps> = (args) => {
   return (
     <TopBar.Notifications
       hasUnread={args.hasUnread}

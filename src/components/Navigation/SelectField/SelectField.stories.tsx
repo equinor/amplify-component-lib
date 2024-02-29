@@ -111,12 +111,12 @@ export const Primary: StoryFn = (args) => {
         </TopBar.Actions>
       </TopBar>
       <SelectField
-        showAccessITLink={args.showAccessITLink}
+        showAccessITLink={args.showAccessITLink as boolean}
         setField={setField}
         fields={fields}
         isLoading={isLoading}
         onChangedField={onChangedField}
-        finishedText={args.finishedText}
+        finishedText={args.finishedText as string}
       />
     </StoryContainer>
   );

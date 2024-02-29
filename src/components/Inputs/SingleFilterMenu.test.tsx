@@ -8,7 +8,7 @@ function getTestProps(): {
   data: string[];
   icon: IconData;
   menuTitle: string;
-  onChange: any;
+  onChange: (selectedId: string | undefined | null) => void;
 } {
   return {
     data: new Array(faker.number.int({ min: 1, max: 10 }))

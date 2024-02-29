@@ -9,7 +9,7 @@ export default {
   title: 'Navigation/SideBar',
   body: `
     Supports not having a create action if it isn't needed. Saves current open-state to localStorage with: 'amplify-sidebar-state: boolean'.
-   
+
   `,
   component: SideBar,
   argTypes: {
@@ -58,11 +58,13 @@ export const Primary: StoryFn = (args) => {
     <SideBarProvider>
       <div style={{ display: 'flex', height: '95vh' }}>
         <SideBar
-          createLabel={args.hasCreateButton && args.createLabel}
+          createLabel={
+            (args.hasCreateButton as string) && (args.createLabel as string)
+          }
           onCreate={
             args.hasCreateButton ? () => console.log('Created 🖋') : undefined
           }
-          createDisabled={args.disabledCreateButton}
+          createDisabled={args.disabledCreateButton as boolean}
         >
           {menuItems.map((m, index) => (
             <SideBar.Item
