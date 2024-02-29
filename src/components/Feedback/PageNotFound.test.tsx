@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { render, screen, userEvent } from '../../tests/test-utils';
@@ -5,7 +6,9 @@ import PageNotFound from './PageNotFound';
 
 test('Displays expected text', () => {
   render(<PageNotFound />, {
-    wrapper: (props: any) => <MemoryRouter>{props.children}</MemoryRouter>,
+    wrapper: (props: { children: ReactNode }) => (
+      <MemoryRouter>{props.children}</MemoryRouter>
+    ),
   });
 
   expect(screen.getByText(/page not found/i)).toBeInTheDocument();
@@ -21,7 +24,7 @@ test('Runs navigate(-1) when clicking button', async () => {
       <Route path="home" element={<p>Home page</p>} />
     </Routes>,
     {
-      wrapper: (props: any) => (
+      wrapper: (props: { children: ReactNode }) => (
         <MemoryRouter initialEntries={['/home', '/not-found']}>
           {props.children}
         </MemoryRouter>

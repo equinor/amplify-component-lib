@@ -131,8 +131,8 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     [onImageUpload, placeholder]
   );
 
-  const handleOnUpdate = (props: EditorEvents['update']) => {
-    onChange?.(props.editor.getHTML());
+  const handleOnUpdate = ({ editor }: EditorEvents['update']) => {
+    onChange?.(editor.getHTML());
   };
 
   const content = useMemo(() => {

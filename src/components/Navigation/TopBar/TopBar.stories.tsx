@@ -130,16 +130,8 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
             createLabel="Create something"
             onCreate={() => console.log('Created 🖋')}
           >
-            {menuItems.map((m) => (
-              <SideBar.Item
-                key={m.name}
-                {...m}
-                disabled={
-                  false
-                  // TODO: disabledItem is not an argument
-                  // args.disabledItem !== 'none' && m.link === args.disabledItem
-                }
-              />
+            {menuItems.map((m, index) => (
+              <SideBar.Item key={m.name} {...m} disabled={index === 0} />
             ))}
           </SideBar>
         </SideBarProvider>

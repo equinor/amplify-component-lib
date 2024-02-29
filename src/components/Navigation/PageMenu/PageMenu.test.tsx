@@ -53,8 +53,8 @@ test('OnClick runs as expected', async () => {
       ))}
     </div>,
     {
-      wrapper: (props: any) => (
-        <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+      wrapper: (props: { children: ReactNode }) => (
+        <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
       ),
     }
   );
@@ -93,7 +93,7 @@ test('Hides children when onlyShowSelectedChildren = true', () => {
       ))}
     </div>,
     {
-      wrapper: (props: any) => (
+      wrapper: (props: { children: ReactNode }) => (
         <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
       ),
     }

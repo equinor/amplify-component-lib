@@ -5,9 +5,6 @@ declare module '@tiptap/extension-image' {
   interface ImageOptions {
     inline: boolean;
     allowBase64: boolean;
-    // TODO: replace with correct type
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    HTMLAttributes: Record<string, any>;
     onImageUpload?: (file: File) => Promise<string>;
   }
 }

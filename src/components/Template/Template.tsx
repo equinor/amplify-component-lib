@@ -81,7 +81,10 @@ const GlobalStyles = createGlobalStyle`
 
 `;
 
+// TODO: replace any with correct type for IStyledComponent
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TemplateType = IStyledComponent<'web', any> & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Container: IStyledComponent<'web', any>;
   Content: typeof Content;
   GlobalStyles: typeof GlobalStyles;

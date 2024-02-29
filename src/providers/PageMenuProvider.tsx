@@ -1,7 +1,7 @@
 import {
   createContext,
   FC,
-  ReactElement,
+  ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -40,7 +40,7 @@ export function usePageMenu() {
 
 export interface PageMenuProviderProps {
   items: PageMenuItemType[];
-  children: ReactElement;
+  children: ReactNode;
 }
 
 const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {

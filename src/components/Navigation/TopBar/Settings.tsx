@@ -41,7 +41,7 @@ const SettingsItems = styled.div`
 export interface ISettingsSections {
   title: string;
   type: string;
-  onChange?: (val: unknown) => void;
+  onChange?: (val: string) => void;
   items: {
     label: string;
     name: string;
