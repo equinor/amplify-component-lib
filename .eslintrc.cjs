@@ -34,6 +34,7 @@ module.exports = {
       { checksVoidReturn: false },
     ],
     '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
   },
   overrides: [
     {
