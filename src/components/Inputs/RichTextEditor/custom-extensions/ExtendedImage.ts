@@ -56,16 +56,18 @@ export default Image.extend({
                 onImageUpload(image)
                   .then((item) => {
                     if (!item) return;
+                    // TODO: is this still used?
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const node = schema.nodes.image.create({
                       src: item.b64,
                       alt: item.url,
                     });
                   })
                   .catch((error) => {
-                    console.log(error);
+                    console.error(error);
                   });
               }
-            }, // drop
+            },
             paste(view, event) {
               const hasFiles = event.clipboardData?.files?.length;
 
@@ -89,13 +91,15 @@ export default Image.extend({
                 onImageUpload(image)
                   .then((item) => {
                     if (!item) return;
+                    // TODO: is this still used?
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const node = schema.nodes.image.create({
                       src: item.b64,
                       alt: item.url,
                     });
                   })
                   .catch((error) => {
-                    console.log(error);
+                    console.error(error);
                   });
               }
             },
