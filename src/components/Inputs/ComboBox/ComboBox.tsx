@@ -33,7 +33,8 @@ export type ComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   sortValues?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  className?: string;
+  lightBackground?: boolean;
+  underlineHighlight?: boolean;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 export const ComboBox = <T extends ComboBoxOption<T>>(
@@ -224,8 +225,14 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   return (
-    <div className={props.className ?? ''}>
-      <Container ref={anchorRef} onClick={handleOnOpen} aria-expanded={open}>
+    <div>
+      <Container
+        ref={anchorRef}
+        onClick={handleOnOpen}
+        aria-expanded={open}
+        $underlineHighlight={props.underlineHighlight}
+        $lightBackground={props.lightBackground}
+      >
         {props.label && (
           <Label label={props.label} htmlFor="amplify-combobox" />
         )}
@@ -241,6 +248,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
                   }
                 }}
                 $tryingToRemove={tryingToRemoveItem?.value === value.value}
+                $lightBackground={props.lightBackground}
               >
                 {value.label}
               </StyledChip>

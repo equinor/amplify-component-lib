@@ -7,13 +7,27 @@ import styled from 'styled-components';
 
 const { colors, spacings: EDSSpacings } = tokens;
 
-export const Container = styled.div`
+interface ContainerProps {
+  $lightBackground?: boolean;
+  $underlineHighlight?: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
   padding: ${spacings.medium_small} ${spacings.medium};
+
+  ${({ $underlineHighlight }) =>
+    $underlineHighlight
+      ? `box-shadow: inset 0 -2px 0 0 ${colors.infographic.substitute__blue_overcast.hex}`
+      : ''};
+
+  ${({ $lightBackground }) =>
+    `background-color: ${$lightBackground ? 'white' : 'default'}`};
+
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
   }
@@ -95,13 +109,16 @@ export const Section = styled.section`
 
 interface StyledChipProps {
   $tryingToRemove: boolean;
+  $lightBackground?: boolean;
 }
 
 export const StyledChip = styled(Chip)<StyledChipProps>`
-  background: ${({ $tryingToRemove }) =>
+  background: ${({ $tryingToRemove, $lightBackground }) =>
     $tryingToRemove
       ? colors.interactive.primary__hover_alt.rgba
-      : colors.ui.background__default.rgba};
+      : $lightBackground
+        ? colors.ui.background__light.rgba
+        : colors.ui.background__default.rgba};
 `;
 
 interface CustomMenuItemProps {
