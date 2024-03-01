@@ -56,12 +56,15 @@ export default Image.extend({
                 onImageUpload(image)
                   .then((item) => {
                     if (!item) return;
-                    // TODO: is this still used?
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const node = schema.nodes.image.create({
                       src: item.b64,
                       alt: item.url,
                     });
+                    const transaction = view.state.tr.insert(
+                      coordinates.pos,
+                      node
+                    );
+                    view.dispatch(transaction);
                   })
                   .catch((error) => {
                     console.error(error);
@@ -91,12 +94,13 @@ export default Image.extend({
                 onImageUpload(image)
                   .then((item) => {
                     if (!item) return;
-                    // TODO: is this still used?
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const node = schema.nodes.image.create({
                       src: item.b64,
                       alt: item.url,
                     });
+                    const transaction =
+                      view.state.tr.replaceSelectionWith(node);
+                    view.dispatch(transaction);
                   })
                   .catch((error) => {
                     console.error(error);
