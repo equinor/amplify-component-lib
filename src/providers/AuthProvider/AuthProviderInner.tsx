@@ -129,9 +129,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         console.error(error);
       }
     };
-    getPhoto().catch((error) => {
-      console.error('Error getting photo', error);
-    });
+    getPhoto();
 
     // Get roles
     const getRoles = async () => {
@@ -155,9 +153,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         setAuthState('unauthorized');
       }
     };
-    getRoles().catch((error) => {
-      console.error('Error getting roles', error);
-    });
+    getRoles();
   }, [
     account,
     acquireToken,
