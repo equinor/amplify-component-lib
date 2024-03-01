@@ -33,6 +33,7 @@ export type ComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   sortValues?: boolean;
   disabled?: boolean;
   loading?: boolean;
+  className?: string;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 export const ComboBox = <T extends ComboBoxOption<T>>(
@@ -223,7 +224,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   return (
-    <>
+    <div className={props.className ?? ''}>
       <Container ref={anchorRef} onClick={handleOnOpen} aria-expanded={open}>
         {props.label && (
           <Label label={props.label} htmlFor="amplify-combobox" />
@@ -306,6 +307,6 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
           )}
         </Menu>
       )}
-    </>
+    </div>
   );
 };
