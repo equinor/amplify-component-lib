@@ -34,9 +34,6 @@ const Url: FC = () => {
 
   const handleOnUrlBlur = (e: FocusEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
-    console.log(value);
-    console.log('include ', value.includes(EQUINOR_EMAIL_SUFFIX));
-    console.log('length', value.length !== 0);
     if (!value.includes(EQUINOR_EMAIL_SUFFIX) && value.length !== 0) {
       setIsWrongDomain(true);
     }
