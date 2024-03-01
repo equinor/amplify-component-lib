@@ -87,9 +87,7 @@ const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
       setSrc(src);
     };
     if (!error) {
-      getSrc(props.file).catch((error) => {
-        console.error('Error reading file', error);
-      });
+      getSrc(props.file);
     }
   }, [error, props]);
 
