@@ -227,6 +227,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   return (
     <div>
       <Container
+        data-testid="combobox-container"
         ref={anchorRef}
         onClick={handleOnOpen}
         aria-expanded={open}
@@ -241,6 +242,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
             selectedValues.map((value) => (
               <StyledChip
                 key={value.value}
+                data-testid="amplify-combobox-chip"
                 className="amplify-combo-box-chip"
                 onDelete={() => {
                   if (!props.loading && !props.disabled) {

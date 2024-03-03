@@ -17,16 +17,17 @@ export const Container = styled.div<ContainerProps>`
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
   padding: ${spacings.medium_small} ${spacings.medium};
 
   ${({ $underlineHighlight }) =>
     $underlineHighlight
-      ? `box-shadow: inset 0 -2px 0 0 ${colors.infographic.substitute__blue_overcast.hex}`
-      : ''};
+      ? `box-shadow: inset 0 -2px 0 0 ${colors.infographic.substitute__blue_overcast.rgba}`
+      : `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`};
 
   ${({ $lightBackground }) =>
-    `background-color: ${$lightBackground ? 'white' : 'default'}`};
+    $lightBackground
+      ? `background-color: ${colors.ui.background__default.rgba}`
+      : `background-color: ${colors.ui.background__light.rgba}`};
 
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
