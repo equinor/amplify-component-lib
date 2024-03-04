@@ -1,4 +1,11 @@
-import { FC, ReactElement, ReactNode, useEffect, useState } from 'react';
+import {
+  FC,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   InteractionRequiredAuthError,
@@ -13,6 +20,7 @@ import Unauthorized from 'src/components/Feedback/Unauthorized';
 import { auth, environment } from 'src/utils';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { has } from 'lodash-es';
 
 interface ExtendedJwtPayload extends JwtPayload {
   roles: string[];
@@ -33,9 +41,7 @@ export interface AuthProviderInnerProps {
   children: ReactNode;
   account: AccountInfo | undefined;
   setAccount: (val: AccountInfo | undefined) => void;
-  photo: string | undefined;
   setPhoto: (val: string | undefined) => void;
-  roles: string[] | undefined;
   setRoles: (val: string[] | undefined) => void;
   authState: AuthState;
   setAuthState: (val: AuthState) => void;
@@ -47,9 +53,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   children,
   account,
   setAccount,
-  photo,
   setPhoto,
-  roles,
   setRoles,
   authState,
   setAuthState,
@@ -62,6 +66,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     GRAPH_REQUESTS_LOGIN
   );
   const [isInitialized, setIsInitialized] = useState(false);
+  const hasFetchedRolesAndPhoto = useRef(false);
 
   useEffect(() => {
     if (isInitialized) return;
@@ -104,7 +109,8 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   }, [account, result?.account, setAccount]);
 
   useEffect(() => {
-    if (!account ?? photo ?? roles ?? !isInitialized) return;
+    if (!account || !isInitialized || hasFetchedRolesAndPhoto.current) return;
+    hasFetchedRolesAndPhoto.current = true;
 
     // Get photo
     const getPhoto = async () => {
@@ -154,17 +160,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       }
     };
     getRoles();
-  }, [
-    account,
-    acquireToken,
-    instance,
-    isInitialized,
-    photo,
-    roles,
-    setAuthState,
-    setPhoto,
-    setRoles,
-  ]);
+  }, [account, acquireToken, isInitialized, setAuthState, setPhoto, setRoles]);
 
   if (authState === 'loading' || account === undefined)
     return (
