@@ -36,7 +36,7 @@ const FeedBackIcon: FC<FeedBackIconProps> = ({ name, size, variant }) => {
 
   const appData = feedbackIcons.find(
     (icon) => icon.iconName === `${name}-${variant ? variant : 'filled'}`
-  ) as FeedBackIconData;
+  )!;
   return <appData.component size={size} />;
 };
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 
 import { Meta, StoryFn } from '@storybook/react';
 
@@ -33,14 +33,18 @@ export const Primary: StoryFn = (args) => {
             label: 'Fraction',
             name: 'sectionmode-group',
             value: 'fraction',
-            element: args.hasRightElements && '8½"',
+            element: (args.hasRightElements as boolean)
+              ? ('8½"' as unknown as ReactElement)
+              : undefined,
             disabled: args.disabledItem === 'fraction',
           },
           {
             label: 'Decimal',
             name: 'sectionmode-group',
             value: 'decimal',
-            element: args.hasRightElements && '8.5"',
+            element: args.hasRightElements
+              ? ('8½"' as unknown as ReactElement)
+              : undefined,
             disabled: args.disabledItem === 'decimal',
           },
         ],
@@ -54,14 +58,14 @@ export const Primary: StoryFn = (args) => {
             label: 'Light Mode',
             name: 'theme-group',
             value: 'light',
-            colorBox: args.hasColorBoxes && '#F7F7F7',
+            colorBox: args.hasColorBoxes ? '#F7F7F7' : undefined,
             disabled: args.disabledItem === 'light',
           },
           {
             label: 'Dark Mode',
             name: 'theme-group',
             value: 'dark',
-            colorBox: args.hasColorBoxes && '#243746',
+            colorBox: args.hasColorBoxes ? '#243746' : undefined,
             disabled: args.disabledItem === 'dark',
           },
         ],

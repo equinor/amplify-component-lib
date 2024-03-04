@@ -56,13 +56,13 @@ const router = createMemoryRouter(
   }
 );
 
-test('Tutorials dialog is open', async () => {
+test('Tutorials dialog is open', () => {
   render(<RouterProvider router={router} />);
   const heading = screen.getByText('Tutorials');
   expect(heading).toBeInTheDocument();
 });
 
-test('Check if on Current page', async () => {
+test('Check if on Current page', () => {
   render(<RouterProvider router={router} />);
 
   const tutorialPath = fakeTutorialOptions[0].pathName;

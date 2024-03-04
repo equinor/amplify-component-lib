@@ -128,13 +128,15 @@ export function useSignalRMessages<
 
         /* Get all active messages */
         await connection.invoke('PeekMessages');
-      } catch (e: any) {
-        throw new Error('Connection failed: ', e);
+      } catch (error) {
+        console.error('Connection failed', error);
       }
       connectionRef.current = connection;
     }
 
-    setupConnection();
+    setupConnection().catch((error) => {
+      console.error('Error setting up connection', error);
+    });
   }, [
     host,
     topic,
@@ -147,7 +149,7 @@ export function useSignalRMessages<
   useEffect(() => {
     if (updateMessage) {
       const updateMessageIndex = messages.findIndex(
-        (x) => x.SequenceNumber === updateMessage!.SequenceNumber
+        (x) => x.SequenceNumber === updateMessage.SequenceNumber
       );
       const tempNotifications = [...messages];
       if (updateMessageIndex > -1) {
@@ -175,11 +177,7 @@ export function useSignalRMessages<
   }, [deletedMessageSequenceNumber, messages]);
 
   async function deleteMessage(message: T) {
-    if (
-      connectionRef.current &&
-      message.SequenceNumber !== undefined &&
-      message.SequenceNumber !== null
-    ) {
+    if (connectionRef.current && message.SequenceNumber !== null) {
       await connectionRef.current.invoke(
         'DeleteMessage',
         message.SequenceNumber
@@ -191,11 +189,11 @@ export function useSignalRMessages<
   const setMessageAsRead = (message: T) => {
     if (connectionRef.current) {
       message.Read = !message.Read;
-      connectionRef.current.invoke(
-        'PatchMessage',
-        message.SequenceNumber,
-        message
-      );
+      connectionRef.current
+        .invoke('PatchMessage', message.SequenceNumber, message)
+        .catch((error) => {
+          console.error('Error setting message as read', error);
+        });
     }
   };
 

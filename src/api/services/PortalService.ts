@@ -39,7 +39,7 @@ export class PortalService {
    * @throws ApiError
    */
 
-  public static fileUpload(formData?: FormData): CancelablePromise<any> {
+  public static fileUpload(formData?: FormData): CancelablePromise<unknown> {
     return __request(OpenAPI_Portal, {
       method: 'POST',
       url: '/api/v1/Slack/fileUpload',
@@ -54,7 +54,7 @@ export class PortalService {
    * @throws ApiError
    */
 
-  public static postmessage(formData?: FormData): CancelablePromise<any> {
+  public static postmessage(formData?: FormData): CancelablePromise<unknown> {
     return __request(OpenAPI_Portal, {
       method: 'POST',
       url: '/api/v1/Slack/postmessage',

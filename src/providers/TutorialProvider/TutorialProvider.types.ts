@@ -1,13 +1,13 @@
 import { ReactElement } from 'react';
 
-export type HighlightingInfo = {
+export interface HighlightingInfo {
   top: number;
   left: number;
   width: number;
   height: number;
-};
+}
 
-export type CustomTutorialComponent = {
+export interface CustomTutorialComponent {
   key: string;
   element: ReactElement;
-};
+}

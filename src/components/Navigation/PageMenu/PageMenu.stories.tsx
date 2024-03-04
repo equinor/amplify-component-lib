@@ -7,6 +7,7 @@ import { StoryFn } from '@storybook/react';
 
 import PageMenuProvider, {
   PageMenuItemType,
+  PageMenuProviderProps,
 } from '../../../providers/PageMenuProvider';
 import PageMenu from './PageMenu';
 
@@ -94,13 +95,13 @@ function Section({
   );
 }
 
-export const Primary: StoryFn = (args) => {
+export const Primary: StoryFn<PageMenuProviderProps> = (args) => {
   return (
     <PageMenuProvider items={args.items}>
       <Container>
         <PageMenu />
         <section>
-          {args.items.map((item: any) => (
+          {args.items.map((item) => (
             <Section key={item.value} {...item} />
           ))}
         </section>

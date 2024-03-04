@@ -127,13 +127,13 @@ const StorybookIcon = () => (
   </svg>
 );
 
-type LinksProps = {
+interface LinksProps {
   figmaUrl?: string;
   ariaUrl?: string;
   documentationUrl?: string;
   sourceUrl?: string;
   edsSBUrl?: string;
-};
+}
 
 export const Links = ({
   ariaUrl,

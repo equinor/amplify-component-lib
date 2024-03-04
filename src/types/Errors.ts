@@ -9,10 +9,10 @@ export enum ErrorType {
   DEFAULT = 'default',
 }
 
-export type ErrorContentType = {
+export interface ErrorContentType {
   type: ErrorType;
   illustration: ReactNode;
   title: string;
   description?: string;
   button?: { text?: string; onClick?: () => void };
-};
+}

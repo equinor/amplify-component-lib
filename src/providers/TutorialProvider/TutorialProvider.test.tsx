@@ -103,9 +103,7 @@ const fakeTutorial = (props?: FakeTutorialProps) => {
 let requestsHaveError = false;
 vi.mock('src/api/services/TutorialService', () => {
   class TutorialService {
-    public static getTutorialsForApplication(): CancelablePromise<
-      Array<Tutorial>
-    > {
+    public static getTutorialsForApplication(): CancelablePromise<Tutorial[]> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (requestsHaveError) {
@@ -339,7 +337,7 @@ describe('TutorialProvider', () => {
     expect(stepOneTitleAgainAgain).toBeInTheDocument();
   });
 
-  test('will not show highlighter/dialog if no tutorials exist on path', async () => {
+  test('will not show highlighter/dialog if no tutorials exist on path', () => {
     render(<RouterProvider router={getMemoryRouter({})} />);
 
     const highlighterElement = screen.queryByTestId(
@@ -362,7 +360,7 @@ describe('TutorialProvider', () => {
     expect(highlighterElement).toBeInTheDocument();
   });
 
-  test('does not show active tutorial in prod if "showInProd" is false', async () => {
+  test('does not show active tutorial in prod if "showInProd" is false', () => {
     import.meta.env.VITE_ENVIRONMENT_NAME = 'production';
     const tutorial = fakeTutorial();
     const router = getMemoryRouter({ tutorial });
@@ -414,7 +412,7 @@ describe('TutorialProvider', () => {
       expect(closeButton).not.toBeInTheDocument();
     }, 10000);
 
-    test('shows error dialog when having wrong custom components, if tutorial started from searchparam', async () => {
+    test('shows error dialog when having wrong custom components, if tutorial started from searchparam', () => {
       window.localStorage.setItem(
         TEST_TUTORIAL_SHORT_NAME,
         TUTORIAL_LOCALSTORAGE_VALUE_STRING

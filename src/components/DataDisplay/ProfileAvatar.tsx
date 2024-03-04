@@ -54,12 +54,12 @@ function nameToColor(name?: string): string {
   return availableColors[sum % availableColors.length];
 }
 
-type InitialsContainerProps = {
+interface InitialsContainerProps {
   $fontSize: number;
   $size: number;
   $background: string;
   disabled: boolean;
-};
+}
 
 const InitialsContainer = styled.div<InitialsContainerProps>`
   width: ${(props) => props.$size}px;

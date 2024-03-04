@@ -76,7 +76,7 @@ test('Renders first and last letter of name when image is not given', () => {
   const mockedProps = mockProfileAvatarProps(false);
   render(<ProfileAvatar {...mockedProps} />);
 
-  const initials = nameToInitials(mockedProps.name as string) as string;
+  const initials = nameToInitials(mockedProps.name!)!;
 
   expect(initials).not.toBeUndefined();
 
@@ -87,7 +87,7 @@ test('Renders disabled initials when image is not given and disabled = true', ()
   const mockedProps = mockProfileAvatarProps(false);
   render(<ProfileAvatar {...mockedProps} disabled />);
 
-  const initials = nameToInitials(mockedProps.name as string) as string;
+  const initials = nameToInitials(mockedProps.name!)!;
 
   expect(initials).not.toBeUndefined();
 
@@ -106,7 +106,7 @@ test('Renders first and last letter of name when image is not given', () => {
     else if (size === 'x-large') return 18;
     return size / 2;
   };
-  const initials = nameToInitials(mockedProps.name as string) as string;
+  const initials = nameToInitials(mockedProps.name!)!;
   for (const size of sizeOptions) {
     rerender(<ProfileAvatar {...mockedProps} size={size} />);
     const expectedFontSize = sizeToFontsize(size);

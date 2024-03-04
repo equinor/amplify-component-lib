@@ -33,9 +33,10 @@ const nameOptions: ApplicationIconProps['name'][] = [
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
-type IconsDict = {
-  [key: ApplicationIconProps['name']]: IconData | IconDataWithColor[];
-};
+type IconsDict = Record<
+  ApplicationIconProps['name'],
+  IconData | IconDataWithColor[]
+>;
 
 const icons: IconsDict = {
   acquire: acquire,
@@ -50,7 +51,7 @@ const icons: IconsDict = {
   bravos: bravos,
 };
 
-test('Render correctly with corresponding props', async () => {
+test('Render correctly with corresponding props', () => {
   const { rerender } = render(<ApplicationIcon name="acquire" />);
 
   // Check that it renders correctly with name options
@@ -80,7 +81,7 @@ test('Render correctly with corresponding props', async () => {
   }
 });
 
-test('Renders correct icon, even with wrong casing', async () => {
+test('Renders correct icon, even with wrong casing', () => {
   const { rerender } = render(<ApplicationIcon name="AcQuIre" />);
 
   // Check that it renders correctly with name options
@@ -121,7 +122,7 @@ test("Renders fallback when name isn't found", () => {
   );
 });
 
-test('Renders without shapes when iconOnly=true when single icon', async () => {
+test('Renders without shapes when iconOnly=true when single icon', () => {
   const { rerender } = render(<ApplicationIcon name="acquire" iconOnly />);
 
   for (const name of nameOptions) {

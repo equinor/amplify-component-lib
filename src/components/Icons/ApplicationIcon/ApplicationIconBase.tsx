@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, IconProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -63,12 +63,12 @@ export interface ShapeProps {
   rotation: number;
 }
 
-type ShapeElementProps = {
+interface ShapeElementProps {
   $top: number;
   $left: number;
   $rotation: number;
   $index: number;
-};
+}
 
 const Shape = styled.div<ShapeElementProps>`
   position: absolute;
@@ -97,7 +97,7 @@ interface ApplicationIconBaseProps extends AppIconProps {
 const ApplicationIconBase = forwardRef<
   HTMLDivElement,
   ApplicationIconBaseProps
->(({ size = 48 as any, iconData, shapes, iconOnly, withHover }, ref) => {
+>(({ size = 48, iconData, shapes, iconOnly, withHover }, ref) => {
   if (iconOnly) {
     return (
       <Container
@@ -112,12 +112,16 @@ const ApplicationIconBase = forwardRef<
             <Icon
               key={`icon-${index}`}
               data={icon}
-              size={size}
+              size={size as IconProps['size']}
               color={icon.color}
             />
           ))
         ) : (
-          <Icon data={iconData} size={size} color="#ffffff" />
+          <Icon
+            data={iconData}
+            size={size as IconProps['size']}
+            color="#ffffff"
+          />
         )}
       </Container>
     );
@@ -135,12 +139,16 @@ const ApplicationIconBase = forwardRef<
           <Icon
             key={`icon-${index}`}
             data={icon}
-            size={size}
+            size={size as IconProps['size']}
             color={icon.color}
           />
         ))
       ) : (
-        <Icon data={iconData} size={size} color="#ffffff" />
+        <Icon
+          data={iconData}
+          size={size as IconProps['size']}
+          color="#ffffff"
+        />
       )}
       {shapes.map((shape, index) => (
         <Shape

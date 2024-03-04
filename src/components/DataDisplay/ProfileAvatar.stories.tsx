@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import ProfileAvatar from './ProfileAvatar';
+import ProfileAvatar, { ProfileAvatarProps } from './ProfileAvatar';
 
 export default {
   title: 'Data Display/ProfileAvatar',
@@ -24,7 +24,7 @@ export default {
   },
 } as Meta;
 
-export const Primary: StoryFn = (args) => {
+export const Primary: StoryFn<ProfileAvatarProps> = (args) => {
   return (
     <ProfileAvatar
       size={args.size}
@@ -35,7 +35,7 @@ export const Primary: StoryFn = (args) => {
   );
 };
 
-export const WithoutImage: StoryFn = (args) => {
+export const WithoutImage: StoryFn<ProfileAvatarProps> = (args) => {
   return (
     <ProfileAvatar size={args.size} name={args.name} disabled={args.disabled} />
   );

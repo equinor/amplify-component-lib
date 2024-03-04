@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ import { FilterOption } from './Filter';
 import Sieve from './Sieve';
 import { Option, SieveProps, SieveValue } from './Sieve.types';
 
-function Wrappers({ children }: { children: any }) {
+function Wrappers({ children }: { children: ReactNode }) {
   return <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>;
 }
 
@@ -136,7 +137,7 @@ test('Users can sort', async () => {
   });
 });
 
-test('Sort by is hidden when sorting options = []', async () => {
+test('Sort by is hidden when sorting options = []', () => {
   const props = fakeProps();
   render(<Sieve {...props} sortOptions={[]} />, { wrapper: Wrappers });
 
@@ -346,7 +347,7 @@ test('Users can add multiple filters from the same filter menu', async () => {
   }
 });
 
-test('Filter not shown if the options are empty', async () => {
+test('Filter not shown if the options are empty', () => {
   const props = fakeProps();
   render(<Sieve {...props} filterOptions={[]} />, { wrapper: Wrappers });
 
@@ -378,7 +379,7 @@ test('Users can remove filter by clicking it', async () => {
         ...props.sieveValue,
         filterValues: {
           [props.filterOptions![randomFilterGroup].label]: [
-            props!.filterOptions![randomFilterGroup].options[randomIndex],
+            props.filterOptions![randomFilterGroup].options[randomIndex],
           ],
         },
       }}
@@ -422,12 +423,8 @@ test('Removing the last filter in a filter group works as expected (from menu)',
       sieveValue={{
         ...props.sieveValue,
         filterValues: {
-          [props.filterOptions![0].label]: [
-            props!.filterOptions![0].options[0],
-          ],
-          [props.filterOptions![1].label]: [
-            props!.filterOptions![1].options[0],
-          ],
+          [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
+          [props.filterOptions![1].label]: [props.filterOptions![1].options[0]],
         },
       }}
     />,
@@ -456,7 +453,7 @@ test('Removing the last filter in a filter group works as expected (from menu)',
   expect(props.onUpdate).toHaveBeenCalledWith({
     searchValue: undefined,
     filterValues: {
-      [props.filterOptions![0].label]: [props!.filterOptions![0].options[0]],
+      [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
     },
     sortValue: props.sortOptions?.at(0),
   });
@@ -472,12 +469,8 @@ test('Removing the last filter in a filter group works as expected (from chip)',
       sieveValue={{
         ...props.sieveValue,
         filterValues: {
-          [props.filterOptions![0].label]: [
-            props!.filterOptions![0].options[0],
-          ],
-          [props.filterOptions![1].label]: [
-            props!.filterOptions![1].options[0],
-          ],
+          [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
+          [props.filterOptions![1].label]: [props.filterOptions![1].options[0]],
         },
       }}
     />,
@@ -494,7 +487,7 @@ test('Removing the last filter in a filter group works as expected (from chip)',
   expect(props.onUpdate).toHaveBeenCalledWith({
     searchValue: undefined,
     filterValues: {
-      [props.filterOptions![0].label]: [props!.filterOptions![0].options[0]],
+      [props.filterOptions![0].label]: [props.filterOptions![0].options[0]],
     },
     sortValue: props.sortOptions?.at(0),
   });
@@ -531,7 +524,7 @@ test('Users can remove filters', async () => {
     ...props.sieveValue,
     filterValues: {
       [props.filterOptions![randomFilterGroup].label]: [
-        props!.filterOptions![randomFilterGroup].options[randomIndex],
+        props.filterOptions![randomFilterGroup].options[randomIndex],
       ],
     },
   };
@@ -557,8 +550,8 @@ test('Users can remove all filters', async () => {
     ...props.sieveValue,
     filterValues: {
       [props.filterOptions![randomFilterGroup].label]: [
-        props!.filterOptions![randomFilterGroup].options[0],
-        props!.filterOptions![randomFilterGroup].options[1],
+        props.filterOptions![randomFilterGroup].options[0],
+        props.filterOptions![randomFilterGroup].options[1],
       ],
     },
   };
@@ -651,7 +644,7 @@ test('handleUpdateSieveValue updates the sieve value correctly', async () => {
         ...props.sieveValue,
         filterValues: {
           [props.filterOptions![randomFilterGroup].label]: [
-            props!.filterOptions![randomFilterGroup].options[0],
+            props.filterOptions![randomFilterGroup].options[0],
           ],
         },
       }}
@@ -731,7 +724,7 @@ test('Add search params after what the user is choosing', async () => {
     searchValue: undefined,
     filterValues: {
       [props.filterOptions![randomFilterGroup].label]: [
-        props!.filterOptions![randomFilterGroup].options[0],
+        props.filterOptions![randomFilterGroup].options[0],
       ],
     },
     sortValue: props.sortOptions![0],
@@ -753,7 +746,7 @@ test('Add search params after what the user is choosing', async () => {
               searchValue: fakeText,
               filterValues: {
                 [props.filterOptions![randomFilterGroup].label]: [
-                  props!.filterOptions![randomFilterGroup].options[0],
+                  props.filterOptions![randomFilterGroup].options[0],
                 ],
               },
             }}
@@ -781,14 +774,14 @@ test('Add search params after what the user is choosing', async () => {
     props.filterOptions![randomFilterGroup].label
   );
   expect(filterValue).toBe(
-    JSON.stringify([props!.filterOptions![randomFilterGroup].options[0].label])
+    JSON.stringify([props.filterOptions![randomFilterGroup].options[0].label])
   );
 
   const searchValue = searchParams.get('search');
   expect(searchValue).toBe(fakeText);
 });
 
-test('Init of search params works with "bad" search params', async () => {
+test('Init of search params works with "bad" search params', () => {
   const props = {
     ...fakeProps(),
   };
@@ -823,7 +816,7 @@ test('Init of search params works with "bad" search params', async () => {
   }
 });
 
-test('Search params works with "bad" search params', async () => {
+test('Search params works with "bad" search params', () => {
   const props = {
     ...fakeProps(),
   };

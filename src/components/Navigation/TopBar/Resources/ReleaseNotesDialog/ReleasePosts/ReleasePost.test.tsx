@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
@@ -8,7 +9,7 @@ import ReleasePost from './ReleasePost';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen } from 'src/tests/test-utils';
 
-const Wrappers = ({ children }: { children: any }) => {
+const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

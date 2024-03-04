@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-type useFakeProgressProps = {
+interface useFakeProgressProps {
   onDone: () => void;
   progressDelayMs?: number;
   finishedTimeoutMs?: number;
-};
+}
 
 export function useFakeProgress({
   onDone,

@@ -61,7 +61,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
 }) => {
   /* c8 ignore nextline */
 
-  if (features && (extendFeatures || removeFeatures)) {
+  if (features && (extendFeatures ?? removeFeatures)) {
     throw new Error(
       `Can't specify both 'features' and 'extend/remove' features!
        Extend/remove can only be used when not specifying 'features'`
@@ -71,7 +71,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   const usingFeatures = useMemo(() => {
     if (features) return features;
 
-    return [...DEFAULT_FEATURES, ...(extendFeatures || [])]
+    return [...DEFAULT_FEATURES, ...(extendFeatures ?? [])]
       .filter((feature) => !removeFeatures || !removeFeatures.includes(feature))
       .filter((value, index, array) => index === array.indexOf(value));
   }, [features, extendFeatures, removeFeatures]);
@@ -131,8 +131,8 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     [onImageUpload, placeholder]
   );
 
-  const handleOnUpdate = (props: EditorEvents['update']) => {
-    onChange?.(props.editor.getHTML());
+  const handleOnUpdate = ({ editor }: EditorEvents['update']) => {
+    onChange?.(editor.getHTML());
   };
 
   return (

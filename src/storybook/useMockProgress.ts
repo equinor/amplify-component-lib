@@ -18,5 +18,5 @@ export const useMockProgress = (value: number | null = null): number => {
       clearInterval(timer);
     };
   }, []);
-  return progress || 0;
+  return progress ?? 0;
 };

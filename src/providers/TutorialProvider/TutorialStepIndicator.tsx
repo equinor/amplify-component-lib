@@ -48,7 +48,7 @@ const StepIndicator = styled.div<StepIndicatorProps>`
 `;
 
 interface TutorialStepIndicatorProps {
-  steps: Array<GenericTutorialStep | CustomTutorialStep>;
+  steps: (GenericTutorialStep | CustomTutorialStep)[];
   currentStep: number;
 }
 
@@ -61,11 +61,7 @@ const TutorialStepIndicator: FC<TutorialStepIndicatorProps> = ({
       {steps.map((item, index) => {
         return (
           <StepIndicator
-            key={
-              item.key === undefined || item.key === null
-                ? item.title
-                : item.key
-            }
+            key={item.key ?? item.title}
             $active={index === currentStep}
             $activeNum={currentStep}
             $num={index}

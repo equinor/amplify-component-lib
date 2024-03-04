@@ -1,4 +1,4 @@
-import { filter_list } from '@equinor/eds-icons';
+import { filter_list, IconData } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { render, screen, userEvent, within } from '../../tests/test-utils';
@@ -6,9 +6,9 @@ import SingleFilterMenu from './SingleFilterMenu';
 
 function getTestProps(): {
   data: string[];
-  icon: any;
+  icon: IconData;
   menuTitle: string;
-  onChange: any;
+  onChange: (selectedId: string | undefined | null) => void;
 } {
   return {
     data: new Array(faker.number.int({ min: 1, max: 10 }))

@@ -8,7 +8,7 @@ import Template from '../../Template/Template';
 import SideBar from '../SideBar';
 import { MenuItemType } from '../SideBar/MenuItem';
 import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './Account/stories/data';
-import TopBar from '.';
+import TopBar, { TopBarType } from '.';
 import { EnvironmentType } from 'src/types/Environment';
 
 export default {
@@ -38,7 +38,7 @@ export default {
       control: 'text',
     },
     isFetching: { control: 'boolean' },
-    capitalized: { control: 'boolean' },
+    capitalize: { control: 'boolean' },
     environment: {
       options: [
         EnvironmentType.LOCALHOST,
@@ -54,7 +54,7 @@ export default {
     customIcon: 'none',
     applicationIcon: 'portal',
     applicationName: 'Heinrich von schnellfahrer',
-    capitalized: false,
+    capitalize: false,
     isFetching: false,
   },
   parameters: {
@@ -62,11 +62,11 @@ export default {
   },
 } as Meta;
 
-export const Primary: StoryFn = ({ ...args }) => {
+export const Primary: StoryFn<TopBarType> = ({ ...args }) => {
   return (
     <TopBar
       onHeaderClick={() => console.log('Going to homepage 🏠')}
-      capitalize={args.capitalized}
+      capitalize={args.capitalize}
       applicationIcon={args.applicationIcon}
       applicationName={args.applicationName}
       isFetching={args.isFetching}
@@ -84,7 +84,7 @@ export const Primary: StoryFn = ({ ...args }) => {
   );
 };
 
-export const FullPageExample: StoryFn = ({ ...args }) => {
+export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
   const menuItems: MenuItemType[] = [
     {
       name: 'Dashboard',
@@ -109,7 +109,7 @@ export const FullPageExample: StoryFn = ({ ...args }) => {
     <Template>
       <TopBar
         onHeaderClick={() => console.log('Going to homepage')}
-        capitalize={args.capitalized}
+        capitalize={args.capitalize}
         applicationIcon={args.applicationIcon}
         applicationName={args.applicationName}
         isFetching={args.isFetching}
@@ -130,14 +130,8 @@ export const FullPageExample: StoryFn = ({ ...args }) => {
             createLabel="Create something"
             onCreate={() => console.log('Created 🖋')}
           >
-            {menuItems.map((m) => (
-              <SideBar.Item
-                key={m.name}
-                {...m}
-                disabled={
-                  args.disabledItem !== 'none' && m.link === args.disabledItem
-                }
-              />
+            {menuItems.map((m, index) => (
+              <SideBar.Item key={m.name} {...m} disabled={index === 0} />
             ))}
           </SideBar>
         </SideBarProvider>

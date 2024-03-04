@@ -55,7 +55,7 @@ export interface SingleFilterMenuProps {
   onChange: (selectedId: string | undefined | null) => void;
   customIcon?: IconData;
   menuTitle: string;
-  data: Array<string>;
+  data: string[];
   showChip?: boolean;
   chipColor?: string;
 }

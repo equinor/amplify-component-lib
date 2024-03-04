@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -7,7 +8,7 @@ import { ReleaseNoteType } from './ReleaseNotesTypes.types';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen } from 'src/tests/test-utils';
 
-const Wrappers = ({ children }: { children: any }) => {
+const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

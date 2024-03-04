@@ -5,12 +5,12 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
-type InfoCardTypes = {
+interface InfoCardTypes {
   title?: string;
   description?: string;
   url?: string;
   urlTitle?: string;
-};
+}
 
 const SBCard = styled(Card)`
   border: 1px solid ${colors.infographic.primary__moss_green_100.rgba};

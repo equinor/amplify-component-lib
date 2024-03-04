@@ -25,7 +25,7 @@ function fakeProps(): ContentMenuProps {
   };
 }
 
-test('All labels are visible', async () => {
+test('All labels are visible', () => {
   const props = fakeProps();
   render(<ContentMenu {...props} />);
 
@@ -50,7 +50,7 @@ test('Clicking menu item calls onChange', async () => {
   expect(props.onChange).toHaveBeenCalledTimes(1);
 });
 
-test('Show isLoading correctly', async () => {
+test('Show isLoading correctly', () => {
   const props = fakeProps();
   const { rerender } = render(<ContentMenu {...props} isLoading />);
 

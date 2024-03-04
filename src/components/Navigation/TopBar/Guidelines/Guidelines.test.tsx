@@ -49,7 +49,7 @@ function fakeProps(withColorBoxes = false): GuidelineProps {
   };
 }
 
-test('Renders content correctly', async () => {
+test('Renders content correctly', () => {
   const props = fakeProps();
   render(<Guidelines {...props} />);
 
@@ -69,7 +69,7 @@ test('Renders content correctly', async () => {
   }
 });
 
-test('Renders sections as expected with color boxes correctly', async () => {
+test('Renders sections as expected with color boxes correctly', () => {
   const props = fakeProps(true);
   render(<Guidelines {...props} />);
 
@@ -81,7 +81,7 @@ test('Renders sections as expected with color boxes correctly', async () => {
   }
 });
 
-test('is not shown if open is false', async () => {
+test('is not shown if open is false', () => {
   const props = fakeProps(true);
   render(<Guidelines {...props} open={false} />);
 

@@ -116,7 +116,7 @@ test("Calls 'onChange' when inputting text", async () => {
 
   expect(textInput).not.toBeNull();
 
-  textInput = textInput as Element;
+  textInput = textInput!;
 
   const randomFish = faker.animal.fish();
   fireEvent.change(textInput, {

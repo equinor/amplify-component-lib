@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
@@ -8,7 +9,7 @@ import { CancelablePromise } from 'src/api';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, waitFor } from 'src/tests/test-utils';
 
-const Wrappers = ({ children }: { children: any }) => {
+const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -25,7 +26,7 @@ const FAKE_TOKEN = 'FAKE_TOKEN';
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    public static getContainerSasUri(): CancelablePromise<any> {
+    public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           resolve(`PORTALURL?${FAKE_TOKEN}`);

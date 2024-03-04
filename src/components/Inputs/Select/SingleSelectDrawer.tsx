@@ -44,7 +44,9 @@ const StyledList = styled.div`
   z-index: 50;
 `;
 
-export type SingleSelectDrawerProps<T extends { id: string; label: string }> = {
+export interface SingleSelectDrawerProps<
+  T extends { id: string; label: string },
+> {
   disabled?: boolean;
   id?: string;
   items: T[];
@@ -55,7 +57,7 @@ export type SingleSelectDrawerProps<T extends { id: string; label: string }> = {
   placeholder?: string;
   readOnly?: boolean;
   style?: CSSProperties;
-};
+}
 
 /**
  * @deprecated Use ComboBox instead

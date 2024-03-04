@@ -24,7 +24,7 @@ const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
     const files = event.target.files;
 
     /* c8 ignore start */
-    if (files === undefined || files === null || !files[0]) {
+    if (!files?.[0]) {
       console.error('Files undefined');
       return;
     }

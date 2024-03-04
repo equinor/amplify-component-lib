@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */ // file is deprecated so no need to fix
 import React, { useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';

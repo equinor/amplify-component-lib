@@ -4,9 +4,16 @@ import { details } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { Meta, StoryFn } from '@storybook/react';
 
-import DataCard from './DataCard';
+import DataCard, { DataCardProps } from './DataCard';
 
 import styled from 'styled-components';
+
+interface DataTypeCardBodyProps extends DataCardProps {
+  hasBodyChip: boolean;
+  bodyChipText: string;
+  hasBodyButton: boolean;
+  bodyButtonIcon: string;
+}
 
 const { colors } = tokens;
 
@@ -49,7 +56,7 @@ const DataTypeCardBody = styled.div`
   height: 4em;
 `;
 
-export const Primary: StoryFn = (args) => {
+export const Primary: StoryFn<DataTypeCardBodyProps> = (args) => {
   const body = (
     <DataTypeCardBody>
       {args.hasBodyChip && <Chip>{args.bodyChipText}</Chip>}

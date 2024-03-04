@@ -12,7 +12,7 @@ function fakeProps(disabled = false) {
   };
 }
 
-test('Renders correctly when not disabled', async () => {
+test('Renders correctly when not disabled', () => {
   const props = fakeProps();
   render(
     <StatusChip {...props}>
@@ -25,7 +25,7 @@ test('Renders correctly when not disabled', async () => {
   expect(screen.getByText(props.childText)).toBeInTheDocument();
 });
 
-test('Renders correctly when disabled', async () => {
+test('Renders correctly when disabled', () => {
   const props = fakeProps(true);
   render(
     <StatusChip {...props}>

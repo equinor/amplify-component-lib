@@ -272,7 +272,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       } catch (error) {
         updateServiceNowStatus({
           status: StatusEnum.error,
-          error: error as unknown as ApiError,
+          error: error as ApiError,
         });
       }
     }
@@ -289,7 +289,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     } catch (error) {
       updatePostMessageStatus({
         status: StatusEnum.error,
-        error: error as unknown as ApiError,
+        error: error as ApiError,
       });
     }
 
@@ -309,7 +309,7 @@ const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
           updateSlackAttachmentStatus({
             status: StatusEnum.error,
             filename: attachment.name,
-            error: error as unknown as ApiError,
+            error: error as ApiError,
           });
         }
       }

@@ -1,4 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
+import type { IconData } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
 import {
@@ -24,7 +25,7 @@ import {
   amplify_wireline_open_hole,
 } from './AmplifyIcons';
 
-const allIcons = {
+const allIcons: Record<string, IconData> = {
   amplify_wellbore: amplify_wellbore,
   amplify_wireline_open_hole: amplify_wireline_open_hole,
   amplify_wireline_cased_hole: amplify_wireline_cased_hole,
@@ -102,7 +103,7 @@ export const Primary: StoryFn<StoryFnProps> = (args) => {
     <Icon
       size={args.size}
       color={args.color}
-      data={(allIcons as any)[args.data]}
+      data={allIcons[args.data]}
       fillRule="nonzero"
       rotation={args.rotation}
     />

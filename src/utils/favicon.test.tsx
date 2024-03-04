@@ -5,7 +5,7 @@ import favicon from './favicon';
 
 const lightId = 'light';
 const darkId = 'dark';
-test('setupFavicon works as expected', async () => {
+test('setupFavicon works as expected', () => {
   const lightImg = faker.image.url({ width: 64, height: 64 });
   const darkImg = faker.image.url({ width: 64, height: 64 });
   render(
@@ -27,9 +27,9 @@ test('setupFavicon works as expected', async () => {
     </div>
   );
 
-  const light = document.querySelector(`#${lightId}`) as Element;
+  const light = document.querySelector(`#${lightId}`)!;
   document.head.appendChild(light);
-  const dark = document.querySelector(`#${darkId}`) as Element;
+  const dark = document.querySelector(`#${darkId}`)!;
   document.head.appendChild(dark);
 
   import.meta.env.DARK = 'false';
@@ -39,7 +39,7 @@ test('setupFavicon works as expected', async () => {
   expect(document.head.querySelector(`#${lightId}`)).toBeInTheDocument();
 });
 
-test('setupFavicon works as expected when in dark mode', async () => {
+test('setupFavicon works as expected when in dark mode', () => {
   const lightImg = faker.image.url({ width: 64, height: 64 });
   const darkImg = faker.image.url({ width: 64, height: 64 });
   render(
@@ -61,9 +61,9 @@ test('setupFavicon works as expected when in dark mode', async () => {
     </div>
   );
 
-  const light = document.querySelector(`#${lightId}`) as Element;
+  const light = document.querySelector(`#${lightId}`)!;
   document.head.appendChild(light);
-  const dark = document.querySelector(`#${darkId}`) as Element;
+  const dark = document.querySelector(`#${darkId}`)!;
   document.head.appendChild(dark);
 
   import.meta.env.DARK = 'true';

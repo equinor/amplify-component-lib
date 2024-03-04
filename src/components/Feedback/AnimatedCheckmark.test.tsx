@@ -1,7 +1,7 @@
 import { render, screen } from '../../tests/test-utils';
 import AnimatedCheckmark from './AnimatedCheckmark';
 
-test('Renders as it should', async () => {
+test('Renders as it should', () => {
   render(<AnimatedCheckmark />);
 
   const svg = screen.getByTestId('svg-icon');

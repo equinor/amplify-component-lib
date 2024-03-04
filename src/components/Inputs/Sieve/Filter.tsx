@@ -15,10 +15,10 @@ import { FilterValues, Option } from './Sieve.types';
 
 const { colors } = tokens;
 
-export type FilterOption = {
+export interface FilterOption {
   label: string;
   options: Option[];
-};
+}
 
 interface FilterProps {
   options: FilterOption[];

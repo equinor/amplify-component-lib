@@ -4,11 +4,11 @@ import SingleSelectDrawer from './SingleSelectDrawer';
 
 export { MultiSelectDrawer, OptionDrawer, SingleSelectDrawer };
 
-type SelectItem<T> = {
+interface SelectItem<T> {
   object: T;
   id: string;
   label: string;
   children: SelectItem<T>[];
-};
+}
 
 export type { SelectItem };

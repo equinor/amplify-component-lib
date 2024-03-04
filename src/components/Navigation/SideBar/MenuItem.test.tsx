@@ -5,13 +5,15 @@ import SideBarProvider from '../../../providers/SideBarProvider';
 import { render, screen, userEvent } from '../../../tests/test-utils';
 import MenuItem, { MenuItemProps } from './MenuItem';
 
+type MenuClickHandler = () => void | React.MouseEventHandler<HTMLAnchorElement>;
+
 function fakeProps(): MenuItemProps {
   return {
     currentUrl: faker.internet.url(),
     link: faker.internet.url(),
     icon: home,
     name: faker.person.jobTitle(),
-    onClick: vi.fn() as any,
+    onClick: vi.fn() as MenuClickHandler,
   };
 }
 
@@ -27,7 +29,7 @@ test('MenuItem works as expected in light mode', async () => {
   expect(props.onClick).toHaveBeenCalledTimes(1);
 });
 
-test('MenuItem text renders as correctly when open and active', async () => {
+test('MenuItem text renders as correctly when open and active', () => {
   window.localStorage.setItem(
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: true })

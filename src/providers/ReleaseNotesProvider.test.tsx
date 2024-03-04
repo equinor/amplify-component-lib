@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -53,7 +53,7 @@ const mockServiceHasError = false;
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<any> {
+    public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {
@@ -68,7 +68,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
   return { ReleaseNotesService };
 });
 
-const Wrappers: FC<{ children: any }> = ({ children }) => {
+const Wrappers: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

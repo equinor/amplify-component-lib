@@ -99,7 +99,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (!open && !(props.disabled || props.loading)) {
+    if (!open && !(props.disabled ?? props.loading)) {
       searchRef.current?.focus();
       setOpen(true);
     }
@@ -112,7 +112,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleToggleOpen = () => {
-    if (props.disabled || props.loading) return;
+    if (props.disabled ?? props.loading) return;
 
     if (open) {
       handleOnClose();
@@ -122,7 +122,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === ' ' || props.loading || props.disabled) return;
+    if (event.target.value === ' ' ?? props.loading ?? props.disabled) return;
     setSearch(event.target.value);
     if (!open) {
       setOpen(true);
@@ -142,9 +142,9 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       );
     } else if (props.values.find((i) => i.value === item.value)) {
       // Remove parent with all children
-      const copiedItem = JSON.parse(JSON.stringify(item));
+      const copiedItem = JSON.parse(JSON.stringify(item)) as T;
       const removingValues: string[] = [copiedItem.value];
-      const childItems = copiedItem.children || [];
+      const childItems = copiedItem.children ?? [];
       while (childItems.length > 0) {
         const child = childItems.splice(0, 1)[0];
         removingValues.push(child.value);
@@ -157,9 +157,9 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       props.onSelect([...props.values, item], item);
     } else {
       // Add parent with all children
-      const copiedItem = JSON.parse(JSON.stringify(item));
+      const copiedItem = JSON.parse(JSON.stringify(item)) as T;
       const newValues = [copiedItem];
-      const childItems = copiedItem.children || [];
+      const childItems = copiedItem.children ?? [];
       while (childItems.length > 0) {
         const child = childItems.splice(0, 1)[0];
         if (!props.values.find((value) => value.value === child.value)) {
@@ -262,7 +262,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
           )}
           <input
             id="amplify-combobox"
-            disabled={props.disabled || props.loading}
+            disabled={props.disabled ?? props.loading}
             ref={searchRef}
             type="search"
             role="combobox"

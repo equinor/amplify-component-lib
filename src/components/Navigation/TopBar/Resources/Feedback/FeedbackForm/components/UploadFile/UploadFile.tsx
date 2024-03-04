@@ -36,13 +36,13 @@ function removeDuplicates(
 const UploadFile: FC = () => {
   const { feedbackAttachments, setFeedbackAttachments } = useFeedbackContext();
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
-  const onDrop = async (
+  const onDrop = (
     acceptedFiles: FileWithPath[],
     fileRejections: FileRejection[]
   ) => {
     if (acceptedFiles.length >= 1) {
       const cleanedOfHiddenFiles = acceptedFiles.filter(
-        (file) => file.name[0] !== '.'
+        (file) => !file.name.startsWith('.')
       );
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);

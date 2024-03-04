@@ -1,7 +1,7 @@
 import {
   createContext,
   FC,
-  ReactElement,
+  ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -13,11 +13,11 @@ import {
 import { getValues } from './PageMenuProvider.utils';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
 
-export type PageMenuItemType = {
+export interface PageMenuItemType {
   label: string;
   value: string;
   children?: PageMenuItemType[];
-};
+}
 
 interface PageMenuContextType {
   items: PageMenuItemType[];
@@ -38,9 +38,9 @@ export function usePageMenu() {
   return context;
 }
 
-interface PageMenuProviderProps {
+export interface PageMenuProviderProps {
   items: PageMenuItemType[];
-  children: ReactElement;
+  children: ReactNode;
 }
 
 const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {

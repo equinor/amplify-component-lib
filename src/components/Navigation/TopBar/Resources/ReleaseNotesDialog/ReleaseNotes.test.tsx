@@ -1,6 +1,7 @@
-import { SetStateAction } from 'react';
+import { ReactElement, ReactNode, SetStateAction } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import { AccountInfo } from '@azure/msal-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import ReleaseNotes from './ReleaseNotes';
@@ -22,7 +23,7 @@ const releaseNotes = [
   },
 ];
 
-function Wrappers({ children }: { children: any }) {
+function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -42,7 +43,7 @@ describe('ReleaseNotes', () => {
   const useReleaseNotesSpy = vi.spyOn(useReleaseNotes, 'useReleaseNotes');
   beforeAll(() => {
     vi.mock('@azure/msal-react', () => ({
-      MsalProvider: (children: any) => <div>{children}</div>,
+      MsalProvider: (children: ReactElement) => <div>{children}</div>,
     }));
 
     vi.mock('@azure/msal-browser', () => {
@@ -52,12 +53,12 @@ describe('ReleaseNotes', () => {
             console.log('created');
           }
         },
-        AccountInfo: { username: 'mock' } as any,
+        AccountInfo: { username: 'mock' } as AccountInfo,
       };
     });
     vi.mock('src/api/services/ReleaseNotesService', () => {
       class ReleaseNotesService {
-        public static getReleasenoteList(): CancelablePromise<any> {
+        public static getReleasenoteList(): CancelablePromise<unknown> {
           return new CancelablePromise((resolve, reject) => {
             setTimeout(() => {
               if (mockServiceHasError) {
@@ -68,7 +69,7 @@ describe('ReleaseNotes', () => {
             }, 3000);
           });
         }
-        public static getContainerSasUri(): CancelablePromise<any> {
+        public static getContainerSasUri(): CancelablePromise<unknown> {
           return new CancelablePromise((resolve) => {
             setTimeout(() => {
               resolve(`PORTALURL?FAKE_TOKEN`);

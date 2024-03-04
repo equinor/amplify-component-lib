@@ -26,10 +26,10 @@ export default {
   },
 };
 
-type Item = {
+interface Item {
   label: string;
   value: string;
-};
+}
 
 const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
   label: faker.animal.fish(),
@@ -180,7 +180,7 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
     <ComboBox
       label={args.label}
       selectableParent={
-        (args as MultiComboBoxCommon<Item>)?.selectableParent || false
+        (args as MultiComboBoxCommon<Item>)?.selectableParent ?? false
       }
       disabled={args.disabled}
       loading={args.loading}

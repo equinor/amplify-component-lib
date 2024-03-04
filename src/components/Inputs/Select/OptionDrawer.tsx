@@ -115,15 +115,15 @@ const getStatus = <T extends { id: string; label: string; children?: T[] }>(
   return 'INTERMEDIATE';
 };
 
-export type ToggleEventProps<T> = {
+export interface ToggleEventProps<T> {
   items: T[];
   toggle: boolean;
   event: MouseEvent | ChangeEvent;
-};
+}
 
-export type OptionDrawerProps<
+export interface OptionDrawerProps<
   T extends { id: string; label: string; parentId?: string; children?: T[] },
-> = {
+> {
   item: T;
   onToggle: ({ items, toggle, event }: ToggleEventProps<T>) => void;
   section?: number;
@@ -134,7 +134,7 @@ export type OptionDrawerProps<
   animateUncheck?: boolean;
   animateParent?: Dispatch<SetStateAction<boolean>>;
   openAll?: boolean;
-};
+}
 
 /**
  * @deprecated Use ComboBox instead

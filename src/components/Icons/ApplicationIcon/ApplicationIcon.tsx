@@ -25,10 +25,10 @@ export type ApplicationName =
   | 'inpress'
   | 'bravos';
 
-type ApplicationIconData = {
+interface ApplicationIconData {
   appName: string;
   component: FC<AppIconProps>;
-};
+}
 const apps: ApplicationIconData[] = [
   { appName: 'portal', component: Portal },
   { appName: 'acquire', component: Acquire },

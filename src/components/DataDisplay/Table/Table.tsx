@@ -59,7 +59,7 @@ const Wrapper = styled.div<WrapperProps>`
 export const Table = <T,>(props: EdsDataGridProps<T>) => {
   return (
     <Wrapper
-      $enableSorting={props.enableSorting || false}
+      $enableSorting={props.enableSorting ?? false}
       data-testid="table-wrapper"
     >
       <EdsDataGrid {...props} />

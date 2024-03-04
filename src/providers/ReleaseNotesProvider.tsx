@@ -14,7 +14,7 @@ import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { Option, SieveValue } from 'src/components';
 import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
 import {
-  extractDatesFromReleasNotes,
+  extractDatesFromReleaseNotes,
   sortReleaseNotesByDate,
 } from 'src/utils/releaseNotes';
 
@@ -65,19 +65,21 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   };
 
   const releaseNotesYears = useMemo(
-    () => extractDatesFromReleasNotes(data || []),
+    () => extractDatesFromReleaseNotes(data ?? []),
     [data]
   );
 
   const selectedReleaseNoteTypes = search.filterValues?.Type;
 
   const filteredData = useMemo(() => {
-    let filteredList = data || [];
+    let filteredList = data ?? [];
 
     if (selectedReleaseNoteTypes && selectedReleaseNoteTypes.length > 0) {
       filteredList = filteredList.filter((item) =>
         item.tags?.some((tag) =>
-          selectedReleaseNoteTypes.map((t: any) => t.value).includes(tag)
+          selectedReleaseNoteTypes
+            .map((option: Option) => option.value)
+            .includes(tag)
         )
       );
     }

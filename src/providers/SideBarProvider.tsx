@@ -5,9 +5,9 @@ interface SideBarContextType {
   setIsOpen: (value: boolean) => void;
 }
 
-type SideBarState = {
+interface SideBarState {
   isOpen: boolean;
-};
+}
 
 export function useSideBar() {
   const context = useContext(SideBarContext);
@@ -25,7 +25,7 @@ const getDefaultState = (): SideBarState => {
   const localStorageData = localStorage.getItem(localStorageKey);
 
   if (localStorageData) {
-    return JSON.parse(localStorageData);
+    return JSON.parse(localStorageData) as SideBarState;
   }
   return {
     isOpen: false,

@@ -75,12 +75,12 @@ const ItemText = styled(Typography)<ItemTextProps>`
   }
 `;
 
-export type MenuItemType = {
+export interface MenuItemType {
   icon: IconData;
   name: string;
   link: string;
   onClick: () => void;
-};
+}
 
 export type MenuItemProps = {
   currentUrl?: string;

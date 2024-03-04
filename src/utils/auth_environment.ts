@@ -95,8 +95,8 @@ const getAllowedParentDomains = (
   return parentDomains.split(';');
 };
 function getPortalWithoutLocalhost() {
-  let environmentName: string | EnvironmentType | undefined = import.meta.env
-    .VITE_ENVIRONMENT_NAME;
+  let environmentName: EnvironmentType | undefined = import.meta.env
+    .VITE_ENVIRONMENT_NAME as EnvironmentType;
   if (!environmentName) {
     environmentName = getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
@@ -167,11 +167,14 @@ const allowedParentDomains = getAllowedParentDomains(
 window.addEventListener('message', async (event: MessageEvent) => {
   // Check that the origin is allowed
   if (allowedParentDomains.includes(event.origin)) {
+    // TODO: type check sid
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const sid = event.data;
     if (sid) {
       await msalApp.initialize();
 
       try {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         await msalApp.ssoSilent({ sid });
         console.log('postMessage successfully logged in user!');
       } catch (error) {

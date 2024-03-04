@@ -2,9 +2,9 @@ import { forwardRef } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
-type TitleProps = {
+interface TitleProps {
   title?: string;
-};
+}
 export const Title = forwardRef<HTMLDivElement, TitleProps>(
   ({ title = 'Oops! Something went wrong.' }, ref) => (
     <div ref={ref}>

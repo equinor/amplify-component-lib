@@ -12,7 +12,7 @@ export default {
   },
   args: {
     data: ['Apples', 'Oranges', 'Bananas'],
-    onChange: (val: any) => console.log(val),
+    onChange: (val: string) => console.log(val),
     menuTitle: 'Fruity filter',
     showChip: false,
     chipColor: '#ffffff',

@@ -13,7 +13,7 @@ export function useFeatureToggling(
   featureKey: string,
   showIfKeyMissing?: boolean
 ) {
-  const fallback = showIfKeyMissing === undefined ? true : showIfKeyMissing;
+  const fallback = showIfKeyMissing ?? true;
   const { account } = useAuth();
   const username = `${account?.username}`;
 

@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
@@ -5,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import ReleasePosts from './ReleasePosts';
 import { CancelablePromise } from 'src/api';
+import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, waitFor, within } from 'src/tests/test-utils';
 
@@ -63,7 +65,7 @@ const releaseNotes = [
     tags: ['Feature', 'Improvement', 'Bug fix'],
     createdDate: '2023-08-31T21:05:01.6920+00:00',
   },
-];
+] as ReleaseNote[];
 
 const releaseNotesWithoutDate = [
   {
@@ -77,7 +79,7 @@ const releaseNotesWithoutDate = [
   },
 ];
 
-const Wrappers = ({ children }: { children: any }) => {
+const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -95,7 +97,7 @@ let returnWithEmptyDate = false;
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<any> {
+    public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           if (returnEmptyArray) {
@@ -108,7 +110,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
         }, 300);
       });
     }
-    public static getContainerSasUri(): CancelablePromise<any> {
+    public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           resolve(`PORTALURL?FAKE_TOKEN`);

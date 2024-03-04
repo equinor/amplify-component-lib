@@ -31,13 +31,13 @@ const DialogCustomContent = styled(Dialog.CustomContent)`
   padding: ${spacings.comfortable.medium};
 `;
 
-export type tutorialOptions = {
+export interface tutorialOptions {
   description: string;
   steps: string;
   duration: string;
   onClick: () => void;
   pathName: string;
-};
+}
 
 interface TutorialDialogProps {
   options: tutorialOptions[];

@@ -7,11 +7,12 @@ const { colors } = tokens;
 
 import ReleasePost from './ReleasePost';
 import { Container, ContainerNoResults } from './ReleasePosts.styles';
+import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { monthValueToString } from 'src/utils/releaseNotes';
 
 interface ReleasePostsProps {
-  posts: any;
+  posts: ReleaseNote[] | undefined;
 }
 
 const ReleasePosts: FC<ReleasePostsProps> = ({ posts: data }) => {

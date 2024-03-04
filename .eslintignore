@@ -1,0 +1,11 @@
+vite.config.ts
+vitest.config.ts
+playwright.config.ts
+
+src/api
+
+**/*.json
+**/*.md
+**/*.cjs
+**/*.yaml
+**/*.mjs

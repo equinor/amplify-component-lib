@@ -7,9 +7,9 @@ function sortByDate(a: Date | string, b: Date | string): number {
   return 0;
 }
 
-type WellBore = {
+interface WellBore {
   wellboreName?: string | null;
-};
+}
 
 function sortByWellboreName(
   a: string | WellBore,

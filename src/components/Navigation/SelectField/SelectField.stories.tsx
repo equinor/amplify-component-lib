@@ -90,7 +90,9 @@ export const Primary: StoryFn = (args) => {
       setFields(fetched);
       setIsLoading(false);
     };
-    getFields();
+    getFields().catch((error) => {
+      console.error('Error fetching fields', error);
+    });
   }, []);
 
   return (
@@ -109,12 +111,12 @@ export const Primary: StoryFn = (args) => {
         </TopBar.Actions>
       </TopBar>
       <SelectField
-        showAccessITLink={args.showAccessITLink}
+        showAccessITLink={args.showAccessITLink as boolean}
         setField={setField}
         fields={fields}
         isLoading={isLoading}
         onChangedField={onChangedField}
-        finishedText={args.finishedText}
+        finishedText={args.finishedText as string}
       />
     </StoryContainer>
   );

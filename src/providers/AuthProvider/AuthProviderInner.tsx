@@ -71,7 +71,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       setIsInitialized(true);
     };
 
-    handleInit();
+    handleInit().catch((error) => {
+      console.error('Error during initialization', error);
+    });
   }, [instance, isInitialized]);
 
   useEffect(() => {
@@ -84,7 +86,9 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     ) {
       console.error(error);
       console.log('No account found, need to login via. redirect');
-      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN);
+      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
+        console.error('Error during login', error);
+      });
     } else if (accounts.length > 0 && account === undefined) {
       console.log('Found account, setting that one as active');
       instance.setActiveAccount(accounts[0]);
@@ -100,7 +104,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   }, [account, result?.account, setAccount]);
 
   useEffect(() => {
-    if (!account || photo || roles || !isInitialized) return;
+    if (!account ?? photo ?? roles ?? !isInitialized) return;
 
     // Get photo
     const getPhoto = async () => {
@@ -140,13 +144,12 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
             tokenResponse.accessToken
           );
           if (accessToken.roles) {
-            setRoles(accessToken.roles as string[]);
+            setRoles(accessToken.roles);
           }
           setAuthState('authorized');
         }
       } catch (error) {
-        console.log('Token error when trying to get roles!');
-        console.error(error);
+        console.error('Token error when trying to get roles!', error);
         setAuthState('unauthorized');
       }
     };
@@ -165,11 +168,11 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
   if (authState === 'loading' || account === undefined)
     return (
-      loadingComponent || <FullPageSpinner variant="equinor" withoutScrim />
+      loadingComponent ?? <FullPageSpinner variant="equinor" withoutScrim />
     );
 
   if (authState === 'unauthorized')
-    return unauthorizedComponent || <Unauthorized />;
+    return unauthorizedComponent ?? <Unauthorized />;
 
   return <>{children}</>;
 };

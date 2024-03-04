@@ -21,7 +21,7 @@ export default {
 } as Meta;
 
 export const Primary: StoryFn = (args) => (
-  <StatusChip {...args} style={{ width: args.width }}>
+  <StatusChip {...args} style={{ width: args.width as number }}>
     <Typography group="ui" variant="chip__badge">
       {args.children}
     </Typography>

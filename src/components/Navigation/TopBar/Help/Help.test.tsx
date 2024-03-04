@@ -1,5 +1,7 @@
+import { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import { AccountInfo } from '@azure/msal-browser';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -38,7 +40,7 @@ const releaseNotes = [
 ];
 
 vi.mock('@azure/msal-react', () => ({
-  MsalProvider: (children: any) => <div>{children}</div>,
+  MsalProvider: (children: ReactElement) => <div>{children}</div>,
 }));
 
 vi.mock('@azure/msal-browser', () => {
@@ -48,11 +50,11 @@ vi.mock('@azure/msal-browser', () => {
         console.log('created');
       }
     },
-    AccountInfo: { username: 'mock' } as any,
+    AccountInfo: { username: 'mock' } as AccountInfo,
   };
 });
 
-function Wrappers({ children }: { children: any }) {
+function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -69,7 +71,7 @@ const waitForMS = (timeout: number) => {
   return new Promise((r) => setTimeout(r, timeout));
 };
 
-async function fakeImageFile(bad: boolean = false) {
+function fakeImageFile(bad = false) {
   const extension = bad ? '.tiff' : '.png';
   return new File([faker.lorem.sentence()], faker.word.noun() + extension);
 }
@@ -112,7 +114,7 @@ vi.mock('src/api/services/PortalService', () => {
       );
     }
 
-    public static fileUpload(formData?: FormData): CancelablePromise<any> {
+    public static fileUpload(formData?: FormData): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError && !mockServicePartialError) {
@@ -124,7 +126,7 @@ vi.mock('src/api/services/PortalService', () => {
       );
     }
 
-    public static postmessage(formData?: FormData): Promise<any> {
+    public static postmessage(formData?: FormData): Promise<unknown> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError || mockServicePartialError) {
@@ -143,7 +145,7 @@ vi.mock('src/api/services/PortalService', () => {
 
 vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<any> {
+    public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {
@@ -154,7 +156,7 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
         }, 300);
       });
     }
-    public static getContainerSasUri(): CancelablePromise<any> {
+    public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           resolve(`PORTALURL?FAKE_TOKEN`);
@@ -441,9 +443,7 @@ describe('Help', () => {
         await user.type(titleInput, title);
         await user.type(descInput, description);
 
-        const severityInput = container.querySelector(
-          '#feedback-severity'
-        ) as HTMLInputElement;
+        const severityInput = container.querySelector('#feedback-severity')!;
 
         await user.click(severityInput);
 
@@ -502,8 +502,8 @@ describe('Help', () => {
     test('Inputting all fields with file works as expected', async () => {
       mockServiceHasError = false;
       const { title, description, url } = fakeInputs();
-      const imageOne = await fakeImageFile();
-      const imageTwo = await fakeImageFile();
+      const imageOne = fakeImageFile();
+      const imageTwo = fakeImageFile();
 
       render(<Help />, {
         wrapper: Wrappers,
@@ -583,7 +583,6 @@ describe('Help', () => {
       await user.click(closeButton);
       await waitForMS(1000);
       expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
-      await waitFor(() => {});
     }, 20000); // Setting timeout for this test to be 20 seconds
 
     test('Url validation working as expected', async () => {
@@ -608,7 +607,7 @@ describe('Help', () => {
       urlInput.blur();
       await waitForMS(1000);
       const helperText = screen.queryByText(/URL must be from a .equinor/i);
-      expect(helperText as HTMLElement).toBeInTheDocument();
+      expect(helperText!).toBeInTheDocument();
 
       await user.clear(urlInput);
 
@@ -622,7 +621,7 @@ describe('Help', () => {
         /URL must be from a .equinor/i
       );
 
-      expect(helperTextAgain as HTMLElement).toBeInTheDocument();
+      expect(helperTextAgain!).toBeInTheDocument();
       await user.type(urlInput, rightUrl);
 
       expect(helperTextAgain).not.toBeInTheDocument();
@@ -632,7 +631,7 @@ describe('Help', () => {
       mockServiceHasError = true;
       mockServicePartialError = true;
       const { title, description } = fakeInputs();
-      const imageOne = await fakeImageFile();
+      const imageOne = fakeImageFile();
 
       render(<Help />, {
         wrapper: Wrappers,
@@ -690,7 +689,7 @@ describe('Help', () => {
       mockServiceHasError = true;
       mockServicePartialError = false;
       const { title, description } = fakeInputs();
-      const imageOne = await fakeImageFile();
+      const imageOne = fakeImageFile();
       console.error = vi.fn();
       render(<Help />, {
         wrapper: Wrappers,

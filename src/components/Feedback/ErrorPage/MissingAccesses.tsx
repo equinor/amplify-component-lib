@@ -19,10 +19,10 @@ const Container = styled.div`
   }
 `;
 
-type AccessType = { url: string; title: string };
-type MissingAccessesProps = {
+interface AccessType { url: string; title: string }
+interface MissingAccessesProps {
   accesses?: AccessType[];
-};
+}
 export const MissingAccesses = forwardRef<HTMLDivElement, MissingAccessesProps>(
   ({ accesses = [] }, ref) => (
     <Container ref={ref}>

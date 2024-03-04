@@ -280,7 +280,7 @@ test('renders footer correctly', () => {
   expect(screen.getByText(fakeNotifications.field)).toBeInTheDocument();
 });
 
-test('renders ReadyToReportNotification correctly', async () => {
+test('renders ReadyToReportNotification correctly', () => {
   render(<NotificationTemplate {...systemNotifications} />);
   expect(screen.getByText(systemNotifications.wellbore)).toBeInTheDocument();
 });

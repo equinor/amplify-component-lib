@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
@@ -54,9 +54,7 @@ let rejectPromise = false;
 
 vi.mock('src/api/services/PortalService', () => {
   class PortalService {
-    public static userApplications(): CancelablePromise<
-      Array<AmplifyApplication>
-    > {
+    public static userApplications(): CancelablePromise<AmplifyApplication[]> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
           if (rejectPromise) {
@@ -71,7 +69,7 @@ vi.mock('src/api/services/PortalService', () => {
   return { PortalService };
 });
 
-function Wrappers({ children }: { children: any }) {
+function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -90,7 +88,7 @@ test('Should toggle menu and handle application click', async () => {
 
   const user = userEvent.setup();
 
-  const menuButton = await screen.getByRole('button');
+  const menuButton = screen.getByRole('button');
 
   await user.click(menuButton);
 
@@ -110,7 +108,7 @@ test('background color is shown for the app you are in', async () => {
 
   const user = userEvent.setup();
 
-  const menuButton = await screen.getByRole('button');
+  const menuButton = screen.getByRole('button');
 
   await user.click(menuButton);
 

@@ -47,15 +47,15 @@ const GlobalStyles = createGlobalStyle`
   button {
     border: none;
     background: none;
-    cursor: pointer; 
+    cursor: pointer;
   }
-  
+
   hr {
     margin: 0;
     border: none;
     background: ${colors.ui.background__medium.rgba};
   }
-  
+
   body {
     margin: 0;
     font-family: 'Equinor', sans-serif;
@@ -81,7 +81,10 @@ const GlobalStyles = createGlobalStyle`
 
 `;
 
+// TODO: replace any with correct type for IStyledComponent
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TemplateType = IStyledComponent<'web', any> & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Container: IStyledComponent<'web', any>;
   Content: typeof Content;
   GlobalStyles: typeof GlobalStyles;

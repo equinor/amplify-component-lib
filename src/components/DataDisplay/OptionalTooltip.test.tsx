@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 
@@ -33,7 +33,7 @@ test('Renders correctly without title', () => {
     <OptionalTooltip title={undefined}>
       <p>{props.content}</p>
     </OptionalTooltip>,
-    { wrapper: (props: any) => <div>{props.children}</div> }
+    { wrapper: (props: { children: ReactNode }) => <div>{props.children}</div> }
   );
 
   expect(screen.getByText(props.content)).toBeInTheDocument();

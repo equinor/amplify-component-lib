@@ -12,7 +12,7 @@ interface YearData {
   months: MonthData[];
 }
 
-const extractDatesFromReleasNotes = (
+const extractDatesFromReleaseNotes = (
   releaseNotes: ReleaseNote[]
 ): PageMenuItemType[] => {
   const pageMenuItemFormattedNotes: PageMenuItemType[] = [];
@@ -20,13 +20,13 @@ const extractDatesFromReleasNotes = (
   const releaseNotesWithDate = releaseNotes.filter((n) => n.createdDate);
 
   const releaseNotesDates = releaseNotesWithDate.map((n) => {
-    const date = new Date(n.createdDate as string);
+    const date = new Date(n.createdDate!);
 
     return { date, year: date.getFullYear(), month: date.getMonth() };
   });
 
   for (const note of releaseNotesWithDate) {
-    const createdDate = new Date(note.createdDate as string);
+    const createdDate = new Date(note.createdDate!);
     const yearLabel = createdDate.toLocaleString('en-US', {
       year: 'numeric',
     });
@@ -113,7 +113,7 @@ const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
 
 export type { MonthData, YearData };
 export {
-  extractDatesFromReleasNotes,
+  extractDatesFromReleaseNotes,
   monthToString,
   monthValueToString,
   sortReleaseNotesByDate,

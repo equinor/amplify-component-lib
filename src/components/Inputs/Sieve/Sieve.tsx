@@ -54,11 +54,13 @@ const Sieve: FC<SieveProps> = ({
 
         const labels = JSON.parse(
           searchParams.get(parent.toLowerCase()) ?? '[]'
-        );
+        ) as string[];
 
-        filterValues[parent] = parentOptions?.filter((option) =>
-          labels.includes(option.label)
-        ) as Option[];
+        if (parentOptions !== undefined) {
+          filterValues[parent] = parentOptions.filter((option) =>
+            labels.includes(option.label)
+          );
+        }
       }
 
       onUpdate({
@@ -95,14 +97,10 @@ const Sieve: FC<SieveProps> = ({
 
       const parents =
         filterOptions?.map((filterOption) => filterOption.label) ?? [];
-      const filterValues = sieveValue.filterValues as FilterValues | undefined;
+      const filterValues = sieveValue.filterValues;
 
       for (const parent of parents) {
-        if (
-          filterValues &&
-          filterValues[parent] &&
-          filterValues[parent].length > 0
-        ) {
+        if (filterValues?.[parent] && filterValues[parent].length > 0) {
           searchParams.set(
             parent.toLowerCase(),
             JSON.stringify(filterValues[parent].map((option) => option.label))

@@ -26,7 +26,7 @@ function fakeProps(
   undefinedApprovedDate = false,
   withColor = false
 ): WorkflowDescriptionProps {
-  const fakeOptions: any = [];
+  const fakeOptions = [];
   for (let i = 0; i < faker.number.int({ min: 2, max: 20 }); i++) {
     fakeOptions.push(fakeOption(undefinedApprovedDate, withColor));
   }
@@ -35,7 +35,7 @@ function fakeProps(
   };
 }
 
-test('Renders the flow correctly', async () => {
+test('Renders the flow correctly', () => {
   const props = fakeProps();
   render(<WorkflowDescription {...props} />);
 
@@ -62,34 +62,30 @@ test('Renders the flow correctly', async () => {
   const notApprovedOptions = props.options.filter(
     (option) => option.approvedDate === undefined
   );
-  for (let i = 0; i < notApprovedOptions.length; i++) {
+  for (const option of notApprovedOptions) {
     expect(
-      screen.getByText(notApprovedOptions[i].notApprovedLabel ?? 'failed')
+      screen.getByText(option.notApprovedLabel ?? 'failed')
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(notApprovedOptions[i].label ?? 'failed')
-    ).toBeInTheDocument();
+    expect(screen.getByText(option.label ?? 'failed')).toBeInTheDocument();
   }
 });
 
-test('Renders undefined approved dates properly flow correctly', async () => {
+test('Renders undefined approved dates properly flow correctly', () => {
   const props = fakeProps(true);
   render(<WorkflowDescription {...props} />);
 
   const notApprovedOptions = props.options.filter(
     (option) => option.approvedDate === undefined
   );
-  for (let i = 0; i < notApprovedOptions.length; i++) {
+  for (const options of notApprovedOptions) {
     expect(
-      screen.getByText(notApprovedOptions[i].notApprovedLabel ?? 'failed')
+      screen.getByText(options.notApprovedLabel ?? 'failed')
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(notApprovedOptions[i].label ?? 'failed')
-    ).toBeInTheDocument();
+    expect(screen.getByText(options.label ?? 'failed')).toBeInTheDocument();
   }
 });
 
-test('Renders with color approved dates properly flow correctly', async () => {
+test('Renders with color approved dates properly flow correctly', () => {
   const props = fakeProps(false, true);
   render(<WorkflowDescription {...props} />);
 
@@ -114,7 +110,7 @@ test('Renders with color approved dates properly flow correctly', async () => {
   }
 });
 
-test('Renders with fallback color', async () => {
+test('Renders with fallback color', () => {
   const props = fakeProps(false, false);
   render(<WorkflowDescription {...props} />);
 

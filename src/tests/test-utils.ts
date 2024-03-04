@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 
-import { render } from '@testing-library/react';
+import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 const customRender = (
   ui: ReactElement,
-  options?: any
+  options?: RenderOptions
 ): ReturnType<typeof render> => render(ui, options);
 
 // re-export everything

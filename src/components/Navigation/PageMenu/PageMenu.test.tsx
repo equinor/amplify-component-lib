@@ -31,7 +31,7 @@ function Section({
         id={value}
         ref={(current) => {
           if (current) {
-            current['scrollIntoView'] = vi.fn();
+            current.scrollIntoView = vi.fn();
           }
         }}
       >
@@ -53,8 +53,8 @@ test('OnClick runs as expected', async () => {
       ))}
     </div>,
     {
-      wrapper: (props: any) => (
-        <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+      wrapper: (props: { children: ReactNode }) => (
+        <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
       ),
     }
   );
@@ -69,12 +69,14 @@ test('OnClick runs as expected', async () => {
 
   await user.click(button);
 
-  const section = document.querySelector(`#${items[1].value}`) as Element;
+  const section = document.querySelector(`#${items[1].value}`)!;
 
+  // TODO: fix this?
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   expect(section.scrollIntoView).toHaveBeenCalled();
 });
 
-test('Hides children when onlyShowSelectedChildren = true', async () => {
+test('Hides children when onlyShowSelectedChildren = true', () => {
   const items = fakeItems(true);
 
   render(
@@ -91,18 +93,18 @@ test('Hides children when onlyShowSelectedChildren = true', async () => {
       ))}
     </div>,
     {
-      wrapper: (props: any) => (
+      wrapper: (props: { children: ReactNode }) => (
         <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
       ),
     }
   );
 
-  for (const child of items[0].children || []) {
+  for (const child of items[0].children ?? []) {
     expect(screen.getByText(child.label)).toBeInTheDocument();
   }
 
   for (const item of items.slice(1)) {
-    for (const child of item.children || []) {
+    for (const child of item.children ?? []) {
       expect(screen.queryByText(child.label)).not.toBeInTheDocument();
     }
   }

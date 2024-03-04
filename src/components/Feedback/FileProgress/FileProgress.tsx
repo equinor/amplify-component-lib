@@ -35,7 +35,7 @@ const FileProgress: FC<
   RegularFileProgressBaseProps | CompactFileProgressBaseProps
 > = (props) => {
   const showCompleteState = useMemo(() => {
-    if (props.isError || props.isDone === undefined) return true;
+    if (props.isError ?? props.isDone === undefined) return true;
     return props.isDone;
   }, [props.isError, props.isDone]);
 

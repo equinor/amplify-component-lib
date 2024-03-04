@@ -47,7 +47,7 @@ export const TutorialContext = createContext<TutorialContextType | undefined>(
 
 interface TutorialProviderProps {
   children: ReactNode;
-  customStepComponents?: Array<CustomTutorialComponent>;
+  customStepComponents?: CustomTutorialComponent[];
   tutorials?: Tutorial[];
 }
 
@@ -141,7 +141,9 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     if (allElementsToHighlight.every((item) => item !== null)) {
       setAllElementsToHighlight(allElementsToHighlight as HTMLElement[]);
     } else {
-      handleTryToGetElementsAgain();
+      handleTryToGetElementsAgain().catch((error) => {
+        console.error('Error trying to get elements to highlight', error);
+      });
     }
   }, [activeTutorial, currentStep, tutorialError, shortNameFromParams]);
 
@@ -153,7 +155,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     const customKeysFromSteps = activeTutorial.steps
       .filter((step) => step.key !== undefined && step.key !== null)
       // Writing 'customStep.key as string' for coverage, we know its string since we filter out right before the map
-      .map((customStep) => customStep.key as string);
+      .map((customStep) => customStep.key!);
     if (customKeysFromSteps.length === 0) return;
 
     const customKeysFromComponents = customStepComponents?.map(

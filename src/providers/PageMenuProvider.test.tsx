@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { faker } from '@faker-js/faker';
 
 import PageMenu from '../components/Navigation/PageMenu/PageMenu';
@@ -20,7 +22,6 @@ test('usePageMenu throws error if used outside provider', () => {
 test('SetItemRef works as expected', () => {
   const items = fakeItems();
 
-  import.meta.env.VISIBLE_INDEX = 0;
   render(
     <div>
       <PageMenu />
@@ -31,7 +32,7 @@ test('SetItemRef works as expected', () => {
       ))}
     </div>,
     {
-      wrapper: (props: any) => (
+      wrapper: (props: { children: ReactNode }) => (
         <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
       ),
     }

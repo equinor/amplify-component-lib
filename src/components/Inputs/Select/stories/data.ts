@@ -1,9 +1,9 @@
-export type ValueType = {
+export interface ValueType {
   id: string;
   label: string;
   children?: ValueType[];
   value: number;
-};
+}
 
 export const items: ValueType[] = [
   {

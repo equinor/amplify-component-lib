@@ -3,7 +3,7 @@ import Unauthorized from './Unauthorized';
 export default {
   title: 'Feedback/Unauthorized',
   component: Unauthorized,
-  env: (config: any) => ({
+  env: (config: []) => ({
     ...config,
     NAME: '{AppName}',
   }),

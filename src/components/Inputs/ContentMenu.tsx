@@ -75,11 +75,11 @@ const ContentMenuItemSkeleton = styled(SkeletonBase)`
   padding: ${spacings.medium_small} 0;
 `;
 
-type ContentMenuItemType = {
+interface ContentMenuItemType {
   label: string;
   value: string;
   children?: ContentMenuItemType[];
-};
+}
 
 export interface ContentMenuProps {
   items: ContentMenuItemType[];
