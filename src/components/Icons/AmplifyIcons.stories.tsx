@@ -10,8 +10,10 @@ import {
   amplify_h4,
   amplify_info_small,
   amplify_lwd,
+  amplify_overview,
   amplify_resources,
   amplify_sharepoint,
+  amplify_shield_person,
   amplify_small_portal,
   amplify_snail,
   amplify_sort_small,
@@ -41,6 +43,8 @@ const allIcons = {
   amplify_sort_small: amplify_sort_small,
   amplify_info_small: amplify_info_small,
   amplify_resources: amplify_resources,
+  amplify_overview: amplify_overview,
+  amplify_shield_person: amplify_shield_person,
 };
 
 interface StoryFnProps {
@@ -80,6 +84,8 @@ export default {
         'amplify_sort_small',
         'amplify_info_small',
         'amplify_resources',
+        'amplify_overview',
+        'amplify_shield_person',
       ],
     },
   },

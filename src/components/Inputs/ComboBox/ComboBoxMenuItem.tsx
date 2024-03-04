@@ -131,7 +131,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOption<T>>(
     }
   };
 
-  if (item.children && multiselect) {
+  if (item.children && item.children.length > 0 && multiselect) {
     return (
       <>
         <MenuItemParentSelect
