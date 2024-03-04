@@ -20,7 +20,6 @@ import Unauthorized from 'src/components/Feedback/Unauthorized';
 import { auth, environment } from 'src/utils';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { has } from 'lodash-es';
 
 interface ExtendedJwtPayload extends JwtPayload {
   roles: string[];
