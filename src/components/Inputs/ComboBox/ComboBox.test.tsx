@@ -740,7 +740,7 @@ test('Loading works as expected', async () => {
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
-test('underlineHighlight works as expected', async () => {
+test('underlineHighlight works as expected', () => {
   const items = fakeItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
@@ -775,7 +775,7 @@ test('underlineHighlight works as expected', async () => {
   );
 });
 
-test('lightBackground works as expected', async () => {
+test('lightBackground works as expected', () => {
   const items = fakeItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
