@@ -31,6 +31,13 @@ module.exports = {
       'error',
       { checksVoidReturn: false },
     ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        varsIgnorePattern: '^_',
+        destructuredArrayIgnorePattern: '^_',
+      },
+    ],
   },
   overrides: [
     {

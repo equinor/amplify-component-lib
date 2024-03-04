@@ -1,7 +1,12 @@
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { ComboBox } from './ComboBox';
 import { render, screen, userEvent } from 'src/tests/test-utils';
+
+import { expect } from 'vitest';
+
+const { colors } = tokens;
 
 function fakeItem() {
   return {
@@ -733,6 +738,86 @@ test('Loading works as expected', async () => {
   }
 
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('underlineHighlight works as expected', async () => {
+  const items = fakeItems();
+  const label = faker.animal.bear();
+  const handleOnSelect = vi.fn();
+
+  const { rerender } = render(
+    <ComboBox
+      label={label}
+      onSelect={handleOnSelect}
+      values={[]}
+      items={items}
+    />
+  );
+
+  expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
+    'box-shadow',
+    `inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`
+  );
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handleOnSelect}
+      values={[]}
+      items={items}
+      underlineHighlight={true}
+    />
+  );
+
+  expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
+    'box-shadow',
+    `inset 0 -2px 0 0 ${colors.infographic.substitute__blue_overcast.rgba}`
+  );
+});
+
+test('lightBackground works as expected', async () => {
+  const items = fakeItems();
+  const label = faker.animal.bear();
+  const handleOnSelect = vi.fn();
+
+  const { rerender } = render(
+    <ComboBox
+      label={label}
+      onSelect={handleOnSelect}
+      items={items}
+      value={items[0]}
+    />
+  );
+
+  expect(screen.queryByTestId('combobox-container')).toHaveStyleRule(
+    'background-color',
+    `${colors.ui.background__light.rgba}`
+  );
+
+  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyleRule(
+    'background',
+    `${colors.ui.background__default.rgba}`
+  );
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handleOnSelect}
+      items={items}
+      value={items[0]}
+      lightBackground={true}
+    />
+  );
+
+  expect(screen.queryByTestId('combobox-container')).toHaveStyleRule(
+    'background-color',
+    `${colors.ui.background__default.rgba}`
+  );
+
+  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyleRule(
+    'background',
+    `${colors.ui.background__light.rgba}`
+  );
 });
 
 test('Not able to remove item when disabled/loading', async () => {

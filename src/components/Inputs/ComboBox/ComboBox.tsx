@@ -33,6 +33,8 @@ export type ComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   sortValues?: boolean;
   disabled?: boolean;
   loading?: boolean;
+  lightBackground?: boolean;
+  underlineHighlight?: boolean;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 export const ComboBox = <T extends ComboBoxOption<T>>(
@@ -223,8 +225,15 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   return (
-    <>
-      <Container ref={anchorRef} onClick={handleOnOpen} aria-expanded={open}>
+    <div>
+      <Container
+        data-testid="combobox-container"
+        ref={anchorRef}
+        onClick={handleOnOpen}
+        aria-expanded={open}
+        $underlineHighlight={props.underlineHighlight}
+        $lightBackground={props.lightBackground}
+      >
         {props.label && (
           <Label label={props.label} htmlFor="amplify-combobox" />
         )}
@@ -233,6 +242,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
             selectedValues.map((value) => (
               <StyledChip
                 key={value.value}
+                data-testid="amplify-combobox-chip"
                 className="amplify-combo-box-chip"
                 onDelete={() => {
                   if (!props.loading && !props.disabled) {
@@ -240,6 +250,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
                   }
                 }}
                 $tryingToRemove={tryingToRemoveItem?.value === value.value}
+                $lightBackground={props.lightBackground}
               >
                 {value.label}
               </StyledChip>
@@ -306,6 +317,6 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
           )}
         </Menu>
       )}
-    </>
+    </div>
   );
 };
