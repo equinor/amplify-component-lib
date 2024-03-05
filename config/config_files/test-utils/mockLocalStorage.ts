@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 // Mock localStorage
 const localStorageMock = (function () {
-  let store: any = {};
+  let store: Record<string, string> = {};
 
   return {
     getItem(key: string) {

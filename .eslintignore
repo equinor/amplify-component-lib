@@ -3,6 +3,7 @@ vitest.config.ts
 playwright.config.ts
 
 src/api
+src/config
 
 **/*.json
 **/*.md
