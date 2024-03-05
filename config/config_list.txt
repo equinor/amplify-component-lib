@@ -1,4 +1,5 @@
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.eslintrc.js
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.eslintignore
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierignore
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierrc.js
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.lintstagedrc.yaml

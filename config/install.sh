@@ -38,6 +38,11 @@ curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/confi
 printf -- "Downloading mockLocalStorage.ts file...\n"
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts" > mockLocalStorage.ts
+
+printf -- "Downloading utils.ts file...\n"
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/utils.ts" > utils.ts
+
 cd ../..
 
 printf -- "Downloading nginx.conf proxy config...\n"
