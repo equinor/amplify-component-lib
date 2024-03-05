@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import 'highlight.js/styles/base16/solarized-dark.css';
 
-const { colors, spacings } = tokens;
+const { colors, spacings, typography } = tokens;
 
 export const Wrapper = styled.div`
   display: flex;
@@ -38,6 +38,7 @@ export const Wrapper = styled.div`
       font-size: 16px;
       font-family: 'Equinor', sans-serif;
       color: ${colors.text.static_icons__default.hex};
+      line-height: ${typography.paragraph.body_long.lineHeight};
     }
     img {
       max-width: 100%;
