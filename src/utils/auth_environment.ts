@@ -139,6 +139,7 @@ const GRAPH_REQUESTS_PHOTO = {
 
 const GRAPH_REQUESTS_BACKEND = (apiScope: string) => ({
   scopes: [apiScope],
+  rediectUri: `${window.location.origin}/auth.html`, // https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/errors.md#block_iframe_reload
 });
 
 const isInIframe = (): boolean => {

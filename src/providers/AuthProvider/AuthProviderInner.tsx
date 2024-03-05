@@ -143,12 +143,15 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           InteractionType.Silent,
           GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
         );
-
+        console.log('Successfully acquired token');
         if (tokenResponse && tokenResponse.accessToken) {
+          console.log('Decoding token');
           const accessToken: ExtendedJwtPayload = jwtDecode(
             tokenResponse.accessToken
           );
+          console.log('Token was valid');
           if (accessToken.roles) {
+            console.log('Found roles');
             setRoles(accessToken.roles);
           }
           setAuthState('authorized');
