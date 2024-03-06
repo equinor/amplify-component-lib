@@ -77,14 +77,10 @@ export const ComboBoxWithSingleSelect: StoryFn<ComboBoxComponentProps<Item>> = (
 
   return (
     <ComboBox
-      label={args.label}
-      disabled={args.disabled}
-      loading={args.loading}
-      clearable={args.clearable}
+      {...args}
       items={FAKE_ITEMS}
       value={value}
       onSelect={handleOnSelect}
-      sortValues={args.sortValues}
     />
   );
 };
@@ -96,7 +92,7 @@ export const ComboBoxWithMultiSelect: StoryFn<ComboBoxComponentProps<Item>> = (
 
   const handleOnSelect = (
     selectedValues: ComboBoxOption<Item>[],
-    selectedValue: ComboBoxOption<Item>
+    selectedValue?: ComboBoxOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
     setValues(selectedValues);
@@ -104,14 +100,10 @@ export const ComboBoxWithMultiSelect: StoryFn<ComboBoxComponentProps<Item>> = (
 
   return (
     <ComboBox
-      label={args.label}
-      disabled={args.disabled}
-      loading={args.loading}
-      clearable={args.clearable}
+      {...args}
       items={FAKE_ITEMS}
       values={values}
       onSelect={handleOnSelect}
-      sortValues={args.sortValues}
     />
   );
 };
@@ -130,14 +122,10 @@ export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
 
   return (
     <ComboBox
-      label={args.label}
-      disabled={args.disabled}
-      loading={args.loading}
-      clearable={args.clearable}
+      {...args}
       value={value}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
-      sortValues={args.sortValues}
     />
   );
 };
@@ -149,7 +137,7 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
 
   const handleOnSelect = (
     selectedValues: ComboBoxOption<Item>[],
-    selectedValue: ComboBoxOption<Item>
+    selectedValue?: ComboBoxOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
     setValues(selectedValues);
@@ -157,14 +145,10 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
 
   return (
     <ComboBox
-      label={args.label}
-      disabled={args.disabled}
-      loading={args.loading}
-      clearable={args.clearable}
+      {...args}
       values={values}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
-      sortValues={args.sortValues}
     />
   );
 };
@@ -176,7 +160,7 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
 
   const handleOnSelect = (
     selectedValues: ComboBoxOption<Item>[],
-    selectedValue: ComboBoxOption<Item>
+    selectedValue?: ComboBoxOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
     setValues(selectedValues);
@@ -185,16 +169,19 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
   return (
     <ComboBox
       label={args.label}
+      placeholder={args.placeholder}
+      loading={args.loading}
+      disabled={args.disabled}
+      underlineHighlight={args.underlineHighlight}
+      lightBackground={args.lightBackground}
+      clearable={args.clearable}
+      sortValues={args.sortValues}
       selectableParent={
         (args as MultiComboBoxCommon<Item>)?.selectableParent ?? false
       }
-      disabled={args.disabled}
-      loading={args.loading}
-      clearable={args.clearable}
       items={FAKE_ITEMS_WITH_CHILDREN}
       values={values}
       onSelect={handleOnSelect}
-      sortValues={args.sortValues}
     />
   );
 };
