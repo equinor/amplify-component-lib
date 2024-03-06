@@ -59,7 +59,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   loadingComponent,
   unauthorizedComponent,
 }) => {
-  const { instance, accounts } = useMsal();
+  const { instance, inProgress } = useMsal();
   const { login, result, error, acquireToken } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
@@ -83,35 +83,23 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   useEffect(() => {
     if (!isInitialized) return;
 
-    if (
-      error instanceof InteractionRequiredAuthError &&
-      accounts.length === 0 &&
-      !isInIframe()
-    ) {
+    if (error instanceof InteractionRequiredAuthError && !isInIframe()) {
       console.error(error);
       console.log('No account found, need to login via. redirect');
       login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
         console.error('Error during login', error);
       });
-    } else if (accounts.length > 0 && account === undefined) {
+    } else if (result?.account && !account) {
       console.log('Found account, setting that one as active');
-      instance.setActiveAccount(accounts[0]);
-      setAccount(accounts[0]);
+      instance.setActiveAccount(result.account);
+      setAccount(result.account);
     }
-  }, [account, accounts, error, instance, isInitialized, login, setAccount]);
-
-  useEffect(() => {
-    if (result?.account && account === undefined) {
-      // Set AuthProvider account
-      setAccount(result?.account);
-    }
-  }, [account, result?.account, setAccount]);
+  }, [account, error, instance, isInitialized, login, result, setAccount]);
 
   useEffect(() => {
     if (!account || !isInitialized || hasFetchedRolesAndPhoto.current) return;
     hasFetchedRolesAndPhoto.current = true;
 
-    // Get photo
     const getPhoto = async () => {
       try {
         const tokenResponse = await acquireToken(
@@ -134,9 +122,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         console.error(error);
       }
     };
-    getPhoto();
 
-    // Get roles
     const getRoles = async () => {
       try {
         const tokenResponse = await acquireToken(
@@ -161,8 +147,23 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         setAuthState('unauthorized');
       }
     };
-    getRoles();
-  }, [account, acquireToken, isInitialized, setAuthState, setPhoto, setRoles]);
+
+    const getPhotoAndRoles = async () => {
+      await getPhoto();
+      await getRoles();
+    };
+
+    getPhotoAndRoles();
+  }, [
+    account,
+    acquireToken,
+    error,
+    inProgress,
+    isInitialized,
+    setAuthState,
+    setPhoto,
+    setRoles,
+  ]);
 
   if (authState === 'loading' || account === undefined)
     return (
