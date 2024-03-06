@@ -8,10 +8,11 @@ import {
 } from 'react';
 
 import { CircularProgress, Icon, Label, Menu } from '@equinor/eds-core-react';
-import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
+import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
+  ClearButton,
   Container,
   PlaceholderText,
   Section,
@@ -35,11 +36,22 @@ export type ComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   loading?: boolean;
   lightBackground?: boolean;
   underlineHighlight?: boolean;
+  clearable?: boolean;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 export const ComboBox = <T extends ComboBoxOption<T>>(
   props: ComboBoxComponentProps<T>
 ) => {
+  const {
+    clearable = true,
+    loading = false,
+    disabled = false,
+    sortValues = true,
+    lightBackground = false,
+    underlineHighlight = false,
+    placeholder = 'Select...',
+    label,
+  } = props;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const anchorRef = useRef<HTMLDivElement | null>(null);
@@ -64,7 +76,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       selected = [props.value];
     }
 
-    if (props.sortValues === false) return selected;
+    if (!sortValues) return selected;
 
     let flattenedItems: T[];
     if ('groups' in props) {
@@ -85,7 +97,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       );
       return firstIndex - secondIndex;
     });
-  }, [props]);
+  }, [props, sortValues]);
 
   useEffect(() => {
     if (
@@ -99,7 +111,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (!open && !(props.disabled ?? props.loading)) {
+    if (!open && !disabled && !loading) {
       searchRef.current?.focus();
       setOpen(true);
     }
@@ -112,7 +124,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleToggleOpen = () => {
-    if (props.disabled ?? props.loading) return;
+    if (disabled || loading) return;
 
     if (open) {
       handleOnClose();
@@ -122,7 +134,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === ' ' ?? props.loading ?? props.disabled) return;
+    if (event.target.value === ' ' || loading || disabled) return;
     setSearch(event.target.value);
     if (!open) {
       setOpen(true);
@@ -185,6 +197,13 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
     }
   };
 
+  const handleOnClear = () => {
+    if ('value' in props) props.onSelect(undefined);
+    else {
+      props.onSelect([]);
+    }
+  };
+
   const handleOnSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Space' || event.key === 'Enter') {
       handleOnOpen();
@@ -231,12 +250,10 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
         ref={anchorRef}
         onClick={handleOnOpen}
         aria-expanded={open}
-        $underlineHighlight={props.underlineHighlight}
-        $lightBackground={props.lightBackground}
+        $underlineHighlight={underlineHighlight}
+        $lightBackground={lightBackground}
       >
-        {props.label && (
-          <Label label={props.label} htmlFor="amplify-combobox" />
-        )}
+        {label && <Label label={label} htmlFor="amplify-combobox" />}
         <Section>
           {selectedValues.length > 0 || search !== '' ? (
             selectedValues.map((value) => (
@@ -245,24 +262,22 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
                 data-testid="amplify-combobox-chip"
                 className="amplify-combo-box-chip"
                 onDelete={() => {
-                  if (!props.loading && !props.disabled) {
+                  if (!loading && !disabled) {
                     handleOnRemoveItem(value);
                   }
                 }}
                 $tryingToRemove={tryingToRemoveItem?.value === value.value}
-                $lightBackground={props.lightBackground}
+                $lightBackground={lightBackground}
               >
                 {value.label}
               </StyledChip>
             ))
           ) : (
-            <PlaceholderText>
-              {props.placeholder ? props.placeholder : 'Select...'}
-            </PlaceholderText>
+            <PlaceholderText>{placeholder}</PlaceholderText>
           )}
           <input
             id="amplify-combobox"
-            disabled={props.disabled ?? props.loading}
+            disabled={disabled || loading}
             ref={searchRef}
             type="search"
             role="combobox"
@@ -272,7 +287,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
             onKeyDownCapture={handleOnSearchKeyDown}
           />
         </Section>
-        {props.loading ? (
+        {loading ? (
           <CircularProgress size={16} />
         ) : (
           <Icon
@@ -280,6 +295,11 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
             data={open ? arrow_drop_up : arrow_drop_down}
             color={colors.text.static_icons__default.rgba}
           />
+        )}
+        {clearable && selectedValues.length > 0 && !loading && (
+          <ClearButton variant="ghost_icon" onClick={handleOnClear}>
+            <Icon data={clear} size={18} />
+          </ClearButton>
         )}
       </Container>
       {open && (

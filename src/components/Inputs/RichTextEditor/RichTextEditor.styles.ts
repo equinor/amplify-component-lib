@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
 
   .tiptap {
     height: fit-content;
-    min-height: 200px;
     background: white;
 
     &[contenteditable='true'] {
