@@ -18,7 +18,7 @@ interface SingleComboBoxCommon<T extends ComboBoxOption<T>> {
 
 export interface MultiComboBoxCommon<T extends ComboBoxOption<T>> {
   values: T[];
-  onSelect: (values: T[], selectedValue: T) => void;
+  onSelect: (values: T[], selectedValue?: T) => void;
   selectableParent?: boolean;
 }
 

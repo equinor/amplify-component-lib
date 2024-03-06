@@ -885,7 +885,7 @@ test('Clearing works as expected', async () => {
 
   await user.click(clearButton);
 
-  expect(handler).toHaveBeenCalledWith([], items[0]);
+  expect(handler).toHaveBeenCalledWith([]);
 
   rerender(
     <ComboBox

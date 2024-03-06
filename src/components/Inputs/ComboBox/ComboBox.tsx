@@ -97,7 +97,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       );
       return firstIndex - secondIndex;
     });
-  }, [props]);
+  }, [props, sortValues]);
 
   useEffect(() => {
     if (
@@ -200,7 +200,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
   const handleOnClear = () => {
     if ('value' in props) props.onSelect(undefined);
     else {
-      props.onSelect([], props.values[0]);
+      props.onSelect([]);
     }
   };
 
