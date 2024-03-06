@@ -59,7 +59,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   loadingComponent,
   unauthorizedComponent,
 }) => {
-  const { instance, inProgress } = useMsal();
+  const { instance } = useMsal();
   const { login, result, error, acquireToken } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
@@ -158,7 +158,6 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     account,
     acquireToken,
     error,
-    inProgress,
     isInitialized,
     setAuthState,
     setPhoto,
