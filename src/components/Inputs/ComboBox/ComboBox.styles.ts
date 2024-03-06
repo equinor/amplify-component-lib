@@ -1,4 +1,4 @@
-import { Chip, Menu, Typography } from '@equinor/eds-core-react';
+import { Button, Chip, Menu, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/style/spacings';
@@ -67,6 +67,7 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const Section = styled.section`
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: ${spacings.x_small};
@@ -105,6 +106,23 @@ export const Section = styled.section`
         }
       }
     }
+  }
+`;
+
+export const ClearButton = styled(Button)`
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 48px;
+  width: 24px;
+  height: 24px;
+  svg {
+    fill: ${colors.text.static_icons__secondary.rgba};
+  }
+  &:after {
+    width: 24px;
+    height: 24px;
+    left: 0;
   }
 `;
 

@@ -856,3 +856,46 @@ test('Not able to remove item when disabled/loading', async () => {
 
   expect(handler).not.toHaveBeenCalled();
 });
+
+test('Clearing works as expected', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const items = fakeItems();
+
+  const { rerender } = render(
+    <ComboBox label={label} onSelect={handler} items={items} value={items[0]} />
+  );
+
+  const user = userEvent.setup();
+
+  const clearButton = screen.getByRole('button');
+
+  await user.click(clearButton);
+
+  expect(handler).toHaveBeenCalledWith(undefined);
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0], items[1]]}
+    />
+  );
+
+  await user.click(clearButton);
+
+  expect(handler).toHaveBeenCalledWith([], items[0]);
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={items[0]}
+      clearable={false}
+    />
+  );
+
+  expect(screen.queryByRole('button')).not.toBeInTheDocument();
+});

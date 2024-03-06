@@ -18,11 +18,13 @@ export default {
     label: { control: 'text' },
     selectableParent: { control: 'boolean' },
     sortValues: { control: 'boolean' },
+    clearable: { control: 'boolean' },
   },
   args: {
     label: 'Label here',
     selectableParent: true,
     sortValues: true,
+    clearable: true,
   },
 };
 
@@ -78,6 +80,7 @@ export const ComboBoxWithSingleSelect: StoryFn<ComboBoxComponentProps<Item>> = (
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
+      clearable={args.clearable}
       items={FAKE_ITEMS}
       value={value}
       onSelect={handleOnSelect}
@@ -104,6 +107,7 @@ export const ComboBoxWithMultiSelect: StoryFn<ComboBoxComponentProps<Item>> = (
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
+      clearable={args.clearable}
       items={FAKE_ITEMS}
       values={values}
       onSelect={handleOnSelect}
@@ -129,6 +133,7 @@ export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
+      clearable={args.clearable}
       value={value}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
@@ -155,6 +160,7 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
       label={args.label}
       disabled={args.disabled}
       loading={args.loading}
+      clearable={args.clearable}
       values={values}
       groups={FAKE_GROUPS}
       onSelect={handleOnSelect}
@@ -184,6 +190,7 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
       }
       disabled={args.disabled}
       loading={args.loading}
+      clearable={args.clearable}
       items={FAKE_ITEMS_WITH_CHILDREN}
       values={values}
       onSelect={handleOnSelect}
