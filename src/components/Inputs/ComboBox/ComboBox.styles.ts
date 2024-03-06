@@ -17,7 +17,7 @@ export const Container = styled.div<ContainerProps>`
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  padding: ${spacings.medium_small} ${spacings.medium};
+  padding: ${spacings.small} ${spacings.medium_small};
 
   ${({ $underlineHighlight }) =>
     $underlineHighlight
