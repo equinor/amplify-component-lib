@@ -33,10 +33,10 @@ export const Container = styled.div<ContainerProps>`
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
   }
 
-  margin-top: 0.75rem;
+  margin-top: 1rem;
   > label {
     position: absolute;
-    top: -0.75rem;
+    top: -1rem;
     left: 0;
   }
   > svg[role='progressbar'] {
