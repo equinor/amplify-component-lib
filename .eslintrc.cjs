@@ -68,7 +68,7 @@ module.exports = {
     },
     {
       files: ['**/*.js', '**/*.ts', '**/*.tsx'],
-      excludedFiles: ['*.test.*', '*.stories.*', './src/providers/AuthProvider/**', '.src/utils/auth_environment.ts'],
+      excludedFiles: ['*.test.*', '*.stories.*', './src/providers/AuthProvider/**', './src/utils/auth_environment.ts'],
       rules: {
         'no-console': ['warn', { allow: ['warn', 'error'] }],
       }
