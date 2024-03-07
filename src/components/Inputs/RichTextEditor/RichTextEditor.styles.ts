@@ -6,7 +6,11 @@ import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings, typography } = tokens;
 
-export const Wrapper = styled.div<{ $lightBackground?: boolean }>`
+interface WrapperProps {
+  $lightBackground?: boolean;
+}
+
+export const Wrapper = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
