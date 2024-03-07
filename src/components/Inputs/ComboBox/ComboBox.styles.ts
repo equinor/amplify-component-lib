@@ -71,6 +71,7 @@ export const Section = styled.section`
   display: flex;
   flex-wrap: wrap;
   gap: ${spacings.x_small};
+  height: 24px;
   input[type='search'] {
     background: transparent;
     width: 0;
