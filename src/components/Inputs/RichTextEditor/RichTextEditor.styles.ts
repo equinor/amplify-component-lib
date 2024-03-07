@@ -6,7 +6,7 @@ import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings, typography } = tokens;
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ $lightBackground?: boolean }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -18,7 +18,10 @@ export const Wrapper = styled.div`
 
   .tiptap {
     height: fit-content;
-    background: white;
+    background: ${(props) =>
+      props.$lightBackground
+        ? `${colors.ui.background__default.rgba}`
+        : `${colors.ui.background__light.rgba}`};
 
     &[contenteditable='true'] {
       height: 100%;

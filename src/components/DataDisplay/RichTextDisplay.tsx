@@ -70,9 +70,14 @@ const extensions = [
 export interface RichTextDisplayProps {
   value: string | null | undefined;
   imgReadToken?: string;
+  lightBackground?: boolean;
 }
 
-const RichTextDisplay: FC<RichTextDisplayProps> = ({ value, imgReadToken }) => {
+const RichTextDisplay: FC<RichTextDisplayProps> = ({
+  value,
+  imgReadToken,
+  lightBackground = true,
+}) => {
   const editor = useEditor({
     extensions: extensions,
     content: imgReadToken
@@ -91,7 +96,7 @@ const RichTextDisplay: FC<RichTextDisplayProps> = ({ value, imgReadToken }) => {
   }, [editor, value]);
 
   return (
-    <Wrapper>
+    <Wrapper $lightBackground={lightBackground}>
       <EditorContent editor={editor} readOnly />
     </Wrapper>
   );
