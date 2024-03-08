@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import { Search as Base, SearchProps } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -21,6 +21,8 @@ const StyledBase = styled(Base)`
   }
 `;
 
-export const Search: FC<SearchProps> = (props) => (
-  <StyledBase {...props} autoComplete="off" />
+export const Search = forwardRef<HTMLInputElement, SearchProps>(
+  (props, ref) => <StyledBase {...props} ref={ref} autoComplete="off" />
 );
+
+Search.displayName = 'HeaderDrawer';
