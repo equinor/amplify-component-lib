@@ -12,25 +12,39 @@ const formatDate = (
       | 'DD.MM.YY'
       | 'DD. month';
     month?: 'short' | 'long';
+    useUTC?: boolean;
   }
 ): string => {
   if (date) {
     const dateObj = new Date(date);
     if (dateObj.getTime()) {
       if (options?.format === 'DD. month YYYY') {
-        const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
+        const day = dateObj.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          timeZone: options.useUTC ? 'UTC' : undefined,
+        });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
           month: options?.month ?? 'long',
           year: 'numeric',
+          timeZone: options.useUTC ? 'UTC' : undefined,
         })}`;
       }
-      const day = dateObj.getDate();
-      const month = dateObj.getMonth() + 1;
-      const year = dateObj.getFullYear();
+
+      const day = options?.useUTC ? dateObj.getUTCDate() : dateObj.getDate();
+      const month = options?.useUTC
+        ? dateObj.getUTCMonth() + 1
+        : dateObj.getMonth() + 1;
+      const year = options?.useUTC
+        ? dateObj.getUTCFullYear()
+        : dateObj.getFullYear();
       if (options?.format === 'DD. month') {
-        const day = dateObj.toLocaleDateString('en-GB', { day: 'numeric' });
+        const day = dateObj.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          timeZone: options.useUTC ? 'UTC' : undefined,
+        });
         return `${day}. ${dateObj.toLocaleString('en-GB', {
           month: options.month ?? 'long',
+          timeZone: options.useUTC ? 'UTC' : undefined,
         })}`;
       }
       if (options?.format === 'YYYY-MM-DD') {

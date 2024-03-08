@@ -438,3 +438,34 @@ test('isBetweenDates works as expected with todays date between itself', () => {
   const formatted = date.isBetweenDates(today, [today, today]);
   expect(formatted).toEqual(true);
 });
+describe('UTC timestamps', () => {
+  const utcDate = '2021-06-30T22:00:00+00:00';
+  test('should accept UTC timestamps and get that date back in UTC in the format of DD. month YYYY', () => {
+    const formatted = date.formatDate(utcDate, {
+      format: 'DD. month YYYY',
+      useUTC: true,
+    });
+    expect(formatted).toEqual('30. June 2021');
+  });
+  test('should accept UTC timestamps and get that date back in UTC in the format of DD. month', () => {
+    const formatted = date.formatDate(utcDate, {
+      format: 'DD. month',
+      useUTC: true,
+    });
+    expect(formatted).toEqual('30. June');
+  });
+  test('should accept UTC timestamps and get that date back in UTC in the format of YYYY-MM-DD', () => {
+    const formatted = date.formatDate(utcDate, {
+      format: 'YYYY-MM-DD',
+      useUTC: true,
+    });
+    expect(formatted).toEqual('2021-06-30');
+  });
+  test('should accept UTC timestamps and get that date back in UTC in the format of DD.MM.YY', () => {
+    const formatted = date.formatDate(utcDate, {
+      format: 'DD.MM.YY',
+      useUTC: true,
+    });
+    expect(formatted).toEqual('30.06.21');
+  });
+});
