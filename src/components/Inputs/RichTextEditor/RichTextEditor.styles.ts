@@ -23,6 +23,7 @@ export const Wrapper = styled.div<WrapperProps>`
 
   .tiptap {
     height: fit-content;
+    min-height: fit-content;
     background: ${(props) =>
       props.$lightBackground
         ? `${colors.ui.background__default.rgba}`
