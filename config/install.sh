@@ -21,11 +21,15 @@ do
   curl -s $line > $fileName
 done
 
-printf -- "Downloading setupLocalhost.mjs file...\n"
-
 cd ./src || return
 
+printf -- "Downloading setupLocalhost.mjs file...\n"
+
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
+
+printf -- "Downloading vite.env.d.ts file...\n"
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite-env.d.ts" > vite-env.d.ts
 
 printf -- "Going into test-utils folder...\n"
 
