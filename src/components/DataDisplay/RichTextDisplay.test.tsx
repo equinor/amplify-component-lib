@@ -11,7 +11,6 @@ import {
 } from 'src/tests/mockRichTextEditor';
 import { render, screen } from 'src/tests/test-utils';
 
-import { expect } from 'vitest';
 const { spacings } = tokens;
 
 vi.stubGlobal('ClipboardEvent', ClipboardEventMock);
