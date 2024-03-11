@@ -8,6 +8,7 @@ const { colors, spacings, typography } = tokens;
 
 interface WrapperProps {
   $lightBackground?: boolean;
+  $padding?: 'sm' | 'md' | 'lg' | 'none';
 }
 
 export const Wrapper = styled.div<WrapperProps>`
@@ -22,6 +23,7 @@ export const Wrapper = styled.div<WrapperProps>`
 
   .tiptap {
     height: fit-content;
+    min-height: fit-content;
     background: ${(props) =>
       props.$lightBackground
         ? `${colors.ui.background__default.rgba}`
@@ -31,7 +33,20 @@ export const Wrapper = styled.div<WrapperProps>`
       height: 100%;
       box-shadow: inset 0 -1px ${colors.ui.background__medium.rgba};
     }
-    padding: ${spacings.comfortable.medium};
+
+    padding: ${(props) => {
+      switch (props.$padding) {
+        case 'sm':
+          return spacings.comfortable.small;
+        case 'md':
+          return spacings.comfortable.medium;
+        case 'lg':
+          return spacings.comfortable.large;
+        case 'none':
+        default:
+          return 0;
+      }
+    }};
 
     a {
       color: ${colors.interactive.primary__resting.rgba};

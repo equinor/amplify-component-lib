@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import RichTextDisplay from './RichTextDisplay';
@@ -9,6 +10,8 @@ import {
   mockGetBoundingClientRect,
 } from 'src/tests/mockRichTextEditor';
 import { render, screen } from 'src/tests/test-utils';
+
+const { spacings } = tokens;
 
 vi.stubGlobal('ClipboardEvent', ClipboardEventMock);
 vi.stubGlobal('ClipboardData', ClipboardDataMock);
@@ -67,4 +70,39 @@ test('Shows content when sending in new value', async () => {
   expect(screen.getByText(newContent)).toBeInTheDocument();
 
   expect(screen.queryByText(content)).not.toBeInTheDocument();
+});
+
+test('Padding props works as expected', async () => {
+  const content = faker.animal.bear();
+
+  const { rerender, container } = render(<RichTextDisplay value={content} />);
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(container.querySelector('.tiptap')).toHaveStyle({
+    padding: spacings.comfortable.medium,
+  });
+
+  rerender(<RichTextDisplay value={'content'} padding={'none'} />);
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(container.querySelector('.tiptap')).toHaveStyle({
+    padding: 0,
+  });
+
+  rerender(<RichTextDisplay value={'content'} padding={'sm'} />);
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(container.querySelector('.tiptap')).toHaveStyle({
+    padding: spacings.comfortable.small,
+  });
+
+  rerender(<RichTextDisplay value={'content'} padding={'lg'} />);
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(container.querySelector('.tiptap')).toHaveStyle({
+    padding: spacings.comfortable.large,
+  });
 });
