@@ -29,7 +29,7 @@ curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/confi
 
 printf -- "Downloading vite.env.d.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite-end.d.ts" > vite-env.d.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite-env.d.ts" > vite-env.d.ts
 
 printf -- "Going into test-utils folder...\n"
 
