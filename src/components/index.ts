@@ -124,6 +124,7 @@ export type {
   TabPanelsProps,
   TabsProps,
   TypographyProps,
+  DividerProps,
 } from '@equinor/eds-core-react';
 export {
   Breadcrumbs,
@@ -131,6 +132,7 @@ export {
   Checkbox,
   CircularProgress,
   Dialog,
+  Divider,
   DotProgress,
   Icon,
   Label,
