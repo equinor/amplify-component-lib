@@ -59,7 +59,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   loadingComponent,
   unauthorizedComponent,
 }) => {
-  const { instance } = useMsal();
+  const { instance, accounts } = useMsal();
   const { login, result, error, acquireToken } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
@@ -71,12 +71,14 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     if (isInitialized) return;
 
     const handleInit = async () => {
+      console.log('[AuthProvider] Initializing');
       await instance.initialize();
+      console.log('[AuthProvider] Finished initializing');
       setIsInitialized(true);
     };
 
     handleInit().catch((error) => {
-      console.error('Error during initialization', error);
+      console.error('[AuthProvider] Error during initialization', error);
     });
   }, [instance, isInitialized]);
 
@@ -85,16 +87,37 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
     if (error instanceof InteractionRequiredAuthError && !isInIframe()) {
       console.error(error);
-      console.log('No account found, need to login via. redirect');
+      console.log(
+        '[AuthProvider] No account found, need to login via. redirect'
+      );
       login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
-        console.error('Error during login', error);
+        console.error('[AuthProvider] Error during login', error);
       });
     } else if (result?.account && !account) {
-      console.log('Found account, setting that one as active');
+      console.log(
+        '[AuthProvider] Found account in useMsalAuth result, setting that one as active'
+      );
       instance.setActiveAccount(result.account);
       setAccount(result.account);
+    } else if (accounts.length > 0 && !account) {
+      console.log(
+        '[AuthProvider] Found account in accounts array, setting that one as active'
+      );
+      instance.setActiveAccount(accounts[0]);
+      setAccount(accounts[0]);
+    } else if (error) {
+      console.error('[AuthProvider] Unexpected error:', error);
     }
-  }, [account, error, instance, isInitialized, login, result, setAccount]);
+  }, [
+    account,
+    accounts,
+    error,
+    instance,
+    isInitialized,
+    login,
+    result,
+    setAccount,
+  ]);
 
   useEffect(() => {
     if (!account || !isInitialized || hasFetchedRolesAndPhoto.current) return;
@@ -129,21 +152,25 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           InteractionType.Silent,
           GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
         );
-        console.log('Successfully acquired token');
+        console.log('[AuthProvider] Successfully acquired token');
         if (tokenResponse && tokenResponse.accessToken) {
-          console.log('Decoding token');
+          console.log('[AuthProvider] Decoding token');
           const accessToken: ExtendedJwtPayload = jwtDecode(
             tokenResponse.accessToken
           );
-          console.log('Token was valid');
+          console.log('[AuthProvider] Token was valid');
           if (accessToken.roles) {
-            console.log('Found roles');
+            console.log('[AuthProvider] Found roles');
             setRoles(accessToken.roles);
+
+            setAuthState('authorized');
           }
-          setAuthState('authorized');
         }
       } catch (error) {
-        console.error('Token error when trying to get roles!', error);
+        console.error(
+          '[AuthProvider] Token error when trying to get roles!',
+          error
+        );
         setAuthState('unauthorized');
       }
     };
