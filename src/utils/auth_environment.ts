@@ -186,6 +186,8 @@ window.addEventListener('message', async (event: MessageEvent) => {
 });
 
 const getToken = async () => {
+  if (getIsMock(import.meta.env.VITE_IS_MOCK)) return '';
+
   const activeAccount = msalApp.getActiveAccount(); // This will only return a non-null value if you have logic somewhere else that calls the setActiveAccount API
   const accounts = msalApp.getAllAccounts();
 
@@ -194,6 +196,7 @@ const getToken = async () => {
      * User is not signed in. Throw error or wait for user to login.
      * Do not attempt to log a user in outside of the context of MsalProvider
      */
+    return '';
   }
 
   const authResult = await msalApp.acquireTokenSilent(
