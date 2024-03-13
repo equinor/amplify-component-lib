@@ -60,6 +60,7 @@ export const Wrapper = styled.div<WrapperProps>`
       font-family: 'Equinor', sans-serif;
       color: ${colors.text.static_icons__default.hex};
       line-height: ${typography.paragraph.body_long.lineHeight};
+      margin: 0;
     }
     img {
       max-width: 100%;
