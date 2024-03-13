@@ -1,12 +1,10 @@
-import React from 'react';
-
 import { add, home, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import SideBarProvider from '../../../providers/SideBarProvider';
-import { render, screen, userEvent } from '../../../tests/test-utils';
-import { MenuItemType } from './MenuItem';
+import MenuItem, { MenuItemType } from './MenuItem';
 import SideBar from '.';
+import SideBarProvider from 'src/providers/SideBarProvider';
+import { render, screen, userEvent, within } from 'src/tests/test-utils';
 
 const defaultMenuItems: MenuItemType[] = [
   {
@@ -50,7 +48,7 @@ test('Renders closed on initial render', () => {
     }
   );
 
-  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '72px');
+  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '64px');
 });
 
 test('Renders open width when localStorage has it set to open', () => {
@@ -68,7 +66,7 @@ test('Renders open width when localStorage has it set to open', () => {
       wrapper: SideBarProvider,
     }
   );
-  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '256px');
+  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '231px');
 });
 
 test('Disabled create new button doesnt fire event', async () => {
@@ -108,14 +106,14 @@ test('Opens and closes when pressing the toggle button', async () => {
   const user = userEvent.setup();
 
   const sidebar = screen.getByTestId('sidebar');
-  expect(sidebar).toHaveStyleRule('width', '72px');
+  expect(sidebar).toHaveStyleRule('width', '64px');
 
   expect(screen.queryByText('Collapse')).not.toBeInTheDocument();
 
   const toggleButton = screen.getByRole('button');
   await user.click(toggleButton);
 
-  expect(sidebar).toHaveStyleRule('width', '256px');
+  expect(sidebar).toHaveStyleRule('width', '231px');
   expect(screen.getByText(/collapse/i)).toBeInTheDocument();
 });
 
@@ -176,4 +174,40 @@ test('Hides create button when showCreate=false', async () => {
   }
 
   expect(screen.queryByText(createLabel)).not.toBeInTheDocument();
+});
+
+test('Renders bottom item when provided', () => {
+  const bottomItemProps: MenuItemType = {
+    name: faker.animal.dog(),
+    icon: star_half,
+    link: faker.internet.url(),
+    onClick: vi.fn(),
+  };
+  const bottomitem = <MenuItem {...bottomItemProps} />;
+  window.localStorage.setItem(
+    'amplify-sidebar-state',
+    JSON.stringify({ isOpen: true })
+  );
+  render(
+    <SideBar bottomItem={bottomitem}>
+      {defaultMenuItems.map((m) => (
+        <SideBar.Item key={m.name} {...m} />
+      ))}
+    </SideBar>,
+    { wrapper: SideBarProvider }
+  );
+
+  const menuItems = screen.getAllByTestId('sidebar-menu-item');
+
+  const item1 = menuItems[0];
+  const text1 = within(item1).getByText(defaultMenuItems[0].name);
+  expect(text1).toBeInTheDocument();
+
+  const item2 = menuItems[1];
+  const text2 = within(item2).getByText(defaultMenuItems[1].name);
+  expect(text2).toBeInTheDocument();
+
+  const bottomMenuItem = menuItems[2];
+  const bottomText = within(bottomMenuItem).getByText(bottomItemProps.name);
+  expect(bottomText).toBeInTheDocument();
 });
