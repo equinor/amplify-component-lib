@@ -36,6 +36,10 @@ jobs:
         working-directory: client
         run: diff vite.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite.config.ts)
 
+      - name: Compare remote playwright.config.ts to local
+        working-directory: client
+        run: diff playwright.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/playwright.config.ts)
+
       - name: Compare remote proxy/nginx.conf to local
         working-directory: client/proxy
         run: diff nginx.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf)
@@ -55,3 +59,11 @@ jobs:
       - name: Compare remote src/test-utils/mockLocalStorage.ts to local
         working-directory: client/src/test-utils
         run: diff mockLocalStorage.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts)
+
+      - name: Compare remote src/test-utils/portalMock.ts to local
+        working-directory: client/src/test-utils
+        run: diff portalMock.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/portalMock.ts)
+
+      - name: Compare remote src/test-utils/playwright.ts to local
+        working-directory: client/src/test-utils
+        run: diff playwright.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/playwright.ts)
