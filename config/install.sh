@@ -47,6 +47,14 @@ printf -- "Downloading utils.ts file...\n"
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/utils.ts" > utils.ts
 
+printf -- "Downloading playwright.ts file...\n"
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/playwright.ts" > playwright.ts
+
+printf -- "Downloading portalMock.ts file...\n"
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/portalMock.ts" > portalMock.ts
+
 cd ../..
 
 printf -- "Downloading nginx.conf proxy config...\n"

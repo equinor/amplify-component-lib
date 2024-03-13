@@ -9,3 +9,4 @@ https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/env.sh
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite.config.ts
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vitest.config.ts
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/playwright.config.ts
