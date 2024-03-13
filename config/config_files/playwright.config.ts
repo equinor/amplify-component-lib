@@ -64,9 +64,6 @@ export default defineConfig({
     },
   ],
 
-  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
-
   /* Run your local dev server before starting the e2e */
   webServer: {
     command: `npm run build && vite preview --port ${PORT}`,
