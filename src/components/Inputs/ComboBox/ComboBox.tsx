@@ -20,6 +20,7 @@ import {
 } from './ComboBox.styles';
 import {
   ComboBoxOption,
+  ComboBoxOptionRequired,
   ComboBoxProps,
   GroupedComboboxProps,
 } from './ComboBox.types';
@@ -28,7 +29,7 @@ import { GroupedComboBoxMenu } from './GroupedComboBoxMenu';
 
 const { colors } = tokens;
 
-export type ComboBoxComponentProps<T extends ComboBoxOption<T>> = {
+export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
   label?: string;
   placeholder?: string;
   sortValues?: boolean;
@@ -39,7 +40,7 @@ export type ComboBoxComponentProps<T extends ComboBoxOption<T>> = {
   clearable?: boolean;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
-export const ComboBox = <T extends ComboBoxOption<T>>(
+export const ComboBox = <T extends ComboBoxOptionRequired>(
   props: ComboBoxComponentProps<T>
 ) => {
   const {
@@ -84,7 +85,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
     } else {
       flattenedItems = props.items.flatMap((item) => [
         { ...item },
-        ...((item.children as T[]) || []),
+        ...(item.children! || []),
       ]);
     }
 
@@ -141,7 +142,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
     }
   };
 
-  const handleOnItemSelect = (item: T) => {
+  const handleOnItemSelect = (item: ComboBoxOption<T>) => {
     if ('value' in props) {
       props.onSelect(item);
     } else if (
@@ -154,7 +155,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       );
     } else if (props.values.find((i) => i.value === item.value)) {
       // Remove parent with all children
-      const copiedItem = JSON.parse(JSON.stringify(item)) as T;
+      const copiedItem = structuredClone(item);
       const removingValues: string[] = [copiedItem.value];
       const childItems = copiedItem.children ?? [];
       while (childItems.length > 0) {
@@ -169,7 +170,7 @@ export const ComboBox = <T extends ComboBoxOption<T>>(
       props.onSelect([...props.values, item], item);
     } else {
       // Add parent with all children
-      const copiedItem = JSON.parse(JSON.stringify(item)) as T;
+      const copiedItem = structuredClone(item);
       const newValues = [copiedItem];
       const childItems = copiedItem.children ?? [];
       while (childItems.length > 0) {

@@ -1,62 +1,67 @@
 import { KeyboardEvent, MutableRefObject } from 'react';
 
-type ComboBoxOptionWithoutChildren<T> = {
+export interface ComboBoxOptionRequired {
   value: string;
   label: string;
-} & T;
-
-export interface ComboBoxOption<T = { value: string; label: string }> {
-  value: string;
-  label: string;
-  children?: ComboBoxOptionWithoutChildren<T>[];
 }
 
-interface SingleComboBoxCommon<T extends ComboBoxOption<T>> {
-  value: T | undefined;
-  onSelect: (value: T | undefined) => void;
+export type ComboBoxOption<T extends ComboBoxOptionRequired> = T & {
+  children?: T[];
+};
+
+interface SingleComboBoxCommon<T extends ComboBoxOptionRequired> {
+  value: ComboBoxOption<T> | undefined;
+  onSelect: (value: ComboBoxOption<T> | undefined) => void;
 }
 
-export interface MultiComboBoxCommon<T extends ComboBoxOption<T>> {
-  values: T[];
-  onSelect: (values: T[], selectedValue?: T) => void;
+export interface MultiComboBoxCommon<T extends ComboBoxOptionRequired> {
+  values: ComboBoxOption<T>[];
+  onSelect: (
+    values: ComboBoxOption<T>[],
+    selectedValue?: ComboBoxOption<T>
+  ) => void;
   selectableParent?: boolean;
 }
 
-type AmplifyComboboxCommon<T extends ComboBoxOption<T>> =
+type AmplifyComboboxCommon<T extends ComboBoxOptionRequired> =
   | SingleComboBoxCommon<T>
   | MultiComboBoxCommon<T>;
 
-export type GroupedComboboxProps<T extends ComboBoxOption<T>> =
+export type GroupedComboboxProps<T extends ComboBoxOptionRequired> =
   AmplifyComboboxCommon<T> & {
-    groups: { title: string; items: T[] }[];
+    groups: { title: string; items: ComboBoxOption<T>[] }[];
   };
 
-export type ComboBoxProps<T extends ComboBoxOption<T>> =
+export type ComboBoxProps<T extends ComboBoxOptionRequired> =
   AmplifyComboboxCommon<T> & {
-    items: T[];
+    items: ComboBoxOption<T>[];
   };
 
-export interface ComboBoxMenuProps<T extends ComboBoxOption<T>> {
+export interface ComboBoxMenuProps<T extends ComboBoxOptionRequired> {
   search: string;
   itemRefs: MutableRefObject<(HTMLButtonElement | null)[]>;
   onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
-  onItemSelect: (item: T) => void;
+  onItemSelect: (item: ComboBoxOption<T>) => void;
   selectableParent?: boolean;
 }
 
-interface ComboBoxMenuItemProps<T> {
-  item: T;
+interface ComboBoxMenuItemProps<T extends ComboBoxOptionRequired> {
+  item: ComboBoxOption<T>;
   index: number;
   childOffset: number;
   depth?: number;
 }
 
-export type ComboBoxSingleSelectMenuItemProps<T extends ComboBoxOption<T>> = {
+export type ComboBoxSingleSelectMenuItemProps<
+  T extends ComboBoxOptionRequired,
+> = {
   multiselect?: undefined;
 } & Omit<ComboBoxMenuProps<T>, 'search'> &
   ComboBoxMenuItemProps<T>;
-export type ComboBoxMultiSelectMenuItemProps<T extends ComboBoxOption<T>> = {
-  multiselect: true;
-  values: T[];
-} & Omit<ComboBoxMenuProps<T>, 'search'> &
-  ComboBoxMenuItemProps<T>;
+
+export type ComboBoxMultiSelectMenuItemProps<T extends ComboBoxOptionRequired> =
+  {
+    multiselect: true;
+    values: ComboBoxOption<T>[];
+  } & Omit<ComboBoxMenuProps<T>, 'search'> &
+    ComboBoxMenuItemProps<T>;

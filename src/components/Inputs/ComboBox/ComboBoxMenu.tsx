@@ -3,13 +3,13 @@ import { useMemo } from 'react';
 import { NoItemsFoundText } from './ComboBox.styles';
 import {
   ComboBoxMenuProps,
-  ComboBoxOption,
+  ComboBoxOptionRequired,
   ComboBoxProps,
 } from './ComboBox.types';
 import { getChildOffset } from './ComboBox.utils';
 import { ComboBoxMenuItem } from './ComboBoxMenuItem';
 
-export const ComboBoxMenu = <T extends ComboBoxOption<T>>(
+export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
   props: ComboBoxProps<T> & ComboBoxMenuProps<T>
 ) => {
   const {

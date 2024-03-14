@@ -90,7 +90,10 @@ export { default as TopBar } from './Navigation/TopBar';
 export { default as ResourceMenuItem } from './Navigation/TopBar/Resources/ResourceMenuItem';
 export type { ContentProps, TemplateType } from './Template/Template';
 export { default as Template } from './Template/Template';
-export type { ComboBoxOption } from './Inputs/ComboBox/ComboBox.types';
+export type {
+  ComboBoxOption,
+  ComboBoxOptionRequired,
+} from './Inputs/ComboBox/ComboBox.types';
 
 // EDS re-exports
 export type {
