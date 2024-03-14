@@ -62,6 +62,10 @@ export const Wrapper = styled.div<WrapperProps>`
       line-height: ${typography.paragraph.body_long.lineHeight};
       margin: 0;
     }
+    ul,
+    ol {
+      margin: 0;
+    }
     img {
       max-width: 100%;
       max-height: 100%;

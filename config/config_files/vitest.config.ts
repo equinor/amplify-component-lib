@@ -11,7 +11,7 @@ export default defineConfig({
       'src/test-utils/setupTests.ts',
       'src/test-utils/mockLocalStorage.ts',
     ],
-    exclude: ['node_modules', 'tests/**', 'test-utils'],
+    exclude: ['**/node_modules/**', '**/test-utils/**', '**/e2e/**'],
     coverage: {
       provider: 'v8',
       include: ['src/components/*'],

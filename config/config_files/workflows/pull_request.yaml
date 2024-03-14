@@ -16,6 +16,10 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yaml
 
+  e2e:
+    name: E2E Test
+    uses: ./.github/workflows/e2e.yaml
+
   build:
     name: Build
     uses: ./.github/workflows/build.yaml
@@ -27,3 +31,4 @@ jobs:
   check_configs:
     name: Check Config files
     uses: ./.github/workflows/check_config.yaml
+
