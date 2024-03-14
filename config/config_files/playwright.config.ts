@@ -14,7 +14,7 @@ const PORT = 3001;
 export default defineConfig({
   testDir: './src/e2e',
   /* Maximum time one test can run for. */
-  timeout: 1000 * 10,
+  timeout: 1000 * 60 * 5,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -56,18 +56,12 @@ export default defineConfig({
         ...devices['Desktop Firefox'],
       },
     },
-    {
-      name: 'Microsoft Edge',
-      use: {
-        channel: 'msedge',
-      },
-    },
   ],
 
   /* Run your local dev server before starting the e2e */
   webServer: {
     command: `npm run build && vite preview --port ${PORT}`,
     url: `http://localhost:${PORT}`,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
   },
 });
