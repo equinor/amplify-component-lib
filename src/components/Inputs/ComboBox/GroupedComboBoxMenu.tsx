@@ -5,12 +5,12 @@ import { Menu } from '@equinor/eds-core-react';
 import { NoItemsFoundText } from './ComboBox.styles';
 import {
   ComboBoxMenuProps,
-  ComboBoxOption,
+  ComboBoxOptionRequired,
   GroupedComboboxProps,
 } from './ComboBox.types';
 import { ComboBoxMenuItem } from './ComboBoxMenuItem';
 
-export const GroupedComboBoxMenu = <T extends ComboBoxOption<T>>(
+export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
   props: GroupedComboboxProps<T> & ComboBoxMenuProps<T>
 ) => {
   const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;

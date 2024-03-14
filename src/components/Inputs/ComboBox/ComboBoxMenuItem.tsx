@@ -17,14 +17,14 @@ import {
 } from './ComboBox.styles';
 import {
   ComboBoxMultiSelectMenuItemProps,
-  ComboBoxOption,
+  ComboBoxOptionRequired,
   ComboBoxSingleSelectMenuItemProps,
 } from './ComboBox.types';
 import { getChildOffset } from './ComboBox.utils';
 
 const { colors } = tokens;
 
-export const ComboBoxMenuItem = <T extends ComboBoxOption<T>>(
+export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
   props:
     | ComboBoxSingleSelectMenuItemProps<T>
     | ComboBoxMultiSelectMenuItemProps<T>

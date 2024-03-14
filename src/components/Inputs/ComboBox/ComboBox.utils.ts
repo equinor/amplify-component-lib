@@ -1,7 +1,7 @@
-import { ComboBoxOption } from './ComboBox.types';
+import { ComboBoxOption, ComboBoxOptionRequired } from './ComboBox.types';
 
-export function getChildOffset<T extends ComboBoxOption<T>>(
-  allItems: T[],
+export function getChildOffset<T extends ComboBoxOptionRequired>(
+  allItems: ComboBoxOption<T>[],
   topLevelIndex: number
 ): number {
   const offset = allItems.length;
