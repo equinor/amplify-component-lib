@@ -21,13 +21,6 @@ export default ({ mode }: { mode: string }) => {
         },
       },
     },
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      passWithNoTests: true,
-      setupFiles: ['src/setupTests.ts'],
-      exclude: ['node_modules', './tests'],
-    },
     build: {
       rollupOptions: {
         output: {

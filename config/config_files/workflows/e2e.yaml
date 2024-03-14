@@ -1,0 +1,39 @@
+name: E2E Tests
+on:
+  workflow_call:
+jobs:
+  e2e:
+    name: 'Test on ${{ matrix.project }}'
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, firefox]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21
+          cache: npm
+
+      - name: Install dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Install playwright
+        working-directory: client
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        working-directory: client
+        run: npx playwright test -c playwright.config.ts --project=${{ matrix.project }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: client/playwright-report/
+          retention-days: 30
+
