@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 import { render, RenderOptions } from '@testing-library/react';
 
-import { Providers } from 'src/providers';
+import { Providers } from 'src/providers/Providers';
 
 const renderWithProviders = (
   ui: ReactElement,
