@@ -1,11 +1,12 @@
-import { handlers } from './mock';
+import { handlers as appHandlers } from './mock';
+import { handlers as portalHandlers } from './portalMock';
 
 import { setupServer } from 'msw/node';
 import { afterEach, beforeAll } from 'vitest';
 
 import '@testing-library/jest-dom';
 
-const server = setupServer(...handlers);
+const server = setupServer(...appHandlers, ...portalHandlers);
 
 beforeAll(() => {
   vi.stubEnv('VITE_IS_MOCK', 'true');
