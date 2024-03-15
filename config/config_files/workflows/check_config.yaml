@@ -67,3 +67,19 @@ jobs:
       - name: Compare remote src/test-utils/playwright.ts to local
         working-directory: client/src/test-utils
         run: diff playwright.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/playwright.ts)
+
+      - name: Compare remote .github/workflows/build.yaml to local
+        working-directory: .github/workflows
+        run: diff build.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/build.yaml)
+
+      - name: Compare remote .github/workflows/e2e.yaml to local
+        working-directory: .github/workflows
+        run: diff e2e.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/e2e.yaml)
+
+      - name: Compare remote .github/workflows/lint.yaml to local
+        working-directory: .github/workflows
+        run: diff lint.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/lint.yaml)
+
+      - name: Compare remote .github/workflows/test.yaml to local
+        working-directory: .github/workflows
+        run: diff test.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/test.yaml)
