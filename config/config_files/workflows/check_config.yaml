@@ -83,3 +83,11 @@ jobs:
       - name: Compare remote .github/workflows/test.yaml to local
         working-directory: .github/workflows
         run: diff test.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/test.yaml)
+
+      - name: Compare remote .github/workflows/pull_request.yaml to local
+        working-directory: .github/workflows
+        run: diff pull_request.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/pull_request.yaml)
+
+      - name: Compare remote .github/workflows/build_docker.yaml to local
+        working-directory: .github/workflows
+        run: diff build_docker.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/build_docker.yaml)
