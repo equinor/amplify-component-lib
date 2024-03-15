@@ -1,13 +1,16 @@
-import React from 'react';
-
+import { Button } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import TopBar from '.';
+import { spacings } from 'src/style';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 import { EnvironmentType } from 'src/types/Environment';
 import { Field } from 'src/types/Field';
 
 import { expect } from 'vitest';
+
+const { colors } = tokens;
 
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
@@ -174,5 +177,155 @@ test('close on resize ', async () => {
     {
       timeout: 2000,
     }
+  );
+});
+
+test('Tab navigation should focus actions in expected order', async () => {
+  const appName = 'Car-go 🏎';
+  const availableFields: Field[] = [
+    {
+      uuid: faker.animal.cow(),
+      name: faker.animal.cetacean(),
+      country: faker.animal.rodent(),
+    },
+    {
+      uuid: faker.animal.cat(),
+      name: faker.animal.crocodilia(),
+      country: faker.animal.rodent(),
+    },
+  ];
+  const onSelectedField = vi.fn();
+  const currentField: Field = availableFields[0];
+  const button1 = 'button1';
+  const button2 = 'button2';
+  const button3 = 'button3';
+
+  render(
+    <TopBar
+      applicationIcon="car"
+      applicationName={appName}
+      onHeaderClick={() => console.log('Going home 🏡')}
+    >
+      <TopBar.FieldSelector
+        availableFields={availableFields}
+        currentField={currentField}
+        onSelect={onSelectedField}
+      />
+      <TopBar.Actions>
+        <Button>{button1}</Button>
+        <Button>{button2}</Button>
+        <Button>{button3}</Button>
+      </TopBar.Actions>
+    </TopBar>
+  );
+
+  const homeButton = screen.getByRole('button', { name: appName });
+  const fieldSelector = screen.getByRole('button', {
+    name: currentField.name ?? '',
+  });
+  const firstButton = screen.getByRole('button', { name: button1 });
+  const secondButton = screen.getByRole('button', { name: button2 });
+  const thirdButton = screen.getByRole('button', { name: button3 });
+
+  const user = userEvent.setup();
+  await user.tab();
+
+  expect(homeButton).toHaveFocus();
+  expect(fieldSelector).not.toHaveFocus();
+  expect(firstButton).not.toHaveFocus();
+  expect(secondButton).not.toHaveFocus();
+  expect(thirdButton).not.toHaveFocus();
+
+  await user.tab();
+
+  expect(homeButton).not.toHaveFocus();
+  expect(fieldSelector).toHaveFocus();
+  expect(firstButton).not.toHaveFocus();
+  expect(secondButton).not.toHaveFocus();
+  expect(thirdButton).not.toHaveFocus();
+
+  await user.tab();
+
+  expect(homeButton).not.toHaveFocus();
+  expect(fieldSelector).not.toHaveFocus();
+  expect(firstButton).toHaveFocus();
+  expect(secondButton).not.toHaveFocus();
+  expect(thirdButton).not.toHaveFocus();
+
+  await user.tab();
+
+  expect(homeButton).not.toHaveFocus();
+  expect(fieldSelector).not.toHaveFocus();
+  expect(firstButton).not.toHaveFocus();
+  expect(secondButton).toHaveFocus();
+  expect(thirdButton).not.toHaveFocus();
+
+  await user.tab();
+
+  expect(homeButton).not.toHaveFocus();
+  expect(fieldSelector).not.toHaveFocus();
+  expect(firstButton).not.toHaveFocus();
+  expect(secondButton).not.toHaveFocus();
+  expect(thirdButton).toHaveFocus();
+
+  await user.tab();
+
+  expect(homeButton).not.toHaveFocus();
+  expect(fieldSelector).not.toHaveFocus();
+  expect(firstButton).not.toHaveFocus();
+  expect(secondButton).not.toHaveFocus();
+  expect(thirdButton).not.toHaveFocus();
+});
+
+test('Renders with correct styles', () => {
+  const appName = 'Car-go 🏎';
+  const button1 = 'button1';
+
+  render(
+    <TopBar
+      applicationIcon="car"
+      applicationName={appName}
+      onHeaderClick={() => console.log('Going home 🏡')}
+    >
+      <TopBar.Actions>
+        <Button>{button1}</Button>
+      </TopBar.Actions>
+    </TopBar>
+  );
+
+  const topBar = screen.getByRole('banner');
+  const headerContainer = topBar.firstChild;
+  const appIdentifier = screen.getByRole('button', { name: appName });
+
+  expect(topBar).toHaveStyleRule(
+    'border-bottom',
+    `1px solid ${colors.ui.background__medium.rgba}`
+  );
+  expect(topBar).toHaveStyleRule(
+    'background',
+    colors.ui.background__default.rgba
+  );
+  expect(topBar).toHaveStyleRule('padding-top', `8px`);
+  expect(topBar).toHaveStyleRule(
+    'padding-right',
+    `24px`
+  );
+  expect(topBar).toHaveStyleRule(
+    'padding-bottom',
+    `8px`
+  );
+  expect(topBar).toHaveStyleRule('padding-left', `${spacings.medium}`);
+  expect(topBar).toHaveStyleRule('align-items', 'center');
+  expect(topBar).toHaveStyleRule('height', '64px');
+
+  expect(headerContainer).toHaveStyleRule('gap', spacings.medium);
+
+  expect(appIdentifier).toHaveStyleRule('display', 'flex');
+  expect(appIdentifier).toHaveStyleRule('align-items', 'center');
+  expect(appIdentifier).toHaveStyleRule('gap', spacings.medium_small);
+  expect(appIdentifier).toHaveStyleRule(
+    'outline',
+    `2px dashed ${colors.interactive.primary__resting.rgba}`,
+    { modifier: ':focus' }
   );
 });
