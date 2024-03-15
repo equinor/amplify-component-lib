@@ -1,7 +1,6 @@
 import React, { forwardRef, ReactElement } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { clear } from '@equinor/eds-icons';
+import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import Colorbox from './Colorbox';
@@ -26,15 +25,6 @@ const StyledSideSheet = styled.div`
   z-index: 100;
 `;
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  padding: ${spacings.small} ${spacings.small} ${spacings.small}
-    ${spacings.medium};
-`;
-
 const Content = styled.div`
   height: calc(
     100vh - 64px - 57px
@@ -50,7 +40,7 @@ export interface GuidelineSections {
 
 export interface GuidelineProps {
   open: boolean;
-  onClose: () => void;
+
   /**
    * @deprecated Use Guideline.Section and Guideline.Item as children instead.
    */
@@ -59,22 +49,10 @@ export interface GuidelineProps {
 }
 
 export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
-  ({ open, onClose, sections, children }, ref) => {
+  ({ open, sections, children }, ref) => {
     if (!open) return null;
     return (
       <StyledSideSheet ref={ref}>
-        <Header>
-          <Typography group="ui" variant="accordion_header" as="span">
-            Icons Guide
-          </Typography>
-          <Button
-            variant="ghost_icon"
-            onClick={onClose}
-            data-testid="close-button"
-          >
-            <Icon data={clear} />
-          </Button>
-        </Header>
         <Content>
           {sections?.map((section, index) => (
             <Section
