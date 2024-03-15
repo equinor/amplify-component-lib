@@ -48,6 +48,9 @@ const SettingsItems = styled.div`
 const Radio = styled(EDSRadio)`
   > span {
     padding-left: 0 !important;
+    &:hover {
+      padding-left: 0 !important;
+    }
   }
 `;
 

@@ -44,7 +44,7 @@ function fakeProps(withColorBoxes = false): GuidelineProps {
   }
   return {
     open: true,
-    onClose: vi.fn(),
+
     sections,
   };
 }
