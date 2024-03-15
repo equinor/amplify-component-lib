@@ -1,3 +1,5 @@
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
@@ -55,29 +57,42 @@ export const Primary: StoryFn = (args) => {
   ];
 
   return (
-    <SideBarProvider>
-      <div style={{ display: 'flex', height: '95vh' }}>
-        <SideBar
-          createLabel={
-            (args.hasCreateButton as string) && (args.createLabel as string)
+    <MemoryRouter initialEntries={['/']}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <SideBarProvider>
+              <div style={{ display: 'flex', height: '95vh' }}>
+                <SideBar
+                  createLabel={
+                    (args.hasCreateButton as string) &&
+                    (args.createLabel as string)
+                  }
+                  onCreate={
+                    args.hasCreateButton
+                      ? () => console.log('Created 🖋')
+                      : undefined
+                  }
+                  createDisabled={args.disabledCreateButton as boolean}
+                >
+                  {menuItems.map((m, index) => (
+                    <SideBar.Item
+                      key={m.name}
+                      currentUrl={index === 0 ? m.link : undefined}
+                      {...m}
+                      disabled={
+                        args.disabledItem !== 'none' &&
+                        m.link === args.disabledItem
+                      }
+                    />
+                  ))}
+                </SideBar>
+              </div>
+            </SideBarProvider>
           }
-          onCreate={
-            args.hasCreateButton ? () => console.log('Created 🖋') : undefined
-          }
-          createDisabled={args.disabledCreateButton as boolean}
-        >
-          {menuItems.map((m, index) => (
-            <SideBar.Item
-              key={m.name}
-              currentUrl={index === 0 ? m.link : undefined}
-              {...m}
-              disabled={
-                args.disabledItem !== 'none' && m.link === args.disabledItem
-              }
-            />
-          ))}
-        </SideBar>
-      </div>
-    </SideBarProvider>
+        />
+      </Routes>
+    </MemoryRouter>
   );
 };
