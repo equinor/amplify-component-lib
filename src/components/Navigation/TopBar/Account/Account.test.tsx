@@ -83,7 +83,6 @@ test('Renders correctly with avatar', async () => {
 
   expect(screen.getByText(props.roles?.[0] ?? '')).toBeInTheDocument();
   expect(screen.getAllByAltText(`user-avatar-${accountName}`).length).toBe(2);
-
 });
 
 test('Opens and closes as it should', async () => {

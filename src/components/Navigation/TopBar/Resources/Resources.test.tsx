@@ -217,24 +217,6 @@ describe('Resources', () => {
 
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
-  // test('Closes when click on close button ', async () => {
-  //   render(<Resources />, { wrapper: Wrappers });
-  //
-  //   const user = userEvent.setup();
-  //
-  //   const button = screen.getByRole('button');
-  //
-  //   await user.click(button);
-  //
-  //   const learnMore = screen.getByText(/Learn more/i);
-  //   expect(learnMore).toBeInTheDocument();
-  //
-  //   const menu = screen.getByRole('menu');
-  //
-  //   const closeButton = within(menu).getByRole('button');
-  //   await user.click(closeButton);
-  //   expect(learnMore).not.toBeInTheDocument();
-  // });
 
   test('hide props working as expected', async () => {
     render(<Resources hideFeedback={true} hideReleaseNotes={true} />, {
@@ -247,10 +229,8 @@ describe('Resources', () => {
     await user.click(button);
 
     const releaseNotes = screen.queryByText('Release notes');
-    // const suggest = screen.queryByText('Submit feedback');
 
     expect(releaseNotes).not.toBeInTheDocument();
-    // expect(suggest).not.toBeInTheDocument();
   });
 
   describe('Release notes', () => {

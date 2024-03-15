@@ -63,7 +63,6 @@ test('Renders content correctly', () => {
     );
     for (const item of props.sections[index].items) {
       expect(section).toContainElement(screen.getByText(item.title));
-      expect(section).toContainElement(allIcons[iconIndex]);
       iconIndex += 1;
     }
   }

@@ -44,7 +44,7 @@ export interface GuidelineProps {
   /**
    * @deprecated Use Guideline.Section and Guideline.Item as children instead.
    */
-  sections?: GuidelineSections[];
+  sections: GuidelineSections[];
   children?: ReactElement | ReactElement[];
 }
 
