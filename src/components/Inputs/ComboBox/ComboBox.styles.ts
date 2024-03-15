@@ -1,11 +1,12 @@
 import { Button, Chip, Menu, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { colors } from 'src/constants';
 import { spacings } from 'src/style/spacings';
 
 import styled from 'styled-components';
 
-const { colors, spacings: EDSSpacings } = tokens;
+const { colors: EDSColors, spacings: EDSSpacings } = tokens;
 
 interface ContainerProps {
   $lightBackground?: boolean;
@@ -21,16 +22,16 @@ export const Container = styled.div<ContainerProps>`
 
   ${({ $underlineHighlight }) =>
     $underlineHighlight
-      ? `box-shadow: inset 0 -2px 0 0 ${colors.infographic.substitute__blue_overcast.rgba}`
-      : `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`};
+      ? `box-shadow: inset 0 -2px 0 0 ${colors.dark_blue.rgba}`
+      : `box-shadow: inset 0 -1px 0 0 ${EDSColors.text.static_icons__tertiary.rgba}`};
 
   ${({ $lightBackground }) =>
     $lightBackground
-      ? `background-color: ${colors.ui.background__default.rgba}`
-      : `background-color: ${colors.ui.background__light.rgba}`};
+      ? `background-color: ${EDSColors.ui.background__default.rgba}`
+      : `background-color: ${EDSColors.ui.background__light.rgba}`};
 
   &[aria-expanded='true'] {
-    box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
+    box-shadow: inset 0 -2px 0 0 ${EDSColors.interactive.primary__resting.rgba};
   }
 
   margin-top: 1rem;
@@ -45,23 +46,23 @@ export const Container = styled.div<ContainerProps>`
   > svg:not([role='progressbar']) {
     cursor: pointer;
     &:hover {
-      background: ${colors.interactive.primary__hover_alt.rgba};
+      background: ${EDSColors.interactive.primary__hover_alt.rgba};
       border-radius: 50%;
     }
   }
 
   &:has(input:disabled) {
     cursor: not-allowed;
-    box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__text.rgba};
+    box-shadow: inset 0 -1px 0 0 ${EDSColors.interactive.disabled__text.rgba};
     > svg:not([role='progressbar']) {
       cursor: not-allowed;
-      fill: ${colors.interactive.disabled__text.rgba};
+      fill: ${EDSColors.interactive.disabled__text.rgba};
       &:hover {
         background: transparent;
       }
     }
     > label {
-      color: ${colors.interactive.disabled__text.rgba};
+      color: ${EDSColors.interactive.disabled__text.rgba};
     }
   }
 `;
@@ -78,7 +79,7 @@ export const Section = styled.section`
     flex-grow: 1;
     padding: 0;
     font-family: 'Equinor', sans-serif;
-    color: ${colors.text.static_icons__default.rgba};
+    color: ${EDSColors.text.static_icons__default.rgba};
     outline: none;
     border: none;
   }
@@ -93,14 +94,14 @@ export const Section = styled.section`
   }
   &:has(input:disabled) {
     > p {
-      color: ${colors.interactive.disabled__text.rgba};
+      color: ${EDSColors.interactive.disabled__text.rgba};
     }
     > .amplify-combo-box-chip {
       cursor: not-allowed;
-      background: ${colors.interactive.disabled__fill.rgba};
-      color: ${colors.interactive.disabled__text.rgba};
+      background: ${EDSColors.interactive.disabled__fill.rgba};
+      color: ${EDSColors.interactive.disabled__text.rgba};
       > svg {
-        fill: ${colors.interactive.disabled__text.rgba};
+        fill: ${EDSColors.interactive.disabled__text.rgba};
         &:hover {
           cursor: not-allowed;
           background: none;
@@ -118,7 +119,7 @@ export const ClearButton = styled(Button)`
   width: 24px;
   height: 24px;
   svg {
-    fill: ${colors.text.static_icons__secondary.rgba};
+    fill: ${EDSColors.text.static_icons__secondary.rgba};
   }
   &:after {
     width: 24px;
@@ -135,10 +136,10 @@ interface StyledChipProps {
 export const StyledChip = styled(Chip)<StyledChipProps>`
   background: ${({ $tryingToRemove, $lightBackground }) =>
     $tryingToRemove
-      ? colors.interactive.primary__hover_alt.rgba
+      ? EDSColors.interactive.primary__hover_alt.rgba
       : $lightBackground
-        ? colors.ui.background__light.rgba
-        : colors.ui.background__default.rgba};
+        ? EDSColors.ui.background__light.rgba
+        : EDSColors.ui.background__default.rgba};
 `;
 
 interface CustomMenuItemProps {
@@ -170,13 +171,13 @@ export const MenuItemParentSelect = styled(Menu.Item)<CustomMenuItemProps>`
 export const MenuItemSpacer = styled.hr`
   height: calc(100% + ${EDSSpacings.comfortable.medium} * 2);
   width: 2px;
-  background: ${colors.ui.background__medium.rgba};
+  background: ${EDSColors.ui.background__medium.rgba};
   justify-self: center;
 `;
 
 export const PlaceholderText = styled(Typography)`
   position: absolute;
-  color: ${colors.text.static_icons__tertiary.rgba};
+  color: ${EDSColors.text.static_icons__tertiary.rgba};
   top: calc(50%);
   transform: translate(0, -50%);
 `;
