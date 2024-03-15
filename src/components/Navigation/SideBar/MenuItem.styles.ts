@@ -29,6 +29,12 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
     $active && colors.interactive.primary__selected_highlight.rgba};
   text-decoration: none;
   transition: background 0.1s ease-out;
+  > div > svg {
+    fill: ${({ $disabled }) =>
+      $disabled
+        ? colors.interactive.disabled__text.rgba
+        : colors.interactive.primary__resting.rgba};
+  }
   &:hover {
     cursor: ${({ $disabled }) => !$disabled && 'pointer'};
     text-decoration: none;
@@ -37,6 +43,10 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
       ($active
         ? colors.interactive.primary__selected_hover.rgba
         : colors.interactive.primary__hover_alt.rgba)};
+    > div > svg {
+      fill: ${({ $disabled, $active }) =>
+        !$disabled && !$active && colors.text.static_icons__default.rgba};
+    }
   }
   &:focus {
     outline: 1px dashed ${colors.interactive.primary__resting.rgba};

@@ -1,14 +1,11 @@
-import { forwardRef, HTMLAttributes, useMemo, useState } from 'react';
+import { forwardRef, HTMLAttributes, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
 import { IconContainer, ItemText, Link } from './MenuItem.styles';
 import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
-
-const { colors } = tokens;
 
 export interface MenuItemType {
   icon: IconData;
@@ -27,29 +24,11 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   ({ currentUrl, icon, name, link, onClick, disabled = false }, ref) => {
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
-    const [iconColor, setIconColor] = useState(
-      disabled
-        ? colors.interactive.disabled__text.rgba
-        : colors.interactive.primary__resting.rgba
-    );
 
     const canNavigate = useMemo(
       () => !disabled && !isCurrentUrl,
       [disabled, isCurrentUrl]
     );
-
-    const handleOnMouseEnter = () => {
-      if (!disabled && !isCurrentUrl) {
-        setIconColor(colors.text.static_icons__default.rgba);
-      }
-    };
-
-    const handleOnMouseLeave = () =>
-      setIconColor(
-        disabled
-          ? colors.interactive.disabled__text.rgba
-          : colors.interactive.primary__resting.rgba
-      );
 
     const handleOnClick = (event: React.MouseEvent) => {
       if (!canNavigate) {
@@ -67,8 +46,6 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           aria-disabled={disabled}
           $disabled={disabled}
           onClick={handleOnClick}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
           tabIndex={0}
           $open
           ref={ref}
@@ -76,7 +53,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
         >
           {icon && (
             <IconContainer data-testid="icon-container">
-              <Icon data={icon} size={24} color={iconColor} />
+              <Icon data={icon} size={24} />
             </IconContainer>
           )}
           <ItemText
@@ -98,8 +75,6 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
         aria-disabled={disabled}
         $disabled={disabled}
         onClick={handleOnClick}
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
         $open={isOpen}
         tabIndex={0}
         ref={ref}
@@ -108,7 +83,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
         <OptionalTooltip title={name} placement="right">
           {icon && (
             <IconContainer data-testid="icon-container">
-              <Icon data={icon} size={24} color={iconColor} />
+              <Icon data={icon} size={24} />
             </IconContainer>
           )}
         </OptionalTooltip>
