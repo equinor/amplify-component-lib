@@ -18,14 +18,16 @@ const ContentInfo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: ${spacings.medium_small};
-  padding-right: 20px;
+  gap: ${spacings.x_small};
+  > span {
+    padding: ${spacings.small} ${spacings.x_small};
+  }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.medium} ${spacings.large};
+  padding: ${spacings.medium_small};
   text-decoration: none;
   gap: ${spacings.medium};
   cursor: pointer;

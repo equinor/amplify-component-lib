@@ -7,7 +7,6 @@ import {
   info_circle,
   move_to_inbox,
   report_bug,
-  thumbs_up_down,
 } from '@equinor/eds-icons';
 
 import { TopBarButton } from '../TopBar.styles';
@@ -96,7 +95,6 @@ export const Resources: FC<ResourcesProps> = ({
 
   const handleGoBack = () => setShowingResourceSection(undefined);
 
-  const handleFeedbackClick = () => setShowingResourceSection('feedback');
   const handleLearnMoreClick = () => setShowingResourceSection('learn-more');
 
   const handleOnOpenPortal = () => {
@@ -149,30 +147,7 @@ export const Resources: FC<ResourcesProps> = ({
             </BackButton>
           </>
         );
-      case 'feedback':
-        return (
-          <>
-            <ResourceMenuItem
-              id={FeedbackType.BUG}
-              onClick={handleOnOpenFeedbackDialog}
-              icon={report_bug}
-              text="Report a bug"
-              lastItem
-            />
-            <ResourceMenuItem
-              id={FeedbackType.SUGGESTION}
-              onClick={handleOnOpenFeedbackDialog}
-              icon={move_to_inbox}
-              text="Suggest a idea"
-              lastItem
-            />
-            <BackButton>
-              <Button variant="outlined" onClick={handleGoBack}>
-                <Icon data={arrow_back} /> Back
-              </Button>
-            </BackButton>
-          </>
-        );
+
       default:
         return null;
     }
@@ -209,20 +184,27 @@ export const Resources: FC<ResourcesProps> = ({
           resourceSectionContent
         ) : (
           <>
+            <ResourceMenuItem
+              id={FeedbackType.BUG}
+              onClick={handleOnOpenFeedbackDialog}
+              icon={report_bug}
+              text="Report a bug"
+              lastItem
+            />
+            <ResourceMenuItem
+              id={FeedbackType.SUGGESTION}
+              onClick={handleOnOpenFeedbackDialog}
+              icon={move_to_inbox}
+              text="Suggest a idea"
+              lastItem
+            />
             {!hideReleaseNotes && (
               <ResourceMenuItem
                 id="release-notes"
                 icon={file_description}
                 onClick={toggleReleaseNotes}
                 text="Open release notes"
-              />
-            )}
-
-            {!hideFeedback && (
-              <ResourceMenuItem
-                text="Submit feedback"
-                icon={thumbs_up_down}
-                onClick={handleFeedbackClick}
+                href=""
               />
             )}
 
