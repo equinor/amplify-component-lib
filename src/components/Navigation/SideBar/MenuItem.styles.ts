@@ -1,3 +1,5 @@
+import { Link as ReactRouterDomLink } from 'react-router-dom';
+
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -13,7 +15,7 @@ interface LinkProps {
   $disabled?: boolean;
 }
 
-export const Link = styled.a<LinkProps>`
+export const Link = styled(ReactRouterDomLink)<LinkProps>`
   display: flex;
   align-self: stretch;
   align-items: center;

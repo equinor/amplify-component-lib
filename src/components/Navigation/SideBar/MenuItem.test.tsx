@@ -1,3 +1,6 @@
+import { ReactElement } from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
 import { home } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
@@ -19,6 +22,19 @@ function fakeProps(): MenuItemProps {
     onClick: vi.fn() as MenuClickHandler,
   };
 }
+
+const wrapper = ({ children }: { children: ReactElement }) => {
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <Routes>
+        <Route
+          path="/"
+          element={<SideBarProvider>{children}</SideBarProvider>}
+        />
+      </Routes>
+    </MemoryRouter>
+  );
+};
 
 describe('MenuItem', () => {
   const testBaseStyles = () => {
@@ -64,7 +80,7 @@ describe('MenuItem', () => {
       test('Default', () => {
         const props = fakeProps();
         render(<MenuItem {...props} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
 
@@ -95,7 +111,7 @@ describe('MenuItem', () => {
       test('Hover', async () => {
         const props = fakeProps();
         render(<MenuItem {...props} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -129,7 +145,7 @@ describe('MenuItem', () => {
       test('Selected', () => {
         const props = fakeProps();
         render(<MenuItem {...props} currentUrl={props.link} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -163,7 +179,7 @@ describe('MenuItem', () => {
       test('Selected + Hover', async () => {
         const props = fakeProps();
         render(<MenuItem {...props} currentUrl={props.link} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -207,7 +223,7 @@ describe('MenuItem', () => {
       test('Focus', async () => {
         const props = fakeProps();
         render(<MenuItem {...props} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         const svgPath = screen.getByTestId('eds-icon-path');
@@ -244,7 +260,7 @@ describe('MenuItem', () => {
       test('Disabled', async () => {
         const props = fakeProps();
         render(<MenuItem {...props} disabled />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         const svgPath = screen.getByTestId('eds-icon-path');
@@ -289,7 +305,7 @@ describe('MenuItem', () => {
         test('Should be able to Click', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -299,10 +315,10 @@ describe('MenuItem', () => {
           expect(props.onClick).toHaveBeenCalledOnce();
         });
 
-        test.fails('Should be able to Tab + Enter', async () => {
+        test('Should be able to Tab + Enter', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -321,7 +337,7 @@ describe('MenuItem', () => {
         test('Click should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} currentUrl={props.link} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -334,7 +350,7 @@ describe('MenuItem', () => {
         test('Tab + Enter should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} currentUrl={props.link} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -353,7 +369,7 @@ describe('MenuItem', () => {
         test('Click should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} disabled />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -366,7 +382,7 @@ describe('MenuItem', () => {
         test('Tab + Enter should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} disabled />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -394,7 +410,7 @@ describe('MenuItem', () => {
       test('Default', () => {
         const props = fakeProps();
         render(<MenuItem {...props} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
 
@@ -421,7 +437,7 @@ describe('MenuItem', () => {
       test('Hover', () => {
         const props = fakeProps();
         render(<MenuItem {...props} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -447,7 +463,7 @@ describe('MenuItem', () => {
       test('Selected', () => {
         const props = fakeProps();
         render(<MenuItem {...props} currentUrl={props.link} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -477,7 +493,7 @@ describe('MenuItem', () => {
       test('Selected + Hover', async () => {
         const props = fakeProps();
         render(<MenuItem {...props} currentUrl={props.link} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -517,7 +533,7 @@ describe('MenuItem', () => {
       test('Focus', async () => {
         const props = fakeProps();
         render(<MenuItem {...props} />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         const svgPath = screen.getByTestId('eds-icon-path');
@@ -550,7 +566,7 @@ describe('MenuItem', () => {
       test('Disabled', () => {
         const props = fakeProps();
         render(<MenuItem {...props} disabled />, {
-          wrapper: SideBarProvider,
+          wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         const svgPath = screen.getByTestId('eds-icon-path');
@@ -579,7 +595,7 @@ describe('MenuItem', () => {
         test('Should be able to Click', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -592,7 +608,7 @@ describe('MenuItem', () => {
         test('Should be able to Tab + Enter', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -611,7 +627,7 @@ describe('MenuItem', () => {
         test('Click should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} currentUrl={props.link} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -624,7 +640,7 @@ describe('MenuItem', () => {
         test('Tab + Enter should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} currentUrl={props.link} />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -643,7 +659,7 @@ describe('MenuItem', () => {
         test('Click should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} disabled />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 
@@ -656,7 +672,7 @@ describe('MenuItem', () => {
         test('Tab + Enter should do nothing', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} disabled />, {
-            wrapper: SideBarProvider,
+            wrapper: wrapper,
           });
           const item = screen.getByTestId('sidebar-menu-item');
 

@@ -51,8 +51,10 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           : colors.interactive.primary__resting.rgba
       );
 
-    const handleOnClick = () => {
-      if (canNavigate) {
+    const handleOnClick = (event: React.MouseEvent) => {
+      if (!canNavigate) {
+        event.preventDefault();
+      } else {
         onClick();
       }
     };
@@ -60,7 +62,9 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     if (isOpen) {
       return (
         <Link
+          to={link}
           $active={isCurrentUrl}
+          aria-disabled={disabled}
           $disabled={disabled}
           onClick={handleOnClick}
           onMouseEnter={handleOnMouseEnter}
@@ -89,14 +93,15 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
 
     return (
       <Link
+        to={link}
         $active={isCurrentUrl}
+        aria-disabled={disabled}
         $disabled={disabled}
         onClick={handleOnClick}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
         $open={isOpen}
         tabIndex={0}
-        href={canNavigate ? link : undefined}
         ref={ref}
         data-testid="sidebar-menu-item"
       >
