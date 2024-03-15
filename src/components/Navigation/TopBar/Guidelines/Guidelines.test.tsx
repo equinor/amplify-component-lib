@@ -55,15 +55,12 @@ test('Renders content correctly', () => {
 
   const sections = screen.getAllByTestId('guidelines-section');
 
-  const allIcons = screen.getAllByTestId('eds-icon-path');
-  let iconIndex = 1;
   for (const [index, section] of sections.entries()) {
     expect(section).toContainElement(
       screen.getByText(props.sections[index].sectionName)
     );
     for (const item of props.sections[index].items) {
       expect(section).toContainElement(screen.getByText(item.title));
-      iconIndex += 1;
     }
   }
 });

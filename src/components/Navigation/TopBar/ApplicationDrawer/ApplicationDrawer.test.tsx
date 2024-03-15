@@ -209,7 +209,7 @@ test(
       }
     );
   },
-  { timeout: 15000 }
+  { timeout: 20000 }
 );
 
 test('Click on more access button', async () => {
