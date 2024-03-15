@@ -37,7 +37,8 @@ const FeedbackFormDialog = styled(Dialog)`
 `;
 
 const BackButton = styled.div`
-  padding-top: ${spacings.medium};
+  padding: ${spacings.medium} ${spacings.medium} ${spacings.small}
+    ${spacings.medium};
 `;
 
 type ResourceSection = 'learn-more' | 'feedback';
@@ -195,7 +196,7 @@ export const Resources: FC<ResourcesProps> = ({
               id={FeedbackType.SUGGESTION}
               onClick={handleOnOpenFeedbackDialog}
               icon={move_to_inbox}
-              text="Suggest a idea"
+              text="Suggest idea"
               lastItem
             />
             {!hideReleaseNotes && (
@@ -204,7 +205,7 @@ export const Resources: FC<ResourcesProps> = ({
                 icon={file_description}
                 onClick={toggleReleaseNotes}
                 text="Open release notes"
-                href=""
+                isHref
               />
             )}
 

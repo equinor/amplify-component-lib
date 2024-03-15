@@ -10,10 +10,6 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
-const HrefLink = styled.a`
-  text-decoration: none;
-`;
-
 const ContentInfo = styled.div`
   display: flex;
   flex-direction: row;
@@ -42,21 +38,19 @@ interface ResourceMenuItemProps {
   icon: IconData;
   onClick: (event?: MouseEvent<HTMLDivElement>) => void;
   id?: string;
-  href?: string;
   lastItem?: boolean;
+  isHref?: boolean;
 }
 
 const ResourceMenuItem: FC<ResourceMenuItemProps> = ({
   text,
   icon,
-  href,
+  isHref,
   onClick,
   id,
   lastItem = false,
 }) => {
-  const isHref = href && href.length > 0;
-
-  const content = useMemo(() => {
+  return useMemo(() => {
     return (
       <Wrapper id={id} onClick={onClick} role="menuitem">
         <ContentInfo>
@@ -79,16 +73,6 @@ const ResourceMenuItem: FC<ResourceMenuItemProps> = ({
       </Wrapper>
     );
   }, [icon, id, isHref, lastItem, onClick, text]);
-
-  if (isHref) {
-    return (
-      <HrefLink href={href} target="_blank" as="a">
-        {content}
-      </HrefLink>
-    );
-  }
-
-  return content;
 };
 
 export default ResourceMenuItem;

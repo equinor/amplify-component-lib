@@ -10,7 +10,7 @@ import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const {  elevation } = tokens;
+const { elevation } = tokens;
 
 const ContentWrapper = styled.div`
   display: flex;
