@@ -2,39 +2,13 @@ import React, { forwardRef, ReactElement, useRef, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
 import Colorbox from './Colorbox';
 import Item from './Item';
 import Section from './Section';
 import { TopBarButton } from 'src/components/Navigation/TopBar/TopBar.styles';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
-import { spacings } from 'src/style';
 import { GuidelineItem } from 'src/types/Guidelines';
-
-import styled from 'styled-components';
-
-const { elevation, colors } = tokens;
-
-const StyledSideSheet = styled.div`
-  width: 320px;
-  height: calc(100vh - 64px);
-  background-color: ${colors.ui.background__default.rgba};
-  box-shadow: ${elevation.raised};
-  overflow: hidden;
-  position: fixed;
-  right: 0;
-  top: 64px;
-  z-index: 100;
-`;
-
-const Content = styled.div`
-  height: calc(
-    100vh - 64px - 57px
-  ); // 64px is height of top bar, 57 is height of header in side sheet
-  padding: ${spacings.medium};
-  overflow: auto;
-`;
 
 export interface GuidelineSections {
   sectionName: string;
