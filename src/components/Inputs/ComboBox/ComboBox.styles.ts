@@ -115,7 +115,7 @@ export const ClearButton = styled(Button)`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: 24px;
+  right: 26px;
   width: 24px;
   height: 24px;
   svg {
