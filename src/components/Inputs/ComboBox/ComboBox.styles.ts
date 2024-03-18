@@ -72,7 +72,7 @@ export const Section = styled.section`
   display: flex;
   flex-wrap: wrap;
   gap: ${spacings.x_small};
-  height: 24px;
+  min-height: 24px;
   input[type='search'] {
     background: transparent;
     width: 0;
@@ -115,7 +115,7 @@ export const ClearButton = styled(Button)`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: 48px;
+  right: 24px;
   width: 24px;
   height: 24px;
   svg {
