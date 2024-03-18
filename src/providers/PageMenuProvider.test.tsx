@@ -14,6 +14,7 @@ function fakeItems() {
 }
 
 test('usePageMenu throws error if used outside provider', () => {
+  console.error = vi.fn();
   expect(() => renderHook(() => usePageMenu())).toThrowError(
     "'usePageMenu' must be used within provider"
   );
