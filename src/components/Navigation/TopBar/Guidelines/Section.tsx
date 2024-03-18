@@ -10,12 +10,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.medium};
+  > p {
+    padding-left: ${spacings.medium};
+  }
   > section {
     display: flex;
     flex-direction: column;
     margin-bottom: ${spacings.large};
     gap: ${spacings.medium};
-    margin-left: ${spacings.medium_small};
+    margin-left: ${spacings.medium};
   }
 `;
 

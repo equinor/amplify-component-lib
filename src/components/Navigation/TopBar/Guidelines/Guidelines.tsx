@@ -1,11 +1,14 @@
-import React, { forwardRef, ReactElement } from 'react';
+import React, { forwardRef, ReactElement, useRef, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import Colorbox from './Colorbox';
 import Item from './Item';
 import Section from './Section';
+import { TopBarButton } from 'src/components/Navigation/TopBar/TopBar.styles';
+import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { spacings } from 'src/style';
 import { GuidelineItem } from 'src/types/Guidelines';
 
@@ -50,40 +53,72 @@ export interface GuidelineProps {
 
 export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
   ({ open, sections, children }, ref) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const buttonRef = useRef<HTMLDivElement | null>(null);
+
+    const handleButtonClick = () => {
+      if (isOpen) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    };
+    const onClose = () => {
+      setIsOpen(false);
+    };
+
     if (!open) return null;
     return (
-      <StyledSideSheet ref={ref}>
-        <Content>
-          {sections?.map((section, index) => (
-            <Section
-              key={`section-${section.sectionName}`}
-              title={section.sectionName}
-            >
-              {section.items.map((item, itemIndex) => {
-                if ('element' in item) {
+      <>
+        <TopBarButton
+          variant="ghost"
+          key="topbar-notifications"
+          ref={buttonRef}
+          onClick={handleButtonClick}
+          data-testid="show-hide-button"
+          $isSelected={isOpen}
+        >
+          <Icon data={info_circle} />
+        </TopBarButton>
+
+        <TopBarMenu
+          open={isOpen}
+          anchorEl={buttonRef.current}
+          onClose={onClose}
+        >
+          <div>
+            {sections?.map((section, index) => (
+              <Section
+                key={`section-${section.sectionName}`}
+                title={section.sectionName}
+              >
+                {section.items.map((item, itemIndex) => {
+                  if ('element' in item) {
+                    return (
+                      <Item key={`${itemIndex}-${index}`} title={item.title}>
+                        {item.element}
+                      </Item>
+                    );
+                  }
                   return (
                     <Item key={`${itemIndex}-${index}`} title={item.title}>
-                      {item.element}
+                      {item.colorBox && (
+                        <Colorbox
+                          data-testid={`color-box-${item.title}`}
+                          $color={item.color}
+                        />
+                      )}
+                      <Icon data={item.icon} color={item.color} size={24} />
                     </Item>
                   );
-                }
-                return (
-                  <Item key={`${itemIndex}-${index}`} title={item.title}>
-                    {item.colorBox && (
-                      <Colorbox
-                        data-testid={`color-box-${item.title}`}
-                        $color={item.color}
-                      />
-                    )}
-                    <Icon data={item.icon} color={item.color} size={24} />
-                  </Item>
-                );
-              })}
-            </Section>
-          ))}
-          {children}
-        </Content>
-      </StyledSideSheet>
+                })}
+              </Section>
+            ))}
+            {children}
+          </div>
+        </TopBarMenu>
+      </>
     );
   }
 );
