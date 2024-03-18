@@ -409,9 +409,6 @@ describe('Resources', () => {
 
       await user.click(resourceMenuButton);
 
-      // const submitFeedbackButton = screen.getByText('Submit feedback');
-
-      // await user.click(submitFeedbackButton);
       window.localStorage.clear();
     });
 
