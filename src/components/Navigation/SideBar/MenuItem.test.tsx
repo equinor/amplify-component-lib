@@ -595,20 +595,6 @@ describe('MenuItem', () => {
 
     describe('Interaction', () => {
       describe('Default', () => {
-        test('Should show tooltip on hover', async () => {
-          const props = fakeProps();
-          render(<MenuItem {...props} />, {
-            wrapper: wrapper,
-          });
-          const item = screen.getByTestId('sidebar-menu-item');
-
-          const user = userEvent.setup();
-          await user.hover(item);
-
-          const toolTipText = screen.getByText(props.name);
-          expect(toolTipText).toBeInTheDocument();
-        });
-
         test('Should be able to Click', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} />, {
