@@ -1,58 +1,27 @@
 import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-
 import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
+import {
+  BottomItemContainer,
+  EquinorIconContainer,
+  NavigationContainer,
+  TopItemContainer,
+} from './SideBar.styles';
 import ToggleOpen from './ToggleOpen';
 import { useSideBar } from 'src/providers/SideBarProvider';
-import { spacings } from 'src/style';
 
-import styled from 'styled-components';
-
-const { colors } = tokens;
-
-interface ContainerProps {
-  $width: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  border-right: 1px solid ${colors.ui.background__medium.rgba};
-  background-color: ${colors.ui.background__default.rgba};
-  display: flex;
-  flex-direction: column;
-  padding-bottom: ${spacings.large};
-  overflow: hidden;
-  width: ${(props) => props.$width};
-  min-width: ${(props) => props.$width};
-  height: calc(100vh - 64px - 24px);
-  position: sticky;
-  top: 64px;
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  border-top: 1px solid ${colors.ui.background__medium.rgba};
-  padding-top: ${spacings.large};
-`;
-
-const TopContainer = styled.div`
-  display: grid;
-  grid-auto-rows: 1fr;
-  align-items: center;
-`;
-
-interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
+interface SideBarProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   showCreate?: boolean;
+  bottomItem?: ReactNode;
 }
 
-interface SideBarWithoutCreate extends SidebarProps {
+interface BaseSideBar extends SideBarProps {
   onCreate?: undefined;
 }
 
-interface SidebarWithCreate extends SidebarProps {
+interface SideBarWithCreate extends SideBarProps {
   onCreate: () => void;
   createLabel: string;
   createDisabled?: boolean;
@@ -60,9 +29,9 @@ interface SidebarWithCreate extends SidebarProps {
 
 export const SideBar = forwardRef<
   HTMLDivElement,
-  SidebarWithCreate | SideBarWithoutCreate
+  SideBarWithCreate | BaseSideBar
 >((props, ref) => {
-  const { children, showCreate = true } = props;
+  const { children, showCreate = true, bottomItem } = props;
   const { isOpen, setIsOpen } = useSideBar();
 
   const handleToggle = () => {
@@ -70,12 +39,12 @@ export const SideBar = forwardRef<
   };
 
   return (
-    <Container
-      $width={isOpen ? '256px' : '72px'}
+    <NavigationContainer
+      $width={isOpen ? '231px' : '64px'}
       ref={ref}
       data-testid="sidebar"
     >
-      <TopContainer>
+      <TopItemContainer>
         {props.onCreate && showCreate && (
           <CreateItem
             createLabel={props.createLabel}
@@ -84,12 +53,15 @@ export const SideBar = forwardRef<
           />
         )}
         {children}
-      </TopContainer>
-      <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
-      <LogoContainer>
-        <EquinorLogo />
-      </LogoContainer>
-    </Container>
+      </TopItemContainer>
+      <BottomItemContainer>
+        {bottomItem}
+        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
+        <EquinorIconContainer>
+          <EquinorLogo />
+        </EquinorIconContainer>
+      </BottomItemContainer>
+    </NavigationContainer>
   );
 });
 

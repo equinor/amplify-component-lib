@@ -2,6 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { ComboBox } from './ComboBox';
+import { colors as amplifyColors } from 'src/constants';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
@@ -771,7 +772,7 @@ test('underlineHighlight works as expected', () => {
 
   expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
     'box-shadow',
-    `inset 0 -2px 0 0 ${colors.infographic.substitute__blue_overcast.rgba}`
+    `inset 0 -2px 0 0 ${amplifyColors.dark_blue.rgba}`
   );
 });
 
