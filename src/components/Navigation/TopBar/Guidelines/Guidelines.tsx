@@ -42,8 +42,6 @@ export interface GuidelineSections {
 }
 
 export interface GuidelineProps {
-  open: boolean;
-
   /**
    * @deprecated Use Guideline.Section and Guideline.Item as children instead.
    */
@@ -52,7 +50,7 @@ export interface GuidelineProps {
 }
 
 export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
-  ({ open, sections, children }, ref) => {
+  ({ sections, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -68,7 +66,7 @@ export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
       setIsOpen(false);
     };
 
-    if (!open) return null;
+    // if (!open) return null;
     return (
       <>
         <TopBarButton

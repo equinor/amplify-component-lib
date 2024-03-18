@@ -19,6 +19,9 @@ const Container = styled.div`
     margin-bottom: ${spacings.large};
     gap: ${spacings.medium};
     margin-left: ${spacings.medium};
+    overflow: auto;
+    height: fit-content;
+    max-height: 66vh;
   }
 `;
 
