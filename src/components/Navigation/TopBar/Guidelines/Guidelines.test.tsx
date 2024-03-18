@@ -12,7 +12,7 @@ import {
   Guidelines,
   GuidelineSections,
 } from 'src/components/Navigation/TopBar/Guidelines/Guidelines';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeSection(withColorBoxes = false): GuidelineSections {
   const items: GuidelineSections['items'] = [];
@@ -43,15 +43,16 @@ function fakeProps(withColorBoxes = false): GuidelineProps {
     sections.push(fakeSection(withColorBoxes));
   }
   return {
-    open: true,
-
     sections,
   };
 }
 
-test('Renders content correctly', () => {
+test('Renders content correctly', async () => {
   const props = fakeProps();
+  const user = userEvent.setup();
   render(<Guidelines {...props} />);
+  const button = screen.getByRole('button');
+  await user.click(button);
 
   const sections = screen.getAllByTestId('guidelines-section');
 
@@ -65,9 +66,60 @@ test('Renders content correctly', () => {
   }
 });
 
-test('Renders sections as expected with color boxes correctly', () => {
-  const props = fakeProps(true);
+test('Closes when user click outside', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
   render(<Guidelines {...props} />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const sections = screen.getAllByTestId('guidelines-section');
+
+  for (const [index, section] of sections.entries()) {
+    expect(section).toContainElement(
+      screen.getByText(props.sections[index].sectionName)
+    );
+    for (const item of props.sections[index].items) {
+      expect(section).toContainElement(screen.getByText(item.title));
+    }
+  }
+
+  await user.click(document.body);
+
+  expect(screen.queryByTestId('guidelines-section')).not.toBeInTheDocument();
+});
+test('Closes when user click on icon again ', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+  render(<Guidelines {...props} />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const sections = screen.getAllByTestId('guidelines-section');
+
+  for (const [index, section] of sections.entries()) {
+    expect(section).toContainElement(
+      screen.getByText(props.sections[index].sectionName)
+    );
+    for (const item of props.sections[index].items) {
+      expect(section).toContainElement(screen.getByText(item.title));
+    }
+  }
+
+  await user.click(button);
+
+  expect(screen.queryByTestId('guidelines-section')).not.toBeInTheDocument();
+});
+
+test('Renders sections as expected with color boxes correctly', async () => {
+  const props = fakeProps(true);
+  const user = userEvent.setup();
+  render(<Guidelines {...props} />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
 
   for (const section of props.sections) {
     for (const item of section.items) {
@@ -77,15 +129,7 @@ test('Renders sections as expected with color boxes correctly', () => {
   }
 });
 
-test('is not shown if open is false', () => {
-  const props = fakeProps(true);
-  render(<Guidelines {...props} open={false} />);
-
-  const panelHeader = screen.queryByText('Guidelines');
-  expect(panelHeader).not.toBeInTheDocument();
-});
-
-test('Shows custom elements', () => {
+test('Shows custom elements', async () => {
   const props = fakeProps(false);
   const text = faker.animal.lion();
   const itemElement = {
@@ -93,8 +137,10 @@ test('Shows custom elements', () => {
     element: <p>{text}</p>,
   };
   props.sections[0].items.push(itemElement);
-
-  render(<Guidelines {...props} open />);
+  const user = userEvent.setup();
+  render(<Guidelines {...props} />);
+  const button = screen.getByRole('button');
+  await user.click(button);
 
   expect(screen.getByText(text)).toBeInTheDocument();
   expect(screen.getByText(itemElement.title)).toBeInTheDocument();

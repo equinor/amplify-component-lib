@@ -66,7 +66,6 @@ export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
       setIsOpen(false);
     };
 
-    // if (!open) return null;
     return (
       <>
         <TopBarButton
