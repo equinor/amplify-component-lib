@@ -6,7 +6,8 @@ import styled from 'styled-components';
 
 const MenuWrapper = styled(Menu)`
   padding: 0 !important;
-  width: 350px;
+  min-width: 350px;
+  width: fit-content;
   border-radius: 5px;
 `;
 

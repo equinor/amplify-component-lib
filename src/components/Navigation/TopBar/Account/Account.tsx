@@ -28,7 +28,7 @@ const ProfileButton = styled.button`
 `;
 
 const Container = styled.div`
-  padding-top: ${spacings.medium};
+  padding: ${spacings.medium} ${spacings.small} 0 ${spacings.small};
   display: flex;
   flex-direction: column;
   align-items: center;
