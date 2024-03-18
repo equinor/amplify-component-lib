@@ -1,3 +1,6 @@
+import { ReactNode } from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
 import { add, home, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
@@ -21,6 +24,20 @@ const defaultMenuItems: MenuItemType[] = [
   },
 ];
 
+const wrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <Routes>
+        <Route
+          path="/"
+          element={<SideBarProvider>{children}</SideBarProvider>}
+        />
+        <Route path="/page1" element={<p>Page 1</p>} />
+      </Routes>
+    </MemoryRouter>
+  );
+};
+
 test('Renders create new button when onCreate prop is given', () => {
   render(
     <SideBar onCreate={() => console.log('test')} createLabel="createlabel">
@@ -29,7 +46,7 @@ test('Renders create new button when onCreate prop is given', () => {
       ))}
     </SideBar>,
     {
-      wrapper: SideBarProvider,
+      wrapper: wrapper,
     }
   );
   const createIcon = screen.getAllByTestId('eds-icon-path')[0];
@@ -44,7 +61,7 @@ test('Renders closed on initial render', () => {
       ))}
     </SideBar>,
     {
-      wrapper: SideBarProvider,
+      wrapper: wrapper,
     }
   );
 
@@ -63,7 +80,7 @@ test('Renders open width when localStorage has it set to open', () => {
       ))}
     </SideBar>,
     {
-      wrapper: SideBarProvider,
+      wrapper: wrapper,
     }
   );
   expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '231px');
@@ -78,7 +95,7 @@ test('Disabled create new button doesnt fire event', async () => {
       ))}
     </SideBar>,
     {
-      wrapper: SideBarProvider,
+      wrapper: wrapper,
     }
   );
 
@@ -101,7 +118,7 @@ test('Opens and closes when pressing the toggle button', async () => {
         <SideBar.Item key={m.name} {...m} />
       ))}
     </SideBar>,
-    { wrapper: SideBarProvider }
+    { wrapper: wrapper }
   );
   const user = userEvent.setup();
 
@@ -130,7 +147,7 @@ test('Render Create button correctly when open', async () => {
         <SideBar.Item key={m.name} {...m} />
       ))}
     </SideBar>,
-    { wrapper: SideBarProvider }
+    { wrapper: wrapper }
   );
   const user = userEvent.setup();
 
@@ -162,7 +179,7 @@ test('Hides create button when showCreate=false', async () => {
         <SideBar.Item key={m.name} {...m} />
       ))}
     </SideBar>,
-    { wrapper: SideBarProvider }
+    { wrapper: wrapper }
   );
   const user = userEvent.setup();
 
@@ -194,7 +211,7 @@ test('Renders bottom item when provided', () => {
         <SideBar.Item key={m.name} {...m} />
       ))}
     </SideBar>,
-    { wrapper: SideBarProvider }
+    { wrapper: wrapper }
   );
 
   const menuItems = screen.getAllByTestId('sidebar-menu-item');

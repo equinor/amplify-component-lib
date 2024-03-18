@@ -16,7 +16,7 @@ type MenuClickHandler = () => void | React.MouseEventHandler<HTMLAnchorElement>;
 function fakeProps(): MenuItemProps {
   return {
     currentUrl: faker.internet.url(),
-    link: faker.internet.url(),
+    link: '/page1',
     icon: home,
     name: faker.person.jobTitle(),
     onClick: vi.fn() as MenuClickHandler,
@@ -31,6 +31,7 @@ const wrapper = ({ children }: { children: ReactNode }) => {
           path="/"
           element={<SideBarProvider>{children}</SideBarProvider>}
         />
+        <Route path="/page1" element={<p>Page 1</p>} />
       </Routes>
     </MemoryRouter>
   );
@@ -574,7 +575,6 @@ describe('MenuItem', () => {
         const text = screen.queryByText(props.name);
 
         testBaseStyles();
-        screen.logTestingPlaygroundURL();
 
         expect(item).toHaveAttribute('aria-disabled', 'true');
         expect(item).toHaveStyleRule(
@@ -595,6 +595,20 @@ describe('MenuItem', () => {
 
     describe('Interaction', () => {
       describe('Default', () => {
+        test('Should show tooltip on hover', async () => {
+          const props = fakeProps();
+          render(<MenuItem {...props} />, {
+            wrapper: wrapper,
+          });
+          const item = screen.getByTestId('sidebar-menu-item');
+
+          const user = userEvent.setup();
+          await user.hover(item);
+
+          const toolTipText = screen.getByText(props.name);
+          expect(toolTipText).toBeInTheDocument();
+        });
+
         test('Should be able to Click', async () => {
           const props = fakeProps();
           render(<MenuItem {...props} />, {
