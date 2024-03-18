@@ -4,19 +4,17 @@ import { Button, Dialog, Divider, Icon } from '@equinor/eds-core-react';
 import {
   arrow_back,
   file_description,
-  info_circle,
-  move_to_inbox,
+  lightbulb,
+  placeholder_icon,
   report_bug,
+  school,
+  youtube_alt,
 } from '@equinor/eds-icons';
 
 import { TopBarButton } from '../TopBar.styles';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
-import {
-  amplify_resources,
-  amplify_small_portal,
-  amplify_tutorials,
-} from 'src/components/Icons/AmplifyIcons';
+import { amplify_resources } from 'src/components/Icons/AmplifyIcons';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
@@ -123,14 +121,14 @@ export const Resources: FC<ResourcesProps> = ({
           <>
             <ResourceMenuItem
               text="Open Application portal"
-              icon={amplify_small_portal}
+              icon={placeholder_icon}
               onClick={handleOnOpenPortal}
-              lastItem
+              isHref
             />
             {showTutorials && (
               <ResourceMenuItem
                 text="Tutorials"
-                icon={amplify_tutorials}
+                icon={youtube_alt}
                 onClick={handleOnOpenTutorialDialog}
                 lastItem
               />
@@ -195,7 +193,7 @@ export const Resources: FC<ResourcesProps> = ({
             <ResourceMenuItem
               id={FeedbackType.SUGGESTION}
               onClick={handleOnOpenFeedbackDialog}
-              icon={move_to_inbox}
+              icon={lightbulb}
               text="Suggest idea"
               lastItem
             />
@@ -211,7 +209,7 @@ export const Resources: FC<ResourcesProps> = ({
 
             <ResourceMenuItem
               text="Learn more"
-              icon={info_circle}
+              icon={school}
               onClick={handleLearnMoreClick}
             />
           </>

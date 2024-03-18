@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   text-decoration: none;
   gap: ${spacings.medium};
   cursor: pointer;
-
+  align-items: center;
   &:hover {
     background-color: ${colors.interactive.primary__hover_alt.rgba};
   }
