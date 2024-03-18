@@ -173,7 +173,8 @@ test('renders button and panel correctly', async () => {
   expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 
   const button = screen.getByTestId('show-hide-button');
-  await userEvent.click(button);
+  const user = userEvent.setup();
+  await user.click(button);
   expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 });
 
@@ -270,7 +271,8 @@ test('renders button and panel with filter options correctly', async () => {
   expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 
   const button = screen.getByTestId('show-hide-button');
-  await userEvent.click(button);
+  const user = userEvent.setup();
+  await user.click(button);
   expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 });
 

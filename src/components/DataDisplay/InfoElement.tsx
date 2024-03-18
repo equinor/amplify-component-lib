@@ -28,7 +28,7 @@ const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
               <Typography variant="h6">{contentElement}</Typography>
             </CopyText>
           ) : (
-            <Typography variant="h6" capitalize={capitalizeContent}>
+            <Typography variant="h6">
               {contentElement}
             </Typography>
           )

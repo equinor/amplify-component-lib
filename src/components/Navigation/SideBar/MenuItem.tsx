@@ -1,79 +1,11 @@
 import { forwardRef, HTMLAttributes, useMemo } from 'react';
 
-import { Icon, Typography } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
+import { IconContainer, ItemText, Link } from './MenuItem.styles';
 import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
-import { spacings } from 'src/style';
-
-import styled from 'styled-components';
-
-const { colors } = tokens;
-
-interface ContainerProps {
-  $active?: boolean;
-  $open?: boolean;
-  $disabled?: boolean;
-}
-
-const Container = styled.a<ContainerProps>`
-  background: ${({ $active }) =>
-    $active ? colors.interactive.primary__selected_highlight.rgba : 'none'};
-  display: ${({ $open }) => ($open ? 'grid' : 'flex')};
-  grid-template-columns: repeat(10, 1fr);
-  grid-gap: ${spacings.medium};
-  justify-content: ${({ $open }) => !$open && 'center'};
-  align-items: center;
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  box-sizing: border-box;
-  text-decoration: none;
-  height: 72px;
-  transition: background 0.1s ease-in;
-
-  ${({ $active, $disabled }) =>
-    !$active &&
-    !$disabled &&
-    `
-    &:hover {
-      cursor: pointer;
-      background: ${colors.interactive.primary__hover_alt.rgba};
-    }
-  `}
-
-  ${({ $active, $disabled }) =>
-    $active &&
-    !$disabled &&
-    `
-    &:hover {
-      cursor: pointer;
-      background: ${colors.interactive.primary__selected_hover.rgba};
-    }
-  `}
-`;
-
-const ItemIcon = styled(Icon)`
-  grid-column: 2;
-  margin-left: -4px;
-`;
-
-interface ItemTextProps {
-  $active: boolean;
-  $disabled: boolean;
-}
-
-const ItemText = styled(Typography)<ItemTextProps>`
-  font-weight: ${({ $active }) => ($active ? '500' : '400')};
-  grid-column: 3 / -1;
-  color: ${({ $disabled }) =>
-    $disabled
-      ? colors.interactive.disabled__text.rgba
-      : colors.text.static_icons__default.rgba};
-  &::first-letter {
-    text-transform: capitalize;
-  }
-`;
 
 export interface MenuItemType {
   icon: IconData;
@@ -93,62 +25,69 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
-    const iconColor = useMemo(() => {
-      if (disabled) {
-        return colors.interactive.disabled__text.rgba;
-      } else if (currentUrl) {
-        return colors.interactive.primary__resting.rgba;
-      } else {
-        return colors.interactive.primary__resting.rgba;
-      }
-    }, [currentUrl, disabled]);
+    const canNavigate = useMemo(
+      () => !disabled && !isCurrentUrl,
+      [disabled, isCurrentUrl]
+    );
 
-    const handleOnClick = () => {
-      if (!isCurrentUrl && !disabled) {
+    const handleOnClick = (event: React.MouseEvent) => {
+      if (!canNavigate) {
+        event.preventDefault();
+      } else {
         onClick();
       }
     };
 
     if (isOpen) {
       return (
-        <Container
+        <Link
+          to={link}
           $active={isCurrentUrl}
+          aria-disabled={disabled}
           $disabled={disabled}
           onClick={handleOnClick}
+          tabIndex={0}
           $open
           ref={ref}
           data-testid="sidebar-menu-item"
         >
-          {icon && <ItemIcon data={icon} size={24} color={iconColor} />}
+          {icon && (
+            <IconContainer data-testid="icon-container">
+              <Icon data={icon} size={24} />
+            </IconContainer>
+          )}
           <ItemText
             $active={isCurrentUrl}
             $disabled={disabled}
-            variant="cell_text"
-            group="table"
+            variant="button"
+            group="navigation"
           >
             {name}
           </ItemText>
-        </Container>
+        </Link>
       );
     }
 
     return (
-      <OptionalTooltip
-        title={name}
-        placement="right"
-        textTransform="capitalize"
+      <Link
+        to={link}
+        $active={isCurrentUrl}
+        aria-disabled={disabled}
+        $disabled={disabled}
+        onClick={handleOnClick}
+        $open={isOpen}
+        tabIndex={0}
+        ref={ref}
+        data-testid="sidebar-menu-item"
       >
-        <Container
-          $active={isCurrentUrl}
-          $disabled={disabled}
-          onClick={handleOnClick}
-          $open={isOpen}
-          ref={ref}
-          data-testid="sidebar-menu-item"
-        >
-          {icon && <ItemIcon data={icon} size={24} color={iconColor} />}
-        </Container>
-      </OptionalTooltip>
+        <OptionalTooltip title={name} placement="right">
+          {icon && (
+            <IconContainer data-testid="icon-container">
+              <Icon data={icon} size={24} />
+            </IconContainer>
+          )}
+        </OptionalTooltip>
+      </Link>
     );
   }
 );

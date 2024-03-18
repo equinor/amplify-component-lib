@@ -228,6 +228,7 @@ describe('TutorialProvider', () => {
   });
 
   test('useTutorial throws error if used outside provider', () => {
+    console.error = vi.fn();
     expect(() => renderHook(() => useTutorial())).toThrowError(
       "'useTutorial' must be used within a TutorialProvider"
     );

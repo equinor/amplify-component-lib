@@ -5,6 +5,7 @@ import { useFakeProgress } from './useFakeProgress';
 import { renderHook } from 'src/tests/test-utils';
 
 test('Throws error when changing progressMs prop', () => {
+  console.error = vi.fn();
   const onDone = vi.fn();
   const fakeProgressMs = faker.number.int({ min: 200, max: 1000 });
   const { rerender } = renderHook(
@@ -22,6 +23,7 @@ test('Throws error when changing progressMs prop', () => {
 });
 
 test('Throws error when changing finishMs prop', () => {
+  console.error = vi.fn();
   const onDone = vi.fn();
   const fakeFinishMs = faker.number.int({ min: 200, max: 1000 });
   const { rerender } = renderHook(
