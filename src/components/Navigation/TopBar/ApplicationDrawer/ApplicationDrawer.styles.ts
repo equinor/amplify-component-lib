@@ -20,6 +20,9 @@ export const MenuSection = styled.div`
 export const ApplicationName = styled.div`
   display: flex;
   align-items: flex-start;
+  > p {
+    text-align: center;
+  }
 `;
 
 export const ApplicationContent = styled.div`

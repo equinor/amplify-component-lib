@@ -23,7 +23,7 @@ const ContentInfo = styled.div`
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.medium_small};
+  padding: ${spacings.medium_small} ${spacings.medium};
   text-decoration: none;
   gap: ${spacings.medium};
   cursor: pointer;
