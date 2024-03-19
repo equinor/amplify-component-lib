@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, useRef, useState } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
@@ -16,15 +16,11 @@ export interface GuidelineSections {
 }
 
 export interface GuidelineProps {
-  /**
-   * @deprecated Use Guideline.Section and Guideline.Item as children instead.
-   */
   sections: GuidelineSections[];
-  children?: ReactElement | ReactElement[];
 }
 
 export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
-  ({ sections, children }) => {
+  ({ sections }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -57,37 +53,35 @@ export const Guidelines = forwardRef<HTMLDivElement, GuidelineProps>(
           open={isOpen}
           anchorEl={buttonRef.current}
           onClose={onClose}
+          withGap
         >
-          <div>
-            {sections?.map((section, index) => (
-              <Section
-                key={`section-${section.sectionName}`}
-                title={section.sectionName}
-              >
-                {section.items.map((item, itemIndex) => {
-                  if ('element' in item) {
-                    return (
-                      <Item key={`${itemIndex}-${index}`} title={item.title}>
-                        {item.element}
-                      </Item>
-                    );
-                  }
+          {sections.map((section, index) => (
+            <Section
+              key={`section-${section.sectionName}`}
+              title={section.sectionName}
+            >
+              {section.items.map((item, itemIndex) => {
+                if ('element' in item) {
                   return (
                     <Item key={`${itemIndex}-${index}`} title={item.title}>
-                      {item.colorBox && (
-                        <Colorbox
-                          data-testid={`color-box-${item.title}`}
-                          $color={item.color}
-                        />
-                      )}
-                      <Icon data={item.icon} color={item.color} size={24} />
+                      {item.element}
                     </Item>
                   );
-                })}
-              </Section>
-            ))}
-            {children}
-          </div>
+                }
+                return (
+                  <Item key={`${itemIndex}-${index}`} title={item.title}>
+                    {item.colorBox && (
+                      <Colorbox
+                        data-testid={`color-box-${item.title}`}
+                        $color={item.color}
+                      />
+                    )}
+                    <Icon data={item.icon} color={item.color} size={24} />
+                  </Item>
+                );
+              })}
+            </Section>
+          ))}
         </TopBarMenu>
       </>
     );
