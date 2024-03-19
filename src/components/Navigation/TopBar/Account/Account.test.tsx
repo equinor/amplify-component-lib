@@ -62,10 +62,7 @@ test('Renders correctly without avatar', async () => {
   expect(
     screen.getByText(props.account?.username ?? 'failed')
   ).toBeInTheDocument();
-
-  const closeButton = screen.getByTestId('close-button');
-
-  await user.click(closeButton);
+  await user.click(document.body);
 
   expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 });
@@ -86,12 +83,6 @@ test('Renders correctly with avatar', async () => {
 
   expect(screen.getByText(props.roles?.[0] ?? '')).toBeInTheDocument();
   expect(screen.getAllByAltText(`user-avatar-${accountName}`).length).toBe(2);
-
-  const closeButton = screen.getByTestId('close-button');
-
-  await user.click(closeButton);
-
-  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 });
 
 test('Opens and closes as it should', async () => {

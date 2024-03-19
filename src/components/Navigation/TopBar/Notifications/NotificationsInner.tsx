@@ -30,7 +30,8 @@ const FilterOptionsContainer = styled.div`
 
 const Content = styled.div`
   overflow: auto;
-  height: 66vh;
+  height: fit-content;
+  max-height: 66vh;
   width: 350px;
 `;
 

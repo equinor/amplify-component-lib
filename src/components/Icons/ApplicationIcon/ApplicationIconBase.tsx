@@ -79,7 +79,8 @@ const Shape = styled.div<ShapeElementProps>`
   width: 120%;
   height: 80%;
   box-shadow: ${elevation.raised};
-  background: ${colors.interactive.primary__resting.rgba};
+  // This background is set to hex and not rgba because design do not want this color to change in dark mode , 18 march 2024.
+  background: ${colors.interactive.primary__resting.hex};
   transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
   transform: rotate(${(props) => props.$rotation}deg);
   pointer-events: none;

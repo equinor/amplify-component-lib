@@ -1,6 +1,6 @@
 import { FC, ReactElement, useRef, useState } from 'react';
 
-import { Icon, Radio, Typography } from '@equinor/eds-core-react';
+import { Icon, Radio as EDSRadio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -10,14 +10,18 @@ import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 
-const { colors, elevation } = tokens;
+const { elevation } = tokens;
 
 const ContentWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
   align-items: center;
-  padding-right: 40px;
-  color: ${colors.text.static_icons__default.rgba};
+  gap: ${spacings.x_small};
+  padding: 0 ${spacings.large};
+  justify-content: space-between;
+  > span {
+    padding: ${spacings.small} ${spacings.x_small};
+  }
 `;
 
 interface StyledColorBoxProps {
@@ -36,6 +40,18 @@ const SettingsItems = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.medium};
+  > div > p {
+    padding-left: ${spacings.medium};
+  }
+`;
+
+const Radio = styled(EDSRadio)`
+  > span {
+    padding-left: 0 !important;
+    &:hover {
+      padding-left: 0 !important;
+    }
+  }
 `;
 
 export interface ISettingsSections {

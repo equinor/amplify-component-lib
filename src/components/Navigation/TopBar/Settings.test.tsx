@@ -34,7 +34,7 @@ test('Settings renders as expected', async () => {
   const menuButton = screen.getByRole('button');
   await user.click(menuButton);
 
-  expect(screen.getByText('Settings')).toBeVisible();
+  expect(screen.getByText(/theme/i)).toBeVisible();
   const lightRadioButton = screen.getByRole('radio', { name: /light mode/i });
 
   expect(lightRadioButton).toBeChecked();

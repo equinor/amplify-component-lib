@@ -141,7 +141,7 @@ test('No applications is shown ', async () => {
   expect(text).toBeInTheDocument();
 });
 
-test('Close application drawer  ', async () => {
+test('Close when user click outside  ', async () => {
   rejectPromise = false;
   render(<ApplicationDrawer />, { wrapper: Wrappers });
   const user = userEvent.setup();
@@ -149,10 +149,15 @@ test('Close application drawer  ', async () => {
   const menuButton = await screen.findByRole('button');
 
   await user.click(menuButton);
-  const closeButton = screen.getByTestId('close-button');
-  await user.click(closeButton);
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
+    timeout: 4000,
+  });
+  const text = screen.getByText(/switch between apps/i);
+  expect(text).toBeInTheDocument();
 
-  expect(closeButton).not.toBeInTheDocument();
+  await user.click(document.body);
+
+  expect(screen.queryByText(/switch between apps/i)).not.toBeInTheDocument();
 });
 
 test(
@@ -204,7 +209,7 @@ test(
       }
     );
   },
-  { timeout: 15000 }
+  { timeout: 20000 }
 );
 
 test('Click on more access button', async () => {

@@ -10,26 +10,24 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
-const HrefLink = styled.a`
-  text-decoration: none;
-`;
-
 const ContentInfo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: ${spacings.medium_small};
-  padding-right: 20px;
+  gap: ${spacings.x_small};
+  > span {
+    padding: ${spacings.small} ${spacings.x_small};
+  }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${spacings.medium} ${spacings.large};
+  padding: ${spacings.medium_small};
   text-decoration: none;
   gap: ${spacings.medium};
   cursor: pointer;
-
+  align-items: center;
   &:hover {
     background-color: ${colors.interactive.primary__hover_alt.rgba};
   }
@@ -40,21 +38,19 @@ interface ResourceMenuItemProps {
   icon: IconData;
   onClick: (event?: MouseEvent<HTMLDivElement>) => void;
   id?: string;
-  href?: string;
   lastItem?: boolean;
+  isHref?: boolean;
 }
 
 const ResourceMenuItem: FC<ResourceMenuItemProps> = ({
   text,
   icon,
-  href,
+  isHref,
   onClick,
   id,
   lastItem = false,
 }) => {
-  const isHref = href && href.length > 0;
-
-  const content = useMemo(() => {
+  return useMemo(() => {
     return (
       <Wrapper id={id} onClick={onClick} role="menuitem">
         <ContentInfo>
@@ -77,16 +73,6 @@ const ResourceMenuItem: FC<ResourceMenuItemProps> = ({
       </Wrapper>
     );
   }, [icon, id, isHref, lastItem, onClick, text]);
-
-  if (isHref) {
-    return (
-      <HrefLink href={href} target="_blank" as="a">
-        {content}
-      </HrefLink>
-    );
-  }
-
-  return content;
 };
 
 export default ResourceMenuItem;
