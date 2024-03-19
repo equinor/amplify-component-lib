@@ -21,7 +21,7 @@ export default {
   component: Guidelines,
 } as Meta;
 
-import { GuidelineSections } from 'src/components/Navigation/TopBar/Guidelines/Guidelines';
+import { GuidelineSections } from './Guidelines';
 
 const sections: GuidelineSections[] = [
   {
@@ -87,9 +87,5 @@ const sections: GuidelineSections[] = [
 ];
 
 export const Primary: StoryFn = () => {
-  return (
-    <>
-      <Guidelines sections={sections} />
-    </>
-  );
+  return <Guidelines sections={sections} />;
 };
