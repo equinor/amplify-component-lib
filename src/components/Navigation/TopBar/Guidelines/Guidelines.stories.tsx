@@ -1,10 +1,13 @@
-import { Icon } from '@equinor/eds-core-react';
 import {
-  assignment,
-  check,
+  account_circle,
+  dashboard,
   info_circle,
-  minimize,
-  notifications,
+  list,
+  platform,
+  settings,
+  star_outlined,
+  time,
+  view_module,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { Meta, StoryFn } from '@storybook/react';
@@ -13,59 +16,76 @@ import Guidelines from './index';
 
 const { colors } = tokens;
 
-const Wrapper = styled.div`
-  height: 35rem;
-  > div {
-    top: 0;
-    height: 100%;
-  }
-`;
-
 export default {
   title: 'Navigation/TopBar/Guidelines',
   component: Guidelines,
 } as Meta;
 
-import { actions } from '@storybook/addon-actions';
+import { GuidelineSections } from './Guidelines';
 
-import styled from 'styled-components';
+const sections: GuidelineSections[] = [
+  {
+    sectionName: 'Top bar',
+    items: [
+      {
+        title: 'Field Selector',
+        icon: platform,
+        color: colors.interactive.primary__resting.hex,
+      },
+      {
+        title: 'Guidelines',
+        icon: info_circle,
+        color: colors.interactive.primary__resting.hex,
+      },
+      {
+        title: 'Settings',
+        icon: settings,
+        color: colors.interactive.primary__resting.hex,
+      },
+      {
+        title: 'Account',
+        icon: account_circle,
+        color: colors.interactive.primary__resting.hex,
+      },
+    ],
+  },
+  {
+    sectionName: 'Data display',
+    items: [
+      {
+        title: 'Grid View',
+        icon: view_module,
+        color: colors.interactive.primary__resting.hex,
+      },
+      {
+        title: 'List View',
+        icon: list,
+        color: colors.interactive.primary__resting.hex,
+      },
+    ],
+  },
+  {
+    sectionName: 'Navigation rail',
+    items: [
+      {
+        title: 'Dashboard',
+        icon: dashboard,
+        color: colors.interactive.primary__resting.hex,
+      },
+      {
+        title: 'Recently Updated',
+        icon: time,
+        color: colors.interactive.primary__resting.hex,
+      },
+      {
+        title: 'Favourites',
+        icon: star_outlined,
+        color: colors.interactive.primary__resting.hex,
+      },
+    ],
+  },
+];
+
 export const Primary: StoryFn = () => {
-  const handleOnClose = () => {
-    actions('onClose').onClose('Ran on close');
-  };
-
-  return (
-    <Wrapper>
-      <Guidelines open onClose={handleOnClose}>
-        <Guidelines.Section title="Top bar">
-          <Guidelines.Item title="Notifications">
-            <Icon
-              data={notifications}
-              color={colors.interactive.primary__resting.rgba}
-            />
-          </Guidelines.Item>
-          <Guidelines.Item title="Guidelines">
-            <Icon
-              data={info_circle}
-              color={colors.interactive.primary__resting.rgba}
-            />
-          </Guidelines.Item>
-        </Guidelines.Section>
-        <Guidelines.Section title="Status">
-          <Guidelines.Item title="Yes">
-            <Icon data={check} color="#77ff72" />
-          </Guidelines.Item>
-          <Guidelines.Item title="No">
-            <Icon data={minimize} color="#ff8484" />
-          </Guidelines.Item>
-        </Guidelines.Section>
-        <Guidelines.Section title="Navigation rail">
-          <Guidelines.Item title="Report">
-            <Guidelines.Colorbox $color="#ff8484" />
-            <Icon data={assignment} color="#ff8484" />
-          </Guidelines.Item>
-        </Guidelines.Section>
-      </Guidelines>
-    </Wrapper>
-  );
+  return <Guidelines sections={sections} />;
 };

@@ -16,7 +16,6 @@ const Container = styled.div`
   > section {
     display: flex;
     flex-direction: column;
-    margin-bottom: ${spacings.large};
     gap: ${spacings.medium};
     margin-left: ${spacings.medium};
     overflow: auto;

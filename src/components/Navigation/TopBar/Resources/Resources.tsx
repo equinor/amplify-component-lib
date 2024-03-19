@@ -5,7 +5,6 @@ import {
   arrow_back,
   file_description,
   lightbulb,
-  placeholder_icon,
   report_bug,
   school,
   youtube_alt,
@@ -14,7 +13,10 @@ import {
 import { TopBarButton } from '../TopBar.styles';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
-import { amplify_resources } from 'src/components/Icons/AmplifyIcons';
+import {
+  amplify_resources,
+  amplify_small_portal,
+} from 'src/components/Icons/AmplifyIcons';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
@@ -121,7 +123,7 @@ export const Resources: FC<ResourcesProps> = ({
           <>
             <ResourceMenuItem
               text="Open Application portal"
-              icon={placeholder_icon}
+              icon={amplify_small_portal}
               onClick={handleOnOpenPortal}
               isHref
             />

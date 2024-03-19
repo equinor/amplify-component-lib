@@ -2,13 +2,26 @@ import React, { forwardRef, ReactNode, useEffect } from 'react';
 
 import { Menu } from '@equinor/eds-core-react';
 
+import { spacings } from 'src/style';
+
 import styled from 'styled-components';
 
-const MenuWrapper = styled(Menu)`
+interface MenuWrapperProps {
+  $withGap: boolean;
+}
+
+const MenuWrapper = styled(Menu)<MenuWrapperProps>`
   padding: 0 !important;
   min-width: 350px;
   width: fit-content;
   border-radius: 5px;
+  ${({ $withGap }) =>
+    $withGap &&
+    ` > div[role="menu"] {
+      gap: ${spacings.large}; 
+     
+  }
+  `}
 `;
 
 interface TopBarMenuContentProps {
@@ -19,18 +32,12 @@ interface TopBarMenuContentProps {
   anchorEl: HTMLElement | null;
   contentPadding?: boolean;
   isNotification?: boolean;
+  withGap?: boolean;
 }
 
 const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
   function TopBarRender(
-    {
-      open,
-      onClose,
-      children,
-      anchorEl,
-
-      isNotification,
-    },
+    { open, onClose, children, anchorEl, isNotification, withGap = false },
 
     ref
   ) {
@@ -58,6 +65,7 @@ const TopBarMenu = forwardRef<HTMLDivElement, TopBarMenuContentProps>(
         placement={isNotification ? 'bottom' : 'bottom-end'}
         data-testid="top-bar-menu"
         ref={ref}
+        $withGap={withGap}
       >
         {children}
       </MenuWrapper>
