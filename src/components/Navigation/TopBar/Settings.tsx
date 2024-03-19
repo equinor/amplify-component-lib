@@ -1,6 +1,6 @@
 import { FC, ReactElement, useRef, useState } from 'react';
 
-import { Icon, Radio as EDSRadio, Typography } from '@equinor/eds-core-react';
+import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -17,7 +17,7 @@ const ContentWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: ${spacings.x_small};
-  padding: 0 ${spacings.large};
+  padding: 0 ${spacings.large} 0 ${spacings.small};
   justify-content: space-between;
   > span {
     padding: ${spacings.small} ${spacings.x_small};
@@ -42,15 +42,6 @@ const SettingsItems = styled.div`
   gap: ${spacings.medium};
   > div > p {
     padding-left: ${spacings.medium};
-  }
-`;
-
-const Radio = styled(EDSRadio)`
-  > span {
-    padding-left: 0 !important;
-    &:hover {
-      padding-left: 0 !important;
-    }
   }
 `;
 
