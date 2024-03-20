@@ -41,6 +41,7 @@ const SettingsItems = styled.div`
   flex-direction: column;
   gap: ${spacings.medium};
   > div > p {
+    padding-top: ${spacings.small};
     padding-left: ${spacings.medium};
   }
 `;

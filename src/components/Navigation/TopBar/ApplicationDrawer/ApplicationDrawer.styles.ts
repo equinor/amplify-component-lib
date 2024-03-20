@@ -1,19 +1,20 @@
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import styled from 'styled-components';
+import { spacings } from 'src/style';
 
-const { spacings, colors, shape } = tokens;
+import styled from 'styled-components';
+const { colors, shape } = tokens;
 
 export const MenuSection = styled.div`
   border-bottom: 1px solid ${colors.ui.background__light.rgba};
   display: flex;
   flex-direction: column;
 
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large} 0
-    ${spacings.comfortable.large};
+  padding: ${spacings.small} ${spacings.medium} ${spacings.medium}
+    ${spacings.medium};
   > p {
-    margin-left: ${spacings.comfortable.small};
+    margin-left: ${spacings.small};
   }
 `;
 
@@ -28,8 +29,9 @@ export const ApplicationName = styled.div`
 export const ApplicationContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  padding-top: ${spacings.comfortable.small};
+  padding-top: ${spacings.small};
   justify-items: center;
+  gap: ${spacings.x_small};
 `;
 
 export const MenuFixedItem = styled.div`
@@ -45,8 +47,7 @@ export const MenuFixedItem = styled.div`
   }
   border-top: 1px solid ${colors.ui.background__light.rgba};
   outline: none !important;
-  padding: ${spacings.comfortable.medium} ${spacings.comfortable.large}
-    ${spacings.comfortable.medium} ${spacings.comfortable.large};
+  padding: ${spacings.medium};
   svg {
     align-self: center;
   }
@@ -62,12 +63,12 @@ export const TextContainer = styled.div`
 
 export const NoApplications = styled.div`
   display: flex;
-  padding: ${spacings.comfortable.medium};
+  padding: ${spacings.medium};
 `;
 
 export const LoadingApplications = styled.div`
   display: flex;
-  padding: ${spacings.comfortable.large};
+  padding: ${spacings.large};
   align-items: center;
   grid-column: span 3;
 `;
@@ -78,12 +79,11 @@ interface ApplicationBoxProps {
 
 export const ApplicationBox = styled.div<ApplicationBoxProps>`
   display: flex;
-  height: 96px;
-  width: 64px;
+  width: 100%;
   justify-content: center;
   flex-direction: column;
-  padding: 0 ${spacings.comfortable.medium};
-  gap: ${spacings.comfortable.medium};
+  //padding: ${spacings.medium} ${spacings.small};
+  //gap: ${spacings.medium};
   align-items: center;
   background: ${({ $isSelected }) =>
     $isSelected ? colors.interactive.primary__selected_highlight.rgba : 'none'};
@@ -96,7 +96,7 @@ export const ApplicationBox = styled.div<ApplicationBoxProps>`
 
 export const ApplicationButton = styled(Button)`
   height: 96px;
-  width: 64px;
+  //width: 64px;
   > span {
     display: flex;
     flex-direction: column;

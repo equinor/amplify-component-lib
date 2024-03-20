@@ -12,7 +12,9 @@ const Container = styled.div`
   gap: ${spacings.medium};
   > p {
     padding-left: ${spacings.medium};
+    padding-top: ${spacings.small};
   }
+
   > section {
     display: flex;
     flex-direction: column;

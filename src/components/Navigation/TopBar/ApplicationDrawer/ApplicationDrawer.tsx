@@ -143,7 +143,10 @@ const ApplicationDrawer: FC = () => {
                         onClick={() => handleOpenApplication(item)}
                         data-testid={item.name}
                       >
-                        <ApplicationIcon name={item.name.toLowerCase()} />
+                        <ApplicationIcon
+                          name={item.name.toLowerCase()}
+                          size={36}
+                        />
 
                         <ApplicationName>
                           <Typography group="paragraph" variant="caption">
