@@ -2,12 +2,12 @@ import { fast_forward, grid_on, home } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import {
-  ExpandableIconButtonProps,
   ExpandingIconButton,
+  ExpandingIconButtonProps,
 } from './ExpandingIconButton';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
-function fakeProps(): ExpandableIconButtonProps {
+function fakeProps(): ExpandingIconButtonProps {
   return {
     text: faker.lorem.paragraph(),
     icon: faker.helpers.arrayElement([grid_on, home, fast_forward]),

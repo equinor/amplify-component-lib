@@ -2,8 +2,8 @@ import { exit_to_app } from '@equinor/eds-icons';
 import { StoryFn } from '@storybook/react';
 
 import {
-  ExpandableIconButtonProps,
   ExpandingIconButton,
+  ExpandingIconButtonProps,
 } from './ExpandingIconButton';
 
 import styled from 'styled-components';
@@ -19,7 +19,7 @@ export default {
   },
 };
 
-type StoryProps = Omit<ExpandableIconButtonProps, 'icon'>;
+type StoryProps = Omit<ExpandingIconButtonProps, 'icon'>;
 
 const Wrapper = styled.div`
   display: flex;

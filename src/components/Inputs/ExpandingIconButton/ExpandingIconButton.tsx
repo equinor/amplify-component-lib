@@ -59,7 +59,7 @@ const animationVariants: Variants = {
   },
 };
 
-export interface ExpandableIconButtonProps {
+export interface ExpandingIconButtonProps {
   text: string;
   onClick: () => void;
   className?: string;
@@ -69,7 +69,7 @@ export interface ExpandableIconButtonProps {
 
 export const ExpandingIconButton = forwardRef<
   HTMLDivElement,
-  ExpandableIconButtonProps
+  ExpandingIconButtonProps
 >(({ text, icon, onClick, className, iconPosition = 'left' }, ref) => {
   if (iconPosition === 'left') {
     return (
