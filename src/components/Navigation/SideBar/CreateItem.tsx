@@ -38,7 +38,7 @@ const CreateItem: FC<CreateItemProps> = ({
     <MenuItemContainer>
       <OptionalTooltip title={createLabel} placement="right">
         <CreateButton
-          variant="ghost_icon"
+          variant="contained"
           onClick={onCreate}
           disabled={disabled}
         >
