@@ -20,7 +20,6 @@ const StyledIconButton = motion(styled.button`
   position: absolute;
   display: flex;
   border-radius: ${shape.icon_button.borderRadius};
-  background: ${colors.interactive.primary__resting.rgba};
   align-items: center;
   min-width: 48px;
   height: 48px;
