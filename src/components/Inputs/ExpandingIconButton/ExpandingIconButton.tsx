@@ -14,6 +14,7 @@ const { colors, shape } = tokens;
 const Wrapper = styled.div`
   position: relative;
   height: 48px;
+  width: 48px;
 `;
 
 const StyledIconButton = motion(styled.button`
@@ -31,12 +32,13 @@ const StyledIconButton = motion(styled.button`
     padding: ${spacings.medium_small};
   }
   > span {
+    flex-shrink: 0;
     color: ${colors.text.static_icons__primary_white.rgba};
     white-space: nowrap;
   }
 `);
 
-const animationVariants: Variants = {
+const ANIMATION_VARIANTS: Variants = {
   closed_left: {
     width: '48px',
     left: 0,
@@ -49,12 +51,12 @@ const animationVariants: Variants = {
   },
   closed_right: {
     width: '48px',
-    right: '-48px',
+    right: 0,
     background: colors.interactive.primary__resting.rgba,
   },
   open_right: {
     width: 'auto',
-    right: '-48px',
+    right: 0,
     background: colors.interactive.primary__hover.rgba,
   },
 };
@@ -75,7 +77,7 @@ export const ExpandingIconButton = forwardRef<
     return (
       <Wrapper ref={ref} className={className}>
         <StyledIconButton
-          variants={animationVariants}
+          variants={ANIMATION_VARIANTS}
           initial="closed_left"
           whileHover="open_left"
           onClick={onClick}
@@ -105,7 +107,7 @@ export const ExpandingIconButton = forwardRef<
   return (
     <Wrapper ref={ref} className={className}>
       <StyledIconButton
-        variants={animationVariants}
+        variants={ANIMATION_VARIANTS}
         initial="closed_right"
         whileHover="open_right"
         onClick={onClick}
