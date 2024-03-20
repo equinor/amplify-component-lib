@@ -22,9 +22,12 @@ interface CreateButtonProps extends ButtonProps {
 export const CreateButton = styled(Button)<CreateButtonProps>`
   width: ${(props) => (props.$open ? 'fit-content' : '36px')};
   height: 36px;
-  border-radius: ${(props) => props.$open && shape.icon_button.borderRadius};
+  border-radius: ${shape.icon_button.borderRadius};
   transition: 0.1s ease-out;
   &:hover {
-    border-radius: ${(props) => props.$open && shape.icon_button.borderRadius};
+    border-radius: ${shape.icon_button.borderRadius};
+  }
+  &:disabled {
+    border: 0 solid transparent;
   }
 `;
