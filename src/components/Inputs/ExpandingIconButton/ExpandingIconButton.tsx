@@ -22,14 +22,14 @@ const StyledIconButton = motion(styled.button`
   border-radius: ${shape.icon_button.borderRadius};
   background: ${colors.interactive.primary__resting.rgba};
   align-items: center;
-  min-width: 40px;
-  height: 40px;
+  min-width: 48px;
+  height: 48px;
   overflow: hidden;
   > svg {
     flex-shrink: 0;
     position: absolute;
     background: inherit;
-    padding: ${spacings.small};
+    padding: ${spacings.medium_small};
   }
   > span {
     color: ${colors.text.static_icons__primary_white.rgba};
@@ -39,7 +39,7 @@ const StyledIconButton = motion(styled.button`
 
 const animationVariants: Variants = {
   closed_left: {
-    width: '40px',
+    width: '48px',
     left: 0,
     background: colors.interactive.primary__resting.rgba,
   },
@@ -49,13 +49,13 @@ const animationVariants: Variants = {
     background: colors.interactive.primary__hover.rgba,
   },
   closed_right: {
-    width: '40px',
-    right: '-40px',
+    width: '48px',
+    right: '-48px',
     background: colors.interactive.primary__resting.rgba,
   },
   open_right: {
     width: 'auto',
-    right: '-40px',
+    right: '-48px',
     background: colors.interactive.primary__hover.rgba,
   },
 };
@@ -82,7 +82,7 @@ export const ExpandingIconButton = forwardRef<
           onClick={onClick}
         >
           <Icon
-            style={{ left: '20px', transform: 'translate(-50%, 0)' }}
+            style={{ left: '24px', transform: 'translate(-50%, 0)' }}
             data={icon}
             size={24}
             color={colors.text.static_icons__primary_white.rgba}
@@ -92,7 +92,7 @@ export const ExpandingIconButton = forwardRef<
             group="navigation"
             as="span"
             style={{
-              marginLeft: `calc(40px - ${spacings.x_small})`,
+              marginLeft: `calc(48px - ${spacings.x_small})`,
               marginRight: spacings.large,
             }}
           >
@@ -117,14 +117,14 @@ export const ExpandingIconButton = forwardRef<
           as="span"
           style={{
             marginLeft: spacings.medium,
-            marginRight: `calc(40px + ${spacings.x_small})`,
+            marginRight: `calc(48px + ${spacings.x_small})`,
           }}
         >
           {text}
         </Typography>
         <Icon
           style={{
-            right: '20px',
+            right: '24px',
             transform: 'translate(50%, 0)',
           }}
           data={icon}
