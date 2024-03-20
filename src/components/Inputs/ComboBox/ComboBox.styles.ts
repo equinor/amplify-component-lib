@@ -53,7 +53,7 @@ export const Container = styled.div<ContainerProps>`
 
   &:has(input:disabled) {
     cursor: not-allowed;
-    box-shadow: inset 0 -1px 0 0 ${EDSColors.interactive.disabled__text.rgba};
+    box-shadow: none;
     > svg:not([role='progressbar']) {
       cursor: not-allowed;
       fill: ${EDSColors.interactive.disabled__text.rgba};
