@@ -62,6 +62,8 @@ export { default as NewComment } from './Inputs/CommentField/NewCommentField';
 export { default as ContentMenu } from './Inputs/ContentMenu';
 export { default as CopyText } from './Inputs/CopyText';
 export { default as EditableField } from './Inputs/EditableField';
+export { ExpandingIconButton } from './Inputs/ExpandingIconButton/ExpandingIconButton';
+export type { ExpandingIconButtonProps } from './Inputs/ExpandingIconButton/ExpandingIconButton';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
 export { default as RichTextEditor } from './Inputs/RichTextEditor/RichTextEditor';
