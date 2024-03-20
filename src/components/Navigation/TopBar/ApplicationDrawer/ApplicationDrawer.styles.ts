@@ -82,8 +82,6 @@ export const ApplicationBox = styled.div<ApplicationBoxProps>`
   width: 100%;
   justify-content: center;
   flex-direction: column;
-  //padding: ${spacings.medium} ${spacings.small};
-  //gap: ${spacings.medium};
   align-items: center;
   background: ${({ $isSelected }) =>
     $isSelected ? colors.interactive.primary__selected_highlight.rgba : 'none'};
@@ -96,7 +94,7 @@ export const ApplicationBox = styled.div<ApplicationBoxProps>`
 
 export const ApplicationButton = styled(Button)`
   height: 96px;
-  //width: 64px;
+
   > span {
     display: flex;
     flex-direction: column;
