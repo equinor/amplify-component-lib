@@ -96,11 +96,7 @@ const ApplicationDrawer: FC = () => {
         ref={buttonRef}
         $isSelected={isOpen}
       >
-        <Icon
-          data={apps}
-          size={24}
-          color={colors.interactive.primary__resting.hsla}
-        />
+        <Icon data={apps} size={24} />
       </TopBarButton>
       <TopBarMenu
         open={isOpen}
