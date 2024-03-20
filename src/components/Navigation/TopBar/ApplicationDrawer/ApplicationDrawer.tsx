@@ -96,11 +96,7 @@ const ApplicationDrawer: FC = () => {
         ref={buttonRef}
         $isSelected={isOpen}
       >
-        <Icon
-          data={apps}
-          size={24}
-          color={colors.interactive.primary__resting.hsla}
-        />
+        <Icon data={apps} size={24} />
       </TopBarButton>
       <TopBarMenu
         open={isOpen}
@@ -143,7 +139,10 @@ const ApplicationDrawer: FC = () => {
                         onClick={() => handleOpenApplication(item)}
                         data-testid={item.name}
                       >
-                        <ApplicationIcon name={item.name.toLowerCase()} />
+                        <ApplicationIcon
+                          name={item.name.toLowerCase()}
+                          size={36}
+                        />
 
                         <ApplicationName>
                           <Typography group="paragraph" variant="caption">

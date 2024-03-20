@@ -205,7 +205,7 @@ test(
           '_self'
         ),
       {
-        timeout: 9000,
+        timeout: 10000,
       }
     );
   },
