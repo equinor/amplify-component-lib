@@ -31,7 +31,7 @@ export const ApplicationContent = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   padding-top: ${spacings.small};
   justify-items: center;
-  gap: ${spacings.x_small};
+  gap: ${spacings.small};
 `;
 
 export const MenuFixedItem = styled.div`
