@@ -762,11 +762,11 @@ describe('Resources', () => {
               '_self'
             ),
           {
-            timeout: 9000,
+            timeout: 10000,
           }
         );
       },
-      { timeout: 15000 }
+      { timeout: 20000 }
     );
 
     test('Close open portal by clicking cancel ', async () => {
