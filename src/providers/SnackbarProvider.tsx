@@ -2,8 +2,7 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 import { Button, Snackbar, SnackbarProps } from '@equinor/eds-core-react';
 
-interface ShowSnackbarProps {
-  text: string;
+interface ShowSnackbarSettings {
   customProps?: SnackbarProps;
   action?: {
     text: string;
@@ -12,7 +11,7 @@ interface ShowSnackbarProps {
 }
 
 export interface State {
-  showSnackbar: (props: ShowSnackbarProps) => void;
+  showSnackbar: (text: string, props?: ShowSnackbarSettings) => void;
 }
 
 const SnackbarContext = createContext<State | undefined>(undefined);
@@ -40,20 +39,21 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
     handler: () => void;
   }>(null);
 
-  const showSnackbar = (snackbarProps?: ShowSnackbarProps) => {
-    if (snackbarProps?.customProps) {
-      setSnackbarProps(snackbarProps?.customProps);
+  const showSnackbar = (
+    text: string,
+    snackbarSettings?: ShowSnackbarSettings
+  ) => {
+    setSnackbarText(text);
+
+    if (snackbarSettings?.customProps) {
+      setSnackbarProps(snackbarSettings?.customProps);
     } else {
       setSnackbarProps(props);
     }
 
-    if (snackbarProps?.text) {
-      setSnackbarText(snackbarProps?.text);
-    }
-
-    if (snackbarProps?.action) {
+    if (snackbarSettings?.action) {
       setSnackbarAction({
-        ...snackbarProps.action,
+        ...snackbarSettings.action,
       });
     }
 

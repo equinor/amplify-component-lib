@@ -18,7 +18,7 @@ test("'useSnackbar' showSnackbar function works as expected", () => {
 
   const snackBarText = faker.animal.dog();
 
-  result.current.showSnackbar({ text: snackBarText });
+  result.current.showSnackbar(snackBarText);
   expect(result.current.showSnackbar).toBeDefined();
 });
 
@@ -31,8 +31,7 @@ test("'useSnackbar' showSnackbar function works as expected with custom props", 
 
   const customOnClose = vi.fn();
 
-  result.current.showSnackbar({
-    text: snackBarText,
+  result.current.showSnackbar(snackBarText, {
     customProps: {
       autoHideDuration: 500,
       onClose: customOnClose,
@@ -49,13 +48,11 @@ test("'useSnackbar' showSnackbar function works as expected with action", async 
     wrapper: SnackbarProvider,
   });
 
-  const snackBarText = faker.animal.dog();
   const actionText = faker.animal.cat();
   const customActionHandler = vi.fn();
   const user = userEvent.setup();
 
-  result.current.showSnackbar({
-    text: snackBarText,
+  result.current.showSnackbar(faker.animal.dog(), {
     action: {
       text: actionText,
       handler: customActionHandler,
