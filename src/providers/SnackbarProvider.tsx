@@ -7,6 +7,7 @@ interface ShowSnackbarSettings {
   action?: {
     text: string;
     handler: () => void;
+    disabled?: boolean;
   };
 }
 
@@ -34,10 +35,9 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
   const [open, setOpen] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
-  const [snackbarAction, setSnackbarAction] = useState<null | {
-    text: string;
-    handler: () => void;
-  }>(null);
+  const [snackbarAction, setSnackbarAction] = useState<
+    null | ShowSnackbarSettings['action']
+  >(null);
 
   const showSnackbar = (
     text: string,
@@ -77,7 +77,11 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
         {snackbarText}
         {snackbarAction && (
           <Snackbar.Action>
-            <Button variant="ghost" onClick={snackbarAction.handler}>
+            <Button
+              disabled={snackbarAction.disabled}
+              variant="ghost"
+              onClick={snackbarAction.handler}
+            >
               {snackbarAction.text}
             </Button>
           </Snackbar.Action>
