@@ -11,7 +11,7 @@ export interface MenuItemType {
   icon: IconData;
   name: string;
   link: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export type MenuItemProps = {
@@ -33,9 +33,9 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     const handleOnClick = (event: React.MouseEvent) => {
       if (!canNavigate) {
         event.preventDefault();
-      } else {
-        onClick();
+        return;
       }
+      if (onClick) onClick();
     };
 
     if (isOpen) {
