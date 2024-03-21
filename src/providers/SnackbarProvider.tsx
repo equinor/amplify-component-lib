@@ -1,9 +1,18 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import { Snackbar, SnackbarProps } from '@equinor/eds-core-react';
+import { Button, Snackbar, SnackbarProps } from '@equinor/eds-core-react';
+
+interface ShowSnackbarProps {
+  text: string;
+  customProps?: SnackbarProps;
+  action?: {
+    text: string;
+    handler: () => void;
+  };
+}
 
 export interface State {
-  showSnackbar: (text?: string, customProps?: SnackbarProps) => void;
+  showSnackbar: (props: ShowSnackbarProps) => void;
 }
 
 const SnackbarContext = createContext<State | undefined>(undefined);
@@ -26,16 +35,26 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
   const [open, setOpen] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
+  const [snackbarAction, setSnackbarAction] = useState<null | {
+    text: string;
+    handler: () => void;
+  }>(null);
 
-  const showSnackbar = (text?: string, customProps?: SnackbarProps) => {
-    if (customProps) {
-      setSnackbarProps(customProps);
+  const showSnackbar = (snackbarProps?: ShowSnackbarProps) => {
+    if (snackbarProps?.customProps) {
+      setSnackbarProps(snackbarProps?.customProps);
     } else {
       setSnackbarProps(props);
     }
 
-    if (text) {
-      setSnackbarText(text);
+    if (snackbarProps?.text) {
+      setSnackbarText(snackbarProps?.text);
+    }
+
+    if (snackbarProps?.action) {
+      setSnackbarAction({
+        ...snackbarProps.action,
+      });
     }
 
     setOpen(true);
@@ -56,6 +75,13 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
         placement={snackbarProps.placement}
       >
         {snackbarText}
+        {snackbarAction && (
+          <Snackbar.Action>
+            <Button variant="ghost" onClick={snackbarAction.handler}>
+              {snackbarAction.text}
+            </Button>
+          </Snackbar.Action>
+        )}
       </Snackbar>
     </SnackbarContext.Provider>
   );
