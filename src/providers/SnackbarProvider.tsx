@@ -1,9 +1,19 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import { Snackbar, SnackbarProps } from '@equinor/eds-core-react';
+import { Button, Snackbar, SnackbarProps } from '@equinor/eds-core-react';
+
+interface ShowSnackbarSettings {
+  customProps?: SnackbarProps;
+  action?: {
+    text: string;
+    handler: () => void;
+    disabled?: boolean;
+  };
+}
 
 export interface State {
-  showSnackbar: (text?: string, customProps?: SnackbarProps) => void;
+  showSnackbar: (text: string, props?: ShowSnackbarSettings) => void;
+  setActionDisabledState: (disabled: boolean) => void;
 }
 
 const SnackbarContext = createContext<State | undefined>(undefined);
@@ -26,23 +36,43 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
   const [open, setOpen] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
+  const [snackbarAction, setSnackbarAction] =
+    useState<ShowSnackbarSettings['action']>();
 
-  const showSnackbar = (text?: string, customProps?: SnackbarProps) => {
-    if (customProps) {
-      setSnackbarProps(customProps);
+  const showSnackbar = (
+    text: string,
+    snackbarSettings?: ShowSnackbarSettings
+  ) => {
+    setSnackbarText(text);
+
+    if (snackbarSettings?.customProps) {
+      setSnackbarProps(snackbarSettings?.customProps);
     } else {
       setSnackbarProps(props);
     }
 
-    if (text) {
-      setSnackbarText(text);
+    if (snackbarSettings?.action) {
+      setSnackbarAction({
+        ...snackbarSettings.action,
+      });
     }
 
     setOpen(true);
   };
 
+  const setActionDisabledState = (disabled: boolean) => {
+    setSnackbarAction((currentState) =>
+      currentState
+        ? {
+            ...currentState,
+            disabled,
+          }
+        : currentState
+    );
+  };
+
   return (
-    <SnackbarContext.Provider value={{ showSnackbar }}>
+    <SnackbarContext.Provider value={{ showSnackbar, setActionDisabledState }}>
       {props.children}
       <Snackbar
         open={open}
@@ -56,6 +86,17 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
         placement={snackbarProps.placement}
       >
         {snackbarText}
+        {snackbarAction && (
+          <Snackbar.Action>
+            <Button
+              disabled={snackbarAction.disabled}
+              variant="ghost"
+              onClick={snackbarAction.handler}
+            >
+              {snackbarAction.text}
+            </Button>
+          </Snackbar.Action>
+        )}
       </Snackbar>
     </SnackbarContext.Provider>
   );
