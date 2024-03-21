@@ -66,3 +66,51 @@ test("'useSnackbar' showSnackbar function works as expected with action", async 
   await user.click(actionBtn);
   expect(customActionHandler).toHaveBeenCalledTimes(1);
 });
+
+test("'useSnackbar' setActionDisabledState function works as expected with action", async () => {
+  const { result } = renderHook(() => useSnackbar(), {
+    wrapper: SnackbarProvider,
+  });
+
+  const actionText = faker.animal.cat();
+  const customActionHandler = vi.fn();
+  const user = userEvent.setup();
+
+  result.current.showSnackbar(faker.animal.dog(), {
+    action: {
+      text: actionText,
+      handler: customActionHandler,
+    },
+  });
+
+  const actionBtn = await waitFor(() => screen.getByText(actionText), {
+    timeout: 1000,
+  });
+
+  result.current.setActionDisabledState(true);
+
+  await user.click(actionBtn);
+  expect(customActionHandler).toHaveBeenCalledTimes(0);
+
+  result.current.setActionDisabledState(false);
+
+  await user.click(actionBtn);
+  expect(customActionHandler).toHaveBeenCalledTimes(1);
+});
+
+test("'useSnackbar' action is not visible and setActionDisabledState does nothing in that case", async () => {
+  const { result } = renderHook(() => useSnackbar(), {
+    wrapper: SnackbarProvider,
+  });
+
+  const actionText = faker.animal.cat();
+
+  result.current.showSnackbar(faker.animal.dog());
+
+  const actionBtn = await waitFor(() => screen.queryByText(actionText), {
+    timeout: 1000,
+  });
+
+  result.current.setActionDisabledState(true);
+  expect(actionBtn).not.toBeInTheDocument();
+});

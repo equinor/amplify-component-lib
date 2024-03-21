@@ -13,6 +13,7 @@ interface ShowSnackbarSettings {
 
 export interface State {
   showSnackbar: (text: string, props?: ShowSnackbarSettings) => void;
+  setActionDisabledState: (disabled: boolean) => void;
 }
 
 const SnackbarContext = createContext<State | undefined>(undefined);
@@ -35,9 +36,8 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
   const [open, setOpen] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
-  const [snackbarAction, setSnackbarAction] = useState<
-    null | ShowSnackbarSettings['action']
-  >(null);
+  const [snackbarAction, setSnackbarAction] =
+    useState<ShowSnackbarSettings['action']>();
 
   const showSnackbar = (
     text: string,
@@ -60,8 +60,19 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
     setOpen(true);
   };
 
+  const setActionDisabledState = (disabled: boolean) => {
+    setSnackbarAction((currentState) =>
+      currentState
+        ? {
+            ...currentState,
+            disabled,
+          }
+        : currentState
+    );
+  };
+
   return (
-    <SnackbarContext.Provider value={{ showSnackbar }}>
+    <SnackbarContext.Provider value={{ showSnackbar, setActionDisabledState }}>
       {props.children}
       <Snackbar
         open={open}
