@@ -44,19 +44,8 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
     snackbarSettings?: ShowSnackbarSettings
   ) => {
     setSnackbarText(text);
-
-    if (snackbarSettings?.customProps) {
-      setSnackbarProps(snackbarSettings?.customProps);
-    } else {
-      setSnackbarProps(props);
-    }
-
-    if (snackbarSettings?.action) {
-      setSnackbarAction({
-        ...snackbarSettings.action,
-      });
-    }
-
+    setSnackbarProps(snackbarSettings?.customProps ?? props);
+    setSnackbarAction(snackbarSettings?.action ?? undefined);
     setOpen(true);
   };
 
