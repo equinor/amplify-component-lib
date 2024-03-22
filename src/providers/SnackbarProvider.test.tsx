@@ -114,3 +114,25 @@ test("'useSnackbar' action is not visible and setActionDisabledState does nothin
   result.current.setActionDisabledState(true);
   expect(actionBtn).not.toBeInTheDocument();
 });
+
+test("'useSnackbar' hideSnackbar works as expected", async () => {
+  const { result } = renderHook(() => useSnackbar(), {
+    wrapper: SnackbarProvider,
+  });
+
+  const snackbarText = faker.animal.cat();
+
+  result.current.showSnackbar(snackbarText);
+
+  const snackbar = await waitFor(() => screen.getByText(snackbarText), {
+    timeout: 1000,
+  });
+
+  expect(snackbar).toBeInTheDocument();
+  result.current.hideSnackbar();
+
+  const hiddenSnackbar = await waitFor(() => screen.getByText(snackbarText), {
+    timeout: 1000,
+  });
+  expect(hiddenSnackbar).not.toBeInTheDocument();
+});
