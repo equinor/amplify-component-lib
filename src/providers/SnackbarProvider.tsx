@@ -14,6 +14,7 @@ interface ShowSnackbarSettings {
 export interface State {
   showSnackbar: (text: string, props?: ShowSnackbarSettings) => void;
   setActionDisabledState: (disabled: boolean) => void;
+  hideSnackbar: () => void;
 }
 
 const SnackbarContext = createContext<State | undefined>(undefined);
@@ -60,8 +61,12 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
     );
   };
 
+  const hideSnackbar = () => setOpen(false);
+
   return (
-    <SnackbarContext.Provider value={{ showSnackbar, setActionDisabledState }}>
+    <SnackbarContext.Provider
+      value={{ showSnackbar, setActionDisabledState, hideSnackbar }}
+    >
       {props.children}
       <Snackbar
         open={open}
