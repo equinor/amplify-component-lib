@@ -295,7 +295,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
           <Icon
             onClick={handleToggleOpen}
             data={open ? arrow_drop_up : arrow_drop_down}
-            color={colors.text.static_icons__default.rgba}
+            color={colors.interactive.primary__resting.rgba}
           />
         )}
         {clearable && selectedValues.length > 0 && !loading && (

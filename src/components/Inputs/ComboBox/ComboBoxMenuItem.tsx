@@ -156,7 +156,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
           />
           {item.label}
           <Icon
-            color={colors.text.static_icons__tertiary.rgba}
+            color={colors.interactive.primary__resting.rgba}
             data={openParent ? arrow_drop_up : arrow_drop_down}
           />
         </MenuItemParentSelect>
