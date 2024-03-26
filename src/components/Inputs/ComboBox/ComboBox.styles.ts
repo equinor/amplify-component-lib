@@ -11,6 +11,7 @@ const { colors: EDSColors, spacings: EDSSpacings } = tokens;
 interface ContainerProps {
   $lightBackground?: boolean;
   $underlineHighlight?: boolean;
+  $label?: boolean;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -34,7 +35,8 @@ export const Container = styled.div<ContainerProps>`
     box-shadow: inset 0 -2px 0 0 ${EDSColors.interactive.primary__resting.rgba};
   }
 
-  margin-top: 1rem;
+  ${({ $label }) => $label && `margin-top: 1rem;`};
+
   > label {
     position: absolute;
     top: -1rem;
@@ -138,8 +140,8 @@ export const StyledChip = styled(Chip)<StyledChipProps>`
     $tryingToRemove
       ? EDSColors.interactive.primary__hover_alt.rgba
       : $lightBackground
-        ? EDSColors.ui.background__light.rgba
-        : EDSColors.ui.background__default.rgba};
+      ? EDSColors.ui.background__light.rgba
+      : EDSColors.ui.background__default.rgba};
 `;
 
 interface CustomMenuItemProps {

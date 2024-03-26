@@ -253,6 +253,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
         aria-expanded={open}
         $underlineHighlight={underlineHighlight}
         $lightBackground={lightBackground}
+        $label={!!label}
       >
         {label && <Label label={label} htmlFor="amplify-combobox" />}
         <Section>
