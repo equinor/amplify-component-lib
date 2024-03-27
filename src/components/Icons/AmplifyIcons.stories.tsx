@@ -4,6 +4,8 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import {
   amplify_aml,
+  amplify_branch,
+  amplify_calculator,
   amplify_failure,
   amplify_h1,
   amplify_h2,
@@ -11,10 +13,13 @@ import {
   amplify_h4,
   amplify_info_small,
   amplify_lwd,
+  amplify_merged,
+  amplify_overlay,
   amplify_overview,
   amplify_resources,
   amplify_sharepoint,
   amplify_shield_person,
+  amplify_sidebyside,
   amplify_small_portal,
   amplify_snail,
   amplify_sort_small,
@@ -46,6 +51,11 @@ const allIcons: Record<string, IconData> = {
   amplify_resources: amplify_resources,
   amplify_overview: amplify_overview,
   amplify_shield_person: amplify_shield_person,
+  amplify_merged: amplify_merged,
+  amplify_branch: amplify_branch,
+  amplify_sidebyside: amplify_sidebyside,
+  amplify_overlay: amplify_overlay,
+  amplify_calculator: amplify_calculator,
 };
 
 interface StoryFnProps {
@@ -87,6 +97,11 @@ export default {
         'amplify_resources',
         'amplify_overview',
         'amplify_shield_person',
+        'amplify_merged',
+        'amplify_branch',
+        'amplify_sidebyside',
+        'amplify_overlay',
+        'amplify_calculator',
       ],
     },
   },
