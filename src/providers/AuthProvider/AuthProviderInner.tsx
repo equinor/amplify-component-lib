@@ -59,7 +59,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   loadingComponent,
   unauthorizedComponent,
 }) => {
-  const { instance, accounts } = useMsal();
+  const { instance, accounts, inProgress } = useMsal();
   const { login, result, error, acquireToken } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
@@ -120,7 +120,13 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   ]);
 
   useEffect(() => {
-    if (!account || !isInitialized || hasFetchedRolesAndPhoto.current) return;
+    if (
+      !account ||
+      !isInitialized ||
+      hasFetchedRolesAndPhoto.current ||
+      inProgress !== 'none'
+    )
+      return;
     hasFetchedRolesAndPhoto.current = true;
 
     const getPhoto = async () => {
@@ -186,6 +192,7 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     acquireToken,
     error,
     isInitialized,
+    inProgress,
     setAuthState,
     setPhoto,
     setRoles,
