@@ -168,9 +168,8 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           if (accessToken.roles) {
             console.log('[AuthProvider] Found roles');
             setRoles(accessToken.roles);
-
-            setAuthState('authorized');
           }
+          setAuthState('authorized');
         }
       } catch (error) {
         console.error(
