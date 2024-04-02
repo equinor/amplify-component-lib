@@ -8,7 +8,6 @@ import Guidelines from './Guidelines';
 import { ISettingsProps, Settings } from './Settings';
 import { TopBar as BaseTopBar } from './TopBar';
 import { Account } from 'src/components/Navigation/TopBar/Account/Account';
-import { Help } from 'src/components/Navigation/TopBar/Help/Help';
 
 type TopBarType = typeof BaseTopBar & {
   Account: typeof Account;
@@ -19,7 +18,6 @@ type TopBarType = typeof BaseTopBar & {
   FieldSelector: typeof FieldSelector;
   Resources: typeof Resources;
   ApplicationDrawer: typeof ApplicationDrawer;
-  Help: typeof Help;
 };
 
 const TopBar = BaseTopBar as TopBarType;
@@ -31,7 +29,6 @@ TopBar.Notifications = Notifications;
 TopBar.FieldSelector = FieldSelector;
 TopBar.Resources = Resources;
 TopBar.ApplicationDrawer = ApplicationDrawer;
-TopBar.Help = Help;
 
 export default TopBar;
 export type { GuidelineSections, ISettingsProps, TopBarType };
