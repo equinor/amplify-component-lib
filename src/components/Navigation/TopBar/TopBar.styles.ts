@@ -19,7 +19,7 @@ export const Bar = styled(EDSTopBar)`
   position: relative;
 `;
 
-export const AppIdentitfier = styled.button`
+export const AppIdentifier = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
