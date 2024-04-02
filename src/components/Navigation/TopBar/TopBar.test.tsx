@@ -306,15 +306,9 @@ test('Renders with correct styles', () => {
     colors.ui.background__default.rgba
   );
   expect(topBar).toHaveStyleRule('padding-top', `8px`);
-  expect(topBar).toHaveStyleRule(
-    'padding-right',
-    `24px`
-  );
-  expect(topBar).toHaveStyleRule(
-    'padding-bottom',
-    `8px`
-  );
-  expect(topBar).toHaveStyleRule('padding-left', `${spacings.medium}`);
+  expect(topBar).toHaveStyleRule('padding-right', `24px`);
+  expect(topBar).toHaveStyleRule('padding-bottom', `8px`);
+  expect(topBar).toHaveStyleRule('padding-left', '10px');
   expect(topBar).toHaveStyleRule('align-items', 'center');
   expect(topBar).toHaveStyleRule('height', '64px');
 
