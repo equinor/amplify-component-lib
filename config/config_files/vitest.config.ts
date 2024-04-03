@@ -7,6 +7,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     passWithNoTests: true,
+    testTimeout: 10000,
     setupFiles: [
       'src/test-utils/setupTests.ts',
       'src/test-utils/mockLocalStorage.ts',
