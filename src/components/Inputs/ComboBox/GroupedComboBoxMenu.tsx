@@ -13,7 +13,7 @@ import { ComboBoxMenuItem } from './ComboBoxMenuItem';
 export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
   props: GroupedComboboxProps<T> & ComboBoxMenuProps<T>
 ) => {
-  const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;
+  const { onItemSelect, onItemKeyDown, itemRefs, onMouseEnter, groups, search } = props;
 
   const filteredGroups = useMemo(() => {
     if (search === '') return groups;
@@ -60,6 +60,7 @@ export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
             itemRefs={itemRefs}
             onItemKeyDown={onItemKeyDown}
             onItemSelect={onItemSelect}
+            onMouseEnter={onMouseEnter}
             values={props.values}
           />
         ))}
@@ -82,6 +83,7 @@ export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
           itemRefs={itemRefs}
           onItemKeyDown={onItemKeyDown}
           onItemSelect={onItemSelect}
+          onMouseEnter={onMouseEnter}
         />
       ))}
     </Menu.Section>

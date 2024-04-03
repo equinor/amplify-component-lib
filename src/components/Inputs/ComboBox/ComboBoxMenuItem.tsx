@@ -1,6 +1,6 @@
 import { KeyboardEvent, MouseEvent, useMemo, useRef, useState } from 'react';
 
-import { Icon, Menu } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import {
   arrow_drop_down,
   arrow_drop_up,
@@ -11,6 +11,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import {
+  MenuItem,
   MenuItemMultiselect,
   MenuItemParentSelect,
   MenuItemSpacer,
@@ -36,6 +37,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     item,
     multiselect,
     itemRefs,
+    onMouseEnter,
     onItemKeyDown,
     onItemSelect,
     selectableParent = true,
@@ -128,8 +130,19 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     ) {
       focusingChildIndex.current = 0;
       childRefs.current[focusingChildIndex.current + childOffset]?.focus();
+    } else if (
+      openParent &&
+      event.key === 'ArrowUp' &&
+      focusingChildIndex.current === -1
+    ) {
+      setOpenParent(false);
     }
   };
+
+  const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
+    onMouseEnter();
+    event.currentTarget.focus();
+  }
 
   if (item.children && item.children.length > 0 && multiselect) {
     return (
@@ -173,6 +186,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
               values={props.values}
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
+              onMouseEnter={onMouseEnter}
               selectableParent={selectableParent}
             />
           ))}
@@ -208,7 +222,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
   }
 
   return (
-    <Menu.Item
+    <MenuItem
       $depth={depth}
       ref={(element: HTMLButtonElement | null) => {
         itemRefs.current[index] = element;
@@ -216,8 +230,9 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
       index={index}
       onKeyDownCapture={onItemKeyDown}
       onClick={handleOnClick}
+      onMouseEnter={handleMouseEnter}
     >
       {item.label}
-    </Menu.Item>
+    </MenuItem>
   );
 };

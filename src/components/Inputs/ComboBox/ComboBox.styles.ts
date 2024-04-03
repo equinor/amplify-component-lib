@@ -19,7 +19,7 @@ export const Container = styled.div<ContainerProps>`
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  padding: 6px 8px;
+  padding: 6px 64px 6px 8px;
 
   ${({ $underlineHighlight }) =>
     $underlineHighlight
@@ -113,21 +113,26 @@ export const Section = styled.section`
   }
 `;
 
-export const ClearButton = styled(Button)`
+export const InputAdornments = styled.div`
   position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  right: 26px;
+  right: 0;
+  display: flex;
+  padding-right: ${spacings.small};
+`;
+
+export const ClearButton = styled(Button)`
   width: 24px;
   height: 24px;
-  svg {
-    fill: ${EDSColors.text.static_icons__secondary.rgba};
-  }
   &:after {
     width: 24px;
     height: 24px;
     left: 0;
   }
+`;
+
+export const ToggleButton = styled(Button)`
+  width: 24px;
+  height: 24px;
 `;
 
 interface StyledChipProps {
@@ -149,6 +154,11 @@ interface CustomMenuItemProps {
 }
 
 export const MenuItemMultiselect = styled(Menu.Item)<CustomMenuItemProps>`
+  &:focus {
+    outline: none;
+    border: none;
+    background-color: ${EDSColors.ui.background__medium.rgba};
+  }
   > div {
     display: grid;
     /* This is tested but the code coverage doesn't recognize it */
@@ -160,6 +170,11 @@ export const MenuItemMultiselect = styled(Menu.Item)<CustomMenuItemProps>`
 `;
 
 export const MenuItemParentSelect = styled(Menu.Item)<CustomMenuItemProps>`
+  &:focus {
+    outline: none;
+    border: none;
+    background-color: ${EDSColors.ui.background__medium.rgba};
+  }
   > div {
     display: grid;
     /* This is tested but the code coverage doesn't recognize it */
@@ -178,12 +193,17 @@ export const MenuItemSpacer = styled.hr`
 `;
 
 export const PlaceholderText = styled(Typography)`
-  position: absolute;
-  color: ${EDSColors.text.static_icons__tertiary.rgba};
-  top: calc(50%);
-  transform: translate(0, -50%);
+  color: ${EDSColors.text.static_icons__default.rgba};
 `;
 
 export const NoItemsFoundText = styled(Typography)`
   margin-left: ${EDSSpacings.comfortable.medium};
+`;
+
+export const MenuItem = styled(Menu.Item)`
+  &:focus {
+    outline: none;
+    border: none;
+    background-color: ${EDSColors.ui.background__medium.rgba};
+  }
 `;

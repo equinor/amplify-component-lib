@@ -18,6 +18,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
     onItemSelect,
     itemRefs,
     onItemKeyDown,
+    onMouseEnter,
     selectableParent,
   } = props;
 
@@ -40,6 +41,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
         multiselect
         item={item}
         itemRefs={itemRefs}
+        onMouseEnter={onMouseEnter}
         onItemKeyDown={onItemKeyDown}
         onItemSelect={onItemSelect}
         values={props.values}
@@ -55,6 +57,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
       index={index}
       item={item}
       itemRefs={itemRefs}
+      onMouseEnter={onMouseEnter}
       onItemKeyDown={onItemKeyDown}
       onItemSelect={onItemSelect}
       selectableParent={selectableParent}

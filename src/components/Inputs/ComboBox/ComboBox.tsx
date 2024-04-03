@@ -8,15 +8,17 @@ import {
 } from 'react';
 
 import { CircularProgress, Icon, Label, Menu } from '@equinor/eds-core-react';
-import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
+import { arrow_drop_down, arrow_drop_up, close } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
   ClearButton,
   Container,
+  InputAdornments,
   PlaceholderText,
   Section,
   StyledChip,
+  ToggleButton,
 } from './ComboBox.styles';
 import {
   ComboBoxOption,
@@ -37,6 +39,7 @@ export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
   loading?: boolean;
   lightBackground?: boolean;
   underlineHighlight?: boolean;
+  displayAsChips?: boolean;
   clearable?: boolean;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
@@ -50,6 +53,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
     sortValues = true,
     lightBackground = false,
     underlineHighlight = false,
+    displayAsChips = true,
     placeholder = 'Select...',
     label,
   } = props;
@@ -99,6 +103,11 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
       return firstIndex - secondIndex;
     });
   }, [props, sortValues]);
+
+  const hasInputContent = useMemo(
+    () => selectedValues.length > 0 || search !== '',
+    [search, selectedValues.length]
+  );
 
   useEffect(() => {
     if (
@@ -239,9 +248,20 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
       focusingItemIndex.current -= 1;
       itemRefs.current.at(focusingItemIndex.current)?.focus();
     } else if (event.key === 'ArrowUp' && focusingItemIndex.current === 0) {
-      focusingItemIndex.current = -1;
-      searchRef.current?.focus();
+      focusingItemIndex.current = itemRefs.current.length - 1;
+      itemRefs.current.at(focusingItemIndex.current)?.focus();
+    } else if (
+      event.key === 'ArrowDown' &&
+      focusingItemIndex.current === itemRefs.current.length - 1
+    ) {
+      focusingItemIndex.current = 0;
+      itemRefs.current.at(focusingItemIndex.current)?.focus();
     }
+  };
+
+  const handleMouseEnter = () => {
+    itemRefs.current.at(focusingItemIndex.current)?.blur();
+    focusingItemIndex.current = -1;
   };
 
   return (
@@ -257,7 +277,8 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
       >
         {label && <Label label={label} htmlFor="amplify-combobox" />}
         <Section>
-          {selectedValues.length > 0 || search !== '' ? (
+          {hasInputContent &&
+            displayAsChips &&
             selectedValues.map((value) => (
               <StyledChip
                 key={value.value}
@@ -273,9 +294,11 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
               >
                 {value.label}
               </StyledChip>
-            ))
-          ) : (
-            <PlaceholderText>{placeholder}</PlaceholderText>
+            ))}
+          {hasInputContent && !displayAsChips && (
+            <PlaceholderText group="input" variant="text">
+              {selectedValues.map((value) => value.label).join(', ')}
+            </PlaceholderText>
           )}
           <input
             id="amplify-combobox"
@@ -283,26 +306,47 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
             ref={searchRef}
             type="search"
             role="combobox"
+            aria-controls="combobox-menu"
             value={search}
             autoComplete="off"
+            placeholder={hasInputContent ? undefined : placeholder}
             onChange={handleOnSearchChange}
             onKeyDownCapture={handleOnSearchKeyDown}
           />
         </Section>
-        {loading ? (
-          <CircularProgress size={16} />
-        ) : (
-          <Icon
-            onClick={handleToggleOpen}
-            data={open ? arrow_drop_up : arrow_drop_down}
-            color={colors.interactive.primary__resting.rgba}
-          />
-        )}
-        {clearable && selectedValues.length > 0 && !loading && (
-          <ClearButton variant="ghost_icon" onClick={handleOnClear}>
-            <Icon data={clear} size={18} />
-          </ClearButton>
-        )}
+        <InputAdornments>
+          {clearable && selectedValues.length > 0 && !loading && (
+            <ClearButton
+              variant="ghost_icon"
+              onClick={handleOnClear}
+              aria-label="clear options"
+              title="clear"
+            >
+              <Icon
+                data={close}
+                size={16}
+                color={colors.interactive.primary__resting.rgba}
+              />
+            </ClearButton>
+          )}
+          {loading ? (
+            <CircularProgress size={16} />
+          ) : (
+            <ToggleButton
+              variant="ghost_icon"
+              onClick={handleToggleOpen}
+              tabIndex={-1}
+              title="open"
+              aria-label="toggle options"
+              aria-controls="combobox-menu"
+            >
+              <Icon
+                data={open ? arrow_drop_up : arrow_drop_down}
+                color={colors.interactive.primary__resting.rgba}
+              />
+            </ToggleButton>
+          )}
+        </InputAdornments>
       </Container>
       {open && (
         <Menu
@@ -324,6 +368,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
               itemRefs={itemRefs}
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
+              onMouseEnter={handleMouseEnter}
             />
           ) : (
             <ComboBoxMenu
@@ -332,6 +377,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
               itemRefs={itemRefs}
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
+              onMouseEnter={handleMouseEnter}
               selectableParent={
                 'values' in props ? props.selectableParent : false
               }

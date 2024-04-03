@@ -42,6 +42,7 @@ export interface ComboBoxMenuProps<T extends ComboBoxOptionRequired> {
   itemRefs: MutableRefObject<(HTMLButtonElement | null)[]>;
   onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
   onItemSelect: (item: ComboBoxOption<T>) => void;
+  onMouseEnter: () => void;
   selectableParent?: boolean;
 }
 
