@@ -3,13 +3,10 @@
   "type": "module",
   "scripts": {
     "setup": "cd client && npm install",
-    "pretty": "cd client && npm run pretty",
-    "lint": "cd client && npm run lint",
     "pretty:fix": "cd client && npm run pretty:fix",
     "lint:fix": "cd client && npm run lint:fix",
     "postinstall": "husky install",
-    "prepare": "husky install",
-    "precommit": "node tooling/commit-tasks.mjs"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "husky": "^7.0.0",
