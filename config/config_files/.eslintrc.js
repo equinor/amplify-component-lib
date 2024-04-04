@@ -1,7 +1,6 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
     node: true,
   },
   extends: [
@@ -16,7 +15,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 12,
+    ecmaVersion: 'latest',
     sourceType: 'module',
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
@@ -27,6 +26,7 @@ module.exports = {
     '@typescript-eslint/no-redundant-type-constituents': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-floating-promises': 'off', // we don't always care about unhandles promises
+    '@typescript-eslint/prefer-nullish-coalescing': 'off', // we sometimes want to use || instead of ??
     '@typescript-eslint/no-misused-promises': [
       'error',
       { checksVoidReturn: false },
@@ -83,7 +83,6 @@ module.exports = {
   ],
   settings: {
     react: {
-      pragma: 'React',
       version: 'detect',
     },
   },
