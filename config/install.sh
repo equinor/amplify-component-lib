@@ -35,6 +35,10 @@ printf -- "Going into test-utils folder...\n"
 
 cd ./test-utils || (mkdir test-utils && cd ./test-utils || return)
 
+printf -- "Downloading vitest.d.ts file...\n"
+
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/vitest.d.ts" > vitest.d.ts
+
 printf -- "Downloading setupTests.ts file...\n"
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/setupTests.ts" > setupTests.ts
