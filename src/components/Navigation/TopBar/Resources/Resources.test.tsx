@@ -845,5 +845,22 @@ describe('Resources', () => {
 
       expect(findCurrentPage).not.toBeInTheDocument();
     });
+
+    test('Render custom button works', () => {
+      render(
+        <Resources
+          customButton={(ref, onToggle) => (
+            <button ref={ref} onClick={onToggle}>
+              custom
+            </button>
+          )}
+        />,
+        { wrapper: Wrappers }
+      );
+
+      const button = screen.getByRole('button');
+
+      expect(button).toHaveTextContent('custom');
+    });
   });
 });

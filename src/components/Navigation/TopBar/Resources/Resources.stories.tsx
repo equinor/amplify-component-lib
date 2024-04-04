@@ -18,6 +18,9 @@ export default {
     hideReleaseNotes: {
       control: 'boolean',
     },
+    hideLearnMore: {
+      control: 'boolean',
+    },
     children: {
       control: 'text',
       description:
@@ -30,6 +33,7 @@ export default {
   args: {
     hideFeedback: false,
     hideReleaseNotes: false,
+    hideLearnMore: false,
   },
 } as Meta;
 

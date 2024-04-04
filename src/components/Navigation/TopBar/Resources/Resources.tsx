@@ -1,4 +1,13 @@
-import { FC, MouseEvent, ReactNode, useMemo, useRef, useState } from 'react';
+import {
+  FC,
+  MouseEvent,
+  MutableRefObject,
+  ReactElement,
+  ReactNode,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { Button, Dialog, Divider, Icon } from '@equinor/eds-core-react';
 import {
@@ -47,18 +56,25 @@ export interface ResourcesProps {
   field?: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
+  hideLearnMore?: boolean;
   children?: ReactNode;
   showTutorials?: boolean;
   tutorialOptions?: tutorialOptions[];
+  customButton?: (
+    ref: MutableRefObject<HTMLButtonElement | null>,
+    onToggle: () => void
+  ) => ReactElement;
 }
 
 export const Resources: FC<ResourcesProps> = ({
   field,
   hideFeedback = false,
   hideReleaseNotes = false,
+  hideLearnMore = false,
   children,
   tutorialOptions,
   showTutorials,
+  customButton,
 }) => {
   const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
     useReleaseNotes();
@@ -70,7 +86,7 @@ export const Resources: FC<ResourcesProps> = ({
     ResourceSection | undefined
   >(undefined);
 
-  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const [feedbackType, setFeedbackType] = useState<FeedbackType | undefined>(
     undefined
@@ -162,18 +178,22 @@ export const Resources: FC<ResourcesProps> = ({
 
   return (
     <>
-      <TopBarButton
-        variant="ghost"
-        ref={buttonRef}
-        id="anchor-match"
-        aria-haspopup="true"
-        aria-expanded={isOpen}
-        aria-controls="menu-match"
-        onClick={toggleMenu}
-        $isSelected={isOpen}
-      >
-        <Icon data={amplify_resources} />
-      </TopBarButton>
+      {customButton ? (
+        customButton(buttonRef, toggleMenu)
+      ) : (
+        <TopBarButton
+          variant="ghost"
+          ref={buttonRef}
+          id="anchor-match"
+          aria-haspopup="true"
+          aria-expanded={isOpen}
+          aria-controls="menu-match"
+          onClick={toggleMenu}
+          $isSelected={isOpen}
+        >
+          <Icon data={amplify_resources} />
+        </TopBarButton>
+      )}
 
       <TopBarMenu
         open={isOpen && !showReleaseNotes && !showFeedbackDialog}
@@ -209,11 +229,13 @@ export const Resources: FC<ResourcesProps> = ({
               />
             )}
 
-            <ResourceMenuItem
-              text="Learn more"
-              icon={school}
-              onClick={handleLearnMoreClick}
-            />
+            {!hideLearnMore && (
+              <ResourceMenuItem
+                text="Learn more"
+                icon={school}
+                onClick={handleLearnMoreClick}
+              />
+            )}
           </>
         )}
       </TopBarMenu>
