@@ -11,7 +11,7 @@ type ChipProps = EdsChipProps & {
 export const Chip = forwardRef<HTMLDivElement, ChipProps>((props, ref) => {
   const { readonly, ...rest } = props;
 
-  return <StyledChip ref={ref} {...rest} $readonly={readonly} />;
+  return <StyledChip ref={ref} $readonly={readonly} {...rest} />;
 });
 
 Chip.displayName = 'Chip';
