@@ -12,6 +12,7 @@ export interface MenuItemType {
   name: string;
   link: string;
   onClick?: () => void;
+  replace?: boolean;
 }
 
 export type MenuItemProps = {
@@ -21,7 +22,10 @@ export type MenuItemProps = {
   HTMLAttributes<HTMLAnchorElement>;
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
-  ({ currentUrl, icon, name, link, onClick, disabled = false }, ref) => {
+  (
+    { currentUrl, icon, name, link, onClick, disabled = false, replace },
+    ref
+  ) => {
     const isCurrentUrl = currentUrl?.includes(link) ?? false;
     const { isOpen } = useSideBar();
 
@@ -50,6 +54,7 @@ const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           $open
           ref={ref}
           data-testid="sidebar-menu-item"
+          replace={replace}
         >
           {icon && (
             <IconContainer data-testid="icon-container">
