@@ -1,9 +1,17 @@
 import { forwardRef } from 'react';
 
-import { Chip as Base, ChipProps } from '@equinor/eds-core-react';
+import { ChipProps as EdsChipProps } from '@equinor/eds-core-react';
 
-export const Chip = forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
-  <Base ref={ref} {...props} />
-));
+import { StyledChip } from './Chip.styles';
+
+type ChipProps = EdsChipProps & {
+  readonly?: boolean;
+};
+
+export const Chip = forwardRef<HTMLDivElement, ChipProps>((props, ref) => {
+  const { readonly, ...rest } = props;
+
+  return <StyledChip ref={ref} {...rest} $readonly={readonly} />;
+});
 
 Chip.displayName = 'Chip';
