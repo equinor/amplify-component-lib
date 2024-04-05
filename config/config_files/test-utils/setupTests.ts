@@ -1,5 +1,6 @@
 import { IconData } from '@equinor/eds-icons';
 import { cleanup, within } from '@testing-library/react';
+
 import { handlers as appHandlers } from './mock';
 import { handlers as portalHandlers } from './portalMock';
 import { MatcherResult } from './vitest';
