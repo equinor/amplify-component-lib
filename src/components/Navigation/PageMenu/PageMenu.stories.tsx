@@ -9,7 +9,7 @@ import PageMenuProvider, {
   PageMenuItemType,
   PageMenuProviderProps,
 } from '../../../providers/PageMenuProvider';
-import PageMenu from './PageMenu';
+import PageMenu, { PageMenuProps } from './PageMenu';
 
 import styled from 'styled-components';
 
@@ -21,26 +21,25 @@ export default {
   argTypes: {
     items: { control: 'array' },
     onlyShowSelectedChildren: { control: 'boolean' },
+    variant: { control: 'radio', items: ['border', 'buttons'] },
   },
   args: {
     items: [
       {
         label: 'First section',
         value: 'id-1',
-        color: colors.infographic.substitute__blue_ocean.rgba,
       },
       {
         label: 'Second section',
         value: 'id-2',
-        color: colors.infographic.substitute__blue_sky.rgba,
       },
       {
         label: 'Third section',
         value: 'id-3',
-        color: colors.infographic.substitute__blue_overcast.rgba,
       },
     ],
     onlyShowSelectedChildren: false,
+    variant: 'buttons',
   },
 };
 
@@ -74,6 +73,12 @@ const Container = styled.div`
   }
 `;
 
+const COLORS = [
+  colors.infographic.substitute__blue_ocean.rgba,
+  colors.infographic.substitute__blue_sky.rgba,
+  colors.infographic.substitute__blue_overcast.rgba,
+];
+
 function Section({
   label,
   value,
@@ -95,14 +100,41 @@ function Section({
   );
 }
 
-export const Primary: StoryFn<PageMenuProviderProps> = (args) => {
+type StoryProps = PageMenuProviderProps & PageMenuProps;
+
+export const Primary: StoryFn<StoryProps> = (args) => {
   return (
     <PageMenuProvider items={args.items}>
       <Container>
-        <PageMenu />
+        <PageMenu variant={args.variant} />
         <section>
-          {args.items.map((item) => (
-            <Section key={item.value} {...item} />
+          {args.items.map((item, index) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={COLORS[index]}
+            />
+          ))}
+        </section>
+      </Container>
+    </PageMenuProvider>
+  );
+};
+
+export const BorderVariant: StoryFn<StoryProps> = (args) => {
+  return (
+    <PageMenuProvider items={args.items}>
+      <Container>
+        <PageMenu variant="border" />
+        <section>
+          {args.items.map((item, index) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={COLORS[index]}
+            />
           ))}
         </section>
       </Container>
@@ -137,13 +169,127 @@ const ITEMS_WITH_CHILDREN: PageMenuItemType[] = [
   },
 ];
 
-export const WithChildren: StoryFn = (args) => {
+export const WithChildren: StoryFn<StoryProps> = (args) => {
   return (
     <PageMenuProvider items={ITEMS_WITH_CHILDREN}>
       <Container>
-        <PageMenu {...args} />
+        <PageMenu {...args} variant="buttons" />
         <section>
           {ITEMS_WITH_CHILDREN.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </PageMenuProvider>
+  );
+};
+
+export const WithChildrenAndBorders: StoryFn<StoryProps> = (args) => {
+  return (
+    <PageMenuProvider items={ITEMS_WITH_CHILDREN}>
+      <Container>
+        <PageMenu {...args} variant="border" />
+        <section>
+          {ITEMS_WITH_CHILDREN.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </PageMenuProvider>
+  );
+};
+
+const ITEMS_WITH_CHILDREN_DISABLED: PageMenuItemType[] = [
+  {
+    label: '2023',
+    value: 'year2023',
+    children: [
+      { label: 'January', value: 'year2023--january' },
+      { label: 'February', value: 'year2023--february' },
+      { label: 'March', value: 'year2023--march' },
+      { label: 'April', value: 'year2023--april', disabled: true },
+      { label: 'May', value: 'year2023--may' },
+      { label: 'June', value: 'year2023--june' },
+    ],
+  },
+  {
+    label: '2022',
+    value: 'year2022',
+    children: [
+      { label: 'January', value: 'year2022--january' },
+      { label: 'February', value: 'year2022--february', disabled: true },
+      { label: 'March', value: 'year2022--march' },
+      { label: 'April', value: 'year2022--april', disabled: true },
+      { label: 'May', value: 'year2022--may' },
+      { label: 'June', value: 'year2022--june' },
+    ],
+  },
+];
+
+export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
+  return (
+    <PageMenuProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
+      <Container>
+        <PageMenu {...args} variant="buttons" />
+        <section>
+          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </PageMenuProvider>
+  );
+};
+
+export const WithChildrenAndBordersDisabled: StoryFn<StoryProps> = (args) => {
+  return (
+    <PageMenuProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
+      <Container>
+        <PageMenu {...args} variant="border" />
+        <section>
+          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
             <Section
               key={item.value}
               label={item.label}

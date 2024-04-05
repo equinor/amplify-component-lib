@@ -11,11 +11,13 @@ import {
 } from 'react';
 
 import { getValues } from './PageMenuProvider.utils';
+import { PageMenuVariants } from 'src/components/Navigation/PageMenu/PageMenu.types';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
 
 export interface PageMenuItemType {
   label: string;
   value: string;
+  disabled?: boolean;
   children?: PageMenuItemType[];
 }
 
@@ -23,7 +25,7 @@ interface PageMenuContextType {
   items: PageMenuItemType[];
   selected: string | undefined;
   setSelected: (value: string) => void;
-  isActive: (item: PageMenuItemType) => boolean;
+  isActive: (item: PageMenuItemType, variant: PageMenuVariants) => boolean;
 }
 
 const PageMenuContext = createContext<PageMenuContextType | undefined>(
@@ -58,10 +60,11 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   }, [values]);
 
   const isActive = useCallback(
-    (item: PageMenuItemType) => {
+    (item: PageMenuItemType, variant: PageMenuVariants) => {
       if (item.value === selected) return true;
 
-      if (item.children && selected) {
+      // In the 'border' variant we don't want parents to be set as active
+      if (item.children && selected && variant === 'buttons') {
         const childValues = getValues([], item);
         return childValues.includes(selected);
       }
