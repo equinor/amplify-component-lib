@@ -2,11 +2,11 @@ import { FC, useMemo } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { PageMenuVariants } from './PageMenu.types';
-import PageMenuItem from './PageMenuItem';
-import { BorderItemsContainer } from './PageMenuItem.styles';
-import { usePageMenu } from 'src/providers/PageMenuProvider';
-import { getValues } from 'src/providers/PageMenuProvider.utils';
+import { BorderItemsContainer } from 'src/components/Navigation/TableOfContents/TableOfContents.styles';
+import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
+import TableOfContentsItem from 'src/components/Navigation/TableOfContents/TableOfContentsItem';
+import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
+import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 import { spacings } from 'src/style';
 
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ import styled from 'styled-components';
 const { colors } = tokens;
 
 interface ContainerProps {
-  $variant: PageMenuVariants;
+  $variant: TableOfContentsVariants;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -30,16 +30,16 @@ const Container = styled.div<ContainerProps>`
   }}
 `;
 
-export interface PageMenuProps {
-  variant?: PageMenuVariants;
+export interface TableOfContentsProps {
+  variant?: TableOfContentsVariants;
   onlyShowSelectedChildren?: boolean;
 }
 
-const PageMenu: FC<PageMenuProps> = ({
+export const TableOfContents: FC<TableOfContentsProps> = ({
   variant = 'buttons',
   onlyShowSelectedChildren = true,
 }) => {
-  const { items, selected } = usePageMenu();
+  const { items, selected } = useTableOfContents();
 
   const activeIndex = useMemo(() => {
     // Was not able to test this properly because selected can't be correctly updated in the unit test
@@ -69,7 +69,7 @@ const PageMenu: FC<PageMenuProps> = ({
             $activeIndex={activeIndex}
             aria-selected={activeIndex === index}
           >
-            <PageMenuItem
+            <TableOfContentsItem
               key={`page-menu-item-${item.value}`}
               variant={variant}
               {...item}
@@ -84,7 +84,7 @@ const PageMenu: FC<PageMenuProps> = ({
   return (
     <Container className="page-menu" $variant={variant}>
       {items.map((item) => (
-        <PageMenuItem
+        <TableOfContentsItem
           key={`page-menu-item-${item.value}`}
           variant={variant}
           {...item}
@@ -94,5 +94,3 @@ const PageMenu: FC<PageMenuProps> = ({
     </Container>
   );
 };
-
-export default PageMenu;

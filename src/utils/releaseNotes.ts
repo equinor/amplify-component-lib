@@ -1,5 +1,5 @@
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
-import { PageMenuItemType } from 'src/providers/PageMenuProvider';
+import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
 
 interface MonthData {
   label: string;
@@ -14,8 +14,8 @@ interface YearData {
 
 const extractDatesFromReleaseNotes = (
   releaseNotes: ReleaseNote[]
-): PageMenuItemType[] => {
-  const pageMenuItemFormattedNotes: PageMenuItemType[] = [];
+): TableOfContentsItemType[] => {
+  const pageMenuItemFormattedNotes: TableOfContentsItemType[] = [];
 
   const releaseNotesWithDate = releaseNotes.filter((n) => n.createdDate);
 

@@ -5,19 +5,22 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 import { StoryFn } from '@storybook/react';
 
-import PageMenuProvider, {
-  PageMenuItemType,
-  PageMenuProviderProps,
-} from '../../../providers/PageMenuProvider';
-import PageMenu, { PageMenuProps } from './PageMenu';
+import {
+  TableOfContents,
+  TableOfContentsProps,
+} from 'src/components/Navigation/TableOfContents/TableOfContents';
+import TableOfContentsProvider, {
+  TableOfContentsItemType,
+  TableOfContentsProviderProps,
+} from 'src/providers/TableOfContentsProvider';
 
 import styled from 'styled-components';
 
 const { colors } = tokens;
 
 export default {
-  title: 'Navigation/PageMenu',
-  component: PageMenu,
+  title: 'Navigation/TableOfContents',
+  component: TableOfContents,
   argTypes: {
     items: { control: 'array' },
     onlyShowSelectedChildren: { control: 'boolean' },
@@ -100,13 +103,13 @@ function Section({
   );
 }
 
-type StoryProps = PageMenuProviderProps & PageMenuProps;
+type StoryProps = TableOfContentsProviderProps & TableOfContentsProps;
 
 export const Primary: StoryFn<StoryProps> = (args) => {
   return (
-    <PageMenuProvider items={args.items}>
+    <TableOfContentsProvider items={args.items}>
       <Container>
-        <PageMenu variant={args.variant} />
+        <TableOfContents variant={args.variant} />
         <section>
           {args.items.map((item, index) => (
             <Section
@@ -118,15 +121,15 @@ export const Primary: StoryFn<StoryProps> = (args) => {
           ))}
         </section>
       </Container>
-    </PageMenuProvider>
+    </TableOfContentsProvider>
   );
 };
 
 export const BorderVariant: StoryFn<StoryProps> = (args) => {
   return (
-    <PageMenuProvider items={args.items}>
+    <TableOfContentsProvider items={args.items}>
       <Container>
-        <PageMenu variant="border" />
+        <TableOfContents variant="border" />
         <section>
           {args.items.map((item, index) => (
             <Section
@@ -138,11 +141,11 @@ export const BorderVariant: StoryFn<StoryProps> = (args) => {
           ))}
         </section>
       </Container>
-    </PageMenuProvider>
+    </TableOfContentsProvider>
   );
 };
 
-const ITEMS_WITH_CHILDREN: PageMenuItemType[] = [
+const ITEMS_WITH_CHILDREN: TableOfContentsItemType[] = [
   {
     label: '2023',
     value: 'year2023',
@@ -171,9 +174,9 @@ const ITEMS_WITH_CHILDREN: PageMenuItemType[] = [
 
 export const WithChildren: StoryFn<StoryProps> = (args) => {
   return (
-    <PageMenuProvider items={ITEMS_WITH_CHILDREN}>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
       <Container>
-        <PageMenu {...args} variant="buttons" />
+        <TableOfContents {...args} variant="buttons" />
         <section>
           {ITEMS_WITH_CHILDREN.map((item) => (
             <Section
@@ -194,15 +197,15 @@ export const WithChildren: StoryFn<StoryProps> = (args) => {
           ))}
         </section>
       </Container>
-    </PageMenuProvider>
+    </TableOfContentsProvider>
   );
 };
 
 export const WithChildrenAndBorders: StoryFn<StoryProps> = (args) => {
   return (
-    <PageMenuProvider items={ITEMS_WITH_CHILDREN}>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
       <Container>
-        <PageMenu {...args} variant="border" />
+        <TableOfContents {...args} variant="border" />
         <section>
           {ITEMS_WITH_CHILDREN.map((item) => (
             <Section
@@ -223,11 +226,11 @@ export const WithChildrenAndBorders: StoryFn<StoryProps> = (args) => {
           ))}
         </section>
       </Container>
-    </PageMenuProvider>
+    </TableOfContentsProvider>
   );
 };
 
-const ITEMS_WITH_CHILDREN_DISABLED: PageMenuItemType[] = [
+const ITEMS_WITH_CHILDREN_DISABLED: TableOfContentsItemType[] = [
   {
     label: '2023',
     value: 'year2023',
@@ -256,9 +259,9 @@ const ITEMS_WITH_CHILDREN_DISABLED: PageMenuItemType[] = [
 
 export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
   return (
-    <PageMenuProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
       <Container>
-        <PageMenu {...args} variant="buttons" />
+        <TableOfContents {...args} variant="buttons" />
         <section>
           {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
             <Section
@@ -279,15 +282,15 @@ export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
           ))}
         </section>
       </Container>
-    </PageMenuProvider>
+    </TableOfContentsProvider>
   );
 };
 
 export const WithChildrenAndBordersDisabled: StoryFn<StoryProps> = (args) => {
   return (
-    <PageMenuProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
       <Container>
-        <PageMenu {...args} variant="border" />
+        <TableOfContents {...args} variant="border" />
         <section>
           {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
             <Section
@@ -308,6 +311,6 @@ export const WithChildrenAndBordersDisabled: StoryFn<StoryProps> = (args) => {
           ))}
         </section>
       </Container>
-    </PageMenuProvider>
+    </TableOfContentsProvider>
   );
 };

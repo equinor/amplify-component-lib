@@ -13,9 +13,9 @@ import {
   Wrapper,
 } from './ReleaseNotes.styles';
 import ReleaseNotesHeader from './ReleaseNotesHeader';
-import PageMenu from 'src/components/Navigation/PageMenu/PageMenu';
+import TableOfContents from 'src/components/Navigation/TableOfContents/TableOfContents';
 import { useReleaseNotesQuery } from 'src/hooks';
-import { PageMenuProvider } from 'src/providers';
+import { TableOfContentsProvider } from 'src/providers';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 const ReleaseNotes: FC = () => {
@@ -35,18 +35,18 @@ const ReleaseNotes: FC = () => {
           <CircularProgress />
         </LoadingWrapper>
       ) : (
-        <PageMenuProvider items={releaseNotesYears}>
+        <TableOfContentsProvider items={releaseNotesYears}>
           <ScrollWrapper>
             <Wrapper>
               <LeftContainer>
-                <PageMenu />
+                <TableOfContents />
               </LeftContainer>
               <Content>
                 <ReleasePosts posts={data} />
               </Content>
             </Wrapper>
           </ScrollWrapper>
-        </PageMenuProvider>
+        </TableOfContentsProvider>
       )}
     </StyledDialog>
   );

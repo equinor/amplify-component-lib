@@ -2,13 +2,13 @@ import { ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import PageMenu from './PageMenu';
-import PageMenuProvider, {
-  PageMenuItemType,
-} from 'src/providers/PageMenuProvider';
+import { TableOfContents } from './TableOfContents';
+import TableOfContentsProvider, {
+  TableOfContentsItemType,
+} from 'src/providers/TableOfContentsProvider';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
-function fakeItems(withChildren = false): PageMenuItemType[] {
+function fakeItems(withChildren = false): TableOfContentsItemType[] {
   return new Array(faker.number.int({ min: 2, max: 8 })).fill(0).map(() => ({
     value: 'a' + faker.string.uuid(),
     label: faker.string.uuid(),
@@ -48,14 +48,17 @@ describe('button variant', () => {
 
     render(
       <div>
-        <PageMenu />
+        <TableOfContents />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {' '}
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );
@@ -81,7 +84,7 @@ describe('button variant', () => {
 
     render(
       <div>
-        <PageMenu onlyShowSelectedChildren />
+        <TableOfContents onlyShowSelectedChildren />
         {items.map((item) => (
           <Section key={item.value} {...item}>
             {item.children?.map((child) => (
@@ -94,7 +97,9 @@ describe('button variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );
@@ -118,14 +123,17 @@ describe('button variant', () => {
 
     render(
       <div>
-        <PageMenu />
+        <TableOfContents />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {' '}
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );
@@ -166,14 +174,17 @@ describe('border variant', () => {
 
     render(
       <div>
-        <PageMenu variant="border" />
+        <TableOfContents variant="border" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {' '}
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );
@@ -199,7 +210,7 @@ describe('border variant', () => {
 
     render(
       <div>
-        <PageMenu onlyShowSelectedChildren variant="border" />
+        <TableOfContents onlyShowSelectedChildren variant="border" />
         {items.map((item) => (
           <Section key={item.value} {...item}>
             {item.children?.map((child) => (
@@ -212,7 +223,9 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );
@@ -236,14 +249,17 @@ describe('border variant', () => {
 
     render(
       <div>
-        <PageMenu variant="border" />
+        <TableOfContents variant="border" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {' '}
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );
@@ -282,14 +298,17 @@ describe('border variant', () => {
 
     render(
       <div>
-        <PageMenu variant="border" />
+        <TableOfContents variant="border" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {' '}
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );
@@ -313,7 +332,7 @@ describe('border variant', () => {
 
     render(
       <div>
-        <PageMenu onlyShowSelectedChildren variant="border" />
+        <TableOfContents onlyShowSelectedChildren variant="border" />
         {items.map((item) => (
           <Section key={item.value} {...item}>
             {item.children?.map((child) => (
@@ -326,7 +345,9 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+          <TableOfContentsProvider items={items}>
+            {props.children}
+          </TableOfContentsProvider>
         ),
       }
     );

@@ -2,9 +2,11 @@ import { ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import PageMenu from '../components/Navigation/PageMenu/PageMenu';
 import { render, renderHook, screen } from '../tests/test-utils';
-import PageMenuProvider, { usePageMenu } from './PageMenuProvider';
+import TableOfContents from 'src/components/Navigation/TableOfContents/TableOfContents';
+import TableOfContentsProvider, {
+  useTableOfContents,
+} from 'src/providers/TableOfContentsProvider';
 
 function fakeItems() {
   return new Array(faker.number.int({ min: 3, max: 8 })).fill(0).map(() => ({
@@ -15,7 +17,7 @@ function fakeItems() {
 
 test('usePageMenu throws error if used outside provider', () => {
   console.error = vi.fn();
-  expect(() => renderHook(() => usePageMenu())).toThrowError(
+  expect(() => renderHook(() => useTableOfContents())).toThrowError(
     "'usePageMenu' must be used within provider"
   );
 });
@@ -25,7 +27,7 @@ test('SetItemRef works as expected', () => {
 
   render(
     <div>
-      <PageMenu />
+      <TableOfContents />
       {items.map((item) => (
         <h1 key={item.value} id={item.value}>
           {item.label}
@@ -34,7 +36,9 @@ test('SetItemRef works as expected', () => {
     </div>,
     {
       wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+        <TableOfContentsProvider items={items}>
+          {props.children}
+        </TableOfContentsProvider>
       ),
     }
   );

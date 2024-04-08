@@ -1,16 +1,22 @@
 import { FC, useMemo } from 'react';
 
-import { Button, Container } from './PageMenuItem.styles';
-import { PageMenuVariants } from 'src/components/Navigation/PageMenu/PageMenu.types';
-import { PageMenuItemType, usePageMenu } from 'src/providers/PageMenuProvider';
+import {
+  Button,
+  Container,
+} from 'src/components/Navigation/TableOfContents/TableOfContents.styles';
+import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
+import {
+  TableOfContentsItemType,
+  useTableOfContents,
+} from 'src/providers/TableOfContentsProvider';
 
-interface PageMenuItemProps extends PageMenuItemType {
+interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;
-  variant: PageMenuVariants;
+  variant: TableOfContentsVariants;
   layer?: number;
 }
 
-const PageMenuItem: FC<PageMenuItemProps> = ({
+const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   label,
   value,
   disabled = false,
@@ -19,7 +25,7 @@ const PageMenuItem: FC<PageMenuItemProps> = ({
   onlyShowSelectedChildren,
   layer = 0,
 }) => {
-  const { isActive, setSelected } = usePageMenu();
+  const { isActive, setSelected } = useTableOfContents();
 
   const active = useMemo(
     () => isActive({ label, value, children }, variant) && !disabled,
@@ -44,7 +50,7 @@ const PageMenuItem: FC<PageMenuItemProps> = ({
         </Button>
         {((onlyShowSelectedChildren && active) || !onlyShowSelectedChildren) &&
           children.map((child) => (
-            <PageMenuItem
+            <TableOfContentsItem
               key={`${value}-child-${child.value}`}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
               layer={layer + 1}
@@ -69,4 +75,4 @@ const PageMenuItem: FC<PageMenuItemProps> = ({
   );
 };
 
-export default PageMenuItem;
+export default TableOfContentsItem;

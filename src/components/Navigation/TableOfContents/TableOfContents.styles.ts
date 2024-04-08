@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import { PageMenuVariants } from 'src/components/Navigation/PageMenu/PageMenu.types';
+import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
 import { spacings } from 'src/style';
 
 import styled from 'styled-components';
@@ -9,7 +9,7 @@ const { colors, shape } = tokens;
 
 interface ButtonProps {
   $active: boolean;
-  $variant: PageMenuVariants;
+  $variant: TableOfContentsVariants;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -88,7 +88,7 @@ export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
 
 interface ContainerProps {
   $layer: number;
-  $variant: PageMenuVariants;
+  $variant: TableOfContentsVariants;
 }
 
 export const Container = styled.div<ContainerProps>`
