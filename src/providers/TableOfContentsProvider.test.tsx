@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { faker } from '@faker-js/faker';
 
 import { render, renderHook, screen } from '../tests/test-utils';
-import TableOfContents from 'src/components/Navigation/TableOfContents/TableOfContents';
+import { TableOfContents } from 'src/components/Navigation/TableOfContents/TableOfContents';
 import TableOfContentsProvider, {
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
@@ -18,7 +18,7 @@ function fakeItems() {
 test('usePageMenu throws error if used outside provider', () => {
   console.error = vi.fn();
   expect(() => renderHook(() => useTableOfContents())).toThrowError(
-    "'usePageMenu' must be used within provider"
+    "'useTableOfContents' must be used within provider"
   );
 });
 
