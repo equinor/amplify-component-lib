@@ -9,6 +9,9 @@ COPY index.html ./
 COPY src ./src
 COPY public ./public
 
+# Remove mockServiceWorker.js
+RUN rm ./public/mockServiceWorker.js
+
 # Dependencies
 RUN npm ci --ignore-scripts
 
