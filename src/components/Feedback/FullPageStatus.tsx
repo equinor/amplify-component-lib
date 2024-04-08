@@ -19,7 +19,6 @@ export interface FullPageStatusProps {
 const Center = styled.div`
   display: flex;
   width: 100%;
-  height: 80%;
   justify-content: center;
   align-items: center;
 `;
