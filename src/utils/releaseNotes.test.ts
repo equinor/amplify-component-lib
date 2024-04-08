@@ -38,7 +38,6 @@ describe('release notes utils', () => {
     const expectedYearOrder = ['2023', '2022'];
     const expectedMonthOrder = ['July', 'June', 'May', 'January'];
     const actual = extractDatesFromReleaseNotes(dates);
-    const months = actual[1].children ?? [];
 
     expect(actual[0].label).toEqual(expectedYearOrder[0]);
     expect(actual[1].label).toEqual(expectedYearOrder[1]);
