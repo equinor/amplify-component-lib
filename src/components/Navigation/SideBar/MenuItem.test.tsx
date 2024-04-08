@@ -70,6 +70,13 @@ describe('MenuItem', () => {
     expect(icon).toHaveAttribute('width', '24px');
   };
 
+  test('should navigate if replace is set to true and url is a partial match', () => {
+    const props = fakeProps();
+    render(<MenuItem {...props} replace />, {
+      wrapper: wrapper,
+    });
+  });
+
   describe('Expanded', () => {
     beforeEach(() => {
       window.localStorage.setItem(
@@ -627,17 +634,42 @@ describe('MenuItem', () => {
       });
 
       describe('Selected', () => {
-        test('Click should do nothing', async () => {
+        test('should not register click event if url is partially the same', async () => {
           const props = fakeProps();
-          render(<MenuItem {...props} currentUrl={props.link} />, {
-            wrapper: wrapper,
-          });
+          render(
+            <MenuItem
+              {...props}
+              currentUrl={`${props.link}/${faker.airline.aircraftType()}`}
+            />,
+            {
+              wrapper: wrapper,
+            }
+          );
           const item = screen.getByTestId('sidebar-menu-item');
 
           const user = userEvent.setup();
           await user.click(item);
 
           expect(props.onClick).not.toHaveBeenCalled();
+        });
+        test('should register click event if url is partially the same when replace is set to true', async () => {
+          const props = fakeProps();
+          render(
+            <MenuItem
+              {...props}
+              currentUrl={`${props.link}/${faker.airline.aircraftType()}`}
+              replace
+            />,
+            {
+              wrapper: wrapper,
+            }
+          );
+          const item = screen.getByTestId('sidebar-menu-item');
+
+          const user = userEvent.setup();
+          await user.click(item);
+
+          expect(props.onClick).toHaveBeenCalled();
         });
 
         test('Tab + Enter should do nothing', async () => {
