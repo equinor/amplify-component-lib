@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { forwardRef, HTMLAttributes, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
@@ -23,10 +24,21 @@ export type MenuItemProps = {
 
 const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
   (
-    { currentUrl, icon, name, link, onClick, disabled = false, replace },
+    {
+      currentUrl,
+      icon,
+      name,
+      link,
+      onClick,
+      disabled = false,
+      replace = false,
+    },
     ref
   ) => {
-    const isCurrentUrl = currentUrl?.includes(link) ?? false;
+    const isCurrentUrl =
+      (replace
+        ? typeof currentUrl === 'string' && currentUrl === link
+        : currentUrl?.includes(link)) ?? false;
     const { isOpen } = useSideBar();
 
     const canNavigate = useMemo(
