@@ -9,7 +9,7 @@ import {
   FakeDOMRectList,
   mockGetBoundingClientRect,
 } from 'src/tests/mockRichTextEditor';
-import { render, screen } from 'src/tests/test-utils';
+import { act, render, screen } from 'src/tests/test-utils';
 
 const { spacings } = tokens;
 
@@ -28,7 +28,9 @@ test('RichTextDisplay shows value as expected', async () => {
   render(<RichTextDisplay value={`<p>${randomText}</p>`} />);
 
   // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(screen.getByText(randomText)).toBeInTheDocument();
 });
@@ -46,7 +48,9 @@ test('Image read token prop works as expected', async () => {
   );
 
   // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(screen.getByRole('img')).toHaveAttribute(
     'src',
@@ -58,14 +62,18 @@ test('Shows content when sending in new value', async () => {
   const content = faker.animal.dog();
   const { rerender } = render(<RichTextDisplay value={content} />);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(screen.getByText(content)).toBeInTheDocument();
 
   const newContent = faker.airline.airplane().name;
   rerender(<RichTextDisplay value={newContent} />);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(screen.getByText(newContent)).toBeInTheDocument();
 
@@ -76,7 +84,10 @@ test('Padding props works as expected', async () => {
   const content = faker.animal.bear();
 
   const { rerender, container } = render(<RichTextDisplay value={content} />);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(container.querySelector('.tiptap')).toHaveStyle({
     padding: spacings.comfortable.medium,
@@ -84,7 +95,9 @@ test('Padding props works as expected', async () => {
 
   rerender(<RichTextDisplay value={'content'} padding={'none'} />);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(container.querySelector('.tiptap')).toHaveStyle({
     padding: 0,
@@ -92,7 +105,9 @@ test('Padding props works as expected', async () => {
 
   rerender(<RichTextDisplay value={'content'} padding={'sm'} />);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(container.querySelector('.tiptap')).toHaveStyle({
     padding: spacings.comfortable.small,
@@ -100,7 +115,9 @@ test('Padding props works as expected', async () => {
 
   rerender(<RichTextDisplay value={'content'} padding={'lg'} />);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
 
   expect(container.querySelector('.tiptap')).toHaveStyle({
     padding: spacings.comfortable.large,

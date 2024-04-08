@@ -39,7 +39,6 @@ describe('release notes utils', () => {
     const expectedMonthOrder = ['July', 'June', 'May', 'January'];
     const actual = extractDatesFromReleaseNotes(dates);
     const months = actual[1].children ?? [];
-    console.log(`Sorted: ${months.map((c) => c.label).join(', ')}`);
 
     expect(actual[0].label).toEqual(expectedYearOrder[0]);
     expect(actual[1].label).toEqual(expectedYearOrder[1]);
@@ -52,19 +51,16 @@ describe('release notes utils', () => {
   test('transform date to month string', () => {
     const expectedYear = 'June';
     const actual = monthToString(dateObject);
-    console.log({ actual });
     expect(actual).toEqual(expectedYear);
   });
   test('transform date to a string in the format of month_year: year2023--June', () => {
     const expectedYear = 'year2023--June';
     const actual = monthValueToString(dateObject);
-    console.log({ actual });
     expect(actual).toEqual(expectedYear);
   });
   test('transform date to string formatted with a year_ prefix to the year: year2023', () => {
     const expectedYear = 'year2023';
     const actual = yearValueToString(dateObject);
-    console.log({ actual });
     expect(actual).toEqual(expectedYear);
   });
 

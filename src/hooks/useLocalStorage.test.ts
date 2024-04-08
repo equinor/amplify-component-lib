@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { renderHook, waitFor } from '../tests/test-utils';
+import { act, renderHook, waitFor } from '../tests/test-utils';
 import {
   LAST_UPDATED_KEY_SUFFIX,
   updateLocalStorage,
@@ -16,7 +16,9 @@ test('useLocalStorage works as expected', async () => {
     useLocalStorage(key, defaultValue, 20000)
   );
   const [, setState] = result.current;
-  setState(newValue);
+  act(() => {
+    setState(newValue);
+  });
 
   await waitFor(
     () => expect(JSON.parse(localStorage.getItem(key)!)).toBe(newValue),
@@ -35,8 +37,11 @@ test('clear() removes local storage', () => {
     useLocalStorage<string>(key, defaultValue, 20000)
   );
   const [, setState, clear] = result.current;
-  setState(newValue);
-  clear();
+
+  act(() => {
+    setState(newValue);
+    clear();
+  });
 
   expect(localStorage.getItem(key)!).toBe(undefined);
 });
@@ -50,7 +55,9 @@ test('setting state to undefined removes local storage', () => {
     useLocalStorage<string | undefined>(key, defaultValue, 20000)
   );
   const [, setState] = result.current;
-  setState(newValue);
+  act(() => {
+    setState(newValue);
+  });
 
   expect(localStorage.getItem(key)!).toBe(undefined);
 });
@@ -64,7 +71,9 @@ test('setting state to null removes local storage', () => {
     useLocalStorage<string | undefined | null>(key, defaultValue, 20000)
   );
   const [, setState] = result.current;
-  setState(newValue);
+  act(() => {
+    setState(newValue);
+  });
 
   expect(localStorage.getItem(key)!).toBe(undefined);
 });

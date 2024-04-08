@@ -79,7 +79,6 @@ vi.mock('src/api/services/PortalService', () => {
       return new CancelablePromise((resolve, reject) => {
         setTimeout(() => {
           if (mockServiceHasError) {
-            console.log('rejecting');
             reject({ message: 'error featureToggle' });
           } else {
             resolve(mockedAppFeatures.find((f) => f.applicationName === key));

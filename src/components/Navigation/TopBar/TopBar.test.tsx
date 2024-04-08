@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 
 import TopBar from '.';
 import { spacings } from 'src/style';
-import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import { act, render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 import { EnvironmentType } from 'src/types/Environment';
 import { Field } from 'src/types/Field';
 
@@ -170,7 +170,9 @@ test('close on resize ', async () => {
   expect(screen.getByTestId('top-bar-menu')).toBeInTheDocument();
 
   vi.stubGlobal(800, 600);
-  global.dispatchEvent(new Event('resize'));
+  act(() => {
+    global.dispatchEvent(new Event('resize'));
+  });
 
   await waitFor(
     () => expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument(),
@@ -306,14 +308,8 @@ test('Renders with correct styles', () => {
     colors.ui.background__default.rgba
   );
   expect(topBar).toHaveStyleRule('padding-top', `8px`);
-  expect(topBar).toHaveStyleRule(
-    'padding-right',
-    `24px`
-  );
-  expect(topBar).toHaveStyleRule(
-    'padding-bottom',
-    `8px`
-  );
+  expect(topBar).toHaveStyleRule('padding-right', `24px`);
+  expect(topBar).toHaveStyleRule('padding-bottom', `8px`);
   expect(topBar).toHaveStyleRule('padding-left', `${spacings.medium}`);
   expect(topBar).toHaveStyleRule('align-items', 'center');
   expect(topBar).toHaveStyleRule('height', '64px');
