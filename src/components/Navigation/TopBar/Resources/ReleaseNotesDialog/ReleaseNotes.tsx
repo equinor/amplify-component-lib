@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { CircularProgress } from '@equinor/eds-core-react';
 
+import { TableOfContents } from '../../../TableOfContents/TableOfContents';
 import { useTokenReleaseNote } from './ReleasePosts/hooks/useTokenReleaseNote';
 import ReleasePosts from './ReleasePosts/ReleasePosts';
 import {
@@ -13,7 +14,6 @@ import {
   Wrapper,
 } from './ReleaseNotes.styles';
 import ReleaseNotesHeader from './ReleaseNotesHeader';
-import TableOfContents from 'src/components/Navigation/TableOfContents/TableOfContents';
 import { useReleaseNotesQuery } from 'src/hooks';
 import { TableOfContentsProvider } from 'src/providers';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
