@@ -42,303 +42,306 @@ function Section({
   );
 }
 
-test('OnClick runs as expected', async () => {
-  const items = fakeItems();
+describe('button variant', () => {
+  test('OnClick runs as expected', async () => {
+    const items = fakeItems();
 
-  render(
-    <div>
-      <PageMenu />
-      {items.map((item) => (
-        <Section key={item.value} label={item.label} value={item.value} />
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
-      ),
+    render(
+      <div>
+        <PageMenu />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+        ),
+      }
+    );
+
+    const user = userEvent.setup();
+
+    for (const item of items) {
+      expect(screen.queryAllByText(item.label).length).toBe(2);
     }
-  );
 
-  const user = userEvent.setup();
+    const button = screen.getByRole('button', { name: items[1].label });
 
-  for (const item of items) {
-    expect(screen.queryAllByText(item.label).length).toBe(2);
-  }
+    await user.click(button);
 
-  const button = screen.getByRole('button', { name: items[1].label });
+    const section = document.querySelector(`#${items[1].value}`)!;
 
-  await user.click(button);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(section.scrollIntoView).toHaveBeenCalled();
+  });
 
-  const section = document.querySelector(`#${items[1].value}`)!;
+  test('Hides children when onlyShowSelectedChildren = true', () => {
+    const items = fakeItems(true);
 
-  // TODO: fix this?
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(section.scrollIntoView).toHaveBeenCalled();
+    render(
+      <div>
+        <PageMenu onlyShowSelectedChildren />
+        {items.map((item) => (
+          <Section key={item.value} {...item}>
+            {item.children?.map((child) => (
+              <h2 key={child.value} id={child.value}>
+                {child.label + 'content'}
+              </h2>
+            ))}
+          </Section>
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+        ),
+      }
+    );
+
+    for (const child of items[0].children ?? []) {
+      expect(screen.getByText(child.label)).toBeInTheDocument();
+    }
+
+    for (const item of items.slice(1)) {
+      for (const child of item.children ?? []) {
+        expect(screen.queryByText(child.label)).not.toBeInTheDocument();
+      }
+    }
+  });
+
+  test('Does not run OnClick when disabled', async () => {
+    const items = fakeItems().map((item, index) => ({
+      ...item,
+      disabled: index % 2 === 0,
+    }));
+
+    render(
+      <div>
+        <PageMenu />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+        ),
+      }
+    );
+
+    const user = userEvent.setup();
+
+    for (const item of items) {
+      expect(screen.queryAllByText(item.label).length).toBe(2);
+    }
+
+    const button = screen.getByRole('button', { name: items[0].label });
+
+    expect(button).toBeDisabled();
+    await user.click(button);
+
+    const section = document.querySelector(`#${items[0].value}`)!;
+
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(section.scrollIntoView).not.toHaveBeenCalled();
+
+    // Expect other button _not_ to be disabled
+    const otherButton = screen.getByRole('button', { name: items[1].label });
+
+    expect(otherButton).not.toBeDisabled();
+
+    await user.click(otherButton);
+
+    const otherSection = document.querySelector(`#${items[1].value}`)!;
+
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(otherSection.scrollIntoView).toHaveBeenCalled();
+  });
 });
 
-test('Hides children when onlyShowSelectedChildren = true', () => {
-  const items = fakeItems(true);
+describe('border variant', () => {
+  test('OnClick runs as expected with border variant', async () => {
+    const items = fakeItems();
 
-  render(
-    <div>
-      <PageMenu onlyShowSelectedChildren />
-      {items.map((item) => (
-        <Section key={item.value} {...item}>
-          {item.children?.map((child) => (
-            <h2 key={child.value} id={child.value}>
-              {child.label + 'content'}
-            </h2>
-          ))}
-        </Section>
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
-      ),
+    render(
+      <div>
+        <PageMenu variant="border" />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+        ),
+      }
+    );
+
+    const user = userEvent.setup();
+
+    for (const item of items) {
+      expect(screen.queryAllByText(item.label).length).toBe(2);
     }
-  );
 
-  for (const child of items[0].children ?? []) {
-    expect(screen.getByText(child.label)).toBeInTheDocument();
-  }
+    const button = screen.getByRole('button', { name: items[1].label });
 
-  for (const item of items.slice(1)) {
-    for (const child of item.children ?? []) {
-      expect(screen.queryByText(child.label)).not.toBeInTheDocument();
+    await user.click(button);
+
+    const section = document.querySelector(`#${items[1].value}`)!;
+
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(section.scrollIntoView).toHaveBeenCalled();
+  });
+
+  test('Hides children when onlyShowSelectedChildren = true', () => {
+    const items = fakeItems(true);
+
+    render(
+      <div>
+        <PageMenu onlyShowSelectedChildren variant="border" />
+        {items.map((item) => (
+          <Section key={item.value} {...item}>
+            {item.children?.map((child) => (
+              <h2 key={child.value} id={child.value}>
+                {child.label + 'content'}
+              </h2>
+            ))}
+          </Section>
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+        ),
+      }
+    );
+
+    for (const child of items[0].children ?? []) {
+      expect(screen.getByText(child.label)).toBeInTheDocument();
     }
-  }
-});
 
-test('Does not run OnClick when disabled', async () => {
-  const items = fakeItems().map((item, index) => ({
-    ...item,
-    disabled: index % 2 === 0,
-  }));
-
-  render(
-    <div>
-      <PageMenu />
-      {items.map((item) => (
-        <Section key={item.value} label={item.label} value={item.value} />
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
-      ),
+    for (const item of items.slice(1)) {
+      for (const child of item.children ?? []) {
+        expect(screen.queryByText(child.label)).not.toBeInTheDocument();
+      }
     }
-  );
+  });
 
-  const user = userEvent.setup();
+  test('Does not run OnClick when disabled', async () => {
+    const items = fakeItems().map((item, index) => ({
+      ...item,
+      disabled: index % 2 === 0,
+    }));
 
-  for (const item of items) {
-    expect(screen.queryAllByText(item.label).length).toBe(2);
-  }
+    render(
+      <div>
+        <PageMenu variant="border" />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+        ),
+      }
+    );
 
-  const button = screen.getByRole('button', { name: items[0].label });
+    const user = userEvent.setup();
 
-  expect(button).toBeDisabled();
-  await user.click(button);
-
-  const section = document.querySelector(`#${items[0].value}`)!;
-
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(section.scrollIntoView).not.toHaveBeenCalled();
-
-  // Expect other button _not_ to be disabled
-  const otherButton = screen.getByRole('button', { name: items[1].label });
-
-  expect(otherButton).not.toBeDisabled();
-
-  await user.click(otherButton);
-
-  const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(otherSection.scrollIntoView).toHaveBeenCalled();
-});
-
-test('OnClick runs as expected with border variant', async () => {
-  const items = fakeItems();
-
-  render(
-    <div>
-      <PageMenu variant="border" />
-      {items.map((item) => (
-        <Section key={item.value} label={item.label} value={item.value} />
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
-      ),
+    for (const item of items) {
+      expect(screen.queryAllByText(item.label).length).toBe(2);
     }
-  );
 
-  const user = userEvent.setup();
+    const button = screen.getByRole('button', { name: items[0].label });
 
-  for (const item of items) {
-    expect(screen.queryAllByText(item.label).length).toBe(2);
-  }
+    expect(button).toBeDisabled();
+    await user.click(button);
 
-  const button = screen.getByRole('button', { name: items[1].label });
+    const section = document.querySelector(`#${items[0].value}`)!;
 
-  await user.click(button);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(section.scrollIntoView).not.toHaveBeenCalled();
 
-  const section = document.querySelector(`#${items[1].value}`)!;
+    // Expect other button _not_ to be disabled
+    const otherButton = screen.getByRole('button', { name: items[1].label });
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(section.scrollIntoView).toHaveBeenCalled();
-});
+    expect(otherButton).not.toBeDisabled();
 
-test('Hides children when onlyShowSelectedChildren = true', () => {
-  const items = fakeItems(true);
+    await user.click(otherButton);
 
-  render(
-    <div>
-      <PageMenu onlyShowSelectedChildren variant="border" />
-      {items.map((item) => (
-        <Section key={item.value} {...item}>
-          {item.children?.map((child) => (
-            <h2 key={child.value} id={child.value}>
-              {child.label + 'content'}
-            </h2>
-          ))}
-        </Section>
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
-      ),
-    }
-  );
+    const otherSection = document.querySelector(`#${items[1].value}`)!;
 
-  for (const child of items[0].children ?? []) {
-    expect(screen.getByText(child.label)).toBeInTheDocument();
-  }
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(otherSection.scrollIntoView).toHaveBeenCalled();
+  });
 
-  for (const item of items.slice(1)) {
-    for (const child of item.children ?? []) {
-      expect(screen.queryByText(child.label)).not.toBeInTheDocument();
-    }
-  }
-});
+  test('activeItem in border variant', () => {
+    const items = fakeItems();
 
-test('Does not run OnClick when disabled', async () => {
-  const items = fakeItems().map((item, index) => ({
-    ...item,
-    disabled: index % 2 === 0,
-  }));
+    render(
+      <div>
+        <PageMenu variant="border" />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
+        ),
+      }
+    );
 
-  render(
-    <div>
-      <PageMenu variant="border" />
-      {items.map((item) => (
-        <Section key={item.value} label={item.label} value={item.value} />
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
-      ),
-    }
-  );
+    const wrapper = screen.getByRole('button', {
+      name: items[0].label,
+    }).parentElement!;
 
-  const user = userEvent.setup();
+    expect(wrapper).toBeInTheDocument();
+    expect(wrapper).toHaveAttribute('aria-selected', 'true');
 
-  for (const item of items) {
-    expect(screen.queryAllByText(item.label).length).toBe(2);
-  }
+    const otherButtonWrapper = screen.getByRole('button', {
+      name: items[1].label,
+    }).parentElement!;
 
-  const button = screen.getByRole('button', { name: items[0].label });
+    expect(otherButtonWrapper).toHaveAttribute('aria-selected', 'false');
+  });
 
-  expect(button).toBeDisabled();
-  await user.click(button);
+  test('activeItem in border variant with children', () => {
+    const items = fakeItems(true);
 
-  const section = document.querySelector(`#${items[0].value}`)!;
+    render(
+      <div>
+        <PageMenu onlyShowSelectedChildren variant="border" />
+        {items.map((item) => (
+          <Section key={item.value} {...item}>
+            {item.children?.map((child) => (
+              <h2 key={child.value} id={child.value}>
+                {child.label + 'content'}
+              </h2>
+            ))}
+          </Section>
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
+        ),
+      }
+    );
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(section.scrollIntoView).not.toHaveBeenCalled();
+    const wrapper = screen.getByRole('button', {
+      name: items[0].label,
+    }).parentElement!.parentElement!;
 
-  // Expect other button _not_ to be disabled
-  const otherButton = screen.getByRole('button', { name: items[1].label });
+    expect(wrapper).toBeInTheDocument();
+    expect(wrapper).toHaveAttribute('aria-selected', 'true');
 
-  expect(otherButton).not.toBeDisabled();
+    const otherButtonWrapper = screen.getByRole('button', {
+      name: items[1].label,
+    }).parentElement!.parentElement!;
 
-  await user.click(otherButton);
-
-  const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(otherSection.scrollIntoView).toHaveBeenCalled();
-});
-
-test('activeItem in border variant', () => {
-  const items = fakeItems();
-
-  render(
-    <div>
-      <PageMenu variant="border" />
-      {items.map((item) => (
-        <Section key={item.value} label={item.label} value={item.value} />
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}> {props.children}</PageMenuProvider>
-      ),
-    }
-  );
-
-  const wrapper = screen.getByRole('button', {
-    name: items[0].label,
-  }).parentElement!;
-
-  expect(wrapper).toBeInTheDocument();
-  expect(wrapper).toHaveAttribute('aria-selected', 'true');
-
-  const otherButtonWrapper = screen.getByRole('button', {
-    name: items[1].label,
-  }).parentElement!;
-
-  expect(otherButtonWrapper).toHaveAttribute('aria-selected', 'false');
-});
-
-test('activeItem in border variant with children', () => {
-  const items = fakeItems(true);
-
-  render(
-    <div>
-      <PageMenu onlyShowSelectedChildren variant="border" />
-      {items.map((item) => (
-        <Section key={item.value} {...item}>
-          {item.children?.map((child) => (
-            <h2 key={child.value} id={child.value}>
-              {child.label + 'content'}
-            </h2>
-          ))}
-        </Section>
-      ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <PageMenuProvider items={items}>{props.children}</PageMenuProvider>
-      ),
-    }
-  );
-
-  const wrapper = screen.getByRole('button', {
-    name: items[0].label,
-  }).parentElement!.parentElement!;
-
-  expect(wrapper).toBeInTheDocument();
-  expect(wrapper).toHaveAttribute('aria-selected', 'true');
-
-  const otherButtonWrapper = screen.getByRole('button', {
-    name: items[1].label,
-  }).parentElement!.parentElement!;
-
-  expect(otherButtonWrapper).toHaveAttribute('aria-selected', 'false');
+    expect(otherButtonWrapper).toHaveAttribute('aria-selected', 'false');
+  });
 });
