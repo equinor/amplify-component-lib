@@ -1,5 +1,4 @@
 import { useAuth } from '../providers/AuthProvider/AuthProvider';
-import { usePageMenu } from '../providers/PageMenuProvider';
 import { useReleaseNotes } from '../providers/ReleaseNotesProvider';
 import { useSideBar } from '../providers/SideBarProvider';
 import { useSnackbar } from '../providers/SnackbarProvider';
@@ -13,6 +12,7 @@ import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
 import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
+import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
 
 export {
   useAuth,
@@ -23,7 +23,7 @@ export {
   useNotification,
   useOnScreen,
   useOnScreenMultiple,
-  usePageMenu,
+  useTableOfContents,
   usePrevious,
   useReleaseNotes,
   useReleaseNotesQuery,

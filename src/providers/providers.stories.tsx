@@ -5,9 +5,9 @@ import styled from 'styled-components';
 
 const providersList = [
   {
-    name: 'PageMenuProvider',
-    body: 'Provider to make PageMenu component work',
-    code: `<PageMenuProvider items={...}>{children}</PageMenuProvider>`,
+    name: 'TableOfContentsProvider',
+    body: 'Provider to make TableOfContents component work',
+    code: `<TableOfContentsProvider items={...}>{children}</TableOfContentsProvider>`,
   },
   {
     name: 'AuthProvider',

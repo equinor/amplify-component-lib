@@ -1,8 +1,8 @@
-import { PageMenuItemType } from './PageMenuProvider';
+import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
 
 export function getValues(
   previousValues: string[],
-  item: PageMenuItemType
+  item: TableOfContentsItemType
 ): string[] {
   if (item.children) {
     const childValues = [...previousValues, item.value];

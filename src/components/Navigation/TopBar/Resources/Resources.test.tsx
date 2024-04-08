@@ -20,6 +20,7 @@ import {
   SnackbarProvider,
 } from 'src/providers';
 import {
+  act,
   render,
   screen,
   userEvent,
@@ -444,19 +445,26 @@ describe('Resources', () => {
         const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
         await user.type(urlInput, wrongUrl);
 
-        urlInput.blur();
-        await waitForMS(1000);
+        act(() => {
+          urlInput.blur();
+        });
+        await act(async () => {
+          await waitForMS(1000);
+        });
         const helperText = screen.queryByText(/URL must be from a .equinor/i);
         expect(helperText!).toBeInTheDocument();
-
         await user.clear(urlInput);
 
         expect(helperText).not.toBeInTheDocument();
 
         await user.type(urlInput, wrongUrl);
 
-        urlInput.blur();
-        await waitForMS(1000);
+        act(() => {
+          urlInput.blur();
+        });
+        await act(async () => {
+          await waitForMS(1000);
+        });
         const helperTextAgain = screen.queryByText(
           /URL must be from a .equinor/i
         );
@@ -531,7 +539,9 @@ describe('Resources', () => {
           const submitButton = screen.getByTestId('submit-button');
           await user.click(submitButton);
 
-          await waitForMS(2500);
+          await act(async () => {
+            await waitForMS(2500);
+          });
 
           expect(
             screen.getByText(`Posting ${imageOne.name}`)
@@ -557,7 +567,9 @@ describe('Resources', () => {
           const submitButton = screen.getByTestId('submit-button');
           await user.click(submitButton);
 
-          await waitForMS(2500);
+          await act(async () => {
+            await waitForMS(2500);
+          });
 
           expect(
             screen.getByText(`Posting ${imageOne.name}`)
@@ -579,7 +591,9 @@ describe('Resources', () => {
 
           expect(titleInputAgain.value).toBe(currentTitleInputValue);
           await user.click(resetForm);
-          await waitForMS(1000);
+          await act(async () => {
+            await waitForMS(1000);
+          });
           expect(titleInputAgain.value).not.toBe(currentTitleInputValue);
         }, 10000); // Setting timeout for this test to be 10 seconds
 
@@ -630,7 +644,10 @@ describe('Resources', () => {
           const submitButton = screen.getByTestId('submit-button');
           expect(submitButton).not.toBeDisabled();
           await user.click(submitButton);
-          await waitForMS(2500);
+
+          await act(async () => {
+            await waitForMS(2500);
+          });
 
           await waitFor(
             () => expect(screen.getAllByText(/success/i).length).toBe(2),
@@ -681,7 +698,10 @@ describe('Resources', () => {
         const submitButton = screen.getByTestId('submit-button');
         const user = userEvent.setup();
         await user.click(submitButton);
-        await waitForMS(2500);
+
+        await act(async () => {
+          await waitForMS(2500);
+        });
 
         expect(
           screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)

@@ -247,7 +247,6 @@ describe('TutorialProvider', () => {
     const highlighterElement = screen.queryByTestId(
       TUTORIAL_HIGHLIGHTER_DATATEST_ID
     );
-    console.log(highlighterElement);
 
     expect(highlighterElement).toBeInTheDocument();
 
@@ -370,8 +369,6 @@ describe('TutorialProvider', () => {
     const highlighterElement = screen.queryByTestId(
       TUTORIAL_HIGHLIGHTER_DATATEST_ID
     );
-    console.log(highlighterElement);
-
     expect(highlighterElement).not.toBeInTheDocument();
 
     const skipDialogButton = screen.queryByText(/test/i);
