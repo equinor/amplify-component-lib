@@ -24,7 +24,8 @@ export const AppIdentifier = styled.button`
   flex-direction: row;
   align-items: center;
   gap: ${spacings.medium_small};
-  padding: 5px;
+  padding: 0;
+  outline-offset: ${spacings.x_small};
   &:hover {
     border-radius: 8px;
     outline: none;
