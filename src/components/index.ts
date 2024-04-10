@@ -44,6 +44,7 @@ export {
   portal,
   pwex,
   recap,
+  premo,
 } from './Icons/ApplicationIcon/ApplicationIconCollection';
 export { default as DataSharing } from './Icons/ApplicationIcon/Dasha';
 export { default as DataExperience } from './Icons/ApplicationIcon/FourDInsight';

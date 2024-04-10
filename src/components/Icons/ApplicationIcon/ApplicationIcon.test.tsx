@@ -12,6 +12,7 @@ import {
   loggingQualification,
   orca,
   portal,
+  premo,
   pwex,
   recap,
 } from './ApplicationIconCollection';
@@ -30,6 +31,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'orca',
   'inpress',
   'bravos',
+  'premo',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
@@ -49,6 +51,7 @@ const icons: IconsDict = {
   orca: orca,
   inpress: inPress,
   bravos: bravos,
+  premo: premo,
 };
 
 test('Render correctly with corresponding props', () => {
