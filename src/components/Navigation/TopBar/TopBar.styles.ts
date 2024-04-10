@@ -15,7 +15,8 @@ const { colors } = tokens;
 
 export const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  padding-left: 10px;
+  padding-left: ${spacings.medium};
+  align-content: center;
   position: relative;
 `;
 
@@ -24,13 +25,14 @@ export const AppIdentifier = styled.button`
   flex-direction: row;
   align-items: center;
   gap: ${spacings.medium_small};
-  padding: 5px;
+  padding: 0;
+  outline-offset: ${spacings.x_small};
   &:hover {
-    border-radius: 8px;
+    border-radius: 4px;
     outline: none;
   }
   &:focus {
-    border-radius: 8px;
+    border-radius: 4px;
     outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
 `;

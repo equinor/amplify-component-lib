@@ -50,6 +50,7 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
   }
   &:focus {
     outline: 1px dashed ${colors.interactive.primary__resting.rgba};
+    outline-offset: -1px;
     text-decoration: none;
   }
 `;

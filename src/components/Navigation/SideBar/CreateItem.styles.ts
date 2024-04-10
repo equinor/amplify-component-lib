@@ -30,4 +30,7 @@ export const CreateButton = styled(Button)<CreateButtonProps>`
   &:disabled {
     border: 0 solid transparent;
   }
+  > span {
+    ${(props) => props.$open && 'margin-left: -11px'};
+  }
 `;
