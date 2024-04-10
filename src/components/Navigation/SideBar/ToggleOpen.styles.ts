@@ -28,5 +28,6 @@ export const Container = styled.button<ContainerProps>`
   }
   &:focus {
     outline: 1px dashed ${colors.interactive.primary__resting.rgba};
+    outline-offset: -1px;
   }
 `;
