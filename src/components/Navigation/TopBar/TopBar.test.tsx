@@ -316,7 +316,7 @@ test('Renders with correct styles', () => {
     'padding-bottom',
     eds_spacings.comfortable.small
   );
-  expect(topBar).toHaveStyleRule('padding-left', '10px');
+  expect(topBar).toHaveStyleRule('padding-left', spacings.medium);
   expect(topBar).toHaveStyleRule('align-items', 'center');
   expect(topBar).toHaveStyleRule('height', '64px');
 
