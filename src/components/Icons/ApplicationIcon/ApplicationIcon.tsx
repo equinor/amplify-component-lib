@@ -9,6 +9,7 @@ import InPress from './InPress';
 import LoggingQualification from './LoggingQualification';
 import Orca from './Orca';
 import Portal from './Portal';
+import Premo from './Premo';
 import Pwex from './Pwex';
 import Recap from './Recap';
 import { AppIconProps } from 'src/types/AppIcon';
@@ -23,7 +24,8 @@ export type ApplicationName =
   | 'logging-qualification'
   | 'pwex'
   | 'inpress'
-  | 'bravos';
+  | 'bravos'
+  | 'premo';
 
 interface ApplicationIconData {
   appName: string;
@@ -40,6 +42,7 @@ const apps: ApplicationIconData[] = [
   { appName: 'pwex', component: Pwex },
   { appName: 'inpress', component: InPress },
   { appName: 'bravos', component: Bravos },
+  { appName: 'premo', component: Premo },
 ];
 
 export interface ApplicationIconProps {
