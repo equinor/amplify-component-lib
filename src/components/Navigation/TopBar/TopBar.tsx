@@ -5,7 +5,7 @@ import { Typography } from '@equinor/eds-core-react';
 import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
 import {
   AppAndFieldContainer,
-  AppIdentitfier,
+  AppIdentifier,
   AppName,
   Bar,
   CircularProgress,
@@ -49,8 +49,8 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
     return (
       <Bar ref={ref}>
         <AppAndFieldContainer>
-          <AppIdentitfier onClick={onHeaderClick} tabIndex={0}>
-            <ApplicationIcon name={applicationIcon} size={32} withHover />
+          <AppIdentifier onClick={onHeaderClick} tabIndex={0}>
+            <ApplicationIcon name={applicationIcon} size={36} withHover />
             <AppName
               group="navigation"
               variant="menu_title"
@@ -58,7 +58,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
             >
               {capitalize ? applicationName.toLowerCase() : applicationName}
             </AppName>
-          </AppIdentitfier>
+          </AppIdentifier>
           {availableFields && onSelectField && (
             <FieldSelector
               availableFields={availableFields}

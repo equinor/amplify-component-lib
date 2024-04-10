@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
@@ -106,39 +107,41 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
     },
   ];
   return (
-    <Template>
-      <TopBar
-        onHeaderClick={() => console.log('Going to homepage')}
-        capitalize={args.capitalize}
-        applicationIcon={args.applicationIcon}
-        applicationName={args.applicationName}
-        isFetching={args.isFetching}
-        environment={args.environment}
-      >
-        <TopBar.Actions>
-          <TopBar.Account
-            account={FAKE_ACCOUNT}
-            photo={FAKE_ACCOUNT_PHOTO}
-            roles={['Admin']}
-            logout={() => console.log('logged out')}
-          />
-        </TopBar.Actions>
-      </TopBar>
-      <Template.Container>
-        <SideBarProvider>
-          <SideBar
-            createLabel="Create something"
-            onCreate={() => console.log('Created 🖋')}
-          >
-            {menuItems.map((m, index) => (
-              <SideBar.Item key={m.name} {...m} disabled={index === 0} />
-            ))}
-          </SideBar>
-        </SideBarProvider>
-        <Template.Content $open={false}>
-          <h1>Content goes here</h1>
-        </Template.Content>
-      </Template.Container>
-    </Template>
+    <MemoryRouter>
+      <Template>
+        <TopBar
+          onHeaderClick={() => console.log('Going to homepage')}
+          capitalize={args.capitalize}
+          applicationIcon={args.applicationIcon}
+          applicationName={args.applicationName}
+          isFetching={args.isFetching}
+          environment={args.environment}
+        >
+          <TopBar.Actions>
+            <TopBar.Account
+              account={FAKE_ACCOUNT}
+              photo={FAKE_ACCOUNT_PHOTO}
+              roles={['Admin']}
+              logout={() => console.log('logged out')}
+            />
+          </TopBar.Actions>
+        </TopBar>
+        <Template.Container>
+          <SideBarProvider>
+            <SideBar
+              createLabel="Create something"
+              onCreate={() => console.log('Created 🖋')}
+            >
+              {menuItems.map((m, index) => (
+                <SideBar.Item key={m.name} {...m} disabled={index === 0} />
+              ))}
+            </SideBar>
+          </SideBarProvider>
+          <Template.Content $open={false}>
+            <h1>Content goes here</h1>
+          </Template.Content>
+        </Template.Container>
+      </Template>
+    </MemoryRouter>
   );
 };

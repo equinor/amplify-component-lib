@@ -15,11 +15,11 @@ const { colors } = tokens;
 
 export const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  padding-left: ${spacings.medium};
+  padding-left: 10px;
   position: relative;
 `;
 
-export const AppIdentitfier = styled.button`
+export const AppIdentifier = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -37,7 +37,7 @@ export const AppIdentitfier = styled.button`
 
 export const AppAndFieldContainer = styled(EDSTopBar.Header)`
   display: flex;
-  flex-direction: row;
+  align-items: center;
   gap: ${spacings.medium};
 `;
 
