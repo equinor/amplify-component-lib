@@ -56,13 +56,11 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
 `;
 
 export const IconContainer = styled.div`
+  padding: ${spacings.x_small};
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
-  > svg {
-    padding: ${spacings.x_small};
-  }
 `;
 
 interface ItemTextProps {
