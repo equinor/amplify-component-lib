@@ -4,13 +4,13 @@ import { faker } from '@faker-js/faker';
 
 import TopBar from '.';
 import { spacings } from 'src/style';
-import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import { act, render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 import { EnvironmentType } from 'src/types/Environment';
 import { Field } from 'src/types/Field';
 
 import { expect } from 'vitest';
 
-const { colors } = tokens;
+const { colors, spacings: eds_spacings } = tokens;
 
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
@@ -170,7 +170,9 @@ test('close on resize ', async () => {
   expect(screen.getByTestId('top-bar-menu')).toBeInTheDocument();
 
   vi.stubGlobal(800, 600);
-  global.dispatchEvent(new Event('resize'));
+  act(() => {
+    global.dispatchEvent(new Event('resize'));
+  });
 
   await waitFor(
     () => expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument(),
@@ -305,16 +307,16 @@ test('Renders with correct styles', () => {
     'background',
     colors.ui.background__default.rgba
   );
-  expect(topBar).toHaveStyleRule('padding-top', `8px`);
+  expect(topBar).toHaveStyleRule('padding-top', eds_spacings.comfortable.small);
   expect(topBar).toHaveStyleRule(
     'padding-right',
-    `24px`
+    eds_spacings.comfortable.large
   );
   expect(topBar).toHaveStyleRule(
     'padding-bottom',
-    `8px`
+    eds_spacings.comfortable.small
   );
-  expect(topBar).toHaveStyleRule('padding-left', `${spacings.medium}`);
+  expect(topBar).toHaveStyleRule('padding-left', spacings.medium);
   expect(topBar).toHaveStyleRule('align-items', 'center');
   expect(topBar).toHaveStyleRule('height', '64px');
 

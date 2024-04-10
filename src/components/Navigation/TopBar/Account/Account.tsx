@@ -9,59 +9,19 @@ import {
 } from 'react';
 
 import { AccountInfo } from '@azure/msal-common';
-import { Button, Chip, Icon, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
+import {
+  ButtonWrapper,
+  Container,
+  ProfileButton,
+  RoleChip,
+  RolesContainer,
+  TextContent,
+} from './Account.styles';
 import ProfileAvatar from 'src/components/DataDisplay/ProfileAvatar';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
-import { spacings } from 'src/style';
-
-import styled from 'styled-components';
-
-const { colors } = tokens;
-
-const ProfileButton = styled.button`
-  border-radius: 50%;
-  background: none;
-  cursor: pointer;
-`;
-
-const Container = styled.div`
-  padding: ${spacings.medium} ${spacings.small} 0 ${spacings.small};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${spacings.small};
-  > div:first-child {
-    border: 1px solid ${colors.text.static_icons__primary_white.rgba};
-    border-radius: 50%;
-  }
-`;
-
-const TextContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const RolesContainer = styled.section`
-  display: flex;
-  gap: ${spacings.small};
-  margin-top: ${spacings.small};
-`;
-
-const RoleChip = styled(Chip)`
-  background: ${colors.ui.background__light.rgba};
-  border: 1px solid ${colors.ui.background__medium.rgba};
-  color: ${colors.text.static_icons__default.rgba};
-`;
-
-const ButtonWrapper = styled.div`
-  display: grid;
-  margin-top: ${spacings.x_large};
-  justify-content: center;
-`;
 
 export interface AccountProps {
   account: AccountInfo | undefined;

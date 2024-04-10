@@ -10,40 +10,48 @@ import {
   useState,
 } from 'react';
 
-import { getValues } from './PageMenuProvider.utils';
+import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
+import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 
-export interface PageMenuItemType {
+export interface TableOfContentsItemType {
   label: string;
   value: string;
-  children?: PageMenuItemType[];
+  disabled?: boolean;
+  children?: TableOfContentsItemType[];
 }
 
-interface PageMenuContextType {
-  items: PageMenuItemType[];
+interface TableOfContentsContextType {
+  items: TableOfContentsItemType[];
   selected: string | undefined;
   setSelected: (value: string) => void;
-  isActive: (item: PageMenuItemType) => boolean;
+  isActive: (
+    item: TableOfContentsItemType,
+    variant: TableOfContentsVariants
+  ) => boolean;
 }
 
-const PageMenuContext = createContext<PageMenuContextType | undefined>(
-  undefined
-);
+const TableOfContentsContext = createContext<
+  TableOfContentsContextType | undefined
+>(undefined);
 
-export function usePageMenu() {
-  const context = useContext(PageMenuContext);
+export function useTableOfContents() {
+  const context = useContext(TableOfContentsContext);
   if (context === undefined) {
-    throw new Error("'usePageMenu' must be used within provider");
+    throw new Error("'useTableOfContents' must be used within provider");
   }
   return context;
 }
 
-export interface PageMenuProviderProps {
-  items: PageMenuItemType[];
+export interface TableOfContentsProviderProps {
+  items: TableOfContentsItemType[];
   children: ReactNode;
 }
 
-const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
+const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
+  items,
+  children,
+}) => {
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
 
@@ -58,10 +66,11 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   }, [values]);
 
   const isActive = useCallback(
-    (item: PageMenuItemType) => {
+    (item: TableOfContentsItemType, variant: TableOfContentsVariants) => {
       if (item.value === selected) return true;
 
-      if (item.children && selected) {
+      // In the 'border' variant we don't want parents to be set as active
+      if (item.children && selected && variant === 'buttons') {
         const childValues = getValues([], item);
         return childValues.includes(selected);
       }
@@ -74,7 +83,7 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
 
   const isScrollingTo = useRef<number>(-1);
 
-  // If the user clicks on an item in the PageMenu that isn't visible now, we want to scroll to it
+  // If the user clicks on an item in the TableOfContents that isn't visible now, we want to scroll to it
   const handleSetSelected = useCallback(
     (value: string) => {
       const selectedIndex = values.findIndex(
@@ -136,12 +145,12 @@ const PageMenuProvider: FC<PageMenuProviderProps> = ({ items, children }) => {
   /* c8 ignore end */
 
   return (
-    <PageMenuContext.Provider
+    <TableOfContentsContext.Provider
       value={{ items, selected, setSelected: handleSetSelected, isActive }}
     >
       {children}
-    </PageMenuContext.Provider>
+    </TableOfContentsContext.Provider>
   );
 };
 
-export default PageMenuProvider;
+export default TableOfContentsProvider;

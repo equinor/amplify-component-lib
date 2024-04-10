@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { renderHook, waitFor } from '../tests/test-utils';
+import { act, renderHook, waitFor } from '../tests/test-utils';
 import ReleaseNotesProvider, { useReleaseNotes } from './ReleaseNotesProvider';
 import { CancelablePromise } from 'src/api';
 import { ReleaseNoteType } from 'src/components/Navigation/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
@@ -109,10 +109,12 @@ describe('Release notes provider', () => {
     expect(result.current.search.searchValue).toBe(undefined);
     expect(result.current.search.sortValue).toBe(undefined);
 
-    result.current.setSearch({
-      filterValues: {},
-      searchValue: '',
-      sortValue: { label: '', value: '' },
+    act(() => {
+      result.current.setSearch({
+        filterValues: {},
+        searchValue: '',
+        sortValue: { label: '', value: '' },
+      });
     });
     await waitFor(
       () => {
@@ -148,10 +150,12 @@ describe('Release notes provider', () => {
       wrapper: Wrappers,
     });
 
-    result.current.setSearch({
-      filterValues: undefined,
-      searchValue: 'qwerty qwert',
-      sortValue: undefined,
+    act(() => {
+      result.current.setSearch({
+        filterValues: undefined,
+        searchValue: 'qwerty qwert',
+        sortValue: undefined,
+      });
     });
 
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
@@ -169,10 +173,12 @@ describe('Release notes provider', () => {
       wrapper: Wrappers,
     });
 
-    result.current.setSearch({
-      filterValues: undefined,
-      searchValue: ' qwert',
-      sortValue: undefined,
+    act(() => {
+      result.current.setSearch({
+        filterValues: undefined,
+        searchValue: ' qwert',
+        sortValue: undefined,
+      });
     });
 
     const expected = [
@@ -202,14 +208,16 @@ describe('Release notes provider', () => {
       wrapper: Wrappers,
     });
 
-    result.current.setSearch({
-      filterValues: {
-        Type: [
-          { label: ReleaseNoteType.FEATURE, value: ReleaseNoteType.FEATURE },
-        ],
-      },
-      searchValue: undefined,
-      sortValue: undefined,
+    act(() => {
+      result.current.setSearch({
+        filterValues: {
+          Type: [
+            { label: ReleaseNoteType.FEATURE, value: ReleaseNoteType.FEATURE },
+          ],
+        },
+        searchValue: undefined,
+        sortValue: undefined,
+      });
     });
 
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
@@ -227,14 +235,16 @@ describe('Release notes provider', () => {
       wrapper: Wrappers,
     });
 
-    result.current.setSearch({
-      filterValues: {
-        Type: [
-          { label: ReleaseNoteType.BUG_FIX, value: ReleaseNoteType.BUG_FIX },
-        ],
-      },
-      searchValue: undefined,
-      sortValue: undefined,
+    act(() => {
+      result.current.setSearch({
+        filterValues: {
+          Type: [
+            { label: ReleaseNoteType.BUG_FIX, value: ReleaseNoteType.BUG_FIX },
+          ],
+        },
+        searchValue: undefined,
+        sortValue: undefined,
+      });
     });
 
     // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect

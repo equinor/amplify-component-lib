@@ -1,8 +1,9 @@
+import { useNotification } from '../components/Navigation/TopBar/Notifications/NotificationProvider';
 import { useAuth } from '../providers/AuthProvider/AuthProvider';
-import { usePageMenu } from '../providers/PageMenuProvider';
 import { useReleaseNotes } from '../providers/ReleaseNotesProvider';
 import { useSideBar } from '../providers/SideBarProvider';
 import { useSnackbar } from '../providers/SnackbarProvider';
+import { useTableOfContents } from '../providers/TableOfContentsProvider';
 import { useTutorialSteps } from '../providers/TutorialStepsProvider';
 import { useDebounce } from './useDebounce';
 import { useFakeProgress } from './useFakeProgress';
@@ -12,7 +13,6 @@ import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
-import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
 
 export {
   useAuth,
@@ -23,7 +23,7 @@ export {
   useNotification,
   useOnScreen,
   useOnScreenMultiple,
-  usePageMenu,
+  useTableOfContents,
   usePrevious,
   useReleaseNotes,
   useReleaseNotesQuery,
