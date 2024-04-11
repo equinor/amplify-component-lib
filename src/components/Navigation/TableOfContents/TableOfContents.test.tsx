@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 
@@ -55,10 +56,12 @@ describe('button variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -97,9 +100,11 @@ describe('button variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -130,10 +135,12 @@ describe('button variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -181,10 +188,12 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -223,9 +232,11 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -256,10 +267,12 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -305,10 +318,12 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -345,9 +360,11 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );

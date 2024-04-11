@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 
@@ -36,9 +37,11 @@ test('SetItemRef works as expected', () => {
     </div>,
     {
       wrapper: (props: { children: ReactNode }) => (
-        <TableOfContentsProvider items={items}>
-          {props.children}
-        </TableOfContentsProvider>
+        <MemoryRouter>
+          <TableOfContentsProvider items={items}>
+            {props.children}
+          </TableOfContentsProvider>
+        </MemoryRouter>
       ),
     }
   );
