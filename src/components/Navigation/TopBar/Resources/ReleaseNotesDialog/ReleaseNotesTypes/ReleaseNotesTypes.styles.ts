@@ -12,7 +12,8 @@ const StyledChipButton = styled(Button)`
   color: ${colors.text.static_icons__default.rgba};
   background: ${colors.ui.background__light.rgba};
   border: 1px solid ${colors.ui.background__medium.rgba};
-  padding: 4px 10px;
+  padding: ${spacings.x_small} ${spacings.small};
+  height: auto;
 
   span > p {
     color: ${colors.text.static_icons__default.rgba};
@@ -33,12 +34,10 @@ const StyledChip = styled.div`
   align-items: center;
   grid-gap: ${spacings.small};
   border-radius: ${shape.rounded.borderRadius};
-
-  &:hover {
-  }
-  background-color: ${colors.ui.background__warning.rgba};
+  height: auto;
+  background-color: ${colors.ui.background__light.rgba};
   color: ${colors.text.static_icons__default.rgba};
-  padding: 4px 10px;
+  padding: ${spacings.x_small} ${spacings.small};
 
   > p {
     line-height: normal;
@@ -52,8 +51,8 @@ interface DotProps {
 }
 
 const Dot = styled.span<DotProps>`
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background-color: ${({ $dotColor }) => $dotColor};
   position: relative;
