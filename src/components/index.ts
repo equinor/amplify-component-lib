@@ -133,6 +133,7 @@ export type {
   TabsProps,
   TypographyProps,
   DividerProps,
+  Card,
 } from '@equinor/eds-core-react';
 export {
   Breadcrumbs,
