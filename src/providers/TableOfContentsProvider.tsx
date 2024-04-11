@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router';
 
 import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
@@ -46,12 +47,15 @@ export function useTableOfContents() {
 export interface TableOfContentsProviderProps {
   items: TableOfContentsItemType[];
   children: ReactNode;
+  hashNavigation?: boolean;
 }
 
 const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   items,
   children,
+  hashNavigation,
 }) => {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
 
@@ -106,6 +110,9 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
             same += 1;
             if (same > 1) {
               setSelected(values[selectedIndex]);
+              if (hashNavigation) {
+                navigate(`#${values[selectedIndex]}`);
+              }
               isScrollingTo.current = -1;
               return;
             }
@@ -119,7 +126,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         requestAnimationFrame(checkScrollDone);
       }
     },
-    [elements, values]
+    [elements, hashNavigation, navigate, values]
   );
 
   // Handle change of selected when scrolling down the page
@@ -140,8 +147,11 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     }
     if (newSelectedIndex !== -1 && values.at(newSelectedIndex) !== undefined) {
       setSelected(values[newSelectedIndex]);
+      if (hashNavigation) {
+        navigate(`#${values[newSelectedIndex]}`);
+      }
     }
-  }, [values, visible]);
+  }, [hashNavigation, navigate, values, visible]);
   /* c8 ignore end */
 
   return (
