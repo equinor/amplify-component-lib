@@ -19,7 +19,6 @@ export const Button = styled.button<ButtonProps>`
   gap: ${spacings.xx_small};
   color: ${colors.text.static_icons__default.rgba};
   border: none;
-  padding: ${spacings.medium_small} ${spacings.medium};
   text-align: left;
   cursor: pointer;
   font-family: 'Equinor', sans-serif;
@@ -30,6 +29,7 @@ export const Button = styled.button<ButtonProps>`
     switch ($variant) {
       case 'buttons':
         return `
+          padding: ${spacings.medium_small} ${spacings.medium};
           border-radius: ${shape.corners.borderRadius};
           background: ${$active ? colors.interactive.primary__hover_alt.rgba : 'none'};
           &:hover {
@@ -38,8 +38,10 @@ export const Button = styled.button<ButtonProps>`
         `;
       case 'border':
         return `
-          height: 48px;
+          padding: ${spacings.small} ${spacings.medium};
           font-weight: ${$active ? 700 : 500};
+          // Font height of the equinor for is wonky, this makes it look more vertically aligned
+          line-height: 10px;
           &:hover {
             background: ${colors.interactive.primary__hover_alt.rgba};
           }
