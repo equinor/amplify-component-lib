@@ -326,3 +326,44 @@ export const WithChildrenAndBordersDisabled: StoryFn<StoryProps> = (args) => {
     </MemoryRouter>
   );
 };
+
+export const WithChildrenAndCounts: StoryFn<StoryProps> = (args) => {
+  return (
+    <MemoryRouter>
+      <TableOfContentsProvider
+        items={ITEMS_WITH_CHILDREN.map((item) => ({
+          ...item,
+          count: Math.ceil(Math.random() * 10),
+          children:
+            item.children?.map((child) => ({
+              ...child,
+              count: Math.ceil(Math.random() * 10),
+            })) ?? [],
+        }))}
+      >
+        <Container>
+          <TableOfContents {...args} variant="border" />
+          <section>
+            {ITEMS_WITH_CHILDREN.map((item) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={faker.color.rgb()}
+              >
+                {item.children?.map((child) => (
+                  <Section
+                    key={child.value}
+                    label={child.label}
+                    value={child.value}
+                    color={faker.color.rgb()}
+                  />
+                ))}
+              </Section>
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    </MemoryRouter>
+  );
+};

@@ -76,9 +76,11 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
       <Container className="page-menu" $variant={variant} layoutRoot>
         {items.map((item, index) => (
           <BorderItemsContainer
+            data-testid={`border-items-container-${item.value}`}
             key={item.value}
             $index={index}
             $activeIndex={activeIndex}
+            aria-selected={activeIndex === index}
           >
             <TableOfContentsItem
               index={index}

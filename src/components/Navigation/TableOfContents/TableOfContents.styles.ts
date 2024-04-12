@@ -15,53 +15,78 @@ interface ButtonProps {
 }
 
 export const Button = styled.button<ButtonProps>`
-  display: block;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: ${spacings.small};
   color: ${colors.text.static_icons__default.rgba};
-  border: none;
-  text-align: left;
   cursor: pointer;
-  font-family: 'Equinor', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
+  padding: 0 ${spacings.medium};
+  height: ${({ $variant }) => HEIGHT[$variant]};
   transition: background 200ms;
   &:hover {
     background: ${colors.interactive.primary__hover_alt.rgba};
   }
+  > span {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: left;
+    font-family: 'Equinor', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
   ${({ $variant, $active }) => {
     switch ($variant) {
       case 'buttons':
-        return `
-          padding: ${spacings.medium_small} ${spacings.medium};
+        return css`
           border-radius: ${shape.corners.borderRadius};
-          background: ${$active ? colors.interactive.primary__hover_alt.rgba : 'none'};
+          background: ${$active
+            ? colors.interactive.primary__hover_alt.rgba
+            : 'none'};
         `;
       case 'border':
-        return `
-          width: 100%;
-          padding: ${spacings.medium_small} ${spacings.medium};
-          font-weight: ${$active ? 700 : 500};
-          // Font height of the equinor for is wonky, this makes it look more vertically aligned
-          line-height: 10px;
-          &:after {
-            height: 0;
-            display: block; 
-            content: attr(title);
-            font-weight: 700;
-            color: transparent;
-            overflow: hidden;
-            visibility: hidden;
+        return css`
+          > span {
+            font-weight: ${$active ? 700 : 500};
+            &:after {
+              height: 0;
+              display: block;
+              content: attr(title);
+              font-weight: 700;
+              font-size: 14px;
+              overflow: hidden;
+              visibility: hidden;
+            }
           }
         `;
     }
   }}
   ${({ $active }) =>
     !$active &&
-    `
-    &:disabled {
-      color: ${colors.interactive.disabled__text.rgba};
-      cursor: not-allowed;
-    }
-  `}
+    css`
+      &:disabled {
+        color: ${colors.interactive.disabled__text.rgba};
+        cursor: not-allowed;
+      }
+    `}
+`;
+
+export const CountDot = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  > span {
+    font-weight: 500;
+    font-size: 12px;
+    color: ${colors.text.static_icons__tertiary.rgba};
+    padding: 0 ${spacings.x_small};
+  }
+  background: ${colors.ui.background__medium.rgba};
+  width: fit-content;
+  height: 16px;
+  border-radius: ${shape.rounded.borderRadius};
 `;
 
 interface BorderItemsContainerProps {
@@ -107,16 +132,20 @@ interface ChildContainerProps {
 export const ChildContainer = styled(motion.div)<ChildContainerProps>`
   display: flex;
   flex-direction: column;
-  ${({ $variant }) => $variant === 'buttons' && `gap:${spacings.x_small};`}
-
-  > button {
+  > div > button {
     ${({ $variant }) => {
       switch ($variant) {
         case 'buttons':
-          return `margin-left: ${spacings.medium};`;
+          return css`
+            margin-left: ${spacings.medium};
+          `;
         case 'border':
-          return `padding-left: ${spacings.x_large};`;
+          return css`
+            padding-left: ${spacings.x_large};
+          `;
       }
     }}
   }
+
+  ${({ $variant }) => $variant === 'buttons' && `gap:${spacings.x_small};`}
 `;

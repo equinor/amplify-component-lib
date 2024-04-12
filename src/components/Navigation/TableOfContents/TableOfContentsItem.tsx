@@ -1,7 +1,14 @@
 import { FC, useEffect, useMemo, useRef } from 'react';
 
+import { Typography } from '@equinor/eds-core-react';
+
 import { GAP, HEIGHT } from './TableOfContents.constants';
-import { Button, ChildContainer, Container } from './TableOfContents.styles';
+import {
+  Button,
+  ChildContainer,
+  Container,
+  CountDot,
+} from './TableOfContents.styles';
 import { TableOfContentsVariants } from './TableOfContents.types';
 import {
   TableOfContentsItemType,
@@ -22,6 +29,7 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   index = 1,
   label,
   value,
+  count,
   disabled = false,
   children,
   variant,
@@ -37,20 +45,8 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   }, []);
 
   const active = useMemo(
-    () =>
-      isActive(
-        { label, value, children },
-        onlyShowSelectedChildren ? 'buttons' : variant
-      ) && !disabled,
-    [
-      children,
-      disabled,
-      isActive,
-      label,
-      onlyShowSelectedChildren,
-      value,
-      variant,
-    ]
+    () => isActive({ label, value, children }, variant) && !disabled,
+    [children, disabled, isActive, label, value, variant]
   );
 
   const handleOnClick = () => {
@@ -67,9 +63,15 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
         $variant={variant}
         onClick={handleOnClick}
         disabled={active || disabled}
-        title={label}
       >
-        {label}
+        <span title={label}>{label}</span>
+        {count !== undefined && (
+          <CountDot className="count-dot">
+            <Typography as="span" variant="label" group="navigation">
+              {count}
+            </Typography>
+          </CountDot>
+        )}
       </Button>
       {children && (
         <AnimatePresence>
