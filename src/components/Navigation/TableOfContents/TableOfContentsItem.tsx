@@ -29,7 +29,6 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   label,
   value,
   count,
-  activeParent = false,
   disabled = false,
   children,
   variant,
@@ -45,25 +44,24 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   }, []);
 
   const active = useMemo(
-    () => isActive({ label, value, children }, variant) && !disabled,
+    () => isActive({ label, value, children }) && !disabled,
     [children, disabled, isActive, label, value, variant]
   );
 
   const handleOnClick = () => {
-    if (!active && !disabled) setSelected(value);
+    if (!disabled && selected !== value) setSelected(value);
   };
 
   const shouldShowChildren: boolean =
-    (onlyShowSelectedChildren && (active || activeParent)) ||
-    !onlyShowSelectedChildren;
+    (onlyShowSelectedChildren && active) || !onlyShowSelectedChildren;
 
   return (
     <Container $variant={variant} layoutScroll layoutRoot>
       <Button
-        $active={active}
+        $active={selected === value}
         $variant={variant}
         onClick={handleOnClick}
-        disabled={active || disabled}
+        disabled={disabled}
       >
         <span title={label}>{label}</span>
         {count !== undefined && (

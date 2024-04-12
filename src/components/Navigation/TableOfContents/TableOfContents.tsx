@@ -84,7 +84,6 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
           >
             <TableOfContentsItem
               variant={variant}
-              activeParent={activeIndex === index}
               {...item}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
             />

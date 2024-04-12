@@ -27,10 +27,7 @@ interface TableOfContentsContextType {
   items: TableOfContentsItemType[];
   selected: string | undefined;
   setSelected: (value: string) => void;
-  isActive: (
-    item: TableOfContentsItemType,
-    variant: TableOfContentsVariants
-  ) => boolean;
+  isActive: (item: TableOfContentsItemType) => boolean;
 }
 
 const TableOfContentsContext = createContext<
@@ -71,11 +68,11 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   }, [values]);
 
   const isActive = useCallback(
-    (item: TableOfContentsItemType, variant: TableOfContentsVariants) => {
+    (item: TableOfContentsItemType) => {
       if (item.value === selected) return true;
 
       // In the 'border' variant we don't want parents to be set as active
-      if (item.children && selected && variant === 'buttons') {
+      if (item.children && selected) {
         const childValues = getValues([], item);
         return childValues.includes(selected);
       }
