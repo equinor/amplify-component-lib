@@ -20,22 +20,22 @@ import { spacings } from 'src/style';
 import { AnimatePresence } from 'framer-motion';
 
 interface TableOfContentsItemProps extends TableOfContentsItemType {
-  index?: number;
   onlyShowSelectedChildren: boolean;
   variant: TableOfContentsVariants;
+  activeParent?: boolean;
 }
 
 const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
-  index = 1,
   label,
   value,
   count,
+  activeParent = false,
   disabled = false,
   children,
   variant,
   onlyShowSelectedChildren,
 }) => {
-  const { items, isActive, selected, setSelected } = useTableOfContents();
+  const { isActive, selected, setSelected } = useTableOfContents();
   const initialHeight = useRef<number | undefined>(undefined);
 
   useEffect(() => {
@@ -54,7 +54,8 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   };
 
   const shouldShowChildren: boolean =
-    (onlyShowSelectedChildren && active) || !onlyShowSelectedChildren;
+    (onlyShowSelectedChildren && (active || activeParent)) ||
+    !onlyShowSelectedChildren;
 
   return (
     <Container $variant={variant} layoutScroll layoutRoot>

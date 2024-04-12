@@ -83,8 +83,8 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
             aria-selected={activeIndex === index}
           >
             <TableOfContentsItem
-              index={index}
               variant={variant}
+              activeParent={activeIndex === index}
               {...item}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
             />
