@@ -56,7 +56,6 @@ const Container = styled.div`
     position: sticky;
     top: 12px;
     left: 12px;
-    height: fit-content;
   }
   > section {
     max-height: 50rem;

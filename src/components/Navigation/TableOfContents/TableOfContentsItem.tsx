@@ -1,77 +1,111 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useRef } from 'react';
 
-import {
-  Button,
-  Container,
-} from 'src/components/Navigation/TableOfContents/TableOfContents.styles';
-import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
+import { GAP, HEIGHT } from './TableOfContents.constants';
+import { Button, ChildContainer, Container } from './TableOfContents.styles';
+import { TableOfContentsVariants } from './TableOfContents.types';
 import {
   TableOfContentsItemType,
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
+import { getValues } from 'src/providers/TableOfContentsProvider.utils';
+import { spacings } from 'src/style';
+
+import { AnimatePresence } from 'framer-motion';
 
 interface TableOfContentsItemProps extends TableOfContentsItemType {
+  index?: number;
   onlyShowSelectedChildren: boolean;
   variant: TableOfContentsVariants;
-  layer?: number;
 }
 
 const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
+  index = 1,
   label,
   value,
   disabled = false,
   children,
   variant,
   onlyShowSelectedChildren,
-  layer = 0,
 }) => {
-  const { isActive, setSelected } = useTableOfContents();
+  const { items, isActive, selected, setSelected } = useTableOfContents();
+  const initialHeight = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (initialHeight.current === undefined) {
+      initialHeight.current = 0;
+    }
+  }, []);
 
   const active = useMemo(
-    () => isActive({ label, value, children }, variant) && !disabled,
-    [children, disabled, isActive, label, value, variant]
+    () =>
+      isActive(
+        { label, value, children },
+        onlyShowSelectedChildren ? 'buttons' : variant
+      ) && !disabled,
+    [
+      children,
+      disabled,
+      isActive,
+      label,
+      onlyShowSelectedChildren,
+      value,
+      variant,
+    ]
   );
 
   const handleOnClick = () => {
     if (!active && !disabled) setSelected(value);
   };
 
-  if (children) {
-    return (
-      <Container $layer={layer} $variant={variant}>
-        <Button
-          $active={active}
-          $variant={variant}
-          onClick={handleOnClick}
-          disabled={active || disabled}
-          title={label}
-        >
-          {label}
-        </Button>
-        {((onlyShowSelectedChildren && active) || !onlyShowSelectedChildren) &&
-          children.map((child) => (
-            <TableOfContentsItem
-              key={`${value}-child-${child.value}`}
-              onlyShowSelectedChildren={onlyShowSelectedChildren}
-              layer={layer + 1}
-              variant={variant}
-              {...child}
-            />
-          ))}
-      </Container>
-    );
-  }
+  const shouldShowChildren: boolean =
+    (onlyShowSelectedChildren && active) || !onlyShowSelectedChildren;
 
   return (
-    <Button
-      $active={active}
-      $variant={variant}
-      onClick={handleOnClick}
-      disabled={active || disabled}
-      title={label}
-    >
-      {label}
-    </Button>
+    <Container $variant={variant} layoutScroll layoutRoot>
+      <Button
+        $active={active}
+        $variant={variant}
+        onClick={handleOnClick}
+        disabled={active || disabled}
+        title={label}
+      >
+        {label}
+      </Button>
+      {children && (
+        <AnimatePresence>
+          {shouldShowChildren && (
+            <ChildContainer
+              $variant={variant}
+              initial={{ height: initialHeight.current }}
+              animate={{
+                height: `
+                  calc(
+                    (${HEIGHT[variant]} * ${children.length}) 
+                    ${
+                      variant === 'buttons'
+                        ? `+ (${GAP.buttons} * ${children.length - 1})`
+                        : ''
+                    }
+                  )`,
+              }}
+              exit={{
+                height: 0,
+              }}
+              transition={{ duration: 0.4 }}
+            >
+              {children.map((child) => (
+                <TableOfContentsItem
+                  key={child.value}
+                  onlyShowSelectedChildren={onlyShowSelectedChildren}
+                  variant={variant}
+                  {...child}
+                />
+              ))}
+            </ChildContainer>
+          )}
+        </AnimatePresence>
+      )}
+    </Container>
   );
 };
 

@@ -2,14 +2,15 @@ import { FC, useMemo } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
+import { TableOfContentsVariants } from './TableOfContents.types';
+import TableOfContentsItem from './TableOfContentsItem';
 import { BorderItemsContainer } from 'src/components/Navigation/TableOfContents/TableOfContents.styles';
-import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
-import TableOfContentsItem from 'src/components/Navigation/TableOfContents/TableOfContentsItem';
 import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 import { spacings } from 'src/style';
 
-import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import styled, { css } from 'styled-components';
 
 const { colors } = tokens;
 
@@ -17,15 +18,26 @@ interface ContainerProps {
   $variant: TableOfContentsVariants;
 }
 
-const Container = styled.div<ContainerProps>`
+const Container = styled(motion.div)<ContainerProps>`
   display: flex;
   flex-direction: column;
+  height: fit-content;
+  overflow: hidden;
   ${({ $variant }) => {
     switch ($variant) {
       case 'buttons':
         return `gap: ${spacings.small};`;
       case 'border':
-        return `border-left: 2px solid ${colors.ui.background__medium.rgba};`;
+        return css`
+          &:after {
+            position: absolute;
+            left: 0;
+            content: '';
+            width: 2px;
+            height: 100%;
+            background: ${colors.ui.background__medium.rgba};
+          }
+        `;
     }
   }}
 `;
@@ -61,16 +73,15 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
 
   if (variant === 'border') {
     return (
-      <Container className="page-menu" $variant={variant}>
+      <Container className="page-menu" $variant={variant} layoutRoot>
         {items.map((item, index) => (
           <BorderItemsContainer
-            key={`page-menu-item-container-${item.value}-${index}`}
+            key={item.value}
             $index={index}
             $activeIndex={activeIndex}
-            aria-selected={activeIndex === index}
           >
             <TableOfContentsItem
-              key={`page-menu-item-${item.value}`}
+              index={index}
               variant={variant}
               {...item}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
@@ -82,10 +93,10 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
   }
 
   return (
-    <Container className="page-menu" $variant={variant}>
+    <Container className="page-menu" $variant={variant} layoutRoot>
       {items.map((item) => (
         <TableOfContentsItem
-          key={`page-menu-item-${item.value}`}
+          key={item.value}
           variant={variant}
           {...item}
           onlyShowSelectedChildren={onlyShowSelectedChildren}
