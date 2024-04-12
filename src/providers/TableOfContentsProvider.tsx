@@ -11,7 +11,6 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router';
 
-import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 

@@ -14,8 +14,6 @@ import {
   TableOfContentsItemType,
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
-import { getValues } from 'src/providers/TableOfContentsProvider.utils';
-import { spacings } from 'src/style';
 
 import { AnimatePresence } from 'framer-motion';
 
