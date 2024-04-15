@@ -43,7 +43,7 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
 
   const active = useMemo(
     () => isActive({ label, value, children }) && !disabled,
-    [children, disabled, isActive, label, value, variant]
+    [children, disabled, isActive, label, value]
   );
 
   const handleOnClick = () => {
