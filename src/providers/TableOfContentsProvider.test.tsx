@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
+import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { render, renderHook, screen } from '../tests/test-utils';
@@ -7,6 +9,8 @@ import { TableOfContents } from 'src/components/Navigation/TableOfContents/Table
 import TableOfContentsProvider, {
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
+
+const { colors } = tokens;
 
 function fakeItems() {
   return new Array(faker.number.int({ min: 3, max: 8 })).fill(0).map(() => ({
@@ -36,12 +40,20 @@ test('SetItemRef works as expected', () => {
     </div>,
     {
       wrapper: (props: { children: ReactNode }) => (
-        <TableOfContentsProvider items={items}>
-          {props.children}
-        </TableOfContentsProvider>
+        <MemoryRouter>
+          <TableOfContentsProvider items={items}>
+            {props.children}
+          </TableOfContentsProvider>
+        </MemoryRouter>
       ),
     }
   );
-  const button = screen.getByRole('button', { name: items[0].label });
-  expect(button).toBeDisabled();
+  const button = screen.getByRole('button', {
+    name: items[0].label,
+  });
+
+  expect(button).toHaveStyleRule(
+    'background',
+    colors.interactive.primary__hover_alt.rgba
+  );
 });

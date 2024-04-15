@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 
@@ -55,10 +56,11 @@ describe('button variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -79,6 +81,40 @@ describe('button variant', () => {
     expect(section.scrollIntoView).toHaveBeenCalled();
   });
 
+  test('Shows count when it is set', () => {
+    const items = fakeItems();
+
+    render(
+      <div>
+        <TableOfContents />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <MemoryRouter>
+            <TableOfContentsProvider
+              items={items.map((item, index) => ({ ...item, count: index }))}
+            >
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
+        ),
+      }
+    );
+
+    for (const [index, item] of items.entries()) {
+      {
+        const button = screen.getByRole('button', {
+          name: `${item.label} ${index}`,
+        });
+
+        expect(button).toBeInTheDocument();
+      }
+    }
+  });
+
   test('Hides children when onlyShowSelectedChildren = true', () => {
     const items = fakeItems(true);
 
@@ -97,9 +133,11 @@ describe('button variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -130,10 +168,12 @@ describe('button variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -181,10 +221,12 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -205,6 +247,40 @@ describe('border variant', () => {
     expect(section.scrollIntoView).toHaveBeenCalled();
   });
 
+  test('Shows count when it is set', () => {
+    const items = fakeItems();
+
+    render(
+      <div>
+        <TableOfContents />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <MemoryRouter>
+            <TableOfContentsProvider
+              items={items.map((item, index) => ({ ...item, count: index }))}
+            >
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
+        ),
+      }
+    );
+
+    for (const [index, item] of items.entries()) {
+      {
+        const button = screen.getByRole('button', {
+          name: `${item.label} ${index}`,
+        });
+
+        expect(button).toBeInTheDocument();
+      }
+    }
+  });
+
   test('Hides children when onlyShowSelectedChildren = true', () => {
     const items = fakeItems(true);
 
@@ -223,9 +299,11 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -256,10 +334,12 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
@@ -305,26 +385,28 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {' '}
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );
 
-    const wrapper = screen.getByRole('button', {
-      name: items[0].label,
-    }).parentElement!;
+    const wrapper = screen.getByTestId(
+      `border-items-container-${items[0].value}`
+    );
 
     expect(wrapper).toBeInTheDocument();
     expect(wrapper).toHaveAttribute('aria-selected', 'true');
 
-    const otherButtonWrapper = screen.getByRole('button', {
-      name: items[1].label,
-    }).parentElement!;
+    const otherWrapper = screen.getByTestId(
+      `border-items-container-${items[1].value}`
+    );
 
-    expect(otherButtonWrapper).toHaveAttribute('aria-selected', 'false');
+    expect(otherWrapper).toHaveAttribute('aria-selected', 'false');
   });
 
   test('activeItem in border variant with children', () => {
@@ -345,9 +427,11 @@ describe('border variant', () => {
       </div>,
       {
         wrapper: (props: { children: ReactNode }) => (
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
         ),
       }
     );

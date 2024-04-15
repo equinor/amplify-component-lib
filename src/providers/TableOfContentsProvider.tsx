@@ -9,14 +9,15 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router';
 
-import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 
 export interface TableOfContentsItemType {
   label: string;
   value: string;
+  count?: number;
   disabled?: boolean;
   children?: TableOfContentsItemType[];
 }
@@ -25,10 +26,7 @@ interface TableOfContentsContextType {
   items: TableOfContentsItemType[];
   selected: string | undefined;
   setSelected: (value: string) => void;
-  isActive: (
-    item: TableOfContentsItemType,
-    variant: TableOfContentsVariants
-  ) => boolean;
+  isActive: (item: TableOfContentsItemType) => boolean;
 }
 
 const TableOfContentsContext = createContext<
@@ -46,12 +44,15 @@ export function useTableOfContents() {
 export interface TableOfContentsProviderProps {
   items: TableOfContentsItemType[];
   children: ReactNode;
+  hashNavigation?: boolean;
 }
 
 const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   items,
   children,
+  hashNavigation,
 }) => {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
 
@@ -66,11 +67,11 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   }, [values]);
 
   const isActive = useCallback(
-    (item: TableOfContentsItemType, variant: TableOfContentsVariants) => {
+    (item: TableOfContentsItemType) => {
       if (item.value === selected) return true;
 
       // In the 'border' variant we don't want parents to be set as active
-      if (item.children && selected && variant === 'buttons') {
+      if (item.children && selected) {
         const childValues = getValues([], item);
         return childValues.includes(selected);
       }
@@ -106,6 +107,9 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
             same += 1;
             if (same > 1) {
               setSelected(values[selectedIndex]);
+              if (hashNavigation) {
+                navigate(`#${values[selectedIndex]}`);
+              }
               isScrollingTo.current = -1;
               return;
             }
@@ -119,7 +123,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         requestAnimationFrame(checkScrollDone);
       }
     },
-    [elements, values]
+    [elements, hashNavigation, navigate, values]
   );
 
   // Handle change of selected when scrolling down the page
@@ -140,8 +144,11 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     }
     if (newSelectedIndex !== -1 && values.at(newSelectedIndex) !== undefined) {
       setSelected(values[newSelectedIndex]);
+      if (hashNavigation) {
+        navigate(`#${values[newSelectedIndex]}`);
+      }
     }
-  }, [values, visible]);
+  }, [hashNavigation, navigate, values, visible]);
   /* c8 ignore end */
 
   return (
