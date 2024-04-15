@@ -1,13 +1,19 @@
 import { Meta, StoryFn } from '@storybook/react';
 
 import FileProgress, {
-  FileProgressWithoutProgressProps,
-  FileProgressWithProgressProps,
+  CompactFileProgressBaseProps,
+  RegularFileProgressBaseProps,
 } from './FileProgress';
 
 export default {
   title: 'Feedback/FileProgress',
   component: FileProgress,
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?type=design&node-id=5694-19751&mode=design&t=jlQAMMWK1GLpzcAL-4',
+    },
+  },
   argTypes: {
     compact: { control: 'boolean' },
     file: { control: { type: 'file', accept: '.png, .jpg, .jpeg' } },
@@ -37,5 +43,5 @@ export default {
 } as Meta;
 
 export const Primary: StoryFn<
-  FileProgressWithProgressProps | FileProgressWithoutProgressProps
+  RegularFileProgressBaseProps | CompactFileProgressBaseProps
 > = (args) => <FileProgress {...args} />;
