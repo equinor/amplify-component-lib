@@ -81,10 +81,7 @@ const Filter: FC<FilterProps> = ({
   const handleFilterOptionClick = (parent: string, option: Option) => {
     let newValues: FilterValues | undefined = { ...filterValues };
 
-    if (
-      newValues[parent] !== undefined &&
-      newValues[parent].some((item) => item.value === option.value)
-    ) {
+    if (newValues[parent].some((item) => item.value === option.value)) {
       const index = newValues[parent].findIndex(
         (item) => item.value === option.value
       );
