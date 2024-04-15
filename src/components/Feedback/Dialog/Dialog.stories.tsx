@@ -7,7 +7,7 @@ import {
   Radio,
   Typography,
 } from '@equinor/eds-core-react';
-import { useArgs } from '@storybook/client-api';
+import { useArgs } from '@storybook/preview-api';
 import { Meta, StoryFn } from '@storybook/react';
 
 import page from './Dialog.docs.mdx';
