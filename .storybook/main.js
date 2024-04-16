@@ -1,9 +1,10 @@
 const config = {
-  stories: ['../src/intro.stories.mdx', '../src/**/*.stories.@(ts|tsx|mdx)'],
+  stories: ['../src/intro.mdx', '../src/**/*.stories.@(ts|tsx)'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-actions',
+    '@storybook/addon-designs',
     '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
     'storybook-addon-react-docgen',
@@ -11,10 +12,11 @@ const config = {
   build: {
     sourcemap: false,
   },
-  core: {
-    builder: '@storybook/builder-vite',
+  core: {},
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
   },
-  framework: '@storybook/react-vite',
   docs: {
     autodocs: true,
   },

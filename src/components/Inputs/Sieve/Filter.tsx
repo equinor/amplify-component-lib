@@ -82,7 +82,7 @@ const Filter: FC<FilterProps> = ({
     let newValues: FilterValues | undefined = { ...filterValues };
 
     if (
-      newValues[parent] !== undefined &&
+      parent in newValues &&
       newValues[parent].some((item) => item.value === option.value)
     ) {
       const index = newValues[parent].findIndex(

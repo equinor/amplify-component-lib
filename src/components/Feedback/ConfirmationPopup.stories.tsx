@@ -8,6 +8,12 @@ import ConfirmationPopup, { ConfirmationPopupProps } from './ConfirmationPopup';
 export default {
   title: 'Feedback/ConfirmationPopup',
   component: ConfirmationPopup,
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?type=design&node-id=5694-19714&mode=design&t=jlQAMMWK1GLpzcAL-4',
+    },
+  },
   argTypes: {
     title: {
       control: 'text',
