@@ -7,7 +7,7 @@ import {
   Radio,
   Typography,
 } from '@equinor/eds-core-react';
-import { useArgs } from '@storybook/client-api';
+import { useArgs } from '@storybook/preview-api';
 import { Meta, StoryFn } from '@storybook/react';
 
 import page from './Dialog.docs.mdx';
@@ -29,6 +29,10 @@ const meta: Meta<typeof Dialog> = {
     Actions: Dialog.Actions as ComponentType<unknown>,
   },
   parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?type=design&node-id=3009-34034&mode=design&t=jlQAMMWK1GLpzcAL-4',
+    },
     docs: {
       page,
       source: {

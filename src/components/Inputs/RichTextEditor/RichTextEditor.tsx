@@ -72,7 +72,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     if (features) return features;
 
     return [...DEFAULT_FEATURES, ...(extendFeatures ?? [])]
-      .filter((feature) => !removeFeatures || !removeFeatures.includes(feature))
+      .filter((feature) => !removeFeatures?.includes(feature))
       .filter((value, index, array) => index === array.indexOf(value));
   }, [features, extendFeatures, removeFeatures]);
 

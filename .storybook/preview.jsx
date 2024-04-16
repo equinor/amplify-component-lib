@@ -38,7 +38,7 @@ export const decorators = [
 ];
 
 export const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
+  actions: { argTypes: /^on[A-Z].*/ },
   viewMode: 'docs',
   backgrounds: {
     default: 'Equinor UI Light (off-white/off-dark)',
