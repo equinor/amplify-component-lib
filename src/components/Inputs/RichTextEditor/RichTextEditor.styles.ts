@@ -10,6 +10,7 @@ interface WrapperProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
   $maxHeight?: string;
+  border?: boolean;
 }
 
 export const Wrapper = styled.div<WrapperProps>`
@@ -19,7 +20,8 @@ export const Wrapper = styled.div<WrapperProps>`
   background: white;
 
   border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
-  border: 1px solid ${colors.ui.background__medium.rgba};
+  border: ${(props) =>
+    props.border ? `1px solid ${colors.ui.background__medium.rgba}` : 'none'};
   border-bottom: none;
 
   &:has(div[contenteditable='true']) {
