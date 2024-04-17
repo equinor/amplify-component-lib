@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import 'highlight.js/styles/base16/solarized-dark.css';
 
-const { colors, spacings, typography } = tokens;
+const { colors, spacings, typography, shape } = tokens;
 
 interface WrapperProps {
   $lightBackground?: boolean;
@@ -17,6 +17,10 @@ export const Wrapper = styled.div<WrapperProps>`
   flex-direction: column;
   flex-grow: 1;
   background: white;
+
+  border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
+  border: 1px solid ${colors.ui.background__medium.rgba};
+  border-bottom: none;
 
   &:has(div[contenteditable='true']) {
     height: inherit;
