@@ -9,6 +9,7 @@ const { colors, spacings, typography } = tokens;
 interface WrapperProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
+  $maxHeight?: string;
 }
 
 export const Wrapper = styled.div<WrapperProps>`
@@ -24,6 +25,8 @@ export const Wrapper = styled.div<WrapperProps>`
   .tiptap {
     height: fit-content;
     min-height: fit-content;
+    max-height: ${(props) => props.$maxHeight ?? 'none'};
+    overflow-y: scroll;
     background: ${(props) =>
       props.$lightBackground
         ? `${colors.ui.background__default.rgba}`
