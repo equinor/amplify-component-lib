@@ -26,7 +26,7 @@ export const Wrapper = styled.div<WrapperProps>`
     height: fit-content;
     min-height: fit-content;
     max-height: ${(props) => props.$maxHeight ?? 'none'};
-    overflow-y: scroll;
+    overflow-y: auto;
     background: ${(props) =>
       props.$lightBackground
         ? `${colors.ui.background__default.rgba}`
