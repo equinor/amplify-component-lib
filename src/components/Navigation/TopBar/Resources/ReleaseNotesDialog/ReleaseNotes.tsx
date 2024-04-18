@@ -18,9 +18,13 @@ import { useReleaseNotesQuery } from 'src/hooks';
 import { TableOfContentsProvider } from 'src/providers';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
-const ReleaseNotes: FC = () => {
+interface ReleaseNotesProps {
+  enabled?: boolean;
+}
+
+const ReleaseNotes: FC<ReleaseNotesProps> = ({ enabled }) => {
   const { releaseNotesYears, setOpen, open } = useReleaseNotes();
-  const { isLoading, data } = useReleaseNotesQuery();
+  const { isLoading, data } = useReleaseNotesQuery({ enabled });
   const { data: token } = useTokenReleaseNote();
 
   const handleCloseModal = () => {
