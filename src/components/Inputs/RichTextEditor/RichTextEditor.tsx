@@ -148,7 +148,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       $padding={padding}
       $maxHeight={maxHeight}
       $lightBackground={lightBackground}
-      border={border}
+      $border={border}
     >
       <EditorProvider
         slotBefore={
