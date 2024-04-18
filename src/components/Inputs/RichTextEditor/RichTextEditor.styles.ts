@@ -4,11 +4,13 @@ import styled from 'styled-components';
 
 import 'highlight.js/styles/base16/solarized-dark.css';
 
-const { colors, spacings, typography } = tokens;
+const { colors, spacings, typography, shape } = tokens;
 
 interface WrapperProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
+  $maxHeight?: string;
+  $border?: boolean;
 }
 
 export const Wrapper = styled.div<WrapperProps>`
@@ -17,6 +19,11 @@ export const Wrapper = styled.div<WrapperProps>`
   flex-grow: 1;
   background: white;
 
+  border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
+  border: ${(props) =>
+    props.$border ? `1px solid ${colors.ui.background__medium.rgba}` : 'none'};
+  border-bottom: none;
+
   &:has(div[contenteditable='true']) {
     height: inherit;
   }
@@ -24,6 +31,8 @@ export const Wrapper = styled.div<WrapperProps>`
   .tiptap {
     height: fit-content;
     min-height: fit-content;
+    max-height: ${(props) => props.$maxHeight ?? 'none'};
+    overflow-y: auto;
     background: ${(props) =>
       props.$lightBackground
         ? `${colors.ui.background__default.rgba}`

@@ -48,6 +48,10 @@ export interface RichTextEditorProps {
   features?: RichTextEditorFeatures[];
   extendFeatures?: RichTextEditorFeatures[];
   removeFeatures?: RichTextEditorFeatures[];
+  padding?: 'sm' | 'md' | 'lg' | 'none';
+  maxHeight?: string;
+  lightBackground?: boolean;
+  border?: boolean;
 }
 
 const RichTextEditor: FC<RichTextEditorProps> = ({
@@ -58,6 +62,10 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   features,
   extendFeatures,
   removeFeatures,
+  padding = 'md',
+  maxHeight,
+  lightBackground,
+  border = true,
 }) => {
   /* c8 ignore nextline */
 
@@ -136,7 +144,12 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper
+      $padding={padding}
+      $maxHeight={maxHeight}
+      $lightBackground={lightBackground}
+      $border={border}
+    >
       <EditorProvider
         slotBefore={
           <MenuBar features={usingFeatures} onImageUpload={onImageUpload} />
