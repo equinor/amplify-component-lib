@@ -68,7 +68,11 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
   return { ReleaseNotesService };
 });
 
-const Wrappers: FC<{ children: ReactNode }> = ({ children }) => {
+interface WrapperProp {
+  children: ReactNode;
+}
+
+const Wrappers: FC<WrapperProp> = ({ children }) => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
@@ -79,7 +83,7 @@ const Wrappers: FC<{ children: ReactNode }> = ({ children }) => {
 
 describe('Release notes provider', () => {
   test('should not return any data when enabled is set to false', () => {
-    const wrapper: FC<{ children: ReactNode }> = ({ children }) => {
+    const wrapper: FC<WrapperProp> = ({ children }) => {
       const queryClient = new QueryClient();
       return (
         <QueryClientProvider client={queryClient}>
