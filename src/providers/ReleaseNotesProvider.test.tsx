@@ -78,6 +78,24 @@ const Wrappers: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 describe('Release notes provider', () => {
+  test('should not return any data when enabled is set to false', () => {
+    const wrapper: FC<{ children: ReactNode }> = ({ children }) => {
+      const queryClient = new QueryClient();
+      return (
+        <QueryClientProvider client={queryClient}>
+          <ReleaseNotesProvider enabled={false}>
+            {children}
+          </ReleaseNotesProvider>
+        </QueryClientProvider>
+      );
+    };
+    const { result } = renderHook(() => useReleaseNotes(), {
+      wrapper,
+    });
+
+    expect(result.current.filteredData.length).toEqual(0);
+    expect(result.current.releaseNotesYears.length).toEqual(0);
+  });
   test('should correctly return filtered data', async () => {
     const { result } = renderHook(() => useReleaseNotes(), {
       wrapper: Wrappers,

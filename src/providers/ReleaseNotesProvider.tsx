@@ -51,12 +51,14 @@ export const useReleaseNotes = (): ReleaseNotesContextState => {
 
 interface ReleaseNotesContextProviderProps {
   children: ReactNode;
+  enabled?: boolean;
 }
 
 const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   children,
+  enabled,
 }) => {
-  const { data } = useReleaseNotesQuery();
+  const { data } = useReleaseNotesQuery({ enabled });
   const [search, setSearch] = useState<SieveValue>(defaultSearchState);
   const [open, setOpen] = useState(false);
 

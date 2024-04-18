@@ -6,11 +6,16 @@ import { environment } from 'src/utils';
 
 const { getAppName } = environment;
 
-export function useReleaseNotesQuery() {
+interface ReleaseNotesQueryProps {
+  enabled?: boolean;
+}
+
+export function useReleaseNotesQuery(options?: ReleaseNotesQueryProps) {
   const applicationName = getAppName(import.meta.env.VITE_NAME);
 
   return useQuery<ReleaseNote[]>({
     queryKey: ['get-all-release-notes'],
     queryFn: () => ReleaseNotesService.getReleasenoteList(applicationName),
+    enabled: options?.enabled ?? true,
   });
 }
