@@ -73,14 +73,21 @@ export const Button = styled.button<ButtonProps>`
     `}
 `;
 
-export const CountDot = styled.div`
+interface CountDotProps {
+  $disabledText?: boolean;
+}
+
+export const CountDot = styled.div<CountDotProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   > span {
     font-weight: 500;
     font-size: 12px;
-    color: ${colors.text.static_icons__tertiary.rgba};
+    color: ${({ $disabledText }) =>
+      $disabledText
+        ? colors.interactive.disabled__text.rgba
+        : colors.text.static_icons__tertiary.rgba};
     padding: 0 ${spacings.x_small};
   }
   background: ${colors.ui.background__medium.rgba};
