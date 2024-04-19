@@ -22,10 +22,14 @@ export interface TableOfContentsItemType {
   children?: TableOfContentsItemType[];
 }
 
+interface SetSelectedOptions {
+  behavior?: ScrollBehavior | undefined;
+}
+
 interface TableOfContentsContextType {
   items: TableOfContentsItemType[];
   selected: string | undefined;
-  setSelected: (value: string) => void;
+  setSelected: (value: string, options?: SetSelectedOptions) => void;
   isActive: (item: TableOfContentsItemType) => boolean;
 }
 
@@ -86,7 +90,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
 
   // If the user clicks on an item in the TableOfContents that isn't visible now, we want to scroll to it
   const handleSetSelected = useCallback(
-    (value: string) => {
+    (value: string, options?: SetSelectedOptions) => {
       const selectedIndex = values.findIndex(
         (itemValue) => itemValue === value
       );
@@ -95,7 +99,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
       if (element) {
         element.scrollIntoView({
           block: 'start',
-          behavior: 'smooth',
+          behavior: options?.behavior ?? 'smooth',
         });
         isScrollingTo.current = selectedIndex;
         let previousTop = Infinity;

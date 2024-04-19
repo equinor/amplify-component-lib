@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import { render, renderHook, screen } from '../tests/test-utils';
+import { render, renderHook, screen, userEvent } from '../tests/test-utils';
 import { TableOfContents } from 'src/components/Navigation/TableOfContents/TableOfContents';
 import TableOfContentsProvider, {
   useTableOfContents,
@@ -25,6 +25,40 @@ test('usePageMenu throws error if used outside provider', () => {
     "'useTableOfContents' must be used within provider"
   );
 });
+
+interface TestContainerProps {
+  items: {
+    value: string;
+    label: string;
+  }[];
+}
+
+const TestContainer: FC<TestContainerProps> = ({ items }) => {
+  const { setSelected } = useTableOfContents();
+
+  return (
+    <>
+      {items.map((item) => (
+        <h1
+          key={item.value}
+          id={item.value}
+          ref={(current) => {
+            if (current) {
+              current.scrollIntoView = vi.fn();
+            }
+          }}
+          onClick={() =>
+            setSelected(item.value, {
+              behavior: 'instant',
+            })
+          }
+        >
+          {item.label}
+        </h1>
+      ))}
+    </>
+  );
+};
 
 test('SetItemRef works as expected', () => {
   const items = fakeItems();
@@ -56,4 +90,45 @@ test('SetItemRef works as expected', () => {
     'background',
     colors.interactive.primary__hover_alt.rgba
   );
+});
+
+test('Manual scroll settings work as expected and do not affect menu scroll', async () => {
+  const items = fakeItems();
+
+  render(
+    <div>
+      <TableOfContents />
+      <TestContainer items={items} />
+    </div>,
+    {
+      wrapper: (props: { children: ReactNode }) => (
+        <MemoryRouter>
+          <TableOfContentsProvider items={items}>
+            {props.children}
+          </TableOfContentsProvider>
+        </MemoryRouter>
+      ),
+    }
+  );
+
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button', { name: items[1].label });
+  const header = document.querySelector(`#${items[1].value}`)!;
+
+  await user.click(header);
+
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  expect(header.scrollIntoView).toHaveBeenCalledWith({
+    block: 'start',
+    behavior: 'instant',
+  });
+
+  await user.click(button);
+
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  expect(header.scrollIntoView).toHaveBeenCalledWith({
+    block: 'start',
+    behavior: 'smooth',
+  });
 });
