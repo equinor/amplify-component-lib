@@ -63,7 +63,7 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
       >
         <span title={label}>{label}</span>
         {count !== undefined && (
-          <CountDot className="count-dot">
+          <CountDot className="count-dot" $disabledText={count === 0}>
             <Typography as="span" variant="label" group="navigation">
               {count}
             </Typography>
