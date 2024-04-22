@@ -148,7 +148,7 @@ describe('button variant', () => {
 
     for (const item of items.slice(1)) {
       for (const child of item.children ?? []) {
-        expect(screen.queryByText(child.label)).not.toBeInTheDocument();
+        expect(screen.queryByText(child.label)).not.toBeVisible();
       }
     }
   });
@@ -314,7 +314,7 @@ describe('border variant', () => {
 
     for (const item of items.slice(1)) {
       for (const child of item.children ?? []) {
-        expect(screen.queryByText(child.label)).not.toBeInTheDocument();
+        expect(screen.queryByText(child.label)).not.toBeVisible();
       }
     }
   });
