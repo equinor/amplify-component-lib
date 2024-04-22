@@ -89,9 +89,11 @@ export const CountDot = styled.div<CountDotProps>`
         ? colors.interactive.disabled__text.rgba
         : colors.text.static_icons__tertiary.rgba};
     padding: 0 ${spacings.x_small};
+    line-height: normal;
   }
   background: ${colors.ui.background__medium.rgba};
   width: fit-content;
+  min-width: 16px;
   height: 16px;
   border-radius: ${shape.rounded.borderRadius};
 `;
