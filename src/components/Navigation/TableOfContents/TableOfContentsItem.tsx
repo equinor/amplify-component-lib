@@ -15,8 +15,6 @@ import {
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
 
-import { AnimatePresence } from 'framer-motion';
-
 interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;
   variant: TableOfContentsVariants;
