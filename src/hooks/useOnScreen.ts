@@ -40,6 +40,8 @@ export function useOnScreenMultiple(elements: (Element | null)[]) {
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
+    setIsIntersecting(new Array(elements.length).fill(false));
+
     for (const [index, element] of elements.entries()) {
       if (element === null) continue;
       const observer = new IntersectionObserver(
