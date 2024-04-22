@@ -136,11 +136,19 @@ export const Container = styled(motion.div)<ContainerProps>`
 
 interface ChildContainerProps {
   $variant: TableOfContentsVariants;
+  $shouldShowChildren: boolean;
 }
 
 export const ChildContainer = styled(motion.div)<ChildContainerProps>`
   display: flex;
   flex-direction: column;
+  ${({ $shouldShowChildren }) =>
+    !$shouldShowChildren
+      ? css`
+          visibility: hidden;
+          height: 0 !important;
+        `
+      : null}
   > div > button {
     ${({ $variant }) => {
       switch ($variant) {
