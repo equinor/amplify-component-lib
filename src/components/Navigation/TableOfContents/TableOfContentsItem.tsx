@@ -15,8 +15,6 @@ import {
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
 
-import { AnimatePresence } from 'framer-motion';
-
 interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;
   variant: TableOfContentsVariants;
@@ -71,38 +69,32 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
         )}
       </Button>
       {children && (
-        <AnimatePresence>
-          {shouldShowChildren && (
-            <ChildContainer
-              $variant={variant}
-              initial={{ height: initialHeight.current }}
-              animate={{
-                height: `
+        <ChildContainer
+          $shouldShowChildren={shouldShowChildren}
+          $variant={variant}
+          initial={{ height: initialHeight.current }}
+          animate={{
+            height: `
                   calc(
-                    (${HEIGHT[variant]} * ${children.length}) 
+                    (${shouldShowChildren ? HEIGHT[variant] : '0'} * ${children.length})
                     ${
                       variant === 'buttons'
                         ? `+ (${GAP.buttons} * ${children.length - 1})`
                         : ''
                     }
                   )`,
-              }}
-              exit={{
-                height: 0,
-              }}
-              transition={{ duration: 0.4 }}
-            >
-              {children.map((child) => (
-                <TableOfContentsItem
-                  key={child.value}
-                  onlyShowSelectedChildren={onlyShowSelectedChildren}
-                  variant={variant}
-                  {...child}
-                />
-              ))}
-            </ChildContainer>
-          )}
-        </AnimatePresence>
+          }}
+          transition={{ duration: 0.4 }}
+        >
+          {children.map((child) => (
+            <TableOfContentsItem
+              key={child.value}
+              onlyShowSelectedChildren={onlyShowSelectedChildren}
+              variant={variant}
+              {...child}
+            />
+          ))}
+        </ChildContainer>
       )}
     </Container>
   );
