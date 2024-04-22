@@ -35,7 +35,7 @@ export const Button = styled.button<ButtonProps>`
     text-align: left;
     font-family: 'Equinor', sans-serif;
     font-weight: 700;
-    font-size: 14px;
+    font-size: ${({ $active }) => ($active ? 16 : 14)}px;
   }
   ${({ $variant, $active }) => {
     switch ($variant) {
