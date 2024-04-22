@@ -296,6 +296,84 @@ export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
   );
 };
 
+const firstParentId = `1${faker.database.mongodbObjectId()}`;
+const secondParentId = `2${faker.database.mongodbObjectId()}`;
+
+const ITEMS_WITH_CHILDREN_AND_LONG_LABEL = [
+  {
+    label: '2023',
+    value: `firstParentId`,
+    children: [
+      { label: 'January', value: `${firstParentId}--january` },
+      { label: 'February', value: `${firstParentId}--february` },
+      { label: 'March', value: `${firstParentId}--march` },
+      { label: 'April', value: `${firstParentId}--april` },
+      { label: 'May', value: `${firstParentId}--may` },
+      { label: 'June', value: `${firstParentId}--june` },
+    ],
+  },
+  {
+    label: '2022',
+    value: firstParentId,
+    children: [
+      { label: 'January', value: `${secondParentId}--january` },
+      { label: 'February', value: `${secondParentId}--february` },
+      { label: 'March', value: `${secondParentId}--march` },
+      { label: 'April', value: `${secondParentId}--april` },
+      { label: 'May', value: `${secondParentId}--may` },
+      { label: 'June', value: `${secondParentId}--june` },
+    ],
+  },
+  {
+    label: '2021',
+    value: 'year2021',
+    children: [
+      {
+        label:
+          'Ridiculously long label to highlight how width is shared even though this is sometimes hidden',
+        value: 'year2021--july',
+      },
+    ],
+  },
+];
+
+export const WithChildrenAndBordersOnlyShowSelectedChildrenSharedWidth: StoryFn<
+  StoryProps
+> = (args) => {
+  return (
+    <MemoryRouter>
+      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_AND_LONG_LABEL}>
+        <Container>
+          <TableOfContents
+            {...args}
+            variant="border"
+            onlyShowSelectedChildren
+          />
+          <section>
+            {ITEMS_WITH_CHILDREN_AND_LONG_LABEL.map((item) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={faker.color.rgb()}
+              >
+                {item.children?.map((child) => (
+                  <Section
+                    key={child.value}
+                    label={child.label}
+                    value={child.value}
+                    color={faker.color.rgb()}
+                  />
+                ))}
+              </Section>
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    </MemoryRouter>
+  );
+};
+
 export const WithChildrenAndBordersDisabled: StoryFn<StoryProps> = (args) => {
   return (
     <MemoryRouter>
