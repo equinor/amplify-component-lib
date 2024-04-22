@@ -71,13 +71,12 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
         )}
       </Button>
       {children && (
-        <AnimatePresence>
-          <ChildContainer
-            $shouldShowChildren={shouldShowChildren}
-            $variant={variant}
-            initial={{ height: initialHeight.current }}
-            animate={{
-              height: `
+        <ChildContainer
+          $shouldShowChildren={shouldShowChildren}
+          $variant={variant}
+          initial={{ height: initialHeight.current }}
+          animate={{
+            height: `
                   calc(
                     (${shouldShowChildren ? HEIGHT[variant] : '0'} * ${children.length})
                     ${
@@ -86,22 +85,18 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
                         : ''
                     }
                   )`,
-            }}
-            exit={{
-              height: 0,
-            }}
-            transition={{ duration: 0.4 }}
-          >
-            {children.map((child) => (
-              <TableOfContentsItem
-                key={child.value}
-                onlyShowSelectedChildren={onlyShowSelectedChildren}
-                variant={variant}
-                {...child}
-              />
-            ))}
-          </ChildContainer>
-        </AnimatePresence>
+          }}
+          transition={{ duration: 0.4 }}
+        >
+          {children.map((child) => (
+            <TableOfContentsItem
+              key={child.value}
+              onlyShowSelectedChildren={onlyShowSelectedChildren}
+              variant={variant}
+              {...child}
+            />
+          ))}
+        </ChildContainer>
       )}
     </Container>
   );
