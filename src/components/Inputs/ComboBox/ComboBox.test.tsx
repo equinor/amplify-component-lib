@@ -2,6 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { ComboBox } from './ComboBox';
+import { getCumulativeArrayFromNumberedArray } from 'src/components/Inputs/ComboBox/ComboBox.utils';
 import { colors as amplifyColors } from 'src/constants';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
@@ -919,4 +920,12 @@ test('Sets id when sending it', () => {
 
   expect(screen.getByRole('combobox')).toHaveAttribute('id', id);
   expect(screen.getByText(label).parentElement).toHaveAttribute('for', id);
+});
+
+test('getCumulativeArrayFromNumberedArray returns cumulative values', () => {
+  const numberedArray = [1, 2, 3, 4, 5];
+  const expectedArray = [0, 1, 3, 6, 10];
+  expect(getCumulativeArrayFromNumberedArray(numberedArray)).toEqual(
+    expectedArray
+  );
 });
