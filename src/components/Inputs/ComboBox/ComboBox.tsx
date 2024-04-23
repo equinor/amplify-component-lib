@@ -30,6 +30,7 @@ import { GroupedComboBoxMenu } from './GroupedComboBoxMenu';
 const { colors } = tokens;
 
 export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
+  id?: string;
   label?: string;
   placeholder?: string;
   sortValues?: boolean;
@@ -44,6 +45,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
   props: ComboBoxComponentProps<T>
 ) => {
   const {
+    id,
     clearable = true,
     loading = false,
     disabled = false,
@@ -255,7 +257,12 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
         $lightBackground={lightBackground}
         $label={!!label}
       >
-        {label && <Label label={label} htmlFor="amplify-combobox" />}
+        {label && (
+          <Label
+            label={label}
+            htmlFor={id ? id : `amplify-combobox-${label}`}
+          />
+        )}
         <Section>
           {selectedValues.length > 0 || search !== '' ? (
             selectedValues.map((value) => (
@@ -278,7 +285,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
             <PlaceholderText>{placeholder}</PlaceholderText>
           )}
           <input
-            id="amplify-combobox"
+            id={id ? id : `amplify-combobox-${label}`}
             disabled={disabled || loading}
             ref={searchRef}
             type="search"
