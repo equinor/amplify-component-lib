@@ -9,6 +9,7 @@ import {
   GroupedComboboxProps,
 } from './ComboBox.types';
 import { ComboBoxMenuItem } from './ComboBoxMenuItem';
+import { getCumulativeArrayFromNumberedArray } from 'src/components/Inputs/ComboBox/ComboBox.utils';
 
 export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
   props: GroupedComboboxProps<T> & ComboBoxMenuProps<T>
@@ -27,16 +28,8 @@ export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
   }, [groups, search]);
 
   const filteredGroupSum = useMemo(() => {
-    const itemsCount = filteredGroups.map((group) => group.items.length);
-
-    const sum = new Array(itemsCount.length).fill(0) as number[];
-
-    for (const [index, itemCount] of itemsCount.entries()) {
-      if (index === 0) continue;
-      sum[index] = itemCount + sum[index - 1];
-    }
-
-    return sum;
+    const groupSizeArray = filteredGroups.map((group) => group.items.length);
+    return getCumulativeArrayFromNumberedArray(groupSizeArray);
   }, [filteredGroups]);
 
   if (filteredGroups.length === 0) {
