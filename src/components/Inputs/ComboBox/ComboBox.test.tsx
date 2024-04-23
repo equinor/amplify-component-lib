@@ -900,3 +900,23 @@ test('Clearing works as expected', async () => {
 
   expect(screen.queryByRole('button')).not.toBeInTheDocument();
 });
+
+test('Sets id when sending it', () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const items = fakeItems();
+  const id = faker.string.uuid();
+
+  render(
+    <ComboBox
+      id={id}
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={items[0]}
+    />
+  );
+
+  expect(screen.getByRole('combobox')).toHaveAttribute('id', id);
+  expect(screen.getByText(label).parentElement).toHaveAttribute('for', id);
+});
