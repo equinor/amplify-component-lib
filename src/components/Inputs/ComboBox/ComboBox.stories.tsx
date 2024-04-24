@@ -38,13 +38,15 @@ const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
   value: faker.string.uuid(),
 }));
 
-const FAKE_GROUPS = new Array(3).fill(0).map(() => ({
-  title: faker.animal.lion(),
-  items: new Array(5).fill(0).map(() => ({
-    label: faker.animal.fish(),
-    value: faker.string.uuid(),
-  })),
-}));
+const FAKE_GROUPS = new Array(faker.number.int({ min: 3, max: 6 }))
+  .fill(0)
+  .map(() => ({
+    title: faker.animal.lion(),
+    items: new Array(faker.number.int({ min: 1, max: 5 })).fill(0).map(() => ({
+      label: faker.animal.fish(),
+      value: faker.string.uuid(),
+    })),
+  }));
 
 const FAKE_ITEMS_WITH_CHILDREN = [
   {

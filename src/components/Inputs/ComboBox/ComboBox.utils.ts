@@ -13,3 +13,15 @@ export function getChildOffset<T extends ComboBoxOptionRequired>(
 
   return offset + before;
 }
+
+export const getCumulativeArrayFromNumberedArray = (
+  groupSizeArray: number[]
+) => {
+  const sum = new Array(groupSizeArray.length).fill(0) as number[];
+
+  for (let index = 1; index < groupSizeArray.length; index++) {
+    sum[index] = sum[index - 1] + groupSizeArray[index - 1];
+  }
+
+  return sum;
+};
