@@ -12,7 +12,7 @@ interface CountDotProps {
 }
 
 const pickColorSchemeBy = (variant: Variants) => {
-  const mappings = {
+  const colorSchemes = {
     light: {
       background: 'rgba(235, 235, 235, 1)',
       color: colors.text.static_icons__tertiary.rgba,
@@ -31,7 +31,7 @@ const pickColorSchemeBy = (variant: Variants) => {
     },
   };
 
-  return mappings[variant] ?? mappings.default;
+  return colorSchemes[variant];
 };
 
 export const Container = styled.div<CountDotProps>`
