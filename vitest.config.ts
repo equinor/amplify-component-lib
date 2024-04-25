@@ -7,13 +7,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     passWithNoTests: true,
-    setupFiles: [
-      'src/tests/setupTests.ts',
-      'src/tests/mockLocalStorage.ts',
-      'src/tests/mockResizeObserver.ts',
-      'src/tests/mockInteractionObserver.ts',
-      'src/tests/mockMatchMedia.ts',
-    ],
+    setupFiles: ['src/tests/setupTests.ts', 'src/tests/browserMocks.ts'],
     exclude: [
       'dist',
       'node_modules',
