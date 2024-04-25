@@ -78,6 +78,85 @@ export const Button = styled.button<ButtonProps>`
     `}
 `;
 
+interface LinkProps extends ButtonProps {
+  $disabled?: boolean;
+}
+
+export const Link = styled(ReactLink)<LinkProps>`
+  text-decoration: none;
+  &:focus,
+  &:hover,
+  &:active {
+    text-decoration: none;
+    color: ${colors.text.static_icons__default.rgba};
+  }
+  &:hover {
+    background: ${colors.interactive.primary__hover_alt.rgba};
+  }
+  &:focus-visible {
+    color: ${colors.text.static_icons__default.rgba};
+    outline: 2px dashed ${colors.interactive.focus.rgba};
+    outline-offset: -4px;
+  }
+
+  ${({ $disabled, $active }) =>
+    $disabled &&
+    !$active &&
+    css`
+      color: ${colors.interactive.disabled__text.rgba} !important;
+      &:hover {
+        cursor: not-allowed;
+      }
+    `};
+
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: ${spacings.small};
+  color: ${colors.text.static_icons__default.rgba};
+  cursor: pointer;
+  padding: 0 ${spacings.medium};
+  height: ${({ $variant }) => HEIGHT[$variant]};
+  transition: background 200ms;
+
+  > span {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: left;
+    font-family: 'Equinor', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  ${({ $variant, $active }) => {
+    switch ($variant) {
+      case 'buttons':
+        return css`
+          border-radius: ${shape.corners.borderRadius};
+          background: ${$active
+            ? colors.interactive.primary__hover_alt.rgba
+            : 'none'};
+        `;
+      case 'border':
+        return css`
+          > span {
+            font-weight: ${$active ? 700 : 500};
+            &:after {
+              height: 0;
+              display: block;
+              content: attr(title);
+              font-weight: 700;
+              font-size: 14px;
+              overflow: hidden;
+              visibility: hidden;
+            }
+          }
+        `;
+    }
+  }}
+`;
+
 interface BorderItemsContainerProps {
   $activeIndex: number;
   $index: number;

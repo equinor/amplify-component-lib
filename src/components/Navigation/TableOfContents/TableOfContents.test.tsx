@@ -280,6 +280,39 @@ describe('border variant', () => {
       }
     }
   });
+  test('Shows count when it is set for links', () => {
+    const items = fakeItems();
+
+    render(
+      <div>
+        <TableOfContents isLink />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <MemoryRouter>
+            <TableOfContentsProvider
+              items={items.map((item, index) => ({ ...item, count: index }))}
+            >
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
+        ),
+      }
+    );
+
+    for (const [index, item] of items.entries()) {
+      {
+        const link = screen.getByRole('link', {
+          name: `${item.label} ${index}`,
+        });
+
+        expect(link).toBeInTheDocument();
+      }
+    }
+  });
 
   test('Hides children when onlyShowSelectedChildren = true', () => {
     const items = fakeItems(true);
@@ -319,7 +352,7 @@ describe('border variant', () => {
     }
   });
 
-  test('Does not run OnClick when disabled', async () => {
+  test('Does not run OnClick when button is disabled', async () => {
     const items = fakeItems().map((item, index) => ({
       ...item,
       disabled: index % 2 === 0,
@@ -366,6 +399,62 @@ describe('border variant', () => {
     expect(otherButton).not.toBeDisabled();
 
     await user.click(otherButton);
+
+    const otherSection = document.querySelector(`#${items[1].value}`)!;
+
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(otherSection.scrollIntoView).toHaveBeenCalled();
+  });
+
+  test('Does not run OnClick when link is disabled', async () => {
+    const items = fakeItems().map((item, index) => ({
+      ...item,
+      disabled: index % 2 === 0,
+    }));
+
+    render(
+      <div>
+        <TableOfContents variant="border" isLink />
+        {items.map((item) => (
+          <Section key={item.value} label={item.label} value={item.value} />
+        ))}
+      </div>,
+      {
+        wrapper: (props: { children: ReactNode }) => (
+          <MemoryRouter>
+            <TableOfContentsProvider items={items}>
+              {' '}
+              {props.children}
+            </TableOfContentsProvider>
+          </MemoryRouter>
+        ),
+      }
+    );
+
+    const user = userEvent.setup();
+
+    for (const item of items) {
+      expect(screen.queryAllByText(item.label).length).toBe(2);
+    }
+
+    const link = screen.getByRole('link', { name: items[0].label });
+
+    expect(link).toHaveStyleRule(
+      'color',
+      'var(--eds_text__static_icons__default, rgba(61, 61, 61, 1))'
+    );
+
+    await user.click(link);
+
+    const section = document.querySelector(`#${items[0].value}`)!;
+
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(section.scrollIntoView).not.toHaveBeenCalled();
+
+    // Expect other button _not_ to be disabled
+    const otherLink = screen.getByRole('link', { name: items[1].label });
+
+    await user.click(otherLink);
 
     const otherSection = document.querySelector(`#${items[1].value}`)!;
 
