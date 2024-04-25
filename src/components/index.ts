@@ -99,6 +99,7 @@ export type {
   ComboBoxOption,
   ComboBoxOptionRequired,
 } from './Inputs/ComboBox/ComboBox.types';
+export { Badge } from './DataDisplay/Badge/Badge';
 
 // EDS re-exports
 export type {

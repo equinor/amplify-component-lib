@@ -1,15 +1,9 @@
 import { FC, useEffect, useMemo, useRef } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
-
 import { GAP, HEIGHT } from './TableOfContents.constants';
-import {
-  Button,
-  ChildContainer,
-  Container,
-  CountDot,
-} from './TableOfContents.styles';
+import { Button, ChildContainer, Container } from './TableOfContents.styles';
 import { TableOfContentsVariants } from './TableOfContents.types';
+import { Badge } from 'src/components/DataDisplay/Badge/Badge';
 import {
   TableOfContentsItemType,
   useTableOfContents,
@@ -61,11 +55,7 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
       >
         <span title={label}>{label}</span>
         {count !== undefined && (
-          <CountDot className="count-dot" $disabledText={count === 0}>
-            <Typography as="span" variant="label" group="navigation">
-              {count}
-            </Typography>
-          </CountDot>
+          <Badge variant={count === 0 ? 'empty' : 'light'} value={count} />
         )}
       </Button>
       {children && (
