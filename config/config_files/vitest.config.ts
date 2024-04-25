@@ -10,7 +10,7 @@ export default defineConfig({
     testTimeout: 10000,
     setupFiles: [
       'src/test-utils/setupTests.ts',
-      'src/test-utils/mockLocalStorage.ts',
+      'src/test-utils/browserMocks.ts',
     ],
     exclude: ['**/node_modules/**', '**/test-utils/**', '**/e2e/**'],
     coverage: {

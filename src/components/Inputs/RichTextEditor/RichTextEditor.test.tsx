@@ -6,24 +6,7 @@ import {
   DEFAULT_FEATURES,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
-import {
-  ClipboardDataMock,
-  ClipboardEventMock,
-  DragEventMock,
-  FakeDOMRectList,
-  mockGetBoundingClientRect,
-} from 'src/tests/mockRichTextEditor';
 import { render, screen, userEvent } from 'src/tests/test-utils';
-
-vi.stubGlobal('ClipboardEvent', ClipboardEventMock);
-vi.stubGlobal('ClipboardData', ClipboardDataMock);
-vi.stubGlobal('DragEvent', DragEventMock);
-
-document.elementFromPoint = (): null => null;
-HTMLElement.prototype.getBoundingClientRect = mockGetBoundingClientRect;
-HTMLElement.prototype.getClientRects = (): DOMRectList => new FakeDOMRectList();
-Range.prototype.getBoundingClientRect = mockGetBoundingClientRect;
-Range.prototype.getClientRects = (): DOMRectList => new FakeDOMRectList();
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {
