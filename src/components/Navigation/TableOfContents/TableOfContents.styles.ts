@@ -1,3 +1,5 @@
+import { Link as ReactLink } from 'react-router-dom';
+
 import { tokens } from '@equinor/eds-tokens';
 
 import { HEIGHT } from 'src/components/Navigation/TableOfContents/TableOfContents.constants';
@@ -8,13 +10,19 @@ import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
 const { colors, shape } = tokens;
-
 interface ButtonProps {
   $active: boolean;
   $variant: TableOfContentsVariants;
 }
 
 export const Button = styled.button<ButtonProps>`
+  &:hover {
+    background: ${colors.interactive.primary__hover_alt.rgba};
+  }
+  &:focus {
+    outline: 2px dashed ${colors.interactive.focus.rgba};
+    outline-offset: -4px;
+  }
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -25,9 +33,6 @@ export const Button = styled.button<ButtonProps>`
   padding: 0 ${spacings.medium};
   height: ${({ $variant }) => HEIGHT[$variant]};
   transition: background 200ms;
-  &:hover {
-    background: ${colors.interactive.primary__hover_alt.rgba};
-  }
   > span {
     display: flex;
     flex-direction: column;
@@ -94,19 +99,46 @@ export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
   }
 `;
 
-interface ContainerProps {
+interface TableOfContentsContainerProps {
   $variant: TableOfContentsVariants;
 }
 
-export const Container = styled(motion.div)<ContainerProps>`
+export const TableOfContentsItemContainer = styled(
+  motion.div
+)<TableOfContentsContainerProps>`
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
   ${({ $variant }) => css`
     min-height: ${HEIGHT[$variant]};
     ${$variant === 'buttons' && `gap: ${spacings.x_small};`}
   `}
+`;
+
+export const TableOfContentsContainer = styled(
+  motion.div
+)<TableOfContentsContainerProps>`
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  overflow: hidden;
+  ${({ $variant }) => {
+    switch ($variant) {
+      case 'buttons':
+        return `gap: ${spacings.small};`;
+      case 'border':
+        return css`
+          &:after {
+            position: absolute;
+            left: 0;
+            content: '';
+            width: 2px;
+            height: 100%;
+            background: ${colors.ui.background__medium.rgba};
+          }
+        `;
+    }
+  }}
 `;
 
 interface ChildContainerProps {
@@ -124,7 +156,7 @@ export const ChildContainer = styled(motion.div)<ChildContainerProps>`
           height: 0 !important;
         `
       : null}
-  > div > button {
+  > div > button, a {
     ${({ $variant }) => {
       switch ($variant) {
         case 'buttons':
