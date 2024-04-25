@@ -43,9 +43,9 @@ printf -- "Downloading setupTests.ts file...\n"
 
 curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/setupTests.ts" > setupTests.ts
 
-printf -- "Downloading mockLocalStorage.ts file...\n"
+printf -- "Downloading browserMocks.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts" > mockLocalStorage.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/browserMocks.ts" > browserMocks.ts
 
 printf -- "Downloading utils.ts file...\n"
 
