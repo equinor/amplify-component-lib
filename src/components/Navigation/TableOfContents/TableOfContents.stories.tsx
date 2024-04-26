@@ -296,6 +296,42 @@ export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
   );
 };
 
+export const WithChildrenAndBordersLinksAndDisabled: StoryFn<StoryProps> = (
+  args
+) => {
+  return (
+    <MemoryRouter>
+      <TableOfContentsProvider
+        items={ITEMS_WITH_CHILDREN_DISABLED}
+        hashNavigation
+      >
+        <Container>
+          <TableOfContents {...args} variant="border" isLink />
+          <section>
+            {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={faker.color.rgb()}
+              >
+                {item.children?.map((child) => (
+                  <Section
+                    key={child.value}
+                    label={child.label}
+                    value={child.value}
+                    color={faker.color.rgb()}
+                  />
+                ))}
+              </Section>
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    </MemoryRouter>
+  );
+};
+
 const firstParentId = `1${faker.database.mongodbObjectId()}`;
 const secondParentId = `2${faker.database.mongodbObjectId()}`;
 

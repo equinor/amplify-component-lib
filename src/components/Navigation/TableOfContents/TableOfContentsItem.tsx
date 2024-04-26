@@ -1,7 +1,12 @@
-import { FC, useEffect, useMemo, useRef } from 'react';
+import { FC, MouseEvent, useEffect, useMemo, useRef } from 'react';
 
 import { GAP, HEIGHT } from './TableOfContents.constants';
-import { Button, ChildContainer, Container } from './TableOfContents.styles';
+import {
+  Button,
+  ChildContainer,
+  Link,
+  TableOfContentsItemContainer as Container,
+} from './TableOfContents.styles';
 import { TableOfContentsVariants } from './TableOfContents.types';
 import { Badge } from 'src/components/DataDisplay/Badge/Badge';
 import {
@@ -13,6 +18,7 @@ interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;
   variant: TableOfContentsVariants;
   activeParent?: boolean;
+  isLink?: boolean;
 }
 
 const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
@@ -23,6 +29,7 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   children,
   variant,
   onlyShowSelectedChildren,
+  isLink = false,
 }) => {
   const { isActive, selected, setSelected } = useTableOfContents();
   const initialHeight = useRef<number | undefined>(undefined);
@@ -38,7 +45,13 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
     [children, disabled, isActive, label, value]
   );
 
-  const handleOnClick = () => {
+  const handleOnClick = (
+    event?: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
+  ) => {
+    // disabling for links
+    if (disabled && event) {
+      event.preventDefault();
+    }
     if (!disabled && selected !== value) setSelected(value);
   };
 
@@ -47,17 +60,33 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
 
   return (
     <Container $variant={variant} layoutScroll layoutRoot>
-      <Button
-        $active={selected === value}
-        $variant={variant}
-        onClick={handleOnClick}
-        disabled={disabled}
-      >
-        <span title={label}>{label}</span>
-        {count !== undefined && (
-          <Badge variant={count === 0 ? 'empty' : 'light'} value={count} />
-        )}
-      </Button>
+      {isLink ? (
+        <Link
+          $active={selected === value}
+          $variant={variant}
+          onClick={(event) => handleOnClick(event)}
+          to={disabled ? '' : `#${value}`}
+          $disabled={disabled}
+          tabIndex={disabled ? -1 : 0}
+        >
+          <span title={label}>{label}</span>
+          {count !== undefined && (
+            <Badge variant={count === 0 ? 'empty' : 'light'} value={count} />
+          )}
+        </Link>
+      ) : (
+        <Button
+          $active={selected === value}
+          $variant={variant}
+          onClick={() => handleOnClick()}
+          disabled={disabled}
+        >
+          <span title={label}>{label}</span>
+          {count !== undefined && (
+            <Badge variant={count === 0 ? 'empty' : 'light'} value={count} />
+          )}
+        </Button>
+      )}
       {children && (
         <ChildContainer
           $shouldShowChildren={shouldShowChildren}
@@ -82,6 +111,7 @@ const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
               onlyShowSelectedChildren={onlyShowSelectedChildren}
               variant={variant}
               {...child}
+              isLink={isLink}
             />
           ))}
         </ChildContainer>
