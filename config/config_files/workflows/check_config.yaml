@@ -60,9 +60,9 @@ jobs:
         working-directory: client/src/test-utils
         run: diff vitest.d.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/vitest.d.ts)
 
-      - name: Compare remote src/test-utils/mockLocalStorage.ts to local
+      - name: Compare remote src/test-utils/browserMocks.ts to local
         working-directory: client/src/test-utils
-        run: diff mockLocalStorage.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts)
+        run: diff browserMocks.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/mockLocalStorage.ts)
 
       - name: Compare remote src/test-utils/portalMock.ts to local
         working-directory: client/src/test-utils
