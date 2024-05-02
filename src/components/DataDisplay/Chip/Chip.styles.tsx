@@ -10,8 +10,8 @@ interface ChipProps {
   $variant?: 'active' | 'error' | 'default';
 }
 
-const getColorSchemeBy = (variant: ChipProps['$variant'] = 'default') => {
-  const colorSchemes = {
+const getColorSchemeBy = (variant: ChipProps['$variant'] = 'default') =>
+  ({
     error: {
       color: `${colors.interactive.danger__resting.rgba}`,
       background: `${colors.ui.background__light.rgba}`,
@@ -42,10 +42,7 @@ const getColorSchemeBy = (variant: ChipProps['$variant'] = 'default') => {
         borderColor: `${colors.interactive.primary__hover.rgba}`,
       },
     },
-  } as const;
-
-  return colorSchemes[variant];
-};
+  })[variant];
 
 export const StyledChip = styled(Base)<ChipProps>`
   border: 1px solid ${colors.ui.background__medium.rgba};
