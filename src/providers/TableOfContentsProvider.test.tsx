@@ -31,9 +31,13 @@ interface TestContainerProps {
     value: string;
     label: string;
   }[];
+  shouldInstantlyJumpOnMount?: boolean;
 }
 
-const TestContainer: FC<TestContainerProps> = ({ items }) => {
+const TestContainer: FC<TestContainerProps> = ({
+  items,
+  shouldInstantlyJumpOnMount,
+}) => {
   const { setSelected } = useTableOfContents();
 
   return (
@@ -48,9 +52,14 @@ const TestContainer: FC<TestContainerProps> = ({ items }) => {
             }
           }}
           onClick={() =>
-            setSelected(item.value, {
-              behavior: 'instant',
-            })
+            setSelected(
+              item.value,
+              shouldInstantlyJumpOnMount
+                ? { shouldInstantlyJumpOnMount }
+                : {
+                    behavior: 'instant',
+                  }
+            )
           }
         >
           {item.label}
@@ -103,6 +112,47 @@ test('Manual scroll settings work as expected and do not affect menu scroll', as
     {
       wrapper: (props: { children: ReactNode }) => (
         <MemoryRouter>
+          <TableOfContentsProvider items={items}>
+            {props.children}
+          </TableOfContentsProvider>
+        </MemoryRouter>
+      ),
+    }
+  );
+
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button', { name: items[1].label });
+  const header = document.querySelector(`#${items[1].value}`)!;
+
+  await user.click(header);
+
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  expect(header.scrollIntoView).toHaveBeenCalledWith({
+    block: 'start',
+    behavior: 'instant',
+  });
+
+  await user.click(button);
+
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  expect(header.scrollIntoView).toHaveBeenCalledWith({
+    block: 'start',
+    behavior: 'smooth',
+  });
+});
+
+test('Should scroll instantly to element when shouldInstantlyJumpOnMount and a hash is present is set and then', async () => {
+  const items = fakeItems();
+
+  render(
+    <div>
+      <TableOfContents />
+      <TestContainer items={items} shouldInstantlyJumpOnMount />
+    </div>,
+    {
+      wrapper: (props: { children: ReactNode }) => (
+        <MemoryRouter initialEntries={['/#1']}>
           <TableOfContentsProvider items={items}>
             {props.children}
           </TableOfContentsProvider>

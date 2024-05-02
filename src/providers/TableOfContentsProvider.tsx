@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
@@ -24,6 +24,7 @@ export interface TableOfContentsItemType {
 
 interface SetSelectedOptions {
   behavior?: ScrollBehavior | undefined;
+  shouldInstantlyJumpOnMount?: boolean;
 }
 
 interface TableOfContentsContextType {
@@ -57,8 +58,10 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   hashNavigation,
 }) => {
   const navigate = useNavigate();
+  const { hash } = useLocation();
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
+  const [shouldInstantlyJump, setShouldInstantlyJump] = useState(hash !== '');
 
   const values: string[] = useMemo(
     () => items.flatMap((item) => getValues([], item)),
@@ -97,9 +100,13 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
       const element = elements[selectedIndex];
 
       if (element) {
+        const behavior =
+          options?.shouldInstantlyJumpOnMount && shouldInstantlyJump
+            ? 'instant'
+            : options?.behavior ?? 'smooth';
         element.scrollIntoView({
           block: 'start',
-          behavior: options?.behavior ?? 'smooth',
+          behavior,
         });
         isScrollingTo.current = selectedIndex;
         let previousTop = Infinity;
@@ -113,6 +120,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
               setSelected(values[selectedIndex]);
               if (hashNavigation) {
                 navigate(`#${values[selectedIndex]}`);
+                setShouldInstantlyJump(false);
               }
               isScrollingTo.current = -1;
               return;
@@ -127,7 +135,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         requestAnimationFrame(checkScrollDone);
       }
     },
-    [elements, hashNavigation, navigate, values]
+    [elements, hashNavigation, navigate, shouldInstantlyJump, values]
   );
 
   // Handle change of selected when scrolling down the page
@@ -157,7 +165,12 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
 
   return (
     <TableOfContentsContext.Provider
-      value={{ items, selected, setSelected: handleSetSelected, isActive }}
+      value={{
+        items,
+        selected,
+        setSelected: handleSetSelected,
+        isActive,
+      }}
     >
       {children}
     </TableOfContentsContext.Provider>
