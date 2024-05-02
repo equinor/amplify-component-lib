@@ -26,7 +26,7 @@ test('Shows chip', () => {
 
   expect(screen.getByText(someText)).toHaveStyleRule(
     'background',
-    `${colors.interactive.primary__hover_alt.rgba}`,
+    `${colors.interactive.primary__hover_alt.rgba}!important`,
     hoverOption
   );
 });
