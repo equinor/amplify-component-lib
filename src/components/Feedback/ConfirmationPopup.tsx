@@ -47,6 +47,7 @@ export interface ConfirmationPopupProps {
   onClose?: () => void | undefined;
   children?: ReactNode;
   width?: string;
+  isDismissable?: boolean;
 }
 
 const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
@@ -60,12 +61,19 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
       onClose,
       children,
       width = '400px',
+      isDismissable = true,
     },
     ref
   ) => {
     if (show) {
       return (
-        <StyledDialog ref={ref} open={show} style={{ width }}>
+        <StyledDialog
+          ref={ref}
+          open={show}
+          style={{ width }}
+          isDismissable={isDismissable}
+          onClose={onClose}
+        >
           <DialogHeader data-testid="dialog-header">
             {title}
             <Button variant="ghost_icon" onClick={onClose}>
