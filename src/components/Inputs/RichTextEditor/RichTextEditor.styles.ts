@@ -28,9 +28,16 @@ export const Wrapper = styled.div<WrapperProps>`
     height: inherit;
   }
 
+  div:has(> .tiptap) {
+    display: flex;
+  }
+
+  div:has(> .tiptap),
   .tiptap {
-    height: fit-content;
-    min-height: fit-content;
+    flex-grow: 1;
+  }
+
+  .tiptap {
     max-height: ${(props) => props.$maxHeight ?? 'none'};
     overflow-y: auto;
     background: ${(props) =>
@@ -39,7 +46,6 @@ export const Wrapper = styled.div<WrapperProps>`
         : `${colors.ui.background__light.rgba}`};
 
     &[contenteditable='true'] {
-      height: 100%;
       box-shadow: inset 0 -1px ${colors.ui.background__medium.rgba};
     }
 
