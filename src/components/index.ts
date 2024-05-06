@@ -68,7 +68,7 @@ export type { ExpandingIconButtonProps } from './Inputs/ExpandingIconButton/Expa
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
 export { default as RichTextEditor } from './Inputs/RichTextEditor/RichTextEditor';
-export type { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
+export { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
 export { Search } from './Inputs/Search/Search';
 export type { SelectItem } from './Inputs/Select';
 export { default as MultiSelectDrawer } from './Inputs/Select/MultiSelectDrawer';
