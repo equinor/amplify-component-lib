@@ -39,7 +39,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     onItemKeyDown,
     onItemSelect,
     selectableParent = true,
-    isParentSelected,
+    isParentSelected = false,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
