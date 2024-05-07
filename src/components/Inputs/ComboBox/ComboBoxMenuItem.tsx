@@ -71,7 +71,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     }
 
     return checkbox_outline;
-  }, [item, multiselect, props, selectableParent, isSelected]);
+  }, [item, multiselect, props, isSelected]);
 
   const spacers = useMemo(
     () =>
