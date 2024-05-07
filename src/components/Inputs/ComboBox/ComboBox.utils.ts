@@ -14,6 +14,25 @@ export function getChildOffset<T extends ComboBoxOptionRequired>(
   return offset + before;
 }
 
+export const flattenOptions = <T extends ComboBoxOptionRequired>(
+  options: ComboBoxOption<T>[]
+): (ComboBoxOption<T> & { parent?: string })[] => {
+  const extractChildren = (
+    options: ComboBoxOption<T>[]
+  ): ComboBoxOption<T>[] => {
+    if (!options?.length) return [];
+
+    const children = options.flatMap(
+      ({ children, value }) =>
+        children?.map((child) => ({ ...child, parent: value })) ?? []
+    );
+
+    return [...children, ...extractChildren(children)];
+  };
+
+  return [...options, ...extractChildren(options)];
+};
+
 export const getCumulativeArrayFromNumberedArray = (
   groupSizeArray: number[]
 ) => {

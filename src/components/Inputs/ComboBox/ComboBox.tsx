@@ -24,8 +24,11 @@ import {
   ComboBoxProps,
   GroupedComboboxProps,
 } from './ComboBox.types';
+import { flattenOptions } from './ComboBox.utils';
 import { ComboBoxMenu } from './ComboBoxMenu';
 import { GroupedComboBoxMenu } from './GroupedComboBoxMenu';
+
+import { groupBy } from 'lodash';
 
 const { colors } = tokens;
 
@@ -64,6 +67,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
   const [tryingToRemoveItem, setTryingToRemoveItem] = useState<T | undefined>(
     undefined
   );
+
   const internalUpdateOfValues = useRef<boolean>(false);
   const previousAmountOfValues = useRef<number>(0);
 
@@ -101,6 +105,18 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
       return firstIndex - secondIndex;
     });
   }, [props, sortValues]);
+
+  const items = 'items' in props ? props.items : [];
+
+  const groupedFormations = groupBy(
+    flattenOptions(items),
+    ({ value }) => value
+  );
+
+  const getParent = (value: string) => {
+    const parentName = groupedFormations[value]?.at(0)?.parent ?? '';
+    return groupedFormations[parentName]?.at(0);
+  };
 
   useEffect(() => {
     if (
@@ -144,44 +160,65 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
     }
   };
 
+  const getParentsRecursively = (value: string): ComboBoxOption<T>[] => {
+    const parent = getParent(value);
+    if (!parent?.children) return [];
+
+    return [parent, ...getParentsRecursively(parent.value)];
+  };
+
+  const getSiblings = (value: string): ComboBoxOption<T>[] => {
+    const children = getParent(value)?.children;
+    if (!children) return [];
+
+    return children.filter((child) => child.value !== value);
+  };
+
+  const getValuesToAdd = (
+    values: ComboBoxOption<T>[],
+    item: ComboBoxOption<T>
+  ): ComboBoxOption<T>[] => {
+    const flatParents = getParentsRecursively(item.value).map(
+      ({ value }) => value
+    );
+
+    const flatChildren = flattenOptions(item.children ?? []).map(
+      ({ value }) => value
+    );
+
+    const isIncludedByParent = values.some(({ value }) =>
+      [...flatParents].includes(value)
+    );
+
+    const siblings = getSiblings(item.value);
+
+    if (isIncludedByParent) {
+      return [
+        ...siblings,
+        ...values.filter(({ value }) => !flatParents.includes(value)),
+      ];
+    }
+
+    return [
+      item,
+      ...values.filter(
+        ({ value }) => ![...flatChildren, ...flatParents].includes(value)
+      ),
+    ];
+  };
+
   const handleOnItemSelect = (item: ComboBoxOption<T>) => {
     if ('value' in props) {
       props.onSelect(item);
-    } else if (
-      props.values.find((i) => i.value === item.value) &&
-      ('groups' in props || props.selectableParent === false)
-    ) {
+    } else if (props.values.find((i) => i.value === item.value)) {
+      // Remove item
       props.onSelect(
         props.values.filter((i) => i.value !== item.value),
         item
       );
-    } else if (props.values.find((i) => i.value === item.value)) {
-      // Remove parent with all children
-      const copiedItem = structuredClone(item);
-      const removingValues: string[] = [copiedItem.value];
-      const childItems = copiedItem.children ?? [];
-      while (childItems.length > 0) {
-        const child = childItems.splice(0, 1)[0];
-        removingValues.push(child.value);
-      }
-      props.onSelect(
-        props.values.filter((i) => !removingValues.includes(i.value)),
-        item
-      );
-    } else if ('groups' in props || props.selectableParent === false) {
-      props.onSelect([...props.values, item], item);
     } else {
-      // Add parent with all children
-      const copiedItem = structuredClone(item);
-      const newValues = [copiedItem];
-      const childItems = copiedItem.children ?? [];
-      while (childItems.length > 0) {
-        const child = childItems.splice(0, 1)[0];
-        if (!props.values.find((value) => value.value === child.value)) {
-          newValues.push(child);
-        }
-      }
-      props.onSelect([...props.values, ...newValues], item);
+      //add item and uncheck potential relative checkboxes
+      props.onSelect(getValuesToAdd(props.values, item), item);
     }
 
     if (search !== '') {

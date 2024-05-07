@@ -52,11 +52,17 @@ const FAKE_ITEMS_WITH_CHILDREN = [
   {
     label: faker.animal.fish(),
     value: faker.string.uuid(),
-    children: new Array(faker.number.int({ min: 1, max: 5 }))
+    children: new Array(faker.number.int({ min: 3, max: 3 }))
       .fill(0)
       .map(() => ({
         label: faker.animal.fish(),
         value: faker.string.uuid(),
+        children: new Array(faker.number.int({ min: 3, max: 3 }))
+          .fill(0)
+          .map(() => ({
+            label: faker.animal.fish(),
+            value: faker.string.uuid(),
+          })),
       })),
   },
   ...new Array(5).fill(0).map(() => ({
