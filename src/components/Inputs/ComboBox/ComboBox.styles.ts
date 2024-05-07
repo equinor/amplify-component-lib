@@ -140,8 +140,8 @@ export const StyledChip = styled(Chip)<StyledChipProps>`
     $tryingToRemove
       ? EDSColors.interactive.primary__hover_alt.rgba
       : $lightBackground
-      ? EDSColors.ui.background__light.rgba
-      : EDSColors.ui.background__default.rgba};
+        ? EDSColors.ui.background__light.rgba
+        : EDSColors.ui.background__default.rgba};
 `;
 
 interface CustomMenuItemProps {
@@ -157,6 +157,10 @@ export const MenuItemMultiselect = styled(Menu.Item)<CustomMenuItemProps>`
       ${({ $depth }) => ($depth > 0 ? '24px '.repeat($depth) : '')}
       auto 1fr;
   }
+  &:focus {
+    outline: none;
+    background: ${EDSColors.interactive.table__header__fill_hover.rgba};
+  }
 `;
 
 export const MenuItemParentSelect = styled(Menu.Item)<CustomMenuItemProps>`
@@ -167,6 +171,11 @@ export const MenuItemParentSelect = styled(Menu.Item)<CustomMenuItemProps>`
       /* c8 ignore next */
       ${({ $depth }) => ($depth > 0 ? '24px '.repeat($depth) : '')}
       auto 1fr auto;
+  }
+  &:focus {
+    outline: none;
+    background: ${EDSColors.interactive.table__header__fill_hover.rgba};
+  }
   }
 `;
 

@@ -10,10 +10,16 @@ import { expect } from 'vitest';
 
 const { colors } = tokens;
 
-function fakeItem() {
+function fakeItem(withChildren = false) {
   return {
     label: faker.string.uuid(),
     value: faker.string.uuid(),
+    ...(withChildren && {
+      children: new Array(2).fill(0).map(() => ({
+        label: faker.string.uuid(),
+        value: faker.string.uuid(),
+      })),
+    }),
   };
 }
 
@@ -191,19 +197,13 @@ test('Parent multi select with selectableParent = true', async () => {
   const icon = screen.getByRole('menuitem', { name: randomItem.label });
   await user.click(icon);
 
-  expect(handleOnSelect).toHaveBeenCalledWith(
-    [
-      { children: [], label: randomItem.label, value: randomItem.value },
-      ...(randomItem?.children || []),
-    ],
-    randomItem
-  );
+  expect(handleOnSelect).toHaveBeenCalledWith([randomItem], randomItem);
 
   rerender(
     <ComboBox
       label={label}
       onSelect={handleOnSelect}
-      values={[randomItem, ...randomItem.children]}
+      values={[randomItem]}
       items={[...items, itemWithoutChildren]}
     />
   );
@@ -224,6 +224,151 @@ test('Parent multi select with selectableParent = true', async () => {
     screen.getByRole('menuitem', { name: itemWithoutChildren.label })
   );
   expect(handleOnSelect).toHaveBeenCalledWith([], itemWithoutChildren);
+});
+
+test('Parent multi select - nested selection works as expected', async () => {
+  const label = faker.animal.bear();
+  const items = fakeItemsWithChildren();
+  const handler = vi.fn();
+
+  const { rerender } = render(
+    <ComboBox label={label} onSelect={handler} items={items} values={[]} />
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  // Go past and back  -- for some reason if you remove the next two lines the test sometimes fails 😅
+  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{ArrowUp}');
+
+  // Enter menu
+  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{ArrowRight}');
+
+  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{Enter}');
+
+  let newValues = [items[0].children[0]];
+  expect(handler).toBeCalledWith(newValues, items[0].children[0]);
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={newValues}
+    />
+  );
+
+  const icon1 = screen.getByRole('menuitem', {
+    name: items[0].children[0].label,
+  });
+
+  const icon2 = screen.getByRole('menuitem', {
+    name: items[0].children[1].label,
+  });
+
+  await user.click(icon2);
+
+  newValues = [items[0].children[1], items[0].children[0]];
+  expect(handler).toBeCalledWith(newValues, items[0].children[1]);
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={newValues}
+    />
+  );
+
+  await user.click(icon2);
+
+  newValues = [items[0].children[0]];
+  expect(handler).toBeCalledWith(newValues, items[0].children[1]);
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={newValues}
+    />
+  );
+
+  await user.click(icon1);
+
+  expect(handler).toBeCalledWith([], items[0].children[0]);
+});
+
+test('Parent multi select - nested selection with preselected parent works as expected', async () => {
+  const label = faker.animal.bear();
+  const items = fakeItemsWithChildren();
+  const handler = vi.fn();
+
+  render(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0]]}
+    />
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  // Go past and back  -- for some reason if you remove the next two lines the test sometimes fails 😅
+  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{ArrowUp}');
+
+  // Enter menu
+  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{ArrowRight}');
+
+  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{Enter}');
+
+  expect(handler).toBeCalledWith([items[0].children[1]], items[0].children[0]);
+});
+
+test('Parent multi select - nested child label shows as expected', async () => {
+  const label = faker.animal.bear();
+  const items = [
+    {
+      label: 'label 1',
+      value: 'value 1',
+      children: [
+        {
+          label: 'label 2',
+          value: 'value 2',
+          children: [
+            {
+              label: 'label 3',
+              value: 'value 3',
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const handler = vi.fn();
+
+  render(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[{ ...items[0].children[0].children[0], children: [] }]}
+    />
+  );
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('combobox'));
+
+  expect(screen.getByText('label 3')).toBeInTheDocument();
 });
 
 test('Basic group single select', async () => {

@@ -20,7 +20,7 @@ import {
   ComboBoxOptionRequired,
   ComboBoxSingleSelectMenuItemProps,
 } from './ComboBox.types';
-import { getChildOffset } from './ComboBox.utils';
+import { flattenOptions, getChildOffset } from './ComboBox.utils';
 
 const { colors } = tokens;
 
@@ -39,24 +39,21 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     onItemKeyDown,
     onItemSelect,
     selectableParent = true,
+    isParentSelected,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
   const childRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
+  const selectedValues =
+    'values' in props ? props.values.map(({ value }) => value) : [];
+  const isSelected = selectedValues.includes(item.value) || isParentSelected;
+
   const parentIcon = useMemo(() => {
     if (!multiselect || !item.children || item.children.length === 0)
       return checkbox_outline;
 
-    if (
-      [item, ...item.children].every((option) =>
-        props.values.find((i) => i.value === option.value)
-      ) ||
-      (!selectableParent &&
-        item.children.every((option) =>
-          props.values.find((i) => i.value === option.value)
-        ))
-    ) {
+    if (isSelected) {
       return checkbox;
     } else if (
       [item, ...item.children].some((option) =>
@@ -65,8 +62,16 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     ) {
       return checkbox_indeterminate;
     }
+
+    const selectedValues = props.values.map(({ value }) => value);
+    const allOptions = flattenOptions([item])?.map(({ value }) => value);
+
+    if (allOptions.some((option) => selectedValues.includes(option))) {
+      return checkbox_indeterminate;
+    }
+
     return checkbox_outline;
-  }, [item, multiselect, props, selectableParent]);
+  }, [item, multiselect, props, selectableParent, isSelected]);
 
   const spacers = useMemo(
     () =>
@@ -79,13 +84,17 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
   const handleOnClick = (event: MouseEvent) => {
     event.stopPropagation();
     onItemSelect(item);
+
+    if (!('values' in props) && !multiselect) return;
+    const selectedValues = props.values.map(({ value }) => value);
+    const willOpen = !selectedValues.includes(item.value);
+    setOpenParent(willOpen);
   };
 
   const handleOnParentClick = (event: MouseEvent) => {
+    setOpenParent((prev) => !prev);
     if (event.target instanceof HTMLButtonElement && selectableParent) {
       onItemSelect(item);
-    } else {
-      setOpenParent((prev) => !prev);
     }
   };
 
@@ -165,7 +174,9 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
             <ComboBoxMenuItem
               key={`child-${childIndex}-${child.value}-${item.value}`}
               index={childOffset + childIndex}
-              childOffset={childOffset + getChildOffset([], childIndex)}
+              childOffset={
+                childOffset + getChildOffset(item.children!, childIndex)
+              }
               depth={depth + 1}
               multiselect
               item={child}
@@ -174,6 +185,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
               selectableParent={selectableParent}
+              isParentSelected={isSelected}
             />
           ))}
       </>
@@ -196,11 +208,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
         {spacers}
         <Icon
           color={colors.interactive.primary__resting.rgba}
-          data={
-            props.values.find((value) => value.value === item.value)
-              ? checkbox
-              : checkbox_outline
-          }
+          data={isSelected ? checkbox : checkbox_outline}
         />
         {item.label}
       </MenuItemMultiselect>
