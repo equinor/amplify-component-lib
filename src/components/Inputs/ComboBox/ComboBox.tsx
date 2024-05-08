@@ -356,10 +356,6 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
           onClose={handleOnClose}
           placement="bottom"
           matchAnchorWidth
-          style={{
-            maxHeight: '20rem',
-            overflow: 'auto',
-          }}
         >
           {'groups' in props ? (
             <GroupedComboBoxMenu
