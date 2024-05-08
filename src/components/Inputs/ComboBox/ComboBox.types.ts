@@ -67,3 +67,9 @@ export type ComboBoxMultiSelectMenuItemProps<T extends ComboBoxOptionRequired> =
     values: ComboBoxOption<T>[];
   } & Omit<ComboBoxMenuProps<T>, 'search'> &
     ComboBoxMenuItemProps<T>;
+
+export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
+  sortValues?: boolean;
+  disabled?: boolean;
+  loading?: boolean;
+} & (ComboBoxProps<T> | GroupedComboboxProps<T>);

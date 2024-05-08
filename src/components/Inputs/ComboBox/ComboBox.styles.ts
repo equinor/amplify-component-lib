@@ -1,4 +1,9 @@
-import { Button, Chip, Menu, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Chip,
+  Menu as EDSMenu,
+  Typography,
+} from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { colors } from 'src/constants';
@@ -14,7 +19,7 @@ interface ContainerProps {
   $label?: boolean;
 }
 
-export const Container = styled.div<ContainerProps>`
+const Container = styled.div<ContainerProps>`
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
@@ -69,7 +74,7 @@ export const Container = styled.div<ContainerProps>`
   }
 `;
 
-export const Section = styled.section`
+const Section = styled.section`
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -113,7 +118,7 @@ export const Section = styled.section`
   }
 `;
 
-export const ClearButton = styled(Button)`
+const ClearButton = styled(Button)`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
@@ -135,7 +140,7 @@ interface StyledChipProps {
   $lightBackground?: boolean;
 }
 
-export const StyledChip = styled(Chip)<StyledChipProps>`
+const StyledChip = styled(Chip)<StyledChipProps>`
   background: ${({ $tryingToRemove, $lightBackground }) =>
     $tryingToRemove
       ? EDSColors.interactive.primary__hover_alt.rgba
@@ -148,7 +153,7 @@ interface CustomMenuItemProps {
   $depth: number;
 }
 
-export const MenuItemMultiselect = styled(Menu.Item)<CustomMenuItemProps>`
+const MenuItemMultiselect = styled(EDSMenu.Item)<CustomMenuItemProps>`
   > div {
     display: grid;
     /* This is tested but the code coverage doesn't recognize it */
@@ -163,7 +168,7 @@ export const MenuItemMultiselect = styled(Menu.Item)<CustomMenuItemProps>`
   }
 `;
 
-export const MenuItemParentSelect = styled(Menu.Item)<CustomMenuItemProps>`
+const MenuItemParentSelect = styled(EDSMenu.Item)<CustomMenuItemProps>`
   > div {
     display: grid;
     /* This is tested but the code coverage doesn't recognize it */
@@ -179,20 +184,40 @@ export const MenuItemParentSelect = styled(Menu.Item)<CustomMenuItemProps>`
   }
 `;
 
-export const MenuItemSpacer = styled.hr`
+const MenuItemSpacer = styled.hr`
   height: calc(100% + ${EDSSpacings.comfortable.medium} * 2);
   width: 2px;
   background: ${EDSColors.ui.background__medium.rgba};
   justify-self: center;
 `;
 
-export const PlaceholderText = styled(Typography)`
+const PlaceholderText = styled(Typography)`
   position: absolute;
   color: ${EDSColors.text.static_icons__tertiary.rgba};
   top: calc(50%);
   transform: translate(0, -50%);
 `;
 
-export const NoItemsFoundText = styled(Typography)`
+const NoItemsFoundText = styled(Typography)`
   margin-left: ${EDSSpacings.comfortable.medium};
 `;
+
+const Menu = styled(EDSMenu)`
+  max-height: 20rem;
+  overflow: auto;
+`;
+
+export {
+  Button,
+  Chip,
+  ClearButton,
+  Container,
+  MenuItemMultiselect,
+  MenuItemParentSelect,
+  MenuItemSpacer,
+  Menu,
+  NoItemsFoundText,
+  PlaceholderText,
+  StyledChip,
+  Section,
+};

@@ -58,6 +58,7 @@ export { default as NothingOutlined } from './Icons/FeedBackIcon/NegativeOutline
 export { default as SomethingFilled } from './Icons/FeedBackIcon/PositiveFilled';
 export { default as SomethingOutlined } from './Icons/FeedBackIcon/PositiveOutlined';
 export { ComboBox } from './Inputs/ComboBox/ComboBox';
+export { ComboBoxMenu } from './Inputs/ComboBox/ComboBoxMenu';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
 export { default as NewComment } from './Inputs/CommentField/NewCommentField';
 export { default as ContentMenu } from './Inputs/ContentMenu';
@@ -98,6 +99,9 @@ export { default as Template } from './Template/Template';
 export type {
   ComboBoxOption,
   ComboBoxOptionRequired,
+  ComboBoxComponentProps,
+  ComboBoxProps,
+  GroupedComboboxProps,
 } from './Inputs/ComboBox/ComboBox.types';
 export { Badge } from './DataDisplay/Badge/Badge';
 

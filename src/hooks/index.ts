@@ -5,6 +5,7 @@ import { useSideBar } from '../providers/SideBarProvider';
 import { useSnackbar } from '../providers/SnackbarProvider';
 import { useTableOfContents } from '../providers/TableOfContentsProvider';
 import { useTutorialSteps } from '../providers/TutorialStepsProvider';
+import { useComboBox } from './useComboBox';
 import { useDebounce } from './useDebounce';
 import { useFakeProgress } from './useFakeProgress';
 import { useFeatureToggling } from './useFeatureToggling';
@@ -16,6 +17,7 @@ import { useSignalRMessages } from './useSignalRMessages';
 
 export {
   useAuth,
+  useComboBox,
   useDebounce,
   useFakeProgress,
   useFeatureToggling,
