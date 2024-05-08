@@ -7,10 +7,6 @@
   "author": "Amplify Team",
   "license": "ISC",
   "homepage": "https://github.com/equinor/amplify-components#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/equinor/amplify-components.git"
-  },
   "bugs": {
     "url": "https://github.com/equinor/amplify-components/issues"
   },
