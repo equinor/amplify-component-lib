@@ -99,6 +99,9 @@ export { default as Template } from './Template/Template';
 export type {
   ComboBoxOption,
   ComboBoxOptionRequired,
+  ComboBoxComponentProps,
+  ComboBoxProps,
+  GroupedComboboxProps,
 } from './Inputs/ComboBox/ComboBox.types';
 export { Badge } from './DataDisplay/Badge/Badge';
 
