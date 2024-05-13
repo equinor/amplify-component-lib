@@ -12,27 +12,14 @@ import {
   StyledChip,
 } from './ComboBox.styles';
 import {
+  ComboBoxComponentProps,
   ComboBoxOptionRequired,
-  ComboBoxProps,
-  GroupedComboboxProps,
 } from './ComboBox.types';
 import { ComboBoxMenu } from './ComboBoxMenu';
 import { GroupedComboBoxMenu } from './GroupedComboBoxMenu';
 import { useComboBox } from 'src/hooks/useComboBox';
 
 const { colors } = tokens;
-
-export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
-  id?: string;
-  label?: string;
-  placeholder?: string;
-  sortValues?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-  lightBackground?: boolean;
-  underlineHighlight?: boolean;
-  clearable?: boolean;
-} & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 export const ComboBox = <T extends ComboBoxOptionRequired>(
   props: ComboBoxComponentProps<T>

@@ -9,19 +9,12 @@ import {
 
 import { ComboBoxOption } from 'src/components';
 import {
+  ComboBoxComponentProps,
   ComboBoxOptionRequired,
-  ComboBoxProps,
-  GroupedComboboxProps,
 } from 'src/components/Inputs/ComboBox/ComboBox.types';
 import { flattenOptions } from 'src/components/Inputs/ComboBox/ComboBox.utils';
 
 import { groupBy } from 'lodash';
-
-export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
-  sortValues?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-} & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 const useComboBox = <T extends ComboBoxOptionRequired>(
   props: ComboBoxComponentProps<T>

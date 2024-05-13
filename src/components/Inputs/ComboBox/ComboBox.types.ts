@@ -69,7 +69,13 @@ export type ComboBoxMultiSelectMenuItemProps<T extends ComboBoxOptionRequired> =
     ComboBoxMenuItemProps<T>;
 
 export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
+  id?: string;
+  label?: string;
+  placeholder?: string;
   sortValues?: boolean;
   disabled?: boolean;
   loading?: boolean;
+  lightBackground?: boolean;
+  underlineHighlight?: boolean;
+  clearable?: boolean;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
