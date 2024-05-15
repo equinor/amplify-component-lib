@@ -24,10 +24,12 @@ interface AccessType {
   url?: string;
   title: string;
 }
+
 interface MissingAccessesProps {
   accesses?: AccessType[];
   text?: string;
 }
+
 export const MissingAccesses = forwardRef<HTMLDivElement, MissingAccessesProps>(
   ({ accesses = [], text }, ref) => {
     return (
