@@ -202,7 +202,7 @@ const NoItemsFoundText = styled(Typography)`
   margin-left: ${EDSSpacings.comfortable.medium};
 `;
 
-const Menu = styled(EDSMenu)`
+const StyledMenu = styled(EDSMenu)`
   max-height: 20rem;
   overflow: auto;
 `;
@@ -215,7 +215,7 @@ export {
   MenuItemMultiselect,
   MenuItemParentSelect,
   MenuItemSpacer,
-  Menu,
+  StyledMenu,
   NoItemsFoundText,
   PlaceholderText,
   StyledChip,

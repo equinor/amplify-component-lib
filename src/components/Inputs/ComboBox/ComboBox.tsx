@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { CircularProgress, Icon, Label, Menu } from '@equinor/eds-core-react';
+import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -10,6 +10,7 @@ import {
   PlaceholderText,
   Section,
   StyledChip,
+  StyledMenu,
 } from './ComboBox.styles';
 import {
   ComboBoxOptionRequired,
@@ -132,7 +133,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
         )}
       </Container>
       {open && (
-        <Menu
+        <StyledMenu
           open
           id="combobox-menu"
           anchorEl={anchorRef.current}
@@ -160,7 +161,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
               }
             />
           )}
-        </Menu>
+        </StyledMenu>
       )}
     </div>
   );
