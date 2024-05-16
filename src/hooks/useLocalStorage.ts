@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { debounce } from 'lodash';
 
@@ -35,6 +35,8 @@ export const useLocalStorage = <T>(
   defaultState: T,
   keepAliveMs?: number
 ) => {
+  const initRender = useRef(true);
+
   const [state, setState] = useState<T>(
     getLocalStorage<T>(key, defaultState, keepAliveMs)
   );
@@ -54,14 +56,20 @@ export const useLocalStorage = <T>(
     []
   );
 
-  const handleSetState = (state: T) => {
-    setState(state);
+  useEffect(() => {
+    if (initRender.current) {
+      initRender.current = false;
+      return;
+    }
+
     if (state === undefined || state === null) {
       clear();
     } else {
       debouncedUpdateLocalStorage(key, state);
     }
-  };
 
-  return [state, handleSetState, clear] as const;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+
+  return [state, setState, clear] as const;
 };
