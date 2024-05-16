@@ -41,11 +41,11 @@ export const useLocalStorage = <T>(
     getLocalStorage<T>(key, defaultState, keepAliveMs)
   );
 
-  const clear = () => {
+  const clear = useCallback(() => {
     setState(defaultState);
     localStorage.removeItem(key);
     localStorage.removeItem(key + LAST_UPDATED_KEY_SUFFIX);
-  };
+  }, [setState, defaultState, key]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedUpdateLocalStorage = useCallback(
@@ -67,9 +67,7 @@ export const useLocalStorage = <T>(
     } else {
       debouncedUpdateLocalStorage(key, state);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  }, [state, clear, debouncedUpdateLocalStorage, key]);
 
   return [state, setState, clear] as const;
 };
