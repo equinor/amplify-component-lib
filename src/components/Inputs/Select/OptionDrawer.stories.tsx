@@ -18,11 +18,19 @@ export default {
     animateUncheck: {
       control: 'boolean',
     },
+    indeterminateToggleOff: {
+      control: 'boolean',
+    },
+    excludeChildrenOnParentSelection: {
+      control: 'boolean',
+    },
   },
   args: {
-    singleSelect: false,
+    singleSelect: true,
     animateCheck: false,
     animateUncheck: false,
+    shouldToggleOffOnIndeterminateState: true,
+    excludeChildrenOnParentSelection: true,
   },
 } as Meta;
 
@@ -47,6 +55,12 @@ export const Primary: StoryFn<OptionDrawerProps<ValueType>> = (args) => {
           animateCheck={args.animateCheck}
           animateParent={args.animateParent}
           animateUncheck={args.animateUncheck}
+          shouldToggleOffOnIndeterminateState={
+            args.shouldToggleOffOnIndeterminateState
+          }
+          excludeChildrenOnParentSelection={
+            args.excludeChildrenOnParentSelection
+          }
         />
       ))}
     </div>

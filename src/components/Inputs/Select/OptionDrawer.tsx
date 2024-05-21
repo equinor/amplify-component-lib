@@ -7,113 +7,16 @@ import {
   useState,
 } from 'react';
 
-import { Checkbox, Icon } from '@equinor/eds-core-react';
+import { Checkbox } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import styled, { css, keyframes } from 'styled-components';
-
-const { colors } = tokens;
-
-interface StyledOptionProps {
-  $section: number;
-  $animationActive?: boolean;
-}
-
-const animateToggle = keyframes`
-  0% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-`;
-
-const StyledOptionWrapper = styled.div<StyledOptionProps>`
-  margin-left: ${({ $section }) => ($section > 0 ? '22px' : '')};
-  border-left: ${({ $section }) =>
-    $section > 0 ? '1px solid ' + colors.ui.background__medium.rgba : ''};
-  opacity: 1;
-  color: ${colors.text.static_icons__default.rgba};
-  animation: ${({ $animationActive }) =>
-    $animationActive
-      ? css`
-          ${animateToggle} 400ms ease-in
-        `
-      : 'none'};
-`;
-
-const StyledOption = styled.div<StyledOptionProps>`
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: background-color 0.1s ease-in;
-  &:hover {
-    background-color: ${colors.interactive.primary__hover_alt.rgba};
-  }
-
-  svg {
-    fill: ${colors.interactive.primary__resting.rgba};
-  }
-`;
-
-const StyledIcon = styled(Icon)`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
-const getAllItems = <T extends { id: string; label: string; children?: T[] }>(
-  items: T[]
-): T[] => {
-  if (items.length === 0) {
-    return [];
-  }
-
-  let options: T[] = [];
-
-  items.forEach((item) => {
-    const children = getAllItems(item?.children ?? []);
-    options = [item, ...options, ...children];
-  });
-
-  return options;
-};
-
-type StatusType = 'CHECKED' | 'INTERMEDIATE' | 'NONE';
-
-const getStatus = <T extends { id: string; label: string; children?: T[] }>(
-  item: T,
-  selectedItems: T[],
-  singleSelect?: boolean
-): StatusType => {
-  if (
-    item.children === undefined ||
-    item.children.length === 0 ||
-    singleSelect
-  ) {
-    return selectedItems.find((s) => s.id === item.id) !== undefined
-      ? 'CHECKED'
-      : 'NONE';
-  }
-
-  const selected = getAllItems(item?.children).map(
-    (i) => selectedItems.find((s) => s.id === i.id) !== undefined
-  );
-
-  if (selected.every(Boolean)) {
-    return 'CHECKED';
-  } else if (selected.every((s) => !s)) {
-    return 'NONE';
-  }
-
-  return 'INTERMEDIATE';
-};
+import {
+  StyledIcon,
+  StyledOption,
+  StyledOptionWrapper,
+} from './OptionDrawer.styles';
+import { StatusType } from './OptionDrawer.types';
+import { getStatus } from './OptionDrawer.utils';
 
 export interface ToggleEventProps<T> {
   items: T[];
@@ -124,21 +27,35 @@ export interface ToggleEventProps<T> {
 export interface OptionDrawerProps<
   T extends { id: string; label: string; parentId?: string; children?: T[] },
 > {
+  /**
+   * @requires id, label and value
+   */
   item: T;
   onToggle: ({ items, toggle, event }: ToggleEventProps<T>) => void;
   section?: number;
   selectedItems?: T[];
   singleSelect?: boolean;
   siblings?: number;
+  /**
+   * This is useful in cases where we want to add elements to the options list when checked
+   */
   animateCheck?: boolean;
+  /**
+   * This is useful in cases where we want to filter away elements from the options list when unchecked
+   */
   animateUncheck?: boolean;
   animateParent?: Dispatch<SetStateAction<boolean>>;
   openAll?: boolean;
+  /**
+   * when parent is in an indeterminate state, this flag will help determine if parent and children should all be unchecked or checked
+   */
+  shouldToggleOffOnIndeterminateState?: boolean;
+  /**
+   * When checking parent, children should be unchecked
+   */
+  excludeChildrenOnParentSelection?: boolean;
 }
 
-/**
- * @deprecated Use ComboBox instead
- */
 const OptionDrawer = <
   T extends { id: string; label: string; parentId?: string; children?: T[] },
 >({
@@ -152,6 +69,8 @@ const OptionDrawer = <
   animateUncheck,
   animateParent,
   openAll,
+  shouldToggleOffOnIndeterminateState = false,
+  excludeChildrenOnParentSelection = false,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
@@ -201,9 +120,11 @@ const OptionDrawer = <
       item.children !== undefined
         ? [...item.children]
         : [item];
-    if (status === 'CHECKED') {
-      onToggle({ items: items, toggle: false, event: e });
-    } else if (status === 'NONE' || status === 'INTERMEDIATE') {
+    } else if (
+      status === StatusType.NONE ||
+      (!shouldToggleOffOnIndeterminateState &&
+        status === StatusType.INTERMEDIATE)
+    ) {
       onToggle({ items: items, toggle: true, event: e });
     }
     setAnimationActive(false);
@@ -216,13 +137,17 @@ const OptionDrawer = <
     // Only animate whole group when everything is checked/unchecked
     if (shouldAnimateParent && animateParent) {
       animateParent(true);
-      setStatus(status === 'CHECKED' ? 'NONE' : 'CHECKED');
+      setStatus(
+        status === StatusType.CHECKED ? StatusType.NONE : StatusType.CHECKED
+      );
       setTimeout(() => {
         handleToggle(e);
       }, 400);
     } else if (!siblings) {
       setAnimationActive(true);
-      setStatus(status === 'CHECKED' ? 'NONE' : 'CHECKED');
+      setStatus(
+        status === StatusType.CHECKED ? StatusType.NONE : StatusType.CHECKED
+      );
       setTimeout(() => {
         handleToggle(e);
       }, 400);
@@ -247,10 +172,10 @@ const OptionDrawer = <
   };
 
   const handleCheck = (e: MouseEvent | ChangeEvent) => {
-    if (status === 'CHECKED' && animateUncheck) {
+    if (status === StatusType.CHECKED && animateUncheck) {
       animate(e, shouldAnimateParent(true));
     } else if (
-      (status === 'NONE' || status === 'INTERMEDIATE') &&
+      (status === StatusType.NONE || status === StatusType.INTERMEDIATE) &&
       animateCheck
     ) {
       animate(e, shouldAnimateParent(false));
@@ -272,9 +197,9 @@ const OptionDrawer = <
     >
       <StyledOption $section={section} onClick={handleClick}>
         <Checkbox
-          indeterminate={status === 'INTERMEDIATE'}
-          checked={status === 'CHECKED'}
-          onChange={(e) => handleCheck(e)}
+          indeterminate={status === StatusType.INTERMEDIATE}
+          checked={status === StatusType.CHECKED}
+          onChange={handleCheck}
           color="secondary"
         />
         {item.label}
@@ -296,6 +221,10 @@ const OptionDrawer = <
             animateUncheck={animateUncheck}
             animateParent={setAnimationActive}
             openAll={openAll}
+            excludeChildrenOnParentSelection={excludeChildrenOnParentSelection}
+            shouldToggleOffOnIndeterminateState={
+              shouldToggleOffOnIndeterminateState
+            }
           />
         ))}
     </StyledOptionWrapper>
