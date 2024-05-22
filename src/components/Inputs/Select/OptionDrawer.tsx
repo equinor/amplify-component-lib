@@ -74,13 +74,31 @@ const OptionDrawer = <
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
-    getStatus(item, selectedItems, singleSelect)
+    getStatus(
+      item,
+      selectedItems,
+      singleSelect && !shouldToggleOffOnIndeterminateState,
+      excludeChildrenOnParentSelection
+    )
   );
   const [animationActive, setAnimationActive] = useState(false);
 
   useEffect(() => {
-    setStatus(getStatus(item, selectedItems, singleSelect));
-  }, [item, selectedItems, singleSelect]);
+    setStatus(
+      getStatus(
+        item,
+        selectedItems,
+        singleSelect && !shouldToggleOffOnIndeterminateState,
+        excludeChildrenOnParentSelection
+      )
+    );
+  }, [
+    excludeChildrenOnParentSelection,
+    item,
+    selectedItems,
+    shouldToggleOffOnIndeterminateState,
+    singleSelect,
+  ]);
 
   useEffect(() => {
     if (openAll) {
@@ -116,15 +134,50 @@ const OptionDrawer = <
   const handleToggle = (e: MouseEvent | ChangeEvent) => {
     const items =
       item.children?.length !== 0 &&
-      !singleSelect &&
+      (!singleSelect ||
+        (singleSelect && shouldToggleOffOnIndeterminateState)) &&
       item.children !== undefined
         ? [...item.children]
         : [item];
+    console.log({ items, item, e, status, selectedItems });
+    if (
+      status === StatusType.NONE &&
+      excludeChildrenOnParentSelection &&
+      item.children !== undefined
+    ) {
+      const selectedIds = selectedItems.map((i) => i.id);
+      const childrenToBeRemoved = item.children?.filter((c) =>
+        selectedIds.includes(c.id)
+      );
+      // check if item has children and if any of those children are selected
+      console.log('removing immediate children', {
+        items,
+        e,
+        selectedItems,
+        item,
+      });
+      onToggle({
+        items: [item],
+        toggle: true,
+        event: e,
+      });
+    } else if (
+      status === StatusType.CHECKED ||
+      (shouldToggleOffOnIndeterminateState &&
+        status === StatusType.INTERMEDIATE)
+    ) {
+      console.log('toggle off', { items, e, item, selectedItems });
+      onToggle({
+        items: excludeChildrenOnParentSelection ? [item] : items,
+        toggle: false,
+        event: e,
+      });
     } else if (
       status === StatusType.NONE ||
       (!shouldToggleOffOnIndeterminateState &&
         status === StatusType.INTERMEDIATE)
     ) {
+      console.log('toggle on', { items, e, item, selectedItems });
       onToggle({ items: items, toggle: true, event: e });
     }
     setAnimationActive(false);
