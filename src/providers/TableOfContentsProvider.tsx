@@ -119,7 +119,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
             if (same > 1) {
               setSelected(values[selectedIndex]);
               if (hashNavigation) {
-                navigate(`#${values[selectedIndex]}`);
+                navigate(`#${values[selectedIndex]}`, { replace: true });
                 setShouldInstantlyJump(false);
               }
               isScrollingTo.current = -1;
@@ -157,7 +157,7 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     if (newSelectedIndex !== -1 && values.at(newSelectedIndex) !== undefined) {
       setSelected(values[newSelectedIndex]);
       if (hashNavigation) {
-        navigate(`#${values[newSelectedIndex]}`);
+        navigate(`#${values[newSelectedIndex]}`, { replace: true });
       }
     }
   }, [hashNavigation, navigate, values, visible]);
