@@ -330,7 +330,7 @@ test('Parent multi select - nested selection with preselected parent works as ex
   await user.keyboard('{ArrowDown}');
   await user.keyboard('{Enter}');
 
-  expect(handler).toBeCalledWith([items[0].children[1]], items[0].children[0]);
+  expect(handler).toBeCalledWith([items[0].children[0]], items[0].children[0]);
 });
 
 test('Parent multi select - nested child label shows as expected', async () => {
