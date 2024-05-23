@@ -62,18 +62,26 @@ const isJwtTokenExpired = (token: string) => {
   return decodedToken.exp && todayInSecUnix > decodedToken.exp;
 };
 
+const isJwtTokenValid = (token: string) => {
+  if (token.length === 0) return false;
+  try {
+    return !isJwtTokenExpired(token);
+  } catch (err) {
+    return false;
+  }
+};
+
 const getToken = async (
   localStorageKey: string,
   tokenRequest: () => CancelablePromise<string>
 ) => {
   const localStorageToken = getLocalStorage(localStorageKey, '');
-  if (localStorageToken.length !== 0 && !isJwtTokenExpired(localStorageToken)) {
-    return localStorageToken;
-  } else {
-    const requestToken = await tokenRequest();
-    updateLocalStorage(localStorageKey, requestToken);
-    return requestToken;
-  }
+  if (isJwtTokenValid(localStorageToken)) return localStorageToken;
+
+  const requestToken = await tokenRequest();
+  updateLocalStorage(localStorageKey, requestToken);
+
+  return requestToken;
 };
 
 export const getPortalToken = async () => {
