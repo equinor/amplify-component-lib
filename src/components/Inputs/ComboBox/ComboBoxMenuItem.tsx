@@ -39,7 +39,6 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     onItemKeyDown,
     onItemSelect,
     selectableParent = true,
-    isParentSelected = false,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
@@ -47,7 +46,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
 
   const selectedValues =
     'values' in props ? props.values.map(({ value }) => value) : [];
-  const isSelected = selectedValues.includes(item.value) || isParentSelected;
+  const isSelected = selectedValues.includes(item.value);
 
   const parentIcon = useMemo(() => {
     if (!multiselect || !item.children || item.children.length === 0)
@@ -185,7 +184,6 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
               selectableParent={selectableParent}
-              isParentSelected={isSelected}
             />
           ))}
       </>

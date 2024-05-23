@@ -135,13 +135,6 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
     return [parent, ...getParentsRecursively(parent.value)];
   };
 
-  const getSiblings = (value: string): ComboBoxOption<T>[] => {
-    const children = getParent(value)?.children;
-    if (!children) return [];
-
-    return children.filter((child) => child.value !== value);
-  };
-
   const getValuesToAdd = (
     values: ComboBoxOption<T>[],
     item: ComboBoxOption<T>
@@ -153,19 +146,6 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
     const flatChildren = flattenOptions(item.children ?? []).map(
       ({ value }) => value
     );
-
-    const isIncludedByParent = values.some(({ value }) =>
-      [...flatParents].includes(value)
-    );
-
-    const siblings = getSiblings(item.value);
-
-    if (isIncludedByParent) {
-      return [
-        ...siblings,
-        ...values.filter(({ value }) => !flatParents.includes(value)),
-      ];
-    }
 
     return [
       item,
