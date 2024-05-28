@@ -31,6 +31,10 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
+  const hasNestedItems = filteredItems.some(
+    (i) => i.children && i.children.length > 0
+  );
+
   if ('values' in props) {
     return filteredItems.map((item, index) => (
       <ComboBoxMenuItem
@@ -44,6 +48,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
         onItemSelect={onItemSelect}
         values={props.values}
         selectableParent={selectableParent}
+        parentHasNestedItems={hasNestedItems}
       />
     ));
   }
@@ -58,6 +63,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
       onItemKeyDown={onItemKeyDown}
       onItemSelect={onItemSelect}
       selectableParent={selectableParent}
+      parentHasNestedItems={hasNestedItems}
     />
   ));
 };
