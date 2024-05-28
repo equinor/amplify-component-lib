@@ -67,6 +67,12 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
   } = useComboBox(props);
   const anchorRef = useRef<HTMLDivElement | null>(null);
 
+  const handleChipRemoval = (value: T) => () => {
+    if (!loading && !disabled) {
+      handleOnRemoveItem(value);
+    }
+  };
+
   return (
     <div>
       <Container
@@ -91,11 +97,8 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
                 key={value.value}
                 data-testid="amplify-combobox-chip"
                 className="amplify-combo-box-chip"
-                onDelete={() => {
-                  if (!loading && !disabled) {
-                    handleOnRemoveItem(value);
-                  }
-                }}
+                onClick={handleChipRemoval(value)}
+                onDelete={handleChipRemoval(value)}
                 $tryingToRemove={tryingToRemoveItem?.value === value.value}
                 $lightBackground={lightBackground}
               >
@@ -127,7 +130,11 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
           />
         )}
         {clearable && selectedValues.length > 0 && !loading && (
-          <ClearButton variant="ghost_icon" onClick={handleOnClear}>
+          <ClearButton
+            variant="ghost_icon"
+            onClick={handleOnClear}
+            data-testid="clearBtn"
+          >
             <Icon data={clear} size={18} />
           </ClearButton>
         )}

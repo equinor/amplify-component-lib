@@ -1015,7 +1015,7 @@ test('Clearing works as expected', async () => {
 
   const user = userEvent.setup();
 
-  const clearButton = screen.getByRole('button');
+  const clearButton = screen.getByTestId('clearBtn');
 
   await user.click(clearButton);
 
@@ -1044,7 +1044,7 @@ test('Clearing works as expected', async () => {
     />
   );
 
-  expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('clearBtn')).not.toBeInTheDocument();
 });
 
 test('Sets id when sending it', () => {

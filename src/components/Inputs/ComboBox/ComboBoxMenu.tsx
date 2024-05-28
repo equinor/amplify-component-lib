@@ -3,10 +3,11 @@ import { useMemo } from 'react';
 import { NoItemsFoundText } from './ComboBox.styles';
 import {
   ComboBoxMenuProps,
+  ComboBoxOption,
   ComboBoxOptionRequired,
   ComboBoxProps,
 } from './ComboBox.types';
-import { getChildOffset } from './ComboBox.utils';
+import { flattenOptions, getChildOffset } from './ComboBox.utils';
 import { ComboBoxMenuItem } from './ComboBoxMenuItem';
 
 export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
@@ -24,7 +25,10 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
   const filteredItems = useMemo(() => {
     if (search === '') return items;
     const regexPattern = new RegExp(search, 'i');
-    return items.filter((item) => item.label.match(regexPattern));
+
+    return flattenOptions(items)
+      .map(({ value, label }) => ({ value, label }) as ComboBoxOption<T>)
+      .filter((item) => item.label.match(regexPattern));
   }, [items, search]);
 
   if (filteredItems.length === 0) {

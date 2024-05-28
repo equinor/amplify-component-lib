@@ -1,11 +1,7 @@
-import {
-  Button,
-  Chip,
-  Menu as EDSMenu,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { Chip } from 'src/components/DataDisplay/Chip/Chip';
 import { colors } from 'src/constants';
 import { spacings } from 'src/style/spacings';
 
