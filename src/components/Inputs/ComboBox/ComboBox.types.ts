@@ -57,12 +57,14 @@ export type ComboBoxSingleSelectMenuItemProps<
 > = {
   multiselect?: undefined;
   isParentSelected?: boolean;
+  parentHasNestedItems?: boolean;
 } & Omit<ComboBoxMenuProps<T>, 'search'> &
   ComboBoxMenuItemProps<T>;
 
 export type ComboBoxMultiSelectMenuItemProps<T extends ComboBoxOptionRequired> =
   {
     isParentSelected?: boolean;
+    parentHasNestedItems?: boolean;
     multiselect: true;
     values: ComboBoxOption<T>[];
   } & Omit<ComboBoxMenuProps<T>, 'search'> &

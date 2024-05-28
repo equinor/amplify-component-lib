@@ -150,45 +150,31 @@ const StyledChip = styled(Chip)<StyledChipProps>`
 `;
 
 interface CustomMenuItemProps {
-  $depth: number;
+  $paddedLeft?: boolean;
 }
 
-const MenuItemMultiselect = styled(EDSMenu.Item)<CustomMenuItemProps>`
-  > div {
-    display: grid;
-    /* This is tested but the code coverage doesn't recognize it */
-    grid-template-columns:
-      /* c8 ignore next */
-      ${({ $depth }) => ($depth > 0 ? '24px '.repeat($depth) : '')}
-      auto 1fr;
-  }
+const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
+  flex: 1;
+  border-radius: 2px;
+  ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
+    
   &:focus {
     outline: none;
-    background: ${EDSColors.interactive.table__header__fill_hover.rgba};
   }
-`;
-
-const MenuItemParentSelect = styled(EDSMenu.Item)<CustomMenuItemProps>`
-  > div {
-    display: grid;
-    /* This is tested but the code coverage doesn't recognize it */
-    grid-template-columns:
-      /* c8 ignore next */
-      ${({ $depth }) => ($depth > 0 ? '24px '.repeat($depth) : '')}
-      auto 1fr auto;
+  
+  &:focus-visible {
+    background: ${EDSColors.interactive.primary__hover_alt.rgba};
   }
-  &:focus {
-    outline: none;
-    background: ${EDSColors.interactive.table__header__fill_hover.rgba};
+  
+  &:hover {
+    background: ${EDSColors.interactive.primary__hover_alt.rgba};
   }
-  }
-`;
+}`;
 
 const MenuItemSpacer = styled.hr`
   height: calc(100% + ${EDSSpacings.comfortable.medium} * 2);
-  width: 2px;
-  background: ${EDSColors.ui.background__medium.rgba};
   justify-self: center;
+  width: ${spacings.x_large};
 `;
 
 const PlaceholderText = styled(Typography)`
@@ -207,17 +193,29 @@ const StyledMenu = styled(EDSMenu)`
   overflow: auto;
 `;
 
+const MenuItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 ${spacings.small};
+`;
+
+const SmallButton = styled(Button)`
+  width: 36px;
+  height: 36px;
+`;
+
 export {
   Button,
   Chip,
   ClearButton,
   Container,
-  MenuItemMultiselect,
-  MenuItemParentSelect,
   MenuItemSpacer,
   StyledMenu,
   NoItemsFoundText,
   PlaceholderText,
   StyledChip,
   Section,
+  MenuItemWrapper,
+  SmallButton,
+  StyledMenuItem,
 };

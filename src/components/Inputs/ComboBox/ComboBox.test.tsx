@@ -143,13 +143,13 @@ test('Parent multi select with selectableParent = false', async () => {
 
   await user.click(screen.getByText(randomItem.label));
 
+  expect(handleOnSelect).toHaveBeenCalledTimes(1);
+  handleOnSelect.mockClear();
+
   for (const child of randomItem.children) {
     const menuItem = screen.getByRole('menuitem', { name: child.label });
     await user.click(menuItem);
     expect(handleOnSelect).toHaveBeenCalledWith([child], child);
-    expect(menuItem.children[0]).toHaveStyle(
-      'grid-template-columns: 24px auto 1fr'
-    );
   }
 
   expect(handleOnSelect).toHaveBeenCalledTimes(randomItem.children.length);
@@ -1073,4 +1073,30 @@ test('getCumulativeArrayFromNumberedArray returns cumulative values', () => {
   expect(getCumulativeArrayFromNumberedArray(numberedArray)).toEqual(
     expectedArray
   );
+});
+
+test('Chevron button works as expected', async () => {
+  const label = faker.animal.bear();
+  const items = fakeItemsWithChildren(1);
+  const handler = vi.fn();
+
+  items
+    .at(0)
+    ?.children.forEach((child) =>
+      expect(screen.queryByText(child.label)).not.toBeInTheDocument()
+    );
+
+  render(
+    <ComboBox label={label} onSelect={handler} items={items} values={[]} />
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+  await user.click(screen.getByTestId('toggle-button'));
+
+  items
+    .at(0)
+    ?.children.forEach((child) =>
+      expect(screen.queryByText(child.label)).toBeInTheDocument()
+    );
 });

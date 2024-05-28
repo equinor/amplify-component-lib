@@ -1,19 +1,20 @@
 import { KeyboardEvent, MouseEvent, useMemo, useRef, useState } from 'react';
 
-import { Icon, Menu } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import {
-  arrow_drop_down,
-  arrow_drop_up,
   checkbox,
   checkbox_indeterminate,
   checkbox_outline,
+  chevron_down,
+  chevron_right,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
-  MenuItemMultiselect,
-  MenuItemParentSelect,
   MenuItemSpacer,
+  MenuItemWrapper,
+  SmallButton,
+  StyledMenuItem,
 } from './ComboBox.styles';
 import {
   ComboBoxMultiSelectMenuItemProps,
@@ -39,6 +40,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     onItemKeyDown,
     onItemSelect,
     selectableParent = true,
+    parentHasNestedItems = false,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
@@ -80,21 +82,22 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
     [depth]
   );
 
-  const handleOnClick = (event: MouseEvent) => {
-    event.stopPropagation();
+  const handleOnItemClick = () => {
     onItemSelect(item);
 
-    if (!('values' in props) && !multiselect) return;
+    if (!multiselect) {
+      setOpenParent((prev) => !prev);
+      return;
+    }
+
     const selectedValues = props.values.map(({ value }) => value);
     const willOpen = !selectedValues.includes(item.value);
     setOpenParent(willOpen);
   };
 
-  const handleOnParentClick = (event: MouseEvent) => {
+  const handleChevronIconClick = (event: MouseEvent) => {
+    event.stopPropagation();
     setOpenParent((prev) => !prev);
-    if (event.target instanceof HTMLButtonElement && selectableParent) {
-      onItemSelect(item);
-    }
   };
 
   const handleOnChildKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -142,32 +145,39 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
   if (item.children && item.children.length > 0 && multiselect) {
     return (
       <>
-        <MenuItemParentSelect
-          $depth={depth}
-          ref={(element: HTMLButtonElement | null) => {
-            itemRefs.current[index] = element;
-          }}
-          index={index}
-          closeMenuOnClick={false}
-          onKeyDownCapture={handleOnParentKeyDown}
-          onClick={handleOnParentClick}
-        >
+        <MenuItemWrapper>
           {spacers}
-          <Icon
-            onClick={handleOnClick}
-            color={
-              selectableParent
-                ? colors.interactive.primary__resting.rgba
-                : colors.interactive.disabled__fill.rgba
-            }
-            data={parentIcon}
-          />
-          {item.label}
-          <Icon
-            color={colors.interactive.primary__resting.rgba}
-            data={openParent ? arrow_drop_up : arrow_drop_down}
-          />
-        </MenuItemParentSelect>
+          <SmallButton
+            variant="ghost_icon"
+            onClick={handleChevronIconClick}
+            data-testid="toggle-button"
+          >
+            <Icon
+              color={colors.interactive.primary__resting.rgba}
+              data={openParent ? chevron_down : chevron_right}
+            />
+          </SmallButton>
+          <StyledMenuItem
+            $depth={depth}
+            ref={(element: HTMLButtonElement | null) => {
+              itemRefs.current[index] = element;
+            }}
+            index={index}
+            closeMenuOnClick={false}
+            onKeyDownCapture={handleOnParentKeyDown}
+            onClick={handleOnItemClick}
+          >
+            <Icon
+              color={
+                selectableParent
+                  ? colors.interactive.primary__resting.rgba
+                  : colors.interactive.disabled__fill.rgba
+              }
+              data={parentIcon}
+            />
+            {item.label}
+          </StyledMenuItem>
+        </MenuItemWrapper>
         {openParent &&
           item.children.map((child, childIndex) => (
             <ComboBoxMenuItem
@@ -184,6 +194,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
               selectableParent={selectableParent}
+              parentHasNestedItems
             />
           ))}
       </>
@@ -192,38 +203,42 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
 
   if (multiselect) {
     return (
-      <MenuItemMultiselect
+      <MenuItemWrapper>
+        {spacers}
+        <StyledMenuItem
+          $depth={depth}
+          $paddedLeft={parentHasNestedItems}
+          ref={(element: HTMLButtonElement | null) => {
+            itemRefs.current[index] = element;
+          }}
+          index={index}
+          tabIndex={depth}
+          closeMenuOnClick={false}
+          onKeyDownCapture={onItemKeyDown}
+          onClick={handleOnItemClick}
+        >
+          <Icon
+            color={colors.interactive.primary__resting.rgba}
+            data={isSelected ? checkbox : checkbox_outline}
+          />
+          {item.label}
+        </StyledMenuItem>
+      </MenuItemWrapper>
+    );
+  }
+  return (
+    <MenuItemWrapper>
+      <StyledMenuItem
         $depth={depth}
         ref={(element: HTMLButtonElement | null) => {
           itemRefs.current[index] = element;
         }}
         index={index}
-        tabIndex={depth}
-        closeMenuOnClick={false}
         onKeyDownCapture={onItemKeyDown}
-        onClick={handleOnClick}
+        onClick={handleOnItemClick}
       >
-        {spacers}
-        <Icon
-          color={colors.interactive.primary__resting.rgba}
-          data={isSelected ? checkbox : checkbox_outline}
-        />
         {item.label}
-      </MenuItemMultiselect>
-    );
-  }
-
-  return (
-    <Menu.Item
-      $depth={depth}
-      ref={(element: HTMLButtonElement | null) => {
-        itemRefs.current[index] = element;
-      }}
-      index={index}
-      onKeyDownCapture={onItemKeyDown}
-      onClick={handleOnClick}
-    >
-      {item.label}
-    </Menu.Item>
+      </StyledMenuItem>
+    </MenuItemWrapper>
   );
 };
