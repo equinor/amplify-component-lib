@@ -85,21 +85,6 @@ const getAllItems = <T extends { id: string; label: string; children?: T[] }>(
   return options;
 };
 
-const allChildrenSelected = <
-  T extends { id: string; label: string; children?: T[] },
->(
-  item: T,
-  selectedItems: T[]
-): boolean => {
-  if (!item.children?.length) return false;
-
-  return item.children.every(
-    (i) =>
-      selectedItems.find((s) => s.id === i.id) !== undefined ||
-      allChildrenSelected(i, selectedItems)
-  );
-};
-
 type StatusType = 'CHECKED' | 'INTERMEDIATE' | 'NONE';
 
 const getStatus = <T extends { id: string; label: string; children?: T[] }>(
@@ -120,15 +105,13 @@ const getStatus = <T extends { id: string; label: string; children?: T[] }>(
   )
     return 'NONE';
 
-  if (!singleSelect && allChildrenSelected(item, selectedItems)) {
-    return 'CHECKED';
-  }
-
-  const isNoneSelected = getAllItems(item?.children).every(
-    (i) => selectedItems.find((s) => s.id === i.id) === undefined
+  const selected = getAllItems(item?.children).map(
+    (i) => selectedItems.find((s) => s.id === i.id) !== undefined
   );
 
-  if (isNoneSelected) {
+  if (!singleSelect && selected.every(Boolean)) {
+    return 'CHECKED';
+  } else if (selected.every((s) => !s)) {
     return 'NONE';
   }
 
