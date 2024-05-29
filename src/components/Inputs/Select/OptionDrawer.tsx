@@ -85,30 +85,50 @@ const getAllItems = <T extends { id: string; label: string; children?: T[] }>(
   return options;
 };
 
+const allChildrenSelected = <
+  T extends { id: string; label: string; children?: T[] },
+>(
+  item: T,
+  selectedItems: T[]
+): boolean => {
+  if (!item.children?.length) return false;
+
+  return item.children.every(
+    (i) =>
+      selectedItems.find((s) => s.id === i.id) !== undefined ||
+      allChildrenSelected(i, selectedItems)
+  );
+};
+
 type StatusType = 'CHECKED' | 'INTERMEDIATE' | 'NONE';
 
 const getStatus = <T extends { id: string; label: string; children?: T[] }>(
   item: T,
   selectedItems: T[],
-  singleSelect?: boolean
+  singleSelect?: boolean,
+  showIntermediateParent?: boolean
 ): StatusType => {
+  const itemIsSelected =
+    selectedItems.find((s) => s.id === item.id) !== undefined;
+
+  if (itemIsSelected) return 'CHECKED';
+
   if (
     item.children === undefined ||
     item.children.length === 0 ||
-    singleSelect
-  ) {
-    return selectedItems.find((s) => s.id === item.id) !== undefined
-      ? 'CHECKED'
-      : 'NONE';
+    (singleSelect && !showIntermediateParent)
+  )
+    return 'NONE';
+
+  if (!singleSelect && allChildrenSelected(item, selectedItems)) {
+    return 'CHECKED';
   }
 
-  const selected = getAllItems(item?.children).map(
-    (i) => selectedItems.find((s) => s.id === i.id) !== undefined
+  const isNoneSelected = getAllItems(item?.children).every(
+    (i) => selectedItems.find((s) => s.id === i.id) === undefined
   );
 
-  if (selected.every(Boolean)) {
-    return 'CHECKED';
-  } else if (selected.every((s) => !s)) {
+  if (isNoneSelected) {
     return 'NONE';
   }
 
@@ -134,6 +154,7 @@ export interface OptionDrawerProps<
   animateUncheck?: boolean;
   animateParent?: Dispatch<SetStateAction<boolean>>;
   openAll?: boolean;
+  showIntermediateParent?: boolean;
 }
 
 /**
@@ -152,16 +173,19 @@ const OptionDrawer = <
   animateUncheck,
   animateParent,
   openAll,
+  showIntermediateParent = false,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
-    getStatus(item, selectedItems, singleSelect)
+    getStatus(item, selectedItems, singleSelect, showIntermediateParent)
   );
   const [animationActive, setAnimationActive] = useState(false);
 
   useEffect(() => {
-    setStatus(getStatus(item, selectedItems, singleSelect));
-  }, [item, selectedItems, singleSelect]);
+    setStatus(
+      getStatus(item, selectedItems, singleSelect, showIntermediateParent)
+    );
+  }, [item, selectedItems, singleSelect, showIntermediateParent]);
 
   useEffect(() => {
     if (openAll) {
@@ -201,10 +225,13 @@ const OptionDrawer = <
       item.children !== undefined
         ? [...item.children]
         : [item];
+
     if (status === 'CHECKED') {
       onToggle({ items: items, toggle: false, event: e });
+      setOpen(false);
     } else if (status === 'NONE' || status === 'INTERMEDIATE') {
       onToggle({ items: items, toggle: true, event: e });
+      setOpen(true);
     }
     setAnimationActive(false);
   };
@@ -296,6 +323,7 @@ const OptionDrawer = <
             animateUncheck={animateUncheck}
             animateParent={setAnimationActive}
             openAll={openAll}
+            showIntermediateParent={showIntermediateParent}
           />
         ))}
     </StyledOptionWrapper>

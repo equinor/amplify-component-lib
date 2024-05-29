@@ -43,7 +43,8 @@ export const Primary: StoryFn<OptionDrawerProps<ValueType>> = (args) => {
           }}
           item={item}
           selectedItems={selectedItems}
-          singleSelect={args.singleSelect}
+          singleSelect={true}
+          showIntermediateParent={true}
           animateCheck={args.animateCheck}
           animateParent={args.animateParent}
           animateUncheck={args.animateUncheck}
