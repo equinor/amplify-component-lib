@@ -236,6 +236,7 @@ const OptionDrawer = <
             indeterminate={status === 'INTERMEDIATE'}
             checked={status === 'CHECKED'}
             color="secondary"
+            onChange={() => null}
           />
           {item.label}
         </StyledOption>
