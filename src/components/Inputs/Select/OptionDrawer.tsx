@@ -7,66 +7,15 @@ import {
   useState,
 } from 'react';
 
-import { Checkbox, Icon } from '@equinor/eds-core-react';
+import { Button, Checkbox } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import styled, { css, keyframes } from 'styled-components';
-
-const { colors } = tokens;
-
-interface StyledOptionProps {
-  $section: number;
-  $animationActive?: boolean;
-}
-
-const animateToggle = keyframes`
-  0% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-`;
-
-const StyledOptionWrapper = styled.div<StyledOptionProps>`
-  margin-left: ${({ $section }) => ($section > 0 ? '22px' : '')};
-  border-left: ${({ $section }) =>
-    $section > 0 ? '1px solid ' + colors.ui.background__medium.rgba : ''};
-  opacity: 1;
-  color: ${colors.text.static_icons__default.rgba};
-  animation: ${({ $animationActive }) =>
-    $animationActive
-      ? css`
-          ${animateToggle} 400ms ease-in
-        `
-      : 'none'};
-`;
-
-const StyledOption = styled.div<StyledOptionProps>`
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: background-color 0.1s ease-in;
-  &:hover {
-    background-color: ${colors.interactive.primary__hover_alt.rgba};
-  }
-
-  svg {
-    fill: ${colors.interactive.primary__resting.rgba};
-  }
-`;
-
-const StyledIcon = styled(Icon)`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
+import {
+  StyledIcon,
+  StyledOption,
+  StyledOptionItem,
+  StyledOptionWrapper,
+} from './OptionDrawer.styles';
 
 const getAllItems = <T extends { id: string; label: string; children?: T[] }>(
   items: T[]
@@ -138,6 +87,7 @@ export interface OptionDrawerProps<
   animateParent?: Dispatch<SetStateAction<boolean>>;
   openAll?: boolean;
   showIntermediateParent?: boolean;
+  parentHasNestedItems?: boolean;
 }
 
 /**
@@ -157,6 +107,7 @@ const OptionDrawer = <
   animateParent,
   openAll,
   showIntermediateParent = false,
+  parentHasNestedItems = false,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
@@ -179,26 +130,10 @@ const OptionDrawer = <
   }, [openAll]);
 
   const handleClick = (e: MouseEvent) => {
-    const checkboxElement = e.target as SVGPathElement;
-    const checkboxSVGElement = e.target as SVGElement;
-
-    // if element is of type checkbox, do not take any action.
-    if (
-      !(checkboxElement.getAttribute('name') === 'checked') &&
-      !(checkboxElement.getAttribute('name') === 'not-checked') &&
-      !(
-        checkboxSVGElement.children.length > 0 &&
-        checkboxSVGElement.children[0].getAttribute('name') === 'checked'
-      ) &&
-      !(e.target instanceof HTMLInputElement) &&
-      !(e.target instanceof HTMLSpanElement)
-    ) {
-      if (item.children && item.children.length !== 0) {
-        setOpen((o) => !o);
-      } else if (e.target instanceof HTMLDivElement) {
-        handleCheck(e);
-      }
+    if (item.children && item.children.length !== 0) {
+      setOpen((o) => !o);
     }
+    handleCheck(e);
   };
 
   const handleToggle = (e: MouseEvent | ChangeEvent) => {
@@ -269,6 +204,12 @@ const OptionDrawer = <
     }
   };
 
+  const handleChevronIconClick = () => {
+    setOpen((state) => !state);
+  };
+
+  const hasChildren = item.children && item.children.length !== 0;
+
   return (
     <StyledOptionWrapper
       key={
@@ -280,18 +221,25 @@ const OptionDrawer = <
       $animationActive={animationActive}
       data-testid={animationActive ? 'animated-' + item.id : item.id}
     >
-      <StyledOption $section={section} onClick={handleClick}>
-        <Checkbox
-          indeterminate={status === 'INTERMEDIATE'}
-          checked={status === 'CHECKED'}
-          onChange={(e) => handleCheck(e)}
-          color="secondary"
-        />
-        {item.label}
-        {item.children && item.children.length !== 0 && (
-          <StyledIcon data={open ? arrow_drop_up : arrow_drop_down} />
+      <StyledOptionItem $paddedLeft={parentHasNestedItems && !hasChildren}>
+        {hasChildren && (
+          <Button
+            variant="ghost_icon"
+            onClick={handleChevronIconClick}
+            data-testid="chevron-toggler-option-drawer"
+          >
+            <StyledIcon data={open ? arrow_drop_up : arrow_drop_down} />
+          </Button>
         )}
-      </StyledOption>
+        <StyledOption $section={section} onClick={handleClick}>
+          <Checkbox
+            indeterminate={status === 'INTERMEDIATE'}
+            checked={status === 'CHECKED'}
+            color="secondary"
+          />
+          {item.label}
+        </StyledOption>
+      </StyledOptionItem>
       {open &&
         item.children?.map((i) => (
           <OptionDrawer<T>
@@ -307,6 +255,7 @@ const OptionDrawer = <
             animateParent={setAnimationActive}
             openAll={openAll}
             showIntermediateParent={showIntermediateParent}
+            parentHasNestedItems
           />
         ))}
     </StyledOptionWrapper>
