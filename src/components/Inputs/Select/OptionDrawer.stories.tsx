@@ -48,7 +48,6 @@ export const Primary: StoryFn<OptionDrawerProps<ValueType>> = (args) => {
           animateCheck={args.animateCheck}
           animateParent={args.animateParent}
           animateUncheck={args.animateUncheck}
-          parentHasNestedItems={true}
         />
       ))}
     </div>

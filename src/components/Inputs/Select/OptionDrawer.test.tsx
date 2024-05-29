@@ -59,10 +59,7 @@ function fakeProps(
   };
 }
 
-interface FakeSelectedItemType {
-  id: string;
-  label: string;
-}
+interface FakeSelectedItemType { id: string; label: string }
 
 let selectedItems: FakeSelectedItemType[] = [];
 const handleOnToggle = (e: ToggleEventProps<FakeSelectedItemType>) => {
@@ -320,25 +317,4 @@ test('onToggle is called after uncheck animation', async () => {
   await waitFor(() => expect(props.onToggle).toHaveBeenCalledTimes(1), {
     timeout: 800,
   });
-});
-
-test('chevron toggler works as expected', async () => {
-  const user = userEvent.setup();
-
-  const props = fakeProps();
-  const children = props.item.children ?? [props.item];
-
-  render(<OptionDrawer {...props} selectedItems={children} openAll />);
-
-  const allLabels = children.map((child) => child.label);
-  allLabels.forEach((label) =>
-    expect(screen.getByText(label)).toBeInTheDocument()
-  );
-
-  const toggler = screen.getByTestId('chevron-toggler-option-drawer');
-  await user.click(toggler);
-
-  allLabels.forEach((label) =>
-    expect(screen.queryByText(label)).not.toBeInTheDocument()
-  );
 });
