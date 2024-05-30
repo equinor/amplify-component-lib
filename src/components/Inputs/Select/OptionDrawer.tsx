@@ -8,7 +8,7 @@ import {
 } from 'react';
 
 import { Button, Checkbox } from '@equinor/eds-core-react';
-import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
+import { chevron_down, chevron_right } from '@equinor/eds-icons';
 
 import {
   StyledIcon,
@@ -228,7 +228,7 @@ const OptionDrawer = <
             onClick={handleChevronIconClick}
             data-testid="chevron-toggler-option-drawer"
           >
-            <StyledIcon data={open ? arrow_drop_up : arrow_drop_down} />
+            <StyledIcon data={open ? chevron_down : chevron_right} />
           </Button>
         )}
         <StyledOption $section={section} onClick={handleClick}>
