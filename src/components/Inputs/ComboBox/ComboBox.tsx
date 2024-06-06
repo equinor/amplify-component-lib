@@ -32,6 +32,7 @@ export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
   loading?: boolean;
   lightBackground?: boolean;
   underlineHighlight?: boolean;
+  onSearchChange?: (inputValue: string) => void;
   clearable?: boolean;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
