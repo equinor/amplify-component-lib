@@ -4,7 +4,9 @@
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
-  "author": "Amplify Team",
+  "author": {
+    "name": "Amplify Team"
+  },
   "license": "ISC",
   "homepage": "https://github.com/equinor/amplify-components#readme",
   "bugs": {
@@ -31,7 +33,8 @@
     "build-components": "rollup -c && tsc --outDir dist --declarationDir dist/types --declaration true --emitDeclarationOnly --project tsconfig.build.json",
     "build-components:ci": "rm -rf lib dist && npm run build-components",
     "build-and-use": "node tooling/build-and-use.mjs",
-    "brute-coverage": "node tooling/brute-coverage.mjs"
+    "brute-coverage": "node tooling/brute-coverage.mjs",
+    "chromatic": "npx chromatic --project-token=chpt_a67c030e6894c6b"
   },
   "browserslist": {
     "production": [
