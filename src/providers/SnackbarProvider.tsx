@@ -29,11 +29,11 @@ export const useSnackbar = () => {
   return context;
 };
 
-export type SnackbarContextProviderProps = {
+export type SnackbarProviderProps = {
   children: ReactNode;
 } & SnackbarProps;
 
-const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
+export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
   const [open, setOpen] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
@@ -95,5 +95,3 @@ const SnackbarContextProvider: FC<SnackbarContextProviderProps> = (props) => {
     </SnackbarContext.Provider>
   );
 };
-
-export default SnackbarContextProvider;
