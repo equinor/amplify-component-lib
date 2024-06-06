@@ -3,6 +3,7 @@ import Template from 'src/components/Template/Template';
 
 import { darkTokens } from 'src/style/darkTokens';
 import { spacingTokens } from 'src/style/spacingTokens';
+import { SnackbarProvider } from 'src/providers/SnackbarProvider';
 
 const { colors } = tokens;
 
@@ -31,7 +32,9 @@ export const decorators = [
     return (
       <>
         <Template.GlobalStyles />
-        <Story />
+        <SnackbarProvider>
+          <Story />
+        </SnackbarProvider>
       </>
     );
   },
