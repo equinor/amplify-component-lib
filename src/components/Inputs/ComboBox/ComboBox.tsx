@@ -139,37 +139,36 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
           </ClearButton>
         )}
       </Container>
-      {open && (
-        <StyledMenu
-          open
-          id="combobox-menu"
-          anchorEl={anchorRef.current}
-          onClose={handleOnClose}
-          placement="bottom"
-          matchAnchorWidth
-        >
-          {'groups' in props ? (
-            <GroupedComboBoxMenu
-              {...props}
-              search={search}
-              itemRefs={itemRefs}
-              onItemSelect={handleOnItemSelect}
-              onItemKeyDown={handleOnItemKeyDown}
-            />
-          ) : (
-            <ComboBoxMenu
-              {...props}
-              search={search}
-              itemRefs={itemRefs}
-              onItemSelect={handleOnItemSelect}
-              onItemKeyDown={handleOnItemKeyDown}
-              selectableParent={
-                'values' in props ? props.selectableParent : false
-              }
-            />
-          )}
-        </StyledMenu>
-      )}
+      <StyledMenu
+        open={open}
+        id="combobox-menu"
+        data-testid="menu-list"
+        anchorEl={anchorRef.current}
+        onClose={handleOnClose}
+        placement="bottom"
+        matchAnchorWidth
+      >
+        {'groups' in props ? (
+          <GroupedComboBoxMenu
+            {...props}
+            search={search}
+            itemRefs={itemRefs}
+            onItemSelect={handleOnItemSelect}
+            onItemKeyDown={handleOnItemKeyDown}
+          />
+        ) : (
+          <ComboBoxMenu
+            {...props}
+            search={search}
+            itemRefs={itemRefs}
+            onItemSelect={handleOnItemSelect}
+            onItemKeyDown={handleOnItemKeyDown}
+            selectableParent={
+              'values' in props ? props.selectableParent : false
+            }
+          />
+        )}
+      </StyledMenu>
     </div>
   );
 };

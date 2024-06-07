@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { ComboBox } from './ComboBox';
 import { getCumulativeArrayFromNumberedArray } from 'src/components/Inputs/ComboBox/ComboBox.utils';
 import { colors as amplifyColors } from 'src/constants';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent, within } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
 
@@ -60,6 +60,7 @@ test('Basic single select', async () => {
     />
   );
   const user = userEvent.setup();
+  const menuList = screen.getByTestId('menu-list');
 
   expect(screen.getByText(label)).toBeInTheDocument();
 
@@ -71,7 +72,7 @@ test('Basic single select', async () => {
 
   const randomItem = faker.helpers.arrayElement(items);
 
-  await user.click(screen.getByText(randomItem.label));
+  await user.click(within(menuList).getByText(randomItem.label));
 
   expect(handleOnSelect).toHaveBeenCalledTimes(1);
   expect(handleOnSelect).toHaveBeenCalledWith(randomItem);
@@ -85,7 +86,7 @@ test('Basic single select', async () => {
     />
   );
 
-  expect(screen.getByText(randomItem.label)).toBeInTheDocument();
+  expect(within(menuList).getByText(randomItem.label)).toBeInTheDocument();
 });
 
 test('Basic multi select', async () => {
@@ -458,10 +459,11 @@ test('Sorts items as expected', () => {
   const { rerender } = render(
     <ComboBox label={label} onSelect={handler} items={items} values={values} />
   );
+  const menuList = screen.getByTestId('menu-list');
 
   for (let i = 1; i < sortedValues.length; i++) {
-    const first = screen.getByText(sortedValues[i - 1].label);
-    const second = screen.getByText(sortedValues[i].label);
+    const first = within(menuList).getByText(sortedValues[i - 1].label);
+    const second = within(menuList).getByText(sortedValues[i].label);
 
     expect(first.compareDocumentPosition(second)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
@@ -479,8 +481,8 @@ test('Sorts items as expected', () => {
   );
 
   for (let i = 1; i < values.length; i++) {
-    const first = screen.getByText(values[i - 1].label);
-    const second = screen.getByText(values[i].label);
+    const first = within(menuList).getByText(values[i - 1].label);
+    const second = within(menuList).getByText(values[i].label);
 
     expect(first.compareDocumentPosition(second)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
@@ -506,16 +508,11 @@ test('Can open/close by clicking icon', async () => {
   const svgIcon = screen.getByTestId('eds-icon-path');
 
   await user.click(svgIcon);
-
-  for (const item of items) {
-    expect(screen.getByText(item.label)).toBeInTheDocument();
-  }
+  const menuList = screen.getByTestId('menu-list').parentElement;
+  expect(menuList).toHaveAttribute('open');
 
   await user.click(svgIcon);
-
-  for (const item of items) {
-    expect(screen.queryByText(item.label)).not.toBeInTheDocument();
-  }
+  expect(menuList).not.toHaveAttribute('open');
 });
 
 test('Searching works as expected', async () => {
@@ -546,20 +543,13 @@ test('Searching works as expected', async () => {
 
   for (const item of items) {
     if (item.label === randomItem.label) continue;
-
     expect(screen.queryByText(item.label)).not.toBeInTheDocument();
   }
 
   await user.click(screen.getByRole('menuitem', { name: randomItem.label }));
 
   expect(handler).toHaveBeenCalledWith(randomItem);
-
   expect(searchField).toHaveValue('');
-
-  for (const item of items) {
-    if (item.label === randomItem.label) continue;
-    expect(screen.queryByText(item.label)).not.toBeInTheDocument();
-  }
 
   rerender(
     <ComboBox
