@@ -91,17 +91,11 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
         $shouldShowTopMargin={shouldShowTopMargin}
       >
         {shouldShowTopMargin && (
-          // we render both labels to ensure correct positioning
-          <>
-            <Label
-              label={label}
-              htmlFor={id ? id : `amplify-combobox-${label}`}
-            />
-            <Label
-              label={meta}
-              htmlFor={id ? id : `amplify-combobox-${meta}`}
-            />
-          </>
+          <Label
+            label={label}
+            meta={meta}
+            htmlFor={id ? id : `amplify-combobox-${label}-${meta}`}
+          />
         )}
         <Section>
           {selectedValues.length > 0 || search !== '' ? (

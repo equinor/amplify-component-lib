@@ -38,7 +38,7 @@ const Container = styled.div<ContainerProps>`
 
   ${({ $shouldShowTopMargin }) => $shouldShowTopMargin && `margin-top: 1rem;`};
 
-  > label:first-child {
+  > label {
     left: 0;
     position: absolute;
     top: -1rem;
