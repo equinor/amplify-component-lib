@@ -50,10 +50,12 @@ function fakeItemsWithChildren(count = 5) {
 test('Basic single select', async () => {
   const items = fakeItems();
   const label = faker.animal.bear();
+  const meta = faker.animal.insect();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
     <ComboBox
       label={label}
+      meta={meta}
       onSelect={handleOnSelect}
       value={undefined}
       items={items}
@@ -62,6 +64,7 @@ test('Basic single select', async () => {
   const user = userEvent.setup();
 
   expect(screen.getByText(label)).toBeInTheDocument();
+  expect(screen.getByText(meta)).toBeInTheDocument();
 
   await user.click(screen.getByRole('combobox'));
 
@@ -79,13 +82,28 @@ test('Basic single select', async () => {
   rerender(
     <ComboBox
       label={label}
+      meta={meta}
       onSelect={handleOnSelect}
       value={randomItem}
       items={items}
     />
   );
+});
 
-  expect(screen.getByText(randomItem.label)).toBeInTheDocument();
+test('Basic single select with only meta label', () => {
+  const items = fakeItems();
+  const meta = faker.animal.insect();
+  const handleOnSelect = vi.fn();
+  render(
+    <ComboBox
+      meta={meta}
+      onSelect={handleOnSelect}
+      value={undefined}
+      items={items}
+    />
+  );
+
+  expect(screen.getByText(meta)).toBeInTheDocument();
 });
 
 test('Basic multi select', async () => {
