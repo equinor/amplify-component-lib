@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
@@ -33,6 +33,7 @@ export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
   lightBackground?: boolean;
   underlineHighlight?: boolean;
   clearable?: boolean;
+  meta?: string;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 export const ComboBox = <T extends ComboBoxOptionRequired>(
@@ -47,6 +48,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
     underlineHighlight = false,
     placeholder = 'Select...',
     label,
+    meta,
   } = props;
   const {
     handleOnClear,
@@ -73,6 +75,10 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
     }
   };
 
+  const shouldShowTopMargin = useMemo(() => {
+    return !!label || !!meta;
+  }, [label, meta]);
+
   return (
     <div>
       <Container
@@ -82,12 +88,13 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
         aria-expanded={open}
         $underlineHighlight={underlineHighlight}
         $lightBackground={lightBackground}
-        $label={!!label}
+        $shouldShowTopMargin={shouldShowTopMargin}
       >
-        {label && (
+        {shouldShowTopMargin && (
           <Label
             label={label}
-            htmlFor={id ? id : `amplify-combobox-${label}`}
+            meta={meta}
+            htmlFor={id ? id : `amplify-combobox-${label}-${meta}`}
           />
         )}
         <Section>

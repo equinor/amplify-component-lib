@@ -25,6 +25,7 @@ export default {
     selectableParent: true,
     sortValues: true,
     clearable: true,
+    meta: 'Meta label here',
   },
 };
 
