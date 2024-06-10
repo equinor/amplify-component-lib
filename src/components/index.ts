@@ -159,4 +159,5 @@ export {
   Tabs,
   Typography,
   Card,
+  DatePicker,
 } from '@equinor/eds-core-react';
