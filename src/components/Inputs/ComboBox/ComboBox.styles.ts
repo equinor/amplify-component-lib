@@ -12,7 +12,7 @@ const { colors: EDSColors, spacings: EDSSpacings } = tokens;
 interface ContainerProps {
   $lightBackground?: boolean;
   $underlineHighlight?: boolean;
-  $label?: boolean;
+  $shouldShowTopMargin?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -36,13 +36,20 @@ const Container = styled.div<ContainerProps>`
     box-shadow: inset 0 -2px 0 0 ${EDSColors.interactive.primary__resting.rgba};
   }
 
-  ${({ $label }) => $label && `margin-top: 1rem;`};
+  ${({ $shouldShowTopMargin }) => $shouldShowTopMargin && `margin-top: 1rem;`};
 
-  > label {
+  > label:first-child {
+    left: 0;
     position: absolute;
     top: -1rem;
-    left: 0;
   }
+
+  > label {
+    right: 0;
+    position: absolute;
+    top: -1rem;
+  }
+
   > svg[role='progressbar'] {
     overflow: unset;
   }
