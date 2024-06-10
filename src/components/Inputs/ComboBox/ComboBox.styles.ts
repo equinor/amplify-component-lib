@@ -161,19 +161,19 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   border-radius: 2px;
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;
-    
+
   &:focus {
     outline: none;
   }
-  
+
   &:focus-visible {
     background: ${EDSColors.interactive.primary__hover_alt.rgba};
   }
-  
+
   &:hover {
     background: ${EDSColors.interactive.primary__hover_alt.rgba};
   }
-}`;
+`;
 
 const MenuItemSpacer = styled.hr`
   height: calc(100% + ${EDSSpacings.comfortable.medium} * 2);
