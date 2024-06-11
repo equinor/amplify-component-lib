@@ -12,7 +12,7 @@ const { colors: EDSColors, spacings: EDSSpacings } = tokens;
 interface ContainerProps {
   $lightBackground?: boolean;
   $underlineHighlight?: boolean;
-  $label?: boolean;
+  $shouldShowTopMargin?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -36,13 +36,15 @@ const Container = styled.div<ContainerProps>`
     box-shadow: inset 0 -2px 0 0 ${EDSColors.interactive.primary__resting.rgba};
   }
 
-  ${({ $label }) => $label && `margin-top: 1rem;`};
+  ${({ $shouldShowTopMargin }) => $shouldShowTopMargin && `margin-top: 1rem;`};
 
   > label {
+    left: 0;
+    right: 0;
     position: absolute;
     top: -1rem;
-    left: 0;
   }
+
   > svg[role='progressbar'] {
     overflow: unset;
   }
@@ -154,19 +156,19 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   border-radius: 2px;
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;
-    
+
   &:focus {
     outline: none;
   }
-  
+
   &:focus-visible {
     background: ${EDSColors.interactive.primary__hover_alt.rgba};
   }
-  
+
   &:hover {
     background: ${EDSColors.interactive.primary__hover_alt.rgba};
   }
-}`;
+`;
 
 const MenuItemSpacer = styled.hr`
   height: calc(100% + ${EDSSpacings.comfortable.medium} * 2);
