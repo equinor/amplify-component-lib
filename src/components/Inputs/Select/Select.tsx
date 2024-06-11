@@ -4,6 +4,7 @@ import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { GroupedSelectMenu } from './GroupedSelectMenu';
 import {
   ClearButton,
   Container,
@@ -11,33 +12,27 @@ import {
   Section,
   StyledChip,
   StyledMenu,
-} from './ComboBox.styles';
+} from './Select.styles';
 import {
-  ComboBoxOptionRequired,
-  ComboBoxProps,
-  GroupedComboboxProps,
-} from './ComboBox.types';
-import { ComboBoxMenu } from './ComboBoxMenu';
-import { GroupedComboBoxMenu } from './GroupedComboBoxMenu';
-import { useComboBox } from 'src/hooks/useComboBox';
+  CommonSelectProps,
+  GroupedSelectProps,
+  ListSelectProps,
+  MultiSelectCommon,
+  SelectOptionRequired,
+  SingleSelectCommon,
+} from './Select.types';
+import { SelectMenu } from './SelectMenu';
+import { useSelect } from 'src/hooks/useSelect';
 
 const { colors } = tokens;
 
-export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
-  id?: string;
-  label?: string;
-  placeholder?: string;
-  sortValues?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-  lightBackground?: boolean;
-  underlineHighlight?: boolean;
-  clearable?: boolean;
-  meta?: string;
-} & (ComboBoxProps<T> | GroupedComboboxProps<T>);
+export type SelectComponentProps<T extends SelectOptionRequired> =
+  CommonSelectProps &
+    (SingleSelectCommon<T> | MultiSelectCommon<T>) &
+    (ListSelectProps<T> | GroupedSelectProps<T>);
 
-export const ComboBox = <T extends ComboBoxOptionRequired>(
-  props: ComboBoxComponentProps<T>
+export const Select = <T extends SelectOptionRequired>(
+  props: SelectComponentProps<T>
 ) => {
   const {
     id,
@@ -66,7 +61,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
     open,
     searchRef,
     tryingToRemoveItem,
-  } = useComboBox(props);
+  } = useSelect(props);
   const anchorRef = useRef<HTMLDivElement | null>(null);
 
   const handleChipRemoval = (value: T) => () => {
@@ -156,7 +151,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
           matchAnchorWidth
         >
           {'groups' in props ? (
-            <GroupedComboBoxMenu
+            <GroupedSelectMenu
               {...props}
               search={search}
               itemRefs={itemRefs}
@@ -164,7 +159,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
               onItemKeyDown={handleOnItemKeyDown}
             />
           ) : (
-            <ComboBoxMenu
+            <SelectMenu
               {...props}
               search={search}
               itemRefs={itemRefs}

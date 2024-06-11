@@ -7,24 +7,19 @@ import {
   useState,
 } from 'react';
 
-import { ComboBoxOption } from 'src/components';
+import { SelectOption } from 'src/components';
+import { SelectComponentProps } from 'src/components/Inputs/Select/Select';
 import {
-  ComboBoxOptionRequired,
-  ComboBoxProps,
-  GroupedComboboxProps,
-} from 'src/components/Inputs/ComboBox/ComboBox.types';
-import { flattenOptions } from 'src/components/Inputs/ComboBox/ComboBox.utils';
+  GroupedSingleSelectProps,
+  SelectOptionRequired,
+  SingleSelectProps,
+} from 'src/components/Inputs/Select/Select.types';
+import { flattenOptions } from 'src/components/Inputs/Select/Select.utils';
 
 import { groupBy } from 'lodash';
 
-export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
-  sortValues?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-} & (ComboBoxProps<T> | GroupedComboboxProps<T>);
-
-const useComboBox = <T extends ComboBoxOptionRequired>(
-  props: ComboBoxComponentProps<T>
+const useSelect = <T extends SelectOptionRequired>(
+  props: SelectComponentProps<T>
 ) => {
   const { loading = false, disabled = false, sortValues = true } = props;
   const [open, setOpen] = useState(false);
@@ -128,7 +123,7 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
     return groupedFormations[parentName]?.at(0);
   };
 
-  const getParentsRecursively = (value: string): ComboBoxOption<T>[] => {
+  const getParentsRecursively = (value: string): SelectOption<T>[] => {
     const parent = getParent(value);
     if (!parent?.children) return [];
 
@@ -136,9 +131,9 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   };
 
   const getValuesToAdd = (
-    values: ComboBoxOption<T>[],
-    item: ComboBoxOption<T>
-  ): ComboBoxOption<T>[] => {
+    values: SelectOption<T>[],
+    item: SelectOption<T>
+  ): SelectOption<T>[] => {
     const flatParents = getParentsRecursively(item.value).map(
       ({ value }) => value
     );
@@ -155,7 +150,7 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
     ];
   };
 
-  const handleOnItemSelect = (item: ComboBoxOption<T>) => {
+  const handleOnItemSelect = (item: SelectOption<T>) => {
     if ('value' in props) {
       props.onSelect(item);
     } else if (props.values.find((i) => i.value === item.value)) {
@@ -250,4 +245,4 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   };
 };
 
-export { useComboBox };
+export { useSelect };

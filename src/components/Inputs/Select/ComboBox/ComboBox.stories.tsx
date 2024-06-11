@@ -4,15 +4,11 @@ import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
-import { ComboBox, ComboBoxComponentProps } from './ComboBox';
-import {
-  ComboBoxOption,
-  ComboBoxProps,
-  MultiComboBoxCommon,
-} from './ComboBox.types';
+import { SelectOption } from '../Select.types';
+import { ComboBox } from './ComboBox';
 
 export default {
-  title: 'Inputs/ComboBox',
+  title: 'Inputs/Select/ComboBox',
   component: ComboBox,
   argTypes: {
     label: { control: 'text' },
@@ -72,36 +68,12 @@ const FAKE_ITEMS_WITH_CHILDREN = [
   })),
 ];
 
-export const ComboBoxWithSingleSelect: StoryFn<ComboBoxComponentProps<Item>> = (
-  args
-) => {
-  const [value, setValue] = useState<ComboBoxOption<Item> | undefined>(
-    undefined
-  );
-
-  const handleOnSelect = (selectedValue: ComboBoxOption<Item> | undefined) => {
-    actions('onSelect').onSelect(selectedValue);
-    setValue(selectedValue);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      value={value}
-      onSelect={handleOnSelect}
-    />
-  );
-};
-
-export const ComboBoxWithMultiSelect: StoryFn<ComboBoxComponentProps<Item>> = (
-  args
-) => {
-  const [values, setValues] = useState<ComboBoxOption<Item>[]>([]);
+export const BasicComboBox: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
-    selectedValues: ComboBoxOption<Item>[],
-    selectedValue?: ComboBoxOption<Item>
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
     setValues(selectedValues);
@@ -117,36 +89,12 @@ export const ComboBoxWithMultiSelect: StoryFn<ComboBoxComponentProps<Item>> = (
   );
 };
 
-export const ComboBoxWithGroupsAndSingleSelect: StoryFn<
-  ComboBoxComponentProps<Item>
-> = (args) => {
-  const [value, setValue] = useState<ComboBoxOption<Item> | undefined>(
-    undefined
-  );
-
-  const handleOnSelect = (selectedValue: ComboBoxOption<Item> | undefined) => {
-    actions('onSelect').onSelect(selectedValue);
-    setValue(selectedValue);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      value={value}
-      groups={FAKE_GROUPS}
-      onSelect={handleOnSelect}
-    />
-  );
-};
-
-export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
-  ComboBoxComponentProps<Item>
-> = (args) => {
-  const [values, setValues] = useState<ComboBoxOption<Item>[]>([]);
+export const ComboBoxWithGroups: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
-    selectedValues: ComboBoxOption<Item>[],
-    selectedValue?: ComboBoxOption<Item>
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
     setValues(selectedValues);
@@ -162,14 +110,12 @@ export const ComboBoxWithGroupsAndMultiSelect: StoryFn<
   );
 };
 
-export const ComboBoxParentedWithMultiSelect: StoryFn<
-  ComboBoxComponentProps<Item> & ComboBoxProps<Item>
-> = (args) => {
-  const [values, setValues] = useState<ComboBoxOption<Item>[]>([]);
+export const ComboBoxParented: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
-    selectedValues: ComboBoxOption<Item>[],
-    selectedValue?: ComboBoxOption<Item>
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
     setValues(selectedValues);
@@ -177,17 +123,7 @@ export const ComboBoxParentedWithMultiSelect: StoryFn<
 
   return (
     <ComboBox
-      label={args.label}
-      placeholder={args.placeholder}
-      loading={args.loading}
-      disabled={args.disabled}
-      underlineHighlight={args.underlineHighlight}
-      lightBackground={args.lightBackground}
-      clearable={args.clearable}
-      sortValues={args.sortValues}
-      selectableParent={
-        (args as MultiComboBoxCommon<Item>)?.selectableParent ?? false
-      }
+      {...args}
       items={FAKE_ITEMS_WITH_CHILDREN}
       values={values}
       onSelect={handleOnSelect}

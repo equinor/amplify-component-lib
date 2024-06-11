@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import { ComboBox } from './ComboBox';
-import { getCumulativeArrayFromNumberedArray } from 'src/components/Inputs/ComboBox/ComboBox.utils';
+import { Select } from './Select';
+import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { colors as amplifyColors } from 'src/constants';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
@@ -53,7 +53,7 @@ test('Basic single select', async () => {
   const meta = faker.animal.insect();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
-    <ComboBox
+    <Select
       label={label}
       meta={meta}
       onSelect={handleOnSelect}
@@ -80,7 +80,7 @@ test('Basic single select', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith(randomItem);
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       meta={meta}
       onSelect={handleOnSelect}
@@ -95,7 +95,7 @@ test('Basic single select with only meta label', () => {
   const meta = faker.animal.insect();
   const handleOnSelect = vi.fn();
   render(
-    <ComboBox
+    <Select
       meta={meta}
       onSelect={handleOnSelect}
       value={undefined}
@@ -111,12 +111,7 @@ test('Basic multi select', async () => {
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   render(
-    <ComboBox
-      label={label}
-      onSelect={handleOnSelect}
-      values={[]}
-      items={items}
-    />
+    <Select label={label} onSelect={handleOnSelect} values={[]} items={items} />
   );
   const user = userEvent.setup();
 
@@ -141,7 +136,7 @@ test('Parent multi select with selectableParent = false', async () => {
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       values={[]}
@@ -173,7 +168,7 @@ test('Parent multi select with selectableParent = false', async () => {
   expect(handleOnSelect).toHaveBeenCalledTimes(randomItem.children.length);
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       values={[randomItem.children[0]]}
@@ -194,7 +189,7 @@ test('Parent multi select with selectableParent = true', async () => {
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       values={[]}
@@ -218,7 +213,7 @@ test('Parent multi select with selectableParent = true', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith([randomItem], randomItem);
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       values={[randomItem]}
@@ -230,7 +225,7 @@ test('Parent multi select with selectableParent = true', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith([], randomItem);
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       values={[itemWithoutChildren]}
@@ -250,7 +245,7 @@ test('Parent multi select - nested selection works as expected', async () => {
   const handler = vi.fn();
 
   const { rerender } = render(
-    <ComboBox label={label} onSelect={handler} items={items} values={[]} />
+    <Select label={label} onSelect={handler} items={items} values={[]} />
   );
   const user = userEvent.setup();
 
@@ -271,12 +266,7 @@ test('Parent multi select - nested selection works as expected', async () => {
   expect(handler).toBeCalledWith(newValues, items[0].children[0]);
 
   rerender(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      values={newValues}
-    />
+    <Select label={label} onSelect={handler} items={items} values={newValues} />
   );
 
   const icon1 = screen.getByRole('menuitem', {
@@ -293,12 +283,7 @@ test('Parent multi select - nested selection works as expected', async () => {
   expect(handler).toBeCalledWith(newValues, items[0].children[1]);
 
   rerender(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      values={newValues}
-    />
+    <Select label={label} onSelect={handler} items={items} values={newValues} />
   );
 
   await user.click(icon2);
@@ -307,12 +292,7 @@ test('Parent multi select - nested selection works as expected', async () => {
   expect(handler).toBeCalledWith(newValues, items[0].children[1]);
 
   rerender(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      values={newValues}
-    />
+    <Select label={label} onSelect={handler} items={items} values={newValues} />
   );
 
   await user.click(icon1);
@@ -326,7 +306,7 @@ test('Parent multi select - nested selection with preselected parent works as ex
   const handler = vi.fn();
 
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -375,7 +355,7 @@ test('Parent multi select - nested child label shows as expected', async () => {
   const handler = vi.fn();
 
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -394,7 +374,7 @@ test('Basic group single select', async () => {
   const handler = vi.fn();
   const groups = fakeGroups();
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       groups={groups}
@@ -432,7 +412,7 @@ test('Basic group multi select with preselected item', async () => {
     faker.helpers.arrayElement(groups).items
   );
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       groups={groups}
@@ -455,7 +435,7 @@ test('Throws error if providing groups and items', () => {
   console.error = vi.fn();
   expect(() =>
     render(
-      <ComboBox
+      <Select
         label="hei"
         onSelect={handle}
         items={[]}
@@ -474,7 +454,7 @@ test('Sorts items as expected', () => {
   const handler = vi.fn();
 
   const { rerender } = render(
-    <ComboBox label={label} onSelect={handler} items={items} values={values} />
+    <Select label={label} onSelect={handler} items={items} values={values} />
   );
 
   for (let i = 1; i < sortedValues.length; i++) {
@@ -487,7 +467,7 @@ test('Sorts items as expected', () => {
   }
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -511,12 +491,7 @@ test('Can open/close by clicking icon', async () => {
   const handler = vi.fn();
   const items = fakeItems();
   render(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      value={undefined}
-    />
+    <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
 
   const user = userEvent.setup();
@@ -542,12 +517,7 @@ test('Searching works as expected', async () => {
   const items = fakeItems();
 
   const { rerender } = render(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      value={undefined}
-    />
+    <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
   const user = userEvent.setup();
 
@@ -580,12 +550,7 @@ test('Searching works as expected', async () => {
   }
 
   rerender(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      value={randomItem}
-    />
+    <Select label={label} onSelect={handler} items={items} value={randomItem} />
   );
 
   // Opens when typing again
@@ -612,7 +577,7 @@ test("Clicking 'x' on chip works as expected", async () => {
   const handler = vi.fn();
 
   const { rerender } = render(
-    <ComboBox label={label} onSelect={handler} items={items} value={items[0]} />
+    <Select label={label} onSelect={handler} items={items} value={items[0]} />
   );
   const user = userEvent.setup();
 
@@ -623,7 +588,7 @@ test("Clicking 'x' on chip works as expected", async () => {
   expect(handler).toHaveBeenCalledWith(undefined);
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -642,7 +607,7 @@ test('Removing with backspace', async () => {
   const handler = vi.fn();
 
   render(
-    <ComboBox label={label} onSelect={handler} items={items} value={items[0]} />
+    <Select label={label} onSelect={handler} items={items} value={items[0]} />
   );
   const user = userEvent.setup();
 
@@ -663,12 +628,7 @@ test('Keyboard navigation works as expected', async () => {
   const handler = vi.fn();
 
   render(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      value={undefined}
-    />
+    <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
   const user = userEvent.setup();
 
@@ -726,7 +686,7 @@ test('Placeholder prop works as expected', () => {
   const handler = vi.fn();
 
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       value={undefined}
@@ -744,12 +704,7 @@ test('Filtering with no results', async () => {
   const handler = vi.fn();
 
   render(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      value={undefined}
-      items={items}
-    />
+    <Select label={label} onSelect={handler} value={undefined} items={items} />
   );
   const user = userEvent.setup();
 
@@ -764,7 +719,7 @@ test('Filtering with no results in groups', async () => {
   const handler = vi.fn();
 
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       value={undefined}
@@ -783,9 +738,7 @@ test('Keyboard navigation inside parent item', async () => {
   const items = fakeItemsWithChildren();
   const handler = vi.fn();
 
-  render(
-    <ComboBox label={label} onSelect={handler} items={items} values={[]} />
-  );
+  render(<Select label={label} onSelect={handler} items={items} values={[]} />);
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
@@ -849,7 +802,7 @@ test('Disabled works as expected', async () => {
   const items = fakeItems();
 
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -880,7 +833,7 @@ test('Loading works as expected', async () => {
   const items = fakeItems();
 
   render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -911,12 +864,7 @@ test('underlineHighlight works as expected', () => {
   const handleOnSelect = vi.fn();
 
   const { rerender } = render(
-    <ComboBox
-      label={label}
-      onSelect={handleOnSelect}
-      values={[]}
-      items={items}
-    />
+    <Select label={label} onSelect={handleOnSelect} values={[]} items={items} />
   );
 
   expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
@@ -925,7 +873,7 @@ test('underlineHighlight works as expected', () => {
   );
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       values={[]}
@@ -946,7 +894,7 @@ test('lightBackground works as expected', () => {
   const handleOnSelect = vi.fn();
 
   const { rerender } = render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       items={items}
@@ -965,7 +913,7 @@ test('lightBackground works as expected', () => {
   );
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handleOnSelect}
       items={items}
@@ -991,7 +939,7 @@ test('Not able to remove item when disabled/loading', async () => {
   const items = fakeItems();
 
   const { rerender } = render(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -1008,7 +956,7 @@ test('Not able to remove item when disabled/loading', async () => {
   expect(handler).not.toHaveBeenCalled();
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -1028,7 +976,7 @@ test('Clearing works as expected', async () => {
   const items = fakeItems();
 
   const { rerender } = render(
-    <ComboBox label={label} onSelect={handler} items={items} value={items[0]} />
+    <Select label={label} onSelect={handler} items={items} value={items[0]} />
   );
 
   const user = userEvent.setup();
@@ -1040,7 +988,7 @@ test('Clearing works as expected', async () => {
   expect(handler).toHaveBeenCalledWith(undefined);
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -1053,7 +1001,7 @@ test('Clearing works as expected', async () => {
   expect(handler).toHaveBeenCalledWith([]);
 
   rerender(
-    <ComboBox
+    <Select
       label={label}
       onSelect={handler}
       items={items}
@@ -1072,7 +1020,7 @@ test('Sets id when sending it', () => {
   const id = faker.string.uuid();
 
   render(
-    <ComboBox
+    <Select
       id={id}
       label={label}
       onSelect={handler}
@@ -1104,9 +1052,7 @@ test('Chevron button works as expected', async () => {
       expect(screen.queryByText(child.label)).not.toBeInTheDocument()
     );
 
-  render(
-    <ComboBox label={label} onSelect={handler} items={items} values={[]} />
-  );
+  render(<Select label={label} onSelect={handler} items={items} values={[]} />);
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));

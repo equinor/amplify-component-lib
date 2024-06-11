@@ -4,12 +4,15 @@ import React, { useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
-import MultiSelectDrawer from './MultiSelectDrawer';
-import { items, ValueType } from 'src/components/Inputs/Select/stories/data';
+import SingleSelectDrawer from './SingleSelectDrawer';
+import {
+  items,
+  ValueType,
+} from 'src/components/Inputs/SelectDrawer/stories/data';
 
 export default {
-  title: 'Inputs/Select/MultiSelectDrawer',
-  component: MultiSelectDrawer,
+  title: 'Inputs/SelectDrawer/SingleSelectDrawer',
+  component: SingleSelectDrawer,
   argTypes: {
     label: { control: 'text' },
     meta: { control: 'text' },
@@ -25,10 +28,9 @@ export default {
 } as Meta;
 
 export const Primary: StoryFn = (args) => {
-  const [selectedItems, setSelectedItems] = useState<ValueType[]>([
-    items[0],
-    items[3],
-  ]);
+  const [selectedItem, setSelectedItem] = useState<ValueType | undefined>(
+    items[0]
+  );
 
   return (
     <div
@@ -42,26 +44,18 @@ export const Primary: StoryFn = (args) => {
           width: '300px',
         }}
       >
-        <MultiSelectDrawer<ValueType>
-          items={items}
+        <SingleSelectDrawer<ValueType>
+          label={args.label}
           disabled={args.disabled}
           meta={args.meta}
-          label={args.label}
-          onChange={(val) => setSelectedItems(val)}
-          placeholder={
-            selectedItems.length
-              ? selectedItems.map((s) => s.label).join(', ')
-              : args.placeholder
-          }
-          selectedItems={selectedItems}
+          items={items}
+          initialItem={items[0]}
+          placeholder={args.placeholder}
+          onChange={(item) => setSelectedItem(item)}
         />
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {selectedItems.map((value) => (
-          <Typography key={value.id} variant="h3">
-            {value.label}
-          </Typography>
-        ))}
+      <div>
+        <Typography variant="h3">{selectedItem?.label}</Typography>
       </div>
     </div>
   );
