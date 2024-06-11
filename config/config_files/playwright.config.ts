@@ -48,12 +48,24 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+
+        contextOptions: {
+          // access clipboard in playwright tests
+          permissions: ['clipboard-read', 'clipboard-write'],
+        },
       },
     },
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        // access clipboard in playwright tests
+        launchOptions: {
+          firefoxUserPrefs: {
+            'dom.events.asyncClipboard.readText': true,
+            'dom.events.testing.asyncClipboard': true,
+          },
+        },
       },
     },
   ],
