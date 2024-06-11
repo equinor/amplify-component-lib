@@ -1,8 +1,8 @@
-import React from 'react';
+import { FC } from 'react';
 
 import WaveShapeWithNoise from './WaveShapeWithNoise';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export interface VisualWavesProps {
   waveIntervalDist?: number;
@@ -40,6 +40,18 @@ const WaveInnerContainer = styled.div<VisualWavesProps>`
   position: absolute;
 `;
 
+const waveWobble = keyframes`
+    0% {
+      transform: var(--rotate3d) translateY(-2px) rotateX(0) scaleY(1);
+    }
+    50% {
+      transform: var(--rotate3d) translateY(5px) rotateX(60deg) scaleY(0.8);
+    }
+    100% {
+      transform: var(--rotate3d) translateY(-2px) rotateX(0) scaleY(1);
+    }
+`;
+
 const Wave = styled.div<VisualWavesProps>`
   position: absolute;
   height: 100%;
@@ -51,21 +63,10 @@ const Wave = styled.div<VisualWavesProps>`
   filter: grayscale(1);
   mix-blend-mode: overlay;
 
-  @keyframes wobble2 {
-    0% {
-      transform: var(--rotate3d) translateY(-2px) rotateX(0) scaleY(1);
-    }
-    50% {
-      transform: var(--rotate3d) translateY(5px) rotateX(60deg) scaleY(0.8);
-    }
-    100% {
-      transform: var(--rotate3d) translateY(-2px) rotateX(0) scaleY(1);
-    }
-  }
-  animation: wobble2 5.5s infinite ease alternate;
+  animation: ${waveWobble} 5.5s infinite ease alternate;
 `;
 
-const NoiseSvg: React.FC = () => (
+const NoiseSvg: FC = () => (
   <svg viewBox="0 0 1500 1500" xmlns="http://www.w3.org/2000/svg">
     <filter id="noiseFilter">
       <feTurbulence
@@ -79,7 +80,7 @@ const NoiseSvg: React.FC = () => (
   </svg>
 );
 
-const VisualWaves: React.FC<VisualWavesProps> = ({
+const VisualWaves: FC<VisualWavesProps> = ({
   waveIntervalDist = 3,
   waveDelay = 0.75,
   numWaves = 10,
@@ -87,7 +88,7 @@ const VisualWaves: React.FC<VisualWavesProps> = ({
 }) => {
   const waves = Array.from({ length: numWaves }, (_, index) => {
     const top = index * waveIntervalDist;
-    const altWave = index % 2 === 0 ? true : false;
+    const altWave = index % 2 === 0;
     const delay = index * waveDelay;
 
     return {

@@ -1,13 +1,14 @@
-import React from 'react';
+import { FC } from 'react';
 
 interface WaveShapeWithNoiseProps {
   index?: number;
   isAltWave?: boolean;
 }
 
-const WaveShapeWithNoise: React.FC<WaveShapeWithNoiseProps> = (props) => {
-  console.log(props.isAltWave);
-
+const WaveShapeWithNoise: FC<WaveShapeWithNoiseProps> = ({
+  index,
+  isAltWave,
+}) => {
   return (
     <svg
       width="100%"
@@ -31,14 +32,14 @@ const WaveShapeWithNoise: React.FC<WaveShapeWithNoiseProps> = (props) => {
         </linearGradient>
 
         <pattern
-          id={'wavePattern' + props.index}
+          id={'wavePattern' + index}
           x="0"
           y="0"
           width="117px"
           height="100%"
           patternUnits="userSpaceOnUse"
         >
-          {!props.isAltWave ? (
+          {!isAltWave ? (
             <path
               d="M58.5 0C33.952 0 28.4498 23 0 23V834.5H117V23C88.5502 23 83.048 0 58.5 0Z"
               fill="url(#gradient)"
@@ -51,13 +52,13 @@ const WaveShapeWithNoise: React.FC<WaveShapeWithNoiseProps> = (props) => {
           )}
         </pattern>
 
-        <mask id={'waveMask' + props.index} x="0" y="0" width="100%" height="1">
+        <mask id={'waveMask' + index} x="0" y="0" width="100%" height="1">
           <rect
             x="0"
             y="0"
             width="100%"
             height="100%"
-            fill={'url(#wavePattern' + props.index + ')'}
+            fill={'url(#wavePattern' + index + ')'}
           />
         </mask>
       </defs>
@@ -66,7 +67,7 @@ const WaveShapeWithNoise: React.FC<WaveShapeWithNoiseProps> = (props) => {
         width="100%"
         height="100%"
         filter="url(#noiseFilter)"
-        mask={'url(#waveMask' + props.index + ')'}
+        mask={'url(#waveMask' + index + ')'}
       />
     </svg>
   );
