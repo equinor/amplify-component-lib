@@ -14,4 +14,6 @@ beforeAll(() => {
   HTMLDialogElement.prototype.show = vi.fn();
   HTMLDialogElement.prototype.showModal = vi.fn();
   HTMLDialogElement.prototype.close = vi.fn();
+  HTMLElement.prototype.showPopover = vi.fn();
+  HTMLElement.prototype.hidePopover = vi.fn();
 });
