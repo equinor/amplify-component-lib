@@ -5,6 +5,7 @@ import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { IconDataWithColor } from './ApplicationIconCollection';
+import { GRAYSCALE_FILTER_VALUE } from 'src/components/Icons/ApplicationIcon/ApplicationIcon.constants';
 import { AppIconProps } from 'src/types/AppIcon';
 
 import styled, { css } from 'styled-components';
@@ -32,7 +33,7 @@ const Container = styled.div<ContainerProps>`
   ${({ $grayScale }) =>
     $grayScale
       ? css`
-          filter: grayscale(1) brightness(1.25);
+          filter: ${GRAYSCALE_FILTER_VALUE};
         `
       : ''}
   > svg {

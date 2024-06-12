@@ -16,6 +16,7 @@ import {
   pwex,
   recap,
 } from './ApplicationIconCollection';
+import { GRAYSCALE_FILTER_VALUE } from 'src/components/Icons/ApplicationIcon/ApplicationIcon.constants';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 import { expect, test } from 'vitest';
@@ -160,4 +161,10 @@ test("Doesn't hover effects when withHover=false", async () => {
 
   await user.hover(applicationIcon);
   expect(applicationIcon).not.toHaveStyleRule('cursor');
+});
+
+test('has grayscale css attribute when grayscale is set', async () => {
+  render(<ApplicationIcon name="orca" grayScale />);
+  const applicationIcon = screen.getByTestId('application-icon');
+  expect(applicationIcon).toHaveStyleRule('filter', GRAYSCALE_FILTER_VALUE);
 });
