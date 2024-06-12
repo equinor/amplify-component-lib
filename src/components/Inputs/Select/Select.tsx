@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
@@ -74,13 +74,6 @@ export const Select = <T extends SelectOptionRequired>(
     placeholder,
   });
   const anchorRef = useRef<HTMLDivElement | null>(null);
-
-  const handleChipRemoval = (value: T) => () => {
-    if (!loading && !disabled) {
-      handleOnRemoveItem(value);
-    }
-  };
-
   const shouldShowTopMargin = useMemo(() => {
     return !!label || !!meta;
   }, [label, meta]);
@@ -94,8 +87,8 @@ export const Select = <T extends SelectOptionRequired>(
           key={value.value}
           data-testid="amplify-combobox-chip"
           className="amplify-combo-box-chip"
-          onClick={handleChipRemoval(value)}
-          onDelete={handleChipRemoval(value)}
+          onClick={() => handleOnRemoveItem(value)}
+          onDelete={() => handleOnRemoveItem(value)}
           $tryingToRemove={tryingToRemoveItem?.value === value.value}
           $lightBackground={lightBackground}
         >
@@ -103,7 +96,13 @@ export const Select = <T extends SelectOptionRequired>(
         </StyledChip>
       ));
     }
-  }, [selectedValues, tryingToRemoveItem, lightBackground, props]);
+  }, [
+    selectedValues,
+    tryingToRemoveItem,
+    lightBackground,
+    props,
+    handleOnRemoveItem,
+  ]);
 
   return (
     <div>
@@ -166,7 +165,7 @@ export const Select = <T extends SelectOptionRequired>(
           placement="bottom"
           matchAnchorWidth
         >
-          {'groups' in props ? (
+          {props.groups ? (
             <GroupedSelectMenu
               {...props}
               search={search}

@@ -2,17 +2,20 @@ import { useMemo } from 'react';
 
 import { NoItemsFoundText } from './Select.styles';
 import {
-  MultiSelectProps,
+  ListSelectProps,
+  MultiSelectCommon,
   SelectMenuProps,
   SelectOption,
   SelectOptionRequired,
-  SingleSelectProps,
+  SingleSelectCommon,
 } from './Select.types';
 import { flattenOptions, getChildOffset } from './Select.utils';
 import { SelectMenuItem } from './SelectMenuItem';
 
 export const SelectMenu = <T extends SelectOptionRequired>(
-  props: (SingleSelectProps<T> | MultiSelectProps<T>) & SelectMenuProps<T>
+  props: ListSelectProps<T> &
+    SelectMenuProps<T> &
+    (MultiSelectCommon<T> | SingleSelectCommon<T>)
 ) => {
   const {
     search,

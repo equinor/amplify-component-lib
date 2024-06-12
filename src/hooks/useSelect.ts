@@ -10,7 +10,7 @@ import {
 import { SelectOption } from 'src/components';
 import { SelectComponentProps } from 'src/components/Inputs/Select/Select';
 import {
-  GroupedSelectProps,
+  ListSelectProps,
   SelectOptionRequired,
 } from 'src/components/Inputs/Select/Select.types';
 import { flattenOptions } from 'src/components/Inputs/Select/Select.utils';
@@ -108,7 +108,7 @@ const useSelect = <T extends SelectOptionRequired>(
 
   const getParent = (value: string) => {
     const groupedFormations = groupBy(
-      flattenOptions(props.items as SelectOption<T>[]),
+      flattenOptions((props as ListSelectProps<T>).items),
       ({ value }) => value
     );
     const parentName = groupedFormations[value]?.at(0)?.parent ?? '';
@@ -163,7 +163,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnRemoveItem = (item: T) => {
-    if ('values' in props) {
+    if ('values' in props && !loading && !disabled) {
       props.onSelect(
         props.values.filter((i) => i.value !== item.value),
         item

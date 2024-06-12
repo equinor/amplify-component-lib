@@ -4,17 +4,19 @@ import { Menu } from '@equinor/eds-core-react';
 
 import { NoItemsFoundText } from './Select.styles';
 import {
-  GroupedMultiSelectProps,
-  GroupedSingleSelectProps,
+  GroupedSelectProps,
+  MultiSelectCommon,
   SelectMenuProps,
   SelectOptionRequired,
+  SingleSelectCommon,
 } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { SelectMenuItem } from './SelectMenuItem';
 
 export const GroupedSelectMenu = <T extends SelectOptionRequired>(
-  props: (GroupedSingleSelectProps<T> | GroupedMultiSelectProps<T>) &
-    SelectMenuProps<T>
+  props: GroupedSelectProps<T> &
+    SelectMenuProps<T> &
+    (MultiSelectCommon<T> | SingleSelectCommon<T>)
 ) => {
   const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;
 

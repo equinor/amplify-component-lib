@@ -4,7 +4,7 @@ import { fakeItems } from '../Select.test';
 import { ComboBox } from './ComboBox';
 import { render, screen } from 'src/tests/test-utils';
 
-test('ComboBox renders as expected', async () => {
+test('ComboBox renders as expected', () => {
   const items = fakeItems();
   const placeholder = faker.animal.fish();
   const handleOnSelect = vi.fn();
