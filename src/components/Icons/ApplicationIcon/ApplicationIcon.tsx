@@ -1,4 +1,4 @@
-import { FC, forwardRef } from 'react';
+import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
 import Acquire from './Acquire';
 import Bravos from './Bravos';
@@ -29,7 +29,9 @@ export type ApplicationName =
 
 interface ApplicationIconData {
   appName: string;
-  component: FC<AppIconProps>;
+  component: ForwardRefExoticComponent<
+    AppIconProps & RefAttributes<HTMLDivElement>
+  >;
 }
 const apps: ApplicationIconData[] = [
   { appName: 'portal', component: Portal },
@@ -45,15 +47,15 @@ const apps: ApplicationIconData[] = [
   { appName: 'premo', component: Premo },
 ];
 
-export interface ApplicationIconProps {
+export interface ApplicationIconProps extends Partial<AppIconProps> {
   name: ApplicationName | string;
-  size?: 16 | 18 | 24 | 32 | 40 | 48 | number;
-  iconOnly?: boolean;
-  withHover?: boolean;
 }
 
 const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
-  ({ name, size = 48, iconOnly = false, withHover = false }, ref) => {
+  (
+    { name, size = 48, iconOnly = false, withHover = false, grayScale = false },
+    ref
+  ) => {
     const appData = apps.find((app) => app.appName === name.toLowerCase());
 
     if (appData === undefined)
@@ -63,13 +65,16 @@ const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
           ref={ref}
           iconOnly={iconOnly}
           withHover={withHover}
+          grayScale={grayScale}
         />
       );
     return (
       <appData.component
         size={size}
+        ref={ref}
         iconOnly={iconOnly}
         withHover={withHover}
+        grayScale={grayScale}
       />
     );
   }

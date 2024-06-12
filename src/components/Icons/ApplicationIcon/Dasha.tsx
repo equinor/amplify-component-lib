@@ -17,18 +17,9 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Dasha = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly = false, withHover = true }, ref) => (
-    <ApplicationIconBase
-      size={size}
-      iconData={dasha}
-      shapes={shapes}
-      iconOnly={iconOnly}
-      withHover={withHover}
-      ref={ref}
-    />
-  )
-);
+const Dasha = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase iconData={dasha} shapes={shapes} ref={ref} {...props} />
+));
 
 Dasha.displayName = 'Dasha';
 

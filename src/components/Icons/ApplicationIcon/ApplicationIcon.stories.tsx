@@ -24,6 +24,7 @@ export default {
       ],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
+    grayScale: { control: 'boolean' },
   },
   args: {
     name: '4dinsight',

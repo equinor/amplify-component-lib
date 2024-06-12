@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { recap } from './ApplicationIconCollection';
@@ -17,18 +17,10 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Recap: FC<AppIconProps> = ({
-  size,
-  iconOnly = false,
-  withHover = true,
-}) => (
-  <ApplicationIconBase
-    size={size}
-    iconData={recap}
-    iconOnly={iconOnly}
-    withHover={withHover}
-    shapes={shapes}
-  />
-);
+const Recap = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase ref={ref} iconData={recap} shapes={shapes} {...props} />
+));
+
+Recap.displayName = 'Recap';
 
 export default Recap;

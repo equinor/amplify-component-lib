@@ -18,14 +18,12 @@ const shapes: ShapeProps[] = [
 ];
 
 const LoggingQualification = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly = false, withHover = true }, ref) => (
+  (props, ref) => (
     <ApplicationIconBase
       ref={ref}
-      size={size}
       iconData={loggingQualification}
-      iconOnly={iconOnly}
-      withHover={withHover}
       shapes={shapes}
+      {...props}
     />
   )
 );

@@ -17,17 +17,13 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const FourDInsight = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly = false, withHover = true }, ref) => (
-    <ApplicationIconBase
-      ref={ref}
-      size={size}
-      iconData={fourDInsight}
-      iconOnly={iconOnly}
-      withHover={withHover}
-      shapes={shapes}
-    />
-  )
-);
+const FourDInsight = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    iconData={fourDInsight}
+    shapes={shapes}
+    {...props}
+  />
+));
 FourDInsight.displayName = 'FourDInsight';
 export default FourDInsight;

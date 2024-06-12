@@ -7,7 +7,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { IconDataWithColor } from './ApplicationIconCollection';
 import { AppIconProps } from 'src/types/AppIcon';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const { colors, elevation } = tokens;
 
@@ -15,6 +15,7 @@ interface ContainerProps {
   $size: number;
   $iconOnly: boolean;
   $withHover: boolean;
+  $grayScale: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -28,6 +29,12 @@ const Container = styled.div<ContainerProps>`
   height: ${({ $size }) => `${$size}px`};
   z-index: 100;
   overflow: hidden;
+  ${({ $grayScale }) =>
+    $grayScale
+      ? css`
+          filter: grayscale(1) brightness(1.25);
+        `
+      : ''}
   > svg {
     position: absolute;
     top: 0;
@@ -68,6 +75,7 @@ interface ShapeElementProps {
   $left: number;
   $rotation: number;
   $index: number;
+  $grayScale: boolean;
 }
 
 const Shape = styled.div<ShapeElementProps>`
@@ -86,7 +94,7 @@ const Shape = styled.div<ShapeElementProps>`
   pointer-events: none;
 `;
 
-interface ApplicationIconBaseProps extends AppIconProps {
+interface ApplicationIconBaseProps extends Required<AppIconProps> {
   iconData: IconData | IconDataWithColor[];
   shapes: ShapeProps[];
   iconOnly: boolean;
@@ -98,8 +106,40 @@ interface ApplicationIconBaseProps extends AppIconProps {
 const ApplicationIconBase = forwardRef<
   HTMLDivElement,
   ApplicationIconBaseProps
->(({ size = 48, iconData, shapes, iconOnly, withHover }, ref) => {
-  if (iconOnly) {
+>(
+  (
+    { size = 48, iconData, shapes, iconOnly, withHover, grayScale = false },
+    ref
+  ) => {
+    if (iconOnly) {
+      return (
+        <Container
+          data-testid="application-icon"
+          ref={ref}
+          $size={size}
+          $iconOnly={iconOnly}
+          $withHover={withHover}
+          $grayScale={grayScale}
+        >
+          {Array.isArray(iconData) ? (
+            iconData.map((icon, index) => (
+              <Icon
+                key={`icon-${index}`}
+                data={icon}
+                size={size as IconProps['size']}
+                color={icon.color}
+              />
+            ))
+          ) : (
+            <Icon
+              data={iconData}
+              size={size as IconProps['size']}
+              color="#ffffff"
+            />
+          )}
+        </Container>
+      );
+    }
     return (
       <Container
         data-testid="application-icon"
@@ -107,6 +147,7 @@ const ApplicationIconBase = forwardRef<
         $size={size}
         $iconOnly={iconOnly}
         $withHover={withHover}
+        $grayScale={grayScale}
       >
         {Array.isArray(iconData) ? (
           iconData.map((icon, index) => (
@@ -124,46 +165,21 @@ const ApplicationIconBase = forwardRef<
             color="#ffffff"
           />
         )}
+        {shapes.map((shape, index) => (
+          <Shape
+            key={`shape-${index}`}
+            data-testid="shape"
+            $index={index}
+            $top={shape.top}
+            $left={shape.left}
+            $rotation={shape.rotation}
+            $grayScale={grayScale}
+          />
+        ))}
       </Container>
     );
   }
-  return (
-    <Container
-      data-testid="application-icon"
-      ref={ref}
-      $size={size}
-      $iconOnly={iconOnly}
-      $withHover={withHover}
-    >
-      {Array.isArray(iconData) ? (
-        iconData.map((icon, index) => (
-          <Icon
-            key={`icon-${index}`}
-            data={icon}
-            size={size as IconProps['size']}
-            color={icon.color}
-          />
-        ))
-      ) : (
-        <Icon
-          data={iconData}
-          size={size as IconProps['size']}
-          color="#ffffff"
-        />
-      )}
-      {shapes.map((shape, index) => (
-        <Shape
-          key={`shape-${index}`}
-          data-testid="shape"
-          $index={index}
-          $top={shape.top}
-          $left={shape.left}
-          $rotation={shape.rotation}
-        />
-      ))}
-    </Container>
-  );
-});
+);
 
 ApplicationIconBase.displayName = 'ApplicationIconBase';
 
