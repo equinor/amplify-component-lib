@@ -87,7 +87,6 @@ export const Select = <T extends SelectOptionRequired>(
           key={value.value}
           data-testid="amplify-combobox-chip"
           className="amplify-combo-box-chip"
-          onClick={() => handleOnRemoveItem(value)}
           onDelete={() => handleOnRemoveItem(value)}
           $tryingToRemove={tryingToRemoveItem?.value === value.value}
           $lightBackground={lightBackground}
