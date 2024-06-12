@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { ReactNode, useMemo, useRef } from 'react';
 
 import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
@@ -12,6 +12,7 @@ import {
   Section,
   StyledChip,
   StyledMenu,
+  ValueText,
 } from './Select.styles';
 import {
   CommonSelectProps,
@@ -35,15 +36,16 @@ export const Select = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
 ) => {
   const {
-    id,
     clearable = true,
     loading = false,
     disabled = false,
     lightBackground = false,
     underlineHighlight = false,
+    sortValues = true,
     placeholder = 'Select...',
     label,
     meta,
+    id = `amplify-combobox-${label}`,
   } = props;
   const {
     handleOnClear,
@@ -61,7 +63,16 @@ export const Select = <T extends SelectOptionRequired>(
     open,
     searchRef,
     tryingToRemoveItem,
-  } = useSelect(props);
+  } = useSelect({
+    ...props,
+    clearable,
+    loading,
+    disabled,
+    lightBackground,
+    underlineHighlight,
+    sortValues,
+    placeholder,
+  });
   const anchorRef = useRef<HTMLDivElement | null>(null);
 
   const handleChipRemoval = (value: T) => () => {
@@ -73,6 +84,26 @@ export const Select = <T extends SelectOptionRequired>(
   const shouldShowTopMargin = useMemo(() => {
     return !!label || !!meta;
   }, [label, meta]);
+
+  const valueElements = useMemo(() => {
+    if ('value' in props && props.value) {
+      return <ValueText>{props.value.label}</ValueText>;
+    } else {
+      return selectedValues.map((value) => (
+        <StyledChip
+          key={value.value}
+          data-testid="amplify-combobox-chip"
+          className="amplify-combo-box-chip"
+          onClick={handleChipRemoval(value)}
+          onDelete={handleChipRemoval(value)}
+          $tryingToRemove={tryingToRemoveItem?.value === value.value}
+          $lightBackground={lightBackground}
+        >
+          {value.label}
+        </StyledChip>
+      ));
+    }
+  }, [selectedValues, tryingToRemoveItem, lightBackground, props]);
 
   return (
     <div>
@@ -86,32 +117,17 @@ export const Select = <T extends SelectOptionRequired>(
         $shouldShowTopMargin={shouldShowTopMargin}
       >
         {shouldShowTopMargin && (
-          <Label
-            label={label}
-            meta={meta}
-            htmlFor={id ? id : `amplify-combobox-${label}-${meta}`}
-          />
+          <Label label={label} meta={meta} htmlFor={id} />
         )}
         <Section>
-          {selectedValues.length > 0 || search !== '' ? (
-            selectedValues.map((value) => (
-              <StyledChip
-                key={value.value}
-                data-testid="amplify-combobox-chip"
-                className="amplify-combo-box-chip"
-                onClick={handleChipRemoval(value)}
-                onDelete={handleChipRemoval(value)}
-                $tryingToRemove={tryingToRemoveItem?.value === value.value}
-                $lightBackground={lightBackground}
-              >
-                {value.label}
-              </StyledChip>
-            ))
-          ) : (
+          {search === '' && selectedValues.length === 0 && (
             <PlaceholderText>{placeholder}</PlaceholderText>
           )}
+          {(search === '' ||
+            ('values' in props && selectedValues.length > 0)) &&
+            valueElements}
           <input
-            id={id ? id : `amplify-combobox-${label}`}
+            id={id}
             disabled={disabled || loading}
             ref={searchRef}
             type="search"

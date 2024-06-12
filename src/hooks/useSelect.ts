@@ -10,9 +10,8 @@ import {
 import { SelectOption } from 'src/components';
 import { SelectComponentProps } from 'src/components/Inputs/Select/Select';
 import {
-  GroupedSingleSelectProps,
+  GroupedSelectProps,
   SelectOptionRequired,
-  SingleSelectProps,
 } from 'src/components/Inputs/Select/Select.types';
 import { flattenOptions } from 'src/components/Inputs/Select/Select.utils';
 
@@ -21,7 +20,7 @@ import { groupBy } from 'lodash';
 const useSelect = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
 ) => {
-  const { loading = false, disabled = false, sortValues = true } = props;
+  const { loading, disabled, sortValues } = props;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -34,10 +33,6 @@ const useSelect = <T extends SelectOptionRequired>(
   const internalUpdateOfValues = useRef<boolean>(false);
   const previousAmountOfValues = useRef<number>(0);
 
-  if ('groups' in props && 'items' in props) {
-    throw new Error("Can't use both items and groups!");
-  }
-
   const selectedValues: T[] = useMemo(() => {
     let selected: T[] = [];
     if ('values' in props) {
@@ -49,7 +44,7 @@ const useSelect = <T extends SelectOptionRequired>(
     if (!sortValues) return selected;
 
     let flattenedItems: T[];
-    if ('groups' in props) {
+    if (props.groups) {
       flattenedItems = props.groups.flatMap((group) => group.items);
     } else {
       flattenedItems = props.items.flatMap((item) => [
@@ -111,14 +106,11 @@ const useSelect = <T extends SelectOptionRequired>(
     }
   };
 
-  const items = 'items' in props ? props.items : [];
-
-  const groupedFormations = groupBy(
-    flattenOptions(items),
-    ({ value }) => value
-  );
-
   const getParent = (value: string) => {
+    const groupedFormations = groupBy(
+      flattenOptions(props.items as SelectOption<T>[]),
+      ({ value }) => value
+    );
     const parentName = groupedFormations[value]?.at(0)?.parent ?? '';
     return groupedFormations[parentName]?.at(0);
   };
@@ -171,8 +163,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnRemoveItem = (item: T) => {
-    if ('value' in props) props.onSelect(undefined);
-    else {
+    if ('values' in props) {
       props.onSelect(
         props.values.filter((i) => i.value !== item.value),
         item
@@ -201,6 +192,7 @@ const useSelect = <T extends SelectOptionRequired>(
     } else if (
       event.key === 'Backspace' &&
       tryingToRemoveItem === undefined &&
+      'values' in props &&
       search === ''
     ) {
       setTryingToRemoveItem(selectedValues?.at(-1));

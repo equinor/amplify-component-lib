@@ -10,20 +10,14 @@ import { expect } from 'vitest';
 
 const { colors } = tokens;
 
-function fakeItem(withChildren = false) {
+function fakeItem() {
   return {
     label: faker.string.uuid(),
     value: faker.string.uuid(),
-    ...(withChildren && {
-      children: new Array(2).fill(0).map(() => ({
-        label: faker.string.uuid(),
-        value: faker.string.uuid(),
-      })),
-    }),
   };
 }
 
-function fakeItems(count = 10) {
+export function fakeItems(count = 10) {
   return new Array(count).fill(0).map(() => fakeItem());
 }
 
@@ -260,6 +254,7 @@ test('Parent multi select - nested selection works as expected', async () => {
   await user.keyboard('{ArrowRight}');
 
   await user.keyboard('{ArrowDown}');
+
   await user.keyboard('{Enter}');
 
   let newValues = [items[0].children[0]];
@@ -430,22 +425,6 @@ test('Basic group multi select with preselected item', async () => {
   expect(handler).toBeCalledWith([], randomItem);
 });
 
-test('Throws error if providing groups and items', () => {
-  const handle = vi.fn();
-  console.error = vi.fn();
-  expect(() =>
-    render(
-      <Select
-        label="hei"
-        onSelect={handle}
-        items={[]}
-        groups={[]}
-        value={undefined}
-      />
-    )
-  ).toThrowError();
-});
-
 test('Sorts items as expected', () => {
   const label = faker.animal.bear();
   const items = fakeItems();
@@ -577,15 +556,19 @@ test("Clicking 'x' on chip works as expected", async () => {
   const handler = vi.fn();
 
   const { rerender } = render(
-    <Select label={label} onSelect={handler} items={items} value={items[0]} />
+    <Select
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0]]}
+    />
   );
   const user = userEvent.setup();
 
-  const chip = screen.getByRole('img');
+  const chip = screen.getByRole('img', { name: /close/i });
 
   await user.click(chip);
-
-  expect(handler).toHaveBeenCalledWith(undefined);
+  expect(handler).toHaveBeenCalledWith([], items[0]);
 
   rerender(
     <Select
@@ -607,7 +590,12 @@ test('Removing with backspace', async () => {
   const handler = vi.fn();
 
   render(
-    <Select label={label} onSelect={handler} items={items} value={items[0]} />
+    <Select
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0]]}
+    />
   );
   const user = userEvent.setup();
 
@@ -619,7 +607,7 @@ test('Removing with backspace', async () => {
 
   await user.keyboard('{Backspace}');
 
-  expect(handler).toHaveBeenCalledWith(undefined);
+  expect(handler).toHaveBeenCalledWith([], items[0]);
 });
 
 test('Keyboard navigation works as expected', async () => {
@@ -898,7 +886,7 @@ test('lightBackground works as expected', () => {
       label={label}
       onSelect={handleOnSelect}
       items={items}
-      value={items[0]}
+      values={[items[0]]}
     />
   );
 
@@ -909,7 +897,7 @@ test('lightBackground works as expected', () => {
 
   expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyleRule(
     'background',
-    `${colors.ui.background__default.rgba}`
+    `${colors.ui.background__default.rgba}!important`
   );
 
   rerender(
@@ -917,7 +905,7 @@ test('lightBackground works as expected', () => {
       label={label}
       onSelect={handleOnSelect}
       items={items}
-      value={items[0]}
+      values={[items[0]]}
       lightBackground={true}
     />
   );
@@ -929,7 +917,7 @@ test('lightBackground works as expected', () => {
 
   expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyleRule(
     'background',
-    `${colors.ui.background__light.rgba}`
+    `${colors.ui.background__light.rgba}!important`
   );
 });
 
@@ -943,7 +931,7 @@ test('Not able to remove item when disabled/loading', async () => {
       label={label}
       onSelect={handler}
       items={items}
-      value={items[0]}
+      values={[items[0]]}
       disabled
     />
   );
@@ -976,7 +964,13 @@ test('Clearing works as expected', async () => {
   const items = fakeItems();
 
   const { rerender } = render(
-    <Select label={label} onSelect={handler} items={items} value={items[0]} />
+    <Select
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={items[0]}
+      clearable
+    />
   );
 
   const user = userEvent.setup();
