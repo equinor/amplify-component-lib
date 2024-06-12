@@ -1058,3 +1058,27 @@ test('Chevron button works as expected', async () => {
       expect(screen.queryByText(child.label)).toBeInTheDocument()
     );
 });
+
+test('onSearchChange to be called with value when typing in input field', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const items = fakeItems();
+  const id = faker.string.uuid();
+  const handleOnSearchChange = vi.fn();
+
+  render(
+    <Select
+      id={id}
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={items[0]}
+      onSearchChange={handleOnSearchChange}
+    />
+  );
+
+  const user = userEvent.setup();
+  const searchField = screen.getByRole('combobox');
+  await user.type(searchField, 'Test');
+  expect(handleOnSearchChange).toHaveBeenCalledWith('Test');
+});

@@ -20,7 +20,7 @@ import { groupBy } from 'lodash';
 const useSelect = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
 ) => {
-  const { loading, disabled, sortValues } = props;
+  const { loading, disabled, sortValues, onSearchChange } = props;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -101,6 +101,7 @@ const useSelect = <T extends SelectOptionRequired>(
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === ' ' || loading || disabled) return;
     setSearch(event.target.value);
+    onSearchChange?.(event.target.value);
     if (!open) {
       setOpen(true);
     }

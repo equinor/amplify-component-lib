@@ -74,4 +74,5 @@ export interface CommonSelectProps {
   underlineHighlight?: boolean;
   clearable?: boolean;
   meta?: string;
+  onSearchChange?: (inputValue: string) => void;
 }
