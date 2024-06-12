@@ -107,6 +107,8 @@ export { Badge } from './DataDisplay/Badge/Badge';
 
 // EDS re-exports
 export type {
+  AutocompleteChanges,
+  AutocompleteProps,
   BreadcrumbProps,
   BreadcrumbsProps,
   ButtonProps,
@@ -141,6 +143,7 @@ export type {
   CardProps,
 } from '@equinor/eds-core-react';
 export {
+  Autocomplete,
   Breadcrumbs,
   Button,
   Checkbox,
