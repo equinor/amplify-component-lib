@@ -68,15 +68,15 @@ html[data-theme='dark'] {
   --eds_interactive_secondary__highlight: rgba(255, 255, 255, 0.1);
   --eds_interactive_secondary__resting: rgba(222, 229, 231, 1);
   --eds_interactive_secondary__link_hover: rgba(23, 36, 47, 1);
-  --eds_interactive_danger__highlight: rgba(255, 102, 112, 0.1);
+  --eds_interactive_danger__highlight: rgba(90, 57, 70, 1);
   --eds_interactive_danger__resting: rgba(235, 0, 0, 1);
   --eds_interactive_danger__hover: rgba(255, 148, 155, 1);
   --eds_interactive_danger__text: rgba(255, 102, 112, 1);
-  --eds_interactive_warning__highlight: rgba(255, 198, 122, 0.1);
+  --eds_interactive_warning__highlight: rgba(90, 86, 73, 1);
   --eds_interactive_warning__resting: rgba(255, 146, 0, 1);
   --eds_interactive_warning__hover: rgba(255, 218, 168, 1);
   --eds_interactive_warning__text: rgba(255, 198, 122, 1);
-  --eds_interactive_success__highlight: rgba(161, 218, 160, 0.1);
+  --eds_interactive_success__highlight: rgba(62, 92, 84, 1);
   --eds_interactive_success__resting: rgba(75, 183, 72, 1);
   --eds_interactive_success__hover: rgba(193, 231, 193, 1);
   --eds_interactive_success__text: rgba(161, 218, 160, 1);
@@ -150,9 +150,9 @@ html[data-theme='dark'] {
   --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1);
 
   --eds_ui__chip__badge_color: var(--eds_text_static_icons__default);
-  
 
-  
+
+
 }
 
 
