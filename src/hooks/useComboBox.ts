@@ -21,7 +21,6 @@ export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
   sortValues?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  onSearchChange?: (inputValue: string) => void;
 } & (ComboBoxProps<T> | GroupedComboboxProps<T>);
 
 const useComboBox = <T extends ComboBoxOptionRequired>(
@@ -112,7 +111,6 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === ' ' || loading || disabled) return;
     setSearch(event.target.value);
-    props.onSearchChange?.(event.target.value);
     if (!open) {
       setOpen(true);
     }
