@@ -5,7 +5,6 @@ import { useSideBar } from '../providers/SideBarProvider';
 import { useSnackbar } from '../providers/SnackbarProvider';
 import { useTableOfContents } from '../providers/TableOfContentsProvider';
 import { useTutorialSteps } from '../providers/TutorialStepsProvider';
-import { useComboBox } from './useComboBox';
 import { useDebounce } from './useDebounce';
 import { useFakeProgress } from './useFakeProgress';
 import { useFeatureToggling } from './useFeatureToggling';
@@ -14,10 +13,11 @@ import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
+import { useSelect } from 'src/hooks/useSelect';
 
 export {
   useAuth,
-  useComboBox,
+  useSelect,
   useDebounce,
   useFakeProgress,
   useFeatureToggling,

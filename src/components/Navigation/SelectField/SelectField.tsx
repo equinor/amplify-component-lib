@@ -3,9 +3,9 @@ import { FC, useRef, useState } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 
 import ChangingField from 'src/components/Navigation/SelectField/ChangingField';
-import Illustration from 'src/components/Navigation/SelectField/Illustration';
 import SelectorCard from 'src/components/Navigation/SelectField/SelectorCard/SelectorCard';
 import SelectorSkeleton from 'src/components/Navigation/SelectField/SelectorCard/Skeleton';
+import VisualWaves from 'src/components/Visuals/Waves/VisualWaves';
 import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
@@ -76,7 +76,7 @@ const SelectField: FC<SelectFieldProps> = ({
   return (
     <Container className="select-field">
       <ImageWrapper>
-        <Illustration />
+        <VisualWaves />
       </ImageWrapper>
       {!isLoading ? (
         <SelectorCard

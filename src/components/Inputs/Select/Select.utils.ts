@@ -1,7 +1,7 @@
-import { ComboBoxOption, ComboBoxOptionRequired } from './ComboBox.types';
+import { SelectOption, SelectOptionRequired } from './Select.types';
 
-export function getChildOffset<T extends ComboBoxOptionRequired>(
-  allItems: ComboBoxOption<T>[],
+export function getChildOffset<T extends SelectOptionRequired>(
+  allItems: SelectOption<T>[],
   topLevelIndex: number
 ): number {
   const offset = allItems.length;
@@ -14,12 +14,10 @@ export function getChildOffset<T extends ComboBoxOptionRequired>(
   return offset + before;
 }
 
-export const flattenOptions = <T extends ComboBoxOptionRequired>(
-  options: ComboBoxOption<T>[]
-): (ComboBoxOption<T> & { parent?: string })[] => {
-  const extractChildren = (
-    options: ComboBoxOption<T>[]
-  ): ComboBoxOption<T>[] => {
+export const flattenOptions = <T extends SelectOptionRequired>(
+  options: SelectOption<T>[]
+): (SelectOption<T> & { parent?: string })[] => {
+  const extractChildren = (options: SelectOption<T>[]): SelectOption<T>[] => {
     if (!options?.length) return [];
 
     const children = options.flatMap(

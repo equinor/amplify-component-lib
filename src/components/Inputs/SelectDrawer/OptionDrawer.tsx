@@ -90,9 +90,6 @@ export interface OptionDrawerProps<
   parentHasNestedItems?: boolean;
 }
 
-/**
- * @deprecated Use ComboBox instead
- */
 const OptionDrawer = <
   T extends { id: string; label: string; parentId?: string; children?: T[] },
 >({

@@ -15,20 +15,18 @@ import {
   MenuItemWrapper,
   SmallButton,
   StyledMenuItem,
-} from './ComboBox.styles';
+} from './Select.styles';
 import {
-  ComboBoxMultiSelectMenuItemProps,
-  ComboBoxOptionRequired,
-  ComboBoxSingleSelectMenuItemProps,
-} from './ComboBox.types';
-import { flattenOptions, getChildOffset } from './ComboBox.utils';
+  MultiSelectMenuItemProps,
+  SelectOptionRequired,
+  SingleSelectMenuItemProps,
+} from './Select.types';
+import { flattenOptions, getChildOffset } from './Select.utils';
 
 const { colors } = tokens;
 
-export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
-  props:
-    | ComboBoxSingleSelectMenuItemProps<T>
-    | ComboBoxMultiSelectMenuItemProps<T>
+export const SelectMenuItem = <T extends SelectOptionRequired>(
+  props: SingleSelectMenuItemProps<T> | MultiSelectMenuItemProps<T>
 ) => {
   const {
     index,
@@ -180,7 +178,7 @@ export const ComboBoxMenuItem = <T extends ComboBoxOptionRequired>(
         </MenuItemWrapper>
         {openParent &&
           item.children.map((child, childIndex) => (
-            <ComboBoxMenuItem
+            <SelectMenuItem
               key={`child-${childIndex}-${child.value}-${item.value}`}
               index={childOffset + childIndex}
               childOffset={

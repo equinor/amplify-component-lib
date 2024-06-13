@@ -2,17 +2,21 @@ import { useMemo } from 'react';
 
 import { Menu } from '@equinor/eds-core-react';
 
-import { NoItemsFoundText } from './ComboBox.styles';
+import { NoItemsFoundText } from './Select.styles';
 import {
-  ComboBoxMenuProps,
-  ComboBoxOptionRequired,
-  GroupedComboboxProps,
-} from './ComboBox.types';
-import { ComboBoxMenuItem } from './ComboBoxMenuItem';
-import { getCumulativeArrayFromNumberedArray } from 'src/components/Inputs/ComboBox/ComboBox.utils';
+  GroupedSelectProps,
+  MultiSelectCommon,
+  SelectMenuProps,
+  SelectOptionRequired,
+  SingleSelectCommon,
+} from './Select.types';
+import { getCumulativeArrayFromNumberedArray } from './Select.utils';
+import { SelectMenuItem } from './SelectMenuItem';
 
-export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
-  props: GroupedComboboxProps<T> & ComboBoxMenuProps<T>
+export const GroupedSelectMenu = <T extends SelectOptionRequired>(
+  props: GroupedSelectProps<T> &
+    SelectMenuProps<T> &
+    (MultiSelectCommon<T> | SingleSelectCommon<T>)
 ) => {
   const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;
 
@@ -44,7 +48,7 @@ export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
         title={group.title}
       >
         {group.items.map((item, index) => (
-          <ComboBoxMenuItem
+          <SelectMenuItem
             key={`${group.title}-${groupIndex}-item-${item.value}`}
             index={index + filteredGroupSum[groupIndex]}
             childOffset={0}
@@ -67,7 +71,7 @@ export const GroupedComboBoxMenu = <T extends ComboBoxOptionRequired>(
       title={group.title}
     >
       {group.items.map((item, index) => (
-        <ComboBoxMenuItem
+        <SelectMenuItem
           key={`${group.title}-${groupIndex}-item-${item.value}`}
           index={index + filteredGroupSum[groupIndex]}
           childOffset={0}
