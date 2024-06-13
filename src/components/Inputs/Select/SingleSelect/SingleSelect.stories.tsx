@@ -104,7 +104,7 @@ export const SingleSelectWithGroups: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxParented: StoryFn = (args) => {
+export const SingleSelectParented: StoryFn = (args) => {
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
   const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
