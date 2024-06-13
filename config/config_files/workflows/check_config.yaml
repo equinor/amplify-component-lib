@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Compare remote .eslintrc.js to local
         working-directory: client
         run: diff .eslintrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.eslintrc.js)
