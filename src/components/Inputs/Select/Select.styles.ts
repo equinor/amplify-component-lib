@@ -139,12 +139,11 @@ interface StyledChipProps {
 }
 
 const StyledChip = styled(Chip)<StyledChipProps>`
-  background: ${({ $tryingToRemove, $lightBackground }) =>
-    $tryingToRemove
-      ? EDSColors.interactive.primary__hover_alt.rgba
-      : $lightBackground
-        ? EDSColors.ui.background__light.rgba
-        : EDSColors.ui.background__default.rgba};
+  background: ${({ $tryingToRemove, $lightBackground }) => {
+    if ($tryingToRemove) return EDSColors.interactive.primary__hover_alt.rgba;
+    if ($lightBackground) return EDSColors.ui.background__light.rgba;
+    return EDSColors.ui.background__default.rgba;
+  }} !important;
 `;
 
 interface CustomMenuItemProps {
@@ -183,6 +182,10 @@ const PlaceholderText = styled(Typography)`
   transform: translate(0, -50%);
 `;
 
+const ValueText = styled(PlaceholderText)`
+  color: ${EDSColors.text.static_icons__default.rgba};
+`;
+
 const NoItemsFoundText = styled(Typography)`
   margin-left: ${EDSSpacings.comfortable.medium};
 `;
@@ -205,7 +208,6 @@ const SmallButton = styled(Button)`
 
 export {
   Button,
-  Chip,
   ClearButton,
   Container,
   MenuItemSpacer,
@@ -217,4 +219,5 @@ export {
   MenuItemWrapper,
   SmallButton,
   StyledMenuItem,
+  ValueText,
 };

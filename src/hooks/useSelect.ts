@@ -7,27 +7,20 @@ import {
   useState,
 } from 'react';
 
-import { ComboBoxOption } from 'src/components';
+import { SelectOption } from 'src/components';
+import { SelectComponentProps } from 'src/components/Inputs/Select/Select';
 import {
-  ComboBoxOptionRequired,
-  ComboBoxProps,
-  GroupedComboboxProps,
-} from 'src/components/Inputs/ComboBox/ComboBox.types';
-import { flattenOptions } from 'src/components/Inputs/ComboBox/ComboBox.utils';
+  ListSelectProps,
+  SelectOptionRequired,
+} from 'src/components/Inputs/Select/Select.types';
+import { flattenOptions } from 'src/components/Inputs/Select/Select.utils';
 
 import { groupBy } from 'lodash';
 
-export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
-  sortValues?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-  onSearchChange?: (inputValue: string) => void;
-} & (ComboBoxProps<T> | GroupedComboboxProps<T>);
-
-const useComboBox = <T extends ComboBoxOptionRequired>(
-  props: ComboBoxComponentProps<T>
+const useSelect = <T extends SelectOptionRequired>(
+  props: SelectComponentProps<T>
 ) => {
-  const { loading = false, disabled = false, sortValues = true } = props;
+  const { loading, disabled, sortValues, onSearchChange } = props;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -40,10 +33,6 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   const internalUpdateOfValues = useRef<boolean>(false);
   const previousAmountOfValues = useRef<number>(0);
 
-  if ('groups' in props && 'items' in props) {
-    throw new Error("Can't use both items and groups!");
-  }
-
   const selectedValues: T[] = useMemo(() => {
     let selected: T[] = [];
     if ('values' in props) {
@@ -55,7 +44,7 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
     if (!sortValues) return selected;
 
     let flattenedItems: T[];
-    if ('groups' in props) {
+    if (props.groups) {
       flattenedItems = props.groups.flatMap((group) => group.items);
     } else {
       flattenedItems = props.items.flatMap((item) => [
@@ -112,25 +101,22 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === ' ' || loading || disabled) return;
     setSearch(event.target.value);
-    props.onSearchChange?.(event.target.value);
+    onSearchChange?.(event.target.value);
     if (!open) {
       setOpen(true);
     }
   };
 
-  const items = 'items' in props ? props.items : [];
-
-  const groupedFormations = groupBy(
-    flattenOptions(items),
-    ({ value }) => value
-  );
-
   const getParent = (value: string) => {
+    const groupedFormations = groupBy(
+      flattenOptions((props as ListSelectProps<T>).items),
+      ({ value }) => value
+    );
     const parentName = groupedFormations[value]?.at(0)?.parent ?? '';
     return groupedFormations[parentName]?.at(0);
   };
 
-  const getParentsRecursively = (value: string): ComboBoxOption<T>[] => {
+  const getParentsRecursively = (value: string): SelectOption<T>[] => {
     const parent = getParent(value);
     if (!parent?.children) return [];
 
@@ -138,9 +124,9 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   };
 
   const getValuesToAdd = (
-    values: ComboBoxOption<T>[],
-    item: ComboBoxOption<T>
-  ): ComboBoxOption<T>[] => {
+    values: SelectOption<T>[],
+    item: SelectOption<T>
+  ): SelectOption<T>[] => {
     const flatParents = getParentsRecursively(item.value).map(
       ({ value }) => value
     );
@@ -157,7 +143,7 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
     ];
   };
 
-  const handleOnItemSelect = (item: ComboBoxOption<T>) => {
+  const handleOnItemSelect = (item: SelectOption<T>) => {
     if ('value' in props) {
       props.onSelect(item);
     } else if (props.values.find((i) => i.value === item.value)) {
@@ -178,8 +164,7 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   };
 
   const handleOnRemoveItem = (item: T) => {
-    if ('value' in props) props.onSelect(undefined);
-    else {
+    if ('values' in props && !loading && !disabled) {
       props.onSelect(
         props.values.filter((i) => i.value !== item.value),
         item
@@ -208,6 +193,7 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
     } else if (
       event.key === 'Backspace' &&
       tryingToRemoveItem === undefined &&
+      'values' in props &&
       search === ''
     ) {
       setTryingToRemoveItem(selectedValues?.at(-1));
@@ -252,4 +238,4 @@ const useComboBox = <T extends ComboBoxOptionRequired>(
   };
 };
 
-export { useComboBox };
+export { useSelect };
