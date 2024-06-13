@@ -8,6 +8,7 @@ const variantOptions: FeedBackIconProps['variant'][] = ['filled', 'outlined'];
 const sizeOptions: FeedBackIconProps['size'][] = [
   undefined,
   16,
+  18,
   24,
   32,
   40,
