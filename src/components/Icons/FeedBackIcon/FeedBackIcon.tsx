@@ -23,7 +23,7 @@ const feedbackIcons: FeedBackIconData[] = [
   { iconName: 'positive-outlined', component: PositiveOutlined },
 ];
 
-const FeedBackIcon: FC<FeedBackIconProps> = ({ name, size = 48, variant }) => {
+const FeedBackIcon: FC<FeedBackIconProps> = ({ name, size, variant }) => {
   const DefaultComponent = feedbackIcons[0].component;
   if (
     !feedbackIcons.some(
