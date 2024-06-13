@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { pwex } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types/Icon';
 
 const shapes: ShapeProps[] = [
   {

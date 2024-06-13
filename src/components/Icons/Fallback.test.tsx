@@ -1,9 +1,16 @@
 import { render, screen } from '@testing-library/react';
 
 import Fallback from './Fallback';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types/Icon';
 
-const sizeOptions: AppIconProps['size'][] = [undefined, 16, 24, 32, 40, 48];
+const sizeOptions: Partial<AppIconProps>['size'][] = [
+  undefined,
+  16,
+  24,
+  32,
+  40,
+  48,
+];
 
 test('renders as expected width default size', () => {
   render(<Fallback />);

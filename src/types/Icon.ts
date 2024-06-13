@@ -4,3 +4,5 @@ export interface AppIconProps {
   withHover: boolean;
   grayScale: boolean;
 }
+
+export type SizeIconProps = Pick<AppIconProps, 'size'>;

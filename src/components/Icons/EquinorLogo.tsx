@@ -2,6 +2,8 @@ import React, { forwardRef } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
+import { SizeIconProps } from 'src/types';
+
 const { colors } = tokens;
 
 const colorSwitch = (color?: 'red' | 'white' | 'black') => {
@@ -17,10 +19,9 @@ const colorSwitch = (color?: 'red' | 'white' | 'black') => {
   }
 };
 
-export interface EquinorLogoProps {
+export interface EquinorLogoProps extends SizeIconProps {
   large?: boolean;
   color?: 'red' | 'white' | 'black';
-  size?: 16 | 24 | 32 | 40 | 48;
 }
 
 const EquinorLogo = forwardRef<SVGSVGElement, EquinorLogoProps>(
