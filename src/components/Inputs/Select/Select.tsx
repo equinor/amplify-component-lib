@@ -4,6 +4,7 @@ import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { GroupedSelectMenu } from './GroupedSelectMenu';
 import {
   ClearButton,
   Container,
@@ -11,45 +12,40 @@ import {
   Section,
   StyledChip,
   StyledMenu,
-} from './ComboBox.styles';
+  ValueText,
+} from './Select.styles';
 import {
-  ComboBoxOptionRequired,
-  ComboBoxProps,
-  GroupedComboboxProps,
-} from './ComboBox.types';
-import { ComboBoxMenu } from './ComboBoxMenu';
-import { GroupedComboBoxMenu } from './GroupedComboBoxMenu';
-import { useComboBox } from 'src/hooks/useComboBox';
+  CommonSelectProps,
+  GroupedSelectProps,
+  ListSelectProps,
+  MultiSelectCommon,
+  SelectOptionRequired,
+  SingleSelectCommon,
+} from './Select.types';
+import { SelectMenu } from './SelectMenu';
+import { useSelect } from 'src/hooks/useSelect';
 
 const { colors } = tokens;
 
-export type ComboBoxComponentProps<T extends ComboBoxOptionRequired> = {
-  id?: string;
-  label?: string;
-  placeholder?: string;
-  sortValues?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-  lightBackground?: boolean;
-  underlineHighlight?: boolean;
-  onSearchChange?: (inputValue: string) => void;
-  clearable?: boolean;
-  meta?: string;
-} & (ComboBoxProps<T> | GroupedComboboxProps<T>);
+export type SelectComponentProps<T extends SelectOptionRequired> =
+  CommonSelectProps &
+    (SingleSelectCommon<T> | MultiSelectCommon<T>) &
+    (ListSelectProps<T> | GroupedSelectProps<T>);
 
-export const ComboBox = <T extends ComboBoxOptionRequired>(
-  props: ComboBoxComponentProps<T>
+export const Select = <T extends SelectOptionRequired>(
+  props: SelectComponentProps<T>
 ) => {
   const {
-    id,
     clearable = true,
     loading = false,
     disabled = false,
     lightBackground = false,
     underlineHighlight = false,
+    sortValues = true,
     placeholder = 'Select...',
     label,
     meta,
+    id = `amplify-combobox-${label}`,
   } = props;
   const {
     handleOnClear,
@@ -67,18 +63,45 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
     open,
     searchRef,
     tryingToRemoveItem,
-  } = useComboBox(props);
+  } = useSelect({
+    ...props,
+    clearable,
+    loading,
+    disabled,
+    lightBackground,
+    underlineHighlight,
+    sortValues,
+    placeholder,
+  });
   const anchorRef = useRef<HTMLDivElement | null>(null);
-
-  const handleChipRemoval = (value: T) => () => {
-    if (!loading && !disabled) {
-      handleOnRemoveItem(value);
-    }
-  };
-
   const shouldShowTopMargin = useMemo(() => {
     return !!label || !!meta;
   }, [label, meta]);
+
+  const valueElements = useMemo(() => {
+    if ('value' in props && props.value) {
+      return <ValueText>{props.value.label}</ValueText>;
+    } else {
+      return selectedValues.map((value) => (
+        <StyledChip
+          key={value.value}
+          data-testid="amplify-combobox-chip"
+          className="amplify-combo-box-chip"
+          onDelete={() => handleOnRemoveItem(value)}
+          $tryingToRemove={tryingToRemoveItem?.value === value.value}
+          $lightBackground={lightBackground}
+        >
+          {value.label}
+        </StyledChip>
+      ));
+    }
+  }, [
+    selectedValues,
+    tryingToRemoveItem,
+    lightBackground,
+    props,
+    handleOnRemoveItem,
+  ]);
 
   return (
     <div>
@@ -92,32 +115,17 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
         $shouldShowTopMargin={shouldShowTopMargin}
       >
         {shouldShowTopMargin && (
-          <Label
-            label={label}
-            meta={meta}
-            htmlFor={id ? id : `amplify-combobox-${label}-${meta}`}
-          />
+          <Label label={label} meta={meta} htmlFor={id} />
         )}
         <Section>
-          {selectedValues.length > 0 || search !== '' ? (
-            selectedValues.map((value) => (
-              <StyledChip
-                key={value.value}
-                data-testid="amplify-combobox-chip"
-                className="amplify-combo-box-chip"
-                onClick={handleChipRemoval(value)}
-                onDelete={handleChipRemoval(value)}
-                $tryingToRemove={tryingToRemoveItem?.value === value.value}
-                $lightBackground={lightBackground}
-              >
-                {value.label}
-              </StyledChip>
-            ))
-          ) : (
+          {search === '' && selectedValues.length === 0 && (
             <PlaceholderText>{placeholder}</PlaceholderText>
           )}
+          {(search === '' ||
+            ('values' in props && selectedValues.length > 0)) &&
+            valueElements}
           <input
-            id={id ? id : `amplify-combobox-${label}`}
+            id={id}
             disabled={disabled || loading}
             ref={searchRef}
             type="search"
@@ -156,8 +164,8 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
           placement="bottom"
           matchAnchorWidth
         >
-          {'groups' in props ? (
-            <GroupedComboBoxMenu
+          {props.groups ? (
+            <GroupedSelectMenu
               {...props}
               search={search}
               itemRefs={itemRefs}
@@ -165,7 +173,7 @@ export const ComboBox = <T extends ComboBoxOptionRequired>(
               onItemKeyDown={handleOnItemKeyDown}
             />
           ) : (
-            <ComboBoxMenu
+            <SelectMenu
               {...props}
               search={search}
               itemRefs={itemRefs}

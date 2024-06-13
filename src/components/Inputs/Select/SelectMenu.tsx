@@ -1,17 +1,21 @@
 import { useMemo } from 'react';
 
-import { NoItemsFoundText } from './ComboBox.styles';
+import { NoItemsFoundText } from './Select.styles';
 import {
-  ComboBoxMenuProps,
-  ComboBoxOption,
-  ComboBoxOptionRequired,
-  ComboBoxProps,
-} from './ComboBox.types';
-import { flattenOptions, getChildOffset } from './ComboBox.utils';
-import { ComboBoxMenuItem } from './ComboBoxMenuItem';
+  ListSelectProps,
+  MultiSelectCommon,
+  SelectMenuProps,
+  SelectOption,
+  SelectOptionRequired,
+  SingleSelectCommon,
+} from './Select.types';
+import { flattenOptions, getChildOffset } from './Select.utils';
+import { SelectMenuItem } from './SelectMenuItem';
 
-export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
-  props: ComboBoxProps<T> & ComboBoxMenuProps<T>
+export const SelectMenu = <T extends SelectOptionRequired>(
+  props: ListSelectProps<T> &
+    SelectMenuProps<T> &
+    (MultiSelectCommon<T> | SingleSelectCommon<T>)
 ) => {
   const {
     search,
@@ -27,7 +31,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
     const regexPattern = new RegExp(search, 'i');
 
     return flattenOptions(items)
-      .map(({ value, label }) => ({ value, label }) as ComboBoxOption<T>)
+      .map(({ value, label }) => ({ value, label }) as SelectOption<T>)
       .filter((item) => item.label.match(regexPattern));
   }, [items, search]);
 
@@ -41,7 +45,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
 
   if ('values' in props) {
     return filteredItems.map((item, index) => (
-      <ComboBoxMenuItem
+      <SelectMenuItem
         key={`menu-item-${index}-${item.value}`}
         childOffset={getChildOffset(filteredItems, index)}
         index={index}
@@ -58,7 +62,7 @@ export const ComboBoxMenu = <T extends ComboBoxOptionRequired>(
   }
 
   return filteredItems.map((item, index) => (
-    <ComboBoxMenuItem
+    <SelectMenuItem
       key={`menu-item-${index}-${item.value}`}
       childOffset={getChildOffset(filteredItems, index)}
       index={index}

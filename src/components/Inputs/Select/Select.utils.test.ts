@@ -1,4 +1,4 @@
-import { flattenOptions } from 'src/components/Inputs/ComboBox/ComboBox.utils';
+import { flattenOptions } from './Select.utils';
 
 import { expect } from 'vitest';
 
