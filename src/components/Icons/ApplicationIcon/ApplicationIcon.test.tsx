@@ -163,7 +163,7 @@ test("Doesn't hover effects when withHover=false", async () => {
   expect(applicationIcon).not.toHaveStyleRule('cursor');
 });
 
-test('has grayscale css attribute when grayscale is set', async () => {
+test('has grayscale css attribute when grayscale is set', () => {
   render(<ApplicationIcon name="orca" grayScale />);
   const applicationIcon = screen.getByTestId('application-icon');
   expect(applicationIcon).toHaveStyleRule('filter', GRAYSCALE_FILTER_VALUE);
