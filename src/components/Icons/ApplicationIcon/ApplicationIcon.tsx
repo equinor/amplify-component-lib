@@ -50,7 +50,9 @@ const apps: ApplicationIconData[] = [
   { appName: ['premo'], component: Premo },
 ];
 
-export interface ApplicationIconProps extends Partial<AppIconProps> {
+type OptionalAppIconProps = Partial<AppIconProps>;
+
+export interface ApplicationIconProps extends OptionalAppIconProps {
   name: ApplicationName | string;
 }
 
