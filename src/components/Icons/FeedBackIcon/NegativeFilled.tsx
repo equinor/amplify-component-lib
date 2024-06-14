@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { SizeIconProps } from 'src/types/Icon';
+import { SizeIconProps } from 'src/types';
 
 const NegativeFilled: FC<SizeIconProps> = ({ size }) => (
   <svg

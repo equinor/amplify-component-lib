@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import Fallback from './Fallback';
-import { AppIconProps } from 'src/types/Icon';
+import { AppIconProps } from 'src/types';
 
 const sizeOptions: Partial<AppIconProps>['size'][] = [
   undefined,

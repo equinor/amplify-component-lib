@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { SizeIconProps } from 'src/types/Icon';
+import { SizeIconProps } from 'src/types';
 
 const NegativeOutlined: FC<SizeIconProps> = ({ size }) => (
   <svg

@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { inPress } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/Icon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {

@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { IconDataWithColor } from './ApplicationIconCollection';
 import { GRAYSCALE_FILTER_VALUE } from 'src/components/Icons/ApplicationIcon/ApplicationIcon.constants';
-import { AppIconProps } from 'src/types/Icon';
+import { AppIconProps } from 'src/types';
 
 import styled, { css } from 'styled-components';
 

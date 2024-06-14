@@ -12,7 +12,7 @@ import Portal from './Portal';
 import Premo from './Premo';
 import Pwex from './Pwex';
 import Recap from './Recap';
-import { AppIconProps } from 'src/types/Icon';
+import { AppIconProps } from 'src/types';
 
 export type ApplicationName =
   | 'acquire'
