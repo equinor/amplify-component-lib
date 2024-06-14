@@ -4,17 +4,16 @@ import NegativeFilled from './NegativeFilled';
 import NegativeOutlined from './NegativeOutlined';
 import PositiveFilled from './PositiveFilled';
 import PositiveOutlined from './PositiveOutlined';
-import { AppIconProps } from 'src/types/AppIcon';
+import { SizeIconProps } from 'src/types';
 
 interface FeedBackIconData {
   iconName: string;
-  component: FC<AppIconProps>;
+  component: FC<SizeIconProps>;
 }
 
-export interface FeedBackIconProps {
+export interface FeedBackIconProps extends SizeIconProps {
   name: 'positive' | 'negative';
   variant?: 'filled' | 'outlined';
-  size?: 16 | 24 | 32 | 40 | 48;
 }
 
 const feedbackIcons: FeedBackIconData[] = [
