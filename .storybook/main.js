@@ -1,5 +1,6 @@
 const config = {
   stories: ['../src/intro.mdx', '../src/**/*.stories.@(ts|tsx)'],
+  logLevel: 'debug',
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -8,6 +9,7 @@ const config = {
     '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
     'storybook-addon-react-docgen',
+    './addons/GitHubSearchAddon/manager.js',
   ],
   build: {
     sourcemap: false,
