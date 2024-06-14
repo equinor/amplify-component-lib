@@ -28,23 +28,26 @@ export type ApplicationName =
   | 'premo';
 
 interface ApplicationIconData {
-  appName: string;
+  appName: string[];
   component: ForwardRefExoticComponent<
     AppIconProps & RefAttributes<HTMLDivElement>
   >;
 }
 const apps: ApplicationIconData[] = [
-  { appName: 'portal', component: Portal },
-  { appName: 'acquire', component: Acquire },
-  { appName: '4dinsight', component: FourDInsight },
-  { appName: 'dasha', component: Dasha },
-  { appName: 'orca', component: Orca },
-  { appName: 'logging-qualification', component: LoggingQualification },
-  { appName: 'recap', component: Recap },
-  { appName: 'pwex', component: Pwex },
-  { appName: 'inpress', component: InPress },
-  { appName: 'bravos', component: Bravos },
-  { appName: 'premo', component: Premo },
+  { appName: ['portal'], component: Portal },
+  { appName: ['acquire'], component: Acquire },
+  { appName: ['4dinsight'], component: FourDInsight },
+  { appName: ['dasha'], component: Dasha },
+  { appName: ['orca'], component: Orca },
+  {
+    appName: ['logging-qualification', 'logging qualification'],
+    component: LoggingQualification,
+  },
+  { appName: ['recap'], component: Recap },
+  { appName: ['pwex'], component: Pwex },
+  { appName: ['inpress'], component: InPress },
+  { appName: ['bravos'], component: Bravos },
+  { appName: ['premo'], component: Premo },
 ];
 
 export interface ApplicationIconProps extends Partial<AppIconProps> {
@@ -56,7 +59,9 @@ const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
     { name, size = 48, iconOnly = false, withHover = false, grayScale = false },
     ref
   ) => {
-    const appData = apps.find((app) => app.appName === name.toLowerCase());
+    const appData = apps.find((app) =>
+      app.appName.includes(name.toLowerCase())
+    );
 
     if (appData === undefined)
       return (
