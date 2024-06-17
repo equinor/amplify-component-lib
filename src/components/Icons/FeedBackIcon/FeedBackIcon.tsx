@@ -1,10 +1,11 @@
 import { FC } from 'react';
 
+// Needs to be relative path for the type to be importable after build
+import { SizeIconProps } from '../../../types';
 import NegativeFilled from './NegativeFilled';
 import NegativeOutlined from './NegativeOutlined';
 import PositiveFilled from './PositiveFilled';
 import PositiveOutlined from './PositiveOutlined';
-import { SizeIconProps } from 'src/types';
 
 interface FeedBackIconData {
   iconName: string;
