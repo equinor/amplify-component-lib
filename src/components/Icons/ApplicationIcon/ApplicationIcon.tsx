@@ -1,5 +1,7 @@
 import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
+// Needs to be relative path for the type to be importable after build
+import { AppIconProps } from '../../../types';
 import Acquire from './Acquire';
 import Bravos from './Bravos';
 import Dasha from './Dasha';
@@ -12,7 +14,6 @@ import Portal from './Portal';
 import Premo from './Premo';
 import Pwex from './Pwex';
 import Recap from './Recap';
-import { AppIconProps } from 'src/types';
 
 export type ApplicationName =
   | 'acquire'
@@ -50,9 +51,7 @@ const apps: ApplicationIconData[] = [
   { appName: ['premo'], component: Premo },
 ];
 
-type OptionalAppIconProps = Partial<AppIconProps>;
-
-export interface ApplicationIconProps extends OptionalAppIconProps {
+interface ApplicationIconProps extends Partial<AppIconProps> {
   name: ApplicationName | string;
 }
 
