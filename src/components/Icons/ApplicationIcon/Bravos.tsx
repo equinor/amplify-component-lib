@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { bravos } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,20 +17,10 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Bravos: FC<AppIconProps> = ({
-  size,
-  iconOnly = false,
-  withHover = true,
-}) => {
-  return (
-    <ApplicationIconBase
-      size={size}
-      iconData={bravos}
-      iconOnly={iconOnly}
-      withHover={withHover}
-      shapes={shapes}
-    />
-  );
-};
+const Bravos = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase ref={ref} iconData={bravos} shapes={shapes} {...props} />
+));
+
+Bravos.displayName = 'Bravos';
 
 export default Bravos;

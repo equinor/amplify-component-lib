@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { acquire } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,20 +17,15 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Acquire: FC<AppIconProps> = ({
-  size,
-  iconOnly = false,
-  withHover = true,
-}) => {
-  return (
-    <ApplicationIconBase
-      size={size}
-      iconData={acquire}
-      iconOnly={iconOnly}
-      withHover={withHover}
-      shapes={shapes}
-    />
-  );
-};
+const Acquire = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    iconData={acquire}
+    shapes={shapes}
+    {...props}
+  />
+));
+
+Acquire.displayName = 'Acquire';
 
 export default Acquire;

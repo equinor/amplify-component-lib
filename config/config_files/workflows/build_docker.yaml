@@ -6,7 +6,7 @@ jobs:
     name: Build client docker image
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build the docker image
         working-directory: client
         run: docker build . --file Dockerfile

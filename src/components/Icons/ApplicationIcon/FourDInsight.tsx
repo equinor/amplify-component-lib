@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { fourDInsight } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,17 +17,13 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const FourDInsight = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly = false, withHover = true }, ref) => (
-    <ApplicationIconBase
-      ref={ref}
-      size={size}
-      iconData={fourDInsight}
-      iconOnly={iconOnly}
-      withHover={withHover}
-      shapes={shapes}
-    />
-  )
-);
+const FourDInsight = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    iconData={fourDInsight}
+    shapes={shapes}
+    {...props}
+  />
+));
 FourDInsight.displayName = 'FourDInsight';
 export default FourDInsight;

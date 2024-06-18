@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { premo } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,20 +17,17 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Premo: FC<AppIconProps> = ({
-  size,
-  iconOnly = false,
-  withHover = true,
-}) => {
+const Premo = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => {
   return (
     <ApplicationIconBase
-      size={size}
+      ref={ref}
       iconData={premo}
-      iconOnly={iconOnly}
-      withHover={withHover}
       shapes={shapes}
+      {...props}
     />
   );
-};
+});
+
+Premo.displayName = 'Premo';
 
 export default Premo;
