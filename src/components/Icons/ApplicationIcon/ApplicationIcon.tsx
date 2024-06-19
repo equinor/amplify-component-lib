@@ -1,5 +1,7 @@
-import { FC, forwardRef } from 'react';
+import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
+// Needs to be relative path for the type to be importable after build
+import { AppIconProps } from '../../../types';
 import Acquire from './Acquire';
 import Bravos from './Bravos';
 import Dasha from './Dasha';
@@ -12,7 +14,6 @@ import Portal from './Portal';
 import Premo from './Premo';
 import Pwex from './Pwex';
 import Recap from './Recap';
-import { AppIconProps } from 'src/types/AppIcon';
 
 export type ApplicationName =
   | 'acquire'
@@ -28,33 +29,40 @@ export type ApplicationName =
   | 'premo';
 
 interface ApplicationIconData {
-  appName: string;
-  component: FC<AppIconProps>;
+  appName: string[];
+  component: ForwardRefExoticComponent<
+    AppIconProps & RefAttributes<HTMLDivElement>
+  >;
 }
 const apps: ApplicationIconData[] = [
-  { appName: 'portal', component: Portal },
-  { appName: 'acquire', component: Acquire },
-  { appName: '4dinsight', component: FourDInsight },
-  { appName: 'dasha', component: Dasha },
-  { appName: 'orca', component: Orca },
-  { appName: 'logging-qualification', component: LoggingQualification },
-  { appName: 'recap', component: Recap },
-  { appName: 'pwex', component: Pwex },
-  { appName: 'inpress', component: InPress },
-  { appName: 'bravos', component: Bravos },
-  { appName: 'premo', component: Premo },
+  { appName: ['portal'], component: Portal },
+  { appName: ['acquire'], component: Acquire },
+  { appName: ['4dinsight'], component: FourDInsight },
+  { appName: ['dasha'], component: Dasha },
+  { appName: ['orca'], component: Orca },
+  {
+    appName: ['logging-qualification', 'logging qualification'],
+    component: LoggingQualification,
+  },
+  { appName: ['recap'], component: Recap },
+  { appName: ['pwex'], component: Pwex },
+  { appName: ['inpress'], component: InPress },
+  { appName: ['bravos'], component: Bravos },
+  { appName: ['premo'], component: Premo },
 ];
 
-export interface ApplicationIconProps {
+export interface ApplicationIconProps extends Partial<AppIconProps> {
   name: ApplicationName | string;
-  size?: 16 | 18 | 24 | 32 | 40 | 48 | number;
-  iconOnly?: boolean;
-  withHover?: boolean;
 }
 
 const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
-  ({ name, size = 48, iconOnly = false, withHover = false }, ref) => {
-    const appData = apps.find((app) => app.appName === name.toLowerCase());
+  (
+    { name, size = 48, iconOnly = false, withHover = false, grayScale = false },
+    ref
+  ) => {
+    const appData = apps.find((app) =>
+      app.appName.includes(name.toLowerCase())
+    );
 
     if (appData === undefined)
       return (
@@ -63,13 +71,16 @@ const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
           ref={ref}
           iconOnly={iconOnly}
           withHover={withHover}
+          grayScale={grayScale}
         />
       );
     return (
       <appData.component
         size={size}
+        ref={ref}
         iconOnly={iconOnly}
         withHover={withHover}
+        grayScale={grayScale}
       />
     );
   }

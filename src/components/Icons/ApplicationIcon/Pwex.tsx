@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { pwex } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,18 +17,10 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Pwex: FC<AppIconProps> = ({
-  size,
-  iconOnly = false,
-  withHover = true,
-}) => (
-  <ApplicationIconBase
-    size={size}
-    iconData={pwex}
-    iconOnly={iconOnly}
-    withHover={withHover}
-    shapes={shapes}
-  />
-);
+const Pwex = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase ref={ref} iconData={pwex} shapes={shapes} {...props} />
+));
+
+Pwex.displayName = 'Pwex';
 
 export default Pwex;

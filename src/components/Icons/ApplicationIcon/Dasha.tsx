@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { dasha } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,18 +17,9 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Dasha = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly = false, withHover = true }, ref) => (
-    <ApplicationIconBase
-      size={size}
-      iconData={dasha}
-      shapes={shapes}
-      iconOnly={iconOnly}
-      withHover={withHover}
-      ref={ref}
-    />
-  )
-);
+const Dasha = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase iconData={dasha} shapes={shapes} ref={ref} {...props} />
+));
 
 Dasha.displayName = 'Dasha';
 

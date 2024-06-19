@@ -1,8 +1,9 @@
 import { FC } from 'react';
 
-import { AppIconProps } from 'src/types/AppIcon';
+// Needs to be relative path for the type to be importable after build
+import { SizeIconProps } from '../../../types';
 
-const PositiveOutlined: FC<AppIconProps> = ({ size }) => (
+const PositiveOutlined: FC<SizeIconProps> = ({ size }) => (
   <svg
     width={size ? size : 48}
     height={size ? size : 48}

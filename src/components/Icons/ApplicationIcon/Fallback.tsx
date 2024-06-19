@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import ApplicationIconBase, { ShapeProps } from './ApplicationIconBase';
 import { fallback } from './ApplicationIconCollection';
-import { AppIconProps } from 'src/types/AppIcon';
+import { AppIconProps } from 'src/types';
 
 const shapes: ShapeProps[] = [
   {
@@ -17,20 +17,14 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Fallback = forwardRef<HTMLDivElement, AppIconProps>(
-  ({ size, iconOnly = false, withHover = true }, ref) => {
-    return (
-      <ApplicationIconBase
-        ref={ref}
-        size={size}
-        iconData={fallback}
-        iconOnly={iconOnly}
-        withHover={withHover}
-        shapes={shapes}
-      />
-    );
-  }
-);
+const Fallback = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    iconData={fallback}
+    shapes={shapes}
+    {...props}
+  />
+));
 
 Fallback.displayName = 'Fallback';
 
