@@ -65,4 +65,10 @@ export const StyledChip = styled(Base)<ChipProps>`
             border: 1px solid ${getColorSchemeBy($variant).hover.borderColor};
           }
         `};
+  align-items: end;
+  line-height: 1.55em;
+  & > div,
+  svg {
+    align-self: center;
+  }
 `;
