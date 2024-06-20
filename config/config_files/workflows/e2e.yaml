@@ -10,12 +10,13 @@ jobs:
       fail-fast: false
       matrix:
         project: [chromium, firefox]
+        node-version: [21.x]
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 21
+          node-version: ${{ matrix.node-version }}
           cache: npm
           cache-dependency-path: client/package-lock.json
 
@@ -37,4 +38,3 @@ jobs:
           name: playwright-report-${{ matrix.project }}
           path: client/playwright-report/
           retention-days: 30
-
