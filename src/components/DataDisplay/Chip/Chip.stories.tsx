@@ -1,5 +1,5 @@
 import { Avatar, AvatarProps, Icon } from '@equinor/eds-core-react';
-import { save } from '@equinor/eds-icons';
+import { info_circle, pipe_support, save, tune } from '@equinor/eds-icons';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
@@ -9,9 +9,12 @@ import { Stack } from 'src/storybook';
 
 const icons = {
   save,
+  tune,
 };
 
 Icon.add(icons);
+const handleDelete = action('onDelete');
+const handleClick = action('onClick');
 
 const meta: Meta<typeof Chip> = {
   title: 'Data Display/Chips',
@@ -48,49 +51,68 @@ const meta: Meta<typeof Chip> = {
     variant: {
       control: {
         type: 'radio',
-        options: ['default', 'active', 'warning', 'error'],
+        options: [
+          'default',
+          'active',
+          'warning',
+          'warning-active',
+          'error',
+          'error-active',
+        ],
       },
       name: 'Variant',
       defaultValue: 'active',
     },
     children: {
       control: 'radio',
-      options: ['Text', 'Icon', 'Both'],
+      options: ['Short Text', 'Long Text'],
       mapping: {
-        Text: 'Chip Text',
-        Icon: <Icon name="save" />,
-        Both: (
-          <>
-            <Icon name="save" />
-            Chip Text
-          </>
-        ),
+        'Short Text': 'Chip Text',
+        'Long Text': 'Some Long Chip Text',
       },
       defaultValue: 'Text',
     },
     onClick: {
-      action: 'clicked',
-      control: false, // Hide the onDelete prop in the controls
-    },
-    onDelete: {
-      action: 'deleted',
-      control: false, // Hide the onDelete prop in the controls
-    },
-    /*     leadingIconName: {
-      control: 'select',
-      options: ['none', 'text', 'info', 'save'],
+      control: 'radio',
+
+      options: ['none', 'Can be clicked'],
       mapping: {
         none: undefined,
+        'Can be clicked': handleClick,
       },
+      description:
+        'Sets the onClick action to be undefined, or sends the handleClick-action',
       defaultValue: 'none',
-    }, */
+    },
+    onDelete: {
+      control: 'radio',
+      options: ['none', 'Can be deleted'],
+      mapping: {
+        none: undefined,
+        'Can be deleted': handleDelete,
+      },
+      description:
+        'Sets the onDelete action to be undefined, or sends the handleDelete-action, if both onClick and onDelete are present, onDelete is executed',
+      defaultValue: 'none',
+    },
+    leadingIconData: {
+      control: 'select',
+      options: ['none', 'info_circle', 'pipe_support', 'save', 'tune'],
+      mapping: {
+        none: undefined,
+        info_circle: info_circle,
+        pipe_support: pipe_support,
+        save: save,
+        tune: tune,
+      },
+      description:
+        'List only represent a few examples of icons, any Icon from EDS can be used',
+      defaultValue: 'none',
+    },
   },
 };
 
 export default meta;
-
-const handleDelete = action('onDelete');
-const handleClick = action('onClick');
 
 const CatImage = (props: Partial<AvatarProps>) => (
   <Avatar src="https://i.imgur.com/UM3mrju.jpg" alt="cat" {...props} />
@@ -100,16 +122,8 @@ export const Introduction: StoryFn<InteractiveChipProps> = (args) => (
   <>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       Read-Only chip
-      <Chip {...args} onDelete={undefined} onClick={undefined} />
+      <Chip {...args} />
     </div>
-    {/*     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      Clickable Chip
-      <Chip {...args} onClick={handleClick} onDelete={undefined} />
-    </div>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      Deletable Chip
-      <Chip {...args} onDelete={handleDelete} />
-    </div> */}
   </>
 );
 
