@@ -25,12 +25,22 @@ USER 0
 # Clear default nginx html file
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/storybook-static /usr/share/nginx/html
-COPY proxy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY proxy/nginx.conf /etc/nginx/conf.d/default.conf.template
 COPY proxy/securityheaders.conf /etc/nginx/securityheaders.conf
 
-RUN chown -R 101 /etc/nginx/conf.d \
-    && chown -R 101 /usr/share/nginx/html
+# Copy .env file and shell script to container to handle
+# runtime environment variables
+WORKDIR /usr/share/nginx/html
+COPY ./secrets.sh .
+
+RUN chown -R nginx /etc/nginx/conf.d \
+    && chown -R nginx /usr/share/nginx/html \
+    && chmod +x ./secrets.sh
+
+# Add bash shell
+RUN apk update
+RUN apk add --no-cache bash
 
 USER 101
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/bash", "-c", "./secrets.sh && nginx -g \"daemon off;\""]

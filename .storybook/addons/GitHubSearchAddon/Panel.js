@@ -1,22 +1,12 @@
 // .storybook/addons/GitHubSearchAddon/Panel.js
-import React, { useState, useEffect } from 'react';
-import {
-  useAddonState,
-  useStorybookApi,
-  useStorybookState,
-} from '@storybook/manager-api';
+import React, { useMemo, useState } from 'react';
+import { useStorybookState } from '@storybook/manager-api';
 
 import styled from 'styled-components';
 
-import { Button, Checkbox } from '@equinor/eds-core-react';
+import { Autocomplete, Button } from '@equinor/eds-core-react';
 import { AddonPanel } from '@storybook/components';
-import { ADDON_ID } from './constants';
-
-const extractComponentName = (filePath) => {
-  const regex = /\/([^/]+)\.stories\.tsx$/;
-  const match = filePath.match(regex);
-  return match ? match[1] : null;
-};
+import { PER_PAGE, REPO_LIST } from './constants';
 
 const Container = styled.div`
   display: flex;
@@ -35,10 +25,6 @@ const Container = styled.div`
     'Open Sans',
     'Helvetica Neue',
     sans-serif !important;
-
-  .checkbox-container {
-    display: flex;
-  }
 
   button {
     font-family:
@@ -70,12 +56,14 @@ const Container = styled.div`
     }
   }
 `;
+
 const RepoCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
   justify-content: center;
 `;
+
 const RepoCard = styled.div`
   border-radius: 4px;
   display: flex;
@@ -84,8 +72,8 @@ const RepoCard = styled.div`
 
   max-width: 512px;
   box-shadow:
-    0px 2px 4px 0px rgba(0, 0, 0, 0.14),
-    0px 3px 4px 0px rgba(0, 0, 0, 0.12);
+    0 2px 4px 0 rgba(0, 0, 0, 0.14),
+    0 3px 4px 0 rgba(0, 0, 0, 0.12);
 
   h2 {
     font-weight: bold;
@@ -107,6 +95,12 @@ const RepoCard = styled.div`
   }
 `;
 
+const extractComponentName = (filePath) => {
+  const regex = /\/([^/]+)\.stories\.tsx$/;
+  const match = filePath.match(regex);
+  return match ? match[1] : null;
+};
+
 // Define your component with the Storybook APIs
 const GitHubSearchPanel = ({ active }) => {
   if (!active) return null;
@@ -114,83 +108,44 @@ const GitHubSearchPanel = ({ active }) => {
   const [repos, setRepos] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [queryWord, setQueryWord] = useState('');
 
-  const api = useStorybookApi(); // Get Storybook API instance
+  const state = useStorybookState(); // Get Storybook API instance
 
-  const token = '{github-personal-token}'; // Replace this securely as mentioned
-  const perPage = 100; // Adjust as needed
-
-  const repoList = [
-    'equinor/inpress',
-    'equinor/recap',
-    'equinor/acquire',
-    'equinor/ToolsQualificationList',
-    'equinor/4DInsight',
-    'equinor/orca',
-    'equinor/premo',
-    'equinor/petec-well-experience',
-    'equinor/dasha',
-  ];
-  const [selectedRepos, setSelectedRepos] = useState(
-    repoList.reduce((acc, repo) => ({ ...acc, [repo]: true }), {})
-  );
-  useEffect(() => {
-    const currentStory = api.getCurrentStoryData();
-    console.log(currentStory);
-    let currentComponentName = '';
-
-    const currentComponentPath = currentStory
-      ? currentStory.importPath
-      : undefined;
-    console.log(currentComponentPath);
-
-    currentComponentName = extractComponentName(
-      currentComponentPath ? currentComponentPath : ''
+  const currentComponentName = useMemo(() => {
+    return extractComponentName(
+      state?.index?.[state?.storyId]?.importPath ?? ''
     );
+  }, [state?.index?.[state?.storyId]]);
 
-    if (currentComponentName) {
-      currentComponentName ? setQueryWord(currentComponentName) : '';
-    }
-  }, [api]);
+  const [selectedRepos, setSelectedRepos] = useState([...REPO_LIST]);
 
-  const handleRepoToggle = (repo) => {
-    setSelectedRepos((prevSelectedRepos) => ({
-      ...prevSelectedRepos,
-      [repo]: !prevSelectedRepos[repo],
-    }));
+  const handleOnRepoSelect = (changes) => {
+    setSelectedRepos(changes.selectedItems);
   };
 
   const handleSearch = async () => {
     setLoading(true);
     setError(null);
 
-    const selectedRepoList = repoList.filter((repo) => selectedRepos[repo]);
-    const query = `"<${queryWord}" ${selectedRepoList.map((repo) => `repo:${repo}`).join(' ')}`;
+    const query = `"<${currentComponentName}" ${selectedRepos.map((repo) => `repo:${repo}`).join(' ')}`;
 
     const repoMap = {};
     let page = 1;
     let hasMore = true;
 
     while (hasMore) {
-      const url = `https://api.github.com/search/code?q=${encodeURIComponent(query)}&per_page=${perPage}&page=${page}`;
+      const url = `/github-search/?q=${encodeURIComponent(query)}&per_page=${PER_PAGE}&page=${page}`;
 
       try {
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `token ${token}`,
-            Accept: 'application/vnd.github.v3+json',
-          },
-        });
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error('GitHub API response was not ok');
         }
 
         const data = await response.json();
-        console.log(data);
 
-        hasMore = data.items.length === perPage;
+        hasMore = data.items.length === PER_PAGE;
 
         data.items.forEach((item) => {
           const repoName = item.repository.full_name;
@@ -217,26 +172,19 @@ const GitHubSearchPanel = ({ active }) => {
 
   return (
     <Container>
-      {/*       <input
-        type="text"
-        value={queryWord}
-        onChange={(e) => setQueryWord(e.target.value)}
-        placeholder="Enter search query"
-      /> */}
-      <div className="checkbox-container">
-        {repoList.map((repo) => (
-          <label key={repo}>
-            <Checkbox
-              checked={!!selectedRepos[repo]}
-              onChange={() => handleRepoToggle(repo)}
-            />
-            {repo}
-          </label>
-        ))}
-      </div>
+      <Autocomplete
+        label="Repositories"
+        multiple
+        selectedOptions={selectedRepos}
+        options={REPO_LIST}
+        onOptionsChange={handleOnRepoSelect}
+      />
 
-      <Button onClick={handleSearch} disabled={loading || queryWord === ''}>
-        Search for {queryWord} in Repositories
+      <Button
+        onClick={handleSearch}
+        disabled={loading || currentComponentName === undefined}
+      >
+        Search for {currentComponentName} in Repositories
       </Button>
 
       {loading && <p>Loading...</p>}
