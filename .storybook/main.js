@@ -1,6 +1,5 @@
 const config = {
   stories: ['../src/intro.mdx', '../src/**/*.stories.@(ts|tsx)'],
-  logLevel: 'debug',
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
