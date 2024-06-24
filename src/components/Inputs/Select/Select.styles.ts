@@ -136,6 +136,7 @@ const ClearButton = styled(Button)`
 interface StyledChipProps {
   $tryingToRemove: boolean;
   $lightBackground?: boolean;
+  className: string;
 }
 
 const StyledChip = styled(Chip)<StyledChipProps>`
