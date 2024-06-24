@@ -111,7 +111,7 @@ const InteractiveChip = forwardRef<HTMLButtonElement, InteractiveChipProps>(
         <div className="content">
           {leadingIconData && (
             <div className="leading">
-              <Icon data={leadingIconData} size={16} />
+              <Icon role={'img'} data={leadingIconData} size={16} />
             </div>
           )}
           {children}

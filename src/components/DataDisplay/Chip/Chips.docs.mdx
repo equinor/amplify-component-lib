@@ -4,15 +4,9 @@ import * as ComponentStories from './Chip.stories';
 
 # Chip
 
-**Component from EDS**
-
 Chips, also known as tags or badges, are advanced badges that represent discrete information.
 
-<Links
-  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17497%3A0"
-  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Chip/Chip.tsx"
-  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/data-display-chips--docs"
-/>
+<Links figmaUrl="https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/💠-Component-Library---Amplify?node-id=2382-84016&t=eBjrjWKcBq1Sc2Bi-11" />
 
 <Primary />
 <Controls />
@@ -31,14 +25,14 @@ Chips allow users to enter information, make selections, filter content, or trig
 
 ## Examples
 
-### Text
+### Read only Chip
 
-<Canvas of={ComponentStories.Text} />
+**Read only is doesn't have its own prop, but is defined only when onClick AND onDelete is undefined (or not present in the props at all.)**
 
-### Text and Icon
+Read only chips are when chips only should display information, and not be interactive.
 
-<Canvas of={ComponentStories.TextAndIcon} />
+<Canvas of={ComponentStories.ReadOnlyChip} />
 
-### Text and Avatar
+### Grid of all the variants
 
-<Canvas of={ComponentStories.TextAndAvatar} />
+<Canvas of={ComponentStories.ChipVariantsWithStates} />

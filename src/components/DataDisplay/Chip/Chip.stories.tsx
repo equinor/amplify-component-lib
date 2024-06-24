@@ -1,18 +1,11 @@
-import { Avatar, AvatarProps, Icon } from '@equinor/eds-core-react';
 import { info_circle, pipe_support, save, tune } from '@equinor/eds-icons';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Chip, InteractiveChipProps } from './Chip';
+import { BaseChipProps, Chip, InteractiveChipProps } from './Chip';
 import page from './Chips.docs.mdx';
 import { Stack } from 'src/storybook';
 
-const icons = {
-  save,
-  tune,
-};
-
-Icon.add(icons);
 const handleDelete = action('onDelete');
 const handleClick = action('onClick');
 
@@ -70,19 +63,19 @@ const meta: Meta<typeof Chip> = {
         'Short Text': 'Chip Text',
         'Long Text': 'Some Long Chip Text',
       },
-      defaultValue: 'Text',
+      defaultValue: 'Short Text',
     },
     onClick: {
       control: 'radio',
 
       options: ['none', 'Can be clicked'],
+      defaultValue: 'none',
       mapping: {
         none: undefined,
         'Can be clicked': handleClick,
       },
       description:
         'Sets the onClick action to be undefined, or sends the handleClick-action',
-      defaultValue: 'none',
     },
     onDelete: {
       control: 'radio',
@@ -114,207 +107,66 @@ const meta: Meta<typeof Chip> = {
 
 export default meta;
 
-const CatImage = (props: Partial<AvatarProps>) => (
-  <Avatar src="https://i.imgur.com/UM3mrju.jpg" alt="cat" {...props} />
+export const DefaultChip: StoryFn<InteractiveChipProps> = (args) => (
+  <Chip {...args} />
 );
 
-export const Introduction: StoryFn<InteractiveChipProps> = (args) => (
-  <>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      Read-Only chip
-      <Chip {...args} />
-    </div>
-  </>
+DefaultChip.args = {
+  children: 'Chip Text',
+  onClick: handleClick,
+};
+
+export const ReadOnlyChip: StoryFn<InteractiveChipProps> = (args) => (
+  <Chip {...args} onClick={undefined} onDelete={undefined} />
 );
 
-Introduction.args = {};
+ReadOnlyChip.args = {
+  children: 'Chip Text',
+  onClick: handleClick,
+};
 
-export const Text: StoryFn<InteractiveChipProps> = () => (
-  <>
-    {/* Normal */}
-    <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-      <Chip leadingIconData={save}>Normal</Chip>
-      <Chip onClick={handleClick}>clickable</Chip>
-      <Chip onDelete={handleDelete}>deletable</Chip>
-      <Chip onDelete={handleDelete} onClick={handleClick}>
-        deletable + clickable
-      </Chip>
-    </div>
-
-    {/* Active */}
-    <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-      <Chip variant="active">Active</Chip>
-      <Chip variant="active" onClick={handleClick}>
-        clickable
-      </Chip>
-      <Chip variant="active" onDelete={handleDelete}>
-        deletable
-      </Chip>
-      <Chip variant="active" onDelete={handleDelete} onClick={handleClick}>
-        deletable + clickable
-      </Chip>
-    </div>
-
-    {/* Error */}
-    <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-      <Chip variant="error">Error</Chip>
-      <Chip variant="error" onClick={handleClick}>
-        clickable
-      </Chip>
-      <Chip variant="error" onDelete={handleDelete}>
-        deletable
-      </Chip>
-      <Chip variant="error" onDelete={handleDelete} onClick={handleClick}>
-        <span>deletable + clickable</span>
-      </Chip>
-    </div>
-
-    {/* Warning */}
-    <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-      <Chip variant="warning">Warning</Chip>
-      <Chip variant="warning" onClick={handleClick}>
-        clickable
-      </Chip>
-      <Chip variant="warning" onDelete={handleDelete}>
-        deletable
-      </Chip>
-      <Chip variant="warning" onDelete={handleDelete} onClick={handleClick}>
-        deletable + clickable
-      </Chip>
-    </div>
-
-    {/* Disabled */}
-    <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-      <Chip disabled>Disabled</Chip>
-      <Chip onDelete={handleDelete} disabled>
-        deletable
-      </Chip>
-    </div>
-  </>
-);
-
-export const TextAndIcon: StoryFn<InteractiveChipProps> = () => (
-  <>
-    <Chip>
-      <Icon name="save" />
-      Normal
-    </Chip>
-    <Chip variant="active">
-      <Icon name="save" />
-      Active
-    </Chip>
-    <Chip variant="error">
-      <Icon name="save" />
-      Error
-    </Chip>
-    <Chip disabled>
-      <Icon name="save" />
-      Disabled
-    </Chip>
-    <Chip onClick={handleClick}>
-      <Icon name="save" />
-      clickable
-    </Chip>
-    <Chip variant="active" onClick={handleClick}>
-      <Icon name="save" />
-      clickable
-    </Chip>
-    <Chip variant="error" onClick={handleClick}>
-      <Icon name="save" />
-      clickable
-    </Chip>
-    <Chip onDelete={handleDelete} disabled>
-      <Icon name="save" />
-      deletable
-    </Chip>
-    <Chip onDelete={handleDelete}>
-      <Icon name="save" />
-      deletable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete}>
-      <Icon name="save" />
-      deletable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete}>
-      <Icon name="save" />
-      deletable
-    </Chip>
+const Template: StoryFn<BaseChipProps> = (args) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr repeat(4, 1fr)',
+      gap: '16px',
+      alignItems: 'center',
+    }}
+  >
+    {/* Column Headers */}
     <div></div>
-    <Chip onDelete={handleDelete} onClick={handleClick}>
-      <Icon name="save" />
-      deletable + clickable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete} onClick={handleClick}>
-      <Icon name="save" />
-      deletable + clickable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete} onClick={handleClick}>
-      <Icon name="save" />
-      deletable + clickable
-    </Chip>
-  </>
-);
-TextAndIcon.storyName = 'Text and icon';
+    <div>Default</div>
+    <div>Active</div>
+    <div>Disabled + Active</div>
+    <div>Disabled</div>
 
-export const TextAndAvatar: StoryFn<InteractiveChipProps> = () => (
-  <>
-    <Chip>
-      <CatImage />
-      Normal
-    </Chip>
-    <Chip variant="active">
-      <CatImage />
-      Active
-    </Chip>
-    <Chip variant="error">
-      <CatImage />
-      Error
-    </Chip>
-    <Chip disabled>
-      <CatImage />
-      Disabled
-    </Chip>
-    <Chip onClick={handleClick}>
-      <CatImage />
-      clickable
-    </Chip>
-    <Chip variant="active" onClick={handleClick}>
-      <CatImage />
-      clickable
-    </Chip>
-    <Chip variant="error" onClick={handleClick}>
-      <CatImage />
-      clickable
-    </Chip>
-    <Chip onDelete={handleDelete} disabled>
-      <CatImage />
-      deletable
-    </Chip>
-    <Chip onDelete={handleDelete}>
-      <CatImage />
-      deletable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete}>
-      <CatImage />
-      deletable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete}>
-      <CatImage />
-      deletable
-    </Chip>
-    <div></div>
-    <Chip onDelete={handleDelete} onClick={handleClick}>
-      <CatImage />
-      deletable + clickable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete} onClick={handleClick}>
-      <CatImage />
-      deletable + clickable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete} onClick={handleClick}>
-      <CatImage />
-      deletable + clickable
-    </Chip>
-  </>
+    {/* Default Variant */}
+    <div>Default</div>
+    <Chip {...args} variant="default"></Chip>
+    <Chip {...args} variant="active"></Chip>
+    <Chip {...args} variant="active" disabled></Chip>
+    <Chip {...args} variant="default" disabled></Chip>
+
+    {/* Warning Variant */}
+    <div>Warning</div>
+    <Chip {...args} variant="warning"></Chip>
+    <Chip {...args} variant="warning-active"></Chip>
+    <Chip {...args} variant="warning-active" disabled></Chip>
+    <Chip {...args} variant="warning" disabled></Chip>
+
+    {/* Error Variant */}
+    <div>Error</div>
+    <Chip {...args} variant="error"></Chip>
+    <Chip {...args} variant="error-active"></Chip>
+    <Chip {...args} variant="error-active" disabled></Chip>
+    <Chip {...args} variant="error" disabled></Chip>
+  </div>
 );
-TextAndAvatar.storyName = 'Text and avatar';
+
+export const ChipVariantsWithStates = Template.bind({});
+ChipVariantsWithStates.args = {
+  children: 'Chip Text',
+  leadingIconData: save,
+  onClick: handleClick,
+};

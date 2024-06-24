@@ -38,7 +38,7 @@ const colorSchemes: Record<
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.primary__hover.rgba}`,
+      borderColor: `${colors.interactive.disabled__border.rgba}`,
     },
   },
   active: {
@@ -68,7 +68,7 @@ const colorSchemes: Record<
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.warning__highlight.rgba}`,
+      borderColor: `${colors.interactive.disabled__border.rgba}`,
     },
   },
   'warning-active': {
@@ -98,7 +98,7 @@ const colorSchemes: Record<
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.danger__highlight.rgba}`,
+      borderColor: `${colors.interactive.disabled__border.rgba}`,
     },
   },
 
@@ -176,12 +176,12 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
         border: 1px solid ${colorScheme.hover.borderColor};
       }
       &:disabled {
-        background-color: ${colorScheme.disabled?.background};
         color: ${colorScheme.disabled?.color};
+        background-color: ${colorScheme.disabled?.background};
         border: 1px solid ${colorScheme.disabled?.borderColor};
 
         &:hover {
-          border: 1px solid ${colorScheme.borderColor};
+          border: 1px solid ${colorScheme.disabled?.borderColor};
         }
       }
     `;
