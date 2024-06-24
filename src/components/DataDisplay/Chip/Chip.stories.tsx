@@ -135,28 +135,44 @@ const Template: StoryFn<BaseChipProps> = (args) => (
     }}
   >
     {/* Column Headers */}
-    <div></div>
-    <div>Default</div>
-    <div>Active</div>
-    <div>Disabled + Active</div>
-    <div>Disabled</div>
+    <div>
+      {args.onClick || args.onDelete ? '' : <strong>Read Only Chips</strong>}
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Default
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Active
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Disabled + Active
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Disabled
+    </div>
 
     {/* Default Variant */}
-    <div>Default</div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Default
+    </div>
     <Chip {...args} variant="default"></Chip>
     <Chip {...args} variant="active"></Chip>
     <Chip {...args} variant="active" disabled></Chip>
     <Chip {...args} variant="default" disabled></Chip>
 
     {/* Warning Variant */}
-    <div>Warning</div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Warning
+    </div>
     <Chip {...args} variant="warning"></Chip>
     <Chip {...args} variant="warning-active"></Chip>
     <Chip {...args} variant="warning-active" disabled></Chip>
     <Chip {...args} variant="warning" disabled></Chip>
 
     {/* Error Variant */}
-    <div>Error</div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Error
+    </div>
     <Chip {...args} variant="error"></Chip>
     <Chip {...args} variant="error-active"></Chip>
     <Chip {...args} variant="error-active" disabled></Chip>
