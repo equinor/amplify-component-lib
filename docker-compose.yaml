@@ -1,0 +1,9 @@
+name: amplify-component-library
+services:
+  storybook:
+    ports:
+      - 8080:8080
+    build:
+      dockerfile: Dockerfile
+    environment:
+      - GITHUB_PAT_SEARCH_TOKEN={{Insert your github PAT token here}}
