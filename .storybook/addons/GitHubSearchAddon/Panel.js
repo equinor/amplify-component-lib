@@ -13,47 +13,8 @@ const Container = styled.div`
   flex-direction: column;
   padding: 16px;
   gap: 32px;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Open Sans',
-    'Helvetica Neue',
-    sans-serif !important;
-
-  button {
-    font-family:
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      Roboto,
-      Oxygen,
-      Ubuntu,
-      Cantarell,
-      'Open Sans',
-      'Helvetica Neue',
-      sans-serif;
-
-    &:disabled {
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        Roboto,
-        Oxygen,
-        Ubuntu,
-        Cantarell,
-        'Open Sans',
-        'Helvetica Neue',
-        sans-serif;
-    }
+  * {
+    font-family: system-ui;
   }
 `;
 
