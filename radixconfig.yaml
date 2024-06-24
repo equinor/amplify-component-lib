@@ -18,6 +18,8 @@ spec:
         - name: https
           port: 8080
       publicPort: https
+      secrets:
+        - GITHUB_PAT_SEARCH_TOKEN
 
   dnsAppAlias:
     environment: production

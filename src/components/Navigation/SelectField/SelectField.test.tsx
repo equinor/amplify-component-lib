@@ -191,7 +191,7 @@ test('Clearing field works as expected', async () => {
   expect(textField).toHaveDisplayValue('');
 }, 15000); // Setting timeout for this test to be 15 seconds
 
-test('Clicking missing access calls window.open with accessit link', async () => {
+test('checks the href attribute of the link', async () => {
   const fields = fakeFields();
   const finishedText = faker.lorem.sentence();
   window.open = vi.fn();
@@ -199,8 +199,6 @@ test('Clicking missing access calls window.open with accessit link', async () =>
   const setField = vi.fn();
 
   const onChangedField = vi.fn();
-
-  const user = userEvent.setup();
 
   render(
     <SelectField
@@ -213,12 +211,16 @@ test('Clicking missing access calls window.open with accessit link', async () =>
     />
   );
 
-  await user.click(screen.getByTestId('missing-access'));
+  const linkElement = screen.getByTestId('missing-access');
 
-  expect(window.open).toHaveBeenCalledWith(
-    'https://accessit.equinor.com/#',
-    '_blank'
-  );
+  // Check that the href attribute is correct
+  expect(linkElement).toHaveAttribute('href', 'https://accessit.equinor.com/#');
+
+  // Optionally, check that the link opens in a new tab
+  expect(linkElement).toHaveAttribute('target', '_blank');
+
+  // Simulate a click event if needed
+  await userEvent.click(linkElement);
 }, 15000); // Setting timeout for this test to be 15 seconds
 
 test('Shows skeleton as expected', () => {

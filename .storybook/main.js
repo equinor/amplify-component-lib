@@ -8,6 +8,7 @@ const config = {
     '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
     'storybook-addon-react-docgen',
+    './addons/GitHubSearchAddon/manager.js',
   ],
   build: {
     sourcemap: false,

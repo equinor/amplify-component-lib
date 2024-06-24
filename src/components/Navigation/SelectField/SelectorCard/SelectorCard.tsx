@@ -8,7 +8,7 @@ import {
   Icon,
   Typography,
 } from '@equinor/eds-core-react';
-import { arrow_forward, exit_to_app } from '@equinor/eds-icons';
+import { arrow_forward } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/style';
@@ -17,14 +17,6 @@ import { Field } from 'src/types/Field';
 import styled from 'styled-components';
 
 const { elevation, colors, shape } = tokens;
-
-const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  > h6 {
-    text-transform: capitalize;
-  }
-`;
 
 const StyledCard = styled(Card)`
   position: absolute;
@@ -40,16 +32,20 @@ const StyledCard = styled(Card)`
   border-radius: ${shape.corners.borderRadius};
   display: flex;
   flex-direction: column;
-  gap: ${spacings.medium};
+  gap: ${spacings.large};
   > h3 {
     color: ${colors.text.static_icons__default.rgba};
-    margin-bottom: ${spacings.medium};
   }
-  > section {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: flex-end;
-    grid-gap: ${spacings.medium};
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: ${spacings.large};
+    section {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      grid-gap: ${spacings.medium};
+    }
   }
 `;
 
@@ -66,14 +62,34 @@ const AutocompleteWrapper = styled.div`
   }
 `;
 
-const MissingAccess = styled.div`
-  padding: ${spacings.medium} ${spacings.large};
-  display: grid;
-  grid-template-columns: 1fr 24px;
-  justify-content: space-between;
-  align-items: center;
+const LinkContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.small};
+  > h6 {
+    text-transform: capitalize;
+  }
+`;
+const GoToAccessItLink = styled.a`
+  padding: ${spacings.small} ${spacings.medium};
+  transition: background-color 200ms ease;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border-radius: ${shape.corners.borderRadius};
+  text-decoration: none;
+  &:visited {
+    color: inherit;
+  }
+  &:focus-within {
+    outline: ${colors.interactive.primary__resting.rgba} dashed 2px;
+  }
+  &:active {
+    outline: 0;
+    background-color: ${colors.interactive.primary__selected_highlight.rgba};
+  }
   &:hover {
-    background: ${colors.interactive.primary__hover_alt.rgba};
+    background-color: ${colors.interactive.primary__hover_alt.rgba};
     cursor: pointer;
   }
 `;
@@ -118,44 +134,41 @@ const SelectorCard: FC<FieldSelectorType> = ({
   return (
     <StyledCard>
       <Typography variant="h3">Please select a field</Typography>
-      <section>
-        <AutocompleteWrapper>
-          <Autocomplete
-            autoWidth
-            options={options}
-            label=""
-            placeholder="Select a field"
-            onOptionsChange={handleOnChange}
-            optionLabel={(option) => option.name}
-          />
-        </AutocompleteWrapper>
-        <Button
-          data-testid="nextButton"
-          variant="contained_icon"
-          disabled={selectedOption === undefined}
-          onClick={handleSelectField}
-        >
-          <Icon data={arrow_forward} />
-        </Button>
-      </section>
-      {showAccessITLink && (
-        <MissingAccess
-          data-testid="missing-access"
-          onClick={() =>
-            window.open('https://accessit.equinor.com/#', '_blank')
-          }
-        >
-          <TextContainer>
+      <div>
+        <section>
+          <AutocompleteWrapper>
+            <Autocomplete
+              autoWidth
+              options={options}
+              label=""
+              placeholder="Select a field"
+              onOptionsChange={handleOnChange}
+              optionLabel={(option) => option.name}
+            />
+          </AutocompleteWrapper>
+          <Button
+            data-testid="nextButton"
+            variant="contained_icon"
+            disabled={selectedOption === undefined}
+            onClick={handleSelectField}
+          >
+            <Icon data={arrow_forward} />
+          </Button>
+        </section>
+        {showAccessITLink && (
+          <LinkContainer>
             <Typography variant="overline">Missing a field?</Typography>
-            <Typography variant="h6">Go to AccessIT</Typography>
-          </TextContainer>
-          <Icon
-            data={exit_to_app}
-            color={colors.interactive.primary__resting.rgba}
-            size={24}
-          />
-        </MissingAccess>
-      )}
+            <GoToAccessItLink
+              tabIndex={0}
+              data-testid="missing-access"
+              href="https://accessit.equinor.com/#"
+              target="_blank"
+            >
+              Go to AccessIT
+            </GoToAccessItLink>
+          </LinkContainer>
+        )}
+      </div>
     </StyledCard>
   );
 };
