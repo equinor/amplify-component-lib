@@ -1,6 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import { BaseChipProps, InteractiveChipProps, ReadOnlyChipProps } from './Chip';
+import { BaseChipProps } from './Chip';
+import { InteractiveChipProps } from './InteractiveChip';
+import { ReadOnlyChipProps } from './ReadOnlyChip';
 
 import styled, { css } from 'styled-components';
 
@@ -53,7 +55,7 @@ const colorSchemes: Record<
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.primary__selected_hover.rgba}`,
+      borderColor: `${colors.interactive.disabled__border.rgba}`,
     },
   },
   warning: {
