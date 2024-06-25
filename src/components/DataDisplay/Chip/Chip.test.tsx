@@ -5,8 +5,6 @@ import { faker } from '@faker-js/faker';
 import { Chip } from './Chip';
 import { fireEvent, render, screen } from 'src/tests/test-utils';
 
-import { vi } from 'vitest';
-
 // Mock function for onDelete
 
 test('Shows readonly chip with leading icon', () => {
@@ -22,8 +20,9 @@ test('Shows readonly chip with leading icon', () => {
 
 test('Shows interactive chip with delete icon', () => {
   const someText = faker.animal.crocodilia();
+  const handleOnClick = vi.fn();
 
-  render(<Chip onDelete={mockOnDelete}>{someText}</Chip>);
+  render(<Chip onDelete={handleOnClick}>{someText}</Chip>);
 
   expect(screen.queryByRole('img')).toBeInTheDocument();
 });
@@ -33,14 +32,9 @@ test('Handles delete event on interactive chip', () => {
     vi.clearAllMocks();
   });
   const handleDelete = vi.fn();
-  const handleOnClick = vi.fn();
   const someText = faker.animal.crocodilia();
 
-  render(
-    <Chip onDelete={handleDelete} onClick={handleOnClick}>
-      {someText}
-    </Chip>
-  );
+  render(<Chip onDelete={handleDelete}>{someText}</Chip>);
 
   const chip = screen.getByText(someText).parentElement;
   if (chip) {
@@ -49,30 +43,21 @@ test('Handles delete event on interactive chip', () => {
   // Assert that mockOnClick has been called
 
   expect(handleDelete).toHaveBeenCalled();
-  expect(handleOnClick).not.toHaveBeenCalled();
 });
 
 test('Handles click event on interactive chip', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
+  const handleOnClick = vi.fn();
+
   const someText = faker.animal.crocodilia();
 
-  render(<Chip onClick={mockOnClick}>{someText}</Chip>);
+  render(<Chip onClick={handleOnClick}>{someText}</Chip>);
 
   const chip = screen.getByText(someText).parentElement;
   if (chip) {
     fireEvent.click(chip);
   }
-  // Assert that mockOnClick has been called
-
-  expect(mockOnClick).toHaveBeenCalled();
-
-  // Access the first call's return value from the mock and compare it with the expected value
-  const returnedValue =
-    (mockOnClick.mock?.results[0].value as string) || undefined;
-
-  expect(returnedValue).toBe('onClick called');
+  // Assert that handleOnClick has been called
+  expect(handleOnClick).toHaveBeenCalled();
 });
 
 test('Handles prioritized click event when delete is also defined on interactive chip', () => {
@@ -89,6 +74,8 @@ test('Handles prioritized click event when delete is also defined on interactive
   if (chip) {
     fireEvent.click(chip);
   }
+  // Assert that handleOnDelete has been called
+  // Assert that handleOnClick has NOT been called
 
   expect(handleDelete).toHaveBeenCalled();
   expect(handleOnClick).not.toHaveBeenCalled();
