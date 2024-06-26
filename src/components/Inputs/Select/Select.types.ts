@@ -65,6 +65,13 @@ export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
 
 export type Variants = 'error' | 'warning' | 'success' | 'dirty';
 
+export const VARIANT_OPTIONS: Variants[] = [
+  'success',
+  'warning',
+  'error',
+  'dirty',
+] as const;
+
 export interface CommonSelectProps {
   id?: string;
   variant?: Variants;

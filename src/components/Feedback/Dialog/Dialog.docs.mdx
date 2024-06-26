@@ -8,15 +8,10 @@ import * as ComponentStories from './Dialog.stories';
 
 Informs users about a task and can contain critical information, requires decisions, or involves multiple tasks, in a layer above the page.
 
-<Links
-  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/"
-  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17620%3A721"
-  documentationUrl="https://eds.equinor.com/0b0c666ab/p/059c0e-dialog/b/087c3e"
-  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Dialog/Dialog.tsx"
-  npmUrl="https://www.npmjs.com/package/@equinor/eds-core-react"
-/>
+<Links ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/" figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17620%3A721" documentationUrl="https://eds.equinor.com/0b0c666ab/p/059c0e-dialog/b/087c3e" sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Dialog/Dialog.tsx" npmUrl="https://www.npmjs.com/package/@equinor/eds-core-react" />
 
 <Primary />
+
 <PropsTable />
 
 ## Usage
@@ -28,10 +23,12 @@ Dialogs are purposefully interruptive, so they should be used sparingly.
   <li>
     Dialogs **focus** user attention to ensure their content is addressed.
   </li>
+
   <li>
     Dialogs should be **direct** in communicating information and dedicated to
     completing a assignment.
   </li>
+
   <li>
     Dialogs should appear in response to a user task or an action, with suitable
     or contextual information.
@@ -108,10 +105,12 @@ Most dialog content should avoid scrolling.
 <ul>
   <li>
     {' '}
+
     When scrolling is required, the dialog title is pinned at the top, with action
     buttons pinned at the bottom. This ensures selected content stays visible alongside
     the title and buttons, even upon scroll.
   </li>
+
   <li>
     Dialog does not scroll with elements outside of the dialog, such as the
     background.

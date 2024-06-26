@@ -4,8 +4,7 @@ import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
-import { VARIANT_OPTIONS } from '../Select.test';
-import { SelectOption } from '../Select.types';
+import { SelectOption, VARIANT_OPTIONS } from '../Select.types';
 import { SingleSelect } from './SingleSelect';
 
 export default {

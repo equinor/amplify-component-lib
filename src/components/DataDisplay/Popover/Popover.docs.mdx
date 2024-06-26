@@ -8,13 +8,10 @@ import * as ComponentStories from './Popover.stories';
 
 Is a floating card that provides more information or actions on hover or click.
 
-<Links
-  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17515%3A0"
-  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Popover/Popover.tsx"
-  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/data-display-popover--docs"
-/>
+<Links figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17515%3A0" sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Popover/Popover.tsx" edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/data-display-popover--docs" />
 
 <Primary />
+
 <PropsTable />
 
 ## Usage
@@ -27,6 +24,7 @@ Is a floating card that provides more information or actions on hover or click.
     additional information when users hover over, focus on, or click an
     interactive element.
   </li>
+
   <li>User can interact with popover content.</li>
   <li>Use sparingly.</li>
 </ul>
@@ -104,10 +102,12 @@ It is recommended to use <code>trapFocus</code> in every Popover which contains 
 
 <ul>
   <li>Popovers can be activated by hover or click.</li>
+
   <li>
     To dismiss a popover, use the close icon, press the ESC key, open another
     popover or click outside the popover.
   </li>
+
   <li>
     If there are no actions in the popover, then the close icon should be the
     first focusable element.
@@ -123,10 +123,12 @@ It is recommended to use <code>trapFocus</code> in every Popover which contains 
     Remember to use both <code>onMouseEnter</code> and <code>onFocus</code>{' '}
     attributes to your trigger element to be able to open the popover.
   </li>
+
   <li>
     A timeout delay (300ms) on <code>onMouseEnter</code> is recommended to avoid
     unwanted trigger while browsing.
   </li>
+
   <li>
     Using activ elemnets inside a Popover when <code>onHover</code>, is not
     recommended.
@@ -156,11 +158,14 @@ Provides navigation for applications related to the application the user is curr
     An app launcher is used to organise navigation across different applications
     related or relevant to the current application.
   </li>
+
   <li>The current application shows as active in the app launcher.</li>
+
   <li>
     Each application displayed has a <code>Product icon</code> as well as a{' '}
     <code>label</code> that gives clear and concise direction.
   </li>
+
   <li>
     Note that if the label is longer than the maximum width, it will be
     truncated and should have a tooltip provided.

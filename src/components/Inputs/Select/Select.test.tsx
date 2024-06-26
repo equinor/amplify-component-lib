@@ -3,20 +3,13 @@ import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
 import { VARIANT_COLORS } from './Select.styles';
-import { Variants } from './Select.types';
+import { VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
 
 const { colors } = tokens;
-
-export const VARIANT_OPTIONS: Variants[] = [
-  'success',
-  'warning',
-  'error',
-  'dirty',
-] as const;
 
 function fakeItem() {
   return {
