@@ -1,6 +1,7 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { Variants } from './Select.types';
 import { Chip } from 'src/components/DataDisplay/Chip/Chip';
 import { colors } from 'src/constants';
 import { spacings } from 'src/style/spacings';
@@ -9,9 +10,16 @@ import styled from 'styled-components';
 
 const { colors: EDSColors, spacings: EDSSpacings } = tokens;
 
+export const VARIANT_COLORS: Record<Variants, string> = {
+  warning: EDSColors.interactive.warning__resting.rgba,
+  error: EDSColors.interactive.danger__resting.rgba,
+  success: EDSColors.interactive.success__resting.rgba,
+  dirty: colors.dark_blue.rgba,
+} as const;
+
 interface ContainerProps {
   $lightBackground?: boolean;
-  $underlineHighlight?: boolean;
+  $variant?: Variants;
   $shouldShowTopMargin?: boolean;
 }
 
@@ -22,9 +30,9 @@ const Container = styled.div<ContainerProps>`
   align-items: center;
   padding: 6px 8px;
 
-  ${({ $underlineHighlight }) =>
-    $underlineHighlight
-      ? `box-shadow: inset 0 -2px 0 0 ${colors.dark_blue.rgba}`
+  ${({ $variant }) =>
+    $variant
+      ? `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]}`
       : `box-shadow: inset 0 -1px 0 0 ${EDSColors.text.static_icons__tertiary.rgba}`};
 
   ${({ $lightBackground }) =>

@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
+import { VARIANT_OPTIONS } from '../Select.test';
 import { SelectOption } from '../Select.types';
 import { ComboBox } from './ComboBox';
 
@@ -15,6 +16,11 @@ export default {
     selectableParent: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
+    variant: {
+      control: 'radio',
+      options: VARIANT_OPTIONS,
+      description: 'Variants',
+    },
   },
   args: {
     label: 'Label here',

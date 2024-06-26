@@ -63,8 +63,11 @@ export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
 } & Omit<SelectMenuProps<T>, 'search'> &
   SelectMenuItemProps<T>;
 
+export type Variants = 'error' | 'warning' | 'success' | 'dirty';
+
 export interface CommonSelectProps {
   id?: string;
+  variant?: Variants;
   label?: string;
   placeholder?: string;
   sortValues?: boolean;
