@@ -3,7 +3,7 @@ import { save } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Chip } from './Chip';
-import { fireEvent, render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/test-utils';
 
 // Mock function for onDelete
 
