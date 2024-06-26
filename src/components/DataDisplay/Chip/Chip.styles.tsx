@@ -29,7 +29,7 @@ const colorSchemes: Record<
   }
 > = {
   default: {
-    color: `${colors.infographic.primary__moss_green_100.rgba}`,
+    color: `${colors.interactive.primary__resting.rgba}`,
     background: `${colors.ui.background__light.rgba}`,
     borderColor: `${colors.ui.background__medium.rgba}`,
     hover: {
