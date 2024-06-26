@@ -16,6 +16,7 @@ export const ReadOnlyChip = forwardRef<HTMLDivElement, ReadOnlyChipProps>(
     return (
       <ReadOnlyChipStyle
         {...otherReadOnlyProps}
+        disabled={disabled}
         className={disabled ? 'disabled' : ''}
         ref={ref}
       >
