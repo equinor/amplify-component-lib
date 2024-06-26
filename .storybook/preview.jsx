@@ -43,6 +43,7 @@ export const decorators = [
 export const parameters = {
   actions: { argTypes: /^on[A-Z].*/ },
   viewMode: 'docs',
+  controls: { expanded: true },
   backgrounds: {
     default: 'Equinor UI Light (off-white/off-dark)',
     values: [

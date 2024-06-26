@@ -1,17 +1,13 @@
-import { Avatar, AvatarProps, ChipProps, Icon } from '@equinor/eds-core-react';
-import { save } from '@equinor/eds-icons';
+import { info_circle, pipe_support, save, tune } from '@equinor/eds-icons';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Chip } from './Chip';
+import { BaseChipProps, Chip, InteractiveChipProps } from './Chip';
 import page from './Chips.docs.mdx';
 import { Stack } from 'src/storybook';
 
-const icons = {
-  save,
-};
-
-Icon.add(icons);
+const handleDelete = action('onDelete');
+const handleClick = action('onClick');
 
 const meta: Meta<typeof Chip> = {
   title: 'Data Display/Chips',
@@ -29,9 +25,9 @@ const meta: Meta<typeof Chip> = {
       return (
         <Stack
           style={{
-            display: 'grid',
-            gridGap: '32px',
-            gridTemplateColumns: 'repeat(4, auto)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '32px',
           }}
         >
           <Story />
@@ -39,179 +35,154 @@ const meta: Meta<typeof Chip> = {
       );
     },
   ],
+  argTypes: {
+    disabled: {
+      control: 'boolean',
+      name: 'Disabled',
+      defaultValue: false,
+    },
+    variant: {
+      control: {
+        type: 'radio',
+        options: [
+          'default',
+          'active',
+          'warning',
+          'warning-active',
+          'error',
+          'error-active',
+        ],
+      },
+      name: 'Variant',
+      defaultValue: 'active',
+    },
+    children: {
+      control: 'radio',
+      options: ['Short Text', 'Long Text'],
+      mapping: {
+        'Short Text': 'Chip Text',
+        'Long Text': 'Some Long Chip Text',
+      },
+      defaultValue: 'Short Text',
+    },
+    onClick: {
+      control: 'radio',
+
+      options: ['none', 'Can be clicked'],
+      defaultValue: 'none',
+      mapping: {
+        none: undefined,
+        'Can be clicked': handleClick,
+      },
+      description:
+        'Sets the onClick action to be undefined, or sends the handleClick-action',
+    },
+    onDelete: {
+      control: 'radio',
+      options: ['none', 'Can be deleted'],
+      mapping: {
+        none: undefined,
+        'Can be deleted': handleDelete,
+      },
+      description:
+        'Sets the onDelete action to be undefined, or sends the handleDelete-action, if both onClick and onDelete are present, onDelete is executed',
+      defaultValue: 'none',
+    },
+    leadingIconData: {
+      control: 'select',
+      options: ['none', 'info_circle', 'pipe_support', 'save', 'tune'],
+      mapping: {
+        none: undefined,
+        info_circle: info_circle,
+        pipe_support: pipe_support,
+        save: save,
+        tune: tune,
+      },
+      description:
+        'List only represent a few examples of icons, any Icon from EDS can be used',
+      defaultValue: 'none',
+    },
+  },
 };
 
 export default meta;
 
-const handleDelete = action('onDelete');
-const handleClick = action('onClick');
-
-const CatImage = (props: Partial<AvatarProps>) => (
-  <Avatar src="https://i.imgur.com/UM3mrju.jpg" alt="cat" {...props} />
+export const DefaultChip: StoryFn<InteractiveChipProps> = (args) => (
+  <Chip {...args} />
 );
 
-export const Introduction: StoryFn<ChipProps> = (args) => (
-  <Chip {...args}>Play with me</Chip>
+DefaultChip.args = {
+  children: 'Chip Text',
+  onClick: handleClick,
+};
+
+export const ReadOnlyChip: StoryFn<InteractiveChipProps> = (args) => (
+  <Chip {...args} onClick={undefined} onDelete={undefined} />
 );
 
-export const Text: StoryFn<ChipProps> = () => (
-  <>
-    <Chip>Normal</Chip>
-    <Chip variant="active">Active</Chip>
-    <Chip variant="error">Error</Chip>
-    <Chip disabled>Disabled</Chip>
-    <Chip onClick={handleClick}>clickable</Chip>
-    <Chip variant="active" onClick={handleClick}>
-      clickable
-    </Chip>
-    <Chip variant="error" onClick={handleClick}>
-      clickable
-    </Chip>
-    <Chip onDelete={handleDelete} disabled>
-      deletable
-    </Chip>
-    <Chip onDelete={handleDelete}>deletable</Chip>
-    <Chip variant="active" onDelete={handleDelete}>
-      deletable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete}>
-      deletable
-    </Chip>
-    <div></div>
-    <Chip onDelete={handleDelete} onClick={handleClick}>
-      deletable + clickable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete} onClick={handleClick}>
-      deletable + clickable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete} onClick={handleClick}>
-      deletable + clickable
-    </Chip>
-  </>
-);
+ReadOnlyChip.args = {
+  children: 'Chip Text',
+  onClick: handleClick,
+};
 
-export const TextAndIcon: StoryFn<ChipProps> = () => (
-  <>
-    <Chip>
-      <Icon name="save" />
-      Normal
-    </Chip>
-    <Chip variant="active">
-      <Icon name="save" />
+const Template: StoryFn<BaseChipProps> = (args) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr repeat(4, 1fr)',
+      gap: '16px',
+      alignItems: 'center',
+    }}
+  >
+    {/* Column Headers */}
+    <div>
+      {args.onClick || args.onDelete ? '' : <strong>Read Only Chips</strong>}
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Default
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
       Active
-    </Chip>
-    <Chip variant="error">
-      <Icon name="save" />
-      Error
-    </Chip>
-    <Chip disabled>
-      <Icon name="save" />
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Disabled + Active
+    </div>
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
       Disabled
-    </Chip>
-    <Chip onClick={handleClick}>
-      <Icon name="save" />
-      clickable
-    </Chip>
-    <Chip variant="active" onClick={handleClick}>
-      <Icon name="save" />
-      clickable
-    </Chip>
-    <Chip variant="error" onClick={handleClick}>
-      <Icon name="save" />
-      clickable
-    </Chip>
-    <Chip onDelete={handleDelete} disabled>
-      <Icon name="save" />
-      deletable
-    </Chip>
-    <Chip onDelete={handleDelete}>
-      <Icon name="save" />
-      deletable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete}>
-      <Icon name="save" />
-      deletable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete}>
-      <Icon name="save" />
-      deletable
-    </Chip>
-    <div></div>
-    <Chip onDelete={handleDelete} onClick={handleClick}>
-      <Icon name="save" />
-      deletable + clickable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete} onClick={handleClick}>
-      <Icon name="save" />
-      deletable + clickable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete} onClick={handleClick}>
-      <Icon name="save" />
-      deletable + clickable
-    </Chip>
-  </>
-);
-TextAndIcon.storyName = 'Text and icon';
+    </div>
 
-export const TextAndAvatar: StoryFn<ChipProps> = () => (
-  <>
-    <Chip>
-      <CatImage />
-      Normal
-    </Chip>
-    <Chip variant="active">
-      <CatImage />
-      Active
-    </Chip>
-    <Chip variant="error">
-      <CatImage />
+    {/* Default Variant */}
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Default
+    </div>
+    <Chip {...args} variant="default"></Chip>
+    <Chip {...args} variant="active"></Chip>
+    <Chip {...args} variant="active" disabled></Chip>
+    <Chip {...args} variant="default" disabled></Chip>
+
+    {/* Warning Variant */}
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
+      Warning
+    </div>
+    <Chip {...args} variant="warning"></Chip>
+    <Chip {...args} variant="warning-active"></Chip>
+    <Chip {...args} variant="warning-active" disabled></Chip>
+    <Chip {...args} variant="warning" disabled></Chip>
+
+    {/* Error Variant */}
+    <div style={args.onClick || args.onDelete ? {} : { opacity: 0.4 }}>
       Error
-    </Chip>
-    <Chip disabled>
-      <CatImage />
-      Disabled
-    </Chip>
-    <Chip onClick={handleClick}>
-      <CatImage />
-      clickable
-    </Chip>
-    <Chip variant="active" onClick={handleClick}>
-      <CatImage />
-      clickable
-    </Chip>
-    <Chip variant="error" onClick={handleClick}>
-      <CatImage />
-      clickable
-    </Chip>
-    <Chip onDelete={handleDelete} disabled>
-      <CatImage />
-      deletable
-    </Chip>
-    <Chip onDelete={handleDelete}>
-      <CatImage />
-      deletable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete}>
-      <CatImage />
-      deletable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete}>
-      <CatImage />
-      deletable
-    </Chip>
-    <div></div>
-    <Chip onDelete={handleDelete} onClick={handleClick}>
-      <CatImage />
-      deletable + clickable
-    </Chip>
-    <Chip variant="active" onDelete={handleDelete} onClick={handleClick}>
-      <CatImage />
-      deletable + clickable
-    </Chip>
-    <Chip variant="error" onDelete={handleDelete} onClick={handleClick}>
-      <CatImage />
-      deletable + clickable
-    </Chip>
-  </>
+    </div>
+    <Chip {...args} variant="error"></Chip>
+    <Chip {...args} variant="error-active"></Chip>
+    <Chip {...args} variant="error-active" disabled></Chip>
+    <Chip {...args} variant="error" disabled></Chip>
+  </div>
 );
-TextAndAvatar.storyName = 'Text and avatar';
+
+export const ChipVariantsWithStates = Template.bind({});
+ChipVariantsWithStates.args = {
+  children: 'Chip Text',
+  leadingIconData: save,
+  onClick: handleClick,
+};
