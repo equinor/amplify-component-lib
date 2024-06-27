@@ -1,5 +1,6 @@
 const config = {
   stories: ['../src/intro.mdx', '../src/**/*.stories.@(ts|tsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -9,19 +10,24 @@ const config = {
     'storybook-addon-data-theme-switcher',
     'storybook-addon-react-docgen',
     './addons/GitHubSearchAddon/manager.js',
+    '@storybook/addon-mdx-gfm'
   ],
+
   build: {
     sourcemap: false,
   },
+
   core: {},
+
   framework: {
     name: '@storybook/react-vite',
     options: {},
   },
-  docs: {
-    autodocs: true,
-  },
+
+  docs: {},
+
   staticDirs: ['../static'],
+
   async viteFinal(config) {
     return {
       ...config,
@@ -39,9 +45,14 @@ const config = {
       },
     };
   },
+
   env: () => ({
     VITE_IS_MOCK: 'true',
   }),
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript'
+  }
 };
 
 export default config;

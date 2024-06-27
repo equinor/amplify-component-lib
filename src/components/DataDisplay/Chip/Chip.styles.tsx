@@ -156,9 +156,6 @@ const commonChipStyle = css`
       width: 16px;
       height: 16px;
     }
-
-    span {
-    }
   }
 `;
 
@@ -198,7 +195,6 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
 `;
 
 export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
-  ${commonChipStyle}
   cursor: unset;
 
   ${(props) =>
@@ -215,4 +211,5 @@ export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
           color: ${colors.text.static_icons__default.rgba};
           border: 1px solid ${colors.ui.background__medium.rgba};
         `}
+  ${commonChipStyle}
 `;

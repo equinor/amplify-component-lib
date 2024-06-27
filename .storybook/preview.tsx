@@ -4,6 +4,7 @@ import Template from 'src/components/Template/Template';
 import { darkTokens } from 'src/style/darkTokens';
 import { spacingTokens } from 'src/style/spacingTokens';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider';
+import { Preview, StoryFn } from '@storybook/react';
 
 const { colors } = tokens;
 
@@ -19,7 +20,7 @@ export const globalTypes = {
 };
 
 export const decorators = [
-  (Story) => {
+  (Story: StoryFn) => {
     // Apply styles using the darkTokens variable
     const darkStyleElement = document.createElement('style');
     darkStyleElement.innerHTML = darkTokens;
@@ -58,3 +59,9 @@ export const parameters = {
     ],
   },
 };
+
+const preview: Preview = {
+  tags: ['autodocs']
+};
+
+export default preview;

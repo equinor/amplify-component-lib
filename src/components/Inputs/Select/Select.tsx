@@ -46,6 +46,7 @@ export const Select = <T extends SelectOptionRequired>(
     label,
     meta,
     id = `amplify-combobox-${label}`,
+    variant,
   } = props;
   const {
     handleOnClear,
@@ -110,7 +111,7 @@ export const Select = <T extends SelectOptionRequired>(
         ref={anchorRef}
         onClick={handleOnOpen}
         aria-expanded={open}
-        $underlineHighlight={underlineHighlight}
+        $variant={variant}
         $lightBackground={lightBackground}
         $shouldShowTopMargin={shouldShowTopMargin}
       >

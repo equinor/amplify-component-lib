@@ -2,8 +2,9 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
+import { VARIANT_COLORS } from './Select.styles';
+import { VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
-import { colors as amplifyColors } from 'src/constants';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
@@ -846,7 +847,7 @@ test('Loading works as expected', async () => {
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
-test('underlineHighlight works as expected', () => {
+test('variants work as expected', () => {
   const items = fakeItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
@@ -860,20 +861,22 @@ test('underlineHighlight works as expected', () => {
     `inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`
   );
 
-  rerender(
-    <Select
-      label={label}
-      onSelect={handleOnSelect}
-      values={[]}
-      items={items}
-      underlineHighlight={true}
-    />
-  );
+  for (const variant of VARIANT_OPTIONS) {
+    rerender(
+      <Select
+        label={label}
+        onSelect={handleOnSelect}
+        values={[]}
+        variant={variant}
+        items={items}
+      />
+    );
 
-  expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
-    'box-shadow',
-    `inset 0 -2px 0 0 ${amplifyColors.dark_blue.rgba}`
-  );
+    expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
+      'box-shadow',
+      `inset 0 -2px 0 0 ${VARIANT_COLORS[variant]}`
+    );
+  }
 });
 
 test('lightBackground works as expected', () => {

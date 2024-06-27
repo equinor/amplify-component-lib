@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
-import { SelectOption } from '../Select.types';
+import { SelectOption, VARIANT_OPTIONS } from '../Select.types';
 import { SingleSelect } from './SingleSelect';
 
 export default {
@@ -15,6 +15,11 @@ export default {
     selectableParent: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
+    variant: {
+      control: 'radio',
+      options: VARIANT_OPTIONS,
+      description: 'Variants',
+    },
   },
   args: {
     label: 'Label here',

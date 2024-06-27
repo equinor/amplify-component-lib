@@ -91,11 +91,9 @@ export const Chip = ({
         } else {
           modifiedChildren.push(element);
         }
-      } else if (typeof child === 'string' || typeof child === 'number') {
+      } else {
         // Wrap "loose" string and number children in a span
         modifiedChildren.push(<span key={index}>{child}</span>);
-      } else {
-        modifiedChildren.push(child);
       }
     });
 

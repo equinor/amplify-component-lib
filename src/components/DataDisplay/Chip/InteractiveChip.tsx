@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes } from 'react';
+import { forwardRef, HTMLAttributes, KeyboardEvent, MouseEvent } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 
@@ -30,11 +30,9 @@ export const InteractiveChip = forwardRef<
   const handleClick = disabled ? undefined : onClick;
 
   const handleKeyPress = (
-    event:
-      | React.KeyboardEvent<HTMLButtonElement>
-      | React.MouseEvent<HTMLButtonElement>
+    event: KeyboardEvent<HTMLButtonElement> | MouseEvent<HTMLButtonElement>
   ) => {
-    const { key } = event as React.KeyboardEvent<HTMLButtonElement>;
+    const { key } = event as KeyboardEvent<HTMLButtonElement>;
     if (key === 'Enter') {
       if (deletable) {
         handleDelete!(event as unknown); // using non-null assertion operator since we know deletable is true
