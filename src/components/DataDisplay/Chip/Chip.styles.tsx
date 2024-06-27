@@ -178,6 +178,7 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
         color: ${colorScheme.disabled?.color};
         background-color: ${colorScheme.disabled?.background};
         border: 1px solid ${colorScheme.disabled?.borderColor};
+        cursor: not-allowed;
 
         &:hover {
           border: 1px solid ${colorScheme.disabled?.borderColor};
@@ -185,25 +186,19 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
       }
     `;
   }};
-  ${(props) =>
-    props.disabled &&
-    css`
-      &:disabled {
-        cursor: not-allowed;
-      }
-    `}
 `;
 
 export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
+  ${commonChipStyle}
   cursor: unset;
-
   ${(props) =>
     props.disabled
       ? css`
           &.disabled {
             background-color: ${colors.interactive.disabled__fill.rgba};
             color: ${colors.interactive.disabled__text.rgba};
-            border: 1px solid ${colors.interactive.disabled__fill.rgba};
+            border: 1px solid ${colors.interactive.disabled__border.rgba};
+            cursor: not-allowed;
           }
         `
       : css`
@@ -211,5 +206,4 @@ export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
           color: ${colors.text.static_icons__default.rgba};
           border: 1px solid ${colors.ui.background__medium.rgba};
         `}
-  ${commonChipStyle}
 `;
