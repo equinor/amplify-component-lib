@@ -1,30 +1,6 @@
 import { FC, useMemo } from 'react';
 
-import Bold from '@tiptap/extension-bold';
-import { BulletList } from '@tiptap/extension-bullet-list';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import { Color } from '@tiptap/extension-color';
-import Document from '@tiptap/extension-document';
-import DropCursor from '@tiptap/extension-dropcursor';
-import GapCursor from '@tiptap/extension-gapcursor';
-import { HardBreak } from '@tiptap/extension-hard-break';
-import Heading from '@tiptap/extension-heading';
-import { Highlight } from '@tiptap/extension-highlight';
-import History from '@tiptap/extension-history';
-import Italic from '@tiptap/extension-italic';
-import Link from '@tiptap/extension-link';
-import { ListItem } from '@tiptap/extension-list-item';
-import { OrderedList } from '@tiptap/extension-ordered-list';
-import Paragraph from '@tiptap/extension-paragraph';
-import Placeholder from '@tiptap/extension-placeholder';
-import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
-import Text from '@tiptap/extension-text';
-import { TextAlign } from '@tiptap/extension-text-align';
-import { TextStyle } from '@tiptap/extension-text-style';
-import Typography from '@tiptap/extension-typography';
+import DefaultKit from './custom-extensions/DefaultKit';
 import {
   EditorEvents,
   useEditor,
@@ -32,9 +8,8 @@ import {
   Extensions,
   Editor,
 } from '@tiptap/react';
-import ExtendedHeaders from './custom-extensions/ExtendedHeaders';
+import Counter from './custom-extensions/Counter';
 
-import ExtendedImage from './custom-extensions/ExtendedImage';
 import MenuBar from './MenuBar/MenuBar';
 import { Wrapper } from './RichTextEditor.styles';
 import {
@@ -65,9 +40,9 @@ const string = `
 <p>
   This is still the text editor you’re used to, but enriched with node views.
 </p>
-<react-component count="0">
+<counter count="0">
   <p>This is editable. You can create a new component by pressing Mod+Enter.</p>
-</react-component>
+</counter>
 <p>
   Did you see that? That’s a React component. We are really living in the future.
 </p>
@@ -117,44 +92,28 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
 
   const extensions = useMemo(
     () => [
-      ExtendedHeaders,
-      BulletList,
-      Bold,
-      CodeBlockLowlight.configure({
-        lowlight,
+      DefaultKit.configure({
+        codeBlockLowlight: {
+          lowlight,
+        },
+        image: {
+          allowBase64: true,
+          onImageUpload,
+        },
+        highlight: {
+          multicolor: true,
+        },
+        placeholder: {
+          placeholder,
+        },
+        table: {
+          resizable: true,
+        },
+        textAlign: {
+          types: ['heading', 'paragraph', 'img'],
+        },
       }),
-      Color,
-      Document,
-      DropCursor,
-      ExtendedImage.configure({
-        allowBase64: true,
-        onImageUpload,
-      }),
-      GapCursor,
-      HardBreak,
-      Heading,
-      Highlight.configure({ multicolor: true }),
-      History,
-      Italic,
-      Link,
-      ListItem,
-      OrderedList,
-      Paragraph,
-      Placeholder.configure({
-        placeholder,
-      }),
-      Table.configure({
-        resizable: true,
-      }),
-      TableCell,
-      TableHeader,
-      TableRow,
-      Text,
-      Typography,
-      TextStyle,
-      TextAlign.configure({
-        types: ['heading', 'paragraph', 'img'],
-      }),
+      Counter,
     ],
     [onImageUpload, placeholder]
   );
