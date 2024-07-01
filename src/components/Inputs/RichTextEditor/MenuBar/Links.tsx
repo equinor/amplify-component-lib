@@ -3,7 +3,7 @@ import { ChangeEvent, FC, KeyboardEvent, useRef, useState } from 'react';
 import { Button, Icon, Popover } from '@equinor/eds-core-react';
 import { link, link_off } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useCurrentEditor } from '@tiptap/react';
+import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 
 import { Section } from './MenuBar.styles';
 import MenuButton from './MenuButton';
@@ -24,8 +24,7 @@ const Container = styled.div`
 //💡 Wasn't able to test this component due to tiptap not setting the selected text
 // as expected when inside a test, thus the link buttons are always disabled - Marius 24. Jan 2024
 /* c8 ignore start */
-const Links: FC = () => {
-  const { editor } = useCurrentEditor();
+const Links: FC<EditorPanel> = ({ editor, features }) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const linkText = useRef<string>('');
@@ -70,6 +69,7 @@ const Links: FC = () => {
   };
   const onUnsetLink = () => editor?.chain().focus().unsetLink().run();
 
+  if (!features.includes(RichTextEditorFeatures.LINKS)) return;
   return (
     <>
       <Section>

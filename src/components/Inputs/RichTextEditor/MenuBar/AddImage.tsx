@@ -4,14 +4,21 @@ import { camera_add_photo } from '@equinor/eds-icons';
 import { useCurrentEditor } from '@tiptap/react';
 
 import MenuButton from './MenuButton';
-import { OnImageUploadFn } from 'src/components/Inputs/RichTextEditor/RichTextEditor.types';
+import {
+  OnImageUploadFn,
+  EditorPanel,
+  RichTextEditorFeatures,
+} from 'src/components/Inputs/RichTextEditor/RichTextEditor.types';
+import { on } from 'events';
 
-interface AddImageProps {
-  onImageUpload: OnImageUploadFn;
+interface AddImageProps extends EditorPanel {
+  onImageUpload?: OnImageUploadFn;
 }
 
-const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
-  const { editor } = useCurrentEditor();
+const AddImage: FC<AddImageProps> = ({ onImageUpload, editor, features }) => {
+  if (!onImageUpload) return null;
+  if (!features.includes(RichTextEditorFeatures.IMAGES)) return null;
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const showFileDialog = () => {

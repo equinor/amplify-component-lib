@@ -25,7 +25,13 @@ import Text from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
-import { EditorEvents, EditorProvider } from '@tiptap/react';
+import {
+  EditorEvents,
+  useEditor,
+  EditorContent,
+  Extensions,
+  Editor,
+} from '@tiptap/react';
 
 import ExtendedImage from './custom-extensions/ExtendedImage';
 import MenuBar from './MenuBar/MenuBar';
@@ -151,17 +157,51 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       $border={border}
     >
       <EditorProvider
-        slotBefore={
-          <MenuBar features={usingFeatures} onImageUpload={onImageUpload} />
-        }
-        content={value}
+        value={value}
         extensions={extensions}
         onUpdate={handleOnUpdate}
       >
-        {null}
+        {(editor) => (
+          <div>
+            <MenuBar
+              editor={editor}
+              features={usingFeatures}
+              onImageUpload={onImageUpload}
+            />
+            <EditorContent editor={editor} />
+          </div>
+        )}
       </EditorProvider>
     </Wrapper>
   );
+};
+
+interface EditorProviderProps {
+  children: (editor: Editor) => JSX.Element;
+  value: string | null | undefined;
+  extensions: Extensions;
+  onUpdate: (event: EditorEvents['update']) => void;
+}
+
+const EditorProvider = ({
+  children,
+  extensions,
+  onUpdate,
+  value,
+}: EditorProviderProps) => {
+  const editor = useEditor({
+    content: value,
+    extensions,
+    onUpdate,
+  });
+
+  /* c8 ignore start */
+  if (!editor) {
+    throw new Error("Couldn't find tiptap editor context!");
+  }
+  /* c8 ignore end */
+
+  return children(editor);
 };
 
 export default RichTextEditor;

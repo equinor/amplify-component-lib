@@ -3,7 +3,7 @@ import { ChangeEvent, FC } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { format_color_text } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useCurrentEditor } from '@tiptap/react';
+import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 
 import styled from 'styled-components';
 
@@ -59,13 +59,12 @@ const ColorBar = styled.span`
   width: 24px;
 `;
 
-const TextColor: FC = () => {
-  const { editor } = useCurrentEditor();
-
+const TextColor: FC<EditorPanel> = ({ editor, features }) => {
   const handleOnInput = (event: ChangeEvent<HTMLInputElement>) => {
     editor?.chain().focus().setColor(event.target.value).run();
   };
 
+  if (!features.includes(RichTextEditorFeatures.TEXT_COLOR)) return null;
   return (
     <Container>
       <input

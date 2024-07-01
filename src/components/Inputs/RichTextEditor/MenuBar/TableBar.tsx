@@ -18,6 +18,7 @@ import {
 } from '../../../Icons/AmplifyIcons';
 import { Section } from './MenuBar.styles';
 import MenuButton from './MenuButton';
+import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 
 import styled from 'styled-components';
 
@@ -31,9 +32,8 @@ const Container = styled.div`
 `;
 
 /* c8 ignore start */
-const TableBar: FC = () => {
-  const { editor } = useCurrentEditor();
-
+const TableBar: FC<EditorPanel> = ({ editor }) => {
+  if (!editor.isActive('table')) return null;
   const onRemoveTable = () => editor?.chain().focus().deleteTable().run();
   const onHeaderRow = () => editor?.chain().focus().toggleHeaderRow().run();
   const onHeaderColumn = () =>

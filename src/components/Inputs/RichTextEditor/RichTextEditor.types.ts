@@ -1,3 +1,5 @@
+import { Editor } from '@tiptap/react';
+
 export enum RichTextEditorFeatures {
   HISTORY = 'history',
   FORMATTING = 'formatting',
@@ -29,3 +31,8 @@ export const DEFAULT_FEATURES = [
 export type OnImageUploadFn = (
   file: File
 ) => Promise<{ b64: string; url: string } | undefined>;
+
+export interface EditorPanel {
+  features: RichTextEditorFeatures[];
+  editor: Editor;
+}
