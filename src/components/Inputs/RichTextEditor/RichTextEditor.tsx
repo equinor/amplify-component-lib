@@ -32,6 +32,7 @@ import {
   Extensions,
   Editor,
 } from '@tiptap/react';
+import ExtendedHeaders from './custom-extensions/ExtendedHeaders';
 
 import ExtendedImage from './custom-extensions/ExtendedImage';
 import MenuBar from './MenuBar/MenuBar';
@@ -60,8 +61,20 @@ export interface RichTextEditorProps {
   border?: boolean;
 }
 
+const string = `
+<p>
+  This is still the text editor you’re used to, but enriched with node views.
+</p>
+<react-component count="0">
+  <p>This is editable. You can create a new component by pressing Mod+Enter.</p>
+</react-component>
+<p>
+  Did you see that? That’s a React component. We are really living in the future.
+</p>
+`;
+
 const RichTextEditor: FC<RichTextEditorProps> = ({
-  value,
+  value = string,
   onChange,
   onImageUpload,
   placeholder = 'Add text and content here...',
@@ -104,6 +117,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
 
   const extensions = useMemo(
     () => [
+      ExtendedHeaders,
       BulletList,
       Bold,
       CodeBlockLowlight.configure({
@@ -195,12 +209,7 @@ const EditorProvider = ({
     onUpdate,
   });
 
-  /* c8 ignore start */
-  if (!editor) {
-    throw new Error("Couldn't find tiptap editor context!");
-  }
-  /* c8 ignore end */
-
+  if (!editor) return null;
   return children(editor);
 };
 
