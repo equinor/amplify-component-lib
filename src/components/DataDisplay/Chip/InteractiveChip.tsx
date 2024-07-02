@@ -1,6 +1,7 @@
 import { forwardRef, HTMLAttributes, KeyboardEvent, MouseEvent } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
+import { close } from '@equinor/eds-icons';
 
 import { BaseChipProps } from './Chip';
 import { InteractiveChipStyle } from './Chip.styles';
@@ -58,7 +59,7 @@ export const InteractiveChip = forwardRef<
           </div>
         )}
         {children}
-        {deletable && <Icon name="close" title="close" size={16} />}
+        {deletable && <Icon data={close} title="close" size={16} />}
       </div>
     </InteractiveChipStyle>
   );
