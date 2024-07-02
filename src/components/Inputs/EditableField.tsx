@@ -20,6 +20,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   display: flex;
+  align-items: center;
 
   &:hover {
     cursor: ${(props) => (props.$editable ? 'pointer' : undefined)};
@@ -33,6 +34,7 @@ const Container = styled.div<ContainerProps>`
 const Icon = styled(EdsIcon)`
   margin-left: ${spacings.small};
   height: 20px;
+  min-width: 24px;
 `;
 
 interface ITextFieldProps {
@@ -54,7 +56,7 @@ const TextField = styled(EdsTextField)<ITextFieldProps>`
         box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
       }
    }
-   
+
   `}
 
   div:focus-within {
@@ -140,6 +142,9 @@ const EditableField: React.FC<EditableFieldProps> = ({
           data-testid="editableicon"
           color={colors.interactive.primary__resting.rgba}
           data={edit}
+          style={{
+            minWidth: '24px',
+          }}
         />
       )}
     </Container>
