@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 
-import DefaultKit from './custom-extensions/DefaultKit';
+import { AmplifyKit } from './custom-extensions/DefaultKit';
 import {
   EditorEvents,
   useEditor,
@@ -17,10 +17,6 @@ import {
   OnImageUploadFn,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
-
-import { common, createLowlight } from 'lowlight';
-
-const lowlight = createLowlight(common);
 
 export interface RichTextEditorProps {
   value: string | null | undefined;
@@ -52,7 +48,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   value = string,
   onChange,
   onImageUpload,
-  placeholder = 'Add text and content here...',
+  placeholder,
   features,
   extendFeatures,
   removeFeatures,
@@ -91,30 +87,10 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   }
 
   const extensions = useMemo(
-    () => [
-      DefaultKit.configure({
-        codeBlockLowlight: {
-          lowlight,
-        },
-        image: {
-          allowBase64: true,
-          onImageUpload,
-        },
-        highlight: {
-          multicolor: true,
-        },
-        placeholder: {
-          placeholder,
-        },
-        table: {
-          resizable: true,
-        },
-        textAlign: {
-          types: ['heading', 'paragraph', 'img'],
-        },
+    () =>
+      AmplifyKit({
+        extensions: [Counter],
       }),
-      Counter,
-    ],
     [onImageUpload, placeholder]
   );
 

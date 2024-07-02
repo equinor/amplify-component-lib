@@ -1,4 +1,4 @@
-import { Extension } from '@tiptap/core';
+import { Extension, Extensions } from '@tiptap/core';
 import { Bold, BoldOptions } from '@tiptap/extension-bold';
 import { BulletList, BulletListOptions } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
@@ -38,6 +38,9 @@ import { Typography, TypographyOptions } from '@tiptap/extension-typography';
 import ExtendedHeaders from './ExtendedHeaders';
 import ExtendedImage, { ExtendedImageOptions } from './ExtendedImage';
 
+import { common, createLowlight } from 'lowlight';
+const lowlight = createLowlight(common);
+
 export interface StarterKitOptions {
   bold: Partial<BoldOptions> | false;
   bulletList: Partial<BulletListOptions> | false;
@@ -67,8 +70,35 @@ export interface StarterKitOptions {
   text: false;
 }
 
-export default Extension.create<StarterKitOptions>({
-  name: 'defaultKit',
+interface AmplifyKitProps {
+  configure?: Partial<StarterKitOptions>;
+  extensions: Extensions;
+}
+
+const AmplifyKit = ({ configure, extensions }: AmplifyKitProps): Extensions => {
+  const defaults: Partial<StarterKitOptions> = {
+    codeBlockLowlight: { lowlight },
+    highlight: { multicolor: true },
+    table: { resizable: true },
+    image: {
+      allowBase64: true,
+      onImageUpload: undefined,
+    },
+    placeholder: {
+      placeholder: 'Add text and content here...',
+    },
+    textAlign: {
+      types: ['heading', 'paragraph', 'img'],
+    },
+  };
+  return [
+    DefaultKit.configure(mergeDefaults(defaults, configure)),
+    ...extensions,
+  ];
+};
+
+const DefaultKit = Extension.create<StarterKitOptions>({
+  name: 'AmplifyKit',
   addExtensions() {
     const extensions = [];
 
@@ -181,3 +211,24 @@ export default Extension.create<StarterKitOptions>({
     return extensions;
   },
 });
+
+function mergeDefaults(
+  defaultOptions: Partial<StarterKitOptions>,
+  userOptions?: Partial<StarterKitOptions>
+) {
+  if (!userOptions) return defaultOptions;
+  const mergedOptions = { ...defaultOptions };
+  for (const key in userOptions) {
+    const typedKey = key as keyof StarterKitOptions;
+    const property = userOptions[typedKey];
+    //@ts-expect-error - Typescript shits the bed here because the union type is just too complex for it to handle
+    if (!property) mergedOptions[typedKey] = property;
+    mergedOptions[typedKey] = {
+      ...defaultOptions[typedKey],
+      ...userOptions[typedKey],
+    };
+  }
+  return mergedOptions;
+}
+
+export { AmplifyKit, DefaultKit };
