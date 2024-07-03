@@ -1,5 +1,5 @@
 import { render, screen, userEvent } from '../../tests/test-utils';
-import Unauthorized from './Unauthorized';
+import { Unauthorized } from './Unauthorized';
 
 test('Clicking apply for access opens tab', async () => {
   window.open = vi.fn();
