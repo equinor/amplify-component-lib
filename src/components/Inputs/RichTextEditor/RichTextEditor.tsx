@@ -1,13 +1,7 @@
 import { FC, useMemo } from 'react';
 
 import { AmplifyKit } from './custom-extensions/DefaultKit';
-import {
-  EditorEvents,
-  useEditor,
-  EditorContent,
-  Extensions,
-  Editor,
-} from '@tiptap/react';
+import { useEditor, EditorContent, Extensions, Editor } from '@tiptap/react';
 
 import MenuBar from './MenuBar/MenuBar';
 import { Wrapper } from './RichTextEditor.styles';
@@ -43,17 +37,19 @@ const string = `
 </p>
 `;
 
+interface FeaturesProps {
+  features?: RichTextEditorFeatures[];
+  extendFeatures?: RichTextEditorFeatures[];
+  removeFeatures?: RichTextEditorFeatures[];
+  onImageUpload?: OnImageUploadFn;
+}
+
 const useFeatures = ({
   features,
   extendFeatures,
   removeFeatures,
   onImageUpload,
-}: {
-  features?: RichTextEditorFeatures[];
-  extendFeatures?: RichTextEditorFeatures[];
-  removeFeatures?: RichTextEditorFeatures[];
-  onImageUpload?: OnImageUploadFn;
-}) => {
+}: FeaturesProps) => {
   /* c8 ignore nextline */
   if (features && (extendFeatures ?? removeFeatures)) {
     throw new Error(
@@ -84,6 +80,29 @@ const useFeatures = ({
   return usingFeatures;
 };
 
+interface AmplifyKitProps {
+  features?: RichTextEditorFeatures[];
+  placeholder?: string;
+  onImageUpload?: OnImageUploadFn;
+}
+
+const useAmplifyKit = ({
+  features,
+  placeholder,
+  onImageUpload,
+}: AmplifyKitProps) => {
+  return useMemo(
+    () =>
+      AmplifyKit.configure({
+        placeholder: { placeholder },
+        image: features?.includes(RichTextEditorFeatures.IMAGES)
+          ? { onImageUpload }
+          : false,
+      }),
+    [onImageUpload, placeholder]
+  );
+};
+
 const RichTextEditor: FC<RichTextEditorProps> = ({
   value = string,
   onChange,
@@ -104,19 +123,11 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     onImageUpload,
   });
 
-  const extensions = useMemo(
-    () => [
-      AmplifyKit.configure({
-        image: { onImageUpload },
-        placeholder: { placeholder },
-      }),
-    ],
-    [onImageUpload, placeholder]
-  );
-
-  const handleOnUpdate = ({ editor }: EditorEvents['update']) => {
-    onChange(editor.getHTML());
-  };
+  const extensions = useAmplifyKit({
+    placeholder,
+    onImageUpload,
+    features: usingFeatures,
+  });
 
   return (
     <Wrapper
@@ -127,8 +138,8 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     >
       <EditorProvider
         value={value}
-        extensions={extensions}
-        onUpdate={handleOnUpdate}
+        extensions={[extensions]}
+        onUpdate={onChange}
       >
         {(editor) => (
           <div>
@@ -149,19 +160,21 @@ interface EditorProviderProps {
   children: (editor: Editor) => JSX.Element;
   value: string | null | undefined;
   extensions: Extensions;
-  onUpdate: (event: EditorEvents['update']) => void;
+  onUpdate: (html: string) => void;
 }
 
-const EditorProvider = ({
+const EditorProvider: FC<EditorProviderProps> = ({
   children,
   extensions,
   onUpdate,
   value,
-}: EditorProviderProps) => {
+}) => {
   const editor = useEditor({
     content: value,
     extensions,
-    onUpdate,
+    onUpdate: ({ editor }) => {
+      onUpdate(editor.getHTML());
+    },
   });
 
   if (!editor) return null;
