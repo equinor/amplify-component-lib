@@ -124,7 +124,7 @@ const CompoundComponentString = `
 
 export const CompoundComponent: StoryFn<RichTextEditorProps> = () => {
   const padding = 'md';
-  const maxHeight = '200px';
+  const maxHeight = '1600px';
   const lightBackground = false;
   const border = true;
 
