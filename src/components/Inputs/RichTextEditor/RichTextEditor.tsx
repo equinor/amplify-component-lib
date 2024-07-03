@@ -89,7 +89,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   value = string,
   onChange,
   onImageUpload,
-  placeholder = 'Suck it',
+  placeholder,
   features,
   extendFeatures,
   removeFeatures,
@@ -108,12 +108,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   const extensions = useMemo(
     () => [
       AmplifyKit.configure({
-        image: {
-          onImageUpload: () => {
-            console.log('rex Image uploaded');
-            return Promise.resolve({ b64: 'rex', url: 'rex' });
-          },
-        },
+        image: { onImageUpload },
         placeholder: { placeholder },
       }),
       Counter,
