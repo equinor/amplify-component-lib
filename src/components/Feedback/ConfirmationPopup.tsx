@@ -11,6 +11,10 @@ const StyledDialog = styled(Dialog)`
   min-width: 400px;
 `;
 
+const CloseButton = styled(Button)`
+  min-width: 40px;
+`;
+
 const DialogHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -76,9 +80,9 @@ const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
         >
           <DialogHeader data-testid="dialog-header">
             {title}
-            <Button variant="ghost_icon" onClick={onClose}>
+            <CloseButton variant="ghost_icon" onClick={onClose}>
               <Icon data={close} />
-            </Button>
+            </CloseButton>
           </DialogHeader>
           <Dialog.CustomContent>
             {body && <Typography variant="body_short">{body}</Typography>}
