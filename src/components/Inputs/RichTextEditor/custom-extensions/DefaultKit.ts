@@ -75,6 +75,8 @@ type ExtensionsMap = {
   extension: AnyExtension;
 };
 
+// This is where you add extensions that should come with the AmplifyKit
+// Make sure the name matches a key in the AmplifyKitOptions interface so users can configure them externally
 const extensions: ExtensionsMap[] = [
   { name: 'bold', extension: Bold },
   { name: 'bulletList', extension: BulletList },
