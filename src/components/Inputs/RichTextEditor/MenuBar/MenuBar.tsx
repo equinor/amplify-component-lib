@@ -25,12 +25,12 @@ import MenuButton from './MenuButton';
 
 const { colors, spacings } = tokens;
 
-const Wrapper = styled.div`
+const MenuBarWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Container = styled.div`
+const MenuBarContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${spacings.comfortable.small};
@@ -46,8 +46,8 @@ interface MenuBarProps {
 
 const MenuBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
   return (
-    <Wrapper>
-      <Container>
+    <MenuBarWrapper>
+      <MenuBarContainer>
         <History editor={editor} features={features} />
         <Formating editor={editor} features={features} />
         <Headers editor={editor} features={features} />
@@ -63,12 +63,13 @@ const MenuBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
         />
         <Table editor={editor} features={features} />
         <ClearFormating editor={editor} features={features} />
-      </Container>
+      </MenuBarContainer>
       <TableBar editor={editor} features={features} />
-    </Wrapper>
+    </MenuBarWrapper>
   );
 };
 
+// TODO: go through these and make sure they all use FC
 export {
   MenuBar,
   History,

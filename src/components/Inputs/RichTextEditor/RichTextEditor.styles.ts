@@ -13,7 +13,7 @@ interface WrapperProps {
   $border?: boolean;
 }
 
-export const Wrapper = styled.div<WrapperProps>`
+export const EditorWrapper = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;

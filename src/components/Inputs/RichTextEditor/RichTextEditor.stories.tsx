@@ -1,10 +1,17 @@
 import { StoryFn } from '@storybook/react';
 
-import RichTextEditor, { RichTextEditorProps } from './RichTextEditor';
+import RichTextEditor, {
+  RichTextEditorProps,
+  EditorProvider,
+  EditorWrapper,
+  EditorContent,
+  MenuBar,
+} from './RichTextEditor';
 import {
   DEFAULT_FEATURES,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
+import Counter from './custom-extensions/Counter';
 
 export default {
   title: 'Inputs/RichTextEditor',
@@ -106,5 +113,73 @@ export const MaxHeight: StoryFn<RichTextEditorProps> = (args) => {
       }
       maxHeight="200px"
     />
+  );
+};
+
+const CompoundComponentString = `
+<p>
+  This is still the text editor you’re used to, but enriched with node views.
+</p>
+`;
+
+export const CompoundComponent: StoryFn<RichTextEditorProps> = () => {
+  const padding = 'md';
+  const maxHeight = '200px';
+  const lightBackground = false;
+  const border = true;
+
+  return (
+    <EditorWrapper
+      $padding={padding}
+      $maxHeight={maxHeight}
+      $lightBackground={lightBackground}
+      $border={border}
+    >
+      <EditorProvider content={CompoundComponentString} extensions={[Counter]}>
+        {(editor) => (
+          <div>
+            <EditorContent editor={editor} />
+            <MenuBar editor={editor} features={DEFAULT_FEATURES} />
+          </div>
+        )}
+      </EditorProvider>
+    </EditorWrapper>
+  );
+};
+
+const string = `
+<p>
+  This is still the text editor you’re used to, but enriched with node views.
+</p>
+<counter count="0">
+  <p>This is editable. You can create a new component by pressing Mod+Enter.</p>
+</counter>
+<p>
+  Did you see that? That’s a React component. We are really living in the future.
+</p>
+`;
+
+export const CustomExtensions: StoryFn<RichTextEditorProps> = () => {
+  const padding = 'md';
+  const maxHeight = '200px';
+  const lightBackground = false;
+  const border = true;
+
+  return (
+    <EditorWrapper
+      $padding={padding}
+      $maxHeight={maxHeight}
+      $lightBackground={lightBackground}
+      $border={border}
+    >
+      <EditorProvider content={string} extensions={[Counter]}>
+        {(editor) => (
+          <div>
+            <MenuBar editor={editor} features={DEFAULT_FEATURES} />
+            <EditorContent editor={editor} />
+          </div>
+        )}
+      </EditorProvider>
+    </EditorWrapper>
   );
 };
