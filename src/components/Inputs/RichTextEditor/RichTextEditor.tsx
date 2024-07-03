@@ -68,7 +68,6 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
 
   const usingFeatures = useMemo(() => {
     if (features) return features;
-
     return [...DEFAULT_FEATURES, ...(extendFeatures ?? [])]
       .filter((feature) => !removeFeatures?.includes(feature))
       .filter((value, index, array) => index === array.indexOf(value));
@@ -87,10 +86,17 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   }
 
   const extensions = useMemo(
-    () =>
-      AmplifyKit({
-        extensions: [Counter],
+    () => [
+      AmplifyKit.configure({
+        image: {
+          onImageUpload,
+        },
+        placeholder: {
+          placeholder,
+        },
       }),
+      Counter,
+    ],
     [onImageUpload, placeholder]
   );
 

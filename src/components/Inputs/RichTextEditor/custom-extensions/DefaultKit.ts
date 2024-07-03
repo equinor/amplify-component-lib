@@ -1,4 +1,4 @@
-import { Extension, Extensions } from '@tiptap/core';
+import { Extension, Extensions, AnyExtension } from '@tiptap/core';
 import { Bold, BoldOptions } from '@tiptap/extension-bold';
 import { BulletList, BulletListOptions } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
@@ -41,7 +41,7 @@ import ExtendedImage, { ExtendedImageOptions } from './ExtendedImage';
 import { common, createLowlight } from 'lowlight';
 const lowlight = createLowlight(common);
 
-export interface StarterKitOptions {
+interface AmplifyKitOptions {
   bold: Partial<BoldOptions> | false;
   bulletList: Partial<BulletListOptions> | false;
   hardBreak: Partial<HardBreakOptions> | false;
@@ -53,8 +53,6 @@ export interface StarterKitOptions {
   paragraph: Partial<ParagraphOptions> | false;
   codeBlockLowlight: Partial<CodeBlockLowlightOptions> | false;
   color: Partial<ColorOptions> | false;
-  dropCursor: Partial<DropcursorOptions> | false;
-  gapCursor: false;
   image: Partial<ExtendedImageOptions> | false;
   highlight: Partial<HighlightOptions> | false;
   link: Partial<LinkOptions> | false;
@@ -66,169 +64,96 @@ export interface StarterKitOptions {
   typography: Partial<TypographyOptions> | false;
   textStyle: Partial<TextStyleOptions> | false;
   textAlign: Partial<TextAlignOptions> | false;
+  dropCursor: Partial<DropcursorOptions> | false;
+  gapCursor: false;
   document: false;
   text: false;
 }
 
-interface AmplifyKitProps {
-  configure?: Partial<StarterKitOptions>;
-  extensions: Extensions;
-}
-
-const AmplifyKit = ({ configure, extensions }: AmplifyKitProps): Extensions => {
-  const defaults: Partial<StarterKitOptions> = {
-    codeBlockLowlight: { lowlight },
-    highlight: { multicolor: true },
-    table: { resizable: true },
-    image: {
-      allowBase64: true,
-      onImageUpload: undefined,
-    },
-    placeholder: {
-      placeholder: 'Add text and content here...',
-    },
-    textAlign: {
-      types: ['heading', 'paragraph', 'img'],
-    },
-  };
-  return [
-    DefaultKit.configure(mergeDefaults(defaults, configure)),
-    ...extensions,
-  ];
+type ExtensionsMap = {
+  name: keyof AmplifyKitOptions;
+  extension: AnyExtension;
 };
 
-const DefaultKit = Extension.create<StarterKitOptions>({
+const AmplifyKit = Extension.create<AmplifyKitOptions>({
   name: 'AmplifyKit',
-  addExtensions() {
-    const extensions = [];
+  addExtensions(): Extensions {
+    const options = mergeDefaults({
+      options: this.options,
+      defaults: {
+        codeBlockLowlight: { lowlight },
+        highlight: { multicolor: true },
+        table: { resizable: true },
+        image: { allowBase64: true },
+        placeholder: { placeholder: 'Add text and content here...' },
+        textAlign: { types: ['heading', 'paragraph', 'img'] },
+      },
+    });
 
-    if (this.options.bold !== false) {
-      extensions.push(Bold.configure(this.options?.bold));
-    }
+    const extension: ExtensionsMap[] = [
+      { name: 'bold', extension: Bold },
+      { name: 'bulletList', extension: BulletList },
+      { name: 'document', extension: Document },
+      { name: 'hardBreak', extension: HardBreak },
+      { name: 'history', extension: History },
+      { name: 'italic', extension: Italic },
+      { name: 'listItem', extension: ListItem },
+      { name: 'orderedList', extension: OrderedList },
+      { name: 'paragraph', extension: Paragraph },
+      { name: 'text', extension: Text },
+      { name: 'codeBlockLowlight', extension: CodeBlockLowlight },
+      { name: 'color', extension: Color },
+      { name: 'dropCursor', extension: Dropcursor },
+      { name: 'gapCursor', extension: GapCursor },
+      { name: 'highlight', extension: Highlight },
+      { name: 'link', extension: Link },
+      { name: 'placeholder', extension: Placeholder },
+      { name: 'table', extension: Table },
+      { name: 'tableCell', extension: TableCell },
+      { name: 'tableHeader', extension: TableHeader },
+      { name: 'tableRow', extension: TableRow },
+      { name: 'typography', extension: Typography },
+      { name: 'textStyle', extension: TextStyle },
+      { name: 'textAlign', extension: TextAlign },
+      { name: 'image', extension: ExtendedImage },
+      { name: 'heading', extension: ExtendedHeaders },
+    ];
 
-    if (this.options.bulletList !== false) {
-      extensions.push(BulletList.configure(this.options?.bulletList));
-    }
-
-    if (this.options.document !== false) {
-      extensions.push(Document.configure(this.options?.document));
-    }
-
-    if (this.options.hardBreak !== false) {
-      extensions.push(HardBreak.configure(this.options?.hardBreak));
-    }
-
-    if (this.options.history !== false) {
-      extensions.push(History.configure(this.options?.history));
-    }
-
-    if (this.options.italic !== false) {
-      extensions.push(Italic.configure(this.options?.italic));
-    }
-
-    if (this.options.listItem !== false) {
-      extensions.push(ListItem.configure(this.options?.listItem));
-    }
-
-    if (this.options.orderedList !== false) {
-      extensions.push(OrderedList.configure(this.options?.orderedList));
-    }
-
-    if (this.options.paragraph !== false) {
-      extensions.push(Paragraph.configure(this.options?.paragraph));
-    }
-
-    if (this.options.text !== false) {
-      extensions.push(Text.configure(this.options?.text));
-    }
-
-    if (this.options.codeBlockLowlight !== false) {
-      extensions.push(
-        CodeBlockLowlight.configure(this.options?.codeBlockLowlight)
-      );
-    }
-
-    if (this.options.color !== false) {
-      extensions.push(Color.configure(this.options?.color));
-    }
-
-    if (this.options.dropCursor !== false) {
-      extensions.push(Dropcursor.configure(this.options?.dropCursor));
-    }
-
-    if (this.options.gapCursor !== false) {
-      extensions.push(GapCursor);
-    }
-
-    if (this.options.highlight !== false) {
-      extensions.push(Highlight.configure(this.options?.highlight));
-    }
-
-    if (this.options.link !== false) {
-      extensions.push(Link.configure(this.options?.link));
-    }
-
-    if (this.options.placeholder !== false) {
-      extensions.push(Placeholder.configure(this.options?.placeholder));
-    }
-
-    if (this.options.table !== false) {
-      extensions.push(Table.configure(this.options?.table));
-    }
-
-    if (this.options.tableCell !== false) {
-      extensions.push(TableCell.configure(this.options?.tableCell));
-    }
-
-    if (this.options.tableHeader !== false) {
-      extensions.push(TableHeader.configure(this.options?.tableHeader));
-    }
-
-    if (this.options.tableRow !== false) {
-      extensions.push(TableRow.configure(this.options?.tableRow));
-    }
-
-    if (this.options.typography !== false) {
-      extensions.push(Typography.configure(this.options?.typography));
-    }
-
-    if (this.options.textStyle !== false) {
-      extensions.push(TextStyle.configure(this.options?.textStyle));
-    }
-
-    if (this.options.textAlign !== false) {
-      extensions.push(TextAlign.configure(this.options?.textAlign));
-    }
-
-    if (this.options.image !== false) {
-      extensions.push(ExtendedImage.configure(this.options?.image));
-    }
-
-    if (this.options.heading !== false) {
-      extensions.push(ExtendedHeaders.configure(this.options?.heading));
-    }
-
-    return extensions;
+    return extension
+      .filter((ext) => {
+        const name = ext.name as keyof AmplifyKitOptions;
+        if (!options) return true;
+        return options[name] !== false;
+      })
+      .map((ext) => {
+        const name = ext.name as keyof AmplifyKitOptions;
+        const config = options[name];
+        if (!config) return ext.extension;
+        return ext.extension.configure(config);
+      });
   },
 });
 
-function mergeDefaults(
-  defaultOptions: Partial<StarterKitOptions>,
-  userOptions?: Partial<StarterKitOptions>
-) {
-  if (!userOptions) return defaultOptions;
-  const mergedOptions = { ...defaultOptions };
-  for (const key in userOptions) {
-    const typedKey = key as keyof StarterKitOptions;
-    const property = userOptions[typedKey];
+interface MergedDefaults {
+  options?: Partial<AmplifyKitOptions>;
+  defaults: Partial<AmplifyKitOptions>;
+}
+
+function mergeDefaults({ options, defaults }: MergedDefaults) {
+  if (!options) return defaults;
+  const mergedOptions = { ...defaults };
+  for (const key in options) {
+    const typedKey = key as keyof AmplifyKitOptions;
+    const property = options[typedKey];
     //@ts-expect-error - Typescript shits the bed here because the union type is just too complex for it to handle
     if (!property) mergedOptions[typedKey] = property;
     mergedOptions[typedKey] = {
-      ...defaultOptions[typedKey],
-      ...userOptions[typedKey],
+      ...defaults[typedKey],
+      ...options[typedKey],
     };
   }
   return mergedOptions;
 }
 
-export { AmplifyKit, DefaultKit };
+export type { AmplifyKitOptions };
+export { AmplifyKit };
