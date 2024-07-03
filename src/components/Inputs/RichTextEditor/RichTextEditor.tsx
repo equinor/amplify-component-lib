@@ -44,21 +44,18 @@ const string = `
 </p>
 `;
 
-const RichTextEditor: FC<RichTextEditorProps> = ({
-  value = string,
-  onChange,
-  onImageUpload,
-  placeholder,
+const useFeatures = ({
   features,
   extendFeatures,
   removeFeatures,
-  padding = 'md',
-  maxHeight,
-  lightBackground,
-  border = true,
+  onImageUpload,
+}: {
+  features?: RichTextEditorFeatures[];
+  extendFeatures?: RichTextEditorFeatures[];
+  removeFeatures?: RichTextEditorFeatures[];
+  onImageUpload?: OnImageUploadFn;
 }) => {
   /* c8 ignore nextline */
-
   if (features && (extendFeatures ?? removeFeatures)) {
     throw new Error(
       `Can't specify both 'features' and 'extend/remove' features!
@@ -85,15 +82,39 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     );
   }
 
+  return usingFeatures;
+};
+
+const RichTextEditor: FC<RichTextEditorProps> = ({
+  value = string,
+  onChange,
+  onImageUpload,
+  placeholder = 'Suck it',
+  features,
+  extendFeatures,
+  removeFeatures,
+  padding = 'md',
+  maxHeight,
+  lightBackground,
+  border = true,
+}) => {
+  const usingFeatures = useFeatures({
+    features,
+    extendFeatures,
+    removeFeatures,
+    onImageUpload,
+  });
+
   const extensions = useMemo(
     () => [
       AmplifyKit.configure({
         image: {
-          onImageUpload,
+          onImageUpload: () => {
+            console.log('rex Image uploaded');
+            return Promise.resolve({ b64: 'rex', url: 'rex' });
+          },
         },
-        placeholder: {
-          placeholder,
-        },
+        placeholder: { placeholder },
       }),
       Counter,
     ],
