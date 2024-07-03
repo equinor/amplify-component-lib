@@ -8,7 +8,6 @@ import {
   Extensions,
   Editor,
 } from '@tiptap/react';
-import Counter from './custom-extensions/Counter';
 
 import MenuBar from './MenuBar/MenuBar';
 import { Wrapper } from './RichTextEditor.styles';
@@ -111,13 +110,12 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
         image: { onImageUpload },
         placeholder: { placeholder },
       }),
-      Counter,
     ],
     [onImageUpload, placeholder]
   );
 
   const handleOnUpdate = ({ editor }: EditorEvents['update']) => {
-    onChange?.(editor.getHTML());
+    onChange(editor.getHTML());
   };
 
   return (

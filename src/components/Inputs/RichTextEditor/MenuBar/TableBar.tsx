@@ -2,7 +2,6 @@ import { FC } from 'react';
 
 import { table_chart } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useCurrentEditor } from '@tiptap/react';
 
 import {
   amplify_table_add_column_left,
@@ -18,7 +17,7 @@ import {
 } from '../../../Icons/AmplifyIcons';
 import { Section } from './MenuBar.styles';
 import MenuButton from './MenuButton';
-import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
+import { EditorPanel } from '../RichTextEditor.types';
 
 import styled from 'styled-components';
 

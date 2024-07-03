@@ -75,12 +75,42 @@ type ExtensionsMap = {
   extension: AnyExtension;
 };
 
+const extensions: ExtensionsMap[] = [
+  { name: 'bold', extension: Bold },
+  { name: 'bulletList', extension: BulletList },
+  { name: 'document', extension: Document },
+  { name: 'hardBreak', extension: HardBreak },
+  { name: 'history', extension: History },
+  { name: 'italic', extension: Italic },
+  { name: 'listItem', extension: ListItem },
+  { name: 'orderedList', extension: OrderedList },
+  { name: 'paragraph', extension: Paragraph },
+  { name: 'text', extension: Text },
+  { name: 'codeBlockLowlight', extension: CodeBlockLowlight },
+  { name: 'color', extension: Color },
+  { name: 'dropCursor', extension: Dropcursor },
+  { name: 'gapCursor', extension: GapCursor },
+  { name: 'highlight', extension: Highlight },
+  { name: 'link', extension: Link },
+  { name: 'placeholder', extension: Placeholder },
+  { name: 'table', extension: Table },
+  { name: 'tableCell', extension: TableCell },
+  { name: 'tableHeader', extension: TableHeader },
+  { name: 'tableRow', extension: TableRow },
+  { name: 'typography', extension: Typography },
+  { name: 'textStyle', extension: TextStyle },
+  { name: 'textAlign', extension: TextAlign },
+  { name: 'image', extension: ExtendedImage },
+  { name: 'heading', extension: ExtendedHeaders },
+];
+
 const AmplifyKit = Extension.create<AmplifyKitOptions>({
   name: 'AmplifyKit',
   addExtensions(): Extensions {
     const options = mergeDefaults({
       options: this.options,
       defaults: {
+        // Default extension configurations
         codeBlockLowlight: { lowlight },
         highlight: { multicolor: true },
         table: { resizable: true },
@@ -90,36 +120,7 @@ const AmplifyKit = Extension.create<AmplifyKitOptions>({
       },
     });
 
-    const extension: ExtensionsMap[] = [
-      { name: 'bold', extension: Bold },
-      { name: 'bulletList', extension: BulletList },
-      { name: 'document', extension: Document },
-      { name: 'hardBreak', extension: HardBreak },
-      { name: 'history', extension: History },
-      { name: 'italic', extension: Italic },
-      { name: 'listItem', extension: ListItem },
-      { name: 'orderedList', extension: OrderedList },
-      { name: 'paragraph', extension: Paragraph },
-      { name: 'text', extension: Text },
-      { name: 'codeBlockLowlight', extension: CodeBlockLowlight },
-      { name: 'color', extension: Color },
-      { name: 'dropCursor', extension: Dropcursor },
-      { name: 'gapCursor', extension: GapCursor },
-      { name: 'highlight', extension: Highlight },
-      { name: 'link', extension: Link },
-      { name: 'placeholder', extension: Placeholder },
-      { name: 'table', extension: Table },
-      { name: 'tableCell', extension: TableCell },
-      { name: 'tableHeader', extension: TableHeader },
-      { name: 'tableRow', extension: TableRow },
-      { name: 'typography', extension: Typography },
-      { name: 'textStyle', extension: TextStyle },
-      { name: 'textAlign', extension: TextAlign },
-      { name: 'image', extension: ExtendedImage },
-      { name: 'heading', extension: ExtendedHeaders },
-    ];
-
-    return extension
+    return extensions
       .filter((ext) => {
         const name = ext.name as keyof AmplifyKitOptions;
         if (!options) return true;
