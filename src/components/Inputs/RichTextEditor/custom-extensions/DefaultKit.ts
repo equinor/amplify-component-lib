@@ -12,7 +12,6 @@ import {
   OrderedListOptions,
 } from '@tiptap/extension-ordered-list';
 import { Paragraph, ParagraphOptions } from '@tiptap/extension-paragraph';
-import { Text } from '@tiptap/extension-text';
 
 import {
   CodeBlockLowlight,
@@ -37,6 +36,7 @@ import { Typography, TypographyOptions } from '@tiptap/extension-typography';
 
 import ExtendedHeaders from './ExtendedHeaders';
 import ExtendedImage, { ExtendedImageOptions } from './ExtendedImage';
+import { Text } from '@tiptap/extension-text';
 
 import { common, createLowlight } from 'lowlight';
 const lowlight = createLowlight(common);

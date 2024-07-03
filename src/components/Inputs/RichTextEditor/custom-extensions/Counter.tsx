@@ -7,7 +7,7 @@ import {
 } from '@tiptap/react';
 import { Button } from '../../../';
 
-const Component = (props) => {
+const Component = (props: any) => {
   const [count, setCount] = useState(props.node.attrs.count);
 
   const increase = () => {
@@ -47,6 +47,9 @@ export default Node.create({
       },
     ];
   },
+  renderHTML({ HTMLAttributes }) {
+    return ['counter', mergeAttributes(HTMLAttributes)];
+  },
   addKeyboardShortcuts() {
     return {
       'Mod-Enter': () => {
@@ -59,9 +62,6 @@ export default Node.create({
           .run();
       },
     };
-  },
-  renderHTML({ HTMLAttributes }) {
-    return ['counter', mergeAttributes(HTMLAttributes)];
   },
   addNodeView() {
     return ReactNodeViewRenderer(Component);
