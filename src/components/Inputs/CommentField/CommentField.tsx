@@ -69,6 +69,10 @@ export interface CommentFieldProps {
   onDelete: (id: string) => void;
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const CommentField: FC<CommentFieldProps> = ({
   value,
   createdDate,

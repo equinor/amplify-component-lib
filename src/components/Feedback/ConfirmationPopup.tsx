@@ -54,6 +54,10 @@ export interface ConfirmationPopupProps {
   isDismissable?: boolean;
 }
 
+/**
+ * @deprecated Being deprecated, will implement new Dialog component that will resolve this use case
+ */
+
 const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(
   (
     {

@@ -4,7 +4,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import IconToggleButton, { IconToggleButtonProps } from './IconToggleButton';
 
 export default {
-  title: 'Inputs/IconToggleButton',
+  title: 'Deprecated/Inputs/IconToggleButton',
   component: IconToggleButton,
   argTypes: {
     initialState: { control: 'boolean' },
