@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+
 import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
