@@ -10,7 +10,7 @@ export interface ExtendedImageOptions {
 }
 
 declare module '@tiptap/extension-image' {
-  type ImageOptions = ExtendedImageOptions
+  interface ImageOptions extends ExtendedImageOptions {}
 }
 
 /* c8 ignore start */

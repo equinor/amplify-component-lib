@@ -5,29 +5,29 @@ import OptionalTooltip from '../../../DataDisplay/OptionalTooltip';
 import { MenuButtonStyle } from './MenuBar.styles';
 
 interface MenuButtonProps {
+  ref?: React.RefObject<HTMLButtonElement>;
   children?: React.ReactNode;
   icon: IconData;
   onClick: () => void;
+  active?: boolean;
+  disabled?: boolean;
+  tooltip?: string;
   customColors?: {
     resting: string;
     hover: string;
     backgroundHover: string;
   };
-  active?: boolean;
-  disabled?: boolean;
-  tooltip?: string;
-  ref?: React.RefObject<HTMLButtonElement>;
 }
 
 const MenuButton: React.FC<MenuButtonProps> = ({
-  children,
+  ref,
   icon,
   onClick,
+  children,
   customColors,
   active = false,
   disabled = false,
   tooltip,
-  ref,
 }) => (
   <OptionalTooltip title={tooltip} placement="bottom">
     <MenuButtonStyle

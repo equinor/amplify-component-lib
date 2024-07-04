@@ -28,6 +28,6 @@ export const useAmplifyKit = ({
           ? { onImageUpload }
           : false,
       }),
-    [onImageUpload, placeholder]
+    [onImageUpload, placeholder, features]
   );
 };
