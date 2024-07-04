@@ -5,7 +5,7 @@ import InfoElement, {
 } from 'src/components/DataDisplay/InfoElement/InfoElement';
 
 export default {
-  title: 'Deprecated/Data Display/InfoElement',
+  title: 'Data Display/InfoElement',
   component: InfoElement,
   argTypes: {
     title: { control: 'text' },
