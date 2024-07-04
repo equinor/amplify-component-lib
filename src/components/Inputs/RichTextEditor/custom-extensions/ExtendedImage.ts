@@ -10,7 +10,11 @@ export interface ExtendedImageOptions {
 }
 
 declare module '@tiptap/extension-image' {
-  interface ImageOptions extends ExtendedImageOptions {}
+  interface ImageOptions {
+    inline: boolean;
+    allowBase64: boolean;
+    onImageUpload?: OnImageUploadFn;
+  }
 }
 
 /* c8 ignore start */
