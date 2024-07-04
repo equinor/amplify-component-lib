@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
@@ -19,29 +20,26 @@ interface MenuButtonProps {
   };
 }
 
-const MenuButton: React.FC<MenuButtonProps> = ({
-  ref,
-  icon,
-  onClick,
-  children,
-  customColors,
-  active = false,
-  disabled = false,
-  tooltip,
-}) => (
-  <OptionalTooltip title={tooltip} placement="bottom">
-    <MenuButtonStyle
-      ref={ref}
-      $active={active}
-      type="button"
-      $customColors={customColors}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      <Icon data={icon} />
-      {children}
-    </MenuButtonStyle>
-  </OptionalTooltip>
+const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
+  (
+    { icon, onClick, customColors, active = false, disabled = false, tooltip },
+    ref
+  ) => (
+    <OptionalTooltip title={tooltip} placement="bottom">
+      <MenuButtonStyle
+        ref={ref}
+        $active={active}
+        type="button"
+        $customColors={customColors}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        <Icon data={icon} />
+      </MenuButtonStyle>
+    </OptionalTooltip>
+  )
 );
+
+MenuButton.displayName = 'MenuButton';
 
 export default MenuButton;
