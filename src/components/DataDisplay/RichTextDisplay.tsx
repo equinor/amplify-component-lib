@@ -3,7 +3,7 @@ import { FC, useEffect, useRef } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { AmplifyKit } from '../Inputs/RichTextEditor/custom-extensions/DefaultKit';
 
-import { EditorWrapper } from '../Inputs/RichTextEditor/RichTextEditor.styles';
+import { EditorStyling } from '../Inputs/RichTextEditor/RichTextEditor.styles';
 
 export interface RichTextDisplayProps {
   value: string | null | undefined;
@@ -36,9 +36,9 @@ const RichTextDisplay: FC<RichTextDisplayProps> = ({
   }, [editor, value]);
 
   return (
-    <EditorWrapper $lightBackground={lightBackground} $padding={padding}>
+    <EditorStyling $lightBackground={lightBackground} $padding={padding}>
       <EditorContent editor={editor} readOnly />
-    </EditorWrapper>
+    </EditorStyling>
   );
 };
 

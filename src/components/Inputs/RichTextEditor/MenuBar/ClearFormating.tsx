@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { format_clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -13,7 +14,7 @@ const Divider = styled.hr`
   background: ${colors.ui.background__medium.rgba};
 `;
 
-const ClearFormating = ({ editor, features }: EditorPanel) => {
+const ClearFormating: FC<EditorPanel> = ({ editor, features }) => {
   const clearFormatting = () =>
     editor.chain().focus().clearNodes().unsetAllMarks().run();
   if (!features.includes(RichTextEditorFeatures.CLEAR_FORMATTING)) return;

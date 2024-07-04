@@ -13,7 +13,7 @@ interface WrapperProps {
   $border?: boolean;
 }
 
-export const EditorWrapper = styled.div<WrapperProps>`
+export const EditorStyling = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -23,35 +23,6 @@ export const EditorWrapper = styled.div<WrapperProps>`
   border: ${(props) =>
     props.$border ? `1px solid ${colors.ui.background__medium.rgba}` : 'none'};
   border-bottom: none;
-
-  .react-component {
-    background-color: rgba(88, 5, 255, 0.05);
-    border: 2px solid #6a00f5;
-    border-radius: 0.5rem;
-    margin: 2rem 0;
-    position: relative;
-
-    label {
-      background-color: #6a00f5;
-      border-radius: 0 0 0.5rem 0;
-      color: white;
-      font-size: 0.75rem;
-      font-weight: bold;
-      padding: 0.25rem 0.5rem;
-      position: absolute;
-      top: 0;
-    }
-
-    .content {
-      padding: 0rem 1rem 1rem;
-      &.is-editable {
-        border: 2px dashed lightgray;
-        border-radius: 0.5rem;
-        margin: 2.5rem 1rem 1rem;
-        padding: 0.5rem;
-      }
-    }
-  }
 
   &:has(div[contenteditable='true']) {
     height: inherit;

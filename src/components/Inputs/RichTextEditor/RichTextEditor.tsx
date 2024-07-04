@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { EditorContent } from '@tiptap/react';
 
-import MenuBar from './MenuBar/MenuBar';
-import { EditorWrapper } from './RichTextEditor.styles';
+import AmplifyBar from './MenuBar/MenuBar';
+import { EditorStyling } from './RichTextEditor.styles';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,
@@ -47,7 +47,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     onImageUpload,
   });
   return (
-    <EditorWrapper
+    <EditorStyling
       $padding={padding}
       $maxHeight={maxHeight}
       $lightBackground={lightBackground}
@@ -62,7 +62,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       >
         {(editor) => (
           <div>
-            <MenuBar
+            <AmplifyBar
               editor={editor}
               features={usingFeatures}
               onImageUpload={onImageUpload}
@@ -71,15 +71,15 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
           </div>
         )}
       </EditorProvider>
-    </EditorWrapper>
+    </EditorStyling>
   );
 };
 
 export {
-  EditorWrapper,
+  EditorStyling,
   EditorProvider,
   EditorContent,
-  MenuBar,
+  AmplifyBar,
   useEditor,
   useAmplifyKit,
   AmplifyKit,

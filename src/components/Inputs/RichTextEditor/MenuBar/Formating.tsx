@@ -1,15 +1,16 @@
+import { FC } from 'react';
 import { format_bold, format_italics } from '@equinor/eds-icons';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import { Section } from './MenuBar.styles';
+import { MenuSection } from './MenuBar.styles';
 import MenuButton from './MenuButton';
 
-const Formating = ({ editor, features }: EditorPanel) => {
+const TextFormating: FC<EditorPanel> = ({ editor, features }) => {
   const toggleBold = () => editor.chain().focus().toggleBold().run();
   const toggleItalic = () => editor.chain().focus().toggleItalic().run();
   if (!features.includes(RichTextEditorFeatures.FORMATTING)) return;
   return (
-    <Section>
+    <MenuSection>
       <MenuButton
         active={editor.isActive('bold')}
         icon={format_bold}
@@ -20,8 +21,8 @@ const Formating = ({ editor, features }: EditorPanel) => {
         icon={format_italics}
         onClick={toggleItalic}
       />
-    </Section>
+    </MenuSection>
   );
 };
 
-export { Formating };
+export { TextFormating };

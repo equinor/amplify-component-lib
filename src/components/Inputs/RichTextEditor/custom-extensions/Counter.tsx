@@ -6,24 +6,48 @@ import {
   NodeViewWrapper,
 } from '@tiptap/react';
 import { Button } from '../../../';
+import styled from 'styled-components';
+
+const StyledNodeViewWrapper = styled(NodeViewWrapper)`
+  display: grid;
+  gap: 1rem;
+  padding: 2rem 1rem 1.2rem;
+
+  background-color: rgba(88, 5, 255, 0.05);
+  border: 2px solid #6a00f5;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+  position: relative;
+
+  label {
+    background-color: #6a00f5;
+    border-radius: 0 0 0.5rem 0;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    top: 0;
+  }
+
+  .content {
+    padding: 0rem 1rem 1rem;
+    border: 2px dashed lightgray;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+  }
+`;
 
 const Component = (props: any) => {
   const [count, setCount] = useState(props.node.attrs.count);
-
-  const increase = () => {
-    setCount(count + 1);
-  };
-
   return (
-    <NodeViewWrapper className="react-component">
+    <StyledNodeViewWrapper className="react-component">
       <label contentEditable={false}>React Component</label>
-      <NodeViewContent className="content is-editable" />
-      <div className="content" contentEditable={false}>
-        <Button onClick={increase}>
-          This button has been clicked {count} times.
-        </Button>
-      </div>
-    </NodeViewWrapper>
+      <NodeViewContent className="content" />
+      <Button onClick={() => setCount(count + 1)}>
+        This button has been clicked {count} times.
+      </Button>
+    </StyledNodeViewWrapper>
   );
 };
 

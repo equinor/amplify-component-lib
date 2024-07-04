@@ -1,16 +1,17 @@
+import { FC } from 'react';
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import { Section } from './MenuBar.styles';
+import { MenuSection } from './MenuBar.styles';
 import MenuButton from './MenuButton';
 import { amplify_h2, amplify_h3 } from 'src/components/Icons/AmplifyIcons';
 
-const Headers = ({ editor, features }: EditorPanel) => {
+const TextHeaders: FC<EditorPanel> = ({ editor, features }) => {
   const toggleH2 = () =>
     editor.chain().focus().toggleHeading({ level: 2 }).run();
   const toggleH3 = () =>
     editor.chain().focus().toggleHeading({ level: 3 }).run();
   if (!features.includes(RichTextEditorFeatures.HEADERS)) return;
   return (
-    <Section>
+    <MenuSection>
       <MenuButton
         active={editor.isActive('heading', { level: 2 })}
         icon={amplify_h2}
@@ -21,8 +22,8 @@ const Headers = ({ editor, features }: EditorPanel) => {
         icon={amplify_h3}
         onClick={toggleH3}
       />
-    </Section>
+    </MenuSection>
   );
 };
 
-export { Headers };
+export { TextHeaders };

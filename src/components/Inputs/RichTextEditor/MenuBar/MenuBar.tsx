@@ -8,29 +8,30 @@ import {
   RichTextEditorFeatures,
 } from '../RichTextEditor.types';
 import AddImage from './AddImage';
-import Links from './Links';
-import TableBar from './TableBar';
+import { TextLinks } from './Links';
+import { TableMenuBar } from './Table/TableBar';
 import TextColor from './TextColor';
 
 import styled from 'styled-components';
-import { History } from './History';
-import { Formating } from './Formating';
-import { Headers } from './Headers';
-import { Lists } from './Lists';
-import { Code } from './Code';
-import { Alignment } from './Alignment';
-import { Table } from './Table';
+import { TextHistory } from './History';
+import { TextFormating } from './Formating';
+import { TextHeaders } from './Headers';
+import { TextLists } from './Lists';
+import { TextCode } from './Code';
+import { TextAlignment } from './Alignment';
+import { TextTable } from './Table/Table';
 import { ClearFormating } from './ClearFormating';
 import MenuButton from './MenuButton';
+import { MenuSection } from './MenuBar.styles';
 
 const { colors, spacings } = tokens;
 
-const MenuBarWrapper = styled.div`
+const MenuBars = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const MenuBarContainer = styled.div`
+const MenuBar = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${spacings.comfortable.small};
@@ -44,46 +45,48 @@ interface MenuBarProps {
   onImageUpload?: OnImageUploadFn;
 }
 
-const MenuBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
+const AmplifyBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
   return (
-    <MenuBarWrapper>
-      <MenuBarContainer>
-        <History editor={editor} features={features} />
-        <Formating editor={editor} features={features} />
-        <Headers editor={editor} features={features} />
-        <Lists editor={editor} features={features} />
+    <MenuBars>
+      {/* Main Bar */}
+      <MenuBar>
+        <TextHistory editor={editor} features={features} />
+        <TextFormating editor={editor} features={features} />
+        <TextHeaders editor={editor} features={features} />x
+        <TextLists editor={editor} features={features} />
         <TextColor editor={editor} features={features} />
-        <Code editor={editor} features={features} />
-        <Alignment editor={editor} features={features} />
-        <Links editor={editor} features={features} />
+        <TextCode editor={editor} features={features} />
+        <TextAlignment editor={editor} features={features} />
+        <TextLinks editor={editor} features={features} />
         <AddImage
           editor={editor}
           features={features}
           onImageUpload={onImageUpload}
         />
-        <Table editor={editor} features={features} />
+        <TextTable editor={editor} features={features} />
         <ClearFormating editor={editor} features={features} />
-      </MenuBarContainer>
-      <TableBar editor={editor} features={features} />
-    </MenuBarWrapper>
+      </MenuBar>
+      {/* Sub Bar */}
+      <TableMenuBar editor={editor} />
+    </MenuBars>
   );
 };
 
-// TODO: go through these and make sure they all use FC
 export {
   MenuBar,
-  History,
-  Formating,
-  Headers,
-  Lists,
+  TextHistory,
+  TextFormating,
+  TextHeaders,
+  TextLists,
   TextColor,
-  Code,
-  Alignment,
-  Links,
+  TextCode,
+  TextAlignment,
+  TextLinks,
   AddImage,
-  Table,
+  TextTable,
   ClearFormating,
   MenuButton,
-  TableBar,
+  MenuSection,
+  AmplifyBar,
 };
-export default MenuBar;
+export default AmplifyBar;

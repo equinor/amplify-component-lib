@@ -1,9 +1,13 @@
+import { FC } from 'react';
 import { table_chart } from '@equinor/eds-icons';
 
-import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import MenuButton from './MenuButton';
+import {
+  EditorPanel,
+  RichTextEditorFeatures,
+} from '../../RichTextEditor.types';
+import MenuButton from '../MenuButton';
 
-const Table = ({ editor, features }: EditorPanel) => {
+const TextTable: FC<EditorPanel> = ({ editor, features }) => {
   const createTable = () => {
     editor
       .chain()
@@ -16,4 +20,4 @@ const Table = ({ editor, features }: EditorPanel) => {
   return <MenuButton icon={table_chart} onClick={createTable} />;
 };
 
-export { Table };
+export { TextTable };

@@ -5,7 +5,7 @@ import { link, link_off } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 
-import { Section } from './MenuBar.styles';
+import { MenuSection } from './MenuBar.styles';
 import MenuButton from './MenuButton';
 import { TextField } from 'src/components/Inputs/TextField/TextField';
 import url from 'src/utils/url';
@@ -24,7 +24,7 @@ const Container = styled.div`
 //💡 Wasn't able to test this component due to tiptap not setting the selected text
 // as expected when inside a test, thus the link buttons are always disabled - Marius 24. Jan 2024
 /* c8 ignore start */
-const Links: FC<EditorPanel> = ({ editor, features }) => {
+export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const linkText = useRef<string>('');
@@ -72,7 +72,7 @@ const Links: FC<EditorPanel> = ({ editor, features }) => {
   if (!features.includes(RichTextEditorFeatures.LINKS)) return;
   return (
     <>
-      <Section>
+      <MenuSection>
         <MenuButton
           active={open}
           ref={buttonRef}
@@ -86,7 +86,7 @@ const Links: FC<EditorPanel> = ({ editor, features }) => {
           onClick={onUnsetLink}
           disabled={!editor?.isActive('link')}
         />
-      </Section>
+      </MenuSection>
       {open && (
         <Popover open anchorEl={buttonRef.current} onClose={handleOnClose}>
           <Container>
@@ -111,6 +111,4 @@ const Links: FC<EditorPanel> = ({ editor, features }) => {
     </>
   );
 };
-
-export default Links;
 /* c8 ignore end */
