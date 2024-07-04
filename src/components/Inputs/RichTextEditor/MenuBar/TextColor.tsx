@@ -64,7 +64,8 @@ const TextColor: FC<EditorPanel> = ({ editor, features }) => {
     editor?.chain().focus().setColor(event.target.value).run();
   };
 
-  if (!features.includes(RichTextEditorFeatures.TEXT_COLOR)) return null;
+  if (features && !features.includes(RichTextEditorFeatures.TEXT_COLOR))
+    return null;
   return (
     <Container>
       <input

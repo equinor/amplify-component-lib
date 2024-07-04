@@ -17,7 +17,8 @@ interface AddImageProps extends EditorPanel {
 
 const AddImage: FC<AddImageProps> = ({ onImageUpload, editor, features }) => {
   if (!onImageUpload) return null;
-  if (!features.includes(RichTextEditorFeatures.IMAGES)) return null;
+  if (features && !features.includes(RichTextEditorFeatures.IMAGES))
+    return null;
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 

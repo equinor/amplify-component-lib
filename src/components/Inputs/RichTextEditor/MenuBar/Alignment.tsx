@@ -12,7 +12,7 @@ const TextAlignment: FC<EditorPanel> = ({ editor, features }) => {
   const alignLeft = () => editor.chain().focus().setTextAlign('left').run();
   const alignCenter = () => editor.chain().focus().setTextAlign('center').run();
   const alignRight = () => editor.chain().focus().setTextAlign('right').run();
-  if (!features.includes(RichTextEditorFeatures.ALIGNMENT)) return;
+  if (features && !features.includes(RichTextEditorFeatures.ALIGNMENT)) return;
   return (
     <MenuSection>
       <MenuButton

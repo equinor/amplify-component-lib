@@ -7,7 +7,7 @@ import { TableRow } from './TableRow';
 import { TableMerge } from './TableMerge';
 import { ToggleTable } from './ToggleTable';
 
-export const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
+const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
   if (!editor.isActive('table')) return null;
   return (
     <MenuBar>
@@ -19,3 +19,6 @@ export const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuBar>
   );
 };
+
+export { TableDelete, ToggleTable, TableColumn, TableRow, TableMerge };
+export default TableMenuBar;

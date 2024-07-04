@@ -9,7 +9,7 @@ const TextHeaders: FC<EditorPanel> = ({ editor, features }) => {
     editor.chain().focus().toggleHeading({ level: 2 }).run();
   const toggleH3 = () =>
     editor.chain().focus().toggleHeading({ level: 3 }).run();
-  if (!features.includes(RichTextEditorFeatures.HEADERS)) return;
+  if (features && !features.includes(RichTextEditorFeatures.HEADERS)) return;
   return (
     <MenuSection>
       <MenuButton

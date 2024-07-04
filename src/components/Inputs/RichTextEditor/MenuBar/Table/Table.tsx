@@ -15,7 +15,7 @@ const TextTable: FC<EditorPanel> = ({ editor, features }) => {
       .insertTable({ rows: 1, cols: 3, withHeaderRow: false })
       .run();
   };
-  if (!features.includes(RichTextEditorFeatures.TABLE)) return;
+  if (features && !features.includes(RichTextEditorFeatures.TABLE)) return;
   if (editor.isActive('table')) return;
   return <MenuButton icon={table_chart} onClick={createTable} />;
 };

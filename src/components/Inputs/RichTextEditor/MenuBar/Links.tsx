@@ -69,7 +69,7 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
   };
   const onUnsetLink = () => editor?.chain().focus().unsetLink().run();
 
-  if (!features.includes(RichTextEditorFeatures.LINKS)) return;
+  if (features && !features.includes(RichTextEditorFeatures.LINKS)) return;
   return (
     <>
       <MenuSection>

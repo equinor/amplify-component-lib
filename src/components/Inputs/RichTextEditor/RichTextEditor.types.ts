@@ -33,6 +33,6 @@ export type OnImageUploadFn = (
 ) => Promise<{ b64: string; url: string } | undefined>;
 
 export interface EditorPanel {
-  features?: RichTextEditorFeatures[];
   editor: Editor;
+  features?: RichTextEditorFeatures[];
 }

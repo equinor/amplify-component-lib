@@ -10,7 +10,7 @@ const TextLists: FC<EditorPanel> = ({ editor, features }) => {
     editor.chain().focus().toggleBulletList().run();
   const toggleOrderedList = () =>
     editor.chain().focus().toggleOrderedList().run();
-  if (!features.includes(RichTextEditorFeatures.LISTS)) return;
+  if (features && !features.includes(RichTextEditorFeatures.LISTS)) return;
   return (
     <MenuSection>
       <MenuButton

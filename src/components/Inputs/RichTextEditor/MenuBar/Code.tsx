@@ -6,7 +6,7 @@ import MenuButton from './MenuButton';
 
 const TextCode: FC<EditorPanel> = ({ editor, features }) => {
   const toggleCode = () => editor.chain().focus().toggleCodeBlock().run();
-  if (!features.includes(RichTextEditorFeatures.CODE)) return;
+  if (features && !features.includes(RichTextEditorFeatures.CODE)) return;
   return (
     <MenuButton
       active={editor.isActive('codeBlock')}

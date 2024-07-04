@@ -17,7 +17,8 @@ const Divider = styled.hr`
 const ClearFormating: FC<EditorPanel> = ({ editor, features }) => {
   const clearFormatting = () =>
     editor.chain().focus().clearNodes().unsetAllMarks().run();
-  if (!features.includes(RichTextEditorFeatures.CLEAR_FORMATTING)) return;
+  if (features && !features.includes(RichTextEditorFeatures.CLEAR_FORMATTING))
+    return;
   return (
     <>
       <Divider />

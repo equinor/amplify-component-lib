@@ -9,7 +9,7 @@ import {
 } from '../RichTextEditor.types';
 import AddImage from './AddImage';
 import { TextLinks } from './Links';
-import { TableMenuBar } from './Table/TableBar';
+import TableMenuBar from './Table/TableBar';
 import TextColor from './TextColor';
 
 import styled from 'styled-components';

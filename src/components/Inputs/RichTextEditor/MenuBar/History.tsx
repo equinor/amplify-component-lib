@@ -8,7 +8,7 @@ import MenuButton from './MenuButton';
 const TextHistory: FC<EditorPanel> = ({ editor, features }) => {
   const onUndo = () => editor.chain().focus().undo().run();
   const onRedo = () => editor.chain().focus().redo().run();
-  if (!features.includes(RichTextEditorFeatures.HISTORY)) return;
+  if (features && !features.includes(RichTextEditorFeatures.HISTORY)) return;
   return (
     <MenuSection>
       <MenuButton

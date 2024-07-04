@@ -8,7 +8,7 @@ import MenuButton from './MenuButton';
 const TextFormating: FC<EditorPanel> = ({ editor, features }) => {
   const toggleBold = () => editor.chain().focus().toggleBold().run();
   const toggleItalic = () => editor.chain().focus().toggleItalic().run();
-  if (!features.includes(RichTextEditorFeatures.FORMATTING)) return;
+  if (features && !features.includes(RichTextEditorFeatures.FORMATTING)) return;
   return (
     <MenuSection>
       <MenuButton
