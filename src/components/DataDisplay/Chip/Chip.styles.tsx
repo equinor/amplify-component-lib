@@ -135,19 +135,22 @@ const commonChipStyle = css`
   font-weight: 500;
   font-size: ${tokens.typography.ui.chip__badge.fontSize};
   line-height: 16px;
+  align-items: center;
   text-align: center;
   transition:
     background-color 150ms ease,
     border 150ms ease,
     color 150ms ease;
-  padding: ${tokens.spacings.comfortable.x_small};
-
+  padding: 0;
   .content {
-    padding: 0 ${tokens.spacings.comfortable.small};
+    padding-inline: ${tokens.spacings.comfortable.small};
+    padding-top: ${tokens.spacings.comfortable.xx_small};
     display: flex;
     align-items: center;
     gap: ${tokens.spacings.comfortable.x_small};
-
+    svg {
+      margin-top: -${tokens.spacings.comfortable.xx_small};
+    }
     .leading {
       display: flex;
       align-items: center;
