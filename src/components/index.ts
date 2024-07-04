@@ -28,7 +28,7 @@ export { default as SkeletonBase } from './Feedback/Skeleton/SkeletonBase/Skelet
 export { skeletonBaseloading } from './Feedback/Skeleton/SkeletonBase/SkeletonBase';
 export { default as SkeletonGradient } from './Feedback/Skeleton/SkeletonGradient/SkeletonGradient';
 export { default as Stepper } from './Feedback/Stepper/Stepper';
-export { default as Unauthorized } from './Feedback/Unauthorized';
+export { Unauthorized } from './Feedback/Unauthorized';
 export * from './Icons/AmplifyIcons';
 export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
 export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';

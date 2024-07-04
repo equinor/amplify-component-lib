@@ -1,4 +1,4 @@
-import Unauthorized from './Unauthorized';
+import { Unauthorized } from './Unauthorized';
 
 export default {
   title: 'Feedback/Unauthorized',

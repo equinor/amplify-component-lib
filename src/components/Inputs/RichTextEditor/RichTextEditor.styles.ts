@@ -17,7 +17,7 @@ export const EditorWrapper = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  background: white;
+  background: ${colors.ui.background__default.rgba};
 
   border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
   border: ${(props) =>
@@ -102,7 +102,7 @@ export const EditorWrapper = styled.div<WrapperProps>`
     p {
       font-size: 16px;
       font-family: 'Equinor', sans-serif;
-      color: ${colors.text.static_icons__default.hex};
+      color: ${colors.text.static_icons__default.rgba};
       line-height: ${typography.paragraph.body_long.lineHeight};
       margin: 0;
     }
@@ -190,7 +190,7 @@ export const EditorWrapper = styled.div<WrapperProps>`
     }
   }
   .tiptap p.is-editor-empty:first-child::before {
-    color: #565656;
+    color: ${colors.text.static_icons__default.rgba};
     content: attr(data-placeholder);
     float: left;
     height: 0;

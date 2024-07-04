@@ -86,6 +86,7 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
       <Button
         ref={ref}
         $active={active}
+        type="button"
         $customColors={customColors}
         onClick={onClick}
         disabled={disabled}

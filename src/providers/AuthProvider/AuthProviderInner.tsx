@@ -16,7 +16,7 @@ import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
 import FullPageSpinner from 'src/components/Feedback/FullPageSpinner';
-import Unauthorized from 'src/components/Feedback/Unauthorized';
+import { Unauthorized } from 'src/components/Feedback/Unauthorized';
 import { auth, environment } from 'src/utils';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
@@ -168,6 +168,8 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           if (accessToken.roles) {
             console.log('[AuthProvider] Found roles');
             setRoles(accessToken.roles);
+          } else {
+            throw new Error('Could not find roles in token');
           }
           setAuthState('authorized');
         }
