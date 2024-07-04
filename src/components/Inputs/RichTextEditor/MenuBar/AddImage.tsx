@@ -1,7 +1,6 @@
 import { ChangeEvent, FC, useRef } from 'react';
 
 import { camera_add_photo } from '@equinor/eds-icons';
-import { useCurrentEditor } from '@tiptap/react';
 
 import MenuButton from './MenuButton';
 import {
@@ -9,13 +8,15 @@ import {
   EditorPanel,
   RichTextEditorFeatures,
 } from 'src/components/Inputs/RichTextEditor/RichTextEditor.types';
-import { on } from 'events';
-
 interface AddImageProps extends EditorPanel {
   onImageUpload?: OnImageUploadFn;
 }
 
-const AddImage: FC<AddImageProps> = ({ onImageUpload, editor, features }) => {
+const AddImageButton: FC<AddImageProps> = ({
+  onImageUpload,
+  editor,
+  features,
+}) => {
   if (!onImageUpload) return null;
   if (features && !features.includes(RichTextEditorFeatures.IMAGES))
     return null;
@@ -61,4 +62,4 @@ const AddImage: FC<AddImageProps> = ({ onImageUpload, editor, features }) => {
   );
 };
 
-export default AddImage;
+export { AddImageButton };

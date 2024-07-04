@@ -7,10 +7,10 @@ import {
   OnImageUploadFn,
   RichTextEditorFeatures,
 } from '../RichTextEditor.types';
-import AddImage from './AddImage';
+import { AddImageButton } from './AddImage';
 import { TextLinks } from './Links';
 import TableMenuBar from './Table/TableBar';
-import TextColor from './TextColor';
+import { TextColor } from './TextColor';
 
 import styled from 'styled-components';
 import { TextHistory } from './History';
@@ -20,7 +20,7 @@ import { TextLists } from './Lists';
 import { TextCode } from './Code';
 import { TextAlignment } from './Alignment';
 import { TextTable } from './Table/Table';
-import { ClearFormating } from './ClearFormating';
+import { TextClearFormating } from './ClearFormating';
 import MenuButton from './MenuButton';
 import { MenuSection } from './MenuBar.styles';
 
@@ -52,19 +52,19 @@ const AmplifyBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
       <MenuBar>
         <TextHistory editor={editor} features={features} />
         <TextFormating editor={editor} features={features} />
-        <TextHeaders editor={editor} features={features} />x
+        <TextHeaders editor={editor} features={features} />
         <TextLists editor={editor} features={features} />
         <TextColor editor={editor} features={features} />
         <TextCode editor={editor} features={features} />
         <TextAlignment editor={editor} features={features} />
         <TextLinks editor={editor} features={features} />
-        <AddImage
+        <AddImageButton
           editor={editor}
           features={features}
           onImageUpload={onImageUpload}
         />
         <TextTable editor={editor} features={features} />
-        <ClearFormating editor={editor} features={features} />
+        <TextClearFormating editor={editor} features={features} />
       </MenuBar>
       {/* Sub Bar */}
       <TableMenuBar editor={editor} />
@@ -74,17 +74,18 @@ const AmplifyBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
 
 export {
   MenuBar,
+  MenuBars,
   TextHistory,
   TextFormating,
   TextHeaders,
   TextLists,
   TextColor,
   TextCode,
-  TextAlignment,
   TextLinks,
-  AddImage,
   TextTable,
-  ClearFormating,
+  TextAlignment,
+  TextClearFormating,
+  AddImageButton,
   MenuButton,
   MenuSection,
   AmplifyBar,

@@ -14,6 +14,9 @@ import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
 import { useSelect } from 'src/hooks/useSelect';
+import { useFeatures } from 'src/hooks/useFeatures';
+import { useAmplifyKit } from 'src/hooks/useAmplifyKit';
+import { useEditor } from '@tiptap/react';
 
 export {
   useAuth,
@@ -21,6 +24,9 @@ export {
   useDebounce,
   useFakeProgress,
   useFeatureToggling,
+  useFeatures,
+  useAmplifyKit,
+  useEditor,
   useLocalStorage,
   useNotification,
   useOnScreen,

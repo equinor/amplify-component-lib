@@ -14,7 +14,7 @@ const Divider = styled.hr`
   background: ${colors.ui.background__medium.rgba};
 `;
 
-const ClearFormating: FC<EditorPanel> = ({ editor, features }) => {
+export const TextClearFormating: FC<EditorPanel> = ({ editor, features }) => {
   const clearFormatting = () =>
     editor.chain().focus().clearNodes().unsetAllMarks().run();
   if (features && !features.includes(RichTextEditorFeatures.CLEAR_FORMATTING))
@@ -34,5 +34,3 @@ const ClearFormating: FC<EditorPanel> = ({ editor, features }) => {
     </>
   );
 };
-
-export { ClearFormating };

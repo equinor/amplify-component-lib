@@ -67,7 +67,39 @@ export { ExpandingIconButton } from './Inputs/ExpandingIconButton/ExpandingIconB
 export type { ExpandingIconButtonProps } from './Inputs/ExpandingIconButton/ExpandingIconButton';
 export { default as FileUploadArea } from './Inputs/FileUploadArea';
 export { default as IconToggleButton } from './Inputs/IconToggleButton';
-export { default as RichTextEditor } from './Inputs/RichTextEditor/RichTextEditor';
+export {
+  default as RichTextEditor,
+  EditorStyling,
+  EditorProvider,
+  EditorContent,
+  AmplifyKit,
+} from './Inputs/RichTextEditor/RichTextEditor';
+export {
+  default as AmplifyBar,
+  MenuBar,
+  MenuBars,
+  TextHistory,
+  TextFormating,
+  TextHeaders,
+  TextLists,
+  TextColor,
+  TextCode,
+  TextLinks,
+  TextTable,
+  TextAlignment,
+  TextClearFormating,
+  AddImageButton,
+  MenuButton,
+  MenuSection,
+} from './Inputs/RichTextEditor/MenuBar/MenuBar';
+export {
+  default as TableMenuBar,
+  TableDelete,
+  ToggleTable,
+  TableColumn,
+  TableRow,
+  TableMerge,
+} from './Inputs/RichTextEditor/MenuBar/Table/TableBar';
 export { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
 export { Search } from './Inputs/Search/Search';
 export { default as MultiSelectDrawer } from './Inputs/SelectDrawer/MultiSelectDrawer';

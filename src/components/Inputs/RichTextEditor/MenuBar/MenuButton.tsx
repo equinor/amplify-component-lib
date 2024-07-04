@@ -5,6 +5,7 @@ import OptionalTooltip from '../../../DataDisplay/OptionalTooltip';
 import { MenuButtonStyle } from './MenuBar.styles';
 
 interface MenuButtonProps {
+  children?: React.ReactNode;
   icon: IconData;
   onClick: () => void;
   customColors?: {
@@ -19,6 +20,7 @@ interface MenuButtonProps {
 }
 
 const MenuButton: React.FC<MenuButtonProps> = ({
+  children,
   icon,
   onClick,
   customColors,
@@ -37,6 +39,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
       disabled={disabled}
     >
       <Icon data={icon} />
+      {children}
     </MenuButtonStyle>
   </OptionalTooltip>
 );

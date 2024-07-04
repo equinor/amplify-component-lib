@@ -80,9 +80,10 @@ export {
   EditorProvider,
   EditorContent,
   AmplifyBar,
-  useEditor,
-  useAmplifyKit,
   AmplifyKit,
+  useAmplifyKit,
+  useFeatures,
+  useEditor,
 };
 
 export type { RichTextEditorProps, OnImageUploadFn, RichTextEditorFeatures };

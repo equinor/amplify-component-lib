@@ -26,10 +26,11 @@ const EditorProvider: FC<EditorProviderProps> = ({
   onImageUpload,
   extensions = [],
 }) => {
+  // Lets us apply the features API with the new amplify kit
   const ampExtensions = useAmplifyKit({
+    features,
     placeholder,
     onImageUpload,
-    features,
   });
 
   const editor = useEditor({

@@ -90,4 +90,4 @@ const TextColor: FC<EditorPanel> = ({ editor, features }) => {
   );
 };
 
-export default TextColor;
+export { TextColor };

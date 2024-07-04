@@ -25,40 +25,24 @@ interface MenuButtonProps {
     backgroundHover: string;
   };
 }
-
 export const MenuButtonStyle = styled.button<MenuButtonProps>`
-  padding: ${spacings.comfortable.x_small};
-  background: ${({ $active }) =>
-    $active
-      ? colors.interactive.primary__resting.rgba
-      : colors.ui.background__light.rgba};
   display: flex;
   align-items: center;
   border-radius: ${shape.button.borderRadius};
-  transition: 200ms background;
+  padding: ${spacings.comfortable.x_small};
+  color: ${(props) => getColor(props)};
+  background: ${(props) => getBackground(props)};
+  transition: 200ms;
   > svg {
-    fill: ${({ $customColors, $active }) => {
-      if ($customColors) return $customColors.resting;
-
-      if ($active) {
-        return colors.ui.background__light.rgba;
-      }
-      return colors.interactive.primary__resting.rgba;
-    }};
+    fill: ${(props) => getColor(props)};
     transition: 200ms fill;
   }
 
   &:hover:not(:disabled) {
-    background: ${({ $customColors }) =>
-      $customColors
-        ? $customColors.backgroundHover
-        : colors.interactive.primary__hover_alt.rgba};
-
+    background: ${(props) => getHoverBackground(props)};
+    color: ${(props) => getHoverColor(props)};
     > svg {
-      fill: ${({ $customColors }) => {
-        if ($customColors) return $customColors.hover;
-        return colors.interactive.primary__hover.rgba;
-      }};
+      fill: ${(props) => getHoverColor(props)};
     }
   }
 
@@ -70,3 +54,26 @@ export const MenuButtonStyle = styled.button<MenuButtonProps>`
     fill: ${colors.interactive.disabled__text.rgba};
   }
 `;
+
+const getColor = (props: MenuButtonProps) => {
+  if (props.$customColors) return props.$customColors.resting;
+  if (props.$active) return colors.ui.background__light.rgba;
+  return colors.interactive.primary__resting.rgba;
+};
+
+const getHoverColor = (props: MenuButtonProps) => {
+  if (props.$customColors) return props.$customColors.hover;
+  return colors.interactive.primary__hover.rgba;
+};
+
+const getBackground = (props: MenuButtonProps) => {
+  return props.$active
+    ? colors.interactive.primary__resting.rgba
+    : colors.ui.background__light.rgba;
+};
+
+const getHoverBackground = (props: MenuButtonProps) => {
+  return props.$customColors
+    ? props.$customColors.backgroundHover
+    : colors.interactive.primary__hover_alt.rgba;
+};
