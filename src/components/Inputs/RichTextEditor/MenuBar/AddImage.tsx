@@ -17,11 +17,10 @@ const AddImageButton: FC<AddImageProps> = ({
   editor,
   features,
 }) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   if (!onImageUpload) return null;
   if (features && !features.includes(RichTextEditorFeatures.IMAGES))
     return null;
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const showFileDialog = () => {
     if (inputRef.current) {
