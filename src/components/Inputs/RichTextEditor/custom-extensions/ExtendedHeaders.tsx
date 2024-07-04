@@ -8,7 +8,15 @@ import {
 
 import { Typography } from '../../../';
 
-const Component = (props: any) => {
+interface TiptapHeadingProps {
+  node: {
+    attrs: {
+      level: number;
+    };
+  };
+}
+
+const Component = (props: TiptapHeadingProps) => {
   const level = props.node.attrs.level;
   let variant: TypographyVariants = 'h1';
   if (level === 2) variant = 'h2';

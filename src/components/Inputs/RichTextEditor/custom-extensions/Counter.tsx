@@ -41,7 +41,15 @@ const StyledNodeViewWrapper = styled(NodeViewWrapper)`
   }
 `;
 
-const Component = (props: any) => {
+interface TipTapCounter {
+  node: {
+    attrs: {
+      count: number;
+    };
+  };
+}
+
+const Component = (props: TipTapCounter) => {
   const [count, setCount] = useState(props.node.attrs.count);
   return (
     <StyledNodeViewWrapper className="react-component">
