@@ -1,5 +1,7 @@
 import { FC } from 'react';
+
 import { Editor } from '@tiptap/react';
+
 import {
   amplify_table_add_row_above,
   amplify_table_add_row_below,

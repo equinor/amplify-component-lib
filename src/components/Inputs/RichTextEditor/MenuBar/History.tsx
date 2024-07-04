@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { redo, undo } from '@equinor/eds-icons';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';

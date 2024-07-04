@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { format_bold, format_italics } from '@equinor/eds-icons';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';

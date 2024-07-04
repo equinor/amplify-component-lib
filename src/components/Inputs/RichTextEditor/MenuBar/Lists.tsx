@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { format_list_bulleted, format_list_numbered } from '@equinor/eds-icons';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';

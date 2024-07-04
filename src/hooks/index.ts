@@ -1,3 +1,5 @@
+import { useEditor } from '@tiptap/react';
+
 import { useNotification } from '../components/Navigation/TopBar/Notifications/NotificationProvider';
 import { useAuth } from '../providers/AuthProvider/AuthProvider';
 import { useReleaseNotes } from '../providers/ReleaseNotesProvider';
@@ -13,10 +15,9 @@ import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
-import { useSelect } from 'src/hooks/useSelect';
-import { useFeatures } from 'src/hooks/useFeatures';
 import { useAmplifyKit } from 'src/hooks/useAmplifyKit';
-import { useEditor } from '@tiptap/react';
+import { useFeatures } from 'src/hooks/useFeatures';
+import { useSelect } from 'src/hooks/useSelect';
 
 export {
   useAuth,

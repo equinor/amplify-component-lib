@@ -4,8 +4,8 @@ import { camera_add_photo } from '@equinor/eds-icons';
 
 import MenuButton from './MenuButton';
 import {
-  OnImageUploadFn,
   EditorPanel,
+  OnImageUploadFn,
   RichTextEditorFeatures,
 } from 'src/components/Inputs/RichTextEditor/RichTextEditor.types';
 interface AddImageProps extends EditorPanel {

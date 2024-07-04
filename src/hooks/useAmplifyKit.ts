@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { AmplifyKit } from '../components/Inputs/RichTextEditor/custom-extensions/DefaultKit';
 
+import { AmplifyKit } from '../components/Inputs/RichTextEditor/custom-extensions/DefaultKit';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,

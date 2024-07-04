@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import { useEditor, Extensions, Editor } from '@tiptap/react';
 
+import { Editor,Extensions, useEditor } from '@tiptap/react';
+
+import { useAmplifyKit } from '../../../hooks/useAmplifyKit';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
-import { useAmplifyKit } from '../../../hooks/useAmplifyKit';
 
 interface EditorProviderProps {
   children: (editor: Editor) => JSX.Element;

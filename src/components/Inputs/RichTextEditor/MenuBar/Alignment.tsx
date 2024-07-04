@@ -1,9 +1,11 @@
 import { FC } from 'react';
+
 import {
   format_align_center,
   format_align_left,
   format_align_right,
 } from '@equinor/eds-icons';
+
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { MenuSection } from './MenuBar.styles';
 import MenuButton from './MenuButton';

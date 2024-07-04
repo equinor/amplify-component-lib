@@ -1,6 +1,8 @@
 import { FC } from 'react';
-import { Editor } from '@tiptap/react';
+
 import { table_chart } from '@equinor/eds-icons';
+import { Editor } from '@tiptap/react';
+
 import MenuButton from '../MenuButton';
 
 export const TableDelete: FC<{ editor: Editor }> = ({ editor }) => {

@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef } from 'react';
 
 import { EditorContent, useEditor } from '@tiptap/react';
-import { AmplifyKit } from '../Inputs/RichTextEditor/custom-extensions/DefaultKit';
 
+import { AmplifyKit } from '../Inputs/RichTextEditor/custom-extensions/DefaultKit';
 import { EditorStyling } from '../Inputs/RichTextEditor/RichTextEditor.styles';
 
 export interface RichTextDisplayProps {

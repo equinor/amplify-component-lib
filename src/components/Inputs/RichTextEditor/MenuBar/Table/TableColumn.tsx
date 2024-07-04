@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { Editor } from '@tiptap/react';
+
 import {
   amplify_table_add_column_left,
   amplify_table_add_column_right,
@@ -7,7 +9,6 @@ import {
 } from '../../../../Icons/AmplifyIcons';
 import { MenuSection } from '../MenuBar.styles';
 import MenuButton from '../MenuButton';
-import { Editor } from '@tiptap/react';
 
 export const TableColumn: FC<{ editor: Editor }> = ({ editor }) => {
   const onAddColumnLeft = () => editor?.chain().focus().addColumnBefore().run();

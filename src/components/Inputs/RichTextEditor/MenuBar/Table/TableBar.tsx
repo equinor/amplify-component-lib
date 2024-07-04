@@ -1,10 +1,12 @@
 import { FC } from 'react';
+
 import { Editor } from '@tiptap/react';
+
 import { MenuBar } from '../MenuBar';
-import { TableDelete } from './TableDelete';
 import { TableColumn } from './TableColumn';
-import { TableRow } from './TableRow';
+import { TableDelete } from './TableDelete';
 import { TableMerge } from './TableMerge';
+import { TableRow } from './TableRow';
 import { ToggleTable } from './ToggleTable';
 
 const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {

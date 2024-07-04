@@ -1,28 +1,27 @@
 import { StoryFn } from '@storybook/react';
 
-import RichTextEditor, {
-  RichTextEditorProps,
-  EditorProvider,
-  EditorStyling,
-  EditorContent,
-  useFeatures,
-} from './RichTextEditor';
+import Counter from './custom-extensions/Counter';
 import AmplifyBar, {
-  TextHistory,
-  TextFormating,
-  MenuBars,
   MenuBar,
-  MenuSection,
+  MenuBars,
   MenuButton,
+  MenuSection,
+  TextFormating,
+  TextHistory,
 } from './MenuBar/MenuBar';
 import TableMenuBar from './MenuBar/Table/TableBar';
-import { amplify_h2, amplify_h3 } from 'src/components/Icons/AmplifyIcons';
-
+import RichTextEditor, {
+  EditorContent,
+  EditorProvider,
+  EditorStyling,
+  RichTextEditorProps,
+  useFeatures,
+} from './RichTextEditor';
 import {
   DEFAULT_FEATURES,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
-import Counter from './custom-extensions/Counter';
+import { amplify_h2, amplify_h3 } from 'src/components/Icons/AmplifyIcons';
 
 export default {
   title: 'Inputs/RichTextEditor',

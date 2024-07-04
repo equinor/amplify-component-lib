@@ -1,5 +1,7 @@
 import { FC } from 'react';
+
 import { Editor } from '@tiptap/react';
+
 import {
   amplify_table_column_heading,
   amplify_table_row_heading,

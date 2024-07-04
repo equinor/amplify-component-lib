@@ -7,22 +7,22 @@ import {
   OnImageUploadFn,
   RichTextEditorFeatures,
 } from '../RichTextEditor.types';
-import { AddImageButton } from './AddImage';
-import { TextLinks } from './Links';
+import { TextTable } from './Table/Table';
 import TableMenuBar from './Table/TableBar';
+import { AddImageButton } from './AddImage';
+import { TextAlignment } from './Alignment';
+import { TextClearFormating } from './ClearFormating';
+import { TextCode } from './Code';
+import { TextFormating } from './Formating';
+import { TextHeaders } from './Headers';
+import { TextHistory } from './History';
+import { TextLinks } from './Links';
+import { TextLists } from './Lists';
+import { MenuSection } from './MenuBar.styles';
+import MenuButton from './MenuButton';
 import { TextColor } from './TextColor';
 
 import styled from 'styled-components';
-import { TextHistory } from './History';
-import { TextFormating } from './Formating';
-import { TextHeaders } from './Headers';
-import { TextLists } from './Lists';
-import { TextCode } from './Code';
-import { TextAlignment } from './Alignment';
-import { TextTable } from './Table/Table';
-import { TextClearFormating } from './ClearFormating';
-import MenuButton from './MenuButton';
-import { MenuSection } from './MenuBar.styles';
 
 const { colors, spacings } = tokens;
 

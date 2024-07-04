@@ -1,5 +1,7 @@
 import { FC } from 'react';
+
 import { Editor } from '@tiptap/react';
+
 import {
   amplify_table_merge_cells,
   amplify_table_split_cell,

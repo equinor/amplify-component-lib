@@ -3,8 +3,8 @@ import { ChangeEvent, FC, KeyboardEvent, useRef, useState } from 'react';
 import { Button, Icon, Popover } from '@equinor/eds-core-react';
 import { link, link_off } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 
+import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { MenuSection } from './MenuBar.styles';
 import MenuButton from './MenuButton';
 import { TextField } from 'src/components/Inputs/TextField/TextField';

@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { table_chart } from '@equinor/eds-icons';
 
 import {

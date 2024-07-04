@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { format_clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 

@@ -1,17 +1,18 @@
 import { FC } from 'react';
-import { EditorContent } from '@tiptap/react';
 
+import { EditorContent } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
+
+import { useAmplifyKit } from '../../../hooks/useAmplifyKit';
+import { useFeatures } from '../../../hooks/useFeatures';
+import { AmplifyKit } from './custom-extensions/DefaultKit';
 import AmplifyBar from './MenuBar/MenuBar';
+import { EditorProvider } from './EditorProvider';
 import { EditorStyling } from './RichTextEditor.styles';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
-import { EditorProvider } from './EditorProvider';
-import { useFeatures } from '../../../hooks/useFeatures';
-import { useEditor } from '@tiptap/react';
-import { useAmplifyKit } from '../../../hooks/useAmplifyKit';
-import { AmplifyKit } from './custom-extensions/DefaultKit';
 
 interface RichTextEditorProps {
   value: string | null | undefined;

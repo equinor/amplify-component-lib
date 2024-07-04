@@ -1,27 +1,26 @@
-import { Extension, Extensions, AnyExtension } from '@tiptap/core';
+import { AnyExtension, Extension, Extensions } from '@tiptap/core';
 import { Bold, BoldOptions } from '@tiptap/extension-bold';
 import { BulletList, BulletListOptions } from '@tiptap/extension-bullet-list';
+import {
+  CodeBlockLowlight,
+  CodeBlockLowlightOptions,
+} from '@tiptap/extension-code-block-lowlight';
+import { Color, ColorOptions } from '@tiptap/extension-color';
 import { Document } from '@tiptap/extension-document';
+import { Dropcursor, DropcursorOptions } from '@tiptap/extension-dropcursor';
+import GapCursor from '@tiptap/extension-gapcursor';
 import { HardBreak, HardBreakOptions } from '@tiptap/extension-hard-break';
 import { HeadingOptions } from '@tiptap/extension-heading';
+import { Highlight, HighlightOptions } from '@tiptap/extension-highlight';
 import { History, HistoryOptions } from '@tiptap/extension-history';
 import { Italic, ItalicOptions } from '@tiptap/extension-italic';
+import { Link, LinkOptions } from '@tiptap/extension-link';
 import { ListItem, ListItemOptions } from '@tiptap/extension-list-item';
 import {
   OrderedList,
   OrderedListOptions,
 } from '@tiptap/extension-ordered-list';
 import { Paragraph, ParagraphOptions } from '@tiptap/extension-paragraph';
-
-import {
-  CodeBlockLowlight,
-  CodeBlockLowlightOptions,
-} from '@tiptap/extension-code-block-lowlight';
-import { Color, ColorOptions } from '@tiptap/extension-color';
-import { Dropcursor, DropcursorOptions } from '@tiptap/extension-dropcursor';
-import GapCursor from '@tiptap/extension-gapcursor';
-import { Highlight, HighlightOptions } from '@tiptap/extension-highlight';
-import { Link, LinkOptions } from '@tiptap/extension-link';
 import { Placeholder, PlaceholderOptions } from '@tiptap/extension-placeholder';
 import { Table, TableOptions } from '@tiptap/extension-table';
 import { TableCell, TableCellOptions } from '@tiptap/extension-table-cell';
@@ -30,13 +29,13 @@ import {
   TableHeaderOptions,
 } from '@tiptap/extension-table-header';
 import { TableRow, TableRowOptions } from '@tiptap/extension-table-row';
+import { Text } from '@tiptap/extension-text';
 import { TextAlign, TextAlignOptions } from '@tiptap/extension-text-align';
 import { TextStyle, TextStyleOptions } from '@tiptap/extension-text-style';
 import { Typography, TypographyOptions } from '@tiptap/extension-typography';
 
 import ExtendedHeaders from './ExtendedHeaders';
 import ExtendedImage, { ExtendedImageOptions } from './ExtendedImage';
-import { Text } from '@tiptap/extension-text';
 
 import { common, createLowlight } from 'lowlight';
 const lowlight = createLowlight(common);
@@ -70,10 +69,10 @@ interface AmplifyKitOptions {
   text: false;
 }
 
-type ExtensionsMap = {
+interface ExtensionsMap {
   name: keyof AmplifyKitOptions;
   extension: AnyExtension;
-};
+}
 
 // This is where you add extensions that should come with the AmplifyKit
 // Make sure the name matches a key in the AmplifyKitOptions interface so users can configure them externally
@@ -124,13 +123,11 @@ const AmplifyKit = Extension.create<AmplifyKitOptions>({
 
     return extensions
       .filter((ext) => {
-        const name = ext.name as keyof AmplifyKitOptions;
         if (!options) return true;
-        return options[name] !== false;
+        return options[ext.name] !== false;
       })
       .map((ext) => {
-        const name = ext.name as keyof AmplifyKitOptions;
-        const config = options[name];
+        const config = options[ext.name];
         if (!config) return ext.extension;
         return ext.extension.configure(config);
       });

@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { MenuSection } from './MenuBar.styles';
 import MenuButton from './MenuButton';

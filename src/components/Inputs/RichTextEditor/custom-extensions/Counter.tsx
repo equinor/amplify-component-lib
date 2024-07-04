@@ -1,11 +1,14 @@
 import { useState } from 'react';
+
 import { mergeAttributes, Node } from '@tiptap/core';
 import {
-  ReactNodeViewRenderer,
   NodeViewContent,
   NodeViewWrapper,
+  ReactNodeViewRenderer,
 } from '@tiptap/react';
+
 import { Button } from '../../../';
+
 import styled from 'styled-components';
 
 const StyledNodeViewWrapper = styled(NodeViewWrapper)`

@@ -1,11 +1,12 @@
-import {
-  ReactNodeViewRenderer,
-  NodeViewContent,
-  NodeViewWrapper,
-} from '@tiptap/react';
-import { Typography } from '../../../';
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
 import Heading from '@tiptap/extension-heading';
+import {
+  NodeViewContent,
+  NodeViewWrapper,
+  ReactNodeViewRenderer,
+} from '@tiptap/react';
+
+import { Typography } from '../../../';
 
 const Component = (props: any) => {
   const level = props.node.attrs.level;
