@@ -72,22 +72,26 @@ const AmplifyBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
   );
 };
 
-export {
-  MenuBar,
-  MenuBars,
-  TextHistory,
-  TextFormating,
-  TextHeaders,
-  TextLists,
-  TextColor,
-  TextCode,
-  TextLinks,
-  TextTable,
-  TextAlignment,
-  TextClearFormating,
+const EditorMenu = {
+  Bar: MenuBar,
+  Bars: MenuBars,
+  Button: MenuButton,
+  Section: MenuSection,
   AddImageButton,
-  MenuButton,
-  MenuSection,
-  AmplifyBar,
 };
+
+const EditorText = {
+  History: TextHistory,
+  Formating: TextFormating,
+  Headers: TextHeaders,
+  Lists: TextLists,
+  Color: TextColor,
+  Code: TextCode,
+  Links: TextLinks,
+  Table: TextTable,
+  Alignment: TextAlignment,
+  ClearFormating: TextClearFormating,
+};
+
+export { EditorText, EditorMenu };
 export default AmplifyBar;

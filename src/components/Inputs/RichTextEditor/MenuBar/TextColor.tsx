@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 const { colors, spacings, shape } = tokens;
 
-const Container = styled.div`
+const TextColorStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
@@ -68,7 +68,7 @@ const TextColor: FC<EditorPanel> = ({ editor, features }) => {
   if (features && !features.includes(RichTextEditorFeatures.TEXT_COLOR))
     return null;
   return (
-    <Container>
+    <TextColorStyle>
       <input
         type="color"
         onInput={handleOnInput}
@@ -87,7 +87,7 @@ const TextColor: FC<EditorPanel> = ({ editor, features }) => {
             colors.text.static_icons__default.hex,
         }}
       />
-    </Container>
+    </TextColorStyle>
   );
 };
 

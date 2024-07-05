@@ -3,26 +3,25 @@ import { FC } from 'react';
 import { redo, undo } from '@equinor/eds-icons';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import { MenuSection } from './MenuBar.styles';
-import MenuButton from './MenuButton';
+import { EditorMenu } from './MenuBar';
 
 const TextHistory: FC<EditorPanel> = ({ editor, features }) => {
   const onUndo = () => editor.chain().focus().undo().run();
   const onRedo = () => editor.chain().focus().redo().run();
   if (features && !features.includes(RichTextEditorFeatures.HISTORY)) return;
   return (
-    <MenuSection>
-      <MenuButton
+    <EditorMenu.Section>
+      <EditorMenu.Button
         icon={undo}
         onClick={onUndo}
         disabled={!editor.can().undo()}
       />
-      <MenuButton
+      <EditorMenu.Button
         icon={redo}
         onClick={onRedo}
         disabled={!editor.can().redo()}
       />
-    </MenuSection>
+    </EditorMenu.Section>
   );
 };
 

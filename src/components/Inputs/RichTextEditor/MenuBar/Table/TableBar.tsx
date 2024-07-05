@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { Editor } from '@tiptap/react';
 
-import { MenuBar } from '../MenuBar';
+import { EditorMenu } from '../MenuBar';
 import { TableColumn } from './TableColumn';
 import { TableDelete } from './TableDelete';
 import { TableMerge } from './TableMerge';
@@ -12,15 +12,23 @@ import { ToggleTable } from './ToggleTable';
 const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
   if (!editor.isActive('table')) return null;
   return (
-    <MenuBar>
+    <EditorMenu.Bar>
       <TableDelete editor={editor} />
       <ToggleTable editor={editor} />
       <TableColumn editor={editor} />
       <TableRow editor={editor} />
       <TableMerge editor={editor} />
-    </MenuBar>
+    </EditorMenu.Bar>
   );
 };
 
-export { TableDelete, ToggleTable, TableColumn, TableRow, TableMerge };
+const TextTable = {
+  delete: TableDelete,
+  toggle: ToggleTable,
+  column: TableColumn,
+  row: TableRow,
+  merge: TableMerge,
+};
+
+export { TextTable };
 export default TableMenuBar;

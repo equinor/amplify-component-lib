@@ -2,7 +2,7 @@ import { ChangeEvent, FC, useRef } from 'react';
 
 import { camera_add_photo } from '@equinor/eds-icons';
 
-import MenuButton from './MenuButton';
+import { EditorMenu } from './MenuBar';
 import {
   EditorPanel,
   OnImageUploadFn,
@@ -56,7 +56,7 @@ const AddImageButton: FC<AddImageProps> = ({
         style={{ display: 'none' }}
         accept="image/*, video/*"
       />
-      <MenuButton icon={camera_add_photo} onClick={showFileDialog} />
+      <EditorMenu.Button icon={camera_add_photo} onClick={showFileDialog} />
     </>
   );
 };

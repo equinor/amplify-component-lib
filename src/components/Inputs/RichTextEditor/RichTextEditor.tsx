@@ -1,9 +1,7 @@
 import { FC } from 'react';
 
 import { EditorContent } from '@tiptap/react';
-import { useEditor } from '@tiptap/react';
 
-import { useAmplifyKit } from '../../../hooks/useAmplifyKit';
 import { useFeatures } from '../../../hooks/useFeatures';
 import { AmplifyKit } from './custom-extensions/DefaultKit';
 import AmplifyBar from './MenuBar/MenuBar';
@@ -13,6 +11,14 @@ import {
   OnImageUploadFn,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
+
+const RichText = {
+  Styling: EditorStyling,
+  Provider: EditorProvider,
+  Content: EditorContent,
+  Bar: AmplifyBar,
+  Kit: AmplifyKit,
+};
 
 interface RichTextEditorProps {
   value: string | null | undefined;
@@ -48,13 +54,13 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     onImageUpload,
   });
   return (
-    <EditorStyling
+    <RichText.Styling
       $padding={padding}
       $maxHeight={maxHeight}
       $lightBackground={lightBackground}
       $border={border}
     >
-      <EditorProvider
+      <RichText.Provider
         content={value}
         onUpdate={onChange}
         features={usingFeatures}
@@ -63,29 +69,19 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       >
         {(editor) => (
           <div>
-            <AmplifyBar
+            <RichText.Bar
               editor={editor}
               features={usingFeatures}
               onImageUpload={onImageUpload}
             />
-            <EditorContent editor={editor} />
+            <RichText.Content editor={editor} />
           </div>
         )}
-      </EditorProvider>
-    </EditorStyling>
+      </RichText.Provider>
+    </RichText.Styling>
   );
 };
 
-export {
-  EditorStyling,
-  EditorProvider,
-  EditorContent,
-  AmplifyBar,
-  AmplifyKit,
-  useAmplifyKit,
-  useFeatures,
-  useEditor,
-};
-
 export type { RichTextEditorProps, OnImageUploadFn, RichTextEditorFeatures };
+export { RichText };
 export default RichTextEditor;

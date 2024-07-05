@@ -7,8 +7,7 @@ import {
 } from '@equinor/eds-icons';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import { MenuSection } from './MenuBar.styles';
-import MenuButton from './MenuButton';
+import { EditorMenu } from './MenuBar';
 
 const TextAlignment: FC<EditorPanel> = ({ editor, features }) => {
   const alignLeft = () => editor.chain().focus().setTextAlign('left').run();
@@ -16,23 +15,23 @@ const TextAlignment: FC<EditorPanel> = ({ editor, features }) => {
   const alignRight = () => editor.chain().focus().setTextAlign('right').run();
   if (features && !features.includes(RichTextEditorFeatures.ALIGNMENT)) return;
   return (
-    <MenuSection>
-      <MenuButton
+    <EditorMenu.Section>
+      <EditorMenu.Button
         active={editor.isActive({ textAlign: 'left' })}
         icon={format_align_left}
         onClick={alignLeft}
       />
-      <MenuButton
+      <EditorMenu.Button
         active={editor.isActive({ textAlign: 'center' })}
         icon={format_align_center}
         onClick={alignCenter}
       />
-      <MenuButton
+      <EditorMenu.Button
         active={editor.isActive({ textAlign: 'right' })}
         icon={format_align_right}
         onClick={alignRight}
       />
-    </MenuSection>
+    </EditorMenu.Section>
   );
 };
 

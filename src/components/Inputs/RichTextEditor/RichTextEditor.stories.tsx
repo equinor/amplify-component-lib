@@ -1,22 +1,13 @@
 import { StoryFn } from '@storybook/react';
 
 import Counter from './custom-extensions/Counter';
-import AmplifyBar, {
-  MenuBar,
-  MenuBars,
-  MenuButton,
-  MenuSection,
-  TextFormating,
-  TextHistory,
-} from './MenuBar/MenuBar';
+import { EditorMenu, EditorText } from './MenuBar/MenuBar';
 import TableMenuBar from './MenuBar/Table/TableBar';
 import RichTextEditor, {
-  EditorContent,
-  EditorProvider,
-  EditorStyling,
+  RichText,
   RichTextEditorProps,
-  useFeatures,
 } from './RichTextEditor';
+import { useFeatures } from 'src/hooks/useFeatures';
 import {
   DEFAULT_FEATURES,
   RichTextEditorFeatures,
@@ -64,7 +55,7 @@ export const Headers: StoryFn<RichTextEditorProps> = (args) => {
     <RichTextEditor
       {...args}
       features={[RichTextEditorFeatures.HEADERS]}
-      value={`<h2>This is header inserting the EDS typography component into the rich text</h2>
+      value={`<h2>This is a header inserting the EDS typography component into the rich text</h2>
       <h3>This is also a header.</h3>
       <p>We can even switch between multiple react components depending on what h level we are using.</p>
       `}
@@ -139,7 +130,7 @@ export const MaxHeight: StoryFn<RichTextEditorProps> = (args) => {
 };
 
 export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
-  const string = `<p>The rich text editor is built off a compound component architecture. This means that you can use the individual primitives to take full control. Notice in this example that the MenuBar is below the rich text editor content even though theres no prop to allow you to do this. If you look at the code you will notice that in this example we are no longer using the higher level RichTextEditor component. Instead we are breaking out the smaller primitive components that make up the RichTextEditor. This way you have full control of all the parts in the editor. You can mix an match them as you please. Decide which individual parts you need to take over will still using the other parts.</p>`;
+  const string = `<p>The rich text editor is built off a compound component architecture. This means that you can use the individual primitives to take full control. Notice in this example that the MenuBar is below the rich text editor content even though theres no prop to allow you to do this. If you look at the code you will notice that in this example we are no longer using the higher level RichTextEditor component. Instead we are breaking out the smaller primitive components that make up the RichTextEditor. This way you have full control of all the parts in the editor. You can mix an match them as you please. Decide which individual parts you need to take over while still using the other parts.</p>`;
 
   // Hook that lets you apply the features API for filtering extensions
   const usingFeatures = useFeatures({
@@ -149,13 +140,13 @@ export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
     onImageUpload: args.onImageUpload,
   });
   return (
-    <EditorStyling
+    <RichText.Styling
       $padding={args.padding}
       $maxHeight={args.maxHeight}
       $lightBackground={args.lightBackground}
       $border={args.border}
     >
-      <EditorProvider
+      <RichText.Provider
         extensions={[Counter]}
         onUpdate={args.onChange}
         onImageUpload={args.onImageUpload}
@@ -164,25 +155,25 @@ export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
       >
         {(editor) => (
           <div>
-            <EditorContent editor={editor} />
-            <AmplifyBar editor={editor} features={DEFAULT_FEATURES} />
+            <RichText.Content editor={editor} />
+            <RichText.Bar editor={editor} features={DEFAULT_FEATURES} />
           </div>
         )}
-      </EditorProvider>
-    </EditorStyling>
+      </RichText.Provider>
+    </RichText.Styling>
   );
 };
 
 export const CustomExtensions: StoryFn<RichTextEditorProps> = (args) => {
   const string = `<p>Breaking the RichTextEditor into its smaller primitive components also allows you to insert your own TipTap extensions. This is not just an example of inserting a custom extension into the editor but also an example of using NodeViews to render React components inside rich text.</p><counter count="0"><p>This is editable. You can create a new component by pressing Mod+Enter.</p> Also, try to delete me with backspace or delete. Move cursor in and out of me with arrow keys. And notice that I can even carry state because I am a react component inside your rich text.</counter>`;
   return (
-    <EditorStyling
+    <RichText.Styling
       $padding={args.padding}
       $maxHeight={args.maxHeight}
       $lightBackground={args.lightBackground}
       $border={args.border}
     >
-      <EditorProvider
+      <RichText.Provider
         content={string}
         extensions={[Counter]}
         onUpdate={args.onChange}
@@ -190,12 +181,12 @@ export const CustomExtensions: StoryFn<RichTextEditorProps> = (args) => {
       >
         {(editor) => (
           <div>
-            <AmplifyBar editor={editor} features={DEFAULT_FEATURES} />
-            <EditorContent editor={editor} />
+            <RichText.Bar editor={editor} features={DEFAULT_FEATURES} />
+            <RichText.Content editor={editor} />
           </div>
         )}
-      </EditorProvider>
-    </EditorStyling>
+      </RichText.Provider>
+    </RichText.Styling>
   );
 };
 
@@ -211,13 +202,13 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
   });
 
   return (
-    <EditorStyling
+    <RichText.Styling
       $padding={args.padding}
       $maxHeight={args.maxHeight}
       $lightBackground={args.lightBackground}
       $border={args.border}
     >
-      <EditorProvider
+      <RichText.Provider
         extensions={[Counter]}
         onUpdate={args.onChange}
         onImageUpload={args.onImageUpload}
@@ -226,13 +217,13 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
       >
         {(editor) => (
           <div>
-            <MenuBars>
+            <EditorMenu.Bars>
               {/* Main Bar */}
-              <MenuBar>
-                <TextHistory editor={editor} />
-                <TextFormating editor={editor} />
-                <MenuSection>
-                  <MenuButton
+              <EditorMenu.Bar>
+                <EditorText.History editor={editor} />
+                <EditorText.Formating editor={editor} />
+                <EditorMenu.Section>
+                  <EditorMenu.Button
                     active={editor.isActive('heading', { level: 2 })}
                     icon={amplify_h2}
                     onClick={() =>
@@ -240,8 +231,8 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
                     }
                   >
                     Title 2
-                  </MenuButton>
-                  <MenuButton
+                  </EditorMenu.Button>
+                  <EditorMenu.Button
                     active={editor.isActive('heading', { level: 3 })}
                     icon={amplify_h3}
                     onClick={() =>
@@ -249,16 +240,16 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
                     }
                   >
                     Title 3
-                  </MenuButton>
-                </MenuSection>
-              </MenuBar>
+                  </EditorMenu.Button>
+                </EditorMenu.Section>
+              </EditorMenu.Bar>
               {/* Sub Bar */}
               <TableMenuBar editor={editor} />
-            </MenuBars>
-            <EditorContent editor={editor} />
+            </EditorMenu.Bars>
+            <RichText.Content editor={editor} />
           </div>
         )}
-      </EditorProvider>
-    </EditorStyling>
+      </RichText.Provider>
+    </RichText.Styling>
   );
 };

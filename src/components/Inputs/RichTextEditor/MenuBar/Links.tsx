@@ -5,8 +5,7 @@ import { link, link_off } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import { MenuSection } from './MenuBar.styles';
-import MenuButton from './MenuButton';
+import { EditorMenu } from './MenuBar';
 import { TextField } from 'src/components/Inputs/TextField/TextField';
 import url from 'src/utils/url';
 
@@ -72,8 +71,8 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
   if (features && !features.includes(RichTextEditorFeatures.LINKS)) return;
   return (
     <>
-      <MenuSection>
-        <MenuButton
+      <EditorMenu.Section>
+        <EditorMenu.Button
           active={open}
           ref={buttonRef}
           icon={link}
@@ -81,12 +80,12 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
           disabled={editor?.state.selection.empty}
           data-testid="link-button"
         />
-        <MenuButton
+        <EditorMenu.Button
           icon={link_off}
           onClick={onUnsetLink}
           disabled={!editor?.isActive('link')}
         />
-      </MenuSection>
+      </EditorMenu.Section>
       {open && (
         <Popover open anchorEl={buttonRef.current} onClose={handleOnClose}>
           <Container>

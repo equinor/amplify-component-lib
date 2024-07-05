@@ -4,7 +4,7 @@ import { format_clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import MenuButton from './MenuButton';
+import { EditorMenu } from './MenuBar';
 
 import styled from 'styled-components';
 
@@ -23,7 +23,7 @@ export const TextClearFormating: FC<EditorPanel> = ({ editor, features }) => {
   return (
     <>
       <Divider />
-      <MenuButton
+      <EditorMenu.Button
         icon={format_clear}
         onClick={clearFormatting}
         customColors={{
