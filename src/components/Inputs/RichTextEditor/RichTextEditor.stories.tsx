@@ -191,7 +191,7 @@ export const CustomExtensions: StoryFn<RichTextEditorProps> = (args) => {
 };
 
 export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
-  const string = `<p>With a compound component architecture, you can take full control of every part of the editor. Notice that in this example we can add our own menu buttons for making text commands in the editor.</p>`;
+  const string = `<p>With a compound component architecture you can take full control of every part of the editor. Notice that in this example we can add our own menu buttons for making text commands in the editor.</p>`;
 
   // Hook that lets you apply the features API for filtering extensions
   const usingFeatures = useFeatures({
