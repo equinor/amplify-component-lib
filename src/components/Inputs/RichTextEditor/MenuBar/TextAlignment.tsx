@@ -10,7 +10,7 @@ import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { EditorMenu } from './MenuBar';
 
 const TextAlignment: FC<EditorPanel> = ({ editor, features }) => {
-  /* c8 ignore start */ // Testing tese lines would just be testing the tiptap library or testing that JavaScript works. Theres not enough custom logic here to warrant the maintance cost
+  /* c8 ignore start */ // Testing these lines would just be testing the tiptap library or testing that JavaScript works. Theres not enough custom logic here to warrant the maintance cost
   const alignLeft = () => editor.chain().focus().setTextAlign('left').run();
   const alignCenter = () => editor.chain().focus().setTextAlign('center').run();
   const alignRight = () => editor.chain().focus().setTextAlign('right').run();
