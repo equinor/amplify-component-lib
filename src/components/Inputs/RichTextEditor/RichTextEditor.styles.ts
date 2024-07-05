@@ -29,11 +29,6 @@ export const EditorStyling = styled.div<EditorStylingProps>`
     height: inherit;
   }
 
-  div:has(> .tiptap) {
-    display: flex;
-  }
-
-  div:has(> .tiptap),
   .tiptap {
     flex-grow: 1;
   }
