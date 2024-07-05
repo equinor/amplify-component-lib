@@ -1,4 +1,3 @@
-// c8 ignore file
 import { useState } from 'react';
 
 import { mergeAttributes, Node } from '@tiptap/core';
