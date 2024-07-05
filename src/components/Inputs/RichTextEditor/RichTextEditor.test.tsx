@@ -9,6 +9,9 @@ import {
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { render, screen, userEvent } from 'src/tests/test-utils';
+import { TableColumn } from './MenuBar/Table/TableColumn';
+import { TableDelete } from './MenuBar/Table/TableDelete';
+import { useEditor } from '@tiptap/react';
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {

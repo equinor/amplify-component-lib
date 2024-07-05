@@ -9,11 +9,10 @@ import {
 import { MenuSection } from '../MenuBar.styles';
 import MenuButton from '../MenuButton';
 
+/* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const TableMerge: FC<{ editor: Editor }> = ({ editor }) => {
-  /* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
   const onMergeCells = () => editor.chain().focus().mergeCells().run();
   const onSplitCell = () => editor.chain().focus().splitCell().run();
-  /* c8 ignore end */
   return (
     <MenuSection>
       <MenuButton
@@ -31,3 +30,4 @@ export const TableMerge: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuSection>
   );
 };
+/* c8 ignore end */

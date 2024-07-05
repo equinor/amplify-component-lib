@@ -10,12 +10,11 @@ import {
 import { MenuSection } from '../MenuBar.styles';
 import MenuButton from '../MenuButton';
 
+/* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const TableRow: FC<{ editor: Editor }> = ({ editor }) => {
-  /* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
   const onAddRowBelow = () => editor.chain().focus().addRowAfter().run();
   const onAddRowAbove = () => editor.chain().focus().addRowBefore().run();
   const onRemoveRow = () => editor.chain().focus().deleteRow().run();
-  /* c8 ignore end */
   return (
     <MenuSection>
       <MenuButton
@@ -39,3 +38,4 @@ export const TableRow: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuSection>
   );
 };
+/* c8 ignore end */

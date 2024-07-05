@@ -9,12 +9,11 @@ import {
 import { MenuSection } from '../MenuBar.styles';
 import MenuButton from '../MenuButton';
 
+/* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const ToggleTable: FC<{ editor: Editor }> = ({ editor }) => {
-  /* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
   const onHeaderRow = () => editor.chain().focus().toggleHeaderRow().run();
   const onHeaderColumn = () =>
     editor.chain().focus().toggleHeaderColumn().run();
-  /* c8 ignore end */
   return (
     <MenuSection>
       <MenuButton
@@ -32,3 +31,4 @@ export const ToggleTable: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuSection>
   );
 };
+/* c8 ignore end */

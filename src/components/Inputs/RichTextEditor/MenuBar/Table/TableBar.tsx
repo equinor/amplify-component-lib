@@ -22,7 +22,6 @@ const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
     </EditorMenu.Bar>
   );
 };
-/* c8 ignore end */
 
 const TextTable = {
   delete: TableDelete,
@@ -31,6 +30,7 @@ const TextTable = {
   row: TableRow,
   merge: TableMerge,
 };
+/* c8 ignore end */
 
 export { TextTable };
 export default TableMenuBar;
