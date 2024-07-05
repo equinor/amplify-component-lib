@@ -10,6 +10,9 @@ import { TableRow } from './TableRow';
 import { ToggleTable } from './ToggleTable';
 
 const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
+  /* c8 ignore start */
+  if (!editor.isActive('table')) return null;
+  /* c8 ignore end */
   return (
     <EditorMenu.Bar>
       <TableDelete editor={editor} />
