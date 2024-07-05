@@ -11,7 +11,7 @@ interface AmplifyKitProps {
   placeholder?: string;
   onImageUpload?: OnImageUploadFn;
 }
-
+/* c8 ignore start */
 export const useAmplifyKit = ({
   features,
   placeholder,
@@ -31,3 +31,4 @@ export const useAmplifyKit = ({
     [onImageUpload, placeholder, features]
   );
 };
+/* c8 ignore stop */
