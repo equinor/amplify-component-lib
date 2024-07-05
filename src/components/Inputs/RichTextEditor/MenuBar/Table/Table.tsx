@@ -15,6 +15,7 @@ const TextTable: FC<EditorPanel> = ({ editor, features }) => {
   /* c8 ignore end */
   return (
     <MenuButton
+      data-testid="add-table-button"
       icon={table_chart}
       onClick={() => {
         editor

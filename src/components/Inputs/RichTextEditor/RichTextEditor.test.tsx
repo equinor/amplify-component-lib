@@ -175,8 +175,7 @@ test('Creating table works as expected', async () => {
   // Wait for tip tap to initialize
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const tableButton = screen.getByRole('button');
-
+  const tableButton = screen.getByTestId('add-table-button');
   await user.click(tableButton);
 
   expect(screen.getByRole('table')).toBeInTheDocument();
