@@ -9,10 +9,9 @@ import { TableMerge } from './TableMerge';
 import { TableRow } from './TableRow';
 import { ToggleTable } from './ToggleTable';
 
+/* c8 ignore start */
 const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
-  /* c8 ignore start */
   if (!editor.isActive('table')) return null;
-  /* c8 ignore end */
   return (
     <EditorMenu.Bar>
       <TableDelete editor={editor} />
@@ -23,6 +22,7 @@ const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
     </EditorMenu.Bar>
   );
 };
+/* c8 ignore end */
 
 const TextTable = {
   delete: TableDelete,
