@@ -2,8 +2,9 @@ import { info_circle, pipe_support, save, tune } from '@equinor/eds-icons';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { BaseChipProps, Chip, InteractiveChipProps } from './Chip';
+import { BaseChipProps, Chip } from './Chip';
 import page from './Chips.docs.mdx';
+import { InteractiveChipProps } from './InteractiveChip';
 import { Stack } from 'src/storybook';
 
 const handleDelete = action('onDelete');
