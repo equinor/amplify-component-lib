@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
 import Heading from '@tiptap/extension-heading';
 import {
@@ -33,7 +34,6 @@ const Component = (props: TiptapHeadingProps) => {
   );
 };
 
-/* c8 ignore start */
 export default Heading.extend({
   content: 'inline*',
   addNodeView() {

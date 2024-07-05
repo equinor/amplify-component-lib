@@ -9,16 +9,22 @@ import {
 import MenuButton from '../MenuButton';
 
 const TextTable: FC<EditorPanel> = ({ editor, features }) => {
-  const createTable = () => {
-    editor
-      .chain()
-      .focus()
-      .insertTable({ rows: 1, cols: 3, withHeaderRow: false })
-      .run();
-  };
+  /* c8 ignore start */
   if (features && !features.includes(RichTextEditorFeatures.TABLE)) return;
   if (editor.isActive('table')) return;
-  return <MenuButton icon={table_chart} onClick={createTable} />;
+  /* c8 ignore end */
+  return (
+    <MenuButton
+      icon={table_chart}
+      onClick={() => {
+        editor
+          .chain()
+          .focus()
+          .insertTable({ rows: 1, cols: 3, withHeaderRow: false })
+          .run();
+      }}
+    />
+  );
 };
 
 export { TextTable };

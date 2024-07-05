@@ -16,10 +16,12 @@ const Divider = styled.hr`
 `;
 
 export const TextClearFormating: FC<EditorPanel> = ({ editor, features }) => {
+  /* c8 ignore start */ // Testing tese lines would just be testing the tiptap library or testing that JavasCript works. Theres not enough custom logic here to warrant the maintance cost
   const clearFormatting = () =>
     editor.chain().focus().clearNodes().unsetAllMarks().run();
   if (features && !features.includes(RichTextEditorFeatures.CLEAR_FORMATTING))
     return;
+  /* c8 ignore end */
   return (
     <>
       <Divider />

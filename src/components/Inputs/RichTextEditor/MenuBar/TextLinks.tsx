@@ -31,12 +31,12 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
 
   const handleOnToggleOpen = () => {
     setOpen((prev) => !prev);
-    editor?.chain().focus().setHighlight({ color: '#accef7' }).run();
+    editor.chain().focus().setHighlight({ color: '#accef7' }).run();
   };
   const handleOnClose = () => {
     setOpen(false);
     linkText.current = '';
-    editor?.chain().focus().unsetHighlight().run();
+    editor.chain().focus().unsetHighlight().run();
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +57,7 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
 
     // save link
     editor
-      ?.chain()
+      .chain()
       .focus()
       .extendMarkRange('link')
       .setLink({ href: linkText.current })
@@ -77,13 +77,13 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
           ref={buttonRef}
           icon={link}
           onClick={handleOnToggleOpen}
-          disabled={editor?.state.selection.empty}
+          disabled={editor.state.selection.empty}
           data-testid="link-button"
         />
         <EditorMenu.Button
           icon={link_off}
           onClick={onUnsetLink}
-          disabled={!editor?.isActive('link')}
+          disabled={!editor.isActive('link')}
         />
       </EditorMenu.Section>
       {open && (

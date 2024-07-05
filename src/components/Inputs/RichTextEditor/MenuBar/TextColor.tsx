@@ -62,7 +62,7 @@ const ColorBar = styled.span`
 
 const TextColor: FC<EditorPanel> = ({ editor, features }) => {
   const handleOnInput = (event: ChangeEvent<HTMLInputElement>) => {
-    editor?.chain().focus().setColor(event.target.value).run();
+    editor.chain().focus().setColor(event.target.value).run();
   };
 
   if (features && !features.includes(RichTextEditorFeatures.TEXT_COLOR))
@@ -73,7 +73,7 @@ const TextColor: FC<EditorPanel> = ({ editor, features }) => {
         type="color"
         onInput={handleOnInput}
         value={
-          (editor?.getAttributes('textStyle')?.color as string) ||
+          (editor.getAttributes('textStyle')?.color as string) ||
           colors.text.static_icons__default.hex
         }
       />
@@ -83,7 +83,7 @@ const TextColor: FC<EditorPanel> = ({ editor, features }) => {
       <ColorBar
         style={{
           background:
-            (editor?.getAttributes('textStyle')?.color as string) ||
+            (editor.getAttributes('textStyle')?.color as string) ||
             colors.text.static_icons__default.hex,
         }}
       />
