@@ -126,7 +126,7 @@ const getColorSchemeBy = (variant: Variant = 'default') => {
 };
 
 const commonChipStyle = css`
-  border: 1px solid ${colors.ui.background__medium.rgba};
+  outline: 1px solid ${colors.ui.background__medium.rgba};
   cursor: pointer;
   display: flex;
   width: fit-content;
@@ -138,9 +138,10 @@ const commonChipStyle = css`
   text-align: center;
   transition:
     background-color 150ms ease,
-    border 150ms ease,
+    outline 150ms ease,
     color 150ms ease;
   padding: ${tokens.spacings.comfortable.x_small};
+  box-sizing: content-box;
 
   .content {
     padding: 0 ${tokens.spacings.comfortable.small};
@@ -167,21 +168,21 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
     return css`
       color: ${colorScheme.color};
       background-color: ${colorScheme.background};
-      border: 1px solid ${colorScheme.borderColor};
+      outline: 1px solid ${colorScheme.borderColor};
 
       &:hover {
         background-color: ${colorScheme.hover.background};
         color: ${colorScheme.hover.color};
-        border: 1px solid ${colorScheme.hover.borderColor};
+        outline: 1px solid ${colorScheme.hover.borderColor};
       }
       &:disabled {
         color: ${colorScheme.disabled?.color};
         background-color: ${colorScheme.disabled?.background};
-        border: 1px solid ${colorScheme.disabled?.borderColor};
+        outline: 1px solid ${colorScheme.disabled?.borderColor};
         cursor: not-allowed;
 
         &:hover {
-          border: 1px solid ${colorScheme.disabled?.borderColor};
+          outline: 1px solid ${colorScheme.disabled?.borderColor};
         }
       }
     `;
@@ -197,13 +198,13 @@ export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
           &.disabled {
             background-color: ${colors.interactive.disabled__fill.rgba};
             color: ${colors.interactive.disabled__text.rgba};
-            border: 1px solid ${colors.interactive.disabled__border.rgba};
+            outline: 1px solid ${colors.interactive.disabled__border.rgba};
             cursor: not-allowed;
           }
         `
       : css`
           background-color: ${colors.ui.background__light.rgba};
           color: ${colors.text.static_icons__default.rgba};
-          border: 1px solid ${colors.ui.background__medium.rgba};
+          outline: 1px solid ${colors.ui.background__medium.rgba};
         `}
 `;

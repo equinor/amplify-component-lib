@@ -122,9 +122,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
         getAllElementsToHighlight(activeTutorial);
       /* c8 ignore start */
       if (allElementsToHighlightInTimeout.every((item) => item !== null)) {
-        setAllElementsToHighlight(
-          allElementsToHighlightInTimeout as HTMLElement[]
-        );
+        setAllElementsToHighlight(allElementsToHighlightInTimeout);
         /* c8 ignore end */
       } else {
         console.error(
@@ -139,7 +137,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     const allElementsToHighlight = getAllElementsToHighlight(activeTutorial);
 
     if (allElementsToHighlight.every((item) => item !== null)) {
-      setAllElementsToHighlight(allElementsToHighlight as HTMLElement[]);
+      setAllElementsToHighlight(allElementsToHighlight);
     } else {
       handleTryToGetElementsAgain().catch((error) => {
         console.error('Error trying to get elements to highlight', error);
@@ -155,7 +153,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     const customKeysFromSteps = activeTutorial.steps
       .filter((step) => step.key !== undefined && step.key !== null)
       // Writing 'customStep.key as string' for coverage, we know its string since we filter out right before the map
-      .map((customStep) => customStep.key!);
+      .map((customStep) => customStep.key);
     if (customKeysFromSteps.length === 0) return;
 
     const customKeysFromComponents = customStepComponents?.map(
@@ -176,7 +174,7 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
       customKeysFromComponents?.includes(keyFromStep)
     );
 
-    if (stepsHaveComponents.some((step) => step !== true)) {
+    if (stepsHaveComponents.some((step) => !step)) {
       console.error(
         'Could not find the custom components related to the active tutorial. ' +
           '\n The active tutorial expected to find these keys:  ',

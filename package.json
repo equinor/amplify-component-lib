@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "7.12.4",
+  "version": "7.12.7",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
@@ -162,7 +162,8 @@
     "vitest": "^1.2.2"
   },
   "resolutions": {
-    "prosemirror-state": "1.4.3"
+    "prosemirror-state": "1.4.3",
+    "ws": "8.17.1"
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
