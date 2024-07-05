@@ -10,17 +10,17 @@ import {
 import { TextTable } from './Table/Table';
 import TableMenuBar from './Table/TableBar';
 import { AddImageButton } from './AddImageButton';
+import { MenuSection } from './MenuBar.styles';
+import MenuButton from './MenuButton';
 import { TextAlignment } from './TextAlignment';
 import { TextClearFormating } from './TextClearFormating';
 import { TextCode } from './TextCode';
+import { TextColor } from './TextColor';
 import { TextFormating } from './TextFormating';
 import { TextHeaders } from './TextHeaders';
 import { TextHistory } from './TextHistory';
 import { TextLinks } from './TextLinks';
 import { TextLists } from './TextLists';
-import { MenuSection } from './MenuBar.styles';
-import MenuButton from './MenuButton';
-import { TextColor } from './TextColor';
 
 import styled from 'styled-components';
 
