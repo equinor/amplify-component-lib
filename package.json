@@ -163,7 +163,7 @@
   },
   "resolutions": {
     "prosemirror-state": "1.4.3",
-    "ws": "8.18.0"
+    "ws": "8.17.1"
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
