@@ -6,14 +6,14 @@ import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings, typography, shape } = tokens;
 
-interface WrapperProps {
+export interface EditorStylingProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
   $maxHeight?: string;
   $border?: boolean;
 }
 
-export const EditorStyling = styled.div<WrapperProps>`
+export const EditorStyling = styled.div<EditorStylingProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;

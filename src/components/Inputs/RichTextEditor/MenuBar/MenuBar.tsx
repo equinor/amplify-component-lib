@@ -93,5 +93,6 @@ const EditorText = {
   ClearFormating: TextClearFormating,
 };
 
+export type { MenuBarProps };
 export { EditorText, EditorMenu };
 export default AmplifyBar;

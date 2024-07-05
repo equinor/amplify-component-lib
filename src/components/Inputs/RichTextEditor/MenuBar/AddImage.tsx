@@ -61,4 +61,5 @@ const AddImageButton: FC<AddImageProps> = ({
   );
 };
 
+export type { AddImageProps };
 export { AddImageButton };

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Editor,Extensions, useEditor } from '@tiptap/react';
+import { Editor, Extensions, useEditor } from '@tiptap/react';
 
 import { useAmplifyKit } from '../../../hooks/useAmplifyKit';
 import {
@@ -44,4 +44,5 @@ const EditorProvider: FC<EditorProviderProps> = ({
   return children(editor);
 };
 
+export type { EditorProviderProps };
 export { EditorProvider };

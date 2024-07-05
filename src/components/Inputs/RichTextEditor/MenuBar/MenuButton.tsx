@@ -52,4 +52,5 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
 
 MenuButton.displayName = 'MenuButton';
 
+export type { MenuButtonProps };
 export default MenuButton;
