@@ -231,7 +231,10 @@ describe('Editor defaults can be merged', () => {
     const defaults = uniqe;
     const options = removedExtensions;
     const result = mergeDefaults({ options, defaults });
-    expect(result).toEqual(defaults);
+    expect(result).toEqual({
+      bold: options.bold,
+      bulletList: defaults.bulletList,
+    });
   });
 
   it('should overwrite defaults with options', () => {
