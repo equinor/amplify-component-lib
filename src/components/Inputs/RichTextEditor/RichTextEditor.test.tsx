@@ -238,7 +238,7 @@ describe('Editor defaults can be merged', () => {
     const defaults = unconfigured;
     const options = removedExtensions;
     const result = mergeDefaults({ options, defaults });
-    expect(result.bold).toBeUndefined();
+    expect(result.bold).toBe(false);
   });
 
   it('should not overwrite defaults when property is undefined', () => {
