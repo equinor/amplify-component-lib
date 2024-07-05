@@ -36,11 +36,10 @@ const AddImageButton: FC<AddImageProps> = ({
       console.error('Files undefined');
       return;
     }
-    /* c8 ignore end */
 
     const image = await onImageUpload(files[0]);
-
     if (!image) return;
+    /* c8 ignore end */
 
     editor?.chain().focus().setImage({ src: image.b64, alt: image.url }).run();
   };
