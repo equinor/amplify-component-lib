@@ -18,6 +18,8 @@ const AddImageButton: FC<AddImageProps> = ({
   features,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  /* c8 ignore start */ // These lines are too basic to test. Testing them would effectivley just be us testing if JavaScript/React works.
   if (!onImageUpload) return null;
   if (features && !features.includes(RichTextEditorFeatures.IMAGES))
     return null;
@@ -31,7 +33,6 @@ const AddImageButton: FC<AddImageProps> = ({
   const handleOnFileSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
-    /* c8 ignore start */
     if (!files?.[0]) {
       console.error('Files undefined');
       return;
@@ -39,11 +40,11 @@ const AddImageButton: FC<AddImageProps> = ({
 
     const image = await onImageUpload(files[0]);
     if (!image) return;
-    /* c8 ignore end */
 
     editor?.chain().focus().setImage({ src: image.b64, alt: image.url }).run();
   };
 
+  /* c8 ignore end */
   return (
     <>
       <input

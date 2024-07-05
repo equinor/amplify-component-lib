@@ -1,3 +1,4 @@
+/* c8 ignore start */ // This entire file is just an example file for future nodeview projects. Testing it is adding maintance cost to something that is not used.
 import { useState } from 'react';
 
 import { mergeAttributes, Node } from '@tiptap/core';
@@ -19,8 +20,8 @@ const StyledNodeViewWrapper = styled(NodeViewWrapper)`
   background-color: rgba(88, 5, 255, 0.05);
   border: 2px solid #6a00f5;
   border-radius: 0.5rem;
-  margin: 2rem 0;
   position: relative;
+  margin: 2rem 0;
 
   label {
     background-color: #6a00f5;
