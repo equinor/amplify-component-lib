@@ -31,6 +31,7 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
       disabled = false,
       tooltip,
       children,
+      ...props
     },
     ref
   ) => (
@@ -38,10 +39,11 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
       <MenuButtonStyle
         ref={ref}
         $active={active}
-        type="button"
         $customColors={customColors}
         onClick={onClick}
         disabled={disabled}
+        type="button"
+        {...props}
       >
         <Icon data={icon} />
         {children}

@@ -56,7 +56,11 @@ const AddImageButton: FC<AddImageProps> = ({
         style={{ display: 'none' }}
         accept="image/*, video/*"
       />
-      <EditorMenu.Button icon={camera_add_photo} onClick={showFileDialog} />
+      <EditorMenu.Button
+        data-testid="add-image-button"
+        icon={camera_add_photo}
+        onClick={showFileDialog}
+      />
     </>
   );
 };

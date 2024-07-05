@@ -160,8 +160,7 @@ test('Open file dialog', async () => {
   // Wait for tip tap to initialize
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const uploadButton = screen.getByRole('button');
-
+  const uploadButton = screen.getByTestId('add-image-button');
   await user.click(uploadButton);
 });
 
