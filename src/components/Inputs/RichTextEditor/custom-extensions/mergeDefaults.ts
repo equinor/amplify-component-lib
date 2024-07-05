@@ -11,7 +11,7 @@ function mergeDefaults({ options, defaults }: MergedDefaults) {
   for (const key in options) {
     const typedKey = key as keyof AmplifyKitOptions;
     const property = options[typedKey];
-    if (!property) {
+    if (property === false) {
       //@ts-expect-error - Typescript shits the bed here because the union type is just too complex for it to handle
       mergedOptions[typedKey] = property;
     } else {
