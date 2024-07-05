@@ -12,14 +12,6 @@ import {
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 
-const RichText = {
-  Styling: EditorStyling,
-  Provider: EditorProvider,
-  Content: EditorContent,
-  Bar: AmplifyBar,
-  Kit: AmplifyKit,
-};
-
 interface RichTextEditorProps {
   value: string | null | undefined;
   onChange: (value: string) => void;
@@ -80,6 +72,14 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       </RichText.Provider>
     </RichText.Styling>
   );
+};
+
+const RichText = {
+  Styling: EditorStyling,
+  Provider: EditorProvider,
+  Content: EditorContent,
+  Bar: AmplifyBar,
+  Kit: AmplifyKit,
 };
 
 export type { RichTextEditorProps, OnImageUploadFn, RichTextEditorFeatures };

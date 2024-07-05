@@ -23,7 +23,15 @@ interface MenuButtonProps {
 
 const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
   (
-    { icon, onClick, customColors, active = false, disabled = false, tooltip },
+    {
+      icon,
+      onClick,
+      customColors,
+      active = false,
+      disabled = false,
+      tooltip,
+      children,
+    },
     ref
   ) => (
     <OptionalTooltip title={tooltip} placement="bottom">
@@ -36,6 +44,7 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
         disabled={disabled}
       >
         <Icon data={icon} />
+        {children}
       </MenuButtonStyle>
     </OptionalTooltip>
   )
