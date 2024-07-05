@@ -6,7 +6,6 @@ import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings, typography, shape } = tokens;
 
-/* c8 ignore start */
 export interface EditorStylingProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
@@ -160,4 +159,3 @@ export const EditorStyling = styled.div<EditorStylingProps>`
     pointer-events: none;
   }
 `;
-/* c8 ignore stop */
