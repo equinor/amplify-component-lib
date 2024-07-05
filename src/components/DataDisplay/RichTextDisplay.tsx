@@ -1,5 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
+
 import { useEditor } from '@tiptap/react';
+
 import { RichText } from '../Inputs/RichTextEditor/RichTextEditor';
 
 export interface RichTextDisplayProps {

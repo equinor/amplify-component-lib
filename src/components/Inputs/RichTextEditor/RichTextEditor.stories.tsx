@@ -7,12 +7,12 @@ import RichTextEditor, {
   RichText,
   RichTextEditorProps,
 } from './RichTextEditor';
-import { useFeatures } from 'src/hooks/useFeatures';
 import {
   DEFAULT_FEATURES,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { amplify_h2, amplify_h3 } from 'src/components/Icons/AmplifyIcons';
+import { useFeatures } from 'src/hooks/useFeatures';
 
 export default {
   title: 'Inputs/RichTextEditor',
