@@ -1,9 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
-
-import { EditorContent, useEditor } from '@tiptap/react';
-
-import { AmplifyKit } from '../Inputs/RichTextEditor/custom-extensions/DefaultKit';
-import { EditorStyling } from '../Inputs/RichTextEditor/RichTextEditor.styles';
+import { useEditor } from '@tiptap/react';
+import { RichText } from '../Inputs/RichTextEditor/RichTextEditor';
 
 export interface RichTextDisplayProps {
   value: string | null | undefined;
@@ -19,7 +16,7 @@ const RichTextDisplay: FC<RichTextDisplayProps> = ({
   padding = 'md',
 }) => {
   const editor = useEditor({
-    extensions: [AmplifyKit],
+    extensions: [RichText.Kit],
     content: imgReadToken
       ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
       : value,
@@ -36,9 +33,9 @@ const RichTextDisplay: FC<RichTextDisplayProps> = ({
   }, [editor, value]);
 
   return (
-    <EditorStyling $lightBackground={lightBackground} $padding={padding}>
-      <EditorContent editor={editor} readOnly />
-    </EditorStyling>
+    <RichText.Styling $lightBackground={lightBackground} $padding={padding}>
+      <RichText.Content editor={editor} readOnly />
+    </RichText.Styling>
   );
 };
 
