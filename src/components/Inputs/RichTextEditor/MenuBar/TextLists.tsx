@@ -6,7 +6,7 @@ import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { EditorMenu } from './MenuBar';
 
 const TextLists: FC<EditorPanel> = ({ editor, features }) => {
-  /* c8 ignore start */ // Testing tese lines would just be testing the tiptap library or testing that JavasCript works. Theres not enough custom logic here to warrant the maintance cost
+  /* c8 ignore start */ // Testing tese lines would just be testing the tiptap library or testing that JavaScript works. Theres not enough custom logic here to warrant the maintance cost
   const toggleBulletList = () =>
     editor.chain().focus().toggleBulletList().run();
   const toggleOrderedList = () =>
