@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { fireEvent, waitFor } from '@testing-library/dom';
-import { mergeDefaults } from './custom-extensions/DefaultKit';
-import type { AmplifyKitOptions } from './custom-extensions/DefaultKit';
 
+import type { AmplifyKitOptions } from './custom-extensions/DefaultKit';
+import { mergeDefaults } from './custom-extensions/DefaultKit';
 import RichTextEditor, { RichTextEditorProps } from './RichTextEditor';
 import {
   DEFAULT_FEATURES,
