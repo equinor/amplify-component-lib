@@ -6,7 +6,7 @@ import { StoryFn } from '@storybook/react';
 import ConfirmationPopup, { ConfirmationPopupProps } from './ConfirmationPopup';
 
 export default {
-  title: 'Feedback/ConfirmationPopup',
+  title: 'Deprecated/Feedback/ConfirmationPopup',
   component: ConfirmationPopup,
   parameters: {
     design: {

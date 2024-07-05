@@ -8,7 +8,7 @@ import CopyText, { CopyTextProps } from './CopyText';
 import styled from 'styled-components';
 
 export default {
-  title: 'Inputs/CopyText',
+  title: 'Deprecated/Inputs/CopyText',
   component: CopyText,
   args: {
     textToCopy: 'Some text',

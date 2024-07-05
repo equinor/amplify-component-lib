@@ -63,6 +63,10 @@ export interface CopyTextProps {
   children: ReactNode;
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const CopyText: FC<CopyTextProps> = ({ children, textToCopy }) => {
   const isMounted = useRef(false);
   const [hovering, setHovering] = useState(false);

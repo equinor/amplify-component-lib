@@ -3,7 +3,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import EditableField, { EditableFieldProps } from './EditableField';
 
 export default {
-  title: 'Inputs/EditableField',
+  title: 'Deprecated/Inputs/EditableField',
   component: EditableField,
   argTypes: {
     editable: { control: 'boolean' },

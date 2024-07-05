@@ -3,8 +3,8 @@ import React from 'react';
 import { Button } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 
-import { render, screen, userEvent } from '../../tests/test-utils';
-import InfoElement from './InfoElement';
+import InfoElement from 'src/components/DataDisplay/InfoElement/InfoElement';
+import { render, screen, userEvent } from 'src/tests/test-utils';
 
 test('renders string content correctly', () => {
   const title = faker.animal.cetacean().toUpperCase();

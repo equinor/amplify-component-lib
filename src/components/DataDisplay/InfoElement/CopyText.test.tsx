@@ -1,5 +1,5 @@
-import { render, screen, userEvent, waitFor } from '../../tests/test-utils';
-import CopyText from './CopyText';
+import CopyText from 'src/components/DataDisplay/InfoElement/CopyText';
+import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
 test('Renders label on hover', async () => {
   render(<CopyText textToCopy="Test">testing text</CopyText>);

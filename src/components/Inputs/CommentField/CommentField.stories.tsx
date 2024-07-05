@@ -3,7 +3,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import CommentField, { CommentFieldProps } from './CommentField';
 
 export default {
-  title: 'Inputs/CommentField/CommentField',
+  title: 'Deprecated/Inputs/CommentField',
   component: CommentField,
   parameters: {
     docs: {

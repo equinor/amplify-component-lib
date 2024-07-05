@@ -2,7 +2,7 @@ import React, { forwardRef, ReactElement } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
-import CopyText from '../Inputs/CopyText';
+import CopyText from 'src/components/DataDisplay/InfoElement/CopyText';
 
 export interface InfoElementProps {
   title: string;
@@ -28,9 +28,7 @@ const InfoElement = forwardRef<HTMLDivElement, InfoElementProps>(
               <Typography variant="h6">{contentElement}</Typography>
             </CopyText>
           ) : (
-            <Typography variant="h6">
-              {contentElement}
-            </Typography>
+            <Typography variant="h6">{contentElement}</Typography>
           )
         ) : (
           content

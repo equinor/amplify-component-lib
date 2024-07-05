@@ -11,7 +11,7 @@ import {
 } from 'src/components/Inputs/SelectDrawer/stories/data';
 
 export default {
-  title: 'Inputs/SelectDrawer/SingleSelectDrawer',
+  title: 'Deprecated/Inputs/SelectDrawer/SingleSelectDrawer',
   component: SingleSelectDrawer,
   argTypes: {
     label: { control: 'text' },

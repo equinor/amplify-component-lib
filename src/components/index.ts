@@ -1,7 +1,7 @@
 export { Chip } from './DataDisplay/Chip/Chip';
 export { default as DataCard } from './DataDisplay/DataCard';
 export { default as HeaderDrawer } from './DataDisplay/HeaderDrawer';
-export { default as InfoElement } from './DataDisplay/InfoElement';
+export { default as InfoElement } from 'src/components/DataDisplay/InfoElement/InfoElement';
 export { default as OptionalTooltip } from './DataDisplay/OptionalTooltip';
 export type { ProfileAvatarProps } from './DataDisplay/ProfileAvatar';
 export { default as ProfileAvatar } from './DataDisplay/ProfileAvatar';
@@ -61,7 +61,7 @@ export { ComboBox } from 'src/components/Inputs/Select/ComboBox/ComboBox';
 export { default as CommentField } from './Inputs/CommentField/CommentField';
 export { default as NewComment } from './Inputs/CommentField/NewCommentField';
 export { default as ContentMenu } from './Inputs/ContentMenu';
-export { default as CopyText } from './Inputs/CopyText';
+export { default as CopyText } from 'src/components/DataDisplay/InfoElement/CopyText';
 export { default as EditableField } from './Inputs/EditableField';
 export { ExpandingIconButton } from './Inputs/ExpandingIconButton/ExpandingIconButton';
 export type { ExpandingIconButtonProps } from './Inputs/ExpandingIconButton/ExpandingIconButton';

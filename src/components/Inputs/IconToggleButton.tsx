@@ -37,6 +37,10 @@ export interface IconToggleButtonProps {
   onClick?: (toggle: boolean) => void;
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const IconToggleButton = forwardRef<HTMLButtonElement, IconToggleButtonProps>(
   ({ initialState = false, toggleOn, toggleOff, onClick }, ref) => {
     const [toggle, setToggle] = useState(initialState);
