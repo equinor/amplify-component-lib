@@ -3,6 +3,12 @@ import { Plugin, PluginKey } from '@tiptap/pm/state';
 
 import { OnImageUploadFn } from 'src/components/Inputs/RichTextEditor/RichTextEditor.types';
 
+export interface ExtendedImageOptions {
+  inline: boolean;
+  allowBase64: boolean;
+  onImageUpload?: OnImageUploadFn;
+}
+
 declare module '@tiptap/extension-image' {
   interface ImageOptions {
     inline: boolean;

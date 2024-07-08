@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { fireEvent, waitFor } from '@testing-library/dom';
 
+import type { AmplifyKitOptions } from './custom-extensions/DefaultKit';
+import { mergeDefaults } from './custom-extensions/DefaultKit';
 import RichTextEditor, { RichTextEditorProps } from './RichTextEditor';
 import {
   DEFAULT_FEATURES,
@@ -158,8 +160,7 @@ test('Open file dialog', async () => {
   // Wait for tip tap to initialize
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const uploadButton = screen.getByRole('button');
-
+  const uploadButton = screen.getByTestId('add-image-button');
   await user.click(uploadButton);
 });
 
@@ -174,8 +175,7 @@ test('Creating table works as expected', async () => {
   // Wait for tip tap to initialize
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const tableButton = screen.getByRole('button');
-
+  const tableButton = screen.getByTestId('add-table-button');
   await user.click(tableButton);
 
   expect(screen.getByRole('table')).toBeInTheDocument();
@@ -200,4 +200,59 @@ test('Images work as expected', async () => {
   expect(screen.getByRole('img')).toHaveAttribute('src', randomUrl);
 
   expect(screen.getByRole('img')).toHaveAttribute('alt', alt);
+});
+
+describe('Editor defaults can be merged', () => {
+  const uniqe: Partial<AmplifyKitOptions> = {
+    bold: { HTMLAttributes: { class: 'bolder' } },
+    bulletList: { HTMLAttributes: { class: 'ammo-list' } },
+  };
+
+  const removedExtensions: Partial<AmplifyKitOptions> = {
+    bold: false,
+  };
+
+  const unconfigured: Partial<AmplifyKitOptions> = {
+    bold: undefined,
+    bulletList: undefined,
+  };
+
+  it('should return defaults when options is undefined', () => {
+    const defaults = uniqe;
+    const result = mergeDefaults({ options: undefined, defaults });
+    expect(result).toEqual(defaults);
+    const resultEmpty = mergeDefaults({ options: {}, defaults });
+    expect(resultEmpty).toEqual(defaults);
+  });
+
+  it('should merge options and defaults correctly', () => {
+    const defaults = uniqe;
+    const options = removedExtensions;
+    const result = mergeDefaults({ options, defaults });
+    expect(result).toEqual({
+      bold: options.bold,
+      bulletList: defaults.bulletList,
+    });
+  });
+
+  it('should overwrite defaults with options', () => {
+    const defaults = unconfigured;
+    const options = removedExtensions;
+    const result = mergeDefaults({ options, defaults });
+    expect(result.bold).toBe(false);
+  });
+
+  it('should not overwrite defaults when property is undefined', () => {
+    const defaults = uniqe;
+    const options = unconfigured;
+    const result = mergeDefaults({ options, defaults });
+    expect(result).toEqual(defaults);
+  });
+
+  it('should merge defaults and options when both are objects', () => {
+    const defaults = unconfigured;
+    const options = uniqe;
+    const result = mergeDefaults({ options, defaults });
+    expect(result).toEqual(options);
+  });
 });

@@ -3,10 +3,9 @@ import { ChangeEvent, FC, KeyboardEvent, useRef, useState } from 'react';
 import { Button, Icon, Popover } from '@equinor/eds-core-react';
 import { link, link_off } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useCurrentEditor } from '@tiptap/react';
 
-import { Section } from './MenuBar.styles';
-import MenuButton from './MenuButton';
+import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
+import { EditorMenu } from './MenuBar';
 import { TextField } from 'src/components/Inputs/TextField/TextField';
 import url from 'src/utils/url';
 
@@ -24,8 +23,7 @@ const Container = styled.div`
 //💡 Wasn't able to test this component due to tiptap not setting the selected text
 // as expected when inside a test, thus the link buttons are always disabled - Marius 24. Jan 2024
 /* c8 ignore start */
-const Links: FC = () => {
-  const { editor } = useCurrentEditor();
+export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const linkText = useRef<string>('');
@@ -33,12 +31,12 @@ const Links: FC = () => {
 
   const handleOnToggleOpen = () => {
     setOpen((prev) => !prev);
-    editor?.chain().focus().setHighlight({ color: '#accef7' }).run();
+    editor.chain().focus().setHighlight({ color: '#accef7' }).run();
   };
   const handleOnClose = () => {
     setOpen(false);
     linkText.current = '';
-    editor?.chain().focus().unsetHighlight().run();
+    editor.chain().focus().unsetHighlight().run();
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +57,7 @@ const Links: FC = () => {
 
     // save link
     editor
-      ?.chain()
+      .chain()
       .focus()
       .extendMarkRange('link')
       .setLink({ href: linkText.current })
@@ -70,23 +68,24 @@ const Links: FC = () => {
   };
   const onUnsetLink = () => editor?.chain().focus().unsetLink().run();
 
+  if (features && !features.includes(RichTextEditorFeatures.LINKS)) return;
   return (
     <>
-      <Section>
-        <MenuButton
+      <EditorMenu.Section>
+        <EditorMenu.Button
           active={open}
           ref={buttonRef}
           icon={link}
           onClick={handleOnToggleOpen}
-          disabled={editor?.state.selection.empty}
+          disabled={editor.state.selection.empty}
           data-testid="link-button"
         />
-        <MenuButton
+        <EditorMenu.Button
           icon={link_off}
           onClick={onUnsetLink}
-          disabled={!editor?.isActive('link')}
+          disabled={!editor.isActive('link')}
         />
-      </Section>
+      </EditorMenu.Section>
       {open && (
         <Popover open anchorEl={buttonRef.current} onClose={handleOnClose}>
           <Container>
@@ -111,6 +110,4 @@ const Links: FC = () => {
     </>
   );
 };
-
-export default Links;
 /* c8 ignore end */

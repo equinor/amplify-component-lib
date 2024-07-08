@@ -3,13 +3,14 @@ import { ChangeEvent, FC } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { format_color_text } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useCurrentEditor } from '@tiptap/react';
+
+import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 
 import styled from 'styled-components';
 
 const { colors, spacings, shape } = tokens;
 
-const Container = styled.div`
+const TextColorStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.comfortable.medium};
@@ -59,20 +60,20 @@ const ColorBar = styled.span`
   width: 24px;
 `;
 
-const TextColor: FC = () => {
-  const { editor } = useCurrentEditor();
-
+const TextColor: FC<EditorPanel> = ({ editor, features }) => {
   const handleOnInput = (event: ChangeEvent<HTMLInputElement>) => {
-    editor?.chain().focus().setColor(event.target.value).run();
+    editor.chain().focus().setColor(event.target.value).run();
   };
 
+  if (features && !features.includes(RichTextEditorFeatures.TEXT_COLOR))
+    return null;
   return (
-    <Container>
+    <TextColorStyle>
       <input
         type="color"
         onInput={handleOnInput}
         value={
-          (editor?.getAttributes('textStyle')?.color as string) ||
+          (editor.getAttributes('textStyle')?.color as string) ||
           colors.text.static_icons__default.hex
         }
       />
@@ -82,12 +83,12 @@ const TextColor: FC = () => {
       <ColorBar
         style={{
           background:
-            (editor?.getAttributes('textStyle')?.color as string) ||
+            (editor.getAttributes('textStyle')?.color as string) ||
             colors.text.static_icons__default.hex,
         }}
       />
-    </Container>
+    </TextColorStyle>
   );
 };
 
-export default TextColor;
+export { TextColor };
