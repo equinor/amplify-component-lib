@@ -1,7 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
-import { EditorContent } from '@tiptap/react';
+import { EditorContent as TiptapContent } from '@tiptap/react';
 import styled from 'styled-components';
-import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings, typography, shape } = tokens;
 interface RichTextContentProps {
@@ -9,32 +8,22 @@ interface RichTextContentProps {
   $maxHeight?: string;
 }
 
-const RichTextContent = styled(EditorContent)<RichTextContentProps>`
+const EditorContent = styled(TiptapContent)<RichTextContentProps>`
   min-height: ${(props) => props.$minHeight || 'auto'};
   max-height: ${(props) => props.$maxHeight || 'auto'};
-  .tiptap {
-    height: 100%;
-  }
-
-  & .rich-text-content .tiptap p[data-placeholder]::before {
-    color: ${colors.text.static_icons__tertiary.rgba};
-  }
 `;
 
-export interface EditorStylingProps {
+interface EditorStylingProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
-  $maxHeight?: string;
-  $minHeight?: string;
   $border?: boolean;
 }
 
-export const EditorStyling = styled.div<EditorStylingProps>`
+const EditorStyling = styled.div<EditorStylingProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   background: ${colors.ui.background__default.rgba};
-
   border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
   border: ${(props) =>
     props.$border ? `1px solid ${colors.ui.background__medium.rgba}` : 'none'};
@@ -50,8 +39,6 @@ export const EditorStyling = styled.div<EditorStylingProps>`
 
   .tiptap {
     height: 100%;
-    min-height: ${(props) => props.$minHeight ?? 'none'};
-    max-height: ${(props) => props.$maxHeight ?? 'none'};
     overflow-y: auto;
     background: ${(props) =>
       props.$lightBackground
@@ -173,6 +160,7 @@ export const EditorStyling = styled.div<EditorStylingProps>`
       box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
     }
   }
+
   .tiptap p.is-editor-empty:first-child::before {
     color: ${colors.text.static_icons__default.rgba};
     content: attr(data-placeholder);
@@ -181,3 +169,6 @@ export const EditorStyling = styled.div<EditorStylingProps>`
     pointer-events: none;
   }
 `;
+
+export type { RichTextContentProps, EditorStylingProps };
+export { EditorContent, EditorStyling };

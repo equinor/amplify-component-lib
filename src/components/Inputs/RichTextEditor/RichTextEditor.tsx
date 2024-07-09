@@ -1,12 +1,10 @@
 import { FC } from 'react';
 
-import { EditorContent } from '@tiptap/react';
-
 import getFeatures from '../../../utils/getFeatures';
 import { AmplifyKit } from './custom-extensions/DefaultKit';
 import AmplifyBar from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
-import { EditorStyling } from './RichTextEditor.styles';
+import { EditorStyling, EditorContent } from './RichTextEditor.styles';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,
@@ -59,8 +57,6 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
         <RichText.Styling
           $border={border}
           $padding={padding}
-          $maxHeight={maxHeight}
-          $minHeight={minHeight}
           $lightBackground={lightBackground}
         >
           <RichText.Bar
@@ -68,7 +64,11 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
             features={usedFeatured}
             onImageUpload={onImageUpload}
           />
-          <RichText.Content editor={editor} />
+          <RichText.Content
+            editor={editor}
+            $maxHeight={maxHeight}
+            $minHeight={minHeight}
+          />
         </RichText.Styling>
       )}
     </RichText.Provider>
