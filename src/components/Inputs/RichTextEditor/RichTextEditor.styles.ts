@@ -28,6 +28,10 @@ export const EditorStyling = styled.div<EditorStylingProps>`
     height: inherit;
   }
 
+  & [data-placeholder]::before {
+    color: ${colors.text.static_icons__tertiary.rgba} !important;
+  }
+
   .tiptap {
     max-height: ${(props) => props.$maxHeight ?? 'none'};
     overflow-y: auto;
