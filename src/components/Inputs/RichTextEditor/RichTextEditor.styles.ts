@@ -10,6 +10,7 @@ interface RichTextContentProps {
 }
 
 const EditorContent = styled(TiptapContent)<RichTextContentProps>`
+  overflow-y: auto;
   min-height: ${(props) => props.$minHeight || 'auto'};
   max-height: ${(props) => props.$maxHeight || 'auto'};
 `;
