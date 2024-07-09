@@ -15,9 +15,8 @@ import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSignalRMessages } from './useSignalRMessages';
-import { useAmplifyKit } from 'src/hooks/useAmplifyKit';
-import useFeatures from 'src/utils/getFeatures';
-import { useSelect } from 'src/hooks/useSelect';
+import { useAmplifyKit } from './useAmplifyKit';
+import { useSelect } from './useSelect';
 
 export {
   useAuth,
@@ -25,7 +24,6 @@ export {
   useDebounce,
   useFakeProgress,
   useFeatureToggling,
-  useFeatures,
   useAmplifyKit,
   useEditor,
   useLocalStorage,
