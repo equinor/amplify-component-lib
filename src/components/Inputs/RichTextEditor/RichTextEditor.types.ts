@@ -28,6 +28,7 @@ export const DEFAULT_FEATURES = [
   RichTextEditorFeatures.CLEAR_FORMATTING,
 ];
 
+//TODO Export this
 export type OnImageUploadFn = (
   file: File
 ) => Promise<{ b64: string; url: string } | undefined>;

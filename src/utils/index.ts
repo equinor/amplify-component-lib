@@ -9,6 +9,7 @@ import size from './size';
 import sort from './sort';
 import string from './string';
 import url from './url';
+import getFeatures from './getFeatures';
 
 export {
   auth,
@@ -17,6 +18,7 @@ export {
   environment,
   errors,
   exportComponent,
+  getFeatures,
   favicon,
   map,
   size,

@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { EditorContent } from '@tiptap/react';
 
-import { useFeatures } from '../../../hooks/useFeatures';
+import getFeatures from '../../../utils/getFeatures';
 import { AmplifyKit } from './custom-extensions/DefaultKit';
 import AmplifyBar from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
@@ -22,6 +22,7 @@ interface RichTextEditorProps {
   removeFeatures?: RichTextEditorFeatures[];
   padding?: 'sm' | 'md' | 'lg' | 'none';
   maxHeight?: string;
+  minHeight?: string;
   lightBackground?: boolean;
   border?: boolean;
 }
@@ -36,41 +37,41 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
   removeFeatures,
   padding = 'md',
   maxHeight,
+  minHeight,
   lightBackground,
   border = true,
 }) => {
-  const usingFeatures = useFeatures({
+  const usedFeatured = getFeatures({
     features,
     extendFeatures,
     removeFeatures,
     onImageUpload,
   });
   return (
-    <RichText.Styling
-      $padding={padding}
-      $maxHeight={maxHeight}
-      $lightBackground={lightBackground}
-      $border={border}
+    <RichText.Provider
+      content={value}
+      onUpdate={onChange}
+      features={usedFeatured}
+      placeholder={placeholder}
+      onImageUpload={onImageUpload}
     >
-      <RichText.Provider
-        content={value}
-        onUpdate={onChange}
-        features={usingFeatures}
-        placeholder={placeholder}
-        onImageUpload={onImageUpload}
-      >
-        {(editor) => (
-          <div>
-            <RichText.Bar
-              editor={editor}
-              features={usingFeatures}
-              onImageUpload={onImageUpload}
-            />
-            <RichText.Content editor={editor} />
-          </div>
-        )}
-      </RichText.Provider>
-    </RichText.Styling>
+      {(editor) => (
+        <RichText.Styling
+          $border={border}
+          $padding={padding}
+          $maxHeight={maxHeight}
+          $minHeight={minHeight}
+          $lightBackground={lightBackground}
+        >
+          <RichText.Bar
+            editor={editor}
+            features={usedFeatured}
+            onImageUpload={onImageUpload}
+          />
+          <RichText.Content editor={editor} />
+        </RichText.Styling>
+      )}
+    </RichText.Provider>
   );
 };
 

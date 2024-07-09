@@ -46,6 +46,7 @@ interface MenuBarProps {
 }
 
 const AmplifyBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
+  if (features.length === 0) return null;
   return (
     <MenuBars>
       {/* Main Bar */}

@@ -10,6 +10,7 @@ export interface EditorStylingProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
   $maxHeight?: string;
+  $minHeight?: string;
   $border?: boolean;
 }
 
@@ -29,6 +30,8 @@ export const EditorStyling = styled.div<EditorStylingProps>`
   }
 
   .tiptap {
+    height: 100%;
+    min-height: ${(props) => props.$minHeight ?? 'none'};
     max-height: ${(props) => props.$maxHeight ?? 'none'};
     overflow-y: auto;
     background: ${(props) =>
