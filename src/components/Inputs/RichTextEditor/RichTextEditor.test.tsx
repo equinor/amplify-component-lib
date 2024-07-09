@@ -18,10 +18,6 @@ function fakeProps(withImage = false): RichTextEditorProps {
   };
 }
 
-function randomFeatures(amount: number): RichTextEditorFeatures[] {
-  return faker.helpers.arrayElements(DEFAULT_FEATURES, amount);
-}
-
 test('Shows text that is input', async () => {
   const props = fakeProps(true);
   const fish = faker.animal.fish();
