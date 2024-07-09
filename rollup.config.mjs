@@ -31,11 +31,10 @@ export default [
     ],
     output: [
       {
-        dir: 'dist/esm',
+        dir: 'dist',
         preserveModules: true,
         preserveModulesRoot: 'src',
         format: 'es',
-        sourcemap: false,
       },
     ],
   },

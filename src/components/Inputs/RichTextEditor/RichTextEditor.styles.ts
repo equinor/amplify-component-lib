@@ -2,8 +2,6 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-import 'highlight.js/styles/base16/solarized-dark.css';
-
 const { colors, spacings, typography, shape } = tokens;
 
 export interface EditorStylingProps {
