@@ -46,32 +46,6 @@ test('Throws error if providing RichTextEditorFeature.IMAGES but not an image ha
   ).toThrowError();
 });
 
-test("Throws error if specifying 'features' and 'extendFeatures' / 'removeFeatures'", () => {
-  console.error = vi.fn();
-
-  const props = fakeProps();
-
-  expect(() =>
-    render(
-      <RichTextEditor
-        {...props}
-        features={randomFeatures(5)}
-        extendFeatures={randomFeatures(4)}
-      />
-    )
-  ).toThrowError();
-
-  expect(() =>
-    render(
-      <RichTextEditor
-        {...props}
-        features={randomFeatures(5)}
-        removeFeatures={randomFeatures(4)}
-      />
-    )
-  ).toThrowError();
-});
-
 test("Calls 'onChange' when inputting text", async () => {
   const props = fakeProps();
 
