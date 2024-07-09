@@ -1,5 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import { EditorContent as TiptapContent } from '@tiptap/react';
+
 import styled from 'styled-components';
 
 const { colors, spacings, typography, shape } = tokens;

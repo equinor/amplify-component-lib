@@ -4,12 +4,12 @@ import date from './date';
 import errors from './errors';
 import exportComponent from './export';
 import favicon from './favicon';
+import getFeatures from './getFeatures';
 import map from './map';
 import size from './size';
 import sort from './sort';
 import string from './string';
 import url from './url';
-import getFeatures from './getFeatures';
 
 export {
   auth,

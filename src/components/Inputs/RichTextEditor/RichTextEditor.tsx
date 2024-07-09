@@ -4,7 +4,7 @@ import getFeatures from '../../../utils/getFeatures';
 import { AmplifyKit } from './custom-extensions/DefaultKit';
 import AmplifyBar from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
-import { EditorStyling, EditorContent } from './RichTextEditor.styles';
+import { EditorContent,EditorStyling } from './RichTextEditor.styles';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,
