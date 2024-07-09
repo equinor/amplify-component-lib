@@ -4,10 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/dom';
 import type { AmplifyKitOptions } from './custom-extensions/DefaultKit';
 import { mergeDefaults } from './custom-extensions/DefaultKit';
 import RichTextEditor, { RichTextEditorProps } from './RichTextEditor';
-import {
-  DEFAULT_FEATURES,
-  RichTextEditorFeatures,
-} from './RichTextEditor.types';
+import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
