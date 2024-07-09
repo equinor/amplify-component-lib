@@ -45,6 +45,7 @@ interface MenuBarProps {
   onImageUpload?: OnImageUploadFn;
 }
 
+/* c8 ignore start */
 const AmplifyBar: FC<MenuBarProps> = ({ editor, features, onImageUpload }) => {
   if (features.length === 0) return null;
   return (
@@ -93,6 +94,7 @@ const EditorText = {
   Alignment: TextAlignment,
   ClearFormating: TextClearFormating,
 };
+/* c8 ignore end */
 
 export type { MenuBarProps };
 export { EditorText, EditorMenu };

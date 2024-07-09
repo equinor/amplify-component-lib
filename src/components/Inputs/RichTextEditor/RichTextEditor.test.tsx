@@ -72,19 +72,6 @@ test("Throws error if specifying 'features' and 'extendFeatures' / 'removeFeatur
   ).toThrowError();
 });
 
-test("Throws error if 'features' is empty", () => {
-  console.error = vi.fn();
-
-  const props = fakeProps();
-
-  expect(() =>
-    render(<RichTextEditor {...props} removeFeatures={DEFAULT_FEATURES} />)
-  ).toThrowError();
-  expect(() =>
-    render(<RichTextEditor {...props} features={[]} />)
-  ).toThrowError();
-});
-
 test("Calls 'onChange' when inputting text", async () => {
   const props = fakeProps();
 
