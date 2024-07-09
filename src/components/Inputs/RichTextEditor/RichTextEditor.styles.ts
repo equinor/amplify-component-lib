@@ -44,6 +44,10 @@ export const EditorStyling = styled.div<EditorStylingProps>`
     height: inherit;
   }
 
+  & [data-placeholder]::before {
+    color: ${colors.text.static_icons__tertiary.rgba} !important;
+  }
+
   .tiptap {
     height: 100%;
     min-height: ${(props) => props.$minHeight ?? 'none'};
