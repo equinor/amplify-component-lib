@@ -1,10 +1,25 @@
 import { tokens } from '@equinor/eds-tokens';
-
+import { EditorContent } from '@tiptap/react';
 import styled from 'styled-components';
-
 import 'highlight.js/styles/base16/solarized-dark.css';
 
 const { colors, spacings, typography, shape } = tokens;
+interface RichTextContentProps {
+  $minHeight?: string;
+  $maxHeight?: string;
+}
+
+const RichTextContent = styled(EditorContent)<RichTextContentProps>`
+  min-height: ${(props) => props.$minHeight || 'auto'};
+  max-height: ${(props) => props.$maxHeight || 'auto'};
+  .tiptap {
+    height: 100%;
+  }
+
+  & .rich-text-content .tiptap p[data-placeholder]::before {
+    color: ${colors.text.static_icons__tertiary.rgba};
+  }
+`;
 
 export interface EditorStylingProps {
   $lightBackground?: boolean;
