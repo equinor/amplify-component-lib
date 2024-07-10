@@ -12,12 +12,9 @@ import { ButtonContainer, Wrapper } from './FilterHeader.styles';
 import { ChipWrapper, SieveWrapper } from './FilterHeader.styles';
 import { EnvironmentType } from 'src/atoms/types/Environment';
 import { environment } from 'src/atoms/utils';
-import { FilterOption } from 'src/components/Inputs/Sieve/Filter';
-import Sieve from 'src/components/Inputs/Sieve/Sieve';
-import {
-  FilterValues,
-  SieveValue,
-} from 'src/components/Inputs/Sieve/Sieve.types';
+import { FilterOption } from 'src/molecules/Sieve/Filter';
+import Sieve from 'src/molecules/Sieve/Sieve';
+import { FilterValues, SieveValue } from 'src/molecules/Sieve/Sieve.types';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 const { getEnvironmentName, getAppName } = environment;

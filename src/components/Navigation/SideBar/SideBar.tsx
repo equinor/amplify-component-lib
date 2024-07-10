@@ -1,6 +1,5 @@
 import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 
-import EquinorLogo from '../../Icons/EquinorLogo';
 import CreateItem from './CreateItem';
 import {
   BottomItemContainer,
@@ -9,6 +8,7 @@ import {
   TopItemContainer,
 } from './SideBar.styles';
 import ToggleOpen from './ToggleOpen';
+import EquinorLogo from 'src/molecules/EquinorLogo/EquinorLogo';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 interface SideBarProps extends HTMLAttributes<HTMLDivElement> {

@@ -15,13 +15,13 @@ import {
   extractDatesFromReleaseNotes,
   sortReleaseNotesByDate,
 } from 'src/atoms/utils/releaseNotes';
-import { Option, SieveValue } from 'src/components';
+import { SieveOption, SieveValue } from 'src/molecules/Sieve/Sieve.types';
 import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
 
 interface ReleaseNotesContextState {
   search: SieveValue;
   setSearch: Dispatch<SetStateAction<SieveValue>>;
-  selectedReleaseNoteTypes?: Option[];
+  selectedReleaseNoteTypes?: SieveOption[];
   open: boolean;
   setOpen: (open: boolean) => void;
   toggle: () => void;
@@ -80,7 +80,7 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
       filteredList = filteredList.filter((item) =>
         item.tags?.some((tag) =>
           selectedReleaseNoteTypes
-            .map((option: Option) => option.value)
+            .map((option: SieveOption) => option.value)
             .includes(tag)
         )
       );

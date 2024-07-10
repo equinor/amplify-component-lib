@@ -1,0 +1,93 @@
+import { Links, Story } from 'src/storybook'
+import { Primary, Canvas, Meta, Controls } from '@storybook/blocks'
+import * as ComponentStories from 'src/molecules/Card/Card.stories'
+
+<Meta of={ComponentStories} />
+
+# Card
+
+**Components from EDS**
+
+Displays content related to a single subject and acts as an entry point to more detailed information.
+
+<Links figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=18442%3A38079" documentationUrl="https://eds.equinor.com/0b0c666ab/p/9016ba-card/b/75c90f" sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Card/Card.tsx" npmUrl="https://www.npmjs.com/package/@equinor/eds-core-react" />
+
+<Primary />
+
+<Controls />
+
+## Usage
+
+A `Card` should be easy to scan for relevant and actionable information. <br />
+
+<ul>
+  <li>Card is identifiable as a single, contained unit.</li>
+  <li>Card can stand alone, without relying on surrounding elements for context.</li>
+  <li>Card cannot merge with another card, or divide into multiple cards.</li>
+  <li>Card blocks can be combined in a variety of ways.</li>
+</ul>
+
+```tsx
+import { Card } from '@equinor/eds-core-react'
+
+<Card>
+  <Card.Header>
+    <Card.HeaderTitle>
+      <Typography variant="h5">Title</Typography>
+      <Typography variant="body_short">Sub title</Typography>
+    </Card.HeaderTitle>
+  </Card.Header>
+  <Card.Content>
+    <Typography variant="body_short">
+       In ornare quam viverra orci sagittis eu volutpat.
+       Vel elit scelerisque mauris pellentesque pulvinar.
+    </Typography>
+  </Card.Content>
+  <Card.Actions alignRight>
+    <Button variant="ghost_icon">
+      <Icon name="settings" title="settings action" size={iconSize}></Icon>
+    </Button>
+    <Button variant="ghost_icon">
+      <Icon name="save" title="save action" size={iconSize}></Icon>
+    </Button>
+  </Cardd.Actions>
+</Card>
+```
+
+## Examples
+
+### Container variants
+
+<ul>
+  <li>The <code>container</code> is the only required block in a card.</li>
+  <li>There are four available <code>card/container</code> options:</li>
+</ul>
+
+<Canvas of={ComponentStories.TypeOfCards} />
+
+### Header variants
+
+There are eleven title blocks to choose between:
+
+<Canvas of={ComponentStories.CardHeaderVariants} />
+
+### With media
+
+Elements, like text and images, should be placed on them in a way that clearly indicates hierarchy.
+
+<Canvas of={ComponentStories.WithMedia} />
+
+### With actions
+
+<ul>
+  <li>A rule of thumb is to place them at the bottom of a card.</li>
+  <li>There are three supplemental action blocks to choose between:</li>
+</ul>
+
+<Canvas of={ComponentStories.WithActions} />
+
+### With divider
+
+Dividers can be used to separate areas in cards or to indicate sections of a card that can expand.
+
+<Canvas of={ComponentStories.WithDivider} />

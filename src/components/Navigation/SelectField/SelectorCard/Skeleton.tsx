@@ -4,7 +4,7 @@ import { Card } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
-import SkeletonBase from 'src/components/Feedback/Skeleton/SkeletonBase/SkeletonBase';
+import SkeletonBase from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled from 'styled-components';
 const { elevation, shape } = tokens;

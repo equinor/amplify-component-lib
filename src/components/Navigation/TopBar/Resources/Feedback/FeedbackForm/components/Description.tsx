@@ -7,7 +7,7 @@ import { FeedbackType } from '../../Feedback.types';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
 import { spacings } from 'src/atoms/style';
-import { TextField } from 'src/components/Inputs/TextField/TextField';
+import { TextField } from 'src/molecules/TextField/TextField';
 
 import styled from 'styled-components';
 

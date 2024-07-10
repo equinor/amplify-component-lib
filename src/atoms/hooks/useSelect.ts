@@ -7,13 +7,13 @@ import {
   useState,
 } from 'react';
 
-import { SelectOption } from 'src/components';
-import { SelectComponentProps } from 'src/components/Inputs/Select/Select';
+import { SelectComponentProps } from 'src/molecules/Select/Select';
+import { SelectOption } from 'src/molecules/Select/Select.types';
 import {
   ListSelectProps,
   SelectOptionRequired,
-} from 'src/components/Inputs/Select/Select.types';
-import { flattenOptions } from 'src/components/Inputs/Select/Select.utils';
+} from 'src/molecules/Select/Select.types';
+import { flattenOptions } from 'src/molecules/Select/Select.utils';
 
 import { groupBy } from 'lodash';
 

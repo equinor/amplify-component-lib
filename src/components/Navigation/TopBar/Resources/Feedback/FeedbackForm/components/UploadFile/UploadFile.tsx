@@ -5,7 +5,7 @@ import { MAX_FILE_SIZE_BYTES } from '../../../Feedback.const';
 import { useFeedbackContext } from '../../../hooks/useFeedbackContext';
 import ImageFile from './ImageFile';
 import { FileUploadAreaWrapper, Title } from './UploadFile.styles';
-import FileUploadArea from 'src/components/Inputs/FileUploadArea';
+import FileUploadArea from 'src/molecules/FileUploadArea/FileUploadArea';
 
 import styled from 'styled-components';
 

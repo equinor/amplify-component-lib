@@ -20,8 +20,8 @@ import {
   RolesContainer,
   TextContent,
 } from './Account.styles';
-import ProfileAvatar from 'src/components/DataDisplay/ProfileAvatar';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
+import ProfileAvatar from 'src/molecules/ProfileAvatar/ProfileAvatar';
 
 export interface AccountProps {
   account: AccountInfo | undefined;

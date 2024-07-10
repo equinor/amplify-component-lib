@@ -3,8 +3,8 @@ import { FC } from 'react';
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import OptionalTooltip from '../../../../../DataDisplay/OptionalTooltip';
 import { RequestChangeOrcaTypes } from '../Notifications.types';
+import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 

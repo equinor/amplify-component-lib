@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import ReleaseNotes from './ReleaseNotes';
 import { CancelablePromise } from 'src/api';
-import { SieveValue } from 'src/components/Inputs/Sieve/Sieve.types';
+import { SieveValue } from 'src/molecules/Sieve/Sieve.types';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import * as useReleaseNotes from 'src/providers/ReleaseNotesProvider';
 import { render, within } from 'src/tests/test-utils';

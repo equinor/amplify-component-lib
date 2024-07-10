@@ -24,9 +24,6 @@ import {
   ReviewQANotificationsTypes,
 } from './Notifications.types';
 import { date } from 'src/atoms/utils';
-import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
-import ProfileAvatar from 'src/components/DataDisplay/ProfileAvatar';
-import ApplicationIcon from 'src/components/Icons/ApplicationIcon/ApplicationIcon';
 import {
   Content,
   DeleteButton,
@@ -38,6 +35,9 @@ import {
   UserInformation,
   Wrapper,
 } from 'src/components/Navigation/TopBar/Notifications/NotificationsTemplate/NotificationTemplate.style';
+import ApplicationIcon from 'src/molecules/ApplicationIcon/ApplicationIcon';
+import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
+import ProfileAvatar from 'src/molecules/ProfileAvatar/ProfileAvatar';
 
 const { colors } = tokens;
 const NotificationTemplate: FC<

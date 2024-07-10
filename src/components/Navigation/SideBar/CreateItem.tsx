@@ -4,7 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 
 import { CreateButton, MenuItemContainer } from './CreateItem.styles';
-import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
+import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 export interface CreateItemProps {

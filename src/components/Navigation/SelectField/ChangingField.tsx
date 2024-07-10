@@ -9,7 +9,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useFakeProgress } from 'src/atoms/hooks';
 import { spacings } from 'src/atoms/style';
 import { string } from 'src/atoms/utils';
-import AnimatedCheckmark from 'src/components/Feedback/AnimatedCheckmark';
+import AnimatedCheckmark from 'src/molecules/AnimatedCheckmark/AnimatedCheckmark';
 
 import styled from 'styled-components';
 const { colors } = tokens;

@@ -3,7 +3,7 @@ import { forwardRef, useState } from 'react';
 import { Button, Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
-import OptionalTooltip from '../DataDisplay/OptionalTooltip';
+import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 type Placement =
   | 'top'

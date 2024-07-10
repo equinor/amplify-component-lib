@@ -5,7 +5,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
 import { IconContainer, ItemText, Link } from './MenuItem.styles';
-import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
+import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 export interface MenuItemType {

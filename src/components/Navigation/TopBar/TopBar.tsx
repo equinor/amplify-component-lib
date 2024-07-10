@@ -2,7 +2,7 @@ import React, { forwardRef, ReactNode } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
-import ApplicationIcon from '../../Icons/ApplicationIcon/ApplicationIcon';
+import ApplicationIcon from '../../../molecules/ApplicationIcon/ApplicationIcon';
 import {
   AppAndFieldContainer,
   AppIdentifier,

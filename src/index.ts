@@ -1,9 +1,7 @@
-export * from './components';
-
 export * from './providers';
 
-export * from './atoms/hooks';
-export * as style from './atoms/style';
-export * from './atoms/types';
+export * from './atoms';
+export type * from './atoms';
 
-export * from './atoms/utils';
+export * from './molecules';
+export type * from './molecules';

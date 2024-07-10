@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { IconContainer } from './MenuItem.styles';
 import { Container } from './ToggleOpen.styles';
-import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
+import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 const { colors } = tokens;
 

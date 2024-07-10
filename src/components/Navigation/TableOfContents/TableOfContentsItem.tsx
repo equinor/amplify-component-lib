@@ -8,7 +8,7 @@ import {
   TableOfContentsItemContainer as Container,
 } from './TableOfContents.styles';
 import { TableOfContentsVariants } from './TableOfContents.types';
-import { Badge } from 'src/components/DataDisplay/Badge/Badge';
+import { Badge } from 'src/molecules/Badge/Badge';
 import {
   TableOfContentsItemType,
   useTableOfContents,

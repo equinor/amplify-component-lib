@@ -22,12 +22,12 @@ import {
 import { TopBarButton } from '../TopBar.styles';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
-import { spacings } from 'src/atoms/style';
-import { environment } from 'src/atoms/utils';
 import {
   amplify_resources,
   amplify_small_portal,
-} from 'src/components/Icons/AmplifyIcons';
+} from 'src/atoms/icons/AmplifyIcons';
+import { spacings } from 'src/atoms/style';
+import { environment } from 'src/atoms/utils';
 import { FeedbackType } from 'src/components/Navigation/TopBar/Resources/Feedback/Feedback.types';
 import ResourceMenuItem from 'src/components/Navigation/TopBar/Resources/ResourceMenuItem';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';

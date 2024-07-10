@@ -7,7 +7,7 @@ import {
   NotificationsTypes,
   RequestReviewOrcaTypes,
 } from '../Notifications.types';
-import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
+import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 

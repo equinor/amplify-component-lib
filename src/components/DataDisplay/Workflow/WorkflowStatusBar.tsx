@@ -2,7 +2,7 @@ import { FC, Fragment } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import OptionalTooltip from '../OptionalTooltip';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 const { colors } = tokens;

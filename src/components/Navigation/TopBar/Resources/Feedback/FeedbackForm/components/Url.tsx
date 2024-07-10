@@ -3,7 +3,7 @@ import { FC, FocusEvent, FormEvent } from 'react';
 import { EQUINOR_EMAIL_SUFFIX } from '../../Feedback.const';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
-import { TextField } from 'src/components/Inputs/TextField/TextField';
+import { TextField } from 'src/molecules/TextField/TextField';
 
 import styled from 'styled-components';
 
