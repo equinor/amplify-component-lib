@@ -7,9 +7,12 @@ const { colors, spacings, typography, shape } = tokens;
 interface RichTextContentProps {
   $minHeight?: string;
   $maxHeight?: string;
+  className?: string;
 }
 
 const EditorContent = styled(TiptapContent)<RichTextContentProps>`
+  display: grid;
+  grid-template-rows: 1fr;
   overflow-y: auto;
   min-height: ${(props) => props.$minHeight || 'auto'};
   max-height: ${(props) => props.$maxHeight || 'auto'};
@@ -22,9 +25,7 @@ interface EditorStylingProps {
 }
 
 const EditorStyling = styled.div<EditorStylingProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  display: grid;
   background: ${colors.ui.background__default.rgba};
   border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
   border: ${(props) =>
@@ -40,7 +41,7 @@ const EditorStyling = styled.div<EditorStylingProps>`
   }
 
   .tiptap {
-    height: 100%;
+    box-sizing: border-box;
     overflow-y: auto;
     background: ${(props) =>
       props.$lightBackground
