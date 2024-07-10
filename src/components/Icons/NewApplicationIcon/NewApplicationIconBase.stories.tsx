@@ -1,17 +1,7 @@
 // Import necessary modules from Storybook
 import { Meta, StoryFn } from '@storybook/react';
 
-import {
-  acquire,
-  amplify,
-  dasha,
-  embark,
-  equinor,
-  ltg,
-  orca,
-  premo,
-  pwex,
-} from './ApplicationIcons/ApplicationIconCollection'; // Adjust imports as per your icons collection
+import { embark } from './ApplicationIcons/ApplicationIconCollection'; // Adjust imports as per your icons collection
 // Import the component and its props
 import NewApplicationIconBase, {
   AllowedColors,
@@ -26,12 +16,6 @@ const StyledWrapper = styled.div`
   min-height: 512px;
   justify-content: center;
   align-items: center;
-
-  div > div > div {
-    transition:
-      transform 400ms ease-in-out,
-      background-color 400ms ease;
-  }
 `;
 
 // Define the default export with title and component
@@ -64,7 +48,7 @@ export default {
       defaultValue: 'blue',
     },
     animationState: {
-      options: ['none', 'hoverable', 'animated'],
+      options: ['none', 'hoverable', 'animated', 'loading'],
       control: {
         type: 'radio',
       },

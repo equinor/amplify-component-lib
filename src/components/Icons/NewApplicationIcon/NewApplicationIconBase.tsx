@@ -12,13 +12,8 @@ export interface AppBaseProps {
   rotationVariant?: number;
   numWaves?: number;
   hasLargeWaves?: boolean;
-  animationState?: 'none' | 'hoverable' | 'animated';
+  animationState?: 'none' | 'hoverable' | 'animated' | 'loading';
   appIconData: string[];
-}
-
-interface WaveInnerContainerProps {
-  color: AllowedColors; // Assuming AllowedColors is an enum or string union type
-  rotationVariant: number;
 }
 
 export type AllowedColors =
@@ -45,14 +40,50 @@ const darkenColor = (
 ) => {
   return `color-mix(in srgb, ${colorMap[color]}${alphaHex}, rgba(0, 0, 0, 1) ${percentage}%)`;
 };
-const AppIconContainer = styled.div<{ size: number; color: AllowedColors }>`
+const AppIconContainer = styled.div<{
+  size: number;
+  color: AllowedColors;
+  animationState: 'none' | 'hoverable' | 'animated' | 'loading';
+}>`
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  position: relative;
+  box-sizing: content-box;
+  transition: border-radius 350ms ease;
   border-radius: 16%;
+
+  &:after {
+    content: '';
+    transition:
+      border-radius 350ms,
+      transform 200ms linear;
+    width: ${({ size }) => `${size - size / 8}px`};
+    height: ${({ size }) => `${size - size / 8}px`};
+    position: absolute;
+    transform: scale(1.5);
+    border-radius: 100%;
+    pointer-events: none;
+    border: ${({ size }) => `${size / 8}px`} solid
+      color-mix(in srgb, ${({ color }) => colorMap[color]} 10%, white);
+    border-top-color: ${({ color }) => colorMap[color]};
+  }
+
+  ${({ animationState }) =>
+    animationState === 'loading'
+      ? css`
+          border-radius: 100%;
+
+          &:after {
+            animation: ${outlinePulsate} 1750ms infinite ease; /* Adjust duration and timing function as needed */
+            animation-delay: 250ms;
+            transform: scale(1);
+          }
+        `
+      : ''}
   position: relative;
   ${({ color }) => {
     return `
@@ -65,6 +96,19 @@ const AppIconContainer = styled.div<{ size: number; color: AllowedColors }>`
     `;
   }}
 `;
+
+const outlinePulsate = keyframes`
+//to{transform: rotate(1turn)}
+
+0% {
+  transform: scale(1);
+}
+
+100% {
+  transform: scale(1) rotate(360deg);
+}
+`;
+
 const IconContainer = styled.div`
   --pos: 12.5%;
   position: absolute;
@@ -74,17 +118,20 @@ const IconContainer = styled.div`
   right: var(--pos);
   z-index: 999;
   pointer-events: none;
-  opacity: 0.95;
+  opacity: 0.85;
   svg {
     filter: drop-shadow(0px 256px 72px rgba(0, 0, 0, 0))
-      drop-shadow(0px 164px 65px rgba(0, 0, 0, 0.01))
-      drop-shadow(0px 92px 55px rgba(0, 0, 0, 0.05))
-      drop-shadow(0px 41px 41px rgba(0, 0, 0, 0.09))
-      drop-shadow(0px 10px 23px rgba(0, 0, 0, 0.1));
+      drop-shadow(0px 164px 55px rgba(0, 0, 0, 0.04))
+      drop-shadow(0px 92px 45px rgba(0, 0, 0, 0.09))
+      drop-shadow(0px 41px 31px rgba(0, 0, 0, 0.12))
+      drop-shadow(0px 10px 13px rgba(0, 0, 0, 0.14));
   }
 `;
 
-const WaveInnerContainer = styled.div<WaveInnerContainerProps>`
+const WaveInnerContainer = styled.div<{
+  color: AllowedColors;
+  rotationVariant: number;
+}>`
   width: 100%;
   height: 100%;
   background-color: ${({ color }) => colorMap[color]};
@@ -95,22 +142,6 @@ const WaveInnerContainer = styled.div<WaveInnerContainerProps>`
     mix-blend-mode: multiply;
     filter: grayscale(1);
   }
-`;
-const waveReveal = keyframes`
-    0% {
-      transform: scaleY(1);
-    }
-    100% {
-      transform: scaleY(0.25);
-    }
-`;
-const waveHide = keyframes`
-    0% {
-      transform: scaleY(0.25);
-    }
-    100% {
-      transform: scaleY(1);
-    }
 `;
 
 const waveWobble = keyframes`
@@ -125,37 +156,43 @@ const waveWobble = keyframes`
     }
 `;
 
-const Waves = styled.div<{ animationState: 'none' | 'hoverable' | 'animated' }>`
+const Waves = styled.div<{
+  animationState: 'none' | 'hoverable' | 'animated' | 'loading';
+}>`
   height: 141.6%;
   min-width: 141.6%;
   overflow: hidden;
   position: relative;
   filter: saturate(1.75);
-
-  transition: transform 1000ms ease-in-out;
+  transform: scaleY(1);
 
   ${({ animationState }) => {
     switch (animationState) {
       case 'hoverable':
         return css`
+          & .wave:first-child {
+            top: -5%;
+          }
           &:hover {
             & .wave {
-              animation: ${waveReveal} 1750ms ease forwards;
-              transform: scaleY(1);
-            }
-          }
-
-          &:not(:hover) {
-            & .wave {
-              animation: ${waveHide} 1750ms ease forwards;
-              transform: scaleY(0.25);
+              transform: scaleY(0);
             }
           }
         `;
       case 'animated':
         return css`
           & .wave {
+            transform: scaleY(1);
+            transition-delay: 0ms !important;
             animation: ${waveWobble} 5000ms ease-in-out infinite alternate;
+          }
+        `;
+      case 'loading':
+        return css`
+          & .wave {
+            animation: unset;
+            transform: scaleY(0);
+            transition-delay: 200ms;
           }
         `;
       case 'none':
@@ -171,6 +208,10 @@ const Wave = styled.div<{ waveIntervalDist: number }>`
   transform-origin: bottom;
   height: 100%;
   width: 100%;
+  transition:
+    transform 950ms ease,
+    top 950ms ease;
+
   mix-blend-mode: soft-light;
   filter: contrast(1.2) brightness(1.1);
   svg {
@@ -198,9 +239,12 @@ const NewApplicationBase: FC<AppBaseProps> = ({
   appIconData,
 }) => {
   const waves = Array.from({ length: 8 }, (_, index) => {
-    const top = index * waveIntervalDist;
+    const top = hasLargeWaves
+      ? index * (waveIntervalDist * 1.15)
+      : index * waveIntervalDist;
     const altWave = index % 2 === 0;
-    const delay = animationState === 'animated' ? index * 0.75 : index * 0.15;
+    const delay =
+      animationState === 'animated' ? index * 0.75 : (index + 1) * 0.05;
 
     if (size <= 128) {
       hasLargeWaves = true;
@@ -217,13 +261,20 @@ const NewApplicationBase: FC<AppBaseProps> = ({
   });
 
   return (
-    <AppIconContainer size={size} color={color}>
+    <AppIconContainer size={size} color={color} animationState={animationState}>
       <IconContainer>
         <IconSvg paths={appIconData} />
       </IconContainer>
       <Waves animationState={animationState}>
         <WaveInnerContainer color={color} rotationVariant={rotationVariant}>
-          <Wave className="wave" waveIntervalDist={0}>
+          <Wave
+            className="wave"
+            waveIntervalDist={0}
+            style={{
+              animationDelay: `0s`,
+              transitionDelay: `0s`,
+            }}
+          >
             <WaveShape
               index={-1}
               isAltWave={false}
@@ -242,6 +293,7 @@ const NewApplicationBase: FC<AppBaseProps> = ({
               waveIntervalDist={wave.waveIntervalDist}
               style={{
                 animationDelay: `${wave.delay}s`,
+                transitionDelay: `${wave.delay}s`,
               }}
             >
               <WaveShape

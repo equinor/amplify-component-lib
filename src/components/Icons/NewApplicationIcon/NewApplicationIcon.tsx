@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { FC } from 'react';
 
 import {
   acquire,
@@ -6,13 +6,13 @@ import {
   dasha,
   embark,
   equinor,
+  fallback,
   ltg,
   orca,
   premo,
   pwex,
 } from './ApplicationIcons/ApplicationIconCollection'; // Adjust imports as per your icons collection
-import NewApplicationBase from './NewApplicationIconBase'; // Adjust the path as per your project structure
-import { AppIconProps } from 'src/types'; // Adjust the path as per your types file
+import NewApplicationBase, { AllowedColors } from './NewApplicationIconBase'; // Adjust the path as per your project structure
 
 export type ApplicationName =
   | 'amplify'
@@ -27,50 +27,108 @@ export type ApplicationName =
 
 interface ApplicationIconData {
   appName: string[];
-  iconSvg: string[]; // This is where you'll store paths like amplify.svgPathData
+  iconSvg: string[];
+  rotationVariant: number;
+  color: AllowedColors;
 }
 
 const apps: ApplicationIconData[] = [
-  { appName: ['amplify'], iconSvg: amplify.svgPathData },
-  { appName: ['embark'], iconSvg: embark.svgPathData },
-  { appName: ['premo'], iconSvg: premo.svgPathData },
-  { appName: ['dasha'], iconSvg: dasha.svgPathData },
-  { appName: ['acquire'], iconSvg: acquire.svgPathData },
-  { appName: ['orca'], iconSvg: orca.svgPathData },
-  { appName: ['pwex'], iconSvg: pwex.svgPathData },
-  { appName: ['ltg'], iconSvg: ltg.svgPathData },
-  { appName: ['equinor'], iconSvg: equinor.svgPathData },
+  {
+    appName: ['amplify'],
+    iconSvg: amplify.svgPathData,
+    rotationVariant: 1,
+    color: 'blue',
+  },
+  {
+    appName: ['embark'],
+    iconSvg: embark.svgPathData,
+    rotationVariant: 2,
+    color: 'green',
+  },
+  {
+    appName: ['premo'],
+    iconSvg: premo.svgPathData,
+    rotationVariant: 3,
+    color: 'purple',
+  },
+  {
+    appName: ['dasha'],
+    iconSvg: dasha.svgPathData,
+    rotationVariant: 0,
+    color: 'red',
+  },
+  {
+    appName: ['acquire'],
+    iconSvg: acquire.svgPathData,
+    rotationVariant: 1,
+    color: 'yellow',
+  },
+  {
+    appName: ['orca'],
+    iconSvg: orca.svgPathData,
+    rotationVariant: 2,
+    color: 'magenta',
+  },
+  {
+    appName: ['pwex'],
+    iconSvg: pwex.svgPathData,
+    rotationVariant: 3,
+    color: 'blue',
+  },
+  {
+    appName: ['ltg'],
+    iconSvg: ltg.svgPathData,
+    rotationVariant: 0,
+    color: 'green',
+  },
+  {
+    appName: ['equinor'],
+    iconSvg: equinor.svgPathData,
+    rotationVariant: 1,
+    color: 'purple',
+  },
+  {
+    appName: ['fallback'],
+    iconSvg: fallback.svgPathData,
+    rotationVariant: 2,
+    color: 'blue',
+  },
 ];
 
-export interface ApplicationIconProps extends Partial<AppIconProps> {
+export interface ApplicationIconProps {
   name: ApplicationName | string;
+  size?: number;
+  animationState?: 'none' | 'hoverable' | 'animated';
 }
 
-const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
-  ({ name, size = 48 }) => {
-    const appData = apps.find((app) =>
-      app.appName.includes(name.toLowerCase())
-    );
+const ApplicationIcon: FC<ApplicationIconProps> = ({
+  name = 'amplify',
+  size = 64,
+  animationState = 'none',
+}) => {
+  let appData = apps.find((app) => app.appName.includes(name.toLowerCase()));
 
-    if (!appData) {
-      // Handle case where appData is not found
-      return <div>Icon not found for {name}</div>;
-    }
-
-    const { iconSvg } = appData;
-
-    return (
-      <NewApplicationBase
-        size={size}
-        color="blue" // You can replace with logic to determine color based on props or data
-        rotationVariant={1} // Example rotation variant
-        hasLargeWaves={true} // Example value, adjust as needed
-        animationState="animated" // Example animation state
-        appIconData={iconSvg}
-      />
-    );
+  if (!appData) {
+    // Set appData to the fallback icon data
+    appData = {
+      appName: ['fallback'],
+      iconSvg: fallback.svgPathData,
+      rotationVariant: 1,
+      color: 'blue',
+    };
   }
-);
+
+  const { iconSvg } = appData;
+  return (
+    <NewApplicationBase
+      size={size}
+      color={appData.color}
+      rotationVariant={appData.rotationVariant}
+      animationState={animationState}
+      appIconData={iconSvg}
+    />
+  );
+};
 
 ApplicationIcon.displayName = 'ApplicationIcon';
 
