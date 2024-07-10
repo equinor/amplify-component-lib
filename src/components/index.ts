@@ -147,7 +147,6 @@ export {
   Divider,
   DotProgress,
   Icon,
-  Label,
   LinearProgress,
   Menu,
   Radio,
@@ -158,11 +157,18 @@ export {
   Card,
 } from '@equinor/eds-core-react';
 
-import { Popover as EDSPopover } from '@equinor/eds-core-react';
+import {
+  Label as EDSLabel,
+  Popover as EDSPopover,
+} from '@equinor/eds-core-react';
 
 /**
  * @deprecated Being deprecated from amplify-components-library, import directly from EDS if still needed
  */
 const Popover = EDSPopover;
+/**
+ * @deprecated Being deprecated from amplify-components-library, import directly from EDS if still needed
+ */
+const Label = EDSLabel;
 
-export { Popover };
+export { Popover, Label };
