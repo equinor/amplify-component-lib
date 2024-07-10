@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 
-import { useFeatureToggling } from 'src/hooks';
+import { useFeatureToggling } from 'src/atoms/hooks';
 
 interface FeatureProps {
   featureKey: string;

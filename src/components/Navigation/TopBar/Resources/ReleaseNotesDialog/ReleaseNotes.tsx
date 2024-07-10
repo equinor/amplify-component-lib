@@ -14,7 +14,7 @@ import {
   Wrapper,
 } from './ReleaseNotes.styles';
 import ReleaseNotesHeader from './ReleaseNotesHeader';
-import { useReleaseNotesQuery } from 'src/hooks';
+import { useReleaseNotesQuery } from 'src/atoms/hooks';
 import { TableOfContentsProvider } from 'src/providers';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 

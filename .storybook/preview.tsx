@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import Template from 'src/components/Template/Template';
 
-import { darkTokens } from 'src/style/darkTokens';
-import { spacingTokens } from 'src/style/spacingTokens';
+import { darkTokens } from 'src/atoms/style/darkTokens';
+import { spacingTokens } from 'src/atoms/style/spacingTokens';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider';
 import { Preview, StoryFn } from '@storybook/react';
 

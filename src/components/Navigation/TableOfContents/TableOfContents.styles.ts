@@ -2,9 +2,9 @@ import { Link as ReactLink } from 'react-router-dom';
 
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/atoms/style';
 import { HEIGHT } from 'src/components/Navigation/TableOfContents/TableOfContents.constants';
 import { TableOfContentsVariants } from 'src/components/Navigation/TableOfContents/TableOfContents.types';
-import { spacings } from 'src/style';
 
 import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';

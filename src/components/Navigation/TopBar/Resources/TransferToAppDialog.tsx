@@ -9,10 +9,10 @@ import {
 } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 
+import { useFakeProgress } from 'src/atoms/hooks';
+import { spacings } from 'src/atoms/style';
+import { string } from 'src/atoms/utils';
 import AnimatedCheckmark from 'src/components/Feedback/AnimatedCheckmark';
-import { useFakeProgress } from 'src/hooks';
-import { spacings } from 'src/style';
-import string from 'src/utils/string';
 
 import styled from 'styled-components';
 

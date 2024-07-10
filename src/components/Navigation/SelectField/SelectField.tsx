@@ -2,11 +2,11 @@ import { FC, useRef, useState } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
+import { Field } from 'src/atoms/types/Field';
 import ChangingField from 'src/components/Navigation/SelectField/ChangingField';
 import SelectorCard from 'src/components/Navigation/SelectField/SelectorCard/SelectorCard';
 import SelectorSkeleton from 'src/components/Navigation/SelectField/SelectorCard/Skeleton';
 import VisualWaves from 'src/components/Visuals/Waves/VisualWaves';
-import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 

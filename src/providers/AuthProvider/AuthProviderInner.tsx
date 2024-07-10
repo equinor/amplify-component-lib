@@ -15,9 +15,9 @@ import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
+import { auth, environment } from 'src/atoms/utils';
 import FullPageSpinner from 'src/components/Feedback/FullPageSpinner';
 import { Unauthorized } from 'src/components/Feedback/Unauthorized';
-import { auth, environment } from 'src/utils';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 

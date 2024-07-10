@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
 import { Resources } from './Resources';
 import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
+import { environment } from 'src/atoms/utils';
 import {
   FeedbackContentType,
   UrgencyOption,
@@ -27,7 +28,6 @@ import {
   waitFor,
   within,
 } from 'src/tests/test-utils';
-import { environment } from 'src/utils';
 
 import { beforeEach, describe, expect } from 'vitest';
 

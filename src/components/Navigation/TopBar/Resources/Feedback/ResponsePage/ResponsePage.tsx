@@ -7,7 +7,7 @@ import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import { AnimateChangeInHeight } from './AnimateChangeInHeight';
 import ResponseStatus from './ResponseStatus';
 import Success from './Success';
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';

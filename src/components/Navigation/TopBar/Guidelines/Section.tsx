@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

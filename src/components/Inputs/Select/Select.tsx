@@ -23,7 +23,7 @@ import {
   SingleSelectCommon,
 } from './Select.types';
 import { SelectMenu } from './SelectMenu';
-import { useSelect } from 'src/hooks/useSelect';
+import { useSelect } from 'src/atoms/hooks/useSelect';
 
 const { colors } = tokens;
 

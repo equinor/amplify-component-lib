@@ -4,8 +4,8 @@ import { Button, Dialog as EDSDialog } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { Step } from './Tutorial';
+import { spacings } from 'src/atoms/style';
 import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
-import { spacings } from 'src/style';
 
 import styled, { keyframes } from 'styled-components';
 const { colors } = tokens;

@@ -12,8 +12,8 @@ import { useGetTutorialsForApp, useTutorial } from './TutorialProvider.hooks';
 import { Highlighter, TutorialErrorDialog } from './TutorialProvider.styles';
 import { HighlightingInfo } from './TutorialProvider.types';
 import { Tutorial } from 'src/api';
-import { EnvironmentType } from 'src/types/Environment';
-import { environment } from 'src/utils/auth_environment';
+import { EnvironmentType } from 'src/atoms/types/Environment';
+import { environment } from 'src/atoms/utils';
 
 const { getEnvironmentName } = environment;
 

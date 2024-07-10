@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 
 // Needs to be relative path for the type to be importable after build
-import { SizeIconProps } from '../../types';
+import { SizeIconProps } from '../../atoms/types';
 
 const { colors } = tokens;
 

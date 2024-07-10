@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode } from 'react';
 
 import GlitchAnimation from './illustrations/GlitchAnimation';
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

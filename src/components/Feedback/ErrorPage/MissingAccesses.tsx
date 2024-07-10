@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 const { colors } = tokens;
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 const Container = styled.div`
   display: flex;

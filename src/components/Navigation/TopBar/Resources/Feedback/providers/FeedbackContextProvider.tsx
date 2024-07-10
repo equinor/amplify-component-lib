@@ -35,9 +35,9 @@ import { useServiceNowIncident } from '../hooks/useServiceNowIncident';
 import { useSlackFileUpload } from '../hooks/useSlackFileUpload';
 import { useSlackPostMessage } from '../hooks/useSlackPostMessage';
 import { ApiError } from 'src/api';
-import { useLocalStorage } from 'src/hooks';
+import { useLocalStorage } from 'src/atoms/hooks';
+import { environment } from 'src/atoms/utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
-import { environment } from 'src/utils';
 
 const { getServiceNowConfigurationItem } = environment;
 

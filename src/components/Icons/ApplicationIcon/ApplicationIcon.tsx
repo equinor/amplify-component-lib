@@ -1,7 +1,7 @@
 import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
 // Needs to be relative path for the type to be importable after build
-import { AppIconProps } from '../../../types';
+import { AppIconProps } from '../../../atoms/types';
 import Acquire from './Acquire';
 import Bravos from './Bravos';
 import Dasha from './Dasha';

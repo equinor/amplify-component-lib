@@ -4,9 +4,9 @@ import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import date from '../../../utils/date';
-import { useDebounce } from 'src/hooks';
-import { spacings } from 'src/style';
+import { useDebounce } from 'src/atoms/hooks';
+import { spacings } from 'src/atoms/style';
+import { date } from 'src/atoms/utils';
 
 import styled from 'styled-components';
 

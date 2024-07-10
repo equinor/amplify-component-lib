@@ -2,9 +2,8 @@ import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { Variants } from './Select.types';
+import { colors, spacings } from 'src/atoms/style';
 import { Chip } from 'src/components/DataDisplay/Chip/Chip';
-import { colors } from 'src/constants';
-import { spacings } from 'src/style/spacings';
 
 import styled from 'styled-components';
 

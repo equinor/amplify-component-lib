@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import OptionDrawer from './OptionDrawer';
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

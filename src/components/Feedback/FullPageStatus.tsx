@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 export interface FullPageStatusProps {
   loading: boolean;

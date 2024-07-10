@@ -6,9 +6,9 @@ import { info_circle } from '@equinor/eds-icons';
 import Colorbox from './Colorbox';
 import Item from './Item';
 import Section from './Section';
+import { GuidelineItem } from 'src/atoms/types/Guidelines';
 import { TopBarButton } from 'src/components/Navigation/TopBar/TopBar.styles';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
-import { GuidelineItem } from 'src/types/Guidelines';
 
 export interface GuidelineSections {
   sectionName: string;

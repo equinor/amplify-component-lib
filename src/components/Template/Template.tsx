@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/style';
-import { darkTokens } from 'src/style/darkTokens';
-import { spacingTokens } from 'src/style/spacingTokens';
+import { spacings } from 'src/atoms/style';
+import { darkTokens } from 'src/atoms/style/darkTokens';
+import { spacingTokens } from 'src/atoms/style/spacingTokens';
 
 import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
 

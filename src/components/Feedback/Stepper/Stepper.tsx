@@ -2,7 +2,7 @@ import { FC, ReactElement, useMemo } from 'react';
 
 import Step from './Step';
 import StepLine from './StepLine';
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

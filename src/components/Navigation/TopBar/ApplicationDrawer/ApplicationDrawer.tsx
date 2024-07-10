@@ -9,6 +9,7 @@ import { TopBarButton } from '../TopBar.styles';
 import TopBarMenu from '../TopBarMenu';
 import { AmplifyApplication } from 'src/api/models/Applications';
 import { PortalService } from 'src/api/services/PortalService';
+import { environment } from 'src/atoms/utils';
 import ApplicationIcon from 'src/components/Icons/ApplicationIcon/ApplicationIcon';
 import {
   ApplicationBox,
@@ -22,7 +23,6 @@ import {
   TextContainer,
 } from 'src/components/Navigation/TopBar/ApplicationDrawer/ApplicationDrawer.styles';
 import TransferToAppDialog from 'src/components/Navigation/TopBar/Resources/TransferToAppDialog';
-import { environment } from 'src/utils';
 
 const { colors } = tokens;
 

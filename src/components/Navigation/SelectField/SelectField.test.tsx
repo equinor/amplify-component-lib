@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
+import { Field } from 'src/atoms/types/Field';
 import SelectField from 'src/components/Navigation/SelectField/SelectField';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
-import { Field } from 'src/types/Field';
 
 function fakeFields(): Field[] {
   const fields: Field[] = [];

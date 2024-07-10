@@ -2,10 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
-import { auth, environment } from 'src/utils';
+import { auth, environment } from 'src/atoms/utils';
 import { CancelablePromise } from 'src/api/core/CancelablePromise';
 import { request as __request } from 'src/api/core/request';
-import { getLocalStorage, updateLocalStorage } from 'src/hooks/useLocalStorage';
+import {
+  getLocalStorage,
+  updateLocalStorage,
+} from 'src/atoms/hooks/useLocalStorage';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 const { getToken: getApplicationToken } = auth;

@@ -23,6 +23,7 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './Notifications.types';
+import { date } from 'src/atoms/utils';
 import OptionalTooltip from 'src/components/DataDisplay/OptionalTooltip';
 import ProfileAvatar from 'src/components/DataDisplay/ProfileAvatar';
 import ApplicationIcon from 'src/components/Icons/ApplicationIcon/ApplicationIcon';
@@ -37,7 +38,6 @@ import {
   UserInformation,
   Wrapper,
 } from 'src/components/Navigation/TopBar/Notifications/NotificationsTemplate/NotificationTemplate.style';
-import { date } from 'src/utils';
 
 const { colors } = tokens;
 const NotificationTemplate: FC<

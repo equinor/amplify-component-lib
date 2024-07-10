@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { spacings } from 'src/atoms/style';
 import { Variants } from 'src/components/DataDisplay/Badge/Badge';
-import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 

@@ -11,9 +11,9 @@ import {
   CircularProgress,
   EnvironmentTag,
 } from './TopBar.styles';
+import { EnvironmentType } from 'src/atoms/types/Environment';
+import { Field } from 'src/atoms/types/Field';
 import FieldSelector from 'src/components/Navigation/TopBar/FieldSelector';
-import { EnvironmentType } from 'src/types/Environment';
-import { Field } from 'src/types/Field';
 
 type TopBarType = {
   onHeaderClick: () => void;

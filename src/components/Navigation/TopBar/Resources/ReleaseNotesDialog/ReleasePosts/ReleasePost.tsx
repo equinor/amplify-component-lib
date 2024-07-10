@@ -19,7 +19,7 @@ import {
   TopContainer,
 } from './ReleasePost.styles';
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
-import { date } from 'src/utils';
+import { date } from 'src/atoms/utils';
 
 import { motion } from 'framer-motion';
 

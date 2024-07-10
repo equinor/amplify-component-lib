@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 // Needs to be relative path for the type to be importable after build
-import { SizeIconProps } from '../../../types';
+import { SizeIconProps } from '../../../atoms/types';
 
 const NegativeFilled: FC<SizeIconProps> = ({ size }) => (
   <svg

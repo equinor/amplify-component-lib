@@ -7,8 +7,8 @@ import {
   UrgencyOption,
 } from './Feedback.types';
 import { ServiceNowUrgency } from 'src/api';
-import { EnvironmentType } from 'src/types/Environment';
-import { date, environment, string } from 'src/utils';
+import { EnvironmentType } from 'src/atoms/types/Environment';
+import { date, environment, string } from 'src/atoms/utils';
 
 const { capitalize } = string;
 const { formatDate } = date;

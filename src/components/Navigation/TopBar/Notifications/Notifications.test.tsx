@@ -16,11 +16,11 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './NotificationsTemplate/Notifications.types';
+import { date } from 'src/atoms/utils';
 import { useNotification } from 'src/components/Navigation/TopBar/Notifications/NotificationProvider';
 import Notifications from 'src/components/Navigation/TopBar/Notifications/Notifications';
 import { UnreadRedDot } from 'src/components/Navigation/TopBar/TopBar.styles';
 import { render, screen, userEvent } from 'src/tests/test-utils';
-import { date } from 'src/utils';
 
 import { beforeEach, describe, expect } from 'vitest';
 

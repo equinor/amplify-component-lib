@@ -1,5 +1,5 @@
 import { TableOfContentsVariants } from './TableOfContents.types';
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 export const HEIGHT: Record<TableOfContentsVariants, string> = {
   buttons: '39px',

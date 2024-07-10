@@ -2,10 +2,10 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router';
 
 import ErrorPage from './ErrorPage';
-import { ErrorType } from 'src/types/Errors';
-import { environment } from 'src/utils';
-import { getErrorContent } from 'src/utils/errors';
+import { ErrorType } from 'src/atoms/types/Errors';
+import { environment, errors } from 'src/atoms/utils';
 
+const { getErrorContent } = errors;
 const { getAppName } = environment;
 
 const PageNotFound: FC = () => {

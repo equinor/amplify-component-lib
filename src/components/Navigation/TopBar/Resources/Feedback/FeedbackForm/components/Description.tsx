@@ -6,8 +6,8 @@ import { tokens } from '@equinor/eds-tokens';
 import { FeedbackType } from '../../Feedback.types';
 import { useFeedbackContext } from '../../hooks/useFeedbackContext';
 import LockedInputTooltip from './LockedInputTooltip';
+import { spacings } from 'src/atoms/style';
 import { TextField } from 'src/components/Inputs/TextField/TextField';
-import { spacings } from 'src/style';
 
 import styled from 'styled-components';
 

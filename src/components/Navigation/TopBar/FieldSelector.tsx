@@ -13,8 +13,8 @@ import { useOutsideClick } from '@equinor/eds-utils';
 
 import { TopBarButton } from './TopBar.styles';
 import TopBarMenu from './TopBarMenu';
-import { spacings } from 'src/style';
-import { Field } from 'src/types/Field';
+import { spacings } from 'src/atoms/style';
+import { Field } from 'src/atoms/types/Field';
 
 import styled from 'styled-components';
 const { colors } = tokens;

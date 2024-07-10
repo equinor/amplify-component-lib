@@ -6,8 +6,8 @@ import {
 } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/style';
-import { EnvironmentType } from 'src/types/Environment';
+import { spacings } from 'src/atoms/style';
+import { EnvironmentType } from 'src/atoms/types/Environment';
 
 import styled from 'styled-components';
 

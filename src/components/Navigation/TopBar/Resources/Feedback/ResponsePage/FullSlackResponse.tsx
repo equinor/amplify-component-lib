@@ -6,7 +6,7 @@ import { RequestStatusType } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import RequestStatus from './RequestStatus';
 import { SlackRequestsWrapper } from './ResponsePage.styles';
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

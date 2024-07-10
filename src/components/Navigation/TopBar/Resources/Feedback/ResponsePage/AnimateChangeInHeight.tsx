@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';

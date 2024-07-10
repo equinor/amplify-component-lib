@@ -6,9 +6,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
 import FilterHeader from './FilterHeader';
+import { EnvironmentType } from 'src/atoms/types/Environment';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, userEvent } from 'src/tests/test-utils';
-import { EnvironmentType } from 'src/types/Environment';
 
 const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();

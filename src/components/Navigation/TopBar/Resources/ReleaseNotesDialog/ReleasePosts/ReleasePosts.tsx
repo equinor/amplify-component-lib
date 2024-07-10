@@ -8,8 +8,8 @@ const { colors } = tokens;
 import ReleasePost from './ReleasePost';
 import { Container, ContainerNoResults } from './ReleasePosts.styles';
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
+import { monthValueToString } from 'src/atoms/utils/releaseNotes';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
-import { monthValueToString } from 'src/utils/releaseNotes';
 
 interface ReleasePostsProps {
   posts: ReleaseNote[] | undefined;

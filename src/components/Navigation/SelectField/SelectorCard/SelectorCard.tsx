@@ -11,8 +11,8 @@ import {
 import { arrow_forward } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/style';
-import { Field } from 'src/types/Field';
+import { spacings } from 'src/atoms/style';
+import { Field } from 'src/atoms/types/Field';
 
 import styled from 'styled-components';
 

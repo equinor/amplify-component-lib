@@ -22,6 +22,8 @@ import {
 import { TopBarButton } from '../TopBar.styles';
 import Feedback from './Feedback/Feedback';
 import ReleaseNotes from './ReleaseNotesDialog/ReleaseNotes';
+import { spacings } from 'src/atoms/style';
+import { environment } from 'src/atoms/utils';
 import {
   amplify_resources,
   amplify_small_portal,
@@ -34,8 +36,6 @@ import Tutorial, {
 } from 'src/components/Navigation/TopBar/Resources/Tutorials/TutorialInfoDialog';
 import TopBarMenu from 'src/components/Navigation/TopBar/TopBarMenu';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
-import { spacings } from 'src/style';
-import { environment } from 'src/utils';
 
 import styled from 'styled-components';
 

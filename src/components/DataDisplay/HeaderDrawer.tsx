@@ -15,7 +15,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
 const { colors, elevation, shape } = tokens;
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 const Content = styled(motion.div)`
   overflow: hidden;

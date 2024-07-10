@@ -10,13 +10,13 @@ import {
 } from 'react';
 
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
-import { Option, SieveValue } from 'src/components';
-import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
-import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
+import { useReleaseNotesQuery } from 'src/atoms/hooks/useReleaseNotesQuery';
 import {
   extractDatesFromReleaseNotes,
   sortReleaseNotesByDate,
-} from 'src/utils/releaseNotes';
+} from 'src/atoms/utils/releaseNotes';
+import { Option, SieveValue } from 'src/components';
+import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
 
 interface ReleaseNotesContextState {
   search: SieveValue;

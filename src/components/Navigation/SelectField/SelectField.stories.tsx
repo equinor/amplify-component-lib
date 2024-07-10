@@ -5,8 +5,8 @@ import { info_circle } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
 import SelectField from './SelectField';
+import { Field } from 'src/atoms/types/Field';
 import TopBar from 'src/components/Navigation/TopBar';
-import { Field } from 'src/types/Field';
 
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';

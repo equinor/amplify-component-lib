@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryFn } from '@storybook/react';
 
 import FieldSelector, { FieldSelectorType } from './FieldSelector';
-import { Field } from 'src/types/Field';
+import { Field } from 'src/atoms/types/Field';
 const fields = new Array(5).fill(0).map(() => FakeField());
 
 export default {

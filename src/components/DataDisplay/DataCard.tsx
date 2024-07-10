@@ -13,7 +13,7 @@ import styled from 'styled-components';
 
 const { colors, elevation } = tokens;
 
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 const Card = styled(EDSCard)`
   box-shadow: ${elevation.raised};

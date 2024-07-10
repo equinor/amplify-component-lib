@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Feature, FeatureToggleDto, GraphUser } from '../api';
 import { PortalService } from '../api/services/PortalService';
 import FullPageSpinner from '../components/Feedback/FullPageSpinner';
-import { environment } from '../utils';
+import { environment } from 'src/atoms/utils';
 
 const { getAppName } = environment;
 

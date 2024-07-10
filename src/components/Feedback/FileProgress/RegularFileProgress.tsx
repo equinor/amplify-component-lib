@@ -9,7 +9,6 @@ import {
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { size } from '../../../utils';
 import {
   FileProgressPropsExtension,
   RegularFileProgressBaseProps,
@@ -22,6 +21,7 @@ import {
   RegularFileProgressDetails,
   RegularFileProgressWrapper,
 } from './RegularFileProgress.styles';
+import { size } from 'src/atoms/utils';
 
 const { colors } = tokens;
 const { formatBytes } = size;

@@ -3,7 +3,7 @@ import React, { forwardRef, ReactNode } from 'react';
 import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

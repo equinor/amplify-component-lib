@@ -10,7 +10,7 @@ import SideBar from '../SideBar';
 import { MenuItemType } from '../SideBar/MenuItem';
 import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './Account/stories/data';
 import TopBar, { TopBarType } from '.';
-import { EnvironmentType } from 'src/types/Environment';
+import { EnvironmentType } from 'src/atoms/types/Environment';
 
 export default {
   title: 'Navigation/TopBar/TopBar',

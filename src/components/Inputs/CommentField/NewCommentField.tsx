@@ -4,7 +4,7 @@ import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

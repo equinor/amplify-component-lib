@@ -7,8 +7,8 @@ import { useCurrentEditor } from '@tiptap/react';
 
 import { Section } from './MenuBar.styles';
 import MenuButton from './MenuButton';
+import url from 'src/atoms/utils/url';
 import { TextField } from 'src/components/Inputs/TextField/TextField';
-import url from 'src/utils/url';
 
 import styled from 'styled-components';
 

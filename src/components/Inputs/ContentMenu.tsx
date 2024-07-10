@@ -5,7 +5,7 @@ import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import SkeletonBase from '../Feedback/Skeleton/SkeletonBase/SkeletonBase';
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

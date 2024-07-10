@@ -4,7 +4,7 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 import { motion, Variants } from 'framer-motion';
 import styled from 'styled-components';
