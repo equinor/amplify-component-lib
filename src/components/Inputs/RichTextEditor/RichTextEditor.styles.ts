@@ -1,22 +1,32 @@
 import { tokens } from '@equinor/eds-tokens';
+import { EditorContent as TiptapContent } from '@tiptap/react';
 
 import styled from 'styled-components';
 
 const { colors, spacings, typography, shape } = tokens;
+interface RichTextContentProps {
+  $minHeight?: string;
+  $maxHeight?: string;
+  className?: string;
+}
 
-export interface EditorStylingProps {
+const EditorContent = styled(TiptapContent)<RichTextContentProps>`
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow-y: auto;
+  min-height: ${(props) => props.$minHeight || 'auto'};
+  max-height: ${(props) => props.$maxHeight || 'auto'};
+`;
+
+interface EditorStylingProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
-  $maxHeight?: string;
   $border?: boolean;
 }
 
-export const EditorStyling = styled.div<EditorStylingProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+const EditorStyling = styled.div<EditorStylingProps>`
+  display: grid;
   background: ${colors.ui.background__default.rgba};
-
   border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
   border: ${(props) =>
     props.$border ? `1px solid ${colors.ui.background__medium.rgba}` : 'none'};
@@ -31,7 +41,7 @@ export const EditorStyling = styled.div<EditorStylingProps>`
   }
 
   .tiptap {
-    max-height: ${(props) => props.$maxHeight ?? 'none'};
+    box-sizing: border-box;
     overflow-y: auto;
     background: ${(props) =>
       props.$lightBackground
@@ -153,6 +163,7 @@ export const EditorStyling = styled.div<EditorStylingProps>`
       box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
     }
   }
+
   .tiptap p.is-editor-empty:first-child::before {
     color: ${colors.text.static_icons__default.rgba};
     content: attr(data-placeholder);
@@ -161,3 +172,6 @@ export const EditorStyling = styled.div<EditorStylingProps>`
     pointer-events: none;
   }
 `;
+
+export type { RichTextContentProps, EditorStylingProps };
+export { EditorContent, EditorStyling };

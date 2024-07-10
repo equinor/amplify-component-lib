@@ -76,11 +76,16 @@ export {
   EditorMenu,
   EditorText,
 } from './Inputs/RichTextEditor/MenuBar/MenuBar';
+export { AmplifyKit } from './Inputs/RichTextEditor/custom-extensions/DefaultKit';
 export {
   default as TableMenu,
   TextTable,
 } from './Inputs/RichTextEditor/MenuBar/Table/TableBar';
-export { RichTextEditorFeatures } from './Inputs/RichTextEditor/RichTextEditor.types';
+export type {
+  RichTextEditorFeatures,
+  OnImageUploadFn,
+} from './Inputs/RichTextEditor/RichTextEditor.types';
+export { DEFAULT_FEATURES } from './Inputs/RichTextEditor/RichTextEditor.types';
 export { Search } from './Inputs/Search/Search';
 export { default as MultiSelectDrawer } from './Inputs/SelectDrawer/MultiSelectDrawer';
 export { default as OptionDrawer } from './Inputs/SelectDrawer/OptionDrawer';

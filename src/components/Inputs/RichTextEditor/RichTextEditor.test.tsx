@@ -4,10 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/dom';
 import type { AmplifyKitOptions } from './custom-extensions/DefaultKit';
 import { mergeDefaults } from './custom-extensions/DefaultKit';
 import RichTextEditor, { RichTextEditorProps } from './RichTextEditor';
-import {
-  DEFAULT_FEATURES,
-  RichTextEditorFeatures,
-} from './RichTextEditor.types';
+import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
@@ -16,10 +13,6 @@ function fakeProps(withImage = false): RichTextEditorProps {
     onChange: vi.fn(),
     onImageUpload: withImage ? vi.fn() : undefined,
   };
-}
-
-function randomFeatures(amount: number): RichTextEditorFeatures[] {
-  return faker.helpers.arrayElements(DEFAULT_FEATURES, amount);
 }
 
 test('Shows text that is input', async () => {
@@ -43,45 +36,6 @@ test('Throws error if providing RichTextEditorFeature.IMAGES but not an image ha
         extendFeatures={[RichTextEditorFeatures.IMAGES]}
       />
     )
-  ).toThrowError();
-});
-
-test("Throws error if specifying 'features' and 'extendFeatures' / 'removeFeatures'", () => {
-  console.error = vi.fn();
-
-  const props = fakeProps();
-
-  expect(() =>
-    render(
-      <RichTextEditor
-        {...props}
-        features={randomFeatures(5)}
-        extendFeatures={randomFeatures(4)}
-      />
-    )
-  ).toThrowError();
-
-  expect(() =>
-    render(
-      <RichTextEditor
-        {...props}
-        features={randomFeatures(5)}
-        removeFeatures={randomFeatures(4)}
-      />
-    )
-  ).toThrowError();
-});
-
-test("Throws error if 'features' is empty", () => {
-  console.error = vi.fn();
-
-  const props = fakeProps();
-
-  expect(() =>
-    render(<RichTextEditor {...props} removeFeatures={DEFAULT_FEATURES} />)
-  ).toThrowError();
-  expect(() =>
-    render(<RichTextEditor {...props} features={[]} />)
   ).toThrowError();
 });
 

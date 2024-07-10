@@ -12,7 +12,7 @@ import {
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { amplify_h2, amplify_h3 } from 'src/components/Icons/AmplifyIcons';
-import { useFeatures } from 'src/hooks/useFeatures';
+import getFeatures from 'src/utils/getFeatures';
 
 export default {
   title: 'Inputs/RichTextEditor',
@@ -28,6 +28,8 @@ export default {
   args: {
     border: true,
     padding: 'md',
+    minHeight: 'auto',
+    maxHeight: '200px',
     lightBackground: false,
     onImageUpload: (file: File) => {
       console.log(file.name);
@@ -133,7 +135,7 @@ export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
   const string = `<p>The rich text editor is built off a compound component architecture. This means that you can use the individual primitives to take full control. Notice in this example that the MenuBar is below the rich text editor content even though theres no prop to allow you to do this. If you look at the code you will notice that in this example we are no longer using the higher level RichTextEditor component. Instead we are breaking out the smaller primitive components that make up the RichTextEditor. This way you have full control of all the parts in the editor. You can mix an match them as you please. Decide which individual parts you need to take over while still using the other parts.</p>`;
 
   // Hook that lets you apply the features API for filtering extensions
-  const usingFeatures = useFeatures({
+  const usingFeatures = getFeatures({
     features: args.features,
     extendFeatures: args.extendFeatures,
     removeFeatures: args.removeFeatures,
@@ -142,7 +144,6 @@ export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
   return (
     <RichText.Styling
       $padding={args.padding}
-      $maxHeight={args.maxHeight}
       $lightBackground={args.lightBackground}
       $border={args.border}
     >
@@ -155,7 +156,11 @@ export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
       >
         {(editor) => (
           <div>
-            <RichText.Content editor={editor} />
+            <RichText.Content
+              editor={editor}
+              $maxHeight={args.maxHeight}
+              $minHeight={args.minHeight}
+            />
             <RichText.Bar editor={editor} features={DEFAULT_FEATURES} />
           </div>
         )}
@@ -169,7 +174,6 @@ export const CustomExtensions: StoryFn<RichTextEditorProps> = (args) => {
   return (
     <RichText.Styling
       $padding={args.padding}
-      $maxHeight={args.maxHeight}
       $lightBackground={args.lightBackground}
       $border={args.border}
     >
@@ -182,7 +186,11 @@ export const CustomExtensions: StoryFn<RichTextEditorProps> = (args) => {
         {(editor) => (
           <div>
             <RichText.Bar editor={editor} features={DEFAULT_FEATURES} />
-            <RichText.Content editor={editor} />
+            <RichText.Content
+              editor={editor}
+              $maxHeight={args.maxHeight}
+              $minHeight={args.minHeight}
+            />
           </div>
         )}
       </RichText.Provider>
@@ -194,7 +202,7 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
   const string = `<p>With a compound component architecture you can take full control of every part of the editor. Notice that in this example we can add our own menu buttons for making text commands in the editor.</p>`;
 
   // Hook that lets you apply the features API for filtering extensions
-  const usingFeatures = useFeatures({
+  const usingFeatures = getFeatures({
     features: args.features,
     extendFeatures: args.extendFeatures,
     removeFeatures: args.removeFeatures,
@@ -204,7 +212,6 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
   return (
     <RichText.Styling
       $padding={args.padding}
-      $maxHeight={args.maxHeight}
       $lightBackground={args.lightBackground}
       $border={args.border}
     >
@@ -246,7 +253,11 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
               {/* Sub Bar */}
               <TableMenuBar editor={editor} />
             </EditorMenu.Bars>
-            <RichText.Content editor={editor} />
+            <RichText.Content
+              editor={editor}
+              $maxHeight={args.maxHeight}
+              $minHeight={args.minHeight}
+            />
           </div>
         )}
       </RichText.Provider>
