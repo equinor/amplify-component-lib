@@ -93,6 +93,10 @@ export interface WorkflowStatusBarProps {
   lineActiveColor?: string;
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
   activeNode,
   options,

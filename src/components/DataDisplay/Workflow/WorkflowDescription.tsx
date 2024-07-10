@@ -52,6 +52,10 @@ export interface WorkflowDescriptionProps {
   options: WorkflowDescriptionType[];
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const WorkflowDescription: FC<WorkflowDescriptionProps> = ({ options }) => {
   return (
     <Wrapper>

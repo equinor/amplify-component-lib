@@ -150,7 +150,6 @@ export {
   Label,
   LinearProgress,
   Menu,
-  Popover,
   Radio,
   StarProgress,
   Switch,
@@ -158,3 +157,12 @@ export {
   Typography,
   Card,
 } from '@equinor/eds-core-react';
+
+import { Popover as EDSPopover } from '@equinor/eds-core-react';
+
+/**
+ * @deprecated Being deprecated from amplify-components-library, import directly from EDS if still needed
+ */
+const Popover = EDSPopover;
+
+export { Popover };

@@ -35,7 +35,7 @@ import styled from 'styled-components';
 const { Title, Content, Header, Actions } = Popover;
 
 const meta: Meta<typeof Popover> = {
-  title: 'Data Display/Popover',
+  title: 'Deprecated/Data Display/Popover',
   component: Popover,
   subcomponents: {
     Header: Header as ComponentType<unknown>,

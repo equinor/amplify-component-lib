@@ -4,7 +4,7 @@ import { StoryFn } from '@storybook/react';
 import HeaderDrawer, { HeaderDrawerProps } from './HeaderDrawer';
 
 export default {
-  title: 'Data Display/HeaderDrawer',
+  title: 'Deprecated/Data Display/HeaderDrawer',
   component: HeaderDrawer,
   argTypes: {
     title: { control: 'text' },
