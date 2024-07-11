@@ -4,9 +4,9 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { add, home, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import SideBar from 'src/organisms/SideBar/index';
-import MenuItem, { MenuItemType } from 'src/organisms/SideBar/MenuItem';
-import SideBarProvider from 'src/providers/SideBarProvider';
+import { SideBar } from 'src/organisms/SideBar/index';
+import { MenuItem, MenuItemType } from 'src/organisms/SideBar/MenuItem';
+import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent, within } from 'src/tests/test-utils';
 
 const defaultMenuItems: MenuItemType[] = [

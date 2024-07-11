@@ -7,8 +7,9 @@ import {
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import FileProgress, {
+import {
   CompactFileProgressBaseProps,
+  FileProgress,
   RegularFileProgressBaseProps,
 } from 'src/molecules/FileProgress/FileProgress';
 import { render, screen, userEvent } from 'src/tests/test-utils';

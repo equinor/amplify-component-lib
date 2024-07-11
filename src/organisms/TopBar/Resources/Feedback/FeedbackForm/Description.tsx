@@ -3,10 +3,10 @@ import { FC, FormEvent, useMemo } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { LockedInputTooltip } from './LockedInputTooltip';
 import { spacings } from 'src/atoms/style';
 import { TextField } from 'src/molecules/TextField/TextField';
 import { FeedbackType } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
-import LockedInputTooltip from 'src/organisms/TopBar/Resources/Feedback/FeedbackForm/LockedInputTooltip';
 import { useFeedbackContext } from 'src/organisms/TopBar/Resources/Feedback/hooks/useFeedbackContext';
 
 import styled from 'styled-components';

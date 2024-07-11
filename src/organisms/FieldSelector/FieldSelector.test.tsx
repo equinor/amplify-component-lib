@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { Field } from 'src/atoms/types/Field';
-import FieldSelector from 'src/organisms/FieldSelector/FieldSelector';
+import { FieldSelector } from 'src/organisms/FieldSelector/FieldSelector';
 import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
 function fakeFields(): Field[] {

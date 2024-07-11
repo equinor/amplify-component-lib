@@ -1,7 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { render, screen } from '@testing-library/react';
 
-import EquinorLogo, {
+import {
+  EquinorLogo,
   EquinorLogoProps,
 } from 'src/molecules/EquinorLogo/EquinorLogo';
 

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import PageNotFound from 'src/organisms/ErrorPage/collections/PageNotFound';
+import { PageNotFound } from 'src/organisms/ErrorPage/collections/PageNotFound';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 test('Displays expected text', () => {

@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import RichTextDisplay from 'src/molecules/RichTextDisplay/RichTextDisplay';
+import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 import { act, render, screen } from 'src/tests/test-utils';
 
 const { spacings } = tokens;

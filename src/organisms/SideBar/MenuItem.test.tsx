@@ -6,8 +6,8 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { spacings } from 'src/atoms/style';
-import MenuItem, { MenuItemProps } from 'src/organisms/SideBar/MenuItem';
-import SideBarProvider from 'src/providers/SideBarProvider';
+import { MenuItem, MenuItemProps } from 'src/organisms/SideBar/MenuItem';
+import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 const { colors } = tokens;
 

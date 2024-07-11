@@ -1,7 +1,7 @@
 import { warning_filled } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import FullPageStatus from 'src/organisms/FullPageStatus/FullPageStatus';
+import { FullPageStatus } from './FullPageStatus';
 import { render, screen } from 'src/tests/test-utils';
 
 test('Shows circular progress when isLoading === true', () => {

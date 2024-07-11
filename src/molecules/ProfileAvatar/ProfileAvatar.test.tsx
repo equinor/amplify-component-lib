@@ -1,8 +1,9 @@
 import { person } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import ProfileAvatar, {
+import {
   nameToInitials,
+  ProfileAvatar,
   ProfileAvatarProps,
 } from 'src/molecules/ProfileAvatar/ProfileAvatar';
 import { render, screen } from 'src/tests/test-utils';

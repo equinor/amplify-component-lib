@@ -1,7 +1,7 @@
 import { filter_list, IconData } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import SingleFilterMenu from 'src/molecules/SingleFilterMenu/SingleFilterMenu';
+import { SingleFilterMenu } from 'src/molecules/SingleFilterMenu/SingleFilterMenu';
 import { render, screen, userEvent, within } from 'src/tests/test-utils';
 
 function getTestProps(): {

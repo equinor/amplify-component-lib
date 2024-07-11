@@ -7,14 +7,14 @@ import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { ApplicationDrawer } from './ApplicationDrawer';
+import { CancelablePromise } from 'src/api';
+import { AmplifyApplication } from 'src/api/models/Applications';
 import {
   AuthProvider,
   ReleaseNotesProvider,
   SnackbarProvider,
-} from '../../../../providers';
-import ApplicationDrawer from './ApplicationDrawer';
-import { CancelablePromise } from 'src/api';
-import { AmplifyApplication } from 'src/api/models/Applications';
+} from 'src/providers';
 import { waitFor } from 'src/tests/test-utils';
 
 import { expect, vi } from 'vitest';

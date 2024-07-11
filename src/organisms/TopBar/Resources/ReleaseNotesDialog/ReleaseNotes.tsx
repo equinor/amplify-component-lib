@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { CircularProgress } from '@equinor/eds-core-react';
 
 import { useTokenReleaseNote } from './ReleasePosts/hooks/useTokenReleaseNote';
-import ReleasePosts from './ReleasePosts/ReleasePosts';
+import { ReleasePosts } from './ReleasePosts/ReleasePosts';
 import {
   Content,
   LeftContainer,

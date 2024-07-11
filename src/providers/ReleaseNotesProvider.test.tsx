@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { act, renderHook, waitFor } from '../tests/test-utils';
-import ReleaseNotesProvider, { useReleaseNotes } from './ReleaseNotesProvider';
+import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
 import { CancelablePromise } from 'src/api';
 import { ReleaseNoteType } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
 

@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
+import { ErrorPage } from '.';
 import { ErrorType } from 'src/atoms/types/Errors';
 import { getErrorContent } from 'src/atoms/utils/errors';
-import ErrorPage from 'src/organisms/ErrorPage/index';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 test('Shows default values without props', () => {

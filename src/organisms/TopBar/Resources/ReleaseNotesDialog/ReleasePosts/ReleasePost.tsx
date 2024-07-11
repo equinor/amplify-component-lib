@@ -5,7 +5,7 @@ import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import { ReleaseNotesTypes } from '../ReleaseNotesTypes/ReleaseNotesTypes';
 import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
-import TextContent from '../TextContent';
+import { TextContent } from '../TextContent';
 import {
   AccordionText,
   BodyContainer,

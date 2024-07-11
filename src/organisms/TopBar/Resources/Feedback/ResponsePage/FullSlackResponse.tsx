@@ -4,9 +4,9 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { RequestStatusType } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
-import RequestStatus from './RequestStatus';
+import { RequestStatus } from './RequestStatus';
+import { SlackRequestsWrapper } from './ResponsePage.styles';
 import { spacings } from 'src/atoms/style';
-import { SlackRequestsWrapper } from 'src/organisms/TopBar/Resources/Feedback/ResponsePage/ResponsePage.styles';
 
 import styled from 'styled-components';
 

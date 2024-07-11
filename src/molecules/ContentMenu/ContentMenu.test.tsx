@@ -1,7 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import ContentMenu, {
+import {
+  ContentMenu,
   ContentMenuProps,
 } from 'src/molecules/ContentMenu/ContentMenu';
 import { render, screen, userEvent } from 'src/tests/test-utils';

@@ -4,7 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 

@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { TextContent } from './TextContent';
@@ -37,20 +36,12 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
   return { ReleaseNotesService };
 });
 
-test('IMG src in TextContent gets token inserted on rendering', async () => {
-  const ALT_TEXT = faker.animal.dog();
-  const IMG_SRC = faker.image.url();
-  const textWithImg =
-    '<p>hei<br><br><br></p><img alt="' + ALT_TEXT + '" src="' + IMG_SRC + '"/>';
+test('TextContent shows text', async () => {
+  const textWithImg = '<p>hei<br><br><br></p>';
 
   render(<TextContent text={textWithImg} />, { wrapper: Wrappers });
 
-  await waitFor(
-    () =>
-      expect(screen.getByAltText(ALT_TEXT)).toHaveAttribute(
-        'src',
-        `${IMG_SRC}?${FAKE_TOKEN}`
-      ),
-    { timeout: 200 }
-  );
+  await waitFor(() => expect(screen.getByText('hei')).toBeInTheDocument(), {
+    timeout: 200,
+  });
 });

@@ -4,8 +4,9 @@ import { MemoryRouter } from 'react-router';
 import { faker } from '@faker-js/faker';
 
 import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
-import TableOfContentsProvider, {
+import {
   TableOfContentsItemType,
+  TableOfContentsProvider,
 } from 'src/providers/TableOfContentsProvider';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 

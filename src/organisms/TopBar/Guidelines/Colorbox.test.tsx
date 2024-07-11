@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import Colorbox from './Colorbox';
+import { Colorbox } from './Colorbox';
 import { render, screen } from 'src/tests/test-utils';
 
 test('Renders Colorbox correctly', () => {

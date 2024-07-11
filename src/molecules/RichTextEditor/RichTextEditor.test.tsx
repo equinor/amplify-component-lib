@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { fireEvent, waitFor } from '@testing-library/dom';
 
-import RichTextEditor, {
+import {
+  RichTextEditor,
   RichTextEditorProps,
 } from 'src/molecules/RichTextEditor/RichTextEditor';
 import {

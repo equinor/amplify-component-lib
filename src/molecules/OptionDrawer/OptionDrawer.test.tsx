@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 
-import OptionDrawer, {
+import {
+  OptionDrawer,
   OptionDrawerProps,
   ToggleEventProps,
 } from 'src/molecules/OptionDrawer/OptionDrawer';

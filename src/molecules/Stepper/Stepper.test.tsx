@@ -2,7 +2,7 @@ import { check } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import Stepper, { StepperProps } from 'src/molecules/Stepper/Stepper';
+import { Stepper, StepperProps } from 'src/molecules/Stepper/Stepper';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 const { colors } = tokens;

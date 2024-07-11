@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { waitFor } from '@testing-library/react';
 
 import { FilterOption } from 'src/molecules/Sieve/Filter';
-import Sieve from 'src/molecules/Sieve/Sieve';
+import { Sieve } from 'src/molecules/Sieve/Sieve';
 import {
   SieveOption,
   SieveProps,

@@ -1,7 +1,7 @@
-export { CommentField } from './CommentField/CommentField';
+export { default as CommentField } from './CommentField/CommentField';
 
 export { ExpandingIconButton } from './ExpandingIconButton/ExpandingIconButton';
-export { Feature } from './Feature/Feature';
+export { default as Feature } from './Feature/Feature';
 
 import {
   Label as EDSLabel,
@@ -17,16 +17,16 @@ const Popover = EDSPopover;
  */
 const Label = EDSLabel;
 export { Popover, Label };
-export { EditableField } from './EditableField';
-export { Tutorial } from './Tutorial/Tutorial';
+export { default as EditableField } from './EditableField';
+export { default as Tutorial } from './Tutorial/Tutorial';
 export type { Step, TutorialProps } from './Tutorial/Tutorial';
 export { HighlightBlocks } from './Tutorial/HighlightBlocks/HighlightBlocks';
 export { default as StatusChip } from './Workflow/StatusChip';
 export { default as WorkflowDescription } from './Workflow/WorkflowDescription';
 export { default as WorkflowStatusBar } from './Workflow/WorkflowStatusBar';
-export { ConfirmationPopup } from './ConfirmationPopup';
-export { DataCard } from './DataCard';
-export { HeaderDrawer } from './HeaderDrawer';
+export { default as ConfirmationPopup } from './ConfirmationPopup';
+export { default as DataCard } from './DataCard';
+export { default as HeaderDrawer } from './HeaderDrawer';
 export { default as MultiSelectDrawer } from './MultiSelectDrawer';
 export { default as SingleSelectDrawer } from './SingleSelectDrawer';
 export { default as IconToggleButton } from './IconToggleButton';

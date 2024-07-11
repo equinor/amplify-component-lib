@@ -5,7 +5,7 @@ import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import TutorialItem from './TutorialItem';
+import { TutorialItem } from './TutorialItem';
 
 import styled from 'styled-components';
 

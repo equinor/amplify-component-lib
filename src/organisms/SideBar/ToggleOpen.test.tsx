@@ -2,7 +2,7 @@ import { first_page, last_page } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
-import ToggleOpen, { ToggleOpenProps } from 'src/organisms/SideBar/ToggleOpen';
+import { ToggleOpen, ToggleOpenProps } from 'src/organisms/SideBar/ToggleOpen';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 const { colors } = tokens;
 

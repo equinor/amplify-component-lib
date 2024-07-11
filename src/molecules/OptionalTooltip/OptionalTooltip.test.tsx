@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import OptionalTooltip from 'src/molecules/OptionalTooltip/OptionalTooltip';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { render, screen } from 'src/tests/test-utils';
 
 function fakeProps() {

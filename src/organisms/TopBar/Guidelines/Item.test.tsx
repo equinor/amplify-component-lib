@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import Item from './Item';
+import { Item } from './Item';
 import { render, screen } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import Section from './Section';
+import { Section } from './Section';
 import { render, screen } from 'src/tests/test-utils';
 
 test('Renders Section correctly with 1 child', () => {

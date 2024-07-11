@@ -6,7 +6,8 @@ import { faker } from '@faker-js/faker';
 
 import { render, renderHook, screen, userEvent } from '../tests/test-utils';
 import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
-import TableOfContentsProvider, {
+import {
+  TableOfContentsProvider,
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
 

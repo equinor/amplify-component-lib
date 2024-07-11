@@ -1,6 +1,7 @@
 import { IconData } from '@equinor/eds-icons';
 
-import ApplicationIcon, {
+import {
+  ApplicationIcon,
   ApplicationIconProps,
 } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 import { GRAYSCALE_FILTER_VALUE } from 'src/molecules/ApplicationIcon/ApplicationIcon.constants';

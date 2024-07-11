@@ -14,7 +14,7 @@ import {
   RequestReviewOrcaTypes,
   ReviewQANotificationsTypes,
 } from './Notifications.types';
-import NotificationTemplate from './NotificationTemplate';
+import { NotificationTemplate } from './NotificationTemplate';
 
 import { expect } from 'vitest';
 

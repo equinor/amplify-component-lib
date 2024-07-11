@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 
-import InfoElement from 'src/molecules/InfoElement/InfoElement';
+import { InfoElement } from 'src/molecules/InfoElement/InfoElement';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 test('renders string content correctly', () => {
