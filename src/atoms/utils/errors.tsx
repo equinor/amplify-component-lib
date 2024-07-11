@@ -1,6 +1,6 @@
-import GlitchAnimation from '../components/Feedback/ErrorPage/illustrations/GlitchAnimation';
-import QuestioningAnimation from '../components/Feedback/ErrorPage/illustrations/QuestioningAnimation';
 import { ErrorContentType, ErrorType } from 'src/atoms/types/Errors';
+import { GlitchAnimation } from 'src/organisms/ErrorPage/illustrations/GlitchAnimation';
+import { QuestioningAnimation } from 'src/organisms/ErrorPage/illustrations/QuestioningAnimation';
 
 // list of errors with default values
 export const getListOfErrors = (appName: string): ErrorContentType[] => {

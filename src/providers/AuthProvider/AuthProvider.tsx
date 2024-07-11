@@ -11,7 +11,7 @@ import {
 import { AccountInfo } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
-import AuthProviderInner from './AuthProviderInner';
+import { AuthProviderInner } from './AuthProviderInner';
 import { auth, environment } from 'src/atoms/utils';
 
 const { msalApp } = auth;
@@ -42,7 +42,7 @@ interface AuthProviderProps {
   unauthorizedComponent?: ReactElement;
 }
 
-const AuthProvider: FC<AuthProviderProps> = ({
+export const AuthProvider: FC<AuthProviderProps> = ({
   children,
   loadingComponent,
   unauthorizedComponent,
@@ -101,5 +101,3 @@ const AuthProvider: FC<AuthProviderProps> = ({
     </AuthContext.Provider>
   );
 };
-
-export default AuthProvider;

@@ -7,13 +7,13 @@ import { useTableOfContents } from '../../providers/TableOfContentsProvider';
 import { useTutorialSteps } from '../../providers/TutorialStepsProvider';
 import { useDebounce } from './useDebounce';
 import { useFakeProgress } from './useFakeProgress';
-import { useFeatureToggling } from './useFeatureToggling';
 import { useLocalStorage } from './useLocalStorage';
 import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSelect } from './useSelect';
 import { useSignalRMessages } from './useSignalRMessages';
+import { useFeatureToggling } from 'src/deprecated/useFeatureToggling';
 
 export {
   useAuth,

@@ -52,7 +52,7 @@ export interface TableOfContentsProviderProps {
   hashNavigation?: boolean;
 }
 
-const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
+export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   items,
   children,
   hashNavigation,
@@ -176,5 +176,3 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     </TableOfContentsContext.Provider>
   );
 };
-
-export default TableOfContentsProvider;

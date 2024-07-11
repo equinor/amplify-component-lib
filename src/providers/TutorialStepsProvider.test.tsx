@@ -1,7 +1,8 @@
 import { ReactElement } from 'react';
 
 import { renderHook } from '../tests/test-utils';
-import TutorialStepsProvider, {
+import {
+  TutorialStepsProvider,
   useTutorialSteps,
 } from './TutorialStepsProvider';
 

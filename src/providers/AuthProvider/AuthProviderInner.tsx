@@ -16,8 +16,8 @@ import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
 import { auth, environment } from 'src/atoms/utils';
-import { Unauthorized } from 'src/components/Feedback/Unauthorized';
-import FullPageSpinner from 'src/molecules/FullPageSpinner/FullPageSpinner';
+import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
+import { Unauthorized } from 'src/organisms/ErrorPage/collections/Unauthorized';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
@@ -48,7 +48,7 @@ export interface AuthProviderInnerProps {
   unauthorizedComponent?: ReactElement;
 }
 
-const AuthProviderInner: FC<AuthProviderInnerProps> = ({
+export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   children,
   account,
   setAccount,
@@ -209,5 +209,3 @@ const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
   return <>{children}</>;
 };
-
-export default AuthProviderInner;

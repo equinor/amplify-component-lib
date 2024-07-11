@@ -48,27 +48,37 @@ export { SkeletonGradient } from './Skeleton/SkeletonGradient/SkeletonGradient';
 export type { SkeletonGradientProps } from './Skeleton/SkeletonGradient/SkeletonGradient';
 export { Stepper } from './Stepper/Stepper';
 export type { StepperProps } from './Stepper/Stepper';
+export { OptionDrawer } from './OptionDrawer/OptionDrawer';
+export type { OptionDrawerProps } from './OptionDrawer/OptionDrawer';
+export type { OptionDrawerSelectItem } from './OptionDrawer/OptionDrawer.types';
+export { PageWithTitle } from './PageWithTitle/PageWithTitle';
+export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
+export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
 
 // EDS Re-export
 export {
   Breadcrumbs,
   Button,
-  Card,
   Checkbox,
   Divider,
+  Dialog,
   Menu,
   Radio,
   Tabs,
   TextField,
   Typography,
   Icon,
+  Switch,
+  CircularProgress,
+  DotProgress,
+  LinearProgress,
 } from '@equinor/eds-core-react';
 export type {
   BreadcrumbsProps,
   BreadcrumbProps,
   ButtonProps,
-  CardProps,
   CheckboxProps,
+  DialogProps,
   DividerProps,
   MenuProps,
   RadioProps,
@@ -77,4 +87,8 @@ export type {
   TextFieldProps,
   TypographyProps,
   IconProps,
+  SwitchProps,
+  CircularProgressProps,
+  DotProgressProps,
+  LinearProgressProps,
 } from '@equinor/eds-core-react';

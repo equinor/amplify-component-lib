@@ -1,0 +1,58 @@
+import { Links } from 'src/storybook';
+import { Primary, Canvas, Controls } from '@storybook/blocks';
+import * as ComponentStories from 'src/molecules/Switch/Switch.stories';
+
+# Switch
+
+**Component from EDS**
+
+Selection controls allow users to select options, make decisions and set preferences.
+
+<Links ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/switch/" figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=18442%3A38197" sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Switch/Switch.tsx" edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/inputs-selection-controls-switch--docs" />
+
+<Primary />
+
+<Controls />
+
+## Usage
+
+**Selection controls**
+
+<ul>
+  <li>Allow users to select options, make decisions and set preferences.</li>
+  <li>Are to be visible and understandable at a quick glance.</li>
+  <li>Are always accompanied with a clear label.</li>
+</ul>
+
+**Switch**
+
+<ul>
+  <li>Toggle a single item on or off.</li>
+  <li>Immediately activate or deactivate something.</li>
+  <li>Switches make it easy to compare available options.</li>
+</ul>
+
+```tsx
+import { Switch } from '@equinor/amplify-components';
+
+<Switch label="Label text" />;
+```
+
+## Examples
+
+### Default states
+
+<Canvas of={ComponentStories.DefaultStates} />
+
+### Alternative to label
+
+To comply with accessibility, a `label` is always required on inputs. In some cases though, a visual label is not desirable. <br />
+In such cases `aria-label` or `aria-labelledby` should be used.
+
+<Canvas of={ComponentStories.AlternativeToLabel} />
+
+### Compact
+
+Compact `Switch` using `EdsProvider`.
+
+<Canvas of={ComponentStories.Compact} />

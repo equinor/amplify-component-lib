@@ -17,7 +17,7 @@ import { Stack } from 'src/storybook';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Radio> = {
-  title: 'Inputs/Selection Controls/Radio',
+  title: 'Organisms/Selection Controls/Radio',
   component: Radio,
   parameters: {
     docs: {

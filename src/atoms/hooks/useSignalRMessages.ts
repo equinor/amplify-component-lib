@@ -10,6 +10,9 @@ import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { EnvironmentType } from 'src/atoms/types/Environment';
 import { environment } from 'src/atoms/utils/auth_environment';
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, use the new @equinor/subsurface-app-management package instead
+ */
 export function useSignalRMessages<
   T extends {
     SequenceNumber?: number | null;

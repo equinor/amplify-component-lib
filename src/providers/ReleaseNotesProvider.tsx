@@ -54,7 +54,7 @@ interface ReleaseNotesContextProviderProps {
   enabled?: boolean;
 }
 
-const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
+export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   children,
   enabled,
 }) => {
@@ -117,5 +117,3 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
     </ReleaseNotesContext.Provider>
   );
 };
-
-export default ReleaseNotesProvider;

@@ -5,7 +5,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { render, renderHook, screen, userEvent } from '../tests/test-utils';
-import { TableOfContents } from 'src/components/Navigation/TableOfContents/TableOfContents';
+import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
 import TableOfContentsProvider, {
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
