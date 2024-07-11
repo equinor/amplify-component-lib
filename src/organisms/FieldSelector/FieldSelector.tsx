@@ -4,9 +4,9 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { SelectorCard } from './SelectorCard/SelectorCard';
 import { SelectorSkeleton } from './SelectorCard/Skeleton';
-import { Waves } from './Waves/Waves';
 import { ChangingField } from './ChangingField';
 import { Field } from 'src/atoms/types/Field';
+import { Waves } from 'src/molecules/Waves/Waves';
 
 import styled from 'styled-components';
 

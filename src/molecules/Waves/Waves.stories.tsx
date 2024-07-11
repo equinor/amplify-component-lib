@@ -1,9 +1,9 @@
 import { StoryFn } from '@storybook/react';
 
-import { Waves, WavesProps } from './Waves';
+import { Waves, WavesProps } from 'src/molecules/Waves/Waves';
 
 export default {
-  title: 'Organisms/FieldSelector/Waves',
+  title: 'Molecules/Waves',
   component: Waves,
   argTypes: {
     waveIntervalDist: {
