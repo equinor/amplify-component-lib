@@ -11,7 +11,7 @@ import {
 } from 'src/components/Inputs/SelectDrawer/stories/data';
 
 export default {
-  title: 'Inputs/SelectDrawer/MultiSelectDrawer',
+  title: 'Deprecated/Inputs/SelectDrawer/MultiSelectDrawer',
   component: MultiSelectDrawer,
   argTypes: {
     label: { control: 'text' },

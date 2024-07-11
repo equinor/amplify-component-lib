@@ -5,7 +5,7 @@ import WorkflowDescription, {
 } from './WorkflowDescription';
 
 export default {
-  title: 'Data Display/Workflow/WorkflowDescription',
+  title: 'Deprecated/Data Display/Workflow/WorkflowDescription',
   component: WorkflowDescription,
 } as Meta;
 

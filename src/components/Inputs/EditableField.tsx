@@ -70,6 +70,9 @@ export interface EditableFieldProps {
   children?: ReactNode;
 }
 
+/**
+ * @deprecated Was only used in Recap, implementation moved into Recap
+ */
 const EditableField: React.FC<EditableFieldProps> = ({
   editable,
   value: initValue,

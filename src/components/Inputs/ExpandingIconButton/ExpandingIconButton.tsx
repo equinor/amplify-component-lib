@@ -69,6 +69,10 @@ export interface ExpandingIconButtonProps {
   iconPosition?: 'left' | 'right';
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 export const ExpandingIconButton = forwardRef<
   HTMLDivElement,
   ExpandingIconButtonProps

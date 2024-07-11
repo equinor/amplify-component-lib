@@ -8,7 +8,7 @@ import { Preview, StoryFn } from '@storybook/react';
 
 const { colors } = tokens;
 
-export const globalTypes = {
+const globalTypes = {
   dataThemes: {
     defaultValue: {
       list: [
@@ -19,7 +19,7 @@ export const globalTypes = {
   },
 };
 
-export const decorators = [
+const decorators = [
   (Story: StoryFn) => {
     // Apply styles using the darkTokens variable
     const darkStyleElement = document.createElement('style');
@@ -41,7 +41,7 @@ export const decorators = [
   },
 ];
 
-export const parameters = {
+const parameters = {
   actions: { argTypes: /^on[A-Z].*/ },
   viewMode: 'docs',
   controls: { expanded: true },
@@ -58,10 +58,32 @@ export const parameters = {
       },
     ],
   },
+  options: {
+    storySort: {
+      // Pre-emptively added 'Atoms', 'Molecules' and 'Organisms'
+      order: [
+        'Deprecated',
+        'Atoms',
+        'Molecules',
+        'Organisms',
+        'Data Display',
+        'Feedback',
+        'Icons',
+        'Inputs',
+        'Navigation',
+        'Typography',
+        'Visuals',
+        'Other',
+      ],
+    },
+  },
 };
 
 const preview: Preview = {
-  tags: ['autodocs']
+  tags: ['autodocs'],
+  globalTypes,
+  decorators,
+  parameters,
 };
 
 export default preview;

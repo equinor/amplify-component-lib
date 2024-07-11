@@ -9,7 +9,7 @@ import {
 import styled from 'styled-components';
 
 export default {
-  title: 'Inputs/ExpandingIconButton',
+  title: 'Deprecated/Inputs/ExpandingIconButton',
   component: ExpandingIconButton,
   argTypes: {
     text: { control: 'text' },

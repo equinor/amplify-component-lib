@@ -19,7 +19,7 @@ const { colors } = tokens;
 
 const icons = [account_circle, info_circle, more_vertical, details];
 export default {
-  title: 'Data Display/DataCard',
+  title: 'Deprecated/Data Display/DataCard',
   component: DataCard,
   argTypes: {
     headerText: { control: 'text' },
@@ -75,7 +75,9 @@ export const Primary: StoryFn<DataTypeCardBodyProps> = (args) => {
       <DataCard
         headerText={args.headerText}
         title={args.title}
-        rightIcon={icons.find((item) => item.name === args.rightIcon)}
+        rightIcon={icons.find((item) => {
+          return item.name === (args.rightIcon as unknown as string);
+        })}
         tooltipOnTitle={args.tooltipOnTitle}
         body={body}
       />

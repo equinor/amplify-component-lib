@@ -5,7 +5,7 @@ import WorkflowStatusBar from './WorkflowStatusBar';
 
 const { colors } = tokens;
 export default {
-  title: 'Data Display/Workflow/WorkflowStatusBar',
+  title: 'Deprecated/Data Display/Workflow/WorkflowStatusBar',
   component: WorkflowStatusBar,
   argTypes: {
     labels: { control: 'array' },
