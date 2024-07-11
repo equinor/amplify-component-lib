@@ -3,32 +3,38 @@ import type { IconData } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
 import {
+  amplify_failure,
+  amplify_lwd,
+  amplify_success,
+  amplify_wellbore,
+  amplify_wireline_cased_hole,
+  amplify_wireline_open_hole,
+} from 'src/atoms/icons/drilling';
+import {
+  amplify_calculator,
+  amplify_overlay,
+  amplify_sidebyside,
+} from 'src/atoms/icons/map';
+import {
   amplify_aml,
   amplify_branch,
-  amplify_calculator,
-  amplify_failure,
-  amplify_h1,
-  amplify_h2,
-  amplify_h3,
-  amplify_h4,
   amplify_info_small,
-  amplify_lwd,
   amplify_merged,
-  amplify_overlay,
   amplify_overview,
   amplify_resources,
   amplify_sharepoint,
   amplify_shield_person,
-  amplify_sidebyside,
   amplify_small_portal,
   amplify_snail,
   amplify_sort_small,
-  amplify_success,
   amplify_tutorials,
-  amplify_wellbore,
-  amplify_wireline_cased_hole,
-  amplify_wireline_open_hole,
-} from 'src/atoms/icons/AmplifyIcons';
+} from 'src/atoms/icons/other';
+import {
+  amplify_h1,
+  amplify_h2,
+  amplify_h3,
+  amplify_h4,
+} from 'src/atoms/icons/wysiwyg';
 
 const allIcons: Record<string, IconData> = {
   amplify_wellbore: amplify_wellbore,

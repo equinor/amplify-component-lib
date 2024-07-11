@@ -17,7 +17,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 import { useCurrentEditor } from '@tiptap/react';
 
-import { amplify_h2, amplify_h3 } from 'src/atoms/icons/AmplifyIcons';
+import { amplify_h2, amplify_h3 } from 'src/atoms/icons';
 import AddImage from 'src/molecules/RichTextEditor/MenuBar/AddImage';
 import Links from 'src/molecules/RichTextEditor/MenuBar/Links';
 import { Section } from 'src/molecules/RichTextEditor/MenuBar/MenuBar.styles';

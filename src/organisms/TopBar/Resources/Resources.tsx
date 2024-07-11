@@ -30,10 +30,7 @@ import {
   tutorialOptions,
 } from './Tutorials/TutorialInfoDialog';
 import { ResourceMenuItem } from './ResourceMenuItem';
-import {
-  amplify_resources,
-  amplify_small_portal,
-} from 'src/atoms/icons/AmplifyIcons';
+import { amplify_resources, amplify_small_portal } from 'src/atoms/icons';
 import { spacings } from 'src/atoms/style';
 import { environment } from 'src/atoms/utils';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';

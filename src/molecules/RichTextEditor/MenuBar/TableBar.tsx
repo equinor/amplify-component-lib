@@ -15,7 +15,7 @@ import {
   amplify_table_remove_row,
   amplify_table_row_heading,
   amplify_table_split_cell,
-} from 'src/atoms/icons/AmplifyIcons';
+} from 'src/atoms/icons';
 import { Section } from 'src/molecules/RichTextEditor/MenuBar/MenuBar.styles';
 import MenuButton from 'src/molecules/RichTextEditor/MenuBar/MenuButton';
 
