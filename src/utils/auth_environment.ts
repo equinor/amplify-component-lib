@@ -101,6 +101,10 @@ function getPortalWithoutLocalhost() {
     environmentName = getConfig('ENVIRONMENT_NAME') as EnvironmentType;
   }
 
+  if (environmentName === EnvironmentType.PRODUCTION) {
+    return `amplify.equinor.com`;
+  }
+
   const environmentNameWithoutLocalHost =
     environmentName === EnvironmentType.LOCALHOST
       ? EnvironmentType.DEVELOP
