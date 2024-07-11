@@ -25,13 +25,13 @@
     "test": "vitest watch",
     "test:ci": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "setup-husky": "husky install",
     "precommit": "npx lint-staged",
     "build": "npm run build-components",
     "build-components": "rollup -c && tsc --outDir dist --declarationDir dist/types --declaration true --emitDeclarationOnly --project tsconfig.build.json",
     "build-components:ci": "rm -rf lib dist && npm run build-components",
     "build-and-use": "node tooling/build-and-use.mjs",
-    "brute-coverage": "node tooling/brute-coverage.mjs"
+    "brute-coverage": "node tooling/brute-coverage.mjs",
+    "prepare": "husky"
   },
   "browserslist": {
     "production": [
@@ -135,6 +135,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "eslint-plugin-storybook": "^0.8.0",
+    "husky": "^9.0.11",
     "jest-styled-components": "^7.2.0",
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",

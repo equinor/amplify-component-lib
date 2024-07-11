@@ -72,6 +72,10 @@ export interface DataCardProps {
   onContextMenu?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const DataCard = forwardRef<HTMLDivElement, DataCardProps>(
   (
     {

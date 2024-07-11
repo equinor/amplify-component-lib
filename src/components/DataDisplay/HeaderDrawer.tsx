@@ -49,6 +49,10 @@ export interface HeaderDrawerProps extends HTMLAttributes<'h6'> {
   openByDefault?: boolean;
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const HeaderDrawer = forwardRef<HTMLHeadingElement, HeaderDrawerProps>(
   ({ title, openByDefault = false, id, children }, ref) => {
     const [isOpen, setIsOpen] = useState<boolean>(openByDefault);

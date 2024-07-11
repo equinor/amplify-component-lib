@@ -47,6 +47,10 @@ export interface StatusChipProps {
   children: ReactNode;
 }
 
+/**
+ * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ */
+
 const StatusChip: FC<StatusChipProps> = ({
   disabled,
   color,
