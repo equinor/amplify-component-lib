@@ -8,7 +8,7 @@ import SingleSelectDrawer from 'src/deprecated/SingleSelectDrawer';
 import { items, ValueType } from 'src/molecules/OptionDrawer/stories/data';
 
 export default {
-  title: 'Deprecated/Inputs/OptionDrawer/SingleSelectDrawer',
+  title: 'Deprecated/SingleSelectDrawer',
   component: SingleSelectDrawer,
   argTypes: {
     label: { control: 'text' },

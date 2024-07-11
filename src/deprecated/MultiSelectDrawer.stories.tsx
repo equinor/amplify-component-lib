@@ -8,7 +8,7 @@ import MultiSelectDrawer from 'src/deprecated/MultiSelectDrawer';
 import { items, ValueType } from 'src/molecules/OptionDrawer/stories/data';
 
 export default {
-  title: 'Deprecated/Inputs/OptionDrawer/MultiSelectDrawer',
+  title: 'Deprecated/MultiSelectDrawer',
   component: MultiSelectDrawer,
   argTypes: {
     label: { control: 'text' },

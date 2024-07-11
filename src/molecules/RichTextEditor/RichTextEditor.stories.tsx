@@ -10,7 +10,7 @@ import {
 } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
 export default {
-  title: 'Inputs/RichTextEditor',
+  title: 'Molecules/RichTextEditor',
   component: RichTextEditor,
   argTypes: {
     features: {

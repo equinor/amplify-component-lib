@@ -6,7 +6,7 @@ import {
 } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 
 export default {
-  title: 'Icons/ApplicationIcon',
+  title: 'Molecules/ApplicationIcon',
   component: ApplicationIcon,
   argTypes: {
     name: {

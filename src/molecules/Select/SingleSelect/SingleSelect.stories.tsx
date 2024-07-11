@@ -11,7 +11,7 @@ import {
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 
 export default {
-  title: 'Inputs/Select/SingleSelect',
+  title: 'Molecules/Select/SingleSelect',
   component: SingleSelect,
   argTypes: {
     label: { control: 'text' },

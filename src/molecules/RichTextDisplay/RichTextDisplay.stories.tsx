@@ -6,7 +6,7 @@ import {
 } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 
 export default {
-  title: 'Data Display/RichTextDisplay',
+  title: 'Molecules/RichTextDisplay',
   component: RichTextDisplay,
   argTypes: {
     value: { control: 'text' },

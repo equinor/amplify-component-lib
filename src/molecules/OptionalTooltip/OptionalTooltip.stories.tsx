@@ -5,7 +5,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 export default {
-  title: 'Data Display/OptionalTooltip',
+  title: 'Molecules/OptionalTooltip',
   component: OptionalTooltip,
   argTypes: { title: { control: 'text' } },
   args: { title: 'Optional tooltip title' },

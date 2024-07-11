@@ -5,7 +5,7 @@ import EditableField, {
 } from 'src/deprecated/EditableField';
 
 export default {
-  title: 'Deprecated/Inputs/EditableField',
+  title: 'Deprecated/EditableField',
   component: EditableField,
   argTypes: {
     editable: { control: 'boolean' },

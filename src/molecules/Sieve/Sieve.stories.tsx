@@ -8,7 +8,7 @@ import { Sieve } from 'src/molecules/Sieve/Sieve';
 import { SieveProps, SieveValue } from 'src/molecules/Sieve/Sieve.types';
 
 export default {
-  title: 'Inputs/Sieve',
+  title: 'Molecules/Sieve',
   component: Sieve,
   argTypes: {
     searchPlaceholder: {

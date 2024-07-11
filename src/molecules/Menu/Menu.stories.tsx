@@ -32,7 +32,7 @@ import { Stack } from 'src/storybook';
 const { colors } = tokens;
 
 const meta: Meta<typeof Menu> = {
-  title: 'Navigation/Menu',
+  title: 'Molecules/Menu',
   component: Menu,
   subcomponents: {
     Item: Menu.Item as ComponentType<unknown>,

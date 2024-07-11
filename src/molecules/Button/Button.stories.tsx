@@ -17,7 +17,7 @@ import page from 'src/molecules/Button/Button.docs.mdx';
 import { Stack } from 'src/storybook';
 
 const meta: Meta<typeof Button> = {
-  title: 'Inputs/Button',
+  title: 'Molecules/Button',
   component: Button,
   args: {
     as: 'button',

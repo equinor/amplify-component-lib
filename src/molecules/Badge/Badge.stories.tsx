@@ -13,7 +13,7 @@ const icons = {
 Icon.add(icons);
 
 const meta: Meta<typeof Badge> = {
-  title: 'Data Display/Badge',
+  title: 'Molecules/Badge',
   component: Badge,
   parameters: {
     docs: {

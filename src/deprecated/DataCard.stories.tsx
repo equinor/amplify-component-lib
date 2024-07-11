@@ -19,7 +19,7 @@ const { colors } = tokens;
 
 const icons = [account_circle, info_circle, more_vertical, details];
 export default {
-  title: 'Deprecated/Data Display/DataCard',
+  title: 'Deprecated/DataCard',
   component: DataCard,
   argTypes: {
     headerText: { control: 'text' },

@@ -9,7 +9,7 @@ import Tutorial, {
 import { TutorialStepsProvider } from 'src/providers';
 
 export default {
-  title: 'Data Display/Tutorial',
+  title: 'Deprecated/Tutorial',
   component: Tutorial,
 } as Meta;
 

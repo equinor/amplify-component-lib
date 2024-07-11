@@ -6,7 +6,7 @@ import {
 } from 'src/molecules/SingleFilterMenu/SingleFilterMenu';
 
 export default {
-  title: 'Inputs/SingleFilterMenu',
+  title: 'Molecules/SingleFilterMenu',
   component: SingleFilterMenu,
   argTypes: {
     menuTitle: { control: 'text' },

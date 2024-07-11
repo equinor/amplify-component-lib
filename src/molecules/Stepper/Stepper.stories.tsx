@@ -5,7 +5,7 @@ import { Stepper, StepperProps } from 'src/molecules/Stepper/Stepper';
 import styled from 'styled-components';
 
 export default {
-  title: 'Feedback/Stepper',
+  title: 'Molecules/Stepper',
   component: Stepper,
   argTypes: {
     current: { control: 'number' },

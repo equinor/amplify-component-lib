@@ -8,7 +8,7 @@ import {
 import styled from 'styled-components';
 
 export default {
-  title: 'Feedback/FullPageSpinner',
+  title: 'Molecules/FullPageSpinner',
   component: FullPageSpinner,
   argTypes: {
     variant: {

@@ -8,7 +8,7 @@ import {
 } from 'src/molecules/ContentMenu/ContentMenu';
 
 export default {
-  title: 'Inputs/ContentMenu',
+  title: 'Molecules/ContentMenu',
   component: ContentMenu,
   argTypes: {
     items: {

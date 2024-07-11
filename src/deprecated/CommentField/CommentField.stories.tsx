@@ -5,7 +5,7 @@ import CommentField, {
 } from 'src/deprecated/CommentField/CommentField';
 
 export default {
-  title: 'Deprecated/Inputs/CommentField',
+  title: 'Deprecated/CommentField',
   component: CommentField,
   parameters: {
     docs: {

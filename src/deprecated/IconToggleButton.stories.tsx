@@ -6,7 +6,7 @@ import IconToggleButton, {
 } from 'src/deprecated/IconToggleButton';
 
 export default {
-  title: 'Deprecated/Inputs/IconToggleButton',
+  title: 'Deprecated/IconToggleButton',
   component: IconToggleButton,
   argTypes: {
     initialState: { control: 'boolean' },

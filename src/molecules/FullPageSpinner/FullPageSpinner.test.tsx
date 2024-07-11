@@ -1,4 +1,4 @@
-import FullPageSpinner from 'src/molecules/FullPageSpinner/FullPageSpinner';
+import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { render, screen } from 'src/tests/test-utils';
 
 test('renders scrim version by default', () => {

@@ -8,7 +8,7 @@ import ConfirmationPopup, {
 } from 'src/deprecated/ConfirmationPopup';
 
 export default {
-  title: 'Deprecated/Feedback/ConfirmationPopup',
+  title: 'Deprecated/ConfirmationPopup',
   component: ConfirmationPopup,
   parameters: {
     design: {

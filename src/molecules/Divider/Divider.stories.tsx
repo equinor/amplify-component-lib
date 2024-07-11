@@ -6,7 +6,7 @@ import page from 'src/molecules/Divider/Divider.docs.mdx';
 import { Stack } from 'src/storybook';
 
 const meta: Meta<typeof Divider> = {
-  title: 'Data Display/Divider',
+  title: 'Molecules/Divider',
   component: Divider,
   argTypes: {
     color: { control: 'radio' },

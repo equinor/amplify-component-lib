@@ -61,20 +61,7 @@ const parameters = {
   options: {
     storySort: {
       // Pre-emptively added 'Atoms', 'Molecules' and 'Organisms'
-      order: [
-        'Deprecated',
-        'Atoms',
-        'Molecules',
-        'Organisms',
-        'Data Display',
-        'Feedback',
-        'Icons',
-        'Inputs',
-        'Navigation',
-        'Typography',
-        'Visuals',
-        'Other',
-      ],
+      order: ['Atoms', 'Molecules', 'Organisms', 'Other', 'Deprecated'],
     },
   },
 };

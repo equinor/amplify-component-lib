@@ -10,8 +10,9 @@ import {
   TableOfContents,
   TableOfContentsProps,
 } from 'src/organisms/TableOfContents/TableOfContents';
-import TableOfContentsProvider, {
+import {
   TableOfContentsItemType,
+  TableOfContentsProvider,
   TableOfContentsProviderProps,
 } from 'src/providers/TableOfContentsProvider';
 
@@ -20,7 +21,7 @@ import styled from 'styled-components';
 const { colors } = tokens;
 
 export default {
-  title: 'Navigation/TableOfContents',
+  title: 'Organisms/TableOfContents',
   component: TableOfContents,
   argTypes: {
     items: { control: 'array' },

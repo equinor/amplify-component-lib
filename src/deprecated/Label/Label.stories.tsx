@@ -4,7 +4,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import page from 'src/deprecated/Label/Label.docs.mdx';
 
 const meta: Meta<typeof Label> = {
-  title: 'Deprecated/Inputs/Label',
+  title: 'Deprecated/Label',
   component: Label,
   parameters: {
     docs: {

@@ -6,7 +6,7 @@ import {
 } from 'src/molecules/FileUploadArea/FileUploadArea';
 
 export default {
-  title: 'Inputs/FileUploadArea',
+  title: 'Molecules/FileUploadArea',
   component: FileUploadArea,
   argTypes: {
     accept: {

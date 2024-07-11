@@ -6,7 +6,7 @@ import {
 } from 'src/molecules/EquinorLogo/EquinorLogo';
 
 export default {
-  title: 'Icons/EquinorLogo',
+  title: 'Molecules/EquinorLogo',
   component: EquinorLogo,
   argTypes: {
     color: {

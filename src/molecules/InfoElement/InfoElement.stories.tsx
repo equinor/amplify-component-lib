@@ -6,7 +6,7 @@ import {
 } from 'src/molecules/InfoElement/InfoElement';
 
 export default {
-  title: 'Data Display/InfoElement',
+  title: 'Molecules/InfoElement',
   component: InfoElement,
   argTypes: {
     title: { control: 'text' },

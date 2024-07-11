@@ -41,7 +41,7 @@ const icons = {
 Icon.add(icons);
 
 const meta: Meta<typeof Tabs> = {
-  title: 'Navigation/Tabs',
+  title: 'Molecules/Tabs',
   component: Tabs,
   subcomponents: {
     List: Tabs.List as ComponentType<unknown>,

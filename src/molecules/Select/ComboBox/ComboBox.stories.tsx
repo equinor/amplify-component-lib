@@ -11,7 +11,7 @@ import {
 } from 'src/molecules/Select/Select.types';
 
 export default {
-  title: 'Inputs/Select/ComboBox',
+  title: 'Molecules/Select/ComboBox',
   component: ComboBox,
   argTypes: {
     label: { control: 'text' },

@@ -116,7 +116,7 @@ const List = () => (
 );
 
 export default {
-  title: 'Other/Hooks',
+  title: 'Atoms/Hooks',
   component: List,
 } as Meta;
 

@@ -7,7 +7,7 @@ import {
 } from 'src/molecules/FileProgress/FileProgress';
 
 export default {
-  title: 'Feedback/FileProgress',
+  title: 'Molecules/FileProgress',
   component: FileProgress,
   parameters: {
     design: {

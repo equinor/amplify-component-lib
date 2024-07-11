@@ -4,7 +4,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import StatusChip from 'src/deprecated/Workflow/StatusChip';
 
 export default {
-  title: 'Deprecated/Data Display/Workflow/StatusChip',
+  title: 'Deprecated/Workflow/StatusChip',
   component: StatusChip,
   argTypes: {
     children: { control: 'text' },

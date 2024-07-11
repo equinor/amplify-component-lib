@@ -13,7 +13,7 @@ import { Search } from 'src/molecules/Search/Search';
 import page from 'src/molecules/Search/Search.docs.mdx';
 
 const meta: Meta<typeof Search> = {
-  title: 'Inputs/Search',
+  title: 'Molecules/Search',
   component: Search,
   parameters: {
     docs: {

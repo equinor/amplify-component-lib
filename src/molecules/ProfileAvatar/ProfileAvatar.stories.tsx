@@ -6,7 +6,7 @@ import {
 } from 'src/molecules/ProfileAvatar/ProfileAvatar';
 
 export default {
-  title: 'Data Display/ProfileAvatar',
+  title: 'Molecules/ProfileAvatar',
   component: ProfileAvatar,
   argTypes: {
     disabled: { control: 'boolean' },

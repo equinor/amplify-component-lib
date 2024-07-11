@@ -2,11 +2,8 @@ import { info_circle, pipe_support, save, tune } from '@equinor/eds-icons';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import {
-  BaseChipProps,
-  Chip,
-  InteractiveChipProps,
-} from 'src/molecules/Chip/Chip';
+import { BaseChipProps, Chip } from './Chip';
+import { InteractiveChipProps } from './InteractiveChip';
 import page from 'src/molecules/Chip/Chips.docs.mdx';
 import { Stack } from 'src/storybook';
 
@@ -14,7 +11,7 @@ const handleDelete = action('onDelete');
 const handleClick = action('onClick');
 
 const meta: Meta<typeof Chip> = {
-  title: 'Data Display/Chips',
+  title: 'Molecules/Chips',
   component: Chip,
   parameters: {
     docs: {

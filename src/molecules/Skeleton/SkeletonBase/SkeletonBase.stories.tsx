@@ -6,7 +6,7 @@ import SkeletonBase from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 import styled from 'styled-components';
 
 export default {
-  title: 'Feedback/Skeleton/SkeletonBase',
+  title: 'Molecules/Skeleton/SkeletonBase',
   component: SkeletonBase,
   argTypes: {
     width: { control: 'text' },

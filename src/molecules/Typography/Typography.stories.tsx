@@ -20,20 +20,15 @@ const SBCard = styled(Card)`
 `;
 
 const meta: Meta<typeof Typography> = {
-  title: 'Typography/Typography',
+  title: 'Molecules/Typography',
   component: Typography,
   argTypes: {
-    variant: { control: { type: null } },
-    group: { control: { type: null } },
     as: {
       description: 'Change the HTML element',
       table: {
         type: {
           summary: 'ElementType<any>',
         },
-      },
-      control: {
-        type: null,
       },
     },
   },

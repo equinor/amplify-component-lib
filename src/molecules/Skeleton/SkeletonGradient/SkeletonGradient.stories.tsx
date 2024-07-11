@@ -8,7 +8,7 @@ import {
 import styled from 'styled-components';
 
 export default {
-  title: 'Feedback/Skeleton/SkeletonGradient',
+  title: 'Molecules/Skeleton/SkeletonGradient',
   component: SkeletonGradient,
   argTypes: {
     duration: { control: 'text' },

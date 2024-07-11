@@ -22,7 +22,7 @@ import { Stack } from 'src/storybook';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Breadcrumbs> = {
-  title: 'Navigation/Breadcrumbs',
+  title: 'Molecules/Breadcrumbs',
   component: Breadcrumbs,
   subcomponents: {
     Breadcrumb: Breadcrumbs.Breadcrumb as ComponentType<unknown>,
