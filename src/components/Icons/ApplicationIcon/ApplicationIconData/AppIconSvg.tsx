@@ -20,6 +20,7 @@ const AppIconSvg: React.FC<IconSvgProps> = ({
       viewBox={viewBox}
       fill={fill}
       xmlns="http://www.w3.org/2000/svg"
+      data-testid="app-icon-svg"
     >
       {paths.map((d, index) => (
         <path

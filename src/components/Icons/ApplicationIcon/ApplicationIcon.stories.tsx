@@ -1,6 +1,10 @@
-import { Meta, StoryFn } from '@storybook/react';
+// ApplicationIcon.stories.tsx
 
-import ApplicationIcon, { ApplicationIconProps } from './ApplicationIcon';
+import React, { FC } from 'react';
+
+import { Meta } from '@storybook/react';
+
+import ApplicationIcon from './ApplicationIcon';
 
 export default {
   title: 'Icons/ApplicationIcon',
@@ -10,28 +14,105 @@ export default {
       control: 'radio',
       options: [
         'fallback',
-        '4dinsight',
-        'acquire',
+        'amplify',
+        'embark',
+        'premo',
         'dasha',
         'orca',
-        'recap',
-        'portal',
+        'acquire',
         'pwex',
-        'logging-qualification',
-        'inpress',
-        'bravos',
-        'premo',
+        'ltg',
+        'equinor',
       ],
     },
-    size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
-    grayScale: { control: 'boolean' },
+    animationState: {
+      options: ['none', 'hoverable', 'animated', 'loading'],
+      control: {
+        type: 'radio',
+      },
+      name: 'Animation State',
+      description: 'Set the animation state of the icon.',
+      defaultValue: 'none',
+    },
+    size: { control: 'radio', options: [24, 32, 40, 48, 96, 128, 144, 256] },
   },
   args: {
-    name: '4dinsight',
     size: 96,
   },
 } as Meta;
 
-export const Primary: StoryFn<ApplicationIconProps> = (args) => (
-  <ApplicationIcon {...args} />
+const Template: FC<{ name: string }> = (args) => (
+  <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+    <ApplicationIcon {...args} />
+  </div>
+);
+
+export const Default = Template.bind({});
+
+export const MultipleIcons: FC = (args) => (
+  <>
+    <h2>No animation</h2>
+    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+      {[
+        'fallback',
+        'amplify',
+        'embark',
+        'premo',
+        'dasha',
+        'orca',
+        'acquire',
+        'pwex',
+        'ltg',
+        'equinor',
+      ].map((appName) => (
+        <ApplicationIcon key={appName} name={appName} size={64} {...args} />
+      ))}
+    </div>
+    <h2>Hoverable</h2>
+    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+      {[
+        'fallback',
+        'amplify',
+        'embark',
+        'premo',
+        'dasha',
+        'orca',
+        'acquire',
+        'pwex',
+        'ltg',
+        'equinor',
+      ].map((appName) => (
+        <ApplicationIcon
+          key={appName}
+          animationState="hoverable"
+          name={appName}
+          size={64}
+          {...args}
+        />
+      ))}
+    </div>
+    <h2>Animated</h2>
+    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+      {[
+        'fallback',
+        'amplify',
+        'embark',
+        'premo',
+        'dasha',
+        'orca',
+        'acquire',
+        'pwex',
+        'logging-qualification',
+        'equinor',
+      ].map((appName) => (
+        <ApplicationIcon
+          key={appName}
+          animationState="animated"
+          name={appName}
+          size={64}
+          {...args}
+        />
+      ))}
+    </div>
+  </>
 );

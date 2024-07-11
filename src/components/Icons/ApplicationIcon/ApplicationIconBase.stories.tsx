@@ -1,13 +1,11 @@
 // Import necessary modules from Storybook
 import { Meta, StoryFn } from '@storybook/react';
 
-import { embark } from './ApplicationIcons/ApplicationIconCollection'; // Adjust imports as per your icons collection
+import { embark } from './ApplicationIconData/ApplicationIconCollection'; // Adjust imports as per your icons collection
 // Import the component and its props
-import NewApplicationIconBase, {
-  AllowedColors,
-  AppBaseProps,
-  colorMap,
-} from './NewApplicationIconBase';
+import { AllowedColors, AppBaseProps, colorMap } from './ApplicationIcon.utils';
+import NewApplicationIconBase from './ApplicationIconBase';
+import ApplicationIconBase from './ApplicationIconBase';
 
 import styled from 'styled-components';
 
@@ -20,7 +18,7 @@ const StyledWrapper = styled.div`
 
 // Define the default export with title and component
 export default {
-  title: 'Icons/NewApplicationIconBase',
+  title: 'Icons/ApplicationIconBase',
   component: NewApplicationIconBase,
   argTypes: {
     size: {
@@ -63,7 +61,7 @@ export default {
 export const Primary: StoryFn<AppBaseProps> = (args) => {
   return (
     <StyledWrapper>
-      <NewApplicationIconBase {...args} appIconData={embark.svgPathData} />
+      <ApplicationIconBase {...args} appIconData={embark.svgPathData} />
     </StyledWrapper>
   );
 };

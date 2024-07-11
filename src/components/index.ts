@@ -30,26 +30,20 @@ export { default as SkeletonGradient } from './Feedback/Skeleton/SkeletonGradien
 export { default as Stepper } from './Feedback/Stepper/Stepper';
 export { Unauthorized } from './Feedback/Unauthorized';
 export * from './Icons/AmplifyIcons';
-export { default as DataAcquisition } from './Icons/ApplicationIcon/Acquire';
 export type { ApplicationName } from './Icons/ApplicationIcon/ApplicationIcon';
 export { default as ApplicationIcon } from './Icons/ApplicationIcon/ApplicationIcon';
 export {
-  acquire,
-  dasha,
   fallback,
-  fourDInsight,
-  inPress,
-  loggingQualification,
-  orca,
-  portal,
-  pwex,
-  recap,
+  amplify,
+  embark,
   premo,
-} from './Icons/ApplicationIcon/ApplicationIconCollection';
-export { default as DataSharing } from './Icons/ApplicationIcon/Dasha';
-export { default as DataExperience } from './Icons/ApplicationIcon/FourDInsight';
-export { default as Portal } from './Icons/ApplicationIcon/Portal';
-export { default as DataTracker } from './Icons/ApplicationIcon/Recap';
+  dasha,
+  orca,
+  acquire,
+  pwex,
+  ltg,
+  equinor,
+} from './Icons/ApplicationIcon/ApplicationIconData/ApplicationIconCollection';
 export { default as EquinorLogo } from './Icons/EquinorLogo';
 export { default as DefaultIcon } from './Icons/Fallback';
 export { default as FeedBackIcon } from './Icons/FeedBackIcon/FeedBackIcon';

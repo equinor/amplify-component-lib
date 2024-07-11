@@ -50,7 +50,11 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
       <Bar ref={ref}>
         <AppAndFieldContainer>
           <AppIdentifier onClick={onHeaderClick} tabIndex={0}>
-            <ApplicationIcon name={applicationIcon} size={32} withHover />
+            <ApplicationIcon
+              name={applicationIcon}
+              size={32}
+              animationState="hoverable"
+            />
             <AppName
               group="navigation"
               variant="menu_title"
