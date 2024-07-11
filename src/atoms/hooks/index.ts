@@ -1,11 +1,11 @@
 import { useDebounce } from './useDebounce';
 import { useFakeProgress } from './useFakeProgress';
 import { useLocalStorage } from './useLocalStorage';
-import { useOnScreen, useOnScreenMultiple } from './useOnScreen';
 import { usePrevious } from './usePrevious';
 import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSelect } from './useSelect';
 import { useSignalRMessages } from './useSignalRMessages';
+import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 import { useFeatureToggling } from 'src/deprecated/useFeatureToggling';
 import { useNotification } from 'src/organisms/TopBar/Notifications/NotificationProvider';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
@@ -23,7 +23,6 @@ export {
   useFeatureToggling,
   useLocalStorage,
   useNotification,
-  useOnScreen,
   useOnScreenMultiple,
   useTableOfContents,
   usePrevious,

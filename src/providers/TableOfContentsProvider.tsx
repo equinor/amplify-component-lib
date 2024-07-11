@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
-import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreen';
+import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 
 export interface TableOfContentsItemType {

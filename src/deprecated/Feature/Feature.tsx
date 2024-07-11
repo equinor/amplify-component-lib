@@ -9,6 +9,7 @@ interface FeatureProps {
   showIfKeyMissing?: boolean;
 }
 
+/* c8 ignore start */
 /**
  * @deprecated Being deprecated from amplify-components-library, use the new @equinor/subsurface-app-management package instead
  */
@@ -28,3 +29,4 @@ const Feature: FC<FeatureProps> = ({
 };
 
 export default Feature;
+/* c8 ignore end */

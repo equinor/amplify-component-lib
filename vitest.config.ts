@@ -42,7 +42,7 @@ export default defineConfig({
         'src/atoms/utils/UtilStory.tsx',
         'src/providers/AuthProvider/**',
         'src/hooks/useSignalRMessages.ts',
-        'src/hooks/useOnScreen.ts',
+        'src/hooks/useOnScreenMultiple.ts',
         'src/components/Navigation/TopBar/Resources/FeedbackForm/**',
         'src/storybook',
       ],

@@ -10,6 +10,7 @@ import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { EnvironmentType } from 'src/atoms/types/Environment';
 import { environment } from 'src/atoms/utils/auth_environment';
 
+/* c8 ignore start */
 /**
  * @deprecated Being deprecated from amplify-components-library, use the new @equinor/subsurface-app-management package instead
  */
@@ -228,3 +229,4 @@ export function useSignalRMessages<
     closeConnection,
   };
 }
+/* c8 ignore end */

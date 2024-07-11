@@ -1,30 +1,7 @@
 import { useEffect, useState } from 'react';
 
-// https://stackoverflow.com/a/65008608
-export function useOnScreen(
-  ref: { current: HTMLElement | null },
-  threshold: number | number[] | undefined
-) {
-  const [isIntersecting, setIntersecting] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIntersecting(entry.isIntersecting);
-      },
-      { rootMargin: '0px', threshold }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    // Remove the observer as soon as the component is unmounted
-    return () => {
-      observer.disconnect();
-    };
-  }, [ref, threshold]);
-
-  return isIntersecting;
-}
-
+// Not able to test IntersectionObservers in vitest :(
+/* c8 ignore start */
 export function useOnScreenMultiple(elements: (Element | null)[]) {
   const [isIntersecting, setIsIntersecting] = useState<boolean[]>(
     new Array(elements.length).fill(false)
@@ -64,3 +41,4 @@ export function useOnScreenMultiple(elements: (Element | null)[]) {
 
   return isIntersecting;
 }
+/* c8 ignore end */

@@ -9,7 +9,7 @@ import { TopBar, TopBarType } from '.';
 import { EnvironmentType } from 'src/atoms/types/Environment';
 import { SideBar } from 'src/organisms/SideBar';
 import { MenuItemType } from 'src/organisms/SideBar/MenuItem';
-import Template from 'src/organisms/Template/Template';
+import { Template } from 'src/organisms/Template/Template';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
 export default {

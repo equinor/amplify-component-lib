@@ -11,7 +11,7 @@ import {
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeItems(withChildren = false): TableOfContentsItemType[] {
-  return new Array(faker.number.int({ min: 2, max: 8 })).fill(0).map(() => ({
+  return new Array(faker.number.int({ min: 4, max: 16 })).fill(0).map(() => ({
     value: 'a' + faker.string.uuid(),
     label: faker.string.uuid(),
     children: withChildren ? fakeItems() : undefined,
