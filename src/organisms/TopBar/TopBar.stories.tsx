@@ -31,7 +31,7 @@ export default {
         'recap',
         'portal',
         'pwex',
-        'logging-qualification',
+        'ltg',
         'inpress',
       ],
     },

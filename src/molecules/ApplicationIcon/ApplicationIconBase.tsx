@@ -1,185 +1,112 @@
-import { forwardRef } from 'react';
+import { FC } from 'react';
 
-import { Icon, IconProps } from '@equinor/eds-core-react';
-import { IconData } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
+import IconSvg from './ApplicationIconData/AppIconSvg';
+import { AppBaseProps } from './ApplicationIcon.utils';
+import {
+  AppIconContainer,
+  IconContainer,
+  Wave,
+  WaveInnerContainer,
+  Waves,
+} from './ApplicationIconBase.styles';
+import { NoiseShape } from './NoiseShape';
+import { WaveShape } from './WaveShape';
 
-import { AppIconProps } from 'src/atoms/types';
-import { GRAYSCALE_FILTER_VALUE } from 'src/molecules/ApplicationIcon/ApplicationIcon.constants';
-import { IconDataWithColor } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+const ApplicationIconBase: FC<AppBaseProps> = ({
+  waveIntervalDist = 14.75,
+  size = 512,
+  color = 'blue',
+  rotationVariant = 1,
+  hasLargeWaves = false,
+  animationState = 'none',
+  appIconData,
+}) => {
+  const waves = Array.from({ length: 8 }, (_, index) => {
+    const top = hasLargeWaves
+      ? index * (waveIntervalDist * 1.15)
+      : index * waveIntervalDist;
+    const altWave = index % 2 === 0;
+    const delay =
+      animationState === 'animated' ? index * 750 : (index + 1) * 50;
 
-import styled, { css } from 'styled-components';
-
-const { colors, elevation } = tokens;
-
-interface ContainerProps {
-  $size: number;
-  $iconOnly: boolean;
-  $withHover: boolean;
-  $grayScale: boolean;
-}
-
-const Container = styled.div<ContainerProps>`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 15%;
-  background: ${({ $iconOnly }) => ($iconOnly ? 'transparent' : '#004f55')};
-  width: ${({ $size }) => `${$size}px`};
-  height: ${({ $size }) => `${$size}px`};
-  z-index: 100;
-  overflow: hidden;
-  ${({ $grayScale }) =>
-    $grayScale
-      ? css`
-          filter: ${GRAYSCALE_FILTER_VALUE};
-        `
-      : ''}
-  > svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    transition: all 2s ease-in-out;
-    z-index: 300;
-    transform: scale(0.8);
-  }
-  ${({ $withHover }) =>
-    $withHover &&
-    `
-  cursor: pointer;
-  &:hover {
-    > svg {
-      transform: scale(0.9);
+    if (size <= 128) {
+      hasLargeWaves = true;
     }
-    > div:nth-child(even) {
-      top: -80%;
-      left: 80%;
-    }
-    > div:nth-child(odd) {
-      top: 93%;
-      left: -93%;
-    }
-  }
-  `};
-`;
+    return {
+      waveIntervalDist: top,
+      size,
+      delay,
+      altWave,
+      hasLargeWaves,
+      animationState,
+      appIconData,
+    };
+  });
 
-export interface ShapeProps {
-  top: number;
-  left: number;
-  rotation: number;
-}
-
-interface ShapeElementProps {
-  $top: number;
-  $left: number;
-  $rotation: number;
-  $index: number;
-  $grayScale: boolean;
-}
-
-const Shape = styled.div<ShapeElementProps>`
-  position: absolute;
-  top: ${(props) => props.$top}%;
-  left: ${(props) => props.$left}%;
-  border-radius: 55% 50% 80% 50%;
-  z-index: ${(props) => 200 - props.$index};
-  width: 120%;
-  height: 80%;
-  box-shadow: ${elevation.raised};
-  // This background is set to hex and not rgba because design do not want this color to change in dark mode , 18 march 2024.
-  background: ${colors.interactive.primary__resting.hex};
-  transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
-  transform: rotate(${(props) => props.$rotation}deg);
-  pointer-events: none;
-`;
-
-interface ApplicationIconBaseProps extends Required<AppIconProps> {
-  iconData: IconData | IconDataWithColor[];
-  shapes: ShapeProps[];
-  iconOnly: boolean;
-  withHover: boolean;
-}
-
-// Icon component from EDS can take whatever size we want in numbers, so casting size to any here is safe
-// Size type is specified on the other higher level components
-export const ApplicationIconBase = forwardRef<
-  HTMLDivElement,
-  ApplicationIconBaseProps
->(
-  (
-    { size = 48, iconData, shapes, iconOnly, withHover, grayScale = false },
-    ref
-  ) => {
-    if (iconOnly) {
-      return (
-        <Container
-          data-testid="application-icon"
-          ref={ref}
-          $size={size}
-          $iconOnly={iconOnly}
-          $withHover={withHover}
-          $grayScale={grayScale}
-        >
-          {Array.isArray(iconData) ? (
-            iconData.map((icon, index) => (
-              <Icon
-                key={`icon-${index}`}
-                data={icon}
-                size={size as IconProps['size']}
-                color={icon.color}
-              />
-            ))
-          ) : (
-            <Icon
-              data={iconData}
-              size={size as IconProps['size']}
-              color="#ffffff"
-            />
-          )}
-        </Container>
-      );
-    }
-    return (
-      <Container
-        data-testid="application-icon"
-        ref={ref}
-        $size={size}
-        $iconOnly={iconOnly}
-        $withHover={withHover}
-        $grayScale={grayScale}
+  return (
+    <AppIconContainer
+      size={size}
+      color={color}
+      animationState={animationState}
+      data-testid="app-icon-container"
+    >
+      <IconContainer data-testid="icon-container">
+        <IconSvg paths={appIconData} />
+      </IconContainer>
+      <Waves
+        animationState={animationState}
+        isLoading={animationState === 'loading'}
+        data-testid="waves-container"
       >
-        {Array.isArray(iconData) ? (
-          iconData.map((icon, index) => (
-            <Icon
-              key={`icon-${index}`}
-              data={icon}
-              size={size as IconProps['size']}
-              color={icon.color}
+        <WaveInnerContainer color={color} rotationVariant={rotationVariant}>
+          <Wave
+            className="wave"
+            waveIntervalDist={0}
+            data-testid="wave"
+            style={{
+              animationDelay: `0ms`,
+              transitionDelay: `0ms`,
+            }}
+          >
+            <WaveShape
+              index={-1}
+              isAltWave={false}
+              hasLargeWaves={hasLargeWaves}
             />
-          ))
-        ) : (
-          <Icon
-            data={iconData}
-            size={size as IconProps['size']}
-            color="#ffffff"
-          />
-        )}
-        {shapes.map((shape, index) => (
-          <Shape
-            key={`shape-${index}`}
-            data-testid="shape"
-            $index={index}
-            $top={shape.top}
-            $left={shape.left}
-            $rotation={shape.rotation}
-            $grayScale={grayScale}
-          />
-        ))}
-      </Container>
-    );
-  }
-);
+            <NoiseShape
+              index={-1}
+              isAltWave={false}
+              hasLargeWaves={hasLargeWaves}
+            />
+          </Wave>
+          {waves.map((wave, index) => (
+            <Wave
+              className="wave"
+              key={index}
+              waveIntervalDist={wave.waveIntervalDist}
+              data-testid="wave"
+              style={{
+                animationDelay: `${wave.delay}ms`,
+                transitionDelay: `${wave.delay}ms`,
+              }}
+            >
+              <WaveShape
+                index={index}
+                isAltWave={wave.altWave}
+                hasLargeWaves={wave.hasLargeWaves}
+              />
+              <NoiseShape
+                index={index}
+                isAltWave={wave.altWave}
+                hasLargeWaves={wave.hasLargeWaves}
+              />
+            </Wave>
+          ))}
+        </WaveInnerContainer>
+      </Waves>
+    </AppIconContainer>
+  );
+};
 
 ApplicationIconBase.displayName = 'ApplicationIconBase';
+export default ApplicationIconBase;

@@ -1,173 +1,89 @@
-import { IconData } from '@equinor/eds-icons';
+import ApplicationIcon from './ApplicationIcon';
+import { ApplicationIconProps } from './ApplicationIcon';
+import { render, screen } from 'src/tests/test-utils';
 
-import {
-  ApplicationIcon,
-  ApplicationIconProps,
-} from 'src/molecules/ApplicationIcon/ApplicationIcon';
-import { GRAYSCALE_FILTER_VALUE } from 'src/molecules/ApplicationIcon/ApplicationIcon.constants';
-import {
-  acquire,
-  bravos,
-  dasha,
-  fallback,
-  fourDInsight,
-  IconDataWithColor,
-  inPress,
-  loggingQualification,
-  orca,
-  portal,
-  premo,
-  pwex,
-  recap,
-} from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
-import { render, screen, userEvent } from 'src/tests/test-utils';
-
-import { expect, test } from 'vitest';
-
-const nameOptions: ApplicationIconProps['name'][] = [
-  'acquire',
-  '4dinsight',
-  'recap',
-  'dasha',
-  'portal',
-  'logging-qualification',
-  'pwex',
-  'orca',
-  'inpress',
-  'bravos',
-  'premo',
-];
-const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
-
-type IconsDict = Record<
-  ApplicationIconProps['name'],
-  IconData | IconDataWithColor[]
->;
-
-const icons: IconsDict = {
-  acquire: acquire,
-  '4dinsight': fourDInsight,
-  recap: recap,
-  dasha: dasha,
-  portal: portal,
-  'logging-qualification': loggingQualification,
-  pwex: pwex,
-  orca: orca,
-  inpress: inPress,
-  bravos: bravos,
-  premo: premo,
+const defaultProps: ApplicationIconProps = {
+  name: 'amplify',
+  size: 64,
+  animationState: 'none',
 };
 
-test('Render correctly with corresponding props', () => {
-  const { rerender } = render(<ApplicationIcon name="acquire" />);
+describe('ApplicationIcon Component', () => {
+  test('renders with default props', () => {
+    render(<ApplicationIcon {...defaultProps} />);
+    const appIconContainer = screen.getByTestId('app-icon-container');
+    const iconContainer = screen.getByTestId('icon-container');
+    const wavesContainer = screen.getByTestId('waves-container');
 
-  // Check that it renders correctly with name options
-  for (const name of nameOptions) {
-    rerender(<ApplicationIcon name={name} />);
-    for (const size of sizeOptions) {
-      rerender(<ApplicationIcon name={name} size={size} />);
-      const currentIcon = icons[name];
-      if (Array.isArray(currentIcon)) {
-        const paths = screen.getAllByTestId('eds-icon-path');
-        for (const [index, path] of paths.entries()) {
-          expect(path).toHaveAttribute('d', currentIcon[index].svgPathData);
-        }
-        const svgComponent = paths[0].parentElement;
-        expect(svgComponent).toBeInTheDocument();
-        expect(svgComponent).toHaveAttribute('height', `${size}px`);
-        expect(svgComponent).toHaveAttribute('width', `${size}px`);
-      } else {
-        const path = screen.getByTestId('eds-icon-path');
-        expect(path).toHaveAttribute('d', currentIcon.svgPathData);
-        const svgComponent = path.parentElement;
-        expect(svgComponent).toBeInTheDocument();
-        expect(svgComponent).toHaveAttribute('height', `${size}px`);
-        expect(svgComponent).toHaveAttribute('width', `${size}px`);
-      }
-    }
-  }
+    expect(appIconContainer).toBeInTheDocument();
+    expect(iconContainer).toBeInTheDocument();
+    expect(wavesContainer).toBeInTheDocument();
+  });
+
+  test('renders with custom props', () => {
+    const customProps: ApplicationIconProps = {
+      name: 'embark',
+      size: 128,
+      animationState: 'hoverable',
+    };
+    render(<ApplicationIcon {...customProps} />);
+
+    const appIconContainer = screen.getByTestId('app-icon-container');
+    expect(appIconContainer).toHaveStyle(`width: ${customProps.size}px`);
+    expect(appIconContainer).toHaveStyle(`height: ${customProps.size}px`);
+  });
+
+  test('renders the correct icon based on the given name', () => {
+    render(<ApplicationIcon name="embark" />);
+    const appIconSvg = screen.getByTestId('app-icon-svg');
+    expect(appIconSvg).toBeInTheDocument();
+  });
+
+  test('uses fallback icon when the provided name does not exist', () => {
+    render(<ApplicationIcon name="nonexistent" />);
+    const appIconSvg = screen.getByTestId('app-icon-svg');
+    expect(appIconSvg).toBeInTheDocument();
+    const appIconContainer = screen.getByTestId('app-icon-container');
+    expect(appIconContainer).toHaveAttribute('color', 'blue');
+  });
+
+  test('applies loading animation state', () => {
+    const loadingProps: ApplicationIconProps = {
+      ...defaultProps,
+      animationState: 'loading',
+    };
+    render(<ApplicationIcon {...loadingProps} />);
+    const wavesContainer = screen.getAllByTestId('wave');
+    console.log(wavesContainer[0]);
+
+    expect(wavesContainer[0]).toHaveStyle('transform: scaleY(0)');
+  });
+
+  test('applies hoverable animation state', () => {
+    const hoverableProps: ApplicationIconProps = {
+      ...defaultProps,
+      animationState: 'hoverable',
+    };
+    render(<ApplicationIcon {...hoverableProps} />);
+    const wavesContainer = screen.getAllByTestId('wave');
+    expect(wavesContainer[0]).toHaveStyle(
+      'transition: transform 950ms ease,top 950ms ease'
+    );
+  });
+
+  test('applies animated animation state', () => {
+    const animatedProps: ApplicationIconProps = {
+      ...defaultProps,
+      animationState: 'animated',
+    };
+    render(<ApplicationIcon {...animatedProps} />);
+    const wavesContainer = screen.getAllByTestId('wave');
+    expect(wavesContainer[0]).toHaveStyle('transition-delay: 0ms');
+  });
 });
 
-test('Renders correct icon, even with wrong casing', () => {
-  const { rerender } = render(<ApplicationIcon name="AcQuIre" />);
-
-  // Check that it renders correctly with name options
-  for (const name of nameOptions) {
-    rerender(<ApplicationIcon name={name.toUpperCase()} />);
-    for (const size of sizeOptions) {
-      rerender(<ApplicationIcon name={name.toUpperCase()} size={size} />);
-      const currentIcon = icons[name];
-      if (Array.isArray(currentIcon)) {
-        const paths = screen.getAllByTestId('eds-icon-path');
-        for (const [index, path] of paths.entries()) {
-          expect(path).toHaveAttribute('d', currentIcon[index].svgPathData);
-        }
-        const svgComponent = paths[0].parentElement;
-        expect(svgComponent).toBeInTheDocument();
-        expect(svgComponent).toHaveAttribute('height', `${size}px`);
-        expect(svgComponent).toHaveAttribute('width', `${size}px`);
-      } else {
-        const path = screen.getByTestId('eds-icon-path');
-        expect(path).toHaveAttribute('d', currentIcon.svgPathData);
-        const svgComponent = path.parentElement;
-        expect(svgComponent).toBeInTheDocument();
-        expect(svgComponent).toHaveAttribute('height', `${size}px`);
-        expect(svgComponent).toHaveAttribute('width', `${size}px`);
-      }
-    }
-  }
-});
-
-test("Renders fallback when name isn't found", () => {
-  render(
-    <ApplicationIcon name={'name not found' as ApplicationIconProps['name']} />
-  );
-
-  expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
-    'd',
-    fallback.svgPathData
-  );
-});
-
-test('Renders without shapes when iconOnly=true when single icon', () => {
-  const { rerender } = render(<ApplicationIcon name="acquire" iconOnly />);
-
-  for (const name of nameOptions) {
-    rerender(<ApplicationIcon name={name} iconOnly />);
-    expect(screen.queryAllByTestId('shape').length).toBe(0);
-  }
-});
-
-test('Renders equinor logo as fallback when iconOnly=true', () => {
-  render(<ApplicationIcon name="hei" iconOnly />);
-
-  const path = screen.getByTestId('eds-icon-path');
-
-  expect(path).toHaveAttribute('d', fallback.svgPathData);
-});
-
-test('Shows hover effects when withHover=true', async () => {
-  render(<ApplicationIcon name="acquire" withHover />);
-  const user = userEvent.setup();
-
-  const applicationIcon = screen.getByTestId('application-icon');
-
-  await user.hover(applicationIcon);
-  expect(applicationIcon).toHaveStyleRule('cursor', 'pointer');
-});
-
-test("Doesn't hover effects when withHover=false", async () => {
-  render(<ApplicationIcon name="acquire" withHover={false} />);
-  const user = userEvent.setup();
-
-  const applicationIcon = screen.getByTestId('application-icon');
-
-  await user.hover(applicationIcon);
-  expect(applicationIcon).not.toHaveStyleRule('cursor');
-});
-
-test('has grayscale css attribute when grayscale is set', () => {
-  render(<ApplicationIcon name="orca" grayScale />);
-  const applicationIcon = screen.getByTestId('application-icon');
-  expect(applicationIcon).toHaveStyleRule('filter', GRAYSCALE_FILTER_VALUE);
+test('renders a large icon causing the small waves on the icon', () => {
+  render(<ApplicationIcon name="embark" size={256} />);
+  const appIconSvg = screen.getByTestId('app-icon-svg');
+  expect(appIconSvg).toBeInTheDocument();
 });

@@ -1,89 +1,135 @@
-import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
+import { FC } from 'react';
 
-import { Acquire } from './Acquire';
-import { Bravos } from './Bravos';
-import { Dasha } from './Dasha';
-import { Fallback } from './Fallback';
-import { FourDInsight } from './FourDInsight';
-import { InPress } from './InPress';
-import { LoggingQualification } from './LoggingQualification';
-import { Orca } from './Orca';
-import { Portal } from './Portal';
-import { Premo } from './Premo';
-import { Pwex } from './Pwex';
-import { Recap } from './Recap';
-// Needs to be relative path for the type to be importable after build
-import { AppIconProps } from 'src/atoms/types';
+import {
+  acquire,
+  amplify,
+  dasha,
+  embark,
+  equinor,
+  fallback,
+  ltg,
+  orca,
+  premo,
+  pwex,
+} from './ApplicationIconData/ApplicationIconCollection'; // Adjust imports as per your icons collection
+import { AllowedColors } from './ApplicationIcon.utils'; // Adjust the path as per your project structure
+import ApplicationIconBase from './ApplicationIconBase'; // Adjust the path as per your project structure
 
 export type ApplicationName =
-  | 'acquire'
-  | '4dinsight'
-  | 'recap'
+  | 'amplify'
+  | 'embark'
+  | 'premo'
   | 'dasha'
   | 'orca'
-  | 'portal'
-  | 'logging-qualification'
+  | 'acquire'
   | 'pwex'
-  | 'inpress'
-  | 'bravos'
-  | 'premo';
+  | 'ltg'
+  | 'equinor';
 
 interface ApplicationIconData {
-  appName: string[];
-  component: ForwardRefExoticComponent<
-    AppIconProps & RefAttributes<HTMLDivElement>
-  >;
+  appName: string;
+  iconSvg: string[];
+  rotationVariant: number;
+  color: AllowedColors;
 }
+
 const apps: ApplicationIconData[] = [
-  { appName: ['portal'], component: Portal },
-  { appName: ['acquire'], component: Acquire },
-  { appName: ['4dinsight'], component: FourDInsight },
-  { appName: ['dasha'], component: Dasha },
-  { appName: ['orca'], component: Orca },
   {
-    appName: ['logging-qualification', 'logging qualification'],
-    component: LoggingQualification,
+    appName: 'amplify',
+    iconSvg: amplify.svgPathData,
+    rotationVariant: 1,
+    color: 'blue',
   },
-  { appName: ['recap'], component: Recap },
-  { appName: ['pwex'], component: Pwex },
-  { appName: ['inpress'], component: InPress },
-  { appName: ['bravos'], component: Bravos },
-  { appName: ['premo'], component: Premo },
+  {
+    appName: 'embark',
+    iconSvg: embark.svgPathData,
+    rotationVariant: 2,
+    color: 'green',
+  },
+  {
+    appName: 'premo',
+    iconSvg: premo.svgPathData,
+    rotationVariant: 3,
+    color: 'purple',
+  },
+  {
+    appName: 'dasha',
+    iconSvg: dasha.svgPathData,
+    rotationVariant: 0,
+    color: 'red',
+  },
+  {
+    appName: 'acquire',
+    iconSvg: acquire.svgPathData,
+    rotationVariant: 1,
+    color: 'yellow',
+  },
+  {
+    appName: 'orca',
+    iconSvg: orca.svgPathData,
+    rotationVariant: 2,
+    color: 'magenta',
+  },
+  {
+    appName: 'pwex',
+    iconSvg: pwex.svgPathData,
+    rotationVariant: 3,
+    color: 'blue',
+  },
+  {
+    appName: 'ltg',
+    iconSvg: ltg.svgPathData,
+    rotationVariant: 0,
+    color: 'green',
+  },
+  {
+    appName: 'equinor',
+    iconSvg: equinor.svgPathData,
+    rotationVariant: 1,
+    color: 'purple',
+  },
+  {
+    appName: 'fallback',
+    iconSvg: fallback.svgPathData,
+    rotationVariant: 2,
+    color: 'blue',
+  },
 ];
 
-export interface ApplicationIconProps extends Partial<AppIconProps> {
+export interface ApplicationIconProps {
   name: ApplicationName | string;
+  size?: number;
+  animationState?: 'none' | 'hoverable' | 'animated' | 'loading';
 }
 
-export const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
-  (
-    { name, size = 48, iconOnly = false, withHover = false, grayScale = false },
-    ref
-  ) => {
-    const appData = apps.find((app) =>
-      app.appName.includes(name.toLowerCase())
-    );
+export const ApplicationIcon: FC<ApplicationIconProps> = ({
+  name = 'amplify',
+  size = 64,
+  animationState = 'none',
+}) => {
+  let appData = apps.find((app) => app.appName.includes(name.toLowerCase()));
 
-    if (appData === undefined)
-      return (
-        <Fallback
-          size={size}
-          ref={ref}
-          iconOnly={iconOnly}
-          withHover={withHover}
-          grayScale={grayScale}
-        />
-      );
-    return (
-      <appData.component
-        size={size}
-        ref={ref}
-        iconOnly={iconOnly}
-        withHover={withHover}
-        grayScale={grayScale}
-      />
-    );
+  if (!appData) {
+    // Set appData to the fallback icon data
+    appData = {
+      appName: 'fallback',
+      iconSvg: fallback.svgPathData,
+      rotationVariant: 1,
+      color: 'blue',
+    };
   }
-);
+
+  const { iconSvg } = appData;
+  return (
+    <ApplicationIconBase
+      size={size}
+      color={appData.color}
+      rotationVariant={appData.rotationVariant}
+      animationState={animationState}
+      appIconData={iconSvg}
+    />
+  );
+};
 
 ApplicationIcon.displayName = 'ApplicationIcon';
+export default ApplicationIcon;
