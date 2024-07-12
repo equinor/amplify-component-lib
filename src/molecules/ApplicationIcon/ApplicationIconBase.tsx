@@ -1,16 +1,16 @@
 import { FC } from 'react';
 
-import { AppBaseProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.utils';
+import IconSvg from './ApplicationIconData/AppIconSvg';
+import { AppBaseProps } from './ApplicationIcon.utils';
 import {
   AppIconContainer,
   IconContainer,
   Wave,
   WaveInnerContainer,
   Waves,
-} from 'src/molecules/ApplicationIcon/ApplicationIconBase.styles';
-import IconSvg from 'src/molecules/ApplicationIcon/ApplicationIconData/AppIconSvg';
-import { NoiseShape } from 'src/molecules/ApplicationIcon/NoiseShape';
-import { WaveShape } from 'src/molecules/ApplicationIcon/WaveShape';
+} from './ApplicationIconBase.styles';
+import { NoiseShape } from './NoiseShape';
+import { WaveShape } from './WaveShape';
 
 const ApplicationIconBase: FC<AppBaseProps> = ({
   waveIntervalDist = 14.75,

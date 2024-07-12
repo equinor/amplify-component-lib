@@ -1,7 +1,5 @@
 import { FC } from 'react';
 
-import { AllowedColors } from './ApplicationIcon.utils'; // Adjust the path as per your project structure
-import ApplicationBase from './ApplicationIconBase'; // Adjust the path as per your project structure
 import {
   acquire,
   amplify,
@@ -13,7 +11,9 @@ import {
   orca,
   premo,
   pwex,
-} from 'src/molecules/ApplicationIcon/ApplicationIconData/ApplicationIconCollection'; // Adjust imports as per your icons collection
+} from './ApplicationIconData/ApplicationIconCollection'; // Adjust imports as per your icons collection
+import { AllowedColors } from './ApplicationIcon.utils'; // Adjust the path as per your project structure
+import ApplicationIconBase from './ApplicationIconBase'; // Adjust the path as per your project structure
 
 export type ApplicationName =
   | 'amplify'
@@ -121,7 +121,7 @@ export const ApplicationIcon: FC<ApplicationIconProps> = ({
 
   const { iconSvg } = appData;
   return (
-    <ApplicationBase
+    <ApplicationIconBase
       size={size}
       color={appData.color}
       rotationVariant={appData.rotationVariant}

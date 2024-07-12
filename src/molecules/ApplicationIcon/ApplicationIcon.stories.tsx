@@ -4,8 +4,8 @@ import React, { FC } from 'react';
 
 import { Meta } from '@storybook/react';
 
-import ApplicationIcon from 'src/molecules/ApplicationIcon/ApplicationIcon';
-import { APP_ICONS } from 'src/molecules/ApplicationIcon/ApplicationIcon.constants';
+import ApplicationIcon from './ApplicationIcon';
+import { APP_ICONS } from './ApplicationIcon.constants';
 
 export default {
   title: 'Molecules/ApplicationIcon',

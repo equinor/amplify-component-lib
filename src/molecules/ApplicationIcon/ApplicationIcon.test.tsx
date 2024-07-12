@@ -1,5 +1,5 @@
 import ApplicationIcon from './ApplicationIcon';
-import { ApplicationIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon';
+import { ApplicationIconProps } from './ApplicationIcon';
 import { render, screen } from 'src/tests/test-utils';
 
 const defaultProps: ApplicationIconProps = {
