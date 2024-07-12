@@ -27,7 +27,7 @@ function dataURItoBlob(dataURI: string) {
 }
 
 // https://github.com/im-salman/react-component-export-image/blob/master/index.js
-const exportComponent = (
+export const exportComponent = (
   node: RefObject<HTMLElement>,
   backgroundColor?: string
 ) => {
@@ -44,5 +44,3 @@ const exportComponent = (
     return dataURItoBlob(canvas.toDataURL('image/png', 1.0));
   });
 };
-
-export default exportComponent;

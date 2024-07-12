@@ -1,24 +1,33 @@
 import { tokens } from '@equinor/eds-tokens';
+import { EditorContent as TiptapContent } from '@tiptap/react';
 
 import styled from 'styled-components';
 
-import 'highlight.js/styles/base16/solarized-dark.css';
-
 const { colors, spacings, typography, shape } = tokens;
 
-interface WrapperProps {
+export interface RichTextContentProps {
+  $minHeight?: string;
+  $maxHeight?: string;
+  className?: string;
+}
+
+export const EditorContent = styled(TiptapContent)<RichTextContentProps>`
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow-y: auto;
+  min-height: ${(props) => props.$minHeight || 'auto'};
+  max-height: ${(props) => props.$maxHeight || 'auto'};
+`;
+
+export interface EditorStylingProps {
   $lightBackground?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
-  $maxHeight?: string;
   $border?: boolean;
 }
 
-export const Wrapper = styled.div<WrapperProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+export const EditorStyling = styled.div<EditorStylingProps>`
+  display: grid;
   background: ${colors.ui.background__default.rgba};
-
   border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
   border: ${(props) =>
     props.$border ? `1px solid ${colors.ui.background__medium.rgba}` : 'none'};
@@ -28,17 +37,12 @@ export const Wrapper = styled.div<WrapperProps>`
     height: inherit;
   }
 
-  div:has(> .tiptap) {
-    display: flex;
-  }
-
-  div:has(> .tiptap),
-  .tiptap {
-    flex-grow: 1;
+  & [data-placeholder]::before {
+    color: ${colors.text.static_icons__tertiary.rgba} !important;
   }
 
   .tiptap {
-    max-height: ${(props) => props.$maxHeight ?? 'none'};
+    box-sizing: border-box;
     overflow-y: auto;
     background: ${(props) =>
       props.$lightBackground
@@ -160,6 +164,7 @@ export const Wrapper = styled.div<WrapperProps>`
       box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
     }
   }
+
   .tiptap p.is-editor-empty:first-child::before {
     color: ${colors.text.static_icons__default.rgba};
     content: attr(data-placeholder);

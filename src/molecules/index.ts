@@ -27,8 +27,24 @@ export { ProfileAvatar } from './ProfileAvatar/ProfileAvatar';
 export type { ProfileAvatarProps } from './ProfileAvatar/ProfileAvatar';
 export { RichTextDisplay } from './RichTextDisplay/RichTextDisplay';
 export type { RichTextDisplayProps } from './RichTextDisplay/RichTextDisplay';
-export { RichTextEditor } from './RichTextEditor/RichTextEditor';
+
+export { AmplifyKit } from './RichTextEditor/custom-extensions/DefaultKit';
+export { RichTextEditor, RichText } from './RichTextEditor/RichTextEditor';
+export {
+  AmplifyBar,
+  EditorMenu,
+  EditorText,
+} from './RichTextEditor/MenuBar/MenuBar';
 export type { RichTextEditorProps } from './RichTextEditor/RichTextEditor';
+export {
+  TableMenuBar,
+  TextTable,
+} from './RichTextEditor/MenuBar/Table/TableBar';
+export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
+export type {
+  RichTextEditorFeatures,
+  OnImageUploadFn,
+} from './RichTextEditor/RichTextEditor.types';
 export { Search } from './Search/Search';
 export { Sieve } from './Sieve/Sieve';
 export type {
