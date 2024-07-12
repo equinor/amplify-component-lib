@@ -19,7 +19,7 @@ Show the navigational path to users allowing them to navigate up the hierarchy.
 `Breadcrumbs` are often placed horizontally before a page's main content.
 
 ```tsx
-import { Breadcrumbs } from '@equinor/amplify-components';
+import { Breadcrumbs } from '@equinor/amplify-component-lib';
 
 <Breadcrumbs>
   <Breadcrumbs.Breadcrumb href="#">Item1</Breadcrumbs.Breadcrumb>
@@ -68,7 +68,7 @@ Use the `as` prop on `Breadcrumbs.Breadcrumb` to utilize third party routers suc
 
 ```tsx
 import { Link } from 'react-router-dom';
-import { Breadcrumbs } from '@equinor/amplify-components';
+import { Breadcrumbs } from '@equinor/amplify-component-lib';
 
 <Breadcrumbs>
   <Breadcrumbs.Breadcrumb as={Link} to="/">

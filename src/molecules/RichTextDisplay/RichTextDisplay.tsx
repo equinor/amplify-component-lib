@@ -2,7 +2,8 @@ import { FC, useEffect, useRef } from 'react';
 
 import { useEditor } from '@tiptap/react';
 
-import { AmplifyKit, RichText } from 'src/molecules';
+import { RichText } from 'src/molecules';
+import { AmplifyKit } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 
 export interface RichTextDisplayProps {
   value: string | null | undefined;

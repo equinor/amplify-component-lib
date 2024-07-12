@@ -28,7 +28,6 @@ export type { ProfileAvatarProps } from './ProfileAvatar/ProfileAvatar';
 export { RichTextDisplay } from './RichTextDisplay/RichTextDisplay';
 export type { RichTextDisplayProps } from './RichTextDisplay/RichTextDisplay';
 
-export { AmplifyKit } from './RichTextEditor/custom-extensions/AmplifyKit';
 export { RichTextEditor, RichText } from './RichTextEditor';
 export {
   AmplifyBar,

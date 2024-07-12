@@ -17,7 +17,7 @@ const Animation = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: url('https://raw.githubusercontent.com/equinor/amplify-components/main/static/Questioning_spritesheet.png')
+  background: url('https://raw.githubusercontent.com/equinor/amplify-component-lib/main/static/Questioning_spritesheet.png')
     left center;
   background-size: cover;
   animation: ${animation} 2.5s steps(34) infinite;

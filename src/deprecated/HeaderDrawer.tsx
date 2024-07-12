@@ -50,7 +50,7 @@ export interface HeaderDrawerProps extends HTMLAttributes<'h6'> {
 }
 
 /**
- * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ * @deprecated Being deprecated from amplify-component-lib move into app if you want the implementation
  */
 
 const HeaderDrawer = forwardRef<HTMLHeadingElement, HeaderDrawerProps>(

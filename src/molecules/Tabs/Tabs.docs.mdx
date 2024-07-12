@@ -30,7 +30,7 @@ Tabs allow for navigation between content that is related and has an equal hiera
 </ul>
 
 ```tsx
-import { Tabs } from '@equinor/amplify-components';
+import { Tabs } from '@equinor/amplify-component-lib';
 
 <Tabs>
   <Tabs.List>
@@ -101,7 +101,7 @@ The non-active `Tabs.Panels` are by default hidden with `display: none`, but can
 `Tabs.Tab` can be rendered as another component using the `as` prop.
 
 ```tsx
-import { Tabs } from '@equinor/amplify-components';
+import { Tabs } from '@equinor/amplify-component-lib';
 import { Link, Outlet } from 'react-router-dom';
 
 <Tabs activeTab="/foo/bar">

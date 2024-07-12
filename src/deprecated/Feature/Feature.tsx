@@ -11,7 +11,7 @@ interface FeatureProps {
 
 /* c8 ignore start */
 /**
- * @deprecated Being deprecated from amplify-components-library, use the new @equinor/subsurface-app-management package instead
+ * @deprecated Being deprecated from amplify-component-lib use the new @equinor/subsurface-app-management package instead
  */
 const Feature: FC<FeatureProps> = ({
   featureKey,

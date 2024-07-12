@@ -10,88 +10,88 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compare remote .eslintrc.js to local
         working-directory: client
-        run: diff .eslintrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.eslintrc.js)
+        run: diff .eslintrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.eslintrc.js)
 
       - name: Compare remote .prettierrc.js to local
         working-directory: client
-        run: diff .prettierrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierrc.js)
+        run: diff .prettierrc.js <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.prettierrc.js)
 
       - name: Compare remote .prettierignore to local
         working-directory: client
-        run: diff .prettierignore <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/.prettierignore)
+        run: diff .prettierignore <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.prettierignore)
 
       - name: Compare remote tsconfig.json to local
         working-directory: client
-        run: diff tsconfig.json <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/tsconfig.json)
+        run: diff tsconfig.json <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/tsconfig.json)
 
       - name: Compare remote Dockerfile to local
         working-directory: client
-        run: diff Dockerfile <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/Dockerfile)
+        run: diff Dockerfile <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/Dockerfile)
 
       - name: Compare remote env.sh to local
         working-directory: client
-        run: diff env.sh <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/env.sh)
+        run: diff env.sh <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/env.sh)
 
       - name: Compare remote vite.config.ts to local
         working-directory: client
-        run: diff vite.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite.config.ts)
+        run: diff vite.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/vite.config.ts)
 
       - name: Compare remote playwright.config.ts to local
         working-directory: client
-        run: diff playwright.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/playwright.config.ts)
+        run: diff playwright.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/playwright.config.ts)
 
       - name: Compare remote proxy/nginx.conf to local
         working-directory: client/proxy
-        run: diff nginx.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf)
+        run: diff nginx.conf <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/nginx.conf)
 
       - name: Compare remote proxy/securityheaders.conf to local
         working-directory: client/proxy
-        run: diff securityheaders.conf <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/securityheaders.conf)
+        run: diff securityheaders.conf <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/securityheaders.conf)
 
       - name: Compare remote src/setupLocalhost.mjs to local
         working-directory: client/src
-        run: diff setupLocalhost.mjs <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs)
+        run: diff setupLocalhost.mjs <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/setupLocalhost.mjs)
 
       - name: Compare remote src/test-utils/setupTests.ts to local
         working-directory: client/src/test-utils
-        run: diff setupTests.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/setupTests.ts)
+        run: diff setupTests.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/setupTests.ts)
 
       - name: Compare remote src/test-utils/vitest.d.ts to local
         working-directory: client/src/test-utils
-        run: diff vitest.d.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/vitest.d.ts)
+        run: diff vitest.d.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/vitest.d.ts)
 
       - name: Compare remote src/test-utils/browserMocks.ts to local
         working-directory: client/src/test-utils
-        run: diff browserMocks.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/browserMocks.ts)
+        run: diff browserMocks.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/browserMocks.ts)
 
       - name: Compare remote src/test-utils/portalMock.ts to local
         working-directory: client/src/test-utils
-        run: diff portalMock.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/portalMock.ts)
+        run: diff portalMock.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/portalMock.ts)
 
       - name: Compare remote src/test-utils/playwright.ts to local
         working-directory: client/src/test-utils
-        run: diff playwright.ts <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/playwright.ts)
+        run: diff playwright.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/playwright.ts)
 
       - name: Compare remote .github/workflows/build.yaml to local
         working-directory: .github/workflows
-        run: diff build.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/build.yaml)
+        run: diff build.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/workflows/build.yaml)
 
       - name: Compare remote .github/workflows/e2e.yaml to local
         working-directory: .github/workflows
-        run: diff e2e.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/e2e.yaml)
+        run: diff e2e.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/workflows/e2e.yaml)
 
       - name: Compare remote .github/workflows/lint.yaml to local
         working-directory: .github/workflows
-        run: diff lint.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/lint.yaml)
+        run: diff lint.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/workflows/lint.yaml)
 
       - name: Compare remote .github/workflows/test.yaml to local
         working-directory: .github/workflows
-        run: diff test.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/test.yaml)
+        run: diff test.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/workflows/test.yaml)
 
       - name: Compare remote .github/workflows/pull_request.yaml to local
         working-directory: .github/workflows
-        run: diff pull_request.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/pull_request.yaml)
+        run: diff pull_request.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/workflows/pull_request.yaml)
 
       - name: Compare remote .github/workflows/build_docker.yaml to local
         working-directory: .github/workflows
-        run: diff build_docker.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/build_docker.yaml)
+        run: diff build_docker.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/workflows/build_docker.yaml)
