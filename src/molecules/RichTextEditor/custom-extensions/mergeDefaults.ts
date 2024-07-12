@@ -1,4 +1,4 @@
-import { AmplifyKitOptions } from './DefaultKit';
+import { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 
 interface MergedDefaults {
   options?: Partial<AmplifyKitOptions>;

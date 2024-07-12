@@ -7,7 +7,7 @@ import {
   ReactNodeViewRenderer,
 } from '@tiptap/react';
 
-import { Typography } from '../../../';
+import { Typography } from 'src/molecules';
 
 interface TiptapHeadingProps {
   node: {

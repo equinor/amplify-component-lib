@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { home } from '@equinor/eds-icons';
@@ -11,7 +11,7 @@ import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 const { colors } = tokens;
 
-type MenuClickHandler = () => void | React.MouseEventHandler<HTMLAnchorElement>;
+type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
 
 function fakeProps(): MenuItemProps {
   return {

@@ -1,7 +1,7 @@
-import { Typography } from '@equinor/eds-core-react';
 import { StoryFn } from '@storybook/react';
 
 import HeaderDrawer, { HeaderDrawerProps } from 'src/deprecated/HeaderDrawer';
+import { Typography } from 'src/molecules';
 
 export default {
   title: 'Deprecated/HeaderDrawer',

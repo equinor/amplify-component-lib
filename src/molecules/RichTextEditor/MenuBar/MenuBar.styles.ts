@@ -26,6 +26,7 @@ interface MenuButtonProps {
     backgroundHover: string;
   };
 }
+
 export const MenuButtonStyle = styled.button<MenuButtonProps>`
   display: flex;
   align-items: center;

@@ -36,7 +36,7 @@ const releaseNotes = [
     applicationName: 'PWEX',
     version: null,
     title: 'Improved task board and reporting overview June',
-    body: '<h1>Release notes body text</h1>',
+    body: '<p>Release notes body text</p>',
     tags: ['Improvement', 'Bug fix'],
     createdDate: '2023-06-29T10:48:49.6883+00:00',
   },

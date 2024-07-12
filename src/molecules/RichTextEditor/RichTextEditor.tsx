@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-import { AmplifyKit } from './custom-extensions/DefaultKit';
 import { AmplifyBar } from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
 import { EditorContent, EditorStyling } from './RichTextEditor.styles';
@@ -46,7 +45,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
     onImageUpload,
   });
   return (
-    <RichText.Provider
+    <EditorProvider
       content={value}
       onUpdate={onChange}
       features={usedFeatured}
@@ -54,31 +53,23 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
       onImageUpload={onImageUpload}
     >
       {(editor) => (
-        <RichText.Styling
+        <EditorStyling
           $border={border}
           $padding={padding}
           $lightBackground={lightBackground}
         >
-          <RichText.Bar
+          <AmplifyBar
             editor={editor}
             features={usedFeatured}
             onImageUpload={onImageUpload}
           />
-          <RichText.Content
+          <EditorContent
             editor={editor}
             $maxHeight={maxHeight}
             $minHeight={minHeight}
           />
-        </RichText.Styling>
+        </EditorStyling>
       )}
-    </RichText.Provider>
+    </EditorProvider>
   );
-};
-
-export const RichText = {
-  Styling: EditorStyling,
-  Provider: EditorProvider,
-  Content: EditorContent,
-  Bar: AmplifyBar,
-  Kit: AmplifyKit,
 };

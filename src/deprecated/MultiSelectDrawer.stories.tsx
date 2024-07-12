@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */ // file is deprecated so no need to fix
 import React, { useState } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import MultiSelectDrawer from 'src/deprecated/MultiSelectDrawer';
+import { Typography } from 'src/molecules';
 import { items, ValueType } from 'src/molecules/OptionDrawer/stories/data';
 
 export default {

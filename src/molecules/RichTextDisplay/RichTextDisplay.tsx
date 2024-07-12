@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from 'react';
 
 import { useEditor } from '@tiptap/react';
 
-import { RichText } from 'src/molecules/RichTextEditor/RichTextEditor';
+import { AmplifyKit, RichText } from 'src/molecules';
 
 export interface RichTextDisplayProps {
   value: string | null | undefined;
@@ -18,7 +18,7 @@ export const RichTextDisplay: FC<RichTextDisplayProps> = ({
   padding = 'md',
 }) => {
   const editor = useEditor({
-    extensions: [RichText.Kit],
+    extensions: [AmplifyKit],
     content: imgReadToken
       ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
       : value,

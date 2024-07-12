@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { fireEvent, waitFor } from '@testing-library/dom';
 
-import type { AmplifyKitOptions } from './custom-extensions/DefaultKit';
-import { mergeDefaults } from './custom-extensions/DefaultKit';
+import { mergeDefaults } from './custom-extensions/mergeDefaults';
 import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
+import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {

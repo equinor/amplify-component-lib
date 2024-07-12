@@ -41,7 +41,7 @@ import { mergeDefaults } from './mergeDefaults';
 import { common, createLowlight } from 'lowlight';
 const lowlight = createLowlight(common);
 
-interface AmplifyKitOptions {
+export interface AmplifyKitOptions {
   bold: Partial<BoldOptions> | false;
   bulletList: Partial<BulletListOptions> | false;
   hardBreak: Partial<HardBreakOptions> | false;
@@ -106,7 +106,7 @@ const extensions: ExtensionsMap[] = [
   { name: 'heading', extension: ExtendedHeaders },
 ];
 
-const AmplifyKit = Extension.create<AmplifyKitOptions>({
+export const AmplifyKit = Extension.create<AmplifyKitOptions>({
   name: 'AmplifyKit',
   addExtensions(): Extensions {
     const options = mergeDefaults({
@@ -131,5 +131,4 @@ const AmplifyKit = Extension.create<AmplifyKitOptions>({
   },
 });
 
-export type { AmplifyKitOptions };
-export { AmplifyKit, mergeDefaults };
+export { mergeDefaults };

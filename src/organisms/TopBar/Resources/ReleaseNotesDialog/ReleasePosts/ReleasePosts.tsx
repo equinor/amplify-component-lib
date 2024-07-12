@@ -1,12 +1,12 @@
 import { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { ReleasePost } from './ReleasePost';
+import { ReleasePost } from './ReleasePost/ReleasePost';
 import { Container, ContainerNoResults } from './ReleasePosts.styles';
 import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { monthValueToString } from 'src/atoms/utils/releaseNotes';
+import { Typography } from 'src/molecules';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 const { colors } = tokens;

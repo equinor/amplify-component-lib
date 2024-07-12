@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 import { StoryFn } from '@storybook/react';
 
+import { Typography } from 'src/molecules';
 import {
   TableOfContents,
   TableOfContentsProps,
