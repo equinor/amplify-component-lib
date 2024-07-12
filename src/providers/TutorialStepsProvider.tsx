@@ -48,7 +48,7 @@ export const useTutorialSteps = (): TutorialContextState => {
   return context;
 };
 
-const TutorialStepsProvider: FC<{
+export const TutorialStepsProvider: FC<{
   children: ReactNode;
   startOpen?: boolean;
 }> = ({ children, startOpen = false }) => {
@@ -79,5 +79,3 @@ const TutorialStepsProvider: FC<{
     </TutorialStepsContext.Provider>
   );
 };
-
-export default TutorialStepsProvider;

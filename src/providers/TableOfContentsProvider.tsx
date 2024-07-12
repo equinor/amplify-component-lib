@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
-import { useOnScreenMultiple } from 'src/hooks/useOnScreen';
+import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 
 export interface TableOfContentsItemType {
@@ -52,7 +52,7 @@ export interface TableOfContentsProviderProps {
   hashNavigation?: boolean;
 }
 
-const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
+export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   items,
   children,
   hashNavigation,
@@ -176,5 +176,3 @@ const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     </TableOfContentsContext.Provider>
   );
 };
-
-export default TableOfContentsProvider;

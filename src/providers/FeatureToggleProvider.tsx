@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Feature, FeatureToggleDto, GraphUser } from '../api';
 import { PortalService } from '../api/services/PortalService';
-import FullPageSpinner from '../components/Feedback/FullPageSpinner';
-import { environment } from '../utils';
+import { environment } from 'src/atoms/utils';
+import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 
 const { getAppName } = environment;
 
@@ -42,7 +42,8 @@ export function useFeatureToggleContext() {
 interface FeatureToggleProviderProps {
   children: ReactNode;
 }
-const FeatureToggleProvider: FC<FeatureToggleProviderProps> = ({
+
+export const FeatureToggleProvider: FC<FeatureToggleProviderProps> = ({
   children,
 }) => {
   const applicationName = getAppName(import.meta.env.VITE_NAME);
@@ -67,5 +68,3 @@ const FeatureToggleProvider: FC<FeatureToggleProviderProps> = ({
     </FeatureToggleContext.Provider>
   );
 };
-
-export default FeatureToggleProvider;
