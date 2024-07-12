@@ -4,7 +4,7 @@
 This package contains components, utils, providers and hooks developed and used by the amplify team.
 
 # Quick links
-- [Storybook](https://storybook-amplify-component-lib.app.radix.equinor.com/)
+- [Storybook](https://storybook-amplify-components.app.radix.equinor.com/)
 
 # Building amplify-component-lib
 
