@@ -7,8 +7,8 @@ import {
   GET_TUTORIALS_SAS_TOKEN,
 } from './TutorialProvider.const';
 import { TutorialService } from 'src/api/services/TutorialService';
+import { environment } from 'src/atoms/utils';
 import { TutorialContext } from 'src/providers/TutorialProvider/TutorialProvider';
-import { environment } from 'src/utils';
 
 const { getAppName } = environment;
 

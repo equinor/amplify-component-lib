@@ -4,7 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled, { keyframes } from 'styled-components';
 
 const { elevation, shape } = tokens;
-import { spacings } from 'src/style';
+import { spacings } from 'src/atoms/style';
 
 const fadeinBoxShadowAnimation = keyframes`
   from {

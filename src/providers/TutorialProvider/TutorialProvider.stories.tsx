@@ -6,7 +6,7 @@ import { StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Tutorial } from 'src/api';
-import TutorialProvider from 'src/providers/TutorialProvider/TutorialProvider';
+import { TutorialProvider } from 'src/providers/TutorialProvider/TutorialProvider';
 import { CustomTutorialComponent } from 'src/providers/TutorialProvider/TutorialProvider.types';
 
 import styled, { keyframes } from 'styled-components';

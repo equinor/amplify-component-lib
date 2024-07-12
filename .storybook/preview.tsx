@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
-import Template from 'src/components/Template/Template';
+import { Template } from 'src/organisms/Template/Template';
 
-import { darkTokens } from 'src/style/darkTokens';
-import { spacingTokens } from 'src/style/spacingTokens';
+import { darkTokens } from 'src/atoms/style/darkTokens';
+import { spacingTokens } from 'src/atoms/style/spacingTokens';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider';
 import { Preview, StoryFn } from '@storybook/react';
 
@@ -61,20 +61,7 @@ const parameters = {
   options: {
     storySort: {
       // Pre-emptively added 'Atoms', 'Molecules' and 'Organisms'
-      order: [
-        'Deprecated',
-        'Atoms',
-        'Molecules',
-        'Organisms',
-        'Data Display',
-        'Feedback',
-        'Icons',
-        'Inputs',
-        'Navigation',
-        'Typography',
-        'Visuals',
-        'Other',
-      ],
+      order: ['Atoms', 'Molecules', 'Organisms', 'Other', 'Deprecated'],
     },
   },
 };

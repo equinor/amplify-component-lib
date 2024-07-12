@@ -51,7 +51,7 @@ interface TutorialProviderProps {
   tutorials?: Tutorial[];
 }
 
-const TutorialProvider: FC<TutorialProviderProps> = ({
+export const TutorialProvider: FC<TutorialProviderProps> = ({
   children,
   customStepComponents,
   tutorials,
@@ -216,4 +216,3 @@ const TutorialProvider: FC<TutorialProviderProps> = ({
     </TutorialContext.Provider>
   );
 };
-export default TutorialProvider;
