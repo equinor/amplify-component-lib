@@ -3,15 +3,12 @@ import { StoryFn } from '@storybook/react';
 import Counter from './custom-extensions/Counter';
 import { EditorMenu, EditorText } from './MenuBar/MenuBar';
 import { TableMenuBar } from './MenuBar/Table/TableBar';
-import {
-  RichText,
-  RichTextEditor,
-  RichTextEditorProps,
-} from './RichTextEditor';
+import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import {
   DEFAULT_FEATURES,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
+import { RichText } from '.';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 import { getFeatures } from 'src/atoms/utils/getFeatures';
 
