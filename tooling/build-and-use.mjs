@@ -27,7 +27,7 @@ async function runTasks() {
     await runTask({
       command: 'npm run build',
       name: `${chalk.white('Building')} ${chalk.bold.magenta(
-        'amplify-components'
+        'amplify-component-lib'
       )}`,
       ignoreStdErr: true,
     });
@@ -69,7 +69,7 @@ async function runTasks() {
     }
     const answer = await rl.question(
       chalk.greenBright(
-        'Write name of project you want to copy local amplify-components into:'
+        'Write name of project you want to copy local amplify-component-lib into:'
       ) + `\n> `
     );
     selectedDir = dirs.find(
@@ -106,16 +106,16 @@ async function runTasks() {
   });
 
   await runTask({
-    command: `rm -rf ../${selectedDir}/client/node_modules/@equinor/amplify-components/dist`,
+    command: `rm -rf ../${selectedDir}/client/node_modules/@equinor/amplify-component-lib/dist`,
     name: `Removing old ${chalk.bold.greenBright(
-      'amplify-components/dist'
+      'amplify-component-lib/dist'
     )} folder from ${chalk.bold.greenBright(
       `${selectedDir}/client/node_modules`
     )}`,
   });
 
   await runTask({
-    command: `cp -r ./dist ../${selectedDir}/client/node_modules/@equinor/amplify-components/dist`,
+    command: `cp -r ./dist ../${selectedDir}/client/node_modules/@equinor/amplify-component-lib/dist`,
     name: `Copying newly built ${chalk.bold.greenBright(
       'dist'
     )} folder into ${chalk.bold.greenBright(

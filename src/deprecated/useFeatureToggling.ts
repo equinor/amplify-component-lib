@@ -10,7 +10,7 @@ import {
 const { getEnvironmentName } = environment;
 
 /**
- * @deprecated Being deprecated from amplify-components-library, use the new @equinor/subsurface-app-management package instead
+ * @deprecated Being deprecated from amplify-component-lib-library, use the new @equinor/subsurface-app-management package instead
  */
 export function useFeatureToggling(
   featureKey: string,

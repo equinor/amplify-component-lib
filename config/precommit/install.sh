@@ -11,7 +11,7 @@ fi
 
 printf -- "Downloading root package.json file used for pre-commit...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/package.json" > package.json
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/precommit/package.json" > package.json
 
 printf -- "Running husky setup...\n"
 
@@ -29,7 +29,7 @@ cd ./.husky || exit 1
 
 printf -- "Downloading pre-commit husky action...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/precommit/pre-commit" > pre-commit
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/precommit/pre-commit" > pre-commit
 
 printf -- "Making the pre-commit file executable...\n"
 

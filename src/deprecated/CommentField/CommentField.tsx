@@ -70,7 +70,7 @@ export interface CommentFieldProps {
 }
 
 /**
- * @deprecated Being deprecated from amplify-components-library, move into app if you want the implementation
+ * @deprecated Being deprecated from amplify-component-lib-library, move into app if you want the implementation
  */
 
 const CommentField: FC<CommentFieldProps> = ({
