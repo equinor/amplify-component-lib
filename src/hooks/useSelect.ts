@@ -137,9 +137,10 @@ const useSelect = <T extends SelectOptionRequired>(
     const flatParents = getParentsRecursively(item.value).map(
       ({ value }) => value
     );
-    const flatChildren = flattenOptions(
-      item.children && item.children.length > 0 ? item.children : []
-    ).map(({ value }) => value);
+
+    const flatChildren = flattenOptions(item.children ?? []).map(
+      ({ value }) => value
+    );
 
     return [
       item,
