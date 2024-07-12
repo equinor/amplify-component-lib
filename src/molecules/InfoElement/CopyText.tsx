@@ -64,7 +64,7 @@ export interface CopyTextProps {
 }
 
 /**
- * @deprecated Being deprecated from amplify-component-lib-library, move into app if you want the implementation
+ * @deprecated Being deprecated from amplify-component-lib move into app if you want the implementation
  */
 
 const CopyText: FC<CopyTextProps> = ({ children, textToCopy }) => {

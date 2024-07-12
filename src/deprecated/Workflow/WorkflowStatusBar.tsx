@@ -94,7 +94,7 @@ export interface WorkflowStatusBarProps {
 }
 
 /**
- * @deprecated Being deprecated from amplify-component-lib-library, move into app if you want the implementation
+ * @deprecated Being deprecated from amplify-component-lib move into app if you want the implementation
  */
 
 const WorkflowStatusBar: FC<WorkflowStatusBarProps> = ({
