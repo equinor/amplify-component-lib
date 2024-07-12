@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import { useTokenReleaseNote } from './ReleasePosts/hooks/useTokenReleaseNote';
-import { RichTextDisplay } from 'src/molecules';
+import { useTokenReleaseNote } from '../hooks/useTokenReleaseNote';
+import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 
 interface TextContentProps {
   text: string;

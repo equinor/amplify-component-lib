@@ -1,13 +1,12 @@
 import { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
-
 import { FilterHeader } from './FilterHeader/FilterHeader';
 import {
   FilterContainer,
   HeaderWrapper,
   HeadingContainer,
 } from './ReleaseNotesHeader.styles';
+import { Typography } from 'src/molecules';
 
 export const ReleaseNotesHeader: FC = () => {
   return (

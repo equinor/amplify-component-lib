@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Typography } from 'src/molecules';
 
 interface DescriptionProps {
   text?: string;

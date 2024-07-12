@@ -1,9 +1,9 @@
 import { FC, Fragment } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import StatusChip from 'src/deprecated/Workflow/StatusChip';
+import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 const { colors } = tokens;

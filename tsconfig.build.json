@@ -3,6 +3,7 @@
   "exclude": [
     "src/**/*.stories.ts*",
     "src/**/*.test.ts*",
-    "vite.config.ts"
+    "vite.config.ts",
+    "src/storybook"
   ]
 }

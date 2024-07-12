@@ -1,4 +1,4 @@
-import { ComponentType, useEffect, useState } from 'react';
+import { ComponentType, MouseEvent, useEffect, useState } from 'react';
 
 import {
   Button,
@@ -60,7 +60,7 @@ const meta: Meta<typeof Menu> = {
 
 export default meta;
 
-const onClick = (event: React.MouseEvent) => {
+const onClick = (event: MouseEvent) => {
   action('clicked')(event);
   event.stopPropagation();
 };

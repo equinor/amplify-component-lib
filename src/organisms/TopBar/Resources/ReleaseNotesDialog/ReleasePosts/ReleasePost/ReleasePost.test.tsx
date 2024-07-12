@@ -4,8 +4,8 @@ import { MemoryRouter } from 'react-router';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
-import { ReleasePost } from './ReleasePost';
+import { ReleaseNoteType } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
+import { ReleasePost } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleasePosts/ReleasePost/ReleasePost';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen } from 'src/tests/test-utils';
 

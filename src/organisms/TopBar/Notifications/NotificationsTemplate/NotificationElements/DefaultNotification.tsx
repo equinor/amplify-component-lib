@@ -1,12 +1,12 @@
 import { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
   DefaultNotificationTypes,
   NotificationsTypes,
 } from '../Notifications.types';
+import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 

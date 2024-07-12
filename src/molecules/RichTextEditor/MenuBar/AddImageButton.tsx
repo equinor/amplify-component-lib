@@ -1,18 +1,29 @@
 import { ChangeEvent, FC, useRef } from 'react';
 
 import { camera_add_photo } from '@equinor/eds-icons';
-import { useCurrentEditor } from '@tiptap/react';
 
-import MenuButton from 'src/molecules/RichTextEditor/MenuBar/MenuButton';
-import { OnImageUploadFn } from 'src/molecules/RichTextEditor/RichTextEditor.types';
+import { EditorMenu } from './MenuBar';
+import {
+  EditorPanel,
+  OnImageUploadFn,
+  RichTextEditorFeatures,
+} from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-interface AddImageProps {
-  onImageUpload: OnImageUploadFn;
+export interface AddImageProps extends EditorPanel {
+  onImageUpload?: OnImageUploadFn;
 }
 
-const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
-  const { editor } = useCurrentEditor();
+export const AddImageButton: FC<AddImageProps> = ({
+  onImageUpload,
+  editor,
+  features,
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  /* c8 ignore start */ // These lines are too basic to test. Testing them would effectivley just be us testing if JavaScript/React works.
+  if (!onImageUpload) return null;
+  if (features && !features.includes(RichTextEditorFeatures.IMAGES))
+    return null;
 
   const showFileDialog = () => {
     if (inputRef.current) {
@@ -23,20 +34,18 @@ const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
   const handleOnFileSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
-    /* c8 ignore start */
     if (!files?.[0]) {
       console.error('Files undefined');
       return;
     }
-    /* c8 ignore end */
 
     const image = await onImageUpload(files[0]);
-
     if (!image) return;
 
     editor?.chain().focus().setImage({ src: image.b64, alt: image.url }).run();
   };
 
+  /* c8 ignore end */
   return (
     <>
       <input
@@ -48,9 +57,11 @@ const AddImage: FC<AddImageProps> = ({ onImageUpload }) => {
         style={{ display: 'none' }}
         accept="image/*, video/*"
       />
-      <MenuButton icon={camera_add_photo} onClick={showFileDialog} />
+      <EditorMenu.Button
+        data-testid="add-image-button"
+        icon={camera_add_photo}
+        onClick={showFileDialog}
+      />
     </>
   );
 };
-
-export default AddImage;

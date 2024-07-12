@@ -96,7 +96,7 @@ SingleRadio.storyName = 'Single radio buttons';
 
 export const GroupedRadio: StoryFn<RadioProps> = () => {
   const [checked, updateChecked] = useState('one');
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     updateChecked(event.target.value);
   };
 

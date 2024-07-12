@@ -1,5 +1,7 @@
 import {
+  ChangeEvent,
   ComponentType,
+  FocusEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -261,7 +263,7 @@ export const WithSearch: StoryFn<TabsProps> = () => {
   const [searchText, setSearchText] = useState('');
   const [activeTab, setActiveTab] = useState(0);
 
-  const handleOnTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchText(value);
   };
@@ -269,11 +271,11 @@ export const WithSearch: StoryFn<TabsProps> = () => {
     setActiveTab(index);
   };
 
-  const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
+  const handleFocus = (e: FocusEvent<HTMLDivElement>) => {
     action('handleFocus')(e.target.textContent);
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
     action('handleBlur')(e.target.textContent);
   };
 
@@ -310,7 +312,7 @@ export const WithInputInPanel: StoryFn<TabsProps> = () => {
   const [searchText, setSearchText] = useState('');
   const [activeTab, setActiveTab] = useState(0);
 
-  const handleOnTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchText(value);
   };
@@ -318,11 +320,11 @@ export const WithInputInPanel: StoryFn<TabsProps> = () => {
     setActiveTab(index);
   };
 
-  const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
+  const handleFocus = (e: FocusEvent<HTMLDivElement>) => {
     action('handleFocus')(e.target.textContent);
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
     action('handleBlur')(e.target.textContent);
   };
 

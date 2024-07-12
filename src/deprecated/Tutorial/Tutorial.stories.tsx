@@ -1,4 +1,3 @@
-import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import TutorialStoryComponent from 'src/deprecated/Tutorial/stories/TutorialStoryComponent';
@@ -6,6 +5,7 @@ import Tutorial, {
   Step,
   TutorialProps,
 } from 'src/deprecated/Tutorial/Tutorial';
+import { Typography } from 'src/molecules';
 import { TutorialStepsProvider } from 'src/providers';
 
 export default {

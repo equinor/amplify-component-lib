@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { Typography } from 'src/molecules';
 import { FeedBackIcon } from 'src/molecules/FeedBackIcon/FeedBackIcon';
 
 import styled from 'styled-components';

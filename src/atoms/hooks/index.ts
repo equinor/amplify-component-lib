@@ -1,3 +1,4 @@
+import { useAmplifyKit } from './useAmplifyKit';
 import { useDebounce } from './useDebounce';
 import { useFakeProgress } from './useFakeProgress';
 import { useLocalStorage } from './useLocalStorage';
@@ -32,4 +33,5 @@ export {
   useSignalRMessages,
   useSnackbar,
   useTutorialSteps,
+  useAmplifyKit,
 };

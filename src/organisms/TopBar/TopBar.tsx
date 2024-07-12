@@ -1,7 +1,5 @@
 import React, { forwardRef, ReactNode } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
-
 import { FieldMenu } from './FieldMenu/FieldMenu';
 import {
   AppAndFieldContainer,
@@ -13,6 +11,7 @@ import {
 } from './TopBar.styles';
 import { EnvironmentType } from 'src/atoms/types/Environment';
 import { Field } from 'src/atoms/types/Field';
+import { Typography } from 'src/molecules';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 
 type TopBarType = {

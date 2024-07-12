@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import {
   Button,
@@ -60,9 +60,7 @@ export const Disabled: StoryFn<SearchProps> = () => (
 export const Controlled: StoryFn<SearchProps> = () => {
   const [searchValue, setSearchValue] = useState('Initial value');
 
-  const handleOnSearchValueChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleOnSearchValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     handleOnChange();
     setSearchValue(value);

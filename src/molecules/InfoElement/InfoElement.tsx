@@ -1,7 +1,6 @@
 import React, { forwardRef, ReactElement } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
-
+import { Typography } from 'src/molecules';
 import CopyText from 'src/molecules/InfoElement/CopyText';
 
 export interface InfoElementProps {

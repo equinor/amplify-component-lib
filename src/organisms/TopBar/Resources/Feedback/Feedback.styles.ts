@@ -1,7 +1,7 @@
-import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
+import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 

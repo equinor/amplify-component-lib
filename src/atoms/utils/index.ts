@@ -2,8 +2,9 @@ import { auth, environment } from './auth_environment';
 import coordinate from './coordinate';
 import date from './date';
 import errors from './errors';
-import exportComponent from './export';
+import { exportComponent } from './export';
 import favicon from './favicon';
+import { getFeatures } from './getFeatures';
 import map from './map';
 import size from './size';
 import sort from './sort';
@@ -17,6 +18,7 @@ export {
   environment,
   errors,
   exportComponent,
+  getFeatures,
   favicon,
   map,
   size,

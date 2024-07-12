@@ -1,7 +1,7 @@
-import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import StatusChip from 'src/deprecated/Workflow/StatusChip';
+import { Typography } from 'src/molecules';
 
 export default {
   title: 'Deprecated/Workflow/StatusChip',

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
+import { Typography } from 'src/molecules';
 import CopyText, { CopyTextProps } from 'src/molecules/InfoElement/CopyText';
 
 import styled from 'styled-components';

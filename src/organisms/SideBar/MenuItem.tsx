@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-import { forwardRef, HTMLAttributes, useMemo } from 'react';
+import { forwardRef, HTMLAttributes, MouseEvent, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
@@ -46,7 +45,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       [disabled, isCurrentUrl]
     );
 
-    const handleOnClick = (event: React.MouseEvent) => {
+    const handleOnClick = (event: MouseEvent) => {
       if (!canNavigate) {
         event.preventDefault();
         return;
