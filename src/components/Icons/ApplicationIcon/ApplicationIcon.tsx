@@ -27,7 +27,7 @@ export type ApplicationName =
   | 'equinor';
 
 interface ApplicationIconData {
-  appName: string[];
+  appName: string;
   iconSvg: string[];
   rotationVariant: number;
   color: AllowedColors;
@@ -35,61 +35,61 @@ interface ApplicationIconData {
 
 const apps: ApplicationIconData[] = [
   {
-    appName: ['amplify'],
+    appName: 'amplify',
     iconSvg: amplify.svgPathData,
     rotationVariant: 1,
     color: 'blue',
   },
   {
-    appName: ['embark'],
+    appName: 'embark',
     iconSvg: embark.svgPathData,
     rotationVariant: 2,
     color: 'green',
   },
   {
-    appName: ['premo'],
+    appName: 'premo',
     iconSvg: premo.svgPathData,
     rotationVariant: 3,
     color: 'purple',
   },
   {
-    appName: ['dasha'],
+    appName: 'dasha',
     iconSvg: dasha.svgPathData,
     rotationVariant: 0,
     color: 'red',
   },
   {
-    appName: ['acquire'],
+    appName: 'acquire',
     iconSvg: acquire.svgPathData,
     rotationVariant: 1,
     color: 'yellow',
   },
   {
-    appName: ['orca'],
+    appName: 'orca',
     iconSvg: orca.svgPathData,
     rotationVariant: 2,
     color: 'magenta',
   },
   {
-    appName: ['pwex'],
+    appName: 'pwex',
     iconSvg: pwex.svgPathData,
     rotationVariant: 3,
     color: 'blue',
   },
   {
-    appName: ['ltg'],
+    appName: 'ltg',
     iconSvg: ltg.svgPathData,
     rotationVariant: 0,
     color: 'green',
   },
   {
-    appName: ['equinor'],
+    appName: 'equinor',
     iconSvg: equinor.svgPathData,
     rotationVariant: 1,
     color: 'purple',
   },
   {
-    appName: ['fallback'],
+    appName: 'fallback',
     iconSvg: fallback.svgPathData,
     rotationVariant: 2,
     color: 'blue',
@@ -112,7 +112,7 @@ const ApplicationIcon: FC<ApplicationIconProps> = ({
   if (!appData) {
     // Set appData to the fallback icon data
     appData = {
-      appName: ['fallback'],
+      appName: 'fallback',
       iconSvg: fallback.svgPathData,
       rotationVariant: 1,
       color: 'blue',

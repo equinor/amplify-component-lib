@@ -1,7 +1,6 @@
-import { render, screen } from '@testing-library/react';
-
 import ApplicationIcon from './ApplicationIcon';
 import { ApplicationIconProps } from './ApplicationIcon';
+import { render, screen } from 'src/tests/test-utils';
 
 const defaultProps: ApplicationIconProps = {
   name: 'amplify',

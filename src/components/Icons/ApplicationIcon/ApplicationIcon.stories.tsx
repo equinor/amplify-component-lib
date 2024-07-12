@@ -5,6 +5,7 @@ import React, { FC } from 'react';
 import { Meta } from '@storybook/react';
 
 import ApplicationIcon from './ApplicationIcon';
+import { APP_ICONS } from './ApplicationIcon.constants';
 
 export default {
   title: 'Icons/ApplicationIcon',
@@ -12,18 +13,7 @@ export default {
   argTypes: {
     name: {
       control: 'radio',
-      options: [
-        'fallback',
-        'amplify',
-        'embark',
-        'premo',
-        'dasha',
-        'orca',
-        'acquire',
-        'pwex',
-        'ltg',
-        'equinor',
-      ],
+      options: APP_ICONS,
     },
     animationState: {
       options: ['none', 'hoverable', 'animated', 'loading'],
@@ -53,35 +43,13 @@ export const MultipleIcons: FC = (args) => (
   <>
     <h2>No animation</h2>
     <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-      {[
-        'fallback',
-        'amplify',
-        'embark',
-        'premo',
-        'dasha',
-        'orca',
-        'acquire',
-        'pwex',
-        'ltg',
-        'equinor',
-      ].map((appName) => (
+      {APP_ICONS.map((appName) => (
         <ApplicationIcon key={appName} name={appName} size={64} {...args} />
       ))}
     </div>
     <h2>Hoverable</h2>
     <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-      {[
-        'fallback',
-        'amplify',
-        'embark',
-        'premo',
-        'dasha',
-        'orca',
-        'acquire',
-        'pwex',
-        'ltg',
-        'equinor',
-      ].map((appName) => (
+      {APP_ICONS.map((appName) => (
         <ApplicationIcon
           key={appName}
           animationState="hoverable"
@@ -93,18 +61,7 @@ export const MultipleIcons: FC = (args) => (
     </div>
     <h2>Animated</h2>
     <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-      {[
-        'fallback',
-        'amplify',
-        'embark',
-        'premo',
-        'dasha',
-        'orca',
-        'acquire',
-        'pwex',
-        'logging-qualification',
-        'equinor',
-      ].map((appName) => (
+      {APP_ICONS.map((appName) => (
         <ApplicationIcon
           key={appName}
           animationState="animated"

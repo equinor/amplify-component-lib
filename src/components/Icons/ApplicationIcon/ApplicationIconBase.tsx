@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import IconSvg from './ApplicationIconData/AppIconSvg';
-import { NoiseShape, WaveShape } from './AppBaseSvg';
 import { AppBaseProps } from './ApplicationIcon.utils';
 import {
   AppIconContainer,
@@ -10,6 +9,8 @@ import {
   WaveInnerContainer,
   Waves,
 } from './ApplicationIconBase.styles';
+import { NoiseShape } from './NoiseShape';
+import { WaveShape } from './WaveShape';
 
 const ApplicationBase: FC<AppBaseProps> = ({
   waveIntervalDist = 14.75,
