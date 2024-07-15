@@ -1,13 +1,16 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import {
+  CancelablePromise,
+  ReleaseNote,
+  ReleaseNotesProvider,
+} from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleasePosts } from './ReleasePosts';
-import { CancelablePromise } from 'src/api';
-import { ReleaseNote } from 'src/api/models/ReleaseNote';
-import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
+import { AuthProvider } from 'src/providers';
 import { render, screen, waitFor, within } from 'src/tests/test-utils';
 
 const releaseNotes = [

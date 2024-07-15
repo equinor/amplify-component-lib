@@ -3,6 +3,11 @@ import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { AccountInfo } from '@azure/msal-browser';
+import {
+  AuthProvider,
+  ReleaseNotesProvider,
+  ServiceNowIncidentResponse,
+} from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -10,13 +15,8 @@ import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
 import { FeedbackContentType, UrgencyOption } from './Feedback/Feedback.types';
 import { tutorialOptions } from './Tutorials/TutorialInfoDialog';
 import { Resources } from './Resources';
-import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
 import { environment } from 'src/atoms/utils';
-import {
-  AuthProvider,
-  ReleaseNotesProvider,
-  SnackbarProvider,
-} from 'src/providers';
+import { SnackbarProvider } from 'src/providers';
 import {
   act,
   render,
@@ -26,6 +26,8 @@ import {
   within,
 } from 'src/tests/test-utils';
 
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 import { beforeEach, describe, expect } from 'vitest';
 
 const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
@@ -99,86 +101,72 @@ const SERVICE_NOW_ERROR = 'service now error';
 const SLACK_POST_ERROR = 'slack post error';
 const SLACK_FILE_ERROR = 'slack file error';
 
-let mockServiceHasError = false;
-let mockServicePartialError = false;
-let defaultError = false;
-
-vi.mock('src/api/services/PortalService', () => {
-  class PortalService {
-    public static createIncident(): CancelablePromise<ServiceNowIncidentResponse> {
-      return new CancelablePromise((resolve, reject) =>
-        setTimeout(() => {
-          if (mockServiceHasError && !mockServicePartialError) {
-            reject({ message: SERVICE_NOW_ERROR });
-          } else {
-            resolve({ sysId: 'kljsdflk-fsd-asdf-fsddf' });
-          }
-        }, 500)
-      );
-    }
-
-    public static fileUpload(
-      formData?: FormData
-    ): CancelablePromise<FormData | undefined> {
-      return new CancelablePromise((resolve, reject) =>
-        setTimeout(() => {
-          if (mockServiceHasError && !mockServicePartialError) {
-            reject({ message: SLACK_FILE_ERROR });
-          } else {
-            resolve(formData);
-          }
-        }, 500)
-      );
-    }
-
-    public static postmessage(formData?: FormData): Promise<unknown> {
-      return new CancelablePromise((resolve, reject) =>
-        setTimeout(() => {
-          if (mockServiceHasError || mockServicePartialError) {
-            reject({
-              message: defaultError ? undefined : SLACK_POST_ERROR,
-            });
-          } else {
-            resolve(formData);
-          }
-        }, 500)
-      );
-    }
-  }
-  return { PortalService };
-});
-
-vi.mock('src/api/services/ReleaseNotesService', () => {
-  class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<unknown> {
-      return new CancelablePromise((resolve, reject) => {
-        setTimeout(() => {
-          if (mockServiceHasError) {
-            reject('error release notes');
-          } else {
-            resolve(releaseNotes);
-          }
-        }, 300);
-      });
-    }
-    public static getContainerSasUri(): CancelablePromise<unknown> {
-      return new CancelablePromise((resolve) => {
-        setTimeout(() => {
-          resolve(`PORTALURL?FAKE_TOKEN`);
-        }, 100);
-      });
-    }
-  }
-  return { ReleaseNotesService };
-});
-
 const severityOptions = [
   UrgencyOption.IMPEDES,
   UrgencyOption.UNABLE,
   UrgencyOption.NO_IMPACT,
 ];
 
+// Default handlers for this test
+const handlers = [
+  http.post('*/api/v1/ServiceNow/incident', () => {
+    const body: ServiceNowIncidentResponse = {
+      sysId: faker.string.uuid(),
+    };
+
+    return HttpResponse.json(body);
+  }),
+  http.post('*/api/v1/Slack/fileUpload', async ({ request }) => {
+    const formData = await request.formData();
+
+    return HttpResponse.formData(formData);
+  }),
+  http.get('*/api/v1/ReleaseNotes', () => {
+    return HttpResponse.json(releaseNotes);
+  }),
+  http.get('*/api/v1/ReleaseNotes/GetContainerSasUri', () => {
+    return HttpResponse.text('PORTALURL?FAKE_TOKEN');
+  }),
+  http.post('*/api/v1/Slack/postmessage', async ({ request }) => {
+    const formData = await request.formData();
+
+    return HttpResponse.formData(formData);
+  }),
+];
+
+const errorHandlers = [
+  http.post('*/api/v1/ServiceNow/incident', () => {
+    return HttpResponse.json({ message: SERVICE_NOW_ERROR }, { status: 500 });
+  }),
+  http.post('*/api/v1/Slack/fileUpload', () => {
+    return HttpResponse.json(
+      {
+        message: SLACK_FILE_ERROR,
+      },
+      { status: 500 }
+    );
+  }),
+  http.get('*/api/v1/ReleaseNotes', () => {
+    return HttpResponse.text('error release notes', { status: 500 });
+  }),
+  http.post('*/api/v1/Slack/postmessage', () => {
+    return HttpResponse.json(
+      {
+        message: SLACK_POST_ERROR,
+      },
+      { status: 500 }
+    );
+  }),
+];
+const server = setupServer(...handlers);
+
 describe('Resources', () => {
+  beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' });
+  });
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
   test('Behaves as expected', async () => {
     render(<Resources showTutorials>Child</Resources>, {
       wrapper: Wrappers,
@@ -260,6 +248,7 @@ describe('Resources', () => {
       const title = screen.queryByText('Release Notes');
       expect(title).not.toBeInTheDocument();
     });
+
     test('can close dialog by clicking outside', async () => {
       render(
         <MemoryRouter initialEntries={['/']}>
@@ -288,8 +277,8 @@ describe('Resources', () => {
 
       expect(titleHeader).not.toBeInTheDocument();
     });
+
     test('show a release note', async () => {
-      mockServiceHasError = false;
       render(
         <MemoryRouter initialEntries={['/']}>
           <Resources />
@@ -314,7 +303,6 @@ describe('Resources', () => {
       );
     });
     test('should show Nothing matching "SearchTerm" when no matching release notes given only entered a search and no filter', async () => {
-      mockServiceHasError = false;
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
           <Resources />
@@ -350,8 +338,8 @@ describe('Resources', () => {
       );
       expect(nothingMatchinText).toBeInTheDocument();
     });
+
     test('should show Nothing matching " Feature" when no matching release notes given only selected type', async () => {
-      mockServiceHasError = false;
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
           <Resources />
@@ -393,10 +381,10 @@ describe('Resources', () => {
       });
       await user.click(featureButton);
 
-      const nothingMatchinText = dialog.getByText(
+      const nothingMatchingText = dialog.getByText(
         `Nothing matching " Feature"`
       );
-      expect(nothingMatchinText).toBeInTheDocument();
+      expect(nothingMatchingText).toBeInTheDocument();
     });
   });
 
@@ -435,7 +423,6 @@ describe('Resources', () => {
       });
 
       test('Url validation working as expected', async () => {
-        mockServiceHasError = false;
         const user = userEvent.setup();
 
         const wrongUrl = 'www.google.com';
@@ -500,7 +487,6 @@ describe('Resources', () => {
         describe('Severity options', () => {
           for (const option of severityOptions) {
             test(`can select and submit "${option}" severity`, async () => {
-              mockServiceHasError = false;
               const user = userEvent.setup();
 
               const severityInput: HTMLInputElement = screen.getByTestId(
@@ -525,81 +511,80 @@ describe('Resources', () => {
           }
         });
 
-        test('shows error message when everything fails', async () => {
-          mockServiceHasError = true;
-          mockServicePartialError = false;
-
-          const imageOne = fakeImageFile();
-          const user = userEvent.setup();
-
-          const fileUploadArea = screen.getByTestId('file-upload-area-input');
-          await user.upload(fileUploadArea, [imageOne]);
-
-          const submitButton = screen.getByTestId('submit-button');
-          await user.click(submitButton);
-
-          await act(async () => {
-            await waitForMS(2500);
+        describe('Error handling', () => {
+          beforeEach(() => {
+            server.use(...errorHandlers);
           });
 
-          expect(
-            screen.getByText(`Posting ${imageOne.name}`)
-          ).toBeInTheDocument();
+          test('shows error message when everything fails', async () => {
+            const imageOne = fakeImageFile();
+            const user = userEvent.setup();
 
-          expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
-          expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
-          expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
-        }, 10000); // Setting timeout for this test to be 10 seconds
+            const fileUploadArea = screen.getByTestId('file-upload-area-input');
+            await user.upload(fileUploadArea, [imageOne]);
 
-        test('shows more details if slack request fails, and can return to form to retry', async () => {
-          mockServiceHasError = true;
-          mockServicePartialError = true;
+            const submitButton = screen.getByTestId('submit-button');
+            await user.click(submitButton);
 
-          const imageOne = fakeImageFile();
+            await act(async () => {
+              await waitForMS(2500);
+            });
 
-          const user = userEvent.setup();
+            expect(
+              screen.getByText(`Posting ${imageOne.name}`)
+            ).toBeInTheDocument();
 
-          const fileUploadArea = screen.getByTestId('file-upload-area-input');
+            expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
+            expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
+            expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
+          }, 10000); // Setting timeout for this test to be 10 seconds
 
-          await user.upload(fileUploadArea, [imageOne]);
+          test('shows more details if slack request fails, and can return to form to retry', async () => {
+            const imageOne = fakeImageFile();
 
-          const submitButton = screen.getByTestId('submit-button');
-          await user.click(submitButton);
+            const user = userEvent.setup();
 
-          await act(async () => {
-            await waitForMS(2500);
-          });
+            const fileUploadArea = screen.getByTestId('file-upload-area-input');
 
-          expect(
-            screen.getByText(`Posting ${imageOne.name}`)
-          ).toBeInTheDocument();
+            await user.upload(fileUploadArea, [imageOne]);
 
-          const retryButton = screen.getByText(/retry/i);
-          expect(retryButton).not.toBeDisabled();
+            const submitButton = screen.getByTestId('submit-button');
+            await user.click(submitButton);
 
-          await user.click(retryButton);
+            await act(async () => {
+              await waitForMS(2500);
+            });
 
-          const titleInputAgain: HTMLInputElement =
-            screen.getByLabelText(/title/i);
-          const currentTitleInputValue = titleInputAgain.value;
+            expect(
+              screen.getByText(`Posting ${imageOne.name}`)
+            ).toBeInTheDocument();
 
-          expect(
-            screen.getByText(/The report has already been sent to service now/i)
-          ).toBeInTheDocument();
-          const resetForm = screen.getByTestId('reset-form-button');
+            const retryButton = screen.getByText(/retry/i);
+            expect(retryButton).not.toBeDisabled();
 
-          expect(titleInputAgain.value).toBe(currentTitleInputValue);
-          await user.click(resetForm);
-          await act(async () => {
-            await waitForMS(1000);
-          });
-          expect(titleInputAgain.value).not.toBe(currentTitleInputValue);
-        }, 10000); // Setting timeout for this test to be 10 seconds
+            await user.click(retryButton);
+
+            const titleInputAgain: HTMLInputElement =
+              screen.getByLabelText(/title/i);
+            const currentTitleInputValue = titleInputAgain.value;
+
+            expect(
+              screen.getByText(
+                /The report has already been sent to service now/i
+              )
+            ).toBeInTheDocument();
+            const resetForm = screen.getByTestId('reset-form-button');
+
+            expect(titleInputAgain.value).toBe(currentTitleInputValue);
+            await user.click(resetForm);
+            await act(async () => {
+              await waitForMS(1000);
+            });
+            expect(titleInputAgain.value).not.toBe(currentTitleInputValue);
+          }, 10000); // Setting timeout for this test to be 10 seconds
+        });
 
         test('Inputting all fields with file works as expected', async () => {
-          mockServiceHasError = false;
-          mockServicePartialError = false;
-          defaultError = false;
           const imageOne = fakeImageFile();
           const imageTwo = fakeImageFile();
 
@@ -689,27 +674,39 @@ describe('Resources', () => {
         expect(descInput.value).toEqual(description);
       });
 
-      test('shows default error message if errorText is undefined', async () => {
-        mockServiceHasError = true;
-        mockServicePartialError = false;
-        defaultError = true;
-
-        const submitButton = screen.getByTestId('submit-button');
-        const user = userEvent.setup();
-        await user.click(submitButton);
-
-        await act(async () => {
-          await waitForMS(2500);
+      describe('Default error', () => {
+        beforeEach(() => {
+          server.use(
+            ...[
+              ...errorHandlers.slice(0, errorHandlers.length - 2),
+              http.post('*/api/v1/Slack/postmessage', () => {
+                return HttpResponse.json(
+                  {
+                    message: undefined,
+                  },
+                  { status: 500 }
+                );
+              }),
+            ]
+          );
         });
 
-        expect(
-          screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)
-        ).toBeInTheDocument();
-      }, 10000); // Setting timeout for this test to be 10 seconds
+        test('shows default error message if errorText is undefined', async () => {
+          const submitButton = screen.getByTestId('submit-button');
+          const user = userEvent.setup();
+          await user.click(submitButton);
+
+          await act(async () => {
+            await waitForMS(2500);
+          });
+
+          expect(
+            screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)
+          ).toBeInTheDocument();
+        }, 10000); // Setting timeout for this test to be 10 seconds
+      });
 
       test('suggest a feature dialog submit button enabled at correct time', async () => {
-        mockServiceHasError = false;
-        mockServicePartialError = false;
         const submitButton = screen.getByTestId('submit-button');
         const user = userEvent.setup();
         await user.click(submitButton);

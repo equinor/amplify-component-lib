@@ -1,19 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { getPortalToken } from '@equinor/subsurface-app-management';
 import * as SignalR from '@microsoft/signalr';
 import { LogLevel } from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 import { useQuery } from '@tanstack/react-query';
 
-import { getPortalToken } from 'src/api/core/OpenAPI';
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { EnvironmentType } from 'src/atoms/types/Environment';
 import { environment } from 'src/atoms/utils/auth_environment';
 
 /* c8 ignore start */
-/**
- * @deprecated Being deprecated from amplify-component-lib use the new @equinor/subsurface-app-management package instead
- */
 export function useSignalRMessages<
   T extends {
     SequenceNumber?: number | null;

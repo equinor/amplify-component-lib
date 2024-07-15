@@ -9,7 +9,8 @@ import {
   useState,
 } from 'react';
 
-import { ReleaseNote } from 'src/api/models/ReleaseNote';
+import { ReleaseNote } from '@equinor/subsurface-app-management';
+
 import { useReleaseNotesQuery } from 'src/atoms/hooks/useReleaseNotesQuery';
 import {
   extractDatesFromReleaseNotes,

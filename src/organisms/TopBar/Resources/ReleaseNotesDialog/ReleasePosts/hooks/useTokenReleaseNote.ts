@@ -1,6 +1,5 @@
+import { ReleaseNotesService } from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
-
-import { ReleaseNotesService } from 'src/api/services/ReleaseNotesService';
 
 export function useTokenReleaseNote() {
   return useQuery({

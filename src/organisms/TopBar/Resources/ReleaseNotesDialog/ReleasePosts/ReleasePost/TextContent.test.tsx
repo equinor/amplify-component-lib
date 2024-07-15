@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import { CancelablePromise } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { CancelablePromise } from 'src/api';
 import { TextContent } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleasePosts/ReleasePost/TextContent';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, waitFor } from 'src/tests/test-utils';

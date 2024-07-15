@@ -1,7 +1,9 @@
+import {
+  ReleaseNote,
+  ReleaseNotesService,
+} from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
 
-import { ReleaseNote } from 'src/api/models/ReleaseNote';
-import { ReleaseNotesService } from 'src/api/services/ReleaseNotesService';
 import { environment } from 'src/atoms/utils';
 
 const { getAppName } = environment;
