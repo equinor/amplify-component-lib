@@ -5,29 +5,24 @@ import { Select } from './Select';
 import { VARIANT_COLORS } from './Select.styles';
 import { VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import {
+  fakeSelectItem,
+  fakeSelectItems,
+  render,
+  screen,
+  userEvent,
+} from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
 
 const { colors } = tokens;
 
-function fakeItem() {
-  return {
-    label: faker.string.uuid(),
-    value: faker.string.uuid(),
-  };
-}
-
-export function fakeItems(count = 10) {
-  return new Array(count).fill(0).map(() => fakeItem());
-}
-
-function fakeGroups(count = 5) {
+function fakeGroups(count = 5, isParented?: boolean) {
   return new Array(count)
     .fill(0)
     .map(() => ({
       title: faker.airline.airplane().name,
-      items: fakeItems(),
+      items: isParented ? fakeItemsWithChildren() : fakeSelectItems(),
     }))
     .filter(
       (group, index, array) =>
@@ -37,13 +32,13 @@ function fakeGroups(count = 5) {
 
 function fakeItemsWithChildren(count = 5) {
   return new Array(count).fill(0).map(() => ({
-    ...fakeItem(),
-    children: new Array(2).fill(0).map(() => ({ ...fakeItem() })),
+    ...fakeSelectItem(),
+    children: new Array(2).fill(0).map(() => ({ ...fakeSelectItem() })),
   }));
 }
 
 test('Basic single select', async () => {
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const label = faker.animal.bear();
   const meta = faker.animal.insect();
   const handleOnSelect = vi.fn();
@@ -86,7 +81,7 @@ test('Basic single select', async () => {
 });
 
 test('Basic single select with only meta label', () => {
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const meta = faker.animal.insect();
   const handleOnSelect = vi.fn();
   render(
@@ -102,7 +97,7 @@ test('Basic single select with only meta label', () => {
 });
 
 test('Basic multi select', async () => {
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   render(
@@ -180,7 +175,7 @@ test('Parent multi select with selectableParent = false', async () => {
 
 test('Parent multi select with selectableParent = true', async () => {
   const items = fakeItemsWithChildren();
-  const itemWithoutChildren = fakeItem();
+  const itemWithoutChildren = fakeSelectItem();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
@@ -257,7 +252,6 @@ test('Parent multi select - nested selection works as expected', async () => {
   await user.keyboard('{ArrowDown}');
 
   await user.keyboard('{Enter}');
-
   let newValues = [items[0].children[0]];
   expect(handler).toBeCalledWith(newValues, items[0].children[0]);
 
@@ -323,7 +317,6 @@ test('Parent multi select - nested selection with preselected parent works as ex
 
   await user.keyboard('{ArrowDown}');
   await user.keyboard('{Enter}');
-
   expect(handler).toBeCalledWith([items[0].children[0]], items[0].children[0]);
 });
 
@@ -426,9 +419,30 @@ test('Basic group multi select with preselected item', async () => {
   expect(handler).toBeCalledWith([], randomItem);
 });
 
+test('Parented group multi select', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const groups = fakeGroups(5, true);
+
+  render(
+    <Select label={label} onSelect={handler} groups={groups} values={[]} />
+  );
+
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('combobox'));
+
+  const firstItem = groups[0].items[0];
+
+  await user.click(screen.getByRole('menuitem', { name: firstItem.label }));
+
+  expect(handler).toBeCalledTimes(1);
+  expect(handler).toBeCalledWith([firstItem], firstItem);
+});
+
 test('Sorts items as expected', () => {
   const label = faker.animal.bear();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const values = [items[3], items[1], items[0]];
   const sortedValues = [items[0], items[1], items[3]];
   const handler = vi.fn();
@@ -469,7 +483,7 @@ test('Sorts items as expected', () => {
 test('Can open/close by clicking icon', async () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   render(
     <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
@@ -494,7 +508,7 @@ test('Can open/close by clicking icon', async () => {
 test('Searching works as expected', async () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
 
   const { rerender } = render(
     <Select label={label} onSelect={handler} items={items} value={undefined} />
@@ -553,7 +567,7 @@ test('Searching works as expected', async () => {
 
 test("Clicking 'x' on chip works as expected", async () => {
   const label = faker.animal.bear();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const handler = vi.fn();
 
   const { rerender } = render(
@@ -587,7 +601,7 @@ test("Clicking 'x' on chip works as expected", async () => {
 
 test('Removing with backspace', async () => {
   const label = faker.animal.bear();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const handler = vi.fn();
 
   render(
@@ -613,7 +627,7 @@ test('Removing with backspace', async () => {
 
 test('Keyboard navigation works as expected', async () => {
   const label = faker.animal.bear();
-  const items = fakeItems().slice(0, 2);
+  const items = fakeSelectItems().slice(0, 2);
   const handler = vi.fn();
 
   render(
@@ -671,7 +685,7 @@ test('Keyboard navigation works as expected', async () => {
 test('Placeholder prop works as expected', () => {
   const placeholder = faker.airline.airport().name;
   const label = faker.animal.bear();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const handler = vi.fn();
 
   render(
@@ -689,7 +703,7 @@ test('Placeholder prop works as expected', () => {
 
 test('Filtering with no results', async () => {
   const label = faker.animal.bear();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const handler = vi.fn();
 
   render(
@@ -788,7 +802,7 @@ test('Keyboard navigation inside parent item', async () => {
 test('Disabled works as expected', async () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
 
   render(
     <Select
@@ -819,7 +833,7 @@ test('Disabled works as expected', async () => {
 test('Loading works as expected', async () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
 
   render(
     <Select
@@ -848,7 +862,7 @@ test('Loading works as expected', async () => {
 });
 
 test('variants work as expected', () => {
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
 
@@ -880,7 +894,7 @@ test('variants work as expected', () => {
 });
 
 test('lightBackground works as expected', () => {
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
 
@@ -927,7 +941,7 @@ test('lightBackground works as expected', () => {
 test('Not able to remove item when disabled/loading', async () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
 
   const { rerender } = render(
     <Select
@@ -964,7 +978,7 @@ test('Not able to remove item when disabled/loading', async () => {
 test('Clearing works as expected', async () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
 
   const { rerender } = render(
     <Select
@@ -1013,7 +1027,7 @@ test('Clearing works as expected', async () => {
 test('Sets id when sending it', () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const id = faker.string.uuid();
 
   render(
@@ -1065,7 +1079,7 @@ test('Chevron button works as expected', async () => {
 test('onSearchChange to be called with value when typing in input field', async () => {
   const label = faker.animal.bear();
   const handler = vi.fn();
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const id = faker.string.uuid();
   const handleOnSearchChange = vi.fn();
 
