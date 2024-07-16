@@ -1,9 +1,10 @@
 {
   "name": "@equinor/amplify-components",
-  "version": "7.12.10",
+  "version": "7.12.11",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "author": "Amplify Team",
   "license": "ISC",
   "homepage": "https://github.com/equinor/amplify-components#readme",
