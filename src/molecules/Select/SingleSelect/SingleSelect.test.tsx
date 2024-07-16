@@ -1,11 +1,10 @@
 import { faker } from '@faker-js/faker';
 
-import { fakeItems } from 'src/molecules/Select/Select.test';
-import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
-import { render, screen } from 'src/tests/test-utils';
+import { SingleSelect } from './SingleSelect';
+import { fakeSelectItems, render, screen } from 'src/tests/test-utils';
 
 test('SingleSelect renders as expected', () => {
-  const items = fakeItems();
+  const items = fakeSelectItems();
   const placeholder = faker.animal.fish();
   const handleOnSelect = vi.fn();
   render(

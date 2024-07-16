@@ -53,29 +53,6 @@ const FAKE_GROUPS = new Array(faker.number.int({ min: 3, max: 6 }))
     })),
   }));
 
-const FAKE_ITEMS_WITH_CHILDREN = [
-  {
-    label: faker.animal.fish(),
-    value: faker.string.uuid(),
-    children: new Array(faker.number.int({ min: 3, max: 3 }))
-      .fill(0)
-      .map(() => ({
-        label: faker.animal.fish(),
-        value: faker.string.uuid(),
-        children: new Array(faker.number.int({ min: 3, max: 3 }))
-          .fill(0)
-          .map(() => ({
-            label: faker.animal.fish(),
-            value: faker.string.uuid(),
-          })),
-      })),
-  },
-  ...new Array(5).fill(0).map(() => ({
-    label: faker.animal.fish(),
-    value: faker.string.uuid(),
-  })),
-];
-
 export const BasicSingleSelect: StoryFn = (args) => {
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
@@ -106,24 +83,6 @@ export const SingleSelectWithGroups: StoryFn = (args) => {
     <SingleSelect
       {...args}
       groups={FAKE_GROUPS}
-      value={value}
-      onSelect={handleOnSelect}
-    />
-  );
-};
-
-export const SingleSelectParented: StoryFn = (args) => {
-  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
-
-  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
-    actions('onSelect').onSelect(selectedValue);
-    setValue(selectedValue);
-  };
-
-  return (
-    <SingleSelect
-      {...args}
-      items={FAKE_ITEMS_WITH_CHILDREN}
       value={value}
       onSelect={handleOnSelect}
     />
