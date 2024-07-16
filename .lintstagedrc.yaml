@@ -1,1 +1,2 @@
+'Dockerfile': ['hadolint Dockerfile -t warning']
 "*.{js,mjs,tsx,ts,tsx,css}": ['eslint --fix', 'prettier --write']

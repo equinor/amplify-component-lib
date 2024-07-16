@@ -19,3 +19,10 @@ jobs:
 
       - name: Linting
         run: npm run lint
+
+      - uses: actions/checkout@v3
+      - name: Linting dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning

@@ -21,3 +21,10 @@ jobs:
       - name: Linting
         working-directory: client
         run: npm run lint
+
+      - uses: actions/checkout@v3
+      - name: Linting dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: client/Dockerfile
+          failure-threshold: warning
