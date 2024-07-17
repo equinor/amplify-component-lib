@@ -8,8 +8,8 @@ on:
       - ".github/workflows/**"
   workflow_dispatch:
 jobs:
-  lint:
-    name: Lint
+  eslint:
+    name: ESLint
     uses: ./.github/workflows/lint.yaml
 
   test:
