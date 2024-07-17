@@ -5,3 +5,4 @@ https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/e2e.yaml
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/check_config.yaml
 https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/pull_request.yaml
+https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/secret_scanning.yaml
