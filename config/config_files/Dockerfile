@@ -12,11 +12,8 @@ COPY public ./public
 # Remove mockServiceWorker.js
 RUN rm -f ./public/mockServiceWorker.js
 
-# Dependencies
-RUN npm ci --ignore-scripts
-
-# Build
-RUN npm run build
+# Install dependencies and build
+RUN npm ci --ignore-scripts && npm run build
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine
@@ -35,16 +32,15 @@ ENV APPSETTING_ENV=local
 WORKDIR /usr/share/nginx/html
 COPY ./env.sh .
 
-RUN rm -rf ./env-config.js
-RUN touch ./env-config.js
-RUN chown nginx ./env-config.js
-RUN chown -R nginx /etc/nginx/conf.d \
-    && chown -R nginx /usr/share/nginx/html \
-    && chmod +x ./env.sh
+RUN rm -rf ./env-config.js \
+  && touch ./env-config.js \
+  && chown nginx ./env-config.js \
+  && chown -R nginx /etc/nginx/conf.d \
+  && chown -R nginx /usr/share/nginx/html \
+  && chmod +x ./env.sh
 
 # Add bash shell
-RUN apk update
-RUN apk add --no-cache bash
+RUN apk update && apk add --no-cache bash=5.2.21-r0
 
 USER 101
 

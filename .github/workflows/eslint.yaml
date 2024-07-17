@@ -1,4 +1,4 @@
-name: Lint
+name: ESLint
 on:
   workflow_call:
 jobs:
@@ -15,9 +15,7 @@ jobs:
         uses: actions/setup-node@v4
 
       - name: Install dependencies
-        working-directory: client
         run: npm ci
 
       - name: Linting
-        working-directory: client
         run: npm run lint
