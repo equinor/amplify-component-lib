@@ -56,7 +56,7 @@ describe('ReleaseNotes', () => {
         AccountInfo: { username: 'mock' } as AccountInfo,
       };
     });
-    vi.mock('src/api/services/ReleaseNotesService', () => {
+    vi.mock('@equinor/subsurface-app-management', async () => {
       class ReleaseNotesService {
         public static getReleasenoteList(): CancelablePromise<unknown> {
           return new CancelablePromise((resolve, reject) => {
@@ -77,7 +77,8 @@ describe('ReleaseNotes', () => {
           });
         }
       }
-      return { ReleaseNotesService };
+      const actual = await vi.importActual('@equinor/subsurface-app-management');
+      return { ...actual, ReleaseNotesService };
     });
     useReleaseNotesSpy.mockReturnValue({
       releaseNotesYears: [],
