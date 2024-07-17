@@ -4,8 +4,6 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { AccountInfo } from '@azure/msal-browser';
 import {
-  AuthProvider,
-  ReleaseNotesProvider,
   ServiceNowIncidentResponse,
 } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
@@ -16,7 +14,8 @@ import { FeedbackContentType, UrgencyOption } from './Feedback/Feedback.types';
 import { tutorialOptions } from './Tutorials/TutorialInfoDialog';
 import { Resources } from './Resources';
 import { environment } from 'src/atoms/utils';
-import { SnackbarProvider } from 'src/providers';
+import { AuthProvider, SnackbarProvider } from 'src/providers';
+import { ReleaseNotesProvider } from 'src/providers/ReleaseNotesProvider';
 import {
   act,
   render,
@@ -109,6 +108,9 @@ const severityOptions = [
 
 // Default handlers for this test
 const handlers = [
+  http.get('*/api/v1/Token/AmplifyPortal', () => {
+    return HttpResponse.text(faker.internet.password())
+  }),
   http.post('*/api/v1/ServiceNow/incident', () => {
     const body: ServiceNowIncidentResponse = {
       sysId: faker.string.uuid(),

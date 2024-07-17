@@ -14,9 +14,9 @@ import userEvent from '@testing-library/user-event';
 import { ApplicationDrawer } from './ApplicationDrawer';
 import {
   AuthProvider,
-  ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
+import { ReleaseNotesProvider } from 'src/providers/ReleaseNotesProvider';
 import { waitFor } from 'src/tests/test-utils';
 
 import { expect, vi } from 'vitest';
@@ -54,7 +54,7 @@ vi.mock('path-to-getappName-file', () => ({
 
 let rejectPromise = false;
 
-vi.mock('src/api/services/PortalService', () => {
+vi.mock('@equinor/subsurface-app-management', async () => {
   class PortalService {
     public static userApplications(): CancelablePromise<AmplifyApplication[]> {
       return new CancelablePromise((resolve) => {
@@ -68,7 +68,8 @@ vi.mock('src/api/services/PortalService', () => {
       });
     }
   }
-  return { PortalService };
+  const actual = await vi.importActual('@equinor/subsurface-app-management');
+  return { ...actual, PortalService };
 });
 
 function Wrappers({ children }: { children: ReactNode }) {

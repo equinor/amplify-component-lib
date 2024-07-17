@@ -23,7 +23,7 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
 
 const FAKE_TOKEN = 'FAKE_TOKEN';
 
-vi.mock('src/api/services/ReleaseNotesService', () => {
+vi.mock('@equinor/subsurface-app-management', async () => {
   class ReleaseNotesService {
     public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
@@ -33,7 +33,8 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
       });
     }
   }
-  return { ReleaseNotesService };
+  const actual = await vi.importActual('@equinor/subsurface-app-management');
+  return { ...actual, ReleaseNotesService };
 });
 
 test('TextContent shows text', async () => {
