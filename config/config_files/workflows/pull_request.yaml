@@ -10,7 +10,7 @@ on:
 jobs:
   eslint:
     name: ESLint
-    uses: ./.github/workflows/lint.yaml
+    uses: ./.github/workflows/eslint.yaml
 
   test:
     name: Test

@@ -80,9 +80,13 @@ jobs:
         working-directory: .github/workflows
         run: diff e2e.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/e2e.yaml)
 
-      - name: Compare remote .github/workflows/lint.yaml to local
+      - name: Compare remote .github/workflows/eslint.yaml to local
         working-directory: .github/workflows
-        run: diff lint.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/lint.yaml)
+        run: diff eslint.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/eslint.yaml)
+
+      - name: Compare remote .github/workflows/dockerfile_lint.yaml to local
+        working-directory: .github/workflows
+        run: diff dockerfile_lint.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/workflows/dockerfile_lint.yaml)
 
       - name: Compare remote .github/workflows/test.yaml to local
         working-directory: .github/workflows
