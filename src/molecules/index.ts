@@ -27,7 +27,6 @@ export { ProfileAvatar } from './ProfileAvatar/ProfileAvatar';
 export type { ProfileAvatarProps } from './ProfileAvatar/ProfileAvatar';
 export { RichTextDisplay } from './RichTextDisplay/RichTextDisplay';
 export type { RichTextDisplayProps } from './RichTextDisplay/RichTextDisplay';
-
 export { RichTextEditor, RichText } from './RichTextEditor';
 export {
   AmplifyBar,
@@ -69,6 +68,8 @@ export type { OptionDrawerSelectItem } from './OptionDrawer/OptionDrawer.types';
 export { PageWithTitle } from './PageWithTitle/PageWithTitle';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
 export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
+export { ListItem } from './ListItem/ListItem';
+export type { ListItemProps } from './ListItem/ListItem';
 
 // EDS Re-export
 export {
