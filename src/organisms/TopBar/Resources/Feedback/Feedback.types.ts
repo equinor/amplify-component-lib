@@ -1,6 +1,9 @@
 import { FileWithPath } from 'react-dropzone';
 
-import { ApiError, ServiceNowIncidentResponse } from 'src/api';
+import {
+  ApiError,
+  ServiceNowIncidentResponse,
+} from '@equinor/subsurface-app-management';
 
 export enum UrgencyOption {
   NO_IMPACT = 'I am not impacted',

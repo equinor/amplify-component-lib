@@ -2,10 +2,10 @@ import { ReactElement, ReactNode, SetStateAction } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { AccountInfo } from '@azure/msal-browser';
+import { CancelablePromise } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleaseNotes } from './ReleaseNotes';
-import { CancelablePromise } from 'src/api';
 import { SieveValue } from 'src/molecules/Sieve/Sieve.types';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import * as useReleaseNotes from 'src/providers/ReleaseNotesProvider';
@@ -56,7 +56,7 @@ describe('ReleaseNotes', () => {
         AccountInfo: { username: 'mock' } as AccountInfo,
       };
     });
-    vi.mock('src/api/services/ReleaseNotesService', () => {
+    vi.mock('@equinor/subsurface-app-management', async () => {
       class ReleaseNotesService {
         public static getReleasenoteList(): CancelablePromise<unknown> {
           return new CancelablePromise((resolve, reject) => {
@@ -77,7 +77,8 @@ describe('ReleaseNotes', () => {
           });
         }
       }
-      return { ReleaseNotesService };
+      const actual = await vi.importActual('@equinor/subsurface-app-management');
+      return { ...actual, ReleaseNotesService };
     });
     useReleaseNotesSpy.mockReturnValue({
       releaseNotesYears: [],

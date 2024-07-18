@@ -1,16 +1,6 @@
-import { ReleaseNote } from 'src/api/models/ReleaseNote';
+import { ReleaseNote } from '@equinor/subsurface-app-management';
+
 import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
-
-interface MonthData {
-  label: string;
-  value: Date;
-}
-
-interface YearData {
-  label: string;
-  value: string;
-  months: MonthData[];
-}
 
 const extractDatesFromReleaseNotes = (
   releaseNotes: ReleaseNote[]
@@ -111,7 +101,6 @@ const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
   });
 };
 
-export type { MonthData, YearData };
 export {
   extractDatesFromReleaseNotes,
   monthToString,

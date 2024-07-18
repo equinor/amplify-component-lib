@@ -11,6 +11,8 @@ import {
 } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
+import { ApiError, } from '@equinor/subsurface-app-management';
+
 import {
   DEFAULT_FEEDBACK_LOCAL_STORAGE,
   ONE_HOUR_IN_MS,
@@ -34,10 +36,8 @@ import {
 import { useServiceNowIncident } from '../hooks/useServiceNowIncident';
 import { useSlackFileUpload } from '../hooks/useSlackFileUpload';
 import { useSlackPostMessage } from '../hooks/useSlackPostMessage';
-import { ApiError } from 'src/api';
-import { useLocalStorage } from 'src/atoms/hooks';
+import { useAuth,useLocalStorage } from 'src/atoms/hooks';
 import { environment } from 'src/atoms/utils';
-import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 const { getServiceNowConfigurationItem } = environment;
 

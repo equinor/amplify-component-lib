@@ -1,16 +1,12 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
 import { renderHook } from '../tests/test-utils';
-import {
+import  {
   TutorialStepsProvider,
   useTutorialSteps,
 } from './TutorialStepsProvider';
 
-const TutorialStepsProviderWithStartOpen = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const TutorialStepsProviderWithStartOpen = ({ children, }: { children: ReactElement; }) => {
   return <TutorialStepsProvider startOpen>{children}</TutorialStepsProvider>;
 };
 

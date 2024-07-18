@@ -3,15 +3,18 @@ import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { AccountInfo } from '@azure/msal-browser';
+import { CancelablePromise, ServiceNowIncidentResponse, } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
-import { FeedbackContentType, UrgencyOption } from './Feedback/Feedback.types';
+import {
+  FeedbackContentType,
+  UrgencyOption,
+} from './Feedback/Feedback.types';
 import { tutorialOptions } from './Tutorials/TutorialInfoDialog';
 import { Resources } from './Resources';
-import { CancelablePromise, ServiceNowIncidentResponse } from 'src/api';
-import { environment } from 'src/atoms/utils';
+import { environment } from 'src/atoms/utils/auth_environment';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -28,7 +31,7 @@ import {
 
 import { beforeEach, describe, expect } from 'vitest';
 
-const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
+const { PORTAL_URL_WITHOUT_LOCALHOST } = environment
 
 const releaseNotes = [
   {
@@ -36,7 +39,7 @@ const releaseNotes = [
     applicationName: 'PWEX',
     version: null,
     title: 'Improved task board and reporting overview June',
-    body: '<p>Release notes body text</p>',
+    body: '<h1>Release notes body text</h1>',
     tags: ['Improvement', 'Bug fix'],
     createdDate: '2023-06-29T10:48:49.6883+00:00',
   },
@@ -103,7 +106,7 @@ let mockServiceHasError = false;
 let mockServicePartialError = false;
 let defaultError = false;
 
-vi.mock('src/api/services/PortalService', () => {
+vi.mock('@equinor/subsurface-app-management', async () => {
   class PortalService {
     public static createIncident(): CancelablePromise<ServiceNowIncidentResponse> {
       return new CancelablePromise((resolve, reject) =>
@@ -117,9 +120,7 @@ vi.mock('src/api/services/PortalService', () => {
       );
     }
 
-    public static fileUpload(
-      formData?: FormData
-    ): CancelablePromise<FormData | undefined> {
+    public static fileUpload(formData: FormData): CancelablePromise<FormData> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError && !mockServicePartialError) {
@@ -145,10 +146,6 @@ vi.mock('src/api/services/PortalService', () => {
       );
     }
   }
-  return { PortalService };
-});
-
-vi.mock('src/api/services/ReleaseNotesService', () => {
   class ReleaseNotesService {
     public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
@@ -169,7 +166,9 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
       });
     }
   }
-  return { ReleaseNotesService };
+
+  const actual = await vi.importActual('@equinor/subsurface-app-management');
+  return { ...actual, PortalService, ReleaseNotesService };
 });
 
 const severityOptions = [

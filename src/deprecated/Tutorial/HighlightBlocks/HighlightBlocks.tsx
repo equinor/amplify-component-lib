@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import { forwardRef, ReactNode } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
@@ -29,7 +30,6 @@ interface HighlightBlocksProps {
   className?: string;
 }
 
-/* c8 ignore start */
 /**
  * @deprecated since version 6.3.0. We use TutorialProvider instead, and add tutorials to a database on amplify-portal.
  * You can read a small guide in the front-end docs on the JS devops (JS devops -> Overview -> Wiki -> Documentation ->

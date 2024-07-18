@@ -4,6 +4,7 @@
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "author": "Amplify Team",
   "license": "ISC",
   "homepage": "https://github.com/equinor/amplify-component-lib#readme",
@@ -93,6 +94,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.21.0",
+    "@equinor/subsurface-app-management": "^1.0.9",
     "@faker-js/faker": "^8.4.1",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -169,6 +171,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
+    "@equinor/subsurface-app-management": "*",
     "@tanstack/react-query": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

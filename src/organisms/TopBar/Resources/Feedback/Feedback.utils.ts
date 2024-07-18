@@ -1,12 +1,13 @@
 import { FileWithPath } from 'react-dropzone';
 
+import { ServiceNowUrgency } from '@equinor/subsurface-app-management';
+
 import {
   Browsers,
   FeedbackContentType,
   FeedbackType,
   UrgencyOption,
 } from './Feedback.types';
-import { ServiceNowUrgency } from 'src/api';
 import { EnvironmentType } from 'src/atoms/types/Environment';
 import { date, environment, string } from 'src/atoms/utils';
 

@@ -1,12 +1,14 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import {
+  CancelablePromise,
+  ReleaseNote,
+} from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleasePosts } from './ReleasePosts';
-import { CancelablePromise } from 'src/api';
-import { ReleaseNote } from 'src/api/models/ReleaseNote';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, waitFor, within } from 'src/tests/test-utils';
 
@@ -95,7 +97,7 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
 let returnEmptyArray = false;
 let returnWithEmptyDate = false;
 
-vi.mock('src/api/services/ReleaseNotesService', () => {
+vi.mock('@equinor/subsurface-app-management', async () => {
   class ReleaseNotesService {
     public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
@@ -118,7 +120,8 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
       });
     }
   }
-  return { ReleaseNotesService };
+  const actual = await vi.importActual('@equinor/subsurface-app-management');
+  return { ...actual, ReleaseNotesService };
 });
 
 test('show release note', async () => {

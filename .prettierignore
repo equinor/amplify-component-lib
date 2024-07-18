@@ -1,5 +1,8 @@
 #
-node_modules
 .yarn
 .yarnrc.yml
-.eslintrc.cjs
+*
+!*.ts
+!*.tsx
+!*.js
+!*.jsx

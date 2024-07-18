@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import { CancelablePromise } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { CancelablePromise } from 'src/api';
 import { TextContent } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleasePosts/ReleasePost/TextContent';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, waitFor } from 'src/tests/test-utils';
@@ -23,7 +23,7 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
 
 const FAKE_TOKEN = 'FAKE_TOKEN';
 
-vi.mock('src/api/services/ReleaseNotesService', () => {
+vi.mock('@equinor/subsurface-app-management', async () => {
   class ReleaseNotesService {
     public static getContainerSasUri(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve) => {
@@ -33,7 +33,8 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
       });
     }
   }
-  return { ReleaseNotesService };
+  const actual = await vi.importActual('@equinor/subsurface-app-management');
+  return { ...actual, ReleaseNotesService };
 });
 
 test('TextContent shows text', async () => {

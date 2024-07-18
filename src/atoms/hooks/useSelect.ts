@@ -10,6 +10,7 @@ import {
 import { SelectComponentProps } from 'src/molecules/Select/Select';
 import { SelectOption } from 'src/molecules/Select/Select.types';
 import {
+  GroupedSelectProps,
   ListSelectProps,
   SelectOptionRequired,
 } from 'src/molecules/Select/Select.types';
@@ -108,10 +109,16 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const getParent = (value: string) => {
-    const groupedFormations = groupBy(
-      flattenOptions((props as ListSelectProps<T>).items),
-      ({ value }) => value
-    );
+    let flattened;
+    if ('groups' in props) {
+      flattened = flattenOptions(
+        (props as GroupedSelectProps<T>).groups.flatMap((group) => group.items)
+      );
+    } else {
+      flattened = flattenOptions((props as ListSelectProps<T>).items);
+    }
+
+    const groupedFormations = groupBy(flattened, ({ value }) => value);
     const parentName = groupedFormations[value]?.at(0)?.parent ?? '';
     return groupedFormations[parentName]?.at(0);
   };
