@@ -12,10 +12,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ApplicationDrawer } from './ApplicationDrawer';
-import {
-  AuthProvider,
-  SnackbarProvider,
-} from 'src/providers';
+import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { ReleaseNotesProvider } from 'src/providers/ReleaseNotesProvider';
 import { waitFor } from 'src/tests/test-utils';
 

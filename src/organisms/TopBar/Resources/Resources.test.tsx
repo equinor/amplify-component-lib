@@ -3,15 +3,15 @@ import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { AccountInfo } from '@azure/msal-browser';
-import { CancelablePromise, ServiceNowIncidentResponse, } from '@equinor/subsurface-app-management';
+import {
+  CancelablePromise,
+  ServiceNowIncidentResponse,
+} from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { DEFAULT_REQUEST_ERROR_MESSAGE } from './Feedback/Feedback.const';
-import {
-  FeedbackContentType,
-  UrgencyOption,
-} from './Feedback/Feedback.types';
+import { FeedbackContentType, UrgencyOption } from './Feedback/Feedback.types';
 import { tutorialOptions } from './Tutorials/TutorialInfoDialog';
 import { Resources } from './Resources';
 import { environment } from 'src/atoms/utils/auth_environment';
@@ -31,7 +31,7 @@ import {
 
 import { beforeEach, describe, expect } from 'vitest';
 
-const { PORTAL_URL_WITHOUT_LOCALHOST } = environment
+const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
 
 const releaseNotes = [
   {

@@ -77,7 +77,9 @@ describe('ReleaseNotes', () => {
           });
         }
       }
-      const actual = await vi.importActual('@equinor/subsurface-app-management');
+      const actual = await vi.importActual(
+        '@equinor/subsurface-app-management'
+      );
       return { ...actual, ReleaseNotesService };
     });
     useReleaseNotesSpy.mockReturnValue({
