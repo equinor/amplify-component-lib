@@ -12,6 +12,7 @@ import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useSideBar } from 'src/providers/SideBarProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
 import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
+import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
 
 export {
   useAuth,
@@ -27,5 +28,6 @@ export {
   useSideBar,
   useSignalRMessages,
   useSnackbar,
+  useTutorialSteps,
   useAmplifyKit,
 };
