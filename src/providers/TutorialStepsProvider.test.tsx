@@ -6,11 +6,7 @@ import  {
   useTutorialSteps,
 } from './TutorialStepsProvider';
 
-const TutorialStepsProviderWithStartOpen = ({
-                                              children,
-                                            }: {
-  children: ReactElement;
-}) => {
+const TutorialStepsProviderWithStartOpen = ({ children, }: { children: ReactElement; }) => {
   return <TutorialStepsProvider startOpen>{children}</TutorialStepsProvider>;
 };
 
