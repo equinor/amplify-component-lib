@@ -14,6 +14,7 @@ import {
 } from './Feedback/Feedback.types';
 import { tutorialOptions } from './Tutorials/TutorialInfoDialog';
 import { Resources } from './Resources';
+import { environment } from 'src/atoms/utils/auth_environment';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -30,6 +31,7 @@ import {
 
 import { beforeEach, describe, expect } from 'vitest';
 
+const { PORTAL_URL_WITHOUT_LOCALHOST } = environment
 
 const releaseNotes = [
   {
@@ -774,7 +776,7 @@ describe('Resources', () => {
         await waitFor(
           () =>
             expect(window.open).toHaveBeenCalledWith(
-              'https://client-amplify-portal-.radix.equinor.com',
+              PORTAL_URL_WITHOUT_LOCALHOST,
               '_self'
             ),
           {
