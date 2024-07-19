@@ -1,9 +1,14 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
+import { environment } from 'src/atoms/utils/auth_environment';
+import {ApplicationIcon} from 'src/molecules/ApplicationIcon/ApplicationIcon';
+
 import styled from 'styled-components';
+
+const { getAppName } = environment
 
 const { colors } = tokens;
 
@@ -18,6 +23,7 @@ const NoScrimContainer = styled.div`
   align-items: center;
   display: flex;
 `;
+
 const CircularProgress = styled(Progress.Circular)`
   circle {
     stroke: ${colors.interactive.primary__resting.rgba};
@@ -28,31 +34,30 @@ const CircularProgress = styled(Progress.Circular)`
 `;
 
 export interface FullPageSpinnerProps {
-  variant?: 'equinor' | 'circle' | 'dots';
-  withoutScrim?: boolean;
+  variant?: 'equinor' | 'circle' | 'dots' | 'application';
+  withScrim?: boolean;
 }
 
 export const FullPageSpinner: FC<FullPageSpinnerProps> = ({
-  variant,
-  withoutScrim,
+  variant = 'application',
+  withScrim = false,
 }) => {
-  const renderSpinner = () => {
-    return (
-      <>
-        {(variant === 'equinor' || !variant) && <StarProgress />}
-        {variant === 'circle' && <CircularProgress />}
-        {variant === 'dots' && <Progress.Dots />}
-      </>
-    );
-  };
+  const spinner = useMemo(() => {
+    switch (variant) {
+      case 'dots': return <Progress.Dots color="primary" />
+      case 'circle': return <CircularProgress />
+      case 'equinor':
+        return <StarProgress />
+      case 'application':
+        return <ApplicationIcon name={getAppName(import.meta.env.VITE_NAME)} animationState="loading" />
+    }
+  }, [variant])
+
+  if(!withScrim){
+    return <NoScrimContainer>{spinner}</NoScrimContainer>
+  }
 
   return (
-    <>
-      {withoutScrim ? (
-        <NoScrimContainer>{renderSpinner()}</NoScrimContainer>
-      ) : (
-        <Scrim open>{renderSpinner()}</Scrim>
-      )}
-    </>
+      <Scrim open>{spinner}</Scrim>
   );
 };
