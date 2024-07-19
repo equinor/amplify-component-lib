@@ -91,23 +91,6 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
       </section>
     );
 
-    if (iconPosition === 'trailing') {
-      return (
-        <Container
-          ref={ref}
-          $isChild={isChild}
-          $selected={selected}
-          disabled={disabled}
-          onClick={onClick}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        >
-          {renderLabel}
-          {renderIcon}
-        </Container>
-      );
-    }
-
     return (
       <Container
         ref={ref}
@@ -118,8 +101,9 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
         onFocus={onFocus}
         onBlur={onBlur}
       >
-        {renderIcon}
-        {renderLabel}
+        {iconPosition === 'trailing'
+          ? [renderLabel, renderIcon]
+          : [renderIcon, renderLabel]}
       </Container>
     );
   }
