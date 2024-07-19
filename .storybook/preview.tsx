@@ -1,14 +1,14 @@
 import { tokens } from '@equinor/eds-tokens';
-import Template from 'src/components/Template/Template';
+import { Template } from 'src/organisms/Template/Template';
 
-import { darkTokens } from 'src/style/darkTokens';
-import { spacingTokens } from 'src/style/spacingTokens';
+import { darkTokens } from 'src/atoms/style/darkTokens';
+import { spacingTokens } from 'src/atoms/style/spacingTokens';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider';
 import { Preview, StoryFn } from '@storybook/react';
 
 const { colors } = tokens;
 
-export const globalTypes = {
+const globalTypes = {
   dataThemes: {
     defaultValue: {
       list: [
@@ -19,7 +19,7 @@ export const globalTypes = {
   },
 };
 
-export const decorators = [
+const decorators = [
   (Story: StoryFn) => {
     // Apply styles using the darkTokens variable
     const darkStyleElement = document.createElement('style');
@@ -41,7 +41,7 @@ export const decorators = [
   },
 ];
 
-export const parameters = {
+const parameters = {
   actions: { argTypes: /^on[A-Z].*/ },
   viewMode: 'docs',
   controls: { expanded: true },
@@ -58,10 +58,19 @@ export const parameters = {
       },
     ],
   },
+  options: {
+    storySort: {
+      // Pre-emptively added 'Atoms', 'Molecules' and 'Organisms'
+      order: ['Atoms', 'Molecules', 'Organisms', 'Other', 'Deprecated'],
+    },
+  },
 };
 
 const preview: Preview = {
-  tags: ['autodocs']
+  tags: ['autodocs'],
+  globalTypes,
+  decorators,
+  parameters,
 };
 
 export default preview;

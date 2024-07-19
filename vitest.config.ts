@@ -4,6 +4,11 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
+    server: {
+      deps: {
+        inline: ['@equinor/subsurface-app-management']
+      }
+    },
     globals: true,
     environment: 'jsdom',
     passWithNoTests: true,
@@ -22,7 +27,6 @@ export default defineConfig({
       include: ['src/**/*'],
       exclude: [
         'src/**/*.d.ts',
-        'src/api/**',
         'src/tests',
         'src/types',
         'src/**/*.test.ts',
@@ -37,12 +41,12 @@ export default defineConfig({
         'src/components/Inputs/TextField.tsx',
         'src/components/Feature/*',
         'src/components/Feedback/Skeleton/**',
-        'src/utils/auth_environment.ts',
-        'src/utils/export.ts',
-        'src/utils/UtilStory.tsx',
+        'src/atoms/utils/auth_environment.ts',
+        'src/atoms/utils/export.ts',
+        'src/atoms/utils/UtilStory.tsx',
         'src/providers/AuthProvider/**',
         'src/hooks/useSignalRMessages.ts',
-        'src/hooks/useOnScreen.ts',
+        'src/hooks/useOnScreenMultiple.ts',
         'src/components/Navigation/TopBar/Resources/FeedbackForm/**',
         'src/storybook',
       ],

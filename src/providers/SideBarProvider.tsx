@@ -40,7 +40,7 @@ const sidebarReducer = (state: SideBarState, newState: SideBarState) => {
   return newState;
 };
 
-const SideBarProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const SideBarProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(sidebarReducer, getDefaultState());
 
   const setIsOpen = (value: boolean) => {
@@ -53,5 +53,3 @@ const SideBarProvider: FC<{ children: ReactNode }> = ({ children }) => {
     </SideBarContext.Provider>
   );
 };
-
-export default SideBarProvider;

@@ -1,5 +1,6 @@
-import { Typography } from '@equinor/eds-core-react';
 import { Meta } from '@storybook/react';
+
+import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -19,13 +20,6 @@ const providersList = [
 </AuthProvider>`,
   },
   {
-    name: 'ReleaseNotesProvider',
-    body: 'Provider to make ReleaseNotes work',
-    code: `<ReleaseNotesProvider>
-    {children}
-</ReleaseNotesProvider>`,
-  },
-  {
     name: 'SideBarProvider',
     body: 'Provider needed for Sidebar isOpen state',
     code: `<SideBarProvider>
@@ -38,13 +32,6 @@ const providersList = [
     code: `<SnackbarProvider>
     {children}
 </SnackbarProvider>`,
-  },
-  {
-    name: 'TutorialStepsProvider',
-    body: 'Provider needed to use tutorial hook',
-    code: `<TutorialStepsProvider>
-    {children}
-</TutorialStepsProvider>`,
   },
 ];
 

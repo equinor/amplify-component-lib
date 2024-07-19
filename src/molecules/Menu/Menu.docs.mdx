@@ -1,0 +1,102 @@
+import { Links, PropsTable } from 'src/storybook';
+import { Primary, Canvas } from '@storybook/blocks';
+import * as ComponentStories from 'src/molecules/Menu/Menu.stories';
+
+# Menu
+
+**Component from EDS**
+
+A temporary list of actions or functions, known as a `dropdown`.
+
+<Links
+  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17627%3A3322"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Menu/Menu.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/navigation-menu--docs"
+/>
+
+<Primary />
+
+<PropsTable />
+
+## Usage
+
+A `Menu` displays a list of choices on a temporary surface. They appear when users interact with a button.
+
+<ul>
+  <li>Menus should be easy to open, close, and interact with.</li>
+  <li>Menu content should be suited to user needs.</li>
+  <li>Menu items should be easy to scan.</li>
+</ul>
+
+```tsx
+import { Menu } from '@equinor/amplify-component-lib';
+
+const Demo = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const openMenu = () => {
+    setIsOpen(true);
+  };
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <>
+      <Button
+        ref={setAnchorEl}
+        id="anchor-default"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        aria-controls="menu-default"
+        onClick={() => (isOpen ? closeMenu() : openMenu())}
+      >
+        Click to open Menu!
+      </Button>
+      <Menu
+        open={isOpen}
+        id="menu-default"
+        aria-labelledby="anchor-default"
+        onClose={closeMenu}
+        anchorEl={anchorEl}
+      >
+        <Menu.Item onClick={onClick}>Pressure</Menu.Item>
+        <Menu.Item onClick={onClick}>Bearing</Menu.Item>
+        <Menu.Item onClick={onClick}>Cable</Menu.Item>
+      </Menu>
+    </>
+  );
+};
+```
+
+## Examples
+
+### Complex
+
+<Canvas of={ComponentStories.Complex} />
+
+### Compact
+
+Compact `Menu` using `EdsProvider`.
+
+<Canvas of={ComponentStories.Compact} />
+
+### Match width
+
+A menu matching the width of the anchorElement
+
+<Canvas of={ComponentStories.MatchWidth} />
+
+### Prevent menu close on click
+
+Adding `closeMenuOnClick={false}` to `Menu.Item` makes the Menu stay open on click
+
+<Canvas of={ComponentStories.StaysOpen} />
+
+### Item as link
+
+Use the `as` prop to override component type of `Menu.Item`.
+
+<Canvas of={ComponentStories.AsLink} />

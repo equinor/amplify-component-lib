@@ -1,11 +1,11 @@
 import { FC, ReactNode } from 'react';
 
+import { CancelablePromise } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { act, renderHook, waitFor } from '../tests/test-utils';
-import ReleaseNotesProvider, { useReleaseNotes } from './ReleaseNotesProvider';
-import { CancelablePromise } from 'src/api';
-import { ReleaseNoteType } from 'src/components/Navigation/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
+import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
+import { ReleaseNoteType } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
 
 const releaseNotes = [
   {
@@ -51,7 +51,7 @@ const monthAndYears = [
 ];
 const mockServiceHasError = false;
 
-vi.mock('src/api/services/ReleaseNotesService', () => {
+vi.mock('@equinor/subsurface-app-management', async () => {
   class ReleaseNotesService {
     public static getReleasenoteList(): CancelablePromise<unknown> {
       return new CancelablePromise((resolve, reject) => {
@@ -65,7 +65,8 @@ vi.mock('src/api/services/ReleaseNotesService', () => {
       });
     }
   }
-  return { ReleaseNotesService };
+  const original = await vi.importActual('@equinor/subsurface-app-management');
+  return { ...original, ReleaseNotesService };
 });
 
 interface WrapperProp {

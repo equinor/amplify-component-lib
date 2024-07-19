@@ -38,6 +38,11 @@ const TutorialStepsContext = createContext<TutorialContextState | undefined>(
   undefined
 );
 
+/**
+ * @deprecated since version 6.3.0. We use TutorialProvider instead, and add tutorials to a database on amplify-portal.
+ * You can read a small guide in the front-end docs on the JS devops (JS devops -> Overview -> Wiki -> Documentation ->
+ * Front-end docs -> Guides -> Creating tutorial for TutorialProvider)
+ */
 export const useTutorialSteps = (): TutorialContextState => {
   const context = useContext(TutorialStepsContext);
   if (context === undefined) {
@@ -48,7 +53,12 @@ export const useTutorialSteps = (): TutorialContextState => {
   return context;
 };
 
-const TutorialStepsProvider: FC<{
+/**
+ * @deprecated since version 6.3.0. We use TutorialProvider instead, and add tutorials to a database on amplify-portal.
+ * You can read a small guide in the front-end docs on the JS devops (JS devops -> Overview -> Wiki -> Documentation ->
+ * Front-end docs -> Guides -> Creating tutorial for TutorialProvider)
+ */
+export const TutorialStepsProvider: FC<{
   children: ReactNode;
   startOpen?: boolean;
 }> = ({ children, startOpen = false }) => {
@@ -79,5 +89,3 @@ const TutorialStepsProvider: FC<{
     </TutorialStepsContext.Provider>
   );
 };
-
-export default TutorialStepsProvider;

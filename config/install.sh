@@ -13,7 +13,7 @@ fi
 
 printf -- "Downloading config files...\n"
 
-configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_list.txt")
+configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_list.txt")
 
 for line in $configList
 do
@@ -25,11 +25,11 @@ cd ./src || return
 
 printf -- "Downloading setupLocalhost.mjs file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
 
 printf -- "Downloading vite.env.d.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/vite-env.d.ts" > vite-env.d.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/vite-env.d.ts" > vite-env.d.ts
 
 printf -- "Going into test-utils folder...\n"
 
@@ -37,27 +37,27 @@ cd ./test-utils || (mkdir test-utils && cd ./test-utils || return)
 
 printf -- "Downloading vitest.d.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/vitest.d.ts" > vitest.d.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/vitest.d.ts" > vitest.d.ts
 
 printf -- "Downloading setupTests.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/setupTests.ts" > setupTests.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/setupTests.ts" > setupTests.ts
 
 printf -- "Downloading browserMocks.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/browserMocks.ts" > browserMocks.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/browserMocks.ts" > browserMocks.ts
 
 printf -- "Downloading utils.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/utils.ts" > utils.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/utils.ts" > utils.ts
 
 printf -- "Downloading playwright.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/playwright.ts" > playwright.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/playwright.ts" > playwright.ts
 
 printf -- "Downloading portalMock.ts file...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/test-utils/portalMock.ts" > portalMock.ts
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/portalMock.ts" > portalMock.ts
 
 cd ../..
 
@@ -65,16 +65,16 @@ printf -- "Downloading nginx.conf proxy config...\n"
 
 cd ./proxy || (mkdir proxy && cd ./proxy || return)
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/nginx.conf" > nginx.conf
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/nginx.conf" > nginx.conf
 
 printf -- "Downloading securityheaders.conf proxy config...\n"
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/securityheaders.conf" > securityheaders.conf
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/securityheaders.conf" > securityheaders.conf
 
 cd ../..
 
 printf -- "Downloading client github actions...\n"
-workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/github_actions_list.txt")
+workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/github_actions_list.txt")
 
 for line in $workflowsList
 do
@@ -83,4 +83,4 @@ do
 done
 
 printf -- "Downloading CODEOWNERS file...\n"
-curl -s "https://raw.githubusercontent.com/equinor/amplify-components/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS

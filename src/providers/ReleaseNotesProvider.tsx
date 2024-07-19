@@ -9,19 +9,20 @@ import {
   useState,
 } from 'react';
 
-import { ReleaseNote } from 'src/api/models/ReleaseNote';
-import { Option, SieveValue } from 'src/components';
-import { useReleaseNotesQuery } from 'src/hooks/useReleaseNotesQuery';
-import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
+import { ReleaseNote } from '@equinor/subsurface-app-management';
+
+import { useReleaseNotesQuery } from 'src/atoms/hooks/useReleaseNotesQuery';
 import {
   extractDatesFromReleaseNotes,
   sortReleaseNotesByDate,
-} from 'src/utils/releaseNotes';
+} from 'src/atoms/utils/releaseNotes';
+import { SieveOption, SieveValue } from 'src/molecules/Sieve/Sieve.types';
+import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
 
 interface ReleaseNotesContextState {
   search: SieveValue;
   setSearch: Dispatch<SetStateAction<SieveValue>>;
-  selectedReleaseNoteTypes?: Option[];
+  selectedReleaseNoteTypes?: SieveOption[];
   open: boolean;
   setOpen: (open: boolean) => void;
   toggle: () => void;
@@ -54,7 +55,7 @@ interface ReleaseNotesContextProviderProps {
   enabled?: boolean;
 }
 
-const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
+export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   children,
   enabled,
 }) => {
@@ -80,7 +81,7 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
       filteredList = filteredList.filter((item) =>
         item.tags?.some((tag) =>
           selectedReleaseNoteTypes
-            .map((option: Option) => option.value)
+            .map((option: SieveOption) => option.value)
             .includes(tag)
         )
       );
@@ -117,5 +118,3 @@ const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
     </ReleaseNotesContext.Provider>
   );
 };
-
-export default ReleaseNotesProvider;

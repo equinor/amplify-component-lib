@@ -1,15 +1,15 @@
 {
-  "name": "@equinor/amplify-components",
-  "version": "7.12.11",
+  "name": "@equinor/amplify-component-lib",
+  "version": "8.0.2",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "author": "Amplify Team",
   "license": "ISC",
-  "homepage": "https://github.com/equinor/amplify-components#readme",
+  "homepage": "https://github.com/equinor/amplify-component-lib#readme",
   "bugs": {
-    "url": "https://github.com/equinor/amplify-components/issues"
+    "url": "https://github.com/equinor/amplify-component-lib/issues"
   },
   "files": [
     "dist/*"
@@ -26,13 +26,13 @@
     "test": "vitest watch",
     "test:ci": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "setup-husky": "husky install",
     "precommit": "npx lint-staged",
     "build": "npm run build-components",
     "build-components": "rollup -c && tsc --project tsconfig.build.json && resolve-tspaths --project tsconfig.build.json",
     "build-components:ci": "rm -rf lib dist && npm run build-components",
     "build-and-use": "node tooling/build-and-use.mjs",
-    "brute-coverage": "node tooling/brute-coverage.mjs"
+    "brute-coverage": "node tooling/brute-coverage.mjs",
+    "prepare": "husky"
   },
   "browserslist": {
     "production": [
@@ -94,6 +94,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.21.0",
+    "@equinor/subsurface-app-management": "^1.0.9",
     "@faker-js/faker": "^8.4.1",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -136,6 +137,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "eslint-plugin-storybook": "^0.8.0",
+    "husky": "^9.0.11",
     "jest-styled-components": "^7.2.0",
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
@@ -169,6 +171,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
+    "@equinor/subsurface-app-management": "*",
     "@tanstack/react-query": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
