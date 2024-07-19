@@ -40,6 +40,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     onUpdate: ({ editor }) => onUpdate?.(editor.getHTML()),
   });
 
+  /* c8 ignore next */
   if (!editor) return null;
   return children(editor);
 };
