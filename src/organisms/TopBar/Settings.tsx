@@ -46,7 +46,7 @@ const SettingsItems = styled.div`
   }
 `;
 
-export interface ISettingsSections {
+export interface SettingsSections {
   title: string;
   type: string;
   onChange?: (val: string) => void;
@@ -62,7 +62,7 @@ export interface ISettingsSections {
 }
 
 export interface SettingsProps {
-  allSettings: ISettingsSections[];
+  allSettings: SettingsSections[];
 }
 
 export const Settings: FC<SettingsProps> = ({ allSettings }) => {
