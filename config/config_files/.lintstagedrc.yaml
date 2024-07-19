@@ -1,1 +1,2 @@
+'*Dockerfile': ['hadolint client/Dockerfile -t warning']
 '*.{js,tsx,ts,tsx,css}': ['npm run lint:fix', 'npm run pretty:fix']

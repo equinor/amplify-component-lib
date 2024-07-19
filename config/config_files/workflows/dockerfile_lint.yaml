@@ -1,0 +1,19 @@
+name: Running linting on dockerfile
+run-name: ${{ github.actor }} is running linting on dockerfiles
+on:
+  pull_request:
+    branches: [main, master, develop, development, staging, hotfix/**/*, release/**/*]
+    paths:
+      - "**Dockerfile"
+jobs:
+  DockerfileLinting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Linting dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          failure-threshold: warning
+          recursive: true
