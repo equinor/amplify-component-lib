@@ -1,8 +1,9 @@
 #
 .yarn
 .yarnrc.yml
-*
-!*.ts
-!*.tsx
-!*.js
-!*.jsx
+/*
+!/src
+!/config/**/*.tsx
+!/config/**/*.ts
+!/config/**/*.jsx
+!/config/**/*.js
