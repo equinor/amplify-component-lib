@@ -22,6 +22,7 @@ jobs:
       - name: Build Components
         run: npm run build-components:ci
 
-      - uses: JS-DevTools/npm-publish@v1
+      - uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.npm-token }}
+          provenance: true

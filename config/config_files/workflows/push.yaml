@@ -4,15 +4,15 @@ on:
     branches: [main]
   workflow_dispatch:
 jobs:
-  lint:
-    name: 🚑 Lint
-    uses: ./.github/workflows/lint.yaml
+  eslint:
+    name: 🚑 ESLint
+    uses: ./.github/workflows/eslint.yaml
   test:
     name: 🧪 Test
     uses: ./.github/workflows/test.yaml
   build_deploy_dev:
     name: 🛠️ Build and 🚀 Deploy development to radix
-    needs: [test, lint]
+    needs: [test, eslint]
     uses: ./.github/workflows/build_deploy_radix.yaml
     with:
       environment-name: development
