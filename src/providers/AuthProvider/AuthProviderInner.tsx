@@ -201,7 +201,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
   if (authState === 'loading' || account === undefined)
     return (
-      loadingComponent ?? <FullPageSpinner variant="equinor" withoutScrim />
+      loadingComponent ?? <FullPageSpinner variant="application" />
     );
 
   if (authState === 'unauthorized')

@@ -1,46 +1,75 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { FC } from 'react';
+
+import { Meta,  StoryObj } from '@storybook/react';
 
 import {
   FullPageSpinner,
-  FullPageSpinnerProps,
+  FullPageSpinnerProps
 } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 
 import styled from 'styled-components';
 
-export default {
+const Container = styled.div`
+  aspect-ratio: 16 / 9;
+  width: 50rem;
+  overflow: auto;
+  & > div {
+      width: 100%;
+      height: 100%;
+  }
+`;
+
+const StoryComponent: FC<FullPageSpinnerProps> = (props) => {
+  return <Container>
+    <FullPageSpinner {...props}/>
+  </Container>
+}
+
+const meta: Meta<typeof StoryComponent>  = {
   title: 'Molecules/FullPageSpinner',
-  component: FullPageSpinner,
+  component: StoryComponent,
   argTypes: {
-    variant: {
-      description: 'Defaults to "equinor" star',
-    },
+    variant: { control: "radio", options: [
+        'equinor' , 'circle' , 'dots' , 'application'
+      ]},
+    withScrim: { control: 'boolean'}
   },
-  args: {
-    variant: undefined,
-  },
+  args: {},
   parameters: {
     layout: 'fullscreen',
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?type=design&node-id=5694-19817&mode=design&t=jlQAMMWK1GLpzcAL-4',
     },
+    env: () => ({
+      VITE_NAME: 'orca'
+    }),
   },
-} as Meta;
+}
 
-const Container = styled.div`
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
+export default meta
+type Story = StoryObj<typeof StoryComponent>;
 
-  & > div {
-    width: 100%;
-    height: 100%;
+
+export const Default: Story = {
+  args: {}
+}
+
+export const Dots: Story = {
+  args: {
+    variant: 'dots'
   }
-`;
+}
 
-const Template: StoryFn<FullPageSpinnerProps> = (args) => (
-  <Container>
-    <FullPageSpinner {...args} />
-  </Container>
-);
+export const Circle: Story = {
+  args: {
+    variant: 'circle'
+  }
+}
 
-export const Primary = Template.bind({});
+export const Equinor: Story = {
+  args: {
+    variant: 'equinor'
+  }
+}
+

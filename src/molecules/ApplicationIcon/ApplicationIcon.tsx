@@ -132,4 +132,3 @@ export const ApplicationIcon: FC<ApplicationIconProps> = ({
 };
 
 ApplicationIcon.displayName = 'ApplicationIcon';
-export default ApplicationIcon;
