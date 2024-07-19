@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 
 import { Meta } from '@storybook/react';
 
-import ApplicationIcon from './ApplicationIcon';
+import { ApplicationIcon } from './ApplicationIcon';
 import { APP_ICONS } from './ApplicationIcon.constants';
 
 export default {
