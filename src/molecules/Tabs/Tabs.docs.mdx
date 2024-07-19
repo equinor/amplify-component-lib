@@ -8,7 +8,12 @@ import * as ComponentStories from 'src/molecules/Tabs/Tabs.stories';
 
 Organise related content across different views to be quickly navigated.
 
-<Links ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/" figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17417%3A0" sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Tabs/Tabs.tsx" edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/navigation-tabs--docs" />
+<Links
+  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17417%3A0"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Tabs/Tabs.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/navigation-tabs--docs"
+/>
 
 <Primary />
 
@@ -60,11 +65,13 @@ Tab width can be decided by three factors:
     tabs. This method is only to be used for four tabs or less.
   </li>
 
-  <li>
-    The width of the widest tab determining the width of all the tabs to provide
-    visual balance. This should be used with caution ensuring all tabs will be
-    seen in smaller layouts.
-  </li>
+{' '}
+
+<li>
+  The width of the widest tab determining the width of all the tabs to provide
+  visual balance. This should be used with caution ensuring all tabs will be
+  seen in smaller layouts.
+</li>
 
   <li>Each tab having its own minimum width to conserve space.</li>
 </ol>
@@ -80,9 +87,11 @@ To navigate using the keyboard use:
     <code>TAB</code> to move from tab to tab panel.
   </li>
 
-  <li>
-    <code>SHIFT + TAB</code> to go backwards.
-  </li>
+{' '}
+
+<li>
+  <code>SHIFT + TAB</code> to go backwards.
+</li>
 
   <li>
     <code>LEFT / RIGHT ARROW</code> to move from between tabs (active tab must
