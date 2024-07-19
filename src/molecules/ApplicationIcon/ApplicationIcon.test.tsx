@@ -1,5 +1,4 @@
-import ApplicationIcon from './ApplicationIcon';
-import { ApplicationIconProps } from './ApplicationIcon';
+import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
 import { render, screen } from 'src/tests/test-utils';
 
 const defaultProps: ApplicationIconProps = {
