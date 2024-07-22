@@ -6,7 +6,12 @@ export default defineConfig({
   test: {
     server: {
       deps: {
-        inline: ['@equinor/eds-tokens']
+        inline: [
+          '@equinor/eds-tokens',
+          '@equinor/eds-core-react',
+          '@equinor/amplify-component-lib',
+          '@equinor/subsurface-app-management',
+        ]
       }
     },
     globals: true,
