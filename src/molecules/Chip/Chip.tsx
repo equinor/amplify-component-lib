@@ -1,9 +1,14 @@
 import {
-  Children as ReactChildren,
+  Children,
+  ForwardedRef,
+  forwardRef,
   Fragment,
   isValidElement,
+  KeyboardEvent,
+  MouseEvent,
   ReactElement,
   ReactNode,
+  useMemo,
 } from 'react';
 
 import { IconData } from '@equinor/eds-icons';
@@ -21,7 +26,9 @@ import {
 export interface BaseChipProps {
   children: ReactNode;
   disabled?: boolean;
-  onDelete?: (event: unknown) => void;
+  onDelete?: (
+    event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
+  ) => void;
   variant?:
     | 'default'
     | 'active'
@@ -29,22 +36,18 @@ export interface BaseChipProps {
     | 'warning-active'
     | 'error'
     | 'error-active';
-  onClick?: (event: unknown) => void;
+  onClick?: (
+    event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
+  ) => void;
   leadingIconData?: IconData;
 }
 
 type ReactElementWithChildren = ReactElement<{ children?: ReactNode }>;
 
-export const Chip = ({
-  children,
-  variant,
-  disabled,
-  onClick,
-  onDelete,
-  ...otherProps
-}: BaseChipProps) => {
-  // Common props for all chips
-
+export const Chip = forwardRef<
+  HTMLDivElement | HTMLButtonElement,
+  BaseChipProps
+>(({ children, variant, disabled, onClick, onDelete, ...otherProps }, ref) => {
   const chipProps = {
     ...otherProps,
     children,
@@ -54,19 +57,17 @@ export const Chip = ({
     onDelete: onDelete,
   };
 
-  // Define a type for React elements with children
-
-  const processChildren = (children: ReactNode): ReactNode[] => {
+  const modifiedChildren = useMemo((): ReactNode[] => {
     const modifiedChildren: ReactNode[] = [];
 
     // Process each child and add it to the new array
-    ReactChildren.map(children, (child, index) => {
+    Children.map(children, (child, index) => {
       if (isValidElement(child)) {
         const element = child as ReactElementWithChildren;
 
         if (element.type === Fragment && element.props.children) {
           // Handle React.Fragment elements
-          ReactChildren.map(
+          Children.map(
             element.props.children,
             (fragmentChild, fragmentIndex) => {
               if (isValidElement(fragmentChild) && fragmentIndex === 0) {
@@ -104,28 +105,36 @@ export const Chip = ({
     });
 
     return modifiedChildren;
-  };
+  }, [children]);
 
   if (!onClick && !onDelete) {
     // Pass readOnly-specific props
     const readOnlyProps: ReadOnlyChipProps = {
       ...chipProps,
     };
-    const modifiedChildren = processChildren(children);
 
-    return <ReadOnlyChip {...readOnlyProps}>{modifiedChildren}</ReadOnlyChip>;
+    return (
+      <ReadOnlyChip
+        {...readOnlyProps}
+        ref={ref as ForwardedRef<HTMLDivElement>}
+      >
+        {modifiedChildren}
+      </ReadOnlyChip>
+    );
   } else {
     // Pass interactive-specific props
     const interactiveProps: InteractiveChipProps = {
       ...chipProps,
     };
-    const modifiedChildren = processChildren(children);
     return (
-      <InteractiveChip {...interactiveProps}>
+      <InteractiveChip
+        {...interactiveProps}
+        ref={ref as ForwardedRef<HTMLButtonElement>}
+      >
         {modifiedChildren}
       </InteractiveChip>
     );
   }
-};
+});
 
 Chip.displayName = 'Chip';
