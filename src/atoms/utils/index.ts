@@ -6,6 +6,7 @@ import { exportComponent } from './export';
 import favicon from './favicon';
 import { getFeatures } from './getFeatures';
 import map from './map';
+import { reactquery } from './reactquery';
 import size from './size';
 import sort from './sort';
 import string from './string';
@@ -19,6 +20,7 @@ export {
   errors,
   exportComponent,
   getFeatures,
+  reactquery,
   favicon,
   map,
   size,
