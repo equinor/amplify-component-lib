@@ -1,18 +1,18 @@
 import { useState } from 'react';
 
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import {
   ContentMenu,
   ContentMenuProps,
 } from 'src/molecules/ContentMenu/ContentMenu';
 
-export default {
+const meta: Meta<typeof ContentMenu> = {
   title: 'Molecules/ContentMenu',
   component: ContentMenu,
   argTypes: {
     items: {
-      control: 'array',
+      control: 'object',
     },
     isLoading: {
       control: 'boolean',
@@ -44,6 +44,8 @@ export default {
     isLoading: false,
   },
 };
+
+export default meta;
 
 export const Primary: StoryFn<ContentMenuProps> = (args) => {
   const [value, setValue] = useState(args.items.at(0)?.value ?? '');

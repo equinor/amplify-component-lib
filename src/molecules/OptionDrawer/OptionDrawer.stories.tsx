@@ -8,7 +8,7 @@ import {
 } from 'src/molecules/OptionDrawer/OptionDrawer';
 import { items, ValueType } from 'src/molecules/OptionDrawer/stories/data';
 
-export default {
+const meta: Meta<typeof OptionDrawer> = {
   title: 'Organisms/OptionDrawer',
   component: OptionDrawer,
   argTypes: {
@@ -27,7 +27,9 @@ export default {
     animateCheck: false,
     animateUncheck: false,
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<OptionDrawerProps<ValueType>> = (args) => {
   const [selectedItems, setSelectedItems] = useState<ValueType[]>([]);

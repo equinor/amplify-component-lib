@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import {
@@ -10,7 +10,7 @@ import {
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
 
-export default {
+const meta: Meta<typeof ComboBox> = {
   title: 'Molecules/Select/ComboBox',
   component: ComboBox,
   argTypes: {
@@ -32,6 +32,8 @@ export default {
     meta: 'Meta label here',
   },
 };
+
+export default meta;
 
 interface Item {
   label: string;

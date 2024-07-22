@@ -14,7 +14,7 @@ import { Stack } from 'src/storybook';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Checkbox> = {
-  title: 'Organisms/Selection Controls/Checkbox',
+  title: 'Molecules/Selection Controls/Checkbox',
   component: Checkbox,
   parameters: {
     docs: {

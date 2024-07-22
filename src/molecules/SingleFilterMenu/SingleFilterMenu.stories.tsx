@@ -5,7 +5,7 @@ import {
   SingleFilterMenuProps,
 } from 'src/molecules/SingleFilterMenu/SingleFilterMenu';
 
-export default {
+const meta: Meta<typeof SingleFilterMenu> = {
   title: 'Molecules/SingleFilterMenu',
   component: SingleFilterMenu,
   argTypes: {
@@ -15,12 +15,13 @@ export default {
   },
   args: {
     data: ['Apples', 'Oranges', 'Bananas'],
-    onChange: (val: string) => console.log(val),
     menuTitle: 'Fruity filter',
     showChip: false,
     chipColor: '#ffffff',
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<SingleFilterMenuProps> = (args) => (
   <SingleFilterMenu {...args} />

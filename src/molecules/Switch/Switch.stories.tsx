@@ -20,7 +20,7 @@ const UnstyledList = styled.ul`
 `;
 
 const meta: Meta<typeof Switch> = {
-  title: 'Organisms/Selection Controls/Switch',
+  title: 'Molecules/Selection Controls/Switch',
   component: Switch,
   parameters: {
     docs: {

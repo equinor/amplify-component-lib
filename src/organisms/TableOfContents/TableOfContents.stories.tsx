@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router';
 
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { Typography } from 'src/molecules';
 import {
@@ -20,11 +20,11 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
-export default {
+const meta: Meta = {
   title: 'Organisms/TableOfContents',
   component: TableOfContents,
   argTypes: {
-    items: { control: 'array' },
+    items: { control: 'object' },
     onlyShowSelectedChildren: { control: 'boolean' },
     variant: { control: 'radio', items: ['border', 'buttons'] },
   },
@@ -47,6 +47,8 @@ export default {
     variant: 'buttons',
   },
 };
+
+export default meta;
 
 const Container = styled.div`
   display: grid;

@@ -1,8 +1,8 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { Waves, WavesProps } from 'src/molecules/Waves/Waves';
 
-export default {
+const meta: Meta<typeof Waves> = {
   title: 'Molecules/Waves',
   component: Waves,
   argTypes: {
@@ -30,6 +30,8 @@ export default {
     heightFromBottom: 600,
   },
 };
+
+export default meta;
 
 export const Primary: StoryFn<WavesProps> = (args) => {
   return <Waves {...args} />;

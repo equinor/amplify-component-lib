@@ -1,16 +1,16 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { Stepper, StepperProps } from 'src/molecules/Stepper/Stepper';
 
 import styled from 'styled-components';
 
-export default {
+const meta: Meta<typeof Stepper> = {
   title: 'Molecules/Stepper',
   component: Stepper,
   argTypes: {
     current: { control: 'number' },
     setCurrent: { action: 'Called setCurrent' },
-    steps: { control: 'array' },
+    steps: { control: 'object' },
     onlyShowCurrentStepLabel: { control: 'boolean' },
     maxWidth: { control: 'text' },
   },
@@ -26,6 +26,8 @@ export default {
     },
   },
 };
+
+export default meta;
 
 const Container = styled.div`
   height: 20rem;
