@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     server: {
       deps: {
-        inline: ['@equinor/subsurface-app-management']
+        inline: ['@equinor/eds-tokens']
       }
     },
     globals: true,
