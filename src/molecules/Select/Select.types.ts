@@ -38,6 +38,7 @@ export interface SelectMenuProps<T extends SelectOptionRequired> {
   itemRefs: MutableRefObject<(HTMLButtonElement | null)[]>;
   onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
   onItemSelect: (item: SelectOption<T>) => void;
+  onMouseEnterItem: (index: number) => void;
   selectableParent?: boolean;
 }
 

@@ -168,11 +168,12 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
     outline: none;
   }
 
-  &:focus-visible {
-    background: ${EDSColors.interactive.primary__hover_alt.rgba};
+  /* Hide any background change on hover since we set focus on hover now */
+  &:hover {
+    background: transparent;
   }
 
-  &:hover {
+  &:focus-visible {
     background: ${EDSColors.interactive.primary__hover_alt.rgba};
   }
 `;
