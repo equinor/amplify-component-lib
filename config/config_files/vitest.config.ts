@@ -4,6 +4,16 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
+    server: {
+      deps: {
+        inline: [
+          '@equinor/eds-tokens',
+          '@equinor/eds-core-react',
+          '@equinor/amplify-component-lib',
+          '@equinor/subsurface-app-management',
+        ]
+      }
+    },
     globals: true,
     environment: 'jsdom',
     passWithNoTests: true,
