@@ -1,5 +1,5 @@
 import { AnimatedCheckmark } from './AnimatedCheckmark';
-import { sizeToPx } from 'src/molecules/AnimatedCheckmark/AnimatedCheckmark.styles';
+import { sizeToPx } from './AnimatedCheckmark.utils';
 import { render, screen } from 'src/tests/test-utils';
 
 test('Default size is as expected', () => {
