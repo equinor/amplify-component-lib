@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { waitFor } from '@testing-library/dom';
 
 import HeaderDrawer from 'src/deprecated/HeaderDrawer';
 import { render, screen, userEvent } from 'src/tests/test-utils';
@@ -23,7 +23,7 @@ test('HeaderDrawer works as expected', async () => {
   expect(screen.getByText(body)).toBeInTheDocument();
 
   await user.click(titleElement);
-  await waitForElementToBeRemoved(screen.getByText(body));
+  await waitFor(() => expect(screen.queryByText(body)).not.toBeInTheDocument());
 });
 
 test('HeaderDrawer openByDefault works as expected', async () => {
@@ -41,5 +41,5 @@ test('HeaderDrawer openByDefault works as expected', async () => {
   expect(screen.getByText(body)).toBeInTheDocument();
 
   await user.click(titleElement);
-  await waitForElementToBeRemoved(screen.getByText(body));
+  await waitFor(() => expect(screen.queryByText(body)).not.toBeInTheDocument());
 });

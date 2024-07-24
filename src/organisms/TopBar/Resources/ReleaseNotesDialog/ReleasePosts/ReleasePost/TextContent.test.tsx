@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import { CancelablePromise } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { TextContent } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleasePosts/ReleasePost/TextContent';
@@ -20,22 +19,6 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
     </QueryClientProvider>
   );
 };
-
-const FAKE_TOKEN = 'FAKE_TOKEN';
-
-vi.mock('@equinor/subsurface-app-management', async () => {
-  class ReleaseNotesService {
-    public static getContainerSasUri(): CancelablePromise<unknown> {
-      return new CancelablePromise((resolve) => {
-        setTimeout(() => {
-          resolve(`PORTALURL?${FAKE_TOKEN}`);
-        }, 100);
-      });
-    }
-  }
-  const actual = await vi.importActual('@equinor/subsurface-app-management');
-  return { ...actual, ReleaseNotesService };
-});
 
 test('TextContent shows text', async () => {
   const textWithImg = '<p>hei<br><br><br></p>';

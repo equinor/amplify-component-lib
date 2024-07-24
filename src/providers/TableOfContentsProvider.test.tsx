@@ -14,7 +14,7 @@ import {
 const { colors } = tokens;
 
 function fakeItems() {
-  return new Array(faker.number.int({ min: 3, max: 8 })).fill(0).map(() => ({
+  return new Array(faker.number.int({ min: 8, max: 16 })).fill(0).map(() => ({
     value: 'a' + faker.string.uuid(),
     label: faker.string.uuid(),
   }));
@@ -125,19 +125,18 @@ test('Manual scroll settings work as expected and do not affect menu scroll', as
 
   const button = screen.getByRole('button', { name: items[1].label });
   const header = document.querySelector(`#${items[1].value}`)!;
+  const headerSpy = vi.spyOn(header, 'scrollIntoView');
 
   await user.click(header);
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(header.scrollIntoView).toHaveBeenCalledWith({
+  expect(headerSpy).toHaveBeenCalledWith({
     block: 'start',
     behavior: 'instant',
   });
 
   await user.click(button);
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(header.scrollIntoView).toHaveBeenCalledWith({
+  expect(headerSpy).toHaveBeenCalledWith({
     block: 'start',
     behavior: 'smooth',
   });
@@ -164,21 +163,24 @@ test('Should scroll instantly to element when shouldInstantlyJumpOnMount and a h
 
   const user = userEvent.setup();
 
-  const button = screen.getByRole('button', { name: items[1].label });
   const header = document.querySelector(`#${items[1].value}`)!;
+  const headerSpy = vi.spyOn(header, 'scrollIntoView');
 
   await user.click(header);
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(header.scrollIntoView).toHaveBeenCalledWith({
+  expect(headerSpy).toHaveBeenCalledWith({
     block: 'start',
     behavior: 'instant',
   });
 
-  await user.click(button);
+  // Move to other
+  const otherButton = screen.getByRole('button', { name: items[7].label });
+  const otherHeader = document.querySelector(`#${items[7].value}`)!;
+  const otherHeaderSpy = vi.spyOn(otherHeader, 'scrollIntoView');
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  expect(header.scrollIntoView).toHaveBeenCalledWith({
+  await user.click(otherButton);
+
+  expect(otherHeaderSpy).toHaveBeenCalledWith({
     block: 'start',
     behavior: 'smooth',
   });

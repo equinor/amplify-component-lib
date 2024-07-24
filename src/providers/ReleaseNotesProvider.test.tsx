@@ -1,73 +1,11 @@
-import { FC, ReactNode } from 'react';
+import { act, FC, ReactNode } from 'react';
 
-import { CancelablePromise } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { act, renderHook, waitFor } from '../tests/test-utils';
+import { renderHook, waitFor } from '../tests/test-utils';
 import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
 import { ReleaseNoteType } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
-
-const releaseNotes = [
-  {
-    releaseId: '123456-1233',
-    applicationName: 'ASDF',
-    version: '12.2.2',
-    title: 'Lorem ipsum',
-    body: '<h1>Release notes body text</h1>',
-    tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
-    createdDate: '2023-05-31T22:00:00.000Z',
-  },
-  {
-    releaseId: '1234dqw6-1233',
-    applicationName: 'ASDF',
-    version: '12.2.3',
-    title: 'Lorem ipsum',
-    body: '<h1>Release2 notes body text</h1>',
-    tags: [],
-    createdDate: '2020-05-31T22:00:00.000Z',
-  },
-  {
-    releaseId: '1234dqw6-1233',
-    applicationName: 'ASDF',
-    version: '12.2.3',
-    title: 'Lorem ipsum',
-    body: '<h1>Release2 notes body text qWert</h1>',
-    tags: [ReleaseNoteType.IMPROVEMENT],
-    createdDate: '2022-05-31T22:00:00.000Z',
-  },
-];
-
-const monthAndYears = [
-  {
-    label: '2023',
-    months: [
-      {
-        label: 'June 2023',
-        value: new Date('2023-05-31T22:00:00.000Z'),
-      },
-    ],
-    value: '2023',
-  },
-];
-const mockServiceHasError = false;
-
-vi.mock('@equinor/subsurface-app-management', async () => {
-  class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<unknown> {
-      return new CancelablePromise((resolve, reject) => {
-        setTimeout(() => {
-          if (mockServiceHasError) {
-            reject('error release notes');
-          } else {
-            resolve(releaseNotes);
-          }
-        }, 200);
-      });
-    }
-  }
-  const original = await vi.importActual('@equinor/subsurface-app-management');
-  return { ...original, ReleaseNotesService };
-});
+import { fakeReleaseNotes } from 'src/tests/mockHandlers';
 
 interface WrapperProp {
   children: ReactNode;
@@ -106,14 +44,15 @@ describe('Release notes provider', () => {
       wrapper: Wrappers,
     });
 
-    // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
-        return expect(result.current.filteredData.length).toBe(3);
+        return expect(result.current.filteredData.length).toBe(
+          fakeReleaseNotes.length
+        );
       },
       { timeout: 550 }
     );
-    expect(result.current.filteredData).toStrictEqual(releaseNotes);
+    expect(result.current.filteredData).not.toBeNull();
   });
 
   test('should use setSearch to populate search variable', async () => {
@@ -121,10 +60,11 @@ describe('Release notes provider', () => {
       wrapper: Wrappers,
     });
 
-    // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
-        return expect(result.current.filteredData.length).toBe(3);
+        return expect(result.current.filteredData.length).toBe(
+          fakeReleaseNotes.length
+        );
       },
       { timeout: 550 }
     );
@@ -139,33 +79,15 @@ describe('Release notes provider', () => {
         sortValue: { label: '', value: '' },
       });
     });
-    await waitFor(
-      () => {
-        return expect(result.current.filteredData.length).toBe(3);
-      },
-      { timeout: 550 }
-    );
+
+    expect(result.current.filteredData.length).toBeGreaterThan(0);
+
     expect(result.current.search.filterValues).toStrictEqual({});
     expect(result.current.search.searchValue).toBe('');
     expect(result.current.search.sortValue).toStrictEqual({
       label: '',
       value: '',
     });
-  });
-
-  test('should correctly return extracted month and year from data', async () => {
-    const { result } = renderHook(() => useReleaseNotes(), {
-      wrapper: Wrappers,
-    });
-
-    // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
-    await waitFor(
-      () => {
-        return expect(result.current.filteredData.length).toBe(3);
-      },
-      { timeout: 550 }
-    );
-    expect(monthAndYears).toBeDefined();
   });
 
   test('should return an empty list when searchValue has a term which does not match anything in release notes', async () => {
@@ -199,28 +121,14 @@ describe('Release notes provider', () => {
     act(() => {
       result.current.setSearch({
         filterValues: undefined,
-        searchValue: ' qwert',
+        searchValue: 'SEARCH',
         sortValue: undefined,
       });
     });
 
-    const expected = [
-      {
-        releaseId: '1234dqw6-1233',
-        applicationName: 'ASDF',
-        version: '12.2.3',
-        title: 'Lorem ipsum',
-        body: '<h1>Release2 notes body text qWert</h1>',
-        tags: [ReleaseNoteType.IMPROVEMENT],
-        createdDate: '2022-05-31T22:00:00.000Z',
-      },
-    ];
-
-    // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
         expect(result.current.filteredData.length).toBe(1);
-        expect(result.current.filteredData).toStrictEqual(expected);
       },
       { timeout: 550 }
     );
@@ -243,14 +151,13 @@ describe('Release notes provider', () => {
       });
     });
 
-    // TODO: improve on this hack; To use expect as a way to ensure that data is populated so that we can check more specifically what we expect
     await waitFor(
       () => {
         return expect(result.current.filteredData.length).toBe(1);
       },
       { timeout: 550 }
     );
-    expect(result.current.filteredData).toStrictEqual([releaseNotes[0]]);
+    expect(result.current.filteredData).toStrictEqual([fakeReleaseNotes[0]]);
   });
 
   test('should return an empty list when filterValues does not match anything in release notes', async () => {

@@ -1,8 +1,7 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import { AccountInfo } from '@azure/msal-browser';
 import {
   CancelablePromise,
   ServiceNowIncidentResponse,
@@ -20,6 +19,7 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
+import { fakeReleaseNotes } from 'src/tests/mockHandlers';
 import {
   act,
   render,
@@ -32,33 +32,6 @@ import {
 import { beforeEach, describe, expect } from 'vitest';
 
 const { PORTAL_URL_WITHOUT_LOCALHOST } = environment;
-
-const releaseNotes = [
-  {
-    releaseId: '221d87d1-7aef-4be5-a0c6-15cb73e3fwefa2',
-    applicationName: 'PWEX',
-    version: null,
-    title: 'Improved task board and reporting overview June',
-    body: '<h1>Release notes body text</h1>',
-    tags: ['Improvement', 'Bug fix'],
-    createdDate: '2023-06-29T10:48:49.6883+00:00',
-  },
-];
-
-vi.mock('@azure/msal-react', () => ({
-  MsalProvider: (children: ReactElement) => <div>{children}</div>,
-}));
-
-vi.mock('@azure/msal-browser', () => {
-  return {
-    PublicClientApplication: class PublicClientApplication {
-      constructor() {
-        console.log('created');
-      }
-    },
-    AccountInfo: { username: 'mock' } as AccountInfo,
-  };
-});
 
 function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
@@ -153,7 +126,7 @@ vi.mock('@equinor/subsurface-app-management', async () => {
           if (mockServiceHasError) {
             reject('error release notes');
           } else {
-            resolve(releaseNotes);
+            resolve(fakeReleaseNotes);
           }
         }, 300);
       });
@@ -388,14 +361,12 @@ describe('Resources', () => {
       expect(typeButton).toBeInTheDocument();
       const featureButton = dialog.getByRole('menuitem', {
         hidden: true,
-        name: 'Feature',
+        name: 'Bug fix',
       });
       await user.click(featureButton);
 
-      const nothingMatchinText = dialog.getByText(
-        `Nothing matching " Feature"`
-      );
-      expect(nothingMatchinText).toBeInTheDocument();
+      const nothingMatchingText = dialog.getByText(/nothing matching/i);
+      expect(nothingMatchingText).toBeInTheDocument();
     });
   });
 
