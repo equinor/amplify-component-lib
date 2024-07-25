@@ -31,10 +31,12 @@ function fakeGroups(count = 5, isParented?: boolean) {
 }
 
 function fakeItemsWithChildren(count = 5) {
-  return new Array(count).fill(0).map(() => ({
-    ...fakeSelectItem(),
-    children: new Array(2).fill(0).map(() => ({ ...fakeSelectItem() })),
-  }));
+  return structuredClone(
+    new Array(count).fill(0).map(() => ({
+      ...fakeSelectItem(),
+      children: new Array(2).fill(0).map(() => ({ ...fakeSelectItem() })),
+    }))
+  );
 }
 
 test('Basic single select', async () => {
@@ -229,7 +231,7 @@ test('Parent multi select with selectableParent = true', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith([], itemWithoutChildren);
 });
 
-test('Parent multi select - nested selection works as expected', async () => {
+test('Parent multi select - nested selection works as expected with keyboard', async () => {
   const label = faker.animal.bear();
   const items = fakeItemsWithChildren();
   const handler = vi.fn();
@@ -237,13 +239,9 @@ test('Parent multi select - nested selection works as expected', async () => {
   const { rerender } = render(
     <Select label={label} onSelect={handler} items={items} values={[]} />
   );
-  const user = userEvent.setup();
+  const user = userEvent.setup({ delay: 100 });
 
   await user.click(screen.getByRole('combobox'));
-
-  // Go past and back  -- for some reason if you remove the next two lines the test sometimes fails 😅
-  await user.keyboard('{ArrowDown}');
-  await user.keyboard('{ArrowUp}');
 
   // Enter menu
   await user.keyboard('{ArrowDown}');
@@ -303,7 +301,7 @@ test('Parent multi select - nested selection with preselected parent works as ex
       values={[items[0]]}
     />
   );
-  const user = userEvent.setup();
+  const user = userEvent.setup({ delay: 100 });
 
   await user.click(screen.getByRole('combobox'));
 
@@ -633,7 +631,7 @@ test('Keyboard navigation works as expected', async () => {
   render(
     <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
-  const user = userEvent.setup();
+  const user = userEvent.setup({ delay: 100 });
 
   const searchField = screen.getByRole('combobox');
 
@@ -736,68 +734,77 @@ test('Filtering with no results in groups', async () => {
   expect(screen.getByText('No items found')).toBeInTheDocument();
 });
 
-test('Keyboard navigation inside parent item', async () => {
-  const label = faker.animal.bear();
-  const items = fakeItemsWithChildren();
-  const handler = vi.fn();
+test(
+  'Keyboard navigation inside parent item',
+  async () => {
+    const label = faker.animal.bear();
+    const items = fakeItemsWithChildren();
+    const handler = vi.fn();
 
-  render(<Select label={label} onSelect={handler} items={items} values={[]} />);
-  const user = userEvent.setup();
+    render(
+      <Select label={label} onSelect={handler} items={items} values={[]} />
+    );
+    const user = userEvent.setup({ delay: 100 });
 
-  await user.click(screen.getByRole('combobox'));
+    await user.click(screen.getByRole('combobox'));
 
-  // Enter menu
-  await user.keyboard('{ArrowDown}');
-
-  // Go past and back
-  await user.keyboard('{ArrowDown}');
-  await user.keyboard('{ArrowUp}');
-
-  // Open / Close / Open first parent
-  await user.keyboard('{ArrowRight}');
-  await user.keyboard('{ArrowLeft}');
-
-  await user.keyboard('{ArrowRight}');
-
-  // Go to first child
-  await user.keyboard('{ArrowDown}');
-
-  // Selecting works
-  await user.keyboard('{Enter}');
-  expect(handler).toBeCalledWith([items[0].children[0]], items[0].children[0]);
-
-  // Move up/down on child element
-  await user.keyboard('{ArrowDown}');
-  await user.keyboard('{ArrowUp}');
-
-  // Move back to parent
-  await user.keyboard('{ArrowUp}');
-
-  // Move down on last child element
-  await user.keyboard('{ArrowDown}');
-
-  for (let i = 1; i < items[0].children.length; i++) {
+    // Enter menu
     await user.keyboard('{ArrowDown}');
-  }
 
-  await user.keyboard('{ArrowDown}');
+    // Go past and back
+    await user.keyboard('{ArrowDown}');
+    await user.keyboard('{ArrowUp}');
 
-  for (const child of items[0].children) {
+    // Open / Close / Open first parent
+    await user.keyboard('{ArrowRight}');
+    await user.keyboard('{ArrowLeft}');
+
+    await user.keyboard('{ArrowRight}');
+
+    // Go to first child
+    await user.keyboard('{ArrowDown}');
+
+    // Selecting works
+    await user.keyboard('{Enter}');
+    expect(handler).toBeCalledWith(
+      [items[0].children[0]],
+      items[0].children[0]
+    );
+
+    // Move up/down on child element
+    await user.keyboard('{ArrowDown}');
+    await user.keyboard('{ArrowUp}');
+
+    // Move back to parent
+    await user.keyboard('{ArrowUp}');
+
+    // Move down on last child element
+    await user.keyboard('{ArrowDown}');
+
+    for (let i = 1; i < items[0].children.length; i++) {
+      await user.keyboard('{ArrowDown}');
+    }
+
+    await user.keyboard('{ArrowDown}');
+
+    for (const child of items[0].children) {
+      expect(
+        screen.queryByRole('menuitem', { name: child.label })
+      ).not.toBeInTheDocument();
+    }
+
+    // Go back to search field
+    await user.keyboard('{ArrowUp}');
+    await user.keyboard('{ArrowUp}');
+
+    await user.keyboard(items[0].label);
+
     expect(
-      screen.queryByRole('menuitem', { name: child.label })
+      screen.queryByRole('menuitem', { name: items[1].label })
     ).not.toBeInTheDocument();
-  }
-
-  // Go back to search field
-  await user.keyboard('{ArrowUp}');
-  await user.keyboard('{ArrowUp}');
-
-  await user.keyboard(items[0].label);
-
-  expect(
-    screen.queryByRole('menuitem', { name: items[1].label })
-  ).not.toBeInTheDocument();
-});
+  },
+  { timeout: 10000 }
+);
 
 test('Disabled works as expected', async () => {
   const label = faker.animal.bear();
