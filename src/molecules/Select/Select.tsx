@@ -83,8 +83,6 @@ export const Select = <T extends SelectOptionRequired>(
   }, [label, meta]);
 
   useOutsideClick(menuRef.current, (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
     if (
       inDialog &&
       open &&
