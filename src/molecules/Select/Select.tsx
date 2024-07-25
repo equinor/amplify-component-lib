@@ -3,6 +3,7 @@ import { useMemo, useRef } from 'react';
 import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+import { useOutsideClick } from '@equinor/eds-utils';
 
 import { useSelect } from 'src/atoms/hooks/useSelect';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
@@ -47,6 +48,7 @@ export const Select = <T extends SelectOptionRequired>(
     meta,
     id = `amplify-combobox-${label}`,
     variant,
+    inDialog = false,
   } = props;
   const {
     handleOnClear,
@@ -75,9 +77,26 @@ export const Select = <T extends SelectOptionRequired>(
     placeholder,
   });
   const anchorRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const shouldShowTopMargin = useMemo(() => {
     return !!label || !!meta;
   }, [label, meta]);
+
+  useOutsideClick(menuRef.current, (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (
+      inDialog &&
+      open &&
+      event.target &&
+      anchorRef.current &&
+      menuRef.current &&
+      !anchorRef.current.contains(event.target as Node) &&
+      !menuRef.current?.contains(event.target as Node)
+    ) {
+      handleOnClose();
+    }
+  });
 
   const valueElements = useMemo(() => {
     if ('value' in props && props.value) {
@@ -158,6 +177,7 @@ export const Select = <T extends SelectOptionRequired>(
       </Container>
       {open && (
         <StyledMenu
+          ref={menuRef}
           open
           id="combobox-menu"
           anchorEl={anchorRef.current}

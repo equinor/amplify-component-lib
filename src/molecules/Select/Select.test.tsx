@@ -1099,3 +1099,75 @@ test('onSearchChange to be called with value when typing in input field', async 
   await user.type(searchField, 'Test');
   expect(handleOnSearchChange).toHaveBeenCalledWith('Test');
 });
+
+test('inDialog works as expected', async () => {
+  const handler = vi.fn();
+  const items = fakeSelectItems();
+  const placeholder = faker.airline.airplane().name;
+  const outside = faker.vehicle.vehicle();
+
+  render(
+    <>
+      <Select
+        placeholder={placeholder}
+        inDialog
+        onSelect={handler}
+        items={items}
+        value={undefined}
+      />
+      <p>{outside}</p>
+    </>
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByText(placeholder));
+
+  for (const item of items) {
+    expect(screen.getByText(item.label)).toBeInTheDocument();
+  }
+
+  await user.click(screen.getByText(outside));
+
+  for (const item of items) {
+    expect(screen.queryByText(item.label)).not.toBeInTheDocument();
+  }
+});
+
+test('openCallback works as expected', async () => {
+  const handler = vi.fn();
+  const items = fakeSelectItems();
+  const placeholder = faker.airline.airplane().name;
+  const outside = faker.vehicle.vehicle();
+  const openCallback = vi.fn();
+
+  render(
+    <>
+      <Select
+        placeholder={placeholder}
+        inDialog
+        onSelect={handler}
+        items={items}
+        value={undefined}
+        onOpenCallback={openCallback}
+      />
+      <p>{outside}</p>
+    </>
+  );
+  const user = userEvent.setup();
+
+  // Open
+  await user.click(screen.getByText(placeholder));
+
+  expect(openCallback).toHaveBeenCalledWith(true);
+
+  // Close
+  await user.click(screen.getByText(placeholder));
+
+  expect(openCallback).toHaveBeenCalledWith(false);
+
+  // Open and click outside
+  await user.click(screen.getByText(placeholder));
+  await user.click(screen.getByText(outside));
+
+  expect(openCallback).toHaveBeenCalledWith(false);
+});
