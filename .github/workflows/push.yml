@@ -15,6 +15,7 @@ jobs:
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
   release:
+    needs: [publish]
     name: Create release notes
     runs-on: ubuntu-latest
     permissions:
