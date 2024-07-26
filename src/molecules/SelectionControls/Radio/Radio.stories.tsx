@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { Checkbox } from './Checkbox';
+import { Radio } from 'src/molecules/SelectionControls/Radio/Radio';
 
-const meta: Meta<typeof Checkbox> = {
-  title: 'Molecules/Selection Controls/Checkbox',
-  component: Checkbox,
+const meta: Meta<typeof Radio> = {
+  title: 'Molecules/Selection Controls/Radio',
+  component: Radio,
   argTypes: {
     onChange: { action: 'onChange' },
   },
@@ -12,14 +12,14 @@ const meta: Meta<typeof Checkbox> = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=4202-107640&m=dev',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=2492-4489&m=dev',
     },
   },
   args: {},
 };
 
 export default meta;
-type Story = StoryObj<typeof Checkbox>;
+type Story = StoryObj<typeof Radio>;
 
 export const Default: Story = {
   args: {
@@ -40,10 +40,11 @@ export const Outlined: Story = {
     outlined: true,
   },
 };
+
 export const DisabledOutlined: Story = {
   args: {
     label: 'Toyota',
-    outlined: true,
     disabled: true,
+    outlined: true,
   },
 };
