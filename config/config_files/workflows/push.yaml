@@ -28,14 +28,6 @@ jobs:
       to-environment: staging
     secrets:
       webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-  notify_staging:
-    name: Notify on slack
-    needs: [deploy_staging]
-    uses: ./.github/workflows/notify.yaml
-    with:
-      environment-name: staging
-    secrets:
-      webhook-url: ${{ secrets.webhook-url }}
   deploy_production:
     name: 🚀 Promote to production
     needs: [deploy_staging]
@@ -46,15 +38,3 @@ jobs:
       to-environment: production
     secrets:
       webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-  release_production:
-    name: Create new release
-    needs: [deploy_production]
-    uses: ./.github/workflows/release.yaml
-  notify_production:
-    name: Notify on slack
-    needs: [release_production]
-    uses: ./.github/workflows/notify.yaml
-    with:
-      environment-name: production
-    secrets:
-      webhook-url: ${{ secrets.webhook-url }}
