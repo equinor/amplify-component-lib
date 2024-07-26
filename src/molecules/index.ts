@@ -75,12 +75,13 @@ export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
 export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
 export { ListItem } from './ListItem/ListItem';
 export type { ListItemProps } from './ListItem/ListItem';
+export { Checkbox } from './Checkbox/Checkbox';
+export type { CheckboxProps } from './Checkbox/Checkbox';
 
 // EDS Re-export
 export {
   Breadcrumbs,
   Button,
-  Checkbox,
   Divider,
   Dialog,
   Menu,
@@ -98,7 +99,6 @@ export type {
   BreadcrumbsProps,
   BreadcrumbProps,
   ButtonProps,
-  CheckboxProps,
   DialogProps,
   DividerProps,
   MenuProps,
