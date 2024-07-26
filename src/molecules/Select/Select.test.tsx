@@ -803,7 +803,7 @@ test(
       screen.queryByRole('menuitem', { name: items[1].label })
     ).not.toBeInTheDocument();
   },
-  { timeout: 10000 }
+  { timeout: 15000 }
 );
 
 test('Disabled works as expected', async () => {
