@@ -1,0 +1,93 @@
+name: Generate release notes
+run-name: ${{ github.actor }} is generating release notes
+on:
+  deployment_status:
+jobs:
+  generate-release:
+    name: Generate release notes and notify on slack
+    if: ${{ github.event.deployment_status.state == 'success' && (github.event.deployment_status.environment == 'staging' || github.event.deployment_status.environment == 'production')}}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check what the next release version should be
+        id: check-next-version
+        uses: equinor/semantic-version-gitmoji-action@v1.0.0
+        with:
+          compareSHA: ${{ github.sha }}
+      - name: Generate draft release notes
+        id: draft-release
+        if: ${{github.event.deployment_status.environment == 'staging'}}
+        run: |
+          releaseUrl="$(gh release create v${{steps.check-next-version.outputs.version}} --generate-notes --target ${{github.sha}} --draft)"
+          echo "RELEASE_DRAFT_URL=$releaseUrl" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Notify in application specific channel about new draft release
+        id: slack-notification-from-staging
+        if: ${{github.event.deployment_status.environment == 'staging'}}
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "🚀 Deployed v${{steps.check-next-version.outputs.version}} to staging",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚀 ${{ vars.RADIX_APPLICATION_NAME }} - Deployed v${{steps.check-next-version.outputs.version}} to staging"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Check out ${{ steps.draft-release.outputs.RELEASE_DRAFT_URL }} on the new changes"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_STAGING }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Generate release notes
+        id: release-notes
+        if: ${{github.event.deployment_status.environment == 'production'}}
+        run: |
+          releaseUrl="$(gh release create v${{steps.check-next-version.outputs.version}} --generate-notes --target ${{github.sha}})"
+          echo "RELEASE_URL=$releaseUrl" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Notify in application specific channel about new release
+        id: slack-notification-from-production
+        if: ${{github.event.deployment_status.environment == 'production'}}
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "🚀 Deployed v${{steps.check-next-version.outputs.version}} to production",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚀 ${{ vars.RADIX_APPLICATION_NAME }} - Deployed v${{steps.check-next-version.outputs.version}} to production"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Check out ${{ steps.draft-release.outputs.RELEASE_URL }} on the new changes"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PRODUCTION }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

@@ -1,7 +1,7 @@
 import { IconData } from '@equinor/eds-icons';
 
 export const amplify_sidebyside: IconData = {
-  name: 'compare',
+  name: 'side_by_side',
   prefix: 'amplify',
   height: '18',
   width: '18',

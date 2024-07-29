@@ -30,7 +30,7 @@ export const amplify_sharepoint: IconData = {
 };
 
 export const amplify_tutorials: IconData = {
-  name: 'h2',
+  name: 'tutorials',
   prefix: 'amplify',
   height: '24',
   width: '24',
@@ -39,7 +39,7 @@ export const amplify_tutorials: IconData = {
 };
 
 export const amplify_small_portal: IconData = {
-  name: 'h2',
+  name: 'small_portal',
   prefix: 'amplify',
   height: '24',
   width: '24',
