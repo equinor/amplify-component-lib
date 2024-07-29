@@ -5,6 +5,7 @@ export type { FieldSelectorProps } from './FieldSelector/FieldSelector';
 export { SideBar } from './SideBar';
 export type { ItemType } from './SideBar';
 export { TopBar } from './TopBar';
+export type { GuidelineSections } from './TopBar/Guidelines/Guidelines';
 export type { SettingsSections } from './TopBar/Settings';
 export { FullPageStatus } from './FullPageStatus/FullPageStatus';
 export { ErrorPage } from './ErrorPage';
