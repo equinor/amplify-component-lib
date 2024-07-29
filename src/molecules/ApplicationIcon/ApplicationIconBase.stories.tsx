@@ -1,11 +1,8 @@
-// Import necessary modules from Storybook
 import { Meta, StoryFn } from '@storybook/react';
 
-import { embark } from './ApplicationIconData/ApplicationIconCollection'; // Adjust imports as per your icons collection
-// Import the component and its props
+import { embark } from './ApplicationIconData/ApplicationIconCollection';
 import { AllowedColors, AppBaseProps, colorMap } from './ApplicationIcon.utils';
-import NewApplicationIconBase from './ApplicationIconBase';
-import ApplicationIconBase from './ApplicationIconBase';
+import { ApplicationIconBase } from './ApplicationIconBase';
 
 import styled from 'styled-components';
 
@@ -16,10 +13,9 @@ const StyledWrapper = styled.div`
   align-items: center;
 `;
 
-// Define the default export with title and component
-export default {
+const meta: Meta<typeof ApplicationIconBase> = {
   title: 'Molecules/ApplicationIcon/ApplicationIconBase',
-  component: NewApplicationIconBase,
+  component: ApplicationIconBase,
   argTypes: {
     size: {
       control: {
@@ -55,7 +51,9 @@ export default {
       defaultValue: 'none',
     },
   },
-} as Meta;
+};
+
+export default meta;
 
 // Define the primary story
 export const Primary: StoryFn<AppBaseProps> = (args) => {

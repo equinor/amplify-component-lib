@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
 import { Button } from '@equinor/eds-core-react';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { AnimatedCheckmark } from './AnimatedCheckmark';
 
 import styled from 'styled-components';
 
-export default {
+const meta: Meta = {
   title: 'Molecules/AnimatedCheckmark',
   component: AnimatedCheckmark,
   parameters: {
@@ -23,6 +23,8 @@ export default {
     },
   },
 };
+
+export default meta;
 
 const Container = styled.div`
   display: grid;

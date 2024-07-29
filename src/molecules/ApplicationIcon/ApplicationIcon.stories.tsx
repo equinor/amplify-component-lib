@@ -7,7 +7,7 @@ import { Meta } from '@storybook/react';
 import { ApplicationIcon } from './ApplicationIcon';
 import { APP_ICONS } from './ApplicationIcon.constants';
 
-export default {
+const meta: Meta<typeof ApplicationIcon> = {
   title: 'Molecules/ApplicationIcon',
   component: ApplicationIcon,
   argTypes: {
@@ -29,7 +29,9 @@ export default {
   args: {
     size: 96,
   },
-} as Meta;
+};
+
+export default meta;
 
 const Template: FC<{ name: string }> = (args) => (
   <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
