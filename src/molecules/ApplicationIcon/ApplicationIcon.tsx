@@ -11,9 +11,9 @@ import {
   orca,
   premo,
   pwex,
-} from './ApplicationIconData/ApplicationIconCollection'; // Adjust imports as per your icons collection
-import { AllowedColors } from './ApplicationIcon.utils'; // Adjust the path as per your project structure
-import ApplicationIconBase from './ApplicationIconBase'; // Adjust the path as per your project structure
+} from './ApplicationIconData/ApplicationIconCollection';
+import { AllowedColors } from './ApplicationIcon.utils';
+import { ApplicationIconBase } from './ApplicationIconBase';
 
 export type ApplicationName =
   | 'amplify'
