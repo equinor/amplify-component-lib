@@ -5,7 +5,7 @@ export type { FieldSelectorProps } from './FieldSelector/FieldSelector';
 export { SideBar } from './SideBar';
 export type { ItemType } from './SideBar';
 export { TopBar } from './TopBar';
-export type { SettingsSections } from './TopBar/Settings';
+export type { SettingsSection } from './TopBar/Settings';
 export { FullPageStatus } from './FullPageStatus/FullPageStatus';
 export { ErrorPage } from './ErrorPage';
 export { GlitchAnimation } from './ErrorPage/illustrations/GlitchAnimation';
