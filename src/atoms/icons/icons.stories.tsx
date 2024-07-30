@@ -71,7 +71,7 @@ interface StoryFnProps {
   rotation: 0 | 90 | 180 | 270;
 }
 
-export default {
+const meta: Meta = {
   title: 'Atoms/AmplifyIcons',
   component: Icon,
   argTypes: {
@@ -117,7 +117,9 @@ export default {
     size: 96,
     rotation: 0,
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<StoryFnProps> = (args) => {
   return (

@@ -6,7 +6,7 @@ import {
   RegularFileProgressBaseProps,
 } from 'src/molecules/FileProgress/FileProgress';
 
-export default {
+const meta: Meta<typeof FileProgress> = {
   title: 'Molecules/FileProgress',
   component: FileProgress,
   parameters: {
@@ -23,24 +23,24 @@ export default {
     isError: { control: 'boolean' },
     customLoadingText: { control: 'text' },
     customCompleteText: { control: 'text' },
-    shortErrorText: { control: 'text' },
     fullErrorText: { control: 'text' },
   },
   args: {
     compact: false,
-    file: { name: 'test', size: 1500000000 },
+    file: new File([], 'test'),
     progressPercent: 1,
     isDone: false,
     customLoadingText: undefined,
     customCompleteText: undefined,
     isError: false,
-    shortErrorText: undefined,
     fullErrorText: undefined,
     onCancel: () => null,
     onRetry: () => null,
     onDelete: () => null,
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<
   RegularFileProgressBaseProps | CompactFileProgressBaseProps

@@ -106,9 +106,11 @@ const List = () => (
   </Container>
 );
 
-export default {
+const meta: Meta = {
   title: 'Atoms/Hooks',
   component: List,
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn = () => <List />;

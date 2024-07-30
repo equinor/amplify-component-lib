@@ -12,7 +12,7 @@ import {
 import { NoiseShape } from './NoiseShape';
 import { WaveShape } from './WaveShape';
 
-const ApplicationIconBase: FC<AppBaseProps> = ({
+export const ApplicationIconBase: FC<AppBaseProps> = ({
   waveIntervalDist = 14.75,
   size = 512,
   color = 'blue',
@@ -105,4 +105,3 @@ const ApplicationIconBase: FC<AppBaseProps> = ({
 };
 
 ApplicationIconBase.displayName = 'ApplicationIconBase';
-export default ApplicationIconBase;

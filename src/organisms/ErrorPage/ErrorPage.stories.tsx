@@ -6,7 +6,7 @@ import { ErrorPage } from '.';
 import { ErrorType } from 'src/atoms/types/Errors';
 import { getErrorContent } from 'src/atoms/utils/errors';
 
-export default {
+const meta: Meta = {
   title: 'Organisms/ErrorPage',
   component: ErrorPage,
   parameters: {
@@ -55,7 +55,9 @@ export default {
     haveDetails: false,
     details: 'More details...',
   },
-} as Meta;
+};
+
+export default meta;
 
 interface ErrorPageStoryProps {
   customized: boolean;

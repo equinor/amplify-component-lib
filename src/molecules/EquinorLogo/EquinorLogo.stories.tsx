@@ -5,7 +5,7 @@ import {
   EquinorLogoProps,
 } from 'src/molecules/EquinorLogo/EquinorLogo';
 
-export default {
+const meta: Meta<typeof EquinorLogo> = {
   title: 'Molecules/EquinorLogo',
   component: EquinorLogo,
   argTypes: {
@@ -21,7 +21,9 @@ export default {
     large: false,
     size: 48,
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<EquinorLogoProps> = (args) => (
   <EquinorLogo {...args} />

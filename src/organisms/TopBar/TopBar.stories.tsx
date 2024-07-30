@@ -12,14 +12,10 @@ import { MenuItemType } from 'src/organisms/SideBar/MenuItem';
 import { Template } from 'src/organisms/Template/Template';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
-export default {
+const meta: Meta<typeof TopBar> = {
   title: 'Organisms/TopBar/TopBar',
   component: TopBar,
   argTypes: {
-    customIcon: {
-      control: 'select',
-      options: ['none', 'car', 'dashboard', 'history', 'home'],
-    },
     applicationIcon: {
       control: 'select',
       options: [
@@ -52,7 +48,6 @@ export default {
     },
   },
   args: {
-    customIcon: 'none',
     applicationIcon: 'portal',
     applicationName: 'Heinrich von schnellfahrer',
     capitalize: false,
@@ -61,7 +56,9 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<TopBarType> = ({ ...args }) => {
   return (

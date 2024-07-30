@@ -1,4 +1,4 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import Counter from './custom-extensions/Counter';
 import { EditorMenu, EditorText } from './MenuBar/MenuBar';
@@ -12,7 +12,7 @@ import { RichText } from '.';
 import { richtext } from 'src/atoms';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 
-export default {
+const meta: Meta<typeof RichTextEditor> = {
   title: 'Molecules/RichTextEditor',
   component: RichTextEditor,
   argTypes: {
@@ -29,12 +29,10 @@ export default {
     minHeight: 'auto',
     maxHeight: '200px',
     lightBackground: false,
-    onImageUpload: (file: File) => {
-      console.log(file.name);
-      return '';
-    },
   },
 };
+
+export default meta;
 
 export const Primary: StoryFn<RichTextEditorProps> = (args) => {
   return <RichTextEditor {...args} />;

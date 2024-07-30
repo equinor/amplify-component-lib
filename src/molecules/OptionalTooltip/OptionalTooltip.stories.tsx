@@ -4,7 +4,7 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
-export default {
+const meta: Meta<typeof OptionalTooltip> = {
   title: 'Molecules/OptionalTooltip',
   component: OptionalTooltip,
   argTypes: { title: { control: 'text' } },
@@ -17,7 +17,8 @@ export default {
       },
     },
   },
-} as Meta;
+};
+export default meta;
 
 export const Primary: StoryFn = (args) => (
   <OptionalTooltip {...args}>

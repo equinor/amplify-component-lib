@@ -5,7 +5,7 @@ import {
   FullPageStatusProps,
 } from 'src/organisms/FullPageStatus/FullPageStatus';
 
-export default {
+const meta: Meta<typeof FullPageStatus> = {
   title: 'Organisms/FullPageStatus',
   component: FullPageStatus,
   parameters: {
@@ -14,7 +14,9 @@ export default {
       url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?type=design&node-id=5694-19835&mode=design&t=jlQAMMWK1GLpzcAL-4',
     },
   },
-} as Meta;
+};
+
+export default meta;
 
 const Template: StoryFn<FullPageStatusProps> = (args) => (
   <FullPageStatus {...args} />

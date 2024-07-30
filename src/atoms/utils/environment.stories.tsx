@@ -2,9 +2,11 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import UtilStory from 'src/storybook/UtilStory';
 
-export default {
+const meta: Meta = {
   title: 'Atoms/Utils/AuthEnvironment/Environment',
-} as Meta;
+};
+
+export default meta;
 
 export const GetConfig: StoryFn = () => {
   const codeText = `

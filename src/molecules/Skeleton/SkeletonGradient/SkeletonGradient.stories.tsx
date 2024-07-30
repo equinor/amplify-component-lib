@@ -7,7 +7,7 @@ import {
 
 import styled from 'styled-components';
 
-export default {
+const meta: Meta<typeof SkeletonGradient> = {
   title: 'Molecules/Skeleton/SkeletonGradient',
   component: SkeletonGradient,
   argTypes: {
@@ -20,7 +20,9 @@ export default {
       url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?type=design&node-id=5694-19891&mode=design&t=jlQAMMWK1GLpzcAL-4',
     },
   },
-} as Meta;
+};
+
+export default meta;
 
 const Container = styled.div`
   display: flex;
