@@ -63,6 +63,7 @@ export const Select = <T extends SelectOptionRequired>(
     handleOnClose,
     handleOnOpen,
     handleOnRemoveItem,
+    handleOnMouseEnterItem,
     open,
     searchRef,
     tryingToRemoveItem,
@@ -193,6 +194,7 @@ export const Select = <T extends SelectOptionRequired>(
               itemRefs={itemRefs}
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
+              onMouseEnterItem={handleOnMouseEnterItem}
             />
           ) : (
             <SelectMenu
@@ -201,6 +203,7 @@ export const Select = <T extends SelectOptionRequired>(
               itemRefs={itemRefs}
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
+              onMouseEnterItem={handleOnMouseEnterItem}
               selectableParent={
                 'values' in props ? props.selectableParent : false
               }

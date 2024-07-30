@@ -3,6 +3,8 @@ import { FC } from 'react';
 import {
   acquire,
   amplify,
+  AppIconData,
+  bravos,
   dasha,
   embark,
   equinor,
@@ -28,7 +30,7 @@ export type ApplicationName =
 
 interface ApplicationIconData {
   appName: string;
-  iconSvg: string[];
+  iconSvg: AppIconData['svgPathData'];
   rotationVariant: number;
   color: AllowedColors;
 }
@@ -38,6 +40,12 @@ const apps: ApplicationIconData[] = [
     appName: 'amplify',
     iconSvg: amplify.svgPathData,
     rotationVariant: 1,
+    color: 'blue',
+  },
+  {
+    appName: 'bravos',
+    iconSvg: bravos.svgPathData,
+    rotationVariant: 2,
     color: 'blue',
   },
   {

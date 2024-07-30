@@ -69,27 +69,30 @@ export { ComboBox } from './Select/ComboBox/ComboBox';
 export type { ComboBoxProps } from './Select/ComboBox/ComboBox';
 export { SingleSelect } from './Select/SingleSelect/SingleSelect';
 export type { SingleSelectProps } from './Select/SingleSelect/SingleSelect';
-export type { SelectOptionRequired } from './Select/Select.types';
+export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
 export { PageWithTitle } from './PageWithTitle/PageWithTitle';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
 export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
 export { ListItem } from './ListItem/ListItem';
 export type { ListItemProps } from './ListItem/ListItem';
+export { Checkbox } from './SelectionControls/Checkbox/Checkbox';
+export type { CheckboxProps } from './SelectionControls/Checkbox/Checkbox';
+export { Radio } from './SelectionControls/Radio/Radio';
+export type { RadioProps } from './SelectionControls/Radio/Radio';
+export { Switch } from './SelectionControls/Switch/Switch';
+export type { SwitchProps } from './SelectionControls/Switch/Switch';
 
 // EDS Re-export
 export {
   Breadcrumbs,
   Button,
-  Checkbox,
   Divider,
   Dialog,
   Menu,
-  Radio,
   Tabs,
   TextField,
   Typography,
   Icon,
-  Switch,
   CircularProgress,
   DotProgress,
   LinearProgress,
@@ -98,17 +101,14 @@ export type {
   BreadcrumbsProps,
   BreadcrumbProps,
   ButtonProps,
-  CheckboxProps,
   DialogProps,
   DividerProps,
   MenuProps,
-  RadioProps,
   SearchProps,
   TabsProps,
   TextFieldProps,
   TypographyProps,
   IconProps,
-  SwitchProps,
   CircularProgressProps,
   DotProgressProps,
   LinearProgressProps,

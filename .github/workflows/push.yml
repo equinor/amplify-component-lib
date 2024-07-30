@@ -15,8 +15,20 @@ jobs:
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
   release:
-    name: Create release notes
     needs: [publish]
-    uses: ./.github/workflows/release.yaml
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+    name: Create release notes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get npm version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+      - name: Generate release notes
+        run: gh release create v${{steps.package-version.outputs.current-version}} --generate-notes --target ${{github.sha}}
+        env:
+          GH_TOKEN: ${{ github.token }}
