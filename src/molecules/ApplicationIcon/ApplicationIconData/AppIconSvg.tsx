@@ -1,14 +1,16 @@
-import React from 'react';
+import { FC } from 'react';
+
+import { AppIconData } from './ApplicationIconCollection';
 
 interface IconSvgProps {
   width?: number;
   height?: number;
   viewBox?: string;
   fill?: string;
-  paths: string[];
+  paths: AppIconData['svgPathData'];
 }
 
-const AppIconSvg: React.FC<IconSvgProps> = ({
+const AppIconSvg: FC<IconSvgProps> = ({
   viewBox = '0 0 384 384',
   fill = 'none',
   paths,
@@ -22,15 +24,26 @@ const AppIconSvg: React.FC<IconSvgProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       data-testid="app-icon-svg"
     >
-      {paths.map((d, index) => (
-        <path
-          key={index}
-          d={d}
-          fillRule="evenodd"
-          clipRule="evenodd"
-          fill="white"
-        />
-      ))}
+      {paths.map((d, index) =>
+        typeof d === 'string' ? (
+          <path
+            key={index}
+            d={d}
+            fillRule="evenodd"
+            clipRule="evenodd"
+            fill="white"
+          />
+        ) : (
+          <path
+            key={index}
+            d={d.path}
+            fillOpacity={d.opacity}
+            fillRule="evenodd"
+            clipRule="evenodd"
+            fill="white"
+          />
+        )
+      )}
     </svg>
   );
 };

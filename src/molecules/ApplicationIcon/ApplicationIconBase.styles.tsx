@@ -94,7 +94,7 @@ export const IconContainer = styled.div`
   right: var(--pos);
   z-index: 999;
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 1;
   svg {
     filter: drop-shadow(0px 256px 72px rgba(0, 0, 0, 0))
       drop-shadow(0px 164px 55px rgba(0, 0, 0, 0.04))
