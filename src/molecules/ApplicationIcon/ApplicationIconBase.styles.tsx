@@ -1,11 +1,7 @@
 import { AllowedColors, colorMap, darkenColor } from './ApplicationIcon.utils';
+import { AnimationState } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
 
 import styled, { css, keyframes } from 'styled-components';
-
-export interface WavesProps {
-  animationState: 'none' | 'hoverable' | 'animated' | 'loading';
-  isLoading: boolean;
-}
 
 const outlinePulsate = keyframes`
   0% {
@@ -28,13 +24,15 @@ const waveWobble = keyframes`
   }
 `;
 
-export const AppIconContainer = styled.div<{
-  size: number;
-  color: AllowedColors;
-  animationState: 'none' | 'hoverable' | 'animated' | 'loading';
-}>`
-  width: ${({ size }) => `${size}px`};
-  height: ${({ size }) => `${size}px`};
+interface AppIconContainerProps {
+  $size: number;
+  $color: AllowedColors;
+  $animationState: AnimationState;
+}
+
+export const AppIconContainer = styled.div<AppIconContainerProps>`
+  width: ${({ $size }) => `${$size}px`};
+  height: ${({ $size }) => `${$size}px`};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,19 +47,19 @@ export const AppIconContainer = styled.div<{
     transition:
       border-radius 350ms,
       transform 200ms linear;
-    width: ${({ size }) => `${size - size / 8}px`};
-    height: ${({ size }) => `${size - size / 8}px`};
+    width: ${({ $size }) => `${$size - $size / 8}px`};
+    height: ${({ $size }) => `${$size - $size / 8}px`};
     position: absolute;
     transform: scale(1.5);
     border-radius: 100%;
     pointer-events: none;
-    border: ${({ size }) => `${size / 8}px`} solid
-      color-mix(in srgb, ${({ color }) => colorMap[color]} 10%, white);
-    border-top-color: ${({ color }) => colorMap[color]};
+    border: ${({ $size }) => `${$size / 8}px`} solid
+      color-mix(in srgb, ${({ $color }) => colorMap[$color]} 10%, white);
+    border-top-color: ${({ $color }) => colorMap[$color]};
   }
 
-  ${({ animationState }) =>
-    animationState === 'loading'
+  ${({ $animationState }) =>
+    $animationState === 'loading'
       ? css`
           border-radius: 100%;
 
@@ -73,14 +71,14 @@ export const AppIconContainer = styled.div<{
         `
       : ''}
   position: relative;
-  ${({ color }) => {
+  ${({ $color }) => {
     return `
       box-shadow:
-        0px 105px 68px 0px ${darkenColor(color, 0, '00')},
-        0px 96px 62px 0px ${darkenColor(color, 0.1, '03')},
-        0px 56px 52px 0px ${darkenColor(color, 0.5, '0D')},
-        0px 32px 39px 0px ${darkenColor(color, 0.9, '17')},
-        0px 8px 21px 0px ${darkenColor(color, 0.1, '1a')};
+        0px 105px 68px 0px ${darkenColor($color, 0, '00')},
+        0px 96px 62px 0px ${darkenColor($color, 0.1, '03')},
+        0px 56px 52px 0px ${darkenColor($color, 0.5, '0D')},
+        0px 32px 39px 0px ${darkenColor($color, 0.9, '17')},
+        0px 8px 21px 0px ${darkenColor($color, 0.1, '1a')};
     `;
   }}
 `;
@@ -104,14 +102,16 @@ export const IconContainer = styled.div`
   }
 `;
 
-export const WaveInnerContainer = styled.div<{
-  color: AllowedColors;
-  rotationVariant: number;
-}>`
+interface WaveInnerContainerProps {
+  $color: AllowedColors;
+  $rotationVariant: number;
+}
+
+export const WaveInnerContainer = styled.div<WaveInnerContainerProps>`
   width: 100%;
   height: 100%;
-  background-color: ${({ color }) => colorMap[color]};
-  transform: ${({ rotationVariant }) => getRotation(rotationVariant)};
+  background-color: ${({ $color }) => colorMap[$color]};
+  transform: ${({ $rotationVariant }) => getRotation($rotationVariant)};
   position: absolute;
 
   .noiseShape {
@@ -119,6 +119,10 @@ export const WaveInnerContainer = styled.div<{
     filter: grayscale(1);
   }
 `;
+
+export interface WavesProps {
+  $animationState: AnimationState;
+}
 
 export const Waves = styled.div<WavesProps>`
   height: 141.6%;
@@ -128,8 +132,8 @@ export const Waves = styled.div<WavesProps>`
   filter: saturate(1.75);
   transform: scaleY(1);
 
-  ${({ animationState }) => {
-    switch (animationState) {
+  ${({ $animationState }) => {
+    switch ($animationState) {
       case 'hoverable':
         return css`
           & .wave:first-child {
@@ -164,9 +168,13 @@ export const Waves = styled.div<WavesProps>`
   }}
 `;
 
-export const Wave = styled.div<{ waveIntervalDist: number }>`
+interface WaveProps {
+  $waveIntervalDist: number;
+}
+
+export const Wave = styled.div<WaveProps>`
   position: absolute;
-  top: ${({ waveIntervalDist }) => `${waveIntervalDist}%`};
+  top: ${({ $waveIntervalDist }) => `${$waveIntervalDist}%`};
   transform-origin: bottom;
   height: 100%;
   width: 100%;

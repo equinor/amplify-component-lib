@@ -26,6 +26,7 @@ export const SelectMenu = <T extends SelectOptionRequired>(
     onItemSelect,
     itemRefs,
     onItemKeyDown,
+    onMouseEnterItem,
     selectableParent,
   } = props;
 
@@ -57,6 +58,7 @@ export const SelectMenu = <T extends SelectOptionRequired>(
         itemRefs={itemRefs}
         onItemKeyDown={onItemKeyDown}
         onItemSelect={onItemSelect}
+        onMouseEnterItem={onMouseEnterItem}
         values={props.values}
         selectableParent={selectableParent}
         parentHasNestedItems={hasNestedItems}
@@ -73,6 +75,7 @@ export const SelectMenu = <T extends SelectOptionRequired>(
       itemRefs={itemRefs}
       onItemKeyDown={onItemKeyDown}
       onItemSelect={onItemSelect}
+      onMouseEnterItem={onMouseEnterItem}
       selectableParent={selectableParent}
       parentHasNestedItems={hasNestedItems}
     />
