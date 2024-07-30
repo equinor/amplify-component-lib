@@ -46,14 +46,14 @@ const SettingsItems = styled.div`
   }
 `;
 
-export interface SettingsSections {
+export interface SettingsSection {
   title: string;
   type: string;
-  onChange?: (val: string) => void;
+  onChange?: (val: unknown) => void;
   items: {
     label: string;
     name: string;
-    value: string;
+    value: unknown;
     colorBox?: string;
     element?: ReactElement;
     text?: string;
@@ -62,7 +62,7 @@ export interface SettingsSections {
 }
 
 export interface SettingsProps {
-  allSettings: SettingsSections[];
+  allSettings: SettingsSection[];
 }
 
 export const Settings: FC<SettingsProps> = ({ allSettings }) => {
@@ -89,16 +89,16 @@ export const Settings: FC<SettingsProps> = ({ allSettings }) => {
         anchorEl={buttonRef.current}
       >
         <SettingsItems>
-          {allSettings.map((section, ind) => (
-            <div key={ind}>
+          {allSettings.map((section, index) => (
+            <div key={index}>
               <Typography variant="overline">{section.title}</Typography>
-              {section.items.map((item, index) => (
-                <ContentWrapper key={index}>
+              {section.items.map((item, itemIndex) => (
+                <ContentWrapper key={itemIndex}>
                   <Radio
                     disabled={item.disabled}
                     label={item.label}
                     name={item.name}
-                    value={item.value}
+                    value={`${item.label}-${itemIndex}`}
                     checked={section.type === item.value}
                     onChange={() => section.onChange?.(item.value)}
                   />
