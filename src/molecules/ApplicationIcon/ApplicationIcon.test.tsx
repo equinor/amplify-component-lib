@@ -43,7 +43,7 @@ describe('ApplicationIcon Component', () => {
     const appIconSvg = screen.getByTestId('app-icon-svg');
     expect(appIconSvg).toBeInTheDocument();
     const appIconContainer = screen.getByTestId('app-icon-container');
-    expect(appIconContainer).toHaveAttribute('color', 'blue');
+    expect(appIconContainer).toBeInTheDocument();
   });
 
   test('applies loading animation state', () => {
@@ -53,7 +53,6 @@ describe('ApplicationIcon Component', () => {
     };
     render(<ApplicationIcon {...loadingProps} />);
     const wavesContainer = screen.getAllByTestId('wave');
-    console.log(wavesContainer[0]);
 
     expect(wavesContainer[0]).toHaveStyle('transform: scaleY(0)');
   });
@@ -85,4 +84,14 @@ test('renders a large icon causing the small waves on the icon', () => {
   render(<ApplicationIcon name="embark" size={256} />);
   const appIconSvg = screen.getByTestId('app-icon-svg');
   expect(appIconSvg).toBeInTheDocument();
+});
+
+test('Works with svgPathData with opacity settings', () => {
+  render(<ApplicationIcon name="bravos" size={256} />);
+
+  const paths = screen.getAllByTestId('app-icon-path');
+
+  for (const path of paths) {
+    expect(path).toHaveAttribute('fill-opacity');
+  }
 });

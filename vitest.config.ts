@@ -12,7 +12,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     passWithNoTests: true,
-    setupFiles: ['src/tests/setupTests.ts', 'src/tests/browserMocks.ts'],
+    setupFiles: ['src/tests/setupTests.ts', 'src/tests/browserMocks.ts', 'src/tests/msalMock.tsx'],
     exclude: [
       'dist',
       'node_modules',

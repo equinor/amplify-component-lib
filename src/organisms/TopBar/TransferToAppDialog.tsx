@@ -100,7 +100,7 @@ export const TransferToAppDialog: FC<PortalTransitProps> = ({
                   <span>{string.capitalize(applicationName)}</span>
                 </StyledTypography>
 
-                <AnimatedCheckmark portal />
+                <AnimatedCheckmark size="small" />
               </TransferringContainer>
             )}
           </Container>

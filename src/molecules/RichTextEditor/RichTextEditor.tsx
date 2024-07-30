@@ -7,7 +7,7 @@ import {
   OnImageUploadFn,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
-import { getFeatures } from 'src/atoms/utils/getFeatures';
+import { richtext } from 'src/atoms';
 
 export interface RichTextEditorProps {
   value: string | null | undefined;
@@ -38,7 +38,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   lightBackground,
   border = true,
 }) => {
-  const usedFeatured = getFeatures({
+  const usedFeatured = richtext.getFeatures({
     features,
     extendFeatures,
     removeFeatures,

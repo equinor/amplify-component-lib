@@ -1,3 +1,5 @@
+import { act } from 'react';
+
 import { faker } from '@faker-js/faker';
 
 import { renderHook, screen, userEvent, waitFor } from '../tests/test-utils';
@@ -122,17 +124,25 @@ test("'useSnackbar' hideSnackbar works as expected", async () => {
 
   const snackbarText = faker.animal.cat();
 
-  result.current.showSnackbar(snackbarText);
-
-  const snackbar = await waitFor(() => screen.getByText(snackbarText), {
-    timeout: 1000,
-  });
+  const snackbar = await waitFor(
+    () => {
+      result.current.showSnackbar(snackbarText, {
+        customProps: { autoHideDuration: 5000 },
+      });
+      return screen.getByText(snackbarText);
+    },
+    {
+      timeout: 1000,
+    }
+  );
 
   expect(snackbar).toBeInTheDocument();
-  result.current.hideSnackbar();
 
-  const hiddenSnackbar = await waitFor(() => screen.getByText(snackbarText), {
-    timeout: 1000,
+  act(() => {
+    result.current.hideSnackbar();
   });
-  expect(hiddenSnackbar).not.toBeInTheDocument();
+
+  await waitFor(() =>
+    expect(screen.queryByText(snackbarText)).not.toBeInTheDocument()
+  );
 });

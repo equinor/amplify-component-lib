@@ -3,9 +3,7 @@ import { faker } from '@faker-js/faker';
 import string from './string';
 
 test('capitalize function works as expected', () => {
-  const templateString = faker.lorem.words(
-    faker.number.int({ min: 1, max: 10 })
-  );
+  const templateString = faker.vehicle.bicycle().toLowerCase();
 
   const formatted = string.capitalize(templateString);
 

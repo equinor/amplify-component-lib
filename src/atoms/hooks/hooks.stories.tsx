@@ -16,11 +16,6 @@ const hookList = [
      deleteMessage } = useSignalRMessages<MessageDto>('recap_notifications', 'url', 'token')`,
   },
   {
-    name: 'useFeatureToggling',
-    body: 'Returns if a given key should be feature toggled on/off',
-    code: 'const { showContent, isLoading } = useFeatureToggling("analytics")',
-  },
-  {
     name: 'usePrevious',
     body: 'Returns the previous of a given state',
     code: 'const previousValue = usePrevious(value)',
@@ -58,11 +53,6 @@ const hookList = [
 ...
 
 showSnackbar(text: string, customProps?: SnackbarProps)`,
-  },
-  {
-    name: 'useReleaseNotes',
-    body: 'Returns release notes object from ReleaseNotesProvider',
-    code: 'const { open, setOpen, toggle, search, setSearch, selectedReleaseNoteTypes, filteredData, releaseNotesYears } = useReleaseNotes()',
   },
 ];
 

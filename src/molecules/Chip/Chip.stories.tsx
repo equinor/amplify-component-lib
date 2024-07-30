@@ -4,6 +4,7 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { BaseChipProps, Chip } from './Chip';
 import { InteractiveChipProps } from './InteractiveChip';
+import { ReadOnlyChipProps } from './ReadOnlyChip';
 import page from 'src/molecules/Chip/Chips.docs.mdx';
 import { Stack } from 'src/storybook';
 
@@ -117,7 +118,7 @@ DefaultChip.args = {
   onClick: handleClick,
 };
 
-export const ReadOnlyChip: StoryFn<InteractiveChipProps> = (args) => (
+export const ReadOnlyChip: StoryFn<ReadOnlyChipProps> = (args) => (
   <Chip {...args} onClick={undefined} onDelete={undefined} />
 );
 

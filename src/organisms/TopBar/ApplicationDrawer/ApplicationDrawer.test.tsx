@@ -13,7 +13,6 @@ import userEvent from '@testing-library/user-event';
 
 import { ApplicationDrawer } from './ApplicationDrawer';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
-import { ReleaseNotesProvider } from 'src/providers/ReleaseNotesProvider';
 import { waitFor } from 'src/tests/test-utils';
 
 import { expect, vi } from 'vitest';
@@ -45,10 +44,6 @@ const fakeApps = new Array(faker.number.int({ min: 4, max: 8 }))
   .fill(0)
   .map(() => fakeApplication());
 
-vi.mock('path-to-getappName-file', () => ({
-  getAppName: vi.fn(() => fakeApps[0].name),
-}));
-
 let rejectPromise = false;
 
 vi.mock('@equinor/subsurface-app-management', async () => {
@@ -74,9 +69,7 @@ function Wrappers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ReleaseNotesProvider>
-          <SnackbarProvider>{children}</SnackbarProvider>
-        </ReleaseNotesProvider>
+        <SnackbarProvider>{children}</SnackbarProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

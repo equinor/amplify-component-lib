@@ -9,14 +9,7 @@ import {
 
 import { SelectComponentProps } from 'src/molecules/Select/Select';
 import { SelectOption } from 'src/molecules/Select/Select.types';
-import {
-  GroupedSelectProps,
-  ListSelectProps,
-  SelectOptionRequired,
-} from 'src/molecules/Select/Select.types';
-import { flattenOptions } from 'src/molecules/Select/Select.utils';
-
-import { groupBy } from 'lodash';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 
 const useSelect = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
@@ -108,44 +101,23 @@ const useSelect = <T extends SelectOptionRequired>(
     }
   };
 
-  const getParent = (value: string) => {
-    let flattened;
-    if ('groups' in props) {
-      flattened = flattenOptions(
-        (props as GroupedSelectProps<T>).groups.flatMap((group) => group.items)
-      );
-    } else {
-      flattened = flattenOptions((props as ListSelectProps<T>).items);
-    }
-
-    const groupedFormations = groupBy(flattened, ({ value }) => value);
-    const parentName = groupedFormations[value]?.at(0)?.parent ?? '';
-    return groupedFormations[parentName]?.at(0);
-  };
-
-  const getParentsRecursively = (value: string): SelectOption<T>[] => {
-    const parent = getParent(value);
-    if (!parent?.children) return [];
-
-    return [parent, ...getParentsRecursively(parent.value)];
-  };
-
-  const getValuesToAdd = (
-    values: SelectOption<T>[],
+  const getNewValues = (
+    current: SelectOption<T>[],
     item: SelectOption<T>
   ): SelectOption<T>[] => {
-    const flatParents = getParentsRecursively(item.value).map(
-      ({ value }) => value
-    );
-
-    const flatChildren = flattenOptions(item.children ?? []).map(
-      ({ value }) => value
-    );
-
+    // De-selecting
+    const copy = structuredClone(current);
+    if (copy.some((x) => x.value === item.value)) {
+      return copy.filter((x) => x.value !== item.value);
+    }
+    // Check if child of any parent was selected
     return [
       item,
-      ...values.filter(
-        ({ value }) => ![...flatChildren, ...flatParents].includes(value)
+      ...copy.filter(
+        (x) =>
+          x.children === undefined ||
+          x.children.length === 0 ||
+          x.children.every((child) => child.value === item.value)
       ),
     ];
   };
@@ -153,15 +125,8 @@ const useSelect = <T extends SelectOptionRequired>(
   const handleOnItemSelect = (item: SelectOption<T>) => {
     if ('value' in props) {
       props.onSelect(item);
-    } else if (props.values.find((i) => i.value === item.value)) {
-      // Remove item
-      props.onSelect(
-        props.values.filter((i) => i.value !== item.value),
-        item
-      );
     } else {
-      //add item and uncheck potential relative checkboxes
-      props.onSelect(getValuesToAdd(props.values, item), item);
+      props.onSelect(getNewValues(props.values, item), item);
     }
 
     if (search !== '') {
@@ -226,6 +191,11 @@ const useSelect = <T extends SelectOptionRequired>(
     }
   };
 
+  const handleOnMouseEnterItem = (index: number) => {
+    focusingItemIndex.current = index;
+    itemRefs.current.at(index)?.focus();
+  };
+
   return {
     handleOnItemSelect,
     handleOnItemKeyDown,
@@ -236,6 +206,7 @@ const useSelect = <T extends SelectOptionRequired>(
     handleOnClose,
     handleOnOpen,
     handleOnRemoveItem,
+    handleOnMouseEnterItem,
     search,
     searchRef,
     itemRefs,

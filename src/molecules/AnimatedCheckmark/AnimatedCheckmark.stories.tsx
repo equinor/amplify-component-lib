@@ -7,7 +7,7 @@ import { AnimatedCheckmark } from './AnimatedCheckmark';
 
 import styled from 'styled-components';
 
-const meta: Meta = {
+const meta: Meta<typeof AnimatedCheckmark> = {
   title: 'Molecules/AnimatedCheckmark',
   component: AnimatedCheckmark,
   parameters: {
@@ -22,6 +22,15 @@ const meta: Meta = {
       },
     },
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['medium', 'small'],
+    },
+  },
+  args: {
+    size: 'medium',
+  },
 };
 
 export default meta;
@@ -35,7 +44,7 @@ const Container = styled.div`
   }
 `;
 
-export const Primary: StoryFn = () => {
+export const Primary: StoryFn<typeof AnimatedCheckmark> = (args) => {
   const [show, setShow] = useState(true);
 
   const handleRerun = () => {
@@ -47,7 +56,7 @@ export const Primary: StoryFn = () => {
 
   return (
     <Container>
-      {show && <AnimatedCheckmark />}
+      {show && <AnimatedCheckmark {...args} />}
       <Button onClick={handleRerun}>Re-run animation</Button>
     </Container>
   );

@@ -294,6 +294,8 @@ test('Renders correctly with elements', async () => {
   await user.click(menuButton);
 
   for (const item of settingsOptions.allSettings[0].items) {
-    expect(screen.getByText(`${item.value}-element`)).toBeInTheDocument();
+    expect(
+      screen.getByText(`${item.value as string}-element`)
+    ).toBeInTheDocument();
   }
 });
