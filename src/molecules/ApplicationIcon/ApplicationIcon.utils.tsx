@@ -1,3 +1,5 @@
+import { AppIconData } from 'src/molecules/ApplicationIcon/ApplicationIconData/ApplicationIconCollection';
+
 export type AllowedColors =
   | 'blue'
   | 'green'
@@ -31,5 +33,5 @@ export interface AppBaseProps {
   numWaves?: number;
   hasLargeWaves?: boolean;
   animationState?: 'none' | 'hoverable' | 'animated' | 'loading';
-  appIconData: string[];
+  appIconData: AppIconData['svgPathData'];
 }

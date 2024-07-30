@@ -85,3 +85,13 @@ test('renders a large icon causing the small waves on the icon', () => {
   const appIconSvg = screen.getByTestId('app-icon-svg');
   expect(appIconSvg).toBeInTheDocument();
 });
+
+test('Works with svgPathData with opacity settings', () => {
+  render(<ApplicationIcon name="bravos" size={256} />);
+
+  const paths = screen.getAllByTestId('app-icon-path');
+
+  for (const path of paths) {
+    expect(path).toHaveAttribute('fill-opacity');
+  }
+});
