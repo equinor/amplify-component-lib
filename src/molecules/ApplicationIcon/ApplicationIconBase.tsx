@@ -45,23 +45,19 @@ const ApplicationIconBase: FC<AppBaseProps> = ({
 
   return (
     <AppIconContainer
-      size={size}
-      color={color}
-      animationState={animationState}
+      $size={size}
+      $color={color}
+      $animationState={animationState}
       data-testid="app-icon-container"
     >
       <IconContainer data-testid="icon-container">
         <IconSvg paths={appIconData} />
       </IconContainer>
-      <Waves
-        animationState={animationState}
-        isLoading={animationState === 'loading'}
-        data-testid="waves-container"
-      >
-        <WaveInnerContainer color={color} rotationVariant={rotationVariant}>
+      <Waves $animationState={animationState} data-testid="waves-container">
+        <WaveInnerContainer $color={color} $rotationVariant={rotationVariant}>
           <Wave
             className="wave"
-            waveIntervalDist={0}
+            $waveIntervalDist={0}
             data-testid="wave"
             style={{
               animationDelay: `0ms`,
@@ -83,7 +79,7 @@ const ApplicationIconBase: FC<AppBaseProps> = ({
             <Wave
               className="wave"
               key={index}
-              waveIntervalDist={wave.waveIntervalDist}
+              $waveIntervalDist={wave.waveIntervalDist}
               data-testid="wave"
               style={{
                 animationDelay: `${wave.delay}ms`,
