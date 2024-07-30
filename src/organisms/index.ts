@@ -6,6 +6,7 @@ export { SideBar } from './SideBar';
 export type { ItemType } from './SideBar';
 export { TopBar } from './TopBar';
 export type { SettingsSection } from './TopBar/Settings';
+export type { GuidelineSections } from './TopBar/Guidelines/Guidelines';
 export { FullPageStatus } from './FullPageStatus/FullPageStatus';
 export { ErrorPage } from './ErrorPage';
 export { GlitchAnimation } from './ErrorPage/illustrations/GlitchAnimation';

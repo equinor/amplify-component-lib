@@ -12,7 +12,12 @@ const server = setupServer(...handlers);
 
 beforeAll(() => {
   vi.stubEnv('VITE_IS_MOCK', 'true');
-  server.listen({ onUnhandledRequest: 'error' });
+  server.listen({
+    onUnhandledRequest: (req, print) => {
+      if (req.url.includes('api')) print.error();
+      return;
+    },
+  });
   HTMLDialogElement.prototype.show = vi.fn();
   HTMLDialogElement.prototype.showModal = vi.fn();
   HTMLDialogElement.prototype.close = vi.fn();

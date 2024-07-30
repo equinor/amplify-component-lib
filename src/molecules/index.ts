@@ -69,7 +69,7 @@ export { ComboBox } from './Select/ComboBox/ComboBox';
 export type { ComboBoxProps } from './Select/ComboBox/ComboBox';
 export { SingleSelect } from './Select/SingleSelect/SingleSelect';
 export type { SingleSelectProps } from './Select/SingleSelect/SingleSelect';
-export type { SelectOptionRequired } from './Select/Select.types';
+export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
 export { PageWithTitle } from './PageWithTitle/PageWithTitle';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
 export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
