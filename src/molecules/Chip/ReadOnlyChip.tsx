@@ -5,7 +5,8 @@ import { Icon } from '@equinor/eds-core-react';
 import { BaseChipProps } from 'src/molecules/Chip/Chip';
 import { ReadOnlyChipStyle } from 'src/molecules/Chip/Chip.styles';
 
-export type ReadOnlyChipProps = BaseChipProps & HTMLAttributes<HTMLDivElement>;
+export type ReadOnlyChipProps = BaseChipProps &
+  Omit<HTMLAttributes<HTMLDivElement>, 'onClick'>;
 
 export const ReadOnlyChip = forwardRef<HTMLDivElement, ReadOnlyChipProps>(
   (props, ref) => {
