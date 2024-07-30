@@ -11,12 +11,12 @@ export interface FeaturesProps {
   onImageUpload?: OnImageUploadFn;
 }
 
-export const getFeatures = ({
+function getFeatures({
   features,
   extendFeatures,
   removeFeatures,
   onImageUpload,
-}: FeaturesProps) => {
+}: FeaturesProps) {
   const defaultFeatures = features ?? DEFAULT_FEATURES;
   const additionalFeatures = extendFeatures ?? [];
   const usedFeatures = [...defaultFeatures, ...additionalFeatures]
@@ -33,4 +33,43 @@ export const getFeatures = ({
     );
   }
   return usedFeatures;
+}
+
+const IMG_WITH_SRC_AND_ALT = /(<img src=".*?" alt="(.*?)">)/g;
+const IMG_WITH_ALT = /(<img alt="(.*?)" \/>)/g;
+
+function extractImageUrls(value: string | undefined): string[] {
+  if (!value) return [];
+
+  const images: string[] = [];
+  const matches = value.matchAll(IMG_WITH_ALT);
+  for (const match of matches) {
+    images.push(match[2]);
+  }
+
+  return images;
+}
+
+function imageToB64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (typeof reader.result === 'string') resolve(reader.result);
+    };
+    reader.onerror = reject;
+  });
+}
+
+function cleanRichTextValue(value: string) {
+  return value.replaceAll(IMG_WITH_SRC_AND_ALT, `<img alt="$2" />`);
+}
+
+export const richtext = {
+  getFeatures,
+  extractImageUrls,
+  imageToB64,
+  cleanRichTextValue,
+  IMG_WITH_SRC_AND_ALT,
+  IMG_WITH_ALT,
 };
