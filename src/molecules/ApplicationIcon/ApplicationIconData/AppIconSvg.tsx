@@ -28,6 +28,7 @@ const AppIconSvg: FC<IconSvgProps> = ({
         typeof d === 'string' ? (
           <path
             key={index}
+            data-testid="app-icon-path"
             d={d}
             fillRule="evenodd"
             clipRule="evenodd"
@@ -36,6 +37,7 @@ const AppIconSvg: FC<IconSvgProps> = ({
         ) : (
           <path
             key={index}
+            data-testid="app-icon-path"
             d={d.path}
             fillOpacity={d.opacity}
             fillRule="evenodd"
