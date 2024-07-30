@@ -34,7 +34,7 @@ const equinorFields = [
   'Åsgard',
 ];
 
-export default {
+const meta: Meta<typeof FieldSelector> = {
   title: 'Organisms/FieldSelector',
   component: FieldSelector,
   argTypes: {
@@ -48,7 +48,9 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
-} as Meta;
+};
+
+export default meta;
 
 function generateFakeFields(): Field[] {
   const fields: Field[] = [];

@@ -5,7 +5,7 @@ import {
   FileUploadAreaProps,
 } from 'src/molecules/FileUploadArea/FileUploadArea';
 
-export default {
+const meta: Meta<typeof FileUploadArea> = {
   title: 'Molecules/FileUploadArea',
   component: FileUploadArea,
   argTypes: {
@@ -25,7 +25,9 @@ export default {
         ['.pptx'],
     },
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<FileUploadAreaProps> = (args) => (
   <FileUploadArea {...args} />

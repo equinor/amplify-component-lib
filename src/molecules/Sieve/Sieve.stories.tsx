@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { actions } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { Sieve } from 'src/molecules/Sieve/Sieve';
 import { SieveProps, SieveValue } from 'src/molecules/Sieve/Sieve.types';
 
-export default {
+const meta: Meta<typeof Sieve> = {
   title: 'Molecules/Sieve',
   component: Sieve,
   argTypes: {
@@ -15,10 +15,10 @@ export default {
       control: 'text',
     },
     sortOptions: {
-      control: 'array',
+      control: 'object',
     },
     filterOptions: {
-      control: 'array',
+      control: 'object',
     },
     showChips: { control: 'boolean' },
     debounceSearchValue: { control: 'boolean' },
@@ -67,6 +67,8 @@ export default {
     debounceSearchValue: false,
   },
 };
+
+export default meta;
 
 export const Primary: StoryFn<SieveProps> = (args) => {
   const [sieveValue, setSieveValue] = useState<SieveValue>({

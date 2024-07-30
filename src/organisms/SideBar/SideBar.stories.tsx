@@ -7,12 +7,8 @@ import { SideBar } from '.';
 import { MenuItemType } from 'src/organisms/SideBar/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
-export default {
+const meta: Meta = {
   title: 'Organisms/SideBar',
-  body: `
-    Supports not having a create action if it isn't needed. Saves current open-state to localStorage with: 'amplify-sidebar-state: boolean'.
-
-  `,
   component: SideBar,
   argTypes: {
     hasCreateButton: { control: 'boolean' },
@@ -32,7 +28,9 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn = (args) => {
   const menuItems: MenuItemType[] = [

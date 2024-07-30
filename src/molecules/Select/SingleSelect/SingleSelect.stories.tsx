@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import {
   SelectOption,
@@ -10,14 +10,10 @@ import {
 } from 'src/molecules/Select/Select.types';
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 
-export default {
+const meta: Meta<typeof SingleSelect> = {
   title: 'Molecules/Select/SingleSelect',
   component: SingleSelect,
   argTypes: {
-    label: { control: 'text' },
-    selectableParent: { control: 'boolean' },
-    sortValues: { control: 'boolean' },
-    clearable: { control: 'boolean' },
     variant: {
       control: 'radio',
       options: VARIANT_OPTIONS,
@@ -26,12 +22,13 @@ export default {
   },
   args: {
     label: 'Label here',
-    selectableParent: true,
     sortValues: true,
     clearable: true,
     meta: 'Meta label here',
   },
 };
+
+export default meta;
 
 interface Item {
   label: string;

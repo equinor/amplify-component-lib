@@ -5,20 +5,22 @@ import {
   InfoElementProps,
 } from 'src/molecules/InfoElement/InfoElement';
 
-export default {
+const meta: Meta<typeof InfoElement> = {
   title: 'Molecules/InfoElement',
   component: InfoElement,
   argTypes: {
     title: { control: 'text' },
     content: { control: 'text' },
     copyableContent: { control: 'boolean' },
-    capitalizedContent: { control: 'boolean' },
+    capitalizeContent: { control: 'boolean' },
   },
   args: {
     title: 'Title',
     content: 'Content',
   },
-} as Meta;
+};
+
+export default meta;
 
 const Template: StoryFn<InfoElementProps> = (args) => <InfoElement {...args} />;
 

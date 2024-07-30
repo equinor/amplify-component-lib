@@ -2,7 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { FeedBackIcon, FeedBackIconProps } from './FeedBackIcon';
 
-export default {
+const meta: Meta<typeof FeedBackIcon> = {
   title: 'Molecules/FeedBackIcon',
   component: FeedBackIcon,
   argTypes: {
@@ -18,7 +18,9 @@ export default {
     variant: 'filled',
     size: 96,
   },
-} as Meta;
+};
+
+export default meta;
 
 export const Primary: StoryFn<FeedBackIconProps> = (args) => (
   <FeedBackIcon {...args} />
