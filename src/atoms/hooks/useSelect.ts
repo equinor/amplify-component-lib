@@ -14,7 +14,8 @@ import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 const useSelect = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
 ) => {
-  const { loading, disabled, sortValues, onSearchChange } = props;
+  const { loading, disabled, sortValues, onSearchChange, onOpenCallback } =
+    props;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -57,6 +58,12 @@ const useSelect = <T extends SelectOptionRequired>(
       return firstIndex - secondIndex;
     });
   }, [props, sortValues]);
+
+  useEffect(() => {
+    if (onOpenCallback !== undefined) {
+      onOpenCallback(open);
+    }
+  }, [onOpenCallback, open]);
 
   useEffect(() => {
     if (

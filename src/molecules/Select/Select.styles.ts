@@ -159,7 +159,7 @@ interface CustomMenuItemProps {
 }
 
 const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
-  flex: 1;
+  flex-grow: 1;
   border-radius: 2px;
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;

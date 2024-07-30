@@ -86,4 +86,6 @@ export interface CommonSelectProps {
   clearable?: boolean;
   meta?: string;
   onSearchChange?: (inputValue: string) => void;
+  inDialog?: boolean;
+  onOpenCallback?: (value: boolean) => void;
 }

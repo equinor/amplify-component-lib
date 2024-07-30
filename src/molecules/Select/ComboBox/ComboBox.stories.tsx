@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { Button, Dialog } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
@@ -138,5 +139,48 @@ export const ComboBoxParented: StoryFn = (args) => {
       values={values}
       onSelect={handleOnSelect}
     />
+  );
+};
+
+export const ComboBoxInDialog: StoryFn = (args) => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+  const [openComboBox, setOpenComboBox] = useState(false);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  const handleOnComboboxOpen = (value: boolean) => setOpenComboBox(value);
+
+  const handleDialogOnClose = () => {
+    if (!openComboBox) setOpenDialog(false);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setOpenDialog(true)}>Open dialog</Button>
+      <Dialog
+        open={openDialog}
+        onClose={handleDialogOnClose}
+        isDismissable
+        style={{ width: '40rem ' }}
+      >
+        <Dialog.Content>
+          <ComboBox
+            {...args}
+            inDialog
+            onOpenCallback={handleOnComboboxOpen}
+            items={FAKE_ITEMS}
+            values={values}
+            onSelect={handleOnSelect}
+          />
+        </Dialog.Content>
+      </Dialog>
+    </>
   );
 };
