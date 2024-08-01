@@ -1,11 +1,11 @@
 import { Chip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { animation, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 
-const { colors } = tokens;
+const { colors, shape } = tokens;
 
 export const ProfileButton = styled.button`
   border-radius: 50%;
@@ -52,4 +52,25 @@ export const ButtonWrapper = styled.div`
   display: grid;
   margin-top: ${spacings.x_large};
   justify-content: center;
+`;
+
+export const ImpersonateButton = styled.button`
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: ${spacings.medium_small};
+  width: 100%;
+  padding: ${spacings.small};
+  border-radius: ${shape.button.borderRadius};
+  background: ${colors.ui.background__light.rgba};
+  transition: background ${animation.transitionMS};
+  > span {
+    color: ${colors.interactive.primary__resting.rgba};
+  }
+  > svg {
+    fill: ${colors.interactive.primary__resting.rgba};
+  }
+  &:hover {
+    background: ${colors.ui.background__medium.rgba};
+  }
 `;

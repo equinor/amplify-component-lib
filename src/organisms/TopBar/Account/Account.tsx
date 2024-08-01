@@ -10,18 +10,20 @@ import {
 
 import { AccountInfo } from '@azure/msal-common';
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { log_out } from '@equinor/eds-icons';
+import { arrow_forward, assignment_user, log_out } from '@equinor/eds-icons';
 
 import { TopBarMenu } from '../TopBarMenu';
 import {
   ButtonWrapper,
   Container,
+  ImpersonateButton,
   ProfileButton,
   RoleChip,
   RolesContainer,
   TextContent,
 } from './Account.styles';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+import { Impersonate } from 'src/organisms/TopBar/Account/Impersonate/Impersonate';
 
 export interface AccountProps {
   account: AccountInfo | undefined;
@@ -42,32 +44,38 @@ export const Account: FC<AccountProps> = ({
   renderCustomButton,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [openImpersonate, setOpenImpersonate] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const isAdmin = roles?.includes('admin');
 
-  const closeMenu = () => setIsOpen(false);
-  const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
+  const handleMenuOnClose = () => setIsOpen(false);
+  const handleToggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
+  const handleOpenImpersonate = () => {
+    setOpenImpersonate(true);
+    setIsOpen(false);
+  };
+  const handleOnCloseImpersonate = () => setOpenImpersonate(false);
 
   const customButton = useMemo(() => {
     if (renderCustomButton) {
-      return renderCustomButton(buttonRef, toggleMenu);
+      return renderCustomButton(buttonRef, handleToggleMenu);
     }
     return null;
-  }, [renderCustomButton, toggleMenu]);
+  }, [renderCustomButton, handleToggleMenu]);
 
   return (
     <>
       {customButton ? (
         customButton
       ) : (
-        <ProfileButton ref={buttonRef} onClick={toggleMenu}>
+        <ProfileButton ref={buttonRef} onClick={handleToggleMenu}>
           <ProfileAvatar size={36} name={account?.name} url={photo} />
         </ProfileButton>
       )}
       <TopBarMenu
         open={isOpen}
         title="Account"
-        onClose={closeMenu}
+        onClose={handleMenuOnClose}
         anchorEl={buttonRef.current}
       >
         <Container>
@@ -83,6 +91,13 @@ export const Account: FC<AccountProps> = ({
               ))}
             </RolesContainer>
           )}
+          <ImpersonateButton onClick={handleOpenImpersonate}>
+            <Icon data={assignment_user} />
+            <Typography variant="button" group="navigation" as="span">
+              Impersonate
+            </Typography>
+            <Icon data={arrow_forward} />
+          </ImpersonateButton>
         </Container>
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>
@@ -91,6 +106,11 @@ export const Account: FC<AccountProps> = ({
           </Button>
         </ButtonWrapper>
       </TopBarMenu>
+      <Impersonate
+        open={openImpersonate}
+        onClose={handleOnCloseImpersonate}
+        anchorEl={buttonRef.current}
+      />
     </>
   );
 };
