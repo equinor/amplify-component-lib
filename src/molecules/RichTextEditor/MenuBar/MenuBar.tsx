@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
 import { Editor } from '@tiptap/react';
 
 import {
@@ -21,10 +20,9 @@ import { TextHeaders } from './TextHeaders';
 import { TextHistory } from './TextHistory';
 import { TextLinks } from './TextLinks';
 import { TextLists } from './TextLists';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
-
-const { colors, spacings } = tokens;
 
 const MenuBars = styled.div`
   display: flex;
@@ -34,8 +32,8 @@ const MenuBars = styled.div`
 const MenuBar = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${spacings.comfortable.small};
-  padding: ${spacings.comfortable.small};
+  gap: ${spacings.small};
+  padding: ${spacings.small};
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
 `;
 

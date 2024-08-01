@@ -3,12 +3,10 @@ import {
   Tooltip,
   Typography,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+
+import { colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
-import { spacings } from 'src/atoms/style';
 
 interface ContainerProps {
   $isError?: boolean;

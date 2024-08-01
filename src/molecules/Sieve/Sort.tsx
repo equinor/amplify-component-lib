@@ -6,12 +6,10 @@ import {
   radio_button_unselected,
   sort,
 } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
+import { colors } from 'src/atoms/style';
 import { Chip, MenuItem } from 'src/molecules/Sieve/Sieve.styles';
 import { SieveOption } from 'src/molecules/Sieve/Sieve.types';
-
-const { colors } = tokens;
 
 interface SortProps {
   options: SieveOption[];

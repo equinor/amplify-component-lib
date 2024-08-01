@@ -1,10 +1,10 @@
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
 import { VARIANT_COLORS } from './Select.styles';
 import { VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
+import { colors } from 'src/atoms/style';
 import {
   fakeSelectItem,
   fakeSelectItems,
@@ -14,8 +14,6 @@ import {
 } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
-
-const { colors } = tokens;
 
 function fakeGroups(count = 5, isParented?: boolean) {
   return new Array(count)

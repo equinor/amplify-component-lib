@@ -1,15 +1,13 @@
 import { FocusEventHandler, forwardRef, MouseEventHandler } from 'react';
 
 import { IconData } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
 import { Icon, Typography } from '..';
+import { colors } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
 import { spacings } from 'src/atoms/style/spacings';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
 
 interface ContainerProps {
   $isChild: boolean;

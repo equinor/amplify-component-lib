@@ -1,11 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 import { Variants } from 'src/molecules/Badge/Badge';
 
 import styled from 'styled-components';
 
-const { colors, shape } = tokens;
+const { shape } = tokens;
 
 interface CountDotProps {
   $variant: Variants;

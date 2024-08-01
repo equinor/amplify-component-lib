@@ -1,13 +1,11 @@
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
+import { colors } from 'src/atoms/style';
 import {
   ContentMenu,
   ContentMenuProps,
 } from 'src/molecules/ContentMenu/ContentMenu';
 import { render, screen, userEvent } from 'src/tests/test-utils';
-
-const { colors } = tokens;
 
 function fakeItem(): { label: string; value: string } {
   return {
