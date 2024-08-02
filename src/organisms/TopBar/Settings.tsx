@@ -1,4 +1,4 @@
-import { FC, ReactElement, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
@@ -7,6 +7,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { TopBarButton } from './TopBar.styles';
 import { TopBarMenu } from './TopBarMenu';
 import { spacings } from 'src/atoms/style';
+import { SettingsSection } from 'src/organisms/TopBar/Settings.types';
 
 import styled from 'styled-components';
 
@@ -46,21 +47,6 @@ const SettingsItems = styled.div`
   }
 `;
 
-export interface SettingsSection {
-  title: string;
-  type: string;
-  onChange?: (val: unknown) => void;
-  items: {
-    label: string;
-    name: string;
-    value: unknown;
-    colorBox?: string;
-    element?: ReactElement;
-    text?: string;
-    disabled?: boolean;
-  }[];
-}
-
 export interface SettingsProps {
   allSettings: SettingsSection[];
 }
@@ -99,8 +85,8 @@ export const Settings: FC<SettingsProps> = ({ allSettings }) => {
                     label={item.label}
                     name={item.name}
                     value={`${item.label}-${itemIndex}`}
-                    checked={section.type === item.value}
-                    onChange={() => section.onChange?.(item.value)}
+                    checked={section.value === item.value}
+                    onChange={() => section.onChange?.(item.value as never)}
                   />
                   {item.colorBox && (
                     <StyledColorBox
