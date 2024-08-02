@@ -19,17 +19,29 @@ const Section = styled.section`
   gap: ${spacings.small};
 `;
 
-export const Actions: FC = () => {
-  return (
-    <Container>
-      <Typography variant="body_short">
-        By selecting a user to impersonate, you will view the contents of this
-        app as if you would be that user.
-      </Typography>
-      <Section>
-        <Button variant="outlined">Cancel</Button>
-        <Button>Impersonate</Button>
-      </Section>
-    </Container>
-  );
-};
+interface ActionsProps {
+  canImpersonate: boolean;
+  onCancel: () => void;
+  onImpersonate: () => void;
+}
+
+export const Actions: FC<ActionsProps> = ({
+  canImpersonate,
+  onCancel,
+  onImpersonate,
+}) => (
+  <Container>
+    <Typography variant="body_short">
+      By selecting a user to impersonate, you will view the contents of this app
+      as if you would be that user.
+    </Typography>
+    <Section>
+      <Button variant="outlined" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button onClick={onImpersonate} disabled={!canImpersonate}>
+        Impersonate
+      </Button>
+    </Section>
+  </Container>
+);

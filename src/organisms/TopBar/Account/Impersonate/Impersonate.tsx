@@ -6,7 +6,23 @@ import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
 import { Content, Header, StyledMenu } from './Impersonate.styles';
 import { Search } from 'src/molecules';
+import { CreateNewUser } from 'src/organisms/TopBar/Account/Impersonate/CreateNewUser/CreateNewUser';
 import { UserImpersonation } from 'src/organisms/TopBar/Account/Impersonate/UserImpersonation';
+
+const FAKE_USERS = [
+  {
+    name: 'Kjartan',
+    roles: ['admin', 'writer'],
+  },
+  {
+    name: 'Nadia',
+    roles: ['admin'],
+  },
+  {
+    name: 'Anna',
+    roles: ['writer'],
+  },
+];
 
 interface ImpersonateProps {
   open: boolean;
@@ -24,8 +40,26 @@ export const Impersonate: FC<ImpersonateProps> = ({
     useState('');
 
   const handleOnOpenCreateNew = () => setCreatingNewUser(true);
+  const handleOnCloseCreateNew = () => setCreatingNewUser(false);
+  const handleOnCreateNewUser = () => {
+    console.log('CREATE');
+  };
+  const handleOnImpersonate = () => {
+    console.log('impersonate');
+  };
 
   if (!open) return null;
+
+  if (creatingNewUser) {
+    return (
+      <StyledMenu open anchorEl={anchorEl} onClose={onClose}>
+        <CreateNewUser
+          onBack={handleOnCloseCreateNew}
+          onCreateNewUser={handleOnCreateNewUser}
+        />
+      </StyledMenu>
+    );
+  }
 
   return (
     <StyledMenu open anchorEl={anchorEl} onClose={onClose}>
@@ -35,14 +69,21 @@ export const Impersonate: FC<ImpersonateProps> = ({
         <Search placeholder="Search users" />
       </Header>
       <Content>
-        <UserImpersonation
-          name="Kjartan"
-          roles={['admin', 'writer']}
-          onClick={setSelectedUserImpersonation}
-        />
+        {FAKE_USERS.map((user) => (
+          <UserImpersonation
+            key={user.name}
+            selected={selectedUserImpersonation === user.name}
+            {...user}
+            onClick={setSelectedUserImpersonation}
+          />
+        ))}
       </Content>
       <CreateNewUserButton onClick={handleOnOpenCreateNew} />
-      <Actions />
+      <Actions
+        canImpersonate={selectedUserImpersonation !== ''}
+        onCancel={onClose}
+        onImpersonate={handleOnImpersonate}
+      />
     </StyledMenu>
   );
 };
