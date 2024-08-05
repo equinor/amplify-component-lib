@@ -41,5 +41,8 @@ export const lightTokens = css`
     --amplify_dataviz_lightpurple_default: rgba(186, 153, 255, 1);
     --amplify_dataviz_lightpurple_darker: rgba(155, 89, 242, 1);
     --amplify_dataviz_lightpurple_lighter: rgba(234, 224, 255, 1);
+
+    --amplify_dataviz_grey_darker: rgba(86, 86, 86, 1);
+    --amplify_dataviz_grey_lighter: rgba(194, 200, 204, 1);
   }
 `;

@@ -73,5 +73,9 @@ export const colors = {
       lighter:
         'var(--amplify_dataviz_lightpurple_lighter, rgba(234, 224, 255, 1))',
     },
+    grey: {
+      darker: 'var(--amplify_dataviz_grey_darker, rgba(86, 86, 86, 1))',
+      lighter: 'var(--amplify_dataviz_grey_lighter,  rgba(194, 200, 204, 1))',
+    },
   },
 } as const;
