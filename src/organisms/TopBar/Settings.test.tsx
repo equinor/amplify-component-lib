@@ -8,7 +8,7 @@ test('Settings renders as expected', async () => {
     allSettings: [
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {
@@ -47,7 +47,7 @@ test('Radios are disabled according to prop', async () => {
     allSettings: [
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {
@@ -88,7 +88,7 @@ test('Settings renders as expected when opened/closed', async () => {
     allSettings: [
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {
@@ -139,7 +139,7 @@ test('Calls onChange when using radio buttons in settings menu', async () => {
     allSettings: [
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {
@@ -185,7 +185,7 @@ test('Renders correctly with color boxes', async () => {
     allSettings: [
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {
@@ -225,7 +225,7 @@ test('Renders correctly with texts', async () => {
     allSettings: [
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {
@@ -265,7 +265,7 @@ test('Renders correctly with elements', async () => {
     allSettings: [
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {
