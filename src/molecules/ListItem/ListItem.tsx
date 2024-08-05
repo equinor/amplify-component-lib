@@ -1,6 +1,7 @@
 import {
   FocusEventHandler,
   forwardRef,
+  HTMLAttributes,
   MouseEventHandler,
   ReactNode,
 } from 'react';
@@ -56,11 +57,13 @@ const Container = styled.button<ContainerProps>`
   }
 `;
 
-const TrailingContent = styled.div`
+const TrailingContent = styled.span`
   margin-left: auto;
+  display: flex;
+  align-items: center;
 `;
 
-export interface ListItemProps {
+export interface ListItemProps extends HTMLAttributes<HTMLButtonElement> {
   label: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
   onFocus?: FocusEventHandler<HTMLButtonElement>;
@@ -79,6 +82,7 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
       onClick,
       onFocus,
       onBlur,
+      className,
       disabled = false,
       leadingContent,
       trailingContent,
@@ -90,6 +94,7 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
     return (
       <Container
         ref={ref}
+        className={className}
         $isChild={isChild}
         $selected={selected}
         disabled={disabled}
@@ -103,7 +108,6 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
             {label}
           </Typography>
         </section>
-
         {trailingContent && (
           <TrailingContent>{renderContent(trailingContent)}</TrailingContent>
         )}
