@@ -1,5 +1,4 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 
 import { colors, spacings } from 'src/atoms/style';
 import { Chip } from 'src/molecules/Chip/Chip';
@@ -7,13 +6,11 @@ import { Variants } from 'src/molecules/Select/Select.types';
 
 import styled from 'styled-components';
 
-const { colors: EDSColors, spacings: EDSSpacings } = tokens;
-
 export const VARIANT_COLORS: Record<Variants, string> = {
-  warning: EDSColors.interactive.warning__resting.rgba,
-  error: EDSColors.interactive.danger__resting.rgba,
-  success: EDSColors.interactive.success__resting.rgba,
-  dirty: colors.dark_blue.rgba,
+  warning: colors.interactive.warning__resting.rgba,
+  error: colors.interactive.danger__resting.rgba,
+  success: colors.interactive.success__resting.rgba,
+  dirty: colors.dataviz.darkblue.darker,
 } as const;
 
 interface ContainerProps {
@@ -32,15 +29,15 @@ const Container = styled.div<ContainerProps>`
   ${({ $variant }) =>
     $variant
       ? `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]}`
-      : `box-shadow: inset 0 -1px 0 0 ${EDSColors.text.static_icons__tertiary.rgba}`};
+      : `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`};
 
   ${({ $lightBackground }) =>
     $lightBackground
-      ? `background-color: ${EDSColors.ui.background__default.rgba}`
-      : `background-color: ${EDSColors.ui.background__light.rgba}`};
+      ? `background-color: ${colors.ui.background__default.rgba}`
+      : `background-color: ${colors.ui.background__light.rgba}`};
 
   &[aria-expanded='true'] {
-    box-shadow: inset 0 -2px 0 0 ${EDSColors.interactive.primary__resting.rgba};
+    box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
   }
 
   ${({ $shouldShowTopMargin }) => $shouldShowTopMargin && `margin-top: 1rem;`};
@@ -58,7 +55,7 @@ const Container = styled.div<ContainerProps>`
   > svg:not([role='progressbar']) {
     cursor: pointer;
     &:hover {
-      background: ${EDSColors.interactive.primary__hover_alt.rgba};
+      background: ${colors.interactive.primary__hover_alt.rgba};
       border-radius: 50%;
     }
   }
@@ -68,13 +65,13 @@ const Container = styled.div<ContainerProps>`
     box-shadow: none;
     > svg:not([role='progressbar']) {
       cursor: not-allowed;
-      fill: ${EDSColors.interactive.disabled__text.rgba};
+      fill: ${colors.interactive.disabled__text.rgba};
       &:hover {
         background: transparent;
       }
     }
     > label {
-      color: ${EDSColors.interactive.disabled__text.rgba};
+      color: ${colors.interactive.disabled__text.rgba};
     }
   }
 `;
@@ -91,7 +88,7 @@ const Section = styled.section`
     flex-grow: 1;
     padding: 0;
     font-family: 'Equinor', sans-serif;
-    color: ${EDSColors.text.static_icons__default.rgba};
+    color: ${colors.text.static_icons__default.rgba};
     outline: none;
     border: none;
   }
@@ -106,14 +103,14 @@ const Section = styled.section`
   }
   &:has(input:disabled) {
     > p {
-      color: ${EDSColors.interactive.disabled__text.rgba};
+      color: ${colors.interactive.disabled__text.rgba};
     }
     > .amplify-combo-box-chip {
       cursor: not-allowed;
-      background: ${EDSColors.interactive.disabled__fill.rgba};
-      color: ${EDSColors.interactive.disabled__text.rgba};
+      background: ${colors.interactive.disabled__fill.rgba};
+      color: ${colors.interactive.disabled__text.rgba};
       > svg {
-        fill: ${EDSColors.interactive.disabled__text.rgba};
+        fill: ${colors.interactive.disabled__text.rgba};
         &:hover {
           cursor: not-allowed;
           background: none;
@@ -131,7 +128,7 @@ const ClearButton = styled(Button)`
   width: 24px;
   height: 24px;
   svg {
-    fill: ${EDSColors.text.static_icons__secondary.rgba};
+    fill: ${colors.text.static_icons__secondary.rgba};
   }
   &:after {
     width: 24px;
@@ -148,9 +145,9 @@ interface StyledChipProps {
 
 const StyledChip = styled(Chip)<StyledChipProps>`
   background: ${({ $tryingToRemove, $lightBackground }) => {
-    if ($tryingToRemove) return EDSColors.interactive.primary__hover_alt.rgba;
-    if ($lightBackground) return EDSColors.ui.background__light.rgba;
-    return EDSColors.ui.background__default.rgba;
+    if ($tryingToRemove) return colors.interactive.primary__hover_alt.rgba;
+    if ($lightBackground) return colors.ui.background__light.rgba;
+    return colors.ui.background__default.rgba;
   }} !important;
 `;
 
@@ -168,35 +165,40 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
     outline: none;
   }
 
+  &:focus-visible {
+    background: ${colors.interactive.primary__hover_alt.rgba};
+  }
+
   /* Hide any background change on hover since we set focus on hover now */
   &:hover {
+    background: ${colors.interactive.primary__hover_alt.rgba};
     background: transparent;
   }
 
   &:focus-visible {
-    background: ${EDSColors.interactive.primary__hover_alt.rgba};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;
 
 const MenuItemSpacer = styled.hr`
-  height: calc(100% + ${EDSSpacings.comfortable.medium} * 2);
+  height: calc(100% + ${spacings.medium} * 2);
   justify-self: center;
   width: ${spacings.x_large};
 `;
 
 const PlaceholderText = styled(Typography)`
   position: absolute;
-  color: ${EDSColors.text.static_icons__tertiary.rgba};
+  color: ${colors.text.static_icons__tertiary.rgba};
   top: calc(50%);
   transform: translate(0, -50%);
 `;
 
 const ValueText = styled(PlaceholderText)`
-  color: ${EDSColors.text.static_icons__default.rgba};
+  color: ${colors.text.static_icons__default.rgba};
 `;
 
 const NoItemsFoundText = styled(Typography)`
-  margin-left: ${EDSSpacings.comfortable.medium};
+  margin-left: ${spacings.medium};
 `;
 
 const StyledMenu = styled(EDSMenu)`

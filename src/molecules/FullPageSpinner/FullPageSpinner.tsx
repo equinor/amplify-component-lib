@@ -1,16 +1,14 @@
 import { FC, useMemo } from 'react';
 
 import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 
+import { colors } from 'src/atoms/style';
 import { environment } from 'src/atoms/utils/auth_environment';
-import {ApplicationIcon} from 'src/molecules/ApplicationIcon/ApplicationIcon';
+import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 
 import styled from 'styled-components';
 
-const { getAppName } = environment
-
-const { colors } = tokens;
+const { getAppName } = environment;
 
 const NoScrimContainer = styled.div`
   width: 100vw;
@@ -44,20 +42,25 @@ export const FullPageSpinner: FC<FullPageSpinnerProps> = ({
 }) => {
   const spinner = useMemo(() => {
     switch (variant) {
-      case 'dots': return <Progress.Dots color="primary" />
-      case 'circle': return <CircularProgress />
+      case 'dots':
+        return <Progress.Dots color="primary" />;
+      case 'circle':
+        return <CircularProgress />;
       case 'equinor':
-        return <StarProgress />
+        return <StarProgress />;
       case 'application':
-        return <ApplicationIcon name={getAppName(import.meta.env.VITE_NAME)} animationState="loading" />
+        return (
+          <ApplicationIcon
+            name={getAppName(import.meta.env.VITE_NAME)}
+            animationState="loading"
+          />
+        );
     }
-  }, [variant])
+  }, [variant]);
 
-  if(!withScrim){
-    return <NoScrimContainer>{spinner}</NoScrimContainer>
+  if (!withScrim) {
+    return <NoScrimContainer>{spinner}</NoScrimContainer>;
   }
 
-  return (
-      <Scrim open>{spinner}</Scrim>
-  );
+  return <Scrim open>{spinner}</Scrim>;
 };

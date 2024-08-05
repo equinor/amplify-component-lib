@@ -1,12 +1,9 @@
 import { car } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 import { ListItem, ListItemProps } from 'src/molecules/ListItem/ListItem';
 import { render, screen, userEvent } from 'src/tests/test-utils';
-
-const { colors } = tokens;
 
 function fakeProps(): ListItemProps {
   return {

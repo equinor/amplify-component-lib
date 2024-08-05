@@ -2,13 +2,10 @@ import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled, { keyframes } from 'styled-components';
-
-const { colors } = tokens;
 
 const Wrapper = styled.div`
   position: relative;

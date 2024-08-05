@@ -1,11 +1,10 @@
 import { FC } from 'react';
 
 import { TextField as Base, TextFieldProps } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+
+import { colors } from 'src/atoms/style';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
 
 const StyledBase = styled(Base)`
   ${(props) => {

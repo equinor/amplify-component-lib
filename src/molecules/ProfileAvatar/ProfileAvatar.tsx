@@ -4,9 +4,11 @@ import { Avatar, Icon } from '@equinor/eds-core-react';
 import { person } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { colors } from 'src/atoms/style';
+
 import styled from 'styled-components';
 
-const { colors, shape, typography } = tokens;
+const { shape, typography } = tokens;
 
 const availableColors: string[] = [
   colors.infographic.primary__energy_red_55.rgba,

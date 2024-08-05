@@ -1,7 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { colors } from 'src/atoms/style';
+
 import styled from 'styled-components';
-const { colors, spacings, shape } = tokens;
+
+const { spacings, shape } = tokens;
 
 export const MenuSection = styled.section`
   display: flex;
