@@ -1,11 +1,17 @@
-import { FocusEventHandler, forwardRef, MouseEventHandler } from 'react';
+import {
+  FocusEventHandler,
+  forwardRef,
+  MouseEventHandler,
+  ReactNode,
+} from 'react';
 
 import { IconData } from '@equinor/eds-icons';
 
-import { Icon, Typography } from '..';
+import { Typography } from '..';
 import { colors } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
 import { spacings } from 'src/atoms/style/spacings';
+import { renderContent } from 'src/molecules/ListItem/ListItem.utils';
 
 import styled from 'styled-components';
 
@@ -52,11 +58,11 @@ const Container = styled.button<ContainerProps>`
 
 export interface ListItemProps {
   label: string;
-  icon: IconData;
   onClick: MouseEventHandler<HTMLButtonElement>;
   onFocus?: FocusEventHandler<HTMLButtonElement>;
   onBlur?: FocusEventHandler<HTMLButtonElement>;
-  iconPosition?: 'leading' | 'trailing';
+  leadingContent?: ReactNode | IconData;
+  trailingContent?: ReactNode | IconData;
   disabled?: boolean;
   selected?: boolean;
   isChild?: boolean;
@@ -66,29 +72,17 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
   (
     {
       label,
-      icon,
       onClick,
       onFocus,
       onBlur,
-      iconPosition = 'leading',
       disabled = false,
+      leadingContent,
+      trailingContent,
       isChild = false,
       selected = false,
     },
     ref
   ) => {
-    const renderIcon = (
-      <Icon data={icon} color={colors.interactive.primary__resting.rgba} />
-    );
-
-    const renderLabel = (
-      <section>
-        <Typography variant="button" group="navigation">
-          {label}
-        </Typography>
-      </section>
-    );
-
     return (
       <Container
         ref={ref}
@@ -99,9 +93,13 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
         onFocus={onFocus}
         onBlur={onBlur}
       >
-        {iconPosition === 'trailing'
-          ? [renderLabel, renderIcon]
-          : [renderIcon, renderLabel]}
+        {leadingContent && renderContent(leadingContent)}
+        <section>
+          <Typography variant="button" group="navigation">
+            {label}
+          </Typography>
+        </section>
+        {trailingContent && renderContent(trailingContent)}
       </Container>
     );
   }
