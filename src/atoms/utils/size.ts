@@ -3,7 +3,7 @@ const k = 1024; // using decimal to give a more realistic value from blobStorage
 /**
  * @deprecated - Use new 'formatDataSize' instead
  */
-const formatBytes = (bytes: number, decimals = 2): string => {
+export const formatBytes = (bytes: number, decimals = 2): string => {
   if (bytes < 0) return '0 Bytes';
   if (bytes === 0) return '0 Bytes';
   if (bytes === 1) return '1 Byte';
@@ -19,7 +19,7 @@ const formatBytes = (bytes: number, decimals = 2): string => {
 /**
  * @deprecated - Use new 'formatDataSize' instead
  */
-const formatKiloBytes = (kiloBytes: number, decimals = 2): string => {
+export const formatKiloBytes = (kiloBytes: number, decimals = 2): string => {
   return formatBytes(kiloBytes * k, decimals);
 };
 
@@ -58,7 +58,7 @@ const SIZES: InputFormats[] = [
  * @param inputFormat - The format that size is in, defaults to 'KiB'
  * @returns - Formatted data size to human readable, i.e. '1024 KiB' = '1 MiB'
  */
-function formatDataSize({
+export function formatDataSize({
   size,
   decimals = 2,
   inputFormat = 'KiB',
@@ -82,5 +82,3 @@ function formatDataSize({
   );
   return `${parsedSize} ${SIZES[index]}`;
 }
-
-export default { formatBytes, formatKiloBytes, formatDataSize };

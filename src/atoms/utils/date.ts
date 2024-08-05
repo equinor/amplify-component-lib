@@ -2,7 +2,7 @@
 // formatDate(new Date(), {format: 'DD.MM.YYYY'}) => 16.06.2021
 // formatDate(new Date(), {format: 'YYYY-MM-DD'}) => 2021-06-16
 // formatDate(new Date(), {format: 'DD. month YYYY'}) => 16. June 2021
-const formatDate = (
+export const formatDate = (
   date: Date | string | null | undefined,
   options?: {
     format:
@@ -67,7 +67,7 @@ const formatDate = (
 
 // formatDateTime(new Date()) => 19. January 2022, 01:32
 // formatDateTime(new Date(), {month: 'short'}) => 19. Jan 2022, 01:32
-const formatDateTime = (
+export const formatDateTime = (
   date: Date | string | null | undefined,
   options: { month?: 'short' | 'long'; hideYear?: boolean; isGMT?: boolean } = {
     month: 'long',
@@ -97,7 +97,7 @@ const formatDateTime = (
 
 // formatRelativeDateTime(new Date()) => Today at 7:17
 // formatRelativeDateTime(new Date(2018, 11, 24, 10, 33)) => 24. November 2018, 10:33
-const formatRelativeDateTime = (
+export const formatRelativeDateTime = (
   date: Date | string | null | undefined,
   isGMT = false
 ): string => {
@@ -147,7 +147,7 @@ const formatRelativeDateTime = (
   return '';
 };
 
-const isBetweenDates = (
+export const isBetweenDates = (
   date: Date | string | null | undefined,
   dates: [Date, Date]
 ): boolean => {
@@ -158,11 +158,4 @@ const isBetweenDates = (
     }
   }
   return false;
-};
-
-export default {
-  formatDate,
-  formatDateTime,
-  formatRelativeDateTime,
-  isBetweenDates,
 };
