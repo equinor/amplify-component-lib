@@ -9,6 +9,7 @@ import {
   embark,
   equinor,
   fallback,
+  inpress,
   ltg,
   orca,
   premo,
@@ -20,6 +21,8 @@ import { ApplicationIconBase } from './ApplicationIconBase';
 export type ApplicationName =
   | 'amplify'
   | 'embark'
+  | 'bravos'
+  | 'inpress'
   | 'premo'
   | 'dasha'
   | 'orca'
@@ -88,6 +91,12 @@ const apps: ApplicationIconData[] = [
     appName: 'ltg',
     iconSvg: ltg.svgPathData,
     rotationVariant: 0,
+    color: 'green',
+  },
+  {
+    appName: 'inpress',
+    iconSvg: inpress.svgPathData,
+    rotationVariant: 1,
     color: 'green',
   },
   {
