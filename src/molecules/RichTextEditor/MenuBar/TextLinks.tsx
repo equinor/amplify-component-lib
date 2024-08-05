@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { EditorMenu } from './MenuBar';
-import url from 'src/atoms/utils/url';
+import { isValidUrl } from 'src/atoms/utils/url';
 import { TextField } from 'src/molecules/TextField/TextField';
 
 import styled from 'styled-components';
@@ -50,7 +50,7 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
   };
 
   const onSetLink = () => {
-    if (!url.isValidUrl(linkText.current)) {
+    if (!isValidUrl(linkText.current)) {
       setFailedToSave(true);
       return;
     }
