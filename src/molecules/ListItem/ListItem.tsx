@@ -56,6 +56,10 @@ const Container = styled.button<ContainerProps>`
   }
 `;
 
+const TrailingContent = styled.div`
+  margin-left: auto;
+`;
+
 export interface ListItemProps {
   label: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -99,7 +103,10 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
             {label}
           </Typography>
         </section>
-        {trailingContent && renderContent(trailingContent)}
+
+        {trailingContent && (
+          <TrailingContent>{renderContent(trailingContent)}</TrailingContent>
+        )}
       </Container>
     );
   }
