@@ -1,7 +1,21 @@
 import { boat, car } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
+import { colors } from 'src/atoms/style';
 import { ListItem } from 'src/molecules/ListItem/ListItem';
+
+import styled from 'styled-components';
+
+const CustomComponent = styled.div`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${colors.interactive.primary__resting.rgba};
+  color: ${colors.text.static_icons__primary_white.rgba};
+  border-radius: 50%;
+`;
 
 const meta: Meta<typeof ListItem> = {
   title: 'Molecules/ListItem',
@@ -21,14 +35,14 @@ type Story = StoryObj<typeof ListItem>;
 
 export const Default: Story = {
   args: {
-    icon: car,
+    leadingContent: car,
     label: 'Toyota',
   },
 };
 
 export const Disabled: Story = {
   args: {
-    icon: car,
+    leadingContent: car,
     label: 'Nissan',
     disabled: true,
   },
@@ -36,7 +50,7 @@ export const Disabled: Story = {
 
 export const Selected: Story = {
   args: {
-    icon: car,
+    leadingContent: car,
     label: 'Daihatsu',
     selected: true,
   },
@@ -44,7 +58,7 @@ export const Selected: Story = {
 
 export const IsChild: Story = {
   args: {
-    icon: car,
+    leadingContent: car,
     label: 'Mazda',
     isChild: true,
   },
@@ -52,8 +66,15 @@ export const IsChild: Story = {
 
 export const TrailingIcon: Story = {
   args: {
-    icon: boat,
+    trailingContent: boat,
     label: 'Buster',
-    iconPosition: 'trailing',
+  },
+};
+
+export const CustomReactElement: Story = {
+  args: {
+    leadingContent: <CustomComponent>2</CustomComponent>,
+    trailingContent: <CustomComponent>5</CustomComponent>,
+    label: 'Golf',
   },
 };
