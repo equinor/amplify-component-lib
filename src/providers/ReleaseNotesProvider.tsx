@@ -12,11 +12,11 @@ import {
 import { ReleaseNote } from '@equinor/subsurface-app-management';
 
 import { useReleaseNotesQuery } from 'src/atoms/hooks/useReleaseNotesQuery';
+import { SieveOption, SieveValue } from 'src/molecules/Sieve/Sieve.types';
 import {
   extractDatesFromReleaseNotes,
   sortReleaseNotesByDate,
-} from 'src/atoms/utils/releaseNotes';
-import { SieveOption, SieveValue } from 'src/molecules/Sieve/Sieve.types';
+} from 'src/providers/ReleaseNotesProvider.utils';
 import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
 
 interface ReleaseNotesContextState {

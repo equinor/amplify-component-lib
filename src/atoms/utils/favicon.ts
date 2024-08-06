@@ -1,4 +1,4 @@
-const setupIcons = (lightFaviconId: string, darkFaviconId: string) => {
+export function setupIcons(lightFaviconId: string, darkFaviconId: string) {
   const lightIcon = document.querySelector(`link#${lightFaviconId}`);
   const darkIcon = document.querySelector(`link#${darkFaviconId}`);
 
@@ -26,6 +26,4 @@ const setupIcons = (lightFaviconId: string, darkFaviconId: string) => {
   };
   matcher.addEventListener('change', onUpdate);
   onUpdate();
-};
-
-export default { setupIcons };
+}
