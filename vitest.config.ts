@@ -33,7 +33,6 @@ export default defineConfig({
         'src/**/*.types.ts',
         'src/**/*.test.tsx',
         'src/**/*.stories.tsx',
-        'src/molecules/ListItem/ListItem.utils.tsx',
         'src/**/*.docs.mdx',
         'src/**/stories/**',
         'src/**/index.ts',

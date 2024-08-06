@@ -6,8 +6,7 @@ import { colors } from 'src/atoms/style';
 import { Icon } from 'src/molecules';
 
 export const renderContent = (content: IconData | ReactNode) => {
-  if (!content) return null;
-  if (typeof content === 'object' && 'prefix' in content) {
+  if (content && typeof content === 'object' && 'prefix' in content) {
     return (
       <Icon data={content} color={colors.interactive.primary__resting.rgba} />
     );
