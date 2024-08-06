@@ -27,3 +27,14 @@ export const FormatKiloBytes: StoryFn = () => {
   `;
   return <UtilStory name="formatKiloBytes" codeText={codeText} />;
 };
+export const FormatDataSize: StoryFn = () => {
+  const codeText = `
+  formatDataSize(
+    size: number,
+    inputFormat = 'KiB'
+    decimals = 2
+  )
+  => returns human-readable byte size (KiB, MiB, GiB ...)
+  `;
+  return <UtilStory name="formatDataSize" codeText={codeText} />;
+};

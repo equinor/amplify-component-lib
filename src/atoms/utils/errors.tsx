@@ -73,5 +73,3 @@ export const getErrorContent = (
     )!;
   }
 };
-
-export default { getErrorContent, getListOfErrors };

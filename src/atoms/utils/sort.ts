@@ -1,4 +1,4 @@
-function sortByDate(a: Date | string, b: Date | string): number {
+export function sortByDate(a: Date | string, b: Date | string): number {
   const firstDate = typeof a === 'string' ? new Date(a) : a;
   const secondDate = typeof b === 'string' ? new Date(b) : b;
 
@@ -11,7 +11,7 @@ interface WellBore {
   wellboreName?: string | null;
 }
 
-function sortByWellboreName(
+export function sortByWellboreName(
   a: string | WellBore,
   b: string | WellBore
 ): number {
@@ -26,5 +26,3 @@ function sortByWellboreName(
   }
   return 0;
 }
-
-export default { sortByDate, sortByWellboreName };

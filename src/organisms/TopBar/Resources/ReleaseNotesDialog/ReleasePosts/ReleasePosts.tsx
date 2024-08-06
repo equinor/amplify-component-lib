@@ -5,9 +5,9 @@ import { ReleaseNote } from '@equinor/subsurface-app-management';
 
 import { ReleasePost } from './ReleasePost/ReleasePost';
 import { Container, ContainerNoResults } from './ReleasePosts.styles';
-import { monthValueToString } from 'src/atoms/utils/releaseNotes';
 import { Typography } from 'src/molecules';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
+import { monthValueToString } from 'src/providers/ReleaseNotesProvider.utils';
 
 const { colors } = tokens;
 
