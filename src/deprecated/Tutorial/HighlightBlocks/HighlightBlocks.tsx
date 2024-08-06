@@ -1,4 +1,3 @@
-/* c8 ignore start */
 import { forwardRef, ReactNode } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
@@ -50,4 +49,3 @@ export const HighlightBlocks = forwardRef<HTMLDivElement, HighlightBlocksProps>(
 );
 
 HighlightBlocks.displayName = 'HighlightBlocks';
-/* c8 ignore end */
