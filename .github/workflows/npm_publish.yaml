@@ -4,6 +4,8 @@ on:
     secrets:
       npm-token:
         required: true
+permissions:
+  id-token: write
 jobs:
   publish:
     runs-on: ubuntu-latest
