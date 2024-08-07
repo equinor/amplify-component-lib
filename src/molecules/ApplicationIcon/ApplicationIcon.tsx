@@ -117,12 +117,14 @@ export interface ApplicationIconProps {
   name: ApplicationName | string;
   size?: number;
   animationState?: 'none' | 'hoverable' | 'animated' | 'loading';
+  iconOnly?: boolean;
 }
 
 export const ApplicationIcon: FC<ApplicationIconProps> = ({
   name = 'amplify',
   size = 64,
   animationState = 'none',
+  iconOnly = false,
 }) => {
   let appData = apps.find((app) => app.appName.includes(name.toLowerCase()));
 
@@ -144,6 +146,7 @@ export const ApplicationIcon: FC<ApplicationIconProps> = ({
       rotationVariant={appData.rotationVariant}
       animationState={animationState}
       appIconData={iconSvg}
+      iconOnly={iconOnly}
     />
   );
 };

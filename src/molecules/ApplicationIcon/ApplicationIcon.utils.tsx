@@ -34,4 +34,5 @@ export interface AppBaseProps {
   hasLargeWaves?: boolean;
   animationState?: 'none' | 'hoverable' | 'animated' | 'loading';
   appIconData: AppIconData['svgPathData'];
+  iconOnly: boolean;
 }
