@@ -28,6 +28,7 @@ interface AppIconContainerProps {
   $size: number;
   $color: AllowedColors;
   $animationState: AnimationState;
+  $iconOnly: boolean;
 }
 
 export const AppIconContainer = styled.div<AppIconContainerProps>`
@@ -71,14 +72,22 @@ export const AppIconContainer = styled.div<AppIconContainerProps>`
         `
       : ''}
   position: relative;
-  ${({ $color }) => {
-    return `
+  ${({ $color, $iconOnly }) => {
+    if ($iconOnly)
+      return css`
+        > div {
+          svg {
+            filter: none;
+          }
+        }
+      `;
+    return css`
       box-shadow:
-        0px 105px 68px 0px ${darkenColor($color, 0, '00')},
-        0px 96px 62px 0px ${darkenColor($color, 0.1, '03')},
-        0px 56px 52px 0px ${darkenColor($color, 0.5, '0D')},
-        0px 32px 39px 0px ${darkenColor($color, 0.9, '17')},
-        0px 8px 21px 0px ${darkenColor($color, 0.1, '1a')};
+        0 105px 68px 0 ${darkenColor($color, 0, '00')},
+        0 96px 62px 0 ${darkenColor($color, 0.1, '03')},
+        0 56px 52px 0 ${darkenColor($color, 0.5, '0D')},
+        0 32px 39px 0 ${darkenColor($color, 0.9, '17')},
+        0 8px 21px 0 ${darkenColor($color, 0.1, '1a')};
     `;
   }}
 `;
