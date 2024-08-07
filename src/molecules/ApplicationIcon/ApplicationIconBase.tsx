@@ -20,6 +20,7 @@ export const ApplicationIconBase: FC<AppBaseProps> = ({
   hasLargeWaves = false,
   animationState = 'none',
   appIconData,
+  iconOnly,
 }) => {
   const waves = Array.from({ length: 8 }, (_, index) => {
     const top = hasLargeWaves
@@ -48,58 +49,61 @@ export const ApplicationIconBase: FC<AppBaseProps> = ({
       $size={size}
       $color={color}
       $animationState={animationState}
+      $iconOnly={iconOnly}
       data-testid="app-icon-container"
     >
       <IconContainer data-testid="icon-container">
         <IconSvg paths={appIconData} />
       </IconContainer>
-      <Waves $animationState={animationState} data-testid="waves-container">
-        <WaveInnerContainer $color={color} $rotationVariant={rotationVariant}>
-          <Wave
-            className="wave"
-            $waveIntervalDist={0}
-            data-testid="wave"
-            style={{
-              animationDelay: `0ms`,
-              transitionDelay: `0ms`,
-            }}
-          >
-            <WaveShape
-              index={-1}
-              isAltWave={false}
-              hasLargeWaves={hasLargeWaves}
-            />
-            <NoiseShape
-              index={-1}
-              isAltWave={false}
-              hasLargeWaves={hasLargeWaves}
-            />
-          </Wave>
-          {waves.map((wave, index) => (
+      {!iconOnly && (
+        <Waves $animationState={animationState} data-testid="waves-container">
+          <WaveInnerContainer $color={color} $rotationVariant={rotationVariant}>
             <Wave
               className="wave"
-              key={index}
-              $waveIntervalDist={wave.waveIntervalDist}
+              $waveIntervalDist={0}
               data-testid="wave"
               style={{
-                animationDelay: `${wave.delay}ms`,
-                transitionDelay: `${wave.delay}ms`,
+                animationDelay: `0ms`,
+                transitionDelay: `0ms`,
               }}
             >
               <WaveShape
-                index={index}
-                isAltWave={wave.altWave}
-                hasLargeWaves={wave.hasLargeWaves}
+                index={-1}
+                isAltWave={false}
+                hasLargeWaves={hasLargeWaves}
               />
               <NoiseShape
-                index={index}
-                isAltWave={wave.altWave}
-                hasLargeWaves={wave.hasLargeWaves}
+                index={-1}
+                isAltWave={false}
+                hasLargeWaves={hasLargeWaves}
               />
             </Wave>
-          ))}
-        </WaveInnerContainer>
-      </Waves>
+            {waves.map((wave, index) => (
+              <Wave
+                className="wave"
+                key={index}
+                $waveIntervalDist={wave.waveIntervalDist}
+                data-testid="wave"
+                style={{
+                  animationDelay: `${wave.delay}ms`,
+                  transitionDelay: `${wave.delay}ms`,
+                }}
+              >
+                <WaveShape
+                  index={index}
+                  isAltWave={wave.altWave}
+                  hasLargeWaves={wave.hasLargeWaves}
+                />
+                <NoiseShape
+                  index={index}
+                  isAltWave={wave.altWave}
+                  hasLargeWaves={wave.hasLargeWaves}
+                />
+              </Wave>
+            ))}
+          </WaveInnerContainer>
+        </Waves>
+      )}
     </AppIconContainer>
   );
 };
