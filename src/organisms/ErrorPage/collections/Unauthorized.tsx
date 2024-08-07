@@ -1,11 +1,9 @@
 import { FC } from 'react';
 
 import { ErrorPage } from '..';
-import { environment, errors } from 'src/atoms/utils';
-
-const { getErrorContent } = errors;
-
 import { ErrorType } from 'src/atoms';
+import { getErrorContent } from 'src/atoms/utils';
+import { environment } from 'src/atoms/utils/auth_environment';
 
 import styled from 'styled-components';
 

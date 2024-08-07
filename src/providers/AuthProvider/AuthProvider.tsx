@@ -12,7 +12,7 @@ import { AccountInfo } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
 import { AuthProviderInner } from './AuthProviderInner';
-import { auth, environment } from 'src/atoms/utils';
+import { auth, environment } from 'src/atoms/utils/auth_environment';
 
 const { msalApp } = auth;
 const { getIsMock } = environment;
