@@ -4,8 +4,11 @@ export type * from './types';
 export * from './enums';
 export * from './icons';
 export * from './utils';
+import * as styleTemp from './style';
 
 /**
  * @deprecated - Use direct export instead
  */
-export * as style from './style';
+const style = styleTemp;
+
+export { style };
