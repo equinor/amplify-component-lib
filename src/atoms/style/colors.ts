@@ -14,7 +14,7 @@ export const colors = {
     lightblue: {
       default:
         'var(--amplify_dataviz_lightblue_default, rgba(133, 208, 250, 1))',
-      darker: 'var(--amplify_dataviz_lightblue_darker, rgba(35, 170, 246, 1)t',
+      darker: 'var(--amplify_dataviz_lightblue_darker, rgba(35, 170, 246, 1))',
       lighter:
         'var(--amplify_dataviz_lightblue_lighter, rgba(211, 238, 253, 1))',
     },
