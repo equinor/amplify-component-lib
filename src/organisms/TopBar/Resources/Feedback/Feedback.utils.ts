@@ -8,7 +8,7 @@ import {
   FeedbackType,
   UrgencyOption,
 } from './Feedback.types';
-import { EnvironmentType } from 'src/atoms/types/Environment';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { date, environment, string } from 'src/atoms/utils';
 
 const { capitalize } = string;

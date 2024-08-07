@@ -15,7 +15,7 @@ import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
-import { auth, environment } from 'src/atoms/utils';
+import { auth, environment } from 'src/atoms/utils/auth_environment';
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { Unauthorized } from 'src/organisms/ErrorPage/collections/Unauthorized';
 
@@ -200,9 +200,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   ]);
 
   if (authState === 'loading' || account === undefined)
-    return (
-      loadingComponent ?? <FullPageSpinner variant="application" />
-    );
+    return loadingComponent ?? <FullPageSpinner variant="application" />;
 
   if (authState === 'unauthorized')
     return unauthorizedComponent ?? <Unauthorized />;

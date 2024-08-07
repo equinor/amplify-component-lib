@@ -6,8 +6,8 @@ import { LogLevel } from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 import { useQuery } from '@tanstack/react-query';
 
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
-import { EnvironmentType } from 'src/atoms/types/Environment';
 import { environment } from 'src/atoms/utils/auth_environment';
 
 /* c8 ignore start */

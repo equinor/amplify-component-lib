@@ -9,7 +9,7 @@ import {
 } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms/style';
-import { size } from 'src/atoms/utils';
+import { formatBytes } from 'src/atoms/utils';
 import {
   FileProgressPropsExtension,
   RegularFileProgressBaseProps,
@@ -22,8 +22,6 @@ import {
   RegularFileProgressDetails,
   RegularFileProgressWrapper,
 } from 'src/molecules/FileProgress/RegularFileProgress.styles';
-
-const { formatBytes } = size;
 
 interface RegularFileProgressProps
   extends RegularFileProgressBaseProps,

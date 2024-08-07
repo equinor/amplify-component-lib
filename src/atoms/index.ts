@@ -1,5 +1,6 @@
 export * from './hooks';
-export * as style from './style';
+export * from './style';
 export type * from './types';
+export * from './enums';
 export * from './icons';
 export * from './utils';

@@ -3,8 +3,8 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { TopBar } from '.';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { spacings } from 'src/atoms/style';
-import { EnvironmentType } from 'src/atoms/types/Environment';
 import { Field } from 'src/atoms/types/Field';
 import { act, render, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
