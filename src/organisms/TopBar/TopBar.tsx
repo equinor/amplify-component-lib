@@ -9,7 +9,7 @@ import {
   CircularProgress,
   EnvironmentTag,
 } from './TopBar.styles';
-import { EnvironmentType } from 'src/atoms/types/Environment';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { Field } from 'src/atoms/types/Field';
 import { Typography } from 'src/molecules';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';

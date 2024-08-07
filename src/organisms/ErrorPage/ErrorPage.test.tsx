@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { ErrorPage } from '.';
-import { ErrorType } from 'src/atoms/types/Errors';
+import { ErrorType } from 'src/atoms';
 import { getErrorContent } from 'src/atoms/utils/errors';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 

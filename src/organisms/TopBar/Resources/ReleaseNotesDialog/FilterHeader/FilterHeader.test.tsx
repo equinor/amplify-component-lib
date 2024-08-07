@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
 import { FilterHeader } from './FilterHeader';
-import { EnvironmentType } from 'src/atoms/types/Environment';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 

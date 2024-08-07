@@ -1,10 +1,11 @@
 import { FC } from 'react';
 
 import { ErrorPage } from '..';
-import { ErrorType } from 'src/atoms/types/Errors';
 import { environment, errors } from 'src/atoms/utils';
 
 const { getErrorContent } = errors;
+
+import { ErrorType } from 'src/atoms';
 
 import styled from 'styled-components';
 

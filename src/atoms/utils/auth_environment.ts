@@ -1,6 +1,6 @@
 import { PublicClientApplication } from '@azure/msal-browser';
 
-import { EnvironmentType } from 'src/atoms/types/Environment';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 
 const OPTIONAL_ENV_VARIABLES = [
   'IS_MOCK',

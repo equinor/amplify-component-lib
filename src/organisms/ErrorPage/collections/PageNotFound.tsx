@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ErrorPage } from '..';
-import { ErrorType } from 'src/atoms/types/Errors';
+import { ErrorType } from 'src/atoms';
 import { environment, errors } from 'src/atoms/utils';
 
 const { getErrorContent } = errors;
