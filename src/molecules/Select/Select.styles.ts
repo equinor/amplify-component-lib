@@ -161,18 +161,13 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;
 
+  &:hover {
+    background: none;
+  }
+
   &:focus {
     outline: none;
-  }
-
-  &:focus-visible {
     background: ${colors.interactive.primary__hover_alt.rgba};
-  }
-
-  /* Hide any background change on hover since we set focus on hover now */
-  &:hover {
-    background: ${colors.interactive.primary__hover_alt.rgba};
-    background: transparent;
   }
 
   &:focus-visible {

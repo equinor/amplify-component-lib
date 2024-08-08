@@ -73,9 +73,18 @@ export const colors = {
       lighter:
         'var(--amplify_dataviz_lightpurple_lighter, rgba(234, 224, 255, 1))',
     },
-    grey: {
-      darker: 'var(--amplify_dataviz_grey_darker, rgba(86, 86, 86, 1))',
-      lighter: 'var(--amplify_dataviz_grey_lighter,  rgba(194, 200, 204, 1))',
+    darkgray: {
+      default: 'var(--amplify_dataviz_darkgray_default, rgba(122, 122, 122,1))',
+      darker: 'var(--amplify-dataviz_darkgray_darker, rgba(86, 86, 86,1))',
+      lighter:
+        'var(--amplify-dataviz_darkgray_lighter, rgba(173, 173, 173, 1))',
+    },
+    lightgray: {
+      default:
+        'var(--amplify_dataviz_lightgray_default, rgba(144, 155, 162, 1))',
+      darker: 'var(--amplify_dataviz_lightgray_darker, rgba(91, 102, 108, 1))',
+      lighter:
+        'var(--amplify_dataviz_lightgray_lighter,  rgba(194, 200, 204, 1))',
     },
   },
 } as const;
