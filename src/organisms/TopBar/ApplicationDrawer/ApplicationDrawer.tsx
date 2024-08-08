@@ -5,7 +5,7 @@ import { apps, exit_to_app } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import {
   AmplifyApplication,
-  PortalService,
+  AmplifyApplicationService,
 } from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
 
@@ -39,7 +39,7 @@ export const ApplicationDrawer: FC = () => {
 
   const { data = [], isLoading } = useQuery({
     queryKey: [`userApplications`],
-    queryFn: () => PortalService.userApplications(),
+    queryFn: () => AmplifyApplicationService.userApplications(),
   });
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
