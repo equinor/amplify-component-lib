@@ -85,7 +85,11 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   useEffect(() => {
     if (!isInitialized) return;
 
-    if (error instanceof InteractionRequiredAuthError && !isInIframe()) {
+    if (
+      error instanceof InteractionRequiredAuthError &&
+      !isInIframe() &&
+      authState !== 'unauthorized'
+    ) {
       console.error(error);
       console.log(
         '[AuthProvider] No account found, need to login via. redirect'
@@ -117,6 +121,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     login,
     result,
     setAccount,
+    authState,
   ]);
 
   useEffect(() => {
