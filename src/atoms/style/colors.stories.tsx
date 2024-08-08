@@ -33,11 +33,12 @@ interface ColorBlockProps {
 }
 
 const ColorBlock = styled.div<ColorBlockProps>`
-  width: 12rem;
+  width: 14rem;
   padding: ${spacings.small};
   height: 5rem;
   background: ${({ $background }) => $background};
   > p {
+    font-weight: bold;
     color: ${({ $background }) => {
       // Magic code to make text color (name of color) change to white/black depending on what the background is
       // See here: https://css-tricks.com/switch-font-color-for-different-backgrounds-with-css/
