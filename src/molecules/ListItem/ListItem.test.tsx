@@ -1,16 +1,12 @@
-import { car } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
+import { car, timer } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 import { ListItem, ListItemProps } from 'src/molecules/ListItem/ListItem';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
-const { colors } = tokens;
-
 function fakeProps(): ListItemProps {
   return {
-    icon: car,
     label: faker.animal.dog(),
     onClick: vi.fn(),
   };
@@ -23,14 +19,29 @@ test('Renders label as expected', () => {
   expect(screen.getByText(props.label)).toBeInTheDocument();
 });
 
-test('Renders icon as expected', () => {
+test('Renders icons as expected', () => {
   const props = fakeProps();
-  render(<ListItem {...props} />);
+  render(<ListItem {...props} leadingContent={car} trailingContent={timer} />);
+  const allIcons = screen.getAllByTestId('eds-icon-path');
+  expect(allIcons[0]).toHaveAttribute('d', car.svgPathData);
+  expect(allIcons[1]).toHaveAttribute('d', timer.svgPathData);
+});
 
-  expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
-    'd',
-    car.svgPathData
+test('Renders custom content as expected', () => {
+  const props = fakeProps();
+  const trailingText = 'trailing';
+  const leadingText = 'leading';
+
+  render(
+    <ListItem
+      {...props}
+      trailingContent={<div>{trailingText}</div>}
+      leadingContent={<div>{leadingText}</div>}
+    />
   );
+
+  expect(screen.getByText(trailingText)).toBeInTheDocument();
+  expect(screen.getByText(leadingText)).toBeInTheDocument();
 });
 
 test('Renders focus color as expected', () => {
@@ -89,9 +100,9 @@ test('Renders disabled color as expected', () => {
   });
 });
 
-test('Renders icon behind when iconPosition=trailing', () => {
+test('renders leadingContent to left of label', () => {
   const props = fakeProps();
-  const { rerender } = render(<ListItem {...props} />);
+  render(<ListItem {...props} leadingContent={car} />);
 
   const trailingLabel = screen.getByText(props.label);
   const precedingSvg = screen.getByTestId('eds-icon-path')
@@ -100,8 +111,11 @@ test('Renders icon behind when iconPosition=trailing', () => {
   const leadingResult = trailingLabel.compareDocumentPosition(precedingSvg);
 
   expect(leadingResult).toBe(Node.DOCUMENT_POSITION_PRECEDING);
+});
 
-  rerender(<ListItem {...props} iconPosition="trailing" />);
+test('renders trailingContent to right of label', () => {
+  const props = fakeProps();
+  render(<ListItem {...props} trailingContent={car} />);
 
   const precedingLabel = screen.getByText(props.label);
   const trailingSvg = screen.getByTestId('eds-icon-path').parentElement as Node;

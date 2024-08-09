@@ -1,8 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import coordinate from './coordinate';
-
-const { formatLatLng, formatUtm } = coordinate;
+import { formatLatLng, formatUtm } from './coordinate';
 
 test('Formats random location without crashing', () => {
   const latitude = Number(faker.location.latitude());

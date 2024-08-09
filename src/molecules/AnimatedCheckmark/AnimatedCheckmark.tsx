@@ -5,7 +5,6 @@ import { Container } from './AnimatedCheckmark.styles';
 export interface AnimatedCheckmarkProps {
   size?: 'small' | 'medium';
 }
-
 export const AnimatedCheckmark: FC<AnimatedCheckmarkProps> = ({ size }) => (
   <Container
     $size={size}

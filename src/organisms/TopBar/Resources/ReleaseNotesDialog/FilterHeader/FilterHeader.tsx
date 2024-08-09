@@ -14,7 +14,7 @@ import {
   SieveWrapper,
   Wrapper,
 } from './FilterHeader.styles';
-import { EnvironmentType } from 'src/atoms/types/Environment';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { environment } from 'src/atoms/utils';
 import { FilterOption } from 'src/molecules/Sieve/Filter';
 import { Sieve } from 'src/molecules/Sieve/Sieve';

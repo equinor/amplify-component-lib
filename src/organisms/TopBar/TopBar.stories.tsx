@@ -6,9 +6,9 @@ import { Meta, StoryFn } from '@storybook/react';
 
 import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './Account/stories/data';
 import { TopBar, TopBarType } from '.';
-import { EnvironmentType } from 'src/atoms/types/Environment';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
+import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar';
-import { MenuItemType } from 'src/organisms/SideBar/MenuItem';
 import { Template } from 'src/organisms/Template/Template';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
@@ -83,7 +83,7 @@ export const Primary: StoryFn<TopBarType> = ({ ...args }) => {
 };
 
 export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
-  const menuItems: MenuItemType[] = [
+  const menuItems: SideBarMenuItem[] = [
     {
       name: 'Dashboard',
       icon: dashboard,

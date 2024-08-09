@@ -4,12 +4,13 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { add, home, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
+import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar/index';
-import { MenuItem, MenuItemType } from 'src/organisms/SideBar/MenuItem';
+import { MenuItem } from 'src/organisms/SideBar/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent, within } from 'src/tests/test-utils';
 
-const defaultMenuItems: MenuItemType[] = [
+const defaultMenuItems: SideBarMenuItem[] = [
   {
     name: 'Home',
     icon: home,
@@ -194,7 +195,7 @@ test('Hides create button when showCreate=false', async () => {
 });
 
 test('Renders bottom item when provided', () => {
-  const bottomItemProps: MenuItemType = {
+  const bottomItemProps: SideBarMenuItem = {
     name: faker.animal.dog(),
     icon: star_half,
     link: faker.internet.url(),

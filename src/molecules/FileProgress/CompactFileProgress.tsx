@@ -3,8 +3,8 @@ import { FileWithPath } from 'react-dropzone';
 
 import { Icon } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
+import { colors } from 'src/atoms/style';
 import {
   AdditionalText,
   CircularProgress,
@@ -20,8 +20,6 @@ import {
   FileProgressPropsExtension,
 } from 'src/molecules/FileProgress/FileProgress';
 import { readUploadedFileAsText } from 'src/molecules/FileProgress/FileProgress.utils';
-
-const { colors } = tokens;
 
 interface CompactFileProgressProps
   extends CompactFileProgressBaseProps,

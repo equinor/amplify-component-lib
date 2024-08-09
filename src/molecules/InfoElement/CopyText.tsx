@@ -2,13 +2,10 @@ import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled, { keyframes } from 'styled-components';
-
-const { colors } = tokens;
 
 const Wrapper = styled.div`
   position: relative;
@@ -36,7 +33,7 @@ const CopyIcon = styled.div`
   padding: ${spacings.xx_small};
   z-index: 1000;
   top: 50%;
-  right: -${spacings.x_small};
+  right: calc(${spacings.x_small} * -1);
   transform: translate(100%, -50%);
   animation: ${spawn} 0.25s;
   background: ${colors.ui.background__light.rgba};
@@ -44,7 +41,7 @@ const CopyIcon = styled.div`
   border-radius: 2px;
   p,
   svg {
-    color: ${colors.interactive.primary__hover.rgba};
+    color: ${colors.interactive.primary__resting.rgba};
   }
   p {
     font-weight: 700;
@@ -62,10 +59,6 @@ export interface CopyTextProps {
   textToCopy: string;
   children: ReactNode;
 }
-
-/**
- * @deprecated Being deprecated from amplify-component-lib move into app if you want the implementation
- */
 
 const CopyText: FC<CopyTextProps> = ({ children, textToCopy }) => {
   const isMounted = useRef(false);

@@ -1,5 +1,5 @@
 import { getErrorContent, getListOfErrors } from './errors';
-import { ErrorType } from 'src/atoms/types/Errors';
+import { ErrorType } from 'src/atoms';
 
 test('Shows default values without props', () => {
   const defaultError = getErrorContent('Amplify portal', ErrorType.DEFAULT);

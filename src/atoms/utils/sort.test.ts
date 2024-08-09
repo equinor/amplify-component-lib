@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import sort from './sort';
+import { sortByDate, sortByWellboreName } from './sort';
 
 test('sortByDate works as expected with date objects', () => {
   const listOfFakeDates: Date[] = faker.date
@@ -11,14 +11,14 @@ test('sortByDate works as expected with date objects', () => {
     })
     .map((item) => new Date(item));
 
-  const sortedList = listOfFakeDates.sort(sort.sortByDate);
+  const sortedList = listOfFakeDates.sort(sortByDate);
 
   for (let i = 1; i < sortedList.length - 1; i++) {
     const firstDate = sortedList[i - 1];
     const secondDate = sortedList[i];
-    expect(sort.sortByDate(firstDate, secondDate)).toBe(-1);
-    expect(sort.sortByDate(secondDate, firstDate)).toBe(1);
-    expect(sort.sortByDate(firstDate, firstDate)).toBe(0);
+    expect(sortByDate(firstDate, secondDate)).toBe(-1);
+    expect(sortByDate(secondDate, firstDate)).toBe(1);
+    expect(sortByDate(firstDate, firstDate)).toBe(0);
   }
 });
 
@@ -31,7 +31,7 @@ test('sortByDate works as expected with strings', () => {
     })
     .map((item: Date) => item.toISOString());
 
-  const sortedList = listOfFakeDates.sort(sort.sortByDate);
+  const sortedList = listOfFakeDates.sort(sortByDate);
 
   for (let i = 1; i < sortedList.length - 1; i++) {
     const firstDate = new Date(sortedList[i - 1]);
@@ -161,7 +161,7 @@ const correctlySortedWellbores = [
 ];
 
 test('sortByWellboreName works with wellbore objects', () => {
-  const sortedWellbores = allWellbores.sort(sort.sortByWellboreName);
+  const sortedWellbores = allWellbores.sort(sortByWellboreName);
 
   for (const [index, wellbore] of sortedWellbores.entries()) {
     expect(wellbore.wellboreName).toBe(
@@ -175,7 +175,7 @@ test('sortByWellboreName works with wellbore strings', () => {
   const correctlySortedStrings = correctlySortedWellbores.map(
     (wellbore) => wellbore.wellboreName
   );
-  const sortedWellbores = allStrings.sort(sort.sortByWellboreName);
+  const sortedWellbores = allStrings.sort(sortByWellboreName);
 
   for (const [index, wellbore] of sortedWellbores.entries()) {
     expect(wellbore).toBe(correctlySortedStrings[index]);
@@ -186,5 +186,5 @@ test('sortByWellboreName works with undefined wellboreName', () => {
   const wellBore = correctlySortedWellbores[0];
   const undefinedNameWellbore = { wellboreName: undefined };
 
-  expect(sort.sortByWellboreName(wellBore, undefinedNameWellbore)).toBe(0);
+  expect(sortByWellboreName(wellBore, undefinedNameWellbore)).toBe(0);
 });

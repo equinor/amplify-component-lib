@@ -1,4 +1,5 @@
-import { ErrorContentType, ErrorType } from 'src/atoms/types/Errors';
+import { ErrorType } from 'src/atoms';
+import { ErrorContentType } from 'src/atoms/types/Errors';
 import { GlitchAnimation } from 'src/organisms/ErrorPage/illustrations/GlitchAnimation';
 import { QuestioningAnimation } from 'src/organisms/ErrorPage/illustrations/QuestioningAnimation';
 
@@ -73,5 +74,3 @@ export const getErrorContent = (
     )!;
   }
 };
-
-export default { getErrorContent, getListOfErrors };

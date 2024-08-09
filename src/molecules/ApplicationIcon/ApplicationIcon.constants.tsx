@@ -8,7 +8,9 @@ export const APP_ICONS = [
   'orca',
   'acquire',
   'pwex',
+  'recap',
   'ltg',
+  'inpress',
   'equinor',
 ] as const;
 

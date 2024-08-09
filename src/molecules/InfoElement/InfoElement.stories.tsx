@@ -1,31 +1,41 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { faker } from '@faker-js/faker';
+import { Meta, StoryObj } from '@storybook/react';
 
-import {
-  InfoElement,
-  InfoElementProps,
-} from 'src/molecules/InfoElement/InfoElement';
+import { InfoElement } from 'src/molecules/InfoElement/InfoElement';
 
 const meta: Meta<typeof InfoElement> = {
   title: 'Molecules/InfoElement',
   component: InfoElement,
-  argTypes: {
-    title: { control: 'text' },
-    content: { control: 'text' },
-    copyableContent: { control: 'boolean' },
-    capitalizeContent: { control: 'boolean' },
-  },
   args: {
-    title: 'Title',
-    content: 'Content',
+    title: faker.airline.airline().name,
   },
 };
 
 export default meta;
+type Story = StoryObj<typeof InfoElement>;
 
-const Template: StoryFn<InfoElementProps> = (args) => <InfoElement {...args} />;
+export const Default: Story = {
+  args: {
+    content: faker.airline.airplane().name,
+  },
+};
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const CopyableContent: Story = {
+  args: {
+    content: faker.airline.airplane().name,
+    copyableContent: true,
+  },
+};
 
-export const WithCopyTextTrue = Template.bind({});
-WithCopyTextTrue.args = { copyableContent: true, capitalizeContent: false };
+export const CapitalizedContent: Story = {
+  args: {
+    content: faker.airline.airplane().name,
+    capitalizeContent: true,
+  },
+};
+
+export const CustomContent: Story = {
+  args: {
+    content: <button>Custom content!</button>,
+  },
+};

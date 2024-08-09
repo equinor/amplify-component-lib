@@ -1,9 +1,14 @@
 import { faker } from '@faker-js/faker';
 
-import date from './date';
+import {
+  formatDate,
+  formatDateTime,
+  formatRelativeDateTime,
+  isBetweenDates,
+} from './date';
 
 test('formatDate works as expected when not sending in a date', () => {
-  const formattedDate = date.formatDate(null);
+  const formattedDate = formatDate(null);
 
   expect(formattedDate).toBe('');
 });
@@ -11,7 +16,7 @@ test('formatDate works as expected when not sending in a date', () => {
 test('formatDate works as expected with default format', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate);
+  const formattedDate = formatDate(fakeDate);
 
   const day = fakeDate.getDate();
   const month = fakeDate.getMonth() + 1;
@@ -24,7 +29,7 @@ test('formatDate works as expected with default format', () => {
 test('formatDate works as expected with default format that needs to be padded', () => {
   const fakeDate = new Date('01.01.23');
 
-  const formattedDate = date.formatDate(fakeDate);
+  const formattedDate = formatDate(fakeDate);
 
   const day = fakeDate.getDate();
   const month = fakeDate.getMonth() + 1;
@@ -37,7 +42,7 @@ test('formatDate works as expected with default format that needs to be padded',
 test('formatDate works as expected with default format that does not need  to be padded', () => {
   const fakeDate = new Date('10.10.23');
 
-  const formattedDate = date.formatDate(fakeDate);
+  const formattedDate = formatDate(fakeDate);
 
   const day = fakeDate.getDate();
   const month = fakeDate.getMonth() + 1;
@@ -50,7 +55,7 @@ test('formatDate works as expected with default format that does not need  to be
 test('formatDate works as expected with format = "DD. month YYYY"', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'DD. month YYYY',
   });
 
@@ -66,7 +71,7 @@ test('formatDate works as expected with format = "DD. month YYYY"', () => {
 test('formatDate works as expected with format = "DD. month YYYY" and month = short', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'DD. month YYYY',
     month: 'short',
   });
@@ -83,7 +88,7 @@ test('formatDate works as expected with format = "DD. month YYYY" and month = sh
 test('formatDate works as expected with format = "YYYY-MM-DD"', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'YYYY-MM-DD',
   });
 
@@ -98,7 +103,7 @@ test('formatDate works as expected with format = "YYYY-MM-DD"', () => {
 test('formatDate works as expected with format = "DD.MM.YY"', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'DD.MM.YY',
   });
 
@@ -113,7 +118,7 @@ test('formatDate works as expected with format = "DD.MM.YY"', () => {
 test('formatDate works as expected with format = "DD.MM.YY" when date needs to be padded', () => {
   const fakeDate = new Date('01.01.23');
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'DD.MM.YY',
   });
 
@@ -128,7 +133,7 @@ test('formatDate works as expected with format = "DD.MM.YY" when date needs to b
 test('formatDate works as expected with format = "DD.MM.YY" when date does not need to be padded', () => {
   const fakeDate = new Date('10.10.23');
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'DD.MM.YY',
   });
 
@@ -143,7 +148,7 @@ test('formatDate works as expected with format = "DD.MM.YY" when date does not n
 test('formatDate works as expected with format = "DD. month"', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'DD. month',
   });
 
@@ -158,7 +163,7 @@ test('formatDate works as expected with format = "DD. month"', () => {
 test('formatDate works as expected with format = "DD. month" and month = "short"', () => {
   const fakeDate = faker.date.past();
 
-  const formattedDate = date.formatDate(fakeDate, {
+  const formattedDate = formatDate(fakeDate, {
     format: 'DD. month',
     month: 'short',
   });
@@ -184,12 +189,12 @@ test('formatDateTime works as expected', () => {
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatDateTime(fakeDate);
+  const formatted = formatDateTime(fakeDate);
   expect(formatted).toBe(expectedResult);
 });
 
 test('formatDateTime works as expected when not sending in a date', () => {
-  const formatted = date.formatDateTime(null);
+  const formatted = formatDateTime(null);
   expect(formatted).toBe('');
 });
 
@@ -206,7 +211,7 @@ test('formatDateTime works as expected with options', () => {
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatDateTime(fakeDate, {
+  const formatted = formatDateTime(fakeDate, {
     month: 'short',
   });
   expect(formatted).toBe(expectedResult);
@@ -224,12 +229,12 @@ test('formatDateTime works as expected when isGMT is set', () => {
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatDateTime(inputDate, { isGMT: true });
+  const formatted = formatDateTime(inputDate, { isGMT: true });
   expect(formatted).toBe(expectedResult);
 });
 
 test('formatRelativeDateTime with null should be empty string', () => {
-  const formatted = date.formatRelativeDateTime(null);
+  const formatted = formatRelativeDateTime(null);
   expect(formatted).toContain('');
 });
 
@@ -244,7 +249,7 @@ test('formatRelativeDateTime with isGMT set should convert to local time', () =>
     hour: '2-digit',
     minute: '2-digit',
   });
-  const formatted = date.formatRelativeDateTime(inputDate, true);
+  const formatted = formatRelativeDateTime(inputDate, true);
   expect(formatted).toContain(time);
 });
 
@@ -257,7 +262,7 @@ test('formatRelativeDateTime with todays date should display as Today including 
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatRelativeDateTime(twoHoursAgo);
+  const formatted = formatRelativeDateTime(twoHoursAgo);
   expect(formatted).toEqual(expectedResult);
 });
 
@@ -265,7 +270,7 @@ test('formatRelativeDateTime with yesterdays date should display as Yesterday in
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const formattedYesterday = date.formatRelativeDateTime(yesterday);
+  const formattedYesterday = formatRelativeDateTime(yesterday);
   expect(formattedYesterday).toContain('Yesterday');
 
   const yesterdayLessThan24Hours = new Date();
@@ -275,7 +280,7 @@ test('formatRelativeDateTime with yesterdays date should display as Yesterday in
       2
   );
 
-  const formatted = date.formatRelativeDateTime(yesterdayLessThan24Hours);
+  const formatted = formatRelativeDateTime(yesterdayLessThan24Hours);
   expect(formatted).toContain('Yesterday');
 });
 
@@ -283,13 +288,13 @@ test('formatRelativeDateTime with tomorrows date should display as Tomorrow incl
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const formattedTomorrow = date.formatRelativeDateTime(tomorrow);
+  const formattedTomorrow = formatRelativeDateTime(tomorrow);
   expect(formattedTomorrow).toContain('Tomorrow');
 
   const tomorrowLessThan24Hours = new Date(tomorrow);
   tomorrowLessThan24Hours.setHours(0);
 
-  const formatted = date.formatRelativeDateTime(tomorrowLessThan24Hours);
+  const formatted = formatRelativeDateTime(tomorrowLessThan24Hours);
   expect(formatted).toContain('Tomorrow');
 });
 
@@ -301,7 +306,7 @@ test('formatRelativeDateTime with date within next week should display as weekda
     weekday: 'long',
   });
 
-  const formatted = date.formatRelativeDateTime(dateInNextWeek);
+  const formatted = formatRelativeDateTime(dateInNextWeek);
   expect(formatted).toContain(weekday);
 });
 
@@ -330,7 +335,7 @@ test('formatRelativeDateTime with date before yesterday should display as full d
     }
   )}`;
 
-  const formattedThreeDaysAgo = date.formatRelativeDateTime(threeDaysAgo);
+  const formattedThreeDaysAgo = formatRelativeDateTime(threeDaysAgo);
   expect(formattedThreeDaysAgo).toBe(expectedResultThreeDaysAgo);
 
   const day = oneWeekAgo.toLocaleDateString('en-GB', { day: 'numeric' });
@@ -343,7 +348,7 @@ test('formatRelativeDateTime with date before yesterday should display as full d
     }
   )}`;
 
-  const formattedOneWeekAgo = date.formatRelativeDateTime(oneWeekAgo);
+  const formattedOneWeekAgo = formatRelativeDateTime(oneWeekAgo);
   expect(formattedOneWeekAgo).toBe(expectedResultOneWeekAgo);
 });
 
@@ -357,7 +362,7 @@ test('formatRelativeDateTime with date after next week displays as full date not
     minute: '2-digit',
   })}`;
 
-  const formatted = date.formatRelativeDateTime(afterNextWeek);
+  const formatted = formatRelativeDateTime(afterNextWeek);
   expect(formatted).toBe(expectedResult);
 });
 
@@ -385,7 +390,7 @@ test('formatRelativeDateTime with date not in current year displays as full date
     }
   )}`;
 
-  const formattedDateInPreviousYear = date.formatRelativeDateTime(
+  const formattedDateInPreviousYear = formatRelativeDateTime(
     fakeDateBeforeCurrentYear
   );
   expect(formattedDateInPreviousYear).toBe(expectedPreviousYearResult);
@@ -409,7 +414,7 @@ test('formatRelativeDateTime with date not in current year displays as full date
     }
   )}`;
 
-  const formattedDateInNextYear = date.formatRelativeDateTime(
+  const formattedDateInNextYear = formatRelativeDateTime(
     fakeDateAfterCurrentYear
   );
   expect(formattedDateInNextYear).toBe(expectedNextYearResult);
@@ -419,7 +424,7 @@ test('isBetweenDates works as expected with null', () => {
   const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
   const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
 
-  const formatted = date.isBetweenDates(null, [yesterday, tomorrow]);
+  const formatted = isBetweenDates(null, [yesterday, tomorrow]);
   expect(formatted).toEqual(false);
 });
 
@@ -428,41 +433,41 @@ test('isBetweenDates works as expected with todays date between yesterday and to
   const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
   const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
 
-  const formatted = date.isBetweenDates(today, [yesterday, tomorrow]);
+  const formatted = isBetweenDates(today, [yesterday, tomorrow]);
   expect(formatted).toEqual(true);
 });
 
 test('isBetweenDates works as expected with todays date between itself', () => {
   const today = new Date();
 
-  const formatted = date.isBetweenDates(today, [today, today]);
+  const formatted = isBetweenDates(today, [today, today]);
   expect(formatted).toEqual(true);
 });
 describe('UTC timestamps', () => {
   const utcDate = '2021-06-30T22:00:00+00:00';
   test('should accept UTC timestamps and get that date back in UTC in the format of DD. month YYYY', () => {
-    const formatted = date.formatDate(utcDate, {
+    const formatted = formatDate(utcDate, {
       format: 'DD. month YYYY',
       useUTC: true,
     });
     expect(formatted).toEqual('30. June 2021');
   });
   test('should accept UTC timestamps and get that date back in UTC in the format of DD. month', () => {
-    const formatted = date.formatDate(utcDate, {
+    const formatted = formatDate(utcDate, {
       format: 'DD. month',
       useUTC: true,
     });
     expect(formatted).toEqual('30. June');
   });
   test('should accept UTC timestamps and get that date back in UTC in the format of YYYY-MM-DD', () => {
-    const formatted = date.formatDate(utcDate, {
+    const formatted = formatDate(utcDate, {
       format: 'YYYY-MM-DD',
       useUTC: true,
     });
     expect(formatted).toEqual('2021-06-30');
   });
   test('should accept UTC timestamps and get that date back in UTC in the format of DD.MM.YY', () => {
-    const formatted = date.formatDate(utcDate, {
+    const formatted = formatDate(utcDate, {
       format: 'DD.MM.YY',
       useUTC: true,
     });

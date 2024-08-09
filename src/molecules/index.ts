@@ -3,6 +3,8 @@ export { ApplicationIcon } from './ApplicationIcon/ApplicationIcon';
 export type { ApplicationIconProps } from './ApplicationIcon/ApplicationIcon';
 export { Badge } from './Badge/Badge';
 export type { BadgeProps } from './Badge/Badge';
+export { Banner } from './Banner/Banner';
+export type { BannerProps } from './Banner/Banner';
 export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
 export { ContentMenu } from './ContentMenu/ContentMenu';

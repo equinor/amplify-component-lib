@@ -1,9 +1,8 @@
 import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+
+import { colors } from 'src/atoms/style';
 
 import styled, { css, keyframes } from 'styled-components';
-
-const { colors } = tokens;
 
 interface StyledOptionProps {
   $section: number;

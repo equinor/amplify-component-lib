@@ -1,6 +1,4 @@
-import { tokens } from '@equinor/eds-tokens';
-const { colors } = tokens;
-
+import { colors } from 'src/atoms/style';
 import { Badge } from 'src/molecules/Badge/Badge';
 import { render, screen } from 'src/tests/test-utils';
 

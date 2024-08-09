@@ -1,14 +1,12 @@
-import { tokens } from '@equinor/eds-tokens';
 import { render, screen } from '@testing-library/react';
 
+import { colors } from 'src/atoms/style';
 import {
   EquinorLogo,
   EquinorLogoProps,
 } from 'src/molecules/EquinorLogo/EquinorLogo';
 
 import '@testing-library/jest-dom';
-
-const { colors } = tokens;
 
 const colorOptions: EquinorLogoProps['color'][] = ['red', 'white', 'black'];
 const sizeOptions: EquinorLogoProps['size'][] = [undefined, 16, 24, 32, 40, 48];
@@ -48,7 +46,7 @@ test('renders size correctly given large and size prop', () => {
     for (const large of largeOptions) {
       rerender(<EquinorLogo large={large} size={size} />);
       const logo = screen.getByTestId('logo');
-      const expectedSize = (large ? (size ?? 24) * 2 : size ?? 24).toString();
+      const expectedSize = (large ? (size ?? 24) * 2 : (size ?? 24)).toString();
       expect(logo).toHaveAttribute('width', expectedSize);
       expect(logo).toHaveAttribute('width', expectedSize);
     }

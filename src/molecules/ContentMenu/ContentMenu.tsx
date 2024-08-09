@@ -4,12 +4,12 @@ import { Icon } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 import SkeletonBase from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled from 'styled-components';
 
-const { colors, shape } = tokens;
+const { shape } = tokens;
 
 const Container = styled.div`
   display: flex;

@@ -1,24 +1,16 @@
 import { forwardRef, HTMLAttributes, MouseEvent, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { IconData } from '@equinor/eds-icons';
 
 import { IconContainer, ItemText, Link } from './MenuItem.styles';
+import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
-
-export interface MenuItemType {
-  icon: IconData;
-  name: string;
-  link: string;
-  onClick?: () => void;
-  replace?: boolean;
-}
 
 export type MenuItemProps = {
   currentUrl?: string;
   disabled?: boolean;
-} & MenuItemType &
+} & SideBarMenuItem &
   HTMLAttributes<HTMLAnchorElement>;
 
 export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(

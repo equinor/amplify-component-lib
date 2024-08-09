@@ -4,7 +4,7 @@ import {
 } from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
 
-import { environment } from 'src/atoms/utils';
+import { environment } from '../utils/auth_environment';
 
 const { getAppName } = environment;
 

@@ -1,11 +1,8 @@
 import React, { forwardRef } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-
+import { colors } from 'src/atoms/style';
 // Needs to be relative path for the type to be importable after build
 import { SizeIconProps } from 'src/atoms/types';
-
-const { colors } = tokens;
 
 const colorSwitch = (color?: 'red' | 'white' | 'black') => {
   switch (color) {

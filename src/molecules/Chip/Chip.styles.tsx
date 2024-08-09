@@ -1,12 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { colors } from 'src/atoms/style';
 import { BaseChipProps } from 'src/molecules/Chip/Chip';
 import { InteractiveChipProps } from 'src/molecules/Chip/InteractiveChip';
 import { ReadOnlyChipProps } from 'src/molecules/Chip/ReadOnlyChip';
 
 import styled, { css } from 'styled-components';
-
-const { colors } = tokens;
 
 type Variant = NonNullable<BaseChipProps['variant']>;
 

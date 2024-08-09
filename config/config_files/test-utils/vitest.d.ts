@@ -1,7 +1,9 @@
 import { IconData } from '@equinor/eds-icons';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { Assertion, AsymmetricMatchersContaining } from 'vitest';
+import type {
+  Assertion as VitestAssertion,
+  AsymmetricMatchersContaining as VitestAsymmetricMatchersContaining,
+} from 'vitest';
 
 interface CustomMatchers<R = unknown> {
   toContainEDSIcon(expected: IconData): R;
@@ -19,7 +21,8 @@ interface MatcherResult {
 declare module 'vitest' {
   // vitest uses 'any' intentionally and suggests to ignore eslint rule here (https://github.com/vitest-dev/vitest/issues/4543)
   // eslint-disable-next-line @typescript-eslint/no-empty-interface, @typescript-eslint/no-explicit-any
-  interface Assertion<T = any> extends CustomMatchers<T> {}
+  type Assertion<T = any> = CustomMatchers<T> & VitestAssertion<T>;
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface AsymmetricMatchersContaining extends CustomMatchers {}
+  type AsymmetricMatchersContaining = CustomMatchers &
+    VitestAsymmetricMatchersContaining<T>;
 }

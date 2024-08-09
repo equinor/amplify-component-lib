@@ -95,3 +95,13 @@ test('Works with svgPathData with opacity settings', () => {
     expect(path).toHaveAttribute('fill-opacity');
   }
 });
+
+test('Icon only prop works as expected', () => {
+  render(<ApplicationIcon name="embark" size={256} iconOnly />);
+
+  const appIconSvg = screen.getByTestId('app-icon-svg');
+  expect(appIconSvg).toBeInTheDocument();
+
+  expect(screen.queryByTestId('wave')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('waves-container')).not.toBeInTheDocument();
+});

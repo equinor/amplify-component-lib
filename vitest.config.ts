@@ -20,6 +20,7 @@ export default defineConfig({
       'src/intro.stories.mdx',
       'src/**/*.docs.mdx',
       'src/storybook',
+      ".idea"
     ],
     coverage: {
       enabled: true,
@@ -36,11 +37,7 @@ export default defineConfig({
         'src/**/*.docs.mdx',
         'src/**/stories/**',
         'src/**/index.ts',
-        'src/components/DataDisplay/Tutorial/HighlightBlocks/*',
-        'src/components/Inputs/FieldSelector.tsx',
-        'src/components/Inputs/TextField.tsx',
-        'src/components/Feature/*',
-        'src/components/Feedback/Skeleton/**',
+        'src/deprecated/**/*',
         'src/atoms/utils/auth_environment.ts',
         'src/atoms/utils/export.ts',
         'src/atoms/utils/UtilStory.tsx',

@@ -69,7 +69,6 @@ const extractDatesFromReleaseNotes = (
 
   return pageMenuItemFormattedNotes;
 };
-
 const monthValueToString = (monthValue: Date) => {
   return `year${monthValue.getFullYear()}--${monthValue.toLocaleDateString(
     'en-GB',
@@ -78,19 +77,16 @@ const monthValueToString = (monthValue: Date) => {
     }
   )}`;
 };
-
 const monthToString = (monthValue: Date) => {
   return `${monthValue.toLocaleDateString('en-GB', {
     month: 'long',
   })}`;
 };
-
 const yearValueToString = (yearValue: Date) => {
   return `year${yearValue.toLocaleDateString('en-GB', {
     year: 'numeric',
   })}`;
 };
-
 const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
   return notes.sort((a, b) => {
     const dateA = new Date(a.createdDate ?? '').getTime();
@@ -100,11 +96,8 @@ const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
     return numberDateB - numberDateA;
   });
 };
-
-export {
-  extractDatesFromReleaseNotes,
-  monthToString,
-  monthValueToString,
-  sortReleaseNotesByDate,
-  yearValueToString,
-};
+export { sortReleaseNotesByDate };
+export { yearValueToString };
+export { monthToString };
+export { monthValueToString };
+export { extractDatesFromReleaseNotes };
