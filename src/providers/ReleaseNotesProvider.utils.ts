@@ -10,13 +10,13 @@ const extractDatesFromReleaseNotes = (
   const releaseNotesWithDate = releaseNotes.filter((n) => n.createdDate);
 
   const releaseNotesDates = releaseNotesWithDate.map((n) => {
-    const date = new Date(n.createdDate!);
+    const date = new Date(n.createdDate);
 
     return { date, year: date.getFullYear(), month: date.getMonth() };
   });
 
   for (const note of releaseNotesWithDate) {
-    const createdDate = new Date(note.createdDate!);
+    const createdDate = new Date(note.createdDate);
     const yearLabel = createdDate.toLocaleString('en-US', {
       year: 'numeric',
     });

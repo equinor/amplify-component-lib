@@ -80,19 +80,22 @@ let mockServicePartialError = false;
 let defaultError = false;
 
 vi.mock('@equinor/subsurface-app-management', async () => {
-  class PortalService {
+  class ServiceNowService {
     public static createIncident(): CancelablePromise<ServiceNowIncidentResponse> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
           if (mockServiceHasError && !mockServicePartialError) {
             reject({ message: SERVICE_NOW_ERROR });
           } else {
-            resolve({ sysId: 'kljsdflk-fsd-asdf-fsddf' });
+            resolve({
+              sysId: 'kljsdflk-fsd-asdf-fsddf',
+            } as ServiceNowIncidentResponse);
           }
         }, 500)
       );
     }
-
+  }
+  class SlackService {
     public static fileUpload(formData: FormData): CancelablePromise<FormData> {
       return new CancelablePromise((resolve, reject) =>
         setTimeout(() => {
@@ -141,7 +144,7 @@ vi.mock('@equinor/subsurface-app-management', async () => {
   }
 
   const actual = await vi.importActual('@equinor/subsurface-app-management');
-  return { ...actual, PortalService, ReleaseNotesService };
+  return { ...actual, ServiceNowService, SlackService, ReleaseNotesService };
 });
 
 const severityOptions = [
