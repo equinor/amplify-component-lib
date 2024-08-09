@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 import {
   AmplifyApplication,
+  ApplicationCategory,
   CancelablePromise,
 } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
@@ -30,7 +31,12 @@ function fakeApplication(): AmplifyApplication {
     ],
     description: faker.lorem.sentence(),
     longDescription: faker.animal.crocodilia(),
-    category: faker.animal.fish(),
+    contentTabs: [],
+    partnerAccess: faker.datatype.boolean(),
+    sponsors: [],
+    category: faker.helpers.arrayElement(
+      Object.values(ApplicationCategory)
+    ) as ApplicationCategory,
     version: faker.string.numeric(),
     applicationInsightAPI: faker.animal.insect(),
     apI_Id: faker.animal.lion(),
@@ -47,7 +53,7 @@ const fakeApps = new Array(faker.number.int({ min: 4, max: 8 }))
 let rejectPromise = false;
 
 vi.mock('@equinor/subsurface-app-management', async () => {
-  class PortalService {
+  class AmplifyApplicationService {
     public static userApplications(): CancelablePromise<AmplifyApplication[]> {
       return new CancelablePromise((resolve) => {
         setTimeout(() => {
@@ -61,7 +67,7 @@ vi.mock('@equinor/subsurface-app-management', async () => {
     }
   }
   const actual = await vi.importActual('@equinor/subsurface-app-management');
-  return { ...actual, PortalService };
+  return { ...actual, AmplifyApplicationService };
 });
 
 function Wrappers({ children }: { children: ReactNode }) {
