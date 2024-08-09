@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { AmplifyKit } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
+import { RichText } from 'src/molecules/RichTextEditor';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,
@@ -23,7 +23,7 @@ export const useAmplifyKit = ({
   // The new compound component structure also lets users circumvent this if they need more control
   return useMemo(
     () =>
-      AmplifyKit.configure({
+      RichText.Kit.configure({
         placeholder: placeholder ? { placeholder } : undefined,
         image: features?.includes(RichTextEditorFeatures.IMAGES)
           ? { onImageUpload }
