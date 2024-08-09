@@ -2,27 +2,13 @@ import { FC, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
+import { CreateNewUser } from './CreateNewUser/CreateNewUser';
+import { useGetAllImpersonationUsersForApp } from './hooks/useGetAllImpersonationUsersForApp';
 import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
 import { Content, Header, StyledMenu } from './Impersonate.styles';
+import { UserImpersonation } from './UserImpersonation';
 import { Search } from 'src/molecules';
-import { CreateNewUser } from 'src/organisms/TopBar/Account/Impersonate/CreateNewUser/CreateNewUser';
-import { UserImpersonation } from 'src/organisms/TopBar/Account/Impersonate/UserImpersonation';
-
-const FAKE_USERS = [
-  {
-    name: 'Kjartan',
-    roles: ['admin', 'writer'],
-  },
-  {
-    name: 'Nadia',
-    roles: ['admin'],
-  },
-  {
-    name: 'Anna',
-    roles: ['writer'],
-  },
-];
 
 interface ImpersonateProps {
   open: boolean;
@@ -36,27 +22,19 @@ export const Impersonate: FC<ImpersonateProps> = ({
   anchorEl,
 }) => {
   const [creatingNewUser, setCreatingNewUser] = useState(false);
-  const [selectedUserImpersonation, setSelectedUserImpersonation] =
-    useState('');
+  const [selectedUniqueName, setSelectedUniqueName] = useState('');
+
+  const { data: availableUsers } = useGetAllImpersonationUsersForApp();
 
   const handleOnOpenCreateNew = () => setCreatingNewUser(true);
   const handleOnCloseCreateNew = () => setCreatingNewUser(false);
-  const handleOnCreateNewUser = () => {
-    console.log('CREATE');
-  };
-  const handleOnImpersonate = () => {
-    console.log('impersonate');
-  };
 
   if (!open) return null;
 
   if (creatingNewUser) {
     return (
       <StyledMenu open anchorEl={anchorEl} onClose={onClose}>
-        <CreateNewUser
-          onBack={handleOnCloseCreateNew}
-          onCreateNewUser={handleOnCreateNewUser}
-        />
+        <CreateNewUser onBack={handleOnCloseCreateNew} onClose={onClose} />
       </StyledMenu>
     );
   }
@@ -69,21 +47,17 @@ export const Impersonate: FC<ImpersonateProps> = ({
         <Search placeholder="Search users" />
       </Header>
       <Content>
-        {FAKE_USERS.map((user) => (
+        {availableUsers?.map((user) => (
           <UserImpersonation
-            key={user.name}
-            selected={selectedUserImpersonation === user.name}
+            key={user.uniqueName}
             {...user}
-            onClick={setSelectedUserImpersonation}
+            selected={selectedUniqueName === user.uniqueName}
+            onClick={setSelectedUniqueName}
           />
         ))}
       </Content>
       <CreateNewUserButton onClick={handleOnOpenCreateNew} />
-      <Actions
-        canImpersonate={selectedUserImpersonation !== ''}
-        onCancel={onClose}
-        onImpersonate={handleOnImpersonate}
-      />
+      <Actions selectedUniqueName={selectedUniqueName} onCancel={onClose} />
     </StyledMenu>
   );
 };

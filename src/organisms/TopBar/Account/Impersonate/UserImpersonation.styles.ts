@@ -16,6 +16,7 @@ export const Container = styled.button<ContainerProps>`
   align-items: center;
   gap: ${spacings.small};
   height: calc(32px + ${spacings.medium} * 2);
+  flex-shrink: 0;
   padding: 0 ${spacings.medium};
   background: ${({ $selected }) =>
     $selected

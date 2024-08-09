@@ -3,7 +3,9 @@ import { ChangeEvent, FC, useMemo, useState } from 'react';
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
 
+import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
 import { Container, Header, Section } from './CreateNewUser.styles';
+import { environment } from 'src/atoms';
 import { Switch } from 'src/molecules';
 import { TextField } from 'src/molecules/TextField/TextField';
 
@@ -11,16 +13,15 @@ const FAKE_AVAILABLE_ROLES = ['admin', 'writer', 'reader'];
 
 interface CreateNewUserProps {
   onBack: () => void;
-  onCreateNewUser: () => void;
+  onClose: () => void;
 }
 
-export const CreateNewUser: FC<CreateNewUserProps> = ({
-  onBack,
-  onCreateNewUser,
-}) => {
+export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
   const [roles, setRoles] = useState<string[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  const { mutateAsync: createImpersonationUser } = useCreateImpersonation();
 
   const isCreateDisabled = useMemo(
     () => firstName === '' || lastName === '' || roles.length === 0,
@@ -42,9 +43,17 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({
     });
   };
 
-  const handleOnCreate = () => {
-    onCreateNewUser();
-    console.log('creating user...');
+  const handleOnCreate = async () => {
+    await createImpersonationUser({
+      firstName,
+      lastName,
+      roles,
+      uniqueName: `${firstName}.${lastName}`.toLowerCase(),
+      name: `${firstName} ${lastName}`,
+      appName: environment.getAppName(import.meta.env.VITE_NAME),
+      activeUsers: [],
+    });
+    onClose();
   };
 
   return (

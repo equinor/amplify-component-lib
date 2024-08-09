@@ -94,7 +94,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.21.0",
-    "@equinor/subsurface-app-management": "^1.0.9",
+    "@equinor/subsurface-app-management": "^1.1.2",
     "@faker-js/faker": "^8.4.1",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -142,6 +142,7 @@
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
     "msw": "^2.3.4",
+    "msw-storybook-addon": "^2.0.3",
     "ora": "^8.0.1",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
@@ -176,5 +177,10 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.11.1",
     "react-router-dom": "^6.11.1"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

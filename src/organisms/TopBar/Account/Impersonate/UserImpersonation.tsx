@@ -3,26 +3,26 @@ import { FC } from 'react';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { account_circle, check } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
+import { ImpersonateUser } from '@equinor/subsurface-app-management';
 
 import { Container, RoleChip } from './UserImpersonation.styles';
 
 const { colors } = tokens;
 
-interface UserImpersonationProps {
-  name: string;
-  roles: string[];
-  selected?: boolean;
+interface UserImpersonationProps extends ImpersonateUser {
+  selected: boolean;
   onClick: (username: string) => void;
 }
 
 export const UserImpersonation: FC<UserImpersonationProps> = ({
   name,
+  uniqueName,
   roles,
-  selected = false,
+  selected,
   onClick,
 }) => {
   const handleOnClick = () => {
-    onClick(name);
+    onClick(uniqueName);
   };
 
   return (
