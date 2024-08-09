@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useMemo, useState } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { Button, DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
 
 import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
@@ -21,7 +21,8 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  const { mutateAsync: createImpersonationUser } = useCreateImpersonation();
+  const { mutateAsync: createImpersonationUser, isPending } =
+    useCreateImpersonation();
 
   const isCreateDisabled = useMemo(
     () => firstName === '' || lastName === '' || roles.length === 0,
@@ -96,9 +97,15 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
         <Button variant="outlined" onClick={onBack}>
           Cancel
         </Button>
-        <Button onClick={handleOnCreate} disabled={isCreateDisabled}>
-          Create and impersonate
-        </Button>
+        {isPending ? (
+          <Button>
+            <DotProgress />
+          </Button>
+        ) : (
+          <Button onClick={handleOnCreate} disabled={isCreateDisabled}>
+            Create and impersonate
+          </Button>
+        )}
       </Section>
     </Container>
   );

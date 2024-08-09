@@ -26,15 +26,22 @@ export const Impersonate: FC<ImpersonateProps> = ({
 
   const { data: availableUsers } = useGetAllImpersonationUsersForApp();
 
-  const handleOnOpenCreateNew = () => setCreatingNewUser(true);
-  const handleOnCloseCreateNew = () => setCreatingNewUser(false);
+  const handleOnCreateNewOpen = () => setCreatingNewUser(true);
+  const handleOnCreateNewBack = () => setCreatingNewUser(false);
+  const handleOnCreateNewClose = () => {
+    setCreatingNewUser(false);
+    onClose();
+  };
 
   if (!open) return null;
 
   if (creatingNewUser) {
     return (
       <StyledMenu open anchorEl={anchorEl} onClose={onClose}>
-        <CreateNewUser onBack={handleOnCloseCreateNew} onClose={onClose} />
+        <CreateNewUser
+          onBack={handleOnCreateNewBack}
+          onClose={handleOnCreateNewClose}
+        />
       </StyledMenu>
     );
   }
@@ -56,7 +63,7 @@ export const Impersonate: FC<ImpersonateProps> = ({
           />
         ))}
       </Content>
-      <CreateNewUserButton onClick={handleOnOpenCreateNew} />
+      <CreateNewUserButton onClick={handleOnCreateNewOpen} />
       <Actions selectedUniqueName={selectedUniqueName} onCancel={onClose} />
     </StyledMenu>
   );

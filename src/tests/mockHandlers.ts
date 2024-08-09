@@ -61,6 +61,8 @@ export const handlers = [
   http.post('*/api/v1/ImpersonateUser', async (resolver) => {
     const body = (await resolver.request.json()) as ImpersonateUser;
 
+    fakeImpersonateUsers.push(body);
+
     await delay('real');
     return HttpResponse.json(body);
   }),

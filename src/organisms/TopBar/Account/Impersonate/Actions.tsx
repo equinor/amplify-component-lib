@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Button, Typography } from '@equinor/eds-core-react';
+import { Button, DotProgress, Typography } from '@equinor/eds-core-react';
 
 import { spacings } from 'src/atoms/style/spacings';
 import { useStartImpersonation } from 'src/organisms/TopBar/Account/Impersonate/hooks/useStartImpersonation';
@@ -32,6 +32,7 @@ export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
     await mutateAsync(selectedUniqueName);
     onCancel();
   };
+
   return (
     <Container>
       <Typography variant="body_short">
@@ -42,12 +43,18 @@ export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
         <Button variant="outlined" onClick={onCancel}>
           Cancel
         </Button>
-        <Button
-          onClick={handleOnStartImpersonate}
-          disabled={selectedUniqueName !== ''}
-        >
-          Impersonate
-        </Button>
+        {isPending ? (
+          <Button>
+            <DotProgress />
+          </Button>
+        ) : (
+          <Button
+            onClick={handleOnStartImpersonate}
+            disabled={selectedUniqueName === ''}
+          >
+            Impersonate
+          </Button>
+        )}
       </Section>
     </Container>
   );

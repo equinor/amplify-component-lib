@@ -10,6 +10,7 @@ import { Preview, StoryFn } from '@storybook/react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import { handlers } from 'src/tests/mockHandlers';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from 'src';
 
 const { colors } = tokens;
 initialize({}, [...handlers])
@@ -39,10 +40,12 @@ const decorators = [
 
     return (
       <QueryClientProvider client={queryClient}>
-        <Template.GlobalStyles />
-        <SnackbarProvider>
-          <Story />
-        </SnackbarProvider>
+        <AuthProvider>
+          <Template.GlobalStyles />
+          <SnackbarProvider>
+            <Story />
+          </SnackbarProvider>
+        </AuthProvider>
       </QueryClientProvider>
     );
   },
