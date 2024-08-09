@@ -103,6 +103,14 @@ export const inpress: AppIconData = {
   ],
 };
 
+export const recap: AppIconData = {
+  name: 'inpress',
+  prefix: 'amplify',
+  svgPathData: [
+    'M336.629 68.8054C349.383 80.1431 350.532 99.6741 339.195 112.429L151.3 323.81L45.8054 205.129C34.4676 192.374 35.6165 172.843 48.3715 161.505C61.1264 150.167 80.6574 151.316 91.9952 164.071L151.3 230.789L293.005 71.3715C304.343 58.6165 323.874 57.4676 336.629 68.8054Z',
+  ],
+};
+
 export const equinor: AppIconData = {
   name: 'equinor',
   prefix: 'amplify',
