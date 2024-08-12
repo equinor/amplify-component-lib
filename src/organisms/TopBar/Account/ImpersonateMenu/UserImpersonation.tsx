@@ -5,7 +5,6 @@ import { account_circle, check } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { ImpersonateUser } from '@equinor/subsurface-app-management';
 
-import { useActiveImpersonationUser } from './hooks/useActiveImpersonationUser';
 import {
   Container,
   RoleChip,
@@ -26,17 +25,12 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
   selected,
   onClick,
 }) => {
-  const { data: activeUserImpersonation } = useActiveImpersonationUser();
   const handleOnClick = () => {
     onClick(uniqueName);
   };
 
   return (
-    <Container
-      $selected={selected}
-      disabled={activeUserImpersonation?.uniqueName === uniqueName}
-      onClick={handleOnClick}
-    >
+    <Container $selected={selected} onClick={handleOnClick}>
       <Icon
         color={colors.text.static_icons__tertiary.rgba}
         data={account_circle}

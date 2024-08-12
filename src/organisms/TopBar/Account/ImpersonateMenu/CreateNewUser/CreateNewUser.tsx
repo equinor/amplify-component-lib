@@ -2,14 +2,15 @@ import { ChangeEvent, FC, useMemo, useState } from 'react';
 
 import { Button, DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
+import { AmplifyApplicationService } from '@equinor/subsurface-app-management';
+import { useQuery } from '@tanstack/react-query';
 
 import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
+import { AVAILABLE_ROLES } from '../Impersonate.constants';
 import { Container, Header, Section } from './CreateNewUser.styles';
 import { environment } from 'src/atoms';
 import { Switch } from 'src/molecules';
 import { TextField } from 'src/molecules/TextField/TextField';
-
-const FAKE_AVAILABLE_ROLES = ['admin', 'writer', 'reader'];
 
 interface CreateNewUserProps {
   onBack: () => void;
@@ -20,6 +21,14 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
   const [roles, setRoles] = useState<string[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  const { data: availableRoles, isLoading: isLoadingRoles } = useQuery({
+    queryKey: [AVAILABLE_ROLES],
+    queryFn: () =>
+      AmplifyApplicationService.getAllAppRoles(
+        environment.getClientId(import.meta.env.VITE_CLIENT_ID)
+      ) as unknown as Promise<string[]>,
+  });
 
   const { mutateAsync: createImpersonationUser, isPending } =
     useCreateImpersonation();
@@ -85,7 +94,8 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
         <Typography variant="label" group="navigation">
           Roles
         </Typography>
-        {FAKE_AVAILABLE_ROLES.map((role) => (
+        {isLoadingRoles && <DotProgress color="primary" />}
+        {availableRoles?.map((role) => (
           <Switch
             key={role}
             label={role}

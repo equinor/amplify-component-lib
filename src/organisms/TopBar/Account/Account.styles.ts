@@ -24,10 +24,6 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${spacings.small};
-  > div:first-child {
-    border: 1px solid ${colors.text.static_icons__primary_white.rgba};
-    border-radius: 50%;
-  }
 `;
 
 export const TextContent = styled.div`
@@ -53,8 +49,7 @@ export const ButtonWrapper = styled.div`
   margin-top: ${spacings.x_large};
   justify-content: center;
 `;
-
-export const ImpersonateButton = styled.button`
+export const OpenImpersonationMenuButton = styled.button`
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -64,12 +59,15 @@ export const ImpersonateButton = styled.button`
   border-radius: ${shape.button.borderRadius};
   background: ${colors.ui.background__light.rgba};
   transition: background ${animation.transitionMS};
+
   > span {
     color: ${colors.interactive.primary__resting.rgba};
   }
+
   > svg {
     fill: ${colors.interactive.primary__resting.rgba};
   }
+
   &:hover {
     background: ${colors.ui.background__medium.rgba};
   }

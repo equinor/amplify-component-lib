@@ -30,15 +30,14 @@ export const fakeReleaseNotes: ReleaseNote[] = [
   },
 ];
 
+const FAKE_ROLES = ['Admin', 'Writer', 'Reader'] as const;
+
 function fakeUser(): ImpersonateUser {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
   const name = `${firstName} ${lastName}`;
   const uniqueName = `${firstName}.${lastName}`;
-  const roles = faker.helpers.arrayElements(['admin', 'writer', 'reader'], {
-    min: 1,
-    max: 3,
-  });
+  const roles = faker.helpers.arrayElements(FAKE_ROLES);
 
   return {
     firstName,
@@ -51,13 +50,31 @@ function fakeUser(): ImpersonateUser {
   };
 }
 
-export const fakeImpersonateUsers: ImpersonateUser[] = [
+const fakeImpersonateUsers: ImpersonateUser[] = [
   fakeUser(),
   fakeUser(),
   fakeUser(),
 ];
 
+let activeImpersonateUser: ImpersonateUser | undefined = undefined;
+
 export const handlers = [
+  http.get(
+    '*/api/v1/AmplifyApplication/application/fake-id/groups',
+    async () => {
+      await delay('real');
+      return HttpResponse.json(FAKE_ROLES);
+    }
+  ),
+  http.get('*/api/v1/ImpersonateUser/CanImpersonate', async () => {
+    await delay('real');
+    return HttpResponse.text('true');
+  }),
+  http.get('*/api/v1/ImpersonateUser/ActiveUserByUsername', async () => {
+    await delay('real');
+    if (!activeImpersonateUser) return new HttpResponse(null, { status: 204 });
+    return HttpResponse.json(activeImpersonateUser);
+  }),
   http.post('*/api/v1/ImpersonateUser', async (resolver) => {
     const body = (await resolver.request.json()) as ImpersonateUser;
 
@@ -73,10 +90,20 @@ export const handlers = [
     const user = fakeImpersonateUsers.find(
       (user) => user.uniqueName === uniqueName
     );
+    activeImpersonateUser = user;
 
-    if (user) return HttpResponse.json(user);
+    if (user) {
+      return HttpResponse.json(user);
+    }
 
-    return HttpResponse.text('Something went wrong!', { status: 500 });
+    return new HttpResponse(null, { status: 204 });
+  }),
+  http.put('*/api/v1/ImpersonateUser/StopImpersonating', async () => {
+    await delay('real');
+
+    activeImpersonateUser = undefined;
+
+    return HttpResponse.text('Ok');
   }),
   http.get('*/api/v1/ImpersonateUser', async () => {
     await delay('real');

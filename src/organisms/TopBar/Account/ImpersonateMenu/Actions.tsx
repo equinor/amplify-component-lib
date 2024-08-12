@@ -2,11 +2,11 @@ import { FC } from 'react';
 
 import { Button, DotProgress, Typography } from '@equinor/eds-core-react';
 
+import { useActiveImpersonationUser } from './hooks/useActiveImpersonationUser';
 import { spacings } from 'src/atoms/style/spacings';
-import { useStartImpersonation } from 'src/organisms/TopBar/Account/Impersonate/hooks/useStartImpersonation';
+import { useStartImpersonation } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useStartImpersonation';
 
 import styled from 'styled-components';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,6 +26,7 @@ interface ActionsProps {
 }
 
 export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
+  const { data: activeUserImpersonation } = useActiveImpersonationUser();
   const { mutateAsync, isPending } = useStartImpersonation();
 
   const handleOnStartImpersonate = async () => {
@@ -50,7 +51,10 @@ export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
         ) : (
           <Button
             onClick={handleOnStartImpersonate}
-            disabled={selectedUniqueName === ''}
+            disabled={
+              selectedUniqueName === '' ||
+              selectedUniqueName === activeUserImpersonation?.uniqueName
+            }
           >
             Impersonate
           </Button>

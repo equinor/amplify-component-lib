@@ -62,7 +62,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
             homeAccountId: 'mock-home-account-id',
             environment: 'mock',
             tenantId: 'mock-tenant-id',
-            username: 'MockUser@euquinor.com',
+            username: 'MOCK@equinor.com',
             localAccountId: 'mock-local-account-id',
             name: 'Mock mocksnes',
           },

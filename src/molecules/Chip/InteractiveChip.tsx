@@ -19,6 +19,7 @@ export const InteractiveChip = forwardRef<
     onDelete,
     disabled = false,
     variant,
+    className,
     onClick,
     leadingIconData,
     ...otherInteractiveProps
@@ -47,6 +48,7 @@ export const InteractiveChip = forwardRef<
       ref={ref}
       disabled={disabled}
       variant={variant}
+      className={className}
       onClick={deletable ? onDelete : onClick}
       onKeyDown={handleKeyPress}
     >

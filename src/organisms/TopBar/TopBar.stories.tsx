@@ -4,7 +4,6 @@ import { MemoryRouter } from 'react-router';
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { FAKE_ACCOUNT, FAKE_ACCOUNT_PHOTO } from './Account/stories/data';
 import { TopBar, TopBarType } from '.';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
@@ -71,12 +70,7 @@ export const Primary: StoryFn<TopBarType> = ({ ...args }) => {
       environment={args.environment}
     >
       <TopBar.Actions>
-        <TopBar.Account
-          account={FAKE_ACCOUNT}
-          photo={FAKE_ACCOUNT_PHOTO}
-          roles={['Admin']}
-          logout={() => console.log('logged out')}
-        />
+        <TopBar.Account />
       </TopBar.Actions>
     </TopBar>
   );
@@ -115,12 +109,7 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
           environment={args.environment}
         >
           <TopBar.Actions>
-            <TopBar.Account
-              account={FAKE_ACCOUNT}
-              photo={FAKE_ACCOUNT_PHOTO}
-              roles={['Admin']}
-              logout={() => console.log('logged out')}
-            />
+            <TopBar.Account />
           </TopBar.Actions>
         </TopBar>
         <Template.Container>
