@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { within } from '@testing-library/dom';
 
 import { Field } from 'src/atoms/types/Field';
 import { FieldSelector } from 'src/organisms/FieldSelector/FieldSelector';
@@ -149,7 +150,9 @@ test('Searching fields works as expected', async () => {
   await user.click(textField);
 
   for (const field of fields) {
-    expect(screen.getByText(field.name ?? '')).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: field.name ?? '' })
+    ).toBeInTheDocument();
   }
 }, 15000); // Setting timeout for this test to be 15 seconds
 
@@ -180,15 +183,19 @@ test('Clearing field works as expected', async () => {
 
   await user.click(textField);
 
-  expect(textField).toHaveDisplayValue(fields[0].name ?? '');
+  expect(
+    within(screen.getByTestId('combobox-container')).getByText(
+      fields[0].name ?? ''
+    )
+  ).toBeInTheDocument();
 
-  await user.click(
-    screen.getByRole('button', {
-      name: /clear options/i,
-    })
-  );
+  await user.click(screen.getByTestId('clearBtn'));
 
-  expect(textField).toHaveDisplayValue('');
+  expect(
+    within(screen.getByTestId('combobox-container')).queryByText(
+      fields[0].name ?? ''
+    )
+  ).not.toBeInTheDocument();
 }, 15000); // Setting timeout for this test to be 15 seconds
 
 test('checks the href attribute of the link', async () => {

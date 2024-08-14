@@ -21,7 +21,7 @@ const meta: Meta<typeof ComboBox> = {
     clearable: { control: 'boolean' },
     variant: {
       control: 'radio',
-      options: VARIANT_OPTIONS,
+      options: [...VARIANT_OPTIONS, undefined],
       description: 'Variants',
     },
   },
