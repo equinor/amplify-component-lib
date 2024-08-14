@@ -40,7 +40,6 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   }, [activeImpersonationUser, open, selectedUniqueName]);
 
   const handleOnClose = () => {
-    setSelectedUniqueName(activeImpersonationUser?.uniqueName ?? '');
     onClose();
   };
 

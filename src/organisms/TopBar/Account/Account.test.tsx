@@ -1,31 +1,16 @@
 import { faker } from '@faker-js/faker';
+import { waitForElementToBeRemoved, within } from '@testing-library/dom';
+import { waitFor } from '@testing-library/react';
 
-import { Account, AccountProps } from './Account';
-import { render, screen, userEvent } from 'src/tests/test-utils';
-
-function fakeProps(withAvatar = false): AccountProps {
-  return {
-    account: {
-      homeAccountId: faker.string.uuid(),
-      environment: faker.lorem.word(),
-      tenantId: faker.string.uuid(),
-      username: faker.internet.userName(),
-      name: faker.animal.dog(),
-      localAccountId: faker.string.uuid(),
-    },
-    logout: vi.fn(),
-    roles: [faker.animal.fish()],
-    photo: withAvatar ? faker.image.avatar() : undefined,
-  };
-}
+import { Account } from './Account';
+import { MOCK_USER } from 'src/providers/AuthProvider/AuthProvider';
+import { renderWithProviders, screen, userEvent } from 'src/tests/test-utils';
 
 test('Renders correctly without avatar', async () => {
-  const props = fakeProps();
   const user = userEvent.setup();
-  render(<Account {...props} />);
+  renderWithProviders(<Account />);
 
-  const accountName = props.account?.name ?? 'failed failed';
-  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
+  expect(screen.queryByText(MOCK_USER.name)).not.toBeInTheDocument();
 
   const button = screen.getByRole('button');
 
@@ -51,28 +36,28 @@ test('Renders correctly without avatar', async () => {
     return defaultName;
   };
 
-  expect(screen.getByText(expectedInitials(accountName))).toBeInTheDocument();
+  expect(
+    screen.getByText(expectedInitials(MOCK_USER.name))
+  ).toBeInTheDocument();
 
   await user.click(button);
 
-  expect(screen.getByText(accountName)).toBeInTheDocument();
+  expect(screen.getByText(MOCK_USER.name)).toBeInTheDocument();
 
-  expect(screen.getByText(props.roles?.[0] ?? '')).toBeInTheDocument();
+  expect(screen.getByText(/admin/i)).toBeInTheDocument();
 
-  expect(
-    screen.getByText(props.account?.username ?? 'failed')
-  ).toBeInTheDocument();
+  expect(screen.getByText(MOCK_USER.username)).toBeInTheDocument();
   await user.click(document.body);
 
-  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
+  expect(screen.queryByText(MOCK_USER.name)).not.toBeInTheDocument();
 });
 
 test('Renders correctly with avatar', async () => {
-  const props = fakeProps(true);
   const user = userEvent.setup();
-  render(<Account {...props} />);
+  vi.stubEnv('VITE_MOCK_USER_PHOTO', 'true');
+  renderWithProviders(<Account />);
 
-  const accountName = props.account?.name ?? 'failed failed';
+  const accountName = MOCK_USER.name;
   expect(screen.queryByText(accountName)).not.toBeInTheDocument();
 
   const button = screen.getByRole('button');
@@ -81,41 +66,33 @@ test('Renders correctly with avatar', async () => {
 
   await user.click(button);
 
-  expect(screen.getByText(props.roles?.[0] ?? '')).toBeInTheDocument();
+  expect(screen.getByText(/admin/i)).toBeInTheDocument();
   expect(screen.getAllByAltText(`user-avatar-${accountName}`).length).toBe(2);
 });
 
 test('Opens and closes as it should', async () => {
-  const props = fakeProps(true);
   const user = userEvent.setup();
-  render(<Account {...props} />);
+
+  renderWithProviders(<Account />);
 
   const button = screen.getByRole('button');
 
-  expect(
-    screen.getAllByAltText(`user-avatar-${props.account?.name}`).length
-  ).toBe(1);
+  expect(screen.queryByText(MOCK_USER.username)).not.toBeInTheDocument();
 
   await user.click(button);
 
-  expect(
-    screen.getAllByAltText(`user-avatar-${props.account?.name}`).length
-  ).toBe(2);
+  expect(screen.getByText(MOCK_USER.username)).toBeInTheDocument();
 
   await user.click(button);
 
-  expect(
-    screen.getAllByAltText(`user-avatar-${props.account?.name}`).length
-  ).toBe(1);
+  expect(screen.queryByText(MOCK_USER.username)).not.toBeInTheDocument();
 });
 
 test('Rendering custom button works as expected', async () => {
-  const props = fakeProps(true);
   const customButtonText = faker.animal.cetacean();
   const user = userEvent.setup();
-  render(
+  renderWithProviders(
     <Account
-      {...props}
       renderCustomButton={(buttonRef, handleToggle) => (
         <button ref={buttonRef} onClick={handleToggle}>
           {customButtonText}
@@ -130,13 +107,131 @@ test('Rendering custom button works as expected', async () => {
 
   await user.click(customButton);
 
-  expect(
-    screen.getByAltText(`user-avatar-${props.account?.name}`)
-  ).toBeInTheDocument();
+  expect(screen.getByText(MOCK_USER.username)).toBeInTheDocument();
 
   await user.click(customButton);
 
-  expect(
-    screen.queryByAltText(`user-avatar-${props.account?.name}`)
-  ).not.toBeInTheDocument();
+  expect(screen.queryByText(MOCK_USER.username)).not.toBeInTheDocument();
+});
+
+test('Can open, start and end impersonation with existing impersonation user', async () => {
+  renderWithProviders(<Account />);
+  const user = userEvent.setup();
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  await waitFor(() =>
+    expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
+  );
+
+  await user.click(screen.getByText(/Impersonate/i));
+
+  const availableImpersonationUsers =
+    screen.getAllByTestId('impersonation-user');
+
+  for (const user of availableImpersonationUsers) {
+    expect(user).toBeInTheDocument();
+  }
+
+  const index = faker.number.int({
+    min: 0,
+    max: availableImpersonationUsers.length - 1,
+  });
+
+  let selectUser = availableImpersonationUsers[index];
+
+  let amountOfRoles = within(selectUser).getAllByTestId('role').length;
+
+  while (amountOfRoles === 1) {
+    selectUser =
+      availableImpersonationUsers[
+        (index + 1) % availableImpersonationUsers.length
+      ];
+    amountOfRoles = within(selectUser).getAllByTestId('role').length;
+  }
+
+  const name = within(selectUser).getByTestId('name').innerHTML;
+
+  const impersonateButton = screen.getByRole('button', {
+    name: 'Impersonate',
+  });
+
+  // Haven't selected a user yet so the button is expected to be disabled
+  expect(impersonateButton).toBeDisabled();
+
+  await user.click(selectUser);
+
+  expect(impersonateButton).not.toBeDisabled();
+
+  await user.click(impersonateButton);
+
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+
+  // Chip with '+1' for example
+  expect(screen.getByText(`+${amountOfRoles - 1}`)).toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(screen.getByText(name)).toBeInTheDocument();
+  expect(screen.getByText('Impersonating')).toBeInTheDocument();
+
+  await user.click(
+    screen.getByRole('button', {
+      name: `${MOCK_USER.name.split(' ').at(0)} ${MOCK_USER.username}`,
+    })
+  );
+
+  expect(screen.getByRole('button', { name: 'Impersonate' })).toBeDisabled();
+
+  // Close Account menu
+  await user.click(screen.getByRole('button', { name: 'Cancel' }));
+
+  // Re-open menu
+  await user.click(button);
+
+  const endButton = screen.getByRole('button', {
+    name: /end impersonation/i,
+  });
+
+  expect(endButton).toBeInTheDocument();
+
+  await user.click(endButton);
+
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+
+  await user.click(button);
+
+  expect(screen.queryByText('Impersonating')).not.toBeInTheDocument();
+});
+
+test('ImpersonateMenu onClose works as expected', async () => {
+  renderWithProviders(
+    <>
+      <Account />
+
+      <p>outside</p>
+    </>
+  );
+  const user = userEvent.setup();
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  await waitFor(() =>
+    expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
+  );
+
+  await user.click(screen.getByText(/Impersonate/i));
+
+  const availableImpersonationUsers =
+    screen.getAllByTestId('impersonation-user');
+
+  for (const user of availableImpersonationUsers) {
+    expect(user).toBeInTheDocument();
+  }
+
+  await user.click(screen.getByText('outside'));
+
+  expect(screen.queryByTestId('impersonation-user')).not.toBeInTheDocument();
 });

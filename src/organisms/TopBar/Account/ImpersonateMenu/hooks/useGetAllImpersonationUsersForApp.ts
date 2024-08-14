@@ -2,7 +2,7 @@ import { ImpersonateUserService } from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
 
 import { GET_ALL_IMPERSONATIONS } from '../Impersonate.constants';
-import { environment } from 'src/atoms';
+import { environment } from 'src/atoms/utils/auth_environment';
 
 const appName = environment.getAppName(import.meta.env.VITE_NAME);
 

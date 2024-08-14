@@ -94,6 +94,16 @@ const getAllowedParentDomains = (
   }
   return parentDomains.split(';');
 };
+
+const getMockUserPhoto = (
+  isMockingUserPhoto: string | undefined
+): string | undefined => {
+  if (isMockingUserPhoto === undefined) {
+    return undefined;
+  }
+
+  return 'https://avatars.githubusercontent.com/u/97165289'; // IMG from faker.image.avatar
+};
 function getPortalWithoutLocalhost() {
   let environmentName: EnvironmentType | undefined = import.meta.env
     .VITE_ENVIRONMENT_NAME as EnvironmentType;
@@ -240,6 +250,7 @@ export const environment = {
   getApiScope,
   getEnvironmentName,
   getIsMock,
+  getMockUserPhoto,
   getServiceNowConfigurationItem,
   PORTAL_URL_WITHOUT_LOCALHOST,
 };

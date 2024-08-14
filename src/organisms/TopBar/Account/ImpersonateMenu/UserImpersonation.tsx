@@ -30,15 +30,21 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
   };
 
   return (
-    <Container $selected={selected} onClick={handleOnClick}>
+    <Container
+      $selected={selected}
+      onClick={handleOnClick}
+      data-testid="impersonation-user"
+    >
       <Icon
         color={colors.text.static_icons__tertiary.rgba}
         data={account_circle}
       />
-      <Typography>{name}</Typography>
+      <Typography data-testid="name">{name}</Typography>
       <RoleChipContainer>
         {roles.map((role) => (
-          <RoleChip key={role}>{role}</RoleChip>
+          <RoleChip key={role} data-testid="role">
+            {role}
+          </RoleChip>
         ))}
       </RoleChipContainer>
       {selected && (

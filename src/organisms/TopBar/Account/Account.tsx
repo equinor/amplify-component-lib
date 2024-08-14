@@ -29,7 +29,7 @@ import { ImpersonateButton } from './ImpersonateButton';
 import { ActiveUserImpersonationButton } from 'src/organisms/TopBar/Account/ActiveUserImpersonationButton';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
-export interface AccountProps {
+interface AccountProps {
   /**
    * @deprecated logout - Not needed anymore
    */
@@ -71,7 +71,11 @@ export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
     : account?.username;
 
   const handleMenuOnClose = () => setIsOpen(false);
-  const handleToggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
+  const handleToggleMenu = useCallback(() => {
+    setIsOpen((prev) => !prev);
+    setOpenImpersonate(false);
+  }, []);
+
   const handleOpenImpersonate = () => {
     setOpenImpersonate(true);
     setIsOpen(false);

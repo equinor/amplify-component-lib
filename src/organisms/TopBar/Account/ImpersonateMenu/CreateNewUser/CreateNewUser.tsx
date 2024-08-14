@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
 import { AVAILABLE_ROLES } from '../Impersonate.constants';
 import { Container, Header, Section } from './CreateNewUser.styles';
-import { environment } from 'src/atoms';
+import { environment } from 'src/atoms/utils/auth_environment';
 import { Switch } from 'src/molecules';
 import { TextField } from 'src/molecules/TextField/TextField';
 

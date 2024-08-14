@@ -30,7 +30,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
   },
 ];
 
-const FAKE_ROLES = ['Admin', 'Writer', 'Reader'] as const;
+export const FAKE_ROLES = ['Admin', 'Writer', 'Reader'] as const;
 
 function fakeUser(): ImpersonateUser {
   const firstName = faker.person.firstName();
@@ -50,7 +50,7 @@ function fakeUser(): ImpersonateUser {
   };
 }
 
-const fakeImpersonateUsers: ImpersonateUser[] = [
+export const fakeImpersonateUsers: ImpersonateUser[] = [
   fakeUser(),
   fakeUser(),
   fakeUser(),

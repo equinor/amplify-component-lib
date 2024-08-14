@@ -28,7 +28,7 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
   ({ onClick }, ref) => {
     const { account, photo } = useAuth();
     const { data: activeImpersonationUser } = useActiveImpersonationUser();
-    const impersonationRoles = activeImpersonationUser?.roles ?? [];
+    const impersonationRoles = activeImpersonationUser?.roles.sort() ?? [];
 
     return (
       <Wrapper>
