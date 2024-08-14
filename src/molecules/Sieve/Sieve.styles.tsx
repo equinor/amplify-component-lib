@@ -40,9 +40,13 @@ const Search = styled(EDSSearch)`
     background: ${colors.ui.background__default.rgba};
     > input {
       color: ${colors.text.static_icons__default.rgba};
-    }
-    > input:focus {
-      box-shadow: inset 0px -2px 0px 0px ${colors.interactive.primary__resting.rgba};
+      box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
+      &:hover {
+        box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba};
+      }
+      &:focus {
+        box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
+      }
     }
   }
 `;

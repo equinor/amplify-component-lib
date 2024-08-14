@@ -1,5 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 
+import { Variants } from 'src/atoms/types/variants';
+
 const { colors: eds_colors } = tokens;
 
 export const colors = {
@@ -87,4 +89,11 @@ export const colors = {
         'var(--amplify_dataviz_lightgray_lighter,  rgba(194, 200, 204, 1))',
     },
   },
+} as const;
+
+export const VARIANT_COLORS: Record<Variants, string> = {
+  warning: colors.interactive.warning__resting.rgba,
+  error: colors.interactive.danger__resting.rgba,
+  success: colors.interactive.success__resting.rgba,
+  dirty: colors.infographic.substitute__blue_ocean.rgba,
 } as const;

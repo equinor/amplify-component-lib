@@ -57,7 +57,7 @@ export const RequestStatus: FC<RequestStatusProps> = ({
           variant="snackbar"
         >
           {requestStatus.status === StatusEnum.error
-            ? requestStatus.errorText ?? DEFAULT_REQUEST_ERROR_MESSAGE
+            ? (requestStatus.errorText ?? DEFAULT_REQUEST_ERROR_MESSAGE)
             : statusText}
         </Typography>
 

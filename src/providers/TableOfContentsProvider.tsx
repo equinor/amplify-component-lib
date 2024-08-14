@@ -103,7 +103,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         const behavior =
           options?.shouldInstantlyJumpOnMount && shouldInstantlyJump
             ? 'instant'
-            : options?.behavior ?? 'smooth';
+            : (options?.behavior ?? 'smooth');
         element.scrollIntoView({
           block: 'start',
           behavior,
