@@ -1,17 +1,11 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
 import { colors, spacings } from 'src/atoms/style';
+import { VARIANT_COLORS } from 'src/atoms/style/colors';
+import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
-import { Variants } from 'src/molecules/Select/Select.types';
 
 import styled from 'styled-components';
-
-export const VARIANT_COLORS: Record<Variants, string> = {
-  warning: colors.interactive.warning__resting.rgba,
-  error: colors.interactive.danger__resting.rgba,
-  success: colors.interactive.success__resting.rgba,
-  dirty: colors.dataviz.darkblue.darker,
-} as const;
 
 interface ContainerProps {
   $lightBackground?: boolean;

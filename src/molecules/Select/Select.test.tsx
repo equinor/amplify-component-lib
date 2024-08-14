@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
-import { VARIANT_COLORS } from './Select.styles';
 import { VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { colors } from 'src/atoms/style';
+import { VARIANT_COLORS } from 'src/atoms/style/colors';
 import {
   fakeSelectItem,
   fakeSelectItems,

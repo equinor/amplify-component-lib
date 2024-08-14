@@ -1,5 +1,7 @@
 import { KeyboardEvent, MutableRefObject } from 'react';
 
+import { Variants } from 'src/atoms/types/variants';
+
 export interface SelectOptionRequired {
   value: string;
   label: string;
@@ -63,8 +65,6 @@ export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
   values: SelectOption<T>[];
 } & Omit<SelectMenuProps<T>, 'search'> &
   SelectMenuItemProps<T>;
-
-export type Variants = 'error' | 'warning' | 'success' | 'dirty';
 
 export const VARIANT_OPTIONS: Variants[] = [
   'success',
