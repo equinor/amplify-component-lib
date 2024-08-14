@@ -31,6 +31,7 @@ export interface BaseChipProps {
   ) => void;
   variant?:
     | 'default'
+    | 'white'
     | 'active'
     | 'warning'
     | 'warning-active'

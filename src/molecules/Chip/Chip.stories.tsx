@@ -48,6 +48,7 @@ const meta: Meta<typeof Chip> = {
         type: 'radio',
         options: [
           'default',
+          'white',
           'active',
           'warning',
           'warning-active',

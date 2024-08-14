@@ -42,6 +42,21 @@ const colorSchemes: Record<
       borderColor: `${colors.interactive.disabled__border.rgba}`,
     },
   },
+  white: {
+    color: `${colors.interactive.primary__resting.rgba}`,
+    background: `${colors.ui.background__default.rgba}`,
+    borderColor: `${colors.ui.background__medium.rgba}`,
+    hover: {
+      background: `${colors.interactive.primary__hover_alt.rgba}`,
+      color: `${colors.interactive.primary__hover.rgba}`,
+      borderColor: `${colors.interactive.primary__hover.rgba}`,
+    },
+    disabled: {
+      color: `${colors.interactive.disabled__text.rgba}`,
+      background: `${colors.interactive.disabled__fill.rgba}`,
+      borderColor: `${colors.interactive.disabled__border.rgba}`,
+    },
+  },
   active: {
     color: `${colors.interactive.primary__resting.rgba}`,
     background: `${colors.interactive.primary__selected_highlight.rgba}`,
@@ -118,7 +133,7 @@ const colorSchemes: Record<
       borderColor: `${colors.interactive.danger__highlight.rgba}`,
     },
   },
-};
+} as const;
 
 const getColorSchemeBy = (variant: Variant = 'default') => {
   return colorSchemes[variant];
