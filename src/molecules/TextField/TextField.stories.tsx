@@ -31,6 +31,10 @@ const meta: Meta<typeof TextField> = {
   title: 'Molecules/TextField',
   component: TextField,
   parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=5362-141508&m=dev',
+    },
     docs: {
       page,
       source: {
@@ -39,6 +43,11 @@ const meta: Meta<typeof TextField> = {
     },
   },
   argTypes: {
+    disabled: { control: 'boolean' },
+    variant: {
+      control: 'radio',
+      options: ['error', 'warning', 'success', 'dirty', undefined],
+    },
     inputIcon: {
       options: ['error', 'warning', 'success'],
       mapping: {
@@ -79,7 +88,6 @@ const meta: Meta<typeof TextField> = {
 
 export default meta;
 
-//for some reason "TextFieldProps" throws a typescript error here, but "typeof TextField" works
 type Story = StoryFn<typeof TextField>;
 
 export const Introduction: Story = (args) => {

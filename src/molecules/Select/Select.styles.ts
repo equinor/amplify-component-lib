@@ -1,17 +1,11 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
 import { colors, spacings } from 'src/atoms/style';
+import { VARIANT_COLORS } from 'src/atoms/style/colors';
+import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
-import { Variants } from 'src/molecules/Select/Select.types';
 
-import styled from 'styled-components';
-
-export const VARIANT_COLORS: Record<Variants, string> = {
-  warning: colors.interactive.warning__resting.rgba,
-  error: colors.interactive.danger__resting.rgba,
-  success: colors.interactive.success__resting.rgba,
-  dirty: colors.dataviz.darkblue.darker,
-} as const;
+import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   $lightBackground?: boolean;
@@ -25,11 +19,35 @@ const Container = styled.div<ContainerProps>`
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: 6px 8px;
+  &:hover:not(:has(input:disabled)) {
+    cursor: pointer;
+  }
 
-  ${({ $variant }) =>
-    $variant
-      ? `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]}`
-      : `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`};
+  ${({ $variant }) => {
+    if (!$variant)
+      return css`
+        box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
+        &:hover {
+          box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba};
+        }
+      `;
+
+    if ($variant === 'dirty') {
+      return css`
+        box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]};
+        &:hover {
+          box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]};
+        }
+      `;
+    }
+
+    return css`
+      outline: 1px solid ${VARIANT_COLORS[$variant]};
+      &:hover {
+        box-shadow: inset 0 -1px 0 0 ${VARIANT_COLORS[$variant]};
+      }
+    `;
+  }}
 
   ${({ $lightBackground }) =>
     $lightBackground
@@ -38,6 +56,10 @@ const Container = styled.div<ContainerProps>`
 
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
+  }
+  &:has(input:disabled) {
+    outline: none;
+    box-shadow: none;
   }
 
   ${({ $shouldShowTopMargin }) => $shouldShowTopMargin && `margin-top: 1rem;`};
@@ -124,7 +146,7 @@ const ClearButton = styled(Button)`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: 26px;
+  right: 32px;
   width: 24px;
   height: 24px;
   svg {

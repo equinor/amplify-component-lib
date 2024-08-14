@@ -16,7 +16,7 @@ const meta: Meta<typeof SingleSelect> = {
   argTypes: {
     variant: {
       control: 'radio',
-      options: VARIANT_OPTIONS,
+      options: [...VARIANT_OPTIONS, undefined],
       description: 'Variants',
     },
   },

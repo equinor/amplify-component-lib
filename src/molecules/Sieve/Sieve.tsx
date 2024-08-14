@@ -221,7 +221,7 @@ export const Sieve: FC<SieveProps> = ({
           value={
             debounceSearchValue
               ? localSearchString
-              : sieveValue.searchValue ?? ''
+              : (sieveValue.searchValue ?? '')
           }
           onChange={handleOnSearch}
         />
