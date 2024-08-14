@@ -101,7 +101,7 @@ export const handlers = [
   }),
   http.get('*/api/v1/ImpersonateUser/ActiveUserByUsername', async () => {
     await delay('real');
-    if (!activeImpersonateUser) return new HttpResponse(null, { status: 204 });
+    if (!activeImpersonateUser) return HttpResponse.json(null, { status: 204 });
     return HttpResponse.json(activeImpersonateUser);
   }),
   http.post('*/api/v1/ImpersonateUser', async (resolver) => {
