@@ -27,7 +27,7 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
     queryFn: () =>
       AmplifyApplicationService.getAllAppRoles(
         environment.getClientId(import.meta.env.VITE_CLIENT_ID)
-      ) as unknown as Promise<string[]>,
+      ),
   });
 
   const { mutateAsync: createImpersonationUser, isPending } =
@@ -97,9 +97,9 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
         {isLoadingRoles && <DotProgress color="primary" />}
         {availableRoles?.map((role) => (
           <Switch
-            key={role}
-            label={role}
-            onChange={() => handleOnRoleToggle(role)}
+            key={role.id}
+            label={role.value}
+            onChange={() => handleOnRoleToggle(role.value)}
           />
         ))}
       </Section>

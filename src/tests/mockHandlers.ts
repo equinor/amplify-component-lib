@@ -3,6 +3,7 @@ import {
   ReleaseNote,
   ReleaseNoteType,
 } from '@equinor/subsurface-app-management';
+import { GraphAppRole } from '@equinor/subsurface-app-management/dist/api/models/GraphAppRole';
 import { faker } from '@faker-js/faker';
 
 import { environment } from 'src/atoms/utils/auth_environment';
@@ -30,14 +31,42 @@ export const fakeReleaseNotes: ReleaseNote[] = [
   },
 ];
 
-export const FAKE_ROLES = ['Admin', 'Writer', 'Reader'] as const;
+export const FAKE_ROLES: GraphAppRole[] = [
+  {
+    allowedMemberTypes: ['fake', 'fake2'],
+    description: faker.word.words(),
+    displayName: faker.airline.airplane().name,
+    isEnabled: true,
+    origin: faker.airline.airport().name,
+    id: faker.string.uuid(),
+    value: 'Admin',
+  },
+  {
+    allowedMemberTypes: ['fake', 'fake2'],
+    description: faker.word.words(),
+    displayName: faker.airline.airplane().name,
+    isEnabled: true,
+    origin: faker.airline.airport().name,
+    id: faker.string.uuid(),
+    value: 'Writer',
+  },
+  {
+    allowedMemberTypes: ['fake', 'fake2'],
+    description: faker.word.words(),
+    displayName: faker.airline.airplane().name,
+    isEnabled: true,
+    origin: faker.airline.airport().name,
+    id: faker.string.uuid(),
+    value: 'Reader',
+  },
+] as const;
 
 function fakeUser(): ImpersonateUser {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
   const name = `${firstName} ${lastName}`;
   const uniqueName = `${firstName}.${lastName}`;
-  const roles = faker.helpers.arrayElements(FAKE_ROLES);
+  const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
     firstName,
@@ -60,7 +89,7 @@ let activeImpersonateUser: ImpersonateUser | undefined = undefined;
 
 export const handlers = [
   http.get(
-    '*/api/v1/AmplifyApplication/application/fake-id/groups',
+    '*/api/v1/AmplifyApplication/application/fake-id/appRoles',
     async () => {
       await delay('real');
       return HttpResponse.json(FAKE_ROLES);

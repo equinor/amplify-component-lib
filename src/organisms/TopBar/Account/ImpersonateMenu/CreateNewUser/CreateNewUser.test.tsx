@@ -99,6 +99,7 @@ describe('CreateNewUser', () => {
         min: 2,
         max: FAKE_ROLES.length - 1,
       })
+      .map((role) => role.value)
       .sort();
 
     for (const role of roles) {

@@ -98,7 +98,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.21.0",
-    "@equinor/subsurface-app-management": "^1.1.4",
+    "@equinor/subsurface-app-management": "^1.1.7",
     "@faker-js/faker": "^8.4.1",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
