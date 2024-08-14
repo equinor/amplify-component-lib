@@ -19,17 +19,22 @@ const Container = styled.div<ContainerProps>`
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: 6px 8px;
+  &:hover:not(:has(input:disabled)) {
+    cursor: pointer;
+  }
 
   ${({ $variant }) => {
     if (!$variant)
       return css`
         box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
+        &:hover {
+          box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba};
+        }
       `;
 
     if ($variant === 'dirty') {
       return css`
         box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]};
-
         &:hover {
           box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]};
         }
@@ -38,7 +43,6 @@ const Container = styled.div<ContainerProps>`
 
     return css`
       outline: 1px solid ${VARIANT_COLORS[$variant]};
-
       &:hover {
         box-shadow: inset 0 -1px 0 0 ${VARIANT_COLORS[$variant]};
       }
@@ -142,7 +146,7 @@ const ClearButton = styled(Button)`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: 26px;
+  right: 32px;
   width: 24px;
   height: 24px;
   svg {

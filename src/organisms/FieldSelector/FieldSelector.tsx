@@ -12,7 +12,6 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 const ImageWrapper = styled.div`
-  margin-top: auto;
   > svg {
     margin-bottom: -10px;
     background-color: ${colors.ui.background__light.rgba};
