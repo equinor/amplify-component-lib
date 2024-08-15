@@ -1,10 +1,7 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import {
-  CancelablePromise,
-  ReleaseNote,
-} from '@equinor/subsurface-app-management';
+import { ReleaseNote } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -98,30 +95,25 @@ let returnEmptyArray = false;
 let returnWithEmptyDate = false;
 
 vi.mock('@equinor/subsurface-app-management', async () => {
-  class ReleaseNotesService {
-    public static getReleasenoteList(): CancelablePromise<unknown> {
-      return new CancelablePromise((resolve) => {
-        setTimeout(() => {
-          if (returnEmptyArray) {
-            resolve([]);
-          } else if (returnWithEmptyDate) {
-            resolve(releaseNotesWithoutDate);
-          } else {
-            resolve(releaseNotes);
-          }
-        }, 300);
-      });
+  function useReleaseNotesQuery() {
+    if (returnEmptyArray) {
+      return {
+        data: [],
+        isLoading: false,
+      };
     }
-    public static getContainerSasUri(): CancelablePromise<unknown> {
-      return new CancelablePromise((resolve) => {
-        setTimeout(() => {
-          resolve(`PORTALURL?FAKE_TOKEN`);
-        }, 100);
-      });
+
+    if (returnWithEmptyDate) {
+      return {
+        data: releaseNotesWithoutDate,
+      };
     }
+    return {
+      data: releaseNotes,
+    };
   }
   const actual = await vi.importActual('@equinor/subsurface-app-management');
-  return { ...actual, ReleaseNotesService };
+  return { ...actual, useReleaseNotesQuery };
 });
 
 test('show release note', async () => {

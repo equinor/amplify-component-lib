@@ -65,7 +65,7 @@ function fakeUser(): ImpersonateUser {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
   const name = `${firstName} ${lastName}`;
-  const uniqueName = `${firstName}.${lastName}`;
+  const uniqueName = faker.internet.userName();
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
