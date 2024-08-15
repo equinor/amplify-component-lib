@@ -2,11 +2,9 @@ import { ChangeEvent, FC, useMemo, useState } from 'react';
 
 import { Button, DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
-import { AmplifyApplicationService } from '@equinor/subsurface-app-management';
-import { useQuery } from '@tanstack/react-query';
 
+import { useAllAppRoles } from '../hooks/useAllAppRoles';
 import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
-import { AVAILABLE_ROLES } from '../Impersonate.constants';
 import { Container, Header, Section } from './CreateNewUser.styles';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { Switch } from 'src/molecules';
@@ -22,13 +20,7 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  const { data: availableRoles, isLoading: isLoadingRoles } = useQuery({
-    queryKey: [AVAILABLE_ROLES],
-    queryFn: () =>
-      AmplifyApplicationService.getAllAppRoles(
-        environment.getClientId(import.meta.env.VITE_CLIENT_ID)
-      ),
-  });
+  const { data: availableRoles, isLoading: isLoadingRoles } = useAllAppRoles();
 
   const { mutateAsync: createImpersonationUser, isPending } =
     useCreateImpersonation();
