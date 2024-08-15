@@ -9,9 +9,11 @@ import {
   useState,
 } from 'react';
 
-import { ReleaseNote } from '@equinor/subsurface-app-management';
+import {
+  ReleaseNote,
+  useReleaseNotesQuery,
+} from '@equinor/subsurface-app-management';
 
-import { useReleaseNotesQuery } from 'src/atoms/hooks/useReleaseNotesQuery';
 import { SieveOption, SieveValue } from 'src/molecules/Sieve/Sieve.types';
 import {
   extractDatesFromReleaseNotes,
