@@ -13,145 +13,113 @@ import {
 
 import { IconData } from '@equinor/eds-icons';
 
-import {
-  InteractiveChip,
-  InteractiveChipProps,
-} from 'src/molecules/Chip/InteractiveChip';
-import {
-  ReadOnlyChip,
-  ReadOnlyChipProps,
-} from 'src/molecules/Chip/ReadOnlyChip';
+import { InteractiveChip } from 'src/molecules/Chip/InteractiveChip';
+import { ReadOnlyChip } from 'src/molecules/Chip/ReadOnlyChip';
 
 // Base type for common properties
 export interface BaseChipProps {
   children: ReactNode;
-  className?: string;
-  disabled?: boolean;
-  onDelete?: (
-    event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
-  ) => void;
-  variant?:
-    | 'default'
-    | 'active'
-    | 'warning'
-    | 'warning-active'
-    | 'error'
-    | 'error-active';
-  onClick?: (
-    event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
-  ) => void;
+  variant?: 'default' | 'white' | 'warning' | 'error';
   leadingIconData?: IconData;
 }
+
+type ReadOnlyChipProps = BaseChipProps & {
+  onClick?: undefined;
+  onDelete?: undefined;
+};
+
+export interface InteractiveChipBase {
+  disabled?: boolean;
+  selected?: boolean;
+}
+
+export type ClickableChipProps = BaseChipProps &
+  InteractiveChipBase & {
+    onClick: (
+      event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
+    ) => void;
+    onDelete?: undefined;
+  };
+
+export type DeletableChipProps = BaseChipProps &
+  InteractiveChipBase & {
+    onClick?: undefined;
+    onDelete: (
+      event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
+    ) => void;
+  };
 
 type ReactElementWithChildren = ReactElement<{ children?: ReactNode }>;
 
 export const Chip = forwardRef<
   HTMLDivElement | HTMLButtonElement,
-  BaseChipProps
->(
-  (
-    {
-      children,
-      className,
-      variant,
-      disabled,
-      onClick,
-      onDelete,
-      ...otherProps
-    },
-    ref
-  ) => {
-    const chipProps = {
-      ...otherProps,
-      className,
-      children,
-      variant: variant,
-      disabled: disabled,
-      onClick: onClick,
-      onDelete: onDelete,
-    };
+  ReadOnlyChipProps | ClickableChipProps | DeletableChipProps
+>((props, ref) => {
+  const { children } = props;
 
-    const modifiedChildren = useMemo((): ReactNode[] => {
-      const modifiedChildren: ReactNode[] = [];
+  const modifiedChildren = useMemo((): ReactNode[] => {
+    const modifiedChildren: ReactNode[] = [];
 
-      // Process each child and add it to the new array
-      Children.map(children, (child, index) => {
-        if (isValidElement(child)) {
-          const element = child as ReactElementWithChildren;
+    // Process each child and add it to the new array
+    Children.map(children, (child, index) => {
+      if (isValidElement(child)) {
+        const element = child as ReactElementWithChildren;
 
-          if (element.type === Fragment && element.props.children) {
-            // Handle React.Fragment elements
-            Children.map(
-              element.props.children,
-              (fragmentChild, fragmentIndex) => {
-                if (isValidElement(fragmentChild) && fragmentIndex === 0) {
-                  modifiedChildren.push(
-                    <div key={`${index}-${fragmentIndex}`} className="leading">
-                      {fragmentChild}
-                    </div>
-                  );
-                } else if (
-                  typeof fragmentChild === 'string' ||
-                  typeof fragmentChild === 'number'
-                ) {
-                  modifiedChildren.push(
-                    <span key={`${index}-${fragmentIndex}`}>
-                      {fragmentChild}
-                    </span>
-                  );
-                } else {
-                  modifiedChildren.push(fragmentChild);
-                }
+        if (element.type === Fragment && element.props.children) {
+          // Handle React.Fragment elements
+          Children.map(
+            element.props.children,
+            (fragmentChild, fragmentIndex) => {
+              if (isValidElement(fragmentChild) && fragmentIndex === 0) {
+                modifiedChildren.push(
+                  <div key={`${index}-${fragmentIndex}`} className="leading">
+                    {fragmentChild}
+                  </div>
+                );
+              } else if (
+                typeof fragmentChild === 'string' ||
+                typeof fragmentChild === 'number'
+              ) {
+                modifiedChildren.push(
+                  <span key={`${index}-${fragmentIndex}`}>{fragmentChild}</span>
+                );
+              } else {
+                modifiedChildren.push(fragmentChild);
               }
-            );
-          } else if (index === 0) {
-            // Handle other valid React elements
-            modifiedChildren.push(
-              <div key={index} className="leading">
-                {element}
-              </div>
-            );
-          } else {
-            modifiedChildren.push(element);
-          }
+            }
+          );
+        } else if (index === 0) {
+          // Handle other valid React elements
+          modifiedChildren.push(
+            <div key={index} className="leading">
+              {element}
+            </div>
+          );
         } else {
-          // Wrap "loose" string and number children in a span
-          modifiedChildren.push(<span key={index}>{child}</span>);
+          modifiedChildren.push(element);
         }
-      });
+      } else {
+        // Wrap "loose" string and number children in a span
+        modifiedChildren.push(<span key={index}>{child}</span>);
+      }
+    });
 
-      return modifiedChildren;
-    }, [children]);
+    return modifiedChildren;
+  }, [children]);
 
-    if (!onClick && !onDelete) {
-      // Pass readOnly-specific props
-      const readOnlyProps: ReadOnlyChipProps = {
-        ...chipProps,
-      };
-
-      return (
-        <ReadOnlyChip
-          {...readOnlyProps}
-          ref={ref as ForwardedRef<HTMLDivElement>}
-        >
-          {modifiedChildren}
-        </ReadOnlyChip>
-      );
-    } else {
-      // Pass interactive-specific props
-      const interactiveProps: InteractiveChipProps = {
-        ...chipProps,
-      };
-      return (
-        <InteractiveChip
-          {...interactiveProps}
-          ref={ref as ForwardedRef<HTMLButtonElement>}
-        >
-          {modifiedChildren}
-        </InteractiveChip>
-      );
-    }
+  if (props.onClick !== undefined || props.onDelete !== undefined) {
+    return (
+      <InteractiveChip {...props} ref={ref as ForwardedRef<HTMLButtonElement>}>
+        {modifiedChildren}
+      </InteractiveChip>
+    );
+  } else {
+    return (
+      <ReadOnlyChip {...props} ref={ref as ForwardedRef<HTMLDivElement>}>
+        {modifiedChildren}
+      </ReadOnlyChip>
+    );
   }
-);
+});
 
 Chip.displayName = 'Chip';

@@ -3,12 +3,14 @@ import { forwardRef, HTMLAttributes, KeyboardEvent } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 
-import { BaseChipProps } from 'src/molecules/Chip/Chip';
+import {
+  ClickableChipProps,
+  DeletableChipProps,
+} from 'src/molecules/Chip/Chip';
 import { InteractiveChipStyle } from 'src/molecules/Chip/Chip.styles';
 
-// Type for InteractiveChipStyle (button)
-export type InteractiveChipProps = BaseChipProps &
-  HTMLAttributes<HTMLButtonElement>;
+export type InteractiveChipProps = (ClickableChipProps | DeletableChipProps) &
+  Omit<HTMLAttributes<HTMLButtonElement>, 'onClick'>;
 
 export const InteractiveChip = forwardRef<
   HTMLButtonElement,
@@ -16,40 +18,29 @@ export const InteractiveChip = forwardRef<
 >((props, ref) => {
   const {
     children,
-    onDelete,
     disabled = false,
     variant,
-    className,
-    onClick,
     leadingIconData,
-    ...otherInteractiveProps
+    onClick,
+    onDelete,
+    ...otherProps
   } = props;
-
-  // deletable and clickable logic can be handled within this component
-  const deletable = onDelete !== undefined;
-  const clickable = !disabled && props.onClick !== undefined;
-  const handleDelete = disabled ? undefined : onDelete;
-  const handleClick = disabled ? undefined : onClick;
+  const relevantOnAction = onDelete ? onDelete : onClick;
 
   const handleKeyPress = (event: KeyboardEvent<HTMLButtonElement>) => {
     const { key } = event;
     if (key === 'Enter') {
-      if (deletable) {
-        handleDelete?.(event); // using non-null assertion operator since we know deletable is true
-      } else if (clickable) {
-        handleClick?.(event); // using non-null assertion operator since we know clickable is true
-      }
+      relevantOnAction(event);
     }
   };
 
   return (
     <InteractiveChipStyle
-      {...otherInteractiveProps}
+      {...otherProps}
       ref={ref}
       disabled={disabled}
       variant={variant}
-      className={className}
-      onClick={deletable ? onDelete : onClick}
+      onClick={relevantOnAction}
       onKeyDown={handleKeyPress}
     >
       <div className="content">
@@ -59,7 +50,7 @@ export const InteractiveChip = forwardRef<
           </div>
         )}
         {children}
-        {deletable && <Icon data={close} title="close" size={16} />}
+        {onDelete && <Icon data={close} title="close" size={16} />}
       </div>
     </InteractiveChipStyle>
   );
