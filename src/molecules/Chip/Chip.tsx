@@ -28,7 +28,7 @@ type ReadOnlyChipProps = BaseChipProps & {
   onDelete?: undefined;
 };
 
-interface InteractiveChipBase {
+export interface InteractiveChipBase {
   disabled?: boolean;
   selected?: boolean;
 }
