@@ -124,7 +124,7 @@ const FALLBACK_APP_ICON: ApplicationIconData = {
 } as const;
 
 export interface ApplicationIconProps {
-  name: ApplicationName | string;
+  name?: ApplicationName | string;
   size?: number;
   animationState?: 'none' | 'hoverable' | 'animated' | 'loading';
   iconOnly?: boolean;
@@ -136,7 +136,7 @@ export const ApplicationIcon: FC<ApplicationIconProps> = ({
   animationState = 'none',
   iconOnly = false,
 }) => {
-  let appData = apps[name];
+  let appData = apps[name.toLowerCase()];
 
   if (!appData) {
     // Set appData to the fallback icon data
