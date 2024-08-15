@@ -30,9 +30,7 @@ export const InteractiveChip = forwardRef<
   const handleKeyPress = (event: KeyboardEvent<HTMLButtonElement>) => {
     const { key } = event;
     if (key === 'Enter') {
-      if ('onClick' in props) {
-        relevantOnAction(event);
-      }
+      relevantOnAction(event);
     }
   };
 

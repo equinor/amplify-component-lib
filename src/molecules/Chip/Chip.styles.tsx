@@ -180,7 +180,7 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
   cursor: pointer;
   ${commonChipStyle}
   ${({ variant, selected }) => {
-    // White variant has the same active styling as default
+    // White variant has the same selected styling as default
     const colorScheme = getColorSchemeBy(variant, selected);
     return css`
       color: ${colorScheme.color};

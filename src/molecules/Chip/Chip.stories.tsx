@@ -53,15 +53,7 @@ const meta: Meta<typeof Chip> = {
     variant: {
       control: {
         type: 'radio',
-        options: [
-          'default',
-          'white',
-          'active',
-          'warning',
-          'warning-active',
-          'error',
-          'error-active',
-        ],
+        options: ['default', 'white', 'warning', 'error'],
       },
       name: 'Variant',
       defaultValue: 'active',
