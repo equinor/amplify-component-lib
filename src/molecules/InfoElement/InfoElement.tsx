@@ -14,14 +14,14 @@ export interface InfoElementProps {
  */
 interface TextInfoElementProps extends InfoElementProps {
   content: string;
-  copyableContent?: true;
-  capitalizeContent?: true;
+  copyableContent?: boolean;
+  capitalizeContent?: boolean;
 }
 
 interface CustomInfoElementProps extends InfoElementProps {
   content: ReactElement;
-  copyableContent?: undefined;
-  capitalizeContent?: undefined;
+  copyableContent?: false;
+  capitalizeContent?: false;
 }
 
 export const InfoElement = forwardRef<

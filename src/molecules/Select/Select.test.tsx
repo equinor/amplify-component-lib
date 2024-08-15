@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
-import { VARIANT_COLORS } from './Select.styles';
 import { VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { colors } from 'src/atoms/style';
+import { VARIANT_COLORS } from 'src/atoms/style/colors';
 import {
   fakeSelectItem,
   fakeSelectItems,
@@ -880,7 +880,22 @@ test('variants work as expected', () => {
     `inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`
   );
 
-  for (const variant of VARIANT_OPTIONS) {
+  rerender(
+    <Select
+      variant="dirty"
+      label={label}
+      onSelect={handleOnSelect}
+      values={[]}
+      items={items}
+    />
+  );
+
+  expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
+    'box-shadow',
+    `inset 0 -2px 0 0 ${VARIANT_COLORS.dirty}`
+  );
+
+  for (const variant of VARIANT_OPTIONS.filter((item) => item !== 'dirty')) {
     rerender(
       <Select
         label={label}
@@ -892,8 +907,8 @@ test('variants work as expected', () => {
     );
 
     expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
-      'box-shadow',
-      `inset 0 -2px 0 0 ${VARIANT_COLORS[variant]}`
+      'outline',
+      `1px solid ${VARIANT_COLORS[variant]}`
     );
   }
 });

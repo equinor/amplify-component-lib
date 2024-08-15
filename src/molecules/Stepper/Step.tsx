@@ -43,7 +43,7 @@ const IconWrapper = styled.span<IconWrapperProps>`
   border-radius: ${shape.circle.borderRadius};
   border: 2px solid
     ${(props) =>
-      props.$filled ?? props.$outlined
+      (props.$filled ?? props.$outlined)
         ? colors.interactive.primary__resting.rgba
         : colors.interactive.disabled__text.rgba};
   background: ${(props) =>

@@ -18,7 +18,7 @@ test('renders with scrim when prop is given', () => {
 test('renders application progress as default', () => {
   render(<FullPageSpinner />);
 
-  expect(screen.getByTestId('app-icon-container')).toBeInTheDocument()
+  expect(screen.getByTestId('app-icon-container')).toBeInTheDocument();
 });
 
 test('renders star progress when prop is given', () => {
