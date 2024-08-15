@@ -13,50 +13,49 @@ import {
 
 import { IconData } from '@equinor/eds-icons';
 
-import {
-  InteractiveChip,
-  InteractiveChipProps,
-} from 'src/molecules/Chip/InteractiveChip';
-import {
-  ReadOnlyChip,
-  ReadOnlyChipProps,
-} from 'src/molecules/Chip/ReadOnlyChip';
+import { InteractiveChip } from 'src/molecules/Chip/InteractiveChip';
+import { ReadOnlyChip } from 'src/molecules/Chip/ReadOnlyChip';
 
 // Base type for common properties
 export interface BaseChipProps {
   children: ReactNode;
-  disabled?: boolean;
-  onDelete?: (
-    event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
-  ) => void;
-  variant?:
-    | 'default'
-    | 'white'
-    | 'active'
-    | 'warning'
-    | 'warning-active'
-    | 'error'
-    | 'error-active';
-  onClick?: (
-    event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
-  ) => void;
+  variant?: 'default' | 'white' | 'warning' | 'error';
   leadingIconData?: IconData;
 }
+
+type ReadOnlyChipProps = BaseChipProps & {
+  onClick?: undefined;
+  onDelete?: undefined;
+};
+
+interface InteractiveChipBase {
+  disabled?: boolean;
+  selected?: boolean;
+}
+
+export type ClickableChipProps = BaseChipProps &
+  InteractiveChipBase & {
+    onClick: (
+      event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
+    ) => void;
+    onDelete?: undefined;
+  };
+
+export type DeletableChipProps = BaseChipProps &
+  InteractiveChipBase & {
+    onClick?: undefined;
+    onDelete: (
+      event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>
+    ) => void;
+  };
 
 type ReactElementWithChildren = ReactElement<{ children?: ReactNode }>;
 
 export const Chip = forwardRef<
   HTMLDivElement | HTMLButtonElement,
-  BaseChipProps
->(({ children, variant, disabled, onClick, onDelete, ...otherProps }, ref) => {
-  const chipProps = {
-    ...otherProps,
-    children,
-    variant: variant,
-    disabled: disabled,
-    onClick: onClick,
-    onDelete: onDelete,
-  };
+  ReadOnlyChipProps | ClickableChipProps | DeletableChipProps
+>((props, ref) => {
+  const { children } = props;
 
   const modifiedChildren = useMemo((): ReactNode[] => {
     const modifiedChildren: ReactNode[] = [];
@@ -108,32 +107,17 @@ export const Chip = forwardRef<
     return modifiedChildren;
   }, [children]);
 
-  if (!onClick && !onDelete) {
-    // Pass readOnly-specific props
-    const readOnlyProps: ReadOnlyChipProps = {
-      ...chipProps,
-    };
-
+  if (props.onClick !== undefined || props.onDelete !== undefined) {
     return (
-      <ReadOnlyChip
-        {...readOnlyProps}
-        ref={ref as ForwardedRef<HTMLDivElement>}
-      >
-        {modifiedChildren}
-      </ReadOnlyChip>
-    );
-  } else {
-    // Pass interactive-specific props
-    const interactiveProps: InteractiveChipProps = {
-      ...chipProps,
-    };
-    return (
-      <InteractiveChip
-        {...interactiveProps}
-        ref={ref as ForwardedRef<HTMLButtonElement>}
-      >
+      <InteractiveChip {...props} ref={ref as ForwardedRef<HTMLButtonElement>}>
         {modifiedChildren}
       </InteractiveChip>
+    );
+  } else {
+    return (
+      <ReadOnlyChip {...props} ref={ref as ForwardedRef<HTMLDivElement>}>
+        {modifiedChildren}
+      </ReadOnlyChip>
     );
   }
 });
