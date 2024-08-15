@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "8.4.9",
+  "version": "8.5.0",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -98,9 +98,9 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.21.0",
-    "@equinor/subsurface-app-management": "^1.1.3",
+    "@equinor/subsurface-app-management": "^1.1.7",
     "@faker-js/faker": "^8.4.1",
-    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
@@ -146,6 +146,7 @@
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
     "msw": "^2.3.4",
+    "msw-storybook-addon": "^2.0.3",
     "ora": "^8.0.1",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
@@ -154,9 +155,9 @@
     "react-router-dom": "^6.22.3",
     "resize-observer-polyfill": "^1.5.1",
     "resolve-tspaths": "^0.8.19",
-    "rollup": "^4.18.1",
+    "rollup": "^4.20.0",
     "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-import-css": "^3.5.0",
+    "rollup-plugin-import-css": "^3.5.1",
     "storybook": "^8.1.10",
     "storybook-addon-data-theme-switcher": "^0.4.2",
     "storybook-addon-react-docgen": "^1.2.44",
@@ -180,5 +181,10 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.11.1",
     "react-router-dom": "^6.11.1"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

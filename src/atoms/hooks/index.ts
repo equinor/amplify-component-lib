@@ -3,12 +3,12 @@ import { useDebounce } from './useDebounce';
 import { useFakeProgress } from './useFakeProgress';
 import { useLocalStorage } from './useLocalStorage';
 import { usePrevious } from './usePrevious';
-import { useReleaseNotesQuery } from './useReleaseNotesQuery';
 import { useSelect } from './useSelect';
 import { useSignalRMessages } from './useSignalRMessages';
 import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 import { useNotification } from 'src/organisms/TopBar/Notifications/NotificationProvider';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
+import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { useSideBar } from 'src/providers/SideBarProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider';
 import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
@@ -24,7 +24,7 @@ export {
   useOnScreenMultiple,
   useTableOfContents,
   usePrevious,
-  useReleaseNotesQuery,
+  useReleaseNotes,
   useSideBar,
   useSignalRMessages,
   useSnackbar,

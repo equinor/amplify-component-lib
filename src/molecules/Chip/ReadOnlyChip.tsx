@@ -13,11 +13,7 @@ export const ReadOnlyChip = forwardRef<HTMLDivElement, ReadOnlyChipProps>(
     const { children, leadingIconData, ...otherReadOnlyProps } = props;
 
     return (
-      <ReadOnlyChipStyle
-        {...otherReadOnlyProps}
-        ref={ref}
-        data-testid="read-only-chip"
-      >
+      <ReadOnlyChipStyle {...otherReadOnlyProps} ref={ref}>
         <div className="content">
           {leadingIconData && (
             <div className="leading">

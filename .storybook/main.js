@@ -48,7 +48,8 @@ const config = {
 
   env: () => ({
     VITE_IS_MOCK: 'true',
-    VITE_NAME: "orca"
+    VITE_NAME: 'orca',
+    VITE_CLIENT_ID: 'fake-id',
   }),
 
   typescript: {

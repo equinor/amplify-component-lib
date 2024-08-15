@@ -15,7 +15,7 @@ import { AuthProviderInner } from './AuthProviderInner';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
 
 const { msalApp } = auth;
-const { getIsMock } = environment;
+const { getIsMock, getMockUserPhoto } = environment;
 
 export type AuthState = 'loading' | 'authorized' | 'unauthorized';
 
@@ -36,6 +36,20 @@ export const useAuth = () => {
   return context;
 };
 
+export const MOCK_USER: Required<AccountInfo> = {
+  homeAccountId: 'mock-home-account-id',
+  environment: 'mock',
+  tenantId: 'mock-tenant-id',
+  username: 'MOCK@equinor.com',
+  localAccountId: 'mock-local-account-id',
+  name: 'Mock mocksnes',
+  idToken: 'fake',
+  idTokenClaims: { id: 'claim' },
+  nativeAccountId: 'accountid',
+  authorityType: 'authority',
+  tenantProfiles: new Map(),
+} as const;
+
 interface AuthProviderProps {
   children: ReactNode;
   loadingComponent?: ReactElement;
@@ -52,21 +66,17 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [photo, setPhoto] = useState<string | undefined>();
   const isMock = useMemo(() => getIsMock(import.meta.env.VITE_IS_MOCK), []);
-
+  const mockPhoto = useMemo(
+    () => getMockUserPhoto(import.meta.env.VITE_MOCK_USER_PHOTO),
+    []
+  );
   if (isMock) {
     return (
       <AuthContext.Provider
         value={{
-          roles: ['mock'],
-          account: {
-            homeAccountId: 'mock-home-account-id',
-            environment: 'mock',
-            tenantId: 'mock-tenant-id',
-            username: 'MockUser@euquinor.com',
-            localAccountId: 'mock-local-account-id',
-            name: 'Mock mocksnes',
-          },
-          photo,
+          roles: ['admin'],
+          account: MOCK_USER,
+          photo: mockPhoto,
           logout: () => console.log('Logged out the user!'),
         }}
       >

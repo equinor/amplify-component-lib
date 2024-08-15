@@ -116,7 +116,7 @@ test('White readonly chip has expected background', () => {
 
   render(<Chip variant="white">{someText}</Chip>);
 
-  const chip = screen.getByTestId('read-only-chip');
+  const chip = screen.getByText(someText).parentElement!.parentElement!;
 
   expect(chip).toHaveStyleRule(
     'background-color',

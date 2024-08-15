@@ -6,7 +6,14 @@ import { spacingTokens } from 'src/atoms/style/spacingTokens';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider';
 import { Preview, StoryFn } from '@storybook/react';
 
+
+import { initialize, mswLoader } from 'msw-storybook-addon';
+import { handlers } from 'src/tests/mockHandlers';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from 'src';
+
 const { colors } = tokens;
+initialize({}, [...handlers])
 
 const globalTypes = {
   dataThemes: {
@@ -21,6 +28,7 @@ const globalTypes = {
 
 const decorators = [
   (Story: StoryFn) => {
+  const queryClient = new QueryClient();
     // Apply styles using the darkTokens variable
     const darkStyleElement = document.createElement('style');
     darkStyleElement.innerHTML = darkTokens;
@@ -31,12 +39,14 @@ const decorators = [
     document.head.appendChild(spacingStyleElement);
 
     return (
-      <>
-        <Template.GlobalStyles />
-        <SnackbarProvider>
-          <Story />
-        </SnackbarProvider>
-      </>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Template.GlobalStyles />
+          <SnackbarProvider>
+            <Story />
+          </SnackbarProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     );
   },
 ];
@@ -60,7 +70,6 @@ const parameters = {
   },
   options: {
     storySort: {
-      // Pre-emptively added 'Atoms', 'Molecules' and 'Organisms'
       order: ['Atoms', 'Molecules', 'Organisms', 'Other', 'Deprecated'],
     },
   },
@@ -71,6 +80,9 @@ const preview: Preview = {
   globalTypes,
   decorators,
   parameters,
+  loaders: [
+    mswLoader,
+  ]
 };
 
 export default preview;
