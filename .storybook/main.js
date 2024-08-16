@@ -26,7 +26,7 @@ const config = {
 
   docs: {},
 
-  staticDirs: ['../static'],
+  staticDirs: ['../public'],
 
   async viteFinal(config) {
     return {
