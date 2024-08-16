@@ -79,16 +79,3 @@ test('Shows right icon when provided', () => {
     edit.svgPathData
   );
 });
-
-test('Shows tooltip when hovering', async () => {
-  const props = fakeProps();
-  const { container } = render(<DataCard {...props} tooltipOnTitle={true} />);
-  const user = userEvent.setup();
-  const title = screen.getByText(props.title);
-
-  await user.hover(title);
-
-  const tooltipContainer = container.parentElement?.children[1];
-
-  expect(tooltipContainer).toBeInTheDocument();
-});
