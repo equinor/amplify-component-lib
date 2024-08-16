@@ -10,7 +10,6 @@ WORKDIR /app
 RUN npm ci --ignore-scripts
 COPY src src
 COPY .storybook .storybook
-COPY static static
 COPY public public
 COPY .eslintrc.cjs .eslintrc.cjs
 COPY vite.config.ts vite.config.ts

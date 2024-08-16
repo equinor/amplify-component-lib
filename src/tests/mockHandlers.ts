@@ -8,7 +8,7 @@ import { faker } from '@faker-js/faker';
 
 import { environment } from 'src/atoms/utils/auth_environment';
 
-import { delay, http, HttpResponse } from 'msw';
+import { bypass, delay, http, HttpResponse } from 'msw';
 
 export const fakeReleaseNotes: ReleaseNote[] = [
   {
@@ -151,5 +151,8 @@ export const handlers = [
     return HttpResponse.text(
       `${faker.internet.url()}?${faker.string.nanoid()}`
     );
+  }),
+  http.get('https://cdn.eds.equinor.com/*', ({ request }) => {
+    return fetch(bypass(request));
   }),
 ];
