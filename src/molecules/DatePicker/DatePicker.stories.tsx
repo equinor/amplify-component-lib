@@ -11,7 +11,7 @@ import { CalendarDate } from '@internationalized/date';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import page from './Datepicker.docs.mdx';
+import page from './DatePicker.docs.mdx';
 import { Stack } from 'src/storybook';
 
 const meta: Meta<typeof DatePicker> = {
