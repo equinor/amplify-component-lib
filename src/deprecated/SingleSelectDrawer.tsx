@@ -105,12 +105,12 @@ const SingleSelectDrawer = <T extends { id: string; label: string }>({
     if (toggle) {
       items.forEach((item) => {
         setSelectedItem(item);
-        onChange && onChange(item);
+        onChange?.(item);
       });
     } else {
       items.forEach(() => {
         setSelectedItem(undefined);
-        onChange && onChange(undefined);
+        onChange?.(undefined);
       });
     }
   };

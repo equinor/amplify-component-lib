@@ -88,13 +88,13 @@ export const createServiceNowUrl = (sysId: string, selfService?: boolean) => {
 };
 
 const getBrowserName = () => {
-  if (navigator.userAgent.indexOf(Browsers.EDGE_SHORT) !== -1) {
+  if (navigator.userAgent.includes(Browsers.EDGE_SHORT)) {
     return Browsers.EDGE;
-  } else if (navigator.userAgent.indexOf(Browsers.CHROME) !== -1) {
+  } else if (navigator.userAgent.includes(Browsers.CHROME)) {
     return Browsers.CHROME;
-  } else if (navigator.userAgent.indexOf(Browsers.SAFARI) !== -1) {
+  } else if (navigator.userAgent.includes(Browsers.SAFARI)) {
     return Browsers.SAFARI;
-  } else if (navigator.userAgent.indexOf(Browsers.FIREFOX) !== -1) {
+  } else if (navigator.userAgent.includes(Browsers.FIREFOX)) {
     return Browsers.FIREFOX;
   } else {
     return;

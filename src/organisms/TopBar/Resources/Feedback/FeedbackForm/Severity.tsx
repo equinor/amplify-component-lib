@@ -27,8 +27,6 @@ export const Severity: FC = () => {
       }
     : undefined;
 
-  console.log(value);
-
   return (
     <Container>
       <LockedInputTooltip show={serviceNowSuccess}>
@@ -41,9 +39,8 @@ export const Severity: FC = () => {
           value={value}
           placeholder="Select error impact"
           onSelect={(newValue) => {
-            if (!newValue) return;
-
-            updateFeedback('urgency', newValue.value);
+            // Since clearable = false newValue is never undefined
+            updateFeedback('urgency', newValue!.value);
           }}
         />
       </LockedInputTooltip>
