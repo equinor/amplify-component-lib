@@ -4,7 +4,7 @@ import { DateRangePicker, DateRangePickerProps } from '@equinor/eds-core-react';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import page from './Datepicker.docs.mdx';
+import page from './DateRangePicker.docs.mdx';
 import { Stack } from 'src/storybook';
 
 const PrimaryComponent = (props: DateRangePickerProps) => {
