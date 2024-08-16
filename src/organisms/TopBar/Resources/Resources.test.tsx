@@ -476,9 +476,8 @@ describe('Resources', () => {
               mockServiceHasError = false;
               const user = userEvent.setup();
 
-              const severityInput: HTMLInputElement = screen.getByTestId(
-                'feedback-severity-input'
-              );
+              const severityInput: HTMLInputElement =
+                screen.getByLabelText(/severity/i);
 
               await user.click(severityInput);
 
@@ -488,7 +487,9 @@ describe('Resources', () => {
 
               await user.click(severityOption);
 
-              expect(severityInput.value).toEqual(option);
+              expect(
+                screen.getByTestId('combobox-container')
+              ).toHaveTextContent(option);
 
               const submitButton = screen.getByText(/send/i);
 

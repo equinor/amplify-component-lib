@@ -31,11 +31,11 @@ const decorators = [
   const queryClient = new QueryClient();
     // Apply styles using the darkTokens variable
     const darkStyleElement = document.createElement('style');
-    darkStyleElement.innerHTML = darkTokens;
+    darkStyleElement.innerHTML = darkTokens as unknown as string;
     document.head.appendChild(darkStyleElement);
 
     const spacingStyleElement = document.createElement('style');
-    spacingStyleElement.innerHTML = spacingTokens;
+    spacingStyleElement.innerHTML = spacingTokens as unknown as string;
     document.head.appendChild(spacingStyleElement);
 
     return (
