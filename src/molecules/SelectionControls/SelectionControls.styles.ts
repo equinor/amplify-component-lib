@@ -12,9 +12,13 @@ interface WrapperProps {
 
 export const Wrapper = styled.span<WrapperProps>`
   > label {
-    padding: 0 ${spacings.large} 0 ${spacings.small};
+    padding: 0 ${spacings.medium} 0 ${spacings.x_small};
     border-radius: ${shape.button.borderRadius};
     transition: background ${animation.transitionMS};
+  }
+
+  &.switch > label {
+    padding: 0 ${spacings.medium} 0 0;
   }
 
   /* Radio / Checkbox hover state override */
