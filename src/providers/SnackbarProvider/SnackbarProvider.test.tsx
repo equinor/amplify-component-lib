@@ -2,8 +2,11 @@ import { act } from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import { renderHook, screen, userEvent, waitFor } from '../tests/test-utils';
-import { SnackbarProvider, useSnackbar } from './SnackbarProvider';
+import {
+  SnackbarProvider,
+  useSnackbar,
+} from 'src/providers/SnackbarProvider/SnackbarProvider';
+import { renderHook, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
 test("'useSnackbar' hook throws error if using outside of context", () => {
   // Hides console errors since this test explicitly tests for thrown errors

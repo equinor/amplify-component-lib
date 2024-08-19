@@ -1,6 +1,16 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import { Button, Snackbar, SnackbarProps } from '@equinor/eds-core-react';
+import {
+  Button,
+  Icon,
+  Snackbar,
+  SnackbarProps,
+  Typography,
+} from '@equinor/eds-core-react';
+import { close } from '@equinor/eds-icons';
+
+import { StyledSnackbar } from './SnackbarProvider.styles';
+import { snackbarIcon } from './SnackbarProvider.utils';
 
 interface ShowSnackbarSettings {
   customProps?: SnackbarProps;
@@ -11,8 +21,16 @@ interface ShowSnackbarSettings {
   };
 }
 
+export interface ShowSnackbar {
+  text: string;
+  variant: 'info' | 'warning' | 'error';
+}
+
 export interface State {
-  showSnackbar: (text: string, props?: ShowSnackbarSettings) => void;
+  showSnackbar: (
+    text: string | ShowSnackbar,
+    props?: ShowSnackbarSettings
+  ) => void;
   setActionDisabledState: (disabled: boolean) => void;
   hideSnackbar: () => void;
 }
@@ -35,16 +53,22 @@ export type SnackbarProviderProps = {
 
 export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
   const [open, setOpen] = useState(false);
-  const [snackbarText, setSnackbarText] = useState('');
+  const [showingSnackbar, setShowingSnackbar] = useState<
+    ShowSnackbar | undefined
+  >(undefined);
   const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
   const [snackbarAction, setSnackbarAction] =
     useState<ShowSnackbarSettings['action']>();
 
   const showSnackbar = (
-    text: string,
+    showSnackbar: string | ShowSnackbar,
     snackbarSettings?: ShowSnackbarSettings
   ) => {
-    setSnackbarText(text);
+    if (typeof showSnackbar === 'string') {
+      setShowingSnackbar({ text: showSnackbar, variant: 'info' });
+    } else {
+      setShowingSnackbar(showSnackbar);
+    }
     setSnackbarProps(snackbarSettings?.customProps ?? props);
     setSnackbarAction(snackbarSettings?.action ?? undefined);
     setOpen(true);
@@ -63,23 +87,29 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
 
   const hideSnackbar = () => setOpen(false);
 
+  const handleOnClose = () => {
+    setOpen(false);
+    if (snackbarProps.onClose) {
+      snackbarProps.onClose();
+    }
+  };
+
   return (
     <SnackbarContext.Provider
       value={{ showSnackbar, setActionDisabledState, hideSnackbar }}
     >
       {props.children}
-      <Snackbar
+      <StyledSnackbar
+        $variant={showingSnackbar?.variant}
         open={open}
-        onClose={() => {
-          setOpen(false);
-          if (snackbarProps.onClose) {
-            snackbarProps.onClose();
-          }
-        }}
+        onClose={handleOnClose}
         autoHideDuration={snackbarProps.autoHideDuration}
         placement={snackbarProps.placement}
       >
-        {snackbarText}
+        {showingSnackbar && (
+          <Icon data={snackbarIcon(showingSnackbar.variant)} />
+        )}
+        <Typography variant="body_short">{showingSnackbar?.text}</Typography>
         {snackbarAction && (
           <Snackbar.Action>
             <Button
@@ -91,7 +121,10 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
             </Button>
           </Snackbar.Action>
         )}
-      </Snackbar>
+        <Button variant="ghost_icon" onClick={handleOnClose}>
+          <Icon data={close} />
+        </Button>
+      </StyledSnackbar>
     </SnackbarContext.Provider>
   );
 };

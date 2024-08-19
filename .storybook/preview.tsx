@@ -3,7 +3,7 @@ import { Template } from 'src/organisms/Template/Template';
 
 import { darkTokens } from 'src/atoms/style/darkTokens';
 import { spacingTokens } from 'src/atoms/style/spacingTokens';
-import { SnackbarProvider } from 'src/providers/SnackbarProvider';
+import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { Preview, StoryFn } from '@storybook/react';
 
 
@@ -73,7 +73,7 @@ const parameters = {
   },
   options: {
     storySort: {
-      order: ['Atoms', 'Molecules', 'Organisms', 'Other', 'Deprecated'],
+      order: ['Atoms', 'Molecules', 'Organisms', 'Providers', 'Other', 'Deprecated'],
     },
   },
 };
