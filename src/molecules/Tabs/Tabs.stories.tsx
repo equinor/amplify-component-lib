@@ -410,16 +410,16 @@ export const Overflow: StoryFn<TabsProps> = () => {
     if (debounceScroll.current) clearTimeout(debounceScroll.current);
     debounceScroll.current = setTimeout(() => {
       if (!list.current) return;
-      list.current.scrollLeft === 0
-        ? setPrevDisabled(true)
-        : setPrevDisabled(false);
+      if (list.current.scrollLeft === 0) setPrevDisabled(true);
+      else setPrevDisabled(false);
 
       const atEndIsh =
         Math.abs(
           containerWidth + Math.round(list.current.scrollLeft) - totalWidth
         ) <= 5;
 
-      atEndIsh ? setNextDisabled(true) : setNextDisabled(false);
+      if (atEndIsh) setNextDisabled(true);
+      else setNextDisabled(false);
     }, 20);
   }, [containerWidth, totalWidth]);
 

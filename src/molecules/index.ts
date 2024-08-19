@@ -86,8 +86,11 @@ export type { SwitchProps } from './SelectionControls/Switch/Switch';
 
 // EDS Re-export
 export {
+  Accordion,
   Breadcrumbs,
   Button,
+  DatePicker,
+  DateRangePicker,
   Divider,
   Dialog,
   Menu,
@@ -100,9 +103,17 @@ export {
   LinearProgress,
 } from '@equinor/eds-core-react';
 export type {
+  AccordionProps,
+  AccordionHeaderProps,
+  AccordionHeaderActionsProps,
+  AccordionItemProps,
+  AccordionPanelProps,
+  AccordionHeaderTitleProps,
   BreadcrumbsProps,
   BreadcrumbProps,
   ButtonProps,
+  DatePickerProps,
+  DateRangePickerProps,
   DialogProps,
   DividerProps,
   MenuProps,

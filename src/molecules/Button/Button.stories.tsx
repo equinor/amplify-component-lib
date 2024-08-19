@@ -69,7 +69,7 @@ export const Accessibility: StoryFn<ButtonProps> = () => {
         <Button
           aria-disabled={!canSubmit}
           onClick={() => {
-            canSubmit && setOpen(true);
+            if (canSubmit) setOpen(true);
           }}
         >
           Submit

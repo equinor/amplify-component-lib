@@ -1,47 +1,48 @@
 import { FC } from 'react';
 
-import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-
+import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import { UrgencyOption } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
 import { LockedInputTooltip } from 'src/organisms/TopBar/Resources/Feedback/FeedbackForm/LockedInputTooltip';
 import { useFeedbackContext } from 'src/organisms/TopBar/Resources/Feedback/hooks/useFeedbackContext';
 
 import styled from 'styled-components';
-const { colors } = tokens;
 
 const Container = styled.div`
   grid-column: 1/2;
 `;
 
-const AutocompleteWrapper = styled.div`
-  * {
-    color: ${colors.text.static_icons__default.rgba};
-  }
-`;
+const ITEMS = Object.values(UrgencyOption).map((option) => ({
+  value: option,
+  label: option,
+}));
 
 export const Severity: FC = () => {
   const { serviceNowSuccess, feedbackContent, updateFeedback } =
     useFeedbackContext();
+
+  const value = feedbackContent.urgency
+    ? {
+        value: feedbackContent.urgency as UrgencyOption,
+        label: feedbackContent.urgency as UrgencyOption,
+      }
+    : undefined;
+
   return (
     <Container>
       <LockedInputTooltip show={serviceNowSuccess}>
-        <AutocompleteWrapper>
-          <Autocomplete
-            options={Object.values(UrgencyOption)}
-            id="feedback-severity"
-            data-testid="feedback-severity-input"
-            label="Severity"
-            meta="optional"
-            disabled={serviceNowSuccess}
-            selectedOptions={[feedbackContent.urgency as UrgencyOption]}
-            placeholder="Select error impact"
-            onOptionsChange={(e: AutocompleteChanges<UrgencyOption>) =>
-              updateFeedback('urgency', e.selectedItems[0])
-            }
-            autoWidth
-          />
-        </AutocompleteWrapper>
+        <SingleSelect
+          items={ITEMS}
+          label="Severity"
+          meta="optional"
+          clearable={false}
+          disabled={serviceNowSuccess}
+          value={value}
+          placeholder="Select error impact"
+          onSelect={(newValue) => {
+            // Since clearable = false newValue is never undefined
+            updateFeedback('urgency', newValue!.value);
+          }}
+        />
       </LockedInputTooltip>
     </Container>
   );
