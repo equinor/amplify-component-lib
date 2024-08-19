@@ -15,7 +15,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   (props, ref) => {
     const { outlined, ...otherProps } = props;
     return (
-      <Wrapper $outlined={outlined || false}>
+      <Wrapper $outlined={outlined || false} className="switch">
         <Base ref={ref} {...otherProps} />
       </Wrapper>
     );
