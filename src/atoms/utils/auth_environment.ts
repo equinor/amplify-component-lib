@@ -86,6 +86,13 @@ const getIsMock = (isMock: string | undefined): boolean => {
   return isMock === 'true';
 };
 
+const getMockRoles = (mockedRoles: string | undefined): string[] => {
+  if (mockedRoles === undefined) {
+    return ['admin'];
+  }
+  return JSON.parse(mockedRoles) as string[];
+};
+
 const getAllowedParentDomains = (
   parentDomains: string | undefined
 ): string[] => {
@@ -251,6 +258,7 @@ export const environment = {
   getEnvironmentName,
   getIsMock,
   getMockUserPhoto,
+  getMockRoles,
   getServiceNowConfigurationItem,
   PORTAL_URL_WITHOUT_LOCALHOST,
 };
