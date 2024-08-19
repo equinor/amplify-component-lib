@@ -15,7 +15,7 @@ import { AuthProviderInner } from './AuthProviderInner';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
 
 const { msalApp } = auth;
-const { getIsMock, getMockUserPhoto } = environment;
+const { getIsMock, getMockUserPhoto, getMockRoles } = environment;
 
 export type AuthState = 'loading' | 'authorized' | 'unauthorized';
 
@@ -70,11 +70,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({
     () => getMockUserPhoto(import.meta.env.VITE_MOCK_USER_PHOTO),
     []
   );
+  const mockRoles = useMemo(
+    () => getMockRoles(import.meta.env.VITE_MOCK_ROLES),
+    []
+  );
+
   if (isMock) {
     return (
       <AuthContext.Provider
         value={{
-          roles: ['admin'],
+          roles: mockRoles,
           account: MOCK_USER,
           photo: mockPhoto,
           logout: () => console.log('Logged out the user!'),
