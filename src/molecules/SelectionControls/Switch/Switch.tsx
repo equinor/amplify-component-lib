@@ -12,11 +12,14 @@ export interface SwitchProps extends EDSSwitchProps {
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
-  (props, ref) => (
-    <Wrapper $outlined={props.outlined || false}>
-      <Base ref={ref} {...props} />
-    </Wrapper>
-  )
+  (props, ref) => {
+    const { outlined, ...otherProps } = props;
+    return (
+      <Wrapper $outlined={outlined || false}>
+        <Base ref={ref} {...otherProps} />
+      </Wrapper>
+    );
+  }
 );
 
 Switch.displayName = 'Switch';

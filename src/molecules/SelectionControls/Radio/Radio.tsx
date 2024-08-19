@@ -12,10 +12,14 @@ export interface RadioProps extends EDSRadioProps {
   outlined?: boolean;
 }
 
-export const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => (
-  <Wrapper $outlined={props.outlined || false}>
-    <Base ref={ref} {...props} />
-  </Wrapper>
-));
+export const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
+  const { outlined, ...otherProps } = props;
+
+  return (
+    <Wrapper $outlined={outlined || false}>
+      <Base ref={ref} {...otherProps} />
+    </Wrapper>
+  );
+});
 
 Radio.displayName = 'Radio';

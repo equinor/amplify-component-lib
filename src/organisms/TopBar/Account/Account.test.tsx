@@ -4,7 +4,11 @@ import { waitFor } from '@testing-library/react';
 
 import { Account } from './Account';
 import { MOCK_USER } from 'src/providers/AuthProvider/AuthProvider';
+import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
+import { server } from 'src/tests/setupTests';
 import { renderWithProviders, screen, userEvent } from 'src/tests/test-utils';
+
+import { delay, http, HttpResponse } from 'msw';
 
 test('Renders correctly without avatar', async () => {
   const user = userEvent.setup();
@@ -114,124 +118,164 @@ test('Rendering custom button works as expected', async () => {
   expect(screen.queryByText(MOCK_USER.username)).not.toBeInTheDocument();
 });
 
-test('Can open, start and end impersonation with existing impersonation user', async () => {
-  renderWithProviders(<Account />);
-  const user = userEvent.setup();
-  const button = screen.getByRole('button');
+describe(
+  'Impersonate module',
+  () => {
+    test(
+      'Can open, start and end impersonation with existing impersonation user',
+      async () => {
+        renderWithProviders(<Account />);
+        const user = userEvent.setup();
+        const button = screen.getByRole('button');
 
-  await user.click(button);
+        await user.click(button);
 
-  await waitFor(() =>
-    expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
-  );
+        await waitFor(() =>
+          expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
+        );
 
-  await user.click(screen.getByText(/Impersonate/i));
+        await user.click(screen.getByText(/Impersonate/i));
 
-  const availableImpersonationUsers =
-    screen.getAllByTestId('impersonation-user');
+        const availableImpersonationUsers =
+          screen.getAllByTestId('impersonation-user');
 
-  for (const user of availableImpersonationUsers) {
-    expect(user).toBeInTheDocument();
-  }
+        for (const user of availableImpersonationUsers) {
+          expect(user).toBeInTheDocument();
+        }
 
-  const index = faker.number.int({
-    min: 0,
-    max: availableImpersonationUsers.length - 1,
-  });
+        const index = faker.number.int({
+          min: 0,
+          max: availableImpersonationUsers.length - 1,
+        });
 
-  let selectUser = availableImpersonationUsers[index];
+        let selectUser = availableImpersonationUsers[index];
 
-  let amountOfRoles = within(selectUser).getAllByTestId('role').length;
+        let amountOfRoles = within(selectUser).getAllByTestId('role').length;
 
-  while (amountOfRoles === 1) {
-    selectUser =
-      availableImpersonationUsers[
-        (index + 1) % availableImpersonationUsers.length
-      ];
-    amountOfRoles = within(selectUser).getAllByTestId('role').length;
-  }
+        while (amountOfRoles === 1) {
+          selectUser =
+            availableImpersonationUsers[
+              (index + 1) % availableImpersonationUsers.length
+            ];
+          amountOfRoles = within(selectUser).getAllByTestId('role').length;
+        }
 
-  const name = within(selectUser).getByTestId('name').innerHTML;
+        const name = within(selectUser).getByTestId('name').innerHTML;
 
-  const impersonateButton = screen.getByRole('button', {
-    name: 'Impersonate',
-  });
+        const impersonateButton = screen.getByRole('button', {
+          name: 'Impersonate',
+        });
 
-  // Haven't selected a user yet so the button is expected to be disabled
-  expect(impersonateButton).toBeDisabled();
+        // Haven't selected a user yet so the button is expected to be disabled
+        expect(impersonateButton).toBeDisabled();
 
-  await user.click(selectUser);
+        await user.click(selectUser);
 
-  expect(impersonateButton).not.toBeDisabled();
+        expect(impersonateButton).not.toBeDisabled();
 
-  await user.click(impersonateButton);
+        await user.click(impersonateButton);
 
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+        await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-  // Chip with '+1' for example
-  expect(screen.getByText(`+${amountOfRoles - 1}`)).toBeInTheDocument();
+        // Chip with '+1' for example
+        expect(screen.getByText(`+${amountOfRoles - 1}`)).toBeInTheDocument();
 
-  await user.click(button);
+        await user.click(button);
 
-  expect(screen.getByText(name)).toBeInTheDocument();
-  expect(screen.getByText('Impersonating')).toBeInTheDocument();
+        expect(screen.getByText(name)).toBeInTheDocument();
+        expect(screen.getByText('Impersonating')).toBeInTheDocument();
 
-  await user.click(
-    screen.getByRole('button', {
-      name: `${MOCK_USER.name.split(' ').at(0)} ${MOCK_USER.username}`,
-    })
-  );
+        await user.click(
+          screen.getByRole('button', {
+            name: `${MOCK_USER.name.split(' ').at(0)} ${MOCK_USER.username}`,
+          })
+        );
 
-  expect(screen.getByRole('button', { name: 'Impersonate' })).toBeDisabled();
+        expect(
+          screen.getByRole('button', { name: 'Impersonate' })
+        ).toBeDisabled();
 
-  // Close Account menu
-  await user.click(screen.getByRole('button', { name: 'Cancel' }));
+        // Close Account menu
+        await user.click(screen.getByRole('button', { name: 'Cancel' }));
 
-  // Re-open menu
-  await user.click(button);
+        // Re-open menu
+        await user.click(button);
 
-  const endButton = screen.getByRole('button', {
-    name: /end impersonation/i,
-  });
+        const endButton = screen.getByRole('button', {
+          name: /end impersonation/i,
+        });
 
-  expect(endButton).toBeInTheDocument();
+        expect(endButton).toBeInTheDocument();
 
-  await user.click(endButton);
+        await user.click(endButton);
 
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+        await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-  await user.click(button);
+        await user.click(button);
 
-  expect(screen.queryByText('Impersonating')).not.toBeInTheDocument();
-});
+        expect(screen.queryByText('Impersonating')).not.toBeInTheDocument();
+      },
+      { timeout: 8000 }
+    );
 
-test('ImpersonateMenu onClose works as expected', async () => {
-  renderWithProviders(
-    <>
-      <Account />
+    test('ImpersonateMenu onClose works as expected', async () => {
+      renderWithProviders(
+        <>
+          <Account />
 
-      <p>outside</p>
-    </>
-  );
-  const user = userEvent.setup();
-  const button = screen.getByRole('button');
+          <p>outside</p>
+        </>
+      );
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
 
-  await user.click(button);
+      await user.click(button);
 
-  await waitFor(() =>
-    expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
-  );
+      await waitFor(() =>
+        expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
+      );
 
-  await user.click(screen.getByText(/Impersonate/i));
+      await user.click(screen.getByText(/Impersonate/i));
 
-  const availableImpersonationUsers =
-    screen.getAllByTestId('impersonation-user');
+      const availableImpersonationUsers =
+        screen.getAllByTestId('impersonation-user');
 
-  for (const user of availableImpersonationUsers) {
-    expect(user).toBeInTheDocument();
-  }
+      for (const user of availableImpersonationUsers) {
+        expect(user).toBeInTheDocument();
+      }
 
-  await user.click(screen.getByText('outside'));
+      await user.click(screen.getByText('outside'));
 
-  expect(screen.queryByTestId('impersonation-user')).not.toBeInTheDocument();
-});
+      expect(
+        screen.queryByTestId('impersonation-user')
+      ).not.toBeInTheDocument();
+    });
+
+    describe('Active impersonation', () => {
+      beforeEach(() => {
+        server.use(
+          http.get(
+            '*/api/v1/ImpersonateUser/ActiveUserByUsername',
+            async () => {
+              await delay('real');
+              return HttpResponse.json(fakeImpersonateUsers[0]);
+            },
+            { once: true }
+          )
+        );
+      });
+
+      test('Active impersonation is set as selected', async () => {
+        renderWithProviders(<Account />);
+        const user = userEvent.setup();
+        const button = screen.getByRole('button');
+
+        await user.click(button);
+
+        const text = await screen.findByText('Impersonating');
+        expect(text).toBeInTheDocument();
+      });
+    });
+  },
+  { concurrent: false, sequential: true }
+);

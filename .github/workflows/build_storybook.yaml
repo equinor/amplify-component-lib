@@ -19,3 +19,15 @@ jobs:
 
       - name: Build
         run: npm run build-storybook
+
+  build-storybook-with-docker:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [21.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the docker image
+        run: docker build . --file Dockerfile
