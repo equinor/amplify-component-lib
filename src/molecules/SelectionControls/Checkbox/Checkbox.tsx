@@ -13,11 +13,14 @@ export interface CheckboxProps extends EDSCheckboxProps {
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  (props, ref) => (
-    <Wrapper $outlined={props.outlined || false}>
-      <Base ref={ref} {...props} />
-    </Wrapper>
-  )
+  (props, ref) => {
+    const { outlined, ...otherProps } = props;
+    return (
+      <Wrapper $outlined={outlined || false}>
+        <Base ref={ref} {...otherProps} />
+      </Wrapper>
+    );
+  }
 );
 
 Checkbox.displayName = 'Checkbox';
