@@ -46,7 +46,7 @@ export const StyledSnackbar = styled(Snackbar)<StyledSnackbarProps>`
   padding: ${spacings.small} ${spacings.small} ${spacings.small}
     ${spacings.medium};
   min-height: unset;
-  &:has(> div > button) {
+  &:has(div > button) {
     grid-template-columns: auto 1fr auto auto;
   }
   > div > button:hover,
