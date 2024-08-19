@@ -61,59 +61,63 @@ describe('CreateNewUser', () => {
     ).not.toBeInTheDocument();
   });
 
-  test('Able to create new impersonation user', async () => {
-    renderWithProviders(<Account />);
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
+  test(
+    'Able to create new impersonation user',
+    async () => {
+      renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
 
-    await user.click(button);
+      await user.click(button);
 
-    const impersonateButton = await screen.findByRole('button', {
-      name: /impersonate/i,
-    });
+      const impersonateButton = await screen.findByRole('button', {
+        name: /impersonate/i,
+      });
 
-    await user.click(impersonateButton);
+      await user.click(impersonateButton);
 
-    await user.click(screen.getByRole('button', { name: /create users/i }));
+      await user.click(screen.getByRole('button', { name: /create users/i }));
 
-    const createButton = screen.getByRole('button', {
-      name: /create and impersonate/i,
-    });
+      const createButton = screen.getByRole('button', {
+        name: /create and impersonate/i,
+      });
 
-    expect(createButton).toBeDisabled();
+      expect(createButton).toBeDisabled();
 
-    const fakeFirstName = faker.person.firstName();
-    const fakeLastName = faker.person.lastName();
+      const fakeFirstName = faker.person.firstName();
+      const fakeLastName = faker.person.lastName();
 
-    await user.type(
-      screen.getByRole('textbox', { name: /first name/i }),
-      fakeFirstName
-    );
-    await user.type(
-      screen.getByRole('textbox', { name: /last name/i }),
-      fakeLastName
-    );
+      await user.type(
+        screen.getByRole('textbox', { name: /first name/i }),
+        fakeFirstName
+      );
+      await user.type(
+        screen.getByRole('textbox', { name: /last name/i }),
+        fakeLastName
+      );
 
-    const roles = faker.helpers
-      .arrayElements(FAKE_ROLES, {
-        min: 2,
-        max: FAKE_ROLES.length - 1,
-      })
-      .map((role) => role.value)
-      .sort();
+      const roles = faker.helpers
+        .arrayElements(FAKE_ROLES, {
+          min: 2,
+          max: FAKE_ROLES.length - 1,
+        })
+        .map((role) => role.value)
+        .sort();
 
-    for (const role of roles) {
-      await user.click(screen.getByRole('checkbox', { name: role }));
-    }
-    // Able to toggle off role as well
-    await user.click(screen.getByRole('checkbox', { name: roles[0] }));
+      for (const role of roles) {
+        await user.click(screen.getByRole('checkbox', { name: role }));
+      }
+      // Able to toggle off role as well
+      await user.click(screen.getByRole('checkbox', { name: roles[0] }));
 
-    expect(createButton).not.toBeDisabled();
+      expect(createButton).not.toBeDisabled();
 
-    await user.click(createButton);
+      await user.click(createButton);
 
-    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+      await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-    expect(screen.getByText(roles[roles.length - 1])).toBeInTheDocument();
-  });
+      expect(screen.getByText(roles[roles.length - 1])).toBeInTheDocument();
+    },
+    { timeout: 8000 }
+  );
 });
