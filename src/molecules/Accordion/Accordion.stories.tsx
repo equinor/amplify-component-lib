@@ -244,33 +244,3 @@ export const Controlled: StoryFn<AccordionProps> = () => {
     </>
   );
 };
-
-/* export const Compact: Story<AccordionProps> = () => {
-  const [density, setDensity] = useState<Density>('comfortable')
-
-  useEffect(() => {
-    // Simulate user change
-    setDensity('compact')
-  }, [density])
-
-  return (
-    <>
-      <EdsProvider density={density}>
-        <Accordion>
-          <Accordion.Item isExpanded>
-            <Accordion.Header>Header 1</Accordion.Header>
-            <Accordion.Panel>Content 1</Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Header 2</Accordion.Header>
-            <Accordion.Panel>Content 2</Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Header 3</Accordion.Header>
-            <Accordion.Panel>Content 3</Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
-      </EdsProvider>
-    </>
-  )
-} */
