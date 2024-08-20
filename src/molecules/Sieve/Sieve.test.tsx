@@ -20,8 +20,8 @@ function Wrappers({ children }: { children: ReactNode }) {
 
 function fakeOption(num: number): SieveOption {
   return {
-    label: faker.animal.dog() + num,
-    value: faker.animal.dog() + num,
+    label: faker.string.uuid() + num,
+    value: faker.string.uuid() + num,
   };
 }
 
