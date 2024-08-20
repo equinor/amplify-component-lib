@@ -24,6 +24,7 @@ export interface AuthContextType {
   photo: string | undefined;
   roles: string[] | undefined;
   logout: () => void;
+  authState: AuthState;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -54,12 +55,14 @@ interface AuthProviderProps {
   children: ReactNode;
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
+  withoutLoader?: boolean;
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({
   children,
   loadingComponent,
   unauthorizedComponent,
+  withoutLoader = false,
 }) => {
   const [account, setAccount] = useState<AccountInfo | undefined>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
@@ -83,6 +86,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
           account: MOCK_USER,
           photo: mockPhoto,
           logout: () => console.log('Logged out the user!'),
+          authState,
         }}
       >
         {children}
@@ -97,6 +101,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         account,
         photo,
         logout: () => msalApp.logoutRedirect(),
+        authState,
       }}
     >
       <MsalProvider instance={msalApp}>
@@ -109,6 +114,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
           setPhoto={setPhoto}
           authState={authState}
           setAuthState={setAuthState}
+          withoutLoader={withoutLoader}
         >
           {children}
         </AuthProviderInner>

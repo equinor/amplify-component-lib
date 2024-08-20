@@ -1,4 +1,5 @@
 import {
+  FeatureToggleDto,
   ImpersonateUser,
   ReleaseNote,
   ReleaseNoteType,
@@ -88,6 +89,14 @@ export const fakeImpersonateUsers: ImpersonateUser[] = [
 let activeImpersonateUser: ImpersonateUser | undefined = undefined;
 
 export const handlers = [
+  http.get('*/api/v1/FeatureToggle', async () => {
+    await delay('real');
+    const body: FeatureToggleDto = {
+      applicationName: 'orca',
+      features: [],
+    };
+    return;
+  }),
   http.get(
     '*/api/v1/AmplifyApplication/application/fake-id/appRoles',
     async () => {
