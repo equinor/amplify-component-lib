@@ -79,6 +79,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   );
 
   if (isMock) {
+    if (authState === 'loading') {
+      setTimeout(() => {
+        setAuthState('authorized');
+      }, 1000);
+    }
     return (
       <AuthContext.Provider
         value={{

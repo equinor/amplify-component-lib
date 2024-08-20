@@ -18,11 +18,14 @@ interface LoadingProviderProps {
  */
 export const LoadingProvider: FC<LoadingProviderProps> = ({ children }) => {
   const { authState } = useAuth();
-  const isFetchingFeatureToggleOrTutorial = useIsFetching({
-    predicate: (query) => {
-      return SAM_QUERIES.some((queryKey) => query.queryKey.includes(queryKey));
-    },
-  });
+  const isFetchingFeatureToggleOrTutorial =
+    useIsFetching({
+      predicate: (query) => {
+        return SAM_QUERIES.some((queryKey) =>
+          query.queryKey.includes(queryKey)
+        );
+      },
+    }) > 0;
   const [isLoading, setIsLoading] = useState(true);
 
   // This ensures that the initial loading of the app will only happen once

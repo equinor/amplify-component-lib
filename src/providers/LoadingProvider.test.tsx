@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { SAM_QUERIES } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -9,6 +10,15 @@ import { render, screen } from 'src/tests/test-utils';
 
 function Wrapper({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
+
+  queryClient.fetchQuery({
+    queryKey: SAM_QUERIES,
+    queryFn: async () => {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve([]), 1000);
+      });
+    },
+  });
 
   return (
     <AuthProvider withoutLoader>
@@ -29,7 +39,5 @@ test('LoadingProvider works as expected', async () => {
 
   expect(screen.getByTestId('app-icon-svg')).toBeInTheDocument();
 
-  expect(
-    await screen.findByText(fakeText, undefined, { timeout: 4000 })
-  ).toBeInTheDocument();
+  expect(await screen.findByText(fakeText, undefined)).toBeInTheDocument();
 });
