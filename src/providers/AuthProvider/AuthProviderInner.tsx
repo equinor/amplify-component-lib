@@ -44,6 +44,7 @@ export interface AuthProviderInnerProps {
   setRoles: (val: string[] | undefined) => void;
   authState: AuthState;
   setAuthState: (val: AuthState) => void;
+  withoutLoader: boolean;
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
 }
@@ -56,6 +57,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   setRoles,
   authState,
   setAuthState,
+  withoutLoader,
   loadingComponent,
   unauthorizedComponent,
 }) => {
@@ -204,11 +206,13 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     setRoles,
   ]);
 
-  if (authState === 'loading' || account === undefined)
-    return loadingComponent ?? <FullPageSpinner variant="application" />;
-
   if (authState === 'unauthorized')
     return unauthorizedComponent ?? <Unauthorized />;
 
-  return <>{children}</>;
+  if (withoutLoader) return children;
+
+  if (authState === 'loading' || account === undefined)
+    return loadingComponent ?? <FullPageSpinner variant="application" />;
+
+  return children;
 };

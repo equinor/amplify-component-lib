@@ -1,7 +1,9 @@
 import {
+  FeatureToggleDto,
   ImpersonateUser,
   ReleaseNote,
   ReleaseNoteType,
+  Tutorial,
 } from '@equinor/subsurface-app-management';
 import { GraphAppRole } from '@equinor/subsurface-app-management/dist/api/models/GraphAppRole';
 import { faker } from '@faker-js/faker';
@@ -88,6 +90,23 @@ export const fakeImpersonateUsers: ImpersonateUser[] = [
 let activeImpersonateUser: ImpersonateUser | undefined = undefined;
 
 export const handlers = [
+  http.get('*/api/v1/Tutorial/SASToken', async () => {
+    await delay('real');
+    return HttpResponse.text(faker.internet.mac());
+  }),
+  http.get('*/api/v1/Tutorial/{applicationName}', async () => {
+    await delay('real');
+    const body: Tutorial[] = [];
+    return HttpResponse.json(body);
+  }),
+  http.get('*/api/v1/FeatureToggle', async () => {
+    await delay('real');
+    const body: FeatureToggleDto = {
+      applicationName: 'orca',
+      features: [],
+    };
+    return HttpResponse.json(body);
+  }),
   http.get(
     '*/api/v1/AmplifyApplication/application/fake-id/appRoles',
     async () => {
