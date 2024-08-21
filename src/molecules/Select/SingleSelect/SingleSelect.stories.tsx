@@ -50,6 +50,15 @@ const FAKE_GROUPS = new Array(faker.number.int({ min: 3, max: 6 }))
     })),
   }));
 
+const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
+  faker.number.int({ min: 3, max: 6 })
+)
+  .fill(0)
+  .map(() => ({
+    label: `${faker.airline.airplane().name} ${faker.airline.aircraftType()} ${faker.airline.airport().name}`,
+    value: faker.string.uuid(),
+  }));
+
 export const BasicSingleSelect: StoryFn = (args) => {
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
@@ -62,6 +71,24 @@ export const BasicSingleSelect: StoryFn = (args) => {
     <SingleSelect
       {...args}
       items={FAKE_ITEMS}
+      value={value}
+      onSelect={handleOnSelect}
+    />
+  );
+};
+
+export const SingleSelectWithReallyLongName: StoryFn = (args) => {
+  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
+
+  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
+    actions('onSelect').onSelect(selectedValue);
+    setValue(selectedValue);
+  };
+
+  return (
+    <SingleSelect
+      {...args}
+      items={FAKE_ITEMS_WITH_REALLY_LONG_NAMES}
       value={value}
       onSelect={handleOnSelect}
     />
