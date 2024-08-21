@@ -5,7 +5,7 @@ import {
   ACTIVE_USERIMPERSONATION,
   SET_ACTIVE_IMPERSONATION,
 } from '../Impersonate.constants';
-import { useSnackbar } from 'src/providers/SnackbarProvider';
+import { useSnackbar } from 'src/providers/SnackbarProvider/SnackbarProvider';
 
 export function useStartImpersonation() {
   const queryClient = useQueryClient();

@@ -1,16 +1,25 @@
 import { Button } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { SnackbarProvider, useSnackbar } from 'src/providers/SnackbarProvider';
+import {
+  ShowSnackbar,
+  SnackbarProvider,
+  useSnackbar,
+} from 'src/providers/SnackbarProvider/SnackbarProvider';
 
 import styled from 'styled-components';
 
 const meta: Meta = {
   title: 'Providers/SnackBarProvider',
   argTypes: {
+    showSnackBarVariant: {
+      control: 'radio',
+      options: ['info', 'warning', 'error'],
+    },
     showSnackBarText: { control: 'text' },
   },
   args: {
+    showSnackBarVariant: 'info',
     showSnackBarText: 'Some text!',
   },
 };
@@ -24,20 +33,32 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-export const Primary: StoryFn<{ showSnackBarText: string }> = (args) => {
+export const Primary: StoryFn<{
+  showSnackBarVariant: ShowSnackbar['variant'];
+  showSnackBarText: string;
+}> = (args) => {
   const { showSnackbar } = useSnackbar();
 
   const handleOnShowSnackBar = () => {
-    showSnackbar(args.showSnackBarText);
+    showSnackbar({
+      text: args.showSnackBarText,
+      variant: args.showSnackBarVariant,
+    });
   };
 
   const handleOnShowSnackBarWithAction = () => {
-    showSnackbar(args.showSnackBarText, {
-      action: {
-        text: 'Undo',
-        handler: () => console.log('Undo action called!'),
+    showSnackbar(
+      {
+        text: args.showSnackBarText,
+        variant: args.showSnackBarVariant,
       },
-    });
+      {
+        action: {
+          text: 'Undo',
+          handler: () => console.log('Undo action called!'),
+        },
+      }
+    );
   };
 
   return (
