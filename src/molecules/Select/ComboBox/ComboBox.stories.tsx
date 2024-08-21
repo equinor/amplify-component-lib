@@ -16,6 +16,7 @@ const meta: Meta<typeof ComboBox> = {
   component: ComboBox,
   argTypes: {
     label: { control: 'text' },
+    helperText: { control: 'text' },
     selectableParent: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
@@ -27,6 +28,7 @@ const meta: Meta<typeof ComboBox> = {
   },
   args: {
     label: 'Label here',
+    helperText: 'helper text',
     selectableParent: true,
     sortValues: true,
     clearable: true,
