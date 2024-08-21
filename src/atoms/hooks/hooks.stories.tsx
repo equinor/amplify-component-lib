@@ -52,7 +52,8 @@ const hookList = [
 
 ...
 
-showSnackbar(text: string, customProps?: SnackbarProps)`,
+showSnackbar(text: string, customProps?: SnackbarProps)\`,
+showSnackbar(object: ShowSnackbar, customProps?: SnackbarProps)`,
   },
 ];
 

@@ -8,7 +8,6 @@ const config = {
     '@storybook/addon-designs',
     '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
-    'storybook-addon-react-docgen',
     './addons/GitHubSearchAddon/manager.js',
     '@storybook/addon-mdx-gfm'
   ],
