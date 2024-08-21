@@ -64,7 +64,12 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   }
 
   return (
-    <StyledMenu open anchorEl={anchorEl} onClose={handleOnClose}>
+    <StyledMenu
+      open
+      anchorEl={anchorEl}
+      onClose={handleOnClose}
+      placement="bottom-end"
+    >
       <Header>
         <Typography variant="h6">Impersonate</Typography>
         <Typography variant="caption">Select a user to impersonate</Typography>

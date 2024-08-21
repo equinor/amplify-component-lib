@@ -2,8 +2,13 @@ import { act } from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import { renderHook, screen, userEvent, waitFor } from '../tests/test-utils';
-import { SnackbarProvider, useSnackbar } from './SnackbarProvider';
+import {
+  ShowSnackbar,
+  SnackbarProvider,
+  useSnackbar,
+} from 'src/providers/SnackbarProvider/SnackbarProvider';
+import { snackbarIcon } from 'src/providers/SnackbarProvider/SnackbarProvider.utils';
+import { renderHook, screen, userEvent, waitFor } from 'src/tests/test-utils';
 
 test("'useSnackbar' hook throws error if using outside of context", () => {
   // Hides console errors since this test explicitly tests for thrown errors
@@ -22,6 +27,37 @@ test("'useSnackbar' showSnackbar function works as expected", () => {
 
   result.current.showSnackbar(snackBarText);
   expect(result.current.showSnackbar).toBeDefined();
+});
+
+describe('Works as expected with variants', () => {
+  const variants: ShowSnackbar['variant'][] = ['info', 'warning', 'error'];
+
+  for (const variant of variants) {
+    test(variant, async () => {
+      const { result } = renderHook(() => useSnackbar(), {
+        wrapper: SnackbarProvider,
+      });
+
+      const snackBarText = faker.animal.dog();
+
+      act(() => {
+        result.current.showSnackbar({ text: snackBarText, variant });
+      });
+
+      const text = await screen.findByText(snackBarText, undefined, {
+        timeout: 2000,
+      });
+
+      expect(text).toBeInTheDocument();
+
+      const variantIcon = screen.getAllByTestId('eds-icon-path')[0];
+
+      expect(variantIcon).toHaveAttribute(
+        'd',
+        snackbarIcon(variant).svgPathData
+      );
+    });
+  }
 });
 
 test("'useSnackbar' showSnackbar function works as expected with custom props", async () => {
@@ -78,11 +114,13 @@ test("'useSnackbar' setActionDisabledState function works as expected with actio
   const customActionHandler = vi.fn();
   const user = userEvent.setup();
 
-  result.current.showSnackbar(faker.animal.dog(), {
-    action: {
-      text: actionText,
-      handler: customActionHandler,
-    },
+  act(() => {
+    result.current.showSnackbar(faker.animal.dog(), {
+      action: {
+        text: actionText,
+        handler: customActionHandler,
+      },
+    });
   });
 
   const actionBtn = await waitFor(() => screen.getByText(actionText), {

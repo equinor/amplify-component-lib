@@ -10,7 +10,7 @@ import { useNotification } from 'src/organisms/TopBar/Notifications/Notification
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { useSideBar } from 'src/providers/SideBarProvider';
-import { useSnackbar } from 'src/providers/SnackbarProvider';
+import { useSnackbar } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
 import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
 
