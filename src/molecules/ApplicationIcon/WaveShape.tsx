@@ -6,13 +6,11 @@ import {
 } from './ApplicationIcon.constants';
 
 export interface WaveShapeWithNoiseProps {
-  index?: number;
   isAltWave?: boolean;
   hasLargeWaves?: boolean;
 }
 
 export const WaveShape: FC<WaveShapeWithNoiseProps> = ({
-  index,
   isAltWave,
   hasLargeWaves,
 }) => {
@@ -26,21 +24,13 @@ export const WaveShape: FC<WaveShapeWithNoiseProps> = ({
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <filter id="noiseFilter">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency={0.5}
-            numOctaves={3}
-            stitchTiles="stitch"
-          />
-        </filter>
-        <linearGradient id="gradient" x1="0" y1="0%" x2="0" y2="100%">
+        <linearGradient id="app-gradient" x1="0" y1="0%" x2="0" y2="100%">
           <stop offset="0%" stopColor="white" />
           <stop offset="100%" stopColor="black" />
         </linearGradient>
       </defs>
 
-      <g id={'wavePattern' + index} x="0" y="0" width="100%" height="100%">
+      <g x="0" y="0" width="100%" height="100%">
         {!isAltWave ? (
           <path
             d={
@@ -48,7 +38,7 @@ export const WaveShape: FC<WaveShapeWithNoiseProps> = ({
                 ? LARGE_WAVES_PATH_DATA[0]
                 : SMALL_WAVES_PATH_DATA[0]
             }
-            fill="url(#gradient)"
+            fill="url(#app-gradient)"
           />
         ) : (
           <path
@@ -57,7 +47,7 @@ export const WaveShape: FC<WaveShapeWithNoiseProps> = ({
                 ? LARGE_WAVES_PATH_DATA[1]
                 : SMALL_WAVES_PATH_DATA[1]
             }
-            fill="url(#gradient)"
+            fill="url(#app-gradient)"
           />
         )}
       </g>

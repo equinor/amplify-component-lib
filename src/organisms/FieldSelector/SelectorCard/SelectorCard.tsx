@@ -59,9 +59,7 @@ const GoToAccessItLink = styled.a`
   font-weight: 500;
   border-radius: ${shape.corners.borderRadius};
   text-decoration: none;
-  &:visited {
-    color: inherit;
-  }
+  color: ${colors.text.static_icons__default.rgba};
   &:focus-within {
     outline: ${colors.interactive.primary__resting.rgba} dashed 2px;
   }
