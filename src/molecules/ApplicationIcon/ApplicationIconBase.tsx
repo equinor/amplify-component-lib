@@ -67,11 +67,7 @@ export const ApplicationIconBase: FC<AppBaseProps> = ({
                 transitionDelay: `0ms`,
               }}
             >
-              <WaveShape
-                index={-1}
-                isAltWave={false}
-                hasLargeWaves={hasLargeWaves}
-              />
+              <WaveShape isAltWave={false} hasLargeWaves={hasLargeWaves} />
               <NoiseShape
                 index={-1}
                 isAltWave={false}
@@ -90,7 +86,6 @@ export const ApplicationIconBase: FC<AppBaseProps> = ({
                 }}
               >
                 <WaveShape
-                  index={index}
                   isAltWave={wave.altWave}
                   hasLargeWaves={wave.hasLargeWaves}
                 />
