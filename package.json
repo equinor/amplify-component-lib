@@ -160,7 +160,6 @@
     "rollup-plugin-import-css": "^3.5.1",
     "storybook": "^8.2.9",
     "storybook-addon-data-theme-switcher": "^0.4.2",
-    "storybook-addon-react-docgen": "^1.2.44",
     "storybook-addon-remix-react-router": "^3.0.0",
     "typescript": "^5.5.4",
     "uuid": "^10.0.0",
