@@ -81,6 +81,15 @@ const FAKE_ITEMS_WITH_CHILDREN = [
   })),
 ];
 
+const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
+  faker.number.int({ min: 3, max: 6 })
+)
+  .fill(0)
+  .map(() => ({
+    label: `${faker.airline.airplane().name} ${faker.airline.aircraftType()} ${faker.airline.airport().name}`,
+    value: faker.string.uuid(),
+  }));
+
 export const BasicComboBox: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
@@ -96,6 +105,27 @@ export const BasicComboBox: StoryFn = (args) => {
     <ComboBox
       {...args}
       items={FAKE_ITEMS}
+      values={values}
+      onSelect={handleOnSelect}
+    />
+  );
+};
+
+export const ComboBoxWithReallyLongName: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      items={FAKE_ITEMS_WITH_REALLY_LONG_NAMES}
       values={values}
       onSelect={handleOnSelect}
     />

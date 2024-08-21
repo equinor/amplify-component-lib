@@ -190,6 +190,7 @@ export const Select = <T extends SelectOptionRequired>(
           )}
           {clearable && selectedValues.length > 0 && !loading && (
             <ClearButton
+              id="clear"
               variant="ghost_icon"
               onClick={handleOnClear}
               data-testid="clearBtn"
@@ -213,7 +214,10 @@ export const Select = <T extends SelectOptionRequired>(
           anchorEl={anchorRef.current}
           onClose={handleOnClose}
           placement="bottom"
-          matchAnchorWidth
+          style={{
+            width: `${anchorRef.current?.clientWidth}px`,
+            maxWidth: `${anchorRef.current?.clientWidth}px`,
+          }}
         >
           {props.groups ? (
             <GroupedSelectMenu

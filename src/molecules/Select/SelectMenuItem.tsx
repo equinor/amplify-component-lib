@@ -187,7 +187,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               }
               data={parentIcon}
             />
-            {item.label}
+            <span>{item.label}</span>
           </StyledMenuItem>
         </MenuItemWrapper>
         {openParent &&
@@ -235,7 +235,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
             color={colors.interactive.primary__resting.rgba}
             data={isSelected ? checkbox : checkbox_outline}
           />
-          {item.label}
+          <span>{item.label}</span>
         </StyledMenuItem>
       </MenuItemWrapper>
     );
@@ -252,7 +252,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
         onClick={handleOnItemClick}
         onMouseEnter={handleOnMouseEnter}
       >
-        {item.label}
+        <span>{item.label}</span>
       </StyledMenuItem>
     </MenuItemWrapper>
   );
