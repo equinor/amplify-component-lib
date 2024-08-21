@@ -7,6 +7,7 @@ import { FullPageSpinner } from 'src/molecules';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 interface LoadingProviderProps {
+  customQueryKeys?: string[];
   children: ReactNode;
 }
 
@@ -14,13 +15,25 @@ interface LoadingProviderProps {
  *
  * @description Combines loading of tutorials/feature toggles + auth into one.
  * Expects AuthProvider to be wrapped around it with 'withoutLoader'-prop set to true
+ * @param customQueryKeys - Custom query keys the loading provider should listen for
  * @param children - ReactNode, typically the rest of your app
  */
-export const LoadingProvider: FC<LoadingProviderProps> = ({ children }) => {
+export const LoadingProvider: FC<LoadingProviderProps> = ({
+  customQueryKeys,
+  children,
+}) => {
   const { authState } = useAuth();
   const isFetchingFeatureToggleOrTutorial =
     useIsFetching({
       predicate: (query) => {
+        if (customQueryKeys) {
+          return (
+            SAM_QUERIES.some((queryKey) => query.queryKey.includes(queryKey)) ||
+            customQueryKeys.some((queryKey) =>
+              query.queryKey.includes(queryKey)
+            )
+          );
+        }
         return SAM_QUERIES.some((queryKey) =>
           query.queryKey.includes(queryKey)
         );
