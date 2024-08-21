@@ -4,5 +4,6 @@ export { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvide
 export { TableOfContentsProvider } from './TableOfContentsProvider';
 export { ReleaseNotesProvider } from './ReleaseNotesProvider';
 export { TutorialStepsProvider } from './TutorialStepsProvider';
+export { LoadingProvider } from './LoadingProvider';
 
 export type { TableOfContentsItemType } from './TableOfContentsProvider';

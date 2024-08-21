@@ -96,6 +96,12 @@ const Container = styled.div<ContainerProps>`
       color: ${colors.interactive.disabled__text.rgba};
     }
   }
+
+  &:has(button#clear) {
+    > section {
+      width: calc(100% - 24px);
+    }
+  }
 `;
 
 const Section = styled.section`
@@ -183,6 +189,11 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;
 
+  > div {
+    grid-auto-columns: auto;
+    justify-content: flex-start;
+  }
+
   &:hover {
     background: none;
   }
@@ -211,7 +222,11 @@ const PlaceholderText = styled(Typography)`
 `;
 
 const ValueText = styled(PlaceholderText)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${colors.text.static_icons__default.rgba};
+  max-width: 100%;
 `;
 
 const NoItemsFoundText = styled(Typography)`
@@ -220,7 +235,12 @@ const NoItemsFoundText = styled(Typography)`
 
 const StyledMenu = styled(EDSMenu)`
   max-height: 20rem;
-  overflow: auto;
+  max-width: inherit;
+  overflow-y: auto;
+  > div {
+    width: inherit;
+    max-width: inherit;
+  }
 `;
 
 const MenuItemWrapper = styled.div`
