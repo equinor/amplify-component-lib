@@ -40,10 +40,17 @@ export const Outlined: Story = {
     outlined: true,
   },
 };
+
 export const DisabledOutlined: Story = {
   args: {
     label: 'Toyota',
     outlined: true,
     disabled: true,
+  },
+};
+
+export const NoLabel: Story = {
+  args: {
+    label: '',
   },
 };
