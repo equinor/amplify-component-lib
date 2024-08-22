@@ -3,96 +3,19 @@ import { FC, ReactNode } from 'react';
 import {
   Button,
   ButtonProps,
-  Dialog as EDSDialog,
   DialogProps as EDSDialogProps,
   Icon,
   Typography,
 } from '@equinor/eds-core-react';
 import { close, IconData } from '@equinor/eds-icons';
 
+import {
+  DialogActions,
+  DialogContent,
+  DialogElement,
+  DialogTitle,
+} from './Dialog.styles';
 import { DialogAction } from './DialogAction';
-import { colors } from 'src/atoms/style/colors';
-import { spacings } from 'src/atoms/style/spacings';
-
-import styled, { css } from 'styled-components';
-
-interface StyledDialogProps {
-  $withBorders: boolean;
-}
-
-const DialogElement = styled(EDSDialog)`
-  grid-gap: 0;
-`;
-
-const DialogTitle = styled(EDSDialog.Title)<StyledDialogProps>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: calc(100% - (${spacings.medium} * 2));
-  padding: ${spacings.medium};
-  ${({ $withBorders }) => {
-    if ($withBorders) {
-      return css`
-        border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-      `;
-    }
-    return '';
-  }}
-  > section {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-interface DialogContentProps {
-  $withContentPadding: boolean;
-}
-
-const DialogContent = styled(EDSDialog.CustomContent)<DialogContentProps>`
-  min-height: unset;
-  ${({ $withContentPadding }) => {
-    if ($withContentPadding) {
-      return css`
-        padding: ${spacings.medium};
-      `;
-    }
-    return css`
-      padding: 0;
-    `;
-  }}
-`;
-
-const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
-  border-top: 1px solid ${colors.ui.background__medium.rgba};
-  display: grid;
-  grid-template-columns: auto auto auto;
-  padding-top: ${spacings.medium};
-  width: calc(100% - (${spacings.medium} * 2));
-  > section {
-    display: flex;
-    gap: ${spacings.small};
-  }
-  > section#dialog-actions-left {
-    grid-column: 1;
-  }
-  > section#dialog-actions-center {
-    grid-column: 2;
-    justify-content: center;
-  }
-  > section#dialog-actions-right {
-    grid-column: 3;
-    justify-content: flex-end;
-  }
-  ${({ $withBorders }) => {
-    if ($withBorders) {
-      return css`
-        border-top: 1px solid ${colors.ui.background__medium.rgba};
-      `;
-    }
-    return css`
-      border-top: none;
-    `;
-  }}
-`;
 
 /**
  * @param position - Right is default
@@ -129,7 +52,7 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
  * @param actions - Dialog act(and is disabled)ions, { position: "right" is default }
  * @param withContentPadding - Defaults to true
  * @param withBorders - Defaults to false
- * Also inherits props from EDS dialogs
+ * Also inherits props from EDS dialog
  */
 export const Dialog: FC<DialogProps> = ({
   title,

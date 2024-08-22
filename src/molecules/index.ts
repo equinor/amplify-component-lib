@@ -10,7 +10,7 @@ export type { BaseChipProps } from './Chip/Chip';
 export { ContentMenu } from './ContentMenu/ContentMenu';
 export type { ContentMenuProps } from './ContentMenu/ContentMenu';
 export { Dialog } from './Dialog/Dialog';
-export type { DialogProps } from './Dialog/Dialog';
+export type { DialogProps, DialogAction } from './Dialog/Dialog';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
 export type { EquinorLogoProps } from './EquinorLogo/EquinorLogo';
 export { FileProgress } from './FileProgress/FileProgress';
