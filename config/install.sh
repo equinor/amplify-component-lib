@@ -84,3 +84,6 @@ done
 
 printf -- "Downloading CODEOWNERS file...\n"
 curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS
+
+printf -- "Downloading .pre-commit-config.yaml file...\n"
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.pre-commit-config.yaml" > .pre-commit-config.yaml
