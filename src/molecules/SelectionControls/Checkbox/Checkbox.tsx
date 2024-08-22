@@ -8,7 +8,7 @@ import {
 import { Wrapper } from '../SelectionControls.styles';
 
 export interface CheckboxProps extends EDSCheckboxProps {
-  label: string;
+  label?: string;
   outlined?: boolean;
 }
 
