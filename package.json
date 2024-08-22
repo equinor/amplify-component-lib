@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "8.5.1",
+  "version": "8.5.2",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -156,7 +156,6 @@
     "rollup-plugin-import-css": "^3.5.1",
     "storybook": "^8.2.9",
     "storybook-addon-data-theme-switcher": "^0.4.2",
-    "storybook-addon-react-docgen": "^1.2.44",
     "storybook-addon-remix-react-router": "^3.0.0",
     "typescript": "^5.5.4",
     "uuid": "^10.0.0",

@@ -7,10 +7,39 @@ import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
 
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.small};
+`;
+
+interface HelperWrapperProps {
+  $variant?: Variants;
+}
+
+export const HelperWrapper = styled.span<HelperWrapperProps>`
+  display: flex;
+  gap: ${spacings.small};
+  align-items: center;
+  margin-left: ${spacings.small};
+  width: calc(100% - ${spacings.small});
+  > label {
+    margin: 0;
+  }
+  ${({ $variant }: HelperWrapperProps) => {
+    if (!$variant) return '';
+    return css`
+      > svg {
+        flex-shrink: 0;
+        fill: ${VARIANT_COLORS[$variant]};
+      }
+    `;
+  }}
+`;
+
 interface ContainerProps {
   $lightBackground?: boolean;
   $variant?: Variants;
-  $shouldShowTopMargin?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -60,15 +89,6 @@ const Container = styled.div<ContainerProps>`
   &:has(input:disabled) {
     outline: none;
     box-shadow: none;
-  }
-
-  ${({ $shouldShowTopMargin }) => $shouldShowTopMargin && `margin-top: 1rem;`};
-
-  > label {
-    left: 0;
-    right: 0;
-    position: absolute;
-    top: -1rem;
   }
 
   > svg[role='progressbar'] {

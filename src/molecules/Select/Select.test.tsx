@@ -11,6 +11,7 @@ import {
   render,
   screen,
   userEvent,
+  within,
 } from 'src/tests/test-utils';
 
 import { expect } from 'vitest';
@@ -78,6 +79,45 @@ test('Basic single select', async () => {
       items={items}
     />
   );
+});
+
+test('Basic single select with helperText', () => {
+  const items = fakeSelectItems();
+  const helperText = faker.airline.airplane().name;
+  const handleOnSelect = vi.fn();
+  render(
+    <Select
+      helperText={helperText}
+      onSelect={handleOnSelect}
+      value={undefined}
+      items={items}
+    />
+  );
+
+  expect(screen.getByText(helperText)).toBeInTheDocument();
+});
+
+test('Basic single select with helperText and variant', () => {
+  const items = fakeSelectItems();
+  const helperText = faker.airline.airplane().name;
+  const handleOnSelect = vi.fn();
+  render(
+    <Select
+      helperText={helperText}
+      onSelect={handleOnSelect}
+      value={undefined}
+      items={items}
+      variant="error"
+    />
+  );
+
+  const helperTextElement = screen.getByText(helperText);
+  const helperIcon = within(
+    helperTextElement.parentElement!.parentElement!
+  ).getByTestId('eds-icon-path');
+
+  expect(helperTextElement).toBeInTheDocument();
+  expect(helperIcon).toBeInTheDocument();
 });
 
 test('Basic single select with only meta label', () => {

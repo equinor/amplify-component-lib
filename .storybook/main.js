@@ -4,13 +4,9 @@ const config = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-actions',
     '@storybook/addon-designs',
-    '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
-    'storybook-addon-react-docgen',
     './addons/GitHubSearchAddon/manager.js',
-    '@storybook/addon-mdx-gfm'
   ],
 
   build: {

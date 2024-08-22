@@ -77,6 +77,7 @@ export interface CommonSelectProps {
   id?: string;
   variant?: Variants;
   label?: string;
+  helperText?: string;
   placeholder?: string;
   sortValues?: boolean;
   disabled?: boolean;

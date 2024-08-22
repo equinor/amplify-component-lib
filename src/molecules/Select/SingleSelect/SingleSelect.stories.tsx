@@ -19,9 +19,11 @@ const meta: Meta<typeof SingleSelect> = {
       options: [...VARIANT_OPTIONS, undefined],
       description: 'Variants',
     },
+    helperText: { control: 'text' },
   },
   args: {
     label: 'Label here',
+    helperText: 'helper text',
     sortValues: true,
     clearable: true,
     meta: 'Meta label here',
