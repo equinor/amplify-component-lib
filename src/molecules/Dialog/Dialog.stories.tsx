@@ -40,11 +40,17 @@ const meta: Meta<typeof Dialog> = {
   title: 'Molecules/Dialog',
   component: DialogStory,
   argTypes: {
+    open: {
+      description: 'Opens/Closes dialog',
+    },
     withBorders: {
       control: 'boolean',
     },
     withContentPadding: {
       control: 'boolean',
+    },
+    dialogRef: {
+      description: 'Ref to dialog element',
     },
   },
   args: {
