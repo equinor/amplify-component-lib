@@ -1,15 +1,58 @@
+import { useState } from 'react';
+
+import { Button } from '@equinor/eds-core-react';
+import { arrow_back } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { Dialog } from 'src/molecules/Dialog/Dialog';
+import { Dialog, DialogProps } from 'src/molecules/Dialog/Dialog';
+import { Story } from 'src/storybook';
+
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+function DialogStory(props: DialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const actions = props.actions?.map((action) => ({
+    ...action,
+    onClick: () => setOpen(false),
+  }));
+
+  return (
+    <Wrapper>
+      <Button onClick={() => setOpen(true)}>Show dialog</Button>
+
+      <Dialog
+        {...props}
+        open={open}
+        actions={actions}
+        onClose={() => setOpen(false)}
+      />
+    </Wrapper>
+  );
+}
 
 const meta: Meta<typeof Dialog> = {
   title: 'Molecules/Dialog',
-  component: Dialog,
+  component: DialogStory,
+  argTypes: {
+    withBorders: {
+      control: 'boolean',
+    },
+    withContentPadding: {
+      control: 'boolean',
+    },
+  },
   args: {
-    open: true,
     isDismissable: false,
+    width: 500,
     title: 'Dialog title',
-    children: 'This is a dialog description',
+    children:
+      'This is a dialog description, it can be however long or short you want',
     actions: [
       {
         variant: 'ghost',
@@ -22,6 +65,8 @@ const meta: Meta<typeof Dialog> = {
         text: 'Continue',
       },
     ],
+    withBorders: false,
+    withContentPadding: true,
   },
   parameters: {
     design: {
@@ -37,4 +82,63 @@ type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
   args: {},
+};
+
+export const WithBorders: Story = {
+  args: {
+    withBorders: true,
+  },
+};
+
+export const WithoutContentPadding: Story = {
+  args: {
+    withContentPadding: false,
+    children: <div>Wow! No padding!</div>,
+  },
+};
+
+export const CenteredAction: Story = {
+  args: {
+    title: 'Central Dialog!',
+    children: 'This dialog contains some information important for the user.',
+    actions: [
+      {
+        position: 'center',
+        text: 'Okay!',
+        onClick: () => console.log('clicked'),
+        variant: 'ghost',
+      },
+    ],
+  },
+};
+
+export const LeftAndRightActions: Story = {
+  args: {
+    title: 'Left and right dialog!',
+    children: (
+      <div>
+        <p>One two three four</p>
+        <p>いち、一、に、二、さん、三、よん、四</p>
+      </div>
+    ),
+    actions: [
+      {
+        position: 'left',
+        text: 'Back',
+        icon: arrow_back,
+        onClick: () => console.log('clicked'),
+        variant: 'ghost',
+      },
+      {
+        text: 'Cancel',
+        onClick: () => console.log('clicked'),
+        variant: 'ghost',
+      },
+      {
+        text: 'Okay',
+        onClick: () => console.log('clicked'),
+        variant: 'contained',
+      },
+    ],
+  },
 };

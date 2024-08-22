@@ -9,6 +9,8 @@ export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
 export { ContentMenu } from './ContentMenu/ContentMenu';
 export type { ContentMenuProps } from './ContentMenu/ContentMenu';
+export { Dialog } from './Dialog/Dialog';
+export type { DialogProps } from './Dialog/Dialog';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
 export type { EquinorLogoProps } from './EquinorLogo/EquinorLogo';
 export { FileProgress } from './FileProgress/FileProgress';
@@ -92,7 +94,7 @@ export {
   DatePicker,
   DateRangePicker,
   Divider,
-  Dialog,
+  Dialog as EDSDialog,
   Menu,
   Tabs,
   TextField,
@@ -114,7 +116,7 @@ export type {
   ButtonProps,
   DatePickerProps,
   DateRangePickerProps,
-  DialogProps,
+  DialogProps as EDSDialogProps,
   DividerProps,
   MenuProps,
   SearchProps,

@@ -1,25 +1,64 @@
 import { FC, ReactNode } from 'react';
 
 import {
+  Button,
   ButtonProps,
   Dialog as EDSDialog,
   DialogProps as EDSDialogProps,
+  Icon,
   Typography,
 } from '@equinor/eds-core-react';
-import { IconData } from '@equinor/eds-icons';
+import { close, IconData } from '@equinor/eds-icons';
 
 import { DialogAction } from './DialogAction';
 import { colors } from 'src/atoms/style/colors';
 import { spacings } from 'src/atoms/style/spacings';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface StyledDialogProps {
-  $withBorders?: boolean;
+  $withBorders: boolean;
 }
 
+const DialogElement = styled(EDSDialog)`
+  grid-gap: 0;
+`;
+
 const DialogTitle = styled(EDSDialog.Title)<StyledDialogProps>`
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - (${spacings.medium} * 2));
+  padding: ${spacings.medium};
+  ${({ $withBorders }) => {
+    if ($withBorders) {
+      return css`
+        border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+      `;
+    }
+    return '';
+  }}
+  > section {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+interface DialogContentProps {
+  $withContentPadding: boolean;
+}
+
+const DialogContent = styled(EDSDialog.CustomContent)<DialogContentProps>`
+  min-height: unset;
+  ${({ $withContentPadding }) => {
+    if ($withContentPadding) {
+      return css`
+        padding: ${spacings.medium};
+      `;
+    }
+    return css`
+      padding: 0;
+    `;
+  }}
 `;
 
 const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
@@ -27,6 +66,7 @@ const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
   display: grid;
   grid-template-columns: auto auto auto;
   padding-top: ${spacings.medium};
+  width: calc(100% - (${spacings.medium} * 2));
   > section {
     display: flex;
     gap: ${spacings.small};
@@ -36,30 +76,70 @@ const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
   }
   > section#dialog-actions-center {
     grid-column: 2;
+    justify-content: center;
   }
   > section#dialog-actions-right {
     grid-column: 3;
+    justify-content: flex-end;
   }
+  ${({ $withBorders }) => {
+    if ($withBorders) {
+      return css`
+        border-top: 1px solid ${colors.ui.background__medium.rgba};
+      `;
+    }
+    return css`
+      border-top: none;
+    `;
+  }}
 `;
 
+/**
+ * @param position - Right is default
+ * @param onClick - button on click
+ * @param text - button text
+ * @param variant - button variant
+ * @param icon - button icon, is placed to the left of the text
+ * @param disabled - if set to string, the button is disabled and gets a tooltip
+ */
 export interface DialogAction {
   position?: 'left' | 'center' | 'right';
   onClick: () => void;
   text: string;
   variant: ButtonProps['variant'];
   icon?: IconData;
+  disabled?: boolean | string;
 }
 
-interface DialogProps extends EDSDialogProps {
-  title: string;
+export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
+  title: string | ReactNode | [ReactNode, ReactNode];
   children: string | ReactNode | ReactNode[];
+  onClose: () => void;
+  width?: number;
   actions?: DialogAction[];
+  withContentPadding?: boolean;
   withBorders?: boolean;
 }
 
-export const Dialog: FC<DialogProps> = (props) => {
-  const { title, children, actions, withBorders, ...otherProps } = props;
-
+/**
+ * @param title - String or up to 2 react elements in a flex-column
+ * @param children - Content in the dialog, if string it gets the default typography styling for dialogs
+ * @param onClose - fn to set open to false
+ * @param width - width in px, defaults to just fit-content
+ * @param actions - Dialog act(and is disabled)ions, { position: "right" is default }
+ * @param withContentPadding - Defaults to true
+ * @param withBorders - Defaults to false
+ * Also inherits props from EDS dialogs
+ */
+export const Dialog: FC<DialogProps> = ({
+  title,
+  children,
+  width,
+  actions,
+  withContentPadding = true,
+  withBorders = false,
+  ...otherProps
+}) => {
   const leftActions = actions?.filter((action) => action.position === 'left');
   const centerActions = actions?.filter(
     (action) => action.position === 'center'
@@ -68,40 +148,59 @@ export const Dialog: FC<DialogProps> = (props) => {
     (action) => action.position === undefined || action.position === 'right'
   );
 
+  const titleElements =
+    typeof title === 'string' ? (
+      <Typography variant="h6">{title}</Typography>
+    ) : (
+      title
+    );
+
   const childrenElements =
     typeof children === 'string' ? (
-      <Typography>{children}</Typography>
+      <Typography variant="body_long">{children}</Typography>
     ) : (
       children
     );
 
   return (
-    <EDSDialog {...otherProps}>
-      <DialogTitle $withBorders={withBorders}>{title}</DialogTitle>
-      {childrenElements}
-      <DialogActions>
-        {leftActions && leftActions.length > 0 && (
-          <section id="dialog-actions-left">
-            {leftActions.map((action) => (
-              <DialogAction key={action.text} {...action} />
-            ))}
-          </section>
-        )}
-        {centerActions && centerActions.length > 0 && (
-          <section id="dialog-actions-center">
-            {centerActions.map((action) => (
-              <DialogAction key={action.text} {...action} />
-            ))}
-          </section>
-        )}
-        {rightActions && rightActions.length > 0 && (
-          <section id="dialog-actions-left">
-            {rightActions.map((action) => (
-              <DialogAction key={action.text} {...action} />
-            ))}
-          </section>
-        )}
-      </DialogActions>
-    </EDSDialog>
+    <DialogElement
+      {...otherProps}
+      style={{ width: width ? `${width}px` : undefined }}
+    >
+      <DialogTitle $withBorders={withBorders}>
+        <section>{titleElements}</section>
+        <Button variant="ghost_icon" onClick={otherProps.onClose}>
+          <Icon data={close} />
+        </Button>
+      </DialogTitle>
+      <DialogContent $withContentPadding={withContentPadding}>
+        {childrenElements}
+      </DialogContent>
+      {actions && actions.length > 0 && (
+        <DialogActions $withBorders={withBorders}>
+          {leftActions && leftActions.length > 0 && (
+            <section id="dialog-actions-left">
+              {leftActions.map((action) => (
+                <DialogAction key={action.text} {...action} />
+              ))}
+            </section>
+          )}
+          {centerActions && centerActions.length > 0 && (
+            <section id="dialog-actions-center">
+              {centerActions.map((action) => (
+                <DialogAction key={action.text} {...action} />
+              ))}
+            </section>
+          )}
+          {rightActions && rightActions.length > 0 && (
+            <section id="dialog-actions-right">
+              {rightActions.map((action) => (
+                <DialogAction key={action.text} {...action} />
+              ))}
+            </section>
+          )}
+        </DialogActions>
+      )}
+    </DialogElement>
   );
 };
