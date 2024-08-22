@@ -1,0 +1,34 @@
+repos:
+  - repo: local
+    hooks:
+      - id: hadolint
+        name: Lint Dockerfiles
+        description: Runs hadolint to lint Dockerfiles
+        language: system
+        types: ['dockerfile']
+        entry: hadolint
+      - id: trufflehog
+        name: TruffleHog
+        description: Detect secrets in your data with TruffleHog.
+        entry: trufflehog git file://. --since-commit HEAD --only-verified --fail
+        language: golang
+        pass_filenames: false
+      - id: prettier
+        name: Prettier
+        description: Runs prettier on supported files
+        language: system
+        entry: 'npx prettier --check'
+        files: .*\.jsx?$|.*\.tsx?$|.*\.ts?$
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.9.0
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
+        additional_dependencies:
+          - eslint@8.57.0
+          - eslint-config-prettier@9.1.0
+          - eslint-plugin-prettier@5.1.3
+          - eslint-plugin-react@7.34.0
+          - eslint-plugin-react-hooks@4.6.0
+          - eslint-plugin-simple-import-sort@12.0.0
