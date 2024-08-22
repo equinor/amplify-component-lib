@@ -9,4 +9,3 @@ https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/conf
 https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/vite.config.ts
 https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/vitest.config.ts
 https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/playwright.config.ts
-https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.pre-commit-config.yaml
