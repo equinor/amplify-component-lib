@@ -53,6 +53,7 @@ export type {
   FilterValues,
   SieveOption,
 } from './Sieve/Sieve.types';
+export type { SieveFilterGroup } from './Sieve/Filter';
 export { SingleFilterMenu } from './SingleFilterMenu/SingleFilterMenu';
 export type { SingleFilterMenuProps } from './SingleFilterMenu/SingleFilterMenu';
 export {

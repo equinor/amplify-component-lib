@@ -16,7 +16,7 @@ import {
 } from './FilterHeader.styles';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { environment } from 'src/atoms/utils';
-import { FilterOption } from 'src/molecules/Sieve/Filter';
+import { SieveFilterGroup } from 'src/molecules/Sieve/Filter';
 import { Sieve } from 'src/molecules/Sieve/Sieve';
 import { FilterValues, SieveValue } from 'src/molecules/Sieve/Sieve.types';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
@@ -40,7 +40,7 @@ export const FilterHeader: FC = () => {
   });
 
   const filterOptions = useMemo(() => {
-    const filterOptions: FilterOption[] = [];
+    const filterOptions: SieveFilterGroup[] = [];
 
     filterOptions.push({
       label: 'Type',
