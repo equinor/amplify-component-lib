@@ -1,318 +1,150 @@
-import { ComponentType, useState } from 'react';
+import { useState } from 'react';
 
-import {
-  Button,
-  Dialog,
-  DialogProps,
-  Radio,
-  Typography,
-} from '@equinor/eds-core-react';
-import { useArgs } from '@storybook/preview-api';
-import { Meta, StoryFn } from '@storybook/react';
+import { Button } from '@equinor/eds-core-react';
+import { arrow_back } from '@equinor/eds-icons';
+import { Meta, StoryObj } from '@storybook/react';
 
-import page from 'src/molecules/Dialog/Dialog.docs.mdx';
-import { Stack } from 'src/storybook';
+import { Dialog, DialogProps } from 'src/molecules/Dialog/Dialog';
+import { Story } from 'src/storybook';
 
 import styled from 'styled-components';
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+function DialogStory(props: DialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const actions = props.actions?.map((action) => ({
+    ...action,
+    onClick: () => setOpen(false),
+  }));
+
+  return (
+    <Wrapper>
+      <Button onClick={() => setOpen(true)}>Show dialog</Button>
+
+      <Dialog
+        {...props}
+        open={open}
+        actions={actions}
+        onClose={() => setOpen(false)}
+      />
+    </Wrapper>
+  );
+}
+
 const meta: Meta<typeof Dialog> = {
   title: 'Molecules/Dialog',
-  component: Dialog,
-  args: {
-    open: false,
-    isDismissable: false,
+  component: DialogStory,
+  argTypes: {
+    open: {
+      description: 'Opens/Closes dialog',
+    },
+    withBorders: {
+      control: 'boolean',
+    },
+    withContentPadding: {
+      control: 'boolean',
+    },
+    dialogRef: {
+      description: 'Ref to dialog element',
+    },
   },
-  subcomponents: {
-    Header: Dialog.Header as ComponentType<unknown>,
-    Title: Dialog.Title as ComponentType<unknown>,
-    CustomContent: Dialog.CustomContent as ComponentType<unknown>,
-    Actions: Dialog.Actions as ComponentType<unknown>,
+  args: {
+    isDismissable: false,
+    width: 500,
+    title: 'Dialog title',
+    children:
+      'This is a dialog description, it can be however long or short you want',
+    actions: [
+      {
+        variant: 'ghost',
+        onClick: () => console.log('clicked'),
+        text: 'Cancel',
+      },
+      {
+        variant: 'outlined',
+        onClick: () => console.log('clicked'),
+        text: 'Continue',
+      },
+    ],
+    withBorders: false,
+    withContentPadding: true,
   },
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?type=design&node-id=3009-34034&mode=design&t=jlQAMMWK1GLpzcAL-4',
     },
-    docs: {
-      page,
-      source: {
-        excludeDecorators: true,
-        type: 'code',
-      },
-    },
   },
-  decorators: [
-    (Story) => {
-      return (
-        <Stack>
-          <Story />
-        </Stack>
-      );
-    },
-  ],
 };
 
 export default meta;
 
-const Wrapper = styled.div`
-  display: grid;
-  column-gap: 16px;
-  grid-template-columns: repeat(2, auto);
-  justify-content: end;
-  justify-self: end;
-`;
+type Story = StoryObj<typeof Dialog>;
 
-const RadioWrapper = styled(Radio)`
-  display: flex;
-`;
-
-const Placeholder = styled.div`
-  background: rgba(255, 146, 0, 0.15);
-  border: 1px dashed #ff9200;
-  box-sizing: border-box;
-  border-radius: 4px;
-  padding: 8px;
-  width: 100%;
-  display: inline-block;
-`;
-
-export const Introduction: StoryFn<DialogProps> = (args) => {
-  const { open, isDismissable } = args;
-  const [, updateArgs] = useArgs();
-  const handleClose = () => {
-    updateArgs({ open: false });
-  };
-  const handleOpen = () => {
-    updateArgs({ open: true });
-  };
-  return (
-    <>
-      <Button aria-haspopup="dialog" onClick={handleOpen}>
-        Trigger Dialog
-      </Button>
-      <Dialog open={open} onClose={handleClose} isDismissable={isDismissable}>
-        <Dialog.Header>
-          <Dialog.Title>Title</Dialog.Title>
-        </Dialog.Header>
-        <Dialog.CustomContent>
-          <Typography variant="body_short">Small description here.</Typography>
-        </Dialog.CustomContent>
-        <Dialog.Actions>
-          <Wrapper>
-            <Button onClick={handleClose}>OK</Button>
-            <Button variant="ghost" onClick={handleClose}>
-              Cancel
-            </Button>
-          </Wrapper>
-        </Dialog.Actions>
-      </Dialog>
-    </>
-  );
+export const Default: Story = {
+  args: {},
 };
 
-export const Dismissable: StoryFn<DialogProps> = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-  return (
-    <>
-      <Button aria-haspopup="dialog" onClick={handleOpen}>
-        Trigger Dialog
-      </Button>
-      <Dialog open={isOpen} isDismissable onClose={handleClose}>
-        <Dialog.Header>
-          <Dialog.Title>Dismissable dialog</Dialog.Title>
-        </Dialog.Header>
-        <Dialog.CustomContent>
-          <Typography variant="body_short">
-            Closes dialog on click outside and escape key.
-          </Typography>
-        </Dialog.CustomContent>
-        <Dialog.Actions>
-          <Wrapper>
-            <Button onClick={handleClose}>OK</Button>
-            <Button variant="ghost" onClick={handleClose}>
-              Cancel
-            </Button>
-          </Wrapper>
-        </Dialog.Actions>
-      </Dialog>
-    </>
-  );
+export const WithBorders: Story = {
+  args: {
+    withBorders: true,
+  },
 };
 
-export const TextPlusAction: StoryFn<DialogProps> = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-  return (
-    <>
-      <Button aria-haspopup="dialog" onClick={handleOpen}>
-        Trigger Dialog
-      </Button>
-      <Dialog open={isOpen}>
-        <Dialog.Header>
-          <Dialog.Title>Text + actions</Dialog.Title>
-        </Dialog.Header>
-        <Dialog.CustomContent>
-          <Typography variant="body_short">Small description here.</Typography>
-        </Dialog.CustomContent>
-        <Dialog.Actions>
-          <Wrapper>
-            <Button onClick={handleClose}>OK</Button>
-            <Button variant="ghost" onClick={handleClose}>
-              Cancel
-            </Button>
-          </Wrapper>
-        </Dialog.Actions>
-      </Dialog>
-    </>
-  );
+export const WithoutContentPadding: Story = {
+  args: {
+    withContentPadding: false,
+    children: <div>Wow! No padding!</div>,
+  },
 };
-TextPlusAction.storyName = 'Text plus action';
 
-export const PlaceholderPlusAction: StoryFn<DialogProps> = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
-  return (
-    <>
-      <Button aria-haspopup="dialog" onClick={handleOpen}>
-        Trigger Dialog
-      </Button>
-      <Dialog open={isOpen}>
-        <Dialog.Header>
-          <Dialog.Title>Placeholder + actions</Dialog.Title>
-        </Dialog.Header>
-        <Dialog.CustomContent>
-          <Placeholder>Custom content</Placeholder>
-        </Dialog.CustomContent>
-        <Dialog.Actions>
-          <Wrapper>
-            <Button onClick={handleClose}>OK</Button>
-            <Button onClick={handleClose} variant="ghost">
-              Cancel
-            </Button>
-          </Wrapper>
-        </Dialog.Actions>
-      </Dialog>
-    </>
-  );
+export const CenteredAction: Story = {
+  args: {
+    title: 'Central Dialog!',
+    children: 'This dialog contains some information important for the user.',
+    actions: [
+      {
+        position: 'center',
+        text: 'Okay!',
+        onClick: () => console.log('clicked'),
+        variant: 'ghost',
+      },
+    ],
+  },
 };
-PlaceholderPlusAction.storyName = 'Placeholder plus action';
 
-export const PlaceholderOnly: StoryFn<DialogProps> = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-  return (
-    <>
-      <Button aria-haspopup="dialog" onClick={handleOpen}>
-        Trigger Dialog
-      </Button>
-      <Dialog open={isOpen} isDismissable onClose={handleClose}>
-        <Dialog.Header>
-          <Dialog.Title>View options</Dialog.Title>
-        </Dialog.Header>
-        <Dialog.CustomContent scrollable>
-          <RadioWrapper label="Down" name="first" />
-          <RadioWrapper label="Up" defaultChecked name="second" />
-        </Dialog.CustomContent>
-      </Dialog>
-    </>
-  );
+export const LeftAndRightActions: Story = {
+  args: {
+    title: 'Left and right dialog!',
+    children: (
+      <div>
+        <p>One two three four</p>
+        <p>いち、一、に、二、さん、三、よん、四</p>
+      </div>
+    ),
+    actions: [
+      {
+        position: 'left',
+        text: 'Back',
+        icon: arrow_back,
+        onClick: () => console.log('clicked'),
+        variant: 'ghost',
+      },
+      {
+        text: 'Cancel',
+        onClick: () => console.log('clicked'),
+        variant: 'ghost',
+      },
+      {
+        text: 'Okay',
+        onClick: () => console.log('clicked'),
+        variant: 'contained',
+      },
+    ],
+  },
 };
-PlaceholderOnly.storyName = 'Placeholder only';
-
-export const ScrollablePlusActions: StoryFn<DialogProps> = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-  return (
-    <>
-      <Button aria-haspopup="dialog" onClick={handleOpen}>
-        Trigger Dialog
-      </Button>
-      <Dialog open={isOpen}>
-        <Dialog.Header>
-          <Dialog.Title>Scrollable + actions</Dialog.Title>
-        </Dialog.Header>
-        <Dialog.CustomContent scrollable>
-          <Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Accusantium architecto suscipit laboriosam, nisi quas omnis iusto
-            nam incidunt. Mollitia aliquid alias explicabo dolorum molestias
-            nostrum il
-          </Typography>
-          <Typography>
-            lum vel rem assumenda ea! Lorem ipsum dolor sit, amet consectetur
-            adipisicing elit. Quo repellendus at eligendi voluptas, eos omnis
-            sunt consequatur nam facilis velit veritatis quibusdam dicta
-            voluptate, labore soluta deserunt, odio enim alias.
-          </Typography>
-        </Dialog.CustomContent>
-        <Dialog.Actions>
-          <Wrapper>
-            <Button onClick={handleClose}>OK</Button>
-            <Button onClick={handleClose} variant="ghost">
-              Cancel
-            </Button>
-          </Wrapper>
-        </Dialog.Actions>
-      </Dialog>
-    </>
-  );
-};
-ScrollablePlusActions.storyName = 'Scrollable plus actions';
-
-export const NoTitle: StoryFn<DialogProps> = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-  return (
-    <>
-      <Button aria-haspopup="dialog" onClick={handleOpen}>
-        Trigger Dialog
-      </Button>
-      <Dialog open={isOpen}>
-        <Dialog.CustomContent>
-          <Typography variant="body_short">Small description here.</Typography>
-        </Dialog.CustomContent>
-        <Dialog.Actions>
-          <Wrapper>
-            <Button onClick={handleClose}>OK</Button>
-            <Button onClick={handleClose} variant="ghost">
-              Cancel
-            </Button>
-          </Wrapper>
-        </Dialog.Actions>
-      </Dialog>
-    </>
-  );
-};
-NoTitle.storyName = 'No title';
