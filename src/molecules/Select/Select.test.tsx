@@ -16,7 +16,7 @@ import {
 
 import { expect } from 'vitest';
 
-function fakeGroups(count = 5, isParented?: boolean) {
+export function fakeGroups(count = 5, isParented?: boolean) {
   return new Array(count)
     .fill(0)
     .map(() => ({
