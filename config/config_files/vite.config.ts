@@ -25,8 +25,12 @@ export default ({ mode }: { mode: string }) => {
       rollupOptions: {
         output: {
           manualChunks: (id) => {
-            if (id.includes('amplify')) {
+            if (id.includes('commonjsHelpers')) {
+              return 'commonjsHelpers';
+            } else if (id.includes('amplify')) {
               return 'amplify';
+            } else if (id.includes('proj4')) {
+              return 'proj4';
             } else if (id.includes('eds')) {
               return 'eds';
             } else if (id.includes('probe.gl')) {
@@ -39,20 +43,18 @@ export default ({ mode }: { mode: string }) => {
               return 'lumagl';
             } else if (id.includes('deck.gl')) {
               return 'deckgl';
-            } else if (id.includes('d3')) {
-              return 'd3';
+            } else if (id.includes('d3') || id.includes('visx')) {
+              return 'visx';
             } else if (id.includes('azure') || id.includes('microsoft')) {
               return 'microsoft';
+            } else if (id.includes('framer-motion')) {
+              return 'framer-motion';
             } else if (id.includes('html2canvas')) {
               return 'html2canvas';
             } else if (id.includes('lodash')) {
               return 'lodash';
-            } else if (id.includes('proj4')) {
-              return 'proj4';
-            } else if (id.includes('react-beautiful-dnd')) {
-              return 'react-beautiful-dnd';
-            } else if (id.includes('mui')) {
-              return 'mui';
+            } else if (id.includes('@hello-pangea/dnd')) {
+              return 'pangea-dnd';
             } else if (id.includes('node_modules')) {
               return 'vendor';
             }
