@@ -4,12 +4,13 @@ metadata:
   name: storybook-amplify-components
 spec:
   environments:
-    - name: production
+    - name: test
       build:
         from: main
     - name: feature
       build:
         from: feature-release/**
+    - name: production
 
   components:
     - name: client
