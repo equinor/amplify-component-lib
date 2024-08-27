@@ -41,7 +41,6 @@ jobs:
         run: diff playwright.config.ts <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/playwright.config.ts)
 
       - name: Compare remote .pre-commit-config.yaml to local
-        working-directory: client
         run: diff .pre-commit-config.yaml <(curl https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.pre-commit-config.yaml)
 
       - name: Compare remote proxy/nginx.conf to local
