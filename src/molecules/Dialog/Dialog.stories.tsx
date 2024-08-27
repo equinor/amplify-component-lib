@@ -40,6 +40,9 @@ const meta: Meta<typeof Dialog> = {
   title: 'Molecules/Dialog',
   component: DialogStory,
   argTypes: {
+    isDismissable: {
+      description: 'If clicking outside/hitting "Esc" closes the dialog',
+    },
     open: {
       description: 'Opens/Closes dialog',
     },
