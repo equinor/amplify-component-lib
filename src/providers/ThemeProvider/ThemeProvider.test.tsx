@@ -35,3 +35,8 @@ test('Initializes correctly', () => {
 
   expect(document.documentElement).toHaveAttribute('data-theme', Theme.DARK);
 });
+
+test("'useThemeProvider' hook throws error when used outside provider", () => {
+  console.error = vi.fn();
+  expect(() => renderHook(() => useThemeProvider())).toThrowError();
+});
