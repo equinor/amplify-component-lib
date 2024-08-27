@@ -1,4 +1,4 @@
-import { FilterOption } from 'src/molecules/Sieve/Filter';
+import { SieveFilterGroup } from './Filter';
 
 interface SieveOption {
   label: string;
@@ -16,7 +16,7 @@ interface SieveValue {
 interface SieveProps {
   searchPlaceholder: string;
   sortOptions?: SieveOption[];
-  filterOptions?: FilterOption[];
+  filterOptions?: SieveFilterGroup[];
   sieveValue: SieveValue;
   onUpdate: (value: SieveValue) => void;
   showChips?: boolean;

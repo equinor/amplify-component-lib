@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
 
-import { NoItemsFoundText } from 'src/molecules/Select/Select.styles';
+import { Menu } from '@equinor/eds-core-react';
+
+import { AddTagItem } from './AddTagItem';
+import {
+  NoItemsFoundText,
+  NoTagFoundText,
+} from 'src/molecules/Select/Select.styles';
 import {
   ListSelectProps,
   MultiSelectCommon,
@@ -30,6 +36,12 @@ export const SelectMenu = <T extends SelectOptionRequired>(
     selectableParent,
   } = props;
 
+  const handleOnAddItem = () => {
+    if ('onAddItem' in props && props.onAddItem) {
+      props.onAddItem(search);
+    }
+  };
+
   const filteredItems = useMemo(() => {
     if (search === '') return items;
     const regexPattern = new RegExp(search, 'i');
@@ -39,7 +51,7 @@ export const SelectMenu = <T extends SelectOptionRequired>(
       .filter((item) => item.label.match(regexPattern));
   }, [items, search]);
 
-  if (filteredItems.length === 0) {
+  if (filteredItems.length === 0 && !('onAddItem' in props)) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
@@ -48,20 +60,58 @@ export const SelectMenu = <T extends SelectOptionRequired>(
   );
 
   if ('values' in props) {
-    return filteredItems.map((item, index) => (
+    const itemProps = filteredItems.map((item, index) => ({
+      childOffset: getChildOffset(filteredItems, index),
+      index: index,
+      item,
+      itemRefs,
+      onItemKeyDown,
+      onItemSelect,
+      onMouseEnterItem,
+      itemValue: item.value,
+      values: props.values,
+      selectableParent,
+      parentHasNestedItems: hasNestedItems,
+    }));
+    if ('onAddItem' in props && props.onAddItem && search !== '') {
+      return (
+        <>
+          <Menu.Section title="Add tag" index={0}>
+            <AddTagItem
+              index={0}
+              itemRefs={itemRefs}
+              onItemKeyDown={onItemKeyDown}
+              onMouseEnterItem={onMouseEnterItem}
+              onAddItem={handleOnAddItem}
+            >
+              {search}
+            </AddTagItem>
+          </Menu.Section>
+          <Menu.Section title="Tag search results" index={1}>
+            {itemProps.length > 0 ? (
+              itemProps.map((item, index) => (
+                <SelectMenuItem
+                  key={`menu-item-${index}-${item.itemValue}`}
+                  multiselect
+                  {...item}
+                  index={index + 1}
+                />
+              ))
+            ) : (
+              <NoTagFoundText>
+                No tag for &quot;{search}&quot; found.
+              </NoTagFoundText>
+            )}
+          </Menu.Section>
+        </>
+      );
+    }
+
+    return itemProps.map((item, index) => (
       <SelectMenuItem
-        key={`menu-item-${index}-${item.value}`}
-        childOffset={getChildOffset(filteredItems, index)}
-        index={index}
+        key={`menu-item-${index}-${item.itemValue}`}
         multiselect
-        item={item}
-        itemRefs={itemRefs}
-        onItemKeyDown={onItemKeyDown}
-        onItemSelect={onItemSelect}
-        onMouseEnterItem={onMouseEnterItem}
-        values={props.values}
-        selectableParent={selectableParent}
-        parentHasNestedItems={hasNestedItems}
+        {...item}
       />
     ));
   }

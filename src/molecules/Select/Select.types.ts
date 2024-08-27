@@ -23,6 +23,7 @@ export interface MultiSelectCommon<T extends SelectOptionRequired> {
     selectedValue?: SelectOption<T>
   ) => void;
   selectableParent?: boolean;
+  onAddItem?: (item: string) => void;
 }
 
 export interface GroupedSelectProps<T extends SelectOptionRequired> {

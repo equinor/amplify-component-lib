@@ -19,7 +19,8 @@ test('"extractImageUrls" works as expected when passing undefined', () => {
 });
 
 test('"imageToB64" works as expected', async () => {
-  const fakeUrl = faker.image.url({ width: 64, height: 64 });
+  const fakeUrl =
+    'https://github.com/equinor/amplify-component-lib/blob/main/static/amplify.png?raw=true';
   const response = await fetch(fakeUrl);
   const blob = await response.blob();
   const file = new File([blob], `img`);
