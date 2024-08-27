@@ -15,13 +15,13 @@ import { FilterValues, SieveOption } from 'src/molecules/Sieve/Sieve.types';
 
 const { colors } = tokens;
 
-export interface FilterOption {
+export interface SieveFilterGroup {
   label: string;
   options: SieveOption[];
 }
 
 interface FilterProps {
-  options: FilterOption[];
+  options: SieveFilterGroup[];
   filterValues: FilterValues | undefined;
   setFilterValues: (values: FilterValues | undefined) => void;
 }

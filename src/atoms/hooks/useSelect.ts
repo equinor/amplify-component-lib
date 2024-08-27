@@ -159,7 +159,15 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Space' || event.key === 'Enter') {
+    if (
+      event.key === 'Enter' &&
+      search !== '' &&
+      'onAddItem' in props &&
+      props.onAddItem
+    ) {
+      props.onAddItem(search);
+      setSearch('');
+    } else if (event.key === 'Space' || event.key === 'Enter') {
       handleOnOpen();
     } else if (event.key === 'Escape') {
       searchRef.current?.blur();
