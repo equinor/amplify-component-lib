@@ -20,6 +20,7 @@ export { default as EditableField } from './EditableField';
 export { default as StatusChip } from './Workflow/StatusChip';
 export { default as WorkflowDescription } from './Workflow/WorkflowDescription';
 export { default as WorkflowStatusBar } from './Workflow/WorkflowStatusBar';
+export { default as ConfirmationPopup } from './ConfirmationPopup';
 export { default as DataCard } from './DataCard';
 export { default as HeaderDrawer } from './HeaderDrawer';
 export { default as MultiSelectDrawer } from './MultiSelectDrawer';
