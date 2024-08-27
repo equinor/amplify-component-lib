@@ -55,7 +55,7 @@ export interface ConfirmationPopupProps {
 }
 
 /**
- * @deprecated Being deprecated, will implement new Dialog component that will resolve this use case
+ * @deprecated Being deprecated, use new Dialog component
  */
 
 const ConfirmationPopup = forwardRef<HTMLDivElement, ConfirmationPopupProps>(

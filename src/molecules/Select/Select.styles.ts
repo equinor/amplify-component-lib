@@ -249,6 +249,10 @@ const ValueText = styled(PlaceholderText)`
   max-width: 100%;
 `;
 
+const NoTagFoundText = styled(Typography)`
+  margin: ${spacings.medium};
+`;
+
 const NoItemsFoundText = styled(Typography)`
   margin-left: ${spacings.medium};
 `;
@@ -280,6 +284,7 @@ export {
   Container,
   MenuItemSpacer,
   StyledMenu,
+  NoTagFoundText,
   NoItemsFoundText,
   PlaceholderText,
   StyledChip,
