@@ -150,8 +150,8 @@ export const Select = <T extends SelectOptionRequired>(
 
   return (
     <div>
+      {shouldShowLabel && <Label label={label} meta={meta} htmlFor={id} />}
       <Wrapper>
-        {shouldShowLabel && <Label label={label} meta={meta} htmlFor={id} />}
         <Container
           data-testid="combobox-container"
           ref={anchorRef}
