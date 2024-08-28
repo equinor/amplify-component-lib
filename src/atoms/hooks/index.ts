@@ -12,6 +12,7 @@ import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 import { useSideBar } from 'src/providers/SideBarProvider';
 import { useSnackbar } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
+import { useThemeProvider } from 'src/providers/ThemeProvider/ThemeProvider';
 import { useTutorialSteps } from 'src/providers/TutorialStepsProvider';
 
 export {
@@ -29,5 +30,6 @@ export {
   useSignalRMessages,
   useSnackbar,
   useTutorialSteps,
+  useThemeProvider,
   useAmplifyKit,
 };
