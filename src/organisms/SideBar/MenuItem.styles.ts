@@ -56,6 +56,7 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
 `;
 
 export const IconContainer = styled.div`
+  display: flex;
   padding: ${spacings.x_small};
   align-items: center;
   justify-content: center;
