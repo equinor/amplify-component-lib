@@ -31,9 +31,9 @@ const Content = styled.div<ContentProps>`
   min-height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
   overflow: auto;
-  /* 256px and 72px is width of Sidebar when open/closed, + 1px because of border */
+  /* 231px and 64px is width of Sidebar when open/closed, + 1px because of border */
   min-width: calc(
-    100% - ${(props) => (props.$open ? '257px' : '73px')} -
+    100% - ${(props) => (props.$open ? '232px' : '65px')} -
       ${spacings.xxx_large} * 2
   );
   &:not(:has(.select-field)) {
