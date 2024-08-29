@@ -25,7 +25,7 @@ test("'useSnackbar' showSnackbar function works as expected", () => {
 
   const snackBarText = faker.animal.dog();
 
-  result.current.showSnackbar(snackBarText);
+  act(() => result.current.showSnackbar(snackBarText));
   expect(result.current.showSnackbar).toBeDefined();
 });
 
@@ -69,13 +69,14 @@ test("'useSnackbar' showSnackbar function works as expected with custom props", 
 
   const customOnClose = vi.fn();
 
-  result.current.showSnackbar(snackBarText, {
-    customProps: {
-      autoHideDuration: 500,
-      onClose: customOnClose,
-    },
-  });
-  expect(result.current.showSnackbar).toBeDefined();
+  act(() =>
+    result.current.showSnackbar(snackBarText, {
+      customProps: {
+        autoHideDuration: 500,
+        onClose: customOnClose,
+      },
+    })
+  );
   await waitFor(() => expect(customOnClose).toHaveBeenCalledTimes(1), {
     timeout: 1000,
   });
@@ -90,12 +91,14 @@ test("'useSnackbar' showSnackbar function works as expected with action", async 
   const customActionHandler = vi.fn();
   const user = userEvent.setup();
 
-  result.current.showSnackbar(faker.animal.dog(), {
-    action: {
-      text: actionText,
-      handler: customActionHandler,
-    },
-  });
+  act(() =>
+    result.current.showSnackbar(faker.animal.dog(), {
+      action: {
+        text: actionText,
+        handler: customActionHandler,
+      },
+    })
+  );
 
   const actionBtn = await waitFor(() => screen.getByText(actionText), {
     timeout: 1000,
@@ -127,12 +130,12 @@ test("'useSnackbar' setActionDisabledState function works as expected with actio
     timeout: 1000,
   });
 
-  result.current.setActionDisabledState(true);
+  act(() => result.current.setActionDisabledState(true));
 
   await user.click(actionBtn);
   expect(customActionHandler).toHaveBeenCalledTimes(0);
 
-  result.current.setActionDisabledState(false);
+  act(() => result.current.setActionDisabledState(false));
 
   await user.click(actionBtn);
   expect(customActionHandler).toHaveBeenCalledTimes(1);
@@ -145,13 +148,13 @@ test("'useSnackbar' action is not visible and setActionDisabledState does nothin
 
   const actionText = faker.animal.cat();
 
-  result.current.showSnackbar(faker.animal.dog());
+  act(() => result.current.showSnackbar(faker.animal.dog()));
 
   const actionBtn = await waitFor(() => screen.queryByText(actionText), {
     timeout: 1000,
   });
 
-  result.current.setActionDisabledState(true);
+  act(() => result.current.setActionDisabledState(true));
   expect(actionBtn).not.toBeInTheDocument();
 });
 
@@ -161,18 +164,14 @@ test("'useSnackbar' hideSnackbar works as expected", async () => {
   });
 
   const snackbarText = faker.animal.cat();
-
-  const snackbar = await waitFor(
-    () => {
-      result.current.showSnackbar(snackbarText, {
-        customProps: { autoHideDuration: 5000 },
-      });
-      return screen.getByText(snackbarText);
-    },
-    {
-      timeout: 1000,
-    }
+  act(() =>
+    result.current.showSnackbar(snackbarText, {
+      customProps: { autoHideDuration: 5000 },
+    })
   );
+  const snackbar = await screen.findByText(snackbarText, undefined, {
+    timeout: 1000,
+  });
 
   expect(snackbar).toBeInTheDocument();
 
