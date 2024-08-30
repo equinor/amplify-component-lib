@@ -40,7 +40,10 @@ export const FilterHeader: FC = () => {
   });
 
   const openReleaseNotesUrl = useMemo(() => {
-    if (environmentNameWithoutLocalHost !== EnvironmentType.PRODUCTION) {
+    if (
+      environmentNameWithoutLocalHost &&
+      environmentNameWithoutLocalHost !== EnvironmentType.PRODUCTION
+    ) {
       return `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/applications/release-notes?applications=%5B"${applicationName}"%5D`;
     } else {
       return `https://jsembark.equinor.com/applications/release-notes?applications=%5B"${applicationName}"%5D`;

@@ -52,7 +52,7 @@ test('should link to correct environment given that it is not prod or empty', ()
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
   expect(actual.getAttribute('href')).toBe(
-    `https://client-amplify-portal-${EnvironmentType.STAGING}.radix.equinor.com/releasenotes?applications=%5B"Amplify components"%5D`
+    `https://client-amplify-portal-${EnvironmentType.STAGING}.radix.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D`
   );
 });
 
@@ -65,10 +65,10 @@ test('should link to development environment given that its environment is local
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
   expect(actual.getAttribute('href')).toBe(
-    `https://client-amplify-portal-${EnvironmentType.DEVELOP}.radix.equinor.com/releasenotes?applications=%5B"Amplify components"%5D`
+    `https://client-amplify-portal-${EnvironmentType.DEVELOP}.radix.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D`
   );
 });
-test('should link to production environment using the external dns, amplify.equinor.com given environment is set to production', () => {
+test('should link to production environment using the external dns, jsembark.equinor.com given environment is set to production', () => {
   vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.PRODUCTION);
   render(<FilterHeader />, {
     wrapper: Wrappers,
@@ -77,7 +77,7 @@ test('should link to production environment using the external dns, amplify.equi
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
   expect(actual.getAttribute('href')).toBe(
-    'https://amplify.equinor.com/releasenotes?applications=%5B"Amplify components"%5D'
+    'https://jsembark.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D'
   );
 });
 test('should link to production environment using the external dns, amplify.equinor.com as a fallback when no environment is set', () => {
@@ -89,7 +89,7 @@ test('should link to production environment using the external dns, amplify.equi
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
   expect(actual.getAttribute('href')).toBe(
-    'https://amplify.equinor.com/releasenotes?applications=%5B"Amplify components"%5D'
+    'https://jsembark.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D'
   );
 });
 
