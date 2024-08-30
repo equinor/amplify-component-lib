@@ -39,6 +39,17 @@ export const FilterHeader: FC = () => {
     sortValue: undefined,
   });
 
+  const openReleaseNotesUrl = useMemo(() => {
+    if (
+      environmentNameWithoutLocalHost &&
+      environmentNameWithoutLocalHost !== EnvironmentType.PRODUCTION
+    ) {
+      return `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/applications/release-notes?applications=%5B"${applicationName}"%5D`;
+    } else {
+      return `https://jsembark.equinor.com/applications/release-notes?applications=%5B"${applicationName}"%5D`;
+    }
+  }, [applicationName, environmentNameWithoutLocalHost]);
+
   const filterOptions = useMemo(() => {
     const filterOptions: SieveFilterGroup[] = [];
 
@@ -90,15 +101,7 @@ export const FilterHeader: FC = () => {
           minSearchWidth="70%"
         />
         <ButtonContainer>
-          <Button
-            variant="ghost_icon"
-            href={
-              environmentNameWithoutLocalHost &&
-              environmentNameWithoutLocalHost !== EnvironmentType.PRODUCTION
-                ? `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
-                : `https://amplify.equinor.com/releasenotes?applications=%5B"${applicationName}"%5D`
-            }
-          >
+          <Button variant="ghost_icon" href={openReleaseNotesUrl}>
             <Icon data={external_link} />
           </Button>
           <Button
