@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { AppIconData } from './ApplicationIconCollection';
+import { AppIconData } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/ApplicationIconNewCollection';
 
 interface IconSvgProps {
   width?: number;

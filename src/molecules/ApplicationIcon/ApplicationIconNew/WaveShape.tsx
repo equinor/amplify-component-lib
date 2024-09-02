@@ -3,7 +3,7 @@ import { FC } from 'react';
 import {
   LARGE_WAVES_PATH_DATA,
   SMALL_WAVES_PATH_DATA,
-} from './ApplicationIcon.constants';
+} from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew.constants';
 
 export interface WaveShapeWithNoiseProps {
   isAltWave?: boolean;

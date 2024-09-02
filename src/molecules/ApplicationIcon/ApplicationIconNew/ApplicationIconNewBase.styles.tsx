@@ -1,5 +1,9 @@
-import { AllowedColors, colorMap, darkenColor } from './ApplicationIcon.utils';
-import { AnimationState } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
+import { AnimationState } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew.types';
+import {
+  AllowedColors,
+  colorMap,
+  darkenColor,
+} from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew.utils';
 
 import styled, { css, keyframes } from 'styled-components';
 

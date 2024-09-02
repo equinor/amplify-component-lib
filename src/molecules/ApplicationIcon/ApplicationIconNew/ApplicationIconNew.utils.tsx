@@ -1,4 +1,4 @@
-import { AppIconData } from 'src/molecules/ApplicationIcon/ApplicationIconData/ApplicationIconCollection';
+import { AppIconData } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/ApplicationIconNewCollection';
 
 export type AllowedColors =
   | 'blue'

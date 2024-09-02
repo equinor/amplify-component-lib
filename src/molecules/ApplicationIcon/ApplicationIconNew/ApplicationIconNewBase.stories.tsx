@@ -1,8 +1,12 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import { embark } from './ApplicationIconData/ApplicationIconCollection';
-import { AllowedColors, AppBaseProps, colorMap } from './ApplicationIcon.utils';
-import { ApplicationIconBase } from './ApplicationIconBase';
+import {
+  AllowedColors,
+  AppBaseProps,
+  colorMap,
+} from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew.utils';
+import { ApplicationIconNewBase } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewBase';
+import { embark } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/ApplicationIconNewCollection';
 
 import styled from 'styled-components';
 
@@ -13,9 +17,9 @@ const StyledWrapper = styled.div`
   align-items: center;
 `;
 
-const meta: Meta<typeof ApplicationIconBase> = {
-  title: 'Molecules/ApplicationIcon/ApplicationIconBase',
-  component: ApplicationIconBase,
+const meta: Meta<typeof ApplicationIconNewBase> = {
+  title: 'Molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewBase',
+  component: ApplicationIconNewBase,
   argTypes: {
     size: {
       control: {
@@ -59,7 +63,7 @@ export default meta;
 export const Primary: StoryFn<AppBaseProps> = (args) => {
   return (
     <StyledWrapper>
-      <ApplicationIconBase {...args} appIconData={embark.svgPathData} />
+      <ApplicationIconNewBase {...args} appIconData={embark.svgPathData} />
     </StyledWrapper>
   );
 };
