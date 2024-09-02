@@ -10,3 +10,5 @@ src/api
 **/*.cjs
 **/*.yaml
 **/*.mjs
+
+!.storybook
