@@ -8,6 +8,7 @@ COPY vite.config.ts ./
 COPY index.html ./
 COPY src ./src
 COPY public ./public
+COPY .storybook ./.storybook
 
 # Remove mockServiceWorker.js
 RUN rm -f ./public/mockServiceWorker.js
