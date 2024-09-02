@@ -31,6 +31,7 @@ export const AddTagItem: FC<AddTagItemProps> = ({
   children,
 }) => {
   const handleOnKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (event.key === 'Enter') {
       onAddItem();
     } else {

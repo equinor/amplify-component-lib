@@ -172,11 +172,12 @@ const useSelect = <T extends SelectOptionRequired>(
     } else if (event.key === 'Escape') {
       searchRef.current?.blur();
       handleOnClose();
-    } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      if (itemRefs.current.at(0)) {
-        itemRefs.current[0]?.focus();
-        focusingItemIndex.current = 0;
-      }
+    } else if (
+      (event.key === 'ArrowDown' || event.key === 'ArrowUp') &&
+      itemRefs.current.at(0)
+    ) {
+      itemRefs.current[0]?.focus();
+      focusingItemIndex.current = 0;
     } else if (
       event.key === 'Backspace' &&
       tryingToRemoveItem === undefined &&
@@ -211,7 +212,15 @@ const useSelect = <T extends SelectOptionRequired>(
     itemRefs.current.at(index)?.focus();
   };
 
+  const handleOnAddItem = () => {
+    if ('onAddItem' in props && props.onAddItem) {
+      props.onAddItem(search);
+      setSearch('');
+    }
+  };
+
   return {
+    handleOnAddItem,
     handleOnItemSelect,
     handleOnItemKeyDown,
     handleOnSearchKeyDown,

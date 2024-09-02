@@ -81,6 +81,7 @@ test('OnAddItem works as expected when clicking item', async () => {
   await user.click(newTagMenuItem);
 
   expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
+  expect(handleOnAddItem).toHaveBeenCalledTimes(1);
 });
 
 test('OnAddItem works as expected when moving to item and hitting {Enter}', async () => {
@@ -107,6 +108,7 @@ test('OnAddItem works as expected when moving to item and hitting {Enter}', asyn
   await user.keyboard('{Enter}');
 
   expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
+  expect(handleOnAddItem).toHaveBeenCalledTimes(1);
 });
 
 test('Works as expected when moving past "add new tag" menuitem', async () => {
