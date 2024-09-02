@@ -45,9 +45,9 @@ export const FullPageSpinner: FC<FullPageSpinnerProps> = ({
       case 'equinor':
         return <StarProgress />;
       case 'application':
-        // TODO: Go back to showing appIcon when we start using new design
+        // TODO: :NEW-APP-ICON-TODOS: Go back to showing appIcon when we start using new design
         // Old app icons do not have a loading state, so cant be used in this case
-        return <CircularProgress />;
+        return <CircularProgress data-testid="app-icon-svg" />;
     }
   }, [variant]);
 
