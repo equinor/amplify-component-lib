@@ -1,6 +1,6 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
+import { ApplicationIcon } from './ApplicationIcon';
 
 const meta: Meta<typeof ApplicationIcon> = {
   title: 'Molecules/ApplicationIcon',
@@ -34,6 +34,8 @@ const meta: Meta<typeof ApplicationIcon> = {
 
 export default meta;
 
-export const Example: StoryFn<ApplicationIconProps> = (args) => (
-  <ApplicationIcon {...args} />
-);
+type Story = StoryObj<typeof ApplicationIcon>;
+
+export const Default: Story = {
+  args: {},
+};
