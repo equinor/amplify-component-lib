@@ -35,13 +35,13 @@ interface ApplicationIconData {
   >;
 }
 const apps: ApplicationIconData[] = [
-  { appName: ['portal'], component: Portal },
+  { appName: ['portal', 'embark', 'jsembark'], component: Portal },
   { appName: ['acquire'], component: Acquire },
   { appName: ['4dinsight'], component: FourDInsight },
   { appName: ['dasha'], component: Dasha },
   { appName: ['orca'], component: Orca },
   {
-    appName: ['logging-qualification', 'logging qualification'],
+    appName: ['logging-qualification', 'logging qualification', 'ltg'],
     component: LoggingQualification,
   },
   { appName: ['recap'], component: Recap },
