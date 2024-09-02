@@ -1,0 +1,42 @@
+name: 'Storybook Tests'
+on:
+  workflow_call:
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [21.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Install playwright
+        working-directory: client
+        run: npx playwright install --with-deps
+
+      - name: Install required packages
+        working-directory: client
+        run: npm install concurrently http-server
+
+      - name: Build Storybook
+        working-directory: client
+        run: npm run build-storybook --quiet
+
+      - name: Serve Storybook and run tests
+        working-directory: client
+        run: |
+          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "npx http-server storybook-static --port 6006 --silent" \
+            "wait-on tcp:6006 && npm run test-storybook"
