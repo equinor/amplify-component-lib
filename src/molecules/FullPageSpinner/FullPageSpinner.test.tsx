@@ -15,11 +15,12 @@ test('renders with scrim when prop is given', () => {
   expect(container.firstElementChild?.className).toContain('Scrim');
 });
 
-test('renders application progress as default', () => {
-  render(<FullPageSpinner />);
-
-  expect(screen.getByTestId('app-icon-container')).toBeInTheDocument();
-});
+// TODO: :NEW-APP-ICON-TODOS: use this test again when changing back to new app icons
+// test('renders application progress as default', () => {
+//   render(<FullPageSpinner />);
+//
+//   expect(screen.getByTestId('app-icon-container')).toBeInTheDocument();
+// });
 
 test('renders star progress when prop is given', () => {
   render(<FullPageSpinner variant="equinor" />);

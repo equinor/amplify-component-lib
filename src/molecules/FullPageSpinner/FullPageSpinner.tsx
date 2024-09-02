@@ -3,12 +3,8 @@ import { FC, useMemo } from 'react';
 import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
 
 import { colors } from 'src/atoms/style';
-import { environment } from 'src/atoms/utils/auth_environment';
-import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 
 import styled from 'styled-components';
-
-const { getAppName } = environment;
 
 const NoScrimContainer = styled.div`
   width: 100vw;
@@ -49,12 +45,9 @@ export const FullPageSpinner: FC<FullPageSpinnerProps> = ({
       case 'equinor':
         return <StarProgress />;
       case 'application':
-        return (
-          <ApplicationIcon
-            name={getAppName(import.meta.env.VITE_NAME)}
-            animationState="loading"
-          />
-        );
+        // TODO: :NEW-APP-ICON-TODOS: Go back to showing appIcon when we start using new design
+        // Old app icons do not have a loading state, so cant be used in this case
+        return <CircularProgress data-testid="app-icon-svg" />;
     }
   }, [variant]);
 
