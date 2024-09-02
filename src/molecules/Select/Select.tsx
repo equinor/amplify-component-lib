@@ -14,6 +14,7 @@ import { useOutsideClick } from '@equinor/eds-utils';
 
 import { useSelect } from 'src/atoms/hooks/useSelect';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
+import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
 import {
   ClearButton,
   Container,
@@ -33,7 +34,6 @@ import {
   SelectOptionRequired,
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
-import { SelectMenu } from 'src/molecules/Select/SelectMenu';
 
 const { colors } = tokens;
 
@@ -61,6 +61,7 @@ export const Select = <T extends SelectOptionRequired>(
     inDialog = false,
   } = props;
   const {
+    handleOnAddItem,
     handleOnClear,
     handleOnItemKeyDown,
     handleOnItemSelect,
@@ -229,10 +230,15 @@ export const Select = <T extends SelectOptionRequired>(
               onMouseEnterItem={handleOnMouseEnterItem}
             />
           ) : (
-            <SelectMenu
+            <ListSelectMenu
               {...props}
               search={search}
               itemRefs={itemRefs}
+              onAddItem={
+                'values' in props && props.onAddItem
+                  ? handleOnAddItem
+                  : undefined
+              }
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
               onMouseEnterItem={handleOnMouseEnterItem}
