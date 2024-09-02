@@ -21,10 +21,10 @@ import {
 } from 'src/molecules/Select/Select.utils';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
-export const SelectMenu = <T extends SelectOptionRequired>(
+export const ListSelectMenu = <T extends SelectOptionRequired>(
   props: ListSelectProps<T> &
     SelectMenuProps<T> &
-    (MultiSelectCommon<T> | SingleSelectCommon<T>)
+    (Omit<MultiSelectCommon<T>, 'onAddItem'> | SingleSelectCommon<T>)
 ) => {
   const {
     search,
@@ -36,12 +36,6 @@ export const SelectMenu = <T extends SelectOptionRequired>(
     selectableParent,
   } = props;
 
-  const handleOnAddItem = () => {
-    if ('onAddItem' in props && props.onAddItem) {
-      props.onAddItem(search);
-    }
-  };
-
   const filteredItems = useMemo(() => {
     if (search === '') return items;
     const regexPattern = new RegExp(search, 'i');
@@ -51,7 +45,7 @@ export const SelectMenu = <T extends SelectOptionRequired>(
       .filter((item) => item.label.match(regexPattern));
   }, [items, search]);
 
-  if (filteredItems.length === 0 && !('onAddItem' in props)) {
+  if (filteredItems.length === 0 && !props.onAddItem) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
@@ -82,7 +76,7 @@ export const SelectMenu = <T extends SelectOptionRequired>(
               itemRefs={itemRefs}
               onItemKeyDown={onItemKeyDown}
               onMouseEnterItem={onMouseEnterItem}
-              onAddItem={handleOnAddItem}
+              onAddItem={props.onAddItem}
             >
               {search}
             </AddTagItem>
