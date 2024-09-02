@@ -3,12 +3,8 @@ import { FC, useMemo } from 'react';
 import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
 
 import { colors } from 'src/atoms/style';
-import { environment } from 'src/atoms/utils/auth_environment';
-import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 
 import styled from 'styled-components';
-
-const { getAppName } = environment;
 
 const NoScrimContainer = styled.div`
   width: 100vw;
