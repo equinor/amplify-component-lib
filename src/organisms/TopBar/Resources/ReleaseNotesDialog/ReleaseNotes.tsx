@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { CircularProgress } from '@equinor/eds-core-react';
+import { useReleaseNotesQuery } from '@equinor/subsurface-app-management';
 
 import { useTokenReleaseNote } from './ReleasePosts/hooks/useTokenReleaseNote';
 import { ReleasePosts } from './ReleasePosts/ReleasePosts';
@@ -13,7 +14,6 @@ import {
   Wrapper,
 } from './ReleaseNotes.styles';
 import { ReleaseNotesHeader } from './ReleaseNotesHeader';
-import { useReleaseNotesQuery } from 'src/atoms/hooks';
 import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
 import { TableOfContentsProvider } from 'src/providers';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';

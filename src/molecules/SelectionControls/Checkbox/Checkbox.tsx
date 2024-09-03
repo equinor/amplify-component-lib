@@ -8,16 +8,19 @@ import {
 import { Wrapper } from '../SelectionControls.styles';
 
 export interface CheckboxProps extends EDSCheckboxProps {
-  label: string;
+  label?: string;
   outlined?: boolean;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  (props, ref) => (
-    <Wrapper $outlined={props.outlined || false}>
-      <Base ref={ref} {...props} />
-    </Wrapper>
-  )
+  (props, ref) => {
+    const { outlined, ...otherProps } = props;
+    return (
+      <Wrapper $outlined={outlined || false}>
+        <Base ref={ref} {...otherProps} />
+      </Wrapper>
+    );
+  }
 );
 
 Checkbox.displayName = 'Checkbox';

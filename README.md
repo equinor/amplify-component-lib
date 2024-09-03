@@ -54,18 +54,77 @@ project
     │   ...
 ```
 
-# Installing pre-commit hook in an application
+# Using [pre-commit](https://pre-commit.com/)
 
-1. Navigate to your projects root folder, `~/Projects/recap` for instance
+## Download and install pre-commit
 
-2. Copy and run the following command
+Using python's pip to download pre-commit
 
 ```bash
-wget -q -O - https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/precommit/install.sh | bash
+pip install pre-commit
 ```
 
-This should have downloaded a `package.json` file in the root of the project, created (if it didn't exist) the `tooling` folder.
-You should also see a `.husky` folder in the root of the project with a file called `pre-commit` inside
+Using brew to download pre-commit
+
+```bash
+brew install pre-commit
+```
+
+finally install pre-commit
+
+```bash
+pre-commit
+```
+
+## Add config file, .pre-commit-config.yaml
+
+Your `.pre-commit-config.yaml` file should look something like below
+```yaml
+repos:
+  - repo: local
+    hooks:
+      - id: hadolint
+        name: Lint Dockerfiles
+        description: Runs hadolint to lint Dockerfiles
+        language: system
+        types: ['dockerfile']
+        entry: hadolint
+      - id: trufflehog
+        name: TruffleHog
+        description: Detect secrets in your data with TruffleHog.
+        entry: trufflehog git file://. --since-commit HEAD --only-verified --fail
+        language: golang
+        pass_filenames: false
+      - id: prettier
+        name: Prettier
+        description: Runs prettier on supported files
+        language: system
+        entry: 'npx prettier --check'
+        files: .*\.jsx?$|.*\.tsx?$|.*\.ts?$
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.9.0
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
+        additional_dependencies:
+          - eslint@8.57.0
+          - eslint-config-prettier@9.1.0
+          - eslint-plugin-prettier@5.1.3
+          - eslint-plugin-react@7.34.0
+          - eslint-plugin-react-hooks@4.6.0
+          - eslint-plugin-simple-import-sort@12.0.0
+
+```
+
+## Install hooks
+
+When you have your config file in place you need to install the hooks
+
+```bash
+pre-commit install
+```
+
 
 ## Dockerfile linting
 

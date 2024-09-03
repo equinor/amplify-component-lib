@@ -3,11 +3,14 @@ import { useState } from 'react';
 import { Button, Dialog } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { useArgs } from '@storybook/preview-api';
+import { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import {
+  ListSelectProps,
   SelectOption,
+  SelectOptionRequired,
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
 
@@ -16,17 +19,19 @@ const meta: Meta<typeof ComboBox> = {
   component: ComboBox,
   argTypes: {
     label: { control: 'text' },
+    helperText: { control: 'text' },
     selectableParent: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
     variant: {
       control: 'radio',
-      options: VARIANT_OPTIONS,
+      options: [...VARIANT_OPTIONS, undefined],
       description: 'Variants',
     },
   },
   args: {
     label: 'Label here',
+    helperText: 'helper text',
     selectableParent: true,
     sortValues: true,
     clearable: true,
@@ -79,6 +84,15 @@ const FAKE_ITEMS_WITH_CHILDREN = [
   })),
 ];
 
+const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
+  faker.number.int({ min: 3, max: 6 })
+)
+  .fill(0)
+  .map(() => ({
+    label: `${faker.airline.airplane().name} ${faker.airline.aircraftType()} ${faker.airline.airport().name}`,
+    value: faker.string.uuid(),
+  }));
+
 export const BasicComboBox: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
@@ -94,6 +108,27 @@ export const BasicComboBox: StoryFn = (args) => {
     <ComboBox
       {...args}
       items={FAKE_ITEMS}
+      values={values}
+      onSelect={handleOnSelect}
+    />
+  );
+};
+
+export const ComboBoxWithReallyLongName: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      items={FAKE_ITEMS_WITH_REALLY_LONG_NAMES}
       values={values}
       onSelect={handleOnSelect}
     />
@@ -183,4 +218,41 @@ export const ComboBoxInDialog: StoryFn = (args) => {
       </Dialog>
     </>
   );
+};
+
+export const ComboBoxWithAdd: StoryObj<typeof ComboBox> = {
+  args: { items: FAKE_ITEMS, values: [] },
+  render: function Render(args) {
+    const [{ values, items }, updateArgs] = useArgs();
+    const handleOnSelect = (newValues: SelectOptionRequired[]) => {
+      updateArgs({ values: newValues });
+    };
+
+    const handleOnAdd = (value: string) => {
+      actions('onItemAdd').onItemAdd(value);
+      const newItem = {
+        label: value,
+        value: faker.string.uuid(),
+      };
+
+      updateArgs({
+        values: [...(values as SelectOptionRequired[]), newItem],
+        items: [
+          ...(args as ListSelectProps<SelectOptionRequired>).items,
+          newItem,
+        ],
+      });
+    };
+
+    return (
+      <ComboBox
+        {...args}
+        values={values as SelectOptionRequired[]}
+        items={items as SelectOptionRequired[]}
+        groups={undefined}
+        onSelect={handleOnSelect}
+        onAddItem={handleOnAdd}
+      />
+    );
+  },
 };

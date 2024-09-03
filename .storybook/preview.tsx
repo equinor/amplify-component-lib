@@ -3,10 +3,17 @@ import { Template } from 'src/organisms/Template/Template';
 
 import { darkTokens } from 'src/atoms/style/darkTokens';
 import { spacingTokens } from 'src/atoms/style/spacingTokens';
-import { SnackbarProvider } from 'src/providers/SnackbarProvider';
+import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { Preview, StoryFn } from '@storybook/react';
 
+
+import { initialize, mswLoader } from 'msw-storybook-addon';
+ import { handlers } from 'src/tests/mockHandlers';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from 'src';
+
 const { colors } = tokens;
+initialize({ onUnhandledRequest: 'bypass' })
 
 const globalTypes = {
   dataThemes: {
@@ -21,27 +28,33 @@ const globalTypes = {
 
 const decorators = [
   (Story: StoryFn) => {
+  const queryClient = new QueryClient();
     // Apply styles using the darkTokens variable
     const darkStyleElement = document.createElement('style');
-    darkStyleElement.innerHTML = darkTokens;
+    darkStyleElement.innerHTML = darkTokens as unknown as string;
     document.head.appendChild(darkStyleElement);
 
     const spacingStyleElement = document.createElement('style');
-    spacingStyleElement.innerHTML = spacingTokens;
+    spacingStyleElement.innerHTML = spacingTokens as unknown as string;
     document.head.appendChild(spacingStyleElement);
 
     return (
-      <>
-        <Template.GlobalStyles />
-        <SnackbarProvider>
-          <Story />
-        </SnackbarProvider>
-      </>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Template.GlobalStyles />
+          <SnackbarProvider>
+            <Story />
+          </SnackbarProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     );
   },
 ];
 
 const parameters = {
+  msw: {
+    handlers
+  },
   actions: { argTypes: /^on[A-Z].*/ },
   viewMode: 'docs',
   controls: { expanded: true },
@@ -60,8 +73,7 @@ const parameters = {
   },
   options: {
     storySort: {
-      // Pre-emptively added 'Atoms', 'Molecules' and 'Organisms'
-      order: ['Atoms', 'Molecules', 'Organisms', 'Other', 'Deprecated'],
+      order: ['Atoms', 'Molecules', 'Organisms', 'Providers', 'Other', 'Deprecated'],
     },
   },
 };
@@ -71,6 +83,9 @@ const preview: Preview = {
   globalTypes,
   decorators,
   parameters,
+  loaders: [
+    mswLoader,
+  ]
 };
 
 export default preview;

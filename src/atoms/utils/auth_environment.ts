@@ -86,6 +86,13 @@ const getIsMock = (isMock: string | undefined): boolean => {
   return isMock === 'true';
 };
 
+const getMockRoles = (mockedRoles: string | undefined): string[] => {
+  if (mockedRoles === undefined) {
+    return ['admin'];
+  }
+  return JSON.parse(mockedRoles) as string[];
+};
+
 const getAllowedParentDomains = (
   parentDomains: string | undefined
 ): string[] => {
@@ -93,6 +100,16 @@ const getAllowedParentDomains = (
     return getConfig('ALLOWED_PARENT_DOMAINS')?.split(';') || [];
   }
   return parentDomains.split(';');
+};
+
+const getMockUserPhoto = (
+  isMockingUserPhoto: string | undefined
+): string | undefined => {
+  if (isMockingUserPhoto === undefined) {
+    return undefined;
+  }
+
+  return 'https://avatars.githubusercontent.com/u/97165289'; // IMG from faker.image.avatar
 };
 function getPortalWithoutLocalhost() {
   let environmentName: EnvironmentType | undefined = import.meta.env
@@ -240,6 +257,8 @@ export const environment = {
   getApiScope,
   getEnvironmentName,
   getIsMock,
+  getMockUserPhoto,
+  getMockRoles,
   getServiceNowConfigurationItem,
   PORTAL_URL_WITHOUT_LOCALHOST,
 };

@@ -9,6 +9,8 @@ export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
 export { ContentMenu } from './ContentMenu/ContentMenu';
 export type { ContentMenuProps } from './ContentMenu/ContentMenu';
+export { Dialog } from './Dialog/Dialog';
+export type { DialogProps, DialogAction } from './Dialog/Dialog';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
 export type { EquinorLogoProps } from './EquinorLogo/EquinorLogo';
 export { FileProgress } from './FileProgress/FileProgress';
@@ -53,6 +55,7 @@ export type {
   FilterValues,
   SieveOption,
 } from './Sieve/Sieve.types';
+export type { SieveFilterGroup } from './Sieve/Filter';
 export { SingleFilterMenu } from './SingleFilterMenu/SingleFilterMenu';
 export type { SingleFilterMenuProps } from './SingleFilterMenu/SingleFilterMenu';
 export {
@@ -86,10 +89,13 @@ export type { SwitchProps } from './SelectionControls/Switch/Switch';
 
 // EDS Re-export
 export {
+  Accordion,
   Breadcrumbs,
   Button,
+  DatePicker,
+  DateRangePicker,
   Divider,
-  Dialog,
+  Dialog as EDSDialog,
   Menu,
   Tabs,
   TextField,
@@ -100,10 +106,18 @@ export {
   LinearProgress,
 } from '@equinor/eds-core-react';
 export type {
+  AccordionProps,
+  AccordionHeaderProps,
+  AccordionHeaderActionsProps,
+  AccordionItemProps,
+  AccordionPanelProps,
+  AccordionHeaderTitleProps,
   BreadcrumbsProps,
   BreadcrumbProps,
   ButtonProps,
-  DialogProps,
+  DatePickerProps,
+  DateRangePickerProps,
+  DialogProps as EDSDialogProps,
   DividerProps,
   MenuProps,
   SearchProps,

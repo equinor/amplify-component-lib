@@ -1,16 +1,13 @@
-import { IconData } from '@equinor/eds-icons';
 import { save } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
+import { colorSchemes } from './Chip.styles';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
-// Mock function for onDelete
-
 test('Shows readonly chip with leading icon', () => {
   const someText = faker.animal.crocodilia();
-  const leadingIconData: IconData = save;
-  render(<Chip leadingIconData={leadingIconData}>{someText}</Chip>);
+  render(<Chip leadingIconData={save}>{someText}</Chip>);
 
   //Accesses the span element, finds it parent and finds the first element, which in this case should alwasys be leading
   expect(
@@ -114,6 +111,44 @@ test('Interactive chip renders icon', () => {
   );
 });
 
+test('White readonly chip has expected background', () => {
+  const someText = faker.animal.crocodilia();
+
+  render(<Chip variant="white">{someText}</Chip>);
+
+  const chip = screen.getByText(someText).parentElement!.parentElement!;
+
+  expect(chip).toHaveStyleRule(
+    'background-color',
+    colorSchemes.white.background
+  );
+});
+
+test('White selected chip has expected styling from default', () => {
+  const handleOnClick = vi.fn();
+
+  const someText = faker.animal.crocodilia();
+  const defaultStyling = colorSchemes.default;
+
+  render(
+    <Chip variant="white" selected onClick={handleOnClick}>
+      {someText}
+    </Chip>
+  );
+
+  const chip = screen.getByRole('button');
+
+  expect(chip).toHaveStyleRule(
+    'background-color',
+    defaultStyling.selected?.background
+  );
+  expect(chip).toHaveStyleRule('color', defaultStyling.color);
+  expect(chip).toHaveStyleRule(
+    'outline',
+    `1px solid ${defaultStyling.selected?.borderColor}`
+  );
+});
+
 test('Handles keyboard event on delete interactive chip', async () => {
   const handleOnDelete = vi.fn();
 
@@ -157,33 +192,5 @@ test('Disabled interactive chip works as expected', async () => {
 
   await user.click(chip);
   // Assert that handleOnClick has been called
-  expect(handleOnClick).not.toHaveBeenCalled();
-});
-
-test('Disabled read only chip works as expected', () => {
-  const someText = faker.animal.crocodilia();
-
-  render(<Chip disabled>{someText}</Chip>);
-
-  const chip = screen.getByText(someText).parentElement;
-
-  expect(chip).toBeVisible();
-});
-
-test('Handles prioritized click event when delete is also defined on interactive chip', async () => {
-  const someText = faker.animal.crocodilia();
-  const handleDelete = vi.fn();
-  const handleOnClick = vi.fn();
-  render(
-    <Chip onClick={handleOnClick} onDelete={handleDelete}>
-      {someText}
-    </Chip>
-  );
-  const user = userEvent.setup();
-  const chip = screen.getByText(someText);
-
-  await user.click(chip);
-
-  expect(handleDelete).toHaveBeenCalled();
   expect(handleOnClick).not.toHaveBeenCalled();
 });

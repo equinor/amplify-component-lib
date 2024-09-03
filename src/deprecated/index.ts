@@ -26,3 +26,5 @@ export { default as HeaderDrawer } from './HeaderDrawer';
 export { default as MultiSelectDrawer } from './MultiSelectDrawer';
 export { default as SingleSelectDrawer } from './SingleSelectDrawer';
 export { default as IconToggleButton } from './IconToggleButton';
+export { default as Tutorial } from './Tutorial/Tutorial';
+export { HighlightBlocks } from './Tutorial/HighlightBlocks/HighlightBlocks';

@@ -5,7 +5,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
 import { waitFor } from '@testing-library/react';
 
-import { FilterOption } from 'src/molecules/Sieve/Filter';
+import { SieveFilterGroup } from 'src/molecules/Sieve/Filter';
 import { Sieve } from 'src/molecules/Sieve/Sieve';
 import {
   SieveOption,
@@ -20,8 +20,8 @@ function Wrappers({ children }: { children: ReactNode }) {
 
 function fakeOption(num: number): SieveOption {
   return {
-    label: faker.animal.dog() + num,
-    value: faker.animal.dog() + num,
+    label: faker.string.uuid() + num,
+    value: faker.string.uuid() + num,
   };
 }
 
@@ -35,8 +35,8 @@ function fakeOptions(): SieveOption[] {
   return options;
 }
 
-function fakeFilterOptions(): FilterOption[] {
-  const options: FilterOption[] = [];
+function fakeFilterOptions(): SieveFilterGroup[] {
+  const options: SieveFilterGroup[] = [];
   for (let i = 0; i < faker.number.int({ min: 2, max: 7 }); i++) {
     options.push({
       label: faker.string.uuid(),

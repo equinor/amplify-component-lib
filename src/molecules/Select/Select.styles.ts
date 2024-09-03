@@ -1,22 +1,45 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
 import { colors, spacings } from 'src/atoms/style';
+import { VARIANT_COLORS } from 'src/atoms/style/colors';
+import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
-import { Variants } from 'src/molecules/Select/Select.types';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const VARIANT_COLORS: Record<Variants, string> = {
-  warning: colors.interactive.warning__resting.rgba,
-  error: colors.interactive.danger__resting.rgba,
-  success: colors.interactive.success__resting.rgba,
-  dirty: colors.dataviz.darkblue.darker,
-} as const;
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.small};
+`;
+
+interface HelperWrapperProps {
+  $variant?: Variants;
+}
+
+export const HelperWrapper = styled.span<HelperWrapperProps>`
+  display: flex;
+  gap: ${spacings.small};
+  align-items: center;
+  margin-left: ${spacings.small};
+  width: calc(100% - ${spacings.small});
+  > label {
+    margin: 0;
+  }
+  ${({ $variant }: HelperWrapperProps) => {
+    if (!$variant) return '';
+    return css`
+      > svg {
+        flex-shrink: 0;
+        fill: ${VARIANT_COLORS[$variant]};
+      }
+    `;
+  }}
+`;
 
 interface ContainerProps {
   $lightBackground?: boolean;
   $variant?: Variants;
-  $shouldShowTopMargin?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -25,11 +48,35 @@ const Container = styled.div<ContainerProps>`
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: 6px 8px;
+  &:hover:not(:has(input:disabled)) {
+    cursor: pointer;
+  }
 
-  ${({ $variant }) =>
-    $variant
-      ? `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]}`
-      : `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`};
+  ${({ $variant }) => {
+    if (!$variant)
+      return css`
+        box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
+        &:hover {
+          box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba};
+        }
+      `;
+
+    if ($variant === 'dirty') {
+      return css`
+        box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]};
+        &:hover {
+          box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS[$variant]};
+        }
+      `;
+    }
+
+    return css`
+      outline: 1px solid ${VARIANT_COLORS[$variant]};
+      &:hover {
+        box-shadow: inset 0 -1px 0 0 ${VARIANT_COLORS[$variant]};
+      }
+    `;
+  }}
 
   ${({ $lightBackground }) =>
     $lightBackground
@@ -39,14 +86,9 @@ const Container = styled.div<ContainerProps>`
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
   }
-
-  ${({ $shouldShowTopMargin }) => $shouldShowTopMargin && `margin-top: 1rem;`};
-
-  > label {
-    left: 0;
-    right: 0;
-    position: absolute;
-    top: -1rem;
+  &:has(input:disabled) {
+    outline: none;
+    box-shadow: none;
   }
 
   > svg[role='progressbar'] {
@@ -72,6 +114,12 @@ const Container = styled.div<ContainerProps>`
     }
     > label {
       color: ${colors.interactive.disabled__text.rgba};
+    }
+  }
+
+  &:has(button#clear) {
+    > section {
+      width: calc(100% - 24px);
     }
   }
 `;
@@ -124,7 +172,7 @@ const ClearButton = styled(Button)`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: 26px;
+  right: 32px;
   width: 24px;
   height: 24px;
   svg {
@@ -161,6 +209,11 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;
 
+  > div {
+    grid-auto-columns: auto;
+    justify-content: flex-start;
+  }
+
   &:hover {
     background: none;
   }
@@ -189,7 +242,15 @@ const PlaceholderText = styled(Typography)`
 `;
 
 const ValueText = styled(PlaceholderText)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${colors.text.static_icons__default.rgba};
+  max-width: 100%;
+`;
+
+const NoTagFoundText = styled(Typography)`
+  margin: ${spacings.medium};
 `;
 
 const NoItemsFoundText = styled(Typography)`
@@ -198,7 +259,12 @@ const NoItemsFoundText = styled(Typography)`
 
 const StyledMenu = styled(EDSMenu)`
   max-height: 20rem;
-  overflow: auto;
+  max-width: inherit;
+  overflow-y: auto;
+  > div {
+    width: inherit;
+    max-width: inherit;
+  }
 `;
 
 const MenuItemWrapper = styled.div`
@@ -218,6 +284,7 @@ export {
   Container,
   MenuItemSpacer,
   StyledMenu,
+  NoTagFoundText,
   NoItemsFoundText,
   PlaceholderText,
   StyledChip,

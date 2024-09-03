@@ -13,75 +13,116 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
 
 import { TopBarMenu } from '../TopBarMenu';
+import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
+import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
+import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
 import {
   ButtonWrapper,
   Container,
-  ProfileButton,
   RoleChip,
   RolesContainer,
   TextContent,
 } from './Account.styles';
-import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+import { AccountAvatar } from './AccountAvatar';
+import { AccountButton } from './AccountButton';
+import { ImpersonateButton } from './ImpersonateButton';
+import { ActiveUserImpersonationButton } from 'src/organisms/TopBar/Account/ActiveUserImpersonationButton';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
-export interface AccountProps {
-  account: AccountInfo | undefined;
-  logout: () => void;
-  photo: string | undefined;
-  roles: string[] | undefined;
+interface AccountProps {
+  /**
+   * @deprecated logout - Not needed anymore
+   */
+  logout?: () => void;
+  /**
+   * @deprecated account - Not needed anymore
+   */
+  account?: AccountInfo | undefined;
+  /**
+   * @deprecated photo - Not needed anymore
+   */
+  photo?: string | undefined;
+  /**
+   * @deprecated roles - Not needed anymore
+   */
+  roles?: string[] | undefined;
   renderCustomButton?: (
     buttonRef: MutableRefObject<HTMLButtonElement | null>,
     handleToggle: () => void
   ) => ReactElement;
 }
 
-export const Account: FC<AccountProps> = ({
-  account,
-  logout,
-  photo,
-  roles,
-  renderCustomButton,
-}) => {
+export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
+  const { account, roles, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [openImpersonate, setOpenImpersonate] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const { data: canImpersonate } = useCanImpersonate();
+  const { data: activeImpersonationUser } = useActiveImpersonationUser();
 
-  const closeMenu = () => setIsOpen(false);
-  const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
+  const name = activeImpersonationUser
+    ? activeImpersonationUser.name
+    : account?.name;
+  const activeRoles = activeImpersonationUser
+    ? activeImpersonationUser.roles
+    : roles;
+  const username = activeImpersonationUser
+    ? activeImpersonationUser.uniqueName
+    : account?.username;
+
+  const handleMenuOnClose = () => setIsOpen(false);
+  const handleToggleMenu = useCallback(() => {
+    setIsOpen((prev) => !prev);
+    setOpenImpersonate(false);
+  }, []);
+
+  const handleOpenImpersonate = () => {
+    setOpenImpersonate(true);
+    setIsOpen(false);
+  };
+  const handleOnCloseImpersonate = () => setOpenImpersonate(false);
 
   const customButton = useMemo(() => {
     if (renderCustomButton) {
-      return renderCustomButton(buttonRef, toggleMenu);
+      return renderCustomButton(buttonRef, handleToggleMenu);
     }
     return null;
-  }, [renderCustomButton, toggleMenu]);
+  }, [renderCustomButton, handleToggleMenu]);
 
   return (
     <>
       {customButton ? (
         customButton
       ) : (
-        <ProfileButton ref={buttonRef} onClick={toggleMenu}>
-          <ProfileAvatar size={36} name={account?.name} url={photo} />
-        </ProfileButton>
+        <AccountButton ref={buttonRef} onClick={handleToggleMenu} />
       )}
       <TopBarMenu
         open={isOpen}
         title="Account"
-        onClose={closeMenu}
+        onClose={handleMenuOnClose}
         anchorEl={buttonRef.current}
       >
         <Container>
-          <ProfileAvatar size={64} name={account?.name} url={photo} />
+          {activeImpersonationUser && (
+            <ActiveUserImpersonationButton onClick={handleOpenImpersonate} />
+          )}
+          <AccountAvatar />
           <TextContent>
-            <Typography variant="h6">{account?.name}</Typography>
-            <Typography>{account?.username}</Typography>
+            <Typography variant="h6">{name}</Typography>
+            <Typography>{username}</Typography>
           </TextContent>
-          {roles && (
+          {activeRoles && (
             <RolesContainer>
-              {roles.map((role) => (
+              {activeRoles.map((role) => (
                 <RoleChip key={role}>{role}</RoleChip>
               ))}
             </RolesContainer>
+          )}
+          {canImpersonate && (
+            <ImpersonateButton
+              onOpenImpersonateMenu={handleOpenImpersonate}
+              onClose={handleMenuOnClose}
+            />
           )}
         </Container>
         <ButtonWrapper>
@@ -91,6 +132,11 @@ export const Account: FC<AccountProps> = ({
           </Button>
         </ButtonWrapper>
       </TopBarMenu>
+      <ImpersonateMenu
+        open={openImpersonate}
+        onClose={handleOnCloseImpersonate}
+        anchorEl={buttonRef.current}
+      />
     </>
   );
 };

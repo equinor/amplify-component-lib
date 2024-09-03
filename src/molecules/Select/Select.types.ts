@@ -1,5 +1,7 @@
 import { KeyboardEvent, MutableRefObject } from 'react';
 
+import { Variants } from 'src/atoms/types/variants';
+
 export interface SelectOptionRequired {
   value: string;
   label: string;
@@ -21,6 +23,7 @@ export interface MultiSelectCommon<T extends SelectOptionRequired> {
     selectedValue?: SelectOption<T>
   ) => void;
   selectableParent?: boolean;
+  onAddItem?: (item: string) => void;
 }
 
 export interface GroupedSelectProps<T extends SelectOptionRequired> {
@@ -30,6 +33,7 @@ export interface GroupedSelectProps<T extends SelectOptionRequired> {
 
 export interface ListSelectProps<T extends SelectOptionRequired> {
   items: SelectOption<T>[];
+  onAddItem?: () => void;
   groups?: undefined;
 }
 
@@ -64,8 +68,6 @@ export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
 } & Omit<SelectMenuProps<T>, 'search'> &
   SelectMenuItemProps<T>;
 
-export type Variants = 'error' | 'warning' | 'success' | 'dirty';
-
 export const VARIANT_OPTIONS: Variants[] = [
   'success',
   'warning',
@@ -77,6 +79,7 @@ export interface CommonSelectProps {
   id?: string;
   variant?: Variants;
   label?: string;
+  helperText?: string;
   placeholder?: string;
   sortValues?: boolean;
   disabled?: boolean;

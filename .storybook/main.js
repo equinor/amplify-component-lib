@@ -4,13 +4,9 @@ const config = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-actions',
     '@storybook/addon-designs',
-    '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
-    'storybook-addon-react-docgen',
     './addons/GitHubSearchAddon/manager.js',
-    '@storybook/addon-mdx-gfm'
   ],
 
   build: {
@@ -26,7 +22,7 @@ const config = {
 
   docs: {},
 
-  staticDirs: ['../static'],
+  staticDirs: ['../public'],
 
   async viteFinal(config) {
     return {
@@ -48,7 +44,9 @@ const config = {
 
   env: () => ({
     VITE_IS_MOCK: 'true',
-    VITE_NAME: "orca"
+    VITE_NAME: 'orca',
+    VITE_CLIENT_ID: 'fake-id',
+    VITE_ENVIRONMENT_NAME: 'development'
   }),
 
   typescript: {

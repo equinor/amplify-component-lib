@@ -6,6 +6,11 @@ import styled from 'styled-components';
 
 const providersList = [
   {
+    name: 'ThemeProvider',
+    body: 'Provider to make Theme (data-theme driven) work',
+    code: `<ThemeProvider>{children}</ThemeProvider>`,
+  },
+  {
     name: 'TableOfContentsProvider',
     body: 'Provider to make TableOfContents component work',
     code: `<TableOfContentsProvider items={...}>{children}</TableOfContentsProvider>`,

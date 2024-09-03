@@ -23,6 +23,7 @@ module.exports = {
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort'],
   rules: {
+    'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-redundant-type-constituents': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',

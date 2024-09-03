@@ -20,4 +20,6 @@ interface ImportMetaEnv {
   VITE_ALLOWED_PARENT_DOMAINS: string;
   ALLOWED_PARENT_DOMAINS: string;
   VITE_IS_MOCK?: string;
+  VITE_MOCK_USER_PHOTO?: string;
+  VITE_MOCK_ROLES?: string;
 }

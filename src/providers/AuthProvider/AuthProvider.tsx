@@ -15,7 +15,7 @@ import { AuthProviderInner } from './AuthProviderInner';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
 
 const { msalApp } = auth;
-const { getIsMock } = environment;
+const { getIsMock, getMockUserPhoto, getMockRoles } = environment;
 
 export type AuthState = 'loading' | 'authorized' | 'unauthorized';
 
@@ -24,6 +24,7 @@ export interface AuthContextType {
   photo: string | undefined;
   roles: string[] | undefined;
   logout: () => void;
+  authState: AuthState;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,38 +37,61 @@ export const useAuth = () => {
   return context;
 };
 
+export const MOCK_USER: Required<AccountInfo> = {
+  homeAccountId: 'mock-home-account-id',
+  environment: 'mock',
+  tenantId: 'mock-tenant-id',
+  username: 'MOCK@equinor.com',
+  localAccountId: 'mock-local-account-id',
+  name: 'Mock mocksnes',
+  idToken: 'fake',
+  idTokenClaims: { id: 'claim' },
+  nativeAccountId: 'accountid',
+  authorityType: 'authority',
+  tenantProfiles: new Map(),
+} as const;
+
 interface AuthProviderProps {
   children: ReactNode;
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
+  withoutLoader?: boolean;
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({
   children,
   loadingComponent,
   unauthorizedComponent,
+  withoutLoader = false,
 }) => {
   const [account, setAccount] = useState<AccountInfo | undefined>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [photo, setPhoto] = useState<string | undefined>();
   const isMock = useMemo(() => getIsMock(import.meta.env.VITE_IS_MOCK), []);
+  const mockPhoto = useMemo(
+    () => getMockUserPhoto(import.meta.env.VITE_MOCK_USER_PHOTO),
+    []
+  );
+  const mockRoles = useMemo(
+    () => getMockRoles(import.meta.env.VITE_MOCK_ROLES),
+    []
+  );
 
   if (isMock) {
+    if (authState === 'loading') {
+      setTimeout(() => {
+        setAuthState('authorized');
+      }, 1000);
+    }
     return (
       <AuthContext.Provider
         value={{
-          roles: ['mock'],
-          account: {
-            homeAccountId: 'mock-home-account-id',
-            environment: 'mock',
-            tenantId: 'mock-tenant-id',
-            username: 'MockUser@euquinor.com',
-            localAccountId: 'mock-local-account-id',
-            name: 'Mock mocksnes',
-          },
-          photo,
+          roles: mockRoles,
+          account: MOCK_USER,
+          photo: mockPhoto,
           logout: () => console.log('Logged out the user!'),
+          authState,
         }}
       >
         {children}
@@ -82,6 +106,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         account,
         photo,
         logout: () => msalApp.logoutRedirect(),
+        authState,
       }}
     >
       <MsalProvider instance={msalApp}>
@@ -94,6 +119,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
           setPhoto={setPhoto}
           authState={authState}
           setAuthState={setAuthState}
+          withoutLoader={withoutLoader}
         >
           {children}
         </AuthProviderInner>

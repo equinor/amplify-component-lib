@@ -152,8 +152,6 @@ export const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
     }, [size]);
 
     const imageSrc = useMemo((): string => {
-      const { btoa, atob } = window;
-
       if (url) {
         try {
           if (btoa(atob(url)) === url) {

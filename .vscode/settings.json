@@ -1,5 +1,5 @@
 {
-  "prettier.configPath": "./.prettierrc.js",
+  "prettier.configPath": "./.prettierrc",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
@@ -9,6 +9,9 @@
   "editor.guides.bracketPairs": "active",
   "files.trimTrailingWhitespace": true,
   "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "testing.automaticallyOpenPeekView": "never"

@@ -1,0 +1,71 @@
+import { Links } from 'src/storybook'
+import { Primary, Canvas, Controls } from '@storybook/blocks'
+import * as ComponentStories from './Accordion.stories'
+
+
+# Accordion
+
+Allows users to collapse and expand sections of content.
+
+<Links
+  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17837%3A125"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Accordion/Accordion.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/surfaces-accordion--docs"
+/>
+
+<Primary />
+
+<Controls />
+
+## Usage
+
+<ul>
+  <li>Accordions are composed of a header area and a content area.</li>
+  <li>Accordions deliver large amounts of information in user-controlled sections.</li>
+  <li>Accordions can be used to group or hide information which helps to keep order and scannability on a page.</li>
+</ul>
+
+```tsx
+import { Accordion } from '@equinor/amplify-component-lib'
+
+<Accordion>
+  <Accordion.Item>
+    <Accordion.Header>Simple header</Accordion.Header>
+    <Accordion.Panel>Content 1</Accordion.Panel>
+  </Accordion.Item>
+  <Accordion.Item>
+    <Accordion.Header>
+      <Accordion.HeaderTitle>
+        Header with actions
+      </Accordion.HeaderTitle>
+      <Accordion.HeaderActions>
+        <Button variant="ghost_icon">
+          <Icon name="edit" title="Edit" />
+        </Button>
+      </Accordion.HeaderActions>
+    </Accordion.Header>
+    <Accordion.Panel>Content 2</Accordion.Panel>
+  </Accordion.Item>
+</Accordion>
+```
+
+## Examples
+
+### Header
+
+<ul>
+  <li>The header is accompanied with two subcomponents, <code>Accordion.HeaderTitle</code> and
+    <code>Accordion.HeaderActions</code> which should be used if there is a need
+    for additional action buttons in the header. Raw text will get wrapped
+    in an <code>Accordion.HeaderTitle</code> automatically.</li>
+  <li>For accessibility, please make sure to set the correct `headerLevel` based on the context the Accordion is used in. An accordion under a `h2` paragraph should be set to `h3`and so on. There is no visual difference between Accordion headerlevels.</li>
+  <li>The expand/collapse functionality is tied to the entire header.</li>
+</ul>
+
+<Canvas of={ComponentStories.Header} />
+
+### Controlled
+
+Use `onExpandedChange` prop on `Accordion.Item` to make it a controlled component
+<Canvas of={ComponentStories.Controlled} />

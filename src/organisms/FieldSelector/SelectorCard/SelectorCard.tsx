@@ -1,18 +1,12 @@
 import React, { FC, useMemo, useState } from 'react';
 
-import {
-  Autocomplete,
-  AutocompleteChanges,
-  Button,
-  Card,
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Card, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_forward } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
 import { Field } from 'src/atoms/types/Field';
+import { SelectOptionRequired, SingleSelect } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -49,19 +43,6 @@ const StyledCard = styled(Card)`
   }
 `;
 
-const AutocompleteWrapper = styled.div`
-  * {
-    background: none !important;
-    color: ${colors.text.static_icons__default.rgba};
-  }
-  *:focus-within {
-    outline: none !important;
-  }
-  input:focus {
-    box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
-  }
-`;
-
 const LinkContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -78,9 +59,7 @@ const GoToAccessItLink = styled.a`
   font-weight: 500;
   border-radius: ${shape.corners.borderRadius};
   text-decoration: none;
-  &:visited {
-    color: inherit;
-  }
+  color: ${colors.text.static_icons__default.rgba};
   &:focus-within {
     outline: ${colors.interactive.primary__resting.rgba} dashed 2px;
   }
@@ -94,9 +73,7 @@ const GoToAccessItLink = styled.a`
   }
 `;
 
-type StrictField = {
-  name: string;
-} & Field;
+type SelectFieldOption = Field & SelectOptionRequired;
 
 export interface FieldSelectorType {
   availableFields: Field[];
@@ -109,23 +86,28 @@ export const SelectorCard: FC<FieldSelectorType> = ({
   onSelect,
   showAccessITLink = true,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Field>();
-
-  const handleOnChange = (event: AutocompleteChanges<Field>) => {
-    setSelectedOption(event.selectedItems[0]);
-  };
+  const [selectedOption, setSelectedOption] = useState<SelectFieldOption>();
 
   const handleSelectField = () => {
-    if (selectedOption !== undefined) onSelect(selectedOption);
+    if (selectedOption !== undefined)
+      onSelect({
+        name: selectedOption.name,
+        uuid: selectedOption.uuid,
+        country: selectedOption.country,
+      });
   };
 
-  const options = useMemo(() => {
-    const all: StrictField[] = [];
+  const handleOnSelect = (selectedOption: SelectFieldOption | undefined) => {
+    setSelectedOption(selectedOption);
+  };
+
+  const options: SelectFieldOption[] = useMemo(() => {
+    const all = [];
     for (const field of availableFields) {
       if (!field.name) {
         console.error('Field with no name found!:', field);
       } else {
-        all.push(field as StrictField);
+        all.push({ label: field.name, value: field.name, ...field });
       }
     }
     return all;
@@ -136,16 +118,13 @@ export const SelectorCard: FC<FieldSelectorType> = ({
       <Typography variant="h3">Please select a field</Typography>
       <div>
         <section>
-          <AutocompleteWrapper>
-            <Autocomplete
-              autoWidth
-              options={options}
-              label=""
-              placeholder="Select a field"
-              onOptionsChange={handleOnChange}
-              optionLabel={(option) => option.name}
-            />
-          </AutocompleteWrapper>
+          <SingleSelect
+            lightBackground
+            value={selectedOption}
+            items={options}
+            placeholder="Select a field"
+            onSelect={handleOnSelect}
+          />
           <Button
             data-testid="nextButton"
             variant="contained_icon"

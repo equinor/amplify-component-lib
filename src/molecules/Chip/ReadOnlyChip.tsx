@@ -10,17 +10,10 @@ export type ReadOnlyChipProps = BaseChipProps &
 
 export const ReadOnlyChip = forwardRef<HTMLDivElement, ReadOnlyChipProps>(
   (props, ref) => {
-    const { children, disabled, leadingIconData, ...otherReadOnlyProps } =
-      props;
+    const { children, leadingIconData, ...otherReadOnlyProps } = props;
 
-    // ReadOnlyChip only needs to handle the div related props and children,
     return (
-      <ReadOnlyChipStyle
-        {...otherReadOnlyProps}
-        disabled={disabled}
-        className={disabled ? 'disabled' : ''}
-        ref={ref}
-      >
+      <ReadOnlyChipStyle {...otherReadOnlyProps} ref={ref}>
         <div className="content">
           {leadingIconData && (
             <div className="leading">

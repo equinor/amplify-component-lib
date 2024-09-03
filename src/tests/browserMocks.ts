@@ -67,8 +67,8 @@ vi.stubGlobal('matchMedia', mockMatchMedia);
 // Mock globals used by RichTextEditor
 
 export class ClipboardDataMock {
-  getData: Mock<string[], [string]>;
-  setData: Mock<string[], [string, string]>;
+  getData: Mock;
+  setData: Mock;
 
   constructor() {
     this.getData = vi.fn();

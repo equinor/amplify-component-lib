@@ -14,5 +14,11 @@ export type ComboBoxProps<T extends SelectOptionRequired> = CommonSelectProps &
 export function ComboBox<T extends SelectOptionRequired>(
   props: ComboBoxProps<T>
 ) {
+  if (props.groups && props.onAddItem) {
+    throw new Error(
+      "[ACL - ComboBox] Using 'onAddItem' is only supported in lists and not groups"
+    );
+  }
+
   return <Select {...props} />;
 }
