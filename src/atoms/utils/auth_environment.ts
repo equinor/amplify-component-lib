@@ -13,6 +13,7 @@ interface EnvVariables {
   NAME: string;
   API_URL: string;
   API_SCOPE: string;
+  API_CLIENT_ID: string;
   ENVIRONMENT_NAME: string;
   SERVICE_NOW_CONFIGURATION_ITEM: string;
   ALLOWED_PARENT_DOMAINS: string;
@@ -59,6 +60,12 @@ const getApiScope = (apiScope: string | undefined): string => {
     return getConfig('API_SCOPE');
   }
   return apiScope;
+};
+const getApiClientId = (apiClientId: string | undefined): string => {
+  if (!apiClientId) {
+    return getConfig('API_CLIENT_ID');
+  }
+  return apiClientId;
 };
 
 const getEnvironmentName = (
@@ -255,6 +262,7 @@ export const environment = {
   getClientId,
   getApiUrl,
   getApiScope,
+  getApiClientId,
   getEnvironmentName,
   getIsMock,
   getMockUserPhoto,
