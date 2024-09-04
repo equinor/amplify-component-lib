@@ -3,6 +3,7 @@ import { forwardRef, HTMLAttributes, MouseEvent, useMemo } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 
 import { IconContainer, ItemText, Link } from './MenuItem.styles';
+import { isCurrentUrl as checkUrl } from './MenuItem.utils';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
@@ -10,6 +11,12 @@ import { useSideBar } from 'src/providers/SideBarProvider';
 export type MenuItemProps = {
   currentUrl?: string;
   disabled?: boolean;
+  /**
+   * This is useful for routes that drills into a path,
+   * by still highlighting the original path and not disable "back to start" by click on the same link again
+   * eg. navigating to /collections and clicking on an item to go into /collections/:id and so on
+   */
+  hasPathDrilling?: boolean;
 } & SideBarMenuItem &
   HTMLAttributes<HTMLAnchorElement>;
 
@@ -23,13 +30,16 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       onClick,
       disabled = false,
       replace = false,
+      hasPathDrilling = false,
     },
     ref
   ) => {
-    const isCurrentUrl =
-      (replace
-        ? typeof currentUrl === 'string' && currentUrl === link
-        : currentUrl?.includes(link)) ?? false;
+    const isCurrentUrl = checkUrl({
+      currentUrl,
+      link,
+      replace,
+      hasPathDrilling,
+    });
     const { isOpen } = useSideBar();
 
     const canNavigate = useMemo(
