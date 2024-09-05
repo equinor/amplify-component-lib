@@ -19,10 +19,11 @@ interface UserImpersonationProps extends ImpersonateUser {
 }
 
 export const UserImpersonation: FC<UserImpersonationProps> = ({
-  name,
   uniqueName,
   roles,
   selected,
+  firstName,
+  lastName,
   onClick,
 }) => {
   const handleOnClick = () => {
@@ -39,7 +40,9 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
         color={colors.text.static_icons__tertiary.rgba}
         data={account_circle}
       />
-      <Typography data-testid="name">{name}</Typography>
+      <Typography data-testid="name">
+        {firstName} {lastName}
+      </Typography>
       <RoleChipContainer>
         {roles.map((role) => (
           <RoleChip key={role} data-testid="role">
