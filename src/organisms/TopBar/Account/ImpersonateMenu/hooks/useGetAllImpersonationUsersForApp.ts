@@ -9,12 +9,9 @@ const appName = environment.getAppName(import.meta.env.VITE_NAME);
 export function useGetAllImpersonationUsersForApp() {
   return useQuery({
     queryKey: [GET_ALL_IMPERSONATIONS],
-    queryFn: async () => {
-      const all = await ImpersonateUserService.getApiV1ImpersonateUser();
-
-      return all
-        .filter((user) => user.appName === appName)
-        .sort((a, b) => a.name.localeCompare(b.name));
-    },
+    queryFn: async () =>
+      await ImpersonateUserService.getApiV1ImpersonateUserGetImpersonateUserForApp(
+        appName
+      ),
   });
 }

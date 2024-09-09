@@ -60,8 +60,8 @@ export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
   const { data: canImpersonate } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
 
-  const name = activeImpersonationUser
-    ? activeImpersonationUser.name
+  const fullName = activeImpersonationUser
+    ? activeImpersonationUser.fullName
     : account?.name;
   const activeRoles = activeImpersonationUser
     ? activeImpersonationUser.roles
@@ -108,7 +108,7 @@ export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
           )}
           <AccountAvatar />
           <TextContent>
-            <Typography variant="h6">{name}</Typography>
+            <Typography variant="h6">{fullName}</Typography>
             <Typography>{username}</Typography>
           </TextContent>
           {activeRoles && (
