@@ -15,6 +15,7 @@ interface ImportMetaEnv {
   VITE_NAME: string;
   VITE_API_URL: string;
   VITE_API_SCOPE: string;
+  VITE_API_CLIENT_ID: string;
   VITE_ENVIRONMENT_NAME: string;
   VITE_SERVICE_NOW_CONFIGURATION_ITEM: string;
   VITE_ALLOWED_PARENT_DOMAINS: string;
