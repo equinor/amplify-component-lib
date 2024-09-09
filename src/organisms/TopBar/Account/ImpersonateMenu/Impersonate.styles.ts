@@ -1,15 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
-import { Menu } from 'src/molecules';
 
 import styled from 'styled-components';
 
 const { colors } = tokens;
-
-export const StyledMenu = styled(Menu)`
-  width: 20rem;
-`;
 
 export const Header = styled.header`
   padding: ${spacings.medium};
