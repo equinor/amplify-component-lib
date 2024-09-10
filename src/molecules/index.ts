@@ -43,10 +43,8 @@ export {
   TextTable,
 } from './RichTextEditor/MenuBar/Table/TableBar';
 export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
-export type {
-  RichTextEditorFeatures,
-  OnImageUploadFn,
-} from './RichTextEditor/RichTextEditor.types';
+export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
+export type { OnImageUploadFn } from './RichTextEditor/RichTextEditor.types';
 export { Search } from './Search/Search';
 export { Sieve } from './Sieve/Sieve';
 export type {

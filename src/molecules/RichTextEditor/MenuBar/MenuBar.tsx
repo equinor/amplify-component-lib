@@ -93,6 +93,7 @@ export const EditorText = {
   Code: TextCode,
   Links: TextLinks,
   Table: TextTable,
+  TableBar: TableMenuBar,
   Alignment: TextAlignment,
   ClearFormating: TextClearFormating,
 };
