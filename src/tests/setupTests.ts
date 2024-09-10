@@ -12,7 +12,8 @@ const server = setupServer(...handlers);
 
 beforeAll(() => {
   vi.stubEnv('VITE_IS_MOCK', 'true');
-  vi.stubEnv('VITE_CLIENT_ID', 'fake-id');
+  vi.stubEnv('VITE_NAME', 'Amplify components');
+  vi.stubEnv('VITE_API_CLIENT_ID', 'fake-id');
   server.listen({
     onUnhandledRequest: (req, print) => {
       if (req.url.includes('api')) print.error();

@@ -23,7 +23,7 @@ export const ImpersonateAvatar: FC<ImpersonateAvatarProps> = ({ size }) => {
 
   return (
     <Wrapper>
-      <ProfileAvatar size={size} name={activeImpersonationUser?.name} />
+      <ProfileAvatar size={size} name={activeImpersonationUser?.fullName} />
     </Wrapper>
   );
 };
