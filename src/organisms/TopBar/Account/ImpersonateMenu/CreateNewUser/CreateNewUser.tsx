@@ -51,7 +51,6 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
       lastName,
       roles,
       uniqueName: `${firstName}.${lastName}`.toLowerCase(),
-      fullName: `${firstName} ${lastName}`,
       appName: environment.getAppName(import.meta.env.VITE_NAME),
       activeUsers: [],
     });
