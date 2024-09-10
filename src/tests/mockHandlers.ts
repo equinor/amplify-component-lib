@@ -118,7 +118,7 @@ export const handlers = [
     await delay('real');
     return HttpResponse.text('true');
   }),
-  http.get('*/api/v1/ImpersonateUser/ActiveUserByUsername', async () => {
+  http.get('*/api/v1/ImpersonateUser/ActiveUser', async () => {
     await delay('real');
     if (!activeImpersonateUser) return HttpResponse.json(null, { status: 204 });
     return HttpResponse.json(activeImpersonateUser);
@@ -153,10 +153,13 @@ export const handlers = [
 
     return HttpResponse.text('Ok');
   }),
-  http.get('*/api/v1/ImpersonateUser', async () => {
-    await delay('real');
-    return HttpResponse.json(fakeImpersonateUsers);
-  }),
+  http.get(
+    '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
+    async () => {
+      await delay('real');
+      return HttpResponse.json(fakeImpersonateUsers);
+    }
+  ),
   http.get('*/api/v1/Token/AmplifyPortal', async () => {
     await delay('real');
     return HttpResponse.text(faker.string.nanoid());
