@@ -1,6 +1,7 @@
 import {
   ImpersonateUserDto,
   ImpersonateUserService,
+  ImpersonateUserUpdateDto,
 } from '@equinor/subsurface-app-management';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -16,7 +17,7 @@ export function useCreateImpersonation() {
 
   return useMutation({
     mutationKey: [CREATE_IMPERSONATION],
-    mutationFn: async (user: ImpersonateUserDto) => {
+    mutationFn: async (user: ImpersonateUserUpdateDto) => {
       const newUser = await ImpersonateUserService.createImpersonateUser(user);
       queryClient.setQueryData(
         [GET_ALL_IMPERSONATIONS],
