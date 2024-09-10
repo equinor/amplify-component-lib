@@ -236,7 +236,6 @@ describe(
       );
 
       await user.click(screen.getByText(/Impersonate/i));
-
       const availableImpersonationUsers =
         screen.getAllByTestId('impersonation-user');
 
@@ -255,7 +254,7 @@ describe(
       beforeEach(() => {
         server.use(
           http.get(
-            '*/api/v1/ImpersonateUser/ActiveUserByUsername',
+            '*/api/v1/ImpersonateUser/ActiveUser',
             async () => {
               await delay('real');
               return HttpResponse.json(fakeImpersonateUsers[0]);

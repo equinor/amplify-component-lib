@@ -1,6 +1,6 @@
 import {
   FeatureToggleDto,
-  ImpersonateUser,
+  ImpersonateUserDto,
   ReleaseNote,
   ReleaseNoteType,
   Tutorial,
@@ -63,17 +63,17 @@ export const FAKE_ROLES: GraphAppRole[] = [
   },
 ] as const;
 
-function fakeUser(): ImpersonateUser {
+function fakeUser(): ImpersonateUserDto {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
-  const name = `${firstName} ${lastName}`;
+  const fullName = `${firstName} ${lastName}`;
   const uniqueName = faker.internet.userName();
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
     firstName,
     lastName,
-    name,
+    fullName,
     uniqueName,
     roles,
     appName: environment.getAppName(import.meta.env.VITE_NAME),
@@ -81,13 +81,13 @@ function fakeUser(): ImpersonateUser {
   };
 }
 
-export const fakeImpersonateUsers: ImpersonateUser[] = [
+export const fakeImpersonateUsers: ImpersonateUserDto[] = [
   fakeUser(),
   fakeUser(),
   fakeUser(),
 ];
 
-let activeImpersonateUser: ImpersonateUser | undefined = undefined;
+let activeImpersonateUser: ImpersonateUserDto | undefined = undefined;
 
 export const handlers = [
   http.get('*/api/v1/Tutorial/SASToken', async () => {
@@ -118,13 +118,13 @@ export const handlers = [
     await delay('real');
     return HttpResponse.text('true');
   }),
-  http.get('*/api/v1/ImpersonateUser/ActiveUserByUsername', async () => {
+  http.get('*/api/v1/ImpersonateUser/ActiveUser', async () => {
     await delay('real');
     if (!activeImpersonateUser) return HttpResponse.json(null, { status: 204 });
     return HttpResponse.json(activeImpersonateUser);
   }),
   http.post('*/api/v1/ImpersonateUser', async (resolver) => {
-    const body = (await resolver.request.json()) as ImpersonateUser;
+    const body = (await resolver.request.json()) as ImpersonateUserDto;
 
     fakeImpersonateUsers.push(body);
 
@@ -153,10 +153,13 @@ export const handlers = [
 
     return HttpResponse.text('Ok');
   }),
-  http.get('*/api/v1/ImpersonateUser', async () => {
-    await delay('real');
-    return HttpResponse.json(fakeImpersonateUsers);
-  }),
+  http.get(
+    '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
+    async () => {
+      await delay('real');
+      return HttpResponse.json(fakeImpersonateUsers);
+    }
+  ),
   http.get('*/api/v1/Token/AmplifyPortal', async () => {
     await delay('real');
     return HttpResponse.text(faker.string.nanoid());

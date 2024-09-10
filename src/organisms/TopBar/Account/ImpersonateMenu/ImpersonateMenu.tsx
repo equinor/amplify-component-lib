@@ -6,8 +6,9 @@ import { CreateNewUser } from './CreateNewUser/CreateNewUser';
 import { useGetAllImpersonationUsersForApp } from './hooks/useGetAllImpersonationUsersForApp';
 import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
-import { Content, Header, StyledMenu } from './Impersonate.styles';
+import { Content, Header } from './Impersonate.styles';
 import { UserImpersonation } from './UserImpersonation';
+import { Menu } from 'src/molecules';
 import { Search } from 'src/molecules';
 import { useActiveImpersonationUser } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useActiveImpersonationUser';
 
@@ -54,17 +55,22 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
 
   if (creatingNewUser) {
     return (
-      <StyledMenu open anchorEl={anchorEl} onClose={handleOnCreateNewClose}>
+      <Menu
+        open
+        anchorEl={anchorEl}
+        onClose={handleOnCreateNewClose}
+        placement="bottom-end"
+      >
         <CreateNewUser
           onBack={handleOnCreateNewBack}
           onClose={handleOnCreateNewClose}
         />
-      </StyledMenu>
+      </Menu>
     );
   }
 
   return (
-    <StyledMenu
+    <Menu
       open
       anchorEl={anchorEl}
       onClose={handleOnClose}
@@ -87,6 +93,6 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
       </Content>
       <CreateNewUserButton onClick={handleOnCreateNewOpen} />
       <Actions selectedUniqueName={selectedUniqueName} onCancel={onClose} />
-    </StyledMenu>
+    </Menu>
   );
 };

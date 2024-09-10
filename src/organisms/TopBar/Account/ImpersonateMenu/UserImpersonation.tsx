@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { account_circle, check } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { ImpersonateUser } from '@equinor/subsurface-app-management';
+import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
 import {
   Container,
@@ -13,13 +13,13 @@ import {
 
 const { colors } = tokens;
 
-interface UserImpersonationProps extends ImpersonateUser {
+interface UserImpersonationProps extends ImpersonateUserDto {
   selected: boolean;
   onClick: (username: string) => void;
 }
 
 export const UserImpersonation: FC<UserImpersonationProps> = ({
-  name,
+  fullName,
   uniqueName,
   roles,
   selected,
@@ -39,7 +39,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
         color={colors.text.static_icons__tertiary.rgba}
         data={account_circle}
       />
-      <Typography data-testid="name">{name}</Typography>
+      <Typography data-testid="name">{fullName}</Typography>
       <RoleChipContainer>
         {roles.map((role) => (
           <RoleChip key={role} data-testid="role">

@@ -9,7 +9,7 @@ export function useAllAppRoles() {
     queryKey: [AVAILABLE_ROLES],
     queryFn: () =>
       AmplifyApplicationService.getAllAppRoles(
-        environment.getClientId(import.meta.env.VITE_CLIENT_ID)
+        environment.getApiClientId(import.meta.env.VITE_API_CLIENT_ID)
       ),
   });
 }

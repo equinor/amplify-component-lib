@@ -17,7 +17,7 @@ export function useStartImpersonation() {
       const user = await ImpersonateUserService.startImpersonating(username);
       queryClient.setQueryData([ACTIVE_USERIMPERSONATION], user);
 
-      showSnackbar(`Set active user impersonation: ${user.name}`);
+      showSnackbar(`Set active user impersonation: ${user.fullName}`);
       return user;
     },
   });
