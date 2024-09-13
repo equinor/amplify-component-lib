@@ -2,6 +2,7 @@ import { FC, useMemo } from 'react';
 
 import {
   BorderItemsContainer,
+  BorderVariantHorizontal,
   TableOfContentsContainer,
 } from './TableOfContents.styles';
 import { TableOfContentsVariants } from './TableOfContents.types';
@@ -62,6 +63,33 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
               isLink={isLink}
             />
           </BorderItemsContainer>
+        ))}
+      </TableOfContentsContainer>
+    );
+  }
+
+  if (variant === 'borderHorizontal') {
+    return (
+      <TableOfContentsContainer
+        className="page-menu"
+        $variant={variant}
+        layoutRoot
+      >
+        {items.map((item, index) => (
+          <BorderVariantHorizontal
+            data-testid={`border-items-container-${item.value}`}
+            key={item.value}
+            $index={index}
+            $activeIndex={activeIndex}
+            aria-selected={activeIndex === index}
+          >
+            <TableOfContentsItem
+              variant={variant}
+              {...item}
+              onlyShowSelectedChildren={onlyShowSelectedChildren}
+              isLink={isLink}
+            />
+          </BorderVariantHorizontal>
         ))}
       </TableOfContentsContainer>
     );

@@ -1,1 +1,1 @@
-export type TableOfContentsVariants = 'buttons' | 'border';
+export type TableOfContentsVariants = 'buttons' | 'border' | 'borderHorizontal';

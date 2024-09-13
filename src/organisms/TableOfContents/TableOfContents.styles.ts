@@ -162,6 +162,23 @@ interface BorderItemsContainerProps {
   $index: number;
 }
 
+export const BorderVariantHorizontal = styled.div<BorderItemsContainerProps>`
+  display: flex;
+  flex-direction:;
+  position: relative;
+  &:after {
+    position: absolute;
+    left: 0;
+    bottom: ${({ $activeIndex, $index }) =>
+      `${($activeIndex - $index) * 100}%`};
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: ${colors.interactive.primary__resting.rgba};
+    z-index: 100;
+  }
+`;
+
 export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
   display: flex;
   flex-direction: column;
@@ -198,7 +215,8 @@ export const TableOfContentsContainer = styled(
   motion.div
 )<TableOfContentsContainerProps>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ $variant }) =>
+    $variant === 'borderHorizontal' ? 'row' : 'column'};
   height: fit-content;
   overflow: hidden;
   ${({ $variant }) => {
@@ -216,6 +234,19 @@ export const TableOfContentsContainer = styled(
             background: ${colors.ui.background__medium.rgba};
           }
         `;
+      case 'borderHorizontal': {
+        return css`
+          &:after {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            content: '';
+            width: 100%;
+            height: 2px;
+            background: ${colors.ui.background__medium.rgba};
+          }
+        `;
+      }
     }
   }}
 `;

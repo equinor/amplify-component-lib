@@ -152,6 +152,28 @@ export const BorderVariant: StoryFn<StoryProps> = (args) => {
   );
 };
 
+export const BorderVariantHorizontal: StoryFn<StoryProps> = (args) => {
+  return (
+    <MemoryRouter>
+      <TableOfContentsProvider items={args.items}>
+        <Container>
+          <TableOfContents variant="borderHorizontal" />
+          <section>
+            {args.items.map((item, index) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={COLORS[index]}
+              />
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    </MemoryRouter>
+  );
+};
+
 const ITEMS_WITH_CHILDREN: TableOfContentsItemType[] = [
   {
     label: '2023',
