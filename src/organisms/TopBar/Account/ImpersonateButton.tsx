@@ -43,6 +43,7 @@ export const ImpersonateButton: FC<ImpersonateButtonProps> = ({
   const handleOnEndImpersonation = async () => {
     await endImpersonation();
     onClose();
+    location.reload();
   };
 
   if (activeImpersonationUser && isPending) {
