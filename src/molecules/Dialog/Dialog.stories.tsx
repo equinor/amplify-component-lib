@@ -121,6 +121,27 @@ export const CenteredAction: Story = {
   },
 };
 
+export const DisabledActions: Story = {
+  args: {
+    title: 'Disabled actions dialog!',
+    children: 'This dialog contains some information important for the user.',
+    actions: [
+      {
+        text: 'Cancel',
+        onClick: () => console.log('clicked'),
+        variant: 'contained',
+        disabled: true,
+      },
+      {
+        text: 'Okay!',
+        onClick: () => console.log('clicked'),
+        variant: 'contained',
+        disabled: 'This action is disabled',
+      },
+    ],
+  },
+};
+
 export const LeftAndRightActions: Story = {
   args: {
     title: 'Left and right dialog!',
