@@ -79,6 +79,35 @@ const Container = styled.div`
   }
 `;
 
+const HorizontalContainer = styled.div`
+  display: grid;
+  position: relative;
+  grid-template-row: auto 1fr;
+  gap: 1rem;
+  > .page-menu {
+    position: sticky;
+    top: 12px;
+    left: 12px;
+  }
+  > section {
+    max-height: 50rem;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    > div {
+      padding-bottom: 100vh;
+      width: 100%;
+      h1 {
+        color: white;
+      }
+      > div {
+        padding-bottom: 20%;
+      }
+    }
+  }
+`;
+
 const COLORS = [
   colors.infographic.substitute__blue_ocean.rgba,
   colors.infographic.substitute__blue_sky.rgba,
@@ -156,7 +185,7 @@ export const BorderVariantHorizontal: StoryFn<StoryProps> = (args) => {
   return (
     <MemoryRouter>
       <TableOfContentsProvider items={args.items}>
-        <Container>
+        <HorizontalContainer>
           <TableOfContents variant="borderHorizontal" />
           <section>
             {args.items.map((item, index) => (
@@ -168,7 +197,7 @@ export const BorderVariantHorizontal: StoryFn<StoryProps> = (args) => {
               />
             ))}
           </section>
-        </Container>
+        </HorizontalContainer>
       </TableOfContentsProvider>
     </MemoryRouter>
   );
