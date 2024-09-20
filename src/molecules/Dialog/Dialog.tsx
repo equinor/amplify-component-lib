@@ -29,7 +29,8 @@ export interface DialogAction {
   position?: 'left' | 'center' | 'right';
   onClick: () => void;
   text: string;
-  variant: ButtonProps['variant'];
+  variant?: ButtonProps['variant'];
+  color?: ButtonProps['color'];
   icon?: IconData;
   disabled?: boolean | string;
 }
