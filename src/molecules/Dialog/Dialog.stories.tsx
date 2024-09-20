@@ -55,6 +55,9 @@ const meta: Meta<typeof Dialog> = {
     dialogRef: {
       description: 'Ref to dialog element',
     },
+    actions: {
+      description: 'Buttons that will be shown at the bottom',
+    },
   },
   args: {
     isDismissable: false,
@@ -67,11 +70,13 @@ const meta: Meta<typeof Dialog> = {
         variant: 'ghost',
         onClick: () => console.log('clicked'),
         text: 'Cancel',
+        color: 'secondary',
       },
       {
         variant: 'outlined',
         onClick: () => console.log('clicked'),
         text: 'Continue',
+        color: 'primary',
       },
     ],
     withBorders: false,
@@ -168,6 +173,32 @@ export const LeftAndRightActions: Story = {
         text: 'Okay',
         onClick: () => console.log('clicked'),
         variant: 'contained',
+      },
+    ],
+  },
+};
+
+export const ColorVariations: Story = {
+  args: {
+    actions: [
+      {
+        onClick: () => console.log('clicked'),
+        text: 'Default (primary)',
+      },
+      {
+        onClick: () => console.log('clicked'),
+        text: 'Primary',
+        color: 'primary',
+      },
+      {
+        onClick: () => console.log('clicked'),
+        text: 'Secondary',
+        color: 'secondary',
+      },
+      {
+        onClick: () => console.log('clicked'),
+        text: 'Danger',
+        color: 'danger',
       },
     ],
   },

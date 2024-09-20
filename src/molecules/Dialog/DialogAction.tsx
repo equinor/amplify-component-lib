@@ -8,6 +8,7 @@ import { OptionalTooltip } from 'src/molecules';
 export const DialogAction: FC<DialogActionProps> = ({
   text,
   variant,
+  color,
   onClick,
   icon,
   disabled,
@@ -15,6 +16,7 @@ export const DialogAction: FC<DialogActionProps> = ({
   <OptionalTooltip title={typeof disabled === 'string' ? disabled : ''}>
     <Button
       variant={variant}
+      color={color}
       onClick={onClick}
       disabled={disabled !== undefined}
     >

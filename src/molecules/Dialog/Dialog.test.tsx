@@ -64,6 +64,7 @@ test('withBorders works as expected', () => {
     variant: 'contained',
     text: faker.animal.dog(),
     onClick: vi.fn(),
+    color: undefined,
   };
   render(
     <Dialog
@@ -139,23 +140,27 @@ test('Actions prop works as expected', async () => {
       variant: 'outlined',
       text: faker.animal.lion(),
       onClick: vi.fn(),
+      color: 'primary',
     },
     {
       position: 'right',
       variant: 'contained',
       text: faker.animal.crocodilia(),
       onClick: vi.fn(),
+      color: 'primary',
     },
     {
       variant: 'contained',
       text: faker.animal.dog(),
       onClick: vi.fn(),
+      color: 'primary',
     },
     {
       position: 'left',
       variant: 'contained',
       text: faker.animal.cat(),
       onClick: vi.fn(),
+      color: 'primary',
     },
   ];
 
@@ -224,6 +229,7 @@ test('Actions with icon works as expected', async () => {
     text: faker.animal.lion(),
     icon: car,
     onClick: vi.fn(),
+    color: 'primary',
   };
 
   render(
