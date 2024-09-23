@@ -18,7 +18,7 @@ export const DialogAction: FC<DialogActionProps> = ({
       variant={variant}
       color={color}
       onClick={onClick}
-      disabled={disabled !== undefined}
+      disabled={disabled !== undefined && !!disabled}
     >
       {icon && <Icon data={icon} />}
       {text}
