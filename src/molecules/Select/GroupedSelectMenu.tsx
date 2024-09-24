@@ -18,14 +18,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
     SelectMenuProps<T> &
     (MultiSelectCommon<T> | SingleSelectCommon<T>)
 ) => {
-  const {
-    onItemSelect,
-    onItemKeyDown,
-    itemRefs,
-    groups,
-    search,
-    onMouseEnterItem,
-  } = props;
+  const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;
 
   const filteredGroups = useMemo(() => {
     if (search === '') return groups;
@@ -64,7 +57,6 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
             itemRefs={itemRefs}
             onItemKeyDown={onItemKeyDown}
             onItemSelect={onItemSelect}
-            onMouseEnterItem={onMouseEnterItem}
             values={props.values}
           />
         ))}
@@ -87,7 +79,6 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
           itemRefs={itemRefs}
           onItemKeyDown={onItemKeyDown}
           onItemSelect={onItemSelect}
-          onMouseEnterItem={onMouseEnterItem}
         />
       ))}
     </Menu.Section>

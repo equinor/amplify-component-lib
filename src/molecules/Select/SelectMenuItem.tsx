@@ -39,7 +39,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     multiselect,
     itemRefs,
     onItemKeyDown,
-    onMouseEnterItem,
     onItemSelect,
     selectableParent = true,
     parentHasNestedItems = false,
@@ -97,10 +96,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     setOpenParent(willOpen);
   };
 
-  const handleOnMouseEnter = () => {
-    onMouseEnterItem(index);
-  };
-
   const handleChevronIconClick = (event: MouseEvent) => {
     event.stopPropagation();
     setOpenParent((prev) => !prev);
@@ -148,11 +143,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     }
   };
 
-  const handleOnMouseEnterChildItem = (index: number) => {
-    focusingChildIndex.current = index;
-    childRefs.current.at(index)?.focus();
-  };
-
   if (item.children && item.children.length > 0 && multiselect) {
     return (
       <>
@@ -176,7 +166,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
             index={index}
             closeMenuOnClick={false}
             onKeyDownCapture={handleOnParentKeyDown}
-            onMouseEnter={handleOnMouseEnter}
             onClick={handleOnItemClick}
           >
             <Icon
@@ -205,7 +194,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               values={props.values}
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
-              onMouseEnterItem={handleOnMouseEnterChildItem}
               selectableParent={selectableParent}
               parentHasNestedItems
             />
@@ -229,7 +217,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
           closeMenuOnClick={false}
           onKeyDownCapture={onItemKeyDown}
           onClick={handleOnItemClick}
-          onMouseEnter={handleOnMouseEnter}
         >
           <Icon
             color={colors.interactive.primary__resting.rgba}
@@ -250,7 +237,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
         index={index}
         onKeyDownCapture={onItemKeyDown}
         onClick={handleOnItemClick}
-        onMouseEnter={handleOnMouseEnter}
       >
         <span>{item.label}</span>
       </StyledMenuItem>
