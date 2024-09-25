@@ -13,7 +13,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from 'src';
 
 const { colors } = tokens;
-initialize({ onUnhandledRequest: 'bypass' })
+initialize({  onUnhandledRequest: (req, print) => {
+  if (req.url.includes('cdn') || req.url.includes('raw.githubusercontent')) {
+    return
+  }
+  print.warning()
+  },
+})
 
 const globalTypes = {
   dataThemes: {
