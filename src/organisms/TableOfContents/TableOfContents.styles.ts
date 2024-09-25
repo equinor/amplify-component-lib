@@ -157,6 +157,28 @@ export const Link = styled(ReactLink)<LinkProps>`
   }}
 `;
 
+interface BorderItemsHorizontalContainerProps {
+  $activeIndex: number;
+  $index: number;
+}
+
+export const BorderItemsHorizontalContainer = styled.div<BorderItemsHorizontalContainerProps>`
+  display: flex;
+  flex-direction:;
+  position: relative;
+  &:after {
+    position: absolute;
+    left: 0;
+    bottom: ${({ $activeIndex, $index }) =>
+      `${($activeIndex - $index) * 100}%`};
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: ${colors.interactive.primary__resting.rgba};
+    z-index: 100;
+  }
+`;
+
 interface BorderItemsContainerProps {
   $activeIndex: number;
   $index: number;
@@ -198,7 +220,8 @@ export const TableOfContentsContainer = styled(
   motion.div
 )<TableOfContentsContainerProps>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ $variant }) =>
+    $variant === 'borderHorizontal' ? 'row' : 'column'};
   height: fit-content;
   overflow: hidden;
   ${({ $variant }) => {
@@ -216,8 +239,22 @@ export const TableOfContentsContainer = styled(
             background: ${colors.ui.background__medium.rgba};
           }
         `;
+      case 'borderHorizontal': {
+        return css`
+          &:after {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            content: '';
+            width: 100%;
+            height: 2px;
+            background: ${colors.ui.background__medium.rgba};
+          }
+        `;
+      }
     }
   }}
+  data-testid="table-of-contents-container"
 `;
 
 interface ChildContainerProps {
