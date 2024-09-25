@@ -22,7 +22,7 @@ export interface MultiSelectCommon<T extends SelectOptionRequired> {
     values: SelectOption<T>[],
     selectedValue?: SelectOption<T>
   ) => void;
-  selectableParent?: boolean;
+  syncParentChildSelection?: boolean;
   onAddItem?: (item: string) => void;
 }
 
@@ -43,7 +43,6 @@ export interface SelectMenuProps<T extends SelectOptionRequired> {
   onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
   onItemSelect: (item: SelectOption<T>) => void;
   onMouseEnterItem: (index: number) => void;
-  selectableParent?: boolean;
 }
 
 interface SelectMenuItemProps<T extends SelectOptionRequired> {

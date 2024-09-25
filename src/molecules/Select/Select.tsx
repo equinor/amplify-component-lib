@@ -242,9 +242,6 @@ export const Select = <T extends SelectOptionRequired>(
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
               onMouseEnterItem={handleOnMouseEnterItem}
-              selectableParent={
-                'values' in props ? props.selectableParent : false
-              }
             />
           )}
         </StyledMenu>

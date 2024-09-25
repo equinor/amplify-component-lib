@@ -104,11 +104,11 @@ describe('CreateNewUser', () => {
         .map((role) => role.value)
         .sort();
 
+      await user.click(screen.getByRole('combobox'));
+
       for (const role of roles) {
-        await user.click(screen.getByRole('checkbox', { name: role }));
+        await user.click(screen.getByText(role));
       }
-      // Able to toggle off role as well
-      await user.click(screen.getByRole('checkbox', { name: roles[0] }));
 
       expect(createButton).not.toBeDisabled();
 
@@ -116,7 +116,7 @@ describe('CreateNewUser', () => {
 
       await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-      expect(screen.getByText(roles[roles.length - 1])).toBeInTheDocument();
+      expect(screen.getByText(roles[0])).toBeInTheDocument();
     },
     { timeout: 8000 }
   );

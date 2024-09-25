@@ -4,7 +4,7 @@ import { Button, Dialog } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { useArgs } from '@storybook/preview-api';
-import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import {
@@ -20,7 +20,7 @@ const meta: Meta<typeof ComboBox> = {
   argTypes: {
     label: { control: 'text' },
     helperText: { control: 'text' },
-    selectableParent: { control: 'boolean' },
+    syncParentChildSelection: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
     variant: {
@@ -32,7 +32,7 @@ const meta: Meta<typeof ComboBox> = {
   args: {
     label: 'Label here',
     helperText: 'helper text',
-    selectableParent: true,
+    syncParentChildSelection: true,
     sortValues: true,
     clearable: true,
     meta: 'Meta label here',
@@ -220,39 +220,30 @@ export const ComboBoxInDialog: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxWithAdd: StoryObj<typeof ComboBox> = {
-  args: { items: FAKE_ITEMS, values: [] },
-  render: function Render(args) {
-    const [{ values, items }, updateArgs] = useArgs();
-    const handleOnSelect = (newValues: SelectOptionRequired[]) => {
-      updateArgs({ values: newValues });
+export const ComboBoxWithAdd: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+  const handleOnSelect = (newValues: SelectOptionRequired[]) => {
+    setValues(newValues);
+  };
+
+  const handleOnAdd = (value: string): void => {
+    actions('onItemAdd').onItemAdd(value);
+    const newItem = {
+      label: value,
+      value: faker.string.uuid(),
     };
 
-    const handleOnAdd = (value: string) => {
-      actions('onItemAdd').onItemAdd(value);
-      const newItem = {
-        label: value,
-        value: faker.string.uuid(),
-      };
+    setValues((prev) => [...prev, newItem]);
+  };
 
-      updateArgs({
-        values: [...(values as SelectOptionRequired[]), newItem],
-        items: [
-          ...(args as ListSelectProps<SelectOptionRequired>).items,
-          newItem,
-        ],
-      });
-    };
-
-    return (
-      <ComboBox
-        {...args}
-        values={values as SelectOptionRequired[]}
-        items={items as SelectOptionRequired[]}
-        groups={undefined}
-        onSelect={handleOnSelect}
-        onAddItem={handleOnAdd}
-      />
-    );
-  },
+  return (
+    <ComboBox
+      {...args}
+      values={values as SelectOptionRequired[]}
+      items={FAKE_ITEMS}
+      groups={undefined}
+      onSelect={handleOnSelect}
+      onAddItem={handleOnAdd}
+    />
+  );
 };
