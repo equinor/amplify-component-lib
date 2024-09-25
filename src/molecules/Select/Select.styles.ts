@@ -218,7 +218,7 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
     background: ${colors.interactive.primary__hover_alt.rgba};
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
 `;
