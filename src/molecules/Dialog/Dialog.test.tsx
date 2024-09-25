@@ -1,3 +1,5 @@
+import { act } from 'react';
+
 import { car, close } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
@@ -62,6 +64,7 @@ test('withBorders works as expected', () => {
     variant: 'contained',
     text: faker.animal.dog(),
     onClick: vi.fn(),
+    color: undefined,
   };
   render(
     <Dialog
@@ -137,23 +140,27 @@ test('Actions prop works as expected', async () => {
       variant: 'outlined',
       text: faker.animal.lion(),
       onClick: vi.fn(),
+      color: 'primary',
     },
     {
       position: 'right',
       variant: 'contained',
       text: faker.animal.crocodilia(),
       onClick: vi.fn(),
+      color: 'primary',
     },
     {
       variant: 'contained',
       text: faker.animal.dog(),
       onClick: vi.fn(),
+      color: 'primary',
     },
     {
       position: 'left',
       variant: 'contained',
       text: faker.animal.cat(),
       onClick: vi.fn(),
+      color: 'primary',
     },
   ];
 
@@ -172,6 +179,46 @@ test('Actions prop works as expected', async () => {
     expect(action.onClick).toHaveBeenCalledTimes(1);
   }
 });
+
+test('Disabled actions works as expected', async () => {
+  const handleOnClose = vi.fn();
+  const title = faker.airline.airplane().name;
+  const description = faker.lorem.paragraph();
+  const actionTextOne = faker.animal.lion();
+  const actionTextTwo = faker.animal.crocodilia();
+  const disabledTooltipText = 'This action is disabled';
+  const actions: DialogAction[] = [
+    {
+      text: actionTextOne,
+      onClick: vi.fn(),
+      variant: 'contained',
+      disabled: true,
+    },
+    {
+      text: actionTextTwo,
+      onClick: vi.fn(),
+      variant: 'contained',
+      disabled: disabledTooltipText,
+    },
+  ];
+
+  render(
+    <Dialog open title={title} onClose={handleOnClose} actions={actions}>
+      {description}
+    </Dialog>
+  );
+  expect(screen.getByText(actionTextOne).parentElement).toBeDisabled();
+  expect(screen.getByText(actionTextTwo).parentElement).toBeDisabled();
+
+  const user = userEvent.setup();
+
+  await user.hover(screen.getByText(actionTextTwo));
+  // Tooltip has open delay
+  await act(() => new Promise((resolve) => setTimeout(resolve, 1000)));
+
+  expect(screen.getByText(disabledTooltipText)).toBeInTheDocument();
+});
+
 test('Actions with icon works as expected', async () => {
   const handleOnClose = vi.fn();
   const title = faker.airline.airplane().name;
@@ -182,6 +229,7 @@ test('Actions with icon works as expected', async () => {
     text: faker.animal.lion(),
     icon: car,
     onClick: vi.fn(),
+    color: 'primary',
   };
 
   render(

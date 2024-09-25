@@ -26,6 +26,7 @@ export function useCreateImpersonation() {
         }
       );
       await startImpersonation(newUser.uniqueName);
+      location.reload();
 
       return newUser;
     },

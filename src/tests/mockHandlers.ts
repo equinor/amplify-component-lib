@@ -10,7 +10,7 @@ import { faker } from '@faker-js/faker';
 
 import { environment } from 'src/atoms/utils/auth_environment';
 
-import { bypass, delay, http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 
 export const fakeReleaseNotes: ReleaseNote[] = [
   {
@@ -107,13 +107,10 @@ export const handlers = [
     };
     return HttpResponse.json(body);
   }),
-  http.get(
-    '*/api/v1/AmplifyApplication/application/fake-id/appRoles',
-    async () => {
-      await delay('real');
-      return HttpResponse.json(FAKE_ROLES);
-    }
-  ),
+  http.get('*/api/v1/AmplifyApplication/application/*/appRoles', async () => {
+    await delay('real');
+    return HttpResponse.json(FAKE_ROLES);
+  }),
   http.get('*/api/v1/ImpersonateUser/CanImpersonate', async () => {
     await delay('real');
     return HttpResponse.text('true');
@@ -173,8 +170,5 @@ export const handlers = [
     return HttpResponse.text(
       `${faker.internet.url()}?${faker.string.nanoid()}`
     );
-  }),
-  http.get('https://cdn.eds.equinor.com/*', ({ request }) => {
-    return fetch(bypass(request));
   }),
 ];

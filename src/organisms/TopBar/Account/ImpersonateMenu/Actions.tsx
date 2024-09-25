@@ -32,6 +32,7 @@ export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
   const handleOnStartImpersonate = async () => {
     await mutateAsync(selectedUniqueName);
     onCancel();
+    location.reload();
   };
 
   return (

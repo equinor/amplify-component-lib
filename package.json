@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "8.7.2",
+  "version": "8.7.5",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -141,7 +141,7 @@
     "eslint-plugin-storybook": "^0.8.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-styled-components": "^7.2.0",
-    "msw": "^2.3.5",
+    "msw": "^2.4.9",
     "msw-storybook-addon": "^2.0.3",
     "ora": "^8.1.0",
     "prettier": "^3.3.3",

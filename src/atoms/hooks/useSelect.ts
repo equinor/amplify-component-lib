@@ -10,6 +10,7 @@ import {
 import { SelectComponentProps } from 'src/molecules/Select/Select';
 import { SelectOption } from 'src/molecules/Select/Select.types';
 import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
+import { flattenOptions } from 'src/molecules/Select/Select.utils';
 
 const useSelect = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
@@ -112,20 +113,34 @@ const useSelect = <T extends SelectOptionRequired>(
     current: SelectOption<T>[],
     item: SelectOption<T>
   ): SelectOption<T>[] => {
-    // De-selecting
     const copy = structuredClone(current);
     if (copy.some((x) => x.value === item.value)) {
       return copy.filter((x) => x.value !== item.value);
     }
-    // Check if child of any parent was selected
+
+    if (
+      'values' in props &&
+      props.syncParentChildSelection !== undefined &&
+      !props.syncParentChildSelection
+    ) {
+      return [item, ...copy];
+    }
+
     return [
       item,
-      ...copy.filter(
-        (x) =>
-          x.children === undefined ||
-          x.children.length === 0 ||
-          x.children.every((child) => child.value === item.value)
-      ),
+      ...copy.filter((x) => {
+        // Remove any child of the newly selected item (which is a parent)
+        if (
+          (item.children === undefined || item.children.length > 0) &&
+          flattenOptions([item]).some((child) => child.value === x.value)
+        ) {
+          return false;
+        }
+
+        if (x.children === undefined || x.children.length === 0) return true;
+
+        return flattenOptions([x]).every((child) => child.value !== item.value);
+      }),
     ];
   };
 
@@ -142,7 +157,7 @@ const useSelect = <T extends SelectOptionRequired>(
     internalUpdateOfValues.current = true;
   };
 
-  const handleOnRemoveItem = (item: T) => {
+  const handleOnRemoveItem = (item: SelectOption<T>) => {
     if ('values' in props && !loading && !disabled) {
       props.onSelect(
         props.values.filter((i) => i.value !== item.value),
@@ -207,11 +222,6 @@ const useSelect = <T extends SelectOptionRequired>(
     }
   };
 
-  const handleOnMouseEnterItem = (index: number) => {
-    focusingItemIndex.current = index;
-    itemRefs.current.at(index)?.focus();
-  };
-
   const handleOnAddItem = () => {
     if ('onAddItem' in props && props.onAddItem) {
       props.onAddItem(search);
@@ -230,7 +240,6 @@ const useSelect = <T extends SelectOptionRequired>(
     handleOnClose,
     handleOnOpen,
     handleOnRemoveItem,
-    handleOnMouseEnterItem,
     search,
     searchRef,
     itemRefs,

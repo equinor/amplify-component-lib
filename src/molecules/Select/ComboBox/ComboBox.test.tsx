@@ -6,11 +6,11 @@ import {
   fakeItemsWithChildren,
 } from 'src/molecules/Select/Select.test';
 import {
-  fakeSelectItem,
   fakeSelectItems,
   render,
   screen,
   userEvent,
+  within,
 } from 'src/tests/test-utils';
 
 test('Renders as expected', () => {
@@ -190,61 +190,31 @@ test('Can select items with clicks', async () => {
   expect(handleOnSelect).toHaveBeenCalledTimes(randomItems.length);
 });
 
-test('Parent with selectableParent = false', async () => {
+test('syncParentChild = true works as expected', async () => {
   const items = fakeItemsWithChildren();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
-  const { rerender } = render(
+  render(
     <ComboBox
       label={label}
       onSelect={handleOnSelect}
-      values={[]}
+      values={[items[0].children[0]]}
       items={items}
-      selectableParent={false}
     />
   );
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 
-  for (const item of items) {
-    expect(screen.getByText(item.label)).toBeInTheDocument();
-  }
+  const item = items[0];
 
-  const randomItem = faker.helpers.arrayElement(items);
-
-  await user.click(screen.getByText(randomItem.label));
-
+  await user.click(screen.getByText(item.label));
+  expect(handleOnSelect).toHaveBeenCalledWith([item], item);
   expect(handleOnSelect).toHaveBeenCalledTimes(1);
-  handleOnSelect.mockClear();
-
-  for (const child of randomItem.children) {
-    const menuItem = screen.getByRole('menuitem', { name: child.label });
-    await user.click(menuItem);
-    expect(handleOnSelect).toHaveBeenCalledWith([child], child);
-  }
-
-  expect(handleOnSelect).toHaveBeenCalledTimes(randomItem.children.length);
-
-  rerender(
-    <ComboBox
-      label={label}
-      onSelect={handleOnSelect}
-      values={[randomItem.children[0]]}
-      items={items}
-      selectableParent={false}
-    />
-  );
-
-  await user.click(
-    screen.getByRole('menuitem', { name: randomItem.children[0].label })
-  );
-  expect(handleOnSelect).toHaveBeenCalledWith([], randomItem.children[0]);
 });
 
-test('Parent with selectableParent = true', async () => {
+test('syncParentChild = false works as expected', async () => {
   const items = fakeItemsWithChildren();
-  const itemWithoutChildren = fakeSelectItem();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
   const { rerender } = render(
@@ -252,50 +222,43 @@ test('Parent with selectableParent = true', async () => {
       label={label}
       onSelect={handleOnSelect}
       values={[]}
-      items={[...items, itemWithoutChildren]}
-      selectableParent
+      items={items}
+      syncParentChildSelection={false}
     />
   );
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 
-  for (const item of items) {
-    expect(screen.getByText(item.label)).toBeInTheDocument();
-  }
+  const item = items[0];
 
-  const randomItem = faker.helpers.arrayElement(items);
-
-  const icon = screen.getByRole('menuitem', { name: randomItem.label });
-  await user.click(icon);
-
-  expect(handleOnSelect).toHaveBeenCalledWith([randomItem], randomItem);
+  await user.click(screen.getByText(item.label));
+  expect(handleOnSelect).toHaveBeenCalledWith([item], item);
+  expect(handleOnSelect).toHaveBeenCalledTimes(1);
 
   rerender(
     <ComboBox
       label={label}
       onSelect={handleOnSelect}
-      values={[randomItem]}
-      items={[...items, itemWithoutChildren]}
+      values={[item]}
+      items={items}
+      syncParentChildSelection={false}
     />
   );
 
-  await user.click(icon);
-  expect(handleOnSelect).toHaveBeenCalledWith([], randomItem);
+  await user.click(screen.getByRole('combobox'));
 
-  rerender(
-    <ComboBox
-      label={label}
-      onSelect={handleOnSelect}
-      values={[itemWithoutChildren]}
-      items={[...items, itemWithoutChildren]}
-    />
-  );
+  const menuItem = screen.getByRole('menuitem', { name: item.label });
 
-  await user.click(
-    screen.getByRole('menuitem', { name: itemWithoutChildren.label })
-  );
-  expect(handleOnSelect).toHaveBeenCalledWith([], itemWithoutChildren);
+  const chevronIcon = within(menuItem.parentElement!).getByRole('button');
+
+  await user.click(chevronIcon);
+
+  const randomChild = faker.helpers.arrayElement(item.children);
+
+  await user.click(screen.getByText(randomChild.label));
+  expect(handleOnSelect).toHaveBeenCalledWith([randomChild, item], randomChild);
+  expect(handleOnSelect).toHaveBeenCalledTimes(2);
 });
 
 test('Parent - nested selection works as expected with keyboard', async () => {
