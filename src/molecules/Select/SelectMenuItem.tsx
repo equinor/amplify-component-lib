@@ -98,7 +98,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
       focusingChildIndex.current -= 1;
     }
 
-    console.log('here');
     if (focusingChildIndex.current <= -1) {
       // On first child and moving up
       itemRefs.current[index]?.focus();
