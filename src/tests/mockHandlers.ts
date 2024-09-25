@@ -107,13 +107,10 @@ export const handlers = [
     };
     return HttpResponse.json(body);
   }),
-  http.get(
-    '*/api/v1/AmplifyApplication/application/fake-id/appRoles',
-    async () => {
-      await delay('real');
-      return HttpResponse.json(FAKE_ROLES);
-    }
-  ),
+  http.get('*/api/v1/AmplifyApplication/application/*/appRoles', async () => {
+    await delay('real');
+    return HttpResponse.json(FAKE_ROLES);
+  }),
   http.get('*/api/v1/ImpersonateUser/CanImpersonate', async () => {
     await delay('real');
     return HttpResponse.text('true');

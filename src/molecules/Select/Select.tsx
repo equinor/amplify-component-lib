@@ -239,9 +239,6 @@ export const Select = <T extends SelectOptionRequired>(
               }
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
-              selectableParent={
-                'values' in props ? props.selectableParent : false
-              }
             />
           )}
         </StyledMenu>

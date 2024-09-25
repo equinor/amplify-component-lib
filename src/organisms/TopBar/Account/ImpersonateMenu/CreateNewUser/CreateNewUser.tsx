@@ -7,7 +7,7 @@ import { useAllAppRoles } from '../hooks/useAllAppRoles';
 import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
 import { Container, Header, Section } from './CreateNewUser.styles';
 import { environment } from 'src/atoms/utils/auth_environment';
-import { Switch } from 'src/molecules';
+import { ComboBox, SelectOptionRequired } from 'src/molecules';
 import { TextField } from 'src/molecules/TextField/TextField';
 
 interface CreateNewUserProps {
@@ -16,11 +16,20 @@ interface CreateNewUserProps {
 }
 
 export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
-  const [roles, setRoles] = useState<string[]>([]);
+  const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  const { data: availableRoles, isLoading: isLoadingRoles } = useAllAppRoles();
+  const { data, isLoading: isLoadingRoles } = useAllAppRoles();
+
+  const availableRoles = useMemo(
+    () =>
+      data?.map((item) => ({
+        value: item.value,
+        label: item.value,
+      })) ?? [],
+    [data]
+  );
 
   const { mutateAsync: createImpersonationUser, isPending } =
     useCreateImpersonation();
@@ -38,18 +47,15 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
     setLastName(event.target.value);
   };
 
-  const handleOnRoleToggle = (role: string) => {
-    setRoles((prev) => {
-      if (prev.includes(role)) return prev.filter((item) => item !== role);
-      return [...prev, role];
-    });
+  const handleOnRoleSelect = (values: SelectOptionRequired[]) => {
+    setRoles(values);
   };
 
   const handleOnCreate = async () => {
     await createImpersonationUser({
       firstName,
       lastName,
-      roles,
+      roles: roles.map((role) => role.value).sort(),
       uniqueName: `${firstName}.${lastName}`.toLowerCase(),
       appName: environment.getAppName(import.meta.env.VITE_NAME),
       activeUsers: [],
@@ -86,13 +92,12 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
           Roles
         </Typography>
         {isLoadingRoles && <DotProgress color="primary" />}
-        {availableRoles?.map((role) => (
-          <Switch
-            key={role.id}
-            label={role.value}
-            onChange={() => handleOnRoleToggle(role.value)}
-          />
-        ))}
+        <ComboBox
+          placeholder="Select roles..."
+          values={roles}
+          onSelect={handleOnRoleSelect}
+          items={availableRoles}
+        />
       </Section>
       <Section>
         <Button variant="outlined" onClick={onBack}>
