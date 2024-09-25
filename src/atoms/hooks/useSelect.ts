@@ -222,11 +222,6 @@ const useSelect = <T extends SelectOptionRequired>(
     }
   };
 
-  const handleOnMouseEnterItem = (index: number) => {
-    focusingItemIndex.current = index;
-    itemRefs.current.at(index)?.focus();
-  };
-
   const handleOnAddItem = () => {
     if ('onAddItem' in props && props.onAddItem) {
       props.onAddItem(search);
@@ -245,7 +240,6 @@ const useSelect = <T extends SelectOptionRequired>(
     handleOnClose,
     handleOnOpen,
     handleOnRemoveItem,
-    handleOnMouseEnterItem,
     search,
     searchRef,
     itemRefs,

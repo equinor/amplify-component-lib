@@ -29,14 +29,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       | SingleSelectCommon<T>
     )
 ) => {
-  const {
-    search,
-    items,
-    onItemSelect,
-    itemRefs,
-    onItemKeyDown,
-    onMouseEnterItem,
-  } = props;
+  const { search, items, onItemSelect, itemRefs, onItemKeyDown } = props;
 
   const filteredItems = useMemo(() => {
     if (search === '') return items;
@@ -63,7 +56,6 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       itemRefs,
       onItemKeyDown,
       onItemSelect,
-      onMouseEnterItem,
       itemValue: item.value,
       values: props.values,
       parentHasNestedItems: hasNestedItems,
@@ -76,7 +68,6 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
               index={0}
               itemRefs={itemRefs}
               onItemKeyDown={onItemKeyDown}
-              onMouseEnterItem={onMouseEnterItem}
               onAddItem={props.onAddItem}
             >
               {search}
@@ -120,7 +111,6 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       itemRefs={itemRefs}
       onItemKeyDown={onItemKeyDown}
       onItemSelect={onItemSelect}
-      onMouseEnterItem={onMouseEnterItem}
       parentHasNestedItems={hasNestedItems}
     />
   ));

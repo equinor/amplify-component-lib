@@ -15,7 +15,6 @@ import {
 
 interface AddTagItemProps {
   itemRefs: MultiSelectMenuItemProps<SelectOptionRequired>['itemRefs'];
-  onMouseEnterItem: MultiSelectMenuItemProps<SelectOptionRequired>['onMouseEnterItem'];
   onItemKeyDown: MultiSelectMenuItemProps<SelectOptionRequired>['onItemKeyDown'];
   onAddItem: () => void;
   index: number;
@@ -24,7 +23,6 @@ interface AddTagItemProps {
 
 export const AddTagItem: FC<AddTagItemProps> = ({
   itemRefs,
-  onMouseEnterItem,
   onItemKeyDown,
   index,
   onAddItem,
@@ -39,10 +37,6 @@ export const AddTagItem: FC<AddTagItemProps> = ({
     }
   };
 
-  const handleOnMouseEnter = () => {
-    onMouseEnterItem(index);
-  };
-
   return (
     <MenuItemWrapper>
       <StyledMenuItem
@@ -52,7 +46,6 @@ export const AddTagItem: FC<AddTagItemProps> = ({
         }}
         onClick={onAddItem}
         onKeyDownCapture={handleOnKeyDown}
-        onMouseEnter={handleOnMouseEnter}
       >
         <Icon data={add_box} color={colors.interactive.primary__resting.rgba} />
         <span>Add &quot;{children}&quot; as new tag</span>
