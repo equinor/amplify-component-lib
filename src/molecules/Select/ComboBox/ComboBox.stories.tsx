@@ -3,12 +3,10 @@ import { useState } from 'react';
 import { Button, Dialog } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
-import { useArgs } from '@storybook/preview-api';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import {
-  ListSelectProps,
   SelectOption,
   SelectOptionRequired,
   VARIANT_OPTIONS,
