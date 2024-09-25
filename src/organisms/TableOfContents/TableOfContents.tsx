@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 
 import {
   BorderItemsContainer,
-  BorderVariantHorizontal,
+  BorderItemsHorizontalContainer,
   TableOfContentsContainer,
 } from './TableOfContents.styles';
 import { TableOfContentsVariants } from './TableOfContents.types';
@@ -47,6 +47,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
         className="page-menu"
         $variant={variant}
         layoutRoot
+        data-testid={'table-of-contents-container'}
       >
         {items.map((item, index) => (
           <BorderItemsContainer
@@ -74,10 +75,10 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
         className="page-menu"
         $variant={variant}
         layoutRoot
+        data-testid={'table-of-contents-container'}
       >
         {items.map((item, index) => (
-          <BorderVariantHorizontal
-            data-testid={`border-items-container-${item.value}`}
+          <BorderItemsHorizontalContainer
             key={item.value}
             $index={index}
             $activeIndex={activeIndex}
@@ -89,7 +90,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
               onlyShowSelectedChildren={onlyShowSelectedChildren}
               isLink={isLink}
             />
-          </BorderVariantHorizontal>
+          </BorderItemsHorizontalContainer>
         ))}
       </TableOfContentsContainer>
     );

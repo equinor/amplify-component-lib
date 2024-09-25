@@ -157,12 +157,12 @@ export const Link = styled(ReactLink)<LinkProps>`
   }}
 `;
 
-interface BorderItemsContainerProps {
+interface BorderItemsHorizontalContainerProps {
   $activeIndex: number;
   $index: number;
 }
 
-export const BorderVariantHorizontal = styled.div<BorderItemsContainerProps>`
+export const BorderItemsHorizontalContainer = styled.div<BorderItemsHorizontalContainerProps>`
   display: flex;
   flex-direction:;
   position: relative;
@@ -178,6 +178,11 @@ export const BorderVariantHorizontal = styled.div<BorderItemsContainerProps>`
     z-index: 100;
   }
 `;
+
+interface BorderItemsContainerProps {
+  $activeIndex: number;
+  $index: number;
+}
 
 export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
   display: flex;
@@ -249,6 +254,7 @@ export const TableOfContentsContainer = styled(
       }
     }
   }}
+  data-testid="table-of-contents-container"
 `;
 
 interface ChildContainerProps {
