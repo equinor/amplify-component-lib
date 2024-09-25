@@ -219,7 +219,7 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   }
 
   &:focus {
-    outline: 1px dashed ${colors.interactive.primary__resting.rgba};
+    outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
 `;
 
