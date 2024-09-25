@@ -11,6 +11,10 @@ then
   cd ./client || exit 1
 fi
 
+printf -- "Checking for .acl-ignore file"
+
+if
+
 printf -- "Downloading config files...\n"
 
 configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_list.txt")
@@ -18,7 +22,11 @@ configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-componen
 for line in $configList
 do
   fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
-  curl -s $line > $fileName
+  if grep -q SomeString "$File"; then
+    printf -- "$fileName in .acl-ignore, skipping...\n"
+  else
+    curl -s $line > $fileName
+  fi
 done
 
 cd ./src || return
