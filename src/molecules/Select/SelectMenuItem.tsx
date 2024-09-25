@@ -98,6 +98,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
       focusingChildIndex.current -= 1;
     }
 
+    console.log('here');
     if (focusingChildIndex.current <= -1) {
       // On first child and moving up
       itemRefs.current[index]?.focus();
@@ -119,7 +120,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   };
 
   const handleOnParentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (!openParent && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+    if ((!openParent && event.key === 'ArrowDown') || event.key === 'ArrowUp') {
       onItemKeyDown(event);
     } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
       setOpenParent((prev) => !prev);
