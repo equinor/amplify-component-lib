@@ -119,7 +119,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   };
 
   const handleOnParentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (!openParent && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+    if ((!openParent && event.key === 'ArrowDown') || event.key === 'ArrowUp') {
       onItemKeyDown(event);
     } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
       setOpenParent((prev) => !prev);
