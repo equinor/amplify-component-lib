@@ -31,9 +31,16 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       currentUrl,
       link,
     });
+    const isExactUrl = useMemo(() => {
+      const currentWithoutParams = currentUrl?.split('?')[0];
+      return currentWithoutParams === link;
+    }, [currentUrl, link]);
     const { isOpen } = useSideBar();
 
-    const canNavigate = useMemo(() => !disabled && !isCurrentUrl, [disabled]);
+    const canNavigate = useMemo(
+      () => !disabled && (!isActive || (isActive && !isExactUrl)),
+      [disabled, isActive, isExactUrl]
+    );
 
     const handleOnClick = (event: MouseEvent) => {
       if (!canNavigate) {
@@ -75,25 +82,25 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     }
 
     return (
-      <Link
-        to={link}
-        $active={isActive}
-        aria-disabled={disabled}
-        $disabled={disabled}
-        onClick={handleOnClick}
-        $open={isOpen}
-        tabIndex={0}
-        ref={ref}
-        data-testid="sidebar-menu-item"
-      >
-        <OptionalTooltip title={name} placement="right">
+      <OptionalTooltip title={name} placement="right">
+        <Link
+          to={link}
+          $active={isActive}
+          aria-disabled={disabled}
+          $disabled={disabled}
+          onClick={handleOnClick}
+          $open={isOpen}
+          tabIndex={0}
+          ref={ref}
+          data-testid="sidebar-menu-item"
+        >
           {icon && (
             <IconContainer data-testid="icon-container">
               <Icon data={icon} size={24} />
             </IconContainer>
           )}
-        </OptionalTooltip>
-      </Link>
+        </Link>
+      </OptionalTooltip>
     );
   }
 );
