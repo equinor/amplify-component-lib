@@ -1,5 +1,5 @@
 # Setup base
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/check_config_workflow/base.yaml" > "test"
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/check_config_workflow/base.yaml" > ".github/workflows/check_config.yaml"
 
 # Loop through the list from check_config/list.txt
 list=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/check_config_workflow/list.txt")
@@ -14,6 +14,6 @@ do
       - name: Compare remote $var1 to local
         working-directory: $var2
         run: diff $var1 <(curl $var3)"
-    echo "$newLine" >> "test"
+    echo "$newLine" >> ".github/workflows/check_config.yaml"
   fi
 done < <(echo "$list")
