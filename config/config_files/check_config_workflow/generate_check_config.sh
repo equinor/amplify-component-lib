@@ -7,6 +7,7 @@ list=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/
 for line in $list
 do
   read -r var1 var2 var3 <<< "$line"
+  printf -- "Checking $var1, $var2"
   if grep -q $var1 "./client/.acl-ignore"; then
     printf -- "$var1 in .acl-ignore, skipping...\n"
   else
