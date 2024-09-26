@@ -4,7 +4,8 @@ curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/co
 # Loop through the list from check_config/list.txt
 list=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/check_config_workflow/list.txt")
 
-while IFS= read -r line; do
+for line in $list
+do
   read -r var1 var2 var3 <<< "$line"
   if grep -q $var1 "./client/.acl-ignore"; then
     printf -- "$var1 in .acl-ignore, skipping...\n"
@@ -16,4 +17,4 @@ while IFS= read -r line; do
     "
     echo "$newLine" >> ".github/workflows/check_config.yaml"
   fi
-done < "$list"
+done
