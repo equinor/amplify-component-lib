@@ -13,65 +13,72 @@ fi
 
 printf -- "Downloading config files...\n"
 
-configList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_list.txt")
+rootConfigFiles=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_list.txt")
 
-for line in $configList
+for line in $rootConfigFiles
 do
   fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
-  curl -s $line > $fileName
+  if grep -q $fileName "./.acl-ignore"; then
+    printf -- "$fileName in .acl-ignore, skipping...\n"
+  else
+    curl -s $line > $fileName
+  fi
 done
+
+printf -- "Going into src folder...\n"
 
 cd ./src || return
 
-printf -- "Downloading setupLocalhost.mjs file...\n"
+srcConfigFiles=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/src_config_list.txt")
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/setupLocalhost.mjs" > setupLocalhost.mjs
-
-printf -- "Downloading vite.env.d.ts file...\n"
-
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/vite-env.d.ts" > vite-env.d.ts
+for line in $srcConfigFiles
+do
+  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
+  if grep -q $fileName "../.acl-ignore"; then
+    printf -- "$fileName in .acl-ignore, skipping...\n"
+  else
+    curl -s $line > $fileName
+  fi
+done
 
 printf -- "Going into test-utils folder...\n"
 
 cd ./test-utils || (mkdir test-utils && cd ./test-utils || return)
 
-printf -- "Downloading vitest.d.ts file...\n"
+testUtilsConfigFiles=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/testutils_config_list.txt")
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/vitest.d.ts" > vitest.d.ts
+for line in $testUtilsConfigFiles
+do
+  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
+  if grep -q $fileName "../../.acl-ignore"; then
+    printf -- "$fileName in .acl-ignore, skipping...\n"
+  else
+    curl -s $line > $fileName
+  fi
+done
 
-printf -- "Downloading setupTests.ts file...\n"
-
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/setupTests.ts" > setupTests.ts
-
-printf -- "Downloading browserMocks.ts file...\n"
-
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/browserMocks.ts" > browserMocks.ts
-
-printf -- "Downloading utils.ts file...\n"
-
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/utils.ts" > utils.ts
-
-printf -- "Downloading playwright.ts file...\n"
-
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/playwright.ts" > playwright.ts
-
-printf -- "Downloading portalMock.ts file...\n"
-
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/test-utils/portalMock.ts" > portalMock.ts
+printf -- "Going into proxy folder...\n"
 
 cd ../..
-
-printf -- "Downloading nginx.conf proxy config...\n"
 
 cd ./proxy || (mkdir proxy && cd ./proxy || return)
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/nginx.conf" > nginx.conf
 
-printf -- "Downloading securityheaders.conf proxy config...\n"
+proxyConfigFiles=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/testutils_config_list.txt")
 
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/securityheaders.conf" > securityheaders.conf
+for line in $proxyConfigFiles
+do
+  fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
+  if grep -q $fileName "../.acl-ignore"; then
+    printf -- "$fileName in .acl-ignore, skipping...\n"
+  else
+    curl -s $line > $fileName
+  fi
+done
 
 cd ../..
+
+printf -- "Going into root folder...\n"
 
 printf -- "Downloading client github actions...\n"
 workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/github_actions_list.txt")
@@ -79,11 +86,26 @@ workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-compo
 for line in $workflowsList
 do
   fileName=$(echo $line | rev | cut -d '/' -f 1 | rev)
-  curl -s $line > ".github/workflows/$fileName"
+  if grep -q $fileName "./client/.acl-ignore"; then
+    printf -- "$fileName in .acl-ignore, skipping...\n"
+  else
+    curl -s $line > ".github/workflows/$fileName"
+  fi
 done
 
-printf -- "Downloading CODEOWNERS file...\n"
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS
+printf -- "Generating .github/workflows/check_config.yaml...\n"
+bash <(curl -s https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/check_config_workflow/generate_check_config.sh)
 
-printf -- "Downloading .pre-commit-config.yaml file...\n"
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.pre-commit-config.yaml" > .pre-commit-config.yaml
+if grep -q "CODEOWNERS" "./client/.acl-ignore"; then
+    printf -- "CODEOWNERS .acl-ignore, skipping...\n"
+else
+  printf -- "Downloading CODEOWNERS file...\n"
+  curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/CODEOWNERS" > .github/CODEOWNERS
+fi
+
+if grep -q ".pre-commit-config.yaml" "./client/.acl-ignore"; then
+    printf -- ".pre-commit-config.yaml in .acl-ignore, skipping...\n"
+else
+  printf -- "Downloading .pre-commit-config.yaml file...\n"
+  curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/.pre-commit-config.yaml" > .pre-commit-config.yaml
+fi

@@ -1,0 +1,2 @@
+https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/setupLocalhost.mjs
+https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/vite-env.d.ts

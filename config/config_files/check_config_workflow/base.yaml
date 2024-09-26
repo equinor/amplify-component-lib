@@ -1,0 +1,10 @@
+name: Check Config files
+on:
+  workflow_call:
+jobs:
+  check_configs:
+    name: Compare local to remote config files
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
