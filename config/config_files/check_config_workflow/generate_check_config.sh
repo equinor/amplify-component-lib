@@ -16,4 +16,4 @@ while IFS= read -r line; do
     "
     echo "$newLine" >> ".github/workflows/check_config.yaml"
   fi
-done < $list
+done < "$list"
