@@ -21,6 +21,7 @@ do
   if grep -q $fileName "./.acl-ignore"; then
     printf -- "$fileName in .acl-ignore, skipping...\n"
   else
+    printf -- "Downloading $fileName file...\n"
     curl -s $line > $fileName
   fi
 done
@@ -37,6 +38,7 @@ do
   if grep -q $fileName "../.acl-ignore"; then
     printf -- "$fileName in .acl-ignore, skipping...\n"
   else
+    printf -- "Downloading $fileName file...\n"
     curl -s $line > $fileName
   fi
 done
@@ -53,6 +55,7 @@ do
   if grep -q $fileName "../../.acl-ignore"; then
     printf -- "$fileName in .acl-ignore, skipping...\n"
   else
+    printf -- "Downloading $fileName file...\n"
     curl -s $line > $fileName
   fi
 done
@@ -72,6 +75,7 @@ do
   if grep -q $fileName "../.acl-ignore"; then
     printf -- "$fileName in .acl-ignore, skipping...\n"
   else
+    printf -- "Downloading $fileName file...\n"
     curl -s $line > $fileName
   fi
 done
@@ -89,6 +93,7 @@ do
   if grep -q $fileName "./client/.acl-ignore"; then
     printf -- "$fileName in .acl-ignore, skipping...\n"
   else
+    printf -- "Downloading $fileName file...\n"
     curl -s $line > ".github/workflows/$fileName"
   fi
 done
