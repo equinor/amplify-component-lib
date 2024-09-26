@@ -18,6 +18,7 @@ const meta: Meta<typeof ComboBox> = {
   argTypes: {
     label: { control: 'text' },
     helperText: { control: 'text' },
+    showHelperIcon: { control: 'boolean' },
     syncParentChildSelection: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
@@ -30,6 +31,7 @@ const meta: Meta<typeof ComboBox> = {
   args: {
     label: 'Label here',
     helperText: 'helper text',
+    showHelperIcon: true,
     syncParentChildSelection: true,
     sortValues: true,
     clearable: true,

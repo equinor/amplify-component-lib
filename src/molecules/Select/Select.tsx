@@ -55,6 +55,7 @@ export const Select = <T extends SelectOptionRequired>(
     placeholder = 'Select...',
     label,
     helperText,
+    showHelperIcon = true,
     meta,
     id = `amplify-combobox-${label}`,
     variant,
@@ -96,6 +97,8 @@ export const Select = <T extends SelectOptionRequired>(
     return !!helperText;
   }, [helperText]);
   const helperIcon = useMemo(() => {
+    if (!showHelperIcon) return;
+
     switch (variant) {
       case 'error':
         return error_filled;
@@ -104,7 +107,7 @@ export const Select = <T extends SelectOptionRequired>(
       case 'success':
         return thumbs_up;
     }
-  }, [variant]);
+  }, [showHelperIcon, variant]);
 
   // Not able to test this properly because the menu onClose works inside a dialog in the test env :(
   /* c8 ignore start */
