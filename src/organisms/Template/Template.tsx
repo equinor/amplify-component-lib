@@ -31,11 +31,8 @@ const Content = styled.div<ContentProps>`
   min-height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
   overflow: auto;
-  /* 231px and 64px is width of Sidebar when open/closed, + 1px because of border */
-  min-width: calc(
-    100% - ${(props) => (props.$open ? '232px' : '65px')} -
-      ${spacings.xxx_large} * 2
-  );
+  /* 231px and 64px is width of Sidebar when open/closed */
+  min-width: calc(100% - ${(props) => (props.$open ? '231px' : '64px')});
   &:not(:has(.select-field)) {
     padding: 0 ${spacings.xxx_large};
   }
@@ -45,6 +42,10 @@ const GlobalStyles = createGlobalStyle`
   ${darkTokens}
   ${lightTokens}
   ${spacingTokens}
+  
+  * {
+      box-sizing: border-box;
+  }
 
   button {
     border: none;
