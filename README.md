@@ -25,6 +25,15 @@ wget -q -O - https://raw.githubusercontent.com/equinor/amplify-component-lib/mai
 
 This should have downloaded the `.eslintrc.cjs`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json`, `env.sh`, `Dockerfile`, `proxy/nginx.conf`, `proxy/securityheaders.conf` and github actions workflow files
 
+If you want to ignore certain configuration files you can create a `.acl-ignore` file in the `client` folder in your project.
+
+For example: `acquire/client/.acl-ignore`
+```
+.eslintrc.js
+CODEOWNERS
+pull_request.yaml
+```
+
 # Using github action workflows related to deploying from github from amplify-component-lib
 
 1. Navigate to your projects root folder, `~/Projects/recap` for instance
