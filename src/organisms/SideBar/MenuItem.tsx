@@ -38,8 +38,8 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     const { isOpen } = useSideBar();
 
     const canNavigate = useMemo(
-      () => !disabled && (!isActive || (isActive && !isExactUrl)),
-      [disabled, isActive, isExactUrl]
+      () => !disabled && (!isActive || (isActive && !isExactUrl && replace)),
+      [disabled, isActive, isExactUrl, replace]
     );
 
     const handleOnClick = (event: MouseEvent) => {
