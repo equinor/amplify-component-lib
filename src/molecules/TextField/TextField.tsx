@@ -26,6 +26,9 @@ const Wrapper = styled.div<WrapperProps>`
   input,
   textarea {
     color: ${colors.text.static_icons__default.rgba};
+    &::placeholder {
+      opacity: 1;
+    }
   }
   div:focus-within {
     outline: none !important;
