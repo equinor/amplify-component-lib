@@ -1,8 +1,8 @@
 # Setup base
-curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/check_config_workflow/base.yaml" > ".github/workflows/check_config.yaml"
+curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/check_config_workflow/base.yaml" > ".github/workflows/check_config.yaml"
 
 # Loop through the list from check_config/list.txt
-list=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/check_config_workflow/list.txt")
+list=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/config_files/check_config_workflow/list.txt")
 
 for line in $list
 do
