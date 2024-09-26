@@ -67,7 +67,7 @@ cd ../..
 cd ./proxy || (mkdir proxy && cd ./proxy || return)
 
 
-proxyConfigFiles=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/testutils_config_list.txt")
+proxyConfigFiles=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/proxy_config_list.txt")
 
 for line in $proxyConfigFiles
 do
