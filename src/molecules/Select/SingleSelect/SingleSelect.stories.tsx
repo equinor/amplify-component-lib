@@ -20,6 +20,7 @@ const meta: Meta<typeof SingleSelect> = {
       description: 'Variants',
     },
     helperText: { control: 'text' },
+    showHelperIcon: { control: 'boolean' },
   },
   args: {
     label: 'Label here',

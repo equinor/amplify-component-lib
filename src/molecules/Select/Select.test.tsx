@@ -1,3 +1,4 @@
+import { error_outlined } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
@@ -445,6 +446,29 @@ test('variants work as expected', () => {
       'outline',
       `1px solid ${VARIANT_COLORS[variant]}`
     );
+  }
+});
+
+test('Able to hide helperIcon', () => {
+  const items = fakeSelectItems();
+  const label = faker.animal.bear();
+  const handleOnSelect = vi.fn();
+
+  render(
+    <Select
+      label={label}
+      onSelect={handleOnSelect}
+      values={[]}
+      items={items}
+      variant="error"
+      showHelperIcon={false}
+    />
+  );
+
+  const edsIcons = screen.getAllByTestId('eds-icon-path');
+
+  for (const icon of edsIcons) {
+    expect(icon).not.toHaveAttribute('d', error_outlined.svgPathData);
   }
 });
 

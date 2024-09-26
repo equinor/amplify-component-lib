@@ -1,7 +1,7 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
 import { colors, spacings } from 'src/atoms/style';
-import { VARIANT_COLORS } from 'src/atoms/style/colors';
+import { VARIANT_COLORS, VARIANT_HELPER_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
 
@@ -29,9 +29,12 @@ export const HelperWrapper = styled.span<HelperWrapperProps>`
   ${({ $variant }: HelperWrapperProps) => {
     if (!$variant) return '';
     return css`
+      > label {
+        color: ${VARIANT_HELPER_COLORS[$variant]};
+      }
       > svg {
         flex-shrink: 0;
-        fill: ${VARIANT_COLORS[$variant]};
+        fill: ${VARIANT_HELPER_COLORS[$variant]};
       }
     `;
   }}
