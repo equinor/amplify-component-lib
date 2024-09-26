@@ -39,9 +39,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     multiselect,
     itemRefs,
     onItemKeyDown,
-    onMouseEnterItem,
     onItemSelect,
-    selectableParent = true,
     parentHasNestedItems = false,
   } = props;
   const [openParent, setOpenParent] = useState(false);
@@ -86,19 +84,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
 
   const handleOnItemClick = () => {
     onItemSelect(item);
-
-    if (!multiselect) {
-      setOpenParent((prev) => !prev);
-      return;
-    }
-
-    const selectedValues = props.values.map(({ value }) => value);
-    const willOpen = !selectedValues.includes(item.value);
-    setOpenParent(willOpen);
-  };
-
-  const handleOnMouseEnter = () => {
-    onMouseEnterItem(index);
   };
 
   const handleChevronIconClick = (event: MouseEvent) => {
@@ -134,7 +119,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   };
 
   const handleOnParentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (!openParent && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+    if ((!openParent && event.key === 'ArrowDown') || event.key === 'ArrowUp') {
       onItemKeyDown(event);
     } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
       setOpenParent((prev) => !prev);
@@ -146,11 +131,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
       focusingChildIndex.current = 0;
       childRefs.current[focusingChildIndex.current + childOffset]?.focus();
     }
-  };
-
-  const handleOnMouseEnterChildItem = (index: number) => {
-    focusingChildIndex.current = index;
-    childRefs.current.at(index)?.focus();
   };
 
   if (item.children && item.children.length > 0 && multiselect) {
@@ -176,15 +156,10 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
             index={index}
             closeMenuOnClick={false}
             onKeyDownCapture={handleOnParentKeyDown}
-            onMouseEnter={handleOnMouseEnter}
             onClick={handleOnItemClick}
           >
             <Icon
-              color={
-                selectableParent
-                  ? colors.interactive.primary__resting.rgba
-                  : colors.interactive.disabled__fill.rgba
-              }
+              color={colors.interactive.primary__resting.rgba}
               data={parentIcon}
             />
             <span>{item.label}</span>
@@ -205,8 +180,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               values={props.values}
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
-              onMouseEnterItem={handleOnMouseEnterChildItem}
-              selectableParent={selectableParent}
               parentHasNestedItems
             />
           ))}
@@ -229,7 +202,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
           closeMenuOnClick={false}
           onKeyDownCapture={onItemKeyDown}
           onClick={handleOnItemClick}
-          onMouseEnter={handleOnMouseEnter}
         >
           <Icon
             color={colors.interactive.primary__resting.rgba}
@@ -250,7 +222,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
         index={index}
         onKeyDownCapture={onItemKeyDown}
         onClick={handleOnItemClick}
-        onMouseEnter={handleOnMouseEnter}
       >
         <span>{item.label}</span>
       </StyledMenuItem>

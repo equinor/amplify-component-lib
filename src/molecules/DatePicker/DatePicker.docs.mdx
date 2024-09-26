@@ -1,7 +1,7 @@
-import { Canvas, Controls,  Primary } from '@storybook/blocks'
+import { Canvas, Controls, Primary } from '@storybook/blocks';
 
-import * as ComponentStories from './DatePicker.stories'
-import { Links } from 'src/storybook'
+import * as ComponentStories from './DatePicker.stories';
+import { Links } from 'src/storybook';
 
 <Links
   sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Datepicker/DatePicker.tsx"
@@ -22,6 +22,7 @@ Datepicker for selecting a single date, built on [react-aria](https://react-spec
 In some cases it's useful to display the date in a different format than the default. This can be done by passing a `formatOptions` prop, which uses the [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) options.
 
 For example, to display the date as `dd MMMM yyyy`:
+
 ```
 <DatePicker
   formatOptions={{ day: '2-digit', month: 'long', year: 'numeric' }} />

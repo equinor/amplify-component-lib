@@ -11,6 +11,9 @@ export type ComboBoxProps<T extends SelectOptionRequired> = CommonSelectProps &
   MultiSelectCommon<T> &
   (GroupedSelectProps<T> | ListSelectProps<T>);
 
+/**
+ * @param syncParentChildSelection - Syncs parents/child selections, default is true
+ */
 export function ComboBox<T extends SelectOptionRequired>(
   props: ComboBoxProps<T>
 ) {

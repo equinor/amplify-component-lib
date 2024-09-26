@@ -215,16 +215,11 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   }
 
   &:hover {
-    background: none;
-  }
-
-  &:focus {
-    outline: none;
     background: ${colors.interactive.primary__hover_alt.rgba};
   }
 
   &:focus-visible {
-    background: ${colors.interactive.primary__hover_alt.rgba};
+    outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
 `;
 

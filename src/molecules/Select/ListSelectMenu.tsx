@@ -24,17 +24,12 @@ import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 export const ListSelectMenu = <T extends SelectOptionRequired>(
   props: ListSelectProps<T> &
     SelectMenuProps<T> &
-    (Omit<MultiSelectCommon<T>, 'onAddItem'> | SingleSelectCommon<T>)
+    (
+      | Omit<MultiSelectCommon<T>, 'onAddItem' | 'syncParentChildSelection'>
+      | SingleSelectCommon<T>
+    )
 ) => {
-  const {
-    search,
-    items,
-    onItemSelect,
-    itemRefs,
-    onItemKeyDown,
-    onMouseEnterItem,
-    selectableParent,
-  } = props;
+  const { search, items, onItemSelect, itemRefs, onItemKeyDown } = props;
 
   const filteredItems = useMemo(() => {
     if (search === '') return items;
@@ -61,10 +56,8 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       itemRefs,
       onItemKeyDown,
       onItemSelect,
-      onMouseEnterItem,
       itemValue: item.value,
       values: props.values,
-      selectableParent,
       parentHasNestedItems: hasNestedItems,
     }));
     if ('onAddItem' in props && props.onAddItem && search !== '') {
@@ -75,7 +68,6 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
               index={0}
               itemRefs={itemRefs}
               onItemKeyDown={onItemKeyDown}
-              onMouseEnterItem={onMouseEnterItem}
               onAddItem={props.onAddItem}
             >
               {search}
@@ -119,8 +111,6 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       itemRefs={itemRefs}
       onItemKeyDown={onItemKeyDown}
       onItemSelect={onItemSelect}
-      onMouseEnterItem={onMouseEnterItem}
-      selectableParent={selectableParent}
       parentHasNestedItems={hasNestedItems}
     />
   ));
