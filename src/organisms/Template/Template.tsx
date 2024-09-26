@@ -45,6 +45,10 @@ const GlobalStyles = createGlobalStyle`
   ${darkTokens}
   ${lightTokens}
   ${spacingTokens}
+  
+  * {
+      box-sizing: border-box;
+  }
 
   button {
     border: none;
