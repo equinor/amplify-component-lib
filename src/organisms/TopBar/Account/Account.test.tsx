@@ -178,7 +178,9 @@ describe(
         await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
         // Chip with '+1' for example
-        expect(screen.getByText(`+${amountOfRoles - 1}`)).toBeInTheDocument();
+        expect(
+          await screen.findByText(`+${amountOfRoles - 1}`)
+        ).toBeInTheDocument();
 
         await user.click(button);
 
@@ -231,9 +233,7 @@ describe(
 
       await user.click(button);
 
-      await waitFor(() =>
-        expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
-      );
+      expect(await screen.findByText(/Impersonate/i)).toBeInTheDocument();
 
       await user.click(screen.getByText(/Impersonate/i));
       const availableImpersonationUsers =
