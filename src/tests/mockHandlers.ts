@@ -128,6 +128,20 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(body);
   }),
+  http.put('*/api/v1/ImpersonateUser', async (resolver) => {
+    const body = (await resolver.request.json()) as ImpersonateUserDto;
+
+    const index = fakeImpersonateUsers.findIndex(
+      (user) => user.uniqueName === body.uniqueName
+    );
+    if (index === -1) {
+      return new HttpResponse(null, { status: 204 });
+    }
+    fakeImpersonateUsers[index] = body;
+
+    await delay('real');
+    return HttpResponse.json(body);
+  }),
   http.put('*/api/v1/ImpersonateUser/StartImpersonating', async (resolver) => {
     const uniqueName = resolver.request.url.split('username=').at(-1);
     await delay('real');

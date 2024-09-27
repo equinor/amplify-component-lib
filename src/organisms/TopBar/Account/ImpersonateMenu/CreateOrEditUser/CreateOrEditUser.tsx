@@ -1,26 +1,47 @@
-import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
 
 import { Button, DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
+import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
 import { useAllAppRoles } from '../hooks/useAllAppRoles';
 import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
-import { Container, Header, Section } from './CreateNewUser.styles';
+import { useEditImpersonation } from '../hooks/useEditImpersonation';
+import { Container, Header, Section } from './CreateOrEditUser.styles';
+import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { ComboBox, SelectOptionRequired } from 'src/molecules';
 import { TextField } from 'src/molecules/TextField/TextField';
 
-interface CreateNewUserProps {
+interface CreateOrEditUserProps {
+  editingUser?: ImpersonateUserDto;
   onBack: () => void;
   onClose: () => void;
 }
 
-export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
+export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
+  editingUser,
+  onBack,
+  onClose,
+}) => {
+  const previousEditingUser = usePrevious(editingUser);
   const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
+
+  useEffect(() => {
+    if (
+      editingUser &&
+      (previousEditingUser === undefined ||
+        previousEditingUser.uniqueName !== editingUser.uniqueName)
+    ) {
+      setRoles(editingUser.roles.map((role) => ({ value: role, label: role })));
+      setFirstName(editingUser.firstName);
+      setLastName(editingUser.lastName);
+    }
+  }, [editingUser, previousEditingUser]);
 
   const availableRoles = useMemo(
     () =>
@@ -31,10 +52,13 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
     [data]
   );
 
-  const { mutateAsync: createImpersonationUser, isPending } =
+  const { mutateAsync: createImpersonationUser, isPending: isCreating } =
     useCreateImpersonation();
+  const { mutateAsync: updateImpersonationUser, isPending: isSaving } =
+    useEditImpersonation();
+  const isPending = isCreating || isSaving;
 
-  const isCreateDisabled = useMemo(
+  const isCreateOrSaveDisabled = useMemo(
     () => firstName === '' || lastName === '' || roles.length === 0,
     [firstName, lastName, roles.length]
   );
@@ -51,16 +75,29 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
     setRoles(values);
   };
 
-  const handleOnCreate = async () => {
-    await createImpersonationUser({
-      firstName,
-      lastName,
-      roles: roles.map((role) => role.value).sort(),
-      uniqueName: `${firstName}.${lastName}`.toLowerCase(),
-      appName: environment.getAppName(import.meta.env.VITE_NAME),
-      activeUsers: [],
-    });
-    onClose();
+  const handleOnCreateOrSave = async () => {
+    if (editingUser) {
+      await updateImpersonationUser({
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`,
+        roles: roles.map((role) => role.value).sort(),
+        uniqueName: editingUser.uniqueName,
+        appName: editingUser.appName,
+        activeUsers: [],
+      });
+      onBack();
+    } else {
+      await createImpersonationUser({
+        firstName,
+        lastName,
+        roles: roles.map((role) => role.value).sort(),
+        uniqueName: `${firstName}.${lastName}`.toLowerCase(),
+        appName: environment.getAppName(import.meta.env.VITE_NAME),
+        activeUsers: [],
+      });
+      onClose();
+    }
   };
 
   return (
@@ -69,7 +106,9 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
         <Button variant="ghost_icon" onClick={onBack}>
           <Icon data={arrow_back} />
         </Button>
-        <Typography variant="h6">Create new user</Typography>
+        <Typography variant="h6">
+          {editingUser ? 'Edit user' : 'Create new user'}
+        </Typography>
       </Header>
       <Section>
         <TextField
@@ -108,8 +147,11 @@ export const CreateNewUser: FC<CreateNewUserProps> = ({ onBack, onClose }) => {
             <DotProgress />
           </Button>
         ) : (
-          <Button onClick={handleOnCreate} disabled={isCreateDisabled}>
-            Create and impersonate
+          <Button
+            onClick={handleOnCreateOrSave}
+            disabled={isCreateOrSaveDisabled}
+          >
+            {editingUser ? 'Save' : 'Create and impersonate'}
           </Button>
         )}
       </Section>

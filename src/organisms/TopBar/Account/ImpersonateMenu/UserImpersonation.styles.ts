@@ -13,7 +13,7 @@ interface ContainerProps {
 
 export const Container = styled.button<ContainerProps>`
   display: grid;
-  grid-template-columns: auto auto 1fr 24px;
+  grid-template-columns: auto auto 1fr 24px 36px;
   align-items: center;
   gap: ${spacings.small};
   height: calc(32px + ${spacings.medium} * 2);
@@ -32,9 +32,13 @@ export const Container = styled.button<ContainerProps>`
   > svg:last-child {
     margin-left: auto;
   }
+  > button {
+    grid-column: 5;
+  }
 `;
 export const RoleChip = styled(Chip)`
   height: fit-content;
+  padding: 0;
   color: ${colors.text.static_icons__primary_white.rgba};
   background: ${colors.text.static_icons__tertiary.rgba};
 `;
