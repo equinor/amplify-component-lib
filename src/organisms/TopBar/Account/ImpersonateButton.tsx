@@ -11,6 +11,7 @@ import {
   assignment_user,
   do_not_disturb,
 } from '@equinor/eds-icons';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
@@ -37,13 +38,14 @@ export const ImpersonateButton: FC<ImpersonateButtonProps> = ({
   onOpenImpersonateMenu,
   onClose,
 }) => {
+  const queryClient = useQueryClient();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
   const { mutateAsync: endImpersonation, isPending } = useStopImpersonation();
 
   const handleOnEndImpersonation = async () => {
     await endImpersonation();
     onClose();
-    location.reload();
+    queryClient.clear();
   };
 
   if (activeImpersonationUser && isPending) {
