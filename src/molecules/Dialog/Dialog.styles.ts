@@ -16,7 +16,7 @@ export const DialogTitle = styled(EDSDialog.Title)<StyledDialogProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: calc(100% - (${spacings.medium} * 2));
+  width: 100%;
   padding: ${spacings.medium};
 
   ${({ $withBorders }) => {
@@ -57,7 +57,7 @@ export const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
   display: grid;
   grid-template-columns: auto auto auto;
   padding-top: ${spacings.medium};
-  width: calc(100% - (${spacings.medium} * 2));
+  width: 100%;
 
   > section {
     display: flex;
