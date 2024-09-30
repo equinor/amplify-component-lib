@@ -44,7 +44,7 @@ const StyledNodeViewWrapper = styled(NodeViewWrapper)`
 `;
 
 const Component = (props: NodeViewProps) => {
-  const [count, setCount] = useState(props.node.attrs.count);
+  const [count, setCount] = useState(props.node.attrs.count as number);
   return (
     <StyledNodeViewWrapper className="react-component">
       <label contentEditable={false}>React Component</label>
