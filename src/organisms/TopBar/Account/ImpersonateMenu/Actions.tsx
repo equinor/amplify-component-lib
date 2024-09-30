@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { Button, DotProgress, Typography } from '@equinor/eds-core-react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useActiveImpersonationUser } from './hooks/useActiveImpersonationUser';
 import { spacings } from 'src/atoms/style/spacings';
@@ -28,11 +29,12 @@ interface ActionsProps {
 export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
   const { data: activeUserImpersonation } = useActiveImpersonationUser();
   const { mutateAsync, isPending } = useStartImpersonation();
+  const queryClient = useQueryClient();
 
   const handleOnStartImpersonate = async () => {
     await mutateAsync(selectedUniqueName);
     onCancel();
-    location.reload();
+    queryClient.clear();
   };
 
   return (

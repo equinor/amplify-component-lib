@@ -116,7 +116,7 @@ describe('CreateNewUser', () => {
 
       await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-      expect(screen.getByText(roles[0])).toBeInTheDocument();
+      expect(await screen.findByText(roles[0])).toBeInTheDocument();
     },
     { timeout: 8000 }
   );
