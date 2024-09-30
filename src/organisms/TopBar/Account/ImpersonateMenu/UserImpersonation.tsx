@@ -57,7 +57,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
   const handleOnToggleMenu = () => setOpen((prev) => !prev);
   const handleOnClose = () => setOpen(false);
 
-  const handleOnClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleOnClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target !== buttonRef.current) {
       onClick(uniqueName);
     }
