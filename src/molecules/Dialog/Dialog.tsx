@@ -91,17 +91,26 @@ export const Dialog: FC<DialogProps> = ({
       {...otherProps}
       style={{ width: width ? `${width}px` : undefined }}
     >
-      <DialogTitle $withBorders={withBorders}>
+      <DialogTitle
+        $withBorders={withBorders}
+        style={{ width: width ? `${width}px` : undefined }}
+      >
         <section>{titleElements}</section>
         <Button variant="ghost_icon" onClick={otherProps.onClose}>
           <Icon data={close} />
         </Button>
       </DialogTitle>
-      <DialogContent $withContentPadding={withContentPadding}>
+      <DialogContent
+        $withContentPadding={withContentPadding}
+        style={{ width: width ? `${width}px` : undefined }}
+      >
         {childrenElements}
       </DialogContent>
       {actions && actions.length > 0 && (
-        <DialogActions $withBorders={withBorders}>
+        <DialogActions
+          $withBorders={withBorders}
+          style={{ width: width ? `${width}px` : undefined }}
+        >
           {leftActions && leftActions.length > 0 && (
             <section id="dialog-actions-left">
               {leftActions.map((action) => (
