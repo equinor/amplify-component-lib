@@ -11,7 +11,7 @@ interface ContainerProps {
   $selected: boolean;
 }
 
-export const Container = styled.button<ContainerProps>`
+export const Container = styled.div<ContainerProps>`
   display: grid;
   grid-template-columns: auto auto 1fr 24px 36px;
   align-items: center;
@@ -26,6 +26,7 @@ export const Container = styled.button<ContainerProps>`
   transition: background ${animation.transitionMS};
 
   &:hover {
+    cursor: pointer;
     background: ${colors.interactive.primary__selected_hover.rgba};
   }
 

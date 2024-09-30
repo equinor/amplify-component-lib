@@ -71,6 +71,7 @@ function fakeUser(): ImpersonateUserDto {
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
+    id: faker.string.uuid(),
     firstName,
     lastName,
     fullName,
@@ -128,11 +129,21 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(body);
   }),
-  http.delete('*/api/v1/ImpersonateUser/DeleteImpersonationUser', async () => {
-    await delay('real');
+  http.delete(
+    '*/api/v1/ImpersonateUser/DeleteImpersonationUser',
+    async (resolver) => {
+      await delay('real');
+      const id = resolver.request.url.split('impersonationUserId=').at(-1);
 
-    return HttpResponse.text('Ok');
-  }),
+      const index = fakeImpersonateUsers.findIndex((user) => user.id === id);
+
+      if (index >= 0) {
+        fakeImpersonateUsers.splice(index, 1);
+      }
+
+      return HttpResponse.text('Ok');
+    }
+  ),
   http.put('*/api/v1/ImpersonateUser', async (resolver) => {
     const body = (await resolver.request.json()) as ImpersonateUserDto;
 

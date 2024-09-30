@@ -19,16 +19,17 @@ export function useEditImpersonation() {
       const previousData = queryClient.getQueryData<ImpersonateUserDto[]>([
         GET_ALL_IMPERSONATIONS,
       ]);
-      const newData =
-        previousData?.map((u) =>
+      if (previousData) {
+        const newData = previousData?.map((u) =>
           u.uniqueName === user.uniqueName ? user : u
-        ) ?? [];
-      queryClient.setQueryData([GET_ALL_IMPERSONATIONS], newData);
+        );
+        queryClient.setQueryData([GET_ALL_IMPERSONATIONS], newData);
+      }
+
       const previousActive = queryClient.getQueryData<
         ImpersonateUserDto | undefined
       >([ACTIVE_USERIMPERSONATION]);
       if (previousActive && previousActive.uniqueName === user.uniqueName) {
-        console.log('setting active cache');
         queryClient.setQueryData([ACTIVE_USERIMPERSONATION], user);
       }
     },

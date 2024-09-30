@@ -22,6 +22,7 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
   const handleDelete = async () => {
     await deleteUser(user);
     showSnackbar(`Deleted user "${user.fullName}" successfully`);
+    onBack();
   };
 
   return (

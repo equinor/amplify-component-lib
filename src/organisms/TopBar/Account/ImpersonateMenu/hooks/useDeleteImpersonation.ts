@@ -12,16 +12,20 @@ export function useDeleteImpersonation() {
   return useMutation({
     mutationFn: async (user: ImpersonateUserDto) => {
       if (user.id) {
-        await ImpersonateUserService.deleteImpersonationUser(user.id);
+        const response = await ImpersonateUserService.deleteImpersonationUser(
+          user.id
+        );
 
         const previousData = queryClient.getQueryData<ImpersonateUserDto[]>([
           GET_ALL_IMPERSONATIONS,
         ]);
-        const index = previousData?.findIndex((u) => u.id === user.id) ?? -1;
-        if (index >= 0) {
-          const newData = previousData?.splice(index, 1);
+        const index = previousData?.findIndex((u) => u.id === user.id);
+        if (index !== undefined && index >= 0 && previousData) {
+          const newData = [...previousData];
+          newData.splice(index, 1);
           queryClient.setQueryData([GET_ALL_IMPERSONATIONS], newData);
         }
+        return response;
       }
     },
   });
