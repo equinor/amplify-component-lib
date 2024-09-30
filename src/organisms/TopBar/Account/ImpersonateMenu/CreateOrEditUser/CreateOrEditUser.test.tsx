@@ -31,7 +31,12 @@ describe('CreateNewUser', () => {
   });
 
   test('Able to open/close edit', async () => {
-    renderWithProviders(<Account />);
+    renderWithProviders(
+      <>
+        <p>outside</p>
+        <Account />
+      </>
+    );
     const user = userEvent.setup();
     const button = screen.getByRole('button');
 
@@ -53,7 +58,13 @@ describe('CreateNewUser', () => {
       screen.getByRole('textbox', { name: /first name/i })
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /cancel/i }));
+    await user.click(screen.getByText('outside'));
+
+    await user.click(button);
+
+    await user.click(
+      await screen.findByRole('button', { name: /impersonate/i })
+    );
 
     await user.click(screen.getByRole('button', { name: /create/i }));
     expect(screen.queryByText('Edit user')).not.toBeInTheDocument();
