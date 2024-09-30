@@ -47,13 +47,33 @@ test('Custom width works', () => {
   const title = faker.airline.airplane().name;
   const description = faker.lorem.paragraph();
   const width = faker.number.int({ min: 10, max: 1000 });
+  const actions: DialogAction[] = [
+    {
+      text: faker.animal.lion(),
+      onClick: vi.fn(),
+      variant: 'contained',
+    },
+  ];
+
   const { container } = render(
-    <Dialog open title={title} onClose={handleOnClose} width={width}>
+    <Dialog
+      open
+      title={title}
+      onClose={handleOnClose}
+      width={width}
+      actions={actions}
+    >
       {description}
     </Dialog>
   );
   const dialogElement = container.firstElementChild!.firstElementChild;
   expect(dialogElement).toHaveAttribute('style', `width: ${width}px;`);
+  const dialogTitle = screen.getByText(title).parentElement!.parentElement!;
+  expect(dialogTitle).toHaveAttribute('style', `width: ${width}px;`);
+
+  const dialogActions = screen.getByText(actions[0].text).parentElement!
+    .parentElement!.parentElement!;
+  expect(dialogActions).toHaveAttribute('style', `width: ${width}px;`);
 });
 
 test('withBorders works as expected', () => {
