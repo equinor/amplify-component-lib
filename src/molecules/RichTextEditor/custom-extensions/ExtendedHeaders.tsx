@@ -6,18 +6,10 @@ import {
   NodeViewWrapper,
   ReactNodeViewRenderer,
 } from '@tiptap/react';
-
+import type { NodeViewProps } from '@tiptap/react';
 import { Typography } from 'src/molecules';
 
-interface TiptapHeadingProps {
-  node: {
-    attrs: {
-      level: number;
-    };
-  };
-}
-
-const Component = (props: TiptapHeadingProps) => {
+const Component = (props: NodeViewProps) => {
   const level = props.node.attrs.level;
   let variant: TypographyVariants = 'h1';
   if (level === 2) variant = 'h2';
