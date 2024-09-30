@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
+import { CreateOrEditUser } from './CreateOrEditUser/CreateOrEditUser';
+import { DeleteUser } from './DeleteUser/DeleteUser';
 import { useActiveImpersonationUser } from './hooks/useActiveImpersonationUser';
 import { useGetAllImpersonationUsersForApp } from './hooks/useGetAllImpersonationUsersForApp';
 import { Actions } from './Actions';
@@ -11,8 +13,6 @@ import { Content, Header } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
 import { Menu } from 'src/molecules';
 import { Search } from 'src/molecules';
-import { CreateOrEditUser } from 'src/organisms/TopBar/Account/ImpersonateMenu/CreateOrEditUser/CreateOrEditUser';
-import { DeleteUser } from 'src/organisms/TopBar/Account/ImpersonateMenu/DeleteUser/DeleteUser';
 
 interface ImpersonateProps {
   open: boolean;
