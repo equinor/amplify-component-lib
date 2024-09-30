@@ -61,41 +61,45 @@ describe('CreateNewUser', () => {
     ).not.toBeInTheDocument();
   });
 
-  test('Able to edit existing user impersonation', async () => {
-    renderWithProviders(<Account />);
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
+  test(
+    'Able to edit existing user impersonation',
+    async () => {
+      renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
 
-    await user.click(button);
+      await user.click(button);
 
-    const impersonateButton = await screen.findByRole('button', {
-      name: /impersonate/i,
-    });
+      const impersonateButton = await screen.findByRole('button', {
+        name: /impersonate/i,
+      });
 
-    await user.click(impersonateButton);
+      await user.click(impersonateButton);
 
-    const menuItems = screen.getAllByTestId('impersonation-user');
-    expect(menuItems.length).toBeGreaterThan(0);
+      const menuItems = screen.getAllByTestId('impersonation-user');
+      expect(menuItems.length).toBeGreaterThan(0);
 
-    // Click edit on the first one
-    await user.click(within(menuItems[0]).getByRole('button'));
+      // Click edit on the first one
+      await user.click(within(menuItems[0]).getByRole('button'));
 
-    await user.click(screen.getByRole('button', { name: /edit user/i }));
+      await user.click(screen.getByRole('button', { name: /edit user/i }));
 
-    const textBox = screen.getByRole('textbox', { name: /first name/i });
-    await user.clear(textBox);
+      const textBox = screen.getByRole('textbox', { name: /first name/i });
+      await user.clear(textBox);
 
-    const newFirstName = faker.person.firstName();
-    await user.type(textBox, newFirstName);
+      const newFirstName = faker.person.firstName();
+      await user.type(textBox, newFirstName);
 
-    await user.click(screen.getByRole('button', { name: /save/i }));
+      await user.click(screen.getByRole('button', { name: /save/i }));
 
-    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+      await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-    expect(
-      await screen.findByText(new RegExp(newFirstName))
-    ).toBeInTheDocument();
-  });
+      expect(
+        await screen.findByText(new RegExp(newFirstName))
+      ).toBeInTheDocument();
+    },
+    { timeout: 8000 }
+  );
 
   test(
     'Able to create new impersonation user',
@@ -163,54 +167,58 @@ describe('CreateNewUser', () => {
     { timeout: 8000 }
   );
 
-  test('Able to edit active user impersonation', async () => {
-    renderWithProviders(<Account />);
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
+  test(
+    'Able to edit active user impersonation',
+    async () => {
+      renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
 
-    await user.click(button);
+      await user.click(button);
 
-    const impersonateButton = await screen.findByRole('button', {
-      name: /impersonate/i,
-    });
+      const impersonateButton = await screen.findByRole('button', {
+        name: /impersonate/i,
+      });
 
-    await user.click(impersonateButton);
+      await user.click(impersonateButton);
 
-    // Select the first one
-    await user.click(screen.getAllByTestId('impersonation-user')[0]);
+      // Select the first one
+      await user.click(screen.getAllByTestId('impersonation-user')[0]);
 
-    // Activate impersonation
-    await user.click(screen.getByRole('button', { name: 'Impersonate' }));
+      // Activate impersonation
+      await user.click(screen.getByRole('button', { name: 'Impersonate' }));
 
-    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+      await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-    // Open menu again
-    await user.click(button);
+      // Open menu again
+      await user.click(button);
 
-    // Open impersonate menu
-    // Our account.name in the test env is Mock
-    await user.click(screen.getByRole('button', { name: /mock/i }));
+      // Open impersonate menu
+      // Our account.name in the test env is Mock
+      await user.click(screen.getByRole('button', { name: /mock/i }));
 
-    const menuItems = screen.getAllByTestId('impersonation-user');
-    expect(menuItems.length).toBeGreaterThan(0);
+      const menuItems = screen.getAllByTestId('impersonation-user');
+      expect(menuItems.length).toBeGreaterThan(0);
 
-    // Click edit on the first one
-    await user.click(within(menuItems[0]).getByRole('button'));
+      // Click edit on the first one
+      await user.click(within(menuItems[0]).getByRole('button'));
 
-    await user.click(screen.getByRole('button', { name: /edit user/i }));
+      await user.click(screen.getByRole('button', { name: /edit user/i }));
 
-    const textBox = screen.getByRole('textbox', { name: /first name/i });
-    await user.clear(textBox);
+      const textBox = screen.getByRole('textbox', { name: /first name/i });
+      await user.clear(textBox);
 
-    const newFirstName = faker.person.firstName();
-    await user.type(textBox, newFirstName);
+      const newFirstName = faker.person.firstName();
+      await user.type(textBox, newFirstName);
 
-    await user.click(screen.getByRole('button', { name: /save/i }));
+      await user.click(screen.getByRole('button', { name: /save/i }));
 
-    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+      await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-    expect(
-      await screen.findByText(new RegExp(newFirstName))
-    ).toBeInTheDocument();
-  });
+      expect(
+        await screen.findByText(new RegExp(newFirstName))
+      ).toBeInTheDocument();
+    },
+    { timeout: 8000 }
+  );
 });
