@@ -3,7 +3,7 @@ import { forwardRef, HTMLAttributes, MouseEvent, useMemo } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 
 import { IconContainer, ItemText, Link } from './MenuItem.styles';
-import { isCurrentUrl as checkUrl } from './MenuItem.utils';
+import { isCurrentUrl } from './MenuItem.utils';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { useSideBar } from 'src/providers/SideBarProvider';
@@ -11,12 +11,6 @@ import { useSideBar } from 'src/providers/SideBarProvider';
 export type MenuItemProps = {
   currentUrl?: string;
   disabled?: boolean;
-  /**
-   * This is useful for routes that drills into a path,
-   * by still highlighting the original path and not disable "back to start" by click on the same link again
-   * eg. navigating to /collections and clicking on an item to go into /collections/:id and so on
-   */
-  hasPathDrilling?: boolean;
 } & SideBarMenuItem &
   HTMLAttributes<HTMLAnchorElement>;
 
@@ -30,21 +24,22 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       onClick,
       disabled = false,
       replace = false,
-      hasPathDrilling = false,
     },
     ref
   ) => {
-    const isCurrentUrl = checkUrl({
+    const isActive = isCurrentUrl({
       currentUrl,
       link,
-      replace,
-      hasPathDrilling,
     });
+    const isExactUrl = useMemo(() => {
+      const currentWithoutParams = currentUrl?.split('?')[0];
+      return currentWithoutParams === link;
+    }, [currentUrl, link]);
     const { isOpen } = useSideBar();
 
     const canNavigate = useMemo(
-      () => !disabled && !isCurrentUrl,
-      [disabled, isCurrentUrl]
+      () => !disabled && (!isActive || (isActive && !isExactUrl && replace)),
+      [disabled, isActive, isExactUrl, replace]
     );
 
     const handleOnClick = (event: MouseEvent) => {
@@ -59,7 +54,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       return (
         <Link
           to={link}
-          $active={isCurrentUrl}
+          $active={isActive}
           aria-disabled={disabled}
           $disabled={disabled}
           onClick={handleOnClick}
@@ -75,7 +70,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
             </IconContainer>
           )}
           <ItemText
-            $active={isCurrentUrl}
+            $active={isActive}
             $disabled={disabled}
             variant="button"
             group="navigation"
@@ -87,25 +82,25 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     }
 
     return (
-      <Link
-        to={link}
-        $active={isCurrentUrl}
-        aria-disabled={disabled}
-        $disabled={disabled}
-        onClick={handleOnClick}
-        $open={isOpen}
-        tabIndex={0}
-        ref={ref}
-        data-testid="sidebar-menu-item"
-      >
-        <OptionalTooltip title={name} placement="right">
+      <OptionalTooltip title={name} placement="right">
+        <Link
+          to={link}
+          $active={isActive}
+          aria-disabled={disabled}
+          $disabled={disabled}
+          onClick={handleOnClick}
+          $open={isOpen}
+          tabIndex={0}
+          ref={ref}
+          data-testid="sidebar-menu-item"
+        >
           {icon && (
             <IconContainer data-testid="icon-container">
               <Icon data={icon} size={24} />
             </IconContainer>
           )}
-        </OptionalTooltip>
-      </Link>
+        </Link>
+      </OptionalTooltip>
     );
   }
 );
