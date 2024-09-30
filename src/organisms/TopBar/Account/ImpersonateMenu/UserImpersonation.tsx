@@ -16,7 +16,7 @@ import {
   RoleChipContainer,
 } from './UserImpersonation.styles';
 import { colors } from 'src/atoms/style/colors';
-import { ListItem } from 'src/molecules';
+import { ListItem, OptionalTooltip } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -26,6 +26,11 @@ const StyledListItem = styled(ListItem)`
   }
   p {
     color: ${colors.interactive.danger__resting.rgba};
+  }
+  &:disabled {
+    svg {
+      fill: ${colors.interactive.disabled__text.rgba};
+    }
   }
 `;
 
@@ -40,6 +45,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
   fullName,
   uniqueName,
   roles,
+  activeUsers,
   selected,
   onClick,
   onEdit,
@@ -109,11 +115,20 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
             onClick={handleOnEditUser}
             leadingContent={edit}
           />
-          <StyledListItem
-            label="Delete user"
-            onClick={handleOnDeleteUser}
-            leadingContent={delete_to_trash}
-          />
+          <OptionalTooltip
+            title={
+              activeUsers.length > 0
+                ? 'Cannot delete user with active sessions'
+                : undefined
+            }
+          >
+            <StyledListItem
+              label="Delete user"
+              onClick={handleOnDeleteUser}
+              disabled={activeUsers.length > 0}
+              leadingContent={delete_to_trash}
+            />
+          </OptionalTooltip>
         </Menu>
       )}
     </>

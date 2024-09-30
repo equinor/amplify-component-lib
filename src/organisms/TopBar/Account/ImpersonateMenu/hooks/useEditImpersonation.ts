@@ -4,7 +4,10 @@ import {
 } from '@equinor/subsurface-app-management';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { GET_ALL_IMPERSONATIONS } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.constants';
+import {
+  ACTIVE_USERIMPERSONATION,
+  GET_ALL_IMPERSONATIONS,
+} from '../Impersonate.constants';
 
 export function useEditImpersonation() {
   const queryClient = useQueryClient();
@@ -21,6 +24,13 @@ export function useEditImpersonation() {
           u.uniqueName === user.uniqueName ? user : u
         ) ?? [];
       queryClient.setQueryData([GET_ALL_IMPERSONATIONS], newData);
+      const previousActive = queryClient.getQueryData<
+        ImpersonateUserDto | undefined
+      >([ACTIVE_USERIMPERSONATION]);
+      if (previousActive && previousActive.uniqueName === user.uniqueName) {
+        console.log('setting active cache');
+        queryClient.setQueryData([ACTIVE_USERIMPERSONATION], user);
+      }
     },
   });
 }

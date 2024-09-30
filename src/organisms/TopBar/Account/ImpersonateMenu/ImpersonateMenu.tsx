@@ -7,7 +7,7 @@ import { useActiveImpersonationUser } from './hooks/useActiveImpersonationUser';
 import { useGetAllImpersonationUsersForApp } from './hooks/useGetAllImpersonationUsersForApp';
 import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
-import { Content, Header } from './Impersonate.styles';
+import { Content, Header } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
 import { Menu } from 'src/molecules';
 import { Search } from 'src/molecules';
@@ -76,6 +76,10 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
     );
   };
 
+  const handleOnDeleteBack = () => {
+    setDeletingUser(undefined);
+  };
+
   if (!open) return null;
 
   if (creatingOrEditingUser) {
@@ -103,7 +107,7 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         onClose={handleOnCreateNewClose}
         placement="bottom-end"
       >
-        <DeleteUser user={deletingUser} />
+        <DeleteUser user={deletingUser} onBack={handleOnDeleteBack} />
       </Menu>
     );
   }

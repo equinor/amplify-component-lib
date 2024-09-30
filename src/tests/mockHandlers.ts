@@ -128,6 +128,11 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(body);
   }),
+  http.delete('*/api/v1/ImpersonateUser/DeleteImpersonationUser', async () => {
+    await delay('real');
+
+    return HttpResponse.text('Ok');
+  }),
   http.put('*/api/v1/ImpersonateUser', async (resolver) => {
     const body = (await resolver.request.json()) as ImpersonateUserDto;
 
@@ -152,6 +157,7 @@ export const handlers = [
     activeImpersonateUser = user;
 
     if (user) {
+      user.activeUsers.push(faker.internet.userName());
       return HttpResponse.json(user);
     }
 

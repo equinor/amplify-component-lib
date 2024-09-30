@@ -12,14 +12,6 @@ export const Container = styled.div`
   gap: ${spacings.medium};
 `;
 
-export const Header = styled.header`
-  display: flex;
-  align-items: center;
-  gap: ${spacings.medium};
-  padding: 0 ${spacings.small} ${spacings.small};
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-`;
-
 export const Section = styled.section`
   display: flex;
   flex-direction: column;
