@@ -1,5 +1,4 @@
 import { forwardRef, ReactNode } from 'react';
-import { ReactNode } from 'react';
 
 import {
   Button,
@@ -56,7 +55,7 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
  * @param withBorders - Defaults to false
  * Also inherits props from EDS dialog
  */
-export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
+export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
   (
     {
       title,
