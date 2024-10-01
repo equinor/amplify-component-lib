@@ -1,4 +1,5 @@
-import { FC, ReactNode } from 'react';
+import { forwardRef, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import {
   Button,
@@ -50,90 +51,98 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
  * @param children - Content in the dialog, if string it gets the default typography styling for dialogs
  * @param onClose - fn to set open to false
  * @param width - width in px, defaults to just fit-content
- * @param actions - Dialog act(and is disabled)ions, { position: "right" is default }
+ * @param actions - Dialog actions, { position: "right" is default }
  * @param withContentPadding - Defaults to true
  * @param withBorders - Defaults to false
  * Also inherits props from EDS dialog
  */
-export const Dialog: FC<DialogProps> = ({
-  title,
-  children,
-  width,
-  actions,
-  withContentPadding = true,
-  withBorders = false,
-  ...otherProps
-}) => {
-  const leftActions = actions?.filter((action) => action.position === 'left');
-  const centerActions = actions?.filter(
-    (action) => action.position === 'center'
-  );
-  const rightActions = actions?.filter(
-    (action) => action.position === undefined || action.position === 'right'
-  );
-
-  const titleElements =
-    typeof title === 'string' ? (
-      <Typography variant="h6">{title}</Typography>
-    ) : (
-      title
+export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
+  (
+    {
+      title,
+      children,
+      width,
+      actions,
+      withContentPadding = true,
+      withBorders = false,
+      ...otherProps
+    },
+    ref
+  ) => {
+    const leftActions = actions?.filter((action) => action.position === 'left');
+    const centerActions = actions?.filter(
+      (action) => action.position === 'center'
+    );
+    const rightActions = actions?.filter(
+      (action) => action.position === undefined || action.position === 'right'
     );
 
-  const childrenElements =
-    typeof children === 'string' ? (
-      <Typography variant="body_long">{children}</Typography>
-    ) : (
-      children
-    );
+    const titleElements =
+      typeof title === 'string' ? (
+        <Typography variant="h6">{title}</Typography>
+      ) : (
+        title
+      );
 
-  return (
-    <DialogElement
-      {...otherProps}
-      style={{ width: width ? `${width}px` : undefined }}
-    >
-      <DialogTitle
-        $withBorders={withBorders}
-        style={{ width: width ? `${width}px` : undefined }}
+    const childrenElements =
+      typeof children === 'string' ? (
+        <Typography variant="body_long">{children}</Typography>
+      ) : (
+        children
+      );
+
+    return (
+      <DialogElement
+        {...otherProps}
+        ref={ref}
+        style={{ width: width ? `${width}px` : undefined, ...otherProps.style }}
       >
-        <section>{titleElements}</section>
-        <Button variant="ghost_icon" onClick={otherProps.onClose}>
-          <Icon data={close} />
-        </Button>
-      </DialogTitle>
-      <DialogContent
-        $withContentPadding={withContentPadding}
-        style={{ width: width ? `${width}px` : undefined }}
-      >
-        {childrenElements}
-      </DialogContent>
-      {actions && actions.length > 0 && (
-        <DialogActions
+        <DialogTitle
           $withBorders={withBorders}
           style={{ width: width ? `${width}px` : undefined }}
         >
-          {leftActions && leftActions.length > 0 && (
-            <section id="dialog-actions-left">
-              {leftActions.map((action) => (
-                <DialogAction key={action.text} {...action} />
-              ))}
-            </section>
-          )}
-          {centerActions && centerActions.length > 0 && (
-            <section id="dialog-actions-center">
-              {centerActions.map((action) => (
-                <DialogAction key={action.text} {...action} />
-              ))}
-            </section>
-          )}
-          {rightActions && rightActions.length > 0 && (
-            <section id="dialog-actions-right">
-              {rightActions.map((action) => (
-                <DialogAction key={action.text} {...action} />
-              ))}
-            </section>
-          )}
-        </DialogActions>
-      )}
-    </DialogElement>
-  );
-};
+          <section>{titleElements}</section>
+          <Button variant="ghost_icon" onClick={otherProps.onClose}>
+            <Icon data={close} />
+          </Button>
+        </DialogTitle>
+        <DialogContent
+          $withContentPadding={withContentPadding}
+          style={{ width: width ? `${width}px` : undefined }}
+        >
+          {childrenElements}
+        </DialogContent>
+        {actions && actions.length > 0 && (
+          <DialogActions
+            $withBorders={withBorders}
+            style={{ width: width ? `${width}px` : undefined }}
+          >
+            {leftActions && leftActions.length > 0 && (
+              <section id="dialog-actions-left">
+                {leftActions.map((action) => (
+                  <DialogAction key={action.text} {...action} />
+                ))}
+              </section>
+            )}
+            {centerActions && centerActions.length > 0 && (
+              <section id="dialog-actions-center">
+                {centerActions.map((action) => (
+                  <DialogAction key={action.text} {...action} />
+                ))}
+              </section>
+            )}
+            {rightActions && rightActions.length > 0 && (
+              <section id="dialog-actions-right">
+                {rightActions.map((action) => (
+                  <DialogAction key={action.text} {...action} />
+                ))}
+              </section>
+            )}
+          </DialogActions>
+        )}
+      </DialogElement>
+    );
+  }
+);
+
+Dialog.displayName = 'Dialog';
