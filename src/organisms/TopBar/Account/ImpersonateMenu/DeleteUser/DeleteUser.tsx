@@ -46,7 +46,7 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
       <div>
         {isPending ? (
           <Button variant="outlined" color="danger">
-            <DotProgress />
+            <DotProgress color="tertiary" />
           </Button>
         ) : (
           <Button variant="outlined" color="danger" onClick={handleDelete}>
