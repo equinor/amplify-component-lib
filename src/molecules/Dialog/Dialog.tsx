@@ -50,7 +50,7 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
  * @param children - Content in the dialog, if string it gets the default typography styling for dialogs
  * @param onClose - fn to set open to false
  * @param width - width in px, defaults to just fit-content
- * @param actions - Dialog act(and is disabled)ions, { position: "right" is default }
+ * @param actions - Dialog actions, { position: "right" is default }
  * @param withContentPadding - Defaults to true
  * @param withBorders - Defaults to false
  * Also inherits props from EDS dialog
@@ -89,7 +89,7 @@ export const Dialog: FC<DialogProps> = ({
   return (
     <DialogElement
       {...otherProps}
-      style={{ width: width ? `${width}px` : undefined }}
+      style={{ width: width ? `${width}px` : undefined, ...otherProps.style }}
     >
       <DialogTitle
         $withBorders={withBorders}
