@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 import { mergeAttributes, Node } from '@tiptap/core';
+import type { NodeViewProps } from '@tiptap/react';
 import {
   NodeViewContent,
   NodeViewWrapper,
@@ -42,16 +43,8 @@ const StyledNodeViewWrapper = styled(NodeViewWrapper)`
   }
 `;
 
-interface TipTapCounter {
-  node: {
-    attrs: {
-      count: number;
-    };
-  };
-}
-
-const Component = (props: TipTapCounter) => {
-  const [count, setCount] = useState(props.node.attrs.count);
+const Component = (props: NodeViewProps) => {
+  const [count, setCount] = useState(props.node.attrs.count as number);
   return (
     <StyledNodeViewWrapper className="react-component">
       <label contentEditable={false}>React Component</label>

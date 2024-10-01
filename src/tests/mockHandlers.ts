@@ -71,6 +71,7 @@ function fakeUser(): ImpersonateUserDto {
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
+    id: faker.string.uuid(),
     firstName,
     lastName,
     fullName,
@@ -128,6 +129,35 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(body);
   }),
+  http.delete(
+    '*/api/v1/ImpersonateUser/DeleteImpersonationUser',
+    async (resolver) => {
+      await delay('real');
+      const id = resolver.request.url.split('impersonationUserId=').at(-1);
+
+      const index = fakeImpersonateUsers.findIndex((user) => user.id === id);
+
+      if (index >= 0) {
+        fakeImpersonateUsers.splice(index, 1);
+      }
+
+      return HttpResponse.text('Ok');
+    }
+  ),
+  http.put('*/api/v1/ImpersonateUser', async (resolver) => {
+    const body = (await resolver.request.json()) as ImpersonateUserDto;
+
+    const index = fakeImpersonateUsers.findIndex(
+      (user) => user.uniqueName === body.uniqueName
+    );
+    if (index === -1) {
+      return new HttpResponse(null, { status: 204 });
+    }
+    fakeImpersonateUsers[index] = body;
+
+    await delay('real');
+    return HttpResponse.json(body);
+  }),
   http.put('*/api/v1/ImpersonateUser/StartImpersonating', async (resolver) => {
     const uniqueName = resolver.request.url.split('username=').at(-1);
     await delay('real');
@@ -138,6 +168,7 @@ export const handlers = [
     activeImpersonateUser = user;
 
     if (user) {
+      user.activeUsers.push(faker.internet.userName());
       return HttpResponse.json(user);
     }
 

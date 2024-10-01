@@ -1,16 +1,18 @@
 import { FC, useEffect, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
+import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
-import { CreateNewUser } from './CreateNewUser/CreateNewUser';
+import { CreateOrEditUser } from './CreateOrEditUser/CreateOrEditUser';
+import { DeleteUser } from './DeleteUser/DeleteUser';
+import { useActiveImpersonationUser } from './hooks/useActiveImpersonationUser';
 import { useGetAllImpersonationUsersForApp } from './hooks/useGetAllImpersonationUsersForApp';
 import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
-import { Content, Header } from './Impersonate.styles';
+import { Content, Header } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
 import { Menu } from 'src/molecules';
 import { Search } from 'src/molecules';
-import { useActiveImpersonationUser } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useActiveImpersonationUser';
 
 interface ImpersonateProps {
   open: boolean;
@@ -23,7 +25,13 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   onClose,
   anchorEl,
 }) => {
-  const [creatingNewUser, setCreatingNewUser] = useState(false);
+  const [creatingOrEditingUser, setCreatingOrEditingUser] = useState(false);
+  const [editingUser, setEditingUser] = useState<
+    ImpersonateUserDto | undefined
+  >(undefined);
+  const [deletingUser, setDeletingUser] = useState<
+    ImpersonateUserDto | undefined
+  >(undefined);
   const [selectedUniqueName, setSelectedUniqueName] = useState('');
   const { data: availableUsers } = useGetAllImpersonationUsersForApp();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
@@ -44,16 +52,37 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
     onClose();
   };
 
-  const handleOnCreateNewOpen = () => setCreatingNewUser(true);
-  const handleOnCreateNewBack = () => setCreatingNewUser(false);
+  const handleOnCreateNewOpen = () => setCreatingOrEditingUser(true);
+  const handleOnCreateNewBack = () => {
+    setCreatingOrEditingUser(false);
+    if (editingUser) setEditingUser(undefined);
+  };
   const handleOnCreateNewClose = () => {
-    setCreatingNewUser(false);
+    setCreatingOrEditingUser(false);
+    if (editingUser) setEditingUser(undefined);
     handleOnClose();
+  };
+
+  const handleOnEditUser = (username: string) => {
+    setEditingUser(
+      availableUsers?.find((user) => user.uniqueName === username)
+    );
+    setCreatingOrEditingUser(true);
+  };
+
+  const handleOnDeleteUser = (username: string) => {
+    setDeletingUser(
+      availableUsers?.find((user) => user.uniqueName === username)
+    );
+  };
+
+  const handleOnDeleteBack = () => {
+    setDeletingUser(undefined);
   };
 
   if (!open) return null;
 
-  if (creatingNewUser) {
+  if (creatingOrEditingUser) {
     return (
       <Menu
         open
@@ -61,10 +90,24 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         onClose={handleOnCreateNewClose}
         placement="bottom-end"
       >
-        <CreateNewUser
+        <CreateOrEditUser
+          editingUser={editingUser}
           onBack={handleOnCreateNewBack}
           onClose={handleOnCreateNewClose}
         />
+      </Menu>
+    );
+  }
+
+  if (deletingUser) {
+    return (
+      <Menu
+        open
+        anchorEl={anchorEl}
+        onClose={handleOnCreateNewClose}
+        placement="bottom-end"
+      >
+        <DeleteUser user={deletingUser} onBack={handleOnDeleteBack} />
       </Menu>
     );
   }
@@ -88,6 +131,8 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
             {...user}
             selected={selectedUniqueName === user.uniqueName}
             onClick={setSelectedUniqueName}
+            onEdit={handleOnEditUser}
+            onDelete={handleOnDeleteUser}
           />
         ))}
       </Content>

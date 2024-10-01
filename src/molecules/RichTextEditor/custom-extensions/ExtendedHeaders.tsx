@@ -1,6 +1,7 @@
 /* c8 ignore start */
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
 import Heading from '@tiptap/extension-heading';
+import type { NodeViewProps } from '@tiptap/react';
 import {
   NodeViewContent,
   NodeViewWrapper,
@@ -9,16 +10,8 @@ import {
 
 import { Typography } from 'src/molecules';
 
-interface TiptapHeadingProps {
-  node: {
-    attrs: {
-      level: number;
-    };
-  };
-}
-
-const Component = (props: TiptapHeadingProps) => {
-  const level = props.node.attrs.level;
+const Component = (props: NodeViewProps) => {
+  const level = props.node.attrs.level as number;
   let variant: TypographyVariants = 'h1';
   if (level === 2) variant = 'h2';
   if (level === 3) variant = 'h3';

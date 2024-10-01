@@ -8,11 +8,13 @@ import { spacings } from 'src/atoms/style/spacings';
 import { useStartImpersonation } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useStartImpersonation';
 
 import styled from 'styled-components';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  gap: ${spacings.medium};
   padding: ${spacings.medium};
-  width: 20rem;
+  width: 25rem;
 `;
 
 const Section = styled.section`
