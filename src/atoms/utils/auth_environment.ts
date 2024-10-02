@@ -6,6 +6,7 @@ const OPTIONAL_ENV_VARIABLES = [
   'IS_MOCK',
   'ALLOWED_PARENT_DOMAINS',
   'SERVICE_NOW_CONFIGURATION_ITEM',
+  'API_CLIENT_ID',
 ];
 
 interface EnvVariables {
