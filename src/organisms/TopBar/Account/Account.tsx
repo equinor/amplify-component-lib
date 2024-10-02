@@ -31,13 +31,6 @@ import { EnvironmentType } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
-const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
-  import.meta.env.VITE_ENVIRONMENT_NAME
-);
-const API_CLIENT_ID = environment.getApiClientId(
-  import.meta.env.VITE_API_CLIENT_ID
-);
-
 interface AccountProps {
   /**
    * @deprecated logout - Not needed anymore
@@ -62,6 +55,12 @@ interface AccountProps {
 }
 
 export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
+  const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
+    import.meta.env.VITE_ENVIRONMENT_NAME
+  );
+  const API_CLIENT_ID = environment.getApiClientId(
+    import.meta.env.VITE_API_CLIENT_ID
+  );
   const { account, roles, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [openImpersonate, setOpenImpersonate] = useState(false);
