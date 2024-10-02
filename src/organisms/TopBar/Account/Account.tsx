@@ -25,9 +25,15 @@ import {
 } from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
+import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
-import { ActiveUserImpersonationButton } from 'src/organisms/TopBar/Account/ActiveUserImpersonationButton';
+import { EnvironmentType } from 'src/atoms';
+import { environment } from 'src/atoms/utils/auth_environment';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
+
+const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
+  import.meta.env.VITE_ENVIRONMENT_NAME
+);
 
 interface AccountProps {
   /**
@@ -118,12 +124,13 @@ export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
               ))}
             </RolesContainer>
           )}
-          {canImpersonate && (
-            <ImpersonateButton
-              onOpenImpersonateMenu={handleOpenImpersonate}
-              onClose={handleMenuOnClose}
-            />
-          )}
+          {canImpersonate &&
+            ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+              <ImpersonateButton
+                onOpenImpersonateMenu={handleOpenImpersonate}
+                onClose={handleMenuOnClose}
+              />
+            )}
         </Container>
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>
