@@ -34,6 +34,9 @@ import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
   import.meta.env.VITE_ENVIRONMENT_NAME
 );
+const API_CLIENT_ID = environment.getApiClientId(
+  import.meta.env.VITE_API_CLIENT_ID
+);
 
 interface AccountProps {
   /**
@@ -125,7 +128,8 @@ export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
             </RolesContainer>
           )}
           {canImpersonate &&
-            ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+            ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION &&
+            API_CLIENT_ID && (
               <ImpersonateButton
                 onOpenImpersonateMenu={handleOpenImpersonate}
                 onClose={handleMenuOnClose}
