@@ -250,6 +250,22 @@ describe(
       ).not.toBeInTheDocument();
     });
 
+    test('Impersonate button not visible when in prod or if api_client_id is not defined', async () => {
+      vi.stubEnv('VITE_API_CLIENT_ID', undefined);
+      const { rerender } = renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+      expect(screen.queryByText(/Impersonate/i)).not.toBeInTheDocument();
+
+      vi.stubEnv('VITE_API_CLIENT_ID', 'fake-id');
+      vi.stubEnv('VITE_ENVIRONMENT_NAME', 'production');
+      rerender(<Account />);
+      await user.click(button);
+      expect(screen.queryByText(/Impersonate/i)).not.toBeInTheDocument();
+    });
+
     describe('Active impersonation', () => {
       beforeEach(() => {
         server.use(

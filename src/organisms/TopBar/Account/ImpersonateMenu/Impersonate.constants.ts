@@ -18,6 +18,8 @@ const ALL_IMPERSONATE_QUERIES = [
   AVAILABLE_ROLES,
 ] as const;
 
+// Ignoring this because it would essentially test that react-query works as expected
+/* c8 ignore start */
 export const IMPERSONATE_QUERY_FILTER: QueryFilters = {
   predicate: (query) => {
     for (const key of query.queryKey) {
@@ -28,3 +30,4 @@ export const IMPERSONATE_QUERY_FILTER: QueryFilters = {
     return true;
   },
 };
+/* c8 ignore end */
