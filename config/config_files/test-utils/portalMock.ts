@@ -245,7 +245,7 @@ export function getGetTutorialsForApplication200Response() {
   return [
     ...new Array(faker.number.int({ min: 1, max: MAX_ARRAY_LENGTH })).keys(),
   ].map((_) => ({
-    id: faker.datatype.uuid(),
+    id: faker.number.int(),
     name: faker.person.fullName(),
     shortName: faker.person.fullName(),
     path: faker.lorem.slug(1),
@@ -253,7 +253,7 @@ export function getGetTutorialsForApplication200Response() {
     steps: [
       ...new Array(faker.number.int({ min: 1, max: MAX_ARRAY_LENGTH })).keys(),
     ].map((_) => ({
-      id: faker.datatype.uuid(),
+      id: faker.number.int(),
       title: faker.lorem.slug(1),
       body: faker.lorem.slug(1),
       key: faker.lorem.slug(1),
