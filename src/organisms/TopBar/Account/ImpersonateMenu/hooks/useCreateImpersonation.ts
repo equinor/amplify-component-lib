@@ -9,6 +9,7 @@ import { useStartImpersonation } from '../hooks/useStartImpersonation';
 import {
   CREATE_IMPERSONATION,
   GET_ALL_IMPERSONATIONS,
+  IMPERSONATE_QUERY_FILTER,
 } from '../Impersonate.constants';
 
 export function useCreateImpersonation() {
@@ -26,7 +27,7 @@ export function useCreateImpersonation() {
         }
       );
       await startImpersonation(newUser.uniqueName);
-      queryClient.clear();
+      await queryClient.invalidateQueries(IMPERSONATE_QUERY_FILTER);
 
       return newUser;
     },

@@ -46,6 +46,7 @@ const config = {
     VITE_IS_MOCK: 'true',
     VITE_NAME: 'orca',
     VITE_CLIENT_ID: 'fake-id',
+    VITE_API_CLIENT_ID: 'fake-api-id',
     VITE_ENVIRONMENT_NAME: 'development'
   }),
 

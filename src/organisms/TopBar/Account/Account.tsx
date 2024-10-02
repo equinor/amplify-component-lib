@@ -25,8 +25,10 @@ import {
 } from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
+import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
-import { ActiveUserImpersonationButton } from 'src/organisms/TopBar/Account/ActiveUserImpersonationButton';
+import { EnvironmentType } from 'src/atoms';
+import { environment } from 'src/atoms/utils/auth_environment';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 interface AccountProps {
@@ -53,6 +55,12 @@ interface AccountProps {
 }
 
 export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
+  const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
+    import.meta.env.VITE_ENVIRONMENT_NAME
+  );
+  const API_CLIENT_ID = environment.getApiClientId(
+    import.meta.env.VITE_API_CLIENT_ID
+  );
   const { account, roles, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [openImpersonate, setOpenImpersonate] = useState(false);
@@ -118,12 +126,14 @@ export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
               ))}
             </RolesContainer>
           )}
-          {canImpersonate && (
-            <ImpersonateButton
-              onOpenImpersonateMenu={handleOpenImpersonate}
-              onClose={handleMenuOnClose}
-            />
-          )}
+          {canImpersonate &&
+            ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION &&
+            API_CLIENT_ID && (
+              <ImpersonateButton
+                onOpenImpersonateMenu={handleOpenImpersonate}
+                onClose={handleMenuOnClose}
+              />
+            )}
         </Container>
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>

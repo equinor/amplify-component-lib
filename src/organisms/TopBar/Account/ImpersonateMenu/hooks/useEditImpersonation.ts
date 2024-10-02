@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ACTIVE_USERIMPERSONATION,
   GET_ALL_IMPERSONATIONS,
+  IMPERSONATE_QUERY_FILTER,
 } from '../Impersonate.constants';
 
 export function useEditImpersonation() {
@@ -31,6 +32,7 @@ export function useEditImpersonation() {
       >([ACTIVE_USERIMPERSONATION]);
       if (previousActive && previousActive.uniqueName === user.uniqueName) {
         queryClient.setQueryData([ACTIVE_USERIMPERSONATION], user);
+        await queryClient.invalidateQueries(IMPERSONATE_QUERY_FILTER);
       }
     },
   });
