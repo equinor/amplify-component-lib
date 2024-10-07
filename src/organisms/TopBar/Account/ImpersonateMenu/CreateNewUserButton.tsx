@@ -19,7 +19,7 @@ const Container = styled.button`
   border-top: 1px solid ${colors.ui.background__medium.rgba};
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   &:hover {
-    background: ${colors.ui.background__medium.rgba};
+    background: ${colors.interactive.primary__selected_hover.rgba};
   }
 `;
 
