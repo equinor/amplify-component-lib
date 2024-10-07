@@ -25,6 +25,7 @@ interface SideBarWithCreate extends SideBarProps {
   onCreate: () => void;
   createLabel: string;
   createDisabled?: boolean;
+  createActive?: boolean;
 }
 
 export const SideBar = forwardRef<
@@ -50,6 +51,7 @@ export const SideBar = forwardRef<
             createLabel={props.createLabel}
             onCreate={props.onCreate}
             disabled={props.createDisabled}
+            active={props.createActive}
           />
         )}
         {children}

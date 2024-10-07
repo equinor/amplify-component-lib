@@ -57,6 +57,11 @@ describe('Expanded', () => {
       );
 
       expect(svgPath).toHaveAttribute('d', add.svgPathData);
+
+      expect(screen.getByTestId('create-item-container')).not.toHaveStyleRule(
+        'background',
+        colors.interactive.primary__selected_highlight.rgba
+      );
     });
 
     test('Disabled', () => {
@@ -72,6 +77,18 @@ describe('Expanded', () => {
         { modifier: ':hover' }
       );
       expect(button).toHaveAttribute('disabled');
+    });
+
+    test('Active', () => {
+      const props = fakeProps();
+      render(<CreateItem {...props} active />, {
+        wrapper: SideBarProvider,
+      });
+
+      expect(screen.getByTestId('create-item-container')).toHaveStyleRule(
+        'background',
+        colors.interactive.primary__selected_highlight.rgba
+      );
     });
   });
 

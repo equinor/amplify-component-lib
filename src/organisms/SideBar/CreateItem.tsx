@@ -14,17 +14,19 @@ export interface CreateItemProps {
   createLabel: string;
   onCreate: () => void;
   disabled?: boolean;
+  active?: boolean;
 }
 
 export const CreateItem: FC<CreateItemProps> = ({
   createLabel,
   onCreate,
   disabled = false,
+  active = false,
 }) => {
   const { isOpen } = useSideBar();
   if (isOpen) {
     return (
-      <MenuItemContainer>
+      <MenuItemContainer $active={active} data-testid="create-item-container">
         <CreateButton
           $open
           variant="contained"
@@ -38,7 +40,7 @@ export const CreateItem: FC<CreateItemProps> = ({
     );
   }
   return (
-    <MenuItemContainer>
+    <MenuItemContainer $active={active} data-testid="create-item-container">
       <OptionalTooltip title={createLabel} placement="right">
         <CreateButton
           variant="contained"

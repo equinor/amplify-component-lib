@@ -5,7 +5,11 @@ import styled from 'styled-components';
 
 const { colors, shape } = tokens;
 
-export const MenuItemContainer = styled.div`
+interface MenuItemContainerProps {
+  $active?: boolean;
+}
+
+export const MenuItemContainer = styled.div<MenuItemContainerProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
@@ -13,6 +17,9 @@ export const MenuItemContainer = styled.div`
   padding: 0 14px;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   box-sizing: border-box;
+  ${({ $active }) =>
+    $active &&
+    `background: ${colors.interactive.primary__selected_highlight.rgba};`}
 `;
 
 interface CreateButtonProps extends ButtonProps {
