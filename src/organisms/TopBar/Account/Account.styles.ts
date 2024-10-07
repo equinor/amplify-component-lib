@@ -34,6 +34,9 @@ export const TextContent = styled.div`
 
 export const RolesContainer = styled.section`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 350px;
   gap: ${spacings.small};
   margin-top: ${spacings.small};
 `;

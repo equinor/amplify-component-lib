@@ -2,6 +2,7 @@ import {
   FC,
   MutableRefObject,
   ReactElement,
+  ReactNode,
   useCallback,
   useMemo,
   useRef,
@@ -31,7 +32,7 @@ import { EnvironmentType } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
-interface AccountProps {
+export interface AccountProps {
   /**
    * @deprecated logout - Not needed anymore
    */
@@ -52,9 +53,15 @@ interface AccountProps {
     buttonRef: MutableRefObject<HTMLButtonElement | null>,
     handleToggle: () => void
   ) => ReactElement;
+  hideRoleChips?: boolean;
+  children?: ReactNode;
 }
 
-export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
+export const Account: FC<AccountProps> = ({
+  renderCustomButton,
+  hideRoleChips = false,
+  children,
+}) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
   );
@@ -119,13 +126,14 @@ export const Account: FC<AccountProps> = ({ renderCustomButton }) => {
             <Typography variant="h6">{fullName}</Typography>
             <Typography>{username}</Typography>
           </TextContent>
-          {activeRoles && (
+          {activeRoles && !hideRoleChips && (
             <RolesContainer>
               {activeRoles.map((role) => (
                 <RoleChip key={role}>{role}</RoleChip>
               ))}
             </RolesContainer>
           )}
+          {children}
           {canImpersonate &&
             ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION &&
             API_CLIENT_ID && (

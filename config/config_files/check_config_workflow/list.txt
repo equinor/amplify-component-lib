@@ -2,7 +2,7 @@
 .prettierrc.js client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/.prettierrc.js
 .prettierignore client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/.prettierignore
 tsconfig.json client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/tsconfig.json
-Dockerfile client https://raw.githubusercontent.com/eoquinor/amplify-component-lib/refs/heads/main/config/config_files/Dockerfile
+Dockerfile client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/Dockerfile
 env.sh client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/env.sh
 vite.config.ts client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/vite.config.ts
 playwright.config.ts client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/playwright.config.ts

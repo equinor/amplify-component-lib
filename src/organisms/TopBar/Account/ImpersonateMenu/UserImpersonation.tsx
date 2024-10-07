@@ -32,6 +32,9 @@ const StyledListItem = styled(ListItem)`
       fill: ${colors.interactive.disabled__text.rgba};
     }
   }
+  &:hover:not(:disabled) {
+    background: ${colors.interactive.danger__highlight.rgba};
+  }
 `;
 
 interface UserImpersonationProps extends ImpersonateUserDto {
@@ -53,6 +56,8 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  const sortedRoles = [...roles].sort();
 
   const handleOnToggleMenu = () => setOpen((prev) => !prev);
   const handleOnClose = () => setOpen(false);
@@ -86,11 +91,14 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
         />
         <Typography data-testid="name">{fullName}</Typography>
         <RoleChipContainer>
-          {roles.map((role) => (
-            <RoleChip key={role} data-testid="role">
-              {role}
-            </RoleChip>
-          ))}
+          <RoleChip data-testid="role">{sortedRoles[0]}</RoleChip>
+          {sortedRoles.length > 1 && (
+            <OptionalTooltip title={sortedRoles.slice(1).join(', ')}>
+              <RoleChip data-testid="additional-roles">
+                +{sortedRoles.length - 1}
+              </RoleChip>
+            </OptionalTooltip>
+          )}
         </RoleChipContainer>
         {selected && (
           <Icon data={check} color={colors.interactive.primary__resting.rgba} />

@@ -4,6 +4,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
+    pool: "threads",
     server: {
       deps: {
         inline: ['@equinor/subsurface-app-management']
