@@ -179,14 +179,24 @@ describe(
 
         let selectUser = availableImpersonationUsers[index];
 
-        let amountOfRoles = within(selectUser).getAllByTestId('role').length;
+        let amountOfRoles =
+          Number(
+            within(selectUser)
+              .queryByTestId('additional-roles')
+              ?.textContent?.slice(1) ?? 0
+          ) + 1;
 
         while (amountOfRoles === 1) {
           selectUser =
             availableImpersonationUsers[
               (index + 1) % availableImpersonationUsers.length
             ];
-          amountOfRoles = within(selectUser).getAllByTestId('role').length;
+          amountOfRoles =
+            Number(
+              within(selectUser)
+                .queryByTestId('additional-roles')
+                ?.textContent?.slice(1) ?? 0
+            ) + 1;
         }
 
         const name = within(selectUser).getByTestId('name').innerHTML;

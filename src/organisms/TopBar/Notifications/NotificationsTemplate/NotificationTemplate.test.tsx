@@ -104,7 +104,7 @@ const readyToBePublished: ExperienceReadyToPublishTypes = {
     userRole: faker.animal.fish(),
   },
   experienceCount: 3,
-  well: { displayName: faker.animal.dog() },
+  well: { displayName: faker.animal.snake() },
 };
 
 const requestReviewOrca: RequestReviewOrcaTypes = {

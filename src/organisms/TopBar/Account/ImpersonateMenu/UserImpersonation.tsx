@@ -94,7 +94,9 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
           <RoleChip data-testid="role">{sortedRoles[0]}</RoleChip>
           {sortedRoles.length > 1 && (
             <OptionalTooltip title={sortedRoles.slice(1).join(', ')}>
-              <RoleChip>+{sortedRoles.length - 1}</RoleChip>
+              <RoleChip data-testid="additional-roles">
+                +{sortedRoles.length - 1}
+              </RoleChip>
             </OptionalTooltip>
           )}
         </RoleChipContainer>
