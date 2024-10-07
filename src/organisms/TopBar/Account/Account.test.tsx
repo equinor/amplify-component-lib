@@ -74,6 +74,35 @@ test('Renders correctly with avatar', async () => {
   expect(screen.getAllByAltText(`user-avatar-${accountName}`).length).toBe(2);
 });
 
+test('Renders correctly when hiding roles', async () => {
+  const user = userEvent.setup();
+  renderWithProviders(<Account hideRoleChips />);
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  expect(screen.queryByText(/admin/i)).not.toBeInTheDocument();
+});
+
+test('Children prop works as expected', async () => {
+  const user = userEvent.setup();
+  const randomText = faker.animal.dog();
+  renderWithProviders(
+    <Account>
+      <p>{randomText}</p>
+    </Account>
+  );
+
+  const button = screen.getByRole('button');
+
+  expect(screen.queryByText(randomText)).not.toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(screen.getByText(randomText)).toBeInTheDocument();
+});
+
 test('Opens and closes as it should', async () => {
   const user = userEvent.setup();
 
@@ -150,14 +179,24 @@ describe(
 
         let selectUser = availableImpersonationUsers[index];
 
-        let amountOfRoles = within(selectUser).getAllByTestId('role').length;
+        let amountOfRoles =
+          Number(
+            within(selectUser)
+              .queryByTestId('additional-roles')
+              ?.textContent?.slice(1) ?? 0
+          ) + 1;
 
         while (amountOfRoles === 1) {
           selectUser =
             availableImpersonationUsers[
               (index + 1) % availableImpersonationUsers.length
             ];
-          amountOfRoles = within(selectUser).getAllByTestId('role').length;
+          amountOfRoles =
+            Number(
+              within(selectUser)
+                .queryByTestId('additional-roles')
+                ?.textContent?.slice(1) ?? 0
+            ) + 1;
         }
 
         const name = within(selectUser).getByTestId('name').innerHTML;

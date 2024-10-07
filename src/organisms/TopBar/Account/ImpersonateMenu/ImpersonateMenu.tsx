@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Menu, Typography } from '@equinor/eds-core-react';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
 import { CreateOrEditUser } from './CreateOrEditUser/CreateOrEditUser';
@@ -11,7 +11,6 @@ import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
 import { Content, Header } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
-import { Menu } from 'src/molecules';
 import { Search } from 'src/molecules';
 
 interface ImpersonateProps {
@@ -89,6 +88,7 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         anchorEl={anchorEl}
         onClose={handleOnCreateNewClose}
         placement="bottom-end"
+        style={{ width: '400px' }}
       >
         <CreateOrEditUser
           editingUser={editingUser}
@@ -106,6 +106,7 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         anchorEl={anchorEl}
         onClose={handleOnCreateNewClose}
         placement="bottom-end"
+        style={{ width: '400px' }}
       >
         <DeleteUser user={deletingUser} onBack={handleOnDeleteBack} />
       </Menu>
