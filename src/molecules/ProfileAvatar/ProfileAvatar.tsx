@@ -66,6 +66,7 @@ interface InitialsContainerProps {
 const InitialsContainer = styled.div<InitialsContainerProps>`
   width: ${(props) => props.$size}px;
   height: ${(props) => props.$size}px;
+  position: relative;
   font-size: ${(props) => props.$fontSize}px;
   font-family: ${typography.heading.h6.fontFamily};
   border-radius: ${shape.circle.borderRadius};
@@ -80,6 +81,10 @@ const InitialsContainer = styled.div<InitialsContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  > span {
+    line-height: ${(props) => props.$fontSize - 4}px;
+    height: ${(props) => props.$fontSize - 4}px;
+  }
 `;
 
 const FallbackIcon = styled(Icon)`
@@ -185,7 +190,7 @@ export const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
         disabled={disabled}
         ref={ref}
       >
-        {initials}
+        <span>{initials}</span>
       </InitialsContainer>
     );
   }
