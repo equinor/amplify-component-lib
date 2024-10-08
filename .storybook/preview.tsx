@@ -22,6 +22,9 @@ initialize({  onUnhandledRequest: (req, print) => {
 })
 
 const globalTypes = {
+  spacingsToggle: {
+    defaultValue: 'comfortable',
+  },
   dataThemes: {
     defaultValue: {
       list: [

@@ -7,6 +7,7 @@ const config = {
     '@storybook/addon-designs',
     'storybook-addon-data-theme-switcher',
     './addons/GitHubSearchAddon/manager.js',
+    './addons/SpacingsAddon/manager.js',
   ],
 
   build: {
