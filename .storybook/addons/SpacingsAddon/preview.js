@@ -1,7 +1,7 @@
-import { withGlobals } from "./withGlobals";
+import { withSpacingsMode } from ".storybook/addons/SpacingsAddon/withSpacingsMode.js";
 
 const preview = {
-  decorators: [withGlobals],
+  decorators: [withSpacingsMode],
   globalTypes: {
     spacingsMode: {
       defaultValue: "comfortable",

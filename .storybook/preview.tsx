@@ -8,9 +8,10 @@ import { Preview, StoryFn } from '@storybook/react';
 
 
 import { initialize, mswLoader } from 'msw-storybook-addon';
- import { handlers } from 'src/tests/mockHandlers';
+import { handlers } from 'src/tests/mockHandlers';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from 'src';
+import { withSpacingsMode } from "./addons/SpacingsAddon/withSpacingsMode";
 
 const { colors } = tokens;
 initialize({  onUnhandledRequest: (req, print) => {
@@ -58,6 +59,7 @@ const decorators = [
       </QueryClientProvider>
     );
   },
+  withSpacingsMode
 ];
 
 const parameters = {
