@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { animation, spacings } from 'src/atoms/style';
 import { Chip } from 'src/molecules';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const { colors } = tokens;
 
@@ -44,8 +44,18 @@ export const RoleChip = styled(Chip)`
   background: ${colors.text.static_icons__tertiary.rgba};
 `;
 
-export const RoleChipContainer = styled.div`
+export const RoleChipContainer = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
   gap: ${spacings.small};
+  ${({ $selected }) => {
+    if (!$selected) return '';
+    return css`
+      > div {
+        background: ${colors.interactive.primary__resting.rgba};
+        color: ${colors.text.static_icons__primary_white.rgba};
+        outline-color: ${colors.interactive.primary__resting.rgba};
+      }
+    `;
+  }}
 `;
