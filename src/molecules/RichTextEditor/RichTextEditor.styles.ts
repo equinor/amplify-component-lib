@@ -3,7 +3,8 @@ import { EditorContent as TiptapContent } from '@tiptap/react';
 
 import styled from 'styled-components';
 
-const { colors, spacings, typography, shape } = tokens;
+const { spacings, typography, shape } = tokens;
+import { colors } from 'src/atoms';
 
 export interface RichTextContentProps {
   $minHeight?: string;
@@ -21,6 +22,7 @@ export const EditorContent = styled(TiptapContent)<RichTextContentProps>`
 
 export interface EditorStylingProps {
   $lightBackground?: boolean;
+  $highlighted?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
   $border?: boolean;
 }
@@ -50,7 +52,10 @@ export const EditorStyling = styled.div<EditorStylingProps>`
         : `${colors.ui.background__light.rgba}`};
 
     &[contenteditable='true'] {
-      box-shadow: inset 0 -1px ${colors.ui.background__medium.rgba};
+      box-shadow: ${({ $highlighted }) =>
+        $highlighted
+          ? `inset 0 -2px ${colors.dataviz.darkblue.darker}`
+          : `inset 0 -1px ${colors.ui.background__medium.rgba}`};
     }
 
     padding: ${(props) => {

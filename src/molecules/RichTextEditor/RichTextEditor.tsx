@@ -22,6 +22,7 @@ export interface RichTextEditorProps {
   minHeight?: string;
   lightBackground?: boolean;
   border?: boolean;
+  highlighted?: boolean;
 }
 
 export const RichTextEditor: FC<RichTextEditorProps> = ({
@@ -37,6 +38,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   minHeight,
   lightBackground,
   border = true,
+  highlighted = false,
 }) => {
   const usedFeatured = getFeatures({
     features,
@@ -57,6 +59,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
           $border={border}
           $padding={padding}
           $lightBackground={lightBackground}
+          $highlighted={highlighted}
         >
           <AmplifyBar
             editor={editor}
