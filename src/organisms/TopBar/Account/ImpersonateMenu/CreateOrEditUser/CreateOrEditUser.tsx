@@ -17,13 +17,11 @@ import { TextField } from 'src/molecules/TextField/TextField';
 interface CreateOrEditUserProps {
   editingUser?: ImpersonateUserDto;
   onBack: () => void;
-  onClose: () => void;
 }
 
 export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   editingUser,
   onBack,
-  onClose,
 }) => {
   const previousEditingUser = usePrevious(editingUser);
   const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
@@ -97,7 +95,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
         appName: environment.getAppName(import.meta.env.VITE_NAME),
         activeUsers: [],
       });
-      onClose();
+      onBack();
     }
   };
 
@@ -152,7 +150,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
             onClick={handleOnCreateOrSave}
             disabled={isCreateOrSaveDisabled}
           >
-            {editingUser ? 'Save' : 'Create and impersonate'}
+            {editingUser ? 'Save' : 'Create'}
           </Button>
         )}
       </Section>

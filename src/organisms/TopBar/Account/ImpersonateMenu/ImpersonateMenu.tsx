@@ -93,7 +93,6 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         <CreateOrEditUser
           editingUser={editingUser}
           onBack={handleOnCreateNewBack}
-          onClose={handleOnCreateNewClose}
         />
       </Menu>
     );

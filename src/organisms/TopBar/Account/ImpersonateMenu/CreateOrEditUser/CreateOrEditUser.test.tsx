@@ -159,7 +159,7 @@ describe('CreateNewUser', () => {
       await user.click(screen.getByRole('button', { name: /create users/i }));
 
       const createButton = screen.getByRole('button', {
-        name: /create and impersonate/i,
+        name: /create/i,
       });
 
       expect(createButton).toBeDisabled();
@@ -196,13 +196,9 @@ describe('CreateNewUser', () => {
 
       await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-      expect(await screen.findByText(roles[0])).toBeInTheDocument();
-
-      await user.click(button);
-
-      await user.click(
-        screen.getByRole('button', { name: /end impersonation/i })
-      );
+      expect(
+        await screen.findByText(`${fakeFirstName} ${fakeLastName}`)
+      ).toBeInTheDocument();
     },
     { timeout: 8000 }
   );

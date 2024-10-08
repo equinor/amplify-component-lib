@@ -124,6 +124,9 @@ export const handlers = [
   http.post('*/api/v1/ImpersonateUser', async (resolver) => {
     const body = (await resolver.request.json()) as ImpersonateUserDto;
 
+    // Only needed in mocks
+    body.fullName = `${body.firstName} ${body.lastName}`;
+
     fakeImpersonateUsers.push(body);
 
     await delay('real');
