@@ -56,6 +56,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
     >
       {(editor) => (
         <EditorStyling
+          data-testid="richtext-editor"
           $border={border}
           $padding={padding}
           $lightBackground={lightBackground}
