@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 export const lightTokens = css`
-  html[data-theme='light'] {
+  [data-theme='light'] {
     --amplify_dataviz_darkblue_default: rgba(0, 71, 153, 1);
     --amplify_dataviz_darkblue_darker: rgba(4, 48, 98, 1);
     --amplify_dataviz_darkblue_lighter: rgba(191, 220, 252, 1);
