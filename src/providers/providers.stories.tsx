@@ -38,6 +38,18 @@ const providersList = [
     {children}
 </SnackbarProvider>`,
   },
+  {
+    name: 'LoadingProvider',
+    body: `Show loading spinner for feature toggle / tutorials.
+    Needs <AuthProvider withoutLoader>...`,
+    code: `<AuthProvider withoutLoader>
+  ...
+    <LoadingProvider>
+      {children}
+    </LoadingProvider>
+  ...
+</AuthProvider>`,
+  },
 ];
 
 const Container = styled.div`
