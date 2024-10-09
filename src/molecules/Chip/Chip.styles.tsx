@@ -1,11 +1,13 @@
 import { tokens } from '@equinor/eds-tokens';
 
-import { colors } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 import { BaseChipProps } from 'src/molecules/Chip/Chip';
 import { InteractiveChipProps } from 'src/molecules/Chip/InteractiveChip';
 import { ReadOnlyChipProps } from 'src/molecules/Chip/ReadOnlyChip';
 
 import styled, { css } from 'styled-components';
+
+const { typography, shape } = tokens;
 
 type Variant = NonNullable<BaseChipProps['variant']>;
 
@@ -146,24 +148,24 @@ const commonChipStyle = css`
   outline: 1px solid ${colors.ui.background__medium.rgba};
   display: flex;
   width: fit-content;
-  border-radius: ${tokens.shape.rounded.borderRadius};
+  border-radius: ${shape.rounded.borderRadius};
   font-family: 'Equinor', sans-serif;
   font-weight: 500;
-  font-size: ${tokens.typography.ui.chip__badge.fontSize};
+  font-size: ${typography.ui.chip__badge.fontSize};
   line-height: 16px;
   text-align: center;
   transition:
     background-color 150ms ease,
     outline 150ms ease,
     color 150ms ease;
-  padding: ${tokens.spacings.comfortable.x_small};
+  padding: ${spacings.x_small};
   box-sizing: content-box;
 
   .content {
-    padding: 0 ${tokens.spacings.comfortable.small};
+    padding: 0 ${spacings.small};
     display: flex;
     align-items: center;
-    gap: ${tokens.spacings.comfortable.x_small};
+    gap: ${spacings.x_small};
 
     .leading {
       display: flex;

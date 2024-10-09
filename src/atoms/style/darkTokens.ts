@@ -2,7 +2,7 @@ import { css } from 'styled-components';
 
 export const darkTokens = css`
   /*Dark Theme*/
-  html[data-theme='dark'] {
+  [data-theme='dark'] {
     textarea,
     input {
       color: var(--eds_text_static_icons__default);
