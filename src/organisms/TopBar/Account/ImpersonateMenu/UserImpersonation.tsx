@@ -95,7 +95,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
           {sortedRoles.length > 1 && (
             <OptionalTooltip title={sortedRoles.slice(1).join(', ')}>
               <RoleChip data-testid="additional-roles">
-                +{sortedRoles.length - 1}
+                {`+${sortedRoles.length - 1}`}
               </RoleChip>
             </OptionalTooltip>
           )}
