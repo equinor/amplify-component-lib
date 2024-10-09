@@ -90,7 +90,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
           data={account_circle}
         />
         <Typography data-testid="name">{fullName}</Typography>
-        <RoleChipContainer>
+        <RoleChipContainer $selected={selected}>
           <RoleChip data-testid="role">{sortedRoles[0]}</RoleChip>
           {sortedRoles.length > 1 && (
             <OptionalTooltip title={sortedRoles.slice(1).join(', ')}>

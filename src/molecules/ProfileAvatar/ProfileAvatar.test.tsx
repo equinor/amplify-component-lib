@@ -112,7 +112,7 @@ test('Renders first and last letter of name when image is not given', () => {
     rerender(<ProfileAvatar {...mockedProps} size={size} />);
     const expectedFontSize = sizeToFontsize(size);
 
-    expect(screen.getByText(initials)).toHaveStyleRule(
+    expect(screen.getByText(initials).parentElement).toHaveStyleRule(
       'font-size',
       `${expectedFontSize}px`
     );

@@ -6,17 +6,20 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 20rem;
-  > div:nth-child(2) {
+  > section:nth-child(2) {
     margin-top: ${spacings.medium};
-    align-self: center;
-  }
-  > section {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0 ${spacings.medium};
-    margin-top: ${spacings.small};
+    margin-bottom: ${spacings.medium};
+  }
+  > section:nth-child(5) {
+    max-width: unset;
     margin-bottom: ${spacings.large};
+  }
+  > div:nth-child(3) {
+    align-self: center;
   }
   > div:last-child {
     display: flex;

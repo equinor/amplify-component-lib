@@ -8,6 +8,11 @@ import { Header } from '../Impersonate.styles';
 import { Container } from './DeleteUser.styles';
 import { colors, useSnackbar } from 'src/atoms';
 import { Button, DotProgress, Icon, Typography } from 'src/molecules';
+import {
+  RoleChip,
+  RolesContainer,
+  TextContent,
+} from 'src/organisms/TopBar/Account/Account.styles';
 import { ImpersonateAvatar } from 'src/organisms/TopBar/Account/ImpersonateAvatar';
 
 interface DeleteUserProps {
@@ -33,16 +38,25 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
         </Button>
         <Typography variant="h6">Delete user</Typography>
       </Header>
-      <ImpersonateAvatar size={64} fullName={user.fullName} />
       <section>
         <Typography variant="h4">You are deleting a user</Typography>
         <Typography
           variant="meta"
           color={colors.text.static_icons__tertiary.rgba}
         >
-          Are you sure you want to delete user &quot;{user.fullName}&quot;
+          Are you sure you want to delete user &quot;{user.fullName}&quot;?
         </Typography>
       </section>
+      <ImpersonateAvatar size={64} fullName={user.fullName} />
+      <TextContent>
+        <Typography variant="h6">{user.fullName}</Typography>
+        <Typography>{user.uniqueName}</Typography>
+      </TextContent>
+      <RolesContainer>
+        {user.roles.map((role) => (
+          <RoleChip key={role}>{role}</RoleChip>
+        ))}
+      </RolesContainer>
       <div>
         {isPending ? (
           <Button variant="outlined" color="danger">
