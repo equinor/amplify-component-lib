@@ -18,7 +18,11 @@ const meta: Meta<typeof FileProgress> = {
   argTypes: {
     compact: { control: 'boolean' },
     file: { control: { type: 'file', accept: '.png, .jpg, .jpeg' } },
-    progressPercent: { control: { type: 'range', min: 1, max: 100, step: 1 } },
+    progressPercent: {
+      control: { type: 'range', min: 1, max: 100, step: 1 },
+      description:
+        'The percentage of the file that has been uploaded, if undefined its considered indeterminate',
+    },
     isDone: { control: 'boolean' },
     isError: { control: 'boolean' },
     customLoadingText: { control: 'text' },
