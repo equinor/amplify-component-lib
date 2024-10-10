@@ -9,6 +9,7 @@ interface FileProgressBaseProps {
   file: FileWithPath | File;
   isDone?: boolean;
   progressPercent?: number;
+  indeterminate?: boolean;
   onCancel?: () => void;
   isError?: boolean;
 }
@@ -31,6 +32,9 @@ export interface FileProgressPropsExtension {
   handleOnClick: () => void;
 }
 
+/**
+ * @progressPercent - The percentage of the file that has been uploaded, if undefined its considered indeterminate
+ */
 export const FileProgress: FC<
   RegularFileProgressBaseProps | CompactFileProgressBaseProps
 > = (props) => {
