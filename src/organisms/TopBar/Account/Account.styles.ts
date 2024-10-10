@@ -72,6 +72,6 @@ export const OpenImpersonationMenuButton = styled.button`
   }
 
   &:hover {
-    background: ${colors.ui.background__medium.rgba};
+    background: ${colors.interactive.primary__hover_alt.rgba};
   }
 `;

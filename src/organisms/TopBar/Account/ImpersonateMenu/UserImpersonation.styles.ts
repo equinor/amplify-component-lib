@@ -27,7 +27,10 @@ export const Container = styled.div<ContainerProps>`
 
   &:hover {
     cursor: pointer;
-    background: ${colors.interactive.primary__selected_hover.rgba};
+    background: ${({ $selected }) =>
+      $selected
+        ? colors.interactive.primary__selected_hover.rgba
+        : colors.interactive.primary__hover_alt.rgba};
   }
 
   > svg:last-child {
