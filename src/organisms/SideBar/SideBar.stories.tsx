@@ -12,7 +12,6 @@ const meta: Meta = {
   component: SideBar,
   argTypes: {
     hasCreateButton: { control: 'boolean' },
-    disabledCreateButton: { control: 'boolean' },
     createLabel: { control: 'text' },
     disabledItem: {
       control: 'select',
@@ -21,7 +20,6 @@ const meta: Meta = {
   },
   args: {
     hasCreateButton: true,
-    disabledCreateButton: false,
     createLabel: 'Create story',
     disabledItem: 'none',
   },
@@ -72,7 +70,7 @@ export const Primary: StoryFn = (args) => {
                       ? () => console.log('Created 🖋')
                       : undefined
                   }
-                  createDisabled={args.disabledCreateButton as boolean}
+                  {...args}
                 >
                   {menuItems.map((m, index) => (
                     <SideBar.Item
