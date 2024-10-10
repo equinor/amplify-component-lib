@@ -41,7 +41,7 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
       <section>
         <Typography variant="h4">You are deleting a user</Typography>
         <Typography
-          variant="meta"
+          variant="caption"
           color={colors.text.static_icons__tertiary.rgba}
         >
           Are you sure you want to delete user &quot;{user.fullName}&quot;?
