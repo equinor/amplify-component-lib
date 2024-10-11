@@ -17,7 +17,6 @@ import {
 } from './Dialog.styles';
 import { DialogAction } from './DialogAction';
 
-// TODO: Add isLoading
 /**
  * @param position - Right is default
  * @param onClick - button on click
