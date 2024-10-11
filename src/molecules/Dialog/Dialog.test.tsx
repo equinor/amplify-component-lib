@@ -239,6 +239,35 @@ test('Disabled actions works as expected', async () => {
   expect(screen.getByText(disabledTooltipText)).toBeInTheDocument();
 });
 
+test('IsLoading actions works as expected', () => {
+  const handleOnClose = vi.fn();
+  const title = faker.airline.airplane().name;
+  const description = faker.lorem.paragraph();
+  const actionTextOne = faker.animal.lion();
+  const actionTextTwo = faker.animal.crocodilia();
+  const actions: DialogAction[] = [
+    {
+      text: actionTextOne,
+      onClick: vi.fn(),
+      variant: 'contained',
+    },
+    {
+      text: actionTextTwo,
+      onClick: vi.fn(),
+      variant: 'contained',
+      isLoading: true,
+    },
+  ];
+
+  render(
+    <Dialog open title={title} onClose={handleOnClose} actions={actions}>
+      {description}
+    </Dialog>
+  );
+
+  expect(screen.getByRole('progressbar', { hidden: true })).toBeInTheDocument();
+});
+
 test('Actions with icon works as expected', async () => {
   const handleOnClose = vi.fn();
   const title = faker.airline.airplane().name;
