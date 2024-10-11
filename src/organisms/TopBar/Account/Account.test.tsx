@@ -259,6 +259,65 @@ describe(
       { timeout: 8000 }
     );
 
+    test('Can search for user impersonations', async () => {
+      renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      await waitFor(() =>
+        expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
+      );
+
+      await user.click(screen.getByText(/Impersonate/i));
+
+      const availableImpersonationUsers =
+        screen.getAllByTestId('impersonation-user');
+
+      const randomUserIndex = faker.number.int({
+        min: 0,
+        max: availableImpersonationUsers.length - 1,
+      });
+      const randomUser =
+        within(availableImpersonationUsers[randomUserIndex]).getByTestId('name')
+          .textContent ?? 'failed';
+
+      const searchInput = screen.getByPlaceholderText('Search users');
+
+      await user.type(searchInput, randomUser);
+
+      for (const [index, user] of availableImpersonationUsers.entries()) {
+        if (index === randomUserIndex) {
+          expect(user).toBeInTheDocument();
+        } else {
+          expect(user).not.toBeInTheDocument();
+        }
+      }
+    });
+
+    test('Shows expected text when search has no results', async () => {
+      renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      await waitFor(() =>
+        expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
+      );
+
+      await user.click(screen.getByText(/Impersonate/i));
+
+      const searchInput = screen.getByPlaceholderText('Search users');
+
+      const randomText = faker.animal.dog();
+
+      await user.type(searchInput, randomText);
+
+      expect(screen.getByText(/no items found/i)).toBeInTheDocument();
+    });
+
     test('ImpersonateMenu onClose works as expected', async () => {
       renderWithProviders(
         <>

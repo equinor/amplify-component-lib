@@ -1,6 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
+import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -21,4 +22,9 @@ export const Content = styled.section`
   max-height: 15rem;
   display: flex;
   flex-direction: column;
+`;
+
+export const NoUsersText = styled(Typography)`
+  color: ${colors.text.static_icons__tertiary.rgba};
+  margin: ${spacings.medium} auto ${spacings.medium} ${spacings.medium};
 `;
