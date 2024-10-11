@@ -18,7 +18,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     applicationName: 'PWEX',
     version: null,
     title: 'Improved task board and reporting overview June',
-    body: '<h1>Release notes body text</h1>',
+    body: '<h1>Release notes body text</h1><br/><br/><br/><p>Hei</p>',
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
     createdDate: faker.date.past().toDateString(),
   },
