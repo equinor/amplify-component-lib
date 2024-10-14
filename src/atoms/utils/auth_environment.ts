@@ -127,7 +127,7 @@ function getPortalWithoutLocalhost() {
   }
 
   if (environmentName === EnvironmentType.PRODUCTION) {
-    return `amplify.equinor.com`;
+    return 'https://jsembark.equinor.com';
   }
 
   const environmentNameWithoutLocalHost =
