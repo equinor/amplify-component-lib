@@ -44,7 +44,7 @@ export default ({ mode }: { mode: string }) => {
             } else if (id.includes('deck.gl')) {
               return 'deckgl';
             } else if (id.includes('d3')) {
-              return 'd3'
+              return 'd3';
             } else if (id.includes('visx')) {
               return 'visx';
             } else if (id.includes('azure') || id.includes('microsoft')) {
