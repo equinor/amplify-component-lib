@@ -2,6 +2,10 @@ import { css } from 'styled-components';
 
 export const lightTokens = css`
   [data-theme='light'] {
+    --amplify_ui_background_light_medium: rgba(235, 235, 235, 1);
+
+    --amplify_interactive_primary_pressed: rgba(19, 46, 49, 1);
+
     --amplify_dataviz_darkblue_default: rgba(0, 71, 153, 1);
     --amplify_dataviz_darkblue_darker: rgba(4, 48, 98, 1);
     --amplify_dataviz_darkblue_lighter: rgba(191, 220, 252, 1);

@@ -6,6 +6,18 @@ const { colors: eds_colors } = tokens;
 
 export const colors = {
   ...eds_colors,
+  ui: {
+    ...eds_colors.ui,
+    background__light_medium: {
+      rgba: 'var(--amplify_ui_background_light_medium, rgba(235, 235, 235, 1))',
+    },
+  },
+  interactive: {
+    ...eds_colors.interactive,
+    primary__pressed: {
+      rgba: 'var(--amplify_interactive_primary_pressed, rgba(19, 46, 49, 1))',
+    },
+  },
   dataviz: {
     darkblue: {
       default: 'var(--amplify_dataviz_darkblue_default, rgba(0, 71, 153, 1))',

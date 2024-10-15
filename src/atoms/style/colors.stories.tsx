@@ -75,8 +75,9 @@ const ColorPreview: FC = () => {
         <section key={colorCategory}>
           <Typography variant="h5">{colorCategory}</Typography>
           <Container>
-            {Object.keys(colors[colorCategory as keyof typeof colors]).map(
-              (color) => {
+            {Object.keys(colors[colorCategory as keyof typeof colors])
+              .sort()
+              .map((color) => {
                 const category = colors[colorCategory as keyof typeof colors];
                 const colorObject = category[
                   color as keyof typeof category
@@ -116,8 +117,7 @@ const ColorPreview: FC = () => {
                     <Typography>{color}</Typography>
                   </ColorBlock>
                 );
-              }
-            )}
+              })}
           </Container>
         </section>
       ))}
