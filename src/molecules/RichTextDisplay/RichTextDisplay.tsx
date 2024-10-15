@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, HTMLAttributes, useEffect, useRef } from 'react';
 
 import { useEditor } from '@tiptap/react';
 
@@ -11,11 +11,14 @@ export interface RichTextDisplayProps {
   padding?: 'sm' | 'md' | 'lg' | 'none';
 }
 
-export const RichTextDisplay: FC<RichTextDisplayProps> = ({
+export const RichTextDisplay: FC<
+  RichTextDisplayProps & HTMLAttributes<HTMLDivElement>
+> = ({
   value,
   imgReadToken,
   lightBackground = true,
   padding = 'md',
+  ...rest
 }) => {
   const editor = useEditor({
     extensions: [RichText.Kit],
@@ -35,7 +38,11 @@ export const RichTextDisplay: FC<RichTextDisplayProps> = ({
   }, [editor, value]);
 
   return (
-    <RichText.Styling $lightBackground={lightBackground} $padding={padding}>
+    <RichText.Styling
+      $lightBackground={lightBackground}
+      $padding={padding}
+      {...rest}
+    >
       <RichText.Content editor={editor} readOnly />
     </RichText.Styling>
   );
