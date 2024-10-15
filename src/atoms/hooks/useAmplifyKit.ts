@@ -24,7 +24,6 @@ export const useAmplifyKit = ({
   return useMemo(
     () =>
       RichText.Kit.configure({
-        heading: false,
         placeholder: placeholder ? { placeholder } : undefined,
         link: features?.includes(RichTextEditorFeatures.LINKS) ? {} : false,
         table: features?.includes(RichTextEditorFeatures.TABLE) ? {} : false,
@@ -42,6 +41,9 @@ export const useAmplifyKit = ({
           : false,
         image: features?.includes(RichTextEditorFeatures.IMAGES)
           ? { onImageUpload }
+          : false,
+        heading: features?.includes(RichTextEditorFeatures.HEADERS)
+          ? {}
           : false,
       }),
     [onImageUpload, placeholder, features]
