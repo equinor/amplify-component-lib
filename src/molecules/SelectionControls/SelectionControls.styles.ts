@@ -15,6 +15,9 @@ export const Wrapper = styled.span<WrapperProps>`
     padding: 0 ${spacings.medium} 0 ${spacings.x_small};
     border-radius: ${shape.button.borderRadius};
     transition: background ${animation.transitionMS};
+    > span {
+      padding: ${spacings.medium_small};
+    }
   }
 
   &.switch > label {
