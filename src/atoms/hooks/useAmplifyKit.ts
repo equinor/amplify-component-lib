@@ -24,7 +24,22 @@ export const useAmplifyKit = ({
   return useMemo(
     () =>
       RichText.Kit.configure({
+        heading: false,
         placeholder: placeholder ? { placeholder } : undefined,
+        link: features?.includes(RichTextEditorFeatures.LINKS) ? {} : false,
+        table: features?.includes(RichTextEditorFeatures.TABLE) ? {} : false,
+        textAlign: features?.includes(RichTextEditorFeatures.ALIGNMENT)
+          ? {}
+          : false,
+        bulletList: features?.includes(RichTextEditorFeatures.LISTS)
+          ? {}
+          : false,
+        orderedList: features?.includes(RichTextEditorFeatures.LISTS)
+          ? {}
+          : false,
+        codeBlockLowlight: features?.includes(RichTextEditorFeatures.CODE)
+          ? {}
+          : false,
         image: features?.includes(RichTextEditorFeatures.IMAGES)
           ? { onImageUpload }
           : false,

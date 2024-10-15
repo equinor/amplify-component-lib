@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
@@ -39,6 +39,16 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     extensions: [ampExtensions, ...extensions],
     onUpdate: ({ editor }) => onUpdate?.(editor.getHTML()),
   });
+
+  useEffect(() => {
+    // This makes Tiptap react to its prop changing from the outside
+    // Usefull if for instance the content is fetched from an API.
+    // This way the editor will update when the content changes
+    if (!editor) return;
+    if (content === editor.getHTML()) return;
+    editor.commands.setContent(content || '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content]);
 
   /* c8 ignore next */
   if (!editor) return null;
