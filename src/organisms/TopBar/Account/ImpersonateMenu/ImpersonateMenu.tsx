@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { Menu, Typography } from '@equinor/eds-core-react';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
@@ -9,7 +9,7 @@ import { useActiveImpersonationUser } from './hooks/useActiveImpersonationUser';
 import { useGetAllImpersonationUsersForApp } from './hooks/useGetAllImpersonationUsersForApp';
 import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
-import { Content, Header } from './ImpersonateMenu.styles';
+import { Content, Header, NoUsersText } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
 import { Search } from 'src/molecules';
 
@@ -32,8 +32,13 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
     ImpersonateUserDto | undefined
   >(undefined);
   const [selectedUniqueName, setSelectedUniqueName] = useState('');
+  const [search, setSearch] = useState('');
   const { data: availableUsers } = useGetAllImpersonationUsersForApp();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
+
+  const filteredUsers = availableUsers?.filter((user) =>
+    user.fullName.toLowerCase().includes(search.toLowerCase())
+  );
 
   useEffect(() => {
     if (
@@ -79,6 +84,10 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
     setDeletingUser(undefined);
   };
 
+  const handleOnSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
   if (!open) return null;
 
   if (creatingOrEditingUser) {
@@ -122,19 +131,27 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
       <Header>
         <Typography variant="h6">Impersonate</Typography>
         <Typography variant="caption">Select a user to impersonate</Typography>
-        <Search placeholder="Search users" />
+        <Search
+          placeholder="Search users"
+          value={search}
+          onChange={handleOnSearch}
+        />
       </Header>
       <Content>
-        {availableUsers?.map((user) => (
-          <UserImpersonation
-            key={user.uniqueName}
-            {...user}
-            selected={selectedUniqueName === user.uniqueName}
-            onClick={setSelectedUniqueName}
-            onEdit={handleOnEditUser}
-            onDelete={handleOnDeleteUser}
-          />
-        ))}
+        {filteredUsers && filteredUsers.length > 0 ? (
+          filteredUsers?.map((user) => (
+            <UserImpersonation
+              key={user.uniqueName}
+              {...user}
+              selected={selectedUniqueName === user.uniqueName}
+              onClick={setSelectedUniqueName}
+              onEdit={handleOnEditUser}
+              onDelete={handleOnDeleteUser}
+            />
+          ))
+        ) : (
+          <NoUsersText>No items found</NoUsersText>
+        )}
       </Content>
       <CreateNewUserButton onClick={handleOnCreateNewOpen} />
       <Actions selectedUniqueName={selectedUniqueName} onCancel={onClose} />

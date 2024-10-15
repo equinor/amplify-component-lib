@@ -33,6 +33,7 @@ export interface DialogAction {
   color?: ButtonProps['color'];
   icon?: IconData;
   disabled?: boolean | string;
+  isLoading?: boolean;
 }
 
 export interface DialogProps extends Omit<EDSDialogProps, 'title'> {

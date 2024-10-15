@@ -147,6 +147,26 @@ export const DisabledActions: Story = {
   },
 };
 
+export const isLoadingAction: Story = {
+  args: {
+    title: 'Disabled actions dialog!',
+    children: 'This dialog contains some information important for the user.',
+    actions: [
+      {
+        text: 'Cancel',
+        onClick: () => console.log('clicked'),
+        variant: 'contained',
+      },
+      {
+        text: 'Okay!',
+        onClick: () => console.log('clicked'),
+        variant: 'contained',
+        isLoading: true,
+      },
+    ],
+  },
+};
+
 export const LeftAndRightActions: Story = {
   args: {
     title: 'Left and right dialog!',

@@ -1,9 +1,10 @@
 import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import { colors, spacings } from 'src/atoms';
+import { RichTextDisplay } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -139,6 +140,73 @@ const meta: Meta = {
 
 export default meta;
 
-export const Default: StoryObj = {
+export const Preview: StoryObj = {
   args: {},
 };
+
+export const DarkTheme: StoryFn = () => (
+  <div>
+    <Typography variant="h3">Dark theme / light theme</Typography>
+    <Typography>
+      For the dark/light theme switching to work you need to be using the rgba
+      color tokens, hex or any other will not work
+    </Typography>
+
+    <Typography>
+      To use the dark theme variables in specific containers you can do this
+    </Typography>
+    <br />
+    <RichTextDisplay
+      value={`<pre><code>import { Theme, colors } from "@equinor/amplify-component-lib";
+
+&lt;div data-theme={Theme.Dark}&gt;
+  &lt;Typography color={colors.text.static_icons__primary_white.rgba}&gt;
+    Text
+  &lt;/Typography&gt;
+&lt;/div&gt; </code></pre>`}
+    />
+
+    <br />
+    <br />
+    <br />
+
+    <Typography variant="h3">Using the ThemeProvider</Typography>
+    <Typography>
+      If you want to use them across an entire app the ThemeProvider is the
+      easiest solution. To be able to switch themes you should add the Settings
+      component in the topbar like this (ThemeProvider needed in
+      src/providers/Providers.tsx):
+      <RichTextDisplay
+        value={`<pre><code># src/components/ApplicationTopBar/Content/Settings.tsx
+export const Settings: FC = () =&gt; {
+  const { theme, setTheme } = useThemeProvider();
+
+  const settingsOptions: SettingsSection[] = [
+    {
+      title: 'Theme',
+      value: theme,
+      onChange: (value: string) =&gt; setTheme(value as Theme),
+      items: [
+        {
+          label: 'Light Mode',
+          name: 'theme-group',
+          value: Theme.LIGHT,
+          colorBox: '#ffffff',
+        },
+        {
+          label: 'Dark Mode',
+          name: 'theme-group',
+          value: Theme.DARK,
+          colorBox: '#243746',
+        },
+      ],
+    },
+  ];
+
+  return &lt;TopBar.Settings allSettings={settingsOptions} /&gt;;
+};
+</code></pre>`}
+      />
+    </Typography>
+  </div>
+);

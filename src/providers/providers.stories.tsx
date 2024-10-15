@@ -103,6 +103,6 @@ export const Docs = () => (
 );
 
 export default {
-  title: 'Other/Providers',
+  title: 'Providers/List of all providers',
   component: Docs,
 } as Meta;
