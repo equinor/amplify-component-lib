@@ -29,6 +29,7 @@ export const darkTokens = css`
     --eds_ui_background__default: rgba(19, 38, 52, 1);
     --eds_ui_background__semitransparent: rgba(255, 255, 255, 0.2);
     --eds_ui_background__light: rgba(38, 55, 68, 1);
+    --amplify_ui_background_light_medium: rgba(40, 58, 72, 1);
     --eds_ui_background__scrim: rgba(0, 0, 0, 0.4);
     --eds_ui_background__overlay: rgba(0, 0, 0, 0.8);
     --eds_ui_background__medium: rgba(44, 64, 79, 1);
@@ -66,6 +67,7 @@ export const darkTokens = css`
     --eds_interactive_primary__resting: rgba(151, 202, 206, 1);
     --eds_interactive_primary__hover: rgba(173, 226, 230, 1);
     --eds_interactive_primary__hover_alt: rgb(96, 125, 127);
+    --amplify_interactive_primary_pressed: rgba(95, 198, 206, 1);
     --eds_interactive_secondary__highlight: rgba(255, 255, 255, 0.1);
     --eds_interactive_secondary__resting: rgba(222, 229, 231, 1);
     --eds_interactive_secondary__link_hover: rgba(23, 36, 47, 1);
