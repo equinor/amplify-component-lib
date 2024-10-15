@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
@@ -32,13 +32,18 @@ export const ReleasePost: FC<ReleaseNote> = ({
 }) => {
   const [showFullContent, setShowFullContent] = useState<boolean>(false);
   const [needsShowMoreButton, setNeedsShowMoreButton] = useState(false);
-
-  // TODO: Could not get the test to work properly (get the height from the element), created a task for it (BUG 438384 in Azure board)
   /* c8 ignore start */
+  const resizeObserver = useRef<ResizeObserver>(
+    new ResizeObserver((entries) => {
+      // Since we only ever observer 1 element we can safely access [0]
+      const { height } = entries[0].contentRect;
+      setNeedsShowMoreButton(height > 108);
+    })
+  );
+
   const handleOnNewRef = (element: HTMLDivElement | null) => {
     if (element) {
-      const { clientHeight } = element;
-      setNeedsShowMoreButton(clientHeight > 108);
+      resizeObserver.current.observe(element);
     }
   };
   /* c8 ignore end */
