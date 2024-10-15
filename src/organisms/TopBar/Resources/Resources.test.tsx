@@ -67,7 +67,7 @@ function fakeInputs(): FeedbackContentType {
   return {
     title: faker.animal.crocodilia(),
     description: faker.lorem.sentence(),
-    url: 'www.amplify.equinor.com',
+    url: 'www.jsembark.equinor.com',
   };
 }
 
@@ -420,7 +420,7 @@ describe(
           const user = userEvent.setup();
 
           const wrongUrl = 'www.google.com';
-          const rightUrl = 'www.amplify.equinor.com';
+          const rightUrl = 'www.jsembark.equinor.com';
 
           const urlInput: HTMLInputElement = screen.getByLabelText(/url/i);
           await user.type(urlInput, wrongUrl);
