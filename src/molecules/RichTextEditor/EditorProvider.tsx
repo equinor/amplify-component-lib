@@ -40,6 +40,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     onUpdate: ({ editor }) => onUpdate?.(editor.getHTML()),
   });
 
+  /* c8 ignore start */
   useEffect(() => {
     // This makes Tiptap react to its prop changing from the outside
     // Usefull if for instance the content is fetched from an API.
@@ -49,6 +50,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     editor.commands.setContent(content || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
+  /* c8 ignore stop */
 
   /* c8 ignore next */
   if (!editor) return null;

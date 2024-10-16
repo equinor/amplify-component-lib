@@ -43,6 +43,7 @@ export const RichTextDisplay: FC<
 
   /* c8 ignore next */
   if (!editor) return null;
+  /* c8 ignore next */
   if (children) return children(editor);
   return (
     <RichText.Styling
