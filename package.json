@@ -51,7 +51,7 @@
   "dependencies": {
     "@azure/msal-browser": "3.21.0",
     "@azure/msal-react": "2.0.22",
-    "@equinor/eds-core-react": "0.41.2",
+    "@equinor/eds-core-react": "0.42.0",
     "@equinor/eds-data-grid-react": "^0.6.1",
     "@microsoft/signalr": "^8.0.7",
     "@tiptap/core": "^2.7.4",
