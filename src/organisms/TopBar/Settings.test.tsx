@@ -1,4 +1,5 @@
 import { Settings, SettingsProps } from './Settings';
+import { ThemeProvider } from 'src/providers';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 test('Settings renders as expected', async () => {
@@ -181,7 +182,7 @@ test('Calls onChange when using radio buttons in settings menu', async () => {
 test('Renders correctly with color boxes', async () => {
   const theme = 'light';
   const setTheme = vi.fn();
-  const settingsOptions: SettingsProps = {
+  const settingsOptions: Required<SettingsProps> = {
     allSettings: [
       {
         title: 'Theme',
@@ -221,7 +222,7 @@ test('Renders correctly with color boxes', async () => {
 test('Renders correctly with texts', async () => {
   const theme = 'light';
   const setTheme = vi.fn();
-  const settingsOptions: SettingsProps = {
+  const settingsOptions: Required<SettingsProps> = {
     allSettings: [
       {
         title: 'Theme',
@@ -261,7 +262,7 @@ test('Renders correctly with texts', async () => {
 test('Renders correctly with elements', async () => {
   const theme = 'light';
   const setTheme = vi.fn();
-  const settingsOptions: SettingsProps = {
+  const settingsOptions: Required<SettingsProps> = {
     allSettings: [
       {
         title: 'Theme',
@@ -298,4 +299,21 @@ test('Renders correctly with elements', async () => {
       screen.getByText(`${item.value as string}-element`)
     ).toBeInTheDocument();
   }
+});
+
+test('Automatically adds Theme settings if ThemeProvider is used', async () => {
+  render(<Settings />, { wrapper: ThemeProvider });
+
+  const user = userEvent.setup();
+
+  const menuButton = screen.getByRole('button');
+
+  await user.click(menuButton);
+
+  expect(screen.getByText(/theme/i)).toBeInTheDocument();
+});
+
+test('Throws error if no settings are provided', () => {
+  console.error = vi.fn();
+  expect(() => render(<Settings />)).toThrowError();
 });
