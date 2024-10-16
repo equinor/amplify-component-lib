@@ -4,14 +4,11 @@ import {
   TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 
 import { EnvironmentType } from 'src/atoms/enums/Environment';
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 
-import styled from 'styled-components';
-
-const { colors } = tokens;
+import styled, { css } from 'styled-components';
 
 export const Bar = styled(EDSTopBar)`
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
@@ -116,13 +113,22 @@ interface ButtonProps {
 }
 
 export const TopBarButton = styled(Button)<ButtonProps>`
-  height: ${({ $fieldSelector }) => ($fieldSelector ? '' : '36px')};
-  width: ${({ $fieldSelector }) => ($fieldSelector ? '' : '36px')};
   border: ${({ $isSelected }) =>
-    $isSelected ? `1px solid #132E31` : '1px solid transparent'};
+    $isSelected
+      ? `1px solid ${colors.interactive.primary__pressed.rgba}`
+      : '1px solid transparent'};
   color: ${({ $isSelected }) =>
-    $isSelected ? '#132E31' : colors.interactive.primary__resting.rgba};
+    $isSelected
+      ? colors.interactive.primary__pressed.rgba
+      : colors.interactive.primary__resting.rgba};
   &:hover ${UnreadRedDot} {
     border: 2px solid ${colors.interactive.primary__hover_alt.rgba};
   }
+  ${({ $fieldSelector }) => {
+    if (!$fieldSelector)
+      return css`
+        height: 36px;
+        width: 36px;
+      `;
+  }}
 `;

@@ -142,6 +142,7 @@ export const darkTokens = css`
     --eds_table__cell_numeric_monospaced_color: rgba(255, 255, 255, 1);
 
     --eds_navigation__menu_title_color: rgba(255, 255, 255, 1);
+    --eds_navigation__menu_tabs_color: rgba(156, 166, 172, 1);
     --eds_ui__accordion_header_color: rgba(255, 255, 255, 1);
 
     --eds_paragraph__overline_color: rgba(255, 255, 255, 1);
