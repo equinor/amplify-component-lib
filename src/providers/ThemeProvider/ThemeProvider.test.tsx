@@ -19,7 +19,7 @@ test('Sets data-theme as expected', () => {
     wrapper: Wrapper,
   });
 
-  act(() => result.current.setTheme(Theme.DARK));
+  act(() => result.current?.setTheme(Theme.DARK));
 
   expect(document.documentElement).toHaveAttribute('data-theme', Theme.DARK);
 });
@@ -36,7 +36,8 @@ test('Initializes correctly', () => {
   expect(document.documentElement).toHaveAttribute('data-theme', Theme.DARK);
 });
 
-test("'useThemeProvider' hook throws error when used outside provider", () => {
+test("'useThemeProvider' hook logs error when used outside provider", () => {
   console.error = vi.fn();
-  expect(() => renderHook(() => useThemeProvider())).toThrowError();
+  renderHook(() => useThemeProvider());
+  expect(console.error).toHaveBeenCalled();
 });
