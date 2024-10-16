@@ -55,8 +55,6 @@ export const FileProgress: FC<
     }
   };
 
-  console.log('isDeleting', isDeleting);
-
   if (props.compact) {
     return (
       <CompactFileProgress
