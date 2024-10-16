@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes, useEffect, useRef } from 'react';
 
-import { useEditor } from '@tiptap/react';
+import { Editor, Extensions, useEditor } from '@tiptap/react';
 
 import { RichText } from 'src/molecules';
 
@@ -9,6 +9,8 @@ export interface RichTextDisplayProps {
   imgReadToken?: string;
   lightBackground?: boolean;
   padding?: 'sm' | 'md' | 'lg' | 'none';
+  extensions?: Extensions;
+  children?: (editor: Editor) => JSX.Element;
 }
 
 export const RichTextDisplay: FC<
@@ -18,10 +20,12 @@ export const RichTextDisplay: FC<
   imgReadToken,
   lightBackground = true,
   padding = 'md',
+  extensions = [RichText.Kit],
+  children,
   ...rest
 }) => {
   const editor = useEditor({
-    extensions: [RichText.Kit],
+    extensions: extensions,
     content: imgReadToken
       ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
       : value,
@@ -37,6 +41,10 @@ export const RichTextDisplay: FC<
     }
   }, [editor, value]);
 
+  /* c8 ignore next */
+  if (!editor) return null;
+  /* c8 ignore next */
+  if (children) return children(editor);
   return (
     <RichText.Styling
       $lightBackground={lightBackground}
