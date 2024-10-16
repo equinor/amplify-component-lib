@@ -1,11 +1,11 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import CompactFileProgress from 'src/molecules/FileProgress/CompactFileProgress';
 import RegularFileProgress from 'src/molecules/FileProgress/RegularFileProgress';
 
 interface FileProgressBaseProps {
-  onDelete: () => void;
+  onDelete: () => Promise<void>;
   file: FileWithPath | File;
   isDone?: boolean;
   progressPercent?: number;
@@ -30,6 +30,7 @@ export interface CompactFileProgressBaseProps extends FileProgressBaseProps {
 export interface FileProgressPropsExtension {
   showCompleteState: boolean;
   handleOnClick: () => void;
+  isDeleting: boolean;
 }
 
 /**
@@ -38,23 +39,29 @@ export interface FileProgressPropsExtension {
 export const FileProgress: FC<
   RegularFileProgressBaseProps | CompactFileProgressBaseProps
 > = (props) => {
+  const [isDeleting, setIsDeleting] = useState(false);
   const showCompleteState = useMemo(() => {
     if (props.isError ?? props.isDone === undefined) return true;
     return props.isDone;
   }, [props.isError, props.isDone]);
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     if (!showCompleteState && props.onCancel) {
       props.onCancel();
     } else {
-      props.onDelete();
+      setIsDeleting(true);
+      await props.onDelete();
+      setIsDeleting(false);
     }
   };
+
+  console.log('isDeleting', isDeleting);
 
   if (props.compact) {
     return (
       <CompactFileProgress
         {...props}
+        isDeleting={isDeleting}
         showCompleteState={showCompleteState}
         handleOnClick={handleOnClick}
       />
@@ -64,6 +71,7 @@ export const FileProgress: FC<
   return (
     <RegularFileProgress
       {...props}
+      isDeleting={isDeleting}
       showCompleteState={showCompleteState}
       handleOnClick={handleOnClick}
     />
