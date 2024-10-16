@@ -311,6 +311,14 @@ test('Automatically adds Theme settings if ThemeProvider is used', async () => {
   await user.click(menuButton);
 
   expect(screen.getByText(/theme/i)).toBeInTheDocument();
+
+  const darkRadioButton = screen.getByRole('radio', { name: /dark mode/i });
+
+  expect(darkRadioButton).not.toBeChecked();
+  expect(darkRadioButton).not.toBeDisabled();
+  await user.click(darkRadioButton);
+
+  expect(darkRadioButton).toBeChecked();
 });
 
 test('Throws error if no settings are provided', () => {
