@@ -6,6 +6,7 @@ import {
   refresh,
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
+import { waitFor } from '@testing-library/react';
 
 import {
   CompactFileProgressBaseProps,
@@ -23,7 +24,9 @@ function fakeProps():
 
   return {
     file: file,
-    onDelete: () => null,
+    onDelete: vi.fn(
+      () => new Promise<void>((resolve) => setTimeout(() => resolve(), 400))
+    ),
   };
 }
 
@@ -158,6 +161,20 @@ test('Renders regular error state with default error text', () => {
   const errorText = screen.getByText('An error has occurred');
 
   expect(errorText).toBeInTheDocument();
+});
+
+test('Clicking delete shows a progress bar and callsOnDelete', async () => {
+  const { file, onDelete } = fakeProps();
+
+  render(<FileProgress file={file} onDelete={onDelete} isDone />);
+
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('button'));
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+
+  await waitFor(() => expect(onDelete).toHaveBeenCalledTimes(1));
 });
 
 test('Renders compact loading state with progress bar', () => {

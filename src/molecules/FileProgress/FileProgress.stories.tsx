@@ -31,7 +31,7 @@ const meta: Meta<typeof FileProgress> = {
   },
   args: {
     compact: false,
-    file: new File([], 'test'),
+    file: new File([], 'Image.png'),
     progressPercent: 1,
     isDone: false,
     customLoadingText: undefined,
@@ -40,7 +40,8 @@ const meta: Meta<typeof FileProgress> = {
     fullErrorText: undefined,
     onCancel: () => null,
     onRetry: () => null,
-    onDelete: () => null,
+    onDelete: () =>
+      new Promise<void>((resolve) => setTimeout(() => resolve(), 2000)),
   },
 };
 

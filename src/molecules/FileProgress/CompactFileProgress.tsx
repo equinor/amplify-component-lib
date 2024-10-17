@@ -33,6 +33,7 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
   showCompleteState,
   fullErrorText,
   handleOnClick,
+  isDeleting,
 }) => {
   const [src, setSrc] = useState('');
 
@@ -71,7 +72,7 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
       );
     }
 
-    if (showCompleteState) {
+    if (showCompleteState && !isDeleting) {
       return (
         <ImageWrapper>
           <img src={src} alt={' ' + `${file.name}`} />
@@ -82,7 +83,9 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
       <LoadingWrapper>
         <CircularProgress
           variant={
-            progressPercent === undefined ? 'indeterminate' : 'determinate'
+            progressPercent === undefined || isDeleting
+              ? 'indeterminate'
+              : 'determinate'
           }
           value={progressPercent}
           size={24}
@@ -90,12 +93,13 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
       </LoadingWrapper>
     );
   }, [
-    file.name,
-    showCompleteState,
     isError,
+    showCompleteState,
+    isDeleting,
     progressPercent,
     shortErrorText,
     src,
+    file.name,
   ]);
 
   return (
@@ -109,16 +113,18 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
           Loading...
         </AdditionalText>
       )}
-      <CloseButton
-        data-testid="attachment-delete-button"
-        onClick={handleOnClick}
-      >
-        <Icon
-          color={colors.text.static_icons__tertiary.rgba}
-          data={clear}
-          size={24}
-        />
-      </CloseButton>
+      {!isDeleting && (
+        <CloseButton
+          data-testid="attachment-delete-button"
+          onClick={handleOnClick}
+        >
+          <Icon
+            color={colors.text.static_icons__tertiary.rgba}
+            data={clear}
+            size={24}
+          />
+        </CloseButton>
+      )}
     </CompactFileProgressContainer>
   );
 };
