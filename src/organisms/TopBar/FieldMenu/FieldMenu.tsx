@@ -94,7 +94,6 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
           variant="ghost"
           ref={buttonRef}
           onClick={toggleMenu}
-          $isSelected={isOpen}
           data-testid="field-selector-top-bar-button"
           $fieldSelector
         >

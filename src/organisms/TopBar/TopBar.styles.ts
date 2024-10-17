@@ -110,17 +110,12 @@ export const UnreadRedDot = styled.div`
 `;
 
 interface ButtonProps {
-  $isSelected: boolean;
   $fieldSelector?: boolean;
 }
 
 export const TopBarButton = styled(Button)<ButtonProps>`
   height: ${({ $fieldSelector }) => ($fieldSelector ? '' : '36px')};
   width: ${({ $fieldSelector }) => ($fieldSelector ? '' : '36px')};
-  border: ${({ $isSelected }) =>
-    $isSelected ? `1px solid #132E31` : '1px solid transparent'};
-  color: ${({ $isSelected }) =>
-    $isSelected ? '#132E31' : colors.interactive.primary__resting.rgba};
   &:hover ${UnreadRedDot} {
     border: 2px solid ${colors.interactive.primary__hover_alt.rgba};
   }
