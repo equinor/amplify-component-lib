@@ -91,7 +91,7 @@ vi.mock('@equinor/subsurface-app-management', async () => {
               sysId: 'kljsdflk-fsd-asdf-fsddf',
             } as ServiceNowIncidentResponse);
           }
-        }, 500)
+        }, 100)
       );
     }
   }
@@ -104,7 +104,7 @@ vi.mock('@equinor/subsurface-app-management', async () => {
           } else {
             resolve(formData);
           }
-        }, 500)
+        }, 100)
       );
     }
 
@@ -118,7 +118,7 @@ vi.mock('@equinor/subsurface-app-management', async () => {
           } else {
             resolve(formData);
           }
-        }, 500)
+        }, 100)
       );
     }
   }
@@ -131,7 +131,7 @@ vi.mock('@equinor/subsurface-app-management', async () => {
           } else {
             resolve(fakeReleaseNotes);
           }
-        }, 300);
+        }, 100);
       });
     }
     public static getContainerSasUri(): CancelablePromise<unknown> {
@@ -153,144 +153,181 @@ const severityOptions = [
   UrgencyOption.NO_IMPACT,
 ];
 
-describe(
-  'Resources',
-  () => {
-    test('Behaves as expected', async () => {
-      render(<Resources showTutorials>Child</Resources>, {
-        wrapper: Wrappers,
+describe('Resources', () => {
+  test('Behaves as expected', async () => {
+    render(<Resources showTutorials>Child</Resources>, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    const learnMoreButton = screen.getByRole('menuitem', {
+      name: /learn more/i,
+    });
+
+    await user.click(learnMoreButton);
+    expect(screen.getByText(/tutorials/i)).toBeInTheDocument();
+
+    const childElement = await screen.findByText('Child');
+
+    expect(childElement).toBeInTheDocument();
+  });
+
+  test('Opens and closes as expected', async () => {
+    render(<Resources />, { wrapper: Wrappers });
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+
+    await user.click(button);
+
+    await user.click(document.body);
+
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+  });
+
+  test('hide props working as expected', async () => {
+    render(<Resources hideFeedback={true} hideReleaseNotes={true} />, {
+      wrapper: Wrappers,
+    });
+    const user = userEvent.setup();
+
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    const releaseNotes = screen.queryByText('Release notes');
+
+    expect(releaseNotes).not.toBeInTheDocument();
+  });
+
+  describe('Release notes', () => {
+    test('should close the dialog by clicking the close button inside', async () => {
+      const { container } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <Resources />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
+      const user = userEvent.setup();
+      const toggleHelpButton = screen.getByRole('button');
+      await user.click(toggleHelpButton);
+      const toggleReleaseNotesButton = screen.getByRole('menuitem', {
+        name: /Open release notes/,
       });
+      expect(toggleReleaseNotesButton).toBeInTheDocument();
+      await user.click(toggleReleaseNotesButton);
+
+      const dialog = within(container.children[1] as HTMLElement);
+      const closeButton = dialog.getByRole('button', {
+        hidden: true,
+        name: 'close modal',
+      });
+      expect(closeButton).toBeInTheDocument();
+      await user.click(closeButton);
+      const title = screen.queryByText('Release Notes');
+      expect(title).not.toBeInTheDocument();
+    });
+    test('can close dialog by clicking outside', async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <Resources />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
       const user = userEvent.setup();
 
       const button = screen.getByRole('button');
 
       await user.click(button);
 
-      const learnMoreButton = screen.getByRole('menuitem', {
-        name: /learn more/i,
+      const releaseNotesButton = screen.getByRole('menuitem', {
+        name: 'Open release notes',
       });
 
-      await user.click(learnMoreButton);
-      expect(screen.getByText(/tutorials/i)).toBeInTheDocument();
+      await user.click(releaseNotesButton);
 
-      const childElement = await screen.findByText('Child');
+      const title = screen.getByText('Release Notes');
 
-      expect(childElement).toBeInTheDocument();
+      expect(title).toBeInTheDocument();
+      const dialog = screen.getByRole('dialog', { hidden: true });
+      await user.click(dialog);
+      const titleHeader = screen.queryByText('Release Notes');
+
+      expect(titleHeader).not.toBeInTheDocument();
     });
-
-    test('Opens and closes as expected', async () => {
-      render(<Resources />, { wrapper: Wrappers });
+    test('show a release note', async () => {
+      mockServiceHasError = false;
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <Resources />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
       const user = userEvent.setup();
-
       const button = screen.getByRole('button');
-
       await user.click(button);
-
-      expect(screen.queryByRole('link')).not.toBeInTheDocument();
-
-      await user.click(button);
-
-      await user.click(document.body);
-
-      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      const releaseButton = document.querySelector('#release-notes');
+      if (releaseButton) {
+        await user.click(releaseButton);
+      }
+      const releaseNoteText = screen.getByText('Release Notes');
+      expect(releaseNoteText).toBeInTheDocument();
+      await waitFor(
+        () => {
+          const actualText = screen.getByText('Release notes body text');
+          return expect(actualText).toBeInTheDocument();
+        },
+        { timeout: 500 }
+      );
     });
-
-    test('hide props working as expected', async () => {
-      render(<Resources hideFeedback={true} hideReleaseNotes={true} />, {
-        wrapper: Wrappers,
-      });
+    test('should show Nothing matching "SearchTerm" when no matching release notes given only entered a search and no filter', async () => {
+      mockServiceHasError = false;
+      const { container } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <Resources />
+        </MemoryRouter>,
+        { wrapper: Wrappers }
+      );
       const user = userEvent.setup();
+      const toggleHelpButton = screen.getByRole('button');
+      await user.click(toggleHelpButton);
+      const toggleReleaseNotesButton = screen.getByRole('menuitem', {
+        name: /Open release notes/,
+      });
+      expect(toggleReleaseNotesButton).toBeInTheDocument();
+      await user.click(toggleReleaseNotesButton);
+      await waitFor(
+        () => {
+          const releaseNoteText = screen.getByText('Release notes body text');
+          expect(releaseNoteText).toBeInTheDocument();
+        },
+        { timeout: 600 }
+      );
 
-      const button = screen.getByRole('button');
+      const dialog = within(container.children[1] as HTMLElement);
+      const searchInput = dialog.getByRole('textbox', {
+        hidden: true,
+      });
+      expect(searchInput).toBeInTheDocument();
+      const searchTerm = faker.animal.crocodilia();
+      await user.type(searchInput, searchTerm);
 
-      await user.click(button);
-
-      const releaseNotes = screen.queryByText('Release notes');
-
-      expect(releaseNotes).not.toBeInTheDocument();
+      const nothingMatchingText = dialog.getByText(
+        `Nothing matching "${searchTerm} "`
+      );
+      expect(nothingMatchingText).toBeInTheDocument();
     });
-
-    describe('Release notes', () => {
-      test('should close the dialog by clicking the close button inside', async () => {
-        const { container } = render(
-          <MemoryRouter initialEntries={['/']}>
-            <Resources />
-          </MemoryRouter>,
-          { wrapper: Wrappers }
-        );
-        const user = userEvent.setup();
-        const toggleHelpButton = screen.getByRole('button');
-        await user.click(toggleHelpButton);
-        const toggleReleaseNotesButton = screen.getByRole('menuitem', {
-          name: /Open release notes/,
-        });
-        expect(toggleReleaseNotesButton).toBeInTheDocument();
-        await user.click(toggleReleaseNotesButton);
-
-        const dialog = within(container.children[1] as HTMLElement);
-        const closeButton = dialog.getByRole('button', {
-          hidden: true,
-          name: 'close modal',
-        });
-        expect(closeButton).toBeInTheDocument();
-        await user.click(closeButton);
-        const title = screen.queryByText('Release Notes');
-        expect(title).not.toBeInTheDocument();
-      });
-      test('can close dialog by clicking outside', async () => {
-        render(
-          <MemoryRouter initialEntries={['/']}>
-            <Resources />
-          </MemoryRouter>,
-          { wrapper: Wrappers }
-        );
-        const user = userEvent.setup();
-
-        const button = screen.getByRole('button');
-
-        await user.click(button);
-
-        const releaseNotesButton = screen.getByRole('menuitem', {
-          name: 'Open release notes',
-        });
-
-        await user.click(releaseNotesButton);
-
-        const title = screen.getByText('Release Notes');
-
-        expect(title).toBeInTheDocument();
-        const dialog = screen.getByRole('dialog', { hidden: true });
-        await user.click(dialog);
-        const titleHeader = screen.queryByText('Release Notes');
-
-        expect(titleHeader).not.toBeInTheDocument();
-      });
-      test('show a release note', async () => {
-        mockServiceHasError = false;
-        render(
-          <MemoryRouter initialEntries={['/']}>
-            <Resources />
-          </MemoryRouter>,
-          { wrapper: Wrappers }
-        );
-        const user = userEvent.setup();
-        const button = screen.getByRole('button');
-        await user.click(button);
-        const releaseButton = document.querySelector('#release-notes');
-        if (releaseButton) {
-          await user.click(releaseButton);
-        }
-        const releaseNoteText = screen.getByText('Release Notes');
-        expect(releaseNoteText).toBeInTheDocument();
-        await waitFor(
-          () => {
-            const actualText = screen.getByText('Release notes body text');
-            return expect(actualText).toBeInTheDocument();
-          },
-          { timeout: 500 }
-        );
-      });
-      test('should show Nothing matching "SearchTerm" when no matching release notes given only entered a search and no filter', async () => {
+    test(
+      'should show Nothing matching " Feature" when no matching release notes given only selected type',
+      async () => {
         mockServiceHasError = false;
         const { container } = render(
           <MemoryRouter initialEntries={['/']}>
@@ -315,85 +352,46 @@ describe(
         );
 
         const dialog = within(container.children[1] as HTMLElement);
-        const searchInput = dialog.getByRole('textbox', {
+        const filterButton = dialog.getByRole('button', {
           hidden: true,
+          name: 'Filter by',
         });
-        expect(searchInput).toBeInTheDocument();
-        const searchTerm = faker.animal.crocodilia();
-        await user.type(searchInput, searchTerm);
+        expect(filterButton).toBeInTheDocument();
+        await user.click(filterButton);
+        const typeButton = dialog.getByRole('menuitem', {
+          hidden: true,
+          name: 'Type',
+        });
+        await user.click(typeButton);
+        expect(typeButton).toBeInTheDocument();
+        const featureButton = dialog.getByRole('menuitem', {
+          hidden: true,
+          name: 'Bug fix',
+        });
+        await user.click(featureButton);
 
-        const nothingMatchingText = dialog.getByText(
-          `Nothing matching "${searchTerm} "`
-        );
+        const nothingMatchingText = dialog.getByText(/nothing matching/i);
         expect(nothingMatchingText).toBeInTheDocument();
-      });
-      test(
-        'should show Nothing matching " Feature" when no matching release notes given only selected type',
-        async () => {
-          mockServiceHasError = false;
-          const { container } = render(
-            <MemoryRouter initialEntries={['/']}>
-              <Resources />
-            </MemoryRouter>,
-            { wrapper: Wrappers }
-          );
-          const user = userEvent.setup();
-          const toggleHelpButton = screen.getByRole('button');
-          await user.click(toggleHelpButton);
-          const toggleReleaseNotesButton = screen.getByRole('menuitem', {
-            name: /Open release notes/,
-          });
-          expect(toggleReleaseNotesButton).toBeInTheDocument();
-          await user.click(toggleReleaseNotesButton);
-          await waitFor(
-            () => {
-              const releaseNoteText = screen.getByText(
-                'Release notes body text'
-              );
-              expect(releaseNoteText).toBeInTheDocument();
-            },
-            { timeout: 600 }
-          );
+      },
+      { timeout: 8000 }
+    );
+  });
 
-          const dialog = within(container.children[1] as HTMLElement);
-          const filterButton = dialog.getByRole('button', {
-            hidden: true,
-            name: 'Filter by',
-          });
-          expect(filterButton).toBeInTheDocument();
-          await user.click(filterButton);
-          const typeButton = dialog.getByRole('menuitem', {
-            hidden: true,
-            name: 'Type',
-          });
-          await user.click(typeButton);
-          expect(typeButton).toBeInTheDocument();
-          const featureButton = dialog.getByRole('menuitem', {
-            hidden: true,
-            name: 'Bug fix',
-          });
-          await user.click(featureButton);
+  describe('Feedback: open menu', () => {
+    beforeEach(async () => {
+      render(<Resources />, { wrapper: Wrappers });
+      const user = userEvent.setup();
 
-          const nothingMatchingText = dialog.getByText(/nothing matching/i);
-          expect(nothingMatchingText).toBeInTheDocument();
-        },
-        { timeout: 8000 }
-      );
+      const resourceMenuButton = screen.getByRole('button');
+
+      await user.click(resourceMenuButton);
+
+      window.localStorage.clear();
     });
 
-    describe('Feedback: open menu', () => {
-      beforeEach(async () => {
-        render(<Resources />, { wrapper: Wrappers });
-        const user = userEvent.setup();
-
-        const resourceMenuButton = screen.getByRole('button');
-
-        await user.click(resourceMenuButton);
-
-        window.localStorage.clear();
-      });
-
-      describe('Click "Report a bug" menu item', () => {
+    describe(
+      'Click "Report a bug" menu item',
+      () => {
         beforeEach(async () => {
           const user = userEvent.setup();
           const reportBug = screen.getByText('Report a bug');
@@ -428,11 +426,10 @@ describe(
           act(() => {
             urlInput.blur();
           });
-          await act(async () => {
-            await waitForMS(1000);
-          });
-          const helperText = screen.queryByText(/URL must be from a .equinor/i);
-          expect(helperText!).toBeInTheDocument();
+          const helperText = await screen.findByText(
+            /URL must be from a .equinor/i
+          );
+          expect(helperText).toBeInTheDocument();
           await user.clear(urlInput);
 
           expect(helperText).not.toBeInTheDocument();
@@ -442,14 +439,12 @@ describe(
           act(() => {
             urlInput.blur();
           });
-          await act(async () => {
-            await waitForMS(1000);
-          });
-          const helperTextAgain = screen.queryByText(
+
+          const helperTextAgain = await screen.findByText(
             /URL must be from a .equinor/i
           );
 
-          expect(helperTextAgain!).toBeInTheDocument();
+          expect(helperTextAgain).toBeInTheDocument();
           await user.type(urlInput, rightUrl);
 
           expect(helperTextAgain).not.toBeInTheDocument();
@@ -521,18 +516,20 @@ describe(
             const submitButton = screen.getByTestId('submit-button');
             await user.click(submitButton);
 
-            await act(async () => {
-              await waitForMS(2500);
-            });
-
             expect(
-              screen.getByText(`Posting ${imageOne.name}`)
+              await screen.findByText(`Posting ${imageOne.name}`)
             ).toBeInTheDocument();
 
-            expect(screen.getByText(SERVICE_NOW_ERROR)).toBeInTheDocument();
-            expect(screen.getByText(SLACK_POST_ERROR)).toBeInTheDocument();
-            expect(screen.getByText(SLACK_FILE_ERROR)).toBeInTheDocument();
-          }, 10000); // Setting timeout for this test to be 10 seconds
+            expect(
+              await screen.findByText(SERVICE_NOW_ERROR)
+            ).toBeInTheDocument();
+            expect(
+              await screen.findByText(SLACK_POST_ERROR)
+            ).toBeInTheDocument();
+            expect(
+              await screen.findByText(SLACK_FILE_ERROR)
+            ).toBeInTheDocument();
+          }, 10000);
 
           test('shows more details if slack request fails, and can return to form to retry', async () => {
             mockServiceHasError = true;
@@ -554,7 +551,7 @@ describe(
             });
 
             expect(
-              screen.getByText(`Posting ${imageOne.name}`)
+              await screen.findByText(`Posting ${imageOne.name}`)
             ).toBeInTheDocument();
 
             const retryButton = screen.getByText(/retry/i);
@@ -563,7 +560,7 @@ describe(
             await user.click(retryButton);
 
             const titleInputAgain: HTMLInputElement =
-              screen.getByLabelText(/title/i);
+              await screen.findByLabelText(/title/i);
             const currentTitleInputValue = titleInputAgain.value;
 
             expect(
@@ -575,11 +572,11 @@ describe(
 
             expect(titleInputAgain.value).toBe(currentTitleInputValue);
             await user.click(resetForm);
-            await act(async () => {
-              await waitForMS(1000);
-            });
-            expect(titleInputAgain.value).not.toBe(currentTitleInputValue);
-          }, 10000); // Setting timeout for this test to be 10 seconds
+
+            await waitFor(() =>
+              expect(titleInputAgain.value).not.toBe(currentTitleInputValue)
+            );
+          }, 10000);
 
           test('Inputting all fields with file works as expected', async () => {
             mockServiceHasError = false;
@@ -633,149 +630,95 @@ describe(
               await waitForMS(2500);
             });
 
-            await waitFor(
-              () => expect(screen.getAllByText(/success/i).length).toBe(2),
-              { timeout: 4000 }
-            );
+            expect((await screen.findAllByText(/success/i)).length).toBe(2);
 
-            await waitFor(
-              () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
-              { timeout: 3000 }
-            );
+            expect(await screen.findByText(/Thank you/i)).toBeInTheDocument();
 
             const closeButton = screen.getByText(/close/i);
+            const text = screen.queryByText(/report a bug/i);
             await user.click(closeButton);
-            await waitForMS(1000);
-            expect(screen.queryByText(/report a bug/i)).not.toBeInTheDocument();
-          }, 20000); // Setting timeout for this test to be 20 seconds
+
+            expect(text).not.toBeInTheDocument();
+          }, 20000);
         });
-      });
+      },
+      { sequential: true, concurrent: false }
+    );
 
-      describe('Click "Suggest a feature" menu item, and fill info', () => {
-        beforeEach(async () => {
-          const user = userEvent.setup();
-
-          const { title, description } = fakeInputs();
-          const suggestFeature = screen.getByText(/suggest idea/i);
-          await user.click(suggestFeature);
-
-          const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
-          const descInput: HTMLInputElement =
-            screen.getByLabelText(/description/i);
-
-          const submitButton = screen.getByTestId('submit-button');
-
-          expect(submitButton).toBeDisabled();
-
-          await user.type(titleInput, title);
-          await user.type(descInput, description);
-
-          expect(titleInput.value).toEqual(title);
-          expect(descInput.value).toEqual(description);
-        });
-
-        test('shows default error message if errorText is undefined', async () => {
-          mockServiceHasError = true;
-          mockServicePartialError = false;
-          defaultError = true;
-
-          const submitButton = screen.getByTestId('submit-button');
-          const user = userEvent.setup();
-          await user.click(submitButton);
-
-          await act(async () => {
-            await waitForMS(2500);
-          });
-
-          expect(
-            screen.getByText(DEFAULT_REQUEST_ERROR_MESSAGE)
-          ).toBeInTheDocument();
-        }, 10000); // Setting timeout for this test to be 10 seconds
-
-        test('suggest a feature dialog submit button enabled at correct time', async () => {
-          mockServiceHasError = false;
-          mockServicePartialError = false;
-          const submitButton = screen.getByTestId('submit-button');
-          const user = userEvent.setup();
-          await user.click(submitButton);
-          await waitFor(
-            () => expect(screen.getByText(/success/i)).toBeInTheDocument(),
-            { timeout: 2000 }
-          );
-          await waitFor(
-            () => expect(screen.getByText(/Thank you/i)).toBeInTheDocument(),
-            { timeout: 2000 }
-          );
-        }, 15000); // Setting timeout for this test to be 15 seconds
-      });
-    });
-
-    describe('Learn more ', () => {
-      test('click on back button ', async () => {
-        render(<Resources showTutorials />, { wrapper: Wrappers });
+    describe('Click "Suggest a feature" menu item, and fill info', () => {
+      beforeEach(async () => {
         const user = userEvent.setup();
 
-        const button = screen.getByRole('button');
+        const { title, description } = fakeInputs();
+        const suggestFeature = screen.getByText(/suggest idea/i);
+        await user.click(suggestFeature);
 
-        await user.click(button);
-        const learnMore = screen.getByText(/learn more/i);
-        await user.click(learnMore);
+        const titleInput: HTMLInputElement = screen.getByLabelText(/title/i);
+        const descInput: HTMLInputElement =
+          screen.getByLabelText(/description/i);
 
-        const tutorial = screen.getByText(/tutorials/i);
-        expect(tutorial).toBeInTheDocument();
+        const submitButton = screen.getByTestId('submit-button');
 
-        const backButton = screen.getByRole('button', { name: /back/i });
-        await user.click(backButton);
+        expect(submitButton).toBeDisabled();
+
+        await user.type(titleInput, title);
+        await user.type(descInput, description);
+
+        expect(titleInput.value).toEqual(title);
+        expect(descInput.value).toEqual(description);
       });
 
-      test(
-        'open portal  ',
-        async () => {
-          window.open = vi.fn();
+      test('shows default error message if errorText is undefined', async () => {
+        mockServiceHasError = true;
+        mockServicePartialError = false;
+        defaultError = true;
 
-          render(<Resources />, { wrapper: Wrappers });
-          const user = userEvent.setup();
+        const submitButton = screen.getByTestId('submit-button');
+        const user = userEvent.setup();
+        await user.click(submitButton);
 
-          const button = screen.getByRole('button');
+        expect(
+          await screen.findByText(DEFAULT_REQUEST_ERROR_MESSAGE)
+        ).toBeInTheDocument();
+      }, 10000); // Setting timeout for this test to be 10 seconds
 
-          await user.click(button);
+      test('suggest a feature dialog submit button enabled at correct time', async () => {
+        mockServiceHasError = false;
+        mockServicePartialError = false;
+        const submitButton = screen.getByTestId('submit-button');
+        const user = userEvent.setup();
+        await user.click(submitButton);
+        expect(await screen.findByText(/success/i)).toBeInTheDocument();
 
-          const learnMore = screen.getByText(/learn more/i);
-          await user.click(learnMore);
+        expect(await screen.findByText(/Thank you/i)).toBeInTheDocument();
+      }, 15000);
+    });
+  });
 
-          const openPortal = screen.getByText(/open application portal/i);
-          await user.click(openPortal);
+  describe('Learn more ', () => {
+    test('click on back button ', async () => {
+      render(<Resources showTutorials />, { wrapper: Wrappers });
+      const user = userEvent.setup();
 
-          const openLink = screen.getByText(/open link/i);
-          expect(openLink).toBeInTheDocument();
+      const button = screen.getByRole('button');
 
-          await waitFor(
-            () =>
-              expect(
-                screen.getByText(/Transferring you to application/i)
-              ).toBeInTheDocument(),
-            {
-              timeout: 8000,
-            }
-          );
+      await user.click(button);
+      const learnMore = screen.getByText(/learn more/i);
+      await user.click(learnMore);
 
-          await waitFor(
-            () =>
-              expect(window.open).toHaveBeenCalledWith(
-                PORTAL_URL_WITHOUT_LOCALHOST,
-                '_self'
-              ),
-            {
-              timeout: 12000,
-            }
-          );
-        },
-        { timeout: 20000 }
-      );
+      const tutorial = screen.getByText(/tutorials/i);
+      expect(tutorial).toBeInTheDocument();
 
-      test('Close open portal by clicking cancel ', async () => {
+      const backButton = screen.getByRole('button', { name: /back/i });
+      await user.click(backButton);
+    });
+
+    test(
+      'open portal  ',
+      async () => {
+        window.open = vi.fn();
+
         render(<Resources />, { wrapper: Wrappers });
-
         const user = userEvent.setup();
 
         const button = screen.getByRole('button');
@@ -791,85 +734,116 @@ describe(
         const openLink = screen.getByText(/open link/i);
         expect(openLink).toBeInTheDocument();
 
-        const cancelButton = screen.getByTestId('close-transfer-app');
+        expect(
+          await screen.findByText(/Transferring you to application/i)
+        ).toBeInTheDocument();
 
-        await user.click(cancelButton);
-
-        expect(openLink).not.toBeInTheDocument();
-      });
-
-      test('open tutorials from resources and close tutorials  ', async () => {
-        const fakeTutorialOptions: tutorialOptions[] = [
+        await waitFor(
+          () =>
+            expect(window.open).toHaveBeenCalledWith(
+              PORTAL_URL_WITHOUT_LOCALHOST,
+              '_self'
+            ),
           {
-            description: faker.lorem.sentence(),
-            steps: faker.animal.dog(),
-            duration: faker.color.rgb(),
-            pathName: '/current',
-            onClick: vi.fn(),
-          },
-        ];
-
-        const router = createMemoryRouter(
-          [
-            {
-              path: '/current',
-              element: (
-                <Resources
-                  tutorialOptions={fakeTutorialOptions}
-                  showTutorials
-                />
-              ),
-            },
-          ],
-          {
-            initialEntries: ['/current'],
-            initialIndex: 0,
+            timeout: 12000,
           }
         );
+      },
+      { timeout: 20000 }
+    );
 
-        render(<RouterProvider router={router} />, {
-          wrapper: Wrappers,
-        });
-        const user = userEvent.setup();
+    test('Close open portal by clicking cancel ', async () => {
+      render(<Resources />, { wrapper: Wrappers });
 
-        const button = screen.getByRole('button');
+      const user = userEvent.setup();
 
-        await user.click(button);
+      const button = screen.getByRole('button');
 
-        const learnMore = screen.getByText(/learn more/i);
-        await user.click(learnMore);
+      await user.click(button);
 
-        const openTutorials = screen.getByRole('menuitem', {
-          name: 'Tutorials',
-        });
-        await user.click(openTutorials);
+      const learnMore = screen.getByText(/learn more/i);
+      await user.click(learnMore);
 
-        const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
-        expect(findCurrentPage).toBeInTheDocument();
+      const openPortal = screen.getByText(/open application portal/i);
+      await user.click(openPortal);
 
-        const closeButton = screen.getByTestId('close-tutorial-dialog');
-        await user.click(closeButton);
+      const openLink = screen.getByText(/open link/i);
+      expect(openLink).toBeInTheDocument();
 
-        expect(findCurrentPage).not.toBeInTheDocument();
-      });
+      const cancelButton = screen.getByTestId('close-transfer-app');
 
-      test('Render custom button works', () => {
-        render(
-          <Resources
-            customButton={(ref, onToggle) => (
-              <button ref={ref} onClick={onToggle}>
-                custom
-              </button>
-            )}
-          />,
-          { wrapper: Wrappers }
-        );
+      await user.click(cancelButton);
 
-        const button = screen.getByRole('button');
-
-        expect(button).toHaveTextContent('custom');
-      });
+      expect(openLink).not.toBeInTheDocument();
     });
-  },
-  { concurrent: false, sequential: true }
-);
+
+    test('open tutorials from resources and close tutorials  ', async () => {
+      const fakeTutorialOptions: tutorialOptions[] = [
+        {
+          description: faker.lorem.sentence(),
+          steps: faker.animal.dog(),
+          duration: faker.color.rgb(),
+          pathName: '/current',
+          onClick: vi.fn(),
+        },
+      ];
+
+      const router = createMemoryRouter(
+        [
+          {
+            path: '/current',
+            element: (
+              <Resources tutorialOptions={fakeTutorialOptions} showTutorials />
+            ),
+          },
+        ],
+        {
+          initialEntries: ['/current'],
+          initialIndex: 0,
+        }
+      );
+
+      render(<RouterProvider router={router} />, {
+        wrapper: Wrappers,
+      });
+      const user = userEvent.setup();
+
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      const learnMore = screen.getByText(/learn more/i);
+      await user.click(learnMore);
+
+      const openTutorials = screen.getByRole('menuitem', {
+        name: 'Tutorials',
+      });
+      await user.click(openTutorials);
+
+      const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
+      expect(findCurrentPage).toBeInTheDocument();
+
+      const closeButton = screen.getByTestId('close-tutorial-dialog');
+      await user.click(closeButton);
+
+      expect(findCurrentPage).not.toBeInTheDocument();
+    });
+
+    test('Render custom button works', () => {
+      render(
+        <Resources
+          customButton={(ref, onToggle) => (
+            <button ref={ref} onClick={onToggle}>
+              custom
+            </button>
+          )}
+        />,
+        { wrapper: Wrappers }
+      );
+
+      const button = screen.getByRole('button');
+
+      expect(button).toHaveTextContent('custom');
+    });
+  });
+});

@@ -21,10 +21,10 @@ export default defineConfig({
       'src/intro.stories.mdx',
       'src/**/*.docs.mdx',
       'src/storybook',
-      ".idea"
+      '.idea'
     ],
     coverage: {
-      enabled: true,
+      enabled: false,
       provider: 'v8',
       include: ['src/**/*'],
       exclude: [
