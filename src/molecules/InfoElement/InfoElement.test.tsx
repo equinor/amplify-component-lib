@@ -62,3 +62,25 @@ test('Capitalizing content works as expected', () => {
 
   expect(screen.getByText(expectedContentString)).toBeInTheDocument();
 });
+
+test('Copyable / capitalize content and ReactElement throws error', () => {
+  console.error = vi.fn();
+  expect(() =>
+    render(
+      <InfoElement
+        title="TestTitle"
+        content={<Button>Click me!</Button>}
+        copyableContent
+      />
+    )
+  ).toThrowError();
+  expect(() =>
+    render(
+      <InfoElement
+        title="TestTitle"
+        content={<Button>Click me!</Button>}
+        capitalizeContent
+      />
+    )
+  ).toThrowError();
+});
