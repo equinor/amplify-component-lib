@@ -13,9 +13,6 @@ export const ProfileButton = styled.button`
   outline-offset: ${spacings.x_small};
   background: none;
   cursor: pointer;
-  &:focus {
-    outline: 2px dashed ${colors.interactive.primary__resting.rgba};
-  }
 `;
 
 export const Container = styled.div`

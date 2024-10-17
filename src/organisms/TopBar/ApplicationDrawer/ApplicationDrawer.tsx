@@ -62,12 +62,7 @@ export const ApplicationDrawer: FC = () => {
   if (isLoading)
     return (
       <>
-        <TopBarButton
-          variant="ghost"
-          onClick={toggleMenu}
-          ref={buttonRef}
-          $isSelected={isOpen}
-        >
+        <TopBarButton variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
           <Icon data={apps} size={24} />
         </TopBarButton>
         <TopBarMenu
@@ -92,12 +87,7 @@ export const ApplicationDrawer: FC = () => {
 
   return (
     <>
-      <TopBarButton
-        variant="ghost"
-        onClick={toggleMenu}
-        ref={buttonRef}
-        $isSelected={isOpen}
-      >
+      <TopBarButton variant="ghost" onClick={toggleMenu} ref={buttonRef}>
         <Icon data={apps} size={24} />
       </TopBarButton>
       <TopBarMenu

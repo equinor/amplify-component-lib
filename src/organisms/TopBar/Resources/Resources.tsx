@@ -180,14 +180,13 @@ export const Resources: FC<ResourcesProps> = ({
         customButton(buttonRef, toggleMenu)
       ) : (
         <TopBarButton
-          variant="ghost"
+          variant="ghost_icon"
           ref={buttonRef}
           id="anchor-match"
           aria-haspopup="true"
           aria-expanded={isOpen}
           aria-controls="menu-match"
           onClick={toggleMenu}
-          $isSelected={isOpen}
         >
           <Icon data={amplify_resources} />
         </TopBarButton>

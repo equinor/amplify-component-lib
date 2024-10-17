@@ -1,3 +1,5 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
@@ -14,14 +16,10 @@ const { colors, spacings: eds_spacings } = tokens;
 
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
-    <TopBar
-      applicationIcon="car"
-      applicationName="Car-go 🏎"
-      onHeaderClick={() => console.log('Going home 🏡')}
-      isFetching={true}
-    >
+    <TopBar applicationIcon="car" applicationName="Car-go 🏎" isFetching={true}>
       content
-    </TopBar>
+    </TopBar>,
+    { wrapper: MemoryRouter }
   );
 
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
@@ -30,7 +28,6 @@ test('Shows progress indicator only when isFetching={true}', () => {
     <TopBar
       applicationIcon="car"
       applicationName="Car-go 🏎"
-      onHeaderClick={() => console.log('Going home 🏡')}
       isFetching={false}
     >
       content
@@ -43,13 +40,11 @@ test('Shows progress indicator only when isFetching={true}', () => {
 test('Shows correct application name', () => {
   const appName = 'Car-go 🏎';
   render(
-    <TopBar
-      applicationIcon="car"
-      applicationName={appName}
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
+    <TopBar applicationIcon="car" applicationName={appName}>
       content
-    </TopBar>
+    </TopBar>,
+
+    { wrapper: MemoryRouter }
   );
   expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();
 });
@@ -75,14 +70,15 @@ test('Shows fields selector instead of application name when field is send in to
     <TopBar
       applicationIcon="car"
       applicationName={appName}
-      onHeaderClick={() => console.log('Going home 🏡')}
       onSelectField={onSelectedField}
       currentField={currentFiled}
       showAccessITLink={true}
       availableFields={availableFields}
     >
       content
-    </TopBar>
+    </TopBar>,
+
+    { wrapper: MemoryRouter }
   );
 
   const button = screen.getByRole('button', { name: currentFiled.name ?? '' });
@@ -96,13 +92,10 @@ test('Shows environment banner when not in production', () => {
     EnvironmentType.STAGING,
   ];
   const { rerender } = render(
-    <TopBar
-      applicationIcon="car"
-      applicationName="test"
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
+    <TopBar applicationIcon="car" applicationName="test">
       content
-    </TopBar>
+    </TopBar>,
+    { wrapper: MemoryRouter }
   );
 
   for (const envType of envs) {
@@ -110,7 +103,6 @@ test('Shows environment banner when not in production', () => {
       <TopBar
         applicationIcon="car"
         applicationName="test"
-        onHeaderClick={() => console.log('Going home 🏡')}
         environment={envType}
       >
         content
@@ -126,11 +118,12 @@ test('Hides environment banner when in production', () => {
     <TopBar
       applicationIcon="test"
       applicationName="test"
-      onHeaderClick={() => console.log('Going home 🏡')}
       environment={environmentName}
     >
       content
-    </TopBar>
+    </TopBar>,
+
+    { wrapper: MemoryRouter }
   );
   expect(screen.queryByText(environmentName)).not.toBeInTheDocument();
 });
@@ -138,14 +131,10 @@ test('Hides environment banner when in production', () => {
 test('Capitalize app name works as expected', () => {
   const name = faker.person.fullName();
   render(
-    <TopBar
-      applicationIcon="test"
-      applicationName={name}
-      capitalize
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
+    <TopBar applicationIcon="test" applicationName={name} capitalize>
       content
-    </TopBar>
+    </TopBar>,
+    { wrapper: MemoryRouter }
   );
   expect(screen.getByText(name.toLowerCase())).toBeInTheDocument();
 });
@@ -154,13 +143,10 @@ test('close on resize ', async () => {
   const name = faker.person.fullName();
   const setAllAsRead = vi.fn();
   render(
-    <TopBar
-      onHeaderClick={() => console.log('Going home 🏡')}
-      applicationIcon="test"
-      applicationName={name}
-    >
+    <TopBar applicationIcon="test" applicationName={name}>
       <TopBar.Notifications setAllAsRead={setAllAsRead} />
-    </TopBar>
+    </TopBar>,
+    { wrapper: MemoryRouter }
   );
   const user = userEvent.setup();
 
@@ -203,11 +189,7 @@ test('Tab navigation should focus actions in expected order', async () => {
   const button3 = 'button3';
 
   render(
-    <TopBar
-      applicationIcon="car"
-      applicationName={appName}
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
+    <TopBar applicationIcon="car" applicationName={appName}>
       <TopBar.FieldSelector
         availableFields={availableFields}
         currentField={currentField}
@@ -218,10 +200,11 @@ test('Tab navigation should focus actions in expected order', async () => {
         <Button>{button2}</Button>
         <Button>{button3}</Button>
       </TopBar.Actions>
-    </TopBar>
+    </TopBar>,
+    { wrapper: MemoryRouter }
   );
 
-  const homeButton = screen.getByRole('button', { name: appName });
+  const homeButton = screen.getByRole('link', { name: appName });
   const fieldSelector = screen.getByRole('button', {
     name: currentField.name ?? '',
   });
@@ -284,20 +267,17 @@ test('Renders with correct styles', () => {
   const button1 = 'button1';
 
   render(
-    <TopBar
-      applicationIcon="car"
-      applicationName={appName}
-      onHeaderClick={() => console.log('Going home 🏡')}
-    >
+    <TopBar applicationIcon="car" applicationName={appName}>
       <TopBar.Actions>
         <Button>{button1}</Button>
       </TopBar.Actions>
-    </TopBar>
+    </TopBar>,
+    { wrapper: MemoryRouter }
   );
 
   const topBar = screen.getByRole('banner');
   const headerContainer = topBar.firstChild;
-  const appIdentifier = screen.getByRole('button', { name: appName });
+  const appIdentifier = screen.getByRole('link', { name: appName });
 
   expect(topBar).toHaveStyleRule(
     'border-bottom',
@@ -325,9 +305,4 @@ test('Renders with correct styles', () => {
   expect(appIdentifier).toHaveStyleRule('display', 'flex');
   expect(appIdentifier).toHaveStyleRule('align-items', 'center');
   expect(appIdentifier).toHaveStyleRule('gap', spacings.medium_small);
-  expect(appIdentifier).toHaveStyleRule(
-    'outline',
-    `2px dashed ${colors.interactive.primary__resting.rgba}`,
-    { modifier: ':focus' }
-  );
 });

@@ -38,12 +38,11 @@ export const Guidelines: FC<GuidelineProps> = ({ sections }) => {
   return (
     <>
       <TopBarButton
-        variant="ghost"
+        variant="ghost_icon"
         key="topbar-notifications"
         ref={buttonRef}
         onClick={handleButtonClick}
         data-testid="show-hide-button"
-        $isSelected={isOpen}
       >
         <Icon data={info_circle} />
       </TopBarButton>
