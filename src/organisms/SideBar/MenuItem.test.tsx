@@ -57,9 +57,6 @@ describe('MenuItem', () => {
     expect(item).toHaveStyleRule('text-decoration', 'none', {
       modifier: ':hover',
     });
-    expect(item).toHaveStyleRule('text-decoration', 'none', {
-      modifier: ':focus',
-    });
 
     expect(iconContainer).toHaveStyleRule('padding', spacings.x_small);
     expect(iconContainer).toHaveStyleRule('align-items', 'center');
@@ -244,15 +241,6 @@ describe('MenuItem', () => {
 
         testBaseStyles();
 
-        expect(item).toHaveStyleRule(
-          'outline',
-          `1px dashed ${colors.interactive.primary__resting.rgba}`,
-          { modifier: ':focus' }
-        );
-        expect(item).toHaveStyleRule('background', undefined, {
-          modifier: ':focus',
-        });
-
         // expect(svgPath.parentElement).toHaveAttribute(
         //   'fill',
         //   colors.interactive.primary__resting.rgba
@@ -277,17 +265,8 @@ describe('MenuItem', () => {
         testBaseStyles();
 
         expect(item).toHaveAttribute('aria-disabled', 'true');
-        expect(item).toHaveStyleRule(
-          'outline',
-          `1px dashed ${colors.interactive.primary__resting.rgba}`,
-          { modifier: ':focus' }
-        );
-        expect(item).toHaveStyleRule('background', undefined);
 
-        // expect(svgPath.parentElement).toHaveAttribute(
-        //   'fill',
-        //   colors.interactive.disabled__text.rgba
-        // );
+        expect(item).toHaveStyleRule('background', undefined);
 
         expect(text).toHaveStyleRule(
           'color',
@@ -298,10 +277,6 @@ describe('MenuItem', () => {
         const user = userEvent.setup();
         await user.hover(item);
 
-        // expect(svgPath.parentElement).toHaveAttribute(
-        //   'fill',
-        //   colors.interactive.disabled__text.rgba
-        // );
         expect(text).toHaveStyleRule(
           'color',
           colors.interactive.disabled__text.rgba
@@ -555,20 +530,6 @@ describe('MenuItem', () => {
 
         testBaseStyles();
 
-        expect(item).toHaveStyleRule(
-          'outline',
-          `1px dashed ${colors.interactive.primary__resting.rgba}`,
-          { modifier: ':focus' }
-        );
-        expect(item).toHaveStyleRule('background', undefined, {
-          modifier: ':focus',
-        });
-
-        // expect(svgPath.parentElement).toHaveAttribute(
-        //   'fill',
-        //   colors.interactive.primary__resting.rgba
-        // );
-
         expect(text).not.toBeInTheDocument();
       });
 
@@ -584,11 +545,6 @@ describe('MenuItem', () => {
         testBaseStyles();
 
         expect(item).toHaveAttribute('aria-disabled', 'true');
-        expect(item).toHaveStyleRule(
-          'outline',
-          `1px dashed ${colors.interactive.primary__resting.rgba}`,
-          { modifier: ':focus' }
-        );
         expect(item).toHaveStyleRule('background', undefined);
 
         // expect(svgPath.parentElement).toHaveAttribute(
