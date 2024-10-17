@@ -48,11 +48,6 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
         !$disabled && !$active && colors.text.static_icons__default.rgba};
     }
   }
-  &:focus {
-    outline: 1px dashed ${colors.interactive.primary__resting.rgba};
-    outline-offset: -1px;
-    text-decoration: none;
-  }
 `;
 
 export const IconContainer = styled.div`
