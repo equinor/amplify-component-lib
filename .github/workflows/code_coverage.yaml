@@ -5,17 +5,16 @@ jobs:
   code-coverage:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [21.x]
-
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+
+      - name: Use Node.js
         uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Unit tests
-        run: npm run test:coverage
+        run: npm run test:coverage-ci
