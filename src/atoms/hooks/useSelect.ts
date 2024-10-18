@@ -107,6 +107,12 @@ const useSelect = <T extends SelectOptionRequired>(
     if (!open) {
       setOpen(true);
     }
+    // Workaround to keep search field in focus when user is typing
+    if (selectedValues.length > 0 && event.target.value !== '') {
+      setTimeout(() => {
+        searchRef.current?.focus();
+      });
+    }
   };
 
   const getNewValues = (
