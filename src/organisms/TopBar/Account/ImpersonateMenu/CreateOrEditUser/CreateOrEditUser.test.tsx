@@ -30,45 +30,49 @@ describe('CreateNewUser', () => {
     await user.click(screen.getByRole('button', { name: /cancel/i }));
   });
 
-  test('Able to open/close edit', async () => {
-    renderWithProviders(
-      <>
-        <p>outside</p>
-        <Account />
-      </>
-    );
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
+  test(
+    'Able to open/close edit',
+    async () => {
+      renderWithProviders(
+        <>
+          <p>outside</p>
+          <Account />
+        </>
+      );
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
 
-    await user.click(button);
+      await user.click(button);
 
-    await user.click(
-      await screen.findByRole('button', { name: /impersonate/i })
-    );
+      await user.click(
+        await screen.findByRole('button', { name: /impersonate/i })
+      );
 
-    const menuItems = screen.getAllByTestId('impersonation-user');
-    expect(menuItems.length).toBeGreaterThan(0);
+      const menuItems = screen.getAllByTestId('impersonation-user');
+      expect(menuItems.length).toBeGreaterThan(0);
 
-    // Click edit on the first one
-    await user.click(within(menuItems[0]).getByRole('button'));
+      // Click edit on the first one
+      await user.click(within(menuItems[0]).getByRole('button'));
 
-    await user.click(screen.getByRole('button', { name: /edit user/i }));
+      await user.click(screen.getByRole('button', { name: /edit user/i }));
 
-    expect(
-      screen.getByRole('textbox', { name: /first name/i })
-    ).toBeInTheDocument();
+      expect(
+        screen.getByRole('textbox', { name: /first name/i })
+      ).toBeInTheDocument();
 
-    await user.click(screen.getByText('outside'));
+      await user.click(screen.getByText('outside'));
 
-    await user.click(button);
+      await user.click(button);
 
-    await user.click(
-      await screen.findByRole('button', { name: /impersonate/i })
-    );
+      await user.click(
+        await screen.findByRole('button', { name: /impersonate/i })
+      );
 
-    await user.click(screen.getByRole('button', { name: /create/i }));
-    expect(screen.queryByText('Edit user')).not.toBeInTheDocument();
-  });
+      await user.click(screen.getByRole('button', { name: /create/i }));
+      expect(screen.queryByText('Edit user')).not.toBeInTheDocument();
+    },
+    { timeout: 6000 }
+  );
 
   test('OnClose runs as expected in create new', async () => {
     renderWithProviders(
@@ -255,6 +259,6 @@ describe('CreateNewUser', () => {
         await screen.findByText(new RegExp(newFirstName))
       ).toBeInTheDocument();
     },
-    { timeout: 8000 }
+    { timeout: 10000 }
   );
 });

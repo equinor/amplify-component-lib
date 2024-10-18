@@ -1,21 +1,34 @@
-name: Test
+name: "Coverage"
+
 on:
   workflow_call:
+
 jobs:
-  code-coverage:
+  coverage:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [21.x]
+    permissions:
+      # Required to checkout the code
+      contents: read
+      # Required to put a comment into the pull-request
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
 
-      - name: Install dependencies
+      - name: "Install Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "21.x"
+
+      - name: "Install Deps"
         run: npm ci
 
-      - name: Unit tests
-        run: npm run test:coverage
+      - name: "Check coverage"
+        run: npm run test:coverage-ci
+
+      - name: 'Report Coverage'
+        # Set if: always() to also generate the report if tests are failing
+        # Only works if you set `reportOnFailure: true` in your vite config as specified above
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2

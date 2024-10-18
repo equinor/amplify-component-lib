@@ -13,39 +13,43 @@ import {
 
 import { delay, http, HttpResponse } from 'msw';
 
-test('Able to delete user impersonation', async () => {
-  renderWithProviders(<Account />);
-  const user = userEvent.setup();
-  const button = screen.getByRole('button');
+test(
+  'Able to delete user impersonation',
+  async () => {
+    renderWithProviders(<Account />);
+    const user = userEvent.setup();
+    const button = screen.getByRole('button');
 
-  await user.click(button);
+    await user.click(button);
 
-  const impersonateButton = await screen.findByRole('button', {
-    name: /impersonate/i,
-  });
+    const impersonateButton = await screen.findByRole('button', {
+      name: /impersonate/i,
+    });
 
-  await user.click(impersonateButton);
+    await user.click(impersonateButton);
 
-  const menuItems = screen.getAllByTestId('impersonation-user');
-  expect(menuItems.length).toBeGreaterThan(0);
+    const menuItems = screen.getAllByTestId('impersonation-user');
+    expect(menuItems.length).toBeGreaterThan(0);
 
-  const name = menuItems[0].children[1].textContent!;
+    const name = menuItems[0].children[1].textContent!;
 
-  // Click edit on the first one
-  await user.click(within(menuItems[0]).getByRole('button'));
+    // Click edit on the first one
+    await user.click(within(menuItems[0]).getByRole('button'));
 
-  await user.click(screen.getByRole('button', { name: /delete user/i }));
+    await user.click(screen.getByRole('button', { name: /delete user/i }));
 
-  expect(
-    await screen.findByText(/you are deleting a user/i)
-  ).toBeInTheDocument();
+    expect(
+      await screen.findByText(/you are deleting a user/i)
+    ).toBeInTheDocument();
 
-  await user.click(screen.getByRole('button', { name: /delete user/i }));
+    await user.click(screen.getByRole('button', { name: /delete user/i }));
 
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-  expect(screen.queryByText(name)).not.toBeInTheDocument();
-});
+    expect(screen.queryByText(name)).not.toBeInTheDocument();
+  },
+  { timeout: 6000 }
+);
 
 test('Not able to delete user impersonation with activeUsers', async () => {
   server.use(

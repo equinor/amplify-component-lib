@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
-    pool: "threads",
+    maxConcurrency: 35,
     server: {
       deps: {
         inline: ['@equinor/subsurface-app-management']
@@ -21,10 +21,10 @@ export default defineConfig({
       'src/intro.stories.mdx',
       'src/**/*.docs.mdx',
       'src/storybook',
-      ".idea"
+      '.idea'
     ],
     coverage: {
-      enabled: true,
+      enabled: false,
       provider: 'v8',
       include: ['src/**/*'],
       exclude: [
