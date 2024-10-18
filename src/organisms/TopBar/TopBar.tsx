@@ -15,9 +15,12 @@ import { Typography } from 'src/molecules';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 
 type TopBarType = {
-  onHeaderClick: () => void;
   applicationIcon: string;
   applicationName: string;
+  /** @deprecated - Not needed anymore, clicking header wil go to '/' by default */
+  onHeaderClick?: () => void;
+  /** @param - Path when clicking header */
+  headerLink?: string;
   environment?: EnvironmentType;
   isFetching?: boolean;
   capitalize?: boolean;
@@ -32,7 +35,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
   (
     {
       children,
-      onHeaderClick,
+      headerLink,
       applicationIcon,
       applicationName,
       environment,
@@ -48,7 +51,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
     return (
       <Bar ref={ref}>
         <AppAndFieldContainer>
-          <AppIdentifier onClick={onHeaderClick} tabIndex={0}>
+          <AppIdentifier tabIndex={0} to={headerLink || '/'}>
             <ApplicationIcon name={applicationIcon} size={32} withHover />
             <AppName
               group="navigation"

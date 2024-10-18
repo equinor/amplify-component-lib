@@ -1,5 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 
+import { RichText } from 'src/molecules';
 import {
   RichTextDisplay,
   RichTextDisplayProps,
@@ -20,4 +21,22 @@ export default meta;
 
 export const Primary: StoryFn<RichTextDisplayProps> = (args) => {
   return <RichTextDisplay {...args} />;
+};
+
+export const CompoundComponents: StoryFn<RichTextDisplayProps> = (args) => {
+  return (
+    <RichText.Display {...args}>
+      {(editor) => {
+        console.log('editor', editor);
+        return (
+          <RichText.Styling
+            $lightBackground={args.lightBackground}
+            $padding={args.padding}
+          >
+            <RichText.Content editor={editor} readOnly />
+          </RichText.Styling>
+        );
+      }}
+    </RichText.Display>
+  );
 };

@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useMemo, useRef, useState } from 'react';
 
 import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
@@ -6,8 +6,10 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { TopBarButton } from './TopBar.styles';
 import { TopBarMenu } from './TopBarMenu';
+import { Theme } from 'src/atoms/enums';
 import { spacings } from 'src/atoms/style';
 import { SettingsSection } from 'src/organisms/TopBar/Settings.types';
+import { useThemeProvider } from 'src/providers/ThemeProvider/ThemeProvider';
 
 import styled from 'styled-components';
 
@@ -48,24 +50,54 @@ const SettingsItems = styled.div`
 `;
 
 export interface SettingsProps {
-  allSettings: SettingsSection[];
+  allSettings?: SettingsSection[];
 }
 
 export const Settings: FC<SettingsProps> = ({ allSettings }) => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const themeContext = useThemeProvider();
 
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const usingSettings: SettingsSection[] = useMemo(() => {
+    // App is using ThemeProvider
+    if (themeContext) {
+      return [
+        {
+          title: 'Theme',
+          value: themeContext.theme,
+          onChange: (value: string) => themeContext.setTheme(value as Theme),
+          items: [
+            {
+              label: 'Light Mode',
+              name: 'theme-group',
+              value: Theme.LIGHT,
+              colorBox: '#ffffff',
+            },
+            {
+              label: 'Dark Mode',
+              name: 'theme-group',
+              value: Theme.DARK,
+              colorBox: '#243746',
+            },
+          ],
+        },
+        ...(allSettings ?? []),
+      ];
+    }
+
+    return allSettings ?? [];
+  }, [allSettings, themeContext]);
+
+  if (usingSettings.length === 0) {
+    throw new Error('Empty settings in TopBar.Settings!');
+  }
+
   return (
     <>
-      <TopBarButton
-        variant="ghost"
-        onClick={toggleMenu}
-        ref={buttonRef}
-        $isSelected={isOpen}
-      >
+      <TopBarButton variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
         <Icon data={settings} size={24} />
       </TopBarButton>
       <TopBarMenu
@@ -75,7 +107,7 @@ export const Settings: FC<SettingsProps> = ({ allSettings }) => {
         anchorEl={buttonRef.current}
       >
         <SettingsItems>
-          {allSettings.map((section, index) => (
+          {usingSettings.map((section, index) => (
             <div key={index}>
               <Typography variant="overline">{section.title}</Typography>
               {section.items.map((item, itemIndex) => (

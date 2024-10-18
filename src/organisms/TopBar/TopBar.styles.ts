@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { Button } from '@equinor/eds-core-react';
 import {
   CircularProgress as EDSCircularProgress,
@@ -17,20 +19,17 @@ export const Bar = styled(EDSTopBar)`
   position: relative;
 `;
 
-export const AppIdentifier = styled.button`
+export const AppIdentifier = styled(Link)`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: ${spacings.medium_small};
   padding: 0;
   outline-offset: ${spacings.x_small};
+  text-decoration: none;
   &:hover {
     border-radius: 4px;
     outline: none;
-  }
-  &:focus {
-    border-radius: 4px;
-    outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
 `;
 
@@ -108,19 +107,10 @@ export const UnreadRedDot = styled.div`
 `;
 
 interface ButtonProps {
-  $isSelected: boolean;
   $fieldSelector?: boolean;
 }
 
 export const TopBarButton = styled(Button)<ButtonProps>`
-  border: ${({ $isSelected }) =>
-    $isSelected
-      ? `1px solid ${colors.interactive.primary__pressed.rgba}`
-      : '1px solid transparent'};
-  color: ${({ $isSelected }) =>
-    $isSelected
-      ? colors.interactive.primary__pressed.rgba
-      : colors.interactive.primary__resting.rgba};
   &:hover ${UnreadRedDot} {
     border: 2px solid ${colors.interactive.primary__hover_alt.rgba};
   }

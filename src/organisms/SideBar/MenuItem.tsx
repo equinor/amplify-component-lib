@@ -64,11 +64,9 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           data-testid="sidebar-menu-item"
           replace={replace}
         >
-          {icon && (
-            <IconContainer data-testid="icon-container">
-              <Icon data={icon} size={24} />
-            </IconContainer>
-          )}
+          <IconContainer data-testid="icon-container">
+            <Icon data={icon} size={24} />
+          </IconContainer>
           <ItemText
             $active={isActive}
             $disabled={disabled}
@@ -94,11 +92,9 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           ref={ref}
           data-testid="sidebar-menu-item"
         >
-          {icon && (
-            <IconContainer data-testid="icon-container">
-              <Icon data={icon} size={24} />
-            </IconContainer>
-          )}
+          <IconContainer data-testid="icon-container">
+            <Icon data={icon} size={24} />
+          </IconContainer>
         </Link>
       </OptionalTooltip>
     );
