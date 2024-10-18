@@ -30,7 +30,7 @@
     "test": "vitest watch",
     "test:ci": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:coverage-ci": "vitest run --coverage --coverage.reporter html",
+    "test:coverage-ci": "vitest run --coverage --coverage.reporter json-summary --silent",
     "build": "npm run build-components",
     "build-components": "rollup -c && tsc --project tsconfig.build.json && resolve-tspaths --project tsconfig.build.json",
     "build-components:ci": "rm -rf lib dist && npm run build-components",
