@@ -5,6 +5,9 @@ jobs:
   code-coverage:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
       - uses: actions/checkout@v4
 
@@ -18,3 +21,9 @@ jobs:
 
       - name: Unit tests
         run: npm run test:coverage-ci
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
