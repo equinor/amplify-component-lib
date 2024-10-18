@@ -26,8 +26,13 @@ export interface MultiSelectCommon<T extends SelectOptionRequired> {
   onAddItem?: (item: string) => void;
 }
 
+export interface SelectGroup<T extends SelectOptionRequired> {
+  title: string;
+  items: SelectOption<T>[];
+}
+
 export interface GroupedSelectProps<T extends SelectOptionRequired> {
-  groups: { title: string; items: SelectOption<T>[] }[];
+  groups: SelectGroup<T>[];
   items?: undefined;
 }
 

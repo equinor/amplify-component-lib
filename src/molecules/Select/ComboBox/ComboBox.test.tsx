@@ -54,6 +54,34 @@ test('OnAddItem works as expected with {Enter}', async () => {
   expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
 });
 
+test('OnAddItem works as expected with {Enter} and preselected values', async () => {
+  const handleOnAddItem = vi.fn();
+  const handleOnSelect = vi.fn();
+  const items = fakeSelectItems();
+  render(
+    <ComboBox
+      values={[items[0]]}
+      onSelect={handleOnSelect}
+      onAddItem={handleOnAddItem}
+      items={items}
+    />
+  );
+  const user = userEvent.setup();
+
+  const input = screen.getByRole('combobox');
+
+  const someRandomText = faker.vehicle.vehicle();
+
+  await user.click(input);
+
+  await user.type(input, someRandomText);
+
+  await user.keyboard('{Enter}');
+
+  expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
+  expect(handleOnSelect).not.toHaveBeenCalled();
+});
+
 test('OnAddItem works as expected when clicking item', async () => {
   const handleOnAddItem = vi.fn();
   const handleOnSelect = vi.fn();
