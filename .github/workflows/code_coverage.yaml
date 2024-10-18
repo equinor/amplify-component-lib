@@ -1,6 +1,8 @@
-name: Coverage
+name: "Coverage"
+
 on:
   workflow_call:
+
 jobs:
   code-coverage:
     runs-on: ubuntu-latest
