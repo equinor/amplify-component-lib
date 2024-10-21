@@ -38,8 +38,11 @@ export interface GroupedSelectProps<T extends SelectOptionRequired> {
 
 export interface ListSelectProps<T extends SelectOptionRequired> {
   items: SelectOption<T>[];
-  onAddItem?: () => void;
   groups?: undefined;
+}
+
+export interface ListSelectMenuProps {
+  onAddItem?: () => void;
 }
 
 export interface SelectMenuProps<T extends SelectOptionRequired> {

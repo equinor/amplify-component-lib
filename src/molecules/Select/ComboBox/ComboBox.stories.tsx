@@ -223,10 +223,11 @@ export const ComboBoxInDialog: StoryFn = (args) => {
 export const ComboBoxWithAdd: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
   const handleOnSelect = (newValues: SelectOptionRequired[]) => {
+    actions('onSelect').onSelect(newValues);
     setValues(newValues);
   };
 
-  const handleOnAdd = (value: string): void => {
+  const handleOnAdd = (value: string) => {
     actions('onItemAdd').onItemAdd(value);
     const newItem = {
       label: value,
@@ -241,7 +242,6 @@ export const ComboBoxWithAdd: StoryFn = (args) => {
       {...args}
       values={values as SelectOptionRequired[]}
       items={FAKE_ITEMS}
-      groups={undefined}
       onSelect={handleOnSelect}
       onAddItem={handleOnAdd}
     />
