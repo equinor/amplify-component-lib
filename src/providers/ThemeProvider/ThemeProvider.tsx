@@ -9,14 +9,14 @@ interface ThemeProviderContextType {
   setTheme: (theme: Theme) => void;
 }
 
-const ThemeProviderContext = createContext<
+export const ThemeProviderContext = createContext<
   ThemeProviderContextType | undefined
 >(undefined);
 
 export function useThemeProvider() {
   const context = useContext(ThemeProviderContext);
   if (context === undefined) {
-    console.error('ThemeProvider must be used within Provider');
+    throw new Error('ThemeProvider must be used within Provider');
   }
   return context;
 }

@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef, useState } from 'react';
+import { FC, useContext, useMemo, useRef, useState } from 'react';
 
 import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
@@ -9,7 +9,7 @@ import { TopBarMenu } from './TopBarMenu';
 import { Theme } from 'src/atoms/enums';
 import { spacings } from 'src/atoms/style';
 import { SettingsSection } from 'src/organisms/TopBar/Settings.types';
-import { useThemeProvider } from 'src/providers/ThemeProvider/ThemeProvider';
+import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
 
 import styled from 'styled-components';
 
@@ -56,7 +56,7 @@ export interface SettingsProps {
 export const Settings: FC<SettingsProps> = ({ allSettings }) => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const themeContext = useThemeProvider();
+  const themeContext = useContext(ThemeProviderContext);
 
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen(!isOpen);
