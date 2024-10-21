@@ -1,3 +1,5 @@
+import { FormEvent } from 'react';
+
 import { faker } from '@faker-js/faker';
 
 import { ComboBox } from './ComboBox';
@@ -80,6 +82,38 @@ test('OnAddItem works as expected with {Enter} and preselected values', async ()
 
   expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
   expect(handleOnSelect).not.toHaveBeenCalled();
+});
+
+test('OnAddItem works as expected with {Enter} inside a form', async () => {
+  const handleOnAddItem = vi.fn();
+  const handleOnSelect = vi.fn();
+  const handleOnSubmit = vi.fn((e: FormEvent) => e.preventDefault());
+  const items = fakeSelectItems();
+  render(
+    <form onSubmit={handleOnSubmit}>
+      <ComboBox
+        values={[items[0]]}
+        onSelect={handleOnSelect}
+        onAddItem={handleOnAddItem}
+        items={items}
+      />
+    </form>
+  );
+  const user = userEvent.setup();
+
+  const input = screen.getByRole('combobox');
+
+  const someRandomText = faker.vehicle.vehicle();
+
+  await user.click(input);
+
+  await user.type(input, someRandomText);
+
+  await user.keyboard('{Enter}');
+
+  expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
+  expect(handleOnSelect).not.toHaveBeenCalled();
+  expect(handleOnSubmit).not.toHaveBeenCalled();
 });
 
 test('OnAddItem works as expected when clicking item', async () => {

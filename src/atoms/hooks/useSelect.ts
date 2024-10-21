@@ -186,6 +186,7 @@ const useSelect = <T extends SelectOptionRequired>(
       'onAddItem' in props &&
       props.onAddItem
     ) {
+      event.preventDefault();
       props.onAddItem(search);
       setSearch('');
     } else if (event.key === 'Space' || event.key === 'Enter') {
