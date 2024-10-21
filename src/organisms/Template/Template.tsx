@@ -47,6 +47,10 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
   }
 
+  dialog {
+    background: ${colors.ui.background__default.rgba};
+  }
+
   button {
     border: none;
     background: none;
