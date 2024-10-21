@@ -221,6 +221,7 @@ export const ComboBoxInDialog: StoryFn = (args) => {
 };
 
 export const ComboBoxWithAdd: StoryFn = (args) => {
+  const [items, setItems] = useState([...FAKE_ITEMS]);
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
   const handleOnSelect = (newValues: SelectOptionRequired[]) => {
     actions('onSelect').onSelect(newValues);
@@ -233,7 +234,8 @@ export const ComboBoxWithAdd: StoryFn = (args) => {
       label: value,
       value: faker.string.uuid(),
     };
-
+    // NEW
+    setItems((prev) => [...prev, newItem]);
     setValues((prev) => [...prev, newItem]);
   };
 
@@ -241,7 +243,7 @@ export const ComboBoxWithAdd: StoryFn = (args) => {
     <ComboBox
       {...args}
       values={values as SelectOptionRequired[]}
-      items={FAKE_ITEMS}
+      items={items}
       onSelect={handleOnSelect}
       onAddItem={handleOnAdd}
     />
