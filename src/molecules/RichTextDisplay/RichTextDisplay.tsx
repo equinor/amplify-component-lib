@@ -2,7 +2,11 @@ import { FC, HTMLAttributes, useEffect, useRef } from 'react';
 
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
-import { RichText } from 'src/molecules';
+import { AmplifyKit } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
+import {
+  EditorContent,
+  EditorStyling,
+} from 'src/molecules/RichTextEditor/RichTextEditor.styles';
 
 export interface RichTextDisplayProps {
   value: string | null | undefined;
@@ -20,7 +24,7 @@ export const RichTextDisplay: FC<
   imgReadToken,
   lightBackground = true,
   padding = 'md',
-  extensions = [RichText.Kit],
+  extensions = [AmplifyKit],
   children,
   ...rest
 }) => {
@@ -46,12 +50,12 @@ export const RichTextDisplay: FC<
   /* c8 ignore next */
   if (children) return children(editor);
   return (
-    <RichText.Styling
+    <EditorStyling
       $lightBackground={lightBackground}
       $padding={padding}
       {...rest}
     >
-      <RichText.Content editor={editor} readOnly />
-    </RichText.Styling>
+      <EditorContent editor={editor} readOnly />
+    </EditorStyling>
   );
 };
