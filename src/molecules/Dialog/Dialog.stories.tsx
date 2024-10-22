@@ -226,7 +226,7 @@ export const ColorVariations: Story = {
 
 export const LongDialogWithContentMaxHeight: Story = {
   args: {
-    title: 'Left and right dialog!',
+    title: 'Long dialog with content max height',
     children: (
       <div
         style={{
