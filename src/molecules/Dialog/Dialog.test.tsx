@@ -318,3 +318,24 @@ test('Custom children works as expected', () => {
   expect(element).toBeInTheDocument();
   expect(element).toHaveTextContent(description);
 });
+
+test('Content max height prop works as expected', () => {
+  const handleOnClose = vi.fn();
+  const title = faker.airline.airplane().name;
+  const description = faker.lorem.paragraph();
+  const contentMaxHeight = `${faker.number.int({ min: 10, max: 1000 })}px`;
+
+  render(
+    <Dialog
+      open
+      title={title}
+      onClose={handleOnClose}
+      contentMaxHeight={contentMaxHeight}
+    >
+      {description}
+    </Dialog>
+  );
+
+  const contentWrapper = screen.getByText(description).parentElement;
+  expect(contentWrapper).toHaveStyle(`max-height: ${contentMaxHeight}`);
+});

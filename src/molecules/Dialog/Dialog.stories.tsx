@@ -223,3 +223,52 @@ export const ColorVariations: Story = {
     ],
   },
 };
+
+export const LongDialogWithContentMaxHeight: Story = {
+  args: {
+    title: 'Left and right dialog!',
+    children: (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <p>一</p>
+        <p>二</p>
+        <p>三</p>
+        <p>四</p>
+        <p>五</p>
+        <p>六</p>
+        <p>七</p>
+        <p>八</p>
+        <p>九</p>
+        <p>十</p>
+        <p>十一</p>
+        <p>十二</p>
+        <p>十三</p>
+        <p>十四</p>
+        <p>十五</p>
+        <p>十六</p>
+        <p>十七</p>
+        <p>十八</p>
+        <p>十九</p>
+        <p>ニ十</p>
+      </div>
+    ),
+    contentMaxHeight: '400px',
+    actions: [
+      {
+        text: 'Cancel',
+        onClick: () => console.log('clicked'),
+        variant: 'ghost',
+      },
+      {
+        text: 'Okay',
+        onClick: () => console.log('clicked'),
+        variant: 'contained',
+      },
+    ],
+  },
+};
