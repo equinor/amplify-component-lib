@@ -41,6 +41,7 @@ export const DialogContent = styled(
   EDSDialog.CustomContent
 )<DialogContentProps>`
   min-height: unset;
+  overflow: auto;
   ${({ $withContentPadding }) => {
     if ($withContentPadding) {
       return css`

@@ -44,6 +44,7 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
   actions?: DialogAction[];
   withContentPadding?: boolean;
   withBorders?: boolean;
+  contentMaxHeight?: string;
 }
 
 /**
@@ -54,6 +55,7 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
  * @param actions - Dialog actions, { position: "right" is default }
  * @param withContentPadding - Defaults to true
  * @param withBorders - Defaults to false
+ * @param contentMaxHeight - Defaults to '60vh'
  * Also inherits props from EDS dialog
  */
 export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
@@ -65,6 +67,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
       actions,
       withContentPadding = true,
       withBorders = false,
+      contentMaxHeight = '60vh',
       ...otherProps
     },
     ref
@@ -108,7 +111,10 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
         </DialogTitle>
         <DialogContent
           $withContentPadding={withContentPadding}
-          style={{ width: width ? `${width}px` : undefined }}
+          style={{
+            width: width ? `${width}px` : undefined,
+            maxHeight: contentMaxHeight,
+          }}
         >
           {childrenElements}
         </DialogContent>
