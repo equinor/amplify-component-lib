@@ -72,14 +72,21 @@ export const Content = styled(motion.div)<ContentProps>`
     display: flex;
     flex-direction: column;
     gap: ${spacings.medium};
-    > div:last-child {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: ${spacings.medium};
-      > button {
-        align-self: flex-end;
+    ${({ $showClearFilterButton }) => {
+      if ($showClearFilterButton) {
+        return css`
+          > div:last-child {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: ${spacings.medium};
+
+            > button {
+              align-self: flex-end;
+            }
+          }
+        `;
       }
-    }
+    }}
   }
 `;
 

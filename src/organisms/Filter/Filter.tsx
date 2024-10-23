@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, KeyboardEvent, ReactNode, useState } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  KeyboardEvent,
+  ReactNode,
+  useRef,
+  useState,
+} from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import {
@@ -38,9 +45,13 @@ export const Filter: FC<FilterProps> = ({
   const [open, setOpen] = useState(initialOpen);
   const [search, setSearch] = useState('');
   const [attemptingToRemove, setAttemptingToRemove] = useState<number>(-1);
+  const initialHeight = useRef(initialOpen ? 'auto' : 0);
 
   const handleOnToggleOpen = () => {
     setOpen((prev) => !prev);
+    if (initialHeight.current === 'auto') {
+      initialHeight.current = 0;
+    }
   };
 
   const handleOnFocus = () => {
@@ -52,6 +63,7 @@ export const Filter: FC<FilterProps> = ({
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
+
   const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && search !== '') {
       event.preventDefault();
@@ -114,7 +126,7 @@ export const Filter: FC<FilterProps> = ({
           <Content
             $showClearFilterButton={showClearFiltersButton}
             animate={{ height: 'auto' }}
-            initial={{ height: 0 }}
+            initial={{ height: initialHeight.current }}
             exit={{ height: 0 }}
           >
             <section>
@@ -122,19 +134,22 @@ export const Filter: FC<FilterProps> = ({
                 children.map((child, index) => (
                   <div key={index}>
                     {child}
-                    {index === children.length - 1 && (
-                      <Button variant="outlined" onClick={onClearAllFilters}>
-                        Clear filters
-                      </Button>
-                    )}
+                    {index === children.length - 1 &&
+                      showClearFiltersButton && (
+                        <Button variant="outlined" onClick={onClearAllFilters}>
+                          Clear filters
+                        </Button>
+                      )}
                   </div>
                 ))
               ) : (
                 <div>
                   {children}
-                  <Button variant="outlined" onClick={onClearAllFilters}>
-                    Clear filters
-                  </Button>
+                  {showClearFiltersButton && (
+                    <Button variant="outlined" onClick={onClearAllFilters}>
+                      Clear filters
+                    </Button>
+                  )}
                 </div>
               )}
             </section>
