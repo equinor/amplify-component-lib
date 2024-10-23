@@ -117,7 +117,11 @@ export const Filter: FC<FilterProps> = ({
             />
           </Button>
         )}
-        <Button variant="ghost_icon" onClick={handleOnToggleOpen}>
+        <Button
+          variant="ghost_icon"
+          onClick={handleOnToggleOpen}
+          data-testid="toggle-open-button"
+        >
           <Icon data={open ? arrow_drop_up : arrow_drop_down} />
         </Button>
       </Container>

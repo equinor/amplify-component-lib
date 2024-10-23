@@ -35,6 +35,30 @@ test('Filter opens/closes as expected when clicking search field', async () => {
   expect(screen.getByText(childText)).toBeInTheDocument();
 });
 
+test('Filter opens/closes as expected when clicking search field with multiple children', async () => {
+  const props = fakeProps();
+  const childText = faker.lorem.sentence().split(' ');
+  render(
+    <Filter {...props}>
+      {childText.map((text) => (
+        <p key={text}>{text}</p>
+      ))}
+    </Filter>
+  );
+
+  const user = userEvent.setup();
+
+  for (const text of childText) {
+    expect(screen.queryByText(text)).not.toBeInTheDocument();
+  }
+
+  await user.click(screen.getByRole('searchbox'));
+
+  for (const text of childText) {
+    expect(screen.getByText(text)).toBeInTheDocument();
+  }
+});
+
 test('Custom placeholder works as expected', () => {
   const props = fakeProps();
   const placeholder = faker.lorem.sentence();
@@ -121,7 +145,7 @@ test('onClearAllFilters is called when clicking clear all', async () => {
   expect(props.onClearAllFilters).toHaveBeenCalledTimes(1);
 });
 
-test('initialOpen works as expected', () => {
+test('initialOpen works as expected', async () => {
   const props = fakeProps();
   const childText = faker.lorem.sentence();
   render(
@@ -129,8 +153,16 @@ test('initialOpen works as expected', () => {
       <p>{childText}</p>
     </Filter>
   );
+  const user = userEvent.setup();
 
   expect(screen.getByText(childText)).toBeInTheDocument();
+
+  await user.click(screen.getByTestId('toggle-open-button'));
+
+  // Wait for animation
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(screen.queryByText(childText)).not.toBeInTheDocument();
 });
 
 test('onSearch is called when hitting enter', async () => {
