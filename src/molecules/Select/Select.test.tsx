@@ -1,3 +1,5 @@
+import { FormEvent } from 'react';
+
 import { error_outlined } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
@@ -749,4 +751,61 @@ test('openCallback works as expected', async () => {
   await user.click(screen.getByText(outside));
 
   expect(openCallback).toHaveBeenCalledWith(false);
+});
+
+test('Does not call onSubmit when clicking items', async () => {
+  const handleOnSelect = vi.fn();
+  const items = fakeSelectItems();
+  const placeholder = faker.airline.airplane().name;
+  const handleOnSubmit = vi.fn((e: FormEvent) => e.preventDefault());
+
+  render(
+    <form onSubmit={handleOnSubmit}>
+      <Select
+        placeholder={placeholder}
+        inDialog
+        onSelect={handleOnSelect}
+        items={items}
+        value={undefined}
+      />
+    </form>
+  );
+  const user = userEvent.setup();
+
+  // Open
+  await user.click(screen.getByText(placeholder));
+
+  await user.click(screen.getByText(items[0].label));
+
+  expect(handleOnSelect).toHaveBeenCalledWith(items[0]);
+  expect(handleOnSubmit).not.toHaveBeenCalled();
+});
+
+test('Does not call onSubmit when selecting items with {Enter}', async () => {
+  const handleOnSelect = vi.fn();
+  const items = fakeSelectItems();
+  const placeholder = faker.airline.airplane().name;
+  const handleOnSubmit = vi.fn((e: FormEvent) => e.preventDefault());
+
+  render(
+    <form onSubmit={handleOnSubmit}>
+      <Select
+        placeholder={placeholder}
+        inDialog
+        onSelect={handleOnSelect}
+        items={items}
+        value={undefined}
+      />
+    </form>
+  );
+  const user = userEvent.setup();
+
+  // Open
+  await user.click(screen.getByText(placeholder));
+
+  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{Enter}');
+
+  expect(handleOnSelect).toHaveBeenCalledWith(items[0]);
+  expect(handleOnSubmit).not.toHaveBeenCalled();
 });
