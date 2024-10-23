@@ -32,6 +32,17 @@ export interface FilterProps {
   showClearFiltersButton?: boolean;
 }
 
+/**
+ * @param values - Array of values to display as chips ({ value: string, label: string, icon?: IconData }[])
+ * @param onSearch - Function to call when the user presses enter in the search input
+ * @param onClearFilter - Function to call when the user clicks the delete button on a chip
+ * @param onClearAllFilters - Function to call when the user clicks the clear filters button
+ * @param children - ReactNode or ReactNode[] to display below when the filter is open
+ * @param initialOpen - Whether the filter should be open by default, defaults to false
+ * @param placeholder - Placeholder text for the search input, defaults to 'Search...'
+ * @param showClearFiltersButton - Whether to show the clear filters button, defaults to true
+ * @constructor
+ */
 export const Filter: FC<FilterProps> = ({
   values,
   onSearch,
