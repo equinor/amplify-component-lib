@@ -82,7 +82,9 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     [depth]
   );
 
-  const handleOnItemClick = () => {
+  const handleOnItemClick = (event: MouseEvent) => {
+    // Stop form submission
+    event.preventDefault();
     onItemSelect(item);
   };
 
