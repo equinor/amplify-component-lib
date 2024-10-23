@@ -17,6 +17,7 @@ export const Container = styled.div`
   > section:nth-child(5) {
     max-width: unset;
     margin-bottom: ${spacings.large};
+    padding: 0 ${spacings.medium};
   }
   > div:nth-child(3) {
     align-self: center;
