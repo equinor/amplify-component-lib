@@ -9,12 +9,12 @@ import {
   IconData,
 } from '@equinor/eds-icons';
 
-import { Container, Content, StyledChip, Wrapper } from './FilterHeader.styles';
+import { Container, Content, StyledChip, Wrapper } from './Filter.styles';
 import { colors } from 'src/atoms/style/colors';
 
 import { AnimatePresence } from 'framer-motion';
 
-export interface FilterHeaderProps {
+export interface FilterProps {
   values: { value: string; label: string; icon?: IconData }[];
   onClearFilter: (value: string) => void;
   onClearAllFilters: () => void;
@@ -25,7 +25,7 @@ export interface FilterHeaderProps {
   showClearFiltersButton?: boolean;
 }
 
-export const FilterHeader: FC<FilterHeaderProps> = ({
+export const Filter: FC<FilterProps> = ({
   values,
   onSearch,
   onClearFilter,

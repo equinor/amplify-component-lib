@@ -1,11 +1,13 @@
+import { FC } from 'react';
+
 import { DatePicker } from '@equinor/eds-core-react';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { FilterHeader, FilterHeaderProps } from './FilterHeader';
+import { Filter, FilterProps } from './Filter';
 import { SingleSelect } from 'src/molecules';
 
-const Wrapper = (props: FilterHeaderProps) => (
-  <FilterHeader {...props}>
+const Wrapper: FC<FilterProps> = (props) => (
+  <Filter {...props}>
     <DatePicker label="Created date" />
     <div
       style={{
@@ -35,11 +37,11 @@ const Wrapper = (props: FilterHeaderProps) => (
         ]}
       />
     </div>
-  </FilterHeader>
+  </Filter>
 );
 
-const meta: Meta<typeof FilterHeader> = {
-  title: 'Molecules/FilterHeader',
+const meta: Meta<typeof Filter> = {
+  title: 'Organisms/Filter',
   component: Wrapper,
   parameters: {
     layout: 'centered',
@@ -57,6 +59,10 @@ const meta: Meta<typeof FilterHeader> = {
   ],
   argTypes: {
     initialOpen: { type: 'boolean', description: 'Default is false' },
+    onClearAllFilters: {
+      type: 'function',
+      description: 'Callback when clear all filters button is clicked',
+    },
   },
   args: {
     values: [
@@ -69,7 +75,7 @@ const meta: Meta<typeof FilterHeader> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof FilterHeader>;
+type Story = StoryObj<typeof Filter>;
 
 export const Default: Story = {
   args: {},
