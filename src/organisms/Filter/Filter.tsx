@@ -16,7 +16,13 @@ import {
   IconData,
 } from '@equinor/eds-icons';
 
-import { Container, Content, StyledChip, Wrapper } from './Filter.styles';
+import {
+  Container,
+  Content,
+  SearchField,
+  StyledChip,
+  Wrapper,
+} from './Filter.styles';
 import { colors } from 'src/atoms/style/colors';
 
 import { AnimatePresence } from 'framer-motion';
@@ -109,7 +115,7 @@ export const Filter: FC<FilterProps> = ({
               {label}
             </StyledChip>
           ))}
-          <input
+          <SearchField
             id="filter-search"
             type="search"
             value={search}

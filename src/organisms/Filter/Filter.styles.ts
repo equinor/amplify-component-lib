@@ -32,22 +32,6 @@ export const Container = styled.div<ContainerProps>`
     display: flex;
     flex-wrap: wrap;
     gap: ${spacings.x_small};
-    > input[type='search'] {
-      background: transparent;
-      width: 0;
-      flex-grow: 1;
-      padding: 0;
-      font-family: 'Equinor', sans-serif;
-      font-size: ${typography.input.text.fontSize};
-      font-weight: ${typography.input.text.fontWeight};
-      color: ${colors.text.static_icons__default.rgba};
-      outline: none;
-      border: none;
-      &::placeholder {
-        opacity: 1;
-        color: ${colors.text.static_icons__tertiary.rgba};
-      }
-    }
   }
   > button {
     width: 24px;
@@ -59,6 +43,23 @@ export const Container = styled.div<ContainerProps>`
   }
   > svg:last-child {
     grid-column: 4;
+  }
+`;
+
+export const SearchField = styled.input`
+  background: transparent;
+  width: 0;
+  flex-grow: 1;
+  padding: 0;
+  font-family: 'Equinor', sans-serif;
+  font-size: ${typography.input.text.fontSize};
+  font-weight: ${typography.input.text.fontWeight};
+  color: ${colors.text.static_icons__default.rgba};
+  outline: none;
+  border: none;
+  &::placeholder {
+    opacity: 1;
+    color: ${colors.text.static_icons__tertiary.rgba};
   }
 `;
 
