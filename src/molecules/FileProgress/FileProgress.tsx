@@ -5,7 +5,7 @@ import CompactFileProgress from 'src/molecules/FileProgress/CompactFileProgress'
 import RegularFileProgress from 'src/molecules/FileProgress/RegularFileProgress';
 
 interface FileProgressBaseProps {
-  onDelete: () => Promise<void>;
+  onDelete: () => Promise<void> | void;
   file: FileWithPath | File;
   isDone?: boolean;
   progressPercent?: number;
