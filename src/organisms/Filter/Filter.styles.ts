@@ -61,6 +61,11 @@ export const SearchField = styled.input`
     opacity: 1;
     color: ${colors.text.static_icons__tertiary.rgba};
   }
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    display: none;
+  }
 `;
 
 interface ContentProps {
