@@ -70,7 +70,7 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     }
 
     return all;
-  }, [carSize, manufacturer, manufacturerDate, props.withIcons]);
+  }, [carSize, manufacturer, manufacturerDate, props.withIcons, search]);
 
   const handleOnSelectEnvironment = (
     value: SelectOptionRequired | undefined
