@@ -97,10 +97,16 @@ export const Filter: FC<FilterProps> = ({
     }
   };
 
+  const handleOnClearAll = () => {
+    setSearch('');
+    onClearAllFilters();
+  };
+
   return (
     <Wrapper>
       <Container $open={open}>
         <Icon
+          onClick={handleOnToggleOpen}
           data={filter_list}
           color={colors.interactive.primary__resting.rgba}
         />
@@ -126,7 +132,11 @@ export const Filter: FC<FilterProps> = ({
           />
         </section>
         {values.length > 0 && (
-          <Button variant="ghost_icon" onClick={onClearAllFilters}>
+          <Button
+            variant="ghost_icon"
+            onClick={handleOnClearAll}
+            data-testid="clear-all-x"
+          >
             <Icon
               data={clear}
               size={16}
@@ -157,7 +167,7 @@ export const Filter: FC<FilterProps> = ({
                     {child}
                     {index === children.length - 1 &&
                       showClearFiltersButton && (
-                        <Button variant="outlined" onClick={onClearAllFilters}>
+                        <Button variant="outlined" onClick={handleOnClearAll}>
                           Clear filters
                         </Button>
                       )}
@@ -167,7 +177,7 @@ export const Filter: FC<FilterProps> = ({
                 <div>
                   {children}
                   {showClearFiltersButton && (
-                    <Button variant="outlined" onClick={onClearAllFilters}>
+                    <Button variant="outlined" onClick={handleOnClearAll}>
                       Clear filters
                     </Button>
                   )}

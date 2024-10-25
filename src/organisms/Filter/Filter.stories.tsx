@@ -1,48 +1,139 @@
-import { FC } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import { DatePicker } from '@equinor/eds-core-react';
-import { car, car_wash } from '@equinor/eds-icons';
+import { gear, van } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { Filter, FilterProps } from './Filter';
 import { formatDate } from 'src/atoms';
-import { SingleSelect } from 'src/molecules';
+import { SelectOptionRequired, SingleSelect } from 'src/molecules';
 
-const Wrapper: FC<FilterProps> = (props) => (
-  <Filter {...props}>
-    <DatePicker label="Created date" />
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
-      }}
+const CAR_SIZE = [
+  { value: 'size', label: 'Sports car' },
+  { value: 'size', label: 'Kei car' },
+  { value: 'size', label: 'Family van' },
+];
+const MANUFACTURER = [
+  { value: 'toyota', label: 'トヨタ (Toyota)' },
+  { value: 'mazda', label: 'マツダ (Mazda)' },
+  { value: 'created-by', label: '鈴木 (Suzuki)' },
+];
+
+type FilterStoryProps = FilterProps & { withIcons?: boolean };
+
+const Wrapper: FC<FilterStoryProps> = (props) => {
+  const [carSize, setCarSize] = useState<SelectOptionRequired | undefined>(
+    undefined
+  );
+  const [manufacturer, setManufacturer] = useState<
+    SelectOptionRequired | undefined
+  >(
+    props.values?.find((value) =>
+      MANUFACTURER.some((manufacturer) => manufacturer.value === value.value)
+    )
+  );
+  const [manufacturerDate, setManufacturerDate] = useState<Date | undefined>(
+    undefined
+  );
+
+  const values = useMemo(() => {
+    const all: FilterProps['values'] = [];
+
+    if (carSize) {
+      if (props.withIcons) {
+        all.push({ ...carSize, icon: van });
+      } else {
+        all.push(carSize);
+      }
+    }
+
+    if (manufacturer) {
+      if (props.withIcons) {
+        all.push({ ...manufacturer, icon: gear });
+      } else {
+        all.push(manufacturer);
+      }
+    }
+
+    if (manufacturerDate) {
+      all.push({
+        value: 'manufacturer-date',
+        label: `Manufactured: ${formatDate(manufacturerDate, {
+          format: 'DD. month YYYY',
+        })}`,
+      });
+    }
+
+    return all;
+  }, [carSize, manufacturer, manufacturerDate, props.withIcons]);
+
+  const handleOnSelectEnvironment = (
+    value: SelectOptionRequired | undefined
+  ) => {
+    setCarSize(value);
+  };
+
+  const handleOnSelectCreatedBy = (value: SelectOptionRequired | undefined) => {
+    setManufacturer(value);
+  };
+
+  const handleOnChangManufacturerDate = (value: Date | null) => {
+    setManufacturerDate(value || undefined);
+  };
+
+  const handleOnClearFilter = (value: string) => {
+    if (MANUFACTURER.some((manufacturer) => manufacturer.value === value)) {
+      setManufacturer(undefined);
+    } else if (CAR_SIZE.some((size) => size.value === value)) {
+      setCarSize(undefined);
+    } else if (value === 'manufacturer-date') {
+      setManufacturerDate(undefined);
+    }
+  };
+
+  const handleOnClearAllFilters = () => {
+    setCarSize(undefined);
+    setManufacturer(undefined);
+    setManufacturerDate(undefined);
+  };
+
+  return (
+    <Filter
+      {...props}
+      values={values}
+      onClearFilter={handleOnClearFilter}
+      onClearAllFilters={handleOnClearAllFilters}
     >
-      <SingleSelect
-        value={undefined}
-        label="Environment"
-        onSelect={(value) => console.log(value)}
-        items={[
-          { value: 'development', label: 'Development' },
-          { value: 'staging', label: 'Staging' },
-          { value: 'production', label: 'Production' },
-        ]}
+      <DatePicker
+        label="Manufacturer date"
+        value={manufacturerDate}
+        onChange={handleOnChangManufacturerDate}
       />
-      <SingleSelect
-        value={undefined}
-        label="Environment"
-        onSelect={(value) => console.log(value)}
-        items={[
-          { value: 'development', label: 'Development' },
-          { value: 'staging', label: 'Staging' },
-          { value: 'production', label: 'Production' },
-        ]}
-      />
-    </div>
-  </Filter>
-);
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '1rem',
+        }}
+      >
+        <SingleSelect
+          value={carSize}
+          label="Car size"
+          onSelect={handleOnSelectEnvironment}
+          items={CAR_SIZE}
+        />
+        <SingleSelect
+          value={manufacturer}
+          label="Created by"
+          onSelect={handleOnSelectCreatedBy}
+          items={MANUFACTURER}
+        />
+      </div>
+    </Filter>
+  );
+};
 
-const meta: Meta<typeof Filter> = {
+const meta: Meta<FilterStoryProps> = {
   title: 'Organisms/Filter',
   component: Wrapper,
   parameters: {
@@ -80,41 +171,23 @@ const meta: Meta<typeof Filter> = {
     },
   },
   args: {
-    values: [
-      {
-        value: 'development',
-        label: 'Development',
-      },
-    ],
+    placeholder: 'Search for a car...',
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof Filter>;
+type Story = StoryObj<FilterStoryProps>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    values: [MANUFACTURER[1]],
+  },
 };
 
 export const ValuesWithIcons: Story = {
   args: {
-    placeholder: 'Search for a car...',
-    values: [
-      {
-        value: 'car',
-        label: 'Toyota',
-        icon: car,
-      },
-      {
-        value: 'purchase-date',
-        label: `Purchased: ${formatDate(new Date(), { format: 'DD. month YYYY' })}`,
-      },
-      {
-        value: 'state',
-        label: 'Newly washed',
-        icon: car_wash,
-      },
-    ],
+    values: [MANUFACTURER[1]],
+    withIcons: true,
   },
 };
 
@@ -126,12 +199,14 @@ export const WithEmptyValues: Story = {
 
 export const InitialOpen: Story = {
   args: {
+    values: [MANUFACTURER[1]],
     initialOpen: true,
   },
 };
 
 export const WithoutClearButton: Story = {
   args: {
+    values: [MANUFACTURER[1]],
     initialOpen: true,
     showClearFiltersButton: false,
   },

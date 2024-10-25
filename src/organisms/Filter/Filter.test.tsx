@@ -129,7 +129,7 @@ test('onClearFilter is called when clicking X', async () => {
   expect(props.onClearFilter).toHaveBeenCalledWith(randomValue.value);
 });
 
-test('onClearAllFilters is called when clicking clear all', async () => {
+test('onClearAllFilters is called when clicking clear all and search is cleared', async () => {
   const props = fakeProps();
   render(
     <Filter {...props}>
@@ -138,11 +138,16 @@ test('onClearAllFilters is called when clicking clear all', async () => {
   );
   const user = userEvent.setup();
 
-  const clearAllButton = screen.getAllByRole('button').at(-2)!;
+  const searchBox = screen.getByRole('searchbox');
+
+  await user.type(searchBox, faker.lorem.word());
+
+  const clearAllButton = screen.getByTestId('clear-all-x');
 
   await user.click(clearAllButton);
 
   expect(props.onClearAllFilters).toHaveBeenCalledTimes(1);
+  expect(searchBox).toHaveValue('');
 });
 
 test('initialOpen works as expected', async () => {
