@@ -35,6 +35,7 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
   const [manufacturerDate, setManufacturerDate] = useState<Date | undefined>(
     undefined
   );
+  const [search, setSearch] = useState<string | undefined>(undefined);
 
   const values = useMemo(() => {
     const all: FilterProps['values'] = [];
@@ -64,8 +65,12 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       });
     }
 
+    if (search) {
+      all.push({ value: 'search', label: `Search: ${search}` });
+    }
+
     return all;
-  }, [carSize, manufacturer, manufacturerDate, props.withIcons]);
+  }, [carSize, manufacturer, manufacturerDate, props.withIcons, search]);
 
   const handleOnSelectEnvironment = (
     value: SelectOptionRequired | undefined
@@ -88,6 +93,8 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       setCarSize(undefined);
     } else if (value === 'manufacturer-date') {
       setManufacturerDate(undefined);
+    } else if (value === 'search') {
+      setSearch(undefined);
     }
   };
 
@@ -95,12 +102,18 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     setCarSize(undefined);
     setManufacturer(undefined);
     setManufacturerDate(undefined);
+    setSearch(undefined);
+  };
+
+  const handleOnSearch = (value: string) => {
+    setSearch(value);
   };
 
   return (
     <Filter
       {...props}
       values={values}
+      onSearch={handleOnSearch}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
     >
