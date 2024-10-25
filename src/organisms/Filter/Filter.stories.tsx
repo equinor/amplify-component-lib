@@ -65,7 +65,7 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     }
 
     return all;
-  }, [carSize, manufacturer, manufacturerDate]);
+  }, [carSize, manufacturer, manufacturerDate, props.withIcons]);
 
   const handleOnSelectEnvironment = (
     value: SelectOptionRequired | undefined
