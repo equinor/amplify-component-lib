@@ -34,6 +34,7 @@ type TopBarType = {
 export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
   (
     {
+      id,
       children,
       headerLink,
       applicationIcon,
@@ -50,7 +51,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
   ) => {
     return (
       <Bar ref={ref}>
-        <AppAndFieldContainer>
+        <AppAndFieldContainer id={id}>
           <AppIdentifier tabIndex={0} to={headerLink || '/'}>
             <ApplicationIcon name={applicationIcon} size={32} withHover />
             <AppName
