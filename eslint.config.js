@@ -3,12 +3,14 @@ import js from "@eslint/js";
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import storybook from 'eslint-plugin-storybook';
 import tseslint from 'typescript-eslint';
 
 export default [
   js.configs.recommended,
   react.configs.flat.recommended,
   ...tseslint.configs.recommended,
+  ...storybook.configs['flat/recommended'],
   {
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     languageOptions: {
@@ -80,6 +82,7 @@ export default [
   },
   {
     ignores: [
+      '!.storybook',
       'vite.config.ts',
       'vitest.config.ts',
       'playwright.config.ts',
