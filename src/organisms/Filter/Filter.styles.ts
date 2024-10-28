@@ -104,7 +104,7 @@ export const StyledChip = styled(Chip)<StyledChipProps>`
   ${({ $tryingToRemove }) => {
     if ($tryingToRemove) {
       return css`
-        background: ${colors.ui.background__light.rgba};
+        background: ${colors.interactive.primary__hover_alt.rgba};
       `;
     }
   }}
