@@ -11,7 +11,7 @@ RUN npm ci --ignore-scripts
 COPY src src
 COPY .storybook .storybook
 COPY public public
-COPY .eslintrc.cjs .eslintrc.cjs
+COPY eslint.config.js eslint.config.js
 COPY vite.config.ts vite.config.ts
 
 # Build
