@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  FC,
-  KeyboardEvent,
-  ReactNode,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, KeyboardEvent, ReactNode, useRef, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import {
@@ -27,9 +20,9 @@ import { colors } from 'src/atoms/style/colors';
 
 import { AnimatePresence } from 'framer-motion';
 
-export interface FilterProps {
-  values: { value: string; label: string; icon?: IconData }[];
-  onClearFilter: (value: string) => void;
+export interface FilterProps<T> {
+  values: { key: T; label: string; icon?: IconData }[];
+  onClearFilter: (key: T) => void;
   onClearAllFilters: () => void;
   search: string;
   onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -51,9 +44,8 @@ export interface FilterProps {
  * @param initialOpen - Whether the filter should be open by default, defaults to false
  * @param placeholder - Placeholder text for the search input, defaults to 'Search...'
  * @param showClearFiltersButton - Whether to show the clear filters button, defaults to true
- * @constructor
  */
-export const Filter: FC<FilterProps> = ({
+export function Filter<T>({
   values,
   search,
   onSearchChange,
@@ -64,7 +56,7 @@ export const Filter: FC<FilterProps> = ({
   initialOpen = false,
   placeholder = 'Search...',
   showClearFiltersButton = true,
-}) => {
+}: FilterProps<T>) {
   const [open, setOpen] = useState(initialOpen);
   const [attemptingToRemove, setAttemptingToRemove] = useState<number>(-1);
   const initialHeight = useRef(initialOpen ? 'auto' : 0);
@@ -89,7 +81,7 @@ export const Filter: FC<FilterProps> = ({
       if (values.length > 0 && attemptingToRemove === -1) {
         setAttemptingToRemove(values.length - 1);
       } else if (attemptingToRemove !== -1) {
-        onClearFilter(values[attemptingToRemove].value);
+        onClearFilter(values[attemptingToRemove].key);
         setAttemptingToRemove(-1);
       }
     }
@@ -108,10 +100,10 @@ export const Filter: FC<FilterProps> = ({
           color={colors.interactive.primary__resting.rgba}
         />
         <section>
-          {values.map(({ value, label, icon }, index) => (
+          {values.map(({ key, label, icon }, index) => (
             <StyledChip
-              key={value}
-              onDelete={() => onClearFilter(value)}
+              key={`${label}-${index}`}
+              onDelete={() => onClearFilter(key)}
               leadingIconData={icon}
               $tryingToRemove={attemptingToRemove === index}
             >
@@ -194,4 +186,4 @@ export const Filter: FC<FilterProps> = ({
       </AnimatePresence>
     </Wrapper>
   );
-};
+}
