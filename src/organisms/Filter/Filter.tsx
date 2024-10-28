@@ -31,7 +31,9 @@ export interface FilterProps {
   values: { value: string; label: string; icon?: IconData }[];
   onClearFilter: (value: string) => void;
   onClearAllFilters: () => void;
-  onSearch: (value: string) => void;
+  search: string;
+  onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSearchEnter: (value: string) => void;
   children: ReactNode | ReactNode[];
   initialOpen?: boolean;
   placeholder?: string;
@@ -40,7 +42,9 @@ export interface FilterProps {
 
 /**
  * @param values - Array of values to display as chips ({ value: string, label: string, icon?: IconData }[])
- * @param onSearch - Function to call when the user presses enter in the search input
+ * @param search - The current search value
+ * @param onSearchChange - Callback when search changes
+ * @param onSearchEnter - Callback when users hit {Enter} in the search field
  * @param onClearFilter - Function to call when the user clicks the delete button on a chip
  * @param onClearAllFilters - Function to call when the user clicks the clear filters button
  * @param children - ReactNode or ReactNode[] to display below when the filter is open
@@ -51,7 +55,9 @@ export interface FilterProps {
  */
 export const Filter: FC<FilterProps> = ({
   values,
-  onSearch,
+  search,
+  onSearchChange,
+  onSearchEnter,
   onClearFilter,
   onClearAllFilters,
   children,
@@ -60,7 +66,6 @@ export const Filter: FC<FilterProps> = ({
   showClearFiltersButton = true,
 }) => {
   const [open, setOpen] = useState(initialOpen);
-  const [search, setSearch] = useState('');
   const [attemptingToRemove, setAttemptingToRemove] = useState<number>(-1);
   const initialHeight = useRef(initialOpen ? 'auto' : 0);
 
@@ -77,17 +82,10 @@ export const Filter: FC<FilterProps> = ({
     }
   };
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
-
   const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && search !== '') {
-      event.preventDefault();
-      onSearch(search);
-      setSearch('');
-    }
-    if (event.key === 'Backspace' && search === '') {
+      onSearchEnter(search);
+    } else if (event.key === 'Backspace' && search === '') {
       if (values.length > 0 && attemptingToRemove === -1) {
         setAttemptingToRemove(values.length - 1);
       } else if (attemptingToRemove !== -1) {
@@ -98,7 +96,6 @@ export const Filter: FC<FilterProps> = ({
   };
 
   const handleOnClearAll = () => {
-    setSearch('');
     onClearAllFilters();
   };
 
@@ -126,7 +123,7 @@ export const Filter: FC<FilterProps> = ({
             type="search"
             value={search}
             placeholder={placeholder}
-            onChange={handleOnChange}
+            onChange={onSearchChange}
             onKeyDownCapture={handleOnKeyDown}
             onFocus={handleOnFocus}
           />

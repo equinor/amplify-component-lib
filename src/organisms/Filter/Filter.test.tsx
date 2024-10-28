@@ -13,7 +13,9 @@ function fakeProps(): Omit<FilterProps, 'children'> {
       })),
     onClearAllFilters: vi.fn(),
     onClearFilter: vi.fn(),
-    onSearch: vi.fn(),
+    search: '',
+    onSearchEnter: vi.fn(),
+    onSearchChange: vi.fn(),
   };
 }
 
@@ -170,9 +172,9 @@ test('initialOpen works as expected', async () => {
   expect(screen.queryByText(childText)).not.toBeInTheDocument();
 });
 
-test('onSearch is called when hitting enter', async () => {
+test('onSearch is called when hitting enter and search is not empty string', async () => {
   const props = fakeProps();
-  render(
+  const { rerender } = render(
     <Filter {...props}>
       <p>child</p>
     </Filter>
@@ -183,9 +185,21 @@ test('onSearch is called when hitting enter', async () => {
 
   await user.click(searchBox);
 
-  const randomWord = faker.lorem.word();
-  await user.type(searchBox, `${randomWord}{Enter}`);
+  await user.keyboard('{Enter}');
+  expect(props.onSearchEnter).not.toHaveBeenCalled();
 
-  expect(props.onSearch).toHaveBeenCalledTimes(1);
-  expect(props.onSearch).toHaveBeenCalledWith(randomWord);
+  const randomWord = faker.lorem.word();
+  await user.type(searchBox, `${randomWord}`);
+  expect(props.onSearchChange).toHaveBeenCalled();
+
+  rerender(
+    <Filter {...props} search={randomWord}>
+      <p>child</p>
+    </Filter>
+  );
+
+  await user.keyboard('{Enter}');
+
+  expect(props.onSearchEnter).toHaveBeenCalledTimes(1);
+  expect(props.onSearchEnter).toHaveBeenCalledWith(randomWord);
 });
