@@ -75,9 +75,7 @@ export const Introduction: StoryFn<MenuProps> = (args) => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react/destructuring-assignment
     setIsOpen(args.open);
-    // eslint-disable-next-line react/destructuring-assignment
   }, [args.open]);
 
   return (
