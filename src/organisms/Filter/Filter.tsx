@@ -164,7 +164,11 @@ export const Filter: FC<FilterProps> = ({
                     {child}
                     {index === children.length - 1 &&
                       showClearFiltersButton && (
-                        <Button variant="outlined" onClick={handleOnClearAll}>
+                        <Button
+                          variant="outlined"
+                          onClick={handleOnClearAll}
+                          disabled={values.length === 0}
+                        >
                           Clear filters
                         </Button>
                       )}
@@ -174,7 +178,11 @@ export const Filter: FC<FilterProps> = ({
                 <div>
                   {children}
                   {showClearFiltersButton && (
-                    <Button variant="outlined" onClick={handleOnClearAll}>
+                    <Button
+                      variant="outlined"
+                      onClick={handleOnClearAll}
+                      disabled={values.length === 0}
+                    >
                       Clear filters
                     </Button>
                   )}
