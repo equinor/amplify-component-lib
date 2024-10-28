@@ -3,12 +3,12 @@ import { faker } from '@faker-js/faker';
 import { Filter, FilterProps } from 'src/organisms/Filter/Filter';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
-function fakeProps(): Omit<FilterProps, 'children'> {
+function fakeProps(): Omit<FilterProps<string>, 'children'> {
   return {
     values: new Array(faker.number.int({ min: 1, max: 10 }))
       .fill(null)
       .map(() => ({
-        value: faker.string.uuid(),
+        key: faker.string.uuid(),
         label: faker.animal.dog(),
       })),
     onClearAllFilters: vi.fn(),
@@ -106,7 +106,7 @@ test('onClearFilter is called when hitting backspace twice', async () => {
 
   expect(props.onClearFilter).toHaveBeenCalledTimes(1);
   expect(props.onClearFilter).toHaveBeenCalledWith(
-    props.values[props.values.length - 1].value
+    props.values[props.values.length - 1].key
   );
 });
 
@@ -128,7 +128,7 @@ test('onClearFilter is called when clicking X', async () => {
   await user.click(closeButton);
 
   expect(props.onClearFilter).toHaveBeenCalledTimes(1);
-  expect(props.onClearFilter).toHaveBeenCalledWith(randomValue.value);
+  expect(props.onClearFilter).toHaveBeenCalledWith(randomValue.key);
 });
 
 test('onClearAllFilters is called when clicking clear all and search is cleared', async () => {
