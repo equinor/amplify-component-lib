@@ -1,4 +1,11 @@
-import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  FC,
+  MouseEvent,
+  ReactNode,
+  useContext,
+  useState,
+} from 'react';
 
 import {
   Button,
@@ -16,7 +23,7 @@ interface ShowSnackbarSettings {
   customProps?: SnackbarProps;
   action?: {
     text: string;
-    handler: () => void;
+    handler: (event: MouseEvent<HTMLButtonElement>) => void;
     disabled?: boolean;
   };
 }
