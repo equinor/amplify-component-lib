@@ -3,17 +3,19 @@ import { faker } from '@faker-js/faker';
 import { Filter, FilterProps } from 'src/organisms/Filter/Filter';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
-function fakeProps(): Omit<FilterProps, 'children'> {
+function fakeProps(): Omit<FilterProps<string>, 'children'> {
   return {
     values: new Array(faker.number.int({ min: 1, max: 10 }))
       .fill(null)
       .map(() => ({
-        value: faker.string.uuid(),
+        key: faker.string.uuid(),
         label: faker.animal.dog(),
       })),
     onClearAllFilters: vi.fn(),
     onClearFilter: vi.fn(),
-    onSearch: vi.fn(),
+    search: '',
+    onSearchEnter: vi.fn(),
+    onSearchChange: vi.fn(),
   };
 }
 
@@ -104,7 +106,7 @@ test('onClearFilter is called when hitting backspace twice', async () => {
 
   expect(props.onClearFilter).toHaveBeenCalledTimes(1);
   expect(props.onClearFilter).toHaveBeenCalledWith(
-    props.values[props.values.length - 1].value
+    props.values[props.values.length - 1].key
   );
 });
 
@@ -126,7 +128,7 @@ test('onClearFilter is called when clicking X', async () => {
   await user.click(closeButton);
 
   expect(props.onClearFilter).toHaveBeenCalledTimes(1);
-  expect(props.onClearFilter).toHaveBeenCalledWith(randomValue.value);
+  expect(props.onClearFilter).toHaveBeenCalledWith(randomValue.key);
 });
 
 test('onClearAllFilters is called when clicking clear all and search is cleared', async () => {
@@ -170,9 +172,9 @@ test('initialOpen works as expected', async () => {
   expect(screen.queryByText(childText)).not.toBeInTheDocument();
 });
 
-test('onSearch is called when hitting enter', async () => {
+test('onSearch is called when hitting enter and search is not empty string', async () => {
   const props = fakeProps();
-  render(
+  const { rerender } = render(
     <Filter {...props}>
       <p>child</p>
     </Filter>
@@ -183,9 +185,21 @@ test('onSearch is called when hitting enter', async () => {
 
   await user.click(searchBox);
 
-  const randomWord = faker.lorem.word();
-  await user.type(searchBox, `${randomWord}{Enter}`);
+  await user.keyboard('{Enter}');
+  expect(props.onSearchEnter).not.toHaveBeenCalled();
 
-  expect(props.onSearch).toHaveBeenCalledTimes(1);
-  expect(props.onSearch).toHaveBeenCalledWith(randomWord);
+  const randomWord = faker.lorem.word();
+  await user.type(searchBox, `${randomWord}`);
+  expect(props.onSearchChange).toHaveBeenCalled();
+
+  rerender(
+    <Filter {...props} search={randomWord}>
+      <p>child</p>
+    </Filter>
+  );
+
+  await user.keyboard('{Enter}');
+
+  expect(props.onSearchEnter).toHaveBeenCalledTimes(1);
+  expect(props.onSearchEnter).toHaveBeenCalledWith(randomWord);
 });

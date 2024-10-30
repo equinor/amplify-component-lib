@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useMemo, useState } from 'react';
 
 import { DatePicker } from '@equinor/eds-core-react';
 import { gear, van } from '@equinor/eds-icons';
@@ -14,37 +14,36 @@ const CAR_SIZE = [
   { value: 'size', label: 'Family van' },
 ];
 const MANUFACTURER = [
-  { value: 'toyota', label: 'トヨタ (Toyota)' },
-  { value: 'mazda', label: 'マツダ (Mazda)' },
-  { value: 'created-by', label: '鈴木 (Suzuki)' },
+  { key: 'toyota', label: 'トヨタ (Toyota)' },
+  { key: 'mazda', label: 'マツダ (Mazda)' },
+  { key: 'created-by', label: '鈴木 (Suzuki)' },
 ];
 
-type FilterStoryProps = FilterProps & { withIcons?: boolean };
+type FilterStoryProps = FilterProps<string> & { withIcons?: boolean };
 
 const Wrapper: FC<FilterStoryProps> = (props) => {
   const [carSize, setCarSize] = useState<SelectOptionRequired | undefined>(
     undefined
   );
-  const [manufacturer, setManufacturer] = useState<
-    SelectOptionRequired | undefined
-  >(
+  const [manufacturer, setManufacturer] = useState(
     props.values?.find((value) =>
-      MANUFACTURER.some((manufacturer) => manufacturer.value === value.value)
+      MANUFACTURER.some((manufacturer) => manufacturer.key === value.key)
     )
   );
   const [manufacturerDate, setManufacturerDate] = useState<Date | undefined>(
     undefined
   );
-  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [search, setSearch] = useState<string>('');
+  const [searchTags, setSearchTags] = useState<string[]>([]);
 
   const values = useMemo(() => {
-    const all: FilterProps['values'] = [];
+    const all: FilterProps<string>['values'] = [];
 
     if (carSize) {
       if (props.withIcons) {
-        all.push({ ...carSize, icon: van });
+        all.push({ key: carSize.value, label: carSize.label, icon: van });
       } else {
-        all.push(carSize);
+        all.push({ key: carSize.value, label: carSize.label });
       }
     }
 
@@ -58,19 +57,21 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
 
     if (manufacturerDate) {
       all.push({
-        value: 'manufacturer-date',
+        key: 'manufacturer-date',
         label: `Manufactured: ${formatDate(manufacturerDate, {
           format: 'DD. month YYYY',
         })}`,
       });
     }
 
-    if (search) {
-      all.push({ value: 'search', label: `Search: ${search}` });
+    if (searchTags) {
+      for (const [index, searchTag] of searchTags.entries()) {
+        all.push({ key: `search-${index}`, label: searchTag });
+      }
     }
 
     return all;
-  }, [carSize, manufacturer, manufacturerDate, props.withIcons, search]);
+  }, [carSize, manufacturer, manufacturerDate, props.withIcons, searchTags]);
 
   const handleOnSelectEnvironment = (
     value: SelectOptionRequired | undefined
@@ -79,7 +80,11 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
   };
 
   const handleOnSelectCreatedBy = (value: SelectOptionRequired | undefined) => {
-    setManufacturer(value);
+    if (value) {
+      setManufacturer({ key: value.value, label: value.label });
+    } else {
+      setManufacturer(undefined);
+    }
   };
 
   const handleOnChangManufacturerDate = (value: Date | null) => {
@@ -87,14 +92,19 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
   };
 
   const handleOnClearFilter = (value: string) => {
-    if (MANUFACTURER.some((manufacturer) => manufacturer.value === value)) {
+    if (MANUFACTURER.some((manufacturer) => manufacturer.key === value)) {
       setManufacturer(undefined);
     } else if (CAR_SIZE.some((size) => size.value === value)) {
       setCarSize(undefined);
     } else if (value === 'manufacturer-date') {
       setManufacturerDate(undefined);
-    } else if (value === 'search') {
-      setSearch(undefined);
+    } else if (value.includes('search')) {
+      setSearchTags((prev) => {
+        const copy = [...prev];
+        const index = Number(value.split('-')[1]);
+        copy.splice(index, 1);
+        return copy;
+      });
     }
   };
 
@@ -102,18 +112,25 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     setCarSize(undefined);
     setManufacturer(undefined);
     setManufacturerDate(undefined);
-    setSearch(undefined);
+    setSearch('');
   };
 
-  const handleOnSearch = (value: string) => {
-    setSearch(value);
+  const handleOnSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const handleOnSearchEnter = (value: string) => {
+    setSearchTags((prev) => [...prev, value]);
+    setSearch('');
   };
 
   return (
     <Filter
       {...props}
       values={values}
-      onSearch={handleOnSearch}
+      search={search}
+      onSearchEnter={handleOnSearchEnter}
+      onSearchChange={handleOnSearch}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
     >
@@ -136,10 +153,17 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
           items={CAR_SIZE}
         />
         <SingleSelect
-          value={manufacturer}
+          value={
+            manufacturer
+              ? { value: manufacturer.key, label: manufacturer.label }
+              : undefined
+          }
           label="Created by"
           onSelect={handleOnSelectCreatedBy}
-          items={MANUFACTURER}
+          items={MANUFACTURER.map((item) => ({
+            value: item.key,
+            label: item.label,
+          }))}
         />
       </div>
     </Filter>
@@ -162,6 +186,9 @@ const meta: Meta<FilterStoryProps> = {
       description:
         'Array with values ({ label: string, value: string, icon?: IconData })',
     },
+    search: {
+      description: 'Search field value',
+    },
     placeholder: {
       type: 'string',
       description: 'Search placeholder text, default is "Search..."',
@@ -177,10 +204,9 @@ const meta: Meta<FilterStoryProps> = {
       type: 'function',
       description: 'Callback when clear all filters button is clicked',
     },
-    onSearch: {
+    onSearchChange: {
       type: 'function',
-      description:
-        'Callback when search is entered (only when hitting {Enter})',
+      description: 'Callback when search is changed',
     },
   },
   args: {
