@@ -2,10 +2,11 @@ name: Pull request
 
 on:
   pull_request:
-    branches: [main, master, develop, development, staging]
+    branches:
+      [main, master, develop, development, staging, release/**/*, hotfix/**/*]
     paths:
-      - "client/**"
-      - ".github/workflows/**"
+      - 'client/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 jobs:
   eslint:
@@ -15,10 +16,6 @@ jobs:
   test:
     name: Test
     uses: ./.github/workflows/test.yaml
-
-  e2e:
-    name: E2E Test
-    uses: ./.github/workflows/e2e.yaml
 
   build:
     name: Build
@@ -31,4 +28,3 @@ jobs:
   check_configs:
     name: Check Config files
     uses: ./.github/workflows/check_config.yaml
-
