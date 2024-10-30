@@ -8,6 +8,50 @@ export const darkTokens = css`
       color: var(--eds_text_static_icons__default);
     }
 
+    /* Override super specific text colors to just default text color */
+    --eds_heading__h1_bold_color: var(--eds_text_static_icons__default);
+    --eds_input__text_monospaced_color: var(--eds_text_static_icons__default);
+    --eds_input__helper_color: var(--eds_text_static_icons__default);
+    --eds_table__cell_text_link_color: var(--eds_text_static_icons__default);
+    --eds_navigation__drawer_active_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_navigation__drawer_inactive_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_navigation__breadcrumb_color: var(--eds_text_static_icons__default);
+    --eds_navigation__breadcrumb_hover_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_navigation__menu_title_hover_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_paragraph__body_short_italic_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_paragraph__body_short_bold_italic_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_paragraph__body_short_bold_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_paragraph__body_short_link_color: var(
+      --eds_interactive_primary__resting
+    );
+    --eds_paragraph__ingress_color: var(--eds_text_static_icons__default);
+    --eds_paragraph__body_long_italic_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_paragraph__body_long_bold_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_paragraph__body_long_bold_italic_color: var(
+      --eds_text_static_icons__default
+    );
+    --eds_ui__tooltip_color: var(--eds_text_static_icons__default);
+    --eds_ui__snackbar_color: var(--eds_text_static_icons__default);
+    --eds_ui__chart_color: var(--eds_text_static_icons__default);
+
     --eds_clickbound_jumbo__base: 88px;
     --eds_clickbound_default__base: 48px;
     --eds_clickbound_default__input: 56px;
