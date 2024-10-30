@@ -25,7 +25,7 @@ export type GroupedComboBoxProps<T extends SelectOptionRequired> =
 export function ComboBox<T extends SelectOptionRequired>(
   props: ListComboBoxProps<T> | GroupedComboBoxProps<T>
 ) {
-  if ('groups' in props && props.onAddItem) {
+  if ('groups' in props && props.groups && props.onAddItem) {
     throw new Error(
       "[ACL - ComboBox] Using 'onAddItem' is only supported in lists and not groups"
     );
