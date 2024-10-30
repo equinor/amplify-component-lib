@@ -7,9 +7,11 @@ import {
   SelectOptionRequired,
 } from 'src/molecules/Select/Select.types';
 
-export type ComboBoxProps<T extends SelectOptionRequired> = CommonSelectProps &
-  MultiSelectCommon<T> &
-  (GroupedSelectProps<T> | ListSelectProps<T>);
+export type ListComboBoxProps<T extends SelectOptionRequired> =
+  CommonSelectProps & MultiSelectCommon<T> & ListSelectProps<T>;
+
+export type GroupedComboBoxProps<T extends SelectOptionRequired> =
+  CommonSelectProps & MultiSelectCommon<T> & GroupedSelectProps<T>;
 
 /**
  * @param clearable - If users should be able to clear the input, defaults to true
@@ -21,9 +23,9 @@ export type ComboBoxProps<T extends SelectOptionRequired> = CommonSelectProps &
  * @param syncParentChildSelection - Syncs parents/child selections, default is true
  */
 export function ComboBox<T extends SelectOptionRequired>(
-  props: ComboBoxProps<T>
+  props: ListComboBoxProps<T> | GroupedComboBoxProps<T>
 ) {
-  if (props.groups && props.onAddItem) {
+  if ('groups' in props && props.onAddItem) {
     throw new Error(
       "[ACL - ComboBox] Using 'onAddItem' is only supported in lists and not groups"
     );
