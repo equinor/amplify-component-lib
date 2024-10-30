@@ -7,10 +7,11 @@ import {
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
 
-export type SingleSelectProps<T extends SelectOptionRequired> =
-  CommonSelectProps &
-    SingleSelectCommon<T> &
-    (GroupedSelectProps<T> | ListSelectProps<T>);
+export type ListSingleSelectProps<T extends SelectOptionRequired> =
+  CommonSelectProps & SingleSelectCommon<T> & ListSelectProps<T>;
+
+export type GroupedSingleSelectProps<T extends SelectOptionRequired> =
+  CommonSelectProps & SingleSelectCommon<T> & GroupedSelectProps<T>;
 
 /**
  * @param clearable - If users should be able to clear the input, defaults to true
@@ -21,7 +22,7 @@ export type SingleSelectProps<T extends SelectOptionRequired> =
  * @param showHelperIcon - Show helper variant icon, defaults to true
  */
 export function SingleSelect<T extends SelectOptionRequired>(
-  props: SingleSelectProps<T>
+  props: ListSingleSelectProps<T> | GroupedSingleSelectProps<T>
 ) {
   return <Select {...props} />;
 }

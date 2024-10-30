@@ -40,7 +40,7 @@ const useSelect = <T extends SelectOptionRequired>(
     if (!sortValues) return selected;
 
     let flattenedItems: T[];
-    if (props.groups) {
+    if ('groups' in props && props.groups) {
       flattenedItems = props.groups.flatMap((group) => group.items);
     } else {
       flattenedItems = props.items.flatMap((item) => [

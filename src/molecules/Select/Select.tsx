@@ -222,7 +222,7 @@ export const Select = <T extends SelectOptionRequired>(
             maxWidth: `${anchorRef.current?.clientWidth}px`,
           }}
         >
-          {props.groups ? (
+          {'groups' in props && props.groups ? (
             <GroupedSelectMenu
               {...props}
               search={search}
