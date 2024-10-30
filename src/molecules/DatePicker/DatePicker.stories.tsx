@@ -167,7 +167,6 @@ const options = [
 ];
 
 export const CustomHeaderFooter: StoryFn<DatePickerProps> = ({
-  // eslint-disable-next-line react/prop-types
   value,
   ...args
 }) => {

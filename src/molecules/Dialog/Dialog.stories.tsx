@@ -147,7 +147,7 @@ export const DisabledActions: Story = {
   },
 };
 
-export const isLoadingAction: Story = {
+export const IsLoadingAction: Story = {
   args: {
     title: 'Disabled actions dialog!',
     children: 'This dialog contains some information important for the user.',

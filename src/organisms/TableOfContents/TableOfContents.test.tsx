@@ -78,7 +78,6 @@ describe('button variant', () => {
 
     const section = document.querySelector(`#${items[1].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(section.scrollIntoView).toHaveBeenCalled();
   });
 
@@ -192,7 +191,6 @@ describe('button variant', () => {
 
     const section = document.querySelector(`#${items[0].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(section.scrollIntoView).not.toHaveBeenCalled();
 
     // Expect other button _not_ to be disabled
@@ -204,7 +202,6 @@ describe('button variant', () => {
 
     const otherSection = document.querySelector(`#${items[1].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(otherSection.scrollIntoView).toHaveBeenCalled();
   });
 });
@@ -243,7 +240,6 @@ describe('border and borderHorizontal  ', () => {
 
     const section = document.querySelector(`#${items[1].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(section.scrollIntoView).toHaveBeenCalled();
   });
 
@@ -391,7 +387,6 @@ describe('border and borderHorizontal  ', () => {
 
     const section = document.querySelector(`#${items[0].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(section.scrollIntoView).not.toHaveBeenCalled();
 
     // Expect other button _not_ to be disabled
@@ -403,7 +398,6 @@ describe('border and borderHorizontal  ', () => {
 
     const otherSection = document.querySelector(`#${items[1].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(otherSection.scrollIntoView).toHaveBeenCalled();
   });
 
@@ -448,7 +442,6 @@ describe('border and borderHorizontal  ', () => {
 
     const section = document.querySelector(`#${items[0].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(section.scrollIntoView).not.toHaveBeenCalled();
 
     // Expect other button _not_ to be disabled
@@ -458,7 +451,6 @@ describe('border and borderHorizontal  ', () => {
 
     const otherSection = document.querySelector(`#${items[1].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(otherSection.scrollIntoView).toHaveBeenCalled();
   });
 
@@ -503,7 +495,6 @@ describe('border and borderHorizontal  ', () => {
 
     const section = document.querySelector(`#${items[0].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(section.scrollIntoView).not.toHaveBeenCalled();
 
     // Expect other button _not_ to be disabled
@@ -513,7 +504,6 @@ describe('border and borderHorizontal  ', () => {
 
     const otherSection = document.querySelector(`#${items[1].value}`)!;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(otherSection.scrollIntoView).toHaveBeenCalled();
   });
 

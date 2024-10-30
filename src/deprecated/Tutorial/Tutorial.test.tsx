@@ -47,7 +47,6 @@ test('Work as expected when clicking through', async () => {
   // Click through all steps
   for (const step of props.steps) {
     expect(screen.getByText(step.title)).toBeInTheDocument();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     expect(screen.getByText(step.body.props.children)).toBeInTheDocument();
     await user.click(screen.getByTestId(step.button));
   }

@@ -1,5 +1,4 @@
-https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/.eslintrc.js
-https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/.eslintignore
+https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/eslint.config.mjs
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/.prettierignore
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/.prettierrc.js
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/tsconfig.json

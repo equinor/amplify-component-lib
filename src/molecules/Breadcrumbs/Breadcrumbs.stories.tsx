@@ -50,7 +50,6 @@ export default meta;
 const handleClick = (
   e: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
 ) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   action('handleClick')((e.target as HTMLElement).textContent);
   e.preventDefault();
 };

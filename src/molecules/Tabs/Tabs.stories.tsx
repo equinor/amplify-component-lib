@@ -71,7 +71,6 @@ const meta: Meta<typeof Tabs> = {
 
 export default meta;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
 const TabsRow = styled.div`

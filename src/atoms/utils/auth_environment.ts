@@ -197,13 +197,11 @@ window.addEventListener('message', async (event: MessageEvent) => {
   // Check that the origin is allowed
   if (allowedParentDomains.includes(event.origin)) {
     // TODO: type check sid
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const sid = event.data;
     if (sid) {
       await msalApp.initialize();
 
       try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         await msalApp.ssoSilent({ sid });
         console.log('postMessage successfully logged in user!');
       } catch (error) {
