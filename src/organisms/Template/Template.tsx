@@ -47,6 +47,10 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
   }
 
+  body, #content {
+      scrollbar-gutter: stable both-edges;
+  }
+
   dialog {
     background: ${colors.ui.background__default.rgba};
   }
