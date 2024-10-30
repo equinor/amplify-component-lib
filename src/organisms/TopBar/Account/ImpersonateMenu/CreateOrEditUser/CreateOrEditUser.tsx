@@ -77,6 +77,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   const handleOnCreateOrSave = async () => {
     if (editingUser) {
       await updateImpersonationUser({
+        id: editingUser.id,
         firstName,
         lastName,
         fullName: `${firstName} ${lastName}`,
