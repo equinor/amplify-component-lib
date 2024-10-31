@@ -10,7 +10,6 @@ This package contains components, utils, providers and hooks developed and used 
 # Building amplify-component-lib
 
 Build and publish is done automatically when code is merged into `main` branch, if the package.json version number is higher.
-To increase the version number use `npm run version <type>` and specify what type of [versioning](https://github.com/theogravity/version-bump#quick-start-usage).
 
 # Using config files from amplify-component-lib
 
@@ -23,13 +22,13 @@ wget -q -O - https://raw.githubusercontent.com/equinor/amplify-component-lib/mai
 ```
 
 
-This should have downloaded the `.eslintrc.cjs`, `.prettierignore`, `.prettierrc.jr`, `tsconfig.json`, `env.sh`, `Dockerfile`, `proxy/nginx.conf`, `proxy/securityheaders.conf` and github actions workflow files
+This should have downloaded the different config files to your project root folder.
 
 If you want to ignore certain configuration files you can create a `.acl-ignore` file in the `client` folder in your project.
 
 For example: `acquire/client/.acl-ignore`
 ```
-.eslintrc.js
+eslint.config.mjs
 CODEOWNERS
 pull_request.yaml
 ```
