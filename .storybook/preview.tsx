@@ -1,26 +1,19 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Template } from 'src/organisms/Template/Template';
+import { Preview, StoryFn } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { withSpacingsMode } from './addons/SpacingsAddon/withSpacingsMode';
+import { AuthProvider } from 'src';
 import { darkTokens } from 'src/atoms/style/darkTokens';
 import { spacingTokens } from 'src/atoms/style/spacingTokens';
+import { Template } from 'src/organisms/Template/Template';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
-import { Preview, StoryFn } from '@storybook/react';
-
+import { handlers } from 'src/tests/mockHandlers';
 
 import { initialize, mswLoader } from 'msw-storybook-addon';
-import { handlers } from 'src/tests/mockHandlers';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from 'src';
-import { withSpacingsMode } from "./addons/SpacingsAddon/withSpacingsMode";
 
 const { colors } = tokens;
-initialize({  onUnhandledRequest: (req, print) => {
-  if (req.url.includes('cdn') || req.url.includes('raw.githubusercontent')) {
-    return
-  }
-  print.warning()
-  },
-})
+initialize({ onUnhandledRequest: 'bypass' });
 
 const globalTypes = {
   spacingsToggle: {
@@ -38,7 +31,7 @@ const globalTypes = {
 
 const decorators = [
   (Story: StoryFn) => {
-  const queryClient = new QueryClient();
+    const queryClient = new QueryClient();
     // Apply styles using the darkTokens variable
     const darkStyleElement = document.createElement('style');
     darkStyleElement.innerHTML = darkTokens as unknown as string;
@@ -59,12 +52,12 @@ const decorators = [
       </QueryClientProvider>
     );
   },
-  withSpacingsMode
+  withSpacingsMode,
 ];
 
 const parameters = {
   msw: {
-    handlers
+    handlers,
   },
   actions: { argTypes: /^on[A-Z].*/ },
   viewMode: 'docs',
@@ -84,7 +77,14 @@ const parameters = {
   },
   options: {
     storySort: {
-      order: ['Atoms', 'Molecules', 'Organisms', 'Providers', 'Other', 'Deprecated'],
+      order: [
+        'Atoms',
+        'Molecules',
+        'Organisms',
+        'Providers',
+        'Other',
+        'Deprecated',
+      ],
     },
   },
 };
@@ -94,9 +94,7 @@ const preview: Preview = {
   globalTypes,
   decorators,
   parameters,
-  loaders: [
-    mswLoader,
-  ]
+  loaders: [mswLoader],
 };
 
 export default preview;

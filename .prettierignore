@@ -3,6 +3,7 @@
 .yarnrc.yml
 /*
 !/src
+!/.storybook
 !/config/**/*.tsx
 !/config/**/*.ts
 !/config/**/*.jsx

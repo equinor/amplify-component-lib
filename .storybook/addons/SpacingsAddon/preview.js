@@ -1,10 +1,10 @@
-import { withSpacingsMode } from ".storybook/addons/SpacingsAddon/withSpacingsMode.js";
+import { withSpacingsMode } from '.storybook/addons/SpacingsAddon/withSpacingsMode.js';
 
 const preview = {
   decorators: [withSpacingsMode],
   globalTypes: {
     spacingsMode: {
-      defaultValue: "comfortable",
+      defaultValue: 'comfortable',
     },
   },
 };

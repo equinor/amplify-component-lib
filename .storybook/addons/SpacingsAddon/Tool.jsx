@@ -1,7 +1,11 @@
 import React, { memo, useMemo, useState } from 'react';
 
-import { useGlobals, } from '@storybook/manager-api';
-import { IconButton, TooltipLinkList, WithTooltip } from '@storybook/components';
+import { useGlobals } from '@storybook/manager-api';
+import {
+  IconButton,
+  TooltipLinkList,
+  WithTooltip,
+} from '@storybook/components';
 import { WandIcon } from '@storybook/icons';
 
 import { PARAM_KEY, TOOL_ID } from './constants';
@@ -9,15 +13,14 @@ import { PARAM_KEY, TOOL_ID } from './constants';
 export const Tool = memo(function MyAddonSelector() {
   const [_, updateGlobals] = useGlobals();
 
-const [toolState, setToolState] = useState({
-  selected: 'comfortable',
-  expanded: false,
-});
+  const [toolState, setToolState] = useState({
+    selected: 'comfortable',
+    expanded: false,
+  });
 
-
-  const items = useMemo(() =>
-    ['comfortable', 'compact', 'extra-compact'].map((value) =>
-      ({
+  const items = useMemo(
+    () =>
+      ['comfortable', 'compact', 'extra-compact'].map((value) => ({
         id: value,
         title: `${value[0].toUpperCase()}${value.slice(1)}`,
         active: toolState.selected === value,
@@ -27,8 +30,9 @@ const [toolState, setToolState] = useState({
           });
           setToolState({ ...toolState, selected: value, expanded: false });
         },
-      }))
-  , [toolState.selected])
+      })),
+    [toolState.selected]
+  );
 
   return (
     <WithTooltip
