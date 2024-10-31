@@ -90,10 +90,14 @@ export default [
     ignores: [
       'vite.config.ts',
       'vitest.config.ts',
+      'src/test-utils/vitest.d.ts',
       'playwright.config.ts',
       '.prettierrc.js',
-      'public/env-config.js',
       'src/api',
+      'dist',
+      'public',
+      'playwright-report',
+      '**/*.mjs',
       '**/*.md',
       '**/*.yaml',
       '**/*.json'
