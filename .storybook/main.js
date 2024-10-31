@@ -48,12 +48,12 @@ const config = {
     VITE_NAME: 'orca',
     VITE_CLIENT_ID: 'fake-id',
     VITE_API_CLIENT_ID: 'fake-api-id',
-    VITE_ENVIRONMENT_NAME: 'development'
+    VITE_ENVIRONMENT_NAME: 'development',
   }),
 
   typescript: {
-    reactDocgen: 'react-docgen-typescript'
-  }
+    reactDocgen: 'react-docgen-typescript',
+  },
 };
 
 export default config;

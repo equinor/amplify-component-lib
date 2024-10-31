@@ -88,6 +88,7 @@ export default [
       'playwright.config.ts',
       'src/api',
       'src/config',
+      '**/*.js',
       '**/*.md',
       '**/*.yaml',
       '**/*.json'
