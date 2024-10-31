@@ -91,6 +91,8 @@ export default [
       'vite.config.ts',
       'vitest.config.ts',
       'playwright.config.ts',
+      '.prettierrc.js',
+      'public/env-config.js',
       'src/api',
       '**/*.md',
       '**/*.yaml',
