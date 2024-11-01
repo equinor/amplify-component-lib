@@ -127,6 +127,7 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
       anchorEl={anchorEl}
       onClose={handleOnClose}
       placement="bottom-end"
+      style={{ width: '400px' }}
     >
       <Header>
         <Typography variant="h6">Impersonate</Typography>
