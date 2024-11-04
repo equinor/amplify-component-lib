@@ -155,6 +155,21 @@ test('Clicking a previous step via the label works as expected', async () => {
   expect(screen.getByText(`Current step: 0`)).toBeInTheDocument();
 });
 
+test('maxWidth works as expected', () => {
+  const steps = fakeSteps();
+  const maxWidth = '800px';
+  render(<Stepper maxWidth={maxWidth} />, {
+    wrapper: ({ children }) => (
+      <StepperProvider steps={steps}>{children}</StepperProvider>
+    ),
+  });
+
+  expect(screen.getByTestId('stepper-container')).toHaveStyleRule(
+    'max-width',
+    maxWidth
+  );
+});
+
 test('onlyShowCurrentLabel works as expected', () => {
   const steps = fakeSteps();
   render(<Stepper onlyShowCurrentStepLabel />, {
@@ -170,4 +185,74 @@ test('onlyShowCurrentLabel works as expected', () => {
       expect(screen.queryByText(steps[i].label)).not.toBeInTheDocument();
     }
   }
+});
+
+test('Works as expected with substeps', async () => {
+  const steps: StepperProviderProps['steps'] = [
+    {
+      label: 'Step 1',
+      subSteps: [
+        {
+          title: faker.animal.dog(),
+          description: faker.lorem.sentence(),
+        },
+        {
+          title: faker.animal.cat(),
+        },
+      ],
+    },
+    {
+      label: 'Step 2',
+    },
+  ];
+  render(<StepperTestComponent />, {
+    wrapper: ({ children }) => (
+      <StepperProvider steps={steps}>{children}</StepperProvider>
+    ),
+  });
+
+  const user = userEvent.setup();
+
+  expect(screen.getByText(`1 of 2`)).toBeInTheDocument();
+  expect(screen.getByText(steps[0].subSteps![0].title)).toBeInTheDocument();
+  expect(
+    screen.getByText(steps[0].subSteps![0].description!)
+  ).toBeInTheDocument();
+
+  await user.click(screen.getByText('Next'));
+
+  expect(screen.getByText(steps[0].subSteps![1].title)).toBeInTheDocument();
+
+  await user.click(screen.getByText('Next'));
+
+  expect(screen.getByText(`Current step: 1`)).toBeInTheDocument();
+
+  await user.click(screen.getByText('Previous'));
+
+  expect(screen.getByText(steps[0].subSteps![1].title)).toBeInTheDocument();
+
+  await user.click(screen.getByText('Previous'));
+
+  expect(screen.getByText(steps[0].subSteps![0].title)).toBeInTheDocument();
+});
+
+test('Works as expected with title in steps', () => {
+  const steps: StepperProviderProps['steps'] = [
+    {
+      label: 'Step 1',
+      title: faker.animal.bear(),
+      description: faker.animal.dog(),
+    },
+    {
+      label: 'Step 2',
+    },
+  ];
+  render(<StepperTestComponent />, {
+    wrapper: ({ children }) => (
+      <StepperProvider steps={steps}>{children}</StepperProvider>
+    ),
+  });
+
+  expect(screen.getByText(steps[0].title!)).toBeInTheDocument();
+  expect(screen.getByText(steps[0].description!)).toBeInTheDocument();
 });

@@ -21,7 +21,10 @@ export const SubTitle: FC = () => {
     'subSteps' in steps[currentStep] ? steps[currentStep].subSteps : [];
   const currentSubStep = currentSubSteps?.at(subStepIndex);
 
-  if (!currentSubStep && steps[currentStep].title === undefined) {
+  if (
+    (!currentSubStep && steps[currentStep].title === undefined) ||
+    !currentSubSteps
+  ) {
     return null;
   }
 

@@ -44,10 +44,7 @@ const Line = styled.span<LineProps>`
 
 export const SubStepIndicator: FC = () => {
   const { currentSubStep, steps, currentStep } = useStepper();
-  const amountOfSubSteps =
-    'subSteps' in steps[currentStep] ? steps[currentStep].subSteps.length : 0;
-
-  if (!amountOfSubSteps) return null;
+  const amountOfSubSteps = steps[currentStep].subSteps!.length;
 
   return (
     <Container $amountOfSubSteps={amountOfSubSteps}>

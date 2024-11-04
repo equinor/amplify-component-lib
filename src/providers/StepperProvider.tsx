@@ -16,6 +16,7 @@ interface StepWithoutSubSteps {
   label: string;
   title?: string;
   description?: string;
+  subSteps?: undefined;
 }
 
 type Step = StepWithSubSteps | StepWithoutSubSteps;
@@ -66,6 +67,7 @@ export const StepperProvider: FC<StepperProviderProps> = ({
   const goToNextStep = () => {
     if (
       'subSteps' in steps[currentStep] &&
+      steps[currentStep].subSteps &&
       currentSubStep < steps[currentStep].subSteps.length - 1
     ) {
       setCurrentSubStep((prev) => prev + 1);
@@ -82,6 +84,7 @@ export const StepperProvider: FC<StepperProviderProps> = ({
     if (
       currentSubStep > 0 &&
       'subSteps' in steps[currentStep] &&
+      steps[currentStep].subSteps &&
       steps[currentStep].subSteps.length > 0
     ) {
       setCurrentSubStep((prev) => prev - 1);
@@ -92,8 +95,8 @@ export const StepperProvider: FC<StepperProviderProps> = ({
 
     setCurrentStep((prev) => prev - 1);
 
-    const previousStep = steps[currentStep - 1];
-    if ('subSteps' in previousStep) {
+    const previousStep = steps.at(currentStep - 1);
+    if (previousStep && 'subSteps' in previousStep && previousStep.subSteps) {
       // Set substeps to the last substep of the previous step
       setCurrentSubStep(previousStep.subSteps.length - 1);
     }
