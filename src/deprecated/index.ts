@@ -28,3 +28,4 @@ export { default as SingleSelectDrawer } from './SingleSelectDrawer';
 export { default as IconToggleButton } from './IconToggleButton';
 export { default as Tutorial } from './Tutorial/Tutorial';
 export { HighlightBlocks } from './Tutorial/HighlightBlocks/HighlightBlocks';
+export { OldStepper } from './OldStepper/OldStepper';
