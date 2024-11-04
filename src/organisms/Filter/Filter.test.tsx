@@ -9,7 +9,7 @@ function fakeProps(): Omit<FilterProps<string>, 'children'> {
       .fill(null)
       .map(() => ({
         key: faker.string.uuid(),
-        label: faker.animal.dog(),
+        label: faker.string.uuid(),
       })),
     onClearAllFilters: vi.fn(),
     onClearFilter: vi.fn(),
