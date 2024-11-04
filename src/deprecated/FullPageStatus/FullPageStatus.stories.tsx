@@ -3,7 +3,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import {
   FullPageStatus,
   FullPageStatusProps,
-} from 'src/organisms/FullPageStatus/FullPageStatus';
+} from 'src/deprecated/FullPageStatus/FullPageStatus';
 
 const meta: Meta<typeof FullPageStatus> = {
   title: 'Organisms/FullPageStatus',
