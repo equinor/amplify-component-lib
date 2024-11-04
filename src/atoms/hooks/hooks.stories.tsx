@@ -6,6 +6,17 @@ import styled from 'styled-components';
 
 const hookList = [
   {
+    name: 'useStepper',
+    body: 'Returns stepper methods and state',
+    code: `const {  
+     steps: [Step, Step, ...Step[]];
+     currentStep: number;
+     currentSubStep: number;
+     setCurrentStep: (value: number) => void;
+     goToNextStep: () => void;
+     goToPreviousStep: () => void; } = useStepper()`,
+  },
+  {
     name: 'useSignalRMessages',
     body: 'Returns service bus messages with wss given a topic + host + token',
     code: `const {

@@ -6,6 +6,11 @@ import styled from 'styled-components';
 
 const providersList = [
   {
+    name: 'StepperProvider',
+    body: 'Provider to make stepper work',
+    code: `<StepperProvider steps={[...]}>{children}</StepperProvider>`,
+  },
+  {
     name: 'ThemeProvider',
     body: 'Provider to make Theme (data-theme driven) work',
     code: `<ThemeProvider>{children}</ThemeProvider>`,

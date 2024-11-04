@@ -21,7 +21,7 @@ const Container = styled.div<ContainerProps>`
   ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}`}
 `;
 
-interface OldStepperProps {
+export interface OldStepperProps {
   current: number;
   setCurrent: (value: number) => void;
   steps: string[];
