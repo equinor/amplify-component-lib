@@ -1,10 +1,18 @@
 import { FC, ReactElement, useMemo } from 'react';
 
+import { Step } from './Step/Step';
+import { StepLine } from './StepLine';
 import { spacings } from 'src/atoms/style';
-import Step from 'src/molecules/Stepper/Step';
-import StepLine from 'src/molecules/Stepper/StepLine';
+import { SubTitle } from 'src/molecules/Stepper/SubTitle/SubTitle';
+import { useStepper } from 'src/providers/StepperProvider';
 
 import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.xx_large};
+`;
 
 interface ContainerProps {
   $stepAmount: number;
@@ -22,20 +30,15 @@ const Container = styled.div<ContainerProps>`
 `;
 
 export interface StepperProps {
-  current: number;
-  setCurrent: (value: number) => void;
-  steps: string[];
   onlyShowCurrentStepLabel?: boolean;
   maxWidth?: string;
 }
 
 export const Stepper: FC<StepperProps> = ({
-  current,
-  setCurrent,
-  steps,
   onlyShowCurrentStepLabel = false,
   maxWidth,
 }) => {
+  const { steps, currentStep } = useStepper();
   const children = useMemo((): ReactElement[] => {
     const all: ReactElement[] = [];
     steps.forEach((step, index) => {
@@ -43,30 +46,31 @@ export const Stepper: FC<StepperProps> = ({
         <Step
           key={`step-${index}`}
           index={index}
-          currentIndex={current}
-          setCurrentIndex={setCurrent}
           onlyShowCurrentStepLabel={onlyShowCurrentStepLabel}
         >
-          {step}
+          {step.label}
         </Step>
       );
 
       if (index !== steps.length - 1) {
         all.push(
-          <StepLine key={`step-line-${index}`} done={current > index} />
+          <StepLine key={`step-line-${index}`} done={currentStep > index} />
         );
       }
     });
     return all;
-  }, [current, onlyShowCurrentStepLabel, setCurrent, steps]);
+  }, [currentStep, onlyShowCurrentStepLabel, steps]);
 
   return (
-    <Container
-      $stepAmount={steps.length}
-      $maxWidth={maxWidth}
-      data-testid="stepper-container"
-    >
-      {children}
-    </Container>
+    <Wrapper>
+      <Container
+        $stepAmount={steps.length}
+        $maxWidth={maxWidth}
+        data-testid="stepper-container"
+      >
+        {children}
+      </Container>
+      <SubTitle />
+    </Wrapper>
   );
 };

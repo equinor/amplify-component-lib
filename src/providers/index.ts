@@ -6,5 +6,6 @@ export { ReleaseNotesProvider } from './ReleaseNotesProvider';
 export { TutorialStepsProvider } from './TutorialStepsProvider';
 export { LoadingProvider } from './LoadingProvider';
 export { ThemeProvider } from './ThemeProvider/ThemeProvider';
+export { StepperProvider } from './StepperProvider';
 
 export type { TableOfContentsItemType } from './TableOfContentsProvider';
