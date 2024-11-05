@@ -9,7 +9,6 @@ export type { ItemType } from './SideBar';
 export { TopBar } from './TopBar';
 export type { GuidelineSections } from './TopBar/Guidelines/Guidelines';
 export type { SettingsSection } from './TopBar/Settings.types';
-export { FullPageStatus } from './FullPageStatus/FullPageStatus';
 export { ErrorPage } from './ErrorPage';
 export { GlitchAnimation } from './ErrorPage/illustrations/GlitchAnimation';
 export { QuestioningAnimation } from './ErrorPage/illustrations/QuestioningAnimation';

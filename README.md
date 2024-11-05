@@ -1,5 +1,7 @@
 
-<img alt="intro-logo" src="https://raw.githubusercontent.com/equinor/amplify-component-lib/main/static/amplify_logo.png" width="300px" />
+<img alt="intro-logo" src="https://raw.githubusercontent.com/equinor/amplify-component-lib/main/static/amplify.png" width="300px" />
+
+[![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/amplify-component-lib/badge)](https://scm-compliance-api.radix.equinor.com/repos/equinor/amplify-component-lib/badge)
 
 This package contains components, utils, providers and hooks developed and used by the amplify team.
 
@@ -21,13 +23,13 @@ Build and publish is done automatically when code is merged into `main` branch, 
 wget -q -O - https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/install.sh | bash
 ```
 
-
 This should have downloaded the different config files to your project root folder.
 
 If you want to ignore certain configuration files you can create a `.acl-ignore` file in the `client` folder in your project.
 
 For example: `acquire/client/.acl-ignore`
-```
+
+```text
 eslint.config.mjs
 CODEOWNERS
 pull_request.yaml
@@ -51,7 +53,7 @@ NOTE: These files should eventually be served from the same install script we us
 
 This script assumes the following structure in the project
 
-```
+```text
 project
 │   README.md
 │
@@ -87,6 +89,7 @@ pre-commit
 ## Add config file, .pre-commit-config.yaml
 
 Your `.pre-commit-config.yaml` file should look something like below
+
 ```yaml
 repos:
   - repo: local
@@ -133,7 +136,6 @@ When you have your config file in place you need to install the hooks
 pre-commit install
 ```
 
-
 ## Dockerfile linting
 
 We use [hadolint](https://github.com/hadolint/hadolint) to check that our docker file is using best practice.
@@ -167,4 +169,5 @@ If you want to shorten the feedback loop when changing your dockerfile you can o
 Looks like it is [not available](https://youtrack.jetbrains.com/issue/IJPL-69780/Bundle-hadolint-a-Docker-linting-tool) for WebStorm at the moment
 
 # Latest version
+
 [![main](https://img.shields.io/npm/v/@equinor/amplify-component-lib?color=%23c3f3d2&label=%40equinor%2Famplify-component-lib&logo=npm&)](https://www.npmjs.com/package/@equinor/amplify-component-lib)
