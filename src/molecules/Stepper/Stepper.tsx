@@ -39,7 +39,8 @@ export const Stepper: FC<StepperProps> = ({
   maxWidth,
 }) => {
   const { steps, currentStep } = useStepper();
-  const children = useMemo((): ReactElement[] => {
+
+  const content = useMemo((): ReactElement[] => {
     const all: ReactElement[] = [];
     steps.forEach((step, index) => {
       all.push(
@@ -68,7 +69,7 @@ export const Stepper: FC<StepperProps> = ({
         $maxWidth={maxWidth}
         data-testid="stepper-container"
       >
-        {children}
+        {content}
       </Container>
       <SubTitle />
     </Wrapper>
