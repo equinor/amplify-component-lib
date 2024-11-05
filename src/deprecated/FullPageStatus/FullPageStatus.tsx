@@ -39,6 +39,9 @@ const CircularProgress = styled(Progress.Circular)`
   }
 `;
 
+/**
+ * @deprecated This component will be replaced by the Status component in a future update
+ */
 export const FullPageStatus: FC<FullPageStatusProps> = ({
   loading,
   error,
