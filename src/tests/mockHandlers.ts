@@ -64,7 +64,7 @@ export const FAKE_ROLES: GraphAppRole[] = [
 ] as const;
 
 function fakeUser(): ImpersonateUserDto {
-  const firstName = faker.person.firstName();
+  const firstName = faker.string.uuid();
   const lastName = faker.person.lastName();
   const fullName = `${firstName} ${lastName}`;
   const uniqueName = faker.internet.userName();

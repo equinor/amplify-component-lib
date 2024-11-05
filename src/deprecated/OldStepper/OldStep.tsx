@@ -61,7 +61,7 @@ const IconWrapper = styled.span<IconWrapperProps>`
   }
 `;
 
-interface StepProps {
+interface OldStepProps {
   currentIndex: number;
   setCurrentIndex: (value: number) => void;
   index: number;
@@ -69,7 +69,7 @@ interface StepProps {
   children?: string;
 }
 
-const Step: FC<StepProps> = ({
+export const OldStep: FC<OldStepProps> = ({
   currentIndex,
   setCurrentIndex,
   index,
@@ -135,5 +135,3 @@ const Step: FC<StepProps> = ({
     </Container>
   );
 };
-
-export default Step;

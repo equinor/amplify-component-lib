@@ -1,18 +1,10 @@
 import { FC, ReactElement, useMemo } from 'react';
 
-import { Step } from './Step/Step';
-import { StepLine } from './StepLine';
+import { OldStep } from './OldStep';
+import OldStepLine from './OldStepLine';
 import { spacings } from 'src/atoms/style';
-import { SubTitle } from 'src/molecules/Stepper/SubTitle/SubTitle';
-import { useStepper } from 'src/providers/StepperProvider';
 
 import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.xx_large};
-`;
 
 interface ContainerProps {
   $stepAmount: number;
@@ -29,49 +21,55 @@ const Container = styled.div<ContainerProps>`
   ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}`}
 `;
 
-export interface StepperProps {
+export interface OldStepperProps {
+  current: number;
+  setCurrent: (value: number) => void;
+  steps: string[];
   onlyShowCurrentStepLabel?: boolean;
   maxWidth?: string;
 }
 
-export const Stepper: FC<StepperProps> = ({
+/**
+ * @deprecated Use the new Stepper + StepperProvider component instead
+ */
+export const OldStepper: FC<OldStepperProps> = ({
+  current,
+  setCurrent,
+  steps,
   onlyShowCurrentStepLabel = false,
   maxWidth,
 }) => {
-  const { steps, currentStep } = useStepper();
-
-  const content = useMemo((): ReactElement[] => {
+  const children = useMemo((): ReactElement[] => {
     const all: ReactElement[] = [];
     steps.forEach((step, index) => {
       all.push(
-        <Step
+        <OldStep
           key={`step-${index}`}
           index={index}
+          currentIndex={current}
+          setCurrentIndex={setCurrent}
           onlyShowCurrentStepLabel={onlyShowCurrentStepLabel}
         >
-          {step.label}
-        </Step>
+          {step}
+        </OldStep>
       );
 
       if (index !== steps.length - 1) {
         all.push(
-          <StepLine key={`step-line-${index}`} done={currentStep > index} />
+          <OldStepLine key={`step-line-${index}`} done={current > index} />
         );
       }
     });
     return all;
-  }, [currentStep, onlyShowCurrentStepLabel, steps]);
+  }, [current, onlyShowCurrentStepLabel, setCurrent, steps]);
 
   return (
-    <Wrapper>
-      <Container
-        $stepAmount={steps.length}
-        $maxWidth={maxWidth}
-        data-testid="stepper-container"
-      >
-        {content}
-      </Container>
-      <SubTitle />
-    </Wrapper>
+    <Container
+      $stepAmount={steps.length}
+      $maxWidth={maxWidth}
+      data-testid="stepper-container"
+    >
+      {children}
+    </Container>
   );
 };

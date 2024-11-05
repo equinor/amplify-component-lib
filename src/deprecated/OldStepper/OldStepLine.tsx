@@ -22,10 +22,12 @@ interface StepLineProps {
   done: boolean;
 }
 
-export const StepLine: FC<StepLineProps> = ({ done }) => {
+const OldStepLine: FC<StepLineProps> = ({ done }) => {
   const background = useMemo((): string => {
     if (done) return colors.interactive.primary__resting.rgba;
     return colors.interactive.disabled__text.rgba;
   }, [done]);
   return <Line $background={background} />;
 };
+
+export default OldStepLine;
