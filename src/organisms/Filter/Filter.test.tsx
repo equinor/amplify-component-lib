@@ -37,6 +37,20 @@ test('Filter opens/closes as expected when clicking search field', async () => {
   expect(screen.getByText(childText)).toBeInTheDocument();
 });
 
+test('ID works as expected', async () => {
+  const props = fakeProps();
+  const childText = faker.lorem.sentence();
+  const id = faker.lorem.word();
+  render(
+    <Filter {...props} id={id}>
+      <p>{childText}</p>
+    </Filter>
+  );
+  const search = screen.getByRole('searchbox');
+
+  expect(search).toHaveAttribute('id', id);
+});
+
 test('Filter opens/closes as expected when clicking search field with multiple children', async () => {
   const props = fakeProps();
   const childText = faker.lorem.sentence().split(' ');
