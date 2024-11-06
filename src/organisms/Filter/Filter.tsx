@@ -30,6 +30,7 @@ export interface FilterProps<T> {
   children: ReactNode | ReactNode[];
   initialOpen?: boolean;
   placeholder?: string;
+  id?: string;
   showClearFiltersButton?: boolean;
 }
 
@@ -43,6 +44,7 @@ export interface FilterProps<T> {
  * @param children - ReactNode or ReactNode[] to display below when the filter is open
  * @param initialOpen - Whether the filter should be open by default, defaults to false
  * @param placeholder - Placeholder text for the search input, defaults to 'Search...'
+ * @param id - ID for the search field
  * @param showClearFiltersButton - Whether to show the clear filters button, defaults to true
  */
 export function Filter<T>({
@@ -55,6 +57,7 @@ export function Filter<T>({
   children,
   initialOpen = false,
   placeholder = 'Search...',
+  id = 'filter-search',
   showClearFiltersButton = true,
 }: FilterProps<T>) {
   const [open, setOpen] = useState(initialOpen);
@@ -111,7 +114,7 @@ export function Filter<T>({
             </StyledChip>
           ))}
           <SearchField
-            id="filter-search"
+            id={id}
             type="search"
             value={search}
             placeholder={placeholder}
