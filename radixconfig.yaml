@@ -19,6 +19,11 @@ spec:
         - name: https
           port: 8080
       publicPort: https
+      environmentConfig:
+        - environment: feature
+          horizontalScaling:
+            minReplicas: 0
+            maxReplicas: 1
       secrets:
         - GITHUB_PAT_SEARCH_TOKEN
 
