@@ -1,9 +1,12 @@
 import { ErrorType } from 'src/atoms';
 import { ErrorContentType } from 'src/atoms/types/Errors';
-import { GlitchAnimation } from 'src/organisms/ErrorPage/illustrations/GlitchAnimation';
-import { QuestioningAnimation } from 'src/organisms/ErrorPage/illustrations/QuestioningAnimation';
+import { GlitchAnimation } from 'src/deprecated/ErrorPage/illustrations/GlitchAnimation';
+import { QuestioningAnimation } from 'src/deprecated/ErrorPage/illustrations/QuestioningAnimation';
 
 // list of errors with default values
+/**
+ * @deprecated
+ */
 export const getListOfErrors = (appName: string): ErrorContentType[] => {
   return [
     {
@@ -57,6 +60,9 @@ export const getListOfErrors = (appName: string): ErrorContentType[] => {
 };
 
 // get Error by type
+/**
+ * @deprecated
+ */
 export const getErrorContent = (
   appName: string,
   errorType?: ErrorType

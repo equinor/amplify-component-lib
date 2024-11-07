@@ -16,8 +16,8 @@ import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
 import { AuthState } from './AuthProvider';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
+import { OldUnauthorized } from 'src/deprecated/ErrorPage/collections/OldUnauthorized';
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
-import { Unauthorized } from 'src/organisms/ErrorPage/collections/Unauthorized';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
@@ -207,7 +207,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   ]);
 
   if (authState === 'unauthorized')
-    return unauthorizedComponent ?? <Unauthorized />;
+    return unauthorizedComponent ?? <OldUnauthorized />;
 
   if (withoutLoader) return children;
 

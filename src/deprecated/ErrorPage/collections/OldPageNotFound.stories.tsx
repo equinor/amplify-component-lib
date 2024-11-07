@@ -1,10 +1,10 @@
-import { PageNotFound } from './PageNotFound';
+import { OldPageNotFound } from 'src/deprecated/ErrorPage/collections/OldPageNotFound';
 
 import { withRouter } from 'storybook-addon-remix-react-router';
 
 export default {
-  title: 'Organisms/ErrorPage/Collections/PageNotFound',
-  component: PageNotFound,
+  title: 'Deprecated/ErrorPage/Collections/PageNotFound',
+  component: OldPageNotFound,
   decorators: [withRouter],
   parameters: {
     design: {
@@ -15,5 +15,5 @@ export default {
 };
 
 export const Primary = () => {
-  return <PageNotFound />;
+  return <OldPageNotFound />;
 };

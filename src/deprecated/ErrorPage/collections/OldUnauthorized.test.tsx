@@ -1,9 +1,9 @@
-import { Unauthorized } from 'src/organisms/ErrorPage/collections/Unauthorized';
+import { OldUnauthorized } from 'src/deprecated/ErrorPage/collections/OldUnauthorized';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 test('Clicking apply for access opens tab', async () => {
   window.open = vi.fn();
-  render(<Unauthorized />);
+  render(<OldUnauthorized />);
 
   const user = userEvent.setup();
 

@@ -23,6 +23,9 @@ const Animation = styled.div`
   animation: ${animation} 4s steps(34) infinite;
 `;
 
+/**
+ * @deprecated - Use Status component instead
+ */
 export const GlitchAnimation: FC = () => {
   return (
     <Container>
