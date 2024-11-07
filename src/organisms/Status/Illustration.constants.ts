@@ -46,6 +46,6 @@ export const SHAPE_TRANSITIONS: Readonly<MotionProps['transition'][]> =
     repeat: Infinity,
     delay: index * 0.1,
     repeatType: 'reverse',
-    duration: (SHAPES.length - index + 1) * 2,
+    duration: SHAPES.length - index + 1,
     ease: 'easeInOut',
   }));
