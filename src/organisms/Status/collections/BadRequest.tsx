@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router';
 
-import { colors } from 'src/atoms';
 import { Status } from 'src/organisms/Status';
 
 export const BadRequest: FC = () => {
@@ -12,7 +11,7 @@ export const BadRequest: FC = () => {
   };
 
   return (
-    <Status color={colors.interactive.warning__resting.rgba}>
+    <Status color="#AB9067">
       <Status.Title title="Bad request" />
       <Status.Description
         text={`We encountered some confusion regarding your request.
