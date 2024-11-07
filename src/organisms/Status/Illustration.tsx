@@ -39,7 +39,7 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="1015" height="713" fill="#111111" />
+      <rect width="1015" height="713" fill="#333333" />
       {SHAPES.map((shape, index) => (
         <motion.path
           key={index}
@@ -49,6 +49,8 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
           initial={{ d: shape.d1 }}
           animate={{ d: [shape.d1, shape.d2, shape.d1] }}
           transition={SHAPE_TRANSITIONS[index]}
+          stroke="#ABABAB"
+          strokeWidth="0.5"
         />
       ))}
       <rect

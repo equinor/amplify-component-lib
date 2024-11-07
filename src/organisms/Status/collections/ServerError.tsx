@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router';
 
+import { colors } from 'src/atoms';
 import { Status } from 'src/organisms/Status';
 
 export const ServerError: FC = () => {
@@ -11,7 +12,7 @@ export const ServerError: FC = () => {
   };
 
   return (
-    <Status>
+    <Status color={colors.ui.background__danger.rgba}>
       <Status.Title title="Something is wrong on our servers" />
       <Status.Description
         text={`Our server encountered an unexpected issue. Please try
