@@ -50,8 +50,6 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
           initial={SHAPE_INITIALS[index]}
           animate={animation}
           transition={SHAPE_TRANSITIONS[index]}
-          stroke="#ABABAB"
-          strokeWidth="0.5"
         />
       ))}
       <rect
@@ -123,7 +121,7 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
           <motion.feSpecularLighting
             surfaceScale="60"
             specularConstant="2.3"
-            specularExponent="20"
+            specularExponent="10"
             lightingColor="#441c7b"
             x="0%"
             y="0%"
@@ -131,8 +129,6 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
             height="100%"
             in="turbulence"
             result="specularLighting"
-            animate={{ specularExponent: [20, 40, 20] }}
-            transition={{ duration: 2, repeat: Infinity }}
           >
             <feDistantLight azimuth="3" elevation="54" />
           </motion.feSpecularLighting>
