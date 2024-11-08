@@ -1,6 +1,8 @@
 import { FC } from 'react';
 
 import {
+  SHAPE_ANIMATIONS,
+  SHAPE_INITIALS,
   SHAPE_TRANSITIONS,
   SHAPES,
 } from 'src/organisms/Status/Illustration.constants';
@@ -40,14 +42,13 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect width="1015" height="713" fill="#333333" />
-      {SHAPES.map((shape, index) => (
+      {SHAPE_ANIMATIONS.map((animation, index) => (
         <motion.path
           key={index}
           fillRule="evenodd"
-          clipRule="evenodd"
-          fill={shape.fill}
-          initial={{ d: shape.d1 }}
-          animate={{ d: [shape.d1, shape.d2, shape.d1] }}
+          fill={SHAPES[index].fill}
+          initial={SHAPE_INITIALS[index]}
+          animate={animation}
           transition={SHAPE_TRANSITIONS[index]}
           stroke="#ABABAB"
           strokeWidth="0.5"
@@ -72,20 +73,16 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
           <motion.path
             fillRule="evenodd"
             clipRule="evenodd"
-            initial={{ d: SHAPES.at(-2)!.d1 }}
-            animate={{
-              d: [SHAPES.at(-2)!.d1, SHAPES.at(-2)!.d2, SHAPES.at(-2)!.d1],
-            }}
+            initial={SHAPE_INITIALS.at(-2)!}
+            animate={SHAPE_ANIMATIONS.at(-2)!}
             transition={SHAPE_TRANSITIONS.at(-2)!}
             fill="black"
           />
           <motion.path
             fillRule="evenodd"
             clipRule="evenodd"
-            initial={{ d: SHAPES.at(-1)!.d1 }}
-            animate={{
-              d: [SHAPES.at(-1)!.d1, SHAPES.at(-1)!.d2, SHAPES.at(-1)!.d1],
-            }}
+            initial={SHAPE_INITIALS.at(-1)!}
+            animate={SHAPE_ANIMATIONS.at(-1)!}
             transition={SHAPE_TRANSITIONS.at(-1)!}
             fill="black"
           />
@@ -95,10 +92,8 @@ export const Illustration: FC<IllustrationProps> = ({ color }) => (
           <motion.path
             fillRule="evenodd"
             clipRule="evenodd"
-            initial={{ d: SHAPES.at(-1)!.d1 }}
-            animate={{
-              d: [SHAPES.at(-1)!.d1, SHAPES.at(-1)!.d2, SHAPES.at(-1)!.d1],
-            }}
+            initial={SHAPE_INITIALS.at(-1)!}
+            animate={SHAPE_ANIMATIONS.at(-1)!}
             transition={SHAPE_TRANSITIONS.at(-1)!}
             fill="black"
           />
