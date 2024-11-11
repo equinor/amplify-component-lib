@@ -112,7 +112,7 @@ export const Account: FC<AccountProps> = ({
     ) {
       handleOnEndImpersonation();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeImpersonationUser, APPLICATION_NAME]);
 
   const customButton = useMemo(() => {
