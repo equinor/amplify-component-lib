@@ -56,6 +56,17 @@ test('Renders focus color as expected', () => {
   );
 });
 
+test('Renders border bottom as expected', () => {
+  const props = fakeProps();
+  render(<ListItem {...props} borderBottom />);
+  const container = screen.getByText(props.label).parentElement!.parentElement!;
+
+  expect(container).toHaveStyleRule(
+    'border-bottom',
+    `1px solid ${colors.ui.background__medium.rgba}`
+  );
+});
+
 test('Renders colors as expected', () => {
   const props = fakeProps();
   render(<ListItem {...props} />);
