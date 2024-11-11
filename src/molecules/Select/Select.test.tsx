@@ -8,7 +8,6 @@ import { SelectOptionRequired, VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { colors } from 'src/atoms/style';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
-import { items } from 'src/molecules/OptionDrawer/stories/data';
 import {
   fakeSelectItem,
   fakeSelectItems,
