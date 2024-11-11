@@ -18,7 +18,14 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
     SelectMenuProps<T> &
     (MultiSelectCommon<T> | SingleSelectCommon<T>)
 ) => {
-  const { onItemSelect, onItemKeyDown, itemRefs, groups, search } = props;
+  const {
+    onItemSelect,
+    onItemKeyDown,
+    itemRefs,
+    groups,
+    search,
+    onSearchFilter,
+  } = props;
 
   const filteredGroups = useMemo(() => {
     if (search === '') return groups;
@@ -26,10 +33,16 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
     return groups
       .map((group) => ({
         title: group.title,
-        items: group.items.filter((item) => item.label.match(regexPattern)),
+        items: group.items.filter((item) => {
+          if (onSearchFilter !== undefined) {
+            return onSearchFilter(search, item);
+          }
+
+          return item.label.match(regexPattern);
+        }),
       }))
       .filter((group) => group.items.length > 0);
-  }, [groups, search]);
+  }, [groups, onSearchFilter, search]);
 
   const filteredGroupSum = useMemo(() => {
     const groupSizeArray = filteredGroups.map((group) => group.items.length);

@@ -50,6 +50,7 @@ export interface SelectMenuProps<T extends SelectOptionRequired> {
   itemRefs: MutableRefObject<(HTMLButtonElement | null)[]>;
   onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
   onItemSelect: (item: SelectOption<T>) => void;
+  onSearchFilter?: (searchValue: string, item: T) => void;
 }
 
 interface SelectMenuItemProps<T extends SelectOptionRequired> {
@@ -81,7 +82,7 @@ export const VARIANT_OPTIONS: Variants[] = [
   'dirty',
 ] as const;
 
-export interface CommonSelectProps {
+export interface CommonSelectProps<T extends SelectOptionRequired> {
   id?: string;
   variant?: Variants;
   label?: string;
@@ -98,4 +99,5 @@ export interface CommonSelectProps {
   onSearchChange?: (inputValue: string) => void;
   inDialog?: boolean;
   onOpenCallback?: (value: boolean) => void;
+  onSearchFilter?: (searchValue: string, item: T) => void;
 }
