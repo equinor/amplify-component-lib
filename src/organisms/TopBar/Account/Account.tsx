@@ -77,7 +77,7 @@ export const Account: FC<AccountProps> = ({
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { data: canImpersonate } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
-  const { mutateAsync: endImpersonation } = useStopImpersonation();
+  const { mutate: endImpersonation } = useStopImpersonation();
 
   const fullName = activeImpersonationUser
     ? activeImpersonationUser.fullName
@@ -100,9 +100,6 @@ export const Account: FC<AccountProps> = ({
     setIsOpen(false);
   };
   const handleOnCloseImpersonate = () => setOpenImpersonate(false);
-  const handleOnEndImpersonation = async () => {
-    await endImpersonation();
-  };
 
   useEffect(() => {
     if (
@@ -110,10 +107,9 @@ export const Account: FC<AccountProps> = ({
       activeImpersonationUser.appName != undefined &&
       activeImpersonationUser.appName != APPLICATION_NAME
     ) {
-      handleOnEndImpersonation();
+      endImpersonation();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeImpersonationUser, APPLICATION_NAME]);
+  }, [activeImpersonationUser, APPLICATION_NAME, endImpersonation]);
 
   const customButton = useMemo(() => {
     if (renderCustomButton) {
