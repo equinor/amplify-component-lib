@@ -38,7 +38,7 @@ import {
 const { colors } = tokens;
 
 export type SelectComponentProps<T extends SelectOptionRequired> =
-  CommonSelectProps &
+  CommonSelectProps<T> &
     (SingleSelectCommon<T> | MultiSelectCommon<T>) &
     (ListSelectProps<T> | GroupedSelectProps<T>);
 
@@ -60,6 +60,7 @@ export const Select = <T extends SelectOptionRequired>(
     id = `amplify-combobox-${label}`,
     variant,
     inDialog = false,
+    onSearchFilter,
   } = props;
   const {
     handleOnAddItem,
@@ -229,6 +230,7 @@ export const Select = <T extends SelectOptionRequired>(
               itemRefs={itemRefs}
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
+              onSearchFilter={onSearchFilter}
             />
           ) : (
             <ListSelectMenu
@@ -242,6 +244,7 @@ export const Select = <T extends SelectOptionRequired>(
               }
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
+              onSearchFilter={onSearchFilter}
             />
           )}
         </StyledMenu>

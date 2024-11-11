@@ -12,7 +12,6 @@ import {
   ListSelectProps,
   MultiSelectCommon,
   SelectMenuProps,
-  SelectOption,
   SelectOptionRequired,
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
@@ -31,16 +30,27 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       | SingleSelectCommon<T>
     )
 ) => {
-  const { search, items, onItemSelect, itemRefs, onItemKeyDown } = props;
+  const {
+    search,
+    items,
+    onItemSelect,
+    itemRefs,
+    onItemKeyDown,
+    onSearchFilter,
+  } = props;
 
   const filteredItems = useMemo(() => {
     if (search === '') return items;
     const regexPattern = new RegExp(search, 'i');
 
-    return flattenOptions(items)
-      .map(({ value, label }) => ({ value, label }) as SelectOption<T>)
-      .filter((item) => item.label.match(regexPattern));
-  }, [items, search]);
+    return flattenOptions(items).filter((item) => {
+      if (onSearchFilter !== undefined) {
+        return onSearchFilter(search, item);
+      }
+
+      return item.label.match(regexPattern);
+    });
+  }, [items, onSearchFilter, search]);
 
   if (filteredItems.length === 0 && !props.onAddItem) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;

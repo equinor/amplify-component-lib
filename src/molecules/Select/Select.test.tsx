@@ -4,7 +4,7 @@ import { error_outlined } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
-import { VARIANT_OPTIONS } from './Select.types';
+import { SelectOptionRequired, VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { colors } from 'src/atoms/style';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
@@ -123,6 +123,57 @@ test('Searching works as expected', async () => {
   expect(
     screen.getByRole('menuitem', { name: nextRandom.label })
   ).toBeInTheDocument();
+});
+
+test('Searching works as expected with onSearchFilter', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const items = fakeSelectItems();
+  const itemToHideInSearch = faker.helpers.arrayElement(items.slice(0, 3));
+  const randomItemToShowInSearch = faker.helpers.arrayElement(
+    items.slice(4, 8)
+  );
+
+  const handleOnSearchFilter = (
+    searchValue: string,
+    item: SelectOptionRequired
+  ) => {
+    if (item.label === itemToHideInSearch.label) return false;
+    const regexPattern = new RegExp(searchValue, 'i');
+    return item.label.match(regexPattern);
+  };
+
+  render(
+    <Select
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={undefined}
+      onSearchFilter={handleOnSearchFilter}
+    />
+  );
+
+  const searchField = screen.getByRole('combobox');
+
+  const user = userEvent.setup();
+
+  // Expect a "normal" item to be shown in search results
+  await user.type(searchField, randomItemToShowInSearch.label);
+
+  expect(searchField).toHaveValue(randomItemToShowInSearch.label);
+  expect(
+    screen.queryByText(randomItemToShowInSearch.label)
+  ).toBeInTheDocument();
+
+  await user.clear(searchField);
+
+  // Expect a item hidden by custom onSearchFilter not to be shown in search results
+  await user.type(searchField, itemToHideInSearch.label);
+
+  expect(searchField).toHaveValue(itemToHideInSearch.label);
+  expect(
+    screen.queryByText(randomItemToShowInSearch.label)
+  ).not.toBeInTheDocument();
 });
 
 test("Clicking 'x' on chip works as expected", async () => {
