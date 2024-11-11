@@ -40,6 +40,14 @@ export const Default: Story = {
   },
 };
 
+export const WithBorder: Story = {
+  args: {
+    leadingContent: car,
+    borderBottom: true,
+    label: 'Suzuki',
+  },
+};
+
 export const Disabled: Story = {
   args: {
     leadingContent: car,

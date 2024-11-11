@@ -14,11 +14,12 @@ import { animation } from 'src/atoms/style/animation';
 import { spacings } from 'src/atoms/style/spacings';
 import { renderContent } from 'src/molecules/ListItem/ListItem.utils';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   $isChild: boolean;
   $selected: boolean;
+  $borderBottom: boolean;
 }
 
 const Container = styled.button<ContainerProps>`
@@ -39,6 +40,14 @@ const Container = styled.button<ContainerProps>`
       ? colors.interactive.primary__selected_highlight.rgba
       : 'transparent'};
   transition: background ${animation.transitionMS};
+  ${({ $borderBottom }) => {
+    if ($borderBottom) {
+      return css`
+        border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+      `;
+    }
+    return '';
+  }}
   &:disabled {
       cursor: not-allowed;
       background: transparent;
@@ -73,6 +82,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   selected?: boolean;
   isChild?: boolean;
+  borderBottom?: boolean;
 }
 
 export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
@@ -88,6 +98,7 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
       trailingContent,
       isChild = false,
       selected = false,
+      borderBottom = false,
     },
     ref
   ) => {
@@ -97,6 +108,7 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
         className={className}
         $isChild={isChild}
         $selected={selected}
+        $borderBottom={borderBottom}
         disabled={disabled}
         onClick={onClick}
         onFocus={onFocus}
