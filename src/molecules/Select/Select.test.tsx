@@ -8,6 +8,7 @@ import { SelectOptionRequired, VARIANT_OPTIONS } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
 import { colors } from 'src/atoms/style';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
+import { items } from 'src/molecules/OptionDrawer/stories/data';
 import {
   fakeSelectItem,
   fakeSelectItems,
@@ -148,6 +149,55 @@ test('Searching works as expected with onSearchFilter', async () => {
       label={label}
       onSelect={handler}
       items={items}
+      value={undefined}
+      onSearchFilter={handleOnSearchFilter}
+    />
+  );
+
+  const searchField = screen.getByRole('combobox');
+
+  const user = userEvent.setup();
+
+  // Expect a "normal" item to be shown in search results
+  await user.type(searchField, randomItemToShowInSearch.label);
+
+  expect(searchField).toHaveValue(randomItemToShowInSearch.label);
+  expect(
+    screen.queryByText(randomItemToShowInSearch.label)
+  ).toBeInTheDocument();
+
+  await user.clear(searchField);
+
+  // Expect a item hidden by custom onSearchFilter not to be shown in search results
+  await user.type(searchField, itemToHideInSearch.label);
+
+  expect(searchField).toHaveValue(itemToHideInSearch.label);
+  expect(
+    screen.queryByText(randomItemToShowInSearch.label)
+  ).not.toBeInTheDocument();
+});
+
+test('Searching works as expected with groups and onSearchFilter', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const groups = fakeGroups();
+  const itemToHideInSearch = faker.helpers.arrayElement(groups[0].items);
+  const randomItemToShowInSearch = faker.helpers.arrayElement(groups[1].items);
+
+  const handleOnSearchFilter = (
+    searchValue: string,
+    item: SelectOptionRequired
+  ) => {
+    if (item.label === itemToHideInSearch.label) return false;
+    const regexPattern = new RegExp(searchValue, 'i');
+    return item.label.match(regexPattern);
+  };
+
+  render(
+    <Select
+      label={label}
+      onSelect={handler}
+      groups={groups}
       value={undefined}
       onSearchFilter={handleOnSearchFilter}
     />
