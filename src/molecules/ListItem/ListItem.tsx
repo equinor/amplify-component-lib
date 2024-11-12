@@ -26,10 +26,13 @@ const Container = styled.button<ContainerProps>`
   display: flex;
   gap: ${spacings.small};
   align-items: center;
-  height: 48px;
   min-width: 210px;
-  padding: ${({ $isChild }) => {
-    const padding = `${spacings.small} ${spacings.large} ${spacings.small}`;
+  padding: ${({ $isChild, $borderBottom }) => {
+    let padding = `${spacings.small} ${spacings.large} ${spacings.small}`;
+    if ($borderBottom) {
+      padding = `${spacings.small} ${spacings.large} calc(${spacings.small} - 1px)`;
+    }
+
     if ($isChild) {
       return `${padding} ${spacings.xx_large}`;
     }
