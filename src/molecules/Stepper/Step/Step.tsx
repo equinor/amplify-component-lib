@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
@@ -7,7 +7,7 @@ import { colors, spacings } from 'src/atoms/style';
 import { StepIcon } from 'src/molecules/Stepper/Step/StepIcon';
 import { useStepper } from 'src/providers/StepperProvider';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   $clickable: boolean;
@@ -20,11 +20,11 @@ const Container = styled.div<ContainerProps>`
   white-space: nowrap;
   ${(props) =>
     props.$clickable &&
-    `
-    &:hover {
+    css`
+      &:hover {
         cursor: pointer;
-    }
-  `}
+      }
+    `}
 `;
 
 interface StepProps {
@@ -39,7 +39,6 @@ export const Step: FC<StepProps> = ({
   children,
 }) => {
   const { currentStep, setCurrentStep } = useStepper();
-  const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
 
   const textVariant = useMemo((): TypographyVariants => {
     if (index < currentStep) return 'body_short';
@@ -60,18 +59,6 @@ export const Step: FC<StepProps> = ({
   return (
     <Container
       data-testid="step"
-      ref={(ref: HTMLDivElement | null) => {
-        if (containerRef === null && ref !== null) {
-          setContainerRef(ref);
-        }
-      }}
-      style={
-        containerRef !== null && !onlyShowCurrentStepLabel
-          ? {
-              width: `calc(${containerRef.clientWidth}px)`,
-            }
-          : undefined
-      }
       $clickable={index < currentStep}
       onClick={handleOnClick}
     >
