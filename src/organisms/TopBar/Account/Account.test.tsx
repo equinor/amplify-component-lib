@@ -364,31 +364,63 @@ describe(
       expect(screen.queryByText(/Impersonate/i)).not.toBeInTheDocument();
     });
 
-    describe('Active impersonation', () => {
-      beforeEach(() => {
-        server.use(
-          http.get(
-            '*/api/v1/ImpersonateUser/ActiveUser',
-            async () => {
-              await delay('real');
-              return HttpResponse.json(fakeImpersonateUsers[0]);
-            },
-            { once: true }
-          )
-        );
-      });
+    describe(
+      'Active impersonation',
+      () => {
+        beforeEach(() => {
+          server.use(
+            http.get(
+              '*/api/v1/ImpersonateUser/ActiveUser',
+              async () => {
+                await delay('real');
+                return HttpResponse.json(fakeImpersonateUsers[0]);
+              },
+              { once: true }
+            )
+          );
+        });
 
-      test('Active impersonation is set as selected', async () => {
-        renderWithProviders(<Account />);
-        const user = userEvent.setup();
-        const button = screen.getByRole('button');
+        test('Active impersonation is set as selected', async () => {
+          renderWithProviders(<Account />);
+          const user = userEvent.setup();
+          const button = screen.getByRole('button');
 
-        await user.click(button);
+          await user.click(button);
 
-        const text = await screen.findByText('Impersonating');
-        expect(text).toBeInTheDocument();
-      });
-    });
+          const text = await screen.findByText('Impersonating');
+          expect(text).toBeInTheDocument();
+        });
+
+        test('Active impersonation gets removed when in different application', async () => {
+          vi.mock('./ImpersonateMenu/hooks/useStopImpersonation', () => {
+            function useStopImpersonation() {
+              return {
+                mutate: () => {
+                  console.log('ENDING');
+                },
+                mutateAsync: async () => {
+                  console.log('ENDING');
+                },
+              };
+            }
+
+            return { useStopImpersonation };
+          });
+          vi.stubEnv('VITE_NAME', 'different-app');
+
+          const spy = vi.spyOn(console, 'log');
+
+          renderWithProviders(<Account />);
+          const user = userEvent.setup();
+          const button = screen.getByRole('button');
+
+          await user.click(button);
+
+          expect(spy).toHaveBeenCalledWith('ENDING');
+        });
+      },
+      { concurrent: true, sequential: true }
+    );
   },
   { concurrent: false, sequential: true }
 );
