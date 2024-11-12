@@ -4,6 +4,7 @@ import {
   ReactElement,
   ReactNode,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -16,6 +17,7 @@ import { log_out } from '@equinor/eds-icons';
 import { TopBarMenu } from '../TopBarMenu';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
+import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
 import {
   ButtonWrapper,
@@ -68,12 +70,14 @@ export const Account: FC<AccountProps> = ({
   const API_CLIENT_ID = environment.getApiClientId(
     import.meta.env.VITE_API_CLIENT_ID
   );
+  const APPLICATION_NAME = environment.getAppName(import.meta.env.VITE_NAME);
   const { account, roles, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [openImpersonate, setOpenImpersonate] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { data: canImpersonate } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
+  const { mutate: endImpersonation } = useStopImpersonation();
 
   const fullName = activeImpersonationUser
     ? activeImpersonationUser.fullName
@@ -96,6 +100,16 @@ export const Account: FC<AccountProps> = ({
     setIsOpen(false);
   };
   const handleOnCloseImpersonate = () => setOpenImpersonate(false);
+
+  useEffect(() => {
+    if (
+      activeImpersonationUser &&
+      activeImpersonationUser.appName != undefined &&
+      activeImpersonationUser.appName != APPLICATION_NAME
+    ) {
+      endImpersonation();
+    }
+  }, [activeImpersonationUser, APPLICATION_NAME, endImpersonation]);
 
   const customButton = useMemo(() => {
     if (renderCustomButton) {
