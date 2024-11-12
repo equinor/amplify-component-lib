@@ -5,6 +5,7 @@ import {
   TextFieldProps as BaseProps,
 } from '@equinor/eds-core-react';
 
+import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 
@@ -26,8 +27,14 @@ const Wrapper = styled.div<WrapperProps>`
   input,
   textarea {
     color: ${colors.text.static_icons__default.rgba};
+    transition:
+      background ${animation.transitionMS},
+      box-shadow ${animation.transitionMS};
     &::placeholder {
       opacity: 1;
+    }
+    &:hover {
+      background: ${colors.ui.background__light_medium.rgba};
     }
   }
   div:focus-within {

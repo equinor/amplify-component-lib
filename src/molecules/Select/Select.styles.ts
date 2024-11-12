@@ -1,6 +1,6 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
-import { colors, spacings } from 'src/atoms/style';
+import { animation, colors, spacings } from 'src/atoms/style';
 import { VARIANT_COLORS, VARIANT_HELPER_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
@@ -51,8 +51,12 @@ const Container = styled.div<ContainerProps>`
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: 6px 8px;
+  transition:
+    background ${animation.transitionMS},
+    box-shadow ${animation.transitionMS};
   &:hover:not(:has(input:disabled)) {
     cursor: pointer;
+    background: ${colors.ui.background__light_medium.rgba};
   }
 
   ${({ $variant }) => {
