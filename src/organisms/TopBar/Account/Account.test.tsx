@@ -398,9 +398,6 @@ describe(
                 mutate: () => {
                   console.log('ENDING');
                 },
-                mutateAsync: async () => {
-                  console.log('ENDING');
-                },
               };
             }
 
@@ -417,6 +414,7 @@ describe(
           await user.click(button);
 
           expect(spy).toHaveBeenCalledWith('ENDING');
+          vi.restoreAllMocks();
         });
       },
       { concurrent: true, sequential: true }
