@@ -1,8 +1,9 @@
-import { FormEvent } from 'react';
+import { FC, FormEvent } from 'react';
 
 import { faker } from '@faker-js/faker';
 
 import { ComboBox } from './ComboBox';
+import { ComboBoxChip, SelectOptionRequired } from 'src/molecules';
 import {
   fakeGroups,
   fakeItemsWithChildren,
@@ -575,4 +576,37 @@ test('Removing with backspace', async () => {
   await user.keyboard('{Backspace}');
 
   expect(handler).toHaveBeenCalledWith([], items[0]);
+});
+
+const CustomValueElement: FC<{
+  item: SelectOptionRequired;
+  onDelete: () => void;
+  tryingToRemove: boolean;
+}> = ({ item, onDelete, tryingToRemove }) => (
+  <ComboBoxChip
+    className="amplify-combo-box-chip"
+    onDelete={onDelete}
+    $tryingToRemove={tryingToRemove}
+  >
+    <span>custom</span>
+    {item.label}
+  </ComboBoxChip>
+);
+
+test('Custom value component', () => {
+  const label = faker.animal.bear();
+  const items = fakeSelectItems();
+  const handler = vi.fn();
+
+  render(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0]]}
+      customValueComponent={CustomValueElement}
+    />
+  );
+
+  expect(screen.getByText('custom')).toBeInTheDocument();
 });
