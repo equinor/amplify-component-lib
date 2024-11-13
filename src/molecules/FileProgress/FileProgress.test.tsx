@@ -3,6 +3,7 @@ import {
   close_circle_outlined,
   delete_to_trash,
   error_outlined,
+  library_pdf,
   refresh,
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
@@ -255,6 +256,26 @@ test('Renders compact complete state when isDone is undefined', () => {
   expect(progressBar).not.toBeInTheDocument();
 });
 
+test('Renders compact complete state with expected icon', () => {
+  const { onDelete } = fakeProps();
+
+  const file = new File(['32452134'], 'testfile.pdf');
+  render(
+    <FileProgress
+      file={file}
+      onDelete={onDelete}
+      progressPercent={50}
+      isDone={undefined}
+      compact
+    />
+  );
+
+  expect(screen.getAllByTestId('eds-icon-path')[0]).toHaveAttribute(
+    'd',
+    library_pdf.svgPathData
+  );
+});
+
 test('Renders compact error state', () => {
   const { file, onDelete } = fakeProps();
 
@@ -289,7 +310,7 @@ test('Renders compact default error messages', () => {
     <FileProgress file={file} onDelete={onDelete} isError={true} compact />
   );
 
-  const shortDefaultErrorText = screen.getByText('Error occurred');
+  const shortDefaultErrorText = screen.getByText('Invalid file type');
 
   expect(shortDefaultErrorText).toBeInTheDocument();
 });

@@ -3,6 +3,7 @@ import { FC } from 'react';
 export const UploadIllustration: FC = () => {
   return (
     <svg
+      data-testid="upload-illustration"
       width="73"
       height="72"
       viewBox="0 0 73 72"

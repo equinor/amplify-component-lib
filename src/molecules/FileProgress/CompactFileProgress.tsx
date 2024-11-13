@@ -1,25 +1,30 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 
-import { colors } from 'src/atoms/style';
 import {
   AdditionalText,
   CircularProgress,
   CloseButton,
   CompactFileProgressContainer,
+  DoneWrapper,
   FileTooltip,
-  ImageWrapper,
   LoadingWrapper,
   Rejection,
-} from 'src/molecules/FileProgress/CompactFileProgress.styles';
+} from './CompactFileProgress.styles';
 import {
   CompactFileProgressBaseProps,
   FileProgressPropsExtension,
-} from 'src/molecules/FileProgress/FileProgress';
-import { readUploadedFileAsText } from 'src/molecules/FileProgress/FileProgress.utils';
+} from './FileProgress';
+import {
+  getFileIcon,
+  isFileImage,
+  readUploadedFileAsText,
+} from './FileProgress.utils';
+import { colors } from 'src/atoms/style';
+import { OptionalTooltip } from 'src/molecules';
 
 interface CompactFileProgressProps
   extends CompactFileProgressBaseProps,
@@ -66,19 +71,28 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
           <div>
             {shortErrorText && shortErrorText.length > 0
               ? shortErrorText
-              : 'Error occurred'}
+              : 'Invalid file type'}
           </div>
         </Rejection>
       );
     }
 
-    if (showCompleteState && !isDeleting) {
+    if (showCompleteState && !isDeleting && isFileImage(file.name)) {
       return (
-        <ImageWrapper>
+        <DoneWrapper>
           <img src={src} alt={' ' + `${file.name}`} />
-        </ImageWrapper>
+        </DoneWrapper>
       );
     }
+
+    if (showCompleteState && !isDeleting) {
+      return (
+        <DoneWrapper>
+          <Icon data={getFileIcon(file.name)} />
+        </DoneWrapper>
+      );
+    }
+
     return (
       <LoadingWrapper>
         <CircularProgress
@@ -90,6 +104,7 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
           value={progressPercent}
           size={24}
         />
+        <Typography variant="meta">Uploading...</Typography>
       </LoadingWrapper>
     );
   }, [
@@ -105,24 +120,17 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
   return (
     <CompactFileProgressContainer $isError={isError}>
       <FileTooltip title={errorText}>{content}</FileTooltip>
-      <AdditionalText group="paragraph" variant="meta">
-        {file.name}
-      </AdditionalText>
-      {!showCompleteState && (
+      <OptionalTooltip title={file.name}>
         <AdditionalText group="paragraph" variant="meta">
-          Loading...
+          {file.name}
         </AdditionalText>
-      )}
+      </OptionalTooltip>
       {!isDeleting && (
         <CloseButton
           data-testid="attachment-delete-button"
           onClick={handleOnClick}
         >
-          <Icon
-            color={colors.text.static_icons__tertiary.rgba}
-            data={clear}
-            size={24}
-          />
+          <Icon color={colors.text.static_icons__tertiary.rgba} data={clear} />
         </CloseButton>
       )}
     </CompactFileProgressContainer>
