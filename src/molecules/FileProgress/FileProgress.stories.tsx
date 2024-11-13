@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { Meta, StoryFn } from '@storybook/react';
 
 import {
@@ -17,7 +19,12 @@ const meta: Meta<typeof FileProgress> = {
   },
   argTypes: {
     compact: { control: 'boolean' },
-    file: { control: { type: 'file', accept: '.png, .jpg, .jpeg' } },
+    file: {
+      control: {
+        type: 'file',
+        accept: '.png, .jpg, .jpeg, .xlsx, .csv, .pdf, .txt, .pptx, .docx',
+      },
+    },
     progressPercent: {
       control: { type: 'range', min: 1, max: 100, step: 1 },
       description:
@@ -49,4 +56,24 @@ export default meta;
 
 export const Primary: StoryFn<
   RegularFileProgressBaseProps | CompactFileProgressBaseProps
-> = (args) => <FileProgress {...args} />;
+> = (args) => {
+  const [file, setFile] = useState<File | undefined>(undefined);
+
+  useEffect(() => {
+    if (!(args.file instanceof File) && typeof args.file[0] === 'string') {
+      // Has uploaded file to storybook
+      const handleSetFile = async () => {
+        const response = await fetch((args.file as unknown as string[])[0]);
+        const blob = (await response.blob()) as File;
+        setFile(blob);
+      };
+      handleSetFile();
+    }
+  }, [args.file]);
+
+  if (args.file instanceof File || file === undefined) {
+    return <FileProgress {...args} />;
+  }
+
+  return <FileProgress {...args} file={file} />;
+};

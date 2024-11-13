@@ -4,9 +4,11 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 
-import { colors, spacings } from 'src/atoms/style';
+import { animation, colors, spacings } from 'src/atoms/style';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+export const BORDER_RADIUS = '8px';
 
 interface ContainerProps {
   $isError?: boolean;
@@ -19,12 +21,14 @@ export const CompactFileProgressContainer = styled.div<ContainerProps>`
   height: 88px;
   box-sizing: border-box;
   position: relative;
-  transition: 0.3s;
+  transition: ${animation.transitionMS};
   ${({ $isError }) =>
     $isError &&
-    `&:hover { 
-        background: ${colors.ui.background__warning.rgba}
-    }`}
+    css`
+      &:hover {
+        background: ${colors.ui.background__warning.rgba};
+      }
+    `}
 `;
 
 export const Title = styled(Typography)`
@@ -36,32 +40,40 @@ export const LoadingWrapper = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  border: 1px dashed ${colors.ui.background__medium.rgba};
+  border: 2px dashed ${colors.ui.background__medium.rgba};
   display: flex;
+  flex-direction: column;
+  gap: ${spacings.small};
   justify-content: center;
   align-items: center;
-  border-radius: 4px;
+  border-radius: ${BORDER_RADIUS};
 `;
 
-export const ImageWrapper = styled.div`
+export const DoneWrapper = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  border: 1px solid ${colors.ui.background__light.rgba};
+  border: 2px solid ${colors.ui.background__medium.rgba};
+  border-radius: ${BORDER_RADIUS};
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   > img {
-    width: 100%;
-    overflow: hidden;
-    text-align: center;
+    object-fit: cover;
+    width: 88px;
+    height: 88px;
+  }
+  > svg {
+    width: 40px;
+    height: 40px;
   }
 `;
 
 export const Rejection = styled.div`
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.small};
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -69,14 +81,9 @@ export const Rejection = styled.div`
   font-size: 11px;
   justify-items: center;
   text-align: center;
-  border-radius: 4px;
-  border: 1px dashed ${colors.interactive.warning__text.rgba};
-  gap: 0;
-  > svg {
-    grid-row: 2/3;
-  }
+  border-radius: ${BORDER_RADIUS};
+  border: 2px dashed ${colors.interactive.warning__text.rgba};
   > div {
-    grid-row: 3/4;
     color: ${colors.interactive.warning__text.rgba};
   }
 `;
@@ -84,7 +91,7 @@ export const Rejection = styled.div`
 export const CloseButton = styled.div`
   background-color: ${colors.text.static_icons__tertiary.rgba};
   border-radius: 50%;
-  border: 2px solid ${colors.text.static_icons__primary_white.rgba};
+  border: 2px solid ${colors.ui.background__light.rgba};
   position: absolute;
   width: 18px;
   height: 18px;
@@ -92,9 +99,9 @@ export const CloseButton = styled.div`
   cursor: pointer;
   top: -10px;
   > svg {
-    width: 18px;
-    height: 18px;
-    fill: ${colors.text.static_icons__primary_white.rgba};
+    width: 14px;
+    height: 14px;
+    fill: ${colors.ui.background__light.rgba};
   }
 `;
 
@@ -104,6 +111,7 @@ export const AdditionalText = styled(Typography)`
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-wrap: nowrap;
 `;
 
 export const FileTooltip = styled(Tooltip)`
