@@ -14,11 +14,6 @@ export interface MenuButtonProps {
   active?: boolean;
   disabled?: boolean;
   tooltip?: string;
-  customColors?: {
-    resting: string;
-    hover: string;
-    backgroundHover: string;
-  };
 }
 
 export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
@@ -26,7 +21,6 @@ export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
     {
       icon,
       onClick,
-      customColors,
       active = false,
       disabled = false,
       tooltip,
@@ -39,7 +33,6 @@ export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
       <MenuButtonStyle
         ref={ref}
         $active={active}
-        $customColors={customColors}
         onClick={onClick}
         disabled={disabled}
         type="button"
