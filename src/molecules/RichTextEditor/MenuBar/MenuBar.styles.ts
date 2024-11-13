@@ -23,11 +23,6 @@ export const MenuSection = styled.section`
 
 interface MenuButtonProps {
   $active: boolean;
-  $customColors?: {
-    resting: string;
-    hover: string;
-    backgroundHover: string;
-  };
 }
 
 export const MenuButtonStyle = styled.button<MenuButtonProps>`
@@ -61,13 +56,12 @@ export const MenuButtonStyle = styled.button<MenuButtonProps>`
 `;
 
 const getColor = (props: MenuButtonProps) => {
-  if (props.$customColors) return props.$customColors.resting;
   if (props.$active) return colors.ui.background__light.rgba;
   return colors.interactive.primary__resting.rgba;
 };
 
 const getHoverColor = (props: MenuButtonProps) => {
-  if (props.$customColors) return props.$customColors.hover;
+  if (props.$active) return colors.text.static_icons__primary_white.rgba;
   return colors.interactive.primary__hover.rgba;
 };
 
@@ -78,7 +72,6 @@ const getBackground = (props: MenuButtonProps) => {
 };
 
 const getHoverBackground = (props: MenuButtonProps) => {
-  return props.$customColors
-    ? props.$customColors.backgroundHover
-    : colors.interactive.primary__hover_alt.rgba;
+  if (props.$active) return colors.interactive.primary__hover.rgba;
+  return colors.interactive.primary__hover_alt.rgba;
 };

@@ -25,15 +25,7 @@ export const TextClearFormating: FC<EditorPanel> = ({ editor, features }) => {
   return (
     <>
       <Divider />
-      <EditorMenu.Button
-        icon={format_clear}
-        onClick={clearFormatting}
-        customColors={{
-          resting: colors.interactive.warning__resting.rgba,
-          hover: colors.interactive.warning__hover.rgba,
-          backgroundHover: colors.ui.background__warning.rgba,
-        }}
-      />
+      <EditorMenu.Button icon={format_clear} onClick={clearFormatting} />
     </>
   );
 };
