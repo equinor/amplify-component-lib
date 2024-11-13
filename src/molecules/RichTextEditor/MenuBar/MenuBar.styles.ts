@@ -68,6 +68,7 @@ const getColor = (props: MenuButtonProps) => {
 
 const getHoverColor = (props: MenuButtonProps) => {
   if (props.$customColors) return props.$customColors.hover;
+  if (props.$active) return colors.text.static_icons__primary_white.rgba;
   return colors.interactive.primary__hover.rgba;
 };
 
@@ -78,7 +79,7 @@ const getBackground = (props: MenuButtonProps) => {
 };
 
 const getHoverBackground = (props: MenuButtonProps) => {
-  return props.$customColors
-    ? props.$customColors.backgroundHover
-    : colors.interactive.primary__hover_alt.rgba;
+  if (props.$customColors) return props.$customColors.backgroundHover;
+  if (props.$active) return colors.interactive.primary__hover.rgba;
+  return colors.interactive.primary__hover_alt.rgba;
 };
