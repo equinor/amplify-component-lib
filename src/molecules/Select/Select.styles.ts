@@ -192,13 +192,13 @@ const ClearButton = styled(Button)`
   }
 `;
 
-interface StyledChipProps {
+interface ComboBoxChipProps {
   $tryingToRemove: boolean;
   $lightBackground?: boolean;
   className: string;
 }
 
-const StyledChip = styled(Chip)<StyledChipProps>`
+const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
   background: ${({ $tryingToRemove, $lightBackground }) => {
     if ($tryingToRemove) return colors.interactive.primary__hover_alt.rgba;
     if ($lightBackground) return colors.ui.background__light.rgba;
@@ -289,7 +289,7 @@ export {
   NoTagFoundText,
   NoItemsFoundText,
   PlaceholderText,
-  StyledChip,
+  ComboBoxChip,
   Section,
   MenuItemWrapper,
   SmallButton,

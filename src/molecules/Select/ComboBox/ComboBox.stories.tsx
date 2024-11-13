@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Button, Dialog } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
+import { ComboBoxChip } from 'src/molecules';
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import {
   SelectOption,
   SelectOptionRequired,
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
+
+import styled from 'styled-components';
 
 const meta: Meta<typeof ComboBox> = {
   title: 'Molecules/Select/ComboBox',
@@ -246,6 +249,50 @@ export const ComboBoxWithAdd: StoryFn = (args) => {
       items={items}
       onSelect={handleOnSelect}
       onAddItem={handleOnAdd}
+    />
+  );
+};
+
+const Dot = styled.span`
+  background: red;
+  border-radius: 50%;
+  width: 4px;
+  height: 4px;
+`;
+
+const CustomValueElement: FC<{
+  item: SelectOption<Item>;
+  onDelete: () => void;
+  tryingToRemove: boolean;
+}> = ({ item, onDelete, tryingToRemove }) => (
+  <ComboBoxChip
+    className="amplify-combo-box-chip"
+    onDelete={onDelete}
+    $tryingToRemove={tryingToRemove}
+  >
+    <Dot />
+    {item.label}
+  </ComboBoxChip>
+);
+
+export const ComboBoxWithCustomValueElements: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      items={FAKE_ITEMS}
+      values={values}
+      onSelect={handleOnSelect}
+      customValueComponent={CustomValueElement}
     />
   );
 };
