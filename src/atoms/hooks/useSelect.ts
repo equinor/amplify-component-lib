@@ -207,6 +207,9 @@ const useSelect = <T extends SelectOptionRequired>(
       search === ''
     ) {
       setTryingToRemoveItem(selectedValues?.at(-1));
+      setTimeout(() => {
+        searchRef.current?.focus();
+      });
     } else if (event.key === 'Backspace' && tryingToRemoveItem) {
       handleOnRemoveItem(tryingToRemoveItem);
       setTryingToRemoveItem(undefined);
