@@ -17,11 +17,11 @@ import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
 import {
   ClearButton,
+  ComboBoxChip,
   Container,
   HelperWrapper,
   PlaceholderText,
   Section,
-  StyledChip,
   StyledMenu,
   ValueText,
   Wrapper,
@@ -131,18 +131,33 @@ export const Select = <T extends SelectOptionRequired>(
     if ('value' in props && props.value) {
       return <ValueText>{props.value.label}</ValueText>;
     } else {
-      return selectedValues.map((value) => (
-        <StyledChip
-          key={value.value}
-          data-testid="amplify-combobox-chip"
-          className="amplify-combo-box-chip"
-          onDelete={() => handleOnRemoveItem(value)}
-          $tryingToRemove={tryingToRemoveItem?.value === value.value}
-          $lightBackground={lightBackground}
-        >
-          {value.label}
-        </StyledChip>
-      ));
+      return selectedValues.map((value) => {
+        if ('customValueComponent' in props && props.customValueComponent) {
+          return (
+            <props.customValueComponent
+              key={value.value}
+              item={value}
+              onDelete={() => handleOnRemoveItem(value)}
+              tryingToRemove={
+                tryingToRemoveItem !== undefined &&
+                tryingToRemoveItem.value === value.value
+              }
+            />
+          );
+        }
+        return (
+          <ComboBoxChip
+            key={value.value}
+            data-testid="amplify-combobox-chip"
+            className="amplify-combo-box-chip"
+            onDelete={() => handleOnRemoveItem(value)}
+            $tryingToRemove={tryingToRemoveItem?.value === value.value}
+            $lightBackground={lightBackground}
+          >
+            {value.label}
+          </ComboBoxChip>
+        );
+      });
     }
   }, [
     selectedValues,

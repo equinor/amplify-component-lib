@@ -69,6 +69,7 @@ export { OptionDrawer } from './OptionDrawer/OptionDrawer';
 export type { OptionDrawerProps } from './OptionDrawer/OptionDrawer';
 export type { OptionDrawerSelectItem } from './OptionDrawer/OptionDrawer.types';
 export { ComboBox } from './Select/ComboBox/ComboBox';
+export { ComboBoxChip } from './Select/Select.styles';
 export type {
   ListComboBoxProps,
   GroupedComboBoxProps,

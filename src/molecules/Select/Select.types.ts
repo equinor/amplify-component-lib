@@ -1,4 +1,4 @@
-import { KeyboardEvent, MutableRefObject } from 'react';
+import { FC, KeyboardEvent, MutableRefObject } from 'react';
 
 import { Variants } from 'src/atoms/types/variants';
 
@@ -24,6 +24,11 @@ export interface MultiSelectCommon<T extends SelectOptionRequired> {
   ) => void;
   syncParentChildSelection?: boolean;
   onAddItem?: (item: string) => void;
+  customValueComponent?: FC<{
+    item: SelectOption<T>;
+    onDelete: () => void;
+    tryingToRemove: boolean;
+  }>;
 }
 
 export interface SelectGroup<T extends SelectOptionRequired> {
