@@ -2,10 +2,11 @@ import { FC, useMemo } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { add, folder } from '@equinor/eds-icons';
+import { folder } from '@equinor/eds-icons';
 
 import { animation, colors, spacings } from 'src/atoms/style';
-import { Button } from 'src/molecules';
+import { Button, OptionalTooltip } from 'src/molecules';
+import { BORDER_RADIUS } from 'src/molecules/FileProgress/CompactFileProgress.styles';
 import { UploadIllustration } from 'src/molecules/FileUploadArea/UploadIllustration';
 
 import styled from 'styled-components';
@@ -34,15 +35,33 @@ const UploadWrapper = styled.div`
 `;
 
 const CompactUploadWrapper = styled.div`
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 88px;
   height: 88px;
-  border: 1px dashed ${colors.interactive.primary__resting.rgba};
-  border-radius: 4px;
+  border: 2px dashed ${colors.interactive.primary__resting.rgba};
+  border-radius: ${BORDER_RADIUS};
   background: ${colors.ui.background__light.rgba};
   transition: background ${animation.transitionMS};
+  > svg {
+    width: 48px;
+    height: 48px;
+  }
+  > p {
+    color: ${colors.interactive.primary__resting.rgba};
+  }
+  > p:last-child {
+    color: ${colors.text.static_icons__tertiary.rgba};
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    position: absolute;
+    bottom: calc((1.6em + ${spacings.small}) * -1);
+  }
   &:hover {
     cursor: pointer;
     background: ${colors.interactive.primary__hover_alt.rgba};
@@ -86,7 +105,13 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
     return (
       <CompactUploadWrapper {...getRootProps()}>
         <input data-testid="file-upload-area-input" {...getInputProps()} />
-        <Icon data={add} color={colors.interactive.primary__resting.rgba} />
+        <UploadIllustration />
+        <Typography variant="meta">Upload image</Typography>
+        {options.accept && (
+          <OptionalTooltip title={`Supported filetypes: ${filetypes}`}>
+            <Typography variant="meta">({filetypes})</Typography>
+          </OptionalTooltip>
+        )}
       </CompactUploadWrapper>
     );
   }
