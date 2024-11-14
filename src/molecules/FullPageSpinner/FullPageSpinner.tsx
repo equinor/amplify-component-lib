@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
 
 import { Progress, Scrim, StarProgress } from '@equinor/eds-core-react';
 
@@ -18,6 +18,10 @@ const NoScrimContainer = styled.div`
   display: flex;
 `;
 
+const ChildrenWrapper = styled.div`
+  visibility: hidden;
+`;
+
 const CircularProgress = styled(Progress.Circular)`
   circle {
     stroke: ${colors.interactive.primary__resting.rgba};
@@ -30,11 +34,13 @@ const CircularProgress = styled(Progress.Circular)`
 export interface FullPageSpinnerProps {
   variant?: 'equinor' | 'circle' | 'dots' | 'application';
   withScrim?: boolean;
+  children?: ReactNode | ReactNode[];
 }
 
 export const FullPageSpinner: FC<FullPageSpinnerProps> = ({
   variant = 'application',
   withScrim = false,
+  children,
 }) => {
   const spinner = useMemo(() => {
     switch (variant) {
@@ -52,8 +58,18 @@ export const FullPageSpinner: FC<FullPageSpinnerProps> = ({
   }, [variant]);
 
   if (!withScrim) {
-    return <NoScrimContainer>{spinner}</NoScrimContainer>;
+    return (
+      <NoScrimContainer>
+        {spinner}
+        {children && <ChildrenWrapper>{children}</ChildrenWrapper>}
+      </NoScrimContainer>
+    );
   }
 
-  return <Scrim open>{spinner}</Scrim>;
+  return (
+    <Scrim open>
+      {spinner}
+      {children && <ChildrenWrapper>{children}</ChildrenWrapper>}
+    </Scrim>
+  );
 };
