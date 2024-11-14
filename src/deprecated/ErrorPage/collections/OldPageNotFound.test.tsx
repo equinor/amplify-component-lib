@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { PageNotFound } from 'src/organisms/ErrorPage/collections/PageNotFound';
+import { OldPageNotFound } from 'src/deprecated/ErrorPage/collections/OldPageNotFound';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
 test('Displays expected text', () => {
-  render(<PageNotFound />, {
+  render(<OldPageNotFound />, {
     wrapper: (props: { children: ReactNode }) => (
       <MemoryRouter>{props.children}</MemoryRouter>
     ),
@@ -20,7 +20,7 @@ test('Displays expected text', () => {
 test('Runs navigate(-1) when clicking button', async () => {
   render(
     <Routes>
-      <Route path="not-found" element={<PageNotFound />} />
+      <Route path="not-found" element={<OldPageNotFound />} />
       <Route path="home" element={<p>Home page</p>} />
     </Routes>,
     {
