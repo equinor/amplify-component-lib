@@ -44,9 +44,11 @@ export const MissingAccesses = forwardRef<HTMLDivElement, MissingAccessesProps>(
             </Typography>
             {access.url && (
               <Button
+                as="a"
                 data-testid={`missing-access-button-${access.title}`}
                 variant="ghost_icon"
-                onClick={() => window.open(access.url, '_blank')}
+                target="_blank"
+                href={access.url}
               >
                 <Icon
                   data={external_link}
