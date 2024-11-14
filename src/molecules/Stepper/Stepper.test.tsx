@@ -10,7 +10,7 @@ import {
   StepperProviderProps,
   useStepper,
 } from 'src/providers/StepperProvider';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeSteps(): StepperProviderProps['steps'] {
   const steps: StepperProviderProps['steps'] = [

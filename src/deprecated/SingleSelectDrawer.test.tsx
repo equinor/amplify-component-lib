@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import SingleSelectDrawer, {
   SingleSelectDrawerProps,
 } from 'src/deprecated/SingleSelectDrawer';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeItem(): { id: string; label: string } {
   return {

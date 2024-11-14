@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { setupIcons } from './favicon';
-import { render } from 'src/tests/test-utils';
+import { render } from 'src/tests/browsertest-utils';
 
 const lightId = 'light';
 const darkId = 'dark';

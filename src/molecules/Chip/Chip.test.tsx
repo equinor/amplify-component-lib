@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 import { colorSchemes } from './Chip.styles';
 import { Chip } from 'src/molecules/Chip/Chip';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Shows readonly chip with leading icon', () => {
   const someText = faker.animal.crocodilia();

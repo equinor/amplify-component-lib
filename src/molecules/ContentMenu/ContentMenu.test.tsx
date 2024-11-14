@@ -5,7 +5,7 @@ import {
   ContentMenu,
   ContentMenuProps,
 } from 'src/molecules/ContentMenu/ContentMenu';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeItem(): { label: string; value: string } {
   return {

@@ -67,7 +67,7 @@ function fakeUser(): ImpersonateUserDto {
   const firstName = faker.string.uuid();
   const lastName = faker.person.lastName();
   const fullName = `${firstName} ${lastName}`;
-  const uniqueName = faker.internet.userName();
+  const uniqueName = faker.internet.username();
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
@@ -171,7 +171,7 @@ export const handlers = [
     activeImpersonateUser = user;
 
     if (user) {
-      user.activeUsers.push(faker.internet.userName());
+      user.activeUsers.push(faker.internet.username());
       return HttpResponse.json(user);
     }
 

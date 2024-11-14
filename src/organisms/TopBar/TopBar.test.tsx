@@ -8,7 +8,13 @@ import { TopBar } from '.';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { spacings } from 'src/atoms/style';
 import { Field } from 'src/atoms/types/Field';
-import { act, render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import {
+  act,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 

@@ -9,14 +9,14 @@ import { ReleaseNotes } from './ReleaseNotes';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import * as useReleaseNotes from 'src/providers/ReleaseNotesProvider';
-import { fakeReleaseNotes } from 'src/tests/mockHandlers';
 import {
   render,
   screen,
   userEvent,
   waitFor,
   within,
-} from 'src/tests/test-utils';
+} from 'src/tests/browsertest-utils';
+import { fakeReleaseNotes } from 'src/tests/mockHandlers';
 
 import { beforeAll, describe, expect } from 'vitest';
 

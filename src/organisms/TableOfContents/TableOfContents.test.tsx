@@ -8,7 +8,7 @@ import {
   TableOfContentsItemType,
   TableOfContentsProvider,
 } from 'src/providers/TableOfContentsProvider';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeItems(withChildren = false): TableOfContentsItemType[] {
   return new Array(faker.number.int({ min: 4, max: 16 })).fill(0).map(() => ({

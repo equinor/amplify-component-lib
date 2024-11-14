@@ -1,15 +1,19 @@
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { Account } from 'src/organisms/TopBar/Account/Account';
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
-import { server } from 'src/tests/setupTests';
-import { renderWithProviders, screen, userEvent } from 'src/tests/test-utils';
+import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
 
 describe('Active impersonation', () => {
   beforeEach(() => {
-    server.use(
+    worker.use(
       http.get(
         '*/api/v1/ImpersonateUser/ActiveUser',
         async () => {

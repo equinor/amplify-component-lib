@@ -4,16 +4,13 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
-    maxConcurrency: 35,
-    server: {
-      deps: {
-        inline: ['@equinor/subsurface-app-management']
-      }
-    },
     globals: true,
-    environment: 'jsdom',
     passWithNoTests: true,
-    setupFiles: ['src/tests/setupTests.ts', 'src/tests/browserMocks.ts', 'src/tests/msalMock.tsx'],
+    env: {
+      VITE_IS_MOCK: 'true',
+      VITE_NAME: 'Amplify components',
+      VITE_API_CLIENT_ID: 'fake-id'
+    },
     exclude: [
       'dist',
       'node_modules',

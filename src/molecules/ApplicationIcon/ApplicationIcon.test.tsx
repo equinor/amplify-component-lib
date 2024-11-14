@@ -17,7 +17,7 @@ import {
   pwex,
   recap,
 } from './ApplicationIconCollection';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { expect, test } from 'vitest';
 

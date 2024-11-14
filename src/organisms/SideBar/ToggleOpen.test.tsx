@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
 import { ToggleOpen, ToggleOpenProps } from 'src/organisms/SideBar/ToggleOpen';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 const { colors } = tokens;
 
 function fakeProps(): ToggleOpenProps {

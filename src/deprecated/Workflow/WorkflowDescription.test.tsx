@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import WorkflowDescription, {
   WorkflowDescriptionProps,
 } from 'src/deprecated/Workflow/WorkflowDescription';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 function fakeOption(undefinedApprovedDate = false, withColor = false) {
   if (Math.random() > 0.5 || undefinedApprovedDate) {

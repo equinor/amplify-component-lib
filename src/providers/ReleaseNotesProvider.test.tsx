@@ -2,7 +2,6 @@ import { act, FC, ReactNode } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { renderHook, waitFor } from '../tests/test-utils';
 import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
 import { ReleaseNoteType } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
 import {
@@ -12,6 +11,7 @@ import {
   sortReleaseNotesByDate,
   yearValueToString,
 } from 'src/providers/ReleaseNotesProvider.utils';
+import { renderHook, waitFor } from 'src/tests/browsertest-utils';
 import { fakeReleaseNotes } from 'src/tests/mockHandlers';
 
 interface WrapperProp {

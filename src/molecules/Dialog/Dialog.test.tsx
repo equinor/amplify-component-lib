@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 
 import { Dialog, DialogAction } from './Dialog';
 import { colors } from 'src/atoms/style/colors';
-import { render, screen, userEvent, within } from 'src/tests/test-utils';
+import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
 
 test('Basic dialog', () => {
   const handleOnClose = vi.fn();

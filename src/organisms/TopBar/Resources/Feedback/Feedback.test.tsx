@@ -15,7 +15,12 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 
 function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();

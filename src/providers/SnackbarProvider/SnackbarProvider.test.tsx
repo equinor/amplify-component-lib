@@ -8,7 +8,12 @@ import {
   useSnackbar,
 } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { snackbarIcon } from 'src/providers/SnackbarProvider/SnackbarProvider.utils';
-import { renderHook, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import {
+  renderHook,
+  screen,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 
 test("'useSnackbar' hook throws error if using outside of context", () => {
   // Hides console errors since this test explicitly tests for thrown errors

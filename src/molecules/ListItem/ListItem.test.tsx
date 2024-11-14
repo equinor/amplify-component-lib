@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 import { colors, spacings } from 'src/atoms/style';
 import { ListItem, ListItemProps } from 'src/molecules/ListItem/ListItem';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): ListItemProps {
   return {

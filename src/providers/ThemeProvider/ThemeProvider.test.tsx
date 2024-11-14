@@ -1,9 +1,10 @@
 import { act, FC, ReactNode } from 'react';
 
+import { renderHook } from '@testing-library/react';
+
 import { ThemeProvider, useThemeProvider } from './ThemeProvider';
 import { THEME_LOCALSTORAGE_KEY } from './ThemeProvider.constants';
 import { Theme } from 'src/atoms/enums/Theme';
-import { renderHook } from 'src/tests/test-utils';
 
 const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
   return (

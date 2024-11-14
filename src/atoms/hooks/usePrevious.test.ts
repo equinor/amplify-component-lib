@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { faker } from '@faker-js/faker';
+import { renderHook } from '@testing-library/react';
 
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
-import { renderHook } from 'src/tests/test-utils';
 
 test('Returns previous value', () => {
   const initial = faker.animal.cow();

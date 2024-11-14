@@ -1,6 +1,6 @@
 import { DataGrid } from 'src/organisms/DataGrid/DataGrid';
 import { data } from 'src/organisms/DataGrid/stories/data';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 const columns = [
   {

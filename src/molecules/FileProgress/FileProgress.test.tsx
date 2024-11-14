@@ -14,7 +14,7 @@ import {
   FileProgress,
   RegularFileProgressBaseProps,
 } from 'src/molecules/FileProgress/FileProgress';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 

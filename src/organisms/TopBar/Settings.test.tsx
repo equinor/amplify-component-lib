@@ -1,6 +1,6 @@
 import { Settings, SettingsProps } from './Settings';
 import { ThemeProvider } from 'src/providers';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Settings renders as expected', async () => {
   const theme = 'light';

@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleasePosts } from './ReleasePosts';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen, waitFor, within } from 'src/tests/test-utils';
+import { render, screen, waitFor, within } from 'src/tests/browsertest-utils';
 
 const releaseNotes = [
   {

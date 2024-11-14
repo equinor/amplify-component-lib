@@ -18,7 +18,7 @@ import {
 import { useNotification } from './NotificationProvider';
 import { Notifications } from './Notifications';
 import { date } from 'src/atoms/utils';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { beforeEach, describe, expect } from 'vitest';
 

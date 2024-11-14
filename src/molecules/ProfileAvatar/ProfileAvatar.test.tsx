@@ -6,7 +6,7 @@ import {
   ProfileAvatar,
   ProfileAvatarProps,
 } from 'src/molecules/ProfileAvatar/ProfileAvatar';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 

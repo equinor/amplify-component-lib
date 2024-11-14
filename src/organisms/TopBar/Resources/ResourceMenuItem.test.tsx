@@ -2,7 +2,7 @@ import { report_bug } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { ResourceMenuItem } from './ResourceMenuItem';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Render resources menu item with a href link', () => {
   const name = faker.animal.cow();

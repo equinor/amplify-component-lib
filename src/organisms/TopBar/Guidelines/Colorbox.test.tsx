@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { Colorbox } from './Colorbox';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Renders Colorbox correctly', () => {
   const color = faker.color.rgb();

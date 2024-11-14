@@ -14,7 +14,7 @@ import {
   screen,
   userEvent,
   within,
-} from 'src/tests/test-utils';
+} from 'src/tests/browsertest-utils';
 
 test('Renders as expected', () => {
   const items = fakeSelectItems();

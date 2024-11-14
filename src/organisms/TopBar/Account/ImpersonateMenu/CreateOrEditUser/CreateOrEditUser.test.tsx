@@ -3,8 +3,12 @@ import { waitForElementToBeRemoved, within } from '@testing-library/dom';
 import { waitFor } from '@testing-library/react';
 
 import { Account } from '../../Account';
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 import { FAKE_ROLES } from 'src/tests/mockHandlers';
-import { renderWithProviders, screen, userEvent } from 'src/tests/test-utils';
 
 describe('CreateNewUser', () => {
   test('Able to open/close create new', async () => {

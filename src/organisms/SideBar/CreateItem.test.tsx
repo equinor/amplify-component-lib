@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 
 import { CreateItem, CreateItemProps } from 'src/organisms/SideBar/CreateItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 const { colors, shape } = tokens;
 
 function fakeProps(): CreateItemProps {

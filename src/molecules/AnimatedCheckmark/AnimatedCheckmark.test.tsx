@@ -1,6 +1,6 @@
 import { AnimatedCheckmark } from './AnimatedCheckmark';
 import { sizeToPx } from './AnimatedCheckmark.utils';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Default size is as expected', () => {
   render(<AnimatedCheckmark />);

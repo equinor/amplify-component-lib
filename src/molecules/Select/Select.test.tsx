@@ -14,7 +14,7 @@ import {
   render,
   screen,
   userEvent,
-} from 'src/tests/test-utils';
+} from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 

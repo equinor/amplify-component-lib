@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { Filter, FilterProps } from 'src/organisms/Filter/Filter';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): Omit<FilterProps<string>, 'children'> {
   return {

@@ -5,7 +5,7 @@ import {
   ExpandingIconButton,
   ExpandingIconButtonProps,
 } from 'src/deprecated/ExpandingIconButton/ExpandingIconButton';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): ExpandingIconButtonProps {
   return {

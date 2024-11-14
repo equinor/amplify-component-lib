@@ -2,7 +2,7 @@ import {
   ApplicationIconNew,
   ApplicationIconProps,
 } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 const defaultProps: ApplicationIconProps = {
   name: 'amplify',

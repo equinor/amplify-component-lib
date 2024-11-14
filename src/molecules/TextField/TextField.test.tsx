@@ -1,6 +1,6 @@
 import { TextField } from './TextField';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Dirty variant', () => {
   render(<TextField id="text" variant="dirty" />);

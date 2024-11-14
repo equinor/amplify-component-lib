@@ -3,7 +3,12 @@ import { within } from '@testing-library/dom';
 
 import { Field } from 'src/atoms/types/Field';
 import { FieldSelector } from 'src/organisms/FieldSelector/FieldSelector';
-import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 
 function fakeFields(): Field[] {
   const fields: Field[] = [];

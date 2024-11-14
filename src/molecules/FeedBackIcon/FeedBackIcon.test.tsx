@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { FeedBackIcon, FeedBackIconProps } from './FeedBackIcon';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 const nameOptions: FeedBackIconProps['name'][] = ['positive', 'negative'];
 const variantOptions: FeedBackIconProps['variant'][] = ['filled', 'outlined'];

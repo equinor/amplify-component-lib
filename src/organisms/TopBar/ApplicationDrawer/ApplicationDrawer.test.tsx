@@ -14,7 +14,7 @@ import userEvent from '@testing-library/user-event';
 
 import { ApplicationDrawer } from './ApplicationDrawer';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
-import { waitFor } from 'src/tests/test-utils';
+import { waitFor } from 'src/tests/browsertest-utils';
 
 import { expect, vi } from 'vitest';
 

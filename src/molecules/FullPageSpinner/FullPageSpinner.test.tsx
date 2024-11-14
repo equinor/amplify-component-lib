@@ -1,5 +1,5 @@
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('renders without scrim by default', () => {
   render(<FullPageSpinner></FullPageSpinner>);

@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { AuthProvider } from './AuthProvider/AuthProvider';
 import { LoadingProvider } from './LoadingProvider';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 function Wrapper({
   queryKey,

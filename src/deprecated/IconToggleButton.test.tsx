@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import IconToggleButton, {
   IconToggleButtonProps,
 } from 'src/deprecated/IconToggleButton';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(withToolTip = false): IconToggleButtonProps {
   return {

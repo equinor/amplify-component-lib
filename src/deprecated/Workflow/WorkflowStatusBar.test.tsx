@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import WorkflowStatusBar, {
   WorkflowStatusBarProps,
 } from 'src/deprecated/Workflow/WorkflowStatusBar';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 function fakeOption() {
   return {

@@ -1,15 +1,15 @@
 import { faker } from '@faker-js/faker';
 
 import { Account } from 'src/organisms/TopBar/Account/Account';
-import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
-import { server } from 'src/tests/setupTests';
 import {
   renderWithProviders,
   screen,
   userEvent,
   waitForElementToBeRemoved,
   within,
-} from 'src/tests/test-utils';
+} from 'src/tests/browsertest-utils';
+import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
+import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
 
@@ -52,13 +52,13 @@ test(
 );
 
 test('Not able to delete user impersonation with activeUsers', async () => {
-  server.use(
+  worker.use(
     http.get(
       '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
       async () => {
         await delay('real');
         const copy = structuredClone(fakeImpersonateUsers);
-        copy[0].activeUsers.push(faker.internet.userName());
+        copy[0].activeUsers.push(faker.internet.username());
         return HttpResponse.json(copy);
       }
     )

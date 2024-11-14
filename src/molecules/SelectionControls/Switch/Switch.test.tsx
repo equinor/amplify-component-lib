@@ -2,7 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { Switch } from './Switch';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 const { colors } = tokens;
 

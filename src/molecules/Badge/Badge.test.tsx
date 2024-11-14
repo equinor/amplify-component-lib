@@ -1,6 +1,6 @@
 import { colors } from 'src/atoms/style';
 import { Badge } from 'src/molecules/Badge/Badge';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Badge renders with expected variants', () => {
   const { rerender } = render(<Badge value={1} />);
