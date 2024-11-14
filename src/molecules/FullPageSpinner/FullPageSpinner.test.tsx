@@ -54,3 +54,10 @@ test('renders children as hidden', () => {
 
   expect(screen.getByText(text)).not.toBeVisible();
 });
+
+test('renders children as hidden withScrim=true', () => {
+  const text = faker.animal.dog();
+  render(<FullPageSpinner withScrim>{text}</FullPageSpinner>);
+
+  expect(screen.getByText(text)).not.toBeVisible();
+});
