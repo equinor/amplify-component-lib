@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { render, screen } from 'src/tests/test-utils';
 
@@ -44,4 +46,11 @@ test('renders dots when prop is given', () => {
   expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
     'Dot'
   );
+});
+
+test('renders children as hidden', () => {
+  const text = faker.animal.dog();
+  render(<FullPageSpinner>{text}</FullPageSpinner>);
+
+  expect(screen.getByText(text)).not.toBeVisible();
 });
