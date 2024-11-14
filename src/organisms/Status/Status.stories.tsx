@@ -65,3 +65,21 @@ export const Default: StoryFn<StatusStoryProps> = (args) => {
     </Status>
   );
 };
+
+export const WithMissingAccesses: StoryFn<StatusStoryProps> = (args) => {
+  const handleOnButtonClick = () => {
+    action('Button clicked')();
+  };
+
+  return (
+    <Status>
+      <Status.Title title="Missing some accesses" />
+      <Status.Description text="To use this app you need some accesses" />
+      <Status.MissingAccesses accesses={args.missingAccesses} />
+      <Status.Action
+        buttonText="Go to AccessIT"
+        onClick={handleOnButtonClick}
+      />
+    </Status>
+  );
+};
