@@ -52,8 +52,16 @@ export const LoadingProvider: FC<LoadingProviderProps> = ({
     }
   }, [authState, isFetchingFeatureToggleOrTutorial, isLoading]);
 
-  if (isLoading) {
+  /*
+   * If the user isn't authorized, we can't show children
+   * because all the requests would cause infinite rerenders
+   * */
+  if (authState !== 'authorized') {
     return <FullPageSpinner variant="application" />;
+  }
+
+  if (isLoading) {
+    return <FullPageSpinner variant="application">{children}</FullPageSpinner>;
   }
 
   return children;

@@ -6,7 +6,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { AuthProvider } from './AuthProvider/AuthProvider';
 import { LoadingProvider } from './LoadingProvider';
-import { render, screen } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from 'src/tests/test-utils';
 
 function Wrapper({
   queryKey,
@@ -55,6 +59,8 @@ test('LoadingProvider works as expected', async () => {
   );
 
   expect(screen.getByTestId('app-icon-svg')).toBeInTheDocument();
+
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
   expect(await screen.findByText(fakeText)).toBeInTheDocument();
 });
