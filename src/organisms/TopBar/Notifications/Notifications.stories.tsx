@@ -1,3 +1,4 @@
+import { Button } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import {
@@ -13,7 +14,6 @@ import {
 } from './NotificationsTemplate/Notifications.types';
 import { Notifications } from './Notifications';
 import { NotificationsProps } from './NotificationsInner';
-import { Button } from '@equinor/eds-core-react';
 
 export default {
   title: 'Organisms/TopBar/Notifications',
