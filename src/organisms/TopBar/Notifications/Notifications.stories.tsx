@@ -13,6 +13,7 @@ import {
 } from './NotificationsTemplate/Notifications.types';
 import { Notifications } from './Notifications';
 import { NotificationsProps } from './NotificationsInner';
+import { Button } from '@equinor/eds-core-react';
 
 export default {
   title: 'Organisms/TopBar/Notifications',
@@ -147,5 +148,22 @@ export const Primary: StoryFn<NotificationsProps> = (args) => {
       showFilterOptions={true}
       notifications={items}
     />
+  );
+};
+
+export const RenderProps: StoryFn<NotificationsProps> = (args) => {
+  return (
+    <Notifications
+      hasUnread={args.hasUnread}
+      setAllAsRead={() => null}
+      showFilterOptions={true}
+      notifications={items}
+    >
+      {({ onClose }) => (
+        <Button onClick={onClose} variant="outlined">
+          Discard all
+        </Button>
+      )}
+    </Notifications>
   );
 };

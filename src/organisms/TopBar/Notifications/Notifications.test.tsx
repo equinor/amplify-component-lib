@@ -238,6 +238,31 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
   expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 });
 
+test('Calls setAllAsRead when triggering handler outside the component', async () => {
+  const randomText = faker.animal.dog();
+  const setAllAsRead = vi.fn();
+  render(
+    <Notifications setAllAsRead={setAllAsRead}>
+      {({ onClose }) => <button onClick={onClose}>{randomText}</button>}
+    </Notifications>
+  );
+  const user = userEvent.setup();
+
+  const buttons = screen.getAllByRole('button');
+
+  const closeButton = buttons[0];
+
+  await user.click(closeButton);
+
+  expect(screen.getByTestId('top-bar-menu')).toBeVisible();
+
+  const butttonInsidePanel = screen.getByText(randomText);
+
+  await user.click(butttonInsidePanel);
+
+  expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
+});
+
 test('Renders unread dot when unread = true', async () => {
   render(
     <Notifications setAllAsRead={() => null} hasUnread {...notificationsData} />
