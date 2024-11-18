@@ -19,15 +19,6 @@ spec:
         - name: https
           port: 8080
       publicPort: https
-      environmentConfig:
-        - environment: feature
-          horizontalScaling:
-            minReplicas: 0
-            maxReplicas: 1
-            triggers:
-              - name: cpu
-                cpu:
-                  value: 50
       secrets:
         - GITHUB_PAT_SEARCH_TOKEN
 
