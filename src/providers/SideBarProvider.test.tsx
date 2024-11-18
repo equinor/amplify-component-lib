@@ -1,5 +1,5 @@
-import { renderHook } from '../tests/test-utils';
 import { useSideBar } from './SideBarProvider';
+import { renderHook } from 'src/tests/browsertest-utils';
 
 test("'useSideBar' hook throws error when used outside provider", () => {
   console.error = vi.fn();

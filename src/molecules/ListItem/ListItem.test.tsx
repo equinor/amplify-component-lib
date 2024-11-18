@@ -61,9 +61,8 @@ test('Renders border bottom as expected', () => {
   render(<ListItem {...props} borderBottom />);
   const container = screen.getByText(props.label).parentElement!.parentElement!;
 
-  expect(container).toHaveStyleRule(
-    'border-bottom',
-    `1px solid ${colors.ui.background__medium.rgba}`
+  expect(container).toHaveStyle(
+    `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
   );
 });
 
@@ -72,7 +71,7 @@ test('Renders colors as expected', () => {
   render(<ListItem {...props} />);
   const container = screen.getByText(props.label).parentElement!.parentElement!;
 
-  expect(container).toHaveStyleRule('background', 'transparent');
+  expect(container).toHaveStyle('background: transparent');
 
   expect(container).toHaveStyleRule(
     'background',
@@ -86,9 +85,8 @@ test('Renders selected color as expected', () => {
   render(<ListItem {...props} selected />);
   const container = screen.getByText(props.label).parentElement!.parentElement!;
 
-  expect(container).toHaveStyleRule(
-    'background',
-    colors.interactive.primary__selected_highlight.rgba
+  expect(container).toHaveStyle(
+    `background: ${colors.interactive.primary__selected_highlight.rgba}`
   );
 
   expect(container).toHaveStyleRule(
@@ -141,9 +139,8 @@ test('isChild offsets as expected', () => {
   render(<ListItem {...props} isChild />);
   const container = screen.getByText(props.label).parentElement!.parentElement!;
 
-  expect(container).toHaveStyleRule(
-    'padding',
-    `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.xx_large}`
+  expect(container).toHaveStyle(
+    `padding: ${spacings.small} ${spacings.large} ${spacings.small} ${spacings.xx_large}`
   );
 });
 

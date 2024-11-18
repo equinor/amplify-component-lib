@@ -118,9 +118,8 @@ test('White readonly chip has expected background', () => {
 
   const chip = screen.getByText(someText).parentElement!.parentElement!;
 
-  expect(chip).toHaveStyleRule(
-    'background-color',
-    colorSchemes.white.background
+  expect(chip).toHaveStyle(
+    `background-color: ${colorSchemes.white.background}`
   );
 });
 
@@ -138,14 +137,12 @@ test('White selected chip has expected styling from default', () => {
 
   const chip = screen.getByRole('button');
 
-  expect(chip).toHaveStyleRule(
-    'background-color',
-    defaultStyling.selected?.background
+  expect(chip).toHaveStyle(
+    `background-color: ${defaultStyling.selected?.background}`
   );
-  expect(chip).toHaveStyleRule('color', defaultStyling.color);
-  expect(chip).toHaveStyleRule(
-    'outline',
-    `1px solid ${defaultStyling.selected?.borderColor}`
+  expect(chip).toHaveStyle(`color: ${defaultStyling.color}`);
+  expect(chip).toHaveStyle(
+    `outline: 1px solid ${defaultStyling.selected?.borderColor}`
   );
 });
 

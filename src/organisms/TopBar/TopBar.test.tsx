@@ -285,30 +285,26 @@ test('Renders with correct styles', () => {
   const headerContainer = topBar.firstChild;
   const appIdentifier = screen.getByRole('link', { name: appName });
 
-  expect(topBar).toHaveStyleRule(
-    'border-bottom',
-    `1px solid ${colors.ui.background__medium.rgba}`
+  expect(topBar).toHaveStyle(
+    `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
   );
-  expect(topBar).toHaveStyleRule(
-    'background',
-    colors.ui.background__default.rgba
+  expect(topBar).toHaveStyle(
+    `background: ${colors.ui.background__default.rgba}`
   );
-  expect(topBar).toHaveStyleRule('padding-top', eds_spacings.comfortable.small);
-  expect(topBar).toHaveStyleRule(
-    'padding-right',
-    eds_spacings.comfortable.large
+  expect(topBar).toHaveStyle(`padding-top: ${eds_spacings.comfortable.small}`);
+  expect(topBar).toHaveStyle(
+    `padding-right: ${eds_spacings.comfortable.large}`
   );
-  expect(topBar).toHaveStyleRule(
-    'padding-bottom',
-    eds_spacings.comfortable.small
+  expect(topBar).toHaveStyle(
+    `padding-bottom: ${eds_spacings.comfortable.small}`
   );
-  expect(topBar).toHaveStyleRule('padding-left', spacings.medium);
-  expect(topBar).toHaveStyleRule('align-items', 'center');
-  expect(topBar).toHaveStyleRule('height', '64px');
+  expect(topBar).toHaveStyle(`padding-left: ${spacings.medium}`);
+  expect(topBar).toHaveStyle('align-items: center');
+  expect(topBar).toHaveStyle('height: 64px');
 
-  expect(headerContainer).toHaveStyleRule('gap', spacings.medium);
+  expect(headerContainer).toHaveStyle(`gap: ${spacings.medium}`);
 
-  expect(appIdentifier).toHaveStyleRule('display', 'flex');
-  expect(appIdentifier).toHaveStyleRule('align-items', 'center');
-  expect(appIdentifier).toHaveStyleRule('gap', spacings.medium_small);
+  expect(appIdentifier).toHaveStyle('display: flex');
+  expect(appIdentifier).toHaveStyle('align-items: center');
+  expect(appIdentifier).toHaveStyle(`gap: ${spacings.medium_small}`);
 });

@@ -28,7 +28,7 @@ test('Renders rows and header', async () => {
 
   await user.hover(wrapper);
 
-  expect(wrapper).toHaveStyleRule('cursor', 'default');
+  expect(wrapper).toHaveStyle('cursor: default');
 
   await user.unhover(wrapper);
 

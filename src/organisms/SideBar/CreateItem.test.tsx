@@ -33,22 +33,20 @@ describe('Expanded', () => {
       const item = button.parentElement;
       const svgPath = screen.getByTestId('eds-icon-path');
 
-      expect(item).toHaveStyleRule('display', 'flex');
-      expect(item).toHaveStyleRule('padding', '0 14px');
-      expect(item).toHaveStyleRule('align-items', 'center');
-      expect(item).toHaveStyleRule('align-self', 'stretch');
-      expect(item).toHaveStyleRule('box-sizing', 'border-box');
-      expect(item).toHaveStyleRule('height', '64px');
-      expect(item).toHaveStyleRule(
-        'border-bottom',
-        `1px solid ${colors.ui.background__medium.rgba}`
+      expect(item).toHaveStyle('display: flex');
+      expect(item).toHaveStyle('padding: 0 14px');
+      expect(item).toHaveStyle('align-items: center');
+      expect(item).toHaveStyle('align-self: stretch');
+      expect(item).toHaveStyle('box-sizing: border-box');
+      expect(item).toHaveStyle('height: 64px');
+      expect(item).toHaveStyle(
+        `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
       );
 
-      expect(button).toHaveStyleRule('width', 'fit-content');
-      expect(button).toHaveStyleRule('height', '36px');
-      expect(button).toHaveStyleRule(
-        'border-radius',
-        shape.icon_button.borderRadius
+      expect(button).toHaveStyle('width: fit-content');
+      expect(button).toHaveStyle('height: 36px');
+      expect(button).toHaveStyle(
+        `border-radius: ${shape.icon_button.borderRadius}`
       );
       expect(button).toHaveStyleRule(
         'border-radius',
@@ -58,9 +56,8 @@ describe('Expanded', () => {
 
       expect(svgPath).toHaveAttribute('d', add.svgPathData);
 
-      expect(screen.getByTestId('create-item-container')).not.toHaveStyleRule(
-        'background',
-        colors.interactive.primary__selected_highlight.rgba
+      expect(screen.getByTestId('create-item-container')).not.toHaveStyle(
+        `background: ${colors.interactive.primary__selected_highlight.rgba}`
       );
     });
 
@@ -85,9 +82,8 @@ describe('Expanded', () => {
         wrapper: SideBarProvider,
       });
 
-      expect(screen.getByTestId('create-item-container')).toHaveStyleRule(
-        'background',
-        colors.interactive.primary__selected_highlight.rgba
+      expect(screen.getByTestId('create-item-container')).toHaveStyle(
+        `background: ${colors.interactive.primary__selected_highlight.rgba}`
       );
     });
   });
@@ -127,19 +123,18 @@ describe('Collapsed', () => {
       const svgPath = screen.getByTestId('eds-icon-path');
       const text = screen.queryByText(props.createLabel);
 
-      expect(item).toHaveStyleRule('display', 'flex');
-      expect(item).toHaveStyleRule('padding', '0 14px');
-      expect(item).toHaveStyleRule('align-items', 'center');
-      expect(item).toHaveStyleRule('align-self', 'stretch');
-      expect(item).toHaveStyleRule('box-sizing', 'border-box');
-      expect(item).toHaveStyleRule('height', '64px');
-      expect(item).toHaveStyleRule(
-        'border-bottom',
-        `1px solid ${colors.ui.background__medium.rgba}`
+      expect(item).toHaveStyle('display: flex');
+      expect(item).toHaveStyle('padding: 0 14px');
+      expect(item).toHaveStyle('align-items: center');
+      expect(item).toHaveStyle('align-self: stretch');
+      expect(item).toHaveStyle('box-sizing: border-box');
+      expect(item).toHaveStyle('height: 64px');
+      expect(item).toHaveStyle(
+        `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
       );
 
-      expect(button).toHaveStyleRule('width', '36px');
-      expect(button).toHaveStyleRule('height', '36px');
+      expect(button).toHaveStyle('width: 36px');
+      expect(button).toHaveStyle('height: 36px');
 
       expect(svgPath).toHaveAttribute('d', add.svgPathData);
 

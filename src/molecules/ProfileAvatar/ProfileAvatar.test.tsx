@@ -59,8 +59,8 @@ test('Renders image when given and in correct sizing', () => {
     rerender(<ProfileAvatar {...mockedProps} size={size} />);
     const avatar = screen.getByTestId('avatar-wrapper');
     const expectedSize = sizeToPx(size);
-    expect(avatar).toHaveStyleRule('width', `${expectedSize}px`);
-    expect(avatar).toHaveStyleRule('height', `${expectedSize}px`);
+    expect(avatar).toHaveStyle(`width: ${expectedSize}px`);
+    expect(avatar).toHaveStyle(`height: ${expectedSize}px`);
   }
 });
 
@@ -112,9 +112,8 @@ test('Renders first and last letter of name when image is not given', () => {
     rerender(<ProfileAvatar {...mockedProps} size={size} />);
     const expectedFontSize = sizeToFontsize(size);
 
-    expect(screen.getByText(initials).parentElement).toHaveStyleRule(
-      'font-size',
-      `${expectedFontSize}px`
+    expect(screen.getByText(initials).parentElement).toHaveStyle(
+      `font-size: ${expectedFontSize}px`
     );
   }
 });

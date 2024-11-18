@@ -150,7 +150,7 @@ test('Shows hover effects when withHover=true', async () => {
   const applicationIcon = screen.getByTestId('application-icon');
 
   await user.hover(applicationIcon);
-  expect(applicationIcon).toHaveStyleRule('cursor', 'pointer');
+  expect(applicationIcon).toHaveStyle('cursor: pointer');
 });
 
 test("Doesn't hover effects when withHover=false", async () => {
@@ -160,11 +160,11 @@ test("Doesn't hover effects when withHover=false", async () => {
   const applicationIcon = screen.getByTestId('application-icon');
 
   await user.hover(applicationIcon);
-  expect(applicationIcon).not.toHaveStyleRule('cursor');
+  expect(applicationIcon).not.toHaveStyle('cursor: pointer');
 });
 
 test('has grayscale css attribute when grayscale is set', () => {
   render(<ApplicationIcon name="orca" grayScale />);
   const applicationIcon = screen.getByTestId('application-icon');
-  expect(applicationIcon).toHaveStyleRule('filter', GRAYSCALE_FILTER_VALUE);
+  expect(applicationIcon).toHaveStyle(`filter: ${GRAYSCALE_FILTER_VALUE}`);
 });

@@ -58,15 +58,13 @@ test('Displays icon/number correctly', async () => {
 
   // Current does not have color attribute
   const firstElement = screen.getByText(steps[0].label);
-  expect(firstElement).toHaveStyleRule(
-    'color',
-    colors.text.static_icons__default.rgba
+  expect(firstElement).toHaveStyle(
+    `color: ${colors.text.static_icons__default.rgba}`
   );
 
   for (const step of steps.slice(1)) {
-    expect(screen.getByText(step.label)).toHaveStyleRule(
-      'color',
-      colors.interactive.disabled__text.rgba
+    expect(screen.getByText(step.label)).toHaveStyle(
+      `color: ${colors.interactive.disabled__text.rgba}`
     );
   }
 
@@ -164,9 +162,8 @@ test('maxWidth works as expected', () => {
     ),
   });
 
-  expect(screen.getByTestId('stepper-container')).toHaveStyleRule(
-    'max-width',
-    maxWidth
+  expect(screen.getByTestId('stepper-container')).toHaveStyle(
+    `max-width: ${maxWidth}`
   );
 });
 

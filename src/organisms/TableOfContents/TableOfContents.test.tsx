@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 
+import { colors } from 'src/atoms';
 import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
 import {
   TableOfContentsItemType,
@@ -433,9 +434,8 @@ describe('border and borderHorizontal  ', () => {
 
     const link = screen.getByRole('link', { name: items[0].label });
 
-    expect(link).toHaveStyleRule(
-      'color',
-      'var(--eds_text__static_icons__default, rgba(61, 61, 61, 1))'
+    expect(link).toHaveStyle(
+      `color: ${colors.text.static_icons__default.rgba}`
     );
 
     await user.click(link);
@@ -486,9 +486,8 @@ describe('border and borderHorizontal  ', () => {
 
     const link = screen.getByRole('link', { name: items[0].label });
 
-    expect(link).toHaveStyleRule(
-      'color',
-      'var(--eds_text__static_icons__default, rgba(61, 61, 61, 1))'
+    expect(link).toHaveStyle(
+      `color: ${colors.text.static_icons__default.rgba}`
     );
 
     await user.click(link);

@@ -4,12 +4,17 @@ import { MemoryRouter } from 'react-router-dom';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
-import { render, renderHook, screen, userEvent } from '../tests/test-utils';
 import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
 import {
   TableOfContentsProvider,
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
+import {
+  render,
+  renderHook,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 const { colors } = tokens;
 
@@ -96,9 +101,8 @@ test('SetItemRef works as expected', () => {
     name: items[0].label,
   });
 
-  expect(button).toHaveStyleRule(
-    'background',
-    colors.interactive.primary__hover_alt.rgba
+  expect(button).toHaveStyle(
+    `background: ${colors.interactive.primary__hover_alt.rgba}`
   );
 });
 

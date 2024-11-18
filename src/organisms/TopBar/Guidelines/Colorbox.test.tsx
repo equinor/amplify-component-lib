@@ -7,8 +7,7 @@ test('Renders Colorbox correctly', () => {
   const color = faker.color.rgb();
   render(<Colorbox data-testid="colorbox" $color={color} />);
 
-  expect(screen.getByTestId('colorbox')).toHaveStyleRule(
-    'background-color',
-    color
+  expect(screen.getByTestId('colorbox')).toHaveStyle(
+    `background-color: ${color}`
   );
 });

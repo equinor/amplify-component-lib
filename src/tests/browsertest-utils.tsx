@@ -5,17 +5,21 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { Template } from 'src/organisms/Template/Template';
 import { AuthProvider } from 'src/providers/AuthProvider/AuthProvider';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 
 const Providers: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
-      <SnackbarProvider>
-        <AuthProvider>{children}</AuthProvider>
-      </SnackbarProvider>
-    </QueryClientProvider>
+    <>
+      <Template.GlobalStyles />
+      <QueryClientProvider client={queryClient}>
+        <SnackbarProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </SnackbarProvider>
+      </QueryClientProvider>
+    </>
   );
 };
 
@@ -33,6 +37,15 @@ export function fakeSelectItem() {
 
 export function fakeSelectItems(count = 10) {
   return new Array(count).fill(0).map(() => fakeSelectItem());
+}
+
+export function getComputedStyleProperty(
+  element: Element,
+  property: keyof CSSStyleDeclaration
+) {
+  const computedStyle = window.getComputedStyle(element);
+
+  return computedStyle[property];
 }
 
 // re-export everything

@@ -45,23 +45,20 @@ describe('MenuItem', () => {
     const icon = svgPath.parentElement;
 
     expect(item.localName).toBe('a');
-    expect(item).toHaveStyleRule('display', 'flex');
-    expect(item).toHaveStyleRule('padding', spacings.medium);
-    expect(item).toHaveStyleRule('align-items', 'center');
-    expect(item).toHaveStyleRule('gap', spacings.medium);
-    expect(item).toHaveStyleRule('align-self', 'stretch');
-    expect(item).toHaveStyleRule('box-sizing', 'border-box');
-    expect(item).toHaveStyleRule('height', '64px');
-    expect(item).toHaveStyleRule('transition', 'background 0.1s ease-out');
-    expect(item).toHaveStyleRule('text-decoration', 'none');
-    expect(item).toHaveStyleRule('text-decoration', 'none', {
-      modifier: ':hover',
-    });
+    expect(item).toHaveStyle('display: flex');
+    expect(item).toHaveStyle(`padding: ${spacings.medium}`);
+    expect(item).toHaveStyle('align-items: center');
+    expect(item).toHaveStyle(`gap: ${spacings.medium}`);
+    expect(item).toHaveStyle('align-self: stretch');
+    expect(item).toHaveStyle('box-sizing: border-box');
+    expect(item).toHaveStyle('height: 64px');
+    expect(item).toHaveStyle('transition: background 0.1s ease-out');
+    expect(item).toHaveStyle('text-decoration: none');
 
-    expect(iconContainer).toHaveStyleRule('padding', spacings.x_small);
-    expect(iconContainer).toHaveStyleRule('align-items', 'center');
-    expect(iconContainer).toHaveStyleRule('width', '32px');
-    expect(iconContainer).toHaveStyleRule('height', '32px');
+    expect(iconContainer).toHaveStyle(`padding: ${spacings.x_small}`);
+    expect(iconContainer).toHaveStyle('align-items: center');
+    expect(iconContainer).toHaveStyle('width: 32px');
+    expect(iconContainer).toHaveStyle('height: 32px');
     expect(svgPath).toHaveAttribute('d', home.svgPathData);
     expect(icon).toHaveAttribute('height', '24px');
     expect(icon).toHaveAttribute('width', '24px');
@@ -94,23 +91,14 @@ describe('MenuItem', () => {
 
         testBaseStyles();
 
-        expect(item).toHaveStyleRule(
-          'border-bottom',
-          `1px solid ${colors.ui.background__medium.rgba}`
+        expect(item).toHaveStyle(
+          `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
         );
-        expect(item).toHaveStyleRule('outline', undefined);
-        expect(item).toHaveStyleRule('background', undefined);
 
-        // expect(svgPath.parentElement).toHaveAttribute(
-        //   'fill',
-        //   colors.interactive.primary__resting.rgba
-        // );
-
-        expect(text).toHaveStyleRule(
-          'color',
-          colors.text.static_icons__default.rgba
+        expect(text).toHaveStyle(
+          `color: ${colors.text.static_icons__default.rgba}`
         );
-        expect(text).toHaveStyleRule('font-weight', '500');
+        expect(text).toHaveStyle('font-weight: 500');
       });
 
       test('Hover', async () => {
@@ -139,7 +127,7 @@ describe('MenuItem', () => {
         expect(item).toHaveStyleRule('outline', undefined, {
           modifier: ':hover',
         });
-        expect(text).toHaveStyleRule('font-weight', '500');
+        expect(text).toHaveStyle('font-weight: 500');
 
         // expect(svgPath.parentElement).toHaveAttribute(
         //   'fill',
@@ -159,13 +147,11 @@ describe('MenuItem', () => {
 
         testBaseStyles();
 
-        expect(item).toHaveStyleRule(
-          'border-bottom',
-          `1px solid ${colors.ui.background__medium.rgba}`
+        expect(item).toHaveStyle(
+          `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
         );
-        expect(item).toHaveStyleRule(
-          'background',
-          colors.interactive.primary__selected_highlight.rgba
+        expect(item).toHaveStyle(
+          `background: ${colors.interactive.primary__selected_highlight.rgba}`
         );
         expect(item).toHaveStyleRule('outline', undefined);
 
@@ -174,11 +160,10 @@ describe('MenuItem', () => {
         //   colors.interactive.primary__resting.rgba
         // );
 
-        expect(text).toHaveStyleRule(
-          'color',
-          colors.text.static_icons__default.rgba
+        expect(text).toHaveStyle(
+          `color: ${colors.text.static_icons__default.rgba}`
         );
-        expect(text).toHaveStyleRule('font-weight', '500');
+        expect(text).toHaveStyle('font-weight: 500');
       });
 
       test('Selected + Hover', async () => {
@@ -218,11 +203,10 @@ describe('MenuItem', () => {
         //   colors.interactive.primary__resting.rgba
         // );
 
-        expect(text).toHaveStyleRule(
-          'color',
-          colors.text.static_icons__default.rgba
+        expect(text).toHaveStyle(
+          `color: ${colors.text.static_icons__default.rgba}`
         );
-        expect(text).toHaveStyleRule('font-weight', '500');
+        expect(text).toHaveStyle('font-weight: 500');
       });
 
       test('Focus', async () => {
@@ -246,11 +230,10 @@ describe('MenuItem', () => {
         //   colors.interactive.primary__resting.rgba
         // );
 
-        expect(text).toHaveStyleRule(
-          'color',
-          colors.text.static_icons__default.rgba
+        expect(text).toHaveStyle(
+          `color: ${colors.text.static_icons__default.rgba}`
         );
-        expect(text).toHaveStyleRule('font-weight', '500');
+        expect(text).toHaveStyle('font-weight: 500');
       });
 
       test('Disabled', async () => {
@@ -266,20 +249,18 @@ describe('MenuItem', () => {
 
         expect(item).toHaveAttribute('aria-disabled', 'true');
 
-        expect(item).toHaveStyleRule('background', undefined);
+        expect(item).not.toHaveStyle('background');
 
-        expect(text).toHaveStyleRule(
-          'color',
-          colors.interactive.disabled__text.rgba
+        expect(text).toHaveStyle(
+          `color: ${colors.interactive.disabled__text.rgba}`
         );
-        expect(text).toHaveStyleRule('font-weight', '500');
+        expect(text).toHaveStyle('font-weight: 500');
 
         const user = userEvent.setup();
         await user.hover(item);
 
-        expect(text).toHaveStyleRule(
-          'color',
-          colors.interactive.disabled__text.rgba
+        expect(text).toHaveStyle(
+          `color: ${colors.interactive.disabled__text.rgba}`
         );
       });
     });
@@ -403,12 +384,12 @@ describe('MenuItem', () => {
 
         testBaseStyles();
 
-        expect(item).toHaveStyleRule(
-          'border-bottom',
-          `1px solid ${colors.ui.background__medium.rgba}`
+        expect(item).toHaveStyle(
+          `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
         );
-        expect(item).toHaveStyleRule('outline', undefined);
-        expect(item).toHaveStyleRule('background', undefined);
+        expect(item).not.toHaveStyle('outline');
+
+        expect(item).not.toHaveStyle('background');
 
         // expect(svgPath.parentElement).toHaveAttribute(
         //   'fill',
@@ -456,13 +437,11 @@ describe('MenuItem', () => {
 
         testBaseStyles();
 
-        expect(item).toHaveStyleRule(
-          'border-bottom',
-          `1px solid ${colors.ui.background__medium.rgba}`
+        expect(item).toHaveStyle(
+          `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
         );
-        expect(item).toHaveStyleRule(
-          'background',
-          colors.interactive.primary__selected_highlight.rgba
+        expect(item).toHaveStyle(
+          `background: ${colors.interactive.primary__selected_highlight.rgba}`
         );
         expect(item).toHaveStyleRule('outline', undefined);
 

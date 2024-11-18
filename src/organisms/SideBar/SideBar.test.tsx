@@ -66,7 +66,7 @@ test('Renders closed on initial render', () => {
     }
   );
 
-  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '64px');
+  expect(screen.getByTestId('sidebar')).toHaveStyle('width: 64px');
 });
 
 test('Renders open width when localStorage has it set to open', () => {
@@ -84,7 +84,7 @@ test('Renders open width when localStorage has it set to open', () => {
       wrapper: wrapper,
     }
   );
-  expect(screen.getByTestId('sidebar')).toHaveStyleRule('width', '231px');
+  expect(screen.getByTestId('sidebar')).toHaveStyle('width: 231px');
 });
 
 test('Disabled create new button doesnt fire event', async () => {
@@ -124,14 +124,14 @@ test('Opens and closes when pressing the toggle button', async () => {
   const user = userEvent.setup();
 
   const sidebar = screen.getByTestId('sidebar');
-  expect(sidebar).toHaveStyleRule('width', '64px');
+  expect(sidebar).toHaveStyle('width: 64px');
 
   expect(screen.queryByText('Collapse')).not.toBeInTheDocument();
 
   const toggleButton = screen.getByRole('button');
   await user.click(toggleButton);
 
-  expect(sidebar).toHaveStyleRule('width', '231px');
+  expect(sidebar).toHaveStyle('width: 231px');
   expect(screen.getByText(/collapse/i)).toBeInTheDocument();
 });
 
@@ -160,7 +160,7 @@ test('Render Create button correctly when open', async () => {
 
   expect(screen.getByText(createLabel)).toBeInTheDocument();
   const createButton = screen.getAllByRole('button')[0];
-  expect(createButton).toHaveStyleRule('height', '36px');
+  expect(createButton).toHaveStyle('height: 36px');
 });
 
 test('Hides create button when showCreate=false', async () => {

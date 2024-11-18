@@ -53,9 +53,8 @@ test('Renders the flow correctly', () => {
     expect(
       screen.getByText(approvedOptions[index].label ?? 'failed')
     ).toBeInTheDocument();
-    expect(option.children[option.children.length - 1]).toHaveStyleRule(
-      'background',
-      approvedOptions[index].backgroundColor
+    expect(option.children[option.children.length - 1]).toHaveStyle(
+      `background: ${approvedOptions[index].backgroundColor}`
     );
   }
 
@@ -103,9 +102,8 @@ test('Renders with color approved dates properly flow correctly', () => {
     expect(
       screen.getByText(approvedOptions[index].label ?? 'failed')
     ).toBeInTheDocument();
-    expect(option.children[option.children.length - 1]).toHaveStyleRule(
-      'border',
-      `0.063em solid ${approvedOptions[index].color}`
+    expect(option.children[option.children.length - 1]).toHaveStyle(
+      `border: 0.063em solid ${approvedOptions[index].color}`
     );
   }
 });
@@ -128,9 +126,8 @@ test('Renders with fallback color', () => {
     expect(
       screen.getByText(approvedOptions[index].label ?? 'failed')
     ).toBeInTheDocument();
-    expect(option.children[option.children.length - 1]).toHaveStyleRule(
-      'border',
-      `0.063em solid var(--eds_text__static_icons__secondary, rgba(86, 86, 86, 1))`
+    expect(option.children[option.children.length - 1]).toHaveStyle(
+      `border: 0.063em solid var(--eds_text__static_icons__secondary, rgba(86, 86, 86, 1))`
     );
   }
 });

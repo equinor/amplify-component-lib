@@ -14,6 +14,7 @@ export default defineWorkspace([
       },
       exclude: ['src/atoms', 'src/deprecated'],
       setupFiles: ['src/tests/setupBrowserTests.ts'],
+      css: true
     },
   },
   {

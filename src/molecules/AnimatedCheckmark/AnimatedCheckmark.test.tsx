@@ -7,8 +7,8 @@ test('Default size is as expected', () => {
 
   const svg = screen.getByTestId('svg-icon');
 
-  expect(svg).toHaveStyleRule('width', sizeToPx('medium'));
-  expect(svg).toHaveStyleRule('height', sizeToPx('medium'));
+  expect(svg).toHaveStyle(`width: ${sizeToPx('medium')}`);
+  expect(svg).toHaveStyle(`height: ${sizeToPx('medium')}`);
 });
 
 test('Medium size is as expected', () => {
@@ -16,8 +16,8 @@ test('Medium size is as expected', () => {
 
   const svg = screen.getByTestId('svg-icon');
 
-  expect(svg).toHaveStyleRule('width', sizeToPx('medium'));
-  expect(svg).toHaveStyleRule('height', sizeToPx('medium'));
+  expect(svg).toHaveStyle(`width: ${sizeToPx('medium')}`);
+  expect(svg).toHaveStyle(`height: ${sizeToPx('medium')}`);
 });
 
 test('Small size is as expected', () => {
@@ -25,6 +25,6 @@ test('Small size is as expected', () => {
 
   const svg = screen.getByTestId('svg-icon');
 
-  expect(svg).toHaveStyleRule('width', sizeToPx('small'));
-  expect(svg).toHaveStyleRule('height', sizeToPx('small'));
+  expect(svg).toHaveStyle(`width: ${sizeToPx('small')}`);
+  expect(svg).toHaveStyle(`height: ${sizeToPx('small')}`);
 });

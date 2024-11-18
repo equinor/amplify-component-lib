@@ -100,17 +100,15 @@ test('withBorders works as expected', () => {
 
   const titleContainer = screen.getByText(title).parentElement!.parentElement!;
 
-  expect(titleContainer).toHaveStyleRule(
-    'border-bottom',
-    `1px solid ${colors.ui.background__medium.rgba}`
+  expect(titleContainer).toHaveStyle(
+    `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
   );
 
   const actionsContainer = screen.getByText(action.text).parentElement!
     .parentElement!.parentElement!;
 
-  expect(actionsContainer).toHaveStyleRule(
-    'border-top',
-    `1px solid ${colors.ui.background__medium.rgba}`
+  expect(actionsContainer).toHaveStyle(
+    `border-top: 1px solid ${colors.ui.background__medium.rgba}`
   );
 });
 
@@ -131,7 +129,7 @@ test('withContentPadding works as expected', () => {
 
   const descriptionContainer = screen.getByText(description).parentElement!;
 
-  expect(descriptionContainer).toHaveStyleRule('padding', '0');
+  expect(descriptionContainer).toHaveStyle('padding: 0');
 });
 
 test('Clicking close calls onClose', async () => {

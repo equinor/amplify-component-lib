@@ -117,9 +117,8 @@ test('background color is shown for the app you are in', async () => {
   const firstAppContainer = screen.getByTestId(
     `application-box-${fakeApps[0].name}`
   );
-  expect(firstAppContainer).toHaveStyleRule(
-    'background',
-    colors.interactive.primary__selected_highlight.rgba
+  expect(firstAppContainer).toHaveStyle(
+    `background: ${colors.interactive.primary__selected_highlight.rgba}`
   );
 });
 

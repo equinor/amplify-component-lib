@@ -11,6 +11,7 @@ import { VARIANT_COLORS } from 'src/atoms/style/colors';
 import {
   fakeSelectItem,
   fakeSelectItems,
+  getComputedStyleProperty,
   render,
   screen,
   userEvent,
@@ -513,9 +514,9 @@ test('variants work as expected', () => {
     <Select label={label} onSelect={handleOnSelect} values={[]} items={items} />
   );
 
-  expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
-    'box-shadow',
-    `inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`
+  const element = screen.getByTestId('combobox-container');
+  expect(element).toHaveStyle(
+    `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`
   );
 
   rerender(
@@ -528,9 +529,8 @@ test('variants work as expected', () => {
     />
   );
 
-  expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
-    'box-shadow',
-    `inset 0 -2px 0 0 ${VARIANT_COLORS.dirty}`
+  expect(element).toHaveStyle(
+    `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS.dirty}`
   );
 
   for (const variant of VARIANT_OPTIONS.filter((item) => item !== 'dirty')) {
@@ -544,8 +544,7 @@ test('variants work as expected', () => {
       />
     );
 
-    expect(screen.getByTestId('combobox-container')).toHaveStyleRule(
-      'outline',
+    expect(getComputedStyleProperty(element, 'outline')).toBe(
       `1px solid ${VARIANT_COLORS[variant]}`
     );
   }
@@ -588,14 +587,12 @@ test('lightBackground works as expected', () => {
     />
   );
 
-  expect(screen.queryByTestId('combobox-container')).toHaveStyleRule(
-    'background-color',
-    `${colors.ui.background__light.rgba}`
+  expect(screen.queryByTestId('combobox-container')).toHaveStyle(
+    `background-color: ${colors.ui.background__light.rgba}`
   );
 
-  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyleRule(
-    'background',
-    `${colors.ui.background__default.rgba}!important`
+  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyle(
+    `background: ${colors.ui.background__default.rgba} !important`
   );
 
   rerender(
@@ -608,14 +605,12 @@ test('lightBackground works as expected', () => {
     />
   );
 
-  expect(screen.queryByTestId('combobox-container')).toHaveStyleRule(
-    'background-color',
-    `${colors.ui.background__default.rgba}`
+  expect(screen.queryByTestId('combobox-container')).toHaveStyle(
+    `background-color: ${colors.ui.background__default.rgba}`
   );
 
-  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyleRule(
-    'background',
-    `${colors.ui.background__light.rgba}!important`
+  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyle(
+    `background: ${colors.ui.background__light.rgba} !important`
   );
 });
 
