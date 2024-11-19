@@ -26,24 +26,25 @@ describe('Expanded', () => {
 
     expect(button.localName).toBe('button');
     expect(button).toHaveStyle('display: flex');
-    expect(button).toHaveStyle(`padding: ${spacings.medium}`);
-    expect(button).toHaveStyle('align-items: center');
-    expect(button).toHaveStyle(`gap: ${spacings.medium}`);
-    expect(button).toHaveStyle('align-self: stretch');
-    expect(button).toHaveStyle('box-sizing: border-box');
-    expect(button).toHaveStyle('height: 64px');
-    expect(button).toHaveStyle('transition: background 0.1s ease-out');
-    expect(button).toHaveStyle(
-      `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
+    expect(button).toHaveStyleRule('padding', spacings.medium);
+    expect(button).toHaveStyleRule('align-items', 'center');
+    expect(button).toHaveStyleRule('gap', spacings.medium);
+    expect(button).toHaveStyleRule('align-self', 'stretch');
+    expect(button).toHaveStyleRule('box-sizing', 'border-box');
+    expect(button).toHaveStyleRule('height', '64px');
+    expect(button).toHaveStyleRule('transition', 'background 0.1s ease-out');
+    expect(button).toHaveStyleRule(
+      'border-bottom',
+      `1px solid ${colors.ui.background__medium.rgba}`
     );
 
-    expect(iconContainer).toHaveStyle(`padding: ${spacings.x_small}`);
-    expect(iconContainer).toHaveStyle('align-items: center');
-    expect(iconContainer).toHaveStyle('width: 32px');
-    expect(iconContainer).toHaveStyle('height: 32px');
+    expect(iconContainer).toHaveStyleRule('padding', spacings.x_small);
+    expect(iconContainer).toHaveStyleRule('align-items', 'center');
+    expect(iconContainer).toHaveStyleRule('width', '32px');
+    expect(iconContainer).toHaveStyleRule('height: 32px');
     expect(svgPath).toHaveAttribute('d', first_page.svgPathData);
-    expect(icon).toHaveAttribute('height: 24px');
-    expect(icon).toHaveAttribute('width: 24px');
+    expect(icon).toHaveAttribute('height', '24px');
+    expect(icon).toHaveAttribute('width', '24px');
 
     expect(text).toHaveStyle('font-weight: 500');
     expect(text).toHaveStyle(

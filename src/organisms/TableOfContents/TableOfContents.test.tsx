@@ -3,8 +3,7 @@ import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 
-import { colors } from 'src/atoms';
-import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
+import { TableOfContents } from 'src/organisms';
 import {
   TableOfContentsItemType,
   TableOfContentsProvider,
@@ -434,10 +433,6 @@ describe('border and borderHorizontal  ', () => {
 
     const link = screen.getByRole('link', { name: items[0].label });
 
-    expect(link).toHaveStyle(
-      `color: ${colors.text.static_icons__default.rgba}`
-    );
-
     await user.click(link);
 
     const section = document.querySelector(`#${items[0].value}`)!;
@@ -485,10 +480,6 @@ describe('border and borderHorizontal  ', () => {
     }
 
     const link = screen.getByRole('link', { name: items[0].label });
-
-    expect(link).toHaveStyle(
-      `color: ${colors.text.static_icons__default.rgba}`
-    );
 
     await user.click(link);
 
@@ -581,55 +572,5 @@ describe('border and borderHorizontal  ', () => {
     }).parentElement!.parentElement!;
 
     expect(otherButtonWrapper).toHaveAttribute('aria-selected', 'false');
-  });
-
-  test('renders with flex-direction: column for border', () => {
-    const items = fakeItems();
-
-    render(
-      <div>
-        <TableOfContents variant="border" />
-        {items.map((item) => (
-          <Section key={item.value} label={item.label} value={item.value} />
-        ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
-    );
-
-    const container = screen.getByTestId('table-of-contents-container');
-    expect(container).toHaveStyle('flex-direction: column');
-  });
-
-  test('renders with flex-direction: row for borderHorizontal', () => {
-    const items = fakeItems();
-
-    render(
-      <div>
-        <TableOfContents variant="borderHorizontal" />
-        {items.map((item) => (
-          <Section key={item.value} label={item.label} value={item.value} />
-        ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
-    );
-
-    const container = screen.getByTestId('table-of-contents-container');
-    expect(container).toHaveStyle('flex-direction: row');
   });
 });

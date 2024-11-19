@@ -6,6 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     passWithNoTests: true,
+    includeTaskLocation: true,
     env: {
       VITE_IS_MOCK: 'true',
       VITE_NAME: 'Amplify components',

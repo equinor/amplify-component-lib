@@ -30,11 +30,13 @@ test('White selected chip has expected styling from default', () => {
 
   const chip = screen.getByRole('button');
 
-  expect(chip).toHaveStyle(
-    `background-color: ${defaultStyling.selected?.background}`
+  expect(chip).toHaveStyleRule(
+    'background-color',
+    defaultStyling.selected?.background
   );
-  expect(chip).toHaveStyle(`color: ${defaultStyling.color}`);
-  expect(chip).toHaveStyle(
-    `outline: 1px solid ${defaultStyling.selected?.borderColor}`
+  expect(chip).toHaveStyleRule('color', defaultStyling.color);
+  expect(chip).toHaveStyleRule(
+    'outline',
+    `1px solid ${defaultStyling.selected?.borderColor}`
   );
 });

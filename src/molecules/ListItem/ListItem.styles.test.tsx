@@ -27,8 +27,9 @@ test('Renders border bottom as expected', () => {
   render(<ListItem {...props} borderBottom />);
   const container = screen.getByText(props.label).parentElement!.parentElement!;
 
-  expect(container).toHaveStyle(
-    `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
+  expect(container).toHaveStyleRule(
+    'border-bottom',
+    `1px solid ${colors.ui.background__medium.rgba}`
   );
 });
 
@@ -80,7 +81,8 @@ test('isChild offsets as expected', () => {
   render(<ListItem {...props} isChild />);
   const container = screen.getByText(props.label).parentElement!.parentElement!;
 
-  expect(container).toHaveStyle(
-    `padding: ${spacings.small} ${spacings.large} ${spacings.small} ${spacings.xx_large}`
+  expect(container).toHaveStyleRule(
+    'padding',
+    `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.xx_large}`
   );
 });

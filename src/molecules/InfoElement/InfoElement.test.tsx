@@ -39,11 +39,10 @@ test('Copying works as expected', async () => {
   );
   const user = userEvent.setup();
 
+  const spy = vi.spyOn(window.navigator.clipboard, 'writeText');
   await user.click(screen.getByText(contentString));
 
-  const clipboard = await window.navigator.clipboard.readText();
-
-  expect(clipboard).toBe(contentString);
+  expect(spy).toHaveBeenCalledWith(contentString);
 });
 
 test('Capitalizing content works as expected', () => {

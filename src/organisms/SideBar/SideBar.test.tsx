@@ -69,7 +69,7 @@ test('Disabled create new button doesnt fire event', async () => {
 
   const user = userEvent.setup();
 
-  const createNewButton = screen.getByText(/create new/i);
+  const createNewButton = screen.getAllByRole('button')[0];
   await user.click(createNewButton);
 
   expect(createNewFn).not.toHaveBeenCalled();
