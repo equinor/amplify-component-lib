@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
 
-import { colors } from 'src/atoms/style';
 import {
   ContentMenu,
   ContentMenuProps,
@@ -84,12 +83,12 @@ test('Parents open and close as expected', async () => {
   ).not.toBeInTheDocument();
 });
 
-test('Children render and function as they should', async () => {
+test('Children function as they should', async () => {
   const user = userEvent.setup();
   const child = fakeItem();
   const props = fakeProps();
   props.items[0].children = [child];
-  const { rerender } = render(<ContentMenu {...props} />);
+  render(<ContentMenu {...props} />);
 
   await user.click(screen.getByRole('button', { name: props.items[0].label }));
 
@@ -103,9 +102,4 @@ test('Children render and function as they should', async () => {
   await user.click(childButton);
 
   expect(props.onChange).toHaveBeenCalledWith(child.value);
-  rerender(<ContentMenu {...props} value={child.value} />);
-
-  expect(childButton).toHaveStyle(
-    `background: ${colors.interactive.primary__hover_alt.rgba}`
-  );
 });

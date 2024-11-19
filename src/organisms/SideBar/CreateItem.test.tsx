@@ -1,11 +1,8 @@
-import { add } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { CreateItem, CreateItemProps } from 'src/organisms/SideBar/CreateItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
-const { colors, shape } = tokens;
 
 function fakeProps(): CreateItemProps {
   return {
@@ -21,71 +18,6 @@ describe('Expanded', () => {
       'amplify-sidebar-state',
       JSON.stringify({ isOpen: true })
     );
-  });
-  describe('Renders with correct styles', () => {
-    test('Default', () => {
-      const props = fakeProps();
-      render(<CreateItem {...props} />, {
-        wrapper: SideBarProvider,
-      });
-
-      const button = screen.getByRole('button', { name: props.createLabel });
-      const item = button.parentElement;
-      const svgPath = screen.getByTestId('eds-icon-path');
-
-      expect(item).toHaveStyle('display: flex');
-      expect(item).toHaveStyle('padding: 0 14px');
-      expect(item).toHaveStyle('align-items: center');
-      expect(item).toHaveStyle('align-self: stretch');
-      expect(item).toHaveStyle('box-sizing: border-box');
-      expect(item).toHaveStyle('height: 64px');
-      expect(item).toHaveStyle(
-        `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
-      );
-
-      expect(button).toHaveStyle('width: fit-content');
-      expect(button).toHaveStyle('height: 36px');
-      expect(button).toHaveStyle(
-        `border-radius: ${shape.icon_button.borderRadius}`
-      );
-      expect(button).toHaveStyleRule(
-        'border-radius',
-        shape.icon_button.borderRadius,
-        { modifier: ':hover' }
-      );
-
-      expect(svgPath).toHaveAttribute('d', add.svgPathData);
-
-      expect(screen.getByTestId('create-item-container')).not.toHaveStyle(
-        `background: ${colors.interactive.primary__selected_highlight.rgba}`
-      );
-    });
-
-    test('Disabled', () => {
-      const props = fakeProps();
-      render(<CreateItem {...props} disabled />, {
-        wrapper: SideBarProvider,
-      });
-      const button = screen.getByRole('button', { name: props.createLabel });
-
-      expect(button).toHaveStyleRule(
-        'border-radius',
-        shape.icon_button.borderRadius,
-        { modifier: ':hover' }
-      );
-      expect(button).toHaveAttribute('disabled');
-    });
-
-    test('Active', () => {
-      const props = fakeProps();
-      render(<CreateItem {...props} active />, {
-        wrapper: SideBarProvider,
-      });
-
-      expect(screen.getByTestId('create-item-container')).toHaveStyle(
-        `background: ${colors.interactive.primary__selected_highlight.rgba}`
-      );
-    });
   });
 
   describe('Interaction', () => {
@@ -112,36 +44,6 @@ describe('Collapsed', () => {
       JSON.stringify({ isOpen: false })
     );
   });
-  describe('Renders with correct styles', () => {
-    test('Default', () => {
-      const props = fakeProps();
-      render(<CreateItem {...props} />, {
-        wrapper: SideBarProvider,
-      });
-      const button = screen.getByRole('button');
-      const item = button.parentElement;
-      const svgPath = screen.getByTestId('eds-icon-path');
-      const text = screen.queryByText(props.createLabel);
-
-      expect(item).toHaveStyle('display: flex');
-      expect(item).toHaveStyle('padding: 0 14px');
-      expect(item).toHaveStyle('align-items: center');
-      expect(item).toHaveStyle('align-self: stretch');
-      expect(item).toHaveStyle('box-sizing: border-box');
-      expect(item).toHaveStyle('height: 64px');
-      expect(item).toHaveStyle(
-        `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
-      );
-
-      expect(button).toHaveStyle('width: 36px');
-      expect(button).toHaveStyle('height: 36px');
-
-      expect(svgPath).toHaveAttribute('d', add.svgPathData);
-
-      expect(text).not.toBeInTheDocument();
-    });
-  });
-
   describe('Interaction', () => {
     test('Click', async () => {
       const props = fakeProps();

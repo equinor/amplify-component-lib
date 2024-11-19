@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
 import {
   AmplifyApplication,
   ApplicationCategory,
@@ -15,10 +14,6 @@ import userEvent from '@testing-library/user-event';
 import { ApplicationDrawer } from './ApplicationDrawer';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { waitFor } from 'src/tests/browsertest-utils';
-
-import { expect, vi } from 'vitest';
-
-const { colors } = tokens;
 
 function fakeApplication(): AmplifyApplication {
   return {
@@ -98,28 +93,6 @@ test('Should toggle menu and handle application click', async () => {
   for (const app of fakeApps) {
     expect(screen.getByText(app.name)).toBeInTheDocument();
   }
-});
-
-test('background color is shown for the app you are in', async () => {
-  rejectPromise = false;
-  vi.stubEnv('VITE_NAME', fakeApps[0].name);
-  render(<ApplicationDrawer />, { wrapper: Wrappers });
-
-  const user = userEvent.setup();
-
-  const menuButton = screen.getByRole('button');
-
-  await user.click(menuButton);
-
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
-    timeout: 4000,
-  });
-  const firstAppContainer = screen.getByTestId(
-    `application-box-${fakeApps[0].name}`
-  );
-  expect(firstAppContainer).toHaveStyle(
-    `background: ${colors.interactive.primary__selected_highlight.rgba}`
-  );
 });
 
 test('No applications is shown ', async () => {

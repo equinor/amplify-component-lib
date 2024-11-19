@@ -39,15 +39,6 @@ export function fakeSelectItems(count = 10) {
   return new Array(count).fill(0).map(() => fakeSelectItem());
 }
 
-export function getComputedStyleProperty(
-  element: Element,
-  property: keyof CSSStyleDeclaration
-) {
-  const computedStyle = window.getComputedStyle(element);
-
-  return computedStyle[property];
-}
-
 // re-export everything
 export * from '@testing-library/react';
 

@@ -1,5 +1,4 @@
 import { defineWorkspace } from 'vitest/config'
-import { environment } from 'src';
 
 export default defineWorkspace([
   {
@@ -12,7 +11,7 @@ export default defineWorkspace([
         // https://playwright.dev
         providerOptions: {},
       },
-      exclude: ['src/atoms', 'src/deprecated'],
+      exclude: ['src/atoms', 'src/deprecated', 'src/**/*.styles.test.tsx'],
       setupFiles: ['src/tests/setupBrowserTests.ts'],
       css: true
     },
@@ -26,7 +25,12 @@ export default defineWorkspace([
           inline: ['@equinor/subsurface-app-management']
         }
       },
-      exclude: ['src/deprecated', 'src/molecules', 'src/organisms'],
+      include:[
+        'src/atoms/**/*.test.ts',
+        'src/atoms/**/*.test.tsx',
+        '**/*.styles.test.tsx'
+      ],
+      exclude: ['src/deprecated'],
       globals: true,
       environment: 'jsdom',
       setupFiles: ['src/tests/setupNodeTests.ts', 'src/tests/browserMocks.ts', 'src/tests/msalMock.tsx'],

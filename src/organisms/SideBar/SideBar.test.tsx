@@ -54,39 +54,6 @@ test('Renders create new button when onCreate prop is given', () => {
   expect(createIcon).toHaveAttribute('d', add.svgPathData);
 });
 
-test('Renders closed on initial render', () => {
-  render(
-    <SideBar>
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item key={m.name} {...m} />
-      ))}
-    </SideBar>,
-    {
-      wrapper: wrapper,
-    }
-  );
-
-  expect(screen.getByTestId('sidebar')).toHaveStyle('width: 64px');
-});
-
-test('Renders open width when localStorage has it set to open', () => {
-  window.localStorage.setItem(
-    'amplify-sidebar-state',
-    JSON.stringify({ isOpen: true })
-  );
-  render(
-    <SideBar>
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item key={m.name} {...m} />
-      ))}
-    </SideBar>,
-    {
-      wrapper: wrapper,
-    }
-  );
-  expect(screen.getByTestId('sidebar')).toHaveStyle('width: 231px');
-});
-
 test('Disabled create new button doesnt fire event', async () => {
   const createNewFn = vi.fn();
   render(
@@ -106,61 +73,6 @@ test('Disabled create new button doesnt fire event', async () => {
   await user.click(createNewButton);
 
   expect(createNewFn).not.toHaveBeenCalled();
-});
-
-test('Opens and closes when pressing the toggle button', async () => {
-  window.localStorage.setItem(
-    'amplify-sidebar-state',
-    JSON.stringify({ isOpen: false })
-  );
-  render(
-    <SideBar>
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item key={m.name} {...m} />
-      ))}
-    </SideBar>,
-    { wrapper: wrapper }
-  );
-  const user = userEvent.setup();
-
-  const sidebar = screen.getByTestId('sidebar');
-  expect(sidebar).toHaveStyle('width: 64px');
-
-  expect(screen.queryByText('Collapse')).not.toBeInTheDocument();
-
-  const toggleButton = screen.getByRole('button');
-  await user.click(toggleButton);
-
-  expect(sidebar).toHaveStyle('width: 231px');
-  expect(screen.getByText(/collapse/i)).toBeInTheDocument();
-});
-
-test('Render Create button correctly when open', async () => {
-  const createLabel = faker.animal.dog();
-  const handleOnCreate = vi.fn();
-  window.localStorage.setItem(
-    'amplify-sidebar-state',
-    JSON.stringify({ isOpen: false })
-  );
-  render(
-    <SideBar createLabel={createLabel} onCreate={handleOnCreate}>
-      {defaultMenuItems.map((m) => (
-        <SideBar.Item key={m.name} {...m} />
-      ))}
-    </SideBar>,
-    { wrapper: wrapper }
-  );
-  const user = userEvent.setup();
-
-  expect(screen.queryByText(createLabel)).not.toBeInTheDocument();
-
-  const toggleButton = screen.getAllByRole('button')[1];
-
-  await user.click(toggleButton);
-
-  expect(screen.getByText(createLabel)).toBeInTheDocument();
-  const createButton = screen.getAllByRole('button')[0];
-  expect(createButton).toHaveStyle('height: 36px');
 });
 
 test('Hides create button when showCreate=false', async () => {

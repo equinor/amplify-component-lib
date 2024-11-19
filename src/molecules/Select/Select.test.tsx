@@ -4,14 +4,11 @@ import { error_outlined } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Select } from './Select';
-import { SelectOptionRequired, VARIANT_OPTIONS } from './Select.types';
+import { SelectOptionRequired } from './Select.types';
 import { getCumulativeArrayFromNumberedArray } from './Select.utils';
-import { colors } from 'src/atoms/style';
-import { VARIANT_COLORS } from 'src/atoms/style/colors';
 import {
   fakeSelectItem,
   fakeSelectItems,
-  getComputedStyleProperty,
   render,
   screen,
   userEvent,
@@ -505,51 +502,6 @@ test('Loading works as expected', async () => {
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
-test('variants work as expected', () => {
-  const items = fakeSelectItems();
-  const label = faker.animal.bear();
-  const handleOnSelect = vi.fn();
-
-  const { rerender } = render(
-    <Select label={label} onSelect={handleOnSelect} values={[]} items={items} />
-  );
-
-  const element = screen.getByTestId('combobox-container');
-  expect(element).toHaveStyle(
-    `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`
-  );
-
-  rerender(
-    <Select
-      variant="dirty"
-      label={label}
-      onSelect={handleOnSelect}
-      values={[]}
-      items={items}
-    />
-  );
-
-  expect(element).toHaveStyle(
-    `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS.dirty}`
-  );
-
-  for (const variant of VARIANT_OPTIONS.filter((item) => item !== 'dirty')) {
-    rerender(
-      <Select
-        label={label}
-        onSelect={handleOnSelect}
-        values={[]}
-        variant={variant}
-        items={items}
-      />
-    );
-
-    expect(getComputedStyleProperty(element, 'outline')).toBe(
-      `1px solid ${VARIANT_COLORS[variant]}`
-    );
-  }
-});
-
 test('Able to hide helperIcon', () => {
   const items = fakeSelectItems();
   const label = faker.animal.bear();
@@ -571,47 +523,6 @@ test('Able to hide helperIcon', () => {
   for (const icon of edsIcons) {
     expect(icon).not.toHaveAttribute('d', error_outlined.svgPathData);
   }
-});
-
-test('lightBackground works as expected', () => {
-  const items = fakeSelectItems();
-  const label = faker.animal.bear();
-  const handleOnSelect = vi.fn();
-
-  const { rerender } = render(
-    <Select
-      label={label}
-      onSelect={handleOnSelect}
-      items={items}
-      values={[items[0]]}
-    />
-  );
-
-  expect(screen.queryByTestId('combobox-container')).toHaveStyle(
-    `background-color: ${colors.ui.background__light.rgba}`
-  );
-
-  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyle(
-    `background: ${colors.ui.background__default.rgba} !important`
-  );
-
-  rerender(
-    <Select
-      label={label}
-      onSelect={handleOnSelect}
-      items={items}
-      values={[items[0]]}
-      lightBackground={true}
-    />
-  );
-
-  expect(screen.queryByTestId('combobox-container')).toHaveStyle(
-    `background-color: ${colors.ui.background__default.rgba}`
-  );
-
-  expect(screen.queryByTestId('amplify-combobox-chip')).toHaveStyle(
-    `background: ${colors.ui.background__light.rgba} !important`
-  );
 });
 
 test('Not able to remove item when disabled/loading', async () => {

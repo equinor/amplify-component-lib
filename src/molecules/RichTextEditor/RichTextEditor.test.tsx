@@ -4,7 +4,6 @@ import { fireEvent, waitFor } from '@testing-library/dom';
 import { mergeDefaults } from './custom-extensions/mergeDefaults';
 import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
-import { colors } from 'src/atoms';
 import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
@@ -134,26 +133,6 @@ test('Creating table works as expected', async () => {
   await user.click(tableButton);
 
   expect(screen.getByRole('table')).toBeInTheDocument();
-});
-
-test('Creating table with highlight works as expected', async () => {
-  const props = fakeProps();
-
-  render(
-    <RichTextEditor
-      {...props}
-      features={[RichTextEditorFeatures.TABLE]}
-      highlighted={true}
-    />
-  );
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const editor = screen.getByTestId('richtext-editor').querySelector('.tiptap');
-
-  expect(editor).toHaveStyle(
-    `box-shadow: inset 0 -2px ${colors.dataviz.darkblue.darker}`
-  );
 });
 
 test('Images work as expected', async () => {

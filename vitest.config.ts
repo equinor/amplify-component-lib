@@ -30,6 +30,7 @@ export default defineConfig({
         'src/types',
         'src/**/*.test.ts',
         'src/**/*.types.ts',
+        'src/**/*.styles.test.tsx',
         'src/**/*.test.tsx',
         'src/**/*.stories.tsx',
         'src/**/*.docs.mdx',
