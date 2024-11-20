@@ -10,7 +10,13 @@ const Container = styled.div`
   flex-direction: column;
   gap: ${spacings.medium};
   align-items: center;
+  justify-items: center;
   max-width: 510px;
+  margin: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   // Title, Description
   > h1,
   > h4 {

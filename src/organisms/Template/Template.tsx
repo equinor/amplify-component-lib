@@ -26,6 +26,7 @@ interface ContentProps {
 }
 
 const Content = styled.div<ContentProps>`
+  position: relative;
   display: flex;
   /* 64px is height of TopBar */
   min-height: calc(100vh - 64px);
