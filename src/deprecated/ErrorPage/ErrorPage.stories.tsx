@@ -7,7 +7,7 @@ import { QuestioningAnimation } from 'src/deprecated/ErrorPage/illustrations/Que
 import { ErrorPage } from 'src/deprecated/ErrorPage/index';
 
 const meta: Meta = {
-  title: 'Organisms/ErrorPage',
+  title: 'Deprecated/ErrorPage',
   component: ErrorPage,
   parameters: {
     design: {
