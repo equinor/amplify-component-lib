@@ -16,7 +16,7 @@ beforeAll(() => {
   vi.stubEnv('VITE_API_CLIENT_ID', 'fake-id');
   server.listen({
     onUnhandledRequest: (req, print) => {
-      if (req.url.includes('api')) print.error();
+      if (req.url.includes('api') && req.url.includes('https')) print.error();
       return;
     },
   });

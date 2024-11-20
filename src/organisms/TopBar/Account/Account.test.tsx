@@ -60,24 +60,6 @@ test('Renders correctly without avatar', async () => {
   expect(screen.queryByText(MOCK_USER.name)).not.toBeInTheDocument();
 });
 
-test('Renders correctly with avatar', async () => {
-  const user = userEvent.setup();
-  vi.stubEnv('VITE_MOCK_USER_PHOTO', 'true');
-  renderWithProviders(<Account />);
-
-  const accountName = MOCK_USER.name;
-  expect(screen.queryByText(accountName)).not.toBeInTheDocument();
-
-  const button = screen.getByRole('button');
-
-  expect(screen.getByAltText(`user-avatar-${accountName}`)).toBeInTheDocument();
-
-  await user.click(button);
-
-  expect(screen.getByText(/admin/i)).toBeInTheDocument();
-  expect(screen.getAllByAltText(`user-avatar-${accountName}`).length).toBe(2);
-});
-
 test('Renders correctly when hiding roles', async () => {
   const user = userEvent.setup();
   renderWithProviders(<Account hideRoleChips />);

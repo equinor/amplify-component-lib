@@ -191,7 +191,7 @@ export const handlers = [
       return HttpResponse.json(fakeImpersonateUsers);
     }
   ),
-  http.get('*/api/v1/Token/AmplifyPortal', async () => {
+  http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
     await delay('real');
     return HttpResponse.text(faker.string.nanoid());
   }),
