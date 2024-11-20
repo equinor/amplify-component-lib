@@ -9,7 +9,7 @@ export type { ItemType } from './SideBar';
 export { TopBar } from './TopBar';
 export type { GuidelineSections } from './TopBar/Guidelines/Guidelines';
 export type { SettingsSection } from './TopBar/Settings.types';
-export { Status } from './Status/Status';
+export { Status } from './Status';
 export * from './Status/collections';
 export { TableOfContents } from './TableOfContents/TableOfContents';
 export type { TableOfContentsProps } from './TableOfContents/TableOfContents';
