@@ -6,7 +6,7 @@ import {
 } from 'src/deprecated/FullPageStatus/FullPageStatus';
 
 const meta: Meta<typeof FullPageStatus> = {
-  title: 'Organisms/FullPageStatus',
+  title: 'Deprecated/FullPageStatus',
   component: FullPageStatus,
   parameters: {
     design: {
