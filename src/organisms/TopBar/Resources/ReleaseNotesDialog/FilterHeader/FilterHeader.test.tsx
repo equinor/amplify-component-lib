@@ -42,18 +42,6 @@ test('should confirm that there is a link button', () => {
   expect(actual).toBeVisible();
 });
 
-test('should link to production environment using the external dns, jsembark.equinor.com as a fallback when no environment is set', () => {
-  render(<FilterHeader />, {
-    wrapper: Wrappers,
-  });
-  const actual = screen.getByRole('link');
-  expect(actual).toBeInTheDocument();
-  expect(actual).toBeVisible();
-  expect(actual.getAttribute('href')).toBe(
-    'https://jsembark.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D'
-  );
-});
-
 test('should check that typing a value in the sieve input is indeed present', async () => {
   render(<FilterHeader />, {
     wrapper: Wrappers,

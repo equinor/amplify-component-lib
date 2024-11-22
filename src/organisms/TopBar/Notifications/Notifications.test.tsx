@@ -1,9 +1,7 @@
 import { notifications } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 import { renderHook } from '@testing-library/react';
 
-import { UnreadRedDot } from '../TopBar.styles';
 import {
   DefaultNotificationTypes,
   Due3WeeksTypes,
@@ -21,8 +19,6 @@ import { date } from 'src/atoms/utils';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { beforeEach, describe, expect } from 'vitest';
-
-const { colors } = tokens;
 
 const notificationsData: (
   | ReadyToReportNotificationTypes
@@ -250,14 +246,6 @@ test('Renders unread dot when unread = true', async () => {
   const unreadDot = screen.getByTestId('unread-dot');
   expect(unreadDot).toBeInTheDocument();
   expect(unreadDot).toBeVisible();
-});
-
-test('Unread dot renders as expected', () => {
-  const { container } = render(<UnreadRedDot />);
-  const unreadDot = container.children[0];
-  expect(unreadDot).toHaveStyle(
-    `background-color: ${colors.interactive.danger__resting.rgba}`
-  );
 });
 
 test('renders button and panel with filter options correctly', async () => {

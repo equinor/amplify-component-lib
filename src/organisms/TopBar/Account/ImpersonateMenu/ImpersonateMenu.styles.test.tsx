@@ -7,13 +7,13 @@ import {
   userEvent,
 } from 'src/tests/browsertest-utils';
 import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
-import { worker } from 'src/tests/setupBrowserTests';
+import { server } from 'src/tests/setupNodeTests';
 
 import { delay, http, HttpResponse } from 'msw';
 
 describe('Active impersonation', () => {
   beforeEach(() => {
-    worker.use(
+    server.use(
       http.get(
         '*/api/v1/ImpersonateUser/ActiveUser',
         async () => {

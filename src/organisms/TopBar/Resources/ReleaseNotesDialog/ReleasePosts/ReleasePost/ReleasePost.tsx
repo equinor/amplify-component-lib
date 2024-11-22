@@ -19,7 +19,7 @@ import {
   TopContainer,
 } from './ReleasePost.styles';
 import { TextContent } from './TextContent';
-import { date } from 'src/atoms/utils';
+import { formatDate } from 'src/atoms';
 
 import { motion } from 'framer-motion';
 
@@ -66,7 +66,7 @@ export const ReleasePost: FC<ReleaseNote> = ({
         <TopContainer>
           <HeadingContainer>
             <Typography group="paragraph" variant="overline">
-              {date.formatDate(createdDate, {
+              {formatDate(createdDate, {
                 format: 'DD. month YYYY',
               })}
             </Typography>

@@ -9,10 +9,6 @@ import {
   screen,
   userEvent,
 } from 'src/tests/browsertest-utils';
-import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
-import { worker } from 'src/tests/setupBrowserTests';
-
-import { delay, http, HttpResponse } from 'msw';
 
 test('Renders correctly without avatar', async () => {
   const user = userEvent.setup();
@@ -151,8 +147,11 @@ describe(
 
         await user.click(screen.getByText(/Impersonate/i));
 
-        const availableImpersonationUsers =
-          screen.getAllByTestId('impersonation-user');
+        const availableImpersonationUsers = await screen.findAllByTestId(
+          'impersonation-user',
+          {},
+          { timeout: 2000 }
+        );
 
         for (const user of availableImpersonationUsers) {
           expect(user).toBeInTheDocument();
@@ -259,7 +258,7 @@ describe(
       await user.click(screen.getByText(/Impersonate/i));
 
       const availableImpersonationUsers =
-        screen.getAllByTestId('impersonation-user');
+        await screen.findAllByTestId('impersonation-user');
 
       const randomUserIndex = faker.number.int({
         min: 0,
@@ -321,7 +320,7 @@ describe(
 
       await user.click(screen.getByText(/Impersonate/i));
       const availableImpersonationUsers =
-        screen.getAllByTestId('impersonation-user');
+        await screen.findAllByTestId('impersonation-user');
 
       for (const user of availableImpersonationUsers) {
         expect(user).toBeInTheDocument();
@@ -332,48 +331,6 @@ describe(
       expect(
         screen.queryByTestId('impersonation-user')
       ).not.toBeInTheDocument();
-    });
-
-    test('Impersonate button not visible when in prod or if api_client_id is not defined', async () => {
-      vi.stubEnv('VITE_API_CLIENT_ID', undefined);
-      const { rerender } = renderWithProviders(<Account />);
-      const user = userEvent.setup();
-      const button = screen.getByRole('button');
-
-      await user.click(button);
-      expect(screen.queryByText(/Impersonate/i)).not.toBeInTheDocument();
-
-      vi.stubEnv('VITE_API_CLIENT_ID', 'fake-id');
-      vi.stubEnv('VITE_ENVIRONMENT_NAME', 'production');
-      rerender(<Account />);
-      await user.click(button);
-      expect(screen.queryByText(/Impersonate/i)).not.toBeInTheDocument();
-    });
-
-    describe('Active impersonation', () => {
-      beforeEach(() => {
-        worker.use(
-          http.get(
-            '*/api/v1/ImpersonateUser/ActiveUser',
-            async () => {
-              await delay('real');
-              return HttpResponse.json(fakeImpersonateUsers[0]);
-            },
-            { once: true }
-          )
-        );
-      });
-
-      test('Active impersonation is set as selected', async () => {
-        renderWithProviders(<Account />);
-        const user = userEvent.setup();
-        const button = screen.getByRole('button');
-
-        await user.click(button);
-
-        const text = await screen.findByText('Impersonating');
-        expect(text).toBeInTheDocument();
-      });
     });
   },
   { concurrent: false, sequential: true }

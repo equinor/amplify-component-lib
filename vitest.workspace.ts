@@ -6,6 +6,11 @@ export default defineWorkspace([
     test: {
       browser: {
         enabled: true,
+        viewport: {
+          width: 1280,
+          height: 900
+        },
+        headless: true,
         name: 'chromium',
         provider: 'playwright',
         // https://playwright.dev
@@ -28,7 +33,7 @@ export default defineWorkspace([
       include:[
         'src/atoms/**/*.test.ts',
         'src/atoms/**/*.test.tsx',
-        '**/*.styles.test.tsx'
+        '**/*.styles.test.tsx' // TODO: Change to jsdom.test.tsx, add to README
       ],
       exclude: ['src/deprecated'],
       globals: true,

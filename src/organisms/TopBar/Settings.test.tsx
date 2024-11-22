@@ -118,7 +118,7 @@ test('Settings renders as expected when opened/closed', async () => {
 
   const lightRadioButton = screen.getByRole('radio', { name: /light mode/i });
 
-  expect(lightRadioButton).toBeChecked();
+  expect(lightRadioButton).toHaveAttribute('checked');
   expect(lightRadioButton).toBeInTheDocument();
   await user.click(menuButton);
 
@@ -168,11 +168,11 @@ test('Calls onChange when using radio buttons in settings menu', async () => {
 
   const lightRadioButton = screen.getByRole('radio', { name: /light mode/i });
 
-  expect(lightRadioButton).toBeChecked();
+  expect(lightRadioButton).toHaveAttribute('checked');
 
   const darkRadioButton = screen.getByRole('radio', { name: /dark mode/i });
 
-  expect(darkRadioButton).not.toBeChecked();
+  expect(darkRadioButton).not.toHaveAttribute('checked');
 
   await user.click(darkRadioButton);
 

@@ -1,5 +1,6 @@
 import { ReleaseNote } from '@equinor/subsurface-app-management';
 
+import { sortByDate } from 'src/atoms';
 import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
 
 const extractDatesFromReleaseNotes = (
@@ -89,11 +90,7 @@ const yearValueToString = (yearValue: Date) => {
 };
 const sortReleaseNotesByDate = (notes: ReleaseNote[]) => {
   return notes.sort((a, b) => {
-    const dateA = new Date(a.createdDate ?? '').getTime();
-    const dateB = new Date(b.createdDate ?? '').getTime();
-    const numberDateA = !Number.isNaN(dateA) ? dateA : 0;
-    const numberDateB = !Number.isNaN(dateB) ? dateB : 0;
-    return numberDateB - numberDateA;
+    return sortByDate(a.createdDate, b.createdDate);
   });
 };
 export { sortReleaseNotesByDate };

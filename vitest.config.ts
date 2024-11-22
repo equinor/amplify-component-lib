@@ -10,6 +10,7 @@ export default defineConfig({
     env: {
       VITE_IS_MOCK: 'true',
       VITE_NAME: 'Amplify components',
+      VITE_ENVIRONMENT_NAME: 'local',
       VITE_API_CLIENT_ID: 'fake-id'
     },
     exclude: [
@@ -23,7 +24,7 @@ export default defineConfig({
     ],
     coverage: {
       enabled: false,
-      provider: 'v8',
+      provider: 'istanbul',
       include: ['src/**/*'],
       exclude: [
         'src/**/*.d.ts',

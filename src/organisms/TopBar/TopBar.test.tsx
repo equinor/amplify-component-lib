@@ -1,12 +1,11 @@
 import { MemoryRouter } from 'react-router-dom';
 
 import { Button } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
+import { fireEvent } from '@testing-library/dom';
 
 import { TopBar } from '.';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
-import { spacings } from 'src/atoms/style';
 import { Field } from 'src/atoms/types/Field';
 import {
   act,
@@ -17,8 +16,6 @@ import {
 } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
-
-const { colors, spacings: eds_spacings } = tokens;
 
 test('Shows progress indicator only when isFetching={true}', () => {
   const { rerender } = render(
@@ -161,9 +158,8 @@ test('close on resize ', async () => {
   await user.click(button);
   expect(screen.getByTestId('top-bar-menu')).toBeInTheDocument();
 
-  vi.stubGlobal(800, 600);
   act(() => {
-    global.dispatchEvent(new Event('resize'));
+    fireEvent(window, new Event('resize'));
   });
 
   await waitFor(
@@ -266,45 +262,4 @@ test('Tab navigation should focus actions in expected order', async () => {
   expect(firstButton).not.toHaveFocus();
   expect(secondButton).not.toHaveFocus();
   expect(thirdButton).not.toHaveFocus();
-});
-
-test('Renders with correct styles', () => {
-  const appName = 'Car-go 🏎';
-  const button1 = 'button1';
-
-  render(
-    <TopBar applicationIcon="car" applicationName={appName}>
-      <TopBar.Actions>
-        <Button>{button1}</Button>
-      </TopBar.Actions>
-    </TopBar>,
-    { wrapper: MemoryRouter }
-  );
-
-  const topBar = screen.getByRole('banner');
-  const headerContainer = topBar.firstChild;
-  const appIdentifier = screen.getByRole('link', { name: appName });
-
-  expect(topBar).toHaveStyle(
-    `border-bottom: 1px solid ${colors.ui.background__medium.rgba}`
-  );
-  expect(topBar).toHaveStyle(
-    `background: ${colors.ui.background__default.rgba}`
-  );
-  expect(topBar).toHaveStyle(`padding-top: ${eds_spacings.comfortable.small}`);
-  expect(topBar).toHaveStyle(
-    `padding-right: ${eds_spacings.comfortable.large}`
-  );
-  expect(topBar).toHaveStyle(
-    `padding-bottom: ${eds_spacings.comfortable.small}`
-  );
-  expect(topBar).toHaveStyle(`padding-left: ${spacings.medium}`);
-  expect(topBar).toHaveStyle('align-items: center');
-  expect(topBar).toHaveStyle('height: 64px');
-
-  expect(headerContainer).toHaveStyle(`gap: ${spacings.medium}`);
-
-  expect(appIdentifier).toHaveStyle('display: flex');
-  expect(appIdentifier).toHaveStyle('align-items: center');
-  expect(appIdentifier).toHaveStyle(`gap: ${spacings.medium_small}`);
 });

@@ -101,8 +101,9 @@ test('SetItemRef works as expected', () => {
     name: items[0].label,
   });
 
-  expect(button).toHaveStyle(
-    `background: ${colors.interactive.primary__hover_alt.rgba}`
+  expect(button).toHaveStyleRule(
+    'background',
+    colors.interactive.primary__hover_alt.rgba
   );
 });
 

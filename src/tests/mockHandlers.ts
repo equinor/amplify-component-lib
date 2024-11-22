@@ -3,6 +3,7 @@ import {
   ImpersonateUserDto,
   ReleaseNote,
   ReleaseNoteType,
+  ServiceNowIncidentResponse,
   Tutorial,
 } from '@equinor/subsurface-app-management';
 import { GraphAppRole } from '@equinor/subsurface-app-management/dist/api/models/GraphAppRole';
@@ -113,12 +114,12 @@ export const handlers = [
     return HttpResponse.json(FAKE_ROLES);
   }),
   http.get('*/api/v1/ImpersonateUser/CanImpersonate', async () => {
-    await delay('real');
     return HttpResponse.text('true');
   }),
   http.get('*/api/v1/ImpersonateUser/ActiveUser', async () => {
     await delay('real');
-    if (!activeImpersonateUser) return HttpResponse.json(null, { status: 204 });
+    if (!activeImpersonateUser)
+      return HttpResponse.json(undefined, { status: 204 });
     return HttpResponse.json(activeImpersonateUser);
   }),
   http.post('*/api/v1/ImpersonateUser', async (resolver) => {
@@ -175,7 +176,7 @@ export const handlers = [
       return HttpResponse.json(user);
     }
 
-    return new HttpResponse(null, { status: 204 });
+    return new HttpResponse(undefined, { status: 204 });
   }),
   http.put('*/api/v1/ImpersonateUser/StopImpersonating', async () => {
     await delay('real');
@@ -184,13 +185,14 @@ export const handlers = [
 
     return HttpResponse.text('Ok');
   }),
-  http.get(
-    '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
-    async () => {
-      await delay('real');
-      return HttpResponse.json(fakeImpersonateUsers);
-    }
-  ),
+  http.get('*/api/v1/ImpersonateUser/GetImpersonateUserForApp/*', async () => {
+    await delay('real');
+    return HttpResponse.json(fakeImpersonateUsers);
+  }),
+  http.get('*/api/v1/Token/AmplifyPortal', async () => {
+    await delay('real');
+    return HttpResponse.text(faker.string.nanoid());
+  }),
   http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
     await delay('real');
     return HttpResponse.text(faker.string.nanoid());
@@ -204,5 +206,23 @@ export const handlers = [
     return HttpResponse.text(
       `${faker.internet.url()}?${faker.string.nanoid()}`
     );
+  }),
+  http.post('*/api/v1/ServiceNow/incident', async () => {
+    await delay('real');
+    return HttpResponse.json({
+      sysId: faker.string.uuid(),
+    } as ServiceNowIncidentResponse);
+  }),
+  http.post('*/api/v1/Slack/fileUpload', async (resolver) => {
+    await delay('real');
+    const body = (await resolver.request.formData()) as FormData;
+
+    return HttpResponse.formData(body);
+  }),
+  http.post('*/api/v1/Slack/postmessage', async (resolver) => {
+    await delay('real');
+    const body = (await resolver.request.formData()) as FormData;
+
+    return HttpResponse.formData(body);
   }),
 ];
