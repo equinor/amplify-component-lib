@@ -26,13 +26,12 @@ export const CreateItem: FC<CreateItemProps> = ({
   const { isOpen } = useSideBar();
   if (isOpen) {
     return (
-      <MenuItemContainer $active={active} data-testid="create-item-container">
-        <CreateButton
-          $open
-          variant="contained"
-          onClick={onCreate}
-          disabled={disabled}
-        >
+      <MenuItemContainer
+        $active={active}
+        data-testid="create-item-container"
+        onClick={onCreate}
+      >
+        <CreateButton $open variant="contained" disabled={disabled}>
           <Icon data={add} />
           {createLabel}
         </CreateButton>
@@ -40,16 +39,16 @@ export const CreateItem: FC<CreateItemProps> = ({
     );
   }
   return (
-    <MenuItemContainer $active={active} data-testid="create-item-container">
-      <OptionalTooltip title={createLabel} placement="right">
-        <CreateButton
-          variant="contained"
-          onClick={onCreate}
-          disabled={disabled}
-        >
+    <OptionalTooltip title={createLabel} placement="right">
+      <MenuItemContainer
+        $active={active}
+        data-testid="create-item-container"
+        onClick={onCreate}
+      >
+        <CreateButton variant="contained" disabled={disabled}>
           <Icon data={add} />
         </CreateButton>
-      </OptionalTooltip>
-    </MenuItemContainer>
+      </MenuItemContainer>
+    </OptionalTooltip>
   );
 };
