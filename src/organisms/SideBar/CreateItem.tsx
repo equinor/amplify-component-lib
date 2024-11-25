@@ -24,12 +24,14 @@ export const CreateItem: FC<CreateItemProps> = ({
   active = false,
 }) => {
   const { isOpen } = useSideBar();
+  const onClickHandler = disabled ? undefined : onCreate;
+
   if (isOpen) {
     return (
       <MenuItemContainer
         $active={active}
         data-testid="create-item-container"
-        onClick={!disabled ? onCreate : undefined}
+        onClick={onClickHandler}
       >
         <CreateButton $open variant="contained" disabled={disabled}>
           <Icon data={add} />
@@ -43,7 +45,7 @@ export const CreateItem: FC<CreateItemProps> = ({
       <MenuItemContainer
         $active={active}
         data-testid="create-item-container"
-        onClick={!disabled ? onCreate : undefined}
+        onClick={onClickHandler}
       >
         <CreateButton variant="contained" disabled={disabled}>
           <Icon data={add} />
