@@ -29,7 +29,7 @@ export const CreateItem: FC<CreateItemProps> = ({
       <MenuItemContainer
         $active={active}
         data-testid="create-item-container"
-        onClick={onCreate}
+        onClick={!disabled ? onCreate : undefined}
       >
         <CreateButton $open variant="contained" disabled={disabled}>
           <Icon data={add} />
@@ -43,7 +43,7 @@ export const CreateItem: FC<CreateItemProps> = ({
       <MenuItemContainer
         $active={active}
         data-testid="create-item-container"
-        onClick={onCreate}
+        onClick={!disabled ? onCreate : undefined}
       >
         <CreateButton variant="contained" disabled={disabled}>
           <Icon data={add} />
