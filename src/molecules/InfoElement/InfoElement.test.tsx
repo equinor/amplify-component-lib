@@ -4,7 +4,11 @@ import { Button } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 
 import { InfoElement } from 'src/molecules/InfoElement/InfoElement';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+} from 'src/tests/browsertest-utils';
 
 test('renders string content correctly', () => {
   const title = faker.animal.cetacean().toUpperCase();
@@ -37,7 +41,7 @@ test('Copying works as expected', async () => {
       copyableContent
     ></InfoElement>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const spy = vi.spyOn(window.navigator.clipboard, 'writeText');
   await user.click(screen.getByText(contentString));

@@ -2,7 +2,13 @@ import { filter_list, IconData } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { SingleFilterMenu } from 'src/molecules/SingleFilterMenu/SingleFilterMenu';
-import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+  userEvent,
+  within,
+} from 'src/tests/browsertest-utils';
 
 function getTestProps(): {
   data: string[];
@@ -51,7 +57,7 @@ test('renders the menu items', () => {
   }
 });
 
-test('renders a the chip when menu item is selected and showChip = true', async () => {
+test('renders the chip when menu item is selected and showChip = true', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
   const menuItemText = props.data[0];
@@ -71,7 +77,7 @@ test('triggers onchange when item is selected', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
   const menuItemText = props.data[0];
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
   await user.click(menuItem);
@@ -83,7 +89,7 @@ test('triggers onchange with undefined clicking selected item', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props}></SingleFilterMenu>);
   const menuItemText = props.data[0];
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
   await user.click(menuItem);
@@ -99,7 +105,7 @@ test('triggers onchange with undefined clicking selected item', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
   const menuItemText = props.data[0];
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
 

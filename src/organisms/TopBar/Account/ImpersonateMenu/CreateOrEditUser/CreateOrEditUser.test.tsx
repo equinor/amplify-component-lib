@@ -5,20 +5,21 @@ import { Account } from '../../Account';
 import {
   renderWithProviders,
   screen,
-  userEvent,
+  testingLibUserEvent,
 } from 'src/tests/browsertest-utils';
 import { FAKE_ROLES } from 'src/tests/mockHandlers';
 
 test('Able to open/close create new', async () => {
   renderWithProviders(<Account />);
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
   const button = screen.getByRole('button');
 
   await user.click(button);
 
-  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
-
-  await user.click(screen.getByRole('button', { name: 'Impersonate' }));
+  const impersonateButton = await screen.findByRole('button', {
+    name: 'Impersonate',
+  });
+  await user.click(impersonateButton);
 
   await user.click(screen.getByRole('button', { name: /create/i }));
 
@@ -38,7 +39,7 @@ test(
         <Account />
       </>
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);
@@ -80,7 +81,7 @@ test('OnClose runs as expected in create new', async () => {
       <p>outside</p>
     </>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
   const button = screen.getByRole('button');
 
   await user.click(button);
@@ -108,7 +109,7 @@ test(
   'Able to edit existing user impersonation',
   async () => {
     renderWithProviders(<Account />);
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);
@@ -146,7 +147,7 @@ test(
   'Able to create new impersonation user',
   async () => {
     renderWithProviders(<Account />);
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);
@@ -207,7 +208,7 @@ test(
   'Able to edit active user impersonation',
   async () => {
     renderWithProviders(<Account />);
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);

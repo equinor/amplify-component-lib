@@ -15,8 +15,12 @@ import {
 } from './NotificationsTemplate/Notifications.types';
 import { useNotification } from './NotificationProvider';
 import { Notifications } from './Notifications';
-import { date } from 'src/atoms/utils';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import { formatRelativeDateTime } from 'src/atoms';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+} from 'src/tests/browsertest-utils';
 
 import { beforeEach, describe, expect } from 'vitest';
 
@@ -167,7 +171,7 @@ test('renders button and panel correctly', async () => {
   expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 
   const button = screen.getByTestId('show-hide-button');
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
   await user.click(button);
   expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 });
@@ -183,7 +187,7 @@ test('renders element children correctly', async () => {
       ))}
     </Notifications>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
 
@@ -197,7 +201,7 @@ test('renders element children correctly', async () => {
 test('Calls setAllAsRead when pressing button twice', async () => {
   const setAllAsRead = vi.fn();
   render(<Notifications setAllAsRead={setAllAsRead} />);
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
 
@@ -217,7 +221,7 @@ test('Calls setAllAsRead when pressing outside of panel', async () => {
       <button>{randomText}</button>
     </div>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const buttons = screen.getAllByRole('button');
 
@@ -238,7 +242,7 @@ test('Renders unread dot when unread = true', async () => {
   render(
     <Notifications setAllAsRead={() => null} hasUnread {...notificationsData} />
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
   await user.click(button);
@@ -256,7 +260,7 @@ test('renders button and panel with filter options correctly', async () => {
   expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 
   const button = screen.getByTestId('show-hide-button');
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
   await user.click(button);
   expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 });
@@ -269,7 +273,7 @@ test('renders filtered and sorted notifications correctly with children', async 
   };
 
   render(<Notifications setAllAsRead={() => null} {...options} />);
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
 
@@ -284,7 +288,7 @@ test('show unread dot when unread=true from system user ', async () => {
   };
 
   render(<Notifications setAllAsRead={() => null} {...options} />);
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const button = screen.getByTestId('show-hide-button');
 
@@ -302,7 +306,7 @@ describe('Sorting notifications ', () => {
     };
 
     render(<Notifications setAllAsRead={() => null} {...options} />);
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const button = screen.getByTestId('show-hide-button');
     await user.click(button);
     const sortButton = screen.getByText(/Sort by/);
@@ -310,7 +314,7 @@ describe('Sorting notifications ', () => {
   });
 
   test('Sort closing when clicking outside  ', async () => {
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     const title = screen.getByText(/newest to oldest/i);
     expect(title).toBeInTheDocument();
@@ -321,7 +325,7 @@ describe('Sorting notifications ', () => {
     expect(title).not.toBeInTheDocument();
   });
   test('Sort closing when click on sort again   ', async () => {
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     const title = screen.getByText(/newest to oldest/i);
     expect(title).toBeInTheDocument();
@@ -336,15 +340,15 @@ describe('Sorting notifications ', () => {
     const allNotificationsBeforeSort =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeSort[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const newToOldSort = screen.getByText(/oldest to newest/i);
     await user.click(newToOldSort);
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
   });
 
@@ -352,15 +356,15 @@ describe('Sorting notifications ', () => {
     const allNotificationsBeforeSort =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeSort[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const newestToOldest = screen.getByText(/newest to oldest/i);
     await user.click(newestToOldest);
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
   });
 
@@ -370,13 +374,13 @@ describe('Sorting notifications ', () => {
     expect(allNotificationsBeforeSort[0].textContent).not.toBe(
       notificationsData[2].Read
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const unread = screen.getByText(/unread/i);
     await user.click(unread);
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
   });
   test('Sort unread and reset unread filter   ', async () => {
@@ -385,13 +389,13 @@ describe('Sorting notifications ', () => {
     expect(allNotificationsBeforeSort[0].textContent).not.toBe(
       notificationsData[2].Read
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const unread = screen.getByText(/unread/i);
     await user.click(unread);
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
     await user.click(unread);
     expect(allNotifications[0].textContent).not.toBe(notificationsData[2].Read);
@@ -407,7 +411,7 @@ describe('Filtering notifications ', () => {
     };
 
     render(<Notifications setAllAsRead={() => null} {...options} />);
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const button = screen.getByTestId('show-hide-button');
     await user.click(button);
     const filterButton = screen.getByText(/Filter by/);
@@ -415,7 +419,7 @@ describe('Filtering notifications ', () => {
   });
 
   test('Filtering closing when clicking outside  ', async () => {
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     const title = screen.getByText(/user messages/i);
     expect(title).toBeInTheDocument();
@@ -427,7 +431,7 @@ describe('Filtering notifications ', () => {
   });
 
   test('Filtering closing when click on sort again   ', async () => {
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     const title = screen.getByText(/user messages/i);
     expect(title).toBeInTheDocument();
@@ -442,9 +446,9 @@ describe('Filtering notifications ', () => {
     const allNotificationsBeforeFilter =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const userMessages = screen.getByText(/user messages/i);
     await user.click(userMessages);
     const allNotifications = screen.getAllByTestId('notification-date');
@@ -455,9 +459,9 @@ describe('Filtering notifications ', () => {
     const allNotificationsBeforeFilter =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const userMessages = screen.getByText(/system messages/i);
     await user.click(userMessages);
     expect(allNotificationsBeforeFilter).not.toBe(
@@ -465,7 +469,7 @@ describe('Filtering notifications ', () => {
     );
     await user.click(userMessages);
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
   });
 
@@ -475,14 +479,14 @@ describe('Filtering notifications ', () => {
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
       notificationsData[2].Read
     );
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     const userMessages = screen.getByText(/unread/i);
 
     await user.click(userMessages);
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
   });
 });

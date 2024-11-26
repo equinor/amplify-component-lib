@@ -8,7 +8,12 @@ import {
   StepperProviderProps,
   useStepper,
 } from 'src/providers/StepperProvider';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeSteps(): StepperProviderProps['steps'] {
   const steps: StepperProviderProps['steps'] = [
@@ -52,7 +57,7 @@ test('Clicking through shows all steps', async () => {
     ),
   });
 
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   for (let i = 0; i < steps.length; i++) {
     expect(screen.getByText(`Current step: ${i}`)).toBeInTheDocument();

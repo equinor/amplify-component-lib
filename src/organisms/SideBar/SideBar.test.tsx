@@ -8,7 +8,13 @@ import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar/index';
 import { MenuItem } from 'src/organisms/SideBar/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
-import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+  userEvent,
+  within,
+} from 'src/tests/browsertest-utils';
 
 const defaultMenuItems: SideBarMenuItem[] = [
   {
@@ -67,7 +73,7 @@ test('Disabled create new button doesnt fire event', async () => {
     }
   );
 
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const createNewButton = screen.getAllByRole('button')[0];
   await user.click(createNewButton);

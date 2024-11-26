@@ -1,5 +1,10 @@
 import { ToggleOpen, ToggleOpenProps } from 'src/organisms/SideBar/ToggleOpen';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeProps(): ToggleOpenProps {
   return {
@@ -15,7 +20,7 @@ describe('Expanded', () => {
 
     const button = screen.getByRole('button');
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     await user.click(button);
 
     expect(props.toggle).toHaveBeenCalledOnce();
@@ -26,7 +31,7 @@ describe('Expanded', () => {
     render(<ToggleOpen {...props} />);
     const button = screen.getByRole('button');
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     await user.tab();
 
     expect(button).toHaveFocus();
@@ -59,7 +64,7 @@ describe('Collapsed', () => {
 
     const button = screen.getByRole('button');
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     await user.click(button);
 
     expect(props.toggle).toHaveBeenCalledOnce();
@@ -70,7 +75,7 @@ describe('Collapsed', () => {
     render(<ToggleOpen {...props} isOpen={false} />);
     const collapseButton = screen.getByRole('button');
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
     await user.tab();
 
     expect(collapseButton).toHaveFocus();

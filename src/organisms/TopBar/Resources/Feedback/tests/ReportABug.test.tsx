@@ -10,7 +10,11 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+} from 'src/tests/browsertest-utils';
 import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
@@ -52,7 +56,7 @@ beforeEach(async () => {
   window.localStorage.clear();
 
   render(<Resources />, { wrapper: Wrappers });
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   await user.click(screen.getByRole('button'));
   await user.click(screen.getByText('Report a bug'));
@@ -60,7 +64,7 @@ beforeEach(async () => {
 
 test('Able to fill in form with successful response', async () => {
   const { title, description, url } = fakeInputs();
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   await user.type(screen.getByLabelText(/title/i), title);
   await user.type(screen.getByLabelText(/description/i), description);
@@ -129,7 +133,7 @@ describe('Show expected error message when requests fail', () => {
   test('Show expected error message when requests fail', async () => {
     const { title, description, url } = fakeInputs();
     const image = fakeImageFile();
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     await user.type(screen.getByLabelText(/title/i), title);
     await user.type(screen.getByLabelText(/description/i), description);

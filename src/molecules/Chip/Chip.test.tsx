@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker';
 
 import { Chip } from 'src/molecules/Chip/Chip';
 import {
+  page,
   render,
   screen,
   testingLibUserEvent,
@@ -14,17 +15,23 @@ test('Shows readonly chip with leading icon', () => {
 
   //Accesses the span element, finds it parent and finds the first element, which in this case should alwasys be leading
   expect(
-    screen.getByText(someText).parentElement?.firstElementChild?.className
+    page.getByText(someText).element().parentElement?.firstElementChild
+      ?.className
   ).toBe('leading');
 });
 
 test('Works with just string/number', () => {
   const text = faker.animal.bear();
   const { rerender } = render(<Chip>{text}</Chip>);
-  expect(screen.getByText(text)).toBeVisible();
+
+  const chip = screen.getByText(text);
+  expect(chip).toBeVisible();
+
   const randomNumb = faker.number.int();
   rerender(<Chip>{randomNumb}</Chip>);
-  expect(screen.getByText(randomNumb)).toBeVisible();
+
+  const otherChip = screen.getByText(randomNumb.toString());
+  expect(otherChip).toBeVisible();
 });
 
 test('Works with multiple children', () => {
@@ -34,6 +41,7 @@ test('Works with multiple children', () => {
   const fourth = faker.animal.crocodilia();
   const fifth = faker.animal.fish();
   const sixth = faker.animal.dog();
+
   render(
     <Chip>
       <div>{first}</div>
@@ -49,12 +57,10 @@ test('Works with multiple children', () => {
     </Chip>
   );
 
-  expect(screen.getByText(first)).toBeVisible();
-  expect(screen.getByText(second)).toBeVisible();
-  expect(screen.getByText(third)).toBeVisible();
-  expect(screen.getByText(fourth)).toBeVisible();
-  expect(screen.getByText(fifth)).toBeVisible();
-  expect(screen.getByText(sixth)).toBeVisible();
+  for (const child of [first, second, third, fourth, fifth, sixth]) {
+    const childElement = page.getByText(child).element();
+    expect(childElement).toBeVisible();
+  }
 });
 
 test('Shows interactive chip with delete icon', () => {
@@ -63,7 +69,8 @@ test('Shows interactive chip with delete icon', () => {
 
   render(<Chip onDelete={handleOnClick}>{someText}</Chip>);
 
-  expect(screen.queryByRole('img')).toBeInTheDocument();
+  const icon = page.getByRole('img').element();
+  expect(icon).toBeInTheDocument();
 });
 
 test('Handles delete event on interactive chip', async () => {

@@ -8,7 +8,12 @@ import {
   TableOfContentsItemType,
   TableOfContentsProvider,
 } from 'src/providers/TableOfContentsProvider';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeItems(withChildren = false): TableOfContentsItemType[] {
   return new Array(faker.number.int({ min: 4, max: 16 })).fill(0).map(() => ({
@@ -178,7 +183,7 @@ describe('button variant', () => {
       }
     );
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     for (const item of items) {
       expect(screen.queryAllByText(item.label).length).toBe(2);
@@ -228,7 +233,7 @@ describe('border and borderHorizontal  ', () => {
       }
     );
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     for (const item of items) {
       expect(screen.queryAllByText(item.label).length).toBe(2);
@@ -374,7 +379,7 @@ describe('border and borderHorizontal  ', () => {
       }
     );
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     for (const item of items) {
       expect(screen.queryAllByText(item.label).length).toBe(2);

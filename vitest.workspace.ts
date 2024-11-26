@@ -14,13 +14,14 @@ export default defineWorkspace([
         provider: 'playwright',
         // https://playwright.dev
         providerOptions: {},
+        screenshotFailures: false
       },
       exclude: ['src/atoms', 'src/deprecated', 'src/**/*.jsdom.test.tsx'],
       setupFiles: ['src/tests/setupBrowserTests.ts'],
       css: true
     },
   },
-  /*{
+  {
     extends: 'vitest.config.ts',
     test: {
       server: {
@@ -39,5 +40,5 @@ export default defineWorkspace([
       setupFiles: ['src/tests/setupNodeTests.ts', 'src/tests/browserMocks.ts', 'src/tests/msalMock.tsx'],
       testTimeout: 60000,
     }
-  }*/
+  }
 ])

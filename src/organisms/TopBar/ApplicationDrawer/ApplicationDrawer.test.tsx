@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 
 import { ApplicationDrawer } from './ApplicationDrawer';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
-import { waitFor } from 'src/tests/browsertest-utils';
+import { testingLibUserEvent, waitFor } from 'src/tests/browsertest-utils';
 import { FAKE_APPS } from 'src/tests/mockHandlers';
 
 function Wrappers({ children }: { children: ReactNode }) {
@@ -21,6 +21,10 @@ function Wrappers({ children }: { children: ReactNode }) {
     </QueryClientProvider>
   );
 }
+
+beforeEach(() => {
+  window.open = vi.fn();
+});
 
 test('Should toggle menu and handle application click', async () => {
   render(<ApplicationDrawer />, { wrapper: Wrappers });
@@ -79,7 +83,7 @@ test(
   async () => {
     render(<ApplicationDrawer />, { wrapper: Wrappers });
 
-    const user = userEvent.setup();
+    const user = testingLibUserEvent.setup();
 
     const menuButton = await screen.findByRole('button');
 
@@ -127,7 +131,7 @@ test(
 test('Click on more access button', async () => {
   render(<ApplicationDrawer />, { wrapper: Wrappers });
 
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const menuButton = await screen.findByRole('button');
 
