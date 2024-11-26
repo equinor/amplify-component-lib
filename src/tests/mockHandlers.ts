@@ -1,4 +1,6 @@
 import {
+  AmplifyApplication,
+  ApplicationCategory,
   FeatureToggleDto,
   ImpersonateUserDto,
   ReleaseNote,
@@ -90,6 +92,37 @@ export const fakeImpersonateUsers: ImpersonateUserDto[] = [
 ];
 
 let activeImpersonateUser: ImpersonateUserDto | undefined = undefined;
+
+function fakeApplication(): AmplifyApplication {
+  return {
+    id: faker.string.uuid(),
+    name: faker.animal.dog() + faker.animal.fish(),
+    adGroups: [faker.animal.cat()],
+    url: faker.animal.bird(),
+    accessRoles: [
+      { role: faker.lorem.word(), description: faker.airline.seat() },
+    ],
+    description: faker.lorem.sentence(),
+    longDescription: faker.animal.crocodilia(),
+    contentTabs: [],
+    partnerAccess: faker.datatype.boolean(),
+    sponsors: [],
+    category: faker.helpers.arrayElement(
+      Object.values(ApplicationCategory)
+    ) as ApplicationCategory,
+    version: faker.string.numeric(),
+    applicationInsightAPI: faker.animal.insect(),
+    apI_Id: faker.animal.lion(),
+    apiurl: faker.animal.snake(),
+    monitored: true,
+    productOwners: [faker.animal.cow()],
+  };
+}
+export const FAKE_APPS = [
+  fakeApplication(),
+  fakeApplication(),
+  fakeApplication(),
+] as AmplifyApplication[];
 
 export const handlers = [
   http.get('*/api/v1/Tutorial/SASToken', async () => {
@@ -224,5 +257,9 @@ export const handlers = [
     const body = (await resolver.request.formData()) as FormData;
 
     return HttpResponse.formData(body);
+  }),
+  http.get('*/api/v1/AmplifyApplication/userapplications', async () => {
+    await delay('real');
+    return HttpResponse.json(FAKE_APPS);
   }),
 ];

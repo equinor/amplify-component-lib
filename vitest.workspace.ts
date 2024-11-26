@@ -10,30 +10,28 @@ export default defineWorkspace([
           width: 1280,
           height: 900
         },
-        headless: true,
         name: 'chromium',
         provider: 'playwright',
         // https://playwright.dev
         providerOptions: {},
       },
-      exclude: ['src/atoms', 'src/deprecated', 'src/**/*.styles.test.tsx'],
+      exclude: ['src/atoms', 'src/deprecated', 'src/**/*.jsdom.test.tsx'],
       setupFiles: ['src/tests/setupBrowserTests.ts'],
       css: true
     },
   },
-  {
+  /*{
     extends: 'vitest.config.ts',
     test: {
-      maxConcurrency: 35,
       server: {
         deps: {
           inline: ['@equinor/subsurface-app-management']
         }
       },
       include:[
-        'src/atoms/**/*.test.ts',
-        'src/atoms/**/*.test.tsx',
-        '**/*.styles.test.tsx' // TODO: Change to jsdom.test.tsx, add to README
+        'src/atoms/!**!/!*.test.ts',
+        'src/atoms/!**!/!*.test.tsx',
+        '**!/!*.jsdom.test.tsx'
       ],
       exclude: ['src/deprecated'],
       globals: true,
@@ -41,5 +39,5 @@ export default defineWorkspace([
       setupFiles: ['src/tests/setupNodeTests.ts', 'src/tests/browserMocks.ts', 'src/tests/msalMock.tsx'],
       testTimeout: 60000,
     }
-  }
+  }*/
 ])

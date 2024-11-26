@@ -4,7 +4,12 @@ import { car, close } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Dialog, DialogAction } from './Dialog';
-import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+  within,
+} from 'src/tests/browsertest-utils';
 
 test('Basic dialog', () => {
   const handleOnClose = vi.fn();
@@ -84,7 +89,7 @@ test('Clicking close calls onClose', async () => {
       {description}
     </Dialog>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   await user.click(screen.getByRole('button', { hidden: true }));
 
@@ -130,7 +135,7 @@ test('Actions prop works as expected', async () => {
       {description}
     </Dialog>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   for (const action of actions) {
     await user.click(
@@ -171,7 +176,7 @@ test('Disabled actions works as expected', async () => {
   expect(screen.getByText(actionTextOne).parentElement).toBeDisabled();
   expect(screen.getByText(actionTextTwo).parentElement).toBeDisabled();
 
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   await user.hover(screen.getByText(actionTextTwo));
   // Tooltip has open delay
@@ -227,7 +232,7 @@ test('Actions with icon works as expected', async () => {
       {description}
     </Dialog>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const button = screen.getByRole('button', {
     name: action.text,

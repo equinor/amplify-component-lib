@@ -4,7 +4,11 @@ import {
   ContentMenu,
   ContentMenuProps,
 } from 'src/molecules/ContentMenu/ContentMenu';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  testingLibUserEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeItem(): { label: string; value: string } {
   return {
@@ -35,7 +39,7 @@ test('All labels are visible', () => {
 });
 
 test('Clicking menu item calls onChange', async () => {
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
   const props = fakeProps();
   render(<ContentMenu {...props} />);
 
@@ -65,7 +69,7 @@ test('Show isLoading correctly', () => {
 });
 
 test('Parents open and close as expected', async () => {
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
   const child = fakeItem();
   const props = fakeProps();
   props.items[0].children = [child];
@@ -84,7 +88,7 @@ test('Parents open and close as expected', async () => {
 });
 
 test('Children function as they should', async () => {
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
   const child = fakeItem();
   const props = fakeProps();
   props.items[0].children = [child];

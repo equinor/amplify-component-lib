@@ -1,7 +1,9 @@
+import { cleanup } from '@testing-library/react';
+
 import { handlers } from 'src/tests/mockHandlers';
 
 import { setupWorker } from 'msw/browser';
-import { afterEach, beforeAll } from 'vitest';
+import { afterEach, beforeAll, beforeEach } from 'vitest';
 
 import 'vitest-browser-react';
 
@@ -14,6 +16,10 @@ beforeAll(() => {
       return;
     },
   });
+});
+
+beforeEach(() => {
+  cleanup();
 });
 
 afterEach(() => {

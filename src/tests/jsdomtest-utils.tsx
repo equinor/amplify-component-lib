@@ -3,8 +3,7 @@ import { FC, ReactElement, ReactNode } from 'react';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
-import { userEvent as testingLibUserEvent } from '@testing-library/user-event';
-import { page, userEvent } from '@vitest/browser/context';
+import userEvent from '@testing-library/user-event';
 
 import { Template } from 'src/organisms/Template/Template';
 import { AuthProvider } from 'src/providers/AuthProvider/AuthProvider';
@@ -44,4 +43,4 @@ export function fakeSelectItems(count = 10) {
 export * from '@testing-library/react';
 
 // override render method
-export { renderWithProviders, userEvent, testingLibUserEvent, page };
+export { renderWithProviders, userEvent };

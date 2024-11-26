@@ -23,5 +23,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install dependencies
+        run: npx playwright install --with-deps
+
       - name: Unit tests
         run: npm run test:ci

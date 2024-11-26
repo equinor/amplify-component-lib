@@ -389,16 +389,15 @@ describe('border and borderHorizontal  ', () => {
 
     expect(section.scrollIntoView).not.toHaveBeenCalled();
 
-    // Expect other button _not_ to be disabled
     const otherButton = screen.getByRole('button', { name: items[1].label });
-
     expect(otherButton).not.toBeDisabled();
+
+    const otherSection = document.querySelector(`#${items[1].value}`)!;
+    const spy = vi.spyOn(otherSection, 'scrollIntoView');
 
     await user.click(otherButton);
 
-    const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-    expect(otherSection.scrollIntoView).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   test('Does not run OnClick when link is disabled', async () => {
@@ -441,12 +440,12 @@ describe('border and borderHorizontal  ', () => {
 
     // Expect other button _not_ to be disabled
     const otherLink = screen.getByRole('link', { name: items[1].label });
+    const otherSection = document.querySelector(`#${items[1].value}`)!;
+    const spy = vi.spyOn(otherSection, 'scrollIntoView');
 
     await user.click(otherLink);
 
-    const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-    expect(otherSection.scrollIntoView).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   test('Does not run OnClick when link is disabled, variant="borderHorizontal"', async () => {
