@@ -30,3 +30,7 @@ export { default as Tutorial } from './Tutorial/Tutorial';
 export { HighlightBlocks } from './Tutorial/HighlightBlocks/HighlightBlocks';
 export { OldStepper } from './OldStepper/OldStepper';
 export { FullPageStatus } from './FullPageStatus/FullPageStatus';
+export { ErrorPage } from './ErrorPage';
+export { GlitchAnimation } from './ErrorPage/illustrations/GlitchAnimation';
+export { QuestioningAnimation } from './ErrorPage/illustrations/QuestioningAnimation';
+export * from './ErrorPage/collections';

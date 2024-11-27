@@ -39,7 +39,7 @@ export interface NotificationsProps {
   setAllAsRead: () => void;
   hasUnread?: boolean;
   showFilterOptions?: boolean;
-  children?: ReactNode;
+  children?: ReactNode | (({ onClose }: { onClose: () => void }) => ReactNode);
   notifications?: (
     | ReadyToReportNotificationTypes
     | RequestChangeOrcaTypes
@@ -146,7 +146,9 @@ export const NotificationsInner: FC<NotificationsProps> = ({
         )}
 
         {children ? (
-          <Content>{children}</Content>
+          <Content>
+            {children instanceof Function ? children({ onClose }) : children}
+          </Content>
         ) : (
           <Content>
             {filteredAndSortedNotifications &&

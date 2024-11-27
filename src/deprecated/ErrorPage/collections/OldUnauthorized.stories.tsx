@@ -1,8 +1,8 @@
-import { Unauthorized } from './Unauthorized';
+import { OldUnauthorized } from 'src/deprecated/ErrorPage/collections/OldUnauthorized';
 
 export default {
-  title: 'Organisms/ErrorPage/Collections/Unauthorized',
-  component: Unauthorized,
+  title: 'Deprecated/ErrorPage/Collections/Unauthorized',
+  component: OldUnauthorized,
   env: (config: []) => ({
     ...config,
     NAME: '{AppName}',
@@ -16,5 +16,5 @@ export default {
 };
 
 export const Primary = () => {
-  return <Unauthorized />;
+  return <OldUnauthorized />;
 };

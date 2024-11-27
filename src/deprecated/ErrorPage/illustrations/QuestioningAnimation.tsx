@@ -23,6 +23,9 @@ const Animation = styled.div`
   animation: ${animation} 2.5s steps(34) infinite;
 `;
 
+/**
+ * @deprecated - Use Status component instead
+ */
 export const QuestioningAnimation: FC = () => {
   return (
     <Container>

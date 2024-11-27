@@ -1,12 +1,12 @@
-import { Action } from 'src/organisms/ErrorPage/Action';
-import { Description } from 'src/organisms/ErrorPage/Description';
-import { Details } from 'src/organisms/ErrorPage/Details';
+import { Action } from 'src/deprecated/ErrorPage/Action';
+import { Description } from 'src/deprecated/ErrorPage/Description';
+import { Details } from 'src/deprecated/ErrorPage/Details';
 import {
   ErrorContentProps,
   ErrorPage as DefaultErrorPage,
-} from 'src/organisms/ErrorPage/ErrorPage';
-import { MissingAccesses } from 'src/organisms/ErrorPage/MissingAccesses';
-import { Title } from 'src/organisms/ErrorPage/Title';
+} from 'src/deprecated/ErrorPage/ErrorPage';
+import { MissingAccesses } from 'src/deprecated/ErrorPage/MissingAccesses';
+import { Title } from 'src/deprecated/ErrorPage/Title';
 
 type ErrorPageType = typeof DefaultErrorPage & {
   Title: typeof Title;
@@ -16,6 +16,9 @@ type ErrorPageType = typeof DefaultErrorPage & {
   MissingAccesses: typeof MissingAccesses;
 };
 
+/**
+ * @deprecated - Use Status component instead
+ */
 export const ErrorPage = DefaultErrorPage as ErrorPageType;
 ErrorPage.Title = Title;
 ErrorPage.Description = Description;
