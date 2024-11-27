@@ -8,6 +8,7 @@ jobs:
     strategy:
       matrix:
         node-version: [21.x]
+        browser: [chromium, firefox, webkit]
 
     steps:
       - name: Checkout code
@@ -26,5 +27,5 @@ jobs:
       - name: Install dependencies
         run: npx playwright install --with-deps
 
-      - name: Unit tests
-        run: npm run test:ci
+      - name: Tests
+        run: npm run test:ci --browser.name=${{ matrix.browser }}

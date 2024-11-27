@@ -2,13 +2,13 @@ import CopyText from 'src/molecules/InfoElement/CopyText';
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
 
 test('Renders label on hover', async () => {
   render(<CopyText textToCopy="Test">testing text</CopyText>);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const wrapper = screen.getByText('testing text');
 
@@ -23,7 +23,7 @@ test('Renders label on hover', async () => {
 
 test('Copies text to clipboard and displays success message', async () => {
   render(<CopyText textToCopy="Test">testing text</CopyText>);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   let clipboard = '';
 

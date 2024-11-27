@@ -5,7 +5,7 @@ import { SingleFilterMenu } from 'src/molecules/SingleFilterMenu/SingleFilterMen
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   userEvent,
   within,
 } from 'src/tests/browsertest-utils';
@@ -77,7 +77,7 @@ test('triggers onchange when item is selected', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
   const menuItemText = props.data[0];
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
   await user.click(menuItem);
@@ -89,7 +89,7 @@ test('triggers onchange with undefined clicking selected item', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props}></SingleFilterMenu>);
   const menuItemText = props.data[0];
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
   await user.click(menuItem);
@@ -105,7 +105,7 @@ test('triggers onchange with undefined clicking selected item', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
   const menuItemText = props.data[0];
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const menuItem = screen.getByText(menuItemText);
 

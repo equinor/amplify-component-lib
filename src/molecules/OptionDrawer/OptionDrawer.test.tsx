@@ -8,7 +8,7 @@ import {
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
 
@@ -97,7 +97,7 @@ const handleOnToggle = (e: ToggleEventProps<FakeSelectedItemType>) => {
 
 test('Works correctly when toggling parent when one child is checked', async () => {
   const props = fakeProps();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   selectedItems = [];
 
   const children = props.item.children ?? [props.item];
@@ -138,7 +138,7 @@ test('Works correctly when toggling parent when one child is checked', async () 
 
 test('Works correctly when opening parent to show children', async () => {
   const props = fakeProps();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   render(<OptionDrawer {...props} />);
 
   const parent = screen.getByText(props.item.label);
@@ -151,7 +151,7 @@ test('Works correctly when opening parent to show children', async () => {
 
 test('Animation works correctly when toggling parent with no child', async () => {
   const props = fakeProps(false, false);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const { rerender } = render(<OptionDrawer {...props} animateCheck={true} />);
 
   const parentElement = screen.getByText(props.item.label);
@@ -187,7 +187,7 @@ test('Animation works correctly when toggling parent with no child', async () =>
 
 test('Children does not trigger animation if you check all but one sibling', async () => {
   const props = fakeProps();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const children = props.item.children ?? [props.item];
   const childrenExpectLast = children.slice(0, -1);
 
@@ -203,7 +203,7 @@ test('Children does not trigger animation if you check all but one sibling', asy
 
 test('Children does not trigger animation if you uncheck all but one sibling', async () => {
   const props = fakeProps();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const children = props.item.children ?? [props.item];
   const childrenExpectLast = children.slice(0, -1);
 
@@ -226,7 +226,7 @@ test('Children does not trigger animation if you uncheck all but one sibling', a
 
 test('Animation works correctly when checking all children', async () => {
   const props = fakeProps();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const children = props.item.children ?? [props.item];
 
   const { rerender } = render(
@@ -268,7 +268,7 @@ test('Animation works correctly when checking all children', async () => {
 
 test('Animation works correctly when unchecking all children', async () => {
   const props = fakeProps();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const children = props.item.children ?? [props.item];
 
   const { rerender } = render(
@@ -300,7 +300,7 @@ test('Animation works correctly when unchecking all children', async () => {
 
 test('onToggle is called after check animation', async () => {
   const props = fakeProps(false, false);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   render(<OptionDrawer {...props} animateCheck={true} />);
 
@@ -312,7 +312,7 @@ test('onToggle is called after check animation', async () => {
 
 test('onToggle is called after uncheck animation', async () => {
   const props = fakeProps(false, false);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   render(
     <OptionDrawer
@@ -329,7 +329,7 @@ test('onToggle is called after uncheck animation', async () => {
 });
 
 test('chevron toggler works as expected', async () => {
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const props = fakeProps();
   const children = props.item.children ?? [props.item];

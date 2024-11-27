@@ -6,7 +6,7 @@ import {
   fakeSelectItems,
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   within,
 } from 'src/tests/browsertest-utils';
 
@@ -40,7 +40,7 @@ test('Works as expected when clicking items', async () => {
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   expect(screen.getByText(label)).toBeInTheDocument();
   expect(screen.getByText(meta)).toBeInTheDocument();
@@ -137,7 +137,7 @@ test('Groups work as expected when clicking items', async () => {
     />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 

@@ -11,7 +11,7 @@ import {
   fakeSelectItems,
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
 } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
@@ -46,7 +46,7 @@ test('Can open/close by clicking icon', async () => {
     <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const svgIcon = screen.getByTestId('eds-icon-path');
 
@@ -71,7 +71,7 @@ test('Searching works as expected', async () => {
   const { rerender } = render(
     <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const searchField = screen.getByRole('combobox');
 
@@ -153,7 +153,7 @@ test('Searching works as expected with onSearchFilter', async () => {
 
   const searchField = screen.getByRole('combobox');
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   // Expect a "normal" item to be shown in search results
   await user.type(searchField, randomItemToShowInSearch.label);
@@ -202,7 +202,7 @@ test('Searching works as expected with groups and onSearchFilter', async () => {
 
   const searchField = screen.getByRole('combobox');
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   // Expect a "normal" item to be shown in search results
   await user.type(searchField, randomItemToShowInSearch.label);
@@ -236,7 +236,7 @@ test("Clicking 'x' on chip works as expected", async () => {
       values={[items[0]]}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const chip = screen.getByRole('img', { name: /close/i });
 
@@ -265,7 +265,7 @@ test('Keyboard navigation works as expected', async () => {
   render(
     <Select label={label} onSelect={handler} items={items} value={undefined} />
   );
-  const user = testingLibUserEvent.setup({ delay: 100 });
+  const user = userEvent.setup({ delay: 100 });
 
   const searchField = screen.getByRole('combobox');
 
@@ -341,7 +341,7 @@ test('Filtering with no results', async () => {
   render(
     <Select label={label} onSelect={handler} value={undefined} items={items} />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.type(screen.getByRole('combobox'), faker.animal.bird());
 
@@ -361,7 +361,7 @@ test('Filtering with no results in groups', async () => {
       groups={groups}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.type(screen.getByRole('combobox'), faker.animal.bird());
 
@@ -378,7 +378,7 @@ test(
     render(
       <Select label={label} onSelect={handler} items={items} values={[]} />
     );
-    const user = testingLibUserEvent.setup({ delay: 100 });
+    const user = userEvent.setup({ delay: 100 });
 
     await user.click(screen.getByRole('combobox'));
 
@@ -455,7 +455,7 @@ test('Disabled works as expected', async () => {
     />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const combobox = screen.getByRole('combobox');
 
@@ -486,7 +486,7 @@ test('Loading works as expected', async () => {
     />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const combobox = screen.getByRole('combobox');
   await user.click(combobox);
@@ -539,7 +539,7 @@ test('Not able to remove item when disabled/loading', async () => {
       disabled
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const chip = screen.getByRole('img', { name: /close/i });
 
@@ -577,7 +577,7 @@ test('Clearing works as expected', async () => {
     />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const clearButton = screen.getByTestId('clearBtn');
 
@@ -651,7 +651,7 @@ test('Chevron button works as expected', async () => {
     );
 
   render(<Select label={label} onSelect={handler} items={items} values={[]} />);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
   await user.click(screen.getByTestId('toggle-button'));
@@ -681,7 +681,7 @@ test('onSearchChange to be called with value when typing in input field', async 
     />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const searchField = screen.getByRole('combobox');
   await user.type(searchField, 'Test');
   expect(handleOnSearchChange).toHaveBeenCalledWith('Test');
@@ -705,7 +705,7 @@ test('inDialog works as expected', async () => {
       <p>{outside}</p>
     </>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByText(placeholder));
 
@@ -740,7 +740,7 @@ test('openCallback works as expected', async () => {
       <p>{outside}</p>
     </>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByText(placeholder));
 
@@ -774,7 +774,7 @@ test('Does not call onSubmit when clicking items', async () => {
       />
     </form>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByText(placeholder));
 
@@ -801,7 +801,7 @@ test('Does not call onSubmit when selecting items with {Enter}', async () => {
       />
     </form>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByText(placeholder));
 

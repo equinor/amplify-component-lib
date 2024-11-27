@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 
 import { ApplicationDrawer } from './ApplicationDrawer';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
-import { testingLibUserEvent, waitFor } from 'src/tests/browsertest-utils';
+import { userEvent, waitFor } from 'src/tests/browsertest-utils';
 import { FAKE_APPS } from 'src/tests/mockHandlers';
 
 function Wrappers({ children }: { children: ReactNode }) {
@@ -83,7 +83,7 @@ test(
   async () => {
     render(<ApplicationDrawer />, { wrapper: Wrappers });
 
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
 
     const menuButton = await screen.findByRole('button');
 
@@ -131,7 +131,7 @@ test(
 test('Click on more access button', async () => {
   render(<ApplicationDrawer />, { wrapper: Wrappers });
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const menuButton = await screen.findByRole('button');
 

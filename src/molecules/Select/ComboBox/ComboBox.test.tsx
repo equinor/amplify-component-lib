@@ -12,7 +12,7 @@ import {
   fakeSelectItems,
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   within,
 } from 'src/tests/browsertest-utils';
 
@@ -44,7 +44,7 @@ test('OnAddItem works as expected with {Enter}', async () => {
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const input = screen.getByRole('combobox');
 
@@ -69,7 +69,7 @@ test('OnAddItem works as expected with {Enter} and preselected values', async ()
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const input = screen.getByRole('combobox');
 
@@ -100,7 +100,7 @@ test('OnAddItem works as expected with {Enter} inside a form', async () => {
       />
     </form>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const input = screen.getByRole('combobox');
 
@@ -129,7 +129,7 @@ test('OnAddItem works as expected when clicking item', async () => {
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const input = screen.getByRole('combobox');
 
@@ -159,7 +159,7 @@ test('OnAddItem works as expected when moving to item and hitting {Enter}', asyn
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup({ delay: 100 });
+  const user = userEvent.setup({ delay: 100 });
 
   const input = screen.getByRole('combobox');
 
@@ -186,7 +186,7 @@ test('Works as expected when moving past "add new tag" menuitem', async () => {
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup({ delay: 100 });
+  const user = userEvent.setup({ delay: 100 });
 
   const input = screen.getByRole('combobox');
 
@@ -235,7 +235,7 @@ test('Can select items with clicks', async () => {
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 
@@ -265,7 +265,7 @@ test('syncParentChild = true works as expected', async () => {
       items={items}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 
@@ -289,7 +289,7 @@ test('syncParentChild = false works as expected', async () => {
       syncParentChildSelection={false}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 
@@ -332,7 +332,7 @@ test('Parent - nested selection works as expected with keyboard', async () => {
   const { rerender } = render(
     <ComboBox label={label} onSelect={handler} items={items} values={[]} />
   );
-  const user = testingLibUserEvent.setup({ delay: 100 });
+  const user = userEvent.setup({ delay: 100 });
 
   await user.click(screen.getByRole('combobox'));
 
@@ -409,7 +409,7 @@ test('Parent - nested selection with preselected parent works as expected', asyn
       values={[items[0]]}
     />
   );
-  const user = testingLibUserEvent.setup({ delay: 100 });
+  const user = userEvent.setup({ delay: 100 });
 
   await user.click(screen.getByRole('combobox'));
 
@@ -458,7 +458,7 @@ test('Parent - nested child label shows as expected', async () => {
     />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   await user.click(screen.getByRole('combobox'));
 
   expect(screen.getByText('label 3')).toBeInTheDocument();
@@ -481,7 +481,7 @@ test('Basic group with preselected item', async () => {
     />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 
@@ -500,7 +500,7 @@ test('Parented group', async () => {
     <ComboBox label={label} onSelect={handler} groups={groups} values={[]} />
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('combobox'));
 
@@ -565,7 +565,7 @@ test('Removing with backspace', async () => {
       values={[items[0]]}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const searchField = screen.getByRole('combobox');
 

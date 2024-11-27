@@ -9,7 +9,7 @@ import { snackbarIcon } from 'src/providers/SnackbarProvider/SnackbarProvider.ut
 import {
   renderHook,
   screen,
-  testingLibUserEvent,
+  userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
 
@@ -88,7 +88,7 @@ test("'useSnackbar' showSnackbar function works as expected with action", async 
 
   const actionText = faker.animal.cat();
   const customActionHandler = vi.fn();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   result.current.showSnackbar(faker.animal.dog(), {
     action: {
@@ -112,7 +112,7 @@ test("'useSnackbar' setActionDisabledState function works as expected with actio
 
   const actionText = faker.animal.cat();
   const customActionHandler = vi.fn();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   result.current.showSnackbar(faker.animal.dog(), {
     action: {

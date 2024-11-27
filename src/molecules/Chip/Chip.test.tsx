@@ -2,12 +2,7 @@ import { save } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Chip } from 'src/molecules/Chip/Chip';
-import {
-  page,
-  render,
-  screen,
-  testingLibUserEvent,
-} from 'src/tests/browsertest-utils';
+import { page, render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Shows readonly chip with leading icon', () => {
   const someText = faker.animal.crocodilia();
@@ -81,7 +76,7 @@ test('Handles delete event on interactive chip', async () => {
   const someText = faker.animal.crocodilia();
 
   render(<Chip onDelete={handleDelete}>{someText}</Chip>);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const chip = screen.getByText(someText);
 
   await user.click(chip);
@@ -95,7 +90,7 @@ test('Handles click event on interactive chip', async () => {
   const someText = faker.animal.crocodilia();
 
   render(<Chip onClick={handleOnClick}>{someText}</Chip>);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const chip = screen.getByText(someText);
 
   await user.click(chip);
@@ -127,7 +122,7 @@ test('Handles keyboard event on delete interactive chip', async () => {
   const someText = faker.animal.crocodilia();
 
   render(<Chip onDelete={handleOnDelete}>{someText}</Chip>);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.tab();
   await user.keyboard('[Enter]');
@@ -141,7 +136,7 @@ test('Handles keyboard event on click interactive chip', async () => {
   const someText = faker.animal.crocodilia();
 
   render(<Chip onClick={handleOnClick}>{someText}</Chip>);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.tab();
   await user.keyboard('[Enter]');
@@ -159,7 +154,7 @@ test('Disabled interactive chip works as expected', async () => {
       {someText}
     </Chip>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const chip = screen.getByText(someText);
 
   await user.click(chip);

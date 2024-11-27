@@ -31,9 +31,9 @@ export default defineWorkspace([
         }
       },
       include:[
-        'src/atoms/!**!/!*.test.ts',
-        'src/atoms/!**!/!*.test.tsx',
-        '**!/!*.jsdom.test.tsx'
+        'src/atoms/**/*.test.ts',
+        'src/atoms/**/*.test.tsx',
+        '**/*.jsdom.test.tsx'
       ],
       exclude: ['src/deprecated'],
       globals: true,

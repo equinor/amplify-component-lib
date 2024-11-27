@@ -9,7 +9,7 @@ import { SideBarProvider } from 'src/providers/SideBarProvider';
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   userEvent,
 } from 'src/tests/browsertest-utils';
 
@@ -127,7 +127,7 @@ describe('Expanded', () => {
         });
         const item = screen.getByTestId('sidebar-menu-item');
 
-        const user = testingLibUserEvent.setup();
+        const user = userEvent.setup();
         await user.click(item);
 
         expect(props.onClick).not.toHaveBeenCalled();
@@ -259,7 +259,7 @@ describe('Collapsed', () => {
         });
         const item = screen.getByTestId('sidebar-menu-item');
 
-        const user = testingLibUserEvent.setup();
+        const user = userEvent.setup();
         await user.click(item);
 
         expect(props.onClick).not.toHaveBeenCalled();

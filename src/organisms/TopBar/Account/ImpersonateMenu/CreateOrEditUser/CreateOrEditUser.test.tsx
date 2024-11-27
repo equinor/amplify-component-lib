@@ -5,13 +5,13 @@ import { Account } from '../../Account';
 import {
   renderWithProviders,
   screen,
-  testingLibUserEvent,
+  userEvent,
 } from 'src/tests/browsertest-utils';
 import { FAKE_ROLES } from 'src/tests/mockHandlers';
 
 test('Able to open/close create new', async () => {
   renderWithProviders(<Account />);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const button = screen.getByRole('button');
 
   await user.click(button);
@@ -39,13 +39,17 @@ test(
         <Account />
       </>
     );
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);
 
     await user.click(
       await screen.findByRole('button', { name: 'Impersonate' })
+    );
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(/no items found/i)
     );
 
     const menuItems = await screen.findAllByTestId('impersonation-user');
@@ -81,7 +85,7 @@ test('OnClose runs as expected in create new', async () => {
       <p>outside</p>
     </>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const button = screen.getByRole('button');
 
   await user.click(button);
@@ -109,7 +113,7 @@ test(
   'Able to edit existing user impersonation',
   async () => {
     renderWithProviders(<Account />);
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);
@@ -147,7 +151,7 @@ test(
   'Able to create new impersonation user',
   async () => {
     renderWithProviders(<Account />);
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);
@@ -208,7 +212,7 @@ test(
   'Able to edit active user impersonation',
   async () => {
     renderWithProviders(<Account />);
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);

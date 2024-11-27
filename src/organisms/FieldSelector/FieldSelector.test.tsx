@@ -6,7 +6,7 @@ import { FieldSelector } from 'src/organisms/FieldSelector/FieldSelector';
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
@@ -35,7 +35,7 @@ test('Selecting field works as expected when country is a string', async () => {
 
   const onChangedField = vi.fn();
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   render(
     <FieldSelector
@@ -81,7 +81,7 @@ test('Selecting field works as expected when country is null', async () => {
 
   const onChangedField = vi.fn();
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   render(
     <FieldSelector
@@ -128,7 +128,7 @@ test('Searching fields works as expected', async () => {
 
   const onChangedField = vi.fn();
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   render(
     <FieldSelector
@@ -170,7 +170,7 @@ test('Clearing field works as expected', async () => {
 
   const onChangedField = vi.fn();
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   render(
     <FieldSelector

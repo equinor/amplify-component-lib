@@ -6,7 +6,7 @@ import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   userEvent,
 } from 'src/tests/browsertest-utils';
 
@@ -24,7 +24,7 @@ test('Renders correctly with title', async () => {
       <p>{props.content}</p>
     </OptionalTooltip>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const content = screen.getByText(props.content);
   expect(content).toBeInTheDocument();

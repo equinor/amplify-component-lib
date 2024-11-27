@@ -11,7 +11,7 @@ import { SideBarProvider } from 'src/providers/SideBarProvider';
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   userEvent,
   within,
 } from 'src/tests/browsertest-utils';
@@ -73,7 +73,7 @@ test('Disabled create new button doesnt fire event', async () => {
     }
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const createNewButton = screen.getAllByRole('button')[0];
   await user.click(createNewButton);

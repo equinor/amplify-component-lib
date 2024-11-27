@@ -3,11 +3,7 @@ import { faker } from '@faker-js/faker';
 import { ErrorPage } from '.';
 import { ErrorType } from 'src/atoms';
 import { getErrorContent } from 'src/atoms/utils/errors';
-import {
-  render,
-  screen,
-  testingLibUserEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Shows default values without props', () => {
   const defaultError = getErrorContent('Amplify portal', ErrorType.DEFAULT);
@@ -47,7 +43,7 @@ test('Shows details after clicking on More details.', async () => {
     faker.helpers.objectValue(ErrorType)
   );
   const detailsText = faker.lorem.sentence(30);
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   render(
     <ErrorPage illustration={error500.illustration}>
@@ -81,7 +77,7 @@ test('Shows missing access when 401 error', async () => {
     </ErrorPage>
   );
   window.open = vi.fn();
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   for (const access of missingAccess) {
     expect(screen.getByText(access.title)).toBeInTheDocument();

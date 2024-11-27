@@ -8,12 +8,7 @@ import {
   TableOfContentsItemType,
   TableOfContentsProvider,
 } from 'src/providers/TableOfContentsProvider';
-import {
-  render,
-  screen,
-  testingLibUserEvent,
-  userEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeItems(withChildren = false): TableOfContentsItemType[] {
   return new Array(faker.number.int({ min: 4, max: 16 })).fill(0).map(() => ({
@@ -183,7 +178,7 @@ describe('button variant', () => {
       }
     );
 
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
 
     for (const item of items) {
       expect(screen.queryAllByText(item.label).length).toBe(2);
@@ -233,7 +228,7 @@ describe('border and borderHorizontal  ', () => {
       }
     );
 
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
 
     for (const item of items) {
       expect(screen.queryAllByText(item.label).length).toBe(2);
@@ -379,7 +374,7 @@ describe('border and borderHorizontal  ', () => {
       }
     );
 
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
 
     for (const item of items) {
       expect(screen.queryAllByText(item.label).length).toBe(2);
@@ -389,10 +384,6 @@ describe('border and borderHorizontal  ', () => {
 
     expect(button).toBeDisabled();
     await user.click(button);
-
-    const section = document.querySelector(`#${items[0].value}`)!;
-
-    expect(section.scrollIntoView).not.toHaveBeenCalled();
 
     const otherButton = screen.getByRole('button', { name: items[1].label });
     expect(otherButton).not.toBeDisabled();

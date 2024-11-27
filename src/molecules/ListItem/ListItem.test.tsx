@@ -2,11 +2,7 @@ import { car, timer } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { ListItem, ListItemProps } from 'src/molecules/ListItem/ListItem';
-import {
-  render,
-  screen,
-  testingLibUserEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): ListItemProps {
   return {
@@ -77,7 +73,7 @@ test('Clicking calls onClick', async () => {
 
   render(<ListItem {...props} />);
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const container = screen.getByText(props.label).parentElement!.parentElement!;
 
@@ -92,7 +88,7 @@ test('OnFocus / OnBlur works', async () => {
   const onBlur = vi.fn();
   render(<ListItem {...props} onFocus={onFocus} onBlur={onBlur} />);
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.tab();
 

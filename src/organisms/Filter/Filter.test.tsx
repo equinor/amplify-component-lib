@@ -1,11 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { Filter, FilterProps } from 'src/organisms';
-import {
-  render,
-  screen,
-  testingLibUserEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): Omit<FilterProps<string>, 'children'> {
   return {
@@ -32,7 +28,7 @@ test('Filter opens/closes as expected when clicking search field', async () => {
     </Filter>
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   expect(screen.queryByText(childText)).not.toBeInTheDocument();
 
@@ -66,7 +62,7 @@ test('Filter opens/closes as expected when clicking search field with multiple c
     </Filter>
   );
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   for (const text of childText) {
     expect(screen.queryByText(text)).not.toBeInTheDocument();
@@ -114,7 +110,7 @@ test('onClearFilter is called when hitting backspace twice', async () => {
       <p>child</p>
     </Filter>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const searchBox = screen.getByRole('searchbox');
   await user.click(searchBox);
@@ -135,7 +131,7 @@ test('onClearFilter is called when clicking X', async () => {
       <p>child</p>
     </Filter>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const randomValue = faker.helpers.arrayElement(props.values);
 
@@ -156,7 +152,7 @@ test('onClearAllFilters is called when clicking clear all and search is cleared'
       <p>child</p>
     </Filter>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const searchBox = screen.getByRole('searchbox');
 
@@ -178,7 +174,7 @@ test('initialOpen works as expected', async () => {
       <p>{childText}</p>
     </Filter>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   expect(screen.getByText(childText)).toBeInTheDocument();
 
@@ -197,7 +193,7 @@ test('onSearch is called when hitting enter and search is not empty string', asy
       <p>child</p>
     </Filter>
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const searchBox = screen.getByRole('searchbox');
 

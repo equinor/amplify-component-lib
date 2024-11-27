@@ -11,7 +11,7 @@ import {
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   userEvent,
 } from 'src/tests/browsertest-utils';
 
@@ -57,7 +57,7 @@ test('Clicking through shows all steps', async () => {
     ),
   });
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   for (let i = 0; i < steps.length; i++) {
     expect(screen.getByText(`Current step: ${i}`)).toBeInTheDocument();

@@ -10,7 +10,7 @@ import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import {
   render,
   screen,
-  testingLibUserEvent,
+  userEvent,
   waitFor,
   within,
 } from 'src/tests/browsertest-utils';
@@ -30,7 +30,7 @@ function Wrappers({ children }: { children: ReactNode }) {
 
 test('should close the dialog by clicking the close button inside', async () => {
   const { container } = render(<Resources />, { wrapper: Wrappers });
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
   const toggleHelpButton = screen.getByRole('button');
   await user.click(toggleHelpButton);
   const toggleReleaseNotesButton = screen.getByRole('menuitem', {
@@ -52,7 +52,7 @@ test('should close the dialog by clicking the close button inside', async () => 
 
 test('can close dialog by clicking outside', async () => {
   render(<Resources />, { wrapper: Wrappers });
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const button = screen.getByRole('button');
 
@@ -75,7 +75,7 @@ test('can close dialog by clicking outside', async () => {
 });
 test('show a release note', async () => {
   render(<Resources />, { wrapper: Wrappers });
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const button = screen.getByRole('button');
   await user.click(button);
@@ -95,7 +95,7 @@ test(
   'should show Nothing matching "SearchTerm" when no matching release notes given only entered a search and no filter',
   async () => {
     render(<Resources />, { wrapper: Wrappers });
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
 
     const toggleHelpButton = screen.getByRole('button');
     await user.click(toggleHelpButton);
@@ -130,7 +130,7 @@ test(
   'should show Nothing matching "Feature" when no matching release notes given only selected type',
   async () => {
     const { container } = render(<Resources />, { wrapper: Wrappers });
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
 
     const toggleHelpButton = screen.getByRole('button');
     await user.click(toggleHelpButton);

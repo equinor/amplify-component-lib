@@ -5,7 +5,7 @@ import { Account } from 'src/organisms/TopBar/Account/Account';
 import {
   renderWithProviders,
   screen,
-  testingLibUserEvent,
+  userEvent,
   waitForElementToBeRemoved,
   within,
 } from 'src/tests/browsertest-utils';
@@ -19,7 +19,7 @@ test(
   'Able to delete user impersonation',
   async () => {
     renderWithProviders(<Account />);
-    const user = testingLibUserEvent.setup();
+    const user = userEvent.setup();
     const button = screen.getByRole('button');
 
     await user.click(button);
@@ -75,7 +75,7 @@ describe(
     });
     test('Not able to delete user impersonation with activeUsers', async () => {
       renderWithProviders(<Account />);
-      const user = testingLibUserEvent.setup();
+      const user = userEvent.setup();
       const button = screen.getByRole('button');
 
       await user.click(button);
@@ -92,10 +92,12 @@ describe(
       // Click edit on the first one
       await user.click(within(menuItems[0]).getByRole('button'));
 
-      await waitFor(() =>
-        expect(
-          screen.getByRole('button', { name: /delete user/i })
-        ).toBeDisabled()
+      await waitFor(
+        () =>
+          expect(
+            screen.getByRole('button', { name: /delete user/i })
+          ).toBeDisabled(),
+        { timeout: 1000 }
       );
     });
   },

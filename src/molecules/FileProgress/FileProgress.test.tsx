@@ -14,11 +14,7 @@ import {
   FileProgress,
   RegularFileProgressBaseProps,
 } from 'src/molecules/FileProgress/FileProgress';
-import {
-  render,
-  screen,
-  testingLibUserEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 
@@ -72,7 +68,7 @@ test('Renders regular custom loading text without progressValue, and click cance
       customLoadingText={customLoadingText}
     />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const loadingText = screen.getByText(customLoadingText);
 
@@ -173,7 +169,7 @@ test('Clicking delete shows a progress bar and callsOnDelete', async () => {
 
   render(<FileProgress file={file} onDelete={onDelete} isDone />);
 
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
 
@@ -205,7 +201,7 @@ test('Renders compact loading state without progress precent, and click onDelete
   render(
     <FileProgress file={file} onDelete={mockOnDelete} isDone={false} compact />
   );
-  const user = testingLibUserEvent.setup();
+  const user = userEvent.setup();
 
   const progressBar = screen.getByRole('progressbar');
 
