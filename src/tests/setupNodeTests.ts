@@ -1,6 +1,6 @@
 import { cleanup } from '@testing-library/react';
 
-import { handlers } from 'src/tests/mockHandlers';
+import { handlers } from './mockHandlers';
 
 import { setupServer } from 'msw/node';
 import { afterEach, beforeAll } from 'vitest';

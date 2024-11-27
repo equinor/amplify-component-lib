@@ -4,9 +4,11 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
+    ui: true,
     globals: true,
     passWithNoTests: true,
     includeTaskLocation: true,
+    testTimeout: 60000,
     env: {
       VITE_IS_MOCK: 'true',
       VITE_NAME: 'Amplify components',
@@ -25,28 +27,28 @@ export default defineConfig({
     coverage: {
       enabled: false,
       provider: 'v8',
-      include: ['src/**/*'],
+      include: [
+        'src/atoms/**/*',
+        'src/molecules/**/*',
+        'src/organisms/**/*',
+        'src/providers/**/*',
+      ],
       exclude: [
         'src/**/*.d.ts',
-        'src/tests',
-        'src/types',
         'src/**/*.test.ts',
         'src/**/*.types.ts',
-        'src/**/*.styles.test.tsx',
+        'src/**/*.jsdom.test.tsx',
         'src/**/*.test.tsx',
         'src/**/*.stories.tsx',
         'src/**/*.docs.mdx',
         'src/**/stories/**',
         'src/**/index.ts',
-        'src/deprecated/**/*',
         'src/atoms/utils/auth_environment.ts',
         'src/atoms/utils/export.ts',
         'src/atoms/utils/UtilStory.tsx',
         'src/providers/AuthProvider/**',
         'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreenMultiple.ts',
-        'src/components/Navigation/TopBar/Resources/FeedbackForm/**',
-        'src/storybook',
       ],
       reporter: [
         'text-summary',

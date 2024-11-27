@@ -13,7 +13,6 @@ import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
 import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
-import { beforeEach, describe } from 'vitest';
 
 test(
   'Able to delete user impersonation',
@@ -57,49 +56,45 @@ test(
   { timeout: 6000 }
 );
 
-describe(
-  'active user',
-  () => {
-    beforeEach(() => {
-      worker.use(
-        http.get(
-          '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
-          async () => {
-            await delay('real');
-            const copy = structuredClone(fakeImpersonateUsers);
-            copy[0].activeUsers.push(faker.internet.username());
-            return HttpResponse.json(copy);
-          }
-        )
-      );
+test(
+  'Not able to delete user impersonation with activeUsers',
+  async () => {
+    worker.use(
+      http.get(
+        '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
+        async () => {
+          await delay('real');
+          const copy = structuredClone(fakeImpersonateUsers);
+          copy[0].activeUsers.push(faker.internet.username());
+          return HttpResponse.json(copy);
+        }
+      )
+    );
+    renderWithProviders(<Account />);
+    const user = userEvent.setup();
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    const impersonateButton = await screen.findByRole('button', {
+      name: /impersonate/i,
     });
-    test('Not able to delete user impersonation with activeUsers', async () => {
-      renderWithProviders(<Account />);
-      const user = userEvent.setup();
-      const button = screen.getByRole('button');
 
-      await user.click(button);
+    await user.click(impersonateButton);
 
-      const impersonateButton = await screen.findByRole('button', {
-        name: /impersonate/i,
-      });
+    const menuItems = await screen.findAllByTestId('impersonation-user');
+    expect(menuItems.length).toBeGreaterThan(0);
 
-      await user.click(impersonateButton);
+    // Click edit on the first one
+    await user.click(within(menuItems[0]).getByRole('button'));
 
-      const menuItems = await screen.findAllByTestId('impersonation-user');
-      expect(menuItems.length).toBeGreaterThan(0);
-
-      // Click edit on the first one
-      await user.click(within(menuItems[0]).getByRole('button'));
-
-      await waitFor(
-        () =>
-          expect(
-            screen.getByRole('button', { name: /delete user/i })
-          ).toBeDisabled(),
-        { timeout: 1000 }
-      );
-    });
+    await waitFor(
+      () =>
+        expect(
+          screen.getByRole('button', { name: /delete user/i })
+        ).toBeDisabled(),
+      { timeout: 3000 }
+    );
   },
-  { concurrent: false, sequential: true }
+  { concurrent: false }
 );

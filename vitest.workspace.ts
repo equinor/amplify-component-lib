@@ -4,6 +4,7 @@ export default defineWorkspace([
   {
     extends: 'vitest.config.ts',
     test: {
+      name: 'browser',
       browser: {
         enabled: true,
         viewport: {
@@ -25,6 +26,7 @@ export default defineWorkspace([
   {
     extends: 'vitest.config.ts',
     test: {
+      name: 'jsdom',
       server: {
         deps: {
           inline: ['@equinor/subsurface-app-management']
@@ -36,10 +38,8 @@ export default defineWorkspace([
         '**/*.jsdom.test.tsx'
       ],
       exclude: ['src/deprecated'],
-      globals: true,
       environment: 'jsdom',
       setupFiles: ['src/tests/setupNodeTests.ts', 'src/tests/browserMocks.ts', 'src/tests/msalMock.tsx'],
-      testTimeout: 60000,
     }
   }
 ])

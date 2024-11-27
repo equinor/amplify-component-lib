@@ -30,7 +30,7 @@
     "test": "vitest watch",
     "test:ci": "CI=true vitest run ",
     "test:coverage": "vitest run --coverage",
-    "test:coverage-ci": "vitest run --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent",
+    "test:coverage-ci": "CI=true vitest run --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent",
     "build": "npm run build-components",
     "build-components": "rollup -c && tsc --project tsconfig.build.json && resolve-tspaths --project tsconfig.build.json",
     "build-components:ci": "rm -rf lib dist && npm run build-components",
@@ -166,8 +166,7 @@
     "vite": "^5.4.11",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.2",
-    "vitest": "^2.1.5",
-    "vitest-browser-react": "^0.0.3"
+    "vitest": "^2.1.5"
   },
   "resolutions": {
     "prosemirror-state": "1.4.3",

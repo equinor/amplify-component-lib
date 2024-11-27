@@ -1,11 +1,9 @@
 import { cleanup } from '@testing-library/react';
 
-import { handlers } from 'src/tests/mockHandlers';
+import { handlers } from './mockHandlers';
 
 import { setupWorker } from 'msw/browser';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
-
-import 'vitest-browser-react';
 
 const worker = setupWorker(...handlers);
 

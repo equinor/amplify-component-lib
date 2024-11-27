@@ -1,41 +1,48 @@
 import { faker } from '@faker-js/faker';
 
-import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
+import {
+  FullPageSpinner,
+  FullPageSpinnerProps,
+} from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { render, screen } from 'src/tests/browsertest-utils';
 
 test('renders with scrim when prop is given', () => {
-  const { container } = render(<FullPageSpinner withScrim></FullPageSpinner>);
+  const { container } = render(<FullPageSpinner withScrim />);
   expect(container.firstElementChild?.className).toContain('Scrim');
 });
 
-test('renders star progress when prop is given', () => {
-  render(<FullPageSpinner variant="equinor" />);
+describe('Renders expected variants, with and without scrim', () => {
+  const EXPECTED_CLASSES: Record<string, string> = {
+    equinor: 'StarProgress',
+    circle: 'CircularProgress',
+    dots: 'Dot',
+  };
 
-  expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-    'StarProgress'
-  );
-});
+  for (const variant of ['equinor', 'circle', 'dots']) {
+    test(`${variant}`, () => {
+      const { rerender } = render(
+        <FullPageSpinner
+          variant={variant as FullPageSpinnerProps['variant']}
+          withScrim
+        />
+      );
+      expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
+        EXPECTED_CLASSES[variant]
+      );
 
-test('renders circle when prop is given', () => {
-  render(<FullPageSpinner variant="circle" />);
-
-  expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-    'CircularProgress'
-  );
-});
-
-test('renders dots when prop is given', () => {
-  render(<FullPageSpinner variant="dots"></FullPageSpinner>);
-
-  expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-    'Dot'
-  );
+      rerender(
+        <FullPageSpinner variant={variant as FullPageSpinnerProps['variant']} />
+      );
+      expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
+        EXPECTED_CLASSES[variant]
+      );
+    });
+  }
 });
 
 test('renders children as hidden', () => {
   const text = faker.animal.dog();
   render(<FullPageSpinner>{text}</FullPageSpinner>);
-
   expect(screen.getByText(text)).not.toBeVisible();
 });
 

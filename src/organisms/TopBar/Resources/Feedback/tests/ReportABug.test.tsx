@@ -107,7 +107,7 @@ describe('Show expected error message when requests fail', () => {
           { status: 500 }
         );
       }),
-      http.post('*!/api/v1/Slack/fileUpload', async () => {
+      http.post('*/api/v1/Slack/fileUpload', async () => {
         await delay('real');
 
         return HttpResponse.json(
