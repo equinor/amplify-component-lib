@@ -6,7 +6,7 @@ import {
   DEFAULT_DESCRIPTION,
   DEFAULT_TITLE,
 } from 'src/organisms/Status/Status.constants';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Shows default values without props', () => {
   const handler = vi.fn();

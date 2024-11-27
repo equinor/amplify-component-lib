@@ -246,7 +246,7 @@ test('Calls setAllAsRead when triggering handler outside the component', async (
       {({ onClose }) => <button onClick={onClose}>{randomText}</button>}
     </Notifications>
   );
-  const user = userEvent.setup();
+  const user = testingLibUserEvent.setup();
 
   const buttons = screen.getAllByRole('button');
 
