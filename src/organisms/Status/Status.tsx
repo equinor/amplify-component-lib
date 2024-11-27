@@ -56,7 +56,7 @@ export const Status: FC<StatusProps> = ({
   center = true,
 }) => {
   return (
-    <Container $center={center}>
+    <Container $center={center} data-testid="status-container">
       <Illustration color={color} />
       {children}
     </Container>

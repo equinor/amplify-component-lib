@@ -45,3 +45,16 @@ test('MissingAccesses shows as expected', () => {
   expect(link).toBeVisible();
   expect(link).toHaveAttribute('href', fakeAccess.url);
 });
+
+test('Center prop works as expected', () => {
+  render(
+    <Status center={false}>
+      <Status.Title />
+      <Status.Description />
+    </Status>
+  );
+
+  const container = screen.getByTestId('status-container');
+
+  expect(container).not.toHaveStyle('position: fixed');
+});
