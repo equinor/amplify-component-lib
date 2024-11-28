@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import { EnvironmentType } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { FilterHeader } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/FilterHeader/FilterHeader';
@@ -30,5 +31,18 @@ test('should link to production environment using the external dns, jsembark.equ
   expect(actual).toBeVisible();
   expect(actual.getAttribute('href')).toBe(
     'https://jsembark.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D'
+  );
+});
+
+test('links to dev if in localhost', () => {
+  vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.LOCALHOST);
+  render(<FilterHeader />, {
+    wrapper: Wrappers,
+  });
+  const actual = screen.getByRole('link');
+  expect(actual).toBeInTheDocument();
+  expect(actual).toBeVisible();
+  expect(actual.getAttribute('href')).toBe(
+    `https://client-amplify-portal-${EnvironmentType.DEVELOP}.radix.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D`
   );
 });

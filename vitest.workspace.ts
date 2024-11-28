@@ -17,7 +17,7 @@ export default defineWorkspace([
         providerOptions: {},
         screenshotFailures: false
       },
-      exclude: ['src/atoms', 'src/deprecated', 'src/**/*.jsdom.test.tsx'],
+      exclude: ['src/atoms', 'src/deprecated', 'src/**/*.jsdom.test.tsx', 'src/**/*.utils.test.ts'],
       setupFiles: ['src/tests/setupBrowserTests.ts'],
       retry: 1,
       css: true
@@ -35,7 +35,8 @@ export default defineWorkspace([
       include:[
         'src/atoms/**/*.test.ts',
         'src/atoms/**/*.test.tsx',
-        '**/*.jsdom.test.tsx'
+        'src/**/*.jsdom.test.tsx',
+        'src/**/*.utils.test.ts'
       ],
       exclude: ['src/deprecated'],
       environment: 'jsdom',

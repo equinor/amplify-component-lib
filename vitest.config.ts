@@ -4,7 +4,6 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
-    ui: true,
     globals: true,
     passWithNoTests: true,
     includeTaskLocation: true,
@@ -26,6 +25,7 @@ export default defineConfig({
     ],
     coverage: {
       enabled: false,
+      cleanOnRerun: false,
       provider: 'v8',
       include: [
         'src/atoms/**/*',
@@ -58,10 +58,8 @@ export default defineConfig({
       reportOnFailure: true,
       thresholds: {
         perFile: true,
-        statements: 100,
-        branches: 100,
-        functions: 100,
-        lines: 100,
+        autoUpdate: true,
+        100: true,
       },
     },
   },
