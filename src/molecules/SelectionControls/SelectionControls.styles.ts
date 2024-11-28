@@ -15,8 +15,8 @@ export const Wrapper = styled.span<WrapperProps>`
     padding: 0 ${spacings.medium} 0 ${spacings.x_small};
     border-radius: ${shape.button.borderRadius};
     transition: background ${animation.transitionMS};
-    > span {
-      padding: ${spacings.medium_small};
+    > span:last-child {
+      padding: 0 ${spacings.medium_small} 0 0;
     }
   }
 
@@ -44,10 +44,16 @@ export const Wrapper = styled.span<WrapperProps>`
     }
   }
   /* Switch dot override */
-  > label:has(input:checked) > span > span > span:last-child {
+  > label:has(input:checked)
+    > span
+    > span
+    > span:last-child:not([class*='SwitchSmall']) {
     background: ${colors.interactive.primary__resting.rgba};
   }
-  > label:has(input:not(:checked)) > span > span > span:last-child {
+  > label:has(input:not(:checked))
+    > span
+    > span
+    > span:last-child:not([class*='SwitchSmall']) {
     background: ${colors.text.static_icons__tertiary.rgba};
   }
 
