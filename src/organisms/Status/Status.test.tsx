@@ -45,3 +45,32 @@ test('MissingAccesses shows as expected', () => {
   expect(link).toBeVisible();
   expect(link).toHaveAttribute('href', fakeAccess.url);
 });
+
+test('Center prop works as expected', () => {
+  render(
+    <Status center={false}>
+      <Status.Title />
+      <Status.Description />
+    </Status>
+  );
+
+  const container = screen.getByTestId('status-container');
+
+  expect(container).not.toHaveStyle('position: fixed');
+});
+
+test('Expected background color works as expected', () => {
+  const color = faker.internet.color();
+
+  render(
+    <Status expectedBackgroundColor={color}>
+      <Status.Title />
+      <Status.Description />
+    </Status>
+  );
+
+  const path =
+    screen.getByTestId('status-container').children[0].children[0].children[6];
+
+  expect(path).toHaveStyle(`fill: ${color}`);
+});
