@@ -21,6 +21,7 @@ const meta: Meta<typeof ApplicationIcon> = {
         'inpress',
         'bravos',
         'premo',
+        'sam',
       ],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
