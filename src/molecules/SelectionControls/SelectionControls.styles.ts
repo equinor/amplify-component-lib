@@ -50,7 +50,7 @@ export const Wrapper = styled.span<WrapperProps>`
     > span:last-child:not([class*='SwitchSmall']) {
     background: ${colors.interactive.primary__resting.rgba};
   }
-  > label:has(input:not(:checked))
+  > label:has(input)
     > span
     > span
     > span:last-child:not([class*='SwitchSmall']) {
