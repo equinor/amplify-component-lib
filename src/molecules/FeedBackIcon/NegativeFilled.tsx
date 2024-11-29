@@ -1,12 +1,11 @@
 import { FC } from 'react';
 
-// Needs to be relative path for the type to be importable after build
 import { SizeIconProps } from 'src/atoms/types';
 
 export const NegativeFilled: FC<SizeIconProps> = ({ size }) => (
   <svg
-    width={size ? size : 48}
-    height={size ? size : 48}
+    width={size}
+    height={size}
     viewBox="0 0 48 48"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

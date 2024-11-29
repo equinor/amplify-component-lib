@@ -5,15 +5,7 @@ import { render, screen } from 'src/tests/browsertest-utils';
 
 const nameOptions: FeedBackIconProps['name'][] = ['positive', 'negative'];
 const variantOptions: FeedBackIconProps['variant'][] = ['filled', 'outlined'];
-const sizeOptions: FeedBackIconProps['size'][] = [
-  undefined,
-  16,
-  18,
-  24,
-  32,
-  40,
-  48,
-];
+const sizeOptions: FeedBackIconProps['size'][] = [16, 18, 24, 32, 40, 48];
 
 test('Render correctly with corresponding props', () => {
   const { rerender } = render(<FeedBackIcon name="negative" />);
