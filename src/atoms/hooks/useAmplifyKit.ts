@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { RichText } from 'src/molecules/RichTextEditor';
+import { RichText } from 'src/molecules';
 import {
   OnImageUploadFn,
   RichTextEditorFeatures,

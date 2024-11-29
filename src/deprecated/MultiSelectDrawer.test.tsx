@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import MultiSelectDrawer, {
   MultiSelectDrawerProps,
 } from 'src/deprecated/MultiSelectDrawer';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 interface FakeType {
   id: string;

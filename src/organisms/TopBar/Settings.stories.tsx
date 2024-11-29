@@ -26,7 +26,7 @@ export const Primary: StoryFn = (args) => {
     allSettings: [
       {
         title: 'Section Mode',
-        type: sectionMode,
+        value: sectionMode,
         onChange: setSectionMode,
         items: [
           {
@@ -51,7 +51,7 @@ export const Primary: StoryFn = (args) => {
       },
       {
         title: 'Theme',
-        type: theme,
+        value: theme,
         onChange: setTheme,
         items: [
           {

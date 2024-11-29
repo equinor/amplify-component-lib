@@ -8,7 +8,7 @@ import {
   WaveInnerContainer,
   Waves,
 } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewBase.styles';
-import IconSvg from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/AppIconSvg';
+import { AppIconSvg } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/AppIconSvg';
 import { NoiseShape } from 'src/molecules/ApplicationIcon/ApplicationIconNew/NoiseShape';
 import { WaveShape } from 'src/molecules/ApplicationIcon/ApplicationIconNew/WaveShape';
 
@@ -53,7 +53,7 @@ export const ApplicationIconNewBase: FC<AppBaseProps> = ({
       data-testid="app-icon-container"
     >
       <IconContainer data-testid="icon-container">
-        <IconSvg paths={appIconData} />
+        <AppIconSvg paths={appIconData} />
       </IconContainer>
       {!iconOnly && (
         <Waves $animationState={animationState} data-testid="waves-container">

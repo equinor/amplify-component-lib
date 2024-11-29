@@ -1,5 +1,10 @@
 import CopyText from 'src/molecules/InfoElement/CopyText';
-import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 
 test('Renders label on hover', async () => {
   render(<CopyText textToCopy="Test">testing text</CopyText>);

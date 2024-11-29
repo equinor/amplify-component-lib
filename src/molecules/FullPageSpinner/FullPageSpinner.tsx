@@ -45,11 +45,18 @@ export const FullPageSpinner: FC<FullPageSpinnerProps> = ({
   const spinner = useMemo(() => {
     switch (variant) {
       case 'dots':
-        return <Progress.Dots color="primary" />;
+        return (
+          <Progress.Dots
+            color="primary"
+            data-testid={`full-page-spinner-${variant}`}
+          />
+        );
       case 'circle':
-        return <CircularProgress />;
+        return (
+          <CircularProgress data-testid={`full-page-spinner-${variant}`} />
+        );
       case 'equinor':
-        return <StarProgress />;
+        return <StarProgress data-testid={`full-page-spinner-${variant}`} />;
       case 'application':
         // TODO: :NEW-APP-ICON-TODOS: Go back to showing appIcon when we start using new design
         // Old app icons do not have a loading state, so cant be used in this case

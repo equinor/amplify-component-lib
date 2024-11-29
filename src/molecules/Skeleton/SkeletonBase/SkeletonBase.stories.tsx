@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from '@storybook/react';
 
 import { Typography } from 'src/molecules';
-import SkeletonBase from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
+import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled from 'styled-components';
 

@@ -3,7 +3,12 @@ import { act, ReactNode } from 'react';
 import { faker } from '@faker-js/faker';
 
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeProps() {
   return {
@@ -15,7 +20,7 @@ function fakeProps() {
 test('Renders correctly with title', async () => {
   const props = fakeProps();
   render(
-    <OptionalTooltip {...props}>
+    <OptionalTooltip title={props.title}>
       <p>{props.content}</p>
     </OptionalTooltip>
   );
@@ -26,9 +31,10 @@ test('Renders correctly with title', async () => {
 
   await user.hover(content);
   // tooltip has open delay
-  await act(() => new Promise((resolve) => setTimeout(resolve, 1000)));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  expect(screen.getByRole('tooltip')).toBeInTheDocument();
+  const tooltip = screen.getByText(props.title);
+  expect(tooltip).toBeInTheDocument();
 });
 
 test('Renders correctly without title', async () => {

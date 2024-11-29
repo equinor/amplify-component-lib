@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { Actions } from './Actions';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Render children in a wrapper', () => {
   const name = faker.animal.cow();

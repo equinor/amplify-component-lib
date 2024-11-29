@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 
-import { renderHook } from '../tests/test-utils';
 import {
   TutorialStepsProvider,
   useTutorialSteps,
 } from './TutorialStepsProvider';
+import { renderHook } from 'src/tests/browsertest-utils';
 
 const TutorialStepsProviderWithStartOpen = ({
   children,

@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReleaseNotesTypes } from './ReleaseNotesTypes';
 import { ReleaseNoteType } from './ReleaseNotesTypes.types';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();

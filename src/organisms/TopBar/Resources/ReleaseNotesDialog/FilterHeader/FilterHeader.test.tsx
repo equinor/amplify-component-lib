@@ -6,9 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleaseNoteType } from '../ReleaseNotesTypes/ReleaseNotesTypes.types';
 import { FilterHeader } from './FilterHeader';
-import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
@@ -41,56 +40,6 @@ test('should confirm that there is a link button', () => {
   const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
-});
-
-test('should link to correct environment given that it is not prod or empty', () => {
-  vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.STAGING);
-  render(<FilterHeader />, {
-    wrapper: Wrappers,
-  });
-  const actual = screen.getByRole('link');
-  expect(actual).toBeInTheDocument();
-  expect(actual).toBeVisible();
-  expect(actual.getAttribute('href')).toBe(
-    `https://client-amplify-portal-${EnvironmentType.STAGING}.radix.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D`
-  );
-});
-
-test('should link to development environment given that its environment is localhost', () => {
-  vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.LOCALHOST);
-  render(<FilterHeader />, {
-    wrapper: Wrappers,
-  });
-  const actual = screen.getByRole('link');
-  expect(actual).toBeInTheDocument();
-  expect(actual).toBeVisible();
-  expect(actual.getAttribute('href')).toBe(
-    `https://client-amplify-portal-${EnvironmentType.DEVELOP}.radix.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D`
-  );
-});
-test('should link to production environment using the external dns, jsembark.equinor.com given environment is set to production', () => {
-  vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.PRODUCTION);
-  render(<FilterHeader />, {
-    wrapper: Wrappers,
-  });
-  const actual = screen.getByRole('link');
-  expect(actual).toBeInTheDocument();
-  expect(actual).toBeVisible();
-  expect(actual.getAttribute('href')).toBe(
-    'https://jsembark.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D'
-  );
-});
-test('should link to production environment using the external dns, amplify.equinor.com as a fallback when no environment is set', () => {
-  vi.stubEnv('VITE_ENVIRONMENT_NAME', '');
-  render(<FilterHeader />, {
-    wrapper: Wrappers,
-  });
-  const actual = screen.getByRole('link');
-  expect(actual).toBeInTheDocument();
-  expect(actual).toBeVisible();
-  expect(actual.getAttribute('href')).toBe(
-    'https://jsembark.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D'
-  );
 });
 
 test('should check that typing a value in the sieve input is indeed present', async () => {

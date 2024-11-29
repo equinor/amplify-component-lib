@@ -1,7 +1,7 @@
 import { folder } from '@equinor/eds-icons';
 
 import { FileUploadArea } from '../index';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 function fakeProps() {
   return {

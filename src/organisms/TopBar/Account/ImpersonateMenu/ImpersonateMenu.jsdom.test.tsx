@@ -1,9 +1,13 @@
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { Account } from 'src/organisms/TopBar/Account/Account';
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+} from 'src/tests/jsdomtest-utils';
 import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
-import { server } from 'src/tests/setupTests';
-import { renderWithProviders, screen, userEvent } from 'src/tests/test-utils';
+import { server } from 'src/tests/setupNodeTests';
 
 import { delay, http, HttpResponse } from 'msw';
 

@@ -113,9 +113,10 @@ export const Settings: FC<SettingsProps> = ({ allSettings }) => {
               {section.items.map((item, itemIndex) => (
                 <ContentWrapper key={itemIndex}>
                   <Radio
+                    id={item.label}
                     disabled={item.disabled}
                     label={item.label}
-                    name={item.name}
+                    name={section.title}
                     value={`${item.label}-${itemIndex}`}
                     checked={section.value === item.value}
                     onChange={() => section.onChange?.(item.value as never)}

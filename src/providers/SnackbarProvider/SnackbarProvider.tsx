@@ -19,7 +19,7 @@ import { close } from '@equinor/eds-icons';
 import { StyledSnackbar } from './SnackbarProvider.styles';
 import { snackbarIcon } from './SnackbarProvider.utils';
 
-interface ShowSnackbarSettings {
+export interface ShowSnackbarSettings {
   customProps?: SnackbarProps;
   action?: {
     text: string;

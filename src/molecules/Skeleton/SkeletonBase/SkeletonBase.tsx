@@ -1,6 +1,6 @@
 import { COLORS } from 'src/molecules/Skeleton/Skeleton.styles';
 
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 export const skeletonBaseloading = keyframes`
   to {
@@ -35,10 +35,8 @@ export const SkeletonBase = styled.div<SkeletonBaseProps>`
     z-index: 1;
     ${(props) =>
       props.$offset &&
-      `
-    animation-delay: ${props.$offset}ms;
-  `};
+      css`
+        animation-delay: ${props.$offset}ms;
+      `};
   }
 `;
-
-export default SkeletonBase;

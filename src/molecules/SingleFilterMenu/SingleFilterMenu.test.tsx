@@ -2,7 +2,13 @@ import { filter_list, IconData } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { SingleFilterMenu } from 'src/molecules/SingleFilterMenu/SingleFilterMenu';
-import { render, screen, userEvent, within } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  userEvent,
+  within,
+} from 'src/tests/browsertest-utils';
 
 function getTestProps(): {
   data: string[];
@@ -51,7 +57,7 @@ test('renders the menu items', () => {
   }
 });
 
-test('renders a the chip when menu item is selected and showChip = true', async () => {
+test('renders the chip when menu item is selected and showChip = true', async () => {
   const props = getTestProps();
   render(<SingleFilterMenu {...props} showChip></SingleFilterMenu>);
   const menuItemText = props.data[0];

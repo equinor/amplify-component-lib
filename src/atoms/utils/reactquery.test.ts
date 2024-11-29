@@ -1,7 +1,6 @@
-import { reactquery } from 'src/atoms';
+import { defaultQueryOptions } from './reactquery';
 
 test('defaultOptions onError to log error', () => {
-  const { defaultQueryOptions } = reactquery;
   console.error = vi.fn();
 
   defaultQueryOptions.mutations?.onError?.(

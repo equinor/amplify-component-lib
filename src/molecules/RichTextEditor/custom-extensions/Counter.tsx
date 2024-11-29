@@ -1,4 +1,4 @@
-/* c8 ignore start */ // This entire file is just an example file for future nodeview projects. Testing it is adding maintance cost to something that is not used.
+/* c8 ignore */ // This entire file is just an example file for future nodeview projects. Testing it is adding maintance cost to something that is not used.
 import { useState } from 'react';
 
 import { mergeAttributes, Node } from '@tiptap/core';
