@@ -67,6 +67,17 @@ describe('MenuItem', () => {
     expect(icon).toHaveAttribute('width', '24px');
   };
 
+  test('should have ID if provided', () => {
+    const props = fakeProps();
+    const fakeId = faker.animal.cat();
+    render(<MenuItem {...props} id={fakeId} replace />, {
+      wrapper: wrapper,
+    });
+
+    const item = screen.getByTestId('sidebar-menu-item');
+    expect(item).toHaveAttribute('id', fakeId);
+  });
+
   test('should navigate if replace is set to true and url is a partial match', () => {
     const props = fakeProps();
     render(<MenuItem {...props} replace />, {
