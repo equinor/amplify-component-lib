@@ -37,9 +37,29 @@ test('Works with multiple children', () => {
   const fifth = faker.animal.fish();
   const sixth = faker.animal.dog();
 
-  render(
+  const { rerender } = render(
     <Chip>
       <div>{first}</div>
+      {second}
+      <p>{third}</p>
+      <>
+        <p>{fifth}</p>
+        {fourth}
+        <div>
+          <p>{sixth}</p>
+        </div>
+      </>
+    </Chip>
+  );
+
+  for (const child of [first, second, third, fourth, fifth, sixth]) {
+    const childElement = page.getByText(child).element();
+    expect(childElement).toBeVisible();
+  }
+
+  rerender(
+    <Chip>
+      {first}
       {second}
       <p>{third}</p>
       <>

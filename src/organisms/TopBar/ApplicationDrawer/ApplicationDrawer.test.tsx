@@ -4,12 +4,15 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import { ApplicationDrawer } from './ApplicationDrawer';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
 import { userEvent, waitFor } from 'src/tests/browsertest-utils';
 import { FAKE_APPS } from 'src/tests/mockHandlers';
+import { worker } from 'src/tests/setupBrowserTests';
+
+import { delay, http, HttpResponse } from 'msw';
+import { beforeEach } from 'vitest';
 
 function Wrappers({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
@@ -140,4 +143,34 @@ test('Click on more access button', async () => {
   await user.click(accessItButton);
   const transitToApplication = screen.queryByText('Open link');
   expect(transitToApplication).toBeInTheDocument();
+});
+
+describe('No other apps to show', () => {
+  beforeEach(() => {
+    worker.resetHandlers(
+      http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
+        await delay('real');
+        return HttpResponse.text(faker.string.nanoid());
+      }),
+      http.get('*/api/v1/AmplifyApplication/userapplications', async () => {
+        await delay('real');
+        return HttpResponse.json([]);
+      })
+    );
+  });
+
+  test('No other apps to show', async () => {
+    render(<ApplicationDrawer />, { wrapper: Wrappers });
+    const user = userEvent.setup();
+    const menuButton = await screen.findByRole('button');
+
+    await user.click(menuButton);
+
+    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+
+    const text = screen.getByText(
+      `You don't have access to other applications`
+    );
+    expect(text).toBeInTheDocument();
+  });
 });
