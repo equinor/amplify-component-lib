@@ -16,6 +16,7 @@ import {
   premo,
   pwex,
   recap,
+  sam,
 } from './ApplicationIconCollection';
 import { render, screen, userEvent } from 'src/tests/test-utils';
 
@@ -33,6 +34,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'inpress',
   'bravos',
   'premo',
+  'sam',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
@@ -53,6 +55,7 @@ const icons: IconsDict = {
   inpress: inPress,
   bravos: bravos,
   premo: premo,
+  sam: sam,
 };
 
 test('Render correctly with corresponding props', () => {
