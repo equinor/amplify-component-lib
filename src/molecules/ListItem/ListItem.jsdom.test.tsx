@@ -86,3 +86,13 @@ test('isChild offsets as expected', () => {
     `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.xx_large}`
   );
 });
+
+test('Trailing content has wrapper with margin-left: auto', () => {
+  const props = fakeProps();
+  render(<ListItem {...props} trailingContent={<div>trailing</div>} />);
+
+  expect(screen.getByText('trailing').parentElement!).toHaveStyleRule(
+    'margin-left',
+    'auto'
+  );
+});

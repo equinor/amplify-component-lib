@@ -2,8 +2,13 @@ import { ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { waitFor } from '@testing-library/react';
 
-import { UrgencyOption } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
+import { DEFAULT_FEEDBACK_LOCAL_STORAGE } from 'src/organisms/TopBar/Resources/Feedback/Feedback.const';
+import {
+  FeedbackType,
+  UrgencyOption,
+} from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
 import {
   AuthProvider,
@@ -58,6 +63,29 @@ beforeEach(async () => {
   await user.click(screen.getByText('Report a bug'));
 });
 
+test('Able to close as expected', async () => {
+  const user = userEvent.setup();
+
+  const text = screen.queryByText(/report a bug/i);
+  await user.click(screen.getByRole('button', { name: /cancel/i }));
+
+  expect(text).not.toBeInTheDocument();
+});
+
+test('Able to upload file and then remove it', async () => {
+  const image = fakeImageFile();
+  const user = userEvent.setup();
+
+  await user.upload(screen.getByTestId('file-upload-area-input'), [image]);
+
+  const removeButton = screen.getByTestId('attachment-delete-button');
+  expect(removeButton).toBeInTheDocument();
+
+  await user.click(removeButton);
+
+  expect(removeButton).not.toBeInTheDocument();
+});
+
 test('Able to fill in form with successful response', async () => {
   const { title, description, url } = fakeInputs();
   const user = userEvent.setup();
@@ -82,6 +110,16 @@ test('Able to fill in form with successful response', async () => {
   expect(
     await screen.findByText(/Thank you/i, undefined, { timeout: 5000 })
   ).toBeInTheDocument();
+
+  await waitFor(
+    () =>
+      expect(
+        window.localStorage.getItem(
+          `${FeedbackType.BUG}-feedbackContentAndRequestStatus`
+        )
+      ).toBe(JSON.stringify(DEFAULT_FEEDBACK_LOCAL_STORAGE)),
+    { timeout: 3000 }
+  );
 
   const text = screen.queryByText(/report a bug/i);
   await user.click(screen.getByRole('button', { name: /close/i }));
@@ -157,5 +195,7 @@ describe('Show expected error message when requests fail', () => {
     ).toBeInTheDocument();
 
     expect(await screen.findAllByText(/not found/i)).toHaveLength(3);
+
+    await user.click(screen.getByRole('button', { name: /retry/i }));
   });
 });

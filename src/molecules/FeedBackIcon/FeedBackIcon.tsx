@@ -31,10 +31,7 @@ export const FeedBackIcon: FC<FeedBackIconProps> = ({
 }) => {
   const appData = feedbackIcons.find(
     (icon) => icon.iconName === `${name}-${variant}`
-  );
+  )!;
 
-  if (!appData) {
-    throw new Error("FeedBackIcon doesn't exist");
-  }
   return <appData.component size={size} />;
 };
