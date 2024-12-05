@@ -17,7 +17,7 @@ export interface ExtendedImageOptions extends ImageExtensionFnProps {
 declare module '@tiptap/extension-image' {
   interface ImageOptions extends ImageExtensionFnProps {
     inline: boolean;
-    allowBase64: boolean;
+    allowBase64: boolean; // TODO: Try to set to false
   }
 }
 
@@ -34,7 +34,6 @@ const Component = (props: NodeViewProps) => {
   );
 };
 
-// TODO: Add 'onDelete' handler so it's easier to remove images in the apps
 /* c8 ignore start */
 export default Image.extend({
   addOptions() {

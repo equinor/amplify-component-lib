@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
 import {
@@ -25,6 +26,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   onUpdate,
   onImageUpload,
   onImageRead,
+  onImageRemove,
   onRemovedImagesChange,
   extensions = [],
 }) => {
@@ -35,10 +37,14 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     onImageUpload,
     onImageRead,
   });
+  const queryClient = useQueryClient();
   const addedImages = useRef<string[]>([]);
+  const deletedImages = useRef<string[]>([]);
   const previousRemovedImages = useRef<string[]>([]);
 
   const handleImageCheck = (editor: Editor) => {
+    // TODO: Test this when we move to browser mode
+    /* c8 ignore start */
     const currentImages: string[] = [];
 
     editor.getJSON().content?.forEach((item) => {
@@ -50,25 +56,44 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     for (const image of currentImages) {
       if (!addedImages.current.includes(image)) {
         addedImages.current.push(image);
+      } else if (addedImages.current.includes(image) && onImageRemove) {
+        // Image was recovered from undo, need to upload it again
+        const dataUrl = queryClient.getQueryData<string>([image]);
+        if (dataUrl) {
+          const arr = dataUrl.split(',');
+          const mime = arr[0].match(/:(.*?);/)![1];
+          const byteString = atob(arr[arr.length - 1]);
+          let n = byteString.length;
+          const u8arr = new Uint8Array(n);
+          while (n--) {
+            u8arr[n] = byteString.charCodeAt(n);
+          }
+          const file = new File([u8arr], image, { type: mime });
+          onImageUpload?.(file);
+        }
       }
     }
 
-    // TODO: Test this when we move to browser mode
-    /* c8 ignore start */
-    const removedImages = addedImages.current.filter(
-      (image) => !currentImages.includes(image)
+    const imagesToDelete = addedImages.current.filter(
+      (image) =>
+        !currentImages.includes(image) && !deletedImages.current.includes(image)
     );
-    if (
-      previousRemovedImages.current.some(
-        (image) => !removedImages.includes(image)
-      ) ||
-      removedImages.some(
-        (image) => !previousRemovedImages.current.includes(image)
-      )
-    ) {
-      onRemovedImagesChange?.(removedImages);
-      previousRemovedImages.current = removedImages;
+
+    if (onImageRemove) {
+      for (const image of imagesToDelete) {
+        onImageRemove?.(image);
+        deletedImages.current.push(image);
+      }
     }
+
+    if (
+      onRemovedImagesChange &&
+      previousRemovedImages.current.length !== imagesToDelete.length
+    ) {
+      onRemovedImagesChange(deletedImages.current);
+      previousRemovedImages.current = imagesToDelete;
+    }
+
     /* c8 ignore end */
   };
 

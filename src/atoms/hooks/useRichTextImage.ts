@@ -7,7 +7,7 @@ export function useRichTextImage(
   onImageRead: ImageExtensionFnProps['onImageRead'] | undefined
 ) {
   return useQuery({
-    queryKey: ['image', image],
+    queryKey: [image],
     queryFn: async () => {
       if (onImageRead) {
         const response = await onImageRead(image);

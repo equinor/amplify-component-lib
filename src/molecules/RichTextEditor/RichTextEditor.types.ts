@@ -32,14 +32,12 @@ type OnImageUploadFn = (
   file: File
 ) => Promise<{ src: string; alt: string } | undefined>;
 
-type OnImageReadFn = (src: string) => Promise<string>;
-
-type OnRemovedImagesChange = (images: string[]) => void;
-
+// TODO: Undo images calls onImageUpload again
 export interface ImageExtensionFnProps {
   onImageUpload?: OnImageUploadFn;
-  onImageRead?: OnImageReadFn;
-  onRemovedImagesChange?: OnRemovedImagesChange;
+  onImageRead?: (src: string) => Promise<string>;
+  onImageRemove?: (src: string) => Promise<void>;
+  onRemovedImagesChange?: (images: string[]) => void;
 }
 
 export interface EditorPanel {

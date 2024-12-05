@@ -30,6 +30,7 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
  * @param onChange - handler for when the content changes
  * @param onImageUpload - handler for when an image is uploaded
  * @param onImageRead - handler used when loading images, expects b64 string to be returned
+ * @param onImageRemove - called when an image removed, use when deleting images instantly
  * @param onRemovedImagesChange - called when the list of removed images change
  * @param placeholder - placeholder text if there is no content
  * @param features - which features should be enabled
@@ -47,6 +48,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   onChange,
   onImageUpload,
   onImageRead,
+  onImageRemove,
   onRemovedImagesChange,
   placeholder,
   features,
@@ -73,6 +75,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
       placeholder={placeholder}
       onImageUpload={onImageUpload}
       onImageRead={onImageRead}
+      onImageRemove={onImageRemove}
       onRemovedImagesChange={onRemovedImagesChange}
     >
       {(editor) => (
