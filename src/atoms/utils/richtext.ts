@@ -35,9 +35,18 @@ export function getFeatures({
   return usedFeatures;
 }
 
+/**
+ * @deprecated - Use the onImageRead prop instead of tokens
+ */
 export const IMG_WITH_SRC_AND_ALT = /(<img src=".*?" alt="(.*?)">)/g;
+/**
+ * @deprecated - Use the onImageRead prop instead of tokens
+ */
 export const IMG_WITH_ALT = /(<img alt="(.*?)" \/>)/g;
 
+/**
+ * @deprecated - Use the onImageRead prop instead of tokens
+ */
 export function extractImageUrls(value: string | undefined): string[] {
   if (!value) return [];
 
@@ -50,6 +59,9 @@ export function extractImageUrls(value: string | undefined): string[] {
   return images;
 }
 
+/**
+ * @deprecated - Use the onImageRead prop instead of tokens
+ */
 export function imageToB64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -61,6 +73,9 @@ export function imageToB64(file: File): Promise<string> {
   });
 }
 
+/**
+ * @deprecated - Use the onImageRead prop instead of tokens
+ */
 export function cleanRichTextValue(value: string) {
   return value.replaceAll(IMG_WITH_SRC_AND_ALT, `<img alt="$2" />`);
 }
