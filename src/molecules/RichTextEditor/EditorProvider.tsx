@@ -53,6 +53,8 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       }
     }
 
+    // TODO: Test this when we move to browser mode
+    /* c8 ignore start */
     const removedImages = addedImages.current.filter(
       (image) => !currentImages.includes(image)
     );
@@ -67,6 +69,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       onRemovedImagesChange?.(removedImages);
       previousRemovedImages.current = removedImages;
     }
+    /* c8 ignore end */
   };
 
   const editor = useEditor({

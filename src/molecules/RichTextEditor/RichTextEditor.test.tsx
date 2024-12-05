@@ -6,7 +6,12 @@ import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { colors } from 'src/atoms';
 import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import {
+  render,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from 'src/tests/test-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {
@@ -162,7 +167,7 @@ test('Images work as expected', async () => {
   const alt = faker.animal.crocodilia();
   const props = fakeProps(true);
 
-  render(
+  renderWithProviders(
     <RichTextEditor
       {...props}
       value={`<img src="${randomUrl}" alt="${alt}" />`}
