@@ -1,21 +1,38 @@
 import Image from '@tiptap/extension-image';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
+import {
+  NodeViewProps,
+  NodeViewWrapper,
+  ReactNodeViewRenderer,
+} from '@tiptap/react';
 
-import { OnImageUploadFn } from 'src/molecules/RichTextEditor/RichTextEditor.types';
+import { useRichTextImage } from 'src/atoms/hooks/useRichTextImage';
+import { ImageExtensionFnProps } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-export interface ExtendedImageOptions {
+export interface ExtendedImageOptions extends ImageExtensionFnProps {
   inline: boolean;
   allowBase64: boolean;
-  onImageUpload?: OnImageUploadFn;
 }
 
 declare module '@tiptap/extension-image' {
-  interface ImageOptions {
+  interface ImageOptions extends ImageExtensionFnProps {
     inline: boolean;
-    allowBase64: boolean;
-    onImageUpload?: OnImageUploadFn;
+    allowBase64: boolean; // TODO: Try to set to false
   }
 }
+
+const Component = (props: NodeViewProps) => {
+  const { src, alt } = props.node.attrs;
+  const onImageRead: ImageExtensionFnProps['onImageRead'] | undefined =
+    props.extension.options.onImageRead;
+  const { data: usingSrc } = useRichTextImage(src, onImageRead);
+
+  return (
+    <NodeViewWrapper>
+      <img src={usingSrc} alt={alt} />
+    </NodeViewWrapper>
+  );
+};
 
 /* c8 ignore start */
 export default Image.extend({
@@ -23,7 +40,11 @@ export default Image.extend({
     return {
       ...this.parent?.(),
       onImageUpload: undefined,
+      onImageRead: undefined,
     };
+  },
+  addNodeView() {
+    return ReactNodeViewRenderer(Component);
   },
   addProseMirrorPlugins() {
     const { onImageUpload } = this.options;
@@ -63,8 +84,8 @@ export default Image.extend({
                   .then((item) => {
                     if (!item) return;
                     const node = schema.nodes.image.create({
-                      src: item.b64,
-                      alt: item.url,
+                      src: item.src,
+                      alt: item.alt,
                     });
                     const transaction = view.state.tr.insert(
                       coordinates.pos,
@@ -101,8 +122,8 @@ export default Image.extend({
                   .then((item) => {
                     if (!item) return;
                     const node = schema.nodes.image.create({
-                      src: item.b64,
-                      alt: item.url,
+                      src: item.src,
+                      alt: item.src,
                     });
                     const transaction =
                       view.state.tr.replaceSelectionWith(node);

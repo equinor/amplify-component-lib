@@ -28,9 +28,17 @@ export const DEFAULT_FEATURES = [
   RichTextEditorFeatures.CLEAR_FORMATTING,
 ];
 
-export type OnImageUploadFn = (
+type OnImageUploadFn = (
   file: File
-) => Promise<{ b64: string; url: string } | undefined>;
+) => Promise<{ src: string; alt: string } | undefined>;
+
+// TODO: Undo images calls onImageUpload again
+export interface ImageExtensionFnProps {
+  onImageUpload?: OnImageUploadFn;
+  onImageRead?: (src: string) => Promise<string>;
+  onImageRemove?: (src: string) => Promise<void>;
+  onRemovedImagesChange?: (images: string[]) => void;
+}
 
 export interface EditorPanel {
   editor: Editor;

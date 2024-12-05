@@ -1,20 +1,20 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
 import {
-  OnImageUploadFn,
+  ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { useAmplifyKit } from 'src/atoms/hooks/useAmplifyKit';
 
-export interface EditorProviderProps {
+export interface EditorProviderProps extends ImageExtensionFnProps {
   children: (editor: Editor) => JSX.Element;
   content: string | null | undefined;
   extensions?: Extensions;
   onUpdate?: (html: string) => void;
   placeholder?: string;
-  onImageUpload?: OnImageUploadFn;
   features?: RichTextEditorFeatures[];
 }
 
@@ -25,6 +25,9 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   placeholder,
   onUpdate,
   onImageUpload,
+  onImageRead,
+  onImageRemove,
+  onRemovedImagesChange,
   extensions = [],
 }) => {
   // Lets us apply the features API with the new amplify kit
@@ -32,12 +35,79 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     features,
     placeholder,
     onImageUpload,
+    onImageRead,
   });
+  const queryClient = useQueryClient();
+  const addedImages = useRef<string[]>([]);
+  const deletedImages = useRef<string[]>([]);
+  const previousRemovedImages = useRef<string[]>([]);
+
+  const handleImageCheck = (editor: Editor) => {
+    // TODO: Test this when we move to browser mode
+    /* c8 ignore start */
+    const currentImages: string[] = [];
+
+    editor.getJSON().content?.forEach((item) => {
+      if (item.type === 'image' && item.attrs?.src) {
+        currentImages.push(item.attrs.src);
+      }
+    });
+
+    for (const image of currentImages) {
+      if (!addedImages.current.includes(image)) {
+        addedImages.current.push(image);
+      } else if (addedImages.current.includes(image) && onImageRemove) {
+        // Image was recovered from undo, need to upload it again
+        const dataUrl = queryClient.getQueryData<string>([image]);
+        if (dataUrl) {
+          const arr = dataUrl.split(',');
+          const mime = arr[0].match(/:(.*?);/)![1];
+          const byteString = atob(arr[arr.length - 1]);
+          let n = byteString.length;
+          const u8arr = new Uint8Array(n);
+          while (n--) {
+            u8arr[n] = byteString.charCodeAt(n);
+          }
+          const file = new File([u8arr], image, { type: mime });
+          onImageUpload?.(file);
+        }
+      }
+    }
+
+    const imagesToDelete = addedImages.current.filter(
+      (image) =>
+        !currentImages.includes(image) && !deletedImages.current.includes(image)
+    );
+
+    if (onImageRemove) {
+      for (const image of imagesToDelete) {
+        onImageRemove?.(image);
+        deletedImages.current.push(image);
+      }
+    }
+
+    if (
+      onRemovedImagesChange &&
+      previousRemovedImages.current.length !== imagesToDelete.length
+    ) {
+      onRemovedImagesChange(deletedImages.current);
+      previousRemovedImages.current = imagesToDelete;
+    }
+
+    /* c8 ignore end */
+  };
 
   const editor = useEditor({
     content,
     extensions: [ampExtensions, ...extensions],
-    onUpdate: ({ editor }) => onUpdate?.(editor.getHTML()),
+    onCreate: ({ editor }) => {
+      handleImageCheck(editor);
+    },
+    onUpdate: ({ editor }) => {
+      handleImageCheck(editor);
+
+      onUpdate?.(editor.getHTML());
+    },
   });
 
   /* c8 ignore start */

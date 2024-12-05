@@ -2,14 +2,22 @@ import { FC, HTMLAttributes, useEffect, useRef } from 'react';
 
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
-import { AmplifyKit } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
+import { useAmplifyKit } from 'src/atoms';
 import {
   EditorContent,
   EditorStyling,
 } from 'src/molecules/RichTextEditor/RichTextEditor.styles';
+import {
+  DEFAULT_FEATURES,
+  ImageExtensionFnProps,
+} from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-export interface RichTextDisplayProps {
+export interface RichTextDisplayProps
+  extends Pick<ImageExtensionFnProps, 'onImageRead'> {
   value: string | null | undefined;
+  /**
+   * @deprecated - Use OnImageRead instead
+   */
   imgReadToken?: string;
   lightBackground?: boolean;
   padding?: 'sm' | 'md' | 'lg' | 'none';
@@ -17,19 +25,35 @@ export interface RichTextDisplayProps {
   children?: (editor: Editor) => JSX.Element;
 }
 
+/**
+ *
+ * @param value - Rich text content
+ * @param imgReadToken - Deprecated, use onImageRead instead
+ * @param onImageRead - handler used when loading images, expects b64 string to be returned
+ * @param lightBackground - if it should have a light BG color
+ * @param padding - padding in the editor
+ * @param extensions - additional extensions to be added
+ * @param children - render prop for custom rendering, provides editor via callback
+ */
 export const RichTextDisplay: FC<
   RichTextDisplayProps & HTMLAttributes<HTMLDivElement>
 > = ({
   value,
   imgReadToken,
+  onImageRead,
   lightBackground = true,
   padding = 'md',
-  extensions = [AmplifyKit],
+  extensions,
   children,
   ...rest
 }) => {
+  const defaultExtensions = useAmplifyKit({
+    features: DEFAULT_FEATURES,
+    onImageRead: onImageRead,
+  });
   const editor = useEditor({
-    extensions: extensions,
+    /* c8 ignore next */
+    extensions: extensions ? extensions : [defaultExtensions],
     content: imgReadToken
       ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
       : value,
