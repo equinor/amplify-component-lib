@@ -1,20 +1,19 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
 import {
-  OnImageUploadFn,
+  ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { useAmplifyKit } from 'src/atoms/hooks/useAmplifyKit';
 
-export interface EditorProviderProps {
+export interface EditorProviderProps extends ImageExtensionFnProps {
   children: (editor: Editor) => JSX.Element;
   content: string | null | undefined;
   extensions?: Extensions;
   onUpdate?: (html: string) => void;
   placeholder?: string;
-  onImageUpload?: OnImageUploadFn;
   features?: RichTextEditorFeatures[];
 }
 
@@ -25,6 +24,8 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   placeholder,
   onUpdate,
   onImageUpload,
+  onImageRead,
+  onRemovedImagesChange,
   extensions = [],
 }) => {
   // Lets us apply the features API with the new amplify kit
@@ -32,12 +33,53 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     features,
     placeholder,
     onImageUpload,
+    onImageRead,
   });
+  const addedImages = useRef<string[]>([]);
+  const previousRemovedImages = useRef<string[]>([]);
+
+  const handleImageCheck = (editor: Editor) => {
+    const currentImages: string[] = [];
+
+    editor.getJSON().content?.forEach((item) => {
+      if (item.type === 'image' && item.attrs?.src) {
+        currentImages.push(item.attrs.src);
+      }
+    });
+
+    for (const image of currentImages) {
+      if (!addedImages.current.includes(image)) {
+        addedImages.current.push(image);
+      }
+    }
+
+    const removedImages = addedImages.current.filter(
+      (image) => !currentImages.includes(image)
+    );
+    if (
+      previousRemovedImages.current.some(
+        (image) => !removedImages.includes(image)
+      ) ||
+      removedImages.some(
+        (image) => !previousRemovedImages.current.includes(image)
+      )
+    ) {
+      onRemovedImagesChange?.(removedImages);
+      previousRemovedImages.current = removedImages;
+    }
+  };
 
   const editor = useEditor({
     content,
     extensions: [ampExtensions, ...extensions],
-    onUpdate: ({ editor }) => onUpdate?.(editor.getHTML()),
+    onCreate: ({ editor }) => {
+      handleImageCheck(editor);
+    },
+    onUpdate: ({ editor }) => {
+      handleImageCheck(editor);
+
+      onUpdate?.(editor.getHTML());
+    },
   });
 
   /* c8 ignore start */

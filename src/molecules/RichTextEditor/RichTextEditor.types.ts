@@ -28,9 +28,19 @@ export const DEFAULT_FEATURES = [
   RichTextEditorFeatures.CLEAR_FORMATTING,
 ];
 
-export type OnImageUploadFn = (
+type OnImageUploadFn = (
   file: File
-) => Promise<{ b64: string; url: string } | undefined>;
+) => Promise<{ src: string; alt: string } | undefined>;
+
+type OnImageReadFn = (src: string) => Promise<string>;
+
+type OnRemovedImagesChange = (images: string[]) => void;
+
+export interface ImageExtensionFnProps {
+  onImageUpload?: OnImageUploadFn;
+  onImageRead?: OnImageReadFn;
+  onRemovedImagesChange?: OnRemovedImagesChange;
+}
 
 export interface EditorPanel {
   editor: Editor;

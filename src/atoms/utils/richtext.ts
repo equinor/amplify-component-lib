@@ -1,14 +1,14 @@
 import {
   DEFAULT_FEATURES,
-  OnImageUploadFn,
+  ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-export interface FeaturesProps {
+export interface FeaturesProps
+  extends Pick<ImageExtensionFnProps, 'onImageUpload'> {
   features?: RichTextEditorFeatures[];
   extendFeatures?: RichTextEditorFeatures[];
   removeFeatures?: RichTextEditorFeatures[];
-  onImageUpload?: OnImageUploadFn;
 }
 
 export function getFeatures({
