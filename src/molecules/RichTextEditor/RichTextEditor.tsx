@@ -61,6 +61,12 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   border = true,
   highlighted = false,
 }) => {
+  if (onImageRemove && onRemovedImagesChange) {
+    throw new Error(
+      'onImageRemove and onRemovedImagesChange cannot be used together'
+    );
+  }
+
   const usedFeatured = getFeatures({
     features,
     extendFeatures,

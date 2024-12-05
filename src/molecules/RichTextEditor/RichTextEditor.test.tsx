@@ -182,6 +182,21 @@ test('Images work as expected', async () => {
   expect(screen.getByRole('img')).toHaveAttribute('alt', alt);
 });
 
+test('Throws error if trying to use both remove strategies', () => {
+  console.error = vi.fn();
+
+  const props = fakeProps();
+  expect(() =>
+    render(
+      <RichTextEditor
+        {...props}
+        onRemovedImagesChange={vi.fn()}
+        onImageRemove={vi.fn()}
+      />
+    )
+  ).toThrowError();
+});
+
 describe('Editor defaults can be merged', () => {
   const uniqe: Partial<AmplifyKitOptions> = {
     bold: { HTMLAttributes: { class: 'bolder' } },
