@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { RichText } from 'src/molecules/RichTextEditor';
+import { AmplifyKit } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 import {
   ImageExtensionFnProps,
   RichTextEditorFeatures,
@@ -23,7 +23,7 @@ export const useAmplifyKit = ({
   // The new compound component structure also lets users circumvent this if they need more control
   return useMemo(
     () =>
-      RichText.Kit.configure({
+      AmplifyKit.configure({
         placeholder: placeholder ? { placeholder } : undefined,
         link: features?.includes(RichTextEditorFeatures.LINKS) ? {} : false,
         table: features?.includes(RichTextEditorFeatures.TABLE) ? {} : false,
