@@ -2,7 +2,7 @@ import { FC, HTMLAttributes, useEffect, useRef } from 'react';
 
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
-import { useAmplifyKit } from 'src/atoms';
+import { useAmplifyKit } from 'src/atoms/hooks/useAmplifyKit';
 import {
   EditorContent,
   EditorStyling,
