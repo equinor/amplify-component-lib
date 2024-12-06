@@ -34,7 +34,8 @@ export const DialogTitle = styled(EDSDialog.Title)<StyledDialogProps>`
 `;
 
 interface DialogContentProps {
-  $withContentPadding: boolean;
+  $withContentPaddingY: boolean;
+  $withContentPaddingX: boolean;
 }
 
 export const DialogContent = styled(
@@ -42,14 +43,10 @@ export const DialogContent = styled(
 )<DialogContentProps>`
   min-height: unset;
   overflow: auto;
-  ${({ $withContentPadding }) => {
-    if ($withContentPadding) {
-      return css`
-        padding: ${spacings.medium};
-      `;
-    }
+  ${({ $withContentPaddingX, $withContentPaddingY }) => {
     return css`
-      padding: 0;
+      padding: ${$withContentPaddingY ? spacings.medium : 0}
+        ${$withContentPaddingX ? spacings.medium : 0};
     `;
   }}
 `;
@@ -89,4 +86,17 @@ export const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
       border-top: none;
     `;
   }}
+`;
+
+export const AdditionalInfoBanner = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: ${spacings.medium};
+  padding: ${spacings.medium};
+  background-color: ${colors.ui.background__info.rgba};
+`;
+
+export const InfoIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;

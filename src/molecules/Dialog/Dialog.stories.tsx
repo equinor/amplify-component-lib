@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button } from '@equinor/eds-core-react';
+import { Button, Typography } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
@@ -49,7 +49,10 @@ const meta: Meta<typeof Dialog> = {
     withBorders: {
       control: 'boolean',
     },
-    withContentPadding: {
+    withContentPaddingX: {
+      control: 'boolean',
+    },
+    withContentPaddingY: {
       control: 'boolean',
     },
     dialogRef: {
@@ -57,6 +60,10 @@ const meta: Meta<typeof Dialog> = {
     },
     actions: {
       description: 'Buttons that will be shown at the bottom',
+    },
+    additionalInfo: {
+      description:
+        'Banner that will display extra information on clicking the info icon button',
     },
   },
   args: {
@@ -80,7 +87,22 @@ const meta: Meta<typeof Dialog> = {
       },
     ],
     withBorders: false,
-    withContentPadding: true,
+    withContentPaddingX: true,
+    withContentPaddingY: true,
+    additionalInfo: (
+      <div>
+        <Typography bold>
+          Sign off to confirm that your approved experiences are ready for
+          publication to our partners.
+        </Typography>
+        <Typography>
+          When the selected group of experiences are ready to be publish, check
+          the last checkbox that says &#39;Selected set of experiences are ready
+          for publishing&#39;. This will notify the publisher that you are ready
+          to publish them.
+        </Typography>
+      </div>
+    ),
   },
   parameters: {
     design: {
@@ -106,7 +128,8 @@ export const WithBorders: Story = {
 
 export const WithoutContentPadding: Story = {
   args: {
-    withContentPadding: false,
+    withContentPaddingX: false,
+    withContentPaddingY: false,
     children: <div>Wow! No padding!</div>,
   },
 };
