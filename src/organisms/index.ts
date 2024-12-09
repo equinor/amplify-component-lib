@@ -3,7 +3,7 @@ export type { EdsDataGridProps as DataGridProps } from '@equinor/eds-data-grid-r
 export { FieldSelector } from './FieldSelector/FieldSelector';
 export type { FieldSelectorProps } from './FieldSelector/FieldSelector';
 export { Filter } from './Filter/Filter';
-export type { FilterProps } from './Filter/Filter';
+export type * from './Filter/Filter.types';
 export { SideBar } from './SideBar';
 export type { ItemType } from './SideBar';
 export { TopBar } from './TopBar';
