@@ -17,27 +17,12 @@ const MenuItem = styled(Menu.Item)`
   }
 `;
 
-const Wrapper = styled.div`
-  position: relative;
-  > span:first-child {
-    visibility: hidden;
-  }
-  > span:last-child {
-    position: absolute;
-    white-space: nowrap;
-    left: 0;
-  }
-`;
-
 export function Sorting<S>({
   sortValue,
   onSortChange,
   sortItems,
 }: SortingProps<S>) {
   const activeSorting = sortItems.find((item) => item.value === sortValue);
-  const longestLabel = sortItems
-    .sort((a, b) => b.label.length - a.label.length)
-    .at(0)?.label;
 
   const handleOnSelect = (value: S) => {
     onSortChange(value);
@@ -68,14 +53,9 @@ export function Sorting<S>({
         </MenuItem>
       ))}
     >
-      <Wrapper>
-        <Typography as="span" variant="button" group="navigation">
-          Sort by {longestLabel?.toLowerCase()}
-        </Typography>
-        <Typography as="span" variant="button" group="navigation">
-          Sort by {activeSorting?.label.toLowerCase()}
-        </Typography>
-      </Wrapper>
+      <Typography as="span" variant="button" group="navigation">
+        Sort by {activeSorting?.label.toLowerCase()}
+      </Typography>
       <Icon data={sort} />
     </ButtonWithMenu>
   );
