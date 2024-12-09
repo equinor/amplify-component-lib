@@ -50,13 +50,17 @@ const meta: Meta<typeof Dialog> = {
       control: 'boolean',
     },
     withContentPadding: {
-      control: 'boolean',
+      control: 'object',
     },
     dialogRef: {
       description: 'Ref to dialog element',
     },
     actions: {
       description: 'Buttons that will be shown at the bottom',
+    },
+    additionalInfo: {
+      description:
+        'Banner that will display extra information on clicking the info icon button',
     },
   },
   args: {
@@ -80,7 +84,11 @@ const meta: Meta<typeof Dialog> = {
       },
     ],
     withBorders: false,
-    withContentPadding: true,
+    withContentPadding: {
+      horizontal: true,
+      vertical: true,
+    },
+    additionalInfo: 'This is where you can add additional information',
   },
   parameters: {
     design: {
@@ -106,7 +114,7 @@ export const WithBorders: Story = {
 
 export const WithoutContentPadding: Story = {
   args: {
-    withContentPadding: false,
+    withContentPadding: { horizontal: false, vertical: false },
     children: <div>Wow! No padding!</div>,
   },
 };
