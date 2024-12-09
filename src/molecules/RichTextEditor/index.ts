@@ -1,4 +1,3 @@
-import { AmplifyKit } from './custom-extensions/AmplifyKit';
 import { AmplifyBar } from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
 import { EditorContent, EditorStyling } from './RichTextEditor.styles';
@@ -12,5 +11,4 @@ export const RichText = {
   Content: EditorContent,
   Display: RichTextDisplay,
   Bar: AmplifyBar,
-  Kit: AmplifyKit,
 };

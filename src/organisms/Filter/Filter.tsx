@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, ReactNode, useRef, useState } from 'react';
+import { KeyboardEvent, useRef, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import {
@@ -6,7 +6,6 @@ import {
   arrow_drop_up,
   clear,
   filter_list,
-  IconData,
 } from '@equinor/eds-icons';
 
 import {
@@ -17,22 +16,11 @@ import {
   Wrapper,
 } from './Filter.styles';
 import { colors } from 'src/atoms/style/colors';
+import { FilterProps } from 'src/organisms/Filter/Filter.types';
+import { QuickFilter } from 'src/organisms/Filter/QuickFilter';
+import { Sorting } from 'src/organisms/Filter/Sorting';
 
 import { AnimatePresence } from 'framer-motion';
-
-export interface FilterProps<T> {
-  values: { key: T; label: string; icon?: IconData }[];
-  onClearFilter: (key: T) => void;
-  onClearAllFilters: () => void;
-  search: string;
-  onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSearchEnter: (value: string) => void;
-  children: ReactNode | ReactNode[];
-  initialOpen?: boolean;
-  placeholder?: string;
-  id?: string;
-  showClearFiltersButton?: boolean;
-}
 
 /**
  * @param values - Array of values to display as chips ({ value: string, label: string, icon?: IconData }[])
@@ -46,8 +34,15 @@ export interface FilterProps<T> {
  * @param placeholder - Placeholder text for the search input, defaults to 'Search...'
  * @param id - ID for the search field
  * @param showClearFiltersButton - Whether to show the clear filters button, defaults to true
+ * - Sorting props
+ * @param sortValue - The current sort value
+ * @param onSortChange - Callback when a sorting is selected in the menu
+ * @param sortItems - Array of sort items ({ value: S, label: string }[])
+ * - Quick filter props
+ * @param onQuickFilter - Callback when a quick filter is selected in the menu
+ * @param quickFilterItems - Array of quick filter items ({ value: Q, label: string }[])
  */
-export function Filter<T>({
+export function Filter<T, S, Q>({
   values,
   search,
   onSearchChange,
@@ -59,7 +54,8 @@ export function Filter<T>({
   placeholder = 'Search...',
   id = 'filter-search',
   showClearFiltersButton = true,
-}: FilterProps<T>) {
+  ...rest
+}: FilterProps<T, S, Q>) {
   const [open, setOpen] = useState(initialOpen);
   const [attemptingToRemove, setAttemptingToRemove] = useState<number>(-1);
   const initialHeight = useRef(initialOpen ? 'auto' : 0);
@@ -96,11 +92,11 @@ export function Filter<T>({
 
   return (
     <Wrapper>
-      <Container $open={open}>
+      <Container>
         <Icon
           onClick={handleOnToggleOpen}
           data={filter_list}
-          color={colors.interactive.primary__resting.rgba}
+          color={colors.text.static_icons__tertiary.rgba}
         />
         <section>
           {values.map(({ key, label, icon }, index) => (
@@ -136,13 +132,14 @@ export function Filter<T>({
             />
           </Button>
         )}
-        <Button
-          variant="ghost_icon"
-          onClick={handleOnToggleOpen}
-          data-testid="toggle-open-button"
-        >
-          <Icon data={open ? arrow_drop_up : arrow_drop_down} />
-        </Button>
+        {'quickFilterItems' in rest && <QuickFilter {...rest} />}
+        {'sortValue' in rest && <Sorting {...rest} />}
+        <button onClick={handleOnToggleOpen} data-testid="toggle-open-button">
+          <Icon
+            data={open ? arrow_drop_up : arrow_drop_down}
+            color={colors.text.static_icons__tertiary.rgba}
+          />
+        </button>
       </Container>
       <AnimatePresence>
         {open && (

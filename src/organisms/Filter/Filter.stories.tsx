@@ -4,9 +4,10 @@ import { DatePicker } from '@equinor/eds-core-react';
 import { gear, van } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { Filter, FilterProps } from './Filter';
+import { Filter } from './Filter';
 import { formatDate } from 'src/atoms';
 import { SelectOptionRequired, SingleSelect } from 'src/molecules';
+import { FilterProps } from 'src/organisms/Filter/Filter.types';
 
 const CAR_SIZE = [
   { value: 'size', label: 'Sports car' },
@@ -19,7 +20,9 @@ const MANUFACTURER = [
   { key: 'created-by', label: '鈴木 (Suzuki)' },
 ];
 
-type FilterStoryProps = FilterProps<string> & { withIcons?: boolean };
+type FilterStoryProps = FilterProps<string, string, string> & {
+  withIcons?: boolean;
+};
 
 const Wrapper: FC<FilterStoryProps> = (props) => {
   const [carSize, setCarSize] = useState<SelectOptionRequired | undefined>(
@@ -35,9 +38,12 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
   );
   const [search, setSearch] = useState<string>('');
   const [searchTags, setSearchTags] = useState<string[]>([]);
+  const [sortValue, setSortValue] = useState<string | undefined>(
+    'sortValue' in props ? props.sortValue : undefined
+  );
 
   const values = useMemo(() => {
-    const all: FilterProps<string>['values'] = [];
+    const all: FilterProps<string, string, string>['values'] = [];
 
     if (carSize) {
       if (props.withIcons) {
@@ -124,6 +130,20 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     setSearch('');
   };
 
+  const handleOnSortSelect = (value: string) => {
+    setSortValue(value);
+  };
+
+  const handleOnQuickFilter = (value: string) => {
+    const [group, index] = value.split('-');
+
+    if (group === 'manufacturer') {
+      setManufacturer(MANUFACTURER[Number(index)]);
+    } else {
+      setCarSize(CAR_SIZE[Number(index)]);
+    }
+  };
+
   return (
     <Filter
       {...props}
@@ -133,6 +153,19 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       onSearchChange={handleOnSearch}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
+      {...('sortValue' in props
+        ? {
+            sortValue,
+            sortItems: props.sortItems,
+            onSortChange: handleOnSortSelect,
+          }
+        : {})}
+      {...('quickFilterItems' in props
+        ? {
+            quickFilterItems: props.quickFilterItems,
+            onQuickFilter: handleOnQuickFilter,
+          }
+        : {})}
     >
       <DatePicker
         label="Manufacturer date"
@@ -248,5 +281,42 @@ export const WithoutClearButton: Story = {
     values: [MANUFACTURER[1]],
     initialOpen: true,
     showClearFiltersButton: false,
+  },
+};
+
+export const WithSorting: Story = {
+  args: {
+    sortValue: 'added-new',
+    sortItems: [
+      { value: 'added-new', label: 'Added Newest' },
+      { value: 'added-old', label: 'Added Oldest' },
+      { value: 'edited-new', label: 'Edited Newest' },
+      { value: 'edited-old', label: 'Edited Oldest' },
+    ],
+  },
+};
+
+export const WithQuickFilter: Story = {
+  args: {
+    quickFilterItems: [
+      { value: 'size-0', label: CAR_SIZE[0].label },
+      { value: 'manufacturer-0', label: MANUFACTURER[0].label },
+    ],
+  },
+};
+
+export const WithBoth: Story = {
+  args: {
+    sortValue: 'added-new',
+    sortItems: [
+      { value: 'added-new', label: 'Added Newest' },
+      { value: 'added-old', label: 'Added Oldest' },
+      { value: 'edited-new', label: 'Edited Newest' },
+      { value: 'edited-old', label: 'Edited Oldest' },
+    ],
+    quickFilterItems: [
+      { value: 'size-0', label: CAR_SIZE[0].label },
+      { value: 'manufacturer-0', label: MANUFACTURER[0].label },
+    ],
   },
 };
