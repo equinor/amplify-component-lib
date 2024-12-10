@@ -2,7 +2,7 @@
 FROM oven/bun:alpine as base
 WORKDIR /app
 COPY package.json ./
-COPY package-lock.json ./
+COPY bun.lockb ./
 COPY tsconfig.json ./
 COPY vite.config.ts ./
 COPY index.html ./

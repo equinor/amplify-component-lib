@@ -20,10 +20,6 @@ jobs:
   build-storybook-with-docker:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [23.x]
-
     steps:
       - uses: actions/checkout@v4
       - name: Build the docker image
