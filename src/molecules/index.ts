@@ -43,6 +43,7 @@ export {
   EditorMenu,
   EditorText,
 } from './RichTextEditor/MenuBar/MenuBar';
+export { AmplifyKit } from './RichTextEditor/custom-extensions/AmplifyKit';
 export type { RichTextEditorProps } from './RichTextEditor/RichTextEditor';
 export {
   TableMenuBar,
