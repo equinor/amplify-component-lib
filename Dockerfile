@@ -1,5 +1,5 @@
 # Base
-FROM oven/bun:alpine AS base
+FROM imbios/bun-node:22-alpine AS base
 WORKDIR /app
 COPY package.json ./
 COPY bun.lockb ./
