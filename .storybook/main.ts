@@ -1,4 +1,6 @@
-const config = {
+import { StorybookConfig } from '@storybook/react-vite';
+
+const config: StorybookConfig = {
   stories: ['../src/intro.mdx', '../src/**/*.stories.@(ts|tsx)'],
 
   addons: [
@@ -9,22 +11,13 @@ const config = {
     './addons/GitHubSearchAddon/manager.js',
     './addons/SpacingsAddon/manager.js',
   ],
-
-  build: {
-    sourcemap: false,
-  },
-
   core: {},
-
   framework: {
     name: '@storybook/react-vite',
     options: {},
   },
-
   docs: {},
-
   staticDirs: ['../public'],
-
   async viteFinal(config) {
     return {
       ...config,

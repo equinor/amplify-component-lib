@@ -1,8 +1,8 @@
 # Base
-FROM node:21-alpine as base
+FROM oven/bun:alpine as base
 WORKDIR /app
 COPY package.json ./
-COPY package-lock.json ./
+COPY bun.lockb ./
 COPY tsconfig.json ./
 COPY vite.config.ts ./
 COPY index.html ./
@@ -13,7 +13,7 @@ COPY public ./public
 RUN rm -f ./public/mockServiceWorker.js
 
 # Install dependencies and build
-RUN npm ci --ignore-scripts && npm run build
+RUN bun install --frozen-lockfile && bun run build
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine
