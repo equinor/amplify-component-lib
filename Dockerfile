@@ -1,5 +1,5 @@
 # Base
-FROM node:21-alpine as base
+FROM oven/bun:alpine as base
 WORKDIR /app
 COPY package*.json ./
 COPY tsconfig*.json ./
@@ -7,7 +7,7 @@ COPY tsconfig*.json ./
 # Dependencies
 FROM base as dependencies
 WORKDIR /app
-RUN npm ci --ignore-scripts
+RUN bun install --frozen-lockfile
 COPY src src
 COPY .storybook .storybook
 COPY public public
@@ -17,7 +17,7 @@ COPY vite.config.ts vite.config.ts
 # Build
 FROM dependencies as builder
 WORKDIR /app
-RUN npm run build-storybook
+RUN bun run build-storybook
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine

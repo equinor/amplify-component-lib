@@ -3,6 +3,8 @@
 # Webstorm specific
 .idea/workspace.xml
 
+package-lock.json
+
 # dependencies
 /node_modules
 /.pnp

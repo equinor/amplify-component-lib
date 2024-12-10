@@ -26,7 +26,7 @@ async function runTasks() {
 
   try {
     await runTask({
-      command: 'npm run build',
+      command: 'bun run build-components',
       name: `${chalk.white('Building')} ${chalk.bold.magenta(
         'amplify-component-lib'
       )}`,

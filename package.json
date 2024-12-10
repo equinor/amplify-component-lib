@@ -22,7 +22,6 @@
   "scripts": {
     "start": "NODE_OPTIONS=--openssl-legacy-provider && storybook dev -p 6006",
     "build-storybook": "NODE_OPTIONS='--openssl-legacy-provider --max-old-space-size=2048' storybook build",
-    "setup": "npm install",
     "pretty": "prettier --check ./config ./src ./.storybook",
     "pretty:fix": "prettier --write ./config ./src ./.storybook",
     "lint": "eslint ./src ./.storybook",
@@ -31,9 +30,7 @@
     "test:ci": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:coverage-ci": "vitest run --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent",
-    "build": "npm run build-components",
     "build-components": "rollup -c && tsc --project tsconfig.build.json && resolve-tspaths --project tsconfig.build.json",
-    "build-components:ci": "rm -rf lib dist && npm run build-components",
     "build-and-use": "node tooling/build-and-use.mjs",
     "brute-coverage": "node tooling/brute-coverage.mjs"
   },
