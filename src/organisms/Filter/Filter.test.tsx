@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
 
-import { Filter, FilterProps } from 'src/organisms';
+import { Filter } from 'src/organisms/Filter/Filter';
+import { CommonFilterProps } from 'src/organisms/Filter/Filter.types';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
-function fakeProps(): Omit<FilterProps<string>, 'children'> {
+function fakeProps(): Omit<CommonFilterProps<string>, 'children'> {
   return {
     values: new Array(faker.number.int({ min: 1, max: 10 }))
       .fill(null)
@@ -216,4 +217,73 @@ test('onSearch is called when hitting enter and search is not empty string', asy
 
   expect(props.onSearchEnter).toHaveBeenCalledTimes(1);
   expect(props.onSearchEnter).toHaveBeenCalledWith(randomWord);
+});
+
+test('Sorting works as expected', async () => {
+  const props = fakeProps();
+  const sortItems = new Array(faker.number.int({ min: 5, max: 10 }))
+    .fill(null)
+    .map(() => ({
+      value: faker.string.uuid(),
+      label: faker.string.uuid(),
+    }));
+  const initialSorting = sortItems[0];
+  const onSortChange = vi.fn();
+
+  render(
+    <Filter
+      {...props}
+      sortValue={initialSorting.value}
+      sortItems={sortItems}
+      onSortChange={onSortChange}
+    >
+      <p>child</p>
+    </Filter>
+  );
+  const user = userEvent.setup();
+
+  const sortButton = screen.getByRole('button', {
+    name: `Sort by ${initialSorting.label.toLowerCase()}`,
+  });
+
+  await user.click(sortButton);
+
+  const randomItem = faker.helpers.arrayElement(sortItems.slice(1));
+
+  const item = screen.getByRole('menuitem', { name: randomItem.label });
+  await user.click(item);
+
+  expect(onSortChange).toHaveBeenCalledWith(randomItem.value);
+});
+
+test('Quick filter works as expected', async () => {
+  const props = fakeProps();
+
+  const quickFilterItems = new Array(faker.number.int({ min: 5, max: 10 }))
+    .fill(null)
+    .map(() => ({
+      value: faker.string.uuid(),
+      label: faker.string.uuid(),
+    }));
+  const onQuickFilter = vi.fn();
+
+  render(
+    <Filter
+      {...props}
+      quickFilterItems={quickFilterItems}
+      onQuickFilter={onQuickFilter}
+    >
+      <p>child</p>
+    </Filter>
+  );
+
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('button', { name: /quick filter/i }));
+
+  const randomItem = faker.helpers.arrayElement(quickFilterItems);
+
+  await user.click(screen.getByText(randomItem.label));
+
+  expect(onQuickFilter).toHaveBeenCalledWith(randomItem.value);
 });

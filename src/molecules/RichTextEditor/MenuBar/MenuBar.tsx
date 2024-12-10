@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Editor } from '@tiptap/react';
 
 import {
-  OnImageUploadFn,
+  ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from '../RichTextEditor.types';
 import { TextTable } from './Table/Table';
@@ -37,10 +37,10 @@ const MenuBar = styled.div`
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
 `;
 
-export interface MenuBarProps {
+export interface MenuBarProps
+  extends Pick<ImageExtensionFnProps, 'onImageUpload'> {
   editor: Editor;
   features: RichTextEditorFeatures[];
-  onImageUpload?: OnImageUploadFn;
 }
 
 /* c8 ignore start */

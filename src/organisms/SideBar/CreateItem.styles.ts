@@ -27,6 +27,11 @@ export const MenuItemContainer = styled.div<MenuItemContainerProps>`
       $active
         ? colors.interactive.primary__selected_hover.rgba
         : colors.interactive.primary__hover_alt.rgba};
+
+    > button {
+      border-color: ${colors.interactive.primary__hover.rgba};
+      background: ${colors.interactive.primary__hover.rgba};
+    }
   }
 `;
 

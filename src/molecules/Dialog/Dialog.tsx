@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import { forwardRef, ReactNode, useState } from 'react';
 
 import {
   Button,
@@ -7,13 +7,15 @@ import {
   Icon,
   Typography,
 } from '@equinor/eds-core-react';
-import { close, IconData } from '@equinor/eds-icons';
+import { close, IconData, info_circle } from '@equinor/eds-icons';
 
 import {
+  AdditionalInfoBanner,
   DialogActions,
   DialogContent,
   DialogElement,
   DialogTitle,
+  InfoIconWrapper,
 } from './Dialog.styles';
 import { DialogAction } from './DialogAction';
 
@@ -42,9 +44,14 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
   onClose: () => void;
   width?: number;
   actions?: DialogAction[];
-  withContentPadding?: boolean;
+  withContentPadding?: {
+    vertical?: boolean;
+    horizontal?: boolean;
+  };
   withBorders?: boolean;
   contentMaxHeight?: string;
+  hideClose?: boolean;
+  additionalInfo?: string | ReactNode;
 }
 
 /**
@@ -53,9 +60,11 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
  * @param onClose - fn to set open to false
  * @param width - width in px, defaults to just fit-content
  * @param actions - Dialog actions, { position: "right" is default }
- * @param withContentPadding - Defaults to true
+ * @param withContentPadding - Defaults to true for vertical and horizontal
  * @param withBorders - Defaults to false
  * @param contentMaxHeight - Defaults to '60vh'
+ * @param hideClose - Defaults to true. Hides the top right close button icon
+ * @param additionalInfo - Defaults to empty, and won't show the additional info button
  * Also inherits props from EDS dialog
  */
 export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
@@ -65,13 +74,20 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
       children,
       width,
       actions,
-      withContentPadding = true,
+      withContentPadding,
       withBorders = false,
       contentMaxHeight = '60vh',
+      hideClose,
+      additionalInfo,
       ...otherProps
     },
     ref
   ) => {
+    const {
+      horizontal: horizontalPadding = true,
+      vertical: verticalPadding = true,
+    } = withContentPadding ?? {};
+    const [showInfoBanner, setShowInfoBanner] = useState(false);
     const leftActions = actions?.filter((action) => action.position === 'left');
     const centerActions = actions?.filter(
       (action) => action.position === 'center'
@@ -105,17 +121,44 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
           style={{ width: width ? `${width}px` : undefined }}
         >
           <section>{titleElements}</section>
-          <Button variant="ghost_icon" onClick={otherProps.onClose}>
-            <Icon data={close} />
-          </Button>
+          <div>
+            {/* TODO: Check with designers if we should have a toggle color on this button, to help indicate whether it is selected or not */}
+            {additionalInfo && (
+              <Button
+                variant="ghost_icon"
+                onClick={() => setShowInfoBanner((prev) => !prev)}
+                data-testid="dialog-info-button"
+              >
+                <Icon data={info_circle} />
+              </Button>
+            )}
+            {!hideClose && (
+              <Button
+                variant="ghost_icon"
+                onClick={otherProps.onClose}
+                data-testid="dialog-close-button"
+              >
+                <Icon data={close} data-testid="dialog-close-icon" size={24} />
+              </Button>
+            )}
+          </div>
         </DialogTitle>
         <DialogContent
-          $withContentPadding={withContentPadding}
+          $withContentPaddingX={horizontalPadding}
+          $withContentPaddingY={verticalPadding}
           style={{
             width: width ? `${width}px` : undefined,
             maxHeight: contentMaxHeight,
           }}
         >
+          {showInfoBanner && additionalInfo && (
+            <AdditionalInfoBanner>
+              <InfoIconWrapper>
+                <Icon data={info_circle} size={24} />
+              </InfoIconWrapper>
+              {additionalInfo}
+            </AdditionalInfoBanner>
+          )}
           {childrenElements}
         </DialogContent>
         {actions && actions.length > 0 && (

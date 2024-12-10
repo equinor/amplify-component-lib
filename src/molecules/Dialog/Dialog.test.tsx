@@ -86,9 +86,32 @@ test('Clicking close calls onClose', async () => {
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button', { hidden: true }));
+  await user.click(screen.getByTestId('dialog-close-button'));
 
   expect(handleOnClose).toHaveBeenCalledTimes(1);
+});
+
+test('Clicking info icon button shows the additional content banner', async () => {
+  const handleOnClose = vi.fn();
+  const title = faker.airline.airplane().name;
+  const description = faker.lorem.paragraph();
+  const additionalInfo = faker.lorem.sentences();
+  render(
+    <Dialog
+      open
+      title={title}
+      onClose={handleOnClose}
+      additionalInfo={additionalInfo}
+    >
+      {description}
+    </Dialog>
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByTestId('dialog-info-button'));
+  screen.logTestingPlaygroundURL();
+
+  expect(screen.getByText(additionalInfo)).toBeInTheDocument();
 });
 
 test('Actions prop works as expected', async () => {

@@ -1,6 +1,7 @@
 import { runTask } from './taskrunner.mjs';
 import chalk from 'chalk';
-import { readdir } from 'fs/promises';
+import { readdir} from 'fs/promises';
+import { existsSync } from 'fs';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
@@ -87,39 +88,44 @@ async function runTasks() {
     )
   );
 
+  let nodeModulesDir = `../${selectedDir}/node_modules`
+  if (existsSync(`../${selectedDir}/client`)) {
+    nodeModulesDir = `../${selectedDir}/client/node_modules`
+  }
+
   await runTask({
-    command: `rm -rf ../${selectedDir}/client/node_modules/.vite`,
+    command: `rm -rf ${nodeModulesDir}/.vite`,
     name: `Removing ${chalk.bold.greenBright(
       '.vite'
     )} folder from ${chalk.bold.greenBright(
-      `${selectedDir}/client/node_modules`
+      `${nodeModulesDir}`
     )}`,
   });
 
   await runTask({
-    command: `rm -rf ../${selectedDir}/client/node_modules/.cache`,
+    command: `rm -rf ${nodeModulesDir}/.cache`,
     name: `Removing ${chalk.bold.greenBright(
       '.cache'
     )} folder from ${chalk.bold.greenBright(
-      `${selectedDir}/client/node_modules`
+      `${nodeModulesDir}`
     )}`,
   });
 
   await runTask({
-    command: `rm -rf ../${selectedDir}/client/node_modules/@equinor/amplify-component-lib/dist`,
+    command: `rm -rf ${nodeModulesDir}/@equinor/amplify-component-lib/dist`,
     name: `Removing old ${chalk.bold.greenBright(
       'amplify-component-lib/dist'
     )} folder from ${chalk.bold.greenBright(
-      `${selectedDir}/client/node_modules`
+      `${nodeModulesDir}`
     )}`,
   });
 
   await runTask({
-    command: `cp -r ./dist ../${selectedDir}/client/node_modules/@equinor/amplify-component-lib/dist`,
+    command: `cp -r ./dist ${nodeModulesDir}/@equinor/amplify-component-lib/dist`,
     name: `Copying newly built ${chalk.bold.greenBright(
       'dist'
     )} folder into ${chalk.bold.greenBright(
-      `${selectedDir}/client/node_modules`
+      `${nodeModulesDir}`
     )}`,
   });
 

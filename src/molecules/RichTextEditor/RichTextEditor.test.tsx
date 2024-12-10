@@ -5,7 +5,7 @@ import { mergeDefaults } from './custom-extensions/mergeDefaults';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { RichTextEditor, RichTextEditorProps } from 'src/molecules';
 import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import { render, renderWithProviders, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {
@@ -18,7 +18,7 @@ function fakeProps(withImage = false): RichTextEditorProps {
 test('Shows text that is input', async () => {
   const props = fakeProps(true);
   const fish = faker.animal.fish();
-  render(<RichTextEditor {...props} value={`<p>${fish}</p>`} />);
+  renderWithProviders(<RichTextEditor {...props} value={`<p>${fish}</p>`} />);
 
   await waitFor(() => expect(screen.getByText(fish)).toBeInTheDocument(), {
     timeout: 1000,
@@ -30,7 +30,7 @@ test('Throws error if providing RichTextEditorFeature.IMAGES but not an image ha
 
   const props = fakeProps();
   expect(() =>
-    render(
+    renderWithProviders(
       <RichTextEditor
         {...props}
         extendFeatures={[RichTextEditorFeatures.IMAGES]}
@@ -42,7 +42,7 @@ test('Throws error if providing RichTextEditorFeature.IMAGES but not an image ha
 test("Calls 'onChange' when inputting text", async () => {
   const props = fakeProps();
 
-  const { container } = render(
+  const { container } = renderWithProviders(
     <RichTextEditor
       {...props}
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
@@ -68,7 +68,7 @@ test("Calls 'onChange' when inputting text", async () => {
 test('Setting color works as expected', async () => {
   const props = fakeProps();
 
-  const { container } = render(
+  const { container } = renderWithProviders(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.TEXT_COLOR]} />
   );
 
@@ -83,7 +83,7 @@ test('Setting color works as expected', async () => {
 test('Calls onImageUpload as expected', async () => {
   const props = fakeProps(true);
 
-  const { container } = render(
+  const { container } = renderWithProviders(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
   );
   const user = userEvent.setup();
@@ -106,7 +106,7 @@ test('Calls onImageUpload as expected', async () => {
 test('Open file dialog', async () => {
   const props = fakeProps(true);
 
-  render(
+  renderWithProviders(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
   );
   const user = userEvent.setup();
@@ -121,7 +121,7 @@ test('Open file dialog', async () => {
 test('Creating table works as expected', async () => {
   const props = fakeProps();
 
-  render(
+  renderWithProviders(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.TABLE]} />
   );
   const user = userEvent.setup();
@@ -141,7 +141,7 @@ test('Images work as expected', async () => {
   const alt = faker.animal.crocodilia();
   const props = fakeProps(true);
 
-  render(
+  renderWithProviders(
     <RichTextEditor
       {...props}
       value={`<img src="${randomUrl}" alt="${alt}" />`}
@@ -154,6 +154,21 @@ test('Images work as expected', async () => {
   expect(screen.getByRole('img')).toHaveAttribute('src', randomUrl);
 
   expect(screen.getByRole('img')).toHaveAttribute('alt', alt);
+});
+
+test('Throws error if trying to use both remove strategies', () => {
+  console.error = vi.fn();
+
+  const props = fakeProps();
+  expect(() =>
+    renderWithProviders(
+      <RichTextEditor
+        {...props}
+        onRemovedImagesChange={vi.fn()}
+        onImageRemove={vi.fn()}
+      />
+    )
+  ).toThrowError();
 });
 
 describe('Editor defaults can be merged', () => {

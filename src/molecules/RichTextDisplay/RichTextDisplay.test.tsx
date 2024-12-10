@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { RichTextDisplay } from 'src/molecules';
-import { act, render, screen } from 'src/tests/browsertest-utils';
+import { act, render, renderWithProviders, screen } from 'src/tests/browsertest-utils';
 
 test('RichTextDisplay shows value as expected', async () => {
   const randomText = faker.animal.dog();
@@ -20,7 +20,7 @@ test('Image read token prop works as expected', async () => {
     'https://images.unsplash.com/photo-1682687221363-72518513620e';
   const randomToken = 'sv=2023-08-03';
 
-  render(
+  renderWithProviders(
     <RichTextDisplay
       value={`<img src="${randomUrl}"/>`}
       imgReadToken={randomToken}
@@ -36,6 +36,26 @@ test('Image read token prop works as expected', async () => {
     'src',
     `${randomUrl}?${randomToken}`
   );
+});
+
+test('onImageRead fn works as expected', async () => {
+  const randomUrl =
+    'https://images.unsplash.com/photo-1682687221363-72518513620e';
+  const handleImageRead = vi.fn();
+
+  renderWithProviders(
+    <RichTextDisplay
+      value={`<img src="${randomUrl}"/>`}
+      onImageRead={handleImageRead}
+    />
+  );
+
+  // Wait for tip tap to initialize
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
+
+  expect(handleImageRead).toHaveBeenCalledWith(randomUrl);
 });
 
 test('Shows content when sending in new value', async () => {

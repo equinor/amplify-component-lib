@@ -10,7 +10,6 @@ import {
   render,
   screen,
   userEvent,
-  userEvent,
 } from 'src/tests/browsertest-utils';
 
 type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;

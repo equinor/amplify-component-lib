@@ -5,13 +5,13 @@ import { camera_add_photo } from '@equinor/eds-icons';
 import { EditorMenu } from './MenuBar';
 import {
   EditorPanel,
-  OnImageUploadFn,
+  ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-export interface AddImageProps extends EditorPanel {
-  onImageUpload?: OnImageUploadFn;
-}
+export interface AddImageProps
+  extends EditorPanel,
+    Pick<ImageExtensionFnProps, 'onImageUpload'> {}
 
 export const AddImageButton: FC<AddImageProps> = ({
   onImageUpload,
@@ -42,7 +42,7 @@ export const AddImageButton: FC<AddImageProps> = ({
     const image = await onImageUpload(files[0]);
     if (!image) return;
 
-    editor?.chain().focus().setImage({ src: image.b64, alt: image.url }).run();
+    editor?.chain().focus().setImage({ src: image.src, alt: image.alt }).run();
   };
 
   /* c8 ignore end */

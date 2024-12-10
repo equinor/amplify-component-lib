@@ -12,6 +12,7 @@ import Portal from './Icons/Portal';
 import Premo from './Icons/Premo';
 import Pwex from './Icons/Pwex';
 import Recap from './Icons/Recap';
+import { Sam } from './Icons/Sam';
 // Needs to be relative path for the type to be importable after build
 import { AppIconProps } from './ApplicationIcon.types';
 
@@ -26,7 +27,8 @@ export type ApplicationName =
   | 'pwex'
   | 'inpress'
   | 'bravos'
-  | 'premo';
+  | 'premo'
+  | 'sam';
 
 interface ApplicationIconData {
   appName: string[];
@@ -49,6 +51,7 @@ const apps: ApplicationIconData[] = [
   { appName: ['inpress'], component: InPress },
   { appName: ['bravos'], component: Bravos },
   { appName: ['premo'], component: Premo },
+  { appName: ['sam'], component: Sam },
 ];
 
 export interface ApplicationIconProps extends Partial<AppIconProps> {

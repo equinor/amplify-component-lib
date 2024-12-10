@@ -11,6 +11,7 @@ export const APP_ICONS = [
   'recap',
   'ltg',
   'inpress',
+  'sam',
   'equinor',
 ] as const;
 

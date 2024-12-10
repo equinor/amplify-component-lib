@@ -3,11 +3,14 @@
 
 [![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/amplify-component-lib/badge)](https://scm-compliance-api.radix.equinor.com/repos/equinor/amplify-component-lib/badge)
 
-This package contains components, utils, providers and hooks developed and used by the amplify team.
+Amplify Component Library (ACL) contains components, utils, providers and hooks developed and used by the Amplify team. 
+
+This package is first and foremost for our own Amplify applications. You can use them outside of Amplify if you want, but we will not be supporting any needs that don't align with our own Amplify applications. If you have an issue or find any bugs, create an issue in Github as we don't accept PRs from contributors outside of the Amplify team.
 
 # Quick links
 
 - [Storybook](https://storybook-amplify-components.app.radix.equinor.com/)
+- [Contributing](https://github.com/equinor/amplify-component-lib/blob/main/CONTRIBUTING.md)
 
 # Building amplify-component-lib
 

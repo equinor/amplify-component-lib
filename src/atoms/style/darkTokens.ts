@@ -116,9 +116,9 @@ export const darkTokens = css`
     --eds_interactive_secondary__resting: rgba(222, 229, 231, 1);
     --eds_interactive_secondary__link_hover: rgba(23, 36, 47, 1);
     --eds_interactive_danger__highlight: rgba(90, 57, 70, 1);
-    --eds_interactive_danger__resting: rgba(235, 0, 0, 1);
+    --eds_interactive_danger__resting: rgba(255, 115, 124, 1);
     --eds_interactive_danger__hover: rgba(255, 148, 155, 1);
-    --eds_interactive_danger__text: rgba(255, 102, 112, 1);
+    --eds_interactive_danger__text: rgba(255, 171, 176, 1);
     --eds_interactive_warning__highlight: rgba(90, 86, 73, 1);
     --eds_interactive_warning__resting: rgba(255, 146, 0, 1);
     --eds_interactive_warning__hover: rgba(255, 218, 168, 1);

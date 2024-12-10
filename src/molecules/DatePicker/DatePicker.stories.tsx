@@ -3,7 +3,6 @@ import { I18nProvider } from 'react-aria';
 
 import {
   Autocomplete,
-  DatePicker,
   DatePickerProps,
   NativeSelect,
 } from '@equinor/eds-core-react';
@@ -12,6 +11,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
 import page from './DatePicker.docs.mdx';
+import { DatePicker } from 'src/molecules/DatePicker/DatePicker';
 import { Stack } from 'src/storybook';
 
 const meta: Meta<typeof DatePicker> = {

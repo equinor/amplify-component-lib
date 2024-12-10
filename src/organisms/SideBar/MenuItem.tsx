@@ -24,6 +24,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       onClick,
       disabled = false,
       replace = false,
+      ...props
     },
     ref
   ) => {
@@ -63,6 +64,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           ref={ref}
           data-testid="sidebar-menu-item"
           replace={replace}
+          {...props}
         >
           <IconContainer data-testid="icon-container">
             <Icon data={icon} size={24} />
@@ -90,6 +92,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
           $open={isOpen}
           tabIndex={0}
           ref={ref}
+          {...props}
           data-testid="sidebar-menu-item"
         >
           <IconContainer data-testid="icon-container">

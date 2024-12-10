@@ -7,7 +7,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [21.x]
+        node-version: [22.x]
         browser: [chromium, firefox, webkit]
 
     steps:

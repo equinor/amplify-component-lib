@@ -9,6 +9,12 @@ export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
 export { ContentMenu } from './ContentMenu/ContentMenu';
 export type { ContentMenuProps } from './ContentMenu/ContentMenu';
+export { DatePicker } from './DatePicker/DatePicker';
+export type {
+  DatePickerProps,
+  DateRangePickerProps,
+  DateTimePickerProps,
+} from '@equinor/eds-core-react';
 export { Dialog } from './Dialog/Dialog';
 export type { DialogProps, DialogAction } from './Dialog/Dialog';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
@@ -44,7 +50,7 @@ export {
 } from './RichTextEditor/MenuBar/Table/TableBar';
 export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
 export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
-export type { OnImageUploadFn } from './RichTextEditor/RichTextEditor.types';
+export type * from './RichTextEditor/RichTextEditor.types';
 export { Search } from './Search/Search';
 export { Sieve } from './Sieve/Sieve';
 export type {
@@ -97,7 +103,6 @@ export {
   Accordion,
   Breadcrumbs,
   Button,
-  DatePicker,
   DateRangePicker,
   Divider,
   Dialog as EDSDialog,
@@ -120,8 +125,6 @@ export type {
   BreadcrumbsProps,
   BreadcrumbProps,
   ButtonProps,
-  DatePickerProps,
-  DateRangePickerProps,
   DialogProps as EDSDialogProps,
   DividerProps,
   MenuProps,

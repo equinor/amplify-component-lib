@@ -17,6 +17,7 @@ import {
   premo,
   pwex,
   recap,
+  sam,
 } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/ApplicationIconNewCollection';
 
 export type ApplicationName =
@@ -31,7 +32,8 @@ export type ApplicationName =
   | 'pwex'
   | 'ltg'
   | 'equinor'
-  | 'recap';
+  | 'recap'
+  | 'sam';
 
 interface ApplicationIconData {
   appName: string;
@@ -107,6 +109,12 @@ const apps: Record<ApplicationName | string, ApplicationIconData | undefined> =
       iconSvg: inpress.svgPathData,
       rotationVariant: 1,
       color: 'green',
+    },
+    sam: {
+      appName: 'sam',
+      iconSvg: sam.svgPathData,
+      rotationVariant: 3,
+      color: 'magenta',
     },
     equinor: {
       appName: 'equinor',

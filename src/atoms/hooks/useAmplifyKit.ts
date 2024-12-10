@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
 
-import { RichText } from 'src/molecules';
+import { AmplifyKit } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 import {
-  OnImageUploadFn,
+  ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-interface AmplifyKitProps {
+interface AmplifyKitProps extends ImageExtensionFnProps {
   features?: RichTextEditorFeatures[];
   placeholder?: string;
-  onImageUpload?: OnImageUploadFn;
 }
 
 /* c8 ignore start */
@@ -17,13 +16,14 @@ export const useAmplifyKit = ({
   features,
   placeholder,
   onImageUpload,
+  onImageRead,
 }: AmplifyKitProps) => {
   // This hooks is where we can use the features API we made to turn off extensions in the new configure API
   // Currently its only turning off the image extension since its the only one that needs to be turned off for the moment
   // The new compound component structure also lets users circumvent this if they need more control
   return useMemo(
     () =>
-      RichText.Kit.configure({
+      AmplifyKit.configure({
         placeholder: placeholder ? { placeholder } : undefined,
         link: features?.includes(RichTextEditorFeatures.LINKS) ? {} : false,
         table: features?.includes(RichTextEditorFeatures.TABLE) ? {} : false,
@@ -40,13 +40,13 @@ export const useAmplifyKit = ({
           ? {}
           : false,
         image: features?.includes(RichTextEditorFeatures.IMAGES)
-          ? { onImageUpload }
+          ? { onImageUpload, onImageRead }
           : false,
         heading: features?.includes(RichTextEditorFeatures.HEADERS)
           ? {}
           : false,
       }),
-    [onImageUpload, placeholder, features]
+    [placeholder, features, onImageUpload, onImageRead]
   );
 };
 /* c8 ignore stop */
