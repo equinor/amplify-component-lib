@@ -29,3 +29,15 @@ test('has grayscale css attribute when grayscale is set', () => {
   const applicationIcon = screen.getByTestId('application-icon');
   expect(applicationIcon).toHaveStyle(`filter: ${GRAYSCALE_FILTER_VALUE}`);
 });
+
+test('background is transparent when iconOnly is set', () => {
+  const { rerender } = render(<ApplicationIcon name="orca" iconOnly />);
+
+  const applicationIcon = screen.getByTestId('application-icon');
+  expect(applicationIcon).toHaveStyleRule('background', 'transparent');
+
+  rerender(<ApplicationIcon name="bravos" iconOnly />);
+
+  const otherApplicationIcon = screen.getByTestId('application-icon');
+  expect(otherApplicationIcon).toHaveStyleRule('background', 'transparent');
+});

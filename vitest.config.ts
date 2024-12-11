@@ -49,6 +49,10 @@ export default defineConfig({
         'src/providers/AuthProvider/**',
         'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreenMultiple.ts',
+        'src/molecules/ApplicationIcon/ApplicationIconNew/NoiseShape',
+        'src/molecules/ApplicationIcon/ApplicationIconNew/WaveShape',
+        'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew',
+        'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewBase',
       ],
       reporter: [
         'text-summary',

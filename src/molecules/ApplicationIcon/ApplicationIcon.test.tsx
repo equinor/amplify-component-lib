@@ -144,3 +144,11 @@ test('Renders equinor logo as fallback when iconOnly=true', () => {
 
   expect(path).toHaveAttribute('d', fallback.svgPathData);
 });
+
+test('App icon with multiple icons renders correctly', () => {
+  render(<ApplicationIcon name="bravos" />);
+
+  for (let i = 0; i < bravos.length; i++) {
+    expect(screen.getByTestId(`icon-part-${i}`)).toBeInTheDocument();
+  }
+});

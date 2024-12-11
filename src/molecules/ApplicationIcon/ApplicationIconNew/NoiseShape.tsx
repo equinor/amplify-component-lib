@@ -52,6 +52,7 @@ export const NoiseShape: FC<WaveShapeWithNoiseProps> = ({
         >
           {!isAltWave ? (
             <path
+              data-testid="wave-noise"
               d={
                 hasLargeWaves
                   ? LARGE_WAVES_PATH_DATA[0]
@@ -61,6 +62,7 @@ export const NoiseShape: FC<WaveShapeWithNoiseProps> = ({
             />
           ) : (
             <path
+              data-testid="wave-noise"
               d={
                 hasLargeWaves
                   ? LARGE_WAVES_PATH_DATA[1]

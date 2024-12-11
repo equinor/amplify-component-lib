@@ -9,7 +9,7 @@ import { Template } from 'src/organisms/Template/Template';
 import { AuthProvider } from 'src/providers/AuthProvider/AuthProvider';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 
-const Providers: FC<{ children: ReactNode }> = ({ children }) => {
+export const Providers: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient();
   return (
     <>

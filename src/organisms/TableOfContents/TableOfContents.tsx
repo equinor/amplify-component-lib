@@ -59,9 +59,9 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
           >
             <TableOfContentsItem
               variant={variant}
-              {...item}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
               isLink={isLink}
+              {...item}
             />
           </BorderItemsContainer>
         ))}

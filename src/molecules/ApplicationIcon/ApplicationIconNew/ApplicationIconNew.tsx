@@ -42,87 +42,86 @@ interface ApplicationIconData {
   color: AllowedColors;
 }
 
-const apps: Record<ApplicationName | string, ApplicationIconData | undefined> =
+const apps: ApplicationIconData[] = [
   {
-    amplify: {
-      appName: 'amplify',
-      iconSvg: amplify.svgPathData,
-      rotationVariant: 1,
-      color: 'blue',
-    },
-    bravos: {
-      appName: 'bravos',
-      iconSvg: bravos.svgPathData,
-      rotationVariant: 2,
-      color: 'blue',
-    },
-    embark: {
-      appName: 'embark',
-      iconSvg: embark.svgPathData,
-      rotationVariant: 2,
-      color: 'green',
-    },
-    premo: {
-      appName: 'premo',
-      iconSvg: premo.svgPathData,
-      rotationVariant: 3,
-      color: 'purple',
-    },
-    dasha: {
-      appName: 'dasha',
-      iconSvg: dasha.svgPathData,
-      rotationVariant: 0,
-      color: 'red',
-    },
-    acquire: {
-      appName: 'acquire',
-      iconSvg: acquire.svgPathData,
-      rotationVariant: 1,
-      color: 'yellow',
-    },
-    orca: {
-      appName: 'orca',
-      iconSvg: orca.svgPathData,
-      rotationVariant: 2,
-      color: 'magenta',
-    },
-    pwex: {
-      appName: 'pwex',
-      iconSvg: pwex.svgPathData,
-      rotationVariant: 3,
-      color: 'blue',
-    },
-    ltg: {
-      appName: 'ltg',
-      iconSvg: ltg.svgPathData,
-      rotationVariant: 0,
-      color: 'green',
-    },
-    recap: {
-      appName: 'recap',
-      iconSvg: recap.svgPathData,
-      rotationVariant: 2,
-      color: 'red',
-    },
-    inpress: {
-      appName: 'inpress',
-      iconSvg: inpress.svgPathData,
-      rotationVariant: 1,
-      color: 'green',
-    },
-    sam: {
-      appName: 'sam',
-      iconSvg: sam.svgPathData,
-      rotationVariant: 3,
-      color: 'magenta',
-    },
-    equinor: {
-      appName: 'equinor',
-      iconSvg: equinor.svgPathData,
-      rotationVariant: 1,
-      color: 'purple',
-    },
-  };
+    appName: 'amplify',
+    iconSvg: amplify.svgPathData,
+    rotationVariant: 1,
+    color: 'blue',
+  },
+  {
+    appName: 'bravos',
+    iconSvg: bravos.svgPathData,
+    rotationVariant: 2,
+    color: 'blue',
+  },
+  {
+    appName: 'embark',
+    iconSvg: embark.svgPathData,
+    rotationVariant: 2,
+    color: 'green',
+  },
+  {
+    appName: 'premo',
+    iconSvg: premo.svgPathData,
+    rotationVariant: 3,
+    color: 'purple',
+  },
+  {
+    appName: 'dasha',
+    iconSvg: dasha.svgPathData,
+    rotationVariant: 0,
+    color: 'red',
+  },
+  {
+    appName: 'acquire',
+    iconSvg: acquire.svgPathData,
+    rotationVariant: 1,
+    color: 'yellow',
+  },
+  {
+    appName: 'orca',
+    iconSvg: orca.svgPathData,
+    rotationVariant: 2,
+    color: 'magenta',
+  },
+  {
+    appName: 'pwex',
+    iconSvg: pwex.svgPathData,
+    rotationVariant: 3,
+    color: 'blue',
+  },
+  {
+    appName: 'ltg',
+    iconSvg: ltg.svgPathData,
+    rotationVariant: 0,
+    color: 'green',
+  },
+  {
+    appName: 'recap',
+    iconSvg: recap.svgPathData,
+    rotationVariant: 2,
+    color: 'red',
+  },
+  {
+    appName: 'inpress',
+    iconSvg: inpress.svgPathData,
+    rotationVariant: 1,
+    color: 'green',
+  },
+  {
+    appName: 'sam',
+    iconSvg: sam.svgPathData,
+    rotationVariant: 3,
+    color: 'magenta',
+  },
+  {
+    appName: 'equinor',
+    iconSvg: equinor.svgPathData,
+    rotationVariant: 1,
+    color: 'purple',
+  },
+];
 
 const FALLBACK_APP_ICON: ApplicationIconData = {
   appName: 'fallback',
@@ -144,7 +143,7 @@ export const ApplicationIconNew: FC<ApplicationIconProps> = ({
   animationState = 'none',
   iconOnly = false,
 }) => {
-  let appData = apps[name.toLowerCase()];
+  let appData = apps.find((icon) => icon.appName === name.toLowerCase());
 
   if (!appData) {
     // Set appData to the fallback icon data

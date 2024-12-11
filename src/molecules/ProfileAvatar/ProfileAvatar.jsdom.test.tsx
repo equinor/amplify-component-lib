@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import {
+  nameToInitials,
   ProfileAvatar,
   ProfileAvatarProps,
 } from 'src/molecules/ProfileAvatar/ProfileAvatar';
@@ -53,4 +54,10 @@ test('Renders image when given and in correct sizing', () => {
     expect(avatar).toHaveStyle(`width: ${expectedSize}px`);
     expect(avatar).toHaveStyle(`height: ${expectedSize}px`);
   }
+});
+
+test('nameToInitials works correct with names containing commas', () => {
+  const nameWithComma = 'Name, Nameson';
+
+  expect(nameToInitials(nameWithComma)).toBe('NN');
 });
