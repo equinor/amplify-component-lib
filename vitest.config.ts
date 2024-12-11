@@ -7,7 +7,9 @@ export default defineConfig({
     globals: true,
     passWithNoTests: true,
     includeTaskLocation: true,
-    testTimeout: 60000,
+    testTimeout: 15000,
+    fileParallelism: false,
+    pool: 'threads',
     env: {
       VITE_IS_MOCK: 'true',
       VITE_NAME: 'Amplify components',
@@ -49,10 +51,6 @@ export default defineConfig({
         'src/providers/AuthProvider/**',
         'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreenMultiple.ts',
-        'src/molecules/ApplicationIcon/ApplicationIconNew/NoiseShape',
-        'src/molecules/ApplicationIcon/ApplicationIconNew/WaveShape',
-        'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew',
-        'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewBase',
       ],
       reporter: [
         'text-summary',

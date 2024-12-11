@@ -11,32 +11,35 @@ test('renders with scrim when prop is given', () => {
   expect(container.firstElementChild?.className).toContain('Scrim');
 });
 
-describe('Renders expected variants, with and without scrim', () => {
-  const EXPECTED_CLASSES: Record<string, string> = {
-    equinor: 'StarProgress',
-    circle: 'CircularProgress',
-    dots: 'Dot',
-  };
+const EXPECTED_CLASSES: Record<string, string> = {
+  equinor: 'StarProgress',
+  circle: 'CircularProgress',
+  dots: 'Dot',
+};
 
+test('Variants work as expected', () => {
+  const { rerender } = render(<FullPageSpinner withScrim />);
   for (const variant of ['equinor', 'circle', 'dots']) {
-    test(`${variant}`, () => {
-      const { rerender } = render(
-        <FullPageSpinner
-          variant={variant as FullPageSpinnerProps['variant']}
-          withScrim
-        />
-      );
-      expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-        EXPECTED_CLASSES[variant]
-      );
+    rerender(
+      <FullPageSpinner
+        variant={variant as FullPageSpinnerProps['variant']}
+        withScrim
+      />
+    );
+    expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
+      EXPECTED_CLASSES[variant]
+    );
 
-      rerender(
-        <FullPageSpinner variant={variant as FullPageSpinnerProps['variant']} />
-      );
-      expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-        EXPECTED_CLASSES[variant]
-      );
-    });
+    expect(
+      screen.getByTestId(`full-page-spinner-${variant}`)
+    ).toBeInTheDocument();
+
+    rerender(
+      <FullPageSpinner variant={variant as FullPageSpinnerProps['variant']} />
+    );
+    expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
+      EXPECTED_CLASSES[variant]
+    );
   }
 });
 

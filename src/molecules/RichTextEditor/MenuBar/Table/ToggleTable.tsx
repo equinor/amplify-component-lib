@@ -9,7 +9,7 @@ import {
   amplify_table_row_heading,
 } from 'src/atoms/icons/wysiwyg';
 
-/* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
+/* v8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const ToggleTable: FC<{ editor: Editor }> = ({ editor }) => {
   const onHeaderRow = () => editor.chain().focus().toggleHeaderRow().run();
   const onHeaderColumn = () =>
@@ -31,4 +31,4 @@ export const ToggleTable: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuSection>
   );
 };
-/* c8 ignore end */
+/* v8 ignore end */

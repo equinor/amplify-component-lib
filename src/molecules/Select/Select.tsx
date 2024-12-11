@@ -111,7 +111,7 @@ export const Select = <T extends SelectOptionRequired>(
   }, [showHelperIcon, variant]);
 
   // Not able to test this properly because the menu onClose works inside a dialog in the test env :(
-  /* c8 ignore start */
+  /* v8 ignore start */
   useOutsideClick(menuRef.current, (event) => {
     if (
       inDialog &&
@@ -125,7 +125,7 @@ export const Select = <T extends SelectOptionRequired>(
       handleOnClose();
     }
   });
-  /* c8 ignore end */
+  /* v8 ignore end */
 
   const valueElements = useMemo(() => {
     if ('value' in props && props.value) {

@@ -26,27 +26,29 @@ function Wrappers({ children }: { children: ReactNode }) {
   );
 }
 
-beforeEach(async () => {
-  window.localStorage.clear();
+describe('Suggest a feature', () => {
+  beforeEach(async () => {
+    window.localStorage.clear();
 
-  render(<Resources />, { wrapper: Wrappers });
-  const user = userEvent.setup();
+    render(<Resources />, { wrapper: Wrappers });
+    const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
-  await user.click(screen.getByText('Suggest idea'));
-});
+    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByText('Suggest idea'));
+  });
 
-test('Suggest a feature works as expected', async () => {
-  const user = userEvent.setup();
-  const title = faker.animal.dog();
-  const description = faker.lorem.sentence();
-  await user.type(screen.getByLabelText(/title/i), title);
-  await user.type(screen.getByLabelText(/description/i), description);
+  test('Suggest a feature works as expected', async () => {
+    const user = userEvent.setup();
+    const title = faker.animal.dog();
+    const description = faker.lorem.sentence();
+    await user.type(screen.getByLabelText(/title/i), title);
+    await user.type(screen.getByLabelText(/description/i), description);
 
-  await user.click(screen.getByTestId('submit-button'));
+    await user.click(screen.getByTestId('submit-button'));
 
-  expect(await screen.findByText(/success/i)).toBeInTheDocument();
-  expect(
-    await screen.findByText(/Thank you/i, undefined, { timeout: 5000 })
-  ).toBeInTheDocument();
+    expect(await screen.findByText(/success/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Thank you/i, undefined, { timeout: 5000 })
+    ).toBeInTheDocument();
+  });
 });

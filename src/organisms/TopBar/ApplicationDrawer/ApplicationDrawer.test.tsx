@@ -145,36 +145,25 @@ test('Click on more access button', async () => {
   expect(transitToApplication).toBeInTheDocument();
 });
 
-describe('No other apps to show', () => {
-  beforeAll(() => {
-    worker.resetHandlers(
-      http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
-        await delay('real');
-        return HttpResponse.text(faker.string.nanoid());
-      }),
-      http.get('*/api/v1/AmplifyApplication/userapplications', async () => {
-        await delay('real');
-        return HttpResponse.json([]);
-      })
-    );
-  });
+test('No other apps to show', async () => {
+  worker.resetHandlers(
+    http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
+      await delay('real');
+      return HttpResponse.text(faker.string.nanoid());
+    }),
+    http.get('*/api/v1/AmplifyApplication/userapplications', async () => {
+      await delay('real');
+      return HttpResponse.json([]);
+    })
+  );
+  render(<ApplicationDrawer />, { wrapper: Wrappers });
+  const user = userEvent.setup();
+  const menuButton = await screen.findByRole('button');
 
-  afterAll(() => {
-    worker.resetHandlers();
-  });
+  await user.click(menuButton);
 
-  test('No other apps to show', async () => {
-    render(<ApplicationDrawer />, { wrapper: Wrappers });
-    const user = userEvent.setup();
-    const menuButton = await screen.findByRole('button');
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-    await user.click(menuButton);
-
-    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
-
-    const text = screen.getByText(
-      `You don't have access to other applications`
-    );
-    expect(text).toBeInTheDocument();
-  });
+  const text = screen.getByText(`You don't have access to other applications`);
+  expect(text).toBeInTheDocument();
 });

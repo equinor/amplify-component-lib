@@ -1,4 +1,4 @@
-/* c8 ignore file */
+/* v8 ignore file */
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
 import Heading from '@tiptap/extension-heading';
 import type { NodeViewProps } from '@tiptap/react';

@@ -1,3 +1,4 @@
+/* v8 ignore start */
 import { FC } from 'react';
 
 import {
@@ -84,3 +85,4 @@ export const NoiseShape: FC<WaveShapeWithNoiseProps> = ({
     </svg>
   );
 };
+/* v8 ignore end */
