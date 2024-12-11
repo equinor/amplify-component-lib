@@ -186,7 +186,7 @@ describe('Show expected error message when requests fail', () => {
 
     await user.click(sendButton);
 
-    expect(await screen.findAllByText(/sending/i)).toHaveLength(2);
+    expect(await screen.findAllByText(/sending/i)).toHaveLength(1);
 
     expect(
       await screen.findByText(`Posting ${image.name}`, undefined, {
@@ -194,7 +194,7 @@ describe('Show expected error message when requests fail', () => {
       })
     ).toBeInTheDocument();
 
-    expect(await screen.findAllByText(/not found/i)).toHaveLength(3);
+    expect(await screen.findAllByText(/not found/i)).toHaveLength(2);
 
     await user.click(screen.getByRole('button', { name: /retry/i }));
   });

@@ -1,3 +1,5 @@
+import { waitForElementToBeRemoved } from '@testing-library/dom';
+
 import CopyText from 'src/molecules/InfoElement/CopyText';
 import {
   render,
@@ -15,9 +17,11 @@ test('Renders label on hover', async () => {
   await user.hover(wrapper);
 
   await waitFor(() => screen.getByText(/copy/i));
-  expect(screen.getByText(/copy/i)).toBeInTheDocument();
+  const copyText = screen.getByText(/copy/i);
+  expect(copyText).toBeInTheDocument();
 
   await user.unhover(wrapper);
+  await waitForElementToBeRemoved(() => copyText);
   expect(screen.queryByText(/copy/i)).not.toBeInTheDocument();
 });
 
