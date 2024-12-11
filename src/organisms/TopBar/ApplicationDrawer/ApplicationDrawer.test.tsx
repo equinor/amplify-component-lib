@@ -146,7 +146,7 @@ test('Click on more access button', async () => {
 });
 
 describe('No other apps to show', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     worker.resetHandlers(
       http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
         await delay('real');
@@ -157,6 +157,10 @@ describe('No other apps to show', () => {
         return HttpResponse.json([]);
       })
     );
+  });
+
+  afterAll(() => {
+    worker.resetHandlers();
   });
 
   test('No other apps to show', async () => {

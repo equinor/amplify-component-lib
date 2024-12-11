@@ -49,7 +49,10 @@ test('withContentPadding works as expected', () => {
       open
       title={title}
       onClose={handleOnClose}
-      withContentPadding={false}
+      withContentPadding={{
+        vertical: false,
+        horizontal: false,
+      }}
     >
       {description}
     </Dialog>
@@ -57,7 +60,7 @@ test('withContentPadding works as expected', () => {
 
   const descriptionContainer = screen.getByText(description).parentElement!;
 
-  expect(descriptionContainer).toHaveStyle('padding: 0');
+  expect(descriptionContainer).toHaveStyle('padding: 0px 0px');
 });
 
 test('Content max height prop works as expected', () => {

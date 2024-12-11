@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { colors } from 'src/atoms';
-import { render, screen } from 'src/tests/jsdomtest-utils';
+import { renderWithProviders, screen } from 'src/tests/jsdomtest-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {
@@ -16,7 +16,7 @@ function fakeProps(withImage = false): RichTextEditorProps {
 test('Creating table with highlight works as expected', async () => {
   const props = fakeProps();
 
-  render(
+  renderWithProviders(
     <RichTextEditor
       {...props}
       features={[RichTextEditorFeatures.TABLE]}

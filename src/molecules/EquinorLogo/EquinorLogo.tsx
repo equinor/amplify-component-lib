@@ -17,7 +17,7 @@ const colorSwitch = (color?: 'red' | 'white' | 'black') => {
   }
 };
 
-export interface EquinorLogoProps extends SizeIconProps {
+export interface EquinorLogoProps extends Partial<SizeIconProps> {
   large?: boolean;
   color?: 'red' | 'white' | 'black';
 }

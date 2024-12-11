@@ -56,10 +56,21 @@ test(
   { timeout: 6000 }
 );
 
-test(
-  'Not able to delete user impersonation with activeUsers',
-  async () => {
-    worker.use(
+describe('Not able to delete user impersonation with activeUsers', () => {
+  beforeAll(() => {
+    worker.resetHandlers(
+      http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
+        await delay('real');
+        return HttpResponse.text(faker.string.nanoid());
+      }),
+      http.get('*/api/v1/ImpersonateUser/CanImpersonate', async () => {
+        await delay('real');
+        return HttpResponse.text('true');
+      }),
+      http.get('*/api/v1/ImpersonateUser/ActiveUser', async () => {
+        await delay('real');
+        return HttpResponse.json(undefined, { status: 204 });
+      }),
       http.get(
         '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
         async () => {
@@ -70,31 +81,41 @@ test(
         }
       )
     );
-    renderWithProviders(<Account />);
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
+  });
 
-    await user.click(button);
+  afterAll(() => {
+    worker.resetHandlers();
+  });
 
-    const impersonateButton = await screen.findByRole('button', {
-      name: /impersonate/i,
-    });
+  test(
+    'Not able to delete user impersonation with activeUsers',
+    async () => {
+      renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
 
-    await user.click(impersonateButton);
+      await user.click(button);
 
-    const menuItems = await screen.findAllByTestId('impersonation-user');
-    expect(menuItems.length).toBeGreaterThan(0);
+      const impersonateButton = await screen.findByRole('button', {
+        name: /impersonate/i,
+      });
 
-    // Click edit on the first one
-    await user.click(within(menuItems[0]).getByRole('button'));
+      await user.click(impersonateButton);
 
-    await waitFor(
-      () =>
-        expect(
-          screen.getByRole('button', { name: /delete user/i })
-        ).toBeDisabled(),
-      { timeout: 3000 }
-    );
-  },
-  { concurrent: false }
-);
+      const menuItems = await screen.findAllByTestId('impersonation-user');
+      expect(menuItems.length).toBeGreaterThan(0);
+
+      // Click edit on the first one
+      await user.click(within(menuItems[0]).getByRole('button'));
+
+      await waitFor(
+        () =>
+          expect(
+            screen.getByRole('button', { name: /delete user/i })
+          ).toBeDisabled(),
+        { timeout: 3000 }
+      );
+    },
+    { concurrent: false }
+  );
+});

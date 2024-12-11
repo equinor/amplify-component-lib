@@ -5,7 +5,11 @@ import { mergeDefaults } from './custom-extensions/mergeDefaults';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { RichTextEditor, RichTextEditorProps } from 'src/molecules';
 import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
-import { render, renderWithProviders, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {

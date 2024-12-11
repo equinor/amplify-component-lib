@@ -6,11 +6,7 @@ import { faker } from '@faker-js/faker';
 
 import { MenuItem, MenuItemProps } from 'src/organisms/SideBar/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
-import {
-  render,
-  screen,
-  userEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
 

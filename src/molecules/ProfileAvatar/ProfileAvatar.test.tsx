@@ -17,6 +17,15 @@ function mockProfileAvatarProps(image: boolean): ProfileAvatarProps {
   };
 }
 
+test('Renders fallback when no name is given', () => {
+  render(<ProfileAvatar name={undefined} />);
+
+  expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
+    'd',
+    person.svgPathData
+  );
+});
+
 test('Renders image when given', () => {
   const mockedProps = mockProfileAvatarProps(true);
   render(<ProfileAvatar {...mockedProps} />);

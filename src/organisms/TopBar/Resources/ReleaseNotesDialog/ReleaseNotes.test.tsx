@@ -115,7 +115,7 @@ test(
       { timeout: 600 }
     );
 
-    const searchInput = screen.getByRole('textbox', { name: '' });
+    const searchInput = screen.getAllByRole('textbox')[0];
 
     const searchTerm = faker.animal.crocodilia();
     await user.type(searchInput, searchTerm);

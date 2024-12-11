@@ -1,7 +1,12 @@
 import { faker } from '@faker-js/faker';
 
 import { RichTextDisplay } from 'src/molecules';
-import { act, render, renderWithProviders, screen } from 'src/tests/browsertest-utils';
+import {
+  act,
+  render,
+  renderWithProviders,
+  screen,
+} from 'src/tests/browsertest-utils';
 
 test('RichTextDisplay shows value as expected', async () => {
   const randomText = faker.animal.dog();

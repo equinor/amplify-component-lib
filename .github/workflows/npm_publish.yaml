@@ -19,6 +19,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Install playwright with dependencies
+        run: bunx playwright install --with-deps
+
       - name: Run Tests
         run: bun run test:ci
 

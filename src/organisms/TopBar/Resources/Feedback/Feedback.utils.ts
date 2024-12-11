@@ -15,7 +15,7 @@ const { capitalize } = string;
 const { formatDate } = date;
 const { getAppName, getEnvironmentName } = environment;
 
-const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
+export const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
   if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
     return ':large_yellow_circle:';
   }
