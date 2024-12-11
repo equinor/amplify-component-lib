@@ -3,13 +3,14 @@ import { KeyboardEvent, MouseEvent, useMemo, useRef, useState } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import {
   checkbox,
-  checkbox_indeterminate,
   checkbox_outline,
   chevron_down,
   chevron_right,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
+import { getChildOffset } from './Select.utils';
+import { getParentIcon } from './SelectMenuItem.utils';
 import {
   MenuItemSpacer,
   MenuItemWrapper,
@@ -21,10 +22,6 @@ import {
   SelectOptionRequired,
   SingleSelectMenuItemProps,
 } from 'src/molecules/Select/Select.types';
-import {
-  flattenOptions,
-  getChildOffset,
-} from 'src/molecules/Select/Select.utils';
 
 const { colors } = tokens;
 
@@ -51,28 +48,10 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   const isSelected = selectedValues.includes(item.value);
 
   const parentIcon = useMemo(() => {
-    if (!multiselect || !item.children || item.children.length === 0)
-      return checkbox_outline;
+    if (!multiselect) return checkbox_outline;
 
-    if (isSelected) {
-      return checkbox;
-    } else if (
-      [item, ...item.children].some((option) =>
-        props.values.find((i) => i.value === option.value)
-      )
-    ) {
-      return checkbox_indeterminate;
-    }
-
-    const selectedValues = props.values.map(({ value }) => value);
-    const allOptions = flattenOptions([item])?.map(({ value }) => value);
-
-    if (allOptions.some((option) => selectedValues.includes(option))) {
-      return checkbox_indeterminate;
-    }
-
-    return checkbox_outline;
-  }, [item, multiselect, props, isSelected]);
+    return getParentIcon(item, props.values);
+  }, [item, multiselect, props]);
 
   const spacers = useMemo(
     () =>

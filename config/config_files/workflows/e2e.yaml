@@ -20,23 +20,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-          cache-dependency-path: client/package-lock.json
+
+      - name: Use bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: client
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Install playwright
         working-directory: client
-        run: npx playwright install --with-deps
+        run: bunx playwright install --with-deps
 
       - name: Run Playwright tests
         working-directory: client
-        run: npx playwright test -c playwright.config.ts --project=${{ matrix.project }}
+        run: bunx playwright test -c playwright.config.ts --project=${{ matrix.project }}
 
       - uses: actions/upload-artifact@v4
         if: always()

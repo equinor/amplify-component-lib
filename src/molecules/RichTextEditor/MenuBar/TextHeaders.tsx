@@ -5,13 +5,13 @@ import { EditorMenu } from './MenuBar';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 
 export const TextHeaders: FC<EditorPanel> = ({ editor, features }) => {
-  /* c8 ignore start */ // Testing these lines would just be testing the tiptap library or testing that JavaScript works. Theres not enough custom logic here to warrant the maintance cost
+  /* v8 ignore start */ // Testing these lines would just be testing the tiptap library or testing that JavaScript works. Theres not enough custom logic here to warrant the maintance cost
   const toggleH2 = () =>
     editor.chain().focus().toggleHeading({ level: 2 }).run();
   const toggleH3 = () =>
     editor.chain().focus().toggleHeading({ level: 3 }).run();
   if (features && !features.includes(RichTextEditorFeatures.HEADERS)) return;
-  /* c8 ignore end */
+  /* v8 ignore end */
   return (
     <EditorMenu.Section>
       <EditorMenu.Button

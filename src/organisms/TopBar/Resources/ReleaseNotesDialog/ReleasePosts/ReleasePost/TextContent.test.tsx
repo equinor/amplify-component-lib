@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { TextContent } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleasePosts/ReleasePost/TextContent';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
-import { render, screen, waitFor } from 'src/tests/test-utils';
+import { render, screen, waitFor } from 'src/tests/browsertest-utils';
 
 const Wrappers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();

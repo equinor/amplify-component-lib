@@ -1,4 +1,4 @@
-/* c8 ignore start */ // This entire file is just an example file for future nodeview projects. Testing it is adding maintance cost to something that is not used.
+/* v8 ignore start */ // This entire file is just an example file for future nodeview projects. Testing it is adding maintance cost to something that is not used.
 import { useState } from 'react';
 
 import { mergeAttributes, Node } from '@tiptap/core';
@@ -56,7 +56,7 @@ const Component = (props: NodeViewProps) => {
   );
 };
 
-/* c8 ignore start */
+/* v8 ignore start */
 export default Node.create({
   name: 'counter',
   group: 'block',
@@ -96,4 +96,4 @@ export default Node.create({
     return ReactNodeViewRenderer(Component);
   },
 });
-/* c8 ignore end */
+/* v8 ignore end */

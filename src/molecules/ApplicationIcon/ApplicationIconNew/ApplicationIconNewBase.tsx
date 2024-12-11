@@ -8,7 +8,7 @@ import {
   WaveInnerContainer,
   Waves,
 } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewBase.styles';
-import IconSvg from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/AppIconSvg';
+import { AppIconSvg } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNewData/AppIconSvg';
 import { NoiseShape } from 'src/molecules/ApplicationIcon/ApplicationIconNew/NoiseShape';
 import { WaveShape } from 'src/molecules/ApplicationIcon/ApplicationIconNew/WaveShape';
 
@@ -17,11 +17,12 @@ export const ApplicationIconNewBase: FC<AppBaseProps> = ({
   size = 512,
   color = 'blue',
   rotationVariant = 1,
-  hasLargeWaves = false,
   animationState = 'none',
   appIconData,
   iconOnly,
 }) => {
+  const hasLargeWaves = size <= 128;
+
   const waves = Array.from({ length: 8 }, (_, index) => {
     const top = hasLargeWaves
       ? index * (waveIntervalDist * 1.15)
@@ -30,9 +31,6 @@ export const ApplicationIconNewBase: FC<AppBaseProps> = ({
     const delay =
       animationState === 'animated' ? index * 750 : (index + 1) * 50;
 
-    if (size <= 128) {
-      hasLargeWaves = true;
-    }
     return {
       waveIntervalDist: top,
       size,
@@ -53,7 +51,7 @@ export const ApplicationIconNewBase: FC<AppBaseProps> = ({
       data-testid="app-icon-container"
     >
       <IconContainer data-testid="icon-container">
-        <IconSvg paths={appIconData} />
+        <AppIconSvg paths={appIconData} />
       </IconContainer>
       {!iconOnly && (
         <Waves $animationState={animationState} data-testid="waves-container">

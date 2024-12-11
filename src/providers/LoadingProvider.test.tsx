@@ -3,14 +3,11 @@ import { ReactNode } from 'react';
 import { SAM_QUERIES } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { AuthProvider } from './AuthProvider/AuthProvider';
 import { LoadingProvider } from './LoadingProvider';
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 function Wrapper({
   queryKey,
@@ -60,7 +57,9 @@ test('LoadingProvider works as expected', async () => {
 
   expect(screen.getByTestId('app-icon-svg')).toBeInTheDocument();
 
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
+    timeout: 2000,
+  });
 
   expect(await screen.findByText(fakeText)).toBeInTheDocument();
 });

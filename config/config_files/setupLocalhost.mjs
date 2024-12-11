@@ -127,8 +127,8 @@ async function startLocalHost() {
   await new Promise((resolve) => setTimeout(() => resolve(), 1000));
 
   await runTask({
-    command: execShell('npm run generate'),
-    name: chalk.hex('#CCE0E8')('Running npm run generate'),
+    command: execShell('bun run generate'),
+    name: chalk.hex('#CCE0E8')('Running bun run generate'),
   });
 
   console.log(

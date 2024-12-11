@@ -19,7 +19,7 @@ import {
   TopContainer,
 } from './ReleasePost.styles';
 import { TextContent } from './TextContent';
-import { date } from 'src/atoms/utils';
+import { formatDate } from 'src/atoms';
 
 import { motion } from 'framer-motion';
 
@@ -32,7 +32,7 @@ export const ReleasePost: FC<ReleaseNote> = ({
 }) => {
   const [showFullContent, setShowFullContent] = useState<boolean>(false);
   const [needsShowMoreButton, setNeedsShowMoreButton] = useState(false);
-  /* c8 ignore start */
+  /* v8 ignore start */
   const resizeObserver = useRef<ResizeObserver>(
     new ResizeObserver((entries) => {
       // Since we only ever observer 1 element we can safely access [0]
@@ -46,7 +46,7 @@ export const ReleasePost: FC<ReleaseNote> = ({
       resizeObserver.current.observe(element);
     }
   };
-  /* c8 ignore end */
+  /* v8 ignore end */
 
   const toggleContent = () => {
     setShowFullContent((prev) => !prev);
@@ -66,7 +66,7 @@ export const ReleasePost: FC<ReleaseNote> = ({
         <TopContainer>
           <HeadingContainer>
             <Typography group="paragraph" variant="overline">
-              {date.formatDate(createdDate, {
+              {formatDate(createdDate, {
                 format: 'DD. month YYYY',
               })}
             </Typography>

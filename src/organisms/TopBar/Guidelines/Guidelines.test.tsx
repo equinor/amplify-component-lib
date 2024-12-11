@@ -8,7 +8,7 @@ import {
 import { faker } from '@faker-js/faker';
 
 import { GuidelineProps, Guidelines, GuidelineSections } from './Guidelines';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeSection(withColorBoxes = false): GuidelineSections {
   const items: GuidelineSections['items'] = [];

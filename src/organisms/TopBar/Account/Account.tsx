@@ -75,7 +75,7 @@ export const Account: FC<AccountProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [openImpersonate, setOpenImpersonate] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const { data: canImpersonate } = useCanImpersonate();
+  const { data: canImpersonate = true } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
   const { mutate: endImpersonation } = useStopImpersonation();
 

@@ -10,7 +10,7 @@ import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { environment } from 'src/atoms/utils/auth_environment';
 
-/* c8 ignore start */
+/* v8 ignore start */
 export function useSignalRMessages<
   T extends {
     SequenceNumber?: number | null;
@@ -226,4 +226,4 @@ export function useSignalRMessages<
     closeConnection,
   };
 }
-/* c8 ignore end */
+/* v8 ignore end */

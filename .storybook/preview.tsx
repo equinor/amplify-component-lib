@@ -13,7 +13,13 @@ import { handlers } from 'src/tests/mockHandlers';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
 const { colors } = tokens;
-initialize({ onUnhandledRequest: 'bypass' });
+initialize({
+  quiet: true,
+  onUnhandledRequest: (req, print) => {
+    if (req.url.includes('api') && req.url.includes('https')) print.error();
+    return;
+  },
+});
 
 const globalTypes = {
   spacingsToggle: {

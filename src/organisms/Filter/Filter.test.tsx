@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { Filter } from 'src/organisms/Filter/Filter';
 import { CommonFilterProps } from 'src/organisms/Filter/Filter.types';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): Omit<CommonFilterProps<string>, 'children'> {
   return {

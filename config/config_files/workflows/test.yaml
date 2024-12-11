@@ -5,25 +5,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [21.x]
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-          cache-dependency-path: client/package-lock.json
+      - name: Use bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: client
-        run: npm ci
+        run: bun install --frozen-lockfile
 
-      - name: Unit tests
+      - name: Vitest tests
         working-directory: client
-        run: npm run test:ci --passWithNoTests
+        run: bun run test:ci

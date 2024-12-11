@@ -27,7 +27,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     // Was not able to test this properly because selected can't be correctly updated in the unit test
     // Created a test that check that it sets activeIndex correctly
     // but could not get it to work with selected === undefined || child was true
-    /* c8 ignore start */
+    /* v8 ignore start */
     for (const [index, item] of items.entries()) {
       const childValues = getValues([], item);
       if (
@@ -38,7 +38,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     }
 
     return -1;
-    /* c8 ignore end */
+    /* v8 ignore end */
   }, [items, selected]);
 
   if (variant === 'border') {
@@ -59,9 +59,9 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
           >
             <TableOfContentsItem
               variant={variant}
-              {...item}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
               isLink={isLink}
+              {...item}
             />
           </BorderItemsContainer>
         ))}

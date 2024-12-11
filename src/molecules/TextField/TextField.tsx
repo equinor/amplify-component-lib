@@ -57,13 +57,15 @@ const Wrapper = styled.div<WrapperProps>`
       return css`
         input:hover,
         textarea:hover {
-          box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba};
+          box-shadow: inset 0 -2px 0 0
+            ${colors.text.static_icons__tertiary.rgba};
         }
 
         div:focus-within {
           input,
           textarea {
-            box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
+            box-shadow: inset 0 -2px 0 0
+              ${colors.interactive.primary__resting.rgba};
           }
         }
       `;
@@ -80,7 +82,8 @@ const Wrapper = styled.div<WrapperProps>`
 
       input:hover,
       textarea:hover {
-        box-shadow: inset 0 -${$variant === 'dirty' ? 2 : 1}px 0 0 ${VARIANT_COLORS[$variant]};
+        box-shadow: inset 0 -${$variant === 'dirty' ? 2 : 1}px 0 0
+          ${VARIANT_COLORS[$variant]};
       }
 
       div:focus-within {

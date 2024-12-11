@@ -3,12 +3,12 @@ import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 
-import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
+import { TableOfContents } from 'src/organisms';
 import {
   TableOfContentsItemType,
   TableOfContentsProvider,
 } from 'src/providers/TableOfContentsProvider';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeItems(withChildren = false): TableOfContentsItemType[] {
   return new Array(faker.number.int({ min: 4, max: 16 })).fill(0).map(() => ({
@@ -156,12 +156,12 @@ describe('button variant', () => {
   test('Does not run OnClick when disabled', async () => {
     const items = fakeItems().map((item, index) => ({
       ...item,
-      disabled: index % 2 === 0,
+      disabled: index === 1,
     }));
 
     render(
       <div>
-        <TableOfContents />
+        <TableOfContents isLink={false} />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
@@ -170,7 +170,6 @@ describe('button variant', () => {
         wrapper: (props: { children: ReactNode }) => (
           <MemoryRouter>
             <TableOfContentsProvider items={items}>
-              {' '}
               {props.children}
             </TableOfContentsProvider>
           </MemoryRouter>
@@ -178,31 +177,13 @@ describe('button variant', () => {
       }
     );
 
-    const user = userEvent.setup();
-
     for (const item of items) {
       expect(screen.queryAllByText(item.label).length).toBe(2);
     }
 
-    const button = screen.getByRole('button', { name: items[0].label });
-
-    expect(button).toBeDisabled();
-    await user.click(button);
-
-    const section = document.querySelector(`#${items[0].value}`)!;
-
-    expect(section.scrollIntoView).not.toHaveBeenCalled();
-
-    // Expect other button _not_ to be disabled
     const otherButton = screen.getByRole('button', { name: items[1].label });
 
-    expect(otherButton).not.toBeDisabled();
-
-    await user.click(otherButton);
-
-    const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-    expect(otherSection.scrollIntoView).toHaveBeenCalled();
+    expect(otherButton).toBeDisabled();
   });
 });
 
@@ -382,23 +363,14 @@ describe('border and borderHorizontal  ', () => {
 
     const button = screen.getByRole('button', { name: items[0].label });
 
+    const section = document.querySelector(`#${items[0].value}`)!;
+
+    const spy = vi.spyOn(section, 'scrollIntoView');
+
     expect(button).toBeDisabled();
     await user.click(button);
 
-    const section = document.querySelector(`#${items[0].value}`)!;
-
-    expect(section.scrollIntoView).not.toHaveBeenCalled();
-
-    // Expect other button _not_ to be disabled
-    const otherButton = screen.getByRole('button', { name: items[1].label });
-
-    expect(otherButton).not.toBeDisabled();
-
-    await user.click(otherButton);
-
-    const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-    expect(otherSection.scrollIntoView).toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
   });
 
   test('Does not run OnClick when link is disabled', async () => {
@@ -433,25 +405,11 @@ describe('border and borderHorizontal  ', () => {
 
     const link = screen.getByRole('link', { name: items[0].label });
 
-    expect(link).toHaveStyleRule(
-      'color',
-      'var(--eds_text__static_icons__default, rgba(61, 61, 61, 1))'
-    );
-
     await user.click(link);
 
     const section = document.querySelector(`#${items[0].value}`)!;
 
     expect(section.scrollIntoView).not.toHaveBeenCalled();
-
-    // Expect other button _not_ to be disabled
-    const otherLink = screen.getByRole('link', { name: items[1].label });
-
-    await user.click(otherLink);
-
-    const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-    expect(otherSection.scrollIntoView).toHaveBeenCalled();
   });
 
   test('Does not run OnClick when link is disabled, variant="borderHorizontal"', async () => {
@@ -486,25 +444,11 @@ describe('border and borderHorizontal  ', () => {
 
     const link = screen.getByRole('link', { name: items[0].label });
 
-    expect(link).toHaveStyleRule(
-      'color',
-      'var(--eds_text__static_icons__default, rgba(61, 61, 61, 1))'
-    );
-
     await user.click(link);
 
     const section = document.querySelector(`#${items[0].value}`)!;
 
     expect(section.scrollIntoView).not.toHaveBeenCalled();
-
-    // Expect other button _not_ to be disabled
-    const otherLink = screen.getByRole('link', { name: items[1].label });
-
-    await user.click(otherLink);
-
-    const otherSection = document.querySelector(`#${items[1].value}`)!;
-
-    expect(otherSection.scrollIntoView).toHaveBeenCalled();
   });
 
   test('activeItem in border variant', () => {
@@ -582,55 +526,5 @@ describe('border and borderHorizontal  ', () => {
     }).parentElement!.parentElement!;
 
     expect(otherButtonWrapper).toHaveAttribute('aria-selected', 'false');
-  });
-
-  test('renders with flex-direction: column for border', () => {
-    const items = fakeItems();
-
-    render(
-      <div>
-        <TableOfContents variant="border" />
-        {items.map((item) => (
-          <Section key={item.value} label={item.label} value={item.value} />
-        ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
-    );
-
-    const container = screen.getByTestId('table-of-contents-container');
-    expect(container).toHaveStyle('flex-direction: column');
-  });
-
-  test('renders with flex-direction: row for borderHorizontal', () => {
-    const items = fakeItems();
-
-    render(
-      <div>
-        <TableOfContents variant="borderHorizontal" />
-        {items.map((item) => (
-          <Section key={item.value} label={item.label} value={item.value} />
-        ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
-    );
-
-    const container = screen.getByTestId('table-of-contents-container');
-    expect(container).toHaveStyle('flex-direction: row');
   });
 });

@@ -9,8 +9,8 @@ async function runTasks() {
     while (true) {
         try {
             await runTask({
-                command: "npm run test:coverage",
-                name: `${chalk.white("npm")} ${chalk.bold.magenta("test:coverage")}`,
+                command: "bun run test:coverage",
+                name: `${chalk.white("bun")} ${chalk.bold.magenta("test:coverage")}`,
                 ignoreStdErr: true
             })
         } catch {

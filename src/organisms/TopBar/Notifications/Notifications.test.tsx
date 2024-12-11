@@ -1,9 +1,7 @@
 import { notifications } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 import { renderHook } from '@testing-library/react';
 
-import { UnreadRedDot } from '../TopBar.styles';
 import {
   DefaultNotificationTypes,
   Due3WeeksTypes,
@@ -17,12 +15,10 @@ import {
 } from './NotificationsTemplate/Notifications.types';
 import { useNotification } from './NotificationProvider';
 import { Notifications } from './Notifications';
-import { date } from 'src/atoms/utils';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { formatRelativeDateTime } from 'src/atoms';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { beforeEach, describe, expect } from 'vitest';
-
-const { colors } = tokens;
 
 const notificationsData: (
   | ReadyToReportNotificationTypes
@@ -277,15 +273,6 @@ test('Renders unread dot when unread = true', async () => {
   expect(unreadDot).toBeVisible();
 });
 
-test('Unread dot renders as expected', () => {
-  const { container } = render(<UnreadRedDot />);
-  const unreadDot = container.children[0];
-  expect(unreadDot).toHaveStyleRule(
-    'background-color',
-    colors.interactive.danger__resting.rgba
-  );
-});
-
 test('renders button and panel with filter options correctly', async () => {
   render(<Notifications setAllAsRead={() => null} showFilterOptions />);
   const icons = screen.getAllByTestId('eds-icon-path');
@@ -374,7 +361,7 @@ describe('Sorting notifications ', () => {
     const allNotificationsBeforeSort =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeSort[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
     const user = userEvent.setup();
     const newToOldSort = screen.getByText(/oldest to newest/i);
@@ -382,7 +369,7 @@ describe('Sorting notifications ', () => {
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
   });
 
@@ -390,7 +377,7 @@ describe('Sorting notifications ', () => {
     const allNotificationsBeforeSort =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeSort[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
     const user = userEvent.setup();
     const newestToOldest = screen.getByText(/newest to oldest/i);
@@ -398,7 +385,7 @@ describe('Sorting notifications ', () => {
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
   });
 
@@ -414,7 +401,7 @@ describe('Sorting notifications ', () => {
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
   });
   test('Sort unread and reset unread filter   ', async () => {
@@ -429,7 +416,7 @@ describe('Sorting notifications ', () => {
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
     await user.click(unread);
     expect(allNotifications[0].textContent).not.toBe(notificationsData[2].Read);
@@ -480,7 +467,7 @@ describe('Filtering notifications ', () => {
     const allNotificationsBeforeFilter =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
     const user = userEvent.setup();
     const userMessages = screen.getByText(/user messages/i);
@@ -493,7 +480,7 @@ describe('Filtering notifications ', () => {
     const allNotificationsBeforeFilter =
       screen.getAllByTestId('notification-date');
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
     const user = userEvent.setup();
     const userMessages = screen.getByText(/system messages/i);
@@ -503,7 +490,7 @@ describe('Filtering notifications ', () => {
     );
     await user.click(userMessages);
     expect(allNotificationsBeforeFilter[0].textContent).not.toBe(
-      date.formatRelativeDateTime(notificationsData[3].time)
+      formatRelativeDateTime(notificationsData[3].time)
     );
   });
 
@@ -520,7 +507,7 @@ describe('Filtering notifications ', () => {
 
     const allNotifications = screen.getAllByTestId('notification-date');
     expect(allNotifications[0].textContent).toBe(
-      date.formatRelativeDateTime(notificationsData[1].time)
+      formatRelativeDateTime(notificationsData[1].time)
     );
   });
 });

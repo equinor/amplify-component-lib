@@ -1,30 +1,23 @@
 # Base
-FROM node:21-alpine as base
+FROM imbios/bun-node:22-alpine AS base
 WORKDIR /app
-COPY package*.json ./
-COPY tsconfig*.json ./
+COPY package.json ./
+COPY bun.lockb ./
+COPY tsconfig.json ./
+COPY src ./src
+COPY .storybook ./.storybook
+COPY public ./public
+COPY eslint.config.js ./
+COPY vite.config.ts ./
 
-# Dependencies
-FROM base as dependencies
-WORKDIR /app
-RUN npm ci --ignore-scripts
-COPY src src
-COPY .storybook .storybook
-COPY public public
-COPY eslint.config.js eslint.config.js
-COPY vite.config.ts vite.config.ts
-
-# Build
-FROM dependencies as builder
-WORKDIR /app
-RUN npm run build-storybook
+RUN bun install --frozen-lockfile && bun run build-storybook
 
 # STAGE 2 => SETUP NGINX and Run
 FROM nginxinc/nginx-unprivileged:alpine
 USER 0
 # Clear default nginx html file
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/storybook-static /usr/share/nginx/html
+COPY --from=base /app/storybook-static /usr/share/nginx/html
 COPY proxy/nginx.conf /etc/nginx/conf.d/default.conf.template
 COPY proxy/securityheaders.conf /etc/nginx/securityheaders.conf
 

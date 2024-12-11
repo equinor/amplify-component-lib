@@ -1,3 +1,4 @@
+/* v8 ignore start */
 import { FC } from 'react';
 
 import {
@@ -52,6 +53,7 @@ export const NoiseShape: FC<WaveShapeWithNoiseProps> = ({
         >
           {!isAltWave ? (
             <path
+              data-testid="wave-noise"
               d={
                 hasLargeWaves
                   ? LARGE_WAVES_PATH_DATA[0]
@@ -61,6 +63,7 @@ export const NoiseShape: FC<WaveShapeWithNoiseProps> = ({
             />
           ) : (
             <path
+              data-testid="wave-noise"
               d={
                 hasLargeWaves
                   ? LARGE_WAVES_PATH_DATA[1]
@@ -82,3 +85,4 @@ export const NoiseShape: FC<WaveShapeWithNoiseProps> = ({
     </svg>
   );
 };
+/* v8 ignore end */

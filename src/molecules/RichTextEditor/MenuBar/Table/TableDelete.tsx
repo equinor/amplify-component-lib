@@ -5,7 +5,7 @@ import { Editor } from '@tiptap/react';
 
 import { MenuButton } from '../MenuButton';
 
-/* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
+/* v8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const TableDelete: FC<{ editor: Editor }> = ({ editor }) => {
   const onRemoveTable = () => editor.chain().focus().deleteTable().run();
   return (
@@ -18,4 +18,4 @@ export const TableDelete: FC<{ editor: Editor }> = ({ editor }) => {
     />
   );
 };
-/* c8 ignore end */
+/* v8 ignore end */

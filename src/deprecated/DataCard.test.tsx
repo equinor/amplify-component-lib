@@ -4,7 +4,7 @@ import { edit } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import DataCard from 'src/deprecated/DataCard';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps() {
   return {

@@ -13,7 +13,7 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { describe, expect } from 'vitest';
 

@@ -154,6 +154,7 @@ const ApplicationIconBase = forwardRef<
           iconData.map((icon, index) => (
             <Icon
               key={`icon-${index}`}
+              data-testid={`icon-part-${index}`}
               data={icon}
               size={size as IconProps['size']}
               color={icon.color}

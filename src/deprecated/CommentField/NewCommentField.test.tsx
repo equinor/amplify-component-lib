@@ -3,7 +3,7 @@ import React from 'react';
 import { faker } from '@faker-js/faker';
 
 import NewCommentField from 'src/deprecated/CommentField/NewCommentField';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Triggers publish on button press', async () => {
   const defaultValue = faker.animal.dog();

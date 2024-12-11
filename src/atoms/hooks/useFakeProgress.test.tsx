@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 
 import { useFakeProgress } from 'src/atoms/hooks/useFakeProgress';
-import { renderHook } from 'src/tests/test-utils';
 
 test('Throws error when changing progressMs prop', () => {
   console.error = vi.fn();

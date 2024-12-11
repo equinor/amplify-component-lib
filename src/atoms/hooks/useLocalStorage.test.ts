@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
+import { act, renderHook, waitFor } from '@testing-library/react';
 
 import {
   LAST_UPDATED_KEY_SUFFIX,
   updateLocalStorage,
   useLocalStorage,
 } from 'src/atoms/hooks/useLocalStorage';
-import { act, renderHook, waitFor } from 'src/tests/test-utils';
 
 test('useLocalStorage works as expected', async () => {
   const key = faker.animal.dog();

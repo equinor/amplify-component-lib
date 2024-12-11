@@ -14,7 +14,7 @@ import {
   FileProgress,
   RegularFileProgressBaseProps,
 } from 'src/molecules/FileProgress/FileProgress';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 
@@ -68,6 +68,7 @@ test('Renders regular custom loading text without progressValue, and click cance
       customLoadingText={customLoadingText}
     />
   );
+  const user = userEvent.setup();
 
   const loadingText = screen.getByText(customLoadingText);
 
@@ -76,7 +77,6 @@ test('Renders regular custom loading text without progressValue, and click cance
   const cancelButton = screen.getAllByTestId('eds-icon-path')[1];
 
   expect(cancelButton).toHaveAttribute('d', close_circle_outlined.svgPathData);
-  const user = userEvent.setup();
 
   await user.click(cancelButton);
 
@@ -201,6 +201,7 @@ test('Renders compact loading state without progress precent, and click onDelete
   render(
     <FileProgress file={file} onDelete={mockOnDelete} isDone={false} compact />
   );
+  const user = userEvent.setup();
 
   const progressBar = screen.getByRole('progressbar');
 
@@ -209,7 +210,6 @@ test('Renders compact loading state without progress precent, and click onDelete
   const deleteButton = screen.getByTestId('eds-icon-path');
 
   expect(deleteButton).toHaveAttribute('d', clear.svgPathData);
-  const user = userEvent.setup();
 
   await user.click(deleteButton);
 

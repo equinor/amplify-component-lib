@@ -12,7 +12,7 @@ import { DefaultNotification } from './DefaultNotification';
 import { ReadyToBePublished } from './ReadyToBePublished';
 import { RequestReviewOrca } from './RequestReviewOrca';
 import { SystemUserDefault } from './SystemUserDefault';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 

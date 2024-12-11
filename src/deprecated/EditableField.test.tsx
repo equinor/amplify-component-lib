@@ -3,7 +3,7 @@ import React from 'react';
 import { faker } from '@faker-js/faker';
 
 import EditableField from 'src/deprecated/EditableField';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('renders textbox', async () => {
   render(<EditableField editable={true} value="Test"></EditableField>);

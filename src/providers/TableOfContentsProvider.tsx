@@ -111,7 +111,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         isScrollingTo.current = selectedIndex;
         let previousTop = Infinity;
         let same = 0;
-        /* c8 ignore start */
+        /* v8 ignore start */
         const checkScrollDone = () => {
           const newTop = element?.getBoundingClientRect().top;
           if (newTop === previousTop) {
@@ -131,7 +131,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
           }
           requestAnimationFrame(checkScrollDone);
         };
-        /* c8 ignore end */
+        /* v8 ignore end */
         requestAnimationFrame(checkScrollDone);
       }
     },
@@ -139,7 +139,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   );
 
   // Handle change of selected when scrolling down the page
-  /* c8 ignore start */
+  /* v8 ignore start */
   useEffect(() => {
     if (
       visible.length === 0 ||
@@ -161,7 +161,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
       }
     }
   }, [hashNavigation, navigate, values, visible]);
-  /* c8 ignore end */
+  /* v8 ignore end */
 
   return (
     <TableOfContentsContext.Provider

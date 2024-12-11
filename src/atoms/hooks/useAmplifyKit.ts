@@ -11,7 +11,7 @@ interface AmplifyKitProps extends ImageExtensionFnProps {
   placeholder?: string;
 }
 
-/* c8 ignore start */
+/* v8 ignore start */
 export const useAmplifyKit = ({
   features,
   placeholder,
@@ -49,4 +49,4 @@ export const useAmplifyKit = ({
     [placeholder, features, onImageUpload, onImageRead]
   );
 };
-/* c8 ignore stop */
+/* v8 ignore stop */

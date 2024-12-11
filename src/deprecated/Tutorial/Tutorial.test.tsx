@@ -5,7 +5,7 @@ import Tutorial, {
   TutorialProps,
 } from 'src/deprecated/Tutorial/Tutorial';
 import { TutorialStepsProvider } from 'src/providers/TutorialStepsProvider';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeStep(): Step {
   return {
