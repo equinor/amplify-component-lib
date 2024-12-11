@@ -134,6 +134,10 @@ const MOCK_SLACK_FILE_ERROR = 'slack file error';
 describe('Show expected error message when requests fail', () => {
   beforeEach(() => {
     worker.resetHandlers(
+      http.get('*/api/v1/ReleaseNotes*', async () => {
+        await delay('real');
+        return HttpResponse.json([]);
+      }),
       http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
         await delay('real');
         return HttpResponse.text(faker.string.nanoid());
@@ -186,7 +190,7 @@ describe('Show expected error message when requests fail', () => {
 
     await user.click(sendButton);
 
-    expect(await screen.findAllByText(/sending/i)).toHaveLength(1);
+    expect(await screen.findAllByText(/sending/i)).toHaveLength(2);
 
     expect(
       await screen.findByText(`Posting ${image.name}`, undefined, {
@@ -194,7 +198,7 @@ describe('Show expected error message when requests fail', () => {
       })
     ).toBeInTheDocument();
 
-    expect(await screen.findAllByText(/not found/i)).toHaveLength(2);
+    expect(await screen.findAllByText(/not found/i)).toHaveLength(3);
 
     await user.click(screen.getByRole('button', { name: /retry/i }));
   });
