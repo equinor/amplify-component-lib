@@ -10,7 +10,7 @@ import {
   amplify_table_remove_row,
 } from 'src/atoms/icons/wysiwyg';
 
-/* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
+/* v8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const TableRow: FC<{ editor: Editor }> = ({ editor }) => {
   const onAddRowBelow = () => editor.chain().focus().addRowAfter().run();
   const onAddRowAbove = () => editor.chain().focus().addRowBefore().run();
@@ -38,4 +38,4 @@ export const TableRow: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuSection>
   );
 };
-/* c8 ignore end */
+/* v8 ignore end */

@@ -9,7 +9,7 @@ import {
   amplify_table_split_cell,
 } from 'src/atoms/icons/wysiwyg';
 
-/* c8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
+/* v8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const TableMerge: FC<{ editor: Editor }> = ({ editor }) => {
   const onMergeCells = () => editor.chain().focus().mergeCells().run();
   const onSplitCell = () => editor.chain().focus().splitCell().run();
@@ -30,4 +30,4 @@ export const TableMerge: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuSection>
   );
 };
-/* c8 ignore end */
+/* v8 ignore end */

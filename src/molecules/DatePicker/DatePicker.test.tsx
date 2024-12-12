@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { DatePicker } from 'src/molecules/DatePicker/DatePicker';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Expect default format to be long month', async () => {
   const randomDate = faker.date.recent();

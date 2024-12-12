@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@equinor/eds-core-react';
 
 import ConfirmationPopup from 'src/deprecated/ConfirmationPopup';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('renders when show is true', () => {
   render(<ConfirmationPopup show={true}>content</ConfirmationPopup>);

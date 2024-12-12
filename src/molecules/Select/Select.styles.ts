@@ -64,7 +64,8 @@ const Container = styled.div<ContainerProps>`
       return css`
         box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba};
         &:hover {
-          box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba};
+          box-shadow: inset 0 -2px 0 0
+            ${colors.text.static_icons__tertiary.rgba};
         }
       `;
 

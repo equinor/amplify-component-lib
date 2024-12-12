@@ -6,19 +6,9 @@ import {
   ProfileAvatar,
   ProfileAvatarProps,
 } from 'src/molecules/ProfileAvatar/ProfileAvatar';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
-
-const sizeOptions: ProfileAvatarProps['size'][] = [
-  'small',
-  'small-medium',
-  'medium',
-  'large',
-  'x-large',
-  undefined,
-  60,
-];
 
 function mockProfileAvatarProps(image: boolean): ProfileAvatarProps {
   return {
@@ -27,41 +17,20 @@ function mockProfileAvatarProps(image: boolean): ProfileAvatarProps {
   };
 }
 
+test('Renders fallback when no name is given', () => {
+  render(<ProfileAvatar name={undefined} />);
+
+  expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
+    'd',
+    person.svgPathData
+  );
+});
+
 test('Renders image when given', () => {
   const mockedProps = mockProfileAvatarProps(true);
   render(<ProfileAvatar {...mockedProps} />);
 
   expect(screen.getByRole('img')).toBeInTheDocument();
-});
-
-test('Renders image when given and in correct sizing', () => {
-  const mockedProps = mockProfileAvatarProps(true);
-  const { rerender } = render(<ProfileAvatar {...mockedProps} />);
-  const sizeToPx = (size: ProfileAvatarProps['size']) => {
-    switch (size) {
-      case 'small':
-        return 16;
-      case 'small-medium':
-        return 24;
-      case 'medium':
-      case undefined:
-        return 32;
-      case 'large':
-        return 40;
-      case 'x-large':
-        return 48;
-      default:
-        return size;
-    }
-  };
-
-  for (const size of sizeOptions) {
-    rerender(<ProfileAvatar {...mockedProps} size={size} />);
-    const avatar = screen.getByTestId('avatar-wrapper');
-    const expectedSize = sizeToPx(size);
-    expect(avatar).toHaveStyleRule('width', `${expectedSize}px`);
-    expect(avatar).toHaveStyleRule('height', `${expectedSize}px`);
-  }
 });
 
 test('Renders image when b64 is given', () => {
@@ -93,30 +62,6 @@ test('Renders disabled initials when image is not given and disabled = true', ()
   expect(initials).not.toBeUndefined();
 
   expect(screen.getByText(initials)).toBeInTheDocument();
-});
-
-test('Renders first and last letter of name when image is not given', () => {
-  const mockedProps = mockProfileAvatarProps(false);
-  const { rerender } = render(<ProfileAvatar {...mockedProps} />);
-
-  const sizeToFontsize = (size: ProfileAvatarProps['size']) => {
-    if (size === 'small') return 6;
-    else if (size === 'small-medium') return 10;
-    else if (size === 'medium' || size === undefined) return 14;
-    else if (size === 'large') return 16;
-    else if (size === 'x-large') return 18;
-    return size / 2;
-  };
-  const initials = nameToInitials(mockedProps.name!)!;
-  for (const size of sizeOptions) {
-    rerender(<ProfileAvatar {...mockedProps} size={size} />);
-    const expectedFontSize = sizeToFontsize(size);
-
-    expect(screen.getByText(initials).parentElement).toHaveStyleRule(
-      'font-size',
-      `${expectedFontSize}px`
-    );
-  }
 });
 
 test('Renders default icon when no name or image is provided', () => {

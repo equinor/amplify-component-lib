@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import WorkflowStatusBar, {
   WorkflowStatusBarProps,
 } from 'src/deprecated/Workflow/WorkflowStatusBar';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 function fakeOption() {
   return {
@@ -37,13 +37,11 @@ test('Shows expected colors on nodes', () => {
   const options = screen.getAllByTestId('workflow-option');
   for (const [index, option] of options.entries()) {
     const colorIndex = option.children.length - 1;
-    expect(option.children[colorIndex]).toHaveStyleRule(
-      'background-color',
-      props.options[index].backgroundColor
+    expect(option.children[colorIndex]).toHaveStyle(
+      `background-color: ${props.options[index].backgroundColor}`
     );
-    expect(option.children[colorIndex]).toHaveStyleRule(
-      'border',
-      `0.125em solid ${props.options[index].color}`
+    expect(option.children[colorIndex]).toHaveStyle(
+      `border: 0.125em solid ${props.options[index].color}`
     );
   }
 });
@@ -71,9 +69,8 @@ test('Works with disabledTooltip = true ', () => {
   const options = screen.getAllByTestId('workflow-option');
   for (const [index, option] of options.entries()) {
     const colorIndex = option.children.length - 1;
-    expect(option.children[colorIndex]).toHaveStyleRule(
-      'border',
-      `0.125em solid ${props.options[index].color}`
+    expect(option.children[colorIndex]).toHaveStyle(
+      `border: 0.125em solid ${props.options[index].color}`
     );
   }
 });

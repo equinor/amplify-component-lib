@@ -17,7 +17,7 @@ repos:
         name: Prettier
         description: Runs prettier on supported files
         language: system
-        entry: 'npx prettier --check'
+        entry: 'bunx prettier --check'
         files: .*\.jsx?$|.*\.tsx?$|.*\.ts?$
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v9.9.0

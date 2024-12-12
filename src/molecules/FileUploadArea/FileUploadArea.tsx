@@ -22,7 +22,7 @@ const UploadWrapper = styled.div`
   border-radius: 15px;
   margin-top: 10px;
   padding: ${spacings.medium_small} ${spacings.xx_large};
-  /* c8 ignore next */
+  /* v8 ignore next */
   background: ${colors.ui.background__light.rgba};
   transition: background ${animation.transitionMS};
   > section {
@@ -121,7 +121,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
       {...getRootProps()}
       onClick={undefined}
       style={{
-        /* c8 ignore next 2 */
+        /* v8 ignore next 2 */
         background: isDragActive
           ? colors.interactive.primary__hover_alt.rgba
           : undefined,

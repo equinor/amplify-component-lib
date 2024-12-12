@@ -1,5 +1,5 @@
 import { SkeletonGradient } from './SkeletonGradient';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Skeleton gradient works as expected', () => {
   const { container } = render(

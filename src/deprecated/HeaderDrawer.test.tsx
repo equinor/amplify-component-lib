@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { waitFor } from '@testing-library/dom';
 
 import HeaderDrawer from 'src/deprecated/HeaderDrawer';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('HeaderDrawer works as expected', async () => {
   const title = faker.animal.dog();

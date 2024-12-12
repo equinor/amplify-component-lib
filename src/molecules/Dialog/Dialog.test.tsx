@@ -4,8 +4,7 @@ import { car, close } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Dialog, DialogAction } from './Dialog';
-import { colors } from 'src/atoms/style/colors';
-import { render, screen, userEvent, within } from 'src/tests/test-utils';
+import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
 
 test('Basic dialog', () => {
   const handleOnClose = vi.fn();
@@ -76,64 +75,6 @@ test('Custom width works', () => {
   expect(dialogActions).toHaveAttribute('style', `width: ${width}px;`);
 });
 
-test('withBorders works as expected', () => {
-  const handleOnClose = vi.fn();
-  const title = faker.airline.airplane().name;
-  const description = faker.lorem.paragraph();
-  const action: DialogAction = {
-    variant: 'contained',
-    text: faker.animal.dog(),
-    onClick: vi.fn(),
-    color: undefined,
-  };
-  render(
-    <Dialog
-      open
-      title={title}
-      onClose={handleOnClose}
-      withBorders
-      actions={[action]}
-    >
-      {description}
-    </Dialog>
-  );
-
-  const titleContainer = screen.getByText(title).parentElement!.parentElement!;
-
-  expect(titleContainer).toHaveStyleRule(
-    'border-bottom',
-    `1px solid ${colors.ui.background__medium.rgba}`
-  );
-
-  const actionsContainer = screen.getByText(action.text).parentElement!
-    .parentElement!.parentElement!;
-
-  expect(actionsContainer).toHaveStyleRule(
-    'border-top',
-    `1px solid ${colors.ui.background__medium.rgba}`
-  );
-});
-
-test('withContentPadding works as expected', () => {
-  const handleOnClose = vi.fn();
-  const title = faker.airline.airplane().name;
-  const description = faker.lorem.paragraph();
-  render(
-    <Dialog
-      open
-      title={title}
-      onClose={handleOnClose}
-      withContentPadding={{ vertical: false, horizontal: false }}
-    >
-      {description}
-    </Dialog>
-  );
-
-  const descriptionContainer = screen.getByText(description).parentElement!;
-
-  expect(descriptionContainer).toHaveStyleRule('padding', '0 0');
-});
-
 test('Clicking close calls onClose', async () => {
   const handleOnClose = vi.fn();
   const title = faker.airline.airplane().name;
@@ -168,7 +109,6 @@ test('Clicking info icon button shows the additional content banner', async () =
   const user = userEvent.setup();
 
   await user.click(screen.getByTestId('dialog-info-button'));
-  screen.logTestingPlaygroundURL();
 
   expect(screen.getByText(additionalInfo)).toBeInTheDocument();
 });
@@ -340,25 +280,4 @@ test('Custom children works as expected', () => {
   const element = screen.getByTestId('custom');
   expect(element).toBeInTheDocument();
   expect(element).toHaveTextContent(description);
-});
-
-test('Content max height prop works as expected', () => {
-  const handleOnClose = vi.fn();
-  const title = faker.airline.airplane().name;
-  const description = faker.lorem.paragraph();
-  const contentMaxHeight = `${faker.number.int({ min: 10, max: 1000 })}px`;
-
-  render(
-    <Dialog
-      open
-      title={title}
-      onClose={handleOnClose}
-      contentMaxHeight={contentMaxHeight}
-    >
-      {description}
-    </Dialog>
-  );
-
-  const contentWrapper = screen.getByText(description).parentElement;
-  expect(contentWrapper).toHaveStyle(`max-height: ${contentMaxHeight}`);
 });

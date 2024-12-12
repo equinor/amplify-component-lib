@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // Not able to test IntersectionObservers in vitest :(
-/* c8 ignore start */
+/* v8 ignore start */
 export function useOnScreenMultiple(elements: (Element | null)[]) {
   const [isIntersecting, setIsIntersecting] = useState<boolean[]>(
     new Array(elements.length).fill(false)
@@ -41,4 +41,4 @@ export function useOnScreenMultiple(elements: (Element | null)[]) {
 
   return isIntersecting;
 }
-/* c8 ignore end */
+/* v8 ignore end */

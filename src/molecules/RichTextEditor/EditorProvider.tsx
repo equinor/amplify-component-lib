@@ -44,7 +44,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
 
   const handleImageCheck = (editor: Editor) => {
     // TODO: Test this when we move to browser mode
-    /* c8 ignore start */
+    /* v8 ignore start */
     const currentImages: string[] = [];
 
     editor.getJSON().content?.forEach((item) => {
@@ -94,7 +94,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       previousRemovedImages.current = imagesToDelete;
     }
 
-    /* c8 ignore end */
+    /* v8 ignore end */
   };
 
   const editor = useEditor({
@@ -110,7 +110,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     },
   });
 
-  /* c8 ignore start */
+  /* v8 ignore start */
   useEffect(() => {
     // This makes Tiptap react to its prop changing from the outside
     // Usefull if for instance the content is fetched from an API.
@@ -120,9 +120,9 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     editor.commands.setContent(content || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
-  /* c8 ignore stop */
+  /* v8 ignore stop */
 
-  /* c8 ignore next */
+  /* v8 ignore next */
   if (!editor) return null;
   return children(editor);
 };

@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import CommentField, {
   CommentFieldProps,
 } from 'src/deprecated/CommentField/CommentField';
-import { act, render, screen, userEvent } from 'src/tests/test-utils';
+import { act, render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): CommentFieldProps {
   return {

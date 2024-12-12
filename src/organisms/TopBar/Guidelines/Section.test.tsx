@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { Section } from './Section';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Renders Section correctly with 1 child', () => {
   const title = faker.animal.fish();

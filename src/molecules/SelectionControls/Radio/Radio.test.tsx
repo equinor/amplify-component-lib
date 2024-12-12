@@ -1,10 +1,7 @@
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
 import { Radio } from './Radio';
-import { render, screen } from 'src/tests/test-utils';
-
-const { colors } = tokens;
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Renders as expected', () => {
   const label = faker.animal.dog();
@@ -13,13 +10,14 @@ test('Renders as expected', () => {
   expect(screen.getByText(label)).toBeInTheDocument();
 });
 
-test('Renders as expected with outlined=true', () => {
+test('Has checked attribute', () => {
   const label = faker.animal.dog();
-  render(<Radio label={label} outlined />);
+  const onChange = vi.fn();
+  const { rerender } = render(
+    <Radio label={label} checked onChange={onChange} />
+  );
 
-  const computedStyle = window.getComputedStyle(
-    screen.getByText(label).parentElement!
-  ).outline;
-
-  expect(computedStyle).toBe(`1px solid ${colors.ui.background__medium.rgba}`);
+  expect(screen.getByRole('radio')).toBeChecked();
+  rerender(<Radio label={label} checked={false} onChange={onChange} />);
+  expect(screen.getByText(label)).not.toHaveAttribute('checked');
 });

@@ -43,7 +43,7 @@ export interface MenuBarProps
   features: RichTextEditorFeatures[];
 }
 
-/* c8 ignore start */
+/* v8 ignore start */
 export const AmplifyBar: FC<MenuBarProps> = ({
   editor,
   features,
@@ -97,4 +97,4 @@ export const EditorText = {
   Alignment: TextAlignment,
   ClearFormating: TextClearFormating,
 };
-/* c8 ignore end */
+/* v8 ignore end */
