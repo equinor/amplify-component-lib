@@ -152,10 +152,10 @@ test('No other apps to show', async () => {
       return HttpResponse.text(faker.string.nanoid());
     }),
     http.get('*/api/v1/AmplifyApplication/userapplications', async () => {
-      await delay('real');
       return HttpResponse.json([]);
     })
   );
+
   render(<ApplicationDrawer />, { wrapper: Wrappers });
   const user = userEvent.setup();
   const menuButton = await screen.findByRole('button');
