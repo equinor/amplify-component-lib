@@ -3,6 +3,7 @@ import { css } from 'styled-components';
 export const lightTokens = css`
   [data-theme='light'] {
     --amplify_ui_background_light_medium: rgba(235, 235, 235, 1);
+    --amplify_ui_background_heavy: rgba(189, 189, 189, 1);
 
     --amplify_interactive_primary_pressed: rgba(19, 46, 49, 1);
 
