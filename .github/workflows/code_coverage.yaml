@@ -23,7 +23,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Install playwright with dependencies
-        run: bunx playwright install --with-deps
+        run: bunx playwright install --with-deps chromium
 
       - name: "Check coverage"
         run: bun run test:coverage-ci

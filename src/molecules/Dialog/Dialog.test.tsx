@@ -109,7 +109,6 @@ test('Clicking info icon button shows the additional content banner', async () =
   const user = userEvent.setup();
 
   await user.click(screen.getByTestId('dialog-info-button'));
-  screen.logTestingPlaygroundURL();
 
   expect(screen.getByText(additionalInfo)).toBeInTheDocument();
 });

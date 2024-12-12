@@ -3,6 +3,9 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
+  optimizeDeps: {
+    include: ['react/jsx-dev-runtime'],
+  },
   test: {
     globals: true,
     passWithNoTests: true,

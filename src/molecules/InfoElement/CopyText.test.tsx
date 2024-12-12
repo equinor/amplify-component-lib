@@ -25,7 +25,9 @@ test('Renders label on hover', async () => {
 
   await user.hover(screen.getByText('other'));
 
-  expect(screen.queryByText(/copy/i)).not.toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.queryByText(/copy/i)).not.toBeInTheDocument()
+  );
 });
 
 test('Copies text to clipboard and displays success message', async () => {

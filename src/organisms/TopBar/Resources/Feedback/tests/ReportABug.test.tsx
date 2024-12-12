@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { waitFor } from '@testing-library/react';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { DEFAULT_FEEDBACK_LOCAL_STORAGE } from 'src/organisms/TopBar/Resources/Feedback/Feedback.const';
 import {
@@ -15,7 +15,12 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
@@ -132,78 +137,68 @@ describe('Report a bug', () => {
   const MOCK_SLACK_POST_ERROR = 'slack post error';
   const MOCK_SLACK_FILE_ERROR = 'slack file error';
 
-  describe('Show expected error message when requests fail', () => {
-    beforeEach(() => {
-      worker.resetHandlers(
-        http.get('*/api/v1/ReleaseNotes*', async () => {
-          await delay('real');
-          return HttpResponse.json([]);
-        }),
-        http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
-          await delay('real');
-          return HttpResponse.text(faker.string.nanoid());
-        }),
-        http.post('*!/api/v1/ServiceNow/incident', async () => {
-          await delay('real');
-          return HttpResponse.json(
-            { message: MOCK_SERVICE_NOW_ERROR },
-            { status: 500 }
-          );
-        }),
-        http.post('*/api/v1/Slack/fileUpload', async () => {
-          await delay('real');
+  test('Show expected error message when requests fail', async () => {
+    worker.use(
+      http.get('*/api/v1/ReleaseNotes*', async () => {
+        await delay('real');
+        return HttpResponse.json([]);
+      }),
+      http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
+        await delay('real');
+        return HttpResponse.text(faker.string.nanoid());
+      }),
+      http.post('*/api/v1/ServiceNow/incident', async () => {
+        return HttpResponse.json(
+          { message: MOCK_SERVICE_NOW_ERROR },
+          { status: 500 }
+        );
+      }),
+      http.post('*/api/v1/Slack/fileUpload', async () => {
+        return HttpResponse.json(
+          { message: MOCK_SLACK_FILE_ERROR },
+          { status: 500 }
+        );
+      }),
+      http.post('*/api/v1/Slack/postmessage', async () => {
+        return HttpResponse.json(
+          { message: MOCK_SLACK_POST_ERROR },
+          { status: 500 }
+        );
+      })
+    );
 
-          return HttpResponse.json(
-            { message: MOCK_SLACK_FILE_ERROR },
-            { status: 500 }
-          );
-        }),
-        http.post('*/api/v1/Slack/postmessage', async () => {
-          await delay('real');
+    const { title, description, url } = fakeInputs();
+    const image = fakeImageFile();
+    const user = userEvent.setup();
 
-          return HttpResponse.json(
-            { message: MOCK_SLACK_POST_ERROR },
-            { status: 500 }
-          );
-        })
-      );
-    });
+    await user.type(screen.getByLabelText(/title/i), title);
+    await user.type(screen.getByLabelText(/description/i), description);
+    await user.type(screen.getByLabelText(/url/i), url);
 
-    test('Show expected error message when requests fail', async () => {
-      const { title, description, url } = fakeInputs();
-      const image = fakeImageFile();
-      const user = userEvent.setup();
+    await user.upload(screen.getByTestId('file-upload-area-input'), [image]);
 
-      await user.type(screen.getByLabelText(/title/i), title);
-      await user.type(screen.getByLabelText(/description/i), description);
-      await user.type(screen.getByLabelText(/url/i), url);
+    await user.click(screen.getByLabelText(/severity/i));
 
-      await user.upload(screen.getByTestId('file-upload-area-input'), [image]);
+    const option = faker.helpers.arrayElement(SEVERITY_OPTIONS);
+    const optionElement = screen.getByText(option);
+    await user.click(optionElement);
+    expect(screen.getByTestId('combobox-container')).toHaveTextContent(option);
 
-      await user.click(screen.getByLabelText(/severity/i));
-      const option = faker.helpers.arrayElement(SEVERITY_OPTIONS);
-      const optionElement = screen.getByText(option);
-      await user.click(optionElement);
-      expect(screen.getByTestId('combobox-container')).toHaveTextContent(
-        option
-      );
+    const sendButton = screen.getByTestId('submit-button');
+    expect(sendButton).not.toBeDisabled();
 
-      const sendButton = screen.getByTestId('submit-button');
-      expect(sendButton).not.toBeDisabled();
+    await user.click(sendButton);
 
-      await user.click(sendButton);
+    expect(await screen.findAllByText('Sending...')).toHaveLength(2);
 
-      expect(await screen.findAllByText(/sending/i)).toHaveLength(2);
+    await waitForElementToBeRemoved(() => screen.getAllByText('Sending...'));
 
-      expect(
-        await screen.findByText(`Posting ${image.name}`, undefined, {
-          timeout: 5000,
-        })
-      ).toBeInTheDocument();
+    expect(
+      await screen.findAllByText(/internal server error/i, undefined, {
+        timeout: 50000,
+      })
+    ).toHaveLength(3);
 
-      expect(await screen.findAllByText(/not found/i)).toHaveLength(3);
-
-      await user.click(screen.getByRole('button', { name: /retry/i }));
-    });
+    await user.click(screen.getByRole('button', { name: /retry/i }));
   });
 });

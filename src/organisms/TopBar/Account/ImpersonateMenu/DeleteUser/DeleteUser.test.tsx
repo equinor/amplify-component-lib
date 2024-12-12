@@ -57,7 +57,7 @@ test(
 );
 
 test('Not able to delete user impersonation with activeUsers', async () => {
-  worker.resetHandlers(
+  worker.use(
     http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
       await delay('real');
       return HttpResponse.text(faker.string.nanoid());

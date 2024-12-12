@@ -146,7 +146,7 @@ test('Click on more access button', async () => {
 });
 
 test('No other apps to show', async () => {
-  worker.resetHandlers(
+  worker.use(
     http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
       await delay('real');
       return HttpResponse.text(faker.string.nanoid());

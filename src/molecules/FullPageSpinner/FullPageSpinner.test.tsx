@@ -17,15 +17,17 @@ const EXPECTED_CLASSES: Record<string, string> = {
   dots: 'Dot',
 };
 
-test('Variants work as expected', () => {
-  const { rerender } = render(<FullPageSpinner withScrim />);
-  for (const variant of ['equinor', 'circle', 'dots']) {
-    rerender(
-      <FullPageSpinner
-        variant={variant as FullPageSpinnerProps['variant']}
-        withScrim
-      />
+test.for([
+  'equinor',
+  'circle',
+  'dots',
+] as Required<FullPageSpinnerProps>['variant'][])(
+  '%d variant work as expected',
+  (variant) => {
+    const { rerender } = render(
+      <FullPageSpinner withScrim variant={variant} />
     );
+
     expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
       EXPECTED_CLASSES[variant]
     );
@@ -41,7 +43,7 @@ test('Variants work as expected', () => {
       EXPECTED_CLASSES[variant]
     );
   }
-});
+);
 
 test('renders children as hidden', () => {
   const text = faker.animal.dog();
