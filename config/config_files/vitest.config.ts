@@ -4,35 +4,29 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
   test: {
-    server: {
-      deps: {
-        inline: [
-          '@equinor/eds-tokens',
-          '@equinor/eds-core-react',
-          '@equinor/amplify-component-lib',
-          '@equinor/subsurface-app-management',
-        ]
-      }
-    },
     globals: true,
-    environment: 'jsdom',
     passWithNoTests: true,
     testTimeout: 10000,
-    setupFiles: [
-      'src/test-utils/setupTests.ts',
-      'src/test-utils/browserMocks.ts',
-    ],
+    env: {
+      VITE_IS_MOCK: 'true',
+    },
     exclude: ['**/node_modules/**', '**/test-utils/**', '**/e2e/**'],
     coverage: {
+      enabled: false,
       provider: 'v8',
-      include: ['src/components/*'],
-      exclude: ['src/api'],
-      reporter: ['text-summary', 'html'],
+      cleanOnRerun: false,
+      reportOnFailure: true,
+      include: ['src/**/*'],
+      exclude: ['src/api', 'src/e2e', 'src/test-utils'],
+      reporter: [
+        'text-summary',
+        'html',
+        ['json-summary', { file: 'coverage.json' }],
+      ],
       thresholds: {
-        statements: 80,
-        branches: 80,
-        functions: 80,
-        lines: 80,
+        perFile: true,
+        autoUpdate: true,
+        100: true,
       },
     },
   },
