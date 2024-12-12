@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import noiseImage from './noise.png';
+
 interface WaveShapeWithNoiseProps {
   index?: number;
   isAltWave?: boolean;
@@ -18,14 +20,21 @@ export const WaveShapeWithNoise: FC<WaveShapeWithNoiseProps> = ({
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <filter id="noiseFilter">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency={0.5}
-            numOctaves={3}
-            stitchTiles="stitch"
+        <pattern
+          id="noisePattern"
+          patternUnits="userSpaceOnUse"
+          width="100"
+          height="100"
+        >
+          <image
+            x="0"
+            y="0"
+            width="100"
+            height="100"
+            preserveAspectRatio="none"
           />
-        </filter>
+        </pattern>
+
         <linearGradient id="gradient" x1="0" y1="100%" x2="0" y2="0%">
           <stop offset="0%" stopColor="black" />
           <stop offset="100%" stopColor="white" />
@@ -66,7 +75,7 @@ export const WaveShapeWithNoise: FC<WaveShapeWithNoiseProps> = ({
       <rect
         width="100%"
         height="100%"
-        filter="url(#noiseFilter)"
+        fill="url(#noisePattern)"
         mask={'url(#waveMask' + index + ')'}
       />
     </svg>

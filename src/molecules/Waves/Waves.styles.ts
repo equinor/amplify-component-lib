@@ -35,10 +35,9 @@ export const Wave = styled.div<WaveProps>`
   top: ${({ $waveIntervalDist }) => `${$waveIntervalDist}rem`};
   transform-origin: top;
   transform: var(--rotate3d) translateY(-2px) scaleY(1);
-  filter: grayscale(1);
   mix-blend-mode: overlay;
 
-  animation: ${waveWobble} 5.5s infinite ease alternate;
+  //animation: ${waveWobble} 5.5s infinite ease alternate;
 `;
 export const Container = styled.div`
   --topGradientColor: #77d9dd;
@@ -55,7 +54,6 @@ export const Container = styled.div`
   );
   > svg {
     position: absolute;
-    filter: grayscale(1);
     mix-blend-mode: color-burn;
     z-index: 0;
   }
