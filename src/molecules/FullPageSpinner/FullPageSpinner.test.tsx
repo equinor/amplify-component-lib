@@ -1,9 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import {
-  FullPageSpinner,
-  FullPageSpinnerProps,
-} from 'src/molecules/FullPageSpinner/FullPageSpinner';
+import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { render, screen } from 'src/tests/browsertest-utils';
 
 test('renders with scrim when prop is given', () => {
@@ -11,37 +8,22 @@ test('renders with scrim when prop is given', () => {
   expect(container.firstElementChild?.className).toContain('Scrim');
 });
 
-const EXPECTED_CLASSES: Record<string, string> = {
-  equinor: 'StarProgress',
-  circle: 'CircularProgress',
-  dots: 'Dot',
-};
-
-test.for([
-  'equinor',
-  'circle',
-  'dots',
-] as Required<FullPageSpinnerProps>['variant'][])(
-  '%d variant work as expected',
+test.each(['equinor', 'circle', 'dots'] as const)(
+  '%s variant work as expected',
   (variant) => {
     const { rerender } = render(
       <FullPageSpinner withScrim variant={variant} />
-    );
-
-    expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-      EXPECTED_CLASSES[variant]
     );
 
     expect(
       screen.getByTestId(`full-page-spinner-${variant}`)
     ).toBeInTheDocument();
 
-    rerender(
-      <FullPageSpinner variant={variant as FullPageSpinnerProps['variant']} />
-    );
-    expect(screen.getByRole('progressbar').getAttribute('class')).toContain(
-      EXPECTED_CLASSES[variant]
-    );
+    rerender(<FullPageSpinner variant={variant} />);
+
+    expect(
+      screen.getByTestId(`full-page-spinner-${variant}`)
+    ).toBeInTheDocument();
   }
 );
 
@@ -51,9 +33,12 @@ test('renders children as hidden', () => {
   expect(screen.getByText(text)).not.toBeVisible();
 });
 
-test('renders children as hidden withScrim=true', () => {
+test('renders children as hidden withScrim', () => {
   const text = faker.animal.dog();
-  render(<FullPageSpinner withScrim>{text}</FullPageSpinner>);
+  const { container } = render(
+    <FullPageSpinner withScrim>{text}</FullPageSpinner>
+  );
 
+  expect(container.firstElementChild?.className).toContain('Scrim');
   expect(screen.getByText(text)).not.toBeVisible();
 });

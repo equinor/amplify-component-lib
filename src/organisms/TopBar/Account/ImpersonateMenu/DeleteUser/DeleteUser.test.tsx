@@ -63,17 +63,14 @@ test('Not able to delete user impersonation with activeUsers', async () => {
       return HttpResponse.text(faker.string.nanoid());
     }),
     http.get('*/api/v1/ImpersonateUser/CanImpersonate', async () => {
-      await delay('real');
       return HttpResponse.text('true');
     }),
     http.get('*/api/v1/ImpersonateUser/ActiveUser', async () => {
-      await delay('real');
       return HttpResponse.json(undefined, { status: 204 });
     }),
     http.get(
       '*/api/v1/ImpersonateUser/GetImpersonateUserForApp/:appName',
       async () => {
-        await delay('real');
         const copy = structuredClone(fakeImpersonateUsers);
         for (const item of copy) {
           item.activeUsers = [faker.internet.username()];
