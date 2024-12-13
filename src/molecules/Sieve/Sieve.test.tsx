@@ -12,7 +12,7 @@ import {
   SieveProps,
   SieveValue,
 } from 'src/molecules/Sieve/Sieve.types';
-import { render, screen, userEvent, within } from 'src/tests/test-utils';
+import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
 
 function Wrappers({ children }: { children: ReactNode }) {
   return <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>;

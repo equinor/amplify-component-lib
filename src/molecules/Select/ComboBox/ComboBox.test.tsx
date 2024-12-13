@@ -14,7 +14,7 @@ import {
   screen,
   userEvent,
   within,
-} from 'src/tests/test-utils';
+} from 'src/tests/browsertest-utils';
 
 test('Renders as expected', () => {
   const items = fakeSelectItems();
@@ -489,6 +489,33 @@ test('Basic group with preselected item', async () => {
 
   expect(handler).toBeCalledTimes(1);
   expect(handler).toBeCalledWith([], randomItem);
+});
+
+test('Filtering group works as expected', async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const groups = fakeGroups();
+
+  const randomItem = faker.helpers.arrayElement(
+    faker.helpers.arrayElement(groups).items
+  );
+  render(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      groups={groups}
+      values={[randomItem]}
+    />
+  );
+
+  const user = userEvent.setup();
+
+  const searchField = screen.getByRole('combobox');
+  await user.type(searchField, groups[0].title);
+
+  for (const group of groups.slice(1)) {
+    expect(screen.queryByText(group.title)).not.toBeInTheDocument();
+  }
 });
 
 test('Parented group', async () => {

@@ -52,7 +52,7 @@ export const RichTextDisplay: FC<
     onImageRead: onImageRead,
   });
   const editor = useEditor({
-    /* c8 ignore next */
+    /* v8 ignore next */
     extensions: extensions ? extensions : [defaultExtensions],
     content: imgReadToken
       ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
@@ -69,9 +69,9 @@ export const RichTextDisplay: FC<
     }
   }, [editor, value]);
 
-  /* c8 ignore next */
+  /* v8 ignore next */
   if (!editor) return null;
-  /* c8 ignore next */
+  /* v8 ignore next */
   if (children) return children(editor);
   return (
     <EditorStyling

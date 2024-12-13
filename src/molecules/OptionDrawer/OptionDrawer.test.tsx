@@ -5,7 +5,12 @@ import {
   OptionDrawerProps,
   ToggleEventProps,
 } from 'src/molecules/OptionDrawer/OptionDrawer';
-import { render, screen, userEvent, waitFor } from 'src/tests/test-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 
 interface FakeType {
   id: string;

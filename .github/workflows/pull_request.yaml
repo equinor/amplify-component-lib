@@ -12,9 +12,13 @@ jobs:
     name: ESLint
     uses: ./.github/workflows/eslint.yaml
 
-  test:
-    name: Test
-    uses: ./.github/workflows/test.yaml
+  jsdom:
+    name: JSDOM tests
+    uses: ./.github/workflows/jsdom_tests.yaml
+
+  browser:
+    name: Browser tests
+    uses: ./.github/workflows/browser_tests.yaml
 
   code-coverage:
     name: Code coverage

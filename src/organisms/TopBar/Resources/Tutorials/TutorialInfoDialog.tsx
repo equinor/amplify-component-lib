@@ -53,11 +53,11 @@ export const TutorialInfoDialog: FC<TutorialDialogProps> = ({
   const location = useLocation();
 
   const onCurrentPage = useMemo(() => {
-    return options.map((item) => item.pathName === location.pathname);
+    return options.some((item) => item.pathName === location.pathname);
   }, [location.pathname, options]);
 
   const onOtherPages = useMemo(() => {
-    return options.map((item) => item.pathName !== location.pathname);
+    return options.some((item) => item.pathName !== location.pathname);
   }, [location.pathname, options]);
 
   return (
@@ -73,7 +73,7 @@ export const TutorialInfoDialog: FC<TutorialDialogProps> = ({
         </Button>
       </Dialog.Header>
       <DialogCustomContent>
-        {onCurrentPage.includes(true) && (
+        {onCurrentPage && (
           <Wrapper>
             <Typography style={{ fontSize: '10px' }}>
               ON CURRENT PAGE
@@ -95,11 +95,9 @@ export const TutorialInfoDialog: FC<TutorialDialogProps> = ({
             })}
           </Wrapper>
         )}
-        {onOtherPages.includes(true) && (
+        {onOtherPages && (
           <Wrapper>
-            <Typography style={{ fontSize: '10px' }}>
-              ON CURRENT PAGE
-            </Typography>
+            <Typography style={{ fontSize: '10px' }}>ON OTHER PAGES</Typography>
 
             {options.map((item, index) => {
               if (item.pathName !== location.pathname) {

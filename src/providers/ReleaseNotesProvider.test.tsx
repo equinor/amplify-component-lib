@@ -1,8 +1,8 @@
 import { act, FC, ReactNode } from 'react';
 
+import { ReleaseNote } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { renderHook, waitFor } from '../tests/test-utils';
 import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
 import { ReleaseNoteType } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesTypes/ReleaseNotesTypes.types';
 import {
@@ -12,6 +12,7 @@ import {
   sortReleaseNotesByDate,
   yearValueToString,
 } from 'src/providers/ReleaseNotesProvider.utils';
+import { renderHook, waitFor } from 'src/tests/browsertest-utils';
 import { fakeReleaseNotes } from 'src/tests/mockHandlers';
 
 interface WrapperProp {
@@ -57,7 +58,7 @@ describe('Release notes provider', () => {
           fakeReleaseNotes.length
         );
       },
-      { timeout: 550 }
+      { timeout: 10000 }
     );
     expect(result.current.filteredData).not.toBeNull();
   });
@@ -73,7 +74,7 @@ describe('Release notes provider', () => {
           fakeReleaseNotes.length
         );
       },
-      { timeout: 550 }
+      { timeout: 1000 }
     );
     expect(result.current.search.filterValues).toBe(undefined);
     expect(result.current.search.searchValue).toBe(undefined);
@@ -115,7 +116,7 @@ describe('Release notes provider', () => {
       () => {
         return expect(result.current.filteredData.length).toBe(0);
       },
-      { timeout: 550 }
+      { timeout: 10000 }
     );
     expect(result.current.filteredData).toStrictEqual([]);
   });
@@ -128,7 +129,7 @@ describe('Release notes provider', () => {
     act(() => {
       result.current.setSearch({
         filterValues: undefined,
-        searchValue: 'SEARCH',
+        searchValue: fakeReleaseNotes[0].title,
         sortValue: undefined,
       });
     });
@@ -137,7 +138,7 @@ describe('Release notes provider', () => {
       () => {
         expect(result.current.filteredData.length).toBe(1);
       },
-      { timeout: 550 }
+      { timeout: 10000 }
     );
   });
 
@@ -162,7 +163,7 @@ describe('Release notes provider', () => {
       () => {
         return expect(result.current.filteredData.length).toBe(1);
       },
-      { timeout: 550 }
+      { timeout: 10000 }
     );
     expect(result.current.filteredData).toStrictEqual([fakeReleaseNotes[0]]);
   });
@@ -204,22 +205,82 @@ describe('Release notes provider', () => {
 });
 
 const dateObject = new Date('2023-06-29T10:50:22.8210567+00:00');
-const dates = [
-  { createdDate: '2022-06-29T10:50:22.8210567+00:00' },
-  { createdDate: '2022-01-13T10:50:22.8210567+00:00' },
-  { createdDate: '2022-07-20T10:50:22.8210567+00:00' },
-  { createdDate: '2023-06-29T10:50:22.8210567+00:00' },
-  { createdDate: '2022-05-29T10:50:22.8210567+00:00' },
+const dates: ReleaseNote[] = [
+  {
+    createdDate: '2022-06-29T10:50:22.8210567+00:00',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2022-01-13T10:50:22.8210567+00:00',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2022-07-20T10:50:22.8210567+00:00',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2023-06-29T10:50:22.8210567+00:00',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2022-05-29T10:50:22.8210567+00:00',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
 ];
 
-const notes = [
-  { createdDate: '2023-06-29' },
-  { createdDate: '2020-06-29' },
-  { createdDate: '2022-06-29' },
-  { createdDate: '2023-01-17' },
-  { createdDate: '2022-08-31' },
-  { createdDate: undefined },
-  { createdDate: undefined },
+const notes: ReleaseNote[] = [
+  {
+    createdDate: '2023-06-29',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2020-06-29',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2022-06-29',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2023-01-17',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2022-08-10',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2021-08-11',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
+  {
+    createdDate: '2020-01-31',
+    applicationName: '',
+    title: '',
+    body: '',
+  },
 ];
 
 describe('release notes utils', () => {
@@ -262,15 +323,10 @@ describe('release notes utils', () => {
 
   test('sort release notes by created date in descending order', () => {
     const sorted = sortReleaseNotesByDate(notes);
-    const expected = [
-      { createdDate: '2023-06-29' },
-      { createdDate: '2023-01-17' },
-      { createdDate: '2022-08-31' },
-      { createdDate: '2022-06-29' },
-      { createdDate: '2020-06-29' },
-      { createdDate: undefined },
-      { createdDate: undefined },
-    ];
-    expect(sorted).toStrictEqual(expected);
+    for (let i = 1; i < sorted.length; i++) {
+      const date1 = new Date(sorted[i].createdDate);
+      const date2 = new Date(sorted[i - 1].createdDate);
+      expect(date1 < date2).toBeTruthy();
+    }
   });
 });

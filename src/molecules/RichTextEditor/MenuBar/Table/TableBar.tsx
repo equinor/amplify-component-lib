@@ -9,7 +9,7 @@ import { TableMerge } from './TableMerge';
 import { TableRow } from './TableRow';
 import { ToggleTable } from './ToggleTable';
 
-/* c8 ignore start */
+/* v8 ignore start */
 export const TableMenuBar: FC<{ editor: Editor }> = ({ editor }) => {
   if (!editor.isActive('table')) return null;
   return (
@@ -30,4 +30,4 @@ export const TextTable = {
   row: TableRow,
   merge: TableMerge,
 };
-/* c8 ignore end */
+/* v8 ignore end */

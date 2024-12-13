@@ -114,8 +114,9 @@ export interface ProfileAvatarProps {
 export const ProfileAvatar = forwardRef<HTMLDivElement, ProfileAvatarProps>(
   ({ url, name, size = 'medium', disabled = false }, ref) => {
     const initials = useMemo(() => {
-      const defaultIcon = <FallbackIcon data={person}></FallbackIcon>;
-      if (!name || name.trim().length === 0) return defaultIcon;
+      if (!name || name.trim().length === 0) {
+        return <FallbackIcon data={person} />;
+      }
 
       return nameToInitials(name);
     }, [name]);

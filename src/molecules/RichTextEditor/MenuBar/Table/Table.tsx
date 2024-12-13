@@ -9,10 +9,10 @@ import {
 import { MenuButton } from '../MenuButton';
 
 export const TextTable: FC<EditorPanel> = ({ editor, features }) => {
-  /* c8 ignore start */
+  /* v8 ignore start */
   if (features && !features.includes(RichTextEditorFeatures.TABLE)) return;
   if (editor.isActive('table')) return;
-  /* c8 ignore end */
+  /* v8 ignore end */
   return (
     <MenuButton
       data-testid="add-table-button"

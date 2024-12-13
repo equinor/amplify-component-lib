@@ -12,7 +12,7 @@ interface FeedBackIconData {
   component: FC<SizeIconProps>;
 }
 
-export interface FeedBackIconProps extends SizeIconProps {
+export interface FeedBackIconProps extends Partial<SizeIconProps> {
   name: 'positive' | 'negative';
   variant?: 'filled' | 'outlined';
 }
@@ -26,20 +26,12 @@ const feedbackIcons: FeedBackIconData[] = [
 
 export const FeedBackIcon: FC<FeedBackIconProps> = ({
   name,
-  size,
-  variant,
+  size = 48,
+  variant = 'filled',
 }) => {
-  const DefaultComponent = feedbackIcons[0].component;
-  if (
-    !feedbackIcons.some(
-      (icon) => icon.iconName === `${name}-${variant ? variant : 'filled'}`
-    )
-  ) {
-    return <DefaultComponent size={size} />;
-  }
-
   const appData = feedbackIcons.find(
-    (icon) => icon.iconName === `${name}-${variant ? variant : 'filled'}`
+    (icon) => icon.iconName === `${name}-${variant}`
   )!;
+
   return <appData.component size={size} />;
 };

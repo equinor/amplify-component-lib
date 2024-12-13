@@ -53,7 +53,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
-  if ('values' in props) {
+  if ('values' in props)
     return filteredGroups.map((group, groupIndex) => (
       <Menu.Section
         key={`${group.title}-${groupIndex}`}
@@ -75,7 +75,6 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
         ))}
       </Menu.Section>
     ));
-  }
 
   return filteredGroups.map((group, groupIndex) => (
     <Menu.Section

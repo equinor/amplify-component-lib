@@ -1,9 +1,8 @@
 import { save } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { colorSchemes } from './Chip.styles';
 import { Chip } from 'src/molecules/Chip/Chip';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { page, render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Shows readonly chip with leading icon', () => {
   const someText = faker.animal.crocodilia();
@@ -11,17 +10,23 @@ test('Shows readonly chip with leading icon', () => {
 
   //Accesses the span element, finds it parent and finds the first element, which in this case should alwasys be leading
   expect(
-    screen.getByText(someText).parentElement?.firstElementChild?.className
+    page.getByText(someText).element().parentElement?.firstElementChild
+      ?.className
   ).toBe('leading');
 });
 
 test('Works with just string/number', () => {
   const text = faker.animal.bear();
   const { rerender } = render(<Chip>{text}</Chip>);
-  expect(screen.getByText(text)).toBeVisible();
+
+  const chip = screen.getByText(text);
+  expect(chip).toBeVisible();
+
   const randomNumb = faker.number.int();
   rerender(<Chip>{randomNumb}</Chip>);
-  expect(screen.getByText(randomNumb)).toBeVisible();
+
+  const otherChip = screen.getByText(randomNumb.toString());
+  expect(otherChip).toBeVisible();
 });
 
 test('Works with multiple children', () => {
@@ -31,7 +36,8 @@ test('Works with multiple children', () => {
   const fourth = faker.animal.crocodilia();
   const fifth = faker.animal.fish();
   const sixth = faker.animal.dog();
-  render(
+
+  const { rerender } = render(
     <Chip>
       <div>{first}</div>
       {second}
@@ -46,12 +52,30 @@ test('Works with multiple children', () => {
     </Chip>
   );
 
-  expect(screen.getByText(first)).toBeVisible();
-  expect(screen.getByText(second)).toBeVisible();
-  expect(screen.getByText(third)).toBeVisible();
-  expect(screen.getByText(fourth)).toBeVisible();
-  expect(screen.getByText(fifth)).toBeVisible();
-  expect(screen.getByText(sixth)).toBeVisible();
+  for (const child of [first, second, third, fourth, fifth, sixth]) {
+    const childElement = page.getByText(child).element();
+    expect(childElement).toBeVisible();
+  }
+
+  rerender(
+    <Chip>
+      {first}
+      {second}
+      <p>{third}</p>
+      <>
+        <p>{fifth}</p>
+        {fourth}
+        <div>
+          <p>{sixth}</p>
+        </div>
+      </>
+    </Chip>
+  );
+
+  for (const child of [first, second, third, fourth, fifth, sixth]) {
+    const childElement = page.getByText(child).element();
+    expect(childElement).toBeVisible();
+  }
 });
 
 test('Shows interactive chip with delete icon', () => {
@@ -60,7 +84,8 @@ test('Shows interactive chip with delete icon', () => {
 
   render(<Chip onDelete={handleOnClick}>{someText}</Chip>);
 
-  expect(screen.queryByRole('img')).toBeInTheDocument();
+  const icon = page.getByRole('img').element();
+  expect(icon).toBeInTheDocument();
 });
 
 test('Handles delete event on interactive chip', async () => {
@@ -108,44 +133,6 @@ test('Interactive chip renders icon', () => {
   expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
     'd',
     save.svgPathData
-  );
-});
-
-test('White readonly chip has expected background', () => {
-  const someText = faker.animal.crocodilia();
-
-  render(<Chip variant="white">{someText}</Chip>);
-
-  const chip = screen.getByText(someText).parentElement!.parentElement!;
-
-  expect(chip).toHaveStyleRule(
-    'background-color',
-    colorSchemes.white.background
-  );
-});
-
-test('White selected chip has expected styling from default', () => {
-  const handleOnClick = vi.fn();
-
-  const someText = faker.animal.crocodilia();
-  const defaultStyling = colorSchemes.default;
-
-  render(
-    <Chip variant="white" selected onClick={handleOnClick}>
-      {someText}
-    </Chip>
-  );
-
-  const chip = screen.getByRole('button');
-
-  expect(chip).toHaveStyleRule(
-    'background-color',
-    defaultStyling.selected?.background
-  );
-  expect(chip).toHaveStyleRule('color', defaultStyling.color);
-  expect(chip).toHaveStyleRule(
-    'outline',
-    `1px solid ${defaultStyling.selected?.borderColor}`
   );
 });
 

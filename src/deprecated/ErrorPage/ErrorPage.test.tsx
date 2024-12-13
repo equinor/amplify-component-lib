@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 
+import { ErrorPage } from '.';
 import { ErrorType } from 'src/atoms';
 import { getErrorContent } from 'src/atoms/utils/errors';
-import { ErrorPage } from 'src/deprecated/ErrorPage/index';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Shows default values without props', () => {
   const defaultError = getErrorContent('Amplify portal', ErrorType.DEFAULT);

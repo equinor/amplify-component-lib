@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { faker } from '@faker-js/faker';
-import { render, screen } from '@testing-library/react';
 
 import {
   DefaultNotificationTypes,
@@ -15,8 +14,7 @@ import {
   ReviewQANotificationsTypes,
 } from './Notifications.types';
 import { NotificationTemplate } from './NotificationTemplate';
-
-import { expect } from 'vitest';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 const fakeNotifications:
   | ReadyToReportNotificationTypes
@@ -285,7 +283,7 @@ test('renders ReadyToReportNotification correctly', () => {
   expect(screen.getByText(systemNotifications.wellbore)).toBeInTheDocument();
 });
 
-test(' MergeBranchOrca ', () => {
+test('MergeBranchOrca', () => {
   render(<NotificationTemplate {...mergeBranchOrca} />);
 
   const text = screen.getByText(/ has merged your branch/i);
@@ -293,7 +291,7 @@ test(' MergeBranchOrca ', () => {
   expect(text).toBeInTheDocument();
 });
 
-test('Experience in 3 weeks  ', () => {
+test('Experience in 3 weeks', () => {
   render(<NotificationTemplate {...due3weeksnotification} />);
 
   expect(
@@ -304,7 +302,7 @@ test('Experience in 3 weeks  ', () => {
   ).toBeInTheDocument();
 });
 
-test(' RequestChangeOrca ', () => {
+test('RequestChangeOrca', () => {
   render(<NotificationTemplate {...requestChangeOrca} />);
 
   const text = screen.getByText(/has request/i);
@@ -321,14 +319,19 @@ test('ReviewQANotification ', () => {
   ).toBeInTheDocument();
 });
 
-test(' RequestReviewOrca ', () => {
+test('RequestReviewOrca', () => {
   render(<NotificationTemplate {...requestReviewOrca} />);
 
-  const text = screen.getByText(/has requested review/i);
+  const text = screen.getByText(
+    `${requestReviewOrca.fromUser.displayName} has requested review for branch ${requestReviewOrca.branchName}`
+  );
+  expect(
+    screen.getByText(requestReviewOrca.applicationName)
+  ).toBeInTheDocument();
   expect(text).toBeInTheDocument();
 });
 
-test(' ReadyToBePublished ', () => {
+test('ReadyToBePublished', () => {
   render(<NotificationTemplate {...readyToBePublished} />);
 
   expect(

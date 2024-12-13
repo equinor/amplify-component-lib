@@ -1,4 +1,4 @@
-// c8 ignore file
+/* v8 ignore start */
 // Subset of data from https://jsonplaceholder.typicode.com/photos
 
 export const data = [
@@ -212,3 +212,4 @@ export const data = [
     url: 'https://via.placeholder.com/600/372c93',
   },
 ];
+/* v8 ignore end */

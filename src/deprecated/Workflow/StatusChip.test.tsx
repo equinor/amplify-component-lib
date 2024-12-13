@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import StatusChip from 'src/deprecated/Workflow/StatusChip';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 function fakeProps(disabled = false) {
   return {
@@ -21,7 +21,7 @@ test('Renders correctly when not disabled', () => {
   );
 
   const chip = screen.getByTestId('status-chip');
-  expect(chip).toHaveStyleRule('border', `0.063em solid ${props.color}`);
+  expect(chip).toHaveStyle(`border: 0.063em solid ${props.color}`);
   expect(screen.getByText(props.childText)).toBeInTheDocument();
 });
 

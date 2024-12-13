@@ -15,7 +15,7 @@ const { capitalize } = string;
 const { formatDate } = date;
 const { getAppName, getEnvironmentName } = environment;
 
-const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
+export const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
   if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
     return ':large_yellow_circle:';
   }
@@ -30,13 +30,13 @@ export const readUploadedFileAsText = (
 ): Promise<string> => {
   const temporaryFileReader = new FileReader();
 
-  /* c8 ignore start */ // Rejection files not working
+  /* v8 ignore start */ // Rejection files not working
   return new Promise((resolve, reject) => {
     temporaryFileReader.onerror = () => {
       temporaryFileReader.abort();
       reject(new DOMException('Problem parsing input file.'));
     };
-    /* c8 ignore end */
+    /* v8 ignore end */
     temporaryFileReader.onload = () => {
       resolve(temporaryFileReader.result as string);
     };
@@ -77,11 +77,11 @@ export const createServiceNowUrl = (sysId: string, selfService?: boolean) => {
   const path = selfService
     ? 'selfservice?id=ticket&table=incident&sys_id='
     : 'now/nav/ui/classic/params/target/incident.do%3Fsys_id%3D';
-  /* c8 ignore start*/
+  /* v8 ignore start*/
   const isProd =
     getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) ===
     EnvironmentType.PRODUCTION;
-  /* c8 ignore end */
+  /* v8 ignore end */
   return `https://equinor${
     isProd ? '' : 'test'
   }.service-now.com/${path}${sysId}`;

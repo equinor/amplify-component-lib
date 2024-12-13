@@ -1,4 +1,6 @@
+import { colors } from 'src/atoms/style/colors';
+
 export const COLORS = {
-  START: 'var(--eds_interactive_disabled__border, rgba(202, 202, 202, 1))',
-  END: 'var(--eds_interactive_disabled__text, rgba(220, 220, 220, 1))',
-};
+  START: colors.interactive.disabled__border.rgba,
+  END: colors.interactive.disabled__text.rgba,
+} as const;

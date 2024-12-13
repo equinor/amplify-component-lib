@@ -5,7 +5,7 @@ import {
   FieldMenu,
   FieldMenuProps,
 } from 'src/organisms/TopBar/FieldMenu/FieldMenu';
-import { render, screen, userEvent } from 'src/tests/test-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 

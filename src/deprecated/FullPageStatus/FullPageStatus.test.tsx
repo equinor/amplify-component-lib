@@ -2,7 +2,7 @@ import { warning_filled } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { FullPageStatus } from 'src/deprecated/FullPageStatus/FullPageStatus';
-import { render, screen } from 'src/tests/test-utils';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Shows circular progress when isLoading === true', () => {
   render(<FullPageStatus loading error={false} errorMessage="" />);
