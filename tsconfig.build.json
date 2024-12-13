@@ -4,6 +4,8 @@
     "src/**/*.stories.ts*",
     "src/**/*.test.ts*",
     "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.workspace.ts",
     "eslint.config.js",
     "src/storybook",
     ".storybook"
