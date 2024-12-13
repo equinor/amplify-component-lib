@@ -30,7 +30,11 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         <I18nProvider locale={locale}>
           <EDSDatePicker {...props} ref={ref} formatOptions={formatOptions} />
         </I18nProvider>
-        {props.meta && <Typography variant="meta">{props.meta}</Typography>}
+        {props.meta && (
+          <Typography variant="helper" group="input">
+            {props.meta}
+          </Typography>
+        )}
       </DatePickerWrapper>
     );
   }
