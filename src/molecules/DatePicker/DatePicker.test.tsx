@@ -49,3 +49,10 @@ test('Able to override locale', async () => {
 
   expect(screen.getByText('juli')).toBeInTheDocument();
 });
+
+test('Meta text is displayed', async () => {
+  const meta = faker.animal.bear();
+  render(<DatePicker meta={meta} />);
+
+  expect(screen.getByText(meta)).toBeInTheDocument();
+});

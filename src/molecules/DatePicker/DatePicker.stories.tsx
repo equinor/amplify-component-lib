@@ -1,17 +1,13 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria';
 
-import {
-  Autocomplete,
-  DatePickerProps,
-  NativeSelect,
-} from '@equinor/eds-core-react';
+import { Autocomplete, NativeSelect } from '@equinor/eds-core-react';
 import { CalendarDate } from '@internationalized/date';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
+import { DatePicker, DatePickerProps } from './DatePicker';
 import page from './DatePicker.docs.mdx';
-import { DatePicker } from 'src/molecules/DatePicker/DatePicker';
 import { Stack } from 'src/storybook';
 
 const meta: Meta<typeof DatePicker> = {
@@ -66,6 +62,13 @@ max.setDate(-1);
 
 export const WithMinAndMaxValue: StoryFn = (args) => (
   <DatePicker {...args} minValue={min} maxValue={max} />
+);
+
+export const WithMetaText: StoryFn = (args) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <DatePicker {...args} meta="Required" />
+    <DatePicker {...args} label="Label" meta="Required" />
+  </div>
 );
 
 export const LimitSpecificDays: StoryFn<DatePickerProps> = (args) => {
