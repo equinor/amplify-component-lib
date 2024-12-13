@@ -14,4 +14,8 @@ export const DatePickerWrapper = styled.div`
   &:not(:has(> div > label)):has(> p) {
     padding-top: 1rem;
   }
+
+  div:has(> button) {
+    outline-width: 1px;
+  }
 `;
