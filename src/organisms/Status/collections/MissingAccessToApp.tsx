@@ -8,7 +8,7 @@ export const MissingAccessToApp: FC = () => {
 
   const handleOnClick = () => {
     window.open(
-      `https://www.accessit.equinor.com/Search/Search?term=${encodeURIComponent(appName)}`,
+      `https://accessit.equinor.com/Search/Search?term=${encodeURIComponent(appName)}`,
       '_blank'
     );
   };
