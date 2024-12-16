@@ -86,7 +86,7 @@ do
 done
 
 printf -- "Going into root folder...\n"
-if hasClientFolder -eq 1; then
+if $hasClientFolder -eq 1; then
   cd ../..
 else
   cd ..
@@ -96,7 +96,7 @@ printf -- "Downloading client github actions...\n"
 workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/github_actions_list.txt")
 
 aclIgnorePath="./.acl-ignore"
-if hasClientFolder -eq 1; then
+if $hasClientFolder -eq 1; then
   aclIgnorePath="./client/.acl-ignore"
 fi
 
