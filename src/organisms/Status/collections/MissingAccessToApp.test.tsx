@@ -18,7 +18,7 @@ test('Opens AccessIT when clicking button', async () => {
   await user.click(screen.getByRole('button'));
 
   expect(window.open).toHaveBeenCalledWith(
-    `https://www.accessit.equinor.com/Search/Search?term=${encodeURIComponent('Amplify components')}`,
+    `https://accessit.equinor.com/Search/Search?term=${encodeURIComponent('Amplify components')}`,
     '_blank'
   );
 });
