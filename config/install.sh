@@ -10,7 +10,7 @@ then
   printf -- "Not in ./client folder, moving to it...\n\n"
   cd ./client
   hasClientFolder=1
-elif [ $currentDir !== "client" ]
+elif [ $currentDir != "client" ]
 then
   printf -- "Not in client folder and client folder doesn't exist.\n"
   printf -- "Downloading config files to where you are now\n\n"
@@ -86,7 +86,8 @@ do
 done
 
 printf -- "Going into root folder...\n"
-if $hasClientFolder -eq 1; then
+if [ $hasClientFolder == 1 ]
+then
   cd ../..
 else
   cd ..
