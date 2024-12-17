@@ -10,6 +10,9 @@ then
   printf -- "Not in ./client folder, moving to it...\n\n"
   cd ./client
   hasClientFolder=1
+elif [ $currentDir == "client" ]
+then
+  hasClientFolder=1
 elif [ $currentDir != "client" ]
 then
   printf -- "Not in client folder and client folder doesn't exist.\n"
@@ -97,7 +100,8 @@ printf -- "Downloading client github actions...\n"
 workflowsList=$(curl -s "https://raw.githubusercontent.com/equinor/amplify-component-lib/main/config/github_actions_list.txt")
 
 aclIgnorePath="./.acl-ignore"
-if $hasClientFolder -eq 1; then
+if [ $hasClientFolder == 1 ]
+then
   aclIgnorePath="./client/.acl-ignore"
 fi
 
