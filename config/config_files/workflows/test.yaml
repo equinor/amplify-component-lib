@@ -12,6 +12,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
+        working-directory: client
         run: bun install --frozen-lockfile
 
       - name: Vitest tests
