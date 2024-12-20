@@ -15,6 +15,7 @@ import {
 interface FakeType {
   id: string;
   label: string;
+  disabled?: boolean;
   children?: FakeType[];
 }
 
@@ -355,7 +356,13 @@ test("Doesn't call onToggle if disabled", async () => {
   const props = fakeProps();
   const onToggle = vi.fn();
 
-  render(<OptionDrawer {...props} onToggle={onToggle} disabled />);
+  render(
+    <OptionDrawer
+      {...props}
+      item={{ ...props.item, disabled: true }}
+      onToggle={onToggle}
+    />
+  );
 
   await user.click(screen.getByText(props.item.label));
 

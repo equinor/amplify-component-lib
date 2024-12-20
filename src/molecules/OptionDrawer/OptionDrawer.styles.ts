@@ -34,15 +34,28 @@ const StyledOptionWrapper = styled.div<StyledOptionProps>`
       : 'none'};
 `;
 
-const StyledOption = styled.div<StyledOptionProps>`
+const StyledOption = styled.button<StyledOptionProps>`
   position: relative;
   display: flex;
   flex: 1;
   align-items: center;
   cursor: pointer;
   transition: background-color 0.1s ease-in;
-  &:hover {
+  font-family: 'Equinor', sans-serif;
+  font-size: 1rem;
+  color: ${colors.text.static_icons__default.rgba};
+  &:hover:not(:disabled) {
     background-color: ${colors.interactive.primary__hover_alt.rgba};
+  }
+  &:disabled {
+    cursor: not-allowed;
+    color: ${colors.interactive.disabled__text.rgba};
+    > button {
+      cursor: not-allowed;
+    }
+  }
+  > span::before {
+    display: none;
   }
 
   svg {
