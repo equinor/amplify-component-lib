@@ -1,6 +1,7 @@
 export interface ValueType {
   id: string;
   label: string;
+  disabled?: boolean;
   children?: ValueType[];
   value: number;
 }
@@ -15,11 +16,13 @@ export const items: ValueType[] = [
         id: '11',
         value: 11,
         label: 'First',
+        disabled: true,
         children: [
           {
             id: '111',
             value: 111,
             label: 'Uno',
+            disabled: true,
           },
           {
             id: '112',
@@ -30,6 +33,7 @@ export const items: ValueType[] = [
                 id: '1121',
                 value: 1121,
                 label: 'En',
+                disabled: true,
               },
               {
                 id: '1122',

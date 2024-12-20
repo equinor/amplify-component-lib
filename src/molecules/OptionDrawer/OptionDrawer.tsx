@@ -74,7 +74,13 @@ export interface ToggleEventProps<T> {
 }
 
 export interface OptionDrawerProps<
-  T extends { id: string; label: string; parentId?: string; children?: T[] },
+  T extends {
+    id: string;
+    label: string;
+    disabled?: boolean;
+    parentId?: string;
+    children?: T[];
+  },
 > {
   item: T;
   onToggle: ({ items, toggle, event }: ToggleEventProps<T>) => void;
@@ -88,11 +94,16 @@ export interface OptionDrawerProps<
   openAll?: boolean;
   showIntermediateParent?: boolean;
   parentHasNestedItems?: boolean;
-  disabled?: boolean;
 }
 
 export const OptionDrawer = <
-  T extends { id: string; label: string; parentId?: string; children?: T[] },
+  T extends {
+    id: string;
+    label: string;
+    disabled?: boolean;
+    parentId?: string;
+    children?: T[];
+  },
 >({
   item,
   onToggle,
@@ -106,7 +117,6 @@ export const OptionDrawer = <
   openAll,
   showIntermediateParent = false,
   parentHasNestedItems = false,
-  disabled = false,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
@@ -129,7 +139,7 @@ export const OptionDrawer = <
   }, [openAll]);
 
   const handleClick = (e: MouseEvent) => {
-    if (disabled) return;
+    if (item.disabled) return;
 
     if (item.children && item.children.length !== 0) {
       setOpen((o) => !o);
@@ -232,23 +242,28 @@ export const OptionDrawer = <
             <StyledIcon data={open ? chevron_down : chevron_right} />
           </Button>
         )}
-        <StyledOption $section={section} onClick={handleClick}>
+        <StyledOption
+          $section={section}
+          onClick={handleClick}
+          disabled={!!item.disabled}
+        >
           <Checkbox
             indeterminate={status === 'INTERMEDIATE'}
             checked={status === 'CHECKED'}
             color="secondary"
+            disabled={!!item.disabled}
           />
           {item.label}
         </StyledOption>
       </StyledOptionItem>
       {open &&
-        item.children?.map((i) => (
+        item.children?.map((child) => (
           <OptionDrawer<T>
-            key={`OptionDrawer-${i.id}`}
+            key={`OptionDrawer-${child.id}`}
             section={section + 1}
             onToggle={onToggle}
             selectedItems={selectedItems}
-            item={i}
+            item={child}
             singleSelect={singleSelect}
             siblings={item.children?.length}
             animateCheck={animateCheck}
@@ -257,7 +272,6 @@ export const OptionDrawer = <
             openAll={openAll}
             showIntermediateParent={showIntermediateParent}
             parentHasNestedItems
-            disabled={disabled}
           />
         ))}
     </StyledOptionWrapper>
