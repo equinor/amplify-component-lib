@@ -88,6 +88,7 @@ export interface OptionDrawerProps<
   openAll?: boolean;
   showIntermediateParent?: boolean;
   parentHasNestedItems?: boolean;
+  disabled?: boolean;
 }
 
 export const OptionDrawer = <
@@ -105,6 +106,7 @@ export const OptionDrawer = <
   openAll,
   showIntermediateParent = false,
   parentHasNestedItems = false,
+  disabled = false,
 }: OptionDrawerProps<T>) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<StatusType>(
@@ -127,6 +129,8 @@ export const OptionDrawer = <
   }, [openAll]);
 
   const handleClick = (e: MouseEvent) => {
+    if (disabled) return;
+
     if (item.children && item.children.length !== 0) {
       setOpen((o) => !o);
     }
@@ -233,7 +237,6 @@ export const OptionDrawer = <
             indeterminate={status === 'INTERMEDIATE'}
             checked={status === 'CHECKED'}
             color="secondary"
-            onChange={() => null}
           />
           {item.label}
         </StyledOption>
@@ -254,6 +257,7 @@ export const OptionDrawer = <
             openAll={openAll}
             showIntermediateParent={showIntermediateParent}
             parentHasNestedItems
+            disabled={disabled}
           />
         ))}
     </StyledOptionWrapper>

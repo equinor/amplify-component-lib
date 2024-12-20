@@ -348,3 +348,16 @@ test('chevron toggler works as expected', async () => {
     expect(screen.queryByText(label)).not.toBeInTheDocument()
   );
 });
+
+test("Doesn't call onToggle if disabled", async () => {
+  const user = userEvent.setup();
+
+  const props = fakeProps();
+  const onToggle = vi.fn();
+
+  render(<OptionDrawer {...props} onToggle={onToggle} disabled />);
+
+  await user.click(screen.getByText(props.item.label));
+
+  expect(onToggle).not.toHaveBeenCalled();
+});
