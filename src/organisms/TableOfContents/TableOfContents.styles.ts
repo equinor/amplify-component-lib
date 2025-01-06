@@ -19,10 +19,15 @@ export const Button = styled.button<ButtonProps>`
   &:hover {
     background: ${colors.interactive.primary__hover_alt.rgba};
   }
-  &:focus {
-    outline: 2px dashed ${colors.interactive.focus.rgba};
-    outline-offset: -4px;
-  }
+  ${({ $active }) => {
+    if ($active) return '';
+    return css`
+      &:focus:not(:hover) {
+        outline: 2px dashed ${colors.interactive.focus.rgba};
+        outline-offset: -4px;
+      }
+    `;
+  }}
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -164,7 +169,6 @@ interface BorderItemsHorizontalContainerProps {
 
 export const BorderItemsHorizontalContainer = styled.div<BorderItemsHorizontalContainerProps>`
   display: flex;
-  flex-direction:;
   position: relative;
   &:after {
     position: absolute;
@@ -254,7 +258,6 @@ export const TableOfContentsContainer = styled(
       }
     }
   }}
-  data-testid="table-of-contents-container"
 `;
 
 interface ChildContainerProps {
