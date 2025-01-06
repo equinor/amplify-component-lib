@@ -17,5 +17,8 @@ export const DatePickerWrapper = styled.div`
 
   div:has(> button) {
     outline-width: 1px;
+    > button:focus-visible {
+      outline: none;
+    }
   }
 `;
