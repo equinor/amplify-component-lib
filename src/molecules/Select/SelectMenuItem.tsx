@@ -11,6 +11,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { getChildOffset } from './Select.utils';
 import { getParentIcon } from './SelectMenuItem.utils';
+import { spacings } from 'src/atoms/style/spacings';
 import {
   MenuItemSpacer,
   MenuItemWrapper,
@@ -117,7 +118,9 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   if (item.children && item.children.length > 0 && multiselect) {
     return (
       <>
-        <MenuItemWrapper>
+        <MenuItemWrapper
+          style={{ paddingLeft: depth === 0 ? spacings.small : 0 }}
+        >
           {spacers}
           <SmallButton
             variant="ghost_icon"
