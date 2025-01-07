@@ -73,6 +73,24 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
               ? shortErrorText
               : 'Invalid file type'}
           </div>
+          <svg
+            width="88"
+            height="88"
+            viewBox="0 0 88 88"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="1"
+              y="1"
+              width="86"
+              height="86"
+              rx="7"
+              stroke={colors.interactive.warning__text.rgba}
+              strokeWidth="2"
+              strokeDasharray="4 4"
+            />
+          </svg>
         </Rejection>
       );
     }
@@ -105,6 +123,24 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
           size={24}
         />
         <Typography variant="meta">Uploading...</Typography>
+        <svg
+          width="88"
+          height="88"
+          viewBox="0 0 88 88"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="1"
+            y="1"
+            width="86"
+            height="86"
+            rx="7"
+            stroke={colors.ui.background__medium.rgba}
+            strokeWidth="2"
+            strokeDasharray="4 4"
+          />
+        </svg>
       </LoadingWrapper>
     );
   }, [

@@ -8,20 +8,20 @@ import { animation, colors, spacings } from 'src/atoms/style';
 
 import styled, { css } from 'styled-components';
 
-export const BORDER_RADIUS = '8px';
+export const BORDER_RADIUS = '7px';
 
 interface ContainerProps {
   $isError?: boolean;
 }
 
 export const CompactFileProgressContainer = styled.div<ContainerProps>`
-  border-radius: 4px;
   margin: 10px 0;
   width: 88px;
   height: 88px;
   box-sizing: border-box;
   position: relative;
   transition: ${animation.transitionMS};
+  border-radius: ${BORDER_RADIUS};
   ${({ $isError }) =>
     $isError &&
     css`
@@ -40,13 +40,15 @@ export const LoadingWrapper = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
-  border: 2px dashed ${colors.ui.background__medium.rgba};
   display: flex;
   flex-direction: column;
   gap: ${spacings.small};
   justify-content: center;
   align-items: center;
   border-radius: ${BORDER_RADIUS};
+  > svg:last-child {
+    position: absolute;
+  }
 `;
 
 export const DoneWrapper = styled.div`
@@ -59,11 +61,13 @@ export const DoneWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   > img {
     object-fit: cover;
     width: 88px;
     height: 88px;
   }
+
   > svg {
     width: 40px;
     height: 40px;
@@ -82,7 +86,9 @@ export const Rejection = styled.div`
   justify-items: center;
   text-align: center;
   border-radius: ${BORDER_RADIUS};
-  border: 2px dashed ${colors.interactive.warning__text.rgba};
+  > svg:last-child {
+    position: absolute;
+  }
   > div {
     color: ${colors.interactive.warning__text.rgba};
   }

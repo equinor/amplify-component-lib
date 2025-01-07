@@ -1,13 +1,6 @@
 import { FileWithPath } from 'react-dropzone';
 
-import {
-  file,
-  IconData,
-  library_pdf,
-  microsoft_excel,
-  microsoft_powerpoint,
-  microsoft_word,
-} from '@equinor/eds-icons';
+import { file_description, IconData, library_pdf } from '@equinor/eds-icons';
 
 export function readUploadedFileAsText(
   inputFile: FileWithPath
@@ -38,17 +31,7 @@ export function getFileIcon(fileName: string): IconData {
   switch (fileExtension) {
     case 'pdf':
       return library_pdf;
-    case 'doc':
-    case 'docx':
-      return microsoft_word;
-    case 'ppt':
-    case 'pptx':
-      return microsoft_powerpoint;
-    case 'xls':
-    case 'xlsx':
-    case 'csv':
-      return microsoft_excel;
     default:
-      return file;
+      return file_description;
   }
 }
