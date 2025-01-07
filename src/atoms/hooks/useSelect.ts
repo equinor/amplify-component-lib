@@ -152,7 +152,11 @@ const useSelect = <T extends SelectOptionRequired>(
 
   const handleOnItemSelect = (item: SelectOption<T>) => {
     if ('value' in props) {
-      props.onSelect(item);
+      if (props.value?.value === item.value) {
+        props.onSelect(undefined);
+      } else {
+        props.onSelect(item);
+      }
     } else {
       props.onSelect(getNewValues(props.values, item), item);
     }
