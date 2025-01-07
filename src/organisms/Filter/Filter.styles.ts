@@ -13,7 +13,6 @@ export const Container = styled.div`
   background: ${colors.ui.background__default.rgba};
   align-items: center;
   width: 100%;
-  height: 36px;
   padding-left: ${spacings.small};
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   border-top-left-radius: ${shape.corners.borderRadius};
@@ -21,14 +20,16 @@ export const Container = styled.div`
   transition: border-bottom 200ms;
   cursor: pointer;
   > section {
-    margin-left: ${spacings.small};
+    min-height: 24px;
+    align-items: center;
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
     gap: ${spacings.x_small};
+    margin: calc(${spacings.xx_small} + ${spacings.x_small}) 0
+      calc(${spacings.xx_small} + ${spacings.x_small}) ${spacings.small};
   }
-  > button {
-    height: 35px;
+  > button:not([data-testid='clear-all-x']) {
     padding: 0 ${spacings.small} 0 ${spacings.medium_small};
     display: flex;
     gap: ${spacings.x_small};
@@ -48,7 +49,7 @@ export const Container = styled.div`
     width: 24px;
     height: 24px;
     border-left: none;
-    margin-right: ${spacings.small};
+    margin-right: ${spacings.xx_small};
     &:after {
       width: 24px;
       height: 24px;
@@ -58,6 +59,7 @@ export const Container = styled.div`
     border-left: 1px solid ${colors.ui.background__medium.rgba};
     width: 36px;
     padding: 0;
+    align-self: stretch;
     &:hover {
       border-top-right-radius: ${shape.corners.borderRadius};
       background: ${colors.interactive.primary__hover_alt.rgba};
