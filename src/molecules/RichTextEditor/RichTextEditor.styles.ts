@@ -132,7 +132,8 @@ export const EditorStyling = styled.div<EditorStylingProps>`
       }
 
       th {
-        background-color: #f1f3f5;
+        background-color: ${({ $lightBackground }) =>
+          $lightBackground ? '#f1f3f5' : colors.ui.background__default.rgba};
         font-weight: bold;
         text-align: left;
       }
