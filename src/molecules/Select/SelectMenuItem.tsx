@@ -197,6 +197,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     <MenuItemWrapper>
       <StyledMenuItem
         $depth={depth}
+        $selected={props.value && item.value === props.value.value}
         ref={(element: HTMLButtonElement | null) => {
           itemRefs.current[index] = element;
         }}

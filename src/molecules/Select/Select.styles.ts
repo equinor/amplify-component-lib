@@ -209,6 +209,7 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
 
 interface CustomMenuItemProps {
   $paddedLeft?: boolean;
+  $selected?: boolean;
 }
 
 const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
@@ -216,7 +217,7 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   border-radius: 2px;
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;
-
+  
   > div {
     grid-auto-columns: auto;
     justify-content: flex-start;
@@ -229,6 +230,13 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   &:focus-visible {
     outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
+
+    ${({ $selected }) =>
+      $selected
+        ? css`
+            background: ${colors.interactive.primary__selected_highlight.rgba};
+          `
+        : ''}}
 `;
 
 const MenuItemSpacer = styled.hr`
