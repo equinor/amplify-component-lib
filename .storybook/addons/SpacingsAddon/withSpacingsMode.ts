@@ -14,7 +14,6 @@ export const withSpacingsMode = (StoryFn: StoryFunction<Renderer>) => {
 
   const spacingsMode = globals[PARAM_KEY];
 
-  console.log('spacingsMode', spacingsMode);
   useEffect(() => {
     document.documentElement.setAttribute('data-spacing-mode', spacingsMode);
   }, [spacingsMode, updateGlobals]);
