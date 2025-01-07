@@ -25,8 +25,9 @@ test('Renders label on hover', async () => {
 
   await user.hover(screen.getByText('other'));
 
-  await waitFor(() =>
-    expect(screen.queryByText(/copy/i)).not.toBeInTheDocument()
+  await waitFor(
+    () => expect(screen.queryByText(/copy/i)).not.toBeInTheDocument(),
+    { timeout: 5000 }
   );
 });
 

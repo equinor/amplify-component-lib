@@ -70,7 +70,8 @@ export type SingleSelectMenuItemProps<T extends SelectOptionRequired> = {
   isParentSelected?: boolean;
   parentHasNestedItems?: boolean;
 } & Omit<SelectMenuProps<T>, 'search'> &
-  SelectMenuItemProps<T>;
+  SelectMenuItemProps<T> &
+  Pick<SingleSelectCommon<T>, 'value'>;
 
 export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
   isParentSelected?: boolean;

@@ -91,6 +91,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
           itemRefs={itemRefs}
           onItemKeyDown={onItemKeyDown}
           onItemSelect={onItemSelect}
+          value={props.value}
         />
       ))}
     </Menu.Section>

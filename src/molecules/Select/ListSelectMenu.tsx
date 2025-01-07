@@ -124,6 +124,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       onItemKeyDown={onItemKeyDown}
       onItemSelect={onItemSelect}
       parentHasNestedItems={hasNestedItems}
+      value={props.value}
     />
   ));
 };

@@ -157,3 +157,31 @@ test('Groups work as expected when clicking items', async () => {
   expect(handler).toBeCalledTimes(1);
   expect(handler).toBeCalledWith(randomItem);
 });
+
+test('Clicking the same item deselects it', async () => {
+  const items = fakeSelectItems();
+  const label = faker.animal.bear();
+  const meta = faker.animal.insect();
+  const handleOnSelect = vi.fn();
+  const value = faker.helpers.arrayElement(items);
+  render(
+    <SingleSelect
+      label={label}
+      meta={meta}
+      onSelect={handleOnSelect}
+      value={value}
+      items={items}
+    />
+  );
+  const user = userEvent.setup();
+
+  expect(screen.getByText(label)).toBeInTheDocument();
+  expect(screen.getByText(meta)).toBeInTheDocument();
+
+  await user.click(screen.getByRole('combobox'));
+
+  await user.click(screen.getByRole('menuitem', { name: value.label }));
+
+  expect(handleOnSelect).toHaveBeenCalledTimes(1);
+  expect(handleOnSelect).toHaveBeenCalledWith(undefined);
+});
