@@ -11,20 +11,20 @@ on:
 jobs:
   eslint:
     name: ESLint
-    uses: ./.github/workflows/eslint.yaml
+    uses: ./eslint.yaml
 
   test:
     name: Test
-    uses: ./.github/workflows/test.yaml
+    uses: ./test.yaml
 
   build:
     name: Build
-    uses: ./.github/workflows/build.yaml
+    uses: ./build.yaml
 
   build-docker:
     name: Build docker image
-    uses: ./.github/workflows/build_docker.yaml
+    uses: ./build_docker.yaml
 
   check_configs:
     name: Check Config files
-    uses: ./.github/workflows/check_config.yaml
+    uses: ./check_config.yaml
