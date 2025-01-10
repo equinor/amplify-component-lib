@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 import { Settings, SettingsProps } from './Settings';
 import { ThemeProvider } from 'src/providers';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
@@ -182,31 +184,29 @@ test('Calls onChange when using radio buttons in settings menu', async () => {
 test('Renders correctly with color boxes', async () => {
   const theme = 'light';
   const setTheme = vi.fn();
-  const settingsOptions: Required<SettingsProps> = {
-    allSettings: [
-      {
-        title: 'Theme',
-        value: theme,
-        onChange: setTheme,
-        items: [
-          {
-            label: 'Light Mode',
-            name: 'theme-group',
-            colorBox: '#ffffff',
-            value: 'light',
-          },
-          {
-            label: 'Dark Mode',
-            name: 'theme-group',
-            colorBox: '#000000',
-            value: 'dark',
-          },
-        ],
-      },
-    ],
-  };
+  const allSettings: Required<SettingsProps['allSettings']> = [
+    {
+      title: 'Theme',
+      value: theme,
+      onChange: setTheme,
+      items: [
+        {
+          label: 'Light Mode',
+          name: 'theme-group',
+          colorBox: '#ffffff',
+          value: 'light',
+        },
+        {
+          label: 'Dark Mode',
+          name: 'theme-group',
+          colorBox: '#000000',
+          value: 'dark',
+        },
+      ],
+    },
+  ];
 
-  render(<Settings allSettings={settingsOptions.allSettings} />);
+  render(<Settings allSettings={allSettings} />);
 
   const user = userEvent.setup();
 
@@ -214,7 +214,7 @@ test('Renders correctly with color boxes', async () => {
 
   await user.click(menuButton);
 
-  for (const item of settingsOptions.allSettings[0].items) {
+  for (const item of allSettings[0].items) {
     expect(screen.getByTestId(`colorbox-${item.colorBox}`)).toBeInTheDocument();
   }
 });
@@ -222,31 +222,29 @@ test('Renders correctly with color boxes', async () => {
 test('Renders correctly with texts', async () => {
   const theme = 'light';
   const setTheme = vi.fn();
-  const settingsOptions: Required<SettingsProps> = {
-    allSettings: [
-      {
-        title: 'Theme',
-        value: theme,
-        onChange: setTheme,
-        items: [
-          {
-            label: 'Light Mode',
-            name: 'theme-group',
-            text: 'light-text',
-            value: 'light',
-          },
-          {
-            label: 'Dark Mode',
-            name: 'theme-group',
-            text: 'dark-text',
-            value: 'dark',
-          },
-        ],
-      },
-    ],
-  };
+  const allSettings: Required<SettingsProps['allSettings']> = [
+    {
+      title: 'Theme',
+      value: theme,
+      onChange: setTheme,
+      items: [
+        {
+          label: 'Light Mode',
+          name: 'theme-group',
+          text: 'light-text',
+          value: 'light',
+        },
+        {
+          label: 'Dark Mode',
+          name: 'theme-group',
+          text: 'dark-text',
+          value: 'dark',
+        },
+      ],
+    },
+  ];
 
-  render(<Settings allSettings={settingsOptions.allSettings} />);
+  render(<Settings allSettings={allSettings} />);
 
   const user = userEvent.setup();
 
@@ -254,7 +252,7 @@ test('Renders correctly with texts', async () => {
 
   await user.click(menuButton);
 
-  for (const item of settingsOptions.allSettings[0].items) {
+  for (const item of allSettings[0].items) {
     expect(screen.getByText(item.text ?? '')).toBeInTheDocument();
   }
 });
@@ -262,31 +260,29 @@ test('Renders correctly with texts', async () => {
 test('Renders correctly with elements', async () => {
   const theme = 'light';
   const setTheme = vi.fn();
-  const settingsOptions: Required<SettingsProps> = {
-    allSettings: [
-      {
-        title: 'Theme',
-        value: theme,
-        onChange: setTheme,
-        items: [
-          {
-            label: 'Light Mode',
-            name: 'theme-group',
-            element: <p>light-element</p>,
-            value: 'light',
-          },
-          {
-            label: 'Dark Mode',
-            name: 'theme-group',
-            element: <p>dark-element</p>,
-            value: 'dark',
-          },
-        ],
-      },
-    ],
-  };
+  const allSettings: Required<SettingsProps['allSettings']> = [
+    {
+      title: 'Theme',
+      value: theme,
+      onChange: setTheme,
+      items: [
+        {
+          label: 'Light Mode',
+          name: 'theme-group',
+          element: <p>light-element</p>,
+          value: 'light',
+        },
+        {
+          label: 'Dark Mode',
+          name: 'theme-group',
+          element: <p>dark-element</p>,
+          value: 'dark',
+        },
+      ],
+    },
+  ];
 
-  render(<Settings allSettings={settingsOptions.allSettings} />);
+  render(<Settings allSettings={allSettings} />);
 
   const user = userEvent.setup();
 
@@ -294,7 +290,7 @@ test('Renders correctly with elements', async () => {
 
   await user.click(menuButton);
 
-  for (const item of settingsOptions.allSettings[0].items) {
+  for (const item of allSettings[0].items) {
     expect(
       screen.getByText(`${item.value as string}-element`)
     ).toBeInTheDocument();
@@ -324,4 +320,22 @@ test('Automatically adds Theme settings if ThemeProvider is used', async () => {
 test('Throws error if no settings are provided', () => {
   console.error = vi.fn();
   expect(() => render(<Settings />)).toThrowError();
+});
+
+test('Shows custom children as expected', async () => {
+  const someText = faker.animal.dog();
+  render(
+    <Settings>
+      <p>{someText}</p>
+    </Settings>,
+    { wrapper: ThemeProvider }
+  );
+
+  const user = userEvent.setup();
+
+  const menuButton = screen.getByRole('button');
+
+  await user.click(menuButton);
+
+  expect(screen.getByText(someText)).toBeInTheDocument();
 });
