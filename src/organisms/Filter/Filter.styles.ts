@@ -1,4 +1,4 @@
-import { colors, elevation, shape, spacings, typography } from 'src/atoms';
+import { colors, shape, spacings, typography } from 'src/atoms';
 import { Chip } from 'src/molecules/Chip/Chip';
 
 import { motion } from 'framer-motion';
@@ -6,6 +6,9 @@ import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   width: 100%;
+  border: 1px solid ${colors.ui.background__heavy.rgba};
+  border-radius: ${shape.corners.borderRadius};
+  overflow: hidden;
 `;
 
 export const Container = styled.div`
@@ -14,10 +17,7 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
   padding-left: ${spacings.small};
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  border-top-left-radius: ${shape.corners.borderRadius};
-  border-top-right-radius: ${shape.corners.borderRadius};
-  transition: border-bottom 200ms;
+  outline: 1px solid ${colors.ui.background__medium.rgba};
   cursor: pointer;
   > section {
     min-height: 24px;
@@ -61,7 +61,6 @@ export const Container = styled.div`
     padding: 0;
     align-self: stretch;
     &:hover {
-      border-top-right-radius: ${shape.corners.borderRadius};
       background: ${colors.interactive.primary__hover_alt.rgba};
     }
   }
@@ -97,7 +96,6 @@ export const Content = styled(motion.div)<ContentProps>`
   border-bottom-left-radius: ${shape.corners.borderRadius};
   border-bottom-right-radius: ${shape.corners.borderRadius};
   background: ${colors.ui.background__default.rgba};
-  box-shadow: ${elevation.raised};
   overflow: hidden;
   > section {
     padding: ${spacings.medium};
