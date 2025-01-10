@@ -1,19 +1,16 @@
-import { FC, useContext, useMemo, useRef, useState } from 'react';
+import { FC, ReactNode, useContext, useMemo, useRef, useState } from 'react';
 
 import { Icon, Radio, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
 import { TopBarButton } from './TopBar.styles';
 import { TopBarMenu } from './TopBarMenu';
 import { Theme } from 'src/atoms/enums';
-import { spacings } from 'src/atoms/style';
+import { elevation, spacings } from 'src/atoms/style';
 import { SettingsSection } from 'src/organisms/TopBar/Settings.types';
 import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
 
 import styled from 'styled-components';
-
-const { elevation } = tokens;
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -51,9 +48,10 @@ const SettingsItems = styled.div`
 
 export interface SettingsProps {
   allSettings?: SettingsSection[];
+  children?: ReactNode | ReactNode[];
 }
 
-export const Settings: FC<SettingsProps> = ({ allSettings }) => {
+export const Settings: FC<SettingsProps> = ({ allSettings, children }) => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const themeContext = useContext(ThemeProviderContext);
@@ -136,6 +134,7 @@ export const Settings: FC<SettingsProps> = ({ allSettings }) => {
             </div>
           ))}
         </SettingsItems>
+        {children}
       </TopBarMenu>
     </>
   );
