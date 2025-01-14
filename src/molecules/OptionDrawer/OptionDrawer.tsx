@@ -251,6 +251,7 @@ export const OptionDrawer = <
             checked={status === 'CHECKED'}
             color="secondary"
             disabled={!!item.disabled}
+            onChange={() => null}
           />
           {item.label}
         </StyledOption>
