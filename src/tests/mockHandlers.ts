@@ -3,6 +3,7 @@ import {
   ApplicationCategory,
   FeatureToggleDto,
   ImpersonateUserDto,
+  MyFeatureDto,
   ReleaseNote,
   ReleaseNoteType,
   ServiceNowIncidentResponse,
@@ -125,6 +126,14 @@ export const FAKE_APPS = [
   fakeApplication(),
   fakeApplication(),
 ] as AmplifyApplication[];
+
+export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
+  faker.number.int({ min: 2, max: 5 })
+)
+  .fill(0)
+  .map(() => ({
+    uuid: faker.string.uuid(),
+  }));
 
 export const handlers = [
   http.get('*/api/v1/Tutorial/SASToken', async () => {
@@ -272,4 +281,12 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(FAKE_APPS);
   }),
+  http.get(
+    '*/api/v1/FeatureToggle/Amplify%20components/myfeatures',
+    async () => {
+      await delay('real');
+
+      return HttpResponse.json(FAKE_FEATURE_TOGGLES);
+    }
+  ),
 ];
