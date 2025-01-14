@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "8.19.0",
+  "version": "9.0.0",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -95,7 +95,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.22.0",
-    "@equinor/subsurface-app-management": "^2.1.0",
+    "@equinor/subsurface-app-management": "^2.2.0",
     "@eslint/js": "^9.18.0",
     "@faker-js/faker": "^9.3.0",
     "@rollup/plugin-commonjs": "^28.0.2",
@@ -170,7 +170,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
-    "@equinor/subsurface-app-management": "^2.1.0",
+    "@equinor/subsurface-app-management": "^2.2.0",
     "@tanstack/react-query": "*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
