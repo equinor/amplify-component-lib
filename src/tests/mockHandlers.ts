@@ -23,6 +23,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     title: 'Improved task board and reporting overview June',
     body: '<h1>Release notes body text</h1><br/><br/><br/><p>Hei</p>',
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
+    draft: false,
     createdDate: faker.date.past().toDateString(),
   },
   {
@@ -32,6 +33,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     title: 'SEARCH',
     body: '<h1>Some other text</h1>',
     tags: [ReleaseNoteType.IMPROVEMENT],
+    draft: false,
     createdDate: faker.date.past().toDateString(),
   },
 ];
