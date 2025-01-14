@@ -282,7 +282,7 @@ export const handlers = [
     return HttpResponse.json(FAKE_APPS);
   }),
   http.get(
-    '*/api/v1/FeatureToggle/Amplify%20components/myfeatures',
+    '*/api/v1/FeatureToggle/Amplify%20components/local/myfeatures',
     async () => {
       await delay('real');
 

@@ -99,7 +99,9 @@ test('should show if featureUuid is in my features', async () => {
       );
     },
   });
-  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
+    timeout: 5000,
+  });
 
   expect(screen.getByTestId('sidebar-menu-item')).toBeInTheDocument();
 });

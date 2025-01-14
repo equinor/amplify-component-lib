@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 
 import { Illustration } from './Illustration';
-import { colors, spacings } from 'src/atoms';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled, { css } from 'styled-components';
 
