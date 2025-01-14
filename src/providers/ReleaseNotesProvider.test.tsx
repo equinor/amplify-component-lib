@@ -1,6 +1,7 @@
 import { act, FC, ReactNode } from 'react';
 
 import { ReleaseNote } from '@equinor/subsurface-app-management';
+import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
@@ -207,30 +208,40 @@ describe('Release notes provider', () => {
 const dateObject = new Date('2023-06-29T10:50:22.8210567+00:00');
 const dates: ReleaseNote[] = [
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2022-06-29T10:50:22.8210567+00:00',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2022-01-13T10:50:22.8210567+00:00',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2022-07-20T10:50:22.8210567+00:00',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2023-06-29T10:50:22.8210567+00:00',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2022-05-29T10:50:22.8210567+00:00',
     applicationName: '',
     title: '',
@@ -240,42 +251,56 @@ const dates: ReleaseNote[] = [
 
 const notes: ReleaseNote[] = [
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2023-06-29',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2020-06-29',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2022-06-29',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2023-01-17',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2022-08-10',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2021-08-11',
     applicationName: '',
     title: '',
     body: '',
   },
   {
+    draft: false,
+    releaseId: faker.string.uuid(),
     createdDate: '2020-01-31',
     applicationName: '',
     title: '',

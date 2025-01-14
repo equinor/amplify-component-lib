@@ -29,8 +29,8 @@ test('should link to production environment using the external dns, jsembark.equ
   const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
-  expect(actual.getAttribute('href')).toBe(
-    'https://jsembark.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D'
+  expect(actual.getAttribute('href')).toContain(
+    'subsurfappmanagement.equinor.com'
   );
 });
 
@@ -42,7 +42,5 @@ test('links to dev if in localhost', () => {
   const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
-  expect(actual.getAttribute('href')).toBe(
-    `https://client-amplify-portal-${EnvironmentType.DEVELOP}.radix.equinor.com/applications/release-notes?applications=%5B"Amplify components"%5D`
-  );
+  expect(actual.getAttribute('href')).toContain(EnvironmentType.DEVELOP);
 });

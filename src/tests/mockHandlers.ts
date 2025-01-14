@@ -232,7 +232,15 @@ export const handlers = [
     await delay('real');
     return HttpResponse.text(faker.string.nanoid());
   }),
-  http.get('*/api/v1/ReleaseNotes', async () => {
+  http.get('*/api/v1/Token/SamPortal', async () => {
+    await delay('real');
+    return HttpResponse.text(faker.string.nanoid());
+  }),
+  http.get('*/api/v1/Token/SamPortal/*', async () => {
+    await delay('real');
+    return HttpResponse.text(faker.string.nanoid());
+  }),
+  http.get('*/api/v1/ReleaseNotes/:applicationName', async () => {
     await delay('real');
     return HttpResponse.json(fakeReleaseNotes);
   }),
