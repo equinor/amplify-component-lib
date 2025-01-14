@@ -27,7 +27,6 @@ export const CompoundComponents: StoryFn<RichTextDisplayProps> = (args) => {
   return (
     <RichText.Display {...args}>
       {(editor) => {
-        console.log('editor', editor);
         return (
           <RichText.Styling
             $lightBackground={args.lightBackground}
