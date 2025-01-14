@@ -9,10 +9,8 @@ import {
   UrgencyOption,
 } from './Feedback.types';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
-import { date, environment, string } from 'src/atoms/utils';
+import { capitalize, environment, formatDate } from 'src/atoms/utils';
 
-const { capitalize } = string;
-const { formatDate } = date;
 const { getAppName, getEnvironmentName } = environment;
 
 export const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {

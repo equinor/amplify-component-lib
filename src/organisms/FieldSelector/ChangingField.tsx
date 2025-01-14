@@ -4,15 +4,13 @@ import {
   LinearProgress as EDSLinearProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 
 import { useFakeProgress } from 'src/atoms/hooks';
-import { spacings } from 'src/atoms/style';
-import { string } from 'src/atoms/utils';
+import { colors, spacings } from 'src/atoms/style';
+import { capitalize } from 'src/atoms/utils';
 import { AnimatedCheckmark } from 'src/molecules/AnimatedCheckmark/AnimatedCheckmark';
 
 import styled from 'styled-components';
-const { colors } = tokens;
 
 const Container = styled.div`
   gap: ${spacings.medium};
@@ -68,7 +66,7 @@ export const ChangingField: FC<ChangingFieldProps> = ({
       ) : (
         <>
           <StyledTypography variant="h3">
-            Changed to <span>{string.capitalize(fieldName)}</span>
+            Changed to <span>{capitalize(fieldName)}</span>
           </StyledTypography>
           <AnimatedCheckmark />
           <Typography variant="h6">{finishedText}</Typography>
