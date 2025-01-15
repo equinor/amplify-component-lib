@@ -39,6 +39,30 @@ const wrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const featureTestWrapper = ({ children }: { children: ReactNode }) => {
+  const queryClient = new QueryClient();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <FeatureToggleProvider>
+          <LoadingProvider>
+            <MemoryRouter initialEntries={['/']}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={<SideBarProvider>{children}</SideBarProvider>}
+                />
+                <Route path="/page1" element={<p>Page 1</p>} />
+              </Routes>
+            </MemoryRouter>
+          </LoadingProvider>
+        </FeatureToggleProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
+
 test('should navigate if replace is set to true and url is a partial match', () => {
   const props = fakeProps();
   render(<MenuItem {...props} replace />, {
@@ -50,26 +74,7 @@ test('should hide if featureUuid is not in my features', () => {
   const props = fakeProps();
   const someRandomUuid = faker.string.uuid();
   render(<MenuItem {...props} featureUuid={someRandomUuid} />, {
-    wrapper: ({ children }: { children: ReactNode }) => {
-      const queryClient = new QueryClient();
-      return (
-        <QueryClientProvider client={queryClient}>
-          <FeatureToggleProvider>
-            <LoadingProvider>
-              <MemoryRouter initialEntries={['/']}>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={<SideBarProvider>{children}</SideBarProvider>}
-                  />
-                  <Route path="/page1" element={<p>Page 1</p>} />
-                </Routes>
-              </MemoryRouter>
-            </LoadingProvider>
-          </FeatureToggleProvider>
-        </QueryClientProvider>
-      );
-    },
+    wrapper: featureTestWrapper,
   });
 
   expect(screen.queryByTestId('sidebar-menu-item')).not.toBeInTheDocument();
@@ -78,28 +83,7 @@ test('should hide if featureUuid is not in my features', () => {
 test('should show if featureUuid is in my features', async () => {
   const props = fakeProps();
   render(<MenuItem {...props} featureUuid={FAKE_FEATURE_TOGGLES[0].uuid} />, {
-    wrapper: ({ children }: { children: ReactNode }) => {
-      const queryClient = new QueryClient();
-      return (
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <FeatureToggleProvider>
-              <LoadingProvider>
-                <MemoryRouter initialEntries={['/']}>
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={<SideBarProvider>{children}</SideBarProvider>}
-                    />
-                    <Route path="/page1" element={<p>Page 1</p>} />
-                  </Routes>
-                </MemoryRouter>
-              </LoadingProvider>
-            </FeatureToggleProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      );
-    },
+    wrapper: featureTestWrapper,
   });
   await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
     timeout: 5000,
