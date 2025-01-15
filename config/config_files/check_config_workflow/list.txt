@@ -4,7 +4,8 @@ eslint.config.mjs client https://raw.githubusercontent.com/equinor/amplify-compo
 tsconfig.json client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/tsconfig.json
 Dockerfile client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/Dockerfile
 env.sh client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/env.sh
-vite.config.ts client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/vite.config.ts
+vite.config.mts client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/vite.config.mts
+vitest.config.mts client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/vitest.config.mts
 playwright.config.ts client https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/playwright.config.ts
 .pre-commit-config.yaml . https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/.pre-commit-config.yaml
 nginx.conf client/proxy https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/nginx.conf
