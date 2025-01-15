@@ -54,7 +54,7 @@ export function Sorting<S>({
       ))}
     >
       <Typography as="span" variant="button" group="navigation">
-        Sort by {activeSorting?.label.toLowerCase()}
+        Sort by {activeSorting?.label}
       </Typography>
       <Icon data={sort} />
     </ButtonWithMenu>

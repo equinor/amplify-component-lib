@@ -34,7 +34,7 @@ import {
   UserInformation,
   Wrapper,
 } from './NotificationTemplate.style';
-import { date } from 'src/atoms/utils';
+import { formatRelativeDateTime } from 'src/atoms/utils';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
@@ -133,7 +133,7 @@ export const NotificationTemplate: FC<
               }
               data-testid="notification-date"
             >
-              {date.formatRelativeDateTime(time)}
+              {formatRelativeDateTime(time)}
             </Typography>
           </TopContainer>
           <Content>{content}</Content>

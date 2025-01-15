@@ -16,7 +16,8 @@ import {
   RoleChipContainer,
 } from './UserImpersonation.styles';
 import { colors } from 'src/atoms/style/colors';
-import { ListItem, OptionalTooltip } from 'src/molecules';
+import { ListItem } from 'src/molecules/ListItem/ListItem';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 

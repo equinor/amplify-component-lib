@@ -9,7 +9,7 @@ import {
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { RichText } from '.';
-import { richtext } from 'src/atoms';
+import { getFeatures } from 'src/atoms';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 
 const meta: Meta<typeof RichTextEditor> = {
@@ -131,7 +131,7 @@ export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
   const string = `<p>The rich text editor is built off a compound component architecture. This means that you can use the individual primitives to take full control. Notice in this example that the MenuBar is below the rich text editor content even though theres no prop to allow you to do this. If you look at the code you will notice that in this example we are no longer using the higher level RichTextEditor component. Instead we are breaking out the smaller primitive components that make up the RichTextEditor. This way you have full control of all the parts in the editor. You can mix an match them as you please. Decide which individual parts you need to take over while still using the other parts.</p>`;
 
   // Hook that lets you apply the features API for filtering extensions
-  const usingFeatures = richtext.getFeatures({
+  const usingFeatures = getFeatures({
     features: args.features,
     extendFeatures: args.extendFeatures,
     removeFeatures: args.removeFeatures,
@@ -198,7 +198,7 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
   const string = `<p>With a compound component architecture you can take full control of every part of the editor. Notice that in this example we can add our own menu buttons for making text commands in the editor.</p>`;
 
   // Hook that lets you apply the features API for filtering extensions
-  const usingFeatures = richtext.getFeatures({
+  const usingFeatures = getFeatures({
     features: args.features,
     extendFeatures: args.extendFeatures,
     removeFeatures: args.removeFeatures,

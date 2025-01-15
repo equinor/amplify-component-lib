@@ -1,5 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
-
 import { colors } from 'src/atoms/style';
 
 import styled, { css, keyframes } from 'styled-components';
@@ -63,8 +61,6 @@ const StyledOption = styled.button<StyledOptionProps>`
   }
 `;
 
-const StyledIcon = styled(Icon)``;
-
 interface StyledOptionItemProps {
   $paddedLeft?: boolean;
 }
@@ -75,4 +71,4 @@ const StyledOptionItem = styled.div<StyledOptionItemProps>`
   ${({ $paddedLeft }) => $paddedLeft && `margin-left: 40px`};
 `;
 
-export { StyledOptionWrapper, StyledOption, StyledIcon, StyledOptionItem };
+export { StyledOptionWrapper, StyledOption, StyledOptionItem };

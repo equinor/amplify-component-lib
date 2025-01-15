@@ -18,8 +18,9 @@ import {
   TitleContainer,
   TopContainer,
 } from './ReleasePost.styles';
-import { TextContent } from './TextContent';
 import { formatDate } from 'src/atoms';
+import { RichTextDisplay } from 'src/molecules';
+import { releaseNoteImageRead } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleasePosts/ReleasePost/ReleasePost.utils';
 
 import { motion } from 'framer-motion';
 
@@ -95,7 +96,7 @@ export const ReleasePost: FC<ReleaseNote> = ({
           </Typography>
         </TitleContainer>
         <BodyContainer ref={handleOnNewRef}>
-          <TextContent text={body ?? ''} />
+          <RichTextDisplay value={body} onImageRead={releaseNoteImageRead} />
         </BodyContainer>
         <BtnContainer $open={needsShowMoreButton}>
           {needsShowMoreButton && (

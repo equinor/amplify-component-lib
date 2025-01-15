@@ -2,11 +2,16 @@ import { MouseEventHandler, ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { home } from '@equinor/eds-icons';
+import { FeatureToggleProvider } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { MenuItem, MenuItemProps } from 'src/organisms/SideBar/MenuItem';
+import { AuthProvider, LoadingProvider } from 'src/providers';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import { FAKE_FEATURE_TOGGLES } from 'src/tests/mockHandlers';
 
 type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
 
@@ -34,11 +39,57 @@ const wrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const featureTestWrapper = ({ children }: { children: ReactNode }) => {
+  const queryClient = new QueryClient();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <FeatureToggleProvider>
+          <LoadingProvider>
+            <MemoryRouter initialEntries={['/']}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={<SideBarProvider>{children}</SideBarProvider>}
+                />
+                <Route path="/page1" element={<p>Page 1</p>} />
+              </Routes>
+            </MemoryRouter>
+          </LoadingProvider>
+        </FeatureToggleProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
+
 test('should navigate if replace is set to true and url is a partial match', () => {
   const props = fakeProps();
   render(<MenuItem {...props} replace />, {
     wrapper: wrapper,
   });
+});
+
+test('should hide if featureUuid is not in my features', () => {
+  const props = fakeProps();
+  const someRandomUuid = faker.string.uuid();
+  render(<MenuItem {...props} featureUuid={someRandomUuid} />, {
+    wrapper: featureTestWrapper,
+  });
+
+  expect(screen.queryByTestId('sidebar-menu-item')).not.toBeInTheDocument();
+});
+
+test('should show if featureUuid is in my features', async () => {
+  const props = fakeProps();
+  render(<MenuItem {...props} featureUuid={FAKE_FEATURE_TOGGLES[0].uuid} />, {
+    wrapper: featureTestWrapper,
+  });
+  await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
+    timeout: 5000,
+  });
+
+  expect(screen.getByTestId('sidebar-menu-item')).toBeInTheDocument();
 });
 
 describe('Expanded', () => {

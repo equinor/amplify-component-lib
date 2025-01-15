@@ -1,4 +1,4 @@
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style/colors';
 
 import { MotionProps } from 'framer-motion';
 

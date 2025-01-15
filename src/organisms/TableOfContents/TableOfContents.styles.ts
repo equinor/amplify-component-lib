@@ -2,7 +2,7 @@ import { Link as ReactLink } from 'react-router-dom';
 
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { animation, spacings } from 'src/atoms/style';
 import { HEIGHT } from 'src/organisms/TableOfContents/TableOfContents.constants';
 import { TableOfContentsVariants } from 'src/organisms/TableOfContents/TableOfContents.types';
 
@@ -192,6 +192,7 @@ export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
   &:after {
     position: absolute;
     left: 0;
@@ -201,6 +202,7 @@ export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
     height: 100%;
     background: ${colors.interactive.primary__resting.rgba};
     z-index: 100;
+    transition: top ${animation.transitionMS};
   }
 `;
 

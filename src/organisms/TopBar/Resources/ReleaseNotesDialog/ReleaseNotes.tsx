@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { useReleaseNotesQuery } from '@equinor/subsurface-app-management';
 
-import { useTokenReleaseNote } from './ReleasePosts/hooks/useTokenReleaseNote';
 import { ReleasePosts } from './ReleasePosts/ReleasePosts';
 import {
   Content,
@@ -25,7 +24,6 @@ interface ReleaseNotesProps {
 export const ReleaseNotes: FC<ReleaseNotesProps> = ({ enabled }) => {
   const { releaseNotesYears, setOpen, open } = useReleaseNotes();
   const { isLoading, data } = useReleaseNotesQuery({ enabled });
-  const { data: token } = useTokenReleaseNote();
 
   const handleCloseModal = () => {
     setOpen(false);
@@ -34,7 +32,7 @@ export const ReleaseNotes: FC<ReleaseNotesProps> = ({ enabled }) => {
   return (
     <StyledDialog open={open} onClose={handleCloseModal} isDismissable>
       <ReleaseNotesHeader />
-      {isLoading || token === undefined ? (
+      {isLoading ? (
         <LoadingWrapper>
           <CircularProgress />
         </LoadingWrapper>

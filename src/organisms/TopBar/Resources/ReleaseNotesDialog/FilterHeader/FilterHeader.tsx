@@ -44,10 +44,9 @@ export const FilterHeader: FC = () => {
       environmentNameWithoutLocalHost &&
       environmentNameWithoutLocalHost !== EnvironmentType.PRODUCTION
     ) {
-      return `https://client-amplify-portal-${environmentNameWithoutLocalHost}.radix.equinor.com/applications/release-notes?applications=%5B"${applicationName}"%5D`;
-    } else {
-      return `https://jsembark.equinor.com/applications/release-notes?applications=%5B"${applicationName}"%5D`;
+      return `https://client-subsurfappmanagement-frontend-${environmentNameWithoutLocalHost}.radix.equinor.com/release-notes?filters={"applications"%3A["${encodeURIComponent(applicationName)}"]}`;
     }
+    return `https://subsurfappmanagement.equinor.com/release-notes?filters={"applications"%3A["${encodeURIComponent(applicationName)}"]}`;
   }, [applicationName, environmentNameWithoutLocalHost]);
 
   const filterOptions = useMemo(() => {
@@ -101,7 +100,11 @@ export const FilterHeader: FC = () => {
           minSearchWidth="70%"
         />
         <ButtonContainer>
-          <Button variant="ghost_icon" href={openReleaseNotesUrl}>
+          <Button
+            variant="ghost_icon"
+            href={openReleaseNotesUrl}
+            target="_blank"
+          >
             <Icon data={external_link} />
           </Button>
           <Button

@@ -37,6 +37,7 @@ export const Container = styled.div`
     justify-content: center;
     border-left: 1px solid ${colors.ui.background__medium.rgba};
     color: ${colors.interactive.primary__resting.rgba};
+    align-self: stretch;
     span {
       color: ${colors.interactive.primary__resting.rgba};
     }
@@ -59,7 +60,6 @@ export const Container = styled.div`
     border-left: 1px solid ${colors.ui.background__medium.rgba};
     width: 36px;
     padding: 0;
-    align-self: stretch;
     &:hover {
       background: ${colors.interactive.primary__hover_alt.rgba};
     }

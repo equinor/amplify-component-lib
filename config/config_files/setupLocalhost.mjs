@@ -129,6 +129,7 @@ async function startLocalHost() {
   await runTask({
     command: execShell('bun run generate'),
     name: chalk.hex('#CCE0E8')('Running bun run generate'),
+    ignoreStdErr: true
   });
 
   console.log(
