@@ -55,15 +55,17 @@ test('should hide if featureUuid is not in my features', () => {
       return (
         <QueryClientProvider client={queryClient}>
           <FeatureToggleProvider>
-            <MemoryRouter initialEntries={['/']}>
-              <Routes>
-                <Route
-                  path="/"
-                  element={<SideBarProvider>{children}</SideBarProvider>}
-                />
-                <Route path="/page1" element={<p>Page 1</p>} />
-              </Routes>
-            </MemoryRouter>
+            <LoadingProvider>
+              <MemoryRouter initialEntries={['/']}>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={<SideBarProvider>{children}</SideBarProvider>}
+                  />
+                  <Route path="/page1" element={<p>Page 1</p>} />
+                </Routes>
+              </MemoryRouter>
+            </LoadingProvider>
           </FeatureToggleProvider>
         </QueryClientProvider>
       );
