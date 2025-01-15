@@ -1,6 +1,13 @@
-import { forwardRef, HTMLAttributes, MouseEvent, useMemo } from 'react';
+import {
+  forwardRef,
+  HTMLAttributes,
+  MouseEvent,
+  useCallback,
+  useMemo,
+} from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
+import { Feature } from '@equinor/subsurface-app-management';
 
 import { IconContainer, ItemText, Link } from './MenuItem.styles';
 import { isCurrentUrl } from './MenuItem.utils';
@@ -24,6 +31,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       onClick,
       disabled = false,
       replace = false,
+      featureUuid,
       ...props
     },
     ref
@@ -43,64 +51,86 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       [disabled, isActive, isExactUrl, replace]
     );
 
-    const handleOnClick = (event: MouseEvent) => {
-      if (!canNavigate) {
-        event.preventDefault();
-        return;
-      }
-      if (onClick) onClick();
-    };
+    const handleOnClick = useCallback(
+      (event: MouseEvent) => {
+        if (!canNavigate) {
+          event.preventDefault();
+          return;
+        }
+        if (onClick) onClick();
+      },
+      [canNavigate, onClick]
+    );
 
-    if (isOpen) {
-      return (
-        <Link
-          to={link}
-          $active={isActive}
-          aria-disabled={disabled}
-          $disabled={disabled}
-          onClick={handleOnClick}
-          tabIndex={0}
-          $open
-          ref={ref}
-          data-testid="sidebar-menu-item"
-          replace={replace}
-          {...props}
-        >
-          <IconContainer data-testid="icon-container">
-            <Icon data={icon} size={24} />
-          </IconContainer>
-          <ItemText
+    const content = useMemo(() => {
+      if (isOpen) {
+        return (
+          <Link
+            to={link}
             $active={isActive}
+            aria-disabled={disabled}
             $disabled={disabled}
-            variant="button"
-            group="navigation"
+            onClick={handleOnClick}
+            tabIndex={0}
+            $open
+            ref={ref}
+            data-testid="sidebar-menu-item"
+            replace={replace}
+            {...props}
           >
-            {name}
-          </ItemText>
-        </Link>
+            <IconContainer data-testid="icon-container">
+              <Icon data={icon} size={24} />
+            </IconContainer>
+            <ItemText
+              $active={isActive}
+              $disabled={disabled}
+              variant="button"
+              group="navigation"
+            >
+              {name}
+            </ItemText>
+          </Link>
+        );
+      }
+
+      return (
+        <OptionalTooltip title={name} placement="right">
+          <Link
+            to={link}
+            $active={isActive}
+            aria-disabled={disabled}
+            $disabled={disabled}
+            onClick={handleOnClick}
+            $open={isOpen}
+            tabIndex={0}
+            ref={ref}
+            {...props}
+            data-testid="sidebar-menu-item"
+          >
+            <IconContainer data-testid="icon-container">
+              <Icon data={icon} size={24} />
+            </IconContainer>
+          </Link>
+        </OptionalTooltip>
       );
+    }, [
+      disabled,
+      handleOnClick,
+      icon,
+      isActive,
+      isOpen,
+      link,
+      name,
+      props,
+      ref,
+      replace,
+    ]);
+
+    if (featureUuid) {
+      return <Feature featureUuid={featureUuid}>{content}</Feature>;
     }
 
-    return (
-      <OptionalTooltip title={name} placement="right">
-        <Link
-          to={link}
-          $active={isActive}
-          aria-disabled={disabled}
-          $disabled={disabled}
-          onClick={handleOnClick}
-          $open={isOpen}
-          tabIndex={0}
-          ref={ref}
-          {...props}
-          data-testid="sidebar-menu-item"
-        >
-          <IconContainer data-testid="icon-container">
-            <Icon data={icon} size={24} />
-          </IconContainer>
-        </Link>
-      </OptionalTooltip>
-    );
+    return content;
   }
 );
 

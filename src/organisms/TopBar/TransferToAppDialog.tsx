@@ -11,7 +11,7 @@ import { close } from '@equinor/eds-icons';
 
 import { useFakeProgress } from 'src/atoms/hooks';
 import { spacings } from 'src/atoms/style';
-import { string } from 'src/atoms/utils';
+import { capitalize } from 'src/atoms/utils';
 import { AnimatedCheckmark } from 'src/molecules/AnimatedCheckmark/AnimatedCheckmark';
 
 import styled from 'styled-components';
@@ -97,7 +97,7 @@ export const TransferToAppDialog: FC<PortalTransitProps> = ({
             ) : (
               <TransferringContainer>
                 <StyledTypography variant="h3">
-                  <span>{string.capitalize(applicationName)}</span>
+                  <span>{capitalize(applicationName)}</span>
                 </StyledTypography>
 
                 <AnimatedCheckmark size="small" />

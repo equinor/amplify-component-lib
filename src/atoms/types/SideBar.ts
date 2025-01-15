@@ -6,4 +6,5 @@ export interface SideBarMenuItem {
   link: string;
   onClick?: () => void;
   replace?: boolean;
+  featureUuid?: string;
 }

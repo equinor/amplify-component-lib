@@ -3,6 +3,7 @@ import {
   ApplicationCategory,
   FeatureToggleDto,
   ImpersonateUserDto,
+  MyFeatureDto,
   ReleaseNote,
   ReleaseNoteType,
   ServiceNowIncidentResponse,
@@ -23,6 +24,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     title: 'Improved task board and reporting overview June',
     body: '<h1>Release notes body text</h1><br/><br/><br/><p>Hei</p>',
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
+    draft: false,
     createdDate: faker.date.past().toDateString(),
   },
   {
@@ -32,6 +34,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     title: 'SEARCH',
     body: '<h1>Some other text</h1>',
     tags: [ReleaseNoteType.IMPROVEMENT],
+    draft: false,
     createdDate: faker.date.past().toDateString(),
   },
 ];
@@ -123,6 +126,14 @@ export const FAKE_APPS = [
   fakeApplication(),
   fakeApplication(),
 ] as AmplifyApplication[];
+
+export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
+  faker.number.int({ min: 2, max: 5 })
+)
+  .fill(0)
+  .map(() => ({
+    uuid: faker.string.uuid(),
+  }));
 
 export const handlers = [
   http.get('*/api/v1/Tutorial/SASToken', async () => {
@@ -230,7 +241,15 @@ export const handlers = [
     await delay('real');
     return HttpResponse.text(faker.string.nanoid());
   }),
-  http.get('*/api/v1/ReleaseNotes', async () => {
+  http.get('*/api/v1/Token/SamPortal', async () => {
+    await delay('real');
+    return HttpResponse.text(faker.string.nanoid());
+  }),
+  http.get('*/api/v1/Token/SamPortal/*', async () => {
+    await delay('real');
+    return HttpResponse.text(faker.string.nanoid());
+  }),
+  http.get('*/api/v1/ReleaseNotes/:applicationName', async () => {
     await delay('real');
     return HttpResponse.json(fakeReleaseNotes);
   }),
@@ -262,4 +281,12 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(FAKE_APPS);
   }),
+  http.get(
+    '*/api/v1/FeatureToggle/Amplify%20components/local/myfeatures',
+    async () => {
+      await delay('real');
+
+      return HttpResponse.json(FAKE_FEATURE_TOGGLES);
+    }
+  ),
 ];

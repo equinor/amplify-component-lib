@@ -1,7 +1,7 @@
 import { Button as EDSbutton, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 
@@ -12,7 +12,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: ${spacings.xx_large};
-  background-color: #fff;
+  background-color: ${colors.ui.background__default.rgba};
   box-shadow: ${elevation.raised};
   border-radius: ${shape.corners.borderRadius};
   overflow: hidden;
@@ -55,7 +55,7 @@ const ReleaseNoteTypeContainer = styled.span`
   font-family: 'Equionor', sans-serif;
   font-size: 16px;
   font-weight: 500;
-  padding: 0px;
+  padding: 0;
 
   > p {
     line-height: normal;
@@ -77,7 +77,7 @@ const BtnContainer = styled.div<BtnContainerProps>`
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 20%
+    ${colors.ui.background__default.rgba} 20%
   );
   // Remove padding when setting width
   width: calc(100% - (${spacings.large}) * 2);
@@ -96,7 +96,7 @@ const Button = styled(EDSbutton)`
 
 const AccordionText = styled(Typography)`
   font-size: 14px;
-  color: #007079;
+  color: ${colors.interactive.primary__resting.rgba};
 `;
 
 export {
