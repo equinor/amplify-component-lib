@@ -36,6 +36,11 @@ const Wrapper = styled.div<WrapperProps>`
     &:hover {
       background: ${colors.ui.background__light_medium.rgba};
     }
+    &:disabled {
+      &::placeholder {
+        color: ${colors.interactive.disabled__text.rgba};
+      }
+    }
   }
   div:focus-within {
     outline: none !important;

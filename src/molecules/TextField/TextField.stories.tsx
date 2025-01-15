@@ -91,7 +91,7 @@ export default meta;
 type Story = StoryFn<typeof TextField>;
 
 export const Introduction: Story = (args) => {
-  return <TextField {...args} />;
+  return <TextField placeholder="Placeholder" {...args} />;
 };
 
 Introduction.bind({});
