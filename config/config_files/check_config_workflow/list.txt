@@ -13,7 +13,7 @@ setupLocalhost.mjs client/src https://raw.githubusercontent.com/equinor/amplify-
 setupTests.ts client/src/test-utils https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/setupTests.ts
 vitest.d.ts client/src/test-utils https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/vitest.d.ts
 browserMocks.ts client/src/test-utils https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/browserMocks.ts
-portalMock.ts client/src/test-utils https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/portalMock.ts
+samMock.ts client/src/test-utils https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/samMock.ts
 playwright.ts client/src/test-utils https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/playwright.ts
 build.yaml .github/workflows https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/build.yaml
 e2e.yaml .github/workflows https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/e2e.yaml
