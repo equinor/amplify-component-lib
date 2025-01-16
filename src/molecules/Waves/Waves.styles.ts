@@ -14,7 +14,8 @@ export const Container = styled.div`
   );
   > svg {
     position: absolute;
-
     z-index: 0;
+    height: 100%;
+    width: 100%;
   }
 `;

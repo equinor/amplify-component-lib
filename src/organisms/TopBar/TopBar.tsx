@@ -48,43 +48,41 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
       showAccessITLink,
     },
     ref
-  ) => {
-    return (
-      <Bar ref={ref}>
-        <AppAndFieldContainer id={id}>
-          <AppIdentifier tabIndex={0} to={headerLink || '/'}>
-            <ApplicationIcon name={applicationIcon} size={32} withHover />
-            <AppName
-              group="navigation"
-              variant="menu_title"
-              $capitalize={capitalize}
-            >
-              {capitalize ? applicationName.toLowerCase() : applicationName}
-            </AppName>
-          </AppIdentifier>
-          {availableFields && onSelectField && (
-            <FieldMenu
-              availableFields={availableFields}
-              onSelect={onSelectField}
-              currentField={currentField}
-              showAccessITLink={showAccessITLink}
-            />
-          )}
-          {isFetching && <CircularProgress size={16} />}
-        </AppAndFieldContainer>
-        {(environment === EnvironmentType.DEVELOP ||
-          environment === EnvironmentType.STAGING ||
-          environment === EnvironmentType.LOCALHOST) && (
-          <EnvironmentTag $environmentType={environment}>
-            <Typography group="heading" variant="h5">
-              {environment}
-            </Typography>
-          </EnvironmentTag>
+  ) => (
+    <Bar ref={ref}>
+      <AppAndFieldContainer id={id}>
+        <AppIdentifier tabIndex={0} to={headerLink || '/'}>
+          <ApplicationIcon name={applicationIcon} size={32} withHover />
+          <AppName
+            group="navigation"
+            variant="menu_title"
+            $capitalize={capitalize}
+          >
+            {capitalize ? applicationName.toLowerCase() : applicationName}
+          </AppName>
+        </AppIdentifier>
+        {availableFields && onSelectField && (
+          <FieldMenu
+            availableFields={availableFields}
+            onSelect={onSelectField}
+            currentField={currentField}
+            showAccessITLink={showAccessITLink}
+          />
         )}
-        {children}
-      </Bar>
-    );
-  }
+        {isFetching && <CircularProgress size={16} />}
+      </AppAndFieldContainer>
+      {(environment === EnvironmentType.DEVELOP ||
+        environment === EnvironmentType.STAGING ||
+        environment === EnvironmentType.LOCALHOST) && (
+        <EnvironmentTag $environmentType={environment}>
+          <Typography group="heading" variant="h5">
+            {environment}
+          </Typography>
+        </EnvironmentTag>
+      )}
+      {children}
+    </Bar>
+  )
 );
 
 TopBar.displayName = 'TopBar';

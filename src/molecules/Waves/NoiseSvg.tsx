@@ -1,7 +1,16 @@
 import { FC } from 'react';
 
-export const NoiseSvg: FC = () => (
-  <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+interface NoiseSvgProps {
+  viewBox: string;
+}
+
+export const NoiseSvg: FC<NoiseSvgProps> = ({ viewBox }) => (
+  <svg
+    width="100%"
+    height="100%"
+    viewBox={viewBox}
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <filter id="noiseFilter">
       <feTurbulence
         type="fractalNoise"
