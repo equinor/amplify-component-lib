@@ -3,4 +3,4 @@ https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/browserMocks.ts
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/utils.ts
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/playwright.ts
-https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/portalMock.ts
+https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/samMock.ts
