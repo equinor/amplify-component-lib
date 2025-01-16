@@ -3,8 +3,12 @@ import { FC } from 'react';
 import { Container } from './Waves.styles';
 import { WaveStatic } from './WaveStatic';
 
-export const Waves: FC = () => (
+export interface WaveProps {
+  gradientColors?: string[];
+}
+
+export const Waves: FC<WaveProps> = ({ gradientColors }) => (
   <Container>
-    <WaveStatic />
+    <WaveStatic gradientColors={gradientColors} />
   </Container>
 );
