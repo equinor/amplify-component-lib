@@ -60,6 +60,10 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json([]);
   }),
+  http.get('*/api/v1/Tutorial/:applicationName', async () => {
+    await delay('real');
+    return HttpResponse.json([]);
+  }),
   http.get('*/api/v1/ReleaseNotes/GetContainerSasUri', async () => {
     await delay('real');
     return HttpResponse.text(

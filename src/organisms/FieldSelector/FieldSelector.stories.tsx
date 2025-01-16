@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
+import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { FieldSelector } from './FieldSelector';
@@ -32,7 +34,7 @@ const equinorFields = [
   'Martin Linge',
   'Aasta Hansteeen',
   'Åsgard',
-];
+] as const;
 
 const meta: Meta<typeof FieldSelector> = {
   title: 'Organisms/FieldSelector',
@@ -82,7 +84,7 @@ export const Primary: StoryFn = (args) => {
   };
 
   const onChangedField = () => {
-    console.log('Changed to field: ', field.current);
+    actions('onChangedField').onChangedField('Ran cnChange field');
     field.current = undefined;
   };
 
@@ -98,28 +100,24 @@ export const Primary: StoryFn = (args) => {
   }, []);
 
   return (
-    <StoryContainer>
-      <TopBar
-        onHeaderClick={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-        applicationIcon="acquire"
-        applicationName="App"
-      >
-        <TopBar.Actions>
-          <Button variant="ghost_icon">
-            <Icon data={info_circle} />
-          </Button>
-        </TopBar.Actions>
-      </TopBar>
-      <FieldSelector
-        showAccessITLink={args.showAccessITLink as boolean}
-        setField={setField}
-        fields={fields}
-        isLoading={isLoading}
-        onChangedField={onChangedField}
-        finishedText={args.finishedText as string}
-      />
-    </StoryContainer>
+    <MemoryRouter>
+      <StoryContainer>
+        <TopBar applicationIcon="acquire" applicationName="App">
+          <TopBar.Actions>
+            <Button variant="ghost_icon">
+              <Icon data={info_circle} />
+            </Button>
+          </TopBar.Actions>
+        </TopBar>
+        <FieldSelector
+          showAccessITLink={args.showAccessITLink as boolean}
+          setField={setField}
+          fields={fields}
+          isLoading={isLoading}
+          onChangedField={onChangedField}
+          finishedText={args.finishedText as string}
+        />
+      </StoryContainer>
+    </MemoryRouter>
   );
 };
