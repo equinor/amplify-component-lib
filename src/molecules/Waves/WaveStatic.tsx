@@ -11,7 +11,6 @@ export const WaveStatic: FC = () => {
   useEffect(() => {
     const resizeHandler = (event: Event) => {
       const target = event.target as Window;
-      console.log(target);
       setViewBox(`0 0 ${target.innerWidth} ${target.innerHeight - 64}`);
     };
 
