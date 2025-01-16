@@ -12,6 +12,27 @@ test('renders expected amount of svgs', () => {
   expect(container.children[0].children[0].childNodes.length).toBe(2);
 });
 
+test('renders expected gradient colors', () => {
+  const gradientColors = ['#ff7f50', '#1e90ff'];
+  const { container } = render(<Waves gradientColors={gradientColors} />);
+
+  expect(container).toBeInTheDocument();
+
+  const svgElement = container.querySelector('svg');
+  expect(svgElement).toBeInTheDocument();
+
+  const linearGradient = svgElement?.querySelector('linearGradient');
+  expect(linearGradient).toBeInTheDocument();
+
+  const gradientStops = linearGradient?.querySelectorAll('stop');
+  expect(gradientStops?.length).toBe(gradientColors.length);
+
+  gradientColors.forEach((color, index) => {
+    const stop = gradientStops?.[index];
+    expect(stop).toHaveAttribute('stop-color', color);
+  });
+});
+
 test('resize actually resizes', async () => {
   const { container } = render(<Waves />);
   const randomWidth = faker.number.int({ min: 100, max: 1920 });
