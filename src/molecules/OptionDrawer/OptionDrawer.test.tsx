@@ -1,4 +1,6 @@
+import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
+import { within } from '@testing-library/dom';
 
 import {
   OptionDrawer,
@@ -148,6 +150,22 @@ test('Works correctly when opening parent to show children', async () => {
   for (const child of props.item.children ?? []) {
     expect(screen.queryByText(child.label)).toBeVisible();
   }
+});
+
+test('Shows expected status for parent if singleSelect=true', async () => {
+  const props = fakeProps();
+  render(
+    <OptionDrawer
+      {...props}
+      singleSelect
+      selectedItems={[props.item!.children![0]]}
+    />
+  );
+
+  expect(screen.getByRole('checkbox')).toHaveAttribute(
+    'data-indeterminate',
+    'false'
+  );
 });
 
 test('Animation works correctly when toggling parent with no child', async () => {

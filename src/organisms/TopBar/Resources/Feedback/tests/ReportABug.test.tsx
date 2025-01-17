@@ -270,7 +270,9 @@ describe('Report a bug', () => {
     await user.hover(screen.getByLabelText(/title/i));
 
     expect(
-      screen.getByText(/The report was successfully submitted to ServiceNow./i)
+      await screen.findByText(
+        /The report was successfully submitted to ServiceNow./i
+      )
     ).toBeInTheDocument();
   });
 });

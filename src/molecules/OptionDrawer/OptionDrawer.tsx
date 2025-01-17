@@ -138,8 +138,6 @@ export const OptionDrawer = <
   }, [openAll]);
 
   const handleClick = (e: MouseEvent) => {
-    if (item.disabled) return;
-
     if (item.children && item.children.length !== 0) {
       setOpen((o) => !o);
     }
