@@ -82,7 +82,10 @@ describe('Report a bug', () => {
     const image = fakeImageFile();
     const user = userEvent.setup();
 
-    await user.upload(screen.getByTestId('file-upload-area-input'), [image]);
+    await user.upload(screen.getByTestId('file-upload-area-input'), [
+      image,
+      image,
+    ]);
 
     const removeButton = screen.getByTestId('attachment-delete-button');
     expect(removeButton).toBeInTheDocument();
@@ -94,8 +97,10 @@ describe('Report a bug', () => {
 
   test('Able to fill in form with successful response', async () => {
     const { title, description, url } = fakeInputs();
+    const image = fakeImageFile();
     const user = userEvent.setup();
 
+    await user.upload(screen.getByTestId('file-upload-area-input'), [image]);
     await user.type(screen.getByLabelText(/title/i), title);
     await user.type(screen.getByLabelText(/description/i), description);
     await user.type(screen.getByLabelText(/url/i), url);
@@ -200,5 +205,72 @@ describe('Report a bug', () => {
     ).toHaveLength(3);
 
     await user.click(screen.getByRole('button', { name: /retry/i }));
+  });
+
+  test('Form is partially locked when the service now request succeeds but slack fails', async () => {
+    worker.use(
+      http.get('*/api/v1/ReleaseNotes*', async () => {
+        await delay('real');
+        return HttpResponse.json([]);
+      }),
+      http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
+        await delay('real');
+        return HttpResponse.text(faker.string.nanoid());
+      }),
+      http.post('*/api/v1/Slack/fileUpload', async () => {
+        return HttpResponse.json(
+          { message: MOCK_SLACK_FILE_ERROR },
+          { status: 500 }
+        );
+      }),
+      http.post('*/api/v1/Slack/postmessage', async () => {
+        return HttpResponse.json(
+          { message: MOCK_SLACK_POST_ERROR },
+          { status: 500 }
+        );
+      })
+    );
+
+    const { title, description, url } = fakeInputs();
+    const image = fakeImageFile();
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText(/title/i), title);
+    await user.type(screen.getByLabelText(/description/i), description);
+    await user.type(screen.getByLabelText(/url/i), url);
+
+    await user.upload(screen.getByTestId('file-upload-area-input'), [image]);
+
+    await user.click(screen.getByLabelText(/severity/i));
+
+    const option = faker.helpers.arrayElement(SEVERITY_OPTIONS);
+    const optionElement = screen.getByText(option);
+    await user.click(optionElement);
+    expect(screen.getByTestId('combobox-container')).toHaveTextContent(option);
+
+    const sendButton = screen.getByTestId('submit-button');
+    expect(sendButton).not.toBeDisabled();
+
+    await user.click(sendButton);
+
+    expect(await screen.findAllByText('Sending...')).toHaveLength(2);
+
+    await waitForElementToBeRemoved(() => screen.getAllByText('Sending...'));
+
+    expect(
+      await screen.findAllByText(/internal server error/i, undefined, {
+        timeout: 50000,
+      })
+    ).toHaveLength(2);
+
+    await user.click(screen.getByRole('button', { name: /retry/i }));
+
+    expect(screen.getByText(/the report has already/i)).toBeInTheDocument();
+
+    await user.hover(screen.getByLabelText(/title/i));
+
+    expect(
+      screen.getByText(/The report was successfully submitted to ServiceNow./i)
+    ).toBeInTheDocument();
   });
 });

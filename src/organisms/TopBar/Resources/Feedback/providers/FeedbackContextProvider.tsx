@@ -199,7 +199,9 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       const itemToUpdate = prevCopy.find((item) => item.fileName === filename);
       if (itemToUpdate) {
         itemToUpdate.status = status;
+        // Ignoring this since there is no good way to get an error without an error message
         itemToUpdate.errorText =
+          /* v8 ignore next */
           status === StatusEnum.error ? error?.message : undefined;
       }
       return prevCopy;
