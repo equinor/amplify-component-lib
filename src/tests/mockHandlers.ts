@@ -253,6 +253,21 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(fakeReleaseNotes);
   }),
+  http.get('*/api/v1/ReleaseNotes/getreleasenoteimage/*', async () => {
+    await delay('real');
+    const data = await fetch(faker.image.url());
+    const blob = await data.blob();
+    const b64: string = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        resolve(base64data as string);
+      };
+      reader.onerror = reject;
+    });
+    return HttpResponse.text(b64);
+  }),
   http.get('*/api/v1/ReleaseNotes/GetContainerSasUri', async () => {
     await delay('real');
     return HttpResponse.text(

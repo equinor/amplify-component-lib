@@ -169,3 +169,54 @@ test(
   },
   { timeout: 8000 }
 );
+
+test(
+  'should show Nothing matching "searchTerm+Feature" when no matching release notes',
+  async () => {
+    const { container } = render(<Resources />, { wrapper: Wrappers });
+    const user = userEvent.setup();
+
+    const toggleHelpButton = screen.getByRole('button');
+    await user.click(toggleHelpButton);
+    const toggleReleaseNotesButton = screen.getByRole('menuitem', {
+      name: /Open release notes/,
+    });
+    expect(toggleReleaseNotesButton).toBeInTheDocument();
+    await user.click(toggleReleaseNotesButton);
+
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
+    const releaseNoteText = await screen.findByText('Release notes body text');
+    expect(releaseNoteText).toBeInTheDocument();
+
+    const searchInput = screen.getAllByRole('textbox')[0];
+
+    const searchTerm = faker.animal.crocodilia();
+    await user.type(searchInput, searchTerm);
+
+    const dialog = within(container.children[1] as HTMLElement);
+    const filterButton = dialog.getByRole('button', {
+      hidden: true,
+      name: 'Filter by',
+    });
+    expect(filterButton).toBeInTheDocument();
+    await user.click(filterButton);
+    const typeButton = dialog.getByRole('menuitem', {
+      hidden: true,
+      name: 'Type',
+    });
+    await user.click(typeButton);
+    expect(typeButton).toBeInTheDocument();
+    const featureButton = dialog.getByRole('menuitem', {
+      hidden: true,
+      name: 'Bug fix',
+    });
+    await user.click(featureButton);
+
+    const nothingMatchingText = await screen.findByText(/nothing matching/i);
+    expect(nothingMatchingText).toBeInTheDocument();
+  },
+  { timeout: 8000 }
+);
+
+describe('No release notes', () => {});

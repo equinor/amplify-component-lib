@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { useRef } from 'react';
+
+import { render, renderHook, screen } from '@testing-library/react';
 
 import { colors } from 'src/atoms/style';
 import {
@@ -51,4 +53,15 @@ test('renders size correctly given large and size prop', () => {
       expect(logo).toHaveAttribute('width', expectedSize);
     }
   }
+});
+
+test('ref is expected type', () => {
+  expect(
+    renderHook(() => {
+      const ref = useRef(null);
+      render(<EquinorLogo ref={ref} />);
+
+      return ref.current;
+    })
+  ).not.toBeNull();
 });
