@@ -1,6 +1,4 @@
-import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
-import { within } from '@testing-library/dom';
 
 import {
   OptionDrawer,

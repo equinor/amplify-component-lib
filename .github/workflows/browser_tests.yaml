@@ -19,7 +19,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Install playwright with dependencies
-        run: bunx playwright install --with-deps ${{ matrix.browser }}
+        run: bunx playwright install --with-deps
 
       - name: Tests
-        run: bun run test:ci --project browser --browser.name=${{ matrix.browser }}
+        run: bun run test:ci --project browser
