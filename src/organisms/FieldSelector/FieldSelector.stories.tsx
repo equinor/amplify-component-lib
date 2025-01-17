@@ -6,6 +6,7 @@ import { info_circle } from '@equinor/eds-icons';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
+import { Template } from '../Template/Template';
 import { FieldSelector } from './FieldSelector';
 import { Field } from 'src/atoms/types/Field';
 import { TopBar } from 'src/organisms/TopBar';
@@ -102,21 +103,28 @@ export const Primary: StoryFn = (args) => {
   return (
     <MemoryRouter>
       <StoryContainer>
-        <TopBar applicationIcon="acquire" applicationName="App">
-          <TopBar.Actions>
-            <Button variant="ghost_icon">
-              <Icon data={info_circle} />
-            </Button>
-          </TopBar.Actions>
-        </TopBar>
-        <FieldSelector
-          showAccessITLink={args.showAccessITLink as boolean}
-          setField={setField}
-          fields={fields}
-          isLoading={isLoading}
-          onChangedField={onChangedField}
-          finishedText={args.finishedText as string}
-        />
+        <Template>
+          <Template.GlobalStyles />
+          <TopBar applicationIcon="acquire" applicationName="App">
+            <TopBar.Actions>
+              <Button variant="ghost_icon">
+                <Icon data={info_circle} />
+              </Button>
+            </TopBar.Actions>
+          </TopBar>
+          <Template.Container>
+            <Template.Content $open={false} id="content">
+              <FieldSelector
+                showAccessITLink={args.showAccessITLink as boolean}
+                setField={setField}
+                fields={fields}
+                isLoading={isLoading}
+                onChangedField={onChangedField}
+                finishedText={args.finishedText as string}
+              />
+            </Template.Content>
+          </Template.Container>
+        </Template>
       </StoryContainer>
     </MemoryRouter>
   );
