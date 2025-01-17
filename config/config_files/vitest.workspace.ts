@@ -11,10 +11,10 @@ export default defineWorkspace([
           width: 1280,
           height: 900
         },
-        name: 'chromium',
+        instances: [{
+          browser: "chromium"
+        }],
         provider: 'playwright',
-        // https://playwright.dev
-        providerOptions: {},
         screenshotFailures: false
       },
       exclude: [
