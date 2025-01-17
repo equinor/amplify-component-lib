@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, ReactNode, useEffect, useRef } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { Editor, Extensions, useEditor } from '@tiptap/react';
@@ -10,7 +10,7 @@ import {
 import { useAmplifyKit } from 'src/atoms/hooks/useAmplifyKit';
 
 export interface EditorProviderProps extends ImageExtensionFnProps {
-  children: (editor: Editor) => JSX.Element;
+  children: (editor: Editor) => ReactNode;
   content: string | null | undefined;
   extensions?: Extensions;
   onUpdate?: (html: string) => void;
