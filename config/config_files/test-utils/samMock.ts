@@ -26,6 +26,7 @@ export const handlers = [
     return HttpResponse.json([]);
   }),
   http.get('*/api/v1/ImpersonateUser/CanImpersonate', async () => {
+    await delay('real');
     return HttpResponse.text('true');
   }),
   http.get('*/api/v1/ImpersonateUser/ActiveUser', async () => {
