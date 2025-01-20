@@ -1,4 +1,4 @@
-/* v8 ignore file */
+/* v8 ignore start */
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
 import Heading from '@tiptap/extension-heading';
 import type { NodeViewProps } from '@tiptap/react';
@@ -33,3 +33,4 @@ export default Heading.extend({
     return ReactNodeViewRenderer(Component);
   },
 });
+/* v8 ignore end */

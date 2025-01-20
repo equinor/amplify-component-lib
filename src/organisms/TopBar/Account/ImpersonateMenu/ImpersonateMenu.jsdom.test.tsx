@@ -38,3 +38,28 @@ describe('Active impersonation', () => {
     expect(screen.queryByText('Impersonating')).not.toBeInTheDocument();
   });
 });
+
+describe('Active impersonation endpoint fails', () => {
+  beforeEach(() => {
+    server.use(
+      http.get(
+        '*/api/v1/ImpersonateUser/ActiveUser',
+        async () => {
+          await delay('real');
+          return HttpResponse.json({}, { status: 404 });
+        },
+        { once: true }
+      )
+    );
+  });
+
+  test('Shows as not active if endpoint returns 404', async () => {
+    renderWithProviders(<Account />);
+    const user = userEvent.setup();
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    expect(screen.queryByText('Impersonating')).not.toBeInTheDocument();
+  });
+});

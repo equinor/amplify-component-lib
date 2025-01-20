@@ -7,14 +7,14 @@ export default defineWorkspace([
       name: 'browser',
       browser: {
         enabled: true,
+        provider: "playwright",
         viewport: {
           width: 1280,
           height: 900
         },
-        name: 'chromium',
-        provider: 'playwright',
-        // https://playwright.dev
-        providerOptions: {},
+        instances: [
+          { browser: "chromium", }
+        ],
         screenshotFailures: false
       },
       exclude: ['src/atoms', 'src/deprecated', 'src/**/*.jsdom.test.tsx', 'src/**/*.utils.test.ts'],

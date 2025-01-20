@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useEffect, useRef } from 'react';
+import { FC, HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 
 import { Editor, Extensions, useEditor } from '@tiptap/react';
 
@@ -22,7 +22,7 @@ export interface RichTextDisplayProps
   lightBackground?: boolean;
   padding?: 'sm' | 'md' | 'lg' | 'none';
   extensions?: Extensions;
-  children?: (editor: Editor) => JSX.Element;
+  children?: (editor: Editor) => ReactNode;
 }
 
 /**

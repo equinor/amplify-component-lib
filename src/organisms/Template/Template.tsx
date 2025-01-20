@@ -48,7 +48,7 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
   }
 
-  body, #content {
+  body, #content:not(:has(.select-field)) {
       scrollbar-gutter: stable both-edges;
   }
 
