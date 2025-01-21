@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';

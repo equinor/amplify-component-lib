@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';

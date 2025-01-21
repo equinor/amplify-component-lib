@@ -133,6 +133,7 @@ export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
   .fill(0)
   .map(() => ({
     uuid: faker.string.uuid(),
+    active: true,
   }));
 
 export const handlers = [

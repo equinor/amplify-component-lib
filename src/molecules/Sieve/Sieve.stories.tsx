@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';

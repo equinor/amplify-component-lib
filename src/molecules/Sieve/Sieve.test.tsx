@@ -1,6 +1,9 @@
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import {
+  createMemoryRouter,
+  MemoryRouter,
+  RouterProvider,
+} from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 import { waitFor } from '@testing-library/react';
