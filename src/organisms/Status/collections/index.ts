@@ -4,3 +4,4 @@ export { MissingAccessToApp } from './MissingAccessToApp';
 export { MissingPermissions } from './MissingPermissions';
 export { PageNotFound } from './PageNotFound';
 export { ServerError } from './ServerError';
+export { ApiResponseError } from './ApiResponseError';
