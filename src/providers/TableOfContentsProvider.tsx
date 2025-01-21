@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';

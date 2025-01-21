@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
