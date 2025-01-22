@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { PageNotFound } from './PageNotFound';
+import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 const meta: Meta<typeof PageNotFound> = {
   title: 'Organisms/Status/Collections/PageNotFound',
@@ -17,7 +18,9 @@ const meta: Meta<typeof PageNotFound> = {
   args: {},
   decorators: (Story) => (
     <MemoryRouter initialEntries={['/']}>
-      <Story />
+      <StatusWrapper>
+        <Story />
+      </StatusWrapper>
     </MemoryRouter>
   ),
 };
