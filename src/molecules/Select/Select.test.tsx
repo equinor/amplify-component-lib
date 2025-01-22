@@ -811,3 +811,24 @@ test('Does not call onSubmit when selecting items with {Enter}', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith(items[0]);
   expect(handleOnSubmit).not.toHaveBeenCalled();
 });
+
+test('Passing "data-testid" attribute works as expected', () => {
+  const handler = vi.fn();
+  const label = faker.animal.bear();
+  const items = fakeSelectItems();
+  const id = faker.string.uuid();
+  const randomTestId = faker.animal.dog();
+
+  render(
+    <Select
+      id={id}
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={items[0]}
+      data-testid={randomTestId}
+    />
+  );
+
+  expect(screen.getByTestId(randomTestId)).toBeInTheDocument();
+});

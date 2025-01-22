@@ -33,6 +33,22 @@ test('Renders as expected', () => {
   expect(screen.getByText(placeholder)).toBeInTheDocument();
 });
 
+test("Passing 'data-testid' attribute works", () => {
+  const items = fakeSelectItems();
+  const handleOnSelect = vi.fn();
+  const someId = faker.vehicle.vehicle();
+  render(
+    <ComboBox
+      values={[]}
+      onSelect={handleOnSelect}
+      items={items}
+      data-testid={someId}
+    />
+  );
+
+  expect(screen.getByTestId(someId)).toBeInTheDocument();
+});
+
 test('OnAddItem works as expected with {Enter}', async () => {
   const handleOnAddItem = vi.fn();
   const handleOnSelect = vi.fn();
