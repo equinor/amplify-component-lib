@@ -127,6 +127,43 @@ export const MaxHeight: StoryFn<RichTextEditorProps> = (args) => {
   );
 };
 
+export const Variants: StoryFn<RichTextEditorProps> = (args) => {
+  return (
+    <div
+      style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}
+    >
+      <RichTextEditor
+        {...args}
+        variant="dirty"
+        label="Label"
+        meta="Meta"
+        helperText="Helper text"
+      />
+      <RichTextEditor
+        {...args}
+        variant="error"
+        label="Label"
+        meta="Meta"
+        helperText="Helper text"
+      />
+      <RichTextEditor
+        {...args}
+        variant="warning"
+        label="Label"
+        meta="Meta"
+        helperText="Helper text"
+      />
+      <RichTextEditor
+        {...args}
+        variant="success"
+        label="Label"
+        meta="Meta"
+        helperText="Helper text"
+      />
+    </div>
+  );
+};
+
 export const CustomEditor: StoryFn<RichTextEditorProps> = (args) => {
   const string = `<p>The rich text editor is built off a compound component architecture. This means that you can use the individual primitives to take full control. Notice in this example that the MenuBar is below the rich text editor content even though theres no prop to allow you to do this. If you look at the code you will notice that in this example we are no longer using the higher level RichTextEditor component. Instead we are breaking out the smaller primitive components that make up the RichTextEditor. This way you have full control of all the parts in the editor. You can mix an match them as you please. Decide which individual parts you need to take over while still using the other parts.</p>`;
 
