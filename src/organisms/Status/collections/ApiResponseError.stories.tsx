@@ -1,0 +1,46 @@
+import { MemoryRouter } from 'react-router-dom';
+
+import { Meta, StoryObj } from '@storybook/react';
+
+import { ApiResponseError } from './ApiResponseError';
+
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  height: 50vh;
+`;
+
+const meta: Meta<typeof ApiResponseError> = {
+  title: 'Organisms/Status/Collections/ApiResponseError',
+  component: ApiResponseError,
+  parameters: {
+    layout: 'centered',
+    design: {
+      type: 'figma',
+      url: '',
+    },
+  },
+  argTypes: {
+    statusCode: {
+      control: 'number',
+      description: 'Eg. 400, 401, 403, 404, 500',
+    },
+  },
+  args: {
+    statusCode: 400,
+  },
+  decorators: (Story) => (
+    <Wrapper>
+      <MemoryRouter initialEntries={['/']}>
+        <Story />
+      </MemoryRouter>
+    </Wrapper>
+  ),
+};
+
+export default meta;
+type Story = StoryObj<typeof ApiResponseError>;
+
+export const Default: Story = {
+  args: {},
+};
