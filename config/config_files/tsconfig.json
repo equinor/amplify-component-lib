@@ -19,5 +19,5 @@
     "strictPropertyInitialization": false,
     "target": "ES2022",
   },
-  "include": ["src"],
+  "include": ["src", "vite.config.ts","vitest.workspace.ts", "vitest.config.ts"]
 }

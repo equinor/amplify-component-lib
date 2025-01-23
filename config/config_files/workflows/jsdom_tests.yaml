@@ -1,4 +1,4 @@
-name: Test
+name: JSDOM tests
 on:
   workflow_call:
 jobs:
@@ -15,6 +15,6 @@ jobs:
         working-directory: client
         run: bun install --frozen-lockfile
 
-      - name: Vitest tests
+      - name: Tests
         working-directory: client
-        run: bun run test:ci
+        run: bun run test:ci --project jsdom

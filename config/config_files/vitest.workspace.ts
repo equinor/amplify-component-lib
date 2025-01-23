@@ -12,7 +12,7 @@ export default defineWorkspace([
           height: 900
         },
         instances: [{
-          browser: "chromium"
+          browser: 'chromium'
         }],
         provider: 'playwright',
         screenshotFailures: false
@@ -24,7 +24,6 @@ export default defineWorkspace([
         'src/**/*.jsdom.test.tsx',
       ],
       setupFiles: ['src/tests/setupBrowserTests.ts'],
-      retry: 1,
       css: true
     },
   },
