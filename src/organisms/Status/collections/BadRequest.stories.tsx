@@ -1,8 +1,9 @@
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { Meta, StoryObj } from '@storybook/react';
 
 import { BadRequest } from './BadRequest';
+import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 const meta: Meta<typeof BadRequest> = {
   title: 'Organisms/Status/Collections/BadRequest',
@@ -17,7 +18,9 @@ const meta: Meta<typeof BadRequest> = {
   args: {},
   decorators: (Story) => (
     <MemoryRouter initialEntries={['/']}>
-      <Story />
+      <StatusWrapper>
+        <Story />
+      </StatusWrapper>
     </MemoryRouter>
   ),
 };

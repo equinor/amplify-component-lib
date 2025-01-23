@@ -1,10 +1,8 @@
-import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 
+import { spacings } from 'src/atoms/style';
 import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 import { act, render } from 'src/tests/jsdomtest-utils';
-
-const { spacings } = tokens;
 
 test('Padding props works as expected', async () => {
   const content = faker.animal.bear();
@@ -16,7 +14,7 @@ test('Padding props works as expected', async () => {
   });
 
   expect(container.querySelector('.tiptap')).toHaveStyle({
-    padding: spacings.comfortable.medium,
+    padding: spacings.medium,
   });
 
   rerender(<RichTextDisplay value={'content'} padding={'none'} />);
@@ -36,7 +34,7 @@ test('Padding props works as expected', async () => {
   });
 
   expect(container.querySelector('.tiptap')).toHaveStyle({
-    padding: spacings.comfortable.small,
+    padding: spacings.small,
   });
 
   rerender(<RichTextDisplay value={'content'} padding={'lg'} />);
@@ -46,6 +44,6 @@ test('Padding props works as expected', async () => {
   });
 
   expect(container.querySelector('.tiptap')).toHaveStyle({
-    padding: spacings.comfortable.large,
+    padding: spacings.large,
   });
 });

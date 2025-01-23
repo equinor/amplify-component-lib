@@ -2,8 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { Status } from '.';
-
-import styled from 'styled-components';
+import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 interface StatusStoryProps {
   customized: boolean;
@@ -54,17 +53,13 @@ const meta: Meta = {
 
 export default meta;
 
-const Wrapper = styled.div`
-  height: 50vh;
-`;
-
 export const Default: StoryFn<StatusStoryProps> = (args) => {
   const handleOnButtonClick = () => {
     action('Button clicked')();
   };
 
   return (
-    <Wrapper>
+    <StatusWrapper>
       <Status
         center={args.center}
         expectedBackgroundColor={args.expectedBackgroundColor}
@@ -79,7 +74,7 @@ export const Default: StoryFn<StatusStoryProps> = (args) => {
           onClick={handleOnButtonClick}
         />
       </Status>
-    </Wrapper>
+    </StatusWrapper>
   );
 };
 
@@ -89,7 +84,7 @@ export const WithMissingAccesses: StoryFn<StatusStoryProps> = (args) => {
   };
 
   return (
-    <Wrapper>
+    <StatusWrapper>
       <Status
         center={args.center}
         expectedBackgroundColor={args.expectedBackgroundColor}
@@ -102,6 +97,6 @@ export const WithMissingAccesses: StoryFn<StatusStoryProps> = (args) => {
           onClick={handleOnButtonClick}
         />
       </Status>
-    </Wrapper>
+    </StatusWrapper>
   );
 };

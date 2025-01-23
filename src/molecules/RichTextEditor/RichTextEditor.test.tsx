@@ -175,6 +175,32 @@ test('Throws error if trying to use both remove strategies', () => {
   ).toThrowError();
 });
 
+test('Shows label / meta / helper as expected', async () => {
+  const props = fakeProps(true);
+  const label = faker.airline.airline().name;
+  const meta = faker.commerce.department();
+  const helper = faker.food.fruit();
+  const helperIcon = <div data-testid="helper-icon" />;
+
+  renderWithProviders(
+    <RichTextEditor
+      {...props}
+      label={label}
+      meta={meta}
+      helperText={helper}
+      helperIcon={helperIcon}
+    />
+  );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(screen.getByText(label)).toBeInTheDocument();
+  expect(screen.getByText(meta)).toBeInTheDocument();
+  expect(screen.getByText(helper)).toBeInTheDocument();
+  expect(screen.getByTestId('helper-icon')).toBeInTheDocument();
+});
+
 describe('Editor defaults can be merged', () => {
   const uniqe: Partial<AmplifyKitOptions> = {
     bold: { HTMLAttributes: { class: 'bolder' } },

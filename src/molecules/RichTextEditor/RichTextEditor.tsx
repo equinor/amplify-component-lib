@@ -1,12 +1,22 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
+
+import { Typography } from '@equinor/eds-core-react';
 
 import { AmplifyBar } from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
-import { EditorContent, EditorStyling } from './RichTextEditor.styles';
+import {
+  EditorContent,
+  EditorStyling,
+  HelperWrapper,
+  LabelWrapper,
+  Wrapper,
+} from './RichTextEditor.styles';
 import {
   ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
+import { colors, VARIANT_HELPER_COLORS } from 'src/atoms/style/colors';
+import { Variants } from 'src/atoms/types/variants';
 import { getFeatures } from 'src/atoms/utils/richtext';
 
 export interface RichTextEditorProps extends ImageExtensionFnProps {
@@ -21,7 +31,15 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
   minHeight?: string;
   lightBackground?: boolean;
   border?: boolean;
+  /**
+   * @deprecated - Use new 'variant' prop instead
+   */
   highlighted?: boolean;
+  variant?: Variants;
+  label?: string;
+  meta?: string;
+  helperText?: string;
+  helperIcon?: ReactNode;
 }
 
 /**
@@ -41,7 +59,12 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
  * @param minHeight - minHeight of the text box
  * @param lightBackground - if it should have a different BG color
  * @param border - if it should have a border
+ * @param variant - field variants - for example 'error'
  * @param highlighted - if it should have a highlighted border
+ * @param label - Label text at top left
+ * @param meta - Meta text at top right
+ * @param helperText - Helper text bottom left
+ * @param helperIcon - Icon / element to be placed before helper text
  */
 export const RichTextEditor: FC<RichTextEditorProps> = ({
   value,
@@ -60,6 +83,11 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   lightBackground,
   border = true,
   highlighted = false,
+  variant,
+  label,
+  meta,
+  helperText,
+  helperIcon,
 }) => {
   if (onImageRemove && onRemovedImagesChange) {
     throw new Error(
@@ -85,24 +113,55 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
       onRemovedImagesChange={onRemovedImagesChange}
     >
       {(editor) => (
-        <EditorStyling
-          data-testid="richtext-editor"
-          $border={border}
-          $padding={padding}
-          $lightBackground={lightBackground}
-          $highlighted={highlighted}
-        >
-          <AmplifyBar
-            editor={editor}
-            features={usedFeatured}
-            onImageUpload={onImageUpload}
-          />
-          <EditorContent
-            editor={editor}
-            $maxHeight={maxHeight}
-            $minHeight={minHeight}
-          />
-        </EditorStyling>
+        <Wrapper>
+          {label && (
+            <LabelWrapper>
+              <Typography variant="label" group="input">
+                {label}
+              </Typography>
+              {meta && (
+                <Typography variant="helper" group="input">
+                  {meta}
+                </Typography>
+              )}
+            </LabelWrapper>
+          )}
+          <EditorStyling
+            data-testid="richtext-editor"
+            $border={border}
+            $padding={padding}
+            $lightBackground={lightBackground}
+            $highlighted={highlighted}
+            $variant={variant}
+          >
+            <AmplifyBar
+              editor={editor}
+              features={usedFeatured}
+              onImageUpload={onImageUpload}
+            />
+            <EditorContent
+              editor={editor}
+              $maxHeight={maxHeight}
+              $minHeight={minHeight}
+            />
+          </EditorStyling>
+          {helperText && (
+            <HelperWrapper>
+              {helperIcon ? helperIcon : undefined}
+              <Typography
+                variant="helper"
+                group="input"
+                color={
+                  variant
+                    ? VARIANT_HELPER_COLORS[variant]
+                    : colors.text.static_icons__tertiary.rgba
+                }
+              >
+                {helperText}
+              </Typography>
+            </HelperWrapper>
+          )}
+        </Wrapper>
       )}
     </EditorProvider>
   );

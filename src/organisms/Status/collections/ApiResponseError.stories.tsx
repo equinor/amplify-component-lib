@@ -3,12 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { ApiResponseError } from './ApiResponseError';
-
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  height: 50vh;
-`;
+import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 const meta: Meta<typeof ApiResponseError> = {
   title: 'Organisms/Status/Collections/ApiResponseError',
@@ -30,11 +25,11 @@ const meta: Meta<typeof ApiResponseError> = {
     statusCode: 400,
   },
   decorators: (Story) => (
-    <Wrapper>
+    <StatusWrapper>
       <MemoryRouter initialEntries={['/']}>
         <Story />
       </MemoryRouter>
-    </Wrapper>
+    </StatusWrapper>
   ),
 };
 

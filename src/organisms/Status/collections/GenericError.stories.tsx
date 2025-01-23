@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { GenericError } from './GenericError';
+import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 const meta: Meta<typeof GenericError> = {
   title: 'Organisms/Status/Collections/GenericError',
@@ -17,7 +18,9 @@ const meta: Meta<typeof GenericError> = {
   args: {},
   decorators: (Story) => (
     <MemoryRouter initialEntries={['/']}>
-      <Story />
+      <StatusWrapper>
+        <Story />
+      </StatusWrapper>
     </MemoryRouter>
   ),
 };
