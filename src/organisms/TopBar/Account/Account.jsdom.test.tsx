@@ -1,3 +1,5 @@
+import { EnvironmentType } from '@equinor/subsurface-app-management';
+
 import { Account } from 'src/organisms/TopBar/Account/Account';
 import { MOCK_USER } from 'src/providers/AuthProvider/AuthProvider';
 import {
@@ -57,6 +59,7 @@ describe('Active impersonation', () => {
         { once: true }
       )
     );
+    vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.DEVELOP);
   });
 
   test('Active impersonation is set as selected', async () => {

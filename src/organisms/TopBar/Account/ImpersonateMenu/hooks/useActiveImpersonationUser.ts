@@ -5,6 +5,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 
 import { ACTIVE_USERIMPERSONATION } from '../Impersonate.constants';
+import { environment } from 'src/atoms/utils/auth_environment';
 
 export function useActiveImpersonationUser() {
   return useQuery({
@@ -25,5 +26,8 @@ export function useActiveImpersonationUser() {
         }
       }
     },
+    enabled:
+      environment.getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) !==
+      'production',
   });
 }
