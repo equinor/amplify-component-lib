@@ -6,5 +6,5 @@ https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/pull_request.yaml
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/secret_scanning.yaml
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/browser_tests.yaml
-https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/jsdom.yaml
+https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/jsdom_tests.yaml
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/workflows/code_coverage.yaml
