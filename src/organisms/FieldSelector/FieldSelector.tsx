@@ -2,6 +2,7 @@ import { FC, useRef, useState } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 
+import { Template } from '../Template/Template';
 import { SelectorCard } from './SelectorCard/SelectorCard';
 import { SelectorSkeleton } from './SelectorCard/Skeleton';
 import { ChangingField } from './ChangingField';
@@ -73,7 +74,7 @@ export const FieldSelector: FC<FieldSelectorProps> = ({
   }
 
   return (
-    <Container className="select-field">
+    <Container className={Template.FullWidth}>
       <ImageWrapper>
         <Waves />
       </ImageWrapper>
