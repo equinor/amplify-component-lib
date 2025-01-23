@@ -61,6 +61,7 @@ export const Select = <T extends SelectOptionRequired>(
     variant,
     inDialog = false,
     onSearchFilter,
+    'data-testid': dataTestId,
   } = props;
   const {
     handleOnAddItem,
@@ -172,7 +173,7 @@ export const Select = <T extends SelectOptionRequired>(
       {shouldShowLabel && <Label label={label} meta={meta} htmlFor={id} />}
       <Wrapper>
         <Container
-          data-testid="combobox-container"
+          data-testid={dataTestId ? dataTestId : 'combobox-container'}
           ref={anchorRef}
           onClick={handleOnOpen}
           aria-expanded={open}

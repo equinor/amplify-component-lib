@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, MutableRefObject } from 'react';
+import { FC, KeyboardEvent, RefObject } from 'react';
 
 import { Variants } from 'src/atoms/types/variants';
 
@@ -52,7 +52,7 @@ export interface ListSelectMenuProps {
 
 export interface SelectMenuProps<T extends SelectOptionRequired> {
   search: string;
-  itemRefs: MutableRefObject<(HTMLButtonElement | null)[]>;
+  itemRefs: RefObject<(HTMLButtonElement | null)[]>;
   onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
   onItemSelect: (item: SelectOption<T>) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
@@ -106,4 +106,5 @@ export interface CommonSelectProps<T extends SelectOptionRequired> {
   inDialog?: boolean;
   onOpenCallback?: (value: boolean) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
+  'data-testid'?: string;
 }

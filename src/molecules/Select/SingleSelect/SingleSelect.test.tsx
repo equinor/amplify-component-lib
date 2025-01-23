@@ -26,6 +26,23 @@ test('Renders as expected', () => {
   expect(screen.getByText(placeholder)).toBeInTheDocument();
 });
 
+test('Passing "data-testid" attribute works as expected', () => {
+  const items = fakeSelectItems();
+  const handleOnSelect = vi.fn();
+  const someId = faker.book.title();
+
+  render(
+    <SingleSelect
+      value={undefined}
+      onSelect={handleOnSelect}
+      items={items}
+      data-testid={someId}
+    />
+  );
+
+  expect(screen.getByTestId(someId)).toBeInTheDocument();
+});
+
 test('Works as expected when clicking items', async () => {
   const items = fakeSelectItems();
   const label = faker.animal.bear();
