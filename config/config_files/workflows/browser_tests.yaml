@@ -1,0 +1,28 @@
+name: Browser tests
+on:
+  workflow_call:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browser: [chromium]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        working-directory: client
+        run: bun install --frozen-lockfile
+
+      - name: Install playwright with dependencies
+        working-directory: client
+        run: bunx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Tests
+        working-directory: client
+        run: bun run test:ci --project="browser (${{ matrix.browser }})"
