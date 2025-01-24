@@ -35,7 +35,7 @@ jobs:
           path: ./browser-coverage
           key: browser-coverage
 
-      - run: mkdir coverage && bunx istanbul-merge --out ./coverage/coverage.json ./browser-coverage/coverage-final.json ./jsdom-coverage/coverage-final.json
+      - run: mkdir coverage && bun x istanbul-merge --out ./coverage/coverage.json ./browser-coverage/coverage-final.json ./jsdom-coverage/coverage-final.json
 
       - name: 'Report Coverage'
         # Set if: always() to also generate the report if tests are failing
