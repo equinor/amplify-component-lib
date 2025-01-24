@@ -1,0 +1,42 @@
+name: "Tests"
+
+on:
+  workflow_call:
+
+jobs:
+  browser_tests:
+    name: Run browser tests
+    uses: ./.github/workflows/browser_tests.yaml
+
+  jsdom_tests:
+    name: Run JSDOM tests
+    uses: ./.github/workflows/jsdom_tests.yaml
+
+  coverage:
+    runs-on: ubuntu-latest
+    needs: [browser_tests, jsdom_tests]
+
+    permissions:
+      # Required to checkout the code
+      contents: read
+      # Required to put a comment into the pull-request
+      pull-requests: write
+
+    steps:
+      - uses: actions/cache@v4
+        name: 'Get jsdom coverage data'
+        with:
+          path: jsdom-coverage
+          key: ${{ runner.os }}-jsdom-coverage
+
+      - uses: actions/cache@v4
+        name: 'Get browser coverage data'
+        with:
+          path: browser-coverage
+          key: ${{ runner.os }}-browser-coverage
+
+      - name: 'Report Coverage'
+        # Set if: always() to also generate the report if tests are failing
+        # Only works if you set `reportOnFailure: true` in your vite config as specified above
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
