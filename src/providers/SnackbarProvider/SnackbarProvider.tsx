@@ -16,6 +16,7 @@ import {
 } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 
+import { APIErrorSnackbar } from './APIErrorSnackbar';
 import { StyledSnackbar } from './SnackbarProvider.styles';
 import { snackbarIcon } from './SnackbarProvider.utils';
 
@@ -56,14 +57,24 @@ export const useSnackbar = () => {
 
 export type SnackbarProviderProps = {
   children: ReactNode;
+  showAPIErrors?: boolean;
 } & SnackbarProps;
 
-export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
+/**
+ * @param children - Children to render under the SnackbarProvider
+ * @param showAPIErrors - Set default query options for showing API errors, defaults to true
+ */
+export const SnackbarProvider: FC<SnackbarProviderProps> = ({
+  children,
+  showAPIErrors = true,
+  ...initialSnackbarProps
+}) => {
   const [open, setOpen] = useState(false);
   const [showingSnackbar, setShowingSnackbar] = useState<
     ShowSnackbar | undefined
   >(undefined);
-  const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
+  const [snackbarProps, setSnackbarProps] =
+    useState<SnackbarProps>(initialSnackbarProps);
   const [snackbarAction, setSnackbarAction] =
     useState<ShowSnackbarSettings['action']>();
 
@@ -76,7 +87,7 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
     } else {
       setShowingSnackbar(showSnackbar);
     }
-    setSnackbarProps(snackbarSettings?.customProps ?? props);
+    setSnackbarProps(snackbarSettings?.customProps ?? initialSnackbarProps);
     setSnackbarAction(snackbarSettings?.action ?? undefined);
     setOpen(true);
   };
@@ -105,7 +116,11 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
     <SnackbarContext.Provider
       value={{ showSnackbar, setActionDisabledState, hideSnackbar }}
     >
-      {props.children}
+      {showAPIErrors ? (
+        <APIErrorSnackbar>{children}</APIErrorSnackbar>
+      ) : (
+        children
+      )}
       <StyledSnackbar
         $variant={showingSnackbar?.variant}
         open={open}
