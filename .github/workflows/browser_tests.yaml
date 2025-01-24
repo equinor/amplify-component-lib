@@ -22,9 +22,9 @@ jobs:
         run: bunx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Tests
-        run: bun run test:ci --project="browser (${{ matrix.browser }})" --coverage
+        run: bun run test:coverage-ci --project="browser (${{ matrix.browser }})" --coverage.threshold.100=false
 
       - uses: actions/cache@v4
         with:
-          path: browser-coverage
+          path: coverage
           key: ${{ runner.os }}-browser-coverage
