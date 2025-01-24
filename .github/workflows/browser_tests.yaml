@@ -23,8 +23,3 @@ jobs:
 
       - name: Tests
         run: bun run test:coverage-ci --project="browser (${{ matrix.browser }})" --coverage.threshold.100=false
-
-      - uses: actions/cache@v4
-        with:
-          path: coverage
-          key: ${{ runner.os }}-browser-coverage
