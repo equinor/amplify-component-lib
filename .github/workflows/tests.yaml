@@ -23,6 +23,18 @@ jobs:
       pull-requests: write
 
     steps:
+      - uses: actions/cache@v4
+        name: 'Get jsdom coverage data'
+        with:
+          path: coverage
+          key: jsdom-coverage
+
+      - uses: actions/cache@v4
+        name: 'Get browser coverage data'
+        with:
+          path: coverage
+          key: browser-coverage
+
       - name: 'Report Coverage'
         # Set if: always() to also generate the report if tests are failing
         # Only works if you set `reportOnFailure: true` in your vite config as specified above

@@ -2,7 +2,7 @@ name: JSDOM tests
 on:
   workflow_call:
 jobs:
-  test:
+  jsdom:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,3 +17,8 @@ jobs:
       - name: Tests
         run: bun run test:coverage-ci --project jsdom
         continue-on-error: true
+
+      - uses: actions/cache@v4
+        with:
+          path: ./coverage
+          key: browser-coverage
