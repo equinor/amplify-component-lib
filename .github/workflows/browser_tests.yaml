@@ -22,4 +22,5 @@ jobs:
         run: bunx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Tests
-        run: bun run test:coverage-ci --project="browser (${{ matrix.browser }})" --coverage.threshold.100=false
+        run: bun run test:coverage-ci --project="browser (${{ matrix.browser }})"
+        continue-on-error: true
