@@ -22,10 +22,10 @@ jobs:
         run: bunx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Tests
-        run: bun run test:coverage-ci --project="browser (${{ matrix.browser }})"
+        run: bun run test:coverage-ci --project="browser (${{ matrix.browser }})" --coverage.reportsDirectory="browser-coverage"
         continue-on-error: true
 
       - uses: actions/cache@v4
         with:
-          path: ./coverage
+          path: ./browser-coverage
           key: browser-coverage
