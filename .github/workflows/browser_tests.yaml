@@ -2,7 +2,7 @@ name: Browser tests
 on:
   workflow_call:
 jobs:
-  test:
+  browser:
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,4 +22,10 @@ jobs:
         run: bunx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Tests
-        run: bun run test:ci --project="browser (${{ matrix.browser }})"
+        run: bun run test:coverage-ci --project="browser (${{ matrix.browser }})" --coverage.reportsDirectory="browser-coverage"
+        continue-on-error: true
+
+      - uses: actions/cache@v4
+        with:
+          path: ./browser-coverage
+          key: browser-coverage
