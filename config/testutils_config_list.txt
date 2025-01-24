@@ -1,6 +1,8 @@
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/vitest.d.ts
-https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/setupTests.ts
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/browserMocks.ts
-https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/utils.ts
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/playwright.ts
 https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/samMock.ts
+https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/browsertest-utils.tsx
+https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/jsdomtest-utils.tsx
+https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/setupBrowserTests.ts
+https://raw.githubusercontent.com/equinor/amplify-component-lib/refs/heads/main/config/config_files/test-utils/setupNodeTests.ts
