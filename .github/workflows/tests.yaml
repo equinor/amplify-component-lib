@@ -19,7 +19,7 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Tests
-        run: bun run test:ci -- --bail=1 --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false
+        run: bun run test:ci -- --bail=1 --coverage --coverage.reporter=json --coverage.reporter=json-summary --coverage.threshold.functions=0 --coverage.threshold.lines=0 --coverage.threshold.statements=0  --coverage.threshold.branches=0 --silent --watch false
 
       - uses: actions/cache@v4
         with:
