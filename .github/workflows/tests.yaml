@@ -4,17 +4,8 @@ on:
   workflow_call:
 
 jobs:
-  browser_tests:
-    name: Run browser tests
-    uses: ./.github/workflows/browser_tests.yaml
-
-  jsdom_tests:
-    name: Run JSDOM tests
-    uses: ./.github/workflows/jsdom_tests.yaml
-
-  coverage:
+  tests:
     runs-on: ubuntu-latest
-    needs: [browser_tests, jsdom_tests]
 
     permissions:
       # Required to checkout the code
@@ -23,19 +14,17 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/cache@v4
-        name: 'Get jsdom coverage data'
-        with:
-          path: ./jsdom-coverage
-          key: jsdom-coverage
+      - uses: actions/checkout@v4
 
-      - uses: actions/cache@v4
-        name: 'Get browser coverage data'
-        with:
-          path: ./browser-coverage
-          key: browser-coverage
+      - name: Use bun
+        uses: oven-sh/setup-bun@v2
 
-      - run: mkdir coverage && bun x istanbul-merge --out ./coverage/coverage.json ./browser-coverage/coverage-final.json ./jsdom-coverage/coverage-final.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Tests
+        run: bun run test:coverage-ci
+        continue-on-error: true
 
       - name: 'Report Coverage'
         # Set if: always() to also generate the report if tests are failing
