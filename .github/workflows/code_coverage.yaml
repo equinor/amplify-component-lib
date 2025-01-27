@@ -30,5 +30,3 @@ jobs:
         # Only works if you set `reportOnFailure: true` in your vite config as specified above
         if: always()
         uses: davelosert/vitest-coverage-report-action@v2
-        with:
-          vite-config-path: ./vitest.config.ts
