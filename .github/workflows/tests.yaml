@@ -37,6 +37,8 @@ jobs:
       pull-requests: write
 
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/cache@v4
         name: 'Get coverage report'
         with:
