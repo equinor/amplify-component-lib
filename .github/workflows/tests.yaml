@@ -1,17 +1,9 @@
-name: "Tests"
-
+name: Browser tests
 on:
   workflow_call:
-
 jobs:
-  tests:
+  browser:
     runs-on: ubuntu-latest
-
-    permissions:
-      # Required to checkout the code
-      contents: read
-      # Required to put a comment into the pull-request
-      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
@@ -22,12 +14,13 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Tests
-        run: bun run test:coverage-ci
-        continue-on-error: true
+      - name: Install playwright with dependencies
+        run: bunx playwright install --with-deps chromium
 
-      - name: 'Report Coverage'
-        # Set if: always() to also generate the report if tests are failing
-        # Only works if you set `reportOnFailure: true` in your vite config as specified above
-        if: always()
-        uses: davelosert/vitest-coverage-report-action@v2
+      - name: Tests
+        run: vitest run --bail=1 --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --coverage.thresholds.lines=0 --coverage.thresholds.functions=0 --coverage.thresholds.branches=0 --coverage.thresholds.statements=0
+
+      - uses: actions/cache@v4
+        with:
+          path: ./coverage
+          key: coverage

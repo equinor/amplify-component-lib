@@ -13,8 +13,8 @@ jobs:
     uses: ./.github/workflows/eslint.yaml
 
   tests:
-    name: Tests
-    uses: ./.github/workflows/tests.yaml
+    name: Test run
+    uses: ./.github/workflows/code_coverage.yaml
 
   build:
     name: Build
