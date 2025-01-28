@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Check if tests failed
-        if: ${{ contains(join(steps.tests.outputs, '\n'), 'failed') }} == 'true'
+        if: ${{ contains(join(steps.tests.outputs, '\n'), 'error') }} == 'true'
         uses: actions/github-script@v3
         with:
           script: |
