@@ -23,7 +23,8 @@ jobs:
         continue-on-error: true
         id: tests
 
-      - run: if [${{ contains(steps.tests.outputs, 'failed') }}]; then exit 1; fi
+      - name: Check if tests failed
+        run: if [${{ contains(steps.tests.outputs, 'failed') }}]; then exit 1; fi
 
       - uses: actions/cache@v4
         with:
@@ -37,7 +38,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: if [${{ contains(steps.tests.outputs, 'does not meet') }}]; then exit 1; fi
+      - name: Check if coverage failed
+        run: if [${{ contains(steps.tests.outputs, 'does not meet') }}]; then exit 1; fi
 
   report-coverage:
     runs-on: ubuntu-latest

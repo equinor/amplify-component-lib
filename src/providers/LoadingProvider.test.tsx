@@ -80,7 +80,7 @@ test('LoadingProvider works as expected with customQueryKeys', async () => {
     }
   );
 
-  expect(screen.getByTestId('app-icon-svg')).toBeInTheDocument();
+  expect(screen.getByTestId('app-icon-svg-test')).toBeInTheDocument();
 
   expect(
     await screen.findByText(fakeText, undefined, { timeout: 3000 })
