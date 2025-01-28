@@ -7,11 +7,12 @@ import {
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { GuidelineProps, Guidelines, GuidelineSections } from './Guidelines';
+import { Guidelines } from './Guidelines';
+import { ElementItem, IconItem } from 'src/atoms/types/Guidelines';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
-function fakeSection(withColorBoxes = false): GuidelineSections {
-  const items: GuidelineSections['items'] = [];
+function fakeSection(withColorBoxes = false) {
+  const items: (IconItem | ElementItem)[] = [];
   for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     items.push({
       title: faker.string.uuid(),
@@ -33,8 +34,8 @@ function fakeSection(withColorBoxes = false): GuidelineSections {
   };
 }
 
-function fakeProps(withColorBoxes = false): GuidelineProps {
-  const sections: GuidelineSections[] = [];
+function fakeProps(withColorBoxes = false) {
+  const sections = [];
   for (let i = 0; i < faker.number.int({ min: 2, max: 5 }); i++) {
     sections.push(fakeSection(withColorBoxes));
   }
@@ -140,4 +141,23 @@ test('Shows custom elements', async () => {
 
   expect(screen.getByText(text)).toBeInTheDocument();
   expect(screen.getByText(itemElement.title)).toBeInTheDocument();
+});
+
+test('Shows custom item element', async () => {
+  const text = faker.animal.lion();
+  const props = {
+    sections: [
+      {
+        sectionName: faker.animal.cat(),
+        items: [<p key={'item'}>{text}</p>],
+      },
+    ],
+  };
+  const user = userEvent.setup();
+  render(<Guidelines {...props} />);
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  expect(screen.getByText(text)).toBeInTheDocument();
+  expect(screen.getByText(props.sections[0].sectionName)).toBeInTheDocument();
 });
