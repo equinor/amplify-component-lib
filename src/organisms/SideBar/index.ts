@@ -1,4 +1,4 @@
-import { SideBarMenuItem as ItemType } from 'src/atoms/types/SideBar';
+import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { MenuItem } from 'src/organisms/SideBar/MenuItem';
 import { SideBar as BaseSideBar } from 'src/organisms/SideBar/SideBar';
 
@@ -6,8 +6,15 @@ type SidebarType = typeof BaseSideBar & {
   Item: typeof MenuItem;
 };
 
+/**
+ * @deprecated Unnecessary rename of SideBarMenuItem, use SideBarMenuItem instead
+ */
+type ItemType = SideBarMenuItem;
+
 export const SideBar = BaseSideBar as SidebarType;
 SideBar.Item = MenuItem;
 SideBar.Item.displayName = 'SideBar.Item';
 
-export type { ItemType, SidebarType };
+export type { ItemType };
+
+export type { SidebarType };
