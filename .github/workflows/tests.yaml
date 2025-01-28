@@ -30,7 +30,7 @@ jobs:
           key: coverage
 
       - name: Check if tests failed
-        if: ${{ contains(join(steps.tests.outputs, '\n'), 'failed') }}
+        if: contains(join(steps.tests.outputs, '\n'), 'failed') == 'true'
         uses: actions/github-script@v3
         with:
           script: |
@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - name: Check if coverage failed
-        if: ${{ contains(join(steps.tests.outputs, '\n'), 'does not meet') }}
+        if: ${{ contains(join(steps.tests.outputs, '\n'), 'does not meet') }} == 'true'
         uses: actions/github-script@v3
         with:
           script: |
