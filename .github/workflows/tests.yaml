@@ -31,7 +31,10 @@ jobs:
 
       - name: Check if tests failed
         if: ${{ contains(steps.tests.outputs, 'failed') }}
-        run: exit 1
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Tests failed!')
 
   check-coverage:
     runs-on: ubuntu-latest
@@ -40,7 +43,10 @@ jobs:
     steps:
       - name: Check if coverage failed
         if: ${{ contains(steps.tests.outputs, 'does not meet') }}
-        run: exit 1
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Coverage failed!')
 
   report-coverage:
     runs-on: ubuntu-latest
