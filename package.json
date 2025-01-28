@@ -48,8 +48,8 @@
     ]
   },
   "dependencies": {
-    "@azure/msal-browser": "4.0.1",
-    "@azure/msal-react": "3.0.1",
+    "@azure/msal-browser": "4.0.2",
+    "@azure/msal-react": "3.0.2",
     "@equinor/eds-core-react": "0.42.5",
     "@equinor/eds-data-grid-react": "^0.7.4",
     "@microsoft/signalr": "^8.0.7",
