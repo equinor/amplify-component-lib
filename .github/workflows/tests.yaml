@@ -21,8 +21,8 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Tests
-        run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false
-          --reporter=json --reporter-default --outputFile=./test.json
+        run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary \
+         --silent --watch false --reporter=json --reporter-default --outputFile=./test.json
         continue-on-error: true
         id: tests
 
