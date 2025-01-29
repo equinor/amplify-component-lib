@@ -26,7 +26,7 @@ jobs:
         continue-on-error: true
         id: test_run
 
-      - run: echo "${{ join(steps.test_run.outputs.*, '\n') }}"
+      - run: echo ${{ join(steps.test_run.outputs.*, '\n') }}
 
       - name: Set coverage_failed
         id: set_coverage
