@@ -26,17 +26,15 @@ jobs:
         continue-on-error: true
         id: test_run
 
-      - run: echo ${{ join(steps.test_run.outputs.*, '\n') }}
-
-      - name: Set coverage_failed
-        id: set_coverage
-        run: |
-          echo "coverage_failed=${{ contains(join(steps.test_run.outputs.*, '\n'), 'does not meet global threshold') }}" >> $GITHUB_OUTPUT
-
       - name: Set tests_failed
         id: set_failed
         run: |
           echo "tests_failed=$(grep -q 'numFailedTests\":0' ./testrun.json && echo 'false' || echo 'true')" >> $GITHUB_OUTPUT
+
+      - name: Set coverage_failed
+        id: set_coverage
+        run: |
+          echo "coverage_failed=$(${{ steps.test_run.outcome }} != 'success' && grep -q 'numFailedTests\":0' ./testrun.json && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
         name: Cache coverage report
