@@ -42,7 +42,6 @@ jobs:
     needs: [tests]
 
     steps:
-      - run: echo ${{needs.tests.outputs.tests_failed}}
       - name: Check if tests failed
         if: ${{needs.tests.outputs.tests_failed}} == true
         uses: actions/github-script@v3
