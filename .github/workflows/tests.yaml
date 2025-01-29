@@ -27,7 +27,7 @@ jobs:
 
       - name: Set tests_failed
         run: |
-          echo "tests_failed=$(grep -q 'numFailedTests":0' ./testrun.json && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          echo "tests_failed=$(grep -q 'numFailedTests":0' ./testrun.json && echo 'false' || echo 'true')" >> $GITHUB_OUTPUT
 
       - run: cat ./testrun.json
 
