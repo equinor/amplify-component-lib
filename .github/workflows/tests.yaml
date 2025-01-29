@@ -29,7 +29,7 @@ jobs:
       - name: Set coverage_failed
         id: set_coverage
         run: |
-          echo "coverage_failed=${{ contains(join(steps.tests.outputs, '\n'), 'does not meet') }}" >> $GITHUB_OUTPUT
+          echo "coverage_failed=${{ contains(join(steps.tests.outputs.*, '\n'), 'does not meet') }}" >> $GITHUB_OUTPUT
 
       - name: Set tests_failed
         id: set_failed
