@@ -5,6 +5,8 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    outputs:
+      tests_failed: ${{ steps.tests.outputs.tests_failed }}
 
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +22,13 @@ jobs:
 
       - name: Tests
         run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false
+          --reporter=json --reporter-default --outputFile=./test.json
         continue-on-error: true
         id: tests
+
+      - name: Set tests_failed
+        run: |
+          echo "tests_failed=$(grep -q 'numFailedTests":0' ./test.json && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
         name: Cache coverage report
@@ -36,7 +43,7 @@ jobs:
 
     steps:
       - name: Check if tests failed
-        if: ${{ contains(join(steps.tests.outputs, '\n'), 'failed') }} == 'true'
+        if: ${{needs.tests.outputs.tests_failed}} == 'true'
         uses: actions/github-script@v3
         with:
           script: |
