@@ -42,7 +42,7 @@ jobs:
         name: Cache coverage report
         with:
           path: ./coverage
-          key: coverage
+          key: coverage-${{ github.sha }}
 
 
   check-test:
@@ -86,7 +86,7 @@ jobs:
         name: Get coverage report
         with:
           path: ./coverage
-          key: coverage
+          key: coverage-${{ github.sha }}
 
       - name: Report Coverage
         # Set if: always() to also generate the report if tests are failing
