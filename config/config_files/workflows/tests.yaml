@@ -16,29 +16,36 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
+        working-directory: ./client
         run: bun install --frozen-lockfile
 
       - name: Install playwright with dependencies
+        working-directory: ./client
         run: bunx playwright install --with-deps chromium
 
       - name: Tests
+        working-directory: ./client
         run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt
         continue-on-error: true
 
       - name: Log stderr
+        working-directory: ./client
         run: cat stderr.txt
 
       - name: Set tests_failed
+        working-directory: ./client
         id: set_failed
         run: |
           echo "tests_failed=$(grep -q 'numFailedTests\":0' ./testrun.json && echo 'false' || echo 'true')" >> $GITHUB_OUTPUT
 
       - name: Set coverage_failed
+        working-directory: ./client
         id: set_coverage
         run: |
           echo "coverage_failed=$(grep -q 'ERROR: Coverage' ./stderr.txt && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
+        working-directory: ./client
         name: Cache coverage report
         with:
           path: ./coverage
@@ -84,6 +91,7 @@ jobs:
 
       - uses: actions/cache@v4
         name: Get coverage report
+        working-directory: ./client
         with:
           path: ./coverage
           key: coverage
@@ -93,3 +101,5 @@ jobs:
         # Only works if you set `reportOnFailure: true` in your vite config as specified above
         if: always()
         uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          working-directory: ./client
