@@ -34,7 +34,7 @@ jobs:
       - name: Set coverage_failed
         id: set_coverage
         run: |
-          echo "coverage_failed=$('${{ steps.test_run.outcome }}' != 'success' && grep -q 'numFailedTests\":0' ./testrun.json && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          echo "coverage_failed='${{ contains(join(steps.test_run.outputs.*, '\n'), 'ERROR: Coverage') }}'" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
         name: Cache coverage report
