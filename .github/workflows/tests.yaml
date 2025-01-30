@@ -22,9 +22,9 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Tests
-        run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json
+        run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> testrun.txt
         continue-on-error: true
-        id: test_run
+
 
       - name: Set tests_failed
         id: set_failed
@@ -34,7 +34,7 @@ jobs:
       - name: Set coverage_failed
         id: set_coverage
         run: |
-          echo "coverage_failed='${{ contains(join(steps.test_run.outputs.*, '\n'), 'ERROR: Coverage') }}'" >> $GITHUB_OUTPUT
+          echo "coverage_failed=$(grep -q 'ERROR: Coverage' ./testrun.txt && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
         name: Cache coverage report
