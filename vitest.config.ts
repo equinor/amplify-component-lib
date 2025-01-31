@@ -63,7 +63,6 @@ export default defineConfig({
       reportOnFailure: true,
       thresholds: {
         perFile: true,
-        autoUpdate: true,
         100: true,
       },
     },

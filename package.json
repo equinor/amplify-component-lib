@@ -29,7 +29,6 @@
     "test": "vitest watch",
     "test:ci": "CI=true vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:coverage-ci": "CI=true vitest run --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent",
     "build": "npm run build-components",
     "build-components": "rollup -c && tsc --project tsconfig.build.json && resolve-tspaths --project tsconfig.build.json",
     "build-and-use": "node tooling/build-and-use.mjs",
