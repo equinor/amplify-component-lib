@@ -7,16 +7,12 @@ on:
 permissions:
   id-token: write
 jobs:
-  browser_tests:
-    name: Run browser tests
-    uses: ./.github/workflows/browser_tests.yaml
-
-  jsdom_tests:
-    name: Run JSDOM tests
-    uses: ./.github/workflows/jsdom_tests.yaml
+  tests:
+    name: Run vitest tests
+    uses: ./.github/workflows/tests.yaml
 
   publish:
-    needs: [browser_tests, jsdom_tests]
+    needs: [tests]
     runs-on: ubuntu-latest
 
     steps:
