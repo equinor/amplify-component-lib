@@ -27,6 +27,7 @@ import { motion } from 'framer-motion';
 export const ReleasePost: FC<ReleaseNote> = ({
   createdDate,
   version,
+  releaseDate,
   tags,
   title,
   body,
@@ -67,7 +68,7 @@ export const ReleasePost: FC<ReleaseNote> = ({
         <TopContainer>
           <HeadingContainer>
             <Typography group="paragraph" variant="overline">
-              {formatDate(createdDate, {
+              {formatDate(releaseDate ? releaseDate : createdDate, {
                 format: 'DD. month YYYY',
               })}
             </Typography>
