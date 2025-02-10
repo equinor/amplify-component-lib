@@ -10,3 +10,4 @@ export * from './size';
 export * from './sort';
 export * from './string';
 export * from './url';
+export * from './tutorials';
