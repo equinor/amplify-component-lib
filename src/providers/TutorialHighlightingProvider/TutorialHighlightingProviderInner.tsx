@@ -1,17 +1,12 @@
-import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
+import { FC, ReactElement, useMemo } from 'react';
 
-import {
-  MyTutorialDto,
-  useTutorials,
-} from '@equinor/subsurface-app-management';
+import { useTutorials } from '@equinor/subsurface-app-management';
 
+import { useReversedScrollY } from './hooks/useReversedScrollY';
 import { TutorialPopover } from './TutorialPopover/TutorialPopover';
 import { TUTORIAL_HIGHLIGHT_ANIMATION_PROPS } from './TutorialHighlightingProvider.constants';
 import { spacings } from 'src/atoms/style';
-import {
-  getHighlightElementBoundingBox,
-  TutorialHighlight,
-} from 'src/atoms/utils/tutorials';
+import { getHighlightElementBoundingBox } from 'src/atoms/utils/tutorials';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -54,68 +49,36 @@ export const TutorialHighlightingProviderInner: FC<
 > = ({ children }) => {
   const { activeTutorial, activeStep, unseenTutorialsOnThisPage } =
     useTutorials();
-  const [highlightedTutorials, setHighlightedTutorials] = useState<
-    TutorialHighlight[]
-  >([]);
+  const reversedScrollY = useReversedScrollY();
 
   const activeTutorials = activeTutorial
     ? [activeTutorial]
     : unseenTutorialsOnThisPage;
 
-  const handleSetHighlighted = useCallback(
-    async ({
-      currentActiveTutorial,
-      currentActiveStep,
-      currentUnseenTutorials,
-    }: {
-      currentActiveTutorial: MyTutorialDto | undefined;
-      currentActiveStep: number | undefined;
-      currentUnseenTutorials: MyTutorialDto[];
-    }) => {
-      if (currentActiveTutorial && currentActiveStep !== undefined) {
-        if (!currentActiveTutorial.steps[currentActiveStep].highlightElement)
-          return [];
+  const highlightedTutorials = useMemo(() => {
+    if (activeTutorial && activeStep !== undefined) {
+      if (!activeTutorial.steps[activeStep].highlightElement) return [];
 
-        const highlight = await getHighlightElementBoundingBox(
-          currentActiveTutorial.id,
-          currentActiveStep
-        );
+      const highlight = getHighlightElementBoundingBox(
+        activeTutorial.id,
+        activeStep
+      );
 
-        if (highlight !== undefined) {
-          setHighlightedTutorials([highlight]);
-        } else {
-          setHighlightedTutorials([]);
-        }
-
-        return;
+      if (highlight !== undefined) {
+        return [highlight];
+      } else {
+        return [];
       }
+    }
 
-      const newHighlights = await Promise.all(
-        currentUnseenTutorials.map(async (tutorial) => {
-          if (!tutorial.steps.at(0)?.highlightElement) return undefined;
+    return unseenTutorialsOnThisPage
+      .map((tutorial) => {
+        if (!tutorial.steps.at(0)?.highlightElement) return undefined;
 
-          return getHighlightElementBoundingBox(tutorial.id, 0);
-        })
-      ).then((result) => result.filter((value) => value !== undefined));
-
-      setHighlightedTutorials(newHighlights);
-    },
-
-    []
-  );
-
-  useEffect(() => {
-    handleSetHighlighted({
-      currentActiveTutorial: activeTutorial,
-      currentActiveStep: activeStep,
-      currentUnseenTutorials: unseenTutorialsOnThisPage,
-    });
-  }, [
-    activeStep,
-    activeTutorial,
-    handleSetHighlighted,
-    unseenTutorialsOnThisPage,
-  ]);
+        return getHighlightElementBoundingBox(tutorial.id, 0);
+      })
+      .filter((value) => value !== undefined);
+  }, [activeStep, activeTutorial, unseenTutorialsOnThisPage]);
 
   if (activeTutorials.length > 0) {
     return (
@@ -140,21 +103,27 @@ export const TutorialHighlightingProviderInner: FC<
         <CustomScrimSvg>
           <mask id="tutorials-rectangles">
             <rect width="100%" height="100%" fill="white" />
-            {highlightedTutorials.map((tutorial) => (
-              <motion.path
-                key={tutorial.id}
-                data-testid={`tutorial-mask-${tutorial.id}`}
-                initial={{
-                  opacity: 0,
-                  d: `M ${tutorial.left} ${tutorial.top} h ${tutorial.width} v ${tutorial.height} h -${tutorial.width} Z`,
-                }}
-                animate={{
-                  opacity: 1,
-                  d: `M ${tutorial.left} ${tutorial.top} h ${tutorial.width} v ${tutorial.height} h -${tutorial.width} Z`,
-                }}
-                fill="black"
-              />
-            ))}
+            <motion.g
+              style={{
+                translateY: reversedScrollY,
+              }}
+            >
+              {highlightedTutorials.map((tutorial) => (
+                <motion.path
+                  key={tutorial.id}
+                  data-testid={`tutorial-mask-${tutorial.id}`}
+                  initial={{
+                    opacity: 0,
+                    d: `M ${tutorial.left} ${tutorial.top} h ${tutorial.width} v ${tutorial.height} h -${tutorial.width} Z`,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    d: `M ${tutorial.left} ${tutorial.top} h ${tutorial.width} v ${tutorial.height} h -${tutorial.width} Z`,
+                  }}
+                  fill="black"
+                />
+              ))}
+            </motion.g>
           </mask>
 
           <motion.rect

@@ -11,8 +11,9 @@ import { useTutorialHighlighting } from '../TutorialHighlightingProvider';
 import { TUTORIAL_HIGHLIGHT_ANIMATION_PROPS } from '../TutorialHighlightingProvider.constants';
 import { StepIndicator } from './StepIndicator';
 import { colors, elevation, spacings } from 'src/atoms/style';
+import { useReversedScrollY } from 'src/providers/TutorialHighlightingProvider/hooks/useReversedScrollY';
 
-import { motion, MotionProps } from 'framer-motion';
+import { motion, MotionProps, useTransform } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
 interface ContainerProps extends MotionProps {
@@ -38,7 +39,7 @@ const Container = styled(motion(Card))<ContainerProps>`
   ${({ $highlightingElement }) =>
     $highlightingElement &&
     css`
-      transform: translate(-50%, 0);
+      transform: translateX(-50%);
       &:before {
         z-index: -1;
         content: '';
@@ -93,9 +94,14 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
     goToNextStep,
     goToPreviousStep,
   } = useTutorials();
+  const reversedScrollY = useReversedScrollY();
   const usingTop = top && height ? top + height + TOP_OFFSET : undefined;
   const usingLeft = left && width ? left + width / 2 : undefined;
   const highlightingElement = !!usingTop && !!usingLeft;
+  const transformedTop = useTransform(reversedScrollY, (value) => {
+    if (!highlightingElement) return null;
+    return value + usingTop;
+  });
 
   const handleSkip = () => {
     skipTutorial(id);
@@ -122,7 +128,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
       <Container
         style={{
           position: highlightingElement ? 'absolute' : undefined,
-          top: usingTop,
+          top: transformedTop,
           left: usingLeft,
         }}
         $highlightingElement={highlightingElement}
@@ -149,7 +155,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
     <Container
       style={{
         position: highlightingElement ? 'absolute' : undefined,
-        top: usingTop,
+        top: transformedTop,
         left: usingLeft,
       }}
       $highlightingElement={highlightingElement}

@@ -22,10 +22,10 @@ export interface TutorialHighlight
   id: string;
 }
 
-export async function getHighlightElementBoundingBox(
+export function getHighlightElementBoundingBox(
   tutorialId: string,
   stepNum: number
-): Promise<TutorialHighlight | undefined> {
+): TutorialHighlight | undefined {
   const usingId = highlightTutorialElementID(tutorialId, stepNum);
   const element = document.getElementById(usingId);
 
@@ -37,7 +37,9 @@ export async function getHighlightElementBoundingBox(
   }
 
   const rect = element.getBoundingClientRect();
+  const scrollOffset = window.scrollY;
 
+  // Subtract scroll offset
   if (
     rect.top <= 0 ||
     rect.left <= 0 ||
@@ -49,7 +51,7 @@ export async function getHighlightElementBoundingBox(
 
   return {
     id: tutorialId,
-    top: rect.top - HIGHLIGHT_OFFSET,
+    top: rect.top - HIGHLIGHT_OFFSET + scrollOffset,
     left: rect.left - HIGHLIGHT_OFFSET,
     width: rect.width + HIGHLIGHT_OFFSET * 2,
     height: rect.height + HIGHLIGHT_OFFSET * 2,
