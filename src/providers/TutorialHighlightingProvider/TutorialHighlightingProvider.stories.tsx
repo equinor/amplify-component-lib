@@ -324,3 +324,71 @@ export const ScrollToElement: StoryObj = {
     },
   },
 };
+
+export const TutorialWithImage: StoryObj = {
+  parameters: {
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get(`*/api/v1/Tutorial/gettutorialimage/:path`, async () => {
+          await delay('real');
+          const data = await fetch(
+            faker.image.url({
+              width: 1920,
+              height: 1080,
+            })
+          );
+          const blob = await data.blob();
+          const b64: string = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = () => {
+              const base64data = reader.result;
+              resolve(base64data as string);
+            };
+            reader.onerror = reject;
+          });
+          return HttpResponse.text(b64);
+        }),
+        http.get(`*/api/v1/Tutorial/draft/:applicationName`, async () => {
+          await delay('real');
+
+          const tutorials: MyTutorialDto[] = [
+            {
+              id: TUTORIAL_IDS[0],
+              name: faker.book.title(),
+              path: '/tutorial',
+              willPopUp: true,
+              application: environment.getEnvironmentName(
+                import.meta.env.VITE_NAME
+              ),
+              steps: [
+                {
+                  id: '1',
+                  title: faker.vehicle.vehicle(),
+                  body: faker.music.artist(),
+                  highlightElement: true,
+                  imgUrl: faker.animal.dog(),
+                },
+                {
+                  id: '2',
+                  title: faker.vehicle.vehicle(),
+                  body: faker.music.artist(),
+                  highlightElement: true,
+                },
+                {
+                  id: '3',
+                  title: faker.vehicle.vehicle(),
+                  body: faker.music.artist(),
+                  highlightElement: true,
+                },
+              ],
+            },
+          ];
+
+          return HttpResponse.json(tutorials);
+        }),
+      ],
+    },
+  },
+};

@@ -5,6 +5,7 @@ import { info_circle } from '@equinor/eds-icons';
 import {
   MyTutorialDto,
   useTutorials,
+  useTutorialStepImage,
 } from '@equinor/subsurface-app-management';
 
 import { useTutorialHighlighting } from '../TutorialHighlightingProvider';
@@ -35,6 +36,10 @@ const Container = styled(motion(Card))<ContainerProps>`
     display: flex;
     gap: ${spacings.small};
     align-items: center;
+  }
+  > img {
+    max-height: 170px;
+    object-fit: contain;
   }
   ${({ $highlightingElement }) =>
     $highlightingElement &&
@@ -94,6 +99,9 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
     goToNextStep,
     goToPreviousStep,
   } = useTutorials();
+  const { data: image } = useTutorialStepImage(
+    activeTutorial?.steps.at(activeStep ?? -1)?.imgUrl ?? undefined
+  );
   const reversedScrollY = useReversedScrollY();
   const usingTop = top && height ? top + height + TOP_OFFSET : undefined;
   const usingLeft = left && width ? left + width / 2 : undefined;
@@ -175,6 +183,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
           <Typography variant="body_short">
             {steps[activeStep]?.body}
           </Typography>
+          {image ? <img src={image} alt={steps[activeStep].title!} /> : null}
         </>
       )}
       <Actions>
