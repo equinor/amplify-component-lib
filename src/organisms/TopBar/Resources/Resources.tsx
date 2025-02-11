@@ -16,7 +16,6 @@ import {
   lightbulb,
   report_bug,
   school,
-  youtube_alt,
 } from '@equinor/eds-icons';
 
 import { TopBarButton } from '../TopBar.styles';
@@ -25,10 +24,6 @@ import { TransferToAppDialog } from '../TransferToAppDialog';
 import { Feedback } from './Feedback/Feedback';
 import { FeedbackType } from './Feedback/Feedback.types';
 import { ReleaseNotes } from './ReleaseNotesDialog/ReleaseNotes';
-import {
-  TutorialInfoDialog,
-  tutorialOptions,
-} from './Tutorials/TutorialInfoDialog';
 import { ResourceMenuItem } from './ResourceMenuItem';
 import { amplify_resources, amplify_small_portal } from 'src/atoms/icons';
 import { spacings } from 'src/atoms/style';
@@ -56,8 +51,6 @@ export interface ResourcesProps {
   hideReleaseNotes?: boolean;
   hideLearnMore?: boolean;
   children?: ReactNode;
-  showTutorials?: boolean;
-  tutorialOptions?: tutorialOptions[];
   customButton?: (
     ref: MutableRefObject<HTMLButtonElement | null>,
     onToggle: () => void
@@ -70,8 +63,6 @@ export const Resources: FC<ResourcesProps> = ({
   hideReleaseNotes = false,
   hideLearnMore = false,
   children,
-  tutorialOptions,
-  showTutorials,
   customButton,
 }) => {
   const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
@@ -79,7 +70,6 @@ export const Resources: FC<ResourcesProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
   const [openPortal, setOpenPortal] = useState(false);
-  const [openTutorials, setOpenTutorials] = useState(false);
   const [showingResourceSection, setShowingResourceSection] = useState<
     ResourceSection | undefined
   >(undefined);
@@ -121,15 +111,6 @@ export const Resources: FC<ResourcesProps> = ({
     closeMenu();
   };
 
-  const handleOnOpenTutorialDialog = () => {
-    setOpenTutorials(true);
-  };
-
-  const handleOnCloseTutorialDialog = () => {
-    setOpenTutorials(false);
-    closeMenu();
-  };
-
   const resourceSectionContent = useMemo(() => {
     switch (showingResourceSection) {
       case 'learn-more':
@@ -141,15 +122,6 @@ export const Resources: FC<ResourcesProps> = ({
               onClick={handleOnOpenPortal}
               isHref
             />
-            {showTutorials && (
-              <ResourceMenuItem
-                text="Tutorials"
-                icon={youtube_alt}
-                onClick={handleOnOpenTutorialDialog}
-                lastItem
-              />
-            )}
-
             {/*// TODO: Remove children when PWEX has change layout in topbar */}
             {children && !hideFeedback && !hideReleaseNotes && (
               <Divider style={{ margin: 0 }} />
@@ -166,13 +138,7 @@ export const Resources: FC<ResourcesProps> = ({
       default:
         return null;
     }
-  }, [
-    children,
-    hideFeedback,
-    hideReleaseNotes,
-    showTutorials,
-    showingResourceSection,
-  ]);
+  }, [children, hideFeedback, hideReleaseNotes, showingResourceSection]);
 
   return (
     <>
@@ -236,13 +202,6 @@ export const Resources: FC<ResourcesProps> = ({
           </>
         )}
       </TopBarMenu>
-      {openTutorials && tutorialOptions && (
-        <TutorialInfoDialog
-          options={tutorialOptions}
-          open={openTutorials}
-          onClose={handleOnCloseTutorialDialog}
-        />
-      )}
       {showReleaseNotes && <ReleaseNotes />}
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog

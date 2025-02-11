@@ -37,7 +37,7 @@ export function getHighlightElementBoundingBox(
   }
 
   const rect = element.getBoundingClientRect();
-  const scrollOffset = window.scrollY;
+  const scrollOffset = document.getElementById('content')?.scrollTop ?? 0;
 
   // Subtract scroll offset
   if (

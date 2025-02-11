@@ -32,6 +32,7 @@ const Container = styled(motion(Card))<ContainerProps>`
     top 400ms,
     left 400ms;
   box-shadow: ${elevation.raised};
+  pointer-events: auto;
   > header {
     display: flex;
     gap: ${spacings.small};

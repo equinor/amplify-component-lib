@@ -169,7 +169,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
-    "@equinor/subsurface-app-management": "^2.5.1",
+    "@equinor/subsurface-app-management": "^2.5.2",
     "@tanstack/react-query": "*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -30,7 +30,11 @@ const meta: Meta = {
               path: '/tutorial',
               element: (
                 <div
-                  style={{ maxWidth: '100vw', maxHeight: '100vh' }}
+                  style={{
+                    maxWidth: '100vw',
+                    maxHeight: '100vh',
+                    overflow: 'auto',
+                  }}
                   id="content"
                 >
                   <TutorialHighlightingProvider>
@@ -81,7 +85,7 @@ const meta: Meta = {
                       ))}
                       <Typography
                         id={highlightTutorialElementID(TUTORIAL_IDS[0], 3)}
-                        style={{ marginTop: '80vh' }}
+                        style={{ marginTop: '80vh', marginBottom: '10vh' }}
                       >
                         This is some text really far away
                       </Typography>

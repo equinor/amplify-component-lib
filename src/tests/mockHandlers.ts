@@ -102,12 +102,13 @@ const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 export function fakeTutorial(
   id: string,
   willPopUp: boolean,
-  highlightElement: boolean
+  highlightElement: boolean,
+  path?: string
 ): MyTutorialDto {
   return {
     id,
     name: faker.commerce.productName(),
-    path: '/tutorial',
+    path: path ? path : '/tutorial',
     willPopUp,
     application: environment.getEnvironmentName(import.meta.env.VITE_NAME),
     steps: [

@@ -4,6 +4,7 @@ import { FieldMenu } from './FieldMenu/FieldMenu';
 import { GuidelineSections } from './Guidelines/Guidelines';
 import { Notifications } from './Notifications/Notifications';
 import { Resources } from './Resources/Resources';
+import { Tutorials } from './Tutorials/Tutorials';
 import { Actions } from './Actions';
 import { Guidelines } from './Guidelines';
 import { Settings, SettingsProps } from './Settings';
@@ -18,6 +19,7 @@ type TopBarType = typeof BaseTopBar & {
   FieldSelector: typeof FieldMenu;
   Resources: typeof Resources;
   ApplicationDrawer: typeof ApplicationDrawer;
+  Tutorials: typeof Tutorials;
 };
 
 export const TopBar = BaseTopBar as TopBarType;
@@ -29,5 +31,6 @@ TopBar.Notifications = Notifications;
 TopBar.FieldSelector = FieldMenu;
 TopBar.Resources = Resources;
 TopBar.ApplicationDrawer = ApplicationDrawer;
+TopBar.Tutorials = Tutorials;
 
 export type { GuidelineSections, SettingsProps, TopBarType };

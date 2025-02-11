@@ -18,12 +18,8 @@ const CustomScrimSvg = styled.svg`
   height: 100vh;
   width: 100vw;
   z-index: 9999999;
+  background: none;
   pointer-events: none;
-`;
-
-const Wrapper = styled.div`
-  max-width: inherit;
-  max-height: inherit;
 `;
 
 const Centered = styled.div`
@@ -38,6 +34,8 @@ const Centered = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
+  background: none;
+  pointer-events: none;
 `;
 
 interface TutorialHighlightingProviderInnerProps {
@@ -82,7 +80,7 @@ export const TutorialHighlightingProviderInner: FC<
   if (activeTutorials.length > 0) {
     return (
       <>
-        <Wrapper>{children}</Wrapper>
+        {children}
         <Centered>
           {activeTutorials.map((tutorial) => {
             const highlight = highlightedTutorials.find(

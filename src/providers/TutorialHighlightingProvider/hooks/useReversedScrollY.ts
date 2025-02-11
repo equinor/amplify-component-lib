@@ -1,7 +1,10 @@
 import { useScroll, useTransform } from 'framer-motion';
 
 export function useReversedScrollY() {
-  const { scrollY } = useScroll();
+  const { scrollY } = useScroll({
+    container: { current: document.getElementById('content') },
+  });
+
   return useTransform(scrollY, (value) => {
     // Wasn't able to test this, there is however a test that has scrolling highlighting
     /* v8 ignore next */
