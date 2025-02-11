@@ -64,11 +64,10 @@ export const TutorialHighlightingProviderInner: FC<
         activeStep
       );
 
-      if (highlight !== undefined) {
+      if (highlight) {
         return [highlight];
-      } else {
-        return [];
       }
+      return [];
     }
 
     return unseenTutorialsOnThisPage

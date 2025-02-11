@@ -41,12 +41,10 @@ interface StepIndicatorProps {
 export const StepIndicator: FC<StepIndicatorProps> = ({ stepAmount }) => {
   const { activeStep } = useTutorials();
 
-  if (activeStep === undefined) return null;
-
   return (
     <Container style={{ gridTemplateColumns: `repeat(${stepAmount}, 1fr)` }}>
       {Array.from({ length: stepAmount }).map((_, index) => (
-        <Step key={index} $index={index} $activeIndex={activeStep} />
+        <Step key={index} $index={index} $activeIndex={activeStep!} />
       ))}
     </Container>
   );

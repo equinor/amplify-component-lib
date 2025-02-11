@@ -100,7 +100,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
     goToPreviousStep,
   } = useTutorials();
   const { data: image } = useTutorialStepImage(
-    activeTutorial?.steps.at(activeStep ?? -1)?.imgUrl ?? undefined
+    activeTutorial?.steps.at(activeStep!)?.imgUrl ?? undefined
   );
   const reversedScrollY = useReversedScrollY();
   const usingTop = top && height ? top + height + TOP_OFFSET : undefined;
