@@ -18,6 +18,7 @@ import {
 import {
   FAKE_TUTORIALS,
   fakeTutorial,
+  getTutorialImageHandler,
   tokenHandler,
 } from 'src/tests/mockHandlers';
 import { worker } from 'src/tests/setupBrowserTests';
@@ -528,8 +529,9 @@ test('Image content works as expected', async () => {
       },
     ],
   };
-  worker.use(
+  worker.resetHandlers(
     tokenHandler,
+    getTutorialImageHandler,
     http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
       return HttpResponse.json([highlightedTutorial]);
     })
