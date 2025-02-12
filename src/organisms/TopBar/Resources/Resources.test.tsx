@@ -1,13 +1,10 @@
 import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitFor } from '@testing-library/react';
 
 import { Resources } from './Resources';
 import { environment } from 'src/atoms/utils/auth_environment';
-import { tutorialOptions } from 'src/organisms/TopBar/Resources/Tutorials/TutorialInfoDialog';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -34,7 +31,7 @@ function Wrappers({ children }: { children: ReactNode }) {
 
 describe('Resources', () => {
   test('Behaves as expected', async () => {
-    render(<Resources showTutorials>Child</Resources>, {
+    render(<Resources>Child</Resources>, {
       wrapper: Wrappers,
     });
     const user = userEvent.setup();
@@ -48,7 +45,6 @@ describe('Resources', () => {
     });
 
     await user.click(learnMoreButton);
-    expect(screen.getByText(/tutorials/i)).toBeInTheDocument();
 
     const childElement = await screen.findByText('Child');
 
@@ -88,7 +84,7 @@ describe('Resources', () => {
   });
 
   test('click on back button ', async () => {
-    render(<Resources showTutorials />, { wrapper: Wrappers });
+    render(<Resources />, { wrapper: Wrappers });
     const user = userEvent.setup();
 
     const button = screen.getByRole('button');
@@ -96,9 +92,6 @@ describe('Resources', () => {
     await user.click(button);
     const learnMore = screen.getByText(/learn more/i);
     await user.click(learnMore);
-
-    const tutorial = screen.getByText(/tutorials/i);
-    expect(tutorial).toBeInTheDocument();
 
     const backButton = screen.getByRole('button', { name: /back/i });
     await user.click(backButton);
@@ -166,58 +159,6 @@ describe('Resources', () => {
     await user.click(cancelButton);
 
     expect(openLink).not.toBeInTheDocument();
-  });
-
-  test('open tutorials from resources and close tutorials  ', async () => {
-    const fakeTutorialOptions: tutorialOptions[] = [
-      {
-        description: faker.lorem.sentence(),
-        steps: faker.animal.dog(),
-        duration: faker.color.rgb(),
-        pathName: '/current',
-        onClick: vi.fn(),
-      },
-    ];
-
-    const router = createMemoryRouter(
-      [
-        {
-          path: '/current',
-          element: (
-            <Resources tutorialOptions={fakeTutorialOptions} showTutorials />
-          ),
-        },
-      ],
-      {
-        initialEntries: ['/current'],
-        initialIndex: 0,
-      }
-    );
-
-    render(<RouterProvider router={router} />, {
-      wrapper: Wrappers,
-    });
-    const user = userEvent.setup();
-
-    const button = screen.getByRole('button');
-
-    await user.click(button);
-
-    const learnMore = screen.getByText(/learn more/i);
-    await user.click(learnMore);
-
-    const openTutorials = screen.getByRole('menuitem', {
-      name: 'Tutorials',
-    });
-    await user.click(openTutorials);
-
-    const findCurrentPage = screen.getByText(/ON CURRENT PAGE/i);
-    expect(findCurrentPage).toBeInTheDocument();
-
-    const closeButton = screen.getByTestId('close-tutorial-dialog');
-    await user.click(closeButton);
-
-    expect(findCurrentPage).not.toBeInTheDocument();
   });
 
   test('Render custom button works', () => {

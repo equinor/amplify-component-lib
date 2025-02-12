@@ -30,8 +30,6 @@ test('Shows text that is input', async () => {
 });
 
 test('Throws error if providing RichTextEditorFeature.IMAGES but not an image handler', () => {
-  console.error = vi.fn();
-
   const props = fakeProps();
   expect(() =>
     renderWithProviders(

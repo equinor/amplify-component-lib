@@ -110,6 +110,9 @@ test("'useSnackbar' setActionDisabledState function works as expected with actio
     wrapper: SnackbarProvider,
   });
 
+  // Calling this should do nothing since there is no snackbar
+  result.current.setActionDisabledState(true);
+
   const actionText = faker.animal.cat();
   const customActionHandler = vi.fn();
   const user = userEvent.setup();

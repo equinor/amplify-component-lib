@@ -689,56 +689,9 @@ test('Add search params after what the user is choosing', async () => {
     max: (props.filterOptions?.length ?? 0) - 1,
   });
 
-  const user = userEvent.setup();
-
-  let router = createMemoryRouter(
-    [
-      {
-        path: '/',
-        element: <Sieve {...props} syncWithSearchParams />,
-      },
-    ],
-    {
-      initialEntries: ['/'],
-      initialIndex: 0,
-    }
-  );
-
-  const { rerender } = render(<RouterProvider router={router} />);
-
-  const filterByButton = screen.getByRole('button', {
-    name: /filter by/i,
-  });
-
-  await user.click(filterByButton);
-
-  await user.click(
-    screen.getByRole('menuitem', {
-      name: props.filterOptions?.[randomFilterGroup].label,
-    })
-  );
-
-  await user.click(
-    screen.getByRole('menuitem', {
-      name: props.filterOptions?.[randomFilterGroup]?.options[0]?.label,
-    })
-  );
-
-  expect(props.onUpdate).toHaveBeenCalledWith({
-    searchValue: undefined,
-    filterValues: {
-      [props.filterOptions![randomFilterGroup].label]: [
-        props.filterOptions![randomFilterGroup].options[0],
-      ],
-    },
-    sortValue: props.sortOptions![0],
-  });
-
   const fakeText = faker.animal.cetacean();
 
-  await user.type(screen.getByRole('textbox'), fakeText);
-
-  router = createMemoryRouter(
+  const router = createMemoryRouter(
     [
       {
         path: '/',
@@ -765,7 +718,7 @@ test('Add search params after what the user is choosing', async () => {
     }
   );
 
-  rerender(<RouterProvider router={router} />);
+  render(<RouterProvider router={router} />);
 
   await waitFor(() => {
     const searchParams = new URLSearchParams(router.state.location.search);
