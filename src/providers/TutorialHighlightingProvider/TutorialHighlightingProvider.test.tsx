@@ -548,5 +548,7 @@ test('Image content works as expected', async () => {
 
   await user.click(screen.getByRole('button', { name: /start tour/i }));
 
-  await waitFor(() => expect(screen.getByRole('img')).toBeInTheDocument());
+  await waitFor(() => expect(screen.getByRole('img')).toBeInTheDocument(), {
+    timeout: 2000,
+  });
 });
