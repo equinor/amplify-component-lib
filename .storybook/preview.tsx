@@ -12,6 +12,8 @@ import { handlers } from 'src/tests/mockHandlers';
 
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
+import './index.css';
+
 const { colors } = tokens;
 initialize({
   quiet: true,

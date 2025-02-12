@@ -103,6 +103,7 @@ const meta: Meta = {
       )}
     />
   ),
+  tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
     design: {

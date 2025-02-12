@@ -7,6 +7,7 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { TutorialHighlightingProvider } from './TutorialHighlightingProvider';
+import page from './TutorialHighlightingProvider.docs.mdx';
 import { highlightTutorialElementID } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
 import {
@@ -15,7 +16,7 @@ import {
   tokenHandler,
 } from 'src/tests/mockHandlers';
 
-import { delay, http, HttpResponse } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 
@@ -100,6 +101,7 @@ const meta: Meta = {
       />
     );
   },
+  tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
     design: {
@@ -118,14 +120,24 @@ const meta: Meta = {
 
 export default meta;
 
+export const HowToUse: StoryObj = {
+  parameters: {
+    layout: 'padded',
+    docs: {
+      source: {
+        dark: true,
+      },
+    },
+  },
+  render: page,
+};
+
 export const HighlightingElement: StoryObj = {
   parameters: {
     msw: {
       handlers: [
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
-          await delay('real');
-
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id, index) =>
             fakeTutorial(id, index === 0, true)
           );
@@ -143,8 +155,6 @@ export const MultipleHighlightingElement: StoryObj = {
       handlers: [
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
-          await delay('real');
-
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id) =>
             fakeTutorial(id, true, true)
           );
@@ -162,8 +172,6 @@ export const CenterTutorial: StoryObj = {
       handlers: [
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
-          await delay('real');
-
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id, index) =>
             fakeTutorial(id, index === 0, false)
           );
@@ -181,8 +189,6 @@ export const MultipleCenterTutorial: StoryObj = {
       handlers: [
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
-          await delay('real');
-
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id) =>
             fakeTutorial(id, true, false)
           );
@@ -200,8 +206,6 @@ export const MixedTutorial: StoryObj = {
       handlers: [
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
-          await delay('real');
-
           const tutorials: MyTutorialDto[] = [
             {
               id: TUTORIAL_IDS[0],
@@ -247,8 +251,6 @@ export const ScrollToElement: StoryObj = {
       handlers: [
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
-          await delay('real');
-
           const tutorials: MyTutorialDto[] = [
             {
               id: TUTORIAL_IDS[0],
@@ -301,8 +303,6 @@ export const TutorialWithImage: StoryObj = {
         tokenHandler,
         getTutorialImageHandler,
         http.get(`*/api/v1/Tutorial/draft/:applicationName`, async () => {
-          await delay('real');
-
           const tutorials: MyTutorialDto[] = [
             {
               id: TUTORIAL_IDS[0],
