@@ -9,7 +9,11 @@ import { Container, TutorialList } from './Tutorials.styles';
 import { TopBarButton } from 'src/organisms/TopBar/TopBar.styles';
 import { TopBarMenu } from 'src/organisms/TopBar/TopBarMenu';
 
-export const Tutorials: FC = () => {
+interface TutorialsProps {
+  onTutorialStart: (tutorialId: string) => void;
+}
+
+export const Tutorials: FC<TutorialsProps> = ({ onTutorialStart }) => {
   const { allTutorials, tutorialsOnThisPage } = useTutorials();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -26,10 +30,6 @@ export const Tutorials: FC = () => {
       <TopBarButton
         variant="ghost_icon"
         ref={buttonRef}
-        id="anchor-match"
-        aria-haspopup="true"
-        aria-expanded={open}
-        aria-controls="menu-match"
         onClick={handleToggleOpen}
       >
         <Icon data={youtube_alt} />
@@ -50,6 +50,7 @@ export const Tutorials: FC = () => {
                 {tutorialsOnThisPage.map((tutorial) => (
                   <TutorialItem
                     key={tutorial.id}
+                    onTutorialStart={onTutorialStart}
                     onClose={handleToggleOpen}
                     {...tutorial}
                   />
@@ -64,6 +65,7 @@ export const Tutorials: FC = () => {
                 {tutorialsOnOtherPages.map((tutorial) => (
                   <TutorialItem
                     key={tutorial.id}
+                    onTutorialStart={onTutorialStart}
                     onClose={handleToggleOpen}
                     {...tutorial}
                   />

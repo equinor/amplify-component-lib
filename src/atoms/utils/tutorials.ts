@@ -37,7 +37,8 @@ export function getHighlightElementBoundingBox(
   }
 
   const rect = element.getBoundingClientRect();
-  const scrollOffset = document.getElementById('content')?.scrollTop ?? 0;
+  // Assume we always have 1 div with id 'content' that scrolls (Template.Content)
+  const scrollOffset = document.getElementById('content')!.scrollTop;
 
   // Subtract scroll offset
   if (

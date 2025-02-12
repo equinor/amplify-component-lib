@@ -34,16 +34,23 @@ const Container = styled.button`
 `;
 
 interface TutorialItemProps extends MyTutorialDto {
+  onTutorialStart: (tutorialId: string) => void;
   onClose: () => void;
 }
 
-export const TutorialItem: FC<TutorialItemProps> = ({ onClose, id, name }) => {
+export const TutorialItem: FC<TutorialItemProps> = ({
+  onTutorialStart,
+  onClose,
+  id,
+  name,
+}) => {
   const { startTutorial, seenTutorialIDs } = useTutorials();
 
   const isCompleted = seenTutorialIDs.includes(id);
 
   const handleOnClick = () => {
     startTutorial(id);
+    onTutorialStart(id);
     onClose();
   };
 

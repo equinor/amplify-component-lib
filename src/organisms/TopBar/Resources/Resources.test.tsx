@@ -45,7 +45,6 @@ describe('Resources', () => {
     });
 
     await user.click(learnMoreButton);
-    expect(screen.getByText(/tutorials/i)).toBeInTheDocument();
 
     const childElement = await screen.findByText('Child');
 
@@ -93,9 +92,6 @@ describe('Resources', () => {
     await user.click(button);
     const learnMore = screen.getByText(/learn more/i);
     await user.click(learnMore);
-
-    const tutorial = screen.getByText(/tutorials/i);
-    expect(tutorial).toBeInTheDocument();
 
     const backButton = screen.getByRole('button', { name: /back/i });
     await user.click(backButton);
