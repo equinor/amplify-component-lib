@@ -193,23 +193,9 @@ export const tokenHandler = http.get(`*/api/v1/Token/*`, async () => {
 export const getTutorialImageHandler = http.get(
   `*/api/v1/Tutorial/gettutorialimage/:path`,
   async () => {
-    const data = await fetch(
-      faker.image.url({
-        width: 1920,
-        height: 1080,
-      })
+    return HttpResponse.text(
+      faker.image.dataUri({ width: 1920, height: 1080 })
     );
-    const blob = await data.blob();
-    const b64: string = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data as string);
-      };
-      reader.onerror = reject;
-    });
-    return HttpResponse.text(b64);
   }
 );
 
@@ -334,18 +320,9 @@ export const handlers = [
   }),
   http.get('*/api/v1/ReleaseNotes/getreleasenoteimage/*', async () => {
     await delay('real');
-    const data = await fetch(faker.image.url());
-    const blob = await data.blob();
-    const b64: string = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data as string);
-      };
-      reader.onerror = reject;
-    });
-    return HttpResponse.text(b64);
+    return HttpResponse.text(
+      faker.image.dataUri({ width: 1920, height: 1080 })
+    );
   }),
   http.get('*/api/v1/ReleaseNotes/GetContainerSasUri', async () => {
     await delay('real');
