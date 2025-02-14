@@ -31,7 +31,7 @@ RUN chown -R nginx /etc/nginx/conf.d \
     && chmod +x ./secrets.sh
 
 # Add bash shell
-RUN apk update && apk add --no-cache bash~=5.2.26
+RUN apk update && apk add --no-cache bash~=5.2.37
 
 USER 101
 
