@@ -40,4 +40,6 @@ RUN rm -rf ./env-config.js \
   && chmod +x ./env.sh
 
 # Add bash shell
+USER 101
+
 CMD ["/bin/sh", "-c", "./env.sh && nginx -g \"daemon off;\""]
