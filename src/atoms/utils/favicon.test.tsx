@@ -8,28 +8,16 @@ const darkId = 'dark';
 test('setupFavicon works as expected', () => {
   const lightImg = faker.image.url({ width: 64, height: 64 });
   const darkImg = faker.image.url({ width: 64, height: 64 });
-  render(
-    <div>
-      <link
-        rel="icon"
-        id={lightId}
-        href={lightImg}
-        sizes="64x64"
-        type="image/png"
-      />
-      <link
-        rel="icon"
-        id={darkId}
-        href={darkImg}
-        sizes="64x64"
-        type="image/png"
-      />
-    </div>
-  );
+  render(<div>some page</div>);
 
-  const light = document.querySelector(`#${lightId}`)!;
+  const light = document.createElement('link');
+  light.id = lightId;
+  light.href = lightImg;
   document.head.appendChild(light);
-  const dark = document.querySelector(`#${darkId}`)!;
+
+  const dark = document.createElement('link');
+  dark.id = darkId;
+  dark.href = darkImg;
   document.head.appendChild(dark);
 
   import.meta.env.DARK = 'false';
@@ -37,33 +25,24 @@ test('setupFavicon works as expected', () => {
 
   expect(document.head.children.length).toBe(1);
   expect(document.head.querySelector(`#${lightId}`)).toBeInTheDocument();
+
+  // Clean up
+  document.head.removeChild(light);
 });
 
 test('setupFavicon works as expected when in dark mode', () => {
   const lightImg = faker.image.url({ width: 64, height: 64 });
   const darkImg = faker.image.url({ width: 64, height: 64 });
-  render(
-    <div>
-      <link
-        rel="icon"
-        id={lightId}
-        href={lightImg}
-        sizes="64x64"
-        type="image/png"
-      />
-      <link
-        rel="icon"
-        id={darkId}
-        href={darkImg}
-        sizes="64x64"
-        type="image/png"
-      />
-    </div>
-  );
+  render(<div>some page</div>);
 
-  const light = document.querySelector(`#${lightId}`)!;
+  const light = document.createElement('link');
+  light.id = lightId;
+  light.href = lightImg;
   document.head.appendChild(light);
-  const dark = document.querySelector(`#${darkId}`)!;
+
+  const dark = document.createElement('link');
+  dark.id = darkId;
+  dark.href = darkImg;
   document.head.appendChild(dark);
 
   import.meta.env.DARK = 'true';
@@ -72,4 +51,7 @@ test('setupFavicon works as expected when in dark mode', () => {
 
   expect(document.head.children.length).toBe(1);
   expect(document.head.querySelector(`#${darkId}`)).toBeInTheDocument();
+
+  // Clean up
+  document.head.removeChild(dark);
 });

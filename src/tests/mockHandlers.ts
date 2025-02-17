@@ -4,6 +4,7 @@ import {
   FeatureToggleDto,
   ImpersonateUserDto,
   MyFeatureDto,
+  MyTutorialDto,
   ReleaseNote,
   ReleaseNoteType,
   ServiceNowIncidentResponse,
@@ -96,6 +97,53 @@ export const fakeImpersonateUsers: ImpersonateUserDto[] = [
 
 let activeImpersonateUser: ImpersonateUserDto | undefined = undefined;
 
+const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
+
+export function fakeTutorial(
+  id: string,
+  willPopUp: boolean,
+  highlightElement: boolean,
+  path?: string
+): MyTutorialDto {
+  return {
+    id,
+    name: faker.commerce.productName(),
+    path: path ? path : '/tutorial',
+    willPopUp,
+    application: environment.getEnvironmentName(import.meta.env.VITE_NAME),
+    steps: [
+      {
+        id: '1',
+        title: faker.vehicle.vehicle(),
+        body: faker.music.artist(),
+        highlightElement,
+      },
+      {
+        id: '2',
+        title: faker.vehicle.vehicle(),
+        body: faker.music.artist(),
+        highlightElement,
+      },
+      {
+        id: '3',
+        title: faker.vehicle.vehicle(),
+        body: faker.music.artist(),
+        highlightElement,
+      },
+      {
+        id: '4',
+        title: faker.vehicle.vehicle(),
+        body: faker.music.artist(),
+        highlightElement,
+      },
+    ],
+  };
+}
+
+export const FAKE_TUTORIALS = TUTORIAL_IDS.map((id, index) =>
+  fakeTutorial(id, index === 0, index === 0)
+);
+
 function fakeApplication(): AmplifyApplication {
   return {
     id: faker.string.uuid(),
@@ -133,9 +181,26 @@ export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
   .fill(0)
   .map(() => ({
     uuid: faker.string.uuid(),
+    active: true,
   }));
 
+export const tokenHandler = http.get(`*/api/v1/Token/*`, async () => {
+  await delay('real');
+
+  return HttpResponse.text(faker.lorem.word());
+});
+
+export const getTutorialImageHandler = http.get(
+  `*/api/v1/Tutorial/gettutorialimage/:path`,
+  async () => {
+    return HttpResponse.text(
+      faker.image.dataUri({ width: 1920, height: 1080 })
+    );
+  }
+);
+
 export const handlers = [
+  getTutorialImageHandler,
   http.get('*/api/v1/Tutorial/SASToken', async () => {
     await delay('real');
     return HttpResponse.text(faker.internet.mac());
@@ -255,18 +320,9 @@ export const handlers = [
   }),
   http.get('*/api/v1/ReleaseNotes/getreleasenoteimage/*', async () => {
     await delay('real');
-    const data = await fetch(faker.image.url());
-    const blob = await data.blob();
-    const b64: string = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data as string);
-      };
-      reader.onerror = reject;
-    });
-    return HttpResponse.text(b64);
+    return HttpResponse.text(
+      faker.image.dataUri({ width: 1920, height: 1080 })
+    );
   }),
   http.get('*/api/v1/ReleaseNotes/GetContainerSasUri', async () => {
     await delay('real');
@@ -304,4 +360,8 @@ export const handlers = [
       return HttpResponse.json(FAKE_FEATURE_TOGGLES);
     }
   ),
+  http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
+    await delay('real');
+    return HttpResponse.json(FAKE_TUTORIALS);
+  }),
 ];

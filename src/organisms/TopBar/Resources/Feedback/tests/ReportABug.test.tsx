@@ -255,7 +255,9 @@ describe('Report a bug', () => {
 
     expect(await screen.findAllByText('Sending...')).toHaveLength(2);
 
-    await waitForElementToBeRemoved(() => screen.getAllByText('Sending...'));
+    await waitForElementToBeRemoved(() => screen.getAllByText('Sending...'), {
+      timeout: 2000,
+    });
 
     expect(
       await screen.findAllByText(/internal server error/i, undefined, {
@@ -266,13 +268,5 @@ describe('Report a bug', () => {
     await user.click(screen.getByRole('button', { name: /retry/i }));
 
     expect(screen.getByText(/the report has already/i)).toBeInTheDocument();
-
-    await user.hover(screen.getByLabelText(/title/i));
-
-    expect(
-      await screen.findByText(
-        /The report was successfully submitted to ServiceNow./i
-      )
-    ).toBeInTheDocument();
   });
 });

@@ -20,7 +20,7 @@ export function fakeGroups(count = 5, isParented?: boolean) {
   return new Array(count)
     .fill(0)
     .map(() => ({
-      title: faker.airline.airplane().name,
+      title: faker.animal.cow(),
       items: isParented ? fakeItemsWithChildren() : fakeSelectItems(),
     }))
     .filter(

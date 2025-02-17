@@ -34,7 +34,6 @@ export default defineConfig((configEnv) =>
           ],
           thresholds: {
             perFile: true,
-            autoUpdate: true,
             100: true,
           },
         },
