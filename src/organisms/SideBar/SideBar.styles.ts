@@ -32,6 +32,8 @@ export const TopItemContainer = styled.div`
   align-items: flex-start;
   flex: 1 0 0;
   align-self: stretch;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const BottomItemContainer = styled.div`

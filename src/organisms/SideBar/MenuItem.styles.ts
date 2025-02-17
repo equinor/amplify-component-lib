@@ -21,6 +21,7 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
   align-items: center;
   justify-content: ${({ $open }) => !$open && 'center'};
   height: 64px;
+  min-width: 64px;
   padding: ${spacings.medium};
   gap: ${spacings.medium};
   box-sizing: border-box;
