@@ -13,6 +13,7 @@ export const MenuItemContainer = styled.div<MenuItemContainerProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
+  min-height: 64px;
   height: 64px;
   padding: 0 14px;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
