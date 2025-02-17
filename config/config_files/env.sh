@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Add assignment
 echo "window._env_ = {" >>./env-config.js
