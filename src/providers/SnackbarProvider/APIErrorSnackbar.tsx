@@ -16,7 +16,9 @@ export const APIErrorSnackbar: FC<APIErrorSnackbarProps> = ({ children }) => {
   useEffect(() => {
     if (!initialized.current) {
       initialized.current = true;
+      const currentOptions = queryClient.getDefaultOptions();
       queryClient.setDefaultOptions({
+        ...currentOptions,
         queries: {
           throwOnError: (error) => {
             if (error instanceof ApiError) {
