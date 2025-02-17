@@ -32,7 +32,7 @@ function Wrappers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ReleaseNotesProvider>
-          <SnackbarProvider>{children}</SnackbarProvider>
+          <SnackbarProvider showAPIErrors={false}>{children}</SnackbarProvider>
         </ReleaseNotesProvider>
       </AuthProvider>
     </QueryClientProvider>
