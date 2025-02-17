@@ -30,9 +30,6 @@ RUN chown -R nginx /etc/nginx/conf.d \
     && chown -R nginx /usr/share/nginx/html \
     && chmod +x ./secrets.sh
 
-# Add bash shell
-RUN apk update && apk add --no-cache bash~=5.2.37
-
 USER 101
 
 CMD ["/bin/bash", "-c", "./secrets.sh && nginx -g \"daemon off;\""]
