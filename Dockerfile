@@ -32,4 +32,4 @@ RUN chown -R nginx /etc/nginx/conf.d \
 
 USER 101
 
-CMD ["/bin/bash", "-c", "./secrets.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/sh", "-c", "./secrets.sh && nginx -g \"daemon off;\""]
