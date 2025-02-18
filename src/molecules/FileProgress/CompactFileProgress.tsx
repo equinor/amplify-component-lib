@@ -115,7 +115,7 @@ const CompactFileProgress: FC<
           variant={
             rest.indeterminate || isDeleting ? 'indeterminate' : 'determinate'
           }
-          value={!rest.indeterminate ? undefined : rest.progressPercent}
+          value={rest.indeterminate ? rest.progressPercent : undefined}
           size={24}
         />
         <Typography variant="meta">Uploading...</Typography>

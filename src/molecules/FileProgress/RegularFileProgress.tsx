@@ -118,7 +118,7 @@ const RegularFileProgress: FC<
           {!showCompleteState && (
             <LinearProgress
               variant={rest.indeterminate ? 'indeterminate' : 'determinate'}
-              value={!rest.indeterminate ? undefined : rest.progressPercent}
+              value={rest.indeterminate ? rest.progressPercent : undefined}
             />
           )}
         </ProgressWrapper>

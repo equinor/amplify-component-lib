@@ -60,6 +60,7 @@ test('Renders regular custom loading text without progressValue, and click cance
       onCancel={mockOnCancel}
       isDone={false}
       customLoadingText={customLoadingText}
+      indeterminate
     />
   );
   const user = userEvent.setup();
@@ -186,7 +187,13 @@ test('Renders compact loading state without progress precent, and click onDelete
   const { file } = fakeProps();
   const mockOnDelete = vi.fn();
   render(
-    <FileProgress file={file} onDelete={mockOnDelete} isDone={false} compact />
+    <FileProgress
+      file={file}
+      onDelete={mockOnDelete}
+      isDone={false}
+      compact
+      indeterminate
+    />
   );
   const user = userEvent.setup();
 
@@ -285,7 +292,15 @@ test('Renders compact error state', () => {
 test('Renders compact default error messages', () => {
   const { file, onDelete } = fakeProps();
 
-  render(<FileProgress file={file} onDelete={onDelete} isError compact />);
+  render(
+    <FileProgress
+      file={file}
+      onDelete={onDelete}
+      isError
+      compact
+      indeterminate
+    />
+  );
 
   const shortDefaultErrorText = screen.getByText('Invalid file type');
 

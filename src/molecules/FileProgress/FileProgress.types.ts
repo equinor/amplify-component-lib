@@ -21,7 +21,7 @@ type ProgressPercentFileProgress = FileProgressBaseProps & {
 type IndeterminateFileProgress = FileProgressBaseProps & {
   progressPercent?: undefined;
   isDone?: false;
-  indeterminate?: true;
+  indeterminate: true;
 };
 
 type FileProgressBase =
