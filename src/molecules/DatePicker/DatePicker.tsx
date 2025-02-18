@@ -19,8 +19,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       props.formatOptions !== undefined
         ? props.formatOptions
         : {
-            month: 'long',
             day: '2-digit',
+            month: '2-digit',
             year: 'numeric',
           };
 

@@ -18,6 +18,20 @@ test('formatDate works as expected with default format', () => {
 
   const formattedDate = formatDate(fakeDate);
 
+  const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
+  const testFormatted = `${day}. ${fakeDate.toLocaleString('en-GB', {
+    month: 'long',
+    year: 'numeric',
+  })}`;
+
+  expect(formattedDate).toBe(testFormatted);
+});
+
+test('formatDate works as expected with format = "DD.MM.YYYY"', () => {
+  const fakeDate = faker.date.past();
+
+  const formattedDate = formatDate(fakeDate, { format: 'DD.MM.YYYY' });
+
   const day = fakeDate.getDate();
   const month = fakeDate.getMonth() + 1;
   const year = fakeDate.getFullYear();
@@ -26,23 +40,10 @@ test('formatDate works as expected with default format', () => {
   );
 });
 
-test('formatDate works as expected with default format that needs to be padded', () => {
+test('formatDate works as expected with format = "DD.MM.YYYY" that needs to be padded', () => {
   const fakeDate = new Date('01.01.23');
 
-  const formattedDate = formatDate(fakeDate);
-
-  const day = fakeDate.getDate();
-  const month = fakeDate.getMonth() + 1;
-  const year = fakeDate.getFullYear();
-  expect(formattedDate).toBe(
-    `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`
-  );
-});
-
-test('formatDate works as expected with default format that does not need  to be padded', () => {
-  const fakeDate = new Date('10.10.23');
-
-  const formattedDate = formatDate(fakeDate);
+  const formattedDate = formatDate(fakeDate, { format: 'DD.MM.YYYY' });
 
   const day = fakeDate.getDate();
   const month = fakeDate.getMonth() + 1;
