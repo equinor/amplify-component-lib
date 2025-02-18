@@ -2,17 +2,21 @@
 // formatDate(new Date(), {format: 'DD.MM.YYYY'}) => 16.06.2021
 // formatDate(new Date(), {format: 'YYYY-MM-DD'}) => 2021-06-16
 // formatDate(new Date(), {format: 'DD. month YYYY'}) => 16. June 2021
+
+type FormatDateOptions =
+  | { format: 'DD. month YYYY' | 'DD. month'; month?: 'short' | 'long' }
+  | { format: 'DD.MM.YYYY' | 'YYYY-MM-DD' | 'DD.MM.YY' };
+/**
+ * @param date - The date obj / date string to format
+ * @param options - Default is { format: 'DD. month YYYY', month: 'long' }
+ */
 export const formatDate = (
   date: Date | string | null | undefined,
-  options?: {
-    format:
-      | 'DD.MM.YYYY'
-      | 'DD. month YYYY'
-      | 'YYYY-MM-DD'
-      | 'DD.MM.YY'
-      | 'DD. month';
-    month?: 'short' | 'long';
+  options: FormatDateOptions & {
     useUTC?: boolean;
+  } = {
+    format: 'DD. month YYYY',
+    month: 'long',
   }
 ): string => {
   if (date) {
