@@ -213,6 +213,26 @@ const meta: Meta<FilterStoryProps> = {
       type: 'figma',
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=9801-44479&t=iOpa7kGdXfEcX6sJ-4',
     },
+    docs: {
+      source: {
+        code: `<Filter {...props} >
+    /* Children here should not be wrapped in a div, if they are the "Clear filters" button
+     will not be positioned correctly */
+    <DatePicker label="Manufacturer date" />
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '1rem',
+      }}
+    >
+      <SingleSelect label="Car size" />
+      <SingleSelect label="Created by" />
+    </div>
+  </Filter>
+        `,
+      },
+    },
   },
   argTypes: {
     values: {
