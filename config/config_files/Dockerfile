@@ -2,7 +2,7 @@
 FROM imbios/bun-node:22-alpine AS base
 WORKDIR /app
 COPY package.json ./
-COPY bun.lockb ./
+COPY bun.lock ./
 COPY tsconfig.json ./
 COPY vite.config.ts ./
 COPY index.html ./
