@@ -15,6 +15,7 @@ export { TableOfContents } from './TableOfContents/TableOfContents';
 export type { TableOfContentsProps } from './TableOfContents/TableOfContents';
 export { Template } from './Template/Template';
 export type { ContentProps, TemplateType } from './Template/Template';
+export { PageTitle } from './PageTitle/PageTitle';
 
 export {
   // EDS Re-export
