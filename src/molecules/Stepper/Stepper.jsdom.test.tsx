@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { createMemoryRouter, RouterProvider } from 'react-router';
 
 import { check } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
@@ -50,7 +51,16 @@ test('Displays icon/number correctly', async () => {
   const steps = fakeSteps();
   render(<StepperTestComponent />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps}>{children}</StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps}>{children}</StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
@@ -81,7 +91,16 @@ test('maxWidth works as expected', () => {
   const maxWidth = '800px';
   render(<Stepper maxWidth={maxWidth} />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps}>{children}</StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps}>{children}</StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
