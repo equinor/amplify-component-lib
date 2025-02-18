@@ -20,11 +20,8 @@ export type { DialogProps, DialogAction } from './Dialog/Dialog';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
 export type { EquinorLogoProps } from './EquinorLogo/EquinorLogo';
 export { FileProgress } from './FileProgress/FileProgress';
-export type {
-  RegularFileProgressBaseProps,
-  CompactFileProgressBaseProps,
-  FileProgressPropsExtension,
-} from './FileProgress/FileProgress';
+export type { FileProgressPropsExtension } from './FileProgress/FileProgress';
+export type { FileProgressProps } from './FileProgress/FileProgress.types';
 export { FileUploadArea } from './FileUploadArea/FileUploadArea';
 export type { FileUploadAreaProps } from './FileUploadArea/FileUploadArea';
 export { FullPageSpinner } from './FullPageSpinner/FullPageSpinner';

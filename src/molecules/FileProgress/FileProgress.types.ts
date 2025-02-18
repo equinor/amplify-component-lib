@@ -29,7 +29,7 @@ type FileProgressBase =
   | ProgressPercentFileProgress
   | IndeterminateFileProgress;
 
-type RegularFileProgressBaseProps = FileProgressBase & {
+export type RegularFileProgressBaseProps = FileProgressBase & {
   compact?: false;
   fullErrorText?: string;
   customLoadingText?: string;
@@ -37,11 +37,17 @@ type RegularFileProgressBaseProps = FileProgressBase & {
   onRetry?: () => void;
 };
 
-type CompactFileProgressBaseProps = FileProgressBase & {
+export type CompactFileProgressBaseProps = FileProgressBase & {
   compact: true;
   shortErrorText?: string;
   fullErrorText?: string;
 };
+
+export interface FileProgressPropsExtension {
+  showCompleteState: boolean;
+  handleOnClick: () => void;
+  isDeleting: boolean;
+}
 
 export type FileProgressProps =
   | RegularFileProgressBaseProps

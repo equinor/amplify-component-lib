@@ -18,7 +18,7 @@ import { formatDataSize } from 'src/atoms/utils';
 import {
   FileProgressPropsExtension,
   RegularFileProgressBaseProps,
-} from 'src/molecules/FileProgress/FileProgress';
+} from 'src/molecules/FileProgress/FileProgress.types';
 import {
   Container,
   FileName,
@@ -28,13 +28,11 @@ import {
   RegularFileProgressWrapper,
 } from 'src/molecules/FileProgress/RegularFileProgress.styles';
 
-interface RegularFileProgressProps
-  extends RegularFileProgressBaseProps,
-    FileProgressPropsExtension {}
-const RegularFileProgress: FC<RegularFileProgressProps> = ({
+const RegularFileProgress: FC<
+  RegularFileProgressBaseProps & FileProgressPropsExtension
+> = ({
   onRetry,
   file,
-  progressPercent,
   customLoadingText,
   customCompleteText,
   isError,
@@ -42,16 +40,23 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
   showCompleteState,
   handleOnClick,
   isDeleting,
+  ...rest
 }) => {
   const fileSizeProgress = useMemo(() => {
-    if (!file?.size || !progressPercent) return 1;
-    const progressInSize = (file.size / 100) * progressPercent;
+    if (
+      !file?.size ||
+      rest.isDone ||
+      rest.indeterminate ||
+      rest.progressPercent === undefined
+    )
+      return 1;
+    const progressInSize = (file.size / 100) * rest.progressPercent;
     return formatDataSize({
       inputFormat: 'B',
       size: progressInSize,
       decimals: 1,
     });
-  }, [file?.size, progressPercent]);
+  }, [file?.size, rest]);
 
   const detailsText = useMemo(() => {
     if (isError) {
@@ -112,10 +117,8 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
         <ProgressWrapper>
           {!showCompleteState && (
             <LinearProgress
-              variant={
-                progressPercent === undefined ? 'indeterminate' : 'determinate'
-              }
-              value={progressPercent}
+              variant={rest.indeterminate ? 'indeterminate' : 'determinate'}
+              value={!rest.indeterminate ? undefined : rest.progressPercent}
             />
           )}
         </ProgressWrapper>
