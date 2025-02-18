@@ -2,11 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { Meta, StoryFn } from '@storybook/react';
 
-import {
-  CompactFileProgressBaseProps,
-  FileProgress,
-  RegularFileProgressBaseProps,
-} from 'src/molecules/FileProgress/FileProgress';
+import { FileProgress } from 'src/molecules/FileProgress/FileProgress';
+import { FileProgressProps } from 'src/molecules/FileProgress/FileProgress.types';
 
 const meta: Meta<typeof FileProgress> = {
   title: 'Molecules/FileProgress',
@@ -39,7 +36,7 @@ const meta: Meta<typeof FileProgress> = {
   args: {
     compact: false,
     file: new File([], 'Image.png'),
-    progressPercent: 1,
+    progressPercent: undefined,
     isDone: false,
     customLoadingText: undefined,
     customCompleteText: undefined,
@@ -54,9 +51,7 @@ const meta: Meta<typeof FileProgress> = {
 
 export default meta;
 
-export const Primary: StoryFn<
-  RegularFileProgressBaseProps | CompactFileProgressBaseProps
-> = (args) => {
+export const Primary: StoryFn<FileProgressProps> = (args) => {
   const [file, setFile] = useState<File | undefined>(undefined);
 
   useEffect(() => {
