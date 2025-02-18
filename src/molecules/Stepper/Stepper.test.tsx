@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import {
+  createMemoryRouter,
+  RouterProvider,
+  useLocation,
+} from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 
@@ -33,12 +37,14 @@ function fakeSteps(): StepperProviderProps['steps'] {
 }
 
 const StepperTestComponent: FC<StepperProps> = (props) => {
+  const { pathname } = useLocation();
   const { currentStep, goToPreviousStep, goToNextStep } = useStepper();
 
   return (
     <div>
       <Stepper {...props} />
       <p>{`Current step: ${currentStep}`}</p>
+      <p>{`Current location: ${pathname}`}</p>
       <button onClick={goToPreviousStep}>Previous</button>
       <button onClick={goToNextStep}>Next</button>
     </div>
@@ -270,4 +276,37 @@ test('Works as expected with title in steps', () => {
 
   expect(screen.getByText(steps[0].title!)).toBeInTheDocument();
   expect(screen.getByText(steps[0].description!)).toBeInTheDocument();
+});
+
+test('Works as expected with sync to url', async () => {
+  const steps = fakeSteps();
+  render(<StepperTestComponent />, {
+    wrapper: ({ children }) => (
+      <RouterProvider
+        router={createMemoryRouter(
+          [
+            {
+              path: '/create/:step',
+              element: (
+                <StepperProvider steps={steps} syncToURLParam>
+                  {children}
+                </StepperProvider>
+              ),
+            },
+          ],
+          { initialEntries: ['/create/0'] }
+        )}
+      />
+    ),
+  });
+  const user = userEvent.setup();
+
+  expect(screen.getByText(`Current step: 0`)).toBeInTheDocument();
+  expect(screen.getByText(`Current location: /create/0`)).toBeInTheDocument();
+
+  await user.click(screen.getByText('Next'));
+
+  expect(screen.getByText(`Current step: 1`)).toBeInTheDocument();
+
+  expect(screen.getByText(`Current location: /create/1`)).toBeInTheDocument();
 });
