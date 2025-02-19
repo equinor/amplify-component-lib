@@ -29,7 +29,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
 
   const filteredGroups = useMemo(() => {
     if (search === '') return groups;
-    const regexPattern = new RegExp(search, 'i');
+    const regexPattern = new RegExp(search.trim(), 'i');
     return groups
       .map((group) => ({
         title: group.title,
@@ -66,7 +66,6 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
             index={index + filteredGroupSum[groupIndex]}
             childOffset={0}
             item={item}
-            multiselect
             itemRefs={itemRefs}
             onItemKeyDown={onItemKeyDown}
             onItemSelect={onItemSelect}
