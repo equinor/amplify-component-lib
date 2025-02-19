@@ -1,31 +1,8 @@
 import { FC, useMemo, useState } from 'react';
-import { FileWithPath } from 'react-dropzone';
 
+import { FileProgressProps } from './FileProgress.types';
 import CompactFileProgress from 'src/molecules/FileProgress/CompactFileProgress';
 import RegularFileProgress from 'src/molecules/FileProgress/RegularFileProgress';
-
-interface FileProgressBaseProps {
-  onDelete: () => Promise<void> | void;
-  file: FileWithPath | File;
-  isDone?: boolean;
-  progressPercent?: number;
-  indeterminate?: boolean;
-  onCancel?: () => void;
-  isError?: boolean;
-}
-
-export interface RegularFileProgressBaseProps extends FileProgressBaseProps {
-  compact?: false;
-  fullErrorText?: string;
-  customLoadingText?: string;
-  customCompleteText?: string;
-  onRetry?: () => void;
-}
-export interface CompactFileProgressBaseProps extends FileProgressBaseProps {
-  compact: true;
-  shortErrorText?: string;
-  fullErrorText?: string;
-}
 
 export interface FileProgressPropsExtension {
   showCompleteState: boolean;
@@ -34,11 +11,21 @@ export interface FileProgressPropsExtension {
 }
 
 /**
- * @progressPercent - The percentage of the file that has been uploaded, if undefined its considered indeterminate
+ * @param onDelete - call back when clicking delete
+ * @param file - file to show progress for (FileWithPath or File)
+ * @param onCancel - call back when clicking cancel
+ * @param isError - if the file upload has an error
+ * @param isDone - if the file upload is done
+ * @param progressPercent - the percentage of the file that has been uploaded, if undefined its considered indeterminate
+ * @param indeterminate - if the file upload progress is indeterminate
+ * @param compact - if the file progress should use compact mode
+ * @param fullErrorText - the full error text to show when hovering over the error icon
+ * @param customLoadingText - custom loading text to show
+ * @param customCompleteText - custom complete text to show
+ * @param onRetry - call back when clicking retry on a failed upload
+ * @param shortErrorText - short error text to show (in compact mode)
  */
-export const FileProgress: FC<
-  RegularFileProgressBaseProps | CompactFileProgressBaseProps
-> = (props) => {
+export const FileProgress: FC<FileProgressProps> = (props) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const showCompleteState = useMemo(() => {
     if (props.isError ?? props.isDone === undefined) return true;

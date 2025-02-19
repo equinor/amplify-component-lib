@@ -17,7 +17,7 @@ import {
 import {
   CompactFileProgressBaseProps,
   FileProgressPropsExtension,
-} from './FileProgress';
+} from './FileProgress.types';
 import {
   getFileIcon,
   isFileImage,
@@ -26,19 +26,17 @@ import {
 import { colors } from 'src/atoms/style';
 import { OptionalTooltip } from 'src/molecules';
 
-interface CompactFileProgressProps
-  extends CompactFileProgressBaseProps,
-    FileProgressPropsExtension {}
-
-const CompactFileProgress: FC<CompactFileProgressProps> = ({
+const CompactFileProgress: FC<
+  CompactFileProgressBaseProps & FileProgressPropsExtension
+> = ({
   file,
-  progressPercent,
   isError,
   shortErrorText,
   showCompleteState,
   fullErrorText,
   handleOnClick,
   isDeleting,
+  ...rest
 }) => {
   const [src, setSrc] = useState('');
 
@@ -115,11 +113,9 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
       <LoadingWrapper>
         <CircularProgress
           variant={
-            progressPercent === undefined || isDeleting
-              ? 'indeterminate'
-              : 'determinate'
+            rest.indeterminate || isDeleting ? 'indeterminate' : 'determinate'
           }
-          value={progressPercent}
+          value={rest.indeterminate ? rest.progressPercent : undefined}
           size={24}
         />
         <Typography variant="meta">Uploading...</Typography>
@@ -147,10 +143,10 @@ const CompactFileProgress: FC<CompactFileProgressProps> = ({
     isError,
     showCompleteState,
     isDeleting,
-    progressPercent,
     shortErrorText,
     src,
     file.name,
+    rest,
   ]);
 
   return (

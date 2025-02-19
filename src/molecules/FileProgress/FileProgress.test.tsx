@@ -9,18 +9,12 @@ import {
 import { faker } from '@faker-js/faker';
 import { waitFor } from '@testing-library/react';
 
-import {
-  CompactFileProgressBaseProps,
-  FileProgress,
-  RegularFileProgressBaseProps,
-} from 'src/molecules/FileProgress/FileProgress';
+import { FileProgress } from './FileProgress';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 import { expect } from 'vitest';
 
-function fakeProps():
-  | RegularFileProgressBaseProps
-  | CompactFileProgressBaseProps {
+function fakeProps() {
   const file = new File(['32452134'], 'testfile.png');
 
   return {
@@ -66,6 +60,7 @@ test('Renders regular custom loading text without progressValue, and click cance
       onCancel={mockOnCancel}
       isDone={false}
       customLoadingText={customLoadingText}
+      indeterminate
     />
   );
   const user = userEvent.setup();
@@ -86,14 +81,7 @@ test('Renders regular custom loading text without progressValue, and click cance
 test('Renders regular complete state default text', () => {
   const { file, onDelete } = fakeProps();
 
-  render(
-    <FileProgress
-      file={file}
-      onDelete={onDelete}
-      progressPercent={50}
-      isDone={true}
-    />
-  );
+  render(<FileProgress file={file} onDelete={onDelete} isDone />);
 
   const completeText = screen.getByText('File uploaded!');
   const allIcons = screen.getAllByTestId('eds-icon-path');
@@ -110,8 +98,7 @@ test('Renders regular complete state custom text', () => {
     <FileProgress
       file={file}
       onDelete={onDelete}
-      progressPercent={50}
-      isDone={true}
+      isDone
       customCompleteText={customCompleteText}
     />
   );
@@ -195,11 +182,18 @@ test('Renders compact loading state with progress bar', () => {
 
   expect(progressBar).toBeInTheDocument();
 });
+
 test('Renders compact loading state without progress precent, and click onDelete call', async () => {
   const { file } = fakeProps();
   const mockOnDelete = vi.fn();
   render(
-    <FileProgress file={file} onDelete={mockOnDelete} isDone={false} compact />
+    <FileProgress
+      file={file}
+      onDelete={mockOnDelete}
+      isDone={false}
+      compact
+      indeterminate
+    />
   );
   const user = userEvent.setup();
 
@@ -219,15 +213,7 @@ test('Renders compact loading state without progress precent, and click onDelete
 test('Renders compact complete state', () => {
   const { file, onDelete } = fakeProps();
 
-  render(
-    <FileProgress
-      file={file}
-      onDelete={onDelete}
-      progressPercent={50}
-      isDone={true}
-      compact
-    />
-  );
+  render(<FileProgress file={file} onDelete={onDelete} isDone compact />);
 
   const fileName = screen.getByText(file.name);
   const progressBar = screen.queryByRole('progressbar');
@@ -286,9 +272,8 @@ test('Renders compact error state', () => {
     <FileProgress
       file={file}
       onDelete={onDelete}
-      progressPercent={50}
-      isDone={true}
-      isError={true}
+      isDone
+      isError
       shortErrorText={fakeShortErrorText}
       fullErrorText={fakeFullErrorText}
       compact
@@ -303,11 +288,18 @@ test('Renders compact error state', () => {
 
   expect(shortErrorText).toBeInTheDocument();
 });
+
 test('Renders compact default error messages', () => {
   const { file, onDelete } = fakeProps();
 
   render(
-    <FileProgress file={file} onDelete={onDelete} isError={true} compact />
+    <FileProgress
+      file={file}
+      onDelete={onDelete}
+      isError
+      compact
+      indeterminate
+    />
   );
 
   const shortDefaultErrorText = screen.getByText('Invalid file type');
