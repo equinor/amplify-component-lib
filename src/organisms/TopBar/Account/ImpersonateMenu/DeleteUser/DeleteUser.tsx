@@ -23,10 +23,11 @@ interface DeleteUserProps {
 export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
   const { mutateAsync: deleteUser, isPending } = useDeleteImpersonation();
   const { showSnackbar } = useSnackbar();
+  const fullName = `${user.firstName} ${user.lastName}`;
 
   const handleDelete = async () => {
     await deleteUser(user);
-    showSnackbar(`Deleted user "${user.fullName}" successfully`);
+    showSnackbar(`Deleted user "${fullName}" successfully`);
     onBack();
   };
 
@@ -44,12 +45,12 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
           variant="caption"
           color={colors.text.static_icons__tertiary.rgba}
         >
-          Are you sure you want to delete user &quot;{user.fullName}&quot;?
+          Are you sure you want to delete user &quot;{fullName}&quot;?
         </Typography>
       </section>
-      <ImpersonateAvatar size={64} fullName={user.fullName} />
+      <ImpersonateAvatar size={64} fullName={fullName} />
       <TextContent>
-        <Typography variant="h6">{user.fullName}</Typography>
+        <Typography variant="h6">{fullName}</Typography>
         <Typography>{user.uniqueName}</Typography>
       </TextContent>
       <RolesContainer>
