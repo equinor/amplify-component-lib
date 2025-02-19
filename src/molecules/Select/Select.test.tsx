@@ -832,3 +832,24 @@ test('Passing "data-testid" attribute works as expected', () => {
 
   expect(screen.getByTestId(randomTestId)).toBeInTheDocument();
 });
+
+test("Shows 'no items' text even if we have onAddItem but the search is empty", async () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const handleOnAdd = vi.fn();
+
+  render(
+    <Select
+      label={label}
+      onSelect={handler}
+      onAddItem={handleOnAdd}
+      items={[]}
+      value={undefined}
+    />
+  );
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('combobox'));
+
+  expect(screen.getByText('No items found')).toBeInTheDocument();
+});
