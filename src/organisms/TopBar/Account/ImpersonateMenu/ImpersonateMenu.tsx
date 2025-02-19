@@ -12,6 +12,7 @@ import { CreateNewUserButton } from './CreateNewUserButton';
 import { Content, Header, NoUsersText } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
 import { Search } from 'src/molecules';
+import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 
 interface ImpersonateProps {
   open: boolean;
@@ -37,7 +38,9 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
 
   const filteredUsers = availableUsers?.filter((user) =>
-    user.fullName.toLowerCase().includes(search.toLowerCase())
+    impersonateUserDtoToFullName(user)
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   useEffect(() => {

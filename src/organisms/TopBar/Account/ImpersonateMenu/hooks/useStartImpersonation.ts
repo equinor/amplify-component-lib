@@ -19,7 +19,9 @@ export function useStartImpersonation() {
       queryClient.setQueryData([ACTIVE_USERIMPERSONATION], user);
       await queryClient.invalidateQueries(IMPERSONATE_QUERY_FILTER);
 
-      showSnackbar(`Set active user impersonation: ${user.fullName}`);
+      showSnackbar(
+        `Set active user impersonation: ${user.firstName} ${user.lastName}`
+      );
       return user;
     },
   });

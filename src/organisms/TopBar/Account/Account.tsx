@@ -32,6 +32,7 @@ import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
 import { EnvironmentType } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
+import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export interface AccountProps {
@@ -80,7 +81,7 @@ export const Account: FC<AccountProps> = ({
   const { mutate: endImpersonation } = useStopImpersonation();
 
   const fullName = activeImpersonationUser
-    ? activeImpersonationUser.fullName
+    ? impersonateUserDtoToFullName(activeImpersonationUser)
     : account?.name;
   const activeRoles = activeImpersonationUser
     ? activeImpersonationUser.roles
@@ -105,7 +106,8 @@ export const Account: FC<AccountProps> = ({
     if (
       activeImpersonationUser &&
       activeImpersonationUser.appName != undefined &&
-      activeImpersonationUser.appName != APPLICATION_NAME
+      activeImpersonationUser.appName.toUpperCase() !=
+        APPLICATION_NAME.toUpperCase()
     ) {
       endImpersonation();
     }
