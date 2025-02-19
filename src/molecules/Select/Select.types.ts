@@ -23,7 +23,6 @@ export interface MultiSelectCommon<T extends SelectOptionRequired> {
     selectedValue?: SelectOption<T>
   ) => void;
   syncParentChildSelection?: boolean;
-  onAddItem?: (item: string) => void;
   customValueComponent?: FC<{
     item: SelectOption<T>;
     onDelete: () => void;
@@ -63,20 +62,16 @@ interface SelectMenuItemProps<T extends SelectOptionRequired> {
   index: number;
   childOffset: number;
   depth?: number;
+  isParentSelected?: boolean;
+  parentHasNestedItems?: boolean;
 }
 
 export type SingleSelectMenuItemProps<T extends SelectOptionRequired> = {
-  multiselect?: undefined;
-  isParentSelected?: boolean;
-  parentHasNestedItems?: boolean;
+  value: SelectOption<T> | undefined;
 } & Omit<SelectMenuProps<T>, 'search'> &
-  SelectMenuItemProps<T> &
-  Pick<SingleSelectCommon<T>, 'value'>;
+  SelectMenuItemProps<T>;
 
 export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
-  isParentSelected?: boolean;
-  parentHasNestedItems?: boolean;
-  multiselect: true;
   values: SelectOption<T>[];
 } & Omit<SelectMenuProps<T>, 'search'> &
   SelectMenuItemProps<T>;
@@ -106,5 +101,6 @@ export interface CommonSelectProps<T extends SelectOptionRequired> {
   inDialog?: boolean;
   onOpenCallback?: (value: boolean) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
+  onAddItem?: (item: string) => void;
   'data-testid'?: string;
 }

@@ -253,11 +253,7 @@ export const Select = <T extends SelectOptionRequired>(
               {...props}
               search={search}
               itemRefs={itemRefs}
-              onAddItem={
-                'values' in props && props.onAddItem
-                  ? handleOnAddItem
-                  : undefined
-              }
+              onAddItem={props.onAddItem ? handleOnAddItem : undefined}
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
               onSearchFilter={onSearchFilter}
