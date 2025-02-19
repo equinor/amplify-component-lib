@@ -47,7 +47,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
     });
   }, [items, onSearchFilter, search]);
 
-  if (filteredItems.length === 0 && !props.onAddItem) {
+  if (filteredItems.length === 0 && (!props.onAddItem || search === '')) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
