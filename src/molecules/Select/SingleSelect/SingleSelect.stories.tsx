@@ -115,3 +115,34 @@ export const SingleSelectWithGroups: StoryFn = (args) => {
     />
   );
 };
+
+export const SingleSelectWithAdd: StoryFn = (args) => {
+  const [items, setItems] = useState([...FAKE_ITEMS]);
+  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
+
+  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
+    actions('onSelect').onSelect(selectedValue);
+    setValue(selectedValue);
+  };
+
+  const handleOnAdd = (value: string) => {
+    actions('onItemAdd').onItemAdd(value);
+    const newItem = {
+      label: value,
+      value: faker.string.uuid(),
+    };
+    // NEW
+    setItems((prev) => [...prev, newItem]);
+    setValue(newItem);
+  };
+
+  return (
+    <SingleSelect
+      {...args}
+      items={items}
+      value={value}
+      onSelect={handleOnSelect}
+      onAddItem={handleOnAdd}
+    />
+  );
+};
