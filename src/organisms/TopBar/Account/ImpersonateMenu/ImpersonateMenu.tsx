@@ -38,7 +38,9 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
 
   const filteredUsers = availableUsers?.filter((user) =>
-    impersonateUserDtoToFullName(user).includes(search.toLowerCase())
+    impersonateUserDtoToFullName(user)
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   useEffect(() => {
