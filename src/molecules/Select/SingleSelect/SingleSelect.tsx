@@ -25,5 +25,10 @@ export type GroupedSingleSelectProps<T extends SelectOptionRequired> =
 export function SingleSelect<T extends SelectOptionRequired>(
   props: ListSingleSelectProps<T> | GroupedSingleSelectProps<T>
 ) {
+  if ('groups' in props && props.groups && props.onAddItem) {
+    throw new Error(
+      "[ACL - SingleSelect] Using 'onAddItem' is only supported in lists and not groups"
+    );
+  }
   return <Select {...props} />;
 }
