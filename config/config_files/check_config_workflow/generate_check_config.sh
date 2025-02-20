@@ -35,6 +35,7 @@ do
 
     newLine="
       - name: Compare remote $var1 to local
+        if: success() || failure()
         working-directory: $workingDir
         run: diff $var1 <(curl $var3)"
     echo "$newLine" >> ".github/workflows/check_config.yaml"
