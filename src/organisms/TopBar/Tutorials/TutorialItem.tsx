@@ -34,8 +34,8 @@ const Container = styled.button`
 `;
 
 interface TutorialItemProps extends MyTutorialDto {
-  onTutorialStart: (tutorialId: string) => void;
   onClose: () => void;
+  onTutorialStart?: (tutorialId: string) => void;
 }
 
 export const TutorialItem: FC<TutorialItemProps> = ({
@@ -50,7 +50,7 @@ export const TutorialItem: FC<TutorialItemProps> = ({
 
   const handleOnClick = () => {
     startTutorial(id);
-    onTutorialStart(id);
+    onTutorialStart?.(id);
     onClose();
   };
 
