@@ -10,7 +10,7 @@ import { TopBarButton } from 'src/organisms/TopBar/TopBar.styles';
 import { TopBarMenu } from 'src/organisms/TopBar/TopBarMenu';
 
 interface TutorialsProps {
-  onTutorialStart: (tutorialId: string) => void;
+  onTutorialStart?: (tutorialId: string) => void;
 }
 
 export const Tutorials: FC<TutorialsProps> = ({ onTutorialStart }) => {

@@ -61,8 +61,7 @@ beforeEach(() => {
 });
 
 test('Renders expected items when opening the tutorials menu', async () => {
-  const callback = vi.fn();
-  render(<Tutorials onTutorialStart={callback} />, { wrapper: Wrapper });
+  render(<Tutorials />, { wrapper: Wrapper });
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
