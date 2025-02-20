@@ -115,10 +115,10 @@ const RegularFileProgress: FC<
           </div>
         </FileName>
         <ProgressWrapper>
-          {!showCompleteState && (
+          {!showCompleteState && !rest.isDone && (
             <LinearProgress
               variant={rest.indeterminate ? 'indeterminate' : 'determinate'}
-              value={rest.indeterminate ? rest.progressPercent : undefined}
+              value={!rest.indeterminate ? rest.progressPercent : undefined}
             />
           )}
         </ProgressWrapper>

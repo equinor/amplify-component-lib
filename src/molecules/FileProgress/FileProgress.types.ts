@@ -9,7 +9,7 @@ interface FileProgressBaseProps {
 
 type DoneFileProgress = FileProgressBaseProps & {
   isDone: true;
-  indeterminate?: undefined;
+  indeterminate?: boolean;
 };
 
 type ProgressPercentFileProgress = FileProgressBaseProps & {
