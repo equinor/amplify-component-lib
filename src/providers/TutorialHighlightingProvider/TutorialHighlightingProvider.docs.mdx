@@ -6,6 +6,8 @@
 
 2. Place the `TutorialHighlightingProvider` inside the Routes, usually this would be here:
 
+2.1 If you have any custom content you can add that too
+
 <br />
 
 ```typescript dark
@@ -13,11 +15,15 @@
 ...
 import { TutorialHighlightingProvider, ... } from '@equinor/amplify-component-lib';
 
+const CUSTOM_CONTENT = {
+   ['my-step-id']: <p>Some custom content</p> // can also be a component
+}
+
 export function App() {
   const { isOpen } = useSideBar();
 
   return (
-    <TutorialHighlightingProvider>
+    <TutorialHighlightingProvider customStepContent={CUSTOM_CONTENT}>
       <Template.GlobalStyles />
       <Template>
         <ApplicationTopBar />
