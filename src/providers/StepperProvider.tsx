@@ -69,7 +69,10 @@ export const StepperProvider: FC<
 > = ({ steps, children, ...rest }) => {
   const { step } = useParams();
   const navigate = useNavigate();
-  const pathWithoutStep = useLocation().pathname.replace(`/${step}`, '');
+  const pathWithoutStep = useLocation()
+    .pathname.split('/')
+    .slice(0, -1)
+    .join('/');
   const usingInitialStep = rest.syncToURLParam
     ? Number(step)
     : (rest?.initialStep ?? 0);
