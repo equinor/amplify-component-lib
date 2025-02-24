@@ -25,47 +25,25 @@ jobs:
 
       - name: Tests
         working-directory: ./client
-        run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt
-        continue-on-error: true
-
-      - name: Log stderr
-        working-directory: ./client
-        run: cat stderr.txt
-
-      - name: Set tests_failed
-        working-directory: ./client
-        id: set_failed
-        run: |
-          echo "tests_failed=$(grep -q 'numFailedTests\":0' ./testrun.json && echo 'false' || echo 'true')" >> $GITHUB_OUTPUT
+        run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
 
       - name: Set coverage_failed
+        if: success() || failure()
         working-directory: ./client
         id: set_coverage
         run: |
           echo "coverage_failed=$(grep -q 'ERROR: Coverage' ./stderr.txt && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
-        working-directory: ./client
+        if: success() || failure()
         name: Cache coverage report
         with:
-          path: ./coverage
+          path: ./client/coverage
           key: coverage-${{ github.sha }}
-
-
-  check-test:
-    runs-on: ubuntu-latest
-    needs: [tests]
-
-    steps:
-      - name: Check if tests failed
-        if: ${{ contains(needs.tests.outputs.tests_failed, 'true')}}
-        uses: actions/github-script@v3
-        with:
-          script: |
-            core.setFailed('Tests failed!')
 
   check-coverage:
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs: [tests]
 
     steps:
@@ -78,6 +56,7 @@ jobs:
 
   report-coverage:
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs: [tests]
 
     permissions:
