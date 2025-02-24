@@ -93,7 +93,6 @@ export const StepperProvider: FC<
 
   const handleOnSetStep = (value: number) => {
     if (rest.syncToURLParam) {
-      console.log(pathWithoutStep);
       navigate(`${pathWithoutStep}/${value}`);
     } else {
       setCurrentStep(value);
