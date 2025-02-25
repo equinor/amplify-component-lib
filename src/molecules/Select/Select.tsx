@@ -5,9 +5,9 @@ import {
   arrow_drop_down,
   arrow_drop_up,
   clear,
-  error_filled,
+  error_outlined,
   thumbs_up,
-  warning_filled,
+  warning_outlined,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
@@ -103,9 +103,9 @@ export const Select = <T extends SelectOptionRequired>(
 
     switch (variant) {
       case 'error':
-        return error_filled;
+        return error_outlined;
       case 'warning':
-        return warning_filled;
+        return warning_outlined;
       case 'success':
         return thumbs_up;
     }
