@@ -34,12 +34,11 @@ jobs:
         run: |
           echo "coverage_failed=$(grep -q 'ERROR: Coverage' ./stderr.txt && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@v4
+      - name: Report Coverage
         if: success() || failure()
-        name: Cache coverage report
+        uses: davelosert/vitest-coverage-report-action@v2
         with:
-          path: ./client/coverage
-          key: coverage-${{ github.sha }}
+          working-directory: ./client
 
   check-coverage:
     runs-on: ubuntu-latest
@@ -53,32 +52,3 @@ jobs:
         with:
           script: |
             core.setFailed('Coverage failed!')
-
-  report-coverage:
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    needs: [tests]
-
-    permissions:
-      # Required to checkout the code
-      contents: read
-      # Required to put a comment into the pull-request
-      pull-requests: write
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/cache@v4
-        name: Get coverage report
-        working-directory: ./client
-        with:
-          path: ./coverage
-          key: coverage-${{ github.sha }}
-
-      - name: Report Coverage
-        # Set if: always() to also generate the report if tests are failing
-        # Only works if you set `reportOnFailure: true` in your vite config as specified above
-        if: always()
-        uses: davelosert/vitest-coverage-report-action@v2
-        with:
-          working-directory: ./client
