@@ -22,6 +22,7 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Tests
+        timeout-minutes: 15
         run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
 
       - name: Set coverage_failed
@@ -39,7 +40,7 @@ jobs:
 
   check-coverage:
     runs-on: ubuntu-latest
-    if: ${{ always() }}
+    if: ${{ success() || failure() }}
     needs: [tests]
 
     steps:
@@ -52,7 +53,7 @@ jobs:
 
   report-coverage:
     runs-on: ubuntu-latest
-    if: ${{ always() }}
+    if: ${{ success() || failure() }}
     needs: [tests]
 
     permissions:
