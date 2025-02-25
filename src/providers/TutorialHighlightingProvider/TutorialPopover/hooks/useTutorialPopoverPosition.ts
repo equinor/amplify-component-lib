@@ -29,6 +29,7 @@ export function useTutorialPopoverPosition({
   popoverSize,
 }: UseTutorialPopoverPositionArgs): UseTutorialPopoverPositionReturn {
   const reversedScrollY = useReversedScrollY();
+  // Default position of the popover is that it's under the highlighted element
   let usingTop = top && height ? top + height + CARET_OFFSET : undefined;
   let usingLeft = left && width ? left + width / 2 : undefined;
   const highlightingElement = !!usingTop && !!usingLeft;
@@ -62,6 +63,7 @@ export function useTutorialPopoverPosition({
     highlightDirection = 'left';
   }
 
+  // Overflowing to the right
   if (
     top &&
     height &&
