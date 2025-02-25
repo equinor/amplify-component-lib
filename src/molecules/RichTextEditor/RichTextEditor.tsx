@@ -1,6 +1,11 @@
-import { FC, ReactNode } from 'react';
+import { FC, useMemo } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import {
+  error_outlined,
+  thumbs_up,
+  warning_outlined,
+} from '@equinor/eds-icons';
 
 import { AmplifyBar } from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
@@ -15,7 +20,11 @@ import {
   ImageExtensionFnProps,
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
-import { colors, VARIANT_HELPER_COLORS } from 'src/atoms/style/colors';
+import {
+  colors,
+  VARIANT_COLORS,
+  VARIANT_HELPER_TEXT_COLORS,
+} from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { getFeatures } from 'src/atoms/utils/richtext';
 
@@ -39,7 +48,6 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
   label?: string;
   meta?: string;
   helperText?: string;
-  helperIcon?: ReactNode;
 }
 
 /**
@@ -64,7 +72,6 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
  * @param label - Label text at top left
  * @param meta - Meta text at top right
  * @param helperText - Helper text bottom left
- * @param helperIcon - Icon / element to be placed before helper text
  */
 export const RichTextEditor: FC<RichTextEditorProps> = ({
   value,
@@ -87,7 +94,6 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   label,
   meta,
   helperText,
-  helperIcon,
 }) => {
   if (onImageRemove && onRemovedImagesChange) {
     throw new Error(
@@ -101,6 +107,18 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
     removeFeatures,
     onImageUpload,
   });
+
+  const helperIcon = useMemo(() => {
+    switch (variant) {
+      case 'error':
+        return error_outlined;
+      case 'warning':
+        return warning_outlined;
+      case 'success':
+        return thumbs_up;
+    }
+  }, [variant]);
+
   return (
     <EditorProvider
       content={value}
@@ -147,13 +165,19 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
           </EditorStyling>
           {helperText && (
             <HelperWrapper>
-              {helperIcon ? helperIcon : undefined}
+              {helperIcon && variant ? (
+                <Icon
+                  data={helperIcon}
+                  size={16}
+                  color={VARIANT_COLORS[variant]}
+                />
+              ) : null}
               <Typography
                 variant="helper"
                 group="input"
                 color={
                   variant
-                    ? VARIANT_HELPER_COLORS[variant]
+                    ? VARIANT_HELPER_TEXT_COLORS[variant]
                     : colors.text.static_icons__tertiary.rgba
                 }
               >

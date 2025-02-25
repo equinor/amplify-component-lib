@@ -3,7 +3,10 @@ import { faker } from '@faker-js/faker';
 import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { colors } from 'src/atoms';
-import { VARIANT_COLORS, VARIANT_HELPER_COLORS } from 'src/atoms/style/colors';
+import {
+  VARIANT_COLORS,
+  VARIANT_HELPER_TEXT_COLORS,
+} from 'src/atoms/style/colors';
 import { renderWithProviders, screen } from 'src/tests/jsdomtest-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
@@ -74,6 +77,6 @@ test('Helper text gets expected colors', async () => {
 
   expect(screen.getByText(helper)).toHaveStyleRule(
     'color',
-    VARIANT_HELPER_COLORS['error']
+    VARIANT_HELPER_TEXT_COLORS['error']
   );
 });

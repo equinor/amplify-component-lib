@@ -199,6 +199,7 @@ export const LabelWrapper = styled.div`
 
 export const HelperWrapper = styled.div`
   display: flex;
+  gap: ${spacings.small};
   padding-left: ${spacings.small};
   margin-top: ${spacings.small};
 `;

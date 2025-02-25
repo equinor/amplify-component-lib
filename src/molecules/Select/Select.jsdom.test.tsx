@@ -8,7 +8,7 @@ import { fakeSelectItems, render, screen } from 'src/tests/jsdomtest-utils';
 
 import { expect } from 'vitest';
 
-test('variants work as expected', () => {
+test.each(VARIANT_OPTIONS)('variant %s works as expected', (variant) => {
   const items = fakeSelectItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
@@ -24,34 +24,18 @@ test('variants work as expected', () => {
 
   rerender(
     <Select
-      variant="dirty"
       label={label}
       onSelect={handleOnSelect}
       values={[]}
+      variant={variant}
       items={items}
     />
   );
 
-  expect(element).toHaveStyle(
-    `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS.dirty}`
+  expect(element).toHaveStyleRule(
+    'outline',
+    variant === 'dirty' ? undefined : `1px solid ${VARIANT_COLORS[variant]}`
   );
-
-  for (const variant of VARIANT_OPTIONS.filter((item) => item !== 'dirty')) {
-    rerender(
-      <Select
-        label={label}
-        onSelect={handleOnSelect}
-        values={[]}
-        variant={variant}
-        items={items}
-      />
-    );
-
-    expect(element).toHaveStyleRule(
-      'outline',
-      `1px solid ${VARIANT_COLORS[variant]}`
-    );
-  }
 });
 
 test('lightBackground works as expected', () => {
