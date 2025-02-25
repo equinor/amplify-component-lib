@@ -22,7 +22,8 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Tests
-        run: bun run test:ci -- --coverage --coverage.reporter=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
+        timeout-minutes: 15
+        run: bun run test:ci -- --coverage --coverage.report=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
 
       - name: Set coverage_failed
         if: success() || failure()
@@ -30,16 +31,13 @@ jobs:
         run: |
           echo "coverage_failed=$(grep -q 'ERROR: Coverage' ./stderr.txt && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@v4
-        if: success() || failure()
-        name: Cache coverage report
-        with:
-          path: ./coverage
-          key: coverage-${{ github.sha }}
+      - name: Report Coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
 
   check-coverage:
     runs-on: ubuntu-latest
-    if: ${{ always() }}
+    if: ${{ success() || failure() }}
     needs: [tests]
 
     steps:
@@ -49,29 +47,3 @@ jobs:
         with:
           script: |
             core.setFailed('Coverage failed!')
-
-  report-coverage:
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    needs: [tests]
-
-    permissions:
-      # Required to checkout the code
-      contents: read
-      # Required to put a comment into the pull-request
-      pull-requests: write
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/cache@v4
-        name: Get coverage report
-        with:
-          path: ./coverage
-          key: coverage-${{ github.sha }}
-
-      - name: Report Coverage
-        # Set if: always() to also generate the report if tests are failing
-        # Only works if you set `reportOnFailure: true` in your vite config as specified above
-        if: always()
-        uses: davelosert/vitest-coverage-report-action@v2
