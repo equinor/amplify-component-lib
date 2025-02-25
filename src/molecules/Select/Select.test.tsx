@@ -781,7 +781,7 @@ test('Does not call onSubmit when clicking items', async () => {
   await user.click(screen.getByText(items[0].label));
 
   expect(handleOnSelect).toHaveBeenCalledWith(items[0]);
-  expect(handleOnSubmit).toHaveBeenCalled();
+  expect(handleOnSubmit).not.toHaveBeenCalled();
 });
 
 test('Does not call onSubmit when selecting items with {Enter}', async () => {
