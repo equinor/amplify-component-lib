@@ -62,7 +62,6 @@ const TestComponent = ({
                         justifyContent: 'center',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding: '10rem',
                         gap: '1rem',
                       }}
                     >
@@ -93,13 +92,7 @@ const TestComponent = ({
                             </Button>
                           </Card.Actions>
                         </Card>
-                        <Card
-                          style={{ padding: '1rem' }}
-                          id={highlightTutorialElementID(
-                            FAKE_TUTORIALS[0].id,
-                            2
-                          )}
-                        >
+                        <Card style={{ padding: '1rem' }}>
                           <Card.HeaderTitle>
                             <Typography variant="h2">
                               {faker.airline.airplane().name +
@@ -107,6 +100,16 @@ const TestComponent = ({
                                 faker.airline.airplane().iataTypeCode}
                             </Typography>
                           </Card.HeaderTitle>
+                          <Button
+                            id={highlightTutorialElementID(
+                              FAKE_TUTORIALS[0].id,
+                              2
+                            )}
+                            variant="outlined"
+                            style={{ marginLeft: 'auto' }}
+                          >
+                            Stop
+                          </Button>
                         </Card>
                         <Divider />
                       </Fragment>
