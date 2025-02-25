@@ -24,7 +24,8 @@ export interface TutorialHighlight
 
 export function getHighlightElementBoundingBox(
   tutorialId: string,
-  stepNum: number
+  stepNum: number,
+  windowSize: { width: number; height: number }
 ): TutorialHighlight | undefined {
   const usingId = highlightTutorialElementID(tutorialId, stepNum);
   const element = document.getElementById(usingId);
@@ -44,8 +45,8 @@ export function getHighlightElementBoundingBox(
   if (
     rect.top <= 0 ||
     rect.left <= 0 ||
-    rect.bottom >= window.innerHeight ||
-    rect.right >= window.innerWidth
+    rect.bottom >= windowSize.height ||
+    rect.right >= windowSize.width
   ) {
     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }

@@ -1,4 +1,4 @@
-import { FC, ReactElement, useMemo } from 'react';
+import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
 
 import { useTutorials } from '@equinor/subsurface-app-management';
 
@@ -48,6 +48,25 @@ export const TutorialHighlightingProviderInner: FC<
   const { activeTutorial, activeStep, unseenTutorialsOnThisPage } =
     useTutorials();
   const reversedScrollY = useReversedScrollY();
+  const [windowSize, setWindowSize] = useState<{
+    width: number;
+    height: number;
+  }>({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleOnResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleOnResize);
+    return () => window.removeEventListener('resize', handleOnResize);
+  }, []);
 
   const activeTutorials = activeTutorial
     ? [activeTutorial]
@@ -59,7 +78,8 @@ export const TutorialHighlightingProviderInner: FC<
 
       const highlight = getHighlightElementBoundingBox(
         activeTutorial.id,
-        activeStep
+        activeStep,
+        windowSize
       );
 
       if (highlight) {
@@ -72,10 +92,10 @@ export const TutorialHighlightingProviderInner: FC<
       .map((tutorial) => {
         if (!tutorial.steps.at(0)?.highlightElement) return undefined;
 
-        return getHighlightElementBoundingBox(tutorial.id, 0);
+        return getHighlightElementBoundingBox(tutorial.id, 0, windowSize);
       })
       .filter((value) => value !== undefined);
-  }, [activeStep, activeTutorial, unseenTutorialsOnThisPage]);
+  }, [activeStep, activeTutorial, unseenTutorialsOnThisPage, windowSize]);
 
   if (activeTutorials.length > 0) {
     return (
