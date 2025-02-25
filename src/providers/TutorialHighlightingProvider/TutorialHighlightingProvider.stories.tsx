@@ -45,7 +45,7 @@ const meta: Meta = {
                         justifyContent: 'center',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding: '10rem',
+                        padding: '10rem 0',
                         gap: '1rem',
                       }}
                     >
@@ -69,10 +69,7 @@ const meta: Meta = {
                               </Button>
                             </Card.Actions>
                           </Card>
-                          <Card
-                            style={{ padding: '1rem' }}
-                            id={highlightTutorialElementID(id, 2)}
-                          >
+                          <Card style={{ padding: '1rem' }}>
                             <Card.HeaderTitle>
                               <Typography variant="h2">
                                 {faker.airline.airplane().name +
@@ -80,13 +77,20 @@ const meta: Meta = {
                                   faker.airline.airplane().iataTypeCode}
                               </Typography>
                             </Card.HeaderTitle>
+                            <Button
+                              id={highlightTutorialElementID(id, 2)}
+                              variant="outlined"
+                              style={{ marginLeft: 'auto' }}
+                            >
+                              Stop
+                            </Button>
                           </Card>
                           <Divider />
                         </Fragment>
                       ))}
                       <Typography
                         id={highlightTutorialElementID(TUTORIAL_IDS[0], 3)}
-                        style={{ marginTop: '80vh', marginBottom: '10vh' }}
+                        style={{ marginTop: '80vh' }}
                       >
                         This is some text really far away
                       </Typography>

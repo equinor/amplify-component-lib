@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { Button, Card, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
@@ -12,13 +12,17 @@ import { useTutorialHighlighting } from '../TutorialHighlightingProvider';
 import { TUTORIAL_HIGHLIGHT_ANIMATION_PROPS } from '../TutorialHighlightingProvider.constants';
 import { StepIndicator } from './StepIndicator';
 import { colors, elevation, spacings } from 'src/atoms/style';
-import { useReversedScrollY } from 'src/providers/TutorialHighlightingProvider/hooks/useReversedScrollY';
+import {
+  useTutorialPopoverPosition,
+  UseTutorialPopoverPositionReturn,
+} from 'src/providers/TutorialHighlightingProvider/TutorialPopover/hooks/useTutorialPopoverPosition';
 
-import { motion, MotionProps, useTransform } from 'framer-motion';
+import { motion, MotionProps } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
 interface ContainerProps extends MotionProps {
   $highlightingElement: boolean;
+  $highlightDirection: UseTutorialPopoverPositionReturn['highlightDirection'];
 }
 
 const Container = styled(motion(Card))<ContainerProps>`
@@ -42,7 +46,7 @@ const Container = styled(motion(Card))<ContainerProps>`
     max-height: 170px;
     object-fit: contain;
   }
-  ${({ $highlightingElement }) =>
+  ${({ $highlightingElement, $highlightDirection }) =>
     $highlightingElement &&
     css`
       transform: translateX(-50%);
@@ -50,12 +54,20 @@ const Container = styled(motion(Card))<ContainerProps>`
         z-index: -1;
         content: '';
         width: 32px;
-        height: 26px;
+        height: 32px;
         background: ${colors.infographic.primary__moss_green_13.rgba};
         position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, 0) rotate(45deg);
+        ${$highlightDirection === 'top' || $highlightDirection === 'bottom'
+          ? css`
+              left: 50%;
+              ${$highlightDirection}: 0;
+              transform: translate(-50%, 0) rotate(45deg);
+            `
+          : css`
+              top: 50%;
+              ${$highlightDirection}: 0;
+              transform: translate(0, -50%) rotate(45deg);
+            `}
       }
     `}
 `;
@@ -70,8 +82,6 @@ const Actions = styled.div`
     }
   }
 `;
-
-const TOP_OFFSET = 16;
 
 interface TutorialPopoverProps extends MyTutorialDto {
   isHighlighting: boolean;
@@ -103,14 +113,32 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
   const { data: image } = useTutorialStepImage(
     activeTutorial?.steps.at(activeStep!)?.imgUrl ?? undefined
   );
-  const reversedScrollY = useReversedScrollY();
-  const usingTop = top && height ? top + height + TOP_OFFSET : undefined;
-  const usingLeft = left && width ? left + width / 2 : undefined;
-  const highlightingElement = !!usingTop && !!usingLeft;
-  const transformedTop = useTransform(reversedScrollY, (value) => {
-    if (!highlightingElement) return null;
-    return value + usingTop;
-  });
+  const [popoverSize, setPopoverSize] = useState<
+    | {
+        width: number;
+        height: number;
+      }
+    | undefined
+  >(undefined);
+  const { style, highlightingElement, highlightDirection } =
+    useTutorialPopoverPosition({
+      top,
+      left,
+      width,
+      height,
+      popoverSize,
+    });
+
+  const handleSetPopoverSize = (element: HTMLDivElement | null) => {
+    if (!element) {
+      setPopoverSize(undefined);
+      return;
+    }
+    setPopoverSize({
+      width: element.clientWidth,
+      height: element.clientHeight,
+    });
+  };
 
   const handleSkip = () => {
     skipTutorial(id);
@@ -135,12 +163,10 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
   if (!activeTutorial || activeStep === undefined) {
     return (
       <Container
-        style={{
-          position: highlightingElement ? 'absolute' : undefined,
-          top: transformedTop,
-          left: usingLeft,
-        }}
+        ref={handleSetPopoverSize}
+        style={{ ...style }}
         $highlightingElement={highlightingElement}
+        $highlightDirection={highlightDirection}
         {...TUTORIAL_HIGHLIGHT_ANIMATION_PROPS}
       >
         <header>
@@ -162,11 +188,12 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
 
   return (
     <Container
+      ref={handleSetPopoverSize}
       style={{
-        position: highlightingElement ? 'absolute' : undefined,
-        top: transformedTop,
-        left: usingLeft,
+        ...style,
+        width: steps[activeStep].custom ? 'auto' : undefined,
       }}
+      $highlightDirection={highlightDirection}
       $highlightingElement={highlightingElement}
       {...TUTORIAL_HIGHLIGHT_ANIMATION_PROPS}
     >

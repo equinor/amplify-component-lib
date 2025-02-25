@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { act, Fragment } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
@@ -62,7 +62,6 @@ const TestComponent = ({
                         justifyContent: 'center',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding: '10rem',
                         gap: '1rem',
                       }}
                     >
@@ -93,13 +92,7 @@ const TestComponent = ({
                             </Button>
                           </Card.Actions>
                         </Card>
-                        <Card
-                          style={{ padding: '1rem' }}
-                          id={highlightTutorialElementID(
-                            FAKE_TUTORIALS[0].id,
-                            2
-                          )}
-                        >
+                        <Card style={{ padding: '1rem' }}>
                           <Card.HeaderTitle>
                             <Typography variant="h2">
                               {faker.airline.airplane().name +
@@ -107,6 +100,16 @@ const TestComponent = ({
                                 faker.airline.airplane().iataTypeCode}
                             </Typography>
                           </Card.HeaderTitle>
+                          <Button
+                            id={highlightTutorialElementID(
+                              FAKE_TUTORIALS[0].id,
+                              2
+                            )}
+                            variant="outlined"
+                            style={{ marginLeft: 'auto' }}
+                          >
+                            Stop
+                          </Button>
                         </Card>
                         <Divider />
                       </Fragment>
@@ -190,6 +193,26 @@ test('Able to click through tutorial as expected', async () => {
       expect(screen.queryByText(step.body!)).not.toBeInTheDocument()
     );
   }
+});
+
+test('Resizing works', async () => {
+  render(<TestComponent />);
+  const randomWidth = faker.number.int({ min: 100, max: 1920 });
+  const randomHeight = faker.number.int({ min: 100, max: 1080 });
+
+  const highlightTutorial = FAKE_TUTORIALS[0];
+
+  await act(async () => {
+    window['innerWidth'] = randomWidth;
+    window['innerHeight'] = randomHeight;
+    window.dispatchEvent(new Event('resize'));
+  });
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
 });
 
 test('Able to click through tutorial with centered steps', async () => {
