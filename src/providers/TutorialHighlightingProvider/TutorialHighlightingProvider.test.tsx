@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { act, Fragment } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
@@ -193,6 +193,26 @@ test('Able to click through tutorial as expected', async () => {
       expect(screen.queryByText(step.body!)).not.toBeInTheDocument()
     );
   }
+});
+
+test('Resizing works', async () => {
+  render(<TestComponent />);
+  const randomWidth = faker.number.int({ min: 100, max: 1920 });
+  const randomHeight = faker.number.int({ min: 100, max: 1080 });
+
+  const highlightTutorial = FAKE_TUTORIALS[0];
+
+  await act(async () => {
+    window['innerWidth'] = randomWidth;
+    window['innerHeight'] = randomHeight;
+    window.dispatchEvent(new Event('resize'));
+  });
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
 });
 
 test('Able to click through tutorial with centered steps', async () => {
