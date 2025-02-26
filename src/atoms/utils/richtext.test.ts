@@ -3,9 +3,11 @@ import { faker } from '@faker-js/faker';
 import {
   cleanRichTextValue,
   extractImageUrls,
+  getFeatures,
   getImagesFromRichText,
   imageToB64,
 } from './richtext';
+import { RichTextEditorFeatures } from 'src/molecules';
 
 test('"extractImageUrls" works as expected', () => {
   const fakeUrl = faker.image.url();
@@ -51,4 +53,10 @@ test('"getImagesFromRichText" works as expected', () => {
 
   expect(images).toHaveLength(1);
   expect(images[0]).toBe(fakeUrl);
+});
+
+test('Throws error if trying to get image features without handlers', () => {
+  expect(() =>
+    getFeatures({ extendFeatures: [RichTextEditorFeatures.IMAGES] })
+  ).toThrowError();
 });

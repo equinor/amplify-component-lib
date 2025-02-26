@@ -17,9 +17,10 @@ export function usePrefetchRichTextImages({
   const queryClient = useQueryClient();
   const prefetched = useRef<string[]>([]);
   const paths = richTextValues.flatMap((value) => getImagesFromRichText(value));
-  const isPrefetching = useIsFetching({
-    predicate: (query) => paths.some((path) => query.queryKey[0] === path),
-  });
+  const isPrefetching =
+    useIsFetching({
+      predicate: (query) => paths.some((path) => query.queryKey[0] === path),
+    }) > 0;
 
   useEffect(() => {
     for (const path of paths.filter(

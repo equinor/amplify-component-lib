@@ -1,18 +1,12 @@
 import { useMemo, useRef } from 'react';
 
 import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
-import {
-  arrow_drop_down,
-  arrow_drop_up,
-  clear,
-  error_outlined,
-  thumbs_up,
-  warning_outlined,
-} from '@equinor/eds-icons';
+import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import { useSelect } from 'src/atoms/hooks/useSelect';
+import { VARIANT_ICONS } from 'src/atoms/utils/forms';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
 import {
@@ -101,14 +95,7 @@ export const Select = <T extends SelectOptionRequired>(
   const helperIcon = useMemo(() => {
     if (!showHelperIcon) return;
 
-    switch (variant) {
-      case 'error':
-        return error_outlined;
-      case 'warning':
-        return warning_outlined;
-      case 'success':
-        return thumbs_up;
-    }
+    return variant ? VARIANT_ICONS[variant] : undefined;
   }, [showHelperIcon, variant]);
 
   // Not able to test this properly because the menu onClose works inside a dialog in the test env :(
