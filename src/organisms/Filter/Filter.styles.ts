@@ -24,6 +24,7 @@ export const Container = styled.div`
     align-items: center;
     flex-grow: 1;
     display: flex;
+    flex-direction: row-reverse;
     flex-wrap: wrap;
     gap: ${spacings.x_small};
     margin: calc(${spacings.xx_small} + ${spacings.x_small}) 0
@@ -88,36 +89,15 @@ export const SearchField = styled.input`
   }
 `;
 
-interface ContentProps {
-  $showClearFilterButton: boolean;
-}
-
-export const Content = styled(motion.div)<ContentProps>`
+export const Content = styled(motion.div)`
   border-bottom-left-radius: ${shape.corners.borderRadius};
   border-bottom-right-radius: ${shape.corners.borderRadius};
   background: ${colors.ui.background__default.rgba};
   overflow: hidden;
-  > section {
-    padding: ${spacings.medium};
-    display: flex;
-    flex-direction: column;
-    gap: ${spacings.medium};
-    ${({ $showClearFilterButton }) => {
-      if ($showClearFilterButton) {
-        return css`
-          > div:last-child {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: ${spacings.medium};
-
-            > button {
-              align-self: flex-end;
-            }
-          }
-        `;
-      }
-    }}
-  }
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.medium};
+  padding: ${spacings.medium};
 `;
 
 interface StyledChipProps {

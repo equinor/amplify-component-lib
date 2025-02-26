@@ -16,9 +16,8 @@ import {
   Wrapper,
 } from './Filter.styles';
 import { colors } from 'src/atoms/style/colors';
+import { SelectOptionRequired } from 'src/molecules';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
-import { QuickFilter } from 'src/organisms/Filter/QuickFilter';
-import { Sorting } from 'src/organisms/Filter/Sorting';
 
 import { AnimatePresence } from 'framer-motion';
 
@@ -30,19 +29,12 @@ import { AnimatePresence } from 'framer-motion';
  * @param onClearFilter - Function to call when the user clicks the delete button on a chip
  * @param onClearAllFilters - Function to call when the user clicks the clear filters button
  * @param children - ReactNode or ReactNode[] to display below when the filter is open
+ * @param inlineContent - ReactNode or ReactNode[] to display inline with the search field, but before the open/close button
  * @param initialOpen - Whether the filter should be open by default, defaults to false
  * @param placeholder - Placeholder text for the search input, defaults to 'Search...'
  * @param id - ID for the search field
- * @param showClearFiltersButton - Whether to show the clear filters button, defaults to true
- * - Sorting props
- * @param sortValue - The current sort value
- * @param onSortChange - Callback when a sorting is selected in the menu
- * @param sortItems - Array of sort items ({ value: S, label: string }[])
- * - Quick filter props
- * @param onQuickFilter - Callback when a quick filter is selected in the menu
- * @param quickFilterItems - Array of quick filter items ({ value: Q, label: string }[])
  */
-export function Filter<T, S, Q>({
+export function Filter<T extends string>({
   values,
   search,
   onSearchChange,
@@ -50,14 +42,16 @@ export function Filter<T, S, Q>({
   onClearFilter,
   onClearAllFilters,
   children,
+  inlineContent,
   initialOpen = false,
   placeholder = 'Search...',
   id = 'filter-search',
-  showClearFiltersButton = true,
   ...rest
-}: FilterProps<T, S, Q>) {
+}: FilterProps<T>) {
   const [open, setOpen] = useState(initialOpen);
-  const [attemptingToRemove, setAttemptingToRemove] = useState<number>(-1);
+  const [attemptingToRemove, setAttemptingToRemove] = useState<T | undefined>(
+    undefined
+  );
   const initialHeight = useRef(initialOpen ? 'auto' : 0);
 
   const handleOnToggleOpen = () => {
@@ -73,21 +67,42 @@ export function Filter<T, S, Q>({
     }
   };
 
-  const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && search !== '') {
-      onSearchEnter(search);
-    } else if (event.key === 'Backspace' && search === '') {
-      if (values.length > 0 && attemptingToRemove === -1) {
-        setAttemptingToRemove(values.length - 1);
-      } else if (attemptingToRemove !== -1) {
-        onClearFilter(values[attemptingToRemove].key);
-        setAttemptingToRemove(-1);
+  const handleOnSearchEnter = (searchValue: string) => {
+    if (!('autoCompleteOptions' in rest)) {
+      onSearchEnter(searchValue);
+      return;
+    }
+
+    for (const key in rest.autoCompleteOptions) {
+      const found = rest.autoCompleteOptions[key].find(
+        (option) => option.label.toLowerCase() === searchValue.toLowerCase()
+      );
+
+      if (found) {
+        rest.onAutoComplete(key, found);
+        return;
       }
     }
+
+    onSearchEnter(searchValue);
   };
 
-  const handleOnClearAll = () => {
-    onClearAllFilters();
+  const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && search !== '') {
+      handleOnSearchEnter(search);
+    } else if (event.key === 'Backspace' && search === '') {
+      if (attemptingToRemove === undefined) {
+        for (const key of Object.keys(values) as T[]) {
+          if (values[key].length > 0) {
+            setAttemptingToRemove(key);
+            break;
+          }
+        }
+        return;
+      }
+      onClearFilter(attemptingToRemove, values[attemptingToRemove].length - 1);
+      setAttemptingToRemove(undefined);
+    }
   };
 
   return (
@@ -99,16 +114,6 @@ export function Filter<T, S, Q>({
           color={colors.text.static_icons__tertiary.rgba}
         />
         <section>
-          {values.map(({ key, label, icon }, index) => (
-            <StyledChip
-              key={`${label}-${index}`}
-              onDelete={() => onClearFilter(key)}
-              leadingIconData={icon}
-              $tryingToRemove={attemptingToRemove === index}
-            >
-              {label}
-            </StyledChip>
-          ))}
           <SearchField
             id={id}
             type="search"
@@ -118,11 +123,27 @@ export function Filter<T, S, Q>({
             onKeyDownCapture={handleOnKeyDown}
             onFocus={handleOnFocus}
           />
+          {(Object.keys(values) as Array<T>).flatMap((key) =>
+            values[key].map(({ label, icon }, index, list) => (
+              <StyledChip
+                key={`${label}-${index}-${key}`}
+                onDelete={() => onClearFilter(key, index)}
+                leadingIconData={icon}
+                $tryingToRemove={
+                  attemptingToRemove === key && index === list.length - 1
+                }
+              >
+                {label}
+              </StyledChip>
+            ))
+          )}
         </section>
-        {values.length > 0 && (
+        {(Object.values(values) as SelectOptionRequired[][]).some(
+          (list) => list.length > 0
+        ) && (
           <Button
             variant="ghost_icon"
-            onClick={handleOnClearAll}
+            onClick={onClearAllFilters}
             data-testid="clear-all-x"
           >
             <Icon
@@ -132,8 +153,7 @@ export function Filter<T, S, Q>({
             />
           </Button>
         )}
-        {'quickFilterItems' in rest && <QuickFilter {...rest} />}
-        {'sortValue' in rest && <Sorting {...rest} />}
+        {inlineContent}
         <button onClick={handleOnToggleOpen} data-testid="toggle-open-button">
           <Icon
             data={open ? arrow_drop_up : arrow_drop_down}
@@ -144,43 +164,11 @@ export function Filter<T, S, Q>({
       <AnimatePresence>
         {open && (
           <Content
-            $showClearFilterButton={showClearFiltersButton}
             animate={{ height: 'auto' }}
             initial={{ height: initialHeight.current }}
             exit={{ height: 0 }}
           >
-            <section>
-              {Array.isArray(children) ? (
-                children.map((child, index) => (
-                  <div key={index}>
-                    {child}
-                    {index === children.length - 1 &&
-                      showClearFiltersButton && (
-                        <Button
-                          variant="outlined"
-                          onClick={handleOnClearAll}
-                          disabled={values.length === 0}
-                        >
-                          Clear filters
-                        </Button>
-                      )}
-                  </div>
-                ))
-              ) : (
-                <div>
-                  {children}
-                  {showClearFiltersButton && (
-                    <Button
-                      variant="outlined"
-                      onClick={handleOnClearAll}
-                      disabled={values.length === 0}
-                    >
-                      Clear filters
-                    </Button>
-                  )}
-                </div>
-              )}
-            </section>
+            {children}
           </Content>
         )}
       </AnimatePresence>
