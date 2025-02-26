@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker';
 
-import { cleanRichTextValue, extractImageUrls, imageToB64 } from './richtext';
+import {
+  cleanRichTextValue,
+  extractImageUrls,
+  getImagesFromRichText,
+  imageToB64,
+} from './richtext';
 
 test('"extractImageUrls" works as expected', () => {
   const fakeUrl = faker.image.url();
@@ -36,4 +41,14 @@ test('"cleanRichTextValue" works as expected', () => {
   const cleaned = cleanRichTextValue(fakeText);
 
   expect(cleaned).not.toContain('src');
+});
+
+test('"getImagesFromRichText" works as expected', () => {
+  const fakeUrl = faker.image.url();
+  const fakeText = `<p>this is some text</p><img src="${fakeUrl}" alt="${fakeUrl}">`;
+
+  const images = getImagesFromRichText(fakeText);
+
+  expect(images).toHaveLength(1);
+  expect(images[0]).toBe(fakeUrl);
 });
