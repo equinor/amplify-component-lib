@@ -22,13 +22,20 @@ export interface TutorialHighlight
   id: string;
 }
 
-export function getHighlightElementBoundingBox(
+export async function getHighlightElementBoundingBox(
   tutorialId: string,
   stepNum: number,
   windowSize: { width: number; height: number }
-): TutorialHighlight | undefined {
+): Promise<TutorialHighlight | undefined> {
   const usingId = highlightTutorialElementID(tutorialId, stepNum);
-  const element = document.getElementById(usingId);
+  let element = document.getElementById(usingId);
+  let failed = false;
+
+  while (!element && !failed) {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    element = document.getElementById(usingId);
+    failed = true;
+  }
 
   if (!element) {
     console.warn(
