@@ -5,29 +5,20 @@ interface FileProgressBaseProps {
   file: FileWithPath | File;
   onCancel?: () => void;
   isError?: boolean;
+  isDone?: boolean;
 }
-
-type DoneFileProgress = FileProgressBaseProps & {
-  isDone: true;
-  indeterminate?: boolean;
-};
 
 type ProgressPercentFileProgress = FileProgressBaseProps & {
   progressPercent: number;
-  isDone?: false;
   indeterminate?: false;
 };
 
 type IndeterminateFileProgress = FileProgressBaseProps & {
   progressPercent?: undefined;
-  isDone?: false;
   indeterminate: true;
 };
 
-type FileProgressBase =
-  | DoneFileProgress
-  | ProgressPercentFileProgress
-  | IndeterminateFileProgress;
+type FileProgressBase = ProgressPercentFileProgress | IndeterminateFileProgress;
 
 export type RegularFileProgressBaseProps = FileProgressBase & {
   compact?: false;
