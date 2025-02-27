@@ -6,6 +6,7 @@ import { usePrevious } from './usePrevious';
 import { useSelect } from './useSelect';
 import { useSignalRMessages } from './useSignalRMessages';
 import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
+import { usePrefetchRichTextImages } from 'src/atoms/hooks/usePrefetchRichTextImages';
 import { useNotification } from 'src/organisms/TopBar/Notifications/NotificationProvider';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
@@ -16,6 +17,7 @@ import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
 import { useThemeProvider } from 'src/providers/ThemeProvider/ThemeProvider';
 
 export {
+  usePrefetchRichTextImages,
   useAuth,
   useStepper,
   useSelect,

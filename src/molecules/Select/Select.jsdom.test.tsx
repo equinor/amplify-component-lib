@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { within } from '@testing-library/dom';
 
 import { Select } from './Select';
 import { VARIANT_OPTIONS } from './Select.types';
@@ -36,6 +37,29 @@ test.each(VARIANT_OPTIONS)('variant %s works as expected', (variant) => {
     'outline',
     variant === 'dirty' ? undefined : `1px solid ${VARIANT_COLORS[variant]}`
   );
+});
+
+test('Doesnt show icon if showHelperIcon is false', () => {
+  const items = fakeSelectItems();
+  const label = faker.animal.bear();
+  const handleOnSelect = vi.fn();
+  const helperText = faker.animal.dog();
+
+  render(
+    <Select
+      label={label}
+      onSelect={handleOnSelect}
+      helperText={helperText}
+      showHelperIcon={false}
+      variant="error"
+      values={[]}
+      items={items}
+    />
+  );
+
+  const parent = screen.getByText(helperText).parentElement!;
+
+  expect(within(parent).queryByTestId('eds-icon-path')).not.toBeInTheDocument();
 });
 
 test('lightBackground works as expected', () => {
