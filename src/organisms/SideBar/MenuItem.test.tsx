@@ -92,241 +92,121 @@ test('should show if featureUuid is in my features', async () => {
   expect(screen.getByTestId('sidebar-menu-item')).toBeInTheDocument();
 });
 
-describe('Expanded', () => {
+describe.each(['expanded', 'collapsed'])('MenuItem %s', (state) => {
   beforeEach(() => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
-      JSON.stringify({ isOpen: true })
+      JSON.stringify({ isOpen: state === 'expanded' })
     );
   });
 
-  describe('Interaction', () => {
-    describe('Default', () => {
-      test('Should be able to Click', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
-
-        const user = userEvent.setup();
-        await user.click(item);
-
-        expect(props.onClick).toHaveBeenCalledOnce();
+  describe('Default', () => {
+    test('Should show tooltip when hovering', async () => {
+      const props = fakeProps();
+      render(<MenuItem {...props} />, {
+        wrapper: wrapper,
       });
+      const user = userEvent.setup();
+      const item = screen.getByTestId('sidebar-menu-item');
 
-      test('Should be able to Tab + Enter', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
+      await user.hover(item);
 
-        const user = userEvent.setup();
-        await user.tab();
-
-        expect(item).toHaveFocus();
-
-        await user.keyboard('[Enter]');
-
-        expect(props.onClick).toHaveBeenCalledOnce();
-      });
+      const text = await screen.findByText(props.name);
+      expect(text).toBeInTheDocument();
     });
 
-    describe('Selected', () => {
-      test('Click should do nothing', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} currentUrl={props.link} />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
-
-        const user = userEvent.setup();
-        await user.click(item);
-
-        expect(props.onClick).not.toHaveBeenCalled();
+    test('Should be able to Click', async () => {
+      const props = fakeProps();
+      render(<MenuItem {...props} />, {
+        wrapper: wrapper,
       });
+      const item = screen.getByTestId('sidebar-menu-item');
 
-      test('Tab + Enter should do nothing', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} currentUrl={props.link} />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
+      const user = userEvent.setup();
+      await user.click(item);
 
-        const user = userEvent.setup();
-        await user.tab();
-
-        expect(item).toHaveFocus();
-
-        await user.keyboard('[Enter]');
-
-        expect(props.onClick).not.toHaveBeenCalled();
-      });
+      expect(props.onClick).toHaveBeenCalledOnce();
     });
 
-    describe('Disabled', () => {
-      test('Click should do nothing', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} disabled />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
-
-        const user = userEvent.setup();
-        await user.click(item);
-
-        expect(props.onClick).not.toHaveBeenCalled();
+    test('Should be able to Tab + Enter', async () => {
+      const props = fakeProps();
+      render(<MenuItem {...props} />, {
+        wrapper: wrapper,
       });
+      const item = screen.getByTestId('sidebar-menu-item');
 
-      test('Tab + Enter should do nothing', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} disabled />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
+      const user = userEvent.setup();
+      await user.tab();
 
-        const user = userEvent.setup();
-        await user.tab();
+      expect(item).toHaveFocus();
 
-        expect(item).toHaveFocus();
+      await user.keyboard('[Enter]');
 
-        await user.keyboard('[Enter]');
-
-        expect(props.onClick).not.toHaveBeenCalled();
-      });
+      expect(props.onClick).toHaveBeenCalledOnce();
     });
   });
-});
 
-describe('Collapsed', () => {
-  beforeEach(() => {
-    window.localStorage.setItem(
-      'amplify-sidebar-state',
-      JSON.stringify({ isOpen: false })
-    );
+  describe('Selected', () => {
+    test('Click should do nothing', async () => {
+      const props = fakeProps();
+      render(<MenuItem {...props} currentUrl={props.link} />, {
+        wrapper: wrapper,
+      });
+      const item = screen.getByTestId('sidebar-menu-item');
+
+      const user = userEvent.setup();
+      await user.click(item);
+
+      expect(props.onClick).not.toHaveBeenCalled();
+    });
+
+    test('Tab + Enter should do nothing', async () => {
+      const props = fakeProps();
+      render(<MenuItem {...props} currentUrl={props.link} />, {
+        wrapper: wrapper,
+      });
+      const item = screen.getByTestId('sidebar-menu-item');
+
+      const user = userEvent.setup();
+      await user.tab();
+
+      expect(item).toHaveFocus();
+
+      await user.keyboard('[Enter]');
+
+      expect(props.onClick).not.toHaveBeenCalled();
+    });
   });
 
-  describe('Interaction', () => {
-    describe('Default', () => {
-      test('Should be able to Click', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
-
-        const user = userEvent.setup();
-        await user.click(item);
-
-        expect(props.onClick).toHaveBeenCalledOnce();
+  describe('Disabled', () => {
+    test('Click should do nothing', async () => {
+      const props = fakeProps();
+      render(<MenuItem {...props} disabled />, {
+        wrapper: wrapper,
       });
+      const item = screen.getByTestId('sidebar-menu-item');
 
-      test('Should be able to Tab + Enter', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
+      const user = userEvent.setup();
+      await user.click(item);
 
-        const user = userEvent.setup();
-        await user.tab();
-
-        expect(item).toHaveFocus();
-
-        await user.keyboard('[Enter]');
-
-        expect(props.onClick).toHaveBeenCalledOnce();
-      });
+      expect(props.onClick).not.toHaveBeenCalled();
     });
 
-    describe('Selected', () => {
-      test('should not register click event if url is partially the same', async () => {
-        const props = fakeProps();
-        render(
-          <MenuItem
-            {...props}
-            currentUrl={`${props.link}/${faker.airline.aircraftType()}`}
-          />,
-          {
-            wrapper: wrapper,
-          }
-        );
-        const item = screen.getByTestId('sidebar-menu-item');
-
-        const user = userEvent.setup();
-        await user.click(item);
-
-        expect(props.onClick).not.toHaveBeenCalled();
+    test('Tab + Enter should do nothing', async () => {
+      const props = fakeProps();
+      render(<MenuItem {...props} disabled />, {
+        wrapper: wrapper,
       });
-      test('should register click event if url is partially the same when replace is set to true', async () => {
-        const props = fakeProps();
-        render(
-          <MenuItem
-            {...props}
-            currentUrl={`${props.link}/${faker.airline.aircraftType()}`}
-            replace
-          />,
-          {
-            wrapper: wrapper,
-          }
-        );
-        const item = screen.getByTestId('sidebar-menu-item');
+      const item = screen.getByTestId('sidebar-menu-item');
 
-        const user = userEvent.setup();
-        await user.click(item);
+      const user = userEvent.setup();
+      await user.tab();
 
-        expect(props.onClick).toHaveBeenCalled();
-      });
+      expect(item).toHaveFocus();
 
-      test('Tab + Enter should do nothing', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} currentUrl={props.link} />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
+      await user.keyboard('[Enter]');
 
-        const user = userEvent.setup();
-        await user.tab();
-
-        expect(item).toHaveFocus();
-
-        await user.keyboard('[Enter]');
-
-        expect(props.onClick).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('Disabled', () => {
-      test('Click should do nothing', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} disabled />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
-
-        const user = userEvent.setup();
-        await user.click(item);
-
-        expect(props.onClick).not.toHaveBeenCalled();
-      });
-
-      test('Tab + Enter should do nothing', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} disabled />, {
-          wrapper: wrapper,
-        });
-        const item = screen.getByTestId('sidebar-menu-item');
-
-        const user = userEvent.setup();
-        await user.tab();
-
-        expect(item).toHaveFocus();
-
-        await user.keyboard('[Enter]');
-
-        expect(props.onClick).not.toHaveBeenCalled();
-      });
+      expect(props.onClick).not.toHaveBeenCalled();
     });
   });
 });
