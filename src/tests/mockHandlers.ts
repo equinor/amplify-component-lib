@@ -103,7 +103,8 @@ export function fakeTutorial(
   id: string,
   willPopUp: boolean,
   highlightElement: boolean,
-  path?: string
+  path?: string,
+  stepAmount = 9
 ): MyTutorialDto {
   return {
     id,
@@ -111,32 +112,12 @@ export function fakeTutorial(
     path: path ? path : '/tutorial',
     willPopUp,
     application: environment.getEnvironmentName(import.meta.env.VITE_NAME),
-    steps: [
-      {
-        id: '1',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-      {
-        id: '2',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-      {
-        id: '3',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-      {
-        id: '4',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-    ],
+    steps: new Array(stepAmount).fill(0).map((_, index) => ({
+      id: index.toString(),
+      title: faker.vehicle.vehicle(),
+      body: faker.music.artist(),
+      highlightElement,
+    })),
   };
 }
 

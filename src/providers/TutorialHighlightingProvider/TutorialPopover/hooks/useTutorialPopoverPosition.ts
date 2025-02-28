@@ -78,7 +78,7 @@ export function useTutorialPopoverPosition({
     height !== undefined &&
     usingTop !== undefined &&
     popoverSize !== undefined &&
-    usingTop + popoverSize.height > window.innerHeight;
+    top + height / 2 + popoverSize.height >= window.innerHeight;
   const overflowingTop =
     top !== undefined &&
     height !== undefined &&
@@ -86,19 +86,22 @@ export function useTutorialPopoverPosition({
     popoverSize !== undefined &&
     usingTop < popoverSize.height;
 
-  if (overflowingTop && overflowingLeft) {
+  if (overflowingTop) {
     usingTop = top + height + CARET_OFFSET;
-    usingLeft = left + popoverSize?.width / 2;
-    caretPosition = 'top-left';
-  } else if (overflowingTop && overflowingRight) {
-    // need to position bottom to bottom left
-    usingTop = top + height + CARET_OFFSET;
-    usingLeft = left + width - popoverSize?.width / 2;
-    caretPosition = 'top-right';
+  } else if (overflowingBottom) {
+    usingTop = top - popoverSize.height - height - CARET_OFFSET * 2;
   }
 
-  if (overflowingBottom) {
-    usingTop = top - height * 2 - popoverSize.height - CARET_OFFSET;
+  if (overflowingLeft && (overflowingTop || overflowingBottom)) {
+    usingLeft = left + popoverSize?.width / 2;
+  } else if (overflowingRight && (overflowingTop || overflowingBottom)) {
+    usingLeft = left + width - popoverSize?.width / 2;
+  }
+
+  if (overflowingTop && overflowingLeft) {
+    caretPosition = 'top-left';
+  } else if (overflowingTop && overflowingRight) {
+    caretPosition = 'top-right';
   }
 
   if (overflowingBottom && overflowingLeft) {

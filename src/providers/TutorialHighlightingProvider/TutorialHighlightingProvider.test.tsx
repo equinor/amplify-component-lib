@@ -1,7 +1,7 @@
 import { act, Fragment } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
@@ -24,10 +24,44 @@ import {
 import { worker } from 'src/tests/setupBrowserTests';
 
 import { http, HttpResponse } from 'msw';
+import styled from 'styled-components';
 
 const CUSTOM_CONTENT = {
   ['custom-step-id']: <p>custom content here</p>,
 };
+
+const TutorialWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  padding: 1rem;
+  height: 100vh;
+  > button {
+    width: fit-content;
+    &:nth-child(3n - 1) {
+      justify-self: center;
+    }
+    &:nth-child(3n) {
+      justify-self: flex-end;
+    }
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6) {
+      align-self: center;
+    }
+    &:nth-child(7),
+    &:nth-child(8),
+    &:nth-child(9) {
+      align-self: flex-end;
+    }
+  }
+`;
+
+const COLUMNS = ['left', 'center', 'right'];
+const ROWS = ['top', 'center', 'bottom'];
+
+const CELLS = COLUMNS.flatMap((col) => ROWS.map((row) => `${col} ${row}`));
 
 const TestComponent = ({
   withCustomContent = false,
@@ -56,70 +90,24 @@ const TestComponent = ({
                       withCustomContent ? CUSTOM_CONTENT : undefined
                     }
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '1rem',
-                      }}
-                    >
-                      <Fragment>
-                        <Card
-                          style={{ padding: '1rem' }}
-                          id={highlightTutorialElementID(
-                            FAKE_TUTORIALS[0].id,
-                            0
-                          )}
-                        >
-                          <Card.HeaderTitle>
-                            <Typography variant="h2">
-                              {faker.airline.airport().name +
-                                ' ' +
-                                faker.airline.airport().iataCode}
-                            </Typography>
-                          </Card.HeaderTitle>
-                          <Card.Actions>
-                            <Button variant="outlined">Stop</Button>
+                    {FAKE_TUTORIALS.map((tutorial) => (
+                      <Fragment key={tutorial.id}>
+                        <TutorialWrapper>
+                          {CELLS.map((cell, index) => (
                             <Button
+                              key={index}
                               id={highlightTutorialElementID(
-                                FAKE_TUTORIALS[0].id,
-                                1
+                                tutorial.id,
+                                index
                               )}
+                              variant="outlined"
                             >
-                              Start
+                              {cell}
                             </Button>
-                          </Card.Actions>
-                        </Card>
-                        <Card style={{ padding: '1rem' }}>
-                          <Card.HeaderTitle>
-                            <Typography variant="h2">
-                              {faker.airline.airplane().name +
-                                ' ' +
-                                faker.airline.airplane().iataTypeCode}
-                            </Typography>
-                          </Card.HeaderTitle>
-                          <Button
-                            id={highlightTutorialElementID(
-                              FAKE_TUTORIALS[0].id,
-                              2
-                            )}
-                            variant="outlined"
-                            style={{ marginLeft: 'auto' }}
-                          >
-                            Stop
-                          </Button>
-                        </Card>
-                        <Divider />
+                          ))}
+                        </TutorialWrapper>
                       </Fragment>
-                      <Typography
-                        id={highlightTutorialElementID(FAKE_TUTORIALS[0].id, 3)}
-                        style={{ marginTop: '80vh' }}
-                      >
-                        This is some text really far away
-                      </Typography>
-                    </div>
+                    ))}
                   </TutorialHighlightingProvider>
                 </div>
               </QueryClientProvider>

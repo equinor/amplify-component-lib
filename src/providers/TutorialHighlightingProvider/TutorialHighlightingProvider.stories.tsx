@@ -45,31 +45,26 @@ const meta: Meta = {
                         justifyContent: 'center',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding: '0',
+                        padding: '10rem 0',
                         gap: '1rem',
                       }}
                     >
                       {TUTORIAL_IDS.map((id) => (
                         <Fragment key={id}>
-                          <Card style={{ padding: '1rem' }}>
+                          <Card
+                            style={{ padding: '1rem' }}
+                            id={highlightTutorialElementID(id, 0)}
+                          >
                             <Card.HeaderTitle>
-                              <Typography
-                                variant="h2"
-                                id={highlightTutorialElementID(id, 0)}
-                              >
+                              <Typography variant="h2">
                                 {faker.airline.airport().name +
                                   ' ' +
                                   faker.airline.airport().iataCode}
                               </Typography>
                             </Card.HeaderTitle>
                             <Card.Actions>
-                              <Button
-                                variant="outlined"
-                                id={highlightTutorialElementID(id, 1)}
-                              >
-                                Stop
-                              </Button>
-                              <Button id={highlightTutorialElementID(id, 2)}>
+                              <Button variant="outlined">Stop</Button>
+                              <Button id={highlightTutorialElementID(id, 1)}>
                                 Start
                               </Button>
                             </Card.Actions>
@@ -83,7 +78,7 @@ const meta: Meta = {
                               </Typography>
                             </Card.HeaderTitle>
                             <Button
-                              id={highlightTutorialElementID(id, 3)}
+                              id={highlightTutorialElementID(id, 2)}
                               variant="outlined"
                               style={{ marginLeft: 'auto' }}
                             >
@@ -148,7 +143,7 @@ export const HighlightingElement: StoryObj = {
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id, index) =>
-            fakeTutorial(id, index === 0, true)
+            fakeTutorial(id, index === 0, true, undefined, 4)
           );
 
           return HttpResponse.json(tutorials);
