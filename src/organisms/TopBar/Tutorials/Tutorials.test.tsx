@@ -91,7 +91,11 @@ test('Hides expected tutorials when providing filter fn', async () => {
   await user.click(screen.getByRole('button'));
 
   await waitFor(() =>
-    expect(screen.getByText(/Available Tutorials/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        `Available Tutorials (${tutorials.filter(filterFunction).length})`
+      )
+    ).toBeInTheDocument()
   );
 
   for (const tutorial of tutorials) {

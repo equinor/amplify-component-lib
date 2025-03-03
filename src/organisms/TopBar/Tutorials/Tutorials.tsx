@@ -60,7 +60,7 @@ export const Tutorials: FC<TutorialsProps> = ({
         >
           <Container>
             <Typography variant="h4">
-              Available Tutorials ({allTutorials.length})
+              Available Tutorials ({filteredAllTutorials.length})
             </Typography>
             {filteredTutorialsOnThisPage.length > 0 && (
               <TutorialList>
