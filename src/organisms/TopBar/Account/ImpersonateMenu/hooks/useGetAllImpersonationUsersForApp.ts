@@ -11,5 +11,8 @@ export function useGetAllImpersonationUsersForApp() {
       await ImpersonateUserService.getApiV1ImpersonateUserGetImpersonateUserForApp(
         environment.getAppName(import.meta.env.VITE_NAME)
       ),
+    enabled:
+      environment.getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) !==
+      'production',
   });
 }
