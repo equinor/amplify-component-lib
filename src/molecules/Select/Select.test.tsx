@@ -875,7 +875,10 @@ test('Shows expected word for item when providing prop', async () => {
   const user = userEvent.setup();
   await user.click(screen.getByRole('combobox'));
 
-  await user.type(screen.getByRole('search'), 'test');
+  await user.type(screen.getByRole('combobox'), 'test');
 
-  expect(screen.getByText(`No ${word} found`)).toBeInTheDocument();
+  expect(screen.getByText(`Add ${word}`)).toBeInTheDocument();
+  expect(screen.getByText(`Add "test" as new ${word}`)).toBeInTheDocument();
+  expect(screen.getByText(`${word} search results`)).toBeInTheDocument();
+  expect(screen.getByText(`No ${word} for "test" found.`)).toBeInTheDocument();
 });
