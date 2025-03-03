@@ -1,12 +1,16 @@
-import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 
 import { useTutorials } from '@equinor/subsurface-app-management';
+import { useIsFetching } from '@tanstack/react-query';
 
 import { useReversedScrollY } from './hooks/useReversedScrollY';
 import { TutorialPopover } from './TutorialPopover/TutorialPopover';
 import { TUTORIAL_HIGHLIGHT_ANIMATION_PROPS } from './TutorialHighlightingProvider.constants';
 import { spacings } from 'src/atoms/style';
-import { getHighlightElementBoundingBox } from 'src/atoms/utils/tutorials';
+import {
+  getHighlightElementBoundingBox,
+  TutorialHighlight,
+} from 'src/atoms/utils/tutorials';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -47,6 +51,7 @@ export const TutorialHighlightingProviderInner: FC<
 > = ({ children }) => {
   const { activeTutorial, activeStep, unseenTutorialsOnThisPage } =
     useTutorials();
+  const isFetching = useIsFetching() > 0;
   const reversedScrollY = useReversedScrollY();
   const [windowSize, setWindowSize] = useState<{
     width: number;
@@ -68,34 +73,59 @@ export const TutorialHighlightingProviderInner: FC<
     return () => window.removeEventListener('resize', handleOnResize);
   }, []);
 
+  const [highlightedTutorials, setHighlightedTutorials] = useState<
+    TutorialHighlight[]
+  >([]);
+
+  useEffect(() => {
+    if (isFetching) return;
+
+    const findHighlightedTutorials = async () => {
+      if (activeTutorial && activeStep !== undefined) {
+        if (!activeTutorial.steps[activeStep].highlightElement)
+          return setHighlightedTutorials([]);
+
+        const highlight = await getHighlightElementBoundingBox(
+          activeTutorial.id,
+          activeStep,
+          windowSize
+        );
+
+        if (highlight) {
+          return setHighlightedTutorials([highlight]);
+        }
+        return setHighlightedTutorials([]);
+      }
+
+      const unseen = await Promise.all(
+        unseenTutorialsOnThisPage.map((tutorial) => {
+          if (!tutorial.steps.at(0)?.highlightElement) return undefined;
+
+          return getHighlightElementBoundingBox(tutorial.id, 0, windowSize);
+        })
+      );
+      return setHighlightedTutorials(
+        unseen.filter((value) => value !== undefined)
+      );
+    };
+
+    findHighlightedTutorials();
+  }, [
+    activeStep,
+    activeTutorial,
+    isFetching,
+    unseenTutorialsOnThisPage,
+    windowSize,
+  ]);
+
   const activeTutorials = activeTutorial
     ? [activeTutorial]
-    : unseenTutorialsOnThisPage;
-
-  const highlightedTutorials = useMemo(() => {
-    if (activeTutorial && activeStep !== undefined) {
-      if (!activeTutorial.steps[activeStep].highlightElement) return [];
-
-      const highlight = getHighlightElementBoundingBox(
-        activeTutorial.id,
-        activeStep,
-        windowSize
+    : unseenTutorialsOnThisPage.filter(
+        (tutorial) =>
+          (tutorial.steps[0].highlightElement &&
+            highlightedTutorials.some((tutorial) => tutorial.id)) ||
+          !tutorial.steps[0].highlightElement
       );
-
-      if (highlight) {
-        return [highlight];
-      }
-      return [];
-    }
-
-    return unseenTutorialsOnThisPage
-      .map((tutorial) => {
-        if (!tutorial.steps.at(0)?.highlightElement) return undefined;
-
-        return getHighlightElementBoundingBox(tutorial.id, 0, windowSize);
-      })
-      .filter((value) => value !== undefined);
-  }, [activeStep, activeTutorial, unseenTutorialsOnThisPage, windowSize]);
 
   if (activeTutorials.length > 0) {
     return (

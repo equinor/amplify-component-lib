@@ -10,19 +10,74 @@ import {
 
 import { useTutorialHighlighting } from '../TutorialHighlightingProvider';
 import { TUTORIAL_HIGHLIGHT_ANIMATION_PROPS } from '../TutorialHighlightingProvider.constants';
-import { StepIndicator } from './StepIndicator';
-import { colors, elevation, spacings } from 'src/atoms/style';
 import {
   useTutorialPopoverPosition,
   UseTutorialPopoverPositionReturn,
-} from 'src/providers/TutorialHighlightingProvider/TutorialPopover/hooks/useTutorialPopoverPosition';
+} from './hooks/useTutorialPopoverPosition';
+import { StepIndicator } from './StepIndicator';
+import { colors, elevation, spacings } from 'src/atoms/style';
 
 import { motion, MotionProps } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
+function caretPositionToCss(
+  caretPosition: UseTutorialPopoverPositionReturn['caretPosition']
+) {
+  switch (caretPosition) {
+    case 'top':
+      return css`
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, 0) rotate(45deg);
+      `;
+    case 'top-right':
+      return css`
+        right: 0;
+        top: 0;
+        transform: translate(-50%, 0) rotate(45deg);
+      `;
+    case 'right':
+      return css`
+        right: 0;
+        top: 50%;
+        transform: translate(0, -50%) rotate(45deg);
+      `;
+    case 'bottom-right':
+      return css`
+        right: 0;
+        bottom: 0;
+        transform: translate(-50%, 0) rotate(45deg);
+      `;
+    case 'bottom':
+      return css`
+        left: 50%;
+        bottom: 0;
+        transform: translate(-50%, 0) rotate(45deg);
+      `;
+    case 'bottom-left':
+      return css`
+        left: 24px;
+        bottom: 0;
+        transform: translate(-50%, 0) rotate(45deg);
+      `;
+    case 'left':
+      return css`
+        left: 0;
+        top: 50%;
+        transform: translate(0, -50%) rotate(45deg);
+      `;
+    case 'top-left':
+      return css`
+        left: 24px;
+        top: 0;
+        transform: translate(-50%, 0) rotate(45deg);
+      `;
+  }
+}
+
 interface ContainerProps extends MotionProps {
   $highlightingElement: boolean;
-  $highlightDirection: UseTutorialPopoverPositionReturn['highlightDirection'];
+  $caretPosition: UseTutorialPopoverPositionReturn['caretPosition'];
 }
 
 const Container = styled(motion(Card))<ContainerProps>`
@@ -46,7 +101,7 @@ const Container = styled(motion(Card))<ContainerProps>`
     max-height: 170px;
     object-fit: contain;
   }
-  ${({ $highlightingElement, $highlightDirection }) =>
+  ${({ $highlightingElement, $caretPosition }) =>
     $highlightingElement &&
     css`
       transform: translateX(-50%);
@@ -57,17 +112,7 @@ const Container = styled(motion(Card))<ContainerProps>`
         height: 32px;
         background: ${colors.infographic.primary__moss_green_13.rgba};
         position: absolute;
-        ${$highlightDirection === 'top' || $highlightDirection === 'bottom'
-          ? css`
-              left: 50%;
-              ${$highlightDirection}: 0;
-              transform: translate(-50%, 0) rotate(45deg);
-            `
-          : css`
-              top: 50%;
-              ${$highlightDirection}: 0;
-              transform: translate(0, -50%) rotate(45deg);
-            `}
+        ${caretPositionToCss($caretPosition)}
       }
     `}
 `;
@@ -120,7 +165,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
       }
     | undefined
   >(undefined);
-  const { style, highlightingElement, highlightDirection } =
+  const { style, highlightingElement, caretPosition } =
     useTutorialPopoverPosition({
       top,
       left,
@@ -166,7 +211,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
         ref={handleSetPopoverSize}
         style={{ ...style }}
         $highlightingElement={highlightingElement}
-        $highlightDirection={highlightDirection}
+        $caretPosition={caretPosition}
         {...TUTORIAL_HIGHLIGHT_ANIMATION_PROPS}
       >
         <header>
@@ -193,7 +238,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
         ...style,
         width: steps[activeStep].custom ? 'auto' : undefined,
       }}
-      $highlightDirection={highlightDirection}
+      $caretPosition={caretPosition}
       $highlightingElement={highlightingElement}
       {...TUTORIAL_HIGHLIGHT_ANIMATION_PROPS}
     >
