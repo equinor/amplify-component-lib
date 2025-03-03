@@ -9,11 +9,24 @@ on:
     branches: [main]
 
 jobs:
+  build_deploy_test:
+    name: 🛠️ Build and 🚀 Deploy to radix
+    uses: ./.github/workflows/build_deploy_radix.yaml
+    with:
+      environment-name: test
   publish:
     name: Publish to NPM
     uses: ./.github/workflows/npm_publish.yaml
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
+  promote_to_prod:
+    needs: [build_deploy_test, publish]
+    name: 🚀 Promote to production radix
+    uses: ./.github/workflows/promote.yaml
+    with:
+      environment-name: production
+      from-environment: test
+      to-environment: production
   release:
     needs: [publish]
     name: Create release notes
