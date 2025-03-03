@@ -13,7 +13,8 @@ jobs:
     name: 🛠️ Build and 🚀 Deploy to radix
     uses: ./.github/workflows/build_deploy_radix.yaml
     with:
-      environment-name: test
+      environment-name: main
+      to-environment: test
   publish:
     name: Publish to NPM
     uses: ./.github/workflows/npm_publish.yaml
@@ -24,7 +25,7 @@ jobs:
     name: 🚀 Promote to production radix
     uses: ./.github/workflows/promote.yaml
     with:
-      environment-name: production
+      environment-name: main
       from-environment: test
       to-environment: production
   release:
