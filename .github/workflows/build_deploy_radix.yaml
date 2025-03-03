@@ -1,0 +1,28 @@
+name: 🛠️ Radix Build & Deploy
+on:
+  workflow_call:
+    inputs:
+      environment-name:
+        description: 'The GitHub environment to use this workflow in'
+        type: string
+        required: true
+jobs:
+  build:
+    environment:
+      name: ${{ inputs.environment-name }}
+    name: 🛠️ Build & Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Create build-deploy pipeline
+        uses: equinor/radix-github-actions@v1
+        with:
+          args: >
+            create pipeline-job
+            build-deploy
+            --application ${{ vars.RADIX_APPLICATION_NAME }}
+            --branch ${{ github.ref_name }}
+            --follow
+            --token-environment
