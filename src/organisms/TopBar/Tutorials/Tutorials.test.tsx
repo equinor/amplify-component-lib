@@ -83,6 +83,34 @@ test('Renders expected items when opening the tutorials menu', async () => {
   }
 });
 
+test('Hides expected tutorials when providing filter fn', async () => {
+  const filterFunction = (tutorial: MyTutorialDto) => tutorial.willPopUp;
+  render(<Tutorials filterTutorials={filterFunction} />, { wrapper: Wrapper });
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('button'));
+
+  await waitFor(() =>
+    expect(
+      screen.getByText(
+        `Available Tutorials (${tutorials.filter(filterFunction).length})`
+      )
+    ).toBeInTheDocument()
+  );
+
+  for (const tutorial of tutorials) {
+    if (tutorial.willPopUp) {
+      expect(
+        screen.getByRole('button', { name: tutorial.name })
+      ).toBeInTheDocument();
+    } else {
+      expect(
+        screen.queryByRole('button', { name: tutorial.name })
+      ).not.toBeInTheDocument();
+    }
+  }
+});
+
 test('Clicking TutorialItem triggers callback, so we can navigate / do whatever we need', async () => {
   const callback = vi.fn();
   render(<Tutorials onTutorialStart={callback} />, { wrapper: Wrapper });
