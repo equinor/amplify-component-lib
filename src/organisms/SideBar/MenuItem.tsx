@@ -65,52 +65,58 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
     const content = useMemo(() => {
       if (isOpen) {
         return (
-          <Link
-            to={link}
-            $active={isActive}
-            aria-disabled={disabled}
-            $disabled={disabled}
-            onClick={handleOnClick}
-            tabIndex={0}
-            $open
-            ref={ref}
-            data-testid="sidebar-menu-item"
-            replace={replace}
-            {...props}
-          >
-            <IconContainer data-testid="icon-container">
-              <Icon data={icon} size={24} />
-            </IconContainer>
-            <ItemText
-              $active={isActive}
-              $disabled={disabled}
-              variant="button"
-              group="navigation"
-            >
-              {name}
-            </ItemText>
-          </Link>
+          <OptionalTooltip title={name} placement="right">
+            <span>
+              <Link
+                to={link}
+                $active={isActive}
+                aria-disabled={disabled}
+                $disabled={disabled}
+                onClick={handleOnClick}
+                tabIndex={0}
+                $open
+                ref={ref}
+                data-testid="sidebar-menu-item"
+                replace={replace}
+                {...props}
+              >
+                <IconContainer data-testid="icon-container">
+                  <Icon data={icon} size={24} />
+                </IconContainer>
+                <ItemText
+                  $active={isActive}
+                  $disabled={disabled}
+                  variant="button"
+                  group="navigation"
+                >
+                  {name}
+                </ItemText>
+              </Link>
+            </span>
+          </OptionalTooltip>
         );
       }
 
       return (
         <OptionalTooltip title={name} placement="right">
-          <Link
-            to={link}
-            $active={isActive}
-            aria-disabled={disabled}
-            $disabled={disabled}
-            onClick={handleOnClick}
-            $open={isOpen}
-            tabIndex={0}
-            ref={ref}
-            {...props}
-            data-testid="sidebar-menu-item"
-          >
-            <IconContainer data-testid="icon-container">
-              <Icon data={icon} size={24} />
-            </IconContainer>
-          </Link>
+          <span>
+            <Link
+              to={link}
+              $active={isActive}
+              aria-disabled={disabled}
+              $disabled={disabled}
+              onClick={handleOnClick}
+              $open={isOpen}
+              tabIndex={0}
+              ref={ref}
+              {...props}
+              data-testid="sidebar-menu-item"
+            >
+              <IconContainer data-testid="icon-container">
+                <Icon data={icon} size={24} />
+              </IconContainer>
+            </Link>
+          </span>
         </OptionalTooltip>
       );
     }, [
