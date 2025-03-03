@@ -230,21 +230,3 @@ test('OnAddItem works as expected with {Enter}', async () => {
 
   expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
 });
-
-test('Trying to use onAddItem with groups throws error', () => {
-  const groups = fakeGroups();
-  const label = faker.animal.bear();
-  const handleOnSelect = vi.fn();
-  const handleOnAddItem = vi.fn();
-  expect(() =>
-    render(
-      <SingleSelect
-        label={label}
-        value={undefined}
-        onSelect={handleOnSelect}
-        onAddItem={handleOnAddItem}
-        groups={groups}
-      />
-    )
-  ).toThrowError();
-});

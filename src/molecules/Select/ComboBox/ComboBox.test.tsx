@@ -221,25 +221,6 @@ test('Works as expected when moving past "add new tag" menuitem', async () => {
   expect(handleOnSelect).toHaveBeenCalledWith([items[0]], items[0]);
 });
 
-test('Throws error if trying to use onAddItem with groups', () => {
-  // Silence console.error call
-  console.error = vi.fn();
-
-  const handleOnAddItem = vi.fn();
-  const handleOnSelect = vi.fn();
-  const groups = fakeGroups();
-  expect(() =>
-    render(
-      <ComboBox
-        values={[]}
-        onSelect={handleOnSelect}
-        onAddItem={handleOnAddItem}
-        groups={groups}
-      />
-    )
-  ).toThrowError();
-});
-
 test('Can select items with clicks', async () => {
   const items = fakeSelectItems();
   const label = faker.animal.bear();

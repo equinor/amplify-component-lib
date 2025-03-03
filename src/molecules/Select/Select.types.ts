@@ -40,13 +40,30 @@ export interface GroupedSelectProps<T extends SelectOptionRequired> {
   items?: undefined;
 }
 
-export interface ListSelectProps<T extends SelectOptionRequired> {
+type CommonListSelectProps<T extends SelectOptionRequired> = {
   items: SelectOption<T>[];
   groups?: undefined;
+};
+
+interface ListSelectWithAddItemProps<T extends SelectOptionRequired>
+  extends CommonListSelectProps<T> {
+  onAddItem: (item: string) => void;
+  itemSingularWord?: string;
 }
+
+interface ListSelectWithoutAddItemProps<T extends SelectOptionRequired>
+  extends CommonListSelectProps<T> {
+  onAddItem?: undefined;
+  itemSingularWord?: undefined;
+}
+
+export type ListSelectProps<T extends SelectOptionRequired> =
+  | ListSelectWithAddItemProps<T>
+  | ListSelectWithoutAddItemProps<T>;
 
 export interface ListSelectMenuProps {
   onAddItem?: () => void;
+  itemSingularWord?: string;
 }
 
 export interface SelectMenuProps<T extends SelectOptionRequired> {
@@ -101,6 +118,5 @@ export interface CommonSelectProps<T extends SelectOptionRequired> {
   inDialog?: boolean;
   onOpenCallback?: (value: boolean) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
-  onAddItem?: (item: string) => void;
   'data-testid'?: string;
 }
