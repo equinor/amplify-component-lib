@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Menu } from '@equinor/eds-core-react';
 
 import { AddTagItem } from './AddTagItem';
+import { capitalize } from 'src/atoms/utils/string';
 import {
   NoItemsFoundText,
   NoTagFoundText,
@@ -24,7 +25,7 @@ import {
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
 export const ListSelectMenu = <T extends SelectOptionRequired>(
-  props: ListSelectProps<T> &
+  props: Omit<ListSelectProps<T>, 'onAddItem'> &
     ListSelectMenuProps &
     SelectMenuProps<T> &
     (
@@ -75,19 +76,26 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
         search.trim().toLowerCase()) ||
       filteredItems.length !== 1)
   ) {
+    const singularWord = props.itemSingularWord
+      ? props.itemSingularWord
+      : 'tag';
     return (
       <>
-        <Menu.Section title="Add tag" index={0}>
+        <Menu.Section title={`Add ${singularWord}`} index={0}>
           <AddTagItem
             index={0}
             itemRefs={itemRefs}
             onItemKeyDown={onItemKeyDown}
             onAddItem={props.onAddItem}
+            addItemSingularWord={singularWord}
           >
             {search}
           </AddTagItem>
         </Menu.Section>
-        <Menu.Section title="Tag search results" index={1}>
+        <Menu.Section
+          title={`${capitalize(singularWord)} search results`}
+          index={1}
+        >
           {itemProps.length > 0 ? (
             itemProps.map((item, index) => (
               <SelectMenuItem
@@ -98,7 +106,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
             ))
           ) : (
             <NoTagFoundText>
-              No tag for &quot;{search}&quot; found.
+              No {singularWord} for &quot;{search}&quot; found.
             </NoTagFoundText>
           )}
         </Menu.Section>

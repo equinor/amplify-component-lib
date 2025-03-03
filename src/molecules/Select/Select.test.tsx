@@ -853,3 +853,32 @@ test("Shows 'no items' text even if we have onAddItem but the search is empty", 
 
   expect(screen.getByText('No items found')).toBeInTheDocument();
 });
+
+test('Shows expected word for item when providing prop', async () => {
+  const label = faker.animal.bear();
+  const word = faker.commerce.product();
+  const handler = vi.fn();
+  const handleOnAdd = vi.fn();
+  const items = fakeSelectItems();
+
+  render(
+    <Select
+      label={label}
+      onSelect={handler}
+      onAddItem={handleOnAdd}
+      itemSingularWord={word}
+      items={items}
+      value={undefined}
+    />
+  );
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('combobox'));
+
+  await user.type(screen.getByRole('combobox'), 'test');
+
+  expect(screen.getByText(`Add ${word}`)).toBeInTheDocument();
+  expect(screen.getByText(`Add "test" as new ${word}`)).toBeInTheDocument();
+  expect(screen.getByText(`${word} search results`)).toBeInTheDocument();
+  expect(screen.getByText(`No ${word} for "test" found.`)).toBeInTheDocument();
+});
