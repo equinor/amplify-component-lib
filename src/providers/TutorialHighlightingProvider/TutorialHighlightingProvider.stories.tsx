@@ -143,7 +143,12 @@ export const HighlightingElement: StoryObj = {
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id, index) =>
-            fakeTutorial(id, index === 0, true, undefined, 4)
+            fakeTutorial({
+              id,
+              willPopUp: index === 0,
+              highlightElement: true,
+              stepAmount: 4,
+            })
           );
 
           return HttpResponse.json(tutorials);
@@ -160,7 +165,12 @@ export const MultipleHighlightingElement: StoryObj = {
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id) =>
-            fakeTutorial(id, true, true)
+            fakeTutorial({
+              id,
+              willPopUp: true,
+              highlightElement: true,
+              stepAmount: 4,
+            })
           );
 
           return HttpResponse.json(tutorials);
@@ -177,7 +187,11 @@ export const CenterTutorial: StoryObj = {
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id, index) =>
-            fakeTutorial(id, index === 0, false)
+            fakeTutorial({
+              id,
+              willPopUp: index === 0,
+              highlightElement: false,
+            })
           );
 
           return HttpResponse.json(tutorials);
@@ -194,7 +208,7 @@ export const MultipleCenterTutorial: StoryObj = {
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id) =>
-            fakeTutorial(id, true, false)
+            fakeTutorial({ id, willPopUp: true, highlightElement: false })
           );
 
           return HttpResponse.json(tutorials);

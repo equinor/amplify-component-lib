@@ -2,7 +2,7 @@ import { useReversedScrollY } from 'src/providers/TutorialHighlightingProvider/h
 
 import { MotionStyle, useTransform } from 'framer-motion';
 
-const CARET_OFFSET = 16;
+export const CARET_OFFSET = 16;
 
 interface UseTutorialPopoverPositionArgs {
   top?: number;

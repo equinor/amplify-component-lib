@@ -82,7 +82,8 @@ export const TutorialHighlightingProviderInner: FC<
 
     const findHighlightedTutorials = async () => {
       if (activeTutorial && activeStep !== undefined) {
-        if (!activeTutorial.steps[activeStep].highlightElement) return [];
+        if (!activeTutorial.steps[activeStep].highlightElement)
+          return setHighlightedTutorials([]);
 
         const highlight = await getHighlightElementBoundingBox(
           activeTutorial.id,
@@ -117,14 +118,14 @@ export const TutorialHighlightingProviderInner: FC<
     windowSize,
   ]);
 
-  const activeTutorials = (
-    activeTutorial ? [activeTutorial] : unseenTutorialsOnThisPage
-  ).filter(
-    (tutorial) =>
-      (tutorial.steps[0].highlightElement &&
-        highlightedTutorials.some((tutorial) => tutorial.id)) ||
-      !tutorial.steps[0].highlightElement
-  );
+  const activeTutorials = activeTutorial
+    ? [activeTutorial]
+    : unseenTutorialsOnThisPage.filter(
+        (tutorial) =>
+          (tutorial.steps[0].highlightElement &&
+            highlightedTutorials.some((tutorial) => tutorial.id)) ||
+          !tutorial.steps[0].highlightElement
+      );
 
   if (activeTutorials.length > 0) {
     return (

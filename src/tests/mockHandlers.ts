@@ -99,13 +99,19 @@ let activeImpersonateUser: ImpersonateUserDto | undefined = undefined;
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 
-export function fakeTutorial(
-  id: string,
-  willPopUp: boolean,
-  highlightElement: boolean,
-  path?: string,
-  stepAmount = 9
-): MyTutorialDto {
+export function fakeTutorial({
+  id,
+  willPopUp,
+  highlightElement,
+  path,
+  stepAmount = 9,
+}: {
+  id: string;
+  willPopUp: boolean;
+  highlightElement: boolean;
+  path?: string;
+  stepAmount?: number;
+}): MyTutorialDto {
   return {
     id,
     name: faker.commerce.productName(),
@@ -122,7 +128,7 @@ export function fakeTutorial(
 }
 
 export const FAKE_TUTORIALS = TUTORIAL_IDS.map((id, index) =>
-  fakeTutorial(id, index === 0, index === 0)
+  fakeTutorial({ id, willPopUp: index === 0, highlightElement: index === 0 })
 );
 
 function fakeApplication(): AmplifyApplication {

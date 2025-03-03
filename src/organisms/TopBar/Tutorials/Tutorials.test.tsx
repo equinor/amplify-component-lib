@@ -44,12 +44,12 @@ const tutorials: MyTutorialDto[] = new Array(
 )
   .fill(0)
   .map((_, index) =>
-    fakeTutorial(
-      faker.string.uuid(),
-      index !== 0,
-      true,
-      index === 0 ? '/' : undefined
-    )
+    fakeTutorial({
+      id: faker.string.uuid(),
+      willPopUp: index !== 0,
+      highlightElement: true,
+      path: index === 0 ? '/' : undefined,
+    })
   );
 beforeEach(() => {
   worker.resetHandlers(
