@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, HTMLAttributes, useRef, useState } from 'react';
 
 import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { youtube_alt } from '@equinor/eds-icons';
@@ -12,7 +12,8 @@ import { Container, TutorialList } from './Tutorials.styles';
 import { TopBarButton } from 'src/organisms/TopBar/TopBar.styles';
 import { TopBarMenu } from 'src/organisms/TopBar/TopBarMenu';
 
-interface TutorialsProps {
+interface TutorialsProps
+  extends Omit<HTMLAttributes<HTMLButtonElement>, 'color' | 'onClick'> {
   onTutorialStart?: (tutorialId: string) => void;
   filterTutorials?: (
     value: MyTutorialDto,
@@ -24,6 +25,7 @@ interface TutorialsProps {
 export const Tutorials: FC<TutorialsProps> = ({
   filterTutorials,
   onTutorialStart,
+  ...rest
 }) => {
   const { allTutorials, tutorialsOnThisPage } = useTutorials();
   const [open, setOpen] = useState(false);
@@ -49,6 +51,7 @@ export const Tutorials: FC<TutorialsProps> = ({
         variant="ghost_icon"
         ref={buttonRef}
         onClick={handleToggleOpen}
+        {...rest}
       >
         <Icon data={youtube_alt} />
       </TopBarButton>
