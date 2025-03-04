@@ -20,14 +20,6 @@ jobs:
     uses: ./.github/workflows/npm_publish.yaml
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
-  promote_to_prod:
-    needs: [build_deploy_test, publish]
-    name: 🚀 Promote to production radix
-    uses: ./.github/workflows/promote.yaml
-    with:
-      environment-name: main
-      from-environment: test
-      to-environment: production
   release:
     needs: [publish]
     name: Create release notes
@@ -46,3 +38,11 @@ jobs:
         run: gh release create v${{steps.package-version.outputs.current-version}} --generate-notes --target ${{github.sha}}
         env:
           GH_TOKEN: ${{ github.token }}
+  promote_to_prod:
+    needs: [build_deploy_test, release]
+    name: 🚀 Promote to production radix
+    uses: ./.github/workflows/promote.yaml
+    with:
+      environment-name: main
+      from-environment: test
+      to-environment: production
