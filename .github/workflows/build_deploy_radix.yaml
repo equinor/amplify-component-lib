@@ -39,6 +39,6 @@ jobs:
             build-deploy
             --application ${{ vars.RADIX_APPLICATION_NAME }}
             --branch ${{ github.ref_name }}
+            --environment ${{ inputs.to-environment }}
             --follow
-            --to-environment ${{ inputs.to-environment }}
             --token-environment
