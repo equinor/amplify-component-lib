@@ -35,7 +35,7 @@ export const FileProgress: FC<FileProgressProps> = (props) => {
   const handleOnClick = async () => {
     if (!showCompleteState && props.onCancel) {
       props.onCancel();
-    } else {
+    } else if (props.onDelete) {
       setIsDeleting(true);
       await props.onDelete();
       setIsDeleting(false);

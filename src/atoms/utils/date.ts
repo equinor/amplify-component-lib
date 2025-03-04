@@ -3,6 +3,7 @@
 // formatDate(new Date(), {format: 'DD.MM.YY'}) => 16.06.21
 // formatDate(new Date(), {format: 'YYYY-MM-DD'}) => 2021-06-16
 // formatDate(new Date(), {format: 'DD. month YYYY'}) => 16. June 2021
+// formatDate(new Date(), {format: 'DD. month', month: 'short'}) => 16. Dec
 
 type FormatDateOptions =
   | { format: 'DD. month YYYY' | 'DD. month'; month?: 'short' | 'long' }

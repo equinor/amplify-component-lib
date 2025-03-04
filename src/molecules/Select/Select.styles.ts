@@ -252,6 +252,8 @@ const MenuItemSpacer = styled.hr`
 `;
 
 const PlaceholderText = styled(Typography)`
+  user-select: none;
+  pointer-events: none;
   position: absolute;
   color: ${colors.text.static_icons__tertiary.rgba};
   top: calc(50%);

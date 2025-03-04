@@ -79,7 +79,7 @@ const RegularFileProgress: FC<
         data={file_icon}
         color={
           isError
-            ? colors.interactive.danger__hover.rgba
+            ? colors.interactive.warning__hover.rgba
             : colors.interactive.primary__resting.rgba
         }
         size={32}
@@ -93,15 +93,23 @@ const RegularFileProgress: FC<
                 <CircularProgress size={24} />
               </Button>
             ) : (
-              <Button variant="ghost_icon" onClick={handleOnClick}>
-                <Icon
-                  data={
-                    showCompleteState ? delete_to_trash : close_circle_outlined
-                  }
-                  color={colors.text.static_icons__tertiary.rgba}
-                  size={24}
-                />
-              </Button>
+              rest.onDelete && (
+                <Button
+                  variant="ghost_icon"
+                  onClick={handleOnClick}
+                  data-testid="delete-file"
+                >
+                  <Icon
+                    data={
+                      showCompleteState
+                        ? delete_to_trash
+                        : close_circle_outlined
+                    }
+                    color={colors.text.static_icons__tertiary.rgba}
+                    size={24}
+                  />
+                </Button>
+              )
             )}
             {isError && onRetry && (
               <Button variant="ghost_icon" onClick={onRetry}>
