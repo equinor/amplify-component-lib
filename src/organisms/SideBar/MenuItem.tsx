@@ -9,7 +9,12 @@ import {
 import { Icon } from '@equinor/eds-core-react';
 import { Feature } from '@equinor/subsurface-app-management';
 
-import { IconContainer, ItemText, Link } from './MenuItem.styles';
+import {
+  IconContainer,
+  ItemText,
+  Link,
+  MenuItemWrapper,
+} from './MenuItem.styles';
 import { isCurrentUrl } from './MenuItem.utils';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
@@ -66,7 +71,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
       if (isOpen) {
         return (
           <OptionalTooltip title={name} placement="right">
-            <span>
+            <MenuItemWrapper>
               <Link
                 to={link}
                 $active={isActive}
@@ -92,14 +97,14 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
                   {name}
                 </ItemText>
               </Link>
-            </span>
+            </MenuItemWrapper>
           </OptionalTooltip>
         );
       }
 
       return (
         <OptionalTooltip title={name} placement="right">
-          <span>
+          <MenuItemWrapper>
             <Link
               to={link}
               $active={isActive}
@@ -116,7 +121,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuItemProps>(
                 <Icon data={icon} size={24} />
               </IconContainer>
             </Link>
-          </span>
+          </MenuItemWrapper>
         </OptionalTooltip>
       );
     }, [

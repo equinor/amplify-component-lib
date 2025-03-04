@@ -9,6 +9,10 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
+export const MenuItemWrapper = styled.span`
+  width: 100%;
+`;
+
 interface LinkProps {
   $active?: boolean;
   $open?: boolean;
