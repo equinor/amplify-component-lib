@@ -158,3 +158,15 @@ test('Shows "completed" if tutorial has been seen', async () => {
     })
   ).toBeInTheDocument();
 });
+
+test('Able to add html attributes to tutorial button', () => {
+  const randomTestId = faker.animal.dog();
+  const randomId = faker.animal.snake();
+  render(<Tutorials data-testid={randomTestId} id={randomId} />, {
+    wrapper: Wrapper,
+  });
+
+  const button = screen.getByTestId(randomTestId);
+  expect(button).toBeInTheDocument();
+  expect(button).toHaveAttribute('id', randomId);
+});
