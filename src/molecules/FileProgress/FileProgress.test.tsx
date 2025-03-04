@@ -306,3 +306,17 @@ test('Renders compact default error messages', () => {
 
   expect(shortDefaultErrorText).toBeInTheDocument();
 });
+
+test('Hides delete button if onDelete is not provided', () => {
+  const { file } = fakeProps();
+
+  const { rerender } = render(
+    <FileProgress file={file} isError compact indeterminate />
+  );
+
+  expect(screen.getByTestId('delete-file')).not.toBeInTheDocument();
+
+  rerender(<FileProgress file={file} isError indeterminate />);
+
+  expect(screen.getByTestId('delete-file')).not.toBeInTheDocument();
+});

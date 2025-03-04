@@ -8,6 +8,12 @@ interface FileProgressBaseProps {
   isDone?: boolean;
 }
 
+type DoneFileProgress = FileProgressBaseProps & {
+  isDone: true;
+  indeterminate?: undefined;
+  progressPercent?: undefined;
+};
+
 type ProgressPercentFileProgress = FileProgressBaseProps & {
   progressPercent: number;
   indeterminate?: false;
@@ -18,7 +24,10 @@ type IndeterminateFileProgress = FileProgressBaseProps & {
   indeterminate: true;
 };
 
-type FileProgressBase = ProgressPercentFileProgress | IndeterminateFileProgress;
+type FileProgressBase =
+  | ProgressPercentFileProgress
+  | IndeterminateFileProgress
+  | DoneFileProgress;
 
 export type RegularFileProgressBaseProps = FileProgressBase & {
   compact?: false;

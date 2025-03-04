@@ -162,10 +162,7 @@ const CompactFileProgress: FC<
         </AdditionalText>
       </OptionalTooltip>
       {!isDeleting && rest.onDelete && (
-        <CloseButton
-          data-testid="attachment-delete-button"
-          onClick={handleOnClick}
-        >
+        <CloseButton data-testid="delete-file" onClick={handleOnClick}>
           <Icon color={colors.text.static_icons__tertiary.rgba} data={clear} />
         </CloseButton>
       )}

@@ -94,7 +94,11 @@ const RegularFileProgress: FC<
               </Button>
             ) : (
               rest.onDelete && (
-                <Button variant="ghost_icon" onClick={handleOnClick}>
+                <Button
+                  variant="ghost_icon"
+                  onClick={handleOnClick}
+                  data-testid="delete-file"
+                >
                   <Icon
                     data={
                       showCompleteState
