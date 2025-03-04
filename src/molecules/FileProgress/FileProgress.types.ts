@@ -1,7 +1,7 @@
 import { FileWithPath } from 'react-dropzone';
 
 interface FileProgressBaseProps {
-  onDelete: () => Promise<void> | void;
+  onDelete?: () => Promise<void> | void;
   file: FileWithPath | File;
   onCancel?: () => void;
   isError?: boolean;

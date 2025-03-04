@@ -18,7 +18,7 @@ export const Container = styled.div<ContainerProps>`
   border: 1px solid
     ${({ $isError }) =>
       $isError
-        ? colors.ui.background__danger.rgba
+        ? colors.interactive.warning__hover.rgba
         : colors.ui.background__medium.rgba};
   border-radius: 4px;
 `;
@@ -33,6 +33,7 @@ export const FileName = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 40px;
 `;
 
 export const RegularFileProgressDetails = styled.div`
