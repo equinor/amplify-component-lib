@@ -7,15 +7,11 @@ import { colors } from 'src/atoms/style';
 import styled from 'styled-components';
 
 const NoScrimContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
+  position: absolute;
   z-index: 500;
-  top: 0;
-  left: 0;
-  justify-content: center;
-  align-items: center;
-  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const ChildrenWrapper = styled.div`
@@ -23,6 +19,7 @@ const ChildrenWrapper = styled.div`
 `;
 
 const CircularProgress = styled(Progress.Circular)`
+  padding: 2px;
   circle {
     stroke: ${colors.interactive.primary__resting.rgba};
   }
