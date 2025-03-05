@@ -1,33 +1,20 @@
-import { tokens } from '@equinor/eds-tokens';
-
 import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 
-const { colors } = tokens;
-
 interface ContainerProps {
-  $open?: boolean;
+  $isOpen: boolean;
 }
 
-export const Container = styled.button<ContainerProps>`
+export const Container = styled.div<ContainerProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
-  justify-content: ${({ $open }) => !$open && 'center'};
-  height: 64px;
-  padding: ${spacings.medium};
-  gap: ${spacings.medium};
+  justify-content: ${({ $isOpen }) => ($isOpen ? 'flex-end' : 'center')};
+  padding: ${spacings.large} ${spacings.medium} 0;
   box-sizing: border-box;
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   transition: background 0.1s ease-out;
-
-  &:hover {
-    background: ${colors.interactive.primary__hover_alt.rgba};
-    cursor: pointer;
-  }
-  &:focus {
-    outline: 1px dashed ${colors.interactive.primary__resting.rgba};
-    outline-offset: -1px;
+  > button {
+    flex-shrink: 0;
   }
 `;

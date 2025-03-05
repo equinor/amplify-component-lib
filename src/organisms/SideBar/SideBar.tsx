@@ -3,6 +3,7 @@ import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { CreateItem } from './CreateItem';
 import {
   BottomItemContainer,
+  CenterItemContainer,
   EquinorIconContainer,
   NavigationContainer,
   TopItemContainer,
@@ -46,6 +47,7 @@ export const SideBar = forwardRef<
       data-testid="sidebar"
     >
       <TopItemContainer>
+        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
         {props.onCreate && showCreate && (
           <CreateItem
             createLabel={props.createLabel}
@@ -54,11 +56,10 @@ export const SideBar = forwardRef<
             active={props.createActive}
           />
         )}
-        {children}
       </TopItemContainer>
+      <CenterItemContainer>{children}</CenterItemContainer>
       <BottomItemContainer>
         {bottomItem}
-        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
         <EquinorIconContainer>
           <EquinorLogo />
         </EquinorIconContainer>

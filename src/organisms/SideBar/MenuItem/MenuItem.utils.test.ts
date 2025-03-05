@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { isCurrentUrl } from './MenuItem.utils';
+import { isCurrentUrl } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 
 describe('isCurrentUrl', () => {
   test('should return true if currentUrl is equal to link', () => {

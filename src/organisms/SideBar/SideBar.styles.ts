@@ -15,7 +15,6 @@ export const NavigationContainer = styled.div<ContainerProps>`
   flex-direction: column;
   align-self: stretch;
   align-items: flex-start;
-  justify-content: space-between;
   width: ${(props) => props.$width};
   min-width: ${(props) => props.$width};
   height: calc(100vh - 64px);
@@ -30,6 +29,14 @@ export const TopItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  align-self: stretch;
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+`;
+
+export const CenterItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   flex: 1 0 0;
   align-self: stretch;
   overflow-y: auto;
@@ -41,7 +48,7 @@ export const BottomItemContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  border-top: 1px solid ${colors.ui.background__medium.rgba};
+  border-top: 2px solid ${colors.ui.background__medium.rgba};
 `;
 
 export const EquinorIconContainer = styled.div`

@@ -5,7 +5,10 @@ import { home } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { colors, spacings } from 'src/atoms/style';
-import { MenuItem, MenuItemProps } from 'src/organisms/SideBar/MenuItem';
+import {
+  MenuItem,
+  MenuItemProps,
+} from 'src/organisms/SideBar/MenuItem/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/jsdomtest-utils';
 

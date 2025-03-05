@@ -1,6 +1,6 @@
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
+import { car, dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { SideBar } from '.';
@@ -39,13 +39,23 @@ export const Primary: StoryFn = (args) => {
       onClick: () => console.log('going to dashboard...'),
     },
     {
-      name: 'history',
+      name: 'History',
       icon: history,
       link: 'history',
       onClick: () => console.log('going to history...'),
     },
     {
-      name: 'favourites',
+      name: 'Favourites',
+      icon: favorite_outlined,
+      items: [
+        {
+          name: 'Sub 1',
+          link: 'hei',
+        },
+      ],
+    },
+    {
+      name: 'Favourites',
       icon: favorite_outlined,
       link: 'favourites',
       onClick: () => console.log('going to favourites...'),
@@ -70,17 +80,17 @@ export const Primary: StoryFn = (args) => {
                       ? () => console.log('Created 🖋')
                       : undefined
                   }
+                  bottomItem={<SideBar.Item icon={car} name="Cars" link="/" />}
                   {...args}
                 >
-                  {menuItems.map((m, index) => (
+                  {menuItems.map((m) => (
                     <SideBar.Item
                       key={m.name}
-                      currentUrl={index === 0 ? m.link : undefined}
-                      {...m}
                       disabled={
                         args.disabledItem !== 'none' &&
-                        m.link === args.disabledItem
+                        m.name === args.disabledItem
                       }
+                      {...m}
                     />
                   ))}
                 </SideBar>

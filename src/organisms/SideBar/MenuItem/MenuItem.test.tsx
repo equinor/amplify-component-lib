@@ -8,7 +8,10 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
-import { MenuItem, MenuItemProps } from 'src/organisms/SideBar/MenuItem';
+import {
+  MenuItem,
+  MenuItemProps,
+} from 'src/organisms/SideBar/MenuItem/MenuItem';
 import { AuthProvider, LoadingProvider } from 'src/providers';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';

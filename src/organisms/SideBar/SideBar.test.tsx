@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar/index';
-import { MenuItem } from 'src/organisms/SideBar/MenuItem';
+import { MenuItem } from 'src/organisms/SideBar/MenuItem/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
 

@@ -1,10 +1,26 @@
+import { HTMLAttributes } from 'react';
+
 import { IconData } from '@equinor/eds-icons';
 
-export interface SideBarMenuItem {
+interface SideBarMenuItemBase {
   icon: IconData;
   name: string;
   link: string;
-  onClick?: () => void;
-  replace?: boolean;
   featureUuid?: string;
 }
+
+export type BasicSideBarMenuItem = {
+  onClick?: () => void;
+  replace?: boolean;
+} & SideBarMenuItemBase &
+  Omit<HTMLAttributes<HTMLAnchorElement>, 'children' | 'href' | 'onClick'>;
+
+export interface SideBarMenuItemWithItems
+  extends Omit<HTMLAttributes<HTMLButtonElement>, 'children'> {
+  icon: IconData;
+  name: string;
+  featureUuid?: string;
+  items: Omit<SideBarMenuItemBase, 'icon'>[];
+}
+
+export type SideBarMenuItem = SideBarMenuItemWithItems | BasicSideBarMenuItem;
