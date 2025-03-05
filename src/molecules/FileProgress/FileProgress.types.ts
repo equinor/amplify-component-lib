@@ -1,12 +1,18 @@
 import { FileWithPath } from 'react-dropzone';
 
 interface FileProgressBaseProps {
-  onDelete: () => Promise<void> | void;
+  onDelete?: () => Promise<void> | void;
   file: FileWithPath | File;
   onCancel?: () => void;
   isError?: boolean;
   isDone?: boolean;
 }
+
+type DoneFileProgress = FileProgressBaseProps & {
+  isDone: true;
+  indeterminate?: undefined;
+  progressPercent?: undefined;
+};
 
 type ProgressPercentFileProgress = FileProgressBaseProps & {
   progressPercent: number;
@@ -18,7 +24,10 @@ type IndeterminateFileProgress = FileProgressBaseProps & {
   indeterminate: true;
 };
 
-type FileProgressBase = ProgressPercentFileProgress | IndeterminateFileProgress;
+type FileProgressBase =
+  | ProgressPercentFileProgress
+  | IndeterminateFileProgress
+  | DoneFileProgress;
 
 export type RegularFileProgressBaseProps = FileProgressBase & {
   compact?: false;
