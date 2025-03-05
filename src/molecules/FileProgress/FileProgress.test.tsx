@@ -211,11 +211,12 @@ test('Renders compact loading state without progress precent, and click onDelete
 });
 
 test('Renders compact complete state', () => {
-  const { file, onDelete } = fakeProps();
+  const { onDelete } = fakeProps();
 
-  render(<FileProgress file={file} onDelete={onDelete} isDone compact />);
+  const imageFile = new File(['32452134'], 'testfile.png');
+  render(<FileProgress file={imageFile} onDelete={onDelete} isDone compact />);
 
-  const fileName = screen.getByText(file.name);
+  const fileName = screen.getByText(imageFile.name);
   const progressBar = screen.queryByRole('progressbar');
 
   expect(fileName).toBeInTheDocument();
