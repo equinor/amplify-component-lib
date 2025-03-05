@@ -707,7 +707,7 @@ test('inDialog works as expected', async () => {
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByText(placeholder));
+  await user.click(screen.getByRole('combobox'));
 
   for (const item of items) {
     expect(screen.getByText(item.label)).toBeInTheDocument();
@@ -742,16 +742,16 @@ test('openCallback works as expected', async () => {
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByText(placeholder));
+  await user.click(screen.getByRole('combobox'));
 
   expect(openCallback).toHaveBeenCalledWith(true);
 
-  await user.click(screen.getByText(placeholder));
+  await user.click(screen.getByRole('combobox'));
 
   expect(openCallback).toHaveBeenCalledWith(false);
 
   // Open and click outside
-  await user.click(screen.getByText(placeholder));
+  await user.click(screen.getByRole('combobox'));
   await user.click(screen.getByText(outside));
 
   expect(openCallback).toHaveBeenCalledWith(false);
@@ -776,7 +776,7 @@ test('Does not call onSubmit when clicking items', async () => {
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByText(placeholder));
+  await user.click(screen.getByRole('combobox'));
 
   await user.click(screen.getByText(items[0].label));
 
@@ -803,7 +803,7 @@ test('Does not call onSubmit when selecting items with {Enter}', async () => {
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByText(placeholder));
+  await user.click(screen.getByRole('combobox'));
 
   await user.keyboard('{ArrowDown}');
   await user.keyboard('{Enter}');

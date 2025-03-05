@@ -15,7 +15,7 @@ import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 import { expect } from 'vitest';
 
 function fakeProps() {
-  const file = new File(['32452134'], 'testfile.png');
+  const file = new File(['32452134'], 'testfile.txt');
 
   return {
     file: file,
@@ -311,12 +311,12 @@ test('Hides delete button if onDelete is not provided', () => {
   const { file } = fakeProps();
 
   const { rerender } = render(
-    <FileProgress file={file} isError compact indeterminate />
+    <FileProgress file={file} compact indeterminate />
   );
 
-  expect(screen.getByTestId('delete-file')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('delete-file')).not.toBeInTheDocument();
 
-  rerender(<FileProgress file={file} isError indeterminate />);
+  rerender(<FileProgress file={file} indeterminate />);
 
-  expect(screen.getByTestId('delete-file')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('delete-file')).not.toBeInTheDocument();
 });
