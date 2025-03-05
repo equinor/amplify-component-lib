@@ -3,6 +3,7 @@ import {
   FC,
   MouseEvent,
   ReactNode,
+  useCallback,
   useContext,
   useState,
 } from 'react';
@@ -16,9 +17,9 @@ import {
 } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 
-import { APIErrorSnackbar } from './APIErrorSnackbar';
 import { StyledSnackbar } from './SnackbarProvider.styles';
 import { snackbarIcon } from './SnackbarProvider.utils';
+import { useApiErrorSnackbar } from 'src/providers/SnackbarProvider/hooks/useApiErrorSnackbar';
 
 export interface ShowSnackbarSettings {
   customProps?: SnackbarProps;
@@ -78,19 +79,24 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = ({
   const [snackbarAction, setSnackbarAction] =
     useState<ShowSnackbarSettings['action']>();
 
-  const showSnackbar = (
-    showSnackbar: string | ShowSnackbar,
-    snackbarSettings?: ShowSnackbarSettings
-  ) => {
-    if (typeof showSnackbar === 'string') {
-      setShowingSnackbar({ text: showSnackbar, variant: 'info' });
-    } else {
-      setShowingSnackbar(showSnackbar);
-    }
-    setSnackbarProps(snackbarSettings?.customProps ?? initialSnackbarProps);
-    setSnackbarAction(snackbarSettings?.action ?? undefined);
-    setOpen(true);
-  };
+  const showSnackbar = useCallback(
+    (
+      showSnackbar: string | ShowSnackbar,
+      snackbarSettings?: ShowSnackbarSettings
+    ) => {
+      if (typeof showSnackbar === 'string') {
+        setShowingSnackbar({ text: showSnackbar, variant: 'info' });
+      } else {
+        setShowingSnackbar(showSnackbar);
+      }
+      setSnackbarProps(snackbarSettings?.customProps ?? initialSnackbarProps);
+      setSnackbarAction(snackbarSettings?.action ?? undefined);
+      setOpen(true);
+    },
+    [initialSnackbarProps]
+  );
+
+  useApiErrorSnackbar({ showAPIErrors, showSnackbar });
 
   const setActionDisabledState = (disabled: boolean) => {
     setSnackbarAction((currentState) =>
@@ -116,11 +122,7 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = ({
     <SnackbarContext.Provider
       value={{ showSnackbar, setActionDisabledState, hideSnackbar }}
     >
-      {showAPIErrors ? (
-        <APIErrorSnackbar>{children}</APIErrorSnackbar>
-      ) : (
-        children
-      )}
+      {children}
       <StyledSnackbar
         $variant={showingSnackbar?.variant}
         open={open}
