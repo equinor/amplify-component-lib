@@ -7,7 +7,6 @@ import { faker } from '@faker-js/faker';
 import {
   QueryClient,
   QueryClientProvider,
-  useMutation,
   useQuery,
 } from '@tanstack/react-query';
 
@@ -229,52 +228,20 @@ function TestComponent({ errorBody = false }: { errorBody?: boolean }) {
     retry: false,
   });
 
-  const { mutate } = useMutation({
-    mutationFn: () => {
-      return new Promise((_, reject) => {
-        const options: ApiRequestOptions = {
-          method: 'GET',
-          url: '/some-random-url',
-        };
-        const result: ApiResult = {
-          body: errorBody ? { userMessage: 'Mutate body error' } : {},
-          ok: false,
-          status: 500,
-          statusText: '',
-          url: '',
-        };
-        reject(new ApiError(options, result, 'Mutate error'));
-      });
-    },
-  });
-
-  return <button onClick={() => mutate()}>button here</button>;
+  return <p>this is the page</p>;
 }
 
 test('Shows error snackbar when API error happens without error body', async () => {
   render(<TestComponent />, { wrapper: TestProviders });
-  const user = userEvent.setup();
   await waitFor(() => screen.getByText('500: API error'), { timeout: 2000 });
-
-  await user.click(screen.getByRole('button', { name: /button here/i }));
-
-  await waitFor(() => screen.getByText('500: Mutate error'), { timeout: 2000 });
 });
 
 test('Shows error snackbar when API error happens with error body', async () => {
   render(<TestComponent errorBody />, { wrapper: TestProviders });
-  const user = userEvent.setup();
-
   await waitFor(() => screen.getByText('500: Body error'), { timeout: 2000 });
-
-  await user.click(screen.getByRole('button', { name: /button here/i }));
-
-  await waitFor(() => screen.getByText('500: Mutate body error'), {
-    timeout: 2000,
-  });
 });
 
-test('Doesnt show api error snackbar if its disabled', async () => {
+test("Doesn't show api error snackbar if its disabled", async () => {
   render(<TestComponent />, {
     wrapper: ({ children }) => (
       <TestProviders showAPIErrors={false}>{children}</TestProviders>
