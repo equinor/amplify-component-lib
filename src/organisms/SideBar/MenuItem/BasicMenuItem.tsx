@@ -12,7 +12,10 @@ import {
   Link,
   MenuItemWrapper,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.styles';
-import { isCurrentUrl } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
+import {
+  canNavigate,
+  isCurrentUrl,
+} from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 export type BasicMenuItemProps = {
@@ -23,7 +26,7 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
   icon,
   link,
   onClick,
-  replace,
+  replace = false,
   name,
   disabled = false,
   featureUuid,
@@ -34,62 +37,26 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
     currentUrl: pathname,
     link,
   });
-  const isExactUrl = useMemo(() => {
-    const currentWithoutParams = pathname?.split('?')[0];
-    return currentWithoutParams === link;
-  }, [pathname, link]);
   const { isOpen } = useSideBar();
-
-  const canNavigate = useMemo(
-    () => !disabled && (!isActive || (isActive && !isExactUrl && replace)),
-    [disabled, isActive, isExactUrl, replace]
-  );
+  const shouldNavigate = canNavigate({
+    currentUrl: pathname,
+    link,
+    replace,
+    disabled,
+  });
 
   const handleOnClick = useCallback(
     (event: MouseEvent) => {
-      if (!canNavigate) {
+      if (!shouldNavigate) {
         event.preventDefault();
         return;
       }
       if (onClick) onClick();
     },
-    [canNavigate, onClick]
+    [shouldNavigate, onClick]
   );
 
   const content = useMemo(() => {
-    if (isOpen) {
-      return (
-        <OptionalTooltip title={name} placement="right">
-          <MenuItemWrapper>
-            <Link
-              to={link}
-              $active={isActive}
-              aria-disabled={disabled}
-              $disabled={disabled}
-              onClick={handleOnClick}
-              tabIndex={0}
-              $open
-              data-testid="sidebar-menu-item"
-              replace={replace}
-              {...props}
-            >
-              <IconContainer data-testid="icon-container">
-                <Icon data={icon} size={24} />
-              </IconContainer>
-              <ItemText
-                $active={isActive}
-                $disabled={disabled}
-                variant="button"
-                group="navigation"
-              >
-                {name}
-              </ItemText>
-            </Link>
-          </MenuItemWrapper>
-        </OptionalTooltip>
-      );
-    }
-
     return (
       <OptionalTooltip title={name} placement="right">
         <MenuItemWrapper>
@@ -99,14 +66,25 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
             aria-disabled={disabled}
             $disabled={disabled}
             onClick={handleOnClick}
-            $open={isOpen}
             tabIndex={0}
-            {...props}
+            $open
             data-testid="sidebar-menu-item"
+            replace={replace}
+            {...props}
           >
             <IconContainer data-testid="icon-container">
               <Icon data={icon} size={24} />
             </IconContainer>
+            {isOpen && (
+              <ItemText
+                $active={isActive}
+                $disabled={disabled}
+                variant="button"
+                group="navigation"
+              >
+                {name}
+              </ItemText>
+            )}
           </Link>
         </MenuItemWrapper>
       </OptionalTooltip>

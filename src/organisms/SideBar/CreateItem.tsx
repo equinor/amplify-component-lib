@@ -43,11 +43,7 @@ export const CreateItem: FC<CreateItemProps> = ({
   }
   return (
     <OptionalTooltip title={createLabel} placement="right">
-      <MenuItemContainer
-        $active={active}
-        data-testid="create-item-container"
-        onClick={onClickHandler}
-      >
+      <MenuItemContainer $active={active} data-testid="create-item-container">
         <CreateButton
           variant="contained"
           disabled={disabled}

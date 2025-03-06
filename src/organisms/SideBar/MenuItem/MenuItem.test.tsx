@@ -2,12 +2,13 @@ import { MouseEventHandler, ReactNode } from 'react';
 import { Outlet } from 'react-router';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { home } from '@equinor/eds-icons';
+import { home, shopping_basket } from '@equinor/eds-icons';
 import { FeatureToggleProvider } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
+import { SideBarMenuItem } from 'src/atoms';
 import {
   MenuItem,
   MenuItemProps,
@@ -19,10 +20,10 @@ import { FAKE_FEATURE_TOGGLES } from 'src/tests/mockHandlers';
 
 type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
 
-function fakeProps(): MenuItemProps {
+function fakeProps(selected = false): MenuItemProps {
   return {
     currentUrl: faker.internet.url(),
-    link: '/page1',
+    link: selected ? '/page1' : '/page2',
     icon: home,
     name: faker.person.jobTitle(),
     onClick: vi.fn() as MenuClickHandler,
@@ -32,7 +33,7 @@ function fakeProps(): MenuItemProps {
 const wrapper = ({ children }: { children: ReactNode }) => {
   return (
     <SideBarProvider>
-      <MemoryRouter initialEntries={['/page2']}>
+      <MemoryRouter initialEntries={['/page1']}>
         <Routes>
           <Route
             element={
@@ -44,6 +45,8 @@ const wrapper = ({ children }: { children: ReactNode }) => {
           >
             <Route path="/page1" element={<p>page 1</p>} />
             <Route path="/page2" element={<p>page 2</p>} />
+            <Route path="/cat" element={<p>cat</p>} />
+            <Route path="/dog" element={<p>dog</p>} />
           </Route>
         </Routes>
       </MemoryRouter>
@@ -76,16 +79,16 @@ const featureTestWrapper = ({ children }: { children: ReactNode }) => {
 
 test('should navigate if replace is set to true and url is a partial match', async () => {
   const props = fakeProps();
-  render(<MenuItem {...props} replace currentUrl={props.link + '/hei'} />, {
+  render(<MenuItem {...props} replace />, {
     wrapper: wrapper,
   });
   const user = userEvent.setup();
 
-  expect(screen.getByText(/page 2/i)).toBeInTheDocument();
+  expect(screen.getByText(/page 1/i)).toBeInTheDocument();
 
   await user.click(screen.getByTestId('sidebar-menu-item'));
 
-  expect(screen.getByText(/page 1/i)).toBeInTheDocument();
+  expect(screen.getByText(/page 2/i)).toBeInTheDocument();
   expect(props.onClick).toHaveBeenCalledOnce();
 });
 
@@ -111,7 +114,7 @@ test('should show if featureUuid is in my features', async () => {
   expect(screen.getByTestId('sidebar-menu-item')).toBeInTheDocument();
 });
 
-describe.each(['expanded', 'collapsed'])('MenuItem %s', (state) => {
+describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
   beforeEach(() => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
@@ -167,8 +170,8 @@ describe.each(['expanded', 'collapsed'])('MenuItem %s', (state) => {
 
   describe('Selected', () => {
     test('Click should do nothing', async () => {
-      const props = fakeProps();
-      render(<MenuItem {...props} currentUrl={props.link} />, {
+      const props = fakeProps(true);
+      render(<MenuItem {...props} />, {
         wrapper: wrapper,
       });
       const item = screen.getByTestId('sidebar-menu-item');
@@ -180,8 +183,8 @@ describe.each(['expanded', 'collapsed'])('MenuItem %s', (state) => {
     });
 
     test('Tab + Enter should do nothing', async () => {
-      const props = fakeProps();
-      render(<MenuItem {...props} currentUrl={props.link} />, {
+      const props = fakeProps(true);
+      render(<MenuItem {...props} />, {
         wrapper: wrapper,
       });
       const item = screen.getByTestId('sidebar-menu-item');
@@ -226,6 +229,49 @@ describe.each(['expanded', 'collapsed'])('MenuItem %s', (state) => {
       await user.keyboard('[Enter]');
 
       expect(props.onClick).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Collapsable', () => {
+    test('Able open and select sub page', async () => {
+      const props: SideBarMenuItem = {
+        name: faker.commerce.productName(),
+        icon: shopping_basket,
+        items: [
+          {
+            link: '/dog',
+            name: faker.animal.dog(),
+          },
+          {
+            link: '/cat',
+            name: faker.animal.cat(),
+          },
+        ],
+      };
+
+      render(<MenuItem {...props} />, {
+        wrapper: wrapper,
+      });
+
+      const user = userEvent.setup();
+
+      await user.click(screen.getByRole('button'));
+
+      for (const item of props.items) {
+        expect(screen.getByText(item.name)).toBeInTheDocument();
+      }
+
+      const randomItem = faker.helpers.arrayElement(props.items);
+      const itemText = screen.getByText(randomItem.name);
+      await user.click(itemText);
+
+      if (state === 'collapsed') {
+        expect(itemText).not.toBeInTheDocument();
+      }
+
+      expect(
+        screen.getByText(randomItem.link.replace('/', ''))
+      ).toBeInTheDocument();
     });
   });
 });

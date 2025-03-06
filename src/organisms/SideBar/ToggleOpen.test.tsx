@@ -1,10 +1,5 @@
 import { ToggleOpen, ToggleOpenProps } from 'src/organisms/SideBar/ToggleOpen';
-import {
-  render,
-  screen,
-  userEvent,
-  userEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): ToggleOpenProps {
   return {

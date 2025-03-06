@@ -92,6 +92,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   ...rest
 }) => {
   const { pathname } = useLocation();
+  const previousPathname = usePrevious(pathname);
   const { isOpen } = useSideBar();
   const previousIsOpen = usePrevious(isOpen);
   const isActive = items.some((item) =>
@@ -103,10 +104,13 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   const handleOnToggleExpanded = () => setExpanded((prev) => !prev);
 
   useEffect(() => {
-    if (previousIsOpen && !isOpen && expanded) {
+    if (
+      (previousIsOpen && !isOpen && expanded) ||
+      (previousPathname !== pathname && expanded && !isOpen)
+    ) {
       setExpanded(false);
     }
-  }, [expanded, isOpen, previousIsOpen]);
+  }, [expanded, isOpen, pathname, previousIsOpen, previousPathname]);
 
   const parentContent = useMemo(() => {
     return (
