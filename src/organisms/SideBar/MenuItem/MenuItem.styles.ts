@@ -48,6 +48,10 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
       ($active
         ? colors.interactive.primary__selected_hover.rgba
         : colors.interactive.primary__hover_alt.rgba)};
+    > div > svg {
+      fill: ${({ $disabled, $active }) =>
+        !$disabled && !$active && colors.interactive.primary__hover.rgba};
+    }
   }
 `;
 

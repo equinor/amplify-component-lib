@@ -8,7 +8,7 @@ export const MenuItemContainer = styled.div`
   display: flex;
   align-self: stretch;
   box-sizing: border-box;
-  padding-top: ${spacings.medium};
+  padding-top: ${spacings.medium_small};
   padding-left: 14px;
 `;
 

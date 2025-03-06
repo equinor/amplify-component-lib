@@ -53,6 +53,9 @@ const Parent = styled.button<ParentProps>`
       if ($expanded) return colors.ui.background__medium.rgba;
       return colors.interactive.primary__hover_alt.rgba;
     }};
+    svg {
+      fill: ${colors.interactive.primary__hover.rgba};
+    }
   }
 
   ${({ $open }) =>
@@ -61,7 +64,7 @@ const Parent = styled.button<ParentProps>`
       &:after {
         position: absolute;
         right: -7px; // 1px border offset from 8px width
-        bottom: -1px;
+        bottom: 0;
         height: 0;
         width: 0;
         border-color: transparent;
