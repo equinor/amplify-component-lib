@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
 
 import { Filter } from 'src/organisms/Filter/Filter';
-import { CommonFilterProps } from 'src/organisms/Filter/Filter.types';
+import { FilterProps } from 'src/organisms/Filter/Filter.types';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
-function fakeProps(): Omit<CommonFilterProps<string>, 'children'> {
+function fakeProps(): Omit<FilterProps<string>, 'children'> {
   return {
     values: new Array(faker.number.int({ min: 1, max: 10 }))
       .fill(null)

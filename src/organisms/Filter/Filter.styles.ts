@@ -14,21 +14,21 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   display: flex;
   background: ${colors.ui.background__default.rgba};
+  gap: ${spacings.small};
   align-items: center;
   width: 100%;
   padding-left: ${spacings.small};
   outline: 1px solid ${colors.ui.background__medium.rgba};
   cursor: pointer;
   > section {
-    min-height: 24px;
+    min-height: calc(48px - (2 * ${spacings.medium_small}));
     align-items: center;
     flex-grow: 1;
     display: flex;
     flex-direction: row-reverse;
     flex-wrap: wrap;
     gap: ${spacings.x_small};
-    margin: calc(${spacings.xx_small} + ${spacings.x_small}) 0
-      calc(${spacings.xx_small} + ${spacings.x_small}) ${spacings.small};
+    margin: ${spacings.medium_small} 0 ${spacings.medium_small};
   }
   > button:not([data-testid='clear-all-x']) {
     padding: 0 ${spacings.small} 0 ${spacings.medium_small};
@@ -59,8 +59,9 @@ export const Container = styled.div`
   }
   > button:last-child {
     border-left: 1px solid ${colors.ui.background__medium.rgba};
-    width: 36px;
-    padding: 0;
+    > span {
+      color: ${colors.text.static_icons__secondary.rgba};
+    }
     &:hover {
       background: ${colors.interactive.primary__hover_alt.rgba};
     }

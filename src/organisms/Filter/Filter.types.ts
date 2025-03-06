@@ -13,6 +13,7 @@ interface CommonFilterProps<T extends string> {
   onSearchEnter: (value: string) => void;
   children: ReactNode | ReactNode[];
   inlineContent?: ReactNode | ReactNode[];
+  topContent?: ReactNode | ReactNode[];
   initialOpen?: boolean;
   placeholder?: string;
   id?: string;

@@ -1,11 +1,11 @@
 import { KeyboardEvent, useRef, useState } from 'react';
 
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import {
   arrow_drop_down,
   arrow_drop_up,
   clear,
-  filter_list,
+  search as search_icon,
 } from '@equinor/eds-icons';
 
 import {
@@ -19,7 +19,7 @@ import { colors } from 'src/atoms/style/colors';
 import { SelectOptionRequired } from 'src/molecules';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 /**
  * @param values - Array of values to display as chips ({ value: string, label: string, icon?: IconData }[])
@@ -42,6 +42,7 @@ export function Filter<T extends string>({
   onClearFilter,
   onClearAllFilters,
   children,
+  topContent,
   inlineContent,
   initialOpen = false,
   placeholder = 'Search...',
@@ -107,10 +108,11 @@ export function Filter<T extends string>({
 
   return (
     <Wrapper>
+      {topContent}
       <Container>
         <Icon
           onClick={handleOnToggleOpen}
-          data={filter_list}
+          data={search_icon}
           color={colors.text.static_icons__tertiary.rgba}
         />
         <section>
@@ -155,6 +157,9 @@ export function Filter<T extends string>({
         )}
         {inlineContent}
         <button onClick={handleOnToggleOpen} data-testid="toggle-open-button">
+          <Typography variant="button" group="navigation" as="span">
+            Filters
+          </Typography>
           <Icon
             data={open ? arrow_drop_up : arrow_drop_down}
             color={colors.text.static_icons__tertiary.rgba}
@@ -163,13 +168,13 @@ export function Filter<T extends string>({
       </Container>
       <AnimatePresence>
         {open && (
-          <Content
+          <motion.div
             animate={{ height: 'auto' }}
             initial={{ height: initialHeight.current }}
             exit={{ height: 0 }}
           >
-            {children}
-          </Content>
+            <Content>{children}</Content>
+          </motion.div>
         )}
       </AnimatePresence>
     </Wrapper>
