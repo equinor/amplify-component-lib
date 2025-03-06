@@ -11,7 +11,7 @@ export const Container = styled.div<ContainerProps>`
   align-self: stretch;
   align-items: center;
   justify-content: ${({ $isOpen }) => ($isOpen ? 'flex-end' : 'center')};
-  padding: ${spacings.large} ${spacings.medium} 0;
+  padding: ${spacings.medium} ${spacings.medium} 0;
   box-sizing: border-box;
   transition: background 0.1s ease-out;
   > button {
