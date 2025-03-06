@@ -54,7 +54,9 @@ export const BottomItemContainer = styled.div`
 
 export const EquinorIconContainer = styled.div`
   display: flex;
-  align-self: stretch;
-  justify-content: center;
-  padding: 20px ${spacings.medium};
+  padding: ${spacings.large} 0 ${spacings.large} 16px;
+  > svg {
+    width: 32px;
+    flex-shrink: 0;
+  }
 `;
