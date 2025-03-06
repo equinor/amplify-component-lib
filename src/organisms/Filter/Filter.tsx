@@ -5,6 +5,7 @@ import {
   arrow_drop_down,
   arrow_drop_up,
   clear,
+  info_circle,
   search as search_icon,
 } from '@equinor/eds-icons';
 
@@ -116,15 +117,6 @@ export function Filter<T extends string>({
           color={colors.text.static_icons__tertiary.rgba}
         />
         <section>
-          <SearchField
-            id={id}
-            type="search"
-            value={search}
-            placeholder={placeholder}
-            onChange={onSearchChange}
-            onKeyDownCapture={handleOnKeyDown}
-            onFocus={handleOnFocus}
-          />
           {(Object.keys(values) as Array<T>).flatMap((key) =>
             values[key].map(({ label, icon }, index, list) => (
               <StyledChip
@@ -139,6 +131,15 @@ export function Filter<T extends string>({
               </StyledChip>
             ))
           )}
+          <SearchField
+            id={id}
+            type="search"
+            value={search}
+            placeholder={placeholder}
+            onChange={onSearchChange}
+            onKeyDownCapture={handleOnKeyDown}
+            onFocus={handleOnFocus}
+          />
         </section>
         {(Object.values(values) as SelectOptionRequired[][]).some(
           (list) => list.length > 0
@@ -173,7 +174,23 @@ export function Filter<T extends string>({
             initial={{ height: initialHeight.current }}
             exit={{ height: 0 }}
           >
-            <Content>{children}</Content>
+            <Content>
+              <span>
+                <Icon
+                  data={info_circle}
+                  size={16}
+                  color={colors.text.static_icons__tertiary.rgba}
+                />
+                <Typography
+                  variant="label"
+                  group="input"
+                  color={colors.text.static_icons__tertiary.rgba}
+                >
+                  Type a keyword and press enter
+                </Typography>
+              </span>
+              {children}
+            </Content>
           </motion.div>
         )}
       </AnimatePresence>
