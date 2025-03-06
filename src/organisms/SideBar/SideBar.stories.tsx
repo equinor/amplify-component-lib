@@ -12,6 +12,7 @@ const meta: Meta = {
   component: SideBar,
   argTypes: {
     hasCreateButton: { control: 'boolean' },
+    hasBottomItem: { control: 'boolean' },
     createLabel: { control: 'text' },
     disabledItem: {
       control: 'select',
@@ -20,6 +21,7 @@ const meta: Meta = {
   },
   args: {
     hasCreateButton: true,
+    hasBottomItem: true,
     createLabel: 'Create story',
     disabledItem: 'none',
   },
@@ -84,7 +86,11 @@ export const Primary: StoryFn = (args) => {
                       ? () => console.log('Created 🖋')
                       : undefined
                   }
-                  bottomItem={<SideBar.Item icon={car} name="Cars" link="/" />}
+                  bottomItem={
+                    args.hasBottomItem ? (
+                      <SideBar.Item icon={car} name="Cars" link="/" />
+                    ) : undefined
+                  }
                   {...args}
                 >
                   {menuItems.map((m) => (
