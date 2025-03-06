@@ -18,22 +18,6 @@ export const MenuItemContainer = styled.div<MenuItemContainerProps>`
   padding: 0 14px;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   box-sizing: border-box;
-  cursor: pointer;
-
-  ${({ $active }) =>
-    $active &&
-    `background: ${colors.interactive.primary__selected_highlight.rgba};`}
-  &:hover {
-    background: ${({ $active }) =>
-      $active
-        ? colors.interactive.primary__selected_hover.rgba
-        : colors.interactive.primary__hover_alt.rgba};
-
-    > button {
-      border-color: ${colors.interactive.primary__hover.rgba};
-      background: ${colors.interactive.primary__hover.rgba};
-    }
-  }
 `;
 
 interface CreateButtonProps extends ButtonProps {

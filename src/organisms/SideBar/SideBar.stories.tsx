@@ -49,15 +49,19 @@ export const Primary: StoryFn = (args) => {
       icon: favorite_outlined,
       items: [
         {
-          name: 'Sub 1',
-          link: 'hei',
+          name: 'My favourites',
+          link: 'my-favourites',
+        },
+        {
+          name: 'Team favourites',
+          link: 'team-favourites',
         },
       ],
     },
     {
-      name: 'Favourites',
-      icon: favorite_outlined,
-      link: 'favourites',
+      name: 'Cars',
+      icon: car,
+      link: 'cars',
       onClick: () => console.log('going to favourites...'),
     },
   ];
@@ -66,7 +70,7 @@ export const Primary: StoryFn = (args) => {
     <MemoryRouter initialEntries={['/']}>
       <Routes>
         <Route
-          path="/"
+          path="*"
           element={
             <SideBarProvider>
               <div style={{ display: 'flex', height: '95vh' }}>

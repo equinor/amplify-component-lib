@@ -28,12 +28,13 @@ export const CreateItem: FC<CreateItemProps> = ({
 
   if (isOpen) {
     return (
-      <MenuItemContainer
-        $active={active}
-        data-testid="create-item-container"
-        onClick={onClickHandler}
-      >
-        <CreateButton $open variant="contained" disabled={disabled}>
+      <MenuItemContainer $active={active} data-testid="create-item-container">
+        <CreateButton
+          $open
+          variant="contained"
+          disabled={disabled}
+          onClick={onClickHandler}
+        >
           <Icon data={add} />
           {createLabel}
         </CreateButton>
@@ -47,7 +48,11 @@ export const CreateItem: FC<CreateItemProps> = ({
         data-testid="create-item-container"
         onClick={onClickHandler}
       >
-        <CreateButton variant="contained" disabled={disabled}>
+        <CreateButton
+          variant="contained"
+          disabled={disabled}
+          onClick={onClickHandler}
+        >
           <Icon data={add} />
         </CreateButton>
       </MenuItemContainer>

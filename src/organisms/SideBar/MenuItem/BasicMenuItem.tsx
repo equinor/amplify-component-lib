@@ -1,4 +1,5 @@
 import { FC, MouseEvent, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { Icon } from '@equinor/eds-core-react';
 import { Feature } from '@equinor/subsurface-app-management';
@@ -15,12 +16,10 @@ import { isCurrentUrl } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 export type BasicMenuItemProps = {
-  currentUrl?: string;
   disabled?: boolean;
 } & BasicSideBarMenuItem;
 
 export const BasicMenuItem: FC<BasicMenuItemProps> = ({
-  currentUrl,
   icon,
   link,
   onClick,
@@ -30,14 +29,15 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
   featureUuid,
   ...props
 }) => {
+  const { pathname } = useLocation();
   const isActive = isCurrentUrl({
-    currentUrl,
+    currentUrl: pathname,
     link,
   });
   const isExactUrl = useMemo(() => {
-    const currentWithoutParams = currentUrl?.split('?')[0];
+    const currentWithoutParams = pathname?.split('?')[0];
     return currentWithoutParams === link;
-  }, [currentUrl, link]);
+  }, [pathname, link]);
   const { isOpen } = useSideBar();
 
   const canNavigate = useMemo(

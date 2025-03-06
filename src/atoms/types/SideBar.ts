@@ -20,7 +20,7 @@ export interface SideBarMenuItemWithItems
   icon: IconData;
   name: string;
   featureUuid?: string;
-  items: Omit<SideBarMenuItemBase, 'icon'>[];
+  items: (Omit<SideBarMenuItemBase, 'icon'> & { disabled?: boolean })[];
 }
 
 export type SideBarMenuItem = SideBarMenuItemWithItems | BasicSideBarMenuItem;

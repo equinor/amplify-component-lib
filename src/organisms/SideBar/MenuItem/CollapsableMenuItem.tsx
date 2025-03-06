@@ -1,14 +1,17 @@
-import { FC, useMemo, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 
 import { Icon, Menu } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 
+import { usePrevious } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
 import { SideBarMenuItemWithItems } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules';
 import {
   IconContainer,
   ItemText,
+  Link,
   MenuItemWrapper,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.styles';
 import { isCurrentUrl } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
@@ -35,17 +38,21 @@ const Parent = styled.button<ParentProps>`
   gap: ${spacings.medium};
   box-sizing: border-box;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  background: ${({ $expanded }) =>
-    $expanded ? colors.ui.background__light.rgba : 'transparent'};
+  background: ${({ $active, $expanded }) => {
+    if ($active) return colors.interactive.primary__selected_highlight.rgba;
+    if ($expanded) return colors.interactive.table__header__fill_resting.rgba;
+    return 'transparent';
+  }};
   text-decoration: none;
   transition: background 0.1s ease-out;
 
   &:hover {
     text-decoration: none;
-    background: ${({ $expanded }) =>
-      $expanded
-        ? colors.interactive.primary__selected_hover.rgba
-        : colors.interactive.primary__hover_alt.rgba};
+    background: ${({ $active, $expanded }) => {
+      if ($active) return colors.interactive.primary__selected_hover.rgba;
+      if ($expanded) return colors.ui.background__medium.rgba;
+      return colors.interactive.primary__hover_alt.rgba;
+    }};
   }
 
   ${({ $open }) =>
@@ -67,25 +74,39 @@ const Parent = styled.button<ParentProps>`
     `}
 `;
 
-export type CollapsableMenuItemProps = {
-  currentUrl?: string;
-} & SideBarMenuItemWithItems;
+const Child = styled(Link)`
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  height: unset;
+  > p:first-child {
+    grid-column: 2;
+  }
+`;
+
+export type CollapsableMenuItemProps = SideBarMenuItemWithItems;
 
 export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   icon,
   name,
   items,
-  currentUrl,
   ...rest
 }) => {
+  const { pathname } = useLocation();
   const { isOpen } = useSideBar();
+  const previousIsOpen = usePrevious(isOpen);
   const isActive = items.some((item) =>
-    isCurrentUrl({ currentUrl, link: item.link })
+    isCurrentUrl({ currentUrl: pathname, link: item.link })
   );
   const parentRef = useRef<HTMLButtonElement | null>(null);
   const [expanded, setExpanded] = useState(false);
 
   const handleOnToggleExpanded = () => setExpanded((prev) => !prev);
+
+  useEffect(() => {
+    if (previousIsOpen && !isOpen && expanded) {
+      setExpanded(false);
+    }
+  }, [expanded, isOpen, previousIsOpen]);
 
   const parentContent = useMemo(() => {
     return (
@@ -134,7 +155,21 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
       <>
         {parentContent}
         {items.map((item, index) => (
-          <p key={index}>{item.name}</p>
+          <Child
+            key={index}
+            to={item.link}
+            $active={isCurrentUrl({ currentUrl: pathname, link: item.link })}
+            $disabled={item.disabled || false}
+          >
+            <ItemText
+              $active={isActive}
+              $disabled={item.disabled || false}
+              variant="button"
+              group="navigation"
+            >
+              {item.name}
+            </ItemText>
+          </Child>
         ))}
       </>
     );
@@ -144,8 +179,23 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
     return (
       <>
         {parentContent}
-        <Menu open anchorEl={parentRef.current} placement="right-start">
-          <Menu.Item>hei</Menu.Item>
+        <Menu
+          open
+          anchorEl={parentRef.current}
+          placement="right-start"
+          onClose={handleOnToggleExpanded}
+        >
+          {items.map((item) => (
+            <Menu.Item
+              as={ReactRouterLink}
+              key={item.link}
+              active={isCurrentUrl({ currentUrl: pathname, link: item.link })}
+              style={{ width: '256px' }}
+              to={item.link}
+            >
+              {item.name}
+            </Menu.Item>
+          ))}
         </Menu>
       </>
     );
