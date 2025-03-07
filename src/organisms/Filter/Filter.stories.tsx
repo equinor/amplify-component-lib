@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useMemo, useState } from 'react';
 
-import { DatePicker } from '@equinor/eds-core-react';
+import { DatePicker, Tabs } from '@equinor/eds-core-react';
 import { gear, van } from '@equinor/eds-icons';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
@@ -30,6 +30,7 @@ type FilterStoryProps = FilterProps<string> & {
   withIcons?: boolean;
   withSorting?: boolean;
   withQuickFilter?: boolean;
+  withTabs?: boolean;
 };
 
 const Wrapper: FC<FilterStoryProps> = (props) => {
@@ -163,6 +164,15 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       onSearchChange={handleOnSearchChange}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
+      topContent={
+        props.withTabs ? (
+          <Tabs>
+            <Tabs.Tab active>All categories</Tabs.Tab>
+            <Tabs.Tab>One</Tabs.Tab>
+            <Tabs.Tab>Two</Tabs.Tab>
+          </Tabs>
+        ) : undefined
+      }
       inlineContent={
         <>
           {props.withQuickFilter && (
@@ -332,5 +342,11 @@ export const WithBoth: Story = {
   args: {
     withSorting: true,
     withQuickFilter: true,
+  },
+};
+
+export const WithTopContent: Story = {
+  args: {
+    withTabs: true,
   },
 };

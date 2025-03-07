@@ -7,13 +7,13 @@ import styled, { css } from 'styled-components';
 export const Wrapper = styled.div`
   width: 100%;
   border: 1px solid ${colors.ui.background__heavy.rgba};
+  background: ${colors.ui.background__default.rgba};
   border-radius: ${shape.corners.borderRadius};
   overflow: hidden;
 `;
 
 export const Container = styled.div`
   display: flex;
-  background: ${colors.ui.background__default.rgba};
   align-items: center;
   width: 100%;
   padding-left: ${spacings.small};
