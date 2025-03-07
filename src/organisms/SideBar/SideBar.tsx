@@ -3,6 +3,7 @@ import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { CreateItem } from './CreateItem';
 import {
   BottomItemContainer,
+  CenterItemContainer,
   EquinorIconContainer,
   NavigationContainer,
   TopItemContainer,
@@ -25,7 +26,6 @@ interface SideBarWithCreate extends SideBarProps {
   onCreate: () => void;
   createLabel: string;
   createDisabled?: boolean;
-  createActive?: boolean;
 }
 
 export const SideBar = forwardRef<
@@ -46,19 +46,18 @@ export const SideBar = forwardRef<
       data-testid="sidebar"
     >
       <TopItemContainer>
+        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
         {props.onCreate && showCreate && (
           <CreateItem
             createLabel={props.createLabel}
             onCreate={props.onCreate}
             disabled={props.createDisabled}
-            active={props.createActive}
           />
         )}
-        {children}
       </TopItemContainer>
+      <CenterItemContainer>{children}</CenterItemContainer>
       <BottomItemContainer>
         {bottomItem}
-        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
         <EquinorIconContainer>
           <EquinorLogo />
         </EquinorIconContainer>

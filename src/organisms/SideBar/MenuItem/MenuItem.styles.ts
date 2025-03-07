@@ -50,7 +50,7 @@ export const Link = styled(ReactRouterDomLink)<LinkProps>`
         : colors.interactive.primary__hover_alt.rgba)};
     > div > svg {
       fill: ${({ $disabled, $active }) =>
-        !$disabled && !$active && colors.text.static_icons__default.rgba};
+        !$disabled && !$active && colors.interactive.primary__hover.rgba};
     }
   }
 `;

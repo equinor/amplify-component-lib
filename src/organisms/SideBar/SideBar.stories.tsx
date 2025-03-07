@@ -1,6 +1,6 @@
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
+import { car, dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { SideBar } from '.';
@@ -12,6 +12,7 @@ const meta: Meta = {
   component: SideBar,
   argTypes: {
     hasCreateButton: { control: 'boolean' },
+    hasBottomItem: { control: 'boolean' },
     createLabel: { control: 'text' },
     disabledItem: {
       control: 'select',
@@ -20,6 +21,7 @@ const meta: Meta = {
   },
   args: {
     hasCreateButton: true,
+    hasBottomItem: true,
     createLabel: 'Create story',
     disabledItem: 'none',
   },
@@ -39,15 +41,29 @@ export const Primary: StoryFn = (args) => {
       onClick: () => console.log('going to dashboard...'),
     },
     {
-      name: 'history',
+      name: 'History',
       icon: history,
       link: 'history',
       onClick: () => console.log('going to history...'),
     },
     {
-      name: 'favourites',
+      name: 'Favourites',
       icon: favorite_outlined,
-      link: 'favourites',
+      items: [
+        {
+          name: 'My favourites',
+          link: 'my-favourites',
+        },
+        {
+          name: 'Team favourites',
+          link: 'team-favourites',
+        },
+      ],
+    },
+    {
+      name: 'Cars',
+      icon: car,
+      link: 'cars',
       onClick: () => console.log('going to favourites...'),
     },
   ];
@@ -56,7 +72,7 @@ export const Primary: StoryFn = (args) => {
     <MemoryRouter initialEntries={['/']}>
       <Routes>
         <Route
-          path="/"
+          path="*"
           element={
             <SideBarProvider>
               <div style={{ display: 'flex', height: '95vh' }}>
@@ -70,17 +86,21 @@ export const Primary: StoryFn = (args) => {
                       ? () => console.log('Created 🖋')
                       : undefined
                   }
+                  bottomItem={
+                    args.hasBottomItem ? (
+                      <SideBar.Item icon={car} name="Cars" link="/" />
+                    ) : undefined
+                  }
                   {...args}
                 >
-                  {menuItems.map((m, index) => (
+                  {menuItems.map((m) => (
                     <SideBar.Item
                       key={m.name}
-                      currentUrl={index === 0 ? m.link : undefined}
-                      {...m}
                       disabled={
                         args.disabledItem !== 'none' &&
-                        m.link === args.disabledItem
+                        m.name === args.disabledItem
                       }
+                      {...m}
                     />
                   ))}
                 </SideBar>
