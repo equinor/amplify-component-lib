@@ -48,7 +48,6 @@ export function Filter<T extends string>({
   initialOpen = false,
   placeholder = 'Search...',
   id = 'filter-search',
-  ...rest
 }: FilterProps<T>) {
   const [open, setOpen] = useState(initialOpen);
   const [attemptingToRemove, setAttemptingToRemove] = useState<T | undefined>(
@@ -70,22 +69,22 @@ export function Filter<T extends string>({
   };
 
   const handleOnSearchEnter = (searchValue: string) => {
-    if (!('autoCompleteOptions' in rest)) {
-      onSearchEnter(searchValue);
-      return;
-    }
-
-    for (const key in rest.autoCompleteOptions) {
-      const found = rest.autoCompleteOptions[key].find(
-        (option) => option.label.toLowerCase() === searchValue.toLowerCase()
-      );
-
-      if (found) {
-        rest.onAutoComplete(key, found);
-        return;
-      }
-    }
-
+    // if (!('autoCompleteOptions' in rest)) {
+    //   onSearchEnter(searchValue);
+    //   return;
+    // }
+    //
+    // for (const key in rest.autoCompleteOptions) {
+    //   const found = rest.autoCompleteOptions[key].find(
+    //     (option) => option.label.toLowerCase() === searchValue.toLowerCase()
+    //   );
+    //
+    //   if (found) {
+    //     rest.onAutoComplete(key, found);
+    //     return;
+    //   }
+    // }
+    //
     onSearchEnter(searchValue);
   };
 

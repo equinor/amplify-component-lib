@@ -227,6 +227,8 @@ test('onSearch is called when hitting enter and search is not empty string', asy
   expect(props.onSearchEnter).toHaveBeenCalledWith(randomWord);
 });
 
+/*
+Going to be used later
 test('Auto complete options work as expected', async () => {
   const props = fakeProps();
   const onAutoComplete = vi.fn();
@@ -285,3 +287,4 @@ test('Auto complete options work as expected when search doesnt match anything',
   expect(onAutoComplete).not.toHaveBeenCalled();
   expect(props.onSearchEnter).toHaveBeenCalledTimes(1);
 });
+*/

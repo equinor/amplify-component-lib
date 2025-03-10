@@ -18,12 +18,11 @@ interface CommonFilterProps<T extends string> {
   placeholder?: string;
   id?: string;
 }
+// Going to be used later
+// type FilterWithAutoCompleteOptions<T extends string> = CommonFilterProps<T> & {
+//   autoCompleteOptions: Record<T, SelectOptionRequired[]>;
+//   onAutoComplete: (key: T, value: SelectOptionRequired) => void;
+// };
 
-type FilterWithAutoCompleteOptions<T extends string> = CommonFilterProps<T> & {
-  autoCompleteOptions: Record<T, SelectOptionRequired[]>;
-  onAutoComplete: (key: T, value: SelectOptionRequired) => void;
-};
-
-export type FilterProps<T extends string> =
-  | CommonFilterProps<T>
-  | FilterWithAutoCompleteOptions<T>;
+export type FilterProps<T extends string> = CommonFilterProps<T>;
+// | FilterWithAutoCompleteOptions<T>;
