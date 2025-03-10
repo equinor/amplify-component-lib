@@ -3,8 +3,7 @@ import { MemoryRouter } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { ReleaseNotesTypes } from './ReleaseNotesTypes';
-import { ReleaseNoteType } from './ReleaseNotesTypes.types';
+import { Header } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/Header/Header';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen } from 'src/tests/browsertest-utils';
 
@@ -13,7 +12,7 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <MemoryRouter>
+        <MemoryRouter initialEntries={['/']}>
           <ReleaseNotesProvider>{children}</ReleaseNotesProvider>
         </MemoryRouter>
       </AuthProvider>
@@ -21,24 +20,12 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
   );
 };
 
-test('Render release note chip type as button', () => {
-  const name = ReleaseNoteType.FEATURE;
-  render(<ReleaseNotesTypes name={name} showIcon />, {
+test('should have a link button', () => {
+  render(<Header />, {
     wrapper: Wrappers,
   });
 
-  const actual = screen.getByRole('button', { name });
-  expect(actual).toBeInTheDocument();
-  expect(actual).toBeVisible();
-});
-
-test('Should render release note chip type as plain element', () => {
-  const name = ReleaseNoteType.FEATURE;
-  render(<ReleaseNotesTypes name={name} active showIcon />, {
-    wrapper: Wrappers,
-  });
-
-  const actual = screen.getByText(name);
+  const actual = screen.getByRole('link');
   expect(actual).toBeInTheDocument();
   expect(actual).toBeVisible();
 });

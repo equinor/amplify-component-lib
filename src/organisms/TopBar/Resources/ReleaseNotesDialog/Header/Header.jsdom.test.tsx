@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router';
 import { EnvironmentType } from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { FilterHeader } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/FilterHeader/FilterHeader';
+import { Header } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/Header/Header';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import { render, screen } from 'src/tests/jsdomtest-utils';
 
@@ -23,7 +23,7 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
 
 test('should link to production environment using the external dns, jsembark.equinor.com as a fallback when no environment is set', () => {
   vi.stubEnv('VITE_ENVIRONMENT_NAME', undefined);
-  render(<FilterHeader />, {
+  render(<Header />, {
     wrapper: Wrappers,
   });
   const actual = screen.getByRole('link');
@@ -36,7 +36,7 @@ test('should link to production environment using the external dns, jsembark.equ
 
 test('links to dev if in localhost', () => {
   vi.stubEnv('VITE_ENVIRONMENT_NAME', EnvironmentType.LOCALHOST);
-  render(<FilterHeader />, {
+  render(<Header />, {
     wrapper: Wrappers,
   });
   const actual = screen.getByRole('link');
