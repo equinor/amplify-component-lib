@@ -118,7 +118,10 @@ test('No release notes', async () => {
   expect(title).toBeInTheDocument();
 
   await waitFor(
-    () => expect(screen.getByText(/no release notes/i)).toBeInTheDocument(),
+    () =>
+      expect(
+        screen.getByText(/This application has no published release notes/i)
+      ).toBeInTheDocument(),
     { timeout: 5000 }
   );
 });

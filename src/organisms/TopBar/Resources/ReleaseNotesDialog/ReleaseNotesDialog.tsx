@@ -6,6 +6,7 @@ import { useReleaseNotesQuery } from '@equinor/subsurface-app-management';
 import { Header } from './Header/Header';
 import { LoadingWrapper, StyledDialog } from './ReleaseNotesDialog.styles';
 import { ReleaseNote } from 'src/organisms/ReleaseNote/ReleaseNote';
+import { Status } from 'src/organisms/Status';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 interface ReleaseNotesDialogProps {
@@ -32,7 +33,10 @@ export const ReleaseNotesDialog: FC<ReleaseNotesDialogProps> = ({
       ) : mostRecentReleaseNote ? (
         <ReleaseNote {...mostRecentReleaseNote} startExpanded />
       ) : (
-        <div>No release notes</div>
+        <Status>
+          <Status.Title title="No published release notes" />
+          <Status.Description text="This application has no published release notes yet." />
+        </Status>
       )}
     </StyledDialog>
   );
