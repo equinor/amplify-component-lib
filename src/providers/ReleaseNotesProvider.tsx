@@ -5,7 +5,8 @@ import {
   useReleaseNotesQuery,
 } from '@equinor/subsurface-app-management';
 
-import { environment, EnvironmentType } from 'src/atoms';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
+import { environment } from 'src/atoms/utils';
 import { environmentAndAppNameToURL } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesDialog.utils';
 import { sortReleaseNotesByDate } from 'src/providers/ReleaseNotesProvider.utils';
 
