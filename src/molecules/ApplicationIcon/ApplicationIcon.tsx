@@ -8,13 +8,13 @@ import FourDInsight from './Icons/FourDInsight';
 import InPress from './Icons/InPress';
 import LoggingQualification from './Icons/LoggingQualification';
 import Orca from './Icons/Orca';
-import Portal from './Icons/Portal';
 import Premo from './Icons/Premo';
 import Pwex from './Icons/Pwex';
 import Recap from './Icons/Recap';
 import { Sam } from './Icons/Sam';
 // Needs to be relative path for the type to be importable after build
 import { AppIconProps } from './ApplicationIcon.types';
+import JsEmbark from 'src/molecules/ApplicationIcon/Icons/JsEmbark';
 
 export type ApplicationName =
   | 'acquire'
@@ -23,6 +23,7 @@ export type ApplicationName =
   | 'dasha'
   | 'orca'
   | 'portal'
+  | 'jsembark'
   | 'logging-qualification'
   | 'pwex'
   | 'inpress'
@@ -37,7 +38,7 @@ interface ApplicationIconData {
   >;
 }
 const apps: ApplicationIconData[] = [
-  { appName: ['portal', 'embark', 'jsembark'], component: Portal },
+  { appName: ['portal', 'embark', 'jsembark'], component: JsEmbark },
   { appName: ['acquire'], component: Acquire },
   { appName: ['4dinsight'], component: FourDInsight },
   { appName: ['dasha'], component: Dasha },

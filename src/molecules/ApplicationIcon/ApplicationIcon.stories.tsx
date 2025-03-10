@@ -15,7 +15,7 @@ const meta: Meta<typeof ApplicationIcon> = {
         'dasha',
         'orca',
         'recap',
-        'portal',
+        'jsembark',
         'pwex',
         'logging-qualification',
         'inpress',
