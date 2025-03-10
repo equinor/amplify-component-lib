@@ -109,7 +109,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
           contentPadding={false}
           ref={menuRef}
         >
-          <>
+          <section>
             <MenuSection>
               {showSearchInput && (
                 <SearchContainer>
@@ -187,7 +187,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
                 </div>
               </MenuFixedItem>
             )}
-          </>
+          </section>
         </TopBarMenu>
       </div>
     );
