@@ -4,7 +4,7 @@ import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.type
 import ApplicationIconBase, {
   ShapeProps,
 } from 'src/molecules/ApplicationIcon/ApplicationIconBase';
-import { portal } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+import { jsembark } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
   {
@@ -19,10 +19,15 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Portal = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
-  <ApplicationIconBase ref={ref} iconData={portal} shapes={shapes} {...props} />
+const JsEmbark = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    iconData={jsembark}
+    shapes={shapes}
+    {...props}
+  />
 ));
 
-Portal.displayName = 'Portal';
+JsEmbark.displayName = 'Portal';
 
-export default Portal;
+export default JsEmbark;
