@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import { DatePicker, Tabs } from '@equinor/eds-core-react';
 import { gear, van } from '@equinor/eds-icons';
@@ -11,9 +11,9 @@ import { ComboBox, SelectOptionRequired, SingleSelect } from 'src/molecules';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
 
 const CAR_SIZE = [
-  { value: 'size', label: 'Sports car' },
-  { value: 'size', label: 'Kei car' },
-  { value: 'size', label: 'Family van' },
+  { value: 'sports-car', label: 'Sports car' },
+  { value: 'kei-car', label: 'Kei car' },
+  { value: 'family-van', label: 'Family van' },
 ];
 const MANUFACTURERS = [
   { value: 'toyota', label: 'トヨタ (Toyota)' },
@@ -130,11 +130,6 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     setSearchTags([]);
   };
 
-  const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    actions('onSearchChange').onSearchChange(event.target.value);
-    setSearch(event.target.value);
-  };
-
   const handleOnSearchEnter = (value: string) => {
     actions('onSearchEnter').onSearchEnter(value);
     setSearchTags((prev) => [...prev, value]);
@@ -155,15 +150,38 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     }
   };
 
+  const handleOnAutoComplete = (key: string, value: SelectOptionRequired) => {
+    switch (key) {
+      case 'manufacturer':
+        setManufacturer((prev) => {
+          if (prev.findIndex((item) => item.value === value.value) === -1) {
+            return [...prev, value];
+          } else {
+            return prev.filter((item) => item.value !== value.value);
+          }
+        });
+        break;
+      case 'carSize':
+        setCarSize(value);
+        break;
+    }
+  };
+
+  // Add autocomplete
   return (
     <Filter
       {...props}
       values={values}
+      autoCompleteOptions={{
+        carSize: CAR_SIZE,
+        manufacturer: MANUFACTURERS,
+      }}
       search={search}
       onSearchEnter={handleOnSearchEnter}
-      onSearchChange={handleOnSearchChange}
+      onSearchChange={setSearch}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
+      onAutoComplete={handleOnAutoComplete}
       topContent={
         props.withTabs ? (
           <Tabs>
@@ -274,7 +292,7 @@ const meta: Meta<FilterStoryProps> = {
   argTypes: {
     values: {
       description:
-        'Array with values ({ label: string, value: string, icon?: IconData })',
+        'Record with values { ["manufacturer": [({ label: string, value: string, icon?: IconData })] }',
     },
     search: {
       description: 'Search field value',
@@ -296,6 +314,13 @@ const meta: Meta<FilterStoryProps> = {
     onSearchChange: {
       type: 'function',
       description: 'Callback when search is changed',
+    },
+    onAutoComplete: {
+      type: 'function',
+      description: 'Callback when autocomplete happens',
+    },
+    autoCompleteOptions: {
+      description: 'Record with autocomplete options',
     },
   },
   args: {

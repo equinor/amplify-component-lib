@@ -1,4 +1,4 @@
-import { KeyboardEvent, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import {
@@ -18,6 +18,7 @@ import {
 } from './Filter.styles';
 import { colors } from 'src/atoms/style/colors';
 import { SelectOptionRequired } from 'src/molecules';
+import { AutoCompleteMenu } from 'src/organisms/Filter/AutoCompleteMenu';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -50,6 +51,8 @@ export function Filter<T extends string>({
   id = 'filter-search',
   ...rest
 }: FilterProps<T>) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const autoCompleteMenuRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(initialOpen);
   const [attemptingToRemove, setAttemptingToRemove] = useState<T | undefined>(
     undefined
@@ -61,6 +64,10 @@ export function Filter<T extends string>({
     if (initialHeight.current === 'auto') {
       initialHeight.current = 0;
     }
+  };
+
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onSearchChange(event.target.value);
   };
 
   const handleOnFocus = () => {
@@ -94,7 +101,7 @@ export function Filter<T extends string>({
       handleOnSearchEnter(search);
     } else if (event.key === 'Backspace' && search === '') {
       if (attemptingToRemove === undefined) {
-        for (const key of Object.keys(values) as T[]) {
+        for (const key of Object.keys(values).toReversed() as T[]) {
           if (values[key].length > 0) {
             setAttemptingToRemove(key);
             break;
@@ -104,7 +111,16 @@ export function Filter<T extends string>({
       }
       onClearFilter(attemptingToRemove, values[attemptingToRemove].length - 1);
       setAttemptingToRemove(undefined);
+    } else if (event.key === 'ArrowDown' && autoCompleteMenuRef.current) {
+      autoCompleteMenuRef.current.focus();
     }
+  };
+
+  const handleOnAutoComplete = (key: T, value: SelectOptionRequired) => {
+    if (!('onAutoComplete' in rest)) return;
+
+    rest.onAutoComplete(key, value);
+    onSearchChange('');
   };
 
   return (
@@ -116,7 +132,7 @@ export function Filter<T extends string>({
           data={search_icon}
           color={colors.text.static_icons__tertiary.rgba}
         />
-        <section>
+        <section ref={sectionRef}>
           {(Object.keys(values) as Array<T>).flatMap((key) =>
             values[key].map(({ label, icon }, index, list) => (
               <StyledChip
@@ -136,7 +152,7 @@ export function Filter<T extends string>({
             type="search"
             value={search}
             placeholder={placeholder}
-            onChange={onSearchChange}
+            onChange={handleOnChange}
             onKeyDownCapture={handleOnKeyDown}
             onFocus={handleOnFocus}
           />
@@ -194,6 +210,15 @@ export function Filter<T extends string>({
           </motion.div>
         )}
       </AnimatePresence>
+      {'autoCompleteOptions' in rest && (
+        <AutoCompleteMenu
+          ref={autoCompleteMenuRef}
+          search={search}
+          anchorEl={sectionRef.current}
+          autoCompleteOptions={rest.autoCompleteOptions}
+          onAutoComplete={handleOnAutoComplete}
+        />
+      )}
     </Wrapper>
   );
 }

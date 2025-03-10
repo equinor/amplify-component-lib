@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { IconData } from '@equinor/eds-icons';
 
@@ -9,7 +9,7 @@ interface CommonFilterProps<T extends string> {
   onClearFilter: (key: T, index: number) => void;
   onClearAllFilters: () => void;
   search: string;
-  onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSearchChange: (value: string) => void;
   onSearchEnter: (value: string) => void;
   children: ReactNode | ReactNode[];
   inlineContent?: ReactNode | ReactNode[];
@@ -19,10 +19,11 @@ interface CommonFilterProps<T extends string> {
   id?: string;
 }
 
-type FilterWithAutoCompleteOptions<T extends string> = CommonFilterProps<T> & {
-  autoCompleteOptions: Record<T, SelectOptionRequired[]>;
-  onAutoComplete: (key: T, value: SelectOptionRequired) => void;
-};
+export type FilterWithAutoCompleteOptions<T extends string> =
+  CommonFilterProps<T> & {
+    autoCompleteOptions: Record<T, SelectOptionRequired[]>;
+    onAutoComplete: (key: T, value: SelectOptionRequired) => void;
+  };
 
 export type FilterProps<T extends string> =
   | CommonFilterProps<T>
