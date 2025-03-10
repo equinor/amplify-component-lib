@@ -48,7 +48,7 @@ const HeaderLeft = styled.section`
   align-items: center;
 `;
 
-type ReleaseNoteProps = {
+export type ReleaseNoteProps = {
   actionMenu?: ReactNode;
   startExpanded?: boolean;
 } & ReleaseNoteDto;
@@ -58,17 +58,27 @@ export const ReleaseNote: FC<ReleaseNoteProps> = ({
   releaseDate,
   createdDate,
   tags,
+  version,
   title,
   body,
   actionMenu,
   startExpanded = false,
 }) => {
   const usingDate = releaseDate ?? createdDate;
+  const [richTextWrapper, setRichTextWrapper] = useState<HTMLDivElement | null>(
+    null
+  );
   const initialHeight = useRef(
     startExpanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT
   );
   const [expanded, setExpanded] = useState(startExpanded);
+  const needsExpand =
+    (richTextWrapper?.firstElementChild &&
+      richTextWrapper.firstElementChild.clientHeight >
+        RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT) ??
+    true;
 
+  console.log(richTextWrapper);
   const handleOnToggleExpand = () => {
     setExpanded((prev) => !prev);
     if (initialHeight.current === 'auto') {
@@ -90,13 +100,15 @@ export const ReleaseNote: FC<ReleaseNoteProps> = ({
             variant="overline"
             color={colors.text.static_icons__tertiary.rgba}
           >
-            {formatRelativeDateTime(usingDate)}・{timeToRead(body)}
+            {formatRelativeDateTime(usingDate)}
+            {version ? ` ・ ${version}` : ''} ・ {timeToRead(body)}
           </Typography>
         </HeaderLeft>
         <MetaTags tags={tags}>{actionMenu}</MetaTags>
       </Header>
       <Typography variant="h4">{title}</Typography>
       <motion.div
+        ref={setRichTextWrapper}
         initial={{
           height: initialHeight.current,
         }}
@@ -110,10 +122,12 @@ export const ReleaseNote: FC<ReleaseNoteProps> = ({
           padding="none"
         />
       </motion.div>
-      <ToggleExpanded
-        expanded={expanded}
-        onToggleExpanded={handleOnToggleExpand}
-      />
+      {needsExpand && (
+        <ToggleExpanded
+          expanded={expanded}
+          onToggleExpanded={handleOnToggleExpand}
+        />
+      )}
     </Container>
   );
 };

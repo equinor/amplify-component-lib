@@ -3,18 +3,9 @@ import { FC } from 'react';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { useReleaseNotesQuery } from '@equinor/subsurface-app-management';
 
-import { ReleasePosts } from './ReleasePosts/ReleasePosts';
-import {
-  Content,
-  LeftContainer,
-  LoadingWrapper,
-  ScrollWrapper,
-  StyledDialog,
-  Wrapper,
-} from './ReleaseNotes.styles';
-import { ReleaseNotesHeader } from './ReleaseNotesHeader';
-import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
-import { TableOfContentsProvider } from 'src/providers';
+import { Header } from './Header/Header';
+import { LoadingWrapper, StyledDialog } from './ReleaseNotes.styles';
+import { ReleaseNote } from 'src/organisms';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 interface ReleaseNotesProps {
@@ -22,8 +13,8 @@ interface ReleaseNotesProps {
 }
 
 export const ReleaseNotes: FC<ReleaseNotesProps> = ({ enabled }) => {
-  const { releaseNotesYears, setOpen, open } = useReleaseNotes();
-  const { isLoading, data } = useReleaseNotesQuery({ enabled });
+  const { setOpen, open, mostRecentReleaseNote } = useReleaseNotes();
+  const { isLoading } = useReleaseNotesQuery({ enabled });
 
   const handleCloseModal = () => {
     setOpen(false);
@@ -31,24 +22,15 @@ export const ReleaseNotes: FC<ReleaseNotesProps> = ({ enabled }) => {
 
   return (
     <StyledDialog open={open} onClose={handleCloseModal} isDismissable>
-      <ReleaseNotesHeader />
+      <Header />
       {isLoading ? (
         <LoadingWrapper>
           <CircularProgress />
         </LoadingWrapper>
+      ) : mostRecentReleaseNote ? (
+        <ReleaseNote {...mostRecentReleaseNote} startExpanded />
       ) : (
-        <TableOfContentsProvider items={releaseNotesYears}>
-          <ScrollWrapper>
-            <Wrapper>
-              <LeftContainer>
-                <TableOfContents />
-              </LeftContainer>
-              <Content>
-                <ReleasePosts posts={data} />
-              </Content>
-            </Wrapper>
-          </ScrollWrapper>
-        </TableOfContentsProvider>
+        <div>empty</div>
       )}
     </StyledDialog>
   );

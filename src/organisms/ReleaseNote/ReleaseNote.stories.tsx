@@ -41,3 +41,16 @@ export const Default: Story = {
     tags: ['Bug fix', 'Improvement', 'Feature'],
   },
 };
+
+export const WithVersion: Story = {
+  args: {
+    releaseId: '1',
+    version: '1.0.1',
+    applicationName: 'PWEX',
+    title: 'Release note title',
+    body: `<p>${faker.lorem.paragraphs(15)}</p>`,
+    releaseDate: new Date('03/09/2024, 10:21').toISOString(),
+    createdDate: new Date('03/09/2024, 10:21').toISOString(),
+    tags: ['Bug fix', 'Improvement', 'Feature'],
+  },
+};

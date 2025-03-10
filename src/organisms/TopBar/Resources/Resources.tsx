@@ -1,9 +1,9 @@
 import {
   FC,
   MouseEvent,
-  MutableRefObject,
   ReactElement,
   ReactNode,
+  RefObject,
   useMemo,
   useRef,
   useState,
@@ -52,7 +52,7 @@ export interface ResourcesProps {
   hideLearnMore?: boolean;
   children?: ReactNode;
   customButton?: (
-    ref: MutableRefObject<HTMLButtonElement | null>,
+    ref: RefObject<HTMLButtonElement | null>,
     onToggle: () => void
   ) => ReactElement;
 }
@@ -65,7 +65,7 @@ export const Resources: FC<ResourcesProps> = ({
   children,
   customButton,
 }) => {
-  const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
+  const { open: showReleaseNotes, setOpen: setOpenReleaseNotes } =
     useReleaseNotes();
   const [isOpen, setIsOpen] = useState(false);
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
@@ -97,6 +97,8 @@ export const Resources: FC<ResourcesProps> = ({
     closeMenu();
     setShowFeedbackDialog(false);
   };
+
+  const handleOnOpenReleaseNoteDialog = () => setOpenReleaseNotes(true);
 
   const handleGoBack = () => setShowingResourceSection(undefined);
 
@@ -167,7 +169,7 @@ export const Resources: FC<ResourcesProps> = ({
         {resourceSectionContent ? (
           resourceSectionContent
         ) : (
-          <>
+          <section>
             <ResourceMenuItem
               id={FeedbackType.BUG}
               onClick={handleOnOpenFeedbackDialog}
@@ -186,7 +188,7 @@ export const Resources: FC<ResourcesProps> = ({
               <ResourceMenuItem
                 id="release-notes"
                 icon={file_description}
-                onClick={toggleReleaseNotes}
+                onClick={handleOnOpenReleaseNoteDialog}
                 text="Open release notes"
                 isHref
               />
@@ -199,7 +201,7 @@ export const Resources: FC<ResourcesProps> = ({
                 onClick={handleLearnMoreClick}
               />
             )}
-          </>
+          </section>
         )}
       </TopBarMenu>
       {showReleaseNotes && <ReleaseNotes />}
