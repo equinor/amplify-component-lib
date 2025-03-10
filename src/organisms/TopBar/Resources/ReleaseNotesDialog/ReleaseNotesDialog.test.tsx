@@ -93,6 +93,10 @@ test('show a release note', async () => {
 
   const actualText = await screen.findByText('Release notes body text');
   expect(actualText).toBeInTheDocument();
+
+  expect(
+    screen.getByRole('link', { name: /See all release notes in SAM/i })
+  ).toBeInTheDocument();
 });
 
 test('No release notes', async () => {
