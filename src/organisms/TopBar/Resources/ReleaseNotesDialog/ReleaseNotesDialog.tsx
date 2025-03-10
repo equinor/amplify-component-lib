@@ -4,15 +4,17 @@ import { CircularProgress } from '@equinor/eds-core-react';
 import { useReleaseNotesQuery } from '@equinor/subsurface-app-management';
 
 import { Header } from './Header/Header';
-import { LoadingWrapper, StyledDialog } from './ReleaseNotes.styles';
-import { ReleaseNote } from 'src/organisms';
+import { LoadingWrapper, StyledDialog } from './ReleaseNotesDialog.styles';
+import { ReleaseNote } from 'src/organisms/ReleaseNote/ReleaseNote';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
-interface ReleaseNotesProps {
+interface ReleaseNotesDialogProps {
   enabled?: boolean;
 }
 
-export const ReleaseNotes: FC<ReleaseNotesProps> = ({ enabled }) => {
+export const ReleaseNotesDialog: FC<ReleaseNotesDialogProps> = ({
+  enabled,
+}) => {
   const { setOpen, open, mostRecentReleaseNote } = useReleaseNotes();
   const { isLoading } = useReleaseNotesQuery({ enabled });
 
@@ -30,7 +32,7 @@ export const ReleaseNotes: FC<ReleaseNotesProps> = ({ enabled }) => {
       ) : mostRecentReleaseNote ? (
         <ReleaseNote {...mostRecentReleaseNote} startExpanded />
       ) : (
-        <div>empty</div>
+        <div>No release notes</div>
       )}
     </StyledDialog>
   );

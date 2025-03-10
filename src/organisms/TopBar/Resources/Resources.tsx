@@ -23,11 +23,11 @@ import { TopBarMenu } from '../TopBarMenu';
 import { TransferToAppDialog } from '../TransferToAppDialog';
 import { Feedback } from './Feedback/Feedback';
 import { FeedbackType } from './Feedback/Feedback.types';
-import { ReleaseNotes } from './ReleaseNotesDialog/ReleaseNotes';
 import { ResourceMenuItem } from './ResourceMenuItem';
 import { amplify_resources, amplify_small_portal } from 'src/atoms/icons';
 import { spacings } from 'src/atoms/style';
 import { environment } from 'src/atoms/utils';
+import { ReleaseNotesDialog } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesDialog';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 import styled from 'styled-components';
@@ -204,7 +204,7 @@ export const Resources: FC<ResourcesProps> = ({
           </section>
         )}
       </TopBarMenu>
-      {showReleaseNotes && <ReleaseNotes />}
+      {showReleaseNotes && <ReleaseNotesDialog />}
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={
