@@ -3,7 +3,11 @@ import { FC, useEffect, useState } from 'react';
 import { NoiseSvg } from './NoiseSvg'; // Assuming it's another SVG file
 import { WaveStaticSvg } from './WaveStaticSvg'; // Assuming it's an SVG file
 
-export const WaveStatic: FC = () => {
+interface WaveStaticProps {
+  gradientColors?: string[];
+}
+
+export const WaveStatic: FC<WaveStaticProps> = ({ gradientColors }) => {
   const [viewBox, setViewBox] = useState(
     `0 0 ${window.innerWidth} ${window.innerHeight - 64}`
   );
@@ -29,7 +33,7 @@ export const WaveStatic: FC = () => {
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* Render the WaveStaticSvg */}
-      <WaveStaticSvg viewBox={viewBox} />
+      <WaveStaticSvg viewBox={viewBox} gradientColors={gradientColors} />
 
       {/* Render the NoiseSvg with blend mode "multiply" */}
       <g style={{ filter: 'grayscale(1)', mixBlendMode: 'color-burn' }}>
