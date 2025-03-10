@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: NPM Publish
+name: Publish
 
 # Controls when the workflow will run
 on:
@@ -9,6 +9,12 @@ on:
     branches: [main]
 
 jobs:
+  build_deploy_test:
+    name: 🛠️ Build and 🚀 Deploy to radix
+    uses: ./.github/workflows/build_deploy_radix.yaml
+    with:
+      environment-name: main
+      to-environment: test
   publish:
     name: Publish to NPM
     uses: ./.github/workflows/npm_publish.yaml
@@ -32,3 +38,11 @@ jobs:
         run: gh release create v${{steps.package-version.outputs.current-version}} --generate-notes --target ${{github.sha}}
         env:
           GH_TOKEN: ${{ github.token }}
+  promote_to_prod:
+    needs: [build_deploy_test, release]
+    name: 🚀 Promote to production radix
+    uses: ./.github/workflows/promote.yaml
+    with:
+      environment-name: main
+      from-environment: test
+      to-environment: production

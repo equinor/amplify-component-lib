@@ -1,9 +1,10 @@
 import { act, Fragment } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { renderHook } from '@testing-library/react';
 
 import { environment, highlightTutorialElementID } from 'src/atoms';
@@ -24,15 +25,53 @@ import {
 import { worker } from 'src/tests/setupBrowserTests';
 
 import { http, HttpResponse } from 'msw';
+import styled from 'styled-components';
 
 const CUSTOM_CONTENT = {
   ['custom-step-id']: <p>custom content here</p>,
 };
 
+const TutorialWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  height: calc(100% - 1rem);
+  box-sizing: border-box;
+  > button {
+    width: fit-content;
+    &:nth-child(3n - 1) {
+      justify-self: center;
+    }
+    &:nth-child(3n) {
+      justify-self: flex-end;
+    }
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6) {
+      align-self: center;
+    }
+    &:nth-child(7),
+    &:nth-child(8),
+    &:nth-child(9) {
+      align-self: flex-end;
+    }
+  }
+`;
+
+const COLUMNS = ['left', 'center', 'right'];
+const ROWS = ['top', 'center', 'bottom'];
+
+const CELLS = COLUMNS.flatMap((col) => ROWS.map((row) => `${col} ${row}`));
+
 const TestComponent = ({
+  renderTutorials = FAKE_TUTORIALS,
   withCustomContent = false,
+  setTutorialIds = true,
 }: {
+  renderTutorials?: typeof FAKE_TUTORIALS;
   withCustomContent?: boolean;
+  setTutorialIds?: boolean;
 }) => {
   const queryClient = new QueryClient();
   return (
@@ -46,8 +85,8 @@ const TestComponent = ({
                 <div
                   style={{
                     maxWidth: '100vw',
-                    maxHeight: '10vh',
-                    overflow: 'auto',
+                    height: '100vh',
+                    overflowX: 'hidden',
                   }}
                   id="content"
                 >
@@ -56,70 +95,29 @@ const TestComponent = ({
                       withCustomContent ? CUSTOM_CONTENT : undefined
                     }
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '1rem',
-                      }}
-                    >
-                      <Fragment>
-                        <Card
-                          style={{ padding: '1rem' }}
-                          id={highlightTutorialElementID(
-                            FAKE_TUTORIALS[0].id,
-                            0
-                          )}
-                        >
-                          <Card.HeaderTitle>
-                            <Typography variant="h2">
-                              {faker.airline.airport().name +
-                                ' ' +
-                                faker.airline.airport().iataCode}
-                            </Typography>
-                          </Card.HeaderTitle>
-                          <Card.Actions>
-                            <Button variant="outlined">Stop</Button>
+                    {renderTutorials.map((tutorial) => (
+                      <Fragment key={tutorial.id}>
+                        <TutorialWrapper>
+                          {CELLS.map((cell, index) => (
                             <Button
-                              id={highlightTutorialElementID(
-                                FAKE_TUTORIALS[0].id,
-                                1
-                              )}
+                              key={index}
+                              id={
+                                setTutorialIds ||
+                                (!setTutorialIds && index === 0)
+                                  ? highlightTutorialElementID(
+                                      tutorial.id,
+                                      index
+                                    )
+                                  : undefined
+                              }
+                              variant="outlined"
                             >
-                              Start
+                              {cell}
                             </Button>
-                          </Card.Actions>
-                        </Card>
-                        <Card style={{ padding: '1rem' }}>
-                          <Card.HeaderTitle>
-                            <Typography variant="h2">
-                              {faker.airline.airplane().name +
-                                ' ' +
-                                faker.airline.airplane().iataTypeCode}
-                            </Typography>
-                          </Card.HeaderTitle>
-                          <Button
-                            id={highlightTutorialElementID(
-                              FAKE_TUTORIALS[0].id,
-                              2
-                            )}
-                            variant="outlined"
-                            style={{ marginLeft: 'auto' }}
-                          >
-                            Stop
-                          </Button>
-                        </Card>
-                        <Divider />
+                          ))}
+                        </TutorialWrapper>
                       </Fragment>
-                      <Typography
-                        id={highlightTutorialElementID(FAKE_TUTORIALS[0].id, 3)}
-                        style={{ marginTop: '80vh' }}
-                      >
-                        This is some text really far away
-                      </Typography>
-                    </div>
+                    ))}
                   </TutorialHighlightingProvider>
                 </div>
               </QueryClientProvider>
@@ -162,10 +160,10 @@ test('Able to skip tutorial as expected', async () => {
 });
 
 test('Able to click through tutorial as expected', async () => {
-  render(<TestComponent />);
-  const user = userEvent.setup();
-
   const highlightTutorial = FAKE_TUTORIALS[0];
+
+  render(<TestComponent renderTutorials={[highlightTutorial]} />);
+  const user = userEvent.setup();
 
   expect(
     await screen.findByText(highlightTutorial.name, undefined, {
@@ -195,6 +193,50 @@ test('Able to click through tutorial as expected', async () => {
   }
 });
 
+test('Highlighted tutorial shows as centered if it doesnt find the element', async () => {
+  const highlightTutorial = {
+    ...fakeTutorial({
+      id: FAKE_TUTORIALS[0].id,
+      willPopUp: true,
+      highlightElement: true,
+    }),
+  };
+  worker.resetHandlers(
+    tokenHandler,
+
+    http.get(`*/api/v1/Tutorial/*`, async () => {
+      return HttpResponse.json([highlightTutorial]);
+    })
+  );
+  render(<TestComponent setTutorialIds={false} />);
+  const user = userEvent.setup();
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 4000,
+    })
+  ).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /start tour/i }));
+
+  const highlightMask = screen.getByTestId(
+    `tutorial-mask-${highlightTutorial.id}`
+  );
+  expect(highlightMask).toBeInTheDocument();
+
+  await user.click(
+    screen.getByRole('button', {
+      name: /next/i,
+    })
+  );
+
+  await waitForElementToBeRemoved(highlightMask);
+
+  expect(
+    screen.queryByTestId(`tutorial-mask-${highlightTutorial.id}`)
+  ).not.toBeInTheDocument();
+});
+
 test('Resizing works', async () => {
   render(<TestComponent />);
   const randomWidth = faker.number.int({ min: 100, max: 1920 });
@@ -217,7 +259,11 @@ test('Resizing works', async () => {
 
 test('Able to click through tutorial with centered steps', async () => {
   const highlightTutorial = {
-    ...fakeTutorial(FAKE_TUTORIALS[0].id, true, false),
+    ...fakeTutorial({
+      id: FAKE_TUTORIALS[0].id,
+      willPopUp: true,
+      highlightElement: false,
+    }),
   };
   worker.resetHandlers(
     tokenHandler,
@@ -255,7 +301,11 @@ test('Able to click through tutorial with centered steps', async () => {
 
 test('Highlighted tutorial shows first', async () => {
   const tutorials = FAKE_TUTORIALS.map((tutorial, index) =>
-    fakeTutorial(tutorial.id, true, index === 0)
+    fakeTutorial({
+      id: tutorial.id,
+      willPopUp: true,
+      highlightElement: index === 0,
+    })
   );
   worker.resetHandlers(
     tokenHandler,
@@ -399,74 +449,6 @@ test('Throws error if step is custom but custom content is not found', async () 
   await user.click(screen.getByRole('button', { name: /start tour/i }));
 
   expect(spy).toHaveBeenCalled();
-});
-
-test('Logs warning if step element is not found', async () => {
-  const fakeId = faker.string.uuid();
-  const fakeTitle = faker.book.title();
-
-  worker.resetHandlers(
-    tokenHandler,
-
-    http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
-      return HttpResponse.json([
-        {
-          id: fakeId,
-          name: fakeTitle,
-          path: '/tutorial',
-          willPopUp: true,
-          application: environment.getEnvironmentName(
-            import.meta.env.VITE_NAME
-          ),
-          steps: [
-            {
-              id: '1',
-              title: faker.vehicle.vehicle(),
-              body: faker.music.artist(),
-              highlightElement: true,
-            },
-            {
-              id: '2',
-              title: faker.vehicle.vehicle(),
-              body: faker.music.artist(),
-              highlightElement: true,
-            },
-            {
-              id: '3',
-              title: faker.vehicle.vehicle(),
-              body: faker.music.artist(),
-              highlightElement: false,
-            },
-          ],
-        },
-      ]);
-    })
-  );
-
-  const spy = vi.spyOn(console, 'warn');
-
-  render(<TestComponent />);
-  const user = userEvent.setup();
-
-  await waitFor(() => expect(screen.getByText(fakeTitle)).toBeInTheDocument(), {
-    timeout: 2000,
-  });
-
-  expect(spy).toHaveBeenCalledWith(
-    `[TutorialHighlightingProvider]: Element with ID sam-tutorial-${fakeId}-0 not found`
-  );
-  expect(
-    screen.queryByTestId(`tutorial-mask-${fakeId}`)
-  ).not.toBeInTheDocument();
-
-  await user.click(screen.getByRole('button', { name: /start tour/i }));
-
-  expect(spy).toHaveBeenCalledWith(
-    `[TutorialHighlightingProvider]: Element with ID sam-tutorial-${fakeId}-0 not found`
-  );
-  expect(
-    screen.queryByTestId(`tutorial-mask-${fakeId}`)
-  ).not.toBeInTheDocument();
 });
 
 test('Using hook outside of context throws error', () => {

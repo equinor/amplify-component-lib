@@ -1,26 +1,46 @@
-import { FC, useRef, useState } from 'react';
+import { FC, HTMLAttributes, useRef, useState } from 'react';
 
 import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { youtube_alt } from '@equinor/eds-icons';
-import { useTutorials } from '@equinor/subsurface-app-management';
+import {
+  MyTutorialDto,
+  useTutorials,
+} from '@equinor/subsurface-app-management';
 
 import { TutorialItem } from './TutorialItem';
 import { Container, TutorialList } from './Tutorials.styles';
 import { TopBarButton } from 'src/organisms/TopBar/TopBar.styles';
 import { TopBarMenu } from 'src/organisms/TopBar/TopBarMenu';
 
-interface TutorialsProps {
+interface TutorialsProps
+  extends Omit<HTMLAttributes<HTMLButtonElement>, 'color' | 'onClick'> {
   onTutorialStart?: (tutorialId: string) => void;
+  filterTutorials?: (
+    value: MyTutorialDto,
+    index: number,
+    array: MyTutorialDto[]
+  ) => boolean;
 }
 
-export const Tutorials: FC<TutorialsProps> = ({ onTutorialStart }) => {
+export const Tutorials: FC<TutorialsProps> = ({
+  filterTutorials,
+  onTutorialStart,
+  ...rest
+}) => {
   const { allTutorials, tutorialsOnThisPage } = useTutorials();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const tutorialsOnOtherPages = allTutorials.filter(
+  const filteredAllTutorials = filterTutorials
+    ? allTutorials.filter(filterTutorials)
+    : allTutorials;
+  const filteredTutorialsOnThisPage = filterTutorials
+    ? tutorialsOnThisPage.filter(filterTutorials)
+    : tutorialsOnThisPage;
+
+  const tutorialsOnOtherPages = filteredAllTutorials.filter(
     (tutorial) =>
-      tutorialsOnThisPage.findIndex((t) => t.id === tutorial.id) === -1
+      filteredTutorialsOnThisPage.findIndex((t) => t.id === tutorial.id) === -1
   );
 
   const handleToggleOpen = () => setOpen((prev) => !prev);
@@ -31,6 +51,7 @@ export const Tutorials: FC<TutorialsProps> = ({ onTutorialStart }) => {
         variant="ghost_icon"
         ref={buttonRef}
         onClick={handleToggleOpen}
+        {...rest}
       >
         <Icon data={youtube_alt} />
       </TopBarButton>
@@ -42,12 +63,12 @@ export const Tutorials: FC<TutorialsProps> = ({ onTutorialStart }) => {
         >
           <Container>
             <Typography variant="h4">
-              Available Tutorials ({allTutorials.length})
+              Available Tutorials ({filteredAllTutorials.length})
             </Typography>
-            {tutorialsOnThisPage.length > 0 && (
+            {filteredTutorialsOnThisPage.length > 0 && (
               <TutorialList>
                 <Typography variant="caption">For current page</Typography>
-                {tutorialsOnThisPage.map((tutorial) => (
+                {filteredTutorialsOnThisPage.map((tutorial) => (
                   <TutorialItem
                     key={tutorial.id}
                     onTutorialStart={onTutorialStart}
@@ -57,8 +78,8 @@ export const Tutorials: FC<TutorialsProps> = ({ onTutorialStart }) => {
                 ))}
               </TutorialList>
             )}
-            {tutorialsOnThisPage.length > 0 &&
-              tutorialsOnOtherPages.length > 0 && <Divider />}
+            {filteredTutorialsOnThisPage.length > 0 &&
+              filteredTutorialsOnThisPage.length > 0 && <Divider />}
             {tutorialsOnOtherPages.length > 0 && (
               <TutorialList>
                 <Typography variant="caption">For other pages</Typography>

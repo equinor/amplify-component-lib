@@ -1,20 +1,14 @@
 import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { add, home, star_half } from '@equinor/eds-icons';
+import { add, home, shopping_basket, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar/index';
-import { MenuItem } from 'src/organisms/SideBar/MenuItem';
+import { MenuItem } from 'src/organisms/SideBar/MenuItem/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
-import {
-  render,
-  screen,
-  userEvent,
-  userEvent,
-  within,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
 
 const defaultMenuItems: SideBarMenuItem[] = [
   {
@@ -56,7 +50,7 @@ test('Renders create new button when onCreate prop is given', () => {
       wrapper: wrapper,
     }
   );
-  const createIcon = screen.getAllByTestId('eds-icon-path')[0];
+  const createIcon = screen.getAllByTestId('eds-icon-path')[1]; // First icon is collapse icon
   expect(createIcon).toHaveAttribute('d', add.svgPathData);
 });
 
@@ -146,4 +140,48 @@ test('Renders bottom item when provided', () => {
   const bottomMenuItem = menuItems[2];
   const bottomText = within(bottomMenuItem).getByText(bottomItemProps.name);
   expect(bottomText).toBeInTheDocument();
+});
+
+test('Collapsing sidebar with open menu item closes it', async () => {
+  const props: SideBarMenuItem = {
+    name: faker.commerce.productName(),
+    icon: shopping_basket,
+    items: [
+      {
+        link: '/dog',
+        name: faker.animal.dog(),
+      },
+      {
+        link: '/cat',
+        name: faker.animal.cat(),
+      },
+    ],
+  };
+
+  render(
+    <SideBar>
+      <SideBar.Item {...props} />
+    </SideBar>,
+    { wrapper: wrapper }
+  );
+  const user = userEvent.setup();
+
+  // Open sidebar
+  const collapseButton = screen.getAllByRole('button')[0];
+  await user.click(collapseButton);
+
+  // Open menu item
+  const menuItemButton = screen.getAllByRole('button')[1];
+  await user.click(menuItemButton);
+
+  for (const item of props.items) {
+    expect(screen.getByText(item.name)).toBeInTheDocument();
+  }
+
+  // Collapse sidebar
+  await user.click(collapseButton);
+
+  for (const item of props.items) {
+    expect(screen.queryByText(item.name)).not.toBeInTheDocument();
+  }
 });

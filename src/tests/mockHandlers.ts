@@ -99,49 +99,36 @@ let activeImpersonateUser: ImpersonateUserDto | undefined = undefined;
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 
-export function fakeTutorial(
-  id: string,
-  willPopUp: boolean,
-  highlightElement: boolean,
-  path?: string
-): MyTutorialDto {
+export function fakeTutorial({
+  id,
+  willPopUp,
+  highlightElement,
+  path,
+  stepAmount = 9,
+}: {
+  id: string;
+  willPopUp: boolean;
+  highlightElement: boolean;
+  path?: string;
+  stepAmount?: number;
+}): MyTutorialDto {
   return {
     id,
     name: faker.commerce.productName(),
     path: path ? path : '/tutorial',
     willPopUp,
     application: environment.getEnvironmentName(import.meta.env.VITE_NAME),
-    steps: [
-      {
-        id: '1',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-      {
-        id: '2',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-      {
-        id: '3',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-      {
-        id: '4',
-        title: faker.vehicle.vehicle(),
-        body: faker.music.artist(),
-        highlightElement,
-      },
-    ],
+    steps: new Array(stepAmount).fill(0).map((_, index) => ({
+      id: index.toString(),
+      title: faker.vehicle.vehicle(),
+      body: faker.music.artist(),
+      highlightElement,
+    })),
   };
 }
 
 export const FAKE_TUTORIALS = TUTORIAL_IDS.map((id, index) =>
-  fakeTutorial(id, index === 0, index === 0)
+  fakeTutorial({ id, willPopUp: index === 0, highlightElement: index === 0 })
 );
 
 function fakeApplication(): AmplifyApplication {

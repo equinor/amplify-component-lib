@@ -1,6 +1,9 @@
 import { faker } from '@faker-js/faker';
 
-import { isCurrentUrl } from './MenuItem.utils';
+import {
+  canNavigate,
+  isCurrentUrl,
+} from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 
 describe('isCurrentUrl', () => {
   test('should return true if currentUrl is equal to link', () => {
@@ -18,4 +21,28 @@ describe('isCurrentUrl', () => {
     const currentUrl = `/`;
     expect(isCurrentUrl({ currentUrl, link: currentUrl })).toBeTruthy();
   });
+});
+
+test('canNavigate returns expected value', () => {
+  const url = '/hei/ho';
+
+  // Top page of current page
+  expect(
+    canNavigate({
+      currentUrl: url,
+      link: '/hei',
+      disabled: false,
+      replace: true,
+    })
+  ).toBe(true);
+
+  // Disabled
+  expect(
+    canNavigate({
+      currentUrl: faker.internet.url(),
+      link: url,
+      disabled: true,
+      replace: true,
+    })
+  ).toBe(false);
 });

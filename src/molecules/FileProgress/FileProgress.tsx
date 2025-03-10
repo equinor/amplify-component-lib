@@ -16,7 +16,7 @@ export interface FileProgressPropsExtension {
  * @param onCancel - call back when clicking cancel
  * @param isError - if the file upload has an error
  * @param isDone - if the file upload is done
- * @param progressPercent - the percentage of the file that has been uploaded, if undefined its considered indeterminate
+ * @param progressPercent - the percentage of the file that has been uploaded
  * @param indeterminate - if the file upload progress is indeterminate
  * @param compact - if the file progress should use compact mode
  * @param fullErrorText - the full error text to show when hovering over the error icon
@@ -35,7 +35,7 @@ export const FileProgress: FC<FileProgressProps> = (props) => {
   const handleOnClick = async () => {
     if (!showCompleteState && props.onCancel) {
       props.onCancel();
-    } else {
+    } else if (props.onDelete) {
       setIsDeleting(true);
       await props.onDelete();
       setIsDeleting(false);

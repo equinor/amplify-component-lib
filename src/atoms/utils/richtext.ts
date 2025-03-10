@@ -79,3 +79,13 @@ export function imageToB64(file: File): Promise<string> {
 export function cleanRichTextValue(value: string) {
   return value.replaceAll(IMG_WITH_SRC_AND_ALT, `<img alt="$2" />`);
 }
+
+export function getImagesFromRichText(value: string): string[] {
+  const images: string[] = [];
+  const matches = value.matchAll(/(<img src="(.*?)" alt=".*?">)/g);
+  for (const match of matches) {
+    images.push(match[2]);
+  }
+
+  return images;
+}

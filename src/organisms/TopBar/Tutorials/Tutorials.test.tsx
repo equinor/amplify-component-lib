@@ -44,12 +44,12 @@ const tutorials: MyTutorialDto[] = new Array(
 )
   .fill(0)
   .map((_, index) =>
-    fakeTutorial(
-      faker.string.uuid(),
-      index !== 0,
-      true,
-      index === 0 ? '/' : undefined
-    )
+    fakeTutorial({
+      id: faker.string.uuid(),
+      willPopUp: index !== 0,
+      highlightElement: true,
+      path: index === 0 ? '/' : undefined,
+    })
   );
 beforeEach(() => {
   worker.resetHandlers(
@@ -80,6 +80,34 @@ test('Renders expected items when opening the tutorials menu', async () => {
     expect(
       screen.getByRole('button', { name: tutorial.name })
     ).toBeInTheDocument();
+  }
+});
+
+test('Hides expected tutorials when providing filter fn', async () => {
+  const filterFunction = (tutorial: MyTutorialDto) => tutorial.willPopUp;
+  render(<Tutorials filterTutorials={filterFunction} />, { wrapper: Wrapper });
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('button'));
+
+  await waitFor(() =>
+    expect(
+      screen.getByText(
+        `Available Tutorials (${tutorials.filter(filterFunction).length})`
+      )
+    ).toBeInTheDocument()
+  );
+
+  for (const tutorial of tutorials) {
+    if (tutorial.willPopUp) {
+      expect(
+        screen.getByRole('button', { name: tutorial.name })
+      ).toBeInTheDocument();
+    } else {
+      expect(
+        screen.queryByRole('button', { name: tutorial.name })
+      ).not.toBeInTheDocument();
+    }
   }
 });
 
@@ -129,4 +157,16 @@ test('Shows "completed" if tutorial has been seen', async () => {
       name: `COMPLETED ${randomTutorial.name}`,
     })
   ).toBeInTheDocument();
+});
+
+test('Able to add html attributes to tutorial button', () => {
+  const randomTestId = faker.animal.dog();
+  const randomId = faker.animal.snake();
+  render(<Tutorials data-testid={randomTestId} id={randomId} />, {
+    wrapper: Wrapper,
+  });
+
+  const button = screen.getByTestId(randomTestId);
+  expect(button).toBeInTheDocument();
+  expect(button).toHaveAttribute('id', randomId);
 });

@@ -1,11 +1,6 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import {
-  error_outlined,
-  thumbs_up,
-  warning_outlined,
-} from '@equinor/eds-icons';
 
 import { AmplifyBar } from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
@@ -26,6 +21,7 @@ import {
   VARIANT_HELPER_TEXT_COLORS,
 } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
+import { VARIANT_ICONS } from 'src/atoms/utils/forms';
 import { getFeatures } from 'src/atoms/utils/richtext';
 
 export interface RichTextEditorProps extends ImageExtensionFnProps {
@@ -108,16 +104,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
     onImageUpload,
   });
 
-  const helperIcon = useMemo(() => {
-    switch (variant) {
-      case 'error':
-        return error_outlined;
-      case 'warning':
-        return warning_outlined;
-      case 'success':
-        return thumbs_up;
-    }
-  }, [variant]);
+  const helperIcon = variant ? VARIANT_ICONS[variant] : undefined;
 
   return (
     <EditorProvider

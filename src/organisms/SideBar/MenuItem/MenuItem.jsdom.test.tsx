@@ -1,20 +1,24 @@
 import { MouseEventHandler, ReactNode } from 'react';
+import { Outlet } from 'react-router';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { home } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { colors, spacings } from 'src/atoms/style';
-import { MenuItem, MenuItemProps } from 'src/organisms/SideBar/MenuItem';
+import {
+  MenuItem,
+  MenuItemProps,
+} from 'src/organisms/SideBar/MenuItem/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/jsdomtest-utils';
 
 type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
 
-function fakeProps(): MenuItemProps {
+function fakeProps(selected = false): MenuItemProps {
   return {
     currentUrl: faker.internet.url(),
-    link: '/page1',
+    link: selected ? '/page1' : '/page2',
     icon: home,
     name: faker.person.jobTitle(),
     onClick: vi.fn() as MenuClickHandler,
@@ -23,15 +27,23 @@ function fakeProps(): MenuItemProps {
 
 const wrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <MemoryRouter initialEntries={['/']}>
-      <Routes>
-        <Route
-          path="/"
-          element={<SideBarProvider>{children}</SideBarProvider>}
-        />
-        <Route path="/page1" element={<p>Page 1</p>} />
-      </Routes>
-    </MemoryRouter>
+    <SideBarProvider>
+      <MemoryRouter initialEntries={['/page1']}>
+        <Routes>
+          <Route
+            element={
+              <div>
+                {children}
+                <Outlet />
+              </div>
+            }
+          >
+            <Route path="/page1" element={<p>page 1</p>} />
+            <Route path="/page2" element={<p>page 2</p>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>
+    </SideBarProvider>
   );
 };
 
@@ -131,8 +143,8 @@ describe('MenuItem', () => {
       });
 
       test('Selected', () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} currentUrl={props.link} />, {
+        const props = fakeProps(true);
+        render(<MenuItem {...props} />, {
           wrapper: wrapper,
         });
 
@@ -160,8 +172,8 @@ describe('MenuItem', () => {
       });
 
       test('Selected + Hover', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} currentUrl={props.link} />, {
+        const props = fakeProps(true);
+        render(<MenuItem {...props} />, {
           wrapper: wrapper,
         });
 
@@ -310,13 +322,12 @@ describe('MenuItem', () => {
       });
 
       test('Selected', () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} currentUrl={props.link} />, {
+        const props = fakeProps(true);
+        render(<MenuItem {...props} />, {
           wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
-        //const svgPath = screen.getByTestId('eds-icon-path');
         const text = screen.queryByText(props.name);
 
         testBaseStyles();
@@ -329,22 +340,16 @@ describe('MenuItem', () => {
         );
         expect(item).toHaveStyleRule('outline', undefined);
 
-        // expect(svgPath.parentElement).toHaveAttribute(
-        //   'fill',
-        //   colors.interactive.primary__resting.rgba
-        // );
-
         expect(text).not.toBeInTheDocument();
       });
 
       test('Selected + Hover', async () => {
-        const props = fakeProps();
-        render(<MenuItem {...props} currentUrl={props.link} />, {
+        const props = fakeProps(true);
+        render(<MenuItem {...props} />, {
           wrapper: wrapper,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
-        //const svgPath = screen.getByTestId('eds-icon-path');
         const text = screen.queryByText(props.name);
 
         const user = userEvent.setup();
@@ -369,11 +374,6 @@ describe('MenuItem', () => {
           modifier: ':hover',
         });
 
-        // expect(svgPath.parentElement).toHaveAttribute(
-        //   'fill',
-        //   colors.interactive.primary__resting.rgba
-        // );
-
         expect(text).not.toBeInTheDocument();
       });
 
@@ -383,7 +383,6 @@ describe('MenuItem', () => {
           wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
-        //const svgPath = screen.getByTestId('eds-icon-path');
         const text = screen.queryByText(props.name);
 
         const user = userEvent.setup();
@@ -402,18 +401,12 @@ describe('MenuItem', () => {
           wrapper: wrapper,
         });
         const item = screen.getByTestId('sidebar-menu-item');
-        //const svgPath = screen.getByTestId('eds-icon-path');
         const text = screen.queryByText(props.name);
 
         testBaseStyles();
 
         expect(item).toHaveAttribute('aria-disabled', 'true');
         expect(item).toHaveStyleRule('background', undefined);
-
-        // expect(svgPath.parentElement).toHaveAttribute(
-        //   'fill',
-        //   colors.interactive.disabled__text.rgba
-        // );
 
         expect(text).not.toBeInTheDocument();
       });

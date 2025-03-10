@@ -15,7 +15,7 @@ import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 import { expect } from 'vitest';
 
 function fakeProps() {
-  const file = new File(['32452134'], 'testfile.png');
+  const file = new File(['32452134'], 'testfile.txt');
 
   return {
     file: file,
@@ -211,11 +211,12 @@ test('Renders compact loading state without progress precent, and click onDelete
 });
 
 test('Renders compact complete state', () => {
-  const { file, onDelete } = fakeProps();
+  const { onDelete } = fakeProps();
 
-  render(<FileProgress file={file} onDelete={onDelete} isDone compact />);
+  const imageFile = new File(['32452134'], 'testfile.png');
+  render(<FileProgress file={imageFile} onDelete={onDelete} isDone compact />);
 
-  const fileName = screen.getByText(file.name);
+  const fileName = screen.getByText(imageFile.name);
   const progressBar = screen.queryByRole('progressbar');
 
   expect(fileName).toBeInTheDocument();
@@ -305,4 +306,18 @@ test('Renders compact default error messages', () => {
   const shortDefaultErrorText = screen.getByText('Invalid file type');
 
   expect(shortDefaultErrorText).toBeInTheDocument();
+});
+
+test('Hides delete button if onDelete is not provided', () => {
+  const { file } = fakeProps();
+
+  const { rerender } = render(
+    <FileProgress file={file} compact indeterminate />
+  );
+
+  expect(screen.queryByTestId('delete-file')).not.toBeInTheDocument();
+
+  rerender(<FileProgress file={file} indeterminate />);
+
+  expect(screen.queryByTestId('delete-file')).not.toBeInTheDocument();
 });
