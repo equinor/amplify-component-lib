@@ -6,6 +6,13 @@ import styled from 'styled-components';
 
 const hookList = [
   {
+    name: 'useSearchParameter',
+    body: 'Returns value and setter for key=value in URL',
+    code: `const [searchValue, setSearchValue] = useSearchParameter<string | undefined>({
+      key: 'search',
+    })`,
+  },
+  {
     name: 'useStepper',
     body: 'Returns stepper methods and state',
     code: `const {  
@@ -15,6 +22,21 @@ const hookList = [
      setCurrentStep: (value: number) => void;
      goToNextStep: () => void;
      goToPreviousStep: () => void; } = useStepper()`,
+  },
+  {
+    name: 'useThemeProvider',
+    body: 'Returns theme and setTheme',
+    code: `const { theme, setTheme } = useThemeProvider()`,
+  },
+  {
+    name: 'useAmplifyKit',
+    body: 'Returns TipTap extensions based on what you pass',
+    code: `const extensions = useAmplifyKit({
+       features,
+       placeholder,
+       onImageUpload,
+       onImageRead 
+     });`,
   },
   {
     name: 'useSignalRMessages',
@@ -67,6 +89,8 @@ showSnackbar(text: string, customProps?: SnackbarProps)\`,
 showSnackbar(object: ShowSnackbar, customProps?: SnackbarProps)`,
   },
 ];
+
+// TODO: Update
 
 const Container = styled.div`
   display: flex;

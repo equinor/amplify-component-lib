@@ -4,22 +4,29 @@ import { Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import { ButtonWithMenu } from './ButtonWithMenu';
-import { QuickFilterProps } from 'src/organisms/Filter/Filter.types';
+import { SelectOptionRequired } from 'src/molecules';
 
-export function QuickFilter<Q>({
-  quickFilterItems,
+interface QuickFilterProps<T extends string> {
+  items: Record<T, SelectOptionRequired[]>;
+  onQuickFilter: (key: T, value: SelectOptionRequired) => void;
+}
+
+export function QuickFilter<T extends string>({
+  items,
   onQuickFilter,
-}: QuickFilterProps<Q>) {
+}: QuickFilterProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <ButtonWithMenu
       onOpenChange={setIsOpen}
-      menuItems={quickFilterItems.map((item) => (
-        <Menu.Item key={item.label} onClick={() => onQuickFilter(item.value)}>
-          {item.label}
-        </Menu.Item>
-      ))}
+      menuItems={(Object.keys(items) as Array<T>).flatMap((key) =>
+        items[key].map((item) => (
+          <Menu.Item key={item.label} onClick={() => onQuickFilter(key, item)}>
+            {item.label}
+          </Menu.Item>
+        ))
+      )}
     >
       <Typography as="span" variant="button" group="navigation">
         Quick filter
