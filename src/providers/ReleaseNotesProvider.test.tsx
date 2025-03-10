@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { ReleaseNote } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
@@ -8,22 +8,9 @@ import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
 import { sortReleaseNotesByDate } from 'src/providers/ReleaseNotesProvider.utils';
 import { renderHook } from 'src/tests/browsertest-utils';
 
-interface WrapperProp {
-  children: ReactNode;
-}
-
-const Wrappers: FC<WrapperProp> = ({ children }) => {
-  const queryClient = new QueryClient();
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ReleaseNotesProvider>{children}</ReleaseNotesProvider>
-    </QueryClientProvider>
-  );
-};
-
 describe('Release notes provider', () => {
   test('should not return any data when enabled is set to false', () => {
-    const wrapper: FC<WrapperProp> = ({ children }) => {
+    const wrapper = ({ children }: { children: ReactNode }) => {
       const queryClient = new QueryClient();
       return (
         <QueryClientProvider client={queryClient}>
