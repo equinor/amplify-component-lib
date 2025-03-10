@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { ReleaseNote } from 'src/organisms/ReleaseNote/ReleaseNote';
-import { render, screen } from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeReleaseNote() {
   return {
@@ -34,4 +34,42 @@ test('Shows expected created date if release date does not exist', async () => {
   render(<ReleaseNote {...props} releaseDate={undefined} />);
   // Created date
   expect(screen.getByText(/april/i)).toBeInTheDocument();
+});
+
+test('Shows version if it has it', async () => {
+  const props = fakeReleaseNote();
+  const version = faker.system.semver();
+  render(<ReleaseNote {...props} version={version} />);
+
+  expect(screen.getByText(version)).toBeInTheDocument();
+});
+
+test('Able to expand it', async () => {
+  const props = fakeReleaseNote();
+  render(<ReleaseNote {...props} />);
+
+  const user = userEvent.setup();
+
+  const showMoreButton = screen.getByRole('button', { name: /more/i });
+  expect(showMoreButton).toBeInTheDocument();
+  await user.click(showMoreButton);
+
+  const showLessButton = screen.getByRole('button', { name: /less/i });
+  expect(showLessButton).toBeInTheDocument();
+  await user.click(showLessButton);
+});
+
+test('Settings startExpanded works as expected', async () => {
+  const props = fakeReleaseNote();
+  render(<ReleaseNote {...props} startExpanded />);
+
+  const user = userEvent.setup();
+
+  const showLessButton = screen.getByRole('button', { name: /less/i });
+  expect(showLessButton).toBeInTheDocument();
+  await user.click(showLessButton);
+
+  const showMoreButton = screen.getByRole('button', { name: /more/i });
+  expect(showMoreButton).toBeInTheDocument();
+  await user.click(showMoreButton);
 });

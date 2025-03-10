@@ -78,7 +78,6 @@ export const ReleaseNote: FC<ReleaseNoteProps> = ({
         RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT) ??
     true;
 
-  console.log(richTextWrapper);
   const handleOnToggleExpand = () => {
     setExpanded((prev) => !prev);
     if (initialHeight.current === 'auto') {
