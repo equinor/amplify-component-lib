@@ -41,7 +41,7 @@ test('Shows version if it has it', async () => {
   const version = faker.system.semver();
   render(<ReleaseNote {...props} version={version} />);
 
-  expect(screen.getByText(version)).toBeInTheDocument();
+  expect(screen.getByText(new RegExp(version))).toBeInTheDocument();
 });
 
 test('Able to expand it', async () => {
