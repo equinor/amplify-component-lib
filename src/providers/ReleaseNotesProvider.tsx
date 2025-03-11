@@ -1,4 +1,11 @@
-import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   ReleaseNote,
@@ -6,6 +13,7 @@ import {
 } from '@equinor/subsurface-app-management';
 
 import { EnvironmentType } from 'src/atoms/enums/Environment';
+import { useLocalStorage } from 'src/atoms/hooks/useLocalStorage';
 import { environment } from 'src/atoms/utils';
 import { environmentAndAppNameToURL } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesDialog.utils';
 import { sortReleaseNotesByDate } from 'src/providers/ReleaseNotesProvider.utils';
@@ -33,6 +41,9 @@ export const useReleaseNotes = (): ReleaseNotesContextState => {
   return context;
 };
 
+const TWO_WEEKS_IN_MS = 1000 * 60 * 60 * 24 * 14;
+const RELEASE_NOTES_WAS_VIEWED_KEY = 'release-notes-was-viewed-key';
+
 interface ReleaseNotesContextProviderProps {
   children: ReactNode;
   enabled?: boolean;
@@ -44,6 +55,11 @@ export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
 }) => {
   const { data } = useReleaseNotesQuery({ enabled });
   const [open, setOpen] = useState(false);
+  const [lastSeenReleaseId, setLastSeenReleaseId] = useLocalStorage(
+    RELEASE_NOTES_WAS_VIEWED_KEY,
+    '',
+    TWO_WEEKS_IN_MS
+  );
 
   const mostRecentReleaseNote = data?.toSorted(sortReleaseNotesByDate).at(0);
 
@@ -59,6 +75,23 @@ export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
     environmentNameWithoutLocalHost,
     applicationName
   );
+
+  useEffect(() => {
+    if (!mostRecentReleaseNote) return;
+
+    const recentReleaseNoteDate = new Date(
+      mostRecentReleaseNote.releaseDate ?? mostRecentReleaseNote.createdDate
+    ).getTime();
+    const nowInMs = Date.now();
+    const timeSinceLastReleaseInMs = nowInMs - recentReleaseNoteDate;
+    if (
+      timeSinceLastReleaseInMs <= TWO_WEEKS_IN_MS &&
+      lastSeenReleaseId !== mostRecentReleaseNote.releaseId
+    ) {
+      setOpen(true);
+      setLastSeenReleaseId(mostRecentReleaseNote.releaseId ?? '');
+    }
+  }, [lastSeenReleaseId, mostRecentReleaseNote, setLastSeenReleaseId]);
 
   return (
     <ReleaseNotesContext.Provider
