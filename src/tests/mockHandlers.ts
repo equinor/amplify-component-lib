@@ -73,7 +73,6 @@ export const FAKE_ROLES: GraphAppRole[] = [
 function fakeUser(): ImpersonateUserDto {
   const firstName = faker.string.uuid();
   const lastName = faker.person.lastName();
-  const fullName = `${firstName} ${lastName}`;
   const uniqueName = faker.internet.username();
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
@@ -81,7 +80,6 @@ function fakeUser(): ImpersonateUserDto {
     id: faker.string.uuid(),
     firstName,
     lastName,
-    fullName,
     uniqueName,
     roles,
     appName: environment.getAppName(import.meta.env.VITE_NAME),

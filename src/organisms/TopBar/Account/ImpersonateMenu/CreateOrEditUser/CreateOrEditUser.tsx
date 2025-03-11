@@ -80,7 +80,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
         id: editingUser.id,
         firstName,
         lastName,
-        fullName: `${firstName} ${lastName}`,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: editingUser.uniqueName,
         appName: editingUser.appName,
