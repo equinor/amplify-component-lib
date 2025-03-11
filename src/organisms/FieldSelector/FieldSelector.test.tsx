@@ -7,7 +7,6 @@ import {
   render,
   screen,
   userEvent,
-  userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
 
@@ -284,4 +283,30 @@ test('Logs error and doesnt include fields which have no name', () => {
     'Field with no name found!:',
     noNameField
   );
+});
+
+test('Able to set item name singular as expected', async () => {
+  const fields = fakeFields();
+  const finishedText = faker.lorem.sentence();
+  const itemName = faker.commerce.productName();
+
+  const setField = vi.fn();
+  const onChangedField = vi.fn();
+
+  render(
+    <FieldSelector
+      setField={setField}
+      fields={fields}
+      isLoading={false}
+      onChangedField={onChangedField}
+      finishedText={finishedText}
+      itemNameSingular={itemName}
+    />
+  );
+
+  expect(screen.getByText(`Please select a ${itemName}`)).toBeInTheDocument();
+
+  expect(screen.getByText(`Select a ${itemName}...`)).toBeInTheDocument();
+
+  expect(screen.getByText(`Missing a ${itemName}?`)).toBeInTheDocument();
 });
