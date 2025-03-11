@@ -4,6 +4,7 @@ import {
   FeatureToggleDto,
   ImpersonateUserDto,
   MyFeatureDto,
+  MyTutorialDto,
   ReleaseNote,
   ReleaseNoteType,
   ServiceNowIncidentResponse,
@@ -21,21 +22,22 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     releaseId: faker.string.uuid(),
     applicationName: 'PWEX',
     version: null,
-    title: 'Improved task board and reporting overview June',
-    body: '<h1>Release notes body text</h1><br/><br/><br/><p>Hei</p>',
+    title: faker.commerce.productName(),
+    body: `<h5>Release notes body text</h5><p>${faker.lorem.paragraphs(6)}</p>`,
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
     draft: false,
-    createdDate: faker.date.past().toDateString(),
+    createdDate: faker.date.past().toISOString(),
+    releaseDate: new Date().toISOString(),
   },
   {
     releaseId: faker.string.uuid(),
     applicationName: 'Acquire',
     version: null,
-    title: 'SEARCH',
-    body: '<h1>Some other text</h1>',
+    title: faker.commerce.productName(),
+    body: `<h5>Release notes body text</h5><p>${faker.lorem.paragraphs(6)}</p>`,
     tags: [ReleaseNoteType.IMPROVEMENT],
     draft: false,
-    createdDate: faker.date.past().toDateString(),
+    createdDate: faker.date.past().toISOString(),
   },
 ];
 
@@ -72,7 +74,6 @@ export const FAKE_ROLES: GraphAppRole[] = [
 function fakeUser(): ImpersonateUserDto {
   const firstName = faker.string.uuid();
   const lastName = faker.person.lastName();
-  const fullName = `${firstName} ${lastName}`;
   const uniqueName = faker.internet.username();
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
@@ -80,7 +81,6 @@ function fakeUser(): ImpersonateUserDto {
     id: faker.string.uuid(),
     firstName,
     lastName,
-    fullName,
     uniqueName,
     roles,
     appName: environment.getAppName(import.meta.env.VITE_NAME),
@@ -95,6 +95,40 @@ export const fakeImpersonateUsers: ImpersonateUserDto[] = [
 ];
 
 let activeImpersonateUser: ImpersonateUserDto | undefined = undefined;
+
+const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
+
+export function fakeTutorial({
+  id,
+  willPopUp,
+  highlightElement,
+  path,
+  stepAmount = 9,
+}: {
+  id: string;
+  willPopUp: boolean;
+  highlightElement: boolean;
+  path?: string;
+  stepAmount?: number;
+}): MyTutorialDto {
+  return {
+    id,
+    name: faker.commerce.productName(),
+    path: path ? path : '/tutorial',
+    willPopUp,
+    application: environment.getEnvironmentName(import.meta.env.VITE_NAME),
+    steps: new Array(stepAmount).fill(0).map((_, index) => ({
+      id: index.toString(),
+      title: faker.vehicle.vehicle(),
+      body: faker.music.artist(),
+      highlightElement,
+    })),
+  };
+}
+
+export const FAKE_TUTORIALS = TUTORIAL_IDS.map((id, index) =>
+  fakeTutorial({ id, willPopUp: index === 0, highlightElement: index === 0 })
+);
 
 function fakeApplication(): AmplifyApplication {
   return {
@@ -133,9 +167,26 @@ export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
   .fill(0)
   .map(() => ({
     uuid: faker.string.uuid(),
+    active: true,
   }));
 
+export const tokenHandler = http.get(`*/api/v1/Token/*`, async () => {
+  await delay('real');
+
+  return HttpResponse.text(faker.lorem.word());
+});
+
+export const getTutorialImageHandler = http.get(
+  `*/api/v1/Tutorial/gettutorialimage/:path`,
+  async () => {
+    return HttpResponse.text(
+      faker.image.dataUri({ width: 1920, height: 1080 })
+    );
+  }
+);
+
 export const handlers = [
+  getTutorialImageHandler,
   http.get('*/api/v1/Tutorial/SASToken', async () => {
     await delay('real');
     return HttpResponse.text(faker.internet.mac());
@@ -168,9 +219,6 @@ export const handlers = [
   }),
   http.post('*/api/v1/ImpersonateUser', async (resolver) => {
     const body = (await resolver.request.json()) as ImpersonateUserDto;
-
-    // Only needed in mocks
-    body.fullName = `${body.firstName} ${body.lastName}`;
 
     fakeImpersonateUsers.push(body);
 
@@ -253,6 +301,12 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(fakeReleaseNotes);
   }),
+  http.get('*/api/v1/ReleaseNotes/getreleasenoteimage/*', async () => {
+    await delay('real');
+    return HttpResponse.text(
+      faker.image.dataUri({ width: 1920, height: 1080 })
+    );
+  }),
   http.get('*/api/v1/ReleaseNotes/GetContainerSasUri', async () => {
     await delay('real');
     return HttpResponse.text(
@@ -289,4 +343,8 @@ export const handlers = [
       return HttpResponse.json(FAKE_FEATURE_TOGGLES);
     }
   ),
+  http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
+    await delay('real');
+    return HttpResponse.json(FAKE_TUTORIALS);
+  }),
 ];

@@ -22,16 +22,11 @@ export type GroupedComboBoxProps<T extends SelectOptionRequired> =
  * @param showHelperIcon - Show helper variant icon, defaults to true
  * @param syncParentChildSelection - Syncs parents/child selections, default is true
  * @param onAddItem - Enables the possibility to add extra tags and is called when submitting a new item, either via menu click 'add' or {Enter}. Not supported with groups prop.
+ * @param addItemSingularWord - Word to use when adding a new item, default is "tag"
  * @param onSearchFilter - Custom filter function for search, default is "item.label.match(new RegExp(searchValue, 'i'))"
  */
 export function ComboBox<T extends SelectOptionRequired>(
   props: ListComboBoxProps<T> | GroupedComboBoxProps<T>
 ) {
-  if ('groups' in props && props.groups && props.onAddItem) {
-    throw new Error(
-      "[ACL - ComboBox] Using 'onAddItem' is only supported in lists and not groups"
-    );
-  }
-
   return <Select {...props} />;
 }

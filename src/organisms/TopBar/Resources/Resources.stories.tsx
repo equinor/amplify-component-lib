@@ -40,55 +40,13 @@ export default {
 export const Primary: StoryFn = (args) => {
   const queryClient = new QueryClient();
 
-  const onClick = () => {
-    console.log('hello');
-  };
-
-  const tutorialOptions = [
-    {
-      description: 'lorem',
-      duration: '2 min ',
-      steps: 'Step by Step',
-      pathName: 'search',
-      onClick: onClick,
-    },
-    {
-      description: 'lorem 2 ',
-      duration: '2 min ',
-      pathName: 'search',
-      steps: 'Step by Step',
-
-      onClick: onClick,
-    },
-    {
-      description: 'lorem 3 ',
-      duration: '2 min ',
-      steps: 'Step by Step',
-      pathName: 'test',
-
-      onClick: onClick,
-    },
-    {
-      description: 'lorem 4 ',
-      duration: '2 min ',
-      steps: 'Step by Step',
-      pathName: 'search',
-
-      onClick: onClick,
-    },
-  ];
-
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <SnackbarProvider>
           <ReleaseNotesProvider>
             <MemoryRouter initialEntries={['/']}>
-              <Resources
-                tutorialOptions={tutorialOptions}
-                {...args}
-                showTutorials
-              />
+              <Resources {...args} />
             </MemoryRouter>
           </ReleaseNotesProvider>
         </SnackbarProvider>

@@ -18,6 +18,7 @@ import {
 import { colors } from 'src/atoms/style/colors';
 import { ListItem } from 'src/molecules/ListItem/ListItem';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
+import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 
 import styled from 'styled-components';
 
@@ -46,7 +47,8 @@ interface UserImpersonationProps extends ImpersonateUserDto {
 }
 
 export const UserImpersonation: FC<UserImpersonationProps> = ({
-  fullName,
+  firstName,
+  lastName,
   uniqueName,
   roles,
   activeUsers,
@@ -57,6 +59,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const fullName = impersonateUserDtoToFullName({ firstName, lastName });
 
   const sortedRoles = [...roles].sort();
 

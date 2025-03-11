@@ -56,6 +56,7 @@ export const RequestStatus: FC<RequestStatusProps> = ({
           group="ui"
           variant="snackbar"
         >
+          {/* v8 ignore next 3 */}
           {requestStatus.status === StatusEnum.error
             ? (requestStatus.errorText ?? DEFAULT_REQUEST_ERROR_MESSAGE)
             : statusText}

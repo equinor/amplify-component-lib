@@ -1,4 +1,9 @@
 import { FC } from 'react';
+import {
+  createMemoryRouter,
+  RouterProvider,
+  useLocation,
+} from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
 
@@ -8,12 +13,7 @@ import {
   StepperProviderProps,
   useStepper,
 } from 'src/providers/StepperProvider';
-import {
-  render,
-  screen,
-  userEvent,
-  userEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeSteps(): StepperProviderProps['steps'] {
   const steps: StepperProviderProps['steps'] = [
@@ -37,12 +37,14 @@ function fakeSteps(): StepperProviderProps['steps'] {
 }
 
 const StepperTestComponent: FC<StepperProps> = (props) => {
+  const { pathname } = useLocation();
   const { currentStep, goToPreviousStep, goToNextStep } = useStepper();
 
   return (
     <div>
       <Stepper {...props} />
       <p>{`Current step: ${currentStep}`}</p>
+      <p>{`Current location: ${pathname}`}</p>
       <button onClick={goToPreviousStep}>Previous</button>
       <button onClick={goToNextStep}>Next</button>
     </div>
@@ -53,7 +55,16 @@ test('Clicking through shows all steps', async () => {
   const steps = fakeSteps();
   render(<StepperTestComponent />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps}>{children}</StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps}>{children}</StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
@@ -69,9 +80,18 @@ test('Clicking past the last step does nothing', async () => {
   const steps = fakeSteps();
   render(<StepperTestComponent />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps} initialStep={steps.length - 1}>
-        {children}
-      </StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps} initialStep={steps.length - 1}>
+                {children}
+              </StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
@@ -92,7 +112,16 @@ test('Clicking previous on the first step does nothing', async () => {
   const steps = fakeSteps();
   render(<StepperTestComponent />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps}>{children}</StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps}>{children}</StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
@@ -109,9 +138,18 @@ test('Clicking a previous step via the label works as expected', async () => {
   const steps = fakeSteps();
   render(<StepperTestComponent />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps} initialStep={steps.length - 1}>
-        {children}
-      </StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps} initialStep={steps.length - 1}>
+                {children}
+              </StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
@@ -130,7 +168,16 @@ test('onlyShowCurrentLabel works as expected', () => {
   const steps = fakeSteps();
   render(<Stepper onlyShowCurrentStepLabel />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps}>{children}</StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps}>{children}</StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
@@ -163,7 +210,16 @@ test('Works as expected with substeps', async () => {
   ];
   render(<StepperTestComponent />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps}>{children}</StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps}>{children}</StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
@@ -205,10 +261,52 @@ test('Works as expected with title in steps', () => {
   ];
   render(<StepperTestComponent />, {
     wrapper: ({ children }) => (
-      <StepperProvider steps={steps}>{children}</StepperProvider>
+      <RouterProvider
+        router={createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <StepperProvider steps={steps}>{children}</StepperProvider>
+            ),
+          },
+        ])}
+      />
     ),
   });
 
   expect(screen.getByText(steps[0].title!)).toBeInTheDocument();
   expect(screen.getByText(steps[0].description!)).toBeInTheDocument();
+});
+
+test('Works as expected with sync to url', async () => {
+  const steps = fakeSteps();
+  render(<StepperTestComponent />, {
+    wrapper: ({ children }) => (
+      <RouterProvider
+        router={createMemoryRouter(
+          [
+            {
+              path: '/create/:step',
+              element: (
+                <StepperProvider steps={steps} syncToURLParam>
+                  {children}
+                </StepperProvider>
+              ),
+            },
+          ],
+          { initialEntries: ['/create/0'] }
+        )}
+      />
+    ),
+  });
+  const user = userEvent.setup();
+
+  expect(screen.getByText(`Current step: 0`)).toBeInTheDocument();
+  expect(screen.getByText(`Current location: /create/0`)).toBeInTheDocument();
+
+  await user.click(screen.getByText('Next'));
+
+  expect(screen.getByText(`Current step: 1`)).toBeInTheDocument();
+
+  expect(screen.getByText(`Current location: /create/1`)).toBeInTheDocument();
 });

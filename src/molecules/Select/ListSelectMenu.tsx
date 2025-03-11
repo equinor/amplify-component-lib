@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Menu } from '@equinor/eds-core-react';
 
 import { AddTagItem } from './AddTagItem';
+import { capitalize } from 'src/atoms/utils/string';
 import {
   NoItemsFoundText,
   NoTagFoundText,
@@ -11,9 +12,11 @@ import {
   ListSelectMenuProps,
   ListSelectProps,
   MultiSelectCommon,
+  MultiSelectMenuItemProps,
   SelectMenuProps,
   SelectOptionRequired,
   SingleSelectCommon,
+  SingleSelectMenuItemProps,
 } from 'src/molecules/Select/Select.types';
 import {
   flattenOptions,
@@ -22,7 +25,7 @@ import {
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
 export const ListSelectMenu = <T extends SelectOptionRequired>(
-  props: ListSelectProps<T> &
+  props: Omit<ListSelectProps<T>, 'onAddItem'> &
     ListSelectMenuProps &
     SelectMenuProps<T> &
     (
@@ -30,18 +33,11 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       | SingleSelectCommon<T>
     )
 ) => {
-  const {
-    search,
-    items,
-    onItemSelect,
-    itemRefs,
-    onItemKeyDown,
-    onSearchFilter,
-  } = props;
+  const { search, items, itemRefs, onItemKeyDown, onSearchFilter } = props;
 
   const filteredItems = useMemo(() => {
     if (search === '') return items;
-    const regexPattern = new RegExp(search, 'i');
+    const regexPattern = new RegExp(search.trim(), 'i');
 
     return flattenOptions(items).filter((item) => {
       if (onSearchFilter !== undefined) {
@@ -52,7 +48,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
     });
   }, [items, onSearchFilter, search]);
 
-  if (filteredItems.length === 0 && !props.onAddItem) {
+  if (filteredItems.length === 0 && (!props.onAddItem || search === '')) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
@@ -60,71 +56,69 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
     (i) => i.children && i.children.length > 0
   );
 
-  if ('values' in props) {
-    const itemProps = filteredItems.map((item, index) => ({
-      childOffset: getChildOffset(filteredItems, index),
-      index: index,
-      item,
-      itemRefs,
-      onItemKeyDown,
-      onItemSelect,
-      itemValue: item.value,
-      values: props.values,
-      parentHasNestedItems: hasNestedItems,
-    }));
-    if ('onAddItem' in props && props.onAddItem && search !== '') {
-      return (
-        <>
-          <Menu.Section title="Add tag" index={0}>
-            <AddTagItem
-              index={0}
-              itemRefs={itemRefs}
-              onItemKeyDown={onItemKeyDown}
-              onAddItem={props.onAddItem}
-            >
-              {search}
-            </AddTagItem>
-          </Menu.Section>
-          <Menu.Section title="Tag search results" index={1}>
-            {itemProps.length > 0 ? (
-              itemProps.map((item, index) => (
-                <SelectMenuItem
-                  key={`menu-item-${index}-${item.itemValue}`}
-                  multiselect
-                  {...item}
-                  index={index + 1}
-                />
-              ))
-            ) : (
-              <NoTagFoundText>
-                No tag for &quot;{search}&quot; found.
-              </NoTagFoundText>
-            )}
-          </Menu.Section>
-        </>
-      );
-    }
+  const itemProps: Array<
+    SingleSelectMenuItemProps<T> | MultiSelectMenuItemProps<T>
+  > = filteredItems.map((item, index) => ({
+    childOffset: getChildOffset(filteredItems, index),
+    index: index,
+    item,
+    itemValue: item.value,
+    parentHasNestedItems: hasNestedItems,
+    ...props,
+  }));
 
-    return itemProps.map((item, index) => (
-      <SelectMenuItem
-        key={`menu-item-${index}-${item.itemValue}`}
-        multiselect
-        {...item}
-      />
-    ));
+  if (
+    'onAddItem' in props &&
+    props.onAddItem &&
+    search !== '' &&
+    ((filteredItems.length === 1 &&
+      filteredItems.at(0)?.label.toLowerCase() !==
+        search.trim().toLowerCase()) ||
+      filteredItems.length !== 1)
+  ) {
+    const singularWord = props.itemSingularWord
+      ? props.itemSingularWord
+      : 'tag';
+    return (
+      <>
+        <Menu.Section title={`Add ${singularWord}`} index={0}>
+          <AddTagItem
+            index={0}
+            itemRefs={itemRefs}
+            onItemKeyDown={onItemKeyDown}
+            onAddItem={props.onAddItem}
+            addItemSingularWord={singularWord}
+          >
+            {search}
+          </AddTagItem>
+        </Menu.Section>
+        <Menu.Section
+          title={`${capitalize(singularWord)} search results`}
+          index={1}
+        >
+          {itemProps.length > 0 ? (
+            itemProps.map((item, index) => (
+              <SelectMenuItem
+                key={`menu-item-${index}-${item.item.value}`}
+                {...item}
+                index={index + 1}
+              />
+            ))
+          ) : (
+            <NoTagFoundText>
+              No {singularWord} for &quot;{search}&quot; found.
+            </NoTagFoundText>
+          )}
+        </Menu.Section>
+      </>
+    );
   }
 
-  return filteredItems.map((item, index) => (
+  return itemProps.map((item, index) => (
     <SelectMenuItem
-      key={`menu-item-${index}-${item.value}`}
-      childOffset={getChildOffset(filteredItems, index)}
+      key={`menu-item-${index}-${item.item.value}`}
+      {...item}
       index={index}
-      item={item}
-      itemRefs={itemRefs}
-      onItemKeyDown={onItemKeyDown}
-      onItemSelect={onItemSelect}
-      parentHasNestedItems={hasNestedItems}
-      value={props.value}
     />
   ));
 };

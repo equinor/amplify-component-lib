@@ -1,9 +1,9 @@
 import {
   FC,
   MouseEvent,
-  MutableRefObject,
   ReactElement,
   ReactNode,
+  RefObject,
   useMemo,
   useRef,
   useState,
@@ -16,7 +16,6 @@ import {
   lightbulb,
   report_bug,
   school,
-  youtube_alt,
 } from '@equinor/eds-icons';
 
 import { TopBarButton } from '../TopBar.styles';
@@ -24,15 +23,11 @@ import { TopBarMenu } from '../TopBarMenu';
 import { TransferToAppDialog } from '../TransferToAppDialog';
 import { Feedback } from './Feedback/Feedback';
 import { FeedbackType } from './Feedback/Feedback.types';
-import { ReleaseNotes } from './ReleaseNotesDialog/ReleaseNotes';
-import {
-  TutorialInfoDialog,
-  tutorialOptions,
-} from './Tutorials/TutorialInfoDialog';
 import { ResourceMenuItem } from './ResourceMenuItem';
 import { amplify_resources, amplify_small_portal } from 'src/atoms/icons';
 import { spacings } from 'src/atoms/style';
 import { environment } from 'src/atoms/utils';
+import { ReleaseNotesDialog } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesDialog';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';
 
 import styled from 'styled-components';
@@ -56,10 +51,8 @@ export interface ResourcesProps {
   hideReleaseNotes?: boolean;
   hideLearnMore?: boolean;
   children?: ReactNode;
-  showTutorials?: boolean;
-  tutorialOptions?: tutorialOptions[];
   customButton?: (
-    ref: MutableRefObject<HTMLButtonElement | null>,
+    ref: RefObject<HTMLButtonElement | null>,
     onToggle: () => void
   ) => ReactElement;
 }
@@ -70,16 +63,13 @@ export const Resources: FC<ResourcesProps> = ({
   hideReleaseNotes = false,
   hideLearnMore = false,
   children,
-  tutorialOptions,
-  showTutorials,
   customButton,
 }) => {
-  const { open: showReleaseNotes, toggle: toggleReleaseNotes } =
+  const { open: showReleaseNotes, setOpen: setOpenReleaseNotes } =
     useReleaseNotes();
   const [isOpen, setIsOpen] = useState(false);
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
   const [openPortal, setOpenPortal] = useState(false);
-  const [openTutorials, setOpenTutorials] = useState(false);
   const [showingResourceSection, setShowingResourceSection] = useState<
     ResourceSection | undefined
   >(undefined);
@@ -108,6 +98,8 @@ export const Resources: FC<ResourcesProps> = ({
     setShowFeedbackDialog(false);
   };
 
+  const handleOnOpenReleaseNoteDialog = () => setOpenReleaseNotes(true);
+
   const handleGoBack = () => setShowingResourceSection(undefined);
 
   const handleLearnMoreClick = () => setShowingResourceSection('learn-more');
@@ -118,15 +110,6 @@ export const Resources: FC<ResourcesProps> = ({
 
   const handleOnClosePortal = () => {
     setOpenPortal(false);
-    closeMenu();
-  };
-
-  const handleOnOpenTutorialDialog = () => {
-    setOpenTutorials(true);
-  };
-
-  const handleOnCloseTutorialDialog = () => {
-    setOpenTutorials(false);
     closeMenu();
   };
 
@@ -141,15 +124,6 @@ export const Resources: FC<ResourcesProps> = ({
               onClick={handleOnOpenPortal}
               isHref
             />
-            {showTutorials && (
-              <ResourceMenuItem
-                text="Tutorials"
-                icon={youtube_alt}
-                onClick={handleOnOpenTutorialDialog}
-                lastItem
-              />
-            )}
-
             {/*// TODO: Remove children when PWEX has change layout in topbar */}
             {children && !hideFeedback && !hideReleaseNotes && (
               <Divider style={{ margin: 0 }} />
@@ -166,13 +140,7 @@ export const Resources: FC<ResourcesProps> = ({
       default:
         return null;
     }
-  }, [
-    children,
-    hideFeedback,
-    hideReleaseNotes,
-    showTutorials,
-    showingResourceSection,
-  ]);
+  }, [children, hideFeedback, hideReleaseNotes, showingResourceSection]);
 
   return (
     <>
@@ -201,7 +169,7 @@ export const Resources: FC<ResourcesProps> = ({
         {resourceSectionContent ? (
           resourceSectionContent
         ) : (
-          <>
+          <section>
             <ResourceMenuItem
               id={FeedbackType.BUG}
               onClick={handleOnOpenFeedbackDialog}
@@ -220,7 +188,7 @@ export const Resources: FC<ResourcesProps> = ({
               <ResourceMenuItem
                 id="release-notes"
                 icon={file_description}
-                onClick={toggleReleaseNotes}
+                onClick={handleOnOpenReleaseNoteDialog}
                 text="Open release notes"
                 isHref
               />
@@ -233,17 +201,10 @@ export const Resources: FC<ResourcesProps> = ({
                 onClick={handleLearnMoreClick}
               />
             )}
-          </>
+          </section>
         )}
       </TopBarMenu>
-      {openTutorials && tutorialOptions && (
-        <TutorialInfoDialog
-          options={tutorialOptions}
-          open={openTutorials}
-          onClose={handleOnCloseTutorialDialog}
-        />
-      )}
-      {showReleaseNotes && <ReleaseNotes />}
+      {showReleaseNotes && <ReleaseNotesDialog />}
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={

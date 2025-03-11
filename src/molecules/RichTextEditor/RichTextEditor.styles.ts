@@ -1,10 +1,10 @@
-import { tokens } from '@equinor/eds-tokens';
 import { EditorContent as TiptapContent } from '@tiptap/react';
 
-import styled from 'styled-components';
+import { colors, shape, spacings, typography } from 'src/atoms/style';
+import { VARIANT_COLORS } from 'src/atoms/style/colors';
+import { Variants } from 'src/atoms/types/variants';
 
-const { spacings, typography, shape, colors } = tokens;
-import { colors as AmplifyColors } from 'src/atoms';
+import styled from 'styled-components';
 
 export interface RichTextContentProps {
   $minHeight?: string;
@@ -25,6 +25,7 @@ export interface EditorStylingProps {
   $highlighted?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
   $border?: boolean;
+  $variant?: Variants;
 }
 
 export const EditorStyling = styled.div<EditorStylingProps>`
@@ -52,20 +53,22 @@ export const EditorStyling = styled.div<EditorStylingProps>`
         : `${colors.ui.background__light.rgba}`};
 
     &[contenteditable='true'] {
-      box-shadow: ${({ $highlighted }) =>
+      box-shadow: ${({ $highlighted, $variant }) =>
         $highlighted
-          ? `inset 0 -2px ${AmplifyColors.dataviz.darkblue.darker}`
-          : `inset 0 -1px ${colors.ui.background__medium.rgba}`};
+          ? `inset 0 -2px ${colors.dataviz.darkblue.darker}`
+          : $variant
+            ? `inset 0 -2px ${VARIANT_COLORS[$variant]}`
+            : `inset 0 -1px ${colors.ui.background__medium.rgba}`};
     }
 
     padding: ${(props) => {
       switch (props.$padding) {
         case 'sm':
-          return spacings.comfortable.small;
+          return spacings.small;
         case 'md':
-          return spacings.comfortable.medium;
+          return spacings.medium;
         case 'lg':
-          return spacings.comfortable.large;
+          return spacings.large;
         case 'none':
         default:
           return 0;
@@ -178,4 +181,25 @@ export const EditorStyling = styled.div<EditorStylingProps>`
     height: 0;
     pointer-events: none;
   }
+`;
+
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LabelWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 ${spacings.small};
+  > p {
+    color: ${colors.text.static_icons__tertiary.rgba};
+  }
+`;
+
+export const HelperWrapper = styled.div`
+  display: flex;
+  gap: ${spacings.small};
+  padding-left: ${spacings.small};
+  margin-top: ${spacings.small};
 `;

@@ -13,9 +13,9 @@ jobs:
     name: ESLint
     uses: ./.github/workflows/eslint.yaml
 
-  test:
-    name: Test
-    uses: ./.github/workflows/test.yaml
+  tests:
+    name: Tests
+    uses: ./.github/workflows/tests.yaml
 
   build:
     name: Build

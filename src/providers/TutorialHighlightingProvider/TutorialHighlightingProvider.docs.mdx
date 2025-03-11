@@ -1,0 +1,70 @@
+
+
+## How to use the TutorialHighlightingProvider
+
+1. Install `@equinor/subsurface-app-management` at `2.5.2` or above
+
+2. Place the `TutorialHighlightingProvider` inside the Routes, usually this would be here:
+
+2.1 If you have any custom content you can add that too
+
+<br />
+
+```typescript dark
+// src/App.tsx
+...
+import { TutorialHighlightingProvider, ... } from '@equinor/amplify-component-lib';
+
+const CUSTOM_CONTENT = {
+   ['my-step-id']: <p>Some custom content</p> // can also be a component
+}
+
+export function App() {
+  const { isOpen } = useSideBar();
+
+  return (
+    <TutorialHighlightingProvider customStepContent={CUSTOM_CONTENT}>
+      <Template.GlobalStyles />
+      <Template>
+        <ApplicationTopBar />
+        <Template.Container>
+          <ApplicationSideBar />
+          <Template.Content $open={isOpen} id="content">
+            <Outlet />
+          </Template.Content>
+        </Template.Container>
+      </Template>
+    </TutorialHighlightingProvider>
+  );
+}
+```
+
+This needs to be placed within the Routes, because it uses hooks from `react-router` to figure out what path you are on
+
+
+3. Add the `<TopBar.Tutorials>` component to the topbar to make the menu  accessible to the user
+
+
+4. Create your tutorial in SAM and copy the tutorials ID to your app so you can use them to generate the correct IDs for the elements you want to highlight
+
+```tsx dark
+// src/constants/tutorials.ts
+const MY_TUTORIAL_ID = 'my-tutorial-id';
+
+// src/pages/SomeRandomPage.tsx
+import { highlightTutorialElementID } from '@equinor/amplify-component-lib';
+
+export const SomeRandomPage = () => {
+
+  return (
+   <div>
+      <h1>This is the header</h1>
+      <div id={highlightTutorialElementID(MY_TUTORIAL_ID, 0)}>First step in the tutorial!</div>
+      <section>Unrelated content</section>
+      <div id={highlightTutorialElementID(MY_TUTORIAL_ID, 1)}>Second step in the tutorial!</div>
+   </div>
+  );
+};
+```
+
+This function takes in the tutorial ID and the step index, and generates a unique ID for the element you want to highlight. This is then again used by the `TutorialHighlightingProvider` to figure out the elements position and size.

@@ -1,0 +1,49 @@
+name: "Tests"
+
+on:
+  workflow_call:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    outputs:
+      tests_failed: ${{ steps.set_failed.outputs.tests_failed }}
+      coverage_failed: ${{ steps.set_coverage.outputs.coverage_failed }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install playwright with dependencies
+        run: bunx playwright install --with-deps chromium
+
+      - name: Tests
+        timeout-minutes: 15
+        run: bun run test:ci -- --coverage --coverage.report=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
+
+      - name: Set coverage_failed
+        if: success() || failure()
+        id: set_coverage
+        run: |
+          echo "coverage_failed=$(grep -q 'ERROR: Coverage' ./stderr.txt && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+
+      - name: Report Coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+
+  check-coverage:
+    runs-on: ubuntu-latest
+    if: ${{ success() || failure() }}
+    needs: [tests]
+
+    steps:
+      - name: Check if coverage failed
+        if: ${{ contains(needs.tests.outputs.coverage_failed, 'true')}}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Coverage failed!')

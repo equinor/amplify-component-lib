@@ -1,38 +1,15 @@
 import { Button, ButtonProps } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+
+import { shape, spacings } from 'src/atoms';
 
 import styled from 'styled-components';
 
-const { colors, shape } = tokens;
-
-interface MenuItemContainerProps {
-  $active?: boolean;
-}
-
-export const MenuItemContainer = styled.div<MenuItemContainerProps>`
+export const MenuItemContainer = styled.div`
   display: flex;
   align-self: stretch;
-  align-items: center;
-  height: 64px;
-  padding: 0 14px;
-  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   box-sizing: border-box;
-  cursor: pointer;
-
-  ${({ $active }) =>
-    $active &&
-    `background: ${colors.interactive.primary__selected_highlight.rgba};`}
-  &:hover {
-    background: ${({ $active }) =>
-      $active
-        ? colors.interactive.primary__selected_hover.rgba
-        : colors.interactive.primary__hover_alt.rgba};
-
-    > button {
-      border-color: ${colors.interactive.primary__hover.rgba};
-      background: ${colors.interactive.primary__hover.rgba};
-    }
-  }
+  padding-top: ${spacings.medium_small};
+  padding-left: 14px;
 `;
 
 interface CreateButtonProps extends ButtonProps {

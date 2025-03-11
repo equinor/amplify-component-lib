@@ -1,12 +1,13 @@
 import { ChangeEvent, FC, useMemo, useState } from 'react';
 
-import { DatePicker } from '@equinor/eds-core-react';
+import { DatePicker, Tabs } from '@equinor/eds-core-react';
 import { gear, van } from '@equinor/eds-icons';
+import { actions } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { Filter } from './Filter';
+import { Filter } from '.';
 import { formatDate } from 'src/atoms';
-import { SelectOptionRequired, SingleSelect } from 'src/molecules';
+import { ComboBox, SelectOptionRequired, SingleSelect } from 'src/molecules';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
 
 const CAR_SIZE = [
@@ -14,66 +15,68 @@ const CAR_SIZE = [
   { value: 'size', label: 'Kei car' },
   { value: 'size', label: 'Family van' },
 ];
-const MANUFACTURER = [
-  { key: 'toyota', label: 'トヨタ (Toyota)' },
-  { key: 'mazda', label: 'マツダ (Mazda)' },
-  { key: 'created-by', label: '鈴木 (Suzuki)' },
+const MANUFACTURERS = [
+  { value: 'toyota', label: 'トヨタ (Toyota)' },
+  { value: 'mazda', label: 'マツダ (Mazda)' },
+  { value: 'created-by', label: '鈴木 (Suzuki)' },
 ];
 
-type FilterStoryProps = FilterProps<string, string, string> & {
+enum Sorting {
+  Name = 'Name',
+  Date = 'Date',
+}
+
+type FilterStoryProps = FilterProps<string> & {
   withIcons?: boolean;
+  withSorting?: boolean;
+  withQuickFilter?: boolean;
+  withTabs?: boolean;
 };
 
 const Wrapper: FC<FilterStoryProps> = (props) => {
   const [carSize, setCarSize] = useState<SelectOptionRequired | undefined>(
     undefined
   );
-  const [manufacturer, setManufacturer] = useState(
-    props.values?.find((value) =>
-      MANUFACTURER.some((manufacturer) => manufacturer.key === value.key)
-    )
-  );
+  const [manufacturer, setManufacturer] = useState<SelectOptionRequired[]>([]);
   const [manufacturerDate, setManufacturerDate] = useState<Date | undefined>(
     undefined
   );
   const [search, setSearch] = useState<string>('');
   const [searchTags, setSearchTags] = useState<string[]>([]);
-  const [sortValue, setSortValue] = useState<string | undefined>(
-    'sortValue' in props ? props.sortValue : undefined
-  );
+  const [sortValue, setSortValue] = useState<Sorting>(Sorting.Name);
 
   const values = useMemo(() => {
-    const all: FilterProps<string, string, string>['values'] = [];
+    const all: FilterProps<string>['values'] = {};
 
     if (carSize) {
-      if (props.withIcons) {
-        all.push({ key: carSize.value, label: carSize.label, icon: van });
-      } else {
-        all.push({ key: carSize.value, label: carSize.label });
-      }
+      all['carSize'] = [
+        { ...carSize, icon: props.withIcons ? van : undefined },
+      ];
     }
 
     if (manufacturer) {
-      if (props.withIcons) {
-        all.push({ ...manufacturer, icon: gear });
-      } else {
-        all.push(manufacturer);
-      }
+      all['manufacturer'] = manufacturer.map((item) => ({
+        ...item,
+        icon: props.withIcons ? gear : undefined,
+      }));
     }
 
     if (manufacturerDate) {
-      all.push({
-        key: 'manufacturer-date',
-        label: `Manufactured: ${formatDate(manufacturerDate, {
-          format: 'DD. month YYYY',
-        })}`,
-      });
+      all['manufacturerDate'] = [
+        {
+          value: manufacturerDate.toDateString(),
+          label: `Manufactured: ${formatDate(manufacturerDate, {
+            format: 'DD. month YYYY',
+          })}`,
+        },
+      ];
     }
 
     if (searchTags) {
-      for (const [index, searchTag] of searchTags.entries()) {
-        all.push({ key: `search-${index}`, label: searchTag });
-      }
+      all['search'] = searchTags.map((searchTag) => ({
+        value: searchTag,
+        label: searchTag,
+      }));
     }
 
     return all;
@@ -85,62 +88,70 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     setCarSize(value);
   };
 
-  const handleOnSelectCreatedBy = (value: SelectOptionRequired | undefined) => {
-    if (value) {
-      setManufacturer({ key: value.value, label: value.label });
-    } else {
-      setManufacturer(undefined);
-    }
+  const handleSelectManufacturer = (value: SelectOptionRequired[]) => {
+    setManufacturer(value);
   };
 
   const handleOnChangManufacturerDate = (value: Date | null) => {
     setManufacturerDate(value || undefined);
   };
 
-  const handleOnClearFilter = (value: string) => {
-    if (MANUFACTURER.some((manufacturer) => manufacturer.key === value)) {
-      setManufacturer(undefined);
-    } else if (CAR_SIZE.some((size) => size.value === value)) {
-      setCarSize(undefined);
-    } else if (value === 'manufacturer-date') {
-      setManufacturerDate(undefined);
-    } else if (value.includes('search')) {
-      setSearchTags((prev) => {
-        const copy = [...prev];
-        const index = Number(value.split('-')[1]);
-        copy.splice(index, 1);
-        return copy;
-      });
+  const handleOnClearFilter = (key: string, index: number) => {
+    actions('onClearFilter').onClearFilter(key, index);
+    switch (key) {
+      case 'carSize':
+        setCarSize(undefined);
+        break;
+      case 'manufacturer':
+        setManufacturer(() => {
+          const copy = structuredClone(values['manufacturer']);
+          copy.splice(index, 1);
+          return copy;
+        });
+        break;
+      case 'manufacturerDate':
+        setManufacturerDate(undefined);
+        break;
+      case 'search':
+        setSearchTags(() => {
+          const copy = structuredClone(values['search']);
+          copy.splice(index, 1);
+          return copy.map((item) => item.value);
+        });
+        break;
     }
   };
 
   const handleOnClearAllFilters = () => {
+    actions('onClearAllFilters').onClearAllFilters();
     setCarSize(undefined);
-    setManufacturer(undefined);
+    setManufacturer([]);
     setManufacturerDate(undefined);
-    setSearch('');
+    setSearchTags([]);
   };
 
-  const handleOnSearch = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    actions('onSearchChange').onSearchChange(event.target.value);
     setSearch(event.target.value);
   };
 
   const handleOnSearchEnter = (value: string) => {
+    actions('onSearchEnter').onSearchEnter(value);
     setSearchTags((prev) => [...prev, value]);
     setSearch('');
   };
 
-  const handleOnSortSelect = (value: string) => {
-    setSortValue(value);
-  };
-
-  const handleOnQuickFilter = (value: string) => {
-    const [group, index] = value.split('-');
-
-    if (group === 'manufacturer') {
-      setManufacturer(MANUFACTURER[Number(index)]);
-    } else {
-      setCarSize(CAR_SIZE[Number(index)]);
+  const handleOnQuickFilter = (key: string, value: SelectOptionRequired) => {
+    switch (key) {
+      case 'manufacturer':
+        setManufacturer((prev) => {
+          if (prev.findIndex((item) => item.value === value.value) === -1) {
+            return [...prev, value];
+          } else {
+            return prev.filter((item) => item.value !== value.value);
+          }
+        });
+        break;
     }
   };
 
@@ -150,22 +161,40 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       values={values}
       search={search}
       onSearchEnter={handleOnSearchEnter}
-      onSearchChange={handleOnSearch}
+      onSearchChange={handleOnSearchChange}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
-      {...('sortValue' in props
-        ? {
-            sortValue,
-            sortItems: props.sortItems,
-            onSortChange: handleOnSortSelect,
-          }
-        : {})}
-      {...('quickFilterItems' in props
-        ? {
-            quickFilterItems: props.quickFilterItems,
-            onQuickFilter: handleOnQuickFilter,
-          }
-        : {})}
+      topContent={
+        props.withTabs ? (
+          <Tabs>
+            <Tabs.Tab active>All categories</Tabs.Tab>
+            <Tabs.Tab>One</Tabs.Tab>
+            <Tabs.Tab>Two</Tabs.Tab>
+          </Tabs>
+        ) : undefined
+      }
+      inlineContent={
+        <>
+          {props.withQuickFilter && (
+            <Filter.QuickFilter
+              items={{
+                manufacturer: [MANUFACTURERS[0]],
+              }}
+              onQuickFilter={handleOnQuickFilter}
+            />
+          )}
+          {props.withSorting && (
+            <Filter.SortMenu
+              value={sortValue}
+              onChange={setSortValue}
+              items={Object.values(Sorting).map((value) => ({
+                value,
+                label: value,
+              }))}
+            />
+          )}
+        </>
+      }
     >
       <DatePicker
         label="Manufacturer date"
@@ -185,18 +214,11 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
           onSelect={handleOnSelectEnvironment}
           items={CAR_SIZE}
         />
-        <SingleSelect
-          value={
-            manufacturer
-              ? { value: manufacturer.key, label: manufacturer.label }
-              : undefined
-          }
+        <ComboBox
+          values={manufacturer}
           label="Created by"
-          onSelect={handleOnSelectCreatedBy}
-          items={MANUFACTURER.map((item) => ({
-            value: item.key,
-            label: item.label,
-          }))}
+          onSelect={handleSelectManufacturer}
+          items={MANUFACTURERS}
         />
       </div>
     </Filter>
@@ -213,6 +235,41 @@ const meta: Meta<FilterStoryProps> = {
       type: 'figma',
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=9801-44479&t=iOpa7kGdXfEcX6sJ-4',
     },
+    docs: {
+      source: {
+        code: `<Filter {...props} 
+   inlineContent={
+      <Filter.QuickFilter
+        items={{
+          manufacturer: [MANUFACTURERS[0]],
+        }}
+        onQuickFilter={handleOnQuickFilter}
+      />
+      <Filter.SortMenu
+        value={sortValue}
+        onChange={setSortValue}
+        items={Object.values(Sorting).map((value) => ({
+          value,
+          label: value,
+        }))}
+      />
+  } 
+>
+  <DatePicker label="Manufacturer date" />
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '1rem',
+    }}
+  >
+    <SingleSelect label="Car size" />
+    <ComboBox label="Created by" />
+  </div>
+</Filter>
+        `,
+      },
+    },
   },
   argTypes: {
     values: {
@@ -228,7 +285,6 @@ const meta: Meta<FilterStoryProps> = {
       control: { type: 'text' },
     },
     initialOpen: { type: 'boolean', description: 'Default is false' },
-    showClearFiltersButton: { type: 'boolean', description: 'Default is true' },
     onClearFilter: {
       type: 'function',
       description: 'Callback when specific filters is cleared',
@@ -251,72 +307,46 @@ export default meta;
 type Story = StoryObj<FilterStoryProps>;
 
 export const Default: Story = {
-  args: {
-    values: [MANUFACTURER[1]],
-  },
+  args: {},
 };
 
 export const ValuesWithIcons: Story = {
   args: {
-    values: [MANUFACTURER[1]],
     withIcons: true,
   },
 };
 
 export const WithEmptyValues: Story = {
-  args: {
-    values: [],
-  },
+  args: {},
 };
 
 export const InitialOpen: Story = {
   args: {
-    values: [MANUFACTURER[1]],
     initialOpen: true,
-  },
-};
-
-export const WithoutClearButton: Story = {
-  args: {
-    values: [MANUFACTURER[1]],
-    initialOpen: true,
-    showClearFiltersButton: false,
   },
 };
 
 export const WithSorting: Story = {
   args: {
-    sortValue: 'added-new',
-    sortItems: [
-      { value: 'added-new', label: 'Added Newest' },
-      { value: 'added-old', label: 'Added Oldest' },
-      { value: 'edited-new', label: 'Edited Newest' },
-      { value: 'edited-old', label: 'Edited Oldest' },
-    ],
+    withSorting: true,
   },
 };
 
 export const WithQuickFilter: Story = {
   args: {
-    quickFilterItems: [
-      { value: 'size-0', label: CAR_SIZE[0].label },
-      { value: 'manufacturer-0', label: MANUFACTURER[0].label },
-    ],
+    withQuickFilter: true,
   },
 };
 
 export const WithBoth: Story = {
   args: {
-    sortValue: 'added-new',
-    sortItems: [
-      { value: 'added-new', label: 'Added Newest' },
-      { value: 'added-old', label: 'Added Oldest' },
-      { value: 'edited-new', label: 'Edited Newest' },
-      { value: 'edited-old', label: 'Edited Oldest' },
-    ],
-    quickFilterItems: [
-      { value: 'size-0', label: CAR_SIZE[0].label },
-      { value: 'manufacturer-0', label: MANUFACTURER[0].label },
-    ],
+    withSorting: true,
+    withQuickFilter: true,
+  },
+};
+
+export const WithTopContent: Story = {
+  args: {
+    withTabs: true,
   },
 };

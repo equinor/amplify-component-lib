@@ -14,8 +14,9 @@ export const FormatDate: StoryFn = () => {
       format: 'DD.MM.YYYY' | 'DD. month YYYY' | 'YYYY-MM-DD' | 'DD.MM.YY' | 'DD. month',
       month?: 'short' | 'long'
   ) => formatted string
-  # formatDate(new Date()) => 16.06.2021
+  # formatDate(new Date()) => 16. June 2021
   # formatDate(new Date(), {format: 'DD.MM.YYYY'}) => 16.06.2021
+  # formatDate(new Date(), {format: 'DD.MM.YY'}) => 16.06.21
   # formatDate(new Date(), {format: 'YYYY-MM-DD'}) => 2021-06-16
   # formatDate(new Date(), {format: 'DD. month YYYY'}) => 16. June 2021
   # formatDate(new Date(), {format: 'DD. month', month: 'short'}) => 16. Dec

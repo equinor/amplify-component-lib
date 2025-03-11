@@ -1,6 +1,13 @@
 import { faker } from '@faker-js/faker';
 
-import { cleanRichTextValue, extractImageUrls, imageToB64 } from './richtext';
+import {
+  cleanRichTextValue,
+  extractImageUrls,
+  getFeatures,
+  getImagesFromRichText,
+  imageToB64,
+} from './richtext';
+import { RichTextEditorFeatures } from 'src/molecules';
 
 test('"extractImageUrls" works as expected', () => {
   const fakeUrl = faker.image.url();
@@ -36,4 +43,20 @@ test('"cleanRichTextValue" works as expected', () => {
   const cleaned = cleanRichTextValue(fakeText);
 
   expect(cleaned).not.toContain('src');
+});
+
+test('"getImagesFromRichText" works as expected', () => {
+  const fakeUrl = faker.image.url();
+  const fakeText = `<p>this is some text</p><img src="${fakeUrl}" alt="${fakeUrl}">`;
+
+  const images = getImagesFromRichText(fakeText);
+
+  expect(images).toHaveLength(1);
+  expect(images[0]).toBe(fakeUrl);
+});
+
+test('Throws error if trying to get image features without handlers', () => {
+  expect(() =>
+    getFeatures({ extendFeatures: [RichTextEditorFeatures.IMAGES] })
+  ).toThrowError();
 });

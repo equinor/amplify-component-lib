@@ -1,16 +1,36 @@
 import { useEffect, useState } from 'react';
 
-import { Meta, StoryFn } from '@storybook/react';
+import { faker } from '@faker-js/faker';
+import { Meta, StoryObj } from '@storybook/react';
 
-import {
-  CompactFileProgressBaseProps,
-  FileProgress,
-  RegularFileProgressBaseProps,
-} from 'src/molecules/FileProgress/FileProgress';
+import { FileProgress } from 'src/molecules/FileProgress/FileProgress';
+import { FileProgressProps } from 'src/molecules/FileProgress/FileProgress.types';
+
+const StoryComponent = (args: FileProgressProps) => {
+  const [file, setFile] = useState<File | undefined>(undefined);
+
+  useEffect(() => {
+    if (!(args.file instanceof File) && typeof args.file[0] === 'string') {
+      // Has uploaded file to storybook
+      const handleSetFile = async () => {
+        const response = await fetch((args.file as unknown as string[])[0]);
+        const blob = (await response.blob()) as File;
+        setFile(blob);
+      };
+      handleSetFile();
+    }
+  }, [args.file]);
+
+  if (args.file instanceof File || file === undefined) {
+    return <FileProgress {...args} />;
+  }
+
+  return <FileProgress {...args} file={file} />;
+};
 
 const meta: Meta<typeof FileProgress> = {
   title: 'Molecules/FileProgress',
-  component: FileProgress,
+  component: StoryComponent,
   parameters: {
     design: {
       type: 'figma',
@@ -38,8 +58,18 @@ const meta: Meta<typeof FileProgress> = {
   },
   args: {
     compact: false,
-    file: new File([], 'Image.png'),
-    progressPercent: 1,
+    file: new File(
+      [
+        new ArrayBuffer(
+          faker.number.int({ min: Math.pow(10, 7), max: Math.pow(10, 9) })
+        ),
+      ],
+      `${faker.commerce.productName().replaceAll(' ', '_')}.${faker.system.fileExt('image/png')}`,
+      {
+        type: 'image/png',
+      }
+    ),
+    progressPercent: undefined,
     isDone: false,
     customLoadingText: undefined,
     customCompleteText: undefined,
@@ -54,26 +84,56 @@ const meta: Meta<typeof FileProgress> = {
 
 export default meta;
 
-export const Primary: StoryFn<
-  RegularFileProgressBaseProps | CompactFileProgressBaseProps
-> = (args) => {
-  const [file, setFile] = useState<File | undefined>(undefined);
+type Story = StoryObj<FileProgressProps>;
 
-  useEffect(() => {
-    if (!(args.file instanceof File) && typeof args.file[0] === 'string') {
-      // Has uploaded file to storybook
-      const handleSetFile = async () => {
-        const response = await fetch((args.file as unknown as string[])[0]);
-        const blob = (await response.blob()) as File;
-        setFile(blob);
-      };
-      handleSetFile();
-    }
-  }, [args.file]);
+export const Default: Story = {
+  args: {
+    indeterminate: true,
+  },
+};
 
-  if (args.file instanceof File || file === undefined) {
-    return <FileProgress {...args} />;
-  }
+export const Compact: Story = {
+  args: {
+    indeterminate: true,
+    compact: true,
+  },
+};
 
-  return <FileProgress {...args} file={file} />;
+export const ProgressPercent: Story = {
+  args: {
+    progressPercent: 75,
+  },
+};
+
+export const ProgressPercentCompact: Story = {
+  args: {
+    compact: true,
+    progressPercent: 75,
+  },
+};
+
+export const Error: Story = {
+  args: {
+    isError: true,
+  },
+};
+
+export const ErrorCompact: Story = {
+  args: {
+    isError: true,
+    compact: true,
+  },
+};
+
+export const WithoutDelete: Story = {
+  args: {
+    onDelete: undefined,
+  },
+};
+
+export const WithoutDeleteCompact: Story = {
+  args: {
+    compact: true,
+    onDelete: undefined,
+  },
 };

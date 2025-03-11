@@ -1,21 +1,8 @@
-import React, { forwardRef } from 'react';
+import { forwardRef, Fragment } from 'react';
 
-import { colors } from 'src/atoms/style';
 // Needs to be relative path for the type to be importable after build
 import { SizeIconProps } from 'src/atoms/types';
-
-const colorSwitch = (color?: 'red' | 'white' | 'black') => {
-  switch (color) {
-    case 'red':
-      return colors.logo.fill_positive.rgba;
-    case 'white':
-      return colors.logo.fill_negative.rgba;
-    case 'black':
-      return '#000';
-    default:
-      return colors.logo.fill_positive.rgba;
-  }
-};
+import { colorSwitch } from 'src/molecules/EquinorLogo/EquinorLogo.utils';
 
 export interface EquinorLogoProps extends Partial<SizeIconProps> {
   large?: boolean;
@@ -24,7 +11,7 @@ export interface EquinorLogoProps extends Partial<SizeIconProps> {
 
 export const EquinorLogo = forwardRef<SVGSVGElement, EquinorLogoProps>(
   ({ large, color, size }, ref) => (
-    <React.Fragment>
+    <Fragment>
       {large ? (
         <svg
           width={size ? size * 2 : 24 * 2} // Size should be related to the Equinor Logo itself and not the text-size,
@@ -62,7 +49,7 @@ export const EquinorLogo = forwardRef<SVGSVGElement, EquinorLogoProps>(
           />
         </svg>
       )}
-    </React.Fragment>
+    </Fragment>
   )
 );
 

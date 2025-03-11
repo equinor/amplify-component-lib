@@ -113,7 +113,7 @@ export const VARIANT_COLORS: Record<Variants, string> = {
   dirty: colors.infographic.substitute__blue_ocean.rgba,
 } as const;
 
-export const VARIANT_HELPER_COLORS: Record<Variants, string> = {
+export const VARIANT_HELPER_TEXT_COLORS: Record<Variants, string> = {
   warning: colors.interactive.warning__hover.rgba,
   error: colors.interactive.danger__hover.rgba,
   success: colors.interactive.success__hover.rgba,

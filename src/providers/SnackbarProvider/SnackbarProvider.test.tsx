@@ -1,4 +1,14 @@
+import { ReactNode } from 'react';
+
+import { ApiError } from '@equinor/subsurface-app-management';
+import { ApiRequestOptions } from '@equinor/subsurface-app-management/dist/api/core/ApiRequestOptions';
+import { ApiResult } from '@equinor/subsurface-app-management/dist/api/core/ApiResult';
 import { faker } from '@faker-js/faker';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
 
 import {
   ShowSnackbar,
@@ -7,11 +17,29 @@ import {
 } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { snackbarIcon } from 'src/providers/SnackbarProvider/SnackbarProvider.utils';
 import {
+  render,
   renderHook,
   screen,
   userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
+
+function TestProviders({
+  showAPIErrors = true,
+  children,
+}: {
+  showAPIErrors?: boolean;
+  children: ReactNode;
+}) {
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SnackbarProvider showAPIErrors={showAPIErrors}>
+        {children}
+      </SnackbarProvider>
+    </QueryClientProvider>
+  );
+}
 
 test("'useSnackbar' hook throws error if using outside of context", () => {
   // Hides console errors since this test explicitly tests for thrown errors
@@ -23,7 +51,7 @@ test("'useSnackbar' hook throws error if using outside of context", () => {
 
 test("'useSnackbar' showSnackbar function works as expected", () => {
   const { result } = renderHook(() => useSnackbar(), {
-    wrapper: SnackbarProvider,
+    wrapper: TestProviders,
   });
 
   const snackBarText = faker.animal.dog();
@@ -38,7 +66,7 @@ describe('Works as expected with variants', () => {
   for (const variant of variants) {
     test(variant, async () => {
       const { result } = renderHook(() => useSnackbar(), {
-        wrapper: SnackbarProvider,
+        wrapper: TestProviders,
       });
 
       const snackBarText = faker.animal.dog();
@@ -63,7 +91,7 @@ describe('Works as expected with variants', () => {
 
 test("'useSnackbar' showSnackbar function works as expected with custom props", async () => {
   const { result } = renderHook(() => useSnackbar(), {
-    wrapper: SnackbarProvider,
+    wrapper: TestProviders,
   });
 
   const snackBarText = faker.animal.dog();
@@ -83,7 +111,7 @@ test("'useSnackbar' showSnackbar function works as expected with custom props", 
 
 test("'useSnackbar' showSnackbar function works as expected with action", async () => {
   const { result } = renderHook(() => useSnackbar(), {
-    wrapper: SnackbarProvider,
+    wrapper: TestProviders,
   });
 
   const actionText = faker.animal.cat();
@@ -107,8 +135,11 @@ test("'useSnackbar' showSnackbar function works as expected with action", async 
 
 test("'useSnackbar' setActionDisabledState function works as expected with action", async () => {
   const { result } = renderHook(() => useSnackbar(), {
-    wrapper: SnackbarProvider,
+    wrapper: TestProviders,
   });
+
+  // Calling this should do nothing since there is no snackbar
+  result.current.setActionDisabledState(true);
 
   const actionText = faker.animal.cat();
   const customActionHandler = vi.fn();
@@ -138,7 +169,7 @@ test("'useSnackbar' setActionDisabledState function works as expected with actio
 
 test("'useSnackbar' action is not visible and setActionDisabledState does nothing in that case", async () => {
   const { result } = renderHook(() => useSnackbar(), {
-    wrapper: SnackbarProvider,
+    wrapper: TestProviders,
   });
 
   const actionText = faker.animal.cat();
@@ -155,7 +186,7 @@ test("'useSnackbar' action is not visible and setActionDisabledState does nothin
 
 test("'useSnackbar' hideSnackbar works as expected", async () => {
   const { result } = renderHook(() => useSnackbar(), {
-    wrapper: SnackbarProvider,
+    wrapper: TestProviders,
   });
 
   const snackbarText = faker.animal.cat();
@@ -173,4 +204,49 @@ test("'useSnackbar' hideSnackbar works as expected", async () => {
   await waitFor(() =>
     expect(screen.queryByText(snackbarText)).not.toBeInTheDocument()
   );
+});
+
+function TestComponent({ errorBody = false }: { errorBody?: boolean }) {
+  useQuery({
+    queryKey: ['somekey'],
+    queryFn: async () => {
+      return new Promise((_, reject) => {
+        const options: ApiRequestOptions = {
+          method: 'GET',
+          url: '/some-random-url',
+        };
+        const result: ApiResult = {
+          body: errorBody ? { userMessage: 'Body error' } : {},
+          ok: false,
+          status: 500,
+          statusText: '',
+          url: '',
+        };
+        reject(new ApiError(options, result, 'API error'));
+      });
+    },
+    retry: false,
+  });
+
+  return <p>this is the page</p>;
+}
+
+test('Shows error snackbar when API error happens without error body', async () => {
+  render(<TestComponent />, { wrapper: TestProviders });
+  await waitFor(() => screen.getByText('500: API error'), { timeout: 2000 });
+});
+
+test('Shows error snackbar when API error happens with error body', async () => {
+  render(<TestComponent errorBody />, { wrapper: TestProviders });
+  await waitFor(() => screen.getByText('500: Body error'), { timeout: 2000 });
+});
+
+test("Doesn't show api error snackbar if its disabled", async () => {
+  render(<TestComponent />, {
+    wrapper: ({ children }) => (
+      <TestProviders showAPIErrors={false}>{children}</TestProviders>
+    ),
+  });
+
+  expect(screen.queryByText('500: API error')).not.toBeInTheDocument();
 });

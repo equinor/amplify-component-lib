@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { ServerError } from './ServerError';
+import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 const meta: Meta<typeof ServerError> = {
   title: 'Organisms/Status/Collections/ServerError',
@@ -17,7 +18,9 @@ const meta: Meta<typeof ServerError> = {
   args: {},
   decorators: (Story) => (
     <MemoryRouter initialEntries={['/']}>
-      <Story />
+      <StatusWrapper>
+        <Story />
+      </StatusWrapper>
     </MemoryRouter>
   ),
 };

@@ -21,6 +21,8 @@ const Container = styled.div`
   display: flex;
 `;
 
+const FULLWIDTH_CLASSNAME = 'fullwidth';
+
 interface ContentProps {
   $open: boolean;
 }
@@ -34,8 +36,10 @@ const Content = styled.div<ContentProps>`
   overflow: auto;
   /* 231px and 64px is width of Sidebar when open/closed */
   min-width: calc(100% - ${(props) => (props.$open ? '231px' : '64px')});
-  &:not(:has(.select-field)) {
-    padding: 0 ${spacings.xxx_large};
+  &:not(:has(.${FULLWIDTH_CLASSNAME})) {
+    padding: 0
+      max(${spacings.xxx_large}, calc(50% - ${spacings.xxx_large} - 1280px / 2));
+    margin: 0 auto;
   }
 `;
 
@@ -48,7 +52,7 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
   }
 
-  body, #content {
+  body, #content:not(:has(.select-field)) {
       scrollbar-gutter: stable both-edges;
   }
 
@@ -100,11 +104,13 @@ type TemplateType = IStyledComponent<'web', any> & {
   Container: IStyledComponent<'web', any>;
   Content: typeof Content;
   GlobalStyles: typeof GlobalStyles;
+  FullWidth: string;
 };
 
 export const Template = BaseTemplate as unknown as TemplateType;
 Template.Container = Container;
 Template.Content = Content;
 Template.GlobalStyles = GlobalStyles;
+Template.FullWidth = FULLWIDTH_CLASSNAME;
 
 export type { ContentProps, TemplateType };

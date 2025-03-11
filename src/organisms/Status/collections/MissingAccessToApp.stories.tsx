@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 
 import { MissingAccessToApp } from './MissingAccessToApp';
+import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 const meta: Meta<typeof MissingAccessToApp> = {
   title: 'Organisms/Status/Collections/MissingAccessToApp',
@@ -13,6 +14,11 @@ const meta: Meta<typeof MissingAccessToApp> = {
     },
   },
   args: {},
+  decorators: (Story) => (
+    <StatusWrapper>
+      <Story />,
+    </StatusWrapper>
+  ),
 };
 
 export default meta;

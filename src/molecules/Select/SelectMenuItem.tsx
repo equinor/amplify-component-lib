@@ -34,7 +34,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     childOffset,
     depth = 0,
     item,
-    multiselect,
     itemRefs,
     onItemKeyDown,
     onItemSelect,
@@ -49,10 +48,10 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   const isSelected = selectedValues.includes(item.value);
 
   const parentIcon = useMemo(() => {
-    if (!multiselect) return checkbox_outline;
+    if ('value' in props) return checkbox_outline;
 
     return getParentIcon(item, props.values);
-  }, [item, multiselect, props]);
+  }, [item, props]);
 
   const spacers = useMemo(
     () =>
@@ -115,7 +114,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     }
   };
 
-  if (item.children && item.children.length > 0 && multiselect) {
+  if (item.children && item.children.length > 0 && 'values' in props) {
     return (
       <>
         <MenuItemWrapper
@@ -158,7 +157,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
                 childOffset + getChildOffset(item.children!, childIndex)
               }
               depth={depth + 1}
-              multiselect
               item={child}
               itemRefs={childRefs}
               values={props.values}
@@ -171,7 +169,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     );
   }
 
-  if (multiselect) {
+  if ('values' in props) {
     return (
       <MenuItemWrapper>
         {spacers}

@@ -18,7 +18,7 @@ import { formatDataSize } from 'src/atoms/utils';
 import {
   FileProgressPropsExtension,
   RegularFileProgressBaseProps,
-} from 'src/molecules/FileProgress/FileProgress';
+} from 'src/molecules/FileProgress/FileProgress.types';
 import {
   Container,
   FileName,
@@ -28,13 +28,11 @@ import {
   RegularFileProgressWrapper,
 } from 'src/molecules/FileProgress/RegularFileProgress.styles';
 
-interface RegularFileProgressProps
-  extends RegularFileProgressBaseProps,
-    FileProgressPropsExtension {}
-const RegularFileProgress: FC<RegularFileProgressProps> = ({
+const RegularFileProgress: FC<
+  RegularFileProgressBaseProps & FileProgressPropsExtension
+> = ({
   onRetry,
   file,
-  progressPercent,
   customLoadingText,
   customCompleteText,
   isError,
@@ -42,16 +40,23 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
   showCompleteState,
   handleOnClick,
   isDeleting,
+  ...rest
 }) => {
   const fileSizeProgress = useMemo(() => {
-    if (!file?.size || !progressPercent) return 1;
-    const progressInSize = (file.size / 100) * progressPercent;
+    if (
+      !file?.size ||
+      rest.isDone ||
+      rest.indeterminate ||
+      rest.progressPercent === undefined
+    )
+      return 1;
+    const progressInSize = (file.size / 100) * rest.progressPercent;
     return formatDataSize({
       inputFormat: 'B',
       size: progressInSize,
       decimals: 1,
     });
-  }, [file?.size, progressPercent]);
+  }, [file?.size, rest]);
 
   const detailsText = useMemo(() => {
     if (isError) {
@@ -74,7 +79,7 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
         data={file_icon}
         color={
           isError
-            ? colors.interactive.danger__hover.rgba
+            ? colors.interactive.warning__hover.rgba
             : colors.interactive.primary__resting.rgba
         }
         size={32}
@@ -88,15 +93,23 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
                 <CircularProgress size={24} />
               </Button>
             ) : (
-              <Button variant="ghost_icon" onClick={handleOnClick}>
-                <Icon
-                  data={
-                    showCompleteState ? delete_to_trash : close_circle_outlined
-                  }
-                  color={colors.text.static_icons__tertiary.rgba}
-                  size={24}
-                />
-              </Button>
+              rest.onDelete && (
+                <Button
+                  variant="ghost_icon"
+                  onClick={handleOnClick}
+                  data-testid="delete-file"
+                >
+                  <Icon
+                    data={
+                      showCompleteState
+                        ? delete_to_trash
+                        : close_circle_outlined
+                    }
+                    color={colors.text.static_icons__tertiary.rgba}
+                    size={24}
+                  />
+                </Button>
+              )
             )}
             {isError && onRetry && (
               <Button variant="ghost_icon" onClick={onRetry}>
@@ -110,12 +123,10 @@ const RegularFileProgress: FC<RegularFileProgressProps> = ({
           </div>
         </FileName>
         <ProgressWrapper>
-          {!showCompleteState && (
+          {!showCompleteState && !rest.isDone && (
             <LinearProgress
-              variant={
-                progressPercent === undefined ? 'indeterminate' : 'determinate'
-              }
-              value={progressPercent}
+              variant={rest.indeterminate ? 'indeterminate' : 'determinate'}
+              value={!rest.indeterminate ? rest.progressPercent : undefined}
             />
           )}
         </ProgressWrapper>

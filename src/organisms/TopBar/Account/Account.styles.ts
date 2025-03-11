@@ -34,6 +34,9 @@ export const RolesContainer = styled.section`
   flex-wrap: wrap;
   justify-content: center;
   max-width: 350px;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
   gap: ${spacings.small};
   margin-top: ${spacings.small};
 `;

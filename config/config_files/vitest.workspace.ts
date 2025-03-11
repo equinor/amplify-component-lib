@@ -11,20 +11,19 @@ export default defineWorkspace([
           width: 1280,
           height: 900
         },
-        name: 'chromium',
+        instances: [{
+          browser: 'chromium'
+        }],
         provider: 'playwright',
-        // https://playwright.dev
-        providerOptions: {},
         screenshotFailures: false
       },
       exclude: [
-        'src/utils',
+        'src/**/*.test.ts',
+        'src/utils/**/*.test.tsx',
+        'src/**/*/utils/*.test.tsx',
         'src/**/*.jsdom.test.tsx',
-        'src/**/*.utils.test.ts',
-        'src/**/*.utils.test.tsx',
       ],
       setupFiles: ['src/tests/setupBrowserTests.ts'],
-      retry: 1,
       css: true
     },
   },
@@ -44,8 +43,9 @@ export default defineWorkspace([
         },
       },
       include: [
-        'src/utils/**/*.test.ts',
+        'src/**/*.test.ts',
         'src/utils/**/*.test.tsx',
+        'src/**/*/utils/*.test.tsx',
         'src/**/*.jsdom.test.tsx',
       ],
       setupFiles: [

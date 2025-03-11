@@ -1,3 +1,5 @@
+import { createMemoryRouter, RouterProvider } from 'react-router';
+
 import { renderHook } from '@testing-library/react';
 
 import { StepperProvider, useStepper } from 'src/providers/StepperProvider';
@@ -9,42 +11,98 @@ test('"useStepper" throws error if used outside of provider', async () => {
   expect(() => renderHook(() => useStepper())).toThrowError();
 });
 
-test('Providing illegal initial step throws error', async () => {
-  console.error = vi.fn();
+test('Providing initial step < 0 throws error', async () => {
+  const spy = vi.spyOn(console, 'error');
 
-  expect(() =>
-    render(
-      <StepperProvider
-        steps={[
-          {
-            label: 'test',
-          },
-          {
-            label: 'test2',
-          },
-        ]}
-        initialStep={-1}
-      >
-        <p>children</p>
-      </StepperProvider>
-    )
-  ).toThrowError();
+  render(
+    <RouterProvider
+      router={createMemoryRouter([
+        {
+          path: '/',
+          element: (
+            <StepperProvider
+              steps={[
+                {
+                  label: 'test',
+                },
+                {
+                  label: 'test2',
+                },
+              ]}
+              initialStep={-1}
+            >
+              <p>children</p>
+            </StepperProvider>
+          ),
+        },
+      ])}
+    />
+  );
 
-  expect(() =>
-    render(
-      <StepperProvider
-        steps={[
+  expect(spy).toHaveBeenCalled();
+});
+
+test('Providing initial step >= steps.length throws error', async () => {
+  const spy = vi.spyOn(console, 'error');
+
+  render(
+    <RouterProvider
+      router={createMemoryRouter([
+        {
+          path: '/',
+          element: (
+            <StepperProvider
+              steps={[
+                {
+                  label: 'test',
+                },
+                {
+                  label: 'test2',
+                },
+              ]}
+              initialStep={2}
+            >
+              <p>children</p>
+            </StepperProvider>
+          ),
+        },
+      ])}
+    />
+  );
+
+  expect(spy).toHaveBeenCalled();
+});
+
+test('Providing step in url that is NaN throws error', async () => {
+  const spy = vi.spyOn(console, 'error');
+
+  render(
+    <RouterProvider
+      router={createMemoryRouter(
+        [
           {
-            label: 'test',
+            path: '/:step',
+            element: (
+              <StepperProvider
+                syncToURLParam
+                steps={[
+                  {
+                    label: 'test',
+                  },
+                  {
+                    label: 'test2',
+                  },
+                ]}
+              >
+                <p>children</p>
+              </StepperProvider>
+            ),
           },
-          {
-            label: 'test2',
-          },
-        ]}
-        initialStep={2}
-      >
-        <p>children</p>
-      </StepperProvider>
-    )
-  ).toThrowError();
+        ],
+        { initialEntries: ['/test'] }
+      )}
+    />
+  );
+
+  expect(spy).toHaveBeenCalled();
 });

@@ -26,6 +26,23 @@ test('Renders as expected', () => {
   expect(screen.getByText(placeholder)).toBeInTheDocument();
 });
 
+test('Passing "data-testid" attribute works as expected', () => {
+  const items = fakeSelectItems();
+  const handleOnSelect = vi.fn();
+  const someId = faker.book.title();
+
+  render(
+    <SingleSelect
+      value={undefined}
+      onSelect={handleOnSelect}
+      items={items}
+      data-testid={someId}
+    />
+  );
+
+  expect(screen.getByTestId(someId)).toBeInTheDocument();
+});
+
 test('Works as expected when clicking items', async () => {
   const items = fakeSelectItems();
   const label = faker.animal.bear();
@@ -184,4 +201,32 @@ test('Clicking the same item deselects it', async () => {
 
   expect(handleOnSelect).toHaveBeenCalledTimes(1);
   expect(handleOnSelect).toHaveBeenCalledWith(undefined);
+});
+
+test('OnAddItem works as expected with {Enter}', async () => {
+  const items = fakeSelectItems();
+  const label = faker.animal.bear();
+  const handleOnSelect = vi.fn();
+  const handleOnAddItem = vi.fn();
+  const value = faker.helpers.arrayElement(items);
+  render(
+    <SingleSelect
+      label={label}
+      value={value}
+      onSelect={handleOnSelect}
+      onAddItem={handleOnAddItem}
+      items={items}
+    />
+  );
+  const user = userEvent.setup();
+
+  const input = screen.getByRole('combobox');
+
+  const someRandomText = faker.vehicle.vehicle();
+
+  await user.type(input, someRandomText);
+
+  await user.keyboard('{Enter}');
+
+  expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
 });

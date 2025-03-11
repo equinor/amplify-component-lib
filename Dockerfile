@@ -2,7 +2,7 @@
 FROM imbios/bun-node:22-alpine AS base
 WORKDIR /app
 COPY package.json ./
-COPY bun.lockb ./
+COPY bun.lock ./
 COPY tsconfig.json ./
 COPY src ./src
 COPY .storybook ./.storybook
@@ -30,9 +30,6 @@ RUN chown -R nginx /etc/nginx/conf.d \
     && chown -R nginx /usr/share/nginx/html \
     && chmod +x ./secrets.sh
 
-# Add bash shell
-RUN apk update && apk add --no-cache bash~=5.2.26
-
 USER 101
 
-CMD ["/bin/bash", "-c", "./secrets.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/sh", "-c", "./secrets.sh && nginx -g \"daemon off;\""]

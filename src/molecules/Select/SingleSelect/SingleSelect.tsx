@@ -20,6 +20,8 @@ export type GroupedSingleSelectProps<T extends SelectOptionRequired> =
  * @param sortValues - Sort the provided values, defaults to true
  * @param inDialog - Fixes weird issue that EDS menus has when it's used in dialogs, defaults to false
  * @param showHelperIcon - Show helper variant icon, defaults to true
+ * @param onAddItem - Enables the possibility to add extra tags and is called when submitting a new item, either via menu click 'add' or {Enter}. Not supported with groups prop.
+ * @param addItemSingularWord - Word to use when adding a new item, default is "tag"
  * @param onSearchFilter - Custom filter function for search, default is "item.label.match(new RegExp(searchValue, 'i'))"
  */
 export function SingleSelect<T extends SelectOptionRequired>(

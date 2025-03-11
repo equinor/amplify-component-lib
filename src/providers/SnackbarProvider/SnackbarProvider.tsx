@@ -3,6 +3,7 @@ import {
   FC,
   MouseEvent,
   ReactNode,
+  useCallback,
   useContext,
   useState,
 } from 'react';
@@ -18,6 +19,7 @@ import { close } from '@equinor/eds-icons';
 
 import { StyledSnackbar } from './SnackbarProvider.styles';
 import { snackbarIcon } from './SnackbarProvider.utils';
+import { useApiErrorSnackbar } from 'src/providers/SnackbarProvider/hooks/useApiErrorSnackbar';
 
 export interface ShowSnackbarSettings {
   customProps?: SnackbarProps;
@@ -56,30 +58,45 @@ export const useSnackbar = () => {
 
 export type SnackbarProviderProps = {
   children: ReactNode;
+  showAPIErrors?: boolean;
 } & SnackbarProps;
 
-export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
+/**
+ * @param children - Children to render under the SnackbarProvider
+ * @param showAPIErrors - Set default query options for showing API errors, defaults to true
+ */
+export const SnackbarProvider: FC<SnackbarProviderProps> = ({
+  children,
+  showAPIErrors = true,
+  ...initialSnackbarProps
+}) => {
   const [open, setOpen] = useState(false);
   const [showingSnackbar, setShowingSnackbar] = useState<
     ShowSnackbar | undefined
   >(undefined);
-  const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>(props);
+  const [snackbarProps, setSnackbarProps] =
+    useState<SnackbarProps>(initialSnackbarProps);
   const [snackbarAction, setSnackbarAction] =
     useState<ShowSnackbarSettings['action']>();
 
-  const showSnackbar = (
-    showSnackbar: string | ShowSnackbar,
-    snackbarSettings?: ShowSnackbarSettings
-  ) => {
-    if (typeof showSnackbar === 'string') {
-      setShowingSnackbar({ text: showSnackbar, variant: 'info' });
-    } else {
-      setShowingSnackbar(showSnackbar);
-    }
-    setSnackbarProps(snackbarSettings?.customProps ?? props);
-    setSnackbarAction(snackbarSettings?.action ?? undefined);
-    setOpen(true);
-  };
+  const showSnackbar = useCallback(
+    (
+      showSnackbar: string | ShowSnackbar,
+      snackbarSettings?: ShowSnackbarSettings
+    ) => {
+      if (typeof showSnackbar === 'string') {
+        setShowingSnackbar({ text: showSnackbar, variant: 'info' });
+      } else {
+        setShowingSnackbar(showSnackbar);
+      }
+      setSnackbarProps(snackbarSettings?.customProps ?? initialSnackbarProps);
+      setSnackbarAction(snackbarSettings?.action ?? undefined);
+      setOpen(true);
+    },
+    [initialSnackbarProps]
+  );
+
+  useApiErrorSnackbar({ showAPIErrors, showSnackbar });
 
   const setActionDisabledState = (disabled: boolean) => {
     setSnackbarAction((currentState) =>
@@ -105,7 +122,7 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = (props) => {
     <SnackbarContext.Provider
       value={{ showSnackbar, setActionDisabledState, hideSnackbar }}
     >
-      {props.children}
+      {children}
       <StyledSnackbar
         $variant={showingSnackbar?.variant}
         open={open}

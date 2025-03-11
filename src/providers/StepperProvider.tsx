@@ -1,4 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 interface SubStep {
   title: string;
@@ -43,22 +44,60 @@ export function useStepper() {
 }
 
 export interface StepperProviderProps {
-  initialStep?: number;
   steps: [Step, Step, ...Step[]];
   children: ReactNode;
 }
 
-export const StepperProvider: FC<StepperProviderProps> = ({
-  initialStep = 0,
-  steps,
-  children,
-}) => {
-  const [currentStep, setCurrentStep] = useState(initialStep);
+interface StepperProviderSyncedToURLParamProps extends StepperProviderProps {
+  syncToURLParam: true;
+}
+
+interface StepperProviderWithoutSyncToURLParamProps
+  extends StepperProviderProps {
+  syncToURLParam?: undefined;
+  initialStep?: number;
+}
+
+/**
+ * @param steps - Which steps the stepper should have
+ * @param syncToURLParam - Assumes step param is at end of path, syncs current step to the URL param
+ * @param initialStep - Initial step to start the stepper at, can't be set if you use syncToURLParam
+ */
+export const StepperProvider: FC<
+  | StepperProviderSyncedToURLParamProps
+  | StepperProviderWithoutSyncToURLParamProps
+> = ({ steps, children, ...rest }) => {
+  const { step } = useParams();
+  const navigate = useNavigate();
+  const pathWithoutStep = useLocation()
+    .pathname.split('/')
+    .slice(0, -1)
+    .join('/');
+  const usingInitialStep = rest.syncToURLParam
+    ? Number(step)
+    : (rest?.initialStep ?? 0);
+
+  if (rest.syncToURLParam && step && isNaN(Number(step))) {
+    throw new Error(
+      'Step URL param must be a valid number when using "syncToURLParam"'
+    );
+  }
+
+  const [currentStep, setCurrentStep] = useState(usingInitialStep);
+  const usingStep = rest.syncToURLParam ? Number(step) : currentStep;
   const [currentSubStep, setCurrentSubStep] = useState(0);
 
-  if (initialStep >= steps.length || initialStep < 0) {
+  if (usingInitialStep >= steps.length || usingInitialStep < 0) {
     throw new Error('initialStep must be a valid index of the steps array');
   }
+
+  const handleOnSetStep = (value: number) => {
+    if (rest.syncToURLParam) {
+      navigate(`${pathWithoutStep}/${value}`);
+    } else {
+      setCurrentStep(value);
+    }
+  };
 
   const resetCurrentSubStep = () => {
     if (currentSubStep !== 0) setCurrentSubStep(0);
@@ -66,36 +105,36 @@ export const StepperProvider: FC<StepperProviderProps> = ({
 
   const goToNextStep = () => {
     if (
-      'subSteps' in steps[currentStep] &&
-      steps[currentStep].subSteps &&
-      currentSubStep < steps[currentStep].subSteps.length - 1
+      'subSteps' in steps[usingStep] &&
+      steps[usingStep].subSteps &&
+      currentSubStep < steps[usingStep].subSteps.length - 1
     ) {
       setCurrentSubStep((prev) => prev + 1);
       return;
     }
 
-    if (currentStep === steps.length - 1) return;
+    if (usingStep === steps.length - 1) return;
 
-    setCurrentStep((prev) => prev + 1);
+    handleOnSetStep(usingStep + 1);
     resetCurrentSubStep();
   };
 
   const goToPreviousStep = () => {
     if (
       currentSubStep > 0 &&
-      'subSteps' in steps[currentStep] &&
-      steps[currentStep].subSteps &&
-      steps[currentStep].subSteps.length > 0
+      'subSteps' in steps[usingStep] &&
+      steps[usingStep].subSteps &&
+      steps[usingStep].subSteps.length > 0
     ) {
       setCurrentSubStep((prev) => prev - 1);
       return;
     }
 
-    if (currentStep === 0) return;
+    if (usingStep === 0) return;
 
-    setCurrentStep((prev) => prev - 1);
+    handleOnSetStep(usingStep - 1);
 
-    const previousStep = steps.at(currentStep - 1);
+    const previousStep = steps.at(usingStep - 1);
     if (previousStep && 'subSteps' in previousStep && previousStep.subSteps) {
       // Set substeps to the last substep of the previous step
       setCurrentSubStep(previousStep.subSteps.length - 1);
@@ -106,9 +145,9 @@ export const StepperProvider: FC<StepperProviderProps> = ({
     <StepperContext.Provider
       value={{
         steps,
-        currentStep,
+        currentStep: usingStep,
         currentSubStep,
-        setCurrentStep,
+        setCurrentStep: handleOnSetStep,
         goToNextStep,
         goToPreviousStep,
       }}

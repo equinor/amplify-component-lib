@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { fireEvent, waitFor } from '@testing-library/dom';
+import { fireEvent, waitFor, within } from '@testing-library/dom';
 
 import { mergeDefaults } from './custom-extensions/mergeDefaults';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
+import { VARIANT_ICONS } from 'src/atoms/utils/forms';
 import { RichTextEditor, RichTextEditorProps } from 'src/molecules';
 import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 import {
@@ -30,8 +31,6 @@ test('Shows text that is input', async () => {
 });
 
 test('Throws error if providing RichTextEditorFeature.IMAGES but not an image handler', () => {
-  console.error = vi.fn();
-
   const props = fakeProps();
   expect(() =>
     renderWithProviders(
@@ -173,6 +172,44 @@ test('Throws error if trying to use both remove strategies', () => {
       />
     )
   ).toThrowError();
+});
+
+test('Shows label / meta / helper as expected', async () => {
+  const props = fakeProps(true);
+  const label = faker.airline.airline().name;
+  const meta = faker.commerce.department();
+  const helper = faker.food.fruit();
+
+  renderWithProviders(
+    <RichTextEditor {...props} label={label} meta={meta} helperText={helper} />
+  );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(screen.getByText(label)).toBeInTheDocument();
+  expect(screen.getByText(meta)).toBeInTheDocument();
+  expect(screen.getByText(helper)).toBeInTheDocument();
+});
+
+test(`Shows variant icon as expected`, async () => {
+  const props = fakeProps(true);
+  const helperText = faker.animal.fish();
+
+  renderWithProviders(
+    <RichTextEditor {...props} variant="error" helperText={helperText} />
+  );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const variantIcon = within(
+    screen.getByText(helperText).parentElement!
+  ).getByTestId('eds-icon-path');
+  expect(variantIcon).toHaveAttribute(
+    'd',
+    VARIANT_ICONS.error!.svgPathData! as string
+  );
 });
 
 describe('Editor defaults can be merged', () => {

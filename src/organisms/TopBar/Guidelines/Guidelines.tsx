@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import { FC, isValidElement, useRef, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
@@ -59,6 +59,8 @@ export const Guidelines: FC<GuidelineProps> = ({ sections }) => {
             title={section.sectionName}
           >
             {section.items.map((item, itemIndex) => {
+              if (isValidElement(item)) return item;
+
               if ('element' in item) {
                 return (
                   <Item key={`${itemIndex}-${index}`} title={item.title}>

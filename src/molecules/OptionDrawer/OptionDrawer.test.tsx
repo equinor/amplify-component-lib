@@ -150,6 +150,22 @@ test('Works correctly when opening parent to show children', async () => {
   }
 });
 
+test('Shows expected status for parent if singleSelect=true', async () => {
+  const props = fakeProps();
+  render(
+    <OptionDrawer
+      {...props}
+      singleSelect
+      selectedItems={[props.item!.children![0]]}
+    />
+  );
+
+  expect(screen.getByRole('checkbox')).toHaveAttribute(
+    'data-indeterminate',
+    'false'
+  );
+});
+
 test('Animation works correctly when toggling parent with no child', async () => {
   const props = fakeProps(false, false);
   const user = userEvent.setup();

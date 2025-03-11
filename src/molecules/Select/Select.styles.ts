@@ -1,7 +1,10 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
 import { animation, colors, spacings } from 'src/atoms/style';
-import { VARIANT_COLORS, VARIANT_HELPER_COLORS } from 'src/atoms/style/colors';
+import {
+  VARIANT_COLORS,
+  VARIANT_HELPER_TEXT_COLORS,
+} from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
 
@@ -30,11 +33,11 @@ export const HelperWrapper = styled.span<HelperWrapperProps>`
     if (!$variant) return '';
     return css`
       > label {
-        color: ${VARIANT_HELPER_COLORS[$variant]};
+        color: ${VARIANT_HELPER_TEXT_COLORS[$variant]};
       }
       > svg {
         flex-shrink: 0;
-        fill: ${VARIANT_HELPER_COLORS[$variant]};
+        fill: ${VARIANT_COLORS[$variant]};
       }
     `;
   }}
@@ -249,6 +252,8 @@ const MenuItemSpacer = styled.hr`
 `;
 
 const PlaceholderText = styled(Typography)`
+  user-select: none;
+  pointer-events: none;
   position: absolute;
   color: ${colors.text.static_icons__tertiary.rgba};
   top: calc(50%);

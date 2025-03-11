@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { within } from '@testing-library/dom';
 
 import { Select } from './Select';
 import { VARIANT_OPTIONS } from './Select.types';
@@ -8,7 +9,7 @@ import { fakeSelectItems, render, screen } from 'src/tests/jsdomtest-utils';
 
 import { expect } from 'vitest';
 
-test('variants work as expected', () => {
+test.each(VARIANT_OPTIONS)('variant %s works as expected', (variant) => {
   const items = fakeSelectItems();
   const label = faker.animal.bear();
   const handleOnSelect = vi.fn();
@@ -24,34 +25,41 @@ test('variants work as expected', () => {
 
   rerender(
     <Select
-      variant="dirty"
       label={label}
       onSelect={handleOnSelect}
+      values={[]}
+      variant={variant}
+      items={items}
+    />
+  );
+
+  expect(element).toHaveStyleRule(
+    'outline',
+    variant === 'dirty' ? undefined : `1px solid ${VARIANT_COLORS[variant]}`
+  );
+});
+
+test('Doesnt show icon if showHelperIcon is false', () => {
+  const items = fakeSelectItems();
+  const label = faker.animal.bear();
+  const handleOnSelect = vi.fn();
+  const helperText = faker.animal.dog();
+
+  render(
+    <Select
+      label={label}
+      onSelect={handleOnSelect}
+      helperText={helperText}
+      showHelperIcon={false}
+      variant="error"
       values={[]}
       items={items}
     />
   );
 
-  expect(element).toHaveStyle(
-    `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS.dirty}`
-  );
+  const parent = screen.getByText(helperText).parentElement!;
 
-  for (const variant of VARIANT_OPTIONS.filter((item) => item !== 'dirty')) {
-    rerender(
-      <Select
-        label={label}
-        onSelect={handleOnSelect}
-        values={[]}
-        variant={variant}
-        items={items}
-      />
-    );
-
-    expect(element).toHaveStyleRule(
-      'outline',
-      `1px solid ${VARIANT_COLORS[variant]}`
-    );
-  }
+  expect(within(parent).queryByTestId('eds-icon-path')).not.toBeInTheDocument();
 });
 
 test('lightBackground works as expected', () => {

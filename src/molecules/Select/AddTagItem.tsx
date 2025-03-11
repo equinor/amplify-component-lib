@@ -17,6 +17,7 @@ interface AddTagItemProps {
   itemRefs: MultiSelectMenuItemProps<SelectOptionRequired>['itemRefs'];
   onItemKeyDown: MultiSelectMenuItemProps<SelectOptionRequired>['onItemKeyDown'];
   onAddItem: () => void;
+  addItemSingularWord: string;
   index: number;
   children: string;
 }
@@ -26,6 +27,7 @@ export const AddTagItem: FC<AddTagItemProps> = ({
   onItemKeyDown,
   index,
   onAddItem,
+  addItemSingularWord,
   children,
 }) => {
   const handleOnKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -48,7 +50,9 @@ export const AddTagItem: FC<AddTagItemProps> = ({
         onKeyDownCapture={handleOnKeyDown}
       >
         <Icon data={add_box} color={colors.interactive.primary__resting.rgba} />
-        <span>Add &quot;{children}&quot; as new tag</span>
+        <span>
+          Add &quot;{children}&quot; as new {addItemSingularWord}
+        </span>
       </StyledMenuItem>
     </MenuItemWrapper>
   );

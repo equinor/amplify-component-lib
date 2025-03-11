@@ -1,0 +1,13 @@
+
+code {
+    background: #3d3d3d;
+    padding: 2px 4px;
+    color: white;
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+pre:has(> code) {
+    background: #3d3d3d;
+    padding: 24px;
+}

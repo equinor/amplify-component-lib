@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import { I18nProvider } from 'react-aria';
 
 import {
   DatePicker as EDSDatePicker,
@@ -20,16 +19,19 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       props.formatOptions !== undefined
         ? props.formatOptions
         : {
-            month: 'long',
             day: '2-digit',
+            month: '2-digit',
             year: 'numeric',
           };
 
     return (
       <DatePickerWrapper>
-        <I18nProvider locale={locale}>
-          <EDSDatePicker {...props} ref={ref} formatOptions={formatOptions} />
-        </I18nProvider>
+        <EDSDatePicker
+          {...props}
+          ref={ref}
+          locale={locale}
+          formatOptions={formatOptions}
+        />
         {props.meta && (
           <Typography variant="helper" group="input">
             {props.meta}

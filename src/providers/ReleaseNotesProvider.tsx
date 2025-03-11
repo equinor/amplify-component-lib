@@ -1,11 +1,9 @@
 import {
   createContext,
-  Dispatch,
   FC,
   ReactNode,
-  SetStateAction,
   useContext,
-  useMemo,
+  useEffect,
   useState,
 } from 'react';
 
@@ -14,29 +12,21 @@ import {
   useReleaseNotesQuery,
 } from '@equinor/subsurface-app-management';
 
-import { SieveOption, SieveValue } from 'src/molecules/Sieve/Sieve.types';
-import {
-  extractDatesFromReleaseNotes,
-  sortReleaseNotesByDate,
-} from 'src/providers/ReleaseNotesProvider.utils';
-import { TableOfContentsItemType } from 'src/providers/TableOfContentsProvider';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
+import { useLocalStorage } from 'src/atoms/hooks/useLocalStorage';
+import { environment } from 'src/atoms/utils';
+import { usingReleaseNoteDate } from 'src/organisms/ReleaseNote/ReleaseNote.utils';
+import { environmentAndAppNameToURL } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesDialog.utils';
+import { sortReleaseNotesByDate } from 'src/providers/ReleaseNotesProvider.utils';
+
+const { getEnvironmentName, getAppName } = environment;
 
 interface ReleaseNotesContextState {
-  search: SieveValue;
-  setSearch: Dispatch<SetStateAction<SieveValue>>;
-  selectedReleaseNoteTypes?: SieveOption[];
   open: boolean;
   setOpen: (open: boolean) => void;
-  toggle: () => void;
-  filteredData: ReleaseNote[];
-  releaseNotesYears: TableOfContentsItemType[];
+  mostRecentReleaseNote: ReleaseNote | undefined;
+  showAllReleaseNotesLink: string;
 }
-
-const defaultSearchState: SieveValue = {
-  filterValues: undefined,
-  searchValue: undefined,
-  sortValue: undefined,
-};
 
 const ReleaseNotesContext = createContext<ReleaseNotesContextState | undefined>(
   undefined
@@ -52,70 +42,74 @@ export const useReleaseNotes = (): ReleaseNotesContextState => {
   return context;
 };
 
+const TWO_WEEKS_IN_MS = 1000 * 60 * 60 * 24 * 14;
+const RELEASE_NOTES_WAS_VIEWED_KEY = 'release-notes-was-viewed-key';
+
 interface ReleaseNotesContextProviderProps {
   children: ReactNode;
   enabled?: boolean;
+  popUpNewReleaseNote?: boolean;
 }
 
 export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   children,
   enabled,
+  popUpNewReleaseNote = false,
 }) => {
   const { data } = useReleaseNotesQuery({ enabled });
-  const [search, setSearch] = useState<SieveValue>(defaultSearchState);
   const [open, setOpen] = useState(false);
-
-  const toggle = () => {
-    setOpen((previous) => !previous);
-  };
-
-  const releaseNotesYears = useMemo(
-    () => extractDatesFromReleaseNotes(data ?? []),
-    [data]
+  const [lastSeenReleaseId, setLastSeenReleaseId] = useLocalStorage(
+    RELEASE_NOTES_WAS_VIEWED_KEY,
+    '',
+    TWO_WEEKS_IN_MS
   );
 
-  const selectedReleaseNoteTypes = search.filterValues?.Type;
+  const mostRecentReleaseNote = data?.toSorted(sortReleaseNotesByDate).at(0);
 
-  const filteredData = useMemo(() => {
-    let filteredList = data ?? [];
+  const applicationName = getAppName(import.meta.env.VITE_NAME);
+  const environmentName = getEnvironmentName(
+    import.meta.env.VITE_ENVIRONMENT_NAME
+  );
+  const environmentNameWithoutLocalHost =
+    environmentName === EnvironmentType.LOCALHOST
+      ? EnvironmentType.DEVELOP
+      : environmentName;
+  const showAllReleaseNotesLink = environmentAndAppNameToURL(
+    environmentNameWithoutLocalHost,
+    applicationName
+  );
 
-    if (selectedReleaseNoteTypes && selectedReleaseNoteTypes.length > 0) {
-      filteredList = filteredList.filter((item) =>
-        item.tags?.some((tag) =>
-          selectedReleaseNoteTypes
-            .map((option: SieveOption) => option.value)
-            .includes(tag)
-        )
-      );
+  useEffect(() => {
+    if (!mostRecentReleaseNote || !popUpNewReleaseNote) return;
+
+    const recentReleaseNoteDate = new Date(
+      usingReleaseNoteDate(mostRecentReleaseNote)
+    ).getTime();
+    const nowInMs = Date.now();
+    const timeSinceLastReleaseInMs = nowInMs - recentReleaseNoteDate;
+    if (
+      timeSinceLastReleaseInMs <= TWO_WEEKS_IN_MS &&
+      lastSeenReleaseId !== mostRecentReleaseNote.releaseId
+    ) {
+      setOpen(true);
+      setLastSeenReleaseId(mostRecentReleaseNote.releaseId);
     }
-
-    if (search?.searchValue && search?.searchValue?.trim() !== '') {
-      const searchTerms = search.searchValue.trim().toLowerCase().split(' ');
-      filteredList = filteredList.filter((item) => {
-        return Object.values(item)
-          .join(' ')
-          .toLowerCase()
-          .includes(searchTerms.join(' '));
-      });
-    }
-    sortReleaseNotesByDate(filteredList);
-
-    return filteredList;
-  }, [data, search.searchValue, selectedReleaseNoteTypes]);
-
-  const contextValue: ReleaseNotesContextState = {
-    search,
-    setSearch,
-    selectedReleaseNoteTypes,
-    open,
-    setOpen,
-    toggle,
-    filteredData,
-    releaseNotesYears,
-  };
+  }, [
+    lastSeenReleaseId,
+    mostRecentReleaseNote,
+    popUpNewReleaseNote,
+    setLastSeenReleaseId,
+  ]);
 
   return (
-    <ReleaseNotesContext.Provider value={contextValue}>
+    <ReleaseNotesContext.Provider
+      value={{
+        open,
+        setOpen,
+        mostRecentReleaseNote,
+        showAllReleaseNotesLink,
+      }}
+    >
       {children}
     </ReleaseNotesContext.Provider>
   );

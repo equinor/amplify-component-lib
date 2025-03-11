@@ -30,7 +30,7 @@ export const ImpersonateAvatar: FC<ImpersonateAvatarProps> = ({
     <Wrapper>
       <ProfileAvatar
         size={size}
-        name={fullName ? fullName : activeImpersonationUser?.fullName}
+        name={fullName ? fullName : activeImpersonationUser?.firstName}
       />
     </Wrapper>
   );

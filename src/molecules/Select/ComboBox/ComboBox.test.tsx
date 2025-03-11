@@ -3,6 +3,7 @@ import { FC, FormEvent } from 'react';
 import { faker } from '@faker-js/faker';
 
 import { ComboBox } from './ComboBox';
+import { spacings } from 'src/atoms';
 import { ComboBoxChip, SelectOptionRequired } from 'src/molecules';
 import {
   fakeGroups,
@@ -30,6 +31,22 @@ test('Renders as expected', () => {
   );
 
   expect(screen.getByText(placeholder)).toBeInTheDocument();
+});
+
+test("Passing 'data-testid' attribute works", () => {
+  const items = fakeSelectItems();
+  const handleOnSelect = vi.fn();
+  const someId = faker.vehicle.vehicle();
+  render(
+    <ComboBox
+      values={[]}
+      onSelect={handleOnSelect}
+      items={items}
+      data-testid={someId}
+    />
+  );
+
+  expect(screen.getByTestId(someId)).toBeInTheDocument();
 });
 
 test('OnAddItem works as expected with {Enter}', async () => {
@@ -202,25 +219,6 @@ test('Works as expected when moving past "add new tag" menuitem', async () => {
   await user.keyboard('{Enter}');
 
   expect(handleOnSelect).toHaveBeenCalledWith([items[0]], items[0]);
-});
-
-test('Throws error if trying to use onAddItem with groups', () => {
-  // Silence console.error call
-  console.error = vi.fn();
-
-  const handleOnAddItem = vi.fn();
-  const handleOnSelect = vi.fn();
-  const groups = fakeGroups();
-  expect(() =>
-    render(
-      <ComboBox
-        values={[]}
-        onSelect={handleOnSelect}
-        onAddItem={handleOnAddItem}
-        groups={groups}
-      />
-    )
-  ).toThrowError();
 });
 
 test('Can select items with clicks', async () => {
@@ -462,6 +460,51 @@ test('Parent - nested child label shows as expected', async () => {
   await user.click(screen.getByRole('combobox'));
 
   expect(screen.getByText('label 3')).toBeInTheDocument();
+});
+
+test('Parent - nested child paddingLeft as expected', async () => {
+  const label = faker.animal.bear();
+  const items = [
+    {
+      label: 'label 1',
+      value: 'value 1',
+      children: [
+        {
+          label: 'label 2',
+          value: 'value 2',
+          children: [
+            {
+              label: 'label 3',
+              value: 'value 3',
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const handler = vi.fn();
+
+  render(
+    <ComboBox label={label} onSelect={handler} items={items} values={[]} />
+  );
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('combobox'));
+
+  const label1MenuItem = screen.getByRole('menuitem', { name: 'label 1' });
+  expect(label1MenuItem.parentElement).toHaveAttribute(
+    'style',
+    `padding-left: ${spacings.small};`
+  );
+
+  await user.click(
+    within(label1MenuItem.parentElement!).getByTestId('toggle-button')
+  );
+
+  expect(
+    screen.getByRole('menuitem', { name: 'label 2' }).parentElement
+  ).toHaveAttribute('style', `padding-left: 0px;`);
 });
 
 test('Basic group with preselected item', async () => {

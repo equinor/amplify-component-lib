@@ -1,18 +1,12 @@
 import { useMemo, useRef } from 'react';
 
 import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
-import {
-  arrow_drop_down,
-  arrow_drop_up,
-  clear,
-  error_filled,
-  thumbs_up,
-  warning_filled,
-} from '@equinor/eds-icons';
+import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import { useSelect } from 'src/atoms/hooks/useSelect';
+import { VARIANT_ICONS } from 'src/atoms/utils/forms';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
 import {
@@ -61,6 +55,7 @@ export const Select = <T extends SelectOptionRequired>(
     variant,
     inDialog = false,
     onSearchFilter,
+    'data-testid': dataTestId,
   } = props;
   const {
     handleOnAddItem,
@@ -100,14 +95,7 @@ export const Select = <T extends SelectOptionRequired>(
   const helperIcon = useMemo(() => {
     if (!showHelperIcon) return;
 
-    switch (variant) {
-      case 'error':
-        return error_filled;
-      case 'warning':
-        return warning_filled;
-      case 'success':
-        return thumbs_up;
-    }
+    return variant ? VARIANT_ICONS[variant] : undefined;
   }, [showHelperIcon, variant]);
 
   // Not able to test this properly because the menu onClose works inside a dialog in the test env :(
@@ -172,7 +160,7 @@ export const Select = <T extends SelectOptionRequired>(
       {shouldShowLabel && <Label label={label} meta={meta} htmlFor={id} />}
       <Wrapper>
         <Container
-          data-testid="combobox-container"
+          data-testid={dataTestId ? dataTestId : 'combobox-container'}
           ref={anchorRef}
           onClick={handleOnOpen}
           aria-expanded={open}
@@ -252,11 +240,7 @@ export const Select = <T extends SelectOptionRequired>(
               {...props}
               search={search}
               itemRefs={itemRefs}
-              onAddItem={
-                'values' in props && props.onAddItem
-                  ? handleOnAddItem
-                  : undefined
-              }
+              onAddItem={props.onAddItem ? handleOnAddItem : undefined}
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
               onSearchFilter={onSearchFilter}
