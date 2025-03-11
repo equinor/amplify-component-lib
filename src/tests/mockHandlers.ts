@@ -26,7 +26,8 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     body: `<h5>Release notes body text</h5><p>${faker.lorem.paragraphs(6)}</p>`,
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
     draft: false,
-    createdDate: faker.date.past().toDateString(),
+    createdDate: faker.date.past().toISOString(),
+    releaseDate: new Date().toISOString(),
   },
   {
     releaseId: faker.string.uuid(),
@@ -36,7 +37,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     body: `<h5>Release notes body text</h5><p>${faker.lorem.paragraphs(6)}</p>`,
     tags: [ReleaseNoteType.IMPROVEMENT],
     draft: false,
-    createdDate: faker.date.past().toDateString(),
+    createdDate: faker.date.past().toISOString(),
   },
 ];
 

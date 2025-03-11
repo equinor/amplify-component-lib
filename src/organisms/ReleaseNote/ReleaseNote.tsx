@@ -7,7 +7,7 @@ import {
 } from '@equinor/subsurface-app-management';
 
 import { RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT } from './ReleaseNote.constants';
-import { timeToRead } from './ReleaseNote.utils';
+import { timeToRead, usingReleaseNoteDate } from './ReleaseNote.utils';
 import { ToggleExpanded } from './ToggleExpanded';
 import { formatRelativeDateTime, shape } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
@@ -64,7 +64,7 @@ export const ReleaseNote: FC<ReleaseNoteProps> = ({
   actionMenu,
   startExpanded = false,
 }) => {
-  const usingDate = releaseDate ?? createdDate;
+  const usingDate = usingReleaseNoteDate({ releaseDate, createdDate });
   const [richTextWrapper, setRichTextWrapper] = useState<HTMLDivElement | null>(
     null
   );

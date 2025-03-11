@@ -15,6 +15,7 @@ import {
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { useLocalStorage } from 'src/atoms/hooks/useLocalStorage';
 import { environment } from 'src/atoms/utils';
+import { usingReleaseNoteDate } from 'src/organisms/ReleaseNote/ReleaseNote.utils';
 import { environmentAndAppNameToURL } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesDialog.utils';
 import { sortReleaseNotesByDate } from 'src/providers/ReleaseNotesProvider.utils';
 
@@ -47,11 +48,13 @@ const RELEASE_NOTES_WAS_VIEWED_KEY = 'release-notes-was-viewed-key';
 interface ReleaseNotesContextProviderProps {
   children: ReactNode;
   enabled?: boolean;
+  popUpNewReleaseNote?: boolean;
 }
 
 export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   children,
   enabled,
+  popUpNewReleaseNote = false,
 }) => {
   const { data } = useReleaseNotesQuery({ enabled });
   const [open, setOpen] = useState(false);
@@ -77,10 +80,10 @@ export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
   );
 
   useEffect(() => {
-    if (!mostRecentReleaseNote) return;
+    if (!mostRecentReleaseNote || !popUpNewReleaseNote) return;
 
     const recentReleaseNoteDate = new Date(
-      mostRecentReleaseNote.releaseDate ?? mostRecentReleaseNote.createdDate
+      usingReleaseNoteDate(mostRecentReleaseNote)
     ).getTime();
     const nowInMs = Date.now();
     const timeSinceLastReleaseInMs = nowInMs - recentReleaseNoteDate;
@@ -89,9 +92,14 @@ export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
       lastSeenReleaseId !== mostRecentReleaseNote.releaseId
     ) {
       setOpen(true);
-      setLastSeenReleaseId(mostRecentReleaseNote.releaseId ?? '');
+      setLastSeenReleaseId(mostRecentReleaseNote.releaseId);
     }
-  }, [lastSeenReleaseId, mostRecentReleaseNote, setLastSeenReleaseId]);
+  }, [
+    lastSeenReleaseId,
+    mostRecentReleaseNote,
+    popUpNewReleaseNote,
+    setLastSeenReleaseId,
+  ]);
 
   return (
     <ReleaseNotesContext.Provider

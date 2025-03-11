@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReleaseNotesProvider, useReleaseNotes } from './ReleaseNotesProvider';
 import { sortReleaseNotesByDate } from 'src/providers/ReleaseNotesProvider.utils';
-import { renderHook } from 'src/tests/browsertest-utils';
+import { renderHook, waitFor } from 'src/tests/browsertest-utils';
 
 describe('Release notes provider', () => {
   test('should not return any data when enabled is set to false', () => {
@@ -33,6 +33,25 @@ describe('Release notes provider', () => {
     expect(() => renderHook(() => useReleaseNotes())).toThrow(
       'useReleaseNotes must be used within a ReleaseNotesProvider'
     );
+  });
+
+  test('Opens is true if it is a new release note and popUpNewReleaseNote is true', async () => {
+    const wrapper = ({ children }: { children: ReactNode }) => {
+      const queryClient = new QueryClient();
+      return (
+        <QueryClientProvider client={queryClient}>
+          <ReleaseNotesProvider popUpNewReleaseNote>
+            {children}
+          </ReleaseNotesProvider>
+        </QueryClientProvider>
+      );
+    };
+
+    const { result } = renderHook(() => useReleaseNotes(), {
+      wrapper,
+    });
+
+    await waitFor(() => expect(result.current.open).toBeTruthy());
   });
 });
 
