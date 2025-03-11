@@ -1,3 +1,5 @@
+import { Icon } from '@equinor/eds-core-react';
+import { car } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Button } from './Button';
@@ -22,6 +24,20 @@ test('Loading prop works as expected', async () => {
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 
   expect(screen.queryByText(text)).not.toBeVisible();
+
+  await user.click(screen.getByRole('button'));
+
+  expect(onClick).not.toHaveBeenCalledTimes(2);
+
+  rerender(
+    <Button loading onClick={onClick} variant="contained_icon">
+      <Icon data={car} />
+    </Button>
+  );
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+
+  expect(screen.getByTestId('eds-icon-path')).not.toBeVisible();
 
   await user.click(screen.getByRole('button'));
 
