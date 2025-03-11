@@ -29,6 +29,7 @@ type TopBarType = {
   onSelectField?: (selectedField: Field) => void;
   currentField?: Field;
   showAccessITLink?: boolean;
+  itemNameSingular?: string; // Defaults to 'field'
 } & React.HTMLAttributes<HTMLElement>;
 
 export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
@@ -46,6 +47,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
       onSelectField,
       currentField,
       showAccessITLink,
+      itemNameSingular,
     },
     ref
   ) => (
@@ -67,6 +69,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
             onSelect={onSelectField}
             currentField={currentField}
             showAccessITLink={showAccessITLink}
+            itemNameSingular={itemNameSingular}
           />
         )}
         {isFetching && <CircularProgress size={16} />}

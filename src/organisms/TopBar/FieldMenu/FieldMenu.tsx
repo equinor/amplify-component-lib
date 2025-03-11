@@ -31,12 +31,19 @@ export interface FieldMenuProps {
   currentField?: Field;
   availableFields: Field[];
   onSelect: (selectedField: Field) => void;
+  itemNameSingular?: string; // Defaults to 'field'
   showAccessITLink?: boolean;
 }
 
 export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
   (
-    { currentField, availableFields, onSelect, showAccessITLink = true },
+    {
+      currentField,
+      availableFields,
+      onSelect,
+      itemNameSingular = 'field',
+      showAccessITLink = true,
+    },
     ref
   ) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -145,7 +152,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
                       variant="body_short"
                       color={colors.text.static_icons__tertiary.rgba}
                     >
-                      No fields matching your search
+                      No {itemNameSingular}s matching your search
                     </NoFieldsText>
                   </NoSearchResultsContainer>
                 ) : (
@@ -176,7 +183,9 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
               >
                 <div>
                   <TextContainer>
-                    <Typography variant="overline">Missing a field?</Typography>
+                    <Typography variant="overline">
+                      Missing a {itemNameSingular}?
+                    </Typography>
                     <Typography variant="h6">Go to AccessIT</Typography>
                   </TextContainer>
                   <Icon

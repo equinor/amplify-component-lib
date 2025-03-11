@@ -184,3 +184,15 @@ test('Runs window.open when clicking access it card', async () => {
     '_blank'
   );
 });
+
+test('Able to set itemNameSingular', async () => {
+  const props = fakeProps();
+  const itemName = faker.commerce.productName();
+  render(<FieldMenu {...props} itemNameSingular={itemName} />);
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  expect(screen.getByText(`Missing a ${itemName}?`)).toBeInTheDocument();
+});
