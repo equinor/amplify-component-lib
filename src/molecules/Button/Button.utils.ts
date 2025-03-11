@@ -13,7 +13,8 @@ export function variantAndColorToProgressColor({
     disabled ||
     variant === undefined ||
     variant === 'contained' ||
-    (color === 'danger' && variant.includes('icon'))
+    variant === 'contained_icon' ||
+    (color === 'danger' && variant === 'ghost_icon')
   ) {
     return 'neutral';
   }
