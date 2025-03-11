@@ -22,21 +22,22 @@ export const fakeReleaseNotes: ReleaseNote[] = [
     releaseId: faker.string.uuid(),
     applicationName: 'PWEX',
     version: null,
-    title: 'Improved task board and reporting overview June',
-    body: '<h1>Release notes body text</h1><br/><br/><br/><p>Hei</p>',
+    title: faker.commerce.productName(),
+    body: `<h5>Release notes body text</h5><p>${faker.lorem.paragraphs(6)}</p>`,
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
     draft: false,
-    createdDate: faker.date.past().toDateString(),
+    createdDate: faker.date.past().toISOString(),
+    releaseDate: new Date().toISOString(),
   },
   {
     releaseId: faker.string.uuid(),
     applicationName: 'Acquire',
     version: null,
-    title: 'SEARCH',
-    body: '<h1>Some other text</h1>',
+    title: faker.commerce.productName(),
+    body: `<h5>Release notes body text</h5><p>${faker.lorem.paragraphs(6)}</p>`,
     tags: [ReleaseNoteType.IMPROVEMENT],
     draft: false,
-    createdDate: faker.date.past().toDateString(),
+    createdDate: faker.date.past().toISOString(),
   },
 ];
 
@@ -73,7 +74,6 @@ export const FAKE_ROLES: GraphAppRole[] = [
 function fakeUser(): ImpersonateUserDto {
   const firstName = faker.string.uuid();
   const lastName = faker.person.lastName();
-  const fullName = `${firstName} ${lastName}`;
   const uniqueName = faker.internet.username();
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
@@ -81,7 +81,6 @@ function fakeUser(): ImpersonateUserDto {
     id: faker.string.uuid(),
     firstName,
     lastName,
-    fullName,
     uniqueName,
     roles,
     appName: environment.getAppName(import.meta.env.VITE_NAME),
