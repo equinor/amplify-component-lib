@@ -163,7 +163,7 @@ export const IsLoadingAction: Story = {
       {
         text: 'Cancel',
         onClick: () => console.log('clicked'),
-        variant: 'contained',
+        variant: 'outlined',
       },
       {
         text: 'Okay!',

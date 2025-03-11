@@ -1,18 +1,16 @@
 import { ChangeEvent, useState } from 'react';
 
 import {
-  Button,
-  ButtonProps,
   Checkbox,
   EdsProvider,
   Icon,
-  Progress,
   Snackbar,
   Tooltip,
 } from '@equinor/eds-core-react';
-import { add, menu, refresh, save, send } from '@equinor/eds-icons';
+import { add, menu, refresh, save } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react';
 
+import { Button, ButtonProps } from './Button';
 import page from 'src/molecules/Button/Button.docs.mdx';
 import { Stack } from 'src/storybook';
 
@@ -21,8 +19,22 @@ const meta: Meta<typeof Button> = {
   component: Button,
   args: {
     as: 'button',
+    loading: undefined,
   },
   argTypes: {
+    loading: {
+      control: 'boolean',
+      type: 'boolean',
+      description:
+        'If true, the button will show loading and onClick will be set to undefined',
+    },
+    disabled: { control: 'boolean', type: 'boolean' },
+    variant: {
+      options: ['ghost', 'contained', 'outlined'],
+      control: {
+        type: 'select',
+      },
+    },
     as: {
       options: ['span', 'a', 'button'],
       control: {
@@ -107,6 +119,56 @@ export const Basic: StoryFn<ButtonProps> = () => (
   </>
 );
 Basic.decorators = [
+  (Story) => (
+    <Stack>
+      <Story />
+    </Stack>
+  ),
+];
+
+export const LoadingState: StoryFn<ButtonProps> = () => (
+  <>
+    <Button loading>Contained</Button>
+    <Button variant="contained_icon" aria-label="add action" loading>
+      <Icon data={add}></Icon>
+    </Button>
+    <Button variant="outlined" loading>
+      Outlined
+    </Button>
+    <Button variant="ghost" loading>
+      Ghost
+    </Button>
+    <Button variant="ghost_icon" aria-label="save action" loading>
+      <Icon data={save}></Icon>
+    </Button>
+    <Button loading color="danger">
+      Contained
+    </Button>
+    <Button
+      variant="contained_icon"
+      color="danger"
+      aria-label="add action"
+      loading
+    >
+      <Icon data={add}></Icon>
+    </Button>
+    <Button variant="outlined" color="danger" loading>
+      Outlined
+    </Button>
+    <Button variant="ghost" color="danger" loading>
+      Ghost
+    </Button>
+    <Button
+      variant="ghost_icon"
+      aria-label="save action"
+      color="danger"
+      loading
+    >
+      <Icon data={save}></Icon>
+    </Button>
+  </>
+);
+LoadingState.decorators = [
   (Story) => (
     <Stack>
       <Story />
@@ -208,56 +270,6 @@ export const Compact: StoryFn<ButtonProps> = () => {
 Compact.decorators = [
   (Story) => (
     <Stack direction="column">
-      <Story />
-    </Stack>
-  ),
-];
-
-export const ProgressButton: StoryFn<ButtonProps> = () => {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const onSubmit = () => {
-    setIsSubmitting(true);
-  };
-
-  return (
-    <>
-      <Button
-        aria-disabled={isSubmitting ? 'true' : 'false'}
-        aria-label={isSubmitting ? 'loading data' : undefined}
-        onClick={!isSubmitting ? onSubmit : undefined}
-      >
-        {isSubmitting ? <Progress.Dots color="primary" /> : 'Fetch data'}
-      </Button>
-      <Button
-        aria-disabled={isSubmitting ? 'true' : 'false'}
-        aria-label={isSubmitting ? 'loading data' : undefined}
-        color="secondary"
-        onClick={!isSubmitting ? onSubmit : undefined}
-      >
-        {isSubmitting ? (
-          <Progress.Circular size={16} color="primary" />
-        ) : (
-          <>
-            Send
-            <Icon data={send} size={16}></Icon>
-          </>
-        )}
-      </Button>
-      <Button onClick={() => setIsSubmitting(false)}>
-        <>
-          <Icon data={refresh} size={16}></Icon>
-          Reset
-        </>
-      </Button>
-    </>
-  );
-};
-
-ProgressButton.storyName = 'Progress button';
-ProgressButton.decorators = [
-  (Story) => (
-    <Stack>
       <Story />
     </Stack>
   ),
