@@ -28,6 +28,6 @@ const JsEmbark = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
   />
 ));
 
-JsEmbark.displayName = 'Portal';
+JsEmbark.displayName = 'JsEmbark';
 
 export default JsEmbark;
