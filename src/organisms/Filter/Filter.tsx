@@ -93,7 +93,7 @@ export function Filter<T extends string>({
       handleOnSearchEnter(search);
     } else if (event.key === 'Backspace' && search === '') {
       if (attemptingToRemove === undefined) {
-        for (const key of Object.keys(values) as T[]) {
+        for (const key of Object.keys(values).toReversed() as T[]) {
           if (values[key].length > 0) {
             setAttemptingToRemove(key);
             break;
