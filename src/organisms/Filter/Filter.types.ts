@@ -2,38 +2,27 @@ import { ChangeEvent, ReactNode } from 'react';
 
 import { IconData } from '@equinor/eds-icons';
 
-export interface CommonFilterProps<T> {
-  values: { key: T; label: string; icon?: IconData }[];
-  onClearFilter: (key: T) => void;
+import { SelectOptionRequired } from 'src/molecules';
+
+interface CommonFilterProps<T extends string> {
+  values: Record<T, Array<SelectOptionRequired & { icon?: IconData }>>;
+  onClearFilter: (key: T, index: number) => void;
   onClearAllFilters: () => void;
   search: string;
   onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSearchEnter: (value: string) => void;
   children: ReactNode | ReactNode[];
+  inlineContent?: ReactNode | ReactNode[];
+  topContent?: ReactNode | ReactNode[];
   initialOpen?: boolean;
   placeholder?: string;
   id?: string;
-  showClearFiltersButton?: boolean;
 }
+// Going to be used later
+// type FilterWithAutoCompleteOptions<T extends string> = CommonFilterProps<T> & {
+//   autoCompleteOptions: Record<T, SelectOptionRequired[]>;
+//   onAutoComplete: (key: T, value: SelectOptionRequired) => void;
+// };
 
-export interface SortingProps<S> {
-  sortValue: S;
-  onSortChange: (value: S) => void;
-  sortItems: { value: S; label: string }[];
-}
-
-type FilterWithSortingProps<T, S> = CommonFilterProps<T> & SortingProps<S>;
-
-export interface QuickFilterProps<Q> {
-  onQuickFilter: (value: Q) => void;
-  quickFilterItems: { value: Q; label: string }[];
-}
-
-type FilterWithQuickFilterProps<T, Q> = CommonFilterProps<T> &
-  QuickFilterProps<Q>;
-
-export type FilterProps<T, S, Q> =
-  | CommonFilterProps<T>
-  | FilterWithSortingProps<T, S>
-  | FilterWithQuickFilterProps<T, Q>
-  | (FilterWithSortingProps<T, S> & FilterWithQuickFilterProps<T, Q>);
+export type FilterProps<T extends string> = CommonFilterProps<T>;
+// | FilterWithAutoCompleteOptions<T>;

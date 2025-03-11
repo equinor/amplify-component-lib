@@ -7,7 +7,6 @@ import {
 
 import { ButtonWithMenu } from './ButtonWithMenu';
 import { colors } from 'src/atoms';
-import { SortingProps } from 'src/organisms/Filter/Filter.types';
 
 import styled from 'styled-components';
 
@@ -17,20 +16,22 @@ const MenuItem = styled(Menu.Item)`
   }
 `;
 
-export function Sorting<S>({
-  sortValue,
-  onSortChange,
-  sortItems,
-}: SortingProps<S>) {
-  const activeSorting = sortItems.find((item) => item.value === sortValue);
+interface SortMenuProps<S> {
+  value: S;
+  onChange: (value: S) => void;
+  items: { value: S; label: string }[];
+}
+
+export function SortMenu<S>({ value, onChange, items }: SortMenuProps<S>) {
+  const activeSorting = items.find((item) => item.value === value);
 
   const handleOnSelect = (value: S) => {
-    onSortChange(value);
+    onChange(value);
   };
 
   return (
     <ButtonWithMenu
-      menuItems={sortItems.map((item) => (
+      menuItems={items.map((item) => (
         <MenuItem
           key={item.label}
           onClick={() => {
@@ -40,12 +41,12 @@ export function Sorting<S>({
           {item.label}
           <Icon
             color={
-              item.value === sortValue
+              item.value === value
                 ? colors.interactive.primary__resting.rgba
                 : colors.text.static_icons__tertiary.rgba
             }
             data={
-              item.value === sortValue
+              item.value === value
                 ? radio_button_selected
                 : radio_button_unselected
             }
