@@ -78,12 +78,14 @@ type SelectFieldOption = Field & SelectOptionRequired;
 export interface FieldSelectorType {
   availableFields: Field[];
   onSelect: (selectedField: Field) => void;
+  itemNameSingular: string;
   showAccessITLink?: boolean;
 }
 
 export const SelectorCard: FC<FieldSelectorType> = ({
   availableFields,
   onSelect,
+  itemNameSingular,
   showAccessITLink = true,
 }) => {
   const [selectedOption, setSelectedOption] = useState<SelectFieldOption>();
@@ -115,14 +117,14 @@ export const SelectorCard: FC<FieldSelectorType> = ({
 
   return (
     <StyledCard>
-      <Typography variant="h3">Please select a field</Typography>
+      <Typography variant="h3">Please select a {itemNameSingular}</Typography>
       <div>
         <section>
           <SingleSelect
             lightBackground
             value={selectedOption}
             items={options}
-            placeholder="Select a field"
+            placeholder={`Select a ${itemNameSingular}...`}
             onSelect={handleOnSelect}
           />
           <Button
@@ -136,7 +138,9 @@ export const SelectorCard: FC<FieldSelectorType> = ({
         </section>
         {showAccessITLink && (
           <LinkContainer>
-            <Typography variant="overline">Missing a field?</Typography>
+            <Typography variant="overline">
+              Missing a {itemNameSingular}?
+            </Typography>
             <GoToAccessItLink
               tabIndex={0}
               data-testid="missing-access"

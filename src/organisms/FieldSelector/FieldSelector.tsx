@@ -36,6 +36,7 @@ export interface FieldSelectorProps {
   onChangedField: () => void;
   showAccessITLink?: boolean;
   finishedText: string; // Example: 'Taking you to the dashboard'
+  itemNameSingular?: string; // Defaults to 'field'
 }
 
 export const FieldSelector: FC<FieldSelectorProps> = ({
@@ -45,6 +46,7 @@ export const FieldSelector: FC<FieldSelectorProps> = ({
   onChangedField,
   finishedText,
   showAccessITLink = true,
+  itemNameSingular = 'field',
 }) => {
   const [isChangingField, setIsChangingField] = useState(false);
   const fieldName = useRef<string>('');
@@ -80,6 +82,7 @@ export const FieldSelector: FC<FieldSelectorProps> = ({
       </ImageWrapper>
       {!isLoading ? (
         <SelectorCard
+          itemNameSingular={itemNameSingular}
           availableFields={fields}
           onSelect={handleClick}
           showAccessITLink={showAccessITLink}

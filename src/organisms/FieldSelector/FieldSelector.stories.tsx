@@ -41,13 +41,20 @@ const meta: Meta<typeof FieldSelector> = {
   title: 'Organisms/FieldSelector',
   component: FieldSelector,
   argTypes: {
+    itemNameSingular: {
+      control: 'text',
+      description:
+        'Defaults to "field" Singular of whatever it is you are selecting, if it is multiple things set it to "field or {whatever}"',
+    },
     finishedText: { control: 'text' },
     showAccessITLink: { control: 'boolean' },
   },
   args: {
     finishedText: 'Taking you to the storybook',
     showAccessITLink: true,
+    itemNameSingular: undefined,
   },
+  tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
   },
@@ -115,6 +122,7 @@ export const Primary: StoryFn = (args) => {
           <Template.Container>
             <Template.Content $open={false} id="content">
               <FieldSelector
+                itemNameSingular={args.itemNameSingular as string}
                 showAccessITLink={args.showAccessITLink as boolean}
                 setField={setField}
                 fields={fields}
