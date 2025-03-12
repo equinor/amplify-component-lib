@@ -214,12 +214,14 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
         <SingleSelect
           value={carSize}
           label="Car size"
+          placeholder="Select car size..."
           onSelect={handleOnSelectEnvironment}
           items={CAR_SIZE}
         />
         <ComboBox
           values={manufacturer}
-          label="Created by"
+          label="Manufacturer"
+          placeholder="Select manufacturer..."
           onSelect={handleSelectManufacturer}
           items={MANUFACTURERS}
         />
