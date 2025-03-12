@@ -75,12 +75,14 @@ function fakeUser(): ImpersonateUserDto {
   const firstName = faker.string.uuid();
   const lastName = faker.person.lastName();
   const uniqueName = faker.internet.username();
+  const email = faker.internet.email();
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
     id: faker.string.uuid(),
     firstName,
     lastName,
+    email,
     uniqueName,
     roles,
     appName: environment.getAppName(import.meta.env.VITE_NAME),
