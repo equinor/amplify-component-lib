@@ -5,6 +5,8 @@ export { Badge } from './Badge/Badge';
 export type { BadgeProps } from './Badge/Badge';
 export { Banner } from './Banner/Banner';
 export type { BannerProps } from './Banner/Banner';
+export { Button } from './Button/Button';
+export type { ButtonProps } from './Button/Button';
 export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
 export { ContentMenu } from './ContentMenu/ContentMenu';
@@ -100,7 +102,6 @@ export type { SwitchProps } from './SelectionControls/Switch/Switch';
 export {
   Accordion,
   Breadcrumbs,
-  Button,
   DateRangePicker,
   Divider,
   Dialog as EDSDialog,
@@ -122,7 +123,6 @@ export type {
   AccordionHeaderTitleProps,
   BreadcrumbsProps,
   BreadcrumbProps,
-  ButtonProps,
   DialogProps as EDSDialogProps,
   DividerProps,
   MenuProps,
