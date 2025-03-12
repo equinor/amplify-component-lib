@@ -12,9 +12,9 @@ import { ComboBox, SelectOptionRequired, SingleSelect } from 'src/molecules';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
 
 const CAR_SIZE = [
-  { value: 'size', label: 'Sports car' },
-  { value: 'size', label: 'Kei car' },
-  { value: 'size', label: 'Family van' },
+  { value: 'sports-car', label: 'Sports car' },
+  { value: 'kei-car', label: 'Kei car' },
+  { value: 'family-van', label: 'Family van' },
 ];
 const MANUFACTURERS = [
   { value: 'toyota', label: 'トヨタ (Toyota)' },
