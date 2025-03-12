@@ -112,6 +112,10 @@ export function Filter<T extends string>({
     }
   };
 
+  const hasAnyValues = (Object.values(values) as Array<T>).some(
+    (value) => value.length > 0
+  );
+
   return (
     <Wrapper>
       {topContent}
@@ -140,7 +144,7 @@ export function Filter<T extends string>({
             id={id}
             type="search"
             value={search}
-            placeholder={placeholder}
+            placeholder={hasAnyValues ? undefined : placeholder}
             onChange={onSearchChange}
             onKeyDownCapture={handleOnKeyDown}
             onFocus={handleOnFocus}
