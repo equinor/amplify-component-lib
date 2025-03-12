@@ -37,13 +37,29 @@ export function useApiErrorSnackbar({
       for (const query of newFailingQueries) {
         shownErrors.current.push(query.queryHash);
         const error = query.state.error;
-        if (error instanceof ApiError) {
-          let message = error.message;
-          if ('userMessage' in error.body) {
-            message = error.body.userMessage;
+        if (
+          typeof error === 'object' &&
+          error &&
+          'name' in error &&
+          error.name === 'ApiError'
+        ) {
+          const typedError = error as ApiError;
+          let message = typedError.message;
+          if ('body' in typedError && typedError.body) {
+            if (
+              typeof typedError.body === 'object' &&
+              'userMessage' in typedError.body &&
+              typeof typedError.body.userMessage === 'string'
+            ) {
+              message = typedError.body.userMessage;
+            }
+
+            if (typeof typedError.body === 'string') {
+              message = typedError.body;
+            }
           }
           showSnackbar({
-            text: `${error.status}: ${message}`,
+            text: `${typedError.status}: ${message}`,
             variant: 'error',
           });
         }
