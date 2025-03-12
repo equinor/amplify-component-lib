@@ -186,6 +186,7 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
         <>
           {props.withQuickFilter && (
             <Filter.QuickFilter
+              values={values}
               items={{
                 manufacturer: [MANUFACTURERS[0]],
               }}
