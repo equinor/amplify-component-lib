@@ -47,6 +47,7 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
   const [search, setSearch] = useState<string>('');
   const [searchTags, setSearchTags] = useState<string[]>([]);
   const [sortValue, setSortValue] = useState<Sorting>(Sorting.Name);
+  const [selectedTab, setSelectedTab] = useState(0);
 
   const values = useMemo(() => {
     const all: FilterProps<string>['values'] = {};
@@ -169,10 +170,15 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       onClearAllFilters={handleOnClearAllFilters}
       topContent={
         props.withTabs ? (
-          <Tabs>
-            <Tabs.Tab active>All categories</Tabs.Tab>
-            <Tabs.Tab>One</Tabs.Tab>
-            <Tabs.Tab>Two</Tabs.Tab>
+          <Tabs
+            activeTab={selectedTab}
+            onChange={(index) => setSelectedTab(index)}
+          >
+            <Tabs.List>
+              <Tabs.Tab>All categories</Tabs.Tab>
+              <Tabs.Tab>One</Tabs.Tab>
+              <Tabs.Tab>Two</Tabs.Tab>
+            </Tabs.List>
           </Tabs>
         ) : undefined
       }
