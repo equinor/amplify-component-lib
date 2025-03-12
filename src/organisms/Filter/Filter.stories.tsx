@@ -230,6 +230,7 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
           placeholder="Select manufacturer..."
           onSelect={handleSelectManufacturer}
           items={MANUFACTURERS}
+          showSelectedAsText
         />
       </div>
     </Filter>
