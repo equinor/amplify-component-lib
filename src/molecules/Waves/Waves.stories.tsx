@@ -1,38 +1,42 @@
 import { Meta, StoryFn } from '@storybook/react';
 
-import { Waves, WavesProps } from 'src/molecules/Waves/Waves';
+import { Waves } from 'src/molecules/Waves/Waves';
 
-const meta: Meta<typeof Waves> = {
+export interface WaveStoryProps {
+  gradientColors?: string[];
+  color1: string;
+  color2: string;
+}
+
+const meta: Meta<WaveStoryProps> = {
   title: 'Molecules/Waves',
   component: Waves,
   argTypes: {
-    waveIntervalDist: {
-      control: { type: 'range', min: 1, max: 10, step: 0.25 },
-      name: 'Wave Interval Distance (rem)',
+    gradientColors: {
+      table: { disable: true }, // Hide gradientColors array from the controls
     },
-    waveDelay: {
-      control: { type: 'range', min: 0, max: 5, step: 0.2 },
-      name: 'Wave Animation Delay (s)',
+    color1: {
+      control: { type: 'color' },
+      name: 'Top Color',
     },
-    numWaves: {
-      control: { type: 'range', min: 1, max: 30, step: 1 },
-      name: 'Number of Waves',
-    },
-    heightFromBottom: {
-      control: { type: 'range', min: 0, max: 1200, step: 10 },
-      name: 'Wave container position (px)',
+    color2: {
+      control: { type: 'color' },
+      name: 'Bottom Color',
     },
   },
   args: {
-    waveIntervalDist: 3,
-    waveDelay: 0.75,
-    numWaves: 10,
-    heightFromBottom: 600,
+    color1: '#77d9dd', // Default for Gradient Color 1
+    color2: '#407577', // Default for Gradient Color 2
+  },
+  tags: ['!autodocs'],
+  parameters: {
+    layout: 'fullscreen',
   },
 };
 
 export default meta;
 
-export const Primary: StoryFn<WavesProps> = (args) => {
-  return <Waves {...args} />;
+export const Primary: StoryFn<WaveStoryProps> = ({ color1, color2 }) => {
+  const gradientColors = [color1, color2]; // Combine individual colors into gradientColors array
+  return <Waves gradientColors={gradientColors} />;
 };
