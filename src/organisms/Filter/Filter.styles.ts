@@ -16,22 +16,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding-left: ${spacings.small};
   outline: 1px solid ${colors.ui.background__medium.rgba};
-  cursor: pointer;
-  > svg:first-child {
-    flex-shrink: 0;
-  }
-  > section {
-    min-height: calc(48px - (2 * ${spacings.medium_small}));
-    align-items: center;
-    flex-grow: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${spacings.x_small};
-    margin: ${spacings.medium_small} 0 ${spacings.medium_small}
-      ${spacings.small};
-  }
   > button:not([data-testid='clear-all-x']) {
     padding: 0 ${spacings.small} 0 ${spacings.medium_small};
     display: flex;
@@ -49,6 +34,37 @@ export const Container = styled.div`
       background: ${colors.interactive.primary__hover_alt.rgba};
     }
   }
+
+  > button:last-child {
+    border-left: 1px solid ${colors.ui.background__medium.rgba};
+    > span {
+      color: ${colors.text.static_icons__secondary.rgba};
+    }
+    &:hover {
+      background: ${colors.interactive.primary__hover_alt.rgba};
+    }
+  }
+`;
+
+export const Section = styled.section`
+  > svg:first-child {
+    flex-shrink: 0;
+  }
+  min-height: calc(48px - (2 * ${spacings.medium_small}));
+  align-items: center;
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${spacings.x_small};
+  padding: ${spacings.medium_small} ${spacings.small};
+  cursor: text;
+  &:hover {
+    background: ${colors.ui.background__light_medium.rgba};
+  }
+  &:focus-within {
+    border-bottom: 1px solid ${colors.interactive.primary__resting.rgba};
+    padding-bottom: calc(${spacings.medium_small} - 1px);
+  }
   > button[data-testid='clear-all-x'] {
     width: 24px;
     height: 24px;
@@ -58,15 +74,6 @@ export const Container = styled.div`
     &:after {
       width: 24px;
       height: 24px;
-    }
-  }
-  > button:last-child {
-    border-left: 1px solid ${colors.ui.background__medium.rgba};
-    > span {
-      color: ${colors.text.static_icons__secondary.rgba};
-    }
-    &:hover {
-      background: ${colors.interactive.primary__hover_alt.rgba};
     }
   }
 `;
