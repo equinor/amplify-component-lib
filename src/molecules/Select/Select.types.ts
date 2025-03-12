@@ -16,19 +16,31 @@ export interface SingleSelectCommon<T extends SelectOptionRequired> {
   onSelect: (value: SelectOption<T> | undefined) => void;
 }
 
-export interface MultiSelectCommon<T extends SelectOptionRequired> {
+interface MultiSelectBase<T extends SelectOptionRequired> {
   values: SelectOption<T>[];
   onSelect: (
     values: SelectOption<T>[],
     selectedValue?: SelectOption<T>
   ) => void;
   syncParentChildSelection?: boolean;
+}
+
+type MultiSelectWithSelectedAsText<T extends SelectOptionRequired> = {
+  showSelectedAsText: true;
+} & MultiSelectBase<T>;
+
+type MultiSelectWithCustomValueComponent<T extends SelectOptionRequired> = {
+  showSelectedAsText?: undefined;
   customValueComponent?: FC<{
     item: SelectOption<T>;
     onDelete: () => void;
     tryingToRemove: boolean;
   }>;
-}
+} & MultiSelectBase<T>;
+
+export type MultiSelectCommon<T extends SelectOptionRequired> =
+  | MultiSelectWithSelectedAsText<T>
+  | MultiSelectWithCustomValueComponent<T>;
 
 export interface SelectGroup<T extends SelectOptionRequired> {
   title: string;
