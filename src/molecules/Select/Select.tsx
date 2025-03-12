@@ -181,9 +181,10 @@ export const Select = <T extends SelectOptionRequired>(
             {search === '' && selectedValues.length === 0 && (
               <PlaceholderText>{placeholder}</PlaceholderText>
             )}
-            {(search === '' ||
+            {((search === '' && 'value' in props) ||
               ('values' in props &&
-                ((selectedValues.length > 0 && !props.showSelectedAsText) ||
+                selectedValues.length > 0 &&
+                (!props.showSelectedAsText ||
                   (props.showSelectedAsText && search === '')))) &&
               valueElements}
             <input
