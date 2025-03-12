@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useMemo, useState } from 'react';
 
 import { DatePicker, Tabs } from '@equinor/eds-core-react';
 import { gear, van } from '@equinor/eds-icons';
+import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
@@ -35,15 +36,18 @@ type FilterStoryProps = FilterProps<string> & {
 
 const Wrapper: FC<FilterStoryProps> = (props) => {
   const [carSize, setCarSize] = useState<SelectOptionRequired | undefined>(
-    undefined
+    props.values['carSize']?.at(0) ?? undefined
   );
-  const [manufacturer, setManufacturer] = useState<SelectOptionRequired[]>([]);
+  const [manufacturer, setManufacturer] = useState<SelectOptionRequired[]>(
+    props.values['manufacturer'] ?? []
+  );
   const [manufacturerDate, setManufacturerDate] = useState<Date | undefined>(
     undefined
   );
   const [search, setSearch] = useState<string>('');
   const [searchTags, setSearchTags] = useState<string[]>([]);
   const [sortValue, setSortValue] = useState<Sorting>(Sorting.Name);
+  const [selectedTab, setSelectedTab] = useState(0);
 
   const values = useMemo(() => {
     const all: FilterProps<string>['values'] = {};
@@ -166,10 +170,15 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       onClearAllFilters={handleOnClearAllFilters}
       topContent={
         props.withTabs ? (
-          <Tabs>
-            <Tabs.Tab active>All categories</Tabs.Tab>
-            <Tabs.Tab>One</Tabs.Tab>
-            <Tabs.Tab>Two</Tabs.Tab>
+          <Tabs
+            activeTab={selectedTab}
+            onChange={(index) => setSelectedTab(index)}
+          >
+            <Tabs.List>
+              <Tabs.Tab>All categories</Tabs.Tab>
+              <Tabs.Tab>One</Tabs.Tab>
+              <Tabs.Tab>Two</Tabs.Tab>
+            </Tabs.List>
           </Tabs>
         ) : undefined
       }
@@ -211,12 +220,14 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
         <SingleSelect
           value={carSize}
           label="Car size"
+          placeholder="Select car size..."
           onSelect={handleOnSelectEnvironment}
           items={CAR_SIZE}
         />
         <ComboBox
           values={manufacturer}
-          label="Created by"
+          label="Manufacturer"
+          placeholder="Select manufacturer..."
           onSelect={handleSelectManufacturer}
           items={MANUFACTURERS}
         />
@@ -307,39 +318,61 @@ export default meta;
 type Story = StoryObj<FilterStoryProps>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    values: {
+      manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 2),
+    },
+  },
 };
 
 export const ValuesWithIcons: Story = {
   args: {
+    values: {
+      manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
+      carSize: [faker.helpers.arrayElement(CAR_SIZE)],
+    },
     withIcons: true,
   },
 };
 
 export const WithEmptyValues: Story = {
-  args: {},
+  args: {
+    values: {},
+  },
 };
 
 export const InitialOpen: Story = {
   args: {
+    values: {
+      manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
+    },
     initialOpen: true,
   },
 };
 
 export const WithSorting: Story = {
   args: {
+    values: {
+      manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
+    },
     withSorting: true,
   },
 };
 
 export const WithQuickFilter: Story = {
   args: {
+    values: {
+      manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
+    },
     withQuickFilter: true,
   },
 };
 
 export const WithBoth: Story = {
   args: {
+    values: {
+      manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
+    },
     withSorting: true,
     withQuickFilter: true,
   },
@@ -348,5 +381,8 @@ export const WithBoth: Story = {
 export const WithTopContent: Story = {
   args: {
     withTabs: true,
+    values: {
+      manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
+    },
   },
 };

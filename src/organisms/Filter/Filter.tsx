@@ -13,6 +13,7 @@ import {
   Container,
   Content,
   SearchField,
+  Section,
   StyledChip,
   Wrapper,
 } from './Filter.styles';
@@ -49,6 +50,7 @@ export function Filter<T extends string>({
   placeholder = 'Search...',
   id = 'filter-search',
 }: FilterProps<T>) {
+  const searchRef = useRef<HTMLInputElement | null>(null);
   const [open, setOpen] = useState(initialOpen);
   const [attemptingToRemove, setAttemptingToRemove] = useState<T | undefined>(
     undefined
@@ -66,6 +68,10 @@ export function Filter<T extends string>({
     if (!open) {
       setOpen(true);
     }
+  };
+
+  const handleOnSectionClick = () => {
+    searchRef.current?.focus();
   };
 
   const handleOnSearchEnter = (searchValue: string) => {
@@ -110,12 +116,11 @@ export function Filter<T extends string>({
     <Wrapper>
       {topContent}
       <Container>
-        <Icon
-          onClick={handleOnToggleOpen}
-          data={search_icon}
-          color={colors.text.static_icons__tertiary.rgba}
-        />
-        <section>
+        <Section onClick={handleOnSectionClick}>
+          <Icon
+            data={search_icon}
+            color={colors.text.static_icons__tertiary.rgba}
+          />
           {(Object.keys(values) as Array<T>).flatMap((key) =>
             values[key].map(({ label, icon }, index, list) => (
               <StyledChip
@@ -131,6 +136,7 @@ export function Filter<T extends string>({
             ))
           )}
           <SearchField
+            ref={searchRef}
             id={id}
             type="search"
             value={search}
@@ -139,22 +145,22 @@ export function Filter<T extends string>({
             onKeyDownCapture={handleOnKeyDown}
             onFocus={handleOnFocus}
           />
-        </section>
-        {(Object.values(values) as SelectOptionRequired[][]).some(
-          (list) => list.length > 0
-        ) && (
-          <Button
-            variant="ghost_icon"
-            onClick={onClearAllFilters}
-            data-testid="clear-all-x"
-          >
-            <Icon
-              data={clear}
-              size={16}
-              color={colors.text.static_icons__tertiary.rgba}
-            />
-          </Button>
-        )}
+          {(Object.values(values) as SelectOptionRequired[][]).some(
+            (list) => list.length > 0
+          ) && (
+            <Button
+              variant="ghost_icon"
+              onClick={onClearAllFilters}
+              data-testid="clear-all-x"
+            >
+              <Icon
+                data={clear}
+                size={16}
+                color={colors.text.static_icons__tertiary.rgba}
+              />
+            </Button>
+          )}
+        </Section>
         {inlineContent}
         <button onClick={handleOnToggleOpen} data-testid="toggle-open-button">
           <Typography variant="button" group="navigation" as="span">
