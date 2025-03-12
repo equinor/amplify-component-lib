@@ -15,7 +15,9 @@ test('Calls onQuickFilter when selecting value', async () => {
       }),
   };
   const onQuickFilter = vi.fn();
-  render(<QuickFilter items={items} onQuickFilter={onQuickFilter} />);
+  render(
+    <QuickFilter values={{}} items={items} onQuickFilter={onQuickFilter} />
+  );
 
   const user = userEvent.setup();
   await user.click(screen.getByRole('button'));

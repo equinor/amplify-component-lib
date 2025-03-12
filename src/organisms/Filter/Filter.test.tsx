@@ -84,7 +84,7 @@ test('Custom placeholder works as expected', () => {
   const props = fakeProps();
   const placeholder = faker.lorem.sentence();
   render(
-    <Filter {...props} placeholder={placeholder}>
+    <Filter {...props} values={{}} placeholder={placeholder}>
       <p>child</p>
     </Filter>
   );
