@@ -27,6 +27,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
 
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
 
@@ -39,6 +40,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       setRoles(editingUser.roles.map((role) => ({ value: role, label: role })));
       setFirstName(editingUser.firstName);
       setLastName(editingUser.lastName);
+      setEmail(editingUser.email ?? '');
     }
   }, [editingUser, previousEditingUser]);
 
@@ -70,6 +72,10 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
     setLastName(event.target.value);
   };
 
+  const handleOnEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
   const handleOnRoleSelect = (values: SelectOptionRequired[]) => {
     setRoles(values);
   };
@@ -80,6 +86,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
         id: editingUser.id,
         firstName,
         lastName,
+        email: email !== '' ? email : undefined,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: editingUser.uniqueName,
         appName: editingUser.appName,
@@ -90,6 +97,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       await createImpersonationUser({
         firstName,
         lastName,
+        email: email !== '' ? email : undefined,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: `${firstName}.${lastName}`.toLowerCase(),
         appName: environment.getAppName(import.meta.env.VITE_NAME),
@@ -123,6 +131,14 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
           placeholder="Add last name..."
           value={lastName}
           onChange={handleOnLastNameChange}
+        />
+        <TextField
+          id="email"
+          label="E-mail"
+          placeholder="Add e-mail..."
+          meta="Optional"
+          value={email}
+          onChange={handleOnEmailChange}
         />
       </Section>
       <Section>

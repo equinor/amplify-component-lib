@@ -109,9 +109,9 @@ test('OnClose runs as expected in create new', async () => {
   ).not.toBeInTheDocument();
 });
 
-test(
-  'Able to edit existing user impersonation',
-  async () => {
+test.each(['email', 'no-email'])(
+  'Able to edit existing user impersonation - %s',
+  async (testCase) => {
     renderWithProviders(<Account />);
     const user = userEvent.setup();
     const button = screen.getByRole('button');
@@ -136,6 +136,15 @@ test(
     const newFirstName = faker.person.firstName();
     await user.type(textBox, newFirstName);
 
+    if (testCase === 'email') {
+      await user.type(
+        screen.getByRole('textbox', { name: /e-mail/i }),
+        faker.internet.email()
+      );
+    } else if (testCase === 'no-email') {
+      await user.clear(screen.getByRole('textbox', { name: /e-mail/i }));
+    }
+
     await user.click(screen.getByRole('button', { name: /save/i }));
 
     await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
@@ -147,9 +156,9 @@ test(
   { timeout: 8000 }
 );
 
-test(
-  'Able to create new impersonation user',
-  async () => {
+test.each(['email', 'no-email'])(
+  'Able to create new impersonation user - %s',
+  async (testCase) => {
     renderWithProviders(<Account />);
     const user = userEvent.setup();
     const button = screen.getByRole('button');
@@ -179,6 +188,15 @@ test(
       screen.getByRole('textbox', { name: /last name/i }),
       fakeLastName
     );
+
+    if (testCase === 'email') {
+      await user.type(
+        screen.getByRole('textbox', { name: /e-mail/i }),
+        faker.internet.email()
+      );
+    } else if (testCase === 'no-email') {
+      await user.clear(screen.getByRole('textbox', { name: /e-mail/i }));
+    }
 
     const roles = faker.helpers
       .arrayElements(FAKE_ROLES, {
