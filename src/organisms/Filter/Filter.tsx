@@ -159,7 +159,7 @@ export function Filter<T extends string>({
             >
               <Icon
                 data={clear}
-                size={16}
+                size={18}
                 color={colors.text.static_icons__tertiary.rgba}
               />
             </Button>
