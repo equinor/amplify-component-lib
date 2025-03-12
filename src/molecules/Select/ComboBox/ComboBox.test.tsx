@@ -680,3 +680,58 @@ test('Custom value component', () => {
 
   expect(screen.getByText('custom')).toBeInTheDocument();
 });
+
+test('showSelectedValuesAsText', async () => {
+  const label = faker.animal.bear();
+  const items = fakeSelectItems();
+  const groups = fakeGroups(5, true);
+  const handler = vi.fn();
+
+  const { rerender } = render(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[]}
+      showSelectedAsText
+    />
+  );
+
+  const user = userEvent.setup();
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0]]}
+      showSelectedAsText
+    />
+  );
+
+  expect(screen.getByText(`1/${items.length} Selected`)).toBeInTheDocument();
+
+  const search = screen.getByRole('combobox');
+  await user.type(search, items[1].label);
+
+  expect(
+    screen.queryByText(`1/${items.length} Selected`)
+  ).not.toBeInTheDocument();
+
+  await user.clear(search);
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      groups={groups}
+      values={[items[0]]}
+      showSelectedAsText
+    />
+  );
+  expect(
+    screen.getByText(
+      `1/${groups.flatMap((group) => group.items).length} Selected`
+    )
+  ).toBeInTheDocument();
+});

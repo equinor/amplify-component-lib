@@ -3,6 +3,8 @@ import { create } from '@storybook/theming';
 export default create({
   base: 'light',
   brandTitle: 'Amplify storybook',
+  brandUrl: 'https://github.com/equinor/amplify-component-lib',
+  brandTarget: '_self',
   brandImage:
     'https://raw.githubusercontent.com/equinor/amplify-component-lib/main/static/amplify.png',
 

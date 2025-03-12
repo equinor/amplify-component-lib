@@ -118,6 +118,16 @@ export const Select = <T extends SelectOptionRequired>(
   const valueElements = useMemo(() => {
     if ('value' in props && props.value) {
       return <ValueText>{props.value.label}</ValueText>;
+    } else if ('showSelectedAsText' in props && props.showSelectedAsText) {
+      const totalAmount = props.items
+        ? props.items.length
+        : props.groups.flatMap((group) => group.items).length;
+
+      return (
+        <ValueText>
+          {selectedValues.length}/{totalAmount} Selected
+        </ValueText>
+      );
     } else {
       return selectedValues.map((value) => {
         if ('customValueComponent' in props && props.customValueComponent) {
@@ -172,7 +182,9 @@ export const Select = <T extends SelectOptionRequired>(
               <PlaceholderText>{placeholder}</PlaceholderText>
             )}
             {(search === '' ||
-              ('values' in props && selectedValues.length > 0)) &&
+              ('values' in props &&
+                ((selectedValues.length > 0 && !props.showSelectedAsText) ||
+                  (props.showSelectedAsText && search === '')))) &&
               valueElements}
             <input
               id={id}

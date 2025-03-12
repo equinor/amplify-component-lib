@@ -296,3 +296,25 @@ export const ComboBoxWithCustomValueElements: StoryFn = (args) => {
     />
   );
 };
+
+export const ComboBoxWithSelectedValuesAsText: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      items={FAKE_ITEMS}
+      values={values}
+      onSelect={handleOnSelect}
+      showSelectedAsText
+    />
+  );
+};

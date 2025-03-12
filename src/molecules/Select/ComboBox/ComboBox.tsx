@@ -24,6 +24,7 @@ export type GroupedComboBoxProps<T extends SelectOptionRequired> =
  * @param onAddItem - Enables the possibility to add extra tags and is called when submitting a new item, either via menu click 'add' or {Enter}. Not supported with groups prop.
  * @param addItemSingularWord - Word to use when adding a new item, default is "tag"
  * @param onSearchFilter - Custom filter function for search, default is "item.label.match(new RegExp(searchValue, 'i'))"
+ * @param showSelectedAsText - If values should be shown as "5/10 Selected", defaults to false
  */
 export function ComboBox<T extends SelectOptionRequired>(
   props: ListComboBoxProps<T> | GroupedComboBoxProps<T>
