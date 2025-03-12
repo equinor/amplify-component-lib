@@ -206,7 +206,13 @@ test("'useSnackbar' hideSnackbar works as expected", async () => {
   );
 });
 
-function TestComponent({ errorBody = false }: { errorBody?: boolean }) {
+function TestComponent({
+  errorBody = false,
+  textBody = false,
+}: {
+  errorBody?: boolean;
+  textBody?: boolean;
+}) {
   useQuery({
     queryKey: ['somekey'],
     queryFn: async () => {
@@ -216,7 +222,11 @@ function TestComponent({ errorBody = false }: { errorBody?: boolean }) {
           url: '/some-random-url',
         };
         const result: ApiResult = {
-          body: errorBody ? { userMessage: 'Body error' } : {},
+          body: errorBody
+            ? textBody
+              ? 'text error'
+              : { userMessage: 'Body error' }
+            : {},
           ok: false,
           status: 500,
           statusText: '',
@@ -236,9 +246,14 @@ test('Shows error snackbar when API error happens without error body', async () 
   await waitFor(() => screen.getByText('500: API error'), { timeout: 2000 });
 });
 
-test('Shows error snackbar when API error happens with error body', async () => {
+test('Shows error snackbar when API error happens with error body as object', async () => {
   render(<TestComponent errorBody />, { wrapper: TestProviders });
   await waitFor(() => screen.getByText('500: Body error'), { timeout: 2000 });
+});
+
+test('Shows error snackbar when API error happens with error body as text', async () => {
+  render(<TestComponent errorBody textBody />, { wrapper: TestProviders });
+  await waitFor(() => screen.getByText('500: text error'), { timeout: 2000 });
 });
 
 test("Doesn't show api error snackbar if its disabled", async () => {
