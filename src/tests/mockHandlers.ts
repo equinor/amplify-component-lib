@@ -349,4 +349,12 @@ export const handlers = [
     await delay('real');
     return HttpResponse.json(FAKE_TUTORIALS);
   }),
+  http.get('*/missing-data', async () => {
+    await delay('real');
+    return HttpResponse.text('missing', { status: 404 });
+  }),
+  http.get('*/failing-data', async () => {
+    await delay('real');
+    return HttpResponse.text('failed', { status: 500 });
+  }),
 ];

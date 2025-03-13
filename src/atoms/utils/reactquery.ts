@@ -1,9 +1,12 @@
+import { ApiError } from '@equinor/subsurface-app-management';
 import { DefaultOptions } from '@tanstack/react-query';
 
 export const defaultQueryOptions: DefaultOptions = {
-  mutations: {
-    onError: (error) => {
-      console.error('[ACL - MutationError]', error);
+  queries: {
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
+    retry: (failureCount, error) => {
+      return (error as ApiError)?.status !== 404 && failureCount <= 2;
     },
   },
 };
