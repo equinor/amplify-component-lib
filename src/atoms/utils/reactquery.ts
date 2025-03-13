@@ -6,7 +6,7 @@ export const defaultQueryOptions: DefaultOptions = {
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 5,
     retry: (failureCount, error) => {
-      return (error as ApiError)?.status === 404 && failureCount <= 2;
+      return (error as ApiError)?.status !== 404 && failureCount <= 2;
     },
   },
 };
