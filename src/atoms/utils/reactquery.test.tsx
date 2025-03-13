@@ -39,11 +39,15 @@ function TestComponent({ url }: { url: string }) {
   return <p>test</p>;
 }
 
-test('Doesnt retry 404 error requests', () => {
+test('Doesnt retry 404 error requests', async () => {
   const spy = vi.spyOn(console, 'log');
   render(<TestComponent url="/missing-data" />, { wrapper });
 
   expect(spy).toHaveBeenCalledExactlyOnceWith('RAN REQUEST');
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  expect(spy).toHaveBeenCalledTimes(1);
 });
 
 test('Retries other failing queries 3 times', async () => {
