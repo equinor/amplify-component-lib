@@ -47,6 +47,7 @@ export interface AuthProviderInnerProps {
   withoutLoader: boolean;
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
+  withoutBackend: boolean;
 }
 
 export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
@@ -60,6 +61,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   withoutLoader,
   loadingComponent,
   unauthorizedComponent,
+  withoutBackend,
 }) => {
   const { instance, accounts, inProgress } = useMsal();
   const { login, result, error, acquireToken } = useMsalAuthentication(
@@ -191,7 +193,11 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
     const getPhotoAndRoles = async () => {
       await getPhoto();
-      await getRoles();
+      if (withoutBackend) {
+        setAuthState('authorized');
+      } else {
+        await getRoles();
+      }
     };
 
     getPhotoAndRoles();
@@ -204,6 +210,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     setAuthState,
     setPhoto,
     setRoles,
+    withoutBackend,
   ]);
 
   if (authState === 'unauthorized')

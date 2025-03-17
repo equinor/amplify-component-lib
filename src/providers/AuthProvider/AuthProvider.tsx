@@ -56,13 +56,22 @@ interface AuthProviderProps {
   loadingComponent?: ReactElement;
   unauthorizedComponent?: ReactElement;
   withoutLoader?: boolean;
+  withoutBackend?: boolean;
 }
 
+/**
+ * @param children - ReactNode
+ * @param loadingComponent - Component to show while auth is loading
+ * @param unauthorizedComponent - Component to show if user is unauthorized
+ * @param withoutLoader - Hide loader from AuthProvider
+ * @param withoutBackend - Will not attempt to get roles from backend
+ */
 export const AuthProvider: FC<AuthProviderProps> = ({
   children,
   loadingComponent,
   unauthorizedComponent,
   withoutLoader = false,
+  withoutBackend = false,
 }) => {
   const [account, setAccount] = useState<AccountInfo | undefined>(undefined);
   const [roles, setRoles] = useState<string[] | undefined>();
@@ -120,6 +129,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
           authState={authState}
           setAuthState={setAuthState}
           withoutLoader={withoutLoader}
+          withoutBackend={withoutBackend}
         >
           {children}
         </AuthProviderInner>
