@@ -7,6 +7,10 @@ export const lightTokens = css`
 
     --amplify_interactive_primary_pressed: rgba(19, 46, 49, 1);
 
+    --amplify_dataviz_primary_default: rgba(0, 107, 229, 1);
+    --amplify_dataviz_primary_darker: rgba(0, 83, 178, 1);
+    --amplify_dataviz_primary_lighter: rgba(206, 229, 255, 1);
+
     --amplify_dataviz_darkblue_default: rgba(0, 71, 153, 1);
     --amplify_dataviz_darkblue_darker: rgba(4, 48, 98, 1);
     --amplify_dataviz_darkblue_lighter: rgba(191, 220, 252, 1);
