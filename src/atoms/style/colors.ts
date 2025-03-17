@@ -22,6 +22,11 @@ export const colors = {
     },
   },
   dataviz: {
+    primary: {
+      default: 'var(--amplify_dataviz_primary_default, rgba(0, 107, 229, 1))',
+      darker: 'var(--amplify_dataviz_primary_darker, rgba(0, 83, 178, 1))',
+      lighter: 'var(--amplify_dataviz_primary_lighter, rgba(206, 229, 255, 1))',
+    },
     darkblue: {
       default: 'var(--amplify_dataviz_darkblue_default, rgba(0, 71, 153, 1))',
       darker: 'var(--amplify_dataviz_darkblue_darker, rgba(4, 48, 98, 1))',
