@@ -11,6 +11,16 @@ export const lightTokens = css`
     --amplify_dataviz_primary_darker: rgba(0, 83, 178, 1);
     --amplify_dataviz_primary_lighter: rgba(206, 229, 255, 1);
 
+    --amplify_dataviz_primary_10: rgba(235, 245, 255, 1);
+    --amplify_dataviz_primary_20: rgba(211, 231, 253, 1);
+    --amplify_dataviz_primary_30: rgba(167, 206, 251, 1);
+    --amplify_dataviz_primary_40: rgba(133, 187, 250, 1);
+    --amplify_dataviz_primary_50: rgba(89, 163, 248, 1);
+    --amplify_dataviz_primary_60: rgba(40, 136, 246, 1);
+    --amplify_dataviz_primary_70: rgba(0, 107, 229, 1);
+    --amplify_dataviz_primary_80: rgba(0, 83, 178, 1);
+    --amplify_dataviz_primary_90: rgba(5, 60, 122, 1);
+
     --amplify_dataviz_darkblue_default: rgba(0, 71, 153, 1);
     --amplify_dataviz_darkblue_darker: rgba(4, 48, 98, 1);
     --amplify_dataviz_darkblue_lighter: rgba(191, 220, 252, 1);
