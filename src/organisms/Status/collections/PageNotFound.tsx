@@ -11,7 +11,7 @@ export const PageNotFound: FC = () => {
   };
 
   return (
-    <Status>
+    <Status center={false}>
       <Status.Title title="Page not found" />
       <Status.Description
         text={`It looks like the page you're looking for has gone missing.
