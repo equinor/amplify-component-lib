@@ -62,3 +62,31 @@ test('Sets active like expected', async () => {
 
   expect(onQuickFilter).toHaveBeenCalledWith(key, item);
 });
+
+test('Label works as expected', () => {
+  const label = faker.airline.airplane().name;
+  const items = {
+    [faker.lorem.word()]: new Array(faker.number.int({ min: 1, max: 5 }))
+      .fill(0)
+      .map(() => {
+        return {
+          value: faker.string.uuid(),
+          label: faker.string.uuid(),
+        };
+      }),
+  };
+  const key = Object.keys(items)[0];
+  const onQuickFilter = vi.fn();
+  render(
+    <QuickFilter
+      values={{
+        [key]: [items[key][0]],
+      }}
+      items={items}
+      label={label}
+      onQuickFilter={onQuickFilter}
+    />
+  );
+
+  expect(screen.getByRole('button', { name: label })).toBeInTheDocument();
+});

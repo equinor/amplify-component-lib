@@ -11,12 +11,14 @@ interface QuickFilterProps<T extends string> {
   values: FilterProps<T>['values'];
   items: Record<T, SelectOptionRequired[]>;
   onQuickFilter: (key: T, value: SelectOptionRequired) => void;
+  label?: string;
 }
 
 export function QuickFilter<T extends string>({
   values,
   items,
   onQuickFilter,
+  label = 'Quick filter',
 }: QuickFilterProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,7 +40,7 @@ export function QuickFilter<T extends string>({
       )}
     >
       <Typography as="span" variant="button" group="navigation">
-        Quick filter
+        {label}
       </Typography>
       <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
     </ButtonWithMenu>
