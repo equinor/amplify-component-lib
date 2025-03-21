@@ -50,7 +50,7 @@ test('Able to expand it', async () => {
 
   const user = userEvent.setup();
 
-  const showMoreButton = screen.getByRole('button', { name: /more/i });
+  const showMoreButton = await screen.findByRole('button', { name: /more/i });
   expect(showMoreButton).toBeInTheDocument();
   await user.click(showMoreButton);
 
@@ -65,7 +65,7 @@ test('Settings startExpanded works as expected', async () => {
 
   const user = userEvent.setup();
 
-  const showLessButton = screen.getByRole('button', { name: /less/i });
+  const showLessButton = await screen.findByRole('button', { name: /less/i });
   expect(showLessButton).toBeInTheDocument();
   await user.click(showLessButton);
 

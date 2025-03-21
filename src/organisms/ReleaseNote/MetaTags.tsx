@@ -20,6 +20,7 @@ const RELEASE_NOTE_DOT_COLOR: Record<ReleaseNoteType, string> = {
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
   gap: ${spacings.small};
   margin-bottom: 1px; // Make room for the outline on the chips
 `;
