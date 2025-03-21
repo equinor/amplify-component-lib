@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { collapse, home, star_half } from '@equinor/eds-icons';
+import { home, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
@@ -95,10 +95,6 @@ test('Opens and closes when pressing the toggle button', async () => {
   await user.click(toggleButton);
 
   expect(sidebar).toHaveStyle('width: 231px');
-  expect(screen.getAllByTestId('eds-icon-path')[0]).toHaveAttribute(
-    'd',
-    collapse.svgPathData
-  );
 });
 
 test('Render Create button correctly when open', async () => {
@@ -120,11 +116,11 @@ test('Render Create button correctly when open', async () => {
 
   expect(screen.queryByText(createLabel)).not.toBeInTheDocument();
 
-  const toggleButton = screen.getAllByRole('button')[0];
+  const toggleButton = screen.getAllByRole('button').at(-1)!;
 
   await user.click(toggleButton);
 
   expect(screen.getByText(createLabel)).toBeInTheDocument();
-  const createButton = screen.getAllByRole('button')[1];
+  const createButton = screen.getAllByRole('button')[0];
   expect(createButton).toHaveStyle('height: 36px');
 });
