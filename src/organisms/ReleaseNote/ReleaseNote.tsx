@@ -1,4 +1,4 @@
-import { FC, ReactNode, useRef, useState } from 'react';
+import { forwardRef, ReactNode, useRef, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import {
@@ -26,6 +26,7 @@ const Container = styled.div`
   border: 1px solid ${colors.ui.background__heavy.rgba};
   border-radius: ${shape.corners.borderRadius};
   min-width: 800px;
+  width: 100%;
   overflow: hidden;
   > h4 {
     margin-top: ${spacings.large};
@@ -53,80 +54,96 @@ export type ReleaseNoteProps = {
   startExpanded?: boolean;
 } & ReleaseNoteDto;
 
-export const ReleaseNote: FC<ReleaseNoteProps> = ({
-  applicationName,
-  releaseDate,
-  createdDate,
-  tags,
-  version,
-  title,
-  body,
-  actionMenu,
-  startExpanded = false,
-}) => {
-  const usingDate = usingReleaseNoteDate({ releaseDate, createdDate });
-  const [richTextWrapper, setRichTextWrapper] = useState<HTMLDivElement | null>(
-    null
-  );
-  const initialHeight = useRef(
-    startExpanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT
-  );
-  const [expanded, setExpanded] = useState(startExpanded);
-  const needsExpand =
-    (richTextWrapper?.firstElementChild &&
-      richTextWrapper.firstElementChild.clientHeight >
-        RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT) ??
-    true;
+export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
+  (
+    {
+      applicationName,
+      releaseDate,
+      createdDate,
+      tags,
+      version,
+      title,
+      body,
+      actionMenu,
+      startExpanded = false,
+    },
+    ref
+  ) => {
+    const usingDate = usingReleaseNoteDate({ releaseDate, createdDate });
+    const initialHeight = useRef(
+      startExpanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT
+    );
+    const [expanded, setExpanded] = useState(startExpanded);
+    const [needsShowMore, setNeedsShowMore] = useState(false);
+    const resizeObserver = useRef(
+      new ResizeObserver((entries) => {
+        if (
+          entries.at(0) &&
+          entries[0].target.scrollHeight > entries[0].target.clientHeight
+        ) {
+          setNeedsShowMore(true);
+        }
+      })
+    );
 
-  const handleOnToggleExpand = () => {
-    setExpanded((prev) => !prev);
-    if (initialHeight.current === 'auto') {
-      initialHeight.current = RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT;
-    }
-  };
+    const handleOnToggleExpand = () => {
+      setExpanded((prev) => !prev);
+      if (initialHeight.current === 'auto') {
+        initialHeight.current = RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT;
+      }
+    };
 
-  return (
-    <Container>
-      <Header>
-        <HeaderLeft>
-          <Typography
-            variant="caption"
-            color={colors.text.static_icons__secondary.rgba}
-          >
-            {applicationName}
-          </Typography>
-          <Typography
-            variant="overline"
-            color={colors.text.static_icons__tertiary.rgba}
-          >
-            {formatRelativeDateTime(usingDate)}
-            {version ? ` ・ ${version}` : ''} ・ {timeToRead(body)}
-          </Typography>
-        </HeaderLeft>
-        <MetaTags tags={tags}>{actionMenu}</MetaTags>
-      </Header>
-      <Typography variant="h4">{title}</Typography>
-      <motion.div
-        ref={setRichTextWrapper}
-        initial={{
-          height: initialHeight.current,
-        }}
-        animate={{
-          height: expanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT,
-        }}
-      >
-        <RichTextDisplay
-          value={body}
-          onImageRead={ReleaseNotesService.getReleaseNoteImage}
-          padding="none"
-        />
-      </motion.div>
-      {needsExpand && (
-        <ToggleExpanded
-          expanded={expanded}
-          onToggleExpanded={handleOnToggleExpand}
-        />
-      )}
-    </Container>
-  );
-};
+    const handleOnSetRef = (element: HTMLDivElement | null) => {
+      if (element) {
+        resizeObserver.current.observe(element);
+      }
+    };
+
+    return (
+      <Container ref={ref}>
+        <Header>
+          <HeaderLeft>
+            <Typography
+              variant="caption"
+              color={colors.text.static_icons__secondary.rgba}
+            >
+              {applicationName}
+            </Typography>
+            <Typography
+              variant="overline"
+              color={colors.text.static_icons__tertiary.rgba}
+            >
+              {formatRelativeDateTime(usingDate)}
+              {version ? ` ・ ${version}` : ''} ・ {timeToRead(body)}
+            </Typography>
+          </HeaderLeft>
+          <MetaTags tags={tags}>{actionMenu}</MetaTags>
+        </Header>
+        <Typography variant="h4">{title}</Typography>
+        <motion.div
+          ref={handleOnSetRef}
+          initial={{
+            height: initialHeight.current,
+          }}
+          animate={{
+            height: expanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT,
+          }}
+        >
+          <RichTextDisplay
+            value={body}
+            onImageRead={ReleaseNotesService.getReleaseNoteImage}
+            padding="none"
+          />
+        </motion.div>
+        {needsShowMore && (
+          <ToggleExpanded
+            expanded={expanded}
+            onToggleExpanded={handleOnToggleExpand}
+          />
+        )}
+      </Container>
+    );
+  }
+);
+
+ReleaseNote.displayName = 'ReleaseNote';
