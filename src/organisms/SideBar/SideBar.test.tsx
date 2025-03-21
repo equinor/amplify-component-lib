@@ -50,7 +50,7 @@ test('Renders create new button when onCreate prop is given', () => {
       wrapper: wrapper,
     }
   );
-  const createIcon = screen.getAllByTestId('eds-icon-path')[1]; // First icon is collapse icon
+  const createIcon = screen.getAllByTestId('eds-icon-path')[0]; // First icon is create icon
   expect(createIcon).toHaveAttribute('d', add.svgPathData);
 });
 
@@ -167,11 +167,11 @@ test('Collapsing sidebar with open menu item closes it', async () => {
   const user = userEvent.setup();
 
   // Open sidebar
-  const collapseButton = screen.getAllByRole('button')[0];
+  const collapseButton = screen.getAllByRole('button').at(-1)!;
   await user.click(collapseButton);
 
   // Open menu item
-  const menuItemButton = screen.getAllByRole('button')[1];
+  const menuItemButton = screen.getAllByRole('button')[0];
   await user.click(menuItemButton);
 
   for (const item of props.items) {
