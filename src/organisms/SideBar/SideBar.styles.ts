@@ -30,7 +30,7 @@ export const TopItemContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  border-bottom: 2px solid ${colors.ui.background__medium.rgba};
+  border-bottom: 1px solid ${colors.ui.background__medium.rgba};
   padding-bottom: ${spacings.medium};
 `;
 

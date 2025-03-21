@@ -45,15 +45,15 @@ export const SideBar = forwardRef<
       ref={ref}
       data-testid="sidebar"
     >
-      <TopItemContainer>
-        {props.onCreate && showCreate && (
+      {props.onCreate && showCreate && (
+        <TopItemContainer>
           <CreateItem
             createLabel={props.createLabel}
             onCreate={props.onCreate}
             disabled={props.createDisabled}
           />
-        )}
-      </TopItemContainer>
+        </TopItemContainer>
+      )}
       <CenterItemContainer>{children}</CenterItemContainer>
       <BottomItemContainer>
         {bottomItem}
