@@ -79,7 +79,8 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
       new ResizeObserver((entries) => {
         if (
           entries.at(0) &&
-          entries[0].target.scrollHeight > entries[0].target.clientHeight
+          entries[0].target.scrollHeight >
+            RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT
         ) {
           setNeedsShowMore(true);
         }
