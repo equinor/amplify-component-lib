@@ -46,7 +46,6 @@ export const SideBar = forwardRef<
       data-testid="sidebar"
     >
       <TopItemContainer>
-        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
         {props.onCreate && showCreate && (
           <CreateItem
             createLabel={props.createLabel}
@@ -58,6 +57,7 @@ export const SideBar = forwardRef<
       <CenterItemContainer>{children}</CenterItemContainer>
       <BottomItemContainer>
         {bottomItem}
+        <ToggleOpen isOpen={isOpen} toggle={handleToggle} />
         <EquinorIconContainer>
           <EquinorLogo />
         </EquinorIconContainer>
