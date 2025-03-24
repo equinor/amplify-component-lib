@@ -43,6 +43,9 @@ const meta: Meta<typeof Dialog> = {
     isDismissable: {
       description: 'If clicking outside/hitting "Esc" closes the dialog',
     },
+    width: {
+      description: "Width of dialog in pixels, can also be 'auto'",
+    },
     open: {
       description: 'Opens/Closes dialog',
     },
