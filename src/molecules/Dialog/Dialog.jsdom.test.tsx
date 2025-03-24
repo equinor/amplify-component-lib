@@ -83,3 +83,31 @@ test('Content max height prop works as expected', () => {
   const contentWrapper = screen.getByText(description).parentElement;
   expect(contentWrapper).toHaveStyle(`max-height: ${contentMaxHeight}`);
 });
+
+test('Width prop works as expected', () => {
+  const handleOnClose = vi.fn();
+  const title = faker.airline.airplane().name;
+  const description = faker.lorem.paragraph();
+
+  const { rerender } = render(
+    <Dialog
+      open
+      title={title}
+      onClose={handleOnClose}
+      width={200}
+      data-testid="dialog"
+    >
+      {description}
+    </Dialog>
+  );
+
+  const dialog = screen.getByTestId('dialog');
+  expect(dialog).toHaveStyle('width: 200px');
+
+  rerender(
+    <Dialog open title={title} onClose={handleOnClose} width="auto">
+      {description}
+    </Dialog>
+  );
+  expect(dialog).toHaveStyle('width: auto');
+});
