@@ -1,7 +1,7 @@
 import { add } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { shape } from 'src/atoms/style';
+import { colors, shape } from 'src/atoms/style';
 import { CreateItem, CreateItemProps } from 'src/organisms/SideBar/CreateItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen } from 'src/tests/jsdomtest-utils';
@@ -64,6 +64,17 @@ describe('Expanded', () => {
         { modifier: ':hover' }
       );
       expect(button).toHaveAttribute('disabled');
+    });
+
+    test('Active', () => {
+      const props = fakeProps();
+      render(<CreateItem {...props} active />, {
+        wrapper: SideBarProvider,
+      });
+
+      expect(screen.getByTestId('create-item-container')).toHaveStyle(
+        `background: ${colors.interactive.primary__selected_highlight.rgba}`
+      );
     });
   });
 });

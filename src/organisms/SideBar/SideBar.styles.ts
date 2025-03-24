@@ -31,7 +31,6 @@ export const TopItemContainer = styled.div`
   align-items: flex-start;
   align-self: stretch;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  padding-bottom: ${spacings.medium};
 `;
 
 export const CenterItemContainer = styled.div`

@@ -14,6 +14,7 @@ const meta: Meta = {
     hasCreateButton: { control: 'boolean' },
     hasBottomItem: { control: 'boolean' },
     createLabel: { control: 'text' },
+    createActive: { control: 'boolean' },
     disabledItem: {
       control: 'select',
       options: ['none', 'dashboard', 'history', 'favourites'],
@@ -75,7 +76,7 @@ export const Primary: StoryFn = (args) => {
           path="*"
           element={
             <SideBarProvider>
-              <div style={{ display: 'flex', height: '95vh' }}>
+              <div style={{ display: 'flex', height: '100%' }}>
                 <SideBar
                   createLabel={
                     (args.hasCreateButton as string) &&
