@@ -19,23 +19,16 @@ interface LoadingProviderProps {
  * @param children - ReactNode, typically the rest of your app
  */
 export const LoadingProvider: FC<LoadingProviderProps> = ({
-  customQueryKeys,
+  customQueryKeys = [],
   children,
 }) => {
   const { authState } = useAuth();
   const isFetchingFeatureToggleOrTutorial =
     useIsFetching({
       predicate: (query) => {
-        if (customQueryKeys) {
-          return (
-            SAM_QUERIES.some((queryKey) => query.queryKey.includes(queryKey)) ||
-            customQueryKeys.some((queryKey) =>
-              query.queryKey.includes(queryKey)
-            )
-          );
-        }
-        return SAM_QUERIES.some((queryKey) =>
-          query.queryKey.includes(queryKey)
+        return (
+          SAM_QUERIES.some((queryKey) => query.queryKey.includes(queryKey)) ||
+          customQueryKeys.some((queryKey) => query.queryKey.includes(queryKey))
         );
       },
     }) > 0;
@@ -57,11 +50,15 @@ export const LoadingProvider: FC<LoadingProviderProps> = ({
    * because all the requests would cause infinite rerenders
    * */
   if (authState !== 'authorized') {
-    return <FullPageSpinner variant="application" />;
+    return <FullPageSpinner variant="application" fixedPosition />;
   }
 
   if (isLoading) {
-    return <FullPageSpinner variant="application">{children}</FullPageSpinner>;
+    return (
+      <FullPageSpinner variant="application" fixedPosition>
+        {children}
+      </FullPageSpinner>
+    );
   }
 
   return children;
