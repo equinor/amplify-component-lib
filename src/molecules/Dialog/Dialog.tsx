@@ -42,7 +42,7 @@ export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
   title: string | ReactNode | [ReactNode, ReactNode];
   children: string | ReactNode | ReactNode[];
   onClose: () => void;
-  width?: number;
+  width?: number | 'auto';
   actions?: DialogAction[];
   withContentPadding?: {
     vertical?: boolean;
@@ -114,7 +114,14 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
       <DialogElement
         {...otherProps}
         ref={ref}
-        style={{ width: width ? `${width}px` : undefined, ...otherProps.style }}
+        style={{
+          width: width
+            ? typeof width === 'string'
+              ? width
+              : `${width}px`
+            : undefined,
+          ...otherProps.style,
+        }}
       >
         <DialogTitle
           $withBorders={withBorders}
