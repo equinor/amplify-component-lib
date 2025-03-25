@@ -13,10 +13,6 @@ const Container = styled.div`
   aspect-ratio: 16 / 9;
   width: 50rem;
   overflow: auto;
-  & > div {
-    width: 100%;
-    height: 100%;
-  }
 `;
 
 const StoryComponent: FC<FullPageSpinnerProps> = (props) => {
