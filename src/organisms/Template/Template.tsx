@@ -22,6 +22,7 @@ const Container = styled.div`
 `;
 
 const FULLWIDTH_CLASSNAME = 'fullwidth';
+const WITHOUT_SCROLL_GUTTER_CLASSNAME = 'fullwidth-without-scroll';
 
 interface ContentProps {
   $open: boolean;
@@ -52,8 +53,8 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
   }
 
-  body, #content:not(:has(.select-field)) {
-      scrollbar-gutter: stable both-edges;
+  body, #content:not(:has(.select-field), :has(.${WITHOUT_SCROLL_GUTTER_CLASSNAME})) {
+      scrollbar-gutter: stable;
   }
 
   dialog {
@@ -105,6 +106,7 @@ type TemplateType = IStyledComponent<'web', any> & {
   Content: typeof Content;
   GlobalStyles: typeof GlobalStyles;
   FullWidth: string;
+  WithoutScrollGutter: string;
 };
 
 export const Template = BaseTemplate as unknown as TemplateType;
@@ -112,5 +114,6 @@ Template.Container = Container;
 Template.Content = Content;
 Template.GlobalStyles = GlobalStyles;
 Template.FullWidth = FULLWIDTH_CLASSNAME;
+Template.WithoutScrollGutter = WITHOUT_SCROLL_GUTTER_CLASSNAME;
 
 export type { ContentProps, TemplateType };
