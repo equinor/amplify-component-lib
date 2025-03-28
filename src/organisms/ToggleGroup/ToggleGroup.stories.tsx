@@ -1,11 +1,10 @@
-import { ComponentType, FC, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { new_label, person, star_outlined } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroup as ToggleGroupComponent } from '.';
-import { ToggleGroupOption } from 'src/organisms/ToggleGroup/ToggleGroupOption';
 
 interface StoryComponentProps {
   variant: ToggleGroupProps['variant'];
@@ -80,14 +79,28 @@ const meta: Meta = {
       control: 'boolean',
     },
   },
-  subcomponents: {
-    'ToggleGroup.Option': ToggleGroupOption as ComponentType<unknown>,
-  },
   parameters: {
     layout: 'centered',
     design: {
       type: 'figma',
       url: '',
+    },
+    docs: {
+      source: {
+        language: 'tsx',
+        code: `<ToggleGroup variant="outlined|filled">
+  <ToggleGroup.Option
+    label="My files"
+    icon={person} // IconData type
+    onToggle={setMyFiles}
+    checked={myFiles} 
+    disabled={disabled} 
+  />
+  // at least 2
+  ...
+</ToggleGroup>
+        `,
+      },
     },
   },
   args: {
