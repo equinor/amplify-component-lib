@@ -26,7 +26,7 @@ interface MultiSelectBase<T extends SelectOptionRequired> {
 }
 
 type MultiSelectWithSelectedAsText<T extends SelectOptionRequired> = {
-  showSelectedAsText: true;
+  showSelectedAsText: boolean;
 } & MultiSelectBase<T>;
 
 type MultiSelectWithCustomValueComponent<T extends SelectOptionRequired> = {
