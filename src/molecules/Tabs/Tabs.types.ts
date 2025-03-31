@@ -9,7 +9,7 @@ export interface Tab<T> {
 export interface Tabs<T> {
   selected: T;
   onChange: (value: T) => void;
-  options: [Tab<T>, Tab<T>, ...Tab<T>[]];
+  options: Tab<T>[];
   scrollable?: boolean;
   amountPerScrollPage?: number;
   centered?: boolean;

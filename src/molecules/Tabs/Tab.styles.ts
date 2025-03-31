@@ -1,4 +1,4 @@
-import { colors, spacings } from 'src/atoms';
+import { colors, spacings } from 'src/atoms/style';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';

@@ -28,6 +28,7 @@ export function Tab<T>({
 
   return (
     <Button
+      role="tab"
       aria-selected={selectedIndex === index}
       onClick={handleOnClick}
       $centered={centered}
