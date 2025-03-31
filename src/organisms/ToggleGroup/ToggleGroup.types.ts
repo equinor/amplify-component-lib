@@ -23,6 +23,6 @@ export type ToggleGroupOption = {
  * @param variant - Defaults to 'filled'
  */
 export interface ToggleGroup {
-  variant?: 'filled' | 'outlined';
+  variant?: 'filled' | 'outlined' | 'ghost';
   children: ReactElement<ToggleGroupOption>[];
 }

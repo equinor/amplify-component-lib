@@ -72,7 +72,7 @@ const meta: Meta = {
   argTypes: {
     variant: {
       control: 'radio',
-      options: ['outlined', 'filled'],
+      options: ['outlined', 'filled', 'ghost'],
     },
     withIcons: {
       description: 'This is only used in the story',
@@ -114,6 +114,12 @@ type Story = StoryObj<StoryComponentProps>;
 export const Outlined: Story = {
   args: {
     variant: 'outlined',
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    variant: 'ghost',
   },
 };
 

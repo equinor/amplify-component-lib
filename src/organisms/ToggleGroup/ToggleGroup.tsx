@@ -2,7 +2,7 @@ import { Children, forwardRef } from 'react';
 
 import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroupOption } from './ToggleGroupOption';
-import { colors } from 'src/atoms';
+import { colors, shape } from 'src/atoms';
 
 import styled, { css } from 'styled-components';
 
@@ -13,11 +13,20 @@ interface WrapperProps {
 const Wrapper = styled.div<WrapperProps>`
   display: flex;
   ${({ $variant }) => {
+    if ($variant === 'filled') {
+      return css`
+        border-radius: ${shape.button.borderRadius};
+        background: ${colors.ui.background__default.rgba};
+      `;
+    }
     if ($variant === 'outlined') {
       return css`
         gap: 1px; // Space for the outline
         > button {
           outline: 1px solid ${colors.text.static_icons__tertiary.rgba};
+          &:hover {
+            outline-color: ${colors.text.static_icons__secondary.rgba};
+          }
           &[aria-checked='true'] {
             outline-color: ${colors.interactive.primary__resting.rgba};
             &:hover {
