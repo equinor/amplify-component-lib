@@ -16,6 +16,10 @@ import {
 
 import { App } from '../App';
 import { Providers } from '../providers/Providers';
+import { worker } from './setupBrowserTests';
+
+import { SetupWorker } from 'msw/browser';
+import { test as testBase } from 'vitest';
 
 const TestProviders: FC<{
   children: ReactNode;
@@ -80,6 +84,37 @@ function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+interface CustomFixtures {
+  worker: SetupWorker;
+}
+
+const test = testBase.extend<CustomFixtures>({
+  worker: [
+    async ({}, use) => {
+      // Start the worker before the test.
+      await worker.start({
+        quiet: true,
+        onUnhandledRequest: (req, print) => {
+          if (req.url.includes('api') && req.url.includes('https'))
+            print.error();
+          return;
+        },
+      });
+
+      // Expose the worker object on the test's context.
+      await use(worker);
+
+      // Stop the worker after the test is done.
+      worker.stop();
+    },
+    {
+      auto: true,
+    },
+  ],
+});
+
+
+
 // re-export everything
 export * from '@testing-library/react';
 
@@ -91,4 +126,5 @@ export {
   userEvent,
   vitestBrowserUserEvent,
   page,
+  test
 };
