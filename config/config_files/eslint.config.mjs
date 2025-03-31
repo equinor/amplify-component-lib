@@ -87,6 +87,12 @@ export default [
     }
   },
   {
+    files: ['**/browsertest-utils.tsx'],
+    rules: {
+      'no-empty-pattern': 'off',
+    },
+  },
+  {
     ignores: [
       'vite.config.ts',
       'vitest.config.ts',
