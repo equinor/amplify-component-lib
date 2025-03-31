@@ -24,6 +24,9 @@ const Wrapper = styled.div<WrapperProps>`
         gap: 1px; // Space for the outline
         > button {
           outline: 1px solid ${colors.text.static_icons__tertiary.rgba};
+          &:hover {
+            outline-color: ${colors.text.static_icons__secondary.rgba};
+          }
           &[aria-checked='true'] {
             outline-color: ${colors.interactive.primary__resting.rgba};
             &:hover {

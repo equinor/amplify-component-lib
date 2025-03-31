@@ -27,6 +27,12 @@ const Button = styled.button`
   }
   &:hover {
     background: ${colors.interactive.table__cell__fill_hover.rgba};
+    > span {
+      color: ${colors.text.static_icons__secondary.rgba};
+    }
+    > svg {
+      fill: ${colors.text.static_icons__secondary.rgba};
+    }
   }
 
   &[aria-checked='true'] {
