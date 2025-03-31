@@ -12,6 +12,7 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   display: flex;
+  background: ${colors.ui.background__default.rgba};
   ${({ $variant }) => {
     if ($variant === 'outlined') {
       return css`
