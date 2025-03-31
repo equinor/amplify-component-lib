@@ -15,7 +15,7 @@ test('Throws error if providing other children than ToggleGroup.Option', async (
   ).toThrowError();
 });
 
-test.each(['outlined', 'filled'] as const)(
+test.each(['outlined', 'filled', 'ghost'] as const)(
   '%s - Able to click options in ToggleGroup',
   async (variant) => {
     const options = new Array(faker.number.int({ min: 2, max: 5 }))
