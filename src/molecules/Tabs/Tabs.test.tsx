@@ -36,6 +36,22 @@ test('Able to click tabs as expected', async () => {
   expect(props.onChange).toHaveBeenCalledExactlyOnceWith(randomOption.value);
 });
 
+test('Able to click tabs as expected when not centered or animated', async () => {
+  const props = fakeProps();
+  render(<Tabs {...props} selected={0} centered={false} animated={false} />);
+  const user = userEvent.setup();
+
+  for (const option of props.options) {
+    expect(screen.getByRole('tab', { name: option.label }));
+  }
+
+  const randomOption = faker.helpers.arrayElement(props.options);
+
+  await user.click(screen.getByRole('tab', { name: randomOption.label }));
+
+  expect(props.onChange).toHaveBeenCalledExactlyOnceWith(randomOption.value);
+});
+
 test('Able to click tabs as expected with animated = false', async () => {
   const props = fakeProps();
   render(<Tabs {...props} selected={0} animated={false} />);
