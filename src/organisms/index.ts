@@ -18,6 +18,7 @@ export type { ContentProps, TemplateType } from './Template/Template';
 export { PageTitle } from './PageTitle/PageTitle';
 export { ReleaseNote } from './ReleaseNote/ReleaseNote';
 export type { ReleaseNoteProps } from './ReleaseNote/ReleaseNote';
+export { ToggleGroup } from './ToggleGroup';
 
 export {
   // EDS Re-export
