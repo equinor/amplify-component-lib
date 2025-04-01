@@ -52,7 +52,6 @@ export default defineConfig({
         'src/atoms/utils/export.ts',
         'src/atoms/utils/UtilStory.tsx',
         'src/providers/AuthProvider/**',
-        'src/hooks/useSignalRMessages.ts',
         'src/hooks/useOnScreenMultiple.ts',
       ],
       reporter: [
