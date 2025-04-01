@@ -1,5 +1,3 @@
-
-
 ## How to use the TutorialHighlightingProvider
 
 1. Install `@equinor/subsurface-app-management` at `2.5.2` or above
@@ -41,9 +39,7 @@ export function App() {
 
 This needs to be placed within the Routes, because it uses hooks from `react-router` to figure out what path you are on
 
-
-3. Add the `<TopBar.Tutorials>` component to the topbar to make the menu  accessible to the user
-
+3. Add the `<TopBar.Tutorials>` component to the topbar to make the menu accessible to the user
 
 4. Create your tutorial in SAM and copy the tutorials ID to your app so you can use them to generate the correct IDs for the elements you want to highlight
 
@@ -55,14 +51,17 @@ const MY_TUTORIAL_ID = 'my-tutorial-id';
 import { highlightTutorialElementID } from '@equinor/amplify-component-lib';
 
 export const SomeRandomPage = () => {
-
   return (
-   <div>
+    <div>
       <h1>This is the header</h1>
-      <div id={highlightTutorialElementID(MY_TUTORIAL_ID, 0)}>First step in the tutorial!</div>
+      <div id={highlightTutorialElementID(MY_TUTORIAL_ID, 0)}>
+        First step in the tutorial!
+      </div>
       <section>Unrelated content</section>
-      <div id={highlightTutorialElementID(MY_TUTORIAL_ID, 1)}>Second step in the tutorial!</div>
-   </div>
+      <div id={highlightTutorialElementID(MY_TUTORIAL_ID, 1)}>
+        Second step in the tutorial!
+      </div>
+    </div>
   );
 };
 ```

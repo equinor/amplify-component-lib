@@ -156,17 +156,22 @@ export const darkTokens = css`
     --eds_interactive_pressed_overlay_dark: rgba(0, 0, 0, 0.2);
     --eds_interactive_pressed_overlay_light: rgba(255, 255, 255, 0.2);
 
-    --eds_elevation_raised: 0 1px 5px rgba(0, 0, 0, 0.2),
-      0 3px 4px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
+    --eds_elevation_raised:
+      0 1px 5px rgba(0, 0, 0, 0.2), 0 3px 4px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.14);
     --eds_elevation_none: 0 0 1px rgba(0, 0, 0, 0.14);
-    --eds_elevation_overlay: 0 1px 10px rgba(0, 0, 0, 0.2),
-      0 4px 5px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
-    --eds_elevation_sticky: 0 4px 5px rgba(0, 0, 0, 0.2),
-      0 3px 14px rgba(0, 0, 0, 0.12), 0 8px 10px rgba(0, 0, 0, 0.14);
-    --eds_elevation_temporary_nav: 0 7px 8px rgba(0, 0, 0, 0.2),
-      0 5px 22px rgba(0, 0, 0, 0.12), 0 12px 17px rgba(0, 0, 0, 0.14);
-    --eds_elevation_above_scrim: 0 11px 15px rgba(0, 0, 0, 0.2),
-      0 9px 46px rgba(0, 0, 0, 0.12), 0 24px 38px rgba(0, 0, 0, 0.14);
+    --eds_elevation_overlay:
+      0 1px 10px rgba(0, 0, 0, 0.2), 0 4px 5px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.14);
+    --eds_elevation_sticky:
+      0 4px 5px rgba(0, 0, 0, 0.2), 0 3px 14px rgba(0, 0, 0, 0.12),
+      0 8px 10px rgba(0, 0, 0, 0.14);
+    --eds_elevation_temporary_nav:
+      0 7px 8px rgba(0, 0, 0, 0.2), 0 5px 22px rgba(0, 0, 0, 0.12),
+      0 12px 17px rgba(0, 0, 0, 0.14);
+    --eds_elevation_above_scrim:
+      0 11px 15px rgba(0, 0, 0, 0.2), 0 9px 46px rgba(0, 0, 0, 0.12),
+      0 24px 38px rgba(0, 0, 0, 0.14);
 
     --eds_heading__h1_color: rgba(255, 255, 255, 1);
     --eds_heading__h2_color: rgba(255, 255, 255, 1);
