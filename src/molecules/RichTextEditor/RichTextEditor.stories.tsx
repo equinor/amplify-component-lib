@@ -144,10 +144,23 @@ export const MaxHeight: StoryFn<RichTextEditorProps> = (args) => {
 export const Variants: StoryFn<RichTextEditorProps> = (args) => {
   return (
     <div
-      style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: '20rem 20rem',
+        gap: '16px',
+      }}
     >
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="dirty"
         label="Label"
         meta="Meta"
@@ -155,6 +168,14 @@ export const Variants: StoryFn<RichTextEditorProps> = (args) => {
       />
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="error"
         label="Label"
         meta="Meta"
@@ -162,6 +183,14 @@ export const Variants: StoryFn<RichTextEditorProps> = (args) => {
       />
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="warning"
         label="Label"
         meta="Meta"
@@ -169,6 +198,14 @@ export const Variants: StoryFn<RichTextEditorProps> = (args) => {
       />
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="success"
         label="Label"
         meta="Meta"

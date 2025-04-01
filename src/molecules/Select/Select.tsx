@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import { useSelect } from 'src/atoms/hooks/useSelect';
-import { VARIANT_ICONS } from 'src/atoms/utils/forms';
+import { getVariantIcon } from 'src/atoms/utils/forms';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
 import {
@@ -95,7 +95,7 @@ export const Select = <T extends SelectOptionRequired>(
   const helperIcon = useMemo(() => {
     if (!showHelperIcon) return;
 
-    return variant ? VARIANT_ICONS[variant] : undefined;
+    return getVariantIcon(variant);
   }, [showHelperIcon, variant]);
 
   // Not able to test this properly because the menu onClose works inside a dialog in the test env :(

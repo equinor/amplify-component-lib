@@ -187,7 +187,6 @@ export const EditorStyling = styled.div<EditorStylingProps>`
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
 `;
 
 export const LabelWrapper = styled.div`
