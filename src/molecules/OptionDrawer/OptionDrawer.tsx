@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 
 import { Button, Checkbox, Icon } from '@equinor/eds-core-react';
 import { chevron_down, chevron_right } from '@equinor/eds-icons';
@@ -15,56 +8,10 @@ import {
   StyledOptionItem,
   StyledOptionWrapper,
 } from 'src/molecules/OptionDrawer/OptionDrawer.styles';
-
-const getAllItems = <T extends { id: string; label: string; children?: T[] }>(
-  items: T[]
-): T[] => {
-  if (items.length === 0) {
-    return [];
-  }
-
-  let options: T[] = [];
-
-  items.forEach((item) => {
-    const children = getAllItems(item?.children ?? []);
-    options = [item, ...options, ...children];
-  });
-
-  return options;
-};
-
-type StatusType = 'CHECKED' | 'INTERMEDIATE' | 'NONE';
-
-const getStatus = <T extends { id: string; label: string; children?: T[] }>(
-  item: T,
-  selectedItems: T[],
-  singleSelect?: boolean,
-  showIntermediateParent?: boolean
-): StatusType => {
-  const itemIsSelected =
-    selectedItems.find((s) => s.id === item.id) !== undefined;
-
-  if (itemIsSelected) return 'CHECKED';
-
-  if (
-    item.children === undefined ||
-    item.children.length === 0 ||
-    (singleSelect && !showIntermediateParent)
-  )
-    return 'NONE';
-
-  const selected = getAllItems(item?.children).map(
-    (i) => selectedItems.find((s) => s.id === i.id) !== undefined
-  );
-
-  if (!singleSelect && selected.every(Boolean)) {
-    return 'CHECKED';
-  } else if (selected.every((s) => !s)) {
-    return 'NONE';
-  }
-
-  return 'INTERMEDIATE';
-};
+import {
+  getStatus,
+  StatusType,
+} from 'src/molecules/OptionDrawer/OptionDrawer.utils';
 
 export interface ToggleEventProps<T> {
   items: T[];
@@ -86,10 +33,6 @@ export interface OptionDrawerProps<
   section?: number;
   selectedItems?: T[];
   singleSelect?: boolean;
-  siblings?: number;
-  animateCheck?: boolean;
-  animateUncheck?: boolean;
-  animateParent?: Dispatch<SetStateAction<boolean>>;
   openAll?: boolean;
   showIntermediateParent?: boolean;
   parentHasNestedItems?: boolean;
@@ -109,10 +52,6 @@ export const OptionDrawer = <
   section = 0,
   selectedItems = [],
   singleSelect = false,
-  siblings,
-  animateCheck,
-  animateUncheck,
-  animateParent,
   openAll,
   showIntermediateParent = false,
   parentHasNestedItems = false,
@@ -137,14 +76,11 @@ export const OptionDrawer = <
     }
   }, [openAll]);
 
-  const handleClick = (e: MouseEvent) => {
+  const handleOnClick = (e: MouseEvent | ChangeEvent) => {
     if (item.children && item.children.length !== 0) {
       setOpen((o) => !o);
     }
-    handleCheck(e);
-  };
 
-  const handleToggle = (e: MouseEvent | ChangeEvent) => {
     const items =
       item.children?.length !== 0 &&
       !singleSelect &&
@@ -160,56 +96,6 @@ export const OptionDrawer = <
       setOpen(true);
     }
     setAnimationActive(false);
-  };
-
-  const animate = (
-    e: MouseEvent | ChangeEvent,
-    shouldAnimateParent: boolean
-  ) => {
-    // Only animate whole group when everything is checked/unchecked
-    if (shouldAnimateParent && animateParent) {
-      animateParent(true);
-      setStatus(status === 'CHECKED' ? 'NONE' : 'CHECKED');
-      setTimeout(() => {
-        handleToggle(e);
-      }, 400);
-    } else if (!siblings) {
-      setAnimationActive(true);
-      setStatus(status === 'CHECKED' ? 'NONE' : 'CHECKED');
-      setTimeout(() => {
-        handleToggle(e);
-      }, 400);
-    } else {
-      handleToggle(e);
-    }
-  };
-
-  const shouldAnimateParent = (checked: boolean) => {
-    if (siblings && animateParent) {
-      const siblingsSelected = selectedItems.filter((selected) =>
-        selected.id.includes(item.parentId ?? '')
-      ).length;
-
-      if (!checked && animateCheck && siblingsSelected === siblings - 1) {
-        return true;
-      } else if (checked && animateUncheck && siblingsSelected === 1) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const handleCheck = (e: MouseEvent | ChangeEvent) => {
-    if (status === 'CHECKED' && animateUncheck) {
-      animate(e, shouldAnimateParent(true));
-    } else if (
-      (status === 'NONE' || status === 'INTERMEDIATE') &&
-      animateCheck
-    ) {
-      animate(e, shouldAnimateParent(false));
-    } else {
-      handleToggle(e);
-    }
   };
 
   const handleChevronIconClick = () => {
@@ -241,7 +127,7 @@ export const OptionDrawer = <
         )}
         <StyledOption
           $section={section}
-          onClick={handleClick}
+          onClick={handleOnClick}
           disabled={!!item.disabled}
         >
           <Checkbox
@@ -263,10 +149,6 @@ export const OptionDrawer = <
             selectedItems={selectedItems}
             item={child}
             singleSelect={singleSelect}
-            siblings={item.children?.length}
-            animateCheck={animateCheck}
-            animateUncheck={animateUncheck}
-            animateParent={setAnimationActive}
             openAll={openAll}
             showIntermediateParent={showIntermediateParent}
             parentHasNestedItems

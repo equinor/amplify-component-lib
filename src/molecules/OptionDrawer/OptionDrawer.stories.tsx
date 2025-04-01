@@ -11,27 +11,11 @@ import { items, ValueType } from 'src/molecules/OptionDrawer/stories/data';
 const meta: Meta<typeof OptionDrawer> = {
   title: 'Organisms/OptionDrawer',
   component: OptionDrawer,
-  argTypes: {
-    singleSelect: {
-      control: 'boolean',
-    },
-    animateCheck: {
-      control: 'boolean',
-    },
-    animateUncheck: {
-      control: 'boolean',
-    },
-  },
-  args: {
-    singleSelect: false,
-    animateCheck: false,
-    animateUncheck: false,
-  },
 };
 
 export default meta;
 
-export const Primary: StoryFn<OptionDrawerProps<ValueType>> = (args) => {
+export const Primary: StoryFn<OptionDrawerProps<ValueType>> = () => {
   const [selectedItems, setSelectedItems] = useState<ValueType[]>([]);
 
   return (
@@ -50,9 +34,6 @@ export const Primary: StoryFn<OptionDrawerProps<ValueType>> = (args) => {
           selectedItems={selectedItems}
           singleSelect={true}
           showIntermediateParent={true}
-          animateCheck={args.animateCheck}
-          animateParent={args.animateParent}
-          animateUncheck={args.animateUncheck}
           parentHasNestedItems={true}
         />
       ))}
