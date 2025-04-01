@@ -60,7 +60,6 @@ export const OptionDrawer = <
   const [status, setStatus] = useState<StatusType>(
     getStatus(item, selectedItems, singleSelect, showIntermediateParent)
   );
-  const [animationActive, setAnimationActive] = useState(false);
 
   useEffect(() => {
     setStatus(
@@ -95,7 +94,6 @@ export const OptionDrawer = <
       onToggle({ items: items, toggle: true, event: e });
       setOpen(true);
     }
-    setAnimationActive(false);
   };
 
   const handleChevronIconClick = () => {
@@ -106,14 +104,9 @@ export const OptionDrawer = <
 
   return (
     <StyledOptionWrapper
-      key={
-        animationActive
-          ? `animated-StyledOptionWrapper-${item.id}`
-          : `StyledOptionWrapper-${item.id}`
-      }
+      key={`StyledOptionWrapper-${item.id}`}
       $section={section}
-      $animationActive={animationActive}
-      data-testid={animationActive ? 'animated-' + item.id : item.id}
+      data-testid={item.id}
     >
       <StyledOptionItem $paddedLeft={parentHasNestedItems && !hasChildren}>
         {hasChildren && (

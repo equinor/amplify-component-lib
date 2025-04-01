@@ -1,35 +1,15 @@
 import { colors } from 'src/atoms/style';
 
-import styled, { css, keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 interface StyledOptionProps {
   $section: number;
-  $animationActive?: boolean;
 }
-
-const animateToggle = keyframes`
-  0% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-`;
 
 const StyledOptionWrapper = styled.div<StyledOptionProps>`
   margin-left: ${({ $section }) => ($section > 0 ? '22px' : '')};
   opacity: 1;
   color: ${colors.text.static_icons__default.rgba};
-  animation: ${({ $animationActive }) =>
-    $animationActive
-      ? css`
-          ${animateToggle} 400ms ease-in
-        `
-      : 'none'};
 `;
 
 const StyledOption = styled.button<StyledOptionProps>`

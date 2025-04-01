@@ -200,3 +200,24 @@ test("Doesn't call onToggle if disabled", async () => {
 
   expect(onToggle).not.toHaveBeenCalled();
 });
+
+test('Calls onToggle with the expected value when clicking checked item in single select', async () => {
+  const user = userEvent.setup();
+
+  const props = fakeProps();
+
+  selectedItems = [props.item];
+  render(
+    <OptionDrawer
+      {...props}
+      singleSelect
+      selectedItems={selectedItems}
+      item={{ ...props.item }}
+      onToggle={handleOnToggle}
+    />
+  );
+
+  await user.click(screen.getByText(props.item.label));
+
+  expect(selectedItems).toStrictEqual([]);
+});

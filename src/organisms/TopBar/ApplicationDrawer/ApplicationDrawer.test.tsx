@@ -151,7 +151,7 @@ test('No other apps to show', async () => {
       await delay('real');
       return HttpResponse.text(faker.string.nanoid());
     }),
-    http.get('*/api/v1/AmplifyApplication/userapplications', async () => {
+    http.get('*/api/v1/Application/userapplications', async () => {
       return HttpResponse.json([]);
     })
   );

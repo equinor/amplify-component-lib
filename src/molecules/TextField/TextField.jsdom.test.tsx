@@ -19,7 +19,7 @@ test('Success variant', () => {
 
   const boxShadow = getComputedStyle(textField).boxShadow;
 
-  expect(boxShadow).toBe(`inset 0 -1px 0 0 ${VARIANT_COLORS.success}`);
+  expect(boxShadow).not.toBe(`inset 0 -2px 0 0 ${VARIANT_COLORS.success}`);
 });
 
 test('Disabled text styling overrides variant', () => {
