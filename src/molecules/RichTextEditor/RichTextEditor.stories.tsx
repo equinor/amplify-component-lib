@@ -9,7 +9,7 @@ import {
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { RichText } from '.';
-import { getFeatures } from 'src/atoms';
+import { colors, getFeatures } from 'src/atoms';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 
 const meta: Meta<typeof RichTextEditor> = {
@@ -28,7 +28,7 @@ const meta: Meta<typeof RichTextEditor> = {
     padding: 'md',
     minHeight: 'auto',
     maxHeight: '200px',
-    lightBackground: false,
+    lightBackground: true,
   },
 };
 
@@ -36,6 +36,20 @@ export default meta;
 
 export const Primary: StoryFn<RichTextEditorProps> = (args) => {
   return <RichTextEditor {...args} />;
+};
+
+export const AutoHeight: StoryFn<RichTextEditorProps> = (args) => {
+  return (
+    <div
+      style={{
+        height: '40rem',
+        padding: '1rem',
+        border: `1px solid ${colors.ui.background__heavy.rgba}`,
+      }}
+    >
+      <RichTextEditor {...args} minHeight={undefined} maxHeight={undefined} />
+    </div>
+  );
 };
 
 export const FormattedText: StoryFn<RichTextEditorProps> = (args) => {
@@ -130,10 +144,23 @@ export const MaxHeight: StoryFn<RichTextEditorProps> = (args) => {
 export const Variants: StoryFn<RichTextEditorProps> = (args) => {
   return (
     <div
-      style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: '20rem 20rem',
+        gap: '16px',
+      }}
     >
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="dirty"
         label="Label"
         meta="Meta"
@@ -141,6 +168,14 @@ export const Variants: StoryFn<RichTextEditorProps> = (args) => {
       />
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="error"
         label="Label"
         meta="Meta"
@@ -148,6 +183,14 @@ export const Variants: StoryFn<RichTextEditorProps> = (args) => {
       />
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="warning"
         label="Label"
         meta="Meta"
@@ -155,6 +198,14 @@ export const Variants: StoryFn<RichTextEditorProps> = (args) => {
       />
       <RichTextEditor
         {...args}
+        removeFeatures={[
+          RichTextEditorFeatures.ALIGNMENT,
+          RichTextEditorFeatures.IMAGES,
+          RichTextEditorFeatures.TABLE,
+          RichTextEditorFeatures.LINKS,
+          RichTextEditorFeatures.LISTS,
+        ]}
+        maxHeight={undefined}
         variant="success"
         label="Label"
         meta="Meta"

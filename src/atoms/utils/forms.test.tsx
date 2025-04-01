@@ -1,11 +1,10 @@
 import { Variants } from 'src/atoms/types/variants';
-import { VARIANT_ICONS } from 'src/atoms/utils/forms';
+import { getVariantIcon } from 'src/atoms/utils/forms';
 
-test.each(Object.keys(VARIANT_ICONS))('%s icon', async (variant) => {
-  const icon = VARIANT_ICONS[variant as Variants];
-  if (variant === 'dirty') {
-    expect(icon).toBeUndefined();
-  } else {
+test.each(['error', 'warning', 'success', 'dirty', undefined])(
+  '%s icon',
+  async (variant) => {
+    const icon = getVariantIcon(variant as Variants);
     expect(icon).toBeDefined();
   }
-});
+);
