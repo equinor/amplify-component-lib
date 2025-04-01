@@ -53,7 +53,7 @@ test('ID works as expected', async () => {
   );
   const search = screen.getByRole('searchbox');
 
-  expect(search).toHaveAttribute('id', id);
+  expect(search).toHaveAttribute('id', `filter-search-${id}`);
 });
 
 test('Filter opens/closes as expected when clicking search field with multiple children', async () => {
