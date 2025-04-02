@@ -1,6 +1,10 @@
+import { MemoryRouter } from 'react-router';
+
 import { Meta, StoryFn } from '@storybook/react';
 
 import { Waves } from 'src/molecules/Waves/Waves';
+import { TopBar } from 'src/organisms/TopBar';
+import { ThemeProvider } from 'src/providers';
 
 export interface WaveStoryProps {
   gradientColors?: string[];
@@ -32,6 +36,18 @@ const meta: Meta<WaveStoryProps> = {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: (Story) => (
+    <MemoryRouter>
+      <ThemeProvider>
+        <TopBar applicationIcon="acquire" applicationName="Acquire">
+          <TopBar.Actions>
+            <TopBar.Settings />
+          </TopBar.Actions>
+        </TopBar>
+        <Story />
+      </ThemeProvider>
+    </MemoryRouter>
+  ),
 };
 
 export default meta;
