@@ -76,7 +76,9 @@ export const FieldSelector: FC<FieldSelectorProps> = ({
   }
 
   return (
-    <Container className={Template.FullWidth}>
+    <Container
+      className={`${Template.FullWidth} ${Template.WithoutScrollGutter}`}
+    >
       <ImageWrapper>
         <Waves />
       </ImageWrapper>
