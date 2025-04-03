@@ -1,528 +1,278 @@
-import {
-  ChangeEvent,
-  ComponentType,
-  FocusEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import {
-  Link,
-  matchPath,
-  MemoryRouter,
-  Route,
-  Routes,
-  useLocation,
-} from 'react-router-dom';
+import { FC, useState } from 'react';
 
-import {
-  Button,
-  Icon,
-  Tabs,
-  TabsProps,
-  Typography,
-} from '@equinor/eds-core-react';
-import { chevron_left, chevron_right } from '@equinor/eds-icons';
-import { mergeRefs } from '@equinor/eds-utils';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { car, gamepad, motorcycle } from '@equinor/eds-icons';
+import { Meta, StoryObj } from '@storybook/react';
 
-import { Search } from 'src/molecules/Search/Search';
-import page from 'src/molecules/Tabs/Tabs.docs.mdx';
-import { Stack } from 'src/storybook';
+import { Tabs } from './Tabs';
+import { Tab, Tabs as TabsType } from './Tabs.types';
 
-import styled from 'styled-components';
+import { PartialStoryFn } from 'storybook/internal/types';
 
-const icons = {
-  chevron_left,
-  chevron_right,
+const OPTIONS: [Tab<number>, Tab<number>, Tab<number>] = [
+  {
+    value: 1,
+    label: 'トヨタ',
+  },
+  {
+    value: 2,
+    label: 'マツダ',
+  },
+  {
+    value: 3,
+    label: '日産',
+  },
+];
+
+const StoryComponent: FC<TabsType<number>> = (args) => {
+  const [selected, setSelected] = useState(1);
+
+  const handleOnChange = (value: number) => {
+    setSelected(value);
+  };
+
+  return <Tabs {...args} selected={selected} onChange={handleOnChange} />;
 };
 
-Icon.add(icons);
-
-const meta: Meta<typeof Tabs> = {
+const meta: Meta = {
   title: 'Molecules/Tabs',
-  component: Tabs,
-  subcomponents: {
-    List: Tabs.List as ComponentType<unknown>,
-    Tab: Tabs.Tab as ComponentType<unknown>,
-    Panels: Tabs.Panels as ComponentType<unknown>,
-    Panel: Tabs.Panel as ComponentType<unknown>,
+  component: StoryComponent,
+  parameters: {
+    layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=10446-26376&m=dev',
+    },
+    docs: {
+      source: {
+        code: `<Tabs options={...} animated={boolean} centered={boolean} />`,
+      },
+    },
   },
   argTypes: {
-    activeTab: {
-      options: [0, 1],
-      control: {
-        type: 'select',
-      },
+    options: {
+      control: { type: 'object' },
+      description:
+        'Array with options, option.value can be whatever you want it to be. In this example it is a number',
+    },
+    animated: {
+      control: { type: 'boolean' },
+      type: 'boolean',
+      description: 'Defaults to true',
+    },
+    centered: {
+      control: { type: 'boolean' },
+      type: 'boolean',
+      description: 'Defaults to true',
+    },
+    scrollable: {
+      control: { type: 'boolean' },
+      type: 'boolean',
+      description: 'Defaults to true',
+    },
+    amountPerScrollPage: {
+      control: { type: 'range', min: 1, max: 6 },
+      type: 'number',
+      description: 'Defaults to undefined',
     },
   },
-  parameters: {
-    docs: {
-      page,
-      source: {
-        excludeDecorators: true,
-      },
-    },
+  args: {
+    options: OPTIONS,
   },
 };
 
 export default meta;
+type Story = StoryObj<typeof Tabs>;
 
-const noop = () => {};
+const WideTabs = (Story: PartialStoryFn) => (
+  <div style={{ width: '40rem', maxWidth: '40rem', overflow: 'hidden' }}>
+    <Story />
+  </div>
+);
 
-const TabsRow = styled.div`
-  display: flex;
-`;
-const StyledTab = styled(Tabs.Tab)`
-  background: pink;
-`;
-
-const StyledTabPanel = styled(Tabs.Panel)`
-  padding: 32px;
-  background: peachpuff;
-`;
-
-const NavButton = styled(Button)`
-  flex-shrink: 0;
-`;
-
-export const Introduction: StoryFn<TabsProps> = (args) => {
-  return (
-    <Tabs {...args}>
-      <Tabs.List>
-        <Tabs.Tab>One</Tabs.Tab>
-        <Tabs.Tab>Two</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel>Panel one</Tabs.Panel>
-        <Tabs.Panel>Panel two</Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  );
+export const Default: Story = {
+  args: {},
 };
-Introduction.decorators = [
-  (Story) => {
-    return (
-      <Stack>
-        <Story />
-      </Stack>
-    );
+
+export const WithLeadingIcon: Story = {
+  args: {
+    options: [
+      {
+        value: 1,
+        leadingIcon: car,
+        label: 'トヨタ',
+      },
+      {
+        value: 2,
+        leadingIcon: gamepad,
+        label: '任天堂',
+      },
+      {
+        value: 3,
+        leadingIcon: motorcycle,
+        label: 'ヤマハ',
+      },
+    ],
   },
-];
-
-export const States: StoryFn<TabsProps> = () => {
-  const focusedRef = useRef<HTMLButtonElement>(null);
-
-  return (
-    <Tabs activeTab={2} onChange={noop}>
-      <Tabs.List>
-        <Tabs.Tab>Enabled</Tabs.Tab>
-        <Tabs.Tab disabled>Disabled</Tabs.Tab>
-        <Tabs.Tab>Active</Tabs.Tab>
-        <Tabs.Tab data-hover>Hover</Tabs.Tab>
-        <Tabs.Tab data-focus ref={focusedRef}>
-          Focus
-        </Tabs.Tab>
-      </Tabs.List>
-    </Tabs>
-  );
 };
-States.decorators = [
-  (Story) => {
-    return (
-      <Stack>
-        <Story />
-      </Stack>
-    );
+
+export const WithDisabledOption: Story = {
+  args: {
+    options: [
+      {
+        value: 1,
+        label: 'トヨタ',
+      },
+      {
+        value: 2,
+        label: 'マツダ',
+        disabled: true,
+      },
+      {
+        value: 3,
+        label: '日産',
+      },
+    ],
   },
-];
-
-export const Widths: StoryFn<TabsProps> = () => {
-  return (
-    <>
-      <Typography variant="h4">minWidth</Typography>
-      <Tabs activeTab={1} onChange={noop} variant="minWidth">
-        <Tabs.List>
-          <Tabs.Tab>Text</Tabs.Tab>
-          <Tabs.Tab>More text</Tabs.Tab>
-          <Tabs.Tab>A really long line of text</Tabs.Tab>
-        </Tabs.List>
-      </Tabs>
-      <Typography variant="h4" style={{ marginTop: '1rem' }}>
-        fullWidth
-      </Typography>
-      <Tabs activeTab={1} onChange={noop} variant="fullWidth">
-        <Tabs.List>
-          <Tabs.Tab>Text</Tabs.Tab>
-          <Tabs.Tab>More text</Tabs.Tab>
-          <Tabs.Tab>A really long line of text</Tabs.Tab>
-        </Tabs.List>
-      </Tabs>
-    </>
-  );
 };
 
-export const WithPanels: StoryFn<TabsProps> = () => {
-  const [activeTab, setActiveTab] = useState(1);
-
-  const handleChange = (index: number) => {
-    setActiveTab(index);
-  };
-
-  return (
-    <Tabs activeTab={activeTab} onChange={handleChange}>
-      <Tabs.List>
-        <Tabs.Tab>Tab one</Tabs.Tab>
-        <Tabs.Tab>Tab two</Tabs.Tab>
-        <Tabs.Tab disabled>Tab three</Tabs.Tab>
-        <Tabs.Tab>Tab four</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels conditionalRender>
-        <Tabs.Panel>Panel one</Tabs.Panel>
-        <Tabs.Panel>Panel two</Tabs.Panel>
-        <Tabs.Panel>Panel three</Tabs.Panel>
-        <Tabs.Panel>Panel four</Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  );
+export const LongTabs: Story = {
+  args: {},
+  decorators: WideTabs,
 };
-WithPanels.storyName = 'With panels';
-WithPanels.decorators = [
-  (Story) => {
-    return (
-      <Stack>
-        <Story />
-      </Stack>
-    );
+
+export const LongTabsWithLeadingIcon: Story = {
+  args: {
+    options: [
+      {
+        value: 1,
+        leadingIcon: car,
+        label: 'トヨタ',
+      },
+      {
+        value: 2,
+        leadingIcon: gamepad,
+        label: '任天堂',
+      },
+      {
+        value: 3,
+        leadingIcon: motorcycle,
+        label: 'ヤマハ',
+      },
+    ],
   },
-];
-
-export const Router: StoryFn<TabsProps> = () => {
-  /*import {MemoryRouter, Route, Routes, Link, matchPath, useLocation} from 'react-router-dom' */
-  function CurrentRoute() {
-    const location = useLocation();
-    return <Typography>Current route: {location.pathname}</Typography>;
-  }
-  function useRouteMatch(patterns: readonly string[]) {
-    const { pathname } = useLocation();
-
-    for (const pattern of patterns) {
-      const possibleMatch = matchPath(pattern, pathname);
-      if (possibleMatch !== null) {
-        return possibleMatch;
-      }
-    }
-
-    return null;
-  }
-  function RouterTabs() {
-    const routeMatch = useRouteMatch(['/wells/:id', '/home', '/settings']);
-    const currentPath = routeMatch?.pattern?.path;
-
-    return (
-      <Tabs activeTab={currentPath}>
-        <Tabs.List>
-          <Tabs.Tab value="/home" to="/home" as={Link}>
-            Home
-          </Tabs.Tab>
-          <Tabs.Tab value="/wells/:id" to="/wells/1" as={Link}>
-            Wells
-          </Tabs.Tab>
-          <Tabs.Tab value="/settings" to="/settings" as={Link}>
-            Settings
-          </Tabs.Tab>
-        </Tabs.List>
-      </Tabs>
-    );
-  }
-
-  return (
-    <MemoryRouter initialEntries={['/home']} initialIndex={0}>
-      <RouterTabs />
-      <Routes>
-        <Route path="*" element={<CurrentRoute />} />
-      </Routes>
-    </MemoryRouter>
-  );
+  decorators: WideTabs,
 };
-Router.decorators = [
-  (Story) => {
-    return (
-      <Stack direction="column">
-        <Story />
-      </Stack>
-    );
+
+export const LeftAligned: Story = {
+  args: {
+    centered: false,
   },
-];
-
-export const WithSearch: StoryFn<TabsProps> = () => {
-  const [searchText, setSearchText] = useState('');
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleOnTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchText(value);
-  };
-  const handleChange = (index: number) => {
-    setActiveTab(index);
-  };
-
-  const handleFocus = (e: FocusEvent<HTMLDivElement>) => {
-    action('handleFocus')(e.target.textContent);
-  };
-
-  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
-    action('handleBlur')(e.target.textContent);
-  };
-
-  return (
-    <>
-      <Search
-        value={searchText}
-        placeholder="Search "
-        onChange={handleOnTextChange}
-      />
-      <Tabs
-        style={{ marginTop: '2rem' }}
-        activeTab={activeTab}
-        onChange={handleChange}
-        variant="fullWidth"
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      >
-        <Tabs.List>
-          <Tabs.Tab>Tags (5+)</Tabs.Tab>
-          <Tabs.Tab> Docs (5+)</Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panels>
-          <Tabs.Panel>Panel one</Tabs.Panel>
-          <Tabs.Panel>Panel two</Tabs.Panel>
-        </Tabs.Panels>
-      </Tabs>
-    </>
-  );
+  decorators: WideTabs,
 };
-WithSearch.storyName = 'With search';
 
-export const WithInputInPanel: StoryFn<TabsProps> = () => {
-  const [searchText, setSearchText] = useState('');
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleOnTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchText(value);
-  };
-  const handleChange = (index: number) => {
-    setActiveTab(index);
-  };
-
-  const handleFocus = (e: FocusEvent<HTMLDivElement>) => {
-    action('handleFocus')(e.target.textContent);
-  };
-
-  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
-    action('handleBlur')(e.target.textContent);
-  };
-
-  return (
-    <Tabs
-      style={{ marginTop: '2rem' }}
-      activeTab={activeTab}
-      onChange={handleChange}
-      variant="fullWidth"
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-    >
-      <Tabs.List>
-        <Tabs.Tab>Tab with textfield</Tabs.Tab>
-        <Tabs.Tab>Other tab</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel style={{ maxWidth: '20em' }}>
-          <Typography variant="body_short" style={{ marginBottom: '1rem' }}>
-            Panel one
-          </Typography>
-          <Search
-            value={searchText}
-            placeholder="Search"
-            onChange={handleOnTextChange}
-          />
-        </Tabs.Panel>
-        <Tabs.Panel>
-          <Typography variant="body_short">Panel two</Typography>
-        </Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  );
+export const Scrolling: Story = {
+  args: {
+    scrollable: true,
+    options: [
+      ...OPTIONS,
+      {
+        value: 4,
+        label: 'ホンダ',
+      },
+      {
+        value: 5,
+        label: 'スバル',
+      },
+      {
+        value: 6,
+        label: '三菱',
+      },
+      {
+        value: 7,
+        label: 'スズキ',
+      },
+      {
+        value: 8,
+        label: 'ダイハツ',
+      },
+      {
+        value: 9,
+        label: 'レクサス',
+      },
+      {
+        value: 10,
+        label: 'いすゞ',
+      },
+      {
+        value: 11,
+        label: '日野',
+      },
+      {
+        value: 12,
+        label: '光岡',
+      },
+      {
+        value: 13,
+        label: 'UDトラックス',
+      },
+    ],
+  },
+  decorators: WideTabs,
 };
-WithInputInPanel.storyName = 'With input in panel';
 
-export const WithStyledComponent: StoryFn<TabsProps> = () => {
-  const [activeTab, setActiveTab] = useState(1);
-
-  const handleChange = (index: number) => {
-    setActiveTab(index);
-  };
-
-  const items = [
-    { name: 'Tab 1', value: 'Tab 1 body as PLAIN TEXT' },
-    { name: 'Tab 2', value: <Typography>Tab 2 body as TYPOGRAPHY</Typography> },
-    { name: 'Tab 3', value: <div>Tab 3 as DIV</div> },
-  ];
-
-  return (
-    <Tabs activeTab={activeTab} onChange={handleChange}>
-      <Tabs.List>
-        {items.map(({ name }) => (
-          <StyledTab key={name}>{name}</StyledTab>
-        ))}
-      </Tabs.List>
-      <Tabs.Panels>
-        {items.map(({ name, value }) => (
-          <StyledTabPanel key={name}>{value}</StyledTabPanel>
-        ))}
-      </Tabs.Panels>
-    </Tabs>
-  );
+export const ScrollingWithAmountPerPage: Story = {
+  args: {
+    scrollable: true,
+    amountPerScrollPage: 3,
+    options: [
+      ...OPTIONS,
+      {
+        value: 4,
+        label: 'ホンダ',
+      },
+      {
+        value: 5,
+        label: 'スバル',
+      },
+      {
+        value: 6,
+        label: '三菱',
+      },
+      {
+        value: 7,
+        label: 'スズキ',
+      },
+      {
+        value: 8,
+        label: 'ダイハツ',
+      },
+      {
+        value: 9,
+        label: 'レクサス',
+      },
+      {
+        value: 10,
+        label: 'いすゞ',
+      },
+      {
+        value: 11,
+        label: '日野',
+      },
+      {
+        value: 12,
+        label: '光岡',
+      },
+      {
+        value: 13,
+        label: 'UDトラックス',
+      },
+    ],
+  },
+  decorators: WideTabs,
 };
-WithStyledComponent.storyName = 'With styled component';
 
-export const Overflow: StoryFn<TabsProps> = () => {
-  const list = useRef<HTMLDivElement>(null);
-  const debounceScroll = useRef<ReturnType<typeof setTimeout>>(
-    setTimeout(() => null, 100)
-  );
-  const [activeTab, setActiveTab] = useState(0);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [totalWidth, setTotalWidth] = useState(0);
-  const [prevDisabled, setPrevDisabled] = useState(true);
-  const [nextDisabled, setNextDisabled] = useState(false);
-
-  const handleChange = (index: number) => {
-    setActiveTab(index);
-  };
-
-  const handleScroll = useCallback(() => {
-    if (debounceScroll.current) clearTimeout(debounceScroll.current);
-    debounceScroll.current = setTimeout(() => {
-      if (!list.current) return;
-      if (list.current.scrollLeft === 0) setPrevDisabled(true);
-      else setPrevDisabled(false);
-
-      const atEndIsh =
-        Math.abs(
-          containerWidth + Math.round(list.current.scrollLeft) - totalWidth
-        ) <= 5;
-
-      if (atEndIsh) setNextDisabled(true);
-      else setNextDisabled(false);
-    }, 20);
-  }, [containerWidth, totalWidth]);
-
-  const resizeObserver = useMemo(
-    () =>
-      new ResizeObserver((entries) => {
-        entries.forEach((entry) => {
-          setContainerWidth(Math.round(entry.borderBoxSize[0].inlineSize));
-          handleScroll();
-        });
-      }),
-    [handleScroll]
-  );
-
-  const listCallback = useCallback(
-    (node: HTMLDivElement) => {
-      if (!node) return;
-      setTotalWidth(node.scrollWidth);
-      setContainerWidth(node.clientWidth);
-      resizeObserver.observe(node);
-      node.addEventListener('scroll', handleScroll, { passive: true });
-    },
-    [handleScroll, resizeObserver]
-  );
-
-  useEffect(() => {
-    const cachedList = list.current;
-    return () => {
-      if (debounceScroll.current) clearTimeout(debounceScroll.current);
-      cachedList?.removeEventListener('scroll', handleScroll);
-      resizeObserver.disconnect();
-    };
-  }, [handleScroll, resizeObserver]);
-
-  const scroll = (direction: string) => {
-    //Tabs have "scroll-snap-align: end" so we need to scroll less than
-    //the full row to avoid skipping past tabs. Here we set it to 80%
-    const SCROLL_AMOUNT = 0.8;
-    let target = 0;
-    const signifier = direction === 'left' ? -1 : 1;
-    if (list.current !== null) {
-      target =
-        list.current.scrollLeft + signifier * containerWidth * SCROLL_AMOUNT;
-    }
-    list.current?.scrollTo(target, 0);
-  };
-
-  return (
-    <Tabs activeTab={activeTab} onChange={handleChange}>
-      <TabsRow>
-        <NavButton
-          variant="ghost_icon"
-          onClick={() => scroll('left')}
-          aria-hidden="true"
-          tabIndex={-1}
-          disabled={prevDisabled}
-        >
-          <Icon name="chevron_left" />
-        </NavButton>
-        <Tabs.List ref={mergeRefs<HTMLDivElement>(list, listCallback)}>
-          {Array.from({ length: 20 }, (_, i) => (
-            <Tabs.Tab key={i}>Tab Title {i + 1}</Tabs.Tab>
-          ))}
-        </Tabs.List>
-        <NavButton
-          variant="ghost_icon"
-          onClick={() => scroll('right')}
-          aria-hidden="true"
-          tabIndex={-1}
-          disabled={nextDisabled}
-        >
-          <Icon name="chevron_right" />
-        </NavButton>
-      </TabsRow>
-      <Tabs.Panels>
-        {Array.from({ length: 20 }, (_, i) => (
-          <Tabs.Panel key={i}>Panel {i + 1}</Tabs.Panel>
-        ))}
-      </Tabs.Panels>
-    </Tabs>
-  );
+export const NotAnimated: Story = {
+  args: {
+    animated: false,
+  },
 };
-Overflow.storyName = 'Overflow with next/previous buttons';
-
-export const OverflowScroll: StoryFn<TabsProps> = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleChange = (index: number) => {
-    setActiveTab(index);
-  };
-
-  return (
-    <Tabs activeTab={activeTab} onChange={handleChange} scrollable>
-      <Tabs.List>
-        {Array.from({ length: 20 }, (_, i) => (
-          <Tabs.Tab key={i}>Tab Title {i + 1}</Tabs.Tab>
-        ))}
-      </Tabs.List>
-      <Tabs.Panels>
-        {Array.from({ length: 20 }, (_, i) => (
-          <Tabs.Panel key={i}>Panel {i + 1}</Tabs.Panel>
-        ))}
-      </Tabs.Panels>
-    </Tabs>
-  );
-};
-OverflowScroll.storyName = 'Overflow with default scrollbar';

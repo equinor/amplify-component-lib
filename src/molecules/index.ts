@@ -44,6 +44,8 @@ export {
 } from './RichTextEditor/MenuBar/MenuBar';
 export { AmplifyKit } from './RichTextEditor/custom-extensions/AmplifyKit';
 export type { RichTextEditorProps } from './RichTextEditor/RichTextEditor';
+export { Tabs } from './Tabs/Tabs';
+export type { TabsProps } from './Tabs/Tabs';
 export {
   TableMenuBar,
   TextTable,
@@ -106,7 +108,6 @@ export {
   Divider,
   Dialog as EDSDialog,
   Menu,
-  Tabs,
   TextField,
   Typography,
   Icon,
@@ -127,7 +128,6 @@ export type {
   DividerProps,
   MenuProps,
   SearchProps,
-  TabsProps,
   TextFieldProps,
   TypographyProps,
   IconProps,
