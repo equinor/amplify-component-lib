@@ -1,29 +1,20 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 
 import { NoiseSvg } from './NoiseSvg'; // Assuming it's another SVG file
 import { WaveStaticSvg } from './WaveStaticSvg'; // Assuming it's an SVG file
 
 interface WaveStaticProps {
+  width: number;
+  height: number;
   gradientColors?: string[];
 }
 
-export const WaveStatic: FC<WaveStaticProps> = ({ gradientColors }) => {
-  const [viewBox, setViewBox] = useState(
-    `0 0 ${window.innerWidth} ${window.innerHeight - 64}`
-  );
-
-  useEffect(() => {
-    const resizeHandler = (event: Event) => {
-      const target = event.target as Window;
-      setViewBox(`0 0 ${target.innerWidth} ${target.innerHeight - 64}`);
-    };
-
-    window.addEventListener('resize', resizeHandler);
-
-    return () => {
-      window.removeEventListener('resize', resizeHandler);
-    };
-  }, []);
+export const WaveStatic: FC<WaveStaticProps> = ({
+  width,
+  height,
+  gradientColors,
+}) => {
+  const viewBox = `0 0 ${width} ${height}`;
 
   return (
     <svg

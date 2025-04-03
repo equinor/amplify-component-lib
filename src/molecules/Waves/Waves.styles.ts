@@ -1,10 +1,11 @@
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled(motion.div)`
   height: calc(100vh - 64px);
   width: 100%;
   overflow: hidden;
-  position: relative;
+  position: absolute;
   > svg {
     position: absolute;
     z-index: 0;
