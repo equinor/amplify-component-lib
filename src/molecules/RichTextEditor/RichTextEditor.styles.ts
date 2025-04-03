@@ -30,6 +30,7 @@ export interface EditorStylingProps {
 
 export const EditorStyling = styled.div<EditorStylingProps>`
   display: grid;
+  grid-template-rows: auto 1fr;
   background: ${colors.ui.background__default.rgba};
   border-radius: ${shape.corners.borderRadius} ${shape.corners.borderRadius} 0 0;
   border: ${(props) =>

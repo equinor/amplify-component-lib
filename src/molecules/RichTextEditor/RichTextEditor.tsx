@@ -21,7 +21,7 @@ import {
   VARIANT_HELPER_TEXT_COLORS,
 } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
-import { VARIANT_ICONS } from 'src/atoms/utils/forms';
+import { getVariantIcon } from 'src/atoms/utils/forms';
 import { getFeatures } from 'src/atoms/utils/richtext';
 
 export interface RichTextEditorProps extends ImageExtensionFnProps {
@@ -104,7 +104,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
     onImageUpload,
   });
 
-  const helperIcon = variant ? VARIANT_ICONS[variant] : undefined;
+  const helperIcon = getVariantIcon(variant);
 
   return (
     <EditorProvider
@@ -118,7 +118,9 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
       onRemovedImagesChange={onRemovedImagesChange}
     >
       {(editor) => (
-        <Wrapper>
+        <Wrapper
+          style={{ height: maxHeight === undefined ? '100%' : undefined }}
+        >
           {label && (
             <LabelWrapper>
               <Typography variant="label" group="input">

@@ -80,3 +80,44 @@ test('Helper text gets expected colors', async () => {
     VARIANT_HELPER_TEXT_COLORS['error']
   );
 });
+
+test('Not setting maxHeight adds height: 100% on wrapper', async () => {
+  const props = fakeProps();
+
+  const label = faker.vehicle.vehicle();
+  renderWithProviders(
+    <RichTextEditor
+      {...props}
+      removeFeatures={[RichTextEditorFeatures.IMAGES]}
+      label={label}
+    />
+  );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const wrapper = screen.getByText(label).parentElement!.parentElement!;
+
+  expect(wrapper).toHaveStyle('height: 100%');
+});
+
+test('Setting maxHeight removes height: 100% on wrapper', async () => {
+  const props = fakeProps();
+
+  const label = faker.vehicle.vehicle();
+  renderWithProviders(
+    <RichTextEditor
+      {...props}
+      removeFeatures={[RichTextEditorFeatures.IMAGES]}
+      label={label}
+      maxHeight="400px"
+    />
+  );
+
+  // Wait for tip tap to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const wrapper = screen.getByText(label).parentElement!.parentElement!;
+
+  expect(wrapper).not.toHaveStyle('height: 100%');
+});

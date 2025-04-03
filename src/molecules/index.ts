@@ -99,6 +99,7 @@ export { Radio } from './SelectionControls/Radio/Radio';
 export type { RadioProps } from './SelectionControls/Radio/Radio';
 export { Switch } from './SelectionControls/Switch/Switch';
 export type { SwitchProps } from './SelectionControls/Switch/Switch';
+export { Waves } from './Waves/Waves';
 
 // EDS Re-export
 export {

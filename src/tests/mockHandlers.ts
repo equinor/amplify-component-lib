@@ -207,7 +207,7 @@ export const handlers = [
     };
     return HttpResponse.json(body);
   }),
-  http.get('*/api/v1/AmplifyApplication/application/*/appRoles', async () => {
+  http.get('*/api/v1/Application/application/*/appRoles', async () => {
     await delay('real');
     return HttpResponse.json(FAKE_ROLES);
   }),
@@ -334,7 +334,7 @@ export const handlers = [
 
     return HttpResponse.formData(body);
   }),
-  http.get('*/api/v1/AmplifyApplication/userapplications', async () => {
+  http.get('*/api/v1/Application/userapplications', async () => {
     await delay('real');
     return HttpResponse.json(FAKE_APPS);
   }),

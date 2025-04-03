@@ -20,7 +20,7 @@ test.each(VARIANT_OPTIONS)('variant %s works as expected', (variant) => {
 
   const element = screen.getByTestId('combobox-container');
   expect(element).toHaveStyle(
-    `box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba}`
+    `box-shadow: inset 0 -1px 0 0 ${colors.text.static_icons__tertiary.rgba}`
   );
 
   rerender(

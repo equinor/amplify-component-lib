@@ -1,0 +1,252 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Set spacing variables */
+  --spacing-*: initial;
+  --spacing-xxx_large: var(--eds_spacing_xxx_large);
+  --spacing-xx_large: var(--eds_spacing_xx_large);
+  --spacing-x_large: var(--eds_spacing_x_large);
+  --spacing-large: var(--eds_spacing_large);
+  --spacing-medium: var(--eds_spacing_medium);
+  --spacing-medium_small: var(--eds_spacing_medium_small,);
+  --spacing-small: var(--eds_spacing_small);
+  --spacing-x_small: var(--eds_spacing_x-small);
+  --spacing-xx_small: var(--eds_spacing_xx_small);
+
+  /* Unset default color values */
+  --color-*: initial;
+  --color-text-static_icons__default: var(--eds_text__static_icons__default);
+  --color-text-static_icons__primary_white: var(
+    --eds_text__static_icons__primary_white
+  );
+  --color-text-static_icons__secondary: var(
+    --eds_text__static_icons__secondary
+  );
+  --color-text-static_icons__tertiary: var(--eds_text__static_icons__tertiary);
+  --color-ui-background__danger: var(--eds_ui_background__danger);
+  --color-ui-background__default: var(--eds_ui_background__default);
+  --color-ui-background__heavy: var(--amplify_ui_background_heavy);
+  --color-ui-background__info: var(--eds_ui_background__info);
+  --color-ui-background__light: var(--eds_ui_background__light);
+  --color-ui-background__light_medium: var(
+    --amplify_ui_background_light_medium
+  );
+  --color-ui-background__medium: var(--eds_ui_background__medium);
+  --color-ui-background__overlay: var(--eds_ui_background__overlay);
+  --color-ui-background__scrim: var(--eds_ui_background__scrim);
+  --color-ui-background__semitransparent: var(
+    --eds_ui_background__semitransparent
+  );
+  --color-ui-background__warning: var(--eds_ui_background__warning);
+  --color-infographic-primary__energy_red_100: var(
+    --eds_infographic_primary__energy_red_100
+  );
+  --color-infographic-primary__energy_red_13: var(
+    --eds_infographic_primary__energy_red_13
+  );
+  --color-infographic-primary__energy_red_21: var(
+    --eds_infographic_primary__energy_red_21
+  );
+  --color-infographic-primary__energy_red_34: var(
+    --eds_infographic_primary__energy_red_34
+  );
+  --color-infographic-primary__energy_red_55: var(
+    --eds_infographic_primary__energy_red_55
+  );
+  --color-infographic-primary__lichen_green: var(
+    --eds_infographic_primary__lichen_green
+  );
+  --color-infographic-primary__mist_blue: var(
+    --eds_infographic_primary__mist_blue
+  );
+  --color-infographic-primary__moss_green_100: var(
+    --eds_infographic_primary__moss_green_100
+  );
+  --color-infographic-primary__moss_green_13: var(
+    --eds_infographic_primary__moss_green_13
+  );
+  --color-infographic-primary__moss_green_21: var(
+    --eds_infographic_primary__moss_green_21
+  );
+  --color-infographic-primary__moss_green_34: var(
+    --eds_infographic_primary__moss_green_34
+  );
+  --color-infographic-primary__moss_green_55: var(
+    --eds_infographic_primary__moss_green_55
+  );
+  --color-infographic-primary__slate_blue: var(
+    --eds_infographic_primary__slate_blue
+  );
+  --color-infographic-primary__spruce_wood: var(
+    --eds_infographic_primary__spruce_wood
+  );
+  --color-infographic-primary__weathered_red: var(
+    --eds_infographic_primary__weathered_red
+  );
+  --color-infographic-substitute__blue_ocean: var(
+    --eds_infographic_substitute__blue_ocean
+  );
+  --color-infographic-substitute__blue_overcast: var(
+    --eds_infographic_substitute__blue_overcast
+  );
+  --color-infographic-substitute__blue_sky: var(
+    --eds_infographic_substitute__blue_sky
+  );
+  --color-infographic-substitute__green_cucumber: var(
+    --eds_infographic_substitute__green_cucumber
+  );
+  --color-infographic-substitute__green_mint: var(
+    --eds_infographic_substitute__green_mint
+  );
+  --color-infographic-substitute__green_succulent: var(
+    --eds_infographic_substitute__green_succulent
+  );
+  --color-infographic-substitute__pink_rose: var(
+    --eds_infographic_substitute__pink_rose
+  );
+  --color-infographic-substitute__pink_salmon: var(
+    --eds_infographic_substitute__pink_salmon
+  );
+  --color-infographic-substitute__purple_berry: var(
+    --eds_infographic_substitute__purple_berry
+  );
+  --color-logo-fill_negative: var(--eds_logo__fill_negative);
+  --color-logo-fill_positive: var(--eds_logo__fill_positive);
+  --color-interactive-danger__highlight: var(
+    --eds_interactive_danger__highlight
+  );
+  --color-interactive-danger__hover: var(--eds_interactive_danger__hover);
+  --color-interactive-danger__resting: var(--eds_interactive_danger__resting);
+  --color-interactive-danger__text: var(--eds_interactive_danger__text);
+  --color-interactive-disabled__border: var(
+    --eds_interactive__disabled__border
+  );
+  --color-interactive-disabled__fill: var(--eds_interactive__disabled__fill);
+  --color-interactive-disabled__text: var(--eds_interactive__disabled__text);
+  --color-interactive-focus: var(--eds_interactive__focus);
+  --color-interactive-icon_on_interactive_colors: var(
+    --eds_interactive__icon_on_interactive_colors
+  );
+  --color-interactive-link_in_snackbars: var(
+    --eds_interactive__link_in_snackbars
+  );
+  --color-interactive-link_on_interactive_colors: var(
+    --eds_interactive__link_on_interactive_colors
+  );
+  --color-interactive-pressed_overlay_dark: var(
+    --eds_interactive__pressed_overlay_dark
+  );
+  --color-interactive-pressed_overlay_light: var(
+    --eds_interactive__pressed_overlay_light
+  );
+  --color-interactive-primary__hover: var(--eds_interactive_primary__hover);
+  --color-interactive-primary__hover_alt: var(
+    --eds_interactive_primary__hover_alt
+  );
+  --color-interactive-primary__pressed: var(
+    --amplify_interactive_primary_pressed
+  );
+  --color-interactive-primary__resting: var(--eds_interactive_primary__resting);
+  --color-interactive-primary__selected_highlight: var(
+    --eds_interactive_primary__selected_highlight
+  );
+  --color-interactive-primary__selected_hover: var(
+    --eds_interactive_primary__selected_hover
+  );
+  --color-interactive-secondary__highlight: var(
+    --eds_interactive_secondary__highlight
+  );
+  --color-interactive-secondary__link_hover: var(
+    --eds_interactive_secondary__link_hover
+  );
+  --color-interactive-secondary__resting: var(
+    --eds_interactive_secondary__resting
+  );
+  --color-interactive-success__highlight: var(
+    --eds_interactive_success__highlight
+  );
+  --color-interactive-success__hover: var(--eds_interactive_success__hover);
+  --color-interactive-success__resting: var(--eds_interactive_success__resting);
+  --color-interactive-success__text: var(--eds_interactive_success__text);
+  --color-interactive-table__cell__fill_activated: var(
+    --eds_interactive_table__cell__fill_activated
+  );
+  --color-interactive-table__cell__fill_hover: var(
+    --eds_interactive_table__cell__fill_hover
+  );
+  --color-interactive-table__cell__fill_resting: var(
+    --eds_interactive_table__cell__fill_resting
+  );
+  --color-interactive-table__header__fill_activated: var(
+    --eds_interactive_table__header__fill_activated
+  );
+  --color-interactive-table__header__fill_hover: var(
+    --eds_interactive_table__header__fill_hover
+  );
+  --color-interactive-table__header__fill_resting: var(
+    --eds_interactive_table__header__fill_resting
+  );
+  --color-interactive-text_highlight: var(--eds_interactive__text_highlight);
+  --color-interactive-warning__highlight: var(
+    --eds_interactive_warning__highlight
+  );
+  --color-interactive-warning__hover: var(--eds_interactive_warning__hover);
+  --color-interactive-warning__resting: var(--eds_interactive_warning__resting);
+  --color-interactive-warning__text: var(--eds_interactive_warning__text);
+  --color-dataviz-darkblue-default: var(--amplify_dataviz_darkblue_default);
+  --color-dataviz-darkblue-darker: var(--amplify_dataviz_darkblue_darker);
+  --color-dataviz-darkblue-lighter: var(--amplify_dataviz_darkblue_lighter);
+  --color-dataviz-darkgray-default: var(--amplify_dataviz_darkgray_default);
+  --color-dataviz-darkgray-darker: var(--amplify-dataviz_darkgray_darker);
+  --color-dataviz-darkgray-lighter: var(--amplify-dataviz_darkgray_lighter);
+  --color-dataviz-darkgreen-default: var(--amplify_dataviz_darkgreen_default);
+  --color-dataviz-darkgreen-darker: var(--amplify_dataviz_darkgreen_darker);
+  --color-dataviz-darkgreen-lighter: var(--amplify_dataviz_darkgreen_lighter);
+  --color-dataviz-darkpink-default: var(--amplify_dataviz_darkpink_default);
+  --color-dataviz-darkpink-darker: var(--amplify_dataviz_darkpink_darker);
+  --color-dataviz-darkpink-lighter: var(--amplify_dataviz_darkpink_lighter);
+  --color-dataviz-darkpurple-default: var(--amplify_dataviz_darkpurple_default);
+  --color-dataviz-darkpurple-darker: var(--amplify_dataviz_darkpurple_darker);
+  --color-dataviz-darkpurple-lighter: var(--amplify_dataviz_darkpurple_lighter);
+  --color-dataviz-darkyellow-default: var(--amplify_dataviz_darkyellow_default);
+  --color-dataviz-darkyellow-darker: var(--amplify_dataviz_darkyellow_darker);
+  --color-dataviz-darkyellow-lighter: var(--amplify_dataviz_darkyellow_lighter);
+  --color-dataviz-lightblue-default: var(--amplify_dataviz_lightblue_default);
+  --color-dataviz-lightblue-darker: var(--amplify_dataviz_lightblue_darker);
+  --color-dataviz-lightblue-lighter: var(--amplify_dataviz_lightblue_lighter);
+  --color-dataviz-lightgray-default: var(--amplify_dataviz_lightgray_default);
+  --color-dataviz-lightgray-darker: var(--amplify_dataviz_lightgray_darker);
+  --color-dataviz-lightgray-lighter: var(--amplify_dataviz_lightgray_lighter);
+  --color-dataviz-lightgreen-default: var(--amplify_dataviz_lightgreen_default);
+  --color-dataviz-lightgreen-darker: var(--amplify_dataviz_lightgreen_darker);
+  --color-dataviz-lightgreen-lighter: var(--amplify_dataviz_lightgreen_lighter);
+  --color-dataviz-lightpink-default: var(--amplify_dataviz_lightpink_default);
+  --color-dataviz-lightpink-darker: var(--amplify_dataviz_lightpink_darker);
+  --color-dataviz-lightpink-lighter: var(--amplify_dataviz_lightpink_lighter);
+  --color-dataviz-lightpurple-default: var(
+    --amplify_dataviz_lightpurple_default
+  );
+  --color-dataviz-lightpurple-darker: var(--amplify_dataviz_lightpurple_darker);
+  --color-dataviz-lightpurple-lighter: var(
+    --amplify_dataviz_lightpurple_lighter
+  );
+  --color-dataviz-lightyellow-default: var(
+    --amplify_dataviz_lightyellow_default
+  );
+  --color-dataviz-lightyellow-darker: var(--amplify_dataviz_lightyellow_darker);
+  --color-dataviz-lightyellow-lighter: var(
+    --amplify_dataviz_lightyellow_lighter
+  );
+  --color-dataviz-primary-default: var(--amplify_dataviz_primary_default);
+  --color-dataviz-primary-darker: var(--amplify_dataviz_primary_darker);
+  --color-dataviz-primary-lighter: var(--amplify_dataviz_primary_lighter);
+  --color-dataviz-primary-g10: var(--amplify_dataviz_primary_g10);
+  --color-dataviz-primary-g20: var(--amplify_dataviz_primary_g20);
+  --color-dataviz-primary-g30: var(--amplify_dataviz_primary_g30);
+  --color-dataviz-primary-g40: var(--amplify_dataviz_primary_g40);
+  --color-dataviz-primary-g50: var(--amplify_dataviz_primary_g50);
+  --color-dataviz-primary-g60: var(--amplify_dataviz_primary_g60);
+  --color-dataviz-primary-g70: var(--amplify_dataviz_primary_g70);
+  --color-dataviz-primary-g80: var(--amplify_dataviz_primary_g80);
+  --color-dataviz-primary-g90: var(--amplify_dataviz_primary_g90);
+}

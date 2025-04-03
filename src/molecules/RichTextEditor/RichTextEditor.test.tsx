@@ -3,7 +3,7 @@ import { fireEvent, waitFor, within } from '@testing-library/dom';
 
 import { mergeDefaults } from './custom-extensions/mergeDefaults';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
-import { VARIANT_ICONS } from 'src/atoms/utils/forms';
+import { getVariantIcon } from 'src/atoms/utils/forms';
 import { RichTextEditor, RichTextEditorProps } from 'src/molecules';
 import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 import {
@@ -208,7 +208,7 @@ test(`Shows variant icon as expected`, async () => {
   ).getByTestId('eds-icon-path');
   expect(variantIcon).toHaveAttribute(
     'd',
-    VARIANT_ICONS.error!.svgPathData! as string
+    getVariantIcon('error').svgPathData as string
   );
 });
 

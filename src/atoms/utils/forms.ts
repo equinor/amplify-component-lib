@@ -1,15 +1,23 @@
 import {
   error_outlined,
   IconData,
+  info_circle,
   thumbs_up,
   warning_outlined,
 } from '@equinor/eds-icons';
 
 import { Variants } from '../types/variants';
 
-export const VARIANT_ICONS: Record<Variants, IconData | undefined> = {
-  error: error_outlined,
-  warning: warning_outlined,
-  success: thumbs_up,
-  dirty: undefined,
-};
+export function getVariantIcon(variant: Variants | undefined): IconData {
+  switch (variant) {
+    case 'error':
+      return error_outlined;
+    case 'warning':
+      return warning_outlined;
+    case 'success':
+      return thumbs_up;
+    case 'dirty':
+    case undefined:
+      return info_circle;
+  }
+}

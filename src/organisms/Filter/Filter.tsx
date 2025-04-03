@@ -48,7 +48,7 @@ export function Filter<T extends string>({
   inlineContent,
   initialOpen = false,
   placeholder = 'Search...',
-  id = 'filter-search',
+  id,
 }: FilterProps<T>) {
   const searchRef = useRef<HTMLInputElement | null>(null);
   const [open, setOpen] = useState(initialOpen);
@@ -117,7 +117,7 @@ export function Filter<T extends string>({
   );
 
   return (
-    <Wrapper>
+    <Wrapper id={id}>
       {topContent}
       <Container>
         <Section onClick={handleOnSectionClick}>
@@ -141,7 +141,7 @@ export function Filter<T extends string>({
           )}
           <SearchField
             ref={searchRef}
-            id={id}
+            id={`filter-search-${id}`}
             type="search"
             value={search}
             placeholder={hasAnyValues ? undefined : placeholder}
