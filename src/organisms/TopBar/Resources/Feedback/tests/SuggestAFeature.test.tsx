@@ -9,7 +9,7 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import { render, screen, test, userEvent } from 'src/tests/browsertest-utils';
 
 import { beforeEach } from 'vitest';
 

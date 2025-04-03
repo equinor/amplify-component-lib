@@ -5,12 +5,12 @@ import { Account } from 'src/organisms/TopBar/Account/Account';
 import {
   renderWithProviders,
   screen,
+  test,
   userEvent,
   waitForElementToBeRemoved,
   within,
 } from 'src/tests/browsertest-utils';
 import { fakeImpersonateUsers } from 'src/tests/mockHandlers';
-import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
 
@@ -56,7 +56,9 @@ test(
   { timeout: 6000 }
 );
 
-test('Not able to delete user impersonation with activeUsers', async () => {
+test('Not able to delete user impersonation with activeUsers', async ({
+  worker,
+}) => {
   worker.use(
     http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
       await delay('real');

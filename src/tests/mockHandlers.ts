@@ -173,6 +173,30 @@ export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
     active: true,
   }));
 
+export const FAKE_FAQ_CATEGORIES: FaqCategory[] = new Array(
+  faker.number.int({ min: 2, max: 4 })
+)
+  .fill(0)
+  .map((_, index) => ({
+    id: index,
+    categoryName: faker.commerce.productName(),
+    orderBy: index,
+    applicationId: faker.string.uuid(),
+    faqs: new Array(faker.number.int({ min: 2, max: 4 }))
+      .fill(0)
+      .map((_, index) => ({
+        id: index,
+        question: faker.commerce.productDescription() + '?',
+        answer: faker.lorem.paragraph(),
+        visible: true,
+        orderBy: index,
+        roles: [],
+        faqCategoryId: 1,
+        createdDate: faker.date.past().toISOString(),
+        updatedDate: faker.date.recent().toISOString(),
+      })),
+  }));
+
 export const tokenHandler = http.get(`*/api/v1/Token/*`, async () => {
   await delay('real');
 
@@ -360,30 +384,6 @@ export const handlers = [
   }),
   http.get('*/v1/Faq/faqcategories/:appName', async () => {
     await delay('real');
-    const data: Array<FaqCategory> = new Array(
-      faker.number.int({ min: 2, max: 4 })
-    )
-      .fill(0)
-      .map((_, index) => ({
-        id: index,
-        categoryName: faker.commerce.productName(),
-        orderBy: index,
-        applicationId: faker.string.uuid(),
-        faqs: new Array(faker.number.int({ min: 2, max: 4 }))
-          .fill(0)
-          .map((_, index) => ({
-            id: index,
-            question: faker.commerce.productDescription() + '?',
-            answer: faker.lorem.paragraph(),
-            visible: true,
-            orderBy: index,
-            roles: [],
-            faqCategoryId: 1,
-            createdDate: faker.date.past().toISOString(),
-            updatedDate: faker.date.recent().toISOString(),
-          })),
-      }));
-
-    return HttpResponse.json(data);
+    return HttpResponse.json(FAKE_FAQ_CATEGORIES);
   }),
 ];

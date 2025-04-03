@@ -3,13 +3,17 @@ import React, { ReactNode } from 'react';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { render, screen } from '@testing-library/react';
 
 import { ApplicationDrawer } from './ApplicationDrawer';
 import { AuthProvider, SnackbarProvider } from 'src/providers';
-import { userEvent, waitFor } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  test,
+  userEvent,
+  waitFor,
+} from 'src/tests/browsertest-utils';
 import { FAKE_APPS } from 'src/tests/mockHandlers';
-import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
 import { beforeEach } from 'vitest';
@@ -145,7 +149,7 @@ test('Click on more access button', async () => {
   expect(transitToApplication).toBeInTheDocument();
 });
 
-test('No other apps to show', async () => {
+test('No other apps to show', async ({ worker }) => {
   worker.use(
     http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
       await delay('real');
