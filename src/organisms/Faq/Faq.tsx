@@ -24,11 +24,9 @@ export const Faq: FC = () => {
     }
     const category = data.find(
       (category) => category.id == Number(selectedTab)
-    );
+    )!;
 
-    if (category) return [category];
-
-    return [];
+    return [category];
   }, [data, selectedTab]);
 
   return (

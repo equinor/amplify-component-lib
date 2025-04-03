@@ -184,12 +184,12 @@ export const FAKE_FAQ_CATEGORIES: FaqCategory[] = new Array(
     applicationId: faker.string.uuid(),
     faqs: new Array(faker.number.int({ min: 2, max: 4 }))
       .fill(0)
-      .map((_, index) => ({
-        id: index,
+      .map((_, faqIndex) => ({
+        id: faqIndex,
         question: faker.commerce.productDescription() + '?',
-        answer: faker.lorem.paragraph(),
+        answer: `${index}${faqIndex}` + faker.lorem.paragraph(),
         visible: true,
-        orderBy: index,
+        orderBy: faqIndex,
         roles: [],
         faqCategoryId: 1,
         createdDate: faker.date.past().toISOString(),

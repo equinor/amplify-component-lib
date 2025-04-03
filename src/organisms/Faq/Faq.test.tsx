@@ -1,11 +1,14 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
+import { faker } from '@faker-js/faker';
+
 import { Faq } from './Faq';
 import {
   renderWithProviders,
   screen,
   test,
+  userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
 import { FAKE_FAQ_CATEGORIES } from 'src/tests/mockHandlers';
@@ -38,6 +41,95 @@ test('Renders expected content', async () => {
       expect(
         screen.getByRole('heading', { name: question.question })
       ).toBeInTheDocument();
+    }
+  }
+});
+
+test('Able to click the tabs', async () => {
+  renderWithProviders(
+    <Wrapper>
+      <Faq />
+    </Wrapper>
+  );
+  const user = userEvent.setup();
+
+  await waitFor(() =>
+    expect(
+      screen.getByRole('tab', { name: FAKE_FAQ_CATEGORIES[0].categoryName })
+    ).toBeInTheDocument()
+  );
+
+  const randomCategoryIndex = faker.number.int({
+    min: 0,
+    max: FAKE_FAQ_CATEGORIES.length - 1,
+  });
+
+  await user.click(
+    screen.getByRole('tab', {
+      name: FAKE_FAQ_CATEGORIES[randomCategoryIndex].categoryName,
+    })
+  );
+
+  for (const [index, category] of FAKE_FAQ_CATEGORIES.entries()) {
+    for (const faq of category.faqs) {
+      if (randomCategoryIndex === index) {
+        expect(
+          screen.getByRole('heading', { name: faq.question })
+        ).toBeInTheDocument();
+      } else {
+        expect(
+          screen.queryByRole('heading', { name: faq.question })
+        ).not.toBeInTheDocument();
+      }
+    }
+  }
+
+  await user.click(
+    screen.getByRole('tab', {
+      name: 'All categories',
+    })
+  );
+
+  for (const category of FAKE_FAQ_CATEGORIES) {
+    for (const question of category.faqs) {
+      expect(
+        screen.getByRole('heading', { name: question.question })
+      ).toBeInTheDocument();
+    }
+  }
+});
+
+test('Able to search', async () => {
+  renderWithProviders(
+    <Wrapper>
+      <Faq />
+    </Wrapper>
+  );
+  const user = userEvent.setup();
+
+  await waitFor(() =>
+    expect(
+      screen.getByRole('tab', { name: FAKE_FAQ_CATEGORIES[0].categoryName })
+    ).toBeInTheDocument()
+  );
+
+  const randomFaq = faker.helpers.arrayElement(FAKE_FAQ_CATEGORIES[0].faqs);
+
+  const randomWord = randomFaq.answer.split(' ')[0];
+
+  await user.type(screen.getByRole('textbox'), randomWord);
+
+  for (const category of FAKE_FAQ_CATEGORIES) {
+    for (const faq of category.faqs) {
+      if (faq.answer.toLowerCase().includes(randomWord.toLowerCase())) {
+        expect(
+          screen.getByRole('heading', { name: faq.question })
+        ).toBeInTheDocument();
+      } else {
+        expect(
+          screen.queryByRole('heading', { name: faq.question })
+        ).not.toBeInTheDocument();
+      }
     }
   }
 });
