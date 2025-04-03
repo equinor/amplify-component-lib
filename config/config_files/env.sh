@@ -27,6 +27,9 @@ echo "  ENVIRONMENT_NAME: \"$value\"," >>./env-config.js
 value=$(printf '%s\n' "${SERVICE_NOW_CONFIGURATION_ITEM}")
 echo "  SERVICE_NOW_CONFIGURATION_ITEM: \"$value\"," >>./env-config.js
 
+value=$(printf '%s\n' "${APPLICATION_INSIGHTS_CONNECTION_STRING}")
+echo "  APPLICATION_INSIGHTS_CONNECTION_STRING: \"$value\"," >>./env-config.js
+
 echo "}" >>./env-config.js
 
 # Update nginx.conf and securityheaders.conf with relevant environment variables
