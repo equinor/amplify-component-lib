@@ -1,6 +1,7 @@
 import {
   AmplifyApplication,
   ApplicationCategory,
+  FaqCategory,
   FeatureToggleDto,
   ImpersonateUserDto,
   MyFeatureDto,
@@ -356,5 +357,33 @@ export const handlers = [
   http.get('*/failing-data', async () => {
     await delay('real');
     return HttpResponse.text('failed', { status: 500 });
+  }),
+  http.get('*/v1/Faq/faqcategories/:appName', async () => {
+    await delay('real');
+    const data: Array<FaqCategory> = new Array(
+      faker.number.int({ min: 2, max: 4 })
+    )
+      .fill(0)
+      .map((_, index) => ({
+        id: index,
+        categoryName: faker.commerce.productName(),
+        orderBy: index,
+        applicationId: faker.string.uuid(),
+        faqs: new Array(faker.number.int({ min: 2, max: 4 }))
+          .fill(0)
+          .map((_, index) => ({
+            id: index,
+            question: faker.commerce.productDescription() + '?',
+            answer: faker.lorem.paragraph(),
+            visible: true,
+            orderBy: index,
+            roles: [],
+            faqCategoryId: 1,
+            createdDate: faker.date.past().toISOString(),
+            updatedDate: faker.date.recent().toISOString(),
+          })),
+      }));
+
+    return HttpResponse.json(data);
   }),
 ];

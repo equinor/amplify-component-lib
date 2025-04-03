@@ -10,6 +10,9 @@ import { SideBar } from 'src/organisms/SideBar';
 import { TopBar } from 'src/organisms/TopBar';
 import { SideBarProvider, ThemeProvider } from 'src/providers';
 import { useSideBar } from 'src/providers/SideBarProvider';
+import { tokenHandler } from 'src/tests/mockHandlers';
+
+import { delay, http, HttpResponse } from 'msw';
 
 const Story: FC = () => {
   const { isOpen } = useSideBar();
@@ -61,4 +64,19 @@ type Story = StoryObj<typeof Faq>;
 
 export const Default: Story = {
   args: {},
+};
+
+export const Empty: Story = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get('*/v1/Faq/faqcategories/:appName', async () => {
+          await delay('real');
+          return HttpResponse.json([]);
+        }),
+      ],
+    },
+  },
 };

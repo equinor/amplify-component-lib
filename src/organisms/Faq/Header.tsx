@@ -1,9 +1,11 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, useMemo } from 'react';
 
 import { Search } from '@equinor/eds-core-react';
 
+import { useFaqsInApplication } from 'src/atoms';
 import { useSearchParameter } from 'src/atoms/hooks/useSearchParameter';
 import { colors, spacings } from 'src/atoms/style';
+import { Tabs } from 'src/molecules/Tabs/Tabs';
 
 import styled from 'styled-components';
 
@@ -23,17 +25,53 @@ const Container = styled.div`
 `;
 
 export const Header: FC = () => {
+  const { data } = useFaqsInApplication();
+  const [selectedTab, setSelectedTab] = useSearchParameter<string | undefined>({
+    key: 'category',
+  });
   const [search, setSearch] = useSearchParameter<string>({
     key: 'search',
   });
+
+  const tabOptions = useMemo(() => {
+    if (!data)
+      return [
+        {
+          value: 'all',
+          label: 'All categories',
+        },
+      ];
+    return [
+      {
+        value: 'all',
+        label: 'All categories',
+      },
+      ...data.map((category) => ({
+        value: category.id.toString(),
+        label: category.categoryName,
+      })),
+    ];
+  }, [data]);
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
+  const handleOnTabChange = (value: string) => {
+    if (value === 'all') setSelectedTab(undefined);
+    else {
+      setSelectedTab(value);
+    }
+  };
+
   return (
     <Container>
-      Tabs tabs
+      <Tabs
+        style={{ maxWidth: '100%', width: 'fit-content' }}
+        selected={selectedTab ?? 'all'}
+        onChange={handleOnTabChange}
+        options={tabOptions}
+      />
       <Search
         value={search}
         onChange={handleOnSearchChange}

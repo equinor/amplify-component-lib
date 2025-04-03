@@ -19,6 +19,7 @@ export { PageTitle } from './PageTitle/PageTitle';
 export { ReleaseNote } from './ReleaseNote/ReleaseNote';
 export type { ReleaseNoteProps } from './ReleaseNote/ReleaseNote';
 export { ToggleGroup } from './ToggleGroup';
+export { Faq } from './Faq/Faq';
 
 export {
   // EDS Re-export

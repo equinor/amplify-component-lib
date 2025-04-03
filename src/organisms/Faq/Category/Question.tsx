@@ -2,9 +2,10 @@ import { FC, useState } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { FaqService } from '@equinor/subsurface-app-management';
+import { Faq, FaqService } from '@equinor/subsurface-app-management';
 
 import { animation, colors, shape, spacings } from 'src/atoms/style';
+import { formatDate } from 'src/atoms/utils/date';
 import { RichTextDisplay } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
 
@@ -34,14 +35,14 @@ const Container = styled.div`
   }
 `;
 
-export const Question: FC = () => {
+export const Question: FC<Faq> = ({ question, answer, createdDate }) => {
   const [open, setOpen] = useState(false);
   const handleOnToggleOpen = () => setOpen((prev) => !prev);
 
   return (
     <Container onClick={handleOnToggleOpen}>
-      <Typography variant="h4">La la l al a</Typography>
-      <Typography variant="caption">Ein dato</Typography>
+      <Typography variant="h4">{question}</Typography>
+      <Typography variant="caption">{formatDate(createdDate)}</Typography>
       <Button variant="ghost_icon">
         <Icon data={open ? chevron_up : chevron_down} />
       </Button>
@@ -54,7 +55,7 @@ export const Question: FC = () => {
             exit={{ height: 0 }}
           >
             <RichTextDisplay
-              value={'asdfghasdhfakshdkfjdsh'}
+              value={answer}
               onImageRead={FaqService.getFaqImage}
             />
           </motion.div>

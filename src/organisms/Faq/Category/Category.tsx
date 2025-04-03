@@ -1,6 +1,7 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
+import { FaqCategory } from '@equinor/subsurface-app-management';
 
 import { Question } from './Question';
 import { spacings } from 'src/atoms/style';
@@ -14,14 +15,21 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export const Category: FC = () => {
+export const Category: FC<FaqCategory> = ({ categoryName, faqs }) => {
+  const sortedFaqs = useMemo(() => {
+    return faqs.toSorted((a, b) => {
+      const usingA = a.orderBy ?? 0;
+      const usingB = b.orderBy ?? 0;
+      return usingA - usingB;
+    });
+  }, [faqs]);
+
   return (
     <Container>
-      <Typography variant="h4">Category title</Typography>
-      <Question />
-      <Question />
-      <Question />
-      <Question />
+      <Typography variant="h4">{categoryName}</Typography>
+      {sortedFaqs.map((faq) => (
+        <Question key={faq.id} {...faq} />
+      ))}
     </Container>
   );
 };
