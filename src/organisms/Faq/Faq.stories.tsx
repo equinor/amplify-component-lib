@@ -19,7 +19,7 @@ const Story: FC = () => {
 
   return (
     <Template>
-      <TopBar applicationIcon="SAM" applicationName="SAM">
+      <TopBar applicationIcon="pwex" applicationName="PWEX">
         <TopBar.Actions>
           <TopBar.Settings />
         </TopBar.Actions>

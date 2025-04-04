@@ -50,7 +50,8 @@ export const Category: FC<FaqCategory> = ({ categoryName, faqs }) => {
     return (
       <Container>
         <Status center={false}>
-          <Status.Title title="No!" />
+          <Status.Title title="No questions found" />
+          <Status.Description text="No questions or answers matcher your search in this category" />
         </Status>
       </Container>
     );
