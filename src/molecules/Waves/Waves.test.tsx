@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { Waves } from './Waves';
 
@@ -30,29 +30,13 @@ test('renders expected gradient colors', () => {
   });
 });
 
-test('Follows size of container', async () => {
-  const { container, rerender } = render(<Waves />);
+test('Follows size of screen', async () => {
+  const { container } = render(<Waves />);
 
   const { clientWidth, clientHeight } = container.children[0];
 
   expect(container.children[0].children[0]).toHaveAttribute(
     'viewBox',
     `0 0 ${clientWidth} ${clientHeight}`
-  );
-
-  rerender(
-    <div style={{ width: 800, height: 500 }}>
-      <Waves />
-    </div>
-  );
-
-  const newClientWidth = container.children[0].clientWidth;
-  const newClientHeight = container.children[0].clientHeight;
-
-  await waitFor(() =>
-    expect(container.children[0].children[0].children[0]).toHaveAttribute(
-      'viewBox',
-      `0 0 ${newClientWidth} ${newClientHeight}`
-    )
   );
 });
