@@ -1,6 +1,7 @@
 import {
   AmplifyApplication,
   ApplicationCategory,
+  FaqCategory,
   FeatureToggleDto,
   ImpersonateUserDto,
   MyFeatureDto,
@@ -170,6 +171,30 @@ export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
   .map(() => ({
     uuid: faker.string.uuid(),
     active: true,
+  }));
+
+export const FAKE_FAQ_CATEGORIES: FaqCategory[] = new Array(
+  faker.number.int({ min: 2, max: 4 })
+)
+  .fill(0)
+  .map((_, index) => ({
+    id: index,
+    categoryName: faker.commerce.productName(),
+    orderBy: index < 2 ? undefined : index,
+    applicationId: faker.string.uuid(),
+    faqs: new Array(faker.number.int({ min: 2, max: 4 }))
+      .fill(0)
+      .map((_, faqIndex) => ({
+        id: faqIndex,
+        question: faker.commerce.productDescription() + '?',
+        answer: `${index}${faqIndex}` + faker.lorem.paragraph(),
+        visible: true,
+        orderBy: faqIndex < 2 ? undefined : faqIndex,
+        roles: [],
+        faqCategoryId: 1,
+        createdDate: faker.date.past().toISOString(),
+        updatedDate: faker.date.recent().toISOString(),
+      })),
   }));
 
 export const tokenHandler = http.get(`*/api/v1/Token/*`, async () => {
@@ -356,5 +381,9 @@ export const handlers = [
   http.get('*/failing-data', async () => {
     await delay('real');
     return HttpResponse.text('failed', { status: 500 });
+  }),
+  http.get('*/v1/Faq/faqcategories/:appName', async () => {
+    await delay('real');
+    return HttpResponse.json(FAKE_FAQ_CATEGORIES);
   }),
 ];

@@ -12,6 +12,10 @@ import {
 import { Template } from 'src/organisms/Template/Template';
 import { AuthProvider } from 'src/providers/AuthProvider/AuthProvider';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
+import { worker } from 'src/tests/setupBrowserTests';
+
+import { SetupWorker } from 'msw/browser';
+import { test as testBase } from 'vitest';
 
 const Providers: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient();
@@ -45,6 +49,36 @@ export function fakeSelectItems(count = 10) {
 
 // re-export everything
 export * from '@testing-library/react';
+
+interface CustomFixtures {
+  worker: SetupWorker;
+}
+
+export const test = testBase.extend<CustomFixtures>({
+  worker: [
+    // eslint-disable-next-line no-empty-pattern
+    async ({}, use) => {
+      // Start the worker before the test.
+      await worker.start({
+        quiet: true,
+        onUnhandledRequest: (req, print) => {
+          if (req.url.includes('api') && req.url.includes('https'))
+            print.error();
+          return;
+        },
+      });
+
+      // Expose the worker object on the test's context.
+      await use(worker);
+
+      // Stop the worker after the test is done.
+      worker.stop();
+    },
+    {
+      auto: true,
+    },
+  ],
+});
 
 // override render method
 export { renderWithProviders, userEvent, vitestBrowserUserEvent, page };

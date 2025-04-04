@@ -13,16 +13,11 @@ import { useTutorialHighlighting } from 'src/providers/TutorialHighlightingProvi
 import {
   render,
   screen,
+  test,
   userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
-import {
-  FAKE_TUTORIALS,
-  fakeTutorial,
-  getTutorialImageHandler,
-  tokenHandler,
-} from 'src/tests/mockHandlers';
-import { worker } from 'src/tests/setupBrowserTests';
+import { FAKE_TUTORIALS, fakeTutorial } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
 import styled from 'styled-components';
@@ -193,7 +188,9 @@ test('Able to click through tutorial as expected', async () => {
   }
 });
 
-test('Highlighted tutorial shows as centered if it doesnt find the element', async () => {
+test('Highlighted tutorial shows as centered if it doesnt find the element', async ({
+  worker,
+}) => {
   const highlightTutorial = {
     ...fakeTutorial({
       id: FAKE_TUTORIALS[0].id,
@@ -201,9 +198,7 @@ test('Highlighted tutorial shows as centered if it doesnt find the element', asy
       highlightElement: true,
     }),
   };
-  worker.resetHandlers(
-    tokenHandler,
-
+  worker.use(
     http.get(`*/api/v1/Tutorial/*`, async () => {
       return HttpResponse.json([highlightTutorial]);
     })
@@ -237,12 +232,16 @@ test('Highlighted tutorial shows as centered if it doesnt find the element', asy
   ).not.toBeInTheDocument();
 });
 
-test('Resizing works', async () => {
+test('Resizing works', async ({ worker }) => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+  worker.use(
+    http.get(`*/api/v1/Tutorial/*`, async () => {
+      return HttpResponse.json([highlightTutorial]);
+    })
+  );
   render(<TestComponent />);
   const randomWidth = faker.number.int({ min: 100, max: 1920 });
   const randomHeight = faker.number.int({ min: 100, max: 1080 });
-
-  const highlightTutorial = FAKE_TUTORIALS[0];
 
   await act(async () => {
     window['innerWidth'] = randomWidth;
@@ -257,7 +256,9 @@ test('Resizing works', async () => {
   ).toBeInTheDocument();
 });
 
-test('Able to click through tutorial with centered steps', async () => {
+test('Able to click through tutorial with centered steps', async ({
+  worker,
+}) => {
   const highlightTutorial = {
     ...fakeTutorial({
       id: FAKE_TUTORIALS[0].id,
@@ -265,9 +266,7 @@ test('Able to click through tutorial with centered steps', async () => {
       highlightElement: false,
     }),
   };
-  worker.resetHandlers(
-    tokenHandler,
-
+  worker.use(
     http.get(`*/api/v1/Tutorial/*`, async () => {
       return HttpResponse.json([highlightTutorial]);
     })
@@ -299,7 +298,7 @@ test('Able to click through tutorial with centered steps', async () => {
   }
 });
 
-test('Highlighted tutorial shows first', async () => {
+test('Highlighted tutorial shows first', async ({ worker }) => {
   const tutorials = FAKE_TUTORIALS.map((tutorial, index) =>
     fakeTutorial({
       id: tutorial.id,
@@ -307,9 +306,7 @@ test('Highlighted tutorial shows first', async () => {
       highlightElement: index === 0,
     })
   );
-  worker.resetHandlers(
-    tokenHandler,
-
+  worker.use(
     http.get(`*/api/v1/Tutorial/*`, async () => {
       return HttpResponse.json(tutorials);
     })
@@ -332,7 +329,9 @@ test('Highlighted tutorial shows first', async () => {
   expect(screen.getByText(tutorials[1].name)).toBeInTheDocument();
 });
 
-test('Able to click through tutorial with mixed center/highlight steps', async () => {
+test('Able to click through tutorial with mixed center/highlight steps', async ({
+  worker,
+}) => {
   const highlightedTutorial = {
     id: FAKE_TUTORIALS[0].id,
     name: FAKE_TUTORIALS[0].name,
@@ -360,9 +359,7 @@ test('Able to click through tutorial with mixed center/highlight steps', async (
       },
     ],
   };
-  worker.resetHandlers(
-    tokenHandler,
-
+  worker.use(
     http.get(`*/api/v1/Tutorial/*`, async () => {
       return HttpResponse.json([highlightedTutorial]);
     })
@@ -395,10 +392,10 @@ test('Able to click through tutorial with mixed center/highlight steps', async (
   }
 });
 
-test('Throws error if step is custom but custom content is not found', async () => {
-  worker.resetHandlers(
-    tokenHandler,
-
+test('Throws error if step is custom but custom content is not found', async ({
+  worker,
+}) => {
+  worker.use(
     http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
       return HttpResponse.json([
         {
@@ -455,7 +452,7 @@ test('Using hook outside of context throws error', () => {
   expect(() => renderHook(() => useTutorialHighlighting())).toThrowError();
 });
 
-test('Custom content works as expected', async () => {
+test('Custom content works as expected', async ({ worker }) => {
   const highlightedTutorial = {
     id: FAKE_TUTORIALS[0].id,
     name: FAKE_TUTORIALS[0].name,
@@ -483,9 +480,7 @@ test('Custom content works as expected', async () => {
       },
     ],
   };
-  worker.resetHandlers(
-    tokenHandler,
-
+  worker.use(
     http.get(`*/api/v1/Tutorial/*`, async () => {
       return HttpResponse.json([highlightedTutorial]);
     })
@@ -505,7 +500,7 @@ test('Custom content works as expected', async () => {
   expect(screen.getByText('custom content here')).toBeInTheDocument();
 });
 
-test('Image content works as expected', async () => {
+test('Image content works as expected', async ({ worker }) => {
   const highlightedTutorial = {
     id: FAKE_TUTORIALS[0].id,
     name: FAKE_TUTORIALS[0].name,
@@ -534,9 +529,7 @@ test('Image content works as expected', async () => {
       },
     ],
   };
-  worker.resetHandlers(
-    tokenHandler,
-    getTutorialImageHandler,
+  worker.use(
     http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
       return HttpResponse.json([highlightedTutorial]);
     })

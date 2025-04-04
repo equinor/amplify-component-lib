@@ -6,6 +6,11 @@ import styled from 'styled-components';
 
 const hookList = [
   {
+    name: 'useFaqsInApplication',
+    body: 'Returns useQuery hook that fetches FAQs in the app you are in now',
+    code: `const { data, isLoading, ... } = useFaqsInApplication();`,
+  },
+  {
     name: 'useSearchParameter',
     body: 'Returns value and setter for key=value in URL',
     code: `const [searchValue, setSearchValue] = useSearchParameter<string | undefined>({

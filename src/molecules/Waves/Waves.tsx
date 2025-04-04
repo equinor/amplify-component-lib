@@ -5,11 +5,11 @@ import { WaveStatic } from './WaveStatic';
 
 import { useScroll } from 'framer-motion';
 
-export interface WaveProps {
+export interface WavesProps {
   gradientColors?: string[];
 }
 
-export const Waves: FC<WaveProps> = ({ gradientColors }) => {
+export const Waves: FC<WavesProps> = ({ gradientColors }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(containerRef.current?.clientWidth ?? 0);
   const [height, setHeight] = useState(containerRef.current?.clientHeight ?? 0);
@@ -28,6 +28,7 @@ export const Waves: FC<WaveProps> = ({ gradientColors }) => {
 
   useEffect(() => {
     const resizeHandler = () => {
+      /* v8 ignore next */
       if (!containerRef.current) return;
 
       setWidth(containerRef.current.clientWidth);

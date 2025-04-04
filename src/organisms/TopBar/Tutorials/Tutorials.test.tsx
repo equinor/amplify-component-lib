@@ -11,9 +11,8 @@ import { waitFor } from '@testing-library/react';
 
 import { Tutorials } from './Tutorials';
 import { environment } from 'src/atoms';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
-import { fakeTutorial, tokenHandler } from 'src/tests/mockHandlers';
-import { worker } from 'src/tests/setupBrowserTests';
+import { render, screen, test, userEvent } from 'src/tests/browsertest-utils';
+import { fakeTutorial } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
 
@@ -51,16 +50,18 @@ const tutorials: MyTutorialDto[] = new Array(
       path: index === 0 ? '/' : undefined,
     })
   );
-beforeEach(() => {
-  worker.resetHandlers(
-    tokenHandler,
-    http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
-      return HttpResponse.json(tutorials);
-    })
-  );
-});
 
-test('Renders expected items when opening the tutorials menu', async () => {
+const tutorialHandler = http.get(
+  `*/api/v1/Tutorial/draft/:appName`,
+  async () => {
+    return HttpResponse.json(tutorials);
+  }
+);
+
+test('Renders expected items when opening the tutorials menu', async ({
+  worker,
+}) => {
+  worker.use(tutorialHandler);
   render(<Tutorials />, { wrapper: Wrapper });
   const user = userEvent.setup();
 
@@ -83,7 +84,10 @@ test('Renders expected items when opening the tutorials menu', async () => {
   }
 });
 
-test('Hides expected tutorials when providing filter fn', async () => {
+test('Hides expected tutorials when providing filter fn', async ({
+  worker,
+}) => {
+  worker.use(tutorialHandler);
   const filterFunction = (tutorial: MyTutorialDto) => tutorial.willPopUp;
   render(<Tutorials filterTutorials={filterFunction} />, { wrapper: Wrapper });
   const user = userEvent.setup();
@@ -111,7 +115,10 @@ test('Hides expected tutorials when providing filter fn', async () => {
   }
 });
 
-test('Clicking TutorialItem triggers callback, so we can navigate / do whatever we need', async () => {
+test('Clicking TutorialItem triggers callback, so we can navigate / do whatever we need', async ({
+  worker,
+}) => {
+  worker.use(tutorialHandler);
   const callback = vi.fn();
   render(<Tutorials onTutorialStart={callback} />, { wrapper: Wrapper });
   const user = userEvent.setup();
@@ -134,7 +141,8 @@ test('Clicking TutorialItem triggers callback, so we can navigate / do whatever 
   expect(callback).toHaveBeenCalledWith(randomTutorial.id);
 });
 
-test('Shows "completed" if tutorial has been seen', async () => {
+test('Shows "completed" if tutorial has been seen', async ({ worker }) => {
+  worker.use(tutorialHandler);
   const randomTutorial = faker.helpers.arrayElement(tutorials);
   window.localStorage.setItem(
     `sam-seen-tutorials-${environment.getAppName(import.meta.env.VITE_NAME)}`,
@@ -159,7 +167,8 @@ test('Shows "completed" if tutorial has been seen', async () => {
   ).toBeInTheDocument();
 });
 
-test('Able to add html attributes to tutorial button', () => {
+test('Able to add html attributes to tutorial button', ({ worker }) => {
+  worker.use(tutorialHandler);
   const randomTestId = faker.animal.dog();
   const randomId = faker.animal.snake();
   render(<Tutorials data-testid={randomTestId} id={randomId} />, {

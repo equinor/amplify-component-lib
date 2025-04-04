@@ -83,7 +83,7 @@ const meta: Meta = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=16934-23362&m=dev',
     },
     docs: {
       source: {

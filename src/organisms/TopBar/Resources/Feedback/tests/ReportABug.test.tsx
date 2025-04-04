@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { ServiceNowIncidentResponse } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
@@ -18,10 +19,10 @@ import {
 import {
   render,
   screen,
+  test,
   userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
-import { worker } from 'src/tests/setupBrowserTests';
 
 import { delay, http, HttpResponse } from 'msw';
 import { beforeEach } from 'vitest';
@@ -142,7 +143,7 @@ describe('Report a bug', () => {
   const MOCK_SLACK_POST_ERROR = 'slack post error';
   const MOCK_SLACK_FILE_ERROR = 'slack file error';
 
-  test('Show expected error message when requests fail', async () => {
+  test('Show expected error message when requests fail', async ({ worker }) => {
     worker.use(
       http.get('*/api/v1/ReleaseNotes*', async () => {
         await delay('real');
@@ -207,7 +208,9 @@ describe('Report a bug', () => {
     await user.click(screen.getByRole('button', { name: /retry/i }));
   });
 
-  test('Form is partially locked when the service now request succeeds but slack fails', async () => {
+  test('Form is partially locked when the service now request succeeds but slack fails', async ({
+    worker,
+  }) => {
     worker.use(
       http.get('*/api/v1/ReleaseNotes*', async () => {
         await delay('real');
@@ -216,6 +219,12 @@ describe('Report a bug', () => {
       http.get('*/api/v1/Token/AmplifyPortal/*', async () => {
         await delay('real');
         return HttpResponse.text(faker.string.nanoid());
+      }),
+      http.post('*/api/v1/ServiceNow/incident', async () => {
+        await delay('real');
+        return HttpResponse.json({
+          sysId: faker.string.uuid(),
+        } as ServiceNowIncidentResponse);
       }),
       http.post('*/api/v1/Slack/fileUpload', async () => {
         return HttpResponse.json(

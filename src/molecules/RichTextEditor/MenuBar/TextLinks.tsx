@@ -55,6 +55,9 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
       return;
     }
 
+    if (!linkText.current.includes('http')) {
+      linkText.current = `https://${linkText.current}`;
+    }
     // save link
     editor
       .chain()
