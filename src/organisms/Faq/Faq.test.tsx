@@ -173,7 +173,7 @@ test('Shows empty state if clicking tab that is empty after searching', async ()
     screen.getByRole('tab', { name: FAKE_FAQ_CATEGORIES[1].categoryName })
   );
 
-  expect(screen.getByText(/no!/i)).toBeInTheDocument();
+  expect(screen.getByText(/no questions found/i)).toBeInTheDocument();
 });
 
 test('Able to open FAQ', async () => {
