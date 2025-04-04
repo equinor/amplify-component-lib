@@ -1,7 +1,12 @@
 import { faker } from '@faker-js/faker';
+import { render } from '@testing-library/react';
 
 import { ReleaseNote } from 'src/organisms/ReleaseNote/ReleaseNote';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeReleaseNote() {
   return {
@@ -61,7 +66,9 @@ test('Able to expand it', async () => {
 
 test('Has expand button if it contains img', async () => {
   const props = fakeReleaseNote();
-  render(<ReleaseNote {...props} body={`<img src="hei" alt="hei" >`} />);
+  renderWithProviders(
+    <ReleaseNote {...props} body={`<img src="hei" alt="hei">`} />
+  );
 
   const showMoreButton = await screen.findByRole('button', { name: /more/i });
   expect(showMoreButton).toBeInTheDocument();
