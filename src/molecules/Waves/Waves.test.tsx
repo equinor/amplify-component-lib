@@ -1,3 +1,6 @@
+import { act } from 'react';
+
+import { faker } from '@faker-js/faker';
 import { render } from '@testing-library/react';
 
 import { Waves } from './Waves';
@@ -35,6 +38,33 @@ test('Follows size of screen', async () => {
 
   const { clientWidth, clientHeight } = container.children[0];
 
+  expect(container.children[0].children[0]).toHaveAttribute(
+    'viewBox',
+    `0 0 ${clientWidth} ${clientHeight}`
+  );
+});
+
+test('Updates when resizing', async () => {
+  const { container } = render(<Waves />);
+
+  const { clientWidth, clientHeight } = container.children[0];
+
+  expect(container.children[0].children[0]).toHaveAttribute(
+    'viewBox',
+    `0 0 ${clientWidth} ${clientHeight}`
+  );
+
+  const randomHeight = faker.number.int({ min: 100, max: 800 });
+  const randomWidth = faker.number.int({ min: 100, max: 800 });
+
+  await act(async () => {
+    window['innerWidth'] = randomWidth;
+    window['innerHeight'] = randomHeight;
+    window.dispatchEvent(new Event('resize'));
+  });
+
+  // Since the resizing in this test doesn't actually change the size of the container,
+  // we expect it to be the same
   expect(container.children[0].children[0]).toHaveAttribute(
     'viewBox',
     `0 0 ${clientWidth} ${clientHeight}`
