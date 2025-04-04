@@ -6,6 +6,7 @@ import { FaqCategory } from '@equinor/subsurface-app-management';
 import { Question } from './Question';
 import { useSearchParameter } from 'src/atoms';
 import { spacings } from 'src/atoms/style';
+import { Status } from 'src/organisms/Status';
 
 import styled from 'styled-components';
 
@@ -14,11 +15,17 @@ const Container = styled.div`
   flex-direction: column;
   gap: ${spacings.medium};
   width: 100%;
+  &:has(> div > div > svg) {
+    transform: translateY(50%);
+  }
 `;
 
 export const Category: FC<FaqCategory> = ({ categoryName, faqs }) => {
   const [search] = useSearchParameter<string | undefined>({
     key: 'search',
+  });
+  const [selectedTab] = useSearchParameter<string | undefined>({
+    key: 'category',
   });
   const sortedFaqs = useMemo(() => {
     return faqs.toSorted((a, b) => {
@@ -31,12 +38,24 @@ export const Category: FC<FaqCategory> = ({ categoryName, faqs }) => {
   const filteredFaqs = useMemo(() => {
     if (!search) return sortedFaqs;
 
-    return sortedFaqs.filter((faq) =>
-      faq.answer.toLowerCase().includes(search.toLowerCase())
+    return sortedFaqs.filter(
+      (faq) =>
+        faq.question.toLowerCase().includes(search.toLowerCase()) ||
+        faq.answer.toLowerCase().includes(search.toLowerCase()) ||
+        categoryName.toLowerCase().includes(search.toLowerCase())
     );
-  }, [search, sortedFaqs]);
+  }, [categoryName, search, sortedFaqs]);
 
-  console.log('serach', search);
+  if (selectedTab !== undefined && filteredFaqs.length === 0) {
+    return (
+      <Container>
+        <Status center={false}>
+          <Status.Title title="No!" />
+        </Status>
+      </Container>
+    );
+  }
+
   if (filteredFaqs.length === 0) return null;
 
   return (

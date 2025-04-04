@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
+import { within } from '@testing-library/dom';
 
 import { Faq } from './Faq';
 import {
@@ -132,6 +133,76 @@ test('Able to search', async () => {
       }
     }
   }
+});
+
+test('Shows empty state if clicking tab that is empty after searching', async () => {
+  renderWithProviders(
+    <Wrapper>
+      <Faq />
+    </Wrapper>
+  );
+  const user = userEvent.setup();
+
+  await waitFor(() =>
+    expect(
+      screen.getByRole('tab', { name: FAKE_FAQ_CATEGORIES[0].categoryName })
+    ).toBeInTheDocument()
+  );
+
+  const randomFaq = faker.helpers.arrayElement(FAKE_FAQ_CATEGORIES[0].faqs);
+
+  const randomWord = randomFaq.question;
+
+  await user.type(screen.getByRole('textbox'), randomWord);
+
+  for (const category of FAKE_FAQ_CATEGORIES) {
+    for (const faq of category.faqs) {
+      if (faq.question.toLowerCase().includes(randomWord.toLowerCase())) {
+        expect(
+          screen.getByRole('heading', { name: faq.question })
+        ).toBeInTheDocument();
+      } else {
+        expect(
+          screen.queryByRole('heading', { name: faq.question })
+        ).not.toBeInTheDocument();
+      }
+    }
+  }
+
+  await user.click(
+    screen.getByRole('tab', { name: FAKE_FAQ_CATEGORIES[1].categoryName })
+  );
+
+  expect(screen.getByText(/no!/i)).toBeInTheDocument();
+});
+
+test('Able to open FAQ', async () => {
+  renderWithProviders(
+    <Wrapper>
+      <Faq />
+    </Wrapper>
+  );
+  const user = userEvent.setup();
+
+  await waitFor(() =>
+    expect(
+      screen.getByRole('tab', { name: FAKE_FAQ_CATEGORIES[0].categoryName })
+    ).toBeInTheDocument()
+  );
+
+  const randomCategory = faker.helpers.arrayElement(FAKE_FAQ_CATEGORIES);
+
+  const randomFaq = faker.helpers.arrayElement(randomCategory.faqs);
+
+  expect(screen.queryByText(randomFaq.answer)).not.toBeInTheDocument();
+
+  await user.click(
+    within(screen.getByText(randomFaq.question).parentElement!).getByRole(
+      'button'
+    )
+  );
+
+  expect(screen.getByText(randomFaq.answer)).toBeInTheDocument();
 });
 
 test('Renders expected content when empty', async ({ worker }) => {
