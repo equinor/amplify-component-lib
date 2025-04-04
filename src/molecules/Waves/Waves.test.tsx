@@ -46,6 +46,6 @@ test('resize actually resizes', async () => {
 
   expect(container.children[0].children[0]).toHaveAttribute(
     'viewBox',
-    `0 0 ${randomWidth} ${randomHeight - 64}`
+    `0 0 ${randomWidth} ${randomHeight}`
   );
 });
