@@ -1,7 +1,4 @@
-import { act } from 'react';
-
-import { faker } from '@faker-js/faker';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { Waves } from './Waves';
 
@@ -33,19 +30,29 @@ test('renders expected gradient colors', () => {
   });
 });
 
-test('resize actually resizes', async () => {
-  const { container } = render(<Waves />);
-  const randomWidth = faker.number.int({ min: 100, max: 1920 });
-  const randomHeight = faker.number.int({ min: 100, max: 1080 });
+test('Follows size of container', async () => {
+  const { container, rerender } = render(<Waves />);
 
-  await act(async () => {
-    window['innerWidth'] = randomWidth;
-    window['innerHeight'] = randomHeight;
-    window.dispatchEvent(new Event('resize'));
-  });
+  const { clientWidth, clientHeight } = container.children[0];
 
   expect(container.children[0].children[0]).toHaveAttribute(
     'viewBox',
-    `0 0 ${randomWidth} ${randomHeight - 64}`
+    `0 0 ${clientWidth} ${clientHeight}`
+  );
+
+  rerender(
+    <div style={{ width: 800, height: 500 }}>
+      <Waves />
+    </div>
+  );
+
+  const newClientWidth = container.children[0].clientWidth;
+  const newClientHeight = container.children[0].clientHeight;
+
+  await waitFor(() =>
+    expect(container.children[0].children[0].children[0]).toHaveAttribute(
+      'viewBox',
+      `0 0 ${newClientWidth} ${newClientHeight}`
+    )
   );
 });
