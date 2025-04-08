@@ -33,10 +33,29 @@ test('renders expected gradient colors', () => {
   });
 });
 
-test('resize actually resizes', async () => {
+test('Follows size of screen', async () => {
   const { container } = render(<Waves />);
-  const randomWidth = faker.number.int({ min: 100, max: 1920 });
-  const randomHeight = faker.number.int({ min: 100, max: 1080 });
+
+  const { clientWidth, clientHeight } = container.children[0];
+
+  expect(container.children[0].children[0]).toHaveAttribute(
+    'viewBox',
+    `0 0 ${clientWidth} ${clientHeight}`
+  );
+});
+
+test('Updates when resizing', async () => {
+  const { container } = render(<Waves />);
+
+  const { clientWidth, clientHeight } = container.children[0];
+
+  expect(container.children[0].children[0]).toHaveAttribute(
+    'viewBox',
+    `0 0 ${clientWidth} ${clientHeight}`
+  );
+
+  const randomHeight = faker.number.int({ min: 100, max: 800 });
+  const randomWidth = faker.number.int({ min: 100, max: 800 });
 
   await act(async () => {
     window['innerWidth'] = randomWidth;
@@ -44,8 +63,10 @@ test('resize actually resizes', async () => {
     window.dispatchEvent(new Event('resize'));
   });
 
+  // Since the resizing in this test doesn't actually change the size of the container,
+  // we expect it to be the same
   expect(container.children[0].children[0]).toHaveAttribute(
     'viewBox',
-    `0 0 ${randomWidth} ${randomHeight - 64}`
+    `0 0 ${clientWidth} ${clientHeight}`
   );
 });

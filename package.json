@@ -93,7 +93,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.22.0",
-    "@equinor/subsurface-app-management": "^3.0.0",
+    "@equinor/subsurface-app-management": "^4.3.1",
     "@eslint/js": "^9.22.0",
     "@faker-js/faker": "^9.6.0",
     "@rollup/plugin-commonjs": "^28.0.3",
@@ -168,7 +168,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
-    "@equinor/subsurface-app-management": ">=2.5.2",
+    "@equinor/subsurface-app-management": ">=4.3.1",
     "@tanstack/react-query": "*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

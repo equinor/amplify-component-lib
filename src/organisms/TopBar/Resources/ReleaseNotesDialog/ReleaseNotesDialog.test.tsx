@@ -9,11 +9,11 @@ import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import {
   render,
   screen,
+  test,
   userEvent,
   waitForElementToBeRemoved,
   within,
 } from 'src/tests/browsertest-utils';
-import { worker } from 'src/tests/setupBrowserTests';
 
 import { http, HttpResponse } from 'msw';
 
@@ -99,7 +99,7 @@ test('show a release note', async () => {
   ).toBeInTheDocument();
 });
 
-test('No release notes', async () => {
+test('No release notes', async ({ worker }) => {
   worker.use(
     http.get('*/api/v1/ReleaseNotes/:applicationName', async () => {
       return HttpResponse.json([]);

@@ -2,13 +2,7 @@ import { car } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Tabs, TabsProps } from './Tabs';
-import {
-  render,
-  screen,
-  userEvent,
-  waitFor,
-  within,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
 
 function fakeProps(): Omit<TabsProps<number>, 'selected'> {
   return {
@@ -167,7 +161,11 @@ test('Using amountPerScrollPage works as expected', async () => {
   const container = screen.getByRole('tab', {
     name: props.options[0].label,
   }).parentElement!;
-  await waitFor(() => expect(container).toHaveStyle('display: grid'));
+
+  // Wait for styling to be updated
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  expect(container).toHaveStyle('display: grid');
 });
 
 test('Throws error if amountPerScrollPage <= 0', () => {
