@@ -15,19 +15,21 @@ export function usePrefetchRichTextImages({
   onImageRead,
 }: UsePrefetchRichTextImagesArgs) {
   const queryClient = useQueryClient();
+  const startedPrefetch = useRef<string[]>([]);
   const prefetched = useRef<string[]>([]);
   const paths = richTextValues.flatMap((value) => getImagesFromRichText(value));
   const isPrefetching =
     useIsFetching({
-      predicate: (query) => paths.some((path) => query.queryKey[0] === path),
+      predicate: (query) =>
+        startedPrefetch.current.some(
+          (path) =>
+            query.queryKey[0] === path && !prefetched.current.includes(path)
+        ),
     }) > 0;
 
   useEffect(() => {
-    for (const path of paths.filter(
-      (path) => !prefetched.current.includes(path)
-    )) {
-      prefetched.current.push(path);
-      queryClient.prefetchQuery({
+    const handlePrefetch = async (path: string) => {
+      await queryClient.prefetchQuery({
         queryKey: [path],
         queryFn: async () => {
           const response = await onImageRead(path);
@@ -37,6 +39,13 @@ export function usePrefetchRichTextImages({
         staleTime: Infinity,
         gcTime: Infinity,
       });
+      prefetched.current.push(path);
+    };
+    for (const path of paths.filter(
+      (path) => !startedPrefetch.current.includes(path)
+    )) {
+      startedPrefetch.current.push(path);
+      handlePrefetch(path);
     }
   }, [onImageRead, paths, queryClient]);
 
