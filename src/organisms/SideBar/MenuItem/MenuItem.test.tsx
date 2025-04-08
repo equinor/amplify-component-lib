@@ -15,7 +15,7 @@ import {
 } from 'src/organisms/SideBar/MenuItem/MenuItem';
 import { AuthProvider, LoadingProvider } from 'src/providers';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import { render, screen, test, userEvent } from 'src/tests/browsertest-utils';
 import { FAKE_FEATURE_TOGGLES } from 'src/tests/mockHandlers';
 
 type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
