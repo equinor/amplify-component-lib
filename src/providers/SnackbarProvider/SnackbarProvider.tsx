@@ -19,7 +19,6 @@ import { close } from '@equinor/eds-icons';
 
 import { StyledSnackbar } from './SnackbarProvider.styles';
 import { snackbarIcon } from './SnackbarProvider.utils';
-import { useApiErrorSnackbar } from 'src/providers/SnackbarProvider/hooks/useApiErrorSnackbar';
 
 export interface ShowSnackbarSettings {
   customProps?: SnackbarProps;
@@ -58,7 +57,6 @@ export const useSnackbar = () => {
 
 export type SnackbarProviderProps = {
   children: ReactNode;
-  showAPIErrors?: boolean;
 } & SnackbarProps;
 
 /**
@@ -67,7 +65,6 @@ export type SnackbarProviderProps = {
  */
 export const SnackbarProvider: FC<SnackbarProviderProps> = ({
   children,
-  showAPIErrors = true,
   ...initialSnackbarProps
 }) => {
   const [open, setOpen] = useState(false);
@@ -95,8 +92,6 @@ export const SnackbarProvider: FC<SnackbarProviderProps> = ({
     },
     [initialSnackbarProps]
   );
-
-  useApiErrorSnackbar({ showAPIErrors, showSnackbar });
 
   const setActionDisabledState = (disabled: boolean) => {
     setSnackbarAction((currentState) =>
