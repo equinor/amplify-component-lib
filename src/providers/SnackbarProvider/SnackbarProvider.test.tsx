@@ -1,14 +1,7 @@
 import { ReactNode } from 'react';
 
-import { ApiError } from '@equinor/subsurface-app-management';
-import { ApiRequestOptions } from '@equinor/subsurface-app-management/dist/api/core/ApiRequestOptions';
-import { ApiResult } from '@equinor/subsurface-app-management/dist/api/core/ApiResult';
 import { faker } from '@faker-js/faker';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import {
   ShowSnackbar,
@@ -17,26 +10,17 @@ import {
 } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { snackbarIcon } from 'src/providers/SnackbarProvider/SnackbarProvider.utils';
 import {
-  render,
   renderHook,
   screen,
   userEvent,
   waitFor,
 } from 'src/tests/browsertest-utils';
 
-function TestProviders({
-  showAPIErrors = true,
-  children,
-}: {
-  showAPIErrors?: boolean;
-  children: ReactNode;
-}) {
+function TestProviders({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <SnackbarProvider showAPIErrors={showAPIErrors}>
-        {children}
-      </SnackbarProvider>
+      <SnackbarProvider>{children}</SnackbarProvider>
     </QueryClientProvider>
   );
 }
@@ -204,64 +188,4 @@ test("'useSnackbar' hideSnackbar works as expected", async () => {
   await waitFor(() =>
     expect(screen.queryByText(snackbarText)).not.toBeInTheDocument()
   );
-});
-
-function TestComponent({
-  errorBody = false,
-  textBody = false,
-}: {
-  errorBody?: boolean;
-  textBody?: boolean;
-}) {
-  useQuery({
-    queryKey: ['somekey'],
-    queryFn: async () => {
-      return new Promise((_, reject) => {
-        const options: ApiRequestOptions = {
-          method: 'GET',
-          url: '/some-random-url',
-        };
-        const result: ApiResult = {
-          body: errorBody
-            ? textBody
-              ? 'text error'
-              : { userMessage: 'Body error' }
-            : {},
-          ok: false,
-          status: 500,
-          statusText: '',
-          url: '',
-        };
-        reject(new ApiError(options, result, 'API error'));
-      });
-    },
-    retry: false,
-  });
-
-  return <p>this is the page</p>;
-}
-
-test('Shows error snackbar when API error happens without error body', async () => {
-  render(<TestComponent />, { wrapper: TestProviders });
-  await waitFor(() => screen.getByText('500: API error'), { timeout: 2000 });
-});
-
-test('Shows error snackbar when API error happens with error body as object', async () => {
-  render(<TestComponent errorBody />, { wrapper: TestProviders });
-  await waitFor(() => screen.getByText('500: Body error'), { timeout: 2000 });
-});
-
-test('Shows error snackbar when API error happens with error body as text', async () => {
-  render(<TestComponent errorBody textBody />, { wrapper: TestProviders });
-  await waitFor(() => screen.getByText('500: text error'), { timeout: 2000 });
-});
-
-test("Doesn't show api error snackbar if its disabled", async () => {
-  render(<TestComponent />, {
-    wrapper: ({ children }) => (
-      <TestProviders showAPIErrors={false}>{children}</TestProviders>
-    ),
-  });
-
-  expect(screen.queryByText('500: API error')).not.toBeInTheDocument();
 });
