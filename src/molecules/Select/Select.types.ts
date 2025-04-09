@@ -26,7 +26,15 @@ interface MultiSelectBase<T extends SelectOptionRequired> {
 }
 
 type MultiSelectWithSelectedAsText<T extends SelectOptionRequired> = {
-  showSelectedAsText: boolean;
+  showSelectedAsText:
+    | boolean
+    | (({
+        selectedAmount,
+        totalAmount,
+      }: {
+        selectedAmount: number;
+        totalAmount: number;
+      }) => string);
 } & MultiSelectBase<T>;
 
 type MultiSelectWithCustomValueComponent<T extends SelectOptionRequired> = {
