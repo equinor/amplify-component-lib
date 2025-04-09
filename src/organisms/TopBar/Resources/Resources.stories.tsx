@@ -1,5 +1,7 @@
 import { MemoryRouter } from 'react-router';
 
+import { ReleaseNoteType } from '@equinor/subsurface-app-management';
+import { faker } from '@faker-js/faker';
 import { Meta, StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -9,6 +11,9 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
+import { handlers } from 'src/tests/mockHandlers';
+
+import { http, HttpResponse } from 'msw';
 
 export default {
   title: 'Organisms/TopBar/Resources',
@@ -34,6 +39,32 @@ export default {
     hideFeedback: false,
     hideReleaseNotes: false,
     hideLearnMore: false,
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('*/api/v1/ReleaseNotes/:applicationName', async () => {
+          return HttpResponse.json([
+            {
+              releaseId: faker.string.uuid(),
+              applicationName: 'PWEX',
+              version: null,
+              title: faker.commerce.productName(),
+              body: `<h5>Release notes body text</h5>
+              ${faker.lorem
+                .paragraphs(55, '<br>')
+                .split('\n')
+                .map((text) => `<p>${text}</p>`)}`,
+              tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
+              draft: false,
+              createdDate: faker.date.past().toISOString(),
+              releaseDate: new Date().toISOString(),
+            },
+          ]);
+        }),
+        ...handlers,
+      ],
+    },
   },
 } as Meta;
 

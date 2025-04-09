@@ -107,7 +107,10 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
     };
 
     return (
-      <Container ref={ref}>
+      <Container
+        ref={ref}
+        style={{ paddingBottom: startExpanded ? spacings.medium : undefined }}
+      >
         <Header>
           <HeaderLeft>
             <Typography
@@ -135,6 +138,7 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
           animate={{
             height: expanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT,
           }}
+          style={{ overflow: startExpanded ? 'auto' : undefined }}
         >
           <RichTextDisplay
             value={body}
@@ -142,7 +146,7 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
             padding="none"
           />
         </motion.div>
-        {needsShowMore && (
+        {needsShowMore && !startExpanded && (
           <ToggleExpanded
             expanded={expanded}
             onToggleExpanded={handleOnToggleExpand}
