@@ -36,10 +36,15 @@ export const exportComponent = (
   }
 
   const element = node.current;
+  const scrollWidth = element.scrollWidth;
+  const scrollHeight = element.scrollHeight;
+
   return html2canvas(element, {
     scrollY: -window.scrollY,
     useCORS: true,
     backgroundColor: backgroundColor ? backgroundColor : '#FFFFFF',
+    width: scrollWidth,
+    height: scrollHeight,
   }).then((canvas) => {
     return dataURItoBlob(canvas.toDataURL('image/png', 1.0));
   });
