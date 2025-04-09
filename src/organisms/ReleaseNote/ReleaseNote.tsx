@@ -91,9 +91,6 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
 
     const handleOnToggleExpand = () => {
       setIsExpanded((prev) => !prev);
-      if (initialHeight.current === 'auto') {
-        initialHeight.current = RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT;
-      }
     };
 
     const handleOnSetRef = (element: HTMLDivElement | null) => {
