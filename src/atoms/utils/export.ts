@@ -36,8 +36,12 @@ export const exportComponent = (
   }
 
   const element = node.current;
+
   const scrollWidth = element.scrollWidth;
   const scrollHeight = element.scrollHeight;
+
+  element.setAttribute('style', 'box-shadow: none');
+  element.setAttribute('style', 'overflow: visible');
 
   return html2canvas(element, {
     scrollY: -window.scrollY,
@@ -46,6 +50,7 @@ export const exportComponent = (
     width: scrollWidth,
     height: scrollHeight,
   }).then((canvas) => {
+    element.removeAttribute('style');
     return dataURItoBlob(canvas.toDataURL('image/png', 1.0));
   });
 };
