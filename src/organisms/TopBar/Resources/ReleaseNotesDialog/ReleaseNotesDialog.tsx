@@ -48,7 +48,7 @@ export const ReleaseNotesDialog: FC<ReleaseNotesDialogProps> = ({
         </LoadingWrapper>
       ) : mostRecentReleaseNote ? (
         <>
-          <ReleaseNote {...mostRecentReleaseNote} startExpanded />
+          <ReleaseNote {...mostRecentReleaseNote} expanded />
           <AllReleaseNotesWrapper>
             <Button
               variant="ghost"
