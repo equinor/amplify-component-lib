@@ -74,17 +74,10 @@ test('Has expand button if it contains img', async () => {
   expect(showMoreButton).toBeInTheDocument();
 });
 
-test('Settings startExpanded works as expected', async () => {
+test('Setting expanded works as expected', async () => {
   const props = fakeReleaseNote();
-  render(<ReleaseNote {...props} startExpanded />);
+  render(<ReleaseNote {...props} expanded />);
 
-  const user = userEvent.setup();
-
-  const showLessButton = await screen.findByRole('button', { name: /less/i });
-  expect(showLessButton).toBeInTheDocument();
-  await user.click(showLessButton);
-
-  const showMoreButton = screen.getByRole('button', { name: /more/i });
-  expect(showMoreButton).toBeInTheDocument();
-  await user.click(showMoreButton);
+  const showLessButton = screen.queryByRole('button', { name: /less/i });
+  expect(showLessButton).not.toBeInTheDocument();
 });

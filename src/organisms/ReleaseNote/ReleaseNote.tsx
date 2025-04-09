@@ -9,11 +9,7 @@ import {
 import { RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT } from './ReleaseNote.constants';
 import { timeToRead, usingReleaseNoteDate } from './ReleaseNote.utils';
 import { ToggleExpanded } from './ToggleExpanded';
-import {
-  formatRelativeDateTime,
-  getImagesFromRichText,
-  shape,
-} from 'src/atoms';
+import { formatDate, getImagesFromRichText, shape } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
 import { RichTextDisplay } from 'src/molecules';
 import { MetaTags } from 'src/organisms/ReleaseNote/MetaTags';
@@ -55,7 +51,7 @@ const HeaderLeft = styled.section`
 
 export type ReleaseNoteProps = {
   actionMenu?: ReactNode;
-  startExpanded?: boolean;
+  expanded?: boolean;
 } & ReleaseNoteDto;
 
 export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
@@ -69,15 +65,15 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
       title,
       body,
       actionMenu,
-      startExpanded = false,
+      expanded = false,
     },
     ref
   ) => {
     const usingDate = usingReleaseNoteDate({ releaseDate, createdDate });
     const initialHeight = useRef(
-      startExpanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT
+      expanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT
     );
-    const [expanded, setExpanded] = useState(startExpanded);
+    const [isExpanded, setIsExpanded] = useState(expanded);
     const [needsShowMore, setNeedsShowMore] = useState(
       getImagesFromRichText(body).length > 0
     );
@@ -94,7 +90,7 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
     );
 
     const handleOnToggleExpand = () => {
-      setExpanded((prev) => !prev);
+      setIsExpanded((prev) => !prev);
       if (initialHeight.current === 'auto') {
         initialHeight.current = RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT;
       }
@@ -109,7 +105,7 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
     return (
       <Container
         ref={ref}
-        style={{ paddingBottom: startExpanded ? spacings.medium : undefined }}
+        style={{ paddingBottom: isExpanded ? spacings.medium : undefined }}
       >
         <Header>
           <HeaderLeft>
@@ -123,7 +119,7 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
               variant="overline"
               color={colors.text.static_icons__tertiary.rgba}
             >
-              {formatRelativeDateTime(usingDate)}
+              {formatDate(usingDate)}
               {version ? ` ・ ${version}` : ''} ・ {timeToRead(body)}
             </Typography>
           </HeaderLeft>
@@ -136,9 +132,11 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
             height: initialHeight.current,
           }}
           animate={{
-            height: expanded ? 'auto' : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT,
+            height: isExpanded
+              ? 'auto'
+              : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT,
           }}
-          style={{ overflow: startExpanded ? 'auto' : undefined }}
+          style={{ overflow: isExpanded ? 'auto' : undefined }}
         >
           <RichTextDisplay
             value={body}
@@ -146,9 +144,9 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
             padding="none"
           />
         </motion.div>
-        {needsShowMore && !startExpanded && (
+        {needsShowMore && !expanded && (
           <ToggleExpanded
-            expanded={expanded}
+            expanded={isExpanded}
             onToggleExpanded={handleOnToggleExpand}
           />
         )}
