@@ -13,7 +13,7 @@ const Button = styled.button`
   padding: calc(${spacings.medium_small} / 2); // 6px in comfortable
   > span {
     color: ${colors.text.static_icons__tertiary.rgba};
-    padding: ${spacings.small} calc(${spacings.medium_small} / 2);
+    padding: ${spacings.x_small} calc(${spacings.medium_small} / 2);
   }
   > svg {
     fill: ${colors.text.static_icons__tertiary.rgba};
