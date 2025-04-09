@@ -23,7 +23,7 @@ jobs:
 
       - name: Tests
         timeout-minutes: 15
-        run: bun run test:ci -- --coverage --coverage.report=json --coverage.reporter=json-summary --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
+        run: bun run test:ci -- --coverage --coverage.report=json --coverage.reporter=json-summary --no-file-parallelism --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
 
       - name: Set coverage_failed
         if: success() || failure()
