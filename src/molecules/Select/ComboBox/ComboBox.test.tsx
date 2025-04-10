@@ -735,3 +735,64 @@ test('showSelectedValuesAsText', async () => {
     )
   ).toBeInTheDocument();
 });
+
+test('custom showSelectedValuesAsText function', async () => {
+  const label = faker.animal.bear();
+  const items = fakeSelectItems();
+  const groups = fakeGroups(5, true);
+  const handler = vi.fn();
+
+  const { rerender } = render(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[]}
+      showSelectedAsText={({ selectedAmount, totalAmount }) =>
+        `${selectedAmount} of ${totalAmount} selected`
+      }
+    />
+  );
+
+  const user = userEvent.setup();
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0]]}
+      showSelectedAsText={({ selectedAmount, totalAmount }) =>
+        `${selectedAmount} of ${totalAmount} selected`
+      }
+    />
+  );
+
+  expect(screen.getByText(`1 of ${items.length} selected`)).toBeInTheDocument();
+
+  const search = screen.getByRole('combobox');
+  await user.type(search, items[1].label);
+
+  expect(
+    screen.queryByText(`1 of ${items.length} selected`)
+  ).not.toBeInTheDocument();
+
+  await user.clear(search);
+
+  rerender(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      groups={groups}
+      values={[items[0]]}
+      showSelectedAsText={({ selectedAmount, totalAmount }) =>
+        `${selectedAmount} of ${totalAmount} selected`
+      }
+    />
+  );
+  expect(
+    screen.getByText(
+      `1 of ${groups.flatMap((group) => group.items).length} selected`
+    )
+  ).toBeInTheDocument();
+});

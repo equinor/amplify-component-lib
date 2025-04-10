@@ -5,8 +5,7 @@ import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import { ComboBoxChip } from 'src/molecules';
-import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
+import { ComboBox, ComboBoxChip } from 'src/molecules';
 import {
   SelectOption,
   SelectOptionRequired,
@@ -315,6 +314,32 @@ export const ComboBoxWithSelectedValuesAsText: StoryFn = (args) => {
       values={values}
       onSelect={handleOnSelect}
       showSelectedAsText
+    />
+  );
+};
+
+export const ComboBoxWithCustomSelectedValuesAsTextFunction: StoryFn = (
+  args
+) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      items={FAKE_ITEMS}
+      values={values}
+      onSelect={handleOnSelect}
+      showSelectedAsText={({ selectedAmount, totalAmount }) =>
+        `${selectedAmount} of ${totalAmount} fishes selected`
+      }
     />
   );
 };

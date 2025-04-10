@@ -123,11 +123,15 @@ export const Select = <T extends SelectOptionRequired>(
         ? props.items.length
         : props.groups.flatMap((group) => group.items).length;
 
-      return (
-        <ValueText>
-          {selectedValues.length}/{totalAmount} Selected
-        </ValueText>
-      );
+      const text =
+        typeof props.showSelectedAsText === 'function'
+          ? props.showSelectedAsText({
+              selectedAmount: selectedValues.length,
+              totalAmount,
+            })
+          : `${selectedValues.length}/${totalAmount} Selected`;
+
+      return <ValueText>{text}</ValueText>;
     } else {
       return selectedValues.map((value) => {
         if ('customValueComponent' in props && props.customValueComponent) {
