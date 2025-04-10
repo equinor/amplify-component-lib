@@ -5,9 +5,11 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroup as ToggleGroupComponent } from '.';
+import { colors } from 'src/atoms';
 
 interface StoryComponentProps {
   variant: ToggleGroupProps['variant'];
+  matchParentHeight: ToggleGroupProps['matchParentHeight'];
   withIcons?: boolean;
   onlyIcons?: boolean;
   disabled?: boolean;
@@ -15,6 +17,7 @@ interface StoryComponentProps {
 
 const ToggleGroup: FC<StoryComponentProps> = ({
   variant,
+  matchParentHeight,
   withIcons = false,
   onlyIcons = false,
   disabled = false,
@@ -24,45 +27,58 @@ const ToggleGroup: FC<StoryComponentProps> = ({
   const [favourites, setFavourites] = useState(false);
 
   return (
-    <ToggleGroupComponent variant={variant}>
-      <ToggleGroupComponent.Option
-        onToggle={setRecentlyPublished}
-        checked={recentlyPublished}
-        disabled={disabled}
-        {...(onlyIcons
-          ? {
-              icon: new_label,
-            }
-          : {
-              label: 'Recently published',
-              icon: withIcons ? new_label : undefined,
-            })}
-      />
-      <ToggleGroupComponent.Option
-        onToggle={setMyFiles}
-        checked={myFiles}
-        {...(onlyIcons
-          ? {
-              icon: person,
-            }
-          : {
-              label: 'My files',
-              icon: withIcons ? person : undefined,
-            })}
-      />
-      <ToggleGroupComponent.Option
-        onToggle={setFavourites}
-        checked={favourites}
-        {...(onlyIcons
-          ? {
-              icon: star_outlined,
-            }
-          : {
-              label: 'Favourites',
-              icon: withIcons ? star_outlined : undefined,
-            })}
-      />
-    </ToggleGroupComponent>
+    <div
+      style={{
+        height: '48px',
+        outline: matchParentHeight
+          ? `1px solid ${colors.ui.background__medium.rgba}`
+          : undefined,
+        outlineOffset: matchParentHeight ? '10px' : undefined,
+      }}
+    >
+      <ToggleGroupComponent
+        variant={variant}
+        matchParentHeight={matchParentHeight}
+      >
+        <ToggleGroupComponent.Option
+          onToggle={setRecentlyPublished}
+          checked={recentlyPublished}
+          disabled={disabled}
+          {...(onlyIcons
+            ? {
+                icon: new_label,
+              }
+            : {
+                label: 'Recently published',
+                icon: withIcons ? new_label : undefined,
+              })}
+        />
+        <ToggleGroupComponent.Option
+          onToggle={setMyFiles}
+          checked={myFiles}
+          {...(onlyIcons
+            ? {
+                icon: person,
+              }
+            : {
+                label: 'My files',
+                icon: withIcons ? person : undefined,
+              })}
+        />
+        <ToggleGroupComponent.Option
+          onToggle={setFavourites}
+          checked={favourites}
+          {...(onlyIcons
+            ? {
+                icon: star_outlined,
+              }
+            : {
+                label: 'Favourites',
+                icon: withIcons ? star_outlined : undefined,
+              })}
+        />
+      </ToggleGroupComponent>
+    </div>
   );
 };
 
@@ -73,6 +89,10 @@ const meta: Meta = {
     variant: {
       control: 'radio',
       options: ['outlined', 'filled', 'ghost'],
+    },
+    matchParentHeight: {
+      description: 'Parent height in storybook is 48px',
+      control: 'boolean',
     },
     withIcons: {
       description: 'This is only used in the story',
@@ -153,5 +173,12 @@ export const OnlyIconsOutlined: Story = {
   args: {
     onlyIcons: true,
     variant: 'outlined',
+  },
+};
+
+export const MatchParentHeight: Story = {
+  args: {
+    variant: 'outlined',
+    matchParentHeight: true,
   },
 };

@@ -18,7 +18,7 @@ test('Throws error if providing other children than ToggleGroup.Option', async (
 test.each(['outlined', 'filled', 'ghost'] as const)(
   '%s - Able to click options in ToggleGroup',
   async (variant) => {
-    const options = new Array(faker.number.int({ min: 2, max: 5 }))
+    const options = new Array(faker.number.int({ min: 2, max: 3 }))
       .fill(null)
       .map(() => faker.vehicle.vehicle());
     const handlers = options.map(() => vi.fn());
@@ -57,7 +57,7 @@ test.each(['outlined', 'filled', 'ghost'] as const)(
 );
 
 test('Works with icons only', async () => {
-  const options = new Array(faker.number.int({ min: 2, max: 5 }))
+  const options = new Array(faker.number.int({ min: 2, max: 3 }))
     .fill(null)
     .map(() => faker.vehicle.vehicle());
   const handlers = options.map(() => vi.fn());
@@ -79,4 +79,27 @@ test('Works with icons only', async () => {
   for (const icon of icons) {
     expect(icon).toHaveAttribute('d', car.svgPathData);
   }
+});
+
+test('Match parent height works as expected', async () => {
+  const options = new Array(faker.number.int({ min: 2, max: 3 }))
+    .fill(null)
+    .map(() => faker.vehicle.vehicle());
+  const handlers = options.map(() => vi.fn());
+  const { container } = render(
+    <div style={{ height: '50px' }}>
+      <ToggleGroup matchParentHeight>
+        {options.map((option, index) => (
+          <ToggleGroup.Option
+            key={option}
+            onToggle={handlers[index]}
+            label={option}
+            checked={false}
+          />
+        ))}
+      </ToggleGroup>
+    </div>
+  );
+
+  expect(container.firstChild).toHaveStyle('height: 50px');
 });

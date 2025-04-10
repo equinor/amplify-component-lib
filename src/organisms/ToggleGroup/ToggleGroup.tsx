@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components';
 
 interface WrapperProps {
   $variant: Required<ToggleGroupProps>['variant'];
+  $matchParentHeight: Required<ToggleGroupProps>['matchParentHeight'];
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -41,12 +42,25 @@ const Wrapper = styled.div<WrapperProps>`
       `;
     }
   }}
+
+  ${({ $matchParentHeight }) => {
+    if ($matchParentHeight) {
+      return css`
+        height: 100%;
+      `;
+    }
+    return '';
+  }}
 `;
 
 export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
-  ({ variant = 'filled', children }, ref) => {
+  ({ variant = 'filled', matchParentHeight = false, children }, ref) => {
     return (
-      <Wrapper ref={ref} $variant={variant}>
+      <Wrapper
+        ref={ref}
+        $variant={variant}
+        $matchParentHeight={matchParentHeight}
+      >
         {Children.map(children, (toggleOption) => {
           if (toggleOption.type != ToggleGroupOption) {
             throw 'Expected child to be ToggleGroupOption!';
