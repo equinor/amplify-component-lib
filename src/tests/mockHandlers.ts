@@ -382,7 +382,7 @@ export const handlers = [
     await delay('real');
     return HttpResponse.text('failed', { status: 500 });
   }),
-  http.get('*/v1/Faq/faqcategories/:appName', async () => {
+  http.get('*/v1/Faq/faqcategorieswithfaqs/:appName', async () => {
     await delay('real');
     return HttpResponse.json(FAKE_FAQ_CATEGORIES);
   }),
