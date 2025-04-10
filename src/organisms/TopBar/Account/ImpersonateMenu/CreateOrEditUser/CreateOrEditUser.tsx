@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button, DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
@@ -8,7 +8,6 @@ import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
 import { useEditImpersonation } from '../hooks/useEditImpersonation';
 import { Header } from '../Impersonate.styles';
 import { Container, Section } from './CreateOrEditUser.styles';
-import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { ComboBox, SelectOptionRequired } from 'src/molecules';
 import { TextField } from 'src/molecules/TextField/TextField';
@@ -23,21 +22,21 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   editingUser,
   onBack,
 }) => {
-  const previousEditingUser = usePrevious(editingUser);
+  const previousEditingUser = useRef<ImpersonateUserDto | undefined>(undefined);
   const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
 
   useEffect(() => {
     if (
       editingUser &&
       data &&
-      (previousEditingUser === undefined ||
-        previousEditingUser.uniqueName !== editingUser.uniqueName)
+      (previousEditingUser.current === undefined ||
+        previousEditingUser.current.uniqueName !== editingUser.uniqueName)
     ) {
+      previousEditingUser.current = editingUser;
       setRoles(
         editingUser.roles.map((role) => {
           const mapped = data.find((item) => item.value === role);

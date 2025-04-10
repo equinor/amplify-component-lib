@@ -131,6 +131,8 @@ test.each(['email', 'no-email'])(
 
     await user.click(screen.getByRole('button', { name: /edit user/i }));
 
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
     const textBox = screen.getByRole('textbox', { name: /first name/i });
     await user.clear(textBox);
 
@@ -147,8 +149,6 @@ test.each(['email', 'no-email'])(
     }
 
     await user.click(screen.getByRole('button', { name: /save/i }));
-
-    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
 
     expect(
       await screen.findByText(new RegExp(newFirstName))
@@ -171,6 +171,8 @@ test.each(['email', 'no-email'])(
     );
 
     await user.click(screen.getByRole('button', { name: /create users/i }));
+
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
 
     const createButton = screen.getByRole('button', {
       name: /create/i,
@@ -204,7 +206,7 @@ test.each(['email', 'no-email'])(
         min: 2,
         max: FAKE_ROLES.length - 1,
       })
-      .map((role) => role.value)
+      .map((role) => role.displayName)
       .sort();
 
     await user.click(screen.getByRole('combobox'));
