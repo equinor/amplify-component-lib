@@ -157,6 +157,44 @@ test.each(['email', 'no-email'])(
   { timeout: 8000 }
 );
 
+test('Edit another user clears the form as expected', async () => {
+  renderWithProviders(<Account />);
+  const user = userEvent.setup();
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+
+  const menuItems = await screen.findAllByTestId('impersonation-user');
+  expect(menuItems.length).toBeGreaterThan(0);
+
+  // Click edit on the first one
+  await user.click(within(menuItems[0]).getByRole('button'));
+
+  await user.click(screen.getByRole('button', { name: /edit user/i }));
+
+  await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
+  const textBox = screen.getByRole('textbox', {
+    name: /first name/i,
+  }) as HTMLInputElement;
+  const firstName = textBox.value;
+
+  await user.click(screen.getByRole('button', { name: /cancel/i }));
+
+  const newMenuItems = await screen.findAllByTestId('impersonation-user');
+  await user.click(within(newMenuItems[1]).getByRole('button'));
+
+  await user.click(screen.getByRole('button', { name: /edit user/i }));
+
+  const otherName = (
+    screen.getByRole('textbox', { name: /first name/i }) as HTMLInputElement
+  ).value;
+
+  expect(otherName).not.toBe(firstName);
+});
+
 test.each(['email', 'no-email'])(
   'Able to create new impersonation user - %s',
   async (testCase) => {

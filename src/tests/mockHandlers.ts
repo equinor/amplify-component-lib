@@ -85,7 +85,7 @@ function fakeUser(): ImpersonateUserDto {
     lastName,
     email,
     uniqueName,
-    roles,
+    roles: [...roles, 'other'],
     appName: environment.getAppName(import.meta.env.VITE_NAME),
     activeUsers: [],
   };
