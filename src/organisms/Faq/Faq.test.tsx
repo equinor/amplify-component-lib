@@ -207,7 +207,7 @@ test('Able to open FAQ', async () => {
 
 test('Renders expected content when empty', async ({ worker }) => {
   worker.use(
-    http.get('*/api/v1/Faq/faqcategories/:appName', () => {
+    http.get('*/api/v1/Faq/faqcategorieswithfaqs/:appName', () => {
       return HttpResponse.json([]);
     })
   );
