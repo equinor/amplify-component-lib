@@ -22,7 +22,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   editingUser,
   onBack,
 }) => {
-  const previousEditingUser = useRef<ImpersonateUserDto | undefined>(undefined);
+  const initializedEditUser = useRef<boolean>(false);
   const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -30,13 +30,8 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
 
   useEffect(() => {
-    if (
-      editingUser &&
-      data &&
-      (previousEditingUser.current === undefined ||
-        previousEditingUser.current.uniqueName !== editingUser.uniqueName)
-    ) {
-      previousEditingUser.current = editingUser;
+    if (editingUser && data && !initializedEditUser.current) {
+      initializedEditUser.current = true;
       setRoles(
         editingUser.roles.map((role) => {
           const mapped = data.find((item) => item.value === role);
@@ -48,7 +43,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       setLastName(editingUser.lastName);
       setEmail(editingUser.email ?? '');
     }
-  }, [data, editingUser, previousEditingUser]);
+  }, [data, editingUser, initializedEditUser]);
 
   const availableRoles = useMemo(
     () =>
