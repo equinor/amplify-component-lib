@@ -1,8 +1,8 @@
 import {
   FC,
-  MutableRefObject,
   ReactElement,
   ReactNode,
+  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -10,13 +10,13 @@ import {
   useState,
 } from 'react';
 
-import { AccountInfo } from '@azure/msal-common';
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
 
 import { TopBarMenu } from '../TopBarMenu';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
+import { useMappedRoles } from './ImpersonateMenu/hooks/useMappedRoles';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
 import {
@@ -36,33 +36,19 @@ import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/Imper
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export interface AccountProps {
-  /**
-   * @deprecated logout - Not needed anymore
-   */
-  logout?: () => void;
-  /**
-   * @deprecated account - Not needed anymore
-   */
-  account?: AccountInfo | undefined;
-  /**
-   * @deprecated photo - Not needed anymore
-   */
-  photo?: string | undefined;
-  /**
-   * @deprecated roles - Not needed anymore
-   */
-  roles?: string[] | undefined;
   renderCustomButton?: (
-    buttonRef: MutableRefObject<HTMLButtonElement | null>,
+    buttonRef: RefObject<HTMLButtonElement | null>,
     handleToggle: () => void
   ) => ReactElement;
   hideRoleChips?: boolean;
+  useDisplayNameForRole?: boolean;
   children?: ReactNode;
 }
 
 export const Account: FC<AccountProps> = ({
   renderCustomButton,
   hideRoleChips = false,
+  useDisplayNameForRole = false,
   children,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
@@ -79,13 +65,16 @@ export const Account: FC<AccountProps> = ({
   const { data: canImpersonate = true } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
   const { mutate: endImpersonation } = useStopImpersonation();
+  const activeRoles = useMappedRoles(
+    // Wasn't able to test the (roles ?? []) part, because roles are always defined from useAuth when we are logged in
+    /* v8 ignore next */
+    activeImpersonationUser ? activeImpersonationUser.roles : (roles ?? []),
+    useDisplayNameForRole
+  );
 
   const fullName = activeImpersonationUser
     ? impersonateUserDtoToFullName(activeImpersonationUser)
     : account?.name;
-  const activeRoles = activeImpersonationUser
-    ? activeImpersonationUser.roles
-    : roles;
   const username = activeImpersonationUser
     ? activeImpersonationUser.uniqueName
     : account?.username;
@@ -145,7 +134,7 @@ export const Account: FC<AccountProps> = ({
           {activeRoles && !hideRoleChips && (
             <RolesContainer>
               {activeRoles.map((role) => (
-                <RoleChip key={role}>{role}</RoleChip>
+                <RoleChip key={role.value}>{role.label}</RoleChip>
               ))}
             </RolesContainer>
           )}

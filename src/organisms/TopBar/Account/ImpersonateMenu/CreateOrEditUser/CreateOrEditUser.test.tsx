@@ -131,6 +131,8 @@ test.each(['email', 'no-email'])(
 
     await user.click(screen.getByRole('button', { name: /edit user/i }));
 
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
     const textBox = screen.getByRole('textbox', { name: /first name/i });
     await user.clear(textBox);
 
@@ -148,14 +150,50 @@ test.each(['email', 'no-email'])(
 
     await user.click(screen.getByRole('button', { name: /save/i }));
 
-    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
-
     expect(
       await screen.findByText(new RegExp(newFirstName))
     ).toBeInTheDocument();
   },
   { timeout: 8000 }
 );
+
+test('Edit another user clears the form as expected', async () => {
+  renderWithProviders(<Account />);
+  const user = userEvent.setup();
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+
+  const menuItems = await screen.findAllByTestId('impersonation-user');
+  expect(menuItems.length).toBeGreaterThan(0);
+
+  // Click edit on the first one
+  await user.click(within(menuItems[0]).getByRole('button'));
+
+  await user.click(screen.getByRole('button', { name: /edit user/i }));
+
+  await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
+  const textBox = screen.getByRole('textbox', {
+    name: /first name/i,
+  }) as HTMLInputElement;
+  const firstName = textBox.value;
+
+  await user.click(screen.getByRole('button', { name: /cancel/i }));
+
+  const newMenuItems = await screen.findAllByTestId('impersonation-user');
+  await user.click(within(newMenuItems[1]).getByRole('button'));
+
+  await user.click(screen.getByRole('button', { name: /edit user/i }));
+
+  const otherName = (
+    screen.getByRole('textbox', { name: /first name/i }) as HTMLInputElement
+  ).value;
+
+  expect(otherName).not.toBe(firstName);
+});
 
 test.each(['email', 'no-email'])(
   'Able to create new impersonation user - %s',
@@ -171,6 +209,8 @@ test.each(['email', 'no-email'])(
     );
 
     await user.click(screen.getByRole('button', { name: /create users/i }));
+
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
 
     const createButton = screen.getByRole('button', {
       name: /create/i,
@@ -204,7 +244,7 @@ test.each(['email', 'no-email'])(
         min: 2,
         max: FAKE_ROLES.length - 1,
       })
-      .map((role) => role.value)
+      .map((role) => role.displayName)
       .sort();
 
     await user.click(screen.getByRole('combobox'));

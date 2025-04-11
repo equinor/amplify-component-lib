@@ -10,6 +10,7 @@ import {
 } from '@equinor/eds-icons';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
+import { useMappedRoles } from './hooks/useMappedRoles';
 import {
   Container,
   RoleChip,
@@ -60,8 +61,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const fullName = impersonateUserDtoToFullName({ firstName, lastName });
-
-  const sortedRoles = [...roles].sort();
+  const activeRoles = useMappedRoles(roles);
 
   const handleOnToggleMenu = () => setOpen((prev) => !prev);
   const handleOnClose = () => setOpen(false);
@@ -95,11 +95,11 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
         />
         <Typography data-testid="name">{fullName}</Typography>
         <RoleChipContainer $selected={selected}>
-          <RoleChip data-testid="role">{sortedRoles[0]}</RoleChip>
-          {sortedRoles.length > 1 && (
-            <OptionalTooltip title={sortedRoles.slice(1).join(', ')}>
+          <RoleChip data-testid="role">{activeRoles[0].label}</RoleChip>
+          {activeRoles.length > 1 && (
+            <OptionalTooltip title={activeRoles.slice(1).join(', ')}>
               <RoleChip data-testid="additional-roles">
-                {`+${sortedRoles.length - 1}`}
+                {`+${activeRoles.length - 1}`}
               </RoleChip>
             </OptionalTooltip>
           )}
