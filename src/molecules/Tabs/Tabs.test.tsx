@@ -192,7 +192,7 @@ test('Throws error if amountPerScrollPage is set but scrollable is false', () =>
 
 test('Hovering over a tab calls the onHover callback', async () => {
   const props = fakeProps();
-  render(<Tabs {...props} selected={0} onHover={props.onHover} />);
+  render(<Tabs {...props} selected={0} />);
   const user = userEvent.setup();
 
   for (const option of props.options) {
