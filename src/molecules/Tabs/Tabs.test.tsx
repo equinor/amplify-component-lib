@@ -11,6 +11,7 @@ function fakeProps(): Omit<TabsProps<number>, 'selected'> {
       label: faker.vehicle.vehicle(),
     })),
     onChange: vi.fn(),
+    onHover: vi.fn(),
   };
 }
 
@@ -187,4 +188,20 @@ test('Throws error if amountPerScrollPage is set but scrollable is false', () =>
       />
     )
   ).toThrowError();
+});
+
+test('Hovering over a tab calls the onHover callback', async () => {
+  const props = fakeProps();
+  render(<Tabs {...props} selected={0} onHover={props.onHover} />);
+  const user = userEvent.setup();
+
+  for (const option of props.options) {
+    expect(screen.getByRole('tab', { name: option.label }));
+  }
+
+  const randomOption = faker.helpers.arrayElement(props.options);
+
+  await user.hover(screen.getByRole('tab', { name: randomOption.label }));
+
+  expect(props.onHover).toHaveBeenCalledExactlyOnceWith(randomOption.value);
 });
