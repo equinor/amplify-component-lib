@@ -52,6 +52,7 @@ export function Tabs<T>({
   scrollable = true,
   amountPerScrollPage,
   onChange,
+  onHover,
   ref,
   ...rest
 }: TabsProps<T>) {
@@ -137,6 +138,7 @@ export function Tabs<T>({
             selectedIndex={selectedIndex}
             index={index}
             onChange={onChange}
+            onHover={onHover}
             centered={centered}
             animated={animated}
             {...option}

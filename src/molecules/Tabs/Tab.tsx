@@ -5,6 +5,7 @@ import { Tab as TabType, Tabs } from './Tabs.types';
 
 type TabProps<T> = {
   onChange: Tabs<T>['onChange'];
+  onHover?: Tabs<T>['onHover'];
   selectedIndex: number;
   index: number;
   centered: boolean;
@@ -17,6 +18,7 @@ export function Tab<T>({
   selectedIndex,
   index,
   onChange,
+  onHover,
   centered,
   animated,
   disabled,
@@ -26,11 +28,17 @@ export function Tab<T>({
     onChange(value);
   };
 
+  const handleOnMouseEnter = () => {
+    if (!onHover) return;
+    onHover(value);
+  };
+
   return (
     <Button
       role="tab"
       aria-selected={selectedIndex === index}
       onClick={handleOnClick}
+      onMouseEnter={handleOnMouseEnter}
       $centered={centered}
       disabled={disabled}
     >
