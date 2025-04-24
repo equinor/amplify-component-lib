@@ -197,7 +197,6 @@ test('Hovering over a tab calls the onHover callback', async () => {
   const user = userEvent.setup();
 
   await user.hover(screen.getByRole('tab', { name: options[0].label }));
-  console.log('randomOption value', options[0].value);
 
   expect(props.onHover).toHaveBeenCalledExactlyOnceWith(options[0].value);
 });
