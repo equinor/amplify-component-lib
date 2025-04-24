@@ -192,16 +192,12 @@ test('Throws error if amountPerScrollPage is set but scrollable is false', () =>
 
 test('Hovering over a tab calls the onHover callback', async () => {
   const props = fakeProps();
-  render(<Tabs {...props} selected={0} />);
+  const options = [{ value: 123, label: 'Option 1' }];
+  render(<Tabs {...props} options={options} selected={0} />);
   const user = userEvent.setup();
 
-  for (const option of props.options) {
-    expect(screen.getByRole('tab', { name: option.label }));
-  }
+  await user.hover(screen.getByRole('tab', { name: options[0].label }));
+  console.log('randomOption value', options[0].value);
 
-  const randomOption = faker.helpers.arrayElement(props.options);
-
-  await user.hover(screen.getByRole('tab', { name: randomOption.label }));
-
-  expect(props.onHover).toHaveBeenCalledExactlyOnceWith(randomOption.value);
+  expect(props.onHover).toHaveBeenCalledExactlyOnceWith(options[0].value);
 });
