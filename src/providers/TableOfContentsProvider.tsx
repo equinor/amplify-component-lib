@@ -51,7 +51,6 @@ export interface TableOfContentsProviderProps {
   children: ReactNode;
   hashNavigation?: boolean;
 }
-
 export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   items,
   children,
@@ -62,6 +61,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
   const [shouldInstantlyJump, setShouldInstantlyJump] = useState(hash !== '');
+  const initHashStateRef = useRef(false);
 
   const values: string[] = useMemo(
     () => items.flatMap((item) => getValues([], item)),
@@ -72,6 +72,11 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   useEffect(() => {
     setElements(values.map((value) => document.getElementById(value)));
   }, [values]);
+
+  useEffect(() => {
+    if (hash.length) return;
+    initHashStateRef.current = true;
+  }, [hash]);
 
   const isActive = useCallback(
     (item: TableOfContentsItemType) => {
@@ -154,12 +159,30 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         newSelectedIndex = index;
       }
     }
-    if (newSelectedIndex !== -1 && values.at(newSelectedIndex) !== undefined) {
-      setSelected(values[newSelectedIndex]);
-      if (hashNavigation) {
-        navigate(`#${values[newSelectedIndex]}`, { replace: true });
-      }
+
+    if (newSelectedIndex === -1 || values.at(newSelectedIndex) === undefined)
+      return;
+
+    const targetValue = hash.replace('#', '');
+    if (
+      !initHashStateRef.current &&
+      targetValue.length &&
+      values.includes(targetValue)
+    ) {
+      handleSetSelected(targetValue, {
+        behavior: 'instant',
+        shouldInstantlyJumpOnMount: true,
+      });
+      initHashStateRef.current = true;
+      return;
     }
+
+    setSelected(values[newSelectedIndex]);
+    if (hashNavigation) {
+      navigate(`#${values[newSelectedIndex]}`, { replace: true });
+    }
+    // this effect handles scroll navigation and should not be triggered on hash change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hashNavigation, navigate, values, visible]);
   /* v8 ignore end */
 

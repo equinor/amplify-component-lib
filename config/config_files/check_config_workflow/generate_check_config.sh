@@ -19,7 +19,7 @@ do
     workingDir=$var2
     if [ ! -d "./client" ]
     then
-      if [ $var2 =~ "client/" ]
+      if [ "$var2" =~ "client/" ]
       then
         workingDir=${var2#"client/"}
       else
@@ -27,7 +27,7 @@ do
       fi
     fi
 
-    if [ $workingDir == "" ]
+    if [ $workingDir = "" ]
     then
       workingDir="."
     fi
