@@ -20,7 +20,7 @@ export const formatDate = (
     format: 'DD. month YYYY',
     month: 'long',
   }
-): string => {
+): string | undefined => {
   if (date) {
     const dateObj = new Date(date);
     if (dateObj.getTime()) {
@@ -68,7 +68,7 @@ export const formatDate = (
         .padStart(2, '0')}.${year.toString().padStart(4, '0')}`;
     }
   }
-  return '';
+  return undefined;
 };
 
 // formatDateTime(new Date()) => 19. January 2022, 01:32
@@ -80,7 +80,7 @@ export const formatDateTime = (
     hideYear: false,
     isGMT: false,
   }
-): string => {
+): string | undefined => {
   if (date) {
     const dateObj = new Date(date);
     if (dateObj.getTime()) {
@@ -98,7 +98,7 @@ export const formatDateTime = (
       })}`;
     }
   }
-  return '';
+  return undefined;
 };
 
 // formatRelativeDateTime(new Date()) => Today at 7:17
@@ -106,7 +106,7 @@ export const formatDateTime = (
 export const formatRelativeDateTime = (
   date: Date | string | null | undefined,
   isGMT = false
-): string => {
+): string | undefined => {
   if (date) {
     const dateObj = new Date(date);
     const today = new Date();
@@ -150,7 +150,7 @@ export const formatRelativeDateTime = (
       }
     }
   }
-  return '';
+  return undefined;
 };
 
 export const isBetweenDates = (
