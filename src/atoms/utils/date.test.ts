@@ -10,7 +10,7 @@ import {
 test('formatDate works as expected when not sending in a date', () => {
   const formattedDate = formatDate(null);
 
-  expect(formattedDate).toBe('');
+  expect(formattedDate).toBe(undefined);
 });
 
 test('formatDate works as expected with default format', () => {
@@ -177,6 +177,11 @@ test('formatDate works as expected with format = "DD. month" and month = "short"
   expect(formattedDate).toBe(testFormatted);
 });
 
+test('formatDate with null should be undefined', () => {
+  const formatted = formatDate(null);
+  expect(formatted).toBe(undefined);
+});
+
 test('formatDateTime works as expected', () => {
   const today = new Date();
   const fakeDate = faker.date.past({
@@ -196,7 +201,7 @@ test('formatDateTime works as expected', () => {
 
 test('formatDateTime works as expected when not sending in a date', () => {
   const formatted = formatDateTime(null);
-  expect(formatted).toBe('');
+  expect(formatted).toBe(undefined);
 });
 
 test('formatDateTime works as expected with options', () => {
@@ -234,9 +239,9 @@ test('formatDateTime works as expected when isGMT is set', () => {
   expect(formatted).toBe(expectedResult);
 });
 
-test('formatRelativeDateTime with null should be empty string', () => {
+test('formatRelativeDateTime with null should be undefined', () => {
   const formatted = formatRelativeDateTime(null);
-  expect(formatted).toContain('');
+  expect(formatted).toBe(undefined);
 });
 
 test('formatRelativeDateTime with isGMT set should convert to local time', () => {
@@ -419,6 +424,11 @@ test('formatRelativeDateTime with date not in current year displays as full date
     fakeDateAfterCurrentYear
   );
   expect(formattedDateInNextYear).toBe(expectedNextYearResult);
+});
+
+test('formatRelativeDateTime with null should be undefined ', () => {
+  const formatted = formatDate(null);
+  expect(formatted).toBe(undefined);
 });
 
 test('isBetweenDates works as expected with null', () => {
