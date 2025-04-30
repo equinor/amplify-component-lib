@@ -234,6 +234,7 @@ export const Select = <T extends SelectOptionRequired>(
         <StyledMenu
           ref={menuRef}
           open
+          key={`select-menu-${search}`}
           id="combobox-menu"
           anchorEl={anchorRef.current}
           onClose={handleOnClose}
