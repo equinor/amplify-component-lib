@@ -5,22 +5,37 @@ import {
 } from '@equinor/eds-icons';
 
 import { SelectOption, SelectOptionRequired } from 'src/molecules';
+import { SelectedState } from 'src/molecules/Select/Select.types';
 import { flattenOptions } from 'src/molecules/Select/Select.utils';
+
+const iconsByState = {
+  selected: checkbox,
+  indeterminate: checkbox_indeterminate,
+  none: checkbox_outline,
+};
 
 export function getParentIcon<T extends SelectOptionRequired>(
   item: SelectOption<T>,
   values: SelectOption<T>[]
 ) {
-  if (!item.children || item.children.length === 0) return checkbox_outline;
+  const state = getParentState(item, values);
+  return iconsByState[state];
+}
+
+export function getParentState<T extends SelectOptionRequired>(
+  item: SelectOption<T>,
+  values: SelectOption<T>[]
+): SelectedState {
+  if (!item.children || item.children.length === 0) return 'none';
 
   const isSelected = values.some((value) => value.value === item.value);
   const selectedValues = values.map(({ value }) => value);
   const allOptions = flattenOptions([item])?.map(({ value }) => value);
   if (isSelected) {
-    return checkbox;
+    return 'selected';
   } else if (allOptions.some((option) => selectedValues.includes(option))) {
-    return checkbox_indeterminate;
+    return 'indeterminate';
   }
 
-  return checkbox_outline;
+  return 'none';
 }

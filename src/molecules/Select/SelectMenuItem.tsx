@@ -10,7 +10,7 @@ import {
 import { tokens } from '@equinor/eds-tokens';
 
 import { getChildOffset } from './Select.utils';
-import { getParentIcon } from './SelectMenuItem.utils';
+import { getParentIcon, getParentState } from './SelectMenuItem.utils';
 import { spacings } from 'src/atoms/style/spacings';
 import {
   MenuItemSpacer,
@@ -20,6 +20,7 @@ import {
 } from 'src/molecules/Select/Select.styles';
 import {
   MultiSelectMenuItemProps,
+  SelectedState,
   SelectOptionRequired,
   SingleSelectMenuItemProps,
 } from 'src/molecules/Select/Select.types';
@@ -38,6 +39,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     onItemKeyDown,
     onItemSelect,
     parentHasNestedItems = false,
+    CustomMenuItemComponent,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
@@ -51,6 +53,12 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     if ('value' in props) return checkbox_outline;
 
     return getParentIcon(item, props.values);
+  }, [item, props]);
+
+  const parentState: SelectedState = useMemo(() => {
+    if ('value' in props) return 'none';
+
+    return getParentState(item, props.values);
   }, [item, props]);
 
   const spacers = useMemo(
@@ -141,11 +149,20 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
             onKeyDownCapture={handleOnParentKeyDown}
             onClick={handleOnItemClick}
           >
-            <Icon
-              color={colors.interactive.primary__resting.rgba}
-              data={parentIcon}
-            />
-            <span>{item.label}</span>
+            {CustomMenuItemComponent ? (
+              <CustomMenuItemComponent
+                item={item}
+                selectedState={parentState}
+              />
+            ) : (
+              <>
+                <Icon
+                  color={colors.interactive.primary__resting.rgba}
+                  data={parentIcon}
+                />
+                <span>{item.label}</span>
+              </>
+            )}
           </StyledMenuItem>
         </MenuItemWrapper>
         {openParent &&
@@ -163,6 +180,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
               parentHasNestedItems
+              CustomMenuItemComponent={CustomMenuItemComponent}
             />
           ))}
       </>
@@ -185,11 +203,20 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
           onKeyDownCapture={onItemKeyDown}
           onClick={handleOnItemClick}
         >
-          <Icon
-            color={colors.interactive.primary__resting.rgba}
-            data={isSelected ? checkbox : checkbox_outline}
-          />
-          <span>{item.label}</span>
+          {CustomMenuItemComponent ? (
+            <CustomMenuItemComponent
+              item={item}
+              selectedState={isSelected ? 'selected' : 'none'}
+            />
+          ) : (
+            <>
+              <Icon
+                color={colors.interactive.primary__resting.rgba}
+                data={isSelected ? checkbox : checkbox_outline}
+              />
+              <span>{item.label}</span>
+            </>
+          )}
         </StyledMenuItem>
       </MenuItemWrapper>
     );
@@ -206,7 +233,18 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
         onKeyDownCapture={onItemKeyDown}
         onClick={handleOnItemClick}
       >
-        <span>{item.label}</span>
+        {CustomMenuItemComponent ? (
+          <CustomMenuItemComponent
+            item={item}
+            selectedState={
+              props.value && item.value === props.value.value
+                ? 'selected'
+                : 'none'
+            }
+          />
+        ) : (
+          <span>{item.label}</span>
+        )}
       </StyledMenuItem>
     </MenuItemWrapper>
   );

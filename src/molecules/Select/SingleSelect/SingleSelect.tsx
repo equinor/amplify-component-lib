@@ -23,6 +23,7 @@ export type GroupedSingleSelectProps<T extends SelectOptionRequired> =
  * @param onAddItem - Enables the possibility to add extra tags and is called when submitting a new item, either via menu click 'add' or {Enter}. Not supported with groups prop.
  * @param addItemSingularWord - Word to use when adding a new item, default is "tag"
  * @param onSearchFilter - Custom filter function for search, default is "item.label.match(new RegExp(searchValue, 'i'))"
+ * @param customMenuItemComponent - Custom component to use for rendering menu item, defaults to a checkbox with label
  */
 export function SingleSelect<T extends SelectOptionRequired>(
   props: ListSingleSelectProps<T> | GroupedSingleSelectProps<T>

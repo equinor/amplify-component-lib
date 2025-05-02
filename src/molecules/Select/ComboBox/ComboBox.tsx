@@ -25,6 +25,7 @@ export type GroupedComboBoxProps<T extends SelectOptionRequired> =
  * @param addItemSingularWord - Word to use when adding a new item, default is "tag"
  * @param onSearchFilter - Custom filter function for search, default is "item.label.match(new RegExp(searchValue, 'i'))"
  * @param showSelectedAsText - If values should be shown as "5/10 Selected", defaults to false
+ * @param customMenuItemComponent - Custom component to use for rendering menu item, defaults to a checkbox with label
  */
 export function ComboBox<T extends SelectOptionRequired>(
   props: ListComboBoxProps<T> | GroupedComboBoxProps<T>

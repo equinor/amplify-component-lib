@@ -4,6 +4,7 @@ import { Menu } from '@equinor/eds-core-react';
 
 import { NoItemsFoundText } from 'src/molecules/Select/Select.styles';
 import {
+  CustomMenuItemComponentProps,
   GroupedSelectProps,
   MultiSelectCommon,
   SelectMenuProps,
@@ -16,6 +17,7 @@ import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 export const GroupedSelectMenu = <T extends SelectOptionRequired>(
   props: GroupedSelectProps<T> &
     SelectMenuProps<T> &
+    CustomMenuItemComponentProps<T> &
     (MultiSelectCommon<T> | SingleSelectCommon<T>)
 ) => {
   const {
