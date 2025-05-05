@@ -1,12 +1,14 @@
 import { FC, useState } from 'react';
 
-import { Button, Dialog } from '@equinor/eds-core-react';
+import { Button, Dialog, Icon } from '@equinor/eds-core-react';
+import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { ComboBox, ComboBoxChip } from 'src/molecules';
 import {
+  SelectedState,
   SelectOption,
   SelectOptionRequired,
   VARIANT_OPTIONS,
@@ -340,6 +342,42 @@ export const ComboBoxWithCustomSelectedValuesAsTextFunction: StoryFn = (
       showSelectedAsText={({ selectedAmount, totalAmount }) =>
         `${selectedAmount} of ${totalAmount} fishes selected`
       }
+    />
+  );
+};
+
+const CustomMenuItem: FC<{
+  item: SelectOption<Item>;
+  selectedState: SelectedState;
+}> = ({ item, selectedState }) => (
+  <>
+    <Icon data={selectedState === 'selected' ? checkbox : checkbox_outline} />
+    <Dot />
+    {item.label}
+  </>
+);
+
+export const ComboboxWithCustomizableSelectMenuItem: StoryFn = (args) => {
+  const [values, setValues] = useState<SelectOption<Item>[]>([]);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<Item>[],
+    selectedValue?: SelectOption<Item>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      items={FAKE_ITEMS}
+      values={values}
+      onSelect={handleOnSelect}
+      showSelectedAsText={({ selectedAmount, totalAmount }) =>
+        `${selectedAmount} of ${totalAmount} fishes selected`
+      }
+      CustomMenuItemComponent={CustomMenuItem}
     />
   );
 };

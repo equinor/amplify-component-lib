@@ -2,13 +2,14 @@ import {
   checkbox,
   checkbox_indeterminate,
   checkbox_outline,
+  IconData,
 } from '@equinor/eds-icons';
 
 import { SelectOption, SelectOptionRequired } from 'src/molecules';
 import { SelectedState } from 'src/molecules/Select/Select.types';
 import { flattenOptions } from 'src/molecules/Select/Select.utils';
 
-const iconsByState = {
+const ICONS_BY_STATE: Record<SelectedState, IconData> = {
   selected: checkbox,
   indeterminate: checkbox_indeterminate,
   none: checkbox_outline,
@@ -19,7 +20,7 @@ export function getParentIcon<T extends SelectOptionRequired>(
   values: SelectOption<T>[]
 ) {
   const state = getParentState(item, values);
-  return iconsByState[state];
+  return ICONS_BY_STATE[state];
 }
 
 export function getParentState<T extends SelectOptionRequired>(
