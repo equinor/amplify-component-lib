@@ -88,7 +88,6 @@ export type {
   GroupedSingleSelectProps,
 } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
-export { PageWithTitle } from './PageWithTitle/PageWithTitle';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
 export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
 export { ListItem } from './ListItem/ListItem';
