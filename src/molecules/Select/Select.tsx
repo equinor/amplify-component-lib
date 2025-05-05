@@ -56,6 +56,7 @@ export const Select = <T extends SelectOptionRequired>(
     inDialog = false,
     onSearchFilter,
     'data-testid': dataTestId,
+    CustomMenuItemComponent,
   } = props;
   const {
     handleOnAddItem,
@@ -252,6 +253,7 @@ export const Select = <T extends SelectOptionRequired>(
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
               onSearchFilter={onSearchFilter}
+              CustomMenuItemComponent={CustomMenuItemComponent}
             />
           ) : (
             <ListSelectMenu
@@ -262,6 +264,7 @@ export const Select = <T extends SelectOptionRequired>(
               onItemSelect={handleOnItemSelect}
               onItemKeyDown={handleOnItemKeyDown}
               onSearchFilter={onSearchFilter}
+              CustomMenuItemComponent={CustomMenuItemComponent}
             />
           )}
         </StyledMenu>

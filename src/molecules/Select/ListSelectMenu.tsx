@@ -9,6 +9,7 @@ import {
   NoTagFoundText,
 } from 'src/molecules/Select/Select.styles';
 import {
+  CustomMenuItemComponentProps,
   ListSelectMenuProps,
   ListSelectProps,
   MultiSelectCommon,
@@ -28,6 +29,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
   props: Omit<ListSelectProps<T>, 'onAddItem'> &
     ListSelectMenuProps &
     SelectMenuProps<T> &
+    CustomMenuItemComponentProps<T> &
     (
       | Omit<MultiSelectCommon<T>, 'syncParentChildSelection'>
       | SingleSelectCommon<T>

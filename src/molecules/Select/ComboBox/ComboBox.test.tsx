@@ -796,3 +796,50 @@ test('custom showSelectedValuesAsText function', async () => {
     )
   ).toBeInTheDocument();
 });
+
+test('Custom menu item renders as expected', async () => {
+  const label = faker.animal.bear();
+  const items = [
+    {
+      label: 'label 1',
+      value: 'value 1',
+      children: [
+        {
+          label: 'label 2',
+          value: 'value 2',
+        },
+        {
+          label: 'label 3',
+          value: 'value 3',
+        },
+      ],
+    },
+  ];
+
+  const handler = vi.fn();
+
+  render(
+    <ComboBox
+      label={label}
+      onSelect={handler}
+      items={items}
+      values={[items[0].children[0]]}
+      CustomMenuItemComponent={({ item }) => (
+        <span>custom item - {item.value}</span>
+      )}
+    />
+  );
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('combobox'));
+
+  const label1MenuItem = screen.getByRole('menuitem', {
+    name: 'custom item - value 1',
+  });
+
+  await user.click(
+    within(label1MenuItem.parentElement!).getByTestId('toggle-button')
+  );
+
+  expect(screen.getByText('custom item - value 2')).toBeInTheDocument();
+});

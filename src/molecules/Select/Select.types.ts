@@ -51,7 +51,7 @@ export type MultiSelectCommon<T extends SelectOptionRequired> =
   | MultiSelectWithCustomValueComponent<T>;
 
 export interface SelectGroup<T extends SelectOptionRequired> {
-  title: string;
+  title?: string;
   items: SelectOption<T>[];
 }
 
@@ -101,17 +101,23 @@ interface SelectMenuItemProps<T extends SelectOptionRequired> {
   depth?: number;
   isParentSelected?: boolean;
   parentHasNestedItems?: boolean;
+  customMenuItemComponent?: FC<{
+    item: SelectOption<T>;
+    selected: boolean;
+  }>;
 }
 
 export type SingleSelectMenuItemProps<T extends SelectOptionRequired> = {
   value: SelectOption<T> | undefined;
 } & Omit<SelectMenuProps<T>, 'search'> &
-  SelectMenuItemProps<T>;
+  SelectMenuItemProps<T> &
+  CustomMenuItemComponentProps<T>;
 
 export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
   values: SelectOption<T>[];
 } & Omit<SelectMenuProps<T>, 'search'> &
-  SelectMenuItemProps<T>;
+  SelectMenuItemProps<T> &
+  CustomMenuItemComponentProps<T>;
 
 export const VARIANT_OPTIONS: Variants[] = [
   'success',
@@ -120,7 +126,16 @@ export const VARIANT_OPTIONS: Variants[] = [
   'dirty',
 ] as const;
 
-export interface CommonSelectProps<T extends SelectOptionRequired> {
+export type SelectedState = 'selected' | 'indeterminate' | 'none';
+
+export interface CustomMenuItemComponentProps<T extends SelectOptionRequired> {
+  CustomMenuItemComponent?: FC<{
+    item: SelectOption<T>;
+    selectedState: SelectedState;
+  }>;
+}
+
+export type CommonSelectProps<T extends SelectOptionRequired> = {
   id?: string;
   variant?: Variants;
   label?: string;
@@ -139,4 +154,4 @@ export interface CommonSelectProps<T extends SelectOptionRequired> {
   onOpenCallback?: (value: boolean) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
   'data-testid'?: string;
-}
+} & CustomMenuItemComponentProps<T>;

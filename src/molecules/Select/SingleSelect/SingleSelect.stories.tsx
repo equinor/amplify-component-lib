@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
 import {
+  SelectedState,
   SelectOption,
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
@@ -143,6 +144,35 @@ export const SingleSelectWithAdd: StoryFn = (args) => {
       value={value}
       onSelect={handleOnSelect}
       onAddItem={handleOnAdd}
+    />
+  );
+};
+
+const CustomMenuItem: FC<{
+  item: SelectOption<Item>;
+  selectedState: SelectedState;
+}> = ({ item, selectedState }) => (
+  <>
+    {selectedState === 'selected' && 'selected: '}
+    {item.label}
+  </>
+);
+
+export const SingleSelectWithCustomizableSelectMenuItem: StoryFn = (args) => {
+  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
+
+  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
+    actions('onSelect').onSelect(selectedValue);
+    setValue(selectedValue);
+  };
+
+  return (
+    <SingleSelect
+      {...args}
+      items={FAKE_ITEMS}
+      value={value}
+      onSelect={handleOnSelect}
+      CustomMenuItemComponent={CustomMenuItem}
     />
   );
 };

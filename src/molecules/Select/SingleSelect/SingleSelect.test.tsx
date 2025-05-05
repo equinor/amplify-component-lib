@@ -230,3 +230,28 @@ test('OnAddItem works as expected with {Enter}', async () => {
 
   expect(handleOnAddItem).toHaveBeenCalledWith(someRandomText);
 });
+
+test('Custom menu item renders as expected', async () => {
+  const label = faker.animal.bear();
+  const items = fakeSelectItems();
+  const value = faker.helpers.arrayElement(items);
+
+  const handler = vi.fn();
+
+  render(
+    <SingleSelect
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={value}
+      CustomMenuItemComponent={({ item }) => (
+        <span>custom item - {item.value}</span>
+      )}
+    />
+  );
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('combobox'));
+
+  expect(screen.getByText(`custom item - ${value.value}`)).toBeInTheDocument();
+});
