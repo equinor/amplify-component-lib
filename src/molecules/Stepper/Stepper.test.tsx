@@ -310,3 +310,39 @@ test('Works as expected with sync to url', async () => {
 
   expect(screen.getByText(`Current location: /create/1`)).toBeInTheDocument();
 });
+
+function isStepDisabled({ stepIndex }: { stepIndex: number }) {
+  return stepIndex === 0;
+}
+
+test('Disabled steps work as expected', async () => {
+  const steps = fakeSteps();
+
+  render(<StepperTestComponent />, {
+    wrapper: ({ children }) => (
+      <RouterProvider
+        router={createMemoryRouter(
+          [
+            {
+              path: '/create/:step',
+              element: (
+                <StepperProvider
+                  steps={steps}
+                  syncToURLParam
+                  isStepDisabled={isStepDisabled}
+                >
+                  {children}
+                </StepperProvider>
+              ),
+            },
+          ],
+          { initialEntries: ['/create/2'] }
+        )}
+      />
+    ),
+  });
+
+  const firstStep = screen.getByText(steps[0].label);
+  expect(firstStep).toBeInTheDocument();
+  expect(firstStep).toBeDisabled();
+});

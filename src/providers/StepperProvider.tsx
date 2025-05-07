@@ -1,4 +1,11 @@
-import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 interface SubStep {
@@ -6,17 +13,17 @@ interface SubStep {
   description?: string;
 }
 
-interface StepWithSubSteps {
-  label: string;
-  title?: undefined;
-  description?: undefined;
-  subSteps: SubStep[];
-}
-
-interface StepWithoutSubSteps {
+interface CommonStep {
   label: string;
   title?: string;
   description?: string;
+}
+
+interface StepWithSubSteps extends CommonStep {
+  subSteps: SubStep[];
+}
+
+interface StepWithoutSubSteps extends CommonStep {
   subSteps?: undefined;
 }
 
@@ -29,6 +36,7 @@ interface StepperContextType {
   setCurrentStep: (value: number) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
+  isStepAtIndexDisabled: (stepIndex: number) => boolean;
 }
 
 export const StepperContext = createContext<StepperContextType | undefined>(
@@ -46,6 +54,17 @@ export function useStepper() {
 export interface StepperProviderProps {
   steps: Step[];
   children: ReactNode;
+  isStepDisabled?: ({
+    step,
+    stepIndex,
+    currentStep,
+    currentStepIndex,
+  }: {
+    step: Step;
+    stepIndex: number;
+    currentStep: Step;
+    currentStepIndex: number;
+  }) => boolean;
 }
 
 interface StepperProviderSyncedToURLParamProps extends StepperProviderProps {
@@ -66,7 +85,7 @@ interface StepperProviderWithoutSyncToURLParamProps
 export const StepperProvider: FC<
   | StepperProviderSyncedToURLParamProps
   | StepperProviderWithoutSyncToURLParamProps
-> = ({ steps, children, ...rest }) => {
+> = ({ steps, children, isStepDisabled, ...rest }) => {
   const { step } = useParams();
   const navigate = useNavigate();
   const pathWithoutStep = useLocation()
@@ -145,6 +164,21 @@ export const StepperProvider: FC<
     }
   };
 
+  const checkIfStepIsDisabled: StepperContextType['isStepAtIndexDisabled'] =
+    useCallback(
+      (stepIndex) => {
+        if (isStepDisabled)
+          return isStepDisabled({
+            step: steps[stepIndex],
+            stepIndex,
+            currentStep: steps[usingStep],
+            currentStepIndex: usingStep,
+          });
+        return false;
+      },
+      [isStepDisabled, usingStep, steps]
+    );
+
   return (
     <StepperContext.Provider
       value={{
@@ -154,6 +188,7 @@ export const StepperProvider: FC<
         setCurrentStep: handleOnSetStep,
         goToNextStep,
         goToPreviousStep,
+        isStepAtIndexDisabled: checkIfStepIsDisabled,
       }}
     >
       {children}
