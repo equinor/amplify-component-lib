@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { check } from '@equinor/eds-icons';
+import { check, lock } from '@equinor/eds-icons';
 
 import { colors, shape } from 'src/atoms/style';
 import { useStepper } from 'src/providers/StepperProvider';
@@ -42,10 +42,15 @@ const IconWrapper = styled.span<IconWrapperProps>`
 
 interface StepIconProps {
   index: number;
+  disabled?: boolean;
 }
 
-export const StepIcon: FC<StepIconProps> = ({ index }) => {
+export const StepIcon: FC<StepIconProps> = ({ index, disabled }) => {
   const { currentStep } = useStepper();
+
+  if (disabled) {
+    return <Icon data={lock} color={colors.interactive.disabled__text.rgba} />;
+  }
 
   if (index >= currentStep) {
     return (

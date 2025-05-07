@@ -11,6 +11,7 @@ import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   $clickable: boolean;
+  $disabled?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -18,13 +19,19 @@ const Container = styled.div<ContainerProps>`
   gap: ${spacings.small};
   align-items: center;
   white-space: nowrap;
-  ${(props) =>
-    props.$clickable &&
-    css`
-      &:hover {
-        cursor: pointer;
-      }
-    `}
+  ${({ $disabled, $clickable }) =>
+    $disabled
+      ? css`
+          &:hover {
+            cursor: not-allowed;
+          }
+        `
+      : $clickable &&
+        css`
+          &:hover {
+            cursor: pointer;
+          }
+        `}
 `;
 
 interface StepProps {
@@ -38,7 +45,9 @@ export const Step: FC<StepProps> = ({
   onlyShowCurrentStepLabel = false,
   children,
 }) => {
-  const { currentStep, setCurrentStep } = useStepper();
+  const { currentStep, setCurrentStep, isStepAtIndexDisabled } = useStepper();
+
+  const isDisabled = isStepAtIndexDisabled(index);
 
   const textVariant = useMemo((): TypographyVariants => {
     if (index < currentStep) return 'body_short';
@@ -46,12 +55,13 @@ export const Step: FC<StepProps> = ({
   }, [currentStep, index]);
 
   const textColor = useMemo((): string | undefined => {
-    if (index > currentStep) return colors.interactive.disabled__text.rgba;
+    if (index > currentStep || isDisabled)
+      return colors.interactive.disabled__text.rgba;
     return colors.text.static_icons__default.rgba;
-  }, [currentStep, index]);
+  }, [currentStep, index, isDisabled]);
 
   const handleOnClick = () => {
-    if (index < currentStep) {
+    if (index < currentStep && !isDisabled) {
       setCurrentStep(index);
     }
   };
@@ -61,8 +71,9 @@ export const Step: FC<StepProps> = ({
       data-testid="step"
       $clickable={index < currentStep}
       onClick={handleOnClick}
+      $disabled={isDisabled}
     >
-      <StepIcon index={index} />
+      <StepIcon index={index} disabled={isDisabled} />
       {(!onlyShowCurrentStepLabel || currentStep === index) && (
         <Typography variant={textVariant} color={textColor}>
           {children}
