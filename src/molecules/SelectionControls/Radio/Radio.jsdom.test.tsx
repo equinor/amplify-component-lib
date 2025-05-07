@@ -14,3 +14,15 @@ test('Renders as expected with outlined=true', () => {
     `outline: 1px solid ${colors.ui.background__medium.rgba}`
   );
 });
+
+test('Renders as expected with error=true', () => {
+  const label = faker.animal.dog();
+  render(<Radio label={label} error />);
+
+  const labelElement = screen.getByLabelText(label);
+  const svgElement = labelElement.parentElement!.children.item(1);
+
+  expect(svgElement).toHaveStyle(
+    `fill: ${colors.interactive.danger__resting.rgba}`
+  );
+});

@@ -7,6 +7,10 @@ const meta: Meta<typeof Checkbox> = {
   component: Checkbox,
   argTypes: {
     onChange: { action: 'onChange' },
+    error: {
+      control: 'boolean',
+      description: 'If true, the checkbox will be in error state',
+    },
   },
   parameters: {
     layout: 'centered',
@@ -41,11 +45,26 @@ export const Outlined: Story = {
   },
 };
 
+export const Error: Story = {
+  args: {
+    label: 'Toyota',
+    error: true,
+  },
+};
+
 export const DisabledOutlined: Story = {
   args: {
     label: 'Toyota',
     outlined: true,
     disabled: true,
+  },
+};
+
+export const ErrorOutlined: Story = {
+  args: {
+    label: 'Toyota',
+    outlined: true,
+    error: true,
   },
 };
 
