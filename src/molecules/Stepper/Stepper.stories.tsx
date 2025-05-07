@@ -31,6 +31,7 @@ const meta: Meta<typeof Stepper> = {
   },
   decorators: (Story, { parameters }) => {
     const syncToURL = parameters?.syncToURL ?? false;
+    const disabledSteps = parameters?.disabledSteps ?? false;
     return (
       <RouterProvider
         router={createMemoryRouter(
@@ -66,6 +67,7 @@ const meta: Meta<typeof Stepper> = {
                       label: 'Finish order',
                     },
                   ]}
+                  isStepDisabled={disabledSteps ? isStepDisabled : undefined}
                 >
                   <Story />
                 </StepperProvider>
@@ -120,7 +122,13 @@ export const Primary: StoryFn<StepperProps> = (args) => {
 };
 
 const Story = (args: StepperProps) => {
-  const { steps, goToNextStep, goToPreviousStep, currentStep } = useStepper();
+  const {
+    steps,
+    goToNextStep,
+    goToPreviousStep,
+    currentStep,
+    isStepAtIndexDisabled,
+  } = useStepper();
   const { pathname } = useLocation();
 
   return (
@@ -131,7 +139,7 @@ const Story = (args: StepperProps) => {
         <Button
           variant="outlined"
           onClick={goToPreviousStep}
-          disabled={currentStep === 0}
+          disabled={isStepAtIndexDisabled(currentStep - 1)}
         >
           Previous
         </Button>
@@ -149,6 +157,24 @@ const Story = (args: StepperProps) => {
 export const SyncedToURL: StoryObj = {
   parameters: {
     syncToURL: true,
+  },
+  render: () => <Story />,
+};
+
+const isStepDisabled = ({
+  stepIndex,
+  currentStepIndex,
+}: {
+  stepIndex: number;
+  currentStepIndex: number;
+}) => {
+  return stepIndex < currentStepIndex;
+};
+
+export const DisabledSteps: StoryObj = {
+  parameters: {
+    syncToURL: true,
+    disabledSteps: true,
   },
   render: () => <Story />,
 };
