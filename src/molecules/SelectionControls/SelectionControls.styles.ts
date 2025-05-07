@@ -23,7 +23,7 @@ export const Wrapper = styled.span<WrapperProps>`
       height: 24px;
       aspect-ratio: 1;
     }
-    > span:last-child {
+    > span[class*='Switch']:last-child {
       padding: 0 ${spacings.medium_small} 0 0;
     }
   }
