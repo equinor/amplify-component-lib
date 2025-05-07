@@ -10,7 +10,7 @@ interface StepWithSubSteps {
   label: string;
   title?: undefined;
   description?: undefined;
-  subSteps: [SubStep, SubStep, ...SubStep[]];
+  subSteps: SubStep[];
 }
 
 interface StepWithoutSubSteps {
@@ -23,7 +23,7 @@ interface StepWithoutSubSteps {
 type Step = StepWithSubSteps | StepWithoutSubSteps;
 
 interface StepperContextType {
-  steps: [Step, Step, ...Step[]];
+  steps: Step[];
   currentStep: number;
   currentSubStep: number;
   setCurrentStep: (value: number) => void;
@@ -44,7 +44,7 @@ export function useStepper() {
 }
 
 export interface StepperProviderProps {
-  steps: [Step, Step, ...Step[]];
+  steps: Step[];
   children: ReactNode;
 }
 
@@ -81,6 +81,10 @@ export const StepperProvider: FC<
     throw new Error(
       'Step URL param must be a valid number when using "syncToURLParam"'
     );
+  }
+
+  if (steps.length < 2) {
+    throw new Error('Stepper must have at least 2 steps');
   }
 
   const [currentStep, setCurrentStep] = useState(usingInitialStep);
