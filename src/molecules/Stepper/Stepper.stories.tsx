@@ -161,15 +161,15 @@ export const SyncedToURL: StoryObj = {
   render: () => <Story />,
 };
 
-const isStepDisabled = ({
+function isStepDisabled({
   stepIndex,
   currentStepIndex,
 }: {
   stepIndex: number;
   currentStepIndex: number;
-}) => {
+}) {
   return stepIndex < currentStepIndex;
-};
+}
 
 export const DisabledSteps: StoryObj = {
   parameters: {

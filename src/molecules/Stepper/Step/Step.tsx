@@ -72,6 +72,8 @@ export const Step: FC<StepProps> = ({
       $clickable={index < currentStep}
       onClick={handleOnClick}
       $disabled={isDisabled}
+      aria-disabled={isDisabled}
+      role="button"
     >
       <StepIcon index={index} disabled={isDisabled} />
       {(!onlyShowCurrentStepLabel || currentStep === index) && (
