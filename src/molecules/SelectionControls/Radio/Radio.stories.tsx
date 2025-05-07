@@ -7,6 +7,10 @@ const meta: Meta<typeof Radio> = {
   component: Radio,
   argTypes: {
     onChange: { action: 'onChange' },
+    error: {
+      control: 'boolean',
+      description: 'If true, the radio button will be in error state',
+    },
   },
   parameters: {
     layout: 'centered',
@@ -34,6 +38,13 @@ export const Disabled: Story = {
   },
 };
 
+export const Error: Story = {
+  args: {
+    label: 'Toyota',
+    error: true,
+  },
+};
+
 export const Outlined: Story = {
   args: {
     label: 'Toyota',
@@ -46,5 +57,13 @@ export const DisabledOutlined: Story = {
     label: 'Toyota',
     disabled: true,
     outlined: true,
+  },
+};
+
+export const ErrorOutlined: Story = {
+  args: {
+    label: 'Toyota',
+    outlined: true,
+    error: true,
   },
 };

@@ -10,13 +10,14 @@ import { Wrapper } from '../SelectionControls.styles';
 export interface RadioProps extends EDSRadioProps {
   label: string;
   outlined?: boolean;
+  error?: boolean;
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
-  const { outlined, ...otherProps } = props;
+  const { outlined, error, ...otherProps } = props;
 
   return (
-    <Wrapper $outlined={outlined || false}>
+    <Wrapper $outlined={outlined || false} $error={error}>
       <Base
         ref={ref}
         {...otherProps}

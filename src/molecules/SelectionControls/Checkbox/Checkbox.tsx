@@ -10,13 +10,14 @@ import { Wrapper } from '../SelectionControls.styles';
 export interface CheckboxProps extends EDSCheckboxProps {
   label?: string;
   outlined?: boolean;
+  error?: boolean;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (props, ref) => {
-    const { outlined, ...otherProps } = props;
+    const { outlined, error, ...otherProps } = props;
     return (
-      <Wrapper $outlined={outlined || false}>
+      <Wrapper $outlined={outlined || false} $error={error}>
         <Base ref={ref} {...otherProps} />
       </Wrapper>
     );

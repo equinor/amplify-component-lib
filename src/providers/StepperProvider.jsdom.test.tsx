@@ -106,3 +106,30 @@ test('Providing step in url that is NaN throws error', async () => {
 
   expect(spy).toHaveBeenCalled();
 });
+
+test('Providing less than 2 steps throws error', async () => {
+  const spy = vi.spyOn(console, 'error');
+
+  render(
+    <RouterProvider
+      router={createMemoryRouter([
+        {
+          path: '/',
+          element: (
+            <StepperProvider
+              steps={[
+                {
+                  label: 'test',
+                },
+              ]}
+            >
+              <p>children</p>
+            </StepperProvider>
+          ),
+        },
+      ])}
+    />
+  );
+
+  expect(spy).toHaveBeenCalled();
+});
