@@ -97,7 +97,12 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
         <RoleChipContainer $selected={selected}>
           <RoleChip data-testid="role">{activeRoles[0].label}</RoleChip>
           {activeRoles.length > 1 && (
-            <OptionalTooltip title={activeRoles.slice(1).join(', ')}>
+            <OptionalTooltip
+              title={activeRoles
+                .slice(1)
+                .map((role) => role.label)
+                .join(', ')}
+            >
               <RoleChip data-testid="additional-roles">
                 {`+${activeRoles.length - 1}`}
               </RoleChip>
