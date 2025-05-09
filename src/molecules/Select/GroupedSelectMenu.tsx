@@ -27,6 +27,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
     groups,
     search,
     onSearchFilter,
+    CustomMenuItemComponent,
   } = props;
 
   const filteredGroups = useMemo(() => {
@@ -72,6 +73,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
             onItemKeyDown={onItemKeyDown}
             onItemSelect={onItemSelect}
             values={props.values}
+            CustomMenuItemComponent={CustomMenuItemComponent}
           />
         ))}
       </Menu.Section>
@@ -93,6 +95,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
           onItemKeyDown={onItemKeyDown}
           onItemSelect={onItemSelect}
           value={props.value}
+          CustomMenuItemComponent={CustomMenuItemComponent}
         />
       ))}
     </Menu.Section>
