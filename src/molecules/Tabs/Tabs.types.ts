@@ -3,6 +3,7 @@ import { IconData } from '@equinor/eds-icons';
 export interface Tab<T> {
   value: T;
   label: string;
+  count?: number;
   leadingIcon?: IconData;
   disabled?: boolean;
 }

@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 
-import { ActiveLine, Button, Line } from './Tab.styles';
+import { ActiveLine, Button, Count, Line } from './Tab.styles';
 import { Tab as TabType, Tabs } from './Tabs.types';
 
 type TabProps<T> = {
@@ -23,6 +23,7 @@ export function Tab<T>({
   animated,
   disabled,
   leadingIcon,
+  count,
 }: TabProps<T>) {
   const handleOnClick = () => {
     onChange(value);
@@ -46,6 +47,13 @@ export function Tab<T>({
       <Typography as="label" variant="menu_tabs" group="navigation">
         {label}
       </Typography>
+      {count !== undefined ? (
+        <Count className="count">
+          <Typography as="span" variant="breadcrumb" group="navigation">
+            {count}
+          </Typography>
+        </Count>
+      ) : null}
       {animated ? (
         <>
           <Line className="static-line" />
