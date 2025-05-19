@@ -15,17 +15,19 @@ const Divider = styled.hr`
   background: ${colors.ui.background__medium.rgba};
 `;
 
-export const TextClearFormating: FC<EditorPanel> = ({ editor, features }) => {
-  /* v8 ignore start */ // Testing these lines would just be testing the tiptap library or testing that JavaScript works. Theres not enough custom logic here to warrant the maintance cost
+export const TextClearFormatting: FC<EditorPanel> = ({ editor, features }) => {
   const clearFormatting = () =>
     editor.chain().focus().clearNodes().unsetAllMarks().run();
   if (features && !features.includes(RichTextEditorFeatures.CLEAR_FORMATTING))
     return;
-  /* v8 ignore end */
   return (
     <>
       <Divider />
-      <EditorMenu.Button icon={format_clear} onClick={clearFormatting} />
+      <EditorMenu.Button
+        icon={format_clear}
+        onClick={clearFormatting}
+        data-testid="clear-formatting"
+      />
     </>
   );
 };

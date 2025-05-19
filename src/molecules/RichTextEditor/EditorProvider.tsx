@@ -43,8 +43,6 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   const previousRemovedImages = useRef<string[]>([]);
 
   const handleImageCheck = (editor: Editor) => {
-    // TODO: Test this when we move to browser mode
-    /* v8 ignore start */
     const currentImages: string[] = [];
 
     editor.getJSON().content?.forEach((item) => {
@@ -93,8 +91,6 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       onRemovedImagesChange(deletedImages.current);
       previousRemovedImages.current = imagesToDelete;
     }
-
-    /* v8 ignore end */
   };
 
   const editor = useEditor({
@@ -113,7 +109,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   /* v8 ignore start */
   useEffect(() => {
     // This makes Tiptap react to its prop changing from the outside
-    // Usefull if for instance the content is fetched from an API.
+    // Useful if for instance the content is fetched from an API.
     // This way the editor will update when the content changes
     if (!editor) return;
     if (content === editor.getHTML()) return;

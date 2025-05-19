@@ -20,9 +20,6 @@ const Container = styled.div`
   width: 15rem;
 `;
 
-//💡 Wasn't able to test this component due to tiptap not setting the selected text
-// as expected when inside a test, thus the link buttons are always disabled - Marius 24. Jan 2024
-/* v8 ignore start */
 export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -87,6 +84,7 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
           icon={link_off}
           onClick={onUnsetLink}
           disabled={!editor.isActive('link')}
+          data-testid="unsetlink-button"
         />
       </EditorMenu.Section>
       {open && (
@@ -113,4 +111,3 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
     </>
   );
 };
-/* v8 ignore end */

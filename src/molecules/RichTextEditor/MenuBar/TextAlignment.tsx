@@ -10,26 +10,27 @@ import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { EditorMenu } from './MenuBar';
 
 export const TextAlignment: FC<EditorPanel> = ({ editor, features }) => {
-  /* v8 ignore start */ // Testing these lines would just be testing the tiptap library or testing that JavaScript works. Theres not enough custom logic here to warrant the maintance cost
   const alignLeft = () => editor.chain().focus().setTextAlign('left').run();
   const alignCenter = () => editor.chain().focus().setTextAlign('center').run();
   const alignRight = () => editor.chain().focus().setTextAlign('right').run();
   if (features && !features.includes(RichTextEditorFeatures.ALIGNMENT)) return;
-  /* v8 ignore end */
   return (
     <EditorMenu.Section>
       <EditorMenu.Button
         active={editor.isActive({ textAlign: 'left' })}
+        data-testid="align-left-button"
         icon={format_align_left}
         onClick={alignLeft}
       />
       <EditorMenu.Button
         active={editor.isActive({ textAlign: 'center' })}
+        data-testid="align-center-button"
         icon={format_align_center}
         onClick={alignCenter}
       />
       <EditorMenu.Button
         active={editor.isActive({ textAlign: 'right' })}
+        data-testid="align-right-button"
         icon={format_align_right}
         onClick={alignRight}
       />
