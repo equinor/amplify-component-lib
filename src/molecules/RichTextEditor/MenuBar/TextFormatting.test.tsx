@@ -7,6 +7,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
 } from 'src/tests/browsertest-utils';
 
 function fakeProps(): RichTextEditorProps {
@@ -36,20 +37,28 @@ test('Able to click bold+italic buttons', async () => {
 
   await user.click(bold);
 
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    1,
-    '<p><strong>test</strong></p>'
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      1,
+      '<p><strong>test</strong></p>'
+    )
   );
 
   await user.click(bold);
-  expect(props.onChange).toHaveBeenNthCalledWith(2, '<p>test</p>');
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(2, '<p>test</p>')
+  );
 
   await user.click(italic);
 
-  expect(props.onChange).toHaveBeenNthCalledWith(3, '<p><em>test</em></p>');
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(3, '<p><em>test</em></p>')
+  );
 
   await user.click(italic);
-  expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>');
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>')
+  );
 });
 
 test('Hides buttons if not in features', async () => {
