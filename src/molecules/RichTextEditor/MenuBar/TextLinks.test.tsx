@@ -9,6 +9,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
 } from 'src/tests/browsertest-utils';
 
 function fakeProps(): RichTextEditorProps {
@@ -37,7 +38,7 @@ test('Able to insert links', async () => {
 
   await user.dblClick(screen.getByText('test'));
 
-  expect(link).toBeEnabled();
+  await waitFor(() => expect(link).toBeEnabled());
 
   await user.click(link);
 
@@ -46,13 +47,17 @@ test('Able to insert links', async () => {
 
   await user.click(screen.getByRole('button', { name: /save/i }));
 
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    3,
-    `<p><a target="_blank" rel="noopener noreferrer nofollow" href="${randomUrl}">test</a></p>`
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      3,
+      `<p><a target="_blank" rel="noopener noreferrer nofollow" href="${randomUrl}">test</a></p>`
+    )
   );
 
   await user.click(unsetLink);
-  expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>');
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>')
+  );
 });
 
 test('Hides buttons if not in features', async () => {
