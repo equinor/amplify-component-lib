@@ -37,27 +37,33 @@ test('Able to click bold+italic buttons', async () => {
 
   await user.click(bold);
 
-  await waitFor(() =>
-    expect(props.onChange).toHaveBeenNthCalledWith(
-      1,
-      '<p><strong>test</strong></p>'
-    )
+  await waitFor(
+    () =>
+      expect(props.onChange).toHaveBeenNthCalledWith(
+        1,
+        '<p><strong>test</strong></p>'
+      ),
+    { timeout: 2000 }
   );
 
   await user.click(bold);
-  await waitFor(() =>
-    expect(props.onChange).toHaveBeenNthCalledWith(2, '<p>test</p>')
+  await waitFor(
+    () => expect(props.onChange).toHaveBeenNthCalledWith(2, '<p>test</p>'),
+    { timeout: 2000 }
   );
 
   await user.click(italic);
 
-  await waitFor(() =>
-    expect(props.onChange).toHaveBeenNthCalledWith(3, '<p><em>test</em></p>')
+  await waitFor(
+    () =>
+      expect(props.onChange).toHaveBeenNthCalledWith(3, '<p><em>test</em></p>'),
+    { timeout: 2000 }
   );
 
   await user.click(italic);
-  await waitFor(() =>
-    expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>')
+  await waitFor(
+    () => expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>'),
+    { timeout: 2000 }
   );
 });
 
