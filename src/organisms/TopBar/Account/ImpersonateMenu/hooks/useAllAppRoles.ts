@@ -11,7 +11,9 @@ export function useAllAppRoles(enabled = true) {
       AmplifyApplicationService.getAllAppRoles(
         environment.getApiClientId(import.meta.env.VITE_API_CLIENT_ID)
       ),
-    enabled,
+    enabled:
+      enabled &&
+      !!environment.getApiClientId(import.meta.env.VITE_API_CLIENT_ID),
     staleTime: Infinity,
     gcTime: Infinity,
   });
