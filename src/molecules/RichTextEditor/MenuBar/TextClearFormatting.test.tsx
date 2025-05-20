@@ -9,6 +9,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
 } from 'src/tests/browsertest-utils';
 
 function fakeProps(text = faker.animal.fish()): RichTextEditorProps {
@@ -35,7 +36,9 @@ test('Able to click clear formatting button', async () => {
 
   await user.click(button);
 
-  expect(props.onChange).toHaveBeenCalledWith(`<p>${text}</p>`);
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenCalledWith(`<p>${text}</p>`)
+  );
 });
 
 test('Hides buttons if not in features', async () => {
