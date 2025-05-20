@@ -115,6 +115,28 @@ export const WithLeadingIcon: Story = {
   },
 };
 
+export const WithCount: Story = {
+  args: {
+    options: [
+      {
+        value: 1,
+        label: 'トヨタ',
+        count: 5,
+      },
+      {
+        value: 2,
+        label: '任天堂',
+        count: 6,
+      },
+      {
+        value: 3,
+        label: 'ヤマハ',
+        count: 128,
+      },
+    ],
+  },
+};
+
 export const WithDisabledOption: Story = {
   args: {
     options: [

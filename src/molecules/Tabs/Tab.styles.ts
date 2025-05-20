@@ -1,4 +1,4 @@
-import { colors, spacings } from 'src/atoms/style';
+import { colors, shape, spacings } from 'src/atoms/style';
 
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -54,7 +54,7 @@ export const Button = styled.button<ButtonProps>`
         color: ${colors.interactive.primary__hover.rgba};
       }
 
-      > span:last-child {
+      > span:not(.count):last-child {
         background: ${colors.interactive.primary__hover.rgba};
       }
     }
@@ -98,4 +98,14 @@ export const ActiveLine = styled(motion.span)`
   width: 100%;
   bottom: 0;
   background: ${colors.interactive.primary__resting.rgba};
+`;
+
+export const Count = styled.span`
+  display: flex;
+  padding: ${spacings.x_small} ${spacings.small};
+  background: ${colors.interactive.primary__resting.rgba};
+  border-radius: ${shape.rounded.borderRadius};
+  > span {
+    color: ${colors.text.static_icons__primary_white.rgba};
+  }
 `;
