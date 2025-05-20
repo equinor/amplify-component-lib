@@ -20,7 +20,7 @@ function fakeProps(text = faker.animal.fish()): RichTextEditorProps {
 }
 
 test('Able to click clear formatting button', async () => {
-  const text = faker.animal.dog();
+  const text = faker.person.firstName();
   const props = fakeProps(text);
   renderWithProviders(
     <RichTextEditor
