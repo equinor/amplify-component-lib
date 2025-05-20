@@ -42,6 +42,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   const deletedImages = useRef<string[]>([]);
   const previousRemovedImages = useRef<string[]>([]);
 
+  /* v8 ignore start */
   const handleImageCheck = (editor: Editor) => {
     const currentImages: string[] = [];
 
@@ -106,7 +107,6 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     },
   });
 
-  /* v8 ignore start */
   useEffect(() => {
     // This makes Tiptap react to its prop changing from the outside
     // Useful if for instance the content is fetched from an API.
