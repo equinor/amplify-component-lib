@@ -35,4 +35,3 @@ jobs:
               --branch ${{ inputs.branch }}
               --environment ${{ inputs.to-environment }}
               --follow
-              --verbose
