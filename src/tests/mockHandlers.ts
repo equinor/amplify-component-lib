@@ -46,7 +46,7 @@ export const FAKE_ROLES: GraphAppRole[] = [
   {
     allowedMemberTypes: ['fake', 'fake2'],
     description: faker.word.words(),
-    displayName: faker.airline.airplane().name,
+    displayName: `${faker.airline.airplane().name} ${faker.airline.airplane().iataTypeCode}`,
     isEnabled: true,
     origin: faker.airline.airport().name,
     id: faker.string.uuid(),
@@ -55,7 +55,7 @@ export const FAKE_ROLES: GraphAppRole[] = [
   {
     allowedMemberTypes: ['fake', 'fake2'],
     description: faker.word.words(),
-    displayName: faker.airline.airplane().name,
+    displayName: `${faker.airline.airplane().name} ${faker.airline.airplane().iataTypeCode}`,
     isEnabled: true,
     origin: faker.airline.airport().name,
     id: faker.string.uuid(),
@@ -64,7 +64,7 @@ export const FAKE_ROLES: GraphAppRole[] = [
   {
     allowedMemberTypes: ['fake', 'fake2'],
     description: faker.word.words(),
-    displayName: faker.airline.airplane().name,
+    displayName: `${faker.airline.airplane().name} ${faker.airline.airplane().iataTypeCode}`,
     isEnabled: true,
     origin: faker.airline.airport().name,
     id: faker.string.uuid(),

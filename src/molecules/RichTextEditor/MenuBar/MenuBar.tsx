@@ -12,15 +12,15 @@ import { AddImageButton } from './AddImageButton';
 import { MenuSection } from './MenuBar.styles';
 import { MenuButton } from './MenuButton';
 import { TextAlignment } from './TextAlignment';
-import { TextClearFormating } from './TextClearFormating';
 import { TextCode } from './TextCode';
 import { TextColor } from './TextColor';
-import { TextFormating } from './TextFormating';
 import { TextHeaders } from './TextHeaders';
 import { TextHistory } from './TextHistory';
 import { TextLinks } from './TextLinks';
 import { TextLists } from './TextLists';
 import { colors, spacings } from 'src/atoms/style';
+import { TextClearFormatting } from 'src/molecules/RichTextEditor/MenuBar/TextClearFormatting';
+import { TextFormatting } from 'src/molecules/RichTextEditor/MenuBar/TextFormatting';
 
 import styled from 'styled-components';
 
@@ -55,7 +55,7 @@ export const AmplifyBar: FC<MenuBarProps> = ({
       {/* Main Bar */}
       <MenuBar>
         <TextHistory editor={editor} features={features} />
-        <TextFormating editor={editor} features={features} />
+        <TextFormatting editor={editor} features={features} />
         <TextHeaders editor={editor} features={features} />
         <TextLists editor={editor} features={features} />
         <TextColor editor={editor} features={features} />
@@ -68,7 +68,7 @@ export const AmplifyBar: FC<MenuBarProps> = ({
           onImageUpload={onImageUpload}
         />
         <TextTable editor={editor} features={features} />
-        <TextClearFormating editor={editor} features={features} />
+        <TextClearFormatting editor={editor} features={features} />
       </MenuBar>
       {/* Sub Bar */}
       <TableMenuBar editor={editor} />
@@ -86,7 +86,7 @@ export const EditorMenu = {
 
 export const EditorText = {
   History: TextHistory,
-  Formating: TextFormating,
+  Formating: TextFormatting,
   Headers: TextHeaders,
   Lists: TextLists,
   Color: TextColor,
@@ -95,6 +95,6 @@ export const EditorText = {
   Table: TextTable,
   TableBar: TableMenuBar,
   Alignment: TextAlignment,
-  ClearFormating: TextClearFormating,
+  ClearFormating: TextClearFormatting,
 };
 /* v8 ignore end */
