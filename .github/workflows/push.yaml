@@ -15,6 +15,7 @@ jobs:
     with:
       environment-name: main
       to-environment: test
+      branch: main
   publish:
     name: Publish to NPM
     uses: ./.github/workflows/npm_publish.yaml
