@@ -35,5 +35,4 @@ jobs:
           --follow
           --from-environment ${{ inputs.from-environment }}
           --to-environment ${{ inputs.to-environment }}
-          --token-environment
           --use-active-deployment
