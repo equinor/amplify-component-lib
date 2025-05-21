@@ -29,6 +29,6 @@ jobs:
     name: Build and deploy to feature env
     uses: ./.github/workflows/build_deploy_radix.yaml
     with:
-      environment-name: main
+      environment-name: feature
       to-environment: feature
       branch: ${{ github.head_ref }}
