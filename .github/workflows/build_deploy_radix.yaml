@@ -28,7 +28,7 @@ jobs:
 
       - run: rx create pipeline-job build-deploy
               --application ${{ vars.RADIX_APPLICATION_NAME }}
-              --branch ${{ github.ref_name }}
+              --branch ${{ github.head_ref }}
               --environment ${{ inputs.to-environment }}
               --follow
               --verbose
