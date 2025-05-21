@@ -23,3 +23,10 @@ jobs:
   build-storybook:
     name: Build storybook
     uses: ./.github/workflows/build_storybook.yaml
+
+  build-deploy-feature-radix:
+    name: Build and deploy to feature env
+    uses: ./.github/workflows/build_deploy_radix.yaml
+    with:
+      environment-name: main
+      to-environment: feature

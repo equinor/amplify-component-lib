@@ -9,7 +9,7 @@ spec:
         from: main
     - name: feature
       build:
-        from: feature-release/**
+        from: feature/*
     - name: production
 
   components:
