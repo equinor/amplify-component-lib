@@ -26,7 +26,8 @@ jobs:
         with:
           azure_client_id: ${{ vars.CLIENT_ID }}
 
-      - run: rx create job build-deploy
+      - run: rx create pipeline-job build-deploy
               --from-config
               --environment ${{ inputs.to-environment }}
               --follow
+              --verbose
