@@ -5,6 +5,8 @@ metadata:
 spec:
   environments:
     - name: test
+      build:
+        from: main
     - name: feature
       build:
         from: feature-release/**
