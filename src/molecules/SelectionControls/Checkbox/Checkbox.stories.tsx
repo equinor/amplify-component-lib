@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Checkbox } from 'src/molecules/SelectionControls/Checkbox/Checkbox';
 
 const meta: Meta<typeof Checkbox> = {
-  title: 'Molecules/Selection Controls/Checkbox blablabla',
+  title: 'Molecules/Selection Controls/Checkbox',
   component: Checkbox,
   argTypes: {
     onChange: { action: 'onChange' },
