@@ -204,5 +204,14 @@ export const darkTokens = css`
     --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1);
 
     --eds_ui__chip__badge_color: var(--eds_text_static_icons__default);
+
+    /* Override table typography variables */
+    --eds_table__cell_header_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_bold_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_link_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_numeric_monospaced_color: var(
+      --eds_text__static_icons__default
+    );
   }
 `;
