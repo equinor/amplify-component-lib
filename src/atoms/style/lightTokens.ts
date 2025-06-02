@@ -144,5 +144,14 @@ export const lightTokens = css`
     --eds_interactive__link_in_snackbars: rgba(151, 202, 206, 1);
     --eds_interactive__pressed_overlay_dark: rgba(0, 0, 0, 0.2);
     --eds_interactive__pressed_overlay_light: rgba(255, 255, 255, 0.2);
+
+    /* Override table typography variables */
+    --eds_table__cell_header_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_bold_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_link_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_numeric_monospaced_color: var(
+      --eds_text__static_icons__default
+    );
   }
 `;
