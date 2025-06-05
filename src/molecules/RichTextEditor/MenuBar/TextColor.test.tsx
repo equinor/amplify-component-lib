@@ -8,6 +8,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
 } from 'src/tests/browsertest-utils';
 
 function fakeProps(): RichTextEditorProps {
@@ -34,8 +35,12 @@ test('Able to change color', async () => {
   (input as HTMLInputElement).value = '#f50000';
   fireEvent.input(input, '#f50000');
 
-  expect(props.onChange).toHaveBeenCalledWith(
-    '<p><span style="color: #f50000">test</span></p>'
+  await waitFor(
+    () =>
+      expect(props.onChange).toHaveBeenCalledWith(
+        '<p><span style="color: #f50000">test</span></p>'
+      ),
+    { timeout: 2000 }
   );
 });
 
