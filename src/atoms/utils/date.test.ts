@@ -454,6 +454,16 @@ test('isBetweenDates works as expected with todays date between itself', () => {
   const formatted = isBetweenDates(today, [today, today]);
   expect(formatted).toEqual(true);
 });
+
+test('isBetweenDates works as expected with string date', () => {
+  const today = new Date();
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+  const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
+
+  const formatted = isBetweenDates(formatDate(today), [yesterday, tomorrow]);
+  expect(formatted).toEqual(true);
+});
+
 describe('UTC timestamps', () => {
   const utcDate = '2021-06-30T22:00:00+00:00';
   test('should accept UTC timestamps and get that date back in UTC in the format of DD. month YYYY', () => {
