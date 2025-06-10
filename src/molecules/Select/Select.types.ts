@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, RefObject } from 'react';
+import { FC, KeyboardEvent, ReactNode, RefObject } from 'react';
 
 import { Variants } from 'src/atoms/types/variants';
 
@@ -148,7 +148,7 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   lightBackground?: boolean;
   underlineHighlight?: boolean;
   clearable?: boolean;
-  meta?: string;
+  meta?: ReactNode;
   onSearchChange?: (inputValue: string) => void;
   inDialog?: boolean;
   onOpenCallback?: (value: boolean) => void;
