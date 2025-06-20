@@ -249,6 +249,7 @@ const MenuItemSpacer = styled.hr`
   height: calc(100% + ${spacings.medium} * 2);
   justify-self: center;
   width: ${spacings.x_large};
+  min-width: ${spacings.x_large};
 `;
 
 const PlaceholderText = styled(Typography)`
