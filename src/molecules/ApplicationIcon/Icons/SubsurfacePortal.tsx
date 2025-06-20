@@ -4,29 +4,30 @@ import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.type
 import ApplicationIconBase, {
   ShapeProps,
 } from 'src/molecules/ApplicationIcon/ApplicationIconBase';
-import { inPress } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+import { subsurfacePortal } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+
 const shapes: ShapeProps[] = [
   {
-    top: -31,
-    left: -17,
-    rotation: 343,
+    top: -45,
+    left: -5,
+    rotation: 25,
   },
   {
-    top: 42,
-    left: 32,
-    rotation: 182,
+    top: 64,
+    left: -5,
+    rotation: 5,
   },
 ];
 
-export const InPress = forwardRef<HTMLDivElement, AppIconProps>(
+export const SubsurfacePortal = forwardRef<HTMLDivElement, AppIconProps>(
   (props, ref) => (
     <ApplicationIconBase
       ref={ref}
-      iconData={inPress}
+      iconData={subsurfacePortal}
       shapes={shapes}
       {...props}
     />
   )
 );
 
-InPress.displayName = 'InPress';
+SubsurfacePortal.displayName = 'Acquire';

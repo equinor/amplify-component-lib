@@ -19,10 +19,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Pwex = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+export const Pwex = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
   <ApplicationIconBase ref={ref} iconData={pwex} shapes={shapes} {...props} />
 ));
 
 Pwex.displayName = 'Pwex';
-
-export default Pwex;

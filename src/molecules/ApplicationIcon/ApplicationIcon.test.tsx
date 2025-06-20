@@ -16,6 +16,7 @@ import {
   pwex,
   recap,
   sam,
+  subsurfacePortal,
 } from './ApplicationIconCollection';
 import { render, screen } from 'src/tests/browsertest-utils';
 
@@ -34,6 +35,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'bravos',
   'premo',
   'sam',
+  'subsurface portal',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
@@ -55,6 +57,7 @@ const icons: IconsDict = {
   bravos: bravos,
   premo: premo,
   sam: sam,
+  'subsurface portal': subsurfacePortal,
 };
 
 test('Render correctly with corresponding props', () => {

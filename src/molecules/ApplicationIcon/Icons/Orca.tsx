@@ -19,10 +19,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Orca = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+export const Orca = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
   <ApplicationIconBase iconData={orca} shapes={shapes} ref={ref} {...props} />
 ));
 
 Orca.displayName = 'Orca';
-
-export default Orca;

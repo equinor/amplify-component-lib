@@ -19,7 +19,7 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Premo = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => {
+export const Premo = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => {
   return (
     <ApplicationIconBase
       ref={ref}
@@ -31,5 +31,3 @@ const Premo = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => {
 });
 
 Premo.displayName = 'Premo';
-
-export default Premo;
