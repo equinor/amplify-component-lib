@@ -92,6 +92,25 @@ export const Default: Story = {
   },
 };
 
+export const ReallyLongFileName: Story = {
+  args: {
+    indeterminate: true,
+    isDone: true,
+
+    file: new File(
+      [
+        new ArrayBuffer(
+          faker.number.int({ min: Math.pow(10, 7), max: Math.pow(10, 9) })
+        ),
+      ],
+      `${(faker.string.uuid() + faker.string.uuid()).replaceAll('-', '')}.${faker.system.fileExt('image/png')}`,
+      {
+        type: 'image/png',
+      }
+    ),
+  },
+};
+
 export const Compact: Story = {
   args: {
     indeterminate: true,
