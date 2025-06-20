@@ -1,20 +1,20 @@
 import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
-import Acquire from './Icons/Acquire';
-import Bravos from './Icons/Bravos';
-import Dasha from './Icons/Dasha';
-import Fallback from './Icons/Fallback';
-import FourDInsight from './Icons/FourDInsight';
-import InPress from './Icons/InPress';
-import LoggingQualification from './Icons/LoggingQualification';
-import Orca from './Icons/Orca';
-import Premo from './Icons/Premo';
-import Pwex from './Icons/Pwex';
-import Recap from './Icons/Recap';
+import { Acquire } from './Icons/Acquire';
+import { Bravos } from './Icons/Bravos';
+import { Dasha } from './Icons/Dasha';
+import { Fallback } from './Icons/Fallback';
+import { FourDInsight } from './Icons/FourDInsight';
+import { InPress } from './Icons/InPress';
+import { JsEmbark } from './Icons/JsEmbark';
+import { LoggingQualification } from './Icons/LoggingQualification';
+import { Orca } from './Icons/Orca';
+import { Premo } from './Icons/Premo';
+import { Pwex } from './Icons/Pwex';
+import { Recap } from './Icons/Recap';
 import { Sam } from './Icons/Sam';
-// Needs to be relative path for the type to be importable after build
+import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
-import JsEmbark from 'src/molecules/ApplicationIcon/Icons/JsEmbark';
 
 export type ApplicationName =
   | 'acquire'
@@ -29,7 +29,8 @@ export type ApplicationName =
   | 'inpress'
   | 'bravos'
   | 'premo'
-  | 'sam';
+  | 'sam'
+  | 'subsurface portal';
 
 interface ApplicationIconData {
   appName: string[];
@@ -53,6 +54,7 @@ const apps: ApplicationIconData[] = [
   { appName: ['bravos'], component: Bravos },
   { appName: ['premo'], component: Premo },
   { appName: ['sam'], component: Sam },
+  { appName: ['subsurface portal'], component: SubsurfacePortal },
 ];
 
 export interface ApplicationIconProps extends Partial<AppIconProps> {

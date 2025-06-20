@@ -18,10 +18,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Dasha = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+export const Dasha = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
   <ApplicationIconBase iconData={dasha} shapes={shapes} ref={ref} {...props} />
 ));
 
 Dasha.displayName = 'Dasha';
-
-export default Dasha;
