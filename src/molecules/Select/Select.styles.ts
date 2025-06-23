@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
 `;
 
 interface HelperWrapperProps {
-  $variant?: Variants;
+  $variant?: Variants | 'disabled';
 }
 
 export const HelperWrapper = styled.span<HelperWrapperProps>`
@@ -33,11 +33,15 @@ export const HelperWrapper = styled.span<HelperWrapperProps>`
     if (!$variant) return '';
     return css`
       > label {
-        color: ${VARIANT_HELPER_TEXT_COLORS[$variant]};
+        color: ${$variant === 'disabled'
+          ? colors.interactive.disabled__text.rgba
+          : VARIANT_HELPER_TEXT_COLORS[$variant]};
       }
       > svg {
         flex-shrink: 0;
-        fill: ${VARIANT_COLORS[$variant]};
+        fill: ${$variant === 'disabled'
+          ? colors.interactive.disabled__text.rgba
+          : VARIANT_HELPER_TEXT_COLORS[$variant]};
       }
     `;
   }}

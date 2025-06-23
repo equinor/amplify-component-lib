@@ -172,7 +172,9 @@ export const Select = <T extends SelectOptionRequired>(
 
   return (
     <div>
-      {shouldShowLabel && <Label label={label} meta={meta} htmlFor={id} />}
+      {shouldShowLabel && (
+        <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
+      )}
       <Wrapper>
         <Container
           data-testid={dataTestId ? dataTestId : 'combobox-container'}
@@ -225,7 +227,7 @@ export const Select = <T extends SelectOptionRequired>(
           )}
         </Container>
         {shouldShowHelper && (
-          <HelperWrapper $variant={variant}>
+          <HelperWrapper $variant={disabled ? 'disabled' : variant}>
             {helperIcon && <Icon data={helperIcon} size={16} />}
             <Label label={helperText} htmlFor={id} />
           </HelperWrapper>
