@@ -19,15 +19,15 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Acquire = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
-  <ApplicationIconBase
-    ref={ref}
-    iconData={acquire}
-    shapes={shapes}
-    {...props}
-  />
-));
+export const Acquire = forwardRef<HTMLDivElement, AppIconProps>(
+  (props, ref) => (
+    <ApplicationIconBase
+      ref={ref}
+      iconData={acquire}
+      shapes={shapes}
+      {...props}
+    />
+  )
+);
 
 Acquire.displayName = 'Acquire';
-
-export default Acquire;

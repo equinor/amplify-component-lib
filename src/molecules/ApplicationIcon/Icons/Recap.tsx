@@ -19,10 +19,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Recap = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+export const Recap = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
   <ApplicationIconBase ref={ref} iconData={recap} shapes={shapes} {...props} />
 ));
 
 Recap.displayName = 'Recap';
-
-export default Recap;

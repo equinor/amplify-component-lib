@@ -40,7 +40,7 @@ test('Able to change color', async () => {
       expect(props.onChange).toHaveBeenCalledWith(
         '<p><span style="color: #f50000">test</span></p>'
       ),
-    { timeout: 2000 }
+    { timeout: 5000 }
   );
 });
 

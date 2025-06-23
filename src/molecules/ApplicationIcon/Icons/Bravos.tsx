@@ -19,10 +19,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const Bravos = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+export const Bravos = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
   <ApplicationIconBase ref={ref} iconData={bravos} shapes={shapes} {...props} />
 ));
 
 Bravos.displayName = 'Bravos';
-
-export default Bravos;
