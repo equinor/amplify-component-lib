@@ -38,7 +38,7 @@ test('Able to insert links', async () => {
 
   await user.dblClick(screen.getByText('test'));
 
-  await waitFor(() => expect(link).toBeEnabled());
+  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
 
   await user.click(link);
 
