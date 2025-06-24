@@ -32,8 +32,10 @@ export const RegularFileProgressWrapper = styled.div`
 export const FileName = styled.div`
   display: flex;
   align-items: center;
+  gap: ${spacings.small};
   justify-content: space-between;
   min-height: 40px;
+  word-break: break-word;
 `;
 
 export const RegularFileProgressDetails = styled.div`
