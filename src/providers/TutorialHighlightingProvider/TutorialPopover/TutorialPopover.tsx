@@ -83,7 +83,7 @@ interface ContainerProps extends MotionProps {
 const Container = styled(motion(Card))<ContainerProps>`
   width: 360px;
   padding: ${spacings.medium};
-  background: ${colors.infographic.primary__moss_green_13.rgba};
+  background: ${colors.ui.background__tutorial_card.rgba};
   display: flex;
   flex-direction: column;
   gap: ${spacings.medium};
@@ -110,7 +110,7 @@ const Container = styled(motion(Card))<ContainerProps>`
         content: '';
         width: 32px;
         height: 32px;
-        background: ${colors.infographic.primary__moss_green_13.rgba};
+        background: ${colors.ui.background__tutorial_card.rgba};
         position: absolute;
         ${caretPositionToCss($caretPosition)}
       }
