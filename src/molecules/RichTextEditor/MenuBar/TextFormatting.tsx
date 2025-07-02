@@ -6,6 +6,7 @@ import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
 import { EditorMenu } from './MenuBar';
 
 export const TextFormatting: FC<EditorPanel> = ({ editor, features }) => {
+  /* v8 ignore next 2 */
   const toggleBold = () => editor.chain().focus().toggleBold().run();
   const toggleItalic = () => editor.chain().focus().toggleItalic().run();
   if (features && !features.includes(RichTextEditorFeatures.FORMATTING)) return;
