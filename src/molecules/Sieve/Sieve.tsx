@@ -6,7 +6,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useSearchParams } from 'react-router-dom';
+
+import { useSearch } from '@tanstack/react-router';
 
 import Filter from 'src/molecules/Sieve/Filter';
 import {
@@ -42,7 +43,7 @@ export const Sieve: FC<SieveProps> = ({
     sieveValue.searchValue ?? ''
   );
   const previousOnIsTyping = useRef<boolean>(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearch({ strict: false });
   const initializedSearchParams = useRef<boolean>(false);
 
   useEffect(() => {

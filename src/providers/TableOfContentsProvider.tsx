@@ -9,7 +9,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+
+import { useLocation, useNavigate } from '@tanstack/react-router';
 
 import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
@@ -124,7 +125,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
             if (same > 1) {
               setSelected(values[selectedIndex]);
               if (hashNavigation) {
-                navigate(`#${values[selectedIndex]}`, { replace: true });
+                navigate({ to: `#${values[selectedIndex]}`, replace: true });
                 setShouldInstantlyJump(false);
               }
               isScrollingTo.current = -1;
@@ -179,7 +180,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
 
     setSelected(values[newSelectedIndex]);
     if (hashNavigation) {
-      navigate(`#${values[newSelectedIndex]}`, { replace: true });
+      navigate({ to: `#${values[newSelectedIndex]}`, replace: true });
     }
     // this effect handles scroll navigation and should not be triggered on hash change
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,6 +1,5 @@
-import { Link as ReactRouterDomLink } from 'react-router-dom';
-
 import { tokens } from '@equinor/eds-tokens';
+import { Link as TanstackLink } from '@tanstack/react-router';
 
 import { spacings } from 'src/atoms/style';
 import { Typography } from 'src/molecules';
@@ -19,7 +18,7 @@ interface LinkProps {
   $disabled?: boolean;
 }
 
-export const Link = styled(ReactRouterDomLink)<LinkProps>`
+export const Link = styled(TanstackLink)<LinkProps>`
   display: flex;
   align-self: stretch;
   align-items: center;

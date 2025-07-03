@@ -1,10 +1,9 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { FaqCategory } from '@equinor/subsurface-app-management';
 
 import { Question } from './Question';
-import { useSearchParameter } from 'src/atoms';
 import { spacings } from 'src/atoms/style';
 import { Status } from 'src/organisms/Status';
 
@@ -21,12 +20,8 @@ const Container = styled.div`
 `;
 
 export const Category: FC<FaqCategory> = ({ categoryName, faqs }) => {
-  const [search] = useSearchParameter<string | undefined>({
-    key: 'search',
-  });
-  const [selectedTab] = useSearchParameter<string | undefined>({
-    key: 'category',
-  });
+  const [search] = useState<string | undefined>(undefined);
+  const [selectedTab] = useState<string | undefined>(undefined);
   const sortedFaqs = useMemo(() => {
     return faqs.toSorted((a, b) => {
       const usingA = a.orderBy ?? 0;
