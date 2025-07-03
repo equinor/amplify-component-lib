@@ -14,6 +14,9 @@ export type SelectOption<T extends SelectOptionRequired> = T & {
 export interface SingleSelectCommon<T extends SelectOptionRequired> {
   value: SelectOption<T> | undefined;
   onSelect: (value: SelectOption<T> | undefined) => void;
+  customValueComponent?: FC<{
+    item: SelectOption<T>;
+  }>;
 }
 
 interface MultiSelectBase<T extends SelectOptionRequired> {

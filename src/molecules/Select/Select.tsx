@@ -117,7 +117,14 @@ export const Select = <T extends SelectOptionRequired>(
   /* v8 ignore end */
 
   const valueElements = useMemo(() => {
-    if ('value' in props && props.value) {
+    if (
+      'value' in props &&
+      props.value &&
+      'customValueComponent' in props &&
+      props.customValueComponent
+    ) {
+      return <props.customValueComponent item={props.value} />;
+    } else if ('value' in props && props.value) {
       return <ValueText>{props.value.label}</ValueText>;
     } else if ('showSelectedAsText' in props && props.showSelectedAsText) {
       const totalAmount = props.items
