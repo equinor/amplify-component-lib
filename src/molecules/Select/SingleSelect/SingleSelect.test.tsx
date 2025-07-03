@@ -1,6 +1,9 @@
+import { boat, car, flight } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { SingleSelect } from './SingleSelect';
+import { colors, spacings } from 'src/atoms';
+import { Icon } from 'src/molecules';
 import { fakeGroups } from 'src/molecules/Select/Select.test';
 import {
   fakeSelectItems,
@@ -254,4 +257,74 @@ test('Custom menu item renders as expected', async () => {
   await user.click(screen.getByRole('combobox'));
 
   expect(screen.getByText(`custom item - ${value.value}`)).toBeInTheDocument();
+});
+
+test('Custom value component works as expected', async () => {
+  const label = faker.animal.bear();
+  const items = [
+    {
+      value: 'car',
+      label: 'Car',
+    },
+    {
+      value: 'airplane',
+      label: 'Airplane',
+    },
+    {
+      value: 'boat',
+      label: 'Boat',
+    },
+  ];
+  const value = items[0];
+
+  const handler = vi.fn();
+
+  render(
+    <SingleSelect
+      label={label}
+      onSelect={handler}
+      items={items}
+      value={value}
+      customValueComponent={({ item }) => {
+        function getIcon(value: string) {
+          switch (value) {
+            case 'car':
+              return car;
+            case 'airplane':
+              return flight;
+            case 'boat':
+            default:
+              return boat;
+          }
+        }
+
+        return (
+          <div
+            style={{
+              display: 'flex',
+              gap: spacings.x_small,
+              alignItems: 'center',
+            }}
+          >
+            <Icon
+              data={getIcon(item.value)}
+              color={colors.text.static_icons__tertiary.rgba}
+            />
+            {item.label}
+          </div>
+        );
+      }}
+    />
+  );
+
+  expect(
+    within(screen.getByText(value.label).parentElement!).getByTestId(
+      'eds-icon-path'
+    )
+  ).toBeInTheDocument();
+  expect(
+    within(screen.getByText(value.label).parentElement!).getByTestId(
+      'eds-icon-path'
+    )
+  ).toHaveAttribute('d', car.svgPathData);
 });

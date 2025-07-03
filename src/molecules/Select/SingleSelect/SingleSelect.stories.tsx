@@ -1,9 +1,12 @@
 import { FC, useState } from 'react';
 
+import { boat, car, flight } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { actions } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
+import { colors, spacings } from 'src/atoms';
+import { Icon } from 'src/molecules';
 import {
   SelectedState,
   SelectOption,
@@ -173,6 +176,86 @@ export const SingleSelectWithCustomizableSelectMenuItem: StoryFn = (args) => {
       value={value}
       onSelect={handleOnSelect}
       CustomMenuItemComponent={CustomMenuItem}
+    />
+  );
+};
+
+function getIcon(value: 'car' | 'airplane' | 'boat') {
+  switch (value) {
+    case 'car':
+      return car;
+    case 'airplane':
+      return flight;
+    case 'boat':
+      return boat;
+  }
+}
+
+const CustomValueComponent: FC<{
+  item: {
+    value: 'car' | 'airplane' | 'boat';
+    label: 'Car' | 'Airplane' | 'Boat';
+  };
+}> = ({ item }) => {
+  return (
+    <div
+      style={{ display: 'flex', gap: spacings.x_small, alignItems: 'center' }}
+    >
+      <Icon
+        data={getIcon(item.value)}
+        color={colors.text.static_icons__tertiary.rgba}
+      />
+      {item.label}
+    </div>
+  );
+};
+
+export const SingleSelectWithCustomValueComponent: StoryFn = (args) => {
+  const [value, setValue] = useState<
+    SelectOption<{
+      value: 'car' | 'airplane' | 'boat';
+      label: 'Car' | 'Airplane' | 'Boat';
+    }>
+  >({
+    value: 'car',
+    label: 'Car',
+  });
+
+  const handleOnSelect = (
+    selectedValue:
+      | SelectOption<{
+          value: 'car' | 'airplane' | 'boat';
+          label: 'Car' | 'Airplane' | 'Boat';
+        }>
+      | undefined
+  ) => {
+    if (selectedValue === undefined) return;
+
+    actions('onSelect').onSelect(selectedValue);
+    setValue(selectedValue);
+  };
+
+  return (
+    <SingleSelect
+      {...args}
+      items={[
+        {
+          value: 'car',
+          label: 'Car',
+        },
+        {
+          value: 'airplane',
+          label: 'Airplane',
+        },
+        {
+          value: 'boat',
+          label: 'Boat',
+        },
+      ]}
+      value={value}
+      onSelect={handleOnSelect}
+      customValueComponent={CustomValueComponent}
+      clearable={false}
     />
   );
 };
