@@ -117,7 +117,14 @@ export const Select = <T extends SelectOptionRequired>(
   /* v8 ignore end */
 
   const valueElements = useMemo(() => {
-    if ('value' in props && props.value) {
+    if (
+      'value' in props &&
+      props.value &&
+      'customValueComponent' in props &&
+      props.customValueComponent
+    ) {
+      return <props.customValueComponent item={props.value} />;
+    } else if ('value' in props && props.value) {
       return <ValueText>{props.value.label}</ValueText>;
     } else if ('showSelectedAsText' in props && props.showSelectedAsText) {
       const totalAmount = props.items
@@ -172,7 +179,9 @@ export const Select = <T extends SelectOptionRequired>(
 
   return (
     <div>
-      {shouldShowLabel && <Label label={label} meta={meta} htmlFor={id} />}
+      {shouldShowLabel && (
+        <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
+      )}
       <Wrapper>
         <Container
           data-testid={dataTestId ? dataTestId : 'combobox-container'}
@@ -225,7 +234,7 @@ export const Select = <T extends SelectOptionRequired>(
           )}
         </Container>
         {shouldShowHelper && (
-          <HelperWrapper $variant={variant}>
+          <HelperWrapper $variant={disabled ? 'disabled' : variant}>
             {helperIcon && <Icon data={helperIcon} size={16} />}
             <Label label={helperText} htmlFor={id} />
           </HelperWrapper>

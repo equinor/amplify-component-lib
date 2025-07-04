@@ -160,7 +160,7 @@ export const isBetweenDates = (
   if (date) {
     const dateObj = new Date(date);
     if (dateObj.getTime()) {
-      return date >= dates[0] && date <= dates[1];
+      return dateObj >= dates[0] && dateObj <= dates[1];
     }
   }
   return false;

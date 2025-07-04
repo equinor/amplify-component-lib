@@ -23,3 +23,12 @@ jobs:
   build-storybook:
     name: Build storybook
     uses: ./.github/workflows/build_storybook.yaml
+
+  build-deploy-feature-radix:
+    if: ${{ startsWith(github.head_ref, 'feature')}}
+    name: Build and deploy to feature env
+    uses: ./.github/workflows/build_deploy_radix.yaml
+    with:
+      environment-name: feature
+      to-environment: feature
+      branch: ${{ github.head_ref }}

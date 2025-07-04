@@ -200,3 +200,18 @@ test('Hovering over a tab calls the onHover callback', async () => {
 
   expect(props.onHover).toHaveBeenCalled();
 });
+
+test('Count shows as expected', async () => {
+  const props = fakeProps();
+  const options = props.options.map((option, index) => ({
+    ...option,
+    count: index,
+  }));
+  render(<Tabs {...props} options={options} selected={0} />);
+
+  for (const option of options) {
+    expect(
+      screen.getByRole('tab', { name: `${option.label} ${option.count}` })
+    );
+  }
+});

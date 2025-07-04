@@ -19,15 +19,15 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const JsEmbark = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
-  <ApplicationIconBase
-    ref={ref}
-    iconData={jsembark}
-    shapes={shapes}
-    {...props}
-  />
-));
+export const JsEmbark = forwardRef<HTMLDivElement, AppIconProps>(
+  (props, ref) => (
+    <ApplicationIconBase
+      ref={ref}
+      iconData={jsembark}
+      shapes={shapes}
+      {...props}
+    />
+  )
+);
 
 JsEmbark.displayName = 'JsEmbark';
-
-export default JsEmbark;

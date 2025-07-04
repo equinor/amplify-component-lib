@@ -442,12 +442,15 @@ test(
 
 test('Disabled works as expected', async () => {
   const label = faker.animal.bear();
+  const helperText = faker.animal.bear();
   const handler = vi.fn();
   const items = fakeSelectItems();
 
   render(
     <Select
       label={label}
+      helperText={helperText}
+      showHelperIcon={false}
       onSelect={handler}
       items={items}
       value={undefined}

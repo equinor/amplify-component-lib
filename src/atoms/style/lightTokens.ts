@@ -4,6 +4,7 @@ export const lightTokens = css`
   [data-theme='light'] {
     --amplify_ui_background_light_medium: rgba(235, 235, 235, 1);
     --amplify_ui_background_heavy: rgba(189, 189, 189, 1);
+    --amplify_ui_background_tutorial_card: rgba(222, 237, 238, 1);
 
     --amplify_interactive_primary_pressed: rgba(19, 46, 49, 1);
 
@@ -144,5 +145,14 @@ export const lightTokens = css`
     --eds_interactive__link_in_snackbars: rgba(151, 202, 206, 1);
     --eds_interactive__pressed_overlay_dark: rgba(0, 0, 0, 0.2);
     --eds_interactive__pressed_overlay_light: rgba(255, 255, 255, 0.2);
+
+    /* Override table typography variables */
+    --eds_table__cell_header_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_bold_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_text_link_color: var(--eds_text__static_icons__default);
+    --eds_table__cell_numeric_monospaced_color: var(
+      --eds_text__static_icons__default
+    );
   }
 `;

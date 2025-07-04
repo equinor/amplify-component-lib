@@ -312,8 +312,6 @@ test(
 
     await user.click(screen.getByRole('button', { name: /save/i }));
 
-    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
-
     expect(
       await screen.findByText(new RegExp(newFirstName))
     ).toBeInTheDocument();

@@ -14,6 +14,9 @@ export const colors = {
     background__heavy: {
       rgba: 'var(--amplify_ui_background_heavy, rgba(189, 189, 189, 1))',
     },
+    background__tutorial_card: {
+      rgba: 'var(--amplify_ui_background_tutorial_card, rgba(222, 237, 238, 1))',
+    },
   },
   interactive: {
     ...eds_colors.interactive,

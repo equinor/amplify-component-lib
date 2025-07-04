@@ -19,7 +19,7 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-const LoggingQualification = forwardRef<HTMLDivElement, AppIconProps>(
+export const LoggingQualification = forwardRef<HTMLDivElement, AppIconProps>(
   (props, ref) => (
     <ApplicationIconBase
       ref={ref}
@@ -31,5 +31,3 @@ const LoggingQualification = forwardRef<HTMLDivElement, AppIconProps>(
 );
 
 LoggingQualification.displayName = 'LoggingQualification';
-
-export default LoggingQualification;
