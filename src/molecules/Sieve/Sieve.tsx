@@ -1,13 +1,4 @@
-import {
-  ChangeEvent,
-  FC,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-
-import { useSearch } from '@tanstack/react-router';
+import { ChangeEvent, FC, useCallback, useRef, useState } from 'react';
 
 import Filter from 'src/molecules/Sieve/Filter';
 import {
@@ -34,8 +25,6 @@ export const Sieve: FC<SieveProps> = ({
   onUpdate,
   showChips = true,
   minSearchWidth = '24rem',
-  syncWithSearchParams = false,
-  isLoadingOptions = false,
   debounceSearchValue = false,
   onIsTyping,
 }) => {
@@ -43,98 +32,6 @@ export const Sieve: FC<SieveProps> = ({
     sieveValue.searchValue ?? ''
   );
   const previousOnIsTyping = useRef<boolean>(false);
-  const [searchParams, setSearchParams] = useSearch({ strict: false });
-  const initializedSearchParams = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (
-      !initializedSearchParams.current &&
-      syncWithSearchParams &&
-      !isLoadingOptions
-    ) {
-      const search = searchParams.get('search') ?? undefined;
-
-      const parents =
-        filterOptions?.map((filterOption) => filterOption.label) ?? [];
-
-      const filterValues: FilterValues = {};
-      for (const parent of parents) {
-        const parentOptions = filterOptions?.find(
-          (filterOption) => filterOption.label === parent
-        )?.options;
-
-        const labels = JSON.parse(
-          searchParams.get(parent.toLowerCase()) ?? '[]'
-        ) as string[];
-
-        if (parentOptions !== undefined) {
-          filterValues[parent] = parentOptions.filter((option) =>
-            labels.includes(option.label)
-          );
-        }
-      }
-
-      onUpdate({
-        searchValue: search,
-        filterValues,
-        sortValue: sieveValue.sortValue,
-      });
-
-      initializedSearchParams.current = true;
-    }
-  }, [
-    filterOptions,
-    initializedSearchParams,
-    isLoadingOptions,
-    onUpdate,
-    searchParams,
-    sieveValue.sortValue,
-    syncWithSearchParams,
-  ]);
-
-  const previousSieveValue = useRef<string>('{}');
-  useEffect(() => {
-    if (
-      syncWithSearchParams &&
-      initializedSearchParams.current &&
-      !isLoadingOptions &&
-      JSON.stringify(sieveValue) !== previousSieveValue.current
-    ) {
-      if (sieveValue.searchValue === undefined) {
-        searchParams.delete('search');
-      } else {
-        searchParams.set('search', sieveValue.searchValue);
-      }
-
-      const parents =
-        filterOptions?.map((filterOption) => filterOption.label) ?? [];
-      const filterValues = sieveValue.filterValues;
-
-      for (const parent of parents) {
-        if (filterValues?.[parent] && filterValues[parent].length > 0) {
-          searchParams.set(
-            parent.toLowerCase(),
-            JSON.stringify(filterValues[parent].map((option) => option.label))
-          );
-        } else {
-          searchParams.delete(parent.toLowerCase());
-        }
-      }
-
-      previousSieveValue.current = JSON.stringify(sieveValue);
-      setSearchParams(searchParams);
-      onUpdate(sieveValue);
-    }
-  }, [
-    filterOptions,
-    initializedSearchParams,
-    isLoadingOptions,
-    onUpdate,
-    searchParams,
-    setSearchParams,
-    sieveValue,
-    syncWithSearchParams,
-  ]);
 
   const handleUpdateSieveValue = useCallback(
     <K extends keyof SieveValue, V extends SieveValue[K]>(key: K, value: V) => {

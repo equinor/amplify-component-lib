@@ -21,8 +21,6 @@ interface SieveProps {
   onUpdate: (value: SieveValue) => void;
   showChips?: boolean;
   minSearchWidth?: string;
-  syncWithSearchParams?: boolean;
-  isLoadingOptions?: boolean;
   debounceSearchValue?: boolean;
   onIsTyping?: (value: boolean) => void;
 }
