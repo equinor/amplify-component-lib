@@ -175,10 +175,18 @@ Types.decorators = [
 ];
 
 export const Loading: Story = () => (
-  <>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
     <TextField
       id="storybook-loading-multiline"
       label="MultiLine"
+      loading
+      multiline
+      rows={3}
+    />
+    <TextField
+      id="storybook-loading-multiline-helper"
+      label="MultiLine"
+      helperText="Helper text"
       loading
       multiline
       rows={3}
@@ -191,7 +199,7 @@ export const Loading: Story = () => (
       inputIcon={<Icon name="thumbs_up" key="thumbs" size={16} />}
     />
     <TextField id="storybook-loading-helper" loading helperText="Helper text" />
-  </>
+  </div>
 );
 
 export const Multiline: Story = () => (

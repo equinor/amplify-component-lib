@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import { FC, InputHTMLAttributes, TextareaHTMLAttributes, useRef } from 'react';
 
 import {
   TextField as Base,
@@ -110,8 +110,6 @@ const Wrapper = styled.div<WrapperProps>`
 const Loader = styled(SkeletonBase)`
   position: absolute;
   left: ${spacings.small};
-  width: 70%;
-  height: calc(36px - ${spacings.small});
   border-radius: ${shape.corners.borderRadius};
   transform: translateY(${spacings.x_small});
 `;
@@ -124,6 +122,8 @@ export const TextField: FC<TextFieldProps> = (props) => {
 
   const usingVariant = props.loading ? undefined : props.variant;
   const skeletonTop = props.label || props.meta ? '1rem' : '0';
+  const skeletonHeight = `calc(100% - ${props.label ? '1rem' : '0px'} - ${props.helperText || props.helperIcon ? '1.5rem' : '0px'} - ${spacings.small})`;
+  const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
 
   return (
     <Wrapper
@@ -135,7 +135,11 @@ export const TextField: FC<TextFieldProps> = (props) => {
         <Loader
           className="skeleton"
           role="progressbar"
-          style={{ top: skeletonTop }}
+          style={{
+            top: skeletonTop,
+            height: skeletonHeight,
+            width: skeletonWidth.current,
+          }}
         />
       )}
     </Wrapper>
