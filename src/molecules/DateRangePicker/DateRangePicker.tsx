@@ -1,23 +1,23 @@
 import { forwardRef } from 'react';
 
 import {
-  DatePicker as EDSDatePicker,
-  DatePickerProps as EDSDatePickerProps,
+  DateRangePicker as Base,
+  DateRangePickerProps as BaseProps,
   Typography,
 } from '@equinor/eds-core-react';
 
 import { Variants } from 'src/atoms/types/variants';
 import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
 
-export type DatePickerProps = Omit<EDSDatePickerProps, 'variant'> & {
+export type DateRangePickerProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   meta?: string;
 };
 
-export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
+export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
   (props, ref) => {
-    const locale: DatePickerProps['locale'] = props.locale ?? 'en-GB';
-    const formatOptions: DatePickerProps['formatOptions'] =
+    const locale: DateRangePickerProps['locale'] = props.locale ?? 'en-GB';
+    const formatOptions: DateRangePickerProps['formatOptions'] =
       props.formatOptions !== undefined
         ? props.formatOptions
         : {
@@ -25,14 +25,14 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             month: '2-digit',
             year: 'numeric',
           };
-    const baseProps: EDSDatePickerProps = {
+    const baseProps: BaseProps = {
       ...props,
       variant: props.variant !== 'dirty' ? props.variant : undefined,
     };
 
     return (
       <DatePickerWrapper $variant={props.variant}>
-        <EDSDatePicker
+        <Base
           {...baseProps}
           ref={ref}
           locale={locale}
@@ -48,4 +48,4 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
   }
 );
 
-DatePicker.displayName = 'DatePicker';
+DateRangePicker.displayName = 'DateRangePicker';

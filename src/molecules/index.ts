@@ -12,11 +12,9 @@ export type { BaseChipProps } from './Chip/Chip';
 export { ContentMenu } from './ContentMenu/ContentMenu';
 export type { ContentMenuProps } from './ContentMenu/ContentMenu';
 export { DatePicker } from './DatePicker/DatePicker';
-export type {
-  DatePickerProps,
-  DateRangePickerProps,
-  DateTimePickerProps,
-} from '@equinor/eds-core-react';
+export type { DatePickerProps } from './DatePicker/DatePicker';
+export { DateRangePicker } from './DateRangePicker/DateRangePicker';
+export type { DateRangePickerProps } from './DateRangePicker/DateRangePicker';
 export { Dialog } from './Dialog/Dialog';
 export type { DialogProps, DialogAction } from './Dialog/Dialog';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
@@ -104,7 +102,6 @@ export { Waves } from './Waves/Waves';
 export {
   Accordion,
   Breadcrumbs,
-  DateRangePicker,
   Divider,
   Dialog as EDSDialog,
   Menu,
