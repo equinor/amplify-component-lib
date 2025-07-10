@@ -43,6 +43,7 @@ const meta: Meta<typeof TextField> = {
     },
   },
   argTypes: {
+    loading: { control: 'boolean' },
     disabled: { control: 'boolean' },
     variant: {
       control: 'radio',
@@ -172,6 +173,26 @@ Types.decorators = [
     );
   },
 ];
+
+export const Loading: Story = () => (
+  <>
+    <TextField
+      id="storybook-loading-multiline"
+      label="MultiLine"
+      loading
+      multiline
+      rows={3}
+    />
+    <TextField id="storybook-loading-label" label="Label" loading />
+    <TextField
+      id="storybook-loading-icon"
+      label="With icon"
+      loading
+      inputIcon={<Icon name="thumbs_up" key="thumbs" size={16} />}
+    />
+    <TextField id="storybook-loading-helper" loading helperText="Helper text" />
+  </>
+);
 
 export const Multiline: Story = () => (
   <TextField id="storybook-multiline" label="Multiline" multiline rows={3} />

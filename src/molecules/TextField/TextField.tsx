@@ -5,14 +5,17 @@ import {
   TextFieldProps as BaseProps,
 } from '@equinor/eds-core-react';
 
+import { shape, spacings } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
+import { SkeletonBase } from 'src/molecules';
 
 import styled, { css } from 'styled-components';
 
 type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
+  loading?: boolean;
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -24,6 +27,7 @@ interface WrapperProps {
 }
 
 const Wrapper = styled.div<WrapperProps>`
+  position: relative;
   input,
   textarea {
     color: ${colors.text.static_icons__default.rgba};
@@ -103,15 +107,37 @@ const Wrapper = styled.div<WrapperProps>`
   }}
 `;
 
+const Loader = styled(SkeletonBase)`
+  position: absolute;
+  left: ${spacings.small};
+  width: 70%;
+  height: calc(36px - ${spacings.small});
+  border-radius: ${shape.corners.borderRadius};
+  transform: translateY(${spacings.x_small});
+`;
+
 export const TextField: FC<TextFieldProps> = (props) => {
   const baseProps: BaseProps = {
     ...props,
     variant: props.variant !== 'dirty' ? props.variant : undefined,
   };
 
+  const usingVariant = props.loading ? undefined : props.variant;
+  const skeletonTop = props.label || props.meta ? '1rem' : '0';
+
   return (
-    <Wrapper $variant={props.variant} $disabled={props.disabled}>
-      <Base {...baseProps} />
+    <Wrapper
+      $variant={usingVariant}
+      $disabled={props.loading ? false : props.disabled}
+    >
+      <Base {...baseProps} disabled={props.loading || props.disabled} />
+      {props.loading && (
+        <Loader
+          className="skeleton"
+          role="progressbar"
+          style={{ top: skeletonTop }}
+        />
+      )}
     </Wrapper>
   );
 };
