@@ -15,6 +15,7 @@ export const UploadWrapper = styled.div`
   /* v8 ignore next */
   background: ${colors.ui.background__light.rgba};
   transition: background ${animation.transitionMS};
+  z-index: 10000;
 
   > svg {
     flex-shrink: 0;
