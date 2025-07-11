@@ -1,4 +1,4 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import {
   FileUploadArea,
@@ -29,6 +29,28 @@ const meta: Meta<typeof FileUploadArea> = {
 
 export default meta;
 
-export const Primary: StoryFn<FileUploadAreaProps> = (args) => (
-  <FileUploadArea {...args} />
-);
+type Story = StoryObj<FileUploadAreaProps>;
+
+export const Primary: Story = {};
+
+export const MediumSize: Story = {
+  args: {
+    size: 'medium',
+  },
+};
+
+export const SmallSize: Story = {
+  args: {
+    size: 'small',
+  },
+};
+
+export const DraggingOver: StoryFn<FileUploadAreaProps> = (args) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <FileUploadArea {...args} size="small" />
+      <FileUploadArea {...args} size="medium" />
+      <FileUploadArea {...args} />
+    </div>
+  );
+};
