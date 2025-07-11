@@ -30,7 +30,7 @@ test('Renders text and icon as it should', () => {
 
 test('Renders compact style as it should', () => {
   const props = fakeProps();
-  render(<FileUploadArea compact {...props} />);
+  render(<FileUploadArea size="small" {...props} />);
 
   const text = screen.queryByText('browse');
 
