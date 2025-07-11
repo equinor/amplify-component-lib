@@ -55,11 +55,13 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
     };
 
     window.document.addEventListener('dragover', handleDragEnter);
-    window.document.addEventListener('mouseout', handleDragEnd);
+    window.document.addEventListener('dragend', handleDragEnd);
+    window.document.addEventListener('mouseleave', () => handleDragEnd);
 
     return () => {
       window.document.removeEventListener('dragover', handleDragEnter);
-      window.document.removeEventListener('mouseout', handleDragEnd);
+      window.document.removeEventListener('dragend', handleDragEnd);
+      window.document.removeEventListener('mouseleave', handleDragEnd);
     };
   }, []);
 
