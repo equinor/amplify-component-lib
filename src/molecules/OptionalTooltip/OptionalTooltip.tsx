@@ -19,9 +19,10 @@ export const OptionalTooltip = forwardRef<HTMLDivElement, OptionalTooltipProps>(
       return <>{children}</>;
     }
 
+    // Added extra div around children to allow tooltip to work on disabled elements (i.e. Button, TextField ++)
     return (
       <Tooltip ref={ref} title={title} {...rest}>
-        {children}
+        <div>{children}</div>
       </Tooltip>
     );
   }
