@@ -56,6 +56,20 @@ export const Default: StoryFn = (props: DatePickerProps) => {
   );
 };
 
+export const Loading: StoryFn = (props: DatePickerProps) => {
+  return (
+    <DatePicker
+      {...props}
+      label="Loading"
+      loading
+      onChange={(v) => {
+        const str = v?.toISOString();
+        action('onChange')(str);
+      }}
+    />
+  );
+};
+
 export const Variants: StoryFn = (props: DatePickerProps) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

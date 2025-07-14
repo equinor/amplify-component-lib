@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 
 import {
   DateRangePicker as Base,
@@ -7,11 +7,14 @@ import {
 } from '@equinor/eds-core-react';
 
 import { Variants } from 'src/atoms/types/variants';
+import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
 import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
+import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
 
 export type DateRangePickerProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   meta?: string;
+  loading?: boolean;
 };
 
 export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
@@ -29,9 +32,16 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       ...props,
       variant: props.variant !== 'dirty' ? props.variant : undefined,
     };
+    const skeletonTop = getSkeletonTop(props);
+    const skeletonHeight = getSkeletonHeight({
+      label: props.label,
+      helperText: props.helperProps?.text,
+      helperIcon: props.helperProps?.icon,
+    });
+    const skeletonWidth = useRef(`${Math.max(40, Math.random() * 80)}%`);
 
     return (
-      <DatePickerWrapper $variant={props.variant}>
+      <DatePickerWrapper $variant={props.variant} $loading={props.loading}>
         <Base
           {...baseProps}
           ref={ref}
@@ -42,6 +52,16 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           <Typography variant="helper" group="input">
             {props.meta}
           </Typography>
+        )}
+        {props.loading && (
+          <SkeletonField
+            role="progressbar"
+            style={{
+              width: skeletonWidth.current,
+              height: skeletonHeight,
+              top: skeletonTop,
+            }}
+          />
         )}
       </DatePickerWrapper>
     );

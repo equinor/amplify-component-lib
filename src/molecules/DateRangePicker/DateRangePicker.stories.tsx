@@ -61,6 +61,10 @@ export const Introduction: StoryFn<DateRangePickerProps> = (args) => (
   <PrimaryComponent {...args} />
 );
 
+export const Loading: StoryFn<DateRangePickerProps> = (args) => (
+  <DateRangePicker {...args} loading value={undefined} />
+);
+
 export const Variants: StoryFn = (props: DateRangePickerProps) => {
   return (
     <div

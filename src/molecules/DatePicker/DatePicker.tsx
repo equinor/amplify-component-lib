@@ -6,12 +6,10 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 
-import { spacings } from 'src/atoms';
 import { Variants } from 'src/atoms/types/variants';
-import {
-  DatePickerWrapper,
-  Loader,
-} from 'src/molecules/DatePicker/DatePicker.styles';
+import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
+import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
+import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
 
 export type DatePickerProps = Omit<EDSDatePickerProps, 'variant'> & {
   variant?: Variants;
@@ -34,12 +32,16 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       ...props,
       variant: props.variant !== 'dirty' ? props.variant : undefined,
     };
-    const skeletonTop = props.label || props.meta ? '1rem' : '0';
-    const skeletonHeight = `calc(100% - ${props.label ? '1rem' : '0px'} - ${props.helperProps?.text || props?.helperProps?.icon ? '1.5rem' : '0px'} - ${spacings.small})`;
+    const skeletonTop = getSkeletonTop(props);
+    const skeletonHeight = getSkeletonHeight({
+      label: props.label,
+      helperText: props.helperProps?.text,
+      helperIcon: props.helperProps?.icon,
+    });
     const skeletonWidth = useRef(`${Math.max(40, Math.random() * 80)}%`);
 
     return (
-      <DatePickerWrapper $variant={props.variant}>
+      <DatePickerWrapper $variant={props.variant} $loading={props.loading}>
         <EDSDatePicker
           {...baseProps}
           ref={ref}
@@ -53,7 +55,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           </Typography>
         )}
         {props.loading && (
-          <Loader
+          <SkeletonField
             role="progressbar"
             style={{
               width: skeletonWidth.current,

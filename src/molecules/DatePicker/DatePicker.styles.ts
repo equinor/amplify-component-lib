@@ -1,12 +1,11 @@
-import { shape, spacings } from 'src/atoms/style';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { DatePickerProps } from 'src/molecules/DatePicker/DatePicker';
-import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
 
 interface DatePickerWrapperProps {
   $variant: DatePickerProps['variant'];
+  $loading?: boolean;
 }
 
 export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
@@ -65,13 +64,18 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
       `;
     }}
   }
-`;
 
-export const Loader = styled(SkeletonBase)`
-  position: absolute;
-  left: ${spacings.small};
-  border-radius: ${shape.corners.borderRadius};
-  transform: translateY(${spacings.x_small});
-  height: 100%;
-  top: 0;
+  ${({ $loading }) => {
+    if ($loading)
+      return css`
+        div[role='presentation'] {
+          visibility: hidden;
+
+          // For the date range picker there is a "-" in between the two dates, so we hide that as well
+          & ~ span {
+            visibility: hidden;
+          }
+        }
+      `;
+  }}
 `;

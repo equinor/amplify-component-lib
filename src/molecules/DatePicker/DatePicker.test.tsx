@@ -82,3 +82,10 @@ test('Error variant', async () => {
     `box-shadow: inset 0 -1px 0 0 ${VARIANT_COLORS['error']}`
   );
 });
+
+test('Loading works as expected', async () => {
+  render(<DatePicker label="Test" loading />);
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  expect(screen.getByRole('textbox')).toBeDisabled();
+});

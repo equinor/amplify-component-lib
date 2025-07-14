@@ -9,6 +9,7 @@ import { shape, spacings } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
+import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
 import { SkeletonBase } from 'src/molecules';
 
 import styled, { css } from 'styled-components';
@@ -121,8 +122,8 @@ export const TextField: FC<TextFieldProps> = (props) => {
   };
 
   const usingVariant = props.loading ? undefined : props.variant;
-  const skeletonTop = props.label || props.meta ? '1rem' : '0';
-  const skeletonHeight = `calc(100% - ${props.label ? '1rem' : '0px'} - ${props.helperText || props.helperIcon ? '1.5rem' : '0px'} - ${spacings.small})`;
+  const skeletonTop = getSkeletonTop(props);
+  const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
 
   return (
