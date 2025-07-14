@@ -1,16 +1,16 @@
 import { faker } from '@faker-js/faker';
 
+import { DateRangePicker } from './DateRangePicker';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
-import { DatePicker } from 'src/molecules/DatePicker/DatePicker';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 test('Expect default format', async () => {
-  const randomDate = faker.date.recent();
-  render(<DatePicker value={randomDate} />);
+  const value = { from: faker.date.recent(), to: faker.date.future() };
+  render(<DateRangePicker value={value} />);
 
-  const day = randomDate.getDate().toString().padStart(2, '0');
-  const month = (randomDate.getMonth() + 1).toString().padStart(2, '0');
-  const year = randomDate.getFullYear().toString();
+  const day = value.from.getDate().toString().padStart(2, '0');
+  const month = (value.from.getMonth() + 1).toString().padStart(2, '0');
+  const year = value.from.getFullYear().toString();
 
   const [dayEl, monthEl, yearEl] = screen.getAllByRole('spinbutton');
   expect(dayEl).toHaveTextContent(day);
@@ -19,10 +19,10 @@ test('Expect default format', async () => {
 });
 
 test('Able to override format', async () => {
-  const randomDate = faker.date.recent();
+  const value = { from: faker.date.recent(), to: faker.date.future() };
   render(
-    <DatePicker
-      value={randomDate}
+    <DateRangePicker
+      value={value}
       formatOptions={{
         month: 'short',
       }}
@@ -31,7 +31,7 @@ test('Able to override format', async () => {
 
   expect(
     screen.getByText(
-      randomDate.toLocaleDateString('en-GB', {
+      value.from.toLocaleDateString('en-GB', {
         month: 'short',
       })
     )
@@ -39,8 +39,8 @@ test('Able to override format', async () => {
 });
 
 test('Expect default locale to be en-GB', async () => {
-  const randomDate = new Date('25. july 2021');
-  render(<DatePicker value={randomDate} hideClearButton />);
+  const value = { from: new Date('25. july 2021'), to: faker.date.future() };
+  render(<DateRangePicker value={value} hideClearButton />);
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
@@ -49,8 +49,8 @@ test('Expect default locale to be en-GB', async () => {
 });
 
 test('Able to override locale', async () => {
-  const randomDate = new Date('25. july 2021');
-  render(<DatePicker value={randomDate} locale={'no-NB'} hideClearButton />);
+  const value = { from: new Date('25. july 2021'), to: faker.date.future() };
+  render(<DateRangePicker value={value} locale={'no-NB'} hideClearButton />);
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
@@ -60,14 +60,14 @@ test('Able to override locale', async () => {
 
 test('Meta text is displayed', async () => {
   const meta = faker.animal.bear();
-  render(<DatePicker meta={meta} />);
+  render(<DateRangePicker meta={meta} />);
 
   expect(screen.getByText(meta)).toBeInTheDocument();
 });
 
 test('Dirty variant', async () => {
-  const randomDate = new Date('25. july 2021');
-  render(<DatePicker value={randomDate} variant="dirty" />);
+  const value = { from: faker.date.recent(), to: faker.date.future() };
+  render(<DateRangePicker value={value} variant="dirty" />);
 
   expect(screen.getAllByRole('button')[0].parentElement!).toHaveStyle(
     `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS['dirty']}`
@@ -75,8 +75,8 @@ test('Dirty variant', async () => {
 });
 
 test('Error variant', async () => {
-  const randomDate = new Date('25. july 2021');
-  render(<DatePicker value={randomDate} variant="error" />);
+  const value = { from: faker.date.recent(), to: faker.date.future() };
+  render(<DateRangePicker value={value} variant="error" />);
 
   expect(screen.getAllByRole('button')[0].parentElement!).toHaveStyle(
     `box-shadow: inset 0 -1px 0 0 ${VARIANT_COLORS['error']}`
