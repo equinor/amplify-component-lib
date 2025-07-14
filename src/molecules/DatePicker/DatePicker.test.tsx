@@ -63,3 +63,10 @@ test('Meta text is displayed', async () => {
 
   expect(screen.getByText(meta)).toBeInTheDocument();
 });
+
+test('Loading works as expected', async () => {
+  render(<DatePicker label="Test" loading />);
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  expect(screen.getByRole('textbox')).toBeDisabled();
+});

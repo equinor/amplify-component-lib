@@ -54,6 +54,19 @@ export const Introduction: StoryFn = (props: DatePickerProps) => {
   );
 };
 
+export const Loading: StoryFn = (props: DatePickerProps) => {
+  return (
+    <DatePicker
+      {...props}
+      loading
+      onChange={(v) => {
+        const str = v?.toISOString();
+        action('onChange')(str);
+      }}
+    />
+  );
+};
+
 const min = new Date();
 const max = new Date();
 min.setDate(2);

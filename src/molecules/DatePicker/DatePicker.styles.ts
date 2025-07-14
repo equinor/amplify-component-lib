@@ -1,4 +1,6 @@
+import { shape, spacings } from 'src/atoms';
 import { colors } from 'src/atoms/style/colors';
+import { SkeletonBase } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -21,4 +23,13 @@ export const DatePickerWrapper = styled.div`
       outline: none;
     }
   }
+`;
+
+export const Loader = styled(SkeletonBase)`
+  position: absolute;
+  left: ${spacings.small};
+  border-radius: ${shape.corners.borderRadius};
+  transform: translateY(${spacings.x_small});
+  height: 100%;
+  top: 0;
 `;

@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 
 import {
   DatePicker as EDSDatePicker,
@@ -6,10 +6,15 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 
-import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
+import { spacings } from 'src/atoms';
+import {
+  DatePickerWrapper,
+  Loader,
+} from 'src/molecules/DatePicker/DatePicker.styles';
 
 export interface DatePickerProps extends EDSDatePickerProps {
   meta?: string;
+  loading?: boolean;
 }
 
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
@@ -23,6 +28,9 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             month: '2-digit',
             year: 'numeric',
           };
+    const skeletonTop = props.label || props.meta ? '1rem' : '0';
+    const skeletonHeight = `calc(100% - ${props.label ? '1rem' : '0px'} - ${props.helperProps?.text || props?.helperProps?.icon ? '1.5rem' : '0px'} - ${spacings.small})`;
+    const skeletonWidth = useRef(`${Math.max(40, Math.random() * 80)}%`);
 
     return (
       <DatePickerWrapper>
@@ -31,11 +39,22 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           ref={ref}
           locale={locale}
           formatOptions={formatOptions}
+          disabled={props.loading || props.disabled}
         />
         {props.meta && (
           <Typography variant="helper" group="input">
             {props.meta}
           </Typography>
+        )}
+        {props.loading && (
+          <Loader
+            role="progressbar"
+            style={{
+              width: skeletonWidth.current,
+              height: skeletonHeight,
+              top: skeletonTop,
+            }}
+          />
         )}
       </DatePickerWrapper>
     );
