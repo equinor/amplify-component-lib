@@ -62,25 +62,32 @@ export const Introduction: StoryFn<DateRangePickerProps> = (args) => (
 );
 
 export const Loading: StoryFn<DateRangePickerProps> = (args) => (
-  <DateRangePicker {...args} loading value={undefined} />
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, auto)',
+      gap: '24px',
+    }}
+  >
+    <DateRangePicker {...args} loading value={undefined} />
+    <DateRangePicker {...args} loading label="Label" value={undefined} />
+  </div>
 );
 
-export const Variants: StoryFn = (props: DateRangePickerProps) => {
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, auto)',
-        gap: '24px',
-      }}
-    >
-      <DateRangePicker {...props} variant="warning" label="Warning" />
-      <DateRangePicker {...props} variant="error" label="Error" />
-      <DateRangePicker {...props} variant="success" label="Success" />
-      <DateRangePicker {...props} variant="dirty" label="Dirty" />
-    </div>
-  );
-};
+export const Variants: StoryFn = (props: DateRangePickerProps) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, auto)',
+      gap: '24px',
+    }}
+  >
+    <DateRangePicker {...props} variant="warning" label="Warning" />
+    <DateRangePicker {...props} variant="error" label="Error" />
+    <DateRangePicker {...props} variant="success" label="Success" />
+    <DateRangePicker {...props} variant="dirty" label="Dirty" />
+  </div>
+);
 
 const min = new Date();
 const max = new Date();

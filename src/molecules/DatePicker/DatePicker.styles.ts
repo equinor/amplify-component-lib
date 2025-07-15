@@ -1,3 +1,4 @@
+import { spacings } from 'src/atoms';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { DatePickerProps } from 'src/molecules/DatePicker/DatePicker';
 
@@ -10,6 +11,7 @@ interface DatePickerWrapperProps {
 
 export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
   position: relative;
+  height: fit-content;
   > p {
     color: ${colors.text.static_icons__tertiary.rgba};
     position: absolute;
@@ -78,4 +80,10 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
         }
       `;
   }}
+
+  > svg {
+    position: absolute;
+    right: ${spacings.small};
+    transform: translateY(calc(${spacings.x_small} + ${spacings.xx_small}));
+  }
 `;

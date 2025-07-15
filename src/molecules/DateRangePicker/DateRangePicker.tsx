@@ -3,9 +3,12 @@ import { forwardRef, useRef } from 'react';
 import {
   DateRangePicker as Base,
   DateRangePickerProps as BaseProps,
+  Icon,
   Typography,
 } from '@equinor/eds-core-react';
+import { calendar_date_range } from '@equinor/eds-icons';
 
+import { colors } from 'src/atoms';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
 import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
@@ -28,9 +31,10 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             month: '2-digit',
             year: 'numeric',
           };
-    const baseProps: BaseProps = {
+    const baseProps = {
       ...props,
       variant: props.variant !== 'dirty' ? props.variant : undefined,
+      loading: undefined,
     };
     const skeletonTop = getSkeletonTop(props);
     const skeletonHeight = getSkeletonHeight({
@@ -39,6 +43,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       helperIcon: props.helperProps?.icon,
     });
     const skeletonWidth = useRef(`${Math.max(40, Math.random() * 80)}%`);
+    const usingDisabled = props.disabled || props.loading;
 
     return (
       <DatePickerWrapper $variant={props.variant} $loading={props.loading}>
@@ -47,6 +52,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           ref={ref}
           locale={locale}
           formatOptions={formatOptions}
+          disabled={usingDisabled}
         />
         {props.meta && (
           <Typography variant="helper" group="input">
@@ -61,6 +67,14 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
               height: skeletonHeight,
               top: skeletonTop,
             }}
+          />
+        )}
+        {usingDisabled && (
+          <Icon
+            style={{ top: skeletonTop }}
+            data={calendar_date_range}
+            size={24}
+            color={colors.interactive.disabled__fill.rgba}
           />
         )}
       </DatePickerWrapper>
