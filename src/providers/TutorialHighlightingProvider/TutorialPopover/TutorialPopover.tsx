@@ -90,7 +90,7 @@ const Container = styled(motion(Card))<ContainerProps>`
   transition:
     top 400ms,
     left 400ms;
-  box-shadow: ${elevation.raised};
+  box-shadow: ${elevation.above_scrim};
   pointer-events: auto;
   > header {
     display: flex;
