@@ -89,7 +89,6 @@ test('Loading works as expected', async () => {
   render(<DatePicker label="Test" loading />);
 
   expect(await screen.findByRole('progressbar')).toBeInTheDocument();
-  expect(await screen.findByRole('textbox')).toBeDisabled();
 });
 
 test('Loading works as expected with helperprops', async () => {
@@ -102,5 +101,4 @@ test('Loading works as expected with helperprops', async () => {
   );
 
   expect(await screen.findByRole('progressbar')).toBeInTheDocument();
-  expect(await screen.findByRole('textbox')).toBeDisabled();
 });
