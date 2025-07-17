@@ -1,5 +1,5 @@
-import { spacings } from 'src/atoms';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
+import { spacings } from 'src/atoms/style/spacings';
 import { DatePickerProps } from 'src/molecules/DatePicker/DatePicker';
 
 import styled, { css } from 'styled-components';

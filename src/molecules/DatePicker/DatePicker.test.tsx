@@ -86,6 +86,6 @@ test('Error variant', async () => {
 test('Loading works as expected', async () => {
   render(<DatePicker label="Test" loading />);
 
-  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  expect(await screen.findByRole('progressbar')).toBeInTheDocument();
   expect(screen.getByRole('textbox')).toBeDisabled();
 });

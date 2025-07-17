@@ -2,10 +2,10 @@ import { useMemo, useRef } from 'react';
 
 import { Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import { useSelect } from 'src/atoms/hooks/useSelect';
+import { colors } from 'src/atoms/style/colors';
 import { getVariantIcon } from 'src/atoms/utils/forms';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
@@ -29,8 +29,6 @@ import {
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
 import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
-
-const { colors } = tokens;
 
 export type SelectComponentProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
@@ -217,6 +215,7 @@ export const Select = <T extends SelectOptionRequired>(
             />
             {loading && (
               <SkeletonField
+                role="progressbar"
                 style={{
                   width: skeletonWidth.current,
                   left: 0,
