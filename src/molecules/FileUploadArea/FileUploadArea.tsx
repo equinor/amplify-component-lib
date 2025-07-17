@@ -30,6 +30,8 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
     ...options,
   });
 
+  // Not able to test dragging of files
+  /* v8 ignore start */
   useEffect(() => {
     const handleDragEnter = () => {
       if (!window.document.getElementById(FILE_UPLOAD_SCRIM_ID)) {
@@ -64,6 +66,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
       window.document.removeEventListener('mouseleave', handleDragEnd);
     };
   }, []);
+  /* v8 ignore end */
 
   const filetypes = useMemo((): string | undefined => {
     if (options.accept) {
