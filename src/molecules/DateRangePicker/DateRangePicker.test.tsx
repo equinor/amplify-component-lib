@@ -1,3 +1,5 @@
+import { Icon } from '@equinor/eds-core-react';
+import { person } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { DateRangePicker } from './DateRangePicker';
@@ -85,6 +87,19 @@ test('Error variant', async () => {
 
 test('Loading works as expected', async () => {
   render(<DateRangePicker label="Test" loading />);
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  expect(screen.getByRole('textbox')).toBeDisabled();
+});
+
+test('Loading works as expected with helper props', async () => {
+  render(
+    <DateRangePicker
+      label="Test"
+      loading
+      helperProps={{ text: 'Helper', icon: <Icon data={person} /> }}
+    />
+  );
 
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
   expect(screen.getByRole('textbox')).toBeDisabled();
