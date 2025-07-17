@@ -100,7 +100,7 @@ export const UploadFile: FC = () => {
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
           }}
-          compact
+          size="small"
         />
         {feedbackAttachments?.map((file) => {
           return (
