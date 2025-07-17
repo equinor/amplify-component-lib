@@ -227,17 +227,62 @@ test('onSearch is called when hitting enter and search is not empty string', asy
   expect(props.onSearchEnter).toHaveBeenCalledWith(randomWord);
 });
 
-/*
-Going to be used later
 test('Auto complete options work as expected', async () => {
   const props = fakeProps();
   const onAutoComplete = vi.fn();
+  const user = userEvent.setup();
 
   const key = Object.keys(props.values)[0];
   const randomValue = faker.helpers.arrayElement(
     Object.values(props.values).flat()
   );
-  render(
+  const { rerender } = render(
+    <Filter
+      {...props}
+      values={{}}
+      search={''}
+      autoCompleteOptions={{
+        [key]: props.values[key],
+      }}
+      onAutoComplete={onAutoComplete}
+    >
+      <p>child</p>
+    </Filter>
+  );
+  const searchBox = screen.getByRole('searchbox');
+  await user.click(searchBox);
+
+  for (const value of Object.values(props.values[key]).flat()) {
+    expect(
+      screen.queryByRole('menuitem', { name: value.label })
+    ).not.toBeInTheDocument();
+  }
+
+  rerender(
+    <Filter
+      {...props}
+      values={{}}
+      search={'a'}
+      autoCompleteOptions={{
+        [key]: props.values[key],
+      }}
+      onAutoComplete={onAutoComplete}
+    >
+      <p>child</p>
+    </Filter>
+  );
+
+  await user.click(searchBox);
+
+  for (const value of Object.values(props.values[key]).flat()) {
+    if (value.label.includes('a')) {
+      expect(
+        await screen.findByRole('menuitem', { name: value.label })
+      ).toBeInTheDocument();
+    }
+  }
+
+  rerender(
     <Filter
       {...props}
       values={{}}
@@ -250,14 +295,12 @@ test('Auto complete options work as expected', async () => {
       <p>child</p>
     </Filter>
   );
-  const user = userEvent.setup();
 
-  const searchBox = screen.getByRole('searchbox');
   await user.click(searchBox);
   await user.keyboard('{Enter}');
 
   expect(onAutoComplete).toHaveBeenCalledTimes(1);
-  expect(onAutoComplete).toHaveBeenCalledWith(key, randomValue);
+  expect(onAutoComplete).toHaveBeenCalledWith(key, { key, ...randomValue });
 });
 
 test('Auto complete options work as expected when search doesnt match anything', async () => {
@@ -287,4 +330,3 @@ test('Auto complete options work as expected when search doesnt match anything',
   expect(onAutoComplete).not.toHaveBeenCalled();
   expect(props.onSearchEnter).toHaveBeenCalledTimes(1);
 });
-*/
