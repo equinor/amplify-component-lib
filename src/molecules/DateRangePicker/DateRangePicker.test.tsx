@@ -101,6 +101,6 @@ test('Loading works as expected with helper props', async () => {
     />
   );
 
-  expect(screen.getByRole('progressbar')).toBeInTheDocument();
-  expect(screen.getByRole('textbox')).toBeDisabled();
+  expect(await screen.findByRole('progressbar')).toBeInTheDocument();
+  expect(await screen.findByRole('textbox')).toBeDisabled();
 });
