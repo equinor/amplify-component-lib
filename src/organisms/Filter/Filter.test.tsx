@@ -330,3 +330,94 @@ test('Auto complete options work as expected when search doesnt match anything',
   expect(onAutoComplete).not.toHaveBeenCalled();
   expect(props.onSearchEnter).toHaveBeenCalledTimes(1);
 });
+
+test('Auto complete with keyboard', async () => {
+  const props = fakeProps();
+  const onAutoComplete = vi.fn();
+  const user = userEvent.setup();
+
+  const key = Object.keys(props.values)[0];
+
+  render(
+    <Filter
+      {...props}
+      values={{}}
+      search={'a'}
+      autoCompleteOptions={{
+        [key]: props.values[key],
+      }}
+      onAutoComplete={onAutoComplete}
+    >
+      <p>child</p>
+    </Filter>
+  );
+  const searchBox = screen.getByRole('searchbox');
+  await user.click(searchBox);
+
+  for (const value of Object.values(props.values[key]).flat()) {
+    if (value.label.includes('a')) {
+      expect(
+        await screen.findByRole('menuitem', { name: value.label })
+      ).toBeInTheDocument();
+    }
+  }
+
+  await user.keyboard('{ArrowDown}');
+  const selectedValue = props.values[key][0];
+  await user.keyboard('{ArrowDown}');
+  expect(
+    screen.getByRole('menuitem', { name: selectedValue.label })
+  ).toHaveFocus();
+  await user.keyboard('{Enter}');
+
+  expect(onAutoComplete).toHaveBeenCalledTimes(1);
+  expect(onAutoComplete).toHaveBeenCalledWith(key, {
+    key,
+    ...selectedValue,
+  });
+});
+
+test('Auto complete menu closes as expected', async () => {
+  const props = fakeProps();
+  const onAutoComplete = vi.fn();
+  const user = userEvent.setup();
+
+  const key = Object.keys(props.values)[0];
+
+  render(
+    <div>
+      <Filter
+        {...props}
+        values={{}}
+        search={'a'}
+        autoCompleteOptions={{
+          [key]: props.values[key],
+        }}
+        onAutoComplete={onAutoComplete}
+      >
+        <p>child</p>
+      </Filter>
+      <p>outside</p>
+    </div>
+  );
+  const searchBox = screen.getByRole('searchbox');
+  await user.click(searchBox);
+
+  for (const value of Object.values(props.values[key]).flat()) {
+    if (value.label.includes('a')) {
+      expect(
+        await screen.findByRole('menuitem', { name: value.label })
+      ).toBeInTheDocument();
+    }
+  }
+
+  await user.click(screen.getByText('outside'));
+
+  for (const value of Object.values(props.values[key]).flat()) {
+    if (value.label.includes('a')) {
+      expect(
+        screen.queryByRole('menuitem', { name: value.label })
+      ).not.toBeInTheDocument();
+    }
+  }
+});

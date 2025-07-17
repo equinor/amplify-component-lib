@@ -60,6 +60,5 @@ export function findStartAndEndIndexOfSearch({
   label: string;
 }): [number, number] {
   const startIndex = label.toLowerCase().indexOf(searchValue.toLowerCase());
-  if (startIndex === -1) return [-1, -1];
   return [startIndex, startIndex + searchValue.length - 1];
 }
