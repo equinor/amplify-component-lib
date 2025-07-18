@@ -23,6 +23,12 @@ export const colors = {
     primary__pressed: {
       rgba: 'var(--amplify_interactive_primary_pressed, rgba(19, 46, 49, 1))',
     },
+    tutorial__active_step: {
+      rgba: 'var(--amplify_interactive_tutorial_active_step, rgba(0, 112, 121, 1))',
+    },
+    tutorial__inactive_step: {
+      rgba: 'var(--amplify_interactive_tutorial_inactive_step, rgba(168, 206, 209, 1))',
+    },
   },
   dataviz: {
     primary: {

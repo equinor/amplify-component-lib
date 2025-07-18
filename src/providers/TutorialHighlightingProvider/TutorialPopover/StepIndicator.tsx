@@ -20,13 +20,13 @@ const Step = styled.span<StepProps>`
   overflow: hidden;
   height: 4px;
   width: 100%;
-  background: ${colors.infographic.primary__moss_green_34.rgba};
+  background: ${colors.interactive.tutorial__inactive_step.rgba};
   border-radius: ${shape.rounded.borderRadius};
   position: relative;
   &:after {
     content: '';
     position: absolute;
-    background: ${colors.interactive.primary__resting.rgba};
+    background: ${colors.interactive.tutorial__active_step.rgba};
     width: 100%;
     height: 100%;
     transition: left ${animation.transitionMS};
