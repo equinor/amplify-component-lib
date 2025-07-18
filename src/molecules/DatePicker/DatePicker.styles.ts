@@ -1,14 +1,17 @@
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
+import { spacings } from 'src/atoms/style/spacings';
 import { DatePickerProps } from 'src/molecules/DatePicker/DatePicker';
 
 import styled, { css } from 'styled-components';
 
 interface DatePickerWrapperProps {
   $variant: DatePickerProps['variant'];
+  $loading?: boolean;
 }
 
 export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
   position: relative;
+  height: fit-content;
   > p {
     color: ${colors.text.static_icons__tertiary.rgba};
     position: absolute;
@@ -62,5 +65,25 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
         }
       `;
     }}
+  }
+
+  ${({ $loading }) => {
+    if ($loading)
+      return css`
+        div[role='presentation'] {
+          visibility: hidden;
+
+          // For the date range picker there is a "-" in between the two dates, so we hide that as well
+          & ~ span {
+            visibility: hidden;
+          }
+        }
+      `;
+  }}
+
+  > svg {
+    position: absolute;
+    right: ${spacings.small};
+    transform: translateY(calc(${spacings.x_small} + ${spacings.xx_small}));
   }
 `;

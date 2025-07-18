@@ -1,3 +1,5 @@
+import { Icon } from '@equinor/eds-core-react';
+import { person } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
@@ -81,4 +83,22 @@ test('Error variant', async () => {
   expect(screen.getAllByRole('button')[0].parentElement!).toHaveStyle(
     `box-shadow: inset 0 -1px 0 0 ${VARIANT_COLORS['error']}`
   );
+});
+
+test('Loading works as expected', async () => {
+  render(<DatePicker label="Test" loading />);
+
+  expect(await screen.findByRole('progressbar')).toBeInTheDocument();
+});
+
+test('Loading works as expected with helperprops', async () => {
+  render(
+    <DatePicker
+      label="Test"
+      loading
+      helperProps={{ text: 'Helper', icon: <Icon data={person} /> }}
+    />
+  );
+
+  expect(await screen.findByRole('progressbar')).toBeInTheDocument();
 });
