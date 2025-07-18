@@ -1,6 +1,5 @@
-import { Link as ReactLink } from 'react-router-dom';
-
 import { tokens } from '@equinor/eds-tokens';
+import { Link as TanstackLink } from '@tanstack/react-router';
 
 import { animation, spacings } from 'src/atoms/style';
 import { HEIGHT } from 'src/organisms/TableOfContents/TableOfContents.constants';
@@ -87,7 +86,7 @@ interface LinkProps extends ButtonProps {
   $disabled?: boolean;
 }
 
-export const Link = styled(ReactLink)<LinkProps>`
+export const Link = styled(TanstackLink)<LinkProps>`
   text-decoration: none;
   &:focus,
   &:hover,
