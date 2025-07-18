@@ -32,6 +32,7 @@ type FilterStoryProps = FilterProps<string> & {
   withSorting?: boolean;
   withQuickFilter?: boolean;
   withTabs?: boolean;
+  withAutoComplete?: boolean;
 };
 
 const Wrapper: FC<FilterStoryProps> = (props) => {
@@ -159,6 +160,19 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     }
   };
 
+  const handleOnAutoComplete = (key: string, value: SelectOptionRequired) => {
+    switch (key) {
+      case 'manufacturer':
+        setManufacturer((prev) => [...prev, value]);
+        break;
+      case 'carSize':
+        setCarSize(value);
+        break;
+    }
+
+    setSearch('');
+  };
+
   return (
     <Filter
       {...props}
@@ -168,6 +182,15 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       onSearchChange={handleOnSearchChange}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
+      autoCompleteOptions={
+        props.withAutoComplete
+          ? {
+              carSize: CAR_SIZE,
+              manufacturer: MANUFACTURERS,
+            }
+          : undefined
+      }
+      onAutoComplete={props.withAutoComplete ? handleOnAutoComplete : undefined}
       topContent={
         props.withTabs ? (
           <Tabs
@@ -386,5 +409,12 @@ export const WithTopContent: Story = {
     values: {
       manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
     },
+  },
+};
+
+export const WithAutoComplete: Story = {
+  args: {
+    withAutoComplete: true,
+    values: {},
   },
 };
