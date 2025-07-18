@@ -23,7 +23,6 @@ export interface FilterWithAutoCompleteOptions<T extends string>
   extends CommonFilterProps<T> {
   autoCompleteOptions: Record<T, SelectOptionRequired[]>;
   onAutoComplete: (key: T, value: SelectOptionRequired) => void;
-  onSearchEnter: (value: string) => void;
 }
 
 export type FilterProps<T extends string> =

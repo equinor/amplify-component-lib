@@ -13,9 +13,9 @@ export const StyledTypography = styled(Typography)`
   position: absolute;
   left: 0;
   color: ${colors.text.static_icons__tertiary.rgba};
-  top: 50%;
-  transform: translateY(-50%);
+  height: fit-content;
   text-wrap: nowrap;
+  line-height: normal;
   > span {
     color: transparent;
   }
