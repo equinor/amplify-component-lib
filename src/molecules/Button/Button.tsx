@@ -34,6 +34,14 @@ export interface ButtonProps extends BaseButtonProps {
 
 const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ loading, variant, color, disabled = false, onClick, ...rest }, ref) => {
+    const usingStyle = variant?.includes('icon')
+      ? {
+          width: 'var(--eds_icon-button__size, 40px)',
+          height: 'var(--eds_icon-button__size, 40px)',
+          ...rest.style,
+        }
+      : rest.style;
+
     return (
       <BaseButton
         ref={ref}
@@ -42,6 +50,7 @@ const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled}
         onClick={loading ? undefined : onClick}
         {...rest}
+        style={usingStyle}
       >
         {loading ? (
           <>
