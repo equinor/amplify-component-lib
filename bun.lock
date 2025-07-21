@@ -39,7 +39,7 @@
         "@tiptap/extension-typography": "^2.11.5",
         "@tiptap/pm": "^2.11.5",
         "@tiptap/react": "^2.11.5",
-        "framer-motion": "^12.4.11",
+        "framer-motion": "^12.23.6",
         "html2canvas": "^1.4.1",
         "jwt-decode": "^4.0.0",
         "lowlight": "^3.3.0",
