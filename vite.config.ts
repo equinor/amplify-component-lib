@@ -15,6 +15,7 @@ export default ({ mode }: { mode: string }) => {
     resolve: {
       alias: {
         src: fileURLToPath(new URL('./src', import.meta.url)),
+        '#AuthProvider': fileURLToPath(new URL('./src/providers/AuthProvider/AuthProvider.tsx', import.meta.url)),
       },
     },
   });
