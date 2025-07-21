@@ -59,7 +59,7 @@ test('Renders correctly without avatar', async () => {
 
 test('Renders correctly when hiding roles', async () => {
   const user = userEvent.setup();
-  renderWithProviders(<Account hideRoleChips />);
+  renderWithProviders(<Account hideRoles />);
 
   const button = screen.getByRole('button');
 

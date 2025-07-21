@@ -3,10 +3,12 @@ import { forwardRef } from 'react';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
 import { ImpersonateAvatar } from './ImpersonateAvatar';
-import { colors, spacings, useAuth } from 'src/atoms';
+import { colors, spacings } from 'src/atoms';
 import { Chip, ProfileAvatar } from 'src/molecules';
 
 import styled from 'styled-components';
+
+import { useAuth } from '#AuthProvider';
 
 const Wrapper = styled.div`
   display: flex;
