@@ -1,13 +1,14 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router';
+
+import { useRouter } from '@tanstack/react-router';
 
 import { Status } from 'src/organisms/Status';
 
 export const ServerError: FC = () => {
-  const navigate = useNavigate();
+  const { history } = useRouter();
 
   const handleOnClick = () => {
-    navigate(-1);
+    history.go(-1);
   };
 
   return (
