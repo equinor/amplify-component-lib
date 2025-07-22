@@ -5,7 +5,6 @@ const config: StorybookConfig = {
 
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
     '@storybook/addon-designs',
     '@storybook/addon-docs',
     'storybook-addon-data-theme-switcher',
@@ -31,7 +30,6 @@ const config: StorybookConfig = {
         include: [
           ...(config.optimizeDeps?.include ?? []),
           '@storybook/addon-docs/mdx-react-shim',
-          '@storybook/blocks',
         ],
       },
     };

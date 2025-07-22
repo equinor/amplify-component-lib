@@ -1,4 +1,4 @@
-import { ArgTypes, PRIMARY_STORY } from '@storybook/addon-docs';
+import { ArgTypes, PRIMARY_STORY } from '@storybook/addon-docs/blocks';
 
 import PropTypes from 'prop-types';
 

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { DateRangePicker, DateRangePickerProps } from './DateRangePicker';
 import { Stack } from 'src/storybook';
+
+import { action } from 'storybook/actions';
 
 const PrimaryComponent = (props: DateRangePickerProps) => {
   const [value, setValue] = useState({
