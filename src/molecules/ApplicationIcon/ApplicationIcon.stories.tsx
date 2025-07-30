@@ -11,6 +11,7 @@ const meta: Meta<typeof ApplicationIcon> = {
       options: [
         'fallback',
         '4dinsight',
+        'adca',
         'acquire',
         'dasha',
         'orca',
