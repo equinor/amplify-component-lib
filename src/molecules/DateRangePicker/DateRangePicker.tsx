@@ -1,12 +1,12 @@
 import { forwardRef, useRef } from 'react';
 
 import {
-  DatePicker as EDSDatePicker,
-  DatePickerProps as EDSDatePickerProps,
+  DateRangePicker as Base,
+  DateRangePickerProps as BaseProps,
   Icon,
   Typography,
 } from '@equinor/eds-core-react';
-import { calendar } from '@equinor/eds-icons';
+import { calendar_date_range } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms';
 import { Variants } from 'src/atoms/types/variants';
@@ -14,16 +14,16 @@ import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
 import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
 import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
 
-export type DatePickerProps = Omit<EDSDatePickerProps, 'variant'> & {
+export type DateRangePickerProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   meta?: string;
   loading?: boolean;
 };
 
-export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
+export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
   (props, ref) => {
-    const locale: DatePickerProps['locale'] = props.locale ?? 'en-GB';
-    const formatOptions: DatePickerProps['formatOptions'] =
+    const locale: DateRangePickerProps['locale'] = props.locale ?? 'en-GB';
+    const formatOptions: DateRangePickerProps['formatOptions'] =
       props.formatOptions !== undefined
         ? props.formatOptions
         : {
@@ -43,11 +43,11 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       helperIcon: props.helperProps?.icon,
     });
     const skeletonWidth = useRef(`${Math.max(40, Math.random() * 80)}%`);
-    const usingDisabled = props.loading || props.disabled;
+    const usingDisabled = props.disabled || props.loading;
 
     return (
       <DatePickerWrapper $variant={props.variant} $loading={props.loading}>
-        <EDSDatePicker
+        <Base
           {...baseProps}
           ref={ref}
           locale={locale}
@@ -72,7 +72,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         {usingDisabled && (
           <Icon
             style={{ top: skeletonTop }}
-            data={calendar}
+            data={calendar_date_range}
             size={24}
             color={colors.interactive.disabled__fill.rgba}
           />
@@ -82,4 +82,4 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
   }
 );
 
-DatePicker.displayName = 'DatePicker';
+DateRangePicker.displayName = 'DateRangePicker';

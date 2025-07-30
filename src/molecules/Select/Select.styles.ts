@@ -50,6 +50,7 @@ export const HelperWrapper = styled.span<HelperWrapperProps>`
 interface ContainerProps {
   $lightBackground?: boolean;
   $variant?: Variants;
+  $loading?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -101,10 +102,6 @@ const Container = styled.div<ContainerProps>`
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
   }
-  &:has(input:disabled) {
-    outline: none;
-    box-shadow: none;
-  }
 
   > svg[role='progressbar'] {
     overflow: unset;
@@ -118,8 +115,9 @@ const Container = styled.div<ContainerProps>`
   }
 
   &:has(input:disabled) {
+    outline: none;
     cursor: not-allowed;
-    box-shadow: none;
+    box-shadow: inset 0 -1px 0 0 ${colors.interactive.disabled__text.rgba} !important;
     > svg:not([role='progressbar']) {
       cursor: not-allowed;
       fill: ${colors.interactive.disabled__text.rgba};

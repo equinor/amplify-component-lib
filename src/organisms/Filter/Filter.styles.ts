@@ -128,3 +128,9 @@ export const StyledChip = styled(Chip)<StyledChipProps>`
     }
   }}
 `;
+
+export const SearchFieldWrapper = styled.section`
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+`;

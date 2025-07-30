@@ -13,13 +13,17 @@ import {
   Container,
   Content,
   SearchField,
+  SearchFieldWrapper,
   Section,
   StyledChip,
   Wrapper,
 } from './Filter.styles';
 import { colors } from 'src/atoms/style/colors';
 import { SelectOptionRequired } from 'src/molecules';
+import { AutoCompleteMenu } from 'src/organisms/Filter/AutoCompleteMenu';
+import { AutoCompleteText } from 'src/organisms/Filter/AutoCompleteText';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
+import { getFilteredAutoCompleteOptions } from 'src/organisms/Filter/Filter.utils';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -49,8 +53,10 @@ export function Filter<T extends string>({
   initialOpen = false,
   placeholder = 'Search...',
   id,
+  ...rest
 }: FilterProps<T>) {
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(initialOpen);
   const [attemptingToRemove, setAttemptingToRemove] = useState<T | undefined>(
     undefined
@@ -65,9 +71,7 @@ export function Filter<T extends string>({
   };
 
   const handleOnFocus = () => {
-    if (!open) {
-      setOpen(true);
-    }
+    if (!open) setOpen(true);
   };
 
   const handleOnSectionClick = () => {
@@ -75,22 +79,24 @@ export function Filter<T extends string>({
   };
 
   const handleOnSearchEnter = (searchValue: string) => {
-    // if (!('autoCompleteOptions' in rest)) {
-    //   onSearchEnter(searchValue);
-    //   return;
-    // }
-    //
-    // for (const key in rest.autoCompleteOptions) {
-    //   const found = rest.autoCompleteOptions[key].find(
-    //     (option) => option.label.toLowerCase() === searchValue.toLowerCase()
-    //   );
-    //
-    //   if (found) {
-    //     rest.onAutoComplete(key, found);
-    //     return;
-    //   }
-    // }
-    //
+    if (!('autoCompleteOptions' in rest)) {
+      onSearchEnter(searchValue);
+      return;
+    }
+
+    const filteredAutoCompleteOptions = getFilteredAutoCompleteOptions({
+      searchValue,
+      autoCompleteOptions: rest.autoCompleteOptions,
+    });
+
+    if (filteredAutoCompleteOptions.length === 1) {
+      rest.onAutoComplete(
+        filteredAutoCompleteOptions[0].key,
+        filteredAutoCompleteOptions[0]
+      );
+      return;
+    }
+
     onSearchEnter(searchValue);
   };
 
@@ -120,7 +126,7 @@ export function Filter<T extends string>({
     <Wrapper id={id}>
       {topContent}
       <Container>
-        <Section onClick={handleOnSectionClick}>
+        <Section ref={sectionRef} onClick={handleOnSectionClick}>
           <Icon
             data={search_icon}
             color={colors.text.static_icons__tertiary.rgba}
@@ -139,16 +145,25 @@ export function Filter<T extends string>({
               </StyledChip>
             ))
           )}
-          <SearchField
-            ref={searchRef}
-            id={`filter-search-${id}`}
-            type="search"
-            value={search}
-            placeholder={hasAnyValues ? undefined : placeholder}
-            onChange={onSearchChange}
-            onKeyDownCapture={handleOnKeyDown}
-            onFocus={handleOnFocus}
-          />
+          <SearchFieldWrapper>
+            {'autoCompleteOptions' in rest && rest.autoCompleteOptions && (
+              <AutoCompleteText
+                search={search}
+                autoCompleteOptions={rest.autoCompleteOptions}
+              />
+            )}
+            <SearchField
+              ref={searchRef}
+              id={`filter-search-${id}`}
+              type="search"
+              autoComplete="off"
+              value={search}
+              placeholder={hasAnyValues ? undefined : placeholder}
+              onChange={onSearchChange}
+              onKeyDownCapture={handleOnKeyDown}
+              onFocus={handleOnFocus}
+            />
+          </SearchFieldWrapper>
           {(Object.values(values) as SelectOptionRequired[][]).some(
             (list) => list.length > 0
           ) && (
@@ -203,6 +218,16 @@ export function Filter<T extends string>({
           </motion.div>
         )}
       </AnimatePresence>
+      {'autoCompleteOptions' in rest && rest.autoCompleteOptions && (
+        <AutoCompleteMenu
+          isFilterOpen={open}
+          search={search}
+          anchorElement={sectionRef.current}
+          autoCompleteOptions={rest.autoCompleteOptions}
+          onAutoComplete={rest.onAutoComplete}
+          searchElement={searchRef.current}
+        />
+      )}
     </Wrapper>
   );
 }

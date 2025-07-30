@@ -18,12 +18,14 @@ export const TextFormatting: FC<EditorPanel> = ({ editor, features }) => {
         data-testid="bold-button"
         icon={format_bold}
         onClick={toggleBold}
+        tooltip="Bold"
       />
       <EditorMenu.Button
         active={editor.isActive('italic')}
         data-testid="italic-button"
         icon={format_italics}
         onClick={toggleItalic}
+        tooltip="Italic"
       />
     </EditorMenu.Section>
   );

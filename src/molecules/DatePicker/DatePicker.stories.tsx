@@ -7,7 +7,6 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { DatePicker, DatePickerProps } from './DatePicker';
-import page from './DatePicker.docs.mdx';
 import { Stack } from 'src/storybook';
 
 const meta: Meta<typeof DatePicker> = {
@@ -15,10 +14,13 @@ const meta: Meta<typeof DatePicker> = {
   component: DatePicker,
   parameters: {
     docs: {
-      page,
       source: {
         excludeDecorators: true,
       },
+    },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=11604-108347&t=s5tJbytN4ZdQ0Xpk-4',
     },
   },
   decorators: [
@@ -42,7 +44,7 @@ const meta: Meta<typeof DatePicker> = {
 
 export default meta;
 
-export const Introduction: StoryFn = (props: DatePickerProps) => {
+export const Default: StoryFn = (props: DatePickerProps) => {
   return (
     <DatePicker
       {...props}
@@ -51,6 +53,42 @@ export const Introduction: StoryFn = (props: DatePickerProps) => {
         action('onChange')(str);
       }}
     />
+  );
+};
+
+export const Loading: StoryFn = (props: DatePickerProps) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <DatePicker
+        {...props}
+        loading
+        onChange={(v) => {
+          const str = v?.toISOString();
+          action('onChange')(str);
+        }}
+      />
+      <DatePicker
+        {...props}
+        label="Loading"
+        loading
+        onChange={(v) => {
+          const str = v?.toISOString();
+          action('onChange')(str);
+        }}
+      />
+    </div>
+  );
+};
+
+export const Variants: StoryFn = (props: DatePickerProps) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <DatePicker {...props} />
+      <DatePicker {...props} variant="warning" />
+      <DatePicker {...props} variant="error" />
+      <DatePicker {...props} variant="success" />
+      <DatePicker {...props} variant="dirty" />
+    </div>
   );
 };
 

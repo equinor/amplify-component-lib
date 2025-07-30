@@ -18,12 +18,14 @@ export const TextHeaders: FC<EditorPanel> = ({ editor, features }) => {
         active={editor.isActive('heading', { level: 2 })}
         icon={amplify_h2}
         onClick={toggleH2}
+        tooltip="Heading 2"
       />
       <EditorMenu.Button
         data-testid="h3-button"
         active={editor.isActive('heading', { level: 3 })}
         icon={amplify_h3}
         onClick={toggleH3}
+        tooltip="Heading 3"
       />
     </EditorMenu.Section>
   );

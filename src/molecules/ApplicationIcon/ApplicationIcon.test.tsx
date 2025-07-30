@@ -3,6 +3,7 @@ import { IconData } from '@equinor/eds-icons';
 import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
 import {
   acquire,
+  adca,
   bravos,
   dasha,
   fallback,
@@ -23,6 +24,7 @@ import { render, screen } from 'src/tests/browsertest-utils';
 import { expect, test } from 'vitest';
 
 const nameOptions: ApplicationIconProps['name'][] = [
+  'adca',
   'acquire',
   '4dinsight',
   'recap',
@@ -45,6 +47,7 @@ type IconsDict = Record<
 >;
 
 const icons: IconsDict = {
+  adca: adca,
   acquire: acquire,
   '4dinsight': fourDInsight,
   recap: recap,

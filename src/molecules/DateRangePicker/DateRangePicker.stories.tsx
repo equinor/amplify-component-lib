@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-import { DateRangePicker, DateRangePickerProps } from '@equinor/eds-core-react';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryFn } from '@storybook/react';
 
-import page from './DateRangePicker.docs.mdx';
+import { DateRangePicker, DateRangePickerProps } from './DateRangePicker';
 import { Stack } from 'src/storybook';
 
 const PrimaryComponent = (props: DateRangePickerProps) => {
@@ -32,7 +31,6 @@ const meta: Meta<typeof DateRangePicker> = {
   component: DateRangePicker,
   parameters: {
     docs: {
-      page,
       source: {
         excludeDecorators: true,
       },
@@ -47,7 +45,7 @@ const meta: Meta<typeof DateRangePicker> = {
             gridGap: '32px',
             gridTemplateColumns: 'repeat(4, auto)',
             alignItems: 'start',
-            height: '100px',
+            height: '130px',
           }}
         >
           <Story />
@@ -61,6 +59,34 @@ export default meta;
 
 export const Introduction: StoryFn<DateRangePickerProps> = (args) => (
   <PrimaryComponent {...args} />
+);
+
+export const Loading: StoryFn<DateRangePickerProps> = (args) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, auto)',
+      gap: '24px',
+    }}
+  >
+    <DateRangePicker {...args} loading value={undefined} />
+    <DateRangePicker {...args} loading label="Label" value={undefined} />
+  </div>
+);
+
+export const Variants: StoryFn = (props: DateRangePickerProps) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, auto)',
+      gap: '24px',
+    }}
+  >
+    <DateRangePicker {...props} variant="warning" label="Warning" />
+    <DateRangePicker {...props} variant="error" label="Error" />
+    <DateRangePicker {...props} variant="success" label="Success" />
+    <DateRangePicker {...props} variant="dirty" label="Dirty" />
+  </div>
 );
 
 const min = new Date();
