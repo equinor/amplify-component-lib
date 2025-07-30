@@ -15,6 +15,7 @@ import { TextAlignment } from './TextAlignment';
 import { TextCode } from './TextCode';
 import { TextColor } from './TextColor';
 import { TextHeaders } from './TextHeaders';
+import { TextHighlight } from './TextHighlight';
 import { TextHistory } from './TextHistory';
 import { TextLinks } from './TextLinks';
 import { TextLists } from './TextLists';
@@ -59,6 +60,7 @@ export const AmplifyBar: FC<MenuBarProps> = ({
         <TextHeaders editor={editor} features={features} />
         <TextLists editor={editor} features={features} />
         <TextColor editor={editor} features={features} />
+        <TextHighlight editor={editor} features={features} />
         <TextCode editor={editor} features={features} />
         <TextAlignment editor={editor} features={features} />
         <TextLinks editor={editor} features={features} />

@@ -12,6 +12,7 @@ export enum RichTextEditorFeatures {
   IMAGES = 'images',
   CLEAR_FORMATTING = 'clear-formatting',
   TABLE = 'table',
+  HIGHLIGHT = 'highlight',
 }
 
 export const DEFAULT_FEATURES = [
@@ -26,6 +27,7 @@ export const DEFAULT_FEATURES = [
   RichTextEditorFeatures.IMAGES,
   RichTextEditorFeatures.TABLE,
   RichTextEditorFeatures.CLEAR_FORMATTING,
+  RichTextEditorFeatures.HIGHLIGHT,
 ];
 
 type OnImageUploadFn = (
