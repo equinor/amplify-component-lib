@@ -27,7 +27,6 @@ export const DEFAULT_FEATURES = [
   RichTextEditorFeatures.IMAGES,
   RichTextEditorFeatures.TABLE,
   RichTextEditorFeatures.CLEAR_FORMATTING,
-  RichTextEditorFeatures.HIGHLIGHT,
 ];
 
 type OnImageUploadFn = (
