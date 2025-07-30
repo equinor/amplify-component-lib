@@ -27,6 +27,7 @@ export const TextClearFormatting: FC<EditorPanel> = ({ editor, features }) => {
         icon={format_clear}
         onClick={clearFormatting}
         data-testid="clear-formatting"
+        tooltip="Clear Formatting"
       />
     </>
   );

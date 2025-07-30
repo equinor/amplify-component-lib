@@ -24,6 +24,7 @@ export const TextTable: FC<EditorPanel> = ({ editor, features }) => {
           .insertTable({ rows: 1, cols: 3, withHeaderRow: false })
           .run();
       }}
+      tooltip="Add Table"
     />
   );
 };

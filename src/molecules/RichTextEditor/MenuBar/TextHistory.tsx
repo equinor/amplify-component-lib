@@ -17,12 +17,14 @@ export const TextHistory: FC<EditorPanel> = ({ editor, features }) => {
         onClick={onUndo}
         data-testid="undo-button"
         disabled={!editor.can().undo()}
+        tooltip="Undo"
       />
       <EditorMenu.Button
         icon={redo}
         onClick={onRedo}
         data-testid="redo-button"
         disabled={!editor.can().redo()}
+        tooltip="Redo"
       />
     </EditorMenu.Section>
   );

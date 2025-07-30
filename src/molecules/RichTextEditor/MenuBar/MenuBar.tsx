@@ -88,7 +88,7 @@ export const EditorMenu = {
 
 export const EditorText = {
   History: TextHistory,
-  Formating: TextFormatting,
+  Formatting: TextFormatting,
   Headers: TextHeaders,
   Lists: TextLists,
   Color: TextColor,
@@ -97,6 +97,6 @@ export const EditorText = {
   Table: TextTable,
   TableBar: TableMenuBar,
   Alignment: TextAlignment,
-  ClearFormating: TextClearFormatting,
+  ClearFormatting: TextClearFormatting,
 };
 /* v8 ignore end */

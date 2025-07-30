@@ -5,6 +5,7 @@ import { format_color_text } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 
@@ -68,26 +69,28 @@ export const TextColor: FC<EditorPanel> = ({ editor, features }) => {
   if (features && !features.includes(RichTextEditorFeatures.TEXT_COLOR))
     return null;
   return (
-    <TextColorStyle>
-      <input
-        type="color"
-        onInput={handleOnInput}
-        data-testid="text-color-input"
-        value={
-          (editor.getAttributes('textStyle')?.color as string) ||
-          colors.text.static_icons__default.hex
-        }
-      />
-      <IconWrapper>
-        <Icon data={format_color_text} />
-      </IconWrapper>
-      <ColorBar
-        style={{
-          background:
+    <OptionalTooltip title="Text Color" enterDelay={300}>
+      <TextColorStyle>
+        <input
+          type="color"
+          onInput={handleOnInput}
+          data-testid="text-color-input"
+          value={
             (editor.getAttributes('textStyle')?.color as string) ||
-            colors.text.static_icons__default.hex,
-        }}
-      />
-    </TextColorStyle>
+            colors.text.static_icons__default.hex
+          }
+        />
+        <IconWrapper>
+          <Icon data={format_color_text} />
+        </IconWrapper>
+        <ColorBar
+          style={{
+            background:
+              (editor.getAttributes('textStyle')?.color as string) ||
+              colors.text.static_icons__default.hex,
+          }}
+        />
+      </TextColorStyle>
+    </OptionalTooltip>
   );
 };

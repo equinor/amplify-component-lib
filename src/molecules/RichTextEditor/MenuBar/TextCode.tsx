@@ -14,6 +14,7 @@ export const TextCode: FC<EditorPanel> = ({ editor, features }) => {
       icon={code}
       onClick={toggleCode}
       data-testid="code-button"
+      tooltip="Code Block"
     />
   );
 };

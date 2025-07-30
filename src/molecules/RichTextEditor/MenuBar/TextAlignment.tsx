@@ -21,18 +21,21 @@ export const TextAlignment: FC<EditorPanel> = ({ editor, features }) => {
         data-testid="align-left-button"
         icon={format_align_left}
         onClick={alignLeft}
+        tooltip="Align Left"
       />
       <EditorMenu.Button
         active={editor.isActive({ textAlign: 'center' })}
         data-testid="align-center-button"
         icon={format_align_center}
         onClick={alignCenter}
+        tooltip="Align Center"
       />
       <EditorMenu.Button
         active={editor.isActive({ textAlign: 'right' })}
         data-testid="align-right-button"
         icon={format_align_right}
         onClick={alignRight}
+        tooltip="Align Right"
       />
     </EditorMenu.Section>
   );
