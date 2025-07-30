@@ -3,7 +3,11 @@ import {
   RichTextEditorFeatures,
   RichTextEditorProps,
 } from 'src/molecules';
-import { renderWithProviders, screen } from 'src/tests/browsertest-utils';
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeProps(): RichTextEditorProps {
   return {
@@ -26,4 +30,24 @@ test('Hides button if not in features', async () => {
   const input = screen.queryByTestId('highlight-button');
 
   expect(input).not.toBeInTheDocument();
+});
+
+test('Highlights text when button is clicked', async () => {
+  const props = fakeProps();
+  renderWithProviders(
+    <RichTextEditor
+      {...props}
+      removeFeatures={[RichTextEditorFeatures.IMAGES]}
+    />
+  );
+  const user = userEvent.setup();
+
+  const button = await screen.findByTestId('highlight-button');
+
+  expect(button).toBeInTheDocument();
+
+  await user.dblClick(screen.getByText('test'));
+  await user.click(button);
+
+  expect(props.onChange).toHaveBeenCalledWith('<p><mark>test</mark></p>');
 });
