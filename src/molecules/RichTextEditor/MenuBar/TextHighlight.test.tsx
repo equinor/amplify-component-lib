@@ -16,7 +16,10 @@ test('Hides button if not in features', async () => {
   renderWithProviders(
     <RichTextEditor
       {...fakeProps()}
-      removeFeatures={[RichTextEditorFeatures.HIGHLIGHT]}
+      removeFeatures={[
+        RichTextEditorFeatures.IMAGES,
+        RichTextEditorFeatures.HIGHLIGHT,
+      ]}
     />
   );
 
