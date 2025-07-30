@@ -79,12 +79,14 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
           onClick={handleOnToggleOpen}
           disabled={editor.state.selection.empty}
           data-testid="link-button"
+          tooltip="Link"
         />
         <EditorMenu.Button
           icon={link_off}
           onClick={onUnsetLink}
           disabled={!editor.isActive('link')}
           data-testid="unsetlink-button"
+          tooltip="Remove Link"
         />
       </EditorMenu.Section>
       {open && (
