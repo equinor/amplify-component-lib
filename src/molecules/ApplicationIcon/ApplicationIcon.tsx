@@ -1,6 +1,7 @@
 import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
 import { Acquire } from './Icons/Acquire';
+import { Adca } from './Icons/Adca';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
 import { Fallback } from './Icons/Fallback';
@@ -17,6 +18,7 @@ import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
 
 export type ApplicationName =
+  | 'adca'
   | 'acquire'
   | '4dinsight'
   | 'recap'
@@ -39,6 +41,7 @@ interface ApplicationIconData {
   >;
 }
 const apps: ApplicationIconData[] = [
+  { appName: ['adca'], component: Adca },
   { appName: ['portal', 'embark', 'jsembark'], component: JsEmbark },
   { appName: ['acquire'], component: Acquire },
   { appName: ['4dinsight'], component: FourDInsight },
