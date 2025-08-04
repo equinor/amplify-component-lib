@@ -191,9 +191,9 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     if (newSelectedIndex === -1 || values.at(newSelectedIndex) === undefined)
       return;
 
-    setSelected(values[newSelectedIndex]);
+    handleSetSelected(values[newSelectedIndex]);
     // this effect handles scroll navigation and should not be triggered on hash change
-  }, [values, visible]);
+  }, [handleSetSelected, values, visible]);
   /* v8 ignore end */
 
   return (
