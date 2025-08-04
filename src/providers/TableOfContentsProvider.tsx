@@ -108,12 +108,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         navigate({
           to: '.',
           hash: `#${values[selectedIndex]}`,
-          hashScrollIntoView: {
-            block: 'start',
-            behavior: options?.shouldInstantlyJumpOnMount
-              ? 'instant'
-              : (options?.behavior ?? 'smooth'),
-          },
+          hashScrollIntoView: false,
           replace: true,
         });
 
@@ -163,12 +158,18 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         return;
       }
 
-      handleSetSelected(targetValue, {
-        behavior: 'instant',
-        shouldInstantlyJumpOnMount: true,
+      setSelected(targetValue);
+      navigate({
+        to: '.',
+        hash: `#${targetValue}`,
+        hashScrollIntoView: {
+          block: 'start',
+          behavior: 'instant',
+        },
+        replace: true,
       });
     }
-  }, [handleSetSelected, hash, values]);
+  }, [hash, navigate, values]);
 
   // Handle change of selected when scrolling down the page
   /* v8 ignore start */
