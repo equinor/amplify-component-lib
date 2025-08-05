@@ -1,4 +1,4 @@
-import { createContext, FC, ReactElement, useContext } from 'react';
+import { createContext, FC, ReactElement, RefObject, useContext } from 'react';
 
 import { TutorialProvider } from '@equinor/subsurface-app-management';
 
@@ -24,17 +24,18 @@ export function useTutorialHighlighting() {
 
 interface TutorialHighlightingProviderProps {
   children: ReactElement | ReactElement[];
+  contentRef: RefObject<HTMLElement | null>;
   customStepContent?: Record<string, ReactElement>;
 }
 
 export const TutorialHighlightingProvider: FC<
   TutorialHighlightingProviderProps
-> = ({ children, customStepContent }) => (
+> = ({ children, contentRef, customStepContent }) => (
   <TutorialHighlightingContext.Provider
     value={{ customStepContent: customStepContent ?? {} }}
   >
     <TutorialProvider>
-      <TutorialHighlightingProviderInner>
+      <TutorialHighlightingProviderInner contentRef={contentRef}>
         {children}
       </TutorialHighlightingProviderInner>
     </TutorialProvider>
