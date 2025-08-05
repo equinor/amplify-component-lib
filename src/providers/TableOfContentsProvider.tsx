@@ -192,9 +192,17 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     if (newSelectedIndex === -1 || values.at(newSelectedIndex) === undefined)
       return;
 
-    handleSetSelected(values[newSelectedIndex]);
+    setSelected(values[newSelectedIndex]);
+    if (hashNavigation) {
+      navigate({
+        to: '.',
+        hash: `#${values[newSelectedIndex]}`,
+        hashScrollIntoView: false,
+        replace: true,
+      });
+    }
     // this effect handles scroll navigation and should not be triggered on hash change
-  }, [handleSetSelected, values, visible]);
+  }, [handleSetSelected, hashNavigation, navigate, values, visible]);
   /* v8 ignore end */
 
   return (
