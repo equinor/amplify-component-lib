@@ -1,3 +1,5 @@
+import { RefObject } from 'react';
+
 import { useReversedScrollY } from 'src/providers/TutorialHighlightingProvider/hooks/useReversedScrollY';
 
 import { MotionStyle, useTransform } from 'framer-motion';
@@ -5,6 +7,7 @@ import { MotionStyle, useTransform } from 'framer-motion';
 export const CARET_OFFSET = 16;
 
 interface UseTutorialPopoverPositionArgs {
+  contentRef: RefObject<HTMLElement | null>;
   top?: number;
   left?: number;
   width?: number;
@@ -33,8 +36,9 @@ export function useTutorialPopoverPosition({
   width,
   height,
   popoverSize,
+  contentRef,
 }: UseTutorialPopoverPositionArgs): UseTutorialPopoverPositionReturn {
-  const reversedScrollY = useReversedScrollY();
+  const reversedScrollY = useReversedScrollY(contentRef);
   // Default position of the popover is that it's under the highlighted element
   let usingTop = top && height ? top + height + CARET_OFFSET : undefined;
   let usingLeft = left && width ? left + width / 2 : undefined;
