@@ -8,25 +8,37 @@ import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
 import { useEditImpersonation } from '../hooks/useEditImpersonation';
 import { Header } from '../Impersonate.styles';
 import { Container, Section } from './CreateOrEditUser.styles';
+import { Field } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
-import { ComboBox, SelectOptionRequired } from 'src/molecules';
+import {
+  ComboBox,
+  SelectOption,
+  SelectOptionRequired,
+  SingleSelect,
+} from 'src/molecules';
 import { TextField } from 'src/molecules/TextField/TextField';
 import { useAllAppRoles } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useAllAppRoles';
 
 interface CreateOrEditUserProps {
   editingUser?: ImpersonateUserDto;
   onBack: () => void;
+  availableFields?: Field[];
+  availableWells?: string[];
 }
 
 export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   editingUser,
   onBack,
+  availableFields,
+  availableWells,
 }) => {
   const initializedEditUser = useRef<boolean>(false);
   const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [field, setField] = useState('');
+  const [well, setWell] = useState('');
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
 
   useEffect(() => {
@@ -39,6 +51,20 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
           return { value: role, label: role };
         })
       );
+
+      if (availableFields) {
+        const selectedField =
+          availableFields.find((field) => field.uuid == editingUser.field)
+            ?.name ?? '';
+        setField(selectedField);
+      }
+
+      if (availableWells) {
+        const selectedWell =
+          availableWells.find((well) => well == editingUser.well) ?? '';
+        setWell(selectedWell);
+      }
+
       setFirstName(editingUser.firstName);
       setLastName(editingUser.lastName);
       setEmail(editingUser.email ?? '');
@@ -47,12 +73,19 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
 
   const availableRoles = useMemo(
     () =>
-      data?.map((item) => ({
-        value: item.value,
-        label: item.displayName,
-      })) ?? [],
+      data?.map((item) => ({ value: item.value, label: item.displayName })) ??
+      [],
     [data]
   );
+
+  const avaiableFieldsSelect: { value: string; label: string }[] =
+    availableFields?.map((item) => ({
+      value: item.uuid ?? '',
+      label: item.name ?? '',
+    })) ?? [];
+
+  const avaiableWellsSelect: { value: string; label: string }[] =
+    availableWells?.map((item) => ({ value: item, label: item })) ?? [];
 
   const { mutateAsync: createImpersonationUser, isPending: isCreating } =
     useCreateImpersonation();
@@ -81,13 +114,27 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
     setRoles(values);
   };
 
+  const handleOnFieldSelect = (
+    selected: SelectOption<{ value: string; label: string }> | undefined
+  ) => {
+    setField(selected?.value ?? '');
+  };
+  const handleOnWellSelect = (
+    selected: SelectOption<{ value: string; label: string }> | undefined
+  ) => {
+    setWell(selected?.value ?? '');
+  };
+
   const handleOnCreateOrSave = async () => {
     if (editingUser) {
       await updateImpersonationUser({
         id: editingUser.id,
         firstName,
         lastName,
+        fullName: `${firstName} ${lastName}`,
         email: email !== '' ? email : undefined,
+        field: field !== '' ? field : undefined,
+        well: well !== '' ? well : undefined,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: editingUser.uniqueName,
         appName: editingUser.appName,
@@ -142,6 +189,46 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
           onChange={handleOnEmailChange}
         />
       </Section>
+
+      <Section>
+        {avaiableFieldsSelect && (
+          <>
+            <Typography variant="label" group="navigation">
+              Field
+            </Typography>
+            <SingleSelect
+              placeholder="Select field..."
+              meta="Optional (For internal application role purposes)"
+              value={
+                avaiableFieldsSelect.find((item) => item.value === field)
+                  ? { value: field, label: field }
+                  : undefined
+              }
+              onSelect={handleOnFieldSelect}
+              items={avaiableFieldsSelect}
+            />
+          </>
+        )}
+        {avaiableWellsSelect && (
+          <>
+            <Typography variant="label" group="navigation">
+              Well
+            </Typography>
+            <SingleSelect
+              placeholder="Select well..."
+              meta="Optional (For internal application role purposes)"
+              value={
+                avaiableWellsSelect.find((item) => item.value === well)
+                  ? { value: field, label: field }
+                  : undefined
+              }
+              onSelect={handleOnWellSelect}
+              items={avaiableWellsSelect}
+            />
+          </>
+        )}
+      </Section>
+
       <Section>
         <Typography variant="label" group="navigation">
           Roles

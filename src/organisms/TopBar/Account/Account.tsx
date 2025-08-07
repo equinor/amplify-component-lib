@@ -30,7 +30,7 @@ import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
-import { EnvironmentType } from 'src/atoms';
+import { EnvironmentType, Field } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
@@ -43,6 +43,8 @@ export interface AccountProps {
   hideRoleChips?: boolean;
   useDisplayNameForRole?: boolean;
   children?: ReactNode;
+  availableFields?: Field[];
+  availableWells?: string[];
 }
 
 export const Account: FC<AccountProps> = ({
@@ -50,6 +52,8 @@ export const Account: FC<AccountProps> = ({
   hideRoleChips = false,
   useDisplayNameForRole = false,
   children,
+  availableFields,
+  availableWells,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
@@ -159,6 +163,8 @@ export const Account: FC<AccountProps> = ({
         open={openImpersonate}
         onClose={handleOnCloseImpersonate}
         anchorEl={buttonRef.current}
+        availableFields={availableFields}
+        availableWells={availableWells}
       />
     </>
   );
