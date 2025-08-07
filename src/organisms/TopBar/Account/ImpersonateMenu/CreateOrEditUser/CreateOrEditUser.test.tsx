@@ -157,6 +157,100 @@ test.each(['email', 'no-email'])(
   { timeout: 8000 }
 );
 
+test.each(['field', 'no-field'])(
+  'Able to edit existing user impersonation - %s',
+  async (testCase) => {
+    renderWithProviders(<Account />);
+    const user = userEvent.setup();
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    await user.click(
+      await screen.findByRole('button', { name: 'Impersonate' })
+    );
+
+    const menuItems = await screen.findAllByTestId('impersonation-user');
+    expect(menuItems.length).toBeGreaterThan(0);
+
+    // Click edit on the first one
+    await user.click(within(menuItems[0]).getByRole('button'));
+
+    await user.click(screen.getByRole('button', { name: /edit user/i }));
+
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
+    const textBox = screen.getByRole('textbox', { name: /first name/i });
+    await user.clear(textBox);
+
+    const newFirstName = faker.person.firstName();
+    await user.type(textBox, newFirstName);
+
+    if (testCase === 'field') {
+      await user.type(
+        screen.getByRole('textbox', { name: /field/i }),
+        faker.location.state()
+      );
+    } else if (testCase === 'no-field') {
+      await user.clear(screen.getByRole('textbox', { name: /field/i }));
+    }
+
+    await user.click(screen.getByRole('button', { name: /save/i }));
+
+    expect(
+      await screen.findByText(new RegExp(newFirstName))
+    ).toBeInTheDocument();
+  },
+  { timeout: 8000 }
+);
+
+test.each(['well', 'no-well'])(
+  'Able to edit existing user impersonation - %s',
+  async (testCase) => {
+    renderWithProviders(<Account />);
+    const user = userEvent.setup();
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+
+    await user.click(
+      await screen.findByRole('button', { name: 'Impersonate' })
+    );
+
+    const menuItems = await screen.findAllByTestId('impersonation-user');
+    expect(menuItems.length).toBeGreaterThan(0);
+
+    // Click edit on the first one
+    await user.click(within(menuItems[0]).getByRole('button'));
+
+    await user.click(screen.getByRole('button', { name: /edit user/i }));
+
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
+    const textBox = screen.getByRole('textbox', { name: /first name/i });
+    await user.clear(textBox);
+
+    const newFirstName = faker.person.firstName();
+    await user.type(textBox, newFirstName);
+
+    if (testCase === 'well') {
+      await user.type(
+        screen.getByRole('textbox', { name: /well/i }),
+        faker.location.city()
+      );
+    } else if (testCase === 'no-well') {
+      await user.clear(screen.getByRole('textbox', { name: /well/i }));
+    }
+
+    await user.click(screen.getByRole('button', { name: /save/i }));
+
+    expect(
+      await screen.findByText(new RegExp(newFirstName))
+    ).toBeInTheDocument();
+  },
+  { timeout: 8000 }
+);
+
 test('Edit another user clears the form as expected', async () => {
   renderWithProviders(<Account />);
   const user = userEvent.setup();
