@@ -69,7 +69,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       setLastName(editingUser.lastName);
       setEmail(editingUser.email ?? '');
     }
-  }, [data, editingUser, initializedEditUser]);
+  }, [data, editingUser, initializedEditUser, availableFields, availableWells]);
 
   const availableRoles = useMemo(
     () =>
