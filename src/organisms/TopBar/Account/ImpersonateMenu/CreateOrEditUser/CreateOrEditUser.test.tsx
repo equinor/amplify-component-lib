@@ -188,11 +188,11 @@ test.each(['field', 'no-field'])(
 
     if (testCase === 'field') {
       await user.type(
-        screen.getByRole('textbox', { name: /field/i }),
+        screen.getByRole('menuitem', { name: /field/i }),
         faker.location.state()
       );
     } else if (testCase === 'no-field') {
-      await user.clear(screen.getByRole('textbox', { name: /field/i }));
+      await user.clear(screen.getByRole('menuitem', { name: /field/i }));
     }
 
     await user.click(screen.getByRole('button', { name: /save/i }));
@@ -235,11 +235,11 @@ test.each(['well', 'no-well'])(
 
     if (testCase === 'well') {
       await user.type(
-        screen.getByRole('textbox', { name: /well/i }),
+        screen.getByRole('menuitem', { name: /well/i }),
         faker.location.city()
       );
     } else if (testCase === 'no-well') {
-      await user.clear(screen.getByRole('textbox', { name: /well/i }));
+      await user.clear(screen.getByRole('menuitem', { name: /well/i }));
     }
 
     await user.click(screen.getByRole('button', { name: /save/i }));
@@ -306,9 +306,7 @@ test.each(['email', 'no-email'])(
 
     await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
 
-    const createButton = screen.getByRole('button', {
-      name: /create/i,
-    });
+    const createButton = screen.getByRole('button', { name: /create/i });
 
     expect(createButton).toBeDisabled();
 
@@ -334,10 +332,7 @@ test.each(['email', 'no-email'])(
     }
 
     const roles = faker.helpers
-      .arrayElements(FAKE_ROLES, {
-        min: 2,
-        max: FAKE_ROLES.length - 1,
-      })
+      .arrayElements(FAKE_ROLES, { min: 2, max: FAKE_ROLES.length - 1 })
       .map((role) => role.displayName)
       .sort();
 
