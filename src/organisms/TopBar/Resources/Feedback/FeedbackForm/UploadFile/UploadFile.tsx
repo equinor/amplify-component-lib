@@ -115,8 +115,8 @@ export const UploadFile: FC = () => {
           /* v8 ignore start */
           return (
             <ImageFile
-              {...rejection}
               key={rejection.file.name + rejection.file.size}
+              {...rejection}
               onDelete={() => handleOnDeleteRejected(rejection)}
               error
             />

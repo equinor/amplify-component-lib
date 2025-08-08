@@ -12,7 +12,6 @@ import GapCursor from '@tiptap/extension-gapcursor';
 import { HardBreak, HardBreakOptions } from '@tiptap/extension-hard-break';
 import { HeadingOptions } from '@tiptap/extension-heading';
 import { Highlight, HighlightOptions } from '@tiptap/extension-highlight';
-import { History, HistoryOptions } from '@tiptap/extension-history';
 import { Italic, ItalicOptions } from '@tiptap/extension-italic';
 import { Link, LinkOptions } from '@tiptap/extension-link';
 import { ListItem, ListItemOptions } from '@tiptap/extension-list-item';
@@ -33,6 +32,7 @@ import { Text } from '@tiptap/extension-text';
 import { TextAlign, TextAlignOptions } from '@tiptap/extension-text-align';
 import { TextStyle, TextStyleOptions } from '@tiptap/extension-text-style';
 import { Typography, TypographyOptions } from '@tiptap/extension-typography';
+import { UndoRedo, UndoRedoOptions } from '@tiptap/extensions';
 
 import ExtendedHeaders from './ExtendedHeaders';
 import ExtendedImage, { ExtendedImageOptions } from './ExtendedImage';
@@ -46,7 +46,7 @@ export interface AmplifyKitOptions {
   bulletList: Partial<BulletListOptions> | false;
   hardBreak: Partial<HardBreakOptions> | false;
   heading: Partial<HeadingOptions> | false;
-  history: Partial<HistoryOptions> | false;
+  undoRedo: Partial<UndoRedoOptions> | false;
   italic: Partial<ItalicOptions> | false;
   listItem: Partial<ListItemOptions> | false;
   orderedList: Partial<OrderedListOptions> | false;
@@ -82,7 +82,7 @@ const extensions: ExtensionsMap[] = [
   { name: 'bulletList', extension: BulletList },
   { name: 'document', extension: Document },
   { name: 'hardBreak', extension: HardBreak },
-  { name: 'history', extension: History },
+  { name: 'undoRedo', extension: UndoRedo },
   { name: 'italic', extension: Italic },
   { name: 'listItem', extension: ListItem },
   { name: 'orderedList', extension: OrderedList },
