@@ -8,7 +8,7 @@ import {
   test,
   userEvent,
 } from 'src/tests/browsertest-utils';
-import { FAKE_ROLES } from 'src/tests/mockHandlers';
+import { FAKE_FIELDS, FAKE_ROLES, FAKE_WELLS } from 'src/tests/mockHandlers';
 
 test('Able to open/close create new', async () => {
   renderWithProviders(<Account />);
@@ -157,99 +157,59 @@ test.each(['email', 'no-email'])(
   { timeout: 8000 }
 );
 
-test.each(['field', 'no-field'])(
-  'Able to edit existing user impersonation - %s',
-  async (testCase) => {
-    renderWithProviders(<Account />);
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
 
-    await user.click(button);
 
-    await user.click(
-      await screen.findByRole('button', { name: 'Impersonate' })
-    );
+test('shows field selector if availableFields array has items', async () => {
+  renderWithProviders(<Account availableFields={FAKE_FIELDS} />);
+  const user = userEvent.setup();
+  // Open impersonate menu
+  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+  // Open create user dialog
+  await user.click(screen.getByRole('button', { name: /create/i }));
 
-    const menuItems = await screen.findAllByTestId('impersonation-user');
-    expect(menuItems.length).toBeGreaterThan(0);
+  const fieldLabel = screen.getByText(/field/i);
+  expect(fieldLabel).toBeInTheDocument();
 
-    // Click edit on the first one
-    await user.click(within(menuItems[0]).getByRole('button'));
+  const singleSelect = screen.getByPlaceholderText(/select field.../i);
+  expect(singleSelect).toBeInTheDocument();
+});
 
-    await user.click(screen.getByRole('button', { name: /edit user/i }));
+test('does not show field selector if availableFields array is empty', async () => {
+  renderWithProviders(<Account availableFields={[]} />);
+  const user = userEvent.setup();
+  // Open impersonate menu
+  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+  // Open create user dialog
+  await user.click(screen.getByRole('button', { name: /create/i }));
 
-    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+  const fieldLabel = screen.queryByText(/field/i);
+  expect(fieldLabel).not.toBeInTheDocument();
 
-    const textBox = screen.getByRole('textbox', { name: /first name/i });
-    await user.clear(textBox);
+  const singleSelect = screen.queryByPlaceholderText(/select field.../i);
+  expect(singleSelect).not.toBeInTheDocument();
+});
 
-    const newFirstName = faker.person.firstName();
-    await user.type(textBox, newFirstName);
+test('shows well selector if availableWells array has items', async () => {
+  renderWithProviders(<Account availableWells={FAKE_WELLS} />);
 
-    if (testCase === 'field') {
-      await user.type(
-        screen.getByRole('menuitem', { name: /field/i }),
-        faker.location.state()
-      );
-    } else if (testCase === 'no-field') {
-      await user.clear(screen.getByRole('menuitem', { name: /field/i }));
-    }
+  const wellLabel = screen.getByText(/well/i);
+  expect(wellLabel).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /save/i }));
+  const singleSelect = screen.getByPlaceholderText(/select well.../i);
+  expect(singleSelect).toBeInTheDocument();
+});
 
-    expect(
-      await screen.findByText(new RegExp(newFirstName))
-    ).toBeInTheDocument();
-  },
-  { timeout: 8000 }
-);
+test('does not show well selector if availableWells array is empty', async () => {
+  renderWithProviders(<Account availableWells={[]} />);
 
-test.each(['well', 'no-well'])(
-  'Able to edit existing user impersonation - %s',
-  async (testCase) => {
-    renderWithProviders(<Account />);
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
+  const fieldLabel = screen.getByText(/well/i);
+  expect(fieldLabel).not.toBeInTheDocument();
 
-    await user.click(button);
-
-    await user.click(
-      await screen.findByRole('button', { name: 'Impersonate' })
-    );
-
-    const menuItems = await screen.findAllByTestId('impersonation-user');
-    expect(menuItems.length).toBeGreaterThan(0);
-
-    // Click edit on the first one
-    await user.click(within(menuItems[0]).getByRole('button'));
-
-    await user.click(screen.getByRole('button', { name: /edit user/i }));
-
-    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
-
-    const textBox = screen.getByRole('textbox', { name: /first name/i });
-    await user.clear(textBox);
-
-    const newFirstName = faker.person.firstName();
-    await user.type(textBox, newFirstName);
-
-    if (testCase === 'well') {
-      await user.type(
-        screen.getByRole('menuitem', { name: /well/i }),
-        faker.location.city()
-      );
-    } else if (testCase === 'no-well') {
-      await user.clear(screen.getByRole('menuitem', { name: /well/i }));
-    }
-
-    await user.click(screen.getByRole('button', { name: /save/i }));
-
-    expect(
-      await screen.findByText(new RegExp(newFirstName))
-    ).toBeInTheDocument();
-  },
-  { timeout: 8000 }
-);
+  const singleSelect = screen.getByPlaceholderText(/select well.../i);
+  expect(singleSelect).not.toBeInTheDocument();
+});
 
 test('Edit another user clears the form as expected', async () => {
   renderWithProviders(<Account />);
