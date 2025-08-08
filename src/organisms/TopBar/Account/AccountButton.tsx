@@ -5,10 +5,9 @@ import { ProfileButton } from './Account.styles';
 import { ImpersonateAvatar } from './ImpersonateAvatar';
 import { colors, spacings } from 'src/atoms';
 import { Chip, ProfileAvatar } from 'src/molecules';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
-
-import { useAuth } from '#AuthProvider';
 
 const Wrapper = styled.div`
   display: flex;

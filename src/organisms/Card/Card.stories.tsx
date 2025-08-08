@@ -6,7 +6,7 @@ import {
   settings,
   share,
 } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Button, Divider, Icon, Typography } from 'src/molecules';
 import page from 'src/organisms/Card/Card.docs.mdx';

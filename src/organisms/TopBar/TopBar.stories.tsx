@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { TopBar, TopBarType } from '.';
 import { EnvironmentType } from 'src/atoms/enums/Environment';

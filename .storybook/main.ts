@@ -5,11 +5,10 @@ const config: StorybookConfig = {
 
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
     '@storybook/addon-designs',
     '@storybook/addon-docs',
-    'storybook-addon-data-theme-switcher',
     './addons/GitHubSearchAddon/manager.js',
+    './addons/ThemeAddon/manager.js',
     './addons/SpacingsAddon/manager.js',
   ],
   core: {},
@@ -31,7 +30,7 @@ const config: StorybookConfig = {
         include: [
           ...(config.optimizeDeps?.include ?? []),
           '@storybook/addon-docs/mdx-react-shim',
-          '@storybook/blocks',
+          '@storybook/addon-docs/blocks',
         ],
       },
     };

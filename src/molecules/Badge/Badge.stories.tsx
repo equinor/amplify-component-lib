@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { save } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Badge, BadgeProps } from 'src/molecules/Badge/Badge';
 import page from 'src/molecules/Badge/Badge.docs.mdx';

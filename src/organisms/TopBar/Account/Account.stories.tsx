@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Account, AccountProps } from './Account';
-import { useAuth } from 'src/providers/AuthProvider/AuthProvider.mock';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
+
+import { fn, mocked } from 'storybook/test';
 
 const meta: Meta<typeof Account> = {
   title: 'Organisms/TopBar/Account',
@@ -16,10 +17,10 @@ export default meta;
 type Story = StoryObj<AccountProps>;
 
 export const Primary: Story = {
-  async beforeEach() {
+  beforeEach() {
     const name = faker.person.fullName();
     const username = `${name.replaceAll(' ', '.').toLowerCase()}@equinor.com`;
-    useAuth.mockReturnValue({
+    mocked(useAuth).mockReturnValue({
       account: {
         name,
         homeAccountId: '',
@@ -39,10 +40,10 @@ export const Primary: Story = {
 };
 
 export const ManyRoles: Story = {
-  async beforeEach() {
+  beforeEach() {
     const name = faker.person.fullName();
     const username = `${name.replaceAll(' ', '.').toLowerCase()}@equinor.com`;
-    useAuth.mockReturnValue({
+    mocked(useAuth).mockReturnValue({
       account: {
         name,
         homeAccountId: '',

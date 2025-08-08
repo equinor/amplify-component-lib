@@ -4,10 +4,9 @@ import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImp
 import { colors, spacings } from 'src/atoms';
 import { Chip, ProfileAvatar } from 'src/molecules';
 import { ImpersonateAvatar } from 'src/organisms/TopBar/Account/ImpersonateAvatar';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
-
-import { useAuth } from '#AuthProvider';
 
 const Wrapper = styled.div`
   position: relative;

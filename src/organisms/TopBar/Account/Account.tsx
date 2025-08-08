@@ -29,8 +29,7 @@ import { RoleList } from './RoleList';
 import { EnvironmentType } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
-
-import { useAuth } from '#AuthProvider';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export interface AccountProps {
   renderCustomButton?: (

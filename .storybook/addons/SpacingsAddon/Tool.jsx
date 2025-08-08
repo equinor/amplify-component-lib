@@ -1,11 +1,11 @@
 import React, { memo, useMemo, useState } from 'react';
 
-import { useGlobals } from '@storybook/manager-api';
+import { useGlobals } from 'storybook/manager-api';
 import {
   IconButton,
   TooltipLinkList,
   WithTooltip,
-} from '@storybook/components';
+} from 'storybook/internal/components';
 import { WandIcon } from '@storybook/icons';
 
 import { PARAM_KEY, TOOL_ID } from './constants';

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { colors, spacings } from 'src/atoms';
 import { RichTextDisplay } from 'src/molecules';
