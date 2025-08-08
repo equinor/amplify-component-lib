@@ -6,6 +6,7 @@ import { withTheme } from './addons/ThemeAddon/withTheme';
 import { darkTokens } from 'src/atoms/style/darkTokens';
 import { spacingTokens } from 'src/atoms/style/spacingTokens';
 import { Template } from 'src/organisms/Template/Template';
+import { AuthProvider } from 'src/providers';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { handlers } from 'src/tests/mockHandlers';
 
@@ -15,7 +16,9 @@ import { sb } from 'storybook/test';
 import './index.css';
 
 // Register mocks
-sb.mock(import('../src/providers/AuthProvider/AuthProvider'));
+sb.mock(import('../src/providers/AuthProvider/AuthProvider.tsx'), {
+  spy: true,
+});
 
 initialize({
   quiet: true,
@@ -48,10 +51,12 @@ const decorators = [
 
     return (
       <QueryClientProvider client={queryClient}>
-        <Template.GlobalStyles />
-        <SnackbarProvider>
-          <Story />
-        </SnackbarProvider>
+        <AuthProvider>
+          <Template.GlobalStyles />
+          <SnackbarProvider>
+            <Story />
+          </SnackbarProvider>
+        </AuthProvider>
       </QueryClientProvider>
     );
   },
