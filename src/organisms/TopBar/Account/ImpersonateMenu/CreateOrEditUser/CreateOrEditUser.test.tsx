@@ -162,10 +162,10 @@ test.each(['email', 'no-email'])(
 test('shows field selector if availableFields array has items', async () => {
   renderWithProviders(<Account availableFields={FAKE_FIELDS} />);
   const user = userEvent.setup();
-  // Open impersonate menu
+
   await user.click(screen.getByRole('button'));
   await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
-  // Open create user dialog
+
   await user.click(screen.getByRole('button', { name: /create/i }));
 
   const fieldLabel = screen.getByText(/field/i);
@@ -178,10 +178,10 @@ test('shows field selector if availableFields array has items', async () => {
 test('does not show field selector if availableFields array is empty', async () => {
   renderWithProviders(<Account availableFields={[]} />);
   const user = userEvent.setup();
-  // Open impersonate menu
+
   await user.click(screen.getByRole('button'));
   await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
-  // Open create user dialog
+
   await user.click(screen.getByRole('button', { name: /create/i }));
 
   const fieldLabel = screen.queryByText(/field/i);
