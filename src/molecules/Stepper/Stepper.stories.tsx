@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 
 import { Button } from '@equinor/eds-core-react';
-import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms';
 import { Stepper, StepperProps } from 'src/molecules/Stepper/Stepper';

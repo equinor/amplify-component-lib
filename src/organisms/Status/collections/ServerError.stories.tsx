@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ServerError } from './ServerError';
 import { StatusWrapper } from 'src/storybook/StatusWrapper';

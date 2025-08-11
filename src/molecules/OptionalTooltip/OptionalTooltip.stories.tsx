@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { folder } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 

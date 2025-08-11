@@ -84,7 +84,7 @@ export default [
   {
     files: ['*.test.*', '*.stories.*', './src/providers/AuthProvider/**', './src/atoms/utils/auth_environment.ts'],
     rules: {
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-console': ['warn', { allow: ['warn', 'error', 'log'] }],
     }
   },
   {

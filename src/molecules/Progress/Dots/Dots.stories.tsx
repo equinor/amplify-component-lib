@@ -6,7 +6,7 @@ import {
   Progress,
   Typography,
 } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from 'src/molecules/Progress/Dots/Dots.docs.mdx';
 import { Stack } from 'src/storybook';

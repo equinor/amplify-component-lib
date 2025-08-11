@@ -14,10 +14,10 @@ import {
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
-import { AuthState } from './AuthProvider';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { MissingAccessToApp } from 'src/organisms/Status/collections/MissingAccessToApp';
+import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 

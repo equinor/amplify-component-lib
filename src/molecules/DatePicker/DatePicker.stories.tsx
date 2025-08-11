@@ -3,11 +3,12 @@ import { I18nProvider } from 'react-aria';
 
 import { Autocomplete, NativeSelect } from '@equinor/eds-core-react';
 import { CalendarDate } from '@internationalized/date';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { DatePicker, DatePickerProps } from './DatePicker';
 import { Stack } from 'src/storybook';
+
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof DatePicker> = {
   title: 'Molecules/Datepicker',

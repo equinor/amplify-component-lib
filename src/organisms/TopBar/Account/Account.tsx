@@ -19,17 +19,13 @@ import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
 import { useMappedRoles } from './ImpersonateMenu/hooks/useMappedRoles';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
-import {
-  ButtonWrapper,
-  Container,
-  RoleChip,
-  RolesContainer,
-  TextContent,
-} from './Account.styles';
+import { ButtonWrapper, Container, TextContent } from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
+import { RoleChips } from './RoleChips';
+import { RoleList } from './RoleList';
 import { EnvironmentType } from 'src/atoms';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
@@ -40,14 +36,14 @@ export interface AccountProps {
     buttonRef: RefObject<HTMLButtonElement | null>,
     handleToggle: () => void
   ) => ReactElement;
-  hideRoleChips?: boolean;
+  hideRoles?: boolean;
   useDisplayNameForRole?: boolean;
   children?: ReactNode;
 }
 
 export const Account: FC<AccountProps> = ({
   renderCustomButton,
-  hideRoleChips = false,
+  hideRoles = false,
   useDisplayNameForRole = false,
   children,
 }) => {
@@ -131,12 +127,14 @@ export const Account: FC<AccountProps> = ({
             <Typography variant="h6">{fullName}</Typography>
             <Typography>{username}</Typography>
           </TextContent>
-          {activeRoles && !hideRoleChips && (
-            <RolesContainer>
-              {activeRoles.map((role) => (
-                <RoleChip key={role.value}>{role.label}</RoleChip>
-              ))}
-            </RolesContainer>
+          {activeRoles && !hideRoles && (
+            <>
+              {activeRoles.length <= 3 ? (
+                <RoleChips roles={activeRoles} />
+              ) : (
+                <RoleList roles={activeRoles} />
+              )}
+            </>
           )}
           {children}
           {canImpersonate &&
