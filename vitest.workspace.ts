@@ -18,7 +18,7 @@ export default defineWorkspace([
         screenshotFailures: false
       },
       exclude: ['src/atoms', 'src/deprecated', 'src/**/*.jsdom.test.tsx', 'src/**/*.utils.test.ts'],
-      setupFiles: ['src/tests/setupBrowserTests.ts'],
+      setupFiles: ['src/tests/setupBrowserTests.ts', 'src/tests/framerMotionMock.ts'],
       retry: 1,
       css: true
     },

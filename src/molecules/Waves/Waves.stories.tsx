@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router';
 
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Waves } from 'src/molecules/Waves/Waves';
 import { TopBar } from 'src/organisms/TopBar';

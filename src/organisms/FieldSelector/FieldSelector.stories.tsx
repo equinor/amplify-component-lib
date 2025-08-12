@@ -3,14 +3,14 @@ import { MemoryRouter } from 'react-router';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { actions } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Template } from '../Template/Template';
 import { FieldSelector } from './FieldSelector';
 import { Field } from 'src/atoms/types/Field';
 import { TopBar } from 'src/organisms/TopBar';
 
+import { actions } from 'storybook/actions';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 

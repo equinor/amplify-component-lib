@@ -14,10 +14,11 @@ import {
   notifications,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from './Accordion.docs.mdx';
+
+import { action } from 'storybook/actions';
 
 Icon.add({
   attach_file,

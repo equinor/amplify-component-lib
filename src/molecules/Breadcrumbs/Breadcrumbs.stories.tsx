@@ -13,12 +13,12 @@ import {
   Icon,
 } from '@equinor/eds-core-react';
 import { chevron_right } from '@equinor/eds-icons';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from 'src/molecules/Breadcrumbs/Breadcrumbs.docs.mdx';
 import { Stack } from 'src/storybook';
 
+import { action } from 'storybook/actions';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Breadcrumbs> = {

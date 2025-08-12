@@ -12,7 +12,8 @@
       "@types/wicg-file-system-access",
       "bun-types"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "rootDir": ".",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

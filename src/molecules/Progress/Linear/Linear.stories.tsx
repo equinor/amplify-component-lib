@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button, LinearProgressProps, Progress } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from 'src/molecules/Progress/Linear/Linear.docs.mdx';
 import { Stack, useMockProgress } from 'src/storybook';

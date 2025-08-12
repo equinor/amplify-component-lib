@@ -1,11 +1,11 @@
 // .storybook/addons/GitHubSearchAddon/Panel.js
 import React, { useMemo, useState } from 'react';
-import { useStorybookState } from '@storybook/manager-api';
+import { useStorybookState } from 'storybook/manager-api';
 
 import styled from 'styled-components';
 
 import { Autocomplete, Button } from '@equinor/eds-core-react';
-import { AddonPanel } from '@storybook/components';
+import { AddonPanel } from 'storybook/internal/components';
 import { PER_PAGE, REPO_LIST } from './constants';
 
 const Container = styled.div`

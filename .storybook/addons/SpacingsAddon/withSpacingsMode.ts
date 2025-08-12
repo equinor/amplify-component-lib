@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { ReactElement } from 'react';
 
-import { useEffect, useGlobals } from '@storybook/preview-api';
+import { PARAM_KEY } from './constants';
+
 import type {
   PartialStoryFn as StoryFunction,
   Renderer,
-} from '@storybook/types';
-
-import { PARAM_KEY } from './constants';
+} from 'storybook/internal/types';
+import { useEffect, useGlobals } from 'storybook/preview-api';
 
 export const withSpacingsMode = (StoryFn: StoryFunction<Renderer>) => {
   const [globals, updateGlobals] = useGlobals();

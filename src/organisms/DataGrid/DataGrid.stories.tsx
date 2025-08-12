@@ -1,5 +1,5 @@
 import { EdsDataGridProps } from '@equinor/eds-data-grid-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { Typography } from 'src/molecules';
