@@ -1,38 +1,48 @@
 import { AnyExtension, Extension, Extensions } from '@tiptap/core';
 import { Bold, BoldOptions } from '@tiptap/extension-bold';
-import { BulletList, BulletListOptions } from '@tiptap/extension-bullet-list';
 import {
   CodeBlockLowlight,
   CodeBlockLowlightOptions,
 } from '@tiptap/extension-code-block-lowlight';
 import { Color, ColorOptions } from '@tiptap/extension-color';
 import { Document } from '@tiptap/extension-document';
-import { Dropcursor, DropcursorOptions } from '@tiptap/extension-dropcursor';
 import GapCursor from '@tiptap/extension-gapcursor';
 import { HardBreak, HardBreakOptions } from '@tiptap/extension-hard-break';
 import { HeadingOptions } from '@tiptap/extension-heading';
 import { Highlight, HighlightOptions } from '@tiptap/extension-highlight';
 import { Italic, ItalicOptions } from '@tiptap/extension-italic';
 import { Link, LinkOptions } from '@tiptap/extension-link';
-import { ListItem, ListItemOptions } from '@tiptap/extension-list-item';
 import {
+  BulletList,
+  BulletListOptions,
+  ListItem,
+  ListItemOptions,
   OrderedList,
   OrderedListOptions,
-} from '@tiptap/extension-ordered-list';
+} from '@tiptap/extension-list';
 import { Paragraph, ParagraphOptions } from '@tiptap/extension-paragraph';
-import { Placeholder, PlaceholderOptions } from '@tiptap/extension-placeholder';
-import { Table, TableOptions } from '@tiptap/extension-table';
-import { TableCell, TableCellOptions } from '@tiptap/extension-table-cell';
 import {
+  Table,
+  TableCell,
+  TableCellOptions,
   TableHeader,
   TableHeaderOptions,
-} from '@tiptap/extension-table-header';
-import { TableRow, TableRowOptions } from '@tiptap/extension-table-row';
+  TableOptions,
+  TableRow,
+  TableRowOptions,
+} from '@tiptap/extension-table';
 import { Text } from '@tiptap/extension-text';
 import { TextAlign, TextAlignOptions } from '@tiptap/extension-text-align';
 import { TextStyle, TextStyleOptions } from '@tiptap/extension-text-style';
 import { Typography, TypographyOptions } from '@tiptap/extension-typography';
-import { UndoRedo, UndoRedoOptions } from '@tiptap/extensions';
+import {
+  Dropcursor,
+  DropcursorOptions,
+  Placeholder,
+  PlaceholderOptions,
+  UndoRedo,
+  UndoRedoOptions,
+} from '@tiptap/extensions';
 
 import ExtendedHeaders from './ExtendedHeaders';
 import ExtendedImage, { ExtendedImageOptions } from './ExtendedImage';
