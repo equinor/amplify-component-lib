@@ -83,16 +83,20 @@ test('Able to write lists', async () => {
 
   await user.keyboard('k');
 
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    2,
-    `<ul><li><p>k</p></li></ul>`
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      2,
+      `<ul><li><p>k</p></li></ul>`
+    )
   );
 
   await user.keyboard('{Enter}');
 
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    3,
-    `<ul><li><p>k</p></li><li><p></p></li></ul>`
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      3,
+      `<ul><li><p>k</p></li><li><p></p></li></ul>`
+    )
   );
 });
 

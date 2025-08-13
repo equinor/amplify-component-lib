@@ -74,7 +74,7 @@ test('Able to insert links with {Enter}', async () => {
   const unsetLink = await screen.findByTestId('unsetlink-button');
 
   expect(link).toBeInTheDocument();
-  expect(link).toBeDisabled();
+  await waitFor(() => expect(link).toBeDisabled(), { timeout: 5000 });
   expect(unsetLink).toBeInTheDocument();
 
   await user.dblClick(screen.getByText('test'));
