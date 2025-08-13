@@ -185,22 +185,28 @@ test('does not show field selector if availableFields array is empty', async () 
 
 test('shows well selector if availableWells array has items', async () => {
   renderWithProviders(<Account availableWells={FAKE_WELLS} />);
+  const user = userEvent.setup();
 
-  const wellLabel = screen.getByText(/well/i);
-  expect(wellLabel).toBeInTheDocument();
+  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
 
-  const singleSelect = screen.getByPlaceholderText(/select well.../i);
-  expect(singleSelect).toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: /create/i }));
+
+  const wellSelect = await screen.findByRole('combobox', { name: /well/i });
+  expect(wellSelect).toBeInTheDocument();
 });
 
 test('does not show well selector if availableWells array is empty', async () => {
   renderWithProviders(<Account availableWells={[]} />);
+  const user = userEvent.setup();
 
-  const fieldLabel = screen.getByText(/well/i);
-  expect(fieldLabel).not.toBeInTheDocument();
+  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
 
-  const singleSelect = screen.getByPlaceholderText(/select well.../i);
-  expect(singleSelect).not.toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: /create/i }));
+
+  const wellSelect = screen.queryByRole('combobox', { name: /well/i });
+  expect(wellSelect).not.toBeInTheDocument();
 });
 
 test('Edit another user clears the form as expected', async () => {

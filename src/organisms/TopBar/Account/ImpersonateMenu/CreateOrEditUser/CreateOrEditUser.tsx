@@ -78,13 +78,13 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
     [data]
   );
 
-  const avaiableFieldsSelect: { value: string; label: string }[] =
+  const availableFieldItems: { value: string; label: string }[] =
     availableFields?.map((item) => ({
       value: item.uuid ?? '',
       label: item.name ?? '',
     })) ?? [];
 
-  const avaiableWellsSelect: { value: string; label: string }[] =
+  const availableWellItems: { value: string; label: string }[] =
     availableWells?.map((item) => ({ value: item, label: item })) ?? [];
 
   const { mutateAsync: createImpersonationUser, isPending: isCreating } =
@@ -191,32 +191,32 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       </Section>
 
       <Section>
-        {avaiableFieldsSelect && (
+        {availableFieldItems && availableFieldItems.length > 0 && (
           <SingleSelect
             placeholder="Select field..."
             label="Field"
             meta="Optional (For internal application role purposes)"
             value={
-              avaiableFieldsSelect.find((item) => item.value === field)
+              availableFieldItems.find((item) => item.value === field)
                 ? { value: field, label: field }
                 : undefined
             }
             onSelect={handleOnFieldSelect}
-            items={avaiableFieldsSelect}
+            items={availableFieldItems}
           />
         )}
-        {avaiableWellsSelect && (
+        {availableWellItems && availableWellItems.length > 0 && (
           <SingleSelect
             label="Well"
             placeholder="Select well..."
             meta="Optional (For internal application role purposes)"
             value={
-              avaiableWellsSelect.find((item) => item.value === well)
+              availableWellItems.find((item) => item.value === well)
                 ? { value: field, label: field }
                 : undefined
             }
             onSelect={handleOnWellSelect}
-            items={avaiableWellsSelect}
+            items={availableWellItems}
           />
         )}
       </Section>
