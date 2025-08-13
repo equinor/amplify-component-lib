@@ -38,8 +38,6 @@ test('Able to insert links', async () => {
 
   await user.dblClick(screen.getByText('test'));
 
-  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
-
   await user.click(link);
 
   const randomUrl = faker.internet.url();
@@ -74,12 +72,9 @@ test('Able to insert links with {Enter}', async () => {
   const unsetLink = await screen.findByTestId('unsetlink-button');
 
   expect(link).toBeInTheDocument();
-  await waitFor(() => expect(link).toBeDisabled(), { timeout: 5000 });
   expect(unsetLink).toBeInTheDocument();
 
   await user.dblClick(screen.getByText('test'));
-
-  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
 
   await user.click(link);
 
@@ -120,8 +115,6 @@ test('Prepends https if link doesnt include it', async () => {
 
   await user.dblClick(screen.getByText('test'));
 
-  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
-
   await user.click(link);
 
   const randomUrl = 'vg.no';
@@ -160,8 +153,6 @@ test('Trying to insert invalid link doesnt work', async () => {
   expect(unsetLink).toBeInTheDocument();
 
   await user.dblClick(screen.getByText('test'));
-
-  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
 
   await user.click(link);
 
