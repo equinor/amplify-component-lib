@@ -2,8 +2,8 @@ import { ChangeEvent, useMemo, useState } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
-import { HeaderMdx } from '@storybook/addon-docs';
-import { Meta, StoryFn } from '@storybook/react';
+import { HeaderMdx } from '@storybook/addon-docs/blocks';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from './AmplifyIconPreview.docs.mdx';
 import * as drillingIcons from 'src/atoms/icons/drilling';

@@ -8,6 +8,7 @@
     "vitest.workspace.ts",
     "eslint.config.js",
     "src/storybook",
+    "src/tests",
     ".storybook"
   ]
 }

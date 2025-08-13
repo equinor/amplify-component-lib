@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Button } from '@equinor/eds-core-react';
 import { arrow_back } from '@equinor/eds-icons';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Dialog, DialogProps } from 'src/molecules/Dialog/Dialog';
 import { Story } from 'src/storybook';

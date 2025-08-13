@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import { actions } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Sieve } from 'src/molecules/Sieve/Sieve';
 import { SieveProps, SieveValue } from 'src/molecules/Sieve/Sieve.types';
+
+import { actions } from 'storybook/actions';
 
 const meta: Meta<typeof Sieve> = {
   title: 'Molecules/Sieve',

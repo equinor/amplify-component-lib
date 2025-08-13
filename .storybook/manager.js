@@ -1,4 +1,4 @@
-import { addons } from '@storybook/manager-api';
+import { addons } from 'storybook/manager-api';
 import amplifyTheme from './amplifyTheme';
 import favicon from '../public/favicon-storybook.png';
 

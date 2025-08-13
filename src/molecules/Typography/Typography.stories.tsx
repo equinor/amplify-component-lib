@@ -5,7 +5,7 @@ import {
   TypographyProps,
 } from '@equinor/eds-core-react';
 import { tokens, Typography as TypographyType } from '@equinor/eds-tokens';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from 'src/molecules/Typography/Typography.docs.mdx';
 import { Stack } from 'src/storybook';

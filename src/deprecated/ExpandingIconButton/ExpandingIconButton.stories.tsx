@@ -1,5 +1,5 @@
 import { exit_to_app } from '@equinor/eds-icons';
-import { StoryFn } from '@storybook/react';
+import { StoryFn } from '@storybook/react-vite';
 
 import {
   ExpandingIconButton,

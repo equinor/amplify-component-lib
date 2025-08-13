@@ -11,13 +11,13 @@ import {
   ServiceNowIncidentResponse,
   Tutorial,
 } from '@equinor/subsurface-app-management';
-import { GraphAppRole } from '@equinor/subsurface-app-management/dist/api/models/GraphAppRole';
 import { faker } from '@faker-js/faker';
 
 import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
 
 import { delay, http, HttpResponse } from 'msw';
+import { GraphAppRole } from 'node_modules/@equinor/subsurface-app-management/dist/api/models/GraphAppRole';
 
 export const fakeReleaseNotes: ReleaseNote[] = [
   {
