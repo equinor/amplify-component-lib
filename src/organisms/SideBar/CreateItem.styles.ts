@@ -18,10 +18,10 @@ export const MenuItemContainer = styled.div<MenuItemContainerProps>`
       ? colors.interactive.primary__selected_highlight.rgba
       : 'transparent'};
   cursor: pointer;
-  &:has(> button:disabled) {
+  &:has(button:disabled) {
     cursor: not-allowed;
   }
-  &:hover:not(:has(> button:disabled)) {
+  &:hover:not(:has(button:disabled)) {
     background: ${({ $active }) =>
       $active
         ? colors.interactive.primary__selected_hover.rgba

@@ -5,7 +5,7 @@ import { home, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
-import { SideBar } from 'src/organisms/SideBar/index';
+import { SideBar } from 'src/organisms/SideBar';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 import { render, screen, userEvent } from 'src/tests/jsdomtest-utils';
 
