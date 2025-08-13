@@ -32,7 +32,7 @@ test('Able to click clear formatting button', async () => {
 
   const button = await screen.findByTestId('clear-formatting');
 
-  await user.dblClick(screen.getByText(text));
+  await user.tripleClick(screen.getByText(text));
 
   await user.click(button);
 

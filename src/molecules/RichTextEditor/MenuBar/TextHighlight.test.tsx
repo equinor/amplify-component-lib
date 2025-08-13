@@ -51,7 +51,7 @@ test('Highlights text when button is clicked', async () => {
 
   expect(button).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
   await user.click(button);
 
   await waitFor(

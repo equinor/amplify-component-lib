@@ -19,7 +19,7 @@ function fakeProps(): RichTextEditorProps {
 }
 
 // This test fails when running in Github Action job, skipping for now (2. July 25)
-test.skip('Able to change color', async () => {
+test('Able to change color', async () => {
   const props = fakeProps();
   renderWithProviders(
     <RichTextEditor
@@ -30,7 +30,7 @@ test.skip('Able to change color', async () => {
   const user = userEvent.setup();
   const input = await screen.findByTestId('text-color-input');
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
   expect(input).toBeInTheDocument();
 
   (input as HTMLInputElement).value = '#f50000';
