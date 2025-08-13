@@ -155,7 +155,7 @@ export const NotificationsInner: FC<NotificationsProps> = ({
             filteredAndSortedNotifications?.length > 0 ? (
               filteredAndSortedNotifications.map((item) => {
                 return (
-                  <NotificationTemplate {...item} key={item.SequenceNumber} />
+                  <NotificationTemplate key={item.SequenceNumber} {...item} />
                 );
               })
             ) : (

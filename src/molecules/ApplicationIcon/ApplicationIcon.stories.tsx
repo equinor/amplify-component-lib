@@ -14,6 +14,7 @@ const meta: Meta<typeof ApplicationIcon> = {
         'adca',
         'acquire',
         'dasha',
+        'forecast-formatter',
         'orca',
         'recap',
         'jsembark',

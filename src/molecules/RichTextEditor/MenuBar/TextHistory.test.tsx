@@ -54,7 +54,7 @@ test('Hides buttons if not in features', async () => {
       {...fakeProps()}
       removeFeatures={[
         RichTextEditorFeatures.IMAGES,
-        RichTextEditorFeatures.HISTORY,
+        RichTextEditorFeatures.UNDO_REDO,
       ]}
     />
   );
