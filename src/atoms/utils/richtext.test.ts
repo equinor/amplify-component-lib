@@ -7,7 +7,7 @@ import {
   getImagesFromRichText,
   imageToB64,
 } from './richtext';
-import { RichTextEditorFeatures } from 'src/molecules';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
 test('"extractImageUrls" works as expected', () => {
   const fakeUrl = faker.image.url();

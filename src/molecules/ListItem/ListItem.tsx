@@ -6,12 +6,10 @@ import {
   ReactNode,
 } from 'react';
 
+import { Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
-import { Typography } from '..';
-import { colors } from 'src/atoms/style';
-import { animation } from 'src/atoms/style/animation';
-import { spacings } from 'src/atoms/style/spacings';
+import { animation, colors, spacings } from 'src/atoms/style';
 import { renderContent } from 'src/molecules/ListItem/ListItem.utils';
 
 import styled, { css } from 'styled-components';

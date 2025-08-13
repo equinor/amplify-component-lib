@@ -4,10 +4,10 @@ import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 import { Icon, Menu } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 
-import { usePrevious } from 'src/atoms';
+import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { colors, spacings } from 'src/atoms/style';
 import { SideBarMenuItemWithItems } from 'src/atoms/types/SideBar';
-import { OptionalTooltip } from 'src/molecules';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import {
   IconContainer,
   ItemText,

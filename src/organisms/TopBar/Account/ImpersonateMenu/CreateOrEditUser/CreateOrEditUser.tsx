@@ -8,14 +8,14 @@ import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
 import { useEditImpersonation } from '../hooks/useEditImpersonation';
 import { Header } from '../Impersonate.styles';
 import { Container, Section } from './CreateOrEditUser.styles';
-import { Field } from 'src/atoms';
+import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
+import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import {
-  ComboBox,
   SelectOption,
   SelectOptionRequired,
-  SingleSelect,
-} from 'src/molecules';
+} from 'src/molecules/Select/Select.types';
+import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import { TextField } from 'src/molecules/TextField/TextField';
 import { useAllAppRoles } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useAllAppRoles';
 

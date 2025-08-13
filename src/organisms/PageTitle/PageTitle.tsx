@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect } from 'react';
 
-import { environment } from 'src/atoms';
+import { environment } from 'src/atoms/utils';
 
 interface PageTitleProps {
   title: string;

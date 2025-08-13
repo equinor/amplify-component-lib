@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
-import { colors, spacings } from 'src/atoms';
-import { ListItem, ListItemProps } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
+import { ListItem, ListItemProps } from 'src/molecules/ListItem/ListItem';
 import { render, screen } from 'src/tests/jsdomtest-utils';
 
 function fakeProps(): ListItemProps {

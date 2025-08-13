@@ -1,7 +1,10 @@
 import { checkbox, checkbox_indeterminate } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { SelectOption, SelectOptionRequired } from 'src/molecules';
+import {
+  SelectOption,
+  SelectOptionRequired,
+} from 'src/molecules/Select/Select.types';
 import { getParentIcon } from 'src/molecules/Select/SelectMenuItem.utils';
 
 test('Returns expected parent icon', async () => {

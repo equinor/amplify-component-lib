@@ -13,7 +13,7 @@ import {
   StyledDialog,
 } from './ReleaseNotesDialog.styles';
 import { usePrefetchRichTextImages } from 'src/atoms';
-import { Button } from 'src/molecules';
+import { Button } from 'src/molecules/Button/Button';
 import { ReleaseNote } from 'src/organisms/ReleaseNote/ReleaseNote';
 import { Status } from 'src/organisms/Status';
 import { useReleaseNotes } from 'src/providers/ReleaseNotesProvider';

@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
+import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { FeedbackType } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import { spacings } from 'src/atoms/style';
-import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 

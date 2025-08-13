@@ -1,10 +1,6 @@
-import { tokens } from '@equinor/eds-tokens';
-
-import { animation, spacings } from 'src/atoms/style';
+import { animation, colors, shape, spacings } from 'src/atoms/style';
 
 import styled, { css } from 'styled-components';
-
-const { colors, shape } = tokens;
 
 interface WrapperProps {
   $outlined: boolean;

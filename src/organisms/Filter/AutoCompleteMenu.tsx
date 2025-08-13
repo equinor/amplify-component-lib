@@ -2,7 +2,7 @@ import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
 import { Menu, Typography } from '@equinor/eds-core-react';
 
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 import { FilterWithAutoCompleteOptions } from 'src/organisms/Filter/Filter.types';
 import {
   findStartAndEndIndexOfSearch,

@@ -3,7 +3,7 @@ import { FC, ReactNode, useEffect, useState } from 'react';
 import { SAM_QUERIES } from '@equinor/subsurface-app-management';
 import { useIsFetching } from '@tanstack/react-query';
 
-import { FullPageSpinner } from 'src/molecules';
+import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 interface LoadingProviderProps {

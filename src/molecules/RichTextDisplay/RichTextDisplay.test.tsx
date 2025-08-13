@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { RichTextDisplay } from 'src/molecules';
+import { RichTextDisplay } from './RichTextDisplay';
 import {
   act,
   render,

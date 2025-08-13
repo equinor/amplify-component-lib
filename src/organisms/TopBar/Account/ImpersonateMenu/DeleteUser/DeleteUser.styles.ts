@@ -1,4 +1,4 @@
-import { spacings } from 'src/atoms';
+import { spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

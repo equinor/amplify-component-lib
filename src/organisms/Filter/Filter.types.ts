@@ -2,7 +2,7 @@ import { ChangeEvent, ReactNode } from 'react';
 
 import { IconData } from '@equinor/eds-icons';
 
-import { SelectOptionRequired } from 'src/molecules';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 
 interface CommonFilterProps<T extends string> {
   values: Record<T, Array<SelectOptionRequired & { icon?: IconData }>>;

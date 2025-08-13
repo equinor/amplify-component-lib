@@ -1,5 +1,5 @@
 import { animation, colors, shape, spacings } from 'src/atoms/style';
-import { Chip } from 'src/molecules';
+import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled from 'styled-components';
 

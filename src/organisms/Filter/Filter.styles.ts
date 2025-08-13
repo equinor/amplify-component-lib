@@ -1,4 +1,4 @@
-import { colors, shape, spacings, typography } from 'src/atoms';
+import { colors, shape, spacings, typography } from 'src/atoms/style';
 import { Chip } from 'src/molecules/Chip/Chip';
 
 import { motion } from 'framer-motion';

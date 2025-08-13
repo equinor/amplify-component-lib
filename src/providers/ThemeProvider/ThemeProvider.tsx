@@ -1,8 +1,8 @@
 import { createContext, FC, ReactNode, useContext, useEffect } from 'react';
 
 import { THEME_LOCALSTORAGE_KEY } from './ThemeProvider.constants';
-import { useLocalStorage } from 'src/atoms';
 import { Theme } from 'src/atoms/enums/Theme';
+import { useLocalStorage } from 'src/atoms/hooks/useLocalStorage';
 
 interface ThemeProviderContextType {
   theme: Theme;

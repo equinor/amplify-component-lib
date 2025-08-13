@@ -5,7 +5,7 @@ import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import { ButtonWithMenu } from './ButtonWithMenu';
 import { FilterProps } from './Filter.types';
-import { SelectOptionRequired } from 'src/molecules';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 
 interface QuickFilterProps<T extends string> {
   values: FilterProps<T>['values'];

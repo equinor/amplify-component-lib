@@ -1,11 +1,8 @@
-import { tokens } from '@equinor/eds-tokens';
+import { Typography } from '@equinor/eds-core-react';
 
-import { spacings } from 'src/atoms/style';
-import { Typography } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
 
 export const Header = styled.header`
   padding: ${spacings.medium};

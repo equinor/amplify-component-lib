@@ -1,9 +1,9 @@
+import { Icon } from '@equinor/eds-core-react';
 import { boat, car, flight } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { SingleSelect } from './SingleSelect';
-import { colors, spacings } from 'src/atoms';
-import { Icon } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
 import { fakeGroups } from 'src/molecules/Select/Select.test';
 import {
   fakeSelectItems,

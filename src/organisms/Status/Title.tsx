@@ -1,7 +1,8 @@
 import { forwardRef } from 'react';
 
+import { Typography } from '@equinor/eds-core-react';
+
 import { DEFAULT_TITLE } from './Status.constants';
-import { Typography } from 'src/molecules';
 
 interface TitleProps {
   title?: string;

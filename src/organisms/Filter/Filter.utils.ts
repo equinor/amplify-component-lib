@@ -1,4 +1,7 @@
-import { SelectOption, SelectOptionRequired } from 'src/molecules';
+import {
+  SelectOption,
+  SelectOptionRequired,
+} from 'src/molecules/Select/Select.types';
 
 function filterAutoCompleteOption<T extends SelectOptionRequired>({
   searchValue,

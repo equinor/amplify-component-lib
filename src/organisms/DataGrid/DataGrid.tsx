@@ -1,11 +1,8 @@
 import { EdsDataGrid, EdsDataGridProps } from '@equinor/eds-data-grid-react';
-import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/index';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
 
 interface WrapperProps {
   $enableSorting: boolean;

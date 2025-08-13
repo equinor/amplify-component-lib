@@ -24,7 +24,7 @@ import {
   readUploadedFileAsText,
 } from './FileProgress.utils';
 import { colors } from 'src/atoms/style';
-import { OptionalTooltip } from 'src/molecules';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 const CompactFileProgress: FC<
   CompactFileProgressBaseProps & FileProgressPropsExtension

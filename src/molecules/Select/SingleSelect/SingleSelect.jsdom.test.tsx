@@ -1,5 +1,5 @@
 import { colors } from 'src/atoms/style/colors';
-import { SingleSelect } from 'src/molecules';
+import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import {
   fakeSelectItems,
   render,

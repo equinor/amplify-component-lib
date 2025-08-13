@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 
 import { useIsFetching, useQueryClient } from '@tanstack/react-query';
 
-import { getImagesFromRichText } from 'src/atoms';
-import { ImageExtensionFnProps } from 'src/molecules';
+import { getImagesFromRichText } from 'src/atoms/utils';
+import { ImageExtensionFnProps } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
 interface UsePrefetchRichTextImagesArgs {
   richTextValues: string[];

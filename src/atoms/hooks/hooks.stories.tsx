@@ -1,6 +1,5 @@
+import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react-vite';
-
-import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 

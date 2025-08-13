@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from '@equinor/eds-core-react';
 
-import { colors, shape, spacings } from 'src/atoms';
+import { colors, shape, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

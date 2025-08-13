@@ -5,8 +5,11 @@ import {
   IconData,
 } from '@equinor/eds-icons';
 
-import { SelectOption, SelectOptionRequired } from 'src/molecules';
-import { SelectedState } from 'src/molecules/Select/Select.types';
+import {
+  SelectedState,
+  SelectOption,
+  SelectOptionRequired,
+} from 'src/molecules/Select/Select.types';
 import { flattenOptions } from 'src/molecules/Select/Select.utils';
 
 const ICONS_BY_STATE: Record<SelectedState, IconData> = {

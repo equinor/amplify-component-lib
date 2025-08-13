@@ -4,7 +4,8 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_forward, engineering } from '@equinor/eds-icons';
 
 import { OpenImpersonationMenuButton } from './Account.styles';
-import { colors, spacings, useAuth } from 'src/atoms';
+import { colors, spacings } from 'src/atoms/style';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
 

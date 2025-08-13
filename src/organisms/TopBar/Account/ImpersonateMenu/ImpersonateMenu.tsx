@@ -11,8 +11,8 @@ import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
 import { Content, Header, NoUsersText } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
-import { Field } from 'src/atoms';
-import { Search } from 'src/molecules';
+import { Field } from 'src/atoms/types/Field';
+import { Search } from 'src/molecules/Search/Search';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 
 interface ImpersonateProps {

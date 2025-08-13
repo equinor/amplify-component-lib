@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
+import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms/style';
-import { Icon } from 'src/molecules';
 
 export const renderContent = (content: IconData | ReactNode) => {
   if (content && typeof content === 'object' && 'prefix' in content) {

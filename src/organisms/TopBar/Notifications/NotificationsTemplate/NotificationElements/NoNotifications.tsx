@@ -1,13 +1,11 @@
 import { FC } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
+import { Typography } from '@equinor/eds-core-react';
 
-import { Typography } from 'src/molecules';
+import { spacings } from 'src/atoms/style';
 import { FeedBackIcon } from 'src/molecules/FeedBackIcon/FeedBackIcon';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const Container = styled.div`
   display: flex;

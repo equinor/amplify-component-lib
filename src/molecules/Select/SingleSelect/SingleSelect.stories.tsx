@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
 
+import { Icon } from '@equinor/eds-core-react';
 import { boat, car, flight } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { colors, spacings } from 'src/atoms';
-import { Icon } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
 import {
   SelectedState,
   SelectOption,
