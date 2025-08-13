@@ -18,7 +18,6 @@ function fakeProps(): RichTextEditorProps {
   };
 }
 
-// This test fails when running in Github Action job, skipping for now (2. July 25)
 test('Able to change color', async () => {
   const props = fakeProps();
   renderWithProviders(
@@ -39,7 +38,7 @@ test('Able to change color', async () => {
   await waitFor(
     () =>
       expect(props.onChange).toHaveBeenCalledWith(
-        '<p><span style="color: #f50000">test</span></p>'
+        '<p><span style="color: rgb(245, 0, 0);">test</span></p>'
       ),
     { timeout: 5000 }
   );
