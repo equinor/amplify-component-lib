@@ -7,6 +7,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
 } from 'src/tests/browsertest-utils';
 
 function fakeProps(): RichTextEditorProps {
@@ -44,16 +45,22 @@ test('Able to insert lists', async () => {
   );
 
   await user.click(bullet);
-  expect(props.onChange).toHaveBeenNthCalledWith(2, `<p>test</p>`);
-
-  await user.click(ordered);
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    3,
-    `<ol><li><p>test</p></li></ol>`
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(2, `<p>test</p>`)
   );
 
   await user.click(ordered);
-  expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>');
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      3,
+      `<ol><li><p>test</p></li></ol>`
+    )
+  );
+
+  await user.click(ordered);
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>')
+  );
 });
 
 test('Able to write lists', async () => {

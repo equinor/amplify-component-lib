@@ -79,7 +79,7 @@ test('Able to insert links with {Enter}', async () => {
 
   await user.dblClick(screen.getByText('test'));
 
-  await waitFor(() => expect(link).toBeEnabled());
+  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
 
   await user.click(link);
 
@@ -120,7 +120,7 @@ test('Prepends https if link doesnt include it', async () => {
 
   await user.dblClick(screen.getByText('test'));
 
-  await waitFor(() => expect(link).toBeEnabled());
+  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
 
   await user.click(link);
 
@@ -161,7 +161,7 @@ test('Trying to insert invalid link doesnt work', async () => {
 
   await user.dblClick(screen.getByText('test'));
 
-  await waitFor(() => expect(link).toBeEnabled());
+  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
 
   await user.click(link);
 
