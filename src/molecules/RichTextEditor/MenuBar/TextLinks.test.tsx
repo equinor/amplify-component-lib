@@ -38,12 +38,13 @@ test('Able to insert links', async () => {
   expect(link).toBeDisabled();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 
   const randomUrl = faker.internet.url();
-  await user.type(screen.getByPlaceholderText(/insert link/i), randomUrl);
+  const linkField = await screen.findByPlaceholderText(/insert link/i);
+  await user.type(linkField, randomUrl);
 
   await user.click(screen.getByRole('button', { name: /save/i }));
 
@@ -78,12 +79,13 @@ test('Able to insert links with {Enter}', async () => {
   expect(link).toBeInTheDocument();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 
   const randomUrl = faker.internet.url();
-  await user.type(screen.getByPlaceholderText(/insert link/i), randomUrl);
+  const linkField = await screen.findByPlaceholderText(/insert link/i);
+  await user.type(linkField, randomUrl);
 
   await user.keyboard('{Enter}');
 
@@ -119,7 +121,7 @@ test('Prepends https if link doesnt include it', async () => {
   expect(link).toBeDisabled();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 
@@ -160,7 +162,7 @@ test('Trying to insert invalid link doesnt work', async () => {
   expect(link).toBeDisabled();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 

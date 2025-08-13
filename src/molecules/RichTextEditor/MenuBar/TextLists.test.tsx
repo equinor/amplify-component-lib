@@ -35,7 +35,7 @@ test('Able to insert lists', async () => {
   expect(bullet).toBeInTheDocument();
   expect(ordered).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   expect(bullet).toBeEnabled();
 
@@ -81,7 +81,7 @@ test('Able to write lists', async () => {
 
   expect(bullet).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(bullet);
 
