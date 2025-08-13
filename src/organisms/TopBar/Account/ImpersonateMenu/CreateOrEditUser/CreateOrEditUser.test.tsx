@@ -157,8 +157,6 @@ test.each(['email', 'no-email'])(
   { timeout: 8000 }
 );
 
-
-
 test('shows field selector if availableFields array has items', async () => {
   renderWithProviders(<Account availableFields={FAKE_FIELDS} />);
   const user = userEvent.setup();
@@ -168,11 +166,8 @@ test('shows field selector if availableFields array has items', async () => {
 
   await user.click(screen.getByRole('button', { name: /create/i }));
 
-  const fieldLabel = screen.getByText(/field/i);
+  const fieldLabel = await screen.findByRole('combobox', { name: /field/i });
   expect(fieldLabel).toBeInTheDocument();
-
-  const singleSelect = screen.getByPlaceholderText(/select field.../i);
-  expect(singleSelect).toBeInTheDocument();
 });
 
 test('does not show field selector if availableFields array is empty', async () => {
@@ -184,11 +179,8 @@ test('does not show field selector if availableFields array is empty', async () 
 
   await user.click(screen.getByRole('button', { name: /create/i }));
 
-  const fieldLabel = screen.queryByText(/field/i);
+  const fieldLabel = screen.queryByRole('combobox', { name: /field/i });
   expect(fieldLabel).not.toBeInTheDocument();
-
-  const singleSelect = screen.queryByPlaceholderText(/select field.../i);
-  expect(singleSelect).not.toBeInTheDocument();
 });
 
 test('shows well selector if availableWells array has items', async () => {

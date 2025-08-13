@@ -192,40 +192,32 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
 
       <Section>
         {avaiableFieldsSelect && (
-          <>
-            <Typography variant="label" group="navigation">
-              Field
-            </Typography>
-            <SingleSelect
-              placeholder="Select field..."
-              meta="Optional (For internal application role purposes)"
-              value={
-                avaiableFieldsSelect.find((item) => item.value === field)
-                  ? { value: field, label: field }
-                  : undefined
-              }
-              onSelect={handleOnFieldSelect}
-              items={avaiableFieldsSelect}
-            />
-          </>
+          <SingleSelect
+            placeholder="Select field..."
+            label="Field"
+            meta="Optional (For internal application role purposes)"
+            value={
+              avaiableFieldsSelect.find((item) => item.value === field)
+                ? { value: field, label: field }
+                : undefined
+            }
+            onSelect={handleOnFieldSelect}
+            items={avaiableFieldsSelect}
+          />
         )}
         {avaiableWellsSelect && (
-          <>
-            <Typography variant="label" group="navigation">
-              Well
-            </Typography>
-            <SingleSelect
-              placeholder="Select well..."
-              meta="Optional (For internal application role purposes)"
-              value={
-                avaiableWellsSelect.find((item) => item.value === well)
-                  ? { value: field, label: field }
-                  : undefined
-              }
-              onSelect={handleOnWellSelect}
-              items={avaiableWellsSelect}
-            />
-          </>
+          <SingleSelect
+            label="Well"
+            placeholder="Select well..."
+            meta="Optional (For internal application role purposes)"
+            value={
+              avaiableWellsSelect.find((item) => item.value === well)
+                ? { value: field, label: field }
+                : undefined
+            }
+            onSelect={handleOnWellSelect}
+            items={avaiableWellsSelect}
+          />
         )}
       </Section>
 

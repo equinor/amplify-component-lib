@@ -5,7 +5,7 @@ import { format_color_text } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import { OptionalTooltip } from 'src/index';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 

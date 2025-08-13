@@ -11,10 +11,10 @@ export const TextHighlight: FC<EditorPanel> = ({ editor, features }) => {
 
   return (
     <EditorMenu.Button
+      data-testid="highlight-button"
       active={editor.isActive('highlight')}
       icon={format_color_fill} // A suitable icon for highlighting doesn't exist in EDS, using color fill as a placeholder
       onClick={() => editor.chain().focus().toggleHighlight().run()}
-      data-testid="highlight-button"
       tooltip="Highlight"
     />
   );

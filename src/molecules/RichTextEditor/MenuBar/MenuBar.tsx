@@ -12,16 +12,16 @@ import { AddImageButton } from './AddImageButton';
 import { MenuSection } from './MenuBar.styles';
 import { MenuButton } from './MenuButton';
 import { TextAlignment } from './TextAlignment';
+import { TextClearFormatting } from './TextClearFormatting';
 import { TextCode } from './TextCode';
 import { TextColor } from './TextColor';
+import { TextFormatting } from './TextFormatting';
 import { TextHeaders } from './TextHeaders';
 import { TextHighlight } from './TextHighlight';
 import { TextHistory } from './TextHistory';
 import { TextLinks } from './TextLinks';
 import { TextLists } from './TextLists';
 import { colors, spacings } from 'src/atoms/style';
-import { TextClearFormatting } from 'src/molecules/RichTextEditor/MenuBar/TextClearFormatting';
-import { TextFormatting } from 'src/molecules/RichTextEditor/MenuBar/TextFormatting';
 
 import styled from 'styled-components';
 

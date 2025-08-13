@@ -10,9 +10,9 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   align-items: center;
-  padding: ${spacings.comfortable.large};
+  padding: ${spacings.large};
 `;
 
 export const NoNotifications: FC = () => {

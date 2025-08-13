@@ -4,7 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
 import { MenuButtonStyle } from './MenuBar.styles';
-import { OptionalTooltip } from 'src/index';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 export interface MenuButtonProps {
   ref?: RefObject<HTMLButtonElement>;
