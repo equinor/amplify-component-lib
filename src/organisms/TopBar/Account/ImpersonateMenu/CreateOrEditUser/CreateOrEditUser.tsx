@@ -11,10 +11,7 @@ import { Container, Section } from './CreateOrEditUser.styles';
 import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
-import {
-  SelectOption,
-  SelectOptionRequired,
-} from 'src/molecules/Select/Select.types';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import { TextField } from 'src/molecules/TextField/TextField';
 import { useAllAppRoles } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useAllAppRoles';
@@ -37,8 +34,8 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [field, setField] = useState('');
-  const [well, setWell] = useState('');
+  const [field, setField] = useState<string | undefined>(undefined);
+  const [well, setWell] = useState<string | undefined>(undefined);
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
 
   useEffect(() => {
@@ -55,13 +52,13 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       if (availableFields) {
         const selectedField =
           availableFields.find((field) => field.uuid == editingUser.field)
-            ?.name ?? '';
+            ?.name ?? undefined;
         setField(selectedField);
       }
 
       if (availableWells) {
         const selectedWell =
-          availableWells.find((well) => well == editingUser.well) ?? '';
+          availableWells.find((well) => well == editingUser.well) ?? undefined;
         setWell(selectedWell);
       }
 
@@ -78,13 +75,13 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
     [data]
   );
 
-  const availableFieldItems: { value: string; label: string }[] =
+  const availableFieldItems: SelectOptionRequired[] =
     availableFields?.map((item) => ({
       value: item.uuid ?? '',
       label: item.name ?? '',
     })) ?? [];
 
-  const availableWellItems: { value: string; label: string }[] =
+  const availableWellItems: SelectOptionRequired[] =
     availableWells?.map((item) => ({ value: item, label: item })) ?? [];
 
   const { mutateAsync: createImpersonationUser, isPending: isCreating } =
@@ -114,15 +111,11 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
     setRoles(values);
   };
 
-  const handleOnFieldSelect = (
-    selected: SelectOption<{ value: string; label: string }> | undefined
-  ) => {
-    setField(selected?.value ?? '');
+  const handleOnFieldSelect = (selected: SelectOptionRequired | undefined) => {
+    setField(selected?.value);
   };
-  const handleOnWellSelect = (
-    selected: SelectOption<{ value: string; label: string }> | undefined
-  ) => {
-    setWell(selected?.value ?? '');
+  const handleOnWellSelect = (selected: SelectOptionRequired | undefined) => {
+    setWell(selected?.value);
   };
 
   const handleOnCreateOrSave = async () => {
@@ -133,8 +126,8 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
         lastName,
         fullName: `${firstName} ${lastName}`,
         email: email !== '' ? email : undefined,
-        field: field !== '' ? field : undefined,
-        well: well !== '' ? well : undefined,
+        field,
+        well,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: editingUser.uniqueName,
         appName: editingUser.appName,
@@ -145,6 +138,8 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       await createImpersonationUser({
         firstName,
         lastName,
+        field,
+        well,
         email: email !== '' ? email : undefined,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: `${firstName}.${lastName}`.toLowerCase(),
@@ -196,11 +191,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
             placeholder="Select field..."
             label="Field"
             meta="Optional (For internal application role purposes)"
-            value={
-              availableFieldItems.find((item) => item.value === field)
-                ? { value: field, label: field }
-                : undefined
-            }
+            value={availableFieldItems.find((item) => item.value === field)}
             onSelect={handleOnFieldSelect}
             items={availableFieldItems}
           />
@@ -210,11 +201,7 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
             label="Well"
             placeholder="Select well..."
             meta="Optional (For internal application role purposes)"
-            value={
-              availableWellItems.find((item) => item.value === well)
-                ? { value: field, label: field }
-                : undefined
-            }
+            value={availableWellItems.find((item) => item.value === well)}
             onSelect={handleOnWellSelect}
             items={availableWellItems}
           />
@@ -222,15 +209,13 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       </Section>
 
       <Section>
-        <Typography variant="label" group="navigation">
-          Roles
-        </Typography>
-        {isLoadingRoles && <DotProgress color="primary" />}
         <ComboBox
+          label="Roles"
           placeholder="Select roles..."
           values={roles}
           onSelect={handleOnRoleSelect}
           items={availableRoles}
+          loading={isLoadingRoles}
         />
       </Section>
       <Section>

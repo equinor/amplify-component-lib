@@ -110,10 +110,15 @@ test('OnClose runs as expected in create new', async () => {
   ).not.toBeInTheDocument();
 });
 
-test.each(['email', 'no-email'])(
+test.each(['email', 'no-email', 'field-well'])(
   'Able to edit existing user impersonation - %s',
   async (testCase) => {
-    renderWithProviders(<Account />);
+    renderWithProviders(
+      <Account
+        availableFields={testCase === 'field-well' ? FAKE_FIELDS : undefined}
+        availableWells={testCase === 'field-well' ? FAKE_WELLS : undefined}
+      />
+    );
     const user = userEvent.setup();
     const button = screen.getByRole('button');
 
@@ -148,6 +153,16 @@ test.each(['email', 'no-email'])(
       await user.clear(screen.getByRole('textbox', { name: /e-mail/i }));
     }
 
+    if (testCase === 'field-well') {
+      await user.click(screen.getByRole('combobox', { name: /field/i }));
+      await user.click(
+        screen.getByRole('menuitem', { name: FAKE_FIELDS[0].name! })
+      );
+
+      await user.click(screen.getByRole('combobox', { name: /well/i }));
+      await user.click(screen.getByRole('menuitem', { name: FAKE_WELLS[0] }));
+    }
+
     await user.click(screen.getByRole('button', { name: /save/i }));
 
     expect(
@@ -157,8 +172,41 @@ test.each(['email', 'no-email'])(
   { timeout: 8000 }
 );
 
+test('Initially selected field and wells works as expected', async () => {
+  renderWithProviders(
+    <Account availableFields={FAKE_FIELDS} availableWells={FAKE_WELLS} />
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+
+  const menuItems = await screen.findAllByTestId('impersonation-user');
+  expect(menuItems.length).toBeGreaterThan(0);
+
+  // Click edit on the first one
+  await user.click(within(menuItems[0]).getByRole('button'));
+  await user.click(screen.getByRole('button', { name: /edit user/i }));
+
+  await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+
+  const fieldLabel = await screen.findByRole('combobox', { name: /field/i });
+  expect(fieldLabel).toBeInTheDocument();
+});
+
 test('shows field selector if availableFields array has items', async () => {
-  renderWithProviders(<Account availableFields={FAKE_FIELDS} />);
+  renderWithProviders(
+    <Account
+      availableFields={[
+        ...FAKE_FIELDS,
+        {
+          country: null,
+          uuid: null,
+          name: null,
+        },
+      ]}
+    />
+  );
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
@@ -247,10 +295,15 @@ test('Edit another user clears the form as expected', async () => {
   expect(otherName).not.toBe(firstName);
 });
 
-test.each(['email', 'no-email'])(
+test.each(['email', 'no-email', 'field-well'])(
   'Able to create new impersonation user - %s',
   async (testCase) => {
-    renderWithProviders(<Account />);
+    renderWithProviders(
+      <Account
+        availableFields={testCase === 'field-well' ? FAKE_FIELDS : undefined}
+        availableWells={testCase === 'field-well' ? FAKE_WELLS : undefined}
+      />
+    );
     const user = userEvent.setup();
     const button = screen.getByRole('button');
 
@@ -294,11 +347,21 @@ test.each(['email', 'no-email'])(
       .map((role) => role.displayName)
       .sort();
 
-    await user.click(screen.getByRole('combobox'));
+    await user.click(screen.getByRole('combobox', { name: /roles/i }));
 
     for (const role of roles) {
       const roleElement = await screen.findByText(role);
       await user.click(roleElement);
+    }
+
+    if (testCase === 'field-well') {
+      await user.click(screen.getByRole('combobox', { name: /field/i }));
+      await user.click(
+        screen.getByRole('menuitem', { name: FAKE_FIELDS[0].name! })
+      );
+
+      await user.click(screen.getByRole('combobox', { name: /well/i }));
+      await user.click(screen.getByRole('menuitem', { name: FAKE_WELLS[0] }));
     }
 
     expect(createButton).not.toBeDisabled();

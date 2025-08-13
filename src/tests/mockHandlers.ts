@@ -89,8 +89,8 @@ function fakeUser(): ImpersonateUserDto {
   const fullName = `${firstName} ${lastName}`;
   const uniqueName = faker.internet.username();
   const email = faker.internet.email();
-  const field = faker.location.state();
-  const well = faker.location.city();
+  const field = FAKE_FIELDS[0].name;
+  const well = FAKE_WELLS[0];
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {

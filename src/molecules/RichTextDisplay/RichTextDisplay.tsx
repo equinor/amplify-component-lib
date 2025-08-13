@@ -54,6 +54,7 @@ export const RichTextDisplay: FC<
   const editor = useEditor({
     /* v8 ignore next */
     shouldRerenderOnTransaction: true,
+    /* v8 ignore next */
     extensions: extensions ? extensions : [defaultExtensions],
     content: imgReadToken
       ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
