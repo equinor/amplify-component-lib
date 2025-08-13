@@ -27,6 +27,8 @@ test('Able to insert links', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');
@@ -66,6 +68,8 @@ test('Able to insert links with {Enter}', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');
@@ -104,6 +108,8 @@ test('Prepends https if link doesnt include it', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');
@@ -143,6 +149,8 @@ test('Trying to insert invalid link doesnt work', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');

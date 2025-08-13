@@ -25,6 +25,8 @@ test('Able to insert lists', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const bullet = await screen.findByTestId('bullet-list-button');
@@ -71,6 +73,8 @@ test('Able to write lists', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const bullet = await screen.findByTestId('bullet-list-button');

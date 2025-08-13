@@ -7,6 +7,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
 } from 'src/tests/browsertest-utils';
 
 function fakeProps(): RichTextEditorProps {
@@ -42,6 +43,8 @@ test('Highlights text when button is clicked', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const button = await screen.findByTestId('highlight-button');
@@ -51,5 +54,9 @@ test('Highlights text when button is clicked', async () => {
   await user.dblClick(screen.getByText('test'));
   await user.click(button);
 
-  expect(props.onChange).toHaveBeenCalledWith('<p><mark>test</mark></p>');
+  await waitFor(
+    () =>
+      expect(props.onChange).toHaveBeenCalledWith('<p><mark>test</mark></p>'),
+    { timeout: 5000 }
+  );
 });
