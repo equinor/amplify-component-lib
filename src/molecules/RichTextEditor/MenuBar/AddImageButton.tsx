@@ -59,6 +59,7 @@ export const AddImageButton: FC<AddImageProps> = ({
         data-testid="add-image-button"
         icon={camera_add_photo}
         onClick={showFileDialog}
+        tooltip="Add Image"
       />
     </>
   );

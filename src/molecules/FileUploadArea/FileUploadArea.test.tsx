@@ -28,9 +28,19 @@ test('Renders text and icon as it should', () => {
   expect(text).toBeVisible();
 });
 
-test('Renders compact style as it should', () => {
+test('Renders size=small style as it should', () => {
   const props = fakeProps();
-  render(<FileUploadArea compact {...props} />);
+  render(<FileUploadArea size="small" {...props} />);
+
+  const text = screen.queryByText('browse');
+
+  expect(screen.getByTestId('upload-illustration')).toBeInTheDocument();
+  expect(text).toBeNull();
+});
+
+test('Renders size=medium style as it should', () => {
+  const props = fakeProps();
+  render(<FileUploadArea size="medium" {...props} />);
 
   const text = screen.queryByText('browse');
 

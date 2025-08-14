@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { comment_discussion } from '@equinor/eds-icons';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Faq } from './Faq';
 import { Template } from 'src/organisms';

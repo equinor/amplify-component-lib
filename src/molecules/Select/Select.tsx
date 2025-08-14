@@ -1,11 +1,11 @@
 import { useMemo, useRef } from 'react';
 
-import { CircularProgress, Icon, Label } from '@equinor/eds-core-react';
+import { Icon, Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import { useOutsideClick } from '@equinor/eds-utils';
 
 import { useSelect } from 'src/atoms/hooks/useSelect';
+import { colors } from 'src/atoms/style/colors';
 import { getVariantIcon } from 'src/atoms/utils/forms';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
@@ -28,8 +28,7 @@ import {
   SelectOptionRequired,
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
-
-const { colors } = tokens;
+import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
 
 export type SelectComponentProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
@@ -85,6 +84,7 @@ export const Select = <T extends SelectOptionRequired>(
     sortValues,
     placeholder,
   });
+  const skeletonWidth = useRef(`${Math.max(40, Math.random() * 80)}%`);
   const anchorRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const shouldShowLabel = useMemo(() => {
@@ -189,10 +189,11 @@ export const Select = <T extends SelectOptionRequired>(
           onClick={handleOnOpen}
           aria-expanded={open}
           $variant={variant}
+          $loading={loading}
           $lightBackground={lightBackground}
         >
           <Section>
-            {search === '' && selectedValues.length === 0 && (
+            {!loading && search === '' && selectedValues.length === 0 && (
               <PlaceholderText>{placeholder}</PlaceholderText>
             )}
             {((search === '' && 'value' in props) ||
@@ -200,6 +201,7 @@ export const Select = <T extends SelectOptionRequired>(
                 selectedValues.length > 0 &&
                 (!props.showSelectedAsText ||
                   (props.showSelectedAsText && search === '')))) &&
+              !loading &&
               valueElements}
             <input
               id={id}
@@ -212,16 +214,27 @@ export const Select = <T extends SelectOptionRequired>(
               onChange={handleOnSearchChange}
               onKeyDownCapture={handleOnSearchKeyDown}
             />
+            {loading && (
+              <SkeletonField
+                role="progressbar"
+                style={{
+                  width: skeletonWidth.current,
+                  left: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              />
+            )}
           </Section>
-          {loading ? (
-            <CircularProgress size={16} />
-          ) : (
-            <Icon
-              onClick={handleToggleOpen}
-              data={open ? arrow_drop_up : arrow_drop_down}
-              color={colors.interactive.primary__resting.rgba}
-            />
-          )}
+          <Icon
+            onClick={handleToggleOpen}
+            data={open ? arrow_drop_up : arrow_drop_down}
+            color={
+              loading
+                ? colors.interactive.disabled__fill.rgba
+                : colors.interactive.primary__resting.rgba
+            }
+          />
           {clearable && selectedValues.length > 0 && !loading && (
             <ClearButton
               id="clear"

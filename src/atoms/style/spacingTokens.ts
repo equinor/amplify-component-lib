@@ -12,6 +12,11 @@ export const spacingTokens = css`
     --eds_spacing_small: 8px;
     --eds_spacing_x_small: 4px;
     --eds_spacing_xx_small: 2px;
+    /* Override button padding variables to make it work with spacings */
+    --eds_button__padding_x: var(--eds_spacing_medium);
+
+    --eds_icon-button__size: 40px;
+    --eds_button__height: 36px;
   }
 
   /*Compact*/
@@ -25,6 +30,9 @@ export const spacingTokens = css`
     --eds_spacing_small: 4px;
     --eds_spacing_x_small: 2px;
     --eds_spacing_xx_small: 0px;
+
+    --eds_icon-button__size: 32px;
+    --eds_button__height: 28px;
   }
 
   /*Extra Compact*/
@@ -38,5 +46,7 @@ export const spacingTokens = css`
     --eds_spacing_small: 2px;
     --eds_spacing_x_small: 0px;
     --eds_spacing_xx_small: 0px;
+    --eds_icon-button__size: 28px;
+    --eds_button__height: 20px;
   }
 `;

@@ -1,5 +1,8 @@
+import { Icon } from '@equinor/eds-core-react';
+import { person } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
+import { VARIANT_COLORS } from 'src/atoms/style/colors';
 import { DatePicker } from 'src/molecules/DatePicker/DatePicker';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
@@ -62,4 +65,40 @@ test('Meta text is displayed', async () => {
   render(<DatePicker meta={meta} />);
 
   expect(screen.getByText(meta)).toBeInTheDocument();
+});
+
+test('Dirty variant', async () => {
+  const randomDate = new Date('25. july 2021');
+  render(<DatePicker value={randomDate} variant="dirty" />);
+
+  expect(screen.getAllByRole('button')[0].parentElement!).toHaveStyle(
+    `box-shadow: inset 0 -2px 0 0 ${VARIANT_COLORS['dirty']}`
+  );
+});
+
+test('Error variant', async () => {
+  const randomDate = new Date('25. july 2021');
+  render(<DatePicker value={randomDate} variant="error" />);
+
+  expect(screen.getAllByRole('button')[0].parentElement!).toHaveStyle(
+    `box-shadow: inset 0 -1px 0 0 ${VARIANT_COLORS['error']}`
+  );
+});
+
+test('Loading works as expected', async () => {
+  render(<DatePicker label="Test" loading />);
+
+  expect(await screen.findByRole('progressbar')).toBeInTheDocument();
+});
+
+test('Loading works as expected with helperprops', async () => {
+  render(
+    <DatePicker
+      label="Test"
+      loading
+      helperProps={{ text: 'Helper', icon: <Icon data={person} /> }}
+    />
+  );
+
+  expect(await screen.findByRole('progressbar')).toBeInTheDocument();
 });

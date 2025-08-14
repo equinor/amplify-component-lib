@@ -1,4 +1,4 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
 
@@ -11,8 +11,10 @@ const meta: Meta<typeof ApplicationIcon> = {
       options: [
         'fallback',
         '4dinsight',
+        'adca',
         'acquire',
         'dasha',
+        'forecast-formatter',
         'orca',
         'recap',
         'jsembark',

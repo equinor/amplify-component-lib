@@ -1,5 +1,5 @@
 import { Links } from 'src/storybook';
-import { Primary, Canvas, Controls } from '@storybook/blocks';
+import { Primary, Canvas, Controls } from '@storybook/addon-docs/blocks';
 import * as ComponentStories from 'src/molecules/TextField/TextField.stories';
 
 # TextField
@@ -65,6 +65,12 @@ Examples of common used types (`input` type).
 <Canvas of={ComponentStories.Types} />
 
 **Note:** While `type="number"` does provide native validation, the implementation is inconsistent across browsers. We instead recommend using custom validation like the examples provided [here](?path=/docs/inputs-textfield--validation).
+
+### Loading
+
+Changes TextField to show loading state and disables inputting
+
+<Canvas of={ComponentStories.Loading} />
 
 ### Multiline
 

@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { FC, ReactElement, RefObject, useEffect, useState } from 'react';
 
 import { useTutorials } from '@equinor/subsurface-app-management';
 import { useIsFetching } from '@tanstack/react-query';
@@ -44,15 +44,16 @@ const Centered = styled.div`
 
 interface TutorialHighlightingProviderInnerProps {
   children: ReactElement | ReactElement[];
+  contentRef: RefObject<HTMLElement | null>;
 }
 
 export const TutorialHighlightingProviderInner: FC<
   TutorialHighlightingProviderInnerProps
-> = ({ children }) => {
+> = ({ children, contentRef }) => {
   const { activeTutorial, activeStep, unseenTutorialsOnThisPage } =
     useTutorials();
   const isFetching = useIsFetching() > 0;
-  const reversedScrollY = useReversedScrollY();
+  const reversedScrollY = useReversedScrollY(contentRef);
   const [windowSize, setWindowSize] = useState<{
     width: number;
     height: number;
@@ -141,6 +142,7 @@ export const TutorialHighlightingProviderInner: FC<
               <TutorialPopover
                 key={tutorial.id}
                 isHighlighting={highlightedTutorials.length > 0}
+                contentRef={contentRef}
                 {...tutorial}
                 {...highlight}
               />

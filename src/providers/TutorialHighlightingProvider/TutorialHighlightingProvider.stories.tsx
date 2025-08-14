@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, useRef } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
 import { MyTutorialDto } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { TutorialHighlightingProvider } from './TutorialHighlightingProvider';
 import page from './TutorialHighlightingProvider.docs.mdx';
@@ -20,6 +20,79 @@ import { http, HttpResponse } from 'msw';
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 
+function RouteComponent() {
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  return (
+    <div
+      ref={contentRef}
+      style={{
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        overflow: 'auto',
+      }}
+      id="content"
+    >
+      <TutorialHighlightingProvider contentRef={contentRef}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '10rem 0',
+            gap: '1rem',
+          }}
+        >
+          {TUTORIAL_IDS.map((id) => (
+            <Fragment key={id}>
+              <Card
+                style={{ padding: '1rem' }}
+                id={highlightTutorialElementID(id, 0)}
+              >
+                <Card.HeaderTitle>
+                  <Typography variant="h2">
+                    {faker.airline.airport().name +
+                      ' ' +
+                      faker.airline.airport().iataCode}
+                  </Typography>
+                </Card.HeaderTitle>
+                <Card.Actions>
+                  <Button variant="outlined">Stop</Button>
+                  <Button id={highlightTutorialElementID(id, 1)}>Start</Button>
+                </Card.Actions>
+              </Card>
+              <Card style={{ padding: '1rem' }}>
+                <Card.HeaderTitle>
+                  <Typography variant="h2">
+                    {faker.airline.airplane().name +
+                      ' ' +
+                      faker.airline.airplane().iataTypeCode}
+                  </Typography>
+                </Card.HeaderTitle>
+                <Button
+                  id={highlightTutorialElementID(id, 2)}
+                  variant="outlined"
+                  style={{ marginLeft: 'auto' }}
+                >
+                  Stop
+                </Button>
+              </Card>
+              <Divider />
+            </Fragment>
+          ))}
+          <Typography
+            id={highlightTutorialElementID(TUTORIAL_IDS[0], 3)}
+            style={{ marginTop: '80vh' }}
+          >
+            This is some text really far away
+          </Typography>
+        </div>
+      </TutorialHighlightingProvider>
+    </div>
+  );
+}
+
 const meta: Meta = {
   title: 'Providers/TutorialHighlightingProvider',
   component: function StoryComponent() {
@@ -29,75 +102,7 @@ const meta: Meta = {
           [
             {
               path: '/tutorial',
-              element: (
-                <div
-                  style={{
-                    maxWidth: '100vw',
-                    maxHeight: '100vh',
-                    overflow: 'auto',
-                  }}
-                  id="content"
-                >
-                  <TutorialHighlightingProvider>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        padding: '10rem 0',
-                        gap: '1rem',
-                      }}
-                    >
-                      {TUTORIAL_IDS.map((id) => (
-                        <Fragment key={id}>
-                          <Card
-                            style={{ padding: '1rem' }}
-                            id={highlightTutorialElementID(id, 0)}
-                          >
-                            <Card.HeaderTitle>
-                              <Typography variant="h2">
-                                {faker.airline.airport().name +
-                                  ' ' +
-                                  faker.airline.airport().iataCode}
-                              </Typography>
-                            </Card.HeaderTitle>
-                            <Card.Actions>
-                              <Button variant="outlined">Stop</Button>
-                              <Button id={highlightTutorialElementID(id, 1)}>
-                                Start
-                              </Button>
-                            </Card.Actions>
-                          </Card>
-                          <Card style={{ padding: '1rem' }}>
-                            <Card.HeaderTitle>
-                              <Typography variant="h2">
-                                {faker.airline.airplane().name +
-                                  ' ' +
-                                  faker.airline.airplane().iataTypeCode}
-                              </Typography>
-                            </Card.HeaderTitle>
-                            <Button
-                              id={highlightTutorialElementID(id, 2)}
-                              variant="outlined"
-                              style={{ marginLeft: 'auto' }}
-                            >
-                              Stop
-                            </Button>
-                          </Card>
-                          <Divider />
-                        </Fragment>
-                      ))}
-                      <Typography
-                        id={highlightTutorialElementID(TUTORIAL_IDS[0], 3)}
-                        style={{ marginTop: '80vh' }}
-                      >
-                        This is some text really far away
-                      </Typography>
-                    </div>
-                  </TutorialHighlightingProvider>
-                </div>
-              ),
+              element: <RouteComponent />,
             },
           ],
           { initialEntries: ['/tutorial'] }

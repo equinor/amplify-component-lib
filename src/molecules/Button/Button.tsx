@@ -34,14 +34,25 @@ export interface ButtonProps extends BaseButtonProps {
 
 const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ loading, variant, color, disabled = false, onClick, ...rest }, ref) => {
+    const usingStyle = variant?.includes('icon')
+      ? {
+          width: 'var(--eds_icon-button__size, 40px)',
+          height: 'var(--eds_icon-button__size, 40px)',
+          ...rest.style,
+        }
+      : rest.style;
+
+    const usingDisabled = loading ? false : disabled;
+
     return (
       <BaseButton
         ref={ref}
         variant={variant}
         color={color}
-        disabled={disabled}
+        disabled={usingDisabled}
         onClick={loading ? undefined : onClick}
         {...rest}
+        style={usingStyle}
       >
         {loading ? (
           <>
@@ -54,7 +65,6 @@ const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
                     variantAndColorToProgressColor({
                       variant,
                       color,
-                      disabled,
                     }) as CircularProgressProps['color']
                   }
                 />
@@ -63,7 +73,6 @@ const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
                   color={variantAndColorToProgressColor({
                     variant,
                     color,
-                    disabled,
                   })}
                 />
               )}

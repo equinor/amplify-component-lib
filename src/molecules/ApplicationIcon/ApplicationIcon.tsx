@@ -1,9 +1,11 @@
 import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
 import { Acquire } from './Icons/Acquire';
+import { Adca } from './Icons/Adca';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
 import { Fallback } from './Icons/Fallback';
+import { ForecastFormatter } from './Icons/ForecastFormatter';
 import { FourDInsight } from './Icons/FourDInsight';
 import { InPress } from './Icons/InPress';
 import { JsEmbark } from './Icons/JsEmbark';
@@ -17,10 +19,12 @@ import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
 
 export type ApplicationName =
+  | 'adca'
   | 'acquire'
   | '4dinsight'
   | 'recap'
   | 'dasha'
+  | 'forecast-formatter'
   | 'orca'
   | 'portal'
   | 'jsembark'
@@ -39,10 +43,20 @@ interface ApplicationIconData {
   >;
 }
 const apps: ApplicationIconData[] = [
+  { appName: ['adca'], component: Adca },
   { appName: ['portal', 'embark', 'jsembark'], component: JsEmbark },
   { appName: ['acquire'], component: Acquire },
   { appName: ['4dinsight'], component: FourDInsight },
   { appName: ['dasha'], component: Dasha },
+  {
+    appName: [
+      'forecast formatter',
+      'Forecast formatter',
+      'Forecast Formatter',
+      'forecast-formatter',
+    ],
+    component: ForecastFormatter,
+  },
   { appName: ['orca'], component: Orca },
   {
     appName: ['logging-qualification', 'logging qualification', 'ltg'],

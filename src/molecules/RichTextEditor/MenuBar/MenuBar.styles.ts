@@ -8,16 +8,22 @@ const { spacings, shape } = tokens;
 
 export const MenuSection = styled.section`
   display: flex;
-  > button:not(:first-child):not(:last-child) {
-    border-radius: 0;
+  > div:not(:first-child):not(:last-child) {
+    > button {
+      border-radius: 0;
+    }
   }
-  > button:first-child {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
+  > div:first-child {
+    > button {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
-  > button:last-child {
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
+  > div:last-child {
+    > button {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
   }
 `;
 

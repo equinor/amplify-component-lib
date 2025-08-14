@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router';
 
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Typography } from 'src/molecules';
 import {

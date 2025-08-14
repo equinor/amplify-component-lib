@@ -10,7 +10,7 @@ import {
   thumbs_up,
   warning_filled,
 } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { TextField } from 'src/molecules/TextField/TextField';
 import page from 'src/molecules/TextField/TextField.docs.mdx';
@@ -43,6 +43,7 @@ const meta: Meta<typeof TextField> = {
     },
   },
   argTypes: {
+    loading: { control: 'boolean' },
     disabled: { control: 'boolean' },
     variant: {
       control: 'radio',
@@ -172,6 +173,34 @@ Types.decorators = [
     );
   },
 ];
+
+export const Loading: Story = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <TextField
+      id="storybook-loading-multiline"
+      label="MultiLine"
+      loading
+      multiline
+      rows={3}
+    />
+    <TextField
+      id="storybook-loading-multiline-helper"
+      label="MultiLine"
+      helperText="Helper text"
+      loading
+      multiline
+      rows={3}
+    />
+    <TextField id="storybook-loading-label" label="Label" loading />
+    <TextField
+      id="storybook-loading-icon"
+      label="With icon"
+      loading
+      inputIcon={<Icon name="thumbs_up" key="thumbs" size={16} />}
+    />
+    <TextField id="storybook-loading-helper" loading helperText="Helper text" />
+  </div>
+);
 
 export const Multiline: Story = () => (
   <TextField id="storybook-multiline" label="Multiline" multiline rows={3} />

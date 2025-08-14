@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, RefObject, useState } from 'react';
 
 import { Button, Card, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
@@ -90,7 +90,7 @@ const Container = styled(motion(Card))<ContainerProps>`
   transition:
     top 400ms,
     left 400ms;
-  box-shadow: ${elevation.raised};
+  box-shadow: ${elevation.above_scrim};
   pointer-events: auto;
   > header {
     display: flex;
@@ -129,6 +129,7 @@ const Actions = styled.div`
 `;
 
 interface TutorialPopoverProps extends MyTutorialDto {
+  contentRef: RefObject<HTMLElement | null>;
   isHighlighting: boolean;
   top?: number;
   left?: number;
@@ -137,6 +138,7 @@ interface TutorialPopoverProps extends MyTutorialDto {
 }
 
 export const TutorialPopover: FC<TutorialPopoverProps> = ({
+  contentRef,
   isHighlighting,
   id,
   top,
@@ -167,6 +169,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
   >(undefined);
   const { style, highlightingElement, caretPosition } =
     useTutorialPopoverPosition({
+      contentRef,
       top,
       left,
       width,

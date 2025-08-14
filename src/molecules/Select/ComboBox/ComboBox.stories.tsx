@@ -3,8 +3,7 @@ import { FC, useState } from 'react';
 import { Button, Dialog, Icon } from '@equinor/eds-core-react';
 import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
-import { actions } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { ComboBox, ComboBoxChip } from 'src/molecules';
 import {
@@ -14,6 +13,7 @@ import {
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
 
+import { actions } from 'storybook/actions';
 import styled from 'styled-components';
 
 const meta: Meta<typeof ComboBox> = {

@@ -100,7 +100,7 @@ export const UploadFile: FC = () => {
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
           }}
-          compact
+          size="small"
         />
         {feedbackAttachments?.map((file) => {
           return (
@@ -115,8 +115,8 @@ export const UploadFile: FC = () => {
           /* v8 ignore start */
           return (
             <ImageFile
-              {...rejection}
               key={rejection.file.name + rejection.file.size}
+              {...rejection}
               onDelete={() => handleOnDeleteRejected(rejection)}
               error
             />

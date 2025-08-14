@@ -3,13 +3,14 @@ import { ChangeEvent, FC, useMemo, useState } from 'react';
 import { DatePicker, Tabs } from '@equinor/eds-core-react';
 import { gear, van } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
-import { actions } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Filter } from '.';
 import { formatDate } from 'src/atoms';
 import { ComboBox, SelectOptionRequired, SingleSelect } from 'src/molecules';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
+
+import { actions } from 'storybook/actions';
 
 const CAR_SIZE = [
   { value: 'sports-car', label: 'Sports car' },
@@ -32,6 +33,7 @@ type FilterStoryProps = FilterProps<string> & {
   withSorting?: boolean;
   withQuickFilter?: boolean;
   withTabs?: boolean;
+  withAutoComplete?: boolean;
 };
 
 const Wrapper: FC<FilterStoryProps> = (props) => {
@@ -159,6 +161,19 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
     }
   };
 
+  const handleOnAutoComplete = (key: string, value: SelectOptionRequired) => {
+    switch (key) {
+      case 'manufacturer':
+        setManufacturer((prev) => [...prev, value]);
+        break;
+      case 'carSize':
+        setCarSize(value);
+        break;
+    }
+
+    setSearch('');
+  };
+
   return (
     <Filter
       {...props}
@@ -168,6 +183,15 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
       onSearchChange={handleOnSearchChange}
       onClearFilter={handleOnClearFilter}
       onClearAllFilters={handleOnClearAllFilters}
+      autoCompleteOptions={
+        props.withAutoComplete
+          ? {
+              carSize: CAR_SIZE,
+              manufacturer: MANUFACTURERS,
+            }
+          : undefined
+      }
+      onAutoComplete={props.withAutoComplete ? handleOnAutoComplete : undefined}
       topContent={
         props.withTabs ? (
           <Tabs
@@ -386,5 +410,12 @@ export const WithTopContent: Story = {
     values: {
       manufacturer: faker.helpers.arrayElements(MANUFACTURERS, 1),
     },
+  },
+};
+
+export const WithAutoComplete: Story = {
+  args: {
+    withAutoComplete: true,
+    values: {},
   },
 };

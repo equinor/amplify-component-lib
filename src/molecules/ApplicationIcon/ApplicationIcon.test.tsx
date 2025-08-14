@@ -3,9 +3,11 @@ import { IconData } from '@equinor/eds-icons';
 import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
 import {
   acquire,
+  adca,
   bravos,
   dasha,
   fallback,
+  forecastFormatter,
   fourDInsight,
   IconDataWithColor,
   inPress,
@@ -23,10 +25,12 @@ import { render, screen } from 'src/tests/browsertest-utils';
 import { expect, test } from 'vitest';
 
 const nameOptions: ApplicationIconProps['name'][] = [
+  'adca',
   'acquire',
   '4dinsight',
   'recap',
   'dasha',
+  'forecast-formatter',
   'jsembark',
   'logging-qualification',
   'pwex',
@@ -45,10 +49,12 @@ type IconsDict = Record<
 >;
 
 const icons: IconsDict = {
+  adca: adca,
   acquire: acquire,
   '4dinsight': fourDInsight,
   recap: recap,
   dasha: dasha,
+  forecastFormatter: forecastFormatter,
   jsembark: jsembark,
   'logging-qualification': loggingQualification,
   pwex: pwex,

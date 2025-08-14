@@ -1,4 +1,4 @@
-import { act, Fragment } from 'react';
+import { act, Fragment, useRef } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { Button } from '@equinor/eds-core-react';
@@ -69,6 +69,8 @@ const TestComponent = ({
   setTutorialIds?: boolean;
 }) => {
   const queryClient = new QueryClient();
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <RouterProvider
       router={createMemoryRouter(
@@ -78,6 +80,7 @@ const TestComponent = ({
             element: (
               <QueryClientProvider client={queryClient}>
                 <div
+                  ref={contentRef}
                   style={{
                     maxWidth: '100vw',
                     height: '100vh',
@@ -86,6 +89,7 @@ const TestComponent = ({
                   id="content"
                 >
                   <TutorialHighlightingProvider
+                    contentRef={contentRef}
                     customStepContent={
                       withCustomContent ? CUSTOM_CONTENT : undefined
                     }

@@ -1,5 +1,5 @@
 import { Avatar, Card } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Button, Chip, Divider, DividerProps, Typography } from '..';
 import page from 'src/molecules/Divider/Divider.docs.mdx';
