@@ -55,7 +55,7 @@ const icons: IconsDict = {
   '4dinsight': fourDInsight,
   recap: recap,
   dasha: dasha,
-  forecastFormatter: forecastFormatter,
+  'forecast-formatter': forecastFormatter,
   jsembark: jsembark,
   'logging-qualification': loggingQualification,
   pwex: pwex,

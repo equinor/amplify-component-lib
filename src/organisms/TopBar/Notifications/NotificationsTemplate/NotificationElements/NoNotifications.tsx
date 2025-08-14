@@ -1,20 +1,18 @@
 import { FC } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
+import { Typography } from '@equinor/eds-core-react';
 
-import { Typography } from 'src/molecules';
+import { spacings } from 'src/atoms/style';
 import { FeedBackIcon } from 'src/molecules/FeedBackIcon/FeedBackIcon';
 
 import styled from 'styled-components';
 
-const { spacings } = tokens;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
+  gap: ${spacings.medium};
   align-items: center;
-  padding: ${spacings.comfortable.large};
+  padding: ${spacings.large};
 `;
 
 export const NoNotifications: FC = () => {

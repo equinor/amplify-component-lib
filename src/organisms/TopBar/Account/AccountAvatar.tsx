@@ -1,8 +1,9 @@
 import { FC } from 'react';
 
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
-import { colors, spacings } from 'src/atoms';
-import { Chip, ProfileAvatar } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
+import { Chip } from 'src/molecules/Chip/Chip';
+import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
 import { ImpersonateAvatar } from 'src/organisms/TopBar/Account/ImpersonateAvatar';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 

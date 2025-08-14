@@ -5,7 +5,8 @@ import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { ComboBox, ComboBoxChip } from 'src/molecules';
+import { ComboBoxChip } from '../Select.styles';
+import { ComboBox } from './ComboBox';
 import {
   SelectedState,
   SelectOption,

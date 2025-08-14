@@ -1,19 +1,21 @@
 import { FC } from 'react';
 
+import { DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back, delete_to_trash } from '@equinor/eds-icons';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
 import { useDeleteImpersonation } from '../hooks/useDeleteImpersonation';
 import { Header } from '../Impersonate.styles';
 import { Container } from './DeleteUser.styles';
-import { colors, useSnackbar } from 'src/atoms';
-import { Button, DotProgress, Icon, Typography } from 'src/molecules';
+import { colors } from 'src/atoms/style';
+import { Button } from 'src/molecules/Button/Button';
 import {
   RoleChip,
   RolesContainer,
   TextContent,
 } from 'src/organisms/TopBar/Account/Account.styles';
 import { ImpersonateAvatar } from 'src/organisms/TopBar/Account/ImpersonateAvatar';
+import { useSnackbar } from 'src/providers/SnackbarProvider/SnackbarProvider';
 
 interface DeleteUserProps {
   user: ImpersonateUserDto;

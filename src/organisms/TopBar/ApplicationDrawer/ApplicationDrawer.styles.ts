@@ -1,10 +1,8 @@
 import { Button } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { colors, shape, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
-const { colors, shape } = tokens;
 
 export const MenuSection = styled.div`
   border-bottom: 1px solid ${colors.ui.background__light.rgba};

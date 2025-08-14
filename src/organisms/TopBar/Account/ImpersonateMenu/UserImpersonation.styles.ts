@@ -1,11 +1,7 @@
-import { tokens } from '@equinor/eds-tokens';
-
-import { animation, spacings } from 'src/atoms/style';
-import { Chip } from 'src/molecules';
+import { animation, colors, spacings } from 'src/atoms/style';
+import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
-
-const { colors } = tokens;
 
 interface ContainerProps {
   $selected: boolean;

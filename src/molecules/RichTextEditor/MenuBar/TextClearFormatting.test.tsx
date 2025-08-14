@@ -2,9 +2,9 @@ import { faker } from '@faker-js/faker';
 
 import {
   RichTextEditor,
-  RichTextEditorFeatures,
   RichTextEditorProps,
-} from 'src/molecules';
+} from 'src/molecules/RichTextEditor/RichTextEditor';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 import {
   renderWithProviders,
   screen,
@@ -32,7 +32,7 @@ test('Able to click clear formatting button', async () => {
 
   const button = await screen.findByTestId('clear-formatting');
 
-  await user.dblClick(screen.getByText(text));
+  await user.tripleClick(screen.getByText(text));
 
   await user.click(button);
 

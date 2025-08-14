@@ -1,12 +1,13 @@
 import {
   RichTextEditor,
-  RichTextEditorFeatures,
   RichTextEditorProps,
-} from 'src/molecules';
+} from 'src/molecules/RichTextEditor/RichTextEditor';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
 } from 'src/tests/browsertest-utils';
 
 function fakeProps(): RichTextEditorProps {
@@ -24,6 +25,8 @@ test('Able to insert lists', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const bullet = await screen.findByTestId('bullet-list-button');
@@ -32,7 +35,7 @@ test('Able to insert lists', async () => {
   expect(bullet).toBeInTheDocument();
   expect(ordered).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   expect(bullet).toBeEnabled();
 
@@ -44,16 +47,22 @@ test('Able to insert lists', async () => {
   );
 
   await user.click(bullet);
-  expect(props.onChange).toHaveBeenNthCalledWith(2, `<p>test</p>`);
-
-  await user.click(ordered);
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    3,
-    `<ol><li><p>test</p></li></ol>`
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(2, `<p>test</p>`)
   );
 
   await user.click(ordered);
-  expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>');
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      3,
+      `<ol><li><p>test</p></li></ol>`
+    )
+  );
+
+  await user.click(ordered);
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(4, '<p>test</p>')
+  );
 });
 
 test('Able to write lists', async () => {
@@ -64,28 +73,34 @@ test('Able to write lists', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const bullet = await screen.findByTestId('bullet-list-button');
 
   expect(bullet).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(bullet);
 
   await user.keyboard('k');
 
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    2,
-    `<ul><li><p>k</p></li></ul>`
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      2,
+      `<ul><li><p>k</p></li></ul>`
+    )
   );
 
   await user.keyboard('{Enter}');
 
-  expect(props.onChange).toHaveBeenNthCalledWith(
-    3,
-    `<ul><li><p>k</p></li><li><p></p></li></ul>`
+  await waitFor(() =>
+    expect(props.onChange).toHaveBeenNthCalledWith(
+      3,
+      `<ul><li><p>k</p></li><li><p></p></li></ul>`
+    )
   );
 });
 

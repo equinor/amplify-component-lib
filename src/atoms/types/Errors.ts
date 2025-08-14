@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { ErrorType } from 'src/atoms';
+import { ErrorType } from 'src/atoms/enums/Errors';
 
 export interface ErrorContentType {
   type: ErrorType;

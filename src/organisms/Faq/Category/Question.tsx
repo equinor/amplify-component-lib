@@ -6,8 +6,8 @@ import { Faq, FaqService } from '@equinor/subsurface-app-management';
 
 import { animation, colors, shape, spacings } from 'src/atoms/style';
 import { formatDate } from 'src/atoms/utils/date';
-import { RichTextDisplay } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
+import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';

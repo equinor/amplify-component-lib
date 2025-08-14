@@ -2,7 +2,7 @@ import { ChangeEvent, FC, useMemo } from 'react';
 
 import { Search } from '@equinor/eds-core-react';
 
-import { useFaqsInApplication } from 'src/atoms';
+import { useFaqsInApplication } from 'src/atoms/hooks/useFaqsInApplication';
 import { useSearchParameter } from 'src/atoms/hooks/useSearchParameter';
 import { colors, spacings } from 'src/atoms/style';
 import { Tabs } from 'src/molecules/Tabs/Tabs';
