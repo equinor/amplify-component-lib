@@ -1,8 +1,8 @@
 import {
   RichTextEditor,
-  RichTextEditorFeatures,
   RichTextEditorProps,
-} from 'src/molecules';
+} from 'src/molecules/RichTextEditor/RichTextEditor';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 import {
   renderWithProviders,
   screen,
@@ -17,8 +17,7 @@ function fakeProps(): RichTextEditorProps {
   };
 }
 
-// This test fails when running in Github Action job, skipping for now (2. July 25)
-test.skip('Able to click bold+italic buttons', async () => {
+test('Able to click bold+italic buttons', async () => {
   const props = fakeProps();
   renderWithProviders(
     <RichTextEditor
@@ -31,7 +30,7 @@ test.skip('Able to click bold+italic buttons', async () => {
   const bold = await screen.findByTestId('bold-button');
   const italic = await screen.findByTestId('italic-button');
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   expect(bold).toBeInTheDocument();
   expect(italic).toBeInTheDocument();

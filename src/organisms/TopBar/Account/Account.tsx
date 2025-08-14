@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
 
 import { TopBarMenu } from '../TopBarMenu';
@@ -26,8 +26,10 @@ import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
 import { RoleChips } from './RoleChips';
 import { RoleList } from './RoleList';
-import { EnvironmentType } from 'src/atoms';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
+import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
+import { Button } from 'src/molecules/Button/Button';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
@@ -39,6 +41,8 @@ export interface AccountProps {
   hideRoles?: boolean;
   useDisplayNameForRole?: boolean;
   children?: ReactNode;
+  availableFields?: Field[];
+  availableWells?: string[];
 }
 
 export const Account: FC<AccountProps> = ({
@@ -46,6 +50,8 @@ export const Account: FC<AccountProps> = ({
   hideRoles = false,
   useDisplayNameForRole = false,
   children,
+  availableFields,
+  availableWells,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
@@ -157,6 +163,8 @@ export const Account: FC<AccountProps> = ({
         open={openImpersonate}
         onClose={handleOnCloseImpersonate}
         anchorEl={buttonRef.current}
+        availableFields={availableFields}
+        availableWells={availableWells}
       />
     </>
   );

@@ -2,9 +2,9 @@ import { faker } from '@faker-js/faker';
 import { fireEvent, waitFor, within } from '@testing-library/dom';
 
 import { mergeDefaults } from './custom-extensions/mergeDefaults';
+import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
 import { getVariantIcon } from 'src/atoms/utils/forms';
-import { RichTextEditor, RichTextEditorProps } from 'src/molecules';
 import type { AmplifyKitOptions } from 'src/molecules/RichTextEditor/custom-extensions/AmplifyKit';
 import {
   renderWithProviders,

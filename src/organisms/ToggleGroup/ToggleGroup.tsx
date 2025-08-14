@@ -2,7 +2,7 @@ import { Children, forwardRef } from 'react';
 
 import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroupOption } from './ToggleGroupOption';
-import { colors, shape } from 'src/atoms';
+import { colors, shape } from 'src/atoms/style';
 
 import styled, { css } from 'styled-components';
 

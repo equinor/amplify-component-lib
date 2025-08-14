@@ -8,7 +8,7 @@ import {
 } from '@equinor/eds-core-react';
 import { calendar_date_range } from '@equinor/eds-icons';
 
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
 import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';

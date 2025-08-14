@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { environment } from 'src/atoms';
+import { environment } from 'src/atoms/utils';
 import { Status } from 'src/organisms/Status';
 
 export const MissingAccessToApp: FC = () => {

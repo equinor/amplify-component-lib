@@ -5,7 +5,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroup as ToggleGroupComponent } from '.';
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 
 interface StoryComponentProps {
   variant: ToggleGroupProps['variant'];

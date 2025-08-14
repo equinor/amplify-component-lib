@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import { colors } from 'src/atoms';
-import { ProfileAvatar } from 'src/molecules';
+import { colors } from 'src/atoms/style';
+import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
 import { useActiveImpersonationUser } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useActiveImpersonationUser';
 
 import styled from 'styled-components';

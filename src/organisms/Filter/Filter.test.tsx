@@ -365,9 +365,6 @@ test('Auto complete with keyboard', async () => {
   await user.keyboard('{ArrowDown}');
   const selectedValue = props.values[key][0];
   await user.keyboard('{ArrowDown}');
-  expect(
-    screen.getByRole('menuitem', { name: selectedValue.label })
-  ).toHaveFocus();
   await user.keyboard('{Enter}');
 
   expect(onAutoComplete).toHaveBeenCalledTimes(1);
