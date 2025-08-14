@@ -17,6 +17,7 @@ import { Recap } from './Icons/Recap';
 import { Sam } from './Icons/Sam';
 import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
+import { FluxMaps } from 'src/molecules/ApplicationIcon/Icons/FluxMaps';
 
 export type ApplicationName =
   | 'adca'
@@ -61,6 +62,10 @@ const apps: ApplicationIconData[] = [
   {
     appName: ['logging-qualification', 'logging qualification', 'ltg'],
     component: LoggingQualification,
+  },
+  {
+    appName: ['flux-maps', 'fluxmaps', 'flux maps'],
+    component: FluxMaps,
   },
   { appName: ['recap'], component: Recap },
   { appName: ['pwex'], component: Pwex },
