@@ -1,5 +1,5 @@
 import { boat, car } from '@equinor/eds-icons';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { colors } from 'src/atoms/style';
 import { ListItem } from 'src/molecules/ListItem/ListItem';

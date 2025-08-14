@@ -1,12 +1,9 @@
-import { tokens } from '@equinor/eds-tokens';
+import { Typography } from '@equinor/eds-core-react';
 import { Link as TanstackLink } from '@tanstack/react-router';
 
-import { spacings } from 'src/atoms/style';
-import { Typography } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
-
-const { colors } = tokens;
 
 export const MenuItemWrapper = styled.span`
   width: 100%;

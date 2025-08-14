@@ -1,10 +1,11 @@
 import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
-import { colors, spacings } from 'src/atoms';
-import { RichTextDisplay } from 'src/molecules';
+import { colors } from './colors';
+import { spacings } from './spacings';
+import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 
 import styled from 'styled-components';
 

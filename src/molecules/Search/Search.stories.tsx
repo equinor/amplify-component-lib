@@ -6,11 +6,12 @@ import {
   EdsProvider,
   SearchProps,
 } from '@equinor/eds-core-react';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Search } from 'src/molecules/Search/Search';
 import page from 'src/molecules/Search/Search.docs.mdx';
+
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof Search> = {
   title: 'Molecules/Search',

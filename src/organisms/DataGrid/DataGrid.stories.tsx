@@ -1,8 +1,8 @@
+import { Typography } from '@equinor/eds-core-react';
 import { EdsDataGridProps } from '@equinor/eds-data-grid-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 import { createColumnHelper } from '@tanstack/react-table';
 
-import { Typography } from 'src/molecules';
 import { DataGrid } from 'src/organisms/DataGrid/DataGrid';
 import { data } from 'src/organisms/DataGrid/stories/data';
 

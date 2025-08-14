@@ -3,12 +3,13 @@ import { FC, FormEvent } from 'react';
 import { faker } from '@faker-js/faker';
 
 import { ComboBox } from './ComboBox';
-import { spacings } from 'src/atoms';
-import { ComboBoxChip, SelectOptionRequired } from 'src/molecules';
+import { spacings } from 'src/atoms/style';
+import { ComboBoxChip } from 'src/molecules/Select/Select.styles';
 import {
   fakeGroups,
   fakeItemsWithChildren,
 } from 'src/molecules/Select/Select.test';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 import {
   fakeSelectItems,
   render,

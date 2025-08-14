@@ -1,4 +1,4 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import Counter from './custom-extensions/Counter';
 import { EditorMenu, EditorText } from './MenuBar/MenuBar';
@@ -9,8 +9,9 @@ import {
   RichTextEditorFeatures,
 } from './RichTextEditor.types';
 import { RichText } from '.';
-import { colors, getFeatures } from 'src/atoms';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
+import { colors } from 'src/atoms/style';
+import { getFeatures } from 'src/atoms/utils';
 
 const meta: Meta<typeof RichTextEditor> = {
   title: 'Molecules/RichTextEditor',
@@ -312,7 +313,7 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
               {/* Main Bar */}
               <EditorMenu.Bar>
                 <EditorText.History editor={editor} />
-                <EditorText.Formating editor={editor} />
+                <EditorText.Formatting editor={editor} />
                 <EditorMenu.Section>
                   <EditorMenu.Button
                     active={editor.isActive('heading', { level: 2 })}

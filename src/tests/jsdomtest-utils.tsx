@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode } from 'react';
+import { FC, ReactElement, ReactNode, useRef } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -10,11 +10,11 @@ import { AuthProvider } from 'src/providers/AuthProvider/AuthProvider';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 
 export const Providers: FC<{ children: ReactNode }> = ({ children }) => {
-  const queryClient = new QueryClient();
+  const queryClient = useRef(new QueryClient());
   return (
     <>
       <Template.GlobalStyles />
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient.current}>
         <SnackbarProvider>
           <AuthProvider>{children}</AuthProvider>
         </SnackbarProvider>

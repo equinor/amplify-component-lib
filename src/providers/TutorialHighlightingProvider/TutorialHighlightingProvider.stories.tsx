@@ -4,7 +4,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
 import { MyTutorialDto } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { TutorialHighlightingProvider } from './TutorialHighlightingProvider';
 import page from './TutorialHighlightingProvider.docs.mdx';

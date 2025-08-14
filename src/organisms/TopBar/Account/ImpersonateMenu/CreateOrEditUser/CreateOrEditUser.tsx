@@ -8,25 +8,34 @@ import { useCreateImpersonation } from '../hooks/useCreateImpersonation';
 import { useEditImpersonation } from '../hooks/useEditImpersonation';
 import { Header } from '../Impersonate.styles';
 import { Container, Section } from './CreateOrEditUser.styles';
+import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
-import { ComboBox, SelectOptionRequired } from 'src/molecules';
+import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
+import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import { TextField } from 'src/molecules/TextField/TextField';
 import { useAllAppRoles } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useAllAppRoles';
 
 interface CreateOrEditUserProps {
   editingUser?: ImpersonateUserDto;
   onBack: () => void;
+  availableFields?: Field[];
+  availableWells?: string[];
 }
 
 export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   editingUser,
   onBack,
+  availableFields,
+  availableWells,
 }) => {
   const initializedEditUser = useRef<boolean>(false);
   const [roles, setRoles] = useState<SelectOptionRequired[]>([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [field, setField] = useState<string | undefined>(undefined);
+  const [well, setWell] = useState<string | undefined>(undefined);
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
 
   useEffect(() => {
@@ -39,20 +48,41 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
           return { value: role, label: role };
         })
       );
+
+      if (availableFields) {
+        const selectedField =
+          availableFields.find((field) => field.uuid == editingUser.field)
+            ?.name ?? undefined;
+        setField(selectedField);
+      }
+
+      if (availableWells) {
+        const selectedWell =
+          availableWells.find((well) => well == editingUser.well) ?? undefined;
+        setWell(selectedWell);
+      }
+
       setFirstName(editingUser.firstName);
       setLastName(editingUser.lastName);
       setEmail(editingUser.email ?? '');
     }
-  }, [data, editingUser, initializedEditUser]);
+  }, [data, editingUser, initializedEditUser, availableFields, availableWells]);
 
   const availableRoles = useMemo(
     () =>
-      data?.map((item) => ({
-        value: item.value,
-        label: item.displayName,
-      })) ?? [],
+      data?.map((item) => ({ value: item.value, label: item.displayName })) ??
+      [],
     [data]
   );
+
+  const availableFieldItems: SelectOptionRequired[] =
+    availableFields?.map((item) => ({
+      value: item.uuid ?? '',
+      label: item.name ?? '',
+    })) ?? [];
+
+  const availableWellItems: SelectOptionRequired[] =
+    availableWells?.map((item) => ({ value: item, label: item })) ?? [];
 
   const { mutateAsync: createImpersonationUser, isPending: isCreating } =
     useCreateImpersonation();
@@ -81,13 +111,23 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
     setRoles(values);
   };
 
+  const handleOnFieldSelect = (selected: SelectOptionRequired | undefined) => {
+    setField(selected?.value);
+  };
+  const handleOnWellSelect = (selected: SelectOptionRequired | undefined) => {
+    setWell(selected?.value);
+  };
+
   const handleOnCreateOrSave = async () => {
     if (editingUser) {
       await updateImpersonationUser({
         id: editingUser.id,
         firstName,
         lastName,
+        fullName: `${firstName} ${lastName}`,
         email: email !== '' ? email : undefined,
+        field,
+        well,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: editingUser.uniqueName,
         appName: editingUser.appName,
@@ -98,6 +138,8 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       await createImpersonationUser({
         firstName,
         lastName,
+        field,
+        well,
         email: email !== '' ? email : undefined,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: `${firstName}.${lastName}`.toLowerCase(),
@@ -142,16 +184,38 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
           onChange={handleOnEmailChange}
         />
       </Section>
+
       <Section>
-        <Typography variant="label" group="navigation">
-          Roles
-        </Typography>
-        {isLoadingRoles && <DotProgress color="primary" />}
+        {availableFieldItems && availableFieldItems.length > 0 && (
+          <SingleSelect
+            placeholder="Select field..."
+            label="Field"
+            meta="Optional (For internal application role purposes)"
+            value={availableFieldItems.find((item) => item.value === field)}
+            onSelect={handleOnFieldSelect}
+            items={availableFieldItems}
+          />
+        )}
+        {availableWellItems && availableWellItems.length > 0 && (
+          <SingleSelect
+            label="Well"
+            placeholder="Select well..."
+            meta="Optional (For internal application role purposes)"
+            value={availableWellItems.find((item) => item.value === well)}
+            onSelect={handleOnWellSelect}
+            items={availableWellItems}
+          />
+        )}
+      </Section>
+
+      <Section>
         <ComboBox
+          label="Roles"
           placeholder="Select roles..."
           values={roles}
           onSelect={handleOnRoleSelect}
           items={availableRoles}
+          loading={isLoadingRoles}
         />
       </Section>
       <Section>

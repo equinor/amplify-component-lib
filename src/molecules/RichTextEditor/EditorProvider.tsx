@@ -96,6 +96,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
 
   const editor = useEditor({
     content,
+    shouldRerenderOnTransaction: true,
     extensions: [ampExtensions, ...extensions],
     onCreate: ({ editor }) => {
       handleImageCheck(editor);

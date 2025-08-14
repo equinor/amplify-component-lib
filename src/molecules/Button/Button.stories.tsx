@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@equinor/eds-core-react';
 import { add, menu, refresh, save } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Button, ButtonProps } from './Button';
 import page from 'src/molecules/Button/Button.docs.mdx';

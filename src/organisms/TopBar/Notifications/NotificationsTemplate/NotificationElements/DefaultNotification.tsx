@@ -1,22 +1,20 @@
 import { FC } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
+import { Typography } from '@equinor/eds-core-react';
 
 import {
   DefaultNotificationTypes,
   NotificationsTypes,
 } from '../Notifications.types';
-import { Typography } from 'src/molecules';
+import { spacings } from 'src/atoms';
 
 import styled from 'styled-components';
-
-const { spacings } = tokens;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacings.comfortable.medium};
-  padding-top: ${spacings.comfortable.medium_small};
+  gap: ${spacings.medium};
+  padding-top: ${spacings.medium_small};
 `;
 
 export const DefaultNotification: FC<DefaultNotificationTypes> = ({

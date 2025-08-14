@@ -10,3 +10,7 @@ pre:has(> code) {
   background: #3d3d3d;
   padding: 24px;
 }
+
+body {
+  background: var(--eds_ui_background__default, rgba(255, 255, 255, 1));
+}

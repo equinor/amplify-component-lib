@@ -2,7 +2,7 @@
 
 import React, { FC } from 'react';
 
-import { Meta } from '@storybook/react';
+import { Meta } from '@storybook/react-vite';
 
 import { ApplicationIconNew } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew';
 import { APP_ICONS } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew.constants';

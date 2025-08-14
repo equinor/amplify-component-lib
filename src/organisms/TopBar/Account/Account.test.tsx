@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { waitForElementToBeRemoved, within } from '@testing-library/dom';
 import { waitFor } from '@testing-library/react';
 
-import { Account } from 'src/organisms/TopBar/Account/Account';
+import { Account } from './Account';
 import { MOCK_USER } from 'src/providers/AuthProvider/AuthProvider';
 import {
   renderWithProviders,
@@ -59,7 +59,7 @@ test('Renders correctly without avatar', async () => {
 
 test('Renders correctly when hiding roles', async () => {
   const user = userEvent.setup();
-  renderWithProviders(<Account hideRoleChips />);
+  renderWithProviders(<Account hideRoles />);
 
   const button = screen.getByRole('button');
 

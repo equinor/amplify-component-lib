@@ -1,18 +1,19 @@
 import { FC, useState } from 'react';
 
+import { Icon } from '@equinor/eds-core-react';
 import { boat, car, flight } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
-import { actions } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { colors, spacings } from 'src/atoms';
-import { Icon } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
 import {
   SelectedState,
   SelectOption,
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
+
+import { actions } from 'storybook/actions';
 
 const meta: Meta<typeof SingleSelect> = {
   title: 'Molecules/Select/SingleSelect',

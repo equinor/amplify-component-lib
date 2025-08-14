@@ -1,7 +1,7 @@
 import { Editor } from '@tiptap/react';
 
 export enum RichTextEditorFeatures {
-  HISTORY = 'history',
+  UNDO_REDO = 'undoRedo',
   FORMATTING = 'formatting',
   HEADERS = 'headers',
   LISTS = 'lists',
@@ -16,7 +16,7 @@ export enum RichTextEditorFeatures {
 }
 
 export const DEFAULT_FEATURES = [
-  RichTextEditorFeatures.HISTORY,
+  RichTextEditorFeatures.UNDO_REDO,
   RichTextEditorFeatures.FORMATTING,
   RichTextEditorFeatures.HEADERS,
   RichTextEditorFeatures.LISTS,

@@ -10,7 +10,7 @@ import {
   thumbs_up,
   warning_filled,
 } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { TextField } from 'src/molecules/TextField/TextField';
 import page from 'src/molecules/TextField/TextField.docs.mdx';

@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
 
 import { new_label, person, star_outlined } from '@equinor/eds-icons';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroup as ToggleGroupComponent } from '.';
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 
 interface StoryComponentProps {
   variant: ToggleGroupProps['variant'];

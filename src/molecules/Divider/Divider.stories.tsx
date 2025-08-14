@@ -1,7 +1,9 @@
 import { Avatar, Card } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Divider, DividerProps, Typography } from '@equinor/eds-core-react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { Button, Chip, Divider, DividerProps, Typography } from '..';
+import { Button } from 'src/molecules/Button/Button';
+import { Chip } from 'src/molecules/Chip/Chip';
 import page from 'src/molecules/Divider/Divider.docs.mdx';
 import { Stack } from 'src/storybook';
 
@@ -153,7 +155,7 @@ export const Middle: StoryFn<DividerProps> = () => (
       </Card.Content>
       <Card.Actions>
         <Chip>active</Chip>
-        <Chip variant="active">pause</Chip>
+        <Chip variant="white">pause</Chip>
         <Chip>disable</Chip>
         <Chip variant="error">stop</Chip>
       </Card.Actions>

@@ -1,8 +1,9 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Status } from '.';
 import { StatusWrapper } from 'src/storybook/StatusWrapper';
+
+import { action } from 'storybook/actions';
 
 interface StatusStoryProps {
   customized: boolean;

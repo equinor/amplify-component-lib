@@ -19,7 +19,7 @@ import {
   Wrapper,
 } from './Filter.styles';
 import { colors } from 'src/atoms/style/colors';
-import { SelectOptionRequired } from 'src/molecules';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 import { AutoCompleteMenu } from 'src/organisms/Filter/AutoCompleteMenu';
 import { AutoCompleteText } from 'src/organisms/Filter/AutoCompleteText';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';

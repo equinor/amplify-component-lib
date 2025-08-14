@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { TopBar, TopBarType } from '.';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
@@ -56,6 +56,11 @@ const meta: Meta<typeof TopBar> = {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: (StoryFn) => (
+    <MemoryRouter>
+      <StoryFn />
+    </MemoryRouter>
+  ),
 };
 
 export default meta;
@@ -99,40 +104,38 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
     },
   ];
   return (
-    <MemoryRouter>
-      <ReleaseNotesProvider>
-        <Template>
-          <TopBar
-            onHeaderClick={() => console.log('Going to homepage')}
-            capitalize={args.capitalize}
-            applicationIcon={args.applicationIcon}
-            applicationName={args.applicationName}
-            isFetching={args.isFetching}
-            environment={args.environment}
-          >
-            <TopBar.Actions>
-              <TopBar.Account />
-              <TopBar.Guidelines sections={[]} />
-              <TopBar.Resources />
-            </TopBar.Actions>
-          </TopBar>
-          <Template.Container>
-            <SideBarProvider>
-              <SideBar
-                createLabel="Create something"
-                onCreate={() => console.log('Created 🖋')}
-              >
-                {menuItems.map((m, index) => (
-                  <SideBar.Item key={m.name} {...m} disabled={index === 0} />
-                ))}
-              </SideBar>
-            </SideBarProvider>
-            <Template.Content $open={false}>
-              <h1>Content goes here</h1>
-            </Template.Content>
-          </Template.Container>
-        </Template>
-      </ReleaseNotesProvider>
-    </MemoryRouter>
+    <ReleaseNotesProvider>
+      <Template>
+        <TopBar
+          onHeaderClick={() => console.log('Going to homepage')}
+          capitalize={args.capitalize}
+          applicationIcon={args.applicationIcon}
+          applicationName={args.applicationName}
+          isFetching={args.isFetching}
+          environment={args.environment}
+        >
+          <TopBar.Actions>
+            <TopBar.Account />
+            <TopBar.Guidelines sections={[]} />
+            <TopBar.Resources />
+          </TopBar.Actions>
+        </TopBar>
+        <Template.Container>
+          <SideBarProvider>
+            <SideBar
+              createLabel="Create something"
+              onCreate={() => console.log('Created 🖋')}
+            >
+              {menuItems.map((m, index) => (
+                <SideBar.Item key={m.name} {...m} disabled={index === 0} />
+              ))}
+            </SideBar>
+          </SideBarProvider>
+          <Template.Content $open={false}>
+            <h1>Content goes here</h1>
+          </Template.Content>
+        </Template.Container>
+      </Template>
+    </ReleaseNotesProvider>
   );
 };

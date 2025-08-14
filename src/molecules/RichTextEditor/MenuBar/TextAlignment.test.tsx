@@ -1,8 +1,8 @@
 import {
   RichTextEditor,
-  RichTextEditorFeatures,
   RichTextEditorProps,
-} from 'src/molecules';
+} from 'src/molecules/RichTextEditor/RichTextEditor';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 import {
   renderWithProviders,
   screen,
@@ -37,15 +37,15 @@ test('Able to click alignment buttons', async () => {
   await user.click(left);
 
   expect(props.onChange).toHaveBeenCalledWith(
-    '<p style="text-align: left">test</p>'
+    '<p style="text-align: left;">test</p>'
   );
   await user.click(center);
   expect(props.onChange).toHaveBeenCalledWith(
-    '<p style="text-align: center">test</p>'
+    '<p style="text-align: center;">test</p>'
   );
   await user.click(right);
   expect(props.onChange).toHaveBeenCalledWith(
-    '<p style="text-align: right">test</p>'
+    '<p style="text-align: right;">test</p>'
   );
 });
 

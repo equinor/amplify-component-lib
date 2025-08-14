@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { faker } from '@faker-js/faker';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { FileProgress } from 'src/molecules/FileProgress/FileProgress';
 import { FileProgressProps } from 'src/molecules/FileProgress/FileProgress.types';

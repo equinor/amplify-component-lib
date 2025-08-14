@@ -1,4 +1,4 @@
-export { AuthProvider } from './AuthProvider/AuthProvider';
+export { AuthProvider } from 'src/providers/AuthProvider/AuthProvider';
 export { SideBarProvider } from './SideBarProvider';
 export { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 export { TableOfContentsProvider } from './TableOfContentsProvider';

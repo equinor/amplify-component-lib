@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { RichTextDisplay } from 'src/molecules';
+import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 
 export const Docs: StoryFn = () => (
   <div>

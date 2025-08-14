@@ -1,7 +1,7 @@
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { car, dashboard, favorite_outlined, history } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { SideBar } from '.';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';

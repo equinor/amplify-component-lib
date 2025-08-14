@@ -1,7 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import { info_circle, pipe_support, save, tune } from '@equinor/eds-icons';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { BaseChipProps, Chip } from './Chip';
 import { InteractiveChipProps } from './InteractiveChip';
@@ -9,6 +8,7 @@ import { colors } from 'src/atoms/style/colors';
 import page from 'src/molecules/Chip/Chips.docs.mdx';
 import { Stack } from 'src/storybook';
 
+import { action } from 'storybook/actions';
 import styled from 'styled-components';
 
 const handleDelete = action('onDelete');

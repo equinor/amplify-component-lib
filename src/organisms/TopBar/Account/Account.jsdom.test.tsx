@@ -47,6 +47,22 @@ test('Impersonate button not visible when in prod or if api_client_id is not def
   expect(screen.queryByText(/Impersonate/i)).not.toBeInTheDocument();
 });
 
+test('Renders list when roles > 3', async () => {
+  vi.stubEnv(
+    'VITE_MOCK_ROLES',
+    JSON.stringify(['admin', 'user', 'viewer', 'other'])
+  );
+  const user = userEvent.setup();
+
+  renderWithProviders(<Account />);
+
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  expect(screen.getByRole('list')).toBeInTheDocument();
+});
+
 describe('Active impersonation', () => {
   beforeEach(() => {
     server.use(

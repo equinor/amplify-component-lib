@@ -1,8 +1,8 @@
 import {
   RichTextEditor,
-  RichTextEditorFeatures,
   RichTextEditorProps,
-} from 'src/molecules';
+} from 'src/molecules/RichTextEditor/RichTextEditor';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 import {
   renderWithProviders,
   screen,
@@ -54,7 +54,7 @@ test('Hides buttons if not in features', async () => {
       {...fakeProps()}
       removeFeatures={[
         RichTextEditorFeatures.IMAGES,
-        RichTextEditorFeatures.HISTORY,
+        RichTextEditorFeatures.UNDO_REDO,
       ]}
     />
   );

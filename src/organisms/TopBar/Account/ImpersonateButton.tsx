@@ -15,7 +15,7 @@ import {
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { OpenImpersonationMenuButton } from './Account.styles';
-import { colors, spacings } from 'src/atoms';
+import { colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

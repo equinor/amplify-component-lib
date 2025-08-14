@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from '@equinor/eds-core-react';
 
-import { colors, shape, spacings } from 'src/atoms';
+import { colors, shape, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 
@@ -18,10 +18,10 @@ export const MenuItemContainer = styled.div<MenuItemContainerProps>`
       ? colors.interactive.primary__selected_highlight.rgba
       : 'transparent'};
   cursor: pointer;
-  &:has(> button:disabled) {
+  &:has(button:disabled) {
     cursor: not-allowed;
   }
-  &:hover:not(:has(> button:disabled)) {
+  &:hover:not(:has(button:disabled)) {
     background: ${({ $active }) =>
       $active
         ? colors.interactive.primary__selected_hover.rgba

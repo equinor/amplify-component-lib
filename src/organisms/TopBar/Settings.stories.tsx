@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Settings, SettingsProps } from './Settings';
 import { colors, spacings } from 'src/atoms';

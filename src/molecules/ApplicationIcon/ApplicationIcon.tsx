@@ -5,6 +5,7 @@ import { Adca } from './Icons/Adca';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
 import { Fallback } from './Icons/Fallback';
+import { ForecastFormatter } from './Icons/ForecastFormatter';
 import { FourDInsight } from './Icons/FourDInsight';
 import { InPress } from './Icons/InPress';
 import { JsEmbark } from './Icons/JsEmbark';
@@ -16,6 +17,7 @@ import { Recap } from './Icons/Recap';
 import { Sam } from './Icons/Sam';
 import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
+import { FluxMaps } from 'src/molecules/ApplicationIcon/Icons/FluxMaps';
 
 export type ApplicationName =
   | 'adca'
@@ -23,6 +25,7 @@ export type ApplicationName =
   | '4dinsight'
   | 'recap'
   | 'dasha'
+  | 'forecast-formatter'
   | 'orca'
   | 'portal'
   | 'jsembark'
@@ -46,10 +49,23 @@ const apps: ApplicationIconData[] = [
   { appName: ['acquire'], component: Acquire },
   { appName: ['4dinsight'], component: FourDInsight },
   { appName: ['dasha'], component: Dasha },
+  {
+    appName: [
+      'forecast formatter',
+      'Forecast formatter',
+      'Forecast Formatter',
+      'forecast-formatter',
+    ],
+    component: ForecastFormatter,
+  },
   { appName: ['orca'], component: Orca },
   {
     appName: ['logging-qualification', 'logging qualification', 'ltg'],
     component: LoggingQualification,
+  },
+  {
+    appName: ['flux-maps', 'fluxmaps', 'flux maps'],
+    component: FluxMaps,
   },
   { appName: ['recap'], component: Recap },
   { appName: ['pwex'], component: Pwex },

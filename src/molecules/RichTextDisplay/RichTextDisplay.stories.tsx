@@ -1,10 +1,10 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { RichText } from 'src/molecules';
 import {
   RichTextDisplay,
   RichTextDisplayProps,
 } from 'src/molecules/RichTextDisplay/RichTextDisplay';
+import { RichText } from 'src/molecules/RichTextEditor';
 
 const meta: Meta<typeof RichTextDisplay> = {
   title: 'Molecules/RichTextDisplay',
@@ -25,7 +25,7 @@ export const Primary: StoryFn<RichTextDisplayProps> = (args) => {
 
 export const CompoundComponents: StoryFn<RichTextDisplayProps> = (args) => {
   return (
-    <RichText.Display {...args}>
+    <RichTextDisplay {...args}>
       {(editor) => {
         return (
           <RichText.Styling
@@ -36,6 +36,6 @@ export const CompoundComponents: StoryFn<RichTextDisplayProps> = (args) => {
           </RichText.Styling>
         );
       }}
-    </RichText.Display>
+    </RichTextDisplay>
   );
 };

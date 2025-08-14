@@ -1,4 +1,11 @@
-import { Avatar, Card, CardProps } from '@equinor/eds-core-react';
+import {
+  Avatar,
+  Card,
+  CardProps,
+  Divider,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
 import {
   more_vertical,
   person_add,
@@ -6,9 +13,9 @@ import {
   settings,
   share,
 } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { Button, Divider, Icon, Typography } from 'src/molecules';
+import { Button } from 'src/molecules/Button/Button';
 import page from 'src/organisms/Card/Card.docs.mdx';
 import { Stack } from 'src/storybook';
 

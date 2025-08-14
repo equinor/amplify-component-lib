@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import { car, gamepad, motorcycle } from '@equinor/eds-icons';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tabs } from './Tabs';
 import { Tab, Tabs as TabsType } from './Tabs.types';

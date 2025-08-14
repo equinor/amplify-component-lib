@@ -42,12 +42,14 @@ const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
         }
       : rest.style;
 
+    const usingDisabled = loading ? false : disabled;
+
     return (
       <BaseButton
         ref={ref}
         variant={variant}
         color={color}
-        disabled={disabled}
+        disabled={usingDisabled}
         onClick={loading ? undefined : onClick}
         {...rest}
         style={usingStyle}
@@ -63,7 +65,6 @@ const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
                     variantAndColorToProgressColor({
                       variant,
                       color,
-                      disabled,
                     }) as CircularProgressProps['color']
                   }
                 />
@@ -72,7 +73,6 @@ const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
                   color={variantAndColorToProgressColor({
                     variant,
                     color,
-                    disabled,
                   })}
                 />
               )}

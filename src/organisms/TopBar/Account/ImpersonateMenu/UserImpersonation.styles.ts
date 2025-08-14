@@ -1,11 +1,7 @@
-import { tokens } from '@equinor/eds-tokens';
-
-import { animation, spacings } from 'src/atoms/style';
-import { Chip } from 'src/molecules';
+import { animation, colors, spacings } from 'src/atoms/style';
+import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
-
-const { colors } = tokens;
 
 interface ContainerProps {
   $selected: boolean;
@@ -13,7 +9,7 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   display: grid;
-  grid-template-columns: auto auto 1fr 24px 36px;
+  grid-template-columns: minmax(auto, 1fr) auto 1fr 24px 36px;
   align-items: center;
   gap: ${spacings.small};
   height: calc(32px + ${spacings.medium} * 2);
@@ -32,7 +28,11 @@ export const Container = styled.div<ContainerProps>`
         ? colors.interactive.primary__selected_hover.rgba
         : colors.interactive.primary__hover_alt.rgba};
   }
-
+  > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   > svg:last-child {
     margin-left: auto;
   }
@@ -41,6 +41,14 @@ export const Container = styled.div<ContainerProps>`
   }
 `;
 export const RoleChip = styled(Chip)`
+  &,
+  div,
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 10ch;
+    text-overflow: ellipsis;
+  }
   height: fit-content;
   padding: 0;
   color: ${colors.text.static_icons__primary_white.rgba};

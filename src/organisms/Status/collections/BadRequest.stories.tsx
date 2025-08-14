@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router';
 
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BadRequest } from './BadRequest';
 import { StatusWrapper } from 'src/storybook/StatusWrapper';

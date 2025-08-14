@@ -1,20 +1,25 @@
-import { tokens } from '@equinor/eds-tokens';
-import { Preview, StoryFn } from '@storybook/react';
+import { Preview, StoryFn } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { withSpacingsMode } from './addons/SpacingsAddon/withSpacingsMode';
-import { AuthProvider } from 'src';
+import { withTheme } from './addons/ThemeAddon/withTheme';
 import { darkTokens } from 'src/atoms/style/darkTokens';
 import { spacingTokens } from 'src/atoms/style/spacingTokens';
 import { Template } from 'src/organisms/Template/Template';
+import { AuthProvider } from 'src/providers';
 import { SnackbarProvider } from 'src/providers/SnackbarProvider/SnackbarProvider';
 import { handlers } from 'src/tests/mockHandlers';
 
 import { initialize, mswLoader } from 'msw-storybook-addon';
+import { sb } from 'storybook/test';
 
 import './index.css';
 
-const { colors } = tokens;
+// Register mocks
+sb.mock(import('../src/providers/AuthProvider/AuthProvider.tsx'), {
+  spy: true,
+});
+
 initialize({
   quiet: true,
   onUnhandledRequest: (req, print) => {
@@ -27,13 +32,8 @@ const globalTypes = {
   spacingsToggle: {
     defaultValue: 'comfortable',
   },
-  dataThemes: {
-    defaultValue: {
-      list: [
-        { name: 'Light', dataTheme: 'light', color: '#FFFFFF' },
-        { name: 'Dark', dataTheme: 'dark', color: '#243746' },
-      ],
-    },
+  themeToggle: {
+    defaultValue: 'light',
   },
 };
 
@@ -61,6 +61,7 @@ const decorators = [
     );
   },
   withSpacingsMode,
+  withTheme,
 ];
 
 const parameters = {
@@ -70,19 +71,6 @@ const parameters = {
   actions: { argTypes: /^on[A-Z].*/ },
   viewMode: 'docs',
   controls: { expanded: true },
-  backgrounds: {
-    default: 'Equinor UI Light (off-white/off-dark)',
-    values: [
-      {
-        name: 'Equinor UI Light (off-white/off-dark)',
-        value: colors.ui.background__light.rgba,
-      },
-      {
-        name: 'Equinor UI Default (white/dark)',
-        value: colors.ui.background__default.rgba,
-      },
-    ],
-  },
   options: {
     storySort: {
       order: [

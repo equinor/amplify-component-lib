@@ -22,12 +22,13 @@ import {
   settings,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { colors } from 'src/atoms/style';
 import page from 'src/molecules/Menu/Menu.docs.mdx';
 import { Stack } from 'src/storybook';
+
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof Menu> = {
   title: 'Molecules/Menu',

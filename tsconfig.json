@@ -5,8 +5,15 @@
     "target": "ES2022",
     "module": "esnext",
     "lib": ["dom", "esnext"],
-    "types": ["node", "vite/client", "vitest/globals", "@types/wicg-file-system-access"],
-    "moduleResolution": "node",
+    "types": [
+      "node",
+      "vite/client",
+      "vitest/globals",
+      "@types/wicg-file-system-access",
+      "bun-types"
+    ],
+    "moduleResolution": "bundler",
+    "rootDir": ".",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

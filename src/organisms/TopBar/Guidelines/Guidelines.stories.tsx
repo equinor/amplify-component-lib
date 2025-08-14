@@ -10,7 +10,7 @@ import {
   view_module,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Guidelines } from '.';
 

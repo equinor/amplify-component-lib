@@ -11,9 +11,10 @@ import {
   UploadWrapper,
 } from './FileUploadArea.styles';
 import { colors } from 'src/atoms/style';
-import { Button, OptionalTooltip } from 'src/molecules';
+import { Button } from 'src/molecules/Button/Button';
 import { FILE_UPLOAD_SCRIM_ID } from 'src/molecules/FileUploadArea/FileUploadArea.constants';
 import { UploadIllustration } from 'src/molecules/FileUploadArea/UploadIllustration';
+import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 export type FileUploadAreaProps = {
   /*

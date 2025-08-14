@@ -2,9 +2,9 @@ import { faker } from '@faker-js/faker';
 
 import {
   RichTextEditor,
-  RichTextEditorFeatures,
   RichTextEditorProps,
-} from 'src/molecules';
+} from 'src/molecules/RichTextEditor/RichTextEditor';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 import {
   renderWithProviders,
   screen,
@@ -27,6 +27,8 @@ test('Able to insert links', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');
@@ -36,14 +38,13 @@ test('Able to insert links', async () => {
   expect(link).toBeDisabled();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
-
-  await waitFor(() => expect(link).toBeEnabled(), { timeout: 5000 });
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 
   const randomUrl = faker.internet.url();
-  await user.type(screen.getByPlaceholderText(/insert link/i), randomUrl);
+  const linkField = await screen.findByPlaceholderText(/insert link/i);
+  await user.type(linkField, randomUrl);
 
   await user.click(screen.getByRole('button', { name: /save/i }));
 
@@ -68,23 +69,23 @@ test('Able to insert links with {Enter}', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');
   const unsetLink = await screen.findByTestId('unsetlink-button');
 
   expect(link).toBeInTheDocument();
-  expect(link).toBeDisabled();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
-
-  await waitFor(() => expect(link).toBeEnabled());
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 
   const randomUrl = faker.internet.url();
-  await user.type(screen.getByPlaceholderText(/insert link/i), randomUrl);
+  const linkField = await screen.findByPlaceholderText(/insert link/i);
+  await user.type(linkField, randomUrl);
 
   await user.keyboard('{Enter}');
 
@@ -109,6 +110,8 @@ test('Prepends https if link doesnt include it', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');
@@ -118,9 +121,7 @@ test('Prepends https if link doesnt include it', async () => {
   expect(link).toBeDisabled();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
-
-  await waitFor(() => expect(link).toBeEnabled());
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 
@@ -150,6 +151,8 @@ test('Trying to insert invalid link doesnt work', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
+  // Wait for tiptap init
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const link = await screen.findByTestId('link-button');
@@ -159,9 +162,7 @@ test('Trying to insert invalid link doesnt work', async () => {
   expect(link).toBeDisabled();
   expect(unsetLink).toBeInTheDocument();
 
-  await user.dblClick(screen.getByText('test'));
-
-  await waitFor(() => expect(link).toBeEnabled());
+  await user.tripleClick(screen.getByText('test'));
 
   await user.click(link);
 

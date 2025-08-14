@@ -1,7 +1,7 @@
 import { Icon, IconProps } from '@equinor/eds-core-react';
 import type { IconData } from '@equinor/eds-icons';
 import * as icons from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from 'src/molecules/Icon/Icon.docs.mdx';
 import { Stack } from 'src/storybook';

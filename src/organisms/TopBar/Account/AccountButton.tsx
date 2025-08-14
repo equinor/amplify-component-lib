@@ -3,8 +3,10 @@ import { forwardRef } from 'react';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
 import { ImpersonateAvatar } from './ImpersonateAvatar';
-import { colors, spacings, useAuth } from 'src/atoms';
-import { Chip, ProfileAvatar } from 'src/molecules';
+import { colors, spacings } from 'src/atoms/style';
+import { Chip } from 'src/molecules/Chip/Chip';
+import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
 

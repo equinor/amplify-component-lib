@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import {
   DefaultNotificationTypes,

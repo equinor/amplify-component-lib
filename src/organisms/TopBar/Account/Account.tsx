@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
 
 import { TopBarMenu } from '../TopBarMenu';
@@ -19,19 +19,17 @@ import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
 import { useMappedRoles } from './ImpersonateMenu/hooks/useMappedRoles';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
-import {
-  ButtonWrapper,
-  Container,
-  RoleChip,
-  RolesContainer,
-  TextContent,
-} from './Account.styles';
+import { ButtonWrapper, Container, TextContent } from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
-import { EnvironmentType } from 'src/atoms';
+import { RoleChips } from './RoleChips';
+import { RoleList } from './RoleList';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
+import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
+import { Button } from 'src/molecules/Button/Button';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
@@ -40,16 +38,20 @@ export interface AccountProps {
     buttonRef: RefObject<HTMLButtonElement | null>,
     handleToggle: () => void
   ) => ReactElement;
-  hideRoleChips?: boolean;
+  hideRoles?: boolean;
   useDisplayNameForRole?: boolean;
   children?: ReactNode;
+  availableFields?: Field[];
+  availableWells?: string[];
 }
 
 export const Account: FC<AccountProps> = ({
   renderCustomButton,
-  hideRoleChips = false,
+  hideRoles = false,
   useDisplayNameForRole = false,
   children,
+  availableFields,
+  availableWells,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
@@ -131,12 +133,14 @@ export const Account: FC<AccountProps> = ({
             <Typography variant="h6">{fullName}</Typography>
             <Typography>{username}</Typography>
           </TextContent>
-          {activeRoles && !hideRoleChips && (
-            <RolesContainer>
-              {activeRoles.map((role) => (
-                <RoleChip key={role.value}>{role.label}</RoleChip>
-              ))}
-            </RolesContainer>
+          {activeRoles && !hideRoles && (
+            <>
+              {activeRoles.length <= 3 ? (
+                <RoleChips roles={activeRoles} />
+              ) : (
+                <RoleList roles={activeRoles} />
+              )}
+            </>
           )}
           {children}
           {canImpersonate &&
@@ -159,6 +163,8 @@ export const Account: FC<AccountProps> = ({
         open={openImpersonate}
         onClose={handleOnCloseImpersonate}
         anchorEl={buttonRef.current}
+        availableFields={availableFields}
+        availableWells={availableWells}
       />
     </>
   );
