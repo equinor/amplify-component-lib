@@ -93,9 +93,13 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
           color={colors.text.static_icons__tertiary.rgba}
           data={account_circle}
         />
-        <Typography data-testid="name">{fullName}</Typography>
+        <OptionalTooltip title={fullName} placement="top">
+          <Typography data-testid="name">{fullName}</Typography>
+        </OptionalTooltip>
         <RoleChipContainer $selected={selected}>
-          <RoleChip data-testid="role">{activeRoles[0].label}</RoleChip>
+          <OptionalTooltip title={activeRoles.at(0)?.label} placement="top">
+            <RoleChip data-testid="role">{activeRoles[0].label}</RoleChip>
+          </OptionalTooltip>
           {activeRoles.length > 1 && (
             <OptionalTooltip
               title={activeRoles
