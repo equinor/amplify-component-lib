@@ -2,7 +2,6 @@ import { FC, useRef, useState } from 'react';
 
 import { DotProgress, Icon, Typography } from '@equinor/eds-core-react';
 import { apps, exit_to_app } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 import {
   AmplifyApplication,
   AmplifyApplicationService,
@@ -22,11 +21,10 @@ import {
   NoApplications,
   TextContainer,
 } from './ApplicationDrawer.styles';
+import { colors } from 'src/atoms/style';
 import { environment } from 'src/atoms/utils';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 import { TransferToAppDialog } from 'src/organisms/TopBar/TransferToAppDialog';
-
-const { colors } = tokens;
 
 const { getAppName, PORTAL_URL_WITHOUT_LOCALHOST } = environment;
 

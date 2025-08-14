@@ -4,8 +4,8 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { Container } from './Faq.styles';
 import { Header } from './Header';
-import { useSearchParameter } from 'src/atoms';
 import { useFaqsInApplication } from 'src/atoms/hooks/useFaqsInApplication';
+import { useSearchParameter } from 'src/atoms/hooks/useSearchParameter';
 import { Category } from 'src/organisms/Faq/Category/Category';
 import { CategorySkeleton } from 'src/organisms/Faq/CategorySkeleton';
 import { Status } from 'src/organisms/Status';

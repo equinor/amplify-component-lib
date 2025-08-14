@@ -4,7 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import { colors, spacings } from 'src/atoms/style';
-import { Button } from 'src/molecules';
+import { Button } from 'src/molecules/Button/Button';
 
 import styled from 'styled-components';
 

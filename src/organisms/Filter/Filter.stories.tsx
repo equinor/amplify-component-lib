@@ -6,8 +6,10 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Filter } from '.';
-import { formatDate } from 'src/atoms';
-import { ComboBox, SelectOptionRequired, SingleSelect } from 'src/molecules';
+import { formatDate } from 'src/atoms/utils';
+import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
+import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
 
 import { actions } from 'storybook/actions';

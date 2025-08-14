@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
-import { Typography } from 'src/molecules';
+import { Typography } from '@equinor/eds-core-react';
+
 import { Container } from 'src/molecules/Badge/Badge.styles';
 
 export type Variants = 'default' | 'light' | 'danger' | 'empty';

@@ -9,9 +9,9 @@ import {
 import { RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT } from './ReleaseNote.constants';
 import { timeToRead, usingReleaseNoteDate } from './ReleaseNote.utils';
 import { ToggleExpanded } from './ToggleExpanded';
-import { formatDate, getImagesFromRichText, shape } from 'src/atoms';
-import { colors, spacings } from 'src/atoms/style';
-import { RichTextDisplay } from 'src/molecules';
+import { colors, shape, spacings } from 'src/atoms/style';
+import { formatDate, getImagesFromRichText } from 'src/atoms/utils';
+import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 import { MetaTags } from 'src/organisms/ReleaseNote/MetaTags';
 
 import { motion } from 'framer-motion';

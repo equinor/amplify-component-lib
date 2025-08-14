@@ -1,7 +1,8 @@
 import { FC } from 'react';
 
+import { Typography } from '@equinor/eds-core-react';
+
 import { colors, spacings } from 'src/atoms/style';
-import { Typography } from 'src/molecules';
 import { SubStepIndicator } from 'src/molecules/Stepper/SubTitle/SubStepIndicator';
 import { useStepper } from 'src/providers/StepperProvider';
 

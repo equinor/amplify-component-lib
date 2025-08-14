@@ -2,15 +2,13 @@ import React, { FC, useMemo, useState } from 'react';
 
 import { Button, Card, Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_forward } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
-import { spacings } from 'src/atoms/style';
+import { colors, elevation, shape, spacings } from 'src/atoms/style';
 import { Field } from 'src/atoms/types/Field';
-import { SelectOptionRequired, SingleSelect } from 'src/molecules';
+import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
+import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 
 import styled from 'styled-components';
-
-const { elevation, colors, shape } = tokens;
 
 const StyledCard = styled(Card)`
   position: absolute;

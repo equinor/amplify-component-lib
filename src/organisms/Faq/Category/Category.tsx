@@ -4,7 +4,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { FaqCategory } from '@equinor/subsurface-app-management';
 
 import { Question } from './Question';
-import { useSearchParameter } from 'src/atoms';
+import { useSearchParameter } from 'src/atoms/hooks/useSearchParameter';
 import { spacings } from 'src/atoms/style';
 import { Status } from 'src/organisms/Status';
 

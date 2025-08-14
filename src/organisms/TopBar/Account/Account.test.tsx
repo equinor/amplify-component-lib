@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { waitForElementToBeRemoved, within } from '@testing-library/dom';
 import { waitFor } from '@testing-library/react';
 
-import { Account } from 'src/organisms/TopBar/Account/Account';
+import { Account } from './Account';
 import { MOCK_USER } from 'src/providers/AuthProvider/AuthProvider';
 import {
   renderWithProviders,

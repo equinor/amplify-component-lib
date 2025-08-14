@@ -13,7 +13,6 @@ type ItemType = SideBarMenuItem;
 
 export const SideBar = BaseSideBar as SidebarType;
 SideBar.Item = MenuItem;
-SideBar.Item.displayName = 'SideBar.Item';
 
 export type { ItemType };
 

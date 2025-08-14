@@ -6,7 +6,7 @@ import {
 } from '@equinor/eds-icons';
 
 import { ButtonWithMenu } from './ButtonWithMenu';
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 
 import styled from 'styled-components';
 

@@ -1,8 +1,8 @@
 import {
   RichTextEditor,
-  RichTextEditorFeatures,
   RichTextEditorProps,
-} from 'src/molecules';
+} from 'src/molecules/RichTextEditor/RichTextEditor';
+import { RichTextEditorFeatures } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 import {
   renderWithProviders,
   screen,
@@ -29,7 +29,7 @@ test('Able to click header buttons', async () => {
   const heading2 = await screen.findByTestId('h2-button');
   const heading3 = await screen.findByTestId('h3-button');
 
-  await user.dblClick(screen.getByText('test'));
+  await user.tripleClick(screen.getByText('test'));
 
   expect(heading2).toBeInTheDocument();
   expect(heading3).toBeInTheDocument();

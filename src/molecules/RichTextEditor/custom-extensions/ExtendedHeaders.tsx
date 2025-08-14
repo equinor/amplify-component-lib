@@ -1,4 +1,5 @@
 /* v8 ignore start */
+import { Typography } from '@equinor/eds-core-react';
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
 import Heading from '@tiptap/extension-heading';
 import type { NodeViewProps } from '@tiptap/react';
@@ -7,8 +8,6 @@ import {
   NodeViewWrapper,
   ReactNodeViewRenderer,
 } from '@tiptap/react';
-
-import { Typography } from 'src/molecules';
 
 const Component = (props: NodeViewProps) => {
   const level = props.node.attrs.level as number;
