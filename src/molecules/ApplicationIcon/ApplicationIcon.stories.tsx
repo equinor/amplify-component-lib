@@ -18,6 +18,7 @@ const meta: Meta<typeof ApplicationIcon> = {
         'orca',
         'recap',
         'jsembark',
+        'flux-maps',
         'pwex',
         'logging-qualification',
         'inpress',

@@ -32,6 +32,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'dasha',
   'forecast-formatter',
   'jsembark',
+  'flux-maps',
   'logging-qualification',
   'pwex',
   'orca',
