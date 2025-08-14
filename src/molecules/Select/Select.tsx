@@ -193,7 +193,7 @@ export const Select = <T extends SelectOptionRequired>(
           $lightBackground={lightBackground}
         >
           <Section>
-            {search === '' && selectedValues.length === 0 && (
+            {!loading && search === '' && selectedValues.length === 0 && (
               <PlaceholderText>{placeholder}</PlaceholderText>
             )}
             {((search === '' && 'value' in props) ||
@@ -201,6 +201,7 @@ export const Select = <T extends SelectOptionRequired>(
                 selectedValues.length > 0 &&
                 (!props.showSelectedAsText ||
                   (props.showSelectedAsText && search === '')))) &&
+              !loading &&
               valueElements}
             <input
               id={id}
