@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "9.15.1",
+  "version": "9.15.2",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/src/index.d.ts",
@@ -151,7 +151,8 @@
     "react-dropzone": "^14.3.8",
     "react-markdown": "^10.1.0",
     "rehype-raw": "^7.0.0",
-    "styled-components": "^6.1.15"
+    "styled-components": "^6.1.15",
+    "lodash": "^4.17.21"
   },
   "msw": {
     "workerDirectory": [

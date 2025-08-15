@@ -95,6 +95,7 @@
         "framer-motion": "^12.23.6",
         "html2canvas": "^1.4.1",
         "jwt-decode": "^4.0.0",
+        "lodash": "^4.17.21",
         "lowlight": "^3.3.0",
         "proj4": "^2.15.0",
         "react": "^19.0.0",
