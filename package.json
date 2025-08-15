@@ -147,7 +147,8 @@
     "react-dropzone": "^14.3.8",
     "react-markdown": "^10.1.0",
     "rehype-raw": "^7.0.0",
-    "styled-components": "^6.1.15"
+    "styled-components": "^6.1.15",
+    "lodash": "^4.17.21"
   },
   "msw": {
     "workerDirectory": [
