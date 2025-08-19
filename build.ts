@@ -9,5 +9,7 @@ const externalDependencies = Object.keys({
 export default await Bun.build({
   entrypoints: ['./src/index.ts'],
   outdir: './dist',
-  external: ['@babel/runtime', 'react/jsx-runtime', ...externalDependencies],
+  splitting: true,
+  minify: true,
+  external: ['@babel/runtime', ...externalDependencies],
 });
