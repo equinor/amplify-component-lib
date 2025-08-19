@@ -30,7 +30,7 @@
     "test:ci": "CI=true vitest run",
     "test:coverage": "vitest run --coverage",
     "build": "npm run build-components",
-    "build-components": "rm -rf dist &&  tsc --project tsconfig.build.json && resolve-tspaths --project tsconfig.build.json && bun run build.ts",
+    "build-components": "rm -rf dist &&  tsc --project tsconfig.build.json && resolve-tspaths --project tsconfig.build.json && NODE_ENV=production bun run build.ts",
     "build-and-use": "node tooling/build-and-use.mjs",
     "brute-coverage": "node tooling/brute-coverage.mjs"
   },
