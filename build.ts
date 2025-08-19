@@ -3,7 +3,6 @@ import pkg from './package.json' with { type: 'json' };
 
 const externalDependencies = Object.keys({
   ...pkg.peerDependencies,
-  ...pkg.dependencies,
 });
 
 export default await Bun.build({
