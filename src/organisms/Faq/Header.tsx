@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, useMemo, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useMemo,
+  useState,
+} from 'react';
 
 import { Search } from '@equinor/eds-core-react';
 
@@ -23,9 +30,13 @@ const Container = styled.div`
   }
 `;
 
-export const Header: FC = () => {
+interface HeaderProps {
+  selectedTab: string | undefined;
+  setSelectedTab: Dispatch<SetStateAction<string | undefined>>;
+}
+
+export const Header: FC<HeaderProps> = ({ setSelectedTab, selectedTab }) => {
   const { data } = useFaqsInApplication();
-  const [selectedTab, setSelectedTab] = useState<string | undefined>(undefined);
   const [search, setSearch] = useState<string>('');
 
   const tabOptions = useMemo(() => {

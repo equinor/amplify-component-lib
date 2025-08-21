@@ -12,7 +12,7 @@ import { Status } from 'src/organisms/Status';
 // TODO: Before @tanstack/react-router switch can be released, these components need to be updated
 export const Faq: FC = () => {
   const { data, isLoading } = useFaqsInApplication();
-  const [selectedTab] = useState<string | undefined>(undefined);
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(undefined);
 
   const filteredCategories = useMemo(() => {
     if (!data) return;
@@ -32,10 +32,10 @@ export const Faq: FC = () => {
       <Typography variant="h1" bold>
         FAQ
       </Typography>
-      <Header />
+      <Header selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       {filteredCategories && filteredCategories.length > 0 ? (
         filteredCategories.map((category) => (
-          <Category key={category.id} {...category} />
+          <Category key={category.id} {...category} selectedTab={selectedTab} />
         ))
       ) : isLoading ? (
         <>
