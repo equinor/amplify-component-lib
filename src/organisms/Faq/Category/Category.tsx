@@ -19,9 +19,17 @@ const Container = styled.div`
   }
 `;
 
-export const Category: FC<FaqCategory> = ({ categoryName, faqs }) => {
+type CategoryProps = {
+  selectedTab: string | undefined;
+} & FaqCategory;
+
+export const Category: FC<CategoryProps> = ({
+  categoryName,
+  faqs,
+  selectedTab,
+}) => {
   const [search] = useState<string | undefined>(undefined);
-  const [selectedTab] = useState<string | undefined>(undefined);
+
   const sortedFaqs = useMemo(() => {
     return faqs.toSorted((a, b) => {
       const usingA = a.orderBy ?? 0;
