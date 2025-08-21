@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "9.15.3-beta.0",
+  "version": "9.15.3-beta.1",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
