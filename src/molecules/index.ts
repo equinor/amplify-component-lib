@@ -44,6 +44,7 @@ export { AmplifyKit } from './RichTextEditor/custom-extensions/AmplifyKit';
 export type { RichTextEditorProps } from './RichTextEditor/RichTextEditor';
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';
+export type { Tab } from './Tabs/Tabs.types';
 export {
   TableMenuBar,
   TextTable,
