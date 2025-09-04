@@ -139,8 +139,7 @@ test('Renders disabled color overriding state and color props as expected', () =
 });
 
 test('Renders scribbled out as expected', () => {
-  const props = fakeProps();
-  render(<IconCell {...props} variant={IconCellVariants.SCRIBBLED_OUT} />);
+  render(<IconCell variant={IconCellVariants.SCRIBBLED_OUT} />);
   const cell = screen.getByRole('button');
 
   expect(cell).toHaveStyle(`border: none`);
