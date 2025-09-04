@@ -29,21 +29,41 @@ test('renderContent as icon', () => {
   expect(typeof returnValue).toBe(typeof Icon);
 });
 
-test('getIconCellColor returns green color in LIGHT theme', () => {
-  const result = getIconCellColor(IconCellColors.GREEN, Theme.LIGHT);
+const allColors = Object.values(IconCellColors);
+const defaultLight = getIconCellColor(IconCellColors.LIGHTGREY, Theme.LIGHT);
+const defaultDark = getIconCellColor(IconCellColors.LIGHTGREY, Theme.DARK);
 
-  expect(result.backgroundColor).toBe(
-    colors.interactive.success__highlight.rgba
-  );
-  expect(result.iconColor).toBe(colors.dataviz.darkgreen.default);
-});
+test.each(allColors)(
+  'getIconCellColor returns values different than the default for %s in LIGHT theme',
+  async (color) => {
+    const result = getIconCellColor(color, Theme.LIGHT);
 
-test('getIconCellColor returns red color in DARK theme', () => {
-  const result = getIconCellColor(IconCellColors.ERROR, Theme.DARK);
+    expect(result).toHaveProperty('backgroundColor');
+    expect(result).toHaveProperty('iconColor');
 
-  expect(result.backgroundColor).toBe(colors.ui.background__danger.rgba);
-  expect(result.iconColor).toBe(colors.text.static_icons__default.rgba);
-});
+    if (color === IconCellColors.LIGHTGREY) {
+      expect(result).toEqual(defaultLight);
+    } else {
+      expect(result).not.toEqual(defaultLight);
+    }
+  }
+);
+
+test.each(allColors)(
+  'getIconCellColor returns values different than the default for %s in DARK theme',
+  async (color) => {
+    const result = getIconCellColor(color, Theme.DARK);
+
+    expect(result).toHaveProperty('backgroundColor');
+    expect(result).toHaveProperty('iconColor');
+
+    if (color === IconCellColors.LIGHTGREY) {
+      expect(result).toEqual(defaultDark);
+    } else {
+      expect(result).not.toEqual(defaultDark);
+    }
+  }
+);
 
 test('getBorderBottom returns backgroundColor when noBottomBorder is true', () => {
   const result = getBorderBottom({
@@ -55,16 +75,22 @@ test('getBorderBottom returns backgroundColor when noBottomBorder is true', () =
   expect(result).toBe('1px solid blue');
 });
 
-test('getBorderBottom returns state color when state is DANGER', () => {
-  const result = getBorderBottom({
-    $noBottomBorder: false,
-    $state: IconCellStates.DANGER,
-    $backgroundColor: 'red',
-    $variant: IconCellVariants.DEFAULT,
-  });
+test.each([
+  [IconCellStates.DANGER, colors.interactive.danger__resting.rgba],
+  [IconCellStates.WARNING, colors.interactive.warning__resting.rgba],
+])(
+  'getBorderBottom returns state color when state is %s',
+  (state, expectedColor) => {
+    const result = getBorderBottom({
+      $noBottomBorder: false,
+      $state: state,
+      $backgroundColor: 'red',
+      $variant: IconCellVariants.DEFAULT,
+    });
 
-  expect(result).toBe(`1px solid ${colors.interactive.danger__resting.rgba}`);
-});
+    expect(result).toBe(`1px solid ${expectedColor}`);
+  }
+);
 
 test('getSelectedBorder returns warning color', () => {
   const result = getSelectedBorder(IconCellStates.WARNING);
@@ -90,14 +116,20 @@ test('getBackground returns transparent for non-COLOURED variant', () => {
   expect(result).toBe('transparent');
 });
 
-test('getBackground returns danger background for DANGER state', () => {
-  const result = getBackground({
-    $variant: IconCellVariants.COLOURED,
-    $state: IconCellStates.DANGER,
-  });
+test.each([
+  [IconCellStates.DANGER, colors.ui.background__danger.rgba],
+  [IconCellStates.WARNING, colors.ui.background__warning.rgba],
+])(
+  'getBackground returns correct background for %s state',
+  (state, expectedColor) => {
+    const result = getBackground({
+      $variant: IconCellVariants.COLOURED,
+      $state: state,
+    });
 
-  expect(result).toBe(colors.ui.background__danger.rgba);
-});
+    expect(result).toBe(expectedColor);
+  }
+);
 
 test('getBackground returns provided background color when no state is given', () => {
   const result = getBackground({

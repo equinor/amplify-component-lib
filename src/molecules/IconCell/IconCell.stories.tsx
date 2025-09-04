@@ -57,7 +57,9 @@ type Story = StoryObj<typeof IconCell>;
 const BasicTable = ({ children }: { children: React.ReactNode }) => {
   return (
     <table style={{ width: '400px', borderCollapse: 'collapse' }}>
-      <tr>{children}</tr>
+      <tbody>
+        <tr>{children}</tr>
+      </tbody>
     </table>
   );
 };
@@ -199,6 +201,7 @@ export const ExampleTableAndStates: StoryFn<IconCellProps> = () => {
             variant={IconCellVariants.COLOURED}
             state={IconCellStates.DANGER}
             selected
+            onClick={() => showSnackbar('Danger Bus clicked')}
           />
         </tr>
         <tr>

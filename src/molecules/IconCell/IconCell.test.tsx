@@ -1,10 +1,13 @@
 import { cake, check } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
+import { IconCellColors, IconCellVariants } from './IconCell.types';
+import { colors } from 'src/atoms';
 import {
   IconCell,
   RegularIconCellProps,
 } from 'src/molecules/IconCell/IconCell';
+import { ThemeProvider } from 'src/providers';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps(): RegularIconCellProps {
@@ -12,8 +15,26 @@ function fakeProps(): RegularIconCellProps {
     label: faker.food.dish(),
     icon: cake,
     onClick: vi.fn(),
+    as: 'div',
   };
 }
+
+test('Renders color correctly when using ThemeProvider', () => {
+  const props = fakeProps();
+  render(
+    <IconCell
+      {...props}
+      color={IconCellColors.BLUE}
+      variant={IconCellVariants.COLOURED}
+    />,
+    {
+      wrapper: ThemeProvider,
+    }
+  );
+  const cell = screen.getByRole('button');
+
+  expect(cell).toHaveStyle(`background: ${colors.dataviz.darkblue.default}`);
+});
 
 test('Renders label as expected', () => {
   const props = fakeProps();

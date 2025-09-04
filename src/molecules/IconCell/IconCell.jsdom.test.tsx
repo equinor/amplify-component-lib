@@ -42,7 +42,13 @@ test('Renders background color as expected', () => {
 
 test('Renders background color on coloured type as expected', () => {
   const props = fakeProps();
-  render(<IconCell {...props} variant={IconCellVariants.COLOURED} />);
+  render(
+    <IconCell
+      {...props}
+      variant={IconCellVariants.COLOURED}
+      color={IconCellColors.GREEN}
+    />
+  );
   const cell = screen.getByRole('button');
 
   expect(cell).toHaveStyle(`background: ${colors.ui.background__default.rgba}`);
@@ -85,6 +91,21 @@ test('Renders selected border on warning state as expected', () => {
     `1px solid ${colors.interactive.warning__resting.rgba}`
   );
 });
+
+test.each([
+  [IconCellStates.WARNING, colors.ui.background__warning.rgba],
+  [IconCellStates.DANGER, colors.ui.background__danger.rgba],
+])(
+  'Renders background color on %s state as expected',
+  (state, expectedColor) => {
+    const props = fakeProps();
+    render(
+      <IconCell {...props} variant={IconCellVariants.COLOURED} state={state} />
+    );
+    const cell = screen.getByRole('button');
+    expect(cell).toHaveStyle(`background: ${expectedColor}`);
+  }
+);
 
 test('Renders disabled color as expected', () => {
   const props = fakeProps();
