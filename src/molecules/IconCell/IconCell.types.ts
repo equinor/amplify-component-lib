@@ -20,7 +20,7 @@ export type IconCellColor =
   (typeof IconCellColors)[keyof typeof IconCellColors];
 
 export const IconCellVariants = {
-  TRANSPARENT: 'transparent',
+  DEFAULT: 'default',
   COLOURED: 'colored',
   SCRIBBLED_OUT: 'scribbled-out',
 } as const;

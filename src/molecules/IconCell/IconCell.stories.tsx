@@ -71,7 +71,7 @@ export const Clickable: StoryFn<IconCellProps> = () => {
         icon={cake}
         label="Cake"
         helperIcon={cake}
-        variant={IconCellVariants.TRANSPARENT}
+        variant={IconCellVariants.DEFAULT}
         onClick={() => showSnackbar('Cake clicked')}
       />
       <IconCell

@@ -72,7 +72,7 @@ export type IconCellProps = RegularIconCellProps | ScribbledOutIconCellProps;
  * @param {IconCellColor} [props.color=IconCellColors.DEFAULT] - Color theme of the cell (non-scribbled only).
  * @param {IconCellState} [props.state=IconCellStates.DEFAULT] - Visual state of the cell: default, danger, or warning (non-scribbled only).
  * @param {string} [props.label] - Optional label text displayed inside the cell (non-scribbled only).
- * @param {IconCellVariant} [props.variant=IconCellVariants.TRANSPARENT] - Variant of the cell: `transparent`, `coloured`, or the special `scribbled-out`.
+ * @param {IconCellVariant} [props.variant=IconCellVariants.DEFAULT] - Variant of the cell: `transparent`, `coloured`, or the special `scribbled-out`.
  * @param {React.ReactNode | IconData} [props.helperIcon] - Optional secondary icon displayed in the corner (non-scribbled only).
  * @param {boolean} [props.noBottomBorder=false] - Whether to render the cell without the default bottom border.
  * @param {'td' | 'div'} [props.as='td'] - Element type to render the outer container as.
@@ -109,7 +109,7 @@ export const IconCell = forwardRef<HTMLButtonElement, IconCellProps>(
       color = IconCellColors.DEFAULT,
       state = IconCellStates.DEFAULT,
       label,
-      variant = IconCellVariants.TRANSPARENT,
+      variant = IconCellVariants.DEFAULT,
       helperIcon,
       noBottomBorder = false,
       as = 'td',
