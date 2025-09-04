@@ -1,9 +1,9 @@
 import {
-  FocusEventHandler,
   forwardRef,
   HTMLAttributes,
   MouseEventHandler,
   ReactNode,
+  useContext,
 } from 'react';
 
 import { IconData } from '@equinor/eds-icons';
@@ -16,88 +16,124 @@ import {
   Label,
 } from './IconCell.styles';
 import {
+  IconCellColor,
   IconCellColors,
+  IconCellState,
   IconCellStates,
-  IconCellTypes,
+  IconCellVariant,
+  IconCellVariants,
 } from './IconCell.types';
 import { getIconCellColor, renderContent } from './IconCell.utils';
-import { useThemeProvider } from 'src/atoms';
+import { Theme } from 'src/atoms';
+import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
+
+type ScribbledOutType = typeof IconCellVariants.SCRIBBLED_OUT;
+
+// Props when NOT scribbled-out
+export type RegularIconCellProps = {
+  icon: ReactNode | IconData;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
+  selected?: boolean;
+  className?: string;
+  color?: IconCellColor;
+  state?: IconCellState;
+  label?: string;
+  variant?: Exclude<IconCellVariant, ScribbledOutType>;
+  helperIcon?: ReactNode | IconData;
+  noBottomBorder?: boolean;
+  as?: 'td' | 'div';
+} & HTMLAttributes<HTMLButtonElement>;
+
+// Props when scribbled-out
+export type ScribbledOutIconCellProps = {
+  variant: ScribbledOutType;
+  className?: string;
+  as?: 'td' | 'div';
+  noBottomBorder?: boolean;
+};
+
+export type IconCellProps = RegularIconCellProps | ScribbledOutIconCellProps;
 
 /**
  * IconCell component renders a styled button-like cell with an icon, optional label,
  * and optional helper icon. It supports various visual states and interaction handlers.
  *
- * @param {React.ReactNode} icon - Main icon displayed in the center of the cell.
- * @param {function} onClick - Callback fired when the cell is clicked.
- * @param {function} onFocus - Callback fired when the cell receives focus.
- * @param {function} onBlur - Callback fired when the cell loses focus.
- * @param {string} className - Optional CSS class for custom styling.
- * @param {boolean} [disabled=false] - Whether the cell is disabled.
- * @param {boolean} [selected=false] - Whether the cell is in a selected state.
- * @param {IconCellColors} [color=IconCellColors.DEFAULT] - Color theme of the cell.
- * @param {IconCellStates} [state=IconCellStates.DEFAULT] - Visual state of the cell: default, danger, or warning.
- * @param {string} label - Optional label text displayed inside the cell.
- * @param {IconCellTypes} [type=IconCellTypes.TRANSPARENT] - Type of the cell: transparent, coloured, or scribbled-out.
- * @param {React.ReactNode} helperIcon - Optional secondary icon displayed alongside the main icon.
- * @param {boolean} [noBorder=false] - Whether to render the cell without the default bottom border.
- * @param {'td' | 'div'} [as='td'] - Element type to render the container as.
- * @param {React.Ref<HTMLButtonElement>} ref - Ref forwarded to the button element.
+ * ### Special case
+ * When `variant` is `IconCellVariants.SCRIBBLED_OUT`, this component renders a
+ * scribbled-out cell and **most other props are disallowed** at the type level, except for `className`, `as` and `noBottomBorder`.
+ *
+ * @param {IconCellProps} props - Component props.
+ * @param {React.ReactNode | IconData} [props.icon] - Main icon displayed in the center of the cell (only for non-scribbled variants).
+ * @param {MouseEventHandler<HTMLButtonElement>} [props.onClick] - Callback fired when the cell is clicked (non-scribbled only).
+ * @param {boolean} [props.disabled=false] - Whether the cell is disabled (non-scribbled only).
+ * @param {boolean} [props.selected=false] - Whether the cell is in a selected state (non-scribbled only).
+ * @param {string} [props.className] - Optional CSS class for custom styling.
+ * @param {IconCellColor} [props.color=IconCellColors.DEFAULT] - Color theme of the cell (non-scribbled only).
+ * @param {IconCellState} [props.state=IconCellStates.DEFAULT] - Visual state of the cell: default, danger, or warning (non-scribbled only).
+ * @param {string} [props.label] - Optional label text displayed inside the cell (non-scribbled only).
+ * @param {IconCellVariant} [props.variant=IconCellVariants.TRANSPARENT] - Variant of the cell: `transparent`, `coloured`, or the special `scribbled-out`.
+ * @param {React.ReactNode | IconData} [props.helperIcon] - Optional secondary icon displayed in the corner (non-scribbled only).
+ * @param {boolean} [props.noBottomBorder=false] - Whether to render the cell without the default bottom border.
+ * @param {'td' | 'div'} [props.as='td'] - Element type to render the outer container as.
+ * @param {React.Ref<HTMLButtonElement>} ref - Ref forwarded to the inner button element.
+ * @returns {JSX.Element} The rendered IconCell.
  */
-export interface IconCellProps extends HTMLAttributes<HTMLButtonElement> {
-  icon: ReactNode | IconData;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  onFocus?: FocusEventHandler<HTMLButtonElement>;
-  onBlur?: FocusEventHandler<HTMLButtonElement>;
-  disabled?: boolean;
-  selected?: boolean;
-  className?: string;
-  color?: IconCellColors;
-  state?: IconCellStates;
-  label?: string;
-  type?: IconCellTypes;
-  helperIcon?: ReactNode | IconData;
-  noBorder?: boolean;
-  as?: 'td' | 'div';
-}
-
 export const IconCell = forwardRef<HTMLButtonElement, IconCellProps>(
-  (
-    {
+  function IconCell(props, ref) {
+    const themeContext = useContext(ThemeProviderContext);
+
+    // Branch on the discriminant to narrow the union:
+    if (props.variant === IconCellVariants.SCRIBBLED_OUT) {
+      const { className, as = 'td', noBottomBorder = false } = props;
+
+      return (
+        <Container className={className} as={as}>
+          <Button
+            ref={ref}
+            $variant={IconCellVariants.SCRIBBLED_OUT}
+            $noBottomBorder={noBottomBorder}
+            $clickable={false}
+          />
+        </Container>
+      );
+    }
+
+    // 👇 Here, props is RegularIconCellProps
+    const {
       icon,
       onClick,
-      onFocus,
-      onBlur,
       className,
       disabled = false,
       selected = false,
       color = IconCellColors.DEFAULT,
       state = IconCellStates.DEFAULT,
       label,
-      type = IconCellTypes.TRANSPARENT,
+      variant = IconCellVariants.TRANSPARENT,
       helperIcon,
-      noBorder = false,
+      noBottomBorder = false,
       as = 'td',
-    },
-    ref
-  ) => {
-    const { theme } = useThemeProvider();
-    const { backgroundColor, iconColor } = getIconCellColor(color, theme);
+      ...dom
+    } = props;
+
+    const { backgroundColor, iconColor } = getIconCellColor(
+      color,
+      themeContext?.theme ?? Theme.LIGHT
+    );
 
     return (
       <Container className={className} as={as}>
         <Button
           ref={ref}
+          {...dom}
           $selected={selected}
           disabled={disabled}
           onClick={onClick}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          $color={color}
           $backgroundColor={backgroundColor}
           $state={state}
-          $type={type}
-          $noBorder={noBorder}
-          $nonClickable={!(onClick && !disabled)}
+          $variant={variant}
+          $noBottomBorder={noBottomBorder}
+          $clickable={!!onClick && !disabled}
         >
           <IconContainer>{renderContent(icon, iconColor)}</IconContainer>
           <Label>

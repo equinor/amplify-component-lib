@@ -4,9 +4,9 @@ import {
   cake,
   car,
   check,
+  coffee,
   flight,
   subway,
-  taxi,
   train,
   tram,
 } from '@equinor/eds-icons';
@@ -15,8 +15,9 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import {
   IconCellColors,
   IconCellStates,
-  IconCellTypes,
+  IconCellVariants,
 } from './IconCell.types';
+import { useSnackbar } from 'src/atoms';
 import { colors } from 'src/atoms/style';
 import { IconCell, IconCellProps } from 'src/molecules/IconCell/IconCell';
 import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
@@ -31,7 +32,7 @@ const meta: Meta<typeof IconCell> = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=4202-107640&m=dev',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?m=auto&node-id=19153-6643&t=A9K3nwdktcGwfyW6-1',
     },
   },
   args: {},
@@ -53,122 +54,172 @@ const meta: Meta<typeof IconCell> = {
 export default meta;
 type Story = StoryObj<typeof IconCell>;
 
+const BasicTable = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <table style={{ width: '400px', borderCollapse: 'collapse' }}>
+      <tr>{children}</tr>
+    </table>
+  );
+};
+
+export const Clickable: StoryFn<IconCellProps> = () => {
+  const { showSnackbar } = useSnackbar();
+
+  return (
+    <BasicTable>
+      <IconCell
+        icon={cake}
+        label="Cake"
+        helperIcon={cake}
+        variant={IconCellVariants.TRANSPARENT}
+        onClick={() => showSnackbar('Cake clicked')}
+      />
+      <IconCell
+        icon={coffee}
+        label="Coffee"
+        helperIcon={coffee}
+        variant={IconCellVariants.COLOURED}
+        onClick={() => showSnackbar('Coffee clicked')}
+      />
+    </BasicTable>
+  );
+};
+
+export const Disabled: StoryFn<IconCellProps> = () => {
+  return (
+    <BasicTable>
+      <IconCell icon={cake} label="Disabled Cake" disabled />
+      <IconCell
+        icon={coffee}
+        label="Disabled Coffee"
+        variant={IconCellVariants.COLOURED}
+        disabled
+      />
+    </BasicTable>
+  );
+};
+
+export const Selected: StoryFn<IconCellProps> = () => {
+  return (
+    <BasicTable>
+      <IconCell icon={cake} label="Selected Cake" selected />
+      <IconCell
+        icon={coffee}
+        label="Selected Coffee"
+        variant={IconCellVariants.COLOURED}
+        selected
+      />
+    </BasicTable>
+  );
+};
+
+export const ScribbledOut: StoryFn<IconCellProps> = () => {
+  return (
+    <BasicTable>
+      <IconCell variant={IconCellVariants.SCRIBBLED_OUT} />
+      <IconCell variant={IconCellVariants.SCRIBBLED_OUT} />
+    </BasicTable>
+  );
+};
+
 const ColorsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 `;
 
-export const Clickable: Story = {
-  args: {
-    icon: car,
-    label: 'Car',
-    helperIcon: car,
-    as: 'div',
-    type: IconCellTypes.COLOURED,
-    onClick: () => {
-      console.log('IconCell clicked');
-    },
-  },
+export const Colors: StoryFn<IconCellProps> = () => {
+  const { showSnackbar } = useSnackbar();
+
+  return (
+    <>
+      <ColorsContainer>
+        {Object.entries(IconCellColors).map(([key, value]) => (
+          <IconCell
+            key={key}
+            icon={cake}
+            label={key}
+            color={value}
+            as="div"
+            variant={IconCellVariants.COLOURED}
+            onClick={() => showSnackbar(`${key} clicked`)}
+          />
+        ))}
+      </ColorsContainer>
+      <ColorsContainer>
+        {Object.entries(IconCellColors).map(([key, value]) => (
+          <IconCell
+            key={key}
+            icon={cake}
+            label={key}
+            color={value}
+            as="div"
+            onClick={() => showSnackbar(`${key} clicked`)}
+          />
+        ))}
+      </ColorsContainer>
+    </>
+  );
 };
 
-export const Colors: StoryFn<IconCellProps> = () => (
-  <ColorsContainer>
-    {Object.entries(IconCellColors).map(([key, value]) => (
-      <IconCell
-        key={key}
-        icon={cake}
-        label={key}
-        color={value}
-        as="div"
-        type={IconCellTypes.COLOURED}
-        onClick={() => console.log(`${key} clicked`)}
-      />
-    ))}
-  </ColorsContainer>
-);
+export const ExampleTableAndStates: StoryFn<IconCellProps> = () => {
+  const { showSnackbar } = useSnackbar();
 
-export const ExampleTable: StoryFn<IconCellProps> = () => (
-  <table style={{ minWidth: '800px', borderCollapse: 'collapse' }}>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Col 1</th>
-        <th>Col 2</th>
-        <th>Col 3</th>
-        <th>Col 4</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Row 1</td>
-        <IconCell
-          icon={car}
-          label="Clickable Green Car"
-          color={IconCellColors.GREEN}
-          helperIcon={check}
-          onClick={() => console.log('Car clicked')}
-        />
-        <IconCell
-          icon={boat}
-          label="Coloured Blue Boat"
-          type={IconCellTypes.COLOURED}
-          color={IconCellColors.BLUE}
-        />
-        <IconCell icon={subway} label="Selected Subway" selected />
-        <IconCell
-          icon={bus}
-          label="Danger Coloured Bus"
-          type={IconCellTypes.COLOURED}
-          state={IconCellStates.DANGER}
-          selected
-        />
-      </tr>
-      <tr>
-        <td>Row 2</td>
-        <IconCell
-          icon={train}
-          label="Disabled Coloured Train"
-          disabled
-          type={IconCellTypes.COLOURED}
-        />
-        <IconCell icon={tram} label="Disabled Tram" disabled />
-        <IconCell
-          icon={taxi}
-          label="Scribbled Taxi"
-          type={IconCellTypes.SCRIBBLED_OUT}
-        />
-        <IconCell
-          icon={flight}
-          label="Warning Plane"
-          state={IconCellStates.WARNING}
-        />
-      </tr>
-    </tbody>
-  </table>
-);
-
-export const JustIcon: Story = {
-  args: {
-    icon: car,
-    as: 'div',
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    icon: car,
-    disabled: true,
-    as: 'div',
-  },
-};
-
-export const Selected: Story = {
-  args: {
-    icon: car,
-    selected: true,
-    as: 'div',
-  },
+  return (
+    <table style={{ minWidth: '800px', borderCollapse: 'collapse' }}>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Col 1</th>
+          <th>Col 2</th>
+          <th>Col 3</th>
+          <th>Col 4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Row 1</td>
+          <IconCell
+            icon={car}
+            label="Clickable Green Car"
+            color={IconCellColors.GREEN}
+            helperIcon={check}
+            onClick={() => showSnackbar('Green Car clicked')}
+          />
+          <IconCell
+            icon={boat}
+            label="Coloured Blue Boat"
+            variant={IconCellVariants.COLOURED}
+            color={IconCellColors.BLUE}
+          />
+          <IconCell icon={subway} label="Selected Subway" selected />
+          <IconCell
+            icon={bus}
+            label="Danger Coloured Bus"
+            variant={IconCellVariants.COLOURED}
+            state={IconCellStates.DANGER}
+            selected
+          />
+        </tr>
+        <tr>
+          <td>Row 2</td>
+          <IconCell
+            icon={train}
+            label="Disabled Colored Train"
+            disabled
+            variant={IconCellVariants.COLOURED}
+          />
+          <IconCell icon={tram} label="Disabled Tram" disabled />
+          <IconCell variant={IconCellVariants.SCRIBBLED_OUT} />
+          <IconCell
+            icon={flight}
+            label="Warning Plane"
+            state={IconCellStates.WARNING}
+          />
+        </tr>
+      </tbody>
+    </table>
+  );
 };
 
 const CustomComponent = styled.div`

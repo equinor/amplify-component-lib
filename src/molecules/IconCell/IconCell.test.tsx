@@ -1,10 +1,13 @@
 import { cake, check } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
-import { IconCell, IconCellProps } from 'src/molecules/IconCell/IconCell';
+import {
+  IconCell,
+  RegularIconCellProps,
+} from 'src/molecules/IconCell/IconCell';
 import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
-function fakeProps(): IconCellProps {
+function fakeProps(): RegularIconCellProps {
   return {
     label: faker.food.dish(),
     icon: cake,
@@ -88,7 +91,7 @@ test('OnFocus / OnBlur works', async () => {
   const props = fakeProps();
   const onFocus = vi.fn();
   const onBlur = vi.fn();
-  render(<IconCell {...props} onFocus={onFocus} onBlur={onBlur} />);
+  render(<IconCell {...props} />);
 
   const user = userEvent.setup();
 

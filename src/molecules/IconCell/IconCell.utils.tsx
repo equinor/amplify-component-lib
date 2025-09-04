@@ -6,8 +6,11 @@ import { IconData } from '@equinor/eds-icons';
 import { ButtonProps } from './IconCell.styles';
 import {
   IconCellColor,
+  IconCellColorObject,
   IconCellColors,
+  IconCellState,
   IconCellStates,
+  IconCellVariants,
 } from './IconCell.types';
 import { colors, Theme } from 'src/atoms';
 
@@ -20,9 +23,9 @@ export const renderContent = (content: IconData | ReactNode, color: string) => {
 };
 
 export const getIconCellColor = (
-  color: IconCellColors,
+  color: IconCellColor,
   theme: Theme
-): IconCellColor => {
+): IconCellColorObject => {
   switch (color) {
     case IconCellColors.GREEN:
     case IconCellColors.SUCCESS:
@@ -124,29 +127,54 @@ export const getIconCellColor = (
 };
 
 // Helper to get a color by state with fallback
-export const stateBorderColors: { [key in IconCellStates]?: string } = {
+export const stateBorderColors: { [key in IconCellState]?: string } = {
   [IconCellStates.DANGER]: colors.interactive.danger__resting.rgba,
   [IconCellStates.WARNING]: colors.interactive.warning__resting.rgba,
 };
 
-export const stateBGColor: { [key in IconCellStates]?: string } = {
+export const stateBGColor: { [key in IconCellState]?: string } = {
   [IconCellStates.DANGER]: colors.ui.background__danger.rgba,
   [IconCellStates.WARNING]: colors.ui.background__warning.rgba,
 };
 
-const getStateColor = ($state: IconCellStates, fallback: string) =>
-  stateBorderColors[$state] ?? fallback;
+const getStateColor = (fallback: string, $state?: IconCellState) => {
+  const color = $state ? stateBorderColors[$state] : undefined;
+  return color ?? fallback;
+};
 
 export const getBorderBottom = ({
-  $noBorder,
+  $noBottomBorder,
   $state,
   $backgroundColor,
 }: ButtonProps) => {
-  const color = $noBorder
+  const color = $noBottomBorder
     ? $backgroundColor
-    : getStateColor($state, colors.ui.background__medium.rgba);
+    : getStateColor(colors.ui.background__medium.rgba, $state);
   return `1px solid ${color}`;
 };
 
-export const getSelectedBorder = ($state: IconCellStates) =>
-  getStateColor($state, colors.text.static_icons__default.rgba);
+export const getSelectedBorder = ($state?: IconCellState) =>
+  getStateColor(colors.text.static_icons__default.rgba, $state);
+
+export const getBackground = ({
+  $variant,
+  $state,
+  $backgroundColor = colors.ui.background__default.rgba,
+}: ButtonProps) => {
+  if ($variant === IconCellVariants.SCRIBBLED_OUT) {
+    return `repeating-linear-gradient(
+      20deg,
+      ${colors.ui.background__light_medium.rgba} 0px,
+      ${colors.ui.background__default.rgba} 1px,
+      ${colors.ui.background__default.rgba} 10px,
+      ${colors.ui.background__light_medium.rgba} 11px,
+      ${colors.ui.background__light_medium.rgba} 12px
+    )`;
+  }
+  if ($variant !== IconCellVariants.COLOURED) return 'transparent';
+  if ($state === IconCellStates.DANGER)
+    return stateBGColor[IconCellStates.DANGER];
+  if ($state === IconCellStates.WARNING)
+    return stateBGColor[IconCellStates.WARNING];
+  return $backgroundColor;
+};

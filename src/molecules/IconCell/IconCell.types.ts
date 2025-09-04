@@ -1,34 +1,43 @@
-export enum IconCellColors {
-  GREEN = 'green',
-  RED = 'red',
-  ORANGE = 'orange',
-  BLUE = 'blue',
-  GREY = 'grey',
-  LIGHTGREY = 'lightgrey',
-  PINK = 'pink',
-  YELLOW = 'yellow',
-  PURPLE = 'purple',
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-  INFO = 'info',
-  DANGER = 'danger',
-  DEFAULT = 'default',
-}
+export const IconCellColors = {
+  GREEN: 'green',
+  RED: 'red',
+  ORANGE: 'orange',
+  BLUE: 'blue',
+  GREY: 'grey',
+  LIGHTGREY: 'lightgrey',
+  PINK: 'pink',
+  YELLOW: 'yellow',
+  PURPLE: 'purple',
+  SUCCESS: 'success',
+  WARNING: 'warning',
+  ERROR: 'error',
+  INFO: 'info',
+  DANGER: 'danger',
+  DEFAULT: 'default',
+} as const;
 
-export enum IconCellTypes {
-  TRANSPARENT = 'transparent',
-  COLOURED = 'colored',
-  SCRIBBLED_OUT = 'scribbled_out',
-}
+export type IconCellColor =
+  (typeof IconCellColors)[keyof typeof IconCellColors];
 
-export enum IconCellStates {
-  DEFAULT = 'default',
-  WARNING = 'warning',
-  DANGER = 'danger',
-}
+export const IconCellVariants = {
+  TRANSPARENT: 'transparent',
+  COLOURED: 'colored',
+  SCRIBBLED_OUT: 'scribbled-out',
+} as const;
 
-export interface IconCellColor {
+export type IconCellVariant =
+  (typeof IconCellVariants)[keyof typeof IconCellVariants];
+
+export const IconCellStates = {
+  DEFAULT: 'default',
+  WARNING: 'warning',
+  DANGER: 'danger',
+} as const;
+
+export type IconCellState =
+  (typeof IconCellStates)[keyof typeof IconCellStates];
+
+export interface IconCellColorObject {
   backgroundColor: string;
   iconColor: string;
 }

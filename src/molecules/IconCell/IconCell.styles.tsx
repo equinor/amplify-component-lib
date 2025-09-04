@@ -1,9 +1,11 @@
 import {
-  IconCellColors,
+  IconCellState,
   IconCellStates,
-  IconCellTypes,
+  IconCellVariant,
+  IconCellVariants,
 } from './IconCell.types';
 import {
+  getBackground,
   getBorderBottom,
   getSelectedBorder,
   stateBGColor,
@@ -11,6 +13,16 @@ import {
 import { animation, colors, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
+
+// Shared overlay pseudo-element
+const overlay = (color: string = 'rgba(0, 0, 0, 0.1)') => `
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: ${color};
+  opacity: 0.7;
+  pointer-events: none;
+`;
 
 export const Container = styled.div`
   min-width: 48px;
@@ -23,6 +35,7 @@ export const Label = styled.div`
   bottom: ${spacings.small};
   left: ${spacings.small};
   padding-right: ${spacings.xx_small};
+
   span {
     font-size: 10px;
     font-weight: 500;
@@ -41,6 +54,7 @@ export const HelperIconContainer = styled.div`
   position: absolute;
   top: ${spacings.small};
   right: ${spacings.small};
+
   svg {
     width: 16px;
     height: 16px;
@@ -49,13 +63,12 @@ export const HelperIconContainer = styled.div`
 `;
 
 export interface ButtonProps {
-  $selected: boolean;
-  $color: IconCellColors;
-  $state: IconCellStates;
-  $type: IconCellTypes;
-  $backgroundColor: string;
-  $noBorder: boolean;
-  $nonClickable: boolean;
+  $selected?: boolean;
+  $state?: IconCellState;
+  $variant: IconCellVariant;
+  $backgroundColor?: string;
+  $noBottomBorder?: boolean;
+  $clickable?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -67,92 +80,90 @@ export const Button = styled.button<ButtonProps>`
   justify-content: center;
   overflow: hidden;
   padding: ${spacings.small};
-  background: ${({ $type, $state, $backgroundColor }) => {
-    if ($type === IconCellTypes.SCRIBBLED_OUT)
-      return `repeating-linear-gradient(
-      20deg,
-      ${colors.ui.background__light_medium.rgba} 0px,
-      ${colors.ui.background__default.rgba} 1px,
-      ${colors.ui.background__default.rgba} 10px,
-      ${colors.ui.background__light_medium.rgba} 11px,
-      ${colors.ui.background__light_medium.rgba} 12px
-    )`;
-    if ($type !== IconCellTypes.COLOURED) return 'transparent';
-    if ($state === IconCellStates.DANGER)
-      return stateBGColor[IconCellStates.DANGER];
-    if ($state === IconCellStates.WARNING)
-      return stateBGColor[IconCellStates.WARNING];
-    return $backgroundColor;
-  }};
+  background: ${getBackground};
   transition: background ${animation.transitionMS};
   border: none;
   border-bottom: ${getBorderBottom};
+  cursor: ${({ $clickable }) => ($clickable ? 'pinter' : 'default')};
 
-  ${({ $type }) =>
-    $type === IconCellTypes.SCRIBBLED_OUT &&
+  // Scribbled-out hides content
+  ${({ $variant }) =>
+    $variant === IconCellVariants.SCRIBBLED_OUT &&
     `
-      ${Label}, ${HelperIconContainer}, ${IconContainer} { display: none; }
+      ${Label}, ${HelperIconContainer}, ${IconContainer} {
+        display: none;
+      }
     `}
 
+  // Selected state
   ${({ $selected, $state }) =>
     $selected &&
     `
       border: 1px solid ${getSelectedBorder($state)};
     `}
 
-  ${({ $backgroundColor, $type, $state }) =>
-    `
-      ${Label}::before, ${HelperIconContainer}::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-color: ${
-          $type === IconCellTypes.COLOURED
-            ? $state === IconCellStates.DANGER
-              ? stateBGColor[IconCellStates.DANGER]
-              : $state === IconCellStates.WARNING
-                ? stateBGColor[IconCellStates.WARNING]
-                : $backgroundColor
-            : colors.ui.background__default.rgba
-        };
-        opacity: 0.7;
-        pointer-events: none;
-      }
-    `}
+  // Overlay for Label & HelperIconContainer
+  ${({ $backgroundColor, $variant, $state }) => {
+    const color =
+      $variant === IconCellVariants.COLOURED
+        ? $state === IconCellStates.DANGER
+          ? stateBGColor[IconCellStates.DANGER]
+          : $state === IconCellStates.WARNING
+            ? stateBGColor[IconCellStates.WARNING]
+            : $backgroundColor
+        : colors.ui.background__default.rgba;
 
+    return `
+      ${Label}::before,
+      ${HelperIconContainer}::before {
+        ${overlay(color)}
+      }
+    `;
+  }}
+
+  // Disabled state
   &:disabled {
     cursor: not-allowed;
-    background: ${({ $type }) =>
-      $type === IconCellTypes.COLOURED
+    background: ${({ $variant }) =>
+      $variant === IconCellVariants.COLOURED
         ? colors.ui.background__light.rgba
         : 'transparent'};
+
     ${Label} span {
       color: ${colors.interactive.disabled__text.rgba};
     }
-    ${HelperIconContainer}, ${IconContainer} {
+
+    ${IconContainer},${HelperIconContainer} {
       opacity: 0.3;
+      filter: grayscale(100%);
     }
 
-    ${({ $backgroundColor, $type }) =>
-      $backgroundColor &&
+    ${({ $selected }) =>
+      $selected &&
       `
-        ${Label}::before, ${HelperIconContainer}::before {
-          background-color: ${$type === IconCellTypes.COLOURED ? colors.ui.background__light.rgba : colors.ui.background__default.rgba};
-        }
+        border: 1px solid ${colors.ui.background__light.rgba};
       `}
+
+    border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+
+    ${({ $variant }) => `
+      ${Label}::before,
+      ${HelperIconContainer}::before {
+        background-color: ${
+          $variant === IconCellVariants.COLOURED
+            ? colors.ui.background__light.rgba
+            : colors.ui.background__default.rgba
+        };
+      }
+    `}
   }
 
-  cursor: ${({ $nonClickable }) => ($nonClickable ? 'default' : 'pointer')};
-
-  ${({ $nonClickable }) =>
-    !$nonClickable &&
+  // Hover effect (only if clickable)
+  ${({ $clickable }) =>
+    $clickable &&
     `
       &:hover:not(:disabled)::after {
-        background: rgba(0, 0, 0, 0.1);
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
+        ${overlay()}
         animation: ${animation.transitionMS} ease-in-out;
       }
     `}
