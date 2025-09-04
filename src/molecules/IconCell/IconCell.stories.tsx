@@ -1,3 +1,5 @@
+import { Typography } from '@equinor/eds-core-react';
+import { EdsDataGridProps } from '@equinor/eds-data-grid-react';
 import {
   boat,
   bus,
@@ -12,6 +14,7 @@ import {
 } from '@equinor/eds-icons';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
+import { StoryBookData, storyBookData } from './stories/data';
 import {
   IconCellColors,
   IconCellStates,
@@ -20,6 +23,7 @@ import {
 import { useSnackbar } from 'src/atoms';
 import { colors } from 'src/atoms/style';
 import { IconCell, IconCellProps } from 'src/molecules/IconCell/IconCell';
+import { DataGrid } from 'src/organisms';
 import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
 
 import { useGlobals } from 'storybook/internal/preview-api';
@@ -222,6 +226,38 @@ export const ExampleTableAndStates: StoryFn<IconCellProps> = () => {
         </tr>
       </tbody>
     </table>
+  );
+};
+
+export const ExampleDataGrid: StoryFn<EdsDataGridProps<StoryBookData>> = () => {
+  return (
+    <>
+      <Typography>
+        This is using the{' '}
+        <a href="https://storybook.eds.equinor.com/?path=/docs/@equinor/eds-data-grid-react_eds-data-grid--docs">
+          EDS Data Grid
+        </a>{' '}
+        component
+      </Typography>
+      <br />
+      <DataGrid
+        rows={storyBookData}
+        cellStyle={() => ({ padding: 0 })}
+        columns={[
+          {
+            accessorKey: 'id',
+            id: 'id',
+            header: 'Id',
+          },
+          {
+            accessorKey: 'icon',
+            id: 'icon',
+            header: 'IconCell',
+            cell: (cell) => <IconCell {...cell.row.original.icon} as="div" />,
+          },
+        ]}
+      />
+    </>
   );
 };
 
