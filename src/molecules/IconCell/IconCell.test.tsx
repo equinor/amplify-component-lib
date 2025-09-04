@@ -33,7 +33,7 @@ test('Renders color correctly when using ThemeProvider', () => {
   );
   const cell = screen.getByRole('button');
 
-  expect(cell).toHaveStyle(`background: ${colors.dataviz.darkblue.default}`);
+  expect(cell).toHaveStyle(`background: ${colors.dataviz.lightblue.lighter}`);
 });
 
 test('Renders label as expected', () => {
