@@ -1,8 +1,8 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 
 import { Icon, Menu } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import { Link as TanstackLink, useLocation } from '@tanstack/react-router';
 
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { colors, spacings } from 'src/atoms/style';
@@ -194,7 +194,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
         >
           {items.map((item) => (
             <Menu.Item
-              as={ReactRouterLink}
+              as={TanstackLink}
               key={item.link}
               active={isCurrentUrl({ currentUrl: pathname, link: item.link })}
               style={{ width: '256px' }}

@@ -6,7 +6,8 @@ import {
   useContext,
   useState,
 } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+
+import { useLocation, useNavigate, useParams } from '@tanstack/react-router';
 
 interface SubStep {
   title: string;
@@ -86,7 +87,7 @@ export const StepperProvider: FC<
   | StepperProviderSyncedToURLParamProps
   | StepperProviderWithoutSyncToURLParamProps
 > = ({ steps, children, isStepDisabled, ...rest }) => {
-  const { step } = useParams();
+  const { step } = useParams({ strict: false });
   const navigate = useNavigate();
   const pathWithoutStep = useLocation()
     .pathname.split('/')
@@ -116,7 +117,7 @@ export const StepperProvider: FC<
 
   const handleOnSetStep = (value: number) => {
     if (rest.syncToURLParam) {
-      navigate(`${pathWithoutStep}/${value}`);
+      navigate({ to: `${pathWithoutStep}/${value}` });
     } else {
       setCurrentStep(value);
     }

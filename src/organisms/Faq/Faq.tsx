@@ -1,20 +1,18 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
 import { Container } from './Faq.styles';
 import { Header } from './Header';
 import { useFaqsInApplication } from 'src/atoms/hooks/useFaqsInApplication';
-import { useSearchParameter } from 'src/atoms/hooks/useSearchParameter';
 import { Category } from 'src/organisms/Faq/Category/Category';
 import { CategorySkeleton } from 'src/organisms/Faq/CategorySkeleton';
 import { Status } from 'src/organisms/Status';
 
+// TODO: Before @tanstack/react-router switch can be released, these components need to be updated
 export const Faq: FC = () => {
   const { data, isLoading } = useFaqsInApplication();
-  const [selectedTab] = useSearchParameter<string | undefined>({
-    key: 'category',
-  });
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(undefined);
 
   const filteredCategories = useMemo(() => {
     if (!data) return;
@@ -34,10 +32,10 @@ export const Faq: FC = () => {
       <Typography variant="h1" bold>
         FAQ
       </Typography>
-      <Header />
+      <Header selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       {filteredCategories && filteredCategories.length > 0 ? (
         filteredCategories.map((category) => (
-          <Category key={category.id} {...category} />
+          <Category key={category.id} {...category} selectedTab={selectedTab} />
         ))
       ) : isLoading ? (
         <>

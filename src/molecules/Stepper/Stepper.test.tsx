@@ -1,11 +1,7 @@
 import { FC } from 'react';
-import {
-  createMemoryRouter,
-  RouterProvider,
-  useLocation,
-} from 'react-router-dom';
 
 import { faker } from '@faker-js/faker';
+import { useLocation } from '@tanstack/react-router';
 
 import { Stepper, StepperProps } from 'src/molecules/Stepper/Stepper';
 import {
@@ -13,7 +9,11 @@ import {
   StepperProviderProps,
   useStepper,
 } from 'src/providers/StepperProvider';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderWithRouter,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeSteps(): StepperProviderProps['steps'] {
   const steps: StepperProviderProps['steps'] = [
@@ -53,52 +53,40 @@ const StepperTestComponent: FC<StepperProps> = (props) => {
 
 test('Clicking through shows all steps', async () => {
   const steps = fakeSteps();
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps}>{children}</StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
 
   const user = userEvent.setup();
 
   for (let i = 0; i < steps.length; i++) {
-    expect(screen.getByText(`Current step: ${i}`)).toBeInTheDocument();
+    expect(await screen.findByText(`Current step: ${i}`)).toBeInTheDocument();
     await user.click(screen.getByText('Next'));
   }
 });
 
 test('Clicking past the last step does nothing', async () => {
   const steps = fakeSteps();
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps} initialStep={steps.length - 1}>
-                {children}
-              </StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps} initialStep={steps.length - 1}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
 
   const user = userEvent.setup();
 
   expect(
-    screen.getByText(`Current step: ${steps.length - 1}`)
+    await screen.findByText(`Current step: ${steps.length - 1}`)
   ).toBeInTheDocument();
 
   await user.click(screen.getByText('Next'));
@@ -110,24 +98,19 @@ test('Clicking past the last step does nothing', async () => {
 
 test('Clicking previous on the first step does nothing', async () => {
   const steps = fakeSteps();
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps}>{children}</StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
 
   const user = userEvent.setup();
 
-  expect(screen.getByText(`Current step: 0`)).toBeInTheDocument();
+  expect(await screen.findByText(`Current step: 0`)).toBeInTheDocument();
 
   await user.click(screen.getByText('Previous'));
 
@@ -136,27 +119,20 @@ test('Clicking previous on the first step does nothing', async () => {
 
 test('Clicking a previous step via the label works as expected', async () => {
   const steps = fakeSteps();
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps} initialStep={steps.length - 1}>
-                {children}
-              </StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps} initialStep={steps.length - 1}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
 
   const user = userEvent.setup();
 
   expect(
-    screen.getByText(`Current step: ${steps.length - 1}`)
+    await screen.findByText(`Current step: ${steps.length - 1}`)
   ).toBeInTheDocument();
 
   await user.click(screen.getByText(steps[0].label));
@@ -164,26 +140,21 @@ test('Clicking a previous step via the label works as expected', async () => {
   expect(screen.getByText(`Current step: 0`)).toBeInTheDocument();
 });
 
-test('onlyShowCurrentLabel works as expected', () => {
+test('onlyShowCurrentLabel works as expected', async () => {
   const steps = fakeSteps();
-  render(<Stepper onlyShowCurrentStepLabel />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps}>{children}</StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps} initialStep={steps.length - 1}>
+      <StepperTestComponent onlyShowCurrentStepLabel />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
 
-  for (let i = 0; i < steps.length; i++) {
-    if (i === 0) {
-      expect(screen.getByText(steps[i].label)).toBeInTheDocument();
+  for (let i = steps.length - 1; i >= 0; i--) {
+    if (i === steps.length - 1) {
+      expect(await screen.findByText(steps[i].label)).toBeInTheDocument();
     } else {
       expect(screen.queryByText(steps[i].label)).not.toBeInTheDocument();
     }
@@ -208,24 +179,19 @@ test('Works as expected with substeps', async () => {
       label: 'Step 2',
     },
   ];
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps}>{children}</StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
 
   const user = userEvent.setup();
 
-  expect(screen.getByText(`1 of 2`)).toBeInTheDocument();
+  expect(await screen.findByText(`1 of 2`)).toBeInTheDocument();
   expect(screen.getByText(steps[0].subSteps![0].title)).toBeInTheDocument();
   expect(
     screen.getByText(steps[0].subSteps![0].description!)
@@ -248,7 +214,7 @@ test('Works as expected with substeps', async () => {
   expect(screen.getByText(steps[0].subSteps![0].title)).toBeInTheDocument();
 });
 
-test('Works as expected with title in steps', () => {
+test('Works as expected with title in steps', async () => {
   const steps: StepperProviderProps['steps'] = [
     {
       label: 'Step 1',
@@ -259,49 +225,34 @@ test('Works as expected with title in steps', () => {
       label: 'Step 2',
     },
   ];
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps}>{children}</StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
 
-  expect(screen.getByText(steps[0].title!)).toBeInTheDocument();
+  expect(await screen.findByText(steps[0].title!)).toBeInTheDocument();
   expect(screen.getByText(steps[0].description!)).toBeInTheDocument();
 });
 
 test('Works as expected with sync to url', async () => {
   const steps = fakeSteps();
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter(
-          [
-            {
-              path: '/create/:step',
-              element: (
-                <StepperProvider steps={steps} syncToURLParam>
-                  {children}
-                </StepperProvider>
-              ),
-            },
-          ],
-          { initialEntries: ['/create/0'] }
-        )}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider steps={steps} syncToURLParam>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/create/0'],
+      routes: ['/create/$step'],
+    }
+  );
   const user = userEvent.setup();
 
-  expect(screen.getByText(`Current step: 0`)).toBeInTheDocument();
+  expect(await screen.findByText(`Current step: 0`)).toBeInTheDocument();
   expect(screen.getByText(`Current location: /create/0`)).toBeInTheDocument();
 
   await user.click(screen.getByText('Next'));
@@ -318,31 +269,21 @@ function isStepDisabled({ stepIndex }: { stepIndex: number }) {
 test('Disabled steps work as expected', async () => {
   const steps = fakeSteps();
 
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter(
-          [
-            {
-              path: '/create/:step',
-              element: (
-                <StepperProvider
-                  steps={steps}
-                  syncToURLParam
-                  isStepDisabled={isStepDisabled}
-                >
-                  {children}
-                </StepperProvider>
-              ),
-            },
-          ],
-          { initialEntries: ['/create/2'] }
-        )}
-      />
-    ),
-  });
+  renderWithRouter(
+    <StepperProvider
+      steps={steps}
+      syncToURLParam
+      isStepDisabled={isStepDisabled}
+    >
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/create/0'],
+      routes: ['/create/$step'],
+    }
+  );
 
-  const firstStep = screen.getByText(steps[0].label);
+  const firstStep = await screen.findByText(steps[0].label);
   expect(firstStep).toBeInTheDocument();
   expect(firstStep).toBeDisabled();
 });

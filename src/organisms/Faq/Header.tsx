@@ -1,9 +1,15 @@
-import { ChangeEvent, FC, useMemo } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useMemo,
+  useState,
+} from 'react';
 
 import { Search } from '@equinor/eds-core-react';
 
-import { useFaqsInApplication } from 'src/atoms/hooks/useFaqsInApplication';
-import { useSearchParameter } from 'src/atoms/hooks/useSearchParameter';
+import { useFaqsInApplication } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
 import { Tabs } from 'src/molecules/Tabs/Tabs';
 
@@ -24,14 +30,14 @@ const Container = styled.div`
   }
 `;
 
-export const Header: FC = () => {
+interface HeaderProps {
+  selectedTab: string | undefined;
+  setSelectedTab: Dispatch<SetStateAction<string | undefined>>;
+}
+
+export const Header: FC<HeaderProps> = ({ setSelectedTab, selectedTab }) => {
   const { data } = useFaqsInApplication();
-  const [selectedTab, setSelectedTab] = useSearchParameter<string | undefined>({
-    key: 'category',
-  });
-  const [search, setSearch] = useSearchParameter<string>({
-    key: 'search',
-  });
+  const [search, setSearch] = useState<string>('');
 
   const tabOptions = useMemo(() => {
     if (!data)
