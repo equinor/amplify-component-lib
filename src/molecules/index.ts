@@ -26,6 +26,13 @@ export { FileUploadArea } from './FileUploadArea/FileUploadArea';
 export type { FileUploadAreaProps } from './FileUploadArea/FileUploadArea';
 export { FullPageSpinner } from './FullPageSpinner/FullPageSpinner';
 export type { FullPageSpinnerProps } from './FullPageSpinner/FullPageSpinner';
+export { IconCell } from './IconCell/IconCell';
+export type { IconCellProps } from './IconCell/IconCell';
+export type {
+  IconCellColors,
+  IconCellStates,
+  IconCellVariants,
+} from './IconCell/IconCell.types';
 export { InfoElement } from './InfoElement/InfoElement';
 export type { InfoElementProps } from './InfoElement/InfoElement';
 export { OptionalTooltip } from './OptionalTooltip/OptionalTooltip';
