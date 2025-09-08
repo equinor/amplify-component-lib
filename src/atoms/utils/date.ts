@@ -75,7 +75,11 @@ export const formatDate = (
 // formatDateTime(new Date(), {month: 'short'}) => 19. Jan 2022, 01:32
 export const formatDateTime = (
   date: Date | string | null | undefined,
-  options: { month?: 'short' | 'long'; hideYear?: boolean; isGMT?: boolean } = {
+  options: {
+    month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';
+    hideYear?: boolean;
+    isGMT?: boolean;
+  } = {
     month: 'long',
     hideYear: false,
     isGMT: false,

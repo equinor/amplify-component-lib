@@ -204,22 +204,22 @@ test('formatDateTime works as expected when not sending in a date', () => {
   expect(formatted).toBe(undefined);
 });
 
-test('formatDateTime works as expected with options', () => {
+test.each(['numeric', '2-digit', 'long', 'short', 'narrow'] as Array<
+  'numeric' | '2-digit' | 'long' | 'short' | 'narrow'
+>)('formatDateTime with month option %s', (month) => {
   const today = new Date();
   const fakeDate = faker.date.past({
     refDate: today.setDate(today.getDate() - 2),
   });
   const day = fakeDate.toLocaleDateString('en-GB', { day: 'numeric' });
   const expectedResult = `${day}. ${fakeDate.toLocaleString('en-GB', {
-    month: 'short',
+    month,
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   })}`;
 
-  const formatted = formatDateTime(fakeDate, {
-    month: 'short',
-  });
+  const formatted = formatDateTime(fakeDate, { month });
   expect(formatted).toBe(expectedResult);
 });
 
