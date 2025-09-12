@@ -104,6 +104,7 @@ export function AutoCompleteMenu<T extends string>({
         return (
           <Menu.Item
             key={item.value}
+            onClick={() => onAutoComplete(item.key, item)}
             onKeyDown={(event) => handleOnKeyDown(event, index)}
           >
             <MatchingText>{elements}</MatchingText>
