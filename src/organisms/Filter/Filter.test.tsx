@@ -374,6 +374,48 @@ test('Auto complete with keyboard', async () => {
   });
 });
 
+test('Auto complete with click', async () => {
+  const props = fakeProps();
+  const onAutoComplete = vi.fn();
+  const user = userEvent.setup();
+
+  const key = Object.keys(props.values)[0];
+
+  render(
+    <Filter
+      {...props}
+      values={{}}
+      search={'a'}
+      autoCompleteOptions={{
+        [key]: props.values[key],
+      }}
+      onAutoComplete={onAutoComplete}
+    >
+      <p>child</p>
+    </Filter>
+  );
+  const searchBox = screen.getByRole('searchbox');
+  await user.click(searchBox);
+
+  for (const value of Object.values(props.values[key]).flat()) {
+    if (value.label.includes('a')) {
+      expect(
+        await screen.findByRole('menuitem', { name: value.label })
+      ).toBeInTheDocument();
+    }
+  }
+
+  const selectedValue = props.values[key][0];
+
+  await user.click(screen.getByRole('menuitem', { name: selectedValue.label }));
+
+  expect(onAutoComplete).toHaveBeenCalledTimes(1);
+  expect(onAutoComplete).toHaveBeenCalledWith(key, {
+    key,
+    ...selectedValue,
+  });
+});
+
 test('Auto complete menu closes as expected', async () => {
   const props = fakeProps();
   const onAutoComplete = vi.fn();
