@@ -1,6 +1,5 @@
-import { Link as ReactRouterDomLink } from 'react-router-dom';
-
 import { Typography } from '@equinor/eds-core-react';
+import { Link as TanstackLink } from '@tanstack/react-router';
 
 import { colors, spacings } from 'src/atoms/style';
 
@@ -16,7 +15,7 @@ interface LinkProps {
   $disabled?: boolean;
 }
 
-export const Link = styled(ReactRouterDomLink)<LinkProps>`
+export const Link = styled(TanstackLink)<LinkProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
