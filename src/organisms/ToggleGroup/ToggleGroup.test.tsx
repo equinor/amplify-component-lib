@@ -101,5 +101,29 @@ test('Match parent height works as expected', async () => {
     </div>
   );
 
-  expect(container.firstChild).toHaveStyle('height: 50px');
+  expect(container.firstChild?.firstChild).toHaveStyle('height: 50px');
+});
+
+test('Match parent width works as expected', async () => {
+  const options = new Array(faker.number.int({ min: 2, max: 3 }))
+    .fill(null)
+    .map(() => faker.vehicle.vehicle());
+  const handlers = options.map(() => vi.fn());
+  const { container } = render(
+    <div style={{ width: '500px' }}>
+      <ToggleGroup matchParentWidth>
+        {options.map((option, index) => (
+          <ToggleGroup.Option
+            key={option}
+            onToggle={handlers[index]}
+            label={option}
+            checked={false}
+          />
+        ))}
+      </ToggleGroup>
+    </div>
+  );
+
+  expect(container.firstChild).toHaveStyle('width: 500px');
+  expect(container.firstChild?.firstChild).toHaveStyle('display: grid');
 });
