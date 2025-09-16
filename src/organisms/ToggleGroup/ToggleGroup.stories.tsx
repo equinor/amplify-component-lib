@@ -7,9 +7,7 @@ import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroup as ToggleGroupComponent } from '.';
 import { colors } from 'src/atoms/style';
 
-interface StoryComponentProps {
-  variant: ToggleGroupProps['variant'];
-  matchParentHeight: ToggleGroupProps['matchParentHeight'];
+interface StoryComponentProps extends ToggleGroupProps {
   withIcons?: boolean;
   onlyIcons?: boolean;
   disabled?: boolean;
@@ -18,6 +16,7 @@ interface StoryComponentProps {
 const ToggleGroup: FC<StoryComponentProps> = ({
   variant,
   matchParentHeight,
+  matchParentWidth,
   withIcons = false,
   onlyIcons = false,
   disabled = false,
@@ -29,16 +28,20 @@ const ToggleGroup: FC<StoryComponentProps> = ({
   return (
     <div
       style={{
-        height: '48px',
-        outline: matchParentHeight
-          ? `1px solid ${colors.ui.background__medium.rgba}`
-          : undefined,
-        outlineOffset: matchParentHeight ? '10px' : undefined,
+        height: matchParentHeight ? '48px' : undefined,
+        width: matchParentWidth ? '100%' : undefined,
+        outline:
+          matchParentHeight || matchParentWidth
+            ? `1px solid ${colors.ui.background__medium.rgba}`
+            : undefined,
+        outlineOffset:
+          matchParentHeight || matchParentWidth ? '10px' : undefined,
       }}
     >
       <ToggleGroupComponent
         variant={variant}
         matchParentHeight={matchParentHeight}
+        matchParentWidth={matchParentWidth}
       >
         <ToggleGroupComponent.Option
           onToggle={setRecentlyPublished}
@@ -180,5 +183,12 @@ export const MatchParentHeight: Story = {
   args: {
     variant: 'outlined',
     matchParentHeight: true,
+  },
+};
+
+export const MatchParentWidth: Story = {
+  args: {
+    variant: 'outlined',
+    matchParentWidth: true,
   },
 };

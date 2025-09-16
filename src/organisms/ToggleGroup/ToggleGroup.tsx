@@ -9,6 +9,7 @@ import styled, { css } from 'styled-components';
 interface WrapperProps {
   $variant: Required<ToggleGroupProps>['variant'];
   $matchParentHeight: Required<ToggleGroupProps>['matchParentHeight'];
+  $gridTemplateColumns?: string;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -51,15 +52,41 @@ const Wrapper = styled.div<WrapperProps>`
     }
     return '';
   }}
+  
+  ${({ $gridTemplateColumns }) => {
+    if (!$gridTemplateColumns) return '';
+
+    return css`
+      display: grid;
+      grid-template-columns: ${$gridTemplateColumns};
+
+      > button {
+        justify-content: center;
+      }
+    `;
+  }}
 `;
 
 export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
-  ({ variant = 'filled', matchParentHeight = false, children }, ref) => {
+  (
+    {
+      variant = 'filled',
+      matchParentHeight = false,
+      matchParentWidth = false,
+      children,
+    },
+    ref
+  ) => {
     return (
       <Wrapper
         ref={ref}
         $variant={variant}
         $matchParentHeight={matchParentHeight}
+        $gridTemplateColumns={
+          matchParentWidth
+            ? `repeat(${children.length}, minmax(0, 1fr))`
+            : undefined
+        }
       >
         {Children.map(children, (toggleOption) => {
           if (toggleOption.type != ToggleGroupOption) {

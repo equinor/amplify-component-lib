@@ -25,5 +25,6 @@ export type ToggleGroupOption = {
 export interface ToggleGroup {
   variant?: 'filled' | 'outlined' | 'ghost';
   matchParentHeight?: boolean;
+  matchParentWidth?: boolean;
   children: ReactElement<ToggleGroupOption>[];
 }
