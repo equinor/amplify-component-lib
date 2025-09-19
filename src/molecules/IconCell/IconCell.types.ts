@@ -3,7 +3,6 @@ export const IconCellColors = {
   RED: 'red',
   ORANGE: 'orange',
   BLUE: 'blue',
-  GREY: 'grey',
   LIGHTGREY: 'lightgrey',
   PINK: 'pink',
   YELLOW: 'yellow',
@@ -11,8 +10,6 @@ export const IconCellColors = {
   SUCCESS: 'success',
   WARNING: 'warning',
   ERROR: 'error',
-  INFO: 'info',
-  DANGER: 'danger',
   DEFAULT: 'default',
 } as const;
 
@@ -31,7 +28,7 @@ export type IconCellVariant =
 export const IconCellStates = {
   DEFAULT: 'default',
   WARNING: 'warning',
-  DANGER: 'danger',
+  ERROR: 'error',
 } as const;
 
 export type IconCellState =

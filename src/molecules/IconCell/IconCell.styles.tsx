@@ -106,8 +106,8 @@ export const Button = styled.button<ButtonProps>`
   ${({ $backgroundColor, $variant, $state }) => {
     const color =
       $variant === IconCellVariants.COLOURED
-        ? $state === IconCellStates.DANGER
-          ? stateBGColor[IconCellStates.DANGER]
+        ? $state === IconCellStates.ERROR
+          ? stateBGColor[IconCellStates.ERROR]
           : $state === IconCellStates.WARNING
             ? stateBGColor[IconCellStates.WARNING]
             : $backgroundColor

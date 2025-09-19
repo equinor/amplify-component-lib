@@ -40,7 +40,6 @@ export const getIconCellColor = (
           };
     case IconCellColors.RED:
     case IconCellColors.ERROR:
-    case IconCellColors.DANGER:
       return theme === Theme.LIGHT
         ? {
             backgroundColor: colors.interactive.danger__highlight.rgba,
@@ -62,7 +61,6 @@ export const getIconCellColor = (
             iconColor: colors.text.static_icons__default.rgba,
           };
     case IconCellColors.BLUE:
-    case IconCellColors.INFO:
       return theme === Theme.LIGHT
         ? {
             backgroundColor: colors.dataviz.lightblue.lighter,
@@ -112,7 +110,6 @@ export const getIconCellColor = (
             backgroundColor: colors.dataviz.darkpurple.darker,
             iconColor: colors.dataviz.lightpurple.lighter,
           };
-    case IconCellColors.GREY:
     default:
       return theme === Theme.LIGHT
         ? {
@@ -128,12 +125,12 @@ export const getIconCellColor = (
 
 // Helper to get a color by state with fallback
 export const stateBorderColors: { [key in IconCellState]?: string } = {
-  [IconCellStates.DANGER]: colors.interactive.danger__resting.rgba,
+  [IconCellStates.ERROR]: colors.interactive.danger__resting.rgba,
   [IconCellStates.WARNING]: colors.interactive.warning__resting.rgba,
 };
 
 export const stateBGColor: { [key in IconCellState]?: string } = {
-  [IconCellStates.DANGER]: colors.ui.background__danger.rgba,
+  [IconCellStates.ERROR]: colors.ui.background__danger.rgba,
   [IconCellStates.WARNING]: colors.ui.background__warning.rgba,
 };
 
@@ -172,8 +169,8 @@ export const getBackground = ({
     )`;
   }
   if ($variant !== IconCellVariants.COLOURED) return 'transparent';
-  if ($state === IconCellStates.DANGER)
-    return stateBGColor[IconCellStates.DANGER];
+  if ($state === IconCellStates.ERROR)
+    return stateBGColor[IconCellStates.ERROR];
   if ($state === IconCellStates.WARNING)
     return stateBGColor[IconCellStates.WARNING];
   return $backgroundColor;

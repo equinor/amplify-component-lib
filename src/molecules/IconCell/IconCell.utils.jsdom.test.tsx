@@ -76,7 +76,7 @@ test('getBorderBottom returns backgroundColor when noBottomBorder is true', () =
 });
 
 test.each([
-  [IconCellStates.DANGER, colors.interactive.danger__resting.rgba],
+  [IconCellStates.ERROR, colors.interactive.danger__resting.rgba],
   [IconCellStates.WARNING, colors.interactive.warning__resting.rgba],
 ])(
   'getBorderBottom returns state color when state is %s',
@@ -117,7 +117,7 @@ test('getBackground returns transparent for non-COLOURED variant', () => {
 });
 
 test.each([
-  [IconCellStates.DANGER, colors.ui.background__danger.rgba],
+  [IconCellStates.ERROR, colors.ui.background__danger.rgba],
   [IconCellStates.WARNING, colors.ui.background__warning.rgba],
 ])(
   'getBackground returns correct background for %s state',
