@@ -94,7 +94,7 @@ test('Renders selected border on warning state as expected', () => {
 
 test.each([
   [IconCellStates.WARNING, colors.ui.background__warning.rgba],
-  [IconCellStates.DANGER, colors.ui.background__danger.rgba],
+  [IconCellStates.ERROR, colors.ui.background__danger.rgba],
 ])(
   'Renders background color on %s state as expected',
   (state, expectedColor) => {
