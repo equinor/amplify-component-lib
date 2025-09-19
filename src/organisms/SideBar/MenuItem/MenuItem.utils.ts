@@ -6,6 +6,7 @@ interface IsUrlArgs {
 export const isCurrentUrl = ({ currentUrl, link }: IsUrlArgs) => {
   const currentIncludesLink = currentUrl.includes(link);
 
+  console.log(currentUrl, link);
   return (currentIncludesLink && link !== '/') || link === currentUrl;
 };
 
