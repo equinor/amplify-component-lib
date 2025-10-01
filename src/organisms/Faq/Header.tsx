@@ -1,13 +1,7 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useMemo,
-  useState,
-} from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useMemo } from 'react';
 
 import { Search } from '@equinor/eds-core-react';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 
 import { useFaqsInApplication } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
@@ -37,7 +31,8 @@ interface HeaderProps {
 
 export const Header: FC<HeaderProps> = ({ setSelectedTab, selectedTab }) => {
   const { data } = useFaqsInApplication();
-  const [search, setSearch] = useState<string>('');
+  const navigate = useNavigate();
+  const { search } = useSearch({ strict: false });
 
   const tabOptions = useMemo(() => {
     if (!data)
@@ -60,7 +55,11 @@ export const Header: FC<HeaderProps> = ({ setSelectedTab, selectedTab }) => {
   }, [data]);
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
+    if (event.target.value) {
+      navigate({ to: '.', search: { search: event.target.value } });
+    } else {
+      navigate({ to: '.', search: null });
+    }
   };
 
   const handleOnTabChange = (value: string) => {

@@ -1,7 +1,8 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { FaqCategory } from '@equinor/subsurface-app-management';
+import { useSearch } from '@tanstack/react-router';
 
 import { Question } from './Question';
 import { spacings } from 'src/atoms/style';
@@ -28,7 +29,7 @@ export const Category: FC<CategoryProps> = ({
   faqs,
   selectedTab,
 }) => {
-  const [search] = useState<string | undefined>(undefined);
+  const { search } = useSearch({ strict: false });
 
   const sortedFaqs = useMemo(() => {
     return faqs.toSorted((a, b) => {

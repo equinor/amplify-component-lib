@@ -1,5 +1,12 @@
-import { Preview, StoryFn } from '@storybook/react-vite';
+import { Decorator, Preview, StoryFn } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 
 import { withSpacingsMode } from './addons/SpacingsAddon/withSpacingsMode';
 import { withTheme } from './addons/ThemeAddon/withTheme';
@@ -37,6 +44,35 @@ const globalTypes = {
   },
 };
 
+const withRouter: Decorator = (StoryFn, context) => {
+  if (!context.parameters.router) return <StoryFn />;
+
+  const {
+    initialEntries = ['/'],
+    initialIndex,
+    routes = ['/'],
+  } = context.parameters.router;
+
+  const rootRoute = createRootRoute();
+
+  const children = routes.map((path: string) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      component: StoryFn,
+    })
+  );
+
+  rootRoute.addChildren(children);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries, initialIndex }),
+    routeTree: rootRoute,
+  });
+
+  return <RouterProvider router={router} />;
+};
+
 const decorators = [
   (Story: StoryFn) => {
     const queryClient = new QueryClient();
@@ -62,6 +98,7 @@ const decorators = [
   },
   withSpacingsMode,
   withTheme,
+  withRouter,
 ];
 
 const parameters = {
