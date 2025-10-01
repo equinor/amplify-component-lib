@@ -28,10 +28,16 @@ export { FullPageSpinner } from './FullPageSpinner/FullPageSpinner';
 export type { FullPageSpinnerProps } from './FullPageSpinner/FullPageSpinner';
 export { IconCell } from './IconCell/IconCell';
 export type { IconCellProps } from './IconCell/IconCell';
-export type {
+export {
   IconCellColors,
-  IconCellStates,
   IconCellVariants,
+  IconCellStates,
+} from './IconCell/IconCell.types';
+export type {
+  IconCellColor,
+  IconCellVariant,
+  IconCellState,
+  IconCellColorObject,
 } from './IconCell/IconCell.types';
 export { InfoElement } from './InfoElement/InfoElement';
 export type { InfoElementProps } from './InfoElement/InfoElement';
