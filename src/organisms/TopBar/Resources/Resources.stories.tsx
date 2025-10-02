@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router';
-
 import { ReleaseNoteType } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn } from '@storybook/react-vite';
@@ -41,6 +39,10 @@ export default {
     hideLearnMore: false,
   },
   parameters: {
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
     msw: {
       handlers: [
         http.get('*/api/v1/ReleaseNotes/:applicationName', async () => {
@@ -76,9 +78,7 @@ export const Primary: StoryFn = (args) => {
       <AuthProvider>
         <SnackbarProvider>
           <ReleaseNotesProvider>
-            <MemoryRouter initialEntries={['/']}>
-              <Resources {...args} />
-            </MemoryRouter>
+            <Resources {...args} />
           </ReleaseNotesProvider>
         </SnackbarProvider>
       </AuthProvider>

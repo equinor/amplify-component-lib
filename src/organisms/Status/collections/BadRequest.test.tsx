@@ -1,33 +1,21 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-
 import { BadRequest } from './BadRequest';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderTwoRoutes,
+  renderWithRouter,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
-test('Renders the title and description', () => {
-  render(<BadRequest />, {
-    wrapper: ({ children }) => (
-      <MemoryRouter initialEntries={['/home', '/other']}>
-        {children}
-      </MemoryRouter>
-    ),
+test('Renders the title and description', async () => {
+  await renderWithRouter(<BadRequest />, {
+    initialEntries: ['/'],
+    routes: ['/'],
   });
   expect(screen.getByText(/bad request/i)).toBeInTheDocument();
 });
 
 test('Calls navigate -1 as expected when clicking button', async () => {
-  render(
-    <Routes>
-      <Route path="other" element={<BadRequest />} />
-      <Route path="home" element={<p>home</p>} />
-    </Routes>,
-    {
-      wrapper: ({ children }) => (
-        <MemoryRouter initialEntries={['/home', '/other']}>
-          {children}
-        </MemoryRouter>
-      ),
-    }
-  );
+  await renderTwoRoutes(<BadRequest />);
 
   const user = userEvent.setup();
 

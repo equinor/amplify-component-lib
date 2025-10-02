@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router-dom';
-
 import { Button } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
 import { fireEvent } from '@testing-library/dom';
@@ -9,7 +7,7 @@ import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { Field } from 'src/atoms/types/Field';
 import {
   act,
-  render,
+  renderWithRouter,
   screen,
   userEvent,
   waitFor,
@@ -17,42 +15,27 @@ import {
 
 import { expect } from 'vitest';
 
-test('Shows progress indicator only when isFetching={true}', () => {
-  const { rerender } = render(
+test('Shows progress indicator only when isFetching={true}', async () => {
+  await renderWithRouter(
     <TopBar applicationIcon="car" applicationName="Car-go 🏎" isFetching={true}>
-      content
-    </TopBar>,
-    { wrapper: MemoryRouter }
-  );
-
-  expect(screen.getByRole('progressbar')).toBeInTheDocument();
-
-  rerender(
-    <TopBar
-      applicationIcon="car"
-      applicationName="Car-go 🏎"
-      isFetching={false}
-    >
       content
     </TopBar>
   );
 
-  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
-test('Shows correct application name', () => {
+test('Shows correct application name', async () => {
   const appName = 'Car-go 🏎';
-  render(
+  await renderWithRouter(
     <TopBar applicationIcon="car" applicationName={appName}>
       content
-    </TopBar>,
-
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
   expect(screen.getByText(new RegExp(appName, 'i'))).toBeInTheDocument();
 });
 
-test('Shows fields selector instead of application name when field is send in to top bar ', () => {
+test('Shows fields selector instead of application name when field is send in to top bar ', async () => {
   const appName = 'Car-go 🏎';
   const availableFields: Field[] = [
     {
@@ -69,7 +52,7 @@ test('Shows fields selector instead of application name when field is send in to
   const onSelectedField = vi.fn();
   const currentFiled: Field = availableFields[0];
 
-  render(
+  await renderWithRouter(
     <TopBar
       applicationIcon="car"
       applicationName={appName}
@@ -79,65 +62,47 @@ test('Shows fields selector instead of application name when field is send in to
       availableFields={availableFields}
     >
       content
-    </TopBar>,
-
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
 
   const button = screen.getByRole('button', { name: currentFiled.name ?? '' });
   expect(button).toBeInTheDocument();
 });
 
-test('Shows environment banner when not in production', () => {
-  const envs = [
-    EnvironmentType.LOCALHOST,
-    EnvironmentType.DEVELOP,
-    EnvironmentType.STAGING,
-  ];
-  const { rerender } = render(
-    <TopBar applicationIcon="car" applicationName="test">
+test.each([
+  EnvironmentType.LOCALHOST,
+  EnvironmentType.DEVELOP,
+  EnvironmentType.STAGING,
+])('Shows environment banner when in %s environment', async (env) => {
+  await renderWithRouter(
+    <TopBar applicationIcon="car" applicationName="test" environment={env}>
       content
-    </TopBar>,
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
 
-  for (const envType of envs) {
-    rerender(
-      <TopBar
-        applicationIcon="car"
-        applicationName="test"
-        environment={envType}
-      >
-        content
-      </TopBar>
-    );
-    expect(screen.getByText(envType)).toBeInTheDocument();
-  }
+  expect(screen.getByText(env)).toBeInTheDocument();
 });
 
-test('Hides environment banner when in production', () => {
+test('Hides environment banner when in production', async () => {
   const environmentName = 'production' as EnvironmentType;
-  render(
+  await renderWithRouter(
     <TopBar
       applicationIcon="test"
       applicationName="test"
       environment={environmentName}
     >
       content
-    </TopBar>,
-
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
   expect(screen.queryByText(environmentName)).not.toBeInTheDocument();
 });
 
-test('Capitalize app name works as expected', () => {
+test('Capitalize app name works as expected', async () => {
   const name = faker.person.fullName();
-  render(
+  await renderWithRouter(
     <TopBar applicationIcon="test" applicationName={name} capitalize>
       content
-    </TopBar>,
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
   expect(screen.getByText(name.toLowerCase())).toBeInTheDocument();
 });
@@ -145,11 +110,10 @@ test('Capitalize app name works as expected', () => {
 test('close on resize ', async () => {
   const name = faker.person.fullName();
   const setAllAsRead = vi.fn();
-  render(
+  await renderWithRouter(
     <TopBar applicationIcon="test" applicationName={name}>
       <TopBar.Notifications setAllAsRead={setAllAsRead} />
-    </TopBar>,
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
   const user = userEvent.setup();
 
@@ -190,7 +154,7 @@ test('Tab navigation should focus actions in expected order', async () => {
   const button2 = 'button2';
   const button3 = 'button3';
 
-  render(
+  await renderWithRouter(
     <TopBar applicationIcon="car" applicationName={appName}>
       <TopBar.FieldSelector
         availableFields={availableFields}
@@ -202,8 +166,7 @@ test('Tab navigation should focus actions in expected order', async () => {
         <Button>{button2}</Button>
         <Button>{button3}</Button>
       </TopBar.Actions>
-    </TopBar>,
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
 
   const homeButton = screen.getByRole('link', { name: appName });

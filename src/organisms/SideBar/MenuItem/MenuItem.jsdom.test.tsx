@@ -1,9 +1,15 @@
-import { MouseEventHandler, ReactNode } from 'react';
-import { Outlet } from 'react-router';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { act, MouseEventHandler, ReactNode } from 'react';
 
 import { home } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  RouterProvider,
+} from '@tanstack/react-router';
 
 import { colors, spacings } from 'src/atoms/style';
 import {
@@ -25,26 +31,36 @@ function fakeProps(selected = false): MenuItemProps {
   };
 }
 
-const wrapper = ({ children }: { children: ReactNode }) => {
-  return (
-    <SideBarProvider>
-      <MemoryRouter initialEntries={['/page1']}>
-        <Routes>
-          <Route
-            element={
-              <div>
-                {children}
-                <Outlet />
-              </div>
-            }
-          >
-            <Route path="/page1" element={<p>page 1</p>} />
-            <Route path="/page2" element={<p>page 2</p>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>
-    </SideBarProvider>
+const renderWithSidebarWrapper = async ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const rootRoute = createRootRoute({
+    component: () => (
+      <SideBarProvider>
+        {children}
+        <Outlet />
+      </SideBarProvider>
+    ),
+  });
+
+  const pages = ['/page1', '/page2'].map((path: string) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      component: () => <p>{path}</p>,
+    })
   );
+
+  rootRoute.addChildren(pages);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries: ['/page1'] }),
+    routeTree: rootRoute,
+  });
+
+  return act(() => render(<RouterProvider router={router} />));
 };
 
 describe('MenuItem', () => {
@@ -74,10 +90,10 @@ describe('MenuItem', () => {
     expect(icon).toHaveAttribute('width', '24px');
   };
 
-  test('should navigate if replace is set to true and url is a partial match', () => {
+  test('should navigate if replace is set to true and url is a partial match', async () => {
     const props = fakeProps();
-    render(<MenuItem {...props} replace />, {
-      wrapper: wrapper,
+    await renderWithSidebarWrapper({
+      children: <MenuItem {...props} replace />,
     });
   });
 
@@ -89,10 +105,10 @@ describe('MenuItem', () => {
       );
     });
     describe('Renders with correct styles', () => {
-      test('Default', () => {
+      test('Default', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
         const item = screen.getByTestId('sidebar-menu-item');
 
@@ -115,8 +131,8 @@ describe('MenuItem', () => {
 
       test('Hover', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -142,10 +158,10 @@ describe('MenuItem', () => {
         expect(text).toHaveStyleRule('font-weight', '500');
       });
 
-      test('Selected', () => {
+      test('Selected', async () => {
         const props = fakeProps(true);
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -173,8 +189,8 @@ describe('MenuItem', () => {
 
       test('Selected + Hover', async () => {
         const props = fakeProps(true);
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -217,8 +233,8 @@ describe('MenuItem', () => {
 
       test('Focus', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         //const svgPath = screen.getByTestId('eds-icon-path');
@@ -240,8 +256,8 @@ describe('MenuItem', () => {
 
       test('Disabled', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} disabled />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} disabled />,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         //const svgPath = screen.getByTestId('eds-icon-path');
@@ -274,10 +290,10 @@ describe('MenuItem', () => {
       );
     });
     describe('Renders with correct styles', () => {
-      test('Default', () => {
+      test('Default', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
         const item = screen.getByTestId('sidebar-menu-item');
 
@@ -295,10 +311,10 @@ describe('MenuItem', () => {
         expect(text).not.toBeInTheDocument();
       });
 
-      test('Hover', () => {
+      test('Hover', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -321,10 +337,10 @@ describe('MenuItem', () => {
         expect(text).not.toBeInTheDocument();
       });
 
-      test('Selected', () => {
+      test('Selected', async () => {
         const props = fakeProps(true);
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -345,8 +361,8 @@ describe('MenuItem', () => {
 
       test('Selected + Hover', async () => {
         const props = fakeProps(true);
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
 
         const item = screen.getByTestId('sidebar-menu-item');
@@ -379,8 +395,8 @@ describe('MenuItem', () => {
 
       test('Focus', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} />,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         const text = screen.queryByText(props.name);
@@ -395,10 +411,10 @@ describe('MenuItem', () => {
         expect(text).not.toBeInTheDocument();
       });
 
-      test('Disabled', () => {
+      test('Disabled', async () => {
         const props = fakeProps();
-        render(<MenuItem {...props} disabled />, {
-          wrapper: wrapper,
+        await renderWithSidebarWrapper({
+          children: <MenuItem {...props} disabled />,
         });
         const item = screen.getByTestId('sidebar-menu-item');
         const text = screen.queryByText(props.name);

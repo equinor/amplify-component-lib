@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router-dom';
-
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ApiResponseError } from './ApiResponseError';
@@ -14,6 +12,10 @@ const meta: Meta<typeof ApiResponseError> = {
       type: 'figma',
       url: '',
     },
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
   },
   argTypes: {
     statusCode: {
@@ -26,9 +28,7 @@ const meta: Meta<typeof ApiResponseError> = {
   },
   decorators: (Story) => (
     <StatusWrapper>
-      <MemoryRouter initialEntries={['/']}>
-        <Story />
-      </MemoryRouter>
+      <Story />
     </StatusWrapper>
   ),
 };

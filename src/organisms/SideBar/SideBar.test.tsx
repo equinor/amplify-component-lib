@@ -1,8 +1,15 @@
-import { ReactNode } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { act, ReactNode } from 'react';
 
 import { add, home, shopping_basket, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  RouterProvider,
+} from '@tanstack/react-router';
 
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar/index';
@@ -25,30 +32,41 @@ const defaultMenuItems: SideBarMenuItem[] = [
   },
 ];
 
-const wrapper = ({ children }: { children: ReactNode }) => {
-  return (
-    <MemoryRouter initialEntries={['/']}>
-      <Routes>
-        <Route
-          path="/"
-          element={<SideBarProvider>{children}</SideBarProvider>}
-        />
-        <Route path="/page1" element={<p>Page 1</p>} />
-      </Routes>
-    </MemoryRouter>
+const renderWithSidebarProvider = (children: ReactNode) => {
+  const rootRoute = createRootRoute({
+    component: () => (
+      <SideBarProvider>
+        {children}
+        <Outlet />
+      </SideBarProvider>
+    ),
+  });
+
+  const pages = ['/page1', '/page2'].map((path: string) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      component: () => <p>{path}</p>,
+    })
   );
+
+  rootRoute.addChildren(pages);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries: ['/page1'] }),
+    routeTree: rootRoute,
+  });
+
+  return act(() => render(<RouterProvider router={router} />));
 };
 
-test('Renders create new button when onCreate prop is given', () => {
-  render(
+test('Renders create new button when onCreate prop is given', async () => {
+  await renderWithSidebarProvider(
     <SideBar onCreate={() => console.log('test')} createLabel="createlabel">
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    {
-      wrapper: wrapper,
-    }
+    </SideBar>
   );
   const createIcon = screen.getAllByTestId('eds-icon-path')[0]; // First icon is create icon
   expect(createIcon).toHaveAttribute('d', add.svgPathData);
@@ -56,15 +74,12 @@ test('Renders create new button when onCreate prop is given', () => {
 
 test('Disabled create new button doesnt fire event', async () => {
   const createNewFn = vi.fn();
-  render(
+  await renderWithSidebarProvider(
     <SideBar createLabel="Create new" onCreate={createNewFn} createDisabled>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    {
-      wrapper: wrapper,
-    }
+    </SideBar>
   );
 
   const user = userEvent.setup();
@@ -82,7 +97,7 @@ test('Hides create button when showCreate=false', async () => {
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: false })
   );
-  render(
+  await renderWithSidebarProvider(
     <SideBar
       createLabel={createLabel}
       onCreate={handleOnCreate}
@@ -91,8 +106,7 @@ test('Hides create button when showCreate=false', async () => {
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    { wrapper: wrapper }
+    </SideBar>
   );
   const user = userEvent.setup();
 
@@ -106,7 +120,7 @@ test('Hides create button when showCreate=false', async () => {
   expect(screen.queryByText(createLabel)).not.toBeInTheDocument();
 });
 
-test('Renders bottom item when provided', () => {
+test('Renders bottom item when provided', async () => {
   const bottomItemProps: SideBarMenuItem = {
     name: faker.animal.dog(),
     icon: star_half,
@@ -118,13 +132,12 @@ test('Renders bottom item when provided', () => {
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: true })
   );
-  render(
+  await renderWithSidebarProvider(
     <SideBar bottomItem={bottomitem}>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    { wrapper: wrapper }
+    </SideBar>
   );
 
   const menuItems = screen.getAllByTestId('sidebar-menu-item');
@@ -158,11 +171,10 @@ test('Collapsing sidebar with open menu item closes it', async () => {
     ],
   };
 
-  render(
+  await renderWithSidebarProvider(
     <SideBar>
       <SideBar.Item {...props} />
-    </SideBar>,
-    { wrapper: wrapper }
+    </SideBar>
   );
   const user = userEvent.setup();
 

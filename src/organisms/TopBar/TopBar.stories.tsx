@@ -1,5 +1,4 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react-vite';
@@ -55,12 +54,11 @@ const meta: Meta<typeof TopBar> = {
   },
   parameters: {
     layout: 'fullscreen',
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
   },
-  decorators: (StoryFn) => (
-    <MemoryRouter>
-      <StoryFn />
-    </MemoryRouter>
-  ),
 };
 
 export default meta;

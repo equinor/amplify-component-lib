@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitFor } from '@testing-library/react';
@@ -7,7 +6,7 @@ import { waitFor } from '@testing-library/react';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
 import { AuthProvider, ReleaseNotesProvider } from 'src/providers';
 import {
-  render,
+  renderWithRouter,
   screen,
   test,
   userEvent,
@@ -22,16 +21,21 @@ function Wrappers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ReleaseNotesProvider>
-          <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>
-        </ReleaseNotesProvider>
+        <ReleaseNotesProvider>{children}</ReleaseNotesProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
 }
 
 test('should close the dialog by clicking the close button inside', async () => {
-  const { container } = render(<Resources />, { wrapper: Wrappers });
+  const { container } = await renderWithRouter(
+    <Resources />,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
+    { wrapper: Wrappers }
+  );
   const user = userEvent.setup();
   const toggleHelpButton = screen.getByRole('button');
   await user.click(toggleHelpButton);
@@ -53,7 +57,14 @@ test('should close the dialog by clicking the close button inside', async () => 
 });
 
 test('can close dialog by clicking outside', async () => {
-  render(<Resources />, { wrapper: Wrappers });
+  await renderWithRouter(
+    <Resources />,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
+    { wrapper: Wrappers }
+  );
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -77,7 +88,14 @@ test('can close dialog by clicking outside', async () => {
 });
 
 test('show a release note', async () => {
-  render(<Resources />, { wrapper: Wrappers });
+  await renderWithRouter(
+    <Resources />,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
+    { wrapper: Wrappers }
+  );
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');
@@ -105,7 +123,14 @@ test('No release notes', async ({ worker }) => {
       return HttpResponse.json([]);
     })
   );
-  render(<Resources />, { wrapper: Wrappers });
+  await renderWithRouter(
+    <Resources />,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
+    { wrapper: Wrappers }
+  );
   const user = userEvent.setup();
 
   const button = screen.getByRole('button');

@@ -1,5 +1,4 @@
 import { Fragment, useRef } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
 import { MyTutorialDto } from '@equinor/subsurface-app-management';
@@ -95,24 +94,14 @@ function RouteComponent() {
 
 const meta: Meta = {
   title: 'Providers/TutorialHighlightingProvider',
-  component: function StoryComponent() {
-    return (
-      <RouterProvider
-        router={createMemoryRouter(
-          [
-            {
-              path: '/tutorial',
-              element: <RouteComponent />,
-            },
-          ],
-          { initialEntries: ['/tutorial'] }
-        )}
-      />
-    );
-  },
+  component: RouteComponent,
   tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
+    router: {
+      initialEntries: ['/tutorial'],
+      routes: ['/tutorial'],
+    },
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/xRWyfJ7Ee4CjcUs91RA0sx/%E2%9A%99%EF%B8%8F-SAM---Design?node-id=942-49931&m=dev',

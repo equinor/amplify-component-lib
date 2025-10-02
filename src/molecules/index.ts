@@ -86,6 +86,8 @@ export type {
   GroupedSingleSelectProps,
 } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
+export { TextField } from './TextField/TextField';
+export type { TextFieldProps } from './TextField/TextField';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
 export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
 export { ListItem } from './ListItem/ListItem';
@@ -105,7 +107,6 @@ export {
   Divider,
   Dialog as EDSDialog,
   Menu,
-  TextField,
   Typography,
   Icon,
   CircularProgress,
@@ -125,7 +126,6 @@ export type {
   DividerProps,
   MenuProps,
   SearchProps,
-  TextFieldProps,
   TypographyProps,
   IconProps,
   CircularProgressProps,

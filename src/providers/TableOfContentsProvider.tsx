@@ -163,8 +163,8 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         to: '.',
         hash: `#${targetValue}`,
         hashScrollIntoView: {
-          block: 'start',
           behavior: 'instant',
+          block: 'start',
         },
         replace: true,
       });

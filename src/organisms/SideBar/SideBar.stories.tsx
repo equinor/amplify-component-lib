@@ -1,5 +1,3 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-
 import { car, dashboard, favorite_outlined, history } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
@@ -28,6 +26,10 @@ const meta: Meta = {
   },
   parameters: {
     layout: 'fullscreen',
+    router: {
+      initialEntries: ['/'],
+      routes: ['$'],
+    },
   },
 };
 
@@ -70,46 +72,33 @@ export const Primary: StoryFn = (args) => {
   ];
 
   return (
-    <MemoryRouter initialEntries={['/']}>
-      <Routes>
-        <Route
-          path="*"
-          element={
-            <SideBarProvider>
-              <div style={{ display: 'flex', height: '100%' }}>
-                <SideBar
-                  createLabel={
-                    (args.hasCreateButton as string) &&
-                    (args.createLabel as string)
-                  }
-                  onCreate={
-                    args.hasCreateButton
-                      ? () => console.log('Created 🖋')
-                      : undefined
-                  }
-                  bottomItem={
-                    args.hasBottomItem ? (
-                      <SideBar.Item icon={car} name="Cars" link="/" />
-                    ) : undefined
-                  }
-                  {...args}
-                >
-                  {menuItems.map((m) => (
-                    <SideBar.Item
-                      key={m.name}
-                      disabled={
-                        args.disabledItem !== 'none' &&
-                        m.name === args.disabledItem
-                      }
-                      {...m}
-                    />
-                  ))}
-                </SideBar>
-              </div>
-            </SideBarProvider>
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '100%' }}>
+        <SideBar
+          createLabel={
+            (args.hasCreateButton as string) && (args.createLabel as string)
           }
-        />
-      </Routes>
-    </MemoryRouter>
+          onCreate={
+            args.hasCreateButton ? () => console.log('Created 🖋') : undefined
+          }
+          bottomItem={
+            args.hasBottomItem ? (
+              <SideBar.Item icon={car} name="Cars" link="/" />
+            ) : undefined
+          }
+          {...args}
+        >
+          {menuItems.map((m) => (
+            <SideBar.Item
+              key={m.name}
+              disabled={
+                args.disabledItem !== 'none' && m.name === args.disabledItem
+              }
+              {...m}
+            />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
   );
 };

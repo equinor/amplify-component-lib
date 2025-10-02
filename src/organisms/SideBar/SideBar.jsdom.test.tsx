@@ -1,8 +1,15 @@
-import { ReactNode } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { act, ReactNode } from 'react';
 
 import { home, star_half } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  RouterProvider,
+} from '@tanstack/react-router';
 
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar';
@@ -24,49 +31,57 @@ const defaultMenuItems: SideBarMenuItem[] = [
   },
 ];
 
-const wrapper = ({ children }: { children: ReactNode }) => {
-  return (
-    <MemoryRouter initialEntries={['/']}>
-      <Routes>
-        <Route
-          path="/"
-          element={<SideBarProvider>{children}</SideBarProvider>}
-        />
-        <Route path="/page1" element={<p>Page 1</p>} />
-      </Routes>
-    </MemoryRouter>
+const renderWithSidebarProvider = (children: ReactNode) => {
+  const rootRoute = createRootRoute({
+    component: () => (
+      <SideBarProvider>
+        {children}
+        <Outlet />
+      </SideBarProvider>
+    ),
+  });
+
+  const pages = ['/page1', '/page2'].map((path: string) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      component: () => <p>{path}</p>,
+    })
   );
+
+  rootRoute.addChildren(pages);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries: ['/page1'] }),
+    routeTree: rootRoute,
+  });
+
+  return act(() => render(<RouterProvider router={router} />));
 };
 
-test('Renders closed on initial render', () => {
-  render(
+test('Renders closed on initial render', async () => {
+  await renderWithSidebarProvider(
     <SideBar>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    {
-      wrapper: wrapper,
-    }
+    </SideBar>
   );
 
   expect(screen.getByTestId('sidebar')).toHaveStyle('width: 64px');
 });
 
-test('Renders open width when localStorage has it set to open', () => {
+test('Renders open width when localStorage has it set to open', async () => {
   window.localStorage.setItem(
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: true })
   );
-  render(
+  await renderWithSidebarProvider(
     <SideBar>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    {
-      wrapper: wrapper,
-    }
+    </SideBar>
   );
   expect(screen.getByTestId('sidebar')).toHaveStyle('width: 231px');
 });
@@ -76,13 +91,12 @@ test('Opens and closes when pressing the toggle button', async () => {
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: false })
   );
-  render(
+  await renderWithSidebarProvider(
     <SideBar>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    { wrapper: wrapper }
+    </SideBar>
   );
   const user = userEvent.setup();
 
@@ -104,13 +118,12 @@ test('Render Create button correctly when open', async () => {
     'amplify-sidebar-state',
     JSON.stringify({ isOpen: false })
   );
-  render(
+  await renderWithSidebarProvider(
     <SideBar createLabel={createLabel} onCreate={handleOnCreate}>
       {defaultMenuItems.map((m) => (
         <SideBar.Item key={m.name} {...m} />
       ))}
-    </SideBar>,
-    { wrapper: wrapper }
+    </SideBar>
   );
   const user = userEvent.setup();
 

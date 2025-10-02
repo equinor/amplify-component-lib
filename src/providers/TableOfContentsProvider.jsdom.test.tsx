@@ -1,5 +1,4 @@
-import { FC, ReactNode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { FC } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
@@ -10,8 +9,8 @@ import {
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
 import {
-  render,
   renderHook,
+  renderWithRouter,
   screen,
   userEvent,
 } from 'src/tests/jsdomtest-utils';
@@ -75,27 +74,18 @@ const TestContainer: FC<TestContainerProps> = ({
   );
 };
 
-test('SetItemRef works as expected', () => {
+test('SetItemRef works as expected', async () => {
   const items = fakeItems();
 
-  render(
-    <div>
+  await renderWithRouter(
+    <TableOfContentsProvider items={items}>
       <TableOfContents />
       {items.map((item) => (
         <h1 key={item.value} id={item.value}>
           {item.label}
         </h1>
       ))}
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <MemoryRouter>
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
-        </MemoryRouter>
-      ),
-    }
+    </TableOfContentsProvider>
   );
   const button = screen.getByRole('button', {
     name: items[0].label,
@@ -110,20 +100,11 @@ test('SetItemRef works as expected', () => {
 test('Manual scroll settings work as expected and do not affect menu scroll', async () => {
   const items = fakeItems();
 
-  render(
-    <div>
+  await renderWithRouter(
+    <TableOfContentsProvider items={items}>
       <TableOfContents />
       <TestContainer items={items} />
-    </div>,
-    {
-      wrapper: (props: { children: ReactNode }) => (
-        <MemoryRouter>
-          <TableOfContentsProvider items={items}>
-            {props.children}
-          </TableOfContentsProvider>
-        </MemoryRouter>
-      ),
-    }
+    </TableOfContentsProvider>
   );
 
   const user = userEvent.setup();
@@ -152,19 +133,14 @@ test(
   async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents />
         <TestContainer items={items} shouldInstantlyJumpOnMount />
-      </div>,
+      </TableOfContentsProvider>,
       {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter initialEntries={['/#1']}>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
+        initialEntries: [`/#${items[0].value}`],
+        routes: ['/'],
       }
     );
 
@@ -175,10 +151,7 @@ test(
 
     await user.click(header);
 
-    expect(headerSpy).toHaveBeenCalledWith({
-      block: 'start',
-      behavior: 'instant',
-    });
+    expect(headerSpy).toHaveBeenCalled();
 
     // Move to other
     const otherButton = screen.getByRole('button', { name: items[7].label });

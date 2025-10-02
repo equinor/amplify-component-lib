@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router';
 
 import { check } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
@@ -11,7 +10,7 @@ import {
   StepperProviderProps,
   useStepper,
 } from 'src/providers/StepperProvider';
-import { render, screen, userEvent } from 'src/tests/jsdomtest-utils';
+import { renderWithRouter, screen, userEvent } from 'src/tests/jsdomtest-utils';
 
 function fakeSteps(): StepperProviderProps['steps'] {
   const steps: StepperProviderProps['steps'] = [
@@ -49,20 +48,15 @@ const StepperTestComponent: FC<StepperProps> = (props) => {
 
 test('Displays icon/number correctly', async () => {
   const steps = fakeSteps();
-  render(<StepperTestComponent />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps}>{children}</StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+  await renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      routes: ['/'],
+      initialEntries: ['/'],
+    }
+  );
 
   const user = userEvent.setup();
 
@@ -86,23 +80,19 @@ test('Displays icon/number correctly', async () => {
   );
 });
 
-test('maxWidth works as expected', () => {
+test('maxWidth works as expected', async () => {
   const steps = fakeSteps();
   const maxWidth = '800px';
-  render(<Stepper maxWidth={maxWidth} />, {
-    wrapper: ({ children }) => (
-      <RouterProvider
-        router={createMemoryRouter([
-          {
-            path: '/',
-            element: (
-              <StepperProvider steps={steps}>{children}</StepperProvider>
-            ),
-          },
-        ])}
-      />
-    ),
-  });
+
+  await renderWithRouter(
+    <StepperProvider steps={steps}>
+      <Stepper maxWidth={maxWidth} />
+    </StepperProvider>,
+    {
+      routes: ['/'],
+      initialEntries: ['/'],
+    }
+  );
 
   expect(screen.getByTestId('stepper-container')).toHaveStyle(
     `max-width: ${maxWidth}`

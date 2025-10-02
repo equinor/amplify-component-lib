@@ -1,5 +1,4 @@
-import { Fragment } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { Fragment, useRef } from 'react';
 
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
 import { MyTutorialDto } from '@equinor/subsurface-app-management';
@@ -21,94 +20,100 @@ const TUTORIAL_IDS = [
   faker.string.uuid(),
 ];
 
+function StoryComponent() {
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  return (
+    <div
+      ref={contentRef}
+      style={{
+        maxWidth: '100vw',
+        height: '100vh',
+        overflowX: 'hidden',
+      }}
+      id="content"
+    >
+      <TutorialHighlightingProvider contentRef={contentRef}>
+        <Template>
+          <TopBar
+            applicationIcon="SAM"
+            applicationName="Subsurface app management"
+          >
+            <TopBar.Actions>
+              <Tutorials />
+            </TopBar.Actions>
+          </TopBar>
+          <div
+            id="content"
+            style={{
+              display: 'grid',
+              alignItems: 'center',
+              padding: '4rem',
+              gap: '1rem',
+              maxHeight: 'calc(100vh - 64px)',
+              overflow: 'auto',
+            }}
+          >
+            {TUTORIAL_IDS.map((id, index) => (
+              <Fragment key={id}>
+                {index !== 0 && <Divider />}
+                <Card
+                  style={{ padding: '1rem' }}
+                  id={highlightTutorialElementID(id, 0)}
+                >
+                  <Card.HeaderTitle>
+                    <Typography variant="h2">
+                      {faker.airline.airport().name +
+                        ' ' +
+                        faker.airline.airport().iataCode}
+                    </Typography>
+                  </Card.HeaderTitle>
+                  <Card.Actions>
+                    <Button variant="outlined">Stop</Button>
+                    <Button id={highlightTutorialElementID(id, 1)}>
+                      Start
+                    </Button>
+                  </Card.Actions>
+                </Card>
+                <Card
+                  style={{ padding: '1rem' }}
+                  id={highlightTutorialElementID(id, 2)}
+                >
+                  <Card.HeaderTitle>
+                    <Typography variant="h2">
+                      {faker.airline.airplane().name +
+                        ' ' +
+                        faker.airline.airplane().iataTypeCode}
+                    </Typography>
+                  </Card.HeaderTitle>
+                </Card>
+              </Fragment>
+            ))}
+            <Typography
+              id={highlightTutorialElementID(TUTORIAL_IDS[0], 3)}
+              style={{ marginTop: '80vh', marginBottom: '10vh' }}
+            >
+              This is some text really far away
+            </Typography>
+          </div>
+        </Template>
+      </TutorialHighlightingProvider>
+    </div>
+  );
+}
+
 const meta: Meta = {
   title: 'Organisms/TopBar/Tutorials',
-  component: () => (
-    <RouterProvider
-      router={createMemoryRouter(
-        [
-          {
-            index: true,
-            path: '/',
-            element: (
-              <TutorialHighlightingProvider>
-                <Template>
-                  <TopBar
-                    applicationIcon="SAM"
-                    applicationName="Subsurface app management"
-                  >
-                    <TopBar.Actions>
-                      <Tutorials />
-                    </TopBar.Actions>
-                  </TopBar>
-                  <div
-                    id="content"
-                    style={{
-                      display: 'grid',
-                      alignItems: 'center',
-                      padding: '4rem',
-                      gap: '1rem',
-                      maxHeight: 'calc(100vh - 64px)',
-                      overflow: 'auto',
-                    }}
-                  >
-                    {TUTORIAL_IDS.map((id, index) => (
-                      <Fragment key={id}>
-                        {index !== 0 && <Divider />}
-                        <Card
-                          style={{ padding: '1rem' }}
-                          id={highlightTutorialElementID(id, 0)}
-                        >
-                          <Card.HeaderTitle>
-                            <Typography variant="h2">
-                              {faker.airline.airport().name +
-                                ' ' +
-                                faker.airline.airport().iataCode}
-                            </Typography>
-                          </Card.HeaderTitle>
-                          <Card.Actions>
-                            <Button variant="outlined">Stop</Button>
-                            <Button id={highlightTutorialElementID(id, 1)}>
-                              Start
-                            </Button>
-                          </Card.Actions>
-                        </Card>
-                        <Card
-                          style={{ padding: '1rem' }}
-                          id={highlightTutorialElementID(id, 2)}
-                        >
-                          <Card.HeaderTitle>
-                            <Typography variant="h2">
-                              {faker.airline.airplane().name +
-                                ' ' +
-                                faker.airline.airplane().iataTypeCode}
-                            </Typography>
-                          </Card.HeaderTitle>
-                        </Card>
-                      </Fragment>
-                    ))}
-                    <Typography
-                      id={highlightTutorialElementID(TUTORIAL_IDS[0], 3)}
-                      style={{ marginTop: '80vh', marginBottom: '10vh' }}
-                    >
-                      This is some text really far away
-                    </Typography>
-                  </div>
-                </Template>
-              </TutorialHighlightingProvider>
-            ),
-          },
-        ],
-        { initialEntries: ['/'] }
-      )}
-    />
-  ),
+  component: StoryComponent,
   tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
     design: {
       type: 'figma',
       url: '',
+    },
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
     },
   },
   loaders: [
@@ -132,7 +137,12 @@ export const Default: Story = {
           await delay('real');
 
           const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id, index) =>
-            fakeTutorial(id, index !== 0, true, index === 0 ? '/' : undefined)
+            fakeTutorial({
+              id,
+              willPopUp: index !== 0,
+              highlightElement: true,
+              path: index === 0 ? '/' : undefined,
+            })
           );
 
           return HttpResponse.json(tutorials);

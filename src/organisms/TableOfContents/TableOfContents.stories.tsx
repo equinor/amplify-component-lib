@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
 
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -23,6 +22,12 @@ const { colors } = tokens;
 const meta: Meta = {
   title: 'Organisms/TableOfContents',
   component: TableOfContents,
+  parameters: {
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
+  },
   argTypes: {
     items: { control: 'object' },
     onlyShowSelectedChildren: { control: 'boolean' },
@@ -139,67 +144,61 @@ type StoryProps = TableOfContentsProviderProps & TableOfContentsProps;
 
 export const Primary: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={args.items}>
-        <Container>
-          <TableOfContents variant={args.variant} />
-          <section>
-            {args.items.map((item, index) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={COLORS[index]}
-              />
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={args.items}>
+      <Container>
+        <TableOfContents variant={args.variant} />
+        <section>
+          {args.items.map((item, index) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={COLORS[index]}
+            />
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
 export const BorderVariant: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={args.items}>
-        <Container>
-          <TableOfContents variant="border" />
-          <section>
-            {args.items.map((item, index) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={COLORS[index]}
-              />
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={args.items}>
+      <Container>
+        <TableOfContents variant="border" />
+        <section>
+          {args.items.map((item, index) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={COLORS[index]}
+            />
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
 export const BorderVariantHorizontal: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={args.items}>
-        <HorizontalContainer>
-          <TableOfContents variant="borderHorizontal" />
-          <section>
-            {args.items.map((item, index) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={COLORS[index]}
-              />
-            ))}
-          </section>
-        </HorizontalContainer>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={args.items}>
+      <HorizontalContainer>
+        <TableOfContents variant="borderHorizontal" />
+        <section>
+          {args.items.map((item, index) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={COLORS[index]}
+            />
+          ))}
+        </section>
+      </HorizontalContainer>
+    </TableOfContentsProvider>
   );
 };
 
@@ -232,63 +231,59 @@ const ITEMS_WITH_CHILDREN: TableOfContentsItemType[] = [
 
 export const WithChildren: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
-        <Container>
-          <TableOfContents {...args} variant="buttons" />
-          <section>
-            {ITEMS_WITH_CHILDREN.map((item) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={faker.color.rgb()}
-              >
-                {item.children?.map((child) => (
-                  <Section
-                    key={child.value}
-                    label={child.label}
-                    value={child.value}
-                    color={faker.color.rgb()}
-                  />
-                ))}
-              </Section>
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
+      <Container>
+        <TableOfContents {...args} variant="buttons" />
+        <section>
+          {ITEMS_WITH_CHILDREN.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
 export const WithChildrenAndBorders: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
-        <Container>
-          <TableOfContents {...args} variant="border" />
-          <section>
-            {ITEMS_WITH_CHILDREN.map((item) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={faker.color.rgb()}
-              >
-                {item.children?.map((child) => (
-                  <Section
-                    key={child.value}
-                    label={child.label}
-                    value={child.value}
-                    color={faker.color.rgb()}
-                  />
-                ))}
-              </Section>
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
+      <Container>
+        <TableOfContents {...args} variant="border" />
+        <section>
+          {ITEMS_WITH_CHILDREN.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
@@ -321,32 +316,30 @@ const ITEMS_WITH_CHILDREN_DISABLED: TableOfContentsItemType[] = [
 
 export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
-        <Container>
-          <TableOfContents {...args} variant="buttons" />
-          <section>
-            {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={faker.color.rgb()}
-              >
-                {item.children?.map((child) => (
-                  <Section
-                    key={child.value}
-                    label={child.label}
-                    value={child.value}
-                    color={faker.color.rgb()}
-                  />
-                ))}
-              </Section>
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
+      <Container>
+        <TableOfContents {...args} variant="buttons" />
+        <section>
+          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
@@ -354,35 +347,33 @@ export const WithChildrenAndBordersLinksAndDisabled: StoryFn<StoryProps> = (
   args
 ) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider
-        items={ITEMS_WITH_CHILDREN_DISABLED}
-        hashNavigation
-      >
-        <Container>
-          <TableOfContents {...args} variant="border" isLink />
-          <section>
-            {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={faker.color.rgb()}
-              >
-                {item.children?.map((child) => (
-                  <Section
-                    key={child.value}
-                    label={child.label}
-                    value={child.value}
-                    color={faker.color.rgb()}
-                  />
-                ))}
-              </Section>
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider
+      items={ITEMS_WITH_CHILDREN_DISABLED}
+      hashNavigation
+    >
+      <Container>
+        <TableOfContents {...args} variant="border" isLink />
+        <section>
+          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
@@ -431,107 +422,97 @@ export const WithChildrenAndBordersOnlyShowSelectedChildrenSharedWidth: StoryFn<
   StoryProps
 > = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_AND_LONG_LABEL}>
-        <Container>
-          <TableOfContents
-            {...args}
-            variant="border"
-            onlyShowSelectedChildren
-          />
-          <section>
-            {ITEMS_WITH_CHILDREN_AND_LONG_LABEL.map((item) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={faker.color.rgb()}
-              >
-                {item.children?.map((child) => (
-                  <Section
-                    key={child.value}
-                    label={child.label}
-                    value={child.value}
-                    color={faker.color.rgb()}
-                  />
-                ))}
-              </Section>
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_AND_LONG_LABEL}>
+      <Container>
+        <TableOfContents {...args} variant="border" onlyShowSelectedChildren />
+        <section>
+          {ITEMS_WITH_CHILDREN_AND_LONG_LABEL.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
 export const WithChildrenAndBordersDisabled: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
-        <Container>
-          <TableOfContents {...args} variant="border" />
-          <section>
-            {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={faker.color.rgb()}
-              >
-                {item.children?.map((child) => (
-                  <Section
-                    key={child.value}
-                    label={child.label}
-                    value={child.value}
-                    color={faker.color.rgb()}
-                  />
-                ))}
-              </Section>
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
+      <Container>
+        <TableOfContents {...args} variant="border" />
+        <section>
+          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };
 
 export const WithChildrenAndCounts: StoryFn<StoryProps> = (args) => {
   return (
-    <MemoryRouter>
-      <TableOfContentsProvider
-        items={ITEMS_WITH_CHILDREN.map((item) => ({
-          ...item,
-          count: Math.ceil(Math.random() * 10),
-          children:
-            item.children?.map((child) => ({
-              ...child,
-              count: Math.ceil(Math.random() * 10),
-            })) ?? [],
-        }))}
-      >
-        <Container>
-          <TableOfContents {...args} variant="border" />
-          <section>
-            {ITEMS_WITH_CHILDREN.map((item) => (
-              <Section
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                color={faker.color.rgb()}
-              >
-                {item.children?.map((child) => (
-                  <Section
-                    key={child.value}
-                    label={child.label}
-                    value={child.value}
-                    color={faker.color.rgb()}
-                  />
-                ))}
-              </Section>
-            ))}
-          </section>
-        </Container>
-      </TableOfContentsProvider>
-    </MemoryRouter>
+    <TableOfContentsProvider
+      items={ITEMS_WITH_CHILDREN.map((item) => ({
+        ...item,
+        count: Math.ceil(Math.random() * 10),
+        children:
+          item.children?.map((child) => ({
+            ...child,
+            count: Math.ceil(Math.random() * 10),
+          })) ?? [],
+      }))}
+    >
+      <Container>
+        <TableOfContents {...args} variant="border" />
+        <section>
+          {ITEMS_WITH_CHILDREN.map((item) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={faker.color.rgb()}
+            >
+              {item.children?.map((child) => (
+                <Section
+                  key={child.value}
+                  label={child.label}
+                  value={child.value}
+                  color={faker.color.rgb()}
+                />
+              ))}
+            </Section>
+          ))}
+        </section>
+      </Container>
+    </TableOfContentsProvider>
   );
 };

@@ -14,7 +14,7 @@ import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
 
-type TextFieldProps = Omit<BaseProps, 'variant'> & {
+export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
 } & (

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { MemoryRouter } from 'react-router';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
@@ -57,6 +56,10 @@ const meta: Meta<typeof FieldSelector> = {
   tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
   },
 };
 
@@ -108,32 +111,30 @@ export const Primary: StoryFn = (args) => {
   }, []);
 
   return (
-    <MemoryRouter>
-      <StoryContainer>
-        <Template>
-          <Template.GlobalStyles />
-          <TopBar applicationIcon="acquire" applicationName="App">
-            <TopBar.Actions>
-              <Button variant="ghost_icon">
-                <Icon data={info_circle} />
-              </Button>
-            </TopBar.Actions>
-          </TopBar>
-          <Template.Container>
-            <Template.Content $open={false} id="content">
-              <FieldSelector
-                itemNameSingular={args.itemNameSingular as string}
-                showAccessITLink={args.showAccessITLink as boolean}
-                setField={setField}
-                fields={fields}
-                isLoading={isLoading}
-                onChangedField={onChangedField}
-                finishedText={args.finishedText as string}
-              />
-            </Template.Content>
-          </Template.Container>
-        </Template>
-      </StoryContainer>
-    </MemoryRouter>
+    <StoryContainer>
+      <Template>
+        <Template.GlobalStyles />
+        <TopBar applicationIcon="acquire" applicationName="App">
+          <TopBar.Actions>
+            <Button variant="ghost_icon">
+              <Icon data={info_circle} />
+            </Button>
+          </TopBar.Actions>
+        </TopBar>
+        <Template.Container>
+          <Template.Content $open={false} id="content">
+            <FieldSelector
+              itemNameSingular={args.itemNameSingular as string}
+              showAccessITLink={args.showAccessITLink as boolean}
+              setField={setField}
+              fields={fields}
+              isLoading={isLoading}
+              onChangedField={onChangedField}
+              finishedText={args.finishedText as string}
+            />
+          </Template.Content>
+        </Template.Container>
+      </Template>
+    </StoryContainer>
   );
 };

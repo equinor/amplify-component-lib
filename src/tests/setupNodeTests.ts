@@ -25,6 +25,7 @@ beforeAll(() => {
   HTMLDialogElement.prototype.close = vi.fn();
   HTMLElement.prototype.showPopover = vi.fn();
   HTMLElement.prototype.hidePopover = vi.fn();
+  HTMLElement.prototype.scrollIntoView = vi.fn();
 });
 
 afterEach(() => {

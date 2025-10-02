@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode } from 'react';
+import { act, FC, ReactElement, ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -24,7 +24,7 @@ import { worker } from 'src/tests/setupBrowserTests';
 import { SetupWorker } from 'msw/browser';
 import { test as testBase } from 'vitest';
 
-const Providers: FC<{ children: ReactNode }> = ({ children }) => {
+export const Providers: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient();
   return (
     <>
@@ -52,14 +52,18 @@ export function fakeSelectItem() {
 
 const renderWithRouter = (
   ui: ReactElement,
-  routerArgs: {
+  routerArgs?: {
     initialEntries: string[];
     routes: string[];
     initialIndex?: number;
   },
   options?: RenderOptions
 ) => {
-  const { initialEntries = ['/'], initialIndex, routes = ['/'] } = routerArgs;
+  const {
+    initialEntries = ['/'],
+    initialIndex,
+    routes = ['/'],
+  } = routerArgs ?? {};
 
   const rootRoute = createRootRoute();
 
@@ -78,8 +82,34 @@ const renderWithRouter = (
     routeTree: rootRoute,
   });
 
-  return render(<RouterProvider router={router} />, options);
+  return act(() => render(<RouterProvider router={router} />, options));
 };
+
+export async function renderTwoRoutes(element: ReactNode) {
+  const rootRoute = createRootRoute({});
+
+  const pages = [
+    createRoute({
+      path: '/home',
+      getParentRoute: () => rootRoute,
+      component: () => <p>home</p>,
+    }),
+    createRoute({
+      path: '/other',
+      getParentRoute: () => rootRoute,
+      component: () => element,
+    }),
+  ];
+
+  rootRoute.addChildren(pages);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries: ['/home', '/other'] }),
+    routeTree: rootRoute,
+  });
+
+  return act(() => render(<RouterProvider router={router} />));
+}
 
 export function fakeSelectItems(count = 10) {
   return new Array(count).fill(0).map(() => fakeSelectItem());

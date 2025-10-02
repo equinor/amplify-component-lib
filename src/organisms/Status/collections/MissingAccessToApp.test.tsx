@@ -1,8 +1,12 @@
 import { MissingAccessToApp } from 'src/organisms';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderWithRouter,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
-test('Renders the title and description', () => {
-  render(<MissingAccessToApp />);
+test('Renders the title and description', async () => {
+  await renderWithRouter(<MissingAccessToApp />);
   expect(screen.getByText(/you don't have access to/i)).toBeInTheDocument();
   expect(
     screen.getByText(/You can apply for acces to the app in AccessIT/i)
@@ -10,7 +14,7 @@ test('Renders the title and description', () => {
 });
 
 test('Opens AccessIT when clicking button', async () => {
-  render(<MissingAccessToApp />);
+  await renderWithRouter(<MissingAccessToApp />);
   const user = userEvent.setup();
 
   window.open = vi.fn();

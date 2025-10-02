@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router-dom';
-
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ServerError } from './ServerError';
@@ -14,14 +12,16 @@ const meta: Meta<typeof ServerError> = {
       type: 'figma',
       url: '',
     },
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
   },
   args: {},
   decorators: (Story) => (
-    <MemoryRouter initialEntries={['/']}>
-      <StatusWrapper>
-        <Story />
-      </StatusWrapper>
-    </MemoryRouter>
+    <StatusWrapper>
+      <Story />
+    </StatusWrapper>
   ),
 };
 

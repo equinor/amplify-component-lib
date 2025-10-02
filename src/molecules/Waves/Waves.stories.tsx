@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router';
-
 import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Waves } from 'src/molecules/Waves/Waves';
@@ -35,18 +33,20 @@ const meta: Meta<WaveStoryProps> = {
   tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
   },
   decorators: (Story) => (
-    <MemoryRouter>
-      <ThemeProvider>
-        <TopBar applicationIcon="acquire" applicationName="Acquire">
-          <TopBar.Actions>
-            <TopBar.Settings />
-          </TopBar.Actions>
-        </TopBar>
-        <Story />
-      </ThemeProvider>
-    </MemoryRouter>
+    <ThemeProvider>
+      <TopBar applicationIcon="acquire" applicationName="Acquire">
+        <TopBar.Actions>
+          <TopBar.Settings />
+        </TopBar.Actions>
+      </TopBar>
+      <Story />
+    </ThemeProvider>
   ),
 };
 
