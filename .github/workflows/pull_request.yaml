@@ -26,6 +26,7 @@ jobs:
 
   build-deploy-feature-radix:
     if: ${{ startsWith(github.head_ref, 'feature')}}
+    timeout-minutes: 60
     name: Build and deploy to feature env
     uses: ./.github/workflows/build_deploy_radix.yaml
     with:
