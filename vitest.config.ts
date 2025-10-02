@@ -1,5 +1,13 @@
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const dirname =
+  typeof __dirname !== 'undefined'
+    ? __dirname
+    : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [viteTsconfigPaths() as any],
@@ -29,6 +37,42 @@ export default defineConfig({
       '.idea'
     ],
     projects: [
+      {
+        extends: 'vitest.config.ts',
+        plugins: [
+          storybookTest({
+            configDir: path.join(dirname, '.storybook'),
+            storybookScript: 'bun run storybook --ci',
+          }),
+        ],
+        test: {
+          name: 'storybook',
+          server: {
+            deps: {
+              inline: [
+                '@equinor/eds-tokens',
+                '@equinor/eds-core-react',
+                '@equinor/amplify-component-lib',
+                '@equinor/subsurface-app-management',
+              ],
+            },
+          },
+          testTimeout: 30000,
+          browser: {
+            enabled: true,
+            headless: true,
+            instances: [
+              {
+                browser: 'chromium',
+              },
+            ],
+            provider: 'playwright',
+          },
+          include: ['**/*.stories.tsx'],
+          exclude: ['**/node_modules/**', '**/test-utils/**', '**/e2e/**'],
+          setupFiles: ['./.storybook/vitest.setup.ts'],
+        },
+      },
       {
         extends: 'vitest.config.ts',
         test: {

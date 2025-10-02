@@ -48,13 +48,15 @@
   },
   "dependencies": {
     "@azure/msal-browser": "3.28.0",
-    "@azure/msal-react": "2.2.0"
+    "@azure/msal-react": "2.2.0",
+    "@storybook/addon-vitest": "^9.1.10"
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.22.0",
     "@equinor/subsurface-app-management": "4.4.3-beta.0",
     "@eslint/js": "^9.22.0",
     "@faker-js/faker": "^9.6.0",
+    "@storybook/addon-coverage": "^2.0.0",
     "@storybook/addon-designs": "^10.0.2",
     "@storybook/addon-docs": "^9.1.1",
     "@storybook/addon-links": "^9.1.1",
