@@ -60,11 +60,7 @@ export const extractYearsData = (
     });
   }
 
-  return years.toSorted((a, b) => {
-    const yearA = Number.parseInt(a.value);
-    const yearB = Number.parseInt(b.value);
-    return yearB - yearA;
-  });
+  return years;
 };
 
 export function monthValueToString(monthValue: Date): string {

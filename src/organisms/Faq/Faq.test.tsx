@@ -136,6 +136,8 @@ test('Able to search', async () => {
       }
     }
   }
+
+  await user.clear(screen.getByRole('textbox'));
 });
 
 test('Shows empty state if clicking tab that is empty after searching', async () => {
