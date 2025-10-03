@@ -134,7 +134,7 @@ test(
     const items = fakeItems();
 
     await renderWithRouter(
-      <TableOfContentsProvider items={items}>
+      <TableOfContentsProvider items={items} hashNavigation>
         <TableOfContents />
         <TestContainer items={items} shouldInstantlyJumpOnMount />
       </TableOfContentsProvider>,

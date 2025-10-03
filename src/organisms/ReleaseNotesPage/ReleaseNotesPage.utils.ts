@@ -46,29 +46,25 @@ export const extractYearsData = (
     const monthValue = new Date(`1. ${monthLabel} ${monthYear}`);
 
     const foundYear = years.find((year) => year.value === yearValue);
-    if (foundYear) {
-      const existingMonth = foundYear.months.find(
-        (month) => month.value.toISOString() === monthValue.toISOString()
-      );
-      if (!existingMonth) {
-        foundYear.months.push({
-          label: monthLabel,
-          value: monthValue,
-        });
-      }
-      foundYear.months.sort((a, b) => {
-        return sortByDate(a.value, b.value);
+    const existingMonth = foundYear?.months.find(
+      (month) => month.value.toISOString() === monthValue.toISOString()
+    );
+    if (!existingMonth) {
+      foundYear?.months.push({
+        label: monthLabel,
+        value: monthValue,
       });
     }
+    foundYear?.months.sort((a, b) => {
+      return sortByDate(a.value, b.value);
+    });
   }
 
-  years.sort((a, b) => {
+  return years.toSorted((a, b) => {
     const yearA = Number.parseInt(a.value);
     const yearB = Number.parseInt(b.value);
     return yearB - yearA;
   });
-
-  return years;
 };
 
 export function monthValueToString(monthValue: Date): string {
@@ -82,10 +78,10 @@ export function yearId(yearValue: string): string {
 }
 
 export function removeFromPreviousByIndex<T extends unknown[]>(
-  prev: T | undefined,
+  prev: T,
   index: number
 ): T {
-  const copy = structuredClone(prev ?? []);
+  const copy = structuredClone(prev);
   copy.splice(index, 1);
   return copy as T;
 }

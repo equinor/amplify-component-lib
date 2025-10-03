@@ -42,7 +42,7 @@ const Story: FC = () => {
   );
 };
 
-function fakeReleaseNote(): ReleaseNote {
+function fakeReleaseNote(index: number): ReleaseNote {
   return {
     releaseId: faker.string.uuid(),
     applicationName: 'PWEX',
@@ -52,11 +52,13 @@ function fakeReleaseNote(): ReleaseNote {
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
     draft: false,
     createdDate: faker.date.past().toISOString(),
-    releaseDate: new Date().toISOString(),
+    releaseDate: index % 2 ? new Date().toISOString() : undefined,
   };
 }
 
-const fakeReleaseNotes = Array.from({ length: 10 }, fakeReleaseNote);
+const fakeReleaseNotes = Array.from({ length: 10 }, (_, index) =>
+  fakeReleaseNote(index)
+);
 
 const meta: Meta<typeof ReleaseNotesPage> = {
   title: 'Organisms/ReleaseNotesPage',
@@ -168,6 +170,11 @@ export const FilterTags: Story = {
         ).not.toBeInTheDocument();
       }
     }
+
+    await userEvent.click(canvas.getByTestId('clear-all-x'));
+    for (const releaseNote of publishedReleaseNotes) {
+      await expect(canvas.queryByText(releaseNote.title)).toBeInTheDocument();
+    }
   },
 };
 
@@ -202,6 +209,13 @@ export const SearchingForTitle: Story = {
     ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('heading', { name: randomReleaseNote.title })
+    ).toBeInTheDocument();
+
+    await userEvent.keyboard('{Backspace}');
+    await userEvent.keyboard('{Backspace}');
+
+    await expect(
+      canvas.queryByRole('heading', { name: otherReleaseNote.title })
     ).toBeInTheDocument();
   },
 };
