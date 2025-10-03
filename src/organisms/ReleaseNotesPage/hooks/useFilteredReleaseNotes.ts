@@ -19,7 +19,7 @@ export function useFilteredReleaseNotes() {
 
     if (search.search) {
       filteredList = filteredList.filter((item) => {
-        return search.search?.some((searchTerm) => {
+        return search.search?.every((searchTerm) => {
           const lowerCased = searchTerm.toLowerCase();
 
           return (

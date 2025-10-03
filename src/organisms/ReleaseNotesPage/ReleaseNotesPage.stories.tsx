@@ -48,7 +48,7 @@ function fakeReleaseNote(): ReleaseNote {
     applicationName: 'PWEX',
     version: null,
     title: faker.commerce.productName(),
-    body: `<h5>Release notes body text</h5><p>${faker.lorem.paragraphs(9)}</p>`,
+    body: `${faker.string.uuid()} <h5>Release notes body text</h5><p>${faker.lorem.paragraphs(9)}</p>`,
     tags: [ReleaseNoteType.FEATURE, ReleaseNoteType.IMPROVEMENT],
     draft: false,
     createdDate: faker.date.past().toISOString(),
