@@ -113,7 +113,7 @@ test('show a release note', async () => {
   expect(actualText).toBeInTheDocument();
 
   expect(
-    screen.getByRole('link', { name: /See all release notes in SAM/i })
+    screen.getByRole('link', { name: /See all release notes/i })
   ).toBeInTheDocument();
 });
 
