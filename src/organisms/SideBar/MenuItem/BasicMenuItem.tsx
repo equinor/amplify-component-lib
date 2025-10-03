@@ -67,7 +67,6 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
             $disabled={disabled}
             onClick={handleOnClick}
             tabIndex={0}
-            $open
             data-testid="sidebar-menu-item"
             replace={replace}
             {...props}

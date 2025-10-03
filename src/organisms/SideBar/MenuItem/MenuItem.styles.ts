@@ -11,7 +11,6 @@ export const MenuItemWrapper = styled.span`
 
 interface LinkProps {
   $active?: boolean;
-  $open?: boolean;
   $disabled?: boolean;
 }
 
@@ -19,7 +18,6 @@ export const Link = styled(TanstackLink)<LinkProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
-  justify-content: ${({ $open }) => !$open && 'center'};
   height: 64px;
   min-width: 64px;
   padding: ${spacings.medium};
