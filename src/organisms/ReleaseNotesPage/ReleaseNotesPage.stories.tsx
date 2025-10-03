@@ -99,10 +99,22 @@ export default meta;
 type Story = StoryObj<typeof ReleaseNotesPage>;
 
 export const Default: Story = {
+  parameters: {
+    router: {
+      routes: ['/release-notes'],
+      initialEntries: ['/release-notes/'],
+    },
+  },
   args: {},
 };
 
 export const ShowsContent: Story = {
+  parameters: {
+    router: {
+      routes: ['/release-notes'],
+      initialEntries: ['/release-notes/'],
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
@@ -120,6 +132,12 @@ export const ShowsContent: Story = {
 };
 
 export const FilterTags: Story = {
+  parameters: {
+    router: {
+      routes: ['/release-notes'],
+      initialEntries: ['/release-notes/'],
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -154,6 +172,12 @@ export const FilterTags: Story = {
 };
 
 export const SearchingForTitle: Story = {
+  parameters: {
+    router: {
+      routes: ['/release-notes'],
+      initialEntries: ['/release-notes/'],
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -183,6 +207,12 @@ export const SearchingForTitle: Story = {
 };
 
 export const SearchingForBody: Story = {
+  parameters: {
+    router: {
+      routes: ['/release-notes'],
+      initialEntries: ['/release-notes/'],
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -210,6 +240,12 @@ export const SearchingForBody: Story = {
 };
 
 export const NoReleaseNotesInSearch: Story = {
+  parameters: {
+    router: {
+      routes: ['/release-notes'],
+      initialEntries: ['/release-notes/'],
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -230,6 +266,10 @@ export const NoReleaseNotesInSearch: Story = {
 
 export const NoContent: Story = {
   parameters: {
+    router: {
+      routes: ['/release-notes'],
+      initialEntries: ['/release-notes/'],
+    },
     msw: {
       handlers: [
         http.get('*/api/v1/Token/SamPortal', async () => {

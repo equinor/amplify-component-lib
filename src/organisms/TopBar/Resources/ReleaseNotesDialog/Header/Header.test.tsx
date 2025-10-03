@@ -17,7 +17,7 @@ const Wrappers = ({ children }: { children: ReactNode }) => {
   );
 };
 
-test('should have a link button', () => {
+test('should have a link button', async () => {
   await renderWithRouter(
     <Header />,
     {

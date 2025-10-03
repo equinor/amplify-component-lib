@@ -5,6 +5,7 @@ import {
   ReleaseNotesService,
   useReleaseNotesQuery,
 } from '@equinor/subsurface-app-management';
+import { Link } from '@tanstack/react-router';
 
 import { Header } from './Header/Header';
 import {
@@ -25,8 +26,7 @@ interface ReleaseNotesDialogProps {
 export const ReleaseNotesDialog: FC<ReleaseNotesDialogProps> = ({
   enabled,
 }) => {
-  const { setOpen, open, mostRecentReleaseNote, showAllReleaseNotesLink } =
-    useReleaseNotes();
+  const { setOpen, open, mostRecentReleaseNote } = useReleaseNotes();
   const { isLoading } = useReleaseNotesQuery({ enabled });
   const { isPrefetching } = usePrefetchRichTextImages({
     richTextValues: mostRecentReleaseNote?.body
@@ -50,12 +50,8 @@ export const ReleaseNotesDialog: FC<ReleaseNotesDialogProps> = ({
         <>
           <ReleaseNote {...mostRecentReleaseNote} expanded />
           <AllReleaseNotesWrapper>
-            <Button
-              variant="ghost"
-              href={showAllReleaseNotesLink}
-              target="_blank"
-            >
-              See all release notes in SAM
+            <Button as={Link} variant="ghost" to="/release-notes">
+              See all release notes
             </Button>
           </AllReleaseNotesWrapper>
         </>
