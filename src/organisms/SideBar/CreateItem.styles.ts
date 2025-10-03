@@ -2,7 +2,7 @@ import { Button, ButtonProps } from '@equinor/eds-core-react';
 
 import { colors, shape, spacings } from 'src/atoms/style';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface MenuItemContainerProps {
   $active?: boolean;
@@ -49,7 +49,12 @@ export const CreateButton = styled(Button)<CreateButtonProps>`
   &:disabled {
     border: 0 solid transparent;
   }
-  > span {
-    ${(props) => props.$open && 'margin-left: -11px'};
-  }
+  ${(props) => {
+    if (!props.$open) return '';
+    return css`
+      > span {
+        margin-left: -11px;
+      }
+    `;
+  }};
 `;
