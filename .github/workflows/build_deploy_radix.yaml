@@ -20,7 +20,9 @@ jobs:
       name: ${{ inputs.environment-name }}
     name: 🛠️ Build & Deploy
     runs-on: ubuntu-latest
-    concurrency: ${{ inputs.environment-name }}-build-deploy
+    concurrency:
+      group: ${{ inputs.environment-name }}-build-deploy
+      cancel-in-progress: true
     permissions:
       id-token: write
       contents: read
