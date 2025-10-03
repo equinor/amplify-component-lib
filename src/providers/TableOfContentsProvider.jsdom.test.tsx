@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
+import { useLocation } from '@tanstack/react-router';
 
 import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
 import {
@@ -44,9 +45,11 @@ const TestContainer: FC<TestContainerProps> = ({
   shouldInstantlyJumpOnMount,
 }) => {
   const { setSelected } = useTableOfContents();
+  const { hash } = useLocation();
 
   return (
     <>
+      <p data-testid="hash">{hash}</p>
       {items.map((item) => (
         <h1
           key={item.value}
@@ -147,23 +150,17 @@ test(
     const user = userEvent.setup({ delay: 1000 });
 
     const header = document.querySelector(`#${items[1].value}`)!;
-    const headerSpy = vi.spyOn(header, 'scrollIntoView');
 
     await user.click(header);
 
-    expect(headerSpy).toHaveBeenCalled();
+    expect(screen.getByTestId('hash')).toHaveTextContent(`${items[1].value}`);
 
     // Move to other
     const otherButton = screen.getByRole('button', { name: items[7].label });
-    const otherHeader = document.querySelector(`#${items[7].value}`)!;
-    const otherHeaderSpy = vi.spyOn(otherHeader, 'scrollIntoView');
 
     await user.click(otherButton);
 
-    expect(otherHeaderSpy).toHaveBeenCalledWith({
-      block: 'start',
-      behavior: 'smooth',
-    });
+    expect(screen.getByTestId('hash')).toHaveTextContent(`${items[7].value}`);
   },
   { timeout: 8000 }
 );
