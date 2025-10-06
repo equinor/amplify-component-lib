@@ -6,7 +6,7 @@ export interface IconItem {
   title: string;
   icon: IconData;
   color: string;
-  colorBox?: ReactNode;
+  colorBox?: boolean;
 }
 
 export interface ElementItem {

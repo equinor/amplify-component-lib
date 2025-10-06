@@ -1,6 +1,5 @@
-import { Link as ReactRouterDomLink } from 'react-router-dom';
-
 import { Typography } from '@equinor/eds-core-react';
+import { Link as TanstackLink } from '@tanstack/react-router';
 
 import { colors, spacings } from 'src/atoms/style';
 
@@ -12,15 +11,13 @@ export const MenuItemWrapper = styled.span`
 
 interface LinkProps {
   $active?: boolean;
-  $open?: boolean;
   $disabled?: boolean;
 }
 
-export const Link = styled(ReactRouterDomLink)<LinkProps>`
+export const Link = styled(TanstackLink)<LinkProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
-  justify-content: ${({ $open }) => !$open && 'center'};
   height: 64px;
   min-width: 64px;
   padding: ${spacings.medium};

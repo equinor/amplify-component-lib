@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { MemoryRouter } from 'react-router';
 
 import { comment_discussion } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -45,17 +44,19 @@ const meta: Meta<typeof Faq> = {
       type: 'figma',
       url: '',
     },
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
   },
   tags: ['!autodocs'],
   args: {},
   decorators: (Story) => (
-    <MemoryRouter initialEntries={['/faq']}>
-      <SideBarProvider>
-        <ThemeProvider>
-          <Story />
-        </ThemeProvider>
-      </SideBarProvider>
-    </MemoryRouter>
+    <SideBarProvider>
+      <ThemeProvider>
+        <Story />
+      </ThemeProvider>
+    </SideBarProvider>
   ),
 };
 

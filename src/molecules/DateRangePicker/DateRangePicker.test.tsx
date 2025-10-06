@@ -21,7 +21,7 @@ test('Expect default format', async () => {
 });
 
 test('Able to override format', async () => {
-  const value = { from: faker.date.recent(), to: faker.date.future() };
+  const value = { from: new Date(2025, 1, 1), to: new Date(2025, 2, 1) };
   render(
     <DateRangePicker
       value={value}

@@ -1,12 +1,10 @@
-import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
-
 import { faker } from '@faker-js/faker';
 import { within } from '@testing-library/dom';
 
 import { Faq } from './Faq';
 import {
-  renderWithProviders,
+  Providers,
+  renderWithRouter,
   screen,
   test,
   userEvent,
@@ -16,15 +14,14 @@ import { FAKE_FAQ_CATEGORIES } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
 
-function Wrapper({ children }: { children: ReactNode }) {
-  return <MemoryRouter>{children}</MemoryRouter>;
-}
-
 test('Renders expected content', async () => {
-  renderWithProviders(
-    <Wrapper>
-      <Faq />
-    </Wrapper>
+  renderWithRouter(
+    <Faq />,
+    {
+      routes: ['/faq'],
+      initialEntries: ['/faq'],
+    },
+    { wrapper: Providers }
   );
 
   await waitFor(() =>
@@ -47,10 +44,13 @@ test('Renders expected content', async () => {
 });
 
 test('Able to click the tabs', async () => {
-  renderWithProviders(
-    <Wrapper>
-      <Faq />
-    </Wrapper>
+  renderWithRouter(
+    <Faq />,
+    {
+      routes: ['/faq'],
+      initialEntries: ['/faq'],
+    },
+    { wrapper: Providers }
   );
   const user = userEvent.setup();
 
@@ -101,10 +101,13 @@ test('Able to click the tabs', async () => {
 });
 
 test('Able to search', async () => {
-  renderWithProviders(
-    <Wrapper>
-      <Faq />
-    </Wrapper>
+  renderWithRouter(
+    <Faq />,
+    {
+      routes: ['/faq'],
+      initialEntries: ['/faq'],
+    },
+    { wrapper: Providers }
   );
   const user = userEvent.setup();
 
@@ -133,13 +136,18 @@ test('Able to search', async () => {
       }
     }
   }
+
+  await user.clear(screen.getByRole('textbox'));
 });
 
 test('Shows empty state if clicking tab that is empty after searching', async () => {
-  renderWithProviders(
-    <Wrapper>
-      <Faq />
-    </Wrapper>
+  renderWithRouter(
+    <Faq />,
+    {
+      routes: ['/faq'],
+      initialEntries: ['/faq'],
+    },
+    { wrapper: Providers }
   );
   const user = userEvent.setup();
 
@@ -177,10 +185,13 @@ test('Shows empty state if clicking tab that is empty after searching', async ()
 });
 
 test('Able to open FAQ', async () => {
-  renderWithProviders(
-    <Wrapper>
-      <Faq />
-    </Wrapper>
+  renderWithRouter(
+    <Faq />,
+    {
+      routes: ['/faq'],
+      initialEntries: ['/faq'],
+    },
+    { wrapper: Providers }
   );
   const user = userEvent.setup();
 
@@ -211,10 +222,13 @@ test('Renders expected content when empty', async ({ worker }) => {
       return HttpResponse.json([]);
     })
   );
-  renderWithProviders(
-    <Wrapper>
-      <Faq />
-    </Wrapper>
+  renderWithRouter(
+    <Faq />,
+    {
+      routes: ['/faq'],
+      initialEntries: ['/faq'],
+    },
+    { wrapper: Providers }
   );
 
   await waitFor(() => expect(screen.getByText(/no FAQs/i)).toBeInTheDocument());

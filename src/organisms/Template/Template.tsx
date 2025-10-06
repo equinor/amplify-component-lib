@@ -9,6 +9,7 @@ import styled, { createGlobalStyle, IStyledComponent } from 'styled-components';
 
 const { colors } = tokens;
 
+/* v8 ignore start */
 const BaseTemplate = styled.div`
   display: flex;
   flex-direction: column;
@@ -117,3 +118,4 @@ Template.FullWidth = FULLWIDTH_CLASSNAME;
 Template.WithoutScrollGutter = WITHOUT_SCROLL_GUTTER_CLASSNAME;
 
 export type { ContentProps, TemplateType };
+/* v8 ignore end */

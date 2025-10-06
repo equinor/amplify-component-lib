@@ -19,19 +19,24 @@ const Container = styled.div<ContainerProps>`
   gap: ${spacings.small};
   align-items: center;
   white-space: nowrap;
-  ${({ $disabled, $clickable }) =>
-    $disabled
-      ? css`
-          &:hover {
-            cursor: not-allowed;
-          }
-        `
-      : $clickable &&
-        css`
-          &:hover {
-            cursor: pointer;
-          }
-        `}
+  ${({ $disabled, $clickable }) => {
+    if ($disabled) {
+      return css`
+        &:hover {
+          cursor: not-allowed;
+        }
+      `;
+    }
+
+    if ($clickable) {
+      return css`
+        &:hover {
+          cursor: pointer;
+        }
+      `;
+    }
+    return '';
+  }}
 `;
 
 interface StepProps {

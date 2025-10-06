@@ -1,5 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { notifications } from '@equinor/eds-icons';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import {
   DefaultNotificationTypes,
@@ -15,15 +16,7 @@ import {
 import { Notifications } from './Notifications';
 import { NotificationsProps } from './NotificationsInner';
 
-export default {
-  title: 'Organisms/TopBar/Notifications',
-  component: Notifications,
-  argTypes: {
-    hasUnread: { control: 'boolean' },
-    hasChildren: { control: 'boolean' },
-  },
-  args: { hasUnread: true, hasChildren: true },
-} as Meta;
+import { expect, fn, userEvent } from 'storybook/test';
 
 const items: (
   | ReadyToReportNotificationTypes
@@ -140,15 +133,34 @@ const items: (
   } as Due3WeeksTypes,
 ];
 
-export const Primary: StoryFn<NotificationsProps> = (args) => {
-  return (
-    <Notifications
-      hasUnread={args.hasUnread}
-      setAllAsRead={() => null}
-      showFilterOptions={true}
-      notifications={items}
-    />
-  );
+export default {
+  title: 'Organisms/TopBar/Notifications',
+  component: Notifications,
+  argTypes: {
+    hasUnread: { control: 'boolean' },
+    hasChildren: { control: 'boolean' },
+  },
+  args: {
+    hasUnread: true,
+    hasChildren: true,
+    notifications: items,
+    setAllAsRead: fn(),
+  },
+} as Meta;
+
+type Story = StoryObj<typeof Notifications>;
+
+export const Primary: Story = {
+  args: { showFilterOptions: true },
+  play: async ({ canvas }) => {
+    const icons = canvas.getAllByTestId('eds-icon-path');
+
+    await expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
+
+    const button = canvas.getByTestId('show-hide-button');
+    await userEvent.click(button);
+    await expect(await canvas.findByText('Amanda')).toBeVisible();
+  },
 };
 
 export const RenderProps: StoryFn<NotificationsProps> = (args) => {

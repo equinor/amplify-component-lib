@@ -1,5 +1,4 @@
 import { Fragment, useRef } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
 import { MyTutorialDto } from '@equinor/subsurface-app-management';
@@ -17,6 +16,7 @@ import {
 } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
+import { expect, userEvent } from 'storybook/test';
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 
@@ -95,24 +95,14 @@ function RouteComponent() {
 
 const meta: Meta = {
   title: 'Providers/TutorialHighlightingProvider',
-  component: function StoryComponent() {
-    return (
-      <RouterProvider
-        router={createMemoryRouter(
-          [
-            {
-              path: '/tutorial',
-              element: <RouteComponent />,
-            },
-          ],
-          { initialEntries: ['/tutorial'] }
-        )}
-      />
-    );
-  },
+  component: RouteComponent,
   tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
+    router: {
+      initialEntries: ['/tutorial'],
+      routes: ['/tutorial'],
+    },
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/xRWyfJ7Ee4CjcUs91RA0sx/%E2%9A%99%EF%B8%8F-SAM---Design?node-id=942-49931&m=dev',
@@ -141,25 +131,46 @@ export const HowToUse: StoryObj = {
   render: page,
 };
 
+const highlightElementTutorials = TUTORIAL_IDS.map((id, index) =>
+  fakeTutorial({
+    id,
+    willPopUp: index === 0,
+    highlightElement: true,
+    stepAmount: 4,
+  })
+);
+
+export const Default: StoryObj = {
+  parameters: {
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get(`*/api/v1/Tutorial/*`, async () => {
+          return HttpResponse.json(highlightElementTutorials);
+        }),
+      ],
+    },
+  },
+};
+
 export const HighlightingElement: StoryObj = {
   parameters: {
     msw: {
       handlers: [
         tokenHandler,
         http.get(`*/api/v1/Tutorial/*`, async () => {
-          const tutorials: MyTutorialDto[] = TUTORIAL_IDS.map((id, index) =>
-            fakeTutorial({
-              id,
-              willPopUp: index === 0,
-              highlightElement: true,
-              stepAmount: 4,
-            })
-          );
-
-          return HttpResponse.json(tutorials);
+          return HttpResponse.json(highlightElementTutorials);
         }),
       ],
     },
+  },
+  play: async ({ canvas }) => {
+    const highlightTutorial = highlightElementTutorials[0];
+
+    await expect(
+      await canvas.findByText(highlightTutorial.name)
+    ).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole('button', { name: /start tour/i }));
   },
 };
 

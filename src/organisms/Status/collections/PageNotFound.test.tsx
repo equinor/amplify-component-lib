@@ -1,34 +1,18 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-
 import { PageNotFound } from './PageNotFound';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderTwoRoutes,
+  renderWithRouter,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
-test('Renders the title and description', () => {
-  render(<PageNotFound />, {
-    wrapper: ({ children }) => (
-      <MemoryRouter initialEntries={['/home', '/other']}>
-        {children}
-      </MemoryRouter>
-    ),
-  });
+test('Renders the title and description', async () => {
+  await renderWithRouter(<PageNotFound />);
   expect(screen.getByText(/page not found/i)).toBeInTheDocument();
 });
 
 test('Calls navigate -1 as expected when clicking button', async () => {
-  render(
-    <Routes>
-      <Route path="other" element={<PageNotFound />} />
-      <Route path="home" element={<p>home</p>} />
-    </Routes>,
-    {
-      wrapper: ({ children }) => (
-        <MemoryRouter initialEntries={['/home', '/other']}>
-          {children}
-        </MemoryRouter>
-      ),
-    }
-  );
-
+  await renderTwoRoutes(<PageNotFound />);
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));

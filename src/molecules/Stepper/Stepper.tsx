@@ -6,7 +6,7 @@ import { spacings } from 'src/atoms/style';
 import { SubTitle } from 'src/molecules/Stepper/SubTitle/SubTitle';
 import { useStepper } from 'src/providers/StepperProvider';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,7 +26,14 @@ const Container = styled.div<ContainerProps>`
   grid-gap: ${spacings.small};
   align-items: center;
   width: 100%;
-  ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}`}
+  ${({ $maxWidth }) => {
+    if ($maxWidth) {
+      return css`
+        max-width: ${$maxWidth};
+      `;
+    }
+    return '';
+  }}
 `;
 
 export interface StepperProps {

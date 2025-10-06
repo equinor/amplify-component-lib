@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 
@@ -9,7 +8,7 @@ import {
   TableOfContentsItemType,
   TableOfContentsProvider,
 } from 'src/providers/TableOfContentsProvider';
-import { render, screen } from 'src/tests/jsdomtest-utils';
+import { renderWithRouter, screen } from 'src/tests/jsdomtest-utils';
 
 function fakeItems(withChildren = false): TableOfContentsItemType[] {
   return new Array(faker.number.int({ min: 4, max: 16 })).fill(0).map(() => ({
@@ -52,22 +51,13 @@ describe('border and borderHorizontal  ', () => {
       disabled: index % 2 === 0,
     }));
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="border" isLink />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const link = screen.getByRole('link', { name: items[0].label });
@@ -84,22 +74,13 @@ describe('border and borderHorizontal  ', () => {
       disabled: index % 2 === 0,
     }));
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="borderHorizontal" isLink />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     for (const item of items) {
@@ -113,50 +94,32 @@ describe('border and borderHorizontal  ', () => {
       colors.text.static_icons__default.rgba
     );
   });
-  test('renders with flex-direction: column for border', () => {
+  test('renders with flex-direction: column for border', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="border" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const container = screen.getByTestId('table-of-contents-container');
     expect(container).toHaveStyle('flex-direction: column');
   });
 
-  test('renders with flex-direction: row for borderHorizontal', () => {
+  test('renders with flex-direction: row for borderHorizontal', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="borderHorizontal" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const container = screen.getByTestId('table-of-contents-container');

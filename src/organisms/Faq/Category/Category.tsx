@@ -2,9 +2,9 @@ import { FC, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { FaqCategory } from '@equinor/subsurface-app-management';
+import { useSearch } from '@tanstack/react-router';
 
 import { Question } from './Question';
-import { useSearchParameter } from 'src/atoms/hooks/useSearchParameter';
 import { spacings } from 'src/atoms/style';
 import { Status } from 'src/organisms/Status';
 
@@ -20,13 +20,17 @@ const Container = styled.div`
   }
 `;
 
-export const Category: FC<FaqCategory> = ({ categoryName, faqs }) => {
-  const [search] = useSearchParameter<string | undefined>({
-    key: 'search',
-  });
-  const [selectedTab] = useSearchParameter<string | undefined>({
-    key: 'category',
-  });
+type CategoryProps = {
+  selectedTab: string | undefined;
+} & FaqCategory;
+
+export const Category: FC<CategoryProps> = ({
+  categoryName,
+  faqs,
+  selectedTab,
+}) => {
+  const { search } = useSearch({ strict: false });
+
   const sortedFaqs = useMemo(() => {
     return faqs.toSorted((a, b) => {
       const usingA = a.orderBy ?? 0;

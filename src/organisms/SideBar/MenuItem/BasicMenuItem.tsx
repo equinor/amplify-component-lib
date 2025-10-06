@@ -1,8 +1,8 @@
 import { FC, MouseEvent, useCallback, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { Icon } from '@equinor/eds-core-react';
 import { Feature } from '@equinor/subsurface-app-management';
+import { useLocation } from '@tanstack/react-router';
 
 import { BasicSideBarMenuItem } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
@@ -67,7 +67,6 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
             $disabled={disabled}
             onClick={handleOnClick}
             tabIndex={0}
-            $open
             data-testid="sidebar-menu-item"
             replace={replace}
             {...props}

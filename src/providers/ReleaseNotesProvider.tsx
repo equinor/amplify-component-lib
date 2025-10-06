@@ -12,20 +12,14 @@ import {
   useReleaseNotesQuery,
 } from '@equinor/subsurface-app-management';
 
-import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { useLocalStorage } from 'src/atoms/hooks/useLocalStorage';
-import { environment } from 'src/atoms/utils';
 import { usingReleaseNoteDate } from 'src/organisms/ReleaseNote/ReleaseNote.utils';
-import { environmentAndAppNameToURL } from 'src/organisms/TopBar/Resources/ReleaseNotesDialog/ReleaseNotesDialog.utils';
 import { sortReleaseNotesByDate } from 'src/providers/ReleaseNotesProvider.utils';
-
-const { getEnvironmentName, getAppName } = environment;
 
 interface ReleaseNotesContextState {
   open: boolean;
   setOpen: (open: boolean) => void;
   mostRecentReleaseNote: ReleaseNote | undefined;
-  showAllReleaseNotesLink: string;
 }
 
 const ReleaseNotesContext = createContext<ReleaseNotesContextState | undefined>(
@@ -66,19 +60,6 @@ export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
 
   const mostRecentReleaseNote = data?.toSorted(sortReleaseNotesByDate).at(0);
 
-  const applicationName = getAppName(import.meta.env.VITE_NAME);
-  const environmentName = getEnvironmentName(
-    import.meta.env.VITE_ENVIRONMENT_NAME
-  );
-  const environmentNameWithoutLocalHost =
-    environmentName === EnvironmentType.LOCALHOST
-      ? EnvironmentType.DEVELOP
-      : environmentName;
-  const showAllReleaseNotesLink = environmentAndAppNameToURL(
-    environmentNameWithoutLocalHost,
-    applicationName
-  );
-
   useEffect(() => {
     if (!mostRecentReleaseNote || !popUpNewReleaseNote) return;
 
@@ -107,7 +88,6 @@ export const ReleaseNotesProvider: FC<ReleaseNotesContextProviderProps> = ({
         open,
         setOpen,
         mostRecentReleaseNote,
-        showAllReleaseNotesLink,
       }}
     >
       {children}

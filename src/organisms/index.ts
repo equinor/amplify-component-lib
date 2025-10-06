@@ -20,6 +20,7 @@ export { ReleaseNote } from './ReleaseNote/ReleaseNote';
 export type { ReleaseNoteProps } from './ReleaseNote/ReleaseNote';
 export { ToggleGroup } from './ToggleGroup';
 export { Faq } from './Faq/Faq';
+export { ReleaseNotesPage } from './ReleaseNotesPage/ReleaseNotesPage';
 
 export {
   // EDS Re-export

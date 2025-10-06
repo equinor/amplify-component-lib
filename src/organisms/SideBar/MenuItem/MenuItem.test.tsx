@@ -1,12 +1,19 @@
-import { MouseEventHandler, ReactNode } from 'react';
-import { Outlet } from 'react-router';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { act, MouseEventHandler, ReactNode } from 'react';
 
 import { home, shopping_basket } from '@equinor/eds-icons';
 import { FeatureToggleProvider } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { RenderOptions } from '@testing-library/react';
 
 import { SideBarMenuItem } from 'src/atoms';
 import {
@@ -29,29 +36,35 @@ function fakeProps(selected = false): MenuItemProps {
     onClick: vi.fn() as MenuClickHandler,
   };
 }
+const renderWithSidebarWrapper = (
+  children: ReactNode,
+  options?: RenderOptions
+) => {
+  const rootRoute = createRootRoute({
+    component: () => (
+      <SideBarProvider>
+        {children}
+        <Outlet />
+      </SideBarProvider>
+    ),
+  });
 
-const wrapper = ({ children }: { children: ReactNode }) => {
-  return (
-    <SideBarProvider>
-      <MemoryRouter initialEntries={['/page1']}>
-        <Routes>
-          <Route
-            element={
-              <div>
-                {children}
-                <Outlet />
-              </div>
-            }
-          >
-            <Route path="/page1" element={<p>page 1</p>} />
-            <Route path="/page2" element={<p>page 2</p>} />
-            <Route path="/cat" element={<p>cat</p>} />
-            <Route path="/dog" element={<p>dog</p>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>
-    </SideBarProvider>
+  const pages = ['/page1', '/page2', '/cat', '/dog'].map((path) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      component: () => <p>{path.slice(1)}</p>,
+    })
   );
+
+  rootRoute.addChildren(pages);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries: ['/page1'] }),
+    routeTree: rootRoute,
+  });
+
+  return act(() => render(<RouterProvider router={router} />, options));
 };
 
 const featureTestWrapper = ({ children }: { children: ReactNode }) => {
@@ -61,16 +74,7 @@ const featureTestWrapper = ({ children }: { children: ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <FeatureToggleProvider>
-          <LoadingProvider>
-            <SideBarProvider>
-              <MemoryRouter initialEntries={['/']}>
-                <Routes>
-                  <Route path="/" element={children} />
-                  <Route path="/page1" element={children} />
-                </Routes>
-              </MemoryRouter>
-            </SideBarProvider>
-          </LoadingProvider>
+          <LoadingProvider>{children}</LoadingProvider>
         </FeatureToggleProvider>
       </AuthProvider>
     </QueryClientProvider>
@@ -79,34 +83,38 @@ const featureTestWrapper = ({ children }: { children: ReactNode }) => {
 
 test('should navigate if replace is set to true and url is a partial match', async () => {
   const props = fakeProps();
-  render(<MenuItem {...props} replace />, {
-    wrapper: wrapper,
-  });
+  await renderWithSidebarWrapper(<MenuItem {...props} replace />);
   const user = userEvent.setup();
 
-  expect(screen.getByText(/page 1/i)).toBeInTheDocument();
+  expect(screen.getByText('page1')).toBeInTheDocument();
 
   await user.click(screen.getByTestId('sidebar-menu-item'));
 
-  expect(screen.getByText(/page 2/i)).toBeInTheDocument();
+  expect(screen.getByText('page2')).toBeInTheDocument();
   expect(props.onClick).toHaveBeenCalledOnce();
 });
 
-test('should hide if featureUuid is not in my features', () => {
+test('should hide if featureUuid is not in my features', async () => {
   const props = fakeProps();
   const someRandomUuid = faker.string.uuid();
-  render(<MenuItem {...props} featureUuid={someRandomUuid} />, {
-    wrapper: featureTestWrapper,
-  });
+  await renderWithSidebarWrapper(
+    <MenuItem {...props} featureUuid={someRandomUuid} />,
+    {
+      wrapper: featureTestWrapper,
+    }
+  );
 
   expect(screen.queryByTestId('sidebar-menu-item')).not.toBeInTheDocument();
 });
 
 test('should show if featureUuid is in my features', async () => {
   const props = fakeProps();
-  render(<MenuItem {...props} featureUuid={FAKE_FEATURE_TOGGLES[0].uuid} />, {
-    wrapper: featureTestWrapper,
-  });
+  await renderWithSidebarWrapper(
+    <MenuItem {...props} featureUuid={FAKE_FEATURE_TOGGLES[0].uuid} />,
+    {
+      wrapper: featureTestWrapper,
+    }
+  );
   await waitForElementToBeRemoved(() => screen.getByRole('progressbar'), {
     timeout: 5000,
   });
@@ -125,9 +133,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
   describe('Default', () => {
     test('Should show tooltip when hovering', async () => {
       const props = fakeProps();
-      render(<MenuItem {...props} />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
       const user = userEvent.setup();
       const item = screen.getByTestId('sidebar-menu-item');
 
@@ -139,9 +145,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
 
     test('Should be able to Click', async () => {
       const props = fakeProps();
-      render(<MenuItem {...props} />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
       const item = screen.getByTestId('sidebar-menu-item');
 
       const user = userEvent.setup();
@@ -152,9 +156,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
 
     test('Should be able to Tab + Enter', async () => {
       const props = fakeProps();
-      render(<MenuItem {...props} />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
       const item = screen.getByTestId('sidebar-menu-item');
 
       const user = userEvent.setup();
@@ -171,9 +173,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
   describe('Selected', () => {
     test('Click should do nothing', async () => {
       const props = fakeProps(true);
-      render(<MenuItem {...props} />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
       const item = screen.getByTestId('sidebar-menu-item');
 
       const user = userEvent.setup();
@@ -184,9 +184,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
 
     test('Tab + Enter should do nothing', async () => {
       const props = fakeProps(true);
-      render(<MenuItem {...props} />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
       const item = screen.getByTestId('sidebar-menu-item');
 
       const user = userEvent.setup();
@@ -203,9 +201,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
   describe('Disabled', () => {
     test('Click should do nothing', async () => {
       const props = fakeProps();
-      render(<MenuItem {...props} disabled />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} disabled />);
       const item = screen.getByTestId('sidebar-menu-item');
 
       const user = userEvent.setup();
@@ -216,9 +212,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
 
     test('Tab + Enter should do nothing', async () => {
       const props = fakeProps();
-      render(<MenuItem {...props} disabled />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} disabled />);
       const item = screen.getByTestId('sidebar-menu-item');
 
       const user = userEvent.setup();
@@ -249,9 +243,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
         ],
       };
 
-      render(<MenuItem {...props} />, {
-        wrapper: wrapper,
-      });
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
 
       const user = userEvent.setup();
 

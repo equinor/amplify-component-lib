@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
 
 import { faker } from '@faker-js/faker';
 
@@ -8,7 +7,11 @@ import {
   TableOfContentsItemType,
   TableOfContentsProvider,
 } from 'src/providers/TableOfContentsProvider';
-import { render, screen, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderWithRouter,
+  screen,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 function fakeItems(withChildren = false): TableOfContentsItemType[] {
   return new Array(faker.number.int({ min: 4, max: 16 })).fill(0).map(() => ({
@@ -48,22 +51,13 @@ describe('button variant', () => {
   test('OnClick runs as expected', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const user = userEvent.setup();
@@ -81,27 +75,18 @@ describe('button variant', () => {
     expect(section.scrollIntoView).toHaveBeenCalled();
   });
 
-  test('Shows count when it is set', () => {
+  test('Shows count when it is set', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider
+        items={items.map((item, index) => ({ ...item, count: index }))}
+      >
         <TableOfContents />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider
-              items={items.map((item, index) => ({ ...item, count: index }))}
-            >
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     for (const [index, item] of items.entries()) {
@@ -115,11 +100,11 @@ describe('button variant', () => {
     }
   });
 
-  test('Hides children when onlyShowSelectedChildren = true', () => {
+  test('Hides children when onlyShowSelectedChildren = true', async () => {
     const items = fakeItems(true);
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents onlyShowSelectedChildren />
         {items.map((item) => (
           <Section key={item.value} {...item}>
@@ -130,16 +115,7 @@ describe('button variant', () => {
             ))}
           </Section>
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     for (const child of items[0].children ?? []) {
@@ -159,22 +135,13 @@ describe('button variant', () => {
       disabled: index === 1,
     }));
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents isLink={false} />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     for (const item of items) {
@@ -191,22 +158,13 @@ describe('border and borderHorizontal  ', () => {
   test('OnClick runs as expected with border variant', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="border" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const user = userEvent.setup();
@@ -224,27 +182,18 @@ describe('border and borderHorizontal  ', () => {
     expect(section.scrollIntoView).toHaveBeenCalled();
   });
 
-  test('Shows count when it is set', () => {
+  test('Shows count when it is set', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider
+        items={items.map((item, index) => ({ ...item, count: index }))}
+      >
         <TableOfContents />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider
-              items={items.map((item, index) => ({ ...item, count: index }))}
-            >
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     for (const [index, item] of items.entries()) {
@@ -258,27 +207,18 @@ describe('border and borderHorizontal  ', () => {
     }
   });
 
-  test('Shows count when it is set for links', () => {
+  test('Shows count when it is set for links', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider
+        items={items.map((item, index) => ({ ...item, count: index }))}
+      >
         <TableOfContents isLink />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider
-              items={items.map((item, index) => ({ ...item, count: index }))}
-            >
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     for (const [index, item] of items.entries()) {
@@ -292,11 +232,11 @@ describe('border and borderHorizontal  ', () => {
     }
   });
 
-  test('Hides children when onlyShowSelectedChildren = true', () => {
+  test('Hides children when onlyShowSelectedChildren = true', async () => {
     const items = fakeItems(true);
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents onlyShowSelectedChildren variant="border" />
         {items.map((item) => (
           <Section key={item.value} {...item}>
@@ -307,16 +247,7 @@ describe('border and borderHorizontal  ', () => {
             ))}
           </Section>
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     for (const child of items[0].children ?? []) {
@@ -336,23 +267,13 @@ describe('border and borderHorizontal  ', () => {
       disabled: index % 2 === 0,
     }));
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="border" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {' '}
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const user = userEvent.setup();
@@ -379,22 +300,13 @@ describe('border and borderHorizontal  ', () => {
       disabled: index % 2 === 0,
     }));
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="border" isLink />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const user = userEvent.setup();
@@ -418,22 +330,13 @@ describe('border and borderHorizontal  ', () => {
       disabled: index % 2 === 0,
     }));
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="borderHorizontal" isLink />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const user = userEvent.setup();
@@ -451,26 +354,16 @@ describe('border and borderHorizontal  ', () => {
     expect(section.scrollIntoView).not.toHaveBeenCalled();
   });
 
-  test('activeItem in border variant', () => {
+  test('activeItem in border variant', async () => {
     const items = fakeItems();
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents variant="border" />
         {items.map((item) => (
           <Section key={item.value} label={item.label} value={item.value} />
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {' '}
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const wrapper = screen.getByTestId(
@@ -487,11 +380,11 @@ describe('border and borderHorizontal  ', () => {
     expect(otherWrapper).toHaveAttribute('aria-selected', 'false');
   });
 
-  test('activeItem in border variant with children', () => {
+  test('activeItem in border variant with children', async () => {
     const items = fakeItems(true);
 
-    render(
-      <div>
+    await renderWithRouter(
+      <TableOfContentsProvider items={items}>
         <TableOfContents onlyShowSelectedChildren variant="border" />
         {items.map((item) => (
           <Section key={item.value} {...item}>
@@ -502,16 +395,7 @@ describe('border and borderHorizontal  ', () => {
             ))}
           </Section>
         ))}
-      </div>,
-      {
-        wrapper: (props: { children: ReactNode }) => (
-          <MemoryRouter>
-            <TableOfContentsProvider items={items}>
-              {props.children}
-            </TableOfContentsProvider>
-          </MemoryRouter>
-        ),
-      }
+      </TableOfContentsProvider>
     );
 
     const wrapper = screen.getByRole('button', {

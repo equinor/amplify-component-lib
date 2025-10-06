@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom';
-
 import { Button } from '@equinor/eds-core-react';
 import {
   CircularProgress as EDSCircularProgress,
   TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
+import { Link } from '@tanstack/react-router';
 
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { colors, spacings } from 'src/atoms/style';

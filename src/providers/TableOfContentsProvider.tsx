@@ -9,7 +9,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+
+import { useLocation, useNavigate } from '@tanstack/react-router';
 
 import { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
@@ -60,7 +61,6 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   const { hash } = useLocation();
   const [selected, setSelected] = useState<string | undefined>(items[0]?.value);
   const [elements, setElements] = useState<(Element | null)[]>([]);
-  const [shouldInstantlyJump, setShouldInstantlyJump] = useState(hash !== '');
   const initHashStateRef = useRef(false);
 
   const values: string[] = useMemo(
@@ -102,13 +102,23 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
       const selectedIndex = values.findIndex(
         (itemValue) => itemValue === value
       );
+
+      if (hashNavigation) {
+        setSelected(values[selectedIndex]);
+        navigate({
+          to: '.',
+          hash: `#${values[selectedIndex]}`,
+          hashScrollIntoView: false,
+          replace: true,
+        });
+
+        return;
+      }
+
       const element = elements[selectedIndex];
 
       if (element) {
-        const behavior =
-          options?.shouldInstantlyJumpOnMount && shouldInstantlyJump
-            ? 'instant'
-            : (options?.behavior ?? 'smooth');
+        const behavior = options?.behavior ?? 'smooth';
         element.scrollIntoView({
           block: 'start',
           behavior,
@@ -123,10 +133,6 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
             same += 1;
             if (same > 1) {
               setSelected(values[selectedIndex]);
-              if (hashNavigation) {
-                navigate(`#${values[selectedIndex]}`, { replace: true });
-                setShouldInstantlyJump(false);
-              }
               isScrollingTo.current = -1;
               return;
             }
@@ -140,8 +146,30 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         requestAnimationFrame(checkScrollDone);
       }
     },
-    [elements, hashNavigation, navigate, shouldInstantlyJump, values]
+    [elements, hashNavigation, navigate, values]
   );
+
+  useEffect(() => {
+    if (hash && !initHashStateRef.current) {
+      initHashStateRef.current = true;
+
+      const targetValue = decodeURIComponent(hash.replace('#', ''));
+      if (!targetValue.length || !values.includes(targetValue)) {
+        return;
+      }
+
+      setSelected(targetValue);
+      navigate({
+        to: '.',
+        hash: `#${targetValue}`,
+        hashScrollIntoView: {
+          behavior: 'instant',
+          block: 'start',
+        },
+        replace: true,
+      });
+    }
+  }, [hash, navigate, values]);
 
   // Handle change of selected when scrolling down the page
   /* v8 ignore start */
@@ -149,7 +177,8 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     if (
       visible.length === 0 ||
       visible.length !== values.length ||
-      isScrollingTo.current !== -1
+      isScrollingTo.current !== -1 ||
+      !initHashStateRef.current
     )
       return;
 
@@ -163,27 +192,17 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     if (newSelectedIndex === -1 || values.at(newSelectedIndex) === undefined)
       return;
 
-    const targetValue = hash.replace('#', '');
-    if (
-      !initHashStateRef.current &&
-      targetValue.length &&
-      values.includes(targetValue)
-    ) {
-      handleSetSelected(targetValue, {
-        behavior: 'instant',
-        shouldInstantlyJumpOnMount: true,
-      });
-      initHashStateRef.current = true;
-      return;
-    }
-
     setSelected(values[newSelectedIndex]);
     if (hashNavigation) {
-      navigate(`#${values[newSelectedIndex]}`, { replace: true });
+      navigate({
+        to: '.',
+        hash: `#${values[newSelectedIndex]}`,
+        hashScrollIntoView: false,
+        replace: true,
+      });
     }
     // this effect handles scroll navigation and should not be triggered on hash change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hashNavigation, navigate, values, visible]);
+  }, [handleSetSelected, hashNavigation, navigate, values, visible]);
   /* v8 ignore end */
 
   return (

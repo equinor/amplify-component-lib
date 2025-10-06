@@ -1,15 +1,92 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-
-import { car, dashboard, favorite_outlined, history } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import {
+  add,
+  car,
+  dashboard,
+  favorite_outlined,
+  history,
+} from '@equinor/eds-icons';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SideBar } from '.';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
+import { expect } from 'storybook/test';
+
+const menuItems: SideBarMenuItem[] = [
+  {
+    name: 'Dashboard',
+    icon: dashboard,
+    link: 'dashboard',
+    onClick: () => console.log('going to dashboard...'),
+  },
+  {
+    name: 'History',
+    icon: history,
+    link: 'history',
+    onClick: () => console.log('going to history...'),
+  },
+  {
+    name: 'Favourites',
+    icon: favorite_outlined,
+    items: [
+      {
+        name: 'My favourites',
+        link: 'my-favourites',
+      },
+      {
+        name: 'Team favourites',
+        link: 'team-favourites',
+      },
+    ],
+  },
+  {
+    name: 'Cars',
+    icon: car,
+    link: 'cars',
+    onClick: () => console.log('going to favourites...'),
+  },
+];
+
+const StoryComponent = (args: {
+  hasCreateButton: boolean;
+  createLabel: string;
+  createActive?: boolean;
+  hasBottomItem: boolean;
+  disabledItem: 'none' | 'dashboard' | 'history' | 'favourites';
+}) => {
+  return (
+    <SideBarProvider>
+      <div style={{ display: 'flex', height: '100%' }}>
+        <SideBar
+          onCreate={
+            args.hasCreateButton ? () => console.log('Created 🖋') : undefined
+          }
+          bottomItem={
+            args.hasBottomItem ? (
+              <SideBar.Item icon={car} name="Cars" link="/" />
+            ) : undefined
+          }
+          {...args}
+        >
+          {menuItems.map((m) => (
+            <SideBar.Item
+              key={m.name}
+              disabled={
+                args.disabledItem !== 'none' && m.name === args.disabledItem
+              }
+              {...m}
+            />
+          ))}
+        </SideBar>
+      </div>
+    </SideBarProvider>
+  );
+};
+
 const meta: Meta = {
   title: 'Organisms/SideBar',
-  component: SideBar,
+  component: StoryComponent,
   argTypes: {
     hasCreateButton: { control: 'boolean' },
     hasBottomItem: { control: 'boolean' },
@@ -28,88 +105,53 @@ const meta: Meta = {
   },
   parameters: {
     layout: 'fullscreen',
+    router: {
+      initialEntries: ['/'],
+      routes: ['$'],
+    },
   },
 };
 
 export default meta;
 
-export const Primary: StoryFn = (args) => {
-  const menuItems: SideBarMenuItem[] = [
-    {
-      name: 'Dashboard',
-      icon: dashboard,
-      link: 'dashboard',
-      onClick: () => console.log('going to dashboard...'),
-    },
-    {
-      name: 'History',
-      icon: history,
-      link: 'history',
-      onClick: () => console.log('going to history...'),
-    },
-    {
-      name: 'Favourites',
-      icon: favorite_outlined,
-      items: [
-        {
-          name: 'My favourites',
-          link: 'my-favourites',
-        },
-        {
-          name: 'Team favourites',
-          link: 'team-favourites',
-        },
-      ],
-    },
-    {
-      name: 'Cars',
-      icon: car,
-      link: 'cars',
-      onClick: () => console.log('going to favourites...'),
-    },
-  ];
+type Story = StoryObj<typeof StoryComponent>;
 
-  return (
-    <MemoryRouter initialEntries={['/']}>
-      <Routes>
-        <Route
-          path="*"
-          element={
-            <SideBarProvider>
-              <div style={{ display: 'flex', height: '100%' }}>
-                <SideBar
-                  createLabel={
-                    (args.hasCreateButton as string) &&
-                    (args.createLabel as string)
-                  }
-                  onCreate={
-                    args.hasCreateButton
-                      ? () => console.log('Created 🖋')
-                      : undefined
-                  }
-                  bottomItem={
-                    args.hasBottomItem ? (
-                      <SideBar.Item icon={car} name="Cars" link="/" />
-                    ) : undefined
-                  }
-                  {...args}
-                >
-                  {menuItems.map((m) => (
-                    <SideBar.Item
-                      key={m.name}
-                      disabled={
-                        args.disabledItem !== 'none' &&
-                        m.name === args.disabledItem
-                      }
-                      {...m}
-                    />
-                  ))}
-                </SideBar>
-              </div>
-            </SideBarProvider>
-          }
-        />
-      </Routes>
-    </MemoryRouter>
-  );
+export const Primary: Story = {
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({
+        isOpen: false,
+      })
+    );
+  },
+  args: {
+    hasCreateButton: true,
+    createLabel: 'Create story',
+    disabledItem: 'favourites',
+  },
+  play: async ({ canvas }) => {
+    const createIcon = canvas.getAllByTestId('eds-icon-path')[0]; // First icon is create icon
+    await expect(createIcon).toHaveAttribute('d', add.svgPathData);
+  },
+};
+
+export const Open: Story = {
+  args: {
+    hasCreateButton: true,
+    createLabel: 'Create story',
+    disabledItem: 'favourites',
+  },
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({
+        isOpen: true,
+      })
+    );
+  },
+  play: async ({ canvas }) => {
+    const createIcon = canvas.getAllByTestId('eds-icon-path')[0]; // First icon is create icon
+    await expect(createIcon).toHaveAttribute('d', add.svgPathData);
+  },
 };

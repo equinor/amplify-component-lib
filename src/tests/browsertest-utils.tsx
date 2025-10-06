@@ -1,7 +1,14 @@
-import { FC, ReactElement, ReactNode } from 'react';
+import { act, FC, ReactElement, ReactNode } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { render, RenderOptions } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import {
@@ -17,7 +24,7 @@ import { worker } from 'src/tests/setupBrowserTests';
 import { SetupWorker } from 'msw/browser';
 import { test as testBase } from 'vitest';
 
-const Providers: FC<{ children: ReactNode }> = ({ children }) => {
+export const Providers: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient();
   return (
     <>
@@ -41,6 +48,67 @@ export function fakeSelectItem() {
     label: faker.string.uuid(),
     value: faker.string.uuid(),
   };
+}
+
+const renderWithRouter = (
+  ui: ReactElement,
+  routerArgs?: {
+    initialEntries: string[];
+    routes: string[];
+    initialIndex?: number;
+  },
+  options?: RenderOptions
+) => {
+  const {
+    initialEntries = ['/'],
+    initialIndex,
+    routes = ['/'],
+  } = routerArgs ?? {};
+
+  const rootRoute = createRootRoute();
+
+  const children = routes.map((path: string) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      component: () => ui,
+    })
+  );
+
+  rootRoute.addChildren(children);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries, initialIndex }),
+    routeTree: rootRoute,
+  });
+
+  return act(() => render(<RouterProvider router={router} />, options));
+};
+
+export async function renderTwoRoutes(element: ReactNode) {
+  const rootRoute = createRootRoute({});
+
+  const pages = [
+    createRoute({
+      path: '/home',
+      getParentRoute: () => rootRoute,
+      component: () => <p>home</p>,
+    }),
+    createRoute({
+      path: '/other',
+      getParentRoute: () => rootRoute,
+      component: () => element,
+    }),
+  ];
+
+  rootRoute.addChildren(pages);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries: ['/home', '/other'] }),
+    routeTree: rootRoute,
+  });
+
+  return act(() => render(<RouterProvider router={router} />));
 }
 
 export function fakeSelectItems(count = 10) {
@@ -81,4 +149,10 @@ export const test = testBase.extend<CustomFixtures>({
 });
 
 // override render method
-export { renderWithProviders, userEvent, vitestBrowserUserEvent, page };
+export {
+  renderWithProviders,
+  renderWithRouter,
+  userEvent,
+  vitestBrowserUserEvent,
+  page,
+};

@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
@@ -30,12 +30,54 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     ...options,
   });
+  const [isDraggingOverWindow, setIsDraggingOverWindow] = useState(false);
 
-  // Not able to test dragging of files
   /* v8 ignore start */
   useEffect(() => {
-    const handleDragEnter = () => {
-      if (!window.document.getElementById(FILE_UPLOAD_SCRIM_ID)) {
+    const handleDragOver = (event: DragEvent) => {
+      // Prevent default to allow dropping
+      event.preventDefault();
+      if (!isDraggingOverWindow) {
+        setIsDraggingOverWindow(true);
+      }
+    };
+
+    const handleDragLeave = (event: DragEvent) => {
+      // Check if the drag is truly leaving the window, not just an element within it
+      if (
+        event.clientX === 0 ||
+        event.clientY === 0 ||
+        event.clientX === window.innerWidth ||
+        event.clientY === window.innerHeight
+      ) {
+        setIsDraggingOverWindow(false);
+      }
+    };
+
+    const handleDrop = () => {
+      setIsDraggingOverWindow(false);
+    };
+
+    const handleDragEnd = () => {
+      setIsDraggingOverWindow(false);
+    };
+
+    window.addEventListener('dragover', handleDragOver);
+    window.addEventListener('dragleave', handleDragLeave);
+    window.addEventListener('drop', handleDrop);
+    window.addEventListener('dragend', handleDragEnd); // Important for when drag ends without a drop
+
+    return () => {
+      window.removeEventListener('dragover', handleDragOver);
+      window.removeEventListener('dragleave', handleDragLeave);
+      window.removeEventListener('drop', handleDrop);
+      window.removeEventListener('dragend', handleDragEnd);
+    };
+  }, [isDraggingOverWindow]);
+
+  useEffect(() => {
+    if (isDraggingOverWindow) {
+      if (!document.getElementById(FILE_UPLOAD_SCRIM_ID)) {
         const scrim = document.createElement('div');
         scrim.id = FILE_UPLOAD_SCRIM_ID;
         scrim.style.position = 'fixed';
@@ -48,25 +90,13 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
         scrim.style.pointerEvents = 'none';
         window.document.body.appendChild(scrim);
       }
-    };
-
-    const handleDragEnd = () => {
-      const scrim = window.document.getElementById(FILE_UPLOAD_SCRIM_ID);
+    } else {
+      const scrim = document.getElementById(FILE_UPLOAD_SCRIM_ID);
       if (scrim !== null) {
         scrim.remove();
       }
-    };
-
-    window.document.addEventListener('dragover', handleDragEnter);
-    window.document.addEventListener('dragend', handleDragEnd);
-    window.document.addEventListener('mouseleave', () => handleDragEnd);
-
-    return () => {
-      window.document.removeEventListener('dragover', handleDragEnter);
-      window.document.removeEventListener('dragend', handleDragEnd);
-      window.document.removeEventListener('mouseleave', handleDragEnd);
-    };
-  }, []);
+    }
+  }, [isDraggingOverWindow]);
   /* v8 ignore end */
 
   const filetypes = useMemo((): string | undefined => {

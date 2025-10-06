@@ -9,8 +9,6 @@ export { Button } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
 export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
-export { ContentMenu } from './ContentMenu/ContentMenu';
-export type { ContentMenuProps } from './ContentMenu/ContentMenu';
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
@@ -66,16 +64,6 @@ export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
 export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
 export type * from './RichTextEditor/RichTextEditor.types';
 export { Search } from './Search/Search';
-export { Sieve } from './Sieve/Sieve';
-export type {
-  SieveProps,
-  SieveValue,
-  FilterValues,
-  SieveOption,
-} from './Sieve/Sieve.types';
-export type { SieveFilterGroup } from './Sieve/Filter';
-export { SingleFilterMenu } from './SingleFilterMenu/SingleFilterMenu';
-export type { SingleFilterMenuProps } from './SingleFilterMenu/SingleFilterMenu';
 export {
   SkeletonBase,
   skeletonBaseloading,
@@ -100,6 +88,8 @@ export type {
   GroupedSingleSelectProps,
 } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
+export { TextField } from './TextField/TextField';
+export type { TextFieldProps } from './TextField/TextField';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';
 export type { FeedBackIconProps } from './FeedBackIcon/FeedBackIcon';
 export { ListItem } from './ListItem/ListItem';
@@ -119,7 +109,6 @@ export {
   Divider,
   Dialog as EDSDialog,
   Menu,
-  TextField,
   Typography,
   Icon,
   CircularProgress,
@@ -139,7 +128,6 @@ export type {
   DividerProps,
   MenuProps,
   SearchProps,
-  TextFieldProps,
   TypographyProps,
   IconProps,
   CircularProgressProps,

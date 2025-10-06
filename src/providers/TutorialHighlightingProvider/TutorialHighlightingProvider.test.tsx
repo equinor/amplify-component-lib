@@ -1,5 +1,4 @@
 import { act, Fragment, useRef } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { Button } from '@equinor/eds-core-react';
 import { faker } from '@faker-js/faker';
@@ -11,7 +10,7 @@ import { environment, highlightTutorialElementID } from 'src/atoms';
 import { TutorialHighlightingProvider } from 'src/providers';
 import { useTutorialHighlighting } from 'src/providers/TutorialHighlightingProvider/TutorialHighlightingProvider';
 import {
-  render,
+  renderWithRouter,
   screen,
   test,
   userEvent,
@@ -72,60 +71,42 @@ const TestComponent = ({
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <RouterProvider
-      router={createMemoryRouter(
-        [
-          {
-            path: '/tutorial',
-            element: (
-              <QueryClientProvider client={queryClient}>
-                <div
-                  ref={contentRef}
-                  style={{
-                    maxWidth: '100vw',
-                    height: '100vh',
-                    overflowX: 'hidden',
-                  }}
-                  id="content"
-                >
-                  <TutorialHighlightingProvider
-                    contentRef={contentRef}
-                    customStepContent={
-                      withCustomContent ? CUSTOM_CONTENT : undefined
+    <QueryClientProvider client={queryClient}>
+      <div
+        ref={contentRef}
+        style={{
+          maxWidth: '100vw',
+          height: '100vh',
+          overflowX: 'hidden',
+        }}
+        id="content"
+      >
+        <TutorialHighlightingProvider
+          contentRef={contentRef}
+          customStepContent={withCustomContent ? CUSTOM_CONTENT : undefined}
+        >
+          {renderTutorials.map((tutorial) => (
+            <Fragment key={tutorial.id}>
+              <TutorialWrapper>
+                {CELLS.map((cell, index) => (
+                  <Button
+                    key={index}
+                    id={
+                      setTutorialIds || (!setTutorialIds && index === 0)
+                        ? highlightTutorialElementID(tutorial.id, index)
+                        : undefined
                     }
+                    variant="outlined"
                   >
-                    {renderTutorials.map((tutorial) => (
-                      <Fragment key={tutorial.id}>
-                        <TutorialWrapper>
-                          {CELLS.map((cell, index) => (
-                            <Button
-                              key={index}
-                              id={
-                                setTutorialIds ||
-                                (!setTutorialIds && index === 0)
-                                  ? highlightTutorialElementID(
-                                      tutorial.id,
-                                      index
-                                    )
-                                  : undefined
-                              }
-                              variant="outlined"
-                            >
-                              {cell}
-                            </Button>
-                          ))}
-                        </TutorialWrapper>
-                      </Fragment>
-                    ))}
-                  </TutorialHighlightingProvider>
-                </div>
-              </QueryClientProvider>
-            ),
-          },
-        ],
-        { initialEntries: ['/tutorial'] }
-      )}
-    />
+                    {cell}
+                  </Button>
+                ))}
+              </TutorialWrapper>
+            </Fragment>
+          ))}
+        </TutorialHighlightingProvider>
+      </div>
+    </QueryClientProvider>
   );
 };
 
@@ -134,7 +115,10 @@ beforeEach(() => {
 });
 
 test('Shows unseen tutorial as expected', async () => {
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
 
   const highlightTutorial = FAKE_TUTORIALS[0];
 
@@ -142,7 +126,10 @@ test('Shows unseen tutorial as expected', async () => {
 });
 
 test('Able to skip tutorial as expected', async () => {
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   const highlightTutorial = FAKE_TUTORIALS[0];
@@ -161,7 +148,10 @@ test('Able to skip tutorial as expected', async () => {
 test('Able to click through tutorial as expected', async () => {
   const highlightTutorial = FAKE_TUTORIALS[0];
 
-  render(<TestComponent renderTutorials={[highlightTutorial]} />);
+  await renderWithRouter(
+    <TestComponent renderTutorials={[highlightTutorial]} />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
   const user = userEvent.setup();
 
   expect(
@@ -207,7 +197,10 @@ test('Highlighted tutorial shows as centered if it doesnt find the element', asy
       return HttpResponse.json([highlightTutorial]);
     })
   );
-  render(<TestComponent setTutorialIds={false} />);
+  await renderWithRouter(<TestComponent setTutorialIds={false} />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   expect(
@@ -243,7 +236,10 @@ test('Resizing works', async ({ worker }) => {
       return HttpResponse.json([highlightTutorial]);
     })
   );
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const randomWidth = faker.number.int({ min: 100, max: 1920 });
   const randomHeight = faker.number.int({ min: 100, max: 1080 });
 
@@ -276,7 +272,10 @@ test('Able to click through tutorial with centered steps', async ({
     })
   );
 
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   await waitFor(
@@ -318,7 +317,10 @@ test('Highlighted tutorial shows first', async ({ worker }) => {
 
   const highlightTutorial = tutorials[0];
 
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   await waitFor(
@@ -369,7 +371,10 @@ test('Able to click through tutorial with mixed center/highlight steps', async (
     })
   );
 
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   await waitFor(
@@ -437,7 +442,10 @@ test('Throws error if step is custom but custom content is not found', async ({
 
   const spy = vi.spyOn(console, 'error');
 
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   const highlightTutorial = FAKE_TUTORIALS[0];
@@ -490,7 +498,10 @@ test('Custom content works as expected', async ({ worker }) => {
     })
   );
 
-  render(<TestComponent withCustomContent />);
+  await renderWithRouter(<TestComponent withCustomContent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   await waitFor(
@@ -539,7 +550,10 @@ test('Image content works as expected', async ({ worker }) => {
     })
   );
 
-  render(<TestComponent />);
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
   const user = userEvent.setup();
 
   await waitFor(

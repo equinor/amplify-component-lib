@@ -1,27 +1,24 @@
-import { MemoryRouter } from 'react-router-dom';
-
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { colors, spacings } from 'src/atoms';
 import { TopBar } from 'src/organisms';
-import { render, screen } from 'src/tests/jsdomtest-utils';
+import { renderWithRouter, screen } from 'src/tests/jsdomtest-utils';
 
 import { expect } from 'vitest';
 
 const { spacings: eds_spacings } = tokens;
 
-test('Renders with correct styles', () => {
+test('Renders with correct styles', async () => {
   const appName = 'Car-go 🏎';
   const button1 = 'button1';
 
-  render(
+  await renderWithRouter(
     <TopBar applicationIcon="car" applicationName={appName}>
       <TopBar.Actions>
         <Button>{button1}</Button>
       </TopBar.Actions>
-    </TopBar>,
-    { wrapper: MemoryRouter }
+    </TopBar>
   );
 
   const topBar = screen.getByRole('banner');

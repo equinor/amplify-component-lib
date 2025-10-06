@@ -1,42 +1,22 @@
-import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-
 import {
   MyTutorialDto,
   TutorialProvider,
 } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitFor } from '@testing-library/react';
 
 import { Tutorials } from './Tutorials';
 import { environment } from 'src/atoms';
-import { render, screen, test, userEvent } from 'src/tests/browsertest-utils';
+import {
+  Providers,
+  renderWithRouter,
+  screen,
+  test,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 import { fakeTutorial } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
-
-function Wrapper({ children }: { children: ReactNode }) {
-  const queryClient = new QueryClient();
-
-  return (
-    <RouterProvider
-      router={createMemoryRouter(
-        [
-          {
-            path: '/tutorial',
-            element: (
-              <QueryClientProvider client={queryClient}>
-                <TutorialProvider>{children}</TutorialProvider>
-              </QueryClientProvider>
-            ),
-          },
-        ],
-        { initialEntries: ['/tutorial'] }
-      )}
-    />
-  );
-}
 
 const tutorials: MyTutorialDto[] = new Array(
   faker.number.int({ min: 3, max: 8 })
@@ -62,7 +42,16 @@ test('Renders expected items when opening the tutorials menu', async ({
   worker,
 }) => {
   worker.use(tutorialHandler);
-  render(<Tutorials />, { wrapper: Wrapper });
+  await renderWithRouter(
+    <TutorialProvider>
+      <Tutorials />
+    </TutorialProvider>,
+    {
+      routes: ['/tutorial'],
+      initialEntries: ['/tutorial'],
+    },
+    { wrapper: Providers }
+  );
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
@@ -89,7 +78,16 @@ test('Hides expected tutorials when providing filter fn', async ({
 }) => {
   worker.use(tutorialHandler);
   const filterFunction = (tutorial: MyTutorialDto) => tutorial.willPopUp;
-  render(<Tutorials filterTutorials={filterFunction} />, { wrapper: Wrapper });
+  await renderWithRouter(
+    <TutorialProvider>
+      <Tutorials filterTutorials={filterFunction} />
+    </TutorialProvider>,
+    {
+      routes: ['/tutorial'],
+      initialEntries: ['/tutorial'],
+    },
+    { wrapper: Providers }
+  );
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
@@ -120,7 +118,17 @@ test('Clicking TutorialItem triggers callback, so we can navigate / do whatever 
 }) => {
   worker.use(tutorialHandler);
   const callback = vi.fn();
-  render(<Tutorials onTutorialStart={callback} />, { wrapper: Wrapper });
+
+  await renderWithRouter(
+    <TutorialProvider>
+      <Tutorials onTutorialStart={callback} />
+    </TutorialProvider>,
+    {
+      routes: ['/tutorial'],
+      initialEntries: ['/tutorial'],
+    },
+    { wrapper: Providers }
+  );
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
@@ -149,7 +157,16 @@ test('Shows "completed" if tutorial has been seen', async ({ worker }) => {
     JSON.stringify([randomTutorial.id])
   );
   const callback = vi.fn();
-  render(<Tutorials onTutorialStart={callback} />, { wrapper: Wrapper });
+  await renderWithRouter(
+    <TutorialProvider>
+      <Tutorials onTutorialStart={callback} />
+    </TutorialProvider>,
+    {
+      routes: ['/tutorial'],
+      initialEntries: ['/tutorial'],
+    },
+    { wrapper: Providers }
+  );
   const user = userEvent.setup();
 
   await user.click(screen.getByRole('button'));
@@ -167,13 +184,20 @@ test('Shows "completed" if tutorial has been seen', async ({ worker }) => {
   ).toBeInTheDocument();
 });
 
-test('Able to add html attributes to tutorial button', ({ worker }) => {
+test('Able to add html attributes to tutorial button', async ({ worker }) => {
   worker.use(tutorialHandler);
   const randomTestId = faker.animal.dog();
   const randomId = faker.animal.snake();
-  render(<Tutorials data-testid={randomTestId} id={randomId} />, {
-    wrapper: Wrapper,
-  });
+  await renderWithRouter(
+    <TutorialProvider>
+      <Tutorials data-testid={randomTestId} id={randomId} />
+    </TutorialProvider>,
+    {
+      routes: ['/tutorial'],
+      initialEntries: ['/tutorial'],
+    },
+    { wrapper: Providers }
+  );
 
   const button = screen.getByTestId(randomTestId);
   expect(button).toBeInTheDocument();

@@ -1,10 +1,12 @@
 import { ReactElement, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Settings, SettingsProps } from './Settings';
 import { colors, spacings } from 'src/atoms';
+
+import { expect, fn, userEvent } from 'storybook/test';
 
 export default {
   title: 'Organisms/TopBar/Settings',
@@ -19,6 +21,61 @@ export default {
   },
   args: { hasRightElements: true, hasColorBoxes: true, disabledItem: 'dark' },
 } as Meta;
+
+type Story = StoryObj<typeof Settings>;
+
+export const Default: Story = {
+  args: {
+    allSettings: [
+      {
+        title: 'Section Mode',
+        value: 'decimal',
+        onChange: fn(),
+        items: [
+          {
+            label: 'Fraction',
+            name: 'sectionmode-group',
+            value: 'fraction',
+          },
+          {
+            label: 'Decimal',
+            name: 'sectionmode-group',
+            value: 'decimal',
+          },
+        ],
+      },
+      {
+        title: 'Theme',
+        value: 'light',
+        onChange: fn(),
+        items: [
+          {
+            label: 'Light Mode',
+            name: 'theme-group',
+            value: 'light',
+            colorBox: '#F7F7F7',
+            disabled: true,
+          },
+          {
+            label: 'Dark Mode',
+            name: 'theme-group',
+            value: 'dark',
+            colorBox: '#243746',
+          },
+        ],
+      },
+    ],
+  },
+  play: async ({ canvas }) => {
+    const menuButton = canvas.getByTestId('show-hide-button');
+    await userEvent.click(menuButton);
+
+    await expect(await canvas.findByText(/theme/i)).toBeVisible();
+    const lightRadioButton = canvas.getByRole('radio', { name: /light mode/i });
+
+    await expect(lightRadioButton).toBeChecked();
+  },
+};
 
 export const Primary: StoryFn = (args) => {
   const [sectionMode, setSectionMode] = useState('decimal');

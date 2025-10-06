@@ -213,13 +213,11 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
 `;
 
 interface CustomMenuItemProps {
-  $paddedLeft?: boolean;
   $selected?: boolean;
 }
 
 const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   flex-grow: 1;
-  ${({ $paddedLeft }) => $paddedLeft && `margin-left: 36px`};
   padding-left: 10px;
   
   > div {

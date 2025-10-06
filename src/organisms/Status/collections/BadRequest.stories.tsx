@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router';
-
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BadRequest } from './BadRequest';
@@ -14,14 +12,16 @@ const meta: Meta<typeof BadRequest> = {
       type: 'figma',
       url: '',
     },
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
   },
   args: {},
   decorators: (Story) => (
-    <MemoryRouter initialEntries={['/']}>
-      <StatusWrapper>
-        <Story />
-      </StatusWrapper>
-    </MemoryRouter>
+    <StatusWrapper>
+      <Story />
+    </StatusWrapper>
   ),
 };
 

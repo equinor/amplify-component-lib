@@ -10,9 +10,13 @@ import { formatDate } from 'src/atoms/utils';
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
-import { FilterProps } from 'src/organisms/Filter/Filter.types';
+import {
+  FilterProps,
+  FilterWithAutoCompleteOptions,
+} from 'src/organisms/Filter/Filter.types';
 
 import { actions } from 'storybook/actions';
+import { expect, fn, userEvent } from 'storybook/test';
 
 const CAR_SIZE = [
   { value: 'sports-car', label: 'Sports car' },
@@ -164,6 +168,11 @@ const Wrapper: FC<FilterStoryProps> = (props) => {
   };
 
   const handleOnAutoComplete = (key: string, value: SelectOptionRequired) => {
+    actions('onAutoComplete').onAutoComplete(key, value);
+    if ('onAutoComplete' in props) {
+      props.onAutoComplete(key, value);
+    }
+
     switch (key) {
       case 'manufacturer':
         setManufacturer((prev) => [...prev, value]);
@@ -343,7 +352,7 @@ const meta: Meta<FilterStoryProps> = {
 };
 
 export default meta;
-type Story = StoryObj<FilterStoryProps>;
+type Story = StoryObj<typeof Wrapper>;
 
 export const Default: Story = {
   args: {
@@ -418,6 +427,36 @@ export const WithTopContent: Story = {
 export const WithAutoComplete: Story = {
   args: {
     withAutoComplete: true,
+    onAutoComplete: fn(),
     values: {},
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('searchbox'));
+    await userEvent.keyboard(faker.animal.fish());
+    await userEvent.keyboard('{Enter}');
+
+    await expect(
+      (args as FilterWithAutoCompleteOptions<string>).onAutoComplete
+    ).not.toHaveBeenCalled();
+
+    // Remove search text
+    await userEvent.keyboard('{Backspace}');
+    await userEvent.keyboard('{Backspace}');
+
+    const randomCarSize = faker.helpers.arrayElement(CAR_SIZE);
+
+    await userEvent.type(canvas.getByRole('searchbox'), randomCarSize.label);
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+
+    await expect(
+      (args as FilterWithAutoCompleteOptions<string>).onAutoComplete
+    ).toHaveBeenCalledWith(
+      'carSize',
+      expect.objectContaining({
+        value: randomCarSize.value,
+        label: randomCarSize.label,
+      })
+    );
   },
 };

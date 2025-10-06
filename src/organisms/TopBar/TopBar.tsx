@@ -15,7 +15,7 @@ import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { Field } from 'src/atoms/types/Field';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 
-type TopBarType = {
+export type TopBarBaseProps = {
   applicationIcon: string;
   applicationName: string;
   /** @deprecated - Not needed anymore, clicking header wil go to '/' by default */
@@ -33,7 +33,7 @@ type TopBarType = {
   itemNameSingular?: string; // Defaults to 'field'
 } & React.HTMLAttributes<HTMLElement>;
 
-export const TopBar = forwardRef<HTMLDivElement, TopBarType>(
+export const TopBar = forwardRef<HTMLDivElement, TopBarBaseProps>(
   (
     {
       id,

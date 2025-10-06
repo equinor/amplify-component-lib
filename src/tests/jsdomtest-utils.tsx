@@ -1,7 +1,14 @@
-import { FC, ReactElement, ReactNode, useRef } from 'react';
+import { act, FC, ReactElement, ReactNode, useRef } from 'react';
 
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -21,6 +28,41 @@ export const Providers: FC<{ children: ReactNode }> = ({ children }) => {
       </QueryClientProvider>
     </>
   );
+};
+
+const renderWithRouter = async (
+  ui: ReactElement,
+  routerArgs?: {
+    initialEntries: string[];
+    routes: string[];
+    initialIndex?: number;
+  },
+  options?: RenderOptions
+) => {
+  const {
+    initialEntries = ['/'],
+    initialIndex,
+    routes = ['/'],
+  } = routerArgs ?? {};
+
+  const rootRoute = createRootRoute();
+
+  const children = routes.map((path: string) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      component: () => ui,
+    })
+  );
+
+  rootRoute.addChildren(children);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries, initialIndex }),
+    routeTree: rootRoute,
+  });
+
+  return await act(() => render(<RouterProvider router={router} />, options));
 };
 
 const renderWithProviders = (
@@ -43,4 +85,4 @@ export function fakeSelectItems(count = 10) {
 export * from '@testing-library/react';
 
 // override render method
-export { renderWithProviders, userEvent };
+export { renderWithProviders, renderWithRouter, userEvent };

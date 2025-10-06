@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
 import { Button } from '@equinor/eds-core-react';
-import { arrow_back } from '@equinor/eds-icons';
+import { arrow_back, close } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Dialog, DialogProps } from 'src/molecules/Dialog/Dialog';
 import { Story } from 'src/storybook';
 
+import { expect, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -106,7 +107,21 @@ export default meta;
 type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    additionalInfo: undefined,
+  },
+  play: async ({ canvasElement, context }) => {
+    const { title, children } = context.args;
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
+
+    await expect(canvas.getByText(title as string)).toBeInTheDocument();
+    await expect(canvas.getByText(children as string)).toBeInTheDocument();
+    const closeIcon = canvas.getByTestId('eds-icon-path');
+    await expect(closeIcon).toBeInTheDocument();
+    await expect(closeIcon).toHaveAttribute('d', close.svgPathData);
+  },
 };
 
 export const WithBorders: Story = {
