@@ -1,19 +1,39 @@
 import React from 'react';
 
 import { dashboard, favorite_outlined, history } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { TopBar, TopBarType } from '.';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar';
 import { Template } from 'src/organisms/Template/Template';
+import { TopBarBaseProps } from 'src/organisms/TopBar/TopBar';
 import { ReleaseNotesProvider } from 'src/providers';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
+import { expect } from 'storybook/test';
+
+function StoryComponent(args: TopBarBaseProps) {
+  return (
+    <TopBar
+      onHeaderClick={() => console.log('Going to homepage 🏠')}
+      capitalize={args.capitalize}
+      applicationIcon={args.applicationIcon}
+      applicationName={args.applicationName}
+      isFetching={args.isFetching}
+      environment={args.environment}
+    >
+      <TopBar.Actions>
+        <TopBar.Account />
+      </TopBar.Actions>
+    </TopBar>
+  );
+}
+
 const meta: Meta<typeof TopBar> = {
   title: 'Organisms/TopBar/TopBar',
-  component: TopBar,
+  component: StoryComponent,
   argTypes: {
     applicationIcon: {
       control: 'select',
@@ -63,21 +83,36 @@ const meta: Meta<typeof TopBar> = {
 
 export default meta;
 
-export const Primary: StoryFn<TopBarType> = ({ ...args }) => {
-  return (
-    <TopBar
-      onHeaderClick={() => console.log('Going to homepage 🏠')}
-      capitalize={args.capitalize}
-      applicationIcon={args.applicationIcon}
-      applicationName={args.applicationName}
-      isFetching={args.isFetching}
-      environment={args.environment}
-    >
-      <TopBar.Actions>
-        <TopBar.Account />
-      </TopBar.Actions>
-    </TopBar>
-  );
+type Story = StoryObj<typeof TopBar>;
+
+export const Primary: Story = {};
+
+export const Localhost: Story = {
+  args: {
+    environment: EnvironmentType.LOCALHOST,
+  },
+  play: async ({ canvas }) => {
+    const envBadge = await canvas.findByText(/localhost/i);
+    await expect(envBadge).toBeInTheDocument();
+  },
+};
+export const Dev: Story = {
+  args: {
+    environment: EnvironmentType.DEVELOP,
+  },
+  play: async ({ canvas }) => {
+    const envBadge = await canvas.findByText(/develop/i);
+    await expect(envBadge).toBeInTheDocument();
+  },
+};
+export const Staging: Story = {
+  args: {
+    environment: EnvironmentType.STAGING,
+  },
+  play: async ({ canvas }) => {
+    const envBadge = await canvas.findByText(/staging/i);
+    await expect(envBadge).toBeInTheDocument();
+  },
 };
 
 export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {

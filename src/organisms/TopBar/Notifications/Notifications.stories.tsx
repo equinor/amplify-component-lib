@@ -148,9 +148,10 @@ export default {
   },
 } as Meta;
 
-type Story = StoryObj<NotificationsProps>;
+type Story = StoryObj<typeof Notifications>;
 
 export const Primary: Story = {
+  args: { showFilterOptions: true },
   play: async ({ canvas }) => {
     const icons = canvas.getAllByTestId('eds-icon-path');
 
@@ -158,7 +159,7 @@ export const Primary: Story = {
 
     const button = canvas.getByTestId('show-hide-button');
     await userEvent.click(button);
-    await expect(await canvas.findByTestId('top-bar-menu')).toBeVisible();
+    await expect(await canvas.findByText('Amanda')).toBeVisible();
   },
 };
 

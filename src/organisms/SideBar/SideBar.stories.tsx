@@ -117,9 +117,38 @@ export default meta;
 type Story = StoryObj<typeof StoryComponent>;
 
 export const Primary: Story = {
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({
+        isOpen: false,
+      })
+    );
+  },
   args: {
     hasCreateButton: true,
     createLabel: 'Create story',
+    disabledItem: 'favourites',
+  },
+  play: async ({ canvas }) => {
+    const createIcon = canvas.getAllByTestId('eds-icon-path')[0]; // First icon is create icon
+    await expect(createIcon).toHaveAttribute('d', add.svgPathData);
+  },
+};
+
+export const Open: Story = {
+  args: {
+    hasCreateButton: true,
+    createLabel: 'Create story',
+    disabledItem: 'favourites',
+  },
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({
+        isOpen: true,
+      })
+    );
   },
   play: async ({ canvas }) => {
     const createIcon = canvas.getAllByTestId('eds-icon-path')[0]; // First icon is create icon

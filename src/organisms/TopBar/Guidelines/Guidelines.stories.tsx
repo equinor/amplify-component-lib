@@ -9,12 +9,9 @@ import {
   time,
   view_module,
 } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Guidelines } from '.';
-
-const { colors } = tokens;
 
 export default {
   title: 'Organisms/TopBar/Guidelines',
@@ -22,6 +19,9 @@ export default {
 } as Meta;
 
 import { GuidelineSections } from './Guidelines';
+import { colors } from 'src/atoms/style';
+
+import { expect, userEvent } from 'storybook/test';
 
 const sections: GuidelineSections[] = [
   {
@@ -86,6 +86,68 @@ const sections: GuidelineSections[] = [
   },
 ];
 
-export const Primary: StoryFn = () => {
-  return <Guidelines sections={sections} />;
+type Story = StoryObj<typeof Guidelines>;
+
+export const Primary: Story = {
+  args: {
+    sections,
+  },
+  play: async ({ canvas, args }) => {
+    const { sections } = args;
+
+    const button = canvas.getByTestId('show-hide-button');
+    await userEvent.click(button);
+
+    const sectionsElements = await canvas.findAllByTestId('guidelines-section');
+
+    for (const [index, section] of sectionsElements.entries()) {
+      await expect(section).toContainElement(
+        canvas.getByText(sections[index].sectionName)
+      );
+      for (const item of sections[index].items) {
+        if ('title' in item) {
+          await expect(section).toContainElement(canvas.getByText(item.title));
+        }
+      }
+    }
+
+    await userEvent.click(button);
+    for (const section of sectionsElements) {
+      await expect(section).not.toBeVisible();
+    }
+  },
+};
+
+export const WithColorBoxes: Story = {
+  args: {
+    sections: sections.map((section) => ({
+      ...section,
+      items: section.items.map((item) => ({
+        ...item,
+        colorBox: true,
+      })),
+    })),
+  },
+  play: async ({ canvas, args }) => {
+    const { sections } = args;
+
+    const button = canvas.getByTestId('show-hide-button');
+    await userEvent.click(button);
+
+    const sectionsElements = await canvas.findAllByTestId('guidelines-section');
+
+    for (const [index, section] of sectionsElements.entries()) {
+      await expect(section).toContainElement(
+        canvas.getByText(sections[index].sectionName)
+      );
+      for (const item of sections[index].items) {
+        if ('title' in item) {
+          await expect(section).toContainElement(canvas.getByText(item.title));
+          await expect(section).toContainElement(
+            canvas.getByTestId(`color-box-${item.title}`)
+          );
+        }
+      }
+    }
+  },
 };

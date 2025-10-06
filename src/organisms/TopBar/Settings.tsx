@@ -95,7 +95,12 @@ export const Settings: FC<SettingsProps> = ({ allSettings, children }) => {
 
   return (
     <>
-      <TopBarButton variant="ghost_icon" onClick={toggleMenu} ref={buttonRef}>
+      <TopBarButton
+        variant="ghost_icon"
+        onClick={toggleMenu}
+        ref={buttonRef}
+        data-testid="show-hide-button"
+      >
         <Icon data={settings} size={24} />
       </TopBarButton>
       <TopBarMenu

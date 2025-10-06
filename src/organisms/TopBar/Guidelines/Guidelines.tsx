@@ -25,14 +25,7 @@ export const Guidelines: FC<GuidelineProps> = ({ sections }) => {
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
   const handleButtonClick = () => {
-    if (isOpen) {
-      setIsOpen(false);
-    } else {
-      setIsOpen(true);
-    }
-  };
-  const onClose = () => {
-    setIsOpen(false);
+    setIsOpen((prev) => !prev);
   };
 
   return (
@@ -50,7 +43,7 @@ export const Guidelines: FC<GuidelineProps> = ({ sections }) => {
       <TopBarMenu
         open={isOpen}
         anchorEl={buttonRef.current}
-        onClose={onClose}
+        onClose={handleButtonClick}
         withGap
       >
         {sections.map((section, index) => (
