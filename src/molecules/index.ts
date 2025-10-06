@@ -9,8 +9,6 @@ export { Button } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
 export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
-export { ContentMenu } from './ContentMenu/ContentMenu';
-export type { ContentMenuProps } from './ContentMenu/ContentMenu';
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
@@ -60,8 +58,6 @@ export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
 export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
 export type * from './RichTextEditor/RichTextEditor.types';
 export { Search } from './Search/Search';
-export { SingleFilterMenu } from './SingleFilterMenu/SingleFilterMenu';
-export type { SingleFilterMenuProps } from './SingleFilterMenu/SingleFilterMenu';
 export {
   SkeletonBase,
   skeletonBaseloading,
