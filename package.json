@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.22.0",
-    "@equinor/subsurface-app-management": "4.4.3-beta.0",
+    "@equinor/subsurface-app-management": "5.0.0",
     "@eslint/js": "^9.22.0",
     "@faker-js/faker": "^9.6.0",
     "@storybook/addon-coverage": "^2.0.0",
@@ -112,7 +112,7 @@
   },
   "peerDependencies": {
     "@equinor/eds-icons": "*",
-    "@equinor/subsurface-app-management": "4.4.3-beta.0",
+    "@equinor/subsurface-app-management": "^5.0.0",
     "@tanstack/react-query": "*",
     "@tanstack/react-router": "*",
     "react": "^19.0.0",
