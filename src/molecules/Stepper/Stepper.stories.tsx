@@ -6,6 +6,7 @@ import { spacings } from 'src/atoms/style';
 import { Stepper, StepperProps } from 'src/molecules/Stepper/Stepper';
 import { StepperProvider, useStepper } from 'src/providers/StepperProvider';
 
+import { expect, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Stepper> = {
@@ -149,6 +150,19 @@ export const SyncedToURL: StoryObj = {
     },
   },
   render: () => <Story />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(
+      canvas.getByText(`Current path: /create/0`)
+    ).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByText('Next'));
+
+    await expect(
+      canvas.getByText(`Current path: /create/1`)
+    ).toBeInTheDocument();
+  },
 };
 
 function isStepDisabled({

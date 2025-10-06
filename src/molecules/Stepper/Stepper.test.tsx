@@ -239,29 +239,6 @@ test('Works as expected with title in steps', async () => {
   expect(screen.getByText(steps[0].description!)).toBeInTheDocument();
 });
 
-test('Works as expected with sync to url', async () => {
-  const steps = fakeSteps();
-  renderWithRouter(
-    <StepperProvider steps={steps} syncToURLParam>
-      <StepperTestComponent />
-    </StepperProvider>,
-    {
-      initialEntries: ['/create/0'],
-      routes: ['/create/$step'],
-    }
-  );
-  const user = userEvent.setup();
-
-  expect(await screen.findByText(`Current step: 0`)).toBeInTheDocument();
-  expect(screen.getByText(`Current location: /create/0`)).toBeInTheDocument();
-
-  await user.click(screen.getByText('Next'));
-
-  expect(screen.getByText(`Current step: 1`)).toBeInTheDocument();
-
-  expect(screen.getByText(`Current location: /create/1`)).toBeInTheDocument();
-});
-
 function isStepDisabled({ stepIndex }: { stepIndex: number }) {
   return stepIndex === 0;
 }
