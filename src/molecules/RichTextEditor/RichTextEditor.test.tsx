@@ -17,6 +17,7 @@ function fakeProps(withImage = false): RichTextEditorProps {
     value: `<p>${faker.animal.fish()}</p>`,
     onChange: vi.fn(),
     onImageUpload: withImage ? vi.fn() : undefined,
+    onImageRemove: withImage ? vi.fn() : undefined,
   };
 }
 
@@ -94,6 +95,9 @@ test('Calls onImageUpload as expected', async () => {
   // Wait for tip tap to initialize
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
+  expect(props.onImageRemove).not.toHaveBeenCalled();
+  expect(props.onImageUpload).not.toHaveBeenCalled();
+
   const uploadInput = container.querySelector('input') as HTMLElement;
 
   const fakeFile = new File(
@@ -103,7 +107,7 @@ test('Calls onImageUpload as expected', async () => {
   );
   await user.upload(uploadInput, fakeFile);
 
-  expect(props.onImageUpload).toHaveBeenCalledWith(fakeFile);
+  expect(props.onImageUpload).toHaveBeenCalledExactlyOnceWith(fakeFile);
 });
 
 test('Open file dialog', async () => {
