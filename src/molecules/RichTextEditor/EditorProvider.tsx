@@ -83,13 +83,11 @@ export const EditorProvider: FC<EditorProviderProps> = ({
         onImageRemove?.(image);
         deletedImages.current.push(image);
       }
-    }
-
-    if (
+    } else if (
       onRemovedImagesChange &&
       previousRemovedImages.current.length !== imagesToDelete.length
     ) {
-      onRemovedImagesChange(deletedImages.current);
+      onRemovedImagesChange(imagesToDelete);
       previousRemovedImages.current = imagesToDelete;
     }
   };
