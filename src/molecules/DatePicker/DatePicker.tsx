@@ -14,8 +14,12 @@ import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
 import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
 import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
 
-export type DatePickerProps = Omit<EDSDatePickerProps, 'variant'> & {
+export type DatePickerProps = Omit<
+  EDSDatePickerProps,
+  'variant' | 'defaultValue'
+> & {
   variant?: Variants;
+  defaultValue?: Date | undefined;
   meta?: string;
   loading?: boolean;
 };
@@ -33,6 +37,9 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           };
     const baseProps = {
       ...props,
+      defaultValue: props.defaultValue as
+        | ((string | number | readonly string[]) & (Date | null))
+        | undefined,
       variant: props.variant !== 'dirty' ? props.variant : undefined,
       loading: undefined,
     };
