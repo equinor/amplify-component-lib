@@ -73,11 +73,6 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     setElements(values.map((value) => document.getElementById(value)));
   }, [values]);
 
-  useEffect(() => {
-    if (hash.length) return;
-    initHashStateRef.current = true;
-  }, [hash]);
-
   const isActive = useCallback(
     (item: TableOfContentsItemType) => {
       if (item.value === selected) return true;
@@ -99,58 +94,56 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   // If the user clicks on an item in the TableOfContents that isn't visible now, we want to scroll to it
   const handleSetSelected = useCallback(
     (value: string, options?: SetSelectedOptions) => {
-      const selectedIndex = values.findIndex(
-        (itemValue) => itemValue === value
-      );
+      const selectedIndex = values.indexOf(value);
+      const element = elements[selectedIndex];
+      const behavior = options?.behavior ?? 'smooth';
+
+      if (selectedIndex === -1 || !element) return;
+
+      const newSelectedValue = values[selectedIndex];
 
       if (hashNavigation) {
-        setSelected(values[selectedIndex]);
         navigate({
           to: '.',
-          hash: `#${values[selectedIndex]}`,
+          hash: `#${newSelectedValue}`,
           hashScrollIntoView: false,
           replace: true,
         });
-
-        return;
       }
 
-      const element = elements[selectedIndex];
+      element.scrollIntoView({
+        block: 'start',
+        behavior,
+      });
 
-      if (element) {
-        const behavior = options?.behavior ?? 'smooth';
-        element.scrollIntoView({
-          block: 'start',
-          behavior,
-        });
-        isScrollingTo.current = selectedIndex;
-        let previousTop = Infinity;
-        let same = 0;
-        /* v8 ignore start */
-        const checkScrollDone = () => {
-          const newTop = element?.getBoundingClientRect().top;
-          if (newTop === previousTop) {
-            same += 1;
-            if (same > 1) {
-              setSelected(values[selectedIndex]);
-              isScrollingTo.current = -1;
-              return;
-            }
-          } else {
-            same = 0;
-            previousTop = newTop;
+      isScrollingTo.current = selectedIndex;
+
+      let previousTop = Infinity;
+      let same = 0;
+      /* v8 ignore start */
+      const checkScrollDone = () => {
+        const newTop = element?.getBoundingClientRect().top;
+        if (newTop === previousTop) {
+          same += 1;
+          if (same > 1) {
+            setSelected(newSelectedValue);
+            isScrollingTo.current = -1;
+            return;
           }
-          requestAnimationFrame(checkScrollDone);
-        };
-        /* v8 ignore end */
+        } else {
+          same = 0;
+          previousTop = newTop;
+        }
         requestAnimationFrame(checkScrollDone);
-      }
+      };
+      /* v8 ignore end */
+      requestAnimationFrame(checkScrollDone);
     },
     [elements, hashNavigation, navigate, values]
   );
 
   useEffect(() => {
-    if (hash && !initHashStateRef.current) {
+    if (hash && !initHashStateRef.current && elements.length > 0) {
       initHashStateRef.current = true;
 
       const targetValue = decodeURIComponent(hash.replace('#', ''));
@@ -158,18 +151,9 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         return;
       }
 
-      setSelected(targetValue);
-      navigate({
-        to: '.',
-        hash: `#${targetValue}`,
-        hashScrollIntoView: {
-          behavior: 'instant',
-          block: 'start',
-        },
-        replace: true,
-      });
+      handleSetSelected(targetValue);
     }
-  }, [hash, navigate, values]);
+  }, [elements.length, handleSetSelected, hash, values]);
 
   // Handle change of selected when scrolling down the page
   /* v8 ignore start */
