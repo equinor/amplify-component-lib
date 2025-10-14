@@ -20,7 +20,7 @@ export const spacingTokens = css`
   }
 
   /*Compact*/
-  [data-spacing-mode='compact'] {
+  [data-spacings-mode='compact'] {
     --eds_spacing_xxx_large: 40px;
     --eds_spacing_xx_large: 32px;
     --eds_spacing_x_large: 40px;
@@ -36,7 +36,7 @@ export const spacingTokens = css`
   }
 
   /*Extra Compact*/
-  [data-spacing-mode='extra-compact'] {
+  [data-spacings-mode='extra-compact'] {
     --eds_spacing_xxx_large: 32px;
     --eds_spacing_xx_large: 24px;
     --eds_spacing_x_large: 16px;
