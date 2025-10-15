@@ -98,7 +98,10 @@ export const Resources: FC<ResourcesProps> = ({
     setShowFeedbackDialog(false);
   };
 
-  const handleOnOpenReleaseNoteDialog = () => setOpenReleaseNotes(true);
+  const handleOnOpenReleaseNoteDialog = () => {
+    setOpenReleaseNotes(true);
+    closeMenu();
+  };
 
   const handleGoBack = () => setShowingResourceSection(undefined);
 
