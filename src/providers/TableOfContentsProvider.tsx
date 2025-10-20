@@ -144,7 +144,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   );
 
   useEffect(() => {
-    if (hash && !initHashStateRef.current && elements.length > 0) {
+    if (!initHashStateRef.current && visible.length > 0) {
       initHashStateRef.current = true;
 
       const targetValue = decodeURIComponent(hash.replace('#', ''));
