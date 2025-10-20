@@ -108,6 +108,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
           hash: `#${newSelectedValue}`,
           hashScrollIntoView: false,
           replace: true,
+          search: (prev: unknown) => prev,
         });
       }
 
@@ -153,7 +154,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
 
       handleSetSelected(targetValue);
     }
-  }, [elements.length, handleSetSelected, hash, values]);
+  }, [visible.length, handleSetSelected, hash, values]);
 
   // Handle change of selected when scrolling down the page
   /* v8 ignore start */
@@ -183,6 +184,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         hash: `#${values[newSelectedIndex]}`,
         hashScrollIntoView: false,
         replace: true,
+        search: (prev: unknown) => prev,
       });
     }
     // this effect handles scroll navigation and should not be triggered on hash change
