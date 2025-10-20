@@ -98,7 +98,12 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
       const element = elements[selectedIndex];
       const behavior = options?.behavior ?? 'smooth';
 
-      if (selectedIndex === -1 || !element) return;
+      if (selectedIndex === -1 || !element) {
+        console.warn(
+          `TableOfContents: Unable to find element with value: ${value}`
+        );
+        return;
+      }
 
       const newSelectedValue = values[selectedIndex];
 

@@ -164,3 +164,23 @@ test(
   },
   { timeout: 8000 }
 );
+
+test('Logs warn when element is not found', async () => {
+  const items = fakeItems();
+
+  await renderWithRouter(
+    <TableOfContentsProvider items={items}>
+      <TableOfContents />
+    </TableOfContentsProvider>
+  );
+  const warnSpy = vi.spyOn(console, 'warn');
+  const user = userEvent.setup();
+
+  const button = screen.getByRole('button', {
+    name: items[1].label,
+  });
+
+  await user.click(button);
+
+  expect(warnSpy).toHaveBeenCalled();
+});
