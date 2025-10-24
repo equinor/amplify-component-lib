@@ -4,7 +4,8 @@ interface IsUrlArgs {
 }
 
 export const isCurrentUrl = ({ currentUrl, link }: IsUrlArgs) => {
-  const currentIncludesLink = currentUrl.includes(link);
+  const decodedCurrentUrl = decodeURIComponent(currentUrl);
+  const currentIncludesLink = decodedCurrentUrl.includes(link);
 
   return (currentIncludesLink && link !== '/') || link === currentUrl;
 };
