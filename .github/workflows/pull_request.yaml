@@ -25,7 +25,7 @@ jobs:
     uses: ./.github/workflows/build_storybook.yaml
 
   build-deploy-feature-radix:
-    if: ${{ startsWith(github.head_ref, 'feature')}}
+    if: ${{ startsWith(github.head_ref, 'feat') }}
     name: Build and deploy to feature env
     uses: ./.github/workflows/build_deploy_radix.yaml
     with:
