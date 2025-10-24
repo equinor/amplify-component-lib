@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import {
   TableOfContents,
@@ -15,6 +15,7 @@ import {
   TableOfContentsProviderProps,
 } from 'src/providers/TableOfContentsProvider';
 
+import { expect, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const { colors } = tokens;
@@ -142,44 +143,55 @@ function Section({
 
 type StoryProps = TableOfContentsProviderProps & TableOfContentsProps;
 
-export const Default: StoryFn<StoryProps> = (args) => {
-  return (
-    <TableOfContentsProvider items={args.items}>
-      <Container>
-        <TableOfContents mode={args.mode} />
-        <section>
-          {args.items.map((item, index) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={COLORS[index]}
-            />
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
+type Story = StoryObj<StoryProps>;
+
+export const Default: Story = {
+  render: (args) => {
+    return (
+      <TableOfContentsProvider items={args.items}>
+        <Container>
+          <TableOfContents mode={args.mode} />
+          <section>
+            {args.items.map((item, index) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={COLORS[index]}
+              />
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    );
+  },
+  play: async ({ canvas, args }) => {
+    for (const item of args.items) {
+      expect(canvas.getByRole('button', { name: item.label }));
+    }
+  },
 };
 
-export const Horizontal: StoryFn<StoryProps> = (args) => {
-  return (
-    <TableOfContentsProvider items={args.items}>
-      <HorizontalContainer>
-        <TableOfContents mode="horizontal" />
-        <section>
-          {args.items.map((item, index) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={COLORS[index]}
-            />
-          ))}
-        </section>
-      </HorizontalContainer>
-    </TableOfContentsProvider>
-  );
+export const Horizontal: Story = {
+  render: (args) => {
+    return (
+      <TableOfContentsProvider items={args.items}>
+        <HorizontalContainer>
+          <TableOfContents mode="horizontal" />
+          <section>
+            {args.items.map((item, index) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={COLORS[index]}
+              />
+            ))}
+          </section>
+        </HorizontalContainer>
+      </TableOfContentsProvider>
+    );
+  },
 };
 
 const ITEMS_WITH_CHILDREN: TableOfContentsItemType[] = [
@@ -209,33 +221,47 @@ const ITEMS_WITH_CHILDREN: TableOfContentsItemType[] = [
   },
 ];
 
-export const WithChildren: StoryFn<StoryProps> = (args) => {
-  return (
-    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
-      <Container>
-        <TableOfContents {...args} />
-        <section>
-          {ITEMS_WITH_CHILDREN.map((item) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={faker.color.rgb()}
-            >
-              {item.children?.map((child) => (
-                <Section
-                  key={child.value}
-                  label={child.label}
-                  value={child.value}
-                  color={faker.color.rgb()}
-                />
-              ))}
-            </Section>
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
+export const WithChildren: Story = {
+  render: (args) => {
+    return (
+      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
+        <Container>
+          <TableOfContents {...args} />
+          <section>
+            {ITEMS_WITH_CHILDREN.map((item) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={faker.color.rgb()}
+              >
+                {item.children?.map((child) => (
+                  <Section
+                    key={child.value}
+                    label={child.label}
+                    value={child.value}
+                    color={faker.color.rgb()}
+                  />
+                ))}
+              </Section>
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    );
+  },
+  play: async ({ canvas }) => {
+    for (const parent of ITEMS_WITH_CHILDREN) {
+      const parentElement = canvas.getByRole('button', { name: parent.label });
+      await expect(parentElement).toBeInTheDocument();
+      const parentContainer = parentElement.parentElement!;
+      for (const child of parent.children ?? []) {
+        await expect(
+          within(parentContainer).getByRole('button', { name: child.label })
+        ).toBeInTheDocument();
+      }
+    }
+  },
 };
 
 const ITEMS_WITH_CHILDREN_DISABLED: TableOfContentsItemType[] = [
@@ -265,33 +291,52 @@ const ITEMS_WITH_CHILDREN_DISABLED: TableOfContentsItemType[] = [
   },
 ];
 
-export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
-  return (
-    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
-      <Container>
-        <TableOfContents {...args} />
-        <section>
-          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={faker.color.rgb()}
-            >
-              {item.children?.map((child) => (
-                <Section
-                  key={child.value}
-                  label={child.label}
-                  value={child.value}
-                  color={faker.color.rgb()}
-                />
-              ))}
-            </Section>
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
+export const WithChildrenAndDisabled: Story = {
+  render: (args) => {
+    return (
+      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
+        <Container>
+          <TableOfContents {...args} />
+          <section>
+            {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={faker.color.rgb()}
+              >
+                {item.children?.map((child) => (
+                  <Section
+                    key={child.value}
+                    label={child.label}
+                    value={child.value}
+                    color={faker.color.rgb()}
+                  />
+                ))}
+              </Section>
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    );
+  },
+  play: async ({ canvas }) => {
+    for (const parent of ITEMS_WITH_CHILDREN_DISABLED) {
+      const parentElement = canvas.getByRole('button', {
+        name: parent.label,
+      }).parentElement!;
+      for (const child of parent.children ?? []) {
+        const childElement = within(parentElement).getByRole('button', {
+          name: child.label,
+        });
+        if (child.disabled) {
+          await expect(childElement).toBeDisabled();
+        } else {
+          await expect(childElement).not.toBeDisabled();
+        }
+      }
+    }
+  },
 };
 
 const firstParentId = `1${faker.database.mongodbObjectId()}`;
@@ -335,35 +380,57 @@ const ITEMS_WITH_CHILDREN_AND_LONG_LABEL = [
   },
 ];
 
-export const WithChildrenAndOnlyShowSelectedChildrenSharedWidth: StoryFn<
-  StoryProps
-> = (args) => {
-  return (
-    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_AND_LONG_LABEL}>
-      <Container>
-        <TableOfContents {...args} onlyShowSelectedChildren />
-        <section>
-          {ITEMS_WITH_CHILDREN_AND_LONG_LABEL.map((item) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={faker.color.rgb()}
-            >
-              {item.children?.map((child) => (
-                <Section
-                  key={child.value}
-                  label={child.label}
-                  value={child.value}
-                  color={faker.color.rgb()}
-                />
-              ))}
-            </Section>
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
+export const WithChildrenAndOnlyShowSelectedChildrenSharedWidth: Story = {
+  render: (args) => {
+    return (
+      <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_AND_LONG_LABEL}>
+        <Container>
+          <TableOfContents {...args} onlyShowSelectedChildren />
+          <section>
+            {ITEMS_WITH_CHILDREN_AND_LONG_LABEL.map((item) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={faker.color.rgb()}
+              >
+                {item.children?.map((child) => (
+                  <Section
+                    key={child.value}
+                    label={child.label}
+                    value={child.value}
+                    color={faker.color.rgb()}
+                  />
+                ))}
+              </Section>
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    );
+  },
+  play: async ({ canvas }) => {
+    for (const [
+      index,
+      parent,
+    ] of ITEMS_WITH_CHILDREN_AND_LONG_LABEL.entries()) {
+      const parentElement = canvas.getByRole('button', { name: parent.label });
+      await expect(parentElement).toBeInTheDocument();
+      const wrapper = parentElement.parentElement!;
+      for (const child of parent.children ?? []) {
+        if (index === 0) {
+          // is selected
+          await expect(
+            within(wrapper).getByRole('button', { name: child.label })
+          ).toBeInTheDocument();
+        } else {
+          await expect(
+            within(wrapper).queryByRole('button', { name: child.label })
+          ).not.toBeInTheDocument();
+        }
+      }
+    }
+  },
 };
 
 export const WithChildrenAndCounts: StoryFn<StoryProps> = (args) => {
@@ -408,9 +475,10 @@ export const WithChildrenAndCounts: StoryFn<StoryProps> = (args) => {
 export const HorizontalCount: StoryFn<StoryProps> = () => {
   return (
     <TableOfContentsProvider
-      items={ITEMS_WITH_CHILDREN.map((item) => ({
+      items={ITEMS_WITH_CHILDREN.map((item, index) => ({
         ...item,
-        count: Math.ceil(Math.random() * 10),
+        count: 0,
+        disabled: index === 1,
         children:
           item.children?.map((child) => ({
             ...child,
@@ -420,6 +488,7 @@ export const HorizontalCount: StoryFn<StoryProps> = () => {
     >
       <HorizontalContainer>
         <TableOfContents mode="horizontal" />
+        <TableOfContents />
         <section>
           {ITEMS_WITH_CHILDREN.map((item, index) => (
             <Section

@@ -1,8 +1,9 @@
 import { FC, useMemo } from 'react';
 
 import {
-  BorderItemsContainer,
+  HorizontalItemsContainer,
   TableOfContentsContainer,
+  VerticalItemsContainer,
 } from './TableOfContents.styles';
 import { TableOfContentsMode } from './TableOfContents.types';
 import { TableOfContentsItem } from './TableOfContentsItem';
@@ -13,13 +14,11 @@ import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 export interface TableOfContentsProps {
   mode?: TableOfContentsMode;
   onlyShowSelectedChildren?: boolean;
-  isLink?: boolean;
 }
 
 export const TableOfContents: FC<TableOfContentsProps> = ({
   mode = 'vertical',
   onlyShowSelectedChildren = true,
-  isLink = false,
 }) => {
   const { items, selected, setSelected } = useTableOfContents();
 
@@ -43,13 +42,15 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
 
   if (mode === 'horizontal') {
     return (
-      <Tabs
-        selected={selected}
-        onChange={(value) => {
-          if (value) setSelected(value);
-        }}
-        options={items}
-      />
+      <HorizontalItemsContainer>
+        <Tabs
+          selected={selected}
+          onChange={(value) => {
+            if (value) setSelected(value);
+          }}
+          options={items}
+        />
+      </HorizontalItemsContainer>
     );
   }
 
@@ -57,10 +58,10 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     <TableOfContentsContainer
       className="page-menu"
       layoutRoot
-      data-testid={'table-of-contents-container'}
+      data-testid="table-of-contents-container"
     >
       {items.map((item, index) => (
-        <BorderItemsContainer
+        <VerticalItemsContainer
           data-testid={`border-items-container-${item.value}`}
           key={item.value}
           $index={index}
@@ -69,10 +70,9 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
         >
           <TableOfContentsItem
             onlyShowSelectedChildren={onlyShowSelectedChildren}
-            isLink={isLink}
             {...item}
           />
-        </BorderItemsContainer>
+        </VerticalItemsContainer>
       ))}
     </TableOfContentsContainer>
   );

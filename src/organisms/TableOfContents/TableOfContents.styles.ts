@@ -1,5 +1,3 @@
-import { Link as TanstackLink } from '@tanstack/react-router';
-
 import { animation, colors, spacings } from 'src/atoms/style';
 import { VERTICAL_ITEM_HEIGHT } from 'src/organisms/TableOfContents/TableOfContents.constants';
 
@@ -68,102 +66,33 @@ export const Button = styled.button<ButtonProps>`
     `}
 `;
 
-interface LinkProps extends ButtonProps {
-  $disabled?: boolean;
-}
-
-export const Link = styled(TanstackLink)<LinkProps>`
-  text-decoration: none;
-  &:focus,
-  &:hover,
-  &:active {
-    text-decoration: none;
-    color: ${colors.text.static_icons__default.rgba};
-  }
-  &:hover {
-    background: ${colors.interactive.primary__hover_alt.rgba};
-  }
-  &:focus-visible {
-    color: ${colors.text.static_icons__default.rgba};
-    outline: 2px dashed ${colors.interactive.focus.rgba};
-    outline-offset: -4px;
-  }
-
-  ${({ $disabled, $active }) =>
-    $disabled &&
-    !$active &&
-    css`
-      color: ${colors.interactive.disabled__text.rgba} !important;
-      &:hover {
-        cursor: not-allowed;
-      }
-    `};
-
-  position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: ${spacings.small};
-  color: ${colors.text.static_icons__default.rgba};
-  cursor: pointer;
-  padding: 0 ${spacings.medium};
-  height: ${VERTICAL_ITEM_HEIGHT};
-  transition: background 200ms;
-
-  > span {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    text-align: left;
-    font-family: 'Equinor', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-  }
-  ${({ $active }) => {
-    return css`
+export const HorizontalItemsContainer = styled.div`
+  button[role='tab'] {
+    .count {
+      background: ${colors.ui.background__light_medium.rgba};
+      padding: 0 ${spacings.x_small};
       > span {
-        font-weight: ${$active ? 700 : 500};
-        &:after {
-          height: 0;
-          display: block;
-          content: attr(title);
-          font-weight: 700;
-          font-size: 14px;
-          overflow: hidden;
-          visibility: hidden;
+        color: ${colors.text.static_icons__tertiary.rgba};
+      }
+    }
+
+    &:disabled {
+      .count {
+        background: ${colors.interactive.disabled__fill.rgba};
+        > span {
+          color: ${colors.interactive.disabled__text.rgba};
         }
       }
-    `;
-  }}
-`;
-
-interface BorderItemsHorizontalContainerProps {
-  $activeIndex: number;
-  $index: number;
-}
-
-export const BorderItemsHorizontalContainer = styled.div<BorderItemsHorizontalContainerProps>`
-  display: flex;
-  position: relative;
-  &:after {
-    position: absolute;
-    left: 0;
-    bottom: ${({ $activeIndex, $index }) =>
-      `${($activeIndex - $index) * 100}%`};
-    content: '';
-    width: 100%;
-    height: 2px;
-    background: ${colors.interactive.primary__resting.rgba};
-    z-index: 100;
+    }
   }
 `;
 
-interface BorderItemsContainerProps {
+interface VerticalItemsContainerProps {
   $activeIndex: number;
   $index: number;
 }
 
-export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
+export const VerticalItemsContainer = styled.div<VerticalItemsContainerProps>`
   display: flex;
   flex-direction: column;
   position: relative;
