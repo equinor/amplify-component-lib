@@ -461,3 +461,15 @@ export const WithAutoComplete: Story = {
     );
   },
 };
+
+export const WithOpenOnFocusFalse: Story = {
+  args: {
+    openOnFocus: false,
+    values: {},
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('searchbox'));
+
+    await expect(canvas.queryByRole('combobox')).not.toBeInTheDocument();
+  },
+};
