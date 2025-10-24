@@ -14,7 +14,7 @@ interface CountDotProps {
 const pickColorSchemeBy = (variant: Variants) => {
   const colorSchemes = {
     light: {
-      background: 'rgba(235, 235, 235, 1)',
+      background: colors.ui.background__light_medium.rgba,
       color: colors.text.static_icons__tertiary.rgba,
     },
     danger: {

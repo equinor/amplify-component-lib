@@ -1,13 +1,11 @@
-import { FC, MouseEvent, useEffect, useMemo, useRef } from 'react';
+import { FC, useEffect, useMemo, useRef } from 'react';
 
-import { GAP, HEIGHT } from './TableOfContents.constants';
+import { VERTICAL_ITEM_HEIGHT } from './TableOfContents.constants';
 import {
   Button,
   ChildContainer,
-  Link,
   TableOfContentsItemContainer,
 } from './TableOfContents.styles';
-import { TableOfContentsVariants } from './TableOfContents.types';
 import { Badge } from 'src/molecules/Badge/Badge';
 import {
   TableOfContentsItemType,
@@ -16,9 +14,7 @@ import {
 
 interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;
-  variant: TableOfContentsVariants;
   activeParent?: boolean;
-  isLink?: boolean;
 }
 
 export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
@@ -27,9 +23,7 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   count,
   disabled = false,
   children,
-  variant,
   onlyShowSelectedChildren,
-  isLink = false,
 }) => {
   const { isActive, selected, setSelected } = useTableOfContents();
   const initialHeight = useRef<number | undefined>(undefined);
@@ -45,13 +39,7 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
     [children, disabled, isActive, label, value]
   );
 
-  const handleOnClick = (
-    event?: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
-  ) => {
-    // disabling for links
-    if (disabled && event) {
-      event.preventDefault();
-    }
+  const handleOnClick = () => {
     if (!disabled && selected !== value) setSelected(value);
   };
 
@@ -59,48 +47,25 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
     (onlyShowSelectedChildren && active) || !onlyShowSelectedChildren;
 
   return (
-    <TableOfContentsItemContainer $variant={variant} layoutScroll layoutRoot>
-      {isLink ? (
-        <Link
-          $active={selected === value}
-          $variant={variant}
-          onClick={(event) => handleOnClick(event)}
-          to={disabled ? '' : `#${value}`}
-          $disabled={disabled}
-          tabIndex={disabled ? -1 : 0}
-        >
-          <span title={label}>{label}</span>
-          {count !== undefined && (
-            <Badge variant={count === 0 ? 'empty' : 'light'} value={count} />
-          )}
-        </Link>
-      ) : (
-        <Button
-          $active={selected === value}
-          $variant={variant}
-          onClick={() => handleOnClick()}
-          disabled={disabled}
-        >
-          <span title={label}>{label}</span>
-          {count !== undefined && (
-            <Badge variant={count === 0 ? 'empty' : 'light'} value={count} />
-          )}
-        </Button>
-      )}
+    <TableOfContentsItemContainer layoutScroll layoutRoot>
+      <Button
+        $active={selected === value}
+        onClick={handleOnClick}
+        disabled={disabled}
+      >
+        <span title={label}>{label}</span>
+        {count !== undefined && (
+          <Badge variant={disabled ? 'empty' : 'light'} value={count} />
+        )}
+      </Button>
       {children && (
         <ChildContainer
           $shouldShowChildren={shouldShowChildren}
-          $variant={variant}
           initial={{ height: initialHeight.current }}
           animate={{
             height: `
                   calc(
-                    (${shouldShowChildren ? HEIGHT[variant] : '0'} * ${children.length})
-                    ${
-                      variant === 'buttons'
-                        ? `+ (${GAP.buttons} * ${children.length - 1})`
-                        : ''
-                    }
+                    (${shouldShowChildren ? VERTICAL_ITEM_HEIGHT : '0'} * ${children.length})
                   )`,
           }}
           transition={{ duration: 0.4 }}
@@ -109,9 +74,7 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
             <TableOfContentsItem
               key={child.value}
               onlyShowSelectedChildren={onlyShowSelectedChildren}
-              variant={variant}
               {...child}
-              isLink={isLink}
             />
           ))}
         </ChildContainer>

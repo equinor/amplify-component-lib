@@ -1,27 +1,26 @@
 import { FC, useMemo } from 'react';
 
 import {
-  BorderItemsContainer,
-  BorderItemsHorizontalContainer,
+  HorizontalItemsContainer,
   TableOfContentsContainer,
+  VerticalItemsContainer,
 } from './TableOfContents.styles';
-import { TableOfContentsVariants } from './TableOfContents.types';
+import { TableOfContentsMode } from './TableOfContents.types';
 import { TableOfContentsItem } from './TableOfContentsItem';
+import { Tabs } from 'src/molecules/Tabs/Tabs';
 import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 
 export interface TableOfContentsProps {
-  variant?: TableOfContentsVariants;
+  mode?: TableOfContentsMode;
   onlyShowSelectedChildren?: boolean;
-  isLink?: boolean;
 }
 
 export const TableOfContents: FC<TableOfContentsProps> = ({
-  variant = 'buttons',
+  mode = 'vertical',
   onlyShowSelectedChildren = true,
-  isLink = false,
 }) => {
-  const { items, selected } = useTableOfContents();
+  const { items, selected, setSelected } = useTableOfContents();
 
   const activeIndex = useMemo(() => {
     // Was not able to test this properly because selected can't be correctly updated in the unit test
@@ -41,75 +40,39 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     /* v8 ignore end */
   }, [items, selected]);
 
-  if (variant === 'border') {
+  if (mode === 'horizontal') {
     return (
-      <TableOfContentsContainer
-        className="page-menu"
-        $variant={variant}
-        layoutRoot
-        data-testid={'table-of-contents-container'}
-      >
-        {items.map((item, index) => (
-          <BorderItemsContainer
-            data-testid={`border-items-container-${item.value}`}
-            key={item.value}
-            $index={index}
-            $activeIndex={activeIndex}
-            aria-selected={activeIndex === index}
-          >
-            <TableOfContentsItem
-              variant={variant}
-              onlyShowSelectedChildren={onlyShowSelectedChildren}
-              isLink={isLink}
-              {...item}
-            />
-          </BorderItemsContainer>
-        ))}
-      </TableOfContentsContainer>
-    );
-  }
-
-  if (variant === 'borderHorizontal') {
-    return (
-      <TableOfContentsContainer
-        className="page-menu"
-        $variant={variant}
-        layoutRoot
-        data-testid={'table-of-contents-container'}
-      >
-        {items.map((item, index) => (
-          <BorderItemsHorizontalContainer
-            key={item.value}
-            $index={index}
-            $activeIndex={activeIndex}
-            aria-selected={activeIndex === index}
-          >
-            <TableOfContentsItem
-              variant={variant}
-              {...item}
-              onlyShowSelectedChildren={onlyShowSelectedChildren}
-              isLink={isLink}
-            />
-          </BorderItemsHorizontalContainer>
-        ))}
-      </TableOfContentsContainer>
+      <HorizontalItemsContainer>
+        <Tabs
+          selected={selected}
+          onChange={(value) => {
+            if (value) setSelected(value);
+          }}
+          options={items}
+        />
+      </HorizontalItemsContainer>
     );
   }
 
   return (
     <TableOfContentsContainer
       className="page-menu"
-      $variant={variant}
       layoutRoot
+      data-testid="table-of-contents-container"
     >
-      {items.map((item) => (
-        <TableOfContentsItem
+      {items.map((item, index) => (
+        <VerticalItemsContainer
+          data-testid={`border-items-container-${item.value}`}
           key={item.value}
-          variant={variant}
-          {...item}
-          onlyShowSelectedChildren={onlyShowSelectedChildren}
-          isLink={isLink}
-        />
+          $index={index}
+          $activeIndex={activeIndex}
+          aria-selected={activeIndex === index}
+        >
+          <TableOfContentsItem
+            onlyShowSelectedChildren={onlyShowSelectedChildren}
+            {...item}
+          />
+        </VerticalItemsContainer>
       ))}
     </TableOfContentsContainer>
   );
