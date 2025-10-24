@@ -142,11 +142,11 @@ function Section({
 
 type StoryProps = TableOfContentsProviderProps & TableOfContentsProps;
 
-export const Primary: StoryFn<StoryProps> = (args) => {
+export const Default: StoryFn<StoryProps> = (args) => {
   return (
     <TableOfContentsProvider items={args.items}>
       <Container>
-        <TableOfContents variant={args.variant} />
+        <TableOfContents mode={args.mode} />
         <section>
           {args.items.map((item, index) => (
             <Section
@@ -162,31 +162,11 @@ export const Primary: StoryFn<StoryProps> = (args) => {
   );
 };
 
-export const BorderVariant: StoryFn<StoryProps> = (args) => {
-  return (
-    <TableOfContentsProvider items={args.items}>
-      <Container>
-        <TableOfContents variant="border" />
-        <section>
-          {args.items.map((item, index) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={COLORS[index]}
-            />
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
-};
-
-export const BorderVariantHorizontal: StoryFn<StoryProps> = (args) => {
+export const Horizontal: StoryFn<StoryProps> = (args) => {
   return (
     <TableOfContentsProvider items={args.items}>
       <HorizontalContainer>
-        <TableOfContents variant="borderHorizontal" />
+        <TableOfContents mode="horizontal" />
         <section>
           {args.items.map((item, index) => (
             <Section
@@ -233,36 +213,7 @@ export const WithChildren: StoryFn<StoryProps> = (args) => {
   return (
     <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
       <Container>
-        <TableOfContents {...args} variant="buttons" />
-        <section>
-          {ITEMS_WITH_CHILDREN.map((item) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={faker.color.rgb()}
-            >
-              {item.children?.map((child) => (
-                <Section
-                  key={child.value}
-                  label={child.label}
-                  value={child.value}
-                  color={faker.color.rgb()}
-                />
-              ))}
-            </Section>
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
-};
-
-export const WithChildrenAndBorders: StoryFn<StoryProps> = (args) => {
-  return (
-    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN}>
-      <Container>
-        <TableOfContents {...args} variant="border" />
+        <TableOfContents {...args} />
         <section>
           {ITEMS_WITH_CHILDREN.map((item) => (
             <Section
@@ -318,41 +269,7 @@ export const WithChildrenAndDisabled: StoryFn<StoryProps> = (args) => {
   return (
     <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
       <Container>
-        <TableOfContents {...args} variant="buttons" />
-        <section>
-          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={faker.color.rgb()}
-            >
-              {item.children?.map((child) => (
-                <Section
-                  key={child.value}
-                  label={child.label}
-                  value={child.value}
-                  color={faker.color.rgb()}
-                />
-              ))}
-            </Section>
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
-};
-
-export const WithChildrenAndBordersLinksAndDisabled: StoryFn<StoryProps> = (
-  args
-) => {
-  return (
-    <TableOfContentsProvider
-      items={ITEMS_WITH_CHILDREN_DISABLED}
-      hashNavigation
-    >
-      <Container>
-        <TableOfContents {...args} variant="border" isLink />
+        <TableOfContents {...args} />
         <section>
           {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
             <Section
@@ -418,44 +335,15 @@ const ITEMS_WITH_CHILDREN_AND_LONG_LABEL = [
   },
 ];
 
-export const WithChildrenAndBordersOnlyShowSelectedChildrenSharedWidth: StoryFn<
+export const WithChildrenAndOnlyShowSelectedChildrenSharedWidth: StoryFn<
   StoryProps
 > = (args) => {
   return (
     <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_AND_LONG_LABEL}>
       <Container>
-        <TableOfContents {...args} variant="border" onlyShowSelectedChildren />
+        <TableOfContents {...args} onlyShowSelectedChildren />
         <section>
           {ITEMS_WITH_CHILDREN_AND_LONG_LABEL.map((item) => (
-            <Section
-              key={item.value}
-              label={item.label}
-              value={item.value}
-              color={faker.color.rgb()}
-            >
-              {item.children?.map((child) => (
-                <Section
-                  key={child.value}
-                  label={child.label}
-                  value={child.value}
-                  color={faker.color.rgb()}
-                />
-              ))}
-            </Section>
-          ))}
-        </section>
-      </Container>
-    </TableOfContentsProvider>
-  );
-};
-
-export const WithChildrenAndBordersDisabled: StoryFn<StoryProps> = (args) => {
-  return (
-    <TableOfContentsProvider items={ITEMS_WITH_CHILDREN_DISABLED}>
-      <Container>
-        <TableOfContents {...args} variant="border" />
-        <section>
-          {ITEMS_WITH_CHILDREN_DISABLED.map((item) => (
             <Section
               key={item.value}
               label={item.label}
@@ -492,7 +380,7 @@ export const WithChildrenAndCounts: StoryFn<StoryProps> = (args) => {
       }))}
     >
       <Container>
-        <TableOfContents {...args} variant="border" />
+        <TableOfContents {...args} />
         <section>
           {ITEMS_WITH_CHILDREN.map((item) => (
             <Section
@@ -513,6 +401,36 @@ export const WithChildrenAndCounts: StoryFn<StoryProps> = (args) => {
           ))}
         </section>
       </Container>
+    </TableOfContentsProvider>
+  );
+};
+
+export const HorizontalCount: StoryFn<StoryProps> = () => {
+  return (
+    <TableOfContentsProvider
+      items={ITEMS_WITH_CHILDREN.map((item) => ({
+        ...item,
+        count: Math.ceil(Math.random() * 10),
+        children:
+          item.children?.map((child) => ({
+            ...child,
+            count: Math.ceil(Math.random() * 10),
+          })) ?? [],
+      }))}
+    >
+      <HorizontalContainer>
+        <TableOfContents mode="horizontal" />
+        <section>
+          {ITEMS_WITH_CHILDREN.map((item, index) => (
+            <Section
+              key={item.value}
+              label={item.label}
+              value={item.value}
+              color={COLORS[index]}
+            />
+          ))}
+        </section>
+      </HorizontalContainer>
     </TableOfContentsProvider>
   );
 };

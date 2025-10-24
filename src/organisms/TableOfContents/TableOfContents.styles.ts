@@ -1,17 +1,13 @@
-import { tokens } from '@equinor/eds-tokens';
 import { Link as TanstackLink } from '@tanstack/react-router';
 
-import { animation, spacings } from 'src/atoms/style';
-import { HEIGHT } from 'src/organisms/TableOfContents/TableOfContents.constants';
-import { TableOfContentsVariants } from 'src/organisms/TableOfContents/TableOfContents.types';
+import { animation, colors, spacings } from 'src/atoms/style';
+import { VERTICAL_ITEM_HEIGHT } from 'src/organisms/TableOfContents/TableOfContents.constants';
 
 import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
-const { colors, shape } = tokens;
 interface ButtonProps {
   $active: boolean;
-  $variant: TableOfContentsVariants;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -35,7 +31,7 @@ export const Button = styled.button<ButtonProps>`
   color: ${colors.text.static_icons__default.rgba};
   cursor: pointer;
   padding: 0 ${spacings.medium};
-  height: ${({ $variant }) => HEIGHT[$variant]};
+  height: ${VERTICAL_ITEM_HEIGHT};
   transition: background 200ms;
   > span {
     display: flex;
@@ -46,31 +42,21 @@ export const Button = styled.button<ButtonProps>`
     font-weight: 700;
     font-size: 14px;
   }
-  ${({ $variant, $active }) => {
-    switch ($variant) {
-      case 'buttons':
-        return css`
-          border-radius: ${shape.corners.borderRadius};
-          background: ${$active
-            ? colors.interactive.primary__hover_alt.rgba
-            : 'none'};
-        `;
-      case 'border':
-        return css`
-          > span {
-            font-weight: ${$active ? 700 : 500};
-            &:after {
-              height: 0;
-              display: block;
-              content: attr(title);
-              font-weight: 700;
-              font-size: 14px;
-              overflow: hidden;
-              visibility: hidden;
-            }
-          }
-        `;
-    }
+  ${({ $active }) => {
+    return css`
+      > span {
+        font-weight: ${$active ? 700 : 500};
+        &:after {
+          height: 0;
+          display: block;
+          content: attr(title);
+          font-weight: 700;
+          font-size: 14px;
+          overflow: hidden;
+          visibility: hidden;
+        }
+      }
+    `;
   }}
   ${({ $active }) =>
     !$active &&
@@ -121,7 +107,7 @@ export const Link = styled(TanstackLink)<LinkProps>`
   color: ${colors.text.static_icons__default.rgba};
   cursor: pointer;
   padding: 0 ${spacings.medium};
-  height: ${({ $variant }) => HEIGHT[$variant]};
+  height: ${VERTICAL_ITEM_HEIGHT};
   transition: background 200ms;
 
   > span {
@@ -133,31 +119,21 @@ export const Link = styled(TanstackLink)<LinkProps>`
     font-weight: 700;
     font-size: 14px;
   }
-  ${({ $variant, $active }) => {
-    switch ($variant) {
-      case 'buttons':
-        return css`
-          border-radius: ${shape.corners.borderRadius};
-          background: ${$active
-            ? colors.interactive.primary__hover_alt.rgba
-            : 'none'};
-        `;
-      case 'border':
-        return css`
-          > span {
-            font-weight: ${$active ? 700 : 500};
-            &:after {
-              height: 0;
-              display: block;
-              content: attr(title);
-              font-weight: 700;
-              font-size: 14px;
-              overflow: hidden;
-              visibility: hidden;
-            }
-          }
-        `;
-    }
+  ${({ $active }) => {
+    return css`
+      > span {
+        font-weight: ${$active ? 700 : 500};
+        &:after {
+          height: 0;
+          display: block;
+          content: attr(title);
+          font-weight: 700;
+          font-size: 14px;
+          overflow: hidden;
+          visibility: hidden;
+        }
+      }
+    `;
   }}
 `;
 
@@ -205,91 +181,44 @@ export const BorderItemsContainer = styled.div<BorderItemsContainerProps>`
   }
 `;
 
-interface TableOfContentsContainerProps {
-  $variant: TableOfContentsVariants;
-}
-
-export const TableOfContentsItemContainer = styled(
-  motion.div
-)<TableOfContentsContainerProps>`
+export const TableOfContentsItemContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   position: relative;
-  ${({ $variant }) => css`
-    min-height: ${HEIGHT[$variant]};
-    ${$variant === 'buttons' && `gap: ${spacings.x_small};`}
-  `}
+  min-height: ${VERTICAL_ITEM_HEIGHT};
 `;
 
-export const TableOfContentsContainer = styled(
-  motion.div
-)<TableOfContentsContainerProps>`
+export const TableOfContentsContainer = styled(motion.div)`
   display: flex;
-  flex-direction: ${({ $variant }) =>
-    $variant === 'borderHorizontal' ? 'row' : 'column'};
+  flex-direction: column;
   height: fit-content;
   overflow: hidden;
-  ${({ $variant }) => {
-    switch ($variant) {
-      case 'buttons':
-        return `gap: ${spacings.small};`;
-      case 'border':
-        return css`
-          &:after {
-            position: absolute;
-            left: 0;
-            content: '';
-            width: 2px;
-            height: 100%;
-            background: ${colors.ui.background__medium.rgba};
-          }
-        `;
-      case 'borderHorizontal': {
-        return css`
-          &:after {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            content: '';
-            width: 100%;
-            height: 2px;
-            background: ${colors.ui.background__medium.rgba};
-          }
-        `;
-      }
-    }
-  }}
+  &:after {
+    position: absolute;
+    left: 0;
+    content: '';
+    width: 2px;
+    height: 100%;
+    background: ${colors.ui.background__medium.rgba};
+  }
 `;
 
 interface ChildContainerProps {
-  $variant: TableOfContentsVariants;
   $shouldShowChildren: boolean;
 }
 
 export const ChildContainer = styled(motion.div)<ChildContainerProps>`
   display: flex;
   flex-direction: column;
+  > div > button,
+  a {
+    padding-left: ${spacings.x_large};
+  }
   ${({ $shouldShowChildren }) =>
     !$shouldShowChildren
       ? css`
           visibility: hidden;
           height: 0 !important;
         `
-      : null}
-  > div > button, a {
-    ${({ $variant }) => {
-      switch ($variant) {
-        case 'buttons':
-          return css`
-            margin-left: ${spacings.medium};
-          `;
-        case 'border':
-          return css`
-            padding-left: ${spacings.x_large};
-          `;
-      }
-    }}
-  }
-
-  ${({ $variant }) => $variant === 'buttons' && `gap:${spacings.x_small};`}
+      : ''}
 `;
