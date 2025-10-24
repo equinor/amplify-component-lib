@@ -333,6 +333,7 @@ const meta: Meta<FilterStoryProps> = {
       control: { type: 'text' },
     },
     initialOpen: { type: 'boolean', description: 'Default is false' },
+    openOnFocus: { type: 'boolean', description: 'Default is true' },
     onClearFilter: {
       type: 'function',
       description: 'Callback when specific filters is cleared',

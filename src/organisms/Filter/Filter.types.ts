@@ -17,6 +17,7 @@ interface CommonFilterProps<T extends string> {
   initialOpen?: boolean;
   placeholder?: string;
   id?: string;
+  openOnFocus?: boolean;
 }
 
 export interface FilterWithAutoCompleteOptions<T extends string>
