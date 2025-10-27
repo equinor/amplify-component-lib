@@ -333,6 +333,7 @@ const meta: Meta<FilterStoryProps> = {
       control: { type: 'text' },
     },
     initialOpen: { type: 'boolean', description: 'Default is false' },
+    openOnFocus: { type: 'boolean', description: 'Default is true' },
     onClearFilter: {
       type: 'function',
       description: 'Callback when specific filters is cleared',
@@ -458,5 +459,17 @@ export const WithAutoComplete: Story = {
         label: randomCarSize.label,
       })
     );
+  },
+};
+
+export const WithOpenOnFocusFalse: Story = {
+  args: {
+    openOnFocus: false,
+    values: {},
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('searchbox'));
+
+    await expect(canvas.queryByRole('combobox')).not.toBeInTheDocument();
   },
 };

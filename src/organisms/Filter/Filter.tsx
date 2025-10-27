@@ -39,6 +39,7 @@ import { AnimatePresence, motion } from 'framer-motion';
  * @param initialOpen - Whether the filter should be open by default, defaults to false
  * @param placeholder - Placeholder text for the search input, defaults to 'Search...'
  * @param id - ID for the search field
+ * @param openOnFocus - Should the filter menu open when focusing the search field, default is true
  */
 export function Filter<T extends string>({
   values,
@@ -53,6 +54,7 @@ export function Filter<T extends string>({
   initialOpen = false,
   placeholder = 'Search...',
   id,
+  openOnFocus = true,
   ...rest
 }: FilterProps<T>) {
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -71,7 +73,7 @@ export function Filter<T extends string>({
   };
 
   const handleOnFocus = () => {
-    if (!open) setOpen(true);
+    if (!open && openOnFocus) setOpen(true);
   };
 
   const handleOnSectionClick = () => {
