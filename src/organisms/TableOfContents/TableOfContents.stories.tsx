@@ -59,7 +59,7 @@ export default meta;
 const Container = styled.div`
   display: grid;
   position: relative;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: minmax(auto, 200px) 1fr;
   gap: 1rem;
   > .page-menu {
     position: sticky;
@@ -477,7 +477,7 @@ export const HorizontalCount: StoryFn<StoryProps> = () => {
     <TableOfContentsProvider
       items={ITEMS_WITH_CHILDREN.map((item, index) => ({
         ...item,
-        count: 0,
+        count: Math.ceil(Math.random() * 13),
         disabled: index === 1,
         children:
           item.children?.map((child) => ({
@@ -488,7 +488,6 @@ export const HorizontalCount: StoryFn<StoryProps> = () => {
     >
       <HorizontalContainer>
         <TableOfContents mode="horizontal" />
-        <TableOfContents />
         <section>
           {ITEMS_WITH_CHILDREN.map((item, index) => (
             <Section

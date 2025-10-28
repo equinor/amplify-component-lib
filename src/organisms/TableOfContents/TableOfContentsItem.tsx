@@ -1,6 +1,5 @@
-import { FC, useEffect, useMemo, useRef } from 'react';
+import { FC, useMemo } from 'react';
 
-import { VERTICAL_ITEM_HEIGHT } from './TableOfContents.constants';
 import {
   Button,
   ChildContainer,
@@ -11,6 +10,8 @@ import {
   TableOfContentsItemType,
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
+
+import { AnimatePresence } from 'framer-motion';
 
 interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;
@@ -26,13 +27,6 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   onlyShowSelectedChildren,
 }) => {
   const { isActive, selected, setSelected } = useTableOfContents();
-  const initialHeight = useRef<number | undefined>(undefined);
-
-  useEffect(() => {
-    if (initialHeight.current === undefined) {
-      initialHeight.current = 0;
-    }
-  }, []);
 
   const active = useMemo(
     () => isActive({ label, value, children }) && !disabled,
@@ -58,27 +52,26 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
           <Badge variant={disabled ? 'empty' : 'light'} value={count} />
         )}
       </Button>
-      {children && (
-        <ChildContainer
-          $shouldShowChildren={shouldShowChildren}
-          initial={{ height: initialHeight.current }}
-          animate={{
-            height: `
-                  calc(
-                    (${shouldShowChildren ? VERTICAL_ITEM_HEIGHT : '0'} * ${children.length})
-                  )`,
-          }}
-          transition={{ duration: 0.4 }}
-        >
-          {children.map((child) => (
-            <TableOfContentsItem
-              key={child.value}
-              onlyShowSelectedChildren={onlyShowSelectedChildren}
-              {...child}
-            />
-          ))}
-        </ChildContainer>
-      )}
+      <AnimatePresence>
+        {children && shouldShowChildren && (
+          <ChildContainer
+            initial={{ height: 0 }}
+            animate={{
+              height: 'auto',
+            }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {children.map((child) => (
+              <TableOfContentsItem
+                key={child.value}
+                onlyShowSelectedChildren={onlyShowSelectedChildren}
+                {...child}
+              />
+            ))}
+          </ChildContainer>
+        )}
+      </AnimatePresence>
     </TableOfContentsItemContainer>
   );
 };

@@ -29,7 +29,7 @@ export const Button = styled.button<ButtonProps>`
   color: ${colors.text.static_icons__default.rgba};
   cursor: pointer;
   padding: 0 ${spacings.medium};
-  height: ${VERTICAL_ITEM_HEIGHT};
+  min-height: ${VERTICAL_ITEM_HEIGHT};
   transition: background 200ms;
   > span {
     display: flex;
@@ -132,22 +132,11 @@ export const TableOfContentsContainer = styled(motion.div)`
   }
 `;
 
-interface ChildContainerProps {
-  $shouldShowChildren: boolean;
-}
-
-export const ChildContainer = styled(motion.div)<ChildContainerProps>`
+export const ChildContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   > div > button,
   a {
     padding-left: ${spacings.x_large};
   }
-  ${({ $shouldShowChildren }) =>
-    !$shouldShowChildren
-      ? css`
-          visibility: hidden;
-          height: 0 !important;
-        `
-      : ''}
 `;
