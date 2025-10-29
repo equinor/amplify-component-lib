@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
+import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -19,7 +20,11 @@ function Wrappers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ReleaseNotesProvider>
-          <SnackbarProvider>{children}</SnackbarProvider>
+          <SnackbarProvider>
+            <TopBar applicationIcon="test" applicationName="test">
+              {children}
+            </TopBar>
+          </SnackbarProvider>
         </ReleaseNotesProvider>
       </AuthProvider>
     </QueryClientProvider>

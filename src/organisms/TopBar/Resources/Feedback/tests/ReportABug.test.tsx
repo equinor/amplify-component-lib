@@ -11,6 +11,7 @@ import {
   UrgencyOption,
 } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
+import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
   AuthProvider,
   ReleaseNotesProvider,
@@ -33,7 +34,11 @@ function Wrappers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ReleaseNotesProvider>
-          <SnackbarProvider showAPIErrors={false}>{children}</SnackbarProvider>
+          <SnackbarProvider>
+            <TopBar applicationIcon="test" applicationName="test">
+              {children}
+            </TopBar>
+          </SnackbarProvider>
         </ReleaseNotesProvider>
       </AuthProvider>
     </QueryClientProvider>
