@@ -18,7 +18,7 @@ import {
   SnackbarProvider,
 } from 'src/providers';
 import {
-  render,
+  renderWithRouter,
   screen,
   test,
   userEvent,
@@ -68,7 +68,7 @@ describe('Report a bug', () => {
   beforeEach(async () => {
     window.localStorage.clear();
 
-    render(<Resources />, { wrapper: Wrappers });
+    await renderWithRouter(<Resources />, undefined, { wrapper: Wrappers });
     const user = userEvent.setup();
 
     await user.click(screen.getByRole('button'));

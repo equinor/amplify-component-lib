@@ -4,17 +4,20 @@ import { Feedback } from './Feedback';
 import { FeedbackType } from './Feedback.types';
 import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
-  renderWithProviders,
+  Providers,
+  renderWithRouter,
   screen,
   userEvent,
 } from 'src/tests/browsertest-utils';
 
 test('Shows error if url does not contain .equinor', async () => {
   const handleOnClose = vi.fn();
-  renderWithProviders(
+  await renderWithRouter(
     <TopBar applicationIcon="test" applicationName="Test">
       <Feedback onClose={handleOnClose} selectedType={FeedbackType.BUG} />
-    </TopBar>
+    </TopBar>,
+    undefined,
+    { wrapper: Providers }
   );
   const user = userEvent.setup();
 

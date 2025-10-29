@@ -10,7 +10,12 @@ import {
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, test, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderWithRouter,
+  screen,
+  test,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 import { beforeEach } from 'vitest';
 
@@ -35,7 +40,7 @@ describe('Suggest a feature', () => {
   beforeEach(async () => {
     window.localStorage.clear();
 
-    render(<Resources />, { wrapper: Wrappers });
+    await renderWithRouter(<Resources />, undefined, { wrapper: Wrappers });
     const user = userEvent.setup();
 
     await user.click(screen.getByRole('button'));
