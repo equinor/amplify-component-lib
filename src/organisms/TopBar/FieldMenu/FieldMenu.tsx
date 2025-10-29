@@ -23,12 +23,12 @@ import {
 } from './FieldMenu.styles';
 import { Field } from 'src/atoms/types/Field';
 import { TopBarButton } from 'src/organisms/TopBar/TopBar.styles';
+import { useTopBarInternalContext } from 'src/organisms/TopBar/TopBarInternalContextProvider';
 import { TopBarMenu } from 'src/organisms/TopBar/TopBarMenu';
 
 const { colors } = tokens;
 
 export interface FieldMenuProps {
-  currentField?: Field;
   availableFields: Field[];
   onSelect: (selectedField: Field) => void;
   itemNameSingular?: string; // Defaults to 'field'
@@ -38,7 +38,6 @@ export interface FieldMenuProps {
 export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
   (
     {
-      currentField,
       availableFields,
       onSelect,
       itemNameSingular = 'field',
@@ -46,6 +45,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     },
     ref
   ) => {
+    const { selectedField } = useTopBarInternalContext();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -68,32 +68,32 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
       if (searchValue === '')
         return availableFields.filter(
           (field) =>
-            field.name?.toLowerCase() !== currentField?.name?.toLowerCase()
+            field.name?.toLowerCase() !== selectedField?.name?.toLowerCase()
         );
 
       return availableFields.filter((field) =>
         field.name?.toLowerCase().includes(searchValue.toLowerCase())
       );
-    }, [availableFields, searchValue, currentField]);
+    }, [availableFields, searchValue, selectedField]);
 
     const noSearchResult = useMemo(() => {
       return filteredFields.length === 0 && availableFields.length > 1;
     }, [availableFields.length, filteredFields.length]);
 
     const transformedFieldName = useMemo(() => {
-      if (currentField?.name) {
+      if (selectedField?.name) {
         return (
-          currentField?.name?.charAt(0).toUpperCase() +
-          currentField?.name?.slice(1)
+          selectedField.name.charAt(0).toUpperCase() +
+          selectedField.name.slice(1)
         );
       }
-    }, [currentField?.name]);
+    }, [selectedField?.name]);
 
     const showSearchInput = useMemo(() => {
       return filteredFields.length >= 4 || searchValue !== '';
     }, [filteredFields, searchValue]);
 
-    if (currentField === undefined) return null;
+    if (!selectedField) return null;
 
     return (
       <div ref={ref}>
@@ -130,12 +130,12 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
               )}
 
               <ListContainer>
-                {currentField && !noSearchResult && searchValue === '' && (
+                {selectedField && !noSearchResult && searchValue === '' && (
                   <MenuFixedItem $active>
                     <div>
                       <TextContainer>
                         <Typography variant="h6">
-                          {currentField.name?.toLowerCase()}
+                          {selectedField.name?.toLowerCase()}
                         </Typography>
                       </TextContainer>
                       <Icon

@@ -16,7 +16,7 @@ test('Shows error if url does not contain .equinor', async () => {
     <TopBar applicationIcon="test" applicationName="Test">
       <Feedback onClose={handleOnClose} selectedType={FeedbackType.BUG} />
     </TopBar>,
-    undefined,
+    { initialEntries: ['/'], routes: ['/'] },
     { wrapper: Providers }
   );
   const user = userEvent.setup();

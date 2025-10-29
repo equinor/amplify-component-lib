@@ -34,11 +34,7 @@ function Wrappers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ReleaseNotesProvider>
-          <SnackbarProvider>
-            <TopBar applicationIcon="test" applicationName="test">
-              {children}
-            </TopBar>
-          </SnackbarProvider>
+          <SnackbarProvider>{children}</SnackbarProvider>
         </ReleaseNotesProvider>
       </AuthProvider>
     </QueryClientProvider>
@@ -68,7 +64,13 @@ describe('Report a bug', () => {
   beforeEach(async () => {
     window.localStorage.clear();
 
-    await renderWithRouter(<Resources />, undefined, { wrapper: Wrappers });
+    await renderWithRouter(
+      <TopBar applicationIcon="test" applicationName="test">
+        <Resources />,
+      </TopBar>,
+      { initialEntries: ['/'], routes: ['/'] },
+      { wrapper: Wrappers }
+    );
     const user = userEvent.setup();
 
     await user.click(screen.getByRole('button'));
