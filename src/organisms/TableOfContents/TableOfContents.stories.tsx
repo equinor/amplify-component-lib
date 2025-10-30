@@ -172,6 +172,47 @@ export const Default: Story = {
   },
 };
 
+export const DisabledItemsWithCount: Story = {
+  render: (args) => {
+    return (
+      <TableOfContentsProvider
+        items={args.items.map((item, index) => ({
+          ...item,
+          disabled: index === 1,
+          count: Math.ceil(Math.random() * 13),
+        }))}
+      >
+        <Container>
+          <TableOfContents mode={args.mode} />
+          <section>
+            {args.items.map((item, index) => (
+              <Section
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                color={COLORS[index]}
+              />
+            ))}
+          </section>
+        </Container>
+      </TableOfContentsProvider>
+    );
+  },
+  play: async ({ canvas, args }) => {
+    for (const [index, item] of args.items.entries()) {
+      if (index === 1) {
+        await expect(
+          canvas.getByRole('button', { name: new RegExp(item.label) })
+        ).toBeDisabled();
+      } else {
+        await expect(
+          canvas.getByRole('button', { name: new RegExp(item.label) })
+        ).not.toBeDisabled();
+      }
+    }
+  },
+};
+
 export const Horizontal: Story = {
   render: (args) => {
     return (
