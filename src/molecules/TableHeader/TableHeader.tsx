@@ -1,7 +1,7 @@
 import { FC, MouseEvent, MouseEventHandler } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { IconData, swap_vertical } from '@equinor/eds-icons';
+import { IconData } from '@equinor/eds-icons';
 
 import { SpacingsMode } from 'src/atoms';
 import { Variants } from 'src/atoms/types/variants';
@@ -15,6 +15,7 @@ import {
   getActionIconColor,
   getLeadingIcon,
   getLeadingIconColor,
+  getSortingIcon,
   getTextColor,
 } from 'src/molecules/TableHeader/TableHeader.utils';
 
@@ -28,7 +29,7 @@ export interface TableHeaderProps {
     onClick: () => void;
   };
   sorting?: {
-    isSorting?: boolean;
+    isSorting?: 'asc' | 'desc';
     onSortClick?: MouseEventHandler;
   };
   children: string;
@@ -66,7 +67,7 @@ export const TableHeader: FC<TableHeaderProps> = ({
     <Wrapper as={as}>
       <Container
         $hasOnClick={!!onClick}
-        $hasOnSort={!!sorting?.isSorting}
+        $hasOnSort={!!sorting}
         $variant={variant}
         onClick={handleOnContainerClick}
       >
@@ -113,7 +114,7 @@ export const TableHeader: FC<TableHeaderProps> = ({
                 variant="ghost_icon"
               >
                 <Icon
-                  data={swap_vertical}
+                  data={getSortingIcon(sorting.isSorting)}
                   color={getActionIconColor({
                     variant,
                   })}

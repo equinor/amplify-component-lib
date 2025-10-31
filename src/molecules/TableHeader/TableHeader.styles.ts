@@ -1,4 +1,4 @@
-import { animation, spacings } from 'src/atoms/style';
+import { spacings } from 'src/atoms/style';
 import { TableHeaderProps } from 'src/molecules/TableHeader/TableHeader';
 import {
   getButtonHoverColor,
@@ -29,10 +29,6 @@ export const Container = styled.span<ContainerProps>`
   > ${ActionsWrapper} > button {
     margin-left: auto;
   }
-  > ${ActionsWrapper} > button.sort-button {
-    opacity: 0;
-    transition: opacity ${animation.transitionMS};
-  }
   > ${ActionsWrapper} > button:hover {
     background: none;
     &:before {
@@ -55,23 +51,14 @@ export const Container = styled.span<ContainerProps>`
         cursor: pointer;
         &:hover {
           background: ${getHoverColor({ variant: $variant })};
-          > ${ActionsWrapper} > button.sort-button {
-            opacity: 1;
-          }
         }
       `;
     }
 
     return css`
       cursor: pointer;
-      &:hover {
-        > ${ActionsWrapper} > button.sort-button {
-          opacity: 1;
-        }
-      }
       &:hover:not(:has(> ${ActionsWrapper} > button:hover)) {
         > ${ActionsWrapper} > button.sort-button {
-          opacity: 1;
           &:before {
             content: '';
             width: 100%;

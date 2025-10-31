@@ -24,7 +24,7 @@ const meta: Meta<typeof TableHeader> = {
     children: 'Table Data Header',
     leadingIcon: users_circle,
     sorting: {
-      isSorting: true,
+      isSorting: undefined,
       onSortClick: fn(),
     },
   },
@@ -39,11 +39,11 @@ const meta: Meta<typeof TableHeader> = {
     },
     sorting: {
       control: 'select',
-      options: ['undefined', 'WithActiveSorting', 'WithInactiveSorting'],
+      options: ['undefined', 'WithAscSorting', 'WithDescSorting'],
       mapping: {
         undefined: undefined,
-        WithActiveSorting: { isSorting: true, onSortClick: fn() },
-        WithInactiveSorting: { isSorting: false, onSortClick: fn() },
+        WithAscSorting: { isSorting: 'asc', onSortClick: fn() },
+        WithDescSorting: { isSorting: 'desc', onSortClick: fn() },
       },
     },
     leadingIcon: {
@@ -125,7 +125,7 @@ export const Variants: Story = {
     leadingIcon: undefined,
     children: 'Table Data Header',
     sorting: {
-      isSorting: true,
+      isSorting: 'asc',
       onSortClick: fn(),
     },
   },

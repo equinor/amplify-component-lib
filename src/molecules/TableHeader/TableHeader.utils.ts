@@ -1,4 +1,10 @@
-import { error_outlined, IconData, warning_outlined } from '@equinor/eds-icons';
+import {
+  arrow_down,
+  arrow_up,
+  error_outlined,
+  IconData,
+  warning_outlined,
+} from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms/style';
 import { TableHeaderProps } from 'src/molecules/TableHeader/TableHeader';
@@ -44,6 +50,17 @@ export function getActionIconColor(
   }
 
   return colors.interactive.primary__resting.rgba;
+}
+
+export function getSortingIcon(
+  isSorting: NonNullable<NonNullable<TableHeaderProps['sorting']>['isSorting']>
+): IconData {
+  switch (isSorting) {
+    case 'asc':
+      return arrow_up;
+    case 'desc':
+      return arrow_down;
+  }
 }
 
 export function getTextColor(
