@@ -14,12 +14,11 @@ import {
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { Field } from 'src/atoms/types/Field';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
+import { TopBarInternalContextProvider } from 'src/organisms/TopBar/TopBarInternalContextProvider';
 
 export type TopBarBaseProps = {
   applicationIcon: string;
   applicationName: string;
-  /** @deprecated - Not needed anymore, clicking header wil go to '/' by default */
-  onHeaderClick?: () => void;
   /** @param - Path when clicking header */
   headerLink?: string;
   environment?: EnvironmentType;
@@ -52,40 +51,41 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarBaseProps>(
     },
     ref
   ) => (
-    <Bar ref={ref}>
-      <AppAndFieldContainer id={id}>
-        <AppIdentifier tabIndex={0} to={headerLink || '/'}>
-          <ApplicationIcon name={applicationIcon} size={32} withHover />
-          <AppName
-            group="navigation"
-            variant="menu_title"
-            $capitalize={capitalize}
-          >
-            {capitalize ? applicationName.toLowerCase() : applicationName}
-          </AppName>
-        </AppIdentifier>
-        {availableFields && onSelectField && (
-          <FieldMenu
-            availableFields={availableFields}
-            onSelect={onSelectField}
-            currentField={currentField}
-            showAccessITLink={showAccessITLink}
-            itemNameSingular={itemNameSingular}
-          />
+    <TopBarInternalContextProvider selectedField={currentField}>
+      <Bar ref={ref}>
+        <AppAndFieldContainer id={id}>
+          <AppIdentifier tabIndex={0} to={headerLink || '/'}>
+            <ApplicationIcon name={applicationIcon} size={32} withHover />
+            <AppName
+              group="navigation"
+              variant="menu_title"
+              $capitalize={capitalize}
+            >
+              {capitalize ? applicationName.toLowerCase() : applicationName}
+            </AppName>
+          </AppIdentifier>
+          {availableFields && onSelectField && (
+            <FieldMenu
+              availableFields={availableFields}
+              onSelect={onSelectField}
+              showAccessITLink={showAccessITLink}
+              itemNameSingular={itemNameSingular}
+            />
+          )}
+          {isFetching && <CircularProgress size={16} />}
+        </AppAndFieldContainer>
+        {(environment === EnvironmentType.DEVELOP ||
+          environment === EnvironmentType.STAGING ||
+          environment === EnvironmentType.LOCALHOST) && (
+          <EnvironmentTag $environmentType={environment}>
+            <Typography group="heading" variant="h5">
+              {environment}
+            </Typography>
+          </EnvironmentTag>
         )}
-        {isFetching && <CircularProgress size={16} />}
-      </AppAndFieldContainer>
-      {(environment === EnvironmentType.DEVELOP ||
-        environment === EnvironmentType.STAGING ||
-        environment === EnvironmentType.LOCALHOST) && (
-        <EnvironmentTag $environmentType={environment}>
-          <Typography group="heading" variant="h5">
-            {environment}
-          </Typography>
-        </EnvironmentTag>
-      )}
-      {children}
-    </Bar>
+        {children}
+      </Bar>
+    </TopBarInternalContextProvider>
   )
 );
 
