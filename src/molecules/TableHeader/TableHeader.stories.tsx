@@ -102,6 +102,7 @@ export const Default: Story = {
     children: '富士',
     leadingIcon: undefined,
     onClick: undefined,
+    sorting: undefined,
   },
 };
 
