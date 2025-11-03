@@ -95,7 +95,7 @@ export const Primary: Story = {
   play: async ({ canvas, args }) => {
     const { sections } = args;
 
-    const button = canvas.getByTestId('show-hide-button');
+    const button = canvas.getByRole('button');
     await userEvent.click(button);
 
     const sectionsElements = await canvas.findAllByTestId('guidelines-section');
