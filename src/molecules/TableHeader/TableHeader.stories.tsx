@@ -7,7 +7,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { TableHeader } from './TableHeader';
 import { colors, shape, spacings } from 'src/atoms';
 
-import { fn } from 'storybook/test';
+import { expect, fn, userEvent } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof TableHeader> = {
@@ -145,4 +145,45 @@ export const Variants: Story = {
       )}
     </VariantsContainer>
   ),
+};
+
+export const WithOnClick: Story = {
+  args: {
+    children: 'トヨタ',
+    onClick: fn(),
+    sorting: undefined,
+  },
+  play: async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByText(args.children));
+    await expect(args.onClick).toHaveBeenCalled();
+  },
+};
+
+export const WithOnSort: Story = {
+  args: {
+    children: 'マツダ',
+    sorting: {
+      onSortClick: fn(),
+      isSorting: 'asc',
+    },
+  },
+  play: async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByText(args.children));
+    await expect(args.sorting?.onSortClick).toHaveBeenCalled();
+  },
+};
+
+export const WithTrailingAction: Story = {
+  args: {
+    leadingIcon: undefined,
+    children: 'ホンダ',
+    trailingAction: {
+      onClick: fn(),
+      icon: filter_list,
+    },
+  },
+  play: async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.trailingAction?.onClick).toHaveBeenCalled();
+  },
 };
