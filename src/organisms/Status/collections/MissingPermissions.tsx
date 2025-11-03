@@ -1,15 +1,10 @@
 import { FC } from 'react';
 
-import { useRouter } from '@tanstack/react-router';
-
+import { useStatusNavigation } from 'src/atoms/hooks';
 import { Status } from 'src/organisms/Status';
 
 export const MissingPermissions: FC = () => {
-  const { history } = useRouter();
-
-  const handleOnClick = () => {
-    history.go(-1);
-  };
+  const handleOnClick = useStatusNavigation();
 
   return (
     <Status>
