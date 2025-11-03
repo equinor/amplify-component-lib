@@ -98,7 +98,11 @@ const VariantHeaderPath = styled.span`
 `;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    children: '富士',
+    leadingIcon: undefined,
+    onClick: undefined,
+  },
 };
 
 const VARIANT_OBJECT = {
@@ -159,12 +163,26 @@ export const WithOnClick: Story = {
   },
 };
 
-export const WithOnSort: Story = {
+export const WithOnSortAsc: Story = {
   args: {
     children: 'マツダ',
     sorting: {
       onSortClick: fn(),
       isSorting: 'asc',
+    },
+  },
+  play: async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByText(args.children));
+    await expect(args.sorting?.onSortClick).toHaveBeenCalled();
+  },
+};
+
+export const WithOnSortDesc: Story = {
+  args: {
+    children: 'マツダ',
+    sorting: {
+      onSortClick: fn(),
+      isSorting: 'desc',
     },
   },
   play: async ({ args, canvas }) => {
