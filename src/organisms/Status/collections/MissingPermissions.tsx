@@ -6,6 +6,7 @@ interface MissingPermissionsProps {
   description?: string;
   redirectFallbackUrl?: string;
   onBackClick?: () => void;
+  hideBackButton?: boolean;
 }
 
 export const MissingPermissions = ({
@@ -13,6 +14,7 @@ export const MissingPermissions = ({
   description,
   redirectFallbackUrl,
   onBackClick,
+  hideBackButton = false,
 }: MissingPermissionsProps) => {
   const handleOnClick = useStatusNavigation({
     onBackClick,
@@ -23,7 +25,7 @@ export const MissingPermissions = ({
     <Status>
       <Status.Title title={title} />
       {description && <Status.Description text={description} />}
-      <Status.Action onClick={handleOnClick} />
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };

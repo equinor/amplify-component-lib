@@ -5,12 +5,14 @@ interface PageNotFoundProps {
   description?: string;
   redirectFallbackUrl?: string;
   onBackClick?: () => void;
+  hideBackButton?: boolean;
 }
 
 export const PageNotFound = ({
   description = "It looks like the page you're looking for has gone missing. Please check the URL and try again.",
   redirectFallbackUrl,
   onBackClick,
+  hideBackButton = false,
 }: PageNotFoundProps) => {
   const handleOnClick = useStatusNavigation({
     onBackClick,
@@ -21,7 +23,7 @@ export const PageNotFound = ({
     <Status center={false}>
       <Status.Title title="Page not found" />
       <Status.Description text={description} />
-      <Status.Action onClick={handleOnClick} />
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };

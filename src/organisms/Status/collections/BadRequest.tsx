@@ -5,6 +5,7 @@ interface BadRequestProps {
   description?: string;
   redirectFallbackUrl?: string;
   onBackClick?: () => void;
+  hideBackButton?: boolean;
 }
 
 export const BadRequest = ({
@@ -13,6 +14,7 @@ export const BadRequest = ({
          it using the feedback form located in the top bar.`,
   redirectFallbackUrl,
   onBackClick,
+  hideBackButton = false,
 }: BadRequestProps) => {
   const handleOnClick = useStatusNavigation({
     onBackClick,
@@ -23,7 +25,7 @@ export const BadRequest = ({
     <Status color="#AB9067">
       <Status.Title title="Bad request" />
       <Status.Description text={description} />
-      <Status.Action onClick={handleOnClick} />
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };

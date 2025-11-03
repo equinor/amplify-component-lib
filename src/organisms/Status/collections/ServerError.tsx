@@ -5,6 +5,7 @@ interface ServerErrorProps {
   description?: string;
   redirectFallbackUrl?: string;
   onBackClick?: () => void;
+  hideBackButton?: boolean;
 }
 
 export const ServerError = ({
@@ -13,6 +14,7 @@ export const ServerError = ({
         continues.`,
   redirectFallbackUrl,
   onBackClick,
+  hideBackButton = false,
 }: ServerErrorProps) => {
   const handleOnClick = useStatusNavigation({
     onBackClick,
@@ -23,7 +25,7 @@ export const ServerError = ({
     <Status color="#C47E84">
       <Status.Title title="Something is wrong on our servers" />
       <Status.Description text={description} />
-      <Status.Action onClick={handleOnClick} />
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };

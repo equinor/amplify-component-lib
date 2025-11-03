@@ -6,6 +6,7 @@ interface GenericErrorProps {
   description?: string;
   redirectFallbackUrl?: string;
   onBackClick?: () => void;
+  hideBackButton?: boolean;
 }
 
 export const GenericError = ({
@@ -13,6 +14,7 @@ export const GenericError = ({
   description,
   redirectFallbackUrl,
   onBackClick,
+  hideBackButton = false,
 }: GenericErrorProps) => {
   const handleOnClick = useStatusNavigation({
     onBackClick,
@@ -23,7 +25,7 @@ export const GenericError = ({
     <Status>
       <Status.Title title={title} />
       <Status.Description text={description} />
-      <Status.Action onClick={handleOnClick} />
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };
