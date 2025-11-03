@@ -155,12 +155,13 @@ test('Tab navigation should focus actions in expected order', async () => {
   const button3 = 'button3';
 
   await renderWithRouter(
-    <TopBar applicationIcon="car" applicationName={appName}>
-      <TopBar.FieldSelector
-        availableFields={availableFields}
-        currentField={currentField}
-        onSelect={onSelectedField}
-      />
+    <TopBar
+      applicationIcon="car"
+      applicationName={appName}
+      currentField={currentField}
+      availableFields={availableFields}
+      onSelectField={onSelectedField}
+    >
       <TopBar.Actions>
         <Button>{button1}</Button>
         <Button>{button2}</Button>

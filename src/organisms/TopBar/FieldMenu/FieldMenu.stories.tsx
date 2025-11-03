@@ -1,31 +1,63 @@
 import { useState } from 'react';
 
 import { faker } from '@faker-js/faker';
-import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Field } from 'src/atoms/types/Field';
-import {
-  FieldMenu,
-  FieldMenuProps,
-} from 'src/organisms/TopBar/FieldMenu/FieldMenu';
+import { Field } from 'src/atoms';
+import { TopBar } from 'src/organisms/TopBar';
+import { FieldMenuProps } from 'src/organisms/TopBar/FieldMenu/FieldMenu';
 
 import { expect, fn, userEvent } from 'storybook/test';
 const fields = new Array(5).fill(0).map(() => FakeField());
 
-export default {
-  title: 'Organisms/TopBar/FieldSelector',
-  component: FieldMenu,
-  argTypes: {
-    showAccessITLink: { control: 'boolean' },
-    placement: {
-      control: 'select',
-      options: ['bottom-start', 'bottom', 'bottom-end'],
+function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
+  const [selectedField, setSelectedField] = useState<Field>(fields[0]);
+
+  const handleOnSelectField = (field: Field) => {
+    setSelectedField(field);
+    args?.onSelect?.(field);
+  };
+
+  return (
+    <TopBar
+      availableFields={fields}
+      currentField={
+        args.withField === undefined || args.withField
+          ? selectedField
+          : undefined
+      }
+      showAccessITLink={args.showAccessITLink}
+      onSelectField={handleOnSelectField}
+      applicationIcon="acquire"
+      applicationName="Acquire"
+    >
+      <TopBar.Account />
+    </TopBar>
+  );
+}
+
+const meta: Meta = {
+  title: 'Organisms/TopBar/FieldMenu',
+  component: (args) => <Wrapper {...args} />,
+  parameters: {
+    router: {
+      initialEntries: ['/'],
+      routes: ['/'],
     },
   },
-  args: { showAccessITLink: true, placement: 'bottom-start' },
-} as Meta;
+  argTypes: {
+    showAccessITLink: { control: 'boolean' },
+  },
+  args: {
+    availableFields: fields,
+    onSelect: fn(),
+    showAccessITLink: true,
+  },
+};
 
-type Story = StoryObj<typeof FieldMenu>;
+export default meta;
+
+type Story = StoryObj<typeof Wrapper>;
 
 function FakeField() {
   return {
@@ -35,26 +67,15 @@ function FakeField() {
   };
 }
 
-export const Primary: StoryFn<FieldMenuProps> = (args) => {
-  const [field, setField] = useState<Field>(fields[0]);
-  return (
-    <FieldMenu
-      availableFields={fields}
-      currentField={field}
-      onSelect={(selectedField: Field) => setField(selectedField)}
-      showAccessITLink={args.showAccessITLink}
-    />
-  );
-};
+export const Primary: Story = {};
 
 export const Selecting: Story = {
   args: {
     availableFields: fields,
-    currentField: fields[0],
     onSelect: fn(),
   },
   play: async ({ canvas, args }) => {
-    const button = canvas.getByRole('button');
+    const button = canvas.getByTestId('field-selector-top-bar-button');
     await userEvent.click(button);
 
     const secondItem = canvas.getByText(
@@ -64,5 +85,54 @@ export const Selecting: Story = {
 
     await expect(args.onSelect).toHaveBeenCalledWith(args.availableFields[1]);
     await expect(args.onSelect).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const Searching: Story = {
+  args: {
+    availableFields: fields,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const button = canvas.getByTestId('field-selector-top-bar-button');
+    await userEvent.click(button);
+
+    const searchInput = canvas.getByPlaceholderText(/search fields/i);
+    await userEvent.type(searchInput, faker.animal.cat());
+
+    await expect(canvas.getByText(/no field/i)).toBeInTheDocument();
+  },
+};
+
+export const WithAccessItLink: Story = {
+  args: {
+    availableFields: fields,
+    showAccessITLink: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    window.open = fn();
+    const fieldButton = canvas.getByTestId('field-selector-top-bar-button');
+    await userEvent.click(fieldButton);
+
+    const button = canvas.getByTestId('access-it-link');
+    await userEvent.click(button);
+
+    await expect(window.open).toHaveBeenCalledWith(
+      'https://accessit.equinor.com/#',
+      '_blank'
+    );
+    await expect(window.open).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const NoField: Story = {
+  args: {
+    withField: false,
+  },
+  play: async ({ canvas }) => {
+    const button = canvas.queryByTestId('field-selector-top-bar-button');
+
+    await expect(button).not.toBeInTheDocument();
   },
 };

@@ -9,7 +9,6 @@ import {
   platform,
 } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
-import { useOutsideClick } from '@equinor/eds-utils';
 
 import {
   ListContainer,
@@ -47,7 +46,6 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
   ) => {
     const { selectedField } = useTopBarInternalContext();
     const [isOpen, setIsOpen] = useState(false);
-    const menuRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
 
@@ -57,12 +55,6 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     const handleSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value);
     };
-
-    useOutsideClick(menuRef.current, (e) => {
-      if (buttonRef.current === e.target) return;
-
-      setIsOpen(false);
-    });
 
     const filteredFields = useMemo(() => {
       if (searchValue === '')
@@ -89,9 +81,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
       }
     }, [selectedField?.name]);
 
-    const showSearchInput = useMemo(() => {
-      return filteredFields.length >= 4 || searchValue !== '';
-    }, [filteredFields, searchValue]);
+    const showSearchInput = filteredFields.length >= 4;
 
     if (!selectedField) return null;
 
@@ -114,7 +104,6 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
           onClose={closeMenu}
           anchorEl={buttonRef.current}
           contentPadding={false}
-          ref={menuRef}
         >
           <section>
             <MenuSection>
