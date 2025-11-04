@@ -65,7 +65,15 @@ describe('Report a bug', () => {
     window.localStorage.clear();
 
     await renderWithRouter(
-      <TopBar applicationIcon="test" applicationName="test">
+      <TopBar
+        applicationIcon="test"
+        applicationName="test"
+        currentField={{
+          name: 'field1',
+          country: 'NOR',
+          uuid: 'uuid-1',
+        }}
+      >
         <Resources />,
       </TopBar>,
       { initialEntries: ['/'], routes: ['/'] },

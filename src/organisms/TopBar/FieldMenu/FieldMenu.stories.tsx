@@ -104,6 +104,21 @@ export const Searching: Story = {
   },
 };
 
+export const NoSearchFieldFewFields: Story = {
+  args: {
+    availableFields: [fields[0]],
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const button = canvas.getByTestId('field-selector-top-bar-button');
+    await userEvent.click(button);
+
+    const searchInput = canvas.queryByPlaceholderText(/search fields/i);
+
+    await expect(searchInput).not.toBeInTheDocument();
+  },
+};
+
 export const WithAccessItLink: Story = {
   args: {
     availableFields: fields,
