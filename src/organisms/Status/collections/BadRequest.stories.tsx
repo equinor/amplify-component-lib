@@ -52,13 +52,9 @@ export const CustomDescription: Story = {
     description:
       'Invalid request format. Please check your input and try again.',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test custom description is rendered
-    await expect(
-      canvas.getByText(
-        'Invalid request format. Please check your input and try again.'
-      )
-    ).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is still present
     const backButton = canvas.getByRole('button');
@@ -86,12 +82,10 @@ export const HiddenBackButton: Story = {
     hideBackButton: true,
     description: 'Request blocked - no navigation options available.',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test that title and description are rendered
     await expect(canvas.getByText('Bad request')).toBeVisible();
-    await expect(
-      canvas.getByText('Request blocked - no navigation options available.')
-    ).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is NOT present
     const buttons = canvas.queryAllByRole('button');

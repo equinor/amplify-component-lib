@@ -44,12 +44,10 @@ export const WithTitleAndDescription: Story = {
     title: 'Custom Error Title',
     description: 'This is a custom error description for testing.',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test custom title and description are rendered
-    await expect(canvas.getByText('Custom Error Title')).toBeVisible();
-    await expect(
-      canvas.getByText('This is a custom error description for testing.')
-    ).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is present
     const backButton = canvas.getByRole('button');
@@ -64,9 +62,9 @@ export const WithFallbackUrl: Story = {
       'Unable to connect to the service. Will redirect to home if no history.',
     redirectFallbackUrl: '/home',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test that component renders with fallback URL prop
-    await expect(canvas.getByText('Connection Error')).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
     await expect(
       canvas.getByText(/Will redirect to home if no history/)
     ).toBeVisible();
@@ -84,10 +82,8 @@ export const WithCustomCallback: Story = {
   },
   play: async ({ canvas, args }) => {
     // Test content is rendered
-    await expect(canvas.getByText('Authentication Error')).toBeVisible();
-    await expect(
-      canvas.getByText('Session expired. Please log in again.')
-    ).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     const backButton = canvas.getByRole('button');
     await expect(backButton).toBeVisible();
@@ -105,14 +101,10 @@ export const HiddenBackButton: Story = {
       'System is currently under maintenance. Please check back later.',
     hideBackButton: true,
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test that title and description are rendered
-    await expect(canvas.getByText('Maintenance Mode')).toBeVisible();
-    await expect(
-      canvas.getByText(
-        'System is currently under maintenance. Please check back later.'
-      )
-    ).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is NOT present
     const buttons = canvas.queryAllByRole('button');

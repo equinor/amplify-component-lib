@@ -50,11 +50,9 @@ export const CustomDescription: Story = {
   args: {
     description: 'This is a custom 404 message for testing purposes.',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test custom description is rendered
-    await expect(
-      canvas.getByText('This is a custom 404 message for testing purposes.')
-    ).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is still present
     const backButton = canvas.getByRole('button');
@@ -98,11 +96,9 @@ export const HiddenBackButton: Story = {
     hideBackButton: true,
     description: 'Page not found - no back button available.',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test that description is rendered
-    await expect(
-      canvas.getByText('Page not found - no back button available.')
-    ).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is NOT present
     const buttons = canvas.queryAllByRole('button');
@@ -119,9 +115,7 @@ export const AllPropsTest: Story = {
   },
   play: async ({ canvas, args }) => {
     // Test custom description
-    await expect(
-      canvas.getByText('Comprehensive test with all props configured.')
-    ).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test back button functionality
     const backButton = canvas.getByRole('button');

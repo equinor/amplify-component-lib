@@ -52,14 +52,10 @@ export const CustomTitleAndDescription: Story = {
     description:
       'You need admin privileges to view this content. Please contact your administrator.',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test custom title and description are rendered
-    await expect(canvas.getByText('Access Denied')).toBeVisible();
-    await expect(
-      canvas.getByText(
-        'You need admin privileges to view this content. Please contact your administrator.'
-      )
-    ).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is present
     const backButton = canvas.getByRole('button');
@@ -75,7 +71,7 @@ export const WithCustomCallback: Story = {
   },
   play: async ({ canvas, args }) => {
     // Test content is rendered
-    await expect(canvas.getByText('Insufficient Permissions')).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
 
     const backButton = canvas.getByRole('button');
     await expect(backButton).toBeVisible();
@@ -92,14 +88,10 @@ export const HiddenBackButton: Story = {
     description: 'This area is restricted and no navigation is available.',
     hideBackButton: true,
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test that title and description are rendered
-    await expect(canvas.getByText('Restricted Area')).toBeVisible();
-    await expect(
-      canvas.getByText(
-        'This area is restricted and no navigation is available.'
-      )
-    ).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
+    await expect(canvas.getByText(args.description!)).toBeVisible();
 
     // Test that back button is NOT present
     const buttons = canvas.queryAllByRole('button');
@@ -112,9 +104,9 @@ export const TitleOnly: Story = {
     title: 'Permission Required',
     // No description prop - should not render description element
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     // Test that title is rendered
-    await expect(canvas.getByText('Permission Required')).toBeVisible();
+    await expect(canvas.getByText(args.title!)).toBeVisible();
 
     // Test that back button is present
     const backButton = canvas.getByRole('button');
