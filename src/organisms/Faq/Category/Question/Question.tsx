@@ -38,10 +38,14 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
     <Wrapper>
       <Container>
         <Header>
-          <Typography id={`faq-${id}`}>{question}</Typography>
+          <Typography id={`faq-${id}`} variant="h4">
+            {question}
+          </Typography>
         </Header>
         <TopRight>
-          <Typography>{createdDate}</Typography>
+          <Typography group="paragraph" variant="caption">
+            {createdDate}
+          </Typography>
           <Button
             variant="ghost_icon"
             onClick={handleOnToggleExpanded}

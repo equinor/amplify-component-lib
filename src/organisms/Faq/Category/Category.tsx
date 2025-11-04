@@ -1,8 +1,5 @@
 import type { FC } from 'react';
 
-import { visibility_off } from '@equinor/eds-icons';
-import { useSearch } from '@tanstack/react-router';
-
 import {
   FaqCategoriesWithFaqDto,
   faqInSearch,
@@ -10,8 +7,7 @@ import {
 import { Question } from './Question/Question';
 import { Container, Content, Header } from './Category.styles';
 import { Subcategory } from './Subcategory';
-import { colors } from 'src/atoms';
-import { Icon, Typography } from 'src/molecules';
+import { Typography } from 'src/molecules';
 
 interface CategoryProps extends FaqCategoriesWithFaqDto {
   dataUpdatedAt: number;
@@ -23,7 +19,6 @@ export const Category: FC<CategoryProps> = ({
   categoryName,
   subCategories,
   dataUpdatedAt,
-  visible,
 }) => {
   // const { search } = useSearch({
   //   from: '/app-management/$appId/faq/',
@@ -56,20 +51,6 @@ export const Category: FC<CategoryProps> = ({
         <Typography variant="h4" id={`category-${id}`}>
           {categoryName}
         </Typography>
-        {!visible && (
-          <>
-            <Icon
-              data={visibility_off}
-              color={colors.text.static_icons__tertiary.rgba}
-            />
-            <Typography
-              variant="body_short"
-              color={colors.text.static_icons__tertiary.rgba}
-            >
-              Not Visible
-            </Typography>
-          </>
-        )}
       </Header>
       <Content>
         <Content>

@@ -1,4 +1,3 @@
-import { FaqService } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
@@ -162,7 +161,6 @@ export function faqOrderBy(
 
 export function useAppIdToAppName(overrideAppId?: string) {
   const { appId } = useParams({ strict: false });
-  console.log('appid', appId);
   const { data } = useAllApplications();
 
   const usingAppId = overrideAppId ?? appId;
@@ -209,6 +207,36 @@ export function useFaqCategoriesWithFaqs() {
               visible: true,
               orderBy: 2,
               createdDate: faker.date.past().toDateString(),
+            },
+          ],
+          subCategories: [
+            {
+              id: 3,
+              fkParentCategoryId: 1,
+              categoryName: 'Subcategory A',
+              visible: true,
+              applicationId: '1',
+              orderBy: 1,
+              faqs: [
+                {
+                  id: 4,
+                  categoryId: 3,
+                  question: 'What is Subcategory A?',
+                  answer: 'This is a mock answer for Subcategory A.',
+                  visible: true,
+                  orderBy: 1,
+                  createdDate: faker.date.past().toDateString(),
+                },
+                {
+                  id: 5,
+                  categoryId: 3,
+                  question: 'How to use Subcategory A?',
+                  answer: 'Here is how to use Subcategory A.',
+                  visible: true,
+                  orderBy: 2,
+                  createdDate: faker.date.past().toDateString(),
+                },
+              ],
             },
           ],
         },

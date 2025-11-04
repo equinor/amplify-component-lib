@@ -1,11 +1,9 @@
 import type { FC } from 'react';
 
-import { visibility_off } from '@equinor/eds-icons';
-
 import { FaqCategoriesWithFaqDto } from '../useFaqCategoriesWithFaqs';
 import { Question } from './Question/Question';
 import { colors, shape, spacings } from 'src/atoms/style/';
-import { Icon, Typography } from 'src/molecules';
+import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -35,7 +33,7 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const Line = styled.hr`
+const VerticalLine = styled.hr`
   height: 100%;
   width: 2px;
 `;
@@ -61,13 +59,12 @@ export const Subcategory: FC<SubcategoryProps> = ({
   id,
   faqs,
   categoryName,
-  visible,
 }) => {
   const data = faqs ?? [];
 
   return (
     <Container>
-      <Line />
+      <VerticalLine />
       <RightSide>
         <Header>
           <Typography
@@ -77,20 +74,6 @@ export const Subcategory: FC<SubcategoryProps> = ({
           >
             {categoryName}
           </Typography>
-          {!visible && (
-            <>
-              <Icon
-                data={visibility_off}
-                color={colors.text.static_icons__tertiary.rgba}
-              />
-              <Typography
-                variant="body_short"
-                color={colors.text.static_icons__tertiary.rgba}
-              >
-                Not Visible
-              </Typography>
-            </>
-          )}
         </Header>
         <Content>
           {data.map((question) => (

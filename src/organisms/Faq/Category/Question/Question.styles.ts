@@ -83,7 +83,7 @@ export const Header = styled.header`
 
 export const TopRight = styled.section`
   display: flex;
-  gap: ${spacings.x_small};
+  gap: ${spacings.medium};
   align-items: center;
 `;
 
@@ -96,4 +96,7 @@ export const ExpandWrapper = styled(motion.div)`
     margin-bottom: ${spacings.medium};
   }
   overflow: hidden;
+  [role='textbox'] {
+    padding: 0 0 ${spacings.medium};
+  }
 `;
