@@ -38,10 +38,6 @@ export type FaqCategoriesWithFaqDto = {
   subCategories?: Array<FaqCategoriesWithFaqDto> | null;
 };
 
-export const GET_FAQ_CATEGORIES_WITH_FAQS = 'getFaqCategoriesWithFaqs';
-export const ALL_APPLICATIONS = 'allApplications';
-export const APP_INFO = 'query-appinfo';
-
 export function faqInSearch(
   faq: Pick<FaqDto, 'answer' | 'question'>,
   searchValue: string

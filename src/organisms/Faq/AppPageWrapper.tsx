@@ -9,7 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   height: fit-content;
-  margin: ${spacings.large} auto;
+  margin: 0 auto ${spacings.large};
   max-width: 1280px;
 `;
 

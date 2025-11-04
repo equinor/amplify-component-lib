@@ -1,4 +1,4 @@
-import { animation, colors, shape, spacings } from 'src/atoms/style';
+import { animation, colors, shape, spacings } from 'src/atoms';
 
 import { motion } from 'framer-motion';
 import { styled } from 'styled-components';
@@ -96,7 +96,7 @@ export const ExpandWrapper = styled(motion.div)`
     margin-bottom: ${spacings.medium};
   }
   overflow: hidden;
-  [role='textbox'] {
-    padding: 0 0 ${spacings.medium};
+  > div {
+    padding-bottom: ${spacings.medium};
   }
 `;

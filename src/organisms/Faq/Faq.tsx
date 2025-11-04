@@ -24,7 +24,7 @@ const Container = styled.div`
   gap: ${spacings.large};
 `;
 
-const Content = styled.div`
+const Content = styled.div<{ $isEmpty?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${spacings.large};
@@ -33,14 +33,14 @@ const Content = styled.div`
 const TOCWrapper = styled.div`
   height: fit-content;
   position: sticky;
+  top: 88px;
   grid-row: span 2;
 `;
 
 const AppHeaderWrapper = styled.div`
   position: sticky;
   top: 0;
-  padding-top: ${spacings.large};
-  padding-bottom: ${spacings.large};
+  padding: ${spacings.large} 0;
   background: ${colors.ui.background__light.rgba};
   z-index: 100;
 `;
@@ -104,7 +104,7 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
           <TOCWrapper>
             <TableOfContents />
           </TOCWrapper>
-          <Content>
+          <Content $isEmpty={!isLoading && filteredCategories.length === 0}>
             {isLoading ? (
               Array.from({ length: 2 })
                 .fill(null)

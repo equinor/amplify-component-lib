@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import { FaqCategoriesWithFaqDto } from '../Faq.utils';
 import { Question } from './Question/Question';
-import { colors, shape, spacings } from 'src/atoms/style/';
+import { colors, shape, spacings } from 'src/atoms';
 import { Typography } from 'src/molecules';
 
 import styled from 'styled-components';

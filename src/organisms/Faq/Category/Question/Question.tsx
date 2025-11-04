@@ -5,7 +5,7 @@ import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { FaqService } from '@equinor/subsurface-app-management';
 import { useLocation } from '@tanstack/react-router';
 
-import { FaqDto } from '../../useFaqCategoriesWithFaqs';
+import { FaqDto } from '../../Faq.utils';
 import {
   Container,
   ExpandWrapper,
@@ -13,6 +13,7 @@ import {
   TopRight,
   Wrapper,
 } from './Question.styles';
+import { formatDate } from 'src/atoms';
 import { usePrefetchRichTextImages } from 'src/atoms/hooks/usePrefetchRichTextImages';
 import { RichTextDisplay } from 'src/molecules';
 
@@ -44,7 +45,7 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
         </Header>
         <TopRight>
           <Typography group="paragraph" variant="caption">
-            {createdDate}
+            {formatDate(createdDate)}
           </Typography>
           <Button
             variant="ghost_icon"
@@ -64,6 +65,7 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
               <RichTextDisplay
                 value={answer}
                 onImageRead={(path) => FaqService.getFaqImage(path)}
+                padding="none"
               />
             </ExpandWrapper>
           )}

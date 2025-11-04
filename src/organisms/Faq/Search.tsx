@@ -1,6 +1,6 @@
 import type { ChangeEvent, FC } from 'react';
 
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 
 import { colors } from 'src/atoms/style/colors';
 import { Search as AmplifySearch } from 'src/molecules/Search/Search';
@@ -18,14 +18,8 @@ interface SearchProps {
 }
 
 export const Search: FC<SearchProps> = ({ placeholder }) => {
-  // const { search } = useSearch({ from: '/app-management/$appId/faq/' });
   const navigate = useNavigate({ from: '/faq' });
-
-  // const { search } = useSearch({
-  //   from: '/app-management/$appId/faq/',
-  // });
-
-  const search = '';
+  const { search } = useSearch({ strict: false });
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value) {
