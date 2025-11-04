@@ -49,13 +49,7 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
-type SubcategoryProps = NonNullable<
-  FaqCategoriesWithFaqDto['subCategories']
->[number] & {
-  dataUpdatedAt: number;
-};
-
-export const Subcategory: FC<SubcategoryProps> = ({
+export const Subcategory: FC<FaqCategoriesWithFaqDto> = ({
   id,
   faqs,
   categoryName,

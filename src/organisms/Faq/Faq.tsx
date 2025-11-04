@@ -53,11 +53,7 @@ export interface FaqProps {
 export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
   const { search } = useSearch({ strict: false });
 
-  const {
-    data: categories,
-    isLoading,
-    dataUpdatedAt,
-  } = useFaqCategoriesWithFaqs();
+  const { data: categories, isLoading } = useFaqCategoriesWithFaqs();
   const isSearchingOrFiltering = !!search;
 
   const filteredCategories = (categories ?? []).filter(
@@ -113,11 +109,7 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
                 ))
             ) : filteredCategories.length > 0 ? (
               filteredCategories.map((category) => (
-                <Category
-                  key={category.id}
-                  dataUpdatedAt={dataUpdatedAt}
-                  {...category}
-                />
+                <Category key={category.id} {...category} />
               ))
             ) : (
               <Status center={false}>

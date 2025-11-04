@@ -8,16 +8,11 @@ import { Container, Content, Header } from './Category.styles';
 import { Subcategory } from './Subcategory';
 import { Typography } from 'src/molecules';
 
-interface CategoryProps extends FaqCategoriesWithFaqDto {
-  dataUpdatedAt: number;
-}
-
-export const Category: FC<CategoryProps> = ({
+export const Category: FC<FaqCategoriesWithFaqDto> = ({
   faqs,
   id,
   categoryName,
   subCategories,
-  dataUpdatedAt,
 }) => {
   const { search } = useSearch({ strict: false });
 
@@ -50,11 +45,7 @@ export const Category: FC<CategoryProps> = ({
           <Question key={question.id} {...question} />
         ))}
         {filteredSubcategories?.map((subcategory) => (
-          <Subcategory
-            key={subcategory.id}
-            dataUpdatedAt={dataUpdatedAt}
-            {...subcategory}
-          />
+          <Subcategory key={subcategory.id} {...subcategory} />
         ))}
       </Content>
     </Container>
