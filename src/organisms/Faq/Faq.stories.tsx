@@ -50,7 +50,10 @@ const meta: Meta<typeof Faq> = {
     },
   },
   tags: ['!autodocs'],
-  args: {},
+  args: {
+    title: 'Frequently Asked Questions',
+    searchPlaceholder: 'Search FAQs',
+  },
   decorators: (Story) => (
     <SideBarProvider>
       <ThemeProvider>

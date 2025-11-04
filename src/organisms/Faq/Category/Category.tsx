@@ -1,74 +1,90 @@
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
-import { FaqCategory } from '@equinor/subsurface-app-management';
+import { visibility_off } from '@equinor/eds-icons';
 import { useSearch } from '@tanstack/react-router';
 
-import { Question } from './Question';
-import { spacings } from 'src/atoms/style';
-import { Status } from 'src/organisms/Status';
+import {
+  FaqCategoriesWithFaqDto,
+  faqInSearch,
+} from '../useFaqCategoriesWithFaqs';
+import { Question } from './Question/Question';
+import { Container, Content, Header } from './Category.styles';
+import { Subcategory } from './Subcategory';
+import { colors } from 'src/atoms';
+import { Icon, Typography } from 'src/molecules';
 
-import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.medium};
-  width: 100%;
-  &:has(> div > div > svg) {
-    transform: translateY(50%);
-  }
-`;
-
-type CategoryProps = {
-  selectedTab: string | undefined;
-} & FaqCategory;
+interface CategoryProps extends FaqCategoriesWithFaqDto {
+  dataUpdatedAt: number;
+}
 
 export const Category: FC<CategoryProps> = ({
-  categoryName,
   faqs,
-  selectedTab,
+  id,
+  categoryName,
+  subCategories,
+  dataUpdatedAt,
+  visible,
 }) => {
-  const { search } = useSearch({ strict: false });
+  // const { search } = useSearch({
+  //   from: '/app-management/$appId/faq/',
+  // });
 
-  const sortedFaqs = useMemo(() => {
-    return faqs.toSorted((a, b) => {
-      const usingA = a.orderBy ?? 0;
-      const usingB = b.orderBy ?? 0;
-      return usingA - usingB;
-    });
-  }, [faqs]);
+  const search = '';
 
-  const filteredFaqs = useMemo(() => {
-    if (!search) return sortedFaqs;
+  const data = faqs ?? [];
 
-    return sortedFaqs.filter(
-      (faq) =>
-        faq.question.toLowerCase().includes(search.toLowerCase()) ||
-        faq.answer.toLowerCase().includes(search.toLowerCase()) ||
-        categoryName.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [categoryName, search, sortedFaqs]);
+  const filteredFaqs = data.filter(
+    (faq) => !search || faqInSearch(faq, search)
+  );
 
-  if (selectedTab !== undefined && filteredFaqs.length === 0) {
-    return (
-      <Container>
-        <Status center={false}>
-          <Status.Title title="No Questions Found" />
-          <Status.Description text="No questions or answers matches your search in this category" />
-        </Status>
-      </Container>
-    );
-  }
+  const filteredSubcategories = subCategories?.filter(
+    (subcategory) =>
+      (!search || subcategory.faqs?.some((faq) => faqInSearch(faq, search))) &&
+      subcategory.faqs &&
+      subcategory.faqs.length > 0
+  );
 
-  if (filteredFaqs.length === 0) return null;
+  if (
+    filteredFaqs.length === 0 &&
+    (!filteredSubcategories || filteredSubcategories.length === 0)
+  )
+    return null;
 
   return (
     <Container>
-      <Typography variant="h4">{categoryName}</Typography>
-      {filteredFaqs.map((faq) => (
-        <Question key={faq.id} {...faq} />
-      ))}
+      <Header>
+        <Typography variant="h4" id={`category-${id}`}>
+          {categoryName}
+        </Typography>
+        {!visible && (
+          <>
+            <Icon
+              data={visibility_off}
+              color={colors.text.static_icons__tertiary.rgba}
+            />
+            <Typography
+              variant="body_short"
+              color={colors.text.static_icons__tertiary.rgba}
+            >
+              Not Visible
+            </Typography>
+          </>
+        )}
+      </Header>
+      <Content>
+        <Content>
+          {filteredFaqs.map((question) => (
+            <Question key={question.id} {...question} />
+          ))}
+          {filteredSubcategories?.map((subcategory) => (
+            <Subcategory
+              key={subcategory.id}
+              dataUpdatedAt={dataUpdatedAt}
+              {...subcategory}
+            />
+          ))}
+        </Content>
+      </Content>
     </Container>
   );
 };
