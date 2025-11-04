@@ -1,7 +1,7 @@
 import { environment, FaqService } from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
 
-type FaqDto = {
+export type FaqDto = {
   id: number;
   question?: string | null;
   answer?: string | null;

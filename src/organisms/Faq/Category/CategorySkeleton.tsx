@@ -9,7 +9,7 @@ import {
   Wrapper,
 } from './Question/Question.styles';
 import { Container, Content } from './Category.styles';
-import { shape, spacings } from 'src/atoms';
+import { shape } from 'src/atoms';
 import { Button, Icon, SkeletonBase } from 'src/molecules';
 
 import styled from 'styled-components';
@@ -20,23 +20,16 @@ const Title = styled(SkeletonBase)`
   border-radius: ${shape.corners.borderRadius};
 `;
 
-const VisibleProp = styled(SkeletonBase)`
-  width: 5rem;
-  height: 0.875rem;
-  margin-bottom: ${spacings.x_small};
-  border-radius: ${shape.rounded.borderRadius};
-`;
-
 const QuestionText = styled(SkeletonBase)`
   width: 10rem;
-  height: 1rem;
-  border-radius: ${shape.rounded.borderRadius};
+  height: 1.25rem;
+  border-radius: ${shape.corners.borderRadius};
 `;
 
-const RoleChip = styled(SkeletonBase)`
+const DateChip = styled(SkeletonBase)`
   width: 8rem;
-  height: 24px;
-  border-radius: ${shape.rounded.borderRadius};
+  height: 0.875rem;
+  border-radius: ${shape.corners.borderRadius};
 `;
 
 export const CategorySkeleton: FC = () => {
@@ -51,10 +44,9 @@ export const CategorySkeleton: FC = () => {
               <QuestionContainer>
                 <Header>
                   <QuestionText />
-                  <VisibleProp />
                 </Header>
                 <TopRight>
-                  <RoleChip />
+                  <DateChip />
                   <Button variant="ghost_icon">
                     <Icon data={chevron_down} />
                   </Button>
