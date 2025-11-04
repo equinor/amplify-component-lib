@@ -1,21 +1,31 @@
-import { FC } from 'react';
-
-import { useRouter } from '@tanstack/react-router';
-
+import { useStatusNavigation } from 'src/atoms/hooks';
 import { Status } from 'src/organisms/Status';
 
-export const GenericError: FC = () => {
-  const { history } = useRouter();
+interface GenericErrorProps {
+  title?: string;
+  description?: string;
+  redirectFallbackUrl?: string;
+  onBackClick?: () => void;
+  hideBackButton?: boolean;
+}
 
-  const handleOnClick = () => {
-    history.go(-1);
-  };
+export const GenericError = ({
+  title,
+  description,
+  redirectFallbackUrl,
+  onBackClick,
+  hideBackButton = false,
+}: GenericErrorProps) => {
+  const handleOnClick = useStatusNavigation({
+    onBackClick,
+    redirectFallbackUrl,
+  });
 
   return (
     <Status>
-      <Status.Title />
-      <Status.Description />
-      <Status.Action onClick={handleOnClick} />
+      <Status.Title title={title} />
+      <Status.Description text={description} />
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };
