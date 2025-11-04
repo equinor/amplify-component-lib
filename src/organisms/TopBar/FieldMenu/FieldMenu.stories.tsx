@@ -11,7 +11,9 @@ import { expect, fn, userEvent } from 'storybook/test';
 const fields = new Array(5).fill(0).map(() => FakeField());
 
 function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
-  const [selectedField, setSelectedField] = useState<Field>(fields[0]);
+  const [selectedField, setSelectedField] = useState<Field>(
+    args.availableFields[0]
+  );
 
   const handleOnSelectField = (field: Field) => {
     setSelectedField(field);
@@ -20,7 +22,7 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
 
   return (
     <TopBar
-      availableFields={fields}
+      availableFields={args.availableFields}
       currentField={
         args.withField === undefined || args.withField
           ? selectedField
@@ -104,7 +106,7 @@ export const Searching: Story = {
   },
 };
 
-export const NoSearchFieldFewFields: Story = {
+export const NoSearchField: Story = {
   args: {
     availableFields: [fields[0]],
     onSelect: fn(),
