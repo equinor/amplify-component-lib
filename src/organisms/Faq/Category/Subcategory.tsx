@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-import { FaqCategoriesWithFaqDto } from '../useFaqCategoriesWithFaqs';
+import { FaqCategoriesWithFaqDto } from '../Faq.utils';
 import { Question } from './Question/Question';
 import { colors, shape, spacings } from 'src/atoms/style/';
 import { Typography } from 'src/molecules';
@@ -60,8 +60,6 @@ export const Subcategory: FC<SubcategoryProps> = ({
   faqs,
   categoryName,
 }) => {
-  const data = faqs ?? [];
-
   return (
     <Container>
       <VerticalLine />
@@ -76,7 +74,7 @@ export const Subcategory: FC<SubcategoryProps> = ({
           </Typography>
         </Header>
         <Content>
-          {data.map((question) => (
+          {faqs?.map((question) => (
             <Question key={question.id} {...question} />
           ))}
         </Content>

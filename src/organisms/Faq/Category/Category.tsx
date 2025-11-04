@@ -1,9 +1,8 @@
 import type { FC } from 'react';
 
-import {
-  FaqCategoriesWithFaqDto,
-  faqInSearch,
-} from '../useFaqCategoriesWithFaqs';
+import { useSearch } from '@tanstack/react-router';
+
+import { FaqCategoriesWithFaqDto, faqInSearch } from '../Faq.utils';
 import { Question } from './Question/Question';
 import { Container, Content, Header } from './Category.styles';
 import { Subcategory } from './Subcategory';
@@ -20,15 +19,9 @@ export const Category: FC<CategoryProps> = ({
   subCategories,
   dataUpdatedAt,
 }) => {
-  // const { search } = useSearch({
-  //   from: '/app-management/$appId/faq/',
-  // });
+  const { search } = useSearch({ strict: false });
 
-  const search = '';
-
-  const data = faqs ?? [];
-
-  const filteredFaqs = data.filter(
+  const filteredFaqs = faqs?.filter(
     (faq) => !search || faqInSearch(faq, search)
   );
 
@@ -40,7 +33,7 @@ export const Category: FC<CategoryProps> = ({
   );
 
   if (
-    filteredFaqs.length === 0 &&
+    filteredFaqs?.length === 0 &&
     (!filteredSubcategories || filteredSubcategories.length === 0)
   )
     return null;
@@ -54,7 +47,7 @@ export const Category: FC<CategoryProps> = ({
       </Header>
       <Content>
         <Content>
-          {filteredFaqs.map((question) => (
+          {filteredFaqs?.map((question) => (
             <Question key={question.id} {...question} />
           ))}
           {filteredSubcategories?.map((subcategory) => (

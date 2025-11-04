@@ -1,17 +1,15 @@
 import { type FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
+import { useSearch } from '@tanstack/react-router';
 
 import { Status } from '../Status';
 import { TableOfContents } from '../TableOfContents/TableOfContents';
 import { Category } from './Category/Category';
 import { CategorySkeleton } from './Category/CategorySkeleton';
 import { AppPageWrapper } from './AppPageWrapper';
+import { faqInSearch, useFaqCategoriesWithFaqs } from './Faq.utils';
 import { Search } from './Search';
-import {
-  faqInSearch,
-  useFaqCategoriesWithFaqs,
-} from './useFaqCategoriesWithFaqs';
 import { colors, spacings } from 'src/atoms/style';
 import {
   TableOfContentsItemType,
@@ -47,18 +45,13 @@ const AppHeaderWrapper = styled.div`
   z-index: 100;
 `;
 
-interface FaqProps {
+export interface FaqProps {
   searchPlaceholder?: string;
   title?: string;
 }
 
 export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
-  // const navigate = useNavigate({ from: '/app-management/$appId/faq' });
-  // const { search } = useSearch({
-  //   from: '/app-management/$appId/faq/',
-  // });
-
-  const search = '';
+  const { search } = useSearch({ strict: false });
 
   const {
     data: categories,
@@ -97,8 +90,6 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
           })),
       ],
     }));
-
-  console.log('title', title);
 
   return (
     <AppPageWrapper>
