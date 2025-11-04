@@ -1,7 +1,7 @@
 import { environment, FaqService } from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
 
-export type FaqDto = {
+type FaqDto = {
   id: number;
   question?: string | null;
   answer?: string | null;
@@ -13,7 +13,7 @@ export type FaqDto = {
   createdDate?: string | null;
 };
 
-export type FaqCategoryDto = {
+type FaqCategoryDto = {
   id: number;
   fkParentCategoryId?: number | null;
   visible: boolean;
@@ -52,7 +52,7 @@ export function faqInSearch(
   );
 }
 
-export function faqOrderBy(
+function faqOrderBy(
   a: FaqDto | FaqCategoryDto | FaqCategoriesWithFaqDto,
   b: FaqDto | FaqCategoryDto | FaqCategoriesWithFaqDto
 ) {

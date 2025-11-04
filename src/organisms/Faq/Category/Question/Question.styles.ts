@@ -12,26 +12,6 @@ export const Container = styled.div`
   padding: 0 ${spacings.medium};
 `;
 
-export const DragHandle = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${colors.ui.background__light_medium.rgba};
-  transition: background ${animation.transitionMS};
-  &:not(:disabled) {
-    cursor: grab;
-    &:hover {
-      background: ${colors.interactive.primary__hover_alt.rgba};
-    }
-  }
-  &:disabled {
-    > svg {
-      fill: ${colors.interactive.disabled__text.rgba};
-    }
-    cursor: not-allowed;
-  }
-`;
-
 export const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -43,16 +23,10 @@ export const Wrapper = styled.div`
     border-top-left-radius: ${shape.corners.borderRadius};
     border-top-right-radius: ${shape.corners.borderRadius};
     border-top: 1px solid ${colors.ui.background__heavy.rgba};
-    ${DragHandle}:first-child {
-      border-top-left-radius: ${shape.corners.borderRadius};
-    }
   }
   &:last-child {
     border-bottom-left-radius: ${shape.corners.borderRadius};
     border-bottom-right-radius: ${shape.corners.borderRadius};
-    ${DragHandle}:first-child {
-      border-bottom-left-radius: ${shape.corners.borderRadius};
-    }
   }
   &::after {
     pointer-events: none;
