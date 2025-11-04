@@ -46,18 +46,16 @@ export const Category: FC<CategoryProps> = ({
         </Typography>
       </Header>
       <Content>
-        <Content>
-          {filteredFaqs?.map((question) => (
-            <Question key={question.id} {...question} />
-          ))}
-          {filteredSubcategories?.map((subcategory) => (
-            <Subcategory
-              key={subcategory.id}
-              dataUpdatedAt={dataUpdatedAt}
-              {...subcategory}
-            />
-          ))}
-        </Content>
+        {filteredFaqs?.map((question) => (
+          <Question key={question.id} {...question} />
+        ))}
+        {filteredSubcategories?.map((subcategory) => (
+          <Subcategory
+            key={subcategory.id}
+            dataUpdatedAt={dataUpdatedAt}
+            {...subcategory}
+          />
+        ))}
       </Content>
     </Container>
   );
