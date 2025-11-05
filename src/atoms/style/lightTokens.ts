@@ -2,6 +2,8 @@ import { css } from 'styled-components';
 
 export const lightTokens = css`
   [data-theme='light'] {
+    --amplify_interactive_inner_hover: rgba(198, 223, 225, 1);
+
     --amplify_ui_background_light_medium: rgba(235, 235, 235, 1);
     --amplify_ui_background_heavy: rgba(189, 189, 189, 1);
     --amplify_ui_background_tutorial_card: rgba(222, 237, 238, 1);
