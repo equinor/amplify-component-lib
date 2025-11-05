@@ -15,7 +15,7 @@ import {
 } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 
 const Story: FC<FaqProps> = (args) => {
   const { isOpen } = useSideBar();
@@ -70,9 +70,13 @@ export default meta;
 type Story = StoryObj<typeof Faq>;
 
 export const Default: Story = {
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
+  },
+  play: async ({ canvas, step }) => {
     await step('Verify that all categories are rendered', async () => {
       await canvas.findByRole('heading', {
         name: 'How do I log in for the first time?',
@@ -110,9 +114,13 @@ export const CustomTitleAndPlaceholder: Story = {
     title: 'Glossary',
     searchPlaceholder: 'Search for a term...',
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
+  },
+  play: async ({ canvas, step }) => {
     await step('Verify custom title is displayed', async () => {
       await canvas.findByRole('heading', { name: 'Glossary' });
     });
@@ -124,13 +132,18 @@ export const CustomTitleAndPlaceholder: Story = {
 };
 
 export const SearchFaqs: Story = {
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
+  },
+  play: async ({ canvas, step }) => {
     await step('Search for "log in"', async () => {
       const searchInput = await canvas.findByPlaceholderText(
         'Search for something...'
       );
+      await userEvent.clear(searchInput);
       await userEvent.type(searchInput, 'log in');
     });
 
@@ -154,8 +167,81 @@ export const SearchFaqs: Story = {
   },
 };
 
+export const SearchFaqsNotFound: Story = {
+  parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
+  },
+  play: async ({ canvas, step }) => {
+    await step('Search for "log in"', async () => {
+      const searchInput = await canvas.findByPlaceholderText(
+        'Search for something...'
+      );
+      await userEvent.clear(searchInput);
+      await userEvent.type(searchInput, 'non-matching search');
+    });
+
+    await step('Verify "not found" message is visible', async () => {
+      await canvas.findByRole('heading', { name: 'No FAQs found' });
+    });
+  },
+};
+
+export const SearchFaqsCleared: Story = {
+  tags: ['test-only'],
+  parameters: {
+    router: {
+      initialEntries: ['/faq?search=log+in'],
+      routes: ['/faq'],
+    },
+  },
+  play: async ({ canvas, step }) => {
+    await step(
+      'Verify search is pre-populated and results are filtered',
+      async () => {
+        const searchInput = await canvas.findByPlaceholderText(
+          'Search for something...'
+        );
+        expect(searchInput).toHaveValue('log in');
+
+        await canvas.findByRole('heading', {
+          name: 'How do I log in for the first time?',
+        });
+      }
+    );
+
+    await step('Clear the search input', async () => {
+      const searchInput = await canvas.findByPlaceholderText(
+        'Search for something...'
+      );
+      await userEvent.clear(searchInput);
+    });
+
+    await step('Verify all categories are visible again', async () => {
+      await canvas.findByRole('heading', {
+        name: 'How do I log in for the first time?',
+      });
+      await canvas.findByRole('heading', {
+        name: 'Working with Data',
+      });
+      await canvas.findByRole('heading', {
+        name: 'Troubleshooting',
+      });
+      await canvas.findByRole('heading', {
+        name: 'Security & Access',
+      });
+    });
+  },
+};
+
 export const Empty: Story = {
   parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
     msw: {
       handlers: [
         tokenHandler,
@@ -165,15 +251,17 @@ export const Empty: Story = {
       ],
     },
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas }) => {
     await canvas.findByRole('heading', { name: 'No FAQs yet' });
   },
 };
 
 export const Loading: Story = {
   parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
     msw: {
       handlers: [
         tokenHandler,
@@ -183,8 +271,7 @@ export const Loading: Story = {
       ],
     },
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas, step }) => {
     await step('Verify loading skeletons are displayed', async () => {
       const loadingCategories = await canvas.findAllByLabelText(
         'Loading FAQ category',
@@ -198,9 +285,13 @@ export const Loading: Story = {
 
 export const OpenQuestion: Story = {
   tags: ['test-only'],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
+  },
+  play: async ({ canvas, step }) => {
     await step('Click to expand question', async () => {
       const expandButton = await canvas.findByRole('button', {
         name: 'Expand answer to: How do I log in for the first time?',

@@ -417,7 +417,6 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
     faqs: [
       {
         id: 1,
-        // unique id
         categoryId: 1,
         question: `How do I log in for the first time?`,
         answer: `<p>Navigate to ${faker.internet.url()} and use your company credentials. If you're having trouble, make sure caps lock is off - it happens to the best of us!</p>`,
@@ -558,7 +557,6 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
     categoryName: 'Troubleshooting',
     visible: true,
     applicationId: '1',
-    orderBy: 3,
     faqs: [
       {
         id: 11,
