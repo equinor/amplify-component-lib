@@ -66,6 +66,7 @@ export function useFaqCategoriesWithFaqs() {
   return useQuery({
     queryKey: ['GET_FAQ_IN_APP'], // This is hard-coded on purpose, assuming we never have to update cache manually
     queryFn: async () => {
+      // TODO: Update with real endpoint once ready
       const data = (await FaqService.getCategoriesWithFaqsFromApplicationName(
         environment.getAppName(import.meta.env.VITE_NAME)
       )) as unknown as FaqCategoriesWithFaqDto[];

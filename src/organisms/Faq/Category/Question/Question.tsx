@@ -51,6 +51,11 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
             variant="ghost_icon"
             onClick={handleOnToggleExpanded}
             data-testid="toggle-open"
+            aria-label={
+              expanded
+                ? `Collapse answer to: ${question}`
+                : `Expand answer to: ${question}`
+            }
           >
             <Icon data={expanded ? chevron_up : chevron_down} />
           </Button>

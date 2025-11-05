@@ -34,7 +34,7 @@ const DateChip = styled(SkeletonBase)`
 
 export const CategorySkeleton: FC = () => {
   return (
-    <Container>
+    <Container aria-label="Loading FAQ category">
       <Title />
       <Content>
         {Array.from({ length: 4 })

@@ -55,7 +55,7 @@ export const Subcategory: FC<FaqCategoriesWithFaqDto> = ({
   categoryName,
 }) => {
   return (
-    <Container>
+    <Container aria-label={`Subcategory: ${categoryName}`}>
       <VerticalLine />
       <RightSide>
         <Header>
