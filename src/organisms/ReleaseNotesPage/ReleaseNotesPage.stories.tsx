@@ -123,8 +123,6 @@ export const ShowsContent: Story = {
       await canvas.findByRole('heading', { name: /release notes/i })
     ).toBeInTheDocument();
 
-    await expect(canvas.getByText(/release notes/i)).toBeInTheDocument();
-
     for (const releaseNote of fakeReleaseNotes.filter((note) => !note.draft)) {
       await expect(
         await canvas.findByText(releaseNote.title)

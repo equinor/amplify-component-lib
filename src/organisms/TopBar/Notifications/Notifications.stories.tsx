@@ -157,8 +157,7 @@ export const Primary: Story = {
 
     await expect(icons[0]).toHaveAttribute('d', notifications.svgPathData);
 
-    const button = canvas.getByTestId('show-hide-button');
-    await userEvent.click(button);
+    await userEvent.click(canvas.getByRole('button'));
     await expect(await canvas.findByText('Amanda')).toBeVisible();
   },
 };

@@ -8,6 +8,8 @@ import {
 } from 'react';
 
 import {
+  BrowserAuthError,
+  BrowserAuthErrorCodes,
   InteractionRequiredAuthError,
   InteractionType,
 } from '@azure/msal-browser';
@@ -113,6 +115,17 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       );
       instance.setActiveAccount(accounts[0]);
       setAccount(accounts[0]);
+    } else if (
+      error instanceof BrowserAuthError &&
+      error.errorCode === BrowserAuthErrorCodes.monitorWindowTimeout
+    ) {
+      console.error(error);
+      console.log(
+        '[AuthProvider] Trying to login again via. redirect due to monitor window timeout'
+      );
+      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
+        console.error('[AuthProvider] Error during login', error);
+      });
     } else if (error) {
       console.error('[AuthProvider] Unexpected error:', error);
     }
