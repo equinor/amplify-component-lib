@@ -73,11 +73,11 @@ export function useFaqCategoriesWithFaqs() {
         environment.getAppName(import.meta.env.VITE_NAME)
       )) as unknown as FaqCategoriesWithFaqDto[];
 
-      for (const category of data) {
-        category.faqs?.sort(faqOrderBy);
-      }
-
-      return data.toSorted(faqOrderBy);
+      return data.toSorted(faqOrderBy).map((category) => ({
+        ...category,
+        faqs: category.faqs?.toSorted(faqOrderBy),
+        subCategories: category.subCategories?.toSorted(faqOrderBy),
+      }));
     },
   });
 }
