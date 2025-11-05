@@ -3,7 +3,6 @@ import { type FC, useRef, useState } from 'react';
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { FaqService } from '@equinor/subsurface-app-management';
-import { useLocation } from '@tanstack/react-router';
 
 import { FaqDto } from '../../Faq.utils';
 import {
@@ -24,14 +23,10 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
     richTextValues: [answer ?? ''],
     onImageRead: (path) => FaqService.getFaqImage(path),
   });
-  const { hash } = useLocation();
-  const initialHeight = useRef(hash.includes(id.toString()) ? 'auto' : 0);
-  const [expanded, setExpanded] = useState(hash.includes(id.toString()));
+  const initialHeight = useRef(0);
+  const [expanded, setExpanded] = useState(false);
 
   const handleOnToggleExpanded = () => {
-    if (initialHeight.current === 'auto') {
-      initialHeight.current = 0;
-    }
     setExpanded((prev) => !prev);
   };
 

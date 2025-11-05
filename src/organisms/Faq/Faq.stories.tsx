@@ -105,8 +105,56 @@ export const Default: Story = {
   },
 };
 
+export const CustomTitleAndPlaceholder: Story = {
+  args: {
+    title: 'Glossary',
+    searchPlaceholder: 'Search for a term...',
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify custom title is displayed', async () => {
+      await canvas.findByRole('heading', { name: 'Glossary' });
+    });
+
+    await step('Verify custom placeholder is displayed', async () => {
+      await canvas.findByPlaceholderText('Search for a term...');
+    });
+  },
+};
+
+export const SearchFaqs: Story = {
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Search for "log in"', async () => {
+      const searchInput = await canvas.findByPlaceholderText(
+        'Search for something...'
+      );
+      await userEvent.type(searchInput, 'log in');
+    });
+
+    await step('Verify matching FAQ is visible', async () => {
+      await canvas.findByRole('heading', {
+        name: 'How do I log in for the first time?',
+      });
+    });
+
+    await step('Verify non-matching categories are hidden', async () => {
+      expect(
+        canvas.queryByRole('heading', { name: 'Working with Data' })
+      ).not.toBeInTheDocument();
+      expect(
+        canvas.queryByRole('heading', { name: 'Troubleshooting' })
+      ).not.toBeInTheDocument();
+      expect(
+        canvas.queryByRole('heading', { name: 'Security & Access' })
+      ).not.toBeInTheDocument();
+    });
+  },
+};
+
 export const Empty: Story = {
-  tags: ['testing'],
   parameters: {
     msw: {
       handlers: [
@@ -149,7 +197,7 @@ export const Loading: Story = {
 };
 
 export const OpenQuestion: Story = {
-  tags: ['testing'],
+  tags: ['test-only'],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -157,9 +205,6 @@ export const OpenQuestion: Story = {
       const expandButton = await canvas.findByRole('button', {
         name: 'Expand answer to: How do I log in for the first time?',
       });
-      // const collapseButton = await canvas.findByRole('button', {
-      //   name: 'Collapse answer to: How do I log in for the first time?',
-      // });
       await userEvent.click(expandButton);
     });
 
@@ -169,78 +214,6 @@ export const OpenQuestion: Story = {
         { exact: false }
       );
       expect(answerText).toBeVisible();
-    });
-  },
-};
-
-export const CustomTitleAndPlaceholder: Story = {
-  tags: ['testing'],
-  args: {
-    title: 'Glossary',
-    searchPlaceholder: 'Search for a term...',
-  },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step('Verify custom title is displayed', async () => {
-      await canvas.findByRole('heading', { name: 'Glossary' });
-    });
-
-    await step('Verify custom placeholder is displayed', async () => {
-      await canvas.findByPlaceholderText('Search for a term...');
-    });
-  },
-};
-
-export const NavigateWithTOC: Story = {
-  tags: ['testing'],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step('Click on TOC category', async () => {
-      await userEvent.click(
-        await canvas.findByRole('button', { name: 'Security & Access 2' })
-      );
-    });
-
-    await step('Verify questions are visible after navigation', async () => {
-      await canvas.findByRole('button', {
-        name: 'How do I reset my password?',
-      });
-      await canvas.findByRole('button', {
-        name: 'Is two-factor authentication available?',
-      });
-    });
-  },
-};
-
-export const SearchFaqs: Story = {
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step('Search for "log in"', async () => {
-      const searchInput = await canvas.findByPlaceholderText(
-        'Search for something...'
-      );
-      await userEvent.type(searchInput, 'log in');
-    });
-
-    await step('Verify matching FAQ is visible', async () => {
-      await canvas.findByRole('heading', {
-        name: 'How do I log in for the first time?',
-      });
-    });
-
-    await step('Verify non-matching categories are hidden', async () => {
-      expect(
-        canvas.queryByRole('heading', { name: 'Working with Data' })
-      ).not.toBeInTheDocument();
-      expect(
-        canvas.queryByRole('heading', { name: 'Troubleshooting' })
-      ).not.toBeInTheDocument();
-      expect(
-        canvas.queryByRole('heading', { name: 'Security & Access' })
-      ).not.toBeInTheDocument();
     });
   },
 };
