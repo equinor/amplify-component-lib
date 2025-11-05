@@ -38,7 +38,8 @@ import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
 export type SelectComponentProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
     (SingleSelectCommon<T> | MultiSelectCommon<T>) &
-    (ListSelectProps<T> | GroupedSelectProps<T>);
+    (ListSelectProps<T> | GroupedSelectProps<T>) &
+    (PersistentModeSelectProps | MenuModeSelectProps);
 
 export const Select = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
@@ -61,6 +62,7 @@ export const Select = <T extends SelectOptionRequired>(
     onSearchFilter,
     'data-testid': dataTestId,
     CustomMenuItemComponent,
+    mode = 'menu',
   } = props;
   const {
     handleOnAddItem,
@@ -181,6 +183,151 @@ export const Select = <T extends SelectOptionRequired>(
     props,
     handleOnRemoveItem,
   ]);
+
+  // TODO:PERSISTENT Maybe change name
+  const searchBarElement = useMemo(() => {
+    return (
+      <>
+        <Wrapper>
+          <Container
+            data-testid={dataTestId ? dataTestId : 'combobox-container'}
+            ref={anchorRef}
+            onClick={handleOnOpen}
+            aria-expanded={open}
+            $variant={variant}
+            $loading={loading}
+            $lightBackground={lightBackground}
+          >
+            <Section>
+              {!loading && search === '' && selectedValues.length === 0 && (
+                <PlaceholderText>{placeholder}</PlaceholderText>
+              )}
+              {((search === '' && 'value' in props) ||
+                ('values' in props &&
+                  selectedValues.length > 0 &&
+                  (!props.showSelectedAsText ||
+                    (props.showSelectedAsText && search === '')))) &&
+                !loading &&
+                valueElements}
+              <input
+                id={id}
+                disabled={disabled || loading}
+                ref={searchRef}
+                type="search"
+                role="combobox"
+                value={search}
+                autoComplete="off"
+                onChange={handleOnSearchChange}
+                onKeyDownCapture={handleOnSearchKeyDown}
+              />
+              {loading && (
+                <SkeletonField
+                  role="progressbar"
+                  style={{
+                    width: skeletonWidth.current,
+                    left: 0,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                  }}
+                />
+              )}
+            </Section>
+            <Icon
+              onClick={handleToggleOpen}
+              data={open ? arrow_drop_up : arrow_drop_down}
+              color={
+                loading
+                  ? colors.interactive.disabled__fill.rgba
+                  : colors.interactive.primary__resting.rgba
+              }
+            />
+            {clearable && selectedValues.length > 0 && !loading && (
+              <ClearButton
+                id="clear"
+                variant="ghost_icon"
+                onClick={handleOnClear}
+                data-testid="clearBtn"
+              >
+                <Icon data={clear} size={18} />
+              </ClearButton>
+            )}
+          </Container>
+          {shouldShowHelper && (
+            <HelperWrapper
+              $borderBottom={mode === 'persistent'}
+              $variant={disabled ? 'disabled' : variant}
+            >
+              {helperIcon && <Icon data={helperIcon} size={16} />}
+              <Label label={helperText} htmlFor={id} />
+            </HelperWrapper>
+          )}
+        </Wrapper>
+      </>
+    );
+  }, [
+    clearable,
+    dataTestId,
+    disabled,
+    handleOnClear,
+    handleOnOpen,
+    handleOnSearchChange,
+    handleOnSearchKeyDown,
+    handleToggleOpen,
+    helperIcon,
+    helperText,
+    id,
+    lightBackground,
+    loading,
+    mode,
+    open,
+    placeholder,
+    props,
+    search,
+    searchRef,
+    selectedValues.length,
+    shouldShowHelper,
+    valueElements,
+    variant,
+  ]);
+
+  if (mode === 'persistent' && 'value' in props && props.value) {
+    throw new Error('You cannot use single select with persistent mode');
+  }
+
+  if (mode === 'persistent') {
+    return (
+      <>
+        {shouldShowLabel && (
+          <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
+        )}
+        <PersistentComboBoxWrapper>
+          {searchBarElement}
+          {'groups' in props && props.groups ? (
+            <GroupedSelectPersistent
+              {...props}
+              search={search}
+              itemRefs={itemRefs}
+              onItemSelect={handleOnItemSelect}
+              onItemKeyDown={handleOnItemKeyDown}
+              onSearchFilter={onSearchFilter}
+              CustomMenuItemComponent={CustomMenuItemComponent}
+            />
+          ) : (
+            <ListSelectPersistent
+              {...props}
+              search={search}
+              itemRefs={itemRefs}
+              onAddItem={props.onAddItem ? handleOnAddItem : undefined}
+              onItemSelect={handleOnItemSelect}
+              onItemKeyDown={handleOnItemKeyDown}
+              onSearchFilter={onSearchFilter}
+              CustomMenuItemComponent={CustomMenuItemComponent}
+            />
+          )}
+        </PersistentComboBoxWrapper>
+      </>
+    );
+  }
 
   return (
     <div>

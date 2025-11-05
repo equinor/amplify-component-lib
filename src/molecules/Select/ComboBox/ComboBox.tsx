@@ -7,11 +7,16 @@ import {
   SelectOptionRequired,
 } from 'src/molecules/Select/Select.types';
 
-export type ListComboBoxProps<T extends SelectOptionRequired> =
-  CommonSelectProps<T> & MultiSelectCommon<T> & ListSelectProps<T>;
-
-export type GroupedComboBoxProps<T extends SelectOptionRequired> =
-  CommonSelectProps<T> & MultiSelectCommon<T> & GroupedSelectProps<T>;
+// export type ListComboBoxProps<T extends SelectOptionRequired> =
+//   CommonSelectProps<T> & MultiSelectCommon<T> & ListSelectProps<T>;
+//
+// export type GroupedComboBoxProps<T extends SelectOptionRequired> =
+//   CommonSelectProps<T> & MultiSelectCommon<T> & GroupedSelectProps<T>;
+// TODO:PERSISTENT look into if this typing works as expected
+export type ComboBoxProps<T extends SelectOptionRequired> =
+  CommonSelectProps<T> &
+    MultiSelectCommon<T> &
+    (ListSelectProps<T> | GroupedSelectProps<T>);
 
 /**
  * @param clearable - If users should be able to clear the input, defaults to true
@@ -28,7 +33,7 @@ export type GroupedComboBoxProps<T extends SelectOptionRequired> =
  * @param customMenuItemComponent - Custom component to use for rendering menu item, defaults to a checkbox with label
  */
 export function ComboBox<T extends SelectOptionRequired>(
-  props: ListComboBoxProps<T> | GroupedComboBoxProps<T>
+  props: ComboBoxProps<T>
 ) {
   return <Select {...props} />;
 }
