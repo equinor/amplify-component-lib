@@ -1,14 +1,10 @@
-import { Menu } from '@equinor/eds-core-react';
-
+import { SelectOptionRequired } from 'src/molecules';
 import { useGroupedSelectItems } from 'src/molecules/Select/Select.hooks';
 import { NoItemsFoundText } from 'src/molecules/Select/Select.styles';
-import {
-  GroupedSelectPropsCombined,
-  SelectOptionRequired,
-} from 'src/molecules/Select/Select.types';
+import { GroupedSelectPropsCombined } from 'src/molecules/Select/Select.types';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
-export const GroupedSelectMenu = <T extends SelectOptionRequired>(
+export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
   props: GroupedSelectPropsCombined<T>
 ) => {
   const { onItemSelect, onItemKeyDown, itemRefs, CustomMenuItemComponent } =
@@ -22,11 +18,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
 
   if ('values' in props)
     return filteredGroups.map((group, groupIndex) => (
-      <Menu.Section
-        key={`${group.title}-${groupIndex}`}
-        index={groupIndex}
-        title={group.title}
-      >
+      <div key={`${group.title}-${groupIndex}`}>
         {group.items.map((item, index) => (
           <SelectMenuItem
             key={`${group.title}-${groupIndex}-item-${item.value}`}
@@ -40,15 +32,11 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
             CustomMenuItemComponent={CustomMenuItemComponent}
           />
         ))}
-      </Menu.Section>
+      </div>
     ));
 
   return filteredGroups.map((group, groupIndex) => (
-    <Menu.Section
-      key={`${group.title}-${groupIndex}`}
-      index={groupIndex}
-      title={group.title}
-    >
+    <div key={`${group.title}-${groupIndex}`}>
       {group.items.map((item, index) => (
         <SelectMenuItem
           key={`${group.title}-${groupIndex}-item-${item.value}`}
@@ -62,6 +50,6 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
           CustomMenuItemComponent={CustomMenuItemComponent}
         />
       ))}
-    </Menu.Section>
+    </div>
   ));
 };

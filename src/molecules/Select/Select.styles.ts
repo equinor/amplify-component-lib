@@ -1,11 +1,12 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
-import { animation, colors, spacings } from 'src/atoms/style';
+import { animation, colors, shape, spacings } from 'src/atoms/style';
 import {
   VARIANT_COLORS,
   VARIANT_HELPER_TEXT_COLORS,
 } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
+import { ListItem } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
@@ -18,14 +19,15 @@ export const Wrapper = styled.div`
 
 interface HelperWrapperProps {
   $variant?: Variants | 'disabled';
+  $borderBottom?: boolean;
 }
 
 export const HelperWrapper = styled.span<HelperWrapperProps>`
   display: flex;
   gap: ${spacings.small};
   align-items: center;
-  margin-left: ${spacings.small};
-  width: calc(100% - ${spacings.small});
+  padding-left: ${spacings.small};
+  width: 100%;
   > label {
     margin: 0;
   }
@@ -45,6 +47,12 @@ export const HelperWrapper = styled.span<HelperWrapperProps>`
       }
     `;
   }}
+  ${({ $borderBottom }) =>
+    $borderBottom &&
+    css`
+      border-bottom: 1px solid ${colors.ui.background__heavy.rgba};
+      padding-bottom: ${spacings.small};
+    `}
 `;
 
 interface ContainerProps {
@@ -245,6 +253,15 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
         : ''}}
 `;
 
+const PersistentComboBoxWrapper = styled.div`
+  border: 1px solid ${colors.ui.background__heavy.rgba};
+  border-radius: ${shape.corners.borderRadius};
+`;
+
+const PersistentListItem = styled(ListItem)`
+  width: 100%;
+`;
+
 const MenuItemSpacer = styled.hr`
   height: calc(100% + ${spacings.medium} * 2);
   justify-self: center;
@@ -306,6 +323,8 @@ export {
   NoTagFoundText,
   NoItemsFoundText,
   PlaceholderText,
+  PersistentListItem,
+  PersistentComboBoxWrapper,
   ComboBoxChip,
   Section,
   MenuItemWrapper,

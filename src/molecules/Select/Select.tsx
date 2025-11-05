@@ -8,12 +8,15 @@ import { useSelect } from 'src/atoms/hooks/useSelect';
 import { colors } from 'src/atoms/style/colors';
 import { getVariantIcon } from 'src/atoms/utils/forms';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
+import { GroupedSelectPersistent } from 'src/molecules/Select/GroupedSelectPersistent';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
+import { ListSelectPersistent } from 'src/molecules/Select/ListSelectPersistent';
 import {
   ClearButton,
   ComboBoxChip,
   Container,
   HelperWrapper,
+  PersistentComboBoxWrapper,
   PlaceholderText,
   Section,
   StyledMenu,
@@ -24,7 +27,9 @@ import {
   CommonSelectProps,
   GroupedSelectProps,
   ListSelectProps,
+  MenuModeSelectProps,
   MultiSelectCommon,
+  PersistentModeSelectProps,
   SelectOptionRequired,
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
@@ -182,77 +187,7 @@ export const Select = <T extends SelectOptionRequired>(
       {shouldShowLabel && (
         <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
       )}
-      <Wrapper>
-        <Container
-          data-testid={dataTestId ? dataTestId : 'combobox-container'}
-          ref={anchorRef}
-          onClick={handleOnOpen}
-          aria-expanded={open}
-          $variant={variant}
-          $loading={loading}
-          $lightBackground={lightBackground}
-        >
-          <Section>
-            {!loading && search === '' && selectedValues.length === 0 && (
-              <PlaceholderText>{placeholder}</PlaceholderText>
-            )}
-            {((search === '' && 'value' in props) ||
-              ('values' in props &&
-                selectedValues.length > 0 &&
-                (!props.showSelectedAsText ||
-                  (props.showSelectedAsText && search === '')))) &&
-              !loading &&
-              valueElements}
-            <input
-              id={id}
-              disabled={disabled || loading}
-              ref={searchRef}
-              type="search"
-              role="combobox"
-              value={search}
-              autoComplete="off"
-              onChange={handleOnSearchChange}
-              onKeyDownCapture={handleOnSearchKeyDown}
-            />
-            {loading && (
-              <SkeletonField
-                role="progressbar"
-                style={{
-                  width: skeletonWidth.current,
-                  left: 0,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                }}
-              />
-            )}
-          </Section>
-          <Icon
-            onClick={handleToggleOpen}
-            data={open ? arrow_drop_up : arrow_drop_down}
-            color={
-              loading
-                ? colors.interactive.disabled__fill.rgba
-                : colors.interactive.primary__resting.rgba
-            }
-          />
-          {clearable && selectedValues.length > 0 && !loading && (
-            <ClearButton
-              id="clear"
-              variant="ghost_icon"
-              onClick={handleOnClear}
-              data-testid="clearBtn"
-            >
-              <Icon data={clear} size={18} />
-            </ClearButton>
-          )}
-        </Container>
-        {shouldShowHelper && (
-          <HelperWrapper $variant={disabled ? 'disabled' : variant}>
-            {helperIcon && <Icon data={helperIcon} size={16} />}
-            <Label label={helperText} htmlFor={id} />
-          </HelperWrapper>
-        )}
-      </Wrapper>
+      {searchBarElement}
       {open && (
         <StyledMenu
           ref={menuRef}

@@ -1,7 +1,4 @@
-import { Menu } from '@equinor/eds-core-react';
-
 import { AddTagItem } from './AddTagItem';
-import { capitalize } from 'src/atoms/utils/string';
 import { useListSelectItems } from 'src/molecules/Select/Select.hooks';
 import {
   NoItemsFoundText,
@@ -23,7 +20,7 @@ import {
 import { getChildOffset } from 'src/molecules/Select/Select.utils';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
-export const ListSelectMenu = <T extends SelectOptionRequired>(
+export const ListSelectPersistent = <T extends SelectOptionRequired>(
   props: Omit<ListSelectProps<T>, 'onAddItem'> &
     ListSelectMenuProps &
     SelectMenuProps<T> &
@@ -37,7 +34,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
   const { search, itemRefs, onItemKeyDown } = props;
 
   const { filteredItems } = useListSelectItems(props);
-
+  console.log(filteredItems, 'filteredItems');
   if (filteredItems.length === 0 && (!props.onAddItem || search === '')) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
@@ -71,7 +68,9 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       : 'tag';
     return (
       <>
-        <Menu.Section title={`Add ${singularWord}`} index={0}>
+        <div
+        // title={`Add ${singularWord}`} index={0}
+        >
           <AddTagItem
             index={0}
             itemRefs={itemRefs}
@@ -81,10 +80,10 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
           >
             {search}
           </AddTagItem>
-        </Menu.Section>
-        <Menu.Section
-          title={`${capitalize(singularWord)} search results`}
-          index={1}
+        </div>
+        <div
+        // title={`${capitalize(singularWord)} search results`}
+        // index={1}
         >
           {itemProps.length > 0 ? (
             itemProps.map((item, index) => (
@@ -99,7 +98,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
               No {singularWord} for &quot;{search}&quot; found.
             </NoTagFoundText>
           )}
-        </Menu.Section>
+        </div>
       </>
     );
   }
