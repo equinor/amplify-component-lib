@@ -29,6 +29,9 @@ export const colors = {
     tutorial__inactive_step: {
       rgba: 'var(--amplify_interactive_tutorial_inactive_step, rgba(168, 206, 209, 1))',
     },
+    inner_hover: {
+      rgba: 'var(--amplify_interactive_inner_hover, rgba(198, 223, 225, 1))',
+    },
   },
   dataviz: {
     primary: {
