@@ -117,7 +117,7 @@ export const ListItem = forwardRef<HTMLButtonElement, ListItemProps>(
       >
         {leadingContent && renderContent(leadingContent)}
         <section>
-          <Typography variant="button" group="navigation">
+          <Typography variant="menu_title" group="navigation">
             {label}
           </Typography>
         </section>
