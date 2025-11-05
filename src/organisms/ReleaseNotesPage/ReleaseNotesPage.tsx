@@ -50,7 +50,7 @@ export const ReleaseNotesPage: FC = () => {
           <ReleasePosts />
         </section>
         <StickyRightSide>
-          <TableOfContents onlyShowSelectedChildren={false} variant="border" />
+          <TableOfContents onlyShowSelectedChildren={false} />
         </StickyRightSide>
       </Container>
     </TableOfContentsProvider>

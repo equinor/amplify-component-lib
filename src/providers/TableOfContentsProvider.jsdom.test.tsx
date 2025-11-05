@@ -96,7 +96,10 @@ test('SetItemRef works as expected', async () => {
 
   expect(button).toHaveStyleRule(
     'background',
-    colors.interactive.primary__hover_alt.rgba
+    colors.interactive.primary__hover_alt.rgba,
+    {
+      modifier: ':hover',
+    }
   );
 });
 
