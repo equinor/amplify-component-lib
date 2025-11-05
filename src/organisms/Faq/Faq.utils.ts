@@ -1,6 +1,8 @@
 import { environment, FaqService } from '@equinor/subsurface-app-management';
 import { useQuery } from '@tanstack/react-query';
 
+export const HEADER_HEIGHT = 88;
+
 export type FaqDto = {
   id: number;
   question?: string | null;

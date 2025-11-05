@@ -35,10 +35,8 @@ export const Category: FC<FaqCategoriesWithFaqDto> = ({
 
   return (
     <Container>
-      <Header>
-        <Typography variant="h4" id={`category-${id}`}>
-          {categoryName}
-        </Typography>
+      <Header id={`category-${id}`}>
+        <Typography variant="h4">{categoryName}</Typography>
       </Header>
       <Content>
         {filteredFaqs?.map((question) => (

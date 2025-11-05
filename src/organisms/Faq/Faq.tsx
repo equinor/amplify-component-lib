@@ -8,7 +8,11 @@ import { TableOfContents } from '../TableOfContents/TableOfContents';
 import { Category } from './Category/Category';
 import { CategorySkeleton } from './Category/CategorySkeleton';
 import { AppPageWrapper } from './AppPageWrapper';
-import { faqInSearch, useFaqCategoriesWithFaqs } from './Faq.utils';
+import {
+  faqInSearch,
+  HEADER_HEIGHT,
+  useFaqCategoriesWithFaqs,
+} from './Faq.utils';
 import { Search } from './Search';
 import { colors, spacings } from 'src/atoms/style';
 import {
@@ -33,7 +37,7 @@ const Content = styled.div<{ $isEmpty?: boolean }>`
 const TOCWrapper = styled.div`
   height: fit-content;
   position: sticky;
-  top: 88px;
+  top: ${HEADER_HEIGHT}px;
   grid-row: span 2;
 `;
 

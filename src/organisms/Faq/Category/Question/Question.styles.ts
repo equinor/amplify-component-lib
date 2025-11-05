@@ -1,3 +1,4 @@
+import { HEADER_HEIGHT } from '../../Faq.utils';
 import { colors, shape, spacings } from 'src/atoms';
 
 import { motion } from 'framer-motion';
@@ -47,6 +48,7 @@ export const Header = styled.header`
   flex-direction: column;
   gap: ${spacings.x_small};
   padding: ${spacings.medium} 0;
+  scroll-margin-top: ${HEADER_HEIGHT}px;
   > div {
     display: flex;
     align-items: center;

@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-import { FaqCategoriesWithFaqDto } from '../Faq.utils';
+import { FaqCategoriesWithFaqDto, HEADER_HEIGHT } from '../Faq.utils';
 import { Question } from './Question/Question';
 import { colors, shape, spacings } from 'src/atoms';
 import { Typography } from 'src/molecules';
@@ -31,6 +31,7 @@ const Header = styled.div`
   display: flex;
   gap: ${spacings.small};
   align-items: center;
+  scroll-margin-top: ${HEADER_HEIGHT}px;
 `;
 
 const VerticalLine = styled.hr`
@@ -58,11 +59,10 @@ export const Subcategory: FC<FaqCategoriesWithFaqDto> = ({
     <Container aria-label={`Subcategory: ${categoryName}`}>
       <VerticalLine />
       <RightSide>
-        <Header>
+        <Header id={`subcategory-${id}`}>
           <Typography
             variant="h5"
             color={colors.text.static_icons__tertiary.rgba}
-            id={`subcategory-${id}`}
           >
             {categoryName}
           </Typography>

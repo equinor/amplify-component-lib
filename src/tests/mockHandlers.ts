@@ -417,6 +417,7 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
     faqs: [
       {
         id: 1,
+        // unique id
         categoryId: 1,
         question: `How do I log in for the first time?`,
         answer: `<p>Navigate to ${faker.internet.url()} and use your company credentials. If you're having trouble, make sure caps lock is off - it happens to the best of us!</p>`,
@@ -426,7 +427,7 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
       },
       {
         id: 2,
-        categoryId: 1,
+        categoryId: 2,
         question: 'What browsers work best?',
         answer: `<p>We recommend using the latest version of ${faker.helpers.arrayElement(['Chrome', 'Firefox', 'Edge', 'Safari'])}. Really any modern browser should work fine.</p>`,
         visible: true,
@@ -435,7 +436,7 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
       },
       {
         id: 3,
-        categoryId: 1,
+        categoryId: 3,
         question: 'Where can I find the user guide?',
         answer: `<p>Check out the documentation at ${faker.system.directoryPath()}/docs or click the Help icon in the top menu. There's also video tutorials if you prefer watching over reading.</p>`,
         visible: true,
@@ -484,7 +485,7 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
     faqs: [
       {
         id: 6,
-        categoryId: 3,
+        categoryId: 6,
         question: 'What file formats can I import?',
         answer: `<p>We support CSV, Excel, JSON, and ${faker.system.fileExt().toUpperCase()} files. Maximum file size is ${faker.number.int({ min: 100, max: 500 })}MB. Larger files should be split or compressed first.</p>`,
         visible: true,
@@ -493,7 +494,7 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
       },
       {
         id: 7,
-        categoryId: 3,
+        categoryId: 7,
         question: 'How long does data processing take?',
         answer: `<p>Most imports finish in ${faker.number.int({ min: 2, max: 10 })} minutes. Larger datasets might take up to an hour. You'll get an email notification when it's done.</p>`,
         visible: true,

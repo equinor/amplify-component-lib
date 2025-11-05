@@ -38,10 +38,8 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
   return (
     <Wrapper>
       <Container>
-        <Header>
-          <Typography id={`faq-${id}`} variant="h4">
-            {question}
-          </Typography>
+        <Header id={`faq-${id}`}>
+          <Typography variant="h4">{question}</Typography>
         </Header>
         <TopRight>
           <Typography group="paragraph" variant="caption">

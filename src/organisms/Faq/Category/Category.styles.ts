@@ -1,3 +1,4 @@
+import { HEADER_HEIGHT } from '../Faq.utils';
 import { spacings } from 'src/atoms';
 
 import styled from 'styled-components';
@@ -17,4 +18,5 @@ export const Header = styled.div`
   display: flex;
   gap: ${spacings.small};
   align-items: center;
+  scroll-margin-top: ${HEADER_HEIGHT}px;
 `;
