@@ -17,7 +17,7 @@ import {
 import { StepIndicator } from './StepIndicator';
 import { colors, elevation, spacings } from 'src/atoms/style';
 
-import { motion, MotionProps } from 'framer-motion';
+import { motion, MotionProps } from 'motion/react';
 import styled, { css } from 'styled-components';
 
 function caretPositionToCss(

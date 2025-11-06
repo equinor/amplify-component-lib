@@ -7,7 +7,7 @@ import {
   SHAPES,
 } from 'src/organisms/Status/Illustration.constants';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import styled from 'styled-components';
 
 const Container = styled.div`

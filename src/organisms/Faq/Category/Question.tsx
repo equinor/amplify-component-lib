@@ -9,7 +9,7 @@ import { formatDate } from 'src/atoms/utils/date';
 import { Button } from 'src/molecules/Button/Button';
 import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import styled from 'styled-components';
 
 const Container = styled.div`

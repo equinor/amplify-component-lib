@@ -2,7 +2,7 @@ import { RefObject } from 'react';
 
 import { useReversedScrollY } from 'src/providers/TutorialHighlightingProvider/hooks/useReversedScrollY';
 
-import { MotionStyle, useTransform } from 'framer-motion';
+import { MotionStyle, useTransform } from 'motion/react';
 
 export const CARET_OFFSET = 16;
 

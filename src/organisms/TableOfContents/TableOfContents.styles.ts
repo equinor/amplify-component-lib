@@ -1,7 +1,7 @@
 import { animation, colors, spacings } from 'src/atoms/style';
 import { VERTICAL_ITEM_HEIGHT } from 'src/organisms/TableOfContents/TableOfContents.constants';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import styled, { css } from 'styled-components';
 
 interface ButtonProps {
