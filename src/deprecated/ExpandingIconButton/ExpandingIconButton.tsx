@@ -6,7 +6,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { spacings } from 'src/atoms/style';
 
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants } from 'motion/react';
 import styled from 'styled-components';
 
 const { colors, shape } = tokens;

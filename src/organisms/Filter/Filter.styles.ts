@@ -1,7 +1,7 @@
 import { colors, shape, spacings, typography } from 'src/atoms/style';
 import { Chip } from 'src/molecules/Chip/Chip';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`

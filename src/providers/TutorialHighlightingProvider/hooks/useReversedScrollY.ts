@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
 
-import { useScroll, useTransform } from 'framer-motion';
+import { useScroll, useTransform } from 'motion/react';
 
 export function useReversedScrollY(contentRef: RefObject<HTMLElement | null>) {
   const { scrollY } = useScroll({

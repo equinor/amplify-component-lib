@@ -15,3 +15,4 @@ export { useTableOfContents } from 'src/providers/TableOfContentsProvider';
 export { useThemeProvider } from 'src/providers/ThemeProvider/ThemeProvider';
 export { usePrefetchRichTextImages } from './usePrefetchRichTextImages';
 export { useFaqsInApplication } from './useFaqsInApplication';
+export { useToasts } from 'src/providers/ToastProvider/ToastProvider';

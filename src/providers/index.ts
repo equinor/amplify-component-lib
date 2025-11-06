@@ -7,5 +7,6 @@ export { TutorialHighlightingProvider } from 'src/providers/TutorialHighlighting
 export { LoadingProvider } from './LoadingProvider';
 export { ThemeProvider } from './ThemeProvider/ThemeProvider';
 export { StepperProvider } from './StepperProvider';
+export { ToastProvider } from './ToastProvider/ToastProvider';
 
 export type { TableOfContentsItemType } from './TableOfContentsProvider';
