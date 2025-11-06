@@ -15,7 +15,7 @@ import {
 } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 
 const Story: FC<FaqProps> = (args) => {
   const { isOpen } = useSideBar();
@@ -305,6 +305,53 @@ export const OpenQuestion: Story = {
         { exact: false }
       );
       expect(answerText).toBeVisible();
+    });
+  },
+};
+
+export const EmptyCategory: Story = {
+  parameters: {
+    router: {
+      initialEntries: ['/faq'],
+      routes: ['/faq'],
+    },
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get('*/v1/Faq/faqcategorieswithfaqs/*', () => {
+          return HttpResponse.json([
+            {
+              id: '1',
+              categoryName: 'Empty Category',
+              faqs: [],
+              subCategories: [],
+            },
+          ]);
+        }),
+      ],
+    },
+  },
+  play: async ({ canvas, step }) => {
+    await step('Wait for loading skeletons to disappear', async () => {
+      const loadingLabel = 'Loading FAQ category';
+
+      const loadingCategories = await canvas.findAllByLabelText(loadingLabel, {
+        exact: true,
+      });
+      expect(loadingCategories.length).toBeGreaterThan(0);
+
+      // Wait for skeletons to disappear
+      await waitFor(() => {
+        expect(
+          canvas.queryAllByLabelText(loadingLabel, { exact: true })
+        ).toHaveLength(0);
+      });
+    });
+
+    await step('Verify empty category is not visible', async () => {
+      expect(
+        canvas.queryByRole('heading', { name: 'Empty Category' })
+      ).not.toBeInTheDocument();
     });
   },
 };

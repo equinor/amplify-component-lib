@@ -30,8 +30,9 @@ export const Category: FC<FaqCategoriesWithFaqDto> = ({
   if (
     filteredFaqs?.length === 0 &&
     (!filteredSubcategories || filteredSubcategories.length === 0)
-  )
+  ) {
     return null;
+  }
 
   return (
     <Container>
