@@ -175,7 +175,7 @@ export const SearchFaqsNotFound: Story = {
     },
   },
   play: async ({ canvas, step }) => {
-    await step('Search for "log in"', async () => {
+    await step('Search for "non-matching search"', async () => {
       const searchInput = await canvas.findByPlaceholderText(
         'Search for something...'
       );

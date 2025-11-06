@@ -73,9 +73,8 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
         )
     );
 
-  const tableOfContentsItems: TableOfContentsItemType[] = filteredCategories
-    .filter(categoryHasFaqs)
-    .map((category) => ({
+  const tableOfContentsItems: TableOfContentsItemType[] =
+    filteredCategories.map((category) => ({
       label: category.categoryName,
       value: `category-${category.id}`,
       count: category.faqs?.length,
