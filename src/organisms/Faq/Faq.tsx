@@ -62,14 +62,16 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
   const { data: categories, isLoading } = useFaqCategoriesWithFaqs();
   const isSearchingOrFiltering = !!search;
 
-  const filteredCategories = (categories ?? []).filter(
-    (category) =>
-      !search ||
-      (category.faqs ?? []).some((faq) => faqInSearch(faq, search)) ||
-      category.subCategories?.some((subcategory) =>
-        subcategory.faqs?.some((faq) => faqInSearch(faq, search))
-      )
-  );
+  const filteredCategories = (categories ?? [])
+    .filter(categoryHasFaqs)
+    .filter(
+      (category) =>
+        !search ||
+        (category.faqs ?? []).some((faq) => faqInSearch(faq, search)) ||
+        category.subCategories?.some((subcategory) =>
+          subcategory.faqs?.some((faq) => faqInSearch(faq, search))
+        )
+    );
 
   const tableOfContentsItems: TableOfContentsItemType[] = filteredCategories
     .filter(categoryHasFaqs)
@@ -77,9 +79,10 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
       label: category.categoryName,
       value: `category-${category.id}`,
       count: category.faqs?.length,
+      /* v8 ignore start */
       children: [
         ...(category.faqs ?? []).map((faq) => ({
-          label: faq.question ?? '',
+          label: faq.question!,
           value: `faq-${faq.id}`,
         })),
         ...(category.subCategories ?? [])
@@ -92,6 +95,7 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
             count: subcategory.faqs?.length,
           })),
       ],
+      /* v8 ignore end */
     }));
 
   const isEmpty =

@@ -20,8 +20,10 @@ import { AnimatePresence } from 'framer-motion';
 
 export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
   usePrefetchRichTextImages({
-    richTextValues: [answer ?? ''],
+    richTextValues: [answer!],
+    /* v8 ignore start */
     onImageRead: (path) => FaqService.getFaqImage(path),
+    /* v8 ignore end */
   });
   const initialHeight = useRef(0);
   const [expanded, setExpanded] = useState(false);

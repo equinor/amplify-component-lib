@@ -310,6 +310,7 @@ export const OpenQuestion: Story = {
 };
 
 export const EmptyCategory: Story = {
+  tags: ['test-only'],
   parameters: {
     router: {
       initialEntries: ['/faq'],
@@ -323,8 +324,8 @@ export const EmptyCategory: Story = {
             {
               id: '1',
               categoryName: 'Empty Category',
-              faqs: [],
-              subCategories: [],
+              faqs: null,
+              subCategories: null,
             },
           ]);
         }),
@@ -332,7 +333,7 @@ export const EmptyCategory: Story = {
     },
   },
   play: async ({ canvas, step }) => {
-    await step('Wait for loading skeletons to disappear', async () => {
+    await step('Wait for loading to complete', async () => {
       const loadingLabel = 'Loading FAQ category';
 
       const loadingCategories = await canvas.findAllByLabelText(loadingLabel, {
@@ -340,7 +341,6 @@ export const EmptyCategory: Story = {
       });
       expect(loadingCategories.length).toBeGreaterThan(0);
 
-      // Wait for skeletons to disappear
       await waitFor(() => {
         expect(
           canvas.queryAllByLabelText(loadingLabel, { exact: true })
@@ -348,10 +348,71 @@ export const EmptyCategory: Story = {
       });
     });
 
-    await step('Verify empty category is not visible', async () => {
+    await step('Verify empty categories are hidden', async () => {
       expect(
         canvas.queryByRole('heading', { name: 'Empty Category' })
       ).not.toBeInTheDocument();
+    });
+  },
+};
+
+export const SearchWithNullFaqs: Story = {
+  tags: ['test-only'],
+  parameters: {
+    router: {
+      initialEntries: ['/faq?search=subcategory'],
+      routes: ['/faq'],
+    },
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get('*/v1/Faq/faqcategorieswithfaqs/*', () => {
+          return HttpResponse.json([
+            {
+              id: 1,
+              categoryName: 'Category With Null Faqs',
+              faqs: null,
+              subCategories: [
+                {
+                  id: 2,
+                  categoryName: 'Subcategory With FAQs',
+                  faqs: [
+                    {
+                      id: 1,
+                      question: 'Question in subcategory',
+                      answer: 'Answer in subcategory',
+                      categoryId: 2,
+                    },
+                  ],
+                  subCategories: null,
+                },
+              ],
+            },
+          ]);
+        }),
+      ],
+    },
+  },
+  play: async ({ canvas, step }) => {
+    await step('Wait for loading to complete', async () => {
+      await waitFor(() => {
+        expect(
+          canvas.queryAllByLabelText('Loading FAQ category', { exact: true })
+        ).toHaveLength(0);
+      });
+    });
+
+    await step('Verify search input contains search term', async () => {
+      const searchInput = await canvas.findByPlaceholderText(
+        'Search for something...'
+      );
+      expect(searchInput).toHaveValue('subcategory');
+    });
+
+    await step('Verify category with null faqs is displayed', async () => {
+      await canvas.findByRole('heading', {
+        name: 'Category With Null Faqs',
+      });
     });
   },
 };
