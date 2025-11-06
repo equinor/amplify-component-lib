@@ -1,7 +1,5 @@
 import type { FC } from 'react';
 
-import { chevron_down } from '@equinor/eds-icons';
-
 import {
   Container as QuestionContainer,
   Header,
@@ -10,7 +8,7 @@ import {
 } from './Question/Question.styles';
 import { Container, Content } from './Category.styles';
 import { shape } from 'src/atoms';
-import { Button, Icon, SkeletonBase } from 'src/molecules';
+import { SkeletonBase } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -32,6 +30,12 @@ const DateChip = styled(SkeletonBase)`
   border-radius: ${shape.corners.borderRadius};
 `;
 
+const IconButton = styled(SkeletonBase)`
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+`;
+
 export const CategorySkeleton: FC = () => {
   return (
     <Container aria-label="Loading FAQ category">
@@ -47,9 +51,7 @@ export const CategorySkeleton: FC = () => {
                 </Header>
                 <TopRight>
                   <DateChip />
-                  <Button variant="ghost_icon">
-                    <Icon data={chevron_down} />
-                  </Button>
+                  <IconButton />
                 </TopRight>
               </QuestionContainer>
             </Wrapper>

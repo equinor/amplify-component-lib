@@ -9,6 +9,7 @@ import { Category } from './Category/Category';
 import { CategorySkeleton } from './Category/CategorySkeleton';
 import { AppPageWrapper } from './AppPageWrapper';
 import {
+  categoryHasFaqs,
   faqInSearch,
   HEADER_HEIGHT,
   useFaqCategoriesWithFaqs,
@@ -22,13 +23,14 @@ import {
 
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled.div<{ $showToc: boolean }>`
   display: grid;
-  grid-template-columns: 1fr 180px;
+  grid-template-columns: ${({ $showToc }) =>
+    $showToc ? '1fr 180px' : '1fr auto'};
   gap: ${spacings.large};
 `;
 
-const Content = styled.div<{ $isEmpty?: boolean }>`
+const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.large};
@@ -69,8 +71,9 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
       )
   );
 
-  const tableOfContentsItems: TableOfContentsItemType[] =
-    filteredCategories.map((category) => ({
+  const tableOfContentsItems: TableOfContentsItemType[] = filteredCategories
+    .filter(categoryHasFaqs)
+    .map((category) => ({
       label: category.categoryName,
       value: `category-${category.id}`,
       count: category.faqs?.length,
@@ -91,6 +94,13 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
       ],
     }));
 
+  const isEmpty =
+    !isLoading &&
+    (filteredCategories.length === 0 ||
+      filteredCategories.every((category) => !categoryHasFaqs(category)));
+
+  const showToc = isLoading || tableOfContentsItems.length > 0;
+
   return (
     <AppPageWrapper>
       <AppHeaderWrapper>
@@ -99,19 +109,19 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
         </Typography>
       </AppHeaderWrapper>
       <TableOfContentsProvider items={tableOfContentsItems} hashNavigation>
-        <Container>
+        <Container $showToc={showToc}>
           <Search placeholder={searchPlaceholder} />
           <TOCWrapper>
             <TableOfContents />
           </TOCWrapper>
-          <Content $isEmpty={!isLoading && filteredCategories.length === 0}>
+          <Content>
             {isLoading ? (
               Array.from({ length: 2 })
                 .fill(null)
                 .map((_, index) => (
                   <CategorySkeleton key={`category-${index.toString()}`} />
                 ))
-            ) : filteredCategories.length > 0 ? (
+            ) : !isEmpty ? (
               filteredCategories.map((category) => (
                 <Category key={category.id} {...category} />
               ))

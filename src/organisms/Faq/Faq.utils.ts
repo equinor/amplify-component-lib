@@ -40,6 +40,14 @@ export type FaqCategoriesWithFaqDto = {
   subCategories?: Array<FaqCategoriesWithFaqDto> | null;
 };
 
+export const categoryHasFaqs = (category: FaqCategoriesWithFaqDto): boolean => {
+  const hasMainFaqs = (category.faqs?.length ?? 0) > 0;
+  const hasSubcategoryFaqs = category.subCategories?.some(
+    (subcategory) => (subcategory.faqs?.length ?? 0) > 0
+  );
+  return hasMainFaqs || hasSubcategoryFaqs || false;
+};
+
 export function faqInSearch(
   faq: Pick<FaqDto, 'answer' | 'question'>,
   searchValue: string

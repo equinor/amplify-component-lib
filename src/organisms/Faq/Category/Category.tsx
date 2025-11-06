@@ -27,13 +27,6 @@ export const Category: FC<FaqCategoriesWithFaqDto> = ({
       subcategory.faqs.length > 0
   );
 
-  if (
-    filteredFaqs?.length === 0 &&
-    (!filteredSubcategories || filteredSubcategories.length === 0)
-  ) {
-    return null;
-  }
-
   return (
     <Container>
       <Header id={`category-${id}`}>
