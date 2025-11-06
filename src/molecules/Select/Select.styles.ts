@@ -6,7 +6,6 @@ import {
   VARIANT_HELPER_TEXT_COLORS,
 } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
-import { ListItem } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
@@ -189,11 +188,15 @@ const Section = styled.section`
   }
 `;
 
-const ClearButton = styled(Button)`
+interface ClearButtonProps {
+  rightPadding?: boolean;
+}
+
+const ClearButton = styled(Button)<ClearButtonProps>`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: 32px;
+  right: ${({ $rightPadding }) => ($rightPadding ? '32px' : '8px')};
   width: 24px;
   height: 24px;
   svg {
@@ -218,6 +221,14 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
     if ($lightBackground) return colors.ui.background__light.rgba;
     return colors.ui.background__default.rgba;
   }} !important;
+`;
+
+const PersistentGroupsWrapper = styled.div`
+  padding: ${spacings.small} 0;
+`;
+
+const GroupTitle = styled(Typography)`
+  padding: ${spacings.small} 0 ${spacings.small} ${spacings.medium};
 `;
 
 interface CustomMenuItemProps {
@@ -256,10 +267,23 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
 const PersistentComboBoxWrapper = styled.div`
   border: 1px solid ${colors.ui.background__heavy.rgba};
   border-radius: ${shape.corners.borderRadius};
+  overflow: hidden;
 `;
 
-const PersistentListItem = styled(ListItem)`
+const PersistentListItem = styled.button`
   width: 100%;
+  display: flex;
+  align-items: center;
+  padding: ${spacings.medium} ${spacings.medium};
+  justify-content: flex-start;
+  gap: ${spacings.small};
+  box-sizing: border-box;
+  &:hover {
+    background-color: ${colors.interactive.primary__hover_alt.rgba};
+  }
+  &:focus-visible {
+    outline: 2px dashed ${colors.interactive.primary__resting.rgba};
+  }
 `;
 
 const MenuItemSpacer = styled.hr`
@@ -318,6 +342,8 @@ export {
   Button,
   ClearButton,
   Container,
+  PersistentGroupsWrapper,
+  GroupTitle,
   MenuItemSpacer,
   StyledMenu,
   NoTagFoundText,

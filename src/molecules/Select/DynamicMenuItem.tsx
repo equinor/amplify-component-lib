@@ -1,9 +1,9 @@
-import { KeyboardEvent, MouseEvent, useMemo } from 'react';
+import { KeyboardEvent, MouseEvent, ReactNode, useMemo } from 'react';
 
 import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms';
-import { Icon, SelectOptionRequired } from 'src/molecules';
+import { Icon, SelectOptionRequired, Typography } from 'src/molecules';
 import {
   PersistentListItem,
   StyledMenuItem,
@@ -22,12 +22,14 @@ interface DynamicMenuItemProps<T extends SelectOptionRequired> {
   menuItemProps: SingleSelectMenuItemProps<T> | MultiSelectMenuItemProps<T>;
   isSelected: boolean;
   handleOnParentKeyDown?: (event: KeyboardEvent<HTMLButtonElement>) => void;
+  children?: ReactNode;
 }
 
 export const DynamicMenuItem = <T extends SelectOptionRequired>({
   menuItemProps,
   isSelected,
   handleOnParentKeyDown,
+  children,
 }: DynamicMenuItemProps<T>) => {
   const {
     index,
@@ -62,6 +64,8 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
   };
 
   const itemContent = useMemo(() => {
+    if (children) return children;
+
     if (CustomMenuItemComponent) {
       return (
         <CustomMenuItemComponent item={item} selectedState={selectedState} />
@@ -76,12 +80,17 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
             data={checkboxIcon}
           />
         )}
-        <span>{item.label}</span>
+        <span>
+          <Typography group="navigation" variant="menu_title">
+            {item.label}
+          </Typography>
+        </span>
       </>
     );
   }, [
     CustomMenuItemComponent,
     checkboxIcon,
+    children,
     item,
     menuItemProps,
     selectedState,
@@ -94,11 +103,11 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
           itemRefs.current[index] = element;
         }}
         tabIndex={index}
-        leadingContent={checkboxIcon}
-        label={item.label}
         onKeyDownCapture={handleOnKeyDown}
         onClick={handleOnItemClick}
-      />
+      >
+        {itemContent}
+      </PersistentListItem>
     );
   }
 

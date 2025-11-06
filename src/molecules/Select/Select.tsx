@@ -232,21 +232,24 @@ export const Select = <T extends SelectOptionRequired>(
                 />
               )}
             </Section>
-            <Icon
-              onClick={handleToggleOpen}
-              data={open ? arrow_drop_up : arrow_drop_down}
-              color={
-                loading
-                  ? colors.interactive.disabled__fill.rgba
-                  : colors.interactive.primary__resting.rgba
-              }
-            />
+            {mode === 'menu' && (
+              <Icon
+                onClick={handleToggleOpen}
+                data={open ? arrow_drop_up : arrow_drop_down}
+                color={
+                  loading
+                    ? colors.interactive.disabled__fill.rgba
+                    : colors.interactive.primary__resting.rgba
+                }
+              />
+            )}
             {clearable && selectedValues.length > 0 && !loading && (
               <ClearButton
                 id="clear"
                 variant="ghost_icon"
                 onClick={handleOnClear}
                 data-testid="clearBtn"
+                $rightPadding={mode === 'menu'}
               >
                 <Icon data={clear} size={18} />
               </ClearButton>

@@ -31,10 +31,10 @@ export const ListSelectPersistent = <T extends SelectOptionRequired>(
       | SingleSelectCommon<T>
     )
 ) => {
-  const { search, itemRefs, onItemKeyDown } = props;
+  const { search, itemRefs, onItemKeyDown, mode } = props;
 
   const { filteredItems } = useListSelectItems(props);
-  console.log(filteredItems, 'filteredItems');
+
   if (filteredItems.length === 0 && (!props.onAddItem || search === '')) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
@@ -77,6 +77,7 @@ export const ListSelectPersistent = <T extends SelectOptionRequired>(
             onItemKeyDown={onItemKeyDown}
             onAddItem={props.onAddItem}
             addItemSingularWord={singularWord}
+            mode={mode}
           >
             {search}
           </AddTagItem>

@@ -1,11 +1,12 @@
-import { FC, KeyboardEvent } from 'react';
+import { FC, KeyboardEvent, useMemo } from 'react';
 
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { add_box } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms/style/colors';
 import {
   MenuItemWrapper,
+  PersistentListItem,
   StyledMenuItem,
 } from 'src/molecules/Select/Select.styles';
 import {
@@ -19,6 +20,7 @@ interface AddTagItemProps {
   onAddItem: () => void;
   addItemSingularWord: string;
   index: number;
+  mode?: 'persistent' | 'menu';
   children: string;
 }
 
@@ -28,6 +30,7 @@ export const AddTagItem: FC<AddTagItemProps> = ({
   index,
   onAddItem,
   addItemSingularWord,
+  mode,
   children,
 }) => {
   const handleOnKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -39,6 +42,35 @@ export const AddTagItem: FC<AddTagItemProps> = ({
     }
   };
 
+  const addItemContent = useMemo(() => {
+    return (
+      <>
+        <Icon data={add_box} color={colors.interactive.primary__resting.rgba} />
+        <span>
+          <Typography group="navigation" variant="menu_title">
+            Add &quot;{children}&quot; as new {addItemSingularWord}
+          </Typography>
+        </span>
+      </>
+    );
+  }, [addItemSingularWord, children]);
+
+  if (mode === 'persistent') {
+    return (
+      <MenuItemWrapper>
+        <PersistentListItem
+          ref={(element: HTMLButtonElement | null) => {
+            itemRefs.current[index] = element;
+          }}
+          onClick={onAddItem}
+          onKeyDownCapture={handleOnKeyDown}
+        >
+          {addItemContent}
+        </PersistentListItem>
+      </MenuItemWrapper>
+    );
+  }
+
   return (
     <MenuItemWrapper>
       <StyledMenuItem
@@ -49,10 +81,7 @@ export const AddTagItem: FC<AddTagItemProps> = ({
         onClick={onAddItem}
         onKeyDownCapture={handleOnKeyDown}
       >
-        <Icon data={add_box} color={colors.interactive.primary__resting.rgba} />
-        <span>
-          Add &quot;{children}&quot; as new {addItemSingularWord}
-        </span>
+        {addItemContent}
       </StyledMenuItem>
     </MenuItemWrapper>
   );

@@ -1,14 +1,25 @@
+import { Divider } from '@equinor/eds-core-react';
+
 import { SelectOptionRequired } from 'src/molecules';
 import { useGroupedSelectItems } from 'src/molecules/Select/Select.hooks';
-import { NoItemsFoundText } from 'src/molecules/Select/Select.styles';
+import {
+  GroupTitle,
+  NoItemsFoundText,
+  PersistentGroupsWrapper,
+} from 'src/molecules/Select/Select.styles';
 import { GroupedSelectPropsCombined } from 'src/molecules/Select/Select.types';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
 export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
   props: GroupedSelectPropsCombined<T>
 ) => {
-  const { onItemSelect, onItemKeyDown, itemRefs, CustomMenuItemComponent } =
-    props;
+  const {
+    onItemSelect,
+    onItemKeyDown,
+    itemRefs,
+    CustomMenuItemComponent,
+    mode,
+  } = props;
 
   const { filteredGroups, filteredGroupSum } = useGroupedSelectItems(props);
 
@@ -16,40 +27,34 @@ export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
-  if ('values' in props)
-    return filteredGroups.map((group, groupIndex) => (
-      <div key={`${group.title}-${groupIndex}`}>
-        {group.items.map((item, index) => (
-          <SelectMenuItem
-            key={`${group.title}-${groupIndex}-item-${item.value}`}
-            index={index + filteredGroupSum[groupIndex]}
-            childOffset={0}
-            item={item}
-            itemRefs={itemRefs}
-            onItemKeyDown={onItemKeyDown}
-            onItemSelect={onItemSelect}
-            values={props.values}
-            CustomMenuItemComponent={CustomMenuItemComponent}
-          />
-        ))}
-      </div>
-    ));
+  if ('value' in props) {
+    throw new Error('You can not use persistent mode with SingleSelect');
+  }
 
-  return filteredGroups.map((group, groupIndex) => (
-    <div key={`${group.title}-${groupIndex}`}>
-      {group.items.map((item, index) => (
-        <SelectMenuItem
-          key={`${group.title}-${groupIndex}-item-${item.value}`}
-          index={index + filteredGroupSum[groupIndex]}
-          childOffset={0}
-          item={item}
-          itemRefs={itemRefs}
-          onItemKeyDown={onItemKeyDown}
-          onItemSelect={onItemSelect}
-          value={props.value}
-          CustomMenuItemComponent={CustomMenuItemComponent}
-        />
+  return (
+    <PersistentGroupsWrapper>
+      {filteredGroups.map((group, groupIndex, groupArr) => (
+        <div key={`${group.title}-${groupIndex}`}>
+          <GroupTitle group="navigation" variant="label">
+            {group.title}
+          </GroupTitle>
+          {group.items.map((item, index) => (
+            <SelectMenuItem
+              key={`${group.title}-${groupIndex}-item-${item.value}`}
+              index={index + filteredGroupSum[groupIndex]}
+              childOffset={0}
+              item={item}
+              itemRefs={itemRefs}
+              onItemKeyDown={onItemKeyDown}
+              onItemSelect={onItemSelect}
+              values={props.values}
+              mode={mode}
+              CustomMenuItemComponent={CustomMenuItemComponent}
+            />
+          ))}
+          {groupIndex < groupArr.length - 1 && <Divider />}
+        </div>
       ))}
-    </div>
-  ));
+    </PersistentGroupsWrapper>
+  );
 };

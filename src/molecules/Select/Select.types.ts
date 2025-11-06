@@ -108,18 +108,19 @@ export interface ListSelectMenuProps {
   itemSingularWord?: string;
 }
 
-export type ListSelectMenuPropsCombined<T extends SelectOptionRequired> = Omit<
-  ListSelectProps<T>,
-  'onAddItem'
-> &
-  ListSelectMenuProps &
-  SelectMenuProps<T> &
-  CustomMenuItemComponentProps<T> &
-  (PersistentModeSelectProps | MenuModeSelectProps) &
-  (
-    | Omit<MultiSelectCommon<T>, 'syncParentChildSelection'>
-    | SingleSelectCommon<T>
-  );
+// TODO:PERSISTENT check if we needed this
+// export type ListSelectMenuPropsCombined<T extends SelectOptionRequired> = Omit<
+//   ListSelectProps<T>,
+//   'onAddItem'
+// > &
+//   ListSelectMenuProps &
+//   SelectMenuProps<T> &
+//   CustomMenuItemComponentProps<T> &
+//   (PersistentModeSelectProps | MenuModeSelectProps) &
+//   (
+//     | Omit<MultiSelectCommon<T>, 'syncParentChildSelection'>
+//     | SingleSelectCommon<T>
+//   );
 
 export interface SelectMenuProps<T extends SelectOptionRequired> {
   search: string;

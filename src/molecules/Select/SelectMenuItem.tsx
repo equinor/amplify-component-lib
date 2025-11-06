@@ -31,9 +31,8 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     itemRefs,
     onItemKeyDown,
     onItemSelect,
-    // parentHasNestedItems = false,
     CustomMenuItemComponent,
-    // mode,
+    mode,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
@@ -120,31 +119,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
             isSelected={isSelected}
             handleOnParentKeyDown={handleOnParentKeyDown}
           />
-          {/*<StyledMenuItem*/}
-          {/*  $depth={depth}*/}
-          {/*  ref={(element: HTMLButtonElement | null) => {*/}
-          {/*    itemRefs.current[index] = element;*/}
-          {/*  }}*/}
-          {/*  index={index}*/}
-          {/*  closeMenuOnClick={false}*/}
-          {/*  onKeyDownCapture={handleOnParentKeyDown}*/}
-          {/*  onClick={handleOnItemClick}*/}
-          {/*>*/}
-          {/*  {CustomMenuItemComponent ? (*/}
-          {/*    <CustomMenuItemComponent*/}
-          {/*      item={item}*/}
-          {/*      selectedState={parentState}*/}
-          {/*    />*/}
-          {/*  ) : (*/}
-          {/*    <>*/}
-          {/*      <Icon*/}
-          {/*        color={colors.interactive.primary__resting.rgba}*/}
-          {/*        data={parentIcon}*/}
-          {/*      />*/}
-          {/*      <span>{item.label}</span>*/}
-          {/*    </>*/}
-          {/*  )}*/}
-          {/*</StyledMenuItem>*/}
         </MenuItemWrapper>
         {openParent &&
           item.children.map((child, childIndex) => (
@@ -160,6 +134,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               values={props.values}
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
+              mode={mode}
               parentHasNestedItems
               CustomMenuItemComponent={CustomMenuItemComponent}
             />
@@ -173,33 +148,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
       <MenuItemWrapper>
         {spacers}
         <DynamicMenuItem menuItemProps={props} isSelected={isSelected} />
-        {/*<StyledMenuItem*/}
-        {/*  $depth={depth}*/}
-        {/*  $paddedLeft={parentHasNestedItems}*/}
-        {/*  ref={(element: HTMLButtonElement | null) => {*/}
-        {/*    itemRefs.current[index] = element;*/}
-        {/*  }}*/}
-        {/*  index={index}*/}
-        {/*  tabIndex={depth}*/}
-        {/*  closeMenuOnClick={false}*/}
-        {/*  onKeyDownCapture={onItemKeyDown}*/}
-        {/*  onClick={handleOnItemClick}*/}
-        {/*>*/}
-        {/*  {CustomMenuItemComponent ? (*/}
-        {/*    <CustomMenuItemComponent*/}
-        {/*      item={item}*/}
-        {/*      selectedState={isSelected ? 'selected' : 'none'}*/}
-        {/*    />*/}
-        {/*  ) : (*/}
-        {/*    <>*/}
-        {/*      <Icon*/}
-        {/*        color={colors.interactive.primary__resting.rgba}*/}
-        {/*        data={isSelected ? checkbox : checkbox_outline}*/}
-        {/*      />*/}
-        {/*      <span>{item.label}</span>*/}
-        {/*    </>*/}
-        {/*  )}*/}
-        {/*</StyledMenuItem>*/}
       </MenuItemWrapper>
     );
   }
@@ -209,29 +157,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
         menuItemProps={props}
         isSelected={Boolean(props.value && item.value === props.value.value)}
       />
-      {/*<StyledMenuItem*/}
-      {/*  $depth={depth}*/}
-      {/*  $selected={props.value && item.value === props.value.value}*/}
-      {/*  ref={(element: HTMLButtonElement | null) => {*/}
-      {/*    itemRefs.current[index] = element;*/}
-      {/*  }}*/}
-      {/*  index={index}*/}
-      {/*  onKeyDownCapture={onItemKeyDown}*/}
-      {/*  onClick={handleOnItemClick}*/}
-      {/*>*/}
-      {/*  {CustomMenuItemComponent ? (*/}
-      {/*    <CustomMenuItemComponent*/}
-      {/*      item={item}*/}
-      {/*      selectedState={*/}
-      {/*        props.value && item.value === props.value.value*/}
-      {/*          ? 'selected'*/}
-      {/*          : 'none'*/}
-      {/*      }*/}
-      {/*    />*/}
-      {/*  ) : (*/}
-      {/*    <span>{item.label}</span>*/}
-      {/*  )}*/}
-      {/*</StyledMenuItem>*/}
     </MenuItemWrapper>
   );
 };
