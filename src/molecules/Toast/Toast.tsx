@@ -1,7 +1,7 @@
 import { FC, RefObject, useEffect } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { close, IconData, info_circle } from '@equinor/eds-icons';
+import { close, IconData } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
@@ -10,6 +10,7 @@ import {
   DurationBar,
   Header,
 } from 'src/molecules/Toast/Toast.styles';
+import { getHeaderIcon } from 'src/molecules/Toast/Toast.utils';
 
 export interface ToastProps {
   title: string;
@@ -37,6 +38,7 @@ export interface ToastProps {
  */
 export const Toast: FC<ToastProps> = ({
   title,
+  icon,
   onClose,
   variant,
   description,
@@ -65,10 +67,12 @@ export const Toast: FC<ToastProps> = ({
     }
   };
 
+  const usingIcon = getHeaderIcon({ icon, variant });
+
   return (
     <Container ref={ref} $variant={variant}>
       <Header>
-        <Icon data={info_circle} />
+        {usingIcon && <Icon data={usingIcon} />}
         <Typography variant="h6" color={colors.text.static_icons__default.rgba}>
           {title}
         </Typography>

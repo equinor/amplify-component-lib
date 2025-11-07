@@ -6,17 +6,20 @@ import styled, { css, keyframes } from 'styled-components';
 
 export const Header = styled.header`
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: ${spacings.medium};
-  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr);
+  gap: ${spacings.small};
+  padding-right: 40px;
   > h6 {
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: calc((40px - 24px) / 2);
   }
-  > svg:first-child {
-    margin-top: calc((40px - 24px) / 2);
-    margin-left: calc((40px - 24px) / 2);
+  &:has(> svg:first-child) {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  > button {
+    position: absolute;
+    top: ${spacings.x_small};
+    right: ${spacings.x_small};
   }
 `;
 
@@ -30,7 +33,8 @@ export const Container = styled.div<ContainerProps>`
   flex-direction: column;
   gap: ${spacings.small};
   border-radius: ${shape.corners.borderRadius};
-  padding: ${spacings.medium_small};
+  padding: ${spacings.medium_small} ${spacings.x_small} ${spacings.medium_small}
+    ${spacings.medium_small};
   overflow: hidden;
   min-width: 300px;
   max-width: 420px;
