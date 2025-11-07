@@ -1,13 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Toast } from './Toast';
-import { DEFAULT_TOAST_DURATION } from './Toast.constants';
 import { spacings } from 'src/atoms/style';
+import { Toast } from 'src/molecules/Toast/Toast';
 
 import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof Toast> = {
-  title: 'Organisms/Toast',
+  title: 'Molecules/Toast',
   component: Toast,
   parameters: {
     layout: 'centered',
@@ -19,7 +18,6 @@ const meta: Meta<typeof Toast> = {
   args: {
     title: 'This is the title',
     onClose: fn(),
-    duration: DEFAULT_TOAST_DURATION * 10,
   },
   argTypes: {
     title: {
@@ -31,7 +29,7 @@ const meta: Meta<typeof Toast> = {
     variant: {
       description: 'Variant of the toast',
       control: 'select',
-      options: ['success', 'warning', 'error'],
+      options: ['neutral', 'info', 'warning', 'error', 'success'],
     },
     description: {
       control: 'text',
@@ -39,7 +37,12 @@ const meta: Meta<typeof Toast> = {
       type: 'string',
     },
     duration: {
-      control: 'number',
+      control: {
+        type: 'range',
+        min: 1,
+        max: 60,
+        step: 1,
+      },
       description: 'Duration in seconds for the progress bar',
       type: 'number',
     },
@@ -64,15 +67,28 @@ type Story = StoryObj<typeof Toast>;
 export const Default: Story = {};
 
 export const Variants: Story = {
+  args: {
+    title: 'A really long title title tilte tiltet wowowo wo wo wo wo ow',
+  },
   render: (args) => (
     <div
       style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
     >
-      <Toast {...args} variant="success" />
+      <Toast {...args} variant="neutral" />
+      <Toast {...args} variant="info" />
       <Toast {...args} variant="warning" />
       <Toast {...args} variant="error" />
+      <Toast {...args} variant="success" />
     </div>
   ),
+};
+export const WithDuration: Story = {
+  args: {
+    duration: 120,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+  },
 };
 
 export const WithDescription: Story = {
