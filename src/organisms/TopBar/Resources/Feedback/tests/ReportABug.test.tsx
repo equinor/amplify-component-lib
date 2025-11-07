@@ -74,7 +74,7 @@ describe('Report a bug', () => {
           uuid: 'uuid-1',
         }}
       >
-        <Resources />,
+        <Resources />
       </TopBar>,
       { initialEntries: ['/'], routes: ['/'] },
       { wrapper: Wrappers }
