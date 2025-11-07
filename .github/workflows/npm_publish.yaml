@@ -1,15 +1,13 @@
 name: NPM Publish
 on:
   workflow_call:
-    secrets:
-      npm-token:
-        required: true
-permissions:
-  id-token: write
-jobs:
 
+jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +21,6 @@ jobs:
       - name: Build Components
         run: bun run build-components
 
-      - uses: JS-DevTools/npm-publish@v3
+      - uses: JS-DevTools/npm-publish@v4
         with:
-          token: ${{ secrets.npm-token }}
-          provenance: true
+          registry: "https://npm.pkg.github.com"
