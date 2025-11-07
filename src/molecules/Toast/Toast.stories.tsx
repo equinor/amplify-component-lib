@@ -1,3 +1,4 @@
+import { hill_shading, users_circle } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
@@ -12,7 +13,7 @@ const meta: Meta<typeof Toast> = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=20462-42970&m=dev',
     },
   },
   args: {
@@ -22,6 +23,16 @@ const meta: Meta<typeof Toast> = {
   argTypes: {
     title: {
       description: 'Title text',
+    },
+    icon: {
+      description: 'Icon in header, has defaults when using variants',
+      control: 'select',
+      options: [undefined, 'users_circle', 'hill_shading'],
+      mapping: {
+        undefined: undefined,
+        users_circle,
+        hill_shading,
+      },
     },
     onClose: {
       description: 'Function called when the toast is closed',
