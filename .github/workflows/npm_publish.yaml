@@ -1,9 +1,7 @@
 name: NPM Publish
 on:
   workflow_call:
-    secrets:
-      npm-token:
-        required: true
+
 jobs:
   publish:
     runs-on: ubuntu-latest
