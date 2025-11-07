@@ -119,7 +119,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
               )}
 
               <ListContainer>
-                {selectedField && !noSearchResult && searchValue === '' && (
+                {!noSearchResult && searchValue === '' && (
                   <MenuFixedItem $active>
                     <div>
                       <TextContainer>
