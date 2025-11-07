@@ -60,8 +60,6 @@ export {
   TableMenuBar,
   TextTable,
 } from './RichTextEditor/MenuBar/Table/TableBar';
-export { TableHeader } from './TableHeader/TableHeader';
-export type { TableHeaderProps } from './TableHeader/TableHeader';
 export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
 export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
 export type * from './RichTextEditor/RichTextEditor.types';
@@ -90,6 +88,10 @@ export type {
   GroupedSingleSelectProps,
 } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
+export { Toast } from './Toast/Toast';
+export type { ToastProps } from './Toast/Toast';
+export { TableHeader } from './TableHeader/TableHeader';
+export type { TableHeaderProps } from './TableHeader/TableHeader';
 export { TextField } from './TextField/TextField';
 export type { TextFieldProps } from './TextField/TextField';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';

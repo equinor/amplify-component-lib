@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 import { spacings } from 'src/atoms/style';
-import { Toast, ToastProps } from 'src/organisms/Toast/Toast';
+import { Toast, type ToastProps } from 'src/molecules/Toast/Toast';
 
 import { AnimatePresence, motion } from 'motion/react';
 import styled from 'styled-components';
