@@ -85,7 +85,7 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
             (subcategory) => subcategory.faqs && subcategory.faqs.length > 0
           )
           .map((subcategory) => ({
-            label: subcategory.categoryName,
+            label: subcategory.categoryName ?? '',
             value: `subcategory-${subcategory.id}`,
             count: subcategory.faqs?.length,
           })),
