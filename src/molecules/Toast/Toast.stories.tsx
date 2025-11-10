@@ -75,11 +75,15 @@ const meta: Meta<typeof Toast> = {
 export default meta;
 type Story = StoryObj<typeof Toast>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    icon: users_circle,
+  },
+};
 
 export const Variants: Story = {
   args: {
-    title: 'A really long title title tilte tiltet wowowo wo wo wo wo ow',
+    title: 'A really long title',
   },
   render: (args) => (
     <div
@@ -95,6 +99,7 @@ export const Variants: Story = {
 };
 export const WithDuration: Story = {
   args: {
+    icon: users_circle,
     duration: 120,
   },
   play: async ({ canvas }) => {
@@ -104,6 +109,7 @@ export const WithDuration: Story = {
 
 export const WithDescription: Story = {
   args: {
+    icon: users_circle,
     description: 'This is the description, it can be a longer text',
   },
   play: async ({ canvas, args }) => {
@@ -114,6 +120,7 @@ export const WithDescription: Story = {
 
 export const WithAction: Story = {
   args: {
+    icon: users_circle,
     description: 'This is the description, it can be a longer text',
     action: {
       onClick: fn(),
