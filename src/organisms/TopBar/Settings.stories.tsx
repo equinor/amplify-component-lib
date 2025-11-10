@@ -67,7 +67,7 @@ export const Default: Story = {
     ],
   },
   play: async ({ canvas }) => {
-    const menuButton = canvas.getByTestId('show-hide-button');
+    const menuButton = await canvas.findByRole('button');
     await userEvent.click(menuButton);
 
     await expect(await canvas.findByText(/theme/i)).toBeVisible();
