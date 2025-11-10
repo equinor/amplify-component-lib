@@ -1,7 +1,7 @@
 import {
   AmplifyApplication,
   ApplicationCategory,
-  FaqCategory,
+  FaqCategoriesWithFaqDto,
   FeatureToggleDto,
   ImpersonateUserDto,
   MyFeatureDto,
@@ -15,10 +15,8 @@ import { faker } from '@faker-js/faker';
 
 import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
-import { FaqCategoriesWithFaqDto } from 'src/organisms/Faq/Faq.utils';
 
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
-import { GraphAppRole } from 'node_modules/@equinor/subsurface-app-management/dist/api/models/GraphAppRole';
 
 export const fakeReleaseNotes: ReleaseNote[] = [
   {
@@ -44,7 +42,7 @@ export const fakeReleaseNotes: ReleaseNote[] = [
   },
 ];
 
-export const FAKE_ROLES: GraphAppRole[] = [
+export const FAKE_ROLES = [
   {
     allowedMemberTypes: ['fake', 'fake2'],
     description: faker.word.words(),
@@ -191,7 +189,7 @@ export const FAKE_FEATURE_TOGGLES: MyFeatureDto[] = new Array(
     active: true,
   }));
 
-export const FAKE_FAQ_CATEGORIES: FaqCategory[] = new Array(
+export const FAKE_FAQ_CATEGORIES = new Array(
   faker.number.int({ min: 2, max: 4 })
 )
   .fill(0)
