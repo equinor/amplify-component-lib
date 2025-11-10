@@ -8,13 +8,9 @@ import { TableOfContents } from '../TableOfContents/TableOfContents';
 import { Category } from './Category/Category';
 import { CategorySkeleton } from './Category/CategorySkeleton';
 import { AppPageWrapper } from './AppPageWrapper';
-import {
-  categoryHasFaqs,
-  faqInSearch,
-  HEADER_HEIGHT,
-  useFaqCategoriesWithFaqs,
-} from './Faq.utils';
+import { categoryHasFaqs, faqInSearch, HEADER_HEIGHT } from './Faq.utils';
 import { Search } from './Search';
+import { useFaqsInApplication } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
 import {
   TableOfContentsItemType,
@@ -59,7 +55,7 @@ export interface FaqProps {
 export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
   const { search } = useSearch({ strict: false });
 
-  const { data: categories, isLoading } = useFaqCategoriesWithFaqs();
+  const { data: categories, isLoading } = useFaqsInApplication();
   const isSearchingOrFiltering = !!search;
 
   const filteredCategories = (categories ?? [])
@@ -81,7 +77,7 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
       /* v8 ignore start */
       children: [
         ...(category.faqs ?? []).map((faq) => ({
-          label: faq.question!,
+          label: faq.question ?? '',
           value: `faq-${faq.id}`,
         })),
         ...(category.subCategories ?? [])
