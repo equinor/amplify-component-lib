@@ -61,10 +61,8 @@ export const Toast: FC<ToastProps> = ({
   }, [duration, onClose]);
 
   const handleOnActionClick = () => {
-    if (action) {
-      action.onClick();
-      onClose();
-    }
+    action?.onClick();
+    onClose();
   };
 
   const usingIcon = getHeaderIcon({ icon, variant });

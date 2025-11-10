@@ -136,6 +136,7 @@ export const WithAction: Story = {
       canvas.getByRole('button', { name: args.action!.text })
     );
     await expect(args.action!.onClick).toHaveBeenCalled();
+    await expect(args.onClose).toHaveBeenCalled();
   },
 };
 

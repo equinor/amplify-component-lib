@@ -49,25 +49,12 @@ export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
 
   const handleShowToast: ToastContextType['showToast'] = (props) => {
     const newToastUuid = crypto.randomUUID();
-    if (typeof props === 'string') {
-      setActiveToasts((prev) => [
-        ...prev,
-        {
-          title: props,
-          uuid: newToastUuid,
-          onClose: () => handleOnRemoveToast(newToastUuid),
-        },
-      ]);
-    } else {
-      setActiveToasts((prev) => [
-        ...prev,
-        {
-          ...props,
-          uuid: newToastUuid,
-          onClose: () => handleOnRemoveToast(newToastUuid),
-        },
-      ]);
-    }
+    const newToast: ToastProps & { uuid: string } = {
+      uuid: newToastUuid,
+      ...(typeof props === 'string' ? { title: props } : props),
+      onClose: () => handleOnRemoveToast(newToastUuid),
+    };
+    setActiveToasts((prev) => [...prev, newToast]);
   };
 
   return (
