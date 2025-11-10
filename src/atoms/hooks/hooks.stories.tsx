@@ -92,7 +92,7 @@ showSnackbar(object: ShowSnackbar, customProps?: SnackbarProps)`,
 
 ...
 
-showToast(text: string)\`,
+showToast(text: string)
 showToast(object: ToastProps)`,
   },
 ];
