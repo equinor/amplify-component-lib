@@ -129,6 +129,7 @@ export const WithAction: Story = {
 };
 
 export const CallsOnCloseOnClick: Story = {
+  tags: ['test-only'],
   play: async ({ canvas, args }) => {
     await userEvent.click(canvas.getByRole('button'));
     await expect(args.onClose).toHaveBeenCalled();
@@ -136,6 +137,7 @@ export const CallsOnCloseOnClick: Story = {
 };
 
 export const CallsOnCloseAfterDuration: Story = {
+  tags: ['test-only'],
   args: {
     duration: 1,
   },

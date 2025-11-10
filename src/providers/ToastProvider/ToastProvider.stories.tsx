@@ -33,7 +33,7 @@ const meta: Meta<typeof Toast> = {
   },
   argTypes: {
     variant: {
-      description: 'Variant of the toast',
+      description: 'Variant of the toast, default is neutral',
       control: 'select',
       options: ['neutral', 'info', 'warning', 'error', 'success'],
     },

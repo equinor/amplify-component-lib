@@ -42,6 +42,9 @@ export const Container = styled.div<ContainerProps>`
   > button {
     margin: 0 ${spacings.small};
   }
+  > p {
+    margin-right: ${spacings.medium};
+  }
 
   ${({ $variant }) => {
     const usingColors = TOAST_COLORS[$variant ?? 'neutral'];
@@ -112,12 +115,29 @@ interface DurationBarProps {
 }
 
 export const DurationBar = styled.span<DurationBarProps>`
-  background: ${({ $variant }) => TOAST_COLORS[$variant ?? 'neutral'].duration};
+  background: white;
   width: 100%;
   height: 2px;
   position: absolute;
   bottom: 0;
   left: 0;
-  animation: ${durationAnimation} ${({ $duration }) => $duration}s linear;
-  animation-fill-mode: forwards;
+  &:after {
+    content: '';
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    background: ${({ $variant }) =>
+      TOAST_COLORS[$variant ?? 'neutral'].background};
+    opacity: 0.5;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    background: ${({ $variant }) =>
+      TOAST_COLORS[$variant ?? 'neutral'].duration};
+    animation: ${durationAnimation} ${({ $duration }) => $duration}s linear;
+    animation-fill-mode: forwards;
+  }
 `;
