@@ -39,7 +39,7 @@ export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     (ToastProps & { uuid: string })[]
   >([]);
 
-  const handleOnRemoveToast = async (uuid: string) => {
+  const handleOnRemoveToast = (uuid: string) => {
     setActiveToasts((prev) => prev.filter((toast) => toast.uuid !== uuid));
   };
 
