@@ -4,12 +4,18 @@ import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
+import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
   AuthProvider,
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
-import { render, screen, test, userEvent } from 'src/tests/browsertest-utils';
+import {
+  renderWithRouter,
+  screen,
+  test,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 
 import { beforeEach } from 'vitest';
 
@@ -30,7 +36,14 @@ describe('Suggest a feature', () => {
   beforeEach(async () => {
     window.localStorage.clear();
 
-    render(<Resources />, { wrapper: Wrappers });
+    await renderWithRouter(
+      <TopBar applicationIcon="test" applicationName="test">
+        <Resources />
+      </TopBar>,
+
+      { initialEntries: ['/'], routes: ['/'] },
+      { wrapper: Wrappers }
+    );
     const user = userEvent.setup();
 
     await user.click(screen.getByRole('button'));

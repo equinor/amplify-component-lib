@@ -38,6 +38,7 @@ import { useSlackFileUpload } from '../hooks/useSlackFileUpload';
 import { useSlackPostMessage } from '../hooks/useSlackPostMessage';
 import { useAuth, useLocalStorage } from 'src/atoms/hooks';
 import { environment } from 'src/atoms/utils';
+import { useTopBarInternalContext } from 'src/organisms/TopBar/TopBarInternalContextProvider';
 
 const { getServiceNowConfigurationItem } = environment;
 
@@ -78,15 +79,14 @@ interface FeedbackContextProviderProps {
   selectedType: FeedbackType;
   onClose: () => void;
   children: ReactNode;
-  field?: string;
 }
 
 export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   children,
   selectedType,
   onClose,
-  field,
 }) => {
+  const { selectedField } = useTopBarInternalContext();
   const configurationItem =
     getServiceNowConfigurationItem(
       import.meta.env.VITE_SERVICE_NOW_CONFIGURATION_ITEM
@@ -250,7 +250,7 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       serviceNowFormData.append('Title', feedbackContent.title);
       serviceNowFormData.append(
         'Description',
-        createServiceNowDescription(feedbackContent, field)
+        createServiceNowDescription(feedbackContent, selectedField?.name)
       );
       serviceNowFormData.append('CallerEmail', userEmail);
       if (feedbackContent.urgency) {
@@ -283,7 +283,13 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     const contentFormData = new FormData();
     contentFormData.append(
       'comment',
-      createSlackMessage(feedbackContent, field, selectedType, userEmail, sysId)
+      createSlackMessage(
+        feedbackContent,
+        selectedField?.name,
+        selectedType,
+        userEmail,
+        sysId
+      )
     );
     try {
       await slackPostMessage(contentFormData);

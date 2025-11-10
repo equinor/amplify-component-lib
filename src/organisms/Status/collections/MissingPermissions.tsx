@@ -1,20 +1,31 @@
-import { FC } from 'react';
-
-import { useRouter } from '@tanstack/react-router';
-
+import { useStatusNavigation } from 'src/atoms/hooks';
 import { Status } from 'src/organisms/Status';
 
-export const MissingPermissions: FC = () => {
-  const { history } = useRouter();
+interface MissingPermissionsProps {
+  title?: string;
+  description?: string;
+  redirectFallbackUrl?: string;
+  onBackClick?: () => void;
+  hideBackButton?: boolean;
+}
 
-  const handleOnClick = () => {
-    history.go(-1);
-  };
+export const MissingPermissions = ({
+  title = "It looks like you don't have permission to access this page.",
+  description,
+  redirectFallbackUrl,
+  onBackClick,
+  hideBackButton = false,
+}: MissingPermissionsProps) => {
+  const handleOnClick = useStatusNavigation({
+    onBackClick,
+    redirectFallbackUrl,
+  });
 
   return (
     <Status>
-      <Status.Title title="It looks like you don't have permission to access this page." />
-      <Status.Action onClick={handleOnClick} />
+      <Status.Title title={title} />
+      {description && <Status.Description text={description} />}
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };

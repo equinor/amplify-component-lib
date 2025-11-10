@@ -4,6 +4,7 @@ export { useFakeProgress } from './useFakeProgress';
 export { useLocalStorage } from './useLocalStorage';
 export { usePrevious } from './usePrevious';
 export { useSelect } from './useSelect';
+export { useStatusNavigation } from './useStatusNavigation';
 export { useOnScreenMultiple } from 'src/atoms/hooks/useOnScreenMultiple';
 export { useNotification } from 'src/organisms/TopBar/Notifications/NotificationProvider';
 export { useAuth } from 'src/providers/AuthProvider/AuthProvider';

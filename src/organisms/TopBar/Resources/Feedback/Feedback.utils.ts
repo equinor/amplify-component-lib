@@ -55,7 +55,7 @@ export const getUrgencyNumber = (urgency: UrgencyOption) => {
 
 export const createServiceNowDescription = (
   feedbackContent: FeedbackContentType,
-  field: string | undefined
+  field: string | null | undefined
 ) => {
   const locationText = `Url location of bug: ${feedbackContent.url} \n`;
   const severityText = `Severity of bug: ${feedbackContent.urgency} \n`;
@@ -118,7 +118,7 @@ export const getBrowserInfo = () => {
 
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
-  field?: string,
+  field?: string | null,
   selectedType?: FeedbackType,
   email?: string,
   sysId?: string | null
