@@ -24,7 +24,7 @@ const meta: Meta<typeof TableHeader> = {
     children: 'Table Data Header',
     leadingIcon: users_circle,
     sorting: {
-      isSorting: 'asc',
+      isSorting: undefined,
       onSortClick: fn(),
     },
   },
