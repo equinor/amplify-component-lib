@@ -29,7 +29,7 @@ export const Search: FC<SearchProps> = ({ placeholder }) => {
         replace: true,
       });
     } else {
-      navigate({ to: '.', replace: true });
+      navigate({ to: '.', search: undefined, replace: true });
     }
   };
 
