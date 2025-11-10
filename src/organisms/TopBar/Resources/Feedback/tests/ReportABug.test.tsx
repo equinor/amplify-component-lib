@@ -11,13 +11,14 @@ import {
   UrgencyOption,
 } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
+import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
   AuthProvider,
   ReleaseNotesProvider,
   SnackbarProvider,
 } from 'src/providers';
 import {
-  render,
+  renderWithRouter,
   screen,
   test,
   userEvent,
@@ -33,7 +34,7 @@ function Wrappers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ReleaseNotesProvider>
-          <SnackbarProvider showAPIErrors={false}>{children}</SnackbarProvider>
+          <SnackbarProvider>{children}</SnackbarProvider>
         </ReleaseNotesProvider>
       </AuthProvider>
     </QueryClientProvider>
@@ -63,7 +64,21 @@ describe('Report a bug', () => {
   beforeEach(async () => {
     window.localStorage.clear();
 
-    render(<Resources />, { wrapper: Wrappers });
+    await renderWithRouter(
+      <TopBar
+        applicationIcon="test"
+        applicationName="test"
+        currentField={{
+          name: 'field1',
+          country: 'NOR',
+          uuid: 'uuid-1',
+        }}
+      >
+        <Resources />
+      </TopBar>,
+      { initialEntries: ['/'], routes: ['/'] },
+      { wrapper: Wrappers }
+    );
     const user = userEvent.setup();
 
     await user.click(screen.getByRole('button'));
