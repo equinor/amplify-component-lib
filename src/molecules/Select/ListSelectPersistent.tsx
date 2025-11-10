@@ -1,6 +1,8 @@
 import { AddTagItem } from './AddTagItem';
+import { capitalize } from 'src/atoms';
 import { useListSelectItems } from 'src/molecules/Select/Select.hooks';
 import {
+  GroupTitle,
   NoItemsFoundText,
   NoTagFoundText,
 } from 'src/molecules/Select/Select.styles';
@@ -68,38 +70,37 @@ export const ListSelectPersistent = <T extends SelectOptionRequired>(
       : 'tag';
     return (
       <>
-        <div
-        // title={`Add ${singularWord}`} index={0}
+        <GroupTitle
+          group="navigation"
+          variant="label"
+        >{`Add ${singularWord}`}</GroupTitle>
+        <AddTagItem
+          index={0}
+          itemRefs={itemRefs}
+          onItemKeyDown={onItemKeyDown}
+          onAddItem={props.onAddItem}
+          addItemSingularWord={singularWord}
+          mode={mode}
         >
-          <AddTagItem
-            index={0}
-            itemRefs={itemRefs}
-            onItemKeyDown={onItemKeyDown}
-            onAddItem={props.onAddItem}
-            addItemSingularWord={singularWord}
-            mode={mode}
-          >
-            {search}
-          </AddTagItem>
-        </div>
-        <div
-        // title={`${capitalize(singularWord)} search results`}
-        // index={1}
-        >
-          {itemProps.length > 0 ? (
-            itemProps.map((item, index) => (
-              <SelectMenuItem
-                key={`menu-item-${index}-${item.item.value}`}
-                {...item}
-                index={index + 1}
-              />
-            ))
-          ) : (
-            <NoTagFoundText>
-              No {singularWord} for &quot;{search}&quot; found.
-            </NoTagFoundText>
-          )}
-        </div>
+          {search}
+        </AddTagItem>
+        <GroupTitle
+          group="navigation"
+          variant="label"
+        >{`${capitalize(singularWord)} search results`}</GroupTitle>
+        {itemProps.length > 0 ? (
+          itemProps.map((item, index) => (
+            <SelectMenuItem
+              key={`menu-item-${index}-${item.item.value}`}
+              {...item}
+              index={index + 1}
+            />
+          ))
+        ) : (
+          <NoTagFoundText>
+            No {singularWord} for &quot;{search}&quot; found.
+          </NoTagFoundText>
+        )}
       </>
     );
   }

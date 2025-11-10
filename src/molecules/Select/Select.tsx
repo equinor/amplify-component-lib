@@ -17,6 +17,7 @@ import {
   Container,
   HelperWrapper,
   PersistentComboBoxWrapper,
+  PersistentStickyWrapper,
   PlaceholderText,
   Section,
   StyledMenu,
@@ -188,7 +189,7 @@ export const Select = <T extends SelectOptionRequired>(
   const searchBarElement = useMemo(() => {
     return (
       <>
-        <Wrapper>
+        <Wrapper $showBackgroundColor={mode === 'persistent'}>
           <Container
             data-testid={dataTestId ? dataTestId : 'combobox-container'}
             ref={anchorRef}
@@ -303,8 +304,15 @@ export const Select = <T extends SelectOptionRequired>(
         {shouldShowLabel && (
           <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
         )}
-        <PersistentComboBoxWrapper>
-          {searchBarElement}
+        <PersistentComboBoxWrapper
+          $maxHeight={
+            props.mode === 'persistent' && props.maxHeight
+              ? props.maxHeight
+              : undefined
+          }
+          $shouldShowLabel={shouldShowLabel}
+        >
+          <PersistentStickyWrapper>{searchBarElement}</PersistentStickyWrapper>
           {'groups' in props && props.groups ? (
             <GroupedSelectPersistent
               {...props}

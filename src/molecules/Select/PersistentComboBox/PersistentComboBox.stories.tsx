@@ -1,12 +1,13 @@
 import { FC, useState } from 'react';
 
-import { Button, Dialog, Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ComboBoxChip } from '../Select.styles';
 import { PersistentComboBox } from './PersistentComboBox';
+import { spacings } from 'src/atoms';
 import {
   SelectedState,
   SelectOption,
@@ -17,12 +18,19 @@ import {
 import { actions } from 'storybook/actions';
 import styled from 'styled-components';
 
+const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
+  label: faker.animal.fish(),
+  value: faker.string.uuid(),
+}));
+
 const meta: Meta<typeof PersistentComboBox> = {
   title: 'Molecules/Select/PersistentComboBox',
   component: PersistentComboBox,
   argTypes: {
     label: { control: 'text' },
     helperText: { control: 'text' },
+    meta: { control: 'text' },
+    maxHeight: { control: 'text' },
     showHelperIcon: { control: 'boolean' },
     syncParentChildSelection: { control: 'boolean' },
     sortValues: { control: 'boolean' },
@@ -34,13 +42,16 @@ const meta: Meta<typeof PersistentComboBox> = {
     },
   },
   args: {
-    label: 'Label here',
-    helperText: 'helper text',
+    label: '',
+    helperText: '',
+    meta: '',
     showHelperIcon: true,
     syncParentChildSelection: true,
     sortValues: true,
     clearable: true,
-    meta: 'Meta label here',
+    maxHeight: undefined,
+    items: FAKE_ITEMS,
+    showSelectedAsText: undefined,
   },
 };
 
@@ -51,16 +62,11 @@ interface Item {
   value: string;
 }
 
-const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
-  label: faker.animal.fish(),
-  value: faker.string.uuid(),
-}));
-
-const FAKE_GROUPS = new Array(faker.number.int({ min: 3, max: 6 }))
+const FAKE_GROUPS = new Array(faker.number.int({ min: 2, max: 4 }))
   .fill(0)
   .map(() => ({
     title: faker.animal.lion(),
-    items: new Array(faker.number.int({ min: 1, max: 5 })).fill(0).map(() => ({
+    items: new Array(faker.number.int({ min: 2, max: 4 })).fill(0).map(() => ({
       label: faker.animal.fish(),
       value: faker.string.uuid(),
     })),
@@ -98,7 +104,9 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
     value: faker.string.uuid(),
   }));
 
-export const BasicComboBox: StoryFn = (args) => {
+type Story = StoryObj<typeof PersistentComboBox>;
+
+const PersistentComboBoxWithState = (args: Story) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -119,114 +127,9 @@ export const BasicComboBox: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxWithReallyLongName: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <PersistentComboBox
-      {...args}
-      items={FAKE_ITEMS_WITH_REALLY_LONG_NAMES}
-      values={values}
-      onSelect={handleOnSelect}
-    />
-  );
-};
-
-export const ComboBoxWithGroups: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <PersistentComboBox
-      {...args}
-      values={values}
-      groups={FAKE_GROUPS}
-      onSelect={handleOnSelect}
-    />
-  );
-};
-
-export const ComboBoxParented: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <PersistentComboBox
-      {...args}
-      items={FAKE_ITEMS_WITH_CHILDREN}
-      values={values}
-      onSelect={handleOnSelect}
-    />
-  );
-};
-
-export const ComboBoxInDialog: StoryFn = (args) => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-  const [openComboBox, setOpenComboBox] = useState(false);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  const handleOnComboboxOpen = (value: boolean) => setOpenComboBox(value);
-
-  const handleDialogOnClose = () => {
-    if (!openComboBox) setOpenDialog(false);
-  };
-
-  return (
-    <>
-      <Button onClick={() => setOpenDialog(true)}>Open dialog</Button>
-      <Dialog
-        open={openDialog}
-        onClose={handleDialogOnClose}
-        isDismissable
-        style={{ width: '40rem ' }}
-      >
-        <Dialog.Content>
-          <PersistentComboBox
-            {...args}
-            inDialog
-            onOpenCallback={handleOnComboboxOpen}
-            items={FAKE_ITEMS}
-            values={values}
-            onSelect={handleOnSelect}
-          />
-        </Dialog.Content>
-      </Dialog>
-    </>
-  );
-};
-
-export const ComboBoxWithAdd: StoryFn = (args) => {
+const PersistentComboBoxWithAddState = (args: Story) => {
   const [items, setItems] = useState([...FAKE_ITEMS]);
+
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
   const handleOnSelect = (newValues: SelectOptionRequired[]) => {
     actions('onSelect').onSelect(newValues);
@@ -247,15 +150,111 @@ export const ComboBoxWithAdd: StoryFn = (args) => {
   return (
     <PersistentComboBox
       {...args}
-      values={values as SelectOptionRequired[]}
       items={items}
+      values={values}
       onSelect={handleOnSelect}
       onAddItem={handleOnAdd}
     />
   );
 };
 
-const Dot = styled.span`
+export const BasicPersistentComboBox: Story = {
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxWithSmallParent: Story = {
+  render: (args) => (
+    <div
+      style={{
+        height: '500px',
+        padding: spacings.large,
+        backgroundColor: 'lightcyan',
+      }}
+    >
+      <PersistentComboBoxWithState {...args} />
+    </div>
+  ),
+};
+
+export const PersistentComboBoxWithLargeParent: Story = {
+  render: (args) => (
+    <div
+      style={{
+        height: '1000px',
+        padding: spacings.large,
+        backgroundColor: 'lightcyan',
+      }}
+    >
+      <PersistentComboBoxWithState {...args} />
+    </div>
+  ),
+};
+
+export const PersistentComboBoxWithMaxHeight: Story = {
+  args: {
+    maxHeight: '400px',
+  },
+  render: (args) => (
+    <div
+      style={{
+        height: '1000px',
+        padding: spacings.large,
+        backgroundColor: 'lightcyan',
+      }}
+    >
+      <PersistentComboBoxWithState {...args} />
+    </div>
+  ),
+};
+
+export const PersistentComboBoxWithReallyLongName: Story = {
+  args: {
+    items: FAKE_ITEMS_WITH_REALLY_LONG_NAMES,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxWithLabelsAndHelperText: Story = {
+  args: {
+    label: 'Label here',
+    helperText: 'helper text',
+    meta: 'Meta label here',
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxWithGroups: Story = {
+  args: {
+    groups: FAKE_GROUPS,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxParented: Story = {
+  args: {
+    items: FAKE_ITEMS_WITH_CHILDREN,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxWithAdd: Story = {
+  render: (args) => <PersistentComboBoxWithAddState {...args} />,
+};
+
+export const PersistentComboBoxWithSelectedValuesAsText: Story = {
+  args: { showSelectedAsText: true },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxWithCustomSelectedValuesAsTextFunction: Story = {
+  args: {
+    showSelectedAsText: ({ selectedAmount, totalAmount }) =>
+      `${selectedAmount} of ${totalAmount} fishes selected`,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+const Dot = styled.div`
   background: red;
   border-radius: 50%;
   width: 4px;
@@ -277,74 +276,11 @@ const CustomValueElement: FC<{
   </ComboBoxChip>
 );
 
-export const ComboBoxWithCustomValueElements: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <PersistentComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      customValueComponent={CustomValueElement}
-    />
-  );
-};
-
-export const ComboBoxWithSelectedValuesAsText: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <PersistentComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      showSelectedAsText
-    />
-  );
-};
-
-export const ComboBoxWithCustomSelectedValuesAsTextFunction: StoryFn = (
-  args
-) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <PersistentComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      showSelectedAsText={({ selectedAmount, totalAmount }) =>
-        `${selectedAmount} of ${totalAmount} fishes selected`
-      }
-    />
-  );
+export const PersistentComboBoxWithCustomValueElements: Story = {
+  args: {
+    customValueComponent: CustomValueElement,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
 const CustomMenuItem: FC<{
@@ -358,27 +294,9 @@ const CustomMenuItem: FC<{
   </>
 );
 
-export const ComboboxWithCustomizableSelectMenuItem: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <PersistentComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      showSelectedAsText={({ selectedAmount, totalAmount }) =>
-        `${selectedAmount} of ${totalAmount} fishes selected`
-      }
-      CustomMenuItemComponent={CustomMenuItem}
-    />
-  );
+export const PersistentComboBoxWithCustomizableSelectMenuItem: Story = {
+  args: {
+    CustomMenuItemComponent: CustomMenuItem,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
 };

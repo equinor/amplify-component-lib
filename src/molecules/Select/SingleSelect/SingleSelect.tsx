@@ -7,11 +7,10 @@ import {
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
 
-export type ListSingleSelectProps<T extends SelectOptionRequired> =
-  CommonSelectProps<T> & SingleSelectCommon<T> & ListSelectProps<T>;
-
-export type GroupedSingleSelectProps<T extends SelectOptionRequired> =
-  CommonSelectProps<T> & SingleSelectCommon<T> & GroupedSelectProps<T>;
+export type SingleSelectProps<T extends SelectOptionRequired> =
+  CommonSelectProps<T> &
+    SingleSelectCommon<T> &
+    (ListSelectProps<T> | GroupedSelectProps<T>);
 
 /**
  * @param clearable - If users should be able to clear the input, defaults to true
@@ -26,7 +25,7 @@ export type GroupedSingleSelectProps<T extends SelectOptionRequired> =
  * @param customMenuItemComponent - Custom component to use for rendering menu item, defaults to a checkbox with label
  */
 export function SingleSelect<T extends SelectOptionRequired>(
-  props: ListSingleSelectProps<T> | GroupedSingleSelectProps<T>
+  props: SingleSelectProps<T>
 ) {
   return <Select {...props} />;
 }

@@ -54,7 +54,7 @@ export type MultiSelectCommon<T extends SelectOptionRequired> =
   | MultiSelectWithCustomValueComponent<T>;
 
 export interface MenuModeSelectProps {
-  mode?: 'menu';
+  mode: 'menu';
 }
 
 export interface PersistentSelectProps {
@@ -62,7 +62,7 @@ export interface PersistentSelectProps {
 }
 
 export interface PersistentModeSelectProps extends PersistentSelectProps {
-  mode?: 'persistent';
+  mode: 'persistent';
 }
 
 export interface SelectGroup<T extends SelectOptionRequired> {
@@ -108,20 +108,6 @@ export interface ListSelectMenuProps {
   itemSingularWord?: string;
 }
 
-// TODO:PERSISTENT check if we needed this
-// export type ListSelectMenuPropsCombined<T extends SelectOptionRequired> = Omit<
-//   ListSelectProps<T>,
-//   'onAddItem'
-// > &
-//   ListSelectMenuProps &
-//   SelectMenuProps<T> &
-//   CustomMenuItemComponentProps<T> &
-//   (PersistentModeSelectProps | MenuModeSelectProps) &
-//   (
-//     | Omit<MultiSelectCommon<T>, 'syncParentChildSelection'>
-//     | SingleSelectCommon<T>
-//   );
-
 export interface SelectMenuProps<T extends SelectOptionRequired> {
   search: string;
   itemRefs: RefObject<(HTMLButtonElement | null)[]>;
@@ -136,6 +122,7 @@ interface SelectMenuItemProps<T extends SelectOptionRequired> {
   childOffset: number;
   depth?: number;
   isParentSelected?: boolean;
+  mode: 'persistent' | 'menu' | undefined;
   parentHasNestedItems?: boolean;
   customMenuItemComponent?: FC<{
     item: SelectOption<T>;
@@ -147,15 +134,13 @@ export type SingleSelectMenuItemProps<T extends SelectOptionRequired> = {
   value: SelectOption<T> | undefined;
 } & Omit<SelectMenuProps<T>, 'search'> &
   SelectMenuItemProps<T> &
-  CustomMenuItemComponentProps<T> &
-  (PersistentModeSelectProps | MenuModeSelectProps);
+  CustomMenuItemComponentProps<T>;
 
 export type MultiSelectMenuItemProps<T extends SelectOptionRequired> = {
   values: SelectOption<T>[];
 } & Omit<SelectMenuProps<T>, 'search'> &
   SelectMenuItemProps<T> &
-  CustomMenuItemComponentProps<T> &
-  (PersistentModeSelectProps | MenuModeSelectProps);
+  CustomMenuItemComponentProps<T>;
 
 export const VARIANT_OPTIONS: Variants[] = [
   'success',

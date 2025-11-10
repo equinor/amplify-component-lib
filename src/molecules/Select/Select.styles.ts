@@ -10,10 +10,19 @@ import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
 
-export const Wrapper = styled.div`
+interface WrapperProps {
+  $showBackgroundColor: boolean;
+}
+
+export const Wrapper = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
   gap: ${spacings.small};
+  ${({ $showBackgroundColor }) =>
+    $showBackgroundColor &&
+    css`
+      background-color: ${colors.ui.background__default.rgba};
+    `}
 `;
 
 interface HelperWrapperProps {
@@ -196,7 +205,8 @@ const ClearButton = styled(Button)<ClearButtonProps>`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: ${({ $rightPadding }) => ($rightPadding ? '32px' : '8px')};
+  right: ${({ $rightPadding }) =>
+    $rightPadding ? spacings.x_large : spacings.small};
   width: 24px;
   height: 24px;
   svg {
@@ -264,10 +274,27 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
         : ''}}
 `;
 
-const PersistentComboBoxWrapper = styled.div`
+interface PersistentComboBoxWrapperProps {
+  $shouldShowLabel: boolean;
+  $maxHeight?: string;
+}
+
+const PersistentComboBoxWrapper = styled.div<PersistentComboBoxWrapperProps>`
   border: 1px solid ${colors.ui.background__heavy.rgba};
   border-radius: ${shape.corners.borderRadius};
-  overflow: hidden;
+  overflow: auto;
+  background-color: ${colors.ui.background__default.rgba};
+  height: ${
+    ({ $shouldShowLabel, $maxHeight }) => {
+      if ($maxHeight) return $maxHeight;
+      return $shouldShowLabel ? css`calc(100% - 16px)` : '100%';
+    } // EDS Label component height is 16px
+  };
+`;
+
+const PersistentStickyWrapper = styled.div`
+  position: sticky;
+  top: 0;
 `;
 
 const PersistentListItem = styled.button`
@@ -343,6 +370,7 @@ export {
   ClearButton,
   Container,
   PersistentGroupsWrapper,
+  PersistentStickyWrapper,
   GroupTitle,
   MenuItemSpacer,
   StyledMenu,
