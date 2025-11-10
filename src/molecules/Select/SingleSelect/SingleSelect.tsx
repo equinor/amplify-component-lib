@@ -27,5 +27,5 @@ export type SingleSelectProps<T extends SelectOptionRequired> =
 export function SingleSelect<T extends SelectOptionRequired>(
   props: SingleSelectProps<T>
 ) {
-  return <Select {...props} />;
+  return <Select {...props} mode="menu" />;
 }
