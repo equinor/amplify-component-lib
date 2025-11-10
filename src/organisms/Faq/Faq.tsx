@@ -73,7 +73,12 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
     filteredCategories.map((category) => ({
       label: category.categoryName ?? '',
       value: `category-${category.id}`,
-      count: category.faqs?.length,
+      count:
+        (category.faqs?.length ?? 0) +
+        (category.subCategories?.reduce(
+          (sum, sub) => sum + (sub.faqs?.length ?? 0),
+          0
+        ) ?? 0),
       /* v8 ignore start */
       children: [
         ...(category.faqs ?? []).map((faq) => ({
