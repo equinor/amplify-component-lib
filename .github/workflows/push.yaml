@@ -19,8 +19,6 @@ jobs:
   publish:
     name: Publish to NPM
     uses: ./.github/workflows/npm_publish.yaml
-    secrets:
-      npm-token: ${{ secrets.NPM_TOKEN }}
   release:
     needs: [publish]
     name: Create release notes

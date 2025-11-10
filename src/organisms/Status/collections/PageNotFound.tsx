@@ -1,24 +1,29 @@
-import { FC } from 'react';
-
-import { useRouter } from '@tanstack/react-router';
-
+import { useStatusNavigation } from 'src/atoms/hooks';
 import { Status } from 'src/organisms/Status';
 
-export const PageNotFound: FC = () => {
-  const { history } = useRouter();
+interface PageNotFoundProps {
+  description?: string;
+  redirectFallbackUrl?: string;
+  onBackClick?: () => void;
+  hideBackButton?: boolean;
+}
 
-  const handleOnClick = () => {
-    history.go(-1);
-  };
+export const PageNotFound = ({
+  description = "It looks like the page you're looking for has gone missing. Please check the URL and try again.",
+  redirectFallbackUrl,
+  onBackClick,
+  hideBackButton = false,
+}: PageNotFoundProps) => {
+  const handleOnClick = useStatusNavigation({
+    onBackClick,
+    redirectFallbackUrl,
+  });
 
   return (
     <Status center={false}>
       <Status.Title title="Page not found" />
-      <Status.Description
-        text={`It looks like the page you're looking for has gone missing.
-        Please check the URL and try again.`}
-      />
-      <Status.Action onClick={handleOnClick} />
+      <Status.Description text={description} />
+      {!hideBackButton && <Status.Action onClick={handleOnClick} />}
     </Status>
   );
 };
