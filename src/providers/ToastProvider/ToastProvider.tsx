@@ -17,6 +17,7 @@ const Container = styled(motion.div)`
 
 interface ToastContextType {
   showToast: (props: string | Omit<ToastProps, 'onClose'>) => void;
+  hideAllToasts: () => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
@@ -40,6 +41,10 @@ export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
 
   const handleOnRemoveToast = async (uuid: string) => {
     setActiveToasts((prev) => prev.filter((toast) => toast.uuid !== uuid));
+  };
+
+  const handleHideAllToasts = () => {
+    setActiveToasts([]);
   };
 
   const handleShowToast: ToastContextType['showToast'] = (props) => {
@@ -69,33 +74,32 @@ export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     <ToastContext.Provider
       value={{
         showToast: handleShowToast,
+        hideAllToasts: handleHideAllToasts,
       }}
     >
-      {activeToasts && (
-        <Container layoutRoot>
-          <AnimatePresence>
-            {activeToasts.map((toast) => (
-              <motion.div
-                key={toast.uuid}
-                layout
-                initial={{
-                  opacity: 0,
-                  x: '100%',
-                  marginBottom: spacings.medium,
-                }}
-                animate={{ opacity: 1, x: 0, marginBottom: spacings.medium }}
-                exit={{ opacity: 0, x: '100%', height: 0, marginBottom: 0 }}
-                transition={{
-                  type: 'spring',
-                  duration: 0.4,
-                }}
-              >
-                <Toast {...toast} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </Container>
-      )}
+      <Container layoutRoot>
+        <AnimatePresence>
+          {activeToasts.map((toast) => (
+            <motion.div
+              key={toast.uuid}
+              layout
+              initial={{
+                opacity: 0,
+                x: '100%',
+                marginBottom: spacings.medium,
+              }}
+              animate={{ opacity: 1, x: 0, marginBottom: spacings.medium }}
+              exit={{ opacity: 0, x: '100%', height: 0, marginBottom: 0 }}
+              transition={{
+                type: 'spring',
+                duration: 0.4,
+              }}
+            >
+              <Toast {...toast} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </Container>
       {children}
     </ToastContext.Provider>
   );
