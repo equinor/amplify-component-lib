@@ -204,6 +204,15 @@ export const WithOnSortDesc: Story = {
   },
 };
 
+export const WithoutSorting: Story = {
+  args: {
+    children: 'Mt. Fuji (富士)',
+    leadingIcon: undefined,
+    onClick: undefined,
+    sorting: undefined,
+  },
+};
+
 export const WithTrailingAction: Story = {
   args: {
     leadingIcon: undefined,
