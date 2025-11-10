@@ -24,7 +24,7 @@ const meta: Meta<typeof TableHeader> = {
     children: 'Table Data Header',
     leadingIcon: users_circle,
     sorting: {
-      isSorting: undefined,
+      isSorting: 'asc',
       onSortClick: fn(),
     },
   },
@@ -44,6 +44,15 @@ const meta: Meta<typeof TableHeader> = {
         undefined: undefined,
         WithAscSorting: { isSorting: 'asc', onSortClick: fn() },
         WithDescSorting: { isSorting: 'desc', onSortClick: fn() },
+      },
+    },
+    variant: {
+      control: 'select',
+      options: ['undefined', 'warning', 'error'],
+      mapping: {
+        undefined: undefined,
+        warning: 'warning',
+        error: 'error',
       },
     },
     leadingIcon: {
@@ -99,10 +108,13 @@ const VariantHeaderPath = styled.span`
 
 export const Default: Story = {
   args: {
-    children: '富士',
+    children: 'Mt. Fuji (富士)',
     leadingIcon: undefined,
     onClick: undefined,
-    sorting: undefined,
+    sorting: {
+      isSorting: 'asc',
+      onSortClick: fn(),
+    },
   },
 };
 
