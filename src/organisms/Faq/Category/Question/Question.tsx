@@ -1,4 +1,4 @@
-import { type FC, useRef, useState } from 'react';
+import { type FC, useState } from 'react';
 
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
@@ -24,7 +24,6 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
     onImageRead: (path) => FaqService.getFaqImage(path),
     /* v8 ignore end */
   });
-  const initialHeight = useRef(0);
   const [expanded, setExpanded] = useState(false);
 
   const handleOnToggleExpanded = () => {
@@ -57,7 +56,7 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
         <AnimatePresence>
           {expanded && (
             <ExpandWrapper
-              initial={{ height: initialHeight.current }}
+              initial={{ height: 0 }}
               exit={{ height: 0 }}
               animate={{ height: 'auto' }}
             >
