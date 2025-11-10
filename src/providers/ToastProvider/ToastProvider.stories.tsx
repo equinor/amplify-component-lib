@@ -30,6 +30,7 @@ const meta: Meta<typeof Toast> = {
   },
   args: {
     title: 'トースト',
+    variant: 'info',
   },
   argTypes: {
     variant: {
