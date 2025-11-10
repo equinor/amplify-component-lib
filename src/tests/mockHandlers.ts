@@ -574,7 +574,7 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
         createdDate: faker.date.past({ years: 0.5 }).toISOString(),
       },
       {
-        id: 12,
+        id: 13,
         categoryId: 6,
         question: 'I got error code 404. What now?',
         answer: `<p>Error 404 means the page wasn't found. Double-check the URL or try navigating from the home page. If you got here by clicking a link, let us know at ${faker.internet.email()}.</p>`,
