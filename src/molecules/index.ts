@@ -60,8 +60,6 @@ export {
   TableMenuBar,
   TextTable,
 } from './RichTextEditor/MenuBar/Table/TableBar';
-export { Toast } from './Toast/Toast';
-export type { ToastProps } from './Toast/Toast';
 export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
 export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
 export type * from './RichTextEditor/RichTextEditor.types';
