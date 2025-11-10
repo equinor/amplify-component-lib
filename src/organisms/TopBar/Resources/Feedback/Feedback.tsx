@@ -7,20 +7,11 @@ import { FeedbackInner } from './FeedbackInner';
 interface FeedbackProps {
   onClose: () => void;
   selectedType: FeedbackType;
-  field?: string;
 }
 
-export const Feedback: FC<FeedbackProps> = ({
-  field,
-  onClose,
-  selectedType,
-}) => {
+export const Feedback: FC<FeedbackProps> = ({ onClose, selectedType }) => {
   return (
-    <FeedbackContextProvider
-      field={field}
-      onClose={onClose}
-      selectedType={selectedType}
-    >
+    <FeedbackContextProvider onClose={onClose} selectedType={selectedType}>
       <FeedbackInner />
     </FeedbackContextProvider>
   );
