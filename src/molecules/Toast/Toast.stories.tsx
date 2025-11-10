@@ -81,6 +81,10 @@ export const Default: Story = {
   },
 };
 
+export const WithoutIcon: Story = {
+  args: {},
+};
+
 export const Variants: Story = {
   args: {
     title: 'A really long title',

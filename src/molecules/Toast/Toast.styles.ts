@@ -1,4 +1,4 @@
-import { shape, spacings } from 'src/atoms';
+import { shape, spacings } from 'src/atoms/style';
 import { ToastProps } from 'src/molecules';
 import { TOAST_COLORS } from 'src/molecules/Toast/Toast.utils';
 
