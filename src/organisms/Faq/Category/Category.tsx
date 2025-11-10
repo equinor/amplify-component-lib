@@ -1,8 +1,9 @@
 import type { FC } from 'react';
 
+import type { FaqCategoriesWithFaqDto } from '@equinor/subsurface-app-management';
 import { useSearch } from '@tanstack/react-router';
 
-import { FaqCategoriesWithFaqDto, faqInSearch } from '../Faq.utils';
+import { faqInSearch } from '../Faq.utils';
 import { Question } from './Question/Question';
 import { Container, Content, Header } from './Category.styles';
 import { Subcategory } from './Subcategory';

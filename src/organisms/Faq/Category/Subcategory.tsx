@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 
-import { FaqCategoriesWithFaqDto, HEADER_HEIGHT } from '../Faq.utils';
+import type { FaqCategoriesWithFaqDto } from '@equinor/subsurface-app-management';
+
+import { HEADER_HEIGHT } from '../Faq.utils';
 import { Question } from './Question/Question';
 import { colors, shape, spacings } from 'src/atoms';
 import { Typography } from 'src/molecules';

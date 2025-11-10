@@ -2,9 +2,8 @@ import { type FC, useRef, useState } from 'react';
 
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { FaqService } from '@equinor/subsurface-app-management';
+import { type FaqDto, FaqService } from '@equinor/subsurface-app-management';
 
-import { FaqDto } from '../../Faq.utils';
 import {
   Container,
   ExpandWrapper,
