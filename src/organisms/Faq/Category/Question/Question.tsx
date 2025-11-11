@@ -15,7 +15,7 @@ import { formatDate } from 'src/atoms';
 import { usePrefetchRichTextImages } from 'src/atoms/hooks/usePrefetchRichTextImages';
 import { RichTextDisplay } from 'src/molecules';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'motion/react';
 
 export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
   usePrefetchRichTextImages({

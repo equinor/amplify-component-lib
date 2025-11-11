@@ -1,6 +1,6 @@
-import { MotionValue, useScroll as ActualUseScroll } from 'framer-motion';
+import { MotionValue, useScroll as ActualUseScroll } from 'motion/react';
 
-vi.mock('framer-motion', async () => {
+vi.mock('motion/react', async () => {
   function useScroll(): ReturnType<typeof ActualUseScroll> {
     const zero: MotionValue<number> = new MotionValue(0);
     return {
@@ -11,7 +11,7 @@ vi.mock('framer-motion', async () => {
     };
   }
 
-  const actual = await vi.importActual('framer-motion');
+  const actual = await vi.importActual('motion/react');
   return {
     ...actual,
     useScroll,
