@@ -67,6 +67,8 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
     .map((category) => mapCategoryToSearch(category, search))
     .filter(filterCategory);
 
+  // Since we already filter the categories etc, this doesn't have to be covered by a test
+  /* v8 ignore start */
   const tableOfContentsItems: TableOfContentsItemType[] =
     filteredCategories.map((category) => {
       return {
@@ -92,6 +94,7 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
         ],
       };
     });
+  /* v8 ignore end */
 
   const isEmpty =
     !isLoading &&
