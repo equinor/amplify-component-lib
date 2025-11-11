@@ -12,7 +12,7 @@ const Container = styled(motion.div)`
   right: ${spacings.medium};
   display: flex;
   flex-direction: column-reverse;
-  z-index: 100000000;
+  z-index: 9999;
 `;
 
 interface ToastContextType {
