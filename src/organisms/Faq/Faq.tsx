@@ -10,7 +10,6 @@ import { CategorySkeleton } from './Category/CategorySkeleton';
 import { AppPageWrapper } from './AppPageWrapper';
 import {
   categoryHasFaqs,
-  faqInSearch,
   filterCategory,
   HEADER_HEIGHT,
   mapCategoryToSearch,
@@ -65,16 +64,8 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
   const isSearchingOrFiltering = !!search;
 
   const filteredCategories = (categories ?? [])
-    .filter((category) => filterCategory(category, search))
-    .filter(
-      (category) =>
-        !search ||
-        (category.faqs ?? []).some((faq) => faqInSearch(faq, search)) ||
-        category.subCategories?.some((subcategory) =>
-          subcategory.faqs?.some((faq) => faqInSearch(faq, search))
-        )
-    )
-    .map((category) => mapCategoryToSearch(category, search));
+    .map((category) => mapCategoryToSearch(category, search))
+    .filter(filterCategory);
 
   const tableOfContentsItems: TableOfContentsItemType[] =
     filteredCategories.map((category) => {

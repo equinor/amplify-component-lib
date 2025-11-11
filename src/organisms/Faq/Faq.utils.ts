@@ -34,20 +34,11 @@ export function faqInSearch(
   );
 }
 
-export function filterCategory(
-  category: FaqCategoriesWithFaqDto,
-  search: string | undefined
-): boolean {
-  if (!search) return true;
-
-  const filteredFaqs = (category.faqs ?? []).filter((faq) =>
-    faqInSearch(faq, search)
+export function filterCategory(category: FaqCategoriesWithFaqDto): boolean {
+  return (
+    (category.faqs ?? []).length > 0 ||
+    (category.subCategories ?? []).length > 0
   );
-  const filteredSubCategories = (category.subCategories ?? []).filter(
-    (subcategory) => subcategory.faqs?.some((faq) => faqInSearch(faq, search))
-  );
-
-  return filteredFaqs.length > 0 || filteredSubCategories.length > 0;
 }
 
 export function mapCategoryToSearch(
