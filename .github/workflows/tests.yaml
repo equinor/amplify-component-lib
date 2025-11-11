@@ -25,6 +25,12 @@ jobs:
         timeout-minutes: 15
         run: bun run test:ci -- --coverage --coverage.report=json --coverage.reporter=json-summary --no-file-parallelism --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
 
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.artifact }}
+          path: coverage
+
       - name: Set coverage_failed
         if: success() || failure()
         id: set_coverage

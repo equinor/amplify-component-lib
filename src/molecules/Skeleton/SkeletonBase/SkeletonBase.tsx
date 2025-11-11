@@ -33,10 +33,12 @@ export const SkeletonBase = styled.div<SkeletonBaseProps>`
     top: 0;
     transform: translateX(-100%);
     z-index: 1;
-    ${(props) =>
-      props.$offset &&
-      css`
-        animation-delay: ${props.$offset}ms;
-      `};
-  }
+    ${({ $offset }) => {
+      if ($offset) {
+        return css`
+          animation-delay: ${$offset}ms;
+        `;
+      }
+      return '';
+    }}
 `;

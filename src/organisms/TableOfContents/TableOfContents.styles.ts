@@ -32,8 +32,6 @@ export const Button = styled.button<ButtonProps>`
   min-height: ${VERTICAL_ITEM_HEIGHT};
   transition: background 200ms;
   > span {
-    display: flex;
-    flex-direction: column;
     position: relative;
     text-align: left;
     font-family: 'Equinor', sans-serif;

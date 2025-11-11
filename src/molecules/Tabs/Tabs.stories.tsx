@@ -7,6 +7,7 @@ import { Tabs } from './Tabs';
 import { Tab, Tabs as TabsType } from './Tabs.types';
 
 import { PartialStoryFn } from 'storybook/internal/types';
+import { expect, fn, userEvent } from 'storybook/test';
 
 const OPTIONS: [Tab<number>, Tab<number>, Tab<number>] = [
   {
@@ -296,5 +297,20 @@ export const ScrollingWithAmountPerPage: Story = {
 export const NotAnimated: Story = {
   args: {
     animated: false,
+  },
+};
+export const OnHover: Story = {
+  tags: ['test-only'],
+  args: {
+    onHover: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    for (const item of args.options) {
+      const tabElement = canvas.getByRole('tab', { name: item.label });
+      await userEvent.hover(tabElement);
+      if (args.onHover) {
+        await expect(args.onHover).toHaveBeenCalledWith(item.value);
+      }
+    }
   },
 };
