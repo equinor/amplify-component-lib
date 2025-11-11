@@ -322,7 +322,7 @@ export const EmptyCategory: Story = {
         http.get('*/v1/Faq/faqcategorieswithfaqs/*', () => {
           return HttpResponse.json([
             {
-              id: '1',
+              id: 1,
               categoryName: 'Empty Category',
               faqs: null,
               subCategories: null,
