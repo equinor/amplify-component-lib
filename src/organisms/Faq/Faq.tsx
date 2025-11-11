@@ -74,33 +74,49 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
       label: category.categoryName ?? '',
       value: `category-${category.id}`,
       count:
-        (category.faqs?.length ?? 0) +
-        (category.subCategories?.reduce(
-          (sum, sub) => sum + (sub.faqs?.length ?? 0),
-          0
-        ) ?? 0),
-      /* v8 ignore start */
-      children: [
-        ...(category.faqs ?? []).map((faq) => ({
-          label: faq.question ?? '',
-          value: `faq-${faq.id}`,
-        })),
-        ...(category.subCategories ?? [])
-          .map((subcategory) => {
-            const filteredFaqs = (subcategory.faqs ?? []).filter((faq) =>
-              !search || faqInSearch(faq, search)
-            );
-            if (filteredFaqs.length === 0) return null;
-            return {
-              label: subcategory.categoryName ?? '',
-              value: `subcategory-${subcategory.id}`,
-              count: filteredFaqs.length,
-            };
-          })
-          .filter(Boolean),
-      ],
-      /* v8 ignore end */
-    }));
+    filteredCategories.map((category) => {
+      // Filter FAQs and subcategories based on search
+      const filteredFaqs = !search
+        ? category.faqs ?? []
+        : (category.faqs ?? []).filter((faq) => faqInSearch(faq, search));
+      const filteredSubCategories = (category.subCategories ?? [])
+        .map((subcategory) => {
+          const filteredSubFaqs = !search
+            ? subcategory.faqs ?? []
+            : (subcategory.faqs ?? []).filter((faq) => faqInSearch(faq, search));
+          return filteredSubFaqs.length > 0
+            ? {
+                label: subcategory.categoryName ?? '',
+                value: `subcategory-${subcategory.id}`,
+                count: filteredSubFaqs.length,
+              }
+            : null;
+        })
+        .filter(Boolean);
+      return {
+        label: category.categoryName ?? '',
+        value: `category-${category.id}`,
+        count:
+          filteredFaqs.length +
+          (category.subCategories
+            ? category.subCategories.reduce((sum, sub) => {
+                const subFaqs = !search
+                  ? sub.faqs ?? []
+                  : (sub.faqs ?? []).filter((faq) => faqInSearch(faq, search));
+                return sum + subFaqs.length;
+              }, 0)
+            : 0),
+        /* v8 ignore start */
+        children: [
+          ...filteredFaqs.map((faq) => ({
+            label: faq.question ?? '',
+            value: `faq-${faq.id}`,
+          })),
+          ...filteredSubCategories,
+        ],
+        /* v8 ignore end */
+      };
+    });
 
   const isEmpty =
     !isLoading &&
