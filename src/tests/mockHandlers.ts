@@ -400,7 +400,7 @@ export const handlers = [
   }),
   http.get('*/v1/Faq/faqcategorieswithfaqs/:appName', async () => {
     await delay('real');
-    return HttpResponse.json(FAKE_FAQ_CATEGORIES);
+    return HttpResponse.json(FAKED_FAQ_CATEGORIES_WITH_FAQS);
   }),
 ];
 
