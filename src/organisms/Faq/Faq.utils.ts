@@ -35,10 +35,7 @@ export function faqInSearch(
 }
 
 export function filterCategory(category: FaqCategoriesWithFaqDto): boolean {
-  return (
-    (category.faqs ?? []).length > 0 ||
-    (category.subCategories ?? []).length > 0
-  );
+  return categoryHasFaqs(category);
 }
 
 export function mapCategoryToSearch(
