@@ -1,9 +1,7 @@
 import type { FC } from 'react';
 
 import type { FaqCategoriesWithFaqDto } from '@equinor/subsurface-app-management';
-import { useSearch } from '@tanstack/react-router';
 
-import { faqInSearch } from '../Faq.utils';
 import { Question } from './Question/Question';
 import { Container, Content, Header } from './Category.styles';
 import { Subcategory } from './Subcategory';
@@ -15,29 +13,16 @@ export const Category: FC<FaqCategoriesWithFaqDto> = ({
   categoryName,
   subCategories,
 }) => {
-  const { search } = useSearch({ strict: false });
-
-  const filteredFaqs = faqs?.filter(
-    (faq) => !search || faqInSearch(faq, search)
-  );
-
-  const filteredSubcategories = subCategories?.filter(
-    (subcategory) =>
-      (!search || subcategory.faqs?.some((faq) => faqInSearch(faq, search))) &&
-      subcategory.faqs &&
-      subcategory.faqs.length > 0
-  );
-
   return (
     <Container>
       <Header id={`category-${id}`}>
         <Typography variant="h4">{categoryName}</Typography>
       </Header>
       <Content>
-        {filteredFaqs?.map((question) => (
+        {faqs?.map((question) => (
           <Question key={question.id} {...question} />
         ))}
-        {filteredSubcategories?.map((subcategory) => (
+        {subCategories?.map((subcategory) => (
           <Subcategory key={subcategory.id} {...subcategory} />
         ))}
       </Content>

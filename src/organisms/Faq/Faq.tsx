@@ -8,7 +8,13 @@ import { TableOfContents } from '../TableOfContents/TableOfContents';
 import { Category } from './Category/Category';
 import { CategorySkeleton } from './Category/CategorySkeleton';
 import { AppPageWrapper } from './AppPageWrapper';
-import { categoryHasFaqs, faqInSearch, HEADER_HEIGHT } from './Faq.utils';
+import {
+  categoryHasFaqs,
+  faqInSearch,
+  filterCategory,
+  HEADER_HEIGHT,
+  mapCategoryToSearch,
+} from './Faq.utils';
 import { Search } from './Search';
 import { useFaqsInApplication } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
@@ -59,7 +65,7 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
   const isSearchingOrFiltering = !!search;
 
   const filteredCategories = (categories ?? [])
-    .filter(categoryHasFaqs)
+    .filter((category) => filterCategory(category, search))
     .filter(
       (category) =>
         !search ||
@@ -67,54 +73,32 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
         category.subCategories?.some((subcategory) =>
           subcategory.faqs?.some((faq) => faqInSearch(faq, search))
         )
-    );
+    )
+    .map((category) => mapCategoryToSearch(category, search));
 
   const tableOfContentsItems: TableOfContentsItemType[] =
-    filteredCategories.map((category) => ({
-      label: category.categoryName ?? '',
-      value: `category-${category.id}`,
-      count:
     filteredCategories.map((category) => {
-      // Filter FAQs and subcategories based on search
-      const filteredFaqs = !search
-        ? category.faqs ?? []
-        : (category.faqs ?? []).filter((faq) => faqInSearch(faq, search));
-      const filteredSubCategories = (category.subCategories ?? [])
-        .map((subcategory) => {
-          const filteredSubFaqs = !search
-            ? subcategory.faqs ?? []
-            : (subcategory.faqs ?? []).filter((faq) => faqInSearch(faq, search));
-          return filteredSubFaqs.length > 0
-            ? {
-                label: subcategory.categoryName ?? '',
-                value: `subcategory-${subcategory.id}`,
-                count: filteredSubFaqs.length,
-              }
-            : null;
-        })
-        .filter(Boolean);
       return {
         label: category.categoryName ?? '',
         value: `category-${category.id}`,
         count:
-          filteredFaqs.length +
+          (category.faqs ?? []).length +
           (category.subCategories
-            ? category.subCategories.reduce((sum, sub) => {
-                const subFaqs = !search
-                  ? sub.faqs ?? []
-                  : (sub.faqs ?? []).filter((faq) => faqInSearch(faq, search));
-                return sum + subFaqs.length;
+            ? category.subCategories.reduce((sum, subcategory) => {
+                return sum + (subcategory.faqs ?? []).length;
               }, 0)
             : 0),
-        /* v8 ignore start */
         children: [
-          ...filteredFaqs.map((faq) => ({
+          ...(category.faqs ?? []).map((faq) => ({
             label: faq.question ?? '',
             value: `faq-${faq.id}`,
           })),
-          ...filteredSubCategories,
+          ...(category.subCategories ?? []).map((subcategory) => ({
+            label: subcategory.categoryName ?? '',
+            value: `subcategory-${subcategory.id}`,
+            count: (subcategory.faqs ?? []).length,
+          })),
         ],
-        /* v8 ignore end */
       };
     });
 
