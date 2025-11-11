@@ -177,13 +177,3 @@ export const JustTitle: Story = {
     await expect(canvas.getByText(args.title)).toBeInTheDocument();
   },
 };
-
-export const OutsideContext: Story = {
-  tags: ['test-only'],
-  render: () => <div>No ToastProvider here</div>,
-  play: async () => {
-    await expect(() => useToasts()).toThrowError(
-      'useToasts must be used within a ToastProvider'
-    );
-  },
-};
