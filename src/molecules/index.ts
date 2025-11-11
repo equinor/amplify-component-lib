@@ -60,6 +60,8 @@ export {
   TableMenuBar,
   TextTable,
 } from './RichTextEditor/MenuBar/Table/TableBar';
+export { TableHeader } from './TableHeader/TableHeader';
+export type { TableHeaderProps } from './TableHeader/TableHeader';
 export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
 export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
 export type * from './RichTextEditor/RichTextEditor.types';
