@@ -46,6 +46,15 @@ const meta: Meta<typeof TableHeader> = {
         WithDescSorting: { isSorting: 'desc', onSortClick: fn() },
       },
     },
+    variant: {
+      control: 'select',
+      options: ['undefined', 'warning', 'error'],
+      mapping: {
+        undefined: undefined,
+        warning: 'warning',
+        error: 'error',
+      },
+    },
     leadingIcon: {
       control: 'select',
       options: ['undefined', 'UsersCircle'],
@@ -99,10 +108,13 @@ const VariantHeaderPath = styled.span`
 
 export const Default: Story = {
   args: {
-    children: '富士',
+    children: 'Mt. Fuji (富士)',
     leadingIcon: undefined,
     onClick: undefined,
-    sorting: undefined,
+    sorting: {
+      isSorting: 'asc',
+      onSortClick: fn(),
+    },
   },
 };
 
@@ -189,6 +201,15 @@ export const WithOnSortDesc: Story = {
   play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByText(args.children));
     await expect(args.sorting?.onSortClick).toHaveBeenCalled();
+  },
+};
+
+export const WithoutSorting: Story = {
+  args: {
+    children: 'Mt. Fuji (富士)',
+    leadingIcon: undefined,
+    onClick: undefined,
+    sorting: undefined,
   },
 };
 
