@@ -7,12 +7,6 @@ import {
   SelectOptionRequired,
 } from 'src/molecules/Select/Select.types';
 
-// export type ListComboBoxProps<T extends SelectOptionRequired> =
-//   CommonSelectProps<T> & MultiSelectCommon<T> & ListSelectProps<T>;
-//
-// export type GroupedComboBoxProps<T extends SelectOptionRequired> =
-//   CommonSelectProps<T> & MultiSelectCommon<T> & GroupedSelectProps<T>;
-// TODO:PERSISTENT look into if this typing works as expected
 export type ComboBoxProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
     MultiSelectCommon<T> &
@@ -35,5 +29,5 @@ export type ComboBoxProps<T extends SelectOptionRequired> =
 export function ComboBox<T extends SelectOptionRequired>(
   props: ComboBoxProps<T>
 ) {
-  return <Select {...props} />;
+  return <Select {...props} mode="menu" />;
 }

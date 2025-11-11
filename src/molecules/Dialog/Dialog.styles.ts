@@ -22,7 +22,7 @@ export const DialogTitle = styled(EDSDialog.Title)<StyledDialogProps>`
   ${({ $withBorders }) => {
     if ($withBorders) {
       return css`
-        border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+        border-bottom: 1px solid ${colors.ui.background__heavy.rgba};
       `;
     }
     return '';
@@ -51,7 +51,7 @@ export const DialogContent = styled(
   }}
 `;
 export const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
-  border-top: 1px solid ${colors.ui.background__medium.rgba};
+  border-top: 1px solid ${colors.ui.background__heavy.rgba};
   display: grid;
   grid-template-columns: auto auto auto;
   padding-top: ${spacings.medium};

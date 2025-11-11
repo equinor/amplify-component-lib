@@ -8,17 +8,11 @@ import {
   SelectOptionRequired,
 } from 'src/molecules/Select/Select.types';
 
-export type ListPersistentComboBoxProps<T extends SelectOptionRequired> =
+export type PersistentComboBoxProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
     MultiSelectCommon<T> &
     PersistentSelectProps &
-    ListSelectProps<T>;
-
-export type GroupedPersistentComboBoxProps<T extends SelectOptionRequired> =
-  CommonSelectProps<T> &
-    MultiSelectCommon<T> &
-    PersistentSelectProps &
-    GroupedSelectProps<T>;
+    (GroupedSelectProps<T> | ListSelectProps<T>);
 
 /**
  * @param clearable - If users should be able to clear the input, defaults to true
@@ -36,7 +30,7 @@ export type GroupedPersistentComboBoxProps<T extends SelectOptionRequired> =
  * @param maxHeight - Max height of the persistent wrapper below the search field, optional
  */
 export function PersistentComboBox<T extends SelectOptionRequired>(
-  props: ListPersistentComboBoxProps<T> | GroupedPersistentComboBoxProps<T>
+  props: PersistentComboBoxProps<T>
 ) {
   return <Select {...props} mode="persistent" />;
 }
