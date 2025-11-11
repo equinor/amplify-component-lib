@@ -21,7 +21,9 @@ test('Badge renders with expected variants', () => {
 
   rerender(<Badge value={1} variant="light" />);
 
-  expect(badge).toHaveStyle('background: rgba(235, 235, 235, 1)');
+  expect(badge).toHaveStyle(
+    `background: ${colors.ui.background__light_medium.rgba}`
+  );
 
   rerender(<Badge value={1} variant="empty" />);
 

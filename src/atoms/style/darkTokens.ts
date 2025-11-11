@@ -10,6 +10,7 @@ export const darkTokens = css`
 
     --amplify_interactive_tutorial_active_step: rgba(154, 202, 206, 1);
     --amplify_interactive_tutorial_inactive_step: rgba(96, 125, 127, 1);
+    --amplify_interactive_inner_hover: rgba(101, 133, 135, 1);
 
     /* Override super specific text colors to just default text color */
     --eds_heading__h1_bold_color: var(--eds_text_static_icons__default);
