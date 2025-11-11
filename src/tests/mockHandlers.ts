@@ -593,7 +593,7 @@ export const FAKED_FAQ_CATEGORIES_WITH_FAQS: FaqCategoriesWithFaqDto[] = [
     orderBy: 4,
     faqs: [
       {
-        id: 13,
+        id: 15,
         categoryId: 7,
         question: 'How do I reset my password?',
         answer: `<p>Click "Forgot Password" on the login page. You'll receive a reset link at ${faker.internet.email()}. The link expires in ${faker.number.int({ min: 15, max: 60 })} minutes for security.</p>`,
