@@ -18,12 +18,12 @@ import { RichTextDisplay } from 'src/molecules';
 import { AnimatePresence } from 'framer-motion';
 
 export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
-  /* v8 ignore start */
   usePrefetchRichTextImages({
+    /* v8 ignore start */
     richTextValues: answer ? [answer] : [],
     onImageRead: (path) => FaqService.getFaqImage(path),
+    /* v8 ignore end */
   });
-  /* v8 ignore end */
   const [expanded, setExpanded] = useState(false);
 
   const handleOnToggleExpanded = () => {

@@ -67,7 +67,7 @@
         "@equinor/eds-core-react": "0.44.0",
         "@equinor/eds-data-grid-react": "^0.7.5",
         "@equinor/eds-icons": "*",
-        "@equinor/subsurface-app-management": ">=5.1.0",
+        "@equinor/subsurface-app-management": "^5.1.0",
         "@tanstack/react-query": "*",
         "@tanstack/react-router": "*",
         "@tiptap/core": "^3.1.0",
