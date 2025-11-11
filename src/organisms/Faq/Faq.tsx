@@ -86,14 +86,18 @@ export const Faq: FC<FaqProps> = ({ searchPlaceholder, title }) => {
           value: `faq-${faq.id}`,
         })),
         ...(category.subCategories ?? [])
-          .filter(
-            (subcategory) => subcategory.faqs && subcategory.faqs.length > 0
-          )
-          .map((subcategory) => ({
-            label: subcategory.categoryName ?? '',
-            value: `subcategory-${subcategory.id}`,
-            count: subcategory.faqs?.length,
-          })),
+          .map((subcategory) => {
+            const filteredFaqs = (subcategory.faqs ?? []).filter((faq) =>
+              !search || faqInSearch(faq, search)
+            );
+            if (filteredFaqs.length === 0) return null;
+            return {
+              label: subcategory.categoryName ?? '',
+              value: `subcategory-${subcategory.id}`,
+              count: filteredFaqs.length,
+            };
+          })
+          .filter(Boolean),
       ],
       /* v8 ignore end */
     }));
