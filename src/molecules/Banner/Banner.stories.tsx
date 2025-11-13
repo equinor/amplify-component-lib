@@ -40,22 +40,6 @@ export const Default: Story = {
   },
 };
 
-export const CustomContent: Story = {
-  args: {
-    children: <Button>Custom button</Button>,
-  },
-  decorators: (Story) => (
-    <div style={{ width: '20rem' }}>
-      <Story />
-    </div>
-  ),
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.getByRole('button', { name: /custom button/i })
-    ).toBeInTheDocument();
-  },
-};
-
 export const Variants: Story = {
   args: {
     children: faker.airline.airplane().name,
@@ -83,4 +67,28 @@ export const Variants: Story = {
       />
     </div>
   ),
+};
+
+export const CustomContent: Story = {
+  tags: ['test-only'],
+  args: {
+    children: <Button>Custom button</Button>,
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole('button', { name: /custom button/i })
+    ).toBeInTheDocument();
+  },
+};
+
+export const Compact: Story = {
+  tags: ['test-only'],
+  args: {
+    spacing: 'compact',
+    children: faker.airline.airplane().name,
+  },
+  play: async ({ canvas, args }) => {
+    const container = canvas.getByText(args.children as string);
+    await expect(container.parentElement).toHaveStyle('padding: 8px');
+  },
 };

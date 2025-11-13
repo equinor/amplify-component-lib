@@ -22,7 +22,7 @@ const CONTAINER_PADDINGS: Record<
 
 interface ContainerProps {
   $color: InformationalNoticeProps['color'];
-  $spacing: InformationalNoticeProps['spacing'];
+  $spacing: NonNullable<InformationalNoticeProps['spacing']>;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -33,7 +33,7 @@ export const Container = styled.div<ContainerProps>`
       ? colors.ui.background__default.rgba
       : colors.ui.background__light.rgba};
   ${({ $spacing }) => {
-    const { gap, padding } = CONTAINER_PADDINGS[$spacing || 'comfortable'];
+    const { gap, padding } = CONTAINER_PADDINGS[$spacing];
 
     return css`
       padding: ${padding};

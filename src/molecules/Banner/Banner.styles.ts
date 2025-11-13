@@ -43,7 +43,7 @@ const SPACINGS: Record<
 
 interface ContainerProps {
   $variant: BannerProps['variant'];
-  $spacing: BannerProps['spacing'];
+  $spacing: NonNullable<BannerProps['spacing']>;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -52,8 +52,8 @@ export const Container = styled.div<ContainerProps>`
   grid-template-columns: auto 1fr;
   align-items: center;
   background: ${({ $variant }) => VARIANT_COLORS[$variant].background};
-  gap: ${({ $spacing }) => SPACINGS[$spacing || 'comfortable'].gap};
-  padding: ${({ $spacing }) => SPACINGS[$spacing || 'comfortable'].padding};
+  gap: ${({ $spacing }) => SPACINGS[$spacing].gap};
+  padding: ${({ $spacing }) => SPACINGS[$spacing].padding};
   border-radius: ${shape.corners.borderRadius};
 
   > svg {
