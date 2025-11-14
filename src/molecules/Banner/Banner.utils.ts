@@ -17,3 +17,13 @@ export function getVariantIcon(variant: BannerProps['variant']): IconData {
       return error_outlined;
   }
 }
+
+export function getIconSize(variant: BannerProps['spacing']) {
+  switch (variant) {
+    case 'compact':
+      return 18;
+    case 'comfortable':
+    default:
+      return 24;
+  }
+}

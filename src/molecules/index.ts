@@ -39,6 +39,8 @@ export type {
 } from './IconCell/IconCell.types';
 export { InfoElement } from './InfoElement/InfoElement';
 export type { InfoElementProps } from './InfoElement/InfoElement';
+export { InformationalNotice } from './InformationalNotice/InformationalNotice';
+export type { InformationalNoticeProps } from './InformationalNotice/InformationalNotice';
 export { OptionalTooltip } from './OptionalTooltip/OptionalTooltip';
 export type { OptionalTooltipProps } from './OptionalTooltip/OptionalTooltip';
 export { ProfileAvatar } from './ProfileAvatar/ProfileAvatar';
