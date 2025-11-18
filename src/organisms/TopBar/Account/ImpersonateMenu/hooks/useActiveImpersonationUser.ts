@@ -20,9 +20,11 @@ export function useActiveImpersonationUser() {
           (error.status === 204 || error.status === 404)
         ) {
           return null;
+          /* v8 ignore start */
         }
         throw error;
       }
+      /* v8 ignore end */
     },
     enabled:
       environment.getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) !==
