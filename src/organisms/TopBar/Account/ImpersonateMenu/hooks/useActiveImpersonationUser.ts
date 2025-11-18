@@ -13,10 +13,7 @@ export function useActiveImpersonationUser() {
     queryFn: async () => {
       try {
         const active = await ImpersonateUserService.getActiveUser();
-
-        if (active === undefined) return null;
-
-        return active;
+        return active ?? null;
       } catch (error) {
         if (
           error instanceof ApiError &&
@@ -24,6 +21,7 @@ export function useActiveImpersonationUser() {
         ) {
           return null;
         }
+        throw error;
       }
     },
     enabled:
