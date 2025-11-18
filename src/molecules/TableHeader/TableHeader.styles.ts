@@ -26,6 +26,7 @@ export const Container = styled.span<ContainerProps>`
   gap: ${spacings.small};
   padding: ${spacings.small};
   align-items: center;
+  height: 100%;
   > ${ActionsWrapper} > button {
     margin-left: auto;
   }
