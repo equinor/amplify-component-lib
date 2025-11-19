@@ -10,13 +10,6 @@ const hookList = [
     code: `const { data, isLoading, ... } = useFaqsInApplication();`,
   },
   {
-    name: 'useSearchParameter',
-    body: 'Returns value and setter for key=value in URL',
-    code: `const [searchValue, setSearchValue] = useSearchParameter<string | undefined>({
-      key: 'search',
-    })`,
-  },
-  {
     name: 'useStepper',
     body: 'Returns stepper methods and state',
     code: `const {  
@@ -92,9 +85,17 @@ const hookList = [
 showSnackbar(text: string, customProps?: SnackbarProps)\`,
 showSnackbar(object: ShowSnackbar, customProps?: SnackbarProps)`,
   },
-];
+  {
+    name: 'useToasts',
+    body: 'Returns showToast function',
+    code: `const { showToast } = useToasts();
 
-// TODO: Update
+...
+
+showToast(text: string)
+showToast(object: ToastProps)`,
+  },
+];
 
 const Container = styled.div`
   display: flex;

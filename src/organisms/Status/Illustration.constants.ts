@@ -1,6 +1,6 @@
 import { colors } from 'src/atoms/style/colors';
 
-import { MotionProps } from 'framer-motion';
+import { MotionProps } from 'motion/react';
 
 interface Shape {
   frames: string[];

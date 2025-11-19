@@ -39,6 +39,8 @@ export type {
 } from './IconCell/IconCell.types';
 export { InfoElement } from './InfoElement/InfoElement';
 export type { InfoElementProps } from './InfoElement/InfoElement';
+export { InformationalNotice } from './InformationalNotice/InformationalNotice';
+export type { InformationalNoticeProps } from './InformationalNotice/InformationalNotice';
 export { OptionalTooltip } from './OptionalTooltip/OptionalTooltip';
 export type { OptionalTooltipProps } from './OptionalTooltip/OptionalTooltip';
 export { ProfileAvatar } from './ProfileAvatar/ProfileAvatar';
@@ -60,8 +62,6 @@ export {
   TableMenuBar,
   TextTable,
 } from './RichTextEditor/MenuBar/Table/TableBar';
-export { TableHeader } from './TableHeader/TableHeader';
-export type { TableHeaderProps } from './TableHeader/TableHeader';
 export { DEFAULT_FEATURES } from './RichTextEditor/RichTextEditor.types';
 export { RichTextEditorFeatures } from './RichTextEditor/RichTextEditor.types';
 export type * from './RichTextEditor/RichTextEditor.types';
@@ -86,6 +86,10 @@ export type { ComboBoxProps } from './Select/ComboBox/ComboBox';
 export { SingleSelect } from './Select/SingleSelect/SingleSelect';
 export type { SingleSelectProps } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
+export { Toast } from './Toast/Toast';
+export type { ToastProps } from './Toast/Toast';
+export { TableHeader } from './TableHeader/TableHeader';
+export type { TableHeaderProps } from './TableHeader/TableHeader';
 export { TextField } from './TextField/TextField';
 export type { TextFieldProps } from './TextField/TextField';
 export { FeedBackIcon } from './FeedBackIcon/FeedBackIcon';

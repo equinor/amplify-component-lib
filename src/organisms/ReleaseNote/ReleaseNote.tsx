@@ -14,7 +14,7 @@ import { formatDate, getImagesFromRichText } from 'src/atoms/utils';
 import { RichTextDisplay } from 'src/molecules/RichTextDisplay/RichTextDisplay';
 import { MetaTags } from 'src/organisms/ReleaseNote/MetaTags';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import styled from 'styled-components';
 
 const Container = styled.div`

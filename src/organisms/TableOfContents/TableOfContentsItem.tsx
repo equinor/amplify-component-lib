@@ -11,7 +11,7 @@ import {
   useTableOfContents,
 } from 'src/providers/TableOfContentsProvider';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'motion/react';
 
 interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;

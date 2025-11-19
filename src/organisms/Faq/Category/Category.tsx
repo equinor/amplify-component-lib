@@ -1,74 +1,31 @@
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
-import { FaqCategory } from '@equinor/subsurface-app-management';
-import { useSearch } from '@tanstack/react-router';
+import type { FaqCategoriesWithFaqDto } from '@equinor/subsurface-app-management';
 
-import { Question } from './Question';
-import { spacings } from 'src/atoms/style';
-import { Status } from 'src/organisms/Status';
+import { Question } from './Question/Question';
+import { Container, Content, Header } from './Category.styles';
+import { Subcategory } from './Subcategory';
+import { Typography } from 'src/molecules';
 
-import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.medium};
-  width: 100%;
-  &:has(> div > div > svg) {
-    transform: translateY(50%);
-  }
-`;
-
-type CategoryProps = {
-  selectedTab: string | undefined;
-} & FaqCategory;
-
-export const Category: FC<CategoryProps> = ({
-  categoryName,
+export const Category: FC<FaqCategoriesWithFaqDto> = ({
   faqs,
-  selectedTab,
+  id,
+  categoryName,
+  subCategories,
 }) => {
-  const { search } = useSearch({ strict: false });
-
-  const sortedFaqs = useMemo(() => {
-    return faqs.toSorted((a, b) => {
-      const usingA = a.orderBy ?? 0;
-      const usingB = b.orderBy ?? 0;
-      return usingA - usingB;
-    });
-  }, [faqs]);
-
-  const filteredFaqs = useMemo(() => {
-    if (!search) return sortedFaqs;
-
-    return sortedFaqs.filter(
-      (faq) =>
-        faq.question.toLowerCase().includes(search.toLowerCase()) ||
-        faq.answer.toLowerCase().includes(search.toLowerCase()) ||
-        categoryName.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [categoryName, search, sortedFaqs]);
-
-  if (selectedTab !== undefined && filteredFaqs.length === 0) {
-    return (
-      <Container>
-        <Status center={false}>
-          <Status.Title title="No Questions Found" />
-          <Status.Description text="No questions or answers matches your search in this category" />
-        </Status>
-      </Container>
-    );
-  }
-
-  if (filteredFaqs.length === 0) return null;
-
   return (
     <Container>
-      <Typography variant="h4">{categoryName}</Typography>
-      {filteredFaqs.map((faq) => (
-        <Question key={faq.id} {...faq} />
-      ))}
+      <Header id={`category-${id}`}>
+        <Typography variant="h4">{categoryName}</Typography>
+      </Header>
+      <Content>
+        {faqs?.map((question) => (
+          <Question key={question.id} {...question} />
+        ))}
+        {subCategories?.map((subcategory) => (
+          <Subcategory key={subcategory.id} {...subcategory} />
+        ))}
+      </Content>
     </Container>
   );
 };
