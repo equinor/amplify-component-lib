@@ -234,10 +234,7 @@ export const PersistentComboBoxParented: Story = {
   args: {
     items: FAKE_ITEMS_WITH_CHILDREN,
   },
-  render: (args) => {
-    console.log(args.items);
-    return <PersistentComboBoxWithState {...args} />;
-  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
 export const PersistentComboBoxWithAdd: Story = {

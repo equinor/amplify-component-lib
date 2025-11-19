@@ -29,5 +29,5 @@ export type ComboBoxProps<T extends SelectOptionRequired> =
 export function ComboBox<T extends SelectOptionRequired>(
   props: ComboBoxProps<T>
 ) {
-  return <Select {...props} mode="menu" />;
+  return <Select {...props} />;
 }

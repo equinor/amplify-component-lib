@@ -185,7 +185,6 @@ export const Select = <T extends SelectOptionRequired>(
     handleOnRemoveItem,
   ]);
 
-  // TODO:PERSISTENT Maybe change name
   const searchBarElement = useMemo(() => {
     return (
       <>

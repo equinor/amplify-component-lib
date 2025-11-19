@@ -54,7 +54,7 @@ export type MultiSelectCommon<T extends SelectOptionRequired> =
   | MultiSelectWithCustomValueComponent<T>;
 
 export interface MenuModeSelectProps {
-  mode: 'menu';
+  mode?: 'menu';
 }
 
 export interface PersistentSelectProps {

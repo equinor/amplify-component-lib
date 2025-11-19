@@ -198,7 +198,7 @@ const Section = styled.section`
 `;
 
 interface ClearButtonProps {
-  rightPadding?: boolean;
+  $rightPadding?: boolean;
 }
 
 const ClearButton = styled(Button)<ClearButtonProps>`

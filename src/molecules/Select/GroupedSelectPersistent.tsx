@@ -28,7 +28,7 @@ export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
   }
 
   if ('value' in props) {
-    throw new Error('You can not use persistent mode with SingleSelect');
+    throw new Error('You cannot use SingleSelect with persistent mode');
   }
 
   return (
