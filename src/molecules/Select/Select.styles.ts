@@ -305,6 +305,9 @@ const PersistentListItem = styled.button`
   justify-content: flex-start;
   gap: ${spacings.small};
   box-sizing: border-box;
+  svg {
+    flex-shrink: 0;
+  }
   &:hover {
     background-color: ${colors.interactive.primary__hover_alt.rgba};
   }

@@ -6,7 +6,10 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ComboBoxChip } from '../Select.styles';
-import { PersistentComboBox } from './PersistentComboBox';
+import {
+  PersistentComboBox,
+  PersistentComboBoxProps,
+} from './PersistentComboBox';
 import { spacings } from 'src/atoms';
 import {
   SelectedState,
@@ -42,16 +45,12 @@ const meta: Meta<typeof PersistentComboBox> = {
     },
   },
   args: {
-    label: '',
-    helperText: '',
-    meta: '',
-    showHelperIcon: true,
     syncParentChildSelection: true,
     sortValues: true,
     clearable: true,
     maxHeight: undefined,
+    showSelectedAsText: false,
     items: FAKE_ITEMS,
-    showSelectedAsText: undefined,
   },
 };
 
@@ -106,7 +105,9 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
 
 type Story = StoryObj<typeof PersistentComboBox>;
 
-const PersistentComboBoxWithState = (args: Story) => {
+const PersistentComboBoxWithState = (
+  args: PersistentComboBoxProps<SelectOptionRequired>
+) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -118,16 +119,13 @@ const PersistentComboBoxWithState = (args: Story) => {
   };
 
   return (
-    <PersistentComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-    />
+    <PersistentComboBox {...args} values={values} onSelect={handleOnSelect} />
   );
 };
 
-const PersistentComboBoxWithAddState = (args: Story) => {
+const PersistentComboBoxWithAddState = (
+  args: PersistentComboBoxProps<SelectOptionRequired>
+) => {
   const [items, setItems] = useState([...FAKE_ITEMS]);
 
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
@@ -153,6 +151,7 @@ const PersistentComboBoxWithAddState = (args: Story) => {
       items={items}
       values={values}
       onSelect={handleOnSelect}
+      groups={undefined}
       onAddItem={handleOnAdd}
     />
   );
@@ -226,6 +225,7 @@ export const PersistentComboBoxWithLabelsAndHelperText: Story = {
 export const PersistentComboBoxWithGroups: Story = {
   args: {
     groups: FAKE_GROUPS,
+    items: undefined,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
@@ -234,7 +234,10 @@ export const PersistentComboBoxParented: Story = {
   args: {
     items: FAKE_ITEMS_WITH_CHILDREN,
   },
-  render: (args) => <PersistentComboBoxWithState {...args} />,
+  render: (args) => {
+    console.log(args.items);
+    return <PersistentComboBoxWithState {...args} />;
+  },
 };
 
 export const PersistentComboBoxWithAdd: Story = {
