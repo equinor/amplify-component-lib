@@ -32,6 +32,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     onItemKeyDown,
     onItemSelect,
     CustomMenuItemComponent,
+    mode,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
@@ -133,7 +134,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               values={props.values}
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
-              mode={props.mode}
+              mode={mode}
               parentHasNestedItems
               CustomMenuItemComponent={CustomMenuItemComponent}
             />
