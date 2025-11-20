@@ -160,10 +160,7 @@ export const lightTokens = css`
     --eds_navigation__button_color: var(--eds_text__static_icons__default);
     --eds_input__label_color: var(--eds_text__static_icons__default);
     --eds_input__text_color: var(--eds_text__static_icons__default);
-    --eds_paragraph__body_short_color: var(--eds_text__static_icons__default);
-    --eds_paragraph__body_long_link_color: var(
-      --eds_text__static_icons__default
-    );
+
     --eds_table__cell_header_color: var(--eds_text__static_icons__default);
     --eds_table__cell_text_color: var(--eds_text__static_icons__default);
     --eds_table__cell_text_bold_color: var(--eds_text__static_icons__default);
@@ -180,6 +177,9 @@ export const lightTokens = css`
     --eds_paragraph__body_short_color: var(--eds_text__static_icons__default);
     --eds_paragraph__body_long_color: var(--eds_text__static_icons__default);
     --eds_paragraph__meta_color: var(--eds_text__static_icons__default);
+    --eds_paragraph__body_long_link_color: var(
+      --eds_text__static_icons__default
+    );
 
     --eds_interactive__icon_on_interactive_colors: var(
       --eds_text__static_icons__default
