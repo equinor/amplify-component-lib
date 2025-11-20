@@ -102,7 +102,6 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
         ref={(element: HTMLButtonElement | null) => {
           itemRefs.current[index] = element;
         }}
-        tabIndex={index}
         onKeyDownCapture={handleOnKeyDown}
         onClick={handleOnItemClick}
       >
