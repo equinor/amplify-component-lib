@@ -84,7 +84,7 @@ const useSelect = <T extends SelectOptionRequired>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (mode === 'persistent') {
+    if (mode === 'persistent' && !open && !disabled && !loading) {
       searchRef.current?.focus();
       return;
     }
