@@ -11,8 +11,13 @@ import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 export const GroupedSelectMenu = <T extends SelectOptionRequired>(
   props: GroupedSelectPropsCombined<T>
 ) => {
-  const { onItemSelect, onItemKeyDown, itemRefs, CustomMenuItemComponent } =
-    props;
+  const {
+    onItemSelect,
+    onItemKeyDown,
+    itemRefs,
+    CustomMenuItemComponent,
+    mode,
+  } = props;
 
   const { filteredGroups, filteredGroupSum } = useGroupedSelectItems(props);
 
@@ -33,6 +38,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
             index={index + filteredGroupSum[groupIndex]}
             childOffset={0}
             item={item}
+            mode={mode}
             itemRefs={itemRefs}
             onItemKeyDown={onItemKeyDown}
             onItemSelect={onItemSelect}
@@ -55,6 +61,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
           index={index + filteredGroupSum[groupIndex]}
           childOffset={0}
           item={item}
+          mode={mode}
           itemRefs={itemRefs}
           onItemKeyDown={onItemKeyDown}
           onItemSelect={onItemSelect}

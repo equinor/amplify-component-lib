@@ -34,7 +34,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       | SingleSelectCommon<T>
     )
 ) => {
-  const { search, itemRefs, onItemKeyDown } = props;
+  const { search, itemRefs, onItemKeyDown, mode } = props;
 
   const { filteredItems } = useListSelectItems(props);
 
@@ -54,6 +54,7 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
     item,
     itemValue: item.value,
     parentHasNestedItems: hasNestedItems,
+    mode,
     ...props,
   }));
 
