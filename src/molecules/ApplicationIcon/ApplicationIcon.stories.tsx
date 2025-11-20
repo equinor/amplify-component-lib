@@ -26,6 +26,7 @@ const meta: Meta<typeof ApplicationIcon> = {
         'premo',
         'sam',
         'subsurface portal',
+        'jscalendar',
       ],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
