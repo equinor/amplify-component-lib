@@ -4,13 +4,15 @@ import {
   GroupedSelectProps,
   ListSelectProps,
   MultiSelectCommon,
+  PersistentSelectProps,
   SelectOptionRequired,
 } from 'src/molecules/Select/Select.types';
 
-export type ComboBoxProps<T extends SelectOptionRequired> =
+export type PersistentComboBoxProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
     MultiSelectCommon<T> &
-    (ListSelectProps<T> | GroupedSelectProps<T>);
+    PersistentSelectProps &
+    (GroupedSelectProps<T> | ListSelectProps<T>);
 
 /**
  * @param clearable - If users should be able to clear the input, defaults to true
@@ -25,9 +27,10 @@ export type ComboBoxProps<T extends SelectOptionRequired> =
  * @param onSearchFilter - Custom filter function for search, default is "item.label.match(new RegExp(searchValue, 'i'))"
  * @param showSelectedAsText - If values should be shown as "5/10 Selected", defaults to false
  * @param customMenuItemComponent - Custom component to use for rendering menu item, defaults to a checkbox with label
+ * @param maxHeight - Max height of the persistent wrapper below the search field, optional
  */
-export function ComboBox<T extends SelectOptionRequired>(
-  props: ComboBoxProps<T>
+export function PersistentComboBox<T extends SelectOptionRequired>(
+  props: PersistentComboBoxProps<T>
 ) {
-  return <Select {...props} />;
+  return <Select {...props} mode="persistent" />;
 }

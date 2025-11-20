@@ -1,56 +1,25 @@
-import { useMemo } from 'react';
-
 import { Menu } from '@equinor/eds-core-react';
 
+import { useGroupedSelectItems } from 'src/molecules/Select/Select.hooks';
 import { NoItemsFoundText } from 'src/molecules/Select/Select.styles';
 import {
-  CustomMenuItemComponentProps,
-  GroupedSelectProps,
-  MultiSelectCommon,
-  SelectMenuProps,
+  GroupedSelectPropsCombined,
   SelectOptionRequired,
-  SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
-import { getCumulativeArrayFromNumberedArray } from 'src/molecules/Select/Select.utils';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
 export const GroupedSelectMenu = <T extends SelectOptionRequired>(
-  props: GroupedSelectProps<T> &
-    SelectMenuProps<T> &
-    CustomMenuItemComponentProps<T> &
-    (MultiSelectCommon<T> | SingleSelectCommon<T>)
+  props: GroupedSelectPropsCombined<T>
 ) => {
   const {
     onItemSelect,
     onItemKeyDown,
     itemRefs,
-    groups,
-    search,
-    onSearchFilter,
     CustomMenuItemComponent,
+    mode,
   } = props;
 
-  const filteredGroups = useMemo(() => {
-    if (search === '') return groups;
-    const regexPattern = new RegExp(search.trim(), 'i');
-    return groups
-      .map((group) => ({
-        title: group.title,
-        items: group.items.filter((item) => {
-          if (onSearchFilter !== undefined) {
-            return onSearchFilter(search, item);
-          }
-
-          return item.label.match(regexPattern);
-        }),
-      }))
-      .filter((group) => group.items.length > 0);
-  }, [groups, onSearchFilter, search]);
-
-  const filteredGroupSum = useMemo(() => {
-    const groupSizeArray = filteredGroups.map((group) => group.items.length);
-    return getCumulativeArrayFromNumberedArray(groupSizeArray);
-  }, [filteredGroups]);
+  const { filteredGroups, filteredGroupSum } = useGroupedSelectItems(props);
 
   if (filteredGroups.length === 0) {
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
@@ -69,6 +38,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
             index={index + filteredGroupSum[groupIndex]}
             childOffset={0}
             item={item}
+            mode={mode}
             itemRefs={itemRefs}
             onItemKeyDown={onItemKeyDown}
             onItemSelect={onItemSelect}
@@ -91,6 +61,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
           index={index + filteredGroupSum[groupIndex]}
           childOffset={0}
           item={item}
+          mode={mode}
           itemRefs={itemRefs}
           onItemKeyDown={onItemKeyDown}
           onItemSelect={onItemSelect}

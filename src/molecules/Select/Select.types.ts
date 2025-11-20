@@ -53,6 +53,18 @@ export type MultiSelectCommon<T extends SelectOptionRequired> =
   | MultiSelectWithSelectedAsText<T>
   | MultiSelectWithCustomValueComponent<T>;
 
+export interface MenuModeSelectProps {
+  mode?: 'menu';
+}
+
+export interface PersistentSelectProps {
+  maxHeight?: string;
+}
+
+export interface PersistentModeSelectProps extends PersistentSelectProps {
+  mode: 'persistent';
+}
+
 export interface SelectGroup<T extends SelectOptionRequired> {
   title?: string;
   items: SelectOption<T>[];
@@ -62,6 +74,13 @@ export interface GroupedSelectProps<T extends SelectOptionRequired> {
   groups: SelectGroup<T>[];
   items?: undefined;
 }
+
+export type GroupedSelectPropsCombined<T extends SelectOptionRequired> =
+  GroupedSelectProps<T> &
+    SelectMenuProps<T> &
+    CustomMenuItemComponentProps<T> &
+    (MultiSelectCommon<T> | SingleSelectCommon<T>) &
+    (PersistentModeSelectProps | MenuModeSelectProps);
 
 type CommonListSelectProps<T extends SelectOptionRequired> = {
   items: SelectOption<T>[];
@@ -103,6 +122,7 @@ interface SelectMenuItemProps<T extends SelectOptionRequired> {
   childOffset: number;
   depth?: number;
   isParentSelected?: boolean;
+  mode: 'persistent' | 'menu' | undefined;
   parentHasNestedItems?: boolean;
   customMenuItemComponent?: FC<{
     item: SelectOption<T>;

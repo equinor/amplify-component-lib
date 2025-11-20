@@ -1,9 +1,8 @@
-import { Menu } from '@equinor/eds-core-react';
-
 import { AddTagItem } from './AddTagItem';
-import { capitalize } from 'src/atoms/utils/string';
+import { capitalize } from 'src/atoms';
 import { useListSelectItems } from 'src/molecules/Select/Select.hooks';
 import {
+  GroupTitle,
   NoItemsFoundText,
   NoTagFoundText,
 } from 'src/molecules/Select/Select.styles';
@@ -23,7 +22,7 @@ import {
 import { getChildOffset } from 'src/molecules/Select/Select.utils';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
-export const ListSelectMenu = <T extends SelectOptionRequired>(
+export const ListSelectPersistent = <T extends SelectOptionRequired>(
   props: Omit<ListSelectProps<T>, 'onAddItem'> &
     ListSelectMenuProps &
     SelectMenuProps<T> &
@@ -54,7 +53,6 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
     item,
     itemValue: item.value,
     parentHasNestedItems: hasNestedItems,
-    mode,
     ...props,
   }));
 
@@ -72,35 +70,37 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       : 'tag';
     return (
       <>
-        <Menu.Section title={`Add ${singularWord}`} index={0}>
-          <AddTagItem
-            index={0}
-            itemRefs={itemRefs}
-            onItemKeyDown={onItemKeyDown}
-            onAddItem={props.onAddItem}
-            addItemSingularWord={singularWord}
-          >
-            {search}
-          </AddTagItem>
-        </Menu.Section>
-        <Menu.Section
-          title={`${capitalize(singularWord)} search results`}
-          index={1}
+        <GroupTitle
+          group="navigation"
+          variant="label"
+        >{`Add ${singularWord}`}</GroupTitle>
+        <AddTagItem
+          index={0}
+          itemRefs={itemRefs}
+          onItemKeyDown={onItemKeyDown}
+          onAddItem={props.onAddItem}
+          addItemSingularWord={singularWord}
+          mode={mode}
         >
-          {itemProps.length > 0 ? (
-            itemProps.map((item, index) => (
-              <SelectMenuItem
-                key={`menu-item-${index}-${item.item.value}`}
-                {...item}
-                index={index + 1}
-              />
-            ))
-          ) : (
-            <NoTagFoundText>
-              No {singularWord} for &quot;{search}&quot; found.
-            </NoTagFoundText>
-          )}
-        </Menu.Section>
+          {search}
+        </AddTagItem>
+        <GroupTitle
+          group="navigation"
+          variant="label"
+        >{`${capitalize(singularWord)} search results`}</GroupTitle>
+        {itemProps.length > 0 ? (
+          itemProps.map((item, index) => (
+            <SelectMenuItem
+              key={`menu-item-${index}-${item.item.value}`}
+              {...item}
+              index={index + 1}
+            />
+          ))
+        ) : (
+          <NoTagFoundText>
+            No {singularWord} for &quot;{search}&quot; found.
+          </NoTagFoundText>
+        )}
       </>
     );
   }

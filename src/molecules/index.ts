@@ -79,16 +79,12 @@ export { OptionDrawer } from './OptionDrawer/OptionDrawer';
 export type { OptionDrawerProps } from './OptionDrawer/OptionDrawer';
 export type { OptionDrawerSelectItem } from './OptionDrawer/OptionDrawer.types';
 export { ComboBox } from './Select/ComboBox/ComboBox';
+export { PersistentComboBox } from './Select/PersistentComboBox/PersistentComboBox';
+export type { PersistentComboBoxProps } from './Select/PersistentComboBox/PersistentComboBox';
 export { ComboBoxChip } from './Select/Select.styles';
-export type {
-  ListComboBoxProps,
-  GroupedComboBoxProps,
-} from './Select/ComboBox/ComboBox';
+export type { ComboBoxProps } from './Select/ComboBox/ComboBox';
 export { SingleSelect } from './Select/SingleSelect/SingleSelect';
-export type {
-  ListSingleSelectProps,
-  GroupedSingleSelectProps,
-} from './Select/SingleSelect/SingleSelect';
+export type { SingleSelectProps } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
 export { Toast } from './Toast/Toast';
 export type { ToastProps } from './Toast/Toast';

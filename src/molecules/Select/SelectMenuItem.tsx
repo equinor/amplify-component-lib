@@ -1,26 +1,19 @@
 import { KeyboardEvent, MouseEvent, useMemo, useRef, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import {
-  checkbox,
-  checkbox_outline,
-  chevron_down,
-  chevron_right,
-} from '@equinor/eds-icons';
+import { chevron_down, chevron_right } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { getChildOffset } from './Select.utils';
-import { getParentIcon, getParentState } from './SelectMenuItem.utils';
 import { spacings } from 'src/atoms/style/spacings';
+import { DynamicMenuItem } from 'src/molecules/Select/DynamicMenuItem';
 import {
   MenuItemSpacer,
   MenuItemWrapper,
   SmallButton,
-  StyledMenuItem,
 } from 'src/molecules/Select/Select.styles';
 import {
   MultiSelectMenuItemProps,
-  SelectedState,
   SelectOptionRequired,
   SingleSelectMenuItemProps,
 } from 'src/molecules/Select/Select.types';
@@ -38,8 +31,8 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     itemRefs,
     onItemKeyDown,
     onItemSelect,
-    parentHasNestedItems = false,
     CustomMenuItemComponent,
+    mode,
   } = props;
   const [openParent, setOpenParent] = useState(false);
   const focusingChildIndex = useRef<number>(-1);
@@ -49,18 +42,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     'values' in props ? props.values.map(({ value }) => value) : [];
   const isSelected = selectedValues.includes(item.value);
 
-  const parentIcon = useMemo(() => {
-    if ('value' in props) return checkbox_outline;
-
-    return getParentIcon(item, props.values);
-  }, [item, props]);
-
-  const parentState: SelectedState = useMemo(() => {
-    if ('value' in props) return 'none';
-
-    return getParentState(item, props.values);
-  }, [item, props]);
-
   const spacers = useMemo(
     () =>
       new Array(depth)
@@ -69,15 +50,24 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     [depth]
   );
 
-  const handleOnItemClick = (event: MouseEvent) => {
-    // Stop form submission
-    event.preventDefault();
-    onItemSelect(item);
-  };
-
   const handleChevronIconClick = (event: MouseEvent) => {
     event.stopPropagation();
     setOpenParent((prev) => !prev);
+  };
+
+  const handleOnParentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if ((!openParent && event.key === 'ArrowDown') || event.key === 'ArrowUp') {
+      onItemKeyDown(event);
+    } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      setOpenParent((prev) => !prev);
+    } else if (
+      openParent &&
+      event.key === 'ArrowDown' &&
+      focusingChildIndex.current === -1
+    ) {
+      focusingChildIndex.current = 0;
+      childRefs.current[focusingChildIndex.current + childOffset]?.focus();
+    }
   };
 
   const handleOnChildKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -107,21 +97,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     }
   };
 
-  const handleOnParentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if ((!openParent && event.key === 'ArrowDown') || event.key === 'ArrowUp') {
-      onItemKeyDown(event);
-    } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-      setOpenParent((prev) => !prev);
-    } else if (
-      openParent &&
-      event.key === 'ArrowDown' &&
-      focusingChildIndex.current === -1
-    ) {
-      focusingChildIndex.current = 0;
-      childRefs.current[focusingChildIndex.current + childOffset]?.focus();
-    }
-  };
-
   if (item.children && item.children.length > 0 && 'values' in props) {
     return (
       <>
@@ -139,31 +114,11 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               data={openParent ? chevron_down : chevron_right}
             />
           </SmallButton>
-          <StyledMenuItem
-            $depth={depth}
-            ref={(element: HTMLButtonElement | null) => {
-              itemRefs.current[index] = element;
-            }}
-            index={index}
-            closeMenuOnClick={false}
-            onKeyDownCapture={handleOnParentKeyDown}
-            onClick={handleOnItemClick}
-          >
-            {CustomMenuItemComponent ? (
-              <CustomMenuItemComponent
-                item={item}
-                selectedState={parentState}
-              />
-            ) : (
-              <>
-                <Icon
-                  color={colors.interactive.primary__resting.rgba}
-                  data={parentIcon}
-                />
-                <span>{item.label}</span>
-              </>
-            )}
-          </StyledMenuItem>
+          <DynamicMenuItem
+            menuItemProps={props}
+            isSelected={isSelected}
+            handleOnParentKeyDown={handleOnParentKeyDown}
+          />
         </MenuItemWrapper>
         {openParent &&
           item.children.map((child, childIndex) => (
@@ -179,6 +134,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               values={props.values}
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
+              mode={mode}
               parentHasNestedItems
               CustomMenuItemComponent={CustomMenuItemComponent}
             />
@@ -191,61 +147,16 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     return (
       <MenuItemWrapper>
         {spacers}
-        <StyledMenuItem
-          $depth={depth}
-          $paddedLeft={parentHasNestedItems}
-          ref={(element: HTMLButtonElement | null) => {
-            itemRefs.current[index] = element;
-          }}
-          index={index}
-          tabIndex={depth}
-          closeMenuOnClick={false}
-          onKeyDownCapture={onItemKeyDown}
-          onClick={handleOnItemClick}
-        >
-          {CustomMenuItemComponent ? (
-            <CustomMenuItemComponent
-              item={item}
-              selectedState={isSelected ? 'selected' : 'none'}
-            />
-          ) : (
-            <>
-              <Icon
-                color={colors.interactive.primary__resting.rgba}
-                data={isSelected ? checkbox : checkbox_outline}
-              />
-              <span>{item.label}</span>
-            </>
-          )}
-        </StyledMenuItem>
+        <DynamicMenuItem menuItemProps={props} isSelected={isSelected} />
       </MenuItemWrapper>
     );
   }
   return (
     <MenuItemWrapper>
-      <StyledMenuItem
-        $depth={depth}
-        $selected={props.value && item.value === props.value.value}
-        ref={(element: HTMLButtonElement | null) => {
-          itemRefs.current[index] = element;
-        }}
-        index={index}
-        onKeyDownCapture={onItemKeyDown}
-        onClick={handleOnItemClick}
-      >
-        {CustomMenuItemComponent ? (
-          <CustomMenuItemComponent
-            item={item}
-            selectedState={
-              props.value && item.value === props.value.value
-                ? 'selected'
-                : 'none'
-            }
-          />
-        ) : (
-          <span>{item.label}</span>
-        )}
-      </StyledMenuItem>
+      <DynamicMenuItem
+        menuItemProps={props}
+        isSelected={Boolean(props.value && item.value === props.value.value)}
+      />
     </MenuItemWrapper>
   );
 };

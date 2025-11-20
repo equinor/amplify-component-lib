@@ -1,6 +1,6 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
-import { animation, colors, spacings } from 'src/atoms/style';
+import { animation, colors, shape, spacings } from 'src/atoms/style';
 import {
   VARIANT_COLORS,
   VARIANT_HELPER_TEXT_COLORS,
@@ -10,22 +10,32 @@ import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
 
-export const Wrapper = styled.div`
+interface WrapperProps {
+  $showBackgroundColor: boolean;
+}
+
+export const Wrapper = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
   gap: ${spacings.small};
+  ${({ $showBackgroundColor }) =>
+    $showBackgroundColor &&
+    css`
+      background-color: ${colors.ui.background__default.rgba};
+    `}
 `;
 
 interface HelperWrapperProps {
   $variant?: Variants | 'disabled';
+  $borderBottom?: boolean;
 }
 
 export const HelperWrapper = styled.span<HelperWrapperProps>`
   display: flex;
   gap: ${spacings.small};
   align-items: center;
-  margin-left: ${spacings.small};
-  width: calc(100% - ${spacings.small});
+  padding-left: ${spacings.small};
+  width: 100%;
   > label {
     margin: 0;
   }
@@ -45,6 +55,12 @@ export const HelperWrapper = styled.span<HelperWrapperProps>`
       }
     `;
   }}
+  ${({ $borderBottom }) =>
+    $borderBottom &&
+    css`
+      border-bottom: 1px solid ${colors.ui.background__heavy.rgba};
+      padding-bottom: ${spacings.small};
+    `}
 `;
 
 interface ContainerProps {
@@ -181,11 +197,16 @@ const Section = styled.section`
   }
 `;
 
-const ClearButton = styled(Button)`
+interface ClearButtonProps {
+  $rightPadding?: boolean;
+}
+
+const ClearButton = styled(Button)<ClearButtonProps>`
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: 32px;
+  right: ${({ $rightPadding }) =>
+    $rightPadding ? spacings.x_large : spacings.small};
   width: 24px;
   height: 24px;
   svg {
@@ -210,6 +231,14 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
     if ($lightBackground) return colors.ui.background__light.rgba;
     return colors.ui.background__default.rgba;
   }} !important;
+`;
+
+const PersistentGroupsWrapper = styled.div`
+  padding: ${spacings.small} 0;
+`;
+
+const GroupTitle = styled(Typography)`
+  padding: ${spacings.small} 0 ${spacings.small} ${spacings.medium};
 `;
 
 interface CustomMenuItemProps {
@@ -243,6 +272,48 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
             }
           `
         : ''}}
+`;
+
+interface PersistentComboBoxWrapperProps {
+  $shouldShowLabel: boolean;
+  $maxHeight?: string;
+}
+
+const PersistentComboBoxWrapper = styled.div<PersistentComboBoxWrapperProps>`
+  border: 1px solid ${colors.ui.background__heavy.rgba};
+  border-radius: ${shape.corners.borderRadius};
+  overflow: auto;
+  background-color: ${colors.ui.background__default.rgba};
+  height: ${
+    ({ $shouldShowLabel, $maxHeight }) => {
+      if ($maxHeight) return $maxHeight;
+      return $shouldShowLabel ? css`calc(100% - 16px)` : '100%';
+    } // EDS Label component height is 16px
+  };
+`;
+
+const PersistentStickyWrapper = styled.div`
+  position: sticky;
+  top: 0;
+`;
+
+const PersistentListItem = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: ${spacings.medium} ${spacings.medium};
+  justify-content: flex-start;
+  gap: ${spacings.small};
+  box-sizing: border-box;
+  svg {
+    flex-shrink: 0;
+  }
+  &:hover {
+    background-color: ${colors.interactive.primary__hover_alt.rgba};
+  }
+  &:focus-visible {
+    outline: 2px dashed ${colors.interactive.primary__resting.rgba};
+  }
 `;
 
 const MenuItemSpacer = styled.hr`
@@ -301,11 +372,16 @@ export {
   Button,
   ClearButton,
   Container,
+  PersistentGroupsWrapper,
+  PersistentStickyWrapper,
+  GroupTitle,
   MenuItemSpacer,
   StyledMenu,
   NoTagFoundText,
   NoItemsFoundText,
   PlaceholderText,
+  PersistentListItem,
+  PersistentComboBoxWrapper,
   ComboBoxChip,
   Section,
   MenuItemWrapper,

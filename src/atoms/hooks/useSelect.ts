@@ -15,8 +15,14 @@ import { flattenOptions } from 'src/molecules/Select/Select.utils';
 const useSelect = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
 ) => {
-  const { loading, disabled, sortValues, onSearchChange, onOpenCallback } =
-    props;
+  const {
+    loading,
+    disabled,
+    sortValues,
+    onSearchChange,
+    onOpenCallback,
+    mode,
+  } = props;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -78,10 +84,14 @@ const useSelect = <T extends SelectOptionRequired>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (!open && !disabled && !loading) {
+    if (open || disabled || loading) return;
+    if (mode === 'persistent') {
       searchRef.current?.focus();
-      setOpen(true);
+      return;
     }
+
+    searchRef.current?.focus();
+    setOpen(true);
   };
 
   const handleOnClose = () => {
