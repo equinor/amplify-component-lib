@@ -1,5 +1,5 @@
 import { BannerProps } from './Banner';
-import { colors, spacings } from 'src/atoms/style';
+import { colors, shape, spacings } from 'src/atoms/style';
 
 import styled from 'styled-components';
 
@@ -24,16 +24,37 @@ const VARIANT_COLORS: Record<
   },
 } as const;
 
+const SPACINGS: Record<
+  NonNullable<BannerProps['spacing']>,
+  {
+    padding: string;
+    gap: string;
+  }
+> = {
+  comfortable: {
+    padding: spacings.medium_small,
+    gap: spacings.medium,
+  },
+  compact: {
+    padding: spacings.small,
+    gap: spacings.medium_small,
+  },
+} as const;
+
 interface ContainerProps {
   $variant: BannerProps['variant'];
+  $spacing: NonNullable<BannerProps['spacing']>;
 }
 
 export const Container = styled.div<ContainerProps>`
+  height: fit-content;
   display: grid;
   grid-template-columns: auto 1fr;
+  align-items: center;
   background: ${({ $variant }) => VARIANT_COLORS[$variant].background};
-  gap: ${spacings.medium};
-  padding: ${spacings.medium_small};
+  gap: ${({ $spacing }) => SPACINGS[$spacing].gap};
+  padding: ${({ $spacing }) => SPACINGS[$spacing].padding};
+  border-radius: ${shape.corners.borderRadius};
 
   > svg {
     fill: ${({ $variant }) => VARIANT_COLORS[$variant].fill};

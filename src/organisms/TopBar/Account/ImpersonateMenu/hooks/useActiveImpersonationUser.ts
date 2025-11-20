@@ -13,18 +13,18 @@ export function useActiveImpersonationUser() {
     queryFn: async () => {
       try {
         const active = await ImpersonateUserService.getActiveUser();
-
-        if (active === undefined) return null;
-
-        return active;
+        return active ?? null;
       } catch (error) {
         if (
           error instanceof ApiError &&
           (error.status === 204 || error.status === 404)
         ) {
           return null;
+          /* v8 ignore start */
         }
+        throw error;
       }
+      /* v8 ignore end */
     },
     enabled:
       environment.getEnvironmentName(import.meta.env.VITE_ENVIRONMENT_NAME) !==

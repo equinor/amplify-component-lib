@@ -50,14 +50,14 @@ test('Shows fields selector instead of application name when field is send in to
     },
   ];
   const onSelectedField = vi.fn();
-  const currentFiled: Field = availableFields[0];
+  const currentField: Field = availableFields[0];
 
   await renderWithRouter(
     <TopBar
       applicationIcon="car"
       applicationName={appName}
       onSelectField={onSelectedField}
-      currentField={currentFiled}
+      currentField={currentField}
       showAccessITLink={true}
       availableFields={availableFields}
     >
@@ -65,7 +65,7 @@ test('Shows fields selector instead of application name when field is send in to
     </TopBar>
   );
 
-  const button = screen.getByRole('button', { name: currentFiled.name ?? '' });
+  const button = screen.getByRole('button', { name: currentField.name ?? '' });
   expect(button).toBeInTheDocument();
 });
 
@@ -155,12 +155,13 @@ test('Tab navigation should focus actions in expected order', async () => {
   const button3 = 'button3';
 
   await renderWithRouter(
-    <TopBar applicationIcon="car" applicationName={appName}>
-      <TopBar.FieldSelector
-        availableFields={availableFields}
-        currentField={currentField}
-        onSelect={onSelectedField}
-      />
+    <TopBar
+      applicationIcon="car"
+      applicationName={appName}
+      currentField={currentField}
+      availableFields={availableFields}
+      onSelectField={onSelectedField}
+    >
       <TopBar.Actions>
         <Button>{button1}</Button>
         <Button>{button2}</Button>

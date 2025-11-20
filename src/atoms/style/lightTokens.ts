@@ -9,6 +9,7 @@ export const lightTokens = css`
     --amplify_interactive_primary_pressed: rgba(19, 46, 49, 1);
     --amplify_interactive_tutorial_active_step: rgba(0, 112, 121, 1);
     --amplify_interactive_tutorial_inactive_step: rgba(168, 206, 209, 1);
+    --amplify_interactive_inner_hover: rgba(198, 223, 225, 1);
 
     --amplify_dataviz_primary_default: rgba(0, 107, 229, 1);
     --amplify_dataviz_primary_darker: rgba(0, 83, 178, 1);

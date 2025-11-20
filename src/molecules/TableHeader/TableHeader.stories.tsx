@@ -1,14 +1,10 @@
-import { Fragment } from 'react';
-
-import { Typography } from '@equinor/eds-core-react';
 import { filter_list, users_circle } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { TableHeader } from './TableHeader';
-import { colors, shape, spacings } from 'src/atoms';
+import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect, fn, userEvent } from 'storybook/test';
-import styled from 'styled-components';
 
 const meta: Meta<typeof TableHeader> = {
   title: 'Molecules/TableHeader',
@@ -46,6 +42,15 @@ const meta: Meta<typeof TableHeader> = {
         WithDescSorting: { isSorting: 'desc', onSortClick: fn() },
       },
     },
+    variant: {
+      control: 'select',
+      options: ['undefined', 'warning', 'error'],
+      mapping: {
+        undefined: undefined,
+        warning: 'warning',
+        error: 'error',
+      },
+    },
     leadingIcon: {
       control: 'select',
       options: ['undefined', 'UsersCircle'],
@@ -68,62 +73,17 @@ const meta: Meta<typeof TableHeader> = {
 export default meta;
 type Story = StoryObj<typeof TableHeader>;
 
-const VariantsContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  align-items: center;
-  grid-template-rows: repeat(6, 1fr);
-  gap: ${spacings.small};
-`;
-
-const VariantHeaderPath = styled.span`
-  position: relative;
-  width: 10px;
-  height: 100%;
-  border-top-left-radius: ${shape.button.borderRadius};
-  border-bottom-left-radius: ${shape.button.borderRadius};
-  border-left: 2px solid ${colors.text.static_icons__default.rgba};
-  border-top: 2px solid ${colors.text.static_icons__default.rgba};
-  border-bottom: 2px solid ${colors.text.static_icons__default.rgba};
-  &::after {
-    content: '';
-    background: ${colors.text.static_icons__default.rgba};
-    height: 2px;
-    width: 6px;
-    position: absolute;
-    left: -6px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`;
-
 export const Default: Story = {
   args: {
-    children: '富士',
+    children: 'Mt. Fuji (富士)',
     leadingIcon: undefined,
     onClick: undefined,
-    sorting: undefined,
+    sorting: {
+      isSorting: 'asc',
+      onSortClick: fn(),
+    },
   },
 };
-
-const VARIANT_OBJECT = {
-  Default: [{}, { onClick: fn() }],
-  Warning: [
-    {
-      variant: 'warning',
-    },
-    { variant: 'warning', onClick: fn() },
-  ],
-  Error: [
-    {
-      variant: 'error',
-    },
-    {
-      variant: 'error',
-      onClick: fn(),
-    },
-  ],
-} as const;
 
 export const Variants: Story = {
   args: {
@@ -135,20 +95,19 @@ export const Variants: Story = {
     },
   },
   render: (args) => (
-    <VariantsContainer>
-      {(Object.keys(VARIANT_OBJECT) as (keyof typeof VARIANT_OBJECT)[]).map(
-        (key) => (
-          <Fragment key={key}>
-            <Typography variant="ingress">{key}</Typography>
-            <VariantHeaderPath />
-            <TableHeader {...args} {...VARIANT_OBJECT[key][0]} />
-            <Typography variant="ingress">Clickable {key}</Typography>
-            <VariantHeaderPath />
-            <TableHeader {...args} {...VARIANT_OBJECT[key][1]} />
-          </Fragment>
-        )
-      )}
-    </VariantsContainer>
+    <VariantShowcase
+      GenericComponent={TableHeader}
+      otherProps={args}
+      columns={[
+        { label: 'Default', value: { onClick: undefined } },
+        { label: 'Clickable', value: { onClick: fn() } },
+      ]}
+      rows={[
+        { label: 'Default', value: { variant: undefined } },
+        { label: 'Warning', value: { variant: 'warning' } },
+        { label: 'Error', value: { variant: 'error' } },
+      ]}
+    />
   ),
 };
 
@@ -189,6 +148,15 @@ export const WithOnSortDesc: Story = {
   play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByText(args.children));
     await expect(args.sorting?.onSortClick).toHaveBeenCalled();
+  },
+};
+
+export const WithoutSorting: Story = {
+  args: {
+    children: 'Mt. Fuji (富士)',
+    leadingIcon: undefined,
+    onClick: undefined,
+    sorting: undefined,
   },
 };
 

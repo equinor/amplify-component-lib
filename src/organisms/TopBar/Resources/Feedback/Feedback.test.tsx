@@ -2,16 +2,22 @@ import { faker } from '@faker-js/faker';
 
 import { Feedback } from './Feedback';
 import { FeedbackType } from './Feedback.types';
+import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
-  renderWithProviders,
+  Providers,
+  renderWithRouter,
   screen,
   userEvent,
 } from 'src/tests/browsertest-utils';
 
 test('Shows error if url does not contain .equinor', async () => {
   const handleOnClose = vi.fn();
-  renderWithProviders(
-    <Feedback onClose={handleOnClose} selectedType={FeedbackType.BUG} />
+  await renderWithRouter(
+    <TopBar applicationIcon="test" applicationName="Test">
+      <Feedback onClose={handleOnClose} selectedType={FeedbackType.BUG} />
+    </TopBar>,
+    { initialEntries: ['/'], routes: ['/'] },
+    { wrapper: Providers }
   );
   const user = userEvent.setup();
 

@@ -46,7 +46,10 @@ export default defineConfig({
           }),
         ],
         test: {
-          name: 'storybook',
+          name: {
+            label: 'storybook',
+            color: 'magenta'
+          },
           server: {
             deps: {
               inline: [
@@ -76,10 +79,13 @@ export default defineConfig({
       {
         extends: 'vitest.config.ts',
         test: {
-          name: 'browser',
+          name: {
+            label: 'browser',
+            color: 'cyan'
+          },
           browser: {
             enabled: true,
-            provider: "playwright",
+            provider: 'playwright',
             viewport: {
               width: 1280,
               height: 900
@@ -98,7 +104,10 @@ export default defineConfig({
       {
         extends: 'vitest.config.ts',
         test: {
-          name: 'jsdom',
+          name: {
+            label: 'jsdom',
+            color: 'yellow'
+          },
           server: {
             deps: {
               inline: ['@equinor/subsurface-app-management']

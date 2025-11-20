@@ -25,7 +25,7 @@ import { AutoCompleteText } from 'src/organisms/Filter/AutoCompleteText';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
 import { getFilteredAutoCompleteOptions } from 'src/organisms/Filter/Filter.utils';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 
 /**
  * @param values - Array of values to display as chips ({ value: string, label: string, icon?: IconData }[])
