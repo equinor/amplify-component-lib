@@ -140,84 +140,82 @@ export const SearchBar = <T extends SelectOptionRequired>({
   ]);
 
   return (
-    <>
-      <Wrapper $showBackgroundColor={mode === 'persistent'}>
-        <Container
-          data-testid={dataTestId ? dataTestId : 'combobox-container'}
-          ref={anchorRef}
-          onClick={handleOnOpen}
-          aria-expanded={open}
-          $variant={variant}
-          $loading={loading}
-          $lightBackground={lightBackground}
-        >
-          <Section>
-            {!loading && search === '' && selectedValues.length === 0 && (
-              <PlaceholderText>{placeholder}</PlaceholderText>
-            )}
-            {((search === '' && 'value' in props) ||
-              ('values' in props &&
-                selectedValues.length > 0 &&
-                (!props.showSelectedAsText ||
-                  (props.showSelectedAsText && search === '')))) &&
-              !loading &&
-              valueElements}
-            <input
-              id={id}
-              disabled={disabled || loading}
-              ref={searchRef}
-              type="search"
-              role="combobox"
-              value={search}
-              autoComplete="off"
-              onChange={handleOnSearchChange}
-              onKeyDownCapture={handleOnSearchKeyDown}
-            />
-            {loading && (
-              <SkeletonField
-                role="progressbar"
-                style={{
-                  width: skeletonWidth.current,
-                  left: 0,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                }}
-              />
-            )}
-          </Section>
-          {mode === 'menu' && (
-            <Icon
-              onClick={handleToggleOpen}
-              data={open ? arrow_drop_up : arrow_drop_down}
-              color={
-                loading
-                  ? colors.interactive.disabled__fill.rgba
-                  : colors.interactive.primary__resting.rgba
-              }
+    <Wrapper $showBackgroundColor={mode === 'persistent'}>
+      <Container
+        data-testid={dataTestId ? dataTestId : 'combobox-container'}
+        ref={anchorRef}
+        onClick={handleOnOpen}
+        aria-expanded={open}
+        $variant={variant}
+        $loading={loading}
+        $lightBackground={lightBackground}
+      >
+        <Section>
+          {!loading && search === '' && selectedValues.length === 0 && (
+            <PlaceholderText>{placeholder}</PlaceholderText>
+          )}
+          {((search === '' && 'value' in props) ||
+            ('values' in props &&
+              selectedValues.length > 0 &&
+              (!props.showSelectedAsText ||
+                (props.showSelectedAsText && search === '')))) &&
+            !loading &&
+            valueElements}
+          <input
+            id={id}
+            disabled={disabled || loading}
+            ref={searchRef}
+            type="search"
+            role="combobox"
+            value={search}
+            autoComplete="off"
+            onChange={handleOnSearchChange}
+            onKeyDownCapture={handleOnSearchKeyDown}
+          />
+          {loading && (
+            <SkeletonField
+              role="progressbar"
+              style={{
+                width: skeletonWidth.current,
+                left: 0,
+                top: '50%',
+                transform: 'translateY(-50%)',
+              }}
             />
           )}
-          {clearable && selectedValues.length > 0 && !loading && (
-            <ClearButton
-              id="clear"
-              variant="ghost_icon"
-              onClick={handleOnClear}
-              data-testid="clearBtn"
-              $rightPadding={mode === 'menu'}
-            >
-              <Icon data={clear} size={18} />
-            </ClearButton>
-          )}
-        </Container>
-        {shouldShowHelper && (
-          <HelperWrapper
-            $borderBottom={mode === 'persistent'}
-            $variant={disabled ? 'disabled' : variant}
-          >
-            {helperIcon && <Icon data={helperIcon} size={16} />}
-            <Label label={helperText} htmlFor={id} />
-          </HelperWrapper>
+        </Section>
+        {mode === 'menu' && (
+          <Icon
+            onClick={handleToggleOpen}
+            data={open ? arrow_drop_up : arrow_drop_down}
+            color={
+              loading
+                ? colors.interactive.disabled__fill.rgba
+                : colors.interactive.primary__resting.rgba
+            }
+          />
         )}
-      </Wrapper>
-    </>
+        {clearable && selectedValues.length > 0 && !loading && (
+          <ClearButton
+            id="clear"
+            variant="ghost_icon"
+            onClick={handleOnClear}
+            data-testid="clearBtn"
+            $rightPadding={mode === 'menu'}
+          >
+            <Icon data={clear} size={18} />
+          </ClearButton>
+        )}
+      </Container>
+      {shouldShowHelper && (
+        <HelperWrapper
+          $borderBottom={mode === 'persistent'}
+          $variant={disabled ? 'disabled' : variant}
+        >
+          {helperIcon && <Icon data={helperIcon} size={16} />}
+          <Label label={helperText} htmlFor={id} />
+        </HelperWrapper>
+      )}
+    </Wrapper>
   );
 };
