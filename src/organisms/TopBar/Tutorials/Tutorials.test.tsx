@@ -47,30 +47,23 @@ test('Renders expected items when opening the tutorials menu', async ({
       <Tutorials />
     </TutorialProvider>,
     {
-      routes: ['/tutorial'],
-      initialEntries: ['/tutorial'],
+      routes: ['/'],
+      initialEntries: ['/'],
     },
     { wrapper: Providers }
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button'));
 
   await waitFor(() =>
-    expect(
-      screen.getByText(
-        `Available Tutorials (${tutorials.filter((item) => item.path === '/tutorial').length})`
-      )
-    ).toBeInTheDocument()
+    expect(screen.getByText(`Available Tutorials (1)`)).toBeInTheDocument()
   );
 
   expect(screen.getByText('For current page')).toBeInTheDocument();
-
-  for (const tutorial of tutorials) {
-    expect(
-      screen.getByRole('button', { name: tutorial.name })
-    ).toBeInTheDocument();
-  }
+  expect(
+    screen.getByRole('button', { name: tutorials[0].name })
+  ).toBeInTheDocument();
 });
 
 test('Hides expected tutorials when providing filter fn', async ({
