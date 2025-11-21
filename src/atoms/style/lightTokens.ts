@@ -144,18 +144,46 @@ export const lightTokens = css`
     --eds_interactive__disabled__border: rgba(220, 220, 220, 1);
     --eds_interactive__disabled__fill: rgba(234, 234, 234, 1);
     --eds_interactive__link_on_interactive_colors: rgba(255, 255, 255, 1);
-    --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1);
     --eds_interactive__link_in_snackbars: rgba(151, 202, 206, 1);
     --eds_interactive__pressed_overlay_dark: rgba(0, 0, 0, 0.2);
     --eds_interactive__pressed_overlay_light: rgba(255, 255, 255, 0.2);
 
-    /* Override table typography variables */
+    --eds_heading__h1_color: var(--eds_text__static_icons__default);
+    --eds_heading__h2_color: var(--eds_text__static_icons__default);
+    --eds_heading__h3_color: var(--eds_text__static_icons__default);
+    --eds_heading__h4_color: var(--eds_text__static_icons__default);
+    --eds_heading__h5_color: var(--eds_text__static_icons__default);
+    --eds_heading__h6_color: var(--eds_text__static_icons__default);
+
+    --eds_navigation__label_color: var(--eds_text__static_icons__default);
+    --eds_navigation__button_color: var(--eds_text__static_icons__default);
+    --eds_input__label_color: var(--eds_text__static_icons__default);
+    --eds_input__text_color: var(--eds_text__static_icons__default);
+
     --eds_table__cell_header_color: var(--eds_text__static_icons__default);
     --eds_table__cell_text_color: var(--eds_text__static_icons__default);
     --eds_table__cell_text_bold_color: var(--eds_text__static_icons__default);
-    --eds_table__cell_text_link_color: var(--eds_text__static_icons__default);
     --eds_table__cell_numeric_monospaced_color: var(
       --eds_text__static_icons__default
     );
+
+    --eds_navigation__menu_title_color: var(--eds_text__static_icons__default);
+    --eds_navigation__menu_tabs_color: var(--eds_text__static_icons__default);
+    --eds_ui__accordion_header_color: var(--eds_text__static_icons__default);
+
+    --eds_paragraph__overline_color: var(--eds_text__static_icons__default);
+    --eds_paragraph__caption_color: var(--eds_text__static_icons__default);
+    --eds_paragraph__body_short_color: var(--eds_text__static_icons__default);
+    --eds_paragraph__body_long_color: var(--eds_text__static_icons__default);
+    --eds_paragraph__meta_color: var(--eds_text__static_icons__default);
+    --eds_paragraph__body_long_link_color: var(
+      --eds_text__static_icons__default
+    );
+
+    --eds_interactive__icon_on_interactive_colors: var(
+      --eds_text__static_icons__default
+    );
+
+    --eds_ui__chip__badge_color: var(--eds_text__static_icons__default);
   }
 `;
