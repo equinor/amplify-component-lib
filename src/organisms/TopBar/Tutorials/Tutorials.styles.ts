@@ -7,10 +7,8 @@ export const Container = styled.div`
   flex-direction: column;
   padding: ${spacings.large};
   width: 520px;
-  > h4 {
-    margin-bottom: ${spacings.x_large};
-  }
-  > hr {
+  height: 100%;
+  > h4:not(:last-child) {
     margin-bottom: ${spacings.x_large};
   }
 `;

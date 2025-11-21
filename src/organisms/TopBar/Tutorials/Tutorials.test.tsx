@@ -58,13 +58,13 @@ test('Renders expected items when opening the tutorials menu', async ({
 
   await waitFor(() =>
     expect(
-      screen.getByText(`Available Tutorials (${tutorials.length})`)
+      screen.getByText(
+        `Available Tutorials (${tutorials.filter((item) => item.path === '/tutorial').length})`
+      )
     ).toBeInTheDocument()
   );
 
   expect(screen.getByText('For current page')).toBeInTheDocument();
-  expect(screen.getByText('For other pages')).toBeInTheDocument();
-  expect(screen.getByRole('separator')).toBeInTheDocument();
 
   for (const tutorial of tutorials) {
     expect(
