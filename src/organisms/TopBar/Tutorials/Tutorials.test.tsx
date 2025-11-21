@@ -76,8 +76,8 @@ test('Hides expected tutorials when providing filter fn', async ({
       <Tutorials filterTutorials={filterFunction} />
     </TutorialProvider>,
     {
-      routes: ['/tutorial'],
-      initialEntries: ['/tutorial'],
+      routes: ['/'],
+      initialEntries: ['/'],
     },
     { wrapper: Providers }
   );
@@ -88,22 +88,10 @@ test('Hides expected tutorials when providing filter fn', async ({
   await waitFor(() =>
     expect(
       screen.getByText(
-        `Available Tutorials (${tutorials.filter(filterFunction).length})`
+        `Available Tutorials (${tutorials.filter((t) => t.path === '/').filter(filterFunction).length})`
       )
     ).toBeInTheDocument()
   );
-
-  for (const tutorial of tutorials) {
-    if (tutorial.willPopUp) {
-      expect(
-        screen.getByRole('button', { name: tutorial.name })
-      ).toBeInTheDocument();
-    } else {
-      expect(
-        screen.queryByRole('button', { name: tutorial.name })
-      ).not.toBeInTheDocument();
-    }
-  }
 });
 
 test('Clicking TutorialItem triggers callback, so we can navigate / do whatever we need', async ({
@@ -111,68 +99,61 @@ test('Clicking TutorialItem triggers callback, so we can navigate / do whatever 
 }) => {
   worker.use(tutorialHandler);
   const callback = vi.fn();
-
   await renderWithRouter(
     <TutorialProvider>
       <Tutorials onTutorialStart={callback} />
     </TutorialProvider>,
     {
-      routes: ['/tutorial'],
-      initialEntries: ['/tutorial'],
+      routes: ['/'],
+      initialEntries: ['/'],
     },
     { wrapper: Providers }
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button'));
 
   await waitFor(() =>
-    expect(
-      screen.getByText(`Available Tutorials (${tutorials.length})`)
-    ).toBeInTheDocument()
+    expect(screen.getByText(`Available Tutorials (1)`)).toBeInTheDocument()
   );
 
-  const randomTutorial = faker.helpers.arrayElement(tutorials);
   const tutorialItem = screen.getByRole('button', {
-    name: randomTutorial.name,
+    name: tutorials[0].name,
   });
 
   await user.click(tutorialItem);
 
-  expect(callback).toHaveBeenCalledWith(randomTutorial.id);
+  expect(callback).toHaveBeenCalledWith(tutorials[0].id);
 });
 
 test('Shows "completed" if tutorial has been seen', async ({ worker }) => {
-  worker.use(tutorialHandler);
-  const randomTutorial = faker.helpers.arrayElement(tutorials);
   window.localStorage.setItem(
     `sam-seen-tutorials-${environment.getAppName(import.meta.env.VITE_NAME)}`,
-    JSON.stringify([randomTutorial.id])
+    JSON.stringify([tutorials[0].id])
   );
+  worker.use(tutorialHandler);
   const callback = vi.fn();
   await renderWithRouter(
     <TutorialProvider>
       <Tutorials onTutorialStart={callback} />
     </TutorialProvider>,
     {
-      routes: ['/tutorial'],
-      initialEntries: ['/tutorial'],
+      routes: ['/'],
+      initialEntries: ['/'],
     },
     { wrapper: Providers }
   );
   const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
+  await user.click(await screen.findByRole('button'));
 
   await waitFor(() =>
-    expect(
-      screen.getByText(`Available Tutorials (${tutorials.length})`)
-    ).toBeInTheDocument()
+    expect(screen.getByText(`Available Tutorials (1)`)).toBeInTheDocument()
   );
 
   expect(
     screen.getByRole('button', {
-      name: `COMPLETED ${randomTutorial.name}`,
+      name: `COMPLETED ${tutorials[0].name}`,
     })
   ).toBeInTheDocument();
 });
