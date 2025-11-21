@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes, useRef, useState } from 'react';
 
-import { Divider, Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { youtube_alt } from '@equinor/eds-icons';
 import {
   MyTutorialDto,
@@ -27,21 +27,13 @@ export const Tutorials: FC<TutorialsProps> = ({
   onTutorialStart,
   ...rest
 }) => {
-  const { allTutorials, tutorialsOnThisPage } = useTutorials();
+  const { tutorialsOnThisPage } = useTutorials();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const filteredAllTutorials = filterTutorials
-    ? allTutorials.filter(filterTutorials)
-    : allTutorials;
   const filteredTutorialsOnThisPage = filterTutorials
     ? tutorialsOnThisPage.filter(filterTutorials)
     : tutorialsOnThisPage;
-
-  const tutorialsOnOtherPages = filteredAllTutorials.filter(
-    (tutorial) =>
-      filteredTutorialsOnThisPage.findIndex((t) => t.id === tutorial.id) === -1
-  );
 
   const handleToggleOpen = () => setOpen((prev) => !prev);
 
@@ -63,27 +55,12 @@ export const Tutorials: FC<TutorialsProps> = ({
         >
           <Container>
             <Typography variant="h4">
-              Available Tutorials ({filteredAllTutorials.length})
+              Available Tutorials ({filteredTutorialsOnThisPage.length})
             </Typography>
             {filteredTutorialsOnThisPage.length > 0 && (
               <TutorialList>
                 <Typography variant="caption">For current page</Typography>
                 {filteredTutorialsOnThisPage.map((tutorial) => (
-                  <TutorialItem
-                    key={tutorial.id}
-                    onTutorialStart={onTutorialStart}
-                    onClose={handleToggleOpen}
-                    {...tutorial}
-                  />
-                ))}
-              </TutorialList>
-            )}
-            {filteredTutorialsOnThisPage.length > 0 &&
-              filteredTutorialsOnThisPage.length > 0 && <Divider />}
-            {tutorialsOnOtherPages.length > 0 && (
-              <TutorialList>
-                <Typography variant="caption">For other pages</Typography>
-                {tutorialsOnOtherPages.map((tutorial) => (
                   <TutorialItem
                     key={tutorial.id}
                     onTutorialStart={onTutorialStart}
