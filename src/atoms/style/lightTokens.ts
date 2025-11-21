@@ -144,7 +144,6 @@ export const lightTokens = css`
     --eds_interactive__disabled__border: rgba(220, 220, 220, 1);
     --eds_interactive__disabled__fill: rgba(234, 234, 234, 1);
     --eds_interactive__link_on_interactive_colors: rgba(255, 255, 255, 1);
-    --eds_interactive__icon_on_interactive_colors: rgba(255, 255, 255, 1);
     --eds_interactive__link_in_snackbars: rgba(151, 202, 206, 1);
     --eds_interactive__pressed_overlay_dark: rgba(0, 0, 0, 0.2);
     --eds_interactive__pressed_overlay_light: rgba(255, 255, 255, 0.2);
@@ -186,14 +185,5 @@ export const lightTokens = css`
     );
 
     --eds_ui__chip__badge_color: var(--eds_text__static_icons__default);
-
-    /* Override table typography variables */
-    --eds_table__cell_header_color: var(--eds_text__static_icons__default);
-    --eds_table__cell_text_color: var(--eds_text__static_icons__default);
-    --eds_table__cell_text_bold_color: var(--eds_text__static_icons__default);
-    --eds_table__cell_text_link_color: var(--eds_text__static_icons__default);
-    --eds_table__cell_numeric_monospaced_color: var(
-      --eds_text__static_icons__default
-    );
   }
 `;
