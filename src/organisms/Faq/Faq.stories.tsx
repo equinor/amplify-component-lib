@@ -154,13 +154,13 @@ export const SearchFaqs: Story = {
     });
 
     await step('Verify non-matching categories are hidden', async () => {
-      expect(
+      await expect(
         canvas.queryByRole('heading', { name: 'Working with Data' })
       ).not.toBeInTheDocument();
-      expect(
+      await expect(
         canvas.queryByRole('heading', { name: 'Troubleshooting' })
       ).not.toBeInTheDocument();
-      expect(
+      await expect(
         canvas.queryByRole('heading', { name: 'Security & Access' })
       ).not.toBeInTheDocument();
     });
@@ -304,7 +304,26 @@ export const OpenQuestion: Story = {
         /Navigate to .+ and use your company credentials/,
         { exact: false }
       );
-      expect(answerText).toBeVisible();
+      await expect(answerText).toBeVisible();
+    });
+  },
+};
+
+export const InitiallyOpenQuestion: Story = {
+  tags: ['test-only'],
+  parameters: {
+    router: {
+      initialEntries: ['/faq#faq-1'],
+      routes: ['/faq'],
+    },
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify that the answer is visible on load', async () => {
+      const answerText = await canvas.findByText(
+        /Navigate to .+ and use your company credentials/,
+        { exact: false }
+      );
+      await expect(answerText).toBeVisible();
     });
   },
 };

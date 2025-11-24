@@ -1,8 +1,9 @@
-import { type FC, useState } from 'react';
+import { type FC, useRef, useState } from 'react';
 
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { type FaqDto, FaqService } from '@equinor/subsurface-app-management';
+import { useLocation } from '@tanstack/react-router';
 
 import {
   Container,
@@ -24,10 +25,15 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
     onImageRead: (path) => FaqService.getFaqImage(path),
     /* v8 ignore end */
   });
-  const [expanded, setExpanded] = useState(false);
+  const { hash } = useLocation();
+  const initialExpanded = useRef(hash === `faq-${id}`);
+  const [expanded, setExpanded] = useState(initialExpanded.current);
 
   const handleOnToggleExpanded = () => {
     setExpanded((prev) => !prev);
+    if (initialExpanded.current) {
+      initialExpanded.current = false;
+    }
   };
 
   return (
@@ -56,7 +62,7 @@ export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
         <AnimatePresence>
           {expanded && (
             <ExpandWrapper
-              initial={{ height: 0 }}
+              initial={{ height: initialExpanded.current ? 'auto' : 0 }}
               exit={{ height: 0 }}
               animate={{ height: 'auto' }}
             >
