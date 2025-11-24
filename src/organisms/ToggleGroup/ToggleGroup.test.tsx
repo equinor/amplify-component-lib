@@ -68,8 +68,6 @@ test('Works with icons only', async () => {
           key={option}
           onToggle={handlers[index]}
           icon={car}
-          tooltip="Car icon"
-          tooltipPlacement="top"
           checked={false}
         />
       ))}
@@ -81,6 +79,34 @@ test('Works with icons only', async () => {
   for (const icon of icons) {
     expect(icon).toHaveAttribute('d', car.svgPathData);
   }
+});
+
+test('Works with icons and tooltip', async () => {
+  const options = new Array(faker.number.int({ min: 2, max: 3 }))
+    .fill(null)
+    .map(() => faker.vehicle.vehicle());
+  const handlers = options.map(() => vi.fn());
+  render(
+    <ToggleGroup>
+      {options.map((option, index) => (
+        <ToggleGroup.Option
+          key={option}
+          onToggle={handlers[index]}
+          icon={car}
+          tooltip="Car icon"
+          tooltipPlacement="top"
+          checked={false}
+        />
+      ))}
+    </ToggleGroup>
+  );
+  const user = userEvent.setup();
+
+  const icon = screen.getAllByTestId('eds-icon-path')[0];
+
+  await user.hover(icon);
+
+  expect(await screen.findByRole('tooltip')).toHaveTextContent('Car icon');
 });
 
 test('Match parent height works as expected', async () => {
