@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 
+import { TooltipProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
 import { ToggleGroupOption } from './ToggleGroupOption';
@@ -13,11 +14,21 @@ interface ToggleGroupOptionOnlyIcon {
   icon: IconData;
 }
 
+interface ToggleGroupOptionOnlyIconWithTooltip {
+  icon: IconData;
+  tooltip: string;
+  tooltipPlacement?: TooltipProps['placement'];
+}
+
 export type ToggleGroupOption = {
   onToggle: (newValue: boolean) => void;
   checked: boolean;
   disabled?: boolean;
-} & (ToggleGroupOptionWithLabel | ToggleGroupOptionOnlyIcon);
+} & (
+  | ToggleGroupOptionWithLabel
+  | ToggleGroupOptionOnlyIcon
+  | ToggleGroupOptionOnlyIconWithTooltip
+);
 
 /**
  * @param variant - Defaults to 'filled'

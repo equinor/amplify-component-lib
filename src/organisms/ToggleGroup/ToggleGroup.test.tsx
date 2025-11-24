@@ -68,6 +68,8 @@ test('Works with icons only', async () => {
           key={option}
           onToggle={handlers[index]}
           icon={car}
+          tooltip="Car icon"
+          tooltipPlacement="top"
           checked={false}
         />
       ))}
