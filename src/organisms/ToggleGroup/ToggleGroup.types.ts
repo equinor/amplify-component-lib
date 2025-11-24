@@ -12,6 +12,7 @@ interface ToggleGroupOptionWithLabel {
 
 interface ToggleGroupOptionOnlyIcon {
   icon: IconData;
+  tooltip?: undefined;
 }
 
 interface ToggleGroupOptionOnlyIconWithTooltip {
