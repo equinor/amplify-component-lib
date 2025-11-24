@@ -24,7 +24,6 @@ function StoryComponent(args: ToastProps | string) {
         <Button onClick={() => showToast(args)}>Show toast</Button>
         <Button onClick={hideAllToasts}>Hide all</Button>
       </div>
-      {}
       {/* prettier-ignore */}
       <pre>
         <code style={{ width: '35rem',   }}>
