@@ -133,7 +133,13 @@ export const ReleaseNote = forwardRef<HTMLDivElement, ReleaseNoteProps>(
               ? 'auto'
               : RELEASE_NOTE_RICH_TEXT_COLLAPSED_HEIGHT,
           }}
-          style={{ overflow: isExpanded ? 'auto' : undefined }}
+          style={{
+            overflow: isExpanded ? 'auto' : undefined,
+            marginBottom:
+              isExpanded && needsShowMore
+                ? `calc(${spacings.medium} + ${shape.button.minHeight})`
+                : undefined,
+          }}
         >
           <RichTextDisplay
             value={body}
