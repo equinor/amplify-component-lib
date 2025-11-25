@@ -298,3 +298,81 @@ export const LongDialogWithContentMaxHeight: Story = {
     ],
   },
 };
+
+// Test-only stories
+export const TestBasicDialog: Story = {
+  tags: ['test-only'],
+  args: {
+    title: 'Test Dialog',
+    children: 'Dialog description text',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
+    await expect(canvas.getByText('Test Dialog')).toBeInTheDocument();
+    await expect(
+      canvas.getByText('Dialog description text')
+    ).toBeInTheDocument();
+    await expect(canvas.getByTestId('dialog-close-button')).toBeInTheDocument();
+  },
+};
+
+export const TestCustomTitle: Story = {
+  tags: ['test-only'],
+  args: {
+    title: <div data-testid="custom-title">Custom Title</div>,
+    children: 'Content',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
+    await expect(canvas.getByText('Custom Title')).toBeInTheDocument();
+    await expect(canvas.getByTestId('custom-title')).toBeInTheDocument();
+  },
+};
+
+export const TestCustomWidth: Story = {
+  tags: ['test-only'],
+  args: {
+    title: 'Fixed Width',
+    children: 'Content',
+    width: 600,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
+    await expect(canvas.getByText('Fixed Width')).toBeInTheDocument();
+  },
+};
+
+export const TestCloseButton: Story = {
+  tags: ['test-only'],
+  args: {
+    title: 'Closeable',
+    children: 'Content',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
+    await expect(canvas.getByText('Closeable')).toBeInTheDocument();
+    await userEvent.click(canvas.getByTestId('dialog-close-button'));
+    // Dialog should close
+  },
+};
+
+export const TestAdditionalInfo: Story = {
+  tags: ['test-only'],
+  args: {
+    title: 'With Info',
+    children: 'Content',
+    additionalInfo: 'Additional information banner',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
+    await userEvent.click(canvas.getByTestId('dialog-info-button'));
+    await expect(
+      canvas.getByText('Additional information banner')
+    ).toBeInTheDocument();
+  },
+};

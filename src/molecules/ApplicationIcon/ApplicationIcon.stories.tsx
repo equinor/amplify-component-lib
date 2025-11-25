@@ -1,11 +1,7 @@
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
-import {
-  acquire,
-  bravos,
-  fallback,
-} from './ApplicationIconCollection';
+import { acquire, bravos, fallback } from './ApplicationIconCollection';
 
 import { expect, within } from 'storybook/test';
 

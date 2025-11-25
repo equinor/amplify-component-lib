@@ -7,6 +7,7 @@ import {
   FullPageSpinnerProps,
 } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 
+import { expect, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -68,5 +69,85 @@ export const Circle: Story = {
 export const Equinor: Story = {
   args: {
     variant: 'equinor',
+  },
+};
+
+// Test-only stories
+export const TestWithScrim: Story = {
+  tags: ['test-only'],
+  args: {
+    withScrim: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Just verify the spinner is rendered (can't test Scrim styling in browser)
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+  },
+};
+
+export const TestEquinorVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    withScrim: true,
+    variant: 'equinor',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByTestId('full-page-spinner-equinor')
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestCircleVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    variant: 'circle',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByTestId('full-page-spinner-circle')
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestDotsVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    variant: 'dots',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByTestId('full-page-spinner-dots')
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestChildrenHidden: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Hidden text content',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const text = canvas.getByText('Hidden text content');
+    await expect(text).not.toBeVisible();
+  },
+};
+
+export const TestChildrenHiddenWithScrim: Story = {
+  tags: ['test-only'],
+  args: {
+    withScrim: true,
+    children: 'Hidden with scrim',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Verify spinner renders and children are hidden
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    const text = canvas.getByText('Hidden with scrim');
+    await expect(text).not.toBeVisible();
   },
 };

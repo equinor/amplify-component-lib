@@ -79,7 +79,7 @@ export const TestRendersGradientColors: Story = {
   play: async ({ canvasElement }) => {
     const svgElement = canvasElement.querySelector('svg');
     await expect(svgElement).toBeInTheDocument();
-    
+
     // Verify SVG renders with gradient colors prop
     // The actual gradient implementation details are tested at component level
   },
@@ -91,7 +91,7 @@ export const TestRendersWithDefaultViewBox: Story = {
   play: async ({ canvasElement }) => {
     const svg = canvasElement.querySelector('svg');
     await expect(svg).toBeInTheDocument();
-    
+
     // Verify the SVG has a viewBox attribute
     const viewBox = svg?.getAttribute('viewBox');
     await expect(viewBox).toBeTruthy();

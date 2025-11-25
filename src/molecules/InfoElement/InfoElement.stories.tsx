@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { InfoElement } from 'src/molecules/InfoElement/InfoElement';
+import { expect, userEvent, within } from 'storybook/test';
 
 const meta: Meta<typeof InfoElement> = {
   title: 'Molecules/InfoElement',

@@ -184,7 +184,10 @@ export const TestRegularLoadingState: Story = {
 
     await expect(loadingText).toBeInTheDocument();
     await expect(progressBar).toBeInTheDocument();
-    await expect(cancelIcons[1]).toHaveAttribute('d', close_circle_outlined.svgPathData);
+    await expect(cancelIcons[1]).toHaveAttribute(
+      'd',
+      close_circle_outlined.svgPathData
+    );
   },
 };
 
@@ -204,7 +207,10 @@ export const TestCustomLoadingTextAndCancel: Story = {
     await expect(loadingText).toBeInTheDocument();
 
     const cancelButton = canvas.getAllByTestId('eds-icon-path')[1];
-    await expect(cancelButton).toHaveAttribute('d', close_circle_outlined.svgPathData);
+    await expect(cancelButton).toHaveAttribute(
+      'd',
+      close_circle_outlined.svgPathData
+    );
 
     await userEvent.click(cancelButton);
     await expect(args.onCancel).toHaveBeenCalledTimes(1);
@@ -285,7 +291,9 @@ export const TestDeleteShowsProgressBar: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
-    onDelete: fn(() => new Promise<void>((resolve) => setTimeout(() => resolve(), 100))),
+    onDelete: fn(
+      () => new Promise<void>((resolve) => setTimeout(() => resolve(), 100))
+    ),
     isDone: true,
   },
   play: async ({ canvasElement, args }) => {
@@ -328,7 +336,7 @@ export const TestCompactLoadingIndeterminate: Story = {
 
     const deleteIcon = canvas.getByTestId('eds-icon-path');
     await expect(deleteIcon).toHaveAttribute('d', clear.svgPathData);
-    
+
     // Note: The delete functionality is covered in other tests
     // This test verifies the UI elements are present
   },
