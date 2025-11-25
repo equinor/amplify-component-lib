@@ -1,9 +1,10 @@
-import { boat, car } from '@equinor/eds-icons';
+import { boat, car, timer } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { colors } from 'src/atoms/style';
 import { ListItem } from 'src/molecules/ListItem/ListItem';
 
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const CustomComponent = styled.div`
@@ -84,5 +85,85 @@ export const CustomReactElement: Story = {
     leadingContent: <CustomComponent>2</CustomComponent>,
     trailingContent: <CustomComponent>5</CustomComponent>,
     label: 'Golf',
+  },
+};
+
+// Test-only stories
+export const TestLabelRenders: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+    onClick: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Test Label')).toBeInTheDocument();
+  },
+};
+
+export const TestIconsRender: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    leadingContent: car,
+    trailingContent: timer,
+    onClick: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+    await expect(allIcons[0]).toHaveAttribute('d', car.svgPathData);
+    await expect(allIcons[1]).toHaveAttribute('d', timer.svgPathData);
+  },
+};
+
+export const TestCustomContentRenders: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    leadingContent: <div>leading</div>,
+    trailingContent: <div>trailing</div>,
+    onClick: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('leading')).toBeInTheDocument();
+    await expect(canvas.getByText('trailing')).toBeInTheDocument();
+  },
+};
+
+export const TestClickingCallsOnClick: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Click me',
+    onClick: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const user = userEvent.setup();
+
+    const container = canvas.getByText('Click me').parentElement!.parentElement!;
+    await user.click(container);
+
+    await expect(args.onClick).toHaveBeenCalledOnce();
+  },
+};
+
+export const TestOnFocusOnBlur: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Focus test',
+    onClick: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const user = userEvent.setup();
+
+    await user.tab();
+    await expect(args.onFocus).toHaveBeenCalledOnce();
+
+    await user.tab();
+    await expect(args.onBlur).toHaveBeenCalledOnce();
   },
 };
