@@ -279,3 +279,73 @@ export const CustomReactElement: Story = {
     as: 'div',
   },
 };
+
+// Test-only stories
+type TestStory = StoryObj<typeof IconCell>;
+
+export const TestLabelRenders: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+    icon: cake,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const cell = canvas.getByRole('button');
+    await expect(cell).toBeInTheDocument();
+  },
+};
+
+export const TestIconsRender: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    icon: cake,
+    helperIcon: check,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+    await expect(allIcons[0]).toHaveAttribute('d', cake.svgPathData);
+    await expect(allIcons[1]).toHaveAttribute('d', check.svgPathData);
+  },
+};
+
+export const TestCustomContent: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    helperIcon: <div>helper</div>,
+    icon: <div>icon</div>,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('helper')).toBeInTheDocument();
+    await expect(canvas.getByText('icon')).toBeInTheDocument();
+  },
+};
+
+export const TestClickingCallsOnClick: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Click me',
+    icon: cake,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const user = userEvent.setup();
+
+    const cell = canvas.getByRole('button');
+    await user.click(cell);
+
+    await expect(args.onClick).toHaveBeenCalledOnce();
+  },
+};
