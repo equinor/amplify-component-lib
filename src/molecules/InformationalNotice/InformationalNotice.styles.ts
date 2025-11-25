@@ -1,5 +1,5 @@
 import { InformationalNoticeProps } from './InformationalNotice';
-import { colors, spacings } from 'src/atoms/style';
+import { colors, shape, spacings } from 'src/atoms/style';
 
 import styled, { css } from 'styled-components';
 
@@ -28,6 +28,7 @@ interface ContainerProps {
 export const Container = styled.div<ContainerProps>`
   display: grid;
   grid-template-columns: auto 1fr;
+  border-radius: ${shape.corners.borderRadius};
   background: ${({ $color }) =>
     $color === 'white'
       ? colors.ui.background__default.rgba
