@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
@@ -10,7 +10,7 @@ import { colors } from 'src/atoms/style';
 export interface InformationalNoticeProps {
   color?: 'grey' | 'white';
   spacing?: 'compact' | 'comfortable';
-  children: string;
+  children: string | ReactNode | ReactNode[];
 }
 
 export const InformationalNotice: FC<InformationalNoticeProps> = ({
@@ -24,6 +24,10 @@ export const InformationalNotice: FC<InformationalNoticeProps> = ({
       color={colors.text.static_icons__default.rgba}
       size={getIconSize(spacing)}
     />
-    <Typography variant="body_long">{children}</Typography>
+    {typeof children === 'string' ? (
+      <Typography variant="body_long">{children}</Typography>
+    ) : (
+      children
+    )}
   </Container>
 );

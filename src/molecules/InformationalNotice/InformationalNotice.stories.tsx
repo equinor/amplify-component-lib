@@ -1,7 +1,10 @@
+import { Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { InformationalNotice } from './InformationalNotice';
+import { spacings } from 'src/atoms/style';
+import { Chip } from 'src/molecules/Chip/Chip';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect } from 'storybook/test';
@@ -37,7 +40,7 @@ export const Default: Story = {
       'd',
       info_circle.svgPathData as string
     );
-    await expect(canvas.getByText(args.children)).toBeInTheDocument();
+    await expect(canvas.getByText(args.children as string)).toBeInTheDocument();
   },
 };
 
@@ -56,4 +59,33 @@ export const Variants: Story = {
       ]}
     />
   ),
+};
+
+export const ElementsAsChildren: Story = {
+  args: {
+    children: (
+      <>
+        <Typography variant="body_long">
+          <b>Section mismatch.</b> The current sections differ from Wellcom.
+          Please review before proceeding.
+        </Typography>
+        <div style={{ display: 'flex', gap: spacings.small }}>
+          <Typography variant="body_long">
+            <b>Sections missing:</b>
+          </Typography>
+          <Chip>18&#34;</Chip>
+          <Chip>8&#34;</Chip>
+        </div>
+      </>
+    ),
+  },
+  decorators: (StoryFn) => (
+    <div style={{ width: '400px' }}>
+      <StoryFn />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('18"')).toBeInTheDocument();
+    await expect(canvas.getByText('8"')).toBeInTheDocument();
+  },
 };
