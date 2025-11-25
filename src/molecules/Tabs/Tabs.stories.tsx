@@ -314,3 +314,75 @@ export const OnHover: Story = {
     }
   },
 };
+
+export const TestClickTabs: Story = {
+  tags: ['test-only'],
+  play: async ({ canvas, args }) => {
+    const user = userEvent.setup();
+
+    for (const option of args.options) {
+      await expect(canvas.getByRole('tab', { name: option.label })).toBeInTheDocument();
+    }
+
+    // Click a tab - the StoryComponent handles the internal state change
+    await user.click(canvas.getByRole('tab', { name: args.options[1].label }));
+    
+    // Verify the tab is now selected
+    await expect(canvas.getByRole('tab', { name: args.options[1].label, selected: true })).toBeInTheDocument();
+  },
+};
+
+export const TestClickTabsNotCenteredOrAnimated: Story = {
+  tags: ['test-only'],
+  args: {
+    centered: false,
+    animated: false,
+  },
+  play: async ({ canvas, args }) => {
+    const user = userEvent.setup();
+
+    for (const option of args.options) {
+      await expect(canvas.getByRole('tab', { name: option.label })).toBeInTheDocument();
+    }
+
+    // Click a tab - verify it's clickable
+    await user.click(canvas.getByRole('tab', { name: args.options[2].label }));
+    await expect(canvas.getByRole('tab', { name: args.options[2].label, selected: true })).toBeInTheDocument();
+  },
+};
+
+export const TestIconShown: Story = {
+  tags: ['test-only'],
+  args: {
+    options: [
+      {
+        value: 1,
+        label: 'Car',
+        leadingIcon: car,
+      },
+      ...OPTIONS.slice(1),
+    ],
+  },
+  play: async ({ canvas, args }) => {
+    const firstTab = canvas.getByRole('tab', { name: args.options[0].label });
+    const icon = firstTab.querySelector('[data-testid="eds-icon-path"]');
+    await expect(icon).toHaveAttribute('d', car.svgPathData);
+  },
+};
+
+export const TestCountShown: Story = {
+  tags: ['test-only'],
+  args: {
+    options: OPTIONS.map((option, index) => ({
+      ...option,
+      count: index,
+    })),
+  },
+  play: async ({ canvas, args }) => {
+    for (const option of args.options) {
+      await expect(
+        canvas.getByRole('tab', { name: `${option.label} ${option.count}` })
+      ).toBeInTheDocument();
+    }
+  },
+};
