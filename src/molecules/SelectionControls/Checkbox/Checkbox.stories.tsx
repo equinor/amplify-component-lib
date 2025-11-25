@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, within } from 'storybook/test';
 
 import { Checkbox } from 'src/molecules/SelectionControls/Checkbox/Checkbox';
 
@@ -71,5 +72,17 @@ export const ErrorOutlined: Story = {
 export const NoLabel: Story = {
   args: {
     label: '',
+  },
+};
+
+// Test-only stories
+export const TestRendersLabel: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Test Label')).toBeInTheDocument();
   },
 };

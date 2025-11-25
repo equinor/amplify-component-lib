@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Switch } from './Switch';
 
+import { expect, within } from 'storybook/test';
+
 const meta: Meta<typeof Switch> = {
   title: 'Molecules/Selection Controls/Switch',
   component: Switch,
@@ -46,5 +48,17 @@ export const DisabledOutlined: Story = {
     label: 'Toyota',
     disabled: true,
     outlined: true,
+  },
+};
+
+// Test-only stories
+export const TestRendersLabel: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Test Label')).toBeInTheDocument();
   },
 };
