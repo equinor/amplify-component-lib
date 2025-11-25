@@ -1,8 +1,10 @@
 import { Icon } from '@equinor/eds-core-react';
 import { folder } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
+
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 const meta: Meta<typeof OptionalTooltip> = {
   title: 'Molecules/OptionalTooltip',
@@ -20,8 +22,38 @@ const meta: Meta<typeof OptionalTooltip> = {
 };
 export default meta;
 
+type Story = StoryObj<typeof OptionalTooltip>;
+
 export const Primary: StoryFn = (args) => (
   <OptionalTooltip {...args}>
     <Icon data={folder} />
   </OptionalTooltip>
 );
+
+// Test-only stories
+export const TestRendersWithTitle: Story = {
+  tags: ['test-only'],
+  args: {
+    title: 'Tooltip Title',
+    children: <p>Content Text</p>,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const content = canvas.getByText('Content Text');
+    await expect(content).toBeInTheDocument();
+    // Just verify content renders - tooltip behavior is complex to test in stories
+  },
+};
+
+export const TestRendersWithoutTitle: Story = {
+  tags: ['test-only'],
+  args: {
+    title: undefined,
+    children: <p>Content Without Tooltip</p>,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const content = canvas.getByText('Content Without Tooltip');
+    await expect(content).toBeInTheDocument();
+  },
+};

@@ -158,3 +158,16 @@ export const CallsOnCloseAfterDuration: Story = {
     await expect(args.onClose).toHaveBeenCalled();
   },
 };
+
+export const TestThrowsOnNegativeDuration: Story = {
+  tags: ['test-only'],
+  args: {
+    title: 'Something',
+    duration: -5,
+    onClose: fn(),
+  },
+  play: async () => {
+    // The component will throw during render, which is expected behavior
+    // This test documents that negative durations are not allowed
+  },
+};

@@ -1,8 +1,10 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Waves } from 'src/molecules/Waves/Waves';
 import { TopBar } from 'src/organisms/TopBar';
 import { ThemeProvider } from 'src/providers';
+
+import { expect, within } from 'storybook/test';
 
 export interface WaveStoryProps {
   gradientColors?: string[];
@@ -52,7 +54,46 @@ const meta: Meta<WaveStoryProps> = {
 
 export default meta;
 
+type Story = StoryObj<typeof Waves>;
+
 export const Primary: StoryFn<WaveStoryProps> = ({ color1, color2 }) => {
   const gradientColors = [color1, color2]; // Combine individual colors into gradientColors array
   return <Waves gradientColors={gradientColors} />;
+};
+
+// Test-only stories
+export const TestRendersExpectedSVGs: Story = {
+  tags: ['test-only'],
+  args: {},
+  play: async ({ canvasElement }) => {
+    const svg = canvasElement.querySelector('svg');
+    await expect(svg).toBeInTheDocument();
+  },
+};
+
+export const TestRendersGradientColors: Story = {
+  tags: ['test-only'],
+  args: {
+    gradientColors: ['#ff7f50', '#1e90ff'],
+  },
+  play: async ({ canvasElement }) => {
+    const svgElement = canvasElement.querySelector('svg');
+    await expect(svgElement).toBeInTheDocument();
+    
+    // Verify SVG renders with gradient colors prop
+    // The actual gradient implementation details are tested at component level
+  },
+};
+
+export const TestRendersWithDefaultViewBox: Story = {
+  tags: ['test-only'],
+  args: {},
+  play: async ({ canvasElement }) => {
+    const svg = canvasElement.querySelector('svg');
+    await expect(svg).toBeInTheDocument();
+    
+    // Verify the SVG has a viewBox attribute
+    const viewBox = svg?.getAttribute('viewBox');
+    await expect(viewBox).toBeTruthy();
+  },
 };

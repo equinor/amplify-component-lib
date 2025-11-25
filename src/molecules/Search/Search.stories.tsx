@@ -6,12 +6,13 @@ import {
   EdsProvider,
   SearchProps,
 } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Search } from 'src/molecules/Search/Search';
 import page from 'src/molecules/Search/Search.docs.mdx';
 
 import { action } from 'storybook/actions';
+import { expect, within } from 'storybook/test';
 
 const meta: Meta<typeof Search> = {
   title: 'Molecules/Search',
@@ -106,4 +107,18 @@ export const Compact: StoryFn<SearchProps> = () => {
       />
     </EdsProvider>
   );
+};
+
+// Test-only stories
+type Story = StoryObj<typeof Search>;
+
+export const TestShowsSearchField: Story = {
+  tags: ['test-only'],
+  args: {
+    placeholder: 'Search placeholder',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('search')).toBeInTheDocument();
+  },
 };
