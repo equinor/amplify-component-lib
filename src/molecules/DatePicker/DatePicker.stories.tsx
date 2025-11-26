@@ -7,7 +7,6 @@ import { CalendarDate } from '@internationalized/date';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { DatePicker, DatePickerProps } from './DatePicker';
-import { VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Stack } from 'src/storybook';
 
 import { action } from 'storybook/actions';
