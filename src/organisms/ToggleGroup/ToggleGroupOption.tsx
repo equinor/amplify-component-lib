@@ -74,6 +74,16 @@ export const ToggleGroupOption = forwardRef<
   HTMLButtonElement,
   ToggleGroupOptionProps
 >(({ checked, onToggle, icon, disabled, ...rest }, ref) => {
+  const buttonProps =
+    'tooltip' in rest
+      ? {
+          ...rest,
+          tooltip: undefined,
+          toolTipPlacement: undefined,
+        }
+      : {
+          ...rest,
+        };
   const handleOnClick = () => {
     onToggle(!checked);
   };
@@ -84,10 +94,10 @@ export const ToggleGroupOption = forwardRef<
       aria-checked={checked}
       onClick={handleOnClick}
       disabled={disabled}
-      {...rest}
+      {...buttonProps}
     >
       {icon ? (
-        rest.tooltip ? (
+        'tooltip' in rest && rest.tooltip ? (
           <OptionalTooltip
             title={rest.tooltip}
             placement={rest.tooltipPlacement}
