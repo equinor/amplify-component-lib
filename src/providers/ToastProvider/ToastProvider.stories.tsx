@@ -26,7 +26,7 @@ function StoryComponent(args: ToastProps | string) {
       </div>
       {/* prettier-ignore */}
       <pre>
-        <code style={{ width: '35rem',   }}>
+        <code style={{ width: '35rem' }}>
           {
             `// How to use the ToastProvider and useToasts hook
 showToast('This is a toast title');
