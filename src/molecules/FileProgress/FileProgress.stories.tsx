@@ -94,7 +94,7 @@ const meta: Meta<typeof FileProgress> = {
 
 export default meta;
 
-type Story = StoryObj<FileProgressProps>;
+type Story = StoryObj<typeof FileProgress>;
 
 export const Default: Story = {
   args: {
@@ -167,8 +167,7 @@ export const WithoutDeleteCompact: Story = {
   },
 };
 
-// Test-only stories
-export const TestRegularLoadingState: Story = {
+export const RegularLoadingState: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -191,7 +190,7 @@ export const TestRegularLoadingState: Story = {
   },
 };
 
-export const TestCustomLoadingTextAndCancel: Story = {
+export const CustomLoadingTextAndCancel: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -217,7 +216,7 @@ export const TestCustomLoadingTextAndCancel: Story = {
   },
 };
 
-export const TestCompleteStateDefaultText: Story = {
+export const CompleteStateDefaultText: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -234,7 +233,7 @@ export const TestCompleteStateDefaultText: Story = {
   },
 };
 
-export const TestCompleteStateCustomText: Story = {
+export const CompleteStateCustomText: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -249,7 +248,7 @@ export const TestCompleteStateCustomText: Story = {
   },
 };
 
-export const TestErrorStateWithRetry: Story = {
+export const ErrorStateWithRetry: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -270,7 +269,7 @@ export const TestErrorStateWithRetry: Story = {
   },
 };
 
-export const TestErrorStateDefaultText: Story = {
+export const ErrorStateDefaultText: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -287,7 +286,7 @@ export const TestErrorStateDefaultText: Story = {
   },
 };
 
-export const TestDeleteShowsProgressBar: Story = {
+export const DeleteShowsProgressBar: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -304,7 +303,7 @@ export const TestDeleteShowsProgressBar: Story = {
   },
 };
 
-export const TestCompactLoadingWithProgress: Story = {
+export const CompactLoadingWithProgress: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -320,7 +319,7 @@ export const TestCompactLoadingWithProgress: Story = {
   },
 };
 
-export const TestCompactLoadingIndeterminate: Story = {
+export const CompactLoadingIndeterminate: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -342,7 +341,7 @@ export const TestCompactLoadingIndeterminate: Story = {
   },
 };
 
-export const TestCompactCompleteState: Story = {
+export const CompactCompleteState: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.png'),
@@ -360,7 +359,7 @@ export const TestCompactCompleteState: Story = {
   },
 };
 
-export const TestCompactCompleteWhenUndefined: Story = {
+export const CompactCompleteWhenUndefined: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -378,7 +377,7 @@ export const TestCompactCompleteWhenUndefined: Story = {
   },
 };
 
-export const TestCompactPDFIcon: Story = {
+export const CompactPDFIcon: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.pdf'),
@@ -394,7 +393,7 @@ export const TestCompactPDFIcon: Story = {
   },
 };
 
-export const TestCompactErrorState: Story = {
+export const CompactErrorState: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -415,7 +414,7 @@ export const TestCompactErrorState: Story = {
   },
 };
 
-export const TestCompactDefaultErrorMessages: Story = {
+export const CompactDefaultErrorMessages: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -431,7 +430,7 @@ export const TestCompactDefaultErrorMessages: Story = {
   },
 };
 
-export const TestHidesDeleteButtonCompact: Story = {
+export const HidesDeleteButtonCompact: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),
@@ -445,7 +444,7 @@ export const TestHidesDeleteButtonCompact: Story = {
   },
 };
 
-export const TestHidesDeleteButtonRegular: Story = {
+export const HidesDeleteButtonRegular: Story = {
   tags: ['test-only'],
   args: {
     file: new File(['32452134'], 'testfile.txt'),

@@ -74,6 +74,7 @@ export default defineConfig({
           include: ['**/*.stories.tsx'],
           exclude: ['**/node_modules/**', '**/test-utils/**', '**/e2e/**'],
           setupFiles: ['./.storybook/vitest.setup.ts'],
+          css: true
         },
       },
       {

@@ -88,8 +88,7 @@ export const CustomReactElement: Story = {
   },
 };
 
-// Test-only stories
-export const TestLabelRenders: Story = {
+export const LabelRenders: Story = {
   tags: ['test-only'],
   args: {
     label: 'Test Label',
@@ -101,7 +100,7 @@ export const TestLabelRenders: Story = {
   },
 };
 
-export const TestIconsRender: Story = {
+export const IconsRender: Story = {
   tags: ['test-only'],
   args: {
     label: 'Test',
@@ -117,7 +116,7 @@ export const TestIconsRender: Story = {
   },
 };
 
-export const TestCustomContentRenders: Story = {
+export const CustomContentRenders: Story = {
   tags: ['test-only'],
   args: {
     label: 'Test',
@@ -132,7 +131,7 @@ export const TestCustomContentRenders: Story = {
   },
 };
 
-export const TestClickingCallsOnClick: Story = {
+export const ClickingCallsOnClick: Story = {
   tags: ['test-only'],
   args: {
     label: 'Click me',
@@ -142,14 +141,15 @@ export const TestClickingCallsOnClick: Story = {
     const canvas = within(canvasElement);
     const user = userEvent.setup();
 
-    const container = canvas.getByText('Click me').parentElement!.parentElement!;
+    const container =
+      canvas.getByText('Click me').parentElement!.parentElement!;
     await user.click(container);
 
     await expect(args.onClick).toHaveBeenCalledOnce();
   },
 };
 
-export const TestOnFocusOnBlur: Story = {
+export const OnFocusOnBlur: Story = {
   tags: ['test-only'],
   args: {
     label: 'Focus test',
@@ -157,7 +157,7 @@ export const TestOnFocusOnBlur: Story = {
     onFocus: fn(),
     onBlur: fn(),
   },
-  play: async ({ canvasElement, args }) => {
+  play: async ({ args }) => {
     const user = userEvent.setup();
 
     await user.tab();

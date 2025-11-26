@@ -40,11 +40,25 @@ export const MediumSize: Story = {
   args: {
     size: 'medium',
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const text = canvas.queryByText('browse');
+
+    await expect(canvas.getByTestId('upload-illustration')).toBeInTheDocument();
+    await expect(text).toBeNull();
+  },
 };
 
 export const SmallSize: Story = {
   args: {
     size: 'small',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const text = canvas.queryByText('browse');
+
+    await expect(canvas.getByTestId('upload-illustration')).toBeInTheDocument();
+    await expect(text).toBeNull();
   },
 };
 
@@ -58,8 +72,7 @@ export const DraggingOver: StoryFn<FileUploadAreaProps> = (args) => {
   );
 };
 
-// Test-only stories
-export const TestTextAndIconRender: Story = {
+export const TextAndIconRender: Story = {
   tags: ['test-only'],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -68,33 +81,5 @@ export const TestTextAndIconRender: Story = {
 
     await expect(icons).toHaveAttribute('d', folder.svgPathData);
     await expect(text).toBeVisible();
-  },
-};
-
-export const TestSmallSize: Story = {
-  tags: ['test-only'],
-  args: {
-    size: 'small',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const text = canvas.queryByText('browse');
-
-    await expect(canvas.getByTestId('upload-illustration')).toBeInTheDocument();
-    await expect(text).toBeNull();
-  },
-};
-
-export const TestMediumSize: Story = {
-  tags: ['test-only'],
-  args: {
-    size: 'medium',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const text = canvas.queryByText('browse');
-
-    await expect(canvas.getByTestId('upload-illustration')).toBeInTheDocument();
-    await expect(text).toBeNull();
   },
 };

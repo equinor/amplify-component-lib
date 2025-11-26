@@ -299,8 +299,7 @@ export const LongDialogWithContentMaxHeight: Story = {
   },
 };
 
-// Test-only stories
-export const TestBasicDialog: Story = {
+export const BasicDialog: Story = {
   tags: ['test-only'],
   args: {
     title: 'Test Dialog',
@@ -317,7 +316,7 @@ export const TestBasicDialog: Story = {
   },
 };
 
-export const TestCustomTitle: Story = {
+export const CustomTitle: Story = {
   tags: ['test-only'],
   args: {
     title: <div data-testid="custom-title">Custom Title</div>,
@@ -331,7 +330,7 @@ export const TestCustomTitle: Story = {
   },
 };
 
-export const TestCustomWidth: Story = {
+export const CustomWidth: Story = {
   tags: ['test-only'],
   args: {
     title: 'Fixed Width',
@@ -345,7 +344,7 @@ export const TestCustomWidth: Story = {
   },
 };
 
-export const TestCloseButton: Story = {
+export const CloseButton: Story = {
   tags: ['test-only'],
   args: {
     title: 'Closeable',
@@ -356,11 +355,11 @@ export const TestCloseButton: Story = {
     await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
     await expect(canvas.getByText('Closeable')).toBeInTheDocument();
     await userEvent.click(canvas.getByTestId('dialog-close-button'));
-    // Dialog should close
+    await expect(canvas.queryByText('Closeable')).not.toBeInTheDocument();
   },
 };
 
-export const TestAdditionalInfo: Story = {
+export const AdditionalInfo: Story = {
   tags: ['test-only'],
   args: {
     title: 'With Info',

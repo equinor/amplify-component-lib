@@ -106,7 +106,7 @@ export const WithMinAndMaxValue: StoryFn = (args) => (
 // Test-only stories
 type Story = StoryObj<typeof DateRangePicker>;
 
-export const TestDefaultFormat: Story = {
+export const DefaultFormat: Story = {
   tags: ['test-only'],
   args: {
     value: { from: new Date('2024-07-25'), to: new Date('2024-07-26') },
@@ -120,7 +120,7 @@ export const TestDefaultFormat: Story = {
   },
 };
 
-export const TestCustomFormat: Story = {
+export const CustomFormat: Story = {
   tags: ['test-only'],
   args: {
     value: { from: new Date('2025-02-01'), to: new Date('2025-03-01') },
@@ -134,7 +134,7 @@ export const TestCustomFormat: Story = {
   },
 };
 
-export const TestDefaultLocale: Story = {
+export const DefaultLocale: Story = {
   tags: ['test-only'],
   args: {
     value: { from: new Date('2021-07-25'), to: new Date('2021-07-26') },
@@ -147,7 +147,7 @@ export const TestDefaultLocale: Story = {
   },
 };
 
-export const TestCustomLocale: Story = {
+export const CustomLocale: Story = {
   tags: ['test-only'],
   args: {
     value: { from: new Date('2021-07-25'), to: new Date('2021-07-26') },
@@ -161,7 +161,7 @@ export const TestCustomLocale: Story = {
   },
 };
 
-export const TestMetaText: Story = {
+export const MetaText: Story = {
   tags: ['test-only'],
   args: {
     meta: 'Meta information',
@@ -172,7 +172,7 @@ export const TestMetaText: Story = {
   },
 };
 
-export const TestLoadingState: Story = {
+export const LoadingState: Story = {
   tags: ['test-only'],
   args: {
     label: 'Test',
@@ -184,7 +184,7 @@ export const TestLoadingState: Story = {
   },
 };
 
-export const TestLoadingWithHelperProps: Story = {
+export const LoadingWithHelperProps: Story = {
   tags: ['test-only'],
   args: {
     label: 'Test',

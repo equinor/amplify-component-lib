@@ -26,8 +26,8 @@ import { IconCell, IconCellProps } from 'src/molecules/IconCell/IconCell';
 import { DataGrid } from 'src/organisms';
 import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
 
-import { expect, fn, userEvent, within } from 'storybook/test';
 import { useGlobals } from 'storybook/internal/preview-api';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof IconCell> = {
@@ -204,7 +204,7 @@ export const ExampleTableAndStates: StoryFn<IconCellProps> = () => {
             icon={bus}
             label="Danger Coloured Bus"
             variant={IconCellVariants.COLOURED}
-            state={IconCellStates.DANGER}
+            state={IconCellStates.ERROR}
             selected
             onClick={() => showSnackbar('Danger Bus clicked')}
           />
@@ -280,10 +280,9 @@ export const CustomReactElement: Story = {
   },
 };
 
-// Test-only stories
 type TestStory = StoryObj<typeof IconCell>;
 
-export const TestLabelRenders: TestStory = {
+export const LabelRenders: TestStory = {
   tags: ['test-only'],
   args: {
     label: 'Test Label',
@@ -298,7 +297,7 @@ export const TestLabelRenders: TestStory = {
   },
 };
 
-export const TestIconsRender: TestStory = {
+export const IconsRender: TestStory = {
   tags: ['test-only'],
   args: {
     label: 'Test',
@@ -315,7 +314,7 @@ export const TestIconsRender: TestStory = {
   },
 };
 
-export const TestCustomContent: TestStory = {
+export const CustomContent: TestStory = {
   tags: ['test-only'],
   args: {
     label: 'Test',
@@ -331,7 +330,7 @@ export const TestCustomContent: TestStory = {
   },
 };
 
-export const TestClickingCallsOnClick: TestStory = {
+export const ClickingCallsOnClick: TestStory = {
   tags: ['test-only'],
   args: {
     label: 'Click me',

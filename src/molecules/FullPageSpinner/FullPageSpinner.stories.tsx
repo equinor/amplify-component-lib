@@ -52,6 +52,11 @@ type Story = StoryObj<typeof StoryComponent>;
 
 export const Default: Story = {
   args: {},
+  play: async ({ canvas }) => {
+    await expect(canvas.getAllByRole('generic')[1]).not.toHaveStyle(
+      'background-color: white'
+    );
+  },
 };
 
 export const Dots: Story = {
@@ -72,8 +77,7 @@ export const Equinor: Story = {
   },
 };
 
-// Test-only stories
-export const TestWithScrim: Story = {
+export const WithScrim: Story = {
   tags: ['test-only'],
   args: {
     withScrim: true,
@@ -85,7 +89,7 @@ export const TestWithScrim: Story = {
   },
 };
 
-export const TestEquinorVariant: Story = {
+export const EquinorVariant: Story = {
   tags: ['test-only'],
   args: {
     withScrim: true,
@@ -99,7 +103,7 @@ export const TestEquinorVariant: Story = {
   },
 };
 
-export const TestCircleVariant: Story = {
+export const CircleVariant: Story = {
   tags: ['test-only'],
   args: {
     variant: 'circle',
@@ -112,7 +116,7 @@ export const TestCircleVariant: Story = {
   },
 };
 
-export const TestDotsVariant: Story = {
+export const DotsVariant: Story = {
   tags: ['test-only'],
   args: {
     variant: 'dots',
@@ -125,7 +129,7 @@ export const TestDotsVariant: Story = {
   },
 };
 
-export const TestChildrenHidden: Story = {
+export const ChildrenHidden: Story = {
   tags: ['test-only'],
   args: {
     children: 'Hidden text content',
@@ -137,7 +141,7 @@ export const TestChildrenHidden: Story = {
   },
 };
 
-export const TestChildrenHiddenWithScrim: Story = {
+export const ChildrenHiddenWithScrim: Story = {
   tags: ['test-only'],
   args: {
     withScrim: true,

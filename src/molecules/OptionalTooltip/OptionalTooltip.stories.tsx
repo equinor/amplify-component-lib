@@ -4,7 +4,7 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 
 const meta: Meta<typeof OptionalTooltip> = {
   title: 'Molecules/OptionalTooltip',
@@ -30,22 +30,19 @@ export const Primary: StoryFn = (args) => (
   </OptionalTooltip>
 );
 
-// Test-only stories
-export const TestRendersWithTitle: Story = {
+export const RendersWithTitle: Story = {
   tags: ['test-only'],
   args: {
     title: 'Tooltip Title',
     children: <p>Content Text</p>,
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas }) => {
     const content = canvas.getByText('Content Text');
     await expect(content).toBeInTheDocument();
-    // Just verify content renders - tooltip behavior is complex to test in stories
   },
 };
 
-export const TestRendersWithoutTitle: Story = {
+export const RendersWithoutTitle: Story = {
   tags: ['test-only'],
   args: {
     title: undefined,

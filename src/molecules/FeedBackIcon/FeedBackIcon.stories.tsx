@@ -30,8 +30,7 @@ export const Primary: StoryFn<FeedBackIconProps> = (args) => (
   <FeedBackIcon {...args} />
 );
 
-// Test-only stories
-export const TestPositiveFilledSize16: Story = {
+export const PositiveFilledSize16: Story = {
   tags: ['test-only'],
   args: {
     name: 'positive',
@@ -47,7 +46,7 @@ export const TestPositiveFilledSize16: Story = {
   },
 };
 
-export const TestNegativeOutlinedSize24: Story = {
+export const NegativeOutlinedSize24: Story = {
   tags: ['test-only'],
   args: {
     name: 'negative',
@@ -63,7 +62,7 @@ export const TestNegativeOutlinedSize24: Story = {
   },
 };
 
-export const TestPositiveOutlinedSize32: Story = {
+export const PositiveOutlinedSize32: Story = {
   tags: ['test-only'],
   args: {
     name: 'positive',
@@ -79,7 +78,7 @@ export const TestPositiveOutlinedSize32: Story = {
   },
 };
 
-export const TestNegativeFilledSize40: Story = {
+export const NegativeFilledSize40: Story = {
   tags: ['test-only'],
   args: {
     name: 'negative',
@@ -95,7 +94,7 @@ export const TestNegativeFilledSize40: Story = {
   },
 };
 
-export const TestPositiveFilledSize48: Story = {
+export const PositiveFilledSize48: Story = {
   tags: ['test-only'],
   args: {
     name: 'positive',

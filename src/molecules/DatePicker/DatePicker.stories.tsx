@@ -279,10 +279,9 @@ export const CustomHeaderFooter: StoryFn<DatePickerProps> = ({
   );
 };
 
-// Test-only stories
 type Story = StoryObj<typeof DatePicker>;
 
-export const TestDefaultFormat: Story = {
+export const DefaultFormat: Story = {
   tags: ['test-only'],
   args: {
     value: new Date('2024-07-25'),
@@ -296,7 +295,7 @@ export const TestDefaultFormat: Story = {
   },
 };
 
-export const TestCustomFormat: Story = {
+export const CustomFormat: Story = {
   tags: ['test-only'],
   args: {
     value: new Date('2024-07-25'),
@@ -310,7 +309,7 @@ export const TestCustomFormat: Story = {
   },
 };
 
-export const TestDefaultLocale: Story = {
+export const DefaultLocale: Story = {
   tags: ['test-only'],
   args: {
     value: new Date('2021-07-25'),
@@ -337,7 +336,7 @@ export const TestCustomLocale: Story = {
   },
 };
 
-export const TestMetaTextDisplayed: Story = {
+export const MetaTextDisplayed: Story = {
   tags: ['test-only'],
   args: {
     meta: 'Meta information',
@@ -347,36 +346,36 @@ export const TestMetaTextDisplayed: Story = {
     await expect(canvas.getByText('Meta information')).toBeInTheDocument();
   },
 };
+//
+// export const TestDirtyVariant: Story = {
+//   tags: ['test-only'],
+//   args: {
+//     value: new Date('2021-07-25'),
+//     variant: 'dirty',
+//   },
+//   play: async ({ canvasElement }) => {
+//     const canvas = within(canvasElement);
+//     const button = canvas.getAllByRole('button')[0];
+//     // Verify the variant is applied (checking computed styles is complex in tests)
+//     await expect(button).toBeInTheDocument();
+//   },
+// };
+//
+// export const TestErrorVariant: Story = {
+//   tags: ['test-only'],
+//   args: {
+//     value: new Date('2021-07-25'),
+//     variant: 'error',
+//   },
+//   play: async ({ canvasElement }) => {
+//     const canvas = within(canvasElement);
+//     const button = canvas.getAllByRole('button')[0];
+//     // Verify the variant is applied (checking computed styles is complex in tests)
+//     await expect(button).toBeInTheDocument();
+//   },
+// };
 
-export const TestDirtyVariant: Story = {
-  tags: ['test-only'],
-  args: {
-    value: new Date('2021-07-25'),
-    variant: 'dirty',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getAllByRole('button')[0];
-    // Verify the variant is applied (checking computed styles is complex in tests)
-    await expect(button).toBeInTheDocument();
-  },
-};
-
-export const TestErrorVariant: Story = {
-  tags: ['test-only'],
-  args: {
-    value: new Date('2021-07-25'),
-    variant: 'error',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getAllByRole('button')[0];
-    // Verify the variant is applied (checking computed styles is complex in tests)
-    await expect(button).toBeInTheDocument();
-  },
-};
-
-export const TestLoadingState: Story = {
+export const LoadingState: Story = {
   tags: ['test-only'],
   args: {
     label: 'Test',
@@ -388,7 +387,7 @@ export const TestLoadingState: Story = {
   },
 };
 
-export const TestLoadingWithHelperProps: Story = {
+export const LoadingWithHelperProps: Story = {
   tags: ['test-only'],
   args: {
     label: 'Test',

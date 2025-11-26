@@ -1,6 +1,4 @@
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
-import { vi } from 'vitest';
 
 import Counter from './custom-extensions/Counter';
 import { EditorMenu, EditorText } from './MenuBar/MenuBar';
@@ -14,6 +12,8 @@ import { RichText } from '.';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 import { colors } from 'src/atoms/style';
 import { getFeatures } from 'src/atoms/utils';
+
+import { expect, fn, within } from 'storybook/test';
 
 const meta: Meta<typeof RichTextEditor> = {
   title: 'Molecules/RichTextEditor',
@@ -352,7 +352,6 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
   );
 };
 
-// Test stories for MenuBar components - checking feature visibility
 export const TestHidesTextColorButton: StoryObj<typeof RichTextEditor> = {
   tags: ['test-only'],
   args: {
@@ -532,7 +531,7 @@ export const TestHidesAddImageButton: StoryObj<typeof RichTextEditor> = {
   tags: ['test-only'],
   args: {
     value: '<p>test</p>',
-    onImageUpload: vi.fn(),
+    onImageUpload: fn(),
     removeFeatures: [RichTextEditorFeatures.IMAGES],
   },
   play: async ({ canvasElement }) => {

@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { InfoElement } from 'src/molecules/InfoElement/InfoElement';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 const meta: Meta<typeof InfoElement> = {
   title: 'Molecules/InfoElement',
@@ -51,7 +51,9 @@ export const TestStringContentRenders: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole('heading', { name: 'Dog' })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('heading', { name: 'Dog' })
+    ).toBeInTheDocument();
     await expect(canvas.getByText('ANIMAL')).toBeInTheDocument();
   },
 };
@@ -64,7 +66,9 @@ export const TestReactElementContentRenders: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole('button', { name: /click me!/i })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: /click me!/i })
+    ).toBeInTheDocument();
   },
 };
 
@@ -79,11 +83,12 @@ export const TestCopyableContent: Story = {
     const canvas = within(canvasElement);
     const user = userEvent.setup();
 
-    const spy = vi.spyOn(window.navigator.clipboard, 'writeText');
+    window.navigator.clipboard.writeText = fn();
     await user.click(canvas.getByText('Copyable text'));
 
-    await expect(spy).toHaveBeenCalledWith('Copyable text');
-    spy.mockRestore();
+    await expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'Copyable text'
+    );
   },
 };
 
