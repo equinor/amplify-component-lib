@@ -87,7 +87,7 @@ export const ToggleGroupOption = forwardRef<
       {...rest}
     >
       {icon ? (
-        'tooltip' in rest && !!rest.tooltip ? (
+        rest.tooltip ? (
           <OptionalTooltip
             title={rest.tooltip}
             placement={rest.tooltipPlacement}
