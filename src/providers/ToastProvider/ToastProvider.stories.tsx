@@ -37,7 +37,7 @@ showToast({
   duration: 10,
   action: {
     text: 'Read more',
-    onClick: () =>; void
+    onClick: () => void
   };
 });`}
         </code>
