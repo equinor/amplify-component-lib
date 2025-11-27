@@ -11,10 +11,37 @@ function StoryComponent(args: ToastProps | string) {
   const { showToast, hideAllToasts } = useToasts();
   return (
     <div
-      style={{ display: 'flex', gap: spacings.medium, position: 'relative' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: spacings.large,
+        alignItems: 'center',
+      }}
     >
-      <Button onClick={() => showToast(args)}>Show toast</Button>
-      <Button onClick={hideAllToasts}>Hide all</Button>
+      <div
+        style={{ display: 'flex', gap: spacings.medium, position: 'relative' }}
+      >
+        <Button onClick={() => showToast(args)}>Show toast</Button>
+        <Button onClick={hideAllToasts}>Hide all</Button>
+      </div>
+      {/* prettier-ignore */}
+      <pre>
+        <code style={{ width: '35rem' }}>
+          {
+            `// How to use the ToastProvider and useToasts hook
+showToast('This is a toast title');
+showToast({
+  title: 'This is a toast title',
+  description: 'This is a description',
+  variant: 'success',
+  duration: 10,
+  action: {
+    text: 'Read more',
+    onClick: () => void
+  };
+});`}
+        </code>
+      </pre>
     </div>
   );
 }
