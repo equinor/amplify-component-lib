@@ -219,5 +219,79 @@ export const darkTokens = css`
     );
 
     --eds_ui__chip__badge_color: var(--eds_text_static_icons__default);
+
+    --amplify_dataviz_primary_lighter: rgba(0, 83, 178, 1);
+    --amplify_dataviz_primary_muted: rgba(0, 107, 229, 1);
+    --amplify_dataviz_primary_primary: rgba(74, 149, 236, 1);
+    --amplify_dataviz_primary_darker: rgba(206, 229, 255, 1);
+
+    --amplify_dataviz_primary_90: rgba(235, 245, 255, 1);
+    --amplify_dataviz_primary_80: rgba(211, 231, 253, 1);
+    --amplify_dataviz_primary_70: rgba(167, 206, 251, 1);
+    --amplify_dataviz_primary_60: rgba(133, 187, 250, 1);
+    --amplify_dataviz_primary_50: rgba(89, 163, 248, 1);
+    --amplify_dataviz_primary_40: rgba(40, 136, 246, 1);
+    --amplify_dataviz_primary_30: rgba(0, 107, 229, 1);
+    --amplify_dataviz_primary_20: rgba(0, 83, 178, 1);
+    --amplify_dataviz_primary_10: rgba(5, 60, 122, 1);
+
+    --amplify_dataviz_darkblue_lighter: rgba(0, 71, 153, 1);
+    --amplify_dataviz_darkblue_darker: rgba(211, 238, 253, 1);
+    --amplify_dataviz_darkblue_default: rgba(191, 220, 252, 1);
+
+    --amplify_dataviz_lightblue_darker: rgba(133, 208, 250, 1);
+    --amplify_dataviz_lightblue_default: rgba(35, 170, 246, 1);
+    --amplify_dataviz_lightblue_lighter: rgba(4, 48, 98, 1);
+
+    --amplify_dataviz_lightgreen_default: rgba(8, 145, 115, 1);
+    --amplify_dataviz_lightgreen_darker: rgba(10, 194, 154, 1);
+    --amplify_dataviz_lightgreen_lighter: rgba(0, 61, 46, 1);
+
+    --amplify_dataviz_darkgreen_default: rgba(200, 237, 227, 1);
+    --amplify_dataviz_darkgreen_darker: rgba(220, 241, 236, 1);
+    --amplify_dataviz_darkgreen_lighter: rgba(0, 102, 76, 1);
+
+    --amplify_dataviz_darkpink_default: rgba(242, 129, 176, 1);
+    --amplify_dataviz_darkpink_darker: rgba(252, 212, 229, 1);
+    --amplify_dataviz_darkpink_muted: rgba(169, 30, 88, 1);
+    --amplify_dataviz_darkpink_lighter: rgba(135, 18, 67, 1);
+
+    --amplify_dataviz_lightpink_default: rgba(225, 81, 93, 1);
+    --amplify_dataviz_lightpink_deep: rgba(255, 219, 222, 1);
+    --amplify_dataviz_lightpink_darker: rgba(225, 128, 138, 1);
+    --amplify_dataviz_lightpink_lighter: rgba(143, 23, 33, 1);
+
+    --amplify_dataviz_darkyellow_default: rgba(253, 202, 53, 1);
+    --amplify_dataviz_darkyellow_darker: rgba(244, 226, 195, 1);
+    --amplify_dataviz_darkyellow_lighter: rgba(121, 85, 21, 1);
+    --amplify_dataviz_darkyellow_deep: rgba(255, 240, 194, 1);
+
+    --amplify_dataviz_lightyellow_default: rgba(160, 112, 28, 1);
+    --amplify_dataviz_lightyellow_darker: rgba(200, 150, 0, 1);
+    --amplify_dataviz_lightyellow_lighter: rgba(98, 77, 42, 1);
+    --amplify_dataviz_lightyellow_deep: rgba(227, 171, 2, 1);
+
+    --amplify_dataviz_orange_lighter: rgba(121, 61, 21, 1);
+    --amplify_dataviz_orange_default: rgba(227, 128, 36, 1);
+    --amplify_dataviz_orange_muted: rgba(255, 173, 99, 1);
+    --amplify_dataviz_orange_darker: rgba(255, 222, 198, 1);
+
+    --amplify_dataviz_darkpurple_default: rgba(232, 209, 246, 1);
+    --amplify_dataviz_darkpurple_darker: rgba(234, 224, 255, 1);
+    --amplify_dataviz_darkpurple_lighter: rgba(147, 20, 219, 1);
+
+    --amplify_dataviz_lightpurple_default: rgba(155, 89, 242, 1);
+    --amplify_dataviz_lightpurple_darker: rgba(186, 153, 255, 1);
+    --amplify_dataviz_lightpurple_lighter: rgba(97, 1, 152, 1);
+
+    --amplify_dataviz_darkgray_lighter: rgba(69, 69, 69, 1);
+    --amplify_dataviz_darkgray_default: rgba(86, 86, 86, 1);
+    --amplify_dataviz_darkgray_darker: rgba(122, 122, 122, 1);
+    --amplify-dataviz_darkgray_deep: rgba(173, 173, 173, 1);
+
+    --amplify_dataviz_lightgray_pale: rgba(97, 102, 108, 1);
+    --amplify_dataviz_lightgray_lighter: rgba(144, 155, 162, 1);
+    --amplify_dataviz_lightgray_default: rgba(194, 200, 204, 1);
+    --amplify_dataviz_lightgray_darker: rgba(235, 238, 240, 1);
   }
 `;

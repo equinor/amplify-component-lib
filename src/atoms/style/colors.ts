@@ -37,6 +37,7 @@ export const colors = {
     primary: {
       default: 'var(--amplify_dataviz_primary_default, rgba(0, 107, 229, 1))',
       darker: 'var(--amplify_dataviz_primary_darker, rgba(0, 83, 178, 1))',
+      muted: 'var(--amplify_dataviz_primary_muted, rgba(74, 149, 236, 1))',
       lighter: 'var(--amplify_dataviz_primary_lighter, rgba(206, 229, 255, 1))',
       primary10: 'var(--amplify_dataviz_primary_10, rgba(235, 245, 255, 1))',
       primary20: 'var(--amplify_dataviz_primary_20, rgba(211, 231, 253, 1))',
@@ -75,14 +76,15 @@ export const colors = {
         'var(--amplify_dataviz_darkgreen_lighter, rgba(200, 237, 227, 1))',
     },
     darkpink: {
-      default: 'var(--amplify_dataviz_darkpink_default, rgba(169, 30, 88, 1))',
-      darker: 'var(--amplify_dataviz_darkpink_darker, rgba(135, 18, 67, 1))',
-      lighter:
-        'var(--amplify_dataviz_darkpink_lighter, rgba(252, 212, 229, 1))',
+      default: 'var(--amplify_dataviz_berry_default, rgba(169, 30, 88, 1))',
+      darker: 'var(--amplify_dataviz_berry_darker, rgba(135, 18, 67, 1))',
+      muted: 'var(--amplify_dataviz_berry_muted, rgba(242, 129, 179, 1))',
+      lighter: 'var(--amplify_dataviz_berry_lighter, rgba(252, 212, 229, 1))',
     },
     lightpink: {
       default:
         'var(--amplify_dataviz_lightpink_default, rgba(255, 128, 138, 1))',
+      deep: 'var(--amplify_dataviz_lightpink_deep, rgba(143, 23, 33, 1))',
       darker: 'var(--amplify_dataviz_lightpink_darker, rgba(225, 81, 93, 1))',
       lighter:
         'var(--amplify_dataviz_lightpink_lighter, rgba(255, 219, 222, 1))',
@@ -90,6 +92,7 @@ export const colors = {
     darkyellow: {
       default:
         'var(--amplify_dataviz_darkyellow_default, rgba(160, 112, 28, 1))',
+      deep: 'var(--amplify_dataviz_darkyellow_deep, rgba(98, 77, 21, 1))',
       darker: 'var(--amplify_dataviz_darkyellow_darker, rgba(121, 85, 21, 1))',
       lighter:
         'var(--amplify_dataviz_darkyellow_lighter, rgba(244, 226, 195, 1))',
@@ -100,6 +103,13 @@ export const colors = {
       darker: 'var(--amplify_dataviz_lightyellow_darker, rgba(227, 171, 2, 1))',
       lighter:
         'var(--amplify_dataviz_lightyellow_lighter, rgba(255, 240, 194, 1))',
+      deep: 'var(--amplify_dataviz_lightyellow_deep, rgba(200, 150, 0, 1))',
+    },
+    orange: {
+      default: 'var(--amplify_dataviz_orange_default, rgba(255, 173, 99, 1))',
+      darker: 'var(--amplify_dataviz_orange_darker, rgba(121, 61, 21, 1))',
+      muted: 'var(--amplify_dataviz_orange_muted, rgba(255, 128, 36, 1))',
+      lighter: 'var(--amplify_dataviz_orange_lighter, rgba(255, 222, 198, 1))',
     },
     darkpurple: {
       default:
@@ -118,6 +128,7 @@ export const colors = {
     },
     darkgray: {
       default: 'var(--amplify_dataviz_darkgray_default, rgba(122, 122, 122,1))',
+      deep: 'var(--amplify-dataviz_darkgray_deep, rgba(69, 69, 69, 1))',
       darker: 'var(--amplify-dataviz_darkgray_darker, rgba(86, 86, 86,1))',
       lighter:
         'var(--amplify-dataviz_darkgray_lighter, rgba(173, 173, 173, 1))',
@@ -128,6 +139,7 @@ export const colors = {
       darker: 'var(--amplify_dataviz_lightgray_darker, rgba(91, 102, 108, 1))',
       lighter:
         'var(--amplify_dataviz_lightgray_lighter,  rgba(194, 200, 204, 1))',
+      pale: 'var(--amplify_dataviz_lightgray_pale,  rgba(235, 238, 240, 1))',
     },
   },
 } as const;
