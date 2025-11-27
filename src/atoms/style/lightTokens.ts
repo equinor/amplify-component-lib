@@ -181,7 +181,7 @@ export const lightTokens = css`
     );
 
     --eds_interactive__icon_on_interactive_colors: var(
-      --eds_text__static_icons__default
+      --eds_text__static_icons__primary_white
     );
 
     --eds_ui__chip__badge_color: var(--eds_text__static_icons__default);
