@@ -27,7 +27,16 @@ const meta: Meta<typeof Tag> = {
   argTypes: {
     color: {
       control: 'select',
-      options: ['blue', 'green', 'purple', 'orange', 'yellow', 'pink', 'grey'],
+      options: [
+        'blue',
+        'green',
+        'purple',
+        'dark pink',
+        'pink',
+        'orange',
+        'yellow',
+        'grey',
+      ],
       description: 'Default is blue',
     },
     leadingIcon: {
