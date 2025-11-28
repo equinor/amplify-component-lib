@@ -272,8 +272,8 @@ export const darkTokens = css`
     --amplify_dataviz_lightyellow_deep: rgba(227, 171, 2, 1);
 
     --amplify_dataviz_orange_lighter: rgba(121, 61, 21, 1);
-    --amplify_dataviz_orange_default: rgba(227, 128, 36, 1);
-    --amplify_dataviz_orange_muted: rgba(255, 173, 99, 1);
+    --amplify_dataviz_orange_muted: rgba(227, 128, 36, 1);
+    --amplify_dataviz_orange_default: rgba(255, 173, 99, 1);
     --amplify_dataviz_orange_darker: rgba(255, 222, 198, 1);
 
     --amplify_dataviz_darkpurple_default: rgba(232, 209, 246, 1);

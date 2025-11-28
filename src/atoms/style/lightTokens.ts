@@ -63,8 +63,8 @@ export const lightTokens = css`
     --amplify_dataviz_lightyellow_deep: rgba(200, 150, 0, 1);
 
     --amplify_dataviz_orange_lighter: rgba(255, 222, 198, 1);
-    --amplify_dataviz_orange_default: rgba(255, 173, 99, 1);
-    --amplify_dataviz_orange_muted: rgba(227, 128, 36, 1);
+    --amplify_dataviz_orange_muted: rgba(255, 173, 99, 1);
+    --amplify_dataviz_orange_default: rgba(227, 128, 36, 1);
     --amplify_dataviz_orange_darker: rgba(121, 61, 21, 1);
 
     --amplify_dataviz_darkpurple_default: rgba(147, 20, 219, 1);
