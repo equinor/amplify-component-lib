@@ -231,8 +231,8 @@ export const darkTokens = css`
     --amplify_dataviz_primary_60: rgba(133, 187, 250, 1);
     --amplify_dataviz_primary_50: rgba(89, 163, 248, 1);
     --amplify_dataviz_primary_40: rgba(40, 136, 246, 1);
-    --amplify_dataviz_primary_30: rgba(0, 107, 229, 1);
-    --amplify_dataviz_primary_20: rgba(0, 83, 178, 1);
+    --amplify_dataviz_primary_30: rgba(10, 115, 235, 1);
+    --amplify_dataviz_primary_20: rgba(8, 91, 186, 1);
     --amplify_dataviz_primary_10: rgba(5, 60, 122, 1);
 
     --amplify_dataviz_darkblue_lighter: rgba(0, 71, 153, 1);

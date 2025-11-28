@@ -22,8 +22,8 @@ export const lightTokens = css`
     --amplify_dataviz_primary_40: rgba(133, 187, 250, 1);
     --amplify_dataviz_primary_50: rgba(89, 163, 248, 1);
     --amplify_dataviz_primary_60: rgba(40, 136, 246, 1);
-    --amplify_dataviz_primary_70: rgba(0, 107, 229, 1);
-    --amplify_dataviz_primary_80: rgba(0, 83, 178, 1);
+    --amplify_dataviz_primary_70: rgba(10, 115, 235, 1);
+    --amplify_dataviz_primary_80: rgba(8, 91, 186, 1);
     --amplify_dataviz_primary_90: rgba(5, 60, 122, 1);
 
     --amplify_dataviz_darkblue_default: rgba(0, 71, 153, 1);
@@ -43,7 +43,7 @@ export const lightTokens = css`
     --amplify_dataviz_darkgreen_lighter: rgba(200, 237, 227, 1);
 
     --amplify_dataviz_berry_lighter: rgba(252, 212, 229, 1);
-    --amplify_dataviz_berry_muted: rgba(242, 129, 179, 1);
+    --amplify_dataviz_berry_muted: rgba(242, 129, 176, 1);
     --amplify_dataviz_berry_default: rgba(169, 30, 88, 1);
     --amplify_dataviz_berry_darker: rgba(135, 18, 67, 1);
 
@@ -55,7 +55,7 @@ export const lightTokens = css`
     --amplify_dataviz_darkyellow_default: rgba(160, 112, 28, 1);
     --amplify_dataviz_darkyellow_darker: rgba(121, 85, 21, 1);
     --amplify_dataviz_darkyellow_lighter: rgba(244, 226, 195, 1);
-    --amplify_dataviz_darkyellow_deep: rgba(98, 77, 21, 1);
+    --amplify_dataviz_darkyellow_deep: rgba(98, 77, 42, 1);
 
     --amplify_dataviz_lightyellow_default: rgba(253, 203, 53, 1);
     --amplify_dataviz_lightyellow_darker: rgba(227, 171, 2, 1);
