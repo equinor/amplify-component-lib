@@ -36,8 +36,8 @@ export const colors = {
   dataviz: {
     primary: {
       lighter: 'var(--amplify_dataviz_primary_lighter, rgba(206, 229, 255, 1))',
-      default: 'var(--amplify_dataviz_primary_default, rgba(0, 107, 229, 1))',
       muted: 'var(--amplify_dataviz_primary_muted, rgba(74, 149, 236, 1))',
+      default: 'var(--amplify_dataviz_primary_default, rgba(0, 107, 229, 1))',
       darker: 'var(--amplify_dataviz_primary_darker, rgba(0, 83, 178, 1))',
       primary10: 'var(--amplify_dataviz_primary_10, rgba(235, 245, 255, 1))',
       primary20: 'var(--amplify_dataviz_primary_20, rgba(211, 231, 253, 1))',
@@ -77,8 +77,8 @@ export const colors = {
     },
     darkpink: {
       lighter: 'var(--amplify_dataviz_berry_lighter, rgba(252, 212, 229, 1))',
-      default: 'var(--amplify_dataviz_berry_default, rgba(169, 30, 88, 1))',
       muted: 'var(--amplify_dataviz_berry_muted, rgba(242, 129, 176, 1))',
+      default: 'var(--amplify_dataviz_berry_default, rgba(169, 30, 88, 1))',
       darker: 'var(--amplify_dataviz_berry_darker, rgba(135, 18, 67, 1))',
     },
     lightpink: {
