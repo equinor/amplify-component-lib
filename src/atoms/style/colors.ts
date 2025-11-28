@@ -76,10 +76,11 @@ export const colors = {
       darker: 'var(--amplify_dataviz_darkgreen_darker, rgba(0, 61, 46, 1))',
     },
     darkpink: {
-      lighter: 'var(--amplify_dataviz_berry_lighter, rgba(252, 212, 229, 1))',
-      muted: 'var(--amplify_dataviz_berry_muted, rgba(242, 129, 176, 1))',
-      default: 'var(--amplify_dataviz_berry_default, rgba(169, 30, 88, 1))',
-      darker: 'var(--amplify_dataviz_berry_darker, rgba(135, 18, 67, 1))',
+      lighter:
+        'var(--amplify_dataviz_darkpink_lighter, rgba(252, 212, 229, 1))',
+      muted: 'var(--amplify_dataviz_darkpink_muted, rgba(242, 129, 176, 1))',
+      default: 'var(--amplify_dataviz_darkpink_default, rgba(169, 30, 88, 1))',
+      darker: 'var(--amplify_dataviz_darkpink_darker, rgba(135, 18, 67, 1))',
     },
     lightpink: {
       lighter:

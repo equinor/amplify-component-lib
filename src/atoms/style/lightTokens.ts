@@ -42,10 +42,10 @@ export const lightTokens = css`
     --amplify_dataviz_darkgreen_darker: rgba(0, 61, 46, 1);
     --amplify_dataviz_darkgreen_lighter: rgba(200, 237, 227, 1);
 
-    --amplify_dataviz_berry_lighter: rgba(252, 212, 229, 1);
-    --amplify_dataviz_berry_muted: rgba(242, 129, 176, 1);
-    --amplify_dataviz_berry_default: rgba(169, 30, 88, 1);
-    --amplify_dataviz_berry_darker: rgba(135, 18, 67, 1);
+    --amplify_dataviz_darkpink_lighter: rgba(252, 212, 229, 1);
+    --amplify_dataviz_darkpink_muted: rgba(242, 129, 176, 1);
+    --amplify_dataviz_darkpink_default: rgba(169, 30, 88, 1);
+    --amplify_dataviz_darkpink_darker: rgba(135, 18, 67, 1);
 
     --amplify_dataviz_lightpink_default: rgba(255, 128, 138, 1);
     --amplify_dataviz_lightpink_deep: rgba(143, 23, 33, 1);
