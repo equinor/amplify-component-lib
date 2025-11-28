@@ -21,7 +21,11 @@ const Container = styled.div<ContainerProps>`
   background: ${({ $color }) => TAG_COLORS[$color].background};
   min-height: calc(24px + 2 * ${spacings.xx_small});
   > span {
+    color: ${({ $color }) => TAG_COLORS[$color].text};
     line-height: normal;
+  }
+  > svg {
+    fill: ${({ $color }) => TAG_COLORS[$color].text};
   }
 `;
 
