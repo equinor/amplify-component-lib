@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from '@storybook/react-vite';
+import { expect, within } from 'storybook/test';
 
 import {
   SkeletonGradient,
@@ -45,4 +46,31 @@ export const Template: StoryFn<SkeletonGradientProps> = (args) => {
       </svg>
     </Container>
   );
+};
+
+export const TestSkeletonGradientWorks: StoryFn<SkeletonGradientProps> = {
+  tags: ['test-only'],
+  render: (args) => (
+    <svg width={100} height={100}>
+      <defs>
+        <SkeletonGradient {...args} />
+      </defs>
+      <rect
+        data-testid="rectangle"
+        fill="url(#skeleton-gradient)"
+        width={50}
+        height={50}
+        x={20}
+        y={10}
+      />
+    </svg>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByTestId('rectangle')).toBeInTheDocument();
+
+    const svg = canvasElement.querySelector('svg');
+    const gradient = svg?.getElementsByTagName('linearGradient');
+    await expect(gradient).not.toBeNull();
+  },
 };

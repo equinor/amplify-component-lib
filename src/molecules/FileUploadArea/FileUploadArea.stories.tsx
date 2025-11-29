@@ -1,9 +1,12 @@
+import { folder } from '@equinor/eds-icons';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import {
   FileUploadArea,
   FileUploadAreaProps,
 } from 'src/molecules/FileUploadArea/FileUploadArea';
+
+import { expect, within } from 'storybook/test';
 
 const meta: Meta<typeof FileUploadArea> = {
   title: 'Molecules/FileUploadArea',
@@ -37,11 +40,25 @@ export const MediumSize: Story = {
   args: {
     size: 'medium',
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const text = canvas.queryByText('browse');
+
+    await expect(canvas.getByTestId('upload-illustration')).toBeInTheDocument();
+    await expect(text).toBeNull();
+  },
 };
 
 export const SmallSize: Story = {
   args: {
     size: 'small',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const text = canvas.queryByText('browse');
+
+    await expect(canvas.getByTestId('upload-illustration')).toBeInTheDocument();
+    await expect(text).toBeNull();
   },
 };
 
@@ -53,4 +70,16 @@ export const DraggingOver: StoryFn<FileUploadAreaProps> = (args) => {
       <FileUploadArea {...args} />
     </div>
   );
+};
+
+export const TextAndIconRender: Story = {
+  tags: ['test-only'],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const icons = canvas.getByTestId('eds-icon-path');
+    const text = canvas.getByText(/browse files/i);
+
+    await expect(icons).toHaveAttribute('d', folder.svgPathData);
+    await expect(text).toBeVisible();
+  },
 };

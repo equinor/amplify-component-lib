@@ -2,7 +2,8 @@
 
 import React, { FC } from 'react';
 
-import { Meta } from '@storybook/react-vite';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, within } from 'storybook/test';
 
 import { ApplicationIconNew } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew';
 import { APP_ICONS } from 'src/molecules/ApplicationIcon/ApplicationIconNew/ApplicationIconNew.constants';
@@ -75,3 +76,90 @@ export const MultipleIcons: FC = (args) => (
     </div>
   </>
 );
+
+export const TestRendersWithDefaultProps: StoryObj<typeof ApplicationIconNew> =
+  {
+    tags: ['test-only'],
+    args: {
+      name: 'amplify',
+      size: 64,
+      animationState: 'none',
+    },
+    play: async ({ canvasElement }) => {
+      const canvas = within(canvasElement);
+      await expect(
+        canvas.getByTestId('app-icon-container')
+      ).toBeInTheDocument();
+      await expect(canvas.getByTestId('icon-container')).toBeInTheDocument();
+      await expect(canvas.getByTestId('waves-container')).toBeInTheDocument();
+    },
+  };
+
+export const TestRendersCorrectIcon: StoryObj<typeof ApplicationIconNew> = {
+  tags: ['test-only'],
+  args: {
+    name: 'embark',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByTestId('app-icon-svg')).toBeInTheDocument();
+  },
+};
+
+export const TestUsesFallbackIcon: StoryObj<typeof ApplicationIconNew> = {
+  tags: ['test-only'],
+  args: {
+    name: 'nonexistent',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByTestId('app-icon-svg')).toBeInTheDocument();
+    await expect(canvas.getByTestId('app-icon-container')).toBeInTheDocument();
+  },
+};
+
+export const TestRendersLargeIcon: StoryObj<typeof ApplicationIconNew> = {
+  tags: ['test-only'],
+  args: {
+    name: 'embark',
+    size: 256,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByTestId('app-icon-svg')).toBeInTheDocument();
+  },
+};
+
+export const TestWorksWithOpacitySettings: StoryObj<typeof ApplicationIconNew> =
+  {
+    tags: ['test-only'],
+    args: {
+      name: 'bravos',
+      size: 256,
+    },
+    play: async ({ canvasElement }) => {
+      const canvas = within(canvasElement);
+      const paths = canvas.getAllByTestId('app-icon-path');
+
+      for (const path of paths) {
+        await expect(path).toHaveAttribute('fill-opacity');
+      }
+    },
+  };
+
+export const TestIconOnlyProp: StoryObj<typeof ApplicationIconNew> = {
+  tags: ['test-only'],
+  args: {
+    name: 'embark',
+    size: 256,
+    iconOnly: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByTestId('app-icon-svg')).toBeInTheDocument();
+    await expect(canvas.queryByTestId('wave')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByTestId('waves-container')
+    ).not.toBeInTheDocument();
+  },
+};

@@ -7,12 +7,14 @@ import {
   Snackbar,
   Tooltip,
 } from '@equinor/eds-core-react';
-import { add, menu, refresh, save } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { add, car, menu, refresh, save } from '@equinor/eds-icons';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Button, ButtonProps } from './Button';
 import page from 'src/molecules/Button/Button.docs.mdx';
 import { Stack } from 'src/storybook';
+
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 const meta: Meta<typeof Button> = {
   title: 'Molecules/Button',
@@ -387,3 +389,53 @@ All.decorators = [
     </Stack>
   ),
 ];
+
+// Test-only stories
+type Story = StoryObj<typeof Button>;
+
+export const TestLoadingPreventsClick: Story = {
+  tags: ['test-only'],
+  args: {
+    onClick: fn(),
+    loading: true,
+    children: 'Click me',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).not.toHaveBeenCalled();
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await expect(canvas.queryByText('Click me')).not.toBeVisible();
+  },
+};
+
+export const TestLoadingPreventsClickNonLoading: Story = {
+  tags: ['test-only'],
+  args: {
+    onClick: fn(),
+    loading: false,
+    children: 'Click me',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).toHaveBeenCalledOnce();
+  },
+};
+
+export const TestLoadingWithIconButton: Story = {
+  tags: ['test-only'],
+  args: {
+    onClick: fn(),
+    loading: true,
+    variant: 'contained_icon',
+    children: <Icon data={car} />,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await expect(canvas.getByTestId('eds-icon-path')).not.toBeVisible();
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
