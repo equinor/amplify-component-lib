@@ -10,7 +10,7 @@ export const isCurrentUrl = ({ currentUrl, link }: IsUrlArgs) => {
   return (currentIncludesLink && link !== '/') || link === currentUrl;
 };
 
-const isExactUrl = ({ currentUrl, link }: IsUrlArgs) => {
+export const isExactUrl = ({ currentUrl, link }: IsUrlArgs) => {
   const currentWithoutParams = currentUrl.split('?')[0];
   return currentWithoutParams === link;
 };

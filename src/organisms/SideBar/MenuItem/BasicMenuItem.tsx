@@ -15,6 +15,7 @@ import {
 import {
   canNavigate,
   isCurrentUrl,
+  isExactUrl,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
@@ -30,13 +31,19 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
   name,
   disabled = false,
   featureUuid,
+  exact,
   ...props
 }) => {
   const { pathname } = useLocation();
-  const isActive = isCurrentUrl({
-    currentUrl: pathname,
-    link,
-  });
+  const isActive = exact
+    ? isExactUrl({
+        currentUrl: pathname,
+        link,
+      })
+    : isCurrentUrl({
+        currentUrl: pathname,
+        link,
+      });
   const { isOpen } = useSideBar();
   const shouldNavigate = canNavigate({
     currentUrl: pathname,
