@@ -9,7 +9,7 @@ interface SideBarMenuItemBase {
   featureUuid?: string;
   /**
    * `true` if the menu item should be matched exactly against the current URL.
-   * When `false`, the menu item is considered active if the current URL includes the menu item's link.
+   * When `false` or `undefined` (default), the menu item is considered active if the current URL includes the menu item's link.
    * The comparison always ignores URL parameters.
    */
   exact?: boolean;
