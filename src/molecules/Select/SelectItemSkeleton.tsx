@@ -17,8 +17,7 @@ const TextSkeleton = styled(SkeletonBase)`
 
 export const SelectItemSkeleton: FC = () => {
   return (
-    <Wrapper>
-      {/*<CheckboxSkeleton />*/}
+    <Wrapper data-testid="select-item-skeleton">
       <TextSkeleton />
     </Wrapper>
   );

@@ -664,22 +664,58 @@ const CustomValueElement: FC<{
   </ComboBoxChip>
 );
 
-test('Custom value component', () => {
-  const label = faker.animal.bear();
-  const items = fakeSelectItems();
-  const handler = vi.fn();
+describe('Custom value component', () => {
+  let label: string;
+  let items: SelectOptionRequired[];
+  let handler: ReturnType<typeof vi.fn>;
 
-  render(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      values={[items[0]]}
-      customValueComponent={CustomValueElement}
-    />
-  );
+  beforeEach(() => {
+    label = faker.animal.bear();
+    items = fakeSelectItems();
+    handler = vi.fn();
 
-  expect(screen.getByText('custom')).toBeInTheDocument();
+    render(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[items[0]]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+  });
+
+  test('Renders', () => {
+    const customChip = screen
+      .getByText('custom')
+      .closest('.amplify-combo-box-chip');
+
+    expect(customChip).toBeInTheDocument();
+  });
+
+  test('Removal by clicking', async () => {
+    const user = userEvent.setup();
+    const customChip = screen
+      .getByText('custom')
+      .closest('.amplify-combo-box-chip');
+
+    await user.click(customChip!);
+
+    expect(handler).toHaveBeenCalledWith([], items[0]);
+    expect(screen.queryByText('custom')).not.toBeInTheDocument();
+  });
+
+  test('Removal by backspace', async () => {
+    const user = userEvent.setup();
+    const searchField = screen.getByRole('combobox');
+
+    await user.click(searchField);
+    await user.keyboard('{Backspace}');
+    await user.keyboard('{Backspace}');
+
+    expect(handler).toHaveBeenCalledWith([], items[0]);
+    expect(screen.queryByText('custom')).not.toBeInTheDocument();
+  });
 });
 
 test('showSelectedValuesAsText', async () => {
