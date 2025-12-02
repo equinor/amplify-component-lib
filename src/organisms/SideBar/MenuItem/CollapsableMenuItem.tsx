@@ -14,7 +14,10 @@ import {
   Link,
   MenuItemWrapper,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.styles';
-import { isCurrentUrl } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
+import {
+  isCurrentUrl,
+  isExactUrl,
+} from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled, { css } from 'styled-components';
@@ -99,7 +102,9 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   const { isOpen } = useSideBar();
   const previousIsOpen = usePrevious(isOpen);
   const isActive = items.some((item) =>
-    isCurrentUrl({ currentUrl: pathname, link: item.link })
+    item.exact
+      ? isExactUrl({ currentUrl: pathname, link: item.link })
+      : isCurrentUrl({ currentUrl: pathname, link: item.link })
   );
   const parentRef = useRef<HTMLButtonElement | null>(null);
   const [expanded, setExpanded] = useState(false);

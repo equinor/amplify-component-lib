@@ -7,6 +7,12 @@ interface SideBarMenuItemBase {
   name: string;
   link: string;
   featureUuid?: string;
+  /**
+   * `true` if the menu item should be matched exactly against the current URL.
+   * When `true`, the menu item is active only when the current URL (excluding query parameters) matches the menu item's link exactly.
+   * When `false` or `undefined` (default), the menu item is active if the current URL includes the menu item's link.
+   */
+  exact?: boolean;
 }
 
 export type BasicSideBarMenuItem = {
