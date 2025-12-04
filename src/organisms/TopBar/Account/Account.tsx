@@ -176,25 +176,23 @@ export const Account: FC<AccountProps> = ({
               <Typography variant="h6">Environment</Typography>
               <Typography></Typography>
             </TextContent>
-            <>
-              <Typography variant="caption" style={{ marginBottom: '8px' }}>
-                Select environment to use for SAM API calls (Default is
-                production)
-              </Typography>
-              {Object.values(PointToProdFeaturesLocalStorageKey).map(
-                (feature) => {
-                  const featureName = feature.split('-key')[0];
-                  return (
-                    <Switch
-                      key={feature}
-                      label={`Use current environment for ${featureName}`}
-                      checked={featureStates[feature] ?? false}
-                      onChange={(e) => toggleFeature(feature, e.target.checked)}
-                    />
-                  );
-                }
-              )}
-            </>
+            <Typography variant="caption" style={{ marginBottom: '8px' }}>
+              Select environment to use for SAM API calls (Default is
+              production)
+            </Typography>
+            {Object.values(PointToProdFeaturesLocalStorageKey).map(
+              (feature) => {
+                const featureName = feature.split('-key')[0];
+                return (
+                  <Switch
+                    key={feature}
+                    label={`Use current environment for ${featureName}`}
+                    checked={featureStates[feature] ?? false}
+                    onChange={(e) => toggleFeature(feature, e.target.checked)}
+                  />
+                );
+              }
+            )}
           </SwitchWrapper>
         )}
         {hasUnsavedChanges && (
