@@ -196,9 +196,7 @@ export const Account: FC<AccountProps> = ({
                       key={feature}
                       label={`Use current environment for ${featureName}`}
                       checked={featureStates[feature] ?? false}
-                      onChange={(e) =>
-                        handleToggleFeature(feature, e.target.checked)
-                      }
+                      onChange={(e) => toggleFeature(feature, e.target.checked)}
                     />
                   );
                 }
