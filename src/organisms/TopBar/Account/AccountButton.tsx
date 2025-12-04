@@ -6,6 +6,8 @@ import { ImpersonateAvatar } from './ImpersonateAvatar';
 import { colors, spacings } from 'src/atoms/style';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+import { EnvironmentAvatar } from 'src/organisms/TopBar/Account/EnvironmentAvatar';
+import { useToggleActiveEnvironment } from 'src/organisms/TopBar/Account/environmentToggles/hooks/useToggleActiveEnvironment';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
@@ -30,6 +32,8 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
   ({ onClick }, ref) => {
     const { account, photo } = useAuth();
     const { data: activeImpersonationUser } = useActiveImpersonationUser();
+    const { isActiveFeatureOnCurrentEnvironment, activeFeatures } =
+      useToggleActiveEnvironment();
     const impersonationRoles = activeImpersonationUser?.roles?.sort() ?? [];
 
     return (
@@ -42,8 +46,21 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
             {`+${impersonationRoles.length - 1}`}
           </ImpersonationRoleChip>
         )}
+
+        {activeFeatures && activeFeatures.at(0) && (
+          <ImpersonationRoleChip>
+            {activeFeatures[0].split('-key')[0]}
+          </ImpersonationRoleChip>
+        )}
+        {activeFeatures && activeFeatures.length > 1 && (
+          <ImpersonationRoleChip>
+            {`+${activeFeatures.length - 1}`}
+          </ImpersonationRoleChip>
+        )}
         <ProfileButton ref={ref} onClick={onClick}>
-          {activeImpersonationUser ? (
+          {isActiveFeatureOnCurrentEnvironment ? (
+            <EnvironmentAvatar size={36} />
+          ) : activeImpersonationUser ? (
             <ImpersonateAvatar size={36} />
           ) : (
             <ProfileAvatar size={36} name={account?.name} url={photo} />

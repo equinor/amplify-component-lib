@@ -19,17 +19,27 @@ import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
 import { useMappedRoles } from './ImpersonateMenu/hooks/useMappedRoles';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
-import { ButtonWrapper, Container, TextContent } from './Account.styles';
+import {
+  ButtonWrapper,
+  Container,
+  SwitchWrapper,
+  TextContent,
+} from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
 import { RoleChips } from './RoleChips';
 import { RoleList } from './RoleList';
-import { EnvironmentType } from 'src/atoms/enums/Environment';
+import {
+  EnvironmentType,
+  PointToProdFeaturesLocalStorageKey,
+} from 'src/atoms/enums/Environment';
 import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
+import { Switch } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
+import { useEnvironmentToggle } from 'src/organisms/TopBar/Account/environmentToggles/hooks/useEnvironmentToggle';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
@@ -63,6 +73,14 @@ export const Account: FC<AccountProps> = ({
   const { account, roles, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [openImpersonate, setOpenImpersonate] = useState(false);
+  const {
+    featureStates,
+    toggleFeature,
+    hasUnsavedChanges,
+    resetChanges,
+    applyChanges,
+  } = useEnvironmentToggle();
+
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { data: canImpersonate = true } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
@@ -92,6 +110,13 @@ export const Account: FC<AccountProps> = ({
     setIsOpen(false);
   };
   const handleOnCloseImpersonate = () => setOpenImpersonate(false);
+
+  const handleToggleFeature = (
+    featureKey: PointToProdFeaturesLocalStorageKey,
+    checked: boolean
+  ) => {
+    toggleFeature(featureKey, checked);
+  };
 
   useEffect(() => {
     if (
@@ -152,6 +177,43 @@ export const Account: FC<AccountProps> = ({
               />
             )}
         </Container>
+        {ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+          <SwitchWrapper>
+            <TextContent>
+              <Typography variant="h6">Environment</Typography>
+              <Typography></Typography>
+            </TextContent>
+            <>
+              <Typography variant="caption" style={{ marginBottom: '8px' }}>
+                Select environment to use for SAM API calls (Default is
+                production)
+              </Typography>
+              {Object.values(PointToProdFeaturesLocalStorageKey).map(
+                (feature) => {
+                  const featureName = feature.split('-key')[0];
+                  return (
+                    <Switch
+                      key={feature}
+                      label={`Use current environment for ${featureName}`}
+                      checked={featureStates[feature] ?? false}
+                      onChange={(e) =>
+                        handleToggleFeature(feature, e.target.checked)
+                      }
+                    />
+                  );
+                }
+              )}
+            </>
+          </SwitchWrapper>
+        )}
+        {hasUnsavedChanges && (
+          <ButtonWrapper>
+            <Button variant="outlined" onClick={resetChanges}>
+              Cancel
+            </Button>
+            <Button onClick={applyChanges}>Apply Changes</Button>
+          </ButtonWrapper>
+        )}
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>
             <Icon data={log_out} />
