@@ -19,6 +19,14 @@ export const Container = styled.div`
   gap: ${spacings.small};
 `;
 
+export const SwitchWrapper = styled.div`
+  padding: ${spacings.medium} ${spacings.medium} 0 ${spacings.medium};
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${spacings.small};
+`;
+
 export const TextContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,8 +35,10 @@ export const TextContent = styled.div`
 
 export const ButtonWrapper = styled.div`
   display: grid;
+  grid-auto-flow: column;
   margin-top: ${spacings.x_large};
   justify-content: center;
+  gap: ${spacings.small};
 `;
 export const OpenImpersonationMenuButton = styled.button`
   display: grid;
