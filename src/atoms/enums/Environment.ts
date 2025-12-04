@@ -4,3 +4,10 @@ export enum EnvironmentType {
   STAGING = 'staging',
   PRODUCTION = 'production',
 }
+
+export enum PointToProdFeaturesLocalStorageKey {
+  FEATURE_TOGGLE = 'feature-toggle-key',
+  TUTORIAL = 'tutorial-key',
+  IMPERSONATE_USER = 'impersonate-user-key',
+  FAQ = 'faq-key',
+}
