@@ -111,13 +111,6 @@ export const Account: FC<AccountProps> = ({
   };
   const handleOnCloseImpersonate = () => setOpenImpersonate(false);
 
-  const handleToggleFeature = (
-    featureKey: PointToProdFeaturesLocalStorageKey,
-    checked: boolean
-  ) => {
-    toggleFeature(featureKey, checked);
-  };
-
   useEffect(() => {
     if (
       activeImpersonationUser &&
