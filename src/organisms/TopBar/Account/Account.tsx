@@ -174,7 +174,6 @@ export const Account: FC<AccountProps> = ({
           <SwitchWrapper>
             <TextContent>
               <Typography variant="h6">Environment</Typography>
-              <Typography></Typography>
             </TextContent>
             <Typography variant="caption" style={{ marginBottom: '8px' }}>
               Select environment to use for SAM API calls (Default is
