@@ -172,14 +172,6 @@ export const Account: FC<AccountProps> = ({
               environmentToggle={environmentToggle}
             />
           )}
-        {hasUnsavedChanges && (
-          <ButtonWrapper>
-            <Button variant="outlined" onClick={resetChanges}>
-              Cancel
-            </Button>
-            <Button onClick={applyChanges}>Apply Changes</Button>
-          </ButtonWrapper>
-        )}
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>
             <Icon data={log_out} />
