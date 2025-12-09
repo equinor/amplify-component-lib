@@ -19,7 +19,12 @@ import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
 import { useMappedRoles } from './ImpersonateMenu/hooks/useMappedRoles';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
-import { ButtonWrapper, Container, TextContent } from './Account.styles';
+import {
+  ButtonWrapper,
+  Container,
+  EnvironmentToggleWrapper,
+  TextContent,
+} from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
@@ -165,13 +170,15 @@ export const Account: FC<AccountProps> = ({
               />
             )}
         </Container>
-        {enableEnvironmentToggle &&
-          ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
-            <EnvironmentToggle
-              setEnvironmentToggle={setEnvironmentToggle}
-              environmentToggle={environmentToggle}
-            />
-          )}
+        <EnvironmentToggleWrapper>
+          {enableEnvironmentToggle &&
+            ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+              <EnvironmentToggle
+                setEnvironmentToggle={setEnvironmentToggle}
+                environmentToggle={environmentToggle}
+              />
+            )}
+        </EnvironmentToggleWrapper>
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>
             <Icon data={log_out} />

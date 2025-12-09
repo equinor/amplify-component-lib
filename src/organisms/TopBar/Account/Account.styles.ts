@@ -19,11 +19,11 @@ export const Container = styled.div`
   gap: ${spacings.small};
 `;
 
-export const SwitchWrapper = styled.div`
+export const EnvironmentToggleWrapper = styled.div`
   padding: ${spacings.medium} ${spacings.medium} 0 ${spacings.medium};
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: ${spacings.small};
 `;
 
