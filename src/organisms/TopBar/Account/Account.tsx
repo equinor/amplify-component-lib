@@ -19,26 +19,20 @@ import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
 import { useMappedRoles } from './ImpersonateMenu/hooks/useMappedRoles';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
-import {
-  ButtonWrapper,
-  Container,
-  SwitchWrapper,
-  TextContent,
-} from './Account.styles';
+import { ButtonWrapper, Container, TextContent } from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
 import { RoleChips } from './RoleChips';
 import { RoleList } from './RoleList';
-import {
-  EnvironmentType,
-  PointToProdFeaturesLocalStorageKey,
-} from 'src/atoms/enums/Environment';
+import { useLocalStorage } from 'src/atoms';
+import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
-import { Switch } from 'src/molecules';
+import { SelectOptionRequired } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
+import { EnvironmentToggle } from 'src/organisms/TopBar/Account/EnvironmentToggle';
 import { useEnvironmentToggle } from 'src/organisms/TopBar/Account/environmentToggles/hooks/useEnvironmentToggle';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
@@ -73,13 +67,12 @@ export const Account: FC<AccountProps> = ({
   const { account, roles, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [openImpersonate, setOpenImpersonate] = useState(false);
-  const {
-    featureStates,
-    toggleFeature,
-    hasUnsavedChanges,
-    resetChanges,
-    applyChanges,
-  } = useEnvironmentToggle();
+  const [environmentToggle, setEnvironmentToggle] = useLocalStorage<
+    SelectOptionRequired[]
+  >('env-toggle-key', []);
+
+  const { hasUnsavedChanges, resetChanges, applyChanges } =
+    useEnvironmentToggle();
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { data: canImpersonate = true } = useCanImpersonate();
@@ -171,28 +164,10 @@ export const Account: FC<AccountProps> = ({
             )}
         </Container>
         {ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
-          <SwitchWrapper>
-            <TextContent>
-              <Typography variant="h6">Environment</Typography>
-            </TextContent>
-            <Typography variant="caption" style={{ marginBottom: '8px' }}>
-              Select environment to use for SAM API calls (Default is
-              production)
-            </Typography>
-            {Object.values(PointToProdFeaturesLocalStorageKey).map(
-              (feature) => {
-                const featureName = feature.split('-key')[0];
-                return (
-                  <Switch
-                    key={feature}
-                    label={`Use current environment for ${featureName}`}
-                    checked={featureStates[feature] ?? false}
-                    onChange={(e) => toggleFeature(feature, e.target.checked)}
-                  />
-                );
-              }
-            )}
-          </SwitchWrapper>
+          <EnvironmentToggle
+            setEnvironmentToggle={setEnvironmentToggle}
+            environmentToggle={environmentToggle}
+          />
         )}
         {hasUnsavedChanges && (
           <ButtonWrapper>
