@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { PointToProdFeaturesLocalStorageKey } from 'src/atoms';
+import { PointToProdFeaturesLocalStorageKey } from '@equinor/subsurface-app-management';
 
 interface UseToggleActiveEnvironment {
   activeFeatures: string[] | null;
