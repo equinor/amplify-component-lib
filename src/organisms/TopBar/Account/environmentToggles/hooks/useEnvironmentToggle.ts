@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { PointToProdFeaturesLocalStorageKey } from 'src/atoms';
+import { PointToProdFeaturesLocalStorageKey } from '@equinor/subsurface-app-management';
 
 interface UseEnvironmentToggle {
   featureStates: Record<string, boolean>;
@@ -11,6 +11,13 @@ interface UseEnvironmentToggle {
   ) => void;
   applyChanges: () => void;
   resetChanges: () => void;
+}
+
+interface EnvironmentToggleType {
+  featureToggle: boolean;
+  tutroial: boolean;
+  faq: boolean;
+  impersonate: boolean;
 }
 
 export function useEnvironmentToggle(): UseEnvironmentToggle {
