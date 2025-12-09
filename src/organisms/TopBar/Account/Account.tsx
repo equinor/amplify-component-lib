@@ -47,6 +47,7 @@ export interface AccountProps {
   children?: ReactNode;
   availableFields?: Field[];
   availableWells?: string[];
+  enableEnvironmentToggle?: boolean;
 }
 
 export const Account: FC<AccountProps> = ({
@@ -56,6 +57,7 @@ export const Account: FC<AccountProps> = ({
   children,
   availableFields,
   availableWells,
+  enableEnvironmentToggle,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
@@ -163,12 +165,13 @@ export const Account: FC<AccountProps> = ({
               />
             )}
         </Container>
-        {ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
-          <EnvironmentToggle
-            setEnvironmentToggle={setEnvironmentToggle}
-            environmentToggle={environmentToggle}
-          />
-        )}
+        {enableEnvironmentToggle &&
+          ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+            <EnvironmentToggle
+              setEnvironmentToggle={setEnvironmentToggle}
+              environmentToggle={environmentToggle}
+            />
+          )}
         {hasUnsavedChanges && (
           <ButtonWrapper>
             <Button variant="outlined" onClick={resetChanges}>
