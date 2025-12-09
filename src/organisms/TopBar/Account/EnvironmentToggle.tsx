@@ -27,6 +27,8 @@ export const EnvironmentToggle: FC<EnvironmentToggleProps> = ({
       items={items}
       values={environmentToggle}
       onSelect={handleOnSelect}
+      placeholder={'Set current environment for feature'}
+      helperText={'This will use current environment for selected features.'}
     />
   );
 };
