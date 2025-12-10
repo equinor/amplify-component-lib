@@ -24,7 +24,6 @@ const StatusChip = styled(Chip)<StatusVariantProps>`
   bottom: calc(${spacings.x_small} * -1);
   left: 50%;
   transform: translateX(-50%);
-  //display: ${({ $variant }) => ($variant == 'combined' ? 'flex' : 'none')};
   white-space: nowrap;
   background: ${({ $variant }) => {
     switch ($variant) {

@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
 import { colors, spacings } from 'src/atoms/style';
-import { cleanStatusText } from 'src/atoms/utils/envrionmentToggle';
+import { getActiveFeatureDisplayName } from 'src/atoms/utils/envrionmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
@@ -22,9 +22,7 @@ const Wrapper = styled.div`
 `;
 
 export const StatusChip = styled(Chip)<StatusVariantProps>`
-  background:/* ${colors.interactive.warning__resting.rgba};*/ ${({
-    $variant,
-  }) => {
+  background: ${({ $variant }) => {
     switch ($variant) {
       case 'combined':
         return colors.interactive.warning__resting.rgba;
@@ -54,7 +52,9 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
     const activeFeatures =
       environmentToggle == null
         ? []
-        : environmentToggle.map((item) => cleanStatusText(item.value));
+        : environmentToggle.map((item) =>
+            getActiveFeatureDisplayName(item.value)
+          );
 
     const impersonationRoles = activeImpersonationUser?.roles?.sort() ?? [];
 
@@ -95,7 +95,7 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
         {isActiveFeatureOnCurrentEnvironment && activeFeatures.at(0) && (
           <StatusChip $variant={'environment'}>{activeFeatures}</StatusChip>
         )}
-        {activeFeatures && activeFeatures.length > 1 && (
+        {activeFeatures && (
           <StatusChip
             $variant={'environment'}
           >{`+${activeFeatures.length - 1}`}</StatusChip>

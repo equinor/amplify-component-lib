@@ -27,9 +27,7 @@ const Wrapper = styled.div<StatusVariantProps>`
     }};
   border-radius: 50%;
   > div:first-child {
-    background: /*${colors.interactive.warning__text.rgba};*/ ${({
-      $variant,
-    }) => {
+    background: ${({ $variant }) => {
       switch ($variant) {
         case 'combined':
           return colors.interactive.warning__text.rgba;

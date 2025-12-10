@@ -2,7 +2,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 
 import { PointToProdFeaturesLocalStorageKey } from '@equinor/subsurface-app-management';
 
-import { cleanStatusText } from 'src/atoms/utils/envrionmentToggle';
+import { getActiveFeatureDisplayName } from 'src/atoms/utils/envrionmentToggle';
 import { ComboBox, SelectOptionRequired } from 'src/molecules';
 
 interface EnvironmentToggleProps {
@@ -17,7 +17,7 @@ export const EnvironmentToggle: FC<EnvironmentToggleProps> = ({
   const items = Object.values(PointToProdFeaturesLocalStorageKey).map(
     (item) => ({
       value: item.toString(),
-      label: cleanStatusText(item.toString()),
+      label: getActiveFeatureDisplayName(item.toString()),
     })
   );
 
