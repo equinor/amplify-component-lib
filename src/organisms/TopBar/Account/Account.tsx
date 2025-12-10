@@ -153,12 +153,12 @@ export const Account: FC<AccountProps> = ({
           </TextContent>
 
           {environmentToggle.length > 0 && (
-            <StatusChips roles={environmentToggle} />
+            <StatusChips statuses={environmentToggle} />
           )}
           {activeRoles && !hideRoles && (
             <>
               {activeRoles.length <= 3 ? (
-                <StatusChips roles={activeRoles} />
+                <StatusChips statuses={activeRoles} />
               ) : (
                 <RoleList roles={activeRoles} />
               )}
