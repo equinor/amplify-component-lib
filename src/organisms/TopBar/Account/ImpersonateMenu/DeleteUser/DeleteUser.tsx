@@ -14,7 +14,7 @@ import {
   RolesContainer,
   TextContent,
 } from 'src/organisms/TopBar/Account/Account.styles';
-import { ImpersonateAvatar } from 'src/organisms/TopBar/Account/ImpersonateAvatar';
+import { StatusAvatar } from 'src/organisms/TopBar/Account/StatusAvatar';
 import { useSnackbar } from 'src/providers/SnackbarProvider/SnackbarProvider';
 
 interface DeleteUserProps {
@@ -50,7 +50,7 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
           Are you sure you want to delete user &quot;{fullName}&quot;?
         </Typography>
       </section>
-      <ImpersonateAvatar size={64} fullName={fullName} />
+      <StatusAvatar size={64} name={fullName} variant="impersonate" />
       <TextContent>
         <Typography variant="h6">{fullName}</Typography>
         <Typography>{user.uniqueName}</Typography>
