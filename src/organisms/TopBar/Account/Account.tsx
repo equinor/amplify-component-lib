@@ -38,7 +38,6 @@ import { environment } from 'src/atoms/utils/auth_environment';
 import { SelectOptionRequired } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
 import { EnvironmentToggle } from 'src/organisms/TopBar/Account/EnvironmentToggle';
-import { useEnvironmentToggle } from 'src/organisms/TopBar/Account/environmentToggles/hooks/useEnvironmentToggle';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
@@ -78,9 +77,6 @@ export const Account: FC<AccountProps> = ({
     SelectOptionRequired[]
   >('env-toggle-key', []);
 
-  const { hasUnsavedChanges, resetChanges, applyChanges } =
-    useEnvironmentToggle();
-
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { data: canImpersonate = true } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
@@ -111,6 +107,8 @@ export const Account: FC<AccountProps> = ({
   };
   const handleOnCloseImpersonate = () => setOpenImpersonate(false);
 
+  //console.log('environment toggle: ', environmentToggle);
+
   useEffect(() => {
     if (
       activeImpersonationUser &&
@@ -134,7 +132,11 @@ export const Account: FC<AccountProps> = ({
       {customButton ? (
         customButton
       ) : (
-        <AccountButton ref={buttonRef} onClick={handleToggleMenu} />
+        <AccountButton
+          ref={buttonRef}
+          onClick={handleToggleMenu}
+          environmentToggle={environmentToggle}
+        />
       )}
       <TopBarMenu
         open={isOpen}
@@ -146,7 +148,7 @@ export const Account: FC<AccountProps> = ({
           {activeImpersonationUser && (
             <ActiveUserImpersonationButton onClick={handleOpenImpersonate} />
           )}
-          <AccountAvatar />
+          <AccountAvatar environmentToggle={environmentToggle} />
           <TextContent>
             <Typography variant="h6">{fullName}</Typography>
             <Typography>{username}</Typography>
