@@ -5,11 +5,11 @@ import {
   RolesContainer,
 } from 'src/organisms/TopBar/Account/Account.styles';
 
-interface RoleChipsProps {
+interface StatusChipsProps {
   statuses: { value: string; label: string }[];
 }
 
-export const StatusChips: FC<RoleChipsProps> = ({ statuses }) => (
+export const StatusChips: FC<StatusChipsProps> = ({ statuses }) => (
   <RolesContainer>
     {statuses?.map((status) => (
       <RoleChip key={status.value}>{status.label}</RoleChip>
