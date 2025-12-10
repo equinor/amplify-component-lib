@@ -6,13 +6,13 @@ import {
 } from 'src/organisms/TopBar/Account/Account.styles';
 
 interface RoleChipsProps {
-  roles: { value: string; label: string }[];
+  statuses: { value: string; label: string }[];
 }
 
-export const StatusChips: FC<RoleChipsProps> = ({ roles }) => (
+export const StatusChips: FC<RoleChipsProps> = ({ statuses }) => (
   <RolesContainer>
-    {roles?.map((role) => (
-      <RoleChip key={role.value}>{role.label}</RoleChip>
+    {statuses?.map((status) => (
+      <RoleChip key={status.value}>{status.label}</RoleChip>
     ))}
   </RolesContainer>
 );
