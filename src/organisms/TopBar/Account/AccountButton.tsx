@@ -6,7 +6,10 @@ import { colors, spacings } from 'src/atoms/style';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
-import { StatusAvatar } from 'src/organisms/TopBar/Account/StatusAvatar';
+import {
+  StatusAvatar,
+  StatusVariantProps,
+} from 'src/organisms/TopBar/Account/StatusAvatar';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
@@ -17,8 +20,21 @@ const Wrapper = styled.div`
   gap: ${spacings.xx_small};
 `;
 
-const StatusChip = styled(Chip)`
-  background: ${colors.interactive.warning__resting.rgba};
+export const StatusChip = styled(Chip)<StatusVariantProps>`
+  background:/* ${colors.interactive.warning__resting.rgba};*/ ${({
+    $variant,
+  }) => {
+    switch ($variant) {
+      case 'combined':
+        return colors.interactive.warning__resting.rgba;
+      case 'environment':
+        return colors.interactive.success__resting.rgba;
+      case 'impersonate':
+        return colors.interactive.warning__resting.rgba;
+      default:
+        return colors.interactive.warning__resting.rgba;
+    }
+  }};
   outline: none;
   padding: 0;
 `;
@@ -41,29 +57,46 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
 
     const impersonationRoles = activeImpersonationUser?.roles?.sort() ?? [];
 
+    const getAvatar = () => {
+      if (isActiveFeatureOnCurrentEnvironment && activeImpersonationUser) {
+        return <StatusAvatar size={36} variant={'combined'} />;
+      }
+      if (isActiveFeatureOnCurrentEnvironment) {
+        return <StatusAvatar size={36} variant="environment" />;
+      }
+
+      if (activeImpersonationUser) {
+        return <StatusAvatar size={36} variant="impersonate" />;
+      }
+
+      return <ProfileAvatar size={36} name={account?.name} url={photo} />;
+    };
+
     return (
       <Wrapper>
         {impersonationRoles.at(0) && (
-          <StatusChip>{impersonationRoles[0]}</StatusChip>
+          <StatusChip $variant={'impersonate'}>
+            {impersonationRoles[0]}
+          </StatusChip>
         )}
         {impersonationRoles.length > 1 && (
-          <StatusChip>{`+${impersonationRoles.length - 1}`}</StatusChip>
+          <StatusChip
+            $variant={'impersonate'}
+          >{`+${impersonationRoles.length - 1}`}</StatusChip>
         )}
 
         {isActiveFeatureOnCurrentEnvironment && activeFeatures.at(0) && (
-          <StatusChip>{activeFeatures[0].split('-key')[0]}</StatusChip>
+          <StatusChip $variant={'environment'}>
+            {activeFeatures[0].split('-key')[0]}
+          </StatusChip>
         )}
         {activeFeatures && activeFeatures.length > 1 && (
-          <StatusChip>{`+${activeFeatures.length - 1}`}</StatusChip>
+          <StatusChip
+            $variant={'environment'}
+          >{`+${activeFeatures.length - 1}`}</StatusChip>
         )}
         <ProfileButton ref={ref} onClick={onClick}>
-          {isActiveFeatureOnCurrentEnvironment ? (
-            <StatusAvatar size={36} />
-          ) : activeImpersonationUser ? (
-            <StatusAvatar size={36} />
-          ) : (
-            <ProfileAvatar size={36} name={account?.name} url={photo} />
-          )}
+          {getAvatar()}
         </ProfileButton>
       </Wrapper>
     );
