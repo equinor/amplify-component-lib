@@ -10,6 +10,7 @@ import { colors } from 'src/atoms/style';
 interface StoryComponentProps extends ToggleGroupProps {
   withIcons?: boolean;
   onlyIcons?: boolean;
+  withTooltips?: boolean;
   disabled?: boolean;
 }
 
@@ -19,6 +20,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
   matchParentWidth,
   withIcons = false,
   onlyIcons = false,
+  withTooltips = false,
   disabled = false,
 }) => {
   const [recentlyPublished, setRecentlyPublished] = useState(false);
@@ -50,6 +52,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
           {...(onlyIcons
             ? {
                 icon: new_label,
+                tooltip: withTooltips ? 'Recently published' : undefined,
               }
             : {
                 label: 'Recently published',
@@ -62,6 +65,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
           {...(onlyIcons
             ? {
                 icon: person,
+                tooltip: withTooltips ? 'My files' : undefined,
               }
             : {
                 label: 'My files',
@@ -74,6 +78,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
           {...(onlyIcons
             ? {
                 icon: star_outlined,
+                tooltip: withTooltips ? 'Favourites' : undefined,
               }
             : {
                 label: 'Favourites',

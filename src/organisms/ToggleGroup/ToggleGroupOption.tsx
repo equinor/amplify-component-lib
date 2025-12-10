@@ -4,6 +4,7 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 
 import { ToggleGroupOption as ToggleGroupOptionType } from './ToggleGroup.types';
 import { colors, shape, spacings } from 'src/atoms/style';
+import { OptionalTooltip } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -73,6 +74,16 @@ export const ToggleGroupOption = forwardRef<
   HTMLButtonElement,
   ToggleGroupOptionProps
 >(({ checked, onToggle, icon, disabled, ...rest }, ref) => {
+  const buttonProps =
+    'tooltip' in rest
+      ? {
+          ...rest,
+          tooltip: undefined,
+          toolTipPlacement: undefined,
+        }
+      : {
+          ...rest,
+        };
   const handleOnClick = () => {
     onToggle(!checked);
   };
@@ -83,9 +94,20 @@ export const ToggleGroupOption = forwardRef<
       aria-checked={checked}
       onClick={handleOnClick}
       disabled={disabled}
-      {...rest}
+      {...buttonProps}
     >
-      {icon ? <Icon data={icon} size={24} /> : null}
+      {icon ? (
+        'tooltip' in rest && rest.tooltip ? (
+          <OptionalTooltip
+            title={rest.tooltip}
+            placement={rest.tooltipPlacement}
+          >
+            <Icon data={icon} size={24} />
+          </OptionalTooltip>
+        ) : (
+          <Icon data={icon} size={24} />
+        )
+      ) : null}
       {'label' in rest ? (
         <Typography as="span" variant="button" group="navigation">
           {rest.label}

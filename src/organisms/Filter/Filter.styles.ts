@@ -52,9 +52,8 @@ export const Section = styled.section`
   }
   min-height: calc(48px - (2 * ${spacings.medium_small}));
   align-items: center;
-  flex-grow: 1;
   display: flex;
-  flex-wrap: wrap;
+  flex-grow: 1;
   gap: ${spacings.x_small};
   padding: ${spacings.medium_small} ${spacings.small};
   cursor: text;
@@ -76,6 +75,13 @@ export const Section = styled.section`
       height: 24px;
     }
   }
+`;
+
+export const SearchAndValuesWrapper = styled.span`
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  gap: ${spacings.x_small};
 `;
 
 export const SearchField = styled.input`

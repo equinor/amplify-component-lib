@@ -12,6 +12,7 @@ import {
 import {
   Container,
   Content,
+  SearchAndValuesWrapper,
   SearchField,
   SearchFieldWrapper,
   Section,
@@ -133,39 +134,41 @@ export function Filter<T extends string>({
             data={search_icon}
             color={colors.text.static_icons__tertiary.rgba}
           />
-          {(Object.keys(values) as Array<T>).flatMap((key) =>
-            values[key].map(({ label, icon }, index, list) => (
-              <StyledChip
-                key={`${label}-${index}-${key}`}
-                onDelete={() => onClearFilter(key, index)}
-                leadingIconData={icon}
-                $tryingToRemove={
-                  attemptingToRemove === key && index === list.length - 1
-                }
-              >
-                {label}
-              </StyledChip>
-            ))
-          )}
-          <SearchFieldWrapper>
-            {'autoCompleteOptions' in rest && rest.autoCompleteOptions && (
-              <AutoCompleteText
-                search={search}
-                autoCompleteOptions={rest.autoCompleteOptions}
-              />
+          <SearchAndValuesWrapper>
+            {(Object.keys(values) as Array<T>).flatMap((key) =>
+              values[key].map(({ label, icon }, index, list) => (
+                <StyledChip
+                  key={`${label}-${index}-${key}`}
+                  onDelete={() => onClearFilter(key, index)}
+                  leadingIconData={icon}
+                  $tryingToRemove={
+                    attemptingToRemove === key && index === list.length - 1
+                  }
+                >
+                  {label}
+                </StyledChip>
+              ))
             )}
-            <SearchField
-              ref={searchRef}
-              id={`filter-search-${id}`}
-              type="search"
-              autoComplete="off"
-              value={search}
-              placeholder={hasAnyValues ? undefined : placeholder}
-              onChange={onSearchChange}
-              onKeyDownCapture={handleOnKeyDown}
-              onFocus={handleOnFocus}
-            />
-          </SearchFieldWrapper>
+            <SearchFieldWrapper>
+              {'autoCompleteOptions' in rest && rest.autoCompleteOptions && (
+                <AutoCompleteText
+                  search={search}
+                  autoCompleteOptions={rest.autoCompleteOptions}
+                />
+              )}
+              <SearchField
+                ref={searchRef}
+                id={`filter-search-${id}`}
+                type="search"
+                autoComplete="off"
+                value={search}
+                placeholder={hasAnyValues ? undefined : placeholder}
+                onChange={onSearchChange}
+                onKeyDownCapture={handleOnKeyDown}
+                onFocus={handleOnFocus}
+              />
+            </SearchFieldWrapper>
+          </SearchAndValuesWrapper>
           {(Object.values(values) as SelectOptionRequired[][]).some(
             (list) => list.length > 0
           ) && (

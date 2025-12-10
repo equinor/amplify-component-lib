@@ -65,7 +65,7 @@ const meta: Meta<typeof Toast> = {
         undefined: undefined,
         withAction: {
           onClick: fn(),
-          text: 'Undo',
+          text: 'Read more',
         },
       },
     },
