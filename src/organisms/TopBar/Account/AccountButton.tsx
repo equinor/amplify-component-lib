@@ -3,6 +3,7 @@ import { forwardRef } from 'react';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
 import { colors, spacings } from 'src/atoms/style';
+import { cleanStatusText } from 'src/atoms/utils/envrionmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
@@ -53,7 +54,7 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
     const activeFeatures =
       environmentToggle == null
         ? []
-        : environmentToggle.map((item) => item.value);
+        : environmentToggle.map((item) => cleanStatusText(item.value));
 
     const impersonationRoles = activeImpersonationUser?.roles?.sort() ?? [];
 
@@ -62,7 +63,13 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
         return <StatusAvatar size={36} variant={'combined'} />;
       }
       if (isActiveFeatureOnCurrentEnvironment) {
-        return <StatusAvatar size={36} variant="environment" />;
+        return (
+          <StatusAvatar
+            size={36}
+            name={environmentToggle.map((x) => x.value).join(', ')}
+            variant="environment"
+          />
+        );
       }
 
       if (activeImpersonationUser) {
@@ -86,9 +93,7 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
         )}
 
         {isActiveFeatureOnCurrentEnvironment && activeFeatures.at(0) && (
-          <StatusChip $variant={'environment'}>
-            {activeFeatures[0].split('-key')[0]}
-          </StatusChip>
+          <StatusChip $variant={'environment'}>{activeFeatures}</StatusChip>
         )}
         {activeFeatures && activeFeatures.length > 1 && (
           <StatusChip
