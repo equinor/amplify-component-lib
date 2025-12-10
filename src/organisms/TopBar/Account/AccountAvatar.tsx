@@ -2,11 +2,10 @@ import { FC } from 'react';
 
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { colors, spacings } from 'src/atoms/style';
+import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
-import { EnvironmentAvatar } from 'src/organisms/TopBar/Account/EnvironmentAvatar';
-import { useToggleActiveEnvironment } from 'src/organisms/TopBar/Account/environmentToggles/hooks/useToggleActiveEnvironment';
-import { ImpersonateAvatar } from 'src/organisms/TopBar/Account/ImpersonateAvatar';
+import { StatusAvatar } from 'src/organisms/TopBar/Account/StatusAvatar';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';
@@ -34,16 +33,27 @@ const EnvironmentChip = styled(Chip)`
   outline-color: ${colors.interactive.warning__resting.rgba};
 `;
 
-export const AccountAvatar: FC = () => {
+interface AccountAvatarProps {
+  environmentToggle?: SelectOptionRequired[];
+}
+
+export const AccountAvatar: FC<AccountAvatarProps> = ({
+  environmentToggle,
+}) => {
   const { account, photo } = useAuth();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
 
-  const { isActiveFeatureOnCurrentEnvironment } = useToggleActiveEnvironment();
+  const isActiveFeatureOnCurrentEnvironment =
+    environmentToggle != null && environmentToggle.length > 0;
+  const activeFeatureNames =
+    environmentToggle == null
+      ? ''
+      : environmentToggle.map((x) => x.label).join(', ');
 
   if (activeImpersonationUser) {
     return (
       <Wrapper>
-        <ImpersonateAvatar size={64} />
+        <StatusAvatar size={64} />
         <ImpersonateChip>Impersonating</ImpersonateChip>
       </Wrapper>
     );
@@ -52,7 +62,7 @@ export const AccountAvatar: FC = () => {
   if (isActiveFeatureOnCurrentEnvironment) {
     return (
       <Wrapper>
-        <EnvironmentAvatar size={64} />
+        <StatusAvatar size={64} name={activeFeatureNames} />
         <EnvironmentChip>Environment</EnvironmentChip>
       </Wrapper>
     );
