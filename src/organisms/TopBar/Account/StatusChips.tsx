@@ -9,9 +9,9 @@ interface RoleChipsProps {
   roles: { value: string; label: string }[];
 }
 
-export const RoleChips: FC<RoleChipsProps> = ({ roles }) => (
+export const StatusChips: FC<RoleChipsProps> = ({ roles }) => (
   <RolesContainer>
-    {roles.map((role) => (
+    {roles?.map((role) => (
       <RoleChip key={role.value}>{role.label}</RoleChip>
     ))}
   </RolesContainer>

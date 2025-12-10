@@ -29,7 +29,6 @@ import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
-import { RoleChips } from './RoleChips';
 import { RoleList } from './RoleList';
 import { useLocalStorage } from 'src/atoms';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
@@ -39,6 +38,7 @@ import { SelectOptionRequired } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
 import { EnvironmentToggle } from 'src/organisms/TopBar/Account/EnvironmentToggle';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
+import { StatusChips } from 'src/organisms/TopBar/Account/StatusChips';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export interface AccountProps {
@@ -151,10 +151,14 @@ export const Account: FC<AccountProps> = ({
             <Typography variant="h6">{fullName}</Typography>
             <Typography>{username}</Typography>
           </TextContent>
+
+          {environmentToggle.length > 0 && (
+            <StatusChips roles={environmentToggle} />
+          )}
           {activeRoles && !hideRoles && (
             <>
               {activeRoles.length <= 3 ? (
-                <RoleChips roles={activeRoles} />
+                <StatusChips roles={activeRoles} />
               ) : (
                 <RoleList roles={activeRoles} />
               )}
