@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
 import { colors, spacings } from 'src/atoms/style';
-import { getActiveFeatureDisplayName } from 'src/atoms/utils/envrionmentToggle';
+import { getActiveFeatureDisplayName } from 'src/atoms/utils/environmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';

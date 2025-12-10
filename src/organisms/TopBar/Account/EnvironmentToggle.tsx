@@ -2,7 +2,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 
 import { PointToProdFeaturesLocalStorageKey } from '@equinor/subsurface-app-management';
 
-import { getActiveFeatureDisplayName } from 'src/atoms/utils/envrionmentToggle';
+import { getActiveFeatureDisplayName } from 'src/atoms/utils/environmentToggle';
 import { ComboBox, SelectOptionRequired } from 'src/molecules';
 
 interface EnvironmentToggleProps {
