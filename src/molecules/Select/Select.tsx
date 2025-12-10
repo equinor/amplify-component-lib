@@ -102,7 +102,7 @@ export const Select = <T extends SelectOptionRequired>(
   /* v8 ignore end */
 
   if (mode === 'persistent' && 'value' in props && props.value) {
-    throw new Error('You cannot use single select with persistent mode');
+    throw new Error('You cannot use SingleSelect with persistent mode');
   }
 
   if (mode === 'persistent') {
