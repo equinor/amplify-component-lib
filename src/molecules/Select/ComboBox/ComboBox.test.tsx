@@ -665,14 +665,10 @@ const CustomValueElement: FC<{
 );
 
 describe('Custom value component', () => {
-  let label: string;
-  let items: SelectOptionRequired[];
-  let handler: ReturnType<typeof vi.fn>;
-
-  beforeEach(() => {
-    label = faker.animal.bear();
-    items = fakeSelectItems();
-    handler = vi.fn();
+  test('Renders', () => {
+    const label = faker.animal.bear();
+    const items = fakeSelectItems();
+    const handler = vi.fn();
 
     render(
       <ComboBox
@@ -683,9 +679,7 @@ describe('Custom value component', () => {
         customValueComponent={CustomValueElement}
       />
     );
-  });
 
-  test('Renders', () => {
     const customChip = screen
       .getByText('custom')
       .closest('.amplify-combo-box-chip');
@@ -694,6 +688,20 @@ describe('Custom value component', () => {
   });
 
   test('Removal by clicking', async () => {
+    const label = faker.animal.bear();
+    const items = fakeSelectItems();
+    const handler = vi.fn();
+
+    const { rerender } = render(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[items[0]]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
     const user = userEvent.setup();
     const customChip = screen
       .getByText('custom')
@@ -702,10 +710,35 @@ describe('Custom value component', () => {
     await user.click(customChip!);
 
     expect(handler).toHaveBeenCalledWith([], items[0]);
+
+    rerender(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
     expect(screen.queryByText('custom')).not.toBeInTheDocument();
   });
 
   test('Removal by backspace', async () => {
+    const label = faker.animal.bear();
+    const items = fakeSelectItems();
+    const handler = vi.fn();
+
+    const { rerender } = render(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[items[0]]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
     const user = userEvent.setup();
     const searchField = screen.getByRole('combobox');
 
@@ -714,6 +747,17 @@ describe('Custom value component', () => {
     await user.keyboard('{Backspace}');
 
     expect(handler).toHaveBeenCalledWith([], items[0]);
+
+    rerender(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
     expect(screen.queryByText('custom')).not.toBeInTheDocument();
   });
 });

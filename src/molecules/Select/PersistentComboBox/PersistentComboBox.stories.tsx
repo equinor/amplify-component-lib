@@ -106,6 +106,30 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
     value: faker.string.uuid(),
   }));
 
+// Custom type that extends SelectOptionRequired with additional properties
+interface ExtendedItem extends SelectOptionRequired {
+  id: number;
+  category: string;
+  metadata?: Record<string, unknown>;
+}
+
+const FAKE_EXTENDED_ITEMS: ExtendedItem[] = new Array(8)
+  .fill(0)
+  .map((_, index) => ({
+    label: `${faker.animal.fish()} #${index + 1}`,
+    value: faker.string.uuid(),
+    id: index + 1,
+    category: faker.helpers.arrayElement([
+      'freshwater',
+      'saltwater',
+      'tropical',
+    ]),
+    metadata: {
+      scientific_name: faker.science.chemicalElement().name,
+      habitat: faker.location.city(),
+    },
+  }));
+
 type Story = StoryObj<typeof PersistentComboBox>;
 
 const PersistentComboBoxWithState = (
@@ -156,6 +180,28 @@ const PersistentComboBoxWithAddState = (
       onSelect={handleOnSelect}
       groups={undefined}
       onAddItem={handleOnAdd}
+    />
+  );
+};
+
+const PersistentComboBoxWithExtendedTypeState: FC = () => {
+  const [values, setValues] = useState<SelectOption<ExtendedItem>[]>([]);
+
+  const handleOnSelect = (
+    selectedValues: SelectOption<ExtendedItem>[],
+    selectedValue?: SelectOption<ExtendedItem>
+  ) => {
+    actions('onSelect').onSelect(selectedValues, selectedValue);
+    setValues(selectedValues);
+  };
+
+  return (
+    <PersistentComboBox<ExtendedItem>
+      items={FAKE_EXTENDED_ITEMS}
+      values={values}
+      onSelect={handleOnSelect}
+      sortValues
+      clearable
     />
   );
 };
@@ -543,4 +589,182 @@ export const PersistentComboBoxWithCustomizableSelectMenuItem: Story = {
     CustomMenuItemComponent: CustomMenuItem,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxNoItemsFound: Story = {
+  args: {
+    items: [],
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // "No items found" text should be visible when items array is empty
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+
+    // Search box should still be present
+    const searchBox = canvas.getByRole('combobox');
+    await expect(searchBox).toBeInTheDocument();
+
+    // Try typing in search box - should still show "No items found"
+    await userEvent.type(searchBox, 'test search');
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+  },
+  tags: ['test-only'],
+};
+
+export const PersistentComboBoxNoItemsFoundWithGroups: Story = {
+  args: {
+    groups: [],
+    items: undefined,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // "No items found" text should be visible when groups array is empty
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+
+    // Search box should still be present
+    const searchBox = canvas.getByRole('combobox');
+    await expect(searchBox).toBeInTheDocument();
+
+    // Try typing in search box - should still show "No items found"
+    await userEvent.type(searchBox, 'test search');
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+  },
+  tags: ['test-only'],
+};
+
+export const PersistentComboBoxAddItemWithExactMatch: Story = {
+  render: (args) => <PersistentComboBoxWithAddState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const searchBox = canvas.getByRole('combobox');
+
+    // Get the first item's exact label
+    const exactItemLabel = FAKE_ITEMS[0].label;
+
+    // Type the EXACT label of an existing item (case-insensitive match)
+    await userEvent.type(searchBox, exactItemLabel);
+
+    // When search exactly matches an existing item (case-insensitive),
+    // the "Add tag" section should NOT appear because there's exactly 1 filtered item
+    // and its label matches the search term
+    await expect(canvas.queryByText('Add tag')).not.toBeInTheDocument();
+
+    // The matching item should be visible
+    await expect(
+      canvas.getByRole('button', { name: exactItemLabel })
+    ).toBeInTheDocument();
+
+    // Clear the search
+    await userEvent.clear(searchBox);
+
+    // Now type a partial match that will result in exactly 1 filtered item
+    // but doesn't match it exactly
+    const partialMatch = exactItemLabel.substring(0, exactItemLabel.length - 2);
+    await userEvent.type(searchBox, partialMatch);
+
+    // With a partial match (1 filtered item but search doesn't match exactly),
+    // the "Add tag" section SHOULD appear
+    await expect(canvas.getByText('Add tag')).toBeInTheDocument();
+
+    // Clear again
+    await userEvent.clear(searchBox);
+
+    // Type something that doesn't match any items
+    await userEvent.type(searchBox, 'NonExistentFishSpecies123');
+
+    // With no matches (filteredItems.length !== 1), "Add tag" SHOULD appear
+    await expect(canvas.getByText('Add tag')).toBeInTheDocument();
+
+    // Clear one more time
+    await userEvent.clear(searchBox);
+
+    // Type a search that matches multiple items (e.g., just first few chars)
+    const multiMatch = FAKE_ITEMS[0].label.substring(0, 3);
+    await userEvent.type(searchBox, multiMatch);
+
+    // With multiple matches (filteredItems.length !== 1), "Add tag" SHOULD appear
+    await expect(canvas.getByText('Add tag')).toBeInTheDocument();
+  },
+  tags: ['test-only'],
+};
+
+export const PersistentComboBoxAddItemWithCustomSingularWord: Story = {
+  render: (args) => <PersistentComboBoxWithAddState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const searchBox = canvas.getByRole('combobox');
+
+    // Type a search term that will trigger the add item UI
+    const searchTerm = 'NewCustomItem';
+    await userEvent.type(searchBox, searchTerm);
+
+    // With itemSingularWord set to "species", the section titles should use "species"
+    // instead of the default "tag"
+    await expect(canvas.getByText('Add species')).toBeInTheDocument();
+    await expect(
+      canvas.getByText('Species search results')
+    ).toBeInTheDocument();
+
+    // The add button should also use "species"
+    const addButton = canvas.getByRole('button', {
+      name: `Add "${searchTerm}" as new species`,
+    });
+    await expect(addButton).toBeInTheDocument();
+
+    // Click to add the item
+    await userEvent.click(addButton);
+
+    // Clear search
+    await userEvent.clear(searchBox);
+
+    // Verify the item was added
+    await expect(
+      canvas.getByRole('button', { name: searchTerm })
+    ).toBeInTheDocument();
+  },
+  args: {
+    itemSingularWord: 'species',
+  },
+  tags: ['test-only'],
+};
+
+export const PersistentComboBoxWithExtendedType: Story = {
+  render: () => <PersistentComboBoxWithExtendedTypeState />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Test that the component works with extended types (T extends SelectOptionRequired)
+    const firstItem = FAKE_EXTENDED_ITEMS[0];
+    const secondItem = FAKE_EXTENDED_ITEMS[1];
+
+    // Items should be visible
+    await expect(
+      canvas.getByRole('button', { name: firstItem.label })
+    ).toBeInTheDocument();
+
+    // Select first item - component should handle extended type properties
+    await userEvent.click(
+      canvas.getByRole('button', { name: firstItem.label })
+    );
+
+    // Select second item
+    await userEvent.click(
+      canvas.getByRole('button', { name: secondItem.label })
+    );
+
+    // Both items should remain visible after selection
+    await expect(
+      canvas.getByRole('button', { name: firstItem.label })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: secondItem.label })
+    ).toBeInTheDocument();
+  },
+  tags: ['test-only'],
 };
