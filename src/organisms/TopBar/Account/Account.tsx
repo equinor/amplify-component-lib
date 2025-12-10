@@ -107,8 +107,6 @@ export const Account: FC<AccountProps> = ({
   };
   const handleOnCloseImpersonate = () => setOpenImpersonate(false);
 
-  //console.log('environment toggle: ', environmentToggle);
-
   useEffect(() => {
     if (
       activeImpersonationUser &&
