@@ -18,7 +18,6 @@ export const EnvironmentToggle: FC<EnvironmentToggleProps> = ({
   );
 
   const handleOnSelect = (value: SelectOptionRequired[]) => {
-    console.log('Selected value: ', value);
     setEnvironmentToggle(value);
   };
 
