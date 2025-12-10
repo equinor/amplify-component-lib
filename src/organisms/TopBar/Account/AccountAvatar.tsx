@@ -101,7 +101,7 @@ export const AccountAvatar: FC<AccountAvatarProps> = ({
       return (
         <>
           <StatusAvatar size={64} variant="impersonate" name={fullName} />
-          <StatusChip $variant="impersonate">Impersonate</StatusChip>
+          <StatusChip $variant="impersonate">Impersonating</StatusChip>
         </>
       );
     }
