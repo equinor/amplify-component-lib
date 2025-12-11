@@ -12,6 +12,7 @@ import {
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
+import { ENVIRONMENT_TOGGLE_KEY } from '@equinor/subsurface-app-management';
 
 import { TopBarMenu } from '../TopBarMenu';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
@@ -75,7 +76,7 @@ export const Account: FC<AccountProps> = ({
   const [openImpersonate, setOpenImpersonate] = useState(false);
   const [environmentToggle, setEnvironmentToggle] = useLocalStorage<
     SelectOptionRequired[]
-  >('env-toggle-key', []);
+  >(ENVIRONMENT_TOGGLE_KEY, []);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { data: canImpersonate = true } = useCanImpersonate();
