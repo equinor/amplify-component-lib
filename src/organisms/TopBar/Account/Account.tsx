@@ -62,7 +62,7 @@ export const Account: FC<AccountProps> = ({
   children,
   availableFields,
   availableWells,
-  enableEnvironmentToggle,
+  enableEnvironmentToggle = false,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME

@@ -5,7 +5,7 @@ import { EnvironmentToggleFeatures } from '@equinor/subsurface-app-management';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
 import { colors, spacings } from 'src/atoms/style';
-import { getActiveFeatureDisplayName } from 'src/atoms/utils/environmentToggle';
+import { formatFeatureName } from 'src/atoms/utils/environmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
@@ -55,7 +55,7 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
       environmentToggle == null
         ? []
         : environmentToggle.map((item) =>
-            getActiveFeatureDisplayName(item.value as EnvironmentToggleFeatures)
+            formatFeatureName(item.value as EnvironmentToggleFeatures)
           );
 
     const impersonationRoles = activeImpersonationUser?.roles?.sort() ?? [];

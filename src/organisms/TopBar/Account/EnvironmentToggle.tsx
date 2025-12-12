@@ -1,8 +1,9 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 import { EnvironmentToggleFeatures } from '@equinor/subsurface-app-management';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { getActiveFeatureDisplayName } from 'src/atoms/utils/environmentToggle';
+import { formatFeatureName } from 'src/atoms/utils/environmentToggle';
 import { ComboBox, SelectOptionRequired } from 'src/molecules';
 
 interface EnvironmentToggleProps {
@@ -14,17 +15,25 @@ export const EnvironmentToggle: FC<EnvironmentToggleProps> = ({
   environmentToggle,
   setEnvironmentToggle,
 }) => {
+  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
   const items = Object.values(EnvironmentToggleFeatures).map((item) => ({
     value: item.toString(),
-    label: getActiveFeatureDisplayName(item),
+    label: formatFeatureName(item),
   }));
 
   const handleOnSelect = (value: SelectOptionRequired[]) => {
     setEnvironmentToggle(value);
+    setIsLoading(true);
+    setTimeout(() => {
+      queryClient.invalidateQueries();
+      setIsLoading(false);
+    }, 2000);
   };
 
   return (
     <ComboBox
+      loading={isLoading}
       items={items}
       values={environmentToggle}
       onSelect={handleOnSelect}
