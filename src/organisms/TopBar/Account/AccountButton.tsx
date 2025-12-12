@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 `;
 
 export const StatusChip = styled(Chip)<StatusVariantProps>`
-  background: ${({ $variant }) => getVariantColors($variant).chip};
+  background: ${({ $variant }) => getVariantColors($variant).chipBackground};
   outline: none;
   padding: 0;
 `;

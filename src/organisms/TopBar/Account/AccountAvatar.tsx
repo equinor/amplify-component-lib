@@ -1,7 +1,8 @@
 import { FC } from 'react';
 
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
-import { colors, spacings } from 'src/atoms/style';
+import { spacings } from 'src/atoms/style';
+import { getVariantColors } from 'src/atoms/utils/environmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
@@ -23,30 +24,8 @@ const StatusChip = styled(Chip)<StatusVariantProps>`
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  background: ${({ $variant }) => {
-    switch ($variant) {
-      case 'combined':
-        return colors.interactive.warning__resting.rgba;
-      case 'environment':
-        return colors.interactive.success__resting.rgba;
-      case 'impersonate':
-        return colors.interactive.warning__resting.rgba;
-      default:
-        return colors.interactive.warning__resting.rgba;
-    }
-  }};
-  outline-color: ${({ $variant }) => {
-    switch ($variant) {
-      case 'combined':
-        return colors.interactive.success__resting.rgba;
-      case 'environment':
-        return colors.interactive.success__resting.rgba;
-      case 'impersonate':
-        return colors.interactive.warning__resting.rgba;
-      default:
-        return colors.interactive.warning__resting.rgba;
-    }
-  }};
+  background: ${({ $variant }) => getVariantColors($variant).chipBackground};
+  outline-color: ${({ $variant }) => getVariantColors($variant).outline};
 `;
 
 interface AccountAvatarProps {
