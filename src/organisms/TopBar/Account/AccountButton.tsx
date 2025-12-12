@@ -9,10 +9,8 @@ import { formatFeatureName } from 'src/atoms/utils/environmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
-import {
-  StatusAvatar,
-  StatusVariantProps,
-} from 'src/organisms/TopBar/Account/StatusAvatar';
+import { StatusVariantProps } from 'src/organisms/TopBar/Account/Account.types';
+import { StatusAvatar } from 'src/organisms/TopBar/Account/StatusAvatar';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';

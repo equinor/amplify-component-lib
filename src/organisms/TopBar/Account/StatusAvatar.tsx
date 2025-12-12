@@ -1,45 +1,20 @@
 import { FC } from 'react';
 
-import { colors } from 'src/atoms/style';
+import { getVariantColors } from 'src/atoms/utils/environmentToggle';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+import {
+  StatusVariant,
+  StatusVariantProps,
+} from 'src/organisms/TopBar/Account/Account.types';
 
 import styled from 'styled-components';
 
-export type StatusVariant = 'impersonate' | 'environment' | 'combined';
-export interface StatusVariantProps {
-  $variant?: StatusVariant;
-}
-
 const Wrapper = styled.div<StatusVariantProps>`
   width: fit-content;
-  border: 2px solid
-    ${({ $variant }) => {
-      switch ($variant) {
-        case 'combined':
-          return colors.interactive.success__resting.rgba;
-        case 'environment':
-          return colors.interactive.success__resting.rgba;
-        case 'impersonate':
-          return colors.interactive.warning__resting.rgba;
-        default:
-          return colors.interactive.warning__resting.rgba;
-      }
-    }};
+  border: 2px solid ${({ $variant }) => getVariantColors($variant).border};
   border-radius: 50%;
   > div:first-child {
-    background: ${({ $variant }) => {
-      switch ($variant) {
-        case 'combined':
-          return colors.interactive.warning__text.rgba;
-        case 'environment':
-          return colors.interactive.success__text.rgba;
-        case 'impersonate':
-          return colors.interactive.warning__text.rgba;
-        default:
-          return colors.interactive.warning__text.rgba;
-      }
-    }};
-  }
+    background: ${({ $variant }) => getVariantColors($variant).background}
 `;
 
 interface StatusAvatarProps {
