@@ -175,15 +175,15 @@ export const Account: FC<AccountProps> = ({
               />
             )}
         </Container>
-        <EnvironmentToggleWrapper>
-          {enableEnvironmentToggle &&
-            ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+        {enableEnvironmentToggle &&
+          ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+            <EnvironmentToggleWrapper>
               <EnvironmentToggle
                 setEnvironmentToggle={setEnvironmentToggle}
                 environmentToggle={environmentToggle}
               />
-            )}
-        </EnvironmentToggleWrapper>
+            </EnvironmentToggleWrapper>
+          )}
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>
             <Icon data={log_out} />
