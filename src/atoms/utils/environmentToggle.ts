@@ -13,26 +13,31 @@ export function formatFeatureName(activeFeature: EnvironmentToggleFeatures) {
 type ColorConfig = {
   border: string;
   background: string;
+  chip: string;
 };
 
 const VARIANT_COLORS: Record<StatusVariant, ColorConfig> = {
   combined: {
     border: colors.interactive.success__resting.rgba,
     background: colors.interactive.warning__text.rgba,
+    chip: colors.interactive.warning__resting.rgba,
   },
   environment: {
     border: colors.interactive.success__resting.rgba,
     background: colors.interactive.success__text.rgba,
+    chip: colors.interactive.success__resting.rgba,
   },
   impersonate: {
     border: colors.interactive.warning__resting.rgba,
     background: colors.interactive.warning__text.rgba,
+    chip: colors.interactive.warning__resting.rgba,
   },
 };
 
 const DEFAULT_COLORS: ColorConfig = {
   border: colors.interactive.warning__resting.rgba,
   background: colors.interactive.warning__text.rgba,
+  chip: colors.interactive.warning__resting.rgba,
 };
 
 export function getVariantColors(

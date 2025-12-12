@@ -2,14 +2,13 @@ import { FC } from 'react';
 
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { colors, spacings } from 'src/atoms/style';
+import { getVariantColors } from 'src/atoms/utils/environmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+import { StatusVariantProps } from 'src/organisms/TopBar/Account/Account.types';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
-import {
-  StatusAvatar,
-  StatusVariantProps,
-} from 'src/organisms/TopBar/Account/StatusAvatar';
+import { StatusAvatar } from 'src/organisms/TopBar/Account/StatusAvatar';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 import styled from 'styled-components';

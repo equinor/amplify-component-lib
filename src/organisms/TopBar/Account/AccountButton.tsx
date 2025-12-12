@@ -4,8 +4,11 @@ import { EnvironmentToggleFeatures } from '@equinor/subsurface-app-management';
 
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
-import { colors, spacings } from 'src/atoms/style';
-import { formatFeatureName } from 'src/atoms/utils/environmentToggle';
+import { spacings } from 'src/atoms/style';
+import {
+  formatFeatureName,
+  getVariantColors,
+} from 'src/atoms/utils/environmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
 import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
@@ -22,18 +25,7 @@ const Wrapper = styled.div`
 `;
 
 export const StatusChip = styled(Chip)<StatusVariantProps>`
-  background: ${({ $variant }) => {
-    switch ($variant) {
-      case 'combined':
-        return colors.interactive.warning__resting.rgba;
-      case 'environment':
-        return colors.interactive.success__resting.rgba;
-      case 'impersonate':
-        return colors.interactive.warning__resting.rgba;
-      default:
-        return colors.interactive.warning__resting.rgba;
-    }
-  }};
+  background: ${({ $variant }) => getVariantColors($variant).chip};
   outline: none;
   padding: 0;
 `;
