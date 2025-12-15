@@ -45,7 +45,7 @@ export const readUploadedFileAsText = (
 export const getUrgencyNumber = (urgency: UrgencyOption) => {
   switch (urgency) {
     case UrgencyOption.UNABLE:
-      return ServiceNowUrgency.CRITICAL;
+      return ServiceNowUrgency.MODERATE;
     case UrgencyOption.IMPEDES:
       return ServiceNowUrgency.MODERATE;
     case UrgencyOption.NO_IMPACT:
