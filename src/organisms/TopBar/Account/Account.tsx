@@ -12,6 +12,7 @@ import {
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
+import { ENVIRONMENT_TOGGLE_KEY } from '@equinor/subsurface-app-management';
 
 import { TopBarMenu } from '../TopBarMenu';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
@@ -19,18 +20,26 @@ import { useCanImpersonate } from './ImpersonateMenu/hooks/useCanImpersonate';
 import { useMappedRoles } from './ImpersonateMenu/hooks/useMappedRoles';
 import { useStopImpersonation } from './ImpersonateMenu/hooks/useStopImpersonation';
 import { ImpersonateMenu } from './ImpersonateMenu/ImpersonateMenu';
-import { ButtonWrapper, Container, TextContent } from './Account.styles';
+import {
+  ButtonWrapper,
+  Container,
+  EnvironmentToggleWrapper,
+  TextContent,
+} from './Account.styles';
 import { AccountAvatar } from './AccountAvatar';
 import { AccountButton } from './AccountButton';
 import { ActiveUserImpersonationButton } from './ActiveUserImpersonationButton';
 import { ImpersonateButton } from './ImpersonateButton';
-import { RoleChips } from './RoleChips';
 import { RoleList } from './RoleList';
+import { useLocalStorage } from 'src/atoms';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
+import { SelectOptionRequired } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
+import { EnvironmentToggle } from 'src/organisms/TopBar/Account/EnvironmentToggle';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
+import { StatusChips } from 'src/organisms/TopBar/Account/StatusChips';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
 export interface AccountProps {
@@ -43,6 +52,7 @@ export interface AccountProps {
   children?: ReactNode;
   availableFields?: Field[];
   availableWells?: string[];
+  enableEnvironmentToggle?: boolean;
 }
 
 export const Account: FC<AccountProps> = ({
@@ -52,6 +62,7 @@ export const Account: FC<AccountProps> = ({
   children,
   availableFields,
   availableWells,
+  enableEnvironmentToggle = false,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
@@ -63,6 +74,10 @@ export const Account: FC<AccountProps> = ({
   const { account, roles, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [openImpersonate, setOpenImpersonate] = useState(false);
+  const [environmentToggle, setEnvironmentToggle] = useLocalStorage<
+    SelectOptionRequired[]
+  >(ENVIRONMENT_TOGGLE_KEY, []);
+
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { data: canImpersonate = true } = useCanImpersonate();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
@@ -116,7 +131,11 @@ export const Account: FC<AccountProps> = ({
       {customButton ? (
         customButton
       ) : (
-        <AccountButton ref={buttonRef} onClick={handleToggleMenu} />
+        <AccountButton
+          ref={buttonRef}
+          onClick={handleToggleMenu}
+          environmentToggle={environmentToggle}
+        />
       )}
       <TopBarMenu
         open={isOpen}
@@ -128,15 +147,19 @@ export const Account: FC<AccountProps> = ({
           {activeImpersonationUser && (
             <ActiveUserImpersonationButton onClick={handleOpenImpersonate} />
           )}
-          <AccountAvatar />
+          <AccountAvatar environmentToggle={environmentToggle} />
           <TextContent>
             <Typography variant="h6">{fullName}</Typography>
             <Typography>{username}</Typography>
           </TextContent>
+
+          {environmentToggle.length > 0 && (
+            <StatusChips statuses={environmentToggle} />
+          )}
           {activeRoles && !hideRoles && (
             <>
               {activeRoles.length <= 3 ? (
-                <RoleChips roles={activeRoles} />
+                <StatusChips statuses={activeRoles} />
               ) : (
                 <RoleList roles={activeRoles} />
               )}
@@ -152,6 +175,15 @@ export const Account: FC<AccountProps> = ({
               />
             )}
         </Container>
+        {enableEnvironmentToggle &&
+          ACTIVE_ENVIRONMENT !== EnvironmentType.PRODUCTION && (
+            <EnvironmentToggleWrapper>
+              <EnvironmentToggle
+                setEnvironmentToggle={setEnvironmentToggle}
+                environmentToggle={environmentToggle}
+              />
+            </EnvironmentToggleWrapper>
+          )}
         <ButtonWrapper>
           <Button variant="ghost" onClick={logout}>
             <Icon data={log_out} />
