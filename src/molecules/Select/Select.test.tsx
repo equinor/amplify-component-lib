@@ -900,7 +900,12 @@ test('Throws error when trying to use SingleSelect with persistent mode and grou
         label={label}
         onSelect={handler}
         groups={groups}
-        value={undefined} // Using 'value' (SingleSelect) instead of 'values' (PersistentComboBox)
+        value={
+          groups.at(0)?.items.at(0) ?? {
+            value: 'someValue',
+            label: 'someLabel',
+          }
+        } // Using 'value' (SingleSelect) instead of 'values' (PersistentComboBox)
         mode="persistent"
       />
     );
