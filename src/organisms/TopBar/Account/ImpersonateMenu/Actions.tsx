@@ -57,6 +57,7 @@ export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
               selectedUniqueName === '' ||
               selectedUniqueName === activeUserImpersonation?.uniqueName
             }
+            data-testid="start-impersonate-button"
           >
             Impersonate
           </Button>
