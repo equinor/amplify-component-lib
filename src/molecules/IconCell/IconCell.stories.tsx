@@ -27,6 +27,7 @@ import { DataGrid } from 'src/organisms';
 import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
 
 import { useGlobals } from 'storybook/internal/preview-api';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof IconCell> = {
@@ -203,7 +204,7 @@ export const ExampleTableAndStates: StoryFn<IconCellProps> = () => {
             icon={bus}
             label="Danger Coloured Bus"
             variant={IconCellVariants.COLOURED}
-            state={IconCellStates.DANGER}
+            state={IconCellStates.ERROR}
             selected
             onClick={() => showSnackbar('Danger Bus clicked')}
           />
@@ -276,5 +277,74 @@ export const CustomReactElement: Story = {
   args: {
     icon: <CustomComponent>2</CustomComponent>,
     as: 'div',
+  },
+};
+
+type TestStory = StoryObj<typeof IconCell>;
+
+export const LabelRenders: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+    icon: cake,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const cell = canvas.getByRole('button');
+    await expect(cell).toBeInTheDocument();
+  },
+};
+
+export const IconsRender: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    icon: cake,
+    helperIcon: check,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+    await expect(allIcons[0]).toHaveAttribute('d', cake.svgPathData);
+    await expect(allIcons[1]).toHaveAttribute('d', check.svgPathData);
+  },
+};
+
+export const CustomContent: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    helperIcon: <div>helper</div>,
+    icon: <div>icon</div>,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('helper')).toBeInTheDocument();
+    await expect(canvas.getByText('icon')).toBeInTheDocument();
+  },
+};
+
+export const ClickingCallsOnClick: TestStory = {
+  tags: ['test-only'],
+  args: {
+    label: 'Click me',
+    icon: cake,
+    onClick: fn(),
+    as: 'div',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const user = userEvent.setup();
+
+    const cell = canvas.getByRole('button');
+    await user.click(cell);
+
+    await expect(args.onClick).toHaveBeenCalledOnce();
   },
 };

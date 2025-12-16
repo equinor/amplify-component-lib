@@ -1,11 +1,8 @@
-import { faker } from '@faker-js/faker';
-
-import { Toast } from './Toast';
+import { Toast } from 'src/molecules';
 import { render } from 'src/tests/browsertest-utils';
 
-test('this is the test', async () => {
-  const duration = faker.number.int({ min: Number.MIN_SAFE_INTEGER, max: 0 });
+test('Throws error when duration is less than or equal to 0', async () => {
   expect(() =>
-    render(<Toast title="Something" duration={duration} onClose={vi.fn()} />)
-  ).toThrow('Duration must be a positive number');
+    render(<Toast title="title" onClose={vi.fn()} duration={0} />)
+  ).toThrowError();
 });

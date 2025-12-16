@@ -1,4 +1,4 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import Counter from './custom-extensions/Counter';
 import { EditorMenu, EditorText } from './MenuBar/MenuBar';
@@ -12,6 +12,8 @@ import { RichText } from '.';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 import { colors } from 'src/atoms/style';
 import { getFeatures } from 'src/atoms/utils';
+
+import { expect, fn, within } from 'storybook/test';
 
 const meta: Meta<typeof RichTextEditor> = {
   title: 'Molecules/RichTextEditor',
@@ -348,4 +350,193 @@ export const CompoundComponents: StoryFn<RichTextEditorProps> = (args) => {
       </RichText.Provider>
     </RichText.Styling>
   );
+};
+
+export const TestHidesTextColorButton: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.TEXT_COLOR,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.queryByTestId('text-color-input');
+    await expect(input).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesHighlightButton: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    extendFeatures: [RichTextEditorFeatures.HIGHLIGHT],
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.HIGHLIGHT,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.queryByTestId('highlight-button');
+    await expect(input).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesClearFormattingButton: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p><span style="color: #f50000">test</span></p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.CLEAR_FORMATTING,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.queryByTestId('clear-formatting');
+    await expect(button).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesCodeButton: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.CODE,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.queryByTestId('code-button');
+    await expect(button).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesAlignmentButtons: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.ALIGNMENT,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const left = canvas.queryByTestId('align-left-button');
+    const center = canvas.queryByTestId('align-center-button');
+    const right = canvas.queryByTestId('align-right-button');
+    await expect(left).not.toBeInTheDocument();
+    await expect(center).not.toBeInTheDocument();
+    await expect(right).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesHeaderButtons: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.HEADERS,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const heading2 = canvas.queryByTestId('h2-button');
+    const heading3 = canvas.queryByTestId('h3-button');
+    await expect(heading2).not.toBeInTheDocument();
+    await expect(heading3).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesHistoryButtons: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.UNDO_REDO,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const undo = canvas.queryByTestId('undo-button');
+    const redo = canvas.queryByTestId('redo-button');
+    await expect(undo).not.toBeInTheDocument();
+    await expect(redo).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesFormattingButtons: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.FORMATTING,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const bold = canvas.queryByTestId('bold-button');
+    const italic = canvas.queryByTestId('italic-button');
+    await expect(bold).not.toBeInTheDocument();
+    await expect(italic).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesListButtons: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.LISTS,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const bullet = canvas.queryByTestId('bullet-list-button');
+    const ordered = canvas.queryByTestId('ordered-list-button');
+    await expect(bullet).not.toBeInTheDocument();
+    await expect(ordered).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesLinkButtons: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    removeFeatures: [
+      RichTextEditorFeatures.IMAGES,
+      RichTextEditorFeatures.LINKS,
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.queryByTestId('link-button');
+    const unset = canvas.queryByTestId('unsetlink-button');
+    await expect(link).not.toBeInTheDocument();
+    await expect(unset).not.toBeInTheDocument();
+  },
+};
+
+export const TestHidesAddImageButton: StoryObj<typeof RichTextEditor> = {
+  tags: ['test-only'],
+  args: {
+    value: '<p>test</p>',
+    onImageUpload: fn(),
+    removeFeatures: [RichTextEditorFeatures.IMAGES],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.queryByTestId('add-image-button');
+    await expect(button).not.toBeInTheDocument();
+  },
 };
