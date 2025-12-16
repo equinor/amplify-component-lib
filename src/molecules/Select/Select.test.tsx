@@ -891,10 +891,6 @@ test('Throws error when trying to use SingleSelect with persistent mode and grou
   const handler = vi.fn();
   const groups = fakeGroups(3);
 
-  // This test covers the error case in GroupedSelectPersistent.tsx
-  // where it checks if ('value' in props) and throws an error.
-  // SingleSelect uses 'value' prop, while multi-select uses 'values' prop.
-
   // Suppress console.error for this test since we expect an error to be thrown
   const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -904,7 +900,7 @@ test('Throws error when trying to use SingleSelect with persistent mode and grou
         label={label}
         onSelect={handler}
         groups={groups}
-        value={undefined} // Using 'value' (SingleSelect) instead of 'values' (multi-select)
+        value={undefined} // Using 'value' (SingleSelect) instead of 'values' (PersistentComboBox)
         mode="persistent"
       />
     );
