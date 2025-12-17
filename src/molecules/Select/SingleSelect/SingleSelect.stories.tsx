@@ -265,7 +265,6 @@ export const SingleSelectWithCustomValueComponent: StoryFn = (args) => {
 type Story = StoryObj<typeof SingleSelect>;
 
 export const DisabledSingleSelect: Story = {
-  ...BasicSingleSelect,
   args: {
     disabled: true,
     items: FAKE_ITEMS,
