@@ -268,6 +268,8 @@ export const DisabledSingleSelect: Story = {
   args: {
     disabled: true,
     items: FAKE_ITEMS,
+    value: undefined,
+    onSelect: () => {},
   },
   play: async ({ canvas }) => {
     const select = canvas.getByRole('combobox');
