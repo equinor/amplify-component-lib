@@ -268,11 +268,15 @@ export const DisabledSingleSelect: Story = {
   args: {
     disabled: true,
     items: FAKE_ITEMS,
-    value: undefined,
+    value: FAKE_ITEMS[0],
     onSelect: () => {},
   },
-  play: async ({ canvas }) => {
-    const select = canvas.getByRole('combobox');
-    expect(select).toBeDisabled();
+  play: async ({ canvas, step }) => {
+    await step('Verify that the select is disabled', () => {
+      expect(canvas.getByRole('combobox')).toBeDisabled();
+    });
+    await step('Verify that the clear button is not rendered', () => {
+      expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    });
   },
 };
