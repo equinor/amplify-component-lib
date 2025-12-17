@@ -146,6 +146,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
         ref={anchorRef}
         onClick={handleOnOpen}
         aria-expanded={open}
+        aria-disabled={disabled || loading}
         $variant={variant}
         $loading={loading}
         $lightBackground={lightBackground}
