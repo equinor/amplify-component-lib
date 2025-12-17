@@ -32,21 +32,17 @@ export const StatusChip = styled(Chip)<StatusVariantProps>`
 
 interface AccountButtonProps {
   onClick: () => void;
-  environmentToggle?: SelectOptionRequired[];
+  environmentToggle: SelectOptionRequired[];
 }
 
 export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
   ({ onClick, environmentToggle }, ref) => {
     const { account, photo } = useAuth();
     const { data: activeImpersonationUser } = useActiveImpersonationUser();
-    const isActiveFeatureOnCurrentEnvironment =
-      environmentToggle != null && environmentToggle.length > 0;
-    const activeFeatures =
-      environmentToggle == null
-        ? []
-        : environmentToggle.map((item) =>
-            formatFeatureName(item.value as EnvironmentToggleFeatures)
-          );
+    const isActiveFeatureOnCurrentEnvironment = environmentToggle.length > 0;
+    const activeFeatures = environmentToggle.map((item) =>
+      formatFeatureName(item.value as EnvironmentToggleFeatures)
+    );
 
     const impersonationRoles = activeImpersonationUser?.roles?.sort() ?? [];
 

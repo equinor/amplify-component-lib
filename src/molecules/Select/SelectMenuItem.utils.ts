@@ -30,8 +30,6 @@ export function getParentState<T extends SelectOptionRequired>(
   item: SelectOption<T>,
   values: SelectOption<T>[]
 ): SelectedState {
-  if (!item.children || item.children.length === 0) return 'none';
-
   const isSelected = values.some((value) => value.value === item.value);
   const selectedValues = values.map(({ value }) => value);
   const allOptions = flattenOptions([item])?.map(({ value }) => value);

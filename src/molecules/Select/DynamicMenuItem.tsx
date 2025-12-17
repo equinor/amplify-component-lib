@@ -1,4 +1,4 @@
-import { KeyboardEvent, MouseEvent, ReactNode, useMemo } from 'react';
+import { KeyboardEvent, MouseEvent, useMemo } from 'react';
 
 import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 
@@ -22,14 +22,12 @@ interface DynamicMenuItemProps<T extends SelectOptionRequired> {
   menuItemProps: SingleSelectMenuItemProps<T> | MultiSelectMenuItemProps<T>;
   isSelected: boolean;
   handleOnParentKeyDown?: (event: KeyboardEvent<HTMLButtonElement>) => void;
-  children?: ReactNode;
 }
 
 export const DynamicMenuItem = <T extends SelectOptionRequired>({
   menuItemProps,
   isSelected,
   handleOnParentKeyDown,
-  children,
 }: DynamicMenuItemProps<T>) => {
   const {
     index,
@@ -64,8 +62,6 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
   };
 
   const itemContent = useMemo(() => {
-    if (children) return children;
-
     if (CustomMenuItemComponent) {
       return (
         <CustomMenuItemComponent item={item} selectedState={selectedState} />
@@ -90,7 +86,6 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
   }, [
     CustomMenuItemComponent,
     checkboxIcon,
-    children,
     item,
     menuItemProps,
     selectedState,

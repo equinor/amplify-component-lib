@@ -19,10 +19,11 @@ import {
 } from 'src/molecules/Select/Select.types';
 
 import { actions } from 'storybook/actions';
+import { expect, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
-const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
-  label: faker.animal.fish(),
+const FAKE_ITEMS = new Array(10).fill(0).map((_, index) => ({
+  label: `${faker.animal.fish()} #${index + 1}`,
   value: faker.string.uuid(),
 }));
 
@@ -63,33 +64,35 @@ interface Item {
 
 const FAKE_GROUPS = new Array(faker.number.int({ min: 2, max: 4 }))
   .fill(0)
-  .map(() => ({
-    title: faker.animal.lion(),
-    items: new Array(faker.number.int({ min: 2, max: 4 })).fill(0).map(() => ({
-      label: faker.animal.fish(),
-      value: faker.string.uuid(),
-    })),
+  .map((_, groupIndex) => ({
+    title: `${faker.animal.lion()} Group ${groupIndex + 1}`,
+    items: new Array(faker.number.int({ min: 2, max: 4 }))
+      .fill(0)
+      .map((_, itemIndex) => ({
+        label: `${faker.animal.fish()} G${groupIndex + 1}-${itemIndex + 1}`,
+        value: faker.string.uuid(),
+      })),
   }));
 
 const FAKE_ITEMS_WITH_CHILDREN = [
   {
-    label: faker.animal.fish(),
+    label: `${faker.animal.fish()} (Parent)`,
     value: faker.string.uuid(),
     children: new Array(faker.number.int({ min: 3, max: 3 }))
       .fill(0)
-      .map(() => ({
-        label: faker.animal.fish(),
+      .map((_, childIndex) => ({
+        label: `${faker.animal.fish()} (Child ${childIndex + 1})`,
         value: faker.string.uuid(),
         children: new Array(faker.number.int({ min: 3, max: 3 }))
           .fill(0)
-          .map(() => ({
-            label: faker.animal.fish(),
+          .map((_, grandchildIndex) => ({
+            label: `${faker.animal.fish()} (Grandchild ${childIndex + 1}.${grandchildIndex + 1})`,
             value: faker.string.uuid(),
           })),
       })),
   },
-  ...new Array(5).fill(0).map(() => ({
-    label: faker.animal.fish(),
+  ...new Array(5).fill(0).map((_, index) => ({
+    label: `${faker.animal.fish()} #${index + 2}`,
     value: faker.string.uuid(),
   })),
 ];
@@ -159,6 +162,55 @@ const PersistentComboBoxWithAddState = (
 
 export const BasicPersistentComboBox: Story = {
   render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const itemsToVerify = [FAKE_ITEMS[0], FAKE_ITEMS[1], FAKE_ITEMS[2]];
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: FAKE_ITEMS[0].label })
+    );
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: FAKE_ITEMS[1].label })
+    );
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+  },
+};
+
+export const PersistentComboBoxLoading: Story = {
+  args: {
+    loading: true,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const skeletonItems = canvas.getAllByTestId('select-item-skeleton');
+
+    await expect(skeletonItems).toHaveLength(3);
+
+    const menuItems = canvas.queryAllByRole('button');
+
+    const actualMenuItems = menuItems.filter((btn) =>
+      FAKE_ITEMS.some((item) => btn.textContent?.includes(item.label))
+    );
+    await expect(actualMenuItems.length).toBe(0);
+  },
 };
 
 export const PersistentComboBoxWithSmallParent: Story = {
@@ -173,6 +225,35 @@ export const PersistentComboBoxWithSmallParent: Story = {
       <PersistentComboBoxWithState {...args} />
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const searchBox = canvas.getByRole('combobox');
+    const itemsToVerify = [FAKE_ITEMS[0], FAKE_ITEMS[1], FAKE_ITEMS[2]];
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+
+    const searchTerm = FAKE_ITEMS[0].label.substring(
+      0,
+      Math.min(5, FAKE_ITEMS[0].label.length)
+    );
+    await userEvent.type(searchBox, searchTerm);
+
+    const firstMenuItem = canvas.getByRole('button', {
+      name: FAKE_ITEMS[0].label,
+    });
+    await expect(firstMenuItem).toBeInTheDocument();
+
+    await userEvent.clear(searchBox);
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+  },
 };
 
 export const PersistentComboBoxWithLargeParent: Story = {
@@ -191,7 +272,7 @@ export const PersistentComboBoxWithLargeParent: Story = {
 
 export const PersistentComboBoxWithMaxHeight: Story = {
   args: {
-    maxHeight: '400px',
+    maxHeight: '200px',
   },
   render: (args) => (
     <div
@@ -204,6 +285,25 @@ export const PersistentComboBoxWithMaxHeight: Story = {
       <PersistentComboBoxWithState {...args} />
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const itemsToVerify = [FAKE_ITEMS[0], FAKE_ITEMS[1], FAKE_ITEMS[2]];
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: FAKE_ITEMS[0].label })
+    );
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+  },
 };
 
 export const PersistentComboBoxWithReallyLongName: Story = {
@@ -228,6 +328,26 @@ export const PersistentComboBoxWithGroups: Story = {
     items: undefined,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const allGroupItems = FAKE_GROUPS.flatMap((g) => g.items);
+    const itemsToVerify = allGroupItems.slice(0, 3); // First 3 items from groups
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: allGroupItems[0].label })
+    );
+
+    for (const item of itemsToVerify) {
+      const menuItem = canvas.getByRole('button', { name: item.label });
+      await expect(menuItem).toBeInTheDocument();
+    }
+  },
 };
 
 export const PersistentComboBoxParented: Story = {
@@ -235,10 +355,93 @@ export const PersistentComboBoxParented: Story = {
     items: FAKE_ITEMS_WITH_CHILDREN,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const parentItem = FAKE_ITEMS_WITH_CHILDREN.find(
+      (item) => 'children' in item
+    );
+    if (!parentItem)
+      throw new Error('No parent item with children found in test data');
+    const firstChild = parentItem?.children[0];
+
+    const parentMenuItem = canvas.getByRole('button', {
+      name: parentItem.label,
+    });
+    await expect(parentMenuItem).toBeInTheDocument();
+
+    expect(
+      canvas.queryByRole('button', { name: firstChild.label })
+    ).not.toBeInTheDocument();
+
+    const toggleButtons = canvas.getAllByTestId('toggle-button');
+    await userEvent.click(toggleButtons[0]);
+
+    const childMenuItem = canvas.getByRole('button', {
+      name: firstChild.label,
+    });
+    await expect(childMenuItem).toBeInTheDocument();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: firstChild.label })
+    );
+
+    await expect(
+      canvas.getByRole('button', { name: parentItem.label })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: firstChild.label })
+    ).toBeInTheDocument();
+  },
 };
 
 export const PersistentComboBoxWithAdd: Story = {
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const searchBox = canvas.getByRole('combobox');
+
+    await expect(
+      canvas.getByRole('button', { name: FAKE_ITEMS[0].label })
+    ).toBeInTheDocument();
+
+    const newItemText = 'New Fish Item';
+    await userEvent.type(searchBox, newItemText);
+
+    await expect(canvas.getByText('Add tag')).toBeInTheDocument();
+
+    const addButton = canvas.getByRole('button', {
+      name: `Add "${newItemText}" as new tag`,
+    });
+    await expect(addButton).toBeInTheDocument();
+
+    await userEvent.click(addButton);
+
+    await userEvent.clear(searchBox);
+
+    await expect(
+      canvas.getByRole('button', { name: newItemText })
+    ).toBeInTheDocument();
+
+    const anotherItemText = 'Another Fish';
+    await userEvent.type(searchBox, anotherItemText);
+
+    await userEvent.keyboard('{Enter}');
+
+    await userEvent.clear(searchBox);
+
+    await expect(
+      canvas.getByRole('button', { name: anotherItemText })
+    ).toBeInTheDocument();
+
+    await expect(
+      canvas.getByRole('button', { name: newItemText })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: FAKE_ITEMS[0].label })
+    ).toBeInTheDocument();
+  },
 };
 
 export const PersistentComboBoxWithSelectedValuesAsText: Story = {
@@ -299,4 +502,123 @@ export const PersistentComboBoxWithCustomizableSelectMenuItem: Story = {
     CustomMenuItemComponent: CustomMenuItem,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const PersistentComboBoxNoItemsFound: Story = {
+  args: {
+    items: [],
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+
+    const searchBox = canvas.getByRole('combobox');
+    await expect(searchBox).toBeInTheDocument();
+
+    await userEvent.type(searchBox, 'test search');
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+  },
+  tags: ['test-only'],
+};
+
+export const PersistentComboBoxNoItemsFoundWithGroups: Story = {
+  args: {
+    groups: [],
+    items: undefined,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+
+    const searchBox = canvas.getByRole('combobox');
+    await expect(searchBox).toBeInTheDocument();
+
+    await userEvent.type(searchBox, 'test search');
+    await expect(canvas.getByText('No items found')).toBeInTheDocument();
+  },
+  tags: ['test-only'],
+};
+
+export const PersistentComboBoxAddItemWithExactMatch: Story = {
+  render: (args) => <PersistentComboBoxWithAddState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const searchBox = canvas.getByRole('combobox');
+
+    const exactItemLabel = FAKE_ITEMS[0].label;
+
+    // Type the EXACT label of an existing item (case-insensitive match)
+    await userEvent.type(searchBox, exactItemLabel);
+
+    await expect(canvas.queryByText('Add tag')).not.toBeInTheDocument();
+
+    await expect(
+      canvas.getByRole('button', { name: exactItemLabel })
+    ).toBeInTheDocument();
+
+    await userEvent.clear(searchBox);
+
+    // Now type a partial match that will result in exactly 1 filtered item
+    // but doesn't match it exactly
+    const partialMatch = exactItemLabel.substring(0, exactItemLabel.length - 2);
+    await userEvent.type(searchBox, partialMatch);
+
+    await expect(canvas.getByText('Add tag')).toBeInTheDocument();
+
+    await userEvent.clear(searchBox);
+
+    // Type something that doesn't match any items
+    await userEvent.type(searchBox, 'NonExistentFishSpecies123');
+
+    await expect(canvas.getByText('Add tag')).toBeInTheDocument();
+
+    await userEvent.clear(searchBox);
+
+    // Type a search that matches multiple items (e.g., just first few chars)
+    const multiMatch = FAKE_ITEMS[0].label.substring(0, 3);
+    await userEvent.type(searchBox, multiMatch);
+
+    await expect(canvas.getByText('Add tag')).toBeInTheDocument();
+  },
+  tags: ['test-only'],
+};
+
+export const PersistentComboBoxAddItemWithCustomSingularWord: Story = {
+  render: (args) => <PersistentComboBoxWithAddState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const searchBox = canvas.getByRole('combobox');
+
+    // Type a search term that will trigger the add item UI
+    const searchTerm = 'NewCustomItem';
+    await userEvent.type(searchBox, searchTerm);
+
+    await expect(canvas.getByText('Add species')).toBeInTheDocument();
+    await expect(
+      canvas.getByText('Species search results')
+    ).toBeInTheDocument();
+
+    const addButton = canvas.getByRole('button', {
+      name: `Add "${searchTerm}" as new species`,
+    });
+    await expect(addButton).toBeInTheDocument();
+
+    await userEvent.click(addButton);
+
+    await userEvent.clear(searchBox);
+
+    await expect(
+      canvas.getByRole('button', { name: searchTerm })
+    ).toBeInTheDocument();
+  },
+  args: {
+    itemSingularWord: 'species',
+  },
+  tags: ['test-only'],
 };
