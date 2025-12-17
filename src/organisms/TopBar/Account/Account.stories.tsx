@@ -6,7 +6,7 @@ import { Account, AccountProps } from './Account';
 import { formatFeatureName } from 'src/atoms/utils/environmentToggle';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
-import { expect, fn, mocked, userEvent } from 'storybook/test';
+import { expect, fn, mocked, userEvent, waitFor } from 'storybook/test';
 
 const meta: Meta<typeof Account> = {
   title: 'Organisms/TopBar/Account',
@@ -160,9 +160,9 @@ export const ShowsEnvironmentToggle: Story = {
       'select-loading-skeleton'
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-
-    await expect(loadingSkeleton).not.toBeInTheDocument();
+    await waitFor(() => expect(loadingSkeleton).not.toBeInTheDocument(), {
+      timeout: 4000,
+    });
 
     await userEvent.click(accountButton);
     const tutorialChip = await canvas.findByText(formattedTutorialName);
