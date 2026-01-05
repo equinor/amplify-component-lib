@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 import { boat, car, flight } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { colors, spacings } from 'src/atoms/style';
 import {
@@ -14,6 +14,7 @@ import {
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 
 import { actions } from 'storybook/actions';
+import { expect } from 'storybook/test';
 
 const meta: Meta<typeof SingleSelect> = {
   title: 'Molecules/Select/SingleSelect',
@@ -259,4 +260,23 @@ export const SingleSelectWithCustomValueComponent: StoryFn = (args) => {
       clearable={false}
     />
   );
+};
+
+type Story = StoryObj<typeof SingleSelect>;
+
+export const DisabledSingleSelect: Story = {
+  args: {
+    disabled: true,
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    onSelect: () => {},
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify that the select is disabled', () => {
+      expect(canvas.getByRole('combobox')).toBeDisabled();
+    });
+    await step('Verify that the clear button is not rendered', () => {
+      expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    });
+  },
 };
