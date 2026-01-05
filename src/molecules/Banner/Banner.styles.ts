@@ -36,7 +36,7 @@ const SPACINGS: Record<
     gap: spacings.medium,
   },
   compact: {
-    padding: spacings.small,
+    padding: `${spacings.x_small} ${spacings.small}`,
     gap: spacings.medium_small,
   },
 } as const;
