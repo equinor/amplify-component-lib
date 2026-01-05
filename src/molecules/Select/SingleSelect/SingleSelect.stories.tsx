@@ -85,7 +85,7 @@ export const BasicSingleSelect: StoryFn = (args) => {
   );
 };
 
-export const SingleSelectWithReallyLongName: StoryFn = (args) => {
+export const ReallyLongName: StoryFn = (args) => {
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
   const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
@@ -103,7 +103,7 @@ export const SingleSelectWithReallyLongName: StoryFn = (args) => {
   );
 };
 
-export const SingleSelectWithGroups: StoryFn = (args) => {
+export const Groups: StoryFn = (args) => {
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
   const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
@@ -121,7 +121,7 @@ export const SingleSelectWithGroups: StoryFn = (args) => {
   );
 };
 
-export const SingleSelectWithAdd: StoryFn = (args) => {
+export const AddFunctionality: StoryFn = (args) => {
   const [items, setItems] = useState([...FAKE_ITEMS]);
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
@@ -162,7 +162,7 @@ const CustomMenuItem: FC<{
   </>
 );
 
-export const SingleSelectWithCustomizableSelectMenuItem: StoryFn = (args) => {
+export const CustomizableMenuItem: StoryFn = (args) => {
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
   const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
@@ -211,7 +211,7 @@ const CustomValueComponent: FC<{
   );
 };
 
-export const SingleSelectWithCustomValueComponent: StoryFn = (args) => {
+export const CustomizableValueComponent: StoryFn = (args) => {
   const [value, setValue] = useState<
     SelectOption<{
       value: 'car' | 'airplane' | 'boat';

@@ -192,7 +192,7 @@ export const BasicPersistentComboBox: Story = {
   },
 };
 
-export const PersistentComboBoxLoading: Story = {
+export const Loading: Story = {
   args: {
     loading: true,
   },
@@ -213,7 +213,7 @@ export const PersistentComboBoxLoading: Story = {
   },
 };
 
-export const PersistentComboBoxWithSmallParent: Story = {
+export const SmallParent: Story = {
   render: (args) => (
     <div
       style={{
@@ -256,7 +256,7 @@ export const PersistentComboBoxWithSmallParent: Story = {
   },
 };
 
-export const PersistentComboBoxWithLargeParent: Story = {
+export const LargeParent: Story = {
   render: (args) => (
     <div
       style={{
@@ -270,7 +270,7 @@ export const PersistentComboBoxWithLargeParent: Story = {
   ),
 };
 
-export const PersistentComboBoxWithMaxHeight: Story = {
+export const MaxHeight: Story = {
   args: {
     maxHeight: '200px',
   },
@@ -306,14 +306,14 @@ export const PersistentComboBoxWithMaxHeight: Story = {
   },
 };
 
-export const PersistentComboBoxWithReallyLongName: Story = {
+export const ReallyLongName: Story = {
   args: {
     items: FAKE_ITEMS_WITH_REALLY_LONG_NAMES,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
-export const PersistentComboBoxWithLabelsAndHelperText: Story = {
+export const LabelsAndHelperText: Story = {
   args: {
     label: 'Label here',
     helperText: 'helper text',
@@ -322,7 +322,7 @@ export const PersistentComboBoxWithLabelsAndHelperText: Story = {
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
-export const PersistentComboBoxWithGroups: Story = {
+export const Groups: Story = {
   args: {
     groups: FAKE_GROUPS,
     items: undefined,
@@ -350,7 +350,7 @@ export const PersistentComboBoxWithGroups: Story = {
   },
 };
 
-export const PersistentComboBoxParented: Story = {
+export const Parented: Story = {
   args: {
     items: FAKE_ITEMS_WITH_CHILDREN,
   },
@@ -395,7 +395,7 @@ export const PersistentComboBoxParented: Story = {
   },
 };
 
-export const PersistentComboBoxWithAdd: Story = {
+export const AddFunctionality: Story = {
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -444,12 +444,12 @@ export const PersistentComboBoxWithAdd: Story = {
   },
 };
 
-export const PersistentComboBoxWithSelectedValuesAsText: Story = {
+export const SelectedValuesAsText: Story = {
   args: { showSelectedAsText: true },
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
-export const PersistentComboBoxWithCustomSelectedValuesAsTextFunction: Story = {
+export const CustomSelectedValuesAsTextFunction: Story = {
   args: {
     showSelectedAsText: ({ selectedAmount, totalAmount }) =>
       `${selectedAmount} of ${totalAmount} fishes selected`,
@@ -479,7 +479,7 @@ const CustomValueElement: FC<{
   </ComboBoxChip>
 );
 
-export const PersistentComboBoxWithCustomValueElements: Story = {
+export const CustomValueElements: Story = {
   args: {
     customValueComponent: CustomValueElement,
   },
@@ -497,14 +497,15 @@ const CustomMenuItem: FC<{
   </>
 );
 
-export const PersistentComboBoxWithCustomizableSelectMenuItem: Story = {
+export const CustomizableMenuItem: Story = {
   args: {
     CustomMenuItemComponent: CustomMenuItem,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
-export const PersistentComboBoxNoItemsFound: Story = {
+export const NoItemsFound: Story = {
+  tags: ['test-only'],
   args: {
     items: [],
   },
@@ -520,10 +521,10 @@ export const PersistentComboBoxNoItemsFound: Story = {
     await userEvent.type(searchBox, 'test search');
     await expect(canvas.getByText('No items found')).toBeInTheDocument();
   },
-  tags: ['test-only'],
 };
 
-export const PersistentComboBoxNoItemsFoundWithGroups: Story = {
+export const NoItemsFoundWithGroups: Story = {
+  tags: ['test-only'],
   args: {
     groups: [],
     items: undefined,
@@ -540,10 +541,10 @@ export const PersistentComboBoxNoItemsFoundWithGroups: Story = {
     await userEvent.type(searchBox, 'test search');
     await expect(canvas.getByText('No items found')).toBeInTheDocument();
   },
-  tags: ['test-only'],
 };
 
-export const PersistentComboBoxAddItemWithExactMatch: Story = {
+export const AddItemWithExactMatch: Story = {
+  tags: ['test-only'],
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -585,10 +586,10 @@ export const PersistentComboBoxAddItemWithExactMatch: Story = {
 
     await expect(canvas.getByText('Add tag')).toBeInTheDocument();
   },
-  tags: ['test-only'],
 };
 
-export const PersistentComboBoxAddItemWithCustomSingularWord: Story = {
+export const AddItemWithCustomSingularWord: Story = {
+  tags: ['test-only'],
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -620,5 +621,4 @@ export const PersistentComboBoxAddItemWithCustomSingularWord: Story = {
   args: {
     itemSingularWord: 'species',
   },
-  tags: ['test-only'],
 };
