@@ -195,7 +195,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             }
           />
         )}
-        {clearable && selectedValues.length > 0 && !loading && (
+        {clearable && selectedValues.length > 0 && !loading && !disabled && (
           <ClearButton
             id="clear"
             variant="ghost_icon"
