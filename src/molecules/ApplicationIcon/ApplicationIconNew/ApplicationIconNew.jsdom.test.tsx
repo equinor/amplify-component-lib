@@ -55,3 +55,7 @@ test('applies animated animation state', () => {
   const wavesContainer = screen.getAllByTestId('wave');
   expect(wavesContainer[0]).toHaveStyle('transition-delay: 0ms');
 });
+
+test('Throws error for invalid icon name', () => {
+  expect(() => render(<ApplicationIconNew name="missing" />)).toThrowError();
+});
