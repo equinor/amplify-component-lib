@@ -1,11 +1,12 @@
 import { forwardRef } from 'react';
 
-import { Icon, IconProps } from '@equinor/eds-core-react';
+import { Icon, IconProps, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { GRAYSCALE_FILTER_VALUE } from './ApplicationIcon.constants';
 import { AppIconProps } from './ApplicationIcon.types';
+import { nameToAcronym } from './ApplicationIcon.utils';
 import { IconDataWithColor } from './ApplicationIconCollection';
 
 import styled, { css } from 'styled-components';
@@ -14,9 +15,9 @@ const { colors, elevation } = tokens;
 
 interface ContainerProps {
   $size: number;
-  $iconOnly: boolean;
   $withHover: boolean;
   $grayScale: boolean;
+  $iconOnly?: true;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -45,24 +46,29 @@ const Container = styled.div<ContainerProps>`
     z-index: 300;
     transform: scale(0.8);
   }
+  > p {
+    color: #ffffff;
+    z-index: 300;
+    font-weight: 700;
+  }
   ${({ $withHover }) =>
     $withHover &&
-    `
-  cursor: pointer;
-  &:hover {
-    > svg {
-      transform: scale(0.9);
-    }
-    > div:nth-child(even) {
-      top: -80%;
-      left: 80%;
-    }
-    > div:nth-child(odd) {
-      top: 93%;
-      left: -93%;
-    }
-  }
-  `};
+    css`
+      cursor: pointer;
+      &:hover {
+        > svg {
+          transform: scale(0.9);
+        }
+        > div:nth-child(even) {
+          top: -80%;
+          left: 80%;
+        }
+        > div:nth-child(odd) {
+          top: 93%;
+          left: -93%;
+        }
+      }
+    `};
 `;
 
 export interface ShapeProps {
@@ -96,62 +102,33 @@ const Shape = styled.div<ShapeElementProps>`
 `;
 
 interface ApplicationIconBaseProps extends Required<AppIconProps> {
-  iconData: IconData | IconDataWithColor[];
   shapes: ShapeProps[];
   iconOnly: boolean;
   withHover: boolean;
+}
+
+interface ApplicationIconWithIconProps extends ApplicationIconBaseProps {
+  iconData: IconData | IconDataWithColor[];
+}
+
+interface ApplicationIconWithNameProps extends ApplicationIconBaseProps {
+  name: string;
 }
 
 // Icon component from EDS can take whatever size we want in numbers, so casting size to any here is safe
 // Size type is specified on the other higher level components
 const ApplicationIconBase = forwardRef<
   HTMLDivElement,
-  ApplicationIconBaseProps
+  ApplicationIconWithIconProps | ApplicationIconWithNameProps
 >(
   (
-    { size = 48, iconData, shapes, iconOnly, withHover, grayScale = false },
+    { size = 48, shapes, iconOnly, withHover, grayScale = false, ...rest },
     ref
   ) => {
-    if (iconOnly) {
-      return (
-        <Container
-          data-testid="application-icon"
-          ref={ref}
-          $size={size}
-          $iconOnly={iconOnly}
-          $withHover={withHover}
-          $grayScale={grayScale}
-        >
-          {Array.isArray(iconData) ? (
-            iconData.map((icon, index) => (
-              <Icon
-                key={`icon-${index}`}
-                data={icon}
-                size={size as IconProps['size']}
-                color={icon.color}
-              />
-            ))
-          ) : (
-            <Icon
-              data={iconData}
-              size={size as IconProps['size']}
-              color="#ffffff"
-            />
-          )}
-        </Container>
-      );
-    }
-    return (
-      <Container
-        data-testid="application-icon"
-        ref={ref}
-        $size={size}
-        $iconOnly={iconOnly}
-        $withHover={withHover}
-        $grayScale={grayScale}
-      >
-        {Array.isArray(iconData) ? (
-          iconData.map((icon, index) => (
+    const content = () =>
+      'iconData' in rest ? (
+        Array.isArray(rest.iconData) ? (
+          rest.iconData.map((icon, index) => (
             <Icon
               key={`icon-${index}`}
               data-testid={`icon-part-${index}`}
@@ -162,11 +139,41 @@ const ApplicationIconBase = forwardRef<
           ))
         ) : (
           <Icon
-            data={iconData}
+            data={rest.iconData}
             size={size as IconProps['size']}
             color="#ffffff"
           />
-        )}
+        )
+      ) : (
+        <Typography style={{ fontSize: size / 2 }}>
+          {nameToAcronym(rest.name)}
+        </Typography>
+      );
+
+    if (iconOnly) {
+      return (
+        <Container
+          data-testid="application-icon"
+          ref={ref}
+          $size={size}
+          $iconOnly
+          $withHover={withHover}
+          $grayScale={grayScale}
+        >
+          {content()}
+        </Container>
+      );
+    }
+
+    return (
+      <Container
+        data-testid="application-icon"
+        ref={ref}
+        $size={size}
+        $withHover={withHover}
+        $grayScale={grayScale}
+      >
+        {content()}
         {shapes.map((shape, index) => (
           <Shape
             key={`shape-${index}`}

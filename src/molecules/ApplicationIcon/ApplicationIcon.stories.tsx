@@ -1,6 +1,8 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { faker } from '@faker-js/faker';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
+import { ApplicationIcon } from './ApplicationIcon';
+import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 const meta: Meta<typeof ApplicationIcon> = {
   title: 'Molecules/ApplicationIcon',
@@ -40,6 +42,28 @@ const meta: Meta<typeof ApplicationIcon> = {
 
 export default meta;
 
-export const Example: StoryFn<ApplicationIconProps> = (args) => (
-  <ApplicationIcon {...args} />
-);
+type Story = StoryObj<typeof ApplicationIcon>;
+
+export const Default: Story = {};
+
+export const Fallback: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: (args) => (
+    <VariantShowcase
+      GenericComponent={ApplicationIcon}
+      otherProps={args}
+      rows={[
+        ...Array.from({ length: 5 })
+          .map(() => faker.book.title())
+          .map((name) => ({
+            label: name,
+            value: {
+              name,
+            },
+          })),
+      ]}
+    />
+  ),
+};
