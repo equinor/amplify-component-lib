@@ -102,8 +102,6 @@ const Shape = styled.div<ShapeElementProps>`
 
 interface ApplicationIconBaseProps extends Required<AppIconProps> {
   shapes: ShapeProps[];
-  iconOnly: boolean;
-  withHover: boolean;
 }
 
 export interface ApplicationIconWithIconProps extends ApplicationIconBaseProps {
