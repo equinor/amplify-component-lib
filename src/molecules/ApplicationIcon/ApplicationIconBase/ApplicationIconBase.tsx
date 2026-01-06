@@ -1,13 +1,12 @@
 import { forwardRef } from 'react';
 
-import { Icon, IconProps, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { GRAYSCALE_FILTER_VALUE } from './ApplicationIcon.constants';
-import { AppIconProps } from './ApplicationIcon.types';
-import { nameToAcronym } from './ApplicationIcon.utils';
-import { IconDataWithColor } from './ApplicationIconCollection';
+import { ApplicationIconContent } from './ApplicationIconContent';
+import { GRAYSCALE_FILTER_VALUE } from 'src/molecules/ApplicationIcon/ApplicationIcon.constants';
+import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
+import { IconDataWithColor } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
 
 import styled, { css } from 'styled-components';
 
@@ -107,11 +106,11 @@ interface ApplicationIconBaseProps extends Required<AppIconProps> {
   withHover: boolean;
 }
 
-interface ApplicationIconWithIconProps extends ApplicationIconBaseProps {
+export interface ApplicationIconWithIconProps extends ApplicationIconBaseProps {
   iconData: IconData | IconDataWithColor[];
 }
 
-interface ApplicationIconWithNameProps extends ApplicationIconBaseProps {
+export interface ApplicationIconWithNameProps extends ApplicationIconBaseProps {
   name: string;
 }
 
@@ -125,31 +124,6 @@ const ApplicationIconBase = forwardRef<
     { size = 48, shapes, iconOnly, withHover, grayScale = false, ...rest },
     ref
   ) => {
-    const content = () =>
-      'iconData' in rest ? (
-        Array.isArray(rest.iconData) ? (
-          rest.iconData.map((icon, index) => (
-            <Icon
-              key={`icon-${index}`}
-              data-testid={`icon-part-${index}`}
-              data={icon}
-              size={size as IconProps['size']}
-              color={icon.color}
-            />
-          ))
-        ) : (
-          <Icon
-            data={rest.iconData}
-            size={size as IconProps['size']}
-            color="#ffffff"
-          />
-        )
-      ) : (
-        <Typography style={{ fontSize: size / 2 }}>
-          {nameToAcronym(rest.name)}
-        </Typography>
-      );
-
     if (iconOnly) {
       return (
         <Container
@@ -160,7 +134,7 @@ const ApplicationIconBase = forwardRef<
           $withHover={withHover}
           $grayScale={grayScale}
         >
-          {content()}
+          <ApplicationIconContent size={size} {...rest} />
         </Container>
       );
     }
@@ -173,7 +147,7 @@ const ApplicationIconBase = forwardRef<
         $withHover={withHover}
         $grayScale={grayScale}
       >
-        {content()}
+        <ApplicationIconContent size={size} {...rest} />
         {shapes.map((shape, index) => (
           <Shape
             key={`shape-${index}`}
