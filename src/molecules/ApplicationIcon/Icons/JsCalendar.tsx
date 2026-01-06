@@ -19,15 +19,13 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-export const JsCalendar = forwardRef<HTMLDivElement, AppIconProps>(
-  (props, ref) => (
-    <ApplicationIconBase
-      ref={ref}
-      iconData={jscalendar}
-      shapes={shapes}
-      {...props}
-    />
-  )
-);
+export const AtWork = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase
+    ref={ref}
+    iconData={jscalendar}
+    shapes={shapes}
+    {...props}
+  />
+));
 
-JsCalendar.displayName = 'JsCalendar';
+AtWork.displayName = 'atWork';

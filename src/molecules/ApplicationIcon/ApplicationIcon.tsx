@@ -8,7 +8,7 @@ import { Fallback } from './Icons/Fallback';
 import { ForecastFormatter } from './Icons/ForecastFormatter';
 import { FourDInsight } from './Icons/FourDInsight';
 import { InPress } from './Icons/InPress';
-import { JsCalendar } from './Icons/JsCalendar';
+import { AtWork } from './Icons/JsCalendar';
 import { JsEmbark } from './Icons/JsEmbark';
 import { LoggingQualification } from './Icons/LoggingQualification';
 import { Orca } from './Icons/Orca';
@@ -76,7 +76,7 @@ const apps: ApplicationIconData[] = [
   { appName: ['premo'], component: Premo },
   { appName: ['sam'], component: Sam },
   { appName: ['subsurface portal'], component: SubsurfacePortal },
-  { appName: ['jscalendar', 'js calendar'], component: JsCalendar },
+  { appName: ['atwork'], component: AtWork },
 ];
 
 export interface ApplicationIconProps extends Partial<AppIconProps> {
