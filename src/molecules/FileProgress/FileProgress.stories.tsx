@@ -1,10 +1,20 @@
 import { useEffect, useState } from 'react';
 
+import {
+  clear,
+  close_circle_outlined,
+  delete_to_trash,
+  error_outlined,
+  library_pdf,
+  refresh,
+} from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { FileProgress } from 'src/molecules/FileProgress/FileProgress';
 import { FileProgressProps } from 'src/molecules/FileProgress/FileProgress.types';
+
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 const StoryComponent = (args: FileProgressProps) => {
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -84,7 +94,7 @@ const meta: Meta<typeof FileProgress> = {
 
 export default meta;
 
-type Story = StoryObj<FileProgressProps>;
+type Story = StoryObj<typeof FileProgress>;
 
 export const Default: Story = {
   args: {
@@ -154,5 +164,295 @@ export const WithoutDeleteCompact: Story = {
   args: {
     compact: true,
     onDelete: undefined,
+  },
+};
+
+export const RegularLoadingState: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    progressPercent: 50,
+    isDone: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const loadingText = canvas.getByText('loading...');
+    const progressBar = canvas.getByRole('progressbar');
+    const cancelIcons = canvas.getAllByTestId('eds-icon-path');
+
+    await expect(loadingText).toBeInTheDocument();
+    await expect(progressBar).toBeInTheDocument();
+    await expect(cancelIcons[1]).toHaveAttribute(
+      'd',
+      close_circle_outlined.svgPathData
+    );
+  },
+};
+
+export const CustomLoadingTextAndCancel: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    onCancel: fn(),
+    isDone: false,
+    customLoadingText: 'Custom Loading...',
+    indeterminate: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const loadingText = canvas.getByText('Custom Loading...');
+    await expect(loadingText).toBeInTheDocument();
+
+    const cancelButton = canvas.getAllByTestId('eds-icon-path')[1];
+    await expect(cancelButton).toHaveAttribute(
+      'd',
+      close_circle_outlined.svgPathData
+    );
+
+    await userEvent.click(cancelButton);
+    await expect(args.onCancel).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const CompleteStateDefaultText: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    isDone: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const completeText = canvas.getByText('File uploaded!');
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+
+    await expect(allIcons[1]).toHaveAttribute('d', delete_to_trash.svgPathData);
+    await expect(completeText).toBeInTheDocument();
+  },
+};
+
+export const CompleteStateCustomText: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    isDone: true,
+    customCompleteText: 'Upload Complete!',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const completeText = canvas.getByText('Upload Complete!');
+    await expect(completeText).toBeInTheDocument();
+  },
+};
+
+export const ErrorStateWithRetry: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    progressPercent: 50,
+    isDone: false,
+    isError: true,
+    fullErrorText: 'Custom error message',
+    onRetry: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+    await expect(allIcons[2]).toHaveAttribute('d', refresh.svgPathData);
+
+    const errorText = canvas.getByText('Custom error message');
+    await expect(errorText).toBeInTheDocument();
+  },
+};
+
+export const ErrorStateDefaultText: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    progressPercent: 50,
+    isDone: false,
+    isError: true,
+    onRetry: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const errorText = canvas.getByText('An error has occurred');
+    await expect(errorText).toBeInTheDocument();
+  },
+};
+
+export const DeleteShowsProgressBar: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(
+      () => new Promise<void>((resolve) => setTimeout(() => resolve(), 100))
+    ),
+    isDone: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await waitFor(() => expect(args.onDelete).toHaveBeenCalledTimes(1));
+  },
+};
+
+export const CompactLoadingWithProgress: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    progressPercent: 50,
+    isDone: false,
+    compact: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const progressBar = canvas.getByRole('progressbar');
+    await expect(progressBar).toBeInTheDocument();
+  },
+};
+
+export const CompactLoadingIndeterminate: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    isDone: false,
+    compact: true,
+    indeterminate: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const progressBar = canvas.getByRole('progressbar');
+    await expect(progressBar).toBeInTheDocument();
+
+    const deleteIcon = canvas.getByTestId('eds-icon-path');
+    await expect(deleteIcon).toHaveAttribute('d', clear.svgPathData);
+
+    // Note: The delete functionality is covered in other tests
+    // This test verifies the UI elements are present
+  },
+};
+
+export const CompactCompleteState: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.png'),
+    onDelete: fn(),
+    isDone: true,
+    compact: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const fileName = canvas.getByText((args.file as File).name);
+    const progressBar = canvas.queryByRole('progressbar');
+
+    await expect(fileName).toBeInTheDocument();
+    await expect(progressBar).not.toBeInTheDocument();
+  },
+};
+
+export const CompactCompleteWhenUndefined: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    isDone: true,
+    compact: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const fileName = canvas.getByText((args.file as File).name);
+    const progressBar = canvas.queryByRole('progressbar');
+
+    await expect(fileName).toBeInTheDocument();
+    await expect(progressBar).not.toBeInTheDocument();
+  },
+};
+
+export const CompactPDFIcon: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.pdf'),
+    onDelete: fn(),
+    isDone: true,
+    compact: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const icons = canvas.getAllByTestId('eds-icon-path');
+    // First icon should be the PDF file icon
+    await expect(icons[0]).toHaveAttribute('d', library_pdf.svgPathData);
+  },
+};
+
+export const CompactErrorState: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    isDone: true,
+    isError: true,
+    shortErrorText: 'Error!',
+    fullErrorText: 'Full error message',
+    compact: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const shortErrorText = canvas.getByText('Error!');
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+
+    await expect(allIcons[0]).toHaveAttribute('d', error_outlined.svgPathData);
+    await expect(shortErrorText).toBeInTheDocument();
+  },
+};
+
+export const CompactDefaultErrorMessages: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: fn(),
+    isError: true,
+    compact: true,
+    indeterminate: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const shortDefaultErrorText = canvas.getByText('Invalid file type');
+    await expect(shortDefaultErrorText).toBeInTheDocument();
+  },
+};
+
+export const HidesDeleteButtonCompact: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: undefined,
+    compact: true,
+    indeterminate: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByTestId('delete-file')).not.toBeInTheDocument();
+  },
+};
+
+export const HidesDeleteButtonRegular: Story = {
+  tags: ['test-only'],
+  args: {
+    file: new File(['32452134'], 'testfile.txt'),
+    onDelete: undefined,
+    indeterminate: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByTestId('delete-file')).not.toBeInTheDocument();
   },
 };

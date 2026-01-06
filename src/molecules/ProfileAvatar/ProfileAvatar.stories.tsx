@@ -1,9 +1,11 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import {
   ProfileAvatar,
   ProfileAvatarProps,
 } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+
+import { expect, within } from 'storybook/test';
 
 const meta: Meta<typeof ProfileAvatar> = {
   title: 'Molecules/ProfileAvatar',
@@ -44,4 +46,70 @@ export const WithoutImage: StoryFn<ProfileAvatarProps> = (args) => {
   return (
     <ProfileAvatar size={args.size} name={args.name} disabled={args.disabled} />
   );
+};
+
+// Test-only stories
+type TestStory = StoryObj<typeof ProfileAvatar>;
+
+export const TestFallbackIconWhenNoName: TestStory = {
+  tags: ['test-only'],
+  args: {
+    name: undefined,
+    url: undefined,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const icon = canvas.getByTestId('eds-icon-path');
+    await expect(icon).toHaveAttribute('d', expect.stringContaining('M'));
+  },
+};
+
+export const TestImageRendersWhenGiven: TestStory = {
+  tags: ['test-only'],
+  args: {
+    name: 'Test User',
+    url: 'https://i.pravatar.cc/150',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('img')).toBeInTheDocument();
+  },
+};
+
+export const TestInitialsRender: TestStory = {
+  tags: ['test-only'],
+  args: {
+    name: 'John Doe',
+    url: undefined,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('JD')).toBeInTheDocument();
+  },
+};
+
+export const TestDisabledInitials: TestStory = {
+  tags: ['test-only'],
+  args: {
+    name: 'Jane Smith',
+    url: undefined,
+    disabled: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('JS')).toBeInTheDocument();
+  },
+};
+
+export const TestDefaultIconWhenEmptyNameAndUrl: TestStory = {
+  tags: ['test-only'],
+  args: {
+    name: '',
+    url: '',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const icons = canvas.getAllByTestId('eds-icon-path');
+    await expect(icons[0]).toHaveAttribute('d', expect.stringContaining('M'));
+  },
 };

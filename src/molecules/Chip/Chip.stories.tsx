@@ -9,6 +9,7 @@ import page from 'src/molecules/Chip/Chips.docs.mdx';
 import { Stack } from 'src/storybook';
 
 import { action } from 'storybook/actions';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const handleDelete = action('onDelete');
@@ -286,4 +287,158 @@ ChipVariantsWithStates.args = {
   children: 'Chip Text',
   leadingIconData: save,
   onClick: handleClick,
+};
+
+// Test-only stories
+export const TestShowsReadonlyChipWithLeadingIcon: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Crocodile',
+    leadingIconData: save,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const chipText = canvas.getByText('Crocodile');
+    await expect(chipText).toBeVisible();
+
+    const chipContainer = chipText.parentElement;
+    await expect(chipContainer?.firstElementChild?.className).toBe('leading');
+  },
+};
+
+export const TestWorksWithStringAndNumber: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Bear',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const chipText = canvas.getByText('Bear');
+    await expect(chipText).toBeVisible();
+  },
+};
+
+export const TestWorksWithMultipleChildren: Story = {
+  tags: ['test-only'],
+  args: {
+    children: (
+      <>
+        <div>Lion</div>
+        Cow
+        <p>Fish</p>
+        <>
+          <p>Crocodile</p>
+          Dog
+          <div>
+            <p>Cat</p>
+          </div>
+        </>
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    for (const text of ['Lion', 'Cow', 'Fish', 'Crocodile', 'Dog', 'Cat']) {
+      await expect(canvas.getByText(text)).toBeVisible();
+    }
+  },
+};
+
+export const TestShowsInteractiveChipWithDeleteIcon: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Deletable Chip',
+    onDelete: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const icon = canvas.getByRole('img');
+    await expect(icon).toBeInTheDocument();
+  },
+};
+
+export const TestHandlesDeleteEvent: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Delete Me',
+    onDelete: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const chip = canvas.getByText('Delete Me');
+
+    await userEvent.click(chip);
+    await expect(args.onDelete).toHaveBeenCalled();
+  },
+};
+
+export const TestHandlesClickEvent: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Click Me',
+    onClick: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const chip = canvas.getByText('Click Me');
+
+    await userEvent.click(chip);
+    await expect(args.onClick).toHaveBeenCalled();
+  },
+};
+
+export const TestInteractiveChipRendersIcon: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Chip with Icon',
+    onClick: fn(),
+    leadingIconData: save,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const iconPath = canvas.getByTestId('eds-icon-path');
+    await expect(iconPath).toHaveAttribute('d', save.svgPathData);
+  },
+};
+
+export const TestHandlesKeyboardDeleteEvent: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Keyboard Delete',
+    onDelete: fn(),
+  },
+  play: async ({ args }) => {
+    await userEvent.tab();
+    await userEvent.keyboard('[Enter]');
+    await expect(args.onDelete).toHaveBeenCalled();
+  },
+};
+
+export const TestHandlesKeyboardClickEvent: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Keyboard Click',
+    onClick: fn(),
+  },
+  play: async ({ args }) => {
+    await userEvent.tab();
+    await userEvent.keyboard('[Enter]');
+    await expect(args.onClick).toHaveBeenCalled();
+  },
+};
+
+export const TestDisabledInteractiveChip: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Disabled Chip',
+    onClick: fn(),
+    disabled: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const chip = canvas.getByText('Disabled Chip');
+
+    await userEvent.click(chip);
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
 };

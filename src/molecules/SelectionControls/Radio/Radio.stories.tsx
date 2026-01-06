@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, within } from 'storybook/test';
 
 import { Radio } from 'src/molecules/SelectionControls/Radio/Radio';
 
@@ -65,5 +66,30 @@ export const ErrorOutlined: Story = {
     label: 'Toyota',
     outlined: true,
     error: true,
+  },
+};
+
+// Test-only stories
+export const TestRendersLabel: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Test Label')).toBeInTheDocument();
+  },
+};
+
+export const TestCheckedAttribute: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    checked: true,
+    onChange: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('radio')).toBeChecked();
   },
 };
