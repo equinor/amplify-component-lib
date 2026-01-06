@@ -3,7 +3,7 @@ import { ShapeProps } from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 export function nameToAcronym(name: string): string {
   const split = name.toUpperCase().split(' ');
 
-  if (split.length === 1) return name[0];
+  if (split.length === 1) return name.toUpperCase()[0];
 
   return `${split[0][0]}${split[1][0]}`;
 }
