@@ -119,7 +119,7 @@ export const BasicComboBox: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxWithReallyLongName: StoryFn = (args) => {
+export const ReallyLongName: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -140,7 +140,7 @@ export const ComboBoxWithReallyLongName: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxWithGroups: StoryFn = (args) => {
+export const Groups: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -161,7 +161,7 @@ export const ComboBoxWithGroups: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxParented: StoryFn = (args) => {
+export const Parented: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -182,7 +182,7 @@ export const ComboBoxParented: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxInDialog: StoryFn = (args) => {
+export const InDialog: StoryFn = (args) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
   const [openComboBox, setOpenComboBox] = useState(false);
@@ -225,7 +225,7 @@ export const ComboBoxInDialog: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxWithAdd: StoryFn = (args) => {
+export const AddFunctionality: StoryFn = (args) => {
   const [items, setItems] = useState([...FAKE_ITEMS]);
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
   const handleOnSelect = (newValues: SelectOptionRequired[]) => {
@@ -277,7 +277,7 @@ const CustomValueElement: FC<{
   </ComboBoxChip>
 );
 
-export const ComboBoxWithCustomValueElements: StoryFn = (args) => {
+export const CustomizableValueElement: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -299,7 +299,7 @@ export const ComboBoxWithCustomValueElements: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxWithSelectedValuesAsText: StoryFn = (args) => {
+export const SelectedValuesAsText: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -321,9 +321,7 @@ export const ComboBoxWithSelectedValuesAsText: StoryFn = (args) => {
   );
 };
 
-export const ComboBoxWithCustomSelectedValuesAsTextFunction: StoryFn = (
-  args
-) => {
+export const CustomSelectedValuesAsTextFunction: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -358,7 +356,7 @@ const CustomMenuItem: FC<{
   </>
 );
 
-export const ComboboxWithCustomizableSelectMenuItem: StoryFn = (args) => {
+export const CustomizableMenuItem: StoryFn = (args) => {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
