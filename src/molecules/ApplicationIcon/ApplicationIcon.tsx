@@ -2,13 +2,13 @@ import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
 import { Acquire } from './Icons/Acquire';
 import { Adca } from './Icons/Adca';
+import { AtWork } from './Icons/Atwork';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
 import { Fallback } from './Icons/Fallback';
 import { ForecastFormatter } from './Icons/ForecastFormatter';
 import { FourDInsight } from './Icons/FourDInsight';
 import { InPress } from './Icons/InPress';
-import { AtWork } from './Icons/JsCalendar';
 import { JsEmbark } from './Icons/JsEmbark';
 import { LoggingQualification } from './Icons/LoggingQualification';
 import { Orca } from './Icons/Orca';
@@ -30,7 +30,7 @@ export type ApplicationName =
   | 'orca'
   | 'portal'
   | 'jsembark'
-  | 'jscalendar'
+  | 'atwork'
   | 'logging-qualification'
   | 'pwex'
   | 'inpress'
