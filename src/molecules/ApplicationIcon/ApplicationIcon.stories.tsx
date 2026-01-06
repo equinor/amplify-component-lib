@@ -4,6 +4,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { ApplicationIcon } from './ApplicationIcon';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
+import { expect } from 'storybook/test';
+
 const meta: Meta<typeof ApplicationIcon> = {
   title: 'Molecules/ApplicationIcon',
   component: ApplicationIcon,
@@ -66,4 +68,24 @@ export const Fallback: Story = {
       ]}
     />
   ),
+};
+
+export const TestFallback: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'some random app name',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('SR')).toBeInTheDocument();
+  },
+};
+
+export const TestFallbackShort: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'some',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('S')).toBeInTheDocument();
+  },
 };
