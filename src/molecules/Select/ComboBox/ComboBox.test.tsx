@@ -664,22 +664,102 @@ const CustomValueElement: FC<{
   </ComboBoxChip>
 );
 
-test('Custom value component', () => {
-  const label = faker.animal.bear();
-  const items = fakeSelectItems();
-  const handler = vi.fn();
+describe('Custom value component', () => {
+  test('Renders', () => {
+    const label = faker.animal.bear();
+    const items = fakeSelectItems();
+    const handler = vi.fn();
 
-  render(
-    <ComboBox
-      label={label}
-      onSelect={handler}
-      items={items}
-      values={[items[0]]}
-      customValueComponent={CustomValueElement}
-    />
-  );
+    render(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[items[0]]}
+        customValueComponent={CustomValueElement}
+      />
+    );
 
-  expect(screen.getByText('custom')).toBeInTheDocument();
+    const customChip = screen
+      .getByText('custom')
+      .closest('.amplify-combo-box-chip');
+
+    expect(customChip).toBeInTheDocument();
+  });
+
+  test('Removal by clicking', async () => {
+    const label = faker.animal.bear();
+    const items = fakeSelectItems();
+    const handler = vi.fn();
+
+    const { rerender } = render(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[items[0]]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
+    const user = userEvent.setup();
+    const customChip = screen
+      .getByText('custom')
+      .closest('.amplify-combo-box-chip');
+
+    await user.click(customChip!);
+
+    expect(handler).toHaveBeenCalledWith([], items[0]);
+
+    rerender(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
+    expect(screen.queryByText('custom')).not.toBeInTheDocument();
+  });
+
+  test('Removal by backspace', async () => {
+    const label = faker.animal.bear();
+    const items = fakeSelectItems();
+    const handler = vi.fn();
+
+    const { rerender } = render(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[items[0]]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
+    const user = userEvent.setup();
+    const searchField = screen.getByRole('combobox');
+
+    await user.click(searchField);
+    await user.keyboard('{Backspace}');
+    await user.keyboard('{Backspace}');
+
+    expect(handler).toHaveBeenCalledWith([], items[0]);
+
+    rerender(
+      <ComboBox
+        label={label}
+        onSelect={handler}
+        items={items}
+        values={[]}
+        customValueComponent={CustomValueElement}
+      />
+    );
+
+    expect(screen.queryByText('custom')).not.toBeInTheDocument();
+  });
 });
 
 test('showSelectedValuesAsText', async () => {

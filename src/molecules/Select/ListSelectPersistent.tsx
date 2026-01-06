@@ -22,6 +22,8 @@ import {
 import { getChildOffset } from 'src/molecules/Select/Select.utils';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
+// Ignored because <T extends SelectOptionRequired> is marked at not covered, and is removed at runtime so it cannot be covered.
+/* c8 ignore next */
 export const ListSelectPersistent = <T extends SelectOptionRequired>(
   props: Omit<ListSelectProps<T>, 'onAddItem'> &
     ListSelectMenuProps &

@@ -7,11 +7,25 @@ import {
   NoItemsFoundText,
   PersistentGroupsWrapper,
 } from 'src/molecules/Select/Select.styles';
-import { GroupedSelectPropsCombined } from 'src/molecules/Select/Select.types';
+import {
+  CustomMenuItemComponentProps,
+  GroupedSelectProps,
+  MenuModeSelectProps,
+  MultiSelectCommon,
+  PersistentModeSelectProps,
+  SelectMenuProps,
+  SingleSelectCommon,
+} from 'src/molecules/Select/Select.types';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
+// Ignored because <T extends SelectOptionRequired> is marked at not covered, and is removed at runtime so it cannot be covered.
+/* c8 ignore next */
 export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
-  props: GroupedSelectPropsCombined<T>
+  props: GroupedSelectProps<T> &
+    SelectMenuProps<T> &
+    CustomMenuItemComponentProps<T> &
+    (MultiSelectCommon<T> | SingleSelectCommon<T>) &
+    (PersistentModeSelectProps | MenuModeSelectProps)
 ) => {
   const {
     onItemSelect,
@@ -27,9 +41,9 @@ export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
     return <NoItemsFoundText>No items found</NoItemsFoundText>;
   }
 
-  if ('value' in props) {
-    throw new Error('You cannot use SingleSelect with persistent mode');
-  }
+  // This case never happens, since there is a check in select.tsx. This check gives the correct typescript inference.
+  /* c8 ignore next */
+  if ('value' in props) return null;
 
   return (
     <PersistentGroupsWrapper>

@@ -89,6 +89,6 @@ export const Compact: Story = {
   },
   play: async ({ canvas, args }) => {
     const container = canvas.getByText(args.children as string);
-    await expect(container.parentElement).toHaveStyle('padding: 8px');
+    await expect(container.parentElement).toHaveStyle('padding: 4px 8px');
   },
 };

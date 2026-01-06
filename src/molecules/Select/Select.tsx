@@ -3,6 +3,7 @@ import { useMemo, useRef } from 'react';
 import { Label } from '@equinor/eds-core-react';
 import { useOutsideClick } from '@equinor/eds-utils';
 
+import { SelectItemSkeleton } from './SelectItemSkeleton';
 import { useSelect } from 'src/atoms/hooks/useSelect';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { GroupedSelectPersistent } from 'src/molecules/Select/GroupedSelectPersistent';
@@ -101,10 +102,34 @@ export const Select = <T extends SelectOptionRequired>(
   /* v8 ignore end */
 
   if (mode === 'persistent' && 'value' in props && props.value) {
-    throw new Error('You cannot use single select with persistent mode');
+    throw new Error('You cannot use SingleSelect with persistent mode');
   }
 
   if (mode === 'persistent') {
+    const persistentListContent =
+      'groups' in props && props.groups ? (
+        <GroupedSelectPersistent
+          {...props}
+          search={search}
+          itemRefs={itemRefs}
+          onItemSelect={handleOnItemSelect}
+          onItemKeyDown={handleOnItemKeyDown}
+          onSearchFilter={onSearchFilter}
+          CustomMenuItemComponent={CustomMenuItemComponent}
+        />
+      ) : (
+        <ListSelectPersistent
+          {...props}
+          search={search}
+          itemRefs={itemRefs}
+          onAddItem={props.onAddItem ? handleOnAddItem : undefined}
+          onItemSelect={handleOnItemSelect}
+          onItemKeyDown={handleOnItemKeyDown}
+          onSearchFilter={onSearchFilter}
+          CustomMenuItemComponent={CustomMenuItemComponent}
+        />
+      );
+
     return (
       <>
         {shouldShowLabel && (
@@ -135,27 +160,14 @@ export const Select = <T extends SelectOptionRequired>(
               handleOnClear={handleOnClear}
             />
           </PersistentStickyWrapper>
-          {'groups' in props && props.groups ? (
-            <GroupedSelectPersistent
-              {...props}
-              search={search}
-              itemRefs={itemRefs}
-              onItemSelect={handleOnItemSelect}
-              onItemKeyDown={handleOnItemKeyDown}
-              onSearchFilter={onSearchFilter}
-              CustomMenuItemComponent={CustomMenuItemComponent}
-            />
+          {props.loading ? (
+            <>
+              <SelectItemSkeleton />
+              <SelectItemSkeleton />
+              <SelectItemSkeleton />
+            </>
           ) : (
-            <ListSelectPersistent
-              {...props}
-              search={search}
-              itemRefs={itemRefs}
-              onAddItem={props.onAddItem ? handleOnAddItem : undefined}
-              onItemSelect={handleOnItemSelect}
-              onItemKeyDown={handleOnItemKeyDown}
-              onSearchFilter={onSearchFilter}
-              CustomMenuItemComponent={CustomMenuItemComponent}
-            />
+            persistentListContent
           )}
         </PersistentComboBoxWrapper>
       </>
