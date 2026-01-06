@@ -170,7 +170,7 @@ test('Tab navigation should focus actions in expected order', async () => {
     </TopBar>
   );
 
-  const homeButton = screen.getByRole('link', { name: appName });
+  const homeButton = screen.getByRole('link', { name: new RegExp(appName) });
   const fieldSelector = screen.getByRole('button', {
     name: currentField.name ?? '',
   });

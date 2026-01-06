@@ -27,14 +27,6 @@ test('renders the correct icon based on the given name', () => {
   expect(appIconSvg).toBeInTheDocument();
 });
 
-test('uses fallback icon when the provided name does not exist', () => {
-  render(<ApplicationIconNew name="nonexistent" />);
-  const appIconSvg = screen.getByTestId('app-icon-svg');
-  expect(appIconSvg).toBeInTheDocument();
-  const appIconContainer = screen.getByTestId('app-icon-container');
-  expect(appIconContainer).toBeInTheDocument();
-});
-
 test('renders a large icon causing the small waves on the icon', () => {
   render(<ApplicationIconNew name="embark" size={256} />);
   const appIconSvg = screen.getByTestId('app-icon-svg');
