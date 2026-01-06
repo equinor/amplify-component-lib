@@ -38,15 +38,6 @@ const VARIANT_COLORS: Record<StatusVariant, ColorConfig> = {
   },
 };
 
-const DEFAULT_COLORS: ColorConfig = {
-  border: colors.interactive.warning__resting.rgba,
-  background: colors.interactive.warning__text.rgba,
-  chipBackground: colors.interactive.warning__resting.rgba,
-  outline: colors.interactive.warning__resting.rgba,
-};
-
-export function getVariantColors(
-  variant: StatusVariant | undefined
-): ColorConfig {
-  return variant ? VARIANT_COLORS[variant] : DEFAULT_COLORS;
+export function getVariantColors(variant: StatusVariant): ColorConfig {
+  return VARIANT_COLORS[variant];
 }

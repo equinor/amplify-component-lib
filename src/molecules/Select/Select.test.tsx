@@ -885,3 +885,31 @@ test('Shows expected word for item when providing prop', async () => {
   expect(screen.getByText(`${word} search results`)).toBeInTheDocument();
   expect(screen.getByText(`No ${word} for "test" found.`)).toBeInTheDocument();
 });
+
+test('Throws error when trying to use SingleSelect with persistent mode and groups', () => {
+  const label = faker.animal.bear();
+  const handler = vi.fn();
+  const groups = fakeGroups(3);
+
+  // Suppress console.error for this test since we expect an error to be thrown
+  const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+  expect(() => {
+    render(
+      <Select
+        label={label}
+        onSelect={handler}
+        groups={groups}
+        value={
+          groups.at(0)?.items.at(0) ?? {
+            value: 'someValue',
+            label: 'someLabel',
+          }
+        } // Using 'value' (SingleSelect) instead of 'values' (PersistentComboBox)
+        mode="persistent"
+      />
+    );
+  }).toThrow('You cannot use SingleSelect with persistent mode');
+
+  consoleSpy.mockRestore();
+});
