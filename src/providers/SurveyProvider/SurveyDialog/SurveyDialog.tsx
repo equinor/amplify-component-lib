@@ -7,6 +7,7 @@ import { SurveyProgress } from './SurveyProgress';
 import { spacings } from 'src/atoms/style';
 import { Dialog, type DialogProps } from 'src/molecules/Dialog/Dialog';
 import { useSurvey } from 'src/providers/SurveyProvider/hooks/useSurvey';
+import { SurveyQuestionType } from 'src/providers/SurveyProvider/SurveyProvider.types';
 
 import styled from 'styled-components';
 
@@ -34,6 +35,21 @@ export const SurveyDialog: FC = () => {
     answerQuestion(currentAnswer);
   };
 
+  const disabledNextAction = () => {
+    if (!currentAnswer) return true;
+
+    switch (currentAnswer.type) {
+      case SurveyQuestionType.SINGLE_CHOICE:
+        return currentAnswer.answerId === undefined;
+      case SurveyQuestionType.MULTIPLE_CHOICE:
+        return currentAnswer.answerIds.length === 0;
+      case SurveyQuestionType.RANGE:
+        return currentAnswer.value === undefined;
+      case SurveyQuestionType.FREE_TEXT:
+        return currentAnswer.text.trim() === '';
+    }
+  };
+
   const defaultActions: DialogProps['actions'] = [
     {
       text: activeQuestionIndex === 0 ? 'Maybe later' : 'Cancel',
@@ -42,7 +58,7 @@ export const SurveyDialog: FC = () => {
     },
     {
       text: activeQuestionIndex === 0 ? 'Get started' : 'Next',
-      disabled: !currentAnswer,
+      disabled: disabledNextAction(),
       onClick: handleAnswer,
     },
   ];

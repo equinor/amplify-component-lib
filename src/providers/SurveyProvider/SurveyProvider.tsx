@@ -90,6 +90,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
 
     // TODO: Save answer
     console.log(answer);
+    setCurrentAnswer(undefined);
 
     if (activeQuestionIndex + 1 < activeSurvey.questions.length) {
       setActiveQuestionIndex(activeQuestionIndex + 1);
