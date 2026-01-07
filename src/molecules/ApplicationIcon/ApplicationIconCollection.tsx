@@ -238,8 +238,8 @@ export const fluxMaps: IconDataWithColor[] = [
   },
 ];
 
-export const jscalendar: IconData = {
-  name: 'jscalendar',
+export const atwork: IconData = {
+  name: 'atwork',
   prefix: 'amplify',
   height: '24',
   width: '24',

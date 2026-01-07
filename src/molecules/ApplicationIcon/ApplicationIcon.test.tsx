@@ -4,6 +4,7 @@ import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
 import {
   acquire,
   adca,
+  atwork,
   bravos,
   dasha,
   fluxMaps,
@@ -11,7 +12,6 @@ import {
   fourDInsight,
   IconDataWithColor,
   inPress,
-  jscalendar,
   jsembark,
   loggingQualification,
   orca,
@@ -42,7 +42,7 @@ const nameOptions: ApplicationIconProps['name'][] = [
   'premo',
   'sam',
   'subsurface portal',
-  'jscalendar',
+  'atwork',
 ];
 const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
@@ -68,7 +68,7 @@ const icons: IconsDict = {
   premo: premo,
   sam: sam,
   'subsurface portal': subsurfacePortal,
-  jscalendar: jscalendar,
+  atwork: atwork,
 };
 
 test('Render correctly with corresponding props', () => {

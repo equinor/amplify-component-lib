@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { jscalendar } from '../ApplicationIconCollection';
+import { atwork } from '../ApplicationIconCollection';
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
 import ApplicationIconBase, {
   ShapeProps,
@@ -19,15 +19,8 @@ const shapes: ShapeProps[] = [
   },
 ];
 
-export const JsCalendar = forwardRef<HTMLDivElement, AppIconProps>(
-  (props, ref) => (
-    <ApplicationIconBase
-      ref={ref}
-      iconData={jscalendar}
-      shapes={shapes}
-      {...props}
-    />
-  )
-);
+export const AtWork = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
+  <ApplicationIconBase ref={ref} iconData={atwork} shapes={shapes} {...props} />
+));
 
-JsCalendar.displayName = 'JsCalendar';
+AtWork.displayName = 'atWork';
