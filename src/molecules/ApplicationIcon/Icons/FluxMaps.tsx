@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
 import ApplicationIconBase, {
   ShapeProps,
-} from 'src/molecules/ApplicationIcon/ApplicationIconBase';
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
 import { fluxMaps } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
 
 const shapes: ShapeProps[] = [
