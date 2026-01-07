@@ -17,12 +17,13 @@ export const DialogTitle = styled(EDSDialog.Title)<StyledDialogProps>`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: ${spacings.medium};
+  padding: ${spacings.small} ${spacings.x_small} ${spacings.small}
+    ${spacings.medium};
 
   ${({ $withBorders }) => {
     if ($withBorders) {
       return css`
-        border-bottom: 1px solid ${colors.ui.background__medium.rgba};
+        border-bottom: 1px solid ${colors.ui.background__heavy.rgba};
       `;
     }
     return '';
@@ -51,7 +52,6 @@ export const DialogContent = styled(
   }}
 `;
 export const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
-  border-top: 1px solid ${colors.ui.background__medium.rgba};
   display: grid;
   grid-template-columns: auto auto auto;
   padding-top: ${spacings.medium};
@@ -79,7 +79,7 @@ export const DialogActions = styled(EDSDialog.Actions)<StyledDialogProps>`
   ${({ $withBorders }) => {
     if ($withBorders) {
       return css`
-        border-top: 1px solid ${colors.ui.background__medium.rgba};
+        border-top: 1px solid ${colors.ui.background__heavy.rgba};
       `;
     }
     return css`
