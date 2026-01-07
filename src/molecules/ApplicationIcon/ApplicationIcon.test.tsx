@@ -7,7 +7,6 @@ import {
   atwork,
   bravos,
   dasha,
-  fallback,
   fluxMaps,
   forecastFormatter,
   fourDInsight,
@@ -132,17 +131,6 @@ test('Renders correct icon, even with wrong casing', () => {
   }
 });
 
-test("Renders fallback when name isn't found", () => {
-  render(
-    <ApplicationIcon name={'name not found' as ApplicationIconProps['name']} />
-  );
-
-  expect(screen.getByTestId('eds-icon-path')).toHaveAttribute(
-    'd',
-    fallback.svgPathData
-  );
-});
-
 test('Renders without shapes when iconOnly=true when single icon', () => {
   const { rerender } = render(<ApplicationIcon name="acquire" iconOnly />);
 
@@ -150,14 +138,6 @@ test('Renders without shapes when iconOnly=true when single icon', () => {
     rerender(<ApplicationIcon name={name} iconOnly />);
     expect(screen.queryAllByTestId('shape').length).toBe(0);
   }
-});
-
-test('Renders equinor logo as fallback when iconOnly=true', () => {
-  render(<ApplicationIcon name="hei" iconOnly />);
-
-  const path = screen.getByTestId('eds-icon-path');
-
-  expect(path).toHaveAttribute('d', fallback.svgPathData);
 });
 
 test('App icon with multiple icons renders correctly', () => {

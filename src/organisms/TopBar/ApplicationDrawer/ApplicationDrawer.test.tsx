@@ -103,7 +103,7 @@ test(
     const appIndex = faker.number.int({ min: 0, max: FAKE_APPS.length - 1 });
 
     const firstApp = screen.getByRole('button', {
-      name: FAKE_APPS[appIndex].name,
+      name: new RegExp(FAKE_APPS[appIndex].name),
     });
 
     await user.click(firstApp);

@@ -1,6 +1,10 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { faker } from '@faker-js/faker';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
+import { ApplicationIcon } from './ApplicationIcon';
+import { VariantShowcase } from 'src/storybook/VariantShowcase';
+
+import { expect } from 'storybook/test';
 
 const meta: Meta<typeof ApplicationIcon> = {
   title: 'Molecules/ApplicationIcon',
@@ -40,6 +44,48 @@ const meta: Meta<typeof ApplicationIcon> = {
 
 export default meta;
 
-export const Example: StoryFn<ApplicationIconProps> = (args) => (
-  <ApplicationIcon {...args} />
-);
+type Story = StoryObj<typeof ApplicationIcon>;
+
+export const Default: Story = {};
+
+export const Fallback: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: (args) => (
+    <VariantShowcase
+      GenericComponent={ApplicationIcon}
+      otherProps={args}
+      rows={[
+        ...Array.from({ length: 5 })
+          .map(() => faker.book.title())
+          .map((name) => ({
+            label: name,
+            value: {
+              name,
+            },
+          })),
+      ]}
+    />
+  ),
+};
+
+export const TestFallback: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'some random app name',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('SR')).toBeInTheDocument();
+  },
+};
+
+export const TestFallbackShort: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'some',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('S')).toBeInTheDocument();
+  },
+};

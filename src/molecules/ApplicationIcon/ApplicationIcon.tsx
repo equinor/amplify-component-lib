@@ -5,7 +5,7 @@ import { Adca } from './Icons/Adca';
 import { AtWork } from './Icons/Atwork';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
-import { Fallback } from './Icons/Fallback';
+import { FluxMaps } from './Icons/FluxMaps';
 import { ForecastFormatter } from './Icons/ForecastFormatter';
 import { FourDInsight } from './Icons/FourDInsight';
 import { InPress } from './Icons/InPress';
@@ -18,7 +18,7 @@ import { Recap } from './Icons/Recap';
 import { Sam } from './Icons/Sam';
 import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
-import { FluxMaps } from 'src/molecules/ApplicationIcon/Icons/FluxMaps';
+import { Fallback } from './Fallback';
 
 export type ApplicationName =
   | 'adca'
@@ -100,6 +100,7 @@ export const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
           iconOnly={iconOnly}
           withHover={withHover}
           grayScale={grayScale}
+          name={name}
         />
       );
     return (
