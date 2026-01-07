@@ -1,8 +1,10 @@
 import { forwardRef } from 'react';
 
 import { AppIconProps } from '../ApplicationIcon.types';
-import ApplicationIconBase, { ShapeProps } from '../ApplicationIconBase';
 import { sam } from '../ApplicationIconCollection';
+import ApplicationIconBase, {
+  ShapeProps,
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
 
 const shapes: ShapeProps[] = [
   {

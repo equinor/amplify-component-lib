@@ -23,7 +23,7 @@ test('Renders with correct styles', async () => {
 
   const topBar = screen.getByRole('banner');
   const headerContainer = topBar.firstChild;
-  const appIdentifier = screen.getByRole('link', { name: appName });
+  const appIdentifier = screen.getByRole('link', { name: new RegExp(appName) });
 
   expect(topBar).toHaveStyleRule(
     'border-bottom',

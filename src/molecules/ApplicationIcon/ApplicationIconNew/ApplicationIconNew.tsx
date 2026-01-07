@@ -10,7 +10,6 @@ import {
   dasha,
   embark,
   equinor,
-  fallback,
   inpress,
   ltg,
   orca,
@@ -123,13 +122,6 @@ const apps: ApplicationIconData[] = [
   },
 ];
 
-const FALLBACK_APP_ICON: ApplicationIconData = {
-  appName: 'fallback',
-  iconSvg: fallback.svgPathData,
-  rotationVariant: 2,
-  color: 'blue',
-} as const;
-
 export interface ApplicationIconProps {
   name?: ApplicationName | string;
   size?: number;
@@ -143,11 +135,11 @@ export const ApplicationIconNew: FC<ApplicationIconProps> = ({
   animationState = 'none',
   iconOnly = false,
 }) => {
-  let appData = apps.find((icon) => icon.appName === name.toLowerCase());
+  const appData = apps.find((icon) => icon.appName === name.toLowerCase());
 
   if (!appData) {
     // Set appData to the fallback icon data
-    appData = FALLBACK_APP_ICON;
+    throw new Error('Application icon not found');
   }
 
   const { iconSvg } = appData;
