@@ -1,8 +1,15 @@
-import { FC, InputHTMLAttributes, TextareaHTMLAttributes, useRef } from 'react';
+import {
+  FC,
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   TextField as Base,
   TextFieldProps as BaseProps,
+  Typography,
 } from '@equinor/eds-core-react';
 
 import { shape, spacings } from 'src/atoms/style';
@@ -17,6 +24,7 @@ import styled, { css } from 'styled-components';
 export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
+  helperTextRight?: string;
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -24,6 +32,7 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
 
 interface WrapperProps {
   $variant: TextFieldProps['variant'];
+  $helperRightWidth: number;
   $disabled?: boolean;
 }
 
@@ -49,6 +58,13 @@ const Wrapper = styled.div<WrapperProps>`
   }
   div:focus-within {
     outline: none !important;
+  }
+
+  div[class*='HelperText'] {
+    margin-right: ${({ $helperRightWidth }) =>
+      $helperRightWidth
+        ? `calc(${$helperRightWidth}px + ${spacings.medium})`
+        : 0};
   }
 
   ${({ $variant, $disabled }) => {
@@ -115,6 +131,11 @@ const Loader = styled(SkeletonBase)`
   transform: translateY(${spacings.x_small});
 `;
 
+const HelperText = styled(Typography)`
+  position: absolute;
+  right: ${spacings.small};
+`;
+
 export const TextField: FC<TextFieldProps> = (props) => {
   const baseProps: BaseProps = {
     ...props,
@@ -125,11 +146,20 @@ export const TextField: FC<TextFieldProps> = (props) => {
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
+  const [helperRightWidth, setHelperRightWidth] = useState(0);
+
+  const handleRenderHelperTextRight = (element: HTMLDivElement | null) => {
+    if (element) {
+      const width = element.getBoundingClientRect().width;
+      setHelperRightWidth(width);
+    }
+  };
 
   return (
     <Wrapper
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
+      $helperRightWidth={helperRightWidth}
     >
       <Base {...baseProps} disabled={props.loading || props.disabled} />
       {props.loading && (
@@ -142,6 +172,21 @@ export const TextField: FC<TextFieldProps> = (props) => {
             width: skeletonWidth.current,
           }}
         />
+      )}
+      {props.helperTextRight && (
+        <HelperText
+          ref={handleRenderHelperTextRight}
+          variant="helper"
+          group="input"
+          color={colors.text.static_icons__tertiary.rgba}
+          style={{
+            bottom: props.helperText
+              ? '0'
+              : `calc((${spacings.small} + 1rem) * -1)`,
+          }}
+        >
+          {props.helperTextRight}
+        </HelperText>
       )}
     </Wrapper>
   );

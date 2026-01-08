@@ -10,11 +10,13 @@ import {
   thumbs_up,
   warning_filled,
 } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { TextField } from 'src/molecules/TextField/TextField';
 import page from 'src/molecules/TextField/TextField.docs.mdx';
 import { Stack } from 'src/storybook';
+
+import { expect } from 'storybook/test';
 
 const icons = {
   thumbs_up,
@@ -48,6 +50,9 @@ const meta: Meta<typeof TextField> = {
     variant: {
       control: 'radio',
       options: ['error', 'warning', 'success', 'dirty', undefined],
+    },
+    helperTextRight: {
+      control: 'text',
     },
     inputIcon: {
       options: ['error', 'warning', 'success'],
@@ -90,6 +95,8 @@ const meta: Meta<typeof TextField> = {
 export default meta;
 
 type Story = StoryFn<typeof TextField>;
+
+type StoryObject = StoryObj<typeof TextField>;
 
 export const Introduction: Story = (args) => {
   return <TextField placeholder="Placeholder" {...args} />;
@@ -635,4 +642,13 @@ export const Validation: Story = () => {
       </Button>
     </form>
   );
+};
+
+export const HelperTextRight: StoryObject = {
+  args: {
+    helperTextRight: '10/20',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('10/20')).toBeInTheDocument();
+  },
 };
