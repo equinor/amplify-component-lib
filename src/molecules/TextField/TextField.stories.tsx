@@ -664,3 +664,18 @@ export const MaxCharacterCount: StoryObject = {
     ).toBeInTheDocument();
   },
 };
+export const MaxCharacterCountExternalUpdate: StoryObject = {
+  tags: ['test-only'],
+  args: {
+    placeholder: 'Enter product name',
+    label: 'Product Name',
+    helperText: "Start by adding the product's name.",
+    value: 'heihei',
+    maxCharacters: 20,
+  },
+  play: async ({ canvas, args }) => {
+    await expect(
+      canvas.getByText(`6 / ${args.maxCharacters}`)
+    ).toBeInTheDocument();
+  },
+};

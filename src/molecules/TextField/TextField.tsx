@@ -144,6 +144,11 @@ const MaxCharactersText = styled(Typography)`
  * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
  */
 export const TextField: FC<TextFieldProps> = (props) => {
+  if (props.maxCharacters && 'type' in props && props.type !== 'text') {
+    throw new Error(
+      '`maxCharacters` prop is not supported for input types other than "text".'
+    );
+  }
   const baseProps: BaseProps = {
     ...props,
     variant: props.variant !== 'dirty' ? props.variant : undefined,
@@ -213,7 +218,11 @@ export const TextField: FC<TextFieldProps> = (props) => {
           ref={handleRenderHelperTextRight}
           variant="helper"
           group="input"
-          color={colors.text.static_icons__tertiary.rgba}
+          color={
+            baseProps.variant
+              ? VARIANT_COLORS[baseProps.variant]
+              : colors.text.static_icons__tertiary.rgba
+          }
           style={{
             bottom: props.helperText
               ? '0'
