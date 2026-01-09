@@ -10,13 +10,14 @@ import {
   thumbs_up,
   warning_filled,
 } from '@equinor/eds-icons';
+import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { TextField } from 'src/molecules/TextField/TextField';
 import page from 'src/molecules/TextField/TextField.docs.mdx';
 import { Stack } from 'src/storybook';
 
-import { expect } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 
 const icons = {
   thumbs_up,
@@ -653,7 +654,13 @@ export const MaxCharacterCount: StoryObject = {
   },
   play: async ({ canvas, args }) => {
     await expect(
-      canvas.getByText(`${args.value} / ${args.maxCharacters}`)
+      canvas.getByText(`0 / ${args.maxCharacters}`)
+    ).toBeInTheDocument();
+    const input = canvas.getByLabelText(`${args.label}`) as HTMLInputElement;
+    const value = faker.airline.airplane().name;
+    await userEvent.type(input, value);
+    await expect(
+      canvas.getByText(`${value.length} / ${args.maxCharacters}`)
     ).toBeInTheDocument();
   },
 };

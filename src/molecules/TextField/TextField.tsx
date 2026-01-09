@@ -133,7 +133,7 @@ const Loader = styled(SkeletonBase)`
   transform: translateY(${spacings.x_small});
 `;
 
-const HelperText = styled(Typography)`
+const MaxCharactersText = styled(Typography)`
   position: absolute;
   right: ${spacings.small};
 `;
@@ -198,7 +198,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
         />
       )}
       {props.maxCharacters && (
-        <HelperText
+        <MaxCharactersText
           ref={handleRenderHelperTextRight}
           variant="helper"
           group="input"
@@ -210,7 +210,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
           }}
         >
           {characterCount} / {props.maxCharacters}
-        </HelperText>
+        </MaxCharactersText>
       )}
     </Wrapper>
   );
