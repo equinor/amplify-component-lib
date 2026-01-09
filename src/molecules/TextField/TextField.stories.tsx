@@ -13,7 +13,7 @@ import {
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
-import { TextField } from 'src/molecules/TextField/TextField';
+import { TextField, TextFieldProps } from 'src/molecules/TextField/TextField';
 import page from 'src/molecules/TextField/TextField.docs.mdx';
 import { Stack } from 'src/storybook';
 
@@ -665,6 +665,43 @@ export const MaxCharacterCount: StoryObject = {
     ).toBeInTheDocument();
   },
 };
+
+export const MaxCharacterCountWithoutHelper: StoryObject = {
+  tags: ['test-only'],
+  args: {
+    placeholder: 'Enter product name',
+    label: 'Product Name',
+    maxCharacters: 10,
+    variant: 'error',
+  },
+  play: async ({ canvas, args }) => {
+    await expect(
+      canvas.getByText(`0 / ${args.maxCharacters}`)
+    ).toBeInTheDocument();
+    const input = canvas.getByLabelText(`${args.label}`) as HTMLInputElement;
+    const value = faker.airline.airport().name;
+    await userEvent.type(input, value);
+    await expect(
+      canvas.getByText(`${value.length} / ${args.maxCharacters}`)
+    ).toBeInTheDocument();
+  },
+};
+
+function TestComponent(args: TextFieldProps) {
+  const [internalValue, setInternalValue] = useState<string>('');
+
+  const handleOnChange = (event) => {
+    setInternalValue(event.target.value);
+  };
+
+  return (
+    <>
+      <TextField {...args} value={internalValue} onChange={handleOnChange} />
+      <button onClick={() => setInternalValue('something')}>external</button>
+    </>
+  );
+}
+
 export const MaxCharacterCountExternalUpdate: StoryObject = {
   tags: ['test-only'],
   args: {
@@ -674,9 +711,19 @@ export const MaxCharacterCountExternalUpdate: StoryObject = {
     value: 'heihei',
     maxCharacters: 20,
   },
+  render: TestComponent,
   play: async ({ canvas, args }) => {
     await expect(
-      canvas.getByText(`6 / ${args.maxCharacters}`)
+      canvas.getByText(`0 / ${args.maxCharacters}`)
+    ).toBeInTheDocument();
+    const newValue = faker.airline.airport().name;
+    await userEvent.type(canvas.getByRole('textbox'), newValue);
+    await expect(
+      canvas.getByText(`${newValue.length} / ${args.maxCharacters}`)
+    ).toBeInTheDocument();
+    await userEvent.click(canvas.getByText('external'));
+    await expect(
+      canvas.getByText(`${'something'.length} / ${args.maxCharacters}`)
     ).toBeInTheDocument();
   },
 };
