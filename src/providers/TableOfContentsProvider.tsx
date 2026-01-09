@@ -110,7 +110,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
       if (hashNavigation) {
         navigate({
           to: '.',
-          hash: `#${newSelectedValue}`,
+          hash: newSelectedValue,
           hashScrollIntoView: false,
           replace: true,
           search: (prev: unknown) => prev,
@@ -186,7 +186,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     if (hashNavigation) {
       navigate({
         to: '.',
-        hash: `#${values[newSelectedIndex]}`,
+        hash: values[newSelectedIndex],
         hashScrollIntoView: false,
         replace: true,
         search: (prev: unknown) => prev,
