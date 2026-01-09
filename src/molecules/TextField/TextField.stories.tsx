@@ -650,14 +650,15 @@ export const MaxCharacterCount: StoryObject = {
     placeholder: 'Enter product name',
     label: 'Product Name',
     helperText: "Start by adding the product's name.",
-    maxCharacters: 20,
+    maxCharacters: 10,
+    variant: 'error',
   },
   play: async ({ canvas, args }) => {
     await expect(
       canvas.getByText(`0 / ${args.maxCharacters}`)
     ).toBeInTheDocument();
     const input = canvas.getByLabelText(`${args.label}`) as HTMLInputElement;
-    const value = faker.airline.airplane().name;
+    const value = faker.airline.airport().name;
     await userEvent.type(input, value);
     await expect(
       canvas.getByText(`${value.length} / ${args.maxCharacters}`)
