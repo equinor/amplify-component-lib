@@ -51,8 +51,8 @@ const meta: Meta<typeof TextField> = {
       control: 'radio',
       options: ['error', 'warning', 'success', 'dirty', undefined],
     },
-    helperTextRight: {
-      control: 'text',
+    maxCharacters: {
+      control: 'number',
     },
     inputIcon: {
       options: ['error', 'warning', 'success'],
@@ -644,11 +644,16 @@ export const Validation: Story = () => {
   );
 };
 
-export const HelperTextRight: StoryObject = {
+export const MaxCharacterCount: StoryObject = {
   args: {
-    helperTextRight: '10/20',
+    placeholder: 'Enter product name',
+    label: 'Product Name',
+    helperText: "Start by adding the product's name.",
+    maxCharacters: 20,
   },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText('10/20')).toBeInTheDocument();
+  play: async ({ canvas, args }) => {
+    await expect(
+      canvas.getByText(`${args.value}/${args.maxCharacters}`)
+    ).toBeInTheDocument();
   },
 };

@@ -1,4 +1,6 @@
 import {
+  ChangeEvent,
+  ChangeEventHandler,
   FC,
   InputHTMLAttributes,
   TextareaHTMLAttributes,
@@ -24,7 +26,7 @@ import styled, { css } from 'styled-components';
 export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
-  helperTextRight?: string;
+  maxCharacters?: number;
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -136,6 +138,10 @@ const HelperText = styled(Typography)`
   right: ${spacings.small};
 `;
 
+/**
+ * @param loading - Show loading skeleton on top of the text field.
+ * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
+ */
 export const TextField: FC<TextFieldProps> = (props) => {
   const baseProps: BaseProps = {
     ...props,
@@ -146,6 +152,11 @@ export const TextField: FC<TextFieldProps> = (props) => {
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
+  const [characterCount, setCharacterCount] = useState<string>(
+    props.maxCharacters
+      ? `${typeof props.value === 'string' ? props.value.length : 0}/${props.maxCharacters}`
+      : ''
+  );
   const [helperRightWidth, setHelperRightWidth] = useState(0);
 
   const handleRenderHelperTextRight = (element: HTMLDivElement | null) => {
@@ -155,13 +166,28 @@ export const TextField: FC<TextFieldProps> = (props) => {
     }
   };
 
+  // Since both textarea and input have event.target.value , we can safely cast here
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (props.onChange) {
+      (props.onChange as ChangeEventHandler<HTMLInputElement>)(event);
+    }
+
+    if (props.maxCharacters) {
+      setCharacterCount(`${event.target.value.length}/${props.maxCharacters}`);
+    }
+  };
+
   return (
     <Wrapper
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
     >
-      <Base {...baseProps} disabled={props.loading || props.disabled} />
+      <Base
+        {...baseProps}
+        disabled={props.loading || props.disabled}
+        onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
+      />
       {props.loading && (
         <Loader
           className="skeleton"
@@ -173,7 +199,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
           }}
         />
       )}
-      {props.helperTextRight && (
+      {characterCount && (
         <HelperText
           ref={handleRenderHelperTextRight}
           variant="helper"
@@ -185,7 +211,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
               : `calc((${spacings.small} + 1rem) * -1)`,
           }}
         >
-          {props.helperTextRight}
+          {characterCount}
         </HelperText>
       )}
     </Wrapper>
