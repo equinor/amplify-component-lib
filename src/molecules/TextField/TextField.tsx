@@ -4,6 +4,7 @@ import {
   FC,
   InputHTMLAttributes,
   TextareaHTMLAttributes,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -174,6 +175,16 @@ export const TextField: FC<TextFieldProps> = (props) => {
       setCharacterCount(event.target.value.length);
     }
   };
+
+  useEffect(() => {
+    if (
+      typeof props.value === 'string' &&
+      props.maxCharacters &&
+      props.value.length !== characterCount
+    ) {
+      setCharacterCount(props.value.length);
+    }
+  }, [characterCount, props.maxCharacters, props.value]);
 
   return (
     <Wrapper
