@@ -653,7 +653,7 @@ export const MaxCharacterCount: StoryObject = {
   },
   play: async ({ canvas, args }) => {
     await expect(
-      canvas.getByText(`${args.value}/${args.maxCharacters}`)
+      canvas.getByText(`${args.value} / ${args.maxCharacters}`)
     ).toBeInTheDocument();
   },
 };

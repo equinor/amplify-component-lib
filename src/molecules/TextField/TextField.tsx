@@ -154,7 +154,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
   const [characterCount, setCharacterCount] = useState<string>(
     props.maxCharacters
-      ? `${typeof props.value === 'string' ? props.value.length : 0}/${props.maxCharacters}`
+      ? `${typeof props.value === 'string' ? props.value.length : 0} / ${props.maxCharacters}`
       : ''
   );
   const [helperRightWidth, setHelperRightWidth] = useState(0);
@@ -173,7 +173,9 @@ export const TextField: FC<TextFieldProps> = (props) => {
     }
 
     if (props.maxCharacters) {
-      setCharacterCount(`${event.target.value.length}/${props.maxCharacters}`);
+      setCharacterCount(
+        `${event.target.value.length} / ${props.maxCharacters}`
+      );
     }
   };
 
