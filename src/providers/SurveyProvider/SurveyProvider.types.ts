@@ -1,7 +1,6 @@
 export enum SurveyQuestionType {
   RANGE = 'range-choice',
   MULTIPLE_CHOICE = 'multiple-choice',
-  SINGLE_CHOICE = 'single-choice',
   FREE_TEXT = 'free-text',
 }
 
@@ -17,16 +16,14 @@ export interface SurveyQuestionDto {
 
 export interface SurveyRangeQuestionDto extends SurveyQuestionDto {
   type: SurveyQuestionType.RANGE;
+  minLabel?: string;
+  maxLabel?: string;
 }
 
 export interface SurveyMultipleChoiceQuestionDto extends SurveyQuestionDto {
   type: SurveyQuestionType.MULTIPLE_CHOICE;
   options: SurveyQuestionChoiceDto[];
-}
-
-export interface SurveySingleChoiceQuestionDto extends SurveyQuestionDto {
-  type: SurveyQuestionType.SINGLE_CHOICE;
-  options: SurveyQuestionChoiceDto[];
+  maxChoice: number;
 }
 
 export interface SurveyFreeTextQuestionDto extends SurveyQuestionDto {
@@ -39,7 +36,6 @@ export interface SurveyDto {
   questions: (
     | SurveyRangeQuestionDto
     | SurveyMultipleChoiceQuestionDto
-    | SurveySingleChoiceQuestionDto
     | SurveyFreeTextQuestionDto
   )[];
 }
@@ -54,11 +50,6 @@ export interface SurveyQuestionMultipleChoiceAnswerDto {
   answerIds: number[];
 }
 
-export interface SurveySingleChoiceQuestionAnswerDto {
-  type: SurveyQuestionType.SINGLE_CHOICE;
-  answerId: number;
-}
-
 export interface SurveyFreeTextAnswerDto {
   type: SurveyQuestionType.FREE_TEXT;
   text: string;
@@ -67,5 +58,4 @@ export interface SurveyFreeTextAnswerDto {
 export type SurveyQuestionAnswerDto =
   | SurveyQuestionRangeAnswerDto
   | SurveyQuestionMultipleChoiceAnswerDto
-  | SurveySingleChoiceQuestionAnswerDto
   | SurveyFreeTextAnswerDto;

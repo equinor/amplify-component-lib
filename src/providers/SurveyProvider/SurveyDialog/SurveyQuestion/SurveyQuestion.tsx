@@ -4,7 +4,6 @@ import { useSurvey } from '../../hooks/useSurvey';
 import { SurveyFreeTextQuestion } from './SurveyFreeTextQuestion';
 import { SurveyMultipleChoiceQuestion } from './SurveyMultipleChoiceQuestion';
 import { SurveyRangeQuestion } from './SurveyRangeQuestion';
-import { SurveySingleChoiceQuestion } from './SurveySingleChoiceQuestion';
 import { SurveyQuestionType } from 'src/providers/SurveyProvider/SurveyProvider.types';
 
 export const SurveyQuestion: FC = () => {
@@ -23,8 +22,6 @@ export const SurveyQuestion: FC = () => {
   switch (activeQuestion.type) {
     case SurveyQuestionType.MULTIPLE_CHOICE:
       return <SurveyMultipleChoiceQuestion {...activeQuestion} />;
-    case SurveyQuestionType.SINGLE_CHOICE:
-      return <SurveySingleChoiceQuestion {...activeQuestion} />;
     case SurveyQuestionType.RANGE:
       return <SurveyRangeQuestion {...activeQuestion} />;
     case SurveyQuestionType.FREE_TEXT:
