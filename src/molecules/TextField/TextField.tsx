@@ -152,10 +152,8 @@ export const TextField: FC<TextFieldProps> = (props) => {
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
-  const [characterCount, setCharacterCount] = useState<string>(
-    props.maxCharacters
-      ? `${typeof props.value === 'string' ? props.value.length : 0} / ${props.maxCharacters}`
-      : ''
+  const [characterCount, setCharacterCount] = useState<number>(
+    typeof props.value === 'string' ? props.value.length : 0
   );
   const [helperRightWidth, setHelperRightWidth] = useState(0);
 
@@ -173,9 +171,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
     }
 
     if (props.maxCharacters) {
-      setCharacterCount(
-        `${event.target.value.length} / ${props.maxCharacters}`
-      );
+      setCharacterCount(event.target.value.length);
     }
   };
 
@@ -201,7 +197,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
           }}
         />
       )}
-      {characterCount && (
+      {props.maxCharacters && (
         <HelperText
           ref={handleRenderHelperTextRight}
           variant="helper"
@@ -213,7 +209,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
               : `calc((${spacings.small} + 1rem) * -1)`,
           }}
         >
-          {characterCount}
+          {characterCount} / {props.maxCharacters}
         </HelperText>
       )}
     </Wrapper>
