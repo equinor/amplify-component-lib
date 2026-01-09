@@ -31,3 +31,9 @@ test('Disabled text styling overrides variant', () => {
 
   expect(boxShadow).not.toBe(`inset 0 -2px 0 0 ${VARIANT_COLORS.dirty}`);
 });
+
+test('Throws error when providing maxCharacters and type number', () => {
+  expect(() =>
+    render(<TextField id="text" type="number" maxCharacters={10} />)
+  ).toThrowError();
+});
