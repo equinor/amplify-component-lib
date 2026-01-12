@@ -24,7 +24,7 @@ import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
 
-export type TextFieldProps = Omit<BaseProps, 'variant'> & {
+export type TextFieldProps = Omit<BaseProps, 'variant' | 'inputRef'> & {
   variant?: Variants;
   loading?: boolean;
   maxCharacters?: number;
@@ -41,6 +41,7 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   position: relative;
+  height: fit-content;
   input,
   textarea {
     color: ${colors.text.static_icons__default.rgba};
@@ -181,6 +182,18 @@ export const TextField: FC<TextFieldProps> = (props) => {
     }
   };
 
+  const handleOnTextFieldRender = (
+    element: HTMLInputElement | HTMLTextAreaElement | null
+  ) => {
+    if (
+      props.maxCharacters &&
+      element &&
+      element.value.length !== characterCount
+    ) {
+      setCharacterCount(element.value.length);
+    }
+  };
+
   useEffect(() => {
     if (
       typeof props.value === 'string' &&
@@ -196,9 +209,13 @@ export const TextField: FC<TextFieldProps> = (props) => {
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
+      style={{
+        marginBottom: props.helperText ? 0 : `calc(${spacings.small} + 1rem)`,
+      }}
     >
       <Base
         {...baseProps}
+        inputRef={handleOnTextFieldRender}
         disabled={props.loading || props.disabled}
         onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
       />
