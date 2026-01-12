@@ -196,13 +196,14 @@ export const SearchBar = <T extends SelectOptionRequired>({
             }
           />
         )}
-        {clearable && selectedValues.length > 0 && !loading && !disabled && (
+        {clearable && selectedValues.length > 0 && !loading && (
           <ClearButton
             id="clear"
             variant="ghost_icon"
             onClick={handleOnClear}
             data-testid="clearBtn"
             $rightPadding={mode === 'menu'}
+            disabled={disabled}
           >
             <Icon data={clear} size={18} />
           </ClearButton>

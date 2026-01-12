@@ -87,14 +87,16 @@ type CommonListSelectProps<T extends SelectOptionRequired> = {
   groups?: undefined;
 };
 
-interface ListSelectWithAddItemProps<T extends SelectOptionRequired>
-  extends CommonListSelectProps<T> {
+interface ListSelectWithAddItemProps<
+  T extends SelectOptionRequired,
+> extends CommonListSelectProps<T> {
   onAddItem: (item: string) => void;
   itemSingularWord?: string;
 }
 
-interface ListSelectWithoutAddItemProps<T extends SelectOptionRequired>
-  extends CommonListSelectProps<T> {
+interface ListSelectWithoutAddItemProps<
+  T extends SelectOptionRequired,
+> extends CommonListSelectProps<T> {
   onAddItem?: undefined;
   itemSingularWord?: undefined;
 }

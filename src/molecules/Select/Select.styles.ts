@@ -217,6 +217,11 @@ const ClearButton = styled(Button)<ClearButtonProps>`
     height: 24px;
     left: 0;
   }
+  &:disabled {
+    svg {
+      fill: ${colors.interactive.disabled__text.rgba};
+    }
+  }
 `;
 
 interface ComboBoxChipProps {
