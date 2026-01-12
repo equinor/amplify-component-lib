@@ -1,7 +1,10 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
 
 import { animation, colors, shape, spacings } from 'src/atoms/style';
-import { VARIANT_COLORS, VARIANT_HELPER_TEXT_COLORS, } from 'src/atoms/style/colors';
+import {
+  VARIANT_COLORS,
+  VARIANT_HELPER_TEXT_COLORS,
+} from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
 

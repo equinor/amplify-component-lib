@@ -21,7 +21,6 @@ import {
   Wrapper,
 } from 'src/molecules/Select/Select.styles';
 import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
-import { Label } from 'src/molecules/IconCell/IconCell.styles';
 
 interface SearchBarProps<T extends SelectOptionRequired> {
   props: SelectComponentProps<T>;
