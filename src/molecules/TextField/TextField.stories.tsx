@@ -645,14 +645,37 @@ export const Validation: Story = () => {
   );
 };
 
+function MaxCharactersComponent(args: TextFieldProps) {
+  const [internalValue, setInternalValue] = useState<string>('');
+
+  const handleOnChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setInternalValue(event.target.value);
+  };
+
+  return (
+    <TextField
+      {...args}
+      value={internalValue}
+      onChange={handleOnChange}
+      variant={
+        internalValue.length > (args.maxCharacters ?? Infinity)
+          ? 'error'
+          : undefined
+      }
+    />
+  );
+}
+
 export const MaxCharacterCount: StoryObject = {
   args: {
     placeholder: 'Enter product name',
     label: 'Product Name',
     helperText: "Start by adding the product's name.",
     maxCharacters: 10,
-    variant: 'error',
   },
+  render: MaxCharactersComponent,
   play: async ({ canvas, args }) => {
     await expect(
       canvas.getByText(`0 / ${args.maxCharacters}`)
@@ -690,13 +713,24 @@ export const MaxCharacterCountWithoutHelper: StoryObject = {
 function TestComponent(args: TextFieldProps) {
   const [internalValue, setInternalValue] = useState<string>('');
 
-  const handleOnChange = (event) => {
+  const handleOnChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setInternalValue(event.target.value);
   };
 
   return (
     <>
-      <TextField {...args} value={internalValue} onChange={handleOnChange} />
+      <TextField
+        {...args}
+        value={internalValue}
+        onChange={handleOnChange}
+        variant={
+          internalValue.length > (args.maxCharacters ?? Infinity)
+            ? 'error'
+            : undefined
+        }
+      />
       <button onClick={() => setInternalValue('something')}>external</button>
     </>
   );
