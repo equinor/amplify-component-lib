@@ -9,11 +9,7 @@ import {
   useState,
 } from 'react';
 
-import {
-  TextField as Base,
-  TextFieldProps as BaseProps,
-  Typography,
-} from '@equinor/eds-core-react';
+import { TextField as Base, TextFieldProps as BaseProps, Typography, } from '@equinor/eds-core-react';
 
 import { shape, spacings } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
@@ -41,6 +37,7 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   position: relative;
+  height: fit-content;
   input,
   textarea {
     color: ${colors.text.static_icons__default.rgba};
@@ -196,6 +193,9 @@ export const TextField: FC<TextFieldProps> = (props) => {
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
+      style={{
+        marginBottom: props.helperText ? 0 : `calc((${spacings.small} + 1rem))`,
+      }}
     >
       <Base
         {...baseProps}
