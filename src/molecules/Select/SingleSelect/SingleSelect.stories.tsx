@@ -275,8 +275,8 @@ export const DisabledSingleSelect: Story = {
     await step('Verify that the select is disabled', () => {
       expect(canvas.getByRole('combobox')).toBeDisabled();
     });
-    await step('Verify that the clear button is not rendered', () => {
-      expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    await step('Verify that the clear button is disabled', () => {
+      expect(canvas.getByTestId('clearBtn')).toBeDisabled();
     });
   },
 };
