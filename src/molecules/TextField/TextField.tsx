@@ -1,8 +1,18 @@
-import { FC, InputHTMLAttributes, TextareaHTMLAttributes, useRef } from 'react';
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  FC,
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   TextField as Base,
   TextFieldProps as BaseProps,
+  Typography,
 } from '@equinor/eds-core-react';
 
 import { shape, spacings } from 'src/atoms/style';
@@ -17,6 +27,7 @@ import styled, { css } from 'styled-components';
 export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
+  maxCharacters?: number;
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -24,6 +35,7 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
 
 interface WrapperProps {
   $variant: TextFieldProps['variant'];
+  $helperRightWidth: number;
   $disabled?: boolean;
 }
 
@@ -49,6 +61,13 @@ const Wrapper = styled.div<WrapperProps>`
   }
   div:focus-within {
     outline: none !important;
+  }
+
+  div[class*='HelperText'] {
+    margin-right: ${({ $helperRightWidth }) =>
+      $helperRightWidth
+        ? `calc(${$helperRightWidth}px + ${spacings.medium})`
+        : 0};
   }
 
   ${({ $variant, $disabled }) => {
@@ -115,7 +134,21 @@ const Loader = styled(SkeletonBase)`
   transform: translateY(${spacings.x_small});
 `;
 
+const MaxCharactersText = styled(Typography)`
+  position: absolute;
+  right: ${spacings.small};
+`;
+
+/**
+ * @param loading - Show loading skeleton on top of the text field.
+ * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
+ */
 export const TextField: FC<TextFieldProps> = (props) => {
+  if (props.maxCharacters && 'type' in props && props.type !== 'text') {
+    throw new Error(
+      '`maxCharacters` prop is not supported for input types other than "text".'
+    );
+  }
   const baseProps: BaseProps = {
     ...props,
     variant: props.variant !== 'dirty' ? props.variant : undefined,
@@ -125,13 +158,50 @@ export const TextField: FC<TextFieldProps> = (props) => {
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
+  const [characterCount, setCharacterCount] = useState<number>(
+    typeof props.value === 'string' ? props.value.length : 0
+  );
+  const [helperRightWidth, setHelperRightWidth] = useState(0);
+
+  const handleRenderHelperTextRight = (element: HTMLDivElement | null) => {
+    if (element) {
+      const width = element.getBoundingClientRect().width;
+      setHelperRightWidth(width);
+    }
+  };
+
+  // Since both textarea and input have event.target.value , we can safely cast here
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (props.onChange) {
+      (props.onChange as ChangeEventHandler<HTMLInputElement>)(event);
+    }
+
+    if (props.maxCharacters) {
+      setCharacterCount(event.target.value.length);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      typeof props.value === 'string' &&
+      props.maxCharacters &&
+      props.value.length !== characterCount
+    ) {
+      setCharacterCount(props.value.length);
+    }
+  }, [characterCount, props.maxCharacters, props.value]);
 
   return (
     <Wrapper
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
+      $helperRightWidth={helperRightWidth}
     >
-      <Base {...baseProps} disabled={props.loading || props.disabled} />
+      <Base
+        {...baseProps}
+        disabled={props.loading || props.disabled}
+        onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
+      />
       {props.loading && (
         <Loader
           className="skeleton"
@@ -142,6 +212,25 @@ export const TextField: FC<TextFieldProps> = (props) => {
             width: skeletonWidth.current,
           }}
         />
+      )}
+      {props.maxCharacters && (
+        <MaxCharactersText
+          ref={handleRenderHelperTextRight}
+          variant="helper"
+          group="input"
+          color={
+            baseProps.variant
+              ? VARIANT_COLORS[baseProps.variant]
+              : colors.text.static_icons__tertiary.rgba
+          }
+          style={{
+            bottom: props.helperText
+              ? '0'
+              : `calc((${spacings.small} + 1rem) * -1)`,
+          }}
+        >
+          {characterCount} / {props.maxCharacters}
+        </MaxCharactersText>
       )}
     </Wrapper>
   );
