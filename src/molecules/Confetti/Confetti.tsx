@@ -43,7 +43,7 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
   const duration = props.mode === 'shower' ? (props.duration ?? Infinity) : 0;
 
   if (mode === 'shower' && duration <= 0) {
-    throw new Error('Duration must be at a positive number');
+    throw new Error('Duration must be a positive number');
   }
 
   // boom specific props
