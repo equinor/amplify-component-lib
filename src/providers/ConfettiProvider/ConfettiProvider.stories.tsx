@@ -5,7 +5,7 @@ import { ConfettiProvider, useConfetti } from './ConfettiProvider';
 import { spacings } from 'src/atoms';
 import { ConfettiProps } from 'src/molecules/Confetti/Confetti.types';
 
-import { expect, userEvent } from 'storybook/test';
+import { expect, screen, userEvent } from 'storybook/test';
 
 function StoryComponent(args: ConfettiProps) {
   const { boom, shower } = useConfetti();
@@ -26,10 +26,9 @@ function StoryComponent(args: ConfettiProps) {
         </Button>
       </div>
 
-      {/* prettier-ignore */}
       <pre>
         <code style={{ width: '38rem' }}>
-        {`// How to use the ConfettiProvider and useConfetti hook
+          {`// How to use the ConfettiProvider and useConfetti hook
         const { boom, shower } = useConfetti();
 
         boom();
@@ -94,7 +93,7 @@ export const Boom: Story = {
     const button = canvas.getByRole('button', { name: /boom/i });
     await userEvent.click(button);
 
-    await expect(canvas.getByTestId('canvas-confetti')).toBeInTheDocument();
+    await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
   },
 };
 
@@ -103,7 +102,7 @@ export const Shower: Story = {
     const button = canvas.getByRole('button', { name: /shower/i });
     await userEvent.click(button);
 
-    await expect(canvas.getByTestId('canvas-confetti')).toBeInTheDocument();
+    await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
   },
 };
 
@@ -115,6 +114,6 @@ export const CustomColors: Story = {
     const button = canvas.getByRole('button', { name: /boom/i });
     await userEvent.click(button);
 
-    await expect(canvas.getByTestId('canvas-confetti')).toBeInTheDocument();
+    await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
   },
 };

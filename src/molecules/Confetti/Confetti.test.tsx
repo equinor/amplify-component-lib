@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
+
 import { faker } from '@faker-js/faker';
 
 import { Confetti } from './Confetti';
+import { useConfetti } from 'src/atoms';
+import { ConfettiProvider } from 'src/providers';
 import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Renders confetti canvas', () => {
@@ -8,6 +12,24 @@ test('Renders confetti canvas', () => {
   const canvas = screen.getByTestId('canvas-confetti');
 
   expect(canvas).toBeInTheDocument();
+});
+
+test('renders confetti on boom', () => {
+  const Test = () => {
+    const { boom } = useConfetti();
+    useEffect(() => {
+      boom();
+    }, [boom]);
+    return null;
+  };
+
+  render(
+    <ConfettiProvider>
+      <Test />
+    </ConfettiProvider>
+  );
+
+  expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
 });
 
 test("Adds styling to canvas when 'style' prop is provided", () => {

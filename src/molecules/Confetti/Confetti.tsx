@@ -172,7 +172,6 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
       ref={canvasRef}
       className={className}
       style={style}
-      aria-hidden="true"
     />
   );
 };

@@ -36,6 +36,19 @@ test('correctly turns hex into rgba', () => {
   expect(rgba).toBe('rgba(255, 87, 51, 1)');
 });
 
+test('hexToRgb throws an error for invalid hex colors', () => {
+  const invalidHex = '#ZZZZZZ';
+
+  expect(() => hexToRgb(invalidHex)).toThrow('Invalid hex color');
+});
+
+test('correctly turns short hex into rgba', () => {
+  const color = hexToRgb('#F53');
+  const { r, g, b } = color;
+  const rgba = `rgba(${r}, ${g}, ${b}, 1)`;
+  expect(rgba).toBe('rgba(255, 85, 51, 1)');
+});
+
 test('replaceOpacity correctly replaces opacity in an rgba string', () => {
   const originalColor = 'rgba(255, 87, 51, 1)';
   const newOpacity = 0.5;
