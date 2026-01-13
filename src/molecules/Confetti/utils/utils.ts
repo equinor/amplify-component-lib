@@ -2,10 +2,21 @@ export const randomNumBetween = (min: number, max: number) =>
   Math.random() * (max - min) + min;
 
 export const hexToRgb = (hex: string) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-
+  // Normalize hex string to handle short-form (#RGB, #RGBA) as well as long-form
+  let normalized = hex.trim();
+  // Expand #RGB and #RGBA to #RRGGBB and #RRGGBBAA respectively
+  if (normalized.length === 4 || normalized.length === 5) {
+    const prefix = normalized[0] === '#' ? '#' : '';
+    const hexPart = prefix ? normalized.slice(1) : normalized;
+    const expandedHexPart = hexPart
+      .split('')
+      .map((ch) => ch + ch)
+      .join('');
+    normalized = prefix + expandedHexPart;
+  }
+  const r = parseInt(normalized.slice(1, 3), 16);
+  const g = parseInt(normalized.slice(3, 5), 16);
+  const b = parseInt(normalized.slice(5, 7), 16);
   return { r, g, b };
 };
 

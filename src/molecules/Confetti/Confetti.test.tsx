@@ -33,16 +33,6 @@ test('Throws error on negative duration', async () => {
   );
 });
 
-test('Throws error on effect interval under 500ms', async () => {
-  const effectInterval = faker.number.int({
-    min: Number.MIN_SAFE_INTEGER,
-    max: 499,
-  });
-  expect(() =>
-    render(<Confetti mode="boom" effectInterval={effectInterval} />)
-  ).toThrow('Effect interval must be at least 500ms');
-});
-
 test('Throws error on effect count under 1', async () => {
   const effectCount = faker.number.int({
     min: Number.MIN_SAFE_INTEGER,

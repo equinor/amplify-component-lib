@@ -17,13 +17,13 @@ test('randomNumBetween generates numbers within the specified range', () => {
   expect(randomNum).toBeLessThanOrEqual(max);
 });
 
-test('isHexcolor correctly detects a hex color', () => {
+test('isHexColor correctly detects a hex color', () => {
   const color = '#FFFFFF';
 
   expect(isHexColor(color)).toBe(true);
 });
 
-test('isHexcolor correctly detects an invalid hex color', () => {
+test('isHexColor correctly detects an invalid hex color', () => {
   const color = 'rgb(255, 255, 255)';
 
   expect(isHexColor(color)).toBe(false);

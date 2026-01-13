@@ -2,8 +2,6 @@ import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Button } from '../Button/Button';
-import { boomConfetti } from './imperatives/boomConfetti';
-import { showerConfetti } from './imperatives/showerConfetti';
 import { SeasonalColorsMap } from './utils/seasonalColors';
 import { Confetti } from './Confetti';
 import {
@@ -12,6 +10,10 @@ import {
 } from './Confetti.constants';
 import { ConfettiProps } from './Confetti.types';
 import { spacings } from 'src/atoms';
+import {
+  ConfettiProvider,
+  useConfetti,
+} from 'src/providers/ConfettiProvider/ConfettiProvider';
 
 import styled from 'styled-components';
 
@@ -21,6 +23,13 @@ const meta: Meta<typeof Confetti> = {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [
+    (Story) => (
+      <ConfettiProvider>
+        <Story />
+      </ConfettiProvider>
+    ),
+  ],
   argTypes: {
     mode: {
       control: { type: 'radio' },
@@ -33,9 +42,6 @@ const meta: Meta<typeof Confetti> = {
     colors: {
       control: { type: 'check' },
       options: CONFETTI_DEFAULT_COLORS,
-    },
-    effectInterval: {
-      if: { arg: 'mode', eq: 'boom' },
     },
     effectCount: {
       if: { arg: 'mode', eq: 'boom' },
@@ -50,7 +56,6 @@ const meta: Meta<typeof Confetti> = {
     mode: 'boom',
     shapes: CONFETTI_DEFAULT_SHAPES,
     colors: CONFETTI_DEFAULT_COLORS,
-    effectInterval: 3000,
     effectCount: Infinity,
   },
 };
@@ -72,21 +77,6 @@ export const Boom: StoryFn = (props: ConfettiProps) => {
   );
 };
 
-export const TriggerConfettiBoom: StoryFn = () => {
-  const handleClick = () => {
-    boomConfetti();
-  };
-
-  return (
-    <ButtonTriggeredContainer>
-      <Typography>
-        Click the button below to trigger the boomConfetti function
-      </Typography>
-      <Button onClick={handleClick}>Trigger a single Confetti Boom</Button>
-    </ButtonTriggeredContainer>
-  );
-};
-
 export const Shower: StoryFn = (props: ConfettiProps) => {
   return (
     <Container>
@@ -104,17 +94,18 @@ const ButtonTriggeredContainer = styled.div`
   gap: ${spacings.medium};
 `;
 
-export const TriggerConfettiShower: StoryFn = () => {
-  const handleClick = () => {
-    showerConfetti();
-  };
+export const TriggerConfetti: StoryFn = () => {
+  const { boom, shower } = useConfetti();
 
   return (
     <ButtonTriggeredContainer>
       <Typography>
         Click the button below to trigger the showerConfetti function
       </Typography>
-      <Button onClick={handleClick}>Trigger a single Confetti Shower</Button>
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button onClick={() => boom()}>Boom 🎉</Button>
+        <Button onClick={() => shower()}>Shower 🌧️</Button>
+      </div>
     </ButtonTriggeredContainer>
   );
 };

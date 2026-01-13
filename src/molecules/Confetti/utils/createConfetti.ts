@@ -6,7 +6,7 @@ import { randomNumBetween } from './utils';
  * Creates a batch of confetti particles.
  *
  * "shower" mode:
- * - continuous stream
+ * - emits single particles over time (when this function is called repeatedly)
  *
  * "boom" mode:
  * - burst from center

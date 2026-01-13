@@ -12,13 +12,13 @@ import { ConfettiProps, Particle } from './Confetti.types';
 /**
  * @param mode 'boom' | 'shower' - Confetti effect mode.
  * @param shapeSize - Size of each confetti particle.
- * @param effectInterval - Interval between effects in 'boom' mode (ms), minimum 500.
  * @param effectCount - Total number of effects in 'boom' mode, minimum 1.
  * @param colors - Array of colors for the confetti, defaults to seasonal colors or a preset array.
  * @param shapes - Array of shapes for the confetti, defaults to ['circle', 'square', 'star', 'spiral'].
  * @param className - Optional CSS class for the canvas.
  * @param style - Optional inline styles for the canvas.
  * @param duration - Duration of the confetti effect in 'shower' mode (ms).
+ * @param onComplete - Callback fired when the confetti effect completes.
  */
 export const Confetti = (props: ConfettiProps): React.ReactNode => {
   const {
@@ -26,6 +26,7 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
     shapeSize = 12,
     className,
     style,
+    onComplete,
   } = props;
 
   const colors =
@@ -41,22 +42,22 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
   const startTimeRef = useRef<number>(Date.now());
   const duration = props.mode === 'shower' ? (props.duration ?? Infinity) : 0;
 
-  if (mode === 'shower' && duration < 0) {
-    throw new Error('Duration must be a positive number');
+  if (mode === 'shower' && duration <= 0) {
+    throw new Error('Duration must be at a positive number');
   }
 
   // boom specific props
-  const { effectInterval = 3000, effectCount = Infinity } =
+  const { effectCount = Infinity } =
     props.mode === 'boom' || props.mode === undefined
       ? props
-      : { effectInterval: 1, effectCount: Infinity };
+      : { effectCount: Infinity };
 
-  if (mode === 'boom' && effectInterval < 500) {
-    throw new Error('Effect interval must be at least 500ms');
-  }
   if (effectCount < 1) {
     throw new Error('Effect count must be at least 1');
   }
+
+  const effectInterval =
+    props.mode === 'boom' || props.mode === undefined ? 3000 : 1;
 
   // We use refs instead of state to avoid re-renders during animation.
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -129,10 +130,20 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
       // Stop animation when all effects are done and no particles remain
       if (effectCountRef.current >= effectCount && particles.length === 0) {
         cancelAnimationFrame(frameRef.current);
+        if (onComplete) onComplete();
       }
       /* v8 ignore end */
     },
-    [colors, effectCount, effectInterval, mode, shapeSize, shapes, duration]
+    [
+      colors,
+      effectCount,
+      effectInterval,
+      mode,
+      shapeSize,
+      shapes,
+      duration,
+      onComplete,
+    ]
   );
 
   // Bootstraps the animation and handles canvas resizing.

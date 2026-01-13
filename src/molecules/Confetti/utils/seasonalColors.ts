@@ -73,7 +73,6 @@ export const SeasonalColorsMap: Record<SeasonalEvent, SeasonalPalette> = {
       '#BA0C2F', // red
       '#FFFFFF', // white
       '#00205B', // blue
-      '#FFD700', // optional gold accent
     ],
   },
 
@@ -83,7 +82,6 @@ export const SeasonalColorsMap: Record<SeasonalEvent, SeasonalPalette> = {
       '#FF6F00', // orange
       '#000000', // black
       '#6A1B9A', // purple
-      '#8BC34A', // eerie green
     ],
   },
 

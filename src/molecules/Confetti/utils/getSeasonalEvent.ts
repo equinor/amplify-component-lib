@@ -57,7 +57,7 @@ export function getSeasonalEvent(date = new Date()): SeasonalEvent | null {
   const diffFromEaster =
     (date.getTime() - easter.getTime()) / (1000 * 60 * 60 * 24);
 
-  if (diffFromEaster >= -4 && diffFromEaster <= 3) {
+  if (diffFromEaster >= -4 && diffFromEaster <= 4) {
     return 'easter';
   }
 
