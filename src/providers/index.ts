@@ -8,5 +8,6 @@ export { LoadingProvider } from './LoadingProvider';
 export { ThemeProvider } from './ThemeProvider/ThemeProvider';
 export { StepperProvider } from './StepperProvider';
 export { ToastProvider } from './ToastProvider/ToastProvider';
+export { ConfettiProvider } from './ConfettiProvider/ConfettiProvider';
 
 export type { TableOfContentsItemType } from './TableOfContentsProvider';

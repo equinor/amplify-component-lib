@@ -29,7 +29,7 @@ test('Adds className to canvas when provided', () => {
 test('Throws error on negative duration', async () => {
   const duration = faker.number.int({ min: Number.MIN_SAFE_INTEGER, max: 0 });
   expect(() => render(<Confetti mode="shower" duration={duration} />)).toThrow(
-    'Duration must be a positive number'
+    'Duration must be a non-negative number'
   );
 });
 

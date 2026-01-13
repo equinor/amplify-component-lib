@@ -42,8 +42,8 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
   const startTimeRef = useRef<number>(Date.now());
   const duration = props.mode === 'shower' ? (props.duration ?? Infinity) : 0;
 
-  if (mode === 'shower' && duration <= 0) {
-    throw new Error('Duration must be a positive number');
+  if (mode === 'shower' && (duration <= 0 || isNaN(duration))) {
+    throw new Error('Duration must be a non-negative number');
   }
 
   // boom specific props
@@ -66,7 +66,6 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
   const frameRef = useRef<number>(0);
   const effectCountRef = useRef(0);
 
-  const lastFrameTimeRef = useRef(0);
   const lastEffectTimeRef = useRef(0);
 
   // Initializes and resizes the canvas to match the viewport.
@@ -152,7 +151,6 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
     window.addEventListener('resize', resizeCanvas);
 
     frameRef.current = requestAnimationFrame((t) => {
-      lastFrameTimeRef.current = t;
       lastEffectTimeRef.current = t - effectInterval;
       animate(t);
     });

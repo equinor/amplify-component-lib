@@ -76,6 +76,8 @@ const drawSpiral = ({ ctx, x, y, width, widthDelta }: DrawShapeArgs) => {
 
   ctx.beginPath();
   ctx.lineWidth = 1.5;
+  // Note: lineWidth is not reset here because the caller wraps drawing in ctx.save()/ctx.restore(),
+  // so this state change is scoped to the particle's draw call.
 
   for (let angle = 0; angle <= MAX_ANGLE; angle += STEP) {
     const radius = angle * (width / MAX_ANGLE) * 0.75;

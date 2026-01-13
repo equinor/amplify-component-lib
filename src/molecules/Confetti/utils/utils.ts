@@ -2,6 +2,10 @@ export const randomNumBetween = (min: number, max: number) =>
   Math.random() * (max - min) + min;
 
 export const hexToRgb = (hex: string) => {
+  if (!isHexColor(hex)) {
+    throw new Error('Invalid hex color');
+  }
+
   // Normalize hex string to handle short-form (#RGB, #RGBA) as well as long-form
   let normalized = hex.trim();
   // Expand #RGB and #RGBA to #RRGGBB and #RRGGBBAA respectively
@@ -40,6 +44,6 @@ export const replaceOpacity = (
     throw new Error('Invalid CSS value: RGBA not found');
   }
 
-  const [_, r, g, b] = rgbaMatch; // Ignore old opacity
+  const [, r, g, b] = rgbaMatch; // Ignore old opacity
   return `rgba(${r}, ${g}, ${b}, ${newOpacity})`;
 };
