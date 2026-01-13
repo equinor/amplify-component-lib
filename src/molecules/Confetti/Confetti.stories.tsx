@@ -100,7 +100,7 @@ export const TriggerConfetti: StoryFn = () => {
   return (
     <ButtonTriggeredContainer>
       <Typography>
-        Click the button below to trigger the showerConfetti function
+        Click the buttons below to trigger the boom and shower confetti effects
       </Typography>
       <div style={{ display: 'flex', gap: spacings.medium }}>
         <Button onClick={() => boom()}>Boom 🎉</Button>
