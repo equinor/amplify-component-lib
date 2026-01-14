@@ -1,9 +1,7 @@
 export type ConfettiMode = 'boom' | 'shower';
 
-export type ConfettiBoomProps = {
-  mode?: 'boom';
+type ConfettiCommonProps = {
   shapeSize?: number;
-  effectCount?: number;
   colors?: string[];
   className?: string;
   style?: React.CSSProperties;
@@ -11,16 +9,15 @@ export type ConfettiBoomProps = {
   onComplete?: () => void;
 };
 
+export type ConfettiBoomProps = {
+  mode?: 'boom';
+  effectCount?: number;
+} & ConfettiCommonProps;
+
 export type ConfettiShowerProps = {
   mode: 'shower';
-  shapeSize?: number;
-  colors?: string[];
-  className?: string;
-  style?: React.CSSProperties;
-  shapes?: ParticleShape[];
   duration?: number;
-  onComplete?: () => void;
-};
+} & ConfettiCommonProps;
 
 export type ConfettiProps = ConfettiBoomProps | ConfettiShowerProps;
 
