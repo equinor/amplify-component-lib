@@ -9,6 +9,12 @@ export { Button } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
 export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
+export { Confetti } from './Confetti/Confetti';
+export type {
+  ConfettiProps,
+  ConfettiBoomProps,
+  ConfettiShowerProps,
+} from './Confetti/Confetti.types';
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
