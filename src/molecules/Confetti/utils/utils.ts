@@ -10,13 +10,12 @@ export const hexToRgb = (hex: string) => {
   let normalized = hex.trim();
   // Expand #RGB and #RGBA to #RRGGBB and #RRGGBBAA respectively
   if (normalized.length === 4 || normalized.length === 5) {
-    const prefix = normalized[0] === '#' ? '#' : '';
-    const hexPart = prefix ? normalized.slice(1) : normalized;
+    const hexPart = normalized.slice(1);
     const expandedHexPart = hexPart
       .split('')
       .map((ch) => ch + ch)
       .join('');
-    normalized = prefix + expandedHexPart;
+    normalized = '#' + expandedHexPart;
   }
   const r = parseInt(normalized.slice(1, 3), 16);
   const g = parseInt(normalized.slice(3, 5), 16);

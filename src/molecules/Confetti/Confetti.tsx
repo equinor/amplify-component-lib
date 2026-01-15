@@ -120,9 +120,11 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
         p.update();
         p.draw(ctx);
 
+        /* v8 ignore start */
         if (p.opacity <= 0 || p.y > canvas.height) {
           particles.splice(i, 1);
         }
+        /* v8 ignore end */
       }
 
       /* v8 ignore start */

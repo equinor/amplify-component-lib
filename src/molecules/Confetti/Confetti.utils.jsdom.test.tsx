@@ -42,6 +42,12 @@ test('hexToRgb throws an error for invalid hex colors', () => {
   expect(() => hexToRgb(invalidHex)).toThrow('Invalid hex color');
 });
 
+test('hexToRgb throws an error on hex without #', () => {
+  const invalidHex = 'FFF';
+
+  expect(() => hexToRgb(invalidHex)).toThrow('Invalid hex color');
+});
+
 test('correctly turns short hex into rgba', () => {
   const color = hexToRgb('#F53');
   const { r, g, b } = color;
