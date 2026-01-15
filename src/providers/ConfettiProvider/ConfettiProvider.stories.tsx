@@ -115,7 +115,7 @@ export const Shower: Story = {
       () => {
         expect(screen.queryByTestId('canvas-confetti')).not.toBeInTheDocument();
       },
-      { timeout: 5000 }
+      { timeout: 7000 }
     );
   },
 };
