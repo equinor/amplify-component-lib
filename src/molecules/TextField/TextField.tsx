@@ -210,7 +210,10 @@ export const TextField: FC<TextFieldProps> = (props) => {
       $disabled={props.loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
       style={{
-        marginBottom: props.helperText ? 0 : `calc(${spacings.small} + 1rem)`,
+        marginBottom:
+          !props.helperText && props.maxCharacters
+            ? `calc(${spacings.small} + 1rem)`
+            : 0,
       }}
     >
       <Base
