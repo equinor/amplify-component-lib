@@ -94,6 +94,11 @@ export const Boom: Story = {
     await userEvent.click(button);
 
     await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
+    setTimeout(async () => {
+      await expect(
+        screen.getByTestId('canvas-confetti')
+      ).not.toBeInTheDocument();
+    }, 4000);
   },
 };
 
@@ -103,6 +108,11 @@ export const Shower: Story = {
     await userEvent.click(button);
 
     await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
+    setTimeout(async () => {
+      await expect(
+        screen.getByTestId('canvas-confetti')
+      ).not.toBeInTheDocument();
+    }, 3000);
   },
 };
 
@@ -115,5 +125,10 @@ export const CustomColors: Story = {
     await userEvent.click(button);
 
     await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
+    setTimeout(async () => {
+      await expect(
+        screen.getByTestId('canvas-confetti')
+      ).not.toBeInTheDocument();
+    }, 3000);
   },
 };

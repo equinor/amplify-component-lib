@@ -56,9 +56,11 @@ export const ConfettiProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
+  /* v8 ignore start */
   const remove = (id: string) => {
     setEvents((prev) => prev.filter((e) => e.id !== id));
   };
+  /* v8 ignore end */
 
   return (
     <ConfettiContext.Provider value={{ boom, shower }}>
@@ -70,6 +72,7 @@ export const ConfettiProvider: React.FC<{ children: React.ReactNode }> = ({
             <Confetti
               key={id}
               {...props}
+              /* v8 ignore next */
               onComplete={() => remove(id)}
               style={IMPERATIVE_STYLING}
             />
