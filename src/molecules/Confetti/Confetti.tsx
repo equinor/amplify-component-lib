@@ -129,7 +129,10 @@ export const Confetti = (props: ConfettiProps): React.ReactNode => {
 
       /* v8 ignore start */
       // Stop animation when all effects are done and no particles remain
-      if (effectCountRef.current >= effectCount && particles.length === 0) {
+      if (
+        (effectCountRef.current >= effectCount || !shouldEmit) &&
+        particles.length === 0
+      ) {
         cancelAnimationFrame(frameRef.current);
         if (onComplete) onComplete();
       }

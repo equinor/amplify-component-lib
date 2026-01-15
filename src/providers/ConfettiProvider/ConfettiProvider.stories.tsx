@@ -5,7 +5,7 @@ import { ConfettiProvider, useConfetti } from './ConfettiProvider';
 import { spacings } from 'src/atoms';
 import { ConfettiProps } from 'src/molecules/Confetti/Confetti.types';
 
-import { expect, screen, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
 function StoryComponent(args: ConfettiProps) {
   const { boom, shower } = useConfetti();
@@ -94,11 +94,13 @@ export const Boom: Story = {
     await userEvent.click(button);
 
     await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
-    setTimeout(async () => {
-      await expect(
-        screen.getByTestId('canvas-confetti')
-      ).not.toBeInTheDocument();
-    }, 4000);
+
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('canvas-confetti')).not.toBeInTheDocument();
+      },
+      { timeout: 4000 }
+    );
   },
 };
 
@@ -108,11 +110,13 @@ export const Shower: Story = {
     await userEvent.click(button);
 
     await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
-    setTimeout(async () => {
-      await expect(
-        screen.getByTestId('canvas-confetti')
-      ).not.toBeInTheDocument();
-    }, 3000);
+
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('canvas-confetti')).not.toBeInTheDocument();
+      },
+      { timeout: 4000 }
+    );
   },
 };
 
@@ -125,10 +129,12 @@ export const CustomColors: Story = {
     await userEvent.click(button);
 
     await expect(screen.getByTestId('canvas-confetti')).toBeInTheDocument();
-    setTimeout(async () => {
-      await expect(
-        screen.getByTestId('canvas-confetti')
-      ).not.toBeInTheDocument();
-    }, 3000);
+
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('canvas-confetti')).not.toBeInTheDocument();
+      },
+      { timeout: 4000 }
+    );
   },
 };
