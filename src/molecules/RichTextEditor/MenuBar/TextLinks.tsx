@@ -96,6 +96,7 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
               id="link"
               placeholder="Insert link"
               autoComplete="off"
+              autoFocus
               inputIcon={<Icon data={link} />}
               onChange={handleOnChange}
               onKeyDown={handleOnKeyDown}
