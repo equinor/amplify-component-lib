@@ -92,6 +92,8 @@ export type { ComboBoxProps } from './Select/ComboBox/ComboBox';
 export { SingleSelect } from './Select/SingleSelect/SingleSelect';
 export type { SingleSelectProps } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
+export { Tag } from './Tag/Tag';
+export type { TagProps } from './Tag/Tag';
 export { Toast } from './Toast/Toast';
 export type { ToastProps } from './Toast/Toast';
 export { TableHeader } from './TableHeader/TableHeader';

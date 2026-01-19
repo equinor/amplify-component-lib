@@ -1,5 +1,5 @@
 import { ParticleShape } from './Confetti.types';
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 
 export const CONFETTI_DEFAULT_COLORS = [
   colors.dataviz.lightpurple.darker,
