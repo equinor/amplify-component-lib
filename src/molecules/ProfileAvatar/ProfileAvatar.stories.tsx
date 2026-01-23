@@ -1,9 +1,13 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { person } from '@equinor/eds-icons';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import {
+  nameToInitials,
   ProfileAvatar,
   ProfileAvatarProps,
 } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+
+import { expect } from 'storybook/test';
 
 const meta: Meta<typeof ProfileAvatar> = {
   title: 'Molecules/ProfileAvatar',
@@ -29,6 +33,8 @@ const meta: Meta<typeof ProfileAvatar> = {
 
 export default meta;
 
+type Story = StoryObj<typeof ProfileAvatar>;
+
 export const Primary: StoryFn<ProfileAvatarProps> = (args) => {
   return (
     <ProfileAvatar
@@ -44,4 +50,66 @@ export const WithoutImage: StoryFn<ProfileAvatarProps> = (args) => {
   return (
     <ProfileAvatar size={args.size} name={args.name} disabled={args.disabled} />
   );
+};
+
+export const TestFallbackNoName: Story = {
+  tags: ['test-only'],
+  args: {
+    name: undefined,
+    url: undefined,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
+      'd',
+      person.svgPathData
+    );
+  },
+};
+
+export const TestRenderImage: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'Test User',
+    url: 'https://via.placeholder.com/150',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('img')).toBeInTheDocument();
+  },
+};
+
+export const TestRenderInitials: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'John Doe',
+    url: undefined,
+  },
+  play: async ({ canvas }) => {
+    const initials = nameToInitials('John Doe');
+    await expect(canvas.getByText(initials!)).toBeInTheDocument();
+  },
+};
+
+export const TestDisabledInitials: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'Jane Smith',
+    disabled: true,
+    url: undefined,
+  },
+  play: async ({ canvas }) => {
+    const initials = nameToInitials('Jane Smith');
+    await expect(canvas.getByText(initials!)).toBeInTheDocument();
+  },
+};
+
+export const TestFallbackEmptyNameAndUrl: Story = {
+  tags: ['test-only'],
+  args: {
+    name: '',
+    url: '',
+  },
+  play: async ({ canvas }) => {
+    const icons = canvas.getAllByTestId('eds-icon-path');
+    await expect(icons[0]).toHaveAttribute('d', person.svgPathData);
+  },
 };

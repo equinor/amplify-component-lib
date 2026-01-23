@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '../Button/Button';
 import { SeasonalColorsMap } from './utils/seasonalColors';
@@ -15,6 +15,7 @@ import {
   useConfetti,
 } from 'src/providers/ConfettiProvider/ConfettiProvider';
 
+import { expect } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Confetti> = {
@@ -118,4 +119,39 @@ export const SeasonalColorsExample: StoryFn = () => {
       <Confetti mode="shower" colors={christmasColors} />
     </Container>
   );
+};
+
+type Story = StoryObj<typeof Confetti>;
+
+export const TestRendersCanvas: Story = {
+  tags: ['test-only'],
+  args: {
+    mode: 'shower',
+    duration: 1000,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('canvas-confetti')).toBeInTheDocument();
+  },
+};
+
+export const TestCustomStyle: Story = {
+  tags: ['test-only'],
+  args: {
+    style: { border: '2px solid red' },
+  },
+  play: async ({ canvas }) => {
+    const canvasElement = canvas.getByTestId('canvas-confetti');
+    await expect(canvasElement).toHaveStyle('border: 2px solid red');
+  },
+};
+
+export const TestCustomClassName: Story = {
+  tags: ['test-only'],
+  args: {
+    className: 'my-custom-confetti',
+  },
+  play: async ({ canvas }) => {
+    const canvasElement = canvas.getByTestId('canvas-confetti');
+    await expect(canvasElement).toHaveClass('my-custom-confetti');
+  },
 };

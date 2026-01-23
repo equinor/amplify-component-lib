@@ -1,6 +1,8 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { FeedBackIcon, FeedBackIconProps } from './FeedBackIcon';
+
+import { expect } from 'storybook/test';
 
 const meta: Meta<typeof FeedBackIcon> = {
   title: 'Molecules/FeedBackIcon',
@@ -22,6 +24,23 @@ const meta: Meta<typeof FeedBackIcon> = {
 
 export default meta;
 
+type Story = StoryObj<typeof FeedBackIcon>;
+
 export const Primary: StoryFn<FeedBackIconProps> = (args) => (
   <FeedBackIcon {...args} />
 );
+
+export const TestRenderWithProps: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'negative',
+    variant: 'filled',
+    size: 48,
+  },
+  play: async ({ canvas, args }) => {
+    const svgComponent = canvas.getByTestId(`${args.name}-${args.variant}`);
+    await expect(svgComponent).toBeInTheDocument();
+    await expect(svgComponent).toHaveAttribute('height', args.size?.toString());
+    await expect(svgComponent).toHaveAttribute('width', args.size?.toString());
+  },
+};

@@ -1,43 +1,149 @@
-import { ApplicationIcon } from './ApplicationIcon';
-import { GRAYSCALE_FILTER_VALUE } from './ApplicationIcon.constants';
-import { render, screen, userEvent } from 'src/tests/jsdomtest-utils';
+import { IconData } from '@equinor/eds-icons';
+
+import { ApplicationIcon, ApplicationIconProps } from './ApplicationIcon';
+import {
+  acquire,
+  adca,
+  atwork,
+  bravos,
+  dasha,
+  fluxMaps,
+  forecastFormatter,
+  fourDInsight,
+  IconDataWithColor,
+  inPress,
+  jsembark,
+  loggingQualification,
+  orca,
+  premo,
+  pwex,
+  recap,
+  sam,
+  subsurfacePortal,
+} from './ApplicationIconCollection';
+import { render, screen } from 'src/tests/browsertest-utils';
 
 import { expect, test } from 'vitest';
 
-test('Shows hover effects when withHover=true', async () => {
-  render(<ApplicationIcon name="acquire" withHover />);
-  const user = userEvent.setup();
+const nameOptions: ApplicationIconProps['name'][] = [
+  'adca',
+  'acquire',
+  '4dinsight',
+  'recap',
+  'dasha',
+  'forecast-formatter',
+  'jsembark',
+  'fluxmaps',
+  'logging-qualification',
+  'pwex',
+  'orca',
+  'inpress',
+  'bravos',
+  'premo',
+  'sam',
+  'subsurface portal',
+  'atwork',
+];
+const sizeOptions: ApplicationIconProps['size'][] = [16, 24, 32, 40, 48];
 
-  const applicationIcon = screen.getByTestId('application-icon');
+type IconsDict = Record<
+  ApplicationIconProps['name'],
+  IconData | IconDataWithColor[]
+>;
 
-  await user.hover(applicationIcon);
-  expect(applicationIcon).toHaveStyle('cursor: pointer');
+const icons: IconsDict = {
+  adca: adca,
+  acquire: acquire,
+  '4dinsight': fourDInsight,
+  recap: recap,
+  dasha: dasha,
+  'forecast-formatter': forecastFormatter,
+  jsembark: jsembark,
+  'logging-qualification': loggingQualification,
+  pwex: pwex,
+  fluxmaps: fluxMaps,
+  orca: orca,
+  inpress: inPress,
+  bravos: bravos,
+  premo: premo,
+  sam: sam,
+  'subsurface portal': subsurfacePortal,
+  atwork: atwork,
+};
+
+test('Render correctly with corresponding props', () => {
+  const { rerender } = render(<ApplicationIcon name="acquire" />);
+
+  // Check that it renders correctly with name options
+  for (const name of nameOptions) {
+    rerender(<ApplicationIcon name={name} />);
+    for (const size of sizeOptions) {
+      rerender(<ApplicationIcon name={name} size={size} />);
+      const currentIcon = icons[name];
+      if (Array.isArray(currentIcon)) {
+        const paths = screen.getAllByTestId('eds-icon-path');
+        for (const [index, path] of paths.entries()) {
+          expect(path).toHaveAttribute('d', currentIcon[index].svgPathData);
+        }
+        const svgComponent = paths[0].parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      } else {
+        const path = screen.getByTestId('eds-icon-path');
+        expect(path).toHaveAttribute('d', currentIcon.svgPathData);
+        const svgComponent = path.parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      }
+    }
+  }
 });
 
-test("Doesn't hover effects when withHover=false", async () => {
-  render(<ApplicationIcon name="acquire" withHover={false} />);
-  const user = userEvent.setup();
+test('Renders correct icon, even with wrong casing', () => {
+  const { rerender } = render(<ApplicationIcon name="AcQuIre" />);
 
-  const applicationIcon = screen.getByTestId('application-icon');
-
-  await user.hover(applicationIcon);
-  expect(applicationIcon).not.toHaveStyle('cursor: pointer');
+  // Check that it renders correctly with name options
+  for (const name of nameOptions) {
+    rerender(<ApplicationIcon name={name.toUpperCase()} />);
+    for (const size of sizeOptions) {
+      rerender(<ApplicationIcon name={name.toUpperCase()} size={size} />);
+      const currentIcon = icons[name];
+      if (Array.isArray(currentIcon)) {
+        const paths = screen.getAllByTestId('eds-icon-path');
+        for (const [index, path] of paths.entries()) {
+          expect(path).toHaveAttribute('d', currentIcon[index].svgPathData);
+        }
+        const svgComponent = paths[0].parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      } else {
+        const path = screen.getByTestId('eds-icon-path');
+        expect(path).toHaveAttribute('d', currentIcon.svgPathData);
+        const svgComponent = path.parentElement;
+        expect(svgComponent).toBeInTheDocument();
+        expect(svgComponent).toHaveAttribute('height', `${size}px`);
+        expect(svgComponent).toHaveAttribute('width', `${size}px`);
+      }
+    }
+  }
 });
 
-test('has grayscale css attribute when grayscale is set', () => {
-  render(<ApplicationIcon name="orca" grayScale />);
-  const applicationIcon = screen.getByTestId('application-icon');
-  expect(applicationIcon).toHaveStyle(`filter: ${GRAYSCALE_FILTER_VALUE}`);
+test('Renders without shapes when iconOnly=true when single icon', () => {
+  const { rerender } = render(<ApplicationIcon name="acquire" iconOnly />);
+
+  for (const name of nameOptions) {
+    rerender(<ApplicationIcon name={name} iconOnly />);
+    expect(screen.queryAllByTestId('shape').length).toBe(0);
+  }
 });
 
-test('background is transparent when iconOnly is set', () => {
-  const { rerender } = render(<ApplicationIcon name="orca" iconOnly />);
+test('App icon with multiple icons renders correctly', () => {
+  render(<ApplicationIcon name="bravos" />);
 
-  const applicationIcon = screen.getByTestId('application-icon');
-  expect(applicationIcon).toHaveStyleRule('background', 'transparent');
-
-  rerender(<ApplicationIcon name="bravos" iconOnly />);
-
-  const otherApplicationIcon = screen.getByTestId('application-icon');
-  expect(otherApplicationIcon).toHaveStyleRule('background', 'transparent');
+  for (let i = 0; i < bravos.length; i++) {
+    expect(screen.getByTestId(`icon-part-${i}`)).toBeInTheDocument();
+  }
 });

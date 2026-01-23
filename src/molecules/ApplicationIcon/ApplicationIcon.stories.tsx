@@ -89,3 +89,24 @@ export const TestFallbackShort: Story = {
     await expect(canvas.getByText('S')).toBeInTheDocument();
   },
 };
+
+export const TestIconOnly: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'acquire',
+    iconOnly: true,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.queryAllByTestId('shape').length).toBe(0);
+  },
+};
+
+export const TestBravosMultipleParts: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'bravos',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('icon-part-0')).toBeInTheDocument();
+  },
+};
