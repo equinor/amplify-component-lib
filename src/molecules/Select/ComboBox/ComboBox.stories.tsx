@@ -3,10 +3,11 @@ import { FC, useState } from 'react';
 import { Button, Dialog, Icon } from '@equinor/eds-core-react';
 import { checkbox, checkbox_outline } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { ComboBoxChip } from '../Select.styles';
 import { ComboBox } from './ComboBox';
+import { spacings } from 'src/atoms/style';
 import {
   SelectedState,
   SelectOption,
@@ -15,6 +16,7 @@ import {
 } from 'src/molecules/Select/Select.types';
 
 import { actions } from 'storybook/actions';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof ComboBox> = {
@@ -379,4 +381,443 @@ export const CustomizableMenuItem: StoryFn = (args) => {
       CustomMenuItemComponent={CustomMenuItem}
     />
   );
+};
+
+// Test Stories
+type Story = StoryObj<typeof ComboBox>;
+
+const TEST_ITEMS = [
+  { label: 'Apple', value: 'apple' },
+  { label: 'Banana', value: 'banana' },
+  { label: 'Cherry', value: 'cherry' },
+  { label: 'Date', value: 'date' },
+  { label: 'Elderberry', value: 'elderberry' },
+];
+
+const TEST_ITEMS_WITH_CHILDREN = [
+  {
+    label: 'Fruits',
+    value: 'fruits',
+    children: [
+      { label: 'Apple', value: 'apple' },
+      { label: 'Banana', value: 'banana' },
+    ],
+  },
+  {
+    label: 'Vegetables',
+    value: 'vegetables',
+    children: [
+      { label: 'Carrot', value: 'carrot' },
+      { label: 'Broccoli', value: 'broccoli' },
+    ],
+  },
+];
+
+const TEST_GROUPS = [
+  {
+    title: 'Group A',
+    items: [
+      { label: 'Item A1', value: 'a1' },
+      { label: 'Item A2', value: 'a2' },
+    ],
+  },
+  {
+    title: 'Group B',
+    items: [
+      { label: 'Item B1', value: 'b1' },
+      { label: 'Item B2', value: 'b2' },
+    ],
+  },
+];
+
+export const TestRendersPlaceholder: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    placeholder: 'Select items',
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('Select items')).toBeInTheDocument();
+  },
+};
+
+export const TestDataTestId: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    'data-testid': 'my-combo-box',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('my-combo-box')).toBeInTheDocument();
+  },
+};
+
+export const TestSelectItemsWithClicks: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    label: 'Select Items',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    // Items should be visible
+    for (const item of TEST_ITEMS) {
+      await expect(canvas.getByText(item.label)).toBeInTheDocument();
+    }
+
+    // Click first item
+    await userEvent.click(canvas.getByText(TEST_ITEMS[0].label));
+
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS[0]],
+      TEST_ITEMS[0]
+    );
+  },
+};
+
+export const TestOnAddItemWithEnter: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    onAddItem: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'New Item');
+    await userEvent.keyboard('{Enter}');
+
+    await expect(
+      'onAddItem' in args ? args.onAddItem : null
+    ).toHaveBeenCalledWith('New Item');
+  },
+};
+
+export const TestOnAddItemWithClick: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    onAddItem: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'New Tag');
+
+    const newTagMenuItem = canvas.getByRole('menuitem');
+    await expect(newTagMenuItem).toBeInTheDocument();
+
+    await userEvent.click(newTagMenuItem);
+
+    const handleOnAddItemClick = 'onAddItem' in args ? args.onAddItem : null;
+    await expect(handleOnAddItemClick).toHaveBeenCalledWith('New Tag');
+    await expect(handleOnAddItemClick).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const TestGroupsPreselected: Story = {
+  tags: ['test-only'],
+  args: {
+    groups: TEST_GROUPS,
+    values: [TEST_GROUPS[0].items[0]],
+    label: 'Select Group Items',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    await userEvent.click(
+      canvas.getByRole('menuitem', { name: TEST_GROUPS[0].items[0].label })
+    );
+
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [],
+      TEST_GROUPS[0].items[0]
+    );
+  },
+};
+
+export const TestFilteringGroups: Story = {
+  tags: ['test-only'],
+  args: {
+    groups: TEST_GROUPS,
+    values: [],
+    label: 'Filter Groups',
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const searchField = canvas.getByRole('combobox');
+    await userEvent.type(searchField, 'Group A');
+
+    await expect(canvas.queryByText('Group B')).not.toBeInTheDocument();
+    await expect(canvas.getByText('Group A')).toBeInTheDocument();
+  },
+};
+
+export const TestParentChildSelection: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS_WITH_CHILDREN,
+    values: [],
+    label: 'Parent Child',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    // Click parent
+    await userEvent.click(canvas.getByText('Fruits'));
+
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS_WITH_CHILDREN[0]],
+      TEST_ITEMS_WITH_CHILDREN[0]
+    );
+  },
+};
+
+export const TestNestedChildLabel: Story = {
+  tags: ['test-only'],
+  render: () => {
+    const items = [
+      {
+        label: 'level 1',
+        value: 'level-1',
+        children: [
+          {
+            label: 'level 2',
+            value: 'level-2',
+            children: [{ label: 'level 3', value: 'level-3' }],
+          },
+        ],
+      },
+    ];
+
+    return (
+      <ComboBox
+        label="Nested Test"
+        items={items}
+        values={[{ ...items[0].children[0].children[0], children: [] }]}
+        onSelect={() => {}}
+      />
+    );
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await expect(canvas.getByText('level 3')).toBeInTheDocument();
+  },
+};
+
+export const TestNestedChildPadding: Story = {
+  tags: ['test-only'],
+  render: () => {
+    const items = [
+      {
+        label: 'Parent Item',
+        value: 'parent',
+        children: [{ label: 'Child Item', value: 'child' }],
+      },
+    ];
+
+    return (
+      <ComboBox
+        label="Padding Test"
+        items={items}
+        values={[]}
+        onSelect={() => {}}
+      />
+    );
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    const parentMenuItem = canvas.getByRole('menuitem', {
+      name: 'Parent Item',
+    });
+    await expect(parentMenuItem.parentElement).toHaveAttribute(
+      'style',
+      `padding-left: ${spacings.small};`
+    );
+  },
+};
+
+export const TestRemoveWithBackspace: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Backspace Test',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const searchField = canvas.getByRole('combobox');
+
+    await userEvent.click(searchField);
+    await userEvent.keyboard('{Backspace}');
+    await userEvent.keyboard('{Backspace}');
+
+    await expect(args.onSelect).toHaveBeenCalledWith([], TEST_ITEMS[0]);
+  },
+};
+
+const TestCustomValueElement: FC<{
+  item: SelectOptionRequired;
+  onDelete: () => void;
+  tryingToRemove: boolean;
+}> = ({ item, onDelete, tryingToRemove }) => (
+  <ComboBoxChip
+    className="amplify-combo-box-chip"
+    onDelete={onDelete}
+    $tryingToRemove={tryingToRemove}
+  >
+    <span>custom</span>
+    {item.label}
+  </ComboBoxChip>
+);
+
+export const TestCustomValueComponentRenders: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Custom Value',
+    onSelect: fn(),
+    customValueComponent: TestCustomValueElement,
+  },
+  play: async ({ canvas }) => {
+    const customChip = canvas
+      .getByText('custom')
+      .closest('.amplify-combo-box-chip');
+    await expect(customChip).toBeInTheDocument();
+  },
+};
+
+export const TestCustomValueRemovalByClick: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Custom Value Click',
+    onSelect: fn(),
+    customValueComponent: TestCustomValueElement,
+  },
+  play: async ({ canvas, args }) => {
+    const customChip = canvas
+      .getByText('custom')
+      .closest('.amplify-combo-box-chip');
+
+    await userEvent.click(customChip!);
+
+    await expect(args.onSelect).toHaveBeenCalledWith([], TEST_ITEMS[0]);
+  },
+};
+
+export const TestShowSelectedAsText: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Selected As Text',
+    onSelect: fn(),
+    showSelectedAsText: true,
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText(`1/${TEST_ITEMS.length} Selected`)
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestCustomShowSelectedAsText: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Custom Selected Text',
+    onSelect: fn(),
+    showSelectedAsText: ({ selectedAmount, totalAmount }) =>
+      `${selectedAmount} of ${totalAmount} selected`,
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText(`1 of ${TEST_ITEMS.length} selected`)
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestCustomMenuItemComponent: Story = {
+  tags: ['test-only'],
+  render: () => {
+    const items = [
+      {
+        label: 'Parent',
+        value: 'parent',
+        children: [
+          { label: 'Child 1', value: 'child1' },
+          { label: 'Child 2', value: 'child2' },
+        ],
+      },
+    ];
+
+    return (
+      <ComboBox
+        label="Custom Menu Item"
+        items={items}
+        values={[items[0].children[0]]}
+        onSelect={() => {}}
+        CustomMenuItemComponent={({ item }) => (
+          <span>custom item - {item.value}</span>
+        )}
+      />
+    );
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    const parentMenuItem = canvas.getByRole('menuitem', {
+      name: 'custom item - parent',
+    });
+
+    await userEvent.click(
+      within(parentMenuItem.parentElement!).getByTestId('toggle-button')
+    );
+
+    await expect(canvas.getByText('custom item - child1')).toBeInTheDocument();
+  },
+};
+
+export const TestSortsValues: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[3], TEST_ITEMS[1], TEST_ITEMS[0]],
+    label: 'Sorted Values',
+    onSelect: fn(),
+    sortValues: true,
+  },
+  play: async ({ canvas }) => {
+    // Sorted order should be: Apple (0), Banana (1), Date (3)
+    const sortedOrder = [TEST_ITEMS[0], TEST_ITEMS[1], TEST_ITEMS[3]];
+
+    for (let i = 1; i < sortedOrder.length; i++) {
+      const first = canvas.getByText(sortedOrder[i - 1].label);
+      const second = canvas.getByText(sortedOrder[i].label);
+
+      await expect(first.compareDocumentPosition(second)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING
+      );
+    }
+  },
 };

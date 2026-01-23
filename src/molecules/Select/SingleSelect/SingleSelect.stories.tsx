@@ -14,7 +14,7 @@ import {
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 
 import { actions } from 'storybook/actions';
-import { expect } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 const meta: Meta<typeof SingleSelect> = {
   title: 'Molecules/Select/SingleSelect',
@@ -278,5 +278,145 @@ export const DisabledSingleSelect: Story = {
     await step('Verify that the clear button is disabled', () => {
       expect(canvas.getByTestId('clearBtn')).toBeDisabled();
     });
+  },
+};
+
+export const TestRendersPlaceholder: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: undefined,
+    placeholder: 'Select an item',
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('Select an item')).toBeInTheDocument();
+  },
+};
+
+export const TestDataTestId: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: undefined,
+    onSelect: fn(),
+    'data-testid': 'my-single-select',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('my-single-select')).toBeInTheDocument();
+  },
+};
+
+export const TestHelperText: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: undefined,
+    helperText: 'This is helper text',
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('This is helper text')).toBeInTheDocument();
+  },
+};
+
+export const TestHelperTextWithVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: undefined,
+    helperText: 'Error helper text',
+    variant: 'error',
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const helperTextElement = canvas.getByText('Error helper text');
+    await expect(helperTextElement).toBeInTheDocument();
+    const helperIcon = within(
+      helperTextElement.parentElement!.parentElement!
+    ).getByTestId('eds-icon-path');
+    await expect(helperIcon).toBeInTheDocument();
+  },
+};
+
+export const TestOnlyMetaLabel: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: undefined,
+    meta: 'Meta label only',
+    label: undefined,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('Meta label only')).toBeInTheDocument();
+  },
+};
+
+export const TestClickingItems: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: undefined,
+    label: 'Select Item',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await expect(canvas.getByText('Select Item')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    // Items should be visible
+    for (const item of FAKE_ITEMS) {
+      await expect(canvas.getByText(item.label)).toBeInTheDocument();
+    }
+
+    // Click an item
+    await userEvent.click(canvas.getByText(FAKE_ITEMS[0].label));
+
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+    await expect(args.onSelect).toHaveBeenCalledWith(FAKE_ITEMS[0]);
+  },
+};
+
+export const TestDeselectItem: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    label: 'Select Item',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    // Click the same item to deselect
+    await userEvent.click(
+      canvas.getByRole('menuitem', { name: FAKE_ITEMS[0].label })
+    );
+
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+    await expect(args.onSelect).toHaveBeenCalledWith(undefined);
+  },
+};
+
+const CustomMenuItemComponent: FC<{ item: SelectOption<Item> }> = ({
+  item,
+}) => <span>custom item - {item.value}</span>;
+
+export const TestCustomMenuItem: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    label: 'Custom Menu',
+    onSelect: fn(),
+    CustomMenuItemComponent,
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await expect(
+      canvas.getByText(`custom item - ${FAKE_ITEMS[0].value}`)
+    ).toBeInTheDocument();
   },
 };
