@@ -29,4 +29,5 @@ export const IMPERATIVE_STYLING: React.CSSProperties = {
   width: '100vw',
   height: '100vh',
   pointerEvents: 'none',
+  zIndex: 999999999,
 };
