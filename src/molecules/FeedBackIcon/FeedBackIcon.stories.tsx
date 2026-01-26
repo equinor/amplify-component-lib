@@ -30,11 +30,41 @@ export const Primary: StoryFn<FeedBackIconProps> = (args) => (
   <FeedBackIcon {...args} />
 );
 
-export const TestRenderWithProps: Story = {
+export const TestPositiveOutlined: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'positive',
+    variant: 'outlined',
+    size: 48,
+  },
+  play: async ({ canvas, args }) => {
+    const svgComponent = canvas.getByTestId(`${args.name}-${args.variant}`);
+    await expect(svgComponent).toBeInTheDocument();
+    await expect(svgComponent).toHaveAttribute('height', args.size?.toString());
+    await expect(svgComponent).toHaveAttribute('width', args.size?.toString());
+  },
+};
+
+export const TestNegativeFilled: Story = {
   tags: ['test-only'],
   args: {
     name: 'negative',
     variant: 'filled',
+    size: 48,
+  },
+  play: async ({ canvas, args }) => {
+    const svgComponent = canvas.getByTestId(`${args.name}-${args.variant}`);
+    await expect(svgComponent).toBeInTheDocument();
+    await expect(svgComponent).toHaveAttribute('height', args.size?.toString());
+    await expect(svgComponent).toHaveAttribute('width', args.size?.toString());
+  },
+};
+
+export const TestNegativeOutlined: Story = {
+  tags: ['test-only'],
+  args: {
+    name: 'negative',
+    variant: 'outlined',
     size: 48,
   },
   play: async ({ canvas, args }) => {

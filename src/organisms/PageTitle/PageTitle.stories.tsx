@@ -1,9 +1,11 @@
+import { useState } from 'react';
+
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { PageTitle } from './PageTitle';
 
-import { expect } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof PageTitle> = {
   title: 'Organisms/PageTitle',
@@ -27,14 +29,27 @@ export const Default: Story = {
   },
 };
 
-const testTitle = faker.book.title();
+function Component({ title }: { title: string }) {
+  const [rerender, setRerender] = useState(0);
+  return (
+    <PageTitle title={title}>
+      <div>
+        <button onClick={() => setRerender(rerender + 1)}>Click me</button>
+        {rerender}
+      </div>
+    </PageTitle>
+  );
+}
+
 export const TestSetsDocumentTitle: Story = {
   tags: ['test-only'],
+  render: Component,
   args: {
-    title: testTitle,
-    children: <div>Test content</div>,
+    title: faker.book.title(),
   },
-  play: async () => {
-    await expect(document.title).toContain(testTitle);
+  play: async ({ canvas, args }) => {
+    await expect(document.title).toContain(args.title);
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(document.title).toContain(args.title);
   },
 };
