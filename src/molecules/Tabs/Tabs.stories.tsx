@@ -5,9 +5,10 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tabs } from './Tabs';
 import { Tab, Tabs as TabsType } from './Tabs.types';
+import { getVariantIcon } from 'src/atoms/utils';
 
 import { PartialStoryFn } from 'storybook/internal/types';
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 const OPTIONS: [Tab<number>, Tab<number>, Tab<number>] = [
   {
@@ -113,6 +114,84 @@ export const WithLeadingIcon: Story = {
         label: 'ヤマハ',
       },
     ],
+  },
+  play: async ({ canvas, args }) => {
+    for (const item of args.options) {
+      const tabElement = canvas.getByRole('tab', { name: item.label });
+      const icon = within(tabElement).getByTestId('eds-icon-path');
+      await expect(icon).toBeInTheDocument();
+      await expect(icon).toHaveAttribute(
+        'd',
+        item.leadingIcon?.svgPathData as string
+      );
+    }
+  },
+};
+
+export const WithTrailingIcon: Story = {
+  args: {
+    options: [
+      {
+        value: 1,
+        trailingIcon: car,
+        label: 'トヨタ',
+      },
+      {
+        value: 2,
+        trailingIcon: gamepad,
+        label: '任天堂',
+      },
+      {
+        value: 3,
+        trailingIcon: motorcycle,
+        label: 'ヤマハ',
+      },
+    ],
+  },
+  play: async ({ canvas, args }) => {
+    for (const item of args.options) {
+      const tabElement = canvas.getByRole('tab', { name: item.label });
+      const icon = within(tabElement).getByTestId('eds-icon-path');
+      await expect(icon).toBeInTheDocument();
+      await expect(icon).toHaveAttribute(
+        'd',
+        item.trailingIcon?.svgPathData as string
+      );
+    }
+  },
+};
+
+export const Variants: Story = {
+  args: {
+    options: [
+      {
+        value: 1,
+        variant: 'error',
+        label: 'トヨタ',
+      },
+      {
+        value: 2,
+        variant: 'warning',
+        label: '任天堂',
+      },
+      {
+        value: 3,
+        leadingIcon: motorcycle,
+        label: 'ヤマハ',
+      },
+    ],
+  },
+  play: async ({ canvas, args }) => {
+    const errorTab = canvas.getByRole('tab', { name: args.options[0].label });
+    await expect(within(errorTab).getByTestId('eds-icon-path')).toHaveAttribute(
+      'd',
+      getVariantIcon('error').svgPathData as string
+    );
+
+    const warningTab = canvas.getByRole('tab', { name: args.options[1].label });
+    await expect(
+      within(warningTab).getByTestId('eds-icon-path')
+    ).toHaveAttribute('d', getVariantIcon('warning').svgPathData as string);
   },
 };
 
