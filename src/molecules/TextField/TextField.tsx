@@ -24,7 +24,7 @@ import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
 
-export type TextFieldProps = Omit<BaseProps, 'variant' | 'inputRef'> & {
+export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
   maxCharacters?: number;
@@ -182,18 +182,6 @@ export const TextField: FC<TextFieldProps> = (props) => {
     }
   };
 
-  const handleOnTextFieldRender = (
-    element: HTMLInputElement | HTMLTextAreaElement | null
-  ) => {
-    if (
-      props.maxCharacters &&
-      element &&
-      element.value.length !== characterCount
-    ) {
-      setCharacterCount(element.value.length);
-    }
-  };
-
   useEffect(() => {
     if (
       typeof props.value === 'string' &&
@@ -218,7 +206,6 @@ export const TextField: FC<TextFieldProps> = (props) => {
     >
       <Base
         {...baseProps}
-        inputRef={handleOnTextFieldRender}
         disabled={props.loading || props.disabled}
         onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
       />
