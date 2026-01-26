@@ -560,7 +560,7 @@ export const TestFilteringGroups: Story = {
   },
   play: async ({ canvas }) => {
     const searchField = canvas.getByRole('combobox');
-    await userEvent.type(searchField, 'Group A');
+    await userEvent.type(searchField, TEST_GROUPS[0].items[0].label);
 
     await expect(canvas.queryByText('Group B')).not.toBeInTheDocument();
     await expect(canvas.getByText('Group A')).toBeInTheDocument();

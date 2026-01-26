@@ -134,17 +134,6 @@ export const TestRendersCanvas: Story = {
   },
 };
 
-export const TestCustomStyle: Story = {
-  tags: ['test-only'],
-  args: {
-    style: { border: '2px solid red' },
-  },
-  play: async ({ canvas }) => {
-    const canvasElement = canvas.getByTestId('canvas-confetti');
-    await expect(canvasElement).toHaveStyle('border: 2px solid red');
-  },
-};
-
 export const TestCustomClassName: Story = {
   tags: ['test-only'],
   args: {

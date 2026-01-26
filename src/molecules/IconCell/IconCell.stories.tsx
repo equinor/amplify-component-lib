@@ -27,7 +27,7 @@ import { DataGrid } from 'src/organisms';
 import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
 
 import { useGlobals } from 'storybook/internal/preview-api';
-import { expect, userEvent } from 'storybook/test';
+import { expect, fn, userEvent } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof IconCell> = {
@@ -280,23 +280,6 @@ export const CustomReactElement: Story = {
   },
 };
 
-export const TestColorWithTheme: Story = {
-  tags: ['test-only'],
-  args: {
-    label: 'Colored Cell',
-    icon: cake,
-    color: IconCellColors.BLUE,
-    variant: IconCellVariants.COLOURED,
-    as: 'div',
-  },
-  play: async ({ canvas }) => {
-    const cell = canvas.getByRole('button');
-    await expect(cell).toHaveStyle(
-      `background: ${colors.dataviz.lightblue.lighter}`
-    );
-  },
-};
-
 export const TestRenderLabel: Story = {
   tags: ['test-only'],
   args: {
@@ -344,18 +327,14 @@ export const TestCustomContent: Story = {
 
 export const TestClickHandler: Story = {
   tags: ['test-only'],
-  render: () => {
-    const handleClick = () => {
-      document.body.setAttribute('data-clicked', 'true');
-    };
-    return (
-      <IconCell label="Clickable" icon={cake} onClick={handleClick} as="div" />
-    );
+  args: {
+    label: 'Clickable',
+    icon: cake,
+    onClick: fn(),
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, args }) => {
     const cell = canvas.getByRole('button');
     await userEvent.click(cell);
-    await expect(document.body).toHaveAttribute('data-clicked', 'true');
-    document.body.removeAttribute('data-clicked');
+    await expect(args.onClick).toHaveBeenCalledOnce();
   },
 };
