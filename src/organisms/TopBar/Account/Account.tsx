@@ -53,6 +53,7 @@ export interface AccountProps {
   availableFields?: Field[];
   availableWells?: string[];
   enableEnvironmentToggle?: boolean;
+  onImpersonateChange?: () => void;
 }
 
 export const Account: FC<AccountProps> = ({
@@ -63,6 +64,7 @@ export const Account: FC<AccountProps> = ({
   availableFields,
   availableWells,
   enableEnvironmentToggle = false,
+  onImpersonateChange,
 }) => {
   const ACTIVE_ENVIRONMENT = environment.getEnvironmentName(
     import.meta.env.VITE_ENVIRONMENT_NAME
@@ -172,6 +174,7 @@ export const Account: FC<AccountProps> = ({
               <ImpersonateButton
                 onOpenImpersonateMenu={handleOpenImpersonate}
                 onClose={handleMenuOnClose}
+                onImpersonateChange={onImpersonateChange}
               />
             )}
         </Container>
@@ -197,6 +200,7 @@ export const Account: FC<AccountProps> = ({
         anchorEl={buttonRef.current}
         availableFields={availableFields}
         availableWells={availableWells}
+        onImpersonateChange={onImpersonateChange}
       />
     </>
   );

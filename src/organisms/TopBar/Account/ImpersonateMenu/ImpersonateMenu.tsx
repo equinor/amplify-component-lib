@@ -21,6 +21,7 @@ interface ImpersonateProps {
   anchorEl: HTMLElement | null;
   availableFields?: Field[];
   availableWells?: string[];
+  onImpersonateChange?: () => void;
 }
 
 export const ImpersonateMenu: FC<ImpersonateProps> = ({
@@ -29,6 +30,7 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   anchorEl,
   availableFields,
   availableWells,
+  onImpersonateChange,
 }) => {
   const [creatingOrEditingUser, setCreatingOrEditingUser] = useState(false);
   const [editingUser, setEditingUser] = useState<
@@ -165,7 +167,11 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         )}
       </Content>
       <CreateNewUserButton onClick={handleOnCreateNewOpen} />
-      <Actions selectedUniqueName={selectedUniqueName} onCancel={onClose} />
+      <Actions
+        selectedUniqueName={selectedUniqueName}
+        onCancel={onClose}
+        onImpersonateChange={onImpersonateChange}
+      />
     </Menu>
   );
 };
