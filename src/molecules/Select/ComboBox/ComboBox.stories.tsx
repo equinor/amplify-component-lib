@@ -72,18 +72,16 @@ const FAKE_ITEMS_WITH_CHILDREN = [
   {
     label: faker.animal.fish(),
     value: faker.string.uuid(),
-    children: new Array(faker.number.int({ min: 3, max: 3 }))
-      .fill(0)
-      .map(() => ({
-        label: faker.animal.fish(),
-        value: faker.string.uuid(),
-        children: new Array(faker.number.int({ min: 3, max: 3 }))
-          .fill(0)
-          .map(() => ({
-            label: faker.animal.fish(),
-            value: faker.string.uuid(),
-          })),
-      })),
+    children: new Array(3).fill(0).map(() => ({
+      label: faker.animal.fish(),
+      value: faker.string.uuid(),
+      children: new Array(faker.number.int({ min: 3, max: 3 }))
+        .fill(0)
+        .map(() => ({
+          label: faker.animal.fish(),
+          value: faker.string.uuid(),
+        })),
+    })),
   },
   ...new Array(5).fill(0).map(() => ({
     label: faker.animal.fish(),
@@ -550,6 +548,23 @@ export const TestGroupsPreselected: Story = {
   },
 };
 
+export const TestGroupsPreselectedSelectedAsText: Story = {
+  tags: ['test-only'],
+  args: {
+    groups: TEST_GROUPS,
+    values: [TEST_GROUPS[0].items[0]],
+    label: 'Select Group Items',
+    onSelect: fn(),
+    showSelectedAsText: true,
+  },
+  play: async ({ canvas, args }) => {
+    const groups = args.groups ?? [];
+    await expect(
+      canvas.getByText(`1/${groups.flatMap((g) => g.items).length} Selected`)
+    ).toBeInTheDocument();
+  },
+};
+
 export const TestFilteringGroups: Story = {
   tags: ['test-only'],
   args: {
@@ -701,6 +716,8 @@ export const TestCustomValueComponentRenders: Story = {
       .getByText('custom')
       .closest('.amplify-combo-box-chip');
     await expect(customChip).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard('{Backspace}');
   },
 };
 
@@ -816,6 +833,64 @@ export const TestSortsValues: Story = {
       const second = canvas.getByText(sortedOrder[i].label);
 
       await expect(first.compareDocumentPosition(second)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING
+      );
+    }
+  },
+};
+
+export const TestKeyboardNavigation: Story = {
+  tags: ['test-only'],
+  args: {
+    values: [],
+    items: FAKE_ITEMS_WITH_CHILDREN,
+    label: 'Keyboard Navigation',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args, step }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    const parentItem = (args.items ?? [])[0];
+    await step(
+      'Navigate to second item using keyboard and select it',
+      async () => {
+        await userEvent.keyboard('{ArrowDown}'); // First item
+        await userEvent.keyboard('{ArrowLeft}'); // Open children
+        for (let i = 0; i < parentItem.children!.length + 1; i++) {
+          await userEvent.keyboard('{ArrowDown}');
+        }
+        await userEvent.keyboard('{ArrowUp}'); // First item
+        await userEvent.keyboard('{ArrowLeft}'); // Open children
+        await userEvent.keyboard('{ArrowDown}');
+        await userEvent.keyboard('{ArrowUp}'); // First item
+        await userEvent.keyboard('{ArrowDown}');
+        await userEvent.keyboard('{Enter}');
+      }
+    );
+    const selectedItem = parentItem.children![0];
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [selectedItem],
+      selectedItem
+    );
+  },
+};
+
+export const TestSortValuesFalse: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    values: [FAKE_ITEMS[3], FAKE_ITEMS[1], FAKE_ITEMS[0]],
+    label: 'Select Item',
+    sortValues: false,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const elements = canvas.getAllByTestId('amplify-combo-box-chip');
+    for (let i = 1; i < elements.length; i++) {
+      const firstElement = elements[i - 1];
+      const secondElement = elements[i];
+      await expect(firstElement.compareDocumentPosition(secondElement)).toBe(
         Node.DOCUMENT_POSITION_FOLLOWING
       );
     }
