@@ -205,7 +205,7 @@ describe(
 
         await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-        expect(onImpersonateChange).toHaveBeenCalled();
+        expect(onImpersonateChange).toHaveBeenCalledTimes(1);
 
         // Chip with '+1' for example
         expect(
@@ -243,7 +243,7 @@ describe(
 
         await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
-        expect(onImpersonateChange).toHaveBeenCalled();
+        expect(onImpersonateChange).toHaveBeenCalledTimes(2);
 
         await user.click(button);
 
