@@ -603,6 +603,72 @@ export const TestParentChildSelection: Story = {
   },
 };
 
+export const TestParentChildSelectionSyncParentFalse: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS_WITH_CHILDREN,
+    values: [TEST_ITEMS_WITH_CHILDREN[1].children[0]],
+    label: 'Parent Child',
+    syncParentChildSelection: false,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    // Click parent
+    await userEvent.click(canvas.getByText('Fruits'));
+
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS_WITH_CHILDREN[0], TEST_ITEMS_WITH_CHILDREN[0].children[0]],
+      TEST_ITEMS_WITH_CHILDREN[0]
+    );
+  },
+};
+
+export const TestParentChildSelectionSyncParent: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS_WITH_CHILDREN,
+    values: [TEST_ITEMS_WITH_CHILDREN[1]],
+    label: 'Parent Child',
+    syncParentChildSelection: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    // Click parent
+    await userEvent.click(canvas.getByText('Fruits'));
+
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS_WITH_CHILDREN[0]],
+      TEST_ITEMS_WITH_CHILDREN[0]
+    );
+  },
+};
+
+export const TestParentChildSelectionSyncParentSelectedChild: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS_WITH_CHILDREN,
+    values: [TEST_ITEMS_WITH_CHILDREN[0].children[0]],
+    label: 'Parent Child',
+    syncParentChildSelection: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    // Click parent
+    await userEvent.click(canvas.getByText('Fruits'));
+
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS_WITH_CHILDREN[0]],
+      TEST_ITEMS_WITH_CHILDREN[0]
+    );
+  },
+};
+
 export const TestNestedChildLabel: Story = {
   tags: ['test-only'],
   render: () => {
@@ -894,5 +960,89 @@ export const TestSortValuesFalse: Story = {
         Node.DOCUMENT_POSITION_FOLLOWING
       );
     }
+  },
+};
+
+export const TestOnOpenCallback: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    values: [],
+    label: 'Select Item',
+    sortValues: false,
+    onSelect: fn(),
+    onOpenCallback: fn(),
+    helperText: undefined,
+    showHelperIcon: false,
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByTestId('eds-icon-path'));
+
+    await expect(
+      'onOpenCallback' in args ? args.onOpenCallback : null
+    ).toHaveBeenCalledTimes(2);
+    await expect(
+      'onOpenCallback' in args ? args.onOpenCallback : null
+    ).toHaveBeenCalledWith(true);
+
+    await userEvent.click(canvas.getAllByTestId('eds-icon-path')[0]);
+    await expect(
+      'onOpenCallback' in args ? args.onOpenCallback : null
+    ).toHaveBeenCalledTimes(3);
+    await expect(
+      'onOpenCallback' in args ? args.onOpenCallback : null
+    ).toHaveBeenCalledWith(false);
+  },
+};
+
+export const TestOnClear: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    values: [FAKE_ITEMS[0]],
+    label: 'Select Item',
+    sortValues: false,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByTestId('clearBtn'));
+
+    await expect(args.onSelect).toHaveBeenNthCalledWith(1, []);
+  },
+};
+
+export const TestOpenWithKeyboard: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    values: [],
+    label: 'Select Item',
+    sortValues: false,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args, step }) => {
+    const combobox = canvas.getByRole('combobox');
+    combobox.focus();
+
+    await step('Open and close the combobox using keyboard', async () => {
+      await userEvent.keyboard('{Space}');
+
+      for (const item of args.items ?? []) {
+        await expect(canvas.getByText(item.label)).toBeInTheDocument();
+      }
+    });
+
+    await step('Moves focus to search field', async () => {
+      await userEvent.keyboard('{ArrowDown}');
+      await userEvent.keyboard('{ArrowUp}');
+      await expect(canvas.getByRole('combobox')).toHaveFocus();
+    });
+
+    await step('Close the combobox using keyboard', async () => {
+      await userEvent.keyboard('{Escape}');
+      for (const item of args.items ?? []) {
+        await expect(canvas.queryByText(item.label)).not.toBeInTheDocument();
+      }
+    });
   },
 };

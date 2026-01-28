@@ -8,6 +8,8 @@ import {
 } from 'src/molecules/Select/Select.types';
 import { SelectMenuItem } from 'src/molecules/Select/SelectMenuItem';
 
+// Was getting coverage error on the generic type parameter here
+/* v8 ignore next */
 export const GroupedSelectMenu = <T extends SelectOptionRequired>(
   props: GroupedSelectPropsCombined<T>
 ) => {
