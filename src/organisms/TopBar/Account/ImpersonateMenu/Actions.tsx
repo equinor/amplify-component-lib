@@ -25,15 +25,21 @@ const Section = styled.section`
 interface ActionsProps {
   selectedUniqueName: string;
   onCancel: () => void;
+  onImpersonateChange?: () => void;
 }
 
-export const Actions: FC<ActionsProps> = ({ selectedUniqueName, onCancel }) => {
+export const Actions: FC<ActionsProps> = ({
+  selectedUniqueName,
+  onCancel,
+  onImpersonateChange,
+}) => {
   const { data: activeUserImpersonation } = useActiveImpersonationUser();
   const { mutateAsync, isPending } = useStartImpersonation();
 
   const handleOnStartImpersonate = async () => {
     await mutateAsync(selectedUniqueName);
     onCancel();
+    onImpersonateChange?.();
   };
 
   return (
