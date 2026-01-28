@@ -619,7 +619,7 @@ export const TestParentChildSelectionSyncParentFalse: Story = {
     await userEvent.click(canvas.getByText('Fruits'));
 
     await expect(args.onSelect).toHaveBeenCalledWith(
-      [TEST_ITEMS_WITH_CHILDREN[0], TEST_ITEMS_WITH_CHILDREN[0].children[0]],
+      [TEST_ITEMS_WITH_CHILDREN[0], TEST_ITEMS_WITH_CHILDREN[1].children[0]],
       TEST_ITEMS_WITH_CHILDREN[0]
     );
   },
@@ -629,7 +629,7 @@ export const TestParentChildSelectionSyncParent: Story = {
   tags: ['test-only'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
-    values: [TEST_ITEMS_WITH_CHILDREN[1]],
+    values: [TEST_ITEMS_WITH_CHILDREN[0].children[0]],
     label: 'Parent Child',
     syncParentChildSelection: true,
     onSelect: fn(),
