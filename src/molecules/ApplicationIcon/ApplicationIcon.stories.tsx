@@ -150,7 +150,9 @@ export const TestGrayScale: Story = {
   },
   play: async ({ canvas }) => {
     const container = canvas.getByTestId('application-icon');
-    expect(getComputedStyle(container).filter).toBeDefined();
+    const filterValue = getComputedStyle(container).filter;
+    expect(filterValue).not.toBe('');
+    expect(filterValue).not.toBe('none');
   },
 };
 
