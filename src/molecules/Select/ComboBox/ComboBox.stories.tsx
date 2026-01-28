@@ -886,7 +886,7 @@ export const TestSortValuesFalse: Story = {
     onSelect: fn(),
   },
   play: async ({ canvas }) => {
-    const elements = canvas.getAllByTestId('amplify-combo-box-chip');
+    const elements = canvas.getAllByTestId('amplify-combobox-chip');
     for (let i = 1; i < elements.length; i++) {
       const firstElement = elements[i - 1];
       const secondElement = elements[i];
