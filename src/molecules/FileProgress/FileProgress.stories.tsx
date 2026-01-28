@@ -6,6 +6,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { FileProgress } from 'src/molecules/FileProgress/FileProgress';
 import { FileProgressProps } from 'src/molecules/FileProgress/FileProgress.types';
 
+import { expect, fn, userEvent } from 'storybook/test';
+
 const StoryComponent = (args: FileProgressProps) => {
   const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -84,7 +86,7 @@ const meta: Meta<typeof FileProgress> = {
 
 export default meta;
 
-type Story = StoryObj<FileProgressProps>;
+type Story = StoryObj<typeof FileProgress>;
 
 export const Default: Story = {
   args: {
@@ -154,5 +156,97 @@ export const WithoutDeleteCompact: Story = {
   args: {
     compact: true,
     onDelete: undefined,
+  },
+};
+
+export const TestCompactCompleted: Story = {
+  args: {
+    indeterminate: true,
+    isDone: true,
+    compact: true,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('img')).toBeInTheDocument();
+  },
+};
+
+export const TestCompactCompletedBasic: Story = {
+  args: {
+    indeterminate: true,
+    isDone: true,
+    compact: true,
+    file: new File([], 'basic.txt', { type: 'text/plain' }),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.queryByRole('img')).not.toBeInTheDocument();
+  },
+};
+
+export const TestOnError: Story = {
+  tags: ['test-only'],
+  args: {
+    indeterminate: false,
+    isError: true,
+    isDone: undefined,
+    fullErrorText: 'This is a full error text for testing purposes.',
+    shortErrorText: 'Short error',
+    compact: true,
+    onDelete: fn(),
+    onCancel: undefined,
+  },
+  play: async ({ canvas, args }) => {
+    if (args.compact) {
+      await expect(
+        canvas.getByText(args.shortErrorText ?? '')
+      ).toBeInTheDocument();
+    }
+  },
+};
+
+export const TestOnDelete: Story = {
+  tags: ['test-only'],
+  args: {
+    indeterminate: true,
+    compact: true,
+    onDelete: fn(),
+    onCancel: undefined,
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByTestId('delete-file'));
+
+    await expect(args.onDelete).toHaveBeenCalledOnce();
+  },
+};
+
+export const TestOnDeleteProgress: Story = {
+  tags: ['test-only'],
+  args: {
+    indeterminate: true,
+    compact: false,
+    onDelete: async () => {
+      return new Promise((resolve) => setTimeout(() => resolve(), 2000));
+    },
+    onCancel: undefined,
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByTestId('delete-file'));
+
+    await expect(canvas.getAllByRole('progressbar').length).toBe(2);
+  },
+};
+
+export const TestOnCancel: Story = {
+  tags: ['test-only'],
+  args: {
+    indeterminate: true,
+    compact: false,
+    isDone: false,
+    onCancel: fn(),
+    onDelete: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByTestId('delete-file'));
+
+    await expect(args.onCancel).toHaveBeenCalledOnce();
   },
 };

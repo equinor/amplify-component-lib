@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import {
@@ -7,6 +8,7 @@ import {
   FullPageSpinnerProps,
 } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 
+import { expect } from 'storybook/test';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -68,5 +70,66 @@ export const Circle: Story = {
 export const Equinor: Story = {
   args: {
     variant: 'equinor',
+  },
+};
+
+export const TestWithScrim: Story = {
+  tags: ['test-only'],
+  args: {
+    withScrim: true,
+  },
+  play: async ({ canvasElement }) => {
+    await expect(
+      canvasElement.querySelector('[class*="Scrim"]')
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestEquinorVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    variant: 'equinor',
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByTestId('full-page-spinner-equinor')
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestCircleVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    variant: 'circle',
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByTestId('full-page-spinner-circle')
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestDotsVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    variant: 'dots',
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByTestId('full-page-spinner-dots')
+    ).toBeInTheDocument();
+  },
+};
+
+const childText = faker.animal.dog();
+export const TestChildrenHidden: Story = {
+  tags: ['test-only'],
+  render: () => (
+    <Container>
+      <FullPageSpinner>{childText}</FullPageSpinner>
+    </Container>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText(childText)).not.toBeVisible();
   },
 };
