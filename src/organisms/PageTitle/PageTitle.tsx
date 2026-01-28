@@ -11,7 +11,10 @@ const APP_NAME = environment.getAppName(import.meta.env.VITE_NAME);
 
 export const PageTitle: FC<PageTitleProps> = ({ title, children }) => {
   useEffect(() => {
-    document.title = `${APP_NAME} - ${title}`;
+    const newTitle = `${APP_NAME} - ${title}`;
+    if (document.title !== newTitle) {
+      document.title = newTitle;
+    }
   }, [title]);
 
   return children;
