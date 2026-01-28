@@ -5,6 +5,7 @@ import { waitFor } from '@testing-library/react';
 import { Account } from './Account';
 import { MOCK_USER } from 'src/providers/AuthProvider/AuthProvider';
 import {
+  page,
   renderWithProviders,
   screen,
   test,
@@ -136,7 +137,10 @@ describe(
     test(
       'Can open, start and end impersonation with existing impersonation user',
       async () => {
-        renderWithProviders(<Account />);
+        const onImpersonateChange = vi.fn();
+        renderWithProviders(
+          <Account onImpersonateChange={onImpersonateChange} />
+        );
         const user = userEvent.setup();
         const button = screen.getByRole('button');
 
@@ -202,6 +206,8 @@ describe(
 
         await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
 
+        expect(onImpersonateChange).toHaveBeenCalled();
+
         // Chip with '+1' for example
         expect(
           await screen.findByText(`+${amountOfRoles - 1}`)
@@ -237,6 +243,8 @@ describe(
         await user.click(endButton);
 
         await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+
+        expect(onImpersonateChange).toHaveBeenCalled();
 
         await user.click(button);
 
