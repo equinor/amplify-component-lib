@@ -5,7 +5,6 @@ import { waitFor } from '@testing-library/react';
 import { Account } from './Account';
 import { MOCK_USER } from 'src/providers/AuthProvider/AuthProvider';
 import {
-  page,
   renderWithProviders,
   screen,
   test,
