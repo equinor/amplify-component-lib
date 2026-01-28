@@ -31,11 +31,13 @@ const EndImpersonationButton = styled(EDSButton)`
 interface ImpersonateButtonProps {
   onOpenImpersonateMenu: () => void;
   onClose: () => void;
+  onImpersonateChange?: () => void;
 }
 
 export const ImpersonateButton: FC<ImpersonateButtonProps> = ({
   onOpenImpersonateMenu,
   onClose,
+  onImpersonateChange,
 }) => {
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
   const { mutateAsync: endImpersonation, isPending } = useStopImpersonation();
@@ -43,6 +45,7 @@ export const ImpersonateButton: FC<ImpersonateButtonProps> = ({
   const handleOnEndImpersonation = async () => {
     await endImpersonation();
     onClose();
+    onImpersonateChange?.();
   };
 
   if (activeImpersonationUser && isPending) {
