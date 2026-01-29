@@ -1,4 +1,7 @@
-import { flattenOptions } from 'src/molecules/Select/Select.utils';
+import {
+  flattenOptions,
+  getCumulativeArrayFromNumberedArray,
+} from 'src/molecules/Select/Select.utils';
 
 import { expect } from 'vitest';
 
@@ -87,5 +90,14 @@ test('flattenOptions attaches correct parents', () => {
 
   expect(result.find(({ value }) => value === 'value 1.2.1')?.parent).toBe(
     'value 1.2'
+  );
+});
+
+test('getCumulativeArrayFromNumberedArray works as expected', async () => {
+  const array = [1, 2, 3, 4, 5];
+  const expectedCumulativeArray = [0, 1, 3, 6, 10];
+
+  expect(getCumulativeArrayFromNumberedArray(array)).toEqual(
+    expectedCumulativeArray
   );
 });
