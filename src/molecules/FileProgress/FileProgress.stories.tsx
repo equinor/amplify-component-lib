@@ -231,7 +231,7 @@ export const TestOnDeleteProgress: Story = {
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByTestId('delete-file'));
 
-    await expect(canvas.getAllByRole('progressbar').length).toBe(2);
+    await expect(canvas.getAllByRole('progressbar')).toHaveLength(2);
   },
 };
 
