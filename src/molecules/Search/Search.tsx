@@ -1,13 +1,20 @@
 import { forwardRef } from 'react';
 
-import { Search as Base, SearchProps } from '@equinor/eds-core-react';
+import {
+  Search as Base,
+  SearchProps as BaseProps,
+} from '@equinor/eds-core-react';
 
 import { animation } from 'src/atoms/style/animation';
 import { colors } from 'src/atoms/style/colors';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-const StyledBase = styled(Base)`
+interface StyledBaseProps {
+  $lightBackground: boolean;
+}
+
+const StyledBase = styled(Base)<StyledBaseProps>`
   input {
     color: ${colors.text.static_icons__default.rgba};
     transition:
@@ -26,10 +33,31 @@ const StyledBase = styled(Base)`
       box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
     }
   }
+
+  ${({ $lightBackground }) => {
+    if (!$lightBackground) return '';
+
+    return css`
+      > div:first-child {
+        background: ${colors.ui.background__default.rgba};
+      }
+    `;
+  }}
 `;
 
+interface SearchProps extends BaseProps {
+  lightBackground?: boolean;
+}
+
 export const Search = forwardRef<HTMLInputElement, SearchProps>(
-  (props, ref) => <StyledBase {...props} ref={ref} autoComplete="off" />
+  ({ lightBackground = false, ...rest }, ref) => (
+    <StyledBase
+      {...rest}
+      ref={ref}
+      autoComplete="off"
+      $lightBackground={lightBackground}
+    />
+  )
 );
 
 Search.displayName = 'HeaderDrawer';
