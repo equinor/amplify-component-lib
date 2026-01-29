@@ -19,6 +19,7 @@ const meta: Meta<typeof ApplicationIcon> = {
         'acquire',
         'dasha',
         'forecast-formatter',
+        'fdi',
         'orca',
         'recap',
         'jsembark',
