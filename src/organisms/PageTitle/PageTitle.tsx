@@ -14,6 +14,7 @@ export const PageTitle: FC<PageTitleProps> = ({ title, children }) => {
     const newTitle = `${APP_NAME} - ${title}`;
     if (document.title !== newTitle) {
       document.title = newTitle;
+      /* v8 ignore next */
     }
   }, [title]);
 

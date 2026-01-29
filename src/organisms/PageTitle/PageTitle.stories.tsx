@@ -51,5 +51,6 @@ export const TestSetsDocumentTitle: Story = {
     await expect(document.title).toContain(args.title);
     await userEvent.click(canvas.getByRole('button'));
     await expect(document.title).toContain(args.title);
+    await userEvent.click(canvas.getByRole('button'));
   },
 };

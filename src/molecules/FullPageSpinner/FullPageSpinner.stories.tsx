@@ -133,3 +133,15 @@ export const TestChildrenHidden: Story = {
     await expect(canvas.getByText(childText)).not.toBeVisible();
   },
 };
+
+export const TestChildrenHiddenWithScrim: Story = {
+  tags: ['test-only'],
+  render: () => (
+    <Container>
+      <FullPageSpinner withScrim>{childText}</FullPageSpinner>
+    </Container>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText(childText)).not.toBeVisible();
+  },
+};
