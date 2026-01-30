@@ -8,7 +8,7 @@ import { colors, shape } from 'src/atoms';
 import styled from 'styled-components';
 
 const StyledIcon = styled(Icon)`
-  fill: ${colors.text.static_icons__tertiary.rgba};
+  fill: ${colors.interactive.primary__hover.rgba};
   cursor: pointer;
   border-radius: ${shape.circle.borderRadius};
   &:hover {
