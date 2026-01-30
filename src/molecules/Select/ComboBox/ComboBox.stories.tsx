@@ -130,9 +130,10 @@ export const Explanation: Story = {
   },
   play: async ({ canvas, args }) => {
     await userEvent.hover(canvas.getAllByTestId('eds-icon-path')[0]);
-    await expect(
-      screen.getByText(args.explanation as string)
-    ).toBeInTheDocument();
+    const explanationTooltip = await screen.findByText(
+      args.explanation as string
+    );
+    expect(explanationTooltip).toBeInTheDocument();
   },
 };
 
