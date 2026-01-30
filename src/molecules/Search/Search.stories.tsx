@@ -9,16 +9,15 @@ import {
 import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Search } from 'src/molecules/Search/Search';
-import page from 'src/molecules/Search/Search.docs.mdx';
 
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof Search> = {
   title: 'Molecules/Search',
   component: Search,
-  parameters: {
-    docs: {
-      page,
+  argTypes: {
+    lightBackground: {
+      control: 'boolean',
     },
   },
 };
@@ -27,10 +26,23 @@ export default meta;
 
 const handleOnChange = action('onChange');
 
-export const Introduction: StoryFn<SearchProps> = () => {
+export const Default: StoryFn<SearchProps> = () => {
   // This story is not interactive, because Search has no props beyond the default HTML ones.
   return (
     <Search
+      aria-label="sitewide"
+      id="search-normal"
+      placeholder="Search"
+      onChange={handleOnChange}
+    />
+  );
+};
+
+export const LightBackground: StoryFn<SearchProps> = () => {
+  // This story is not interactive, because Search has no props beyond the default HTML ones.
+  return (
+    <Search
+      lightBackground
       aria-label="sitewide"
       id="search-normal"
       placeholder="Search"
