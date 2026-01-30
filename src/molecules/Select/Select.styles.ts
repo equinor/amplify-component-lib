@@ -25,6 +25,16 @@ export const Wrapper = styled.div<WrapperProps>`
     `}
 `;
 
+export const LabelWrapper = styled.span`
+  display: flex;
+  gap: ${spacings.small};
+  padding-left: ${spacings.small};
+  > label {
+    width: 100%;
+    margin-left: 0;
+  }
+`;
+
 interface HelperWrapperProps {
   $variant?: Variants | 'disabled';
   $borderBottom?: boolean;

@@ -14,10 +14,9 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { TextField, TextFieldProps } from 'src/molecules/TextField/TextField';
-import page from 'src/molecules/TextField/TextField.docs.mdx';
 import { Stack } from 'src/storybook';
 
-import { expect, userEvent } from 'storybook/test';
+import { expect, screen, userEvent } from 'storybook/test';
 
 const icons = {
   thumbs_up,
@@ -39,7 +38,6 @@ const meta: Meta<typeof TextField> = {
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=5362-141508&m=dev',
     },
     docs: {
-      page,
       source: {
         excludeDecorators: true,
       },
@@ -54,6 +52,9 @@ const meta: Meta<typeof TextField> = {
     },
     maxCharacters: {
       control: 'number',
+    },
+    explanation: {
+      control: 'text',
     },
     inputIcon: {
       options: ['error', 'warning', 'success'],
@@ -110,6 +111,20 @@ Introduction.args = {
   id: 'intro',
   label: 'Play with me',
   helperText: 'helper text',
+};
+
+export const Explanation: StoryObject = {
+  args: {
+    explanation: 'This is an explanation tooltip',
+    label: 'Airport name',
+    placeholder: 'Write an airport name',
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.hover(canvas.getByTestId('eds-icon-path'));
+    await expect(
+      await screen.findByText(`${args.explanation}`)
+    ).toBeInTheDocument();
+  },
 };
 
 export const Types: Story = () => (

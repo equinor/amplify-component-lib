@@ -20,6 +20,7 @@ import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
+import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
@@ -28,6 +29,7 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
   maxCharacters?: number;
+  explanation?: string;
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -37,6 +39,7 @@ interface WrapperProps {
   $variant: TextFieldProps['variant'];
   $helperRightWidth: number;
   $disabled?: boolean;
+  $hasExplanation?: boolean;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -126,6 +129,16 @@ const Wrapper = styled.div<WrapperProps>`
       }
     `;
   }}
+
+  ${({ $hasExplanation }) => {
+    if (!$hasExplanation) return '';
+
+    return css`
+      label {
+        padding-left: ${spacings.medium_small};
+      }
+    `;
+  }}
 `;
 
 const Loader = styled(SkeletonBase)`
@@ -140,6 +153,12 @@ const MaxCharactersText = styled(Typography)`
   right: ${spacings.small};
 `;
 
+const InputExplanationWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
 /**
  * @param loading - Show loading skeleton on top of the text field.
  * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
@@ -150,6 +169,13 @@ export const TextField: FC<TextFieldProps> = (props) => {
       '`maxCharacters` prop is not supported for input types other than "text".'
     );
   }
+
+  if (!!props.explanation && !props.label) {
+    throw new Error(
+      '`explanation` prop requires a `label` to be set on the TextField.'
+    );
+  }
+
   const baseProps: BaseProps = {
     ...props,
     variant: props.variant !== 'dirty' ? props.variant : undefined,
@@ -197,6 +223,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
+      $hasExplanation={!!props.explanation}
       style={{
         marginBottom:
           !props.helperText && props.maxCharacters
@@ -238,6 +265,11 @@ export const TextField: FC<TextFieldProps> = (props) => {
         >
           {characterCount} / {props.maxCharacters}
         </MaxCharactersText>
+      )}
+      {props.explanation && (
+        <InputExplanationWrapper>
+          <InputExplanation>{props.explanation}</InputExplanation>
+        </InputExplanationWrapper>
       )}
     </Wrapper>
   );

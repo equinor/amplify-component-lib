@@ -11,10 +11,14 @@ import {
   SelectOption,
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
-import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
+import {
+  SingleSelect,
+  SingleSelectProps,
+} from 'src/molecules/Select/SingleSelect/SingleSelect';
+import { Item } from 'src/organisms/TopBar/Guidelines/Item';
 
 import { actions } from 'storybook/actions';
-import { expect } from 'storybook/test';
+import { expect, screen, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof SingleSelect> = {
   title: 'Molecules/Select/SingleSelect',
@@ -38,6 +42,8 @@ const meta: Meta<typeof SingleSelect> = {
 };
 
 export default meta;
+
+type Story = StoryObj<typeof SingleSelect>;
 
 interface Item {
   label: string;
@@ -84,6 +90,42 @@ export const BasicSingleSelect: StoryFn = (args) => {
       onSelect={handleOnSelect}
     />
   );
+};
+
+function ExplanationComponent(
+  args: Omit<SingleSelectProps<Item>, 'items' | 'groups'>
+) {
+  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
+
+  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
+    actions('onSelect').onSelect(selectedValue);
+    setValue(selectedValue);
+  };
+
+  return (
+    <SingleSelect
+      {...args}
+      items={FAKE_ITEMS}
+      value={value}
+      onSelect={handleOnSelect}
+    />
+  );
+}
+
+export const Explanation: Story = {
+  render: ExplanationComponent,
+  args: {
+    explanation:
+      'This is an explanation text providing more details about the select field.',
+    explanationPosition: 'bottom',
+  },
+  play: async ({ canvas, args }) => {
+    // First icon will be the explanation icon
+    await userEvent.hover(canvas.getAllByTestId('eds-icon-path')[0]);
+    await expect(
+      await screen.findByText(args.explanation as string)
+    ).toBeInTheDocument();
+  },
 };
 
 export const ReallyLongName: StoryFn = (args) => {
@@ -261,8 +303,6 @@ export const CustomizableValueComponent: StoryFn = (args) => {
     />
   );
 };
-
-type Story = StoryObj<typeof SingleSelect>;
 
 export const DisabledSingleSelect: Story = {
   args: {

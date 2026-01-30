@@ -192,6 +192,13 @@ export const BasicPersistentComboBox: Story = {
   },
 };
 
+export const Explanation: Story = {
+  args: {
+    explanation: 'This is an explanation text',
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
 export const Loading: Story = {
   args: {
     loading: true,
