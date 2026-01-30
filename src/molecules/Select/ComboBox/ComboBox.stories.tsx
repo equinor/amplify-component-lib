@@ -7,6 +7,7 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { ComboBoxChip } from '../Select.styles';
 import { ComboBox, ComboBoxProps } from './ComboBox';
+import { spacings } from 'src/atoms';
 import {
   SelectedState,
   SelectOption,
@@ -307,9 +308,6 @@ export const CustomizableMenuItem: Story = {
     CustomMenuItemComponent: CustomMenuItem,
   },
 };
-
-// Test Stories
-type Story = StoryObj<typeof ComboBox>;
 
 const TEST_ITEMS = [
   { label: 'Apple', value: 'apple' },
