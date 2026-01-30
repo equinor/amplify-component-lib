@@ -18,7 +18,14 @@ const StyledIcon = styled(Icon)`
 `;
 
 interface InputExplanationProps {
+  /**
+   * Controls where the tooltip is placed relative to the help icon.
+   * Uses the same placement options as the underlying EDS Tooltip component.
+   */
   position?: TooltipProps['placement'];
+  /**
+   * Explanation text content displayed inside the tooltip.
+   */
   children: string;
 }
 export const InputExplanation: FC<InputExplanationProps> = ({
