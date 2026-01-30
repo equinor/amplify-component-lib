@@ -60,4 +60,4 @@ export const Search = forwardRef<HTMLInputElement, SearchProps>(
   )
 );
 
-Search.displayName = 'HeaderDrawer';
+Search.displayName = 'Search';
