@@ -15,7 +15,6 @@ import {
   SingleSelect,
   SingleSelectProps,
 } from 'src/molecules/Select/SingleSelect/SingleSelect';
-import { Item } from 'src/organisms/TopBar/Guidelines/Item';
 
 import { actions } from 'storybook/actions';
 import { expect, screen, userEvent } from 'storybook/test';

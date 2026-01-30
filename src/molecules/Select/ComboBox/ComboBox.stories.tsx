@@ -253,6 +253,7 @@ const CustomValueElement: FC<{
 );
 
 export const CustomizableValueElement: Story = {
+  render: ComboBoxStateful,
   args: {
     items: FAKE_ITEMS,
     customValueComponent: CustomValueElement,
