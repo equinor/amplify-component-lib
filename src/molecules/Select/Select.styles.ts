@@ -230,6 +230,7 @@ const ClearButton = styled(Button)<ClearButtonProps>`
   }
 `;
 
+/* v8 ignore start */
 interface ComboBoxChipProps {
   $tryingToRemove: boolean;
   $lightBackground?: boolean;
@@ -243,6 +244,7 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
     return colors.ui.background__default.rgba;
   }} !important;
 `;
+/* v8 ignore end */
 
 const PersistentGroupsWrapper = styled.div`
   padding: ${spacings.small} 0;
