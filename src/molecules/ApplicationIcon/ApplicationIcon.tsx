@@ -6,6 +6,7 @@ import { AtWork } from './Icons/Atwork';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
 import { FluxMaps } from './Icons/FluxMaps';
+import { ForecastDataInventory } from './Icons/ForecastDataInventory';
 import { ForecastFormatter } from './Icons/ForecastFormatter';
 import { FourDInsight } from './Icons/FourDInsight';
 import { InPress } from './Icons/InPress';
@@ -27,6 +28,7 @@ export type ApplicationName =
   | 'recap'
   | 'dasha'
   | 'forecast-formatter'
+  | 'fdi'
   | 'orca'
   | 'portal'
   | 'jsembark'
@@ -60,6 +62,7 @@ const apps: ApplicationIconData[] = [
     ],
     component: ForecastFormatter,
   },
+  { appName: ['fdi'], component: ForecastDataInventory },
   { appName: ['orca'], component: Orca },
   {
     appName: ['logging-qualification', 'logging qualification', 'ltg'],
