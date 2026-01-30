@@ -137,14 +137,21 @@ export const Select = <T extends SelectOptionRequired>(
     return (
       <>
         {shouldShowLabel && (
-          <LabelWrapper>
-            {explanation && (
-              <InputExplanation position={explanationPosition}>
-                {explanation}
-              </InputExplanation>
-            )}
-            <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
-          </LabelWrapper>
+          <Label
+            label={
+              <LabelWrapper>
+                {label}
+                {explanation && (
+                  <InputExplanation position={explanationPosition}>
+                    {explanation}
+                  </InputExplanation>
+                )}
+              </LabelWrapper>
+            }
+            meta={meta}
+            htmlFor={id}
+            disabled={disabled}
+          />
         )}
         <PersistentComboBoxWrapper
           $maxHeight={
@@ -188,14 +195,21 @@ export const Select = <T extends SelectOptionRequired>(
   return (
     <div>
       {shouldShowLabel && (
-        <LabelWrapper>
-          {explanation && (
-            <InputExplanation position={explanationPosition}>
-              {explanation}
-            </InputExplanation>
-          )}
-          <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
-        </LabelWrapper>
+        <Label
+          label={
+            <LabelWrapper>
+              {label}
+              {explanation && (
+                <InputExplanation position={explanationPosition}>
+                  {explanation}
+                </InputExplanation>
+              )}
+            </LabelWrapper>
+          }
+          meta={meta}
+          htmlFor={id}
+          disabled={disabled}
+        />
       )}
       <SearchBar
         props={props}

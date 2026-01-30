@@ -83,15 +83,6 @@ const meta: Meta<typeof TextField> = {
         'Please note that the option list of icons is not complete, this selection is only for demo purposes',
     },
   },
-  decorators: [
-    (Story) => {
-      return (
-        <Stack>
-          <Story />
-        </Stack>
-      );
-    },
-  ],
 };
 
 export default meta;

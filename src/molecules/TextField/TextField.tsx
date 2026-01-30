@@ -12,6 +12,7 @@ import {
 import {
   TextField as Base,
   TextFieldProps as BaseProps,
+  TooltipProps,
   Typography,
 } from '@equinor/eds-core-react';
 
@@ -30,6 +31,7 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   loading?: boolean;
   maxCharacters?: number;
   explanation?: string;
+  explanationPosition?: TooltipProps['placement'];
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -39,7 +41,6 @@ interface WrapperProps {
   $variant: TextFieldProps['variant'];
   $helperRightWidth: number;
   $disabled?: boolean;
-  $hasExplanation?: boolean;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -129,16 +130,6 @@ const Wrapper = styled.div<WrapperProps>`
       }
     `;
   }}
-
-  ${({ $hasExplanation }) => {
-    if (!$hasExplanation) return '';
-
-    return css`
-      label {
-        padding-left: ${spacings.medium_small};
-      }
-    `;
-  }}
 `;
 
 const Loader = styled(SkeletonBase)`
@@ -153,10 +144,10 @@ const MaxCharactersText = styled(Typography)`
   right: ${spacings.small};
 `;
 
-const InputExplanationWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
+const LabelWrapper = styled.div`
+  display: flex;
+  gap: ${spacings.x_small};
+  align-items: center;
 `;
 
 /**
@@ -223,7 +214,6 @@ export const TextField: FC<TextFieldProps> = (props) => {
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
-      $hasExplanation={!!props.explanation}
       style={{
         marginBottom:
           !props.helperText && props.maxCharacters
@@ -233,6 +223,18 @@ export const TextField: FC<TextFieldProps> = (props) => {
     >
       <Base
         {...baseProps}
+        label={
+          baseProps.label ? (
+            <LabelWrapper>
+              {baseProps.label}
+              {props.explanation && (
+                <InputExplanation position={props.explanationPosition}>
+                  {props.explanation}
+                </InputExplanation>
+              )}
+            </LabelWrapper>
+          ) : undefined
+        }
         disabled={props.loading || props.disabled}
         onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
       />
@@ -265,11 +267,6 @@ export const TextField: FC<TextFieldProps> = (props) => {
         >
           {characterCount} / {props.maxCharacters}
         </MaxCharactersText>
-      )}
-      {props.explanation && (
-        <InputExplanationWrapper>
-          <InputExplanation>{props.explanation}</InputExplanation>
-        </InputExplanationWrapper>
       )}
     </Wrapper>
   );
