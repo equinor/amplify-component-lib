@@ -305,6 +305,7 @@ const CustomMenuItem: FC<{
 export const CustomizableMenuItem: Story = {
   render: ComboBoxStateful,
   args: {
+    items: FAKE_ITEMS,
     CustomMenuItemComponent: CustomMenuItem,
   },
 };
