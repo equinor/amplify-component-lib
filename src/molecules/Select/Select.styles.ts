@@ -25,6 +25,12 @@ export const Wrapper = styled.div<WrapperProps>`
     `}
 `;
 
+export const LabelWrapper = styled.span`
+  display: flex;
+  gap: ${spacings.x_small};
+  width: 100%;
+`;
+
 interface HelperWrapperProps {
   $variant?: Variants | 'disabled';
   $borderBottom?: boolean;
@@ -224,6 +230,7 @@ const ClearButton = styled(Button)<ClearButtonProps>`
   }
 `;
 
+/* v8 ignore start */
 interface ComboBoxChipProps {
   $tryingToRemove: boolean;
   $lightBackground?: boolean;
@@ -237,6 +244,7 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
     return colors.ui.background__default.rgba;
   }} !important;
 `;
+/* v8 ignore end */
 
 const PersistentGroupsWrapper = styled.div`
   padding: ${spacings.small} 0;

@@ -27,6 +27,7 @@ import { DataGrid } from 'src/organisms';
 import { ThemeProviderContext } from 'src/providers/ThemeProvider/ThemeProvider';
 
 import { useGlobals } from 'storybook/internal/preview-api';
+import { expect, fn, userEvent } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof IconCell> = {
@@ -203,7 +204,7 @@ export const ExampleTableAndStates: StoryFn<IconCellProps> = () => {
             icon={bus}
             label="Danger Coloured Bus"
             variant={IconCellVariants.COLOURED}
-            state={IconCellStates.DANGER}
+            state={IconCellStates.ERROR}
             selected
             onClick={() => showSnackbar('Danger Bus clicked')}
           />
@@ -276,5 +277,64 @@ export const CustomReactElement: Story = {
   args: {
     icon: <CustomComponent>2</CustomComponent>,
     as: 'div',
+  },
+};
+
+export const TestRenderLabel: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+    icon: cake,
+    onClick: () => {},
+    as: 'div',
+  },
+  play: async ({ canvas }) => {
+    const cell = canvas.getByRole('button');
+    await expect(cell).toBeInTheDocument();
+  },
+};
+
+export const TestRenderIcons: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Icon Test',
+    icon: cake,
+    helperIcon: check,
+    onClick: () => {},
+    as: 'div',
+  },
+  play: async ({ canvas }) => {
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+    await expect(allIcons[0]).toHaveAttribute('d', cake.svgPathData);
+    await expect(allIcons[1]).toHaveAttribute('d', check.svgPathData);
+  },
+};
+
+export const TestCustomContent: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Custom Content',
+    icon: <div>icon</div>,
+    helperIcon: <div>helper</div>,
+    onClick: () => {},
+    as: 'div',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('helper')).toBeInTheDocument();
+    await expect(canvas.getByText('icon')).toBeInTheDocument();
+  },
+};
+
+export const TestClickHandler: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Clickable',
+    icon: cake,
+    onClick: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const cell = canvas.getByRole('button');
+    await userEvent.click(cell);
+    await expect(args.onClick).toHaveBeenCalledOnce();
   },
 };

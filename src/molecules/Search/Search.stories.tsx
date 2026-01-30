@@ -28,7 +28,6 @@ export default meta;
 const handleOnChange = action('onChange');
 
 export const Introduction: StoryFn<SearchProps> = () => {
-  // This story is not interactive, because Search has no props beyond the default HTML ones.
   return (
     <Search
       aria-label="sitewide"

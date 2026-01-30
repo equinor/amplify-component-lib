@@ -1,9 +1,10 @@
-import { boat, car } from '@equinor/eds-icons';
+import { boat, car, timer } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { colors } from 'src/atoms/style';
 import { ListItem } from 'src/molecules/ListItem/ListItem';
 
+import { expect, fn, userEvent } from 'storybook/test';
 import styled from 'styled-components';
 
 const CustomComponent = styled.div`
@@ -84,5 +85,72 @@ export const CustomReactElement: Story = {
     leadingContent: <CustomComponent>2</CustomComponent>,
     trailingContent: <CustomComponent>5</CustomComponent>,
     label: 'Golf',
+  },
+};
+
+export const TestRendersLabel: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test Label',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('Test Label')).toBeInTheDocument();
+  },
+};
+
+export const TestRendersIcons: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Icon Test',
+    leadingContent: car,
+    trailingContent: timer,
+  },
+  play: async ({ canvas }) => {
+    const allIcons = canvas.getAllByTestId('eds-icon-path');
+    await expect(allIcons[0]).toHaveAttribute('d', car.svgPathData);
+    await expect(allIcons[1]).toHaveAttribute('d', timer.svgPathData);
+  },
+};
+
+export const TestCustomContent: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Custom',
+    trailingContent: <div>trailing</div>,
+    leadingContent: <div>leading</div>,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('trailing')).toBeInTheDocument();
+    await expect(canvas.getByText('leading')).toBeInTheDocument();
+  },
+};
+
+export const TestClickHandler: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Clickable',
+    onClick: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const container =
+      canvas.getByText('Clickable').parentElement!.parentElement!;
+    await userEvent.click(container);
+    await expect(args.onClick).toHaveBeenCalledOnce();
+  },
+};
+
+export const TestFocusBlur: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Focus Test',
+    onClick: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
+  },
+  play: async ({ args }) => {
+    await userEvent.tab();
+    await expect(args.onFocus).toHaveBeenCalledOnce();
+    await userEvent.tab();
+    await expect(args.onBlur).toHaveBeenCalledOnce();
   },
 };

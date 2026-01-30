@@ -1,9 +1,15 @@
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Status } from '.';
+import {
+  DEFAULT_ACTION_TEXT,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_TITLE,
+} from 'src/organisms/Status/Status.constants';
 import { StatusWrapper } from 'src/storybook/StatusWrapper';
 
 import { action } from 'storybook/actions';
+import { expect } from 'storybook/test';
 
 interface StatusStoryProps {
   customized: boolean;
@@ -100,4 +106,68 @@ export const WithMissingAccesses: StoryFn<StatusStoryProps> = (args) => {
       </Status>
     </StatusWrapper>
   );
+};
+
+type Story = StoryObj<typeof Status>;
+
+export const TestDefaultValues: Story = {
+  tags: ['test-only'],
+  render: () => (
+    <StatusWrapper>
+      <Status>
+        <Status.Title />
+        <Status.Description />
+        <Status.Action onClick={() => {}} />
+      </Status>
+    </StatusWrapper>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('title')).toHaveTextContent(DEFAULT_TITLE);
+    await expect(canvas.getByTestId('description')).toHaveTextContent(
+      DEFAULT_DESCRIPTION
+    );
+    await expect(canvas.getByRole('button')).toHaveTextContent(
+      DEFAULT_ACTION_TEXT
+    );
+  },
+};
+
+export const TestMissingAccessesLink: Story = {
+  tags: ['test-only'],
+  render: () => {
+    const fakeAccess = {
+      title: 'Test Access',
+      url: 'https://example.com',
+    };
+    return (
+      <StatusWrapper>
+        <Status>
+          <Status.Title />
+          <Status.Description />
+          <Status.MissingAccesses accesses={[fakeAccess]} />
+        </Status>
+      </StatusWrapper>
+    );
+  },
+  play: async ({ canvas }) => {
+    const link = canvas.getByRole('link');
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute('href', 'https://example.com');
+  },
+};
+
+export const TestCenterProp: Story = {
+  tags: ['test-only'],
+  render: () => (
+    <StatusWrapper>
+      <Status center={false}>
+        <Status.Title />
+        <Status.Description />
+      </Status>
+    </StatusWrapper>
+  ),
+  play: async ({ canvas }) => {
+    const container = canvas.getByTestId('status-container');
+    await expect(container).not.toHaveStyle('position: fixed');
+  },
 };
