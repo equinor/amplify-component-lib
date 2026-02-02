@@ -194,6 +194,7 @@ export const BasicPersistentComboBox: Story = {
 
 export const Explanation: Story = {
   args: {
+    label: 'This is the label',
     explanation: 'This is an explanation text',
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
