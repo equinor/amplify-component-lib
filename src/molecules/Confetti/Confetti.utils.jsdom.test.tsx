@@ -120,6 +120,13 @@ test.each(Object.entries(SeasonalEventsTestDates))(
   }
 );
 
+test('getSeasonalEvent on 1. of January returns newYears', () => {
+  const newYears = new Date('2023-01-01T12:00:00Z');
+
+  const detectedEvent = getSeasonalEvent(newYears);
+  expect(detectedEvent).toBe('newYears');
+});
+
 test('getSeasonalColors returns christmas colors on the 25th of December', () => {
   const christmas = new Date('2023-12-25T12:00:00Z');
 
