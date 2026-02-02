@@ -1,0 +1,33 @@
+import { forwardRef } from 'react';
+
+import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
+import ApplicationIconBase, {
+  ShapeProps,
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
+import { fluidSymphony } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+
+const shapes: ShapeProps[] = [
+  {
+    top: -16,
+    left: -17,
+    rotation: 343,
+  },
+  {
+    top: 26,
+    left: 11,
+    rotation: 193,
+  },
+];
+
+export const FluidSymphony = forwardRef<HTMLDivElement, AppIconProps>(
+  (props, ref) => (
+    <ApplicationIconBase
+      ref={ref}
+      iconData={fluidSymphony}
+      shapes={shapes}
+      {...props}
+    />
+  )
+);
+
+FluidSymphony.displayName = 'FluidSymphony';
