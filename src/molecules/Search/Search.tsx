@@ -20,7 +20,7 @@ const StyledBase = styled(Base)<StyledBaseProps>`
     transition:
       background ${animation.transitionMS},
       box-shadow ${animation.transitionMS};
-    &:hover {
+    &:hover:not(:disabled) {
       background: ${colors.ui.background__light_medium.rgba};
       box-shadow: inset 0 -2px 0 0 ${colors.text.static_icons__tertiary.rgba};
     }

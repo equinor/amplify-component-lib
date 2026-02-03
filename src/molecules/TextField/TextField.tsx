@@ -9,11 +9,7 @@ import {
   useState,
 } from 'react';
 
-import {
-  TextField as Base,
-  TextFieldProps as BaseProps,
-  Typography,
-} from '@equinor/eds-core-react';
+import { TextField as Base, TextFieldProps as BaseProps, Typography, } from '@equinor/eds-core-react';
 
 import { shape, spacings } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
@@ -51,7 +47,7 @@ const Wrapper = styled.div<WrapperProps>`
     &::placeholder {
       opacity: 1;
     }
-    &:hover {
+    &:hover:not(:disabled) {
       background: ${colors.ui.background__light_medium.rgba};
     }
     &:disabled {
