@@ -9,7 +9,11 @@ import {
   useState,
 } from 'react';
 
-import { TextField as Base, TextFieldProps as BaseProps, Typography, } from '@equinor/eds-core-react';
+import {
+  TextField as Base,
+  TextFieldProps as BaseProps,
+  Typography,
+} from '@equinor/eds-core-react';
 
 import { shape, spacings } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
