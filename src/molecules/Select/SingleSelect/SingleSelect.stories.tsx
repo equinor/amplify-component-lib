@@ -7,15 +7,8 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { colors, spacings } from 'src/atoms/style';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
-import {
-  SelectedState,
-  SelectOption,
-  VARIANT_OPTIONS,
-} from 'src/molecules/Select/Select.types';
-import {
-  SingleSelect,
-  SingleSelectProps,
-} from 'src/molecules/Select/SingleSelect/SingleSelect';
+import { SelectedState, SelectOption, VARIANT_OPTIONS, } from 'src/molecules/Select/Select.types';
+import { SingleSelect, SingleSelectProps, } from 'src/molecules/Select/SingleSelect/SingleSelect';
 
 import { actions } from 'storybook/actions';
 import { expect, fn, screen, userEvent, within } from 'storybook/test';
@@ -270,7 +263,6 @@ export const DisabledSingleSelect: Story = {
 };
 
 export const TestDirtyVariant: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -288,7 +280,6 @@ export const TestDirtyVariant: Story = {
 };
 
 export const TestRendersPlaceholder: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -302,7 +293,6 @@ export const TestRendersPlaceholder: Story = {
 };
 
 export const TestDataTestId: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -316,7 +306,6 @@ export const TestDataTestId: Story = {
 };
 
 export const TestHelperText: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -330,7 +319,6 @@ export const TestHelperText: Story = {
 };
 
 export const TestHelperTextWithVariant: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -350,7 +338,6 @@ export const TestHelperTextWithVariant: Story = {
 };
 
 export const TestOnlyMetaLabel: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -365,7 +352,6 @@ export const TestOnlyMetaLabel: Story = {
 };
 
 export const TestClickingItems: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS.map((item, index) => ({
@@ -395,7 +381,6 @@ export const TestClickingItems: Story = {
 };
 
 export const TestDeselectItem: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -421,7 +406,6 @@ const CustomMenuItemComponent: FC<{ item: SelectOption<Item> }> = ({
 }) => <span>custom item - {item.value}</span>;
 
 export const TestCustomMenuItem: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -439,7 +423,6 @@ export const TestCustomMenuItem: Story = {
 };
 
 export const TestCustomFilterFn: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -459,7 +442,6 @@ export const TestCustomFilterFn: Story = {
 };
 
 export const TestCustomFilterFnGroups: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     groups: FAKE_GROUPS,
@@ -481,7 +463,6 @@ export const TestCustomFilterFnGroups: Story = {
 };
 
 export const TestFilteringGroups: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     groups: FAKE_GROUPS,
@@ -502,7 +483,6 @@ export const TestFilteringGroups: Story = {
 };
 
 export const TestFilteringGroupsNoMatch: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     groups: FAKE_GROUPS,
@@ -526,7 +506,6 @@ export const TestFilteringGroupsNoMatch: Story = {
 };
 
 export const TestFilteringListNoMatch: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -548,7 +527,6 @@ export const TestFilteringListNoMatch: Story = {
 };
 
 export const TestAddItem: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
@@ -580,7 +558,6 @@ export const TestAddItem: Story = {
 };
 
 export const TestWithoutHelperIcon: Story = {
-  render: SingleSelectStateful,
   tags: ['test-only'],
   args: {
     items: FAKE_ITEMS,
