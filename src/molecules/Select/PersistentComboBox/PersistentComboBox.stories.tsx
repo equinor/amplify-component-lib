@@ -23,7 +23,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const FAKE_ITEMS = new Array(10).fill(0).map((_, index) => ({
-  label: `${faker.animal.fish()} #${index + 1}`,
+  label: `${faker.animal.fish()} ${index + 1}`,
   value: faker.string.uuid(),
 }));
 
