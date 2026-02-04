@@ -5,12 +5,14 @@ import { useOutsideClick } from '@equinor/eds-utils';
 
 import { SelectItemSkeleton } from './SelectItemSkeleton';
 import { useSelect } from 'src/atoms/hooks/useSelect';
+import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { GroupedSelectPersistent } from 'src/molecules/Select/GroupedSelectPersistent';
 import { ListSelectMenu } from 'src/molecules/Select/ListSelectMenu';
 import { ListSelectPersistent } from 'src/molecules/Select/ListSelectPersistent';
 import { SearchBar } from 'src/molecules/Select/SearchBar';
 import {
+  LabelWrapper,
   PersistentComboBoxWrapper,
   PersistentStickyWrapper,
   StyledMenu,
@@ -50,6 +52,8 @@ export const Select = <T extends SelectOptionRequired>(
     onSearchFilter,
     CustomMenuItemComponent,
     mode = 'menu',
+    explanation,
+    explanationPosition,
   } = props;
   const {
     handleOnAddItem,
@@ -133,7 +137,21 @@ export const Select = <T extends SelectOptionRequired>(
     return (
       <>
         {shouldShowLabel && (
-          <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
+          <Label
+            label={
+              <LabelWrapper>
+                {label}
+                {explanation && (
+                  <InputExplanation position={explanationPosition}>
+                    {explanation}
+                  </InputExplanation>
+                )}
+              </LabelWrapper>
+            }
+            meta={meta}
+            htmlFor={id}
+            disabled={disabled}
+          />
         )}
         <PersistentComboBoxWrapper
           $maxHeight={
@@ -177,7 +195,21 @@ export const Select = <T extends SelectOptionRequired>(
   return (
     <div>
       {shouldShowLabel && (
-        <Label label={label} meta={meta} htmlFor={id} disabled={disabled} />
+        <Label
+          label={
+            <LabelWrapper>
+              {label}
+              {explanation && (
+                <InputExplanation position={explanationPosition}>
+                  {explanation}
+                </InputExplanation>
+              )}
+            </LabelWrapper>
+          }
+          meta={meta}
+          htmlFor={id}
+          disabled={disabled}
+        />
       )}
       <SearchBar
         props={props}
