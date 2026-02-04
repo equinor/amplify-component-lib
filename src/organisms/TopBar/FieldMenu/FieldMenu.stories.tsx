@@ -8,6 +8,7 @@ import { TopBar } from 'src/organisms/TopBar';
 import { FieldMenuProps } from 'src/organisms/TopBar/FieldMenu/FieldMenu';
 
 import { expect, fn, userEvent } from 'storybook/test';
+
 const fields = new Array(5).fill(0).map(() => FakeField());
 
 function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
@@ -151,5 +152,22 @@ export const NoField: Story = {
     const button = canvas.queryByTestId('field-selector-top-bar-button');
 
     await expect(button).not.toBeInTheDocument();
+  },
+};
+
+export const OnlyOneField: Story = {
+  args: {
+    withField: true,
+    availableFields: [fields[0]],
+  },
+  play: async ({ canvas, args }) => {
+    const button = canvas.getByTestId('field-selector-top-bar-button');
+
+    await expect(button).toBeInTheDocument();
+    await userEvent.click(button);
+    await expect(canvas.getByTestId('access-it-link')).toBeInTheDocument();
+    await expect(
+      canvas.getByText(args.availableFields[0].name ?? '')
+    ).toBeInTheDocument();
   },
 };
