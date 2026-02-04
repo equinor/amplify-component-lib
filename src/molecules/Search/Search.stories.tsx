@@ -38,7 +38,6 @@ export const Default: StoryFn<SearchProps> = () => {
 };
 
 export const LightBackground: StoryFn<SearchProps> = () => {
-  // This story is not interactive, because Search has no props beyond the default HTML ones.
   return (
     <Search
       lightBackground
