@@ -10,7 +10,7 @@ import {
 } from 'src/tests/browsertest-utils';
 import { FAKE_FIELDS, FAKE_ROLES, FAKE_WELLS } from 'src/tests/mockHandlers';
 
-test('Able to open/close create new', async () => {
+test.sequential('Able to open/close create new', async () => {
   renderWithProviders(<Account />);
   const user = userEvent.setup();
   const button = screen.getByRole('button');
@@ -31,7 +31,7 @@ test('Able to open/close create new', async () => {
   await user.click(screen.getByRole('button', { name: /cancel/i }));
 });
 
-test(
+test.sequential(
   'Able to open/close edit',
   async () => {
     renderWithProviders(
@@ -79,7 +79,7 @@ test(
   { timeout: 6000 }
 );
 
-test('OnClose runs as expected in create new', async () => {
+test.sequential('OnClose runs as expected in create new', async () => {
   renderWithProviders(
     <>
       <Account />
@@ -172,92 +172,117 @@ test.each(['email', 'no-email', 'field-well'])(
   { timeout: 8000 }
 );
 
-test('Initially selected field and wells works as expected', async () => {
-  renderWithProviders(
-    <Account availableFields={FAKE_FIELDS} availableWells={FAKE_WELLS} />
-  );
-  const user = userEvent.setup();
+test.sequential(
+  'Initially selected field and wells works as expected',
+  async () => {
+    renderWithProviders(
+      <Account availableFields={FAKE_FIELDS} availableWells={FAKE_WELLS} />
+    );
+    const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
-  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+    await user.click(screen.getByRole('button'));
+    await user.click(
+      await screen.findByRole('button', { name: 'Impersonate' })
+    );
 
-  const menuItems = await screen.findAllByTestId('impersonation-user');
-  expect(menuItems.length).toBeGreaterThan(0);
+    const menuItems = await screen.findAllByTestId('impersonation-user');
+    expect(menuItems.length).toBeGreaterThan(0);
 
-  // Click edit on the first one
-  await user.click(within(menuItems[0]).getByRole('button'));
-  await user.click(screen.getByRole('button', { name: /edit user/i }));
+    // Click edit on the first one
+    await user.click(within(menuItems[0]).getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /edit user/i }));
 
-  await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
+    await waitForElementToBeRemoved(() => screen.getAllByRole('progressbar'));
 
-  const fieldLabel = await screen.findByRole('combobox', { name: /field/i });
-  expect(fieldLabel).toBeInTheDocument();
-});
+    const fieldLabel = await screen.findByRole('combobox', { name: /field/i });
+    expect(fieldLabel).toBeInTheDocument();
+  }
+);
 
-test('shows field selector if availableFields array has items', async () => {
-  renderWithProviders(
-    <Account
-      availableFields={[
-        ...FAKE_FIELDS,
-        {
-          country: null,
-          uuid: null,
-          name: null,
-        },
-      ]}
-    />
-  );
-  const user = userEvent.setup();
+test.sequential(
+  'shows field selector if availableFields array has items',
+  async () => {
+    renderWithProviders(
+      <Account
+        availableFields={[
+          ...FAKE_FIELDS,
+          {
+            country: null,
+            uuid: null,
+            name: null,
+          },
+        ]}
+      />
+    );
+    const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
-  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+    await user.click(screen.getByRole('button'));
+    await user.click(
+      await screen.findByRole('button', { name: 'Impersonate' })
+    );
 
-  await user.click(screen.getByRole('button', { name: /create/i }));
+    await user.click(screen.getByRole('button', { name: /create/i }));
 
-  const fieldLabel = await screen.findByRole('combobox', { name: /field/i });
-  expect(fieldLabel).toBeInTheDocument();
-});
+    const fieldLabel = await screen.findByRole('combobox', { name: /field/i });
+    expect(fieldLabel).toBeInTheDocument();
+  }
+);
 
-test('does not show field selector if availableFields array is empty', async () => {
-  renderWithProviders(<Account availableFields={[]} />);
-  const user = userEvent.setup();
+test.sequential(
+  'does not show field selector if availableFields array is empty',
+  async () => {
+    renderWithProviders(<Account availableFields={[]} />);
+    const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
-  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+    await user.click(screen.getByRole('button'));
+    await user.click(
+      await screen.findByRole('button', { name: 'Impersonate' })
+    );
 
-  await user.click(screen.getByRole('button', { name: /create/i }));
+    await user.click(screen.getByRole('button', { name: /create/i }));
 
-  const fieldLabel = screen.queryByRole('combobox', { name: /field/i });
-  expect(fieldLabel).not.toBeInTheDocument();
-});
+    const fieldLabel = screen.queryByRole('combobox', { name: /field/i });
+    expect(fieldLabel).not.toBeInTheDocument();
+  }
+);
 
-test('shows well selector if availableWells array has items', async () => {
-  renderWithProviders(<Account availableWells={FAKE_WELLS} />);
-  const user = userEvent.setup();
+test.sequential(
+  'shows well selector if availableWells array has items',
+  async () => {
+    renderWithProviders(<Account availableWells={FAKE_WELLS} />);
+    const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
-  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+    await user.click(screen.getByRole('button'));
+    await user.click(
+      await screen.findByRole('button', { name: 'Impersonate' })
+    );
 
-  await user.click(screen.getByRole('button', { name: /create/i }));
+    await user.click(screen.getByRole('button', { name: /create/i }));
 
-  const wellSelect = await screen.findByRole('combobox', { name: /well/i });
-  expect(wellSelect).toBeInTheDocument();
-});
+    const wellSelect = await screen.findByRole('combobox', { name: /well/i });
+    expect(wellSelect).toBeInTheDocument();
+  }
+);
 
-test('does not show well selector if availableWells array is empty', async () => {
-  renderWithProviders(<Account availableWells={[]} />);
-  const user = userEvent.setup();
+test.sequential(
+  'does not show well selector if availableWells array is empty',
+  async () => {
+    renderWithProviders(<Account availableWells={[]} />);
+    const user = userEvent.setup();
 
-  await user.click(screen.getByRole('button'));
-  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
+    await user.click(screen.getByRole('button'));
+    await user.click(
+      await screen.findByRole('button', { name: 'Impersonate' })
+    );
 
-  await user.click(screen.getByRole('button', { name: /create/i }));
+    await user.click(screen.getByRole('button', { name: /create/i }));
 
-  const wellSelect = screen.queryByRole('combobox', { name: /well/i });
-  expect(wellSelect).not.toBeInTheDocument();
-});
+    const wellSelect = screen.queryByRole('combobox', { name: /well/i });
+    expect(wellSelect).not.toBeInTheDocument();
+  }
+);
 
-test('Edit another user clears the form as expected', async () => {
+test.sequential('Edit another user clears the form as expected', async () => {
   renderWithProviders(<Account />);
   const user = userEvent.setup();
   const button = screen.getByRole('button');
@@ -377,7 +402,7 @@ test.each(['email', 'no-email', 'field-well'])(
   { timeout: 8000 }
 );
 
-test(
+test.sequential(
   'Able to edit active user impersonation',
   async () => {
     renderWithProviders(<Account />);
