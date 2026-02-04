@@ -20,6 +20,7 @@ const meta: Meta<typeof ApplicationIcon> = {
         'acquire',
         'dasha',
         'forecast-formatter',
+        'fluid-symphony',
         'fdi',
         'orca',
         'recap',
@@ -130,6 +131,7 @@ export const TestAdca = createTestStory('adca');
 export const TestAcquire = createTestStory('acquire');
 export const TestDasha = createTestStory('dasha');
 export const TestForecastFormatter = createTestStory('forecast-formatter');
+export const TestFluidSymphony = createTestStory('fluid-symphony');
 export const TestForecastDataInventory = createTestStory('fdi');
 export const TestOrca = createTestStory('orca');
 export const TestRecap = createTestStory('recap');
