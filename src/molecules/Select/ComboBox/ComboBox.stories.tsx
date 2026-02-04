@@ -8,7 +8,6 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import { ComboBoxChip } from '../Select.styles';
 import { ComboBox, ComboBoxProps } from './ComboBox';
 import { spacings } from 'src/atoms/style';
-import { Dialog } from 'src/molecules';
 import {
   SelectedState,
   SelectOption,
@@ -19,6 +18,7 @@ import {
 import { actions } from 'storybook/actions';
 import { expect, fn, screen, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
+import { Dialog } from 'src/molecules';
 
 const meta: Meta<typeof ComboBox> = {
   title: 'Molecules/Select/ComboBox',

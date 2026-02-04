@@ -2,7 +2,12 @@ import { faker } from '@faker-js/faker';
 import { waitForElementToBeRemoved, within } from '@testing-library/dom';
 
 import { Account } from '../../Account';
-import { renderWithProviders, screen, test, userEvent, } from 'src/tests/browsertest-utils';
+import {
+  renderWithProviders,
+  screen,
+  test,
+  userEvent,
+} from 'src/tests/browsertest-utils';
 import { FAKE_FIELDS, FAKE_ROLES, FAKE_WELLS } from 'src/tests/mockHandlers';
 
 test.sequential('Able to open/close create new', async () => {
