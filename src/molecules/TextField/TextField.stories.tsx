@@ -761,3 +761,15 @@ export const MaxCharacterCountExternalUpdate: StoryObject = {
     ).toBeInTheDocument();
   },
 };
+
+export const LoadingState: StoryObject = {
+  tags: ['test-only'],
+  args: {
+    label: 'Test',
+    loading: true,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await expect(canvas.getByRole('textbox')).toBeDisabled();
+  },
+};

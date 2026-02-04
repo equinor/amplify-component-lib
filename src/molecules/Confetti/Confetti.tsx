@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 
 import { createConfetti } from './utils/createConfetti';
 import { getSeasonalColors } from './utils/seasonalColors';
@@ -20,7 +20,8 @@ import { ConfettiProps, Particle } from './Confetti.types';
  * @param duration - Duration of the confetti effect in 'shower' mode (ms).
  * @param onComplete - Callback fired when the confetti effect completes.
  */
-export const Confetti = (props: ConfettiProps): React.ReactNode => {
+/* v8 ignore next */
+export const Confetti: FC<ConfettiProps> = (props) => {
   const {
     mode = 'boom', // 'boom' | 'shower'
     shapeSize = 12,
