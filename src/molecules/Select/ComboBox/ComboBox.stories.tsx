@@ -8,7 +8,12 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import { ComboBoxChip } from '../Select.styles';
 import { ComboBox, ComboBoxProps } from './ComboBox';
 import { spacings } from 'src/atoms/style';
-import { SelectedState, SelectOption, SelectOptionRequired, VARIANT_OPTIONS } from 'src/molecules/Select/Select.types';
+import {
+  SelectedState,
+  SelectOption,
+  SelectOptionRequired,
+  VARIANT_OPTIONS,
+} from 'src/molecules/Select/Select.types';
 
 import { actions } from 'storybook/actions';
 import { expect, fn, screen, userEvent, within } from 'storybook/test';

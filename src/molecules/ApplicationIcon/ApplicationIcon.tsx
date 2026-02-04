@@ -20,6 +20,7 @@ import { Sam } from './Icons/Sam';
 import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
 import { Fallback } from './Fallback';
+import { FluidSymphony } from 'src/molecules/ApplicationIcon/Icons/FluidSymphony';
 
 export type ApplicationName =
   | 'adca'
@@ -28,6 +29,7 @@ export type ApplicationName =
   | 'recap'
   | 'dasha'
   | 'forecast-formatter'
+  | 'fluid-symphony'
   | 'fdi'
   | 'orca'
   | 'portal'
@@ -63,6 +65,7 @@ const apps: ApplicationIconData[] = [
     component: ForecastFormatter,
   },
   { appName: ['fdi'], component: ForecastDataInventory },
+  { appName: ['fluid-symphony', 'Fluid Symphony'], component: FluidSymphony },
   { appName: ['orca'], component: Orca },
   {
     appName: ['logging-qualification', 'logging qualification', 'ltg'],
