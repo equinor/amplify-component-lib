@@ -7,15 +7,8 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { colors, spacings } from 'src/atoms/style';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
-import {
-  SelectedState,
-  SelectOption,
-  VARIANT_OPTIONS,
-} from 'src/molecules/Select/Select.types';
-import {
-  SingleSelect,
-  SingleSelectProps,
-} from 'src/molecules/Select/SingleSelect/SingleSelect';
+import { SelectedState, SelectOption, VARIANT_OPTIONS, } from 'src/molecules/Select/Select.types';
+import { SingleSelect, SingleSelectProps, } from 'src/molecules/Select/SingleSelect/SingleSelect';
 
 import { actions } from 'storybook/actions';
 import { expect, fn, screen, userEvent, within } from 'storybook/test';
@@ -253,7 +246,6 @@ export const CustomizableValueComponent: StoryFn = (args) => {
 };
 
 export const DisabledSingleSelect: Story = {
-  render: SingleSelectStateful,
   args: {
     disabled: true,
     items: FAKE_ITEMS,
