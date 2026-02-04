@@ -20,13 +20,13 @@ const defaultMenuItems: SideBarMenuItem[] = [
   {
     name: 'Home',
     icon: home,
-    link: 'home',
+    to: '/home',
     onClick: vi.fn(),
   },
   {
     name: 'Another Link',
     icon: star_half,
-    link: 'another',
+    to: '/another',
     onClick: vi.fn(),
   },
 ];

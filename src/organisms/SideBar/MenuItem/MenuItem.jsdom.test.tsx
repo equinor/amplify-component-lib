@@ -23,8 +23,7 @@ type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
 
 function fakeProps(selected = false): MenuItemProps {
   return {
-    currentUrl: faker.internet.url(),
-    link: selected ? '/page1' : '/page2',
+    to: selected ? '/page1' : '/page2',
     icon: home,
     name: faker.person.jobTitle(),
     onClick: vi.fn() as MenuClickHandler,
@@ -170,21 +169,20 @@ describe('MenuItem', () => {
 
         testBaseStyles();
 
-        expect(item).toHaveStyleRule(
-          'border-bottom',
-          `1px solid ${colors.ui.background__medium.rgba}`
-        );
-        expect(item).toHaveStyleRule(
-          'background',
-          colors.interactive.primary__selected_highlight.rgba
-        );
-        expect(item).toHaveStyleRule('outline', undefined);
+        expect(item).toHaveStyle({
+          'border-bottom': `1px solid ${colors.ui.background__medium.rgba}`,
+        });
+        expect(item).toHaveStyle({
+          background: colors.interactive.primary__selected_highlight.rgba,
+        });
+        expect(item).toHaveStyle({
+          outline: undefined,
+        });
 
-        expect(text).toHaveStyleRule(
-          'color',
-          colors.text.static_icons__default.rgba
-        );
-        expect(text).toHaveStyleRule('font-weight', '500');
+        expect(text).toHaveStyle({
+          color: colors.text.static_icons__default.rgba,
+        });
+        expect(text).toHaveStyle({ 'font-weight': '500' });
       });
 
       test('Selected + Hover', async () => {
