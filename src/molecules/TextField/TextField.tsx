@@ -51,7 +51,7 @@ const Wrapper = styled.div<WrapperProps>`
     &::placeholder {
       opacity: 1;
     }
-    &:hover {
+    &:hover:not(:disabled) {
       background: ${colors.ui.background__light_medium.rgba};
     }
     &:disabled {
