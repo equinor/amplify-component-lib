@@ -24,23 +24,22 @@ export type BasicMenuItemProps = {
 
 export const BasicMenuItem: FC<BasicMenuItemProps> = ({
   icon,
-  link,
   onClick,
   replace = false,
   name,
   disabled = false,
   featureUuid,
-  ...props
+  ...linkProps
 }) => {
   const { pathname } = useLocation();
   const isActive = isCurrentUrl({
     currentUrl: pathname,
-    link,
+    link: linkProps.to,
   });
   const { isOpen } = useSideBar();
   const shouldNavigate = canNavigate({
     currentUrl: pathname,
-    link,
+    link: linkProps.to,
     replace,
     disabled,
   });
@@ -61,15 +60,13 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
       <OptionalTooltip title={name} placement="right">
         <MenuItemWrapper>
           <Link
-            to={link}
             $active={isActive}
             aria-disabled={disabled}
             $disabled={disabled}
             onClick={handleOnClick}
             tabIndex={0}
             data-testid="sidebar-menu-item"
-            replace={replace}
-            {...props}
+            {...linkProps}
           >
             <IconContainer data-testid="icon-container">
               <Icon data={icon} size={24} />
@@ -88,17 +85,7 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
         </MenuItemWrapper>
       </OptionalTooltip>
     );
-  }, [
-    disabled,
-    handleOnClick,
-    icon,
-    isActive,
-    isOpen,
-    link,
-    name,
-    props,
-    replace,
-  ]);
+  }, [disabled, handleOnClick, icon, isActive, isOpen, name, linkProps]);
 
   if (featureUuid) {
     return <Feature featureUuid={featureUuid}>{content}</Feature>;

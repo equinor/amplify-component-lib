@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Link as TanstackLink } from '@tanstack/react-router';
+import { createLink } from '@tanstack/react-router';
 
 import { colors, spacings } from 'src/atoms/style';
 
@@ -14,7 +14,7 @@ interface LinkProps {
   $disabled?: boolean;
 }
 
-export const Link = styled(TanstackLink)<LinkProps>`
+const AnchorTag = styled.a<LinkProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
@@ -48,6 +48,8 @@ export const Link = styled(TanstackLink)<LinkProps>`
     }
   }
 `;
+
+export const Link = createLink(AnchorTag);
 
 export const IconContainer = styled.div`
   display: flex;
