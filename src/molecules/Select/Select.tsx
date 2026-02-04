@@ -27,7 +27,6 @@ import {
   SelectOptionRequired,
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
-import { Label } from 'src/molecules/IconCell/IconCell.styles';
 
 export type SelectComponentProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
