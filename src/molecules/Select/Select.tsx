@@ -5,7 +5,6 @@ import { useOutsideClick } from '@equinor/eds-utils';
 
 import { SelectItemSkeleton } from './SelectItemSkeleton';
 import { useSelect } from 'src/atoms/hooks/useSelect';
-import { Label } from 'src/molecules/IconCell/IconCell.styles';
 import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { GroupedSelectMenu } from 'src/molecules/Select/GroupedSelectMenu';
 import { GroupedSelectPersistent } from 'src/molecules/Select/GroupedSelectPersistent';
@@ -28,6 +27,7 @@ import {
   SelectOptionRequired,
   SingleSelectCommon,
 } from 'src/molecules/Select/Select.types';
+import { Label } from 'src/molecules/IconCell/IconCell.styles';
 
 export type SelectComponentProps<T extends SelectOptionRequired> =
   CommonSelectProps<T> &
