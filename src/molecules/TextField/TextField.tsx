@@ -12,6 +12,7 @@ import {
 import {
   TextField as Base,
   TextFieldProps as BaseProps,
+  TooltipProps,
   Typography,
 } from '@equinor/eds-core-react';
 
@@ -20,6 +21,7 @@ import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
+import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
@@ -28,6 +30,8 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
   maxCharacters?: number;
+  explanation?: string;
+  explanationPosition?: TooltipProps['placement'];
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -51,7 +55,7 @@ const Wrapper = styled.div<WrapperProps>`
     &::placeholder {
       opacity: 1;
     }
-    &:hover {
+    &:hover:not(:disabled) {
       background: ${colors.ui.background__light_medium.rgba};
     }
     &:disabled {
@@ -140,6 +144,12 @@ const MaxCharactersText = styled(Typography)`
   right: ${spacings.small};
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+  gap: ${spacings.x_small};
+  align-items: center;
+`;
+
 /**
  * @param loading - Show loading skeleton on top of the text field.
  * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
@@ -150,6 +160,13 @@ export const TextField: FC<TextFieldProps> = (props) => {
       '`maxCharacters` prop is not supported for input types other than "text".'
     );
   }
+
+  if (!!props.explanation && !props.label) {
+    throw new Error(
+      '`explanation` prop requires a `label` to be set on the TextField.'
+    );
+  }
+
   const baseProps: BaseProps = {
     ...props,
     variant: props.variant !== 'dirty' ? props.variant : undefined,
@@ -206,6 +223,18 @@ export const TextField: FC<TextFieldProps> = (props) => {
     >
       <Base
         {...baseProps}
+        label={
+          baseProps.label ? (
+            <LabelWrapper>
+              {baseProps.label}
+              {props.explanation && (
+                <InputExplanation position={props.explanationPosition}>
+                  {props.explanation}
+                </InputExplanation>
+              )}
+            </LabelWrapper>
+          ) : undefined
+        }
         disabled={props.loading || props.disabled}
         onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
       />

@@ -6,8 +6,9 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { ComboBoxChip } from '../Select.styles';
-import { ComboBox } from './ComboBox';
+import { ComboBox, ComboBoxProps } from './ComboBox';
 import { spacings } from 'src/atoms/style';
+import { Dialog } from 'src/molecules';
 import {
   SelectedState,
   SelectOption,
@@ -16,7 +17,7 @@ import {
 } from 'src/molecules/Select/Select.types';
 
 import { actions } from 'storybook/actions';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, screen, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof ComboBox> = {
@@ -47,6 +48,8 @@ const meta: Meta<typeof ComboBox> = {
 };
 
 export default meta;
+
+type Story = StoryObj<typeof ComboBox>;
 
 interface Item {
   label: string;
@@ -98,7 +101,7 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
     value: faker.string.uuid(),
   }));
 
-export const BasicComboBox: StoryFn = (args) => {
+function ComboBoxStateful(args: ComboBoxProps<Item>) {
   const [values, setValues] = useState<SelectOption<Item>[]>([]);
 
   const handleOnSelect = (
@@ -109,99 +112,50 @@ export const BasicComboBox: StoryFn = (args) => {
     setValues(selectedValues);
   };
 
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-    />
-  );
+  return <ComboBox {...args} values={values} onSelect={handleOnSelect} />;
+}
+
+export const BasicComboBox: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS,
+  },
 };
 
-export const LightBackground: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      lightBackground
-    />
-  );
+export const Explanation: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS,
+    explanation: 'This is an explanation text providing more details.',
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.hover(canvas.getAllByTestId('eds-icon-path')[0]);
+    const explanationTooltip = await screen.findByText(
+      args.explanation as string
+    );
+    expect(explanationTooltip).toBeInTheDocument();
+  },
 };
 
-export const ReallyLongName: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS_WITH_REALLY_LONG_NAMES}
-      values={values}
-      onSelect={handleOnSelect}
-    />
-  );
+export const ReallyLongName: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS_WITH_REALLY_LONG_NAMES,
+  },
 };
 
-export const Groups: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      values={values}
-      groups={FAKE_GROUPS}
-      onSelect={handleOnSelect}
-    />
-  );
+export const Groups: Story = {
+  render: ComboBoxStateful,
+  args: {
+    groups: FAKE_GROUPS,
+  },
 };
 
-export const Parented: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS_WITH_CHILDREN}
-      values={values}
-      onSelect={handleOnSelect}
-    />
-  );
+export const Parented: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS_WITH_CHILDREN,
+  },
 };
 
 export const InDialog: StoryFn = (args) => {
@@ -299,26 +253,12 @@ const CustomValueElement: FC<{
   </ComboBoxChip>
 );
 
-export const CustomizableValueElement: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      customValueComponent={CustomValueElement}
-    />
-  );
+export const CustomizableValueElement: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS,
+    customValueComponent: CustomValueElement,
+  },
 };
 
 export const SelectedValuesAsText: StoryFn = (args) => {
@@ -343,28 +283,13 @@ export const SelectedValuesAsText: StoryFn = (args) => {
   );
 };
 
-export const CustomSelectedValuesAsTextFunction: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      showSelectedAsText={({ selectedAmount, totalAmount }) =>
-        `${selectedAmount} of ${totalAmount} fishes selected`
-      }
-    />
-  );
+export const CustomSelectedValuesAsTextFunction: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS,
+    showSelectedAsText: ({ selectedAmount, totalAmount }) =>
+      `${selectedAmount} of ${totalAmount} fishes selected`,
+  },
 };
 
 const CustomMenuItem: FC<{
@@ -378,33 +303,13 @@ const CustomMenuItem: FC<{
   </>
 );
 
-export const CustomizableMenuItem: StoryFn = (args) => {
-  const [values, setValues] = useState<SelectOption<Item>[]>([]);
-
-  const handleOnSelect = (
-    selectedValues: SelectOption<Item>[],
-    selectedValue?: SelectOption<Item>
-  ) => {
-    actions('onSelect').onSelect(selectedValues, selectedValue);
-    setValues(selectedValues);
-  };
-
-  return (
-    <ComboBox
-      {...args}
-      items={FAKE_ITEMS}
-      values={values}
-      onSelect={handleOnSelect}
-      showSelectedAsText={({ selectedAmount, totalAmount }) =>
-        `${selectedAmount} of ${totalAmount} fishes selected`
-      }
-      CustomMenuItemComponent={CustomMenuItem}
-    />
-  );
+export const CustomizableMenuItem: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS,
+    CustomMenuItemComponent: CustomMenuItem,
+  },
 };
-
-// Test Stories
-type Story = StoryObj<typeof ComboBox>;
 
 const TEST_ITEMS = [
   { label: 'Apple', value: 'apple' },

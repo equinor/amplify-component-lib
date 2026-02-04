@@ -12,10 +12,13 @@ import {
   SelectOption,
   VARIANT_OPTIONS,
 } from 'src/molecules/Select/Select.types';
-import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
+import {
+  SingleSelect,
+  SingleSelectProps,
+} from 'src/molecules/Select/SingleSelect/SingleSelect';
 
 import { actions } from 'storybook/actions';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, screen, userEvent, within } from 'storybook/test';
 
 const meta: Meta<typeof SingleSelect> = {
   title: 'Molecules/Select/SingleSelect',
@@ -39,6 +42,8 @@ const meta: Meta<typeof SingleSelect> = {
 };
 
 export default meta;
+
+type Story = StoryObj<typeof SingleSelect>;
 
 interface Item {
   label: string;
@@ -69,7 +74,7 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
     value: faker.string.uuid(),
   }));
 
-export const BasicSingleSelect: StoryFn = (args) => {
+function SingleSelectStateful(args: SingleSelectProps<Item>) {
   const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
 
   const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
@@ -77,50 +82,45 @@ export const BasicSingleSelect: StoryFn = (args) => {
     setValue(selectedValue);
   };
 
-  return (
-    <SingleSelect
-      {...args}
-      items={FAKE_ITEMS}
-      value={value}
-      onSelect={handleOnSelect}
-    />
-  );
+  return <SingleSelect {...args} value={value} onSelect={handleOnSelect} />;
+}
+
+export const BasicSingleSelect: Story = {
+  render: SingleSelectStateful,
+  args: {
+    items: FAKE_ITEMS,
+  },
 };
 
-export const ReallyLongName: StoryFn = (args) => {
-  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
-
-  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
-    actions('onSelect').onSelect(selectedValue);
-    setValue(selectedValue);
-  };
-
-  return (
-    <SingleSelect
-      {...args}
-      items={FAKE_ITEMS_WITH_REALLY_LONG_NAMES}
-      value={value}
-      onSelect={handleOnSelect}
-    />
-  );
+export const Explanation: Story = {
+  render: SingleSelectStateful,
+  args: {
+    items: FAKE_ITEMS,
+    explanation:
+      'This is an explanation text providing more details about the select field.',
+    explanationPosition: 'top',
+  },
+  play: async ({ canvas, args }) => {
+    // First icon will be the explanation icon
+    await userEvent.hover(canvas.getAllByTestId('eds-icon-path')[0]);
+    await expect(
+      await screen.findByText(args.explanation as string)
+    ).toBeInTheDocument();
+  },
 };
 
-export const Groups: StoryFn = (args) => {
-  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
+export const ReallyLongName: Story = {
+  render: SingleSelectStateful,
+  args: {
+    items: FAKE_ITEMS_WITH_REALLY_LONG_NAMES,
+  },
+};
 
-  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
-    actions('onSelect').onSelect(selectedValue);
-    setValue(selectedValue);
-  };
-
-  return (
-    <SingleSelect
-      {...args}
-      groups={FAKE_GROUPS}
-      value={value}
-      onSelect={handleOnSelect}
-    />
-  );
+export const Groups: Story = {
+  render: SingleSelectStateful,
+  args: {
+    groups: FAKE_GROUPS,
+  },
 };
 
 export const AddFunctionality: StoryFn = (args) => {
@@ -164,23 +164,12 @@ const CustomMenuItem: FC<{
   </>
 );
 
-export const CustomizableMenuItem: StoryFn = (args) => {
-  const [value, setValue] = useState<SelectOption<Item> | undefined>(undefined);
-
-  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
-    actions('onSelect').onSelect(selectedValue);
-    setValue(selectedValue);
-  };
-
-  return (
-    <SingleSelect
-      {...args}
-      items={FAKE_ITEMS}
-      value={value}
-      onSelect={handleOnSelect}
-      CustomMenuItemComponent={CustomMenuItem}
-    />
-  );
+export const CustomizableMenuItem: Story = {
+  render: SingleSelectStateful,
+  args: {
+    items: FAKE_ITEMS,
+    CustomMenuItemComponent: CustomMenuItem,
+  },
 };
 
 function getIcon(value: 'car' | 'airplane' | 'boat') {
@@ -262,8 +251,6 @@ export const CustomizableValueComponent: StoryFn = (args) => {
     />
   );
 };
-
-type Story = StoryObj<typeof SingleSelect>;
 
 export const DisabledSingleSelect: Story = {
   args: {
