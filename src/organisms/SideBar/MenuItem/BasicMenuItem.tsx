@@ -2,7 +2,7 @@ import { FC, MouseEvent, useCallback, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { Feature } from '@equinor/subsurface-app-management';
-import { useLocation } from '@tanstack/react-router';
+import { useMatchRoute } from '@tanstack/react-router';
 
 import { BasicSideBarMenuItem } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
@@ -12,10 +12,7 @@ import {
   Link,
   MenuItemWrapper,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.styles';
-import {
-  canNavigate,
-  isCurrentUrl,
-} from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
+import { canNavigate } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 export type BasicMenuItemProps = {
@@ -31,15 +28,11 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
   featureUuid,
   ...linkProps
 }) => {
-  const { pathname } = useLocation();
-  const isActive = isCurrentUrl({
-    currentUrl: pathname,
-    link: linkProps.to,
-  });
   const { isOpen } = useSideBar();
+  const matchRoute = useMatchRoute();
+  const isActive = !!matchRoute({ ...linkProps });
   const shouldNavigate = canNavigate({
-    currentUrl: pathname,
-    link: linkProps.to,
+    isActive,
     replace,
     disabled,
   });
@@ -60,7 +53,6 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
       <OptionalTooltip title={name} placement="right">
         <MenuItemWrapper>
           <Link
-            $active={isActive}
             aria-disabled={disabled}
             $disabled={disabled}
             onClick={handleOnClick}

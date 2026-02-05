@@ -2,7 +2,11 @@ import { FC, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Icon, Menu } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { Link as TanstackLink, useLocation } from '@tanstack/react-router';
+import {
+  Link as TanstackLink,
+  useLocation,
+  useMatchRoute,
+} from '@tanstack/react-router';
 
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { colors, spacings } from 'src/atoms/style';
@@ -14,7 +18,6 @@ import {
   Link,
   MenuItemWrapper,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.styles';
-import { isCurrentUrl } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 import styled, { css } from 'styled-components';
@@ -95,12 +98,11 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   ...rest
 }) => {
   const { pathname } = useLocation();
+  const matchRoute = useMatchRoute();
   const previousPathname = usePrevious(pathname);
   const { isOpen } = useSideBar();
   const previousIsOpen = usePrevious(isOpen);
-  const isActive = items.some((item) =>
-    isCurrentUrl({ currentUrl: pathname, link: item.to })
-  );
+  const isActive = items.some((item) => !!matchRoute({ ...item }));
   const parentRef = useRef<HTMLButtonElement | null>(null);
   const [expanded, setExpanded] = useState(false);
 
@@ -162,12 +164,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
       <>
         {parentContent}
         {items.map((item, index) => (
-          <Child
-            key={index}
-            $active={isCurrentUrl({ currentUrl: pathname, link: item.to })}
-            $disabled={item.disabled || false}
-            {...item}
-          >
+          <Child key={index} $disabled={item.disabled || false} {...item}>
             <ItemText
               $active={isActive}
               $disabled={item.disabled || false}
@@ -196,7 +193,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
             <Menu.Item
               as={TanstackLink}
               key={item.to}
-              active={isCurrentUrl({ currentUrl: pathname, link: item.to })}
+              active={!!matchRoute({ ...item })}
               style={{ width: '256px' }}
               {...item}
             >

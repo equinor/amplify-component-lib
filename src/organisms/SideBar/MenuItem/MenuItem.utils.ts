@@ -1,33 +1,13 @@
-interface IsUrlArgs {
-  currentUrl: string;
-  link: string;
-}
-
-export const isCurrentUrl = ({ currentUrl, link }: IsUrlArgs) => {
-  const decodedCurrentUrl = decodeURIComponent(currentUrl);
-  const currentIncludesLink = decodedCurrentUrl.includes(link);
-
-  return (currentIncludesLink && link !== '/') || link === currentUrl;
-};
-
-const isExactUrl = ({ currentUrl, link }: IsUrlArgs) => {
-  const currentWithoutParams = currentUrl.split('?')[0];
-  return currentWithoutParams === link;
-};
-
-interface CanNavigateArgs extends IsUrlArgs {
+interface CanNavigateArgs {
+  isActive: boolean;
   disabled: boolean;
   replace: boolean;
 }
 
 export const canNavigate = ({
-  currentUrl,
-  link,
+  isActive,
   disabled,
   replace,
 }: CanNavigateArgs) => {
-  const isCurrent = isCurrentUrl({ currentUrl, link });
-  const isExact = isExactUrl({ currentUrl, link });
-
-  return !disabled && (!isCurrent || (isCurrent && !isExact && replace));
+  return !disabled && (!isActive || (isActive && replace));
 };
