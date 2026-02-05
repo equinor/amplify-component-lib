@@ -41,7 +41,10 @@ const AnchorTag = styled.a<LinkProps>`
     &:hover {
       background: ${colors.interactive.primary__selected_hover.rgba};
       > div > svg {
-        fill: ${colors.interactive.primary__hover.rgba};
+        fill: ${({ $disabled }) =>
+          $disabled
+            ? colors.interactive.disabled__text.rgba
+            : colors.interactive.primary__hover.rgba};
       }
     }
   }
