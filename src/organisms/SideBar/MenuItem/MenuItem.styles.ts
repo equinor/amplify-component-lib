@@ -36,17 +36,17 @@ const AnchorTag = styled.a<LinkProps>`
     text-decoration: none;
     background: ${({ $disabled }) =>
       !$disabled && colors.interactive.primary__hover_alt.rgba};
+    > div > svg {
+      fill: ${({ $disabled }) =>
+        $disabled
+          ? colors.interactive.disabled__text.rgba
+          : colors.interactive.primary__hover.rgba};
+    }
   }
   &[data-status='active'] {
     background: ${colors.interactive.primary__selected_highlight.rgba};
     &:hover {
       background: ${colors.interactive.primary__selected_hover.rgba};
-      > div > svg {
-        fill: ${({ $disabled }) =>
-          $disabled
-            ? colors.interactive.disabled__text.rgba
-            : colors.interactive.primary__hover.rgba};
-      }
     }
   }
 `;
