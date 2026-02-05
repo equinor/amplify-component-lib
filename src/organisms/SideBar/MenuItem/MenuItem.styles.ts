@@ -34,7 +34,8 @@ const AnchorTag = styled.a<LinkProps>`
   &:hover {
     cursor: ${({ $disabled }) => !$disabled && 'pointer'};
     text-decoration: none;
-    background: ${colors.interactive.primary__hover_alt.rgba};
+    background: ${({ $disabled }) =>
+      !$disabled && colors.interactive.primary__hover_alt.rgba};
   }
   &[data-status='active'] {
     background: ${colors.interactive.primary__selected_highlight.rgba};
