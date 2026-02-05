@@ -99,7 +99,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   const { isOpen } = useSideBar();
   const previousIsOpen = usePrevious(isOpen);
   const isActive = items.some((item) =>
-    isCurrentUrl({ currentUrl: pathname, link: item.link })
+    isCurrentUrl({ currentUrl: pathname, link: item.to })
   );
   const parentRef = useRef<HTMLButtonElement | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -164,9 +164,9 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
         {items.map((item, index) => (
           <Child
             key={index}
-            to={item.link}
-            $active={isCurrentUrl({ currentUrl: pathname, link: item.link })}
+            $active={isCurrentUrl({ currentUrl: pathname, link: item.to })}
             $disabled={item.disabled || false}
+            {...item}
           >
             <ItemText
               $active={isActive}
@@ -195,10 +195,10 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
           {items.map((item) => (
             <Menu.Item
               as={TanstackLink}
-              key={item.link}
-              active={isCurrentUrl({ currentUrl: pathname, link: item.link })}
+              key={item.to}
+              active={isCurrentUrl({ currentUrl: pathname, link: item.to })}
               style={{ width: '256px' }}
-              to={item.link}
+              {...item}
             >
               {item.name}
             </Menu.Item>

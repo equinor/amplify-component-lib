@@ -17,13 +17,13 @@ const menuItems: SideBarMenuItem[] = [
   {
     name: 'Dashboard',
     icon: dashboard,
-    link: 'dashboard',
+    to: '/dashboard',
     onClick: () => console.log('going to dashboard...'),
   },
   {
     name: 'History',
     icon: history,
-    link: 'history',
+    to: '/history',
     onClick: () => console.log('going to history...'),
   },
   {
@@ -32,18 +32,18 @@ const menuItems: SideBarMenuItem[] = [
     items: [
       {
         name: 'My favourites',
-        link: 'my-favourites',
+        to: '/my-favourites',
       },
       {
         name: 'Team favourites',
-        link: 'team-favourites',
+        to: '/team-favourites',
       },
     ],
   },
   {
     name: 'Cars',
     icon: car,
-    link: 'cars',
+    to: '/cars',
     onClick: () => console.log('going to favourites...'),
   },
 ];
@@ -64,7 +64,7 @@ const StoryComponent = (args: {
           }
           bottomItem={
             args.hasBottomItem ? (
-              <SideBar.Item icon={car} name="Cars" link="/" />
+              <SideBar.Item icon={car} name="Cars" to="/" />
             ) : undefined
           }
           {...args}
