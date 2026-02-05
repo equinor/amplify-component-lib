@@ -208,7 +208,7 @@ describe('MenuItem', () => {
         expect(item).toHaveStyleRule(
           'background',
           colors.interactive.primary__selected_hover.rgba,
-          { modifier: ':hover' }
+          { modifier: "&[data-status='active']:hover" }
         );
         expect(item).toHaveStyleRule('outline', undefined, {
           modifier: ':hover',
