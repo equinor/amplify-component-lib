@@ -192,7 +192,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
           {items.map((item) => (
             <Menu.Item
               as={TanstackLink}
-              key={item.to}
+              key={`${item.to}-${item.name}`}
               active={!!matchRoute({ ...item })}
               style={{ width: '256px' }}
               {...item}
