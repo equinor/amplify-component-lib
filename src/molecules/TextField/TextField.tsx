@@ -199,6 +199,8 @@ export const TextField: FC<TextFieldProps> = (props) => {
     }
   };
 
+  // Not able to test the case where the input element isn't found
+  /* v8 ignore start */
   const handleOnRender = (element: HTMLDivElement | null) => {
     if (!element || !props.maxCharacters) return;
     // Get input or textarea element inside the wrapper
@@ -208,6 +210,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
       setCharacterCount(inputElement.value.length);
     }
   };
+  /* v8 ignore end */
 
   useEffect(() => {
     if (
