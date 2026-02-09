@@ -199,6 +199,19 @@ export const TextField: FC<TextFieldProps> = (props) => {
     }
   };
 
+  // Not able to test the case where the input element isn't found
+  /* v8 ignore start */
+  const handleOnRender = (element: HTMLDivElement | null) => {
+    if (!element || !props.maxCharacters) return;
+    // Get input or textarea element inside the wrapper
+    const inputElement: HTMLInputElement | HTMLTextAreaElement | null =
+      element.querySelector('input, textarea');
+    if (inputElement) {
+      setCharacterCount(inputElement.value.length);
+    }
+  };
+  /* v8 ignore end */
+
   useEffect(() => {
     if (
       typeof props.value === 'string' &&
@@ -211,6 +224,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
 
   return (
     <Wrapper
+      ref={handleOnRender}
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
