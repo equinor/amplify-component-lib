@@ -8,8 +8,6 @@ import { Dasha } from './Icons/Dasha';
 import { FluxMaps } from './Icons/FluxMaps';
 import { ForecastDataInventory } from './Icons/ForecastDataInventory';
 import { ForecastFormatter } from './Icons/ForecastFormatter';
-import { FourDInsight } from './Icons/FourDInsight';
-import { InPress } from './Icons/InPress';
 import { JsEmbark } from './Icons/JsEmbark';
 import { LoggingQualification } from './Icons/LoggingQualification';
 import { Orca } from './Icons/Orca';
@@ -20,6 +18,7 @@ import { Sam } from './Icons/Sam';
 import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
 import { Fallback } from './Fallback';
+import { DataDeliveryPlan } from 'src/molecules/ApplicationIcon/Icons/DataDeliveryPlan';
 import { FluidSymphony } from 'src/molecules/ApplicationIcon/Icons/FluidSymphony';
 
 export type ApplicationName =
@@ -53,7 +52,6 @@ const apps: ApplicationIconData[] = [
   { appName: ['adca'], component: Adca },
   { appName: ['portal', 'embark', 'jsembark'], component: JsEmbark },
   { appName: ['acquire'], component: Acquire },
-  { appName: ['4dinsight'], component: FourDInsight },
   { appName: ['dasha'], component: Dasha },
   {
     appName: [
@@ -77,12 +75,15 @@ const apps: ApplicationIconData[] = [
   },
   { appName: ['recap'], component: Recap },
   { appName: ['pwex'], component: Pwex },
-  { appName: ['inpress'], component: InPress },
   { appName: ['bravos'], component: Bravos },
   { appName: ['premo'], component: Premo },
   { appName: ['sam'], component: Sam },
   { appName: ['subsurface portal'], component: SubsurfacePortal },
   { appName: ['atwork'], component: AtWork },
+  {
+    appName: ['data delivery plan', 'data-delivery-plan'],
+    component: DataDeliveryPlan,
+  },
 ];
 
 export interface ApplicationIconProps extends Partial<AppIconProps> {

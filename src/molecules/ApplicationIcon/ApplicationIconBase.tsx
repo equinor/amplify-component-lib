@@ -1,16 +1,10 @@
-import { forwardRef } from 'react';
+import { forwardRef, ReactElement } from 'react';
 
-import { IconData } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
-
-import { ApplicationIconContent } from './ApplicationIconContent';
+import { colors } from 'src/atoms/style';
 import { GRAYSCALE_FILTER_VALUE } from 'src/molecules/ApplicationIcon/ApplicationIcon.constants';
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
-import { IconDataWithColor } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
 
 import styled, { css } from 'styled-components';
-
-const { colors, elevation } = tokens;
 
 interface ContainerProps {
   $size: number;
@@ -43,20 +37,23 @@ const Container = styled.div<ContainerProps>`
     pointer-events: none;
     transition: all 2s ease-in-out;
     z-index: 300;
-    transform: scale(0.8);
+    width: 100%;
+    height: 100%;
   }
+
   > p {
     color: #ffffff;
     z-index: 300;
     font-weight: 700;
   }
+
   ${({ $withHover }) =>
     $withHover &&
     css`
       cursor: pointer;
       &:hover {
         > svg {
-          transform: scale(0.9);
+          transform: scale(1.08);
         }
         > div:nth-child(even) {
           top: -80%;
@@ -92,7 +89,7 @@ const Shape = styled.div<ShapeElementProps>`
   z-index: ${(props) => 200 - props.$index};
   width: 120%;
   height: 80%;
-  box-shadow: ${elevation.raised};
+  box-shadow: rgb(0, 0, 0) 0 0 12px;
   // This background is set to hex and not rgba because design do not want this color to change in dark mode , 18 march 2024.
   background: ${colors.interactive.primary__resting.hex};
   transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
@@ -102,66 +99,50 @@ const Shape = styled.div<ShapeElementProps>`
 
 interface ApplicationIconBaseProps extends Required<AppIconProps> {
   shapes: ShapeProps[];
+  children: ReactElement;
 }
 
-export interface ApplicationIconWithIconProps extends ApplicationIconBaseProps {
-  iconData: IconData | IconDataWithColor[];
-}
-
-export interface ApplicationIconWithNameProps extends ApplicationIconBaseProps {
-  name: string;
-}
-
-// Icon component from EDS can take whatever size we want in numbers, so casting size to any here is safe
-// Size type is specified on the other higher level components
-const ApplicationIconBase = forwardRef<
+export const ApplicationIconBase = forwardRef<
   HTMLDivElement,
-  ApplicationIconWithIconProps | ApplicationIconWithNameProps
->(
-  (
-    { size = 48, shapes, iconOnly, withHover, grayScale = false, ...rest },
-    ref
-  ) => {
-    if (iconOnly) {
-      return (
-        <Container
-          data-testid="application-icon"
-          ref={ref}
-          $size={size}
-          $iconOnly
-          $withHover={withHover}
-          $grayScale={grayScale}
-        >
-          <ApplicationIconContent size={size} {...rest} />
-        </Container>
-      );
-    }
-
+  ApplicationIconBaseProps
+>(({ size, shapes, iconOnly, withHover, grayScale = false, children }, ref) => {
+  if (iconOnly) {
     return (
       <Container
         data-testid="application-icon"
         ref={ref}
         $size={size}
+        $iconOnly
         $withHover={withHover}
         $grayScale={grayScale}
       >
-        <ApplicationIconContent size={size} {...rest} />
-        {shapes.map((shape, index) => (
-          <Shape
-            key={`shape-${index}`}
-            data-testid="shape"
-            $index={index}
-            $top={shape.top}
-            $left={shape.left}
-            $rotation={shape.rotation}
-            $grayScale={grayScale}
-          />
-        ))}
+        {children}
       </Container>
     );
   }
-);
+
+  return (
+    <Container
+      data-testid="application-icon"
+      ref={ref}
+      $size={size}
+      $withHover={withHover}
+      $grayScale={grayScale}
+    >
+      {children}
+      {shapes.map((shape, index) => (
+        <Shape
+          key={`shape-${index}`}
+          data-testid="shape"
+          $index={index}
+          $top={shape.top}
+          $left={shape.left}
+          $rotation={shape.rotation}
+          $grayScale={grayScale}
+        />
+      ))}
+    </Container>
+  );
+});
 
 ApplicationIconBase.displayName = 'ApplicationIconBase';
-
-export default ApplicationIconBase;
