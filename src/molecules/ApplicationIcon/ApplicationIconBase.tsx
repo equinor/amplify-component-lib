@@ -105,7 +105,7 @@ interface ApplicationIconBaseProps extends Required<AppIconProps> {
 export const ApplicationIconBase = forwardRef<
   HTMLDivElement,
   ApplicationIconBaseProps
->(({ size, shapes, iconOnly, withHover, grayScale = false, children }, ref) => {
+>(({ size = 48, shapes, iconOnly, withHover, grayScale = false, children }, ref) => {
   if (iconOnly) {
     return (
       <Container
