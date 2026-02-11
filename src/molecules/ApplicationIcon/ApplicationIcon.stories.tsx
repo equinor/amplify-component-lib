@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ApplicationIcon } from './ApplicationIcon';
 import { spacings } from 'src/atoms/style';
-import { Divider } from 'src/organisms/TopBar/Notifications/NotificationsTemplate/NotificationTemplate.style';
+import { Divider } from 'src/molecules';
 
 import { expect } from 'storybook/test';
 
@@ -79,6 +79,7 @@ export const AllIcons: Story = {
             display: 'grid',
             gridTemplateColumns: 'auto minmax(24px, 1fr) auto',
             alignItems: 'center',
+            gap: spacings.medium,
           }}
         >
           <Typography>{appName}</Typography>
