@@ -36,4 +36,4 @@ export const AtWork = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
   </ApplicationIconBase>
 ));
 
-AtWork.displayName = 'atWork';
+AtWork.displayName = 'AtWork';
