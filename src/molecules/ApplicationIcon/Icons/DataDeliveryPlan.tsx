@@ -42,4 +42,4 @@ export const DataDeliveryPlan = forwardRef<HTMLDivElement, AppIconProps>(
   )
 );
 
-DataDeliveryPlan.displayName = 'AcquDataDeliveryPlanire';
+DataDeliveryPlan.displayName = 'DataDeliveryPlan';
