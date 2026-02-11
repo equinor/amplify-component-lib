@@ -137,6 +137,7 @@ export const TestAdca = createTestStory('adca');
 export const TestAcquire = createTestStory('acquire');
 export const TestBravos = createTestStory('bravos');
 export const TestDasha = createTestStory('dasha');
+export const TestDataDeliveryPlan = createTestStory('data delivery plan');
 export const TestForecastFormatter = createTestStory('forecast-formatter');
 export const TestFluidSymphony = createTestStory('fluid-symphony');
 export const TestForecastDataInventory = createTestStory('fdi');
