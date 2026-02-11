@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
-import ApplicationIconBase, {
+import {
+  ApplicationIconBase,
   ShapeProps,
-} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
-import { recap } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 
 const shapes: ShapeProps[] = [
   {
@@ -20,7 +20,22 @@ const shapes: ShapeProps[] = [
 ];
 
 export const Recap = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
-  <ApplicationIconBase ref={ref} iconData={recap} shapes={shapes} {...props} />
+  <ApplicationIconBase ref={ref} shapes={shapes} {...props}>
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M16 24L21.3333 30L32 18"
+        stroke="#F5F5F5"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+    </svg>
+  </ApplicationIconBase>
 ));
 
 Recap.displayName = 'Recap';

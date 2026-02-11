@@ -1,4 +1,4 @@
-import { ShapeProps } from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
+import { ShapeProps } from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 
 export function nameToAcronym(name: string): string {
   const split = name.toUpperCase().split(' ');

@@ -1,32 +1,42 @@
 import { forwardRef } from 'react';
 
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
-import ApplicationIconBase, {
+import {
+  ApplicationIconBase,
   ShapeProps,
-} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
-import { fluidSymphony } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 
 const shapes: ShapeProps[] = [
   {
-    top: -16,
+    top: -18,
     left: -17,
     rotation: 343,
   },
   {
-    top: 26,
+    top: 40,
     left: 11,
-    rotation: 193,
+    rotation: 200,
   },
 ];
 
 export const FluidSymphony = forwardRef<HTMLDivElement, AppIconProps>(
   (props, ref) => (
-    <ApplicationIconBase
-      ref={ref}
-      iconData={fluidSymphony}
-      shapes={shapes}
-      {...props}
-    />
+    <ApplicationIconBase ref={ref} shapes={shapes} {...props}>
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M29.7773 8C30.0167 8.00008 30.2108 8.19565 30.2109 8.4375V11.0664C30.2109 11.3083 30.0167 11.5048 29.7773 11.5049H29.7226C29.6629 11.5051 29.6142 11.5539 29.6142 11.6143V17.0645C29.6142 17.3079 29.6645 17.5488 29.7617 17.7715L36.7295 33.7451C36.9998 34.365 36.8928 35.0865 36.4541 35.5986L33.3105 39.2676C32.9811 39.6521 32.5023 39.874 31.999 39.874H16.7695C16.2557 39.874 15.768 39.6435 15.4384 39.2451L12.4033 35.5752C11.9816 35.0652 11.8819 34.3579 12.1455 33.749L19.0732 17.749C19.1659 17.5349 19.2146 17.304 19.2177 17.0703L19.292 11.6152C19.2926 11.5544 19.2437 11.5051 19.1836 11.5049H19.1543C18.9148 11.5049 18.7207 11.3084 18.7207 11.0664V8.4375C18.7207 8.1956 18.9148 8 19.1543 8H29.7773ZM23.1894 11.5049C22.9525 11.5051 22.7592 11.6971 22.7558 11.9365L22.6767 17.8262C22.6736 18.0599 22.6239 18.2908 22.5312 18.5049L16.1836 33.166C15.9199 33.775 16.0205 34.4822 16.4423 34.9922L17.0605 35.7402C17.3899 36.1383 17.877 36.368 18.3906 36.3682H30.414C30.9174 36.3682 31.3961 36.1472 31.7255 35.7627L32.3945 34.9824C32.8333 34.4702 32.9403 33.7478 32.6699 33.1279L26.2929 18.5098C26.1958 18.287 26.1455 18.0461 26.1455 17.8027V11.9424C26.1453 11.7006 25.9512 11.5049 25.7119 11.5049H23.1894ZM21.8056 25.4395C22.1922 24.5068 23.2367 24.0749 24.1386 24.4746C25.0403 24.8744 25.4577 25.9541 25.0713 26.8867L22.4062 33.3174C22.0197 34.2501 20.9751 34.682 20.0732 34.2822C19.1716 33.8823 18.7541 32.8026 19.1406 31.8701L21.8056 25.4395Z"
+          fill="#F5F5F5"
+        />
+      </svg>
+    </ApplicationIconBase>
   )
 );
 
