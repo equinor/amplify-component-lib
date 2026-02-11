@@ -5,6 +5,8 @@ import { Adca } from './Icons/Adca';
 import { AtWork } from './Icons/Atwork';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
+import { DataDeliveryPlan } from './Icons/DataDeliveryPlan';
+import { FluidSymphony } from './Icons/FluidSymphony';
 import { FluxMaps } from './Icons/FluxMaps';
 import { ForecastDataInventory } from './Icons/ForecastDataInventory';
 import { ForecastFormatter } from './Icons/ForecastFormatter';
@@ -18,8 +20,6 @@ import { Sam } from './Icons/Sam';
 import { SubsurfacePortal } from './Icons/SubsurfacePortal';
 import { AppIconProps } from './ApplicationIcon.types';
 import { Fallback } from './Fallback';
-import { DataDeliveryPlan } from 'src/molecules/ApplicationIcon/Icons/DataDeliveryPlan';
-import { FluidSymphony } from 'src/molecules/ApplicationIcon/Icons/FluidSymphony';
 
 export type ApplicationName =
   | 'adca'
