@@ -135,6 +135,7 @@ const createTestStory = (appName: string): Story => {
 export const Test4DInsight = createTestStory('4dinsight');
 export const TestAdca = createTestStory('adca');
 export const TestAcquire = createTestStory('acquire');
+export const TestBravos = createTestStory('bravos');
 export const TestDasha = createTestStory('dasha');
 export const TestForecastFormatter = createTestStory('forecast-formatter');
 export const TestFluidSymphony = createTestStory('fluid-symphony');
@@ -175,15 +176,5 @@ export const TestIconOnly: Story = {
   },
   play: async ({ canvas }) => {
     await expect(canvas.queryAllByTestId('shape').length).toBe(0);
-  },
-};
-
-export const TestBravosMultipleParts: Story = {
-  tags: ['test-only'],
-  args: {
-    name: 'bravos',
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByTestId('icon-part-0')).toBeInTheDocument();
   },
 };
