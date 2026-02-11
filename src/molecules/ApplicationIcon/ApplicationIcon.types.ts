@@ -4,5 +4,3 @@ export interface AppIconProps {
   withHover: boolean;
   grayScale: boolean;
 }
-
-export type SizeIconProps = Partial<Pick<AppIconProps, 'size'>>;
