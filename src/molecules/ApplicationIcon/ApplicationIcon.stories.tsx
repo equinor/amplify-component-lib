@@ -132,9 +132,9 @@ const createTestStory = (appName: string): Story => {
   };
 };
 
-export const Test4DInsight = createTestStory('4dinsight');
-export const TestAdca = createTestStory('adca');
 export const TestAcquire = createTestStory('acquire');
+export const TestAdca = createTestStory('adca');
+export const TestAtWork = createTestStory('atwork');
 export const TestBravos = createTestStory('bravos');
 export const TestDasha = createTestStory('dasha');
 export const TestDataDeliveryPlan = createTestStory('data delivery plan');
@@ -153,7 +153,6 @@ export const TestInpress = createTestStory('inpress');
 export const TestPremo = createTestStory('premo');
 export const TestSAM = createTestStory('sam');
 export const TestSubsurfacePortal = createTestStory('subsurface portal');
-export const TestAtWork = createTestStory('atwork');
 
 export const TestGrayScale: Story = {
   tags: ['test-only'],

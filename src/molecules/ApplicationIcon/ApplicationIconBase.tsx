@@ -89,7 +89,7 @@ const Shape = styled.div<ShapeElementProps>`
   z-index: ${(props) => 200 - props.$index};
   width: 120%;
   height: 80%;
-  box-shadow: rgb(0, 0, 0) 0 0 12px;
+  box-shadow: rgba(0, 0, 0, 0.7) 0 0 12px;
   // This background is set to hex and not rgba because design do not want this color to change in dark mode , 18 march 2024.
   background: ${colors.interactive.primary__resting.hex};
   transition: all 3s cubic-bezier(0.25, 1, 0.5, 1);
