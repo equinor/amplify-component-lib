@@ -33,7 +33,6 @@ import { ImpersonateButton } from './ImpersonateButton';
 import { RoleList } from './RoleList';
 import { useLocalStorage } from 'src/atoms';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
-import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { SelectOptionRequired } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
@@ -50,8 +49,6 @@ export interface AccountProps {
   hideRoles?: boolean;
   useDisplayNameForRole?: boolean;
   children?: ReactNode;
-  availableFields?: Field[];
-  availableWells?: string[];
   enableEnvironmentToggle?: boolean;
   onImpersonateChange?: () => void;
 }
@@ -61,8 +58,6 @@ export const Account: FC<AccountProps> = ({
   hideRoles = false,
   useDisplayNameForRole = false,
   children,
-  availableFields,
-  availableWells,
   enableEnvironmentToggle = false,
   onImpersonateChange,
 }) => {
@@ -198,8 +193,6 @@ export const Account: FC<AccountProps> = ({
         open={openImpersonate}
         onClose={handleOnCloseImpersonate}
         anchorEl={buttonRef.current}
-        availableFields={availableFields}
-        availableWells={availableWells}
         onImpersonateChange={onImpersonateChange}
       />
     </>
