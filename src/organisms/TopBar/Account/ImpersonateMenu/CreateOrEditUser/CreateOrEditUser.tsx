@@ -12,7 +12,6 @@ import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
-import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import { TextField } from 'src/molecules/TextField/TextField';
 import { useAllAppRoles } from 'src/organisms/TopBar/Account/ImpersonateMenu/hooks/useAllAppRoles';
 
@@ -34,8 +33,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [field, setField] = useState<string | undefined>(undefined);
-  const [well, setWell] = useState<string | undefined>(undefined);
   const { data, isLoading: isLoadingRoles } = useAllAppRoles();
 
   useEffect(() => {
@@ -49,19 +46,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
         })
       );
 
-      if (availableFields) {
-        const selectedField =
-          availableFields.find((field) => field.uuid == editingUser.field)
-            ?.name ?? undefined;
-        setField(selectedField);
-      }
-
-      if (availableWells) {
-        const selectedWell =
-          availableWells.find((well) => well == editingUser.well) ?? undefined;
-        setWell(selectedWell);
-      }
-
       setFirstName(editingUser.firstName);
       setLastName(editingUser.lastName);
       setEmail(editingUser.email ?? '');
@@ -74,15 +58,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       [],
     [data]
   );
-
-  const availableFieldItems: SelectOptionRequired[] =
-    availableFields?.map((item) => ({
-      value: item.uuid ?? '',
-      label: item.name ?? '',
-    })) ?? [];
-
-  const availableWellItems: SelectOptionRequired[] =
-    availableWells?.map((item) => ({ value: item, label: item })) ?? [];
 
   const { mutateAsync: createImpersonationUser, isPending: isCreating } =
     useCreateImpersonation();
@@ -111,13 +86,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
     setRoles(values);
   };
 
-  const handleOnFieldSelect = (selected: SelectOptionRequired | undefined) => {
-    setField(selected?.value);
-  };
-  const handleOnWellSelect = (selected: SelectOptionRequired | undefined) => {
-    setWell(selected?.value);
-  };
-
   const handleOnCreateOrSave = async () => {
     if (editingUser) {
       await updateImpersonationUser({
@@ -126,8 +94,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
         lastName,
         fullName: `${firstName} ${lastName}`,
         email: email !== '' ? email : undefined,
-        field,
-        well,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: editingUser.uniqueName,
         appName: editingUser.appName,
@@ -138,8 +104,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
       await createImpersonationUser({
         firstName,
         lastName,
-        field,
-        well,
         email: email !== '' ? email : undefined,
         roles: roles.map((role) => role.value).sort(),
         uniqueName: `${firstName}.${lastName}`.toLowerCase(),
@@ -183,29 +147,6 @@ export const CreateOrEditUser: FC<CreateOrEditUserProps> = ({
           value={email}
           onChange={handleOnEmailChange}
         />
-      </Section>
-
-      <Section>
-        {availableFieldItems && availableFieldItems.length > 0 && (
-          <SingleSelect
-            placeholder="Select field..."
-            label="Field"
-            meta="Optional (For internal application role purposes)"
-            value={availableFieldItems.find((item) => item.value === field)}
-            onSelect={handleOnFieldSelect}
-            items={availableFieldItems}
-          />
-        )}
-        {availableWellItems && availableWellItems.length > 0 && (
-          <SingleSelect
-            label="Well"
-            placeholder="Select well..."
-            meta="Optional (For internal application role purposes)"
-            value={availableWellItems.find((item) => item.value === well)}
-            onSelect={handleOnWellSelect}
-            items={availableWellItems}
-          />
-        )}
       </Section>
 
       <Section>
