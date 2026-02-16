@@ -11,7 +11,6 @@ import { Actions } from './Actions';
 import { CreateNewUserButton } from './CreateNewUserButton';
 import { Content, Header, NoUsersText } from './ImpersonateMenu.styles';
 import { UserImpersonation } from './UserImpersonation';
-import { Field } from 'src/atoms/types/Field';
 import { Search } from 'src/molecules/Search/Search';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 
@@ -19,8 +18,6 @@ interface ImpersonateProps {
   open: boolean;
   onClose: () => void;
   anchorEl: HTMLElement | null;
-  availableFields?: Field[];
-  availableWells?: string[];
   onImpersonateChange?: () => void;
 }
 
@@ -28,8 +25,6 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   open,
   onClose,
   anchorEl,
-  availableFields,
-  availableWells,
   onImpersonateChange,
 }) => {
   const [creatingOrEditingUser, setCreatingOrEditingUser] = useState(false);
@@ -112,8 +107,6 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         <CreateOrEditUser
           editingUser={editingUser}
           onBack={handleOnCreateNewBack}
-          availableFields={availableFields}
-          availableWells={availableWells}
         />
       </Menu>
     );
