@@ -1,26 +1,56 @@
 import { forwardRef } from 'react';
 
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
-import ApplicationIconBase, {
+import {
+  ApplicationIconBase,
   ShapeProps,
-} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
-import { adca } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 
 const shapes: ShapeProps[] = [
   {
-    top: -18,
-    left: -17,
-    rotation: 343,
+    top: -11,
+    left: -28,
+    rotation: 134,
   },
   {
-    top: 26,
-    left: 11,
-    rotation: 193,
+    top: 27,
+    left: 9,
+    rotation: -41,
   },
 ];
 
 export const Adca = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
-  <ApplicationIconBase ref={ref} iconData={adca} shapes={shapes} {...props} />
+  <ApplicationIconBase ref={ref} shapes={shapes} {...props}>
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M40.0169 34.7181L40.2186 34.7046C41.2134 34.5852 41.9756 33.7291 41.9568 32.7058C41.9379 31.6824 41.1447 30.8554 40.1462 30.7726L39.9445 30.7659L39.3808 30.7707C36.6184 30.766 34.6882 30.3355 33.204 29.7004C31.8193 29.1077 30.7182 28.2938 29.6186 27.2856L29.1466 26.8417C28.2033 25.9344 27.327 24.9228 26.4414 23.8363L25.5496 22.7254C21.7374 17.9267 17.4328 12 7.97658 12C6.88509 12 6.00023 12.8851 6 13.9765C6 15.0682 6.88494 15.9531 7.97658 15.9531C15.3014 15.9531 18.5113 20.2211 22.4544 25.1846L23.3703 26.3263C24.3061 27.4747 25.3047 28.6308 26.4066 29.6907L26.949 30.2013C28.2409 31.3858 29.7168 32.5081 31.6492 33.3351C33.7195 34.221 36.1946 34.7182 39.3721 34.7239L40.0169 34.7181Z"
+        fill="white"
+        fillOpacity="0.2"
+      />
+      <path
+        d="M30.2117 28.7016C30.2117 27.6099 29.3268 26.725 28.2351 26.725C27.1435 26.725 26.2585 27.6099 26.2585 28.7016C26.2585 29.7932 27.1435 30.6782 28.2351 30.6782C29.3268 30.6782 30.2117 29.7932 30.2117 28.7016Z"
+        fill="white"
+      />
+      <path
+        d="M35.6255 31.9684C35.6255 30.8768 34.7406 29.9918 33.6489 29.9918C32.5573 29.9918 31.6724 30.8768 31.6724 31.9684C31.6724 33.0601 32.5573 33.945 33.6489 33.945C34.7406 33.945 35.6255 33.0601 35.6255 31.9684Z"
+        fill="white"
+      />
+      <path
+        d="M42 32.7422C42 31.6505 41.1151 30.7656 40.0235 30.7656C38.9318 30.7656 38.0469 31.6505 38.0469 32.7422C38.0469 33.8338 38.9318 34.7188 40.0235 34.7188C41.1151 34.7188 42 33.8338 42 32.7422Z"
+        fill="white"
+      />
+      <path
+        d="M22.4544 25.1844C23.1334 26.0389 24.3764 26.1815 25.2311 25.5029C26.0858 24.8238 26.2286 23.58 25.5496 22.7252C21.7374 17.9266 17.4328 12.0008 7.97658 12.0008C6.88494 12.0008 6 12.8857 6 13.9773C6.0002 15.0688 6.88507 15.9539 7.97658 15.9539C15.3014 15.9539 18.5113 20.2209 22.4544 25.1844Z"
+        fill="white"
+      />
+    </svg>
+  </ApplicationIconBase>
 ));
 
 Adca.displayName = 'Adca';

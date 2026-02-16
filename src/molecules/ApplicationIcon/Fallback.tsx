@@ -1,8 +1,10 @@
 import { forwardRef } from 'react';
 
+import { Typography } from '@equinor/eds-core-react';
+
+import { nameToAcronym, nameToShapes } from './ApplicationIcon.utils';
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
-import { nameToShapes } from 'src/molecules/ApplicationIcon/ApplicationIcon.utils';
-import ApplicationIconBase from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
+import { ApplicationIconBase } from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 
 interface FallbackProps extends AppIconProps {
   name: string;
@@ -10,11 +12,11 @@ interface FallbackProps extends AppIconProps {
 
 export const Fallback = forwardRef<HTMLDivElement, FallbackProps>(
   (props, ref) => (
-    <ApplicationIconBase
-      ref={ref}
-      shapes={nameToShapes(props.name)}
-      {...props}
-    />
+    <ApplicationIconBase ref={ref} shapes={nameToShapes(props.name)} {...props}>
+      <Typography style={{ fontSize: props.size / 2 }}>
+        {nameToAcronym(props.name)}
+      </Typography>
+    </ApplicationIconBase>
   )
 );
 

@@ -1,32 +1,48 @@
 import { forwardRef } from 'react';
 
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
-import ApplicationIconBase, {
+import {
+  ApplicationIconBase,
   ShapeProps,
-} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
-import { fluxMaps } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 
 const shapes: ShapeProps[] = [
   {
-    top: -20,
+    top: -22,
     left: -17,
-    rotation: 343,
+    rotation: 0,
   },
   {
-    top: 46,
+    top: 40,
     left: 11,
-    rotation: 193,
+    rotation: 200,
   },
 ];
 
 export const FluxMaps = forwardRef<HTMLDivElement, AppIconProps>(
   (props, ref) => (
-    <ApplicationIconBase
-      ref={ref}
-      iconData={fluxMaps}
-      shapes={shapes}
-      {...props}
-    />
+    <ApplicationIconBase ref={ref} shapes={shapes} {...props}>
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M36.3275 9.5C37.2513 9.50028 37.9996 10.2531 37.9996 11.1815V17.2987C37.9996 18.2271 37.2513 18.9799 36.3275 18.9802C35.4035 18.9802 34.6543 18.2273 34.6543 17.2987V15.2101L29.8374 19.9148C29.184 20.5527 28.1248 20.5529 27.4714 19.9148C26.8183 19.2768 26.8184 18.2424 27.4714 17.6043L32.3261 12.863H30.1926C29.2686 12.863 28.5194 12.1101 28.5193 11.1815C28.5193 10.2529 29.2686 9.5 30.1926 9.5H36.3275Z"
+          fill="white"
+        />
+        <path
+          d="M34.6538 34.6713V23.1851C34.6538 22.2788 35.4029 21.5442 36.3269 21.5442C37.2509 21.5442 38 22.2788 38 23.1851V34.6713C38 36.7858 36.2522 38.5 34.0962 38.5H24.6154C23.6914 38.5 22.9423 37.7654 22.9423 36.8591C22.9423 35.9529 23.6914 35.2182 24.6154 35.2182H34.0962C34.4042 35.2182 34.6538 34.9733 34.6538 34.6713ZM9 22.6271V13.3287C9 11.2142 10.7478 9.5 12.9038 9.5H24.6154C25.5394 9.5 26.2885 10.2347 26.2885 11.1409C26.2885 12.0471 25.5394 12.7818 24.6154 12.7818H12.9038C12.5958 12.7818 12.3462 13.0267 12.3462 13.3287V22.6271C12.3462 23.5333 11.5971 24.268 10.6731 24.268C9.74906 24.268 9 23.5333 9 22.6271Z"
+          fill="white"
+        />
+        <path
+          d="M19.0382 26.7886C19.9623 26.7886 20.7115 27.5415 20.7115 28.4701V34.5873C20.7115 35.5159 19.9623 36.2688 19.0382 36.2688C18.1143 36.2687 17.365 35.5158 17.365 34.5873V32.6497L11.9911 37.9019C11.3378 38.5401 10.2786 38.5401 9.62519 37.9019C8.97211 37.2638 8.972 36.2295 9.62519 35.5915L15.1925 30.1516H12.9033C11.9795 30.1513 11.2312 29.3985 11.2312 28.4701C11.2312 27.5416 11.9795 26.7888 12.9033 26.7886H19.0382Z"
+          fill="white"
+        />
+      </svg>
+    </ApplicationIconBase>
   )
 );
 FluxMaps.displayName = 'FluxMaps';

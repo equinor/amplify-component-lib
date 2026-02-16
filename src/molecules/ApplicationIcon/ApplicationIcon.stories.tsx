@@ -1,46 +1,54 @@
-import { faker } from '@faker-js/faker';
+import { Typography } from '@equinor/eds-core-react';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ApplicationIcon } from './ApplicationIcon';
-import * as ALL_ICONS from './ApplicationIconCollection';
-import { VariantShowcase } from 'src/storybook/VariantShowcase';
+import { spacings } from 'src/atoms/style';
+import { Divider } from 'src/molecules';
 
 import { expect } from 'storybook/test';
+
+const ALL_APP_NAMES = [
+  ...[
+    'adca',
+    'acquire',
+    'dasha',
+    'forecast-formatter',
+    'fluid-symphony',
+    'fdi',
+    'orca',
+    'recap',
+    'jsembark',
+    'flux-maps',
+    'pwex',
+    'logging-qualification',
+    'bravos',
+    'premo',
+    'sam',
+    'subsurface portal',
+    'atwork',
+    'data delivery plan',
+  ].toSorted(),
+] as const;
 
 const meta: Meta<typeof ApplicationIcon> = {
   title: 'Molecules/ApplicationIcon',
   component: ApplicationIcon,
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=7986-164213&m=dev',
+    },
+  },
   argTypes: {
     name: {
       control: 'radio',
-      options: [
-        'fallback',
-        '4dinsight',
-        'adca',
-        'acquire',
-        'dasha',
-        'forecast-formatter',
-        'fluid-symphony',
-        'fdi',
-        'orca',
-        'recap',
-        'jsembark',
-        'flux-maps',
-        'pwex',
-        'logging-qualification',
-        'inpress',
-        'bravos',
-        'premo',
-        'sam',
-        'subsurface portal',
-        'atwork',
-      ],
+      options: ['fallback', ...ALL_APP_NAMES],
     },
     size: { control: 'radio', options: [16, 24, 32, 40, 48, 96] },
     grayScale: { control: 'boolean' },
   },
   args: {
-    name: '4dinsight',
+    name: ALL_APP_NAMES[0],
     size: 96,
   },
 };
@@ -51,26 +59,45 @@ type Story = StoryObj<typeof ApplicationIcon>;
 
 export const Default: Story = {};
 
-export const Fallback: Story = {
+export const AllIcons: Story = {
   parameters: {
     layout: 'centered',
   },
   render: (args) => (
-    <VariantShowcase
-      GenericComponent={ApplicationIcon}
-      otherProps={args}
-      rows={[
-        ...Array.from({ length: 5 })
-          .map(() => faker.book.title())
-          .map((name) => ({
-            label: name,
-            value: {
-              name,
-            },
-          })),
-      ]}
-    />
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        rowGap: spacings.large,
+        columnGap: spacings.xxx_large,
+      }}
+    >
+      {ALL_APP_NAMES.map((appName) => (
+        <div
+          key={appName}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'auto minmax(24px, 1fr) auto',
+            alignItems: 'center',
+            gap: spacings.medium,
+          }}
+        >
+          <Typography>{appName}</Typography>
+          <Divider />
+          <ApplicationIcon {...args} name={appName} />
+        </div>
+      ))}
+    </div>
   ),
+};
+
+export const Fallback: Story = {
+  args: {
+    name: 'fallback',
+  },
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export const TestFallback: Story = {
@@ -101,35 +128,16 @@ const createTestStory = (appName: string): Story => {
     },
     play: async ({ canvas }) => {
       await expect(canvas.getByTestId('application-icon')).toBeInTheDocument();
-      const icon = Object.values(ALL_ICONS).find((icon) => {
-        if (Array.isArray(icon)) {
-          // Is multi-part icon
-          return icon.some((part) => part.name.includes(appName));
-        }
-        return icon.name === appName;
-      });
-
-      if (Array.isArray(icon)) {
-        // Multi-part icon
-        for (let i = 0; i < icon.length; i++) {
-          await expect(
-            canvas.getByTestId(`icon-part-${i}`)
-          ).toBeInTheDocument();
-        }
-      } else if (icon) {
-        await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
-          'd',
-          icon.svgPathData as string
-        );
-      }
     },
   };
 };
 
-export const Test4DInsight = createTestStory('4dinsight');
-export const TestAdca = createTestStory('adca');
 export const TestAcquire = createTestStory('acquire');
+export const TestAdca = createTestStory('adca');
+export const TestAtWork = createTestStory('atwork');
+export const TestBravos = createTestStory('bravos');
 export const TestDasha = createTestStory('dasha');
+export const TestDataDeliveryPlan = createTestStory('data delivery plan');
 export const TestForecastFormatter = createTestStory('forecast-formatter');
 export const TestFluidSymphony = createTestStory('fluid-symphony');
 export const TestForecastDataInventory = createTestStory('fdi');
@@ -145,7 +153,7 @@ export const TestInpress = createTestStory('inpress');
 export const TestPremo = createTestStory('premo');
 export const TestSAM = createTestStory('sam');
 export const TestSubsurfacePortal = createTestStory('subsurface portal');
-export const TestAtWork = createTestStory('atwork');
+
 export const TestGrayScale: Story = {
   tags: ['test-only'],
   args: {
@@ -168,15 +176,5 @@ export const TestIconOnly: Story = {
   },
   play: async ({ canvas }) => {
     await expect(canvas.queryAllByTestId('shape').length).toBe(0);
-  },
-};
-
-export const TestBravosMultipleParts: Story = {
-  tags: ['test-only'],
-  args: {
-    name: 'bravos',
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByTestId('icon-part-0')).toBeInTheDocument();
   },
 };
