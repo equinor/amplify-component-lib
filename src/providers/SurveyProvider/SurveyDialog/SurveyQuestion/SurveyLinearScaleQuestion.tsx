@@ -2,21 +2,20 @@ import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
-import {
-  SurveyQuestionRangeAnswerDto,
-  SurveyQuestionType,
-  SurveyRangeQuestionDto,
-} from '../../SurveyProvider.types';
 import { Radio } from 'src/molecules/SelectionControls/Radio/Radio';
 import { useSurvey } from 'src/providers/SurveyProvider/hooks/useSurvey';
+import { LinearScaleQuestion } from 'src/providers/SurveyProvider/SurveyProvider.types';
 
 import styled from 'styled-components';
 
-const RANGE_AMOUNT = 7;
+interface ContainerProps {
+  $rangeAmount: number;
+}
 
-const Container = styled.div`
+const Container = styled.div<ContainerProps>`
   display: grid;
-  grid-template-columns: auto repeat(${RANGE_AMOUNT}, auto) auto;
+  grid-template-columns: ${({ $rangeAmount }) =>
+    `auto repeat(${$rangeAmount}, auto) auto`};
   align-items: center;
   width: 100%;
 `;
@@ -27,28 +26,29 @@ const RadioWrapper = styled.div`
   align-items: center;
 `;
 
-export const SurveyRangeQuestion: FC<SurveyRangeQuestionDto> = ({
+export const SurveyLinearScaleQuestion: FC<LinearScaleQuestion> = ({
   questionId,
+  linearScaleConfig,
 }) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
+  const rangeAmount = linearScaleConfig.max - linearScaleConfig.min + 1;
 
   return (
-    <Container>
+    <Container $rangeAmount={rangeAmount}>
       <Typography>Strongly disagree</Typography>
-      {Array.from({ length: RANGE_AMOUNT }).map((_, index) => (
+      {Array.from({ length: rangeAmount }).map((_, index) => (
         <RadioWrapper key={`range-radio-${index}`}>
           <Typography variant="body_short">{index + 1}</Typography>
           <Radio
             name={`range-${questionId}`}
             label=""
             checked={
-              currentAnswer?.type === SurveyQuestionType.RANGE &&
-              currentAnswer.value === index + 1
+              currentAnswer?.numericAnswer === index + linearScaleConfig.min
             }
             onClick={() => {
               setCurrentAnswer({
-                type: SurveyQuestionType.RANGE,
-                value: (index + 1) as SurveyQuestionRangeAnswerDto['value'],
+                id: questionId,
+                numericAnswer: index + linearScaleConfig.min,
               });
             }}
           />

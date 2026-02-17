@@ -3,10 +3,7 @@ import { FC } from 'react';
 import { spacings } from 'src/atoms/style';
 import { Checkbox } from 'src/molecules/SelectionControls/Checkbox/Checkbox';
 import { useSurvey } from 'src/providers/SurveyProvider/hooks/useSurvey';
-import {
-  SurveyMultipleChoiceQuestionDto,
-  SurveyQuestionType,
-} from 'src/providers/SurveyProvider/SurveyProvider.types';
+import { ChoiceQuestion } from 'src/providers/SurveyProvider/SurveyProvider.types';
 
 import styled from 'styled-components';
 
@@ -16,40 +13,40 @@ const Container = styled.div`
   gap: ${spacings.medium};
 `;
 
-export const SurveyMultipleChoiceQuestion: FC<
-  SurveyMultipleChoiceQuestionDto
-> = ({ options }) => {
+export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
+  questionId,
+  options,
+}) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
 
   return (
     <Container>
-      {options.map((option) => (
+      {options?.map((option) => (
         <Checkbox
-          key={option.id}
-          label={option.label}
-          checked={
-            currentAnswer?.type === SurveyQuestionType.MULTIPLE_CHOICE &&
-            currentAnswer.answerIds.includes(option.id)
-          }
+          key={option.id.value}
+          label={option.optionText}
+          checked={currentAnswer?.selectedOptionIds?.some(
+            (item) => item.value === option.id.value
+          )}
           onChange={(event) => {
-            setCurrentAnswer((prevAnswers) => {
-              const newAnswerIds =
-                prevAnswers &&
-                prevAnswers.type === SurveyQuestionType.MULTIPLE_CHOICE
-                  ? prevAnswers.answerIds
-                  : [];
+            setCurrentAnswer((prevAnswer) => {
+              const newSelectedOptionIds =
+                (prevAnswer && prevAnswer.selectedOptionIds) ?? [];
               if (event.target.checked) {
-                newAnswerIds.push(option.id);
+                newSelectedOptionIds.push(option.id);
               } else {
-                const index = newAnswerIds.indexOf(option.id);
+                const index = newSelectedOptionIds.findIndex(
+                  (item) => item.value === option.id.value
+                );
                 if (index > -1) {
-                  newAnswerIds.splice(index, 1);
+                  newSelectedOptionIds.splice(index, 1);
                 }
               }
 
               return {
-                type: SurveyQuestionType.MULTIPLE_CHOICE,
-                answerIds: newAnswerIds,
+                ...prevAnswer,
+                id: questionId,
+                selectedOptionIds: newSelectedOptionIds,
               };
             });
           }}

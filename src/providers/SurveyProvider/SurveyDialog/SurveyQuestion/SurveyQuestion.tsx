@@ -1,10 +1,11 @@
 import { FC } from 'react';
 
+import { QuestionType } from '@equinor/subsurface-app-management';
+
 import { useSurvey } from '../../hooks/useSurvey';
 import { SurveyFreeTextQuestion } from './SurveyFreeTextQuestion';
 import { SurveyMultipleChoiceQuestion } from './SurveyMultipleChoiceQuestion';
-import { SurveyRangeQuestion } from './SurveyRangeQuestion';
-import { SurveyQuestionType } from 'src/providers/SurveyProvider/SurveyProvider.types';
+import { SurveyLinearScaleQuestion } from 'src/providers/SurveyProvider/SurveyDialog/SurveyQuestion/SurveyLinearScaleQuestion';
 
 export const SurveyQuestion: FC = () => {
   const { activeSurvey, activeQuestionIndex } = useSurvey();
@@ -20,11 +21,11 @@ export const SurveyQuestion: FC = () => {
   const activeQuestion = activeSurvey.questions[activeQuestionIndex];
 
   switch (activeQuestion.type) {
-    case SurveyQuestionType.MULTIPLE_CHOICE:
+    case QuestionType.CHOICE:
       return <SurveyMultipleChoiceQuestion {...activeQuestion} />;
-    case SurveyQuestionType.RANGE:
-      return <SurveyRangeQuestion {...activeQuestion} />;
-    case SurveyQuestionType.FREE_TEXT:
+    case QuestionType.LINEAR_SCALE:
+      return <SurveyLinearScaleQuestion {...activeQuestion} />;
+    case QuestionType.TEXT:
       return <SurveyFreeTextQuestion {...activeQuestion} />;
   }
 };
