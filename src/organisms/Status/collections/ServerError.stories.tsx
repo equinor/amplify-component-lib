@@ -15,7 +15,7 @@ const meta: Meta<typeof ServerError> = {
       url: '',
     },
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

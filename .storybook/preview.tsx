@@ -1,4 +1,4 @@
-import { Decorator, Preview, StoryFn } from '@storybook/react-vite';
+import { Decorator, Preview } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createMemoryHistory,
@@ -23,7 +23,7 @@ import { sb } from 'storybook/test';
 import './index.css';
 
 // Register mocks
-sb.mock(import('../src/providers/AuthProvider/AuthProvider.tsx'), {
+sb.mock(import('../src/providers/AuthProvider/AuthProvider'), {
   spy: true,
 });
 
@@ -47,11 +47,7 @@ const globalTypes = {
 const withRouter: Decorator = (StoryFn, context) => {
   if (!context.parameters.router) return <StoryFn />;
 
-  const {
-    initialEntries = ['/'],
-    initialIndex,
-    routes = ['/'],
-  } = context.parameters.router;
+  const { routes, initial } = context.parameters.router;
 
   const rootRoute = createRootRoute();
 
@@ -66,40 +62,40 @@ const withRouter: Decorator = (StoryFn, context) => {
   rootRoute.addChildren(children);
 
   const router = createRouter({
-    history: createMemoryHistory({ initialEntries, initialIndex }),
+    history: createMemoryHistory({
+      initialEntries: [initial],
+      initialIndex: 0,
+    }),
     routeTree: rootRoute,
   });
 
   return <RouterProvider router={router} />;
 };
 
-const decorators = [
-  (Story: StoryFn) => {
-    const queryClient = new QueryClient();
-    // Apply styles using the darkTokens variable
-    const darkStyleElement = document.createElement('style');
-    darkStyleElement.innerHTML = darkTokens as unknown as string;
-    document.head.appendChild(darkStyleElement);
+const withProviders: Decorator = (StoryFn) => {
+  const queryClient = new QueryClient();
+  // Apply styles using the darkTokens variable
+  const darkStyleElement = document.createElement('style');
+  darkStyleElement.innerHTML = darkTokens as unknown as string;
+  document.head.appendChild(darkStyleElement);
 
-    const spacingStyleElement = document.createElement('style');
-    spacingStyleElement.innerHTML = spacingTokens as unknown as string;
-    document.head.appendChild(spacingStyleElement);
+  const spacingStyleElement = document.createElement('style');
+  spacingStyleElement.innerHTML = spacingTokens as unknown as string;
+  document.head.appendChild(spacingStyleElement);
 
-    return (
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Template.GlobalStyles />
-          <SnackbarProvider>
-            <Story />
-          </SnackbarProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    );
-  },
-  withSpacingsMode,
-  withTheme,
-  withRouter,
-];
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Template.GlobalStyles />
+        <SnackbarProvider>
+          <StoryFn />
+        </SnackbarProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
+
+const decorators = [withProviders, withSpacingsMode, withTheme, withRouter];
 
 const parameters = {
   msw: {

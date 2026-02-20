@@ -100,7 +100,7 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
     router: {
-      initialEntries: ['/tutorial'],
+      initial: '/tutorial',
       routes: ['/tutorial'],
     },
     design: {

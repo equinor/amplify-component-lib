@@ -116,7 +116,7 @@ export function useTutorialPopoverPosition({
     caretPosition = 'bottom';
   }
 
-  const transformedTop = useTransform(reversedScrollY, (value) => {
+  const transformedTop = useTransform(reversedScrollY, (value: number) => {
     if (!highlightingElement || !usingTop) return null;
     const newValue = value + usingTop;
 

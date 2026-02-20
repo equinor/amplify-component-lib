@@ -6,6 +6,11 @@ import { useSurvey } from '../../hooks/useSurvey';
 import { SurveyFreeTextQuestion } from './SurveyFreeTextQuestion';
 import { SurveyMultipleChoiceQuestion } from './SurveyMultipleChoiceQuestion';
 import { SurveyLinearScaleQuestion } from 'src/providers/SurveyProvider/SurveyDialog/SurveyQuestion/SurveyLinearScaleQuestion';
+import {
+  ChoiceQuestion,
+  FreeTextQuestion,
+  LinearScaleQuestion,
+} from 'src/providers/SurveyProvider/SurveyProvider.types';
 
 export const SurveyQuestion: FC = () => {
   const { activeSurvey, activeQuestionIndex } = useSurvey();
@@ -22,10 +27,18 @@ export const SurveyQuestion: FC = () => {
 
   switch (activeQuestion.type) {
     case QuestionType.CHOICE:
-      return <SurveyMultipleChoiceQuestion {...activeQuestion} />;
+      return (
+        <SurveyMultipleChoiceQuestion {...(activeQuestion as ChoiceQuestion)} />
+      );
     case QuestionType.LINEAR_SCALE:
-      return <SurveyLinearScaleQuestion {...activeQuestion} />;
+      return (
+        <SurveyLinearScaleQuestion
+          {...(activeQuestion as LinearScaleQuestion)}
+        />
+      );
     case QuestionType.TEXT:
-      return <SurveyFreeTextQuestion {...activeQuestion} />;
+      return (
+        <SurveyFreeTextQuestion {...(activeQuestion as FreeTextQuestion)} />
+      );
   }
 };

@@ -15,7 +15,7 @@ const meta: Meta<typeof GenericError> = {
       url: '',
     },
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

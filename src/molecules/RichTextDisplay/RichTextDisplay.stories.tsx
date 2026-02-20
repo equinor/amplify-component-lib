@@ -20,22 +20,21 @@ const meta: Meta<typeof RichTextDisplay> = {
 export default meta;
 
 export const Primary: StoryFn<RichTextDisplayProps> = (args) => {
-  return <RichTextDisplay {...args} />;
+  const { _children, ...rest } = args;
+  return <RichTextDisplay {...rest} />;
 };
 
 export const CompoundComponents: StoryFn<RichTextDisplayProps> = (args) => {
   return (
     <RichTextDisplay {...args}>
-      {(editor) => {
-        return (
-          <RichText.Styling
-            $lightBackground={args.lightBackground}
-            $padding={args.padding}
-          >
-            <RichText.Content editor={editor} readOnly />
-          </RichText.Styling>
-        );
-      }}
+      {(editor) => (
+        <RichText.Styling
+          $lightBackground={args.lightBackground}
+          $padding={args.padding}
+        >
+          <RichText.Content editor={editor} readOnly />
+        </RichText.Styling>
+      )}
     </RichTextDisplay>
   );
 };

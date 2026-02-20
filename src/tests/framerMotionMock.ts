@@ -1,8 +1,9 @@
-import { MotionValue, useScroll as ActualUseScroll } from 'motion/react';
+import { useScroll as ActualUseScroll } from 'motion/react';
+import { MotionValue } from 'motion-dom';
 
 vi.mock('motion/react', async () => {
   function useScroll(): ReturnType<typeof ActualUseScroll> {
-    const zero: MotionValue<number> = new MotionValue(0);
+    const zero = new MotionValue(0);
     return {
       scrollX: zero,
       scrollY: zero,

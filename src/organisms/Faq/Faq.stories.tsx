@@ -49,7 +49,7 @@ const meta: Meta<typeof Faq> = {
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=16908-17885&m=dev',
     },
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
     msw: {
@@ -72,7 +72,7 @@ type Story = StoryObj<typeof Faq>;
 export const Default: Story = {
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
   },
@@ -116,7 +116,7 @@ export const CustomTitleAndPlaceholder: Story = {
   },
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
   },
@@ -134,7 +134,7 @@ export const CustomTitleAndPlaceholder: Story = {
 export const SearchFaqs: Story = {
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
   },
@@ -170,7 +170,7 @@ export const SearchFaqs: Story = {
 export const SearchFaqsNotFound: Story = {
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
   },
@@ -193,7 +193,7 @@ export const SearchFaqsCleared: Story = {
   tags: ['test-only'],
   parameters: {
     router: {
-      initialEntries: ['/faq?search=log+in'],
+      initial: '/faq?search=log+in',
       routes: ['/faq'],
     },
   },
@@ -239,7 +239,7 @@ export const SearchFaqsCleared: Story = {
 export const Empty: Story = {
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
     msw: {
@@ -259,7 +259,7 @@ export const Empty: Story = {
 export const Loading: Story = {
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
     msw: {
@@ -287,7 +287,7 @@ export const OpenQuestion: Story = {
   tags: ['test-only'],
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
   },
@@ -313,7 +313,7 @@ export const InitiallyOpenQuestion: Story = {
   tags: ['test-only'],
   parameters: {
     router: {
-      initialEntries: ['/faq#faq-1'],
+      initial: '/faq#faq-1',
       routes: ['/faq'],
     },
   },
@@ -332,7 +332,7 @@ export const EmptyCategory: Story = {
   tags: ['test-only'],
   parameters: {
     router: {
-      initialEntries: ['/faq'],
+      initial: '/faq',
       routes: ['/faq'],
     },
     msw: {
@@ -379,7 +379,7 @@ export const SearchWithNullFaqs: Story = {
   tags: ['test-only'],
   parameters: {
     router: {
-      initialEntries: ['/faq?search=subcategory'],
+      initial: '/faq?search=subcategory',
       routes: ['/faq'],
     },
     msw: {

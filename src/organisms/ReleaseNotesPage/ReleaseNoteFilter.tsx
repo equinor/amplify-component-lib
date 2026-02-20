@@ -68,7 +68,7 @@ export const ReleaseNoteFilter: FC = () => {
   };
 
   const handleOnClearFilter = (key: keyof typeof selected, index: number) => {
-    setSearchParam(key, removeFromPreviousByIndex(search[key], index));
+    setSearchParam(key, removeFromPreviousByIndex(search[key] ?? [], index));
   };
 
   return (

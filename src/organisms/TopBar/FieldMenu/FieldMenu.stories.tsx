@@ -43,7 +43,7 @@ const meta: Meta = {
   component: (args) => <Wrapper {...args} />,
   parameters: {
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

@@ -73,7 +73,7 @@ export const TextColor: FC<EditorPanel> = ({ editor, features }) => {
       <TextColorStyle>
         <input
           type="color"
-          onInput={handleOnInput}
+          onChange={handleOnInput}
           data-testid="text-color-input"
           value={
             (editor.getAttributes('textStyle')?.color as string) ||

@@ -19,8 +19,8 @@ const Wrapper = styled.div<StatusVariantProps>`
 
 interface StatusAvatarProps {
   size: number;
+  variant: StatusVariant;
   name?: string;
-  variant?: StatusVariant;
 }
 
 export const StatusAvatar: FC<StatusAvatarProps> = ({

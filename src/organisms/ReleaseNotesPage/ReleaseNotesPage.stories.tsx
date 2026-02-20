@@ -83,7 +83,7 @@ const meta: Meta<typeof ReleaseNotesPage> = {
     fullPage: true,
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
   },
   tags: ['!autodocs'],
@@ -104,7 +104,7 @@ export const Default: Story = {
   parameters: {
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
   },
   args: {},
@@ -114,7 +114,7 @@ export const ShowsContent: Story = {
   parameters: {
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
   },
   play: async ({ canvasElement }) => {
@@ -135,7 +135,7 @@ export const FilterTags: Story = {
   parameters: {
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
   },
   play: async ({ canvasElement }) => {
@@ -180,7 +180,7 @@ export const SearchingForTitle: Story = {
   parameters: {
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
   },
   play: async ({ canvasElement }) => {
@@ -222,7 +222,7 @@ export const SearchingForBody: Story = {
   parameters: {
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
   },
   play: async ({ canvasElement }) => {
@@ -255,7 +255,7 @@ export const NoReleaseNotesInSearch: Story = {
   parameters: {
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
   },
   play: async ({ canvasElement }) => {
@@ -280,7 +280,7 @@ export const NoContent: Story = {
   parameters: {
     router: {
       routes: ['/release-notes'],
-      initialEntries: ['/release-notes/'],
+      initial: '/release-notes/',
     },
     msw: {
       handlers: [

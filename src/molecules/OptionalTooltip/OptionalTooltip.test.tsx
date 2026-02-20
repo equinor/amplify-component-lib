@@ -3,12 +3,7 @@ import { act, ReactNode } from 'react';
 import { faker } from '@faker-js/faker';
 
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
-import {
-  render,
-  screen,
-  userEvent,
-  userEvent,
-} from 'src/tests/browsertest-utils';
+import { render, screen, userEvent } from 'src/tests/browsertest-utils';
 
 function fakeProps() {
   return {

@@ -106,7 +106,7 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['$'],
     },
   },

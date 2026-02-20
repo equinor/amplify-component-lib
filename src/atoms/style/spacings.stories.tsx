@@ -29,7 +29,7 @@ export const Docs: StoryFn = () => (
 );
 const meta: Meta = {
   title: 'Atoms/Style/Spacings',
-  component: Docs,
+  render: Docs,
   parameters: {
     layout: 'centered',
     design: {

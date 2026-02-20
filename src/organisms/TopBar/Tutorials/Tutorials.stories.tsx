@@ -112,7 +112,7 @@ const meta: Meta = {
       url: '',
     },
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

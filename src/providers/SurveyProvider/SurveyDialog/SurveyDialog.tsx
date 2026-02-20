@@ -36,7 +36,7 @@ export const SurveyDialog: FC = () => {
 
     answerQuestion({
       ...currentAnswer,
-      selectedOptionIds: currentAnswer?.selectedOptions ?? [],
+      selectedOptionIds: currentAnswer?.selectedOptionIds ?? [],
     });
   };
 
@@ -47,8 +47,9 @@ export const SurveyDialog: FC = () => {
     switch (currentQuestion.type) {
       case QuestionType.CHOICE:
         return (
-          !currentAnswer.selectedOptions ||
-          currentAnswer.selectedOptions.length <=
+          !currentAnswer.selectedOptionIds ||
+          currentAnswer.selectedOptionIds.length === 0 ||
+          currentAnswer.selectedOptionIds.length >
             (currentQuestion.maxSelections ?? 0)
         );
       case QuestionType.LINEAR_SCALE:

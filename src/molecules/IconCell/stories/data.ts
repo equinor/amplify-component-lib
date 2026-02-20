@@ -46,7 +46,7 @@ export const storyBookData: StoryBookData[] = [
       icon: error_outlined,
       color: IconCellColors.RED,
       variant: IconCellVariants.COLOURED,
-      state: IconCellStates.DANGER,
+      state: IconCellStates.ERROR,
       label: 'Error',
     },
   },
@@ -107,7 +107,7 @@ export const storyBookData: StoryBookData[] = [
     id: '10',
     icon: {
       icon: info_circle,
-      color: IconCellColors.GREY,
+      color: IconCellColors.DEFAULT,
       variant: IconCellVariants.COLOURED,
       label: 'General Info',
     },

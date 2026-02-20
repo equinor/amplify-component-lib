@@ -15,7 +15,7 @@ const meta: Meta<typeof MissingPermissions> = {
       url: '',
     },
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

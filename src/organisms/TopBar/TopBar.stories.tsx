@@ -17,7 +17,6 @@ import { expect } from 'storybook/test';
 function StoryComponent(args: TopBarBaseProps) {
   return (
     <TopBar
-      onHeaderClick={() => console.log('Going to homepage 🏠')}
       capitalize={args.capitalize}
       applicationIcon={args.applicationIcon}
       applicationName={args.applicationName}
@@ -75,7 +74,7 @@ const meta: Meta<typeof TopBar> = {
   parameters: {
     layout: 'fullscreen',
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },
@@ -140,7 +139,6 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
     <ReleaseNotesProvider>
       <Template>
         <TopBar
-          onHeaderClick={() => console.log('Going to homepage')}
           capitalize={args.capitalize}
           applicationIcon={args.applicationIcon}
           applicationName={args.applicationName}

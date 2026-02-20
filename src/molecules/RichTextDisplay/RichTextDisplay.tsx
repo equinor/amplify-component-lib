@@ -12,8 +12,10 @@ import {
   ImageExtensionFnProps,
 } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-export interface RichTextDisplayProps
-  extends Pick<ImageExtensionFnProps, 'onImageRead'> {
+export interface RichTextDisplayProps extends Pick<
+  ImageExtensionFnProps,
+  'onImageRead'
+> {
   value: string | null | undefined;
   /**
    * @deprecated - Use OnImageRead instead

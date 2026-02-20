@@ -203,7 +203,7 @@ export const ExampleTableAndStates: StoryFn<IconCellProps> = () => {
             icon={bus}
             label="Danger Coloured Bus"
             variant={IconCellVariants.COLOURED}
-            state={IconCellStates.DANGER}
+            state={IconCellStates.ERROR}
             selected
             onClick={() => showSnackbar('Danger Bus clicked')}
           />
