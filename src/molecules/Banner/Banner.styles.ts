@@ -11,15 +11,15 @@ const VARIANT_COLORS: Record<
   }
 > = {
   info: {
-    background: colors.interactive.secondary__highlight.rgba,
+    background: colors.ui.background__info.rgba,
     fill: colors.interactive.secondary__resting.rgba,
   },
   warning: {
-    background: colors.interactive.warning__highlight.rgba,
-    fill: colors.interactive.warning__resting.rgba,
+    background: colors.ui.background__warning.rgba,
+    fill: colors.interactive.warning__text.rgba,
   },
   danger: {
-    background: colors.interactive.danger__highlight.rgba,
+    background: colors.ui.background__danger.rgba,
     fill: colors.interactive.danger__text.rgba,
   },
 } as const;
