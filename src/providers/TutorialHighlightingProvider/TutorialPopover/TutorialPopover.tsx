@@ -78,10 +78,13 @@ function caretPositionToCss(
 interface ContainerProps extends MotionProps {
   $highlightingElement: boolean;
   $caretPosition: UseTutorialPopoverPositionReturn['caretPosition'];
+  $hasImage: boolean;
 }
 
 const Container = styled(motion(Card))<ContainerProps>`
-  width: 360px;
+  width: ${({ $hasImage }) => ($hasImage ? 'fit-content' : '360px')};
+  max-width: 90vw;
+  max-height: 90vh;
   padding: ${spacings.medium};
   background: ${colors.ui.background__tutorial_card.rgba};
   display: flex;
@@ -96,10 +99,6 @@ const Container = styled(motion(Card))<ContainerProps>`
     display: flex;
     gap: ${spacings.small};
     align-items: center;
-  }
-  > img {
-    max-height: 170px;
-    object-fit: contain;
   }
   ${({ $highlightingElement, $caretPosition }) =>
     $highlightingElement &&
@@ -215,6 +214,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
         style={{ ...style }}
         $highlightingElement={highlightingElement}
         $caretPosition={caretPosition}
+        $hasImage={false}
         {...TUTORIAL_HIGHLIGHT_ANIMATION_PROPS}
       >
         <header>
@@ -233,7 +233,6 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
       </Container>
     );
   }
-
   return (
     <Container
       ref={handleSetPopoverSize}
@@ -243,6 +242,7 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
       }}
       $caretPosition={caretPosition}
       $highlightingElement={highlightingElement}
+      $hasImage={!!image}
       {...TUTORIAL_HIGHLIGHT_ANIMATION_PROPS}
     >
       {steps[activeStep].custom ? (
@@ -259,7 +259,17 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
           <Typography variant="body_short">
             {steps[activeStep]?.body}
           </Typography>
-          {image ? <img src={image} alt={steps[activeStep].title!} /> : null}
+          {image ? (
+            <img
+              src={`data:image/png;base64, ${image}`}
+              alt={steps[activeStep]?.title ?? ''}
+              style={{
+                maxWidth: '100%',
+                height: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          ) : null}
         </>
       )}
       <Actions>
