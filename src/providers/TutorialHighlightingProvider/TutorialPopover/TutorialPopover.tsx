@@ -116,6 +116,20 @@ const Container = styled(motion(Card))<ContainerProps>`
     `}
 `;
 
+const ContainerInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacings.medium};
+  overflow: auto;
+  > img {
+    max-width: 100%;
+    width: fit-content;
+    height: fit-content;
+    object-fit: contain;
+    align-self: center;
+  }
+`;
+
 const Actions = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -256,20 +270,21 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
             />
             <Typography variant="h6">{steps[activeStep]?.title}</Typography>
           </header>
-          <Typography variant="body_short">
-            {steps[activeStep]?.body}
-          </Typography>
-          {image ? (
-            <img
-              src={`data:image/png;base64, ${image}`}
-              alt={steps[activeStep]?.title ?? ''}
-              style={{
-                maxWidth: '100%',
-                height: '100%',
-                objectFit: 'contain',
-              }}
-            />
-          ) : null}
+          <ContainerInner>
+            <Typography variant="body_short">
+              {steps[activeStep]?.body}
+            </Typography>
+            {image ? (
+              <img
+                src={
+                  /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(image)
+                    ? image
+                    : `data:image/png;base64,${image}`
+                }
+                alt={steps[activeStep]?.title ?? ''}
+              />
+            ) : null}
+          </ContainerInner>
         </>
       )}
       <Actions>
