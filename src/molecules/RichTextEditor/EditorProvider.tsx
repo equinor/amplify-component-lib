@@ -154,7 +154,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
 
     if (onImageRemove) {
       for (const image of imagesToDelete) {
-        onImageRemove(image);
+        await onImageRemove(image);
         deletedImages.current.push(image);
       }
     } else if (onRemovedImagesChange) {
