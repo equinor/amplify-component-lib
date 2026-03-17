@@ -18,6 +18,59 @@ export interface EditorProviderProps extends ImageExtensionFnProps {
   features?: RichTextEditorFeatures[];
 }
 
+const createFileFromDataUrl = (dataUrl: string, fileName: string) => {
+  const arr = dataUrl.split(',');
+  const mimeMatch = arr[0]?.match(/:(.*?);/);
+  if (!mimeMatch) return null;
+
+  const byteString = atob(arr[arr.length - 1]);
+  let n = byteString.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = byteString.charCodeAt(n);
+  }
+
+  return new File([u8arr], fileName, { type: mimeMatch[1] });
+};
+
+const replaceTrackedImage = (
+  images: string[],
+  oldSrc: string,
+  newSrc: string
+) =>
+  images.map((image) => {
+    if (image !== oldSrc) return image;
+    return newSrc;
+  });
+
+/** Replaces matching image src values in the editor document. */
+const replaceImageSrcInEditor = (
+  editor: Editor,
+  oldSrc: string,
+  newSrc: string,
+  alt?: string
+) => {
+  if (oldSrc === newSrc) return;
+
+  let transaction = editor.state.tr;
+  let hasUpdates = false;
+
+  editor.state.doc.descendants((node, pos) => {
+    if (node.type.name === 'image' && node.attrs.src === oldSrc) {
+      transaction = transaction.setNodeMarkup(pos, undefined, {
+        ...node.attrs,
+        src: newSrc,
+        alt: alt ?? node.attrs.alt,
+      });
+      hasUpdates = true;
+    }
+  });
+
+  if (hasUpdates) {
+    editor.view.dispatch(transaction);
+  }
+};
+
 export const EditorProvider: FC<EditorProviderProps> = ({
   children,
   content,
@@ -40,10 +93,35 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   const queryClient = useQueryClient();
   const addedImages = useRef<string[]>([]);
   const deletedImages = useRef<string[]>([]);
-  const previousRemovedImages = useRef<string[]>([]);
+
+  const uploadAndReplaceImage = async (editor: Editor, image: string) => {
+    const dataUrl = queryClient.getQueryData<string>([image]);
+    if (!dataUrl) return;
+
+    const file = createFileFromDataUrl(dataUrl, image);
+    if (!file) return;
+
+    const uploadedImage = await onImageUpload?.(file);
+    if (!uploadedImage?.src) return;
+
+    queryClient.setQueryData([uploadedImage.src], dataUrl);
+
+    addedImages.current = replaceTrackedImage(
+      addedImages.current,
+      image,
+      uploadedImage.src
+    );
+
+    replaceImageSrcInEditor(
+      editor,
+      image,
+      uploadedImage.src,
+      uploadedImage.alt
+    );
+  };
 
   /* v8 ignore start */
-  const handleImageCheck = (editor: Editor) => {
+  const handleImageCheck = async (editor: Editor) => {
     const currentImages: string[] = [];
 
     editor.getJSON().content?.forEach((item) => {
@@ -52,43 +130,41 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       }
     });
 
-    for (const image of currentImages) {
-      if (!addedImages.current.includes(image)) {
-        addedImages.current.push(image);
-      } else if (addedImages.current.includes(image) && onImageRemove) {
-        // Image was recovered from undo, need to upload it again
-        const dataUrl = queryClient.getQueryData<string>([image]);
-        if (dataUrl) {
-          const arr = dataUrl.split(',');
-          const mime = arr[0].match(/:(.*?);/)![1];
-          const byteString = atob(arr[arr.length - 1]);
-          let n = byteString.length;
-          const u8arr = new Uint8Array(n);
-          while (n--) {
-            u8arr[n] = byteString.charCodeAt(n);
-          }
-          const file = new File([u8arr], image, { type: mime });
-          onImageUpload?.(file);
-        }
-      }
-    }
-
     const imagesToDelete = addedImages.current.filter(
       (image) =>
         !currentImages.includes(image) && !deletedImages.current.includes(image)
     );
 
+    const newlyAddedImages = currentImages.filter(
+      (image) =>
+        !addedImages.current.includes(image) &&
+        !deletedImages.current.includes(image)
+    );
+
+    const recoveredFromUndo = deletedImages.current.filter((image) =>
+      currentImages.includes(image)
+    );
+
+    addedImages.current.push(...newlyAddedImages);
+
+    for (const image of recoveredFromUndo) {
+      await uploadAndReplaceImage(editor, image);
+    }
+
     if (onImageRemove) {
       for (const image of imagesToDelete) {
-        onImageRemove?.(image);
+        onImageRemove(image);
         deletedImages.current.push(image);
       }
-    } else if (
-      onRemovedImagesChange &&
-      previousRemovedImages.current.length !== imagesToDelete.length
-    ) {
+    } else if (onRemovedImagesChange) {
       onRemovedImagesChange(imagesToDelete);
-      previousRemovedImages.current = imagesToDelete;
+      deletedImages.current.push(...imagesToDelete);
+    }
+
+    if (recoveredFromUndo.length > 0) {
+      deletedImages.current = deletedImages.current.filter(
+        (image) => !recoveredFromUndo.includes(image)
+      );
     }
   };
 
@@ -97,10 +173,10 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     shouldRerenderOnTransaction: true,
     extensions: [ampExtensions, ...extensions],
     onCreate: ({ editor }) => {
-      handleImageCheck(editor);
+      void handleImageCheck(editor);
     },
     onUpdate: ({ editor }) => {
-      handleImageCheck(editor);
+      void handleImageCheck(editor);
 
       onUpdate?.(editor.getHTML());
     },
