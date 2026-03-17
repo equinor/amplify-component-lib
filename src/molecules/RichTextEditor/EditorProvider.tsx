@@ -139,9 +139,9 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     try {
       const currentImages: string[] = [];
 
-      editor.getJSON().content?.forEach((item) => {
-        if (item.type === 'image' && item.attrs?.src) {
-          currentImages.push(item.attrs.src);
+      editor.state.doc.descendants((node) => {
+        if (node.type.name === 'image' && node.attrs.src) {
+          currentImages.push(node.attrs.src);
         }
       });
 
