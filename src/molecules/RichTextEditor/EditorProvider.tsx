@@ -127,7 +127,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
 
   /* v8 ignore start */
   const handleImageCheck = async (editor: Editor) => {
-    // Skip if a check is already in progress to prevent race conditions
+    // Skip if a check is already in progress to prevent race conditions. This could cause some images to not be tracked correctly, but it's safer than trying to run multiple checks at the same time.
     if (isCheckingImages.current) return;
     isCheckingImages.current = true;
 
