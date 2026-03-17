@@ -93,79 +93,101 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   const queryClient = useQueryClient();
   const addedImages = useRef<string[]>([]);
   const deletedImages = useRef<string[]>([]);
+  const isCheckingImages = useRef(false);
 
   const uploadAndReplaceImage = async (editor: Editor, image: string) => {
-    const dataUrl = queryClient.getQueryData<string>([image]);
-    if (!dataUrl) return;
+    try {
+      const dataUrl = queryClient.getQueryData<string>([image]);
+      if (!dataUrl) return;
 
-    const file = createFileFromDataUrl(dataUrl, image);
-    if (!file) return;
+      const file = createFileFromDataUrl(dataUrl, image);
+      if (!file) return;
 
-    const uploadedImage = await onImageUpload?.(file);
-    if (!uploadedImage?.src) return;
+      const uploadedImage = await onImageUpload?.(file);
+      if (!uploadedImage?.src) return;
 
-    queryClient.setQueryData([uploadedImage.src], dataUrl);
+      queryClient.setQueryData([uploadedImage.src], dataUrl);
 
-    addedImages.current = replaceTrackedImage(
-      addedImages.current,
-      image,
-      uploadedImage.src
-    );
+      addedImages.current = replaceTrackedImage(
+        addedImages.current,
+        image,
+        uploadedImage.src
+      );
 
-    replaceImageSrcInEditor(
-      editor,
-      image,
-      uploadedImage.src,
-      uploadedImage.alt
-    );
+      replaceImageSrcInEditor(
+        editor,
+        image,
+        uploadedImage.src,
+        uploadedImage.alt
+      );
+    } catch (error) {
+      console.error('Failed to upload and replace image:', error);
+    }
   };
 
   /* v8 ignore start */
   const handleImageCheck = async (editor: Editor) => {
-    const currentImages: string[] = [];
+    // Skip if a check is already in progress to prevent race conditions
+    if (isCheckingImages.current) return;
+    isCheckingImages.current = true;
 
-    editor.getJSON().content?.forEach((item) => {
-      if (item.type === 'image' && item.attrs?.src) {
-        currentImages.push(item.attrs.src);
-      }
-    });
+    try {
+      const currentImages: string[] = [];
 
-    const imagesToDelete = addedImages.current.filter(
-      (image) =>
-        !currentImages.includes(image) && !deletedImages.current.includes(image)
-    );
+      editor.getJSON().content?.forEach((item) => {
+        if (item.type === 'image' && item.attrs?.src) {
+          currentImages.push(item.attrs.src);
+        }
+      });
 
-    const newlyAddedImages = currentImages.filter(
-      (image) =>
-        !addedImages.current.includes(image) &&
-        !deletedImages.current.includes(image)
-    );
-
-    const recoveredFromUndo = deletedImages.current.filter((image) =>
-      currentImages.includes(image)
-    );
-
-    const uniqueNewImages = [...new Set(newlyAddedImages)];
-    addedImages.current.push(...uniqueNewImages);
-
-    for (const image of recoveredFromUndo) {
-      await uploadAndReplaceImage(editor, image);
-    }
-
-    if (onImageRemove && imagesToDelete.length > 0) {
-      for (const image of imagesToDelete) {
-        await onImageRemove(image);
-        deletedImages.current.push(image);
-      }
-    } else if (onRemovedImagesChange && imagesToDelete.length > 0) {
-      onRemovedImagesChange(imagesToDelete);
-      deletedImages.current.push(...imagesToDelete);
-    }
-
-    if (recoveredFromUndo.length > 0) {
-      deletedImages.current = deletedImages.current.filter(
-        (image) => !recoveredFromUndo.includes(image)
+      const imagesToDelete = addedImages.current.filter(
+        (image) =>
+          !currentImages.includes(image) &&
+          !deletedImages.current.includes(image)
       );
+
+      const newlyAddedImages = currentImages.filter(
+        (image) =>
+          !addedImages.current.includes(image) &&
+          !deletedImages.current.includes(image)
+      );
+
+      const recoveredFromUndo = deletedImages.current.filter((image) =>
+        currentImages.includes(image)
+      );
+
+      const uniqueNewImages = [...new Set(newlyAddedImages)];
+      addedImages.current.push(...uniqueNewImages);
+
+      for (const image of recoveredFromUndo) {
+        try {
+          await uploadAndReplaceImage(editor, image);
+        } catch (error) {
+          console.error('Failed to recover image from undo:', error);
+        }
+      }
+
+      if (onImageRemove && imagesToDelete.length > 0) {
+        for (const image of imagesToDelete) {
+          try {
+            await onImageRemove(image);
+            deletedImages.current.push(image);
+          } catch (error) {
+            console.error('Failed to remove image:', error);
+          }
+        }
+      } else if (onRemovedImagesChange && imagesToDelete.length > 0) {
+        onRemovedImagesChange(imagesToDelete);
+        deletedImages.current.push(...imagesToDelete);
+      }
+
+      if (recoveredFromUndo.length > 0) {
+        deletedImages.current = deletedImages.current.filter(
+          (image) => !recoveredFromUndo.includes(image)
+        );
+      }
+    } finally {
+      isCheckingImages.current = false;
     }
   };
 
