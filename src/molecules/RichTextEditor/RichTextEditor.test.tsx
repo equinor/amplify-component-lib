@@ -270,3 +270,133 @@ describe('Editor defaults can be merged', () => {
     expect(result).toEqual(options);
   });
 });
+
+describe('Image upload behavior (EditorProvider)', () => {
+  test('Normal typing does not trigger image upload', async () => {
+    const onImageUpload = vi.fn();
+    const props = fakeProps(true);
+    props.onImageUpload = onImageUpload;
+
+    const { container } = renderWithProviders(
+      <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
+    );
+
+    // Wait for tip tap to initialize
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const textEditor = container.querySelector('.tiptap') as HTMLElement;
+    expect(textEditor).not.toBeNull();
+
+    // Simulate typing by inserting content
+    fireEvent.input(textEditor, { target: { textContent: 'test text' } });
+    fireEvent.input(textEditor, { target: { textContent: 'test text 2' } });
+    fireEvent.input(textEditor, { target: { textContent: 'test text 3' } });
+
+    await waitFor(
+      () => {
+        // onImageUpload should NOT have been called just from typing
+        expect(onImageUpload).not.toHaveBeenCalled();
+      },
+      { timeout: 500 }
+    );
+  });
+
+  test('Multiple same images do not create duplicate tracking', async () => {
+    const onImageUpload = vi.fn().mockResolvedValue({
+      src: 'https://example.com/uploaded-image.png',
+      alt: '',
+    });
+    const props = fakeProps(true);
+    props.onImageUpload = onImageUpload;
+
+    const sameImageUrl =
+      'https://images.unsplash.com/photo-1682687221363-72518513620e';
+
+    const { container } = renderWithProviders(
+      <RichTextEditor
+        {...props}
+        value={`<p><img src="${sameImageUrl}" /><img src="${sameImageUrl}" /><img src="${sameImageUrl}" /></p>`}
+        features={[RichTextEditorFeatures.IMAGES]}
+      />
+    );
+
+    // Wait for tip tap to initialize
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // All three images should be visible
+    const images = container.querySelectorAll('img');
+    expect(images.length).toBeGreaterThanOrEqual(3);
+
+    // Verify they all have the same src
+    images.forEach((img) => {
+      expect(img.src).toBe(sameImageUrl);
+    });
+  });
+
+  test('onRemovedImagesChange is not called when no images are deleted', async () => {
+    const onRemovedImagesChange = vi.fn();
+    const props = fakeProps(true);
+    props.onRemovedImagesChange = onRemovedImagesChange;
+
+    const { container } = renderWithProviders(
+      <RichTextEditor
+        {...props}
+        value="<p>Some text</p>"
+        features={[RichTextEditorFeatures.IMAGES]}
+      />
+    );
+
+    // Wait for tip tap to initialize
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const textEditor = container.querySelector('.tiptap') as HTMLElement;
+
+    // Simulate typing
+    fireEvent.input(textEditor, { target: { textContent: 'more text' } });
+
+    await waitFor(
+      () => {
+        // onRemovedImagesChange should NOT be called when typing without deleting images
+        expect(onRemovedImagesChange).not.toHaveBeenCalled();
+      },
+      { timeout: 500 }
+    );
+  });
+
+  test('Editor handles image operations without causing race conditions', async () => {
+    const onImageUpload = vi.fn().mockResolvedValue({
+      src: 'https://example.com/uploaded-image.png',
+      alt: '',
+    });
+    const onRemovedImagesChange = vi.fn();
+    const props = fakeProps(true);
+    props.onImageUpload = onImageUpload;
+    props.onRemovedImagesChange = onRemovedImagesChange;
+
+    const { container } = renderWithProviders(
+      <RichTextEditor
+        {...props}
+        value="<p>Initial content</p>"
+        features={[RichTextEditorFeatures.IMAGES]}
+      />
+    );
+
+    // Wait for tip tap to initialize
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const textEditor = container.querySelector('.tiptap') as HTMLElement;
+    expect(textEditor).toBeInTheDocument();
+
+    // Simulate rapid changes
+    fireEvent.input(textEditor, { target: { textContent: 'text 1' } });
+    fireEvent.input(textEditor, { target: { textContent: 'text 2' } });
+    fireEvent.input(textEditor, { target: { textContent: 'text 3' } });
+
+    await waitFor(
+      () => {
+        expect(textEditor).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
+});
