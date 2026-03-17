@@ -335,7 +335,8 @@ describe('Image upload behavior (EditorProvider)', () => {
 
   test('onRemovedImagesChange is not called when no images are deleted', async () => {
     const onRemovedImagesChange = vi.fn();
-    const props = fakeProps(true);
+    const props = fakeProps();
+    props.onImageUpload = vi.fn();
     props.onRemovedImagesChange = onRemovedImagesChange;
 
     const { container } = renderWithProviders(
@@ -369,7 +370,7 @@ describe('Image upload behavior (EditorProvider)', () => {
       alt: '',
     });
     const onRemovedImagesChange = vi.fn();
-    const props = fakeProps(true);
+    const props = fakeProps();
     props.onImageUpload = onImageUpload;
     props.onRemovedImagesChange = onRemovedImagesChange;
 
