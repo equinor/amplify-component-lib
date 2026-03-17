@@ -94,6 +94,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   const addedImages = useRef<string[]>([]);
   const deletedImages = useRef<string[]>([]);
   const isCheckingImages = useRef(false);
+  const needsRecheck = useRef(false);
 
   const uploadAndReplaceImage = async (editor: Editor, image: string) => {
     try {
@@ -127,9 +128,13 @@ export const EditorProvider: FC<EditorProviderProps> = ({
 
   /* v8 ignore start */
   const handleImageCheck = async (editor: Editor) => {
-    // Skip if a check is already in progress to prevent race conditions. This could cause some images to not be tracked correctly, but it's safer than trying to run multiple checks at the same time.
-    if (isCheckingImages.current) return;
+    // Skip if a check is already in progress to prevent race conditions. Mark that a recheck is needed so changes made during the current check are not dropped.
+    if (isCheckingImages.current) {
+      needsRecheck.current = true;
+      return;
+    }
     isCheckingImages.current = true;
+    needsRecheck.current = false;
 
     try {
       const currentImages: string[] = [];
@@ -188,6 +193,10 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       }
     } finally {
       isCheckingImages.current = false;
+      // If another update occurred while this check was running, run again to catch those changes
+      if (needsRecheck.current) {
+        void handleImageCheck(editor);
+      }
     }
   };
 
