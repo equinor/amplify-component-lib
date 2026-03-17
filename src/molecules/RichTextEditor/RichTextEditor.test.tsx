@@ -306,7 +306,7 @@ describe('Image upload behavior (EditorProvider)', () => {
     expect(onImageUpload).not.toHaveBeenCalled();
   });
 
-  test('Multiple same images do not create duplicate tracking', async () => {
+  test('Multiple images with the same src render correctly', async () => {
     const onImageUpload = vi.fn().mockResolvedValue({
       src: 'https://example.com/uploaded-image.png',
       alt: '',
@@ -368,46 +368,59 @@ describe('Image upload behavior (EditorProvider)', () => {
     expect(onRemovedImagesChange).not.toHaveBeenCalled();
   });
 
-  test('Editor handles image operations without causing race conditions', async () => {
-    const onImageUpload = vi.fn().mockResolvedValue({
-      src: 'https://example.com/uploaded-image.png',
-      alt: '',
-    });
-    const onChange = vi.fn();
-    const onRemovedImagesChange = vi.fn();
-    const props = fakeProps();
-    props.onImageUpload = onImageUpload;
-    props.onChange = onChange;
-    props.onRemovedImagesChange = onRemovedImagesChange;
+  test('onImageRemove is called exactly once even when editor updates happen during a slow removal', async () => {
+    const imageUrl =
+      'https://images.unsplash.com/photo-1682687221363-72518513620e';
 
-    const { container } = renderWithProviders(
+    // Controlled promise lets us keep onImageRemove pending while typing occurs
+    let resolveRemove!: () => void;
+    const removePromise = new Promise<void>((resolve) => {
+      resolveRemove = resolve;
+    });
+    const onImageRemove = vi.fn(() => removePromise);
+    const onChange = vi.fn();
+
+    const { container, rerender } = renderWithProviders(
       <RichTextEditor
-        {...props}
-        value="<p>Initial content</p>"
+        value={`<p><img src="${imageUrl}" /></p>`}
+        onChange={onChange}
+        onImageUpload={vi.fn()}
+        onImageRemove={onImageRemove}
         features={[RichTextEditorFeatures.IMAGES]}
       />
     );
     const user = userEvent.setup();
 
-    // Wait for tip tap to initialize
+    // Wait for Tiptap to initialize; onCreate fires handleImageCheck which tracks the image in addedImages
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    // Remove the image by updating the value prop — triggers useEffect → setContent → onUpdate → handleImageCheck
+    // handleImageCheck detects the image is gone and calls onImageRemove (which is now blocked on removePromise)
+    rerender(
+      <RichTextEditor
+        value="<p></p>"
+        onChange={onChange}
+        onImageUpload={vi.fn()}
+        onImageRemove={onImageRemove}
+        features={[RichTextEditorFeatures.IMAGES]}
+      />
+    );
+
+    // Wait for handleImageCheck to reach the onImageRemove call
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(onImageRemove).toHaveBeenCalledOnce();
+
+    // Type while onImageRemove is still pending — this triggers another handleImageCheck call,
+    // which must set needsRecheck instead of running concurrently
     const textEditor = container.querySelector('.tiptap') as HTMLElement;
-    expect(textEditor).toBeInTheDocument();
+    await user.type(textEditor, 'x');
 
-    // Simulate rapid changes using userEvent to properly trigger Tiptap updates
-    await user.type(textEditor, 'a');
-    expect(onChange).toHaveBeenCalled();
-    onChange.mockClear();
+    // Unblock onImageRemove — the recheck fires but must NOT call onImageRemove again,
+    // since the image is now in deletedImages
+    resolveRemove();
 
-    await user.type(textEditor, 'b');
-    expect(onChange).toHaveBeenCalled();
-    onChange.mockClear();
-
-    await user.type(textEditor, 'c');
-    expect(onChange).toHaveBeenCalled();
-
-    // Verify editor is still functional
-    expect(textEditor).toBeInTheDocument();
+    await waitFor(() => {
+      expect(onImageRemove).toHaveBeenCalledOnce();
+    });
   });
 });
