@@ -568,3 +568,102 @@ test('Image content works as expected', async ({ worker }) => {
     timeout: 2000,
   });
 });
+
+test('Image with URL scheme is used directly as src', async ({ worker }) => {
+  const imageUrl = 'https://example.com/image.png';
+  const highlightedTutorial = {
+    id: FAKE_TUTORIALS[0].id,
+    name: FAKE_TUTORIALS[0].name,
+    path: '/tutorial',
+    willPopUp: true,
+    application: environment.getEnvironmentName(import.meta.env.VITE_NAME),
+    steps: [
+      {
+        id: '1',
+        title: faker.vehicle.vehicle(),
+        body: faker.music.artist(),
+        imgUrl: 'some-image-path',
+        highlightElement: true,
+      },
+    ],
+  };
+  worker.use(
+    http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
+      return HttpResponse.json([highlightedTutorial]);
+    }),
+    http.get(`*/api/v1/Tutorial/gettutorialimage/:path`, async () => {
+      return HttpResponse.text(imageUrl);
+    })
+  );
+
+  await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
+  const user = userEvent.setup();
+
+  await waitFor(
+    () =>
+      expect(screen.getByText(highlightedTutorial.name)).toBeInTheDocument(),
+    { timeout: 2000 }
+  );
+
+  await user.click(screen.getByRole('button', { name: /start tour/i }));
+
+  await waitFor(() => expect(screen.getByRole('img')).toBeInTheDocument(), {
+    timeout: 2000,
+  });
+
+  expect(screen.getByRole('img')).toHaveAttribute('src', imageUrl);
+});
+
+test('Image without URL scheme gets base64 prefix', async ({ worker }) => {
+  const base64String =
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk';
+  const highlightedTutorial = {
+    id: FAKE_TUTORIALS[0].id,
+    name: FAKE_TUTORIALS[0].name,
+    path: '/tutorial',
+    willPopUp: true,
+    application: environment.getEnvironmentName(import.meta.env.VITE_NAME),
+    steps: [
+      {
+        id: '1',
+        body: faker.music.artist(),
+        imgUrl: 'some-image-path',
+        highlightElement: true,
+      },
+    ],
+  };
+  worker.use(
+    http.get(`*/api/v1/Tutorial/draft/:appName`, async () => {
+      return HttpResponse.json([highlightedTutorial]);
+    }),
+    http.get(`*/api/v1/Tutorial/gettutorialimage/:path`, async () => {
+      return HttpResponse.text(base64String);
+    })
+  );
+
+  const { container } = await renderWithRouter(<TestComponent />, {
+    initialEntries: ['/tutorial'],
+    routes: ['/tutorial'],
+  });
+  const user = userEvent.setup();
+
+  await waitFor(
+    () =>
+      expect(screen.getByText(highlightedTutorial.name)).toBeInTheDocument(),
+    { timeout: 2000 }
+  );
+
+  await user.click(screen.getByRole('button', { name: /start tour/i }));
+
+  await waitFor(
+    () => expect(container.querySelector('img')).toBeInTheDocument(),
+    { timeout: 2000 }
+  );
+
+  const img = container.querySelector('img')!;
+  expect(img).toHaveAttribute('src', `data:image/png;base64,${base64String}`);
+  expect(img).toHaveAttribute('alt', '');
+});
