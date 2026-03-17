@@ -152,12 +152,12 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       await uploadAndReplaceImage(editor, image);
     }
 
-    if (onImageRemove) {
+    if (onImageRemove && imagesToDelete.length > 0) {
       for (const image of imagesToDelete) {
         await onImageRemove(image);
         deletedImages.current.push(image);
       }
-    } else if (onRemovedImagesChange) {
+    } else if (onRemovedImagesChange && imagesToDelete.length > 0) {
       onRemovedImagesChange(imagesToDelete);
       deletedImages.current.push(...imagesToDelete);
     }
