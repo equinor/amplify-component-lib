@@ -145,7 +145,8 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       currentImages.includes(image)
     );
 
-    addedImages.current.push(...newlyAddedImages);
+    const uniqueNewImages = [...new Set(newlyAddedImages)];
+    addedImages.current.push(...uniqueNewImages);
 
     for (const image of recoveredFromUndo) {
       await uploadAndReplaceImage(editor, image);
