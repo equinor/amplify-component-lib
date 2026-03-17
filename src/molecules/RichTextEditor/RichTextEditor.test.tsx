@@ -274,12 +274,15 @@ describe('Editor defaults can be merged', () => {
 describe('Image upload behavior (EditorProvider)', () => {
   test('Normal typing does not trigger image upload', async () => {
     const onImageUpload = vi.fn();
+    const onChange = vi.fn();
     const props = fakeProps(true);
     props.onImageUpload = onImageUpload;
+    props.onChange = onChange;
 
     const { container } = renderWithProviders(
       <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
     );
+    const user = userEvent.setup();
 
     // Wait for tip tap to initialize
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -287,18 +290,20 @@ describe('Image upload behavior (EditorProvider)', () => {
     const textEditor = container.querySelector('.tiptap') as HTMLElement;
     expect(textEditor).not.toBeNull();
 
-    // Simulate typing by inserting content
-    fireEvent.input(textEditor, { target: { textContent: 'test text' } });
-    fireEvent.input(textEditor, { target: { textContent: 'test text 2' } });
-    fireEvent.input(textEditor, { target: { textContent: 'test text 3' } });
+    // Type text using userEvent to properly trigger Tiptap updates
+    await user.type(textEditor, 'test text');
+    expect(onChange).toHaveBeenCalled();
+    onChange.mockClear();
 
-    await waitFor(
-      () => {
-        // onImageUpload should NOT have been called just from typing
-        expect(onImageUpload).not.toHaveBeenCalled();
-      },
-      { timeout: 500 }
-    );
+    await user.type(textEditor, ' more text');
+    expect(onChange).toHaveBeenCalled();
+    onChange.mockClear();
+
+    await user.type(textEditor, ' even more');
+    expect(onChange).toHaveBeenCalled();
+
+    // onImageUpload should NOT have been called just from typing
+    expect(onImageUpload).not.toHaveBeenCalled();
   });
 
   test('Multiple same images do not create duplicate tracking', async () => {
@@ -335,8 +340,10 @@ describe('Image upload behavior (EditorProvider)', () => {
 
   test('onRemovedImagesChange is not called when no images are deleted', async () => {
     const onRemovedImagesChange = vi.fn();
+    const onChange = vi.fn();
     const props = fakeProps();
     props.onImageUpload = vi.fn();
+    props.onChange = onChange;
     props.onRemovedImagesChange = onRemovedImagesChange;
 
     const { container } = renderWithProviders(
@@ -346,22 +353,19 @@ describe('Image upload behavior (EditorProvider)', () => {
         features={[RichTextEditorFeatures.IMAGES]}
       />
     );
+    const user = userEvent.setup();
 
     // Wait for tip tap to initialize
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const textEditor = container.querySelector('.tiptap') as HTMLElement;
 
-    // Simulate typing
-    fireEvent.input(textEditor, { target: { textContent: 'more text' } });
+    // Type text using userEvent to properly trigger Tiptap updates
+    await user.type(textEditor, 'more ');
+    expect(onChange).toHaveBeenCalled();
 
-    await waitFor(
-      () => {
-        // onRemovedImagesChange should NOT be called when typing without deleting images
-        expect(onRemovedImagesChange).not.toHaveBeenCalled();
-      },
-      { timeout: 500 }
-    );
+    // onRemovedImagesChange should NOT be called when typing without deleting images
+    expect(onRemovedImagesChange).not.toHaveBeenCalled();
   });
 
   test('Editor handles image operations without causing race conditions', async () => {
@@ -369,9 +373,11 @@ describe('Image upload behavior (EditorProvider)', () => {
       src: 'https://example.com/uploaded-image.png',
       alt: '',
     });
+    const onChange = vi.fn();
     const onRemovedImagesChange = vi.fn();
     const props = fakeProps();
     props.onImageUpload = onImageUpload;
+    props.onChange = onChange;
     props.onRemovedImagesChange = onRemovedImagesChange;
 
     const { container } = renderWithProviders(
@@ -381,6 +387,7 @@ describe('Image upload behavior (EditorProvider)', () => {
         features={[RichTextEditorFeatures.IMAGES]}
       />
     );
+    const user = userEvent.setup();
 
     // Wait for tip tap to initialize
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -388,16 +395,19 @@ describe('Image upload behavior (EditorProvider)', () => {
     const textEditor = container.querySelector('.tiptap') as HTMLElement;
     expect(textEditor).toBeInTheDocument();
 
-    // Simulate rapid changes
-    fireEvent.input(textEditor, { target: { textContent: 'text 1' } });
-    fireEvent.input(textEditor, { target: { textContent: 'text 2' } });
-    fireEvent.input(textEditor, { target: { textContent: 'text 3' } });
+    // Simulate rapid changes using userEvent to properly trigger Tiptap updates
+    await user.type(textEditor, 'a');
+    expect(onChange).toHaveBeenCalled();
+    onChange.mockClear();
 
-    await waitFor(
-      () => {
-        expect(textEditor).toBeInTheDocument();
-      },
-      { timeout: 1000 }
-    );
+    await user.type(textEditor, 'b');
+    expect(onChange).toHaveBeenCalled();
+    onChange.mockClear();
+
+    await user.type(textEditor, 'c');
+    expect(onChange).toHaveBeenCalled();
+
+    // Verify editor is still functional
+    expect(textEditor).toBeInTheDocument();
   });
 });
