@@ -18,7 +18,7 @@ export interface EditorProviderProps extends ImageExtensionFnProps {
   features?: RichTextEditorFeatures[];
 }
 
-const createFileFromDataUrl = (dataUrl: string, fileName: string) => {
+export const createFileFromDataUrl = (dataUrl: string, fileName: string) => {
   const arr = dataUrl.split(',');
   const mimeMatch = arr[0]?.match(/:(.*?);/);
   if (!mimeMatch) return null;
@@ -33,7 +33,7 @@ const createFileFromDataUrl = (dataUrl: string, fileName: string) => {
   return new File([u8arr], fileName, { type: mimeMatch[1] });
 };
 
-const replaceTrackedImage = (
+export const replaceTrackedImage = (
   images: string[],
   oldSrc: string,
   newSrc: string
@@ -44,7 +44,7 @@ const replaceTrackedImage = (
   });
 
 /** Replaces matching image src values in the editor document. */
-const replaceImageSrcInEditor = (
+export const replaceImageSrcInEditor = (
   editor: Editor,
   oldSrc: string,
   newSrc: string,

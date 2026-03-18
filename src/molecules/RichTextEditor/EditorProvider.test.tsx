@@ -1,8 +1,15 @@
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitFor } from '@testing-library/dom';
+import type { Editor } from '@tiptap/react';
 
-import { EditorProvider, EditorProviderProps } from './EditorProvider';
+import {
+  createFileFromDataUrl,
+  EditorProvider,
+  EditorProviderProps,
+  replaceImageSrcInEditor,
+  replaceTrackedImage,
+} from './EditorProvider';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
 import {
   renderWithProviders,
@@ -263,5 +270,186 @@ describe('EditorProvider image handling', () => {
     // The editor should still have content
     const content = screen.getByTestId('editor-content');
     expect(content).toBeInTheDocument();
+  });
+
+  test('Logs and continues when upload during recovery fails', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    const imageSrc = fakeImageUrl();
+    queryClient.setQueryData([imageSrc], imageSrc);
+
+    const uploadError = new Error('upload failed');
+    const onImageUpload = vi.fn().mockRejectedValue(uploadError);
+    const onImageRead = vi.fn();
+    const onRemovedImagesChange = vi.fn();
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+
+    renderWithProviders(
+      <QueryClientProvider client={queryClient}>
+        <TestEditorComponent
+          content="<p></p>"
+          features={[RichTextEditorFeatures.IMAGES]}
+          onImageUpload={onImageUpload}
+          onImageRead={onImageRead}
+          onRemovedImagesChange={onRemovedImagesChange}
+        />
+      </QueryClientProvider>
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const user = userEvent.setup();
+    const insertBtn = screen.getByTestId('insert-image-btn');
+    const undoBtn = screen.getByTestId('undo-btn');
+
+    await user.click(insertBtn);
+
+    await waitFor(() => expect(onImageUpload).not.toHaveBeenCalled(), {
+      timeout: 500,
+    });
+
+    await user.click(undoBtn);
+
+    await waitFor(() => {
+      expect(onRemovedImagesChange).toHaveBeenCalled();
+    });
+
+    await user.click(insertBtn);
+
+    await waitFor(() => {
+      expect(onImageUpload).toHaveBeenCalledTimes(1);
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to upload and replace image:',
+        uploadError
+      );
+    });
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  test('Skips replacement when uploaded src equals original src', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    const imageSrc = fakeImageUrl();
+    queryClient.setQueryData([imageSrc], imageSrc);
+
+    const onImageUpload = vi.fn().mockResolvedValue({
+      src: imageSrc,
+      alt: undefined,
+    });
+    const onImageRead = vi.fn();
+    const onRemovedImagesChange = vi.fn();
+
+    renderWithProviders(
+      <QueryClientProvider client={queryClient}>
+        <TestEditorComponent
+          content="<p></p>"
+          features={[RichTextEditorFeatures.IMAGES]}
+          onImageUpload={onImageUpload}
+          onImageRead={onImageRead}
+          onRemovedImagesChange={onRemovedImagesChange}
+        />
+      </QueryClientProvider>
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const user = userEvent.setup();
+    const insertBtn = screen.getByTestId('insert-image-btn');
+    const undoBtn = screen.getByTestId('undo-btn');
+
+    await user.click(insertBtn);
+
+    await waitFor(() => expect(onImageUpload).not.toHaveBeenCalled(), {
+      timeout: 500,
+    });
+
+    await user.click(undoBtn);
+
+    await waitFor(() => {
+      expect(onRemovedImagesChange).toHaveBeenCalled();
+    });
+
+    await user.click(insertBtn);
+
+    await waitFor(() => {
+      expect(onImageUpload).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
+describe('EditorProvider helper functions', () => {
+  test('createFileFromDataUrl returns null when mime match is missing', () => {
+    const file = createFileFromDataUrl('invalid-data-url', 'image.png');
+
+    expect(file).toBeNull();
+  });
+
+  test('replaceTrackedImage replaces only the matching source', () => {
+    const result = replaceTrackedImage(
+      ['old-src', 'keep-src'],
+      'old-src',
+      'new-src'
+    );
+
+    expect(result).toEqual(['new-src', 'keep-src']);
+  });
+
+  test('replaceImageSrcInEditor returns early when old and new src match', () => {
+    const descendants = vi.fn();
+    const dispatch = vi.fn();
+
+    const editor = {
+      state: {
+        tr: {},
+        doc: { descendants },
+      },
+      view: { dispatch },
+    } as unknown as Editor;
+
+    replaceImageSrcInEditor(editor, 'same-src', 'same-src');
+
+    expect(descendants).not.toHaveBeenCalled();
+    expect(dispatch).not.toHaveBeenCalled();
+  });
+
+  test('replaceImageSrcInEditor preserves existing alt when uploaded alt is undefined', () => {
+    const setNodeMarkup = vi.fn();
+    const transaction = {
+      setNodeMarkup,
+    };
+
+    setNodeMarkup.mockReturnValue(transaction);
+
+    const descendants = vi.fn((callback) => {
+      callback(
+        {
+          type: { name: 'image' },
+          attrs: { src: 'old-src', alt: 'existing-alt' },
+        },
+        3
+      );
+    });
+    const dispatch = vi.fn();
+
+    const editor = {
+      state: {
+        tr: transaction,
+        doc: { descendants },
+      },
+      view: { dispatch },
+    } as unknown as Editor;
+
+    replaceImageSrcInEditor(editor, 'old-src', 'new-src');
+
+    expect(setNodeMarkup).toHaveBeenCalledWith(3, undefined, {
+      src: 'new-src',
+      alt: 'existing-alt',
+    });
+    expect(dispatch).toHaveBeenCalledWith(transaction);
   });
 });
