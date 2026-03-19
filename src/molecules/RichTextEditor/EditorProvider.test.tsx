@@ -76,8 +76,7 @@ describe('EditorProvider image handling', () => {
       </QueryClientProvider>
     );
 
-    // Wait for editor to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitFor(() => screen.getByTestId('type-text-btn'));
 
     const typeBtn = screen.getByTestId('type-text-btn');
     const user = userEvent.setup();
@@ -121,8 +120,7 @@ describe('EditorProvider image handling', () => {
       </QueryClientProvider>
     );
 
-    // Wait for editor to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitFor(() => screen.getByTestId('insert-image-btn'));
 
     const user = userEvent.setup();
     const insertBtn = screen.getByTestId('insert-image-btn');
@@ -169,8 +167,7 @@ describe('EditorProvider image handling', () => {
       </QueryClientProvider>
     );
 
-    // Wait for editor to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitFor(() => screen.getByTestId('insert-image-btn'));
 
     const user = userEvent.setup();
     const insertBtn = screen.getByTestId('insert-image-btn');
@@ -211,8 +208,7 @@ describe('EditorProvider image handling', () => {
       </QueryClientProvider>
     );
 
-    // Wait for editor to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitFor(() => screen.getByTestId('type-text-btn'));
 
     const user = userEvent.setup();
     const typeBtn = screen.getByTestId('type-text-btn');
@@ -250,8 +246,7 @@ describe('EditorProvider image handling', () => {
       </QueryClientProvider>
     );
 
-    // Wait for editor to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitFor(() => screen.getByTestId('insert-image-btn'));
 
     const user = userEvent.setup();
     const insertBtn = screen.getByTestId('insert-image-btn');
@@ -299,7 +294,7 @@ describe('EditorProvider image handling', () => {
       </QueryClientProvider>
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitFor(() => screen.getByTestId('insert-image-btn'));
 
     const user = userEvent.setup();
     const insertBtn = screen.getByTestId('insert-image-btn');
@@ -356,7 +351,7 @@ describe('EditorProvider image handling', () => {
       </QueryClientProvider>
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitFor(() => screen.getByTestId('insert-image-btn'));
 
     const user = userEvent.setup();
     const insertBtn = screen.getByTestId('insert-image-btn');

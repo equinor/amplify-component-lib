@@ -21,6 +21,14 @@ function fakeProps(withImage = false): RichTextEditorProps {
   };
 }
 
+async function waitForEditorReady(container: HTMLElement) {
+  await waitFor(() => {
+    const editor = container.querySelector('.tiptap');
+    expect(editor).not.toBeNull();
+    expect(editor).toHaveAttribute('contenteditable', 'true');
+  });
+}
+
 test('Shows text that is input', async () => {
   const props = fakeProps(true);
   const fish = faker.animal.fish();
@@ -52,8 +60,7 @@ test("Calls 'onChange' when inputting text", async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitForEditorReady(container);
 
   let textInput = container.querySelector('.tiptap');
 
@@ -75,9 +82,7 @@ test('Setting color works as expected', async () => {
   const { container } = renderWithProviders(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.TEXT_COLOR]} />
   );
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitForEditorReady(container);
 
   const colorInput = container.querySelector('input') as Element;
 
@@ -91,9 +96,7 @@ test('Calls onImageUpload as expected', async () => {
     <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
   );
   const user = userEvent.setup();
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitForEditorReady(container);
 
   expect(props.onImageRemove).not.toHaveBeenCalled();
   expect(props.onImageUpload).not.toHaveBeenCalled();
@@ -113,13 +116,11 @@ test('Calls onImageUpload as expected', async () => {
 test('Open file dialog', async () => {
   const props = fakeProps(true);
 
-  renderWithProviders(
+  const { container } = renderWithProviders(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
   );
   const user = userEvent.setup();
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitForEditorReady(container);
 
   const uploadButton = screen.getByTestId('add-image-button');
   await user.click(uploadButton);
@@ -128,13 +129,11 @@ test('Open file dialog', async () => {
 test('Creating table works as expected', async () => {
   const props = fakeProps();
 
-  renderWithProviders(
+  const { container } = renderWithProviders(
     <RichTextEditor {...props} features={[RichTextEditorFeatures.TABLE]} />
   );
   const user = userEvent.setup();
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitForEditorReady(container);
 
   const tableButton = screen.getByTestId('add-table-button');
   await user.click(tableButton);
@@ -154,13 +153,10 @@ test('Images work as expected', async () => {
       value={`<img src="${randomUrl}" alt="${alt}" />`}
     />
   );
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  expect(screen.getByRole('img')).toHaveAttribute('src', randomUrl);
-
-  expect(screen.getByRole('img')).toHaveAttribute('alt', alt);
+  await waitFor(() => {
+    expect(screen.getByRole('img')).toHaveAttribute('src', randomUrl);
+    expect(screen.getByRole('img')).toHaveAttribute('alt', alt);
+  });
 });
 
 test('Throws error if trying to use both remove strategies', () => {
@@ -184,12 +180,10 @@ test('Shows label / meta / helper as expected', async () => {
   const meta = faker.commerce.department();
   const helper = faker.food.fruit();
 
-  renderWithProviders(
+  const { container } = renderWithProviders(
     <RichTextEditor {...props} label={label} meta={meta} helperText={helper} />
   );
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitForEditorReady(container);
 
   expect(screen.getByText(label)).toBeInTheDocument();
   expect(screen.getByText(meta)).toBeInTheDocument();
@@ -200,12 +194,10 @@ test(`Shows variant icon as expected`, async () => {
   const props = fakeProps(true);
   const helperText = faker.animal.fish();
 
-  renderWithProviders(
+  const { container } = renderWithProviders(
     <RichTextEditor {...props} variant="error" helperText={helperText} />
   );
-
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitForEditorReady(container);
 
   const variantIcon = within(
     screen.getByText(helperText).parentElement!
@@ -283,9 +275,7 @@ describe('Image upload behavior (EditorProvider)', () => {
       <RichTextEditor {...props} features={[RichTextEditorFeatures.IMAGES]} />
     );
     const user = userEvent.setup();
-
-    // Wait for tip tap to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitForEditorReady(container);
 
     const textEditor = container.querySelector('.tiptap') as HTMLElement;
     expect(textEditor).not.toBeNull();
@@ -324,17 +314,13 @@ describe('Image upload behavior (EditorProvider)', () => {
         features={[RichTextEditorFeatures.IMAGES]}
       />
     );
-
-    // Wait for tip tap to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // All three images should be visible
-    const images = container.querySelectorAll('img');
-    expect(images.length).toBeGreaterThanOrEqual(3);
-
-    // Verify they all have the same src
-    images.forEach((img) => {
-      expect(img.src).toBe(sameImageUrl);
+    // Wait until all three images are visible and have the expected src
+    await waitFor(() => {
+      const images = container.querySelectorAll('img');
+      expect(images.length).toBeGreaterThanOrEqual(3);
+      images.forEach((img) => {
+        expect(img.src).toBe(sameImageUrl);
+      });
     });
   });
 
@@ -354,9 +340,7 @@ describe('Image upload behavior (EditorProvider)', () => {
       />
     );
     const user = userEvent.setup();
-
-    // Wait for tip tap to initialize
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitForEditorReady(container);
 
     const textEditor = container.querySelector('.tiptap') as HTMLElement;
 
@@ -390,9 +374,7 @@ describe('Image upload behavior (EditorProvider)', () => {
       />
     );
     const user = userEvent.setup();
-
-    // Wait for Tiptap to initialize; onCreate fires handleImageCheck which tracks the image in addedImages
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await waitForEditorReady(container);
 
     // Remove the image by updating the value prop — triggers useEffect → setContent → onUpdate → handleImageCheck
     // handleImageCheck detects the image is gone and calls onImageRemove (which is now blocked on removePromise)
@@ -406,8 +388,9 @@ describe('Image upload behavior (EditorProvider)', () => {
       />
     );
 
-    // Wait for handleImageCheck to reach the onImageRemove call
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await waitFor(() => {
+      expect(onImageRemove).toHaveBeenCalledOnce();
+    });
     expect(onImageRemove).toHaveBeenCalledOnce();
 
     // Type while onImageRemove is still pending — this triggers another handleImageCheck call,

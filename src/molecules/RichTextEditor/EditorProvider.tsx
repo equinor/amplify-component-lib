@@ -193,7 +193,6 @@ export const EditorProvider: FC<EditorProviderProps> = ({
       }
     } finally {
       isCheckingImages.current = false;
-      // If another update occurred while this check was running, run again to catch those changes
       if (needsRecheck.current) {
         void handleImageCheck(editor);
       }
