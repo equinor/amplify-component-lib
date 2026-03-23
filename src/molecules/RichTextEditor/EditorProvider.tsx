@@ -18,6 +18,59 @@ export interface EditorProviderProps extends ImageExtensionFnProps {
   features?: RichTextEditorFeatures[];
 }
 
+export const createFileFromDataUrl = (dataUrl: string, fileName: string) => {
+  const arr = dataUrl.split(',');
+  const mimeMatch = arr[0]?.match(/:(.*?);/);
+  if (!mimeMatch) return null;
+
+  const byteString = atob(arr[arr.length - 1]);
+  let n = byteString.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = byteString.charCodeAt(n);
+  }
+
+  return new File([u8arr], fileName, { type: mimeMatch[1] });
+};
+
+export const replaceTrackedImage = (
+  images: string[],
+  oldSrc: string,
+  newSrc: string
+) =>
+  images.map((image) => {
+    if (image !== oldSrc) return image;
+    return newSrc;
+  });
+
+/** Replaces matching image src values in the editor document. */
+export const replaceImageSrcInEditor = (
+  editor: Editor,
+  oldSrc: string,
+  newSrc: string,
+  alt?: string
+) => {
+  if (oldSrc === newSrc) return;
+
+  let transaction = editor.state.tr;
+  let hasUpdates = false;
+
+  editor.state.doc.descendants((node, pos) => {
+    if (node.type.name === 'image' && node.attrs.src === oldSrc) {
+      transaction = transaction.setNodeMarkup(pos, undefined, {
+        ...node.attrs,
+        src: newSrc,
+        alt: alt ?? node.attrs.alt,
+      });
+      hasUpdates = true;
+    }
+  });
+
+  if (hasUpdates) {
+    editor.view.dispatch(transaction);
+  }
+};
+
 export const EditorProvider: FC<EditorProviderProps> = ({
   children,
   content,
@@ -40,55 +93,109 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   const queryClient = useQueryClient();
   const addedImages = useRef<string[]>([]);
   const deletedImages = useRef<string[]>([]);
-  const previousRemovedImages = useRef<string[]>([]);
+  const isCheckingImages = useRef(false);
+  const needsRecheck = useRef(false);
+
+  const uploadAndReplaceImage = async (editor: Editor, image: string) => {
+    try {
+      const dataUrl = queryClient.getQueryData<string>([image]);
+      if (!dataUrl) return;
+
+      const file = createFileFromDataUrl(dataUrl, image);
+      if (!file) return;
+
+      const uploadedImage = await onImageUpload?.(file);
+      if (!uploadedImage?.src) return;
+
+      queryClient.setQueryData([uploadedImage.src], dataUrl);
+
+      addedImages.current = replaceTrackedImage(
+        addedImages.current,
+        image,
+        uploadedImage.src
+      );
+
+      replaceImageSrcInEditor(
+        editor,
+        image,
+        uploadedImage.src,
+        uploadedImage.alt
+      );
+    } catch (error) {
+      console.error('Failed to upload and replace image:', error);
+    }
+  };
 
   /* v8 ignore start */
-  const handleImageCheck = (editor: Editor) => {
-    const currentImages: string[] = [];
+  const handleImageCheck = async (editor: Editor) => {
+    // Skip if a check is already in progress to prevent race conditions. Mark that a recheck is needed so changes made during the current check are not dropped.
+    if (isCheckingImages.current) {
+      needsRecheck.current = true;
+      return;
+    }
+    isCheckingImages.current = true;
+    needsRecheck.current = false;
 
-    editor.getJSON().content?.forEach((item) => {
-      if (item.type === 'image' && item.attrs?.src) {
-        currentImages.push(item.attrs.src);
-      }
-    });
+    try {
+      const currentImages: string[] = [];
 
-    for (const image of currentImages) {
-      if (!addedImages.current.includes(image)) {
-        addedImages.current.push(image);
-      } else if (addedImages.current.includes(image) && onImageRemove) {
-        // Image was recovered from undo, need to upload it again
-        const dataUrl = queryClient.getQueryData<string>([image]);
-        if (dataUrl) {
-          const arr = dataUrl.split(',');
-          const mime = arr[0].match(/:(.*?);/)![1];
-          const byteString = atob(arr[arr.length - 1]);
-          let n = byteString.length;
-          const u8arr = new Uint8Array(n);
-          while (n--) {
-            u8arr[n] = byteString.charCodeAt(n);
-          }
-          const file = new File([u8arr], image, { type: mime });
-          onImageUpload?.(file);
+      editor.state.doc.descendants((node) => {
+        if (node.type.name === 'image' && node.attrs.src) {
+          currentImages.push(node.attrs.src);
+        }
+      });
+
+      const imagesToDelete = addedImages.current.filter(
+        (image) =>
+          !currentImages.includes(image) &&
+          !deletedImages.current.includes(image)
+      );
+
+      const newlyAddedImages = currentImages.filter(
+        (image) =>
+          !addedImages.current.includes(image) &&
+          !deletedImages.current.includes(image)
+      );
+
+      const recoveredFromUndo = deletedImages.current.filter((image) =>
+        currentImages.includes(image)
+      );
+
+      const uniqueNewImages = [...new Set(newlyAddedImages)];
+      addedImages.current.push(...uniqueNewImages);
+
+      for (const image of recoveredFromUndo) {
+        try {
+          await uploadAndReplaceImage(editor, image);
+        } catch (error) {
+          console.error('Failed to recover image from undo:', error);
         }
       }
-    }
 
-    const imagesToDelete = addedImages.current.filter(
-      (image) =>
-        !currentImages.includes(image) && !deletedImages.current.includes(image)
-    );
-
-    if (onImageRemove) {
-      for (const image of imagesToDelete) {
-        onImageRemove?.(image);
-        deletedImages.current.push(image);
+      if (onImageRemove && imagesToDelete.length > 0) {
+        for (const image of imagesToDelete) {
+          try {
+            await onImageRemove(image);
+            deletedImages.current.push(image);
+          } catch (error) {
+            console.error('Failed to remove image:', error);
+          }
+        }
+      } else if (onRemovedImagesChange && imagesToDelete.length > 0) {
+        onRemovedImagesChange(imagesToDelete);
+        deletedImages.current.push(...imagesToDelete);
       }
-    } else if (
-      onRemovedImagesChange &&
-      previousRemovedImages.current.length !== imagesToDelete.length
-    ) {
-      onRemovedImagesChange(imagesToDelete);
-      previousRemovedImages.current = imagesToDelete;
+
+      if (recoveredFromUndo.length > 0) {
+        deletedImages.current = deletedImages.current.filter(
+          (image) => !recoveredFromUndo.includes(image)
+        );
+      }
+    } finally {
+      isCheckingImages.current = false;
+      if (needsRecheck.current) {
+        void handleImageCheck(editor);
+      }
     }
   };
 
@@ -97,10 +204,10 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     shouldRerenderOnTransaction: true,
     extensions: [ampExtensions, ...extensions],
     onCreate: ({ editor }) => {
-      handleImageCheck(editor);
+      void handleImageCheck(editor);
     },
     onUpdate: ({ editor }) => {
-      handleImageCheck(editor);
+      void handleImageCheck(editor);
 
       onUpdate?.(editor.getHTML());
     },

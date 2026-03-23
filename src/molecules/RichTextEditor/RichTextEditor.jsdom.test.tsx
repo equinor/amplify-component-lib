@@ -7,7 +7,7 @@ import {
   VARIANT_COLORS,
   VARIANT_HELPER_TEXT_COLORS,
 } from 'src/atoms/style/colors';
-import { renderWithProviders, screen } from 'src/tests/jsdomtest-utils';
+import { renderWithProviders, screen, waitFor } from 'src/tests/jsdomtest-utils';
 
 function fakeProps(withImage = false): RichTextEditorProps {
   return {
@@ -28,8 +28,9 @@ test('Creating table with highlight works as expected', async () => {
     />
   );
 
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitFor(() => {
+    expect(screen.getByTestId('richtext-editor').querySelector('.tiptap')).not.toBeNull();
+  });
   const editor = screen.getByTestId('richtext-editor').querySelector('.tiptap');
 
   expect(editor).toHaveStyle(
@@ -48,8 +49,9 @@ test('Variant gets expected colors', async () => {
     />
   );
 
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitFor(() => {
+    expect(screen.getByTestId('richtext-editor').querySelector('.tiptap')).not.toBeNull();
+  });
 
   const editor = screen.getByTestId('richtext-editor').querySelector('.tiptap');
 
@@ -72,8 +74,9 @@ test('Helper text gets expected colors', async () => {
     />
   );
 
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitFor(() => {
+    expect(screen.getByTestId('richtext-editor').querySelector('.tiptap')).not.toBeNull();
+  });
 
   expect(screen.getByText(helper)).toHaveStyleRule(
     'color',
@@ -93,8 +96,9 @@ test('Not setting maxHeight adds height: 100% on wrapper', async () => {
     />
   );
 
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitFor(() => {
+    expect(screen.getByTestId('richtext-editor').querySelector('.tiptap')).not.toBeNull();
+  });
 
   const wrapper = screen.getByText(label).parentElement!.parentElement!;
 
@@ -114,8 +118,9 @@ test('Setting maxHeight removes height: 100% on wrapper', async () => {
     />
   );
 
-  // Wait for tip tap to initialize
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await waitFor(() => {
+    expect(screen.getByTestId('richtext-editor').querySelector('.tiptap')).not.toBeNull();
+  });
 
   const wrapper = screen.getByText(label).parentElement!.parentElement!;
 
