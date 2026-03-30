@@ -5,10 +5,10 @@ import { dashboard, edit, star_outlined } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SideSheet } from './SideSheet';
+import { SideSheetProps } from './SideSheet.types';
 import { colors } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
 import { SideBar } from 'src/organisms/SideBar';
-import { SideSheetProps } from 'src/organisms/SideSheet/SideSheet.types';
 import { Template } from 'src/organisms/Template/Template';
 import { TopBar } from 'src/organisms/TopBar';
 import { ReleaseNotesProvider } from 'src/providers/ReleaseNotesProvider';
