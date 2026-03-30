@@ -17,7 +17,6 @@ import { expect } from 'storybook/test';
 function StoryComponent(args: TopBarBaseProps) {
   return (
     <TopBar
-      onHeaderClick={() => console.log('Going to homepage 🏠')}
       capitalize={args.capitalize}
       applicationIcon={args.applicationIcon}
       applicationName={args.applicationName}
@@ -120,19 +119,16 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
     {
       name: 'Dashboard',
       icon: dashboard,
-      link: 'dashboard',
       onClick: () => console.log('going to dashboard...'),
     },
     {
       name: 'history',
       icon: history,
-      link: 'history',
       onClick: () => console.log('going to history...'),
     },
     {
       name: 'favourites',
       icon: favorite_outlined,
-      link: 'favourites',
       onClick: () => console.log('going to favourites...'),
     },
   ];
@@ -140,7 +136,6 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
     <ReleaseNotesProvider>
       <Template>
         <TopBar
-          onHeaderClick={() => console.log('Going to homepage')}
           capitalize={args.capitalize}
           applicationIcon={args.applicationIcon}
           applicationName={args.applicationName}
