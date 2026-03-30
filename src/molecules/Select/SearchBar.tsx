@@ -171,6 +171,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             autoComplete="off"
             onChange={handleOnSearchChange}
             onKeyDownCapture={handleOnSearchKeyDown}
+            aria-invalid={variant === 'error' ? true : undefined}
           />
           {loading && (
             <SkeletonField
