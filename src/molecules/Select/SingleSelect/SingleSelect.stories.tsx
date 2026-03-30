@@ -286,6 +286,23 @@ export const TestDirtyVariant: Story = {
   },
 };
 
+export const TestErrorVariant: Story = {
+  tags: ['test-only'],
+  args: {
+    items: FAKE_ITEMS,
+    value: undefined,
+    variant: 'error',
+    helperText: 'This is the helper text',
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('combobox')).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    );
+  },
+};
+
 export const TestRendersPlaceholder: Story = {
   tags: ['test-only'],
   args: {
