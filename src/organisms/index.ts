@@ -11,6 +11,8 @@ export type { GuidelineSections } from './TopBar/Guidelines/Guidelines';
 export type { SettingsSection } from './TopBar/Settings.types';
 export { Status } from './Status';
 export * from './Status/collections';
+export { SideSheet } from './SideSheet/SideSheet';
+export type { SideSheetProps } from './SideSheet/SideSheet';
 export { TableOfContents } from './TableOfContents/TableOfContents';
 export type { TableOfContentsProps } from './TableOfContents/TableOfContents';
 export { Template } from './Template/Template';
