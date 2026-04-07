@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { dashboard, edit, star_outlined } from '@equinor/eds-icons';
+import { close, dashboard, edit, star_outlined } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SideSheet } from './SideSheet';
@@ -13,6 +13,8 @@ import { Template } from 'src/organisms/Template/Template';
 import { TopBar } from 'src/organisms/TopBar';
 import { ReleaseNotesProvider } from 'src/providers/ReleaseNotesProvider';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
+
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 function StoryComponent(props: SideSheetProps) {
   const [open, setOpen] = useState(false);
@@ -104,6 +106,19 @@ export const Standard: Story = {
   args: {
     type: 'standard',
   },
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    await expect(
+      canvas.getByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const closeIconPath = canvas.getByTestId('eds-icon-path');
+    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
+
+    await userEvent.click(canvas.getByRole('button'));
+  },
 };
 
 export const StandardWithHeaderElements: Story = {
@@ -120,6 +135,23 @@ export const StandardWithHeaderElements: Story = {
       </div>
     ),
   },
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    await expect(
+      canvas.getByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const iconPaths = canvas.getAllByTestId('eds-icon-path');
+    await expect(iconPaths[0]).toHaveAttribute('d', star_outlined.svgPathData);
+    await expect(iconPaths[1]).toHaveAttribute('d', edit.svgPathData);
+    await expect(iconPaths[2]).toHaveAttribute('d', close.svgPathData);
+
+    // Close button is the last button in the header
+    const buttons = canvas.getAllByRole('button');
+    await userEvent.click(buttons[buttons.length - 1]);
+  },
 };
 
 export const Modal: Story = {
@@ -134,6 +166,19 @@ export const Modal: Story = {
       <Story />
     </FloatingStoryWrapper>
   ),
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    await expect(
+      canvas.getByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const closeIconPath = canvas.getByTestId('eds-icon-path');
+    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
+
+    await userEvent.click(canvas.getByRole('button'));
+  },
 };
 export const ModalWithScrim: Story = {
   args: {
@@ -148,6 +193,20 @@ export const ModalWithScrim: Story = {
       <Story />
     </FloatingStoryWrapper>
   ),
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    await expect(
+      canvas.getByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const closeIconPath = canvas.getByTestId('eds-icon-path');
+    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
+
+    // Close via the close button
+    await userEvent.click(canvas.getByRole('button'));
+  },
 };
 
 export const Floating: Story = {
@@ -162,6 +221,19 @@ export const Floating: Story = {
       <Story />
     </FloatingStoryWrapper>
   ),
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    await expect(
+      canvas.getByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const closeIconPath = canvas.getByTestId('eds-icon-path');
+    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
+
+    await userEvent.click(canvas.getByRole('button'));
+  },
 };
 
 export const Stateful: Story = {
@@ -172,4 +244,37 @@ export const Stateful: Story = {
     type: 'modal',
   },
   render: StoryComponent,
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    // Sheet is closed initially
+    await expect(
+      canvas.queryByRole('heading', { name: title as string, level: 2 })
+    ).not.toBeInTheDocument();
+
+    // Open the sheet
+    await userEvent.click(
+      canvas.getByRole('button', { name: /toggle side sheet/i })
+    );
+
+    // Title is visible after opening
+    await expect(
+      canvas.getByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    // Close the sheet via the close button
+    const closeIconPath = canvas.getByTestId('eds-icon-path');
+    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
+
+    const buttons = canvas.getAllByRole('button');
+    await userEvent.click(buttons[buttons.length - 1]);
+
+    // Sheet is closed after clicking close
+    await waitFor(() => {
+      expect(
+        canvas.queryByRole('heading', { name: title as string, level: 2 })
+      ).not.toBeInTheDocument();
+    });
+  },
 };
