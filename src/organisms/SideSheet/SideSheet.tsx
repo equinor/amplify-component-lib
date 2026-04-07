@@ -4,7 +4,7 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 
 import { Header, ScrimWrapper, Sheet, Wrapper } from './SideSheet.styles';
-import { SideSheetProps } from './SideSheet.types';
+import type { SideSheetProps } from './SideSheet.types';
 import { Button } from 'src/molecules/Button/Button';
 
 import { AnimatePresence } from 'motion/react';

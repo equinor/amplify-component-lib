@@ -1,11 +1,11 @@
 import { colors, elevation, shape, spacings } from 'src/atoms/style';
-import { SideSheetProps } from 'src/organisms';
+import type { SideSheetProps } from 'src/organisms';
 
 import { motion } from 'motion/react';
 import { css, styled } from 'styled-components';
 
 interface WrapperProps {
-  $type: Required<SideSheetProps['type']>;
+  $type: NonNullable<SideSheetProps['type']>;
   $withShadow?: boolean;
 }
 
