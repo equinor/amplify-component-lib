@@ -30,6 +30,7 @@ export const SideSheet: FC<SideSheetProps> = ({
   if ('withScrim' in rest && rest.withScrim) {
     return (
       <ScrimWrapper
+        data-testid="side-sheet-scrim"
         onClick={open ? onClose : undefined}
         initial={{
           display: 'none',

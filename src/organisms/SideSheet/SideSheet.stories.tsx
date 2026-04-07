@@ -99,6 +99,23 @@ function FloatingStoryWrapper({ children }: { children: ReactElement }) {
   );
 }
 
+function StatefulModalWrapper(props: SideSheetProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <FloatingStoryWrapper>
+      <div>
+        <div style={{ padding: '1rem' }}>
+          <Button onClick={() => setOpen((prev) => !prev)}>
+            Toggle side sheet
+          </Button>
+        </div>
+        <SideSheet {...props} open={open} onClose={() => setOpen(false)} />
+      </div>
+    </FloatingStoryWrapper>
+  );
+}
+
 export default meta;
 type Story = StoryObj<typeof SideSheet>;
 
@@ -268,6 +285,108 @@ export const Stateful: Story = {
     await userEvent.click(closeButton);
 
     // Sheet is closed after clicking close
+    await waitFor(() => {
+      expect(
+        canvas.queryByRole('heading', { name: title as string, level: 2 })
+      ).not.toBeInTheDocument();
+    });
+  },
+};
+
+export const StatefulModal: Story = {
+  args: {
+    type: 'modal',
+  },
+  parameters: {
+    layout: 'fullscreen',
+  },
+  render: (args) => <StatefulModalWrapper {...args} />,
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    // Sheet is closed initially
+    await expect(
+      canvas.queryByRole('heading', { name: title as string, level: 2 })
+    ).not.toBeInTheDocument();
+
+    // Open the sheet
+    await userEvent.click(
+      canvas.getByRole('button', { name: /toggle side sheet/i })
+    );
+
+    // Title and close icon are visible
+    await expect(
+      canvas.getByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const closeIconPath = canvas.getByTestId('eds-icon-path');
+    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
+
+    // Close via the close button
+    const buttons = canvas.getAllByRole('button');
+    await userEvent.click(buttons[buttons.length - 1]);
+
+    await waitFor(() => {
+      expect(
+        canvas.queryByRole('heading', { name: title as string, level: 2 })
+      ).not.toBeInTheDocument();
+    });
+  },
+};
+
+export const StatefulModalWithScrim: Story = {
+  args: {
+    type: 'modal',
+    withScrim: true,
+  },
+  parameters: {
+    layout: 'fullscreen',
+  },
+  render: (args) => <StatefulModalWrapper {...args} />,
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    // Sheet is closed initially
+    await expect(
+      canvas.queryByRole('heading', { name: title as string, level: 2 })
+    ).not.toBeInTheDocument();
+
+    // Open the sheet
+    await userEvent.click(
+      canvas.getByRole('button', { name: /toggle side sheet/i })
+    );
+
+    // Title and close icon are visible
+    await expect(
+      await canvas.findByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const closeIconPath = canvas.getByTestId('eds-icon-path');
+    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
+
+    // Close by clicking the scrim backdrop
+    await userEvent.click(canvas.getByTestId('side-sheet-scrim'));
+
+    await waitFor(() => {
+      expect(
+        canvas.queryByRole('heading', { name: title as string, level: 2 })
+      ).not.toBeInTheDocument();
+    });
+
+    // Re-open and verify close button also dismisses the sheet
+    await userEvent.click(
+      canvas.getByRole('button', { name: /toggle side sheet/i })
+    );
+
+    await expect(
+      await canvas.findByRole('heading', { name: title as string, level: 2 })
+    ).toBeInTheDocument();
+
+    const buttonsAfterReopen = canvas.getAllByRole('button');
+    await userEvent.click(buttonsAfterReopen[buttonsAfterReopen.length - 1]);
+
     await waitFor(() => {
       expect(
         canvas.queryByRole('heading', { name: title as string, level: 2 })
