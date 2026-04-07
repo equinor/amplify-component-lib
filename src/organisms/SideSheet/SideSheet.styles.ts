@@ -34,7 +34,7 @@ export const Wrapper = styled(motion.div)<WrapperProps>`
 `;
 
 interface SheetProps {
-  $type: Required<SideSheetProps['type']>;
+  $type: NonNullable<SideSheetProps['type']>;
 }
 
 export const Sheet = styled.div<SheetProps>`
