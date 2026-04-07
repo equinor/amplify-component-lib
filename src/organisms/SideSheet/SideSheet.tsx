@@ -103,6 +103,7 @@ function SideSheetContent({
               <Typography variant="h2">{title}</Typography>
               {headerElements && <section>{headerElements}</section>}
               <Button
+                aria-label="close side sheet"
                 variant="ghost_icon"
                 onClick={onClose}
                 style={{

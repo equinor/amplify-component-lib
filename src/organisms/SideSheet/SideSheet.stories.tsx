@@ -264,11 +264,8 @@ export const Stateful: Story = {
     ).toBeInTheDocument();
 
     // Close the sheet via the close button
-    const closeIconPath = canvas.getByTestId('eds-icon-path');
-    await expect(closeIconPath).toHaveAttribute('d', close.svgPathData);
-
-    const buttons = canvas.getAllByRole('button');
-    await userEvent.click(buttons[buttons.length - 1]);
+    const closeButton = canvas.getByLabelText(/close side sheet/i);
+    await userEvent.click(closeButton);
 
     // Sheet is closed after clicking close
     await waitFor(() => {
