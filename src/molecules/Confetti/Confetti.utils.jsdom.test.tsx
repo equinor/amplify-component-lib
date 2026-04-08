@@ -1,4 +1,5 @@
 import { createParticle } from './utils/createParticle';
+import { getDefaultColors } from './utils/getDefaultColors';
 import { getSeasonalEvent } from './utils/getSeasonalEvent';
 import { getSeasonalColors, SeasonalColorsMap } from './utils/seasonalColors';
 import {
@@ -7,6 +8,9 @@ import {
   randomNumBetween,
   replaceOpacity,
 } from './utils/utils';
+import { CONFETTI_DEFAULT_COLORS } from './Confetti.constants';
+
+import { test } from 'vitest';
 
 test('randomNumBetween generates numbers within the specified range', () => {
   const min = 5;
@@ -155,4 +159,10 @@ test('getSeasonalColors returns easter colors 2 days before Easter Sunday', () =
   const easterColors = SeasonalColorsMap['easter'].colors;
 
   expect(colors).toEqual(easterColors);
+});
+
+test('getDefaultColors returns default colors if it isnt a special day', () => {
+  expect(getDefaultColors(new Date('2024-01-15'))).toReturnWith(
+    CONFETTI_DEFAULT_COLORS
+  );
 });
