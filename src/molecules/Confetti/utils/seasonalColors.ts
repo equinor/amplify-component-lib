@@ -93,7 +93,6 @@ export const SeasonalColorsMap: Record<SeasonalEvent, SeasonalPalette> = {
 
 /**
  * Returns a color palette for a given date
- * Defaults to today.
  * Returns null if no seasonal event is detected.
  */
 export function getSeasonalColors(date: Date): string[] | null {
