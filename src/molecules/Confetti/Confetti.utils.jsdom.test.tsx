@@ -161,8 +161,8 @@ test('getSeasonalColors returns easter colors 2 days before Easter Sunday', () =
   expect(colors).toEqual(easterColors);
 });
 
-test('getDefaultColors returns default colors if it isnt a special day', () => {
-  expect(getDefaultColors(new Date('2024-01-15'))).toReturnWith(
+test("getDefaultColors returns default colors if it isn't a special day", () => {
+  expect(getDefaultColors(new Date('2024-01-15'))).toEqual(
     CONFETTI_DEFAULT_COLORS
   );
 });
