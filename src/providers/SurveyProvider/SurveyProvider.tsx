@@ -22,7 +22,9 @@ import { SurveyDialog } from './SurveyDialog/SurveyDialog';
 export interface SurveyContextType {
   activeSurvey?: UserSurveyVm;
   activeQuestionIndex?: number;
-  answerQuestion: (answer: Omit<AnswerQuestionCommandDto, 'id'>) => void;
+  answerQuestion: (
+    answer: Omit<AnswerQuestionCommandDto, 'id'>
+  ) => Promise<void>;
   currentAnswer?: AnswerQuestionCommandDto;
   setCurrentAnswer: Dispatch<
     SetStateAction<AnswerQuestionCommandDto | undefined>
@@ -79,16 +81,21 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       throw new Error('No active survey or question to answer');
     }
 
-    if (activeSurvey.surveyResponseId === undefined) {
-      await respondActiveSurvey({
+    let surveyResponseId = activeSurvey.surveyResponseId?.value;
+    if (surveyResponseId === undefined) {
+      const data = await respondActiveSurvey({
         surveyId: activeSurvey.surveyId,
         optOut: false,
       });
+      surveyResponseId = data.value;
     }
 
     await answerQuestion({
-      id: activeSurvey.questions[activeQuestionIndex].questionId,
-      ...answer,
+      surveyResponseId: surveyResponseId ?? '',
+      body: {
+        id: activeSurvey.questions[activeQuestionIndex].questionId,
+        ...answer,
+      },
     });
 
     setCurrentAnswer(undefined);

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { QuestionType } from '@equinor/subsurface-app-management';
@@ -27,17 +27,24 @@ export const SurveyDialog: FC = () => {
     currentAnswer,
     isCancelled,
   } = useSurvey();
+  const [isAnswering, setIsAnswering] = useState(false);
 
   if (!activeSurvey || activeQuestionIndex === undefined || isCancelled)
     return null;
 
-  const handleAnswer = () => {
+  const handleAnswer = async () => {
     if (!currentAnswer) return;
 
-    answerQuestion({
-      ...currentAnswer,
-      selectedOptionIds: currentAnswer?.selectedOptionIds ?? [],
-    });
+    setIsAnswering(true);
+    try {
+      await answerQuestion({
+        ...currentAnswer,
+        selectedOptionIds: currentAnswer?.selectedOptionIds ?? [],
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    setIsAnswering(false);
   };
 
   const disabledNextAction = () => {
@@ -68,9 +75,15 @@ export const SurveyDialog: FC = () => {
       onClick: cancelSurvey,
     },
     {
-      text: activeQuestionIndex === 0 ? 'Get started' : 'Next',
+      text:
+        activeQuestionIndex === 0
+          ? 'Get started'
+          : activeQuestionIndex === activeSurvey.questions.length - 1
+            ? 'Finish'
+            : 'Next',
       disabled: disabledNextAction(),
       onClick: handleAnswer,
+      isLoading: isAnswering,
     },
   ];
 

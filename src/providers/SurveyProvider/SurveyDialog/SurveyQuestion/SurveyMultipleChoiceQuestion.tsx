@@ -16,42 +16,50 @@ const Container = styled.div`
 export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
   questionId,
   options,
+  maxSelections,
 }) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
 
   return (
     <Container>
-      {options?.map((option) => (
-        <Checkbox
-          key={option.id.value}
-          label={option.optionText}
-          checked={currentAnswer?.selectedOptionIds?.some(
-            (item) => item.value === option.id.value
-          )}
-          onChange={(event) => {
-            setCurrentAnswer((prevAnswer) => {
-              const newSelectedOptionIds =
-                (prevAnswer && prevAnswer.selectedOptionIds) ?? [];
-              if (event.target.checked) {
-                newSelectedOptionIds.push(option.id);
-              } else {
-                const index = newSelectedOptionIds.findIndex(
-                  (item) => item.value === option.id.value
-                );
-                if (index > -1) {
-                  newSelectedOptionIds.splice(index, 1);
+      {options?.map((option) => {
+        const checked = currentAnswer?.selectedOptionIds?.some(
+          (item) => item.value === option.id.value
+        );
+        return (
+          <Checkbox
+            key={option.id.value}
+            label={option.optionText}
+            checked={checked}
+            disabled={
+              !checked &&
+              maxSelections === (currentAnswer?.selectedOptionIds?.length ?? 0)
+            }
+            onChange={(event) => {
+              setCurrentAnswer((prevAnswer) => {
+                const newSelectedOptionIds =
+                  (prevAnswer && prevAnswer.selectedOptionIds) ?? [];
+                if (event.target.checked) {
+                  newSelectedOptionIds.push(option.id);
+                } else {
+                  const index = newSelectedOptionIds.findIndex(
+                    (item) => item.value === option.id.value
+                  );
+                  if (index > -1) {
+                    newSelectedOptionIds.splice(index, 1);
+                  }
                 }
-              }
 
-              return {
-                ...prevAnswer,
-                id: questionId,
-                selectedOptionIds: newSelectedOptionIds,
-              };
-            });
-          }}
-        />
-      ))}
+                return {
+                  ...prevAnswer,
+                  id: questionId,
+                  selectedOptionIds: newSelectedOptionIds,
+                };
+              });
+            }}
+          />
+        );
+      })}
     </Container>
   );
 };
