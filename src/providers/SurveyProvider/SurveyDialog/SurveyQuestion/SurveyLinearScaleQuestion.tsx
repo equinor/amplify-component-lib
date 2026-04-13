@@ -71,7 +71,9 @@ export const SurveyLinearScaleQuestion: FC<SurveyLinearScaleQuestionProps> = ({
             name={`range-${questionId.value}`}
             label=""
             checked={
-              currentAnswer?.numericAnswer === index + linearScaleConfig.min
+              ('answer' in rest ? rest.answer : currentAnswer)
+                ?.numericAnswer ===
+              index + linearScaleConfig.min
             }
             onClick={() => {
               handleOnAnswer(linearScaleConfig.min + index);

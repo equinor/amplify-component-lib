@@ -21,7 +21,7 @@ export const SurveyFreeTextQuestion: FC<FreeTextQuestion> = ({
   return (
     <Container>
       <TextField
-        id={`free-text-${questionId}`}
+        id={`free-text-${questionId.value}`}
         autoComplete="off"
         value={currentAnswer?.textAnswer ?? ''}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
