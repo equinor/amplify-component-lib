@@ -18,6 +18,8 @@ import {
 } from '@equinor/subsurface-app-management';
 
 import { SurveyDialog } from './SurveyDialog/SurveyDialog';
+import { useConfetti } from 'src/providers/ConfettiProvider/ConfettiProvider';
+import { useToasts } from 'src/providers/ToastProvider/ToastProvider';
 
 export interface SurveyContextType {
   activeSurvey?: UserSurveyVm;
@@ -33,6 +35,7 @@ export interface SurveyContextType {
   cancelSurvey: () => void;
   hideSurvey: () => void;
   isCancelled: boolean;
+  completeSurvey: () => void;
 }
 
 export const SurveyContext = createContext<SurveyContextType | undefined>(
@@ -43,7 +46,12 @@ interface SurveyProviderProps {
   children: ReactElement;
 }
 
+/**
+ * @description - Survey provider, assumes you also have ToastProvider and ConfettiProvider in your app.
+ */
 export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
+  const { showToast } = useToasts();
+  const { shower } = useConfetti();
   const { data: activeSurvey } = useActiveSurvey();
   const [activeQuestionIndex, setActiveQuestionIndex] = useState<
     number | undefined
@@ -69,6 +77,24 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       );
     }
   }, [activeSurvey]);
+
+  const handleCompleteSurvey = () => {
+    if (!activeSurvey) return;
+
+    showToast({
+      variant: 'success',
+      title: 'Survey completed',
+      description: 'Thanks for helping us improve!',
+    });
+
+    if (activeSurvey.showConfettiOnComplete) {
+      shower({
+        mode: 'shower',
+        shapes: ['square'],
+        duration: 5000,
+      });
+    }
+  };
 
   const handleAnswerQuestion = async (
     answer: Omit<AnswerQuestionCommandDto, 'id'>
@@ -105,6 +131,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       setActiveQuestionIndex(activeQuestionIndex + 1);
     } else {
       setActiveQuestionIndex(undefined);
+      handleCompleteSurvey();
     }
   };
 
@@ -134,6 +161,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
         currentAnswer,
         setCurrentAnswer,
         isCancelled,
+        completeSurvey: handleCompleteSurvey,
       }}
     >
       {children}

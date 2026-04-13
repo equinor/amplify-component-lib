@@ -11,6 +11,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { useSurvey } from './hooks/useSurvey';
 import { SurveyProvider } from './SurveyProvider';
+import { ConfettiProvider, ToastProvider } from 'src/providers';
 
 import { delay, http, HttpResponse } from 'msw';
 import { expect, userEvent, waitFor } from 'storybook/test';
@@ -27,6 +28,13 @@ const meta: Meta<typeof SurveyProvider> = {
   },
   args: {},
   tags: ['!autodocs'],
+  decorators: (Story) => (
+    <ToastProvider>
+      <ConfettiProvider>
+        <Story />
+      </ConfettiProvider>
+    </ToastProvider>
+  ),
 };
 
 export default meta;
@@ -424,9 +432,13 @@ export const TestNoActiveSurvey: Story = {
   tags: ['test-only'],
   args: {},
   decorators: (Story) => (
-    <SurveyProvider>
-      <Story />
-    </SurveyProvider>
+    <ToastProvider>
+      <ConfettiProvider>
+        <SurveyProvider>
+          <Story />
+        </SurveyProvider>
+      </ConfettiProvider>
+    </ToastProvider>
   ),
   render: NoActiveSurveyComponent,
   parameters: {

@@ -24,8 +24,13 @@ const QuestionWrapper = styled.div`
 `;
 
 export const UmuxDialog: FC = () => {
-  const { activeSurvey, hideSurvey, cancelSurvey, setActiveQuestionIndex } =
-    useSurvey();
+  const {
+    activeSurvey,
+    hideSurvey,
+    cancelSurvey,
+    setActiveQuestionIndex,
+    completeSurvey,
+  } = useSurvey();
   const { mutateAsync: respondActiveSurvey } = useRespondActiveSurvey();
   const { mutateAsync: answerQuestion } = useAnswerQuestionActiveSurvey();
   const [answers, setAnswers] = useState<AnswerQuestionCommandDto[]>([]);
@@ -55,6 +60,7 @@ export const UmuxDialog: FC = () => {
     setIsCompleting(false);
 
     setActiveQuestionIndex(undefined);
+    completeSurvey();
   };
 
   return (
