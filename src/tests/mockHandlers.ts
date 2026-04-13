@@ -13,7 +13,6 @@ import {
 } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 
-import { Field } from 'src/atoms/types/Field';
 import { environment } from 'src/atoms/utils/auth_environment';
 
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
@@ -72,24 +71,12 @@ export const FAKE_ROLES = [
   },
 ] as const;
 
-export const FAKE_FIELDS: Field[] = [
-  {
-    country: faker.location.country(),
-    name: faker.location.continent(),
-    uuid: faker.location.city(),
-  },
-] as const;
-
-export const FAKE_WELLS: string[] = [faker.location.zipCode()] as const;
-
 function fakeUser(): ImpersonateUserDto {
   const firstName = faker.string.uuid();
   const lastName = faker.person.lastName();
   const fullName = `${firstName} ${lastName}`;
   const uniqueName = faker.internet.username();
   const email = faker.internet.email();
-  const field = FAKE_FIELDS[0].name;
-  const well = FAKE_WELLS[0];
   const roles = faker.helpers.arrayElements(FAKE_ROLES).map((i) => i.value);
 
   return {
@@ -99,8 +86,6 @@ function fakeUser(): ImpersonateUserDto {
     fullName,
     email,
     uniqueName,
-    field,
-    well,
     roles: [...roles, 'other'],
     appName: environment.getAppName(import.meta.env.VITE_NAME),
     activeUsers: [],

@@ -1,5 +1,7 @@
 import { FC, KeyboardEvent, ReactNode, RefObject } from 'react';
 
+import type { TooltipProps } from '@equinor/eds-core-react';
+
 import { Variants } from 'src/atoms/types/variants';
 
 export interface SelectOptionRequired {
@@ -87,14 +89,16 @@ type CommonListSelectProps<T extends SelectOptionRequired> = {
   groups?: undefined;
 };
 
-interface ListSelectWithAddItemProps<T extends SelectOptionRequired>
-  extends CommonListSelectProps<T> {
+interface ListSelectWithAddItemProps<
+  T extends SelectOptionRequired,
+> extends CommonListSelectProps<T> {
   onAddItem: (item: string) => void;
   itemSingularWord?: string;
 }
 
-interface ListSelectWithoutAddItemProps<T extends SelectOptionRequired>
-  extends CommonListSelectProps<T> {
+interface ListSelectWithoutAddItemProps<
+  T extends SelectOptionRequired,
+> extends CommonListSelectProps<T> {
   onAddItem?: undefined;
   itemSingularWord?: undefined;
 }
@@ -176,5 +180,7 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   inDialog?: boolean;
   onOpenCallback?: (value: boolean) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
+  explanation?: string;
+  explanationPosition?: TooltipProps['placement'];
   'data-testid'?: string;
 } & CustomMenuItemComponentProps<T>;

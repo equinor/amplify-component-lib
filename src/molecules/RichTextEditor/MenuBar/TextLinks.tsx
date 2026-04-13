@@ -93,12 +93,10 @@ export const TextLinks: FC<EditorPanel> = ({ editor, features }) => {
         <Popover open anchorEl={buttonRef.current} onClose={handleOnClose}>
           <Container>
             <TextField
-              inputRef={(element) => {
-                element?.focus();
-              }}
               id="link"
               placeholder="Insert link"
               autoComplete="off"
+              autoFocus
               inputIcon={<Icon data={link} />}
               onChange={handleOnChange}
               onKeyDown={handleOnKeyDown}

@@ -18,7 +18,7 @@ interface SearchProps {
 }
 
 export const Search: FC<SearchProps> = ({ placeholder }) => {
-  const navigate = useNavigate({ from: '/faq' });
+  const navigate = useNavigate();
   const { search } = useSearch({ strict: false });
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {

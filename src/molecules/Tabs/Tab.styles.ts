@@ -44,6 +44,9 @@ export const Button = styled.button<ButtonProps>`
 
   &:hover:not(:disabled) {
     background: ${colors.interactive.primary__hover_alt.rgba};
+    > label {
+      color: ${colors.text.static_icons__secondary.rgba};
+    }
 
     &[aria-selected='true'] {
       > svg {

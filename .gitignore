@@ -1,8 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Webstorm specific
-.idea/workspace.xml
-
 package-lock.json
 
 # dependencies
@@ -17,6 +14,7 @@ package-lock.json
 
 # Webstorm user specific settings
 .idea/workspace.xml
+.idea/vcs.xml
 
 # production
 /build

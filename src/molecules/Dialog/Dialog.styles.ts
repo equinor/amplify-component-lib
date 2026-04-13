@@ -17,7 +17,7 @@ export const DialogTitle = styled(EDSDialog.Title)<StyledDialogProps>`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: ${spacings.small} ${spacings.x_small} ${spacings.small}
+  padding: ${spacings.small} ${spacings.small} ${spacings.small}
     ${spacings.medium};
 
   ${({ $withBorders }) => {

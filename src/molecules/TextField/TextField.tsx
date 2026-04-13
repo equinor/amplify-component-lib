@@ -1,8 +1,19 @@
-import { FC, InputHTMLAttributes, TextareaHTMLAttributes, useRef } from 'react';
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  FC,
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   TextField as Base,
   TextFieldProps as BaseProps,
+  TooltipProps,
+  Typography,
 } from '@equinor/eds-core-react';
 
 import { shape, spacings } from 'src/atoms/style';
@@ -10,6 +21,7 @@ import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
+import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
@@ -17,6 +29,9 @@ import styled, { css } from 'styled-components';
 export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
   loading?: boolean;
+  maxCharacters?: number;
+  explanation?: string;
+  explanationPosition?: TooltipProps['placement'];
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -24,11 +39,13 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
 
 interface WrapperProps {
   $variant: TextFieldProps['variant'];
+  $helperRightWidth: number;
   $disabled?: boolean;
 }
 
 const Wrapper = styled.div<WrapperProps>`
   position: relative;
+  height: fit-content;
   input,
   textarea {
     color: ${colors.text.static_icons__default.rgba};
@@ -38,7 +55,7 @@ const Wrapper = styled.div<WrapperProps>`
     &::placeholder {
       opacity: 1;
     }
-    &:hover {
+    &:hover:not(:disabled) {
       background: ${colors.ui.background__light_medium.rgba};
     }
     &:disabled {
@@ -49,6 +66,13 @@ const Wrapper = styled.div<WrapperProps>`
   }
   div:focus-within {
     outline: none !important;
+  }
+
+  div[class*='HelperText'] {
+    margin-right: ${({ $helperRightWidth }) =>
+      $helperRightWidth
+        ? `calc(${$helperRightWidth}px + ${spacings.medium})`
+        : 0};
   }
 
   ${({ $variant, $disabled }) => {
@@ -115,7 +139,34 @@ const Loader = styled(SkeletonBase)`
   transform: translateY(${spacings.x_small});
 `;
 
+const MaxCharactersText = styled(Typography)`
+  position: absolute;
+  right: ${spacings.small};
+`;
+
+const LabelWrapper = styled.div`
+  display: flex;
+  gap: ${spacings.x_small};
+  align-items: center;
+`;
+
+/**
+ * @param loading - Show loading skeleton on top of the text field.
+ * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
+ */
 export const TextField: FC<TextFieldProps> = (props) => {
+  if (props.maxCharacters && 'type' in props && props.type !== 'text') {
+    throw new Error(
+      '`maxCharacters` prop is not supported for input types other than "text".'
+    );
+  }
+
+  if (!!props.explanation && !props.label) {
+    throw new Error(
+      '`explanation` prop requires a `label` to be set on the TextField.'
+    );
+  }
+
   const baseProps: BaseProps = {
     ...props,
     variant: props.variant !== 'dirty' ? props.variant : undefined,
@@ -125,13 +176,82 @@ export const TextField: FC<TextFieldProps> = (props) => {
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
+  const [characterCount, setCharacterCount] = useState<number>(
+    typeof props.value === 'string' ? props.value.length : 0
+  );
+  const [helperRightWidth, setHelperRightWidth] = useState(0);
+
+  const handleRenderHelperTextRight = (element: HTMLDivElement | null) => {
+    if (element) {
+      const width = element.getBoundingClientRect().width;
+      setHelperRightWidth(width);
+    }
+  };
+
+  // Since both textarea and input have event.target.value , we can safely cast here
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (props.onChange) {
+      (props.onChange as ChangeEventHandler<HTMLInputElement>)(event);
+    }
+
+    if (props.maxCharacters) {
+      setCharacterCount(event.target.value.length);
+    }
+  };
+
+  // Not able to test the case where the input element isn't found
+  /* v8 ignore start */
+  const handleOnRender = (element: HTMLDivElement | null) => {
+    if (!element || !props.maxCharacters) return;
+    // Get input or textarea element inside the wrapper
+    const inputElement: HTMLInputElement | HTMLTextAreaElement | null =
+      element.querySelector('input, textarea');
+    if (inputElement) {
+      setCharacterCount(inputElement.value.length);
+    }
+  };
+  /* v8 ignore end */
+
+  useEffect(() => {
+    if (
+      typeof props.value === 'string' &&
+      props.maxCharacters &&
+      props.value.length !== characterCount
+    ) {
+      setCharacterCount(props.value.length);
+    }
+  }, [characterCount, props.maxCharacters, props.value]);
 
   return (
     <Wrapper
+      ref={handleOnRender}
       $variant={usingVariant}
       $disabled={props.loading ? false : props.disabled}
+      $helperRightWidth={helperRightWidth}
+      style={{
+        marginBottom:
+          !props.helperText && props.maxCharacters
+            ? `calc(${spacings.small} + 1rem)`
+            : 0,
+      }}
     >
-      <Base {...baseProps} disabled={props.loading || props.disabled} />
+      <Base
+        {...baseProps}
+        label={
+          baseProps.label ? (
+            <LabelWrapper>
+              {baseProps.label}
+              {props.explanation && (
+                <InputExplanation position={props.explanationPosition}>
+                  {props.explanation}
+                </InputExplanation>
+              )}
+            </LabelWrapper>
+          ) : undefined
+        }
+        disabled={props.loading || props.disabled}
+        onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
+      />
       {props.loading && (
         <Loader
           className="skeleton"
@@ -142,6 +262,25 @@ export const TextField: FC<TextFieldProps> = (props) => {
             width: skeletonWidth.current,
           }}
         />
+      )}
+      {props.maxCharacters && (
+        <MaxCharactersText
+          ref={handleRenderHelperTextRight}
+          variant="helper"
+          group="input"
+          color={
+            baseProps.variant
+              ? VARIANT_COLORS[baseProps.variant]
+              : colors.text.static_icons__tertiary.rgba
+          }
+          style={{
+            bottom: props.helperText
+              ? '0'
+              : `calc((${spacings.small} + 1rem) * -1)`,
+          }}
+        >
+          {characterCount} / {props.maxCharacters}
+        </MaxCharactersText>
       )}
     </Wrapper>
   );

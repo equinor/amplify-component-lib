@@ -29,8 +29,7 @@ type MenuClickHandler = () => void | MouseEventHandler<HTMLAnchorElement>;
 
 function fakeProps(selected = false): MenuItemProps {
   return {
-    currentUrl: faker.internet.url(),
-    link: selected ? '/page1' : '/page2',
+    to: selected ? '/page1' : '/page2',
     icon: home,
     name: faker.person.jobTitle(),
     onClick: vi.fn() as MenuClickHandler,
@@ -233,11 +232,11 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
         icon: shopping_basket,
         items: [
           {
-            link: '/dog',
+            to: '/dog',
             name: faker.animal.dog(),
           },
           {
-            link: '/cat',
+            to: '/cat',
             name: faker.animal.cat(),
           },
         ],
@@ -262,7 +261,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
       }
 
       expect(
-        screen.getByText(randomItem.link.replace('/', ''))
+        screen.getByText(randomItem.to.replace('/', ''))
       ).toBeInTheDocument();
     });
   });

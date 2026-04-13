@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { Link as TanstackLink } from '@tanstack/react-router';
+import { createLink } from '@tanstack/react-router';
 
 import { colors, spacings } from 'src/atoms/style';
 
@@ -10,11 +10,10 @@ export const MenuItemWrapper = styled.span`
 `;
 
 interface LinkProps {
-  $active?: boolean;
   $disabled?: boolean;
 }
 
-export const Link = styled(TanstackLink)<LinkProps>`
+const AnchorTag = styled.a<LinkProps>`
   display: flex;
   align-self: stretch;
   align-items: center;
@@ -24,8 +23,6 @@ export const Link = styled(TanstackLink)<LinkProps>`
   gap: ${spacings.medium};
   box-sizing: border-box;
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
-  background: ${({ $active }) =>
-    $active && colors.interactive.primary__selected_highlight.rgba};
   text-decoration: none;
   transition: background 0.1s ease-out;
   > div > svg {
@@ -37,17 +34,24 @@ export const Link = styled(TanstackLink)<LinkProps>`
   &:hover {
     cursor: ${({ $disabled }) => !$disabled && 'pointer'};
     text-decoration: none;
-    background: ${({ $active, $disabled }) =>
-      !$disabled &&
-      ($active
-        ? colors.interactive.primary__selected_hover.rgba
-        : colors.interactive.primary__hover_alt.rgba)};
+    background: ${({ $disabled }) =>
+      !$disabled && colors.interactive.primary__hover_alt.rgba};
     > div > svg {
-      fill: ${({ $disabled, $active }) =>
-        !$disabled && !$active && colors.interactive.primary__hover.rgba};
+      fill: ${({ $disabled }) =>
+        $disabled
+          ? colors.interactive.disabled__text.rgba
+          : colors.interactive.primary__hover.rgba};
+    }
+  }
+  &[data-status='active'] {
+    background: ${colors.interactive.primary__selected_highlight.rgba};
+    &:hover {
+      background: ${colors.interactive.primary__selected_hover.rgba};
     }
   }
 `;
+
+export const Link = createLink(AnchorTag);
 
 export const IconContainer = styled.div`
   display: flex;

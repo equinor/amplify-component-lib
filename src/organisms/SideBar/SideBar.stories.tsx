@@ -11,19 +11,19 @@ import { SideBar } from '.';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
-import { expect } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 
 const menuItems: SideBarMenuItem[] = [
   {
     name: 'Dashboard',
     icon: dashboard,
-    link: 'dashboard',
+    to: '/dashboard',
     onClick: () => console.log('going to dashboard...'),
   },
   {
     name: 'History',
     icon: history,
-    link: 'history',
+    to: '/history',
     onClick: () => console.log('going to history...'),
   },
   {
@@ -32,18 +32,18 @@ const menuItems: SideBarMenuItem[] = [
     items: [
       {
         name: 'My favourites',
-        link: 'my-favourites',
+        to: '/my-favourites',
       },
       {
         name: 'Team favourites',
-        link: 'team-favourites',
+        to: '/team-favourites',
       },
     ],
   },
   {
     name: 'Cars',
     icon: car,
-    link: 'cars',
+    to: '/cars',
     onClick: () => console.log('going to favourites...'),
   },
 ];
@@ -64,7 +64,7 @@ const StoryComponent = (args: {
           }
           bottomItem={
             args.hasBottomItem ? (
-              <SideBar.Item icon={car} name="Cars" link="/" />
+              <SideBar.Item icon={car} name="Cars" to="/" />
             ) : undefined
           }
           {...args}
@@ -153,5 +153,47 @@ export const Open: Story = {
   play: async ({ canvas }) => {
     const createIcon = canvas.getAllByTestId('eds-icon-path')[0]; // First icon is create icon
     await expect(createIcon).toHaveAttribute('d', add.svgPathData);
+  },
+};
+
+export const TestToggleClick: Story = {
+  tags: ['test-only'],
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({
+        isOpen: true,
+      })
+    );
+  },
+  play: async ({ canvas }) => {
+    const buttons = canvas.getAllByRole('button');
+    const toggleButton = buttons[buttons.length - 1]; // Toggle is usually the last button
+
+    await userEvent.click(toggleButton);
+    // Just verify the click doesn't throw
+    await expect(toggleButton).toBeInTheDocument();
+  },
+};
+
+export const TestToggleKeyboard: Story = {
+  tags: ['test-only'],
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({
+        isOpen: true,
+      })
+    );
+  },
+  play: async ({ canvas }) => {
+    const buttons = canvas.getAllByRole('button');
+    const toggleButton = buttons[buttons.length - 1];
+
+    toggleButton.focus();
+    await expect(toggleButton).toHaveFocus();
+
+    await userEvent.keyboard('[Enter]');
+    await expect(toggleButton).toBeInTheDocument();
   },
 };

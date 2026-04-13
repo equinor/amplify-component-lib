@@ -2,13 +2,14 @@ import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
 
 import { Acquire } from './Icons/Acquire';
 import { Adca } from './Icons/Adca';
+import { AtWork } from './Icons/Atwork';
 import { Bravos } from './Icons/Bravos';
 import { Dasha } from './Icons/Dasha';
+import { DataDeliveryPlan } from './Icons/DataDeliveryPlan';
+import { FluidSymphony } from './Icons/FluidSymphony';
 import { FluxMaps } from './Icons/FluxMaps';
+import { ForecastDataInventory } from './Icons/ForecastDataInventory';
 import { ForecastFormatter } from './Icons/ForecastFormatter';
-import { FourDInsight } from './Icons/FourDInsight';
-import { InPress } from './Icons/InPress';
-import { JsCalendar } from './Icons/JsCalendar';
 import { JsEmbark } from './Icons/JsEmbark';
 import { LoggingQualification } from './Icons/LoggingQualification';
 import { Orca } from './Icons/Orca';
@@ -27,10 +28,12 @@ export type ApplicationName =
   | 'recap'
   | 'dasha'
   | 'forecast-formatter'
+  | 'fluid-symphony'
+  | 'fdi'
   | 'orca'
   | 'portal'
   | 'jsembark'
-  | 'jscalendar'
+  | 'atwork'
   | 'logging-qualification'
   | 'pwex'
   | 'inpress'
@@ -49,7 +52,6 @@ const apps: ApplicationIconData[] = [
   { appName: ['adca'], component: Adca },
   { appName: ['portal', 'embark', 'jsembark'], component: JsEmbark },
   { appName: ['acquire'], component: Acquire },
-  { appName: ['4dinsight'], component: FourDInsight },
   { appName: ['dasha'], component: Dasha },
   {
     appName: [
@@ -60,6 +62,8 @@ const apps: ApplicationIconData[] = [
     ],
     component: ForecastFormatter,
   },
+  { appName: ['fdi'], component: ForecastDataInventory },
+  { appName: ['fluid-symphony', 'Fluid Symphony'], component: FluidSymphony },
   { appName: ['orca'], component: Orca },
   {
     appName: ['logging-qualification', 'logging qualification', 'ltg'],
@@ -71,12 +75,15 @@ const apps: ApplicationIconData[] = [
   },
   { appName: ['recap'], component: Recap },
   { appName: ['pwex'], component: Pwex },
-  { appName: ['inpress'], component: InPress },
   { appName: ['bravos'], component: Bravos },
   { appName: ['premo'], component: Premo },
   { appName: ['sam'], component: Sam },
   { appName: ['subsurface portal'], component: SubsurfacePortal },
-  { appName: ['jscalendar', 'js calendar'], component: JsCalendar },
+  { appName: ['atwork'], component: AtWork },
+  {
+    appName: ['data delivery plan', 'data-delivery-plan'],
+    component: DataDeliveryPlan,
+  },
 ];
 
 export interface ApplicationIconProps extends Partial<AppIconProps> {

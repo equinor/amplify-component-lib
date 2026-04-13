@@ -2,7 +2,7 @@ import { FC, MouseEvent, useCallback, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { Feature } from '@equinor/subsurface-app-management';
-import { useLocation } from '@tanstack/react-router';
+import { useMatchRoute } from '@tanstack/react-router';
 
 import { BasicSideBarMenuItem } from 'src/atoms/types/SideBar';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
@@ -12,10 +12,7 @@ import {
   Link,
   MenuItemWrapper,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.styles';
-import {
-  canNavigate,
-  isCurrentUrl,
-} from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
+import { canNavigate } from 'src/organisms/SideBar/MenuItem/MenuItem.utils';
 import { useSideBar } from 'src/providers/SideBarProvider';
 
 export type BasicMenuItemProps = {
@@ -24,23 +21,18 @@ export type BasicMenuItemProps = {
 
 export const BasicMenuItem: FC<BasicMenuItemProps> = ({
   icon,
-  link,
   onClick,
   replace = false,
   name,
   disabled = false,
   featureUuid,
-  ...props
+  ...linkProps
 }) => {
-  const { pathname } = useLocation();
-  const isActive = isCurrentUrl({
-    currentUrl: pathname,
-    link,
-  });
   const { isOpen } = useSideBar();
+  const matchRoute = useMatchRoute();
+  const isActive = !!matchRoute({ ...linkProps });
   const shouldNavigate = canNavigate({
-    currentUrl: pathname,
-    link,
+    isActive,
     replace,
     disabled,
   });
@@ -61,15 +53,12 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
       <OptionalTooltip title={name} placement="right">
         <MenuItemWrapper>
           <Link
-            to={link}
-            $active={isActive}
             aria-disabled={disabled}
             $disabled={disabled}
             onClick={handleOnClick}
             tabIndex={0}
             data-testid="sidebar-menu-item"
-            replace={replace}
-            {...props}
+            {...linkProps}
           >
             <IconContainer data-testid="icon-container">
               <Icon data={icon} size={24} />
@@ -88,17 +77,7 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
         </MenuItemWrapper>
       </OptionalTooltip>
     );
-  }, [
-    disabled,
-    handleOnClick,
-    icon,
-    isActive,
-    isOpen,
-    link,
-    name,
-    props,
-    replace,
-  ]);
+  }, [disabled, handleOnClick, icon, isActive, isOpen, name, linkProps]);
 
   if (featureUuid) {
     return <Feature featureUuid={featureUuid}>{content}</Feature>;

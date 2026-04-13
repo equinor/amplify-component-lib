@@ -9,6 +9,12 @@ export { Button } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
 export { Chip } from './Chip/Chip';
 export type { BaseChipProps } from './Chip/Chip';
+export { Confetti } from './Confetti/Confetti';
+export type {
+  ConfettiProps,
+  ConfettiBoomProps,
+  ConfettiShowerProps,
+} from './Confetti/Confetti.types';
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
@@ -86,6 +92,8 @@ export type { ComboBoxProps } from './Select/ComboBox/ComboBox';
 export { SingleSelect } from './Select/SingleSelect/SingleSelect';
 export type { SingleSelectProps } from './Select/SingleSelect/SingleSelect';
 export type { SelectOption, SelectOptionRequired } from './Select/Select.types';
+export { Tag } from './Tag/Tag';
+export type { TagProps } from './Tag/Tag';
 export { Toast } from './Toast/Toast';
 export type { ToastProps } from './Toast/Toast';
 export { TableHeader } from './TableHeader/TableHeader';

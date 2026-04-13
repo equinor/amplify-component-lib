@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 
 import { AppIconProps } from 'src/molecules/ApplicationIcon/ApplicationIcon.types';
-import ApplicationIconBase, {
+import {
+  ApplicationIconBase,
   ShapeProps,
-} from 'src/molecules/ApplicationIcon/ApplicationIconBase/ApplicationIconBase';
-import { pwex } from 'src/molecules/ApplicationIcon/ApplicationIconCollection';
+} from 'src/molecules/ApplicationIcon/ApplicationIconBase';
 
 const shapes: ShapeProps[] = [
   {
@@ -13,14 +13,27 @@ const shapes: ShapeProps[] = [
     rotation: 343,
   },
   {
-    top: 26,
+    top: 40,
     left: 11,
-    rotation: 193,
+    rotation: 200,
   },
 ];
 
 export const Pwex = forwardRef<HTMLDivElement, AppIconProps>((props, ref) => (
-  <ApplicationIconBase ref={ref} iconData={pwex} shapes={shapes} {...props} />
+  <ApplicationIconBase ref={ref} shapes={shapes} {...props}>
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20.5844 12.0001C21.9187 12.0001 23.1264 12.573 23.9994 13.4982C24.8724 12.5726 26.0808 12.0002 27.4154 12.0001H37.8636C38.3072 12.0004 38.6672 12.3802 38.6674 12.8488V30.8927C38.6673 31.3614 38.3073 31.7411 37.8636 31.7413H15.9984C15.867 31.7414 15.7387 31.7754 15.6244 31.839C15.5785 31.8645 15.5352 31.8951 15.4945 31.9298C15.4743 31.947 15.4546 31.9651 15.4359 31.9845L10.7006 36.8986C10.1922 37.4259 9.33337 37.0447 9.33337 36.2921V12.8488C9.33352 12.38 9.69332 12.0001 10.1371 12.0001H20.5844ZM27.4154 14.9708C26.3059 14.971 25.4066 15.9219 25.4066 17.0939V28.7706H35.8539V14.9708H27.4154ZM14.222 24.9913C13.4507 24.9914 12.8256 25.6174 12.8256 26.3888C12.8257 27.1601 13.4507 27.7852 14.222 27.7853H16.2972C17.0686 27.7853 17.6946 27.1602 17.6947 26.3888C17.6947 25.6173 17.0687 24.9913 16.2972 24.9913H14.222ZM14.222 20.2423C13.4507 20.2424 12.8256 20.8674 12.8256 21.6388C12.8256 22.4102 13.4507 23.0352 14.222 23.0353H19.9496C20.7209 23.0351 21.3461 22.4101 21.3461 21.6388C21.3461 20.8675 20.7208 20.2425 19.9496 20.2423H14.222ZM14.222 15.4923C13.4508 15.4925 12.8257 16.1176 12.8256 16.8888C12.8256 17.6601 13.4507 18.2861 14.222 18.2863H19.9496C20.7209 18.2861 21.3461 17.6602 21.3461 16.8888C21.3459 16.1175 20.7208 15.4924 19.9496 15.4923H14.222Z"
+        fill="#F5F5F5"
+      />
+    </svg>
+  </ApplicationIconBase>
 ));
 
 Pwex.displayName = 'Pwex';

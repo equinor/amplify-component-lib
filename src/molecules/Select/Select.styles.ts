@@ -25,6 +25,12 @@ export const Wrapper = styled.div<WrapperProps>`
     `}
 `;
 
+export const LabelWrapper = styled.span`
+  display: flex;
+  gap: ${spacings.x_small};
+  width: 100%;
+`;
+
 interface HelperWrapperProps {
   $variant?: Variants | 'disabled';
   $borderBottom?: boolean;
@@ -217,8 +223,14 @@ const ClearButton = styled(Button)<ClearButtonProps>`
     height: 24px;
     left: 0;
   }
+  &:disabled {
+    svg {
+      fill: ${colors.interactive.disabled__text.rgba};
+    }
+  }
 `;
 
+/* v8 ignore start */
 interface ComboBoxChipProps {
   $tryingToRemove: boolean;
   $lightBackground?: boolean;
@@ -232,6 +244,7 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
     return colors.ui.background__default.rgba;
   }} !important;
 `;
+/* v8 ignore end */
 
 const PersistentGroupsWrapper = styled.div`
   padding: ${spacings.small} 0;
@@ -248,7 +261,7 @@ interface CustomMenuItemProps {
 const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
   flex-grow: 1;
   padding-left: 10px;
-  
+
   > div {
     grid-auto-columns: auto;
     justify-content: flex-start;
@@ -262,16 +275,16 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
     outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
 
-    ${({ $selected }) =>
-      $selected
-        ? css`
-            background: ${colors.interactive.primary__selected_highlight.rgba};
+  ${({ $selected }) =>
+    $selected
+      ? css`
+          background: ${colors.interactive.primary__selected_highlight.rgba};
 
-            &:hover {
-              background: ${colors.interactive.primary__selected_hover.rgba};
-            }
-          `
-        : ''}}
+          &:hover {
+            background: ${colors.interactive.primary__selected_hover.rgba};
+          }
+        `
+      : ''}
 `;
 
 interface PersistentComboBoxWrapperProps {
@@ -280,6 +293,8 @@ interface PersistentComboBoxWrapperProps {
 }
 
 const PersistentComboBoxWrapper = styled.div<PersistentComboBoxWrapperProps>`
+  position: relative;
+  isolation: isolate;
   border: 1px solid ${colors.ui.background__heavy.rgba};
   border-radius: ${shape.corners.borderRadius};
   overflow: auto;
@@ -295,6 +310,7 @@ const PersistentComboBoxWrapper = styled.div<PersistentComboBoxWrapperProps>`
 const PersistentStickyWrapper = styled.div`
   position: sticky;
   top: 0;
+  z-index: 1;
 `;
 
 const PersistentListItem = styled.button`
@@ -361,11 +377,13 @@ const StyledMenu = styled(EDSMenu)`
 const MenuItemWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: ${spacings.small};
 `;
 
 const SmallButton = styled(Button)`
   width: 36px;
   height: 36px;
+  flex-shrink: 0;
 `;
 
 export {

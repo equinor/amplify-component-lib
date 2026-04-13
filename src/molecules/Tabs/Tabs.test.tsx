@@ -17,7 +17,7 @@ function fakeProps(): Omit<TabsProps<number>, 'selected'> {
 
 test('Able to click tabs as expected', async () => {
   const props = fakeProps();
-  render(<Tabs {...props} selected={0} />);
+  render(<Tabs {...props} onHover={undefined} selected={0} />);
   const user = userEvent.setup();
 
   for (const option of props.options) {

@@ -23,7 +23,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const FAKE_ITEMS = new Array(10).fill(0).map((_, index) => ({
-  label: `${faker.animal.fish()} #${index + 1}`,
+  label: `${faker.animal.fish()} ${index + 1}`,
   value: faker.string.uuid(),
 }));
 
@@ -190,6 +190,14 @@ export const BasicPersistentComboBox: Story = {
       await expect(menuItem).toBeInTheDocument();
     }
   },
+};
+
+export const Explanation: Story = {
+  args: {
+    label: 'This is the label',
+    explanation: 'This is an explanation text',
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
 export const Loading: Story = {

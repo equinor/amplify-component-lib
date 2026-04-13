@@ -64,8 +64,6 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
       );
     }, [availableFields, searchValue, selectedField]);
 
-    const noSearchResult = filteredFields.length === 0;
-
     const transformedFieldName = useMemo(() => {
       if (selectedField?.name) {
         return (
@@ -82,6 +80,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     };
 
     const showSearchInput = availableFields.length >= 4;
+    const noSearchResult = filteredFields.length === 0 && showSearchInput;
 
     if (!selectedField) return null;
 

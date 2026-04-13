@@ -8,11 +8,13 @@ import {
   Tooltip,
 } from '@equinor/eds-core-react';
 import { add, menu, refresh, save } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Button, ButtonProps } from './Button';
 import page from 'src/molecules/Button/Button.docs.mdx';
 import { Stack } from 'src/storybook';
+
+import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof Button> = {
   title: 'Molecules/Button',
@@ -387,3 +389,33 @@ All.decorators = [
     </Stack>
   ),
 ];
+
+type Story = StoryObj<typeof Button>;
+
+export const TestLoadingState: Story = {
+  tags: ['test-only'],
+  args: {
+    loading: true,
+    children: 'Loading Button',
+    onClick: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await expect(canvas.queryByText('Loading Button')).not.toBeVisible();
+
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
+
+export const TestClickable: Story = {
+  tags: ['test-only'],
+  args: {
+    children: 'Click me',
+    onClick: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).toHaveBeenCalledOnce();
+  },
+};
