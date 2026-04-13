@@ -18,7 +18,7 @@ export const SurveyProgress: FC = () => {
   const total = activeSurvey?.questions.length ?? 0;
   const current = (activeQuestionIndex ?? 0) + 1;
 
-  const percentage = (current / total) * 100;
+  const percentage = Math.floor((current / total) * 100);
 
   return (
     <Container>

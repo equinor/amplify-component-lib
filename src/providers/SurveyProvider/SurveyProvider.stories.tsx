@@ -98,6 +98,18 @@ const standardSurvey: UserSurveyVm = {
       ],
       maxSelections: 1,
     },
+    {
+      questionId: { value: 'linearScaleQuestion' },
+      type: QuestionType.LINEAR_SCALE,
+      order: 3,
+      text: 'Is this useful?',
+      linearScaleConfig: {
+        min: 1,
+        minLabel: 'Strongly disagree',
+        max: 7,
+        maxLabel: 'Strongly agree',
+      },
+    },
   ],
 };
 
@@ -130,69 +142,114 @@ export const TestStandard: Story = {
       ],
     },
   },
-  play: async ({ canvas }) => {
-    await expect(
-      await canvas.findByText(standardSurvey.title)
-    ).toBeInTheDocument();
-
-    await expect(
-      await canvas.findByText(standardSurvey.questions[0].text)
-    ).toBeInTheDocument();
-
-    await expect(
-      await canvas.findByText(
-        `Question 1 of ${standardSurvey.questions.length}`
-      )
-    ).toBeInTheDocument();
-
-    await expect(await canvas.findByText('50%')).toBeInTheDocument();
-    await expect(
-      canvas.getByRole('button', { name: /do not show me this again/i })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole('button', { name: /maybe later/i })
-    ).toBeInTheDocument();
-    const getStartedButton = canvas.getByRole('button', {
-      name: /get started/i,
-    });
-    await expect(getStartedButton).toBeInTheDocument();
-    await expect(getStartedButton).toBeDisabled();
-
-    const textField = canvas.getByRole('textbox');
-
-    await userEvent.type(textField, 'This is my answer', {
-      delay: 10,
-    });
-
-    await expect(getStartedButton).toBeEnabled();
-
-    await userEvent.click(getStartedButton);
-
-    await expect(
-      await canvas.findByText(standardSurvey.questions[1].text, undefined, {
-        timeout: 1500,
-      })
-    ).toBeInTheDocument();
-
-    for (const option of standardSurvey.questions[1].options ?? []) {
+  play: async ({ canvas, step }) => {
+    await step('Has expected content in the beginning', async () => {
       await expect(
-        canvas.getByRole('checkbox', { name: option.optionText })
+        await canvas.findByText(standardSurvey.title)
       ).toBeInTheDocument();
-    }
 
-    const completeButton = canvas.getByRole('button', { name: /complete/i });
+      await expect(
+        await canvas.findByText(standardSurvey.questions[0].text)
+      ).toBeInTheDocument();
 
-    await expect(completeButton).toBeDisabled();
+      await expect(
+        await canvas.findByText(
+          `Question 1 of ${standardSurvey.questions.length}`
+        )
+      ).toBeInTheDocument();
 
-    await userEvent.click(
-      canvas.getByRole('checkbox', {
-        name: standardSurvey.questions[1].options?.at(0)!.optionText,
-      })
-    );
+      await expect(await canvas.findByText('33%')).toBeInTheDocument();
+      await expect(
+        canvas.getByRole('button', { name: /do not show me this again/i })
+      ).toBeInTheDocument();
+      await expect(
+        canvas.getByRole('button', { name: /maybe later/i })
+      ).toBeInTheDocument();
+      const getStartedButton = canvas.getByRole('button', {
+        name: /get started/i,
+      });
+      await expect(getStartedButton).toBeInTheDocument();
+      await expect(getStartedButton).toBeDisabled();
+    });
 
-    await expect(completeButton).toBeEnabled();
+    await step('Write some text and start survey', async () => {
+      const getStartedButton = canvas.getByRole('button', {
+        name: /get started/i,
+      });
+      const textField = canvas.getByRole('textbox');
 
-    await userEvent.click(completeButton);
+      await userEvent.type(textField, 'This is my answer', {
+        delay: 10,
+      });
+
+      await expect(getStartedButton).toBeEnabled();
+
+      await userEvent.click(getStartedButton);
+    });
+
+    await step('Checkbox question and click next', async () => {
+      await expect(
+        await canvas.findByText(standardSurvey.questions[1].text, undefined, {
+          timeout: 1500,
+        })
+      ).toBeInTheDocument();
+
+      for (const option of standardSurvey.questions[1].options ?? []) {
+        await expect(
+          canvas.getByRole('checkbox', { name: option.optionText })
+        ).toBeInTheDocument();
+      }
+
+      const nextButton = canvas.getByRole('button', { name: /next/i });
+
+      await expect(nextButton).toBeDisabled();
+
+      // Check
+      await userEvent.click(
+        canvas.getByRole('checkbox', {
+          name: standardSurvey.questions[1].options?.at(0)!.optionText,
+        })
+      );
+      // Uncheck
+      await userEvent.click(
+        canvas.getByRole('checkbox', {
+          name: standardSurvey.questions[1].options?.at(0)!.optionText,
+        })
+      );
+      // Check again
+      await userEvent.click(
+        canvas.getByRole('checkbox', {
+          name: standardSurvey.questions[1].options?.at(0)!.optionText,
+        })
+      );
+
+      await expect(nextButton).toBeEnabled();
+
+      await userEvent.click(nextButton);
+    });
+
+    await step('Linear scale question and complete', async () => {
+      await expect(
+        await canvas.findByText(standardSurvey.questions[2].text)
+      ).toBeInTheDocument();
+      await expect(
+        canvas.getByText(
+          standardSurvey.questions[2]!.linearScaleConfig!.minLabel
+        )
+      ).toBeInTheDocument();
+      await expect(
+        canvas.getByText(
+          standardSurvey.questions[2]!.linearScaleConfig!.maxLabel
+        )
+      ).toBeInTheDocument();
+
+      await userEvent.click(canvas.getAllByRole('radio')[0]);
+
+      const completeButton = canvas.getByRole('button', { name: /complete/i });
+      await expect(completeButton).toBeEnabled();
+
+      await userEvent.click(completeButton);
+    });
 
     await waitFor(() =>
       expect(canvas.queryByText(standardSurvey.title)).not.toBeInTheDocument()
