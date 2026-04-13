@@ -85,6 +85,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       variant: 'success',
       title: 'Survey completed',
       description: 'Thanks for helping us improve!',
+      duration: 5,
     });
 
     if (activeSurvey.showConfettiOnComplete) {
