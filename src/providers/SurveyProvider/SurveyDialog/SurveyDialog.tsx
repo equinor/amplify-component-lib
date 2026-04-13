@@ -1,21 +1,14 @@
 import { FC, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { QuestionType } from '@equinor/subsurface-app-management';
+import { QuestionType, SurveyType } from '@equinor/subsurface-app-management';
 
+import { useSurvey } from '../hooks/useSurvey';
 import { SurveyQuestion } from './SurveyQuestion/SurveyQuestion';
+import { Content } from './SurveyDialog.styles';
 import { SurveyProgress } from './SurveyProgress';
-import { spacings } from 'src/atoms/style';
+import { UmuxDialog } from './UmuxDialog';
 import { Dialog, type DialogProps } from 'src/molecules/Dialog/Dialog';
-import { useSurvey } from 'src/providers/SurveyProvider/hooks/useSurvey';
-
-import styled from 'styled-components';
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacings.large};
-`;
 
 export const SurveyDialog: FC = () => {
   const {
@@ -33,22 +26,20 @@ export const SurveyDialog: FC = () => {
     return null;
 
   const handleAnswer = async () => {
+    /* v8 ignore next */
     if (!currentAnswer) return;
 
     setIsAnswering(true);
-    try {
-      await answerQuestion({
-        ...currentAnswer,
-        selectedOptionIds: currentAnswer?.selectedOptionIds ?? [],
-      });
-    } catch (e) {
-      console.error(e);
-    }
+    await answerQuestion({
+      ...currentAnswer,
+      selectedOptionIds: currentAnswer?.selectedOptionIds ?? [],
+    });
     setIsAnswering(false);
   };
 
   const disabledNextAction = () => {
     if (!currentAnswer) return true;
+    /* v8 ignore next */
     const currentQuestion = activeSurvey?.questions[activeQuestionIndex ?? 0];
 
     switch (currentQuestion.type) {
@@ -57,6 +48,7 @@ export const SurveyDialog: FC = () => {
           !currentAnswer.selectedOptionIds ||
           currentAnswer.selectedOptionIds.length === 0 ||
           currentAnswer.selectedOptionIds.length >
+            /* v8 ignore next */
             (currentQuestion.maxSelections ?? 0)
         );
       case QuestionType.LINEAR_SCALE:
@@ -79,13 +71,17 @@ export const SurveyDialog: FC = () => {
         activeQuestionIndex === 0
           ? 'Get started'
           : activeQuestionIndex === activeSurvey.questions.length - 1
-            ? 'Finish'
+            ? 'Complete'
             : 'Next',
       disabled: disabledNextAction(),
       onClick: handleAnswer,
       isLoading: isAnswering,
     },
   ];
+
+  if (activeSurvey.surveyType === SurveyType.UMUX) {
+    return <UmuxDialog />;
+  }
 
   return (
     <Dialog

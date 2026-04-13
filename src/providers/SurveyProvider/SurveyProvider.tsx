@@ -22,6 +22,7 @@ import { SurveyDialog } from './SurveyDialog/SurveyDialog';
 export interface SurveyContextType {
   activeSurvey?: UserSurveyVm;
   activeQuestionIndex?: number;
+  setActiveQuestionIndex: Dispatch<SetStateAction<number | undefined>>;
   answerQuestion: (
     answer: Omit<AnswerQuestionCommandDto, 'id'>
   ) => Promise<void>;
@@ -126,6 +127,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       value={{
         activeSurvey,
         activeQuestionIndex,
+        setActiveQuestionIndex,
         answerQuestion: handleAnswerQuestion,
         cancelSurvey: handleCancelSurvey,
         hideSurvey: handleHideSurvey,

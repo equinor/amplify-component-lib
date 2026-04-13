@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
+import { AnswerQuestionCommandDto } from '@equinor/subsurface-app-management';
 
 import { Radio } from 'src/molecules/SelectionControls/Radio/Radio';
 import { useSurvey } from 'src/providers/SurveyProvider/hooks/useSurvey';
@@ -26,35 +27,59 @@ const RadioWrapper = styled.div`
   align-items: center;
 `;
 
-export const SurveyLinearScaleQuestion: FC<LinearScaleQuestion> = ({
+interface ControlledSurveyLinearScaleQuestionProps extends LinearScaleQuestion {
+  answer: AnswerQuestionCommandDto;
+  setAnswer: (answer: AnswerQuestionCommandDto) => void;
+}
+
+type SurveyLinearScaleQuestionProps =
+  | LinearScaleQuestion
+  | ControlledSurveyLinearScaleQuestionProps;
+
+export const SurveyLinearScaleQuestion: FC<SurveyLinearScaleQuestionProps> = ({
   questionId,
   linearScaleConfig,
+  ...rest
 }) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
   const rangeAmount = linearScaleConfig.max - linearScaleConfig.min + 1;
 
+  const handleOnAnswer = (numericAnswer: number) => {
+    if ('answer' in rest && 'setAnswer' in rest) {
+      rest.setAnswer({
+        ...rest.answer,
+        numericAnswer,
+      });
+    } else {
+      setCurrentAnswer({
+        id: questionId,
+        numericAnswer,
+      });
+    }
+  };
+
   return (
     <Container $rangeAmount={rangeAmount}>
-      <Typography>Strongly disagree</Typography>
+      <Typography>{linearScaleConfig.minLabel}</Typography>
       {Array.from({ length: rangeAmount }).map((_, index) => (
         <RadioWrapper key={`range-radio-${index}`}>
-          <Typography variant="body_short">{index + 1}</Typography>
+          <Typography variant="body_short">
+            {linearScaleConfig.min + index}
+          </Typography>
           <Radio
-            name={`range-${questionId}`}
+            data-testid={`range-radio-${questionId.value}`}
+            name={`range-${questionId.value}`}
             label=""
             checked={
               currentAnswer?.numericAnswer === index + linearScaleConfig.min
             }
             onClick={() => {
-              setCurrentAnswer({
-                id: questionId,
-                numericAnswer: index + linearScaleConfig.min,
-              });
+              handleOnAnswer(linearScaleConfig.min + index);
             }}
           />
         </RadioWrapper>
       ))}
-      <Typography>Strongly agree</Typography>
+      <Typography>{linearScaleConfig.maxLabel}</Typography>
     </Container>
   );
 };

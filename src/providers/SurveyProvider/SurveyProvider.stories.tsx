@@ -3,11 +3,13 @@ import {
   QuestionType,
   SurveyResponseId,
   SurveyResponseStatus,
+  SurveyType,
   UserSurveyVm,
 } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
+import { useSurvey } from './hooks/useSurvey';
 import { SurveyProvider } from './SurveyProvider';
 
 import { delay, http, HttpResponse } from 'msw';
@@ -51,10 +53,11 @@ const surveyHandlers = [
   }),
 ];
 
-const defaultSurvey: UserSurveyVm = {
+const standardSurvey: UserSurveyVm = {
   surveyId: {
     value: 'someId',
   },
+  surveyType: SurveyType.DEFAULT,
   status: SurveyResponseStatus.NOT_STARTED,
   applicationId: 'appId',
   title: 'This is a survey!',
@@ -98,7 +101,7 @@ const defaultSurvey: UserSurveyVm = {
   ],
 };
 
-export const Default: Story = {
+export const StandardSurvey: Story = {
   args: {},
   parameters: {
     msw: {
@@ -106,14 +109,14 @@ export const Default: Story = {
         ...surveyHandlers,
         http.get(
           '*/api/v1/surveys/applications/:applicationName/me',
-          async () => HttpResponse.json(defaultSurvey)
+          async () => HttpResponse.json(standardSurvey)
         ),
       ],
     },
   },
 };
 
-export const TestDefault: Story = {
+export const TestStandard: Story = {
   tags: ['test-only'],
   args: {},
   parameters: {
@@ -122,22 +125,24 @@ export const TestDefault: Story = {
         ...surveyHandlers,
         http.get(
           '*/api/v1/surveys/applications/:applicationName/me',
-          async () => HttpResponse.json(defaultSurvey)
+          async () => HttpResponse.json(standardSurvey)
         ),
       ],
     },
   },
   play: async ({ canvas }) => {
     await expect(
-      await canvas.findByText(defaultSurvey.title)
+      await canvas.findByText(standardSurvey.title)
     ).toBeInTheDocument();
 
     await expect(
-      await canvas.findByText(defaultSurvey.questions[0].text)
+      await canvas.findByText(standardSurvey.questions[0].text)
     ).toBeInTheDocument();
 
     await expect(
-      await canvas.findByText(`Question 1 of ${defaultSurvey.questions.length}`)
+      await canvas.findByText(
+        `Question 1 of ${standardSurvey.questions.length}`
+      )
     ).toBeInTheDocument();
 
     await expect(await canvas.findByText('50%')).toBeInTheDocument();
@@ -164,33 +169,226 @@ export const TestDefault: Story = {
     await userEvent.click(getStartedButton);
 
     await expect(
-      await canvas.findByText(defaultSurvey.questions[1].text, undefined, {
+      await canvas.findByText(standardSurvey.questions[1].text, undefined, {
         timeout: 1500,
       })
     ).toBeInTheDocument();
 
-    for (const option of defaultSurvey.questions[1].options ?? []) {
+    for (const option of standardSurvey.questions[1].options ?? []) {
       await expect(
         canvas.getByRole('checkbox', { name: option.optionText })
       ).toBeInTheDocument();
     }
 
-    const finishButton = canvas.getByRole('button', { name: /finish/i });
+    const completeButton = canvas.getByRole('button', { name: /complete/i });
 
-    await expect(finishButton).toBeDisabled();
+    await expect(completeButton).toBeDisabled();
 
     await userEvent.click(
       canvas.getByRole('checkbox', {
-        name: defaultSurvey.questions[1].options?.at(0)!.optionText,
+        name: standardSurvey.questions[1].options?.at(0)!.optionText,
       })
     );
 
-    await expect(finishButton).toBeEnabled();
+    await expect(completeButton).toBeEnabled();
 
-    await userEvent.click(finishButton);
+    await userEvent.click(completeButton);
 
     await waitFor(() =>
-      expect(canvas.queryByText(defaultSurvey.title)).not.toBeInTheDocument()
+      expect(canvas.queryByText(standardSurvey.title)).not.toBeInTheDocument()
     );
+  },
+};
+
+const umuxSurvey: UserSurveyVm = {
+  title: 'Help us improve your experience',
+  surveyId: { value: 'umuxSurveyId' },
+  surveyType: SurveyType.UMUX,
+  status: SurveyResponseStatus.NOT_STARTED,
+  applicationId: 'appId',
+  showConfettiOnComplete: true,
+  description: 'UMUX survey',
+  startAt: '2026-01-01',
+  endAt: '2028-01-01',
+  questions: [
+    {
+      type: QuestionType.LINEAR_SCALE,
+      text: 'Acquire is easy to use.',
+      questionId: {
+        value: 'someId',
+      },
+      order: 1,
+      linearScaleConfig: {
+        min: 1,
+        minLabel: 'Strongly disagree',
+        max: 7,
+        maxLabel: 'Strongly agree',
+      },
+    },
+    {
+      type: QuestionType.LINEAR_SCALE,
+      text: 'Acquire meets my needs.',
+      questionId: {
+        value: 'someOtherId',
+      },
+      order: 2,
+      linearScaleConfig: {
+        min: 1,
+        minLabel: 'Strongly disagree',
+        max: 7,
+        maxLabel: 'Strongly agree',
+      },
+    },
+  ],
+};
+
+export const Umux: Story = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        ...surveyHandlers,
+        http.get(
+          '*/api/v1/surveys/applications/:applicationName/me',
+          async () => HttpResponse.json(umuxSurvey)
+        ),
+      ],
+    },
+  },
+};
+
+export const TestUmux: Story = {
+  tags: ['test-only'],
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        ...surveyHandlers,
+        http.get(
+          '*/api/v1/surveys/applications/:applicationName/me',
+          async () => HttpResponse.json(umuxSurvey)
+        ),
+      ],
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(await canvas.findByText(umuxSurvey.title)).toBeInTheDocument();
+
+    const completeButton = canvas.getByRole('button', { name: /complete/i });
+    await expect(completeButton).toBeDisabled();
+
+    for (const question of umuxSurvey.questions) {
+      const options = canvas.getAllByTestId(
+        `range-radio-${question.questionId.value}`
+      );
+      await userEvent.click(options[0]);
+    }
+
+    await expect(completeButton).toBeEnabled();
+
+    await userEvent.click(completeButton);
+
+    await waitFor(
+      () =>
+        expect(canvas.queryByText(umuxSurvey.title)).not.toBeInTheDocument(),
+      { timeout: 1500 }
+    );
+  },
+};
+
+export const TestMaybeLater: Story = {
+  tags: ['test-only'],
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        ...surveyHandlers,
+        http.get(
+          '*/api/v1/surveys/applications/:applicationName/me',
+          async () => HttpResponse.json(standardSurvey)
+        ),
+      ],
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      await canvas.findByText(standardSurvey.title)
+    ).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: /maybe later/i }));
+
+    await expect(
+      canvas.queryByText(standardSurvey.title)
+    ).not.toBeInTheDocument();
+  },
+};
+
+export const TestDoNotShowMe: Story = {
+  tags: ['test-only'],
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        ...surveyHandlers,
+        http.get(
+          '*/api/v1/surveys/applications/:applicationName/me',
+          async () => HttpResponse.json(standardSurvey)
+        ),
+      ],
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      await canvas.findByText(standardSurvey.title)
+    ).toBeInTheDocument();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /do not show me this again/i })
+    );
+
+    await expect(
+      canvas.queryByText(standardSurvey.title)
+    ).not.toBeInTheDocument();
+  },
+};
+
+function NoActiveSurveyComponent() {
+  const { cancelSurvey, hideSurvey } = useSurvey();
+
+  return (
+    <div>
+      <button onClick={cancelSurvey}>cancel</button>
+      <button onClick={hideSurvey}>hide</button>
+    </div>
+  );
+}
+
+export const TestNoActiveSurvey: Story = {
+  tags: ['test-only'],
+  args: {},
+  decorators: (Story) => (
+    <SurveyProvider>
+      <Story />
+    </SurveyProvider>
+  ),
+  render: NoActiveSurveyComponent,
+  parameters: {
+    msw: {
+      handlers: [
+        ...surveyHandlers,
+        http.get(
+          '*/api/v1/surveys/applications/:applicationName/me',
+          async () => HttpResponse.text('No data', { status: 404 })
+        ),
+      ],
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: /hide/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /cancel/i }));
+
+    await expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
   },
 };
