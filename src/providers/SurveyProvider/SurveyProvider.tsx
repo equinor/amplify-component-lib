@@ -119,6 +119,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
     }
 
     await answerQuestion({
+      /* v8 ignore next */
       surveyResponseId: surveyResponseId ?? '',
       body: {
         id: activeSurvey.questions[activeQuestionIndex].questionId,

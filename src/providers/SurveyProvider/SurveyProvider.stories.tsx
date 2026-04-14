@@ -418,12 +418,13 @@ export const TestDoNotShowMe: Story = {
 };
 
 function NoActiveSurveyComponent() {
-  const { cancelSurvey, hideSurvey } = useSurvey();
+  const { cancelSurvey, hideSurvey, completeSurvey } = useSurvey();
 
   return (
     <div>
       <button onClick={cancelSurvey}>cancel</button>
       <button onClick={hideSurvey}>hide</button>
+      <button onClick={completeSurvey}>complete</button>
     </div>
   );
 }
@@ -457,6 +458,10 @@ export const TestNoActiveSurvey: Story = {
 
     await userEvent.click(canvas.getByRole('button', { name: /hide/i }));
     await userEvent.click(canvas.getByRole('button', { name: /cancel/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /complete/i }));
+    await expect(
+      canvas.queryByText(/survey completed/i)
+    ).not.toBeInTheDocument();
 
     await expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
   },

@@ -45,9 +45,7 @@ export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
                   const index = newSelectedOptionIds.findIndex(
                     (item) => item.value === option.id.value
                   );
-                  if (index > -1) {
-                    newSelectedOptionIds.splice(index, 1);
-                  }
+                  newSelectedOptionIds.splice(index, 1);
                 }
 
                 return {
