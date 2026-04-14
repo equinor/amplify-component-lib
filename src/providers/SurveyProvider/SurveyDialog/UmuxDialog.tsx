@@ -41,7 +41,10 @@ export const UmuxDialog: FC = () => {
 
   const completeDisabled =
     answers.length !== activeSurvey.questions.length ||
-    answers.some((answer) => !answer.numericAnswer);
+    answers.some(
+      (answer) =>
+        answer.numericAnswer === undefined || answer.numericAnswer === null
+    );
 
   const handleOnComplete = async () => {
     setIsCompleting(true);
