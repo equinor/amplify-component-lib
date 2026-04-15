@@ -1,13 +1,10 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 
 import { createConfetti } from './utils/createConfetti';
-import { getSeasonalColors } from './utils/seasonalColors';
-import {
-  CONFETTI_DEFAULT_COLORS,
-  CONFETTI_DEFAULT_SHAPES,
-} from './Confetti.constants';
+import { CONFETTI_DEFAULT_SHAPES } from './Confetti.constants';
 import { Canvas } from './Confetti.styles';
 import { ConfettiProps, Particle } from './Confetti.types';
+import { getDefaultColors } from 'src/molecules/Confetti/utils/getDefaultColors';
 
 /**
  * @param mode 'boom' | 'shower' - Confetti effect mode.
@@ -31,9 +28,7 @@ export const Confetti: FC<ConfettiProps> = (props) => {
   } = props;
 
   const colors =
-    props.colors && props.colors.length
-      ? props.colors
-      : getSeasonalColors() || CONFETTI_DEFAULT_COLORS;
+    props.colors && props.colors.length ? props.colors : getDefaultColors();
   const shapes =
     props.shapes && props.shapes.length
       ? props.shapes
