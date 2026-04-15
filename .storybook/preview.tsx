@@ -72,16 +72,36 @@ const withRouter: Decorator = (StoryFn, context) => {
   return <RouterProvider router={router} />;
 };
 
+const DARK_TOKENS_STYLE_ID = 'storybook-dark-tokens';
+const SPACING_TOKENS_STYLE_ID = 'storybook-spacing-tokens';
+
+const ensureStyleElement = (id: string, cssText: string) => {
+  if (typeof document === 'undefined') return;
+
+  let styleElement = document.getElementById(id) as HTMLStyleElement | null;
+
+  if (!styleElement) {
+    styleElement = document.createElement('style');
+    styleElement.id = id;
+    document.head.appendChild(styleElement);
+  }
+
+  if (styleElement.textContent !== cssText) {
+    styleElement.textContent = cssText;
+  }
+};
+
 const withProviders: Decorator = (StoryFn) => {
   const queryClient = new QueryClient();
-  // Apply styles using the darkTokens variable
-  const darkStyleElement = document.createElement('style');
-  darkStyleElement.innerHTML = darkTokens as unknown as string;
-  document.head.appendChild(darkStyleElement);
 
-  const spacingStyleElement = document.createElement('style');
-  spacingStyleElement.innerHTML = spacingTokens as unknown as string;
-  document.head.appendChild(spacingStyleElement);
+  ensureStyleElement(
+    DARK_TOKENS_STYLE_ID,
+    darkTokens as unknown as string
+  );
+  ensureStyleElement(
+    SPACING_TOKENS_STYLE_ID,
+    spacingTokens as unknown as string
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
