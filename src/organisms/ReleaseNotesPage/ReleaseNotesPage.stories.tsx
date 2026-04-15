@@ -31,7 +31,7 @@ const Story: FC = () => {
           <SideBar.Item
             name="Release notes"
             icon={comment_discussion}
-            link="/release-notes"
+            to="/release-notes"
           />
         </SideBar>
         <Template.Content $open={isOpen} id="content">

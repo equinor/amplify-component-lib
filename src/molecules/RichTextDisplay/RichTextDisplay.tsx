@@ -38,7 +38,7 @@ export interface RichTextDisplayProps extends Pick<
  * @param children - render prop for custom rendering, provides editor via callback
  */
 export const RichTextDisplay: FC<
-  RichTextDisplayProps & HTMLAttributes<HTMLDivElement>
+  RichTextDisplayProps & Omit<HTMLAttributes<HTMLDivElement>, 'children'>
 > = ({
   value,
   imgReadToken,

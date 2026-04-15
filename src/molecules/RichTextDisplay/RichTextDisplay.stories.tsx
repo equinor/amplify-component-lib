@@ -19,22 +19,23 @@ const meta: Meta<typeof RichTextDisplay> = {
 
 export default meta;
 
-export const Primary: StoryFn<RichTextDisplayProps> = (args) => {
-  const { _children, ...rest } = args;
-  return <RichTextDisplay {...rest} />;
+export const Primary: StoryFn<Omit<RichTextDisplayProps, 'children'>> = (
+  args
+) => {
+  return <RichTextDisplay {...args} />;
 };
 
-export const CompoundComponents: StoryFn<RichTextDisplayProps> = (args) => {
-  return (
-    <RichTextDisplay {...args}>
-      {(editor) => (
-        <RichText.Styling
-          $lightBackground={args.lightBackground}
-          $padding={args.padding}
-        >
-          <RichText.Content editor={editor} readOnly />
-        </RichText.Styling>
-      )}
-    </RichTextDisplay>
-  );
-};
+export const CompoundComponents: StoryFn<
+  Omit<RichTextDisplayProps, 'children'>
+> = (args) => (
+  <RichTextDisplay {...args}>
+    {(editor) => (
+      <RichText.Styling
+        $lightBackground={args.lightBackground}
+        $padding={args.padding}
+      >
+        <RichText.Content editor={editor} readOnly />
+      </RichText.Styling>
+    )}
+  </RichTextDisplay>
+);

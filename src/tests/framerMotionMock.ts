@@ -1,5 +1,5 @@
+import { MotionValue } from 'motion';
 import { useScroll as ActualUseScroll } from 'motion/react';
-import { MotionValue } from 'motion-dom';
 
 vi.mock('motion/react', async () => {
   function useScroll(): ReturnType<typeof ActualUseScroll> {

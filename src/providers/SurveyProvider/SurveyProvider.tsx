@@ -22,7 +22,7 @@ import { useConfetti } from 'src/providers/ConfettiProvider/ConfettiProvider';
 import { useToasts } from 'src/providers/ToastProvider/ToastProvider';
 
 export interface SurveyContextType {
-  activeSurvey?: UserSurveyVm;
+  activeSurvey?: UserSurveyVm | null | undefined;
   activeQuestionIndex?: number;
   setActiveQuestionIndex: Dispatch<SetStateAction<number | undefined>>;
   answerQuestion: (

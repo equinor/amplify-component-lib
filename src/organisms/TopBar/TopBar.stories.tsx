@@ -119,19 +119,19 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
     {
       name: 'Dashboard',
       icon: dashboard,
-      link: 'dashboard',
+      to: '/dashboard',
       onClick: () => console.log('going to dashboard...'),
     },
     {
       name: 'history',
       icon: history,
-      link: 'history',
+      to: '/history',
       onClick: () => console.log('going to history...'),
     },
     {
       name: 'favourites',
       icon: favorite_outlined,
-      link: 'favourites',
+      to: '/favourites',
       onClick: () => console.log('going to favourites...'),
     },
   ];

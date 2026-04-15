@@ -1,6 +1,6 @@
 import { colors } from 'src/atoms/style/colors';
 
-import { MotionProps } from 'motion/react';
+import { MotionConfigProps } from 'motion/react';
 
 interface Shape {
   frames: string[];
@@ -62,28 +62,25 @@ function showFillAnimation(index: number, arrayLength: number): boolean {
   return index < arrayLength - 2;
 }
 
-export const SHAPE_ANIMATIONS: Readonly<MotionProps['animate'][]> = SHAPES.map(
-  (shape, index, array) => {
-    return {
-      d:
-        index === array.length - 2
-          ? shape.frames
-          : [...shape.frames, shape.frames[0]],
-      opacity: showFillAnimation(index, array.length) ? [0, 1] : undefined,
-    };
-  }
-);
+export const SHAPE_ANIMATIONS = SHAPES.map((shape, index, array) => {
+  return {
+    d:
+      index === array.length - 2
+        ? shape.frames
+        : [...shape.frames, shape.frames[0]],
+    opacity: showFillAnimation(index, array.length) ? [0, 1] : undefined,
+  };
+});
 
-export const SHAPE_INITIALS: Readonly<MotionProps['initial'][]> = SHAPES.map(
-  (shape, index, array) => ({
-    d: shape.frames[0],
-    opacity: showFillAnimation(index, array.length) ? 0 : 1,
-  })
-);
+export const SHAPE_INITIALS = SHAPES.map((shape, index, array) => ({
+  d: shape.frames[0],
+  opacity: showFillAnimation(index, array.length) ? 0 : 1,
+}));
 
-export const SHAPE_TRANSITIONS: Readonly<MotionProps['transition'][]> =
-  new Array(SHAPES.length).fill(null).map((_, index, array) => {
-    const base: MotionProps['transition'] = {
+export const SHAPE_TRANSITIONS = new Array(SHAPES.length)
+  .fill(null)
+  .map((_, index, array) => {
+    const base: MotionConfigProps['transition'] = {
       d: {
         repeat: Infinity,
         delay: index * 0.1,

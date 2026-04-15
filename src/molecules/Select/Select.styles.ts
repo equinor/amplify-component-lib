@@ -348,7 +348,13 @@ const PlaceholderText = styled(Typography)`
   transform: translate(0, -50%);
 `;
 
-const ValueText = styled(PlaceholderText)`
+const ValueText = styled(Typography)`
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  color: ${colors.text.static_icons__tertiary.rgba};
+  top: calc(50%);
+  transform: translate(0, -50%);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

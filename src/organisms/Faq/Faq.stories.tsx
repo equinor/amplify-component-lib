@@ -29,7 +29,7 @@ const Story: FC<FaqProps> = (args) => {
       </TopBar>
       <Template.Container>
         <SideBar>
-          <SideBar.Item name="FAQ" icon={comment_discussion} link="/faq" />
+          <SideBar.Item name="FAQ" icon={comment_discussion} to="/faq" />
         </SideBar>
         <Template.Content $open={isOpen} id="content">
           <Faq {...args} />
