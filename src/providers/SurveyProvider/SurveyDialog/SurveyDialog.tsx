@@ -14,10 +14,12 @@ export const SurveyDialog: FC = () => {
   const {
     activeSurvey,
     activeQuestionIndex,
+    setActiveQuestionIndex,
     cancelSurvey,
     hideSurvey,
     answerQuestion,
     currentAnswer,
+    setCurrentAnswer,
     isCancelled,
   } = useSurvey();
   const [isAnswering, setIsAnswering] = useState(false);
@@ -60,11 +62,27 @@ export const SurveyDialog: FC = () => {
     }
   };
 
+  const handleOnBack = () => {
+    if (activeQuestionIndex === 0) {
+      cancelSurvey();
+    } else if (activeQuestionIndex) {
+      const previousAnswer =
+        activeSurvey.questions[activeQuestionIndex - 1].answer;
+      if (previousAnswer) {
+        setActiveQuestionIndex((prev) => (prev ?? 1) - 1);
+        setCurrentAnswer({
+          id: activeSurvey.questions[activeQuestionIndex - 1].questionId,
+          ...previousAnswer,
+        });
+      }
+    }
+  };
+
   const defaultActions: DialogProps['actions'] = [
     {
-      text: activeQuestionIndex === 0 ? 'Maybe later' : 'Cancel',
+      text: activeQuestionIndex === 0 ? 'Maybe later' : 'Back',
       variant: 'ghost',
-      onClick: cancelSurvey,
+      onClick: handleOnBack,
     },
     {
       text:
