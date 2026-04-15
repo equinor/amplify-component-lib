@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { ReactNode, useMemo, useRef } from 'react';
 
 import { Label } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
@@ -78,7 +78,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
     return getVariantIcon(variant);
   }, [showHelperIcon, variant]);
 
-  const valueElements = useMemo(() => {
+  const valueElements = useMemo<ReactNode>(() => {
     if (
       'value' in props &&
       props.value &&

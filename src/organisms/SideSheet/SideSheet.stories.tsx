@@ -70,7 +70,7 @@ const meta: Meta<typeof SideSheet> = {
     },
     layout: 'centered',
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

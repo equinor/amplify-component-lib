@@ -38,6 +38,10 @@ const Component = (props: NodeViewProps) => {
 export default Image.extend({
   addOptions() {
     return {
+      inline: false,
+      allowBase64: false,
+      HTMLAttributes: {},
+      resize: false,
       ...this.parent?.(),
       onImageUpload: undefined,
       onImageRead: undefined,

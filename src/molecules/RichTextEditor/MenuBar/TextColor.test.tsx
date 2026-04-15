@@ -32,8 +32,7 @@ test('Able to change color', async () => {
   await user.tripleClick(screen.getByText('test'));
   expect(input).toBeInTheDocument();
 
-  (input as HTMLInputElement).value = '#f50000';
-  fireEvent.input(input, '#f50000');
+  fireEvent.change(input, { target: { value: '#f50000' } });
 
   await waitFor(
     () =>

@@ -34,7 +34,7 @@ const meta: Meta<WaveStoryProps> = {
   parameters: {
     layout: 'fullscreen',
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

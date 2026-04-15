@@ -24,7 +24,7 @@ function fakeSection(withColorBoxes = false) {
         hill_shading,
       ]),
       color: faker.color.rgb(),
-      colorBox: withColorBoxes ? faker.color.rgb() : undefined,
+      colorBox: withColorBoxes,
     });
   }
 

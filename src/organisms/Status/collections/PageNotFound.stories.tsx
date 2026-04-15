@@ -15,7 +15,7 @@ const meta: Meta<typeof PageNotFound> = {
       url: '',
     },
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },
