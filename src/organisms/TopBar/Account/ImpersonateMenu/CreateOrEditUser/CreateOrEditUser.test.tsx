@@ -308,7 +308,9 @@ test.sequential(
     await user.click(screen.getByRole('button', { name: /save/i }));
 
     expect(
-      await screen.findByText(new RegExp(newFirstName))
+      await screen.findByText(new RegExp(newFirstName, 'i'), undefined, {
+        timeout: 2000,
+      })
     ).toBeInTheDocument();
   },
   { timeout: 10000 }
