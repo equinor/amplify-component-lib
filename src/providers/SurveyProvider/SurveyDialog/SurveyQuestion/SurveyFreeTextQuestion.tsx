@@ -23,6 +23,7 @@ export const SurveyFreeTextQuestion: FC<FreeTextQuestion> = ({
       <TextField
         id={`free-text-${questionId.value}`}
         autoComplete="off"
+        placeholder="Write answer here..."
         value={currentAnswer?.textAnswer ?? ''}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setCurrentAnswer({
