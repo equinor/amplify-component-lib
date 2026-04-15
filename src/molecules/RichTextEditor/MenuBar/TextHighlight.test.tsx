@@ -43,8 +43,6 @@ test('Highlights text when button is clicked', async () => {
       removeFeatures={[RichTextEditorFeatures.IMAGES]}
     />
   );
-  // Wait for tiptap init
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = userEvent.setup();
 
   const button = await screen.findByTestId('highlight-button');
