@@ -166,3 +166,8 @@ test("getDefaultColors returns default colors if it isn't a special day", () => 
     CONFETTI_DEFAULT_COLORS
   );
 });
+
+test('getDefaultColors returns seasonal colors if it is a special day', () => {
+  const easter2024 = new Date('2024-03-31T12:00:00Z'); // Easter Sunday 2024
+  expect(getDefaultColors(easter2024)).toEqual(SeasonalColorsMap.easter.colors);
+});
