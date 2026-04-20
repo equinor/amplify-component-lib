@@ -1,12 +1,12 @@
+import type { ButtonTokens } from './types';
 import { colors } from 'src/atoms';
 import { DISABLED_TOKENS } from 'src/molecules/ButtonV2/tokens/disabled';
 
-export const DANGER_TOKENS = {
+export const DANGER_TOKENS: ButtonTokens = {
   filled: {
     backgroundColor: colors.interactive.danger__resting.rgba,
     color: colors.text.static_icons__primary_white.rgba,
     outlineColor: colors.interactive.danger__resting.rgba,
-    borderColor: colors.interactive.danger__resting.rgba,
 
     hover: {
       backgroundColor: colors.interactive.danger__hover.rgba,
@@ -40,7 +40,6 @@ export const DANGER_TOKENS = {
     backgroundColor: 'transparent',
     color: colors.interactive.danger__resting.rgba,
     outlineColor: colors.interactive.danger__resting.rgba,
-    borderColor: 'transparent',
 
     hover: {
       backgroundColor: colors.interactive.danger__highlight.rgba,

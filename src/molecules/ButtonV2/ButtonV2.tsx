@@ -1,10 +1,11 @@
 import { ButtonHTMLAttributes, RefObject } from 'react';
 
-import { tokens } from '@equinor/eds-tokens';
-import { typographyTemplate } from '@equinor/eds-utils';
+import { DotProgress, Icon } from '@equinor/eds-core-react';
+import { IconData } from '@equinor/eds-icons';
 
-import { ButtonTokens, TOKEN_MAPPINGS } from './tokens';
-import { shape, spacings } from 'src/atoms';
+import { BaseButton } from './Button.styles';
+import { getLoadingColor } from './Button.utils';
+import { TOKEN_MAPPINGS } from './tokens';
 
 import { styled } from 'styled-components';
 
@@ -15,93 +16,46 @@ export type ButtonV2Props = {
   disabled?: boolean;
   fullWidth?: boolean;
   ref?: RefObject<HTMLButtonElement>;
+  leadingIcon?: IconData;
+  trailingIcon?: IconData;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-interface BaseButton {
-  $tokens: ButtonTokens;
-}
+const LeftIcon = styled(Icon)`
+  left: 0;
+`;
 
-const resolveBorderColor = (tokens: {
-  borderColor?: string;
-  backgroundColor: string;
-}) => ('borderColor' in tokens ? tokens.borderColor : tokens.backgroundColor);
-
-const BaseButton = styled.button<BaseButton>`
-  box-sizing: border-box;
-  margin: 0;
-  padding: 10px ${spacings.medium_small};
-  border-radius: ${shape.button.borderRadius};
-  text-decoration: none;
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
-
-  background: ${({ $tokens }) => $tokens.backgroundColor};
-  ${typographyTemplate(tokens.typography.navigation.button)}
-  color: ${({ $tokens }) => $tokens.color};
-  border: 1px solid ${(props) => resolveBorderColor(props.$tokens)};
-
-  svg {
-    justify-self: center;
-  }
-
-  &::after {
-    position: absolute;
-    content: '';
-  }
-
-  &:hover {
-    background: ${({ $tokens }) => $tokens.hover.backgroundColor};
-    color: ${({ $tokens }) => $tokens.hover.color};
-    border: 1px solid ${(props) => resolveBorderColor(props.$tokens.hover)};
-  }
-
-  &:active {
-    background: ${({ $tokens }) => $tokens.pressed.backgroundColor};
-    color: ${({ $tokens }) => $tokens.pressed.color};
-    border: 1px solid ${(props) => resolveBorderColor(props.$tokens.pressed)};
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    outline: 1px dashed ${({ $tokens }) => $tokens.outlineColor};
-    outline-offset: 3px;
-  }
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
-
-  &:disabled,
-  &[aria-disabled='true'] {
-    cursor: not-allowed;
-    background: ${({ $tokens }) => $tokens.disabled.backgroundColor};
-    color: ${({ $tokens }) => $tokens.disabled.color};
-    border: 1px solid ${(props) => resolveBorderColor(props.$tokens.disabled)};
-
-    @media (hover: hover) and (pointer: fine) {
-      &:hover {
-      }
-    }
-  }
+const RightIcon = styled(Icon)`
+  right: 0;
 `;
 
 export const ButtonV2 = ({
   children,
   variant = 'filled',
   color = 'primary',
+  leadingIcon = undefined,
+  trailingIcon = undefined,
+  fullWidth = false,
+  loading = false,
   ...rest
 }: ButtonV2Props) => {
   const tokens = TOKEN_MAPPINGS[color][variant];
 
   return (
-    <BaseButton $tokens={tokens} {...rest}>
-      {children}
+    <BaseButton $tokens={tokens} $fullWidth={fullWidth} {...rest}>
+      {loading ? (
+        <>
+          <span>{children}</span>
+          <DotProgress color={getLoadingColor({ color, variant })} />
+        </>
+      ) : (
+        <>
+          {leadingIcon && <LeftIcon data={leadingIcon} />}
+          <span>{children}</span>
+          {trailingIcon && (
+            <RightIcon style={{ right: 0 }} data={trailingIcon} />
+          )}
+        </>
+      )}
     </BaseButton>
   );
 };
-
-//      <Icon data={chevron_left} />

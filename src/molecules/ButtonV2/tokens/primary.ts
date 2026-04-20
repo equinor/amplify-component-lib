@@ -1,7 +1,8 @@
+import type { ButtonTokens } from './types';
 import { colors } from 'src/atoms';
 import { DISABLED_TOKENS } from 'src/molecules/ButtonV2/tokens/disabled';
 
-export const PRIMARY_TOKENS = {
+export const PRIMARY_TOKENS: ButtonTokens = {
   filled: {
     backgroundColor: colors.interactive.primary__resting.rgba,
     color: colors.text.static_icons__primary_white.rgba,

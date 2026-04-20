@@ -1,4 +1,5 @@
 import { PRIMARY_TOKENS } from './primary';
+import type { VariantTokens } from './types';
 import { DANGER_TOKENS } from 'src/molecules/ButtonV2/tokens/danger';
 
 export const TOKEN_MAPPINGS = {
@@ -6,5 +7,4 @@ export const TOKEN_MAPPINGS = {
   danger: DANGER_TOKENS,
 } as const;
 
-export type ButtonTokens =
-  (typeof TOKEN_MAPPINGS)[keyof typeof TOKEN_MAPPINGS][keyof (typeof TOKEN_MAPPINGS)[keyof typeof TOKEN_MAPPINGS]];
+export type { VariantTokens };
