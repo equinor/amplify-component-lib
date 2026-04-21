@@ -65,19 +65,19 @@ export const SurveyDialog: FC = () => {
   const handleOnBack = () => {
     if (activeQuestionIndex === 0) {
       cancelSurvey();
-    } else if (activeQuestionIndex) {
-      const previousAnswer =
-        activeSurvey.questions[activeQuestionIndex - 1].answer;
-      // Unable to test this since this never happens
-      /* v8 ignore next */
-      if (!previousAnswer) return;
-
-      setActiveQuestionIndex(activeQuestionIndex - 1);
-      setCurrentAnswer({
-        id: activeSurvey.questions[activeQuestionIndex - 1].questionId,
-        ...previousAnswer,
-      });
+      return;
     }
+    const previousAnswer =
+      activeSurvey.questions[activeQuestionIndex - 1].answer;
+    // Unable to test this since this never happens
+    /* v8 ignore next */
+    if (!previousAnswer) return;
+
+    setActiveQuestionIndex(activeQuestionIndex - 1);
+    setCurrentAnswer({
+      id: activeSurvey.questions[activeQuestionIndex - 1].questionId,
+      ...previousAnswer,
+    });
   };
 
   const defaultActions: DialogProps['actions'] = [
