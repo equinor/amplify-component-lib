@@ -100,7 +100,6 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
   const handleAnswerQuestion = async (
     answer: Omit<AnswerQuestionCommandDto, 'id'>
   ) => {
-    // Implementation for answering a question goes here
     if (
       !activeSurvey ||
       activeQuestionIndex === undefined ||
