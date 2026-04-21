@@ -139,8 +139,7 @@ export const test = testBase.extend<CustomFixtures>({
       // Expose the worker object on the test's context.
       await use(worker);
 
-      // Stop the worker after the test is done.
-      worker.stop();
+      worker.resetHandlers();
     },
     {
       auto: true,

@@ -4,7 +4,7 @@ import {
   TopBar as EDSTopBar,
   Typography,
 } from '@equinor/eds-core-react';
-import { Link } from '@tanstack/react-router';
+import { createLink } from '@tanstack/react-router';
 
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { colors, spacings } from 'src/atoms/style';
@@ -18,7 +18,7 @@ export const Bar = styled(EDSTopBar)`
   position: relative;
 `;
 
-export const AppIdentifier = styled(Link)`
+const AppIdentifierAnchor = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -31,6 +31,8 @@ export const AppIdentifier = styled(Link)`
     outline: none;
   }
 `;
+
+export const AppIdentifier = createLink(AppIdentifierAnchor);
 
 export const AppAndFieldContainer = styled(EDSTopBar.Header)`
   display: flex;

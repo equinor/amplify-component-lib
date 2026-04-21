@@ -40,7 +40,7 @@ export default {
   },
   parameters: {
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
     msw: {

@@ -15,7 +15,7 @@ const meta: Meta<typeof BadRequest> = {
       url: '',
     },
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

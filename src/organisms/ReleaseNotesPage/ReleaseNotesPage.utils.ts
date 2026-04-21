@@ -74,10 +74,10 @@ export function yearId(yearValue: string): string {
 }
 
 export function removeFromPreviousByIndex<T extends unknown[]>(
-  prev: T,
+  prev: T | undefined,
   index: number
 ): T {
   const copy = structuredClone(prev);
-  copy.splice(index, 1);
+  copy?.splice(index, 1);
   return copy as T;
 }

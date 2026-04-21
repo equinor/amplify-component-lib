@@ -25,7 +25,7 @@ const meta: Meta<typeof Stepper> = {
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=5694-19911&m=dev',
     },
     router: {
-      initialEntries: ['/create'],
+      initial: '/create',
       routes: ['/create'],
     },
   },
@@ -145,7 +145,7 @@ export const SyncedToURL: StoryObj = {
   parameters: {
     syncToURL: true,
     router: {
-      initialEntries: ['/create/0'],
+      initial: '/create/0',
       routes: ['/create/$step'],
     },
   },
@@ -180,7 +180,7 @@ export const DisabledSteps: StoryObj = {
     syncToURL: true,
     disabledSteps: true,
     router: {
-      initialEntries: ['/create/0'],
+      initial: '/create/0',
       routes: ['/create/$step'],
     },
   },

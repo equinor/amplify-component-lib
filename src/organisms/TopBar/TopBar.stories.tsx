@@ -74,7 +74,7 @@ const meta: Meta<typeof TopBar> = {
   parameters: {
     layout: 'fullscreen',
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },
@@ -119,16 +119,19 @@ export const FullPageExample: StoryFn<TopBarType> = ({ ...args }) => {
     {
       name: 'Dashboard',
       icon: dashboard,
+      to: '/dashboard',
       onClick: () => console.log('going to dashboard...'),
     },
     {
       name: 'history',
       icon: history,
+      to: '/history',
       onClick: () => console.log('going to history...'),
     },
     {
       name: 'favourites',
       icon: favorite_outlined,
+      to: '/favourites',
       onClick: () => console.log('going to favourites...'),
     },
   ];

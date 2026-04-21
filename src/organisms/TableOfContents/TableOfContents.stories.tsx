@@ -25,7 +25,7 @@ const meta: Meta = {
   component: TableOfContents,
   parameters: {
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

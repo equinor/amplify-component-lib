@@ -58,34 +58,29 @@ export const Introduction: StoryFn<TypographyProps> = (args) => {
 };
 
 export const GroupsOverview = () => {
-  return Object.entries(typography)
-    .filter(([key]) => key !== '_modes')
-    .map(([key, group]) => (
-      <SBCard key={key} elevation="raised">
-        <Card.Header>
-          <Card.HeaderTitle>
-            <Typography variant="h5">{key}</Typography>
-          </Card.HeaderTitle>
-        </Card.Header>
-        <Divider />
-        {Object.entries(group).map(([key, token]) => (
-          <Card.Content key={key}>
-            <Typography token={token as TypographyType}>{key}</Typography>
-          </Card.Content>
+  return (
+    <Stack align="start" style={{ justifyContent: 'flex-start' }}>
+      {Object.entries(typography)
+        .filter(([key]) => key !== '_modes')
+        .map(([key, group]) => (
+          <SBCard key={key} elevation="raised">
+            <Card.Header>
+              <Card.HeaderTitle>
+                <Typography variant="h5">{key}</Typography>
+              </Card.HeaderTitle>
+            </Card.Header>
+            <Divider />
+            {Object.entries(group).map(([key, token]) => (
+              <Card.Content key={key}>
+                <Typography token={token as TypographyType}>{key}</Typography>
+              </Card.Content>
+            ))}
+          </SBCard>
         ))}
-      </SBCard>
-    ));
+    </Stack>
+  );
 };
 GroupsOverview.storyName = 'Groups overview';
-GroupsOverview.decorators = [
-  (Story: StoryFn) => {
-    return (
-      <Stack align="start" style={{ justifyContent: 'flex-start' }}>
-        <Story />
-      </Stack>
-    );
-  },
-];
 
 export const Colors: StoryFn<TypographyProps> = () => (
   <>

@@ -46,7 +46,6 @@ const BackButton = styled.div`
 type ResourceSection = 'learn-more' | 'feedback';
 
 export interface ResourcesProps {
-  field?: string;
   hideFeedback?: boolean;
   hideReleaseNotes?: boolean;
   hideLearnMore?: boolean;
@@ -58,7 +57,6 @@ export interface ResourcesProps {
 }
 
 export const Resources: FC<ResourcesProps> = ({
-  field,
   hideFeedback = false,
   hideReleaseNotes = false,
   hideLearnMore = false,
@@ -223,7 +221,6 @@ export const Resources: FC<ResourcesProps> = ({
               : 'Suggest a feature'}
           </Dialog.Header>
           <Feedback
-            field={field}
             selectedType={feedbackType}
             onClose={handleOnCloseFeedbackDialog}
           />

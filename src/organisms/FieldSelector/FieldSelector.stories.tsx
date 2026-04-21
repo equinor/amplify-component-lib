@@ -57,7 +57,7 @@ const meta: Meta<typeof FieldSelector> = {
   parameters: {
     layout: 'fullscreen',
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },

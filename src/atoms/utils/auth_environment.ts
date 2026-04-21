@@ -182,7 +182,6 @@ const msalApp = new PublicClientApplication({
   },
   cache: {
     cacheLocation: 'localStorage',
-    storeAuthStateInCookie: false,
   },
 });
 

@@ -9,5 +9,6 @@ export { ThemeProvider } from './ThemeProvider/ThemeProvider';
 export { StepperProvider } from './StepperProvider';
 export { ToastProvider } from './ToastProvider/ToastProvider';
 export { ConfettiProvider } from './ConfettiProvider/ConfettiProvider';
+export { SurveyProvider } from './SurveyProvider/SurveyProvider';
 
 export type { TableOfContentsItemType } from './TableOfContentsProvider';
