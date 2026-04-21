@@ -21,14 +21,16 @@ export const BaseButton = styled.button<ButtonStyles>`
   align-items: center;
   justify-content: center;
 
-  background: ${({ $tokens }) => $tokens.backgroundColor};
+  //has to be set before color to not override the color tokens
   ${typographyTemplate(tokens.typography.navigation.button)}
+
+  background: ${({ $tokens }) => $tokens.backgroundColor};
   color: ${({ $tokens }) => $tokens.color};
   border: 1px solid ${(props) => resolveBorderColor(props.$tokens)};
 
   box-sizing: border-box;
   margin: 0;
-  padding: 6px ${spacings.small};
+  padding: 5px 7px;
   border-radius: ${shape.button.borderRadius};
   text-decoration: none;
   position: relative;
