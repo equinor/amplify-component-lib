@@ -180,13 +180,14 @@ export const TestStandard: Story = {
       await expect(getStartedButton).toBeDisabled();
     });
 
+    const textAnswer = 'This is my answer';
     await step('Write some text and start survey', async () => {
       const getStartedButton = canvas.getByRole('button', {
         name: /get started/i,
       });
       const textField = canvas.getByRole('textbox');
 
-      await userEvent.type(textField, 'This is my answer', {
+      await userEvent.type(textField, textAnswer, {
         delay: 10,
       });
 
@@ -194,6 +195,26 @@ export const TestStandard: Story = {
 
       await userEvent.click(getStartedButton);
     });
+
+    await step(
+      'Go back, verify that the text is still there, and click next',
+      async () => {
+        await expect(
+          await canvas.findByText(standardSurvey.questions[1].text, undefined, {
+            timeout: 1500,
+          })
+        ).toBeInTheDocument();
+
+        await userEvent.click(canvas.getByRole('button', { name: /back/i }));
+        await expect(await canvas.findByRole('textbox')).toBeInTheDocument();
+        await expect(await canvas.findByRole('textbox')).toHaveValue(
+          textAnswer
+        );
+        await userEvent.click(
+          canvas.getByRole('button', { name: /get started/i })
+        );
+      }
+    );
 
     await step('Checkbox question and click next', async () => {
       await expect(

@@ -68,13 +68,15 @@ export const SurveyDialog: FC = () => {
     } else if (activeQuestionIndex) {
       const previousAnswer =
         activeSurvey.questions[activeQuestionIndex - 1].answer;
-      if (previousAnswer) {
-        setActiveQuestionIndex((prev) => (prev ?? 1) - 1);
-        setCurrentAnswer({
-          id: activeSurvey.questions[activeQuestionIndex - 1].questionId,
-          ...previousAnswer,
-        });
-      }
+      // Unable to test this since this never happens
+      /* v8 ignore next */
+      if (!previousAnswer) return;
+
+      setActiveQuestionIndex(activeQuestionIndex - 1);
+      setCurrentAnswer({
+        id: activeSurvey.questions[activeQuestionIndex - 1].questionId,
+        ...previousAnswer,
+      });
     }
   };
 
