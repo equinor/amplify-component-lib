@@ -61,6 +61,7 @@ export const UmuxDialog: FC = () => {
         })
       )
     );
+
     setIsCompleting(false);
 
     setActiveQuestionIndex(undefined);
@@ -116,7 +117,7 @@ export const UmuxDialog: FC = () => {
                 setAnswer={(answer) => {
                   setAnswers((prev) => {
                     const copy = [...prev];
-                    copy[index] = answer;
+                    copy[index] = { ...answer, id: question.questionId };
                     return copy;
                   });
                 }}
