@@ -101,9 +101,10 @@ export const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
     { name, size = 48, iconOnly = false, withHover = false, grayScale = false },
     ref
   ) => {
+    const lowerCaseName = name.toLowerCase();
     const appData = apps.find((app) =>
       app.appName.some(
-        (appNameToMatch) => appNameToMatch.toLowerCase() === name.toLowerCase()
+        (appNameToMatch) => appNameToMatch.toLowerCase() === lowerCaseName
       )
     );
 
