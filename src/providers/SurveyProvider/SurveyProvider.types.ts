@@ -1,6 +1,6 @@
 import { QuestionType, QuestionVm } from '@equinor/subsurface-app-management';
 
-type QuestionBase = Pick<QuestionVm, 'questionId' | 'text'>;
+type QuestionBase = Pick<QuestionVm, 'questionId' | 'questionText'>;
 
 export type FreeTextQuestion = QuestionBase & {
   type: QuestionType.TEXT;
@@ -14,5 +14,5 @@ export type ChoiceQuestion = QuestionBase & {
 
 export type LinearScaleQuestion = QuestionBase & {
   type: QuestionType.LINEAR_SCALE;
-  linearScaleConfig: NonNullable<QuestionVm['linearScaleConfig']>;
+  linearScaleVm: NonNullable<QuestionVm['linearScaleVm']>;
 };
