@@ -126,7 +126,7 @@ export const SurveyDialog: FC = () => {
       <Content>
         <SurveyProgress />
         <Typography variant="body_short_bold">
-          {activeSurvey.questions[activeQuestionIndex].text}
+          {activeSurvey.questions[activeQuestionIndex].questionText}
         </Typography>
         <SurveyQuestion />
       </Content>
