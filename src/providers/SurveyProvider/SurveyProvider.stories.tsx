@@ -80,12 +80,12 @@ const standardSurvey: UserSurveyVm = {
       },
       type: QuestionType.TEXT,
       order: 1,
-      text: 'This is the question text',
+      questionText: 'This is the question text',
     },
     {
       questionId: { value: 'choiceQuestion' },
       type: QuestionType.CHOICE,
-      text: 'Choose one please',
+      questionText: 'Choose one please',
       order: 2,
       options: [
         {
@@ -110,7 +110,7 @@ const standardSurvey: UserSurveyVm = {
       questionId: { value: 'linearScaleQuestion' },
       type: QuestionType.LINEAR_SCALE,
       order: 3,
-      text: 'Is this useful?',
+      questionText: 'Is this useful?',
       linearScaleVm: {
         minValue: 1,
         minLabel: 'Strongly disagree',
@@ -157,7 +157,7 @@ export const TestStandard: Story = {
       ).toBeInTheDocument();
 
       await expect(
-        await canvas.findByText(standardSurvey.questions[0].text)
+        await canvas.findByText(standardSurvey.questions[0].questionText)
       ).toBeInTheDocument();
 
       await expect(
@@ -200,9 +200,13 @@ export const TestStandard: Story = {
       'Go back, verify that the text is still there, and click next',
       async () => {
         await expect(
-          await canvas.findByText(standardSurvey.questions[1].text, undefined, {
-            timeout: 1500,
-          })
+          await canvas.findByText(
+            standardSurvey.questions[1].questionText,
+            undefined,
+            {
+              timeout: 1500,
+            }
+          )
         ).toBeInTheDocument();
 
         await userEvent.click(canvas.getByRole('button', { name: /back/i }));
@@ -218,9 +222,13 @@ export const TestStandard: Story = {
 
     await step('Checkbox question and click next', async () => {
       await expect(
-        await canvas.findByText(standardSurvey.questions[1].text, undefined, {
-          timeout: 1500,
-        })
+        await canvas.findByText(
+          standardSurvey.questions[1].questionText,
+          undefined,
+          {
+            timeout: 1500,
+          }
+        )
       ).toBeInTheDocument();
 
       for (const option of standardSurvey.questions[1].options ?? []) {
@@ -259,7 +267,7 @@ export const TestStandard: Story = {
 
     await step('Linear scale question and complete', async () => {
       await expect(
-        await canvas.findByText(standardSurvey.questions[2].text)
+        await canvas.findByText(standardSurvey.questions[2].questionText)
       ).toBeInTheDocument();
       await expect(
         canvas.getByText(standardSurvey.questions[2]!.linearScaleVm!.minLabel)
@@ -295,7 +303,7 @@ const umuxSurvey: UserSurveyVm = {
   questions: [
     {
       type: QuestionType.LINEAR_SCALE,
-      text: 'Acquire is easy to use.',
+      questionText: 'Acquire is easy to use.',
       questionId: {
         value: 'someId',
       },
@@ -309,7 +317,7 @@ const umuxSurvey: UserSurveyVm = {
     },
     {
       type: QuestionType.LINEAR_SCALE,
-      text: 'Acquire meets my needs.',
+      questionText: 'Acquire meets my needs.',
       questionId: {
         value: 'someOtherId',
       },

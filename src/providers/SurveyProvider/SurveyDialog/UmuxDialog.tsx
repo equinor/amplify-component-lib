@@ -101,11 +101,13 @@ export const UmuxDialog: FC = () => {
         </InformationalNotice>
         {activeSurvey.questions.map((question, index) => (
           <QuestionWrapper key={question.questionId.value}>
-            <Typography variant="body_short_bold">{question.text}</Typography>
+            <Typography variant="body_short_bold">
+              {question.questionText}
+            </Typography>
             {question.linearScaleVm && (
               <SurveyLinearScaleQuestion
                 type={QuestionType.LINEAR_SCALE}
-                text={question.text}
+                questionText={question.questionText}
                 questionId={question.questionId}
                 linearScaleVm={question.linearScaleVm}
                 answer={answers[index]}
