@@ -14,5 +14,5 @@ export type ChoiceQuestion = QuestionBase & {
 
 export type LinearScaleQuestion = QuestionBase & {
   type: QuestionType.LINEAR_SCALE;
-  linearScaleConfig: NonNullable<QuestionVm['linearScaleConfig']>;
+  linearScaleVm: NonNullable<QuestionVm['linearScaleVm']>;
 };

@@ -102,17 +102,12 @@ export const UmuxDialog: FC = () => {
         {activeSurvey.questions.map((question, index) => (
           <QuestionWrapper key={question.questionId.value}>
             <Typography variant="body_short_bold">{question.text}</Typography>
-            {question.linearScaleConfig && (
+            {question.linearScaleVm && (
               <SurveyLinearScaleQuestion
                 type={QuestionType.LINEAR_SCALE}
                 text={question.text}
                 questionId={question.questionId}
-                linearScaleConfig={{
-                  max: question.linearScaleConfig.max,
-                  min: question.linearScaleConfig.min,
-                  minLabel: question.linearScaleConfig.minLabel,
-                  maxLabel: question.linearScaleConfig.maxLabel,
-                }}
+                linearScaleVm={question.linearScaleVm}
                 answer={answers[index]}
                 setAnswer={(answer) => {
                   setAnswers((prev) => {

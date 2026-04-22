@@ -111,10 +111,10 @@ const standardSurvey: UserSurveyVm = {
       type: QuestionType.LINEAR_SCALE,
       order: 3,
       text: 'Is this useful?',
-      linearScaleConfig: {
-        min: 1,
+      linearScaleVm: {
+        minValue: 1,
         minLabel: 'Strongly disagree',
-        max: 7,
+        maxValue: 7,
         maxLabel: 'Strongly agree',
       },
     },
@@ -262,14 +262,10 @@ export const TestStandard: Story = {
         await canvas.findByText(standardSurvey.questions[2].text)
       ).toBeInTheDocument();
       await expect(
-        canvas.getByText(
-          standardSurvey.questions[2]!.linearScaleConfig!.minLabel
-        )
+        canvas.getByText(standardSurvey.questions[2]!.linearScaleVm!.minLabel)
       ).toBeInTheDocument();
       await expect(
-        canvas.getByText(
-          standardSurvey.questions[2]!.linearScaleConfig!.maxLabel
-        )
+        canvas.getByText(standardSurvey.questions[2]!.linearScaleVm!.maxLabel)
       ).toBeInTheDocument();
 
       await userEvent.click(canvas.getAllByRole('radio')[0]);
@@ -304,10 +300,10 @@ const umuxSurvey: UserSurveyVm = {
         value: 'someId',
       },
       order: 1,
-      linearScaleConfig: {
-        min: 1,
+      linearScaleVm: {
+        minValue: 1,
         minLabel: 'Strongly disagree',
-        max: 7,
+        maxValue: 7,
         maxLabel: 'Strongly agree',
       },
     },
@@ -318,10 +314,10 @@ const umuxSurvey: UserSurveyVm = {
         value: 'someOtherId',
       },
       order: 2,
-      linearScaleConfig: {
-        min: 1,
+      linearScaleVm: {
+        minValue: 1,
         minLabel: 'Strongly disagree',
-        max: 7,
+        maxValue: 7,
         maxLabel: 'Strongly agree',
       },
     },

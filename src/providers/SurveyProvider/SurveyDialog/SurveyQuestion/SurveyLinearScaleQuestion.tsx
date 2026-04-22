@@ -38,11 +38,11 @@ type SurveyLinearScaleQuestionProps =
 
 export const SurveyLinearScaleQuestion: FC<SurveyLinearScaleQuestionProps> = ({
   questionId,
-  linearScaleConfig,
+  linearScaleVm,
   ...rest
 }) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
-  const rangeAmount = linearScaleConfig.max - linearScaleConfig.min + 1;
+  const rangeAmount = linearScaleVm.maxValue - linearScaleVm.minValue + 1;
 
   const handleOnAnswer = (numericAnswer: number) => {
     if ('answer' in rest && 'setAnswer' in rest) {
@@ -60,11 +60,11 @@ export const SurveyLinearScaleQuestion: FC<SurveyLinearScaleQuestionProps> = ({
 
   return (
     <Container $rangeAmount={rangeAmount}>
-      <Typography>{linearScaleConfig.minLabel}</Typography>
+      <Typography>{linearScaleVm.minLabel}</Typography>
       {Array.from({ length: rangeAmount }).map((_, index) => (
         <RadioWrapper key={`range-radio-${index}`}>
           <Typography variant="body_short">
-            {linearScaleConfig.min + index}
+            {linearScaleVm.minValue + index}
           </Typography>
           <Radio
             data-testid={`range-radio-${questionId.value}`}
@@ -73,15 +73,15 @@ export const SurveyLinearScaleQuestion: FC<SurveyLinearScaleQuestionProps> = ({
             checked={
               ('answer' in rest ? rest.answer : currentAnswer)
                 ?.numericAnswer ===
-              index + linearScaleConfig.min
+              index + linearScaleVm.minValue
             }
             onClick={() => {
-              handleOnAnswer(linearScaleConfig.min + index);
+              handleOnAnswer(linearScaleVm.minValue + index);
             }}
           />
         </RadioWrapper>
       ))}
-      <Typography>{linearScaleConfig.maxLabel}</Typography>
+      <Typography>{linearScaleVm.maxLabel}</Typography>
     </Container>
   );
 };
