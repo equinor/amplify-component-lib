@@ -1,7 +1,7 @@
 import { CircularProgress } from '@equinor/eds-core-react';
 
-import { ButtonPrimitive } from '../Button.styles';
 import { colors, shape } from 'src/atoms/style';
+import { ButtonPrimitive } from 'src/molecules/Button/Button.styles';
 
 import styled, { css } from 'styled-components';
 

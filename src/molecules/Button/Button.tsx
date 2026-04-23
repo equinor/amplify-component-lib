@@ -11,9 +11,9 @@ import {
   HiddenText,
   LeftIcon,
   RightIcon,
-} from './Button.styles';
-import { getLoadingColor } from './Button.utils';
-import { TOKEN_MAPPINGS } from './tokens';
+} from 'src/molecules/Button/Button.styles';
+import { getLoadingColor } from 'src/molecules/Button/Button.utils';
+import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
 type BaseButtonProps = {

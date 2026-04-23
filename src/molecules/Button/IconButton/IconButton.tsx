@@ -6,13 +6,13 @@ import { IconData } from '@equinor/eds-icons';
 import type { LinkComponentProps } from '@tanstack/react-router';
 import { createLink, LinkComponent } from '@tanstack/react-router';
 
-import { getLoadingColor } from '../Button.utils';
-import { TOKEN_MAPPINGS } from '../tokens';
-import { CommonButtonProps } from '../types';
+import { getLoadingColor } from 'src/molecules/Button/Button.utils';
 import {
   IconButtonWrapper,
   StyledCircularProgress,
 } from 'src/molecules/Button/IconButton/IconButton.styles';
+import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
+import { CommonButtonProps } from 'src/molecules/Button/types';
 
 type Shape = 'circular' | 'square';
 

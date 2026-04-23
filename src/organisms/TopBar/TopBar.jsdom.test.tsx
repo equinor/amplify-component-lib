@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
-import { colors, spacings } from 'src/atoms';
+import { colors, spacings } from 'src/atoms/style';
 import { TopBar } from 'src/organisms';
 import { renderWithRouter, screen } from 'src/tests/jsdomtest-utils';
 

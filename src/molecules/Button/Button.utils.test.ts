@@ -1,4 +1,4 @@
-import { getLoadingColor } from './Button.utils';
+import { getLoadingColor } from 'src/molecules/Button/Button.utils';
 
 test('Returns expected color with color=primary', () => {
   const color = getLoadingColor({

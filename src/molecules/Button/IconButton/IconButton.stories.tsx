@@ -1,9 +1,11 @@
 import { external_link, save } from '@equinor/eds-icons';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
-import { IconButton, IconButtonProps } from './IconButton';
-import { spacings } from 'src/atoms';
-import { Button, ButtonProps } from 'src/molecules';
+import { spacings } from 'src/atoms/style';
+import {
+  IconButton,
+  IconButtonProps,
+} from 'src/molecules/Button/IconButton/IconButton';
 import { Stack } from 'src/storybook';
 
 import { expect, fn, userEvent } from 'storybook/test';
@@ -140,7 +142,7 @@ Loading.decorators = [
   ),
 ];
 
-export const LinkButton: StoryFn<ButtonProps> = () => (
+export const LinkButton: StoryFn<IconButtonProps> = () => (
   <>
     <IconButton to="/faq" icon={external_link} />
   </>
@@ -154,7 +156,7 @@ LinkButton.decorators = [
   ),
 ];
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof IconButton>;
 
 export const TestLoadingState: Story = {
   tags: ['test-only'],

@@ -4,8 +4,8 @@ import { Checkbox, Snackbar, Tooltip } from '@equinor/eds-core-react';
 import { save } from '@equinor/eds-icons';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
-import { ButtonProps } from './Button';
-import { spacings } from 'src/atoms';
+import { spacings } from 'src/atoms/style';
+import { ButtonProps } from 'src/molecules/Button/Button';
 import { Button } from 'src/molecules/Button/Button';
 import { Stack } from 'src/storybook';
 

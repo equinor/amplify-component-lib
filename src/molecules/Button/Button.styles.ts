@@ -2,8 +2,8 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { typographyTemplate } from '@equinor/eds-utils';
 
-import { VariantTokens } from './tokens';
-import { shape, spacings } from 'src/atoms';
+import { shape, spacings } from 'src/atoms/style';
+import { VariantTokens } from 'src/molecules/Button/tokens/tokens';
 
 import { css, styled } from 'styled-components';
 

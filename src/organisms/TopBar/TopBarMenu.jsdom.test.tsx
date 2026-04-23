@@ -1,4 +1,4 @@
-import { spacings } from 'src/atoms';
+import { spacings } from 'src/atoms/style';
 import { TopBarMenu } from 'src/organisms/TopBar/TopBarMenu';
 import { render, screen } from 'src/tests/jsdomtest-utils';
 
