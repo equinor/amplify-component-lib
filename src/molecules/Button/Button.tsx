@@ -1,92 +1,74 @@
-import { forwardRef } from 'react';
+import { FC, ReactNode } from 'react';
+
+import { DotProgress } from '@equinor/eds-core-react';
+import { IconData } from '@equinor/eds-icons';
+import type { LinkComponentProps } from '@tanstack/react-router';
+import { createLink, LinkComponent } from '@tanstack/react-router';
 
 import {
-  Button as BaseButton,
-  ButtonProps as BaseButtonProps,
-  CircularProgress,
-  CircularProgressProps,
-  DotProgress,
-} from '@equinor/eds-core-react';
-import { OverridableComponent } from '@equinor/eds-utils';
+  ButtonPrimitive,
+  CenteredContent,
+  HiddenText,
+  LeftIcon,
+  RightIcon,
+} from './Button.styles';
+import { getLoadingColor } from './Button.utils';
+import { TOKEN_MAPPINGS } from './tokens';
+import { CommonButtonProps } from 'src/molecules/Button/types';
 
-import { variantAndColorToProgressColor } from 'src/molecules/Button/Button.utils';
+type BaseButtonProps = {
+  fullWidth?: boolean;
+  leadingIcon?: IconData;
+  trailingIcon?: IconData;
+} & CommonButtonProps;
 
-import styled from 'styled-components';
+export type ButtonProps =
+  | LinkComponentProps<typeof BaseButton>
+  | BaseButtonProps;
 
-const ChildWrapper = styled.span`
-  opacity: 0;
-  visibility: hidden;
-`;
+const BaseButton: FC<BaseButtonProps> = ({
+  children,
+  as,
+  variant = 'filled',
+  color = 'primary',
+  leadingIcon,
+  trailingIcon,
+  fullWidth = false,
+  loading = false,
+  ...rest
+}) => {
+  const tokens = TOKEN_MAPPINGS[color][variant];
 
-const OverlayProgress = styled.span`
-  left: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+  return (
+    <ButtonPrimitive as={as} $tokens={tokens} $fullWidth={fullWidth} {...rest}>
+      {loading ? (
+        <>
+          <HiddenText>{children}</HiddenText>
+          <CenteredContent>
+            <DotProgress color={getLoadingColor({ color, variant })} />
+          </CenteredContent>
+        </>
+      ) : (
+        <>
+          {leadingIcon && <LeftIcon data={leadingIcon} />}
+          <span>{children}</span>
+          {trailingIcon && <RightIcon data={trailingIcon} />}
+        </>
+      )}
+    </ButtonPrimitive>
+  );
+};
 
-export interface ButtonProps extends BaseButtonProps {
-  loading?: boolean;
-}
+const ButtonLink = createLink(BaseButton);
 
-const ButtonComponent = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ loading, variant, color, disabled = false, onClick, ...rest }, ref) => {
-    const usingStyle = variant?.includes('icon')
-      ? {
-          width: 'var(--eds_icon-button__size, 40px)',
-          height: 'var(--eds_icon-button__size, 40px)',
-          ...rest.style,
-        }
-      : rest.style;
+const isPlainButtonProps = (props: ButtonProps): props is BaseButtonProps =>
+  !('to' in props);
 
-    const usingDisabled = loading ? false : disabled;
+type ButtonComponent = LinkComponent<typeof BaseButton> & FC<BaseButtonProps>;
 
-    return (
-      <BaseButton
-        ref={ref}
-        variant={variant}
-        color={color}
-        disabled={usingDisabled}
-        onClick={loading ? undefined : onClick}
-        {...rest}
-        style={usingStyle}
-      >
-        {loading ? (
-          <>
-            <ChildWrapper>{rest.children}</ChildWrapper>
-            <OverlayProgress>
-              {variant && variant.includes('icon') ? (
-                <CircularProgress
-                  size={16}
-                  color={
-                    variantAndColorToProgressColor({
-                      variant,
-                      color,
-                    }) as CircularProgressProps['color']
-                  }
-                />
-              ) : (
-                <DotProgress
-                  color={variantAndColorToProgressColor({
-                    variant,
-                    color,
-                  })}
-                />
-              )}
-            </OverlayProgress>
-          </>
-        ) : (
-          rest.children
-        )}
-      </BaseButton>
-    );
+export const Button: ButtonComponent = ((props: ButtonProps) => {
+  if (isPlainButtonProps(props)) {
+    return <BaseButton {...props} as="button" />;
   }
-);
-
-ButtonComponent.displayName = 'Button';
-
-export const Button: OverridableComponent<ButtonProps, HTMLButtonElement> =
-  ButtonComponent;
+  return <ButtonLink {...props} as="a" />;
+}) as ButtonComponent;

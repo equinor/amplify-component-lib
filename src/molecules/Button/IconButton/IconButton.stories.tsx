@@ -1,9 +1,8 @@
 import { save } from '@equinor/eds-icons';
-import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import { Meta, StoryFn } from '@storybook/react-vite';
 
 import { IconButton, IconButtonProps } from './IconButton';
 import { spacings } from 'src/atoms';
-import { ButtonV2Props } from 'src/molecules/ButtonV2/ButtonV2';
 import { Stack } from 'src/storybook';
 
 const meta: Meta<typeof IconButton> = {
@@ -20,7 +19,7 @@ const meta: Meta<typeof IconButton> = {
       control: 'boolean',
       type: 'boolean',
       description:
-        'If true, the buttonV2 will show loading and onClick will be set to undefined',
+        'If true, the button will show loading and onClick will be set to undefined',
     },
     disabled: { control: 'boolean', type: 'boolean' },
     variant: {
@@ -39,7 +38,6 @@ const meta: Meta<typeof IconButton> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof IconButton>;
 
 export const Introduction: StoryFn<IconButtonProps> = (args) => {
   return <IconButton {...args} icon={save} />;
@@ -76,7 +74,7 @@ Basic.decorators = [
   ),
 ];
 
-export const Disabled: StoryFn<ButtonV2Props> = () => (
+export const Disabled: StoryFn<IconButtonProps> = () => (
   <div style={{ display: 'flex', gap: spacings.medium }}>
     <IconButton icon={save} disabled />
     <IconButton icon={save} disabled variant="outlined" />
@@ -91,7 +89,7 @@ Disabled.decorators = [
   ),
 ];
 
-export const Shape: StoryFn<ButtonV2Props> = () => (
+export const Shape: StoryFn<IconButtonProps> = () => (
   <div style={{ display: 'flex', gap: spacings.medium }}>
     <IconButton shape="circular" icon={save} />
     <IconButton shape="square" icon={save} />

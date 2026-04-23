@@ -1,6 +1,6 @@
+import { DISABLED_TOKENS } from './disabled';
 import type { ButtonTokens } from './types';
 import { colors } from 'src/atoms';
-import { DISABLED_TOKENS } from 'src/molecules/ButtonV2/tokens/disabled';
 
 export const DANGER_TOKENS: ButtonTokens = {
   filled: {

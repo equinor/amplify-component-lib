@@ -121,7 +121,7 @@ export default defineConfig({
           ],
           exclude: ['src/deprecated'],
           environment: 'jsdom',
-          setupFiles: ['src/tests/setupNodeTests.ts', 'src/tests/browserMocks.ts', 'src/tests/msalMock.tsx'],
+          setupFiles: ['src/tests/msalMock.tsx', 'src/tests/browserMocks.ts', 'src/tests/setupNodeTests.ts'],
         }
       }
     ],

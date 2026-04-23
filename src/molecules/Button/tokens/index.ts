@@ -1,6 +1,6 @@
+import { DANGER_TOKENS } from './danger';
 import { PRIMARY_TOKENS } from './primary';
 import type { VariantTokens } from './types';
-import { DANGER_TOKENS } from 'src/molecules/ButtonV2/tokens/danger';
 
 export const TOKEN_MAPPINGS = {
   primary: PRIMARY_TOKENS,
