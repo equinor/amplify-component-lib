@@ -117,7 +117,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       setAccount(accounts[0]);
     } else if (
       error instanceof BrowserAuthError &&
-      error.errorCode === BrowserAuthErrorCodes.monitorWindowTimeout
+      error.errorCode === BrowserAuthErrorCodes.timedOut
     ) {
       console.error(error);
       console.log(

@@ -9,6 +9,7 @@ import {
 test("Caps top if it's more than max", () => {
   const { result } = renderHook(() =>
     useTutorialPopoverPosition({
+      contentRef: { current: null },
       top: window.innerHeight + 200000,
       left: 1000,
       width: 100,
@@ -26,6 +27,7 @@ test("Caps top if it's more than max", () => {
 test("Caps top if it's less than min", () => {
   const { result } = renderHook(() =>
     useTutorialPopoverPosition({
+      contentRef: { current: null },
       top: -100,
       left: 1000,
       width: 100,
@@ -44,6 +46,7 @@ test("Caps left if it's less than min", () => {
   };
   const { result } = renderHook(() =>
     useTutorialPopoverPosition({
+      contentRef: { current: null },
       top: 100,
       left: -1000,
       width: 100,
@@ -62,6 +65,7 @@ test("Caps left if it's more than max", () => {
   };
   const { result } = renderHook(() =>
     useTutorialPopoverPosition({
+      contentRef: { current: null },
       top: 100,
       left: window.innerWidth + 10000,
       width: 100,

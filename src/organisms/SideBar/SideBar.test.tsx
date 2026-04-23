@@ -11,23 +11,32 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 
-import { SideBarMenuItem } from 'src/atoms/types/SideBar';
+import {
+  SideBarMenuItem,
+  SideBarMenuItemWithItems,
+} from 'src/atoms/types/SideBar';
 import { SideBar } from 'src/organisms/SideBar/index';
 import { MenuItem } from 'src/organisms/SideBar/MenuItem/MenuItem';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
-import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  test,
+  userEvent,
+  within,
+} from 'src/tests/browsertest-utils';
 
 const defaultMenuItems: SideBarMenuItem[] = [
   {
     name: 'Home',
     icon: home,
-    link: 'home',
+    to: 'home',
     onClick: vi.fn(),
   },
   {
     name: 'Another Link',
     icon: star_half,
-    link: 'another',
+    to: 'another',
     onClick: vi.fn(),
   },
 ];
@@ -124,7 +133,7 @@ test('Renders bottom item when provided', async () => {
   const bottomItemProps: SideBarMenuItem = {
     name: faker.animal.dog(),
     icon: star_half,
-    link: faker.internet.url(),
+    to: faker.internet.url(),
     onClick: vi.fn(),
   };
   const bottomitem = <MenuItem {...bottomItemProps} />;
@@ -156,16 +165,16 @@ test('Renders bottom item when provided', async () => {
 });
 
 test('Collapsing sidebar with open menu item closes it', async () => {
-  const props: SideBarMenuItem = {
+  const props: SideBarMenuItemWithItems = {
     name: faker.commerce.productName(),
     icon: shopping_basket,
     items: [
       {
-        link: '/dog',
+        to: '/dog',
         name: faker.animal.dog(),
       },
       {
-        link: '/cat',
+        to: '/cat',
         name: faker.animal.cat(),
       },
     ],

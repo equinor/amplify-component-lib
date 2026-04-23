@@ -56,6 +56,7 @@ export const ListSelectPersistent = <T extends SelectOptionRequired>(
     itemValue: item.value,
     parentHasNestedItems: hasNestedItems,
     ...props,
+    mode,
   }));
 
   if (

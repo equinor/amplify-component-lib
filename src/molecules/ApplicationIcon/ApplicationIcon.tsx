@@ -50,7 +50,10 @@ interface ApplicationIconData {
 }
 const apps: ApplicationIconData[] = [
   { appName: ['adca'], component: Adca },
-  { appName: ['portal', 'embark', 'jsembark'], component: JsEmbark },
+  {
+    appName: ['portal', 'embark', 'jsembark', 'js embark'],
+    component: JsEmbark,
+  },
   { appName: ['acquire'], component: Acquire },
   { appName: ['dasha'], component: Dasha },
   {
@@ -62,7 +65,10 @@ const apps: ApplicationIconData[] = [
     ],
     component: ForecastFormatter,
   },
-  { appName: ['fdi'], component: ForecastDataInventory },
+  {
+    appName: ['fdi', 'forecast data inventory'],
+    component: ForecastDataInventory,
+  },
   { appName: ['fluid-symphony', 'Fluid Symphony'], component: FluidSymphony },
   { appName: ['orca'], component: Orca },
   {
@@ -95,8 +101,11 @@ export const ApplicationIcon = forwardRef<HTMLDivElement, ApplicationIconProps>(
     { name, size = 48, iconOnly = false, withHover = false, grayScale = false },
     ref
   ) => {
+    const lowerCaseName = name.toLowerCase();
     const appData = apps.find((app) =>
-      app.appName.includes(name.toLowerCase())
+      app.appName.some(
+        (appNameToMatch) => appNameToMatch.toLowerCase() === lowerCaseName
+      )
     );
 
     if (appData === undefined)

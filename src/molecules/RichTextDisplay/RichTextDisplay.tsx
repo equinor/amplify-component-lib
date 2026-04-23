@@ -12,8 +12,10 @@ import {
   ImageExtensionFnProps,
 } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
-export interface RichTextDisplayProps
-  extends Pick<ImageExtensionFnProps, 'onImageRead'> {
+export interface RichTextDisplayProps extends Pick<
+  ImageExtensionFnProps,
+  'onImageRead'
+> {
   value: string | null | undefined;
   /**
    * @deprecated - Use OnImageRead instead
@@ -36,7 +38,7 @@ export interface RichTextDisplayProps
  * @param children - render prop for custom rendering, provides editor via callback
  */
 export const RichTextDisplay: FC<
-  RichTextDisplayProps & HTMLAttributes<HTMLDivElement>
+  RichTextDisplayProps & Omit<HTMLAttributes<HTMLDivElement>, 'children'>
 > = ({
   value,
   imgReadToken,

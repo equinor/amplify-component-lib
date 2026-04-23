@@ -13,7 +13,7 @@ const meta: Meta<typeof ApiResponseError> = {
       url: '',
     },
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['/'],
     },
   },
