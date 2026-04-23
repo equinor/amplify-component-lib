@@ -102,3 +102,31 @@ Shape.decorators = [
     </Stack>
   ),
 ];
+
+export const Loading: StoryFn<IconButtonProps> = () => (
+  <div
+    style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
+  >
+    <div style={{ display: 'flex', gap: spacings.medium }}>
+      <IconButton shape="circular" variant="filled" icon={save} loading />
+      <IconButton shape="circular" variant="ghost" icon={save} loading />
+    </div>
+    <div style={{ display: 'flex', gap: spacings.medium }}>
+      <IconButton shape="circular" color="danger" icon={save} loading />
+      <IconButton
+        shape="circular"
+        variant="ghost"
+        color="danger"
+        icon={save}
+        loading
+      />
+    </div>
+  </div>
+);
+Loading.decorators = [
+  (Story) => (
+    <Stack>
+      <Story />
+    </Stack>
+  ),
+];
