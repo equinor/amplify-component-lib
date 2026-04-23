@@ -51,7 +51,7 @@ const Component = (props: NodeViewProps) => {
       <NodeViewContent className="content" />
       <Button
         onClick={() => setCount(count + 1)}
-        label=" This button has been clicked {count} times."
+        label={`This button has been clicked ${count} times.`}
       />
     </StyledNodeViewWrapper>
   );

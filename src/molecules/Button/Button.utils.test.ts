@@ -1,6 +1,6 @@
 import { getLoadingColor } from './Button.utils';
 
-test('Returns expected color with icon variant', () => {
+test('Returns expected color with color=primary', () => {
   const color = getLoadingColor({
     variant: 'filled',
     color: 'primary',

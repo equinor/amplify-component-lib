@@ -366,7 +366,7 @@ export const WithDivider: StoryFn<CardProps> = () => {
         </Card.Content>
         <Card.Actions>
           <Button
-            label="SUBMIT TICKER"
+            label="SUBMIT TICKET"
             style={{ marginTop: '16px' }}
             variant="outlined"
           />
