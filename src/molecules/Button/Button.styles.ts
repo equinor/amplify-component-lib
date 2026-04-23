@@ -37,7 +37,7 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   position: relative;
   cursor: pointer;
 
-  span {
+  > span {
     padding: ${spacings.x_small};
     text-align: center;
   }
@@ -88,11 +88,6 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
     background: ${({ $tokens }) => $tokens.disabled.backgroundColor};
     color: ${({ $tokens }) => $tokens.disabled.color};
     border: 1px solid ${(props) => resolveBorderColor(props.$tokens.disabled)};
-
-    @media (hover: hover) and (pointer: fine) {
-      &:hover {
-      }
-    }
   }
 `;
 

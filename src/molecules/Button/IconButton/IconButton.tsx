@@ -79,7 +79,9 @@ type ButtonComponent = LinkComponent<typeof BaseIconButton> &
 
 export const IconButton: ButtonComponent = ((props: IconButtonProps) => {
   if (isPlainButtonProps(props)) {
-    return <BaseIconButton {...props} as="button" />;
+    return (
+      <BaseIconButton {...props} as="button" type={props.type ?? 'button'} />
+    );
   }
   return <ButtonLink {...props} as="a" />;
 }) as ButtonComponent;
