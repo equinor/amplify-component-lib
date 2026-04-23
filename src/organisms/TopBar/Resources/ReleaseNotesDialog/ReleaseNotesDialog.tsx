@@ -5,7 +5,6 @@ import {
   ReleaseNotesService,
   useReleaseNotesQuery,
 } from '@equinor/subsurface-app-management';
-import { Link } from '@tanstack/react-router';
 
 import { Header } from './Header/Header';
 import {
@@ -51,13 +50,11 @@ export const ReleaseNotesDialog: FC<ReleaseNotesDialogProps> = ({
           <ReleaseNote {...mostRecentReleaseNote} expanded />
           <AllReleaseNotesWrapper>
             <Button
-              as={Link}
               variant="ghost"
               to="/release-notes"
               onClick={handleCloseModal}
-            >
-              See all release notes
-            </Button>
+              label="See all release notes"
+            />
           </AllReleaseNotesWrapper>
         </>
       ) : (

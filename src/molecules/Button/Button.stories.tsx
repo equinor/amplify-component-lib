@@ -19,7 +19,7 @@ const meta: Meta<typeof Button> = {
   },
   parameters: {
     router: {
-      initialEntries: ['/'],
+      initial: '/',
       routes: ['$'],
     },
   },
@@ -48,7 +48,7 @@ const meta: Meta<typeof Button> = {
 
 export default meta;
 export const Introduction: StoryFn<ButtonProps> = (args) => {
-  return <Button {...args}>You can control me</Button>;
+  return <Button {...args} label="You can control me" />;
 };
 Introduction.decorators = [
   (Story) => (
@@ -63,18 +63,14 @@ export const Basic: StoryFn<ButtonProps> = () => (
     style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
   >
     <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button variant="filled">Filled</Button>
-      <Button variant="outlined">Outlined</Button>
-      <Button variant="ghost">Ghost</Button>
+      <Button label="Filled" variant="filled" />
+      <Button label="Outlined" variant="outlined" />
+      <Button label="Ghost" variant="ghost" />
     </div>
     <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button color="danger">Filled</Button>
-      <Button color="danger" variant="outlined">
-        Outlined
-      </Button>
-      <Button color="danger" variant="ghost">
-        Ghost
-      </Button>
+      <Button label="Filled" color="danger" />
+      <Button label="Outlined" color="danger" variant="outlined" />
+      <Button label="Ghost" color="danger" variant="ghost" />
     </div>
   </div>
 );
@@ -88,13 +84,9 @@ Basic.decorators = [
 
 export const Disabled: StoryFn<ButtonProps> = () => (
   <div style={{ display: 'flex', gap: spacings.medium }}>
-    <Button disabled>Filled</Button>
-    <Button disabled variant="outlined">
-      Outlined
-    </Button>
-    <Button disabled variant="ghost">
-      Ghost
-    </Button>
+    <Button label="Filled" disabled />
+    <Button label="Outlined" disabled variant="outlined" />
+    <Button label="Ghost" disabled variant="ghost" />
   </div>
 );
 Disabled.decorators = [
@@ -119,13 +111,12 @@ export const Accessibility: StoryFn<ButtonProps> = () => {
       />
       <Tooltip title={canSubmit ? '' : 'Terms & Conditions must be checked'}>
         <Button
+          label="Submit"
           aria-disabled={!canSubmit}
           onClick={() => {
             if (canSubmit) setOpen(true);
           }}
-        >
-          Submit
-        </Button>
+        />
       </Tooltip>
       <Snackbar
         open={open}
@@ -148,8 +139,8 @@ Accessibility.decorators = [
 export const Icons: StoryFn<ButtonProps> = () => (
   <>
     <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button leadingIcon={save}>Leading icon</Button>
-      <Button trailingIcon={save}>Trailing icon</Button>
+      <Button label="Leading icon" leadingIcon={save} />
+      <Button label="Trailing icon" trailingIcon={save} />
     </div>
   </>
 );
@@ -166,24 +157,14 @@ export const Loading: StoryFn<ButtonProps> = () => (
     style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
   >
     <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button loading>Filled</Button>
-      <Button loading variant="outlined">
-        Outlined
-      </Button>
-      <Button loading variant="ghost">
-        Ghost
-      </Button>
+      <Button label="Filled" loading />
+      <Button label="Outlined" loading variant="outlined" />
+      <Button label="Ghost" loading variant="ghost" />
     </div>
     <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button loading color="danger">
-        Filled
-      </Button>
-      <Button loading color="danger" variant="outlined">
-        Outlined
-      </Button>
-      <Button loading color="danger" variant="ghost">
-        Ghost
-      </Button>
+      <Button label="Filled" loading color="danger" />
+      <Button label="Outlined" loading color="danger" variant="outlined" />
+      <Button label="Ghost" loading color="danger" variant="ghost" />
     </div>
   </div>
 );
@@ -197,13 +178,9 @@ Loading.decorators = [
 
 export const FullWidth: StoryFn<ButtonProps> = () => (
   <>
-    <Button fullWidth leadingIcon={save}>
-      fullWidth
-    </Button>
-    <Button fullWidth trailingIcon={save}>
-      fullWidth
-    </Button>
-    <Button leadingIcon={save}>No fullWidth</Button>
+    <Button label="fullWidth" fullWidth leadingIcon={save} />
+    <Button label="fullWidth" fullWidth trailingIcon={save} />
+    <Button label="No fullWidth" leadingIcon={save} />
   </>
 );
 FullWidth.storyName = 'Full width';

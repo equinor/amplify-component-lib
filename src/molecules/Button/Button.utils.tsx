@@ -1,9 +1,11 @@
+import { ButtonColors, ButtonVariants } from 'src/molecules/Button/types';
+
 export const getLoadingColor = ({
   color,
   variant,
 }: {
-  color: 'primary' | 'danger';
-  variant: 'filled' | 'outlined' | 'ghost';
+  color: ButtonColors;
+  variant: ButtonVariants;
 }) => {
   if (variant === 'filled') return 'neutral';
   return color === 'danger' ? 'tertiary' : 'primary';

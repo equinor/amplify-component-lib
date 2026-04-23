@@ -31,12 +31,18 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
   color = 'primary',
   loading = false,
   shape = 'circular',
+  onClick,
   ...rest
 }) => {
   const tokens = TOKEN_MAPPINGS[color][variant];
 
   return (
-    <IconButtonWrapper $shape={shape} $tokens={tokens} {...rest}>
+    <IconButtonWrapper
+      $shape={shape}
+      $tokens={tokens}
+      onClick={loading ? undefined : onClick}
+      {...rest}
+    >
       {loading ? (
         <>
           <StyledCircularProgress

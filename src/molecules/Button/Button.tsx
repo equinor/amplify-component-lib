@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 
 import { DotProgress } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
@@ -17,6 +17,7 @@ import { TOKEN_MAPPINGS } from './tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
 type BaseButtonProps = {
+  label: string;
   fullWidth?: boolean;
   leadingIcon?: IconData;
   trailingIcon?: IconData;
@@ -27,23 +28,28 @@ export type ButtonProps =
   | BaseButtonProps;
 
 const BaseButton: FC<BaseButtonProps> = ({
-  children,
-  as,
+  label,
   variant = 'filled',
   color = 'primary',
   leadingIcon,
   trailingIcon,
   fullWidth = false,
   loading = false,
+  onClick,
   ...rest
 }) => {
   const tokens = TOKEN_MAPPINGS[color][variant];
 
   return (
-    <ButtonPrimitive as={as} $tokens={tokens} $fullWidth={fullWidth} {...rest}>
+    <ButtonPrimitive
+      $tokens={tokens}
+      $fullWidth={fullWidth}
+      onClick={loading ? undefined : onClick}
+      {...rest}
+    >
       {loading ? (
         <>
-          <HiddenText>{children}</HiddenText>
+          <HiddenText>{label}</HiddenText>
           <CenteredContent>
             <DotProgress color={getLoadingColor({ color, variant })} />
           </CenteredContent>
@@ -51,7 +57,7 @@ const BaseButton: FC<BaseButtonProps> = ({
       ) : (
         <>
           {leadingIcon && <LeftIcon data={leadingIcon} />}
-          <span>{children}</span>
+          <span>{label}</span>
           {trailingIcon && <RightIcon data={trailingIcon} />}
         </>
       )}

@@ -1,4 +1,4 @@
-export type Variants = 'filled' | 'outlined' | 'ghost';
+import { ButtonVariants } from 'src/molecules/Button/types';
 
 export interface VariantTokens {
   backgroundColor: string;
@@ -22,4 +22,4 @@ export interface VariantTokens {
   };
 }
 
-export type ButtonTokens = Record<Variants, VariantTokens>;
+export type ButtonTokens = Record<ButtonVariants, VariantTokens>;

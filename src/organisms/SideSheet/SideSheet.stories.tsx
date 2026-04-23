@@ -1,12 +1,12 @@
 import { ReactElement, useState } from 'react';
 
-import { Icon } from '@equinor/eds-core-react';
 import { close, dashboard, edit, star_outlined } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SideSheet } from './SideSheet';
 import { SideSheetProps } from './SideSheet.types';
 import { colors } from 'src/atoms/style';
+import { IconButton } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
 import { SideBar } from 'src/organisms/SideBar';
 import { Template } from 'src/organisms/Template/Template';
@@ -45,12 +45,11 @@ function StoryComponent(props: SideSheetProps) {
           <Template.Content $open={false}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <Button
+                label="Toggle side sheet"
                 onClick={() => {
                   setOpen((prev) => !prev);
                 }}
-              >
-                Toggle side sheet
-              </Button>
+              />
               <SideSheet {...props} open={open} onClose={handleOnClose} />
             </div>
           </Template.Content>
@@ -106,9 +105,10 @@ function StatefulModalWrapper(props: SideSheetProps) {
     <FloatingStoryWrapper>
       <div>
         <div style={{ padding: '1rem' }}>
-          <Button onClick={() => setOpen((prev) => !prev)}>
-            Toggle side sheet
-          </Button>
+          <Button
+            label="Toggle side sheet"
+            onClick={() => setOpen((prev) => !prev)}
+          />
         </div>
         <SideSheet {...props} open={open} onClose={() => setOpen(false)} />
       </div>
@@ -143,12 +143,8 @@ export const StandardWithHeaderElements: Story = {
     type: 'standard',
     headerElements: (
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button variant="ghost_icon">
-          <Icon data={star_outlined} />
-        </Button>
-        <Button variant="ghost_icon">
-          <Icon data={edit} />
-        </Button>
+        <IconButton icon={star_outlined} variant="ghost" />
+        <IconButton icon={edit} variant="ghost" />
       </div>
     ),
   },

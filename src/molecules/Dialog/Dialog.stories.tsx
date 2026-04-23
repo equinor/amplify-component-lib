@@ -78,7 +78,7 @@ const meta: Meta<typeof Dialog> = {
         variant: 'ghost',
         onClick: () => console.log('clicked'),
         text: 'Cancel',
-        color: 'secondary',
+        color: 'primary',
       },
       {
         variant: 'outlined',
@@ -160,13 +160,13 @@ export const DisabledActions: Story = {
       {
         text: 'Cancel',
         onClick: () => console.log('clicked'),
-        variant: 'contained',
+        variant: 'filled',
         disabled: true,
       },
       {
         text: 'Okay!',
         onClick: () => console.log('clicked'),
-        variant: 'contained',
+        variant: 'filled',
         disabled: 'This action is disabled',
       },
     ],
@@ -186,7 +186,7 @@ export const IsLoadingAction: Story = {
       {
         text: 'Okay!',
         onClick: () => console.log('clicked'),
-        variant: 'contained',
+        variant: 'filled',
         isLoading: true,
       },
     ],
@@ -218,7 +218,7 @@ export const LeftAndRightActions: Story = {
       {
         text: 'Okay',
         onClick: () => console.log('clicked'),
-        variant: 'contained',
+        variant: 'filled',
       },
     ],
   },
@@ -239,7 +239,7 @@ export const ColorVariations: Story = {
       {
         onClick: () => console.log('clicked'),
         text: 'Secondary',
-        color: 'secondary',
+        color: 'primary',
       },
       {
         onClick: () => console.log('clicked'),
@@ -293,7 +293,7 @@ export const LongDialogWithContentMaxHeight: Story = {
       {
         text: 'Okay',
         onClick: () => console.log('clicked'),
-        variant: 'contained',
+        variant: 'filled',
       },
     ],
   },
