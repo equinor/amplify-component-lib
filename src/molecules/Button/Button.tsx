@@ -8,7 +8,7 @@ import { createLink, LinkComponent } from '@tanstack/react-router';
 import {
   ButtonPrimitive,
   CenteredContent,
-  HiddenText,
+  HiddenContent,
   LeftIcon,
   RightIcon,
 } from 'src/molecules/Button/Button.styles';
@@ -39,6 +39,7 @@ const BaseButton: FC<BaseButtonProps> = ({
   ...rest
 }) => {
   const tokens = TOKEN_MAPPINGS[color][variant];
+  const iconsCount = [leadingIcon, trailingIcon].filter(Boolean).length;
 
   return (
     <ButtonPrimitive
@@ -49,7 +50,14 @@ const BaseButton: FC<BaseButtonProps> = ({
     >
       {loading ? (
         <>
-          <HiddenText>{label}</HiddenText>
+          <HiddenContent
+            style={{
+              marginLeft: iconsCount * 12,
+              marginRight: iconsCount * 12,
+            }}
+          >
+            {label}
+          </HiddenContent>
           <CenteredContent>
             <DotProgress color={getLoadingColor({ color, variant })} />
           </CenteredContent>

@@ -91,7 +91,7 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   }
 `;
 
-export const HiddenText = styled.span`
+export const HiddenContent = styled.span`
   opacity: 0;
   visibility: hidden;
 `;
