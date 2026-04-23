@@ -2,7 +2,6 @@ import { forwardRef, ReactNode, useState } from 'react';
 
 import {
   Button,
-  ButtonProps,
   DialogProps as EDSDialogProps,
   Icon,
   Typography,
@@ -18,6 +17,7 @@ import {
   InfoIconWrapper,
 } from './Dialog.styles';
 import { DialogAction } from './DialogAction';
+import { ButtonColors, ButtonVariants } from 'src/molecules/Button/types';
 
 /**
  * @param position - Right is default
@@ -31,8 +31,8 @@ export interface DialogAction {
   position?: 'left' | 'center' | 'right';
   onClick: () => void;
   text: string;
-  variant?: ButtonProps['variant'];
-  color?: ButtonProps['color'];
+  variant?: ButtonVariants;
+  color?: ButtonColors;
   icon?: IconData;
   disabled?: boolean | string;
   isLoading?: boolean;

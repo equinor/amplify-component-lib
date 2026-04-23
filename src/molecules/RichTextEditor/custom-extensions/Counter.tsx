@@ -49,9 +49,10 @@ const Component = (props: NodeViewProps) => {
     <StyledNodeViewWrapper className="react-component">
       <label contentEditable={false}>React Component</label>
       <NodeViewContent className="content" />
-      <Button onClick={() => setCount(count + 1)}>
-        This button has been clicked {count} times.
-      </Button>
+      <Button
+        onClick={() => setCount(count + 1)}
+        label={`This button has been clicked ${count} times.`}
+      />
     </StyledNodeViewWrapper>
   );
 };

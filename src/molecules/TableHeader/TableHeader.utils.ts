@@ -39,19 +39,6 @@ export function getLeadingIconColor(
   return colors.text.static_icons__tertiary.rgba;
 }
 
-export function getActionIconColor(
-  props: Pick<TableHeaderProps, 'variant'>
-): string {
-  switch (props.variant) {
-    case 'warning':
-      return colors.interactive.warning__text.rgba;
-    case 'error':
-      return colors.interactive.danger__text.rgba;
-  }
-
-  return colors.interactive.primary__resting.rgba;
-}
-
 export function getSortingIcon(
   isSorting: NonNullable<NonNullable<TableHeaderProps['sorting']>['isSorting']>
 ): IconData {

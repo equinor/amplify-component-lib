@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "12.0.1",
+  "version": "13.0.0",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,9 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "clean": "rm -rf node_modules/.cache/storybook node_modules/.vite",
     "start": "storybook dev -p 6006",
+    "start:fresh": "npm run clean && storybook dev -p 6006",
     "build-storybook": "storybook build",
     "pretty": "prettier --check ./config ./src ./.storybook",
     "pretty:fix": "prettier --write ./config ./src ./.storybook",

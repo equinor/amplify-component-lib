@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Icon, Tooltip, TooltipProps } from '@equinor/eds-core-react';
 import { help_outline } from '@equinor/eds-icons';
 
-import { colors, shape } from 'src/atoms';
+import { colors, shape } from 'src/atoms/style';
 
 import styled from 'styled-components';
 
