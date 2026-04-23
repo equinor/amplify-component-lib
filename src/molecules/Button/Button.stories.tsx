@@ -2,12 +2,14 @@ import { ChangeEvent, useState } from 'react';
 
 import { Checkbox, Snackbar, Tooltip } from '@equinor/eds-core-react';
 import { save } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { ButtonProps } from './Button';
 import { spacings } from 'src/atoms';
 import { Button } from 'src/molecules/Button/Button';
 import { Stack } from 'src/storybook';
+
+import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof Button> = {
   title: 'Molecules/Button',
@@ -191,3 +193,47 @@ FullWidth.decorators = [
     </div>
   ),
 ];
+
+export const LinkButton: StoryFn<ButtonProps> = () => (
+  <>
+    <Button to="/faq" label="I am a link" />
+  </>
+);
+LinkButton.storyName = 'Button as a link';
+LinkButton.decorators = [
+  (Story) => (
+    <Stack>
+      <Story />
+    </Stack>
+  ),
+];
+
+type Story = StoryObj<typeof Button>;
+
+export const TestLoadingState: Story = {
+  tags: ['test-only'],
+  args: {
+    loading: true,
+    label: 'Loading Button',
+    onClick: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await expect(canvas.queryByText('Loading Button')).not.toBeVisible();
+
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
+
+export const TestRendersAsLink: Story = {
+  tags: ['test-only'],
+  render: () => <Button to="/somewhere" label="Save" />,
+  play: async ({ canvas }) => {
+    const link = canvas.getByRole('link', { name: 'Save' });
+
+    await expect(link).toBeInTheDocument();
+    await expect(link.tagName).toBe('A');
+    await expect(link).toHaveAttribute('href', '/somewhere');
+  },
+};

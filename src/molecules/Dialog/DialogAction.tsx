@@ -15,7 +15,7 @@ export const DialogAction: FC<DialogActionProps> = ({
 }) => (
   <OptionalTooltip title={typeof disabled === 'string' ? disabled : ''}>
     <Button
-      trailingIcon={icon}
+      leadingIcon={icon}
       variant={variant}
       color={color}
       onClick={onClick}
