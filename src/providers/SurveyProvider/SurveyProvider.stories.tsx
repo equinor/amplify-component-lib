@@ -87,24 +87,26 @@ const standardSurvey: UserSurveyVm = {
       type: QuestionType.CHOICE,
       questionText: 'Choose one please',
       order: 2,
-      options: [
-        {
-          id: { value: 'optionOne' },
-          optionText: 'First option',
-          order: 1,
-        },
-        {
-          id: { value: 'optionTwo' },
-          optionText: 'Second option',
-          order: 2,
-        },
-        {
-          id: { value: 'optionThree' },
-          optionText: 'Third option',
-          order: 3,
-        },
-      ],
-      maxSelections: 1,
+      multipleChoiceVm: {
+        maxSelectableOptions: 1,
+        options: [
+          {
+            id: { value: 'optionOne' },
+            optionText: 'First option',
+            order: 1,
+          },
+          {
+            id: { value: 'optionTwo' },
+            optionText: 'Second option',
+            order: 2,
+          },
+          {
+            id: { value: 'optionThree' },
+            optionText: 'Third option',
+            order: 3,
+          },
+        ],
+      },
     },
     {
       questionId: { value: 'linearScaleQuestion' },
@@ -231,7 +233,8 @@ export const TestStandard: Story = {
         )
       ).toBeInTheDocument();
 
-      for (const option of standardSurvey.questions[1].options ?? []) {
+      for (const option of standardSurvey.questions[1].multipleChoiceVm
+        ?.options ?? []) {
         await expect(
           canvas.getByRole('checkbox', { name: option.optionText })
         ).toBeInTheDocument();
@@ -244,19 +247,22 @@ export const TestStandard: Story = {
       // Check
       await userEvent.click(
         canvas.getByRole('checkbox', {
-          name: standardSurvey.questions[1].options?.at(0)!.optionText,
+          name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(0)!
+            .optionText,
         })
       );
       // Uncheck
       await userEvent.click(
         canvas.getByRole('checkbox', {
-          name: standardSurvey.questions[1].options?.at(0)!.optionText,
+          name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(0)!
+            .optionText,
         })
       );
       // Check again
       await userEvent.click(
         canvas.getByRole('checkbox', {
-          name: standardSurvey.questions[1].options?.at(0)!.optionText,
+          name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(0)!
+            .optionText,
         })
       );
 

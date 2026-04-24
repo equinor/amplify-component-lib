@@ -15,14 +15,13 @@ const Container = styled.div`
 
 export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
   questionId,
-  options,
-  maxSelections,
+  multipleChoiceVm,
 }) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
 
   return (
     <Container>
-      {options?.map((option) => {
+      {multipleChoiceVm.options.map((option) => {
         const checked = currentAnswer?.selectedOptionIds?.some(
           (item) => item.value === option.id.value
         );
@@ -33,7 +32,8 @@ export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
             checked={checked}
             disabled={
               !checked &&
-              maxSelections === (currentAnswer?.selectedOptionIds?.length ?? 0)
+              multipleChoiceVm.maxSelectableOptions ===
+                (currentAnswer?.selectedOptionIds?.length ?? 0)
             }
             onChange={(event) => {
               setCurrentAnswer((prevAnswer) => {
