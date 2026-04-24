@@ -8,8 +8,7 @@ export type FreeTextQuestion = QuestionBase & {
 
 export type ChoiceQuestion = QuestionBase & {
   type: QuestionType.CHOICE;
-  options: NonNullable<QuestionVm['options']>;
-  maxSelections: NonNullable<QuestionVm['maxSelections']>;
+  multipleChoiceVm: NonNullable<QuestionVm['multipleChoiceVm']>;
 };
 
 export type LinearScaleQuestion = QuestionBase & {

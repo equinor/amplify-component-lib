@@ -51,7 +51,7 @@ export const SurveyDialog: FC = () => {
           currentAnswer.selectedOptionIds.length === 0 ||
           currentAnswer.selectedOptionIds.length >
             /* v8 ignore next */
-            (currentQuestion.maxSelections ?? 0)
+            (currentQuestion.multipleChoiceVm?.maxSelectableOptions ?? 0)
         );
       case QuestionType.LINEAR_SCALE:
         return currentAnswer.numericAnswer === undefined;
