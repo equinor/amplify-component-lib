@@ -43,6 +43,9 @@ export const SurveyLinearScaleQuestion: FC<SurveyLinearScaleQuestionProps> = ({
 }) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
   const rangeAmount = linearScaleVm.maxValue - linearScaleVm.minValue + 1;
+  const currentNumericAnswer = (
+    'setAnswer' in rest ? rest.answer : currentAnswer
+  )?.numericAnswer;
 
   const handleOnAnswer = (numericAnswer: number) => {
     if ('answer' in rest && 'setAnswer' in rest) {
@@ -70,12 +73,9 @@ export const SurveyLinearScaleQuestion: FC<SurveyLinearScaleQuestionProps> = ({
             data-testid={`range-radio-${questionId.value}`}
             name={`range-${questionId.value}`}
             label=""
-            checked={
-              ('answer' in rest ? rest.answer : currentAnswer)
-                ?.numericAnswer ===
-              index + linearScaleVm.minValue
-            }
-            onClick={() => {
+            value={linearScaleVm.minValue + index}
+            checked={currentNumericAnswer === linearScaleVm.minValue + index}
+            onChange={() => {
               handleOnAnswer(linearScaleVm.minValue + index);
             }}
           />
