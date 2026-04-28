@@ -13,6 +13,7 @@ import {
   AnswerQuestionCommandDto,
   useActiveSurvey,
   useAnswerQuestionActiveSurvey,
+  useCompleteActiveSurvey,
   useRespondActiveSurvey,
   UserSurveyVm,
 } from '@equinor/subsurface-app-management';
@@ -63,6 +64,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
   const initializedQuestionIndex = useRef<string | undefined>(undefined);
   const { mutateAsync: respondActiveSurvey } = useRespondActiveSurvey();
   const { mutateAsync: answerQuestion } = useAnswerQuestionActiveSurvey();
+  const { mutate: completeSurvey } = useCompleteActiveSurvey();
 
   useEffect(() => {
     if (
@@ -78,7 +80,9 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
   }, [activeSurvey]);
 
   const handleCompleteSurvey = () => {
-    if (!activeSurvey) return;
+    if (!activeSurvey || !activeSurvey.surveyResponseId) return;
+
+    completeSurvey(activeSurvey.surveyResponseId.value);
 
     showToast({
       variant: 'success',
