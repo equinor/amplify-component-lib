@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 
 import { Checkbox, Snackbar, Tooltip } from '@equinor/eds-core-react';
-import { save } from '@equinor/eds-icons';
+import { chevron_down, save } from '@equinor/eds-icons';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
@@ -143,6 +143,11 @@ export const Icons: StoryFn<ButtonProps> = () => (
     <div style={{ display: 'flex', gap: spacings.medium }}>
       <Button label="Leading icon" leadingIcon={save} />
       <Button label="Trailing icon" trailingIcon={save} />
+      <Button
+        label="Both icons"
+        leadingIcon={save}
+        trailingIcon={chevron_down}
+      />
     </div>
   </>
 );
