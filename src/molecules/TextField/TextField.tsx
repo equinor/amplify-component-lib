@@ -68,10 +68,6 @@ const Wrapper = styled.div<WrapperProps>`
     outline: none !important;
   }
 
-  div[class*='Input__Adornments'] > span {
-    color: ${colors.text.static_icons__tertiary.rgba};
-  }
-
   div[class*='HelperText'] {
     margin-right: ${({ $helperRightWidth }) =>
       $helperRightWidth
@@ -87,6 +83,14 @@ const Wrapper = styled.div<WrapperProps>`
         }
         p {
           color: ${colors.interactive.disabled__text.rgba} !important;
+        }
+      `;
+    }
+
+    if (!$disabled) {
+      return css`
+        div[class*='Input__Adornments'] > span {
+          color: ${colors.text.static_icons__tertiary.rgba};
         }
       `;
     }
