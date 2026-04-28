@@ -70,11 +70,10 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       initializedQuestionIndex.current !== activeSurvey.surveyId.value
     ) {
       initializedQuestionIndex.current = activeSurvey.surveyId.value;
-      setActiveQuestionIndex(
-        activeSurvey.questions.findIndex(
-          (question) => question.answer === undefined
-        )
+      const questionIndex = activeSurvey.questions.findIndex(
+        (question) => question.answer === undefined
       );
+      setActiveQuestionIndex(questionIndex >= 0 ? questionIndex : 0);
     }
   }, [activeSurvey]);
 
