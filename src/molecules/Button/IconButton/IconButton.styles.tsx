@@ -19,13 +19,13 @@ export const IconButtonWrapper = styled(
   ${({ $shape }) =>
     $shape === 'circular'
       ? css`
-          height: 40px;
-          width: 40px;
-          border-radius: 50%;
+          height: ${shape.icon_button.minHeight};
+          width: ${shape.icon_button.minWidth};
+          border-radius: ${shape.icon_button.borderRadius};
         `
       : css`
-          height: 36px;
-          width: 36px;
+          height: ${shape.button.minHeight};
+          width: ${shape.button.minHeight};
           border-radius: ${shape.button.borderRadius};
         `}
 `;

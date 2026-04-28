@@ -21,6 +21,8 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  height: ${shape.button.minHeight};
+  min-width: fit-content;
 
   //has to be set before color to not override the color tokens
   ${typographyTemplate(tokens.typography.navigation.button)}
