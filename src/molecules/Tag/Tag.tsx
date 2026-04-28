@@ -19,7 +19,7 @@ const Container = styled.div<ContainerProps>`
   padding: ${spacings.xx_small} ${spacings.x_small};
   gap: ${spacings.x_small};
   background: ${({ $color }) => TAG_COLORS[$color].background};
-  min-height: calc(24px + 2 * ${spacings.xx_small});
+  min-height: 24px;
   > span {
     color: ${({ $color }) => TAG_COLORS[$color].text};
     line-height: normal;
