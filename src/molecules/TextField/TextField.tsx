@@ -75,6 +75,14 @@ const Wrapper = styled.div<WrapperProps>`
         : 0};
   }
 
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
+      div[class*='Input__Adornments'] > span {
+        color: ${colors.text.static_icons__tertiary.rgba};
+      }
+    `}
+
   ${({ $variant, $disabled }) => {
     if ($disabled) {
       return css`
