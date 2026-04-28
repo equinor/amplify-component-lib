@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.22.0",
-    "@equinor/subsurface-app-management": "5.4.4",
+    "@equinor/subsurface-app-management": "5.4.6",
     "@eslint/js": "^9.22.0",
     "@faker-js/faker": "^9.6.0",
     "@storybook/addon-coverage": "^2.0.0",
@@ -116,7 +116,7 @@
     "@equinor/eds-core-react": "0.44.0",
     "@equinor/eds-data-grid-react": "^0.7.5",
     "@equinor/eds-icons": "*",
-    "@equinor/subsurface-app-management": "^5.4.4",
+    "@equinor/subsurface-app-management": "^5.4.6",
     "@tanstack/react-query": "*",
     "@tanstack/react-router": "*",
     "@tiptap/core": "^3.1.0",

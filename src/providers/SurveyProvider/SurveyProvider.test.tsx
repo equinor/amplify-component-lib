@@ -1,5 +1,11 @@
 import { ReactNode } from 'react';
 
+import {
+  QuestionType,
+  SurveyResponseStatus,
+  SurveyType,
+  UserSurveyVm,
+} from '@equinor/subsurface-app-management';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { useSurvey } from './hooks/useSurvey';
@@ -75,4 +81,99 @@ test("'SurveyQuestion' throws error when there is no active survey", () => {
       </SurveyContext.Provider>
     )
   ).toThrow("SurveyQuestion couldn't find active survey or question");
+});
+
+test('Sets activeQuestionIndex to 0 if all questions have answers', async ({
+  worker,
+}) => {
+  const survey: UserSurveyVm = {
+    surveyId: {
+      value: 'some-id',
+    },
+    status: SurveyResponseStatus.IN_PROGRESS,
+    surveyType: SurveyType.DEFAULT,
+    applicationId: 'some-app',
+    title: 'This is the title',
+    description: '',
+    startAt: '',
+    endAt: '',
+    showConfettiOnComplete: false,
+    questions: [
+      {
+        questionId: { value: 'id1' },
+        questionText: 'Hei',
+        type: QuestionType.TEXT,
+        order: 1,
+        answer: {
+          answerId: { value: 'id2' },
+          textAnswer: 'Something or other',
+        },
+      },
+    ],
+  };
+  worker.use(
+    http.get('*/api/v1/surveys/applications/:applicationName/me', () =>
+      HttpResponse.json(survey)
+    )
+  );
+
+  const { result } = renderHook(() => useSurvey(), { wrapper: TestProviders });
+
+  await waitFor(() =>
+    expect(result.current.activeSurvey?.surveyId.value).toBe(
+      survey.surveyId.value
+    )
+  );
+  await waitFor(() => expect(result.current.activeQuestionIndex).toBe(0));
+});
+
+test('Sets activeQuestionIndex to the last unanswered question if some questions have answers', async ({
+  worker,
+}) => {
+  const survey: UserSurveyVm = {
+    surveyId: {
+      value: 'some-id',
+    },
+    status: SurveyResponseStatus.IN_PROGRESS,
+    surveyType: SurveyType.DEFAULT,
+    applicationId: 'some-app',
+    title: 'This is the title',
+    description: '',
+    startAt: '',
+    endAt: '',
+    showConfettiOnComplete: false,
+    questions: [
+      {
+        questionId: { value: 'id1' },
+        questionText: 'Hei',
+        type: QuestionType.TEXT,
+        order: 1,
+        answer: {
+          answerId: { value: 'id2' },
+          textAnswer: 'Something or other',
+        },
+      },
+      {
+        questionId: { value: 'id2' },
+        questionText: 'Hei',
+        type: QuestionType.TEXT,
+        order: 2,
+        answer: undefined,
+      },
+    ],
+  };
+  worker.use(
+    http.get('*/api/v1/surveys/applications/:applicationName/me', () =>
+      HttpResponse.json(survey)
+    )
+  );
+
+  const { result } = renderHook(() => useSurvey(), { wrapper: TestProviders });
+
+  await waitFor(() =>
+    expect(result.current.activeSurvey?.surveyId.value).toBe(
+      survey.surveyId.value
+    )
+  );
+  await waitFor(() => expect(result.current.activeQuestionIndex).toBe(1));
 });
