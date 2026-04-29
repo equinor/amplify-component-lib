@@ -21,6 +21,23 @@ import { render, renderHook, test, waitFor } from 'src/tests/browsertest-utils';
 
 import { http, HttpResponse } from 'msw';
 
+const mockShower = vi.hoisted(() => vi.fn());
+
+vi.mock('src/providers/ConfettiProvider/ConfettiProvider', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('src/providers/ConfettiProvider/ConfettiProvider')>();
+  return {
+    ...actual,
+    useConfetti: () => ({
+      shower: mockShower,
+      boom: vi.fn(),
+    }),
+  };
+});
+
+beforeEach(() => {
+  mockShower.mockClear();
+});
+
 function TestProviders({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return (
@@ -176,4 +193,97 @@ test('Sets activeQuestionIndex to the last unanswered question if some questions
     )
   );
   await waitFor(() => expect(result.current.activeQuestionIndex).toBe(1));
+});
+
+test('Calls show from confetti provider if showConfettiOnComplete: true', async ({
+  worker,
+}) => {
+  const survey: UserSurveyVm = {
+    surveyId: {
+      value: 'some-id',
+    },
+    status: SurveyResponseStatus.IN_PROGRESS,
+    surveyType: SurveyType.DEFAULT,
+    applicationId: 'some-app',
+    title: 'This is the title',
+    description: '',
+    startAt: '',
+    endAt: '',
+    showConfettiOnComplete: true,
+    questions: [
+      {
+        questionId: { value: 'id1' },
+        questionText: 'Hei',
+        type: QuestionType.TEXT,
+        order: 1,
+        answer: {
+          answerId: { value: 'id2' },
+          textAnswer: 'Something or other',
+        },
+      },
+    ],
+  };
+  worker.use(
+    http.get('*/api/v1/surveys/applications/:applicationName/me', () =>
+      HttpResponse.json(survey)
+    )
+  );
+
+  const { result } = renderHook(() => useSurvey(), { wrapper: TestProviders });
+
+  await waitFor(() =>
+    expect(result.current.activeSurvey?.surveyId.value).toBe(
+      survey.surveyId.value
+    )
+  );
+});
+
+test('Calls shower from useConfetti when completeSurvey is called and showConfettiOnComplete is true', async ({
+  worker,
+}) => {
+  const survey: UserSurveyVm = {
+    surveyId: { value: 'some-id' },
+    surveyResponseId: { value: 'some-response-id' },
+    status: SurveyResponseStatus.IN_PROGRESS,
+    surveyType: SurveyType.DEFAULT,
+    applicationId: 'some-app',
+    title: 'This is the title',
+    description: '',
+    startAt: '',
+    endAt: '',
+    showConfettiOnComplete: true,
+    questions: [
+      {
+        questionId: { value: 'id1' },
+        questionText: 'Hei',
+        type: QuestionType.TEXT,
+        order: 1,
+        answer: {
+          answerId: { value: 'id2' },
+          textAnswer: 'Something or other',
+        },
+      },
+    ],
+  };
+  worker.use(
+    http.get('*/api/v1/surveys/applications/:applicationName/me', () =>
+      HttpResponse.json(survey)
+    )
+  );
+
+  const { result } = renderHook(() => useSurvey(), { wrapper: TestProviders });
+
+  await waitFor(() =>
+    expect(result.current.activeSurvey?.surveyId.value).toBe(
+      survey.surveyId.value
+    )
+  );
+
+  result.current.completeSurvey();
+
+  expect(mockShower).toHaveBeenCalledWith({
+    mode: 'shower',
+    shapes: ['square'],
+    duration: 5000,
+  });
 });
