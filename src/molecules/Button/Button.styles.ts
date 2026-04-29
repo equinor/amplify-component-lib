@@ -12,7 +12,7 @@ export interface ButtonStyles {
   $fullWidth?: boolean;
 }
 
-const resolveBorderColor = (tokens: {
+export const resolveBorderColor = (tokens: {
   borderColor?: string;
   backgroundColor: string;
 }) => ('borderColor' in tokens ? tokens.borderColor : tokens.backgroundColor);
