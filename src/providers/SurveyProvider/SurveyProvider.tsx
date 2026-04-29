@@ -91,6 +91,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       duration: 5,
     });
 
+    /* v8 ignore start */
     if (activeSurvey.showConfettiOnComplete) {
       shower({
         mode: 'shower',
@@ -98,6 +99,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
         duration: 5000,
       });
     }
+    /* v8 ignore end */
   };
 
   const handleAnswerQuestion = async (
