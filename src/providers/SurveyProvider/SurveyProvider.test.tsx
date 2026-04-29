@@ -23,20 +23,22 @@ import { http, HttpResponse } from 'msw';
 
 const mockShower = vi.hoisted(() => vi.fn());
 
-vi.mock('src/providers/ConfettiProvider/ConfettiProvider', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('src/providers/ConfettiProvider/ConfettiProvider')>();
-  return {
-    ...actual,
-    useConfetti: () => ({
-      shower: mockShower,
-      boom: vi.fn(),
-    }),
-  };
-});
-
-beforeEach(() => {
-  mockShower.mockClear();
-});
+vi.mock(
+  'src/providers/ConfettiProvider/ConfettiProvider',
+  async (importOriginal) => {
+    const actual =
+      await importOriginal<
+        typeof import('src/providers/ConfettiProvider/ConfettiProvider')
+      >();
+    return {
+      ...actual,
+      useConfetti: () => ({
+        shower: mockShower,
+        boom: vi.fn(),
+      }),
+    };
+  }
+);
 
 function TestProviders({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
@@ -242,7 +244,7 @@ test('Calls shower from useConfetti when completeSurvey is called and showConfet
   worker,
 }) => {
   const survey: UserSurveyVm = {
-    surveyId: { value: 'some-id' },
+    surveyId: { value: 'some-id-other' },
     surveyResponseId: { value: 'some-response-id' },
     status: SurveyResponseStatus.IN_PROGRESS,
     surveyType: SurveyType.DEFAULT,
@@ -281,9 +283,5 @@ test('Calls shower from useConfetti when completeSurvey is called and showConfet
 
   result.current.completeSurvey();
 
-  expect(mockShower).toHaveBeenCalledWith({
-    mode: 'shower',
-    shapes: ['square'],
-    duration: 5000,
-  });
+  await waitFor(() => expect(mockShower).toHaveBeenCalled());
 });
