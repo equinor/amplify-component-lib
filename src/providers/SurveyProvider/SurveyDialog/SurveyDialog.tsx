@@ -32,11 +32,14 @@ export const SurveyDialog: FC = () => {
     if (!currentAnswer) return;
 
     setIsAnswering(true);
-    await answerQuestion({
-      ...currentAnswer,
-      selectedOptionIds: currentAnswer?.selectedOptionIds ?? [],
-    });
-    setIsAnswering(false);
+    try {
+      await answerQuestion({
+        ...currentAnswer,
+        selectedOptionIds: currentAnswer?.selectedOptionIds ?? [],
+      });
+    } finally {
+      setIsAnswering(false);
+    }
   };
 
   const disabledNextAction = () => {

@@ -177,3 +177,46 @@ test('Sets activeQuestionIndex to the last unanswered question if some questions
   );
   await waitFor(() => expect(result.current.activeQuestionIndex).toBe(1));
 });
+
+test('Calls show from confetti provider if showConfettiOnComplete: true', async ({
+  worker,
+}) => {
+  const survey: UserSurveyVm = {
+    surveyId: {
+      value: 'some-id',
+    },
+    status: SurveyResponseStatus.IN_PROGRESS,
+    surveyType: SurveyType.DEFAULT,
+    applicationId: 'some-app',
+    title: 'This is the title',
+    description: '',
+    startAt: '',
+    endAt: '',
+    showConfettiOnComplete: true,
+    questions: [
+      {
+        questionId: { value: 'id1' },
+        questionText: 'Hei',
+        type: QuestionType.TEXT,
+        order: 1,
+        answer: {
+          answerId: { value: 'id2' },
+          textAnswer: 'Something or other',
+        },
+      },
+    ],
+  };
+  worker.use(
+    http.get('*/api/v1/surveys/applications/:applicationName/me', () =>
+      HttpResponse.json(survey)
+    )
+  );
+
+  const { result } = renderHook(() => useSurvey(), { wrapper: TestProviders });
+
+  await waitFor(() =>
+    expect(result.current.activeSurvey?.surveyId.value).toBe(
+      survey.surveyId.value
+    )
+  );
+});

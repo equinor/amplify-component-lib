@@ -59,6 +59,12 @@ const surveyHandlers = [
     };
     return HttpResponse.json(answerId);
   }),
+  http.put(
+    '*/api/v1/surveys/:surveyResponseId/responses/me/finalize',
+    async () => {
+      return HttpResponse.text('OK');
+    }
+  ),
 ];
 
 const standardSurvey: UserSurveyVm = {
