@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+
 import { colors, elevation, shape, spacings } from 'src/atoms/style';
 import type { SideSheetProps } from 'src/organisms';
 
@@ -7,11 +9,12 @@ import { css, styled } from 'styled-components';
 interface WrapperProps {
   $type: NonNullable<SideSheetProps['type']>;
   $withShadow?: boolean;
+  $zIndex?: CSSProperties['zIndex'];
 }
 
 export const Wrapper = styled(motion.div)<WrapperProps>`
   overflow: hidden;
-  ${({ $type, $withShadow }) => {
+  ${({ $type, $withShadow, $zIndex }) => {
     if ($type === 'standard') return '';
 
     if ($type === 'floating') {
@@ -21,6 +24,10 @@ export const Wrapper = styled(motion.div)<WrapperProps>`
         right: ${spacings.medium};
         box-shadow: ${elevation.sticky};
         border-radius: ${shape.corners.borderRadius};
+        ${$zIndex !== undefined &&
+        css`
+          z-index: ${$zIndex};
+        `}
       `;
     }
 
@@ -29,18 +36,27 @@ export const Wrapper = styled(motion.div)<WrapperProps>`
       top: 64px;
       right: 0;
       box-shadow: ${$withShadow ? elevation.above_scrim : 'none'};
+      ${$zIndex !== undefined &&
+      css`
+        z-index: ${$zIndex};
+      `}
     `;
   }}
 `;
 
 interface SheetProps {
   $type: NonNullable<SideSheetProps['type']>;
+  $width?: CSSProperties['width'];
 }
 
 export const Sheet = styled.div<SheetProps>`
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: ${({ $width }) => {
+    if ($width === undefined) return '500px';
+    if (typeof $width === 'number') return `${$width}px`;
+    return $width;
+  }};
   background: ${colors.ui.background__default.rgba};
   ${({ $type }) => {
     if ($type === 'standard') {
@@ -64,12 +80,16 @@ export const Header = styled.div`
   padding: ${spacings.medium} ${spacings.large};
 `;
 
-export const ScrimWrapper = styled(motion.div)`
+interface ScrimWrapperProps {
+  $zIndex?: CSSProperties['zIndex'];
+}
+
+export const ScrimWrapper = styled(motion.div)<ScrimWrapperProps>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   overflow: hidden;
   height: calc(100vh - 64px);
-  z-index: 10000;
+  z-index: ${({ $zIndex }) => $zIndex ?? 10000};
 `;
