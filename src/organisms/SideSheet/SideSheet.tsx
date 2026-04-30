@@ -16,6 +16,7 @@ import { AnimatePresence } from 'motion/react';
  * @param title - Title to display in the header
  * @param type - How the side sheet should be position, default is standard
  * @param headerElements - Optional spot to put elements in the header, for example more action buttons
+ * @param width - Optional width override (number is treated as px)
  * @param children - Content in the side sheet
  */
 export const SideSheet: FC<SideSheetProps> = ({
@@ -24,6 +25,7 @@ export const SideSheet: FC<SideSheetProps> = ({
   title,
   type = 'standard',
   headerElements,
+  width,
   children,
   ...rest
 }) => {
@@ -32,6 +34,7 @@ export const SideSheet: FC<SideSheetProps> = ({
       <ScrimWrapper
         data-testid="side-sheet-scrim"
         onClick={open ? onClose : undefined}
+        $zIndex={'zIndex' in rest ? rest.zIndex : undefined}
         initial={{
           display: 'none',
           background: 'rgba(111,111,111,0)',
@@ -47,11 +50,29 @@ export const SideSheet: FC<SideSheetProps> = ({
           title={title}
           type="modal"
           headerElements={headerElements}
+          width={width}
+          zIndex={'zIndex' in rest ? rest.zIndex : undefined}
           withScrim
         >
           {children}
         </SideSheetContent>
       </ScrimWrapper>
+    );
+  }
+
+  if (type === 'modal' || type === 'floating') {
+    return (
+      <SideSheetContent
+        open={open}
+        onClose={onClose}
+        title={title}
+        type={type}
+        headerElements={headerElements}
+        width={width}
+        zIndex={'zIndex' in rest ? rest.zIndex : undefined}
+      >
+        {children}
+      </SideSheetContent>
     );
   }
 
@@ -62,6 +83,7 @@ export const SideSheet: FC<SideSheetProps> = ({
       title={title}
       type={type}
       headerElements={headerElements}
+      width={width}
     >
       {children}
     </SideSheetContent>
@@ -74,6 +96,7 @@ function SideSheetContent({
   title,
   type = 'standard',
   headerElements,
+  width,
   children,
   ...rest
 }: SideSheetProps) {
@@ -83,6 +106,7 @@ function SideSheetContent({
         <Wrapper
           $type={type}
           $withShadow={!('withScrim' in rest && rest.withScrim)}
+          $zIndex={'zIndex' in rest ? rest.zIndex : undefined}
           initial={{
             x: type !== 'standard' ? '110%' : undefined,
             width: type === 'standard' ? 0 : undefined,
@@ -99,7 +123,7 @@ function SideSheetContent({
             bounce: 0.25,
           }}
         >
-          <Sheet $type={type}>
+          <Sheet $type={type} $width={width}>
             <Header>
               <Typography variant="h2">{title}</Typography>
               {headerElements && <section>{headerElements}</section>}
