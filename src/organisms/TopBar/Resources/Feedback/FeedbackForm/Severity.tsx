@@ -1,7 +1,8 @@
 import { FC } from 'react';
 
+import { BugSeverity } from '@equinor/subsurface-app-management';
+
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
-import { UrgencyOption } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
 import { LockedInputTooltip } from 'src/organisms/TopBar/Resources/Feedback/FeedbackForm/LockedInputTooltip';
 import { useFeedbackContext } from 'src/organisms/TopBar/Resources/Feedback/hooks/useFeedbackContext';
 
@@ -11,7 +12,7 @@ const Container = styled.div`
   grid-column: 1/2;
 `;
 
-const ITEMS = Object.values(UrgencyOption).map((option) => ({
+const ITEMS = Object.values(BugSeverity).map((option) => ({
   value: option,
   label: option,
 }));
@@ -22,8 +23,8 @@ export const Severity: FC = () => {
 
   const value = feedbackContent.urgency
     ? {
-        value: feedbackContent.urgency as UrgencyOption,
-        label: feedbackContent.urgency as UrgencyOption,
+        value: feedbackContent.urgency as BugSeverity,
+        label: feedbackContent.urgency as BugSeverity,
       }
     : undefined;
 

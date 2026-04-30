@@ -2,11 +2,11 @@ import { FC, FormEvent, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { WorkItemType } from '@equinor/subsurface-app-management';
 
 import { LockedInputTooltip } from './LockedInputTooltip';
 import { spacings } from 'src/atoms/style';
 import { TextField } from 'src/molecules/TextField/TextField';
-import { FeedbackType } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
 import { useFeedbackContext } from 'src/organisms/TopBar/Resources/Feedback/hooks/useFeedbackContext';
 
 import styled from 'styled-components';
@@ -36,7 +36,7 @@ export const Description: FC = () => {
 
   return (
     <Container>
-      {selectedType === FeedbackType.BUG && (
+      {selectedType === WorkItemType.BUG && (
         <div>
           <Typography group="input" variant="text" color={questionColor}>
             What is the specific bug?
@@ -60,7 +60,7 @@ export const Description: FC = () => {
           meta="Required"
           value={feedbackContent.description}
           placeholder={
-            selectedType === FeedbackType.BUG
+            selectedType === WorkItemType.BUG
               ? 'Describe the bug, including expectations, reproductions steps, any workarounds...'
               : 'Describe the feature. What would be the value for you?'
           }

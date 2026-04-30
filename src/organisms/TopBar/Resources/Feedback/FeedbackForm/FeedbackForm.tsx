@@ -2,8 +2,8 @@ import { FC, useMemo } from 'react';
 
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
+import { WorkItemType } from '@equinor/subsurface-app-management';
 
-import { FeedbackType } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import { UploadFile } from './UploadFile/UploadFile';
 import { Description } from './Description';
@@ -47,7 +47,7 @@ export const FeedbackForm: FC = () => {
     <ContentWrapper>
       <Container>
         <Title />
-        {selectedType === FeedbackType.BUG && (
+        {selectedType === WorkItemType.BUG && (
           <>
             <Severity />
             <Url />
@@ -63,7 +63,7 @@ export const FeedbackForm: FC = () => {
         </UploadInfo>
         <UploadFile />
         <ReportLocationText>
-          {selectedType === FeedbackType.BUG
+          {selectedType === WorkItemType.BUG
             ? 'Bug reports are sent to Service Now and to the development team directly'
             : 'Feature suggestions are sent to the development team directly'}
         </ReportLocationText>

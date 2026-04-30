@@ -1,7 +1,7 @@
+import { WorkItemType } from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 
 import { Feedback } from './Feedback';
-import { FeedbackType } from './Feedback.types';
 import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
   Providers,
@@ -14,7 +14,7 @@ test('Shows error if url does not contain .equinor', async () => {
   const handleOnClose = vi.fn();
   await renderWithRouter(
     <TopBar applicationIcon="test" applicationName="Test">
-      <Feedback onClose={handleOnClose} selectedType={FeedbackType.BUG} />
+      <Feedback onClose={handleOnClose} selectedType={WorkItemType.BUG} />
     </TopBar>,
     { initialEntries: ['/'], routes: ['/'] },
     { wrapper: Providers }

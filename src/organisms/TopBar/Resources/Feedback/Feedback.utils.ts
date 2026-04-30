@@ -1,23 +1,22 @@
 import { FileWithPath } from 'react-dropzone';
 
-import { ServiceNowUrgency } from '@equinor/subsurface-app-management';
-
 import {
-  Browsers,
-  FeedbackContentType,
-  FeedbackType,
-  UrgencyOption,
-} from './Feedback.types';
+  BugSeverity,
+  ServiceNowUrgency,
+  WorkItemType,
+} from '@equinor/subsurface-app-management';
+
+import { Browsers, FeedbackContentType } from './Feedback.types';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { capitalize, environment, formatDate } from 'src/atoms/utils';
 
 const { getAppName, getEnvironmentName } = environment;
 
 export const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
-  if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
+  if (feedbackContent.urgency === BugSeverity.DOES_NOT_AFFECT_ME) {
     return ':large_yellow_circle:';
   }
-  if (feedbackContent.urgency === UrgencyOption.IMPEDES) {
+  if (feedbackContent.urgency === BugSeverity.IMPEDES_MY_PROGRESS) {
     return ':large_orange_circle:';
   }
   return ':red_circle:';
@@ -42,14 +41,25 @@ export const readUploadedFileAsText = (
   });
 };
 
-export const getUrgencyNumber = (urgency: UrgencyOption) => {
+export const getUrgencyNumber = (urgency: BugSeverity) => {
   switch (urgency) {
-    case UrgencyOption.UNABLE:
+    case BugSeverity.UNABLE_TO_WORK:
       return ServiceNowUrgency.NORMAL;
-    case UrgencyOption.IMPEDES:
+    case BugSeverity.IMPEDES_MY_PROGRESS:
       return ServiceNowUrgency.NORMAL;
-    case UrgencyOption.NO_IMPACT:
+    case BugSeverity.DOES_NOT_AFFECT_ME:
       return ServiceNowUrgency.NORMAL;
+  }
+};
+
+export const getUrgencyDisplayText = (urgency: BugSeverity) => {
+  switch (urgency) {
+    case BugSeverity.UNABLE_TO_WORK:
+      return 'I am unable to work';
+    case BugSeverity.IMPEDES_MY_PROGRESS:
+      return 'It impedes my progress';
+    case BugSeverity.DOES_NOT_AFFECT_ME:
+      return 'It does not affect me';
   }
 };
 
@@ -119,11 +129,11 @@ export const getBrowserInfo = () => {
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
   field?: string | null,
-  selectedType?: FeedbackType,
+  selectedType?: WorkItemType,
   email?: string,
   sysId?: string | null
 ) => {
-  const isBugReport = selectedType === FeedbackType.BUG;
+  const isBugReport = selectedType === WorkItemType.BUG;
   const typeText = isBugReport ? ':bug: Bug report' : ':bulb: Suggestion';
 
   const dateAndUrlSectionArray = [];
@@ -150,9 +160,9 @@ export const createSlackMessage = (
   if (feedbackContent.urgency) {
     titleAndSeveritySectionArray.push({
       type: 'mrkdwn',
-      text: `*Severity* \n ${getSeverityEmoji(feedbackContent)} ${
+      text: `*Severity* \n ${getSeverityEmoji(feedbackContent)} ${getUrgencyDisplayText(
         feedbackContent.urgency
-      }`,
+      )}`,
     });
   }
   const blockArray = [

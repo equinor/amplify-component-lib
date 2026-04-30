@@ -1,0 +1,30 @@
+import { WorkItemsService } from '@equinor/subsurface-app-management';
+import { useMutation } from '@tanstack/react-query';
+
+import { SLACK_POST_QUERY_KEY } from '../Feedback.const';
+
+type CreateWorkItemParams = Parameters<
+  typeof WorkItemsService.createWorkItemWithAttachment
+>;
+
+interface PostMessageVariables {
+  slackMessage: CreateWorkItemParams[0];
+  attachmentMessage: CreateWorkItemParams[1];
+  formData: CreateWorkItemParams[2];
+}
+
+export function useCreateWorkItemWithAttachment() {
+  return useMutation({
+    mutationKey: [SLACK_POST_QUERY_KEY],
+    mutationFn: ({
+      slackMessage,
+      attachmentMessage,
+      formData,
+    }: PostMessageVariables) =>
+      WorkItemsService.createWorkItemWithAttachment(
+        slackMessage,
+        attachmentMessage,
+        formData
+      ),
+  });
+}

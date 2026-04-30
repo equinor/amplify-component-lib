@@ -2,6 +2,7 @@ import { FileWithPath } from 'react-dropzone';
 
 import {
   ApiError,
+  BugSeverity,
   ServiceNowIncidentResponse,
 } from '@equinor/subsurface-app-management';
 
@@ -11,10 +12,6 @@ export enum UrgencyOption {
   UNABLE = 'I am unable to work',
 }
 
-export enum FeedbackType {
-  BUG = 'bug',
-  SUGGESTION = 'suggestion',
-}
 export enum StatusEnum {
   error = 'error',
   idle = 'idle',
@@ -26,7 +23,7 @@ export enum StatusEnum {
 export interface FeedbackContentLocalStorage {
   title: string;
   description: string;
-  urgency?: string;
+  urgency?: BugSeverity;
   url?: string;
 }
 

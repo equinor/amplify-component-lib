@@ -1,15 +1,15 @@
 import { ReactNode } from 'react';
 
-import { ServiceNowIncidentResponse } from '@equinor/subsurface-app-management';
+import {
+  ServiceNowIncidentResponse,
+  WorkItemType,
+} from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { DEFAULT_FEEDBACK_LOCAL_STORAGE } from 'src/organisms/TopBar/Resources/Feedback/Feedback.const';
-import {
-  FeedbackType,
-  UrgencyOption,
-} from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
+import { UrgencyOption } from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
 import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
@@ -142,7 +142,7 @@ describe('Report a bug', () => {
       () =>
         expect(
           window.localStorage.getItem(
-            `${FeedbackType.BUG}-feedbackContentAndRequestStatus`
+            `${WorkItemType.BUG}-feedbackContentAndRequestStatus`
           )
         ).toBe(JSON.stringify(DEFAULT_FEEDBACK_LOCAL_STORAGE)),
       { timeout: 3000 }

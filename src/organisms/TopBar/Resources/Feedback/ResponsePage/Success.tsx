@@ -2,8 +2,8 @@ import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { WorkItemType } from '@equinor/subsurface-app-management';
 
-import { FeedbackType } from '../Feedback.types';
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
 import { spacings } from 'src/atoms/style';
 
@@ -28,9 +28,9 @@ export const Success: FC = () => {
   return (
     <Container>
       <Typography variant="h3">{`Thank you, we have received your ${
-        selectedType === FeedbackType.BUG ? 'report!' : 'suggestion!'
+        selectedType === WorkItemType.BUG ? 'report!' : 'suggestion!'
       }`}</Typography>
-      {selectedType === FeedbackType.BUG && serviceNowUrl.length > 0 && (
+      {selectedType === WorkItemType.BUG && serviceNowUrl.length > 0 && (
         <ServiceNowLink href={serviceNowUrl}>
           See ticket in ServiceNow
         </ServiceNowLink>

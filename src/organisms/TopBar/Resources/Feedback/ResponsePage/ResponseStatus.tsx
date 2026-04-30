@@ -1,35 +1,26 @@
 import { FC } from 'react';
 
-import { FeedbackType } from '../Feedback.types';
+import { WorkItemType } from '@equinor/subsurface-app-management';
+
 import { useFeedbackContext } from '../hooks/useFeedbackContext';
-import { FullSlackResponse } from './FullSlackResponse';
 import { RequestStatus } from './RequestStatus';
 
 export const ResponseStatus: FC = () => {
-  const {
-    serviceNowRequestResponse,
-    selectedType,
-    showAllSlackRequests,
-    allSlackRequestStatus,
-  } = useFeedbackContext();
+  const { serviceNowRequestResponse, workItemRequestResponse, selectedType } =
+    useFeedbackContext();
   return (
     <>
-      {selectedType === FeedbackType.BUG && (
+      {selectedType === WorkItemType.BUG && (
         <RequestStatus
           title="Service Now"
           requestStatus={serviceNowRequestResponse}
         />
       )}
-      {showAllSlackRequests ? (
-        <FullSlackResponse
-          allSlackRequestStatus={{ status: allSlackRequestStatus }}
-        />
-      ) : (
-        <RequestStatus
-          title="Development team"
-          requestStatus={{ status: allSlackRequestStatus }}
-        />
-      )}
+
+      <RequestStatus
+        title="Development team"
+        requestStatus={workItemRequestResponse}
+      />
     </>
   );
 };
