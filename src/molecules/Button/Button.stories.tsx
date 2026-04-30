@@ -2,18 +2,26 @@ import { ChangeEvent, useState } from 'react';
 
 import { Checkbox, Snackbar, Tooltip } from '@equinor/eds-core-react';
 import { chevron_down, save } from '@equinor/eds-icons';
-import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
-import { ButtonProps } from 'src/molecules/Button/Button';
 import { Button } from 'src/molecules/Button/Button';
 import { Stack } from 'src/storybook';
+import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof Button> = {
   title: 'Molecules/Button',
   component: Button,
+  decorators: [
+    (Story) => (
+      <Stack>
+        <Story />
+      </Stack>
+    ),
+  ],
+
   args: {
     variant: 'filled',
     color: 'primary',
@@ -49,57 +57,40 @@ const meta: Meta<typeof Button> = {
 };
 
 export default meta;
-export const Introduction: StoryFn<ButtonProps> = (args) => {
-  return <Button {...args} label="You can control me" />;
+type Story = StoryObj<typeof Button>;
+export const Introduction: Story = {
+  render: (args) => <Button {...args} label="You can control me" />,
 };
-Introduction.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
 
-export const Basic: StoryFn<ButtonProps> = () => (
-  <div
-    style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
-  >
+export const Basic: Story = {
+  render: (args) => (
+    <VariantShowcase
+      GenericComponent={Button}
+      otherProps={{ ...args, label: 'Button' }}
+      columns={[
+        { label: 'Filled', value: { variant: 'filled' } },
+        { label: 'Outlined', value: { variant: 'outlined' } },
+        { label: 'Ghost', value: { variant: 'ghost' } },
+      ]}
+      rows={[
+        { label: 'Primary', value: { color: 'primary' } },
+        { label: 'Danger', value: { color: 'danger' } },
+      ]}
+    />
+  ),
+};
+
+export const Disabled: Story = {
+  render: () => (
     <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button label="Filled" variant="filled" />
-      <Button label="Outlined" variant="outlined" />
-      <Button label="Ghost" variant="ghost" />
+      <Button label="Filled" disabled />
+      <Button label="Outlined" disabled variant="outlined" />
+      <Button label="Ghost" disabled variant="ghost" />
     </div>
-    <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button label="Filled" color="danger" />
-      <Button label="Outlined" color="danger" variant="outlined" />
-      <Button label="Ghost" color="danger" variant="ghost" />
-    </div>
-  </div>
-);
-Basic.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
   ),
-];
+};
 
-export const Disabled: StoryFn<ButtonProps> = () => (
-  <div style={{ display: 'flex', gap: spacings.medium }}>
-    <Button label="Filled" disabled />
-    <Button label="Outlined" disabled variant="outlined" />
-    <Button label="Ghost" disabled variant="ghost" />
-  </div>
-);
-Disabled.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
-
-export const Accessibility: StoryFn<ButtonProps> = () => {
+const AccessibilityComponent = () => {
   const [canSubmit, setCanSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   return (
@@ -130,90 +121,74 @@ export const Accessibility: StoryFn<ButtonProps> = () => {
     </>
   );
 };
-Accessibility.decorators = [
-  (Story) => (
-    <Stack direction="column">
-      <Story />
-    </Stack>
-  ),
-];
 
-export const Icons: StoryFn<ButtonProps> = () => (
-  <>
-    <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button label="Leading icon" leadingIcon={save} />
-      <Button label="Trailing icon" trailingIcon={save} />
-      <Button
-        label="Both icons"
-        leadingIcon={save}
-        trailingIcon={chevron_down}
-      />
-    </div>
-  </>
-);
-Icons.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
+export const Accessibility: Story = {
+  render: AccessibilityComponent,
+};
 
-export const Loading: StoryFn<ButtonProps> = () => (
-  <div
-    style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
-  >
-    <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button label="Filled" loading />
-      <Button label="Outlined" loading variant="outlined" />
-      <Button label="Ghost" loading variant="ghost" />
-    </div>
-    <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button label="Filled" loading color="danger" />
-      <Button label="Outlined" loading color="danger" variant="outlined" />
-      <Button label="Ghost" loading color="danger" variant="ghost" />
-    </div>
-  </div>
-);
-Loading.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
+export const Icons: Story = {
+  render: () => (
+    <>
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button label="Leading icon" leadingIcon={save} />
+        <Button label="Trailing icon" trailingIcon={save} />
+        <Button
+          label="Both icons"
+          leadingIcon={save}
+          trailingIcon={chevron_down}
+        />
+      </div>
+    </>
   ),
-];
+};
 
-export const FullWidth: StoryFn<ButtonProps> = () => (
-  <>
-    <Button label="fullWidth" fullWidth leadingIcon={save} />
-    <Button label="fullWidth" fullWidth trailingIcon={save} />
-    <Button label="No fullWidth" leadingIcon={save} />
-  </>
-);
-FullWidth.storyName = 'Full width';
-FullWidth.decorators = [
-  (Story) => (
-    <div style={{ margin: '32px', display: 'grid', gridGap: '16px' }}>
-      <Story />
+export const Loading: Story = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: spacings.medium,
+      }}
+    >
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button label="Filled" loading />
+        <Button label="Outlined" loading variant="outlined" />
+        <Button label="Ghost" loading variant="ghost" />
+      </div>
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button label="Filled" loading color="danger" />
+        <Button label="Outlined" loading color="danger" variant="outlined" />
+        <Button label="Ghost" loading color="danger" variant="ghost" />
+      </div>
     </div>
   ),
-];
+};
 
-export const LinkButton: StoryFn<ButtonProps> = () => (
-  <>
-    <Button to="/faq" label="I am a link" />
-  </>
-);
-LinkButton.storyName = 'Button as a link';
-LinkButton.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
+export const FullWidth: Story = {
+  render: () => (
+    <div
+      style={{
+        margin: '32px',
+        display: 'grid',
+        gridGap: '16px',
+        width: '100%',
+      }}
+    >
+      <Button label="fullWidth" fullWidth leadingIcon={save} />
+      <Button label="fullWidth" fullWidth trailingIcon={save} />
+      <Button label="No fullWidth" leadingIcon={save} />
+    </div>
   ),
-];
+  name: 'Full width',
+};
 
-type Story = StoryObj<typeof Button>;
+export const LinkButton: Story = {
+  render: () => {
+    return <Button to="/faq" label="I am a link" />;
+  },
+  name: 'Button as a link',
+};
 
 export const TestLoadingState: Story = {
   tags: ['test-only'],
