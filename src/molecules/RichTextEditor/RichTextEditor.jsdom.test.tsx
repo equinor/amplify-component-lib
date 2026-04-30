@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { RichTextEditor, RichTextEditorProps } from './RichTextEditor';
 import { RichTextEditorFeatures } from './RichTextEditor.types';
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 import {
   VARIANT_COLORS,
   VARIANT_HELPER_TEXT_COLORS,

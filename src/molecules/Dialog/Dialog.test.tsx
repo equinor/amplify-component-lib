@@ -50,7 +50,7 @@ test('Custom width works', () => {
     {
       text: faker.animal.lion(),
       onClick: vi.fn(),
-      variant: 'contained',
+      variant: 'filled',
     },
   ];
 
@@ -127,20 +127,20 @@ test('Actions prop works as expected', async () => {
     },
     {
       position: 'right',
-      variant: 'contained',
+      variant: 'filled',
       text: faker.animal.crocodilia(),
       onClick: vi.fn(),
       color: 'primary',
     },
     {
-      variant: 'contained',
+      variant: 'filled',
       text: faker.animal.dog(),
       onClick: vi.fn(),
       color: 'primary',
     },
     {
       position: 'left',
-      variant: 'contained',
+      variant: 'filled',
       text: faker.animal.cat(),
       onClick: vi.fn(),
       color: 'primary',
@@ -174,13 +174,13 @@ test('Disabled actions works as expected', async () => {
     {
       text: actionTextOne,
       onClick: vi.fn(),
-      variant: 'contained',
+      variant: 'filled',
       disabled: true,
     },
     {
       text: actionTextTwo,
       onClick: vi.fn(),
-      variant: 'contained',
+      variant: 'filled',
       disabled: disabledTooltipText,
     },
   ];
@@ -212,12 +212,12 @@ test('IsLoading actions works as expected', () => {
     {
       text: actionTextOne,
       onClick: vi.fn(),
-      variant: 'contained',
+      variant: 'filled',
     },
     {
       text: actionTextTwo,
       onClick: vi.fn(),
-      variant: 'contained',
+      variant: 'filled',
       isLoading: true,
     },
   ];

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { spacings } from 'src/atoms';
+import { spacings } from 'src/atoms/style';
 import { SkeletonBase } from 'src/molecules';
 
 import styled from 'styled-components';

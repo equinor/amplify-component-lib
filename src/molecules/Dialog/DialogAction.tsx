@@ -1,7 +1,5 @@
 import { FC } from 'react';
 
-import { Icon } from '@equinor/eds-core-react';
-
 import { DialogAction as DialogActionProps } from './Dialog';
 import { Button } from 'src/molecules/Button/Button';
 import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
@@ -17,14 +15,13 @@ export const DialogAction: FC<DialogActionProps> = ({
 }) => (
   <OptionalTooltip title={typeof disabled === 'string' ? disabled : ''}>
     <Button
+      leadingIcon={icon}
       variant={variant}
       color={color}
       onClick={onClick}
       disabled={disabled !== undefined && !!disabled}
       loading={isLoading}
-    >
-      {icon && <Icon data={icon} />}
-      {text}
-    </Button>
+      label={text}
+    />
   </OptionalTooltip>
 );

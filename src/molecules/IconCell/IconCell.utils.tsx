@@ -12,7 +12,8 @@ import {
   IconCellStates,
   IconCellVariants,
 } from './IconCell.types';
-import { colors, Theme } from 'src/atoms';
+import { Theme } from 'src/atoms/enums';
+import { colors } from 'src/atoms/style';
 
 export const renderContent = (content: IconData | ReactNode, color: string) => {
   if (content && typeof content === 'object' && 'prefix' in content) {

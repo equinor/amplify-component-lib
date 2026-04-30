@@ -3,7 +3,6 @@ import {
   Card,
   CardProps,
   Divider,
-  Icon,
   Typography,
 } from '@equinor/eds-core-react';
 import {
@@ -15,21 +14,10 @@ import {
 } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
+import { IconButton } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
 import page from 'src/organisms/Card/Card.docs.mdx';
 import { Stack } from 'src/storybook';
-
-const icons = {
-  more_vertical,
-  share,
-  person_add,
-  settings,
-  save,
-};
-
-Icon.add(icons);
-
-const iconSize = 24;
 
 const meta: Meta<typeof Card> = {
   title: 'Organisms/Card',
@@ -75,13 +63,7 @@ export const Introduction: StoryFn<CardProps> = (args) => {
               With some short content.
             </Typography>
           </Card.HeaderTitle>
-          <Button variant="ghost_icon">
-            <Icon
-              name="more_vertical"
-              title="more action"
-              size={iconSize}
-            ></Icon>
-          </Button>
+          <IconButton icon={more_vertical} variant="ghost" />
         </Card.Header>
       </Card>
       <Card {...args}>
@@ -175,9 +157,7 @@ export const CardHeaderVariants: StoryFn<CardProps> = () => (
           <Typography variant="h4">Title goes here</Typography>
           <Typography variant="body_short">Body short</Typography>
         </Card.HeaderTitle>
-        <Button variant="ghost_icon">
-          <Icon name="more_vertical" title="more action" size={iconSize}></Icon>
-        </Button>
+        <IconButton icon={more_vertical} variant="ghost" />
       </Card.Header>
     </Card>
     <Card variant="info">
@@ -186,9 +166,7 @@ export const CardHeaderVariants: StoryFn<CardProps> = () => (
           <Typography variant="h5">Title goes here</Typography>
           <Typography variant="body_short">Body short</Typography>
         </Card.HeaderTitle>
-        <Button variant="ghost_icon">
-          <Icon name="more_vertical" title="more action" size={iconSize}></Icon>
-        </Button>
+        <IconButton icon={more_vertical} variant="ghost" />
       </Card.Header>
     </Card>
     <Card variant="warning">
@@ -224,9 +202,7 @@ export const CardHeaderVariants: StoryFn<CardProps> = () => (
           <Typography variant="h5">Title goes here</Typography>
           <Typography variant="caption">Caption</Typography>
         </Card.HeaderTitle>
-        <Button variant="ghost_icon">
-          <Icon name="more_vertical" title="more action" size={iconSize}></Icon>
-        </Button>
+        <IconButton icon={more_vertical} variant="ghost" />
       </Card.Header>
     </Card>
     <Card variant="warning">
@@ -235,9 +211,7 @@ export const CardHeaderVariants: StoryFn<CardProps> = () => (
           <Typography variant="overline">Overline</Typography>
           <Typography variant="h6">Title goes here</Typography>
         </Card.HeaderTitle>
-        <Button variant="ghost_icon">
-          <Icon name="more_vertical" title="more action" size={iconSize}></Icon>
-        </Button>
+        <IconButton icon={more_vertical} variant="ghost" />
       </Card.Header>
     </Card>
   </>
@@ -325,8 +299,8 @@ export const WithActions: StoryFn<CardProps> = () => (
       </Card.Content>
 
       <Card.Actions>
-        <Button>Cancel</Button>
-        <Button variant="ghost">OK</Button>
+        <Button label="Cancel" />
+        <Button variant="ghost" label="OK" />
       </Card.Actions>
     </Card>
     <Card>
@@ -342,19 +316,9 @@ export const WithActions: StoryFn<CardProps> = () => (
         </Typography>
       </Card.Content>
       <Card.Actions alignRight>
-        <Button variant="ghost_icon">
-          <Icon
-            name="person_add"
-            title="add person action"
-            size={iconSize}
-          ></Icon>
-        </Button>
-        <Button variant="ghost_icon">
-          <Icon name="settings" title="settings action" size={iconSize}></Icon>
-        </Button>
-        <Button variant="ghost_icon">
-          <Icon name="save" title="save action" size={iconSize}></Icon>
-        </Button>
+        <IconButton icon={person_add} variant="ghost" />
+        <IconButton icon={settings} variant="ghost" />
+        <IconButton icon={save} variant="ghost" />
       </Card.Actions>
     </Card>
     <Card>
@@ -372,9 +336,7 @@ export const WithActions: StoryFn<CardProps> = () => (
         </Typography>
       </Card.Content>
       <Card.Actions meta="Share">
-        <Button variant="ghost_icon">
-          <Icon name="share" title="share action" size={iconSize}></Icon>
-        </Button>
+        <IconButton icon={share} variant="ghost" />
       </Card.Actions>
     </Card>
   </>
@@ -403,9 +365,11 @@ export const WithDivider: StoryFn<CardProps> = () => {
           </Typography>
         </Card.Content>
         <Card.Actions>
-          <Button style={{ marginTop: '16px' }} variant="outlined">
-            SUBMIT TICKET
-          </Button>
+          <Button
+            label="SUBMIT TICKET"
+            style={{ marginTop: '16px' }}
+            variant="outlined"
+          />
         </Card.Actions>
       </Card>
     </>
