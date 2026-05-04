@@ -117,7 +117,7 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   const {
     mutateAsync: createWorkItemWithAttachment,
     status: postMessageStatus,
-  } = useCreateWorkItemWithAttachment(feedbackContent);
+  } = useCreateWorkItemWithAttachment();
 
   const { mutateAsync: serviceNowIncident, status: serviceNowStatus } =
     useServiceNowIncident(feedbackContent);
@@ -268,28 +268,6 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
         error: error as ApiError,
       });
     }
-
-    // // Slack attachments requests
-    // if (feedbackAttachments && feedbackAttachments.length > 0) {
-    //   for (const attachment of feedbackAttachments) {
-    //     const fileFormData = new FormData();
-    //     fileFormData.append('comment', `Title: ${feedbackContent.title}`);
-    //     fileFormData.append('file', attachment);
-    //     try {
-    //       await slackFileUpload(fileFormData);
-    //       updateSlackAttachmentStatus({
-    //         status: Statusenum.success,
-    //         filename: attachment.name,
-    //       });
-    //     } catch (error) {
-    //       updateSlackAttachmentStatus({
-    //         status: StatusEnum.error,
-    //         filename: attachment.name,
-    //         error: error as ApiError,
-    //       });
-    //     }
-    //   }
-    // }
   };
 
   const resetForm = useCallback(() => {

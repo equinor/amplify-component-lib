@@ -68,7 +68,7 @@ export const createServiceNowDescription = (
   field: string | null | undefined
 ) => {
   const locationText = `Url location of bug: ${feedbackContent.url} \n`;
-  const severityText = `Severity of bug: ${feedbackContent.urgency} \n`;
+  const severityText = `Severity of bug: ${feedbackContent.urgency ? getUrgencyDisplayText(feedbackContent.urgency) : 'Not found'} \n`;
   const fieldText = `Field: ${capitalize(field ?? '')} \n`;
   const browserText = `Browser: ${getBrowserInfo()} \n`;
 
