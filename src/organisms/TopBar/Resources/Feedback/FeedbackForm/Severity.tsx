@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { BugSeverity } from '@equinor/subsurface-app-management';
 
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
+import { SORTED_BUG_SEVERITY_OPTIONS } from 'src/organisms/TopBar/Resources/Feedback/Feedback.const';
 import { getUrgencyDisplayText } from 'src/organisms/TopBar/Resources/Feedback/Feedback.utils';
 import { LockedInputTooltip } from 'src/organisms/TopBar/Resources/Feedback/FeedbackForm/LockedInputTooltip';
 import { useFeedbackContext } from 'src/organisms/TopBar/Resources/Feedback/hooks/useFeedbackContext';
@@ -13,7 +14,7 @@ const Container = styled.div`
   grid-column: 1/2;
 `;
 
-const ITEMS = Object.values(BugSeverity).map((option) => ({
+const ITEMS = SORTED_BUG_SEVERITY_OPTIONS.map((option) => ({
   value: option,
   label: getUrgencyDisplayText(option),
 }));
@@ -36,18 +37,15 @@ export const Severity: FC = () => {
           items={ITEMS}
           label="Severity"
           meta="optional"
-          clearable={false}
+          clearable
           disabled={serviceNowSuccess}
           value={value}
           placeholder="Select error impact"
           onSelect={(newValue) => {
-            // Since clearable = false newValue is never undefined
-            updateFeedback('urgency', newValue!.value);
+            updateFeedback('urgency', newValue?.value ?? '');
           }}
         />
       </LockedInputTooltip>
     </Container>
   );
 };
-
-export default Severity;
