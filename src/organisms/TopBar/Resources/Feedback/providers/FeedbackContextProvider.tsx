@@ -27,7 +27,6 @@ import {
   RequestStatusType,
   StatusEnum,
   UpdateRequestStatusHandler,
-  UrgencyOption,
 } from '../Feedback.types';
 import {
   createServiceNowDescription,
@@ -57,7 +56,7 @@ export interface FeedbackContext {
   handleSave: () => void;
   updateFeedback: (
     key: keyof FeedbackContentType | 'attachments',
-    newValue: string | UrgencyOption | FileWithPath[] | boolean
+    newValue: string | BugSeverity | FileWithPath[] | boolean
   ) => void;
   handleResponsePageOnClose: () => void;
   selectedType: WorkItemType;
@@ -186,7 +185,7 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
-    newValue: string | UrgencyOption | FileWithPath[] | boolean
+    newValue: string | BugSeverity | FileWithPath[] | boolean
   ) => {
     setFeedbackLocalStorage({
       ...feedbackLocalStorage,

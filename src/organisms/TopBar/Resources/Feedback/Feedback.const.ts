@@ -5,7 +5,7 @@ import { FeedbackLocalStorage, StatusEnum } from './Feedback.types';
 export const MAX_FILE_SIZE_BYTES = 1048575;
 
 export const SERVICE_NOW_QUERY_KEY = 'serviceNowIncident';
-export const SLACK_POST_QUERY_KEY = 'slackPostMessage';
+export const CREATE_WORK_ITEM_QUERY_KEY = 'createWorkItem';
 
 export const EQUINOR_EMAIL_SUFFIX = '.equinor.com';
 

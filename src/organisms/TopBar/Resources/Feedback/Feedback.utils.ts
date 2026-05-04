@@ -60,6 +60,8 @@ export const getUrgencyDisplayText = (urgency: BugSeverity) => {
       return 'It impedes my progress';
     case BugSeverity.DOES_NOT_AFFECT_ME:
       return 'It does not affect me';
+    default:
+      return 'Not found';
   }
 };
 

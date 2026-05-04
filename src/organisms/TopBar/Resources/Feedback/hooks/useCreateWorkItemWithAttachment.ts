@@ -1,7 +1,7 @@
 import { WorkItemsService } from '@equinor/subsurface-app-management';
 import { useMutation } from '@tanstack/react-query';
 
-import { SLACK_POST_QUERY_KEY } from '../Feedback.const';
+import { CREATE_WORK_ITEM_QUERY_KEY } from '../Feedback.const';
 
 type CreateWorkItemParams = Parameters<
   typeof WorkItemsService.createWorkItemWithAttachment
@@ -15,7 +15,7 @@ interface PostMessageVariables {
 
 export function useCreateWorkItemWithAttachment() {
   return useMutation({
-    mutationKey: [SLACK_POST_QUERY_KEY],
+    mutationKey: [CREATE_WORK_ITEM_QUERY_KEY],
     mutationFn: ({
       slackMessage,
       attachmentMessage,
