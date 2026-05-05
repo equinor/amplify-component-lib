@@ -56,7 +56,7 @@ export interface FeedbackContext {
   handleSave: () => void;
   updateFeedback: (
     key: keyof FeedbackContentType | 'attachments',
-    newValue: string | BugSeverity | FileWithPath[] | boolean
+    newValue: string | BugSeverity | FileWithPath[] | boolean | undefined
   ) => void;
   handleResponsePageOnClose: () => void;
   selectedType: WorkItemType;
@@ -185,7 +185,7 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
 
   const updateFeedback = (
     key: keyof FeedbackContentType,
-    newValue: string | BugSeverity | FileWithPath[] | boolean
+    newValue: string | BugSeverity | FileWithPath[] | boolean | undefined
   ) => {
     setFeedbackLocalStorage({
       ...feedbackLocalStorage,
@@ -196,7 +196,8 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   const handleSave = async () => {
     // Service now request
     toggleShowResponsePage();
-    let sysId: string | undefined | null = '';
+    let sysId: string | undefined | null =
+      serviceNowRequestResponse.serviceNowId ?? '';
     if (
       selectedType === WorkItemType.BUG &&
       userEmail &&
@@ -276,17 +277,19 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   }, [setFeedbackLocalStorage]);
 
   useEffect(() => {
-    return () => {
+      let timeoutId: ReturnType<typeof setTimeout>;
       if (
         serviceNowRequestResponse.status === StatusEnum.success &&
         workItemRequestResponse.status === StatusEnum.success
       ) {
-        setTimeout(() => {
+       timeoutId = setTimeout(() => {
           // Wait with resetting until "Thank you" text is shown.
           setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
         }, 1100);
       }
-    };
+      return () => {
+        clearTimeout(timeoutId);
+      };
   }, [
     workItemRequestResponse,
     serviceNowRequestResponse.status,

@@ -42,7 +42,7 @@ export const Severity: FC = () => {
           value={value}
           placeholder="Select error impact"
           onSelect={(newValue) => {
-            updateFeedback('urgency', newValue?.value ?? '');
+            updateFeedback('urgency', newValue?.value);
           }}
         />
       </LockedInputTooltip>
