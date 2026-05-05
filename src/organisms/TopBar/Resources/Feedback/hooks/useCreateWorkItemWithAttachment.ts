@@ -7,7 +7,7 @@ type CreateWorkItemParams = Parameters<
   typeof WorkItemsService.createWorkItemWithAttachment
 >;
 
-interface PostMessageVariables {
+interface CreateWorkItemsWithAttachmentParams {
   slackMessage: CreateWorkItemParams[0];
   attachmentMessage: CreateWorkItemParams[1];
   formData: CreateWorkItemParams[2];
@@ -20,7 +20,7 @@ export function useCreateWorkItemWithAttachment() {
       slackMessage,
       attachmentMessage,
       formData,
-    }: PostMessageVariables) =>
+    }: CreateWorkItemsWithAttachmentParams) =>
       WorkItemsService.createWorkItemWithAttachment(
         slackMessage,
         attachmentMessage,

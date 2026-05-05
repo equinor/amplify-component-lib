@@ -25,6 +25,7 @@ export const SORTED_BUG_SEVERITY_OPTIONS = Object.values(BugSeverity).sort(
     const indexA = BUG_SEVERITY_ORDER.indexOf(a);
     const indexB = BUG_SEVERITY_ORDER.indexOf(b);
     // Items not in the order list are sorted last
+    if (indexA === -1 && indexB === -1) return 0;
     if (indexA === -1) return 1;
     if (indexB === -1) return -1;
     return indexA - indexB;

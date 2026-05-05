@@ -49,6 +49,8 @@ export const getUrgencyNumber = (urgency: BugSeverity) => {
       return ServiceNowUrgency.NORMAL;
     case BugSeverity.DOES_NOT_AFFECT_ME:
       return ServiceNowUrgency.NORMAL;
+    default:
+      return ServiceNowUrgency.NORMAL;
   }
 };
 
