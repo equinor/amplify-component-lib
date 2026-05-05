@@ -155,8 +155,7 @@ describe('Report a bug', () => {
   });
 
   const MOCK_SERVICE_NOW_ERROR = 'service now error';
-  const MOCK_SLACK_POST_ERROR = 'slack post error';
-  const MOCK_SLACK_FILE_ERROR = 'slack file error';
+  const MOCK_WORK_ITEM_POST_ERROR = 'work item post error';
 
   test('Show expected error message when requests fail', async ({ worker }) => {
     worker.use(
@@ -174,15 +173,9 @@ describe('Report a bug', () => {
           { status: 500 }
         );
       }),
-      http.post('*/api/v1/Slack/fileUpload', async () => {
+      http.post('*/api/v1/WorkItems/workitem-with-attachment', async () => {
         return HttpResponse.json(
-          { message: MOCK_SLACK_FILE_ERROR },
-          { status: 500 }
-        );
-      }),
-      http.post('*/api/v1/Slack/postmessage', async () => {
-        return HttpResponse.json(
-          { message: MOCK_SLACK_POST_ERROR },
+          { message: MOCK_WORK_ITEM_POST_ERROR },
           { status: 500 }
         );
       })
@@ -223,7 +216,7 @@ describe('Report a bug', () => {
     await user.click(screen.getByRole('button', { name: /retry/i }));
   });
 
-  test('Form is partially locked when the service now request succeeds but slack fails', async ({
+  test('Form is partially locked when the service now request succeeds but work item fails', async ({
     worker,
   }) => {
     worker.use(
@@ -241,15 +234,9 @@ describe('Report a bug', () => {
           sysId: faker.string.uuid(),
         } as ServiceNowIncidentResponse);
       }),
-      http.post('*/api/v1/Slack/fileUpload', async () => {
+      http.post('*/api/v1/WorkItems/workitem-with-attachment', async () => {
         return HttpResponse.json(
-          { message: MOCK_SLACK_FILE_ERROR },
-          { status: 500 }
-        );
-      }),
-      http.post('*/api/v1/Slack/postmessage', async () => {
-        return HttpResponse.json(
-          { message: MOCK_SLACK_POST_ERROR },
+          { message: MOCK_WORK_ITEM_POST_ERROR },
           { status: 500 }
         );
       })
