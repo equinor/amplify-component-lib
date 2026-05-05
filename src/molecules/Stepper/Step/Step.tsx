@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, KeyboardEvent, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
@@ -82,14 +82,25 @@ export const Step: FC<StepProps> = ({
     }
   };
 
+  const handleOnKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!isClickable) return;
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      setCurrentStep(index);
+    }
+  };
+
   return (
     <Container
       data-testid="step"
       $clickable={isClickable}
       onClick={handleOnClick}
+      onKeyDown={handleOnKeyDown}
       $disabled={isDisabled}
-      aria-disabled={isDisabled}
+      aria-disabled={!isClickable}
       role="button"
+      tabIndex={isClickable ? 0 : -1}
     >
       <StepIcon
         index={index}

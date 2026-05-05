@@ -1,12 +1,12 @@
 import { Button } from '@equinor/eds-core-react';
-import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useLocation } from '@tanstack/react-router';
 
 import { spacings } from 'src/atoms/style';
 import { Stepper, StepperProps } from 'src/molecules/Stepper/Stepper';
 import { StepperProvider, useStepper } from 'src/providers/StepperProvider';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Stepper> = {
@@ -80,6 +80,8 @@ const meta: Meta<typeof Stepper> = {
 
 export default meta;
 
+type Story = StoryObj<typeof Stepper>;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -104,7 +106,7 @@ const Container = styled.div`
   }
 `;
 
-export const Primary: StoryFn<StepperProps> = (args) => {
+const PrimaryTemplate = (args: StepperProps) => {
   const { steps, goToNextStep, goToPreviousStep, currentStep } = useStepper();
 
   return (
@@ -127,6 +129,24 @@ export const Primary: StoryFn<StepperProps> = (args) => {
       </section>
     </Container>
   );
+};
+
+export const Primary: Story = {
+  render: (args) => <PrimaryTemplate {...args} />,
+};
+
+export const TestPrimary: Story = {
+  tags: ['test-only'],
+  render: (args) => <PrimaryTemplate {...args} />,
+  play: async ({ canvas, step }) => {
+    await step('Future steps are not clickable by default', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: /Finish order/i })
+      );
+
+      await expect(canvas.getByRole('button', { name: 'Next' })).toBeEnabled();
+    });
+  },
 };
 
 const Story = (args: StepperProps) => {
@@ -162,7 +182,7 @@ const Story = (args: StepperProps) => {
   );
 };
 
-export const SyncedToURL: StoryObj = {
+export const SyncedToURL: Story = {
   parameters: {
     syncToURL: true,
     router: {
@@ -171,18 +191,32 @@ export const SyncedToURL: StoryObj = {
     },
   },
   render: () => <Story />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+};
 
-    await expect(
-      canvas.getByText(`Current path: /create/0`)
-    ).toBeInTheDocument();
+export const TestSyncedToURL: Story = {
+  tags: ['test-only'],
+  parameters: {
+    syncToURL: true,
+    router: {
+      initial: '/create/0',
+      routes: ['/create/$step'],
+    },
+  },
+  render: () => <Story />,
+  play: async ({ canvas, step }) => {
+    await step('Initial URL path is rendered', async () => {
+      await expect(
+        canvas.getByText(`Current path: /create/0`)
+      ).toBeInTheDocument();
+    });
 
-    await userEvent.click(canvas.getByText('Next'));
+    await step('Next updates URL param', async () => {
+      await userEvent.click(canvas.getByText('Next'));
 
-    await expect(
-      canvas.getByText(`Current path: /create/1`)
-    ).toBeInTheDocument();
+      await expect(
+        canvas.getByText(`Current path: /create/1`)
+      ).toBeInTheDocument();
+    });
   },
 };
 
@@ -196,7 +230,7 @@ function isStepDisabled({
   return stepIndex < currentStepIndex;
 }
 
-export const DisabledSteps: StoryObj = {
+export const DisabledSteps: Story = {
   parameters: {
     syncToURL: true,
     disabledSteps: true,
@@ -208,7 +242,7 @@ export const DisabledSteps: StoryObj = {
   render: () => <Story />,
 };
 
-export const HideContent: StoryFn<StepperProps> = (args) => {
+const HideContentTemplate = (args: StepperProps) => {
   const { steps, goToNextStep, goToPreviousStep, currentStep } = useStepper();
 
   return (
@@ -233,16 +267,35 @@ export const HideContent: StoryFn<StepperProps> = (args) => {
   );
 };
 
-HideContent.parameters = {
-  docs: {
-    description: {
-      story:
-        'Hides the SubTitle content panel, containing the step title and description, while keeping step indicators and navigation behavior intact.',
+export const HideContent: Story = {
+  render: (args) => <HideContentTemplate {...args} hideContent />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Hides the SubTitle content panel, containing the step title and description, while keeping step indicators and navigation behavior intact.',
+      },
     },
   },
 };
 
-export const AllowJumpingAhead: StoryFn<StepperProps> = (args) => {
+export const TestHideContent: Story = {
+  tags: ['test-only'],
+  render: (args) => <HideContentTemplate {...args} hideContent />,
+  play: async ({ canvas, step }) => {
+    await step(
+      'SubTitle content is hidden while labels remain visible',
+      async () => {
+        await expect(
+          canvas.queryByText('Help us select  a car type for you')
+        ).not.toBeInTheDocument();
+        await expect(canvas.getByText('Select car type')).toBeInTheDocument();
+      }
+    );
+  },
+};
+
+const AllowJumpingAheadTemplate = (args: StepperProps) => {
   const { steps, goToNextStep, goToPreviousStep, currentStep } = useStepper();
 
   return (
@@ -267,20 +320,41 @@ export const AllowJumpingAhead: StoryFn<StepperProps> = (args) => {
   );
 };
 
-AllowJumpingAhead.parameters = {
-  docs: {
-    description: {
-      story:
-        'Allows selecting future steps directly. Future step labels/icons are rendered as interactive rather than disabled.',
+export const AllowJumpingAhead: Story = {
+  render: (args) => <AllowJumpingAheadTemplate {...args} allowJumpingAhead />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Allows selecting future steps directly. Future step labels/icons are rendered as interactive rather than disabled.',
+      },
     },
   },
 };
 
-AllowJumpingAhead.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
+export const TestAllowJumpingAhead: Story = {
+  tags: ['test-only'],
+  render: (args) => <AllowJumpingAheadTemplate {...args} allowJumpingAhead />,
+  play: async ({ canvas, step }) => {
+    await step('Clicking future step jumps directly', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: /Finish order/i })
+      );
 
-  await userEvent.click(canvas.getByRole('button', { name: '3 Finish order' }));
+      await expect(canvas.getByRole('button', { name: 'Next' })).toBeDisabled();
+      await expect(
+        canvas.getByRole('button', { name: 'Previous' })
+      ).toBeEnabled();
+    });
 
-  await expect(canvas.getByRole('button', { name: 'Next' })).toBeDisabled();
-  await expect(canvas.getByRole('button', { name: 'Previous' })).toBeEnabled();
+    await step('Keyboard interaction also supports jumping', async () => {
+      const selectCarModel = canvas.getByRole('button', {
+        name: /Select car model/i,
+      });
+      selectCarModel.focus();
+      await userEvent.keyboard('{Enter}');
+
+      await expect(canvas.getByRole('button', { name: 'Next' })).toBeEnabled();
+    });
+  },
 };
