@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { DEFAULT_FEEDBACK_LOCAL_STORAGE } from 'src/organisms/TopBar/Resources/Feedback/Feedback.const';
+import { getUrgencyDisplayText } from 'src/organisms/TopBar/Resources/Feedback/Feedback.utils';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
 import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
@@ -55,9 +56,9 @@ function fakeInputs() {
 }
 
 const SEVERITY_OPTIONS = [
-  BugSeverity.IMPEDES_MY_PROGRESS,
-  BugSeverity.UNABLE_TO_WORK,
-  BugSeverity.DOES_NOT_AFFECT_ME,
+  getUrgencyDisplayText(BugSeverity.IMPEDES_MY_PROGRESS),
+  getUrgencyDisplayText(BugSeverity.UNABLE_TO_WORK),
+  getUrgencyDisplayText(BugSeverity.DOES_NOT_AFFECT_ME),
 ] as const;
 
 describe('Report a bug', () => {
