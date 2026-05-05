@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, KeyboardEvent, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
@@ -43,12 +43,14 @@ interface StepProps {
   index: number;
   onlyShowCurrentStepLabel?: boolean;
   children?: string;
+  allowJumpingAhead?: boolean;
 }
 
 export const Step: FC<StepProps> = ({
   index,
   onlyShowCurrentStepLabel = false,
   children,
+  allowJumpingAhead = false,
 }) => {
   const { currentStep, setCurrentStep, isStepAtIndexDisabled } = useStepper();
 
@@ -56,17 +58,35 @@ export const Step: FC<StepProps> = ({
 
   const textVariant = useMemo((): TypographyVariants => {
     if (index < currentStep) return 'body_short';
+    if (allowJumpingAhead && index > currentStep) return 'body_short_bold';
     return 'body_short_bold';
-  }, [currentStep, index]);
+  }, [currentStep, index, allowJumpingAhead]);
 
   const textColor = useMemo((): string | undefined => {
-    if (index > currentStep || isDisabled)
+    if (isDisabled) return colors.interactive.disabled__text.rgba;
+    if (index > currentStep && !allowJumpingAhead)
       return colors.interactive.disabled__text.rgba;
     return colors.text.static_icons__default.rgba;
-  }, [currentStep, index, isDisabled]);
+  }, [currentStep, index, isDisabled, allowJumpingAhead]);
+
+  const isClickable = useMemo((): boolean => {
+    if (isDisabled) return false;
+    if (index < currentStep) return true;
+    if (allowJumpingAhead && index > currentStep) return true;
+    return false;
+  }, [index, currentStep, isDisabled, allowJumpingAhead]);
 
   const handleOnClick = () => {
-    if (index < currentStep && !isDisabled) {
+    if (isClickable) {
+      setCurrentStep(index);
+    }
+  };
+
+  const handleOnKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!isClickable) return;
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
       setCurrentStep(index);
     }
   };
@@ -74,13 +94,19 @@ export const Step: FC<StepProps> = ({
   return (
     <Container
       data-testid="step"
-      $clickable={index < currentStep}
+      $clickable={isClickable}
       onClick={handleOnClick}
+      onKeyDown={handleOnKeyDown}
       $disabled={isDisabled}
-      aria-disabled={isDisabled}
+      aria-disabled={!isClickable}
       role="button"
+      tabIndex={isClickable ? 0 : -1}
     >
-      <StepIcon index={index} disabled={isDisabled} />
+      <StepIcon
+        index={index}
+        disabled={isDisabled}
+        allowJumpingAhead={allowJumpingAhead}
+      />
       {(!onlyShowCurrentStepLabel || currentStep === index) && (
         <Typography variant={textVariant} color={textColor}>
           {children}

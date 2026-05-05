@@ -23,6 +23,9 @@ function fakeSteps(): StepperProviderProps['steps'] {
     {
       label: faker.string.uuid(),
     },
+    {
+      label: faker.string.uuid(),
+    },
   ];
   let i = 0;
   const stepAmount = faker.number.int({ min: 0, max: 30 });
@@ -263,4 +266,42 @@ test('Disabled steps work as expected', async () => {
   const firstStep = await screen.findByText(steps[0].label);
   expect(firstStep).toBeInTheDocument();
   expect(firstStep).toBeDisabled();
+});
+
+test('jumping ahead resets substep index on destination step', async () => {
+  const steps: StepperProviderProps['steps'] = [
+    {
+      label: 'Step 1',
+      subSteps: [{ title: 'Step 1 Substep A' }, { title: 'Step 1 Substep B' }],
+    },
+    {
+      label: 'Step 2',
+      subSteps: [{ title: 'Step 2 Substep A' }],
+    },
+    {
+      label: 'Step 3',
+    },
+  ];
+
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent allowJumpingAhead />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
+
+  const user = userEvent.setup();
+
+  expect(await screen.findByText('Step 1 Substep A')).toBeInTheDocument();
+
+  await user.click(screen.getByText('Next'));
+  expect(screen.getByText('Step 1 Substep B')).toBeInTheDocument();
+
+  await user.click(screen.getByText('Step 2'));
+
+  expect(screen.getByText('Current step: 1')).toBeInTheDocument();
+  expect(screen.getByText('Step 2 Substep A')).toBeInTheDocument();
 });

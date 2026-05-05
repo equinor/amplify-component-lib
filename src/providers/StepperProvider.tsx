@@ -72,8 +72,7 @@ interface StepperProviderSyncedToURLParamProps extends StepperProviderProps {
   syncToURLParam: true;
 }
 
-interface StepperProviderWithoutSyncToURLParamProps
-  extends StepperProviderProps {
+interface StepperProviderWithoutSyncToURLParamProps extends StepperProviderProps {
   syncToURLParam?: undefined;
   initialStep?: number;
 }
@@ -115,16 +114,36 @@ export const StepperProvider: FC<
     throw new Error('initialStep must be a valid index of the steps array');
   }
 
+  const setSubStepForDirection = (nextStep: number) => {
+    if (nextStep === usingStep) return;
+
+    if (nextStep > usingStep) {
+      if (currentSubStep !== 0) setCurrentSubStep(0);
+      return;
+    }
+
+    const destinationStep = steps.at(nextStep);
+    if (
+      destinationStep &&
+      'subSteps' in destinationStep &&
+      destinationStep.subSteps &&
+      destinationStep.subSteps.length > 0
+    ) {
+      setCurrentSubStep(destinationStep.subSteps.length - 1);
+      return;
+    }
+
+    if (currentSubStep !== 0) setCurrentSubStep(0);
+  };
+
   const handleOnSetStep = (value: number) => {
+    setSubStepForDirection(value);
+
     if (rest.syncToURLParam) {
       navigate({ to: `${pathWithoutStep}/${value}` });
     } else {
       setCurrentStep(value);
     }
-  };
-
-  const resetCurrentSubStep = () => {
-    if (currentSubStep !== 0) setCurrentSubStep(0);
   };
 
   const goToNextStep = () => {
@@ -140,7 +159,6 @@ export const StepperProvider: FC<
     if (usingStep === steps.length - 1) return;
 
     handleOnSetStep(usingStep + 1);
-    resetCurrentSubStep();
   };
 
   const goToPreviousStep = () => {
@@ -157,12 +175,6 @@ export const StepperProvider: FC<
     if (usingStep === 0) return;
 
     handleOnSetStep(usingStep - 1);
-
-    const previousStep = steps.at(usingStep - 1);
-    if (previousStep && 'subSteps' in previousStep && previousStep.subSteps) {
-      // Set substeps to the last substep of the previous step
-      setCurrentSubStep(previousStep.subSteps.length - 1);
-    }
   };
 
   const checkIfStepIsDisabled: StepperContextType['isStepAtIndexDisabled'] =
