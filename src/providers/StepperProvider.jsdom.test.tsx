@@ -1,5 +1,5 @@
-import { renderHook } from '@testing-library/react';
 import { useLocation } from '@tanstack/react-router';
+import { renderHook } from '@testing-library/react';
 
 import { StepperProvider, useStepper } from 'src/providers/StepperProvider';
 import { renderWithRouter, screen, userEvent } from 'src/tests/jsdomtest-utils';
@@ -227,10 +227,7 @@ test('Setting the current step to the current value keeps substep unchanged', as
 test('Going to the next step from the last step does nothing', async () => {
   await renderWithRouter(
     <StepperProvider
-      steps={[
-        { label: 'step 1' },
-        { label: 'step 2' },
-      ]}
+      steps={[{ label: 'step 1' }, { label: 'step 2' }]}
       initialStep={1}
     >
       <StepperProviderTestHarness />
@@ -246,12 +243,7 @@ test('Going to the next step from the last step does nothing', async () => {
 
 test('Going to the next step advances when not on the last step', async () => {
   await renderWithRouter(
-    <StepperProvider
-      steps={[
-        { label: 'step 1' },
-        { label: 'step 2' },
-      ]}
-    >
+    <StepperProvider steps={[{ label: 'step 1' }, { label: 'step 2' }]}>
       <StepperProviderTestHarness />
     </StepperProvider>
   );
@@ -291,12 +283,7 @@ test('Going previous from a substep decrements the current substep', async () =>
 
 test('Going previous from the first step does nothing', async () => {
   await renderWithRouter(
-    <StepperProvider
-      steps={[
-        { label: 'step 1' },
-        { label: 'step 2' },
-      ]}
-    >
+    <StepperProvider steps={[{ label: 'step 1' }, { label: 'step 2' }]}>
       <StepperProviderTestHarness />
     </StepperProvider>
   );
@@ -311,10 +298,7 @@ test('Going previous from the first step does nothing', async () => {
 test('Going previous from a later step moves to the previous step', async () => {
   await renderWithRouter(
     <StepperProvider
-      steps={[
-        { label: 'step 1' },
-        { label: 'step 2' },
-      ]}
+      steps={[{ label: 'step 1' }, { label: 'step 2' }]}
       initialStep={1}
     >
       <StepperProviderTestHarness />
@@ -360,10 +344,7 @@ test('syncToURLParam navigates when setting the current step', async () => {
   await renderWithRouter(
     <StepperProvider
       syncToURLParam
-      steps={[
-        { label: 'step 1' },
-        { label: 'step 2' },
-      ]}
+      steps={[{ label: 'step 1' }, { label: 'step 2' }]}
     >
       <StepperProviderLocationHarness />
     </StepperProvider>,
@@ -384,10 +365,7 @@ test('syncToURLParam navigates when setting the current step', async () => {
 test('isStepAtIndexDisabled returns callback result', async () => {
   await renderWithRouter(
     <StepperProvider
-      steps={[
-        { label: 'step 1' },
-        { label: 'step 2' },
-      ]}
+      steps={[{ label: 'step 1' }, { label: 'step 2' }]}
       isStepDisabled={({ stepIndex }) => stepIndex === 0}
     >
       <StepperProviderTestHarness />
