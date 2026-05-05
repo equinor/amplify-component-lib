@@ -347,13 +347,7 @@ export const handlers = [
       sysId: faker.string.uuid(),
     } as ServiceNowIncidentResponse);
   }),
-  http.post('*/api/v1/Slack/fileUpload', async (resolver) => {
-    await delay('real');
-    const body = (await resolver.request.formData()) as FormData;
-
-    return HttpResponse.formData(body);
-  }),
-  http.post('*/api/v1/Slack/postmessage', async (resolver) => {
+  http.post('*/api/v1/WorkItems/workitem-with-attachment', async (resolver) => {
     await delay('real');
     const body = (await resolver.request.formData()) as FormData;
 
