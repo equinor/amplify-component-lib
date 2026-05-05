@@ -30,10 +30,12 @@ const IconWrapper = styled.span<IconWrapperProps>`
   > p {
     // Ensure text icons are not squished
     padding: 8px;
-    color: ${(props) =>
-      props.$filled
+    color: ${({ $filled, $outlined }) =>
+      $filled
         ? colors.text.static_icons__primary_white.rgba
-        : colors.interactive.disabled__text.rgba};
+        : $outlined
+          ? colors.interactive.primary__resting.rgba
+          : colors.interactive.disabled__text.rgba};
   }
   > svg {
     transform: scale(0.9);
@@ -43,13 +45,26 @@ const IconWrapper = styled.span<IconWrapperProps>`
 interface StepIconProps {
   index: number;
   disabled?: boolean;
+  allowJumpingAhead?: boolean;
 }
 
-export const StepIcon: FC<StepIconProps> = ({ index, disabled }) => {
+export const StepIcon: FC<StepIconProps> = ({
+  index,
+  disabled,
+  allowJumpingAhead,
+}) => {
   const { currentStep } = useStepper();
 
   if (disabled) {
     return <Icon data={lock} color={colors.interactive.disabled__text.rgba} />;
+  }
+
+  if (index > currentStep && allowJumpingAhead) {
+    return (
+      <IconWrapper $outlined>
+        <Typography variant="caption">{index + 1}</Typography>
+      </IconWrapper>
+    );
   }
 
   if (index >= currentStep) {

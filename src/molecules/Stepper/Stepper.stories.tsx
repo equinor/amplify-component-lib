@@ -15,11 +15,21 @@ const meta: Meta<typeof Stepper> = {
   argTypes: {
     onlyShowCurrentStepLabel: { control: 'boolean' },
     maxWidth: { control: 'text' },
+    hideContent: { control: 'boolean' },
+    allowJumpingAhead: { control: 'boolean' },
   },
   args: {
     onlyShowCurrentStepLabel: false,
+    hideContent: false,
+    allowJumpingAhead: false,
   },
   parameters: {
+    docs: {
+      description: {
+        component:
+          'Navigation buttons in these stories are helper controls for demonstration only and are not part of the Stepper component.',
+      },
+    },
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=5694-19911&m=dev',
@@ -77,9 +87,20 @@ const Container = styled.div`
   padding: 0 10rem;
   > section {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     margin-top: ${spacings.xxx_large};
     gap: ${spacings.medium};
+    padding-top: ${spacings.medium};
+    border-top: 2px solid #e0e0e0;
+
+    &::before {
+      content: 'Story Navigation (not part of component):';
+      margin-right: auto;
+      font-size: 12px;
+      color: #888;
+      font-weight: 500;
+    }
   }
 `;
 
@@ -185,4 +206,81 @@ export const DisabledSteps: StoryObj = {
     },
   },
   render: () => <Story />,
+};
+
+export const HideContent: StoryFn<StepperProps> = (args) => {
+  const { steps, goToNextStep, goToPreviousStep, currentStep } = useStepper();
+
+  return (
+    <Container>
+      <Stepper {...args} hideContent />
+      <section>
+        <Button
+          variant="outlined"
+          onClick={goToPreviousStep}
+          disabled={currentStep === 0}
+        >
+          Previous
+        </Button>
+        <Button
+          onClick={goToNextStep}
+          disabled={currentStep === steps.length - 1}
+        >
+          Next
+        </Button>
+      </section>
+    </Container>
+  );
+};
+
+HideContent.parameters = {
+  docs: {
+    description: {
+      story:
+        'Hides the SubTitle content panel, containing the step title and description, while keeping step indicators and navigation behavior intact.',
+    },
+  },
+};
+
+export const AllowJumpingAhead: StoryFn<StepperProps> = (args) => {
+  const { steps, goToNextStep, goToPreviousStep, currentStep } = useStepper();
+
+  return (
+    <Container>
+      <Stepper {...args} allowJumpingAhead />
+      <section>
+        <Button
+          variant="outlined"
+          onClick={goToPreviousStep}
+          disabled={currentStep === 0}
+        >
+          Previous
+        </Button>
+        <Button
+          onClick={goToNextStep}
+          disabled={currentStep === steps.length - 1}
+        >
+          Next
+        </Button>
+      </section>
+    </Container>
+  );
+};
+
+AllowJumpingAhead.parameters = {
+  docs: {
+    description: {
+      story:
+        'Allows selecting future steps directly. Future step labels/icons are rendered as interactive rather than disabled.',
+    },
+  },
+};
+
+AllowJumpingAhead.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  await userEvent.click(canvas.getByRole('button', { name: '3 Finish order' }));
+
+  await expect(canvas.getByRole('button', { name: 'Next' })).toBeDisabled();
+  await expect(canvas.getByRole('button', { name: 'Previous' })).toBeEnabled();
 };

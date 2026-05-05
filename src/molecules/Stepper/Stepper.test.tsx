@@ -264,3 +264,111 @@ test('Disabled steps work as expected', async () => {
   expect(firstStep).toBeInTheDocument();
   expect(firstStep).toBeDisabled();
 });
+
+test('hideContent prop hides the SubTitle component', async () => {
+  const steps: StepperProviderProps['steps'] = [
+    {
+      label: 'Step 1',
+      title: 'Test Title',
+      description: 'Test Description',
+    },
+    {
+      label: 'Step 2',
+    },
+  ];
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent hideContent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
+
+  // The subtitle text should not be visible when hideContent is true
+  expect(screen.queryByText('Test Title')).not.toBeInTheDocument();
+  expect(screen.queryByText('Test Description')).not.toBeInTheDocument();
+
+  // But the step labels should still be visible
+  expect(await screen.findByText(steps[0].label)).toBeInTheDocument();
+  expect(screen.getByText(steps[1].label)).toBeInTheDocument();
+});
+
+test('hideContent defaults to false, showing SubTitle', async () => {
+  const steps: StepperProviderProps['steps'] = [
+    {
+      label: 'Step 1',
+      title: 'Test Title',
+      description: 'Test Description',
+    },
+    {
+      label: 'Step 2',
+    },
+  ];
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
+
+  // When hideContent is not set, SubTitle should be visible
+  expect(await screen.findByText('Test Title')).toBeInTheDocument();
+  expect(screen.getByText('Test Description')).toBeInTheDocument();
+});
+
+test('allowJumpingAhead allows clicking forward to future steps', async () => {
+  const steps = fakeSteps();
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent allowJumpingAhead />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
+
+  const user = userEvent.setup();
+
+  expect(await screen.findByText(`Current step: 0`)).toBeInTheDocument();
+
+  // Click on a step that is ahead of the current step
+  const thirdStepLabel = steps[2].label;
+  await user.click(screen.getByText(thirdStepLabel));
+
+  // Should now be on step 2
+  expect(screen.getByText(`Current step: 2`)).toBeInTheDocument();
+});
+
+test('allowJumpingAhead defaults to false, preventing forward jumps', async () => {
+  const steps = fakeSteps();
+  renderWithRouter(
+    <StepperProvider steps={steps}>
+      <StepperTestComponent />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
+
+  const user = userEvent.setup();
+
+  expect(await screen.findByText(`Current step: 0`)).toBeInTheDocument();
+
+  // Try to click on a step that is ahead
+  const thirdStepLabel = steps[2].label;
+  const thirdStepElement = screen
+    .getByText(thirdStepLabel)
+    .closest('[role="button"]');
+
+  await user.click(thirdStepElement!);
+
+  // Should still be on step 0 (the click should not have worked)
+  expect(screen.getByText(`Current step: 0`)).toBeInTheDocument();
+});
