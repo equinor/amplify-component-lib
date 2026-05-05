@@ -247,7 +247,7 @@ const HideContentTemplate = (args: StepperProps) => {
 
   return (
     <Container>
-      <Stepper {...args} hideContent />
+      <Stepper {...args} />
       <section>
         <Button
           variant="outlined"
@@ -268,7 +268,10 @@ const HideContentTemplate = (args: StepperProps) => {
 };
 
 export const HideContent: Story = {
-  render: (args) => <HideContentTemplate {...args} hideContent />,
+  args: {
+    hideContent: true,
+  },
+  render: (args) => <HideContentTemplate {...args} />,
   parameters: {
     docs: {
       description: {
@@ -281,7 +284,10 @@ export const HideContent: Story = {
 
 export const TestHideContent: Story = {
   tags: ['test-only'],
-  render: (args) => <HideContentTemplate {...args} hideContent />,
+  args: {
+    hideContent: true,
+  },
+  render: (args) => <HideContentTemplate {...args} />,
   play: async ({ canvas, step }) => {
     await step(
       'SubTitle content is hidden while labels remain visible',
@@ -300,7 +306,7 @@ const AllowJumpingAheadTemplate = (args: StepperProps) => {
 
   return (
     <Container>
-      <Stepper {...args} allowJumpingAhead />
+      <Stepper {...args} />
       <section>
         <Button
           variant="outlined"
@@ -321,7 +327,10 @@ const AllowJumpingAheadTemplate = (args: StepperProps) => {
 };
 
 export const AllowJumpingAhead: Story = {
-  render: (args) => <AllowJumpingAheadTemplate {...args} allowJumpingAhead />,
+  args: {
+    allowJumpingAhead: true,
+  },
+  render: (args) => <AllowJumpingAheadTemplate {...args} />,
   parameters: {
     docs: {
       description: {
@@ -334,7 +343,10 @@ export const AllowJumpingAhead: Story = {
 
 export const TestAllowJumpingAhead: Story = {
   tags: ['test-only'],
-  render: (args) => <AllowJumpingAheadTemplate {...args} allowJumpingAhead />,
+  args: {
+    allowJumpingAhead: true,
+  },
+  render: (args) => <AllowJumpingAheadTemplate {...args} />,
   play: async ({ canvas, step }) => {
     await step('Clicking future step jumps directly', async () => {
       await userEvent.click(
