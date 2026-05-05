@@ -277,19 +277,21 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
   }, [setFeedbackLocalStorage]);
 
   useEffect(() => {
-      let timeoutId: ReturnType<typeof setTimeout>;
-      if (
-        serviceNowRequestResponse.status === StatusEnum.success &&
-        workItemRequestResponse.status === StatusEnum.success
-      ) {
-       timeoutId = setTimeout(() => {
-          // Wait with resetting until "Thank you" text is shown.
-          setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
-        }, 1100);
-      }
-      return () => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    if (
+      serviceNowRequestResponse.status === StatusEnum.success &&
+      workItemRequestResponse.status === StatusEnum.success
+    ) {
+      timeoutId = setTimeout(() => {
+        // Wait with resetting until "Thank you" text is shown.
+        setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
+      }, 1100);
+    }
+    return () => {
+      if (timeoutId) {
         clearTimeout(timeoutId);
-      };
+      }
+    };
   }, [
     workItemRequestResponse,
     serviceNowRequestResponse.status,
