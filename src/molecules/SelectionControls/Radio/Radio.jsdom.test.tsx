@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { Radio } from './Radio';
-import { colors } from 'src/atoms';
+import { colors } from 'src/atoms/style';
 import { render, screen } from 'src/tests/jsdomtest-utils';
 
 test('Renders as expected with outlined=true', () => {

@@ -20,6 +20,9 @@ function fakeSteps(): StepperProviderProps['steps'] {
     {
       label: faker.string.uuid(),
     },
+    {
+      label: faker.string.uuid(),
+    },
   ];
   let i = 0;
   const stepAmount = faker.number.int({ min: 0, max: 30 });
@@ -96,5 +99,32 @@ test('maxWidth works as expected', async () => {
 
   expect(screen.getByTestId('stepper-container')).toHaveStyle(
     `max-width: ${maxWidth}`
+  );
+});
+
+test('Future step icon is outlined and primary when allowJumpingAhead is true', async () => {
+  const steps: StepperProviderProps['steps'] = [
+    { label: 'Step 1' },
+    { label: 'Step 2' },
+    { label: 'Step 3' },
+  ];
+
+  await renderWithRouter(
+    <StepperProvider steps={steps}>
+      <Stepper allowJumpingAhead />
+    </StepperProvider>,
+    {
+      routes: ['/'],
+      initialEntries: ['/'],
+    }
+  );
+
+  const secondStepButton = screen
+    .getByText('Step 2')
+    .closest('[data-testid="step"]');
+  const secondStepNumber = secondStepButton?.querySelector('p');
+
+  expect(secondStepNumber).toHaveStyle(
+    `color: ${colors.interactive.primary__resting.rgba}`
   );
 });

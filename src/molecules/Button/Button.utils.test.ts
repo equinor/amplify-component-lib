@@ -1,8 +1,8 @@
-import { variantAndColorToProgressColor } from './Button.utils';
+import { getLoadingColor } from 'src/molecules/Button/Button.utils';
 
-test('Returns expected color with icon variant', () => {
-  const color = variantAndColorToProgressColor({
-    variant: 'contained_icon',
+test('Returns expected color with color=primary', () => {
+  const color = getLoadingColor({
+    variant: 'filled',
     color: 'primary',
   });
 
@@ -10,7 +10,7 @@ test('Returns expected color with icon variant', () => {
 });
 
 test('Returns expected color with color=danger', () => {
-  const color = variantAndColorToProgressColor({
+  const color = getLoadingColor({
     variant: 'ghost',
     color: 'danger',
   });
@@ -18,11 +18,38 @@ test('Returns expected color with color=danger', () => {
   expect(color).toBe('tertiary');
 });
 
-test('Returns expected color with ghost', () => {
-  const color = variantAndColorToProgressColor({
-    variant: 'ghost',
-    color: undefined,
+test('Returns expected color with outlined + primary', () => {
+  const color = getLoadingColor({
+    variant: 'outlined',
+    color: 'primary',
   });
 
   expect(color).toBe('primary');
+});
+
+test('Returns expected color with outlined + danger', () => {
+  const color = getLoadingColor({
+    variant: 'outlined',
+    color: 'danger',
+  });
+
+  expect(color).toBe('tertiary');
+});
+
+test('Returns expected color with ghost + primary', () => {
+  const color = getLoadingColor({
+    variant: 'ghost',
+    color: 'primary',
+  });
+
+  expect(color).toBe('primary');
+});
+
+test('Returns expected color with filled + danger', () => {
+  const color = getLoadingColor({
+    variant: 'filled',
+    color: 'danger',
+  });
+
+  expect(color).toBe('neutral');
 });

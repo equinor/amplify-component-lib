@@ -1,27 +1,37 @@
 import { ChangeEvent, useState } from 'react';
 
-import {
-  Checkbox,
-  EdsProvider,
-  Icon,
-  Snackbar,
-  Tooltip,
-} from '@equinor/eds-core-react';
-import { add, menu, refresh, save } from '@equinor/eds-icons';
-import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import { Checkbox, Snackbar, Tooltip } from '@equinor/eds-core-react';
+import { chevron_down, save } from '@equinor/eds-icons';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button, ButtonProps } from './Button';
-import page from 'src/molecules/Button/Button.docs.mdx';
+import { spacings } from 'src/atoms/style';
+import { Button } from 'src/molecules/Button/Button';
 import { Stack } from 'src/storybook';
+import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof Button> = {
   title: 'Molecules/Button',
   component: Button,
+  decorators: [
+    (Story) => (
+      <Stack>
+        <Story />
+      </Stack>
+    ),
+  ],
+
   args: {
-    as: 'button',
+    variant: 'filled',
+    color: 'primary',
     loading: undefined,
+  },
+  parameters: {
+    router: {
+      initial: '/',
+      routes: ['$'],
+    },
   },
   argTypes: {
     loading: {
@@ -32,42 +42,55 @@ const meta: Meta<typeof Button> = {
     },
     disabled: { control: 'boolean', type: 'boolean' },
     variant: {
-      options: ['ghost', 'contained', 'outlined'],
+      options: ['filled', 'outlined', 'ghost'],
       control: {
         type: 'select',
       },
     },
-    as: {
-      options: ['span', 'a', 'button'],
+    color: {
+      options: ['primary', 'danger'],
       control: {
         type: 'select',
-      },
-    },
-  },
-  parameters: {
-    docs: {
-      page,
-      source: {
-        excludeDecorators: true,
       },
     },
   },
 };
 
 export default meta;
-
-export const Introduction: StoryFn<ButtonProps> = (args) => {
-  return <Button {...args}>You can control me</Button>;
+type Story = StoryObj<typeof Button>;
+export const Introduction: Story = {
+  render: (args) => <Button {...args} label="You can control me" />,
 };
-Introduction.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
 
-export const Accessibility: StoryFn<ButtonProps> = () => {
+export const Basic: Story = {
+  render: (args) => (
+    <VariantShowcase
+      GenericComponent={Button}
+      otherProps={{ ...args, label: 'Button' }}
+      columns={[
+        { label: 'Filled', value: { variant: 'filled' } },
+        { label: 'Outlined', value: { variant: 'outlined' } },
+        { label: 'Ghost', value: { variant: 'ghost' } },
+      ]}
+      rows={[
+        { label: 'Primary', value: { color: 'primary' } },
+        { label: 'Danger', value: { color: 'danger' } },
+      ]}
+    />
+  ),
+};
+
+export const Disabled: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: spacings.medium }}>
+      <Button label="Filled" disabled />
+      <Button label="Outlined" disabled variant="outlined" />
+      <Button label="Ghost" disabled variant="ghost" />
+    </div>
+  ),
+};
+
+const AccessibilityComponent = () => {
   const [canSubmit, setCanSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   return (
@@ -81,13 +104,12 @@ export const Accessibility: StoryFn<ButtonProps> = () => {
       />
       <Tooltip title={canSubmit ? '' : 'Terms & Conditions must be checked'}>
         <Button
+          label="Submit"
           aria-disabled={!canSubmit}
           onClick={() => {
             if (canSubmit) setOpen(true);
           }}
-        >
-          Submit
-        </Button>
+        />
       </Tooltip>
       <Snackbar
         open={open}
@@ -99,304 +121,80 @@ export const Accessibility: StoryFn<ButtonProps> = () => {
     </>
   );
 };
-Accessibility.decorators = [
-  (Story) => (
-    <Stack direction="column">
-      <Story />
-    </Stack>
-  ),
-];
 
-export const Basic: StoryFn<ButtonProps> = () => (
-  <>
-    <Button>Contained</Button>
-    <Button variant="contained_icon" aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="outlined">Outlined</Button>
-    <Button variant="ghost">Ghost</Button>
-    <Button variant="ghost_icon" aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-  </>
-);
-Basic.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
-
-export const LoadingState: StoryFn<ButtonProps> = () => (
-  <>
-    <Button loading>Contained</Button>
-    <Button variant="contained_icon" aria-label="add action" loading>
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="outlined" loading>
-      Outlined
-    </Button>
-    <Button variant="ghost" loading>
-      Ghost
-    </Button>
-    <Button variant="ghost_icon" aria-label="save action" loading>
-      <Icon data={save}></Icon>
-    </Button>
-    <Button loading color="danger">
-      Contained
-    </Button>
-    <Button
-      variant="contained_icon"
-      color="danger"
-      aria-label="add action"
-      loading
-    >
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="outlined" color="danger" loading>
-      Outlined
-    </Button>
-    <Button variant="ghost" color="danger" loading>
-      Ghost
-    </Button>
-    <Button
-      variant="ghost_icon"
-      aria-label="save action"
-      color="danger"
-      loading
-    >
-      <Icon data={save}></Icon>
-    </Button>
-  </>
-);
-LoadingState.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
-
-export const IconButton: StoryFn<ButtonProps> = () => (
-  <>
-    <Button variant="ghost_icon" aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-    <Button variant="ghost_icon" color="secondary" aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-    <Button variant="ghost_icon" color="danger" aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-    <Button variant="ghost_icon" disabled aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-    <Button variant="contained_icon" aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="contained_icon" color="secondary" aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="contained_icon" color="danger" aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="contained_icon" disabled aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-  </>
-);
-
-IconButton.storyName = 'Icon button';
-IconButton.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
-
-export const Color: StoryFn<ButtonProps> = () => (
-  <>
-    <Button color="primary">Primary</Button>
-    <Button color="secondary">Secondary</Button>
-    <Button color="danger">Danger</Button>
-  </>
-);
-Color.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
-
-export const Hierarchy: StoryFn<ButtonProps> = () => (
-  <>
-    <Button>Contained</Button>
-    <Button variant="outlined">Outlined</Button>
-    <Button variant="ghost">Ghost</Button>
-  </>
-);
-Hierarchy.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
-
-export const Compact: StoryFn<ButtonProps> = () => {
-  const [compact, setComfortable] = useState<boolean>(true);
-
-  return (
-    <EdsProvider density={compact ? 'compact' : 'comfortable'}>
-      <Checkbox
-        label="Compact"
-        onChange={() => {
-          setComfortable(!compact);
-        }}
-        checked={compact}
-      />
-      <Stack direction="row">
-        <Button>Contained</Button>
-        <Button variant="outlined">Outlined</Button>
-        <Button variant="ghost">Ghost</Button>
-        <Button variant="ghost_icon" aria-label="menu action">
-          <Icon data={menu} title="Ghost icon menu"></Icon>
-        </Button>
-      </Stack>
-    </EdsProvider>
-  );
+export const Accessibility: Story = {
+  render: AccessibilityComponent,
 };
-Compact.decorators = [
-  (Story) => (
-    <Stack direction="column">
-      <Story />
-    </Stack>
+
+export const Icons: Story = {
+  render: () => (
+    <>
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button label="Leading icon" leadingIcon={save} />
+        <Button label="Trailing icon" trailingIcon={save} />
+        <Button
+          label="Both icons"
+          leadingIcon={save}
+          trailingIcon={chevron_down}
+        />
+      </div>
+    </>
   ),
-];
+};
 
-export const WithTooltip: StoryFn<ButtonProps> = () => (
-  <>
-    <Tooltip title="This is what a tooltip looks like">
-      <Button>Hover me</Button>
-    </Tooltip>
-    <Tooltip title="This tooltip only shows for people using firefox and using mouse. Don't do this!">
-      <Button disabled>Disabled button</Button>
-    </Tooltip>
-    <Tooltip title="Tooltip works in all browsers and with keyboard navigation when using aria-disabled">
-      <Button aria-disabled>Aria-disabled button</Button>
-    </Tooltip>
-  </>
-);
-
-WithTooltip.decorators = [
-  (Story) => (
-    <Stack>
-      <Story />
-    </Stack>
-  ),
-];
-WithTooltip.storyName = 'Disabled buttons and tooltip';
-
-export const FullWidth: StoryFn<ButtonProps> = () => (
-  <>
-    <Button fullWidth>
-      <Icon data={refresh} size={16}></Icon>
-      Fullwidth
-    </Button>
-    <Button fullWidth>
-      Fullwidth
-      <Icon data={refresh} size={16}></Icon>
-    </Button>
-    <Button>
-      <Icon data={refresh} size={16}></Icon>
-      not Fullwidth
-    </Button>
-  </>
-);
-FullWidth.storyName = 'Full width';
-FullWidth.decorators = [
-  (Story) => (
-    <div style={{ margin: '32px', display: 'grid', gridGap: '16px' }}>
-      <Story />
-    </div>
-  ),
-];
-
-export const All: StoryFn<ButtonProps> = () => (
-  <>
-    <Button>Primary</Button>
-    <Button color="secondary">Secondary</Button>
-    <Button color="danger">Danger</Button>
-    <Button disabled>Disabled</Button>
-    <Button variant="outlined">Primary</Button>
-    <Button variant="outlined" color="secondary">
-      Secondary
-    </Button>
-    <Button variant="outlined" color="danger">
-      Danger
-    </Button>
-    <Button variant="outlined" disabled>
-      Disabled
-    </Button>
-    <Button variant="ghost">Primary</Button>
-    <Button variant="ghost" color="secondary">
-      Secondary
-    </Button>
-    <Button variant="ghost" color="danger">
-      Danger
-    </Button>
-    <Button variant="ghost" disabled>
-      Disabled
-    </Button>
-    <Button variant="ghost_icon" aria-label="save action">
-      <Icon data={save} title="save action"></Icon>
-    </Button>
-    <Button variant="ghost_icon" color="secondary" aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-    <Button variant="ghost_icon" color="danger" aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-    <Button variant="ghost_icon" disabled aria-label="save action">
-      <Icon data={save}></Icon>
-    </Button>
-    <Button variant="contained_icon" aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="contained_icon" color="secondary" aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="contained_icon" color="danger" aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-    <Button variant="contained_icon" disabled aria-label="add action">
-      <Icon data={add}></Icon>
-    </Button>
-  </>
-);
-All.decorators = [
-  (Story) => (
-    <Stack
+export const Loading: Story = {
+  render: () => (
+    <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, auto)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: spacings.medium,
       }}
     >
-      <Story />
-    </Stack>
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button label="Filled" loading />
+        <Button label="Outlined" loading variant="outlined" />
+        <Button label="Ghost" loading variant="ghost" />
+      </div>
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button label="Filled" loading color="danger" />
+        <Button label="Outlined" loading color="danger" variant="outlined" />
+        <Button label="Ghost" loading color="danger" variant="ghost" />
+      </div>
+    </div>
   ),
-];
+};
 
-type Story = StoryObj<typeof Button>;
+export const FullWidth: Story = {
+  render: () => (
+    <div
+      style={{
+        margin: '32px',
+        display: 'grid',
+        gridGap: '16px',
+        width: '100%',
+      }}
+    >
+      <Button label="fullWidth" fullWidth leadingIcon={save} />
+      <Button label="fullWidth" fullWidth trailingIcon={save} />
+      <Button label="No fullWidth" leadingIcon={save} />
+    </div>
+  ),
+  name: 'Full width',
+};
+
+export const LinkButton: Story = {
+  render: () => {
+    return <Button to="/faq" label="I am a link" />;
+  },
+  name: 'Button as a link',
+};
 
 export const TestLoadingState: Story = {
   tags: ['test-only'],
   args: {
     loading: true,
-    children: 'Loading Button',
+    label: 'Loading Button',
     onClick: fn(),
   },
   play: async ({ canvas, args }) => {
@@ -408,14 +206,14 @@ export const TestLoadingState: Story = {
   },
 };
 
-export const TestClickable: Story = {
+export const TestRendersAsLink: Story = {
   tags: ['test-only'],
-  args: {
-    children: 'Click me',
-    onClick: fn(),
-  },
-  play: async ({ canvas, args }) => {
-    await userEvent.click(canvas.getByRole('button'));
-    await expect(args.onClick).toHaveBeenCalledOnce();
+  render: () => <Button to="/somewhere" label="Save" />,
+  play: async ({ canvas }) => {
+    const link = canvas.getByRole('link', { name: 'Save' });
+
+    await expect(link).toBeInTheDocument();
+    await expect(link.tagName).toBe('A');
+    await expect(link).toHaveAttribute('href', '/somewhere');
   },
 };
