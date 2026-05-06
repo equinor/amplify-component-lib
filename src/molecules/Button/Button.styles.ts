@@ -1,11 +1,10 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { typographyTemplate } from '@equinor/eds-utils';
 
-import { shape, spacings } from 'src/atoms/style';
+import { shape } from 'src/atoms/style';
 import { VariantTokens } from 'src/molecules/Button/tokens/tokens';
 
-import { css, styled } from 'styled-components';
+import { styled } from 'styled-components';
 
 export interface ButtonStyles {
   $tokens: VariantTokens;
@@ -39,19 +38,8 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   position: relative;
   cursor: pointer;
 
-  > span {
-    padding: ${spacings.x_small};
-    text-align: center;
-  }
-
   svg {
     justify-self: center;
-    ${(props) =>
-      props.$fullWidth &&
-      css`
-        position: absolute;
-        margin: 0 ${spacings.small};
-      `}
   }
 
   &::after {
@@ -99,19 +87,10 @@ export const HiddenContent = styled.span`
 `;
 
 export const CenteredContent = styled.span`
-  left: 0;
   position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-export const LeftIcon = styled(Icon)`
-  left: 0;
-`;
-
-export const RightIcon = styled(Icon)`
-  right: 0;
 `;

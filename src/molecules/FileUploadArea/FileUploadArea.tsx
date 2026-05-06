@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { folder } from '@equinor/eds-icons';
 
 import {
@@ -162,12 +162,10 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
           <Typography variant="meta">OR</Typography>
           <hr />
         </DividerRow>
-        <Button
-          leadingIcon={folder}
-          variant="ghost"
-          onClick={getRootProps().onClick}
-          label="Browse files"
-        />
+        <Button variant="ghost" onClick={getRootProps().onClick}>
+          <Icon data={folder} />
+          Browse files
+        </Button>
       </MediumUploadWrapper>
     );
   }
@@ -206,12 +204,10 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
         </Typography>
         <hr />
       </DividerRow>
-      <Button
-        leadingIcon={folder}
-        label="Browse files"
-        variant="ghost"
-        onClick={getRootProps().onClick}
-      />
+      <Button variant="ghost" onClick={getRootProps().onClick}>
+        <Icon data={folder} />
+        Browse files
+      </Button>
     </UploadWrapper>
   );
 };

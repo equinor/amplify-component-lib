@@ -86,11 +86,9 @@ export const Toast: FC<ToastProps> = ({
         </Typography>
       )}
       {action && (
-        <Button
-          label={action.text}
-          variant="outlined"
-          onClick={handleOnActionClick}
-        />
+        <Button variant="outlined" onClick={handleOnActionClick}>
+          {action.text}
+        </Button>
       )}
       {duration && (
         <DurationBar

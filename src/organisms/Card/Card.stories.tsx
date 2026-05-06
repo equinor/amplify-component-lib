@@ -299,8 +299,8 @@ export const WithActions: StoryFn<CardProps> = () => (
       </Card.Content>
 
       <Card.Actions>
-        <Button label="Cancel" />
-        <Button variant="ghost" label="OK" />
+        <Button>Cancel</Button>
+        <Button variant="ghost">OK</Button>
       </Card.Actions>
     </Card>
     <Card>
@@ -365,11 +365,9 @@ export const WithDivider: StoryFn<CardProps> = () => {
           </Typography>
         </Card.Content>
         <Card.Actions>
-          <Button
-            label="SUBMIT TICKET"
-            style={{ marginTop: '16px' }}
-            variant="outlined"
-          />
+          <Button style={{ marginTop: '16px' }} variant="outlined">
+            SUBMIT TICKET
+          </Button>
         </Card.Actions>
       </Card>
     </>

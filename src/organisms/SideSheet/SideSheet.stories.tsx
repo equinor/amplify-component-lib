@@ -45,11 +45,12 @@ function StoryComponent(props: SideSheetProps) {
           <Template.Content $open={false}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <Button
-                label="Toggle side sheet"
                 onClick={() => {
                   setOpen((prev) => !prev);
                 }}
-              />
+              >
+                Toggle side sheet
+              </Button>
               <SideSheet {...props} open={open} onClose={handleOnClose} />
             </div>
           </Template.Content>
@@ -105,10 +106,9 @@ function StatefulModalWrapper(props: SideSheetProps) {
     <FloatingStoryWrapper>
       <div>
         <div style={{ padding: '1rem' }}>
-          <Button
-            label="Toggle side sheet"
-            onClick={() => setOpen((prev) => !prev)}
-          />
+          <Button onClick={() => setOpen((prev) => !prev)}>
+            Toggle side sheet
+          </Button>
         </div>
         <SideSheet {...props} open={open} onClose={() => setOpen(false)} />
       </div>

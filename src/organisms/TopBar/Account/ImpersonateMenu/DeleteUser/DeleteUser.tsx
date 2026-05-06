@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { arrow_back, delete_to_trash } from '@equinor/eds-icons';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
@@ -62,13 +62,16 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
       <div>
         <Button
           loading={isPending}
-          leadingIcon={delete_to_trash}
           variant="outlined"
           color="danger"
-          label="Delete user"
           onClick={handleDelete}
-        />
-        <Button label="Cancel" variant="ghost" onClick={onBack} />
+        >
+          <Icon data={delete_to_trash} />
+          Delete user
+        </Button>
+        <Button variant="ghost" onClick={onBack}>
+          Cancel
+        </Button>
       </div>
     </Container>
   );

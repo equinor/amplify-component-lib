@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import { DotProgress } from '@equinor/eds-core-react';
-import { IconData } from '@equinor/eds-icons';
 import type { LinkComponentProps } from '@tanstack/react-router';
 import { createLink, LinkComponent } from '@tanstack/react-router';
 
@@ -9,18 +8,17 @@ import {
   ButtonPrimitive,
   CenteredContent,
   HiddenContent,
-  LeftIcon,
-  RightIcon,
 } from 'src/molecules/Button/Button.styles';
 import { getLoadingColor } from 'src/molecules/Button/Button.utils';
+import {
+  ContentWrapper,
+  FullWidthContentWrapper,
+} from 'src/molecules/Button/ContentWrapper';
 import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
 type BaseButtonProps = {
-  label: string;
   fullWidth?: boolean;
-  leadingIcon?: IconData;
-  trailingIcon?: IconData;
 } & CommonButtonProps;
 
 export type ButtonProps =
@@ -28,18 +26,16 @@ export type ButtonProps =
   | BaseButtonProps;
 
 const BaseButton: FC<BaseButtonProps> = ({
-  label,
   variant = 'filled',
   color = 'primary',
-  leadingIcon,
-  trailingIcon,
   fullWidth = false,
   loading = false,
   onClick,
+  children,
   ...rest
 }) => {
   const tokens = TOKEN_MAPPINGS[color][variant];
-  const iconsCount = [leadingIcon, trailingIcon].filter(Boolean).length;
+  const Wrapper = fullWidth ? FullWidthContentWrapper : ContentWrapper;
 
   return (
     <ButtonPrimitive
@@ -50,24 +46,15 @@ const BaseButton: FC<BaseButtonProps> = ({
     >
       {loading ? (
         <>
-          <HiddenContent
-            style={{
-              marginLeft: iconsCount * 12,
-              marginRight: iconsCount * 12,
-            }}
-          >
-            {label}
+          <HiddenContent>
+            <Wrapper>{children}</Wrapper>
           </HiddenContent>
           <CenteredContent>
             <DotProgress color={getLoadingColor({ color, variant })} />
           </CenteredContent>
         </>
       ) : (
-        <>
-          {leadingIcon && <LeftIcon data={leadingIcon} />}
-          <span>{label}</span>
-          {trailingIcon && <RightIcon data={trailingIcon} />}
-        </>
+        <Wrapper>{children}</Wrapper>
       )}
     </ButtonPrimitive>
   );
