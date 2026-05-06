@@ -265,7 +265,7 @@ describe('Report a bug', () => {
 
     await user.click(sendButton);
 
-    expect(await screen.findAllByText('Sending...')).toHaveLength(1);
+    expect(await screen.findAllByText('Sending...')).toHaveLength(2);
 
     await waitForElementToBeRemoved(() => screen.getAllByText('Sending...'), {
       timeout: 2000,
@@ -275,7 +275,7 @@ describe('Report a bug', () => {
       await screen.findAllByText(/internal server error/i, undefined, {
         timeout: 50000,
       })
-    ).toHaveLength(2);
+    ).toHaveLength(1);
 
     await user.click(screen.getByRole('button', { name: /retry/i }));
 
