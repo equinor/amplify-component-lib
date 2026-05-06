@@ -33,7 +33,7 @@ import {
   createServiceNowUrl,
   createSlackMessage,
   getBrowserInfo,
-  getUrgencyNumber,
+  getServiceNowUrgencyNumber,
 } from '../Feedback.utils';
 import { useServiceNowIncident } from '../hooks/useServiceNowIncident';
 import { environment } from 'src/atoms';
@@ -214,7 +214,9 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
       if (feedbackContent.urgency) {
         serviceNowFormData.append(
           'urgency',
-          getUrgencyNumber(feedbackContent.urgency as BugSeverity).toString()
+          getServiceNowUrgencyNumber(
+            feedbackContent.urgency as BugSeverity
+          ).toString()
         );
       }
       if (feedbackAttachments && feedbackAttachments.length > 0) {
@@ -275,28 +277,6 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
     setFeedbackAttachments([]);
     setWorkItemRequestResponse({ status: StatusEnum.idle });
   }, [setFeedbackLocalStorage]);
-
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    if (
-      serviceNowRequestResponse.status === StatusEnum.success &&
-      workItemRequestResponse.status === StatusEnum.success
-    ) {
-      timeoutId = setTimeout(() => {
-        // Wait with resetting until "Thank you" text is shown.
-        setFeedbackLocalStorage(DEFAULT_FEEDBACK_LOCAL_STORAGE);
-      }, 1100);
-    }
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [
-    workItemRequestResponse,
-    serviceNowRequestResponse.status,
-    setFeedbackLocalStorage,
-  ]);
 
   useEffect(() => {
     if (

@@ -41,14 +41,12 @@ export const readUploadedFileAsText = (
   });
 };
 
-export const getUrgencyNumber = (urgency: BugSeverity) => {
+// We moved to only do normal severity in the service now request to have a standard time to respond. (Severity could reduce it from 4 days, to 1 day)
+export const getServiceNowUrgencyNumber = (urgency: BugSeverity) => {
   switch (urgency) {
     case BugSeverity.UNABLE_TO_WORK:
-      return ServiceNowUrgency.NORMAL;
     case BugSeverity.IMPEDES_MY_PROGRESS:
-      return ServiceNowUrgency.NORMAL;
     case BugSeverity.DOES_NOT_AFFECT_ME:
-      return ServiceNowUrgency.NORMAL;
     default:
       return ServiceNowUrgency.NORMAL;
   }
