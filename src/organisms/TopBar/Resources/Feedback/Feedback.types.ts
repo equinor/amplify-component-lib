@@ -11,7 +11,6 @@ export enum StatusEnum {
   idle = 'idle',
   pending = 'pending',
   success = 'success',
-  partial = 'partial',
 }
 
 export interface FeedbackContentLocalStorage {

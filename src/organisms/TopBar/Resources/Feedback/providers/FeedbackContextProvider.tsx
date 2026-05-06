@@ -252,7 +252,7 @@ export const FeedbackContextProvider: FC<FeedbackContextProviderProps> = ({
         ),
         attachmentMessage: feedbackContent.title,
         formData: {
-          fileList: feedbackAttachments ?? [],
+          fileList: feedbackAttachments,
           Title: feedbackContent.title,
           Description: feedbackContent.description,
           ApplicationName: getAppName(import.meta.env.VITE_NAME),
