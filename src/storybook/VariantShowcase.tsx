@@ -1,4 +1,4 @@
-import { ComponentType } from 'react';
+import { ComponentType, HTMLAttributes } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 
@@ -53,24 +53,27 @@ export const VariantRowShape = styled.span`
   }
 `;
 
-interface VariantShowcaseProps<T> {
+type VariantShowcaseProps<T> = {
   GenericComponent: ComponentType<T>;
   otherProps: T;
   columns?: Array<{ label: string; value: Partial<T> }>;
   rows: Array<{ label: string; value: Partial<T> }>;
-}
+} & HTMLAttributes<HTMLDivElement>;
 
 export function VariantShowcase<T>({
   columns,
   rows,
   GenericComponent,
   otherProps,
+  ...rest
 }: VariantShowcaseProps<T>) {
   if (!columns || columns.length === 0) {
     return (
       <Container
+        {...rest}
         style={{
           gridTemplateColumns: `auto auto auto`,
+          ...rest.style,
         }}
       >
         {rows.flatMap((row, rowIndex) => [
@@ -95,8 +98,10 @@ export function VariantShowcase<T>({
 
   return (
     <Container
+      {...rest}
       style={{
         gridTemplateColumns: `auto auto repeat(${columns.length}, auto)`,
+        ...rest.style,
       }}
     >
       {columns.map((column, index) => (

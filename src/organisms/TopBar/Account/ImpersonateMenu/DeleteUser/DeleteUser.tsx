@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { DotProgress, Icon, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { arrow_back, delete_to_trash } from '@equinor/eds-icons';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 
@@ -8,6 +8,7 @@ import { useDeleteImpersonation } from '../hooks/useDeleteImpersonation';
 import { Header } from '../Impersonate.styles';
 import { Container } from './DeleteUser.styles';
 import { colors } from 'src/atoms/style';
+import { IconButton } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
 import {
   RoleChip,
@@ -36,9 +37,7 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
   return (
     <Container>
       <Header>
-        <Button variant="ghost_icon" onClick={onBack}>
-          <Icon data={arrow_back} />
-        </Button>
+        <IconButton icon={arrow_back} variant="ghost" onClick={onBack} />
         <Typography variant="h6">Delete user</Typography>
       </Header>
       <section>
@@ -61,18 +60,15 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
         ))}
       </RolesContainer>
       <div>
-        {isPending ? (
-          <Button variant="outlined" color="danger">
-            <DotProgress color="tertiary" />
-          </Button>
-        ) : (
-          <Button variant="outlined" color="danger" onClick={handleDelete}>
-            <Icon data={delete_to_trash} /> Delete user
-          </Button>
-        )}
-        <Button variant="ghost" onClick={onBack}>
-          Cancel
-        </Button>
+        <Button
+          loading={isPending}
+          leadingIcon={delete_to_trash}
+          variant="outlined"
+          color="danger"
+          label="Delete user"
+          onClick={handleDelete}
+        />
+        <Button label="Cancel" variant="ghost" onClick={onBack} />
       </div>
     </Container>
   );

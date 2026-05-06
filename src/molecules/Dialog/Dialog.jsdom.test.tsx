@@ -9,7 +9,7 @@ test('withBorders works as expected', () => {
   const title = faker.airline.airplane().name;
   const description = faker.lorem.paragraph();
   const action: DialogAction = {
-    variant: 'contained',
+    variant: 'filled',
     text: faker.animal.dog(),
     onClick: vi.fn(),
     color: undefined,

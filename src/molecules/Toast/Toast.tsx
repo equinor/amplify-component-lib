@@ -4,6 +4,7 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { close, IconData } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms/style';
+import { IconButton } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
 import {
   Container,
@@ -74,9 +75,7 @@ export const Toast: FC<ToastProps> = ({
         <Typography variant="h6" color={colors.text.static_icons__default.rgba}>
           {title}
         </Typography>
-        <Button variant="ghost_icon" onClick={onClose}>
-          <Icon data={close} />
-        </Button>
+        <IconButton icon={close} variant="ghost" onClick={onClose} />
       </Header>
       {description && (
         <Typography
@@ -87,9 +86,11 @@ export const Toast: FC<ToastProps> = ({
         </Typography>
       )}
       {action && (
-        <Button variant="outlined" onClick={handleOnActionClick}>
-          {action.text}
-        </Button>
+        <Button
+          label={action.text}
+          variant="outlined"
+          onClick={handleOnActionClick}
+        />
       )}
       {duration && (
         <DurationBar

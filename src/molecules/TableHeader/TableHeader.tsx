@@ -5,14 +5,13 @@ import { IconData } from '@equinor/eds-icons';
 
 import { SpacingsMode } from 'src/atoms';
 import { Variants } from 'src/atoms/types/variants';
-import { Button } from 'src/molecules/Button/Button';
+import { IconButton } from 'src/molecules';
 import {
   ActionsWrapper,
   Container,
   Wrapper,
 } from 'src/molecules/TableHeader/TableHeader.styles';
 import {
-  getActionIconColor,
   getLeadingIcon,
   getLeadingIconColor,
   getSortingIcon,
@@ -93,33 +92,21 @@ export const TableHeader: FC<TableHeaderProps> = ({
         {(!!trailingAction || !!sorting) && (
           <ActionsWrapper>
             {trailingAction && (
-              <Button
+              <IconButton
                 data-spacings-mode={SpacingsMode.COMPACT}
-                variant="ghost_icon"
+                variant="ghost"
                 onClick={trailingAction.onClick}
-              >
-                <Icon
-                  data={trailingAction.icon}
-                  color={getActionIconColor({
-                    variant,
-                  })}
-                />
-              </Button>
+                icon={trailingAction.icon}
+              />
             )}
             {sorting?.isSorting && (
-              <Button
+              <IconButton
+                icon={getSortingIcon(sorting.isSorting)}
                 className="sort-button"
                 onClick={onClick ? sorting.onSortClick : undefined}
                 data-spacings-mode={SpacingsMode.COMPACT}
-                variant="ghost_icon"
-              >
-                <Icon
-                  data={getSortingIcon(sorting.isSorting)}
-                  color={getActionIconColor({
-                    variant,
-                  })}
-                />
-              </Button>
+                variant="ghost"
+              />
             )}
           </ActionsWrapper>
         )}
