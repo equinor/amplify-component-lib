@@ -331,6 +331,75 @@ export const StatefulModal: Story = {
   },
 };
 
+export const CustomWidth: Story = {
+  args: {
+    type: 'standard',
+    width: 800,
+  },
+  play: async ({ canvasElement, context }) => {
+    const canvas = within(canvasElement);
+    const { title } = context.args;
+
+    const heading = await canvas.findByRole('heading', {
+      name: title as string,
+      level: 2,
+    });
+    const sheet = heading.parentElement?.parentElement;
+
+    if (!(sheet instanceof HTMLElement)) {
+      throw new Error('Could not locate the side sheet element');
+    }
+
+    await waitFor(() => {
+      expect(sheet.offsetWidth).toBe(800);
+    });
+  },
+};
+
+export const CustomZIndex: Story = {
+  args: {
+    type: 'modal',
+    zIndex: 1234,
+  },
+  parameters: {
+    layout: 'fullscreen',
+  },
+  decorators: (Story) => (
+    <FloatingStoryWrapper>
+      <Story />
+    </FloatingStoryWrapper>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const wrapper = await canvas.findByTestId('side-sheet-wrapper');
+
+    await expect(getComputedStyle(wrapper).zIndex).toBe('1234');
+  },
+};
+
+export const CustomZIndexFloating: Story = {
+  args: {
+    type: 'floating',
+    zIndex: 5678,
+  },
+  parameters: {
+    layout: 'fullscreen',
+  },
+  decorators: (Story) => (
+    <FloatingStoryWrapper>
+      <Story />
+    </FloatingStoryWrapper>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const wrapper = await canvas.findByTestId('side-sheet-wrapper');
+
+    await expect(getComputedStyle(wrapper).zIndex).toBe('5678');
+  },
+};
+
 export const StatefulModalWithScrim: Story = {
   args: {
     type: 'modal',
