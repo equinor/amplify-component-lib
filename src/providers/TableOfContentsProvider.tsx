@@ -18,7 +18,7 @@ import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 export interface TableOfContentsItemType {
   label: string;
   value: string;
-  count?: number;
+  count?: number | string;
   disabled?: boolean;
   children?: TableOfContentsItemType[];
 }
