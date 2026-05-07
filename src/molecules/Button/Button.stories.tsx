@@ -219,7 +219,7 @@ export const FullWidth: Story = {
 
 export const LinkButton: Story = {
   render: () => {
-    return <Button to="/faq">I am a link</Button>;
+    return <Button linkOptions={{ to: '/faq' }}>I am a link</Button>;
   },
   name: 'Button as a link',
 };
@@ -244,7 +244,7 @@ export const TestLoadingState: Story = {
 
 export const TestRendersAsLink: Story = {
   tags: ['test-only'],
-  render: () => <Button to="/somewhere">Save</Button>,
+  render: () => <Button linkOptions={{ to: '/somewhere' }}>Save</Button>,
   play: async ({ canvas }) => {
     const link = canvas.getByRole('link', { name: 'Save' });
 

@@ -1,8 +1,11 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { DotProgress } from '@equinor/eds-core-react';
-import type { LinkComponentProps } from '@tanstack/react-router';
-import { createLink, LinkComponent } from '@tanstack/react-router';
+import type {
+  RegisteredRouter,
+  ValidateLinkOptions,
+} from '@tanstack/react-router';
+import { createLink } from '@tanstack/react-router';
 
 import {
   ButtonPrimitive,
@@ -20,10 +23,6 @@ import { CommonButtonProps } from 'src/molecules/Button/types';
 type BaseButtonProps = {
   fullWidth?: boolean;
 } & CommonButtonProps;
-
-export type ButtonProps =
-  | LinkComponentProps<typeof BaseButton>
-  | BaseButtonProps;
 
 const BaseButton: FC<BaseButtonProps> = ({
   variant = 'filled',
@@ -62,14 +61,28 @@ const BaseButton: FC<BaseButtonProps> = ({
 
 const ButtonLink = createLink(BaseButton);
 
-const isPlainButtonProps = (props: ButtonProps): props is BaseButtonProps =>
-  !('to' in props);
+export interface ButtonProps<
+  TRouter extends RegisteredRouter = RegisteredRouter,
+  TOptions = unknown,
+> extends BaseButtonProps {
+  linkOptions?: ValidateLinkOptions<TRouter, TOptions>;
+}
 
-type ButtonComponent = LinkComponent<typeof BaseButton> & FC<BaseButtonProps>;
-
-export const Button: ButtonComponent = ((props: ButtonProps) => {
-  if (isPlainButtonProps(props)) {
-    return <BaseButton {...props} as="button" type={props.type ?? 'button'} />;
+export function Button<TRouter extends RegisteredRouter, TOptions>(
+  props: ButtonProps<TRouter, TOptions>
+): ReactNode;
+export function Button(props: ButtonProps): ReactNode {
+  if (props.linkOptions === undefined) {
+    return <BaseButton {...props} type={props.type ?? 'button'} />;
   }
-  return <ButtonLink {...props} as="a" />;
-}) as ButtonComponent;
+
+  const { linkOptions, ...rest } = props;
+
+  const linkProps = {
+    ...linkOptions,
+    ...rest,
+    as: 'a',
+  } as Parameters<typeof ButtonLink>[0];
+
+  return <ButtonLink {...linkProps} as="a" />;
+}

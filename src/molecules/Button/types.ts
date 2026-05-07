@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ElementType, RefObject } from 'react';
+import { ButtonHTMLAttributes, ElementType, Ref } from 'react';
 
 export type ButtonVariants = 'filled' | 'outlined' | 'ghost';
 export type ButtonColors = 'primary' | 'danger';
@@ -8,6 +8,6 @@ export type CommonButtonProps = {
   variant?: ButtonVariants;
   loading?: boolean;
   disabled?: boolean;
-  ref?: RefObject<HTMLButtonElement>;
+  ref?: Ref<HTMLButtonElement>;
   as?: ElementType;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
