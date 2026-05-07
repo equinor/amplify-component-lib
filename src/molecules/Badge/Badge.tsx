@@ -7,7 +7,7 @@ import { Container } from 'src/molecules/Badge/Badge.styles';
 export type Variants = 'default' | 'light' | 'danger' | 'empty';
 
 export interface BadgeProps {
-  value: number;
+  value: number | string;
   variant?: Variants;
 }
 

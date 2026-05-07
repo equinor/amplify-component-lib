@@ -5,7 +5,7 @@ import { Variants } from 'src/atoms/types/variants';
 export interface Tab<T> {
   value: T;
   label: string;
-  count?: number;
+  count?: number | string;
   leadingIcon?: IconData;
   trailingIcon?: IconData;
   variant?: Extract<Variants, 'warning' | 'error'>;
