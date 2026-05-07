@@ -53,24 +53,49 @@ const FullWidthInner = styled.span`
   }
 `;
 
+type Primitive = string | number;
+const isPrimitive = (child: unknown): child is Primitive =>
+  typeof child === 'string' || typeof child === 'number';
+
+const coalesceChildren = (
+  children: ReactNode,
+  Wrapper: FC<{ children: ReactNode }>
+): ReactNode[] => {
+  const all = Children.toArray(children);
+  const result: ReactNode[] = [];
+  let buffer: Primitive[] = [];
+
+  const flush = () => {
+    if (buffer.length === 0) return;
+    result.push(
+      <Wrapper key={`primitive-${result.length}`}>{buffer.join('')}</Wrapper>
+    );
+    buffer = [];
+  };
+
+  all.forEach((child) => {
+    if (isPrimitive(child)) {
+      buffer.push(child);
+    } else {
+      flush();
+      result.push(child);
+    }
+  });
+  flush();
+
+  return result;
+};
+
 export const FullWidthContentWrapper: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const updatedChildren = Children.map(children, (child) =>
-    typeof child !== 'object' ? (
-      <FullWidthCenterContent>{child}</FullWidthCenterContent>
-    ) : (
-      child
-    )
+  return (
+    <FullWidthInner>
+      {coalesceChildren(children, FullWidthCenterContent)}
+    </FullWidthInner>
   );
-
-  return <FullWidthInner>{updatedChildren}</FullWidthInner>;
 };
 
 export const ContentWrapper: FC<{ children: ReactNode }> = ({ children }) => {
-  const updatedChildren = Children.map(children, (child) =>
-    typeof child !== 'object' ? <TextContent>{child}</TextContent> : child
-  );
-
-  return <Content>{updatedChildren}</Content>;
+  return <Content>{coalesceChildren(children, TextContent)}</Content>;
 };
