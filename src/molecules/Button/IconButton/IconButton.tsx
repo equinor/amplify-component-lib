@@ -69,7 +69,7 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
 
 const ButtonLink = createLink(BaseIconButton);
 
-export interface ButtonProps<
+export interface IconButtonProps<
   TRouter extends RegisteredRouter = RegisteredRouter,
   TOptions = unknown,
 > extends BaseIconButtonProps {
@@ -77,9 +77,9 @@ export interface ButtonProps<
 }
 
 export function IconButton<TRouter extends RegisteredRouter, TOptions>(
-  props: ButtonProps<TRouter, TOptions>
+  props: IconButtonProps<TRouter, TOptions>
 ): ReactNode;
-export function IconButton(props: ButtonProps): ReactNode {
+export function IconButton(props: IconButtonProps): ReactNode {
   if (props.linkOptions === undefined) {
     return <BaseIconButton {...props} type={props.type ?? 'button'} />;
   }
