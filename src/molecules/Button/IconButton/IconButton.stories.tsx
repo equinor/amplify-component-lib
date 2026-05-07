@@ -122,7 +122,9 @@ export const Loading: Story = {
 };
 
 export const LinkButton: Story = {
-  render: () => <IconButton to="/faq" icon={external_link} />,
+  render: () => (
+    <IconButton linkOptions={{ to: '/faq' }} icon={external_link} />
+  ),
   name: 'Button as a link',
 };
 
@@ -144,7 +146,13 @@ export const TestLoadingState: Story = {
 
 export const TestRendersAsLink: Story = {
   tags: ['test-only'],
-  render: () => <IconButton to="/somewhere" aria-label="Save" icon={save} />,
+  render: () => (
+    <IconButton
+      linkOptions={{ to: '/somewhere' }}
+      aria-label="Save"
+      icon={save}
+    />
+  ),
   play: async ({ canvas }) => {
     const link = canvas.getByRole('link', { name: 'Save' });
 
