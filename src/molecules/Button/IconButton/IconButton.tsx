@@ -22,7 +22,8 @@ type Shape = 'circular' | 'square';
 type BaseIconButtonProps = {
   icon: IconData;
   shape?: Shape;
-} & CommonButtonProps;
+  children?: never;
+} & Omit<CommonButtonProps, 'children'>;
 
 const BaseIconButton: FC<BaseIconButtonProps> = ({
   icon,
@@ -92,5 +93,5 @@ export function IconButton(props: IconButtonProps): ReactNode {
     as: 'a',
   } as Parameters<typeof ButtonLink>[0];
 
-  return <ButtonLink {...linkProps} as="a" />;
+  return <ButtonLink {...linkProps} />;
 }

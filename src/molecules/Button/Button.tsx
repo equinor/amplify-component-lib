@@ -84,5 +84,5 @@ export function Button(props: ButtonProps): ReactNode {
     as: 'a',
   } as Parameters<typeof ButtonLink>[0];
 
-  return <ButtonLink {...linkProps} as="a" />;
+  return <ButtonLink {...linkProps} />;
 }
