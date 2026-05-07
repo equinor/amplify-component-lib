@@ -70,8 +70,8 @@ test('Custom width works', () => {
   const dialogTitle = screen.getByText(title).parentElement!.parentElement!;
   expect(dialogTitle).toHaveAttribute('style', `width: ${width}px;`);
 
-  const dialogActions = screen.getByText(actions[0].text).parentElement!
-    .parentElement!.parentElement!;
+  const dialogActions = screen.getByTestId('dialog-actions');
+
   expect(dialogActions).toHaveAttribute('style', `width: ${width}px;`);
 });
 
@@ -190,8 +190,9 @@ test('Disabled actions works as expected', async () => {
       {description}
     </Dialog>
   );
-  expect(screen.getByText(actionTextOne).parentElement).toBeDisabled();
-  expect(screen.getByText(actionTextTwo).parentElement).toBeDisabled();
+
+  expect(screen.getByRole('button', { name: actionTextOne })).toBeDisabled();
+  expect(screen.getByRole('button', { name: actionTextTwo })).toBeDisabled();
 
   const user = userEvent.setup();
 
