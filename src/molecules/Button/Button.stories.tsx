@@ -52,6 +52,12 @@ const meta: Meta<typeof Button> = {
         type: 'select',
       },
     },
+    leadingContent: {
+      table: { type: { summary: 'ReactNode' } },
+    },
+    trailingContent: {
+      table: { type: { summary: 'ReactNode' } },
+    },
   },
 };
 
@@ -139,18 +145,13 @@ export const Icons: Story = {
   render: () => (
     <>
       <div style={{ display: 'flex', gap: spacings.medium }}>
-        <Button>
-          <Icon data={save} />
-          Leading icon
-        </Button>
-        <Button>
-          Trailing icon
-          <Icon data={save} />
-        </Button>
-        <Button>
-          <Icon data={save} />
+        <Button leadingContent={<Icon data={save} />}>Leading icon</Button>
+        <Button trailingContent={<Icon data={save} />}>Trailing icon</Button>
+        <Button
+          leadingContent={<Icon data={save} />}
+          trailingContent={<Icon data={chevron_down} />}
+        >
           Both icons
-          <Icon data={chevron_down} />
         </Button>
       </div>
     </>
@@ -191,7 +192,7 @@ export const Loading: Story = {
 };
 
 export const FullWidth: Story = {
-  render: () => (
+  render: (args) => (
     <div
       style={{
         margin: '32px',
@@ -200,16 +201,13 @@ export const FullWidth: Story = {
         width: '100%',
       }}
     >
-      <Button fullWidth>
-        <Icon data={save} />
+      <Button {...args} fullWidth leadingContent={<Icon data={save} />}>
         fullWidth
       </Button>
-      <Button fullWidth>
+      <Button {...args} fullWidth trailingContent={<Icon data={save} />}>
         fullWidth
-        <Icon data={save} />
       </Button>
-      <Button>
-        <Icon data={save} />
+      <Button {...args} leadingContent={<Icon data={save} />}>
         No fullWidth
       </Button>
     </div>

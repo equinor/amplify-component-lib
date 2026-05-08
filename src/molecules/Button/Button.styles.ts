@@ -1,10 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 import { typographyTemplate } from '@equinor/eds-utils';
 
-import { shape } from 'src/atoms/style';
+import { shape, spacings } from 'src/atoms/style';
 import { VariantTokens } from 'src/molecules/Button/tokens/tokens';
 
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
 export interface ButtonStyles {
   $tokens: VariantTokens;
@@ -17,7 +17,10 @@ export const resolveBorderColor = (tokens: {
 }) => ('borderColor' in tokens ? tokens.borderColor : tokens.backgroundColor);
 
 export const ButtonPrimitive = styled.button<ButtonStyles>`
-  display: inline-flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: auto;
+  
   align-items: center;
   justify-content: center;
   height: ${shape.button.minHeight};
@@ -41,6 +44,29 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   svg {
     justify-self: center;
   }
+  
+  ${(props) =>
+    props.$fullWidth &&
+    css`
+      &:has(> :nth-child(2)) {
+        grid-template-columns: 1fr auto 1fr;
+
+        > :first-child:not(.central-content) {
+          grid-column: 1;
+          justify-self: start;
+        }
+
+        .central-content {
+          grid-column: 2;
+          justify-self: center;
+        }
+
+        > :last-child:not(.central-content) {
+          grid-column: 3;
+          justify-self: end;
+        }
+      }
+    `}}
 
   &::after {
     position: absolute;
@@ -79,6 +105,10 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
     color: ${({ $tokens }) => $tokens.disabled.color};
     border: 1px solid ${(props) => resolveBorderColor(props.$tokens.disabled)};
   }
+`;
+
+export const PaddedContent = styled.span`
+  padding: ${spacings.x_small};
 `;
 
 export const HiddenContent = styled.span`

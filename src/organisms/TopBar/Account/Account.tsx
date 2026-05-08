@@ -183,8 +183,11 @@ export const Account: FC<AccountProps> = ({
             </EnvironmentToggleWrapper>
           )}
         <ButtonWrapper>
-          <Button variant="ghost" onClick={logout}>
-            <Icon data={log_out} />
+          <Button
+            variant="ghost"
+            onClick={logout}
+            leadingContent={<Icon data={log_out} />}
+          >
             Log out
           </Button>
         </ButtonWrapper>

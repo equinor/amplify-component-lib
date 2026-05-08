@@ -22,8 +22,8 @@ export const DialogAction: FC<DialogActionProps> = ({
       onClick={onClick}
       disabled={disabled !== undefined && !!disabled}
       loading={isLoading}
+      leadingContent={icon && <Icon data={icon} />}
     >
-      {icon && <Icon data={icon} />}
       {text}
     </Button>
   </OptionalTooltip>

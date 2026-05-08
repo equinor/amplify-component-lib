@@ -162,8 +162,11 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
           <Typography variant="meta">OR</Typography>
           <hr />
         </DividerRow>
-        <Button variant="ghost" onClick={getRootProps().onClick}>
-          <Icon data={folder} />
+        <Button
+          variant="ghost"
+          onClick={getRootProps().onClick}
+          leadingContent={<Icon data={folder} />}
+        >
           Browse files
         </Button>
       </MediumUploadWrapper>
@@ -204,8 +207,11 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
         </Typography>
         <hr />
       </DividerRow>
-      <Button variant="ghost" onClick={getRootProps().onClick}>
-        <Icon data={folder} />
+      <Button
+        variant="ghost"
+        onClick={getRootProps().onClick}
+        leadingContent={<Icon data={folder} />}
+      >
         Browse files
       </Button>
     </UploadWrapper>

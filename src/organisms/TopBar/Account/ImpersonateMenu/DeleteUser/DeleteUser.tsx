@@ -65,8 +65,8 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
           variant="outlined"
           color="danger"
           onClick={handleDelete}
+          leadingContent={<Icon data={delete_to_trash} />}
         >
-          <Icon data={delete_to_trash} />
           Delete user
         </Button>
         <Button variant="ghost" onClick={onBack}>

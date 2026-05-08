@@ -33,9 +33,14 @@ export const ToggleExpanded: FC<ToggleExpandedProps> = ({
 }) => {
   return (
     <Container>
-      <Button variant="ghost" onClick={onToggleExpanded}>
+      <Button
+        variant="ghost"
+        onClick={onToggleExpanded}
+        trailingContent={
+          <Icon data={expanded ? arrow_drop_up : arrow_drop_down} />
+        }
+      >
         Show {expanded ? 'less' : 'more'}
-        <Icon data={expanded ? arrow_drop_up : arrow_drop_down} />
       </Button>
     </Container>
   );

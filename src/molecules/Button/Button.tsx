@@ -11,22 +11,23 @@ import {
   ButtonPrimitive,
   CenteredContent,
   HiddenContent,
+  PaddedContent,
 } from 'src/molecules/Button/Button.styles';
 import { getLoadingColor } from 'src/molecules/Button/Button.utils';
-import {
-  ContentWrapper,
-  FullWidthContentWrapper,
-} from 'src/molecules/Button/ContentWrapper';
 import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
 type BaseButtonProps = {
   fullWidth?: boolean;
+  leadingContent?: ReactNode;
+  trailingContent?: ReactNode;
 } & CommonButtonProps;
 
 const BaseButton: FC<BaseButtonProps> = ({
   variant = 'filled',
   color = 'primary',
+  leadingContent,
+  trailingContent,
   fullWidth = false,
   loading = false,
   onClick,
@@ -34,7 +35,7 @@ const BaseButton: FC<BaseButtonProps> = ({
   ...rest
 }) => {
   const tokens = TOKEN_MAPPINGS[color][variant];
-  const Wrapper = fullWidth ? FullWidthContentWrapper : ContentWrapper;
+  const contentCount = [leadingContent, trailingContent].filter(Boolean).length;
 
   return (
     <ButtonPrimitive
@@ -45,15 +46,26 @@ const BaseButton: FC<BaseButtonProps> = ({
     >
       {loading ? (
         <>
-          <HiddenContent>
-            <Wrapper>{children}</Wrapper>
-          </HiddenContent>
+          {!fullWidth && (
+            <HiddenContent
+              style={{
+                marginLeft: contentCount * 12,
+                marginRight: contentCount * 12,
+              }}
+            >
+              <PaddedContent>{children}</PaddedContent>
+            </HiddenContent>
+          )}
           <CenteredContent>
             <DotProgress color={getLoadingColor({ color, variant })} />
           </CenteredContent>
         </>
       ) : (
-        <Wrapper>{children}</Wrapper>
+        <>
+          {leadingContent}
+          <PaddedContent className="central-content">{children}</PaddedContent>
+          {trailingContent}
+        </>
       )}
     </ButtonPrimitive>
   );
