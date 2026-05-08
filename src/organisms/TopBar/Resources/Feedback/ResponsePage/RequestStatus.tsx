@@ -29,8 +29,6 @@ export const RequestStatus: FC<RequestStatusProps> = ({
 }) => {
   const statusText = useMemo(() => {
     switch (requestStatus.status) {
-      case StatusEnum.partial:
-        return 'Partially Failed';
       case StatusEnum.idle:
       case StatusEnum.pending:
         return 'Sending...';
@@ -41,9 +39,7 @@ export const RequestStatus: FC<RequestStatusProps> = ({
     }
   }, [requestStatus]);
 
-  const isPartialOrError =
-    requestStatus.status === StatusEnum.partial ||
-    requestStatus.status === StatusEnum.error;
+  const isError = requestStatus.status === StatusEnum.error;
 
   return (
     <Container>
@@ -52,7 +48,7 @@ export const RequestStatus: FC<RequestStatusProps> = ({
       </Typography>
       <Status>
         <Typography
-          color={isPartialOrError ? colors.interactive.warning__text.rgba : ''}
+          color={isError ? colors.interactive.warning__text.rgba : ''}
           group="ui"
           variant="snackbar"
         >
@@ -62,14 +58,14 @@ export const RequestStatus: FC<RequestStatusProps> = ({
             : statusText}
         </Typography>
 
-        {(isPartialOrError || requestStatus.status === StatusEnum.success) && (
+        {(isError || requestStatus.status === StatusEnum.success) && (
           <Icon
             color={
-              isPartialOrError
+              isError
                 ? colors.interactive.warning__text.rgba
                 : colors.interactive.success__resting.rgba
             }
-            data={isPartialOrError ? info_circle : check_circle_outlined}
+            data={isError ? info_circle : check_circle_outlined}
           />
         )}
       </Status>

@@ -17,12 +17,12 @@ import {
   report_bug,
   school,
 } from '@equinor/eds-icons';
+import { WorkItemType } from '@equinor/subsurface-app-management';
 
 import { TopBarButton } from '../TopBar.styles';
 import { TopBarMenu } from '../TopBarMenu';
 import { TransferToAppDialog } from '../TransferToAppDialog';
 import { Feedback } from './Feedback/Feedback';
-import { FeedbackType } from './Feedback/Feedback.types';
 import { ResourceMenuItem } from './ResourceMenuItem';
 import { amplify_resources, amplify_small_portal } from 'src/atoms/icons';
 import { spacings } from 'src/atoms/style';
@@ -74,7 +74,7 @@ export const Resources: FC<ResourcesProps> = ({
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const [feedbackType, setFeedbackType] = useState<FeedbackType | undefined>(
+  const [feedbackType, setFeedbackType] = useState<WorkItemType | undefined>(
     undefined
   );
 
@@ -86,7 +86,7 @@ export const Resources: FC<ResourcesProps> = ({
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleOnOpenFeedbackDialog = (event?: MouseEvent<HTMLDivElement>) => {
-    setFeedbackType(event?.currentTarget.id as FeedbackType);
+    setFeedbackType(event?.currentTarget.id as WorkItemType);
     setShowFeedbackDialog(true);
   };
 
@@ -172,14 +172,14 @@ export const Resources: FC<ResourcesProps> = ({
         ) : (
           <section>
             <ResourceMenuItem
-              id={FeedbackType.BUG}
+              id={WorkItemType.BUG}
               onClick={handleOnOpenFeedbackDialog}
               icon={report_bug}
               text="Report a bug"
               lastItem
             />
             <ResourceMenuItem
-              id={FeedbackType.SUGGESTION}
+              id={WorkItemType.SUGGESTION}
               onClick={handleOnOpenFeedbackDialog}
               icon={lightbulb}
               text="Suggest idea"
@@ -209,14 +209,14 @@ export const Resources: FC<ResourcesProps> = ({
       {!hideFeedback && feedbackType !== undefined && (
         <FeedbackFormDialog
           open={
-            feedbackType === FeedbackType.BUG ||
-            feedbackType === FeedbackType.SUGGESTION
+            feedbackType === WorkItemType.BUG ||
+            feedbackType === WorkItemType.SUGGESTION
           }
           onClose={handleOnCloseFeedbackDialog}
           isDismissable={true}
         >
           <Dialog.Header>
-            {feedbackType === FeedbackType.BUG
+            {feedbackType === WorkItemType.BUG
               ? 'Report a bug - ServiceNow'
               : 'Suggest a feature'}
           </Dialog.Header>

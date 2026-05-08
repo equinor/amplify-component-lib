@@ -2,31 +2,21 @@ import { FileWithPath } from 'react-dropzone';
 
 import {
   ApiError,
+  BugSeverity,
   ServiceNowIncidentResponse,
 } from '@equinor/subsurface-app-management';
 
-export enum UrgencyOption {
-  NO_IMPACT = 'I am not impacted',
-  IMPEDES = 'It impedes my progress',
-  UNABLE = 'I am unable to work',
-}
-
-export enum FeedbackType {
-  BUG = 'bug',
-  SUGGESTION = 'suggestion',
-}
 export enum StatusEnum {
   error = 'error',
   idle = 'idle',
   pending = 'pending',
   success = 'success',
-  partial = 'partial',
 }
 
 export interface FeedbackContentLocalStorage {
   title: string;
   description: string;
-  urgency?: string;
+  urgency?: BugSeverity;
   url?: string;
 }
 
@@ -40,20 +30,10 @@ export interface RequestStatusType {
   errorText?: string;
 }
 
-export type AttachmentStatus = RequestStatusType & {
-  fileName: string;
-};
-
 export interface FeedbackLocalStorage {
   feedbackContent: FeedbackContentLocalStorage;
   serviceNowRequestResponse: RequestStatusType;
 }
-
-export interface SlackStatus {
-  slackRequestResponse: RequestStatusType;
-  slackAttachmentsResponse: AttachmentStatus[];
-}
-export type FeedbackRequestStatus = FeedbackLocalStorage & SlackStatus;
 
 export type UpdateRequestStatusHandler = ({
   status,

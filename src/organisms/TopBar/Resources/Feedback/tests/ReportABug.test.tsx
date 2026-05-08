@@ -1,15 +1,16 @@
 import { ReactNode } from 'react';
 
-import { ServiceNowIncidentResponse } from '@equinor/subsurface-app-management';
+import {
+  BugSeverity,
+  ServiceNowIncidentResponse,
+  WorkItemType,
+} from '@equinor/subsurface-app-management';
 import { faker } from '@faker-js/faker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
 import { DEFAULT_FEEDBACK_LOCAL_STORAGE } from 'src/organisms/TopBar/Resources/Feedback/Feedback.const';
-import {
-  FeedbackType,
-  UrgencyOption,
-} from 'src/organisms/TopBar/Resources/Feedback/Feedback.types';
+import { getUrgencyDisplayText } from 'src/organisms/TopBar/Resources/Feedback/Feedback.utils';
 import { Resources } from 'src/organisms/TopBar/Resources/Resources';
 import { TopBar } from 'src/organisms/TopBar/TopBar';
 import {
@@ -55,9 +56,9 @@ function fakeInputs() {
 }
 
 const SEVERITY_OPTIONS = [
-  UrgencyOption.IMPEDES,
-  UrgencyOption.UNABLE,
-  UrgencyOption.NO_IMPACT,
+  getUrgencyDisplayText(BugSeverity.IMPEDES_MY_PROGRESS),
+  getUrgencyDisplayText(BugSeverity.UNABLE_TO_WORK),
+  getUrgencyDisplayText(BugSeverity.DOES_NOT_AFFECT_ME),
 ] as const;
 
 describe('Report a bug', () => {
@@ -142,7 +143,7 @@ describe('Report a bug', () => {
       () =>
         expect(
           window.localStorage.getItem(
-            `${FeedbackType.BUG}-feedbackContentAndRequestStatus`
+            `${WorkItemType.BUG}-feedbackContentAndRequestStatus`
           )
         ).toBe(JSON.stringify(DEFAULT_FEEDBACK_LOCAL_STORAGE)),
       { timeout: 3000 }
@@ -155,8 +156,7 @@ describe('Report a bug', () => {
   });
 
   const MOCK_SERVICE_NOW_ERROR = 'service now error';
-  const MOCK_SLACK_POST_ERROR = 'slack post error';
-  const MOCK_SLACK_FILE_ERROR = 'slack file error';
+  const MOCK_WORK_ITEM_POST_ERROR = 'work item post error';
 
   test('Show expected error message when requests fail', async ({ worker }) => {
     worker.use(
@@ -174,15 +174,9 @@ describe('Report a bug', () => {
           { status: 500 }
         );
       }),
-      http.post('*/api/v1/Slack/fileUpload', async () => {
+      http.post('*/api/v1/WorkItems/workitem-with-attachment', async () => {
         return HttpResponse.json(
-          { message: MOCK_SLACK_FILE_ERROR },
-          { status: 500 }
-        );
-      }),
-      http.post('*/api/v1/Slack/postmessage', async () => {
-        return HttpResponse.json(
-          { message: MOCK_SLACK_POST_ERROR },
+          { message: MOCK_WORK_ITEM_POST_ERROR },
           { status: 500 }
         );
       })
@@ -218,12 +212,12 @@ describe('Report a bug', () => {
       await screen.findAllByText(/internal server error/i, undefined, {
         timeout: 50000,
       })
-    ).toHaveLength(3);
+    ).toHaveLength(2);
 
     await user.click(screen.getByRole('button', { name: /retry/i }));
   });
 
-  test('Form is partially locked when the service now request succeeds but slack fails', async ({
+  test('Form is partially locked when the service now request succeeds but work item fails', async ({
     worker,
   }) => {
     worker.use(
@@ -241,15 +235,9 @@ describe('Report a bug', () => {
           sysId: faker.string.uuid(),
         } as ServiceNowIncidentResponse);
       }),
-      http.post('*/api/v1/Slack/fileUpload', async () => {
+      http.post('*/api/v1/WorkItems/workitem-with-attachment', async () => {
         return HttpResponse.json(
-          { message: MOCK_SLACK_FILE_ERROR },
-          { status: 500 }
-        );
-      }),
-      http.post('*/api/v1/Slack/postmessage', async () => {
-        return HttpResponse.json(
-          { message: MOCK_SLACK_POST_ERROR },
+          { message: MOCK_WORK_ITEM_POST_ERROR },
           { status: 500 }
         );
       })
@@ -287,7 +275,7 @@ describe('Report a bug', () => {
       await screen.findAllByText(/internal server error/i, undefined, {
         timeout: 50000,
       })
-    ).toHaveLength(2);
+    ).toHaveLength(1);
 
     await user.click(screen.getByRole('button', { name: /retry/i }));
 

@@ -1,23 +1,22 @@
 import { FileWithPath } from 'react-dropzone';
 
-import { ServiceNowUrgency } from '@equinor/subsurface-app-management';
-
 import {
-  Browsers,
-  FeedbackContentType,
-  FeedbackType,
-  UrgencyOption,
-} from './Feedback.types';
+  BugSeverity,
+  ServiceNowUrgency,
+  WorkItemType,
+} from '@equinor/subsurface-app-management';
+
+import { Browsers, FeedbackContentType } from './Feedback.types';
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 import { capitalize, environment, formatDate } from 'src/atoms/utils';
 
 const { getAppName, getEnvironmentName } = environment;
 
 export const getSeverityEmoji = (feedbackContent: FeedbackContentType) => {
-  if (feedbackContent.urgency === UrgencyOption.NO_IMPACT) {
+  if (feedbackContent.urgency === BugSeverity.DOES_NOT_AFFECT_ME) {
     return ':large_yellow_circle:';
   }
-  if (feedbackContent.urgency === UrgencyOption.IMPEDES) {
+  if (feedbackContent.urgency === BugSeverity.IMPEDES_MY_PROGRESS) {
     return ':large_orange_circle:';
   }
   return ':red_circle:';
@@ -42,14 +41,27 @@ export const readUploadedFileAsText = (
   });
 };
 
-export const getUrgencyNumber = (urgency: UrgencyOption) => {
+// We moved to only do normal severity in the service now request to have a standard time to respond. (Severity could reduce it from 4 days, to 1 day)
+export const getServiceNowUrgencyNumber = (urgency: BugSeverity) => {
   switch (urgency) {
-    case UrgencyOption.UNABLE:
+    case BugSeverity.UNABLE_TO_WORK:
+    case BugSeverity.IMPEDES_MY_PROGRESS:
+    case BugSeverity.DOES_NOT_AFFECT_ME:
+    default:
       return ServiceNowUrgency.NORMAL;
-    case UrgencyOption.IMPEDES:
-      return ServiceNowUrgency.NORMAL;
-    case UrgencyOption.NO_IMPACT:
-      return ServiceNowUrgency.NORMAL;
+  }
+};
+
+export const getUrgencyDisplayText = (urgency: BugSeverity) => {
+  switch (urgency) {
+    case BugSeverity.UNABLE_TO_WORK:
+      return 'I am unable to work';
+    case BugSeverity.IMPEDES_MY_PROGRESS:
+      return 'It impedes my progress';
+    case BugSeverity.DOES_NOT_AFFECT_ME:
+      return 'It does not affect me';
+    default:
+      return 'Not found';
   }
 };
 
@@ -58,7 +70,7 @@ export const createServiceNowDescription = (
   field: string | null | undefined
 ) => {
   const locationText = `Url location of bug: ${feedbackContent.url} \n`;
-  const severityText = `Severity of bug: ${feedbackContent.urgency} \n`;
+  const severityText = `Severity of bug: ${feedbackContent.urgency ? getUrgencyDisplayText(feedbackContent.urgency) : 'Not found'} \n`;
   const fieldText = `Field: ${capitalize(field ?? '')} \n`;
   const browserText = `Browser: ${getBrowserInfo()} \n`;
 
@@ -119,11 +131,11 @@ export const getBrowserInfo = () => {
 export const createSlackMessage = (
   feedbackContent: FeedbackContentType,
   field?: string | null,
-  selectedType?: FeedbackType,
+  selectedType?: WorkItemType,
   email?: string,
   sysId?: string | null
 ) => {
-  const isBugReport = selectedType === FeedbackType.BUG;
+  const isBugReport = selectedType === WorkItemType.BUG;
   const typeText = isBugReport ? ':bug: Bug report' : ':bulb: Suggestion';
 
   const dateAndUrlSectionArray = [];
@@ -150,9 +162,9 @@ export const createSlackMessage = (
   if (feedbackContent.urgency) {
     titleAndSeveritySectionArray.push({
       type: 'mrkdwn',
-      text: `*Severity* \n ${getSeverityEmoji(feedbackContent)} ${
+      text: `*Severity* \n ${getSeverityEmoji(feedbackContent)} ${getUrgencyDisplayText(
         feedbackContent.urgency
-      }`,
+      )}`,
     });
   }
   const blockArray = [
