@@ -20,7 +20,7 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: auto;
-  
+
   align-items: center;
   justify-content: center;
   height: ${shape.button.minHeight};
@@ -44,7 +44,7 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   svg {
     justify-self: center;
   }
-  
+
   ${(props) =>
     props.$fullWidth &&
     css`
@@ -66,7 +66,7 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
           justify-self: end;
         }
       }
-    `}}
+    `}
 
   &::after {
     position: absolute;
