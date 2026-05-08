@@ -73,8 +73,11 @@ const flattenChildren = (children: ReactNode): ReactNode[] => {
       node.forEach(visit);
       return;
     }
-    if (isValidElement(node) && node.type === Fragment) {
-      visit((node.props as { children?: ReactNode }).children);
+    if (
+      isValidElement<{ children?: ReactNode }>(node) &&
+      node.type === Fragment
+    ) {
+      visit(node.props.children);
       return;
     }
     result.push(node);
