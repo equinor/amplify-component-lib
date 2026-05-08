@@ -61,18 +61,13 @@ export const Introduction: Story = {
   render: (args) => <Button {...args}>You can control me</Button>,
 };
 
-const test = 'test';
-
 export const Basic: Story = {
   render: () => (
     <div
       style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
     >
       <div style={{ display: 'flex', gap: spacings.medium }}>
-        <Button>
-          <Icon data={save} />
-          Filled {test} text
-        </Button>
+        <Button>Filled</Button>
         <Button variant="outlined">Outlined</Button>
         <Button variant="ghost">Ghost</Button>
       </div>
