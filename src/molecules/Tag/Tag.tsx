@@ -10,6 +10,8 @@ import styled from 'styled-components';
 
 interface ContainerProps {
   $color: NonNullable<TagProps['color']>;
+  $iconColor?: string;
+  $textColor?: string;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -21,11 +23,11 @@ const Container = styled.div<ContainerProps>`
   background: ${({ $color }) => TAG_COLORS[$color].background};
   min-height: 24px;
   > span {
-    color: ${({ $color }) => TAG_COLORS[$color].text};
+    color: ${({ $color, $textColor }) => $textColor ?? TAG_COLORS[$color].text};
     line-height: normal;
   }
   > svg {
-    fill: ${({ $color }) => TAG_COLORS[$color].text};
+    fill: ${({ $color, $iconColor }) => $iconColor ?? TAG_COLORS[$color].text};
   }
 `;
 
@@ -41,6 +43,8 @@ export interface TagProps {
     | 'grey';
   leadingIcon?: IconData;
   trailingIcon?: IconData;
+  iconColor?: string;
+  textColor?: string;
   children: string;
 }
 
@@ -49,9 +53,11 @@ export const Tag: FC<TagProps> = ({
   color = 'blue',
   leadingIcon,
   trailingIcon,
+  textColor,
+  iconColor,
 }) => {
   return (
-    <Container $color={color}>
+    <Container $color={color} $iconColor={iconColor} $textColor={textColor}>
       {leadingIcon && <Icon data={leadingIcon} size={16} />}
       <Typography variant="cell_text" group="table" as="span">
         {children}

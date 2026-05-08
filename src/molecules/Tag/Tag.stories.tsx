@@ -57,6 +57,14 @@ const meta: Meta<typeof Tag> = {
         edit,
       },
     },
+    iconColor: {
+      control: 'color',
+      type: 'string',
+    },
+    textColor: {
+      control: 'color',
+      type: 'string',
+    },
   },
   args: {
     color: 'purple',
@@ -102,6 +110,16 @@ export const Colors: Story = {
       }))}
     />
   ),
+};
+
+export const CustomTextAndIconColors: Story = {
+  args: {
+    leadingIcon: code,
+    color: 'pink',
+    children: 'Developer',
+    textColor: '#265c36',
+    iconColor: '#33C1FF',
+  },
 };
 
 export const LeadingIcon: Story = {
