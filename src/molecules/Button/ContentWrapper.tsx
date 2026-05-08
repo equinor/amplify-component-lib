@@ -1,4 +1,4 @@
-import { Children, FC, ReactNode } from 'react';
+import { FC, Fragment, isValidElement, ReactNode } from 'react';
 
 import { spacings } from 'src/atoms/style';
 
@@ -57,28 +57,68 @@ type Primitive = string | number;
 const isPrimitive = (child: unknown): child is Primitive =>
   typeof child === 'string' || typeof child === 'number';
 
+const flattenChildren = (children: ReactNode): ReactNode[] => {
+  const result: ReactNode[] = [];
+
+  const visit = (node: ReactNode) => {
+    if (
+      node === null ||
+      node === undefined ||
+      node === true ||
+      node === false
+    ) {
+      return;
+    }
+    if (Array.isArray(node)) {
+      node.forEach(visit);
+      return;
+    }
+    if (isValidElement(node) && node.type === Fragment) {
+      visit((node.props as { children?: ReactNode }).children);
+      return;
+    }
+    result.push(node);
+  };
+
+  visit(children);
+  return result;
+};
+
 const coalesceChildren = (
   children: ReactNode,
   Wrapper: FC<{ children: ReactNode }>
 ): ReactNode[] => {
-  const all = Children.toArray(children);
+  const all = flattenChildren(children);
   const result: ReactNode[] = [];
   let buffer: Primitive[] = [];
+
+  let primitiveGroupCount = 0;
 
   const flush = () => {
     if (buffer.length === 0) return;
     result.push(
-      <Wrapper key={`primitive-${result.length}`}>{buffer.join('')}</Wrapper>
+      <Wrapper key={`primitive-${primitiveGroupCount++}`}>
+        {buffer.join('')}
+      </Wrapper>
     );
     buffer = [];
   };
+
+  let elementCount = 0;
 
   all.forEach((child) => {
     if (isPrimitive(child)) {
       buffer.push(child);
     } else {
       flush();
-      result.push(child);
+      if (isValidElement(child) && child.key == null) {
+        result.push(
+          <Fragment key={`node-${elementCount++}`}>{child}</Fragment>
+        );
+      } else {
+        elementCount++;
+        result.push(child);
+      }
     }
   });
   flush();
