@@ -72,7 +72,7 @@ export const Variants: Story = {
 export const CustomContent: Story = {
   tags: ['test-only'],
   args: {
-    children: <Button label="Custom button"></Button>,
+    children: <Button>Custom button</Button>,
   },
   play: async ({ canvas }) => {
     await expect(

@@ -1,4 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { typographyTemplate } from '@equinor/eds-utils';
 
@@ -18,7 +17,10 @@ export const resolveBorderColor = (tokens: {
 }) => ('borderColor' in tokens ? tokens.borderColor : tokens.backgroundColor);
 
 export const ButtonPrimitive = styled.button<ButtonStyles>`
-  display: inline-flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: auto;
+
   align-items: center;
   justify-content: center;
   height: ${shape.button.minHeight};
@@ -39,20 +41,32 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   position: relative;
   cursor: pointer;
 
-  > span {
-    padding: ${spacings.x_small};
-    text-align: center;
-  }
-
   svg {
     justify-self: center;
-    ${(props) =>
-      props.$fullWidth &&
-      css`
-        position: absolute;
-        margin: 0 ${spacings.small};
-      `}
   }
+
+  ${(props) =>
+    props.$fullWidth &&
+    css`
+      &:has(> :nth-child(2)) {
+        grid-template-columns: 1fr auto 1fr;
+
+        > :first-child:not(.central-content) {
+          grid-column: 1;
+          justify-self: start;
+        }
+
+        .central-content {
+          grid-column: 2;
+          justify-self: center;
+        }
+
+        > :last-child:not(.central-content) {
+          grid-column: 3;
+          justify-self: end;
+        }
+      }
+    `}
 
   &::after {
     position: absolute;
@@ -93,25 +107,20 @@ export const ButtonPrimitive = styled.button<ButtonStyles>`
   }
 `;
 
+export const PaddedContent = styled.span`
+  padding: ${spacings.x_small};
+`;
+
 export const HiddenContent = styled.span`
   opacity: 0;
   visibility: hidden;
 `;
 
 export const CenteredContent = styled.span`
-  left: 0;
   position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-export const LeftIcon = styled(Icon)`
-  left: 0;
-`;
-
-export const RightIcon = styled(Icon)`
-  right: 0;
 `;

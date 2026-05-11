@@ -160,11 +160,9 @@ export const Middle: StoryFn<DividerProps> = () => (
         <Chip variant="error">stop</Chip>
       </Card.Actions>
       <Card.Actions>
-        <Button
-          style={{ marginTop: '16px' }}
-          variant="outlined"
-          label="SUBMIT TICKET"
-        />
+        <Button style={{ marginTop: '16px' }} variant="outlined">
+          SUBMIT TICKET
+        </Button>
       </Card.Actions>
     </Card>
   </>

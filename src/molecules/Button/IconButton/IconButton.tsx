@@ -1,10 +1,13 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { CircularProgressProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
-import type { LinkComponentProps } from '@tanstack/react-router';
-import { createLink, LinkComponent } from '@tanstack/react-router';
+import type {
+  RegisteredRouter,
+  ValidateLinkOptions,
+} from '@tanstack/react-router';
+import { createLink } from '@tanstack/react-router';
 
 import { getLoadingColor } from 'src/molecules/Button/Button.utils';
 import {
@@ -19,11 +22,8 @@ type Shape = 'circular' | 'square';
 type BaseIconButtonProps = {
   icon: IconData;
   shape?: Shape;
-} & CommonButtonProps;
-
-export type IconButtonProps =
-  | LinkComponentProps<typeof BaseIconButton>
-  | BaseIconButtonProps;
+  children?: never;
+} & Omit<CommonButtonProps, 'children'>;
 
 const BaseIconButton: FC<BaseIconButtonProps> = ({
   icon,
@@ -70,18 +70,28 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
 
 const ButtonLink = createLink(BaseIconButton);
 
-const isPlainButtonProps = (
-  props: IconButtonProps
-): props is BaseIconButtonProps => !('to' in props);
+export interface IconButtonProps<
+  TRouter extends RegisteredRouter = RegisteredRouter,
+  TOptions = unknown,
+> extends BaseIconButtonProps {
+  linkOptions?: ValidateLinkOptions<TRouter, TOptions>;
+}
 
-type ButtonComponent = LinkComponent<typeof BaseIconButton> &
-  FC<BaseIconButtonProps>;
-
-export const IconButton: ButtonComponent = ((props: IconButtonProps) => {
-  if (isPlainButtonProps(props)) {
-    return (
-      <BaseIconButton {...props} as="button" type={props.type ?? 'button'} />
-    );
+export function IconButton<TRouter extends RegisteredRouter, TOptions>(
+  props: IconButtonProps<TRouter, TOptions>
+): ReactNode;
+export function IconButton(props: IconButtonProps): ReactNode {
+  if (props.linkOptions === undefined) {
+    return <BaseIconButton {...props} type={props.type ?? 'button'} />;
   }
-  return <ButtonLink {...props} as="a" />;
-}) as ButtonComponent;
+
+  const { linkOptions, ...rest } = props;
+
+  const linkProps = {
+    ...linkOptions,
+    ...rest,
+    as: 'a',
+  } as Parameters<typeof ButtonLink>[0];
+
+  return <ButtonLink {...linkProps} />;
+}

@@ -170,6 +170,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
         </DialogContent>
         {actions && actions.length > 0 && (
           <DialogActions
+            data-testid="dialog-actions"
             $withBorders={withBorders}
             style={{ width: width ? `${width}px` : undefined }}
           >

@@ -51,10 +51,11 @@ export const ReleaseNotesDialog: FC<ReleaseNotesDialogProps> = ({
           <AllReleaseNotesWrapper>
             <Button
               variant="ghost"
-              to="/release-notes"
+              linkOptions={{ to: '/release-notes' }}
               onClick={handleCloseModal}
-              label="See all release notes"
-            />
+            >
+              See all release notes
+            </Button>
           </AllReleaseNotesWrapper>
         </>
       ) : (

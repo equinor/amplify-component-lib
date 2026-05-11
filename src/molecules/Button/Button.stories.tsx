@@ -1,13 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 
-import { Checkbox, Snackbar, Tooltip } from '@equinor/eds-core-react';
+import { Checkbox, Icon, Snackbar, Tooltip } from '@equinor/eds-core-react';
 import { chevron_down, save } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
 import { Stack } from 'src/storybook';
-import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect, fn, userEvent } from 'storybook/test';
 
@@ -53,39 +52,54 @@ const meta: Meta<typeof Button> = {
         type: 'select',
       },
     },
+    leadingContent: {
+      table: { type: { summary: 'ReactNode' } },
+    },
+    trailingContent: {
+      table: { type: { summary: 'ReactNode' } },
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Button>;
 export const Introduction: Story = {
-  render: (args) => <Button {...args} label="You can control me" />,
+  render: (args) => <Button {...args}>You can control me</Button>,
 };
 
 export const Basic: Story = {
-  render: (args) => (
-    <VariantShowcase
-      GenericComponent={Button}
-      otherProps={{ ...args, label: 'Button' }}
-      columns={[
-        { label: 'Filled', value: { variant: 'filled' } },
-        { label: 'Outlined', value: { variant: 'outlined' } },
-        { label: 'Ghost', value: { variant: 'ghost' } },
-      ]}
-      rows={[
-        { label: 'Primary', value: { color: 'primary' } },
-        { label: 'Danger', value: { color: 'danger' } },
-      ]}
-    />
+  render: () => (
+    <div
+      style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
+    >
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button>Filled</Button>
+        <Button variant="outlined">Outlined</Button>
+        <Button variant="ghost">Ghost</Button>
+      </div>
+      <div style={{ display: 'flex', gap: spacings.medium }}>
+        <Button color="danger">Filled</Button>
+        <Button color="danger" variant="outlined">
+          Outlined
+        </Button>
+        <Button color="danger" variant="ghost">
+          Ghost
+        </Button>
+      </div>
+    </div>
   ),
 };
 
 export const Disabled: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: spacings.medium }}>
-      <Button label="Filled" disabled />
-      <Button label="Outlined" disabled variant="outlined" />
-      <Button label="Ghost" disabled variant="ghost" />
+      <Button disabled>Filled</Button>
+      <Button disabled variant="outlined">
+        Outlined
+      </Button>
+      <Button disabled variant="ghost">
+        Ghost
+      </Button>
     </div>
   ),
 };
@@ -104,12 +118,13 @@ const AccessibilityComponent = () => {
       />
       <Tooltip title={canSubmit ? '' : 'Terms & Conditions must be checked'}>
         <Button
-          label="Submit"
           aria-disabled={!canSubmit}
           onClick={() => {
             if (canSubmit) setOpen(true);
           }}
-        />
+        >
+          Submit
+        </Button>
       </Tooltip>
       <Snackbar
         open={open}
@@ -130,13 +145,14 @@ export const Icons: Story = {
   render: () => (
     <>
       <div style={{ display: 'flex', gap: spacings.medium }}>
-        <Button label="Leading icon" leadingIcon={save} />
-        <Button label="Trailing icon" trailingIcon={save} />
+        <Button leadingContent={<Icon data={save} />}>Leading icon</Button>
+        <Button trailingContent={<Icon data={save} />}>Trailing icon</Button>
         <Button
-          label="Both icons"
-          leadingIcon={save}
-          trailingIcon={chevron_down}
-        />
+          leadingContent={<Icon data={save} />}
+          trailingContent={<Icon data={chevron_down} />}
+        >
+          Both icons
+        </Button>
       </div>
     </>
   ),
@@ -152,21 +168,31 @@ export const Loading: Story = {
       }}
     >
       <div style={{ display: 'flex', gap: spacings.medium }}>
-        <Button label="Filled" loading />
-        <Button label="Outlined" loading variant="outlined" />
-        <Button label="Ghost" loading variant="ghost" />
+        <Button loading>Filled</Button>
+        <Button loading variant="outlined">
+          Outlined
+        </Button>
+        <Button loading variant="ghost">
+          Ghost
+        </Button>
       </div>
       <div style={{ display: 'flex', gap: spacings.medium }}>
-        <Button label="Filled" loading color="danger" />
-        <Button label="Outlined" loading color="danger" variant="outlined" />
-        <Button label="Ghost" loading color="danger" variant="ghost" />
+        <Button loading color="danger">
+          Filled
+        </Button>
+        <Button loading color="danger" variant="outlined">
+          Outlined
+        </Button>
+        <Button loading color="danger" variant="ghost">
+          Ghost
+        </Button>
       </div>
     </div>
   ),
 };
 
 export const FullWidth: Story = {
-  render: () => (
+  render: (args) => (
     <div
       style={{
         margin: '32px',
@@ -175,9 +201,15 @@ export const FullWidth: Story = {
         width: '100%',
       }}
     >
-      <Button label="fullWidth" fullWidth leadingIcon={save} />
-      <Button label="fullWidth" fullWidth trailingIcon={save} />
-      <Button label="No fullWidth" leadingIcon={save} />
+      <Button {...args} fullWidth leadingContent={<Icon data={save} />}>
+        fullWidth
+      </Button>
+      <Button {...args} fullWidth trailingContent={<Icon data={save} />}>
+        fullWidth
+      </Button>
+      <Button {...args} leadingContent={<Icon data={save} />}>
+        No fullWidth
+      </Button>
     </div>
   ),
   name: 'Full width',
@@ -185,16 +217,18 @@ export const FullWidth: Story = {
 
 export const LinkButton: Story = {
   render: () => {
-    return <Button to="/faq" label="I am a link" />;
+    return <Button linkOptions={{ to: '/faq' }}>I am a link</Button>;
   },
   name: 'Button as a link',
 };
 
 export const TestLoadingState: Story = {
   tags: ['test-only'],
+  render: (args) => {
+    return <Button {...args}>Loading Button</Button>;
+  },
   args: {
     loading: true,
-    label: 'Loading Button',
     onClick: fn(),
   },
   play: async ({ canvas, args }) => {
@@ -208,7 +242,7 @@ export const TestLoadingState: Story = {
 
 export const TestRendersAsLink: Story = {
   tags: ['test-only'],
-  render: () => <Button to="/somewhere" label="Save" />,
+  render: () => <Button linkOptions={{ to: '/somewhere' }}>Save</Button>,
   play: async ({ canvas }) => {
     const link = canvas.getByRole('link', { name: 'Save' });
 

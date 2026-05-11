@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { log_out } from '@equinor/eds-icons';
 import { ENVIRONMENT_TOGGLE_KEY } from '@equinor/subsurface-app-management';
 
@@ -184,11 +184,12 @@ export const Account: FC<AccountProps> = ({
           )}
         <ButtonWrapper>
           <Button
-            label="Log out"
-            leadingIcon={log_out}
             variant="ghost"
             onClick={logout}
-          />
+            leadingContent={<Icon data={log_out} />}
+          >
+            Log out
+          </Button>
         </ButtonWrapper>
       </TopBarMenu>
       <ImpersonateMenu

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { Icon } from '@equinor/eds-core-react';
 import { arrow_drop_down, arrow_drop_up } from '@equinor/eds-icons';
 
 import { colors, spacings } from 'src/atoms/style';
@@ -33,11 +34,14 @@ export const ToggleExpanded: FC<ToggleExpandedProps> = ({
   return (
     <Container>
       <Button
-        label={`Show ${expanded ? 'less' : 'more'}`}
-        trailingIcon={expanded ? arrow_drop_up : arrow_drop_down}
         variant="ghost"
         onClick={onToggleExpanded}
-      />
+        trailingContent={
+          <Icon data={expanded ? arrow_drop_up : arrow_drop_down} />
+        }
+      >
+        Show {expanded ? 'less' : 'more'}
+      </Button>
     </Container>
   );
 };
