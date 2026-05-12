@@ -22,11 +22,14 @@ const Container = styled.div<ContainerProps>`
   gap: ${spacings.x_small};
   background: ${({ $color }) => TAG_COLORS[$color].background};
   min-height: 24px;
+  min-width: fit-content;
+
   > span {
     color: ${({ $color, $textColor }) => $textColor ?? TAG_COLORS[$color].text};
     line-height: normal;
   }
   > svg {
+    flex-shrink: 0;
     fill: ${({ $color, $iconColor }) => $iconColor ?? TAG_COLORS[$color].text};
   }
 `;
