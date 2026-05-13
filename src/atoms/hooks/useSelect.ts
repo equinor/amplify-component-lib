@@ -22,8 +22,10 @@ const useSelect = <T extends SelectOptionRequired>(
     onSearchChange,
     onOpenCallback,
     mode,
+    scrollContainerId,
   } = props;
   const [open, setOpen] = useState(false);
+  const anchorRef = useRef<HTMLDivElement | null>(null);
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -250,8 +252,30 @@ const useSelect = <T extends SelectOptionRequired>(
     }
   };
 
+  /* v8 ignore start */
+  useEffect(() => {
+    if (!open || !scrollContainerId) return;
+
+    const container = document.getElementById(scrollContainerId);
+    const anchorEl = anchorRef.current;
+    if (!container || !anchorEl) return;
+
+    const handleScroll = () => {
+      const anchorRect = anchorEl.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      if (anchorRect.top < containerRect.top) {
+        handleOnClose();
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [open, scrollContainerId]);
+  /* v8 ignore end */
+
   return {
     handleOnAddItem,
+    anchorRef,
     handleOnItemSelect,
     handleOnItemKeyDown,
     handleOnSearchKeyDown,

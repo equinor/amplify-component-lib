@@ -179,6 +179,7 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   onSearchChange?: (inputValue: string) => void;
   inDialog?: boolean;
   onOpenCallback?: (value: boolean) => void;
+  scrollContainerId?: string;
   onSearchFilter?: (searchValue: string, item: T) => void;
   explanation?: string;
   explanationPosition?: TooltipProps['placement'];

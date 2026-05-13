@@ -72,6 +72,7 @@ export const Select = <T extends SelectOptionRequired>(
     handleOnRemoveItem,
     searchRef,
     tryingToRemoveItem,
+    anchorRef,
   } = useSelect({
     ...props,
     clearable,
@@ -82,7 +83,6 @@ export const Select = <T extends SelectOptionRequired>(
     sortValues,
     placeholder,
   });
-  const anchorRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const shouldShowLabel = useMemo(() => {
     return !!label || !!meta;
@@ -103,8 +103,6 @@ export const Select = <T extends SelectOptionRequired>(
       handleOnClose();
     }
   });
-  /* v8 ignore end */
-
   if (mode === 'persistent' && 'value' in props && props.value) {
     throw new Error('You cannot use SingleSelect with persistent mode');
   }
@@ -135,7 +133,7 @@ export const Select = <T extends SelectOptionRequired>(
       );
 
     return (
-      <>
+      <div>
         {shouldShowLabel && (
           <Label
             label={
@@ -188,7 +186,7 @@ export const Select = <T extends SelectOptionRequired>(
             persistentListContent
           )}
         </PersistentComboBoxWrapper>
-      </>
+      </div>
     );
   }
 
