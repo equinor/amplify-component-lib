@@ -65,6 +65,7 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const HorizontalItemsContainer = styled.div`
+  overflow: hidden;
   button[role='tab'] {
     .count {
       background: ${colors.ui.background__light_medium.rgba};
