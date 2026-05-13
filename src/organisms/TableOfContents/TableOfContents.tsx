@@ -17,7 +17,6 @@ interface TableOfContentsBaseProps {
 
 interface TableOfContentsVerticalProps extends TableOfContentsBaseProps {
   mode?: 'vertical';
-  tabsProps?: never;
 }
 
 interface TableOfContentsHorizontalProps extends TableOfContentsBaseProps {
@@ -30,9 +29,8 @@ export type TableOfContentsProps =
   | TableOfContentsHorizontalProps;
 
 export const TableOfContents: FC<TableOfContentsProps> = ({
-  mode = 'vertical',
   onlyShowSelectedChildren = true,
-  tabsProps,
+  ...props
 }) => {
   const { items, selected, setSelected } = useTableOfContents();
 
@@ -54,7 +52,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     /* v8 ignore end */
   }, [items, selected]);
 
-  if (mode === 'horizontal') {
+  if (props.mode === 'horizontal') {
     return (
       <HorizontalItemsContainer>
         <Tabs
@@ -63,7 +61,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
             if (value) setSelected(value);
           }}
           options={items}
-          {...tabsProps}
+          {...props.tabsProps}
         />
       </HorizontalItemsContainer>
     );
