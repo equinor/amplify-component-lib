@@ -5,10 +5,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
-import {
-  TableOfContents,
-  TableOfContentsProps,
-} from 'src/organisms/TableOfContents/TableOfContents';
+import { TableOfContents } from 'src/organisms/TableOfContents/TableOfContents';
 import {
   TableOfContentsItemType,
   TableOfContentsProvider,
@@ -20,7 +17,12 @@ import styled from 'styled-components';
 
 const { colors } = tokens;
 
-const meta: Meta = {
+type StoryProps = TableOfContentsProviderProps & {
+  mode?: 'vertical' | 'horizontal';
+  onlyShowSelectedChildren?: boolean;
+};
+
+const meta: Meta<StoryProps> = {
   title: 'Organisms/TableOfContents',
   component: TableOfContents,
   parameters: {
@@ -32,7 +34,6 @@ const meta: Meta = {
   argTypes: {
     items: { control: 'object' },
     onlyShowSelectedChildren: { control: 'boolean' },
-    variant: { control: 'radio', items: ['border', 'buttons'] },
   },
   args: {
     items: [
@@ -48,9 +49,20 @@ const meta: Meta = {
         label: 'Third section',
         value: 'id-3',
       },
+      {
+        label: 'Fourth section',
+        value: 'id-4',
+      },
+      {
+        label: 'Fifth section',
+        value: 'id-5',
+      },
+      {
+        label: 'Sixth section',
+        value: 'id-6',
+      },
     ],
     onlyShowSelectedChildren: false,
-    variant: 'buttons',
   },
 };
 
@@ -118,6 +130,9 @@ const COLORS = [
   colors.infographic.substitute__blue_ocean.rgba,
   colors.infographic.substitute__blue_sky.rgba,
   colors.infographic.substitute__blue_overcast.rgba,
+  colors.infographic.substitute__green_cucumber.rgba,
+  colors.infographic.substitute__green_succulent.rgba,
+  colors.infographic.substitute__green_mint.rgba,
 ];
 
 function Section({
@@ -140,8 +155,6 @@ function Section({
     </div>
   );
 }
-
-type StoryProps = TableOfContentsProviderProps & TableOfContentsProps;
 
 type Story = StoryObj<StoryProps>;
 
@@ -231,6 +244,33 @@ export const Horizontal: Story = {
           </section>
         </HorizontalContainer>
       </TableOfContentsProvider>
+    );
+  },
+};
+
+export const HorizontalScrollable: Story = {
+  render: (args) => {
+    return (
+      <div style={{ width: '40rem', maxWidth: '40rem' }}>
+        <TableOfContentsProvider items={args.items}>
+          <HorizontalContainer>
+            <TableOfContents
+              mode="horizontal"
+              tabsProps={{ scrollable: true, amountPerScrollPage: 3 }}
+            />
+            <section>
+              {args.items.map((item, index) => (
+                <Section
+                  key={item.value}
+                  label={item.label}
+                  value={item.value}
+                  color={COLORS[index]}
+                />
+              ))}
+            </section>
+          </HorizontalContainer>
+        </TableOfContentsProvider>
+      </div>
     );
   },
 };

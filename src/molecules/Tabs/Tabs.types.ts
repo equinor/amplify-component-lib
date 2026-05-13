@@ -12,13 +12,16 @@ export interface Tab<T> {
   disabled?: boolean;
 }
 
-export interface Tabs<T> {
+export interface TabsScrollProps {
+  scrollable?: boolean;
+  amountPerScrollPage?: number;
+}
+
+export interface Tabs<T> extends TabsScrollProps {
   selected: T;
   onChange: (value: T) => void;
   onHover?: (hoveredTabValue: T) => void;
   options: Tab<T>[];
-  scrollable?: boolean;
-  amountPerScrollPage?: number;
   centered?: boolean;
   animated?: boolean;
 }

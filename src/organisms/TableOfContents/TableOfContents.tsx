@@ -5,20 +5,32 @@ import {
   TableOfContentsContainer,
   VerticalItemsContainer,
 } from './TableOfContents.styles';
-import { TableOfContentsMode } from './TableOfContents.types';
 import { TableOfContentsItem } from './TableOfContentsItem';
 import { Tabs } from 'src/molecules/Tabs/Tabs';
+import { TabsScrollProps } from 'src/molecules/Tabs/Tabs.types';
 import { useTableOfContents } from 'src/providers/TableOfContentsProvider';
 import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 
-export interface TableOfContentsProps {
-  mode?: TableOfContentsMode;
+interface TableOfContentsBaseProps {
   onlyShowSelectedChildren?: boolean;
 }
 
+interface TableOfContentsVerticalProps extends TableOfContentsBaseProps {
+  mode?: 'vertical';
+}
+
+interface TableOfContentsHorizontalProps extends TableOfContentsBaseProps {
+  mode: 'horizontal';
+  tabsProps?: TabsScrollProps;
+}
+
+export type TableOfContentsProps =
+  | TableOfContentsVerticalProps
+  | TableOfContentsHorizontalProps;
+
 export const TableOfContents: FC<TableOfContentsProps> = ({
-  mode = 'vertical',
   onlyShowSelectedChildren = true,
+  ...props
 }) => {
   const { items, selected, setSelected } = useTableOfContents();
 
@@ -40,7 +52,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     /* v8 ignore end */
   }, [items, selected]);
 
-  if (mode === 'horizontal') {
+  if (props.mode === 'horizontal') {
     return (
       <HorizontalItemsContainer>
         <Tabs
@@ -49,6 +61,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
             if (value) setSelected(value);
           }}
           options={items}
+          {...props.tabsProps}
         />
       </HorizontalItemsContainer>
     );
