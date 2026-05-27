@@ -17,7 +17,7 @@ export const resolveBorderColor = (tokens: {
 }) => ('borderColor' in tokens ? tokens.borderColor : tokens.backgroundColor);
 
 export const ButtonPrimitive = styled.button<ButtonStyles>`
-  display: grid;
+  display: inline-grid;
   grid-auto-flow: column;
   grid-template-columns: auto;
 
