@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, IconProps } from '@equinor/eds-core-react';
 import { CircularProgressProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import type {
@@ -21,6 +21,7 @@ type Shape = 'circular' | 'square';
 
 type BaseIconButtonProps = {
   icon: IconData;
+  iconProps?: Omit<IconProps, 'data'>;
   shape?: Shape;
   children?: never;
 } & Omit<CommonButtonProps, 'children'>;
@@ -32,6 +33,7 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
   loading = false,
   shape = 'circular',
   onClick,
+  iconProps,
   ...rest
 }) => {
   const tokens = TOKEN_MAPPINGS[color][variant];
@@ -62,7 +64,7 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
           />
         </>
       ) : (
-        <Icon data={icon} />
+        <Icon data={icon} {...iconProps} />
       )}
     </IconButtonWrapper>
   );
