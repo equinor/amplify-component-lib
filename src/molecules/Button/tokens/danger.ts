@@ -19,7 +19,7 @@ export const DANGER_TOKENS: ButtonTokens = {
     disabled: DISABLED_TOKENS.filled,
   },
   outlined: {
-    backgroundColor: colors.ui.background__default.rgba,
+    backgroundColor: 'transparent',
     color: colors.interactive.danger__resting.rgba,
     borderColor: colors.interactive.danger__resting.rgba,
     outlineColor: colors.interactive.danger__resting.rgba,
@@ -30,7 +30,7 @@ export const DANGER_TOKENS: ButtonTokens = {
       borderColor: colors.interactive.danger__hover.rgba,
     },
     pressed: {
-      backgroundColor: colors.ui.background__default.rgba,
+      backgroundColor: 'transparent',
       color: colors.interactive.danger__hover.rgba,
       borderColor: colors.interactive.danger__hover.rgba,
     },

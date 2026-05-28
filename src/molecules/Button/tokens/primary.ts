@@ -20,7 +20,7 @@ export const PRIMARY_TOKENS: ButtonTokens = {
     disabled: DISABLED_TOKENS.filled,
   },
   outlined: {
-    backgroundColor: colors.ui.background__default.rgba,
+    backgroundColor: 'transparent',
     color: colors.interactive.primary__resting.rgba,
     borderColor: colors.interactive.primary__resting.rgba,
     outlineColor: colors.interactive.primary__resting.rgba,
@@ -31,7 +31,7 @@ export const PRIMARY_TOKENS: ButtonTokens = {
       borderColor: colors.interactive.primary__hover.rgba,
     },
     pressed: {
-      backgroundColor: colors.ui.background__default.rgba,
+      backgroundColor: 'transparent',
       color: colors.interactive.primary__pressed.rgba,
       borderColor: colors.interactive.primary__pressed.rgba,
     },
