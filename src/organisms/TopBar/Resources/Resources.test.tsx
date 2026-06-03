@@ -97,44 +97,40 @@ describe('Resources', () => {
     await user.click(backButton);
   });
 
-  test(
-    'open portal  ',
-    async () => {
-      window.open = vi.fn();
+  test('open portal  ', { timeout: 20000 }, async () => {
+    window.open = vi.fn();
 
-      render(<Resources />, { wrapper: Wrappers });
-      const user = userEvent.setup();
+    render(<Resources />, { wrapper: Wrappers });
+    const user = userEvent.setup();
 
-      const button = screen.getByRole('button');
+    const button = screen.getByRole('button');
 
-      await user.click(button);
+    await user.click(button);
 
-      const learnMore = screen.getByText(/learn more/i);
-      await user.click(learnMore);
+    const learnMore = screen.getByText(/learn more/i);
+    await user.click(learnMore);
 
-      const openPortal = screen.getByText(/open application portal/i);
-      await user.click(openPortal);
+    const openPortal = screen.getByText(/open application portal/i);
+    await user.click(openPortal);
 
-      const openLink = screen.getByText(/open link/i);
-      expect(openLink).toBeInTheDocument();
+    const openLink = screen.getByText(/open link/i);
+    expect(openLink).toBeInTheDocument();
 
-      expect(
-        await screen.findByText(/Transferring you to application/i)
-      ).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Transferring you to application/i)
+    ).toBeInTheDocument();
 
-      await waitFor(
-        () =>
-          expect(window.open).toHaveBeenCalledWith(
-            PORTAL_URL_WITHOUT_LOCALHOST,
-            '_self'
-          ),
-        {
-          timeout: 12000,
-        }
-      );
-    },
-    { timeout: 20000 }
-  );
+    await waitFor(
+      () =>
+        expect(window.open).toHaveBeenCalledWith(
+          PORTAL_URL_WITHOUT_LOCALHOST,
+          '_self'
+        ),
+      {
+        timeout: 12000,
+      }
+    );
+  });
 
   test('Close open portal by clicking cancel ', async () => {
     render(<Resources />, { wrapper: Wrappers });

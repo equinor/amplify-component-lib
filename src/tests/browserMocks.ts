@@ -31,22 +31,25 @@ const localStorageMock = (function () {
 vi.stubGlobal('localStorage', localStorageMock);
 
 // Mock resize observer
-const resizeObserver = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+class MockResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
 
-vi.stubGlobal('ResizeObserver', resizeObserver);
+vi.stubGlobal('ResizeObserver', MockResizeObserver);
 
 // Mock interaction observer
-const MockIntersectionObserver = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  takeRecords: vi.fn(),
-  unobserve: vi.fn(),
-}));
+class MockIntersectionObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  takeRecords = vi.fn();
+}
 vi.stubGlobal(`IntersectionObserver`, MockIntersectionObserver);
+
+// Mock window.scrollTo (not implemented in jsdom; called by @tanstack/router scroll restoration)
+vi.stubGlobal('scrollTo', vi.fn());
 
 // Mock match media
 const mockMatchMedia = (query: string) => {

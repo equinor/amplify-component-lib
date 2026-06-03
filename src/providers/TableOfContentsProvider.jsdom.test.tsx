@@ -136,6 +136,7 @@ test('Manual scroll settings work as expected and do not affect menu scroll', as
 
 test(
   'Should scroll instantly to element when shouldInstantlyJumpOnMount and a hash is present is set and then',
+  { timeout: 8000 },
   async () => {
     const items = fakeItems();
 
@@ -164,8 +165,7 @@ test(
     await user.click(otherButton);
 
     expect(screen.getByTestId('hash')).toHaveTextContent(`${items[7].value}`);
-  },
-  { timeout: 8000 }
+  }
 );
 
 test('Logs warn when element is not found', async () => {

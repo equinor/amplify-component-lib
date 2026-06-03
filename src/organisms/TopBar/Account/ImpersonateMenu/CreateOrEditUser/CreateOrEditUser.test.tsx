@@ -31,53 +31,43 @@ test.sequential('Able to open/close create new', async () => {
   await user.click(screen.getByRole('button', { name: /cancel/i }));
 });
 
-test.sequential(
-  'Able to open/close edit',
-  async () => {
-    renderWithProviders(
-      <>
-        <p>outside</p>
-        <Account />
-      </>
-    );
-    const user = userEvent.setup();
-    const button = screen.getByRole('button');
+test.sequential('Able to open/close edit', { timeout: 6000 }, async () => {
+  renderWithProviders(
+    <>
+      <p>outside</p>
+      <Account />
+    </>
+  );
+  const user = userEvent.setup();
+  const button = screen.getByRole('button');
 
-    await user.click(button);
+  await user.click(button);
 
-    await user.click(
-      await screen.findByRole('button', { name: 'Impersonate' })
-    );
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByText(/no items found/i)
-    );
+  await waitForElementToBeRemoved(() => screen.queryByText(/no items found/i));
 
-    const menuItems = await screen.findAllByTestId('impersonation-user');
-    expect(menuItems.length).toBeGreaterThan(0);
+  const menuItems = await screen.findAllByTestId('impersonation-user');
+  expect(menuItems.length).toBeGreaterThan(0);
 
-    // Click edit on the first one
-    await user.click(within(menuItems[0]).getByRole('button'));
+  // Click edit on the first one
+  await user.click(within(menuItems[0]).getByRole('button'));
 
-    await user.click(screen.getByRole('button', { name: /edit user/i }));
+  await user.click(screen.getByRole('button', { name: /edit user/i }));
 
-    expect(
-      screen.getByRole('textbox', { name: /first name/i })
-    ).toBeInTheDocument();
+  expect(
+    screen.getByRole('textbox', { name: /first name/i })
+  ).toBeInTheDocument();
 
-    await user.click(screen.getByText('outside'));
+  await user.click(screen.getByText('outside'));
 
-    await user.click(button);
+  await user.click(button);
 
-    await user.click(
-      await screen.findByRole('button', { name: 'Impersonate' })
-    );
+  await user.click(await screen.findByRole('button', { name: 'Impersonate' }));
 
-    await user.click(screen.getByRole('button', { name: /create/i }));
-    expect(screen.queryByText('Edit user')).not.toBeInTheDocument();
-  },
-  { timeout: 6000 }
-);
+  await user.click(screen.getByRole('button', { name: /create/i }));
+  expect(screen.queryByText('Edit user')).not.toBeInTheDocument();
+});
 
 test.sequential('OnClose runs as expected in create new', async () => {
   renderWithProviders(
@@ -112,6 +102,7 @@ test.sequential('OnClose runs as expected in create new', async () => {
 
 test.each(['email', 'no-email'])(
   'Able to edit existing user impersonation - %s',
+  { timeout: 8000 },
   async (testCase) => {
     renderWithProviders(<Account />);
     const user = userEvent.setup();
@@ -153,8 +144,7 @@ test.each(['email', 'no-email'])(
     expect(
       await screen.findByText(new RegExp(newFirstName))
     ).toBeInTheDocument();
-  },
-  { timeout: 8000 }
+  }
 );
 
 test.sequential('Edit another user clears the form as expected', async () => {
@@ -197,6 +187,7 @@ test.sequential('Edit another user clears the form as expected', async () => {
 
 test.each(['email', 'no-email'])(
   'Able to create new impersonation user - %s',
+  { timeout: 8000 },
   async (testCase) => {
     renderWithProviders(<Account />);
     const user = userEvent.setup();
@@ -258,12 +249,12 @@ test.each(['email', 'no-email'])(
     expect(
       await screen.findByText(`${fakeFirstName} ${fakeLastName}`)
     ).toBeInTheDocument();
-  },
-  { timeout: 8000 }
+  }
 );
 
 test.sequential(
   'Able to edit active user impersonation',
+  { timeout: 10000 },
   async () => {
     renderWithProviders(<Account />);
     const user = userEvent.setup();
@@ -312,6 +303,5 @@ test.sequential(
         timeout: 2000,
       })
     ).toBeInTheDocument();
-  },
-  { timeout: 10000 }
+  }
 );

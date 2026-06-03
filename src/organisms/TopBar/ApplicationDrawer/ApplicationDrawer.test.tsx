@@ -87,6 +87,8 @@ test('Close when user click outside  ', async () => {
 
 test(
   'Click on a application ',
+  { timeout: 60000 },
+
   async () => {
     render(<ApplicationDrawer />, { wrapper: Wrappers });
 
@@ -131,8 +133,7 @@ test(
         timeout: 10000,
       }
     );
-  },
-  { timeout: 60000 }
+  }
 );
 
 test('Click on more access button', async () => {
