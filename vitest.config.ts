@@ -3,6 +3,8 @@ import { defineConfig } from 'vitest/config';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { playwright } from '@vitest/browser-playwright';
+
 
 const dirname =
   typeof __dirname !== 'undefined'
@@ -69,7 +71,7 @@ export default defineConfig({
                 browser: 'chromium',
               },
             ],
-            provider: 'playwright',
+            provider: playwright(),
           },
           include: ['**/*.stories.tsx'],
           exclude: ['**/node_modules/**', '**/test-utils/**', '**/e2e/**'],
@@ -85,7 +87,7 @@ export default defineConfig({
           },
           browser: {
             enabled: true,
-            provider: 'playwright',
+            provider: playwright(),
             viewport: {
               width: 1280,
               height: 900

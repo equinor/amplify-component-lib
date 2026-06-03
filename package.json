@@ -80,8 +80,9 @@
     "@types/uuid": "^10.0.0",
     "@types/wicg-file-system-access": "^2023.10.5",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/browser": "^3.0.8",
-    "@vitest/coverage-v8": "^3.0.8",
+    "@vitest/browser": "^4.1.8",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/browser-playwright": "^4.1.8",
     "eslint": "^9.22.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -106,7 +107,7 @@
     "vite": "^6.2.1",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.8"
+    "vitest": "^4.1.8"
   },
   "resolutions": {
     "prosemirror-state": "1.4.3",
