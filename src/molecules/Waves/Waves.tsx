@@ -23,7 +23,7 @@ export const Waves: FC<WavesProps> = ({ gradientColors }) => {
 
   useEffect(() => {
     const resizeHandler = () => {
-      /* v8 ignore next */
+      /* v8 ignore next -- @preserve */
       if (!containerRef.current) return;
 
       setWidth(containerRef.current.clientWidth);

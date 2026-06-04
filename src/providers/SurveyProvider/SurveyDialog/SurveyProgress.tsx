@@ -14,7 +14,7 @@ const Container = styled.div`
 
 export const SurveyProgress: FC = () => {
   const { activeSurvey, activeQuestionIndex } = useSurvey();
-  /* v8 ignore next 2 */
+  /* v8 ignore next 2 -- @preserve */
   const total = activeSurvey?.questions.length ?? 0;
   const current = (activeQuestionIndex ?? 0) + 1;
 

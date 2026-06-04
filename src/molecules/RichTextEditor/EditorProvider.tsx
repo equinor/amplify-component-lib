@@ -42,7 +42,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
   const deletedImages = useRef<string[]>([]);
   const previousRemovedImages = useRef<string[]>([]);
 
-  /* v8 ignore start */
+  /* v8 ignore start -- @preserve */
   const handleImageCheck = (editor: Editor) => {
     const currentImages: string[] = [];
 
@@ -115,9 +115,9 @@ export const EditorProvider: FC<EditorProviderProps> = ({
     editor.commands.setContent(content || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
-  /* v8 ignore stop */
+  /* v8 ignore stop -- @preserve */
 
-  /* v8 ignore next */
+  /* v8 ignore next -- @preserve */
   if (!editor) return null;
   return children(editor);
 };

@@ -34,7 +34,7 @@ const Component = (props: NodeViewProps) => {
   );
 };
 
-/* v8 ignore start */
+/* v8 ignore start -- @preserve */
 export default Image.extend({
   addOptions() {
     return {
@@ -144,4 +144,4 @@ export default Image.extend({
     ];
   },
 });
-/* v8 ignore end */
+/* v8 ignore end -- @preserve */

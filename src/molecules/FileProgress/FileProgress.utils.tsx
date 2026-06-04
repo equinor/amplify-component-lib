@@ -7,13 +7,13 @@ export function readUploadedFileAsText(
 ): Promise<string> {
   const temporaryFileReader = new FileReader();
 
-  /* v8 ignore start */ // Rejection files not working
+  /* v8 ignore start -- @preserve */ // Rejection files not working
   return new Promise((resolve, reject) => {
     temporaryFileReader.onerror = () => {
       temporaryFileReader.abort();
       reject(new DOMException('Problem parsing input file.'));
     };
-    /* v8 ignore end */
+    /* v8 ignore end -- @preserve */
     temporaryFileReader.onload = () => {
       resolve(temporaryFileReader.result as string);
     };

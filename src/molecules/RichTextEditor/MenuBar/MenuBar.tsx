@@ -38,13 +38,15 @@ const MenuBar = styled.div`
   border-bottom: 1px solid ${colors.ui.background__medium.rgba};
 `;
 
-export interface MenuBarProps
-  extends Pick<ImageExtensionFnProps, 'onImageUpload'> {
+export interface MenuBarProps extends Pick<
+  ImageExtensionFnProps,
+  'onImageUpload'
+> {
   editor: Editor;
   features: RichTextEditorFeatures[];
 }
 
-/* v8 ignore start */
+/* v8 ignore start -- @preserve */
 export const AmplifyBar: FC<MenuBarProps> = ({
   editor,
   features,
@@ -99,4 +101,4 @@ export const EditorText = {
   Alignment: TextAlignment,
   ClearFormatting: TextClearFormatting,
 };
-/* v8 ignore end */
+/* v8 ignore end -- @preserve */

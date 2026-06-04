@@ -38,7 +38,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     // Was not able to test this properly because selected can't be correctly updated in the unit test
     // Created a test that check that it sets activeIndex correctly
     // but could not get it to work with selected === undefined || child was true
-    /* v8 ignore start */
+    /* v8 ignore start -- @preserve */
     for (const [index, item] of items.entries()) {
       const childValues = getValues([], item);
       if (
@@ -49,7 +49,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
     }
 
     return -1;
-    /* v8 ignore end */
+    /* v8 ignore end -- @preserve */
   }, [items, selected]);
 
   if (props.mode === 'horizontal') {

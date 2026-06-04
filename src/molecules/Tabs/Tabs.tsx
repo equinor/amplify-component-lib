@@ -98,7 +98,7 @@ export function Tabs<T>({
   }, [scrollable, showScrollButtons]);
 
   const handleScroll = (direction: 'left' | 'right') => () => {
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     if (!tabContainer.current || !containerWidth) return;
     let scrollLeft = tabContainer.current.scrollLeft;
     if (direction === 'left') {

@@ -17,7 +17,7 @@ import { getDefaultColors } from 'src/molecules/Confetti/utils/getDefaultColors'
  * @param duration - Duration of the confetti effect in 'shower' mode (ms).
  * @param onComplete - Callback fired when the confetti effect completes.
  */
-/* v8 ignore next */
+/* v8 ignore next -- @preserve */
 export const Confetti: FC<ConfettiProps> = (props) => {
   const {
     mode = 'boom', // 'boom' | 'shower'
@@ -68,7 +68,7 @@ export const Confetti: FC<ConfettiProps> = (props) => {
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     if (!canvas || !ctx) return;
 
     canvas.width = window.innerWidth;
@@ -116,14 +116,14 @@ export const Confetti: FC<ConfettiProps> = (props) => {
         p.update();
         p.draw(ctx);
 
-        /* v8 ignore start */
+        /* v8 ignore start -- @preserve */
         if (p.opacity <= 0 || p.y > canvas.height) {
           particles.splice(i, 1);
         }
-        /* v8 ignore end */
+        /* v8 ignore end -- @preserve */
       }
 
-      /* v8 ignore start */
+      /* v8 ignore start -- @preserve */
       // Stop animation when all effects are done and no particles remain
       if (
         (effectCountRef.current >= effectCount || !shouldEmit) &&
@@ -132,7 +132,7 @@ export const Confetti: FC<ConfettiProps> = (props) => {
         cancelAnimationFrame(frameRef.current);
         if (onComplete) onComplete();
       }
-      /* v8 ignore end */
+      /* v8 ignore end -- @preserve */
     },
     [
       colors,

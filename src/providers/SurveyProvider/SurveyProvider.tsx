@@ -91,7 +91,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
       duration: 5,
     });
 
-    /* v8 ignore start */
+    /* v8 ignore start -- @preserve */
     if (activeSurvey.showConfettiOnComplete) {
       shower({
         mode: 'shower',
@@ -99,7 +99,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
         duration: 5000,
       });
     }
-    /* v8 ignore end */
+    /* v8 ignore end -- @preserve */
   };
 
   const handleAnswerQuestion = async (
@@ -123,7 +123,7 @@ export const SurveyProvider: FC<SurveyProviderProps> = ({ children }) => {
     }
 
     await answerQuestion({
-      /* v8 ignore next */
+      /* v8 ignore next -- @preserve */
       surveyResponseId: surveyResponseId ?? '',
       body: {
         id: activeSurvey.questions[activeQuestionIndex].questionId,

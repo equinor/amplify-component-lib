@@ -10,8 +10,7 @@ import {
 } from 'src/molecules/RichTextEditor/RichTextEditor.types';
 
 export interface AddImageProps
-  extends EditorPanel,
-    Pick<ImageExtensionFnProps, 'onImageUpload'> {}
+  extends EditorPanel, Pick<ImageExtensionFnProps, 'onImageUpload'> {}
 
 export const AddImageButton: FC<AddImageProps> = ({
   onImageUpload,
@@ -38,7 +37,7 @@ export const AddImageButton: FC<AddImageProps> = ({
     }
 
     const image = await onImageUpload?.(files[0]);
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     if (!image) return;
 
     editor?.chain().focus().setImage({ src: image.src, alt: image.alt }).run();

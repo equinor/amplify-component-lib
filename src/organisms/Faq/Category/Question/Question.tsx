@@ -20,10 +20,10 @@ import { AnimatePresence } from 'motion/react';
 
 export const Question: FC<FaqDto> = ({ id, question, createdDate, answer }) => {
   usePrefetchRichTextImages({
-    /* v8 ignore start */
+    /* v8 ignore start -- @preserve */
     richTextValues: answer ? [answer] : [],
     onImageRead: (path) => FaqService.getFaqImage(path),
-    /* v8 ignore end */
+    /* v8 ignore end -- @preserve */
   });
   const { hash } = useLocation();
   const initialExpanded = useRef(hash === `faq-${id}`);

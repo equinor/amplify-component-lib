@@ -36,7 +36,7 @@ export const UmuxDialog: FC = () => {
   const [answers, setAnswers] = useState<AnswerQuestionCommandDto[]>([]);
   const [isCompleting, setIsCompleting] = useState(false);
 
-  /* v8 ignore next */
+  /* v8 ignore next -- @preserve */
   if (!activeSurvey) return null;
 
   const completeDisabled =

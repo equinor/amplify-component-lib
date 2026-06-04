@@ -10,7 +10,7 @@ import {
   amplify_table_remove_column,
 } from 'src/atoms/icons/wysiwyg';
 
-/* v8 ignore start */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
+/* v8 ignore start -- @preserve */ // There is no custom logic here. Testing these actions would just be us testing the tiptap library.
 export const TableColumn: FC<{ editor: Editor }> = ({ editor }) => {
   const onAddColumnLeft = () => editor.chain().focus().addColumnBefore().run();
   const onAddColumnRight = () => editor.chain().focus().addColumnAfter().run();
@@ -38,4 +38,4 @@ export const TableColumn: FC<{ editor: Editor }> = ({ editor }) => {
     </MenuSection>
   );
 };
-/* v8 ignore end */
+/* v8 ignore end -- @preserve */

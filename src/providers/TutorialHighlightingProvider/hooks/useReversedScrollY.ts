@@ -9,7 +9,7 @@ export function useReversedScrollY(contentRef: RefObject<HTMLElement | null>) {
 
   return useTransform(scrollY, (value: number) => {
     // Wasn't able to test this, there is however a test that has scrolling highlighting
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     if (value > 0) return value * -1;
     return 0;
   });

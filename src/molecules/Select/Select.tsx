@@ -89,7 +89,7 @@ export const Select = <T extends SelectOptionRequired>(
   }, [label, meta]);
 
   // Not able to test this properly because the menu onClose works inside a dialog in the test env :(
-  /* v8 ignore start */
+  /* v8 ignore start -- @preserve */
   useOutsideClick(menuRef.current, (event) => {
     if (
       inDialog &&
@@ -103,7 +103,7 @@ export const Select = <T extends SelectOptionRequired>(
       handleOnClose();
     }
   });
-  /* v8 ignore end */
+  /* v8 ignore end -- @preserve */
 
   if (mode === 'persistent' && 'value' in props && props.value) {
     throw new Error('You cannot use SingleSelect with persistent mode');

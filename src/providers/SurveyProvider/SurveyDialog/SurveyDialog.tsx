@@ -28,7 +28,7 @@ export const SurveyDialog: FC = () => {
     return null;
 
   const handleAnswer = async () => {
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     if (!currentAnswer) return;
 
     setIsAnswering(true);
@@ -44,7 +44,7 @@ export const SurveyDialog: FC = () => {
 
   const disabledNextAction = () => {
     if (!currentAnswer) return true;
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     const currentQuestion = activeSurvey?.questions[activeQuestionIndex ?? 0];
 
     switch (currentQuestion.type) {
@@ -53,7 +53,7 @@ export const SurveyDialog: FC = () => {
           !currentAnswer.selectedOptionIds ||
           currentAnswer.selectedOptionIds.length === 0 ||
           currentAnswer.selectedOptionIds.length >
-            /* v8 ignore next */
+            /* v8 ignore next -- @preserve */
             (currentQuestion.multipleChoiceVm?.maxSelectableOptions ?? 0)
         );
       case QuestionType.LINEAR_SCALE:
@@ -73,7 +73,7 @@ export const SurveyDialog: FC = () => {
     const previousAnswer =
       activeSurvey.questions[activeQuestionIndex - 1].answer;
     // Unable to test this since this never happens
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     if (!previousAnswer) return;
 
     setActiveQuestionIndex(activeQuestionIndex - 1);

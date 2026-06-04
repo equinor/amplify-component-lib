@@ -81,7 +81,7 @@ export const Account: FC<AccountProps> = ({
   const { mutate: endImpersonation } = useStopImpersonation();
   const activeRoles = useMappedRoles(
     // Wasn't able to test the (roles ?? []) part, because roles are always defined from useAuth when we are logged in
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     activeImpersonationUser ? activeImpersonationUser.roles : (roles ?? []),
     useDisplayNameForRole
   );

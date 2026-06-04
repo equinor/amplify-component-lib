@@ -5,7 +5,7 @@ import type {
 
 export const HEADER_HEIGHT = 89;
 
-/* v8 ignore start */
+/* v8 ignore start -- @preserve */
 export const categoryHasFaqs = (category: FaqCategoriesWithFaqDto): boolean => {
   const hasMainFaqs = (category.faqs?.length ?? 0) > 0;
   const hasSubcategoryFaqs = category.subCategories?.some(
@@ -14,7 +14,7 @@ export const categoryHasFaqs = (category: FaqCategoriesWithFaqDto): boolean => {
 
   return hasMainFaqs || !!hasSubcategoryFaqs;
 };
-/* v8 ignore end */
+/* v8 ignore end -- @preserve */
 
 export function faqInSearch(
   faq: Pick<FaqDto, 'answer' | 'question'>,
@@ -22,9 +22,9 @@ export function faqInSearch(
 ) {
   const lowerCase = searchValue.toLowerCase();
 
-  /* v8 ignore start */
+  /* v8 ignore start -- @preserve */
   if (!faq.answer || !faq.question) return false;
-  /* v8 ignore end */
+  /* v8 ignore end -- @preserve */
 
   if (lowerCase === '') return true;
 

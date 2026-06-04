@@ -12,7 +12,7 @@ export const UploadWrapper = styled.div`
   border: 2px dashed ${colors.interactive.primary__resting.rgba};
   border-radius: 15px;
   padding: ${spacings.medium_small} ${spacings.xx_large};
-  /* v8 ignore next */
+  /* v8 ignore next -- @preserve */
   background: ${colors.ui.background__light.rgba};
   transition: background ${animation.transitionMS};
   z-index: 10000;

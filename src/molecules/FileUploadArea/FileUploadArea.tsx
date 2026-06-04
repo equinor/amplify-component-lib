@@ -32,7 +32,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
   });
   const [isDraggingOverWindow, setIsDraggingOverWindow] = useState(false);
 
-  /* v8 ignore start */
+  /* v8 ignore start -- @preserve */
   useEffect(() => {
     const handleDragOver = (event: DragEvent) => {
       // Prevent default to allow dropping
@@ -97,7 +97,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
       }
     }
   }, [isDraggingOverWindow]);
-  /* v8 ignore end */
+  /* v8 ignore end -- @preserve */
 
   const filetypes = useMemo((): string | undefined => {
     if (options.accept) {
@@ -110,7 +110,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
       <SmallUploadWrapper
         {...getRootProps()}
         style={{
-          /* v8 ignore next 2 */
+          /* v8 ignore next 2 -- @preserve */
           background: isDragActive
             ? colors.interactive.primary__hover_alt.rgba
             : undefined,
@@ -133,7 +133,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
       <MediumUploadWrapper
         {...getRootProps()}
         style={{
-          /* v8 ignore next 2 */
+          /* v8 ignore next 2 -- @preserve */
           background: isDragActive
             ? colors.interactive.primary__hover_alt.rgba
             : undefined,
@@ -178,7 +178,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
       {...getRootProps()}
       onClick={undefined}
       style={{
-        /* v8 ignore next 2 */
+        /* v8 ignore next 2 -- @preserve */
         background: isDragActive
           ? colors.interactive.primary__hover_alt.rgba
           : undefined,

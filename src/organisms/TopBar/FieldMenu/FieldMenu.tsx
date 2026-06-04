@@ -74,7 +74,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     }, [selectedField?.name]);
 
     // This is being counted as not covered for some reason
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     const handleSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value);
     };

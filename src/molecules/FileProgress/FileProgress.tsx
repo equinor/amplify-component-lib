@@ -25,7 +25,7 @@ export interface FileProgressPropsExtension {
  * @param onRetry - call back when clicking retry on a failed upload
  * @param shortErrorText - short error text to show (in compact mode)
  */
-/* v8 ignore next */
+/* v8 ignore next -- @preserve */
 export const FileProgress: FC<FileProgressProps> = (props) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const showCompleteState = useMemo(() => {
@@ -40,7 +40,7 @@ export const FileProgress: FC<FileProgressProps> = (props) => {
       await props.onDelete();
       setIsDeleting(false);
       // Unable to test since we never call onClick when onDelete and onCancel are not provided
-      /* v8 ignore next */
+      /* v8 ignore next -- @preserve */
     }
   };
 

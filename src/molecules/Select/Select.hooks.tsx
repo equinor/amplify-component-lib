@@ -17,7 +17,7 @@ import {
   getCumulativeArrayFromNumberedArray,
 } from 'src/molecules/Select/Select.utils';
 
-/* v8 ignore next */
+/* v8 ignore next -- @preserve */
 export const useGroupedSelectItems = <T extends SelectOptionRequired>(
   props: GroupedSelectPropsCombined<T>
 ) => {

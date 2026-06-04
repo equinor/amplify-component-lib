@@ -126,7 +126,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
 
       let previousTop = Infinity;
       let same = 0;
-      /* v8 ignore start */
+      /* v8 ignore start -- @preserve */
       const checkScrollDone = () => {
         const newTop = element?.getBoundingClientRect().top;
         if (newTop === previousTop) {
@@ -142,7 +142,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
         }
         requestAnimationFrame(checkScrollDone);
       };
-      /* v8 ignore end */
+      /* v8 ignore end -- @preserve */
       requestAnimationFrame(checkScrollDone);
     },
     [elements, hashNavigation, navigate, values]
@@ -162,7 +162,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
   }, [visible.length, handleSetSelected, hash, values]);
 
   // Handle change of selected when scrolling down the page
-  /* v8 ignore start */
+  /* v8 ignore start -- @preserve */
   useEffect(() => {
     if (
       visible.length === 0 ||
@@ -194,7 +194,7 @@ export const TableOfContentsProvider: FC<TableOfContentsProviderProps> = ({
     }
     // this effect handles scroll navigation and should not be triggered on hash change
   }, [handleSetSelected, hashNavigation, navigate, values, visible]);
-  /* v8 ignore end */
+  /* v8 ignore end -- @preserve */
 
   return (
     <TableOfContentsContext.Provider

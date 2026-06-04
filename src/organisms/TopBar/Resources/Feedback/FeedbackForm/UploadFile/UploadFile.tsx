@@ -67,15 +67,15 @@ export const UploadFile: FC = () => {
   const handleOnDelete = (file: FileWithPath) => {
     const newAttachmentsList =
       feedbackAttachments?.filter((attachment) => {
-        /* v8 ignore start */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
+        /* v8 ignore start -- @preserve */ // TODO: Fix coverage for rejected files. user.upload doesnt send the rejected files to onDrop
         return attachment.name !== file.name && attachment.size !== file.size;
       }) ?? [];
-    /* v8 ignore end */
+    /* v8 ignore end -- @preserve */
 
     setFeedbackAttachments(newAttachmentsList);
   };
 
-  /* v8 ignore start */
+  /* v8 ignore start -- @preserve */
   const handleOnDeleteRejected = (rejection: FileRejection) => {
     setRejectedFiles(
       rejectedFiles?.filter(
@@ -85,7 +85,7 @@ export const UploadFile: FC = () => {
       ) ?? []
     );
   };
-  /* v8 ignore end */
+  /* v8 ignore end -- @preserve */
 
   return (
     <Container>
@@ -112,7 +112,7 @@ export const UploadFile: FC = () => {
           );
         })}
         {rejectedFiles.map((rejection) => {
-          /* v8 ignore start */
+          /* v8 ignore start -- @preserve */
           return (
             <ImageFile
               key={rejection.file.name + rejection.file.size}
@@ -121,7 +121,7 @@ export const UploadFile: FC = () => {
               error
             />
           );
-          /* v8 ignore end */
+          /* v8 ignore end -- @preserve */
         })}
       </FileUploadAreaWrapper>
     </Container>

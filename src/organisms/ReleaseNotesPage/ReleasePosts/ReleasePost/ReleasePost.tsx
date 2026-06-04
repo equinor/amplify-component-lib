@@ -10,7 +10,7 @@ import { usePrefetchRichTextImages } from 'src/atoms/hooks/usePrefetchRichTextIm
 import { ReleaseNote } from 'src/organisms/ReleaseNote/ReleaseNote';
 
 // We already have tests for usePrefetchRichTextImages
-/* v8 ignore start */
+/* v8 ignore start -- @preserve */
 export const ReleasePost: FC<ReleaseNoteApiType> = (props) => {
   const { isPrefetching } = usePrefetchRichTextImages({
     richTextValues: [props.body],
@@ -21,7 +21,7 @@ export const ReleasePost: FC<ReleaseNoteApiType> = (props) => {
   if (isPrefetching) {
     return <ReleasePostSkeleton />;
   }
-  /* v8 ignore end */
+  /* v8 ignore end -- @preserve */
 
   return <ReleaseNote ref={releaseNoteRef} {...props} />;
 };

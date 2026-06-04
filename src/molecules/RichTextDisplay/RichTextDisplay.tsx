@@ -54,9 +54,9 @@ export const RichTextDisplay: FC<
     onImageRead: onImageRead,
   });
   const editor = useEditor({
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     shouldRerenderOnTransaction: true,
-    /* v8 ignore next */
+    /* v8 ignore next -- @preserve */
     extensions: extensions ? extensions : [defaultExtensions],
     content: imgReadToken
       ? value?.replaceAll(/(<img src=")(.+)("\/>)/g, `$1$2?${imgReadToken}$3`)
@@ -73,9 +73,9 @@ export const RichTextDisplay: FC<
     }
   }, [editor, value]);
 
-  /* v8 ignore next */
+  /* v8 ignore next -- @preserve */
   if (!editor) return null;
-  /* v8 ignore next */
+  /* v8 ignore next -- @preserve */
   if (children) return children(editor);
   return (
     <EditorStyling

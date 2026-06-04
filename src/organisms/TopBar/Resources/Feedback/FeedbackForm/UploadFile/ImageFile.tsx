@@ -47,7 +47,7 @@ export const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
   const { error, onDelete } = props;
 
   const errorMessage = useMemo(() => {
-    /* v8 ignore start */
+    /* v8 ignore start -- @preserve */
     if (!error) return;
     const code = props.errors[0].code;
     let message = props.errors[0].message;
@@ -57,14 +57,14 @@ export const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
       message = message.replace(/(\w+\/\w+,)/g, '').replaceAll(',', ', ');
     }
     return `${props.errors[0].code} \n${message}`;
-    /* v8 ignore end */
+    /* v8 ignore end -- @preserve */
   }, [error, props]);
 
   const fileName = useMemo<string>(() => {
-    /* v8 ignore start */ // TODO: Fix rejection testing
+    /* v8 ignore start -- @preserve */ // TODO: Fix rejection testing
     if (error) {
       return props.file.name;
-      /* v8 ignore end */
+      /* v8 ignore end -- @preserve */
     } else {
       return props.file.name;
     }
@@ -98,7 +98,7 @@ export const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
         title={`${fileName}${error ? ': ' + errorMessage : ''}`}
       >
         {
-          /* v8 ignore start */
+          /* v8 ignore start -- @preserve */
           error ? (
             <Rejection>
               <Icon
@@ -108,7 +108,7 @@ export const ImageFile: FC<RejectionImageFileProps | SuccessImageFileProps> = (
               <div>{shortError}</div>
             </Rejection>
           ) : (
-            /* v8 ignore end */
+            /* v8 ignore end -- @preserve */
             <ImageWrapper>
               <img src={src} alt={`Uploaded file: ${fileName}`} />
             </ImageWrapper>
