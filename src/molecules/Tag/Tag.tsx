@@ -23,6 +23,7 @@ const Container = styled.div<ContainerProps>`
   background: ${({ $color }) => TAG_COLORS[$color].background};
   min-height: 24px;
   min-width: fit-content;
+  width: fit-content;
 
   > span {
     color: ${({ $color, $textColor }) => $textColor ?? TAG_COLORS[$color].text};
