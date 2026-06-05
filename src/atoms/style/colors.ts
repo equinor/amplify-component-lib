@@ -27,7 +27,7 @@ export const colors = {
       rgba: 'var(--amplify_interactive_primary_pressed, rgba(19, 46, 49, 1))',
     },
     primary__nested_hover: {
-      rgba: 'var(----amplify_interactive_primary__nested_hover, rgba(187, 219, 223, 1))',
+      rgba: 'var(--amplify_interactive_primary__nested_hover, rgba(187, 219, 223, 1))',
     },
     danger__text_hover: {
       rgba: 'var(--amplify_interactive_danger__text_hover, rgba(154, 16, 38, 1))',
