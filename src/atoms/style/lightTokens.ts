@@ -5,11 +5,26 @@ export const lightTokens = css`
     --amplify_ui_background_light_medium: rgba(235, 235, 235, 1);
     --amplify_ui_background_heavy: rgba(189, 189, 189, 1);
     --amplify_ui_background_tutorial_card: rgba(222, 237, 238, 1);
+    --amplify_ui_background_success: rgba(230, 250, 236, 1);
 
     --amplify_interactive_primary_pressed: rgba(19, 46, 49, 1);
+    --amplify_interactive_primary__nested_hover: rgba(187, 219, 223, 1);
+
+    --amplify_interactive_danger__text_hover: rgba(154, 16, 38, 1);
+    --amplify_interactive_danger__nested_hover: rgba(255, 208, 206, 1);
+
+    --amplify_interactive_warning__text_hover: rgba(155, 73, 0, 1);
+    --amplify_interactive_warning__nested_hover: rgba(246, 202, 170, 1);
+
+    --amplify_interactive_success__text_hover: rgba(32, 105, 31, 1);
+    --amplify_interactive_success__nested_hover: rgba(195, 243, 210, 1);
+
+    --amplify_interactive_info__text: rgba(0, 112, 169, 1);
+    --amplify_interactive_info__text_hover: rgba(8, 88, 131, 1);
+    --amplify_interactive_info__nested_hover: rgba(181, 218, 245, 1);
+
     --amplify_interactive_tutorial_active_step: rgba(0, 112, 121, 1);
     --amplify_interactive_tutorial_inactive_step: rgba(168, 206, 209, 1);
-    --amplify_interactive_inner_hover: rgba(198, 223, 225, 1);
 
     --amplify_dataviz_primary_default: rgba(0, 107, 229, 1);
     --amplify_dataviz_primary_darker: rgba(0, 83, 178, 1);

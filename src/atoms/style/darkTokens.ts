@@ -10,7 +10,20 @@ export const darkTokens = css`
 
     --amplify_interactive_tutorial_active_step: rgba(154, 202, 206, 1);
     --amplify_interactive_tutorial_inactive_step: rgba(96, 125, 127, 1);
-    --amplify_interactive_inner_hover: rgba(101, 133, 135, 1);
+    --amplify_interactive_primary__nested_hover: rgba(62, 115, 120, 1);
+
+    --amplify_interactive_danger__text_hover: rgba(255, 193, 191, 1);
+    --amplify_interactive_danger__nested_hover: rgba(146, 58, 60, 1);
+
+    --amplify_interactive_warning__text_hover: rgba(255, 173, 99, 1);
+    --amplify_interactive_warning__nested_hover: rgba(151, 87, 27, 1);
+
+    --amplify_interactive_success__text_hover: rgba(188, 242, 184, 1);
+    --amplify_interactive_success__nested_hover: rgba(0, 95, 87, 1);
+
+    --amplify_interactive_info__text: rgba(183, 232, 255, 1);
+    --amplify_interactive_info__text_hover: rgba(162, 224, 255, 1);
+    --amplify_interactive_info__nested_hover: rgba(49, 111, 152, 1);
 
     /* Override super specific text colors to just default text color */
     --eds_heading__h1_bold_color: var(--eds_text_static_icons__default);
@@ -80,6 +93,8 @@ export const darkTokens = css`
     --amplify_ui_background_light_medium: rgba(40, 58, 72, 1);
     --amplify_ui_background_heavy: rgba(50, 72, 89, 1);
     --amplify_ui_background_tutorial_card: rgba(50, 72, 89, 1);
+    --amplify_ui_background_success: rgba(0, 151, 123, 1);
+
     --eds_ui_background__scrim: rgba(0, 0, 0, 0.4);
     --eds_ui_background__overlay: rgba(0, 0, 0, 0.8);
     --eds_ui_background__medium: rgba(44, 64, 79, 1);

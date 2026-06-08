@@ -17,20 +17,50 @@ export const colors = {
     background__tutorial_card: {
       rgba: 'var(--amplify_ui_background_tutorial_card, rgba(222, 237, 238, 1))',
     },
+    background__success: {
+      rgba: 'var(--amplify_ui_background_success, rgba(230, 250, 236, 1))',
+    },
   },
   interactive: {
     ...eds_colors.interactive,
     primary__pressed: {
       rgba: 'var(--amplify_interactive_primary_pressed, rgba(19, 46, 49, 1))',
     },
+    primary__nested_hover: {
+      rgba: 'var(--amplify_interactive_primary__nested_hover, rgba(187, 219, 223, 1))',
+    },
+    danger__text_hover: {
+      rgba: 'var(--amplify_interactive_danger__text_hover, rgba(154, 16, 38, 1))',
+    },
+    danger__nested_hover: {
+      rgba: 'var(--amplify_interactive_danger__nested_hover, rgba(255, 208, 206, 1))',
+    },
+    warning__text_hover: {
+      rgba: 'var(--amplify_interactive_warning__text_hover, rgba(155, 73, 0, 1))',
+    },
+    warning__nested_hover: {
+      rgba: 'var(--amplify_interactive_warning__nested_hover, rgba(246, 202, 170, 1))',
+    },
+    success__text_hover: {
+      rgba: 'var(--amplify_interactive_success__text_hover, rgba(32, 105, 31, 1))',
+    },
+    success__nested_hover: {
+      rgba: 'var(--amplify_interactive_success__nested_hover, rgba(195, 243, 210, 1))',
+    },
+    info__text: {
+      rgba: 'var(--amplify_interactive_info__text, rgba(0, 112, 169, 1))',
+    },
+    info__text_hover: {
+      rgba: 'var(--amplify_interactive_info__text_hover, rgba(8, 88, 131, 1))',
+    },
+    info__nested_hover: {
+      rgba: 'var(--amplify_interactive_info__nested_hover, rgba(181, 218, 245, 1))',
+    },
     tutorial__active_step: {
       rgba: 'var(--amplify_interactive_tutorial_active_step, rgba(0, 112, 121, 1))',
     },
     tutorial__inactive_step: {
       rgba: 'var(--amplify_interactive_tutorial_inactive_step, rgba(168, 206, 209, 1))',
-    },
-    inner_hover: {
-      rgba: 'var(--amplify_interactive_inner_hover, rgba(198, 223, 225, 1))',
     },
   },
   dataviz: {
