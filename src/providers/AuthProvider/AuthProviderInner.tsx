@@ -117,7 +117,8 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       setAccount(accounts[0]);
     } else if (
       error instanceof BrowserAuthError &&
-      error.errorCode === BrowserAuthErrorCodes.timedOut
+      error.errorCode === BrowserAuthErrorCodes.timedOut &&
+      !isInIframe()
     ) {
       console.error(error);
       console.log(
