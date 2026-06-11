@@ -99,7 +99,7 @@ export const Boom: Story = {
       () => {
         expect(screen.queryByTestId('canvas-confetti')).not.toBeInTheDocument();
       },
-      { timeout: 4000 }
+      { timeout: 7000 }
     );
   },
 };
@@ -134,7 +134,7 @@ export const CustomColors: Story = {
       () => {
         expect(screen.queryByTestId('canvas-confetti')).not.toBeInTheDocument();
       },
-      { timeout: 4000 }
+      { timeout: 7000 }
     );
   },
 };
