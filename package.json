@@ -1,6 +1,6 @@
 {
   "name": "@equinor/amplify-component-lib",
-  "version": "13.2.2",
+  "version": "13.2.3",
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -49,8 +49,8 @@
     ]
   },
   "dependencies": {
-    "@azure/msal-browser": "4.30.0",
-    "@azure/msal-react": "3.0.29"
+    "@azure/msal-browser": "3.28.0",
+    "@azure/msal-react": "2.2.0"
   },
   "devDependencies": {
     "@equinor/eds-icons": "^0.22.0",

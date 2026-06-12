@@ -39,8 +39,6 @@ export const useAuth = () => {
 
 export const MOCK_USER: Required<AccountInfo> = {
   homeAccountId: 'mock-home-account-id',
-  loginHint: 'login-hint',
-  dataBoundary: 'EU',
   environment: 'mock',
   tenantId: 'mock-tenant-id',
   username: 'MOCK@equinor.com',
