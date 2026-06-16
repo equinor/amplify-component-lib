@@ -392,6 +392,13 @@ const SmallButton = styled(Button)`
   flex-shrink: 0;
 `;
 
+const ChevronPlaceholder = styled.div`
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+`;
+
 export {
   Button,
   ClearButton,
@@ -410,6 +417,7 @@ export {
   Section,
   MenuItemWrapper,
   SmallButton,
+  ChevronPlaceholder,
   StyledMenuItem,
   ValueText,
 };
