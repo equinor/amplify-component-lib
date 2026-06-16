@@ -367,8 +367,11 @@ const NoTagFoundText = styled(Typography)`
 `;
 
 const NoItemsFoundText = styled(Typography)`
+  display: flex;
+  align-items: center;
   margin: 0;
   padding: ${spacings.medium};
+  min-height: 56px; // Height of one menu item to avoid layout shift
 `;
 
 const StyledMenu = styled(EDSMenu)`
