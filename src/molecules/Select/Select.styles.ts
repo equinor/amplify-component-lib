@@ -367,7 +367,8 @@ const NoTagFoundText = styled(Typography)`
 `;
 
 const NoItemsFoundText = styled(Typography)`
-  margin-left: ${spacings.medium};
+  margin: 0;
+  padding: ${spacings.medium};
 `;
 
 const StyledMenu = styled(EDSMenu)`
