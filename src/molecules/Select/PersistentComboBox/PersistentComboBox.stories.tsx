@@ -19,7 +19,7 @@ import {
 } from 'src/molecules/Select/Select.types';
 
 import { actions } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const FAKE_ITEMS = new Array(10).fill(0).map((_, index) => ({
@@ -525,6 +525,58 @@ export const DisabledMenuItems: Story = {
     items: FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const disabledItem = FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED[1];
+    const enabledItem = FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED[0];
+
+    await expect(
+      canvas.getByRole('button', { name: disabledItem.label })
+    ).toBeDisabled();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: disabledItem.label })
+    );
+    await expect(
+      canvas.queryByTestId('amplify-combobox-chip')
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: enabledItem.label })
+    );
+    await expect(canvas.getByTestId('amplify-combobox-chip')).toHaveTextContent(
+      enabledItem.label
+    );
+  },
+};
+
+export const DisabledPersistentComboBox: Story = {
+  tags: ['test-only'],
+  args: {
+    disabled: true,
+    helperText: 'You cannot change this selection',
+    items: FAKE_ITEMS,
+    values: [FAKE_ITEMS[0]],
+    label: 'Disabled Persistent ComboBox',
+    onSelect: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.getByRole('combobox')).toBeDisabled();
+    await expect(canvas.getByTestId('clearBtn')).toBeDisabled();
+    await expect(
+      canvas.getByRole('button', { name: FAKE_ITEMS[1].label })
+    ).toBeDisabled();
+
+    await userEvent.click(canvas.getByTestId('clearBtn'));
+    await userEvent.click(
+      canvas.getByRole('button', { name: FAKE_ITEMS[1].label })
+    );
+
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
 };
 
 export const NoItemsFound: Story = {
