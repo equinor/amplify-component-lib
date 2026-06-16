@@ -107,7 +107,7 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
     value: faker.string.uuid(),
   }));
 
-const FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED: Item[] = FAKE_ITEMS.map(
+const FAKE_ITEMS_WITH_DISABLED_ITEMS: Item[] = FAKE_ITEMS.map(
   (item, index) => ({
     ...item,
     disabled: index === 1 || index === 4,
@@ -522,14 +522,14 @@ export const CustomizableMenuItem: Story = {
 
 export const DisabledMenuItems: Story = {
   args: {
-    items: FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED,
+    items: FAKE_ITEMS_WITH_DISABLED_ITEMS,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const disabledItem = FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED[1];
-    const enabledItem = FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED[0];
+    const disabledItem = FAKE_ITEMS_WITH_DISABLED_ITEMS[1];
+    const enabledItem = FAKE_ITEMS_WITH_DISABLED_ITEMS[0];
 
     await expect(
       canvas.getByRole('button', { name: disabledItem.label })
