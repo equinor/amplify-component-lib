@@ -60,6 +60,7 @@ export default meta;
 interface Item {
   label: string;
   value: string;
+  disabled?: boolean;
 }
 
 const FAKE_GROUPS = new Array(faker.number.int({ min: 2, max: 4 }))
@@ -105,6 +106,13 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
     label: `${faker.airline.airplane().name} ${faker.airline.aircraftType()} ${faker.airline.airport().name}`,
     value: faker.string.uuid(),
   }));
+
+const FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED: Item[] = FAKE_ITEMS.map(
+  (item, index) => ({
+    ...item,
+    disabled: index === 1 || index === 4,
+  })
+);
 
 type Story = StoryObj<typeof PersistentComboBox>;
 
@@ -508,6 +516,13 @@ const CustomMenuItem: FC<{
 export const CustomizableMenuItem: Story = {
   args: {
     CustomMenuItemComponent: CustomMenuItem,
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const DisabledMenuItems: Story = {
+  args: {
+    items: FAKE_ITEMS_WITH_CUSTOM_ITEM_DISABLED,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
