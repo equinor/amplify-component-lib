@@ -198,8 +198,10 @@ const Section = styled.section`
         outline: 1px solid ${colors.interactive.disabled__border.rgba};
       }
 
-      > svg {
+      > .content > svg {
         fill: ${colors.interactive.disabled__text.rgba};
+        display: none;
+
         &:hover {
           cursor: not-allowed;
           background: none;
