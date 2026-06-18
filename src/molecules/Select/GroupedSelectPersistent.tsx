@@ -4,8 +4,8 @@ import { SelectOptionRequired } from 'src/molecules';
 import { useGroupedSelectItems } from 'src/molecules/Select/Select.hooks';
 import {
   GroupTitle,
-  NoItemsFoundText,
   PersistentGroupsWrapper,
+  PersistentNoItemsFoundText,
 } from 'src/molecules/Select/Select.styles';
 import {
   CustomMenuItemComponentProps,
@@ -38,7 +38,7 @@ export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
   const { filteredGroups, filteredGroupSum } = useGroupedSelectItems(props);
 
   if (filteredGroups.length === 0) {
-    return <NoItemsFoundText>No items found</NoItemsFoundText>;
+    return <PersistentNoItemsFoundText>No items found</PersistentNoItemsFoundText>;
   }
 
   // This case never happens, since there is a check in select.tsx. This check gives the correct typescript inference.
