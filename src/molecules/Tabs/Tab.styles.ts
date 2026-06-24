@@ -106,8 +106,10 @@ export const ActiveLine = styled(motion.span)`
 export const Count = styled.span`
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: ${spacings.x_small} ${spacings.small};
   min-width: 24px;
+  min-height: 24px;
   background: ${colors.interactive.primary__resting.rgba};
   border-radius: ${shape.rounded.borderRadius};
   > span {
