@@ -104,10 +104,36 @@ const getMockRoles = (mockedRoles: string | undefined): string[] => {
 const getAllowedParentDomains = (
   parentDomains: string | undefined
 ): string[] => {
-  if (!parentDomains) {
-    return getConfig('ALLOWED_PARENT_DOMAINS')?.split(';') || [];
+  const raw = parentDomains ?? getConfig('ALLOWED_PARENT_DOMAINS') ?? '';
+  // Filter out empty entries so a trailing ';' or an unset variable does not
+  // produce a single empty-string origin that would match nothing.
+  return raw.split(';').filter((domain) => domain.trim().length > 0);
+};
+
+/**
+ * Extracts a session id (sid) from a postMessage payload. We accept several
+ * shapes so different parent apps can integrate without coordinating on an
+ * exact contract:
+ *  - a raw string: `"the-sid"`
+ *  - an object with a `sid` field: `{ sid: 'the-sid' }`
+ *  - a typed object: `{ type: 'something', sid: 'the-sid' }`
+ *
+ * @returns the sid string, or undefined when none could be extracted.
+ */
+const getSidFromMessage = (data: unknown): string | undefined => {
+  if (typeof data === 'string') {
+    return data.length > 0 ? data : undefined;
   }
-  return parentDomains.split(';');
+  if (
+    data &&
+    typeof data === 'object' &&
+    'sid' in data &&
+    typeof (data as { sid: unknown }).sid === 'string'
+  ) {
+    const sid = (data as { sid: string }).sid;
+    return sid.length > 0 ? sid : undefined;
+  }
+  return undefined;
 };
 
 const getMockUserPhoto = (
@@ -189,25 +215,57 @@ const allowedParentDomains = getAllowedParentDomains(
   import.meta.env.ALLOWED_PARENT_DOMAINS
 );
 
+if (allowedParentDomains.length === 0) {
+  // Greppable, one-time startup warning: without any allow-listed parent
+  // origins the postMessage SSO path below can never run.
+  console.warn(
+    '[Auth] ALLOWED_PARENT_DOMAINS resolved empty - postMessage SSO is disabled. ' +
+      'Set ALLOWED_PARENT_DOMAINS (semicolon-separated origins) to enable it.'
+  );
+}
+
 // This code is needed to be able to embed our FE into another FE
 // Msal documentation here:
 // https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/iframe-usage.md#:%7E:text=Using%20MSAL%20in%20iframed%20apps%20By%20default%2C%20MSAL,redirect%20APIs%20for%20user%20interaction%20with%20the%20IdP%3A
+//
+// NOTE: ssoSilent with a sid is best-effort only. It opens a hidden iframe to
+// login.microsoftonline.com and therefore fails when third-party cookies are
+// blocked (e.g. embedded in another app). The reliable recovery path in that
+// case is the `interactionRequired` auth state plus an interactive popup
+// `login()` exposed from `useAuth()`.
 window.addEventListener('message', async (event: MessageEvent) => {
   // Check that the origin is allowed
-  if (allowedParentDomains.includes(event.origin)) {
-    // TODO: type check sid
-    const sid = event.data;
-    if (sid) {
-      await msalApp.initialize();
-
-      try {
-        await msalApp.ssoSilent({ sid });
-        console.log('postMessage successfully logged in user!');
-      } catch (error) {
-        console.error('Something went wrong with postMessage');
-        console.error(error);
-      }
+  if (!allowedParentDomains.includes(event.origin)) {
+    if (event.data) {
+      console.log(
+        '[Auth] Ignoring postMessage from non-allow-listed origin',
+        event.origin,
+        'allow-list:',
+        allowedParentDomains
+      );
     }
+    return;
+  }
+
+  const sid = getSidFromMessage(event.data);
+  if (!sid) {
+    if (event.data) {
+      console.warn(
+        '[Auth] Allowed origin sent a message without an extractable sid. Received shape:',
+        event.data
+      );
+    }
+    return;
+  }
+
+  await msalApp.initialize();
+
+  try {
+    await msalApp.ssoSilent({ sid });
+    console.log('[Auth] postMessage successfully logged in user!');
+  } catch (error) {
+    console.error('[Auth] Something went wrong with postMessage ssoSilent');
+    console.error(error);
   }
 });
 
@@ -252,6 +310,7 @@ export const auth = {
   getToken,
   isReaderOnly,
   isInIframe,
+  getSidFromMessage,
 };
 
 export const environment = {
