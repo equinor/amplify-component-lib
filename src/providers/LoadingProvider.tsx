@@ -46,6 +46,16 @@ export const LoadingProvider: FC<LoadingProviderProps> = ({
   }, [authState, isFetchingFeatureToggleOrTutorial, isLoading]);
 
   /*
+   * When the user needs to interactively sign in (e.g. embedded in an iframe
+   * where silent auth cannot complete), we render children so the consuming
+   * app can show its own sign-in CTA wired to useAuth().login(). This matches
+   * the transparent-render contract in AuthProvider.
+   * */
+  if (authState === 'interactionRequired') {
+    return children;
+  }
+
+  /*
    * If the user isn't authorized, we can't show children
    * because all the requests would cause infinite rerenders
    * */

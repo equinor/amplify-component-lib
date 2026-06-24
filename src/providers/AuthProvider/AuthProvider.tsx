@@ -8,16 +8,26 @@ import {
   useState,
 } from 'react';
 
-import { AccountInfo } from '@azure/msal-browser';
+import { AccountInfo, AuthenticationResult } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
 import { AuthProviderInner } from './AuthProviderInner';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
 
-const { msalApp } = auth;
-const { getIsMock, getMockUserPhoto, getMockRoles } = environment;
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 
-export type AuthState = 'loading' | 'authorized' | 'unauthorized';
+const { msalApp, GRAPH_REQUESTS_LOGIN, GRAPH_REQUESTS_BACKEND } = auth;
+const { getIsMock, getMockUserPhoto, getMockRoles, getApiScope } = environment;
+
+interface ExtendedJwtPayload extends JwtPayload {
+  roles: string[];
+}
+
+export type AuthState =
+  | 'loading'
+  | 'authorized'
+  | 'unauthorized'
+  | 'interactionRequired';
 
 export interface AuthContextType {
   account: AccountInfo | undefined;
@@ -25,6 +35,18 @@ export interface AuthContextType {
   roles: string[] | undefined;
   logout: () => void;
   authState: AuthState;
+  /**
+   * Trigger an interactive popup login. Useful when silent auth cannot
+   * complete (e.g. embedded in an iframe where third-party cookies are
+   * blocked). On success the context transitions to `authorized` in place,
+   * with roles populated, without requiring a page reload.
+   */
+  login: () => Promise<void>;
+  /**
+   * Acquire a token interactively (popup) for the given scopes, falling back
+   * to the configured API scope when none are provided.
+   */
+  acquireToken: (scopes?: string[]) => Promise<AuthenticationResult | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -87,6 +109,19 @@ export const AuthProvider: FC<AuthProviderProps> = ({
     []
   );
 
+  const apiScope = useMemo(
+    () => getApiScope(import.meta.env.VITE_API_SCOPE),
+    []
+  );
+
+  // Scopes requested when logging in interactively. We include the API scope
+  // alongside the standard login scopes so the backend access token is cached
+  // by the popup and roles can be decoded afterwards.
+  const loginScopes = useMemo(
+    () => [...GRAPH_REQUESTS_LOGIN.scopes, apiScope],
+    [apiScope]
+  );
+
   if (isMock) {
     if (authState === 'loading') {
       setTimeout(() => {
@@ -101,12 +136,58 @@ export const AuthProvider: FC<AuthProviderProps> = ({
           photo: mockPhoto,
           logout: () => console.log('Logged out the user!'),
           authState,
+          login: () => {
+            setAuthState('authorized');
+            return Promise.resolve();
+          },
+          acquireToken: () => Promise.resolve(null),
         }}
       >
         {children}
       </AuthContext.Provider>
     );
   }
+
+  const acquireToken = async (
+    scopes?: string[]
+  ): Promise<AuthenticationResult | null> => {
+    try {
+      return await msalApp.acquireTokenPopup({
+        scopes: scopes ?? [apiScope],
+      });
+    } catch (error) {
+      console.error('[AuthProvider] acquireTokenPopup failed', error);
+      return null;
+    }
+  };
+
+  const login = async (): Promise<void> => {
+    const result = await msalApp.loginPopup({ scopes: loginScopes });
+    if (result.account) {
+      msalApp.setActiveAccount(result.account);
+      setAccount(result.account);
+    }
+
+    // Re-evaluate roles and auth state in place so we transition from
+    // interactionRequired to authorized without a page reload.
+    try {
+      const backendToken = await msalApp.acquireTokenSilent(
+        GRAPH_REQUESTS_BACKEND(apiScope)
+      );
+      const decoded: ExtendedJwtPayload = jwtDecode(backendToken.accessToken);
+      if (decoded.roles) {
+        setRoles(decoded.roles);
+      }
+      setAuthState('authorized');
+    } catch (error) {
+      console.error(
+        '[AuthProvider] Could not acquire roles after interactive login',
+        error
+      );
+      // Leave state at interactionRequired so the consumer can offer a retry.
+      throw error;
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -116,6 +197,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         photo,
         logout: () => msalApp.logoutRedirect(),
         authState,
+        login,
+        acquireToken,
       }}
     >
       <MsalProvider instance={msalApp}>

@@ -37,6 +37,8 @@ export const Primary: Story = {
       photo: undefined,
       logout: fn(),
       authState: 'authorized',
+      login: fn(),
+      acquireToken: fn(),
     });
   },
 };
@@ -60,6 +62,8 @@ export const ManyRoles: Story = {
       photo: undefined,
       logout: fn(),
       authState: 'authorized',
+      login: fn(),
+      acquireToken: fn(),
     });
   },
 };
@@ -83,6 +87,8 @@ export const ShowsImpersonate: Story = {
       photo: undefined,
       logout: fn(),
       authState: 'authorized',
+      login: fn(),
+      acquireToken: fn(),
     });
   },
 
@@ -126,6 +132,8 @@ export const ShowsEnvironmentToggle: Story = {
       photo: undefined,
       logout: fn(),
       authState: 'authorized',
+      login: fn(),
+      acquireToken: fn(),
     });
   },
 
@@ -198,6 +206,8 @@ export const ImpersonateWithEnvironmentToggle: Story = {
       photo: undefined,
       logout: fn(),
       authState: 'authorized',
+      login: fn(),
+      acquireToken: fn(),
     });
   },
 

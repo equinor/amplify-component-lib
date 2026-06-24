@@ -103,6 +103,20 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
         console.error('[AuthProvider] Error during login', error);
       });
+    } else if (
+      error instanceof InteractionRequiredAuthError &&
+      isInIframe() &&
+      authState !== 'unauthorized' &&
+      authState !== 'authorized'
+    ) {
+      // We cannot complete silent auth inside an iframe (third-party cookies
+      // are blocked). Surface interactionRequired so the consuming app can
+      // render its own sign-in CTA wired to useAuth().login(). Never call
+      // loginRedirect in an iframe.
+      console.log(
+        '[AuthProvider] Interaction required in iframe, awaiting interactive login()'
+      );
+      setAuthState('interactionRequired');
     } else if (result?.account && !account) {
       console.log(
         '[AuthProvider] Found account in useMsalAuth result, setting that one as active'
@@ -138,6 +152,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     login,
     result,
     setAccount,
+    setAuthState,
     authState,
   ]);
 
@@ -200,7 +215,16 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           '[AuthProvider] Token error when trying to get roles!',
           error
         );
-        setAuthState('unauthorized');
+        // A cached account whose backend token can't be silently refreshed
+        // inside an iframe needs interactive login, not a "missing access"
+        // screen. Route to interactionRequired so the consumer can recover
+        // via useAuth().login(). unauthorized stays strictly for
+        // "authenticated but lacks roles".
+        if (error instanceof InteractionRequiredAuthError && isInIframe()) {
+          setAuthState('interactionRequired');
+        } else {
+          setAuthState('unauthorized');
+        }
       }
     };
 
@@ -228,6 +252,11 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
 
   if (authState === 'unauthorized')
     return unauthorizedComponent ?? <MissingAccessToApp />;
+
+  // Transparent-render contract: in interactionRequired we render children
+  // (no built-in screen/spinner) so the consuming app can detect the state
+  // via useAuth().authState and render its own sign-in CTA wired to login().
+  if (authState === 'interactionRequired') return children;
 
   if (withoutLoader) return children;
 
