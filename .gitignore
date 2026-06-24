@@ -13,8 +13,10 @@ package-lock.json
 /coverage
 
 # Webstorm user specific settings
+.DS_STORE
 .idea/workspace.xml
 .idea/vcs.xml
+.idea/
 
 # production
 /build
