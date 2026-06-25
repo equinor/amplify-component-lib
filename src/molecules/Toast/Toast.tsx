@@ -1,15 +1,18 @@
 import { FC, RefObject, useEffect } from 'react';
 
-import { Icon, Typography } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { close, IconData } from '@equinor/eds-icons';
 
 import { colors } from 'src/atoms/style';
-import { IconButton } from 'src/molecules';
-import { Button } from 'src/molecules/Button/Button';
 import {
+  ActionButton,
+  CloseButton,
   Container,
+  Description,
   DurationBar,
   Header,
+  HeaderIcon,
+  Title,
 } from 'src/molecules/Toast/Toast.styles';
 import { getHeaderIcon } from 'src/molecules/Toast/Toast.utils';
 
@@ -70,25 +73,38 @@ export const Toast: FC<ToastProps> = ({
 
   return (
     <Container ref={ref} $variant={variant}>
-      <Header>
-        {usingIcon && <Icon data={usingIcon} />}
-        <Typography variant="h6" color={colors.text.static_icons__default.rgba}>
+      <Header $hasIcon={Boolean(usingIcon)}>
+        {usingIcon && (
+          <HeaderIcon $variant={variant}>
+            <Icon data={usingIcon} />
+          </HeaderIcon>
+        )}
+        <Title variant="h6" color={colors.text.static_icons__default.rgba}>
           {title}
-        </Typography>
-        <IconButton icon={close} variant="ghost" onClick={onClose} />
+        </Title>
+        <CloseButton
+          icon={close}
+          variant="ghost"
+          onClick={onClose}
+          $variant={variant}
+        />
       </Header>
       {description && (
-        <Typography
+        <Description
           variant="body_long"
           color={colors.text.static_icons__secondary.rgba}
         >
           {description}
-        </Typography>
+        </Description>
       )}
       {action && (
-        <Button variant="outlined" onClick={handleOnActionClick}>
+        <ActionButton
+          variant="outlined"
+          onClick={handleOnActionClick}
+          $variant={variant}
+        >
           {action.text}
-        </Button>
+        </ActionButton>
       )}
       {duration && (
         <DurationBar

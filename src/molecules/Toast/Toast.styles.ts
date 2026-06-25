@@ -1,26 +1,85 @@
+import { Typography } from '@equinor/eds-core-react';
+
 import { shape, spacings } from 'src/atoms/style';
-import { ToastProps } from 'src/molecules';
+import { Button } from 'src/molecules/Button/Button';
+import { IconButton } from 'src/molecules/Button/IconButton/IconButton';
+import type { ToastProps } from 'src/molecules/Toast/Toast';
 import { TOAST_COLORS } from 'src/molecules/Toast/Toast.utils';
 
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-export const Header = styled.header`
+interface VariantProps {
+  $variant?: ToastProps['variant'];
+}
+
+interface HeaderProps {
+  $hasIcon: boolean;
+}
+
+const getVariantColors = (variant?: ToastProps['variant']) =>
+  TOAST_COLORS[variant ?? 'neutral'];
+
+export const Header = styled.header<HeaderProps>`
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: ${({ $hasIcon }) =>
+    $hasIcon ? 'auto minmax(0, 1fr) auto' : 'minmax(0, 1fr) auto'};
+  grid-template-areas: ${({ $hasIcon }) =>
+    $hasIcon ? "'icon title close'" : "'title close'"};
+  align-items: start;
   gap: ${spacings.small};
-  padding-right: 40px;
-  > h6 {
-    overflow: hidden;
-    text-overflow: ellipsis;
+`;
+
+export const HeaderIcon = styled.span<VariantProps>`
+  grid-area: icon;
+  display: inline-flex;
+  align-items: center;
+
+  > svg {
+    color: ${({ $variant }) => getVariantColors($variant).actionText};
   }
-  &:has(> svg:first-child) {
-    grid-template-columns: auto minmax(0, 1fr);
+`;
+
+export const Title = styled(Typography)`
+  grid-area: title;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const ActionButton = styled(Button)<VariantProps>`
+  align-self: flex-start;
+  width: fit-content;
+  margin-left: ${spacings.small};
+  color: ${({ $variant }) => getVariantColors($variant).actionText};
+  border-color: ${({ $variant }) => getVariantColors($variant).actionText};
+  &:hover {
+    background: ${({ $variant }) =>
+      getVariantColors($variant).actionBackgroundHover};
+    color: ${({ $variant }) => getVariantColors($variant).actionTextHover};
+    border-color: ${({ $variant }) =>
+      getVariantColors($variant).actionTextHover};
   }
-  > button {
-    position: absolute;
-    top: ${spacings.x_small};
-    right: ${spacings.x_small};
+`;
+
+export const CloseButton = styled(IconButton)<VariantProps>`
+  position: absolute;
+  top: ${spacings.x_small};
+  right: ${spacings.x_small};
+  grid-area: close;
+  color: ${({ $variant }) => getVariantColors($variant).actionText};
+  &:hover {
+    color: ${({ $variant }) => getVariantColors($variant).actionTextHover};
+    &:before {
+      background: ${({ $variant }) =>
+        getVariantColors($variant).actionBackgroundHover};
+      border-color: ${({ $variant }) =>
+        getVariantColors($variant).actionBackgroundHover};
+    }
   }
+`;
+
+export const Description = styled(Typography)`
+  margin: 0 ${spacings.small};
+  margin-right: ${spacings.medium};
 `;
 
 interface ContainerProps {
@@ -38,67 +97,7 @@ export const Container = styled.div<ContainerProps>`
   overflow: hidden;
   min-width: 300px;
   max-width: 420px;
-  > p,
-  > button {
-    margin: 0 ${spacings.small};
-  }
-  > p {
-    margin-right: ${spacings.medium};
-  }
-
-  ${({ $variant }) => {
-    const usingColors = TOAST_COLORS[$variant ?? 'neutral'];
-
-    return css`
-      background: ${usingColors.background};
-
-      > button {
-        margin-right: auto;
-        color: ${usingColors.icon};
-        border-color: ${usingColors.icon};
-        &:hover {
-          background: none;
-          color: ${usingColors.actionHover};
-          border-color: ${usingColors.actionHover};
-          &:before {
-            position: absolute;
-            left: 0;
-            content: '';
-            width: 100%;
-            height: 100%;
-            background: ${usingColors.icon};
-            opacity: 0.15;
-            overflow: visible;
-          }
-        }
-      }
-
-      > ${Header} {
-        > svg:first-child {
-          color: ${usingColors.icon};
-        }
-        > button {
-          svg {
-            color: ${usingColors.close};
-          }
-          &:hover {
-            background: none;
-            &:before {
-              position: absolute;
-              left: 0;
-              content: '';
-              width: 100%;
-              height: 100%;
-              background: ${usingColors.close};
-              opacity: 0.15;
-              border-radius: 50%;
-              overflow: visible;
-            }
-          }
-        }
-      }
-    `;
-  }}
+  background: ${({ $variant }) => getVariantColors($variant).background};
 `;
 const durationAnimation = keyframes`
  from {
@@ -129,6 +128,7 @@ export const DurationBar = styled.span<DurationBarProps>`
     background: ${({ $variant }) =>
       TOAST_COLORS[$variant ?? 'neutral'].background};
     opacity: 0.5;
+    z-index: 0;
   }
   &:before {
     content: '';
@@ -137,6 +137,7 @@ export const DurationBar = styled.span<DurationBarProps>`
     height: inherit;
     background: ${({ $variant }) =>
       TOAST_COLORS[$variant ?? 'neutral'].duration};
+    z-index: 1;
     animation: ${durationAnimation} ${({ $duration }) => $duration}s linear;
     animation-fill-mode: forwards;
   }

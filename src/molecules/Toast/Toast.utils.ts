@@ -33,45 +33,51 @@ export const TOAST_COLORS: Record<
   NonNullable<ToastProps['variant']>,
   {
     background: string;
-    icon: string;
-    close: string;
-    actionHover: string;
+    actionText: string;
+    actionBackground: string;
+    actionTextHover: string;
+    actionBackgroundHover: string;
     duration: string;
   }
 > = {
   neutral: {
     background: colors.ui.background__light.rgba,
-    icon: colors.text.static_icons__default.rgba,
-    close: colors.interactive.secondary__resting.rgba,
-    actionHover: colors.interactive.secondary__resting.rgba,
-    duration: colors.interactive.secondary__resting.rgba,
+    actionText: colors.interactive.secondary__resting.rgba,
+    actionBackground: colors.ui.background__light.rgba,
+    actionTextHover: colors.text.static_icons__default.rgba,
+    actionBackgroundHover: colors.ui.background__light_medium.rgba,
+    duration: colors.text.static_icons__secondary.rgba,
   },
   info: {
     background: colors.ui.background__info.rgba,
-    icon: colors.text.static_icons__default.rgba,
-    close: colors.interactive.secondary__resting.rgba,
-    actionHover: colors.interactive.secondary__resting.rgba,
-    duration: colors.interactive.secondary__resting.rgba,
+    actionText: colors.interactive.info__text.rgba,
+    actionBackground: colors.ui.background__info.rgba,
+    actionTextHover: colors.interactive.info__text_hover.rgba,
+    actionBackgroundHover: colors.interactive.info__nested_hover.rgba,
+    duration: colors.interactive.info__text.rgba,
   },
   warning: {
     background: colors.ui.background__warning.rgba,
-    icon: colors.interactive.warning__text.rgba,
-    close: colors.interactive.warning__text.rgba,
-    actionHover: colors.interactive.warning__hover.rgba,
+    actionText: colors.interactive.warning__text.rgba,
+    actionBackground: colors.ui.background__warning.rgba,
+    actionTextHover: colors.interactive.warning__text_hover.rgba,
+    actionBackgroundHover: colors.interactive.warning__nested_hover.rgba,
     duration: colors.interactive.warning__resting.rgba,
   },
   error: {
     background: colors.ui.background__danger.rgba,
-    icon: colors.interactive.danger__text.rgba,
-    close: colors.interactive.danger__text.rgba,
-    actionHover: colors.interactive.danger__hover.rgba,
+    actionText: colors.interactive.danger__text.rgba,
+    actionBackground: colors.ui.background__danger.rgba,
+    actionTextHover: colors.interactive.danger__text_hover.rgba,
+    actionBackgroundHover: colors.interactive.danger__nested_hover.rgba,
     duration: colors.interactive.danger__resting.rgba,
   },
   success: {
-    background: colors.interactive.success__highlight.rgba,
-    icon: colors.interactive.success__text.rgba,
-    close: colors.interactive.success__text.rgba,
-    actionHover: colors.interactive.success__hover.rgba,
+    background: colors.ui.background__success.rgba,
+    actionText: colors.interactive.success__text.rgba,
+    actionBackground: colors.ui.background__success.rgba,
+    actionTextHover: colors.interactive.success__text_hover.rgba,
+    actionBackgroundHover: colors.interactive.success__nested_hover.rgba,
     duration: colors.interactive.success__resting.rgba,
   },
 } as const;
