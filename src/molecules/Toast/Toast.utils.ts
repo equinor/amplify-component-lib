@@ -32,52 +32,46 @@ export function getHeaderIcon({
 export const TOAST_COLORS: Record<
   NonNullable<ToastProps['variant']>,
   {
-    background: string;
-    actionText: string;
-    actionBackground: string;
-    actionTextHover: string;
-    actionBackgroundHover: string;
-    duration: string;
+    containerBackground: string;
+    controlForeground: string;
+    controlForegroundHover: string;
+    controlHoverBackground: string;
+    progressFill: string;
   }
 > = {
   neutral: {
-    background: colors.ui.background__light.rgba,
-    actionText: colors.interactive.secondary__resting.rgba,
-    actionBackground: colors.ui.background__light.rgba,
-    actionTextHover: colors.text.static_icons__default.rgba,
-    actionBackgroundHover: colors.ui.background__light_medium.rgba,
-    duration: colors.text.static_icons__secondary.rgba,
+    containerBackground: colors.ui.background__light.rgba,
+    controlForeground: colors.interactive.secondary__resting.rgba,
+    controlForegroundHover: colors.text.static_icons__default.rgba,
+    controlHoverBackground: colors.ui.background__light_medium.rgba,
+    progressFill: colors.text.static_icons__secondary.rgba,
   },
   info: {
-    background: colors.ui.background__info.rgba,
-    actionText: colors.interactive.info__text.rgba,
-    actionBackground: colors.ui.background__info.rgba,
-    actionTextHover: colors.interactive.info__text_hover.rgba,
-    actionBackgroundHover: colors.interactive.info__nested_hover.rgba,
-    duration: colors.interactive.info__text.rgba,
+    containerBackground: colors.ui.background__info.rgba,
+    controlForeground: colors.interactive.info__text.rgba,
+    controlForegroundHover: colors.interactive.info__text_hover.rgba,
+    controlHoverBackground: colors.interactive.info__nested_hover.rgba,
+    progressFill: colors.interactive.info__text.rgba,
   },
   warning: {
-    background: colors.ui.background__warning.rgba,
-    actionText: colors.interactive.warning__text.rgba,
-    actionBackground: colors.ui.background__warning.rgba,
-    actionTextHover: colors.interactive.warning__text_hover.rgba,
-    actionBackgroundHover: colors.interactive.warning__nested_hover.rgba,
-    duration: colors.interactive.warning__resting.rgba,
+    containerBackground: colors.ui.background__warning.rgba,
+    controlForeground: colors.interactive.warning__text.rgba,
+    controlForegroundHover: colors.interactive.warning__text_hover.rgba,
+    controlHoverBackground: colors.interactive.warning__nested_hover.rgba,
+    progressFill: colors.interactive.warning__resting.rgba,
   },
   error: {
-    background: colors.ui.background__danger.rgba,
-    actionText: colors.interactive.danger__text.rgba,
-    actionBackground: colors.ui.background__danger.rgba,
-    actionTextHover: colors.interactive.danger__text_hover.rgba,
-    actionBackgroundHover: colors.interactive.danger__nested_hover.rgba,
-    duration: colors.interactive.danger__resting.rgba,
+    containerBackground: colors.ui.background__danger.rgba,
+    controlForeground: colors.interactive.danger__text.rgba,
+    controlForegroundHover: colors.interactive.danger__text_hover.rgba,
+    controlHoverBackground: colors.interactive.danger__nested_hover.rgba,
+    progressFill: colors.interactive.danger__resting.rgba,
   },
   success: {
-    background: colors.ui.background__success.rgba,
-    actionText: colors.interactive.success__text.rgba,
-    actionBackground: colors.ui.background__success.rgba,
-    actionTextHover: colors.interactive.success__text_hover.rgba,
-    actionBackgroundHover: colors.interactive.success__nested_hover.rgba,
-    duration: colors.interactive.success__resting.rgba,
+    containerBackground: colors.ui.background__success.rgba,
+    controlForeground: colors.interactive.success__text.rgba,
+    controlForegroundHover: colors.interactive.success__text_hover.rgba,
+    controlHoverBackground: colors.interactive.success__nested_hover.rgba,
+    progressFill: colors.interactive.success__resting.rgba,
   },
 } as const;

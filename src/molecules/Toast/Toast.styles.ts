@@ -35,7 +35,7 @@ export const HeaderIcon = styled.span<VariantProps>`
   align-items: center;
 
   > svg {
-    color: ${({ $variant }) => getVariantColors($variant).actionText};
+    color: ${({ $variant }) => getVariantColors($variant).controlForeground};
   }
 `;
 
@@ -49,14 +49,16 @@ export const ActionButton = styled(Button)<VariantProps>`
   align-self: flex-start;
   width: fit-content;
   margin-left: ${spacings.small};
-  color: ${({ $variant }) => getVariantColors($variant).actionText};
-  border-color: ${({ $variant }) => getVariantColors($variant).actionText};
+  color: ${({ $variant }) => getVariantColors($variant).controlForeground};
+  border-color: ${({ $variant }) =>
+    getVariantColors($variant).controlForeground};
   &:hover {
     background: ${({ $variant }) =>
-      getVariantColors($variant).actionBackgroundHover};
-    color: ${({ $variant }) => getVariantColors($variant).actionTextHover};
+      getVariantColors($variant).controlHoverBackground};
+    color: ${({ $variant }) =>
+      getVariantColors($variant).controlForegroundHover};
     border-color: ${({ $variant }) =>
-      getVariantColors($variant).actionTextHover};
+      getVariantColors($variant).controlForegroundHover};
   }
 `;
 
@@ -64,22 +66,21 @@ export const CloseButton = styled(IconButton)<VariantProps>`
   position: absolute;
   top: ${spacings.x_small};
   right: ${spacings.x_small};
-  grid-area: close;
-  color: ${({ $variant }) => getVariantColors($variant).actionText};
+  color: ${({ $variant }) => getVariantColors($variant).controlForeground};
   &:hover {
-    color: ${({ $variant }) => getVariantColors($variant).actionTextHover};
-    &:before {
+    color: ${({ $variant }) =>
+      getVariantColors($variant).controlForegroundHover};
+    &::before {
       background: ${({ $variant }) =>
-        getVariantColors($variant).actionBackgroundHover};
+        getVariantColors($variant).controlHoverBackground};
       border-color: ${({ $variant }) =>
-        getVariantColors($variant).actionBackgroundHover};
+        getVariantColors($variant).controlHoverBackground};
     }
   }
 `;
 
 export const Description = styled(Typography)`
-  margin: 0 ${spacings.small};
-  margin-right: ${spacings.medium};
+  margin: 0 ${spacings.medium} 0 ${spacings.small};
 `;
 
 interface ContainerProps {
@@ -97,14 +98,15 @@ export const Container = styled.div<ContainerProps>`
   overflow: hidden;
   min-width: 300px;
   max-width: 420px;
-  background: ${({ $variant }) => getVariantColors($variant).background};
+  background: ${({ $variant }) =>
+    getVariantColors($variant).containerBackground};
 `;
 const durationAnimation = keyframes`
- from {
-   width: 100%
- }
+  from {
+    width: 100%;
+  }
   to {
-    width: 0
+    width: 0;
   }
 `;
 
@@ -114,33 +116,27 @@ interface DurationBarProps {
 }
 
 export const DurationBar = styled.span<DurationBarProps>`
-  background: white;
-  [data-theme='dark'] & {
-    background: black;
-  }
+  background: ${colors.ui.background__default.rgba};
   width: 100%;
   height: 2px;
   position: absolute;
   bottom: 0;
   left: 0;
-  &:after {
+  &::before {
     content: '';
     position: absolute;
     width: inherit;
     height: inherit;
     background: ${({ $variant }) =>
-      TOAST_COLORS[$variant ?? 'neutral'].background};
+      getVariantColors($variant).containerBackground};
     opacity: 0.5;
-    z-index: 0;
   }
-  &:before {
+  &::after {
     content: '';
     position: absolute;
     width: inherit;
     height: inherit;
-    background: ${({ $variant }) =>
-      TOAST_COLORS[$variant ?? 'neutral'].duration};
-    z-index: 1;
+    background: ${({ $variant }) => getVariantColors($variant).progressFill};
     animation: ${durationAnimation} ${({ $duration }) => $duration}s linear;
     animation-fill-mode: forwards;
   }
