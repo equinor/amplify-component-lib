@@ -8,6 +8,7 @@ import { getChildOffset } from './Select.utils';
 import { spacings } from 'src/atoms/style/spacings';
 import { DynamicMenuItem } from 'src/molecules/Select/DynamicMenuItem';
 import {
+  ChevronPlaceholder,
   MenuItemSpacer,
   MenuItemWrapper,
   SmallButton,
@@ -147,6 +148,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     return (
       <MenuItemWrapper>
         {spacers}
+        {depth > 0 && <ChevronPlaceholder />}
         <DynamicMenuItem menuItemProps={props} isSelected={isSelected} />
       </MenuItemWrapper>
     );
