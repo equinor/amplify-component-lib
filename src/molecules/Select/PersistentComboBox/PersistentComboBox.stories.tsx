@@ -10,7 +10,6 @@ import {
   PersistentComboBox,
   PersistentComboBoxProps,
 } from './PersistentComboBox';
-import { spacings } from 'src/atoms';
 import {
   SelectedState,
   SelectOption,
@@ -236,8 +235,6 @@ export const SmallParent: Story = {
     <div
       style={{
         height: '500px',
-        padding: spacings.large,
-        backgroundColor: 'lightcyan',
       }}
     >
       <PersistentComboBoxWithState {...args} />
@@ -279,8 +276,6 @@ export const LargeParent: Story = {
     <div
       style={{
         height: '1000px',
-        padding: spacings.large,
-        backgroundColor: 'lightcyan',
       }}
     >
       <PersistentComboBoxWithState {...args} />
@@ -296,8 +291,6 @@ export const MaxHeight: Story = {
     <div
       style={{
         height: '1000px',
-        padding: spacings.large,
-        backgroundColor: 'lightcyan',
       }}
     >
       <PersistentComboBoxWithState {...args} />
