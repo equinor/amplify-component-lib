@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 
-import { shape, spacings } from 'src/atoms/style';
+import { colors, shape, spacings } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
 import { IconButton } from 'src/molecules/Button/IconButton/IconButton';
 import type { ToastProps } from 'src/molecules/Toast/Toast';
@@ -115,6 +115,9 @@ interface DurationBarProps {
 
 export const DurationBar = styled.span<DurationBarProps>`
   background: white;
+  [data-theme='dark'] & {
+    background: black;
+  }
   width: 100%;
   height: 2px;
   position: absolute;
