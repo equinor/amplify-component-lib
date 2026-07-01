@@ -190,10 +190,18 @@ const Section = styled.section`
     }
     > .amplify-combo-box-chip {
       cursor: not-allowed;
-      background: ${colors.interactive.disabled__fill.rgba};
+      background: ${colors.interactive.disabled__fill.rgba} !important;
       color: ${colors.interactive.disabled__text.rgba};
-      > svg {
+      outline: 1px solid ${colors.interactive.disabled__border.rgba};
+
+      &:hover {
+        outline: 1px solid ${colors.interactive.disabled__border.rgba};
+      }
+
+      > .content > svg {
         fill: ${colors.interactive.disabled__text.rgba};
+        display: none;
+
         &:hover {
           cursor: not-allowed;
           background: none;
