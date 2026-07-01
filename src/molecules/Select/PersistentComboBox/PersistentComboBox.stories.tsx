@@ -87,6 +87,16 @@ const FAKE_ITEMS_WITH_CHILDREN = [
           .map((_, grandchildIndex) => ({
             label: `${faker.animal.fish()} (Grandchild ${childIndex + 1}.${grandchildIndex + 1})`,
             value: faker.string.uuid(),
+            ...(childIndex === 0 && grandchildIndex === 0
+              ? {
+                  children: new Array(2)
+                    .fill(0)
+                    .map((_, greatGrandchildIndex) => ({
+                      label: `${faker.animal.fish()} (Great-Grandchild ${childIndex + 1}.${grandchildIndex + 1}.${greatGrandchildIndex + 1})`,
+                      value: faker.string.uuid(),
+                    })),
+                }
+              : {}),
           })),
       })),
   },

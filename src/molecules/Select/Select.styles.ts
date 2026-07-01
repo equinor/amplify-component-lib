@@ -394,10 +394,18 @@ const MenuItemWrapper = styled.div`
   gap: ${spacings.small};
 `;
 
-const SmallButton = styled(Button)`
+const smallSquare = css`
   width: 36px;
   height: 36px;
   flex-shrink: 0;
+`;
+
+const SmallButton = styled(Button)`
+  ${smallSquare}
+`;
+
+const ChevronPlaceholder = styled.div`
+  ${smallSquare}
 `;
 
 export {
@@ -419,6 +427,7 @@ export {
   Section,
   MenuItemWrapper,
   SmallButton,
+  ChevronPlaceholder,
   StyledMenuItem,
   ValueText,
 };
