@@ -22,15 +22,12 @@ const getVariantColors = (variant?: ToastProps['variant']) =>
 export const Header = styled.header<HeaderProps>`
   display: grid;
   grid-template-columns: ${({ $hasIcon }) =>
-    $hasIcon ? 'auto minmax(0, 1fr) auto' : 'minmax(0, 1fr) auto'};
-  grid-template-areas: ${({ $hasIcon }) =>
-    $hasIcon ? "'icon title close'" : "'title close'"};
+    $hasIcon ? 'auto minmax(0, 1fr)' : 'minmax(0, 1fr)'};
   align-items: start;
   gap: ${spacings.small};
 `;
 
 export const HeaderIcon = styled.span<VariantProps>`
-  grid-area: icon;
   display: inline-flex;
   align-items: center;
 
@@ -40,9 +37,7 @@ export const HeaderIcon = styled.span<VariantProps>`
 `;
 
 export const Title = styled(Typography)`
-  grid-area: title;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding-right: 40px;
 `;
 
 export const ActionButton = styled(Button)<VariantProps>`
@@ -101,6 +96,7 @@ export const Container = styled.div<ContainerProps>`
   background: ${({ $variant }) =>
     getVariantColors($variant).containerBackground};
 `;
+
 const durationAnimation = keyframes`
   from {
     width: 100%;
