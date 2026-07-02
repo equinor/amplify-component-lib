@@ -37,7 +37,7 @@ export const HeaderIcon = styled.span<VariantProps>`
 `;
 
 export const Title = styled(Typography)`
-  padding-right: 40px;
+  padding-right: ${spacings.xx_large};
 `;
 
 export const ActionButton = styled(Button)<VariantProps>`
