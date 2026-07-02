@@ -136,7 +136,6 @@ function WithDurationRender(args: ToastProps) {
   });
 
   const handleOnClose = (variant: ToastVariant) => {
-    args.onClose();
     setKeysByVariant((current) => ({
       ...current,
       [variant]: current[variant] + 1,
