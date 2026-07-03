@@ -65,11 +65,13 @@ export const CloseButton = styled(IconButton)<VariantProps>`
   &:hover {
     color: ${({ $variant }) =>
       getVariantColors($variant).controlForegroundHover};
+    background: ${({ $variant }) =>
+      getVariantColors($variant).controlHoverBackground};
+    border-color: ${({ $variant }) =>
+      getVariantColors($variant).controlHoverBackground};
     &::before {
-      background: ${({ $variant }) =>
-        getVariantColors($variant).controlHoverBackground};
-      border-color: ${({ $variant }) =>
-        getVariantColors($variant).controlHoverBackground};
+      background: transparent;
+      border-color: transparent;
     }
   }
 `;
