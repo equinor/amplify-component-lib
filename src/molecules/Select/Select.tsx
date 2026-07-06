@@ -14,6 +14,7 @@ import { SearchBar } from 'src/molecules/Select/SearchBar';
 import {
   LabelWrapper,
   PersistentComboBoxWrapper,
+  PersistentListScrollArea,
   PersistentStickyWrapper,
   StyledMenu,
 } from 'src/molecules/Select/Select.styles';
@@ -178,15 +179,17 @@ export const Select = <T extends SelectOptionRequired>(
               handleOnClear={handleOnClear}
             />
           </PersistentStickyWrapper>
-          {props.loading ? (
-            <>
-              <SelectItemSkeleton />
-              <SelectItemSkeleton />
-              <SelectItemSkeleton />
-            </>
-          ) : (
-            persistentListContent
-          )}
+          <PersistentListScrollArea>
+            {props.loading ? (
+              <>
+                <SelectItemSkeleton />
+                <SelectItemSkeleton />
+                <SelectItemSkeleton />
+              </>
+            ) : (
+              persistentListContent
+            )}
+          </PersistentListScrollArea>
         </PersistentComboBoxWrapper>
       </>
     );
