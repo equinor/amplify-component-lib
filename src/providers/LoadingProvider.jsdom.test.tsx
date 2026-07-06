@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { AuthState } from './AuthProvider/AuthProvider';
 import { LoadingProvider } from './LoadingProvider';
-import { render, screen } from 'src/tests/browsertest-utils';
+import { render, screen } from 'src/tests/jsdomtest-utils';
 
 const mocks = vi.hoisted(() => ({
   authState: 'loading' as AuthState,
@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('src/providers/AuthProvider/AuthProvider', () => ({
   useAuth: () => ({ authState: mocks.authState }),
-  // browsertest-utils imports AuthProvider from this module, so we must keep
+  // jsdomtest-utils imports AuthProvider from this module, so we must keep
   // the export available (as a simple pass-through) for the test graph to load.
   AuthProvider: ({ children }: { children: ReactNode }) => children,
 }));
