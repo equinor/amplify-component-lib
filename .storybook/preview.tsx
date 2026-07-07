@@ -23,7 +23,7 @@ import { sb } from 'storybook/test';
 import './index.css';
 
 // Register mocks
-sb.mock(import('../src/providers/AuthProvider/AuthProvider'), {
+sb.mock(import('../src/providers/AuthProvider/AuthProvider.tsx'), {
   spy: true,
 });
 
