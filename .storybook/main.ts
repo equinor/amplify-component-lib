@@ -9,9 +9,9 @@ const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-designs',
     '@storybook/addon-docs',
-    './addons/GitHubSearchAddon/manager.js',
-    './addons/ThemeAddon/manager.js',
-    './addons/SpacingsAddon/manager.js',
+    import.meta.resolve('./addons/GitHubSearchAddon/preset.js'),
+    import.meta.resolve('./addons/ThemeAddon/preset.js'),
+    import.meta.resolve('./addons/SpacingsAddon/preset.js'),
   ],
   core: {},
   framework: {
