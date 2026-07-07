@@ -283,6 +283,24 @@ const StyledMenuItem = styled(EDSMenu.Item)<CustomMenuItemProps>`
     outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
 
+  &:disabled {
+    cursor: not-allowed;
+    color: ${colors.interactive.disabled__text.rgba};
+
+    &:hover {
+      background: transparent;
+    }
+
+    > div,
+    > div * {
+      color: ${colors.interactive.disabled__text.rgba};
+    }
+
+    svg {
+      fill: ${colors.interactive.disabled__text.rgba};
+    }
+  }
+
   ${({ $selected }) =>
     $selected
       ? css`
@@ -346,6 +364,24 @@ const PersistentListItem = styled.button`
   &:focus-visible {
     outline: 2px dashed ${colors.interactive.primary__resting.rgba};
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: ${colors.interactive.disabled__text.rgba};
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &,
+    & * {
+      color: ${colors.interactive.disabled__text.rgba};
+    }
+
+    svg {
+      fill: ${colors.interactive.disabled__text.rgba};
+    }
+  }
 `;
 
 const MenuItemSpacer = styled.hr`
@@ -406,6 +442,14 @@ const smallSquare = css`
   width: 36px;
   height: 36px;
   flex-shrink: 0;
+
+  &:disabled {
+    cursor: not-allowed;
+
+    svg {
+      fill: ${colors.interactive.disabled__text.rgba};
+    }
+  }
 `;
 
 const SmallButton = styled(Button)`
