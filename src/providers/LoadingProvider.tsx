@@ -50,7 +50,7 @@ export const LoadingProvider: FC<LoadingProviderProps> = ({
    * where silent auth cannot complete), we render children so the consuming
    * app can show its own sign-in CTA wired to useAuth().login(). This matches
    * the transparent-render contract in AuthProvider.
-   * */
+   */
   if (authState === 'interactionRequired') {
     return children;
   }
@@ -58,7 +58,7 @@ export const LoadingProvider: FC<LoadingProviderProps> = ({
   /*
    * If the user isn't authorized, we can't show children
    * because all the requests would cause infinite rerenders
-   * */
+   */
   if (authState !== 'authorized') {
     return <FullPageSpinner variant="application" fixedPosition />;
   }

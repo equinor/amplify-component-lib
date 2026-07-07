@@ -20,7 +20,7 @@ const { msalApp, GRAPH_REQUESTS_LOGIN, GRAPH_REQUESTS_BACKEND } = auth;
 const { getIsMock, getMockUserPhoto, getMockRoles, getApiScope } = environment;
 
 interface ExtendedJwtPayload extends JwtPayload {
-  roles: string[];
+  roles?: string[];
 }
 
 export type AuthState =
@@ -175,10 +175,15 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         GRAPH_REQUESTS_BACKEND(apiScope)
       );
       const decoded: ExtendedJwtPayload = jwtDecode(backendToken.accessToken);
-      if (decoded.roles) {
+      // Mirror AuthProviderInner: a user without backend roles is
+      // authenticated but not authorized for the app.
+      if (decoded.roles && decoded.roles.length > 0) {
         setRoles(decoded.roles);
+        setAuthState('authorized');
+      } else {
+        setRoles(undefined);
+        setAuthState('unauthorized');
       }
-      setAuthState('authorized');
     } catch (error) {
       console.error(
         '[AuthProvider] Could not acquire roles after interactive login',

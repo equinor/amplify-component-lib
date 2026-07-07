@@ -105,9 +105,13 @@ const getAllowedParentDomains = (
   parentDomains: string | undefined
 ): string[] => {
   const raw = parentDomains ?? getConfig('ALLOWED_PARENT_DOMAINS') ?? '';
-  // Filter out empty entries so a trailing ';' or an unset variable does not
-  // produce a single empty-string origin that would match nothing.
-  return raw.split(';').filter((domain) => domain.trim().length > 0);
+  // Trim each entry and filter out empty ones so surrounding whitespace in a
+  // semicolon-separated list (or a trailing ';'/unset variable) does not
+  // produce origins that fail an exact `includes(event.origin)` match.
+  return raw
+    .split(';')
+    .map((domain) => domain.trim())
+    .filter((domain) => domain.length > 0);
 };
 
 /**

@@ -1,8 +1,18 @@
 import { ReactNode } from 'react';
 
+import { InteractionRequiredAuthError } from '@azure/msal-browser';
+
 import { AuthProvider, useAuth } from './AuthProvider';
 import { auth } from 'src/atoms/utils/auth_environment';
 import { render, screen, userEvent, waitFor } from 'src/tests/jsdomtest-utils';
+
+const mocks = vi.hoisted(() => ({
+  // Silent auth error surfaced by useMsalAuthentication. When this is an
+  // InteractionRequiredAuthError and we're in an iframe, AuthProviderInner
+  // transitions the context to `interactionRequired`.
+  error: undefined as unknown,
+  isInIframe: vi.fn<() => boolean>(() => false),
+}));
 
 // The jsdom setup (msalMock) replaces @azure/msal-browser with an empty stub
 // that lacks the enums AuthProviderInner imports (InteractionType, etc.). Use
@@ -26,10 +36,21 @@ vi.mock('@azure/msal-react', () => ({
   useMsalAuthentication: () => ({
     login: vi.fn(() => Promise.resolve()),
     result: undefined,
-    error: undefined,
+    error: mocks.error,
     acquireToken: vi.fn(() => Promise.resolve(null)),
   }),
 }));
+
+// Override isInIframe so we can drive AuthProviderInner into the
+// interactionRequired state; keep the rest of the module (incl. msalApp) real.
+vi.mock('src/atoms/utils/auth_environment', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('src/atoms/utils/auth_environment')>();
+  return {
+    ...actual,
+    auth: { ...actual.auth, isInIframe: () => mocks.isInIframe() },
+  };
+});
 
 vi.mock('jwt-decode', () => ({
   jwtDecode: () => ({ roles: ['admin'] }),
@@ -48,6 +69,8 @@ function Consumer() {
 beforeEach(() => {
   // Disable mock-auth mode so the real interactive login() path runs.
   vi.stubEnv('VITE_IS_MOCK', 'false');
+  mocks.error = undefined;
+  mocks.isInIframe.mockReturnValue(false);
 });
 
 afterEach(() => {
@@ -55,6 +78,12 @@ afterEach(() => {
 });
 
 test('login() transitions interactionRequired to authorized in place using mock MSAL', async () => {
+  // Drive the provider into interactionRequired: an iframe where silent auth
+  // surfaces InteractionRequiredAuthError. This is the exact state login() is
+  // meant to recover from.
+  mocks.isInIframe.mockReturnValue(true);
+  mocks.error = new InteractionRequiredAuthError();
+
   // The jsdom setup mocks @azure/msal-browser's PublicClientApplication as an
   // empty class, so we assign the interactive methods we need directly onto
   // the (real) msalApp instance that AuthProvider uses.
@@ -80,7 +109,10 @@ test('login() transitions interactionRequired to authorized in place using mock 
     </AuthProvider>
   );
 
-  expect(screen.getByText('state: loading')).toBeInTheDocument();
+  // Provider settles into interactionRequired before any interactive login.
+  await waitFor(() =>
+    expect(screen.getByText('state: interactionRequired')).toBeInTheDocument()
+  );
 
   await user.click(screen.getByText('sign in'));
 

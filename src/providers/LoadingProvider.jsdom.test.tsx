@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { AuthState } from './AuthProvider/AuthProvider';
+import type { AuthState } from './AuthProvider/AuthProvider';
 import { LoadingProvider } from './LoadingProvider';
 import { render, screen } from 'src/tests/jsdomtest-utils';
 
