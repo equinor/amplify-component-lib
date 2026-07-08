@@ -3,8 +3,8 @@ import { capitalize } from 'src/atoms';
 import { useListSelectItems } from 'src/molecules/Select/Select.hooks';
 import {
   GroupTitle,
-  NoItemsFoundText,
   NoTagFoundText,
+  PersistentNoItemsFoundText,
 } from 'src/molecules/Select/Select.styles';
 import {
   CustomMenuItemComponentProps,
@@ -40,7 +40,9 @@ export const ListSelectPersistent = <T extends SelectOptionRequired>(
   const { filteredItems } = useListSelectItems(props);
 
   if (filteredItems.length === 0 && (!props.onAddItem || search === '')) {
-    return <NoItemsFoundText>No items found</NoItemsFoundText>;
+    return (
+      <PersistentNoItemsFoundText>No items found</PersistentNoItemsFoundText>
+    );
   }
 
   const hasNestedItems = filteredItems.some(

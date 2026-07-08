@@ -10,6 +10,9 @@ import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
 
+// Persistent mode keeps an explicit item height so the empty state matches without layout shift
+const PERSISTENT_ITEM_HEIGHT = `calc(${spacings.medium} * 2 + 24px)`; // 2×spacings.medium padding + 24px line-height
+
 interface WrapperProps {
   $showBackgroundColor: boolean;
 }
@@ -336,6 +339,7 @@ const PersistentListItem = styled.button`
   padding: ${spacings.medium} ${spacings.medium};
   justify-content: flex-start;
   gap: ${spacings.small};
+  min-height: ${PERSISTENT_ITEM_HEIGHT};
   box-sizing: border-box;
   svg {
     flex-shrink: 0;
@@ -382,8 +386,19 @@ const NoTagFoundText = styled(Typography)`
   margin: ${spacings.medium};
 `;
 
-const NoItemsFoundText = styled(Typography)`
-  margin-left: ${spacings.medium};
+const NoItemsFoundText = styled(Typography).attrs({
+  group: 'navigation',
+  variant: 'menu_title',
+})`
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: ${spacings.medium};
+  box-sizing: border-box;
+`;
+
+const PersistentNoItemsFoundText = styled(NoItemsFoundText)`
+  min-height: ${PERSISTENT_ITEM_HEIGHT};
 `;
 
 const StyledMenu = styled(EDSMenu)`
@@ -428,6 +443,7 @@ export {
   StyledMenu,
   NoTagFoundText,
   NoItemsFoundText,
+  PersistentNoItemsFoundText,
   PlaceholderText,
   PersistentListItem,
   PersistentComboBoxWrapper,
