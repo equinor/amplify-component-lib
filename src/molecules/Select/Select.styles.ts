@@ -11,7 +11,7 @@ import { Chip } from 'src/molecules/Chip/Chip';
 import styled, { css } from 'styled-components';
 
 // Persistent mode keeps an explicit item height so the empty state matches without layout shift
-const PERSISTENT_ITEM_HEIGHT = '56px'; // PersistentListItem: 2×spacings.medium padding + 24px line-height
+const PERSISTENT_ITEM_HEIGHT = `calc(${spacings.medium} * 2 + 24px)`; // 2×spacings.medium padding + 24px line-height
 
 interface WrapperProps {
   $showBackgroundColor: boolean;
