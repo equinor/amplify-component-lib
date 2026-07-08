@@ -193,10 +193,18 @@ const Section = styled.section`
     }
     > .amplify-combo-box-chip {
       cursor: not-allowed;
-      background: ${colors.interactive.disabled__fill.rgba};
+      background: ${colors.interactive.disabled__fill.rgba} !important;
       color: ${colors.interactive.disabled__text.rgba};
-      > svg {
+      outline: 1px solid ${colors.interactive.disabled__border.rgba};
+
+      &:hover {
+        outline: 1px solid ${colors.interactive.disabled__border.rgba};
+      }
+
+      > .content > svg {
         fill: ${colors.interactive.disabled__text.rgba};
+        display: none;
+
         &:hover {
           cursor: not-allowed;
           background: none;
@@ -298,9 +306,11 @@ interface PersistentComboBoxWrapperProps {
 const PersistentComboBoxWrapper = styled.div<PersistentComboBoxWrapperProps>`
   position: relative;
   isolation: isolate;
+  display: flex;
+  flex-direction: column;
   border: 1px solid ${colors.ui.background__heavy.rgba};
   border-radius: ${shape.corners.borderRadius};
-  overflow: auto;
+  overflow: hidden;
   background-color: ${colors.ui.background__default.rgba};
   height: ${
     ({ $shouldShowLabel, $maxHeight }) => {
@@ -314,6 +324,12 @@ const PersistentStickyWrapper = styled.div`
   position: sticky;
   top: 0;
   z-index: 1;
+`;
+
+const PersistentListScrollArea = styled.div`
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
 `;
 
 const PersistentListItem = styled.button`
@@ -401,10 +417,18 @@ const MenuItemWrapper = styled.div`
   gap: ${spacings.small};
 `;
 
-const SmallButton = styled(Button)`
+const smallSquare = css`
   width: 36px;
   height: 36px;
   flex-shrink: 0;
+`;
+
+const SmallButton = styled(Button)`
+  ${smallSquare}
+`;
+
+const ChevronPlaceholder = styled.div`
+  ${smallSquare}
 `;
 
 export {
@@ -412,6 +436,7 @@ export {
   ClearButton,
   Container,
   PersistentGroupsWrapper,
+  PersistentListScrollArea,
   PersistentStickyWrapper,
   GroupTitle,
   MenuItemSpacer,
@@ -426,6 +451,7 @@ export {
   Section,
   MenuItemWrapper,
   SmallButton,
+  ChevronPlaceholder,
   StyledMenuItem,
   ValueText,
 };

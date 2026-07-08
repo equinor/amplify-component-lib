@@ -10,7 +10,6 @@ import {
   PersistentComboBox,
   PersistentComboBoxProps,
 } from './PersistentComboBox';
-import { spacings } from 'src/atoms';
 import {
   SelectedState,
   SelectOption,
@@ -88,6 +87,16 @@ const FAKE_ITEMS_WITH_CHILDREN = [
           .map((_, grandchildIndex) => ({
             label: `${faker.animal.fish()} (Grandchild ${childIndex + 1}.${grandchildIndex + 1})`,
             value: faker.string.uuid(),
+            ...(childIndex === 0 && grandchildIndex === 0
+              ? {
+                  children: new Array(2)
+                    .fill(0)
+                    .map((_, greatGrandchildIndex) => ({
+                      label: `${faker.animal.fish()} (Great-Grandchild ${childIndex + 1}.${grandchildIndex + 1}.${greatGrandchildIndex + 1})`,
+                      value: faker.string.uuid(),
+                    })),
+                }
+              : {}),
           })),
       })),
   },
@@ -226,8 +235,6 @@ export const SmallParent: Story = {
     <div
       style={{
         height: '500px',
-        padding: spacings.large,
-        backgroundColor: 'lightcyan',
       }}
     >
       <PersistentComboBoxWithState {...args} />
@@ -269,8 +276,6 @@ export const LargeParent: Story = {
     <div
       style={{
         height: '1000px',
-        padding: spacings.large,
-        backgroundColor: 'lightcyan',
       }}
     >
       <PersistentComboBoxWithState {...args} />
@@ -286,8 +291,6 @@ export const MaxHeight: Story = {
     <div
       style={{
         height: '1000px',
-        padding: spacings.large,
-        backgroundColor: 'lightcyan',
       }}
     >
       <PersistentComboBoxWithState {...args} />
