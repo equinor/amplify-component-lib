@@ -38,6 +38,94 @@ const menuItems: SideBarMenuItem[] = [
         name: 'Team favourites',
         to: '/team-favourites',
       },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites1',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites2',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites3',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites4',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites5',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites6',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites7',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites8',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites9',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites10',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites11',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites12',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites13',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites14',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites15',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites16',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites17',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites18',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites19',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites20',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites21',
+      },
+      {
+        name: 'Team favourites',
+        to: '/team-favourites22',
+      },
     ],
   },
   {
