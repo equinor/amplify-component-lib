@@ -118,7 +118,9 @@ export const WithDescription: Story = {
   },
   play: async ({ canvas, args }) => {
     await expect(canvas.getByText(args.title)).toBeInTheDocument();
-    await expect(canvas.getByText(args.description!)).toBeInTheDocument();
+    await expect(
+      canvas.getByText(args.description?.toString() ?? '')
+    ).toBeInTheDocument();
   },
 };
 
