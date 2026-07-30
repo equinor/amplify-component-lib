@@ -147,7 +147,9 @@ export const AdvancedToastButton: Story = {
     });
     await userEvent.click(button);
     await expect(canvas.getByText(args.title)).toBeInTheDocument();
-    await expect(canvas.getByText(args.description!)).toBeInTheDocument();
+    await expect(
+      canvas.getByText(args.description?.toString() ?? '')
+    ).toBeInTheDocument();
     const actionButton = canvas.getByRole('button', {
       name: args.action!.text,
     });
