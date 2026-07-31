@@ -1,8 +1,9 @@
-import { tokens } from '@equinor/eds-tokens';
 import { typographyTemplate } from '@equinor/eds-utils';
 
-import { elevation } from 'src/atoms';
-import { TooltipPlacement } from 'src/molecules/OptionalTooltip/Tooltip.tsx';
+import { elevation, shape, typography } from 'src/atoms/style';
+import { colors } from 'src/atoms/style/colors';
+import { spacings } from 'src/atoms/style/spacings';
+import { TooltipPlacement } from 'src/molecules/OptionalTooltip/Tooltip';
 
 import styled, { css } from 'styled-components';
 
@@ -35,15 +36,15 @@ export const TooltipWrapper = styled.div<TooltipWrapperProps>`
 
   /* custom popover styles */
   //has to be set before color to not override the color tokens
-  ${typographyTemplate(tokens.typography.ui.tooltip)}
+  ${typographyTemplate(typography.ui.tooltip)}
 
   min-width: 56px;
   max-width: 280px;
-  background-color: #3d3d3d;
+  background-color: ${colors.text.static_icons__default.rgba};
   box-shadow: ${elevation.raised};
-  border-radius: 4px;
-  color: #ffffff;
-  padding: 8px;
+  border-radius: ${shape.corners.borderRadius};
+  color: ${colors.text.static_icons__primary_white.rgba};
+  padding: ${spacings.small};
   text-align: center;
 
   &::before {

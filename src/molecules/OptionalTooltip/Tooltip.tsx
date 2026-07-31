@@ -72,9 +72,7 @@ export const Tooltip: FC<TooltipProps> = ({
     showTimer.current = setTimeout(() => {
       if (!tooltipRef.current?.matches(':popover-open')) {
         tooltipRef.current?.showPopover();
-        requestAnimationFrame(() => {
-          updateResolvedPlacement();
-        });
+        requestAnimationFrame(updateResolvedPlacement);
       }
       showTimer.current = null;
     }, enterDelay);
