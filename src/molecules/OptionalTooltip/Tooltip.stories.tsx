@@ -3,7 +3,7 @@ import { folder } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Tooltip } from 'src/molecules/OptionalTooltip/Tooltip.tsx';
+import { Tooltip } from 'src/molecules/OptionalTooltip/Tooltip';
 
 import { expect, screen, userEvent } from 'storybook/test';
 

@@ -5,7 +5,7 @@ import {
   LeftAlignedText,
   TooltipWrapper,
   Wrapper,
-} from 'src/molecules/OptionalTooltip/Tooltip.styles.ts';
+} from 'src/molecules/OptionalTooltip/Tooltip.styles';
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
@@ -21,15 +21,16 @@ export const Tooltip: FC<TooltipProps> = ({
   title,
   children,
   ref,
-  disabled,
+  disabled = false,
   placement = 'top',
   enterDelay = 0,
   exitDelay = 300,
+  ...rest
 }) => {
-  const uid = useId();
+  const uid = useId().replace(/:/g, '');
 
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const anchorRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -101,6 +102,7 @@ export const Tooltip: FC<TooltipProps> = ({
       onBlur={hide}
       $anchor={`--tooltip-${uid}`}
       ref={anchorRef}
+      {...rest}
     >
       {children}
       <TooltipWrapper

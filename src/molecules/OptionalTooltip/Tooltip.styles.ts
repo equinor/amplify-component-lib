@@ -3,7 +3,7 @@ import { typographyTemplate } from '@equinor/eds-utils';
 import { elevation, shape, typography } from 'src/atoms/style';
 import { colors } from 'src/atoms/style/colors';
 import { spacings } from 'src/atoms/style/spacings';
-import { TooltipPlacement } from 'src/molecules/OptionalTooltip/Tooltip';
+import type { TooltipPlacement } from 'src/molecules/OptionalTooltip/Tooltip';
 
 import styled, { css } from 'styled-components';
 
@@ -122,6 +122,7 @@ export const TooltipWrapper = styled.div<TooltipWrapperProps>`
         return css`
           position-area: right;
           left: ${TOOLTIP_DISTANCE};
+          position-try-fallbacks: flip-inline;
         `;
     }
   }})
