@@ -128,6 +128,11 @@ export const LinkButton: Story = {
   name: 'Button as a link',
 };
 
+export const CustomContentIcon: Story = {
+  render: () => <IconButton icon={<div>test</div>} />,
+  name: 'Custom content as icon',
+};
+
 export const TestLoadingState: Story = {
   tags: ['test-only'],
   args: {
