@@ -7,6 +7,7 @@ import { Stack } from 'src/storybook';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect, fn, userEvent } from 'storybook/test';
+import styled from 'styled-components';
 
 const meta: Meta<typeof IconButton> = {
   title: 'Molecules/IconButton',
@@ -128,8 +129,15 @@ export const LinkButton: Story = {
   name: 'Button as a link',
 };
 
+const Dot = styled.span`
+  background: red;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+`;
+
 export const CustomContentIcon: Story = {
-  render: () => <IconButton icon={<div>test</div>} />,
+  render: () => <IconButton icon={<Dot />} />,
   name: 'Custom content as icon',
 };
 

@@ -73,12 +73,12 @@ const BaseButton: FC<BaseButtonProps> = ({
 
 const ButtonLink = createLink(BaseButton);
 
-export interface ButtonProps<
+export type ButtonProps<
   TRouter extends RegisteredRouter = RegisteredRouter,
   TOptions = unknown,
-> extends BaseButtonProps {
+> = BaseButtonProps & {
   linkOptions?: ValidateLinkOptions<TRouter, TOptions>;
-}
+};
 
 export function Button<TRouter extends RegisteredRouter, TOptions>(
   props: ButtonProps<TRouter, TOptions>
