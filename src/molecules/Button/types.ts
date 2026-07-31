@@ -16,4 +16,7 @@ export type CommonButtonProps = {
   ref?: Ref<HTMLButtonElement>;
   as?: ElementType;
 } & ButtonHTMLAttributes<HTMLButtonElement> &
-  AnchorHTMLAttributes<HTMLAnchorElement>;
+  Omit<
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    keyof ButtonHTMLAttributes<HTMLButtonElement>
+  >;
