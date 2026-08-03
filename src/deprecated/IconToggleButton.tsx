@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
-import { Tooltip, TooltipProps } from '@equinor/eds-core-react';
+import { Tooltip as EdsTooltip, TooltipProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
 type Placement = TooltipProps['placement'];
@@ -45,23 +45,23 @@ const IconToggleButton = forwardRef<HTMLButtonElement, IconToggleButtonProps>(
     };
 
     return toggle ? (
-      <Tooltip
+      <EdsTooltip
         title={toggleOn.tooltip?.title}
         placement={toggleOn.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOff}>
           <Icon size={24} data={toggleOn.icon} />
         </Button>
-      </Tooltip>
+      </EdsTooltip>
     ) : (
-      <Tooltip
+      <EdsTooltip
         title={toggleOff.tooltip?.title}
         placement={toggleOff.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOn}>
           <Icon size={24} data={toggleOff.icon} />
         </Button>
-      </Tooltip>
+      </EdsTooltip>
     );
   }
 );
