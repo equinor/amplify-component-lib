@@ -1,6 +1,7 @@
 import { FC, MouseEvent, useRef, useState } from 'react';
 
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import {
   account_circle,
   check,
@@ -18,7 +19,6 @@ import {
 } from './UserImpersonation.styles';
 import { colors } from 'src/atoms/style/colors';
 import { ListItem } from 'src/molecules/ListItem/ListItem';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 
 import styled from 'styled-components';
@@ -93,15 +93,15 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
           color={colors.text.static_icons__tertiary.rgba}
           data={account_circle}
         />
-        <OptionalTooltip title={fullName} placement="top">
+        <Tooltip title={fullName} placement="top">
           <Typography data-testid="name">{fullName}</Typography>
-        </OptionalTooltip>
+        </Tooltip>
         <RoleChipContainer $selected={selected}>
-          <OptionalTooltip title={activeRoles.at(0)?.label} placement="top">
+          <Tooltip title={activeRoles.at(0)?.label} placement="top">
             <RoleChip data-testid="role">{activeRoles[0].label}</RoleChip>
-          </OptionalTooltip>
+          </Tooltip>
           {activeRoles.length > 1 && (
-            <OptionalTooltip
+            <Tooltip
               title={activeRoles
                 .slice(1)
                 .map((role) => role.label)
@@ -110,7 +110,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
               <RoleChip data-testid="additional-roles">
                 {`+${activeRoles.length - 1}`}
               </RoleChip>
-            </OptionalTooltip>
+            </Tooltip>
           )}
         </RoleChipContainer>
         {selected && (
@@ -136,7 +136,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
             onClick={handleOnEditUser}
             leadingContent={edit}
           />
-          <OptionalTooltip
+          <Tooltip
             title={
               activeUsers.length > 0
                 ? 'Cannot delete user with active sessions'
@@ -149,7 +149,7 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
               disabled={activeUsers.length > 0}
               leadingContent={delete_to_trash}
             />
-          </OptionalTooltip>
+          </Tooltip>
         </Menu>
       )}
     </>

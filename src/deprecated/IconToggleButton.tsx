@@ -1,23 +1,10 @@
 import { forwardRef, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
+import { Tooltip, TooltipProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
-
-type Placement =
-  | 'top'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'right'
-  | 'right-start'
-  | 'right-end'
-  | 'left'
-  | 'left-start'
-  | 'left-end';
+type Placement = TooltipProps['placement'];
 
 interface Tooltip {
   title: string;
@@ -58,23 +45,23 @@ const IconToggleButton = forwardRef<HTMLButtonElement, IconToggleButtonProps>(
     };
 
     return toggle ? (
-      <OptionalTooltip
+      <Tooltip
         title={toggleOn.tooltip?.title}
         placement={toggleOn.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOff}>
           <Icon size={24} data={toggleOn.icon} />
         </Button>
-      </OptionalTooltip>
+      </Tooltip>
     ) : (
-      <OptionalTooltip
+      <Tooltip
         title={toggleOff.tooltip?.title}
         placement={toggleOff.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOn}>
           <Icon size={24} data={toggleOff.icon} />
         </Button>
-      </OptionalTooltip>
+      </Tooltip>
     );
   }
 );

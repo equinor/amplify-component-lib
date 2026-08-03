@@ -1,10 +1,10 @@
 import { forwardRef, HTMLAttributes } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 
 import { ToggleGroupOption as ToggleGroupOptionType } from './ToggleGroup.types';
 import { colors, shape, spacings } from 'src/atoms/style';
-import { Tooltip } from 'src/molecules';
 
 import styled from 'styled-components';
 
