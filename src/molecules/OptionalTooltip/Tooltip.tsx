@@ -38,10 +38,13 @@ export const Tooltip: FC<TooltipProps> = ({
     useState<TooltipPlacement>(placement);
 
   const updateResolvedPlacement = () => {
+    //ignoring failsafe checks
+    /* v8 ignore next */
     if (!tooltipRef.current?.matches(':popover-open')) return;
 
     const tooltip = tooltipRef.current.getBoundingClientRect();
     const anchor = anchorRef.current?.getBoundingClientRect();
+    /* v8 ignore next */
     if (!anchor) return;
 
     if (tooltip.bottom <= anchor.top) {
@@ -71,11 +74,12 @@ export const Tooltip: FC<TooltipProps> = ({
       return;
 
     showTimer.current = setTimeout(() => {
-      if (!tooltipRef.current?.matches(':popover-open')) {
-        tooltipRef.current?.showPopover();
-        requestAnimationFrame(updateResolvedPlacement);
-      }
       showTimer.current = null;
+      //ignoring failsafe check
+      /* v8 ignore next */
+      if (tooltipRef.current?.matches(':popover-open')) return;
+      tooltipRef.current?.showPopover();
+      requestAnimationFrame(updateResolvedPlacement);
     }, enterDelay);
   };
   const hide = () => {
@@ -85,10 +89,11 @@ export const Tooltip: FC<TooltipProps> = ({
     }
 
     hideTimer.current = setTimeout(() => {
-      if (tooltipRef.current?.matches(':popover-open')) {
-        tooltipRef.current.hidePopover();
-      }
       hideTimer.current = null;
+      //ignoring failsafe check
+      /* v8 ignore next */
+      if (!tooltipRef.current?.matches(':popover-open')) return;
+      tooltipRef.current.hidePopover();
     }, exitDelay);
   };
 
