@@ -5,7 +5,7 @@ import { LeftAlignedText, TooltipWrapper, Wrapper } from './Tooltip.styles';
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-type TooltipProps = {
+export type TooltipProps = {
   title?: ReactNode;
   placement?: TooltipPlacement;
   disabled?: boolean;
