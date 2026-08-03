@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 
-import { TooltipProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
 import { ToggleGroupOption } from './ToggleGroupOption';
+import type { TooltipProps } from 'src/molecules';
 
 interface ToggleGroupOptionWithLabel {
   label: string;
