@@ -1,9 +1,9 @@
 import { typographyTemplate } from '@equinor/eds-utils';
 
+import type { TooltipPlacement } from './Tooltip';
 import { elevation, shape, typography } from 'src/atoms/style';
 import { colors } from 'src/atoms/style/colors';
 import { spacings } from 'src/atoms/style/spacings';
-import type { TooltipPlacement } from 'src/molecules/OptionalTooltip/Tooltip';
 
 import styled, { css } from 'styled-components';
 

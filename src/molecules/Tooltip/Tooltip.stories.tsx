@@ -5,7 +5,7 @@ import { folder } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Tooltip } from 'src/molecules/OptionalTooltip/Tooltip';
+import { Tooltip } from './Tooltip';
 
 import { expect, fn, screen, userEvent } from 'storybook/test';
 

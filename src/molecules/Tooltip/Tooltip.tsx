@@ -1,11 +1,7 @@
 import type { ComponentPropsWithRef, FC } from 'react';
 import { ReactNode, useId, useRef, useState } from 'react';
 
-import {
-  LeftAlignedText,
-  TooltipWrapper,
-  Wrapper,
-} from 'src/molecules/OptionalTooltip/Tooltip.styles';
+import { LeftAlignedText, TooltipWrapper, Wrapper } from './Tooltip.styles';
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
