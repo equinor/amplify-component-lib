@@ -151,6 +151,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
               $maxHeight={maxHeight}
               $minHeight={minHeight}
             />
+            <div>test</div>
           </EditorStyling>
           {helperText && (
             <HelperWrapper>

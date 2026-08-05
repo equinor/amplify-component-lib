@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactElement } from 'react';
+import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
 interface BaseSideSheetProps {
   open: boolean;
@@ -6,7 +6,7 @@ interface BaseSideSheetProps {
   title: string;
   headerElements?: ReactElement | ReactElement[];
   width?: number | undefined;
-  children: ReactElement | ReactElement[];
+  children: ReactNode;
 }
 
 interface StandardSideSheetProps extends BaseSideSheetProps {
