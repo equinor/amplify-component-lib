@@ -11,6 +11,7 @@ import {
   IconButton,
   OptionalTooltip,
   ProfileAvatar,
+  RichTextDisplay,
 } from 'src/molecules';
 import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
 
@@ -68,6 +69,7 @@ const LeftSide = styled.div`
 `;
 const RightSide = styled.div`
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   gap: ${spacings.small};
 `;
@@ -151,7 +153,7 @@ export const Comment: FC<CommentProps> = ({
               </Actions>
             )}
           </Header>
-          {text}
+          <RichTextDisplay value={text} padding="none" />
         </RightSide>
       </Wrapper>
       <Dialog

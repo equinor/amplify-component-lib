@@ -1,3 +1,4 @@
+import { Button } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
 import Counter from './custom-extensions/Counter';
@@ -37,6 +38,30 @@ export default meta;
 
 export const Primary: StoryFn<RichTextEditorProps> = (args) => {
   return <RichTextEditor {...args} />;
+};
+
+export const WithFooter: StoryFn<RichTextEditorProps> = (args) => {
+  return (
+    <RichTextEditor
+      {...args}
+      footer={
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '0.5rem',
+          }}
+        >
+          <Button variant="ghost" onClick={() => console.log('Cancel')}>
+            Cancel
+          </Button>
+          <Button variant="outlined" onClick={() => console.log('Update')}>
+            Update
+          </Button>
+        </div>
+      }
+    />
+  );
 };
 
 export const AutoHeight: StoryFn<RichTextEditorProps> = (args) => {

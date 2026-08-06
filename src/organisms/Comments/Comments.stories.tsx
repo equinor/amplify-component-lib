@@ -25,6 +25,14 @@ const CommentsStory = () => {
       id: faker.string.uuid(),
       text: faker.lorem.paragraph(),
       timestamp: faker.date.recent(),
+      editAction: {
+        disabled: true,
+        disabledReason: 'You cannot edit this comment',
+      },
+      deleteAction: {
+        disabled: true,
+        disabledReason: 'You cannot delete this comment',
+      },
       author: {
         id: faker.internet.username(),
         name: faker.person.fullName({ sex: 'male' }),
@@ -35,6 +43,14 @@ const CommentsStory = () => {
       id: faker.string.uuid(),
       text: faker.lorem.paragraph(),
       timestamp: faker.date.recent(),
+      editAction: {
+        disabled: true,
+        disabledReason: 'You cannot edit this comment',
+      },
+      deleteAction: {
+        disabled: true,
+        disabledReason: 'You cannot delete this comment',
+      },
       author: {
         id: faker.internet.username(),
         name: faker.person.fullName({ sex: 'male' }),
@@ -62,7 +78,9 @@ const CommentsStory = () => {
         ]);
       }}
       onEditComment={() => {}}
-      onDeleteComment={() => {}}
+      onDeleteComment={(commentId) => {
+        setComments((prev) => prev.filter((c) => c.id !== commentId));
+      }}
       title="Comments"
       open
       type="modal"

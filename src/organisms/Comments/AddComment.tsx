@@ -37,8 +37,25 @@ export const AddComment: FC<AddCommentProps> = ({ addComment }) => {
         value={comment}
         onChange={setComment}
         lightBackground
-        maxHeight="180px"
-        minHeight="180px"
+        maxHeight="130px"
+        minHeight="130px"
+        footer={
+          <div
+            style={{
+              display: 'flex',
+            }}
+          >
+            <IconButton
+              style={{ marginLeft: 'auto' }}
+              variant="ghost"
+              icon={send}
+              onClick={() => {
+                addComment(comment);
+                setComment('');
+              }}
+            />
+          </div>
+        }
         removeFeatures={[
           RichTextEditorFeatures.ALIGNMENT,
           RichTextEditorFeatures.IMAGES,
@@ -63,20 +80,6 @@ export const AddComment: FC<AddCommentProps> = ({ addComment }) => {
         >
           Type @ to mention team members.
         </Typography>
-        {/*        <div
-          style={{
-            marginLeft: 'auto',
-          }}
-        >
-          <IconButton
-            variant="ghost"
-            icon={send}
-            onClick={() => {
-              addComment(comment);
-              setComment('');
-            }}
-          />
-        </div>*/}
       </InfoWrapper>
     </Wrapper>
   );

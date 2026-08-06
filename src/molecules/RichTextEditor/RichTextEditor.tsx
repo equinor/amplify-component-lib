@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 
@@ -7,6 +7,8 @@ import { EditorProvider } from './EditorProvider';
 import {
   EditorContent,
   EditorStyling,
+  FieldWrapper,
+  FooterContent,
   HelperWrapper,
   LabelWrapper,
   Wrapper,
@@ -44,6 +46,7 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
   label?: string;
   meta?: string;
   helperText?: string;
+  footer?: ReactNode;
 }
 
 /**
@@ -90,6 +93,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   label,
   meta,
   helperText,
+  footer,
 }) => {
   if (onImageRemove && onRemovedImagesChange) {
     throw new Error(
@@ -140,18 +144,28 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
             $lightBackground={lightBackground}
             $highlighted={highlighted}
             $variant={variant}
+            $hasFooter={!!footer}
           >
             <AmplifyBar
               editor={editor}
               features={usedFeatured}
               onImageUpload={onImageUpload}
             />
-            <EditorContent
-              editor={editor}
-              $maxHeight={maxHeight}
-              $minHeight={minHeight}
-            />
-            <div>test</div>
+            <FieldWrapper
+              $hasFooter={!!footer}
+              $lightBackground={lightBackground}
+              $highlighted={highlighted}
+              $variant={variant}
+            >
+              <EditorContent
+                editor={editor}
+                $maxHeight={maxHeight}
+                $minHeight={minHeight}
+              />
+              {footer && (
+                <FooterContent $padding={padding}>{footer}</FooterContent>
+              )}
+            </FieldWrapper>
           </EditorStyling>
           {helperText && (
             <HelperWrapper>

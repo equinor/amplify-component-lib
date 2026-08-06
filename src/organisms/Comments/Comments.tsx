@@ -28,6 +28,7 @@ const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacings.medium};
+  overflow: auto;
 `;
 
 export const Comments: FC<CommentsProps> = ({
