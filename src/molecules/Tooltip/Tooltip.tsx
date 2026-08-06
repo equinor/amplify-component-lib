@@ -2,8 +2,13 @@ import type { ComponentPropsWithRef, FC } from 'react';
 import { ReactNode, useId, useRef, useState } from 'react';
 
 import { LeftAlignedText, TooltipWrapper, Wrapper } from './Tooltip.styles';
+import { getResolvedPlacement } from 'src/molecules/Tooltip/utils';
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
+export interface Arrow {
+  placement: TooltipPlacement;
+  offset: { x?: number; y?: number };
+}
 
 export type TooltipProps = {
   title?: ReactNode;
@@ -30,8 +35,10 @@ export const Tooltip: FC<TooltipProps> = ({
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [arrowPlacement, setArrowPlacement] =
-    useState<TooltipPlacement>(placement);
+  const [arrow, setArrow] = useState<Arrow>({
+    placement,
+    offset: { x: undefined, y: undefined },
+  });
 
   const updateResolvedPlacement = () => {
     //ignoring failsafe checks
@@ -43,14 +50,29 @@ export const Tooltip: FC<TooltipProps> = ({
     /* v8 ignore next */
     if (!anchor) return;
 
-    if (tooltip.bottom <= anchor.top) {
-      setArrowPlacement('top');
-    } else if (tooltip.top >= anchor.bottom) {
-      setArrowPlacement('bottom');
-    } else if (tooltip.right <= anchor.left) {
-      setArrowPlacement('left');
+    const resolved = getResolvedPlacement(tooltip, anchor);
+
+    const ARROW_PADDING = 12;
+    if (resolved === 'top' || resolved === 'bottom') {
+      const anchorCenterX = anchor.left + anchor.width / 2;
+      const x = Math.max(
+        ARROW_PADDING,
+        Math.min(anchorCenterX - tooltip.left, tooltip.width - ARROW_PADDING)
+      );
+      setArrow({
+        placement: resolved,
+        offset: { x },
+      });
     } else {
-      setArrowPlacement('right');
+      const anchorCenterY = anchor.top + anchor.height / 2;
+      const y = Math.max(
+        ARROW_PADDING,
+        Math.min(anchorCenterY - tooltip.top, tooltip.height - ARROW_PADDING)
+      );
+      setArrow({
+        placement: resolved,
+        offset: { y },
+      });
     }
   };
 
@@ -112,7 +134,7 @@ export const Tooltip: FC<TooltipProps> = ({
         popover="hint"
         $anchor={`--tooltip-${uid}`}
         $placement={placement}
-        $arrowPlacement={arrowPlacement}
+        $arrow={arrow}
       >
         {typeof title === 'string' ? (
           <LeftAlignedText>{title}</LeftAlignedText>

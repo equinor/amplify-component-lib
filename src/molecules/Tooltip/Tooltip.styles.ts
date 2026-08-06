@@ -1,6 +1,6 @@
 import { typographyTemplate } from '@equinor/eds-utils';
 
-import type { TooltipPlacement } from './Tooltip';
+import type { Arrow, TooltipPlacement } from './Tooltip';
 import { elevation, shape, typography } from 'src/atoms/style';
 import { colors } from 'src/atoms/style/colors';
 import { spacings } from 'src/atoms/style/spacings';
@@ -21,7 +21,7 @@ export const Wrapper = styled.span<TooltipProps>`
 interface TooltipWrapperProps {
   $anchor: string;
   $placement: TooltipPlacement;
-  $arrowPlacement: TooltipPlacement;
+  $arrow: Arrow;
 }
 
 export const TooltipWrapper = styled.div<TooltipWrapperProps>`
@@ -54,7 +54,7 @@ export const TooltipWrapper = styled.div<TooltipWrapperProps>`
     background: inherit;
     margin: inherit;
     ${(props) => {
-      switch (props.$arrowPlacement) {
+      switch (props.$arrow.placement) {
         case 'top':
           return css`
             inset: 0 0 -${ARROW_SIZE} 0;
@@ -73,29 +73,38 @@ export const TooltipWrapper = styled.div<TooltipWrapperProps>`
           `;
       }
     }}
-    /* prettier-ignore */
-    clip-path: polygon(
-      /* top */
-      calc(50% - ${ARROW_SIZE}) ${ARROW_SIZE},
-      50% 0,
-      50% 0,
-      calc(50% + ${ARROW_SIZE}) ${ARROW_SIZE},
-      /* right */
-      calc(100% - ${ARROW_SIZE}) calc(50% - ${ARROW_SIZE}),
-      100% 50%,
-      100% 50%,
-      calc(100% - ${ARROW_SIZE}) calc(50% + ${ARROW_SIZE}),
-      /* bottom */
-      calc(50% + ${ARROW_SIZE}) calc(100% - ${ARROW_SIZE}),
-      50% 100%,
-      50% 100%,
-      calc(50% - ${ARROW_SIZE}) calc(100% - ${ARROW_SIZE}),
-      /* left */
-      ${ARROW_SIZE} calc(50% + ${ARROW_SIZE}),
-      0 50%,
-      0 50%,
-      ${ARROW_SIZE} calc(50% - ${ARROW_SIZE})
-    );
+
+    ${({ $arrow: { offset } }) => {
+      const x = offset.x ? `${offset.x}px` : '50%';
+      const y = offset.y ? `${offset.y}px` : '50%';
+      /* prettier-ignore */
+      return css`
+        clip-path: polygon(
+          /* top */ 
+          calc(${x} - ${ARROW_SIZE}) ${ARROW_SIZE},
+          ${x} 0,
+          ${x} 0,
+          calc(${x} + ${ARROW_SIZE}) ${ARROW_SIZE},
+          /* right */ 
+          calc(100% - ${ARROW_SIZE})
+          calc(${y} - ${ARROW_SIZE}),
+          100% ${y},
+          100% ${y},
+          calc(100% - ${ARROW_SIZE}) calc(${y} + ${ARROW_SIZE}),
+          /* bottom */ 
+          calc(${x} + ${ARROW_SIZE})
+          calc(100% - ${ARROW_SIZE}),
+          ${x} 100%,
+          ${x} 100%,
+          calc(${x} - ${ARROW_SIZE}) calc(100% - ${ARROW_SIZE}),
+          /* left */ 
+          ${ARROW_SIZE} calc(${y} + ${ARROW_SIZE}),
+          0 ${y},
+          0 ${y},
+          ${ARROW_SIZE} calc(${y} - ${ARROW_SIZE})
+        );
+      `;
+    }};
   }
 
   ${(props) => {
