@@ -53,8 +53,8 @@ export const TooltipWrapper = styled.div<TooltipWrapperProps>`
     z-index: -1;
     background: inherit;
     margin: inherit;
-    ${(props) => {
-      switch (props.$arrow.placement) {
+    ${({ $arrow }) => {
+      switch ($arrow.placement) {
         case 'top':
           return css`
             inset: 0 0 -${ARROW_SIZE} 0;
