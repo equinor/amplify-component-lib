@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { Extensions } from '@tiptap/react';
 
 import { AmplifyBar } from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
@@ -47,6 +48,7 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
   meta?: string;
   helperText?: string;
   footer?: ReactNode;
+  extensions?: Extensions;
 }
 
 /**
@@ -71,6 +73,8 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
  * @param label - Label text at top left
  * @param meta - Meta text at top right
  * @param helperText - Helper text bottom left
+ * @param footer - Custom footer content to display on bottom of editor
+ * @param extensions - Extensions for the editor
  */
 export const RichTextEditor: FC<RichTextEditorProps> = ({
   value,
@@ -94,6 +98,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   meta,
   helperText,
   footer,
+  extensions,
 }) => {
   if (onImageRemove && onRemovedImagesChange) {
     throw new Error(
@@ -120,6 +125,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
       onImageRead={onImageRead}
       onImageRemove={onImageRemove}
       onRemovedImagesChange={onRemovedImagesChange}
+      extensions={extensions}
     >
       {(editor) => (
         <Wrapper

@@ -8,6 +8,11 @@ import { Divider } from 'src/organisms/TopBar/Notifications/NotificationsTemplat
 
 import { styled } from 'styled-components';
 
+export interface User {
+  displayName: string;
+  shortName?: string;
+}
+
 type CommentsProps = {
   comments: CommentData[];
   readonly?: boolean;
@@ -16,6 +21,7 @@ type CommentsProps = {
   onDeleteComment: (commentId: string) => void;
   subHeaderElements?: ReactNode;
   commentActions?: ReactNode;
+  users?: User[];
 } & Omit<SideSheetProps, 'children'>;
 
 const StyledDivider = styled(Divider)`
@@ -38,6 +44,7 @@ export const Comments: FC<CommentsProps> = ({
   onAddComment,
   onEditComment,
   readonly,
+  users,
   ...sideSheetProps
 }) => {
   const commentsContainer = useRef<HTMLDivElement>(null);
@@ -68,10 +75,11 @@ export const Comments: FC<CommentsProps> = ({
             onDelete={onDeleteComment}
             readonly={readonly}
             onEdit={onEditComment}
+            users={users}
           />
         ))}
       </CommentsContainer>
-      {!readonly && <AddComment addComment={onAddComment} />}
+      {!readonly && <AddComment addComment={onAddComment} users={users} />}
     </SideSheet>
   );
 };

@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { delete_forever, edit } from '@equinor/eds-icons';
+import Mention from '@tiptap/extension-mention';
 
-import { formatDateTime } from 'src/atoms';
+import { formatDateTime, useAmplifyKit } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
 import {
   Button,
+  DEFAULT_FEATURES,
   IconButton,
   OptionalTooltip,
   ProfileAvatar,
@@ -15,8 +17,10 @@ import {
   RichTextEditor,
   RichTextEditorFeatures,
 } from 'src/molecules';
+import { User } from 'src/organisms/Comments/Comments.tsx';
 import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation.tsx';
 import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
+import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions.ts';
 
 import { styled } from 'styled-components';
 
@@ -64,6 +68,7 @@ interface CommentProps {
   readonly?: boolean;
   onDelete: (id: string) => void;
   onEdit: ({ id, text }: { id: string; text: string }) => void;
+  users?: User[];
 }
 
 const LeftSide = styled.div`
@@ -104,7 +109,12 @@ export const Comment: FC<CommentProps> = ({
   onDelete,
   onEdit,
   readonly,
+  users,
 }) => {
+  const defaultExtensions = useAmplifyKit({
+    features: DEFAULT_FEATURES,
+  });
+
   const commentContainer = useRef<HTMLDivElement>(null);
   const [text, setText] = useState(comment.text);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -216,9 +226,29 @@ export const Comment: FC<CommentProps> = ({
                 RichTextEditorFeatures.TEXT_COLOR,
                 RichTextEditorFeatures.CODE,
               ]}
+              extensions={[
+                Mention.configure({
+                  HTMLAttributes: {
+                    class: 'mention',
+                  },
+                  suggestions: getSuggestions(users || []),
+                }),
+              ]}
             />
           ) : (
-            <RichTextDisplay value={comment.text} padding="none" />
+            <RichTextDisplay
+              value={comment.text}
+              padding="none"
+              extensions={[
+                defaultExtensions,
+                Mention.configure({
+                  HTMLAttributes: {
+                    class: 'mention',
+                  },
+                  suggestions: getSuggestions(users || []),
+                }),
+              ]}
+            />
           )}
         </RightSide>
       </Wrapper>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle, send } from '@equinor/eds-icons';
+import Mention from '@tiptap/extension-mention';
 
 import { colors, spacings } from 'src/atoms/style';
 import {
@@ -10,11 +11,14 @@ import {
   RichTextEditor,
   RichTextEditorFeatures,
 } from 'src/molecules';
+import { User } from 'src/organisms/Comments/Comments.tsx';
+import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions.ts';
 
 import styled from 'styled-components';
 
 interface AddCommentProps {
   addComment: (text: string) => void;
+  users?: User[];
 }
 
 const Wrapper = styled.div`
@@ -29,7 +33,7 @@ const InfoWrapper = styled.div`
   padding: ${spacings.x_small} ${spacings.small};
 `;
 
-export const AddComment: FC<AddCommentProps> = ({ addComment }) => {
+export const AddComment: FC<AddCommentProps> = ({ addComment, users }) => {
   const [comment, setComment] = useState('');
   return (
     <Wrapper>
@@ -66,21 +70,31 @@ export const AddComment: FC<AddCommentProps> = ({ addComment }) => {
           RichTextEditorFeatures.TEXT_COLOR,
           RichTextEditorFeatures.CODE,
         ]}
+        extensions={[
+          Mention.configure({
+            HTMLAttributes: {
+              class: 'mention',
+            },
+            suggestions: getSuggestions(users || []),
+          }),
+        ]}
       />
-      <InfoWrapper>
-        <Icon
-          color={colors.text.static_icons__tertiary.rgba}
-          data={info_circle}
-          size={16}
-        />
-        <Typography
-          group="input"
-          variant="label"
-          color={colors.text.static_icons__tertiary.rgba}
-        >
-          Type @ to mention team members.
-        </Typography>
-      </InfoWrapper>
+      {users?.length && (
+        <InfoWrapper>
+          <Icon
+            color={colors.text.static_icons__tertiary.rgba}
+            data={info_circle}
+            size={16}
+          />
+          <Typography
+            group="input"
+            variant="label"
+            color={colors.text.static_icons__tertiary.rgba}
+          >
+            Type @ to mention team members.
+          </Typography>
+        </InfoWrapper>
+      )}
     </Wrapper>
   );
 };

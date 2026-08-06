@@ -122,6 +122,12 @@ const CommentsStory = () => {
       open
       type="modal"
       onClose={() => {}}
+      users={[
+        {
+          displayName: faker.person.fullName(),
+          shortName: faker.internet.username(),
+        },
+      ]}
     />
   );
 };

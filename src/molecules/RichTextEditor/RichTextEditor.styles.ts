@@ -1,3 +1,5 @@
+import { tokens } from '@equinor/eds-tokens';
+import { typographyTemplate } from '@equinor/eds-utils';
 import { EditorContent as TiptapContent } from '@tiptap/react';
 
 import { colors, shape, spacings, typography } from 'src/atoms/style';
@@ -42,6 +44,11 @@ export const EditorContent = styled(TiptapContent)<RichTextContentProps>`
   overflow-y: auto;
   min-height: ${(props) => props.$minHeight || 'auto'};
   max-height: ${(props) => props.$maxHeight || 'auto'};
+
+  span.mention[data-type='mention'] {
+    ${typographyTemplate(tokens.typography.paragraph.body_short_bold)};
+    color: ${colors.interactive.primary__resting.rgba};
+  }
 `;
 
 export interface EditorStylingProps {
