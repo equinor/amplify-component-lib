@@ -1,8 +1,17 @@
 import { useState } from 'react';
 
+import {
+  check_circle_outlined,
+  chevron_left,
+  chevron_right,
+  delete_forever,
+  filter_alt,
+} from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
+import { spacings } from 'src/atoms/style';
+import { IconButton } from 'src/molecules';
 import { CommentData } from 'src/organisms/Comments/Comment.tsx';
 import { Comments } from 'src/organisms/Comments/Comments.tsx';
 import { Stack } from 'src/storybook';
@@ -62,6 +71,30 @@ const CommentsStory = () => {
   return (
     <Comments
       comments={comments}
+      subHeaderElements={
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.medium}`,
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 'auto',
+            }}
+          >
+            <IconButton variant="ghost" icon={chevron_left} />
+            {1} / {3} comment threads
+            <IconButton variant="ghost" icon={chevron_right} />
+          </div>
+          <IconButton variant="ghost" icon={check_circle_outlined} />
+          <IconButton variant="ghost" icon={filter_alt} />
+          <IconButton variant="ghost" icon={delete_forever} />
+        </div>
+      }
       onAddComment={(comment) => {
         setComments((prev) => [
           ...prev,
