@@ -12,7 +12,7 @@ type CommentsProps = {
   comments: CommentData[];
   readonly?: boolean;
   onAddComment: (comment: string) => void;
-  onEditComment: (commentId: string, newText: string) => void;
+  onEditComment: ({ id, text }: { id: string; text: string }) => void;
   onDeleteComment: (commentId: string) => void;
   subHeaderElements?: ReactNode;
   commentActions?: ReactNode;
@@ -36,6 +36,7 @@ export const Comments: FC<CommentsProps> = ({
   comments,
   onDeleteComment,
   onAddComment,
+  onEditComment,
   readonly,
   ...sideSheetProps
 }) => {
@@ -66,6 +67,7 @@ export const Comments: FC<CommentsProps> = ({
             comment={c}
             onDelete={onDeleteComment}
             readonly={readonly}
+            onEdit={onEditComment}
           />
         ))}
       </CommentsContainer>

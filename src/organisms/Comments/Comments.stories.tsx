@@ -77,7 +77,11 @@ const CommentsStory = () => {
           },
         ]);
       }}
-      onEditComment={() => {}}
+      onEditComment={({ id, text }) => {
+        setComments((prev) =>
+          prev.map((c) => (c.id === id ? { ...c, text } : c))
+        );
+      }}
       onDeleteComment={(commentId) => {
         setComments((prev) => prev.filter((c) => c.id !== commentId));
       }}

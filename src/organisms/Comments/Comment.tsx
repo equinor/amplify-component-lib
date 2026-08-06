@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { delete_forever, edit } from '@equinor/eds-icons';
@@ -7,12 +7,15 @@ import { delete_forever, edit } from '@equinor/eds-icons';
 import { formatDateTime } from 'src/atoms';
 import { colors, spacings } from 'src/atoms/style';
 import {
-  Dialog,
+  Button,
   IconButton,
   OptionalTooltip,
   ProfileAvatar,
   RichTextDisplay,
+  RichTextEditor,
+  RichTextEditorFeatures,
 } from 'src/molecules';
+import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation.tsx';
 import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
 
 import { styled } from 'styled-components';
@@ -60,6 +63,7 @@ interface CommentProps {
   comment: CommentData;
   readonly?: boolean;
   onDelete: (id: string) => void;
+  onEdit: ({ id, text }: { id: string; text: string }) => void;
 }
 
 const LeftSide = styled.div`
@@ -96,90 +100,137 @@ const Wrapper = styled.div`
 `;
 
 export const Comment: FC<CommentProps> = ({
-  comment: { author, timestamp, text, id, editAction, deleteAction },
+  comment,
   onDelete,
+  onEdit,
   readonly,
 }) => {
+  const commentContainer = useRef<HTMLDivElement>(null);
+  const [text, setText] = useState(comment.text);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+
+  const handleCommentEdit = () => {
+    onEdit({ id: comment.id, text });
+    setEditing(false);
+  };
+
+  useEffect(() => {
+    if (editing) {
+      commentContainer.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+    }
+  }, [editing]);
 
   return (
     <>
-      <Wrapper>
+      <Wrapper ref={commentContainer}>
         <LeftSide>
-          <ProfileAvatar url={author.avatar} name={author.name} />
+          <ProfileAvatar
+            url={comment.author.avatar}
+            name={comment.author.name}
+          />
           <VerticalDivider />
         </LeftSide>
         <RightSide>
           <Header>
             <HeaderInfo>
               <Typography group="paragraph" variant="body_short_bold">
-                {author.name}
+                {comment.author.name}
               </Typography>
               <Typography
                 group="paragraph"
                 variant="meta"
                 color={colors.text.static_icons__tertiary.rgba}
               >
-                {formatDateTime(timestamp)}
+                {formatDateTime(comment.timestamp)}
               </Typography>
             </HeaderInfo>
             {!readonly && (
               <Actions>
-                {!editAction?.hidden && (
+                {!comment.editAction?.hidden && (
                   <OptionalTooltip
-                    title={editAction?.disabled && editAction?.disabledReason}
+                    title={
+                      comment.editAction?.disabled &&
+                      comment.editAction?.disabledReason
+                    }
                   >
                     <IconButton
                       icon={edit}
                       variant="ghost"
-                      disabled={editAction?.disabled}
+                      disabled={comment.editAction?.disabled}
+                      onClick={() => setEditing((prev) => !prev)}
                     />
                   </OptionalTooltip>
                 )}
-                {!deleteAction?.hidden && (
+                {!comment.deleteAction?.hidden && (
                   <OptionalTooltip
                     title={
-                      deleteAction?.disabled && deleteAction?.disabledReason
+                      comment.deleteAction?.disabled &&
+                      comment.deleteAction?.disabledReason
                     }
                   >
                     <IconButton
                       icon={delete_forever}
                       variant="ghost"
                       onClick={() => setDeleteDialogOpen(true)}
-                      disabled={deleteAction?.disabled}
+                      disabled={comment.deleteAction?.disabled}
                     />
                   </OptionalTooltip>
                 )}
               </Actions>
             )}
           </Header>
-          <RichTextDisplay value={text} padding="none" />
+          {editing ? (
+            <RichTextEditor
+              value={text}
+              onChange={setText}
+              lightBackground
+              maxHeight="130px"
+              minHeight="130px"
+              footer={
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    gap: spacings.medium_small,
+                  }}
+                >
+                  <Button variant="ghost" onClick={() => setEditing(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant="outlined" onClick={handleCommentEdit}>
+                    Update
+                  </Button>
+                </div>
+              }
+              removeFeatures={[
+                RichTextEditorFeatures.ALIGNMENT,
+                RichTextEditorFeatures.IMAGES,
+                RichTextEditorFeatures.TABLE,
+                RichTextEditorFeatures.LINKS,
+                RichTextEditorFeatures.UNDO_REDO,
+                RichTextEditorFeatures.HEADERS,
+                RichTextEditorFeatures.TEXT_COLOR,
+                RichTextEditorFeatures.CODE,
+              ]}
+            />
+          ) : (
+            <RichTextDisplay value={comment.text} padding="none" />
+          )}
         </RightSide>
       </Wrapper>
-      <Dialog
-        open={deleteDialogOpen}
-        title="Delete this comment"
-        width={400}
-        actions={[
-          {
-            text: 'Cancel',
-            variant: 'outlined',
-            onClick: () => setDeleteDialogOpen(false),
-          },
-          {
-            text: 'Delete',
-            variant: 'filled',
-            color: 'danger',
-            onClick: () => {
-              setDeleteDialogOpen(false);
-              onDelete(id);
-            },
-          },
-        ]}
-        onClose={() => {}}
-      >
-        You are about to delete your comment.
-      </Dialog>
+      {deleteDialogOpen && (
+        <DeleteConfirmation
+          onClose={() => setDeleteDialogOpen(false)}
+          onConfirm={() => {
+            setDeleteDialogOpen(false);
+            onDelete(comment.id);
+          }}
+        />
+      )}
     </>
   );
 };

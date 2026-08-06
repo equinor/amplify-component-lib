@@ -14,7 +14,7 @@ import {
 import styled from 'styled-components';
 
 interface AddCommentProps {
-  addComment: (comment: string) => void;
+  addComment: (text: string) => void;
 }
 
 const Wrapper = styled.div`
