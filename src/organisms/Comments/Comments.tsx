@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect, useRef } from 'react';
 
 import { Comment, CommentData } from './Comment';
 import { spacings } from 'src/atoms/style';
@@ -39,6 +39,17 @@ export const Comments: FC<CommentsProps> = ({
   readonly,
   ...sideSheetProps
 }) => {
+  const commentsContainer = useRef<HTMLDivElement>(null);
+
+  const lastCommentId = comments.at(-1)?.id;
+
+  useEffect(() => {
+    commentsContainer.current?.scrollTo({
+      top: commentsContainer.current.scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [lastCommentId]);
+
   return (
     <SideSheet {...sideSheetProps}>
       {subHeaderElements != undefined && (
@@ -48,7 +59,7 @@ export const Comments: FC<CommentsProps> = ({
         </>
       )}
 
-      <CommentsContainer>
+      <CommentsContainer ref={commentsContainer}>
         {comments.map((c) => (
           <Comment
             key={c.id}
