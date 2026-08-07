@@ -9,3 +9,11 @@ export const getResolvedPlacement = (
   if (tooltip.right <= anchor.left) return 'left';
   return 'right';
 };
+
+export function assignRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
+  if (typeof ref === 'function') {
+    ref(value);
+  } else if (ref) {
+    ref.current = value;
+  }
+}

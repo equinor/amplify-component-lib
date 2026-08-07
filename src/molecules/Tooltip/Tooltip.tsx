@@ -2,7 +2,7 @@ import type { ComponentPropsWithRef, FC } from 'react';
 import { ReactNode, useId, useRef, useState } from 'react';
 
 import { LeftAlignedText, TooltipWrapper, Wrapper } from './Tooltip.styles';
-import { getResolvedPlacement } from 'src/molecules/Tooltip/utils';
+import { assignRef, getResolvedPlacement } from 'src/molecules/Tooltip/utils';
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 export interface Arrow {
@@ -78,8 +78,7 @@ export const Tooltip: FC<TooltipProps> = ({
 
   const setRef = (node: HTMLDivElement | null) => {
     tooltipRef.current = node;
-    if (typeof ref === 'function') ref(node);
-    else if (ref) ref.current = node;
+    assignRef(ref, node);
   };
 
   const show = () => {

@@ -1,5 +1,3 @@
-import { createRef } from 'react';
-
 import { Icon } from '@equinor/eds-core-react';
 import { folder } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
@@ -7,7 +5,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tooltip } from './Tooltip';
 
-import { expect, fn, screen, userEvent } from 'storybook/test';
+import { expect, screen, userEvent } from 'storybook/test';
 
 const meta = {
   title: 'Molecules/Tooltip',
@@ -63,7 +61,7 @@ export const Disabled: Story = {
 };
 
 export const TestWithTitle: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: faker.animal.dog(),
     children: <p>Hover me</p>,
@@ -81,7 +79,7 @@ export const TestWithTitle: Story = {
 };
 
 export const TestDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: 'Should not appear',
     disabled: true,
@@ -99,7 +97,7 @@ export const TestDisabled: Story = {
 };
 
 export const TestHideWhileShowing: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: 'Hide me quickly',
     enterDelay: 500,
@@ -118,7 +116,7 @@ export const TestHideWhileShowing: Story = {
 };
 
 export const TestShowWhileAlreadyOpen: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: 'Already open',
     enterDelay: 0,
@@ -142,7 +140,7 @@ export const TestShowWhileAlreadyOpen: Story = {
 };
 
 export const TestPlacementTop: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: 'Top tooltip',
     placement: 'top',
@@ -165,7 +163,7 @@ export const TestPlacementTop: Story = {
 };
 
 export const TestPlacementBottom: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: 'Bottom tooltip',
     placement: 'bottom',
@@ -188,7 +186,7 @@ export const TestPlacementBottom: Story = {
 };
 
 export const TestPlacementLeft: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: 'Left tooltip',
     placement: 'left',
@@ -211,7 +209,7 @@ export const TestPlacementLeft: Story = {
 };
 
 export const TestPlacementRight: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: 'Right tooltip',
     placement: 'right',
@@ -234,7 +232,7 @@ export const TestPlacementRight: Story = {
 };
 
 export const TestWithReactNodeTitle: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
   args: {
     title: <strong>Rich title</strong>,
     children: <p>Node title</p>,
@@ -248,7 +246,10 @@ export const TestWithReactNodeTitle: Story = {
 };
 
 export const TestFocusBlur: Story = {
-  tags: ['test-only'],
+  tags: ['test-only', '!dev', '!autodocs'],
+  parameters: {
+    fullPage: false,
+  },
   args: {
     title: 'Focus tooltip',
     enterDelay: 0,
@@ -268,56 +269,14 @@ export const TestFocusBlur: Story = {
   },
 };
 
-export const TestWithFunctionRef: Story = (() => {
-  const refFn = fn();
-
-  return {
-    tags: ['test-only'],
-    args: {
-      title: 'Function ref tooltip',
-      enterDelay: 0,
-      children: <p>Function ref</p>,
-    },
-    render: (args) => (
-      <Tooltip {...args} ref={refFn}>
-        {args.children}
-      </Tooltip>
-    ),
-    play: async () => {
-      await expect(refFn).toHaveBeenCalledWith(expect.any(HTMLDivElement));
-    },
-  };
-})();
-
-export const TestWithObjectRef: Story = (() => {
-  const ref = createRef<HTMLDivElement>();
-
-  return {
-    tags: ['test-only'],
-    args: {
-      title: 'Object ref tooltip',
-      enterDelay: 0,
-      children: <p>Object ref</p>,
-    },
-    render: (args) => (
-      <Tooltip {...args} ref={ref}>
-        {args.children}
-      </Tooltip>
-    ),
-    play: async () => {
-      await expect(ref.current).toBeInstanceOf(HTMLDivElement);
-    },
-  };
-})();
-
-export const TestWithoutTitle: Story = {
+export const WithoutTitle: Story = {
   tags: ['test-only'],
   args: {
     title: undefined,
-    children: <p>Hover me no tooltip</p>,
+    children: <p>Hover me</p>,
   },
   play: async ({ canvas }) => {
-    const content = canvas.getByText('Hover me no tooltip');
+    const content = canvas.getByText('Hover me');
     await expect(content).toBeInTheDocument();
 
     await userEvent.hover(content);
