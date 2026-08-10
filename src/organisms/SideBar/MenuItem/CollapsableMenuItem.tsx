@@ -89,6 +89,11 @@ const Child = styled(Link)`
   }
 `;
 
+const StyledMenu = styled(Menu)`
+  max-height: 80vh;
+  overflow-y: auto;
+`;
+
 export type CollapsableMenuItemProps = SideBarMenuItemWithItems;
 
 export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
@@ -183,7 +188,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
     return (
       <>
         {parentContent}
-        <Menu
+        <StyledMenu
           open
           anchorEl={parentRef.current}
           placement="right-start"
@@ -200,7 +205,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
               {item.name}
             </Menu.Item>
           ))}
-        </Menu>
+        </StyledMenu>
       </>
     );
   }

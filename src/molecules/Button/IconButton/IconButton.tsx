@@ -14,14 +14,23 @@ import {
   IconButtonWrapper,
   StyledCircularProgress,
 } from 'src/molecules/Button/IconButton/IconButton.styles';
+import { isIconData } from 'src/molecules/Button/IconButton/IconButton.utils';
 import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
 type Shape = 'circular' | 'square';
 
-type BaseIconButtonProps = {
+type IconDataProps = {
   icon: IconData;
   iconProps?: Omit<IconProps, 'data'>;
+};
+
+type IconReactNodeProps = {
+  icon: ReactNode;
+  iconProps?: never;
+};
+
+type BaseIconButtonProps = (IconDataProps | IconReactNodeProps) & {
   shape?: Shape;
   children?: never;
 } & Omit<CommonButtonProps, 'children'>;
@@ -63,8 +72,10 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
             }
           />
         </>
-      ) : (
+      ) : isIconData(icon) ? (
         <Icon data={icon} {...iconProps} />
+      ) : (
+        icon
       )}
     </IconButtonWrapper>
   );
@@ -72,12 +83,12 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
 
 const ButtonLink = createLink(BaseIconButton);
 
-export interface IconButtonProps<
+export type IconButtonProps<
   TRouter extends RegisteredRouter = RegisteredRouter,
   TOptions = unknown,
-> extends BaseIconButtonProps {
+> = BaseIconButtonProps & {
   linkOptions?: ValidateLinkOptions<TRouter, TOptions>;
-}
+};
 
 export function IconButton<TRouter extends RegisteredRouter, TOptions>(
   props: IconButtonProps<TRouter, TOptions>
