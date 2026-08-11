@@ -13,7 +13,11 @@ export interface User {
   shortName?: string;
 }
 
-type CommentsProps = {
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type CommentsProps = {
   comments: CommentData[];
   readonly?: boolean;
   onAddComment: (comment: string) => void;
@@ -22,7 +26,7 @@ type CommentsProps = {
   subHeaderElements?: ReactNode;
   commentActions?: ReactNode;
   users?: User[];
-} & Omit<SideSheetProps, 'children'>;
+} & DistributiveOmit<SideSheetProps, 'children'>;
 
 const StyledDivider = styled(Divider)`
   margin-left: 0;

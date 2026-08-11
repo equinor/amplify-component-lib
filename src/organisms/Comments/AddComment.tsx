@@ -50,6 +50,7 @@ export const AddComment: FC<AddCommentProps> = ({ addComment, users }) => {
             }}
           >
             <IconButton
+              data-testid="send-comment-button"
               style={{ marginLeft: 'auto' }}
               variant="ghost"
               icon={send}

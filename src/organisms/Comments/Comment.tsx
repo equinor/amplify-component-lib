@@ -159,7 +159,7 @@ export const Comment: FC<CommentProps> = ({
               </Typography>
             </HeaderInfo>
             {!readonly && (
-              <Actions>
+              <Actions data-testid="comment-actions">
                 {!comment.editAction?.hidden && (
                   <OptionalTooltip
                     title={
@@ -168,6 +168,7 @@ export const Comment: FC<CommentProps> = ({
                     }
                   >
                     <IconButton
+                      data-testid="edit-comment-button"
                       icon={edit}
                       variant="ghost"
                       disabled={comment.editAction?.disabled}
@@ -183,6 +184,7 @@ export const Comment: FC<CommentProps> = ({
                     }
                   >
                     <IconButton
+                      data-testid="delete-comment-button"
                       icon={delete_forever}
                       variant="ghost"
                       onClick={() => setDeleteDialogOpen(true)}
