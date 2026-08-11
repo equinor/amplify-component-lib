@@ -88,7 +88,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: `${colors.interactive.warning__highlight.rgba}`,
     },
     selected: {
       color: `${colors.dataviz.orange.darker}`,
@@ -119,7 +119,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: `${colors.interactive.danger__highlight.rgba}`,
     },
     selected: {
       color: `${colors.interactive.danger__highlight.rgba}`,
