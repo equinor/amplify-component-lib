@@ -49,8 +49,8 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       borderColor: `${colors.interactive.primary__selected_hover.rgba}`,
       hover: {
         color: `${colors.interactive.primary__hover.rgba}`,
-        background: `${colors.interactive.primary__selected_hover.rgba}`,
-        borderColor: `${colors.interactive.primary__hover.rgba}`,
+        background: `${colors.interactive.primary__selected_highlight.rgba}`,
+        borderColor: `${colors.text.static_icons__default.rgba}`,
       },
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
@@ -82,8 +82,8 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     borderColor: `${colors.dataviz.orange.lighter}`,
     hover: {
       color: `${colors.dataviz.orange.darker}`,
-      background: `${colors.dataviz.orange.muted}`,
-      borderColor: `${colors.dataviz.orange.default}`,
+      background: `${colors.dataviz.orange.lighter}`,
+      borderColor: `${colors.dataviz.orange.darker}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
@@ -92,11 +92,11 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     },
     selected: {
       color: `${colors.dataviz.orange.darker}`,
-      background: `${colors.interactive.warning__nested_hover.rgba}`,
-      borderColor: `${colors.dataviz.orange.darker}`,
+      background: `${colors.dataviz.orange.muted}`,
+      borderColor: `${colors.dataviz.orange.muted}`,
       hover: {
         color: `${colors.dataviz.orange.darker}`,
-        background: `${colors.dataviz.orange.darker}`,
+        background: `${colors.dataviz.orange.muted}`,
         borderColor: `${colors.dataviz.orange.darker}`,
       },
       disabled: {
@@ -110,11 +110,11 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
   error: {
     color: `${colors.interactive.danger__text.rgba}`,
     background: `${colors.interactive.danger__highlight.rgba}`,
-    borderColor: `${colors.interactive.danger__resting.rgba}`,
+    borderColor: 'transparent',
     hover: {
       color: `${colors.interactive.danger__hover.rgba}`,
       background: `${colors.ui.background__danger.rgba}`,
-      borderColor: `${colors.interactive.danger__hover.rgba}`,
+      borderColor: `${colors.interactive.danger__text.rgba}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
@@ -122,13 +122,13 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       borderColor: `${colors.interactive.disabled__border.rgba}`,
     },
     selected: {
-      color: `${colors.interactive.danger__text.rgba}`,
-      background: `${colors.interactive.danger__nested_hover.rgba}`,
-      borderColor: `${colors.interactive.danger__resting.rgba}`,
+      color: `${colors.interactive.danger__highlight.rgba}`,
+      background: `${colors.interactive.danger__hover.rgba}`,
+      borderColor: `${colors.interactive.danger__hover.rgba}`,
       hover: {
-        color: `${colors.interactive.danger__hover.rgba}`,
-        background: `${colors.ui.background__danger.rgba}`,
-        borderColor: `${colors.interactive.danger__hover.rgba}`,
+        color: `${colors.interactive.danger__highlight.rgba}`,
+        background: `${colors.dataviz.lightpink.darker}`,
+        borderColor: `${colors.interactive.danger__text_hover.rgba}`,
       },
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
@@ -143,8 +143,8 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     borderColor: `${colors.dataviz.lightblue.lighter}`,
     hover: {
       color: `${colors.dataviz.darkblue.darker}`,
-      background: `${colors.dataviz.lightblue.default}`,
-      borderColor: `${colors.dataviz.lightblue.darker}`,
+      background: `${colors.dataviz.lightblue.lighter}`,
+      borderColor: `${colors.dataviz.darkblue.darker}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
@@ -154,10 +154,10 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     selected: {
       color: `${colors.dataviz.darkblue.darker}`,
       background: `${colors.dataviz.lightblue.darker}`,
-      borderColor: `${colors.dataviz.darkblue.lighter}`,
+      borderColor: `${colors.dataviz.lightblue.darker}`,
       hover: {
         color: `${colors.dataviz.darkblue.darker}`,
-        background: `${colors.dataviz.darkblue.lighter}`,
+        background: `${colors.dataviz.lightblue.darker}`,
         borderColor: `${colors.dataviz.darkblue.default}`,
       },
       disabled: {
@@ -173,8 +173,8 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     borderColor: `${colors.dataviz.lightyellow.lighter}`,
     hover: {
       color: `${colors.dataviz.darkyellow.darker}`,
-      background: `${colors.dataviz.lightyellow.default}`,
-      borderColor: `${colors.dataviz.lightyellow.darker}`,
+      background: `${colors.dataviz.lightyellow.lighter}`,
+      borderColor: `${colors.dataviz.darkyellow.darker}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
@@ -184,10 +184,10 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     selected: {
       color: `${colors.dataviz.darkyellow.darker}`,
       background: `${colors.dataviz.lightyellow.darker}`,
-      borderColor: `${colors.dataviz.darkyellow.lighter}`,
+      borderColor: `${colors.dataviz.lightyellow.darker}`,
       hover: {
         color: `${colors.dataviz.darkyellow.darker}`,
-        background: `${colors.dataviz.darkyellow.lighter}`,
+        background: `${colors.dataviz.lightyellow.darker}`,
         borderColor: `${colors.dataviz.darkyellow.default}`,
       },
       disabled: {
@@ -206,7 +206,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     borderColor: `${colors.dataviz.darkpurple.lighter}`,
     hover: {
       color: `${colors.dataviz.darkpurple.darker}`,
-      background: `${colors.dataviz.darkpurple.default}`,
+      background: `${colors.dataviz.darkpurple.lighter}`,
       borderColor: `${colors.dataviz.darkpurple.darker}`,
     },
     disabled: {
@@ -216,11 +216,11 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     },
     selected: {
       color: `${colors.dataviz.darkpurple.darker}`,
-      background: `${colors.dataviz.darkpurple.darker}`,
-      borderColor: `${colors.dataviz.darkpurple.darker}`,
+      background: `${colors.dataviz.lightpurple.default}`,
+      borderColor: `${colors.dataviz.lightpurple.default}`,
       hover: {
         color: `${colors.dataviz.darkpurple.darker}`,
-        background: `${colors.dataviz.darkpurple.darker}`,
+        background: `${colors.dataviz.lightpurple.default}`,
         borderColor: `${colors.dataviz.darkpurple.darker}`,
       },
       disabled: {
@@ -238,8 +238,8 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     borderColor: `${colors.dataviz.darkpink.lighter}`,
     hover: {
       color: `${colors.dataviz.darkpink.darker}`,
-      background: `${colors.dataviz.darkpink.muted}`,
-      borderColor: `${colors.dataviz.darkpink.default}`,
+      background: `${colors.dataviz.darkpink.lighter}`,
+      borderColor: `${colors.dataviz.darkpink.darker}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
@@ -248,11 +248,11 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     },
     selected: {
       color: `${colors.dataviz.darkpink.darker}`,
-      background: `${colors.dataviz.darkpink.default}`,
-      borderColor: `${colors.dataviz.darkpink.darker}`,
+      background: `${colors.dataviz.darkpink.muted}`,
+      borderColor: `${colors.dataviz.darkpink.muted}`,
       hover: {
         color: `${colors.dataviz.darkpink.darker}`,
-        background: `${colors.dataviz.darkpink.darker}`,
+        background: `${colors.dataviz.darkpink.muted}`,
         borderColor: `${colors.dataviz.darkpink.darker}`,
       },
       disabled: {
@@ -268,8 +268,8 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     borderColor: `${colors.dataviz.lightgreen.lighter}`,
     hover: {
       color: `${colors.dataviz.darkgreen.darker}`,
-      background: `${colors.dataviz.lightgreen.default}`,
-      borderColor: `${colors.dataviz.lightgreen.darker}`,
+      background: `${colors.dataviz.lightgreen.lighter}`,
+      borderColor: `${colors.dataviz.darkgreen.darker}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
@@ -278,12 +278,12 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     },
     selected: {
       color: `${colors.dataviz.darkgreen.darker}`,
-      background: `${colors.dataviz.lightgreen.darker}`,
-      borderColor: `${colors.dataviz.darkgreen.lighter}`,
+      background: `${colors.dataviz.lightgreen.default}`,
+      borderColor: 'transparent',
       hover: {
         color: `${colors.dataviz.darkgreen.darker}`,
-        background: `${colors.dataviz.darkgreen.lighter}`,
-        borderColor: `${colors.dataviz.darkgreen.default}`,
+        background: `${colors.dataviz.lightgreen.default}`,
+        borderColor: `${colors.dataviz.darkgreen.darker}`,
       },
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
@@ -309,10 +309,10 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     selected: {
       color: `${colors.text.static_icons__default.rgba}`,
       background: `${colors.ui.background__medium.rgba}`,
-      borderColor: `${colors.text.static_icons__default.rgba}`,
+      borderColor: `${colors.ui.background__medium.rgba}`,
       hover: {
         color: `${colors.text.static_icons__default.rgba}`,
-        background: `${colors.ui.background__heavy.rgba}`,
+        background: `${colors.ui.background__medium.rgba}`,
         borderColor: `${colors.text.static_icons__default.rgba}`,
       },
       disabled: {
