@@ -55,7 +55,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.interactive.primary__resting.rgba}`,
       },
     },
   },
@@ -102,7 +102,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.dataviz.orange.darker}`,
       },
     },
   },
@@ -133,7 +133,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.interactive.danger__highlight.rgba}`,
       },
     },
   },
@@ -163,7 +163,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.dataviz.darkblue.darker}`,
       },
     },
   },
@@ -193,7 +193,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.dataviz.darkyellow.darker}`,
       },
     },
   },
@@ -226,7 +226,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.dataviz.darkpurple.darker}`,
       },
     },
   },
@@ -258,7 +258,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.dataviz.darkpink.darker}`,
       },
     },
   },
@@ -288,7 +288,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.dataviz.darkgreen.darker}`,
       },
     },
   },
@@ -318,7 +318,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: 'transparent',
+        borderColor: `${colors.text.static_icons__default.rgba}`,
       },
     },
   },
@@ -330,14 +330,6 @@ const getColorSchemeBy = (variant: Variant = 'default', selected = false) => {
   const usingVariant = selected && variant === 'white' ? 'default' : variant;
   const colorScheme = colorSchemes[usingVariant];
   return selected && colorScheme.selected ? colorScheme.selected : colorScheme;
-};
-
-// Read-only chips always use a neutral border, except warning/error which
-// keep a subtle tinted border per the ACL Figma design.
-const getReadOnlyBorderColor = (variant: Variant = 'default') => {
-  if (variant === 'warning') return colors.interactive.warning__highlight.rgba;
-  if (variant === 'error') return colors.interactive.danger__highlight.rgba;
-  return colors.interactive.disabled__border.rgba;
 };
 
 const commonChipStyle = css`
@@ -408,12 +400,15 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
 export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
   ${commonChipStyle}
   ${(props) => {
+    const colorScheme = getColorSchemeBy(props.variant, true);
+
     return css`
       color: ${colors.text.static_icons__default.rgba};
-      background-color: ${props.variant === 'white'
+      background-color: ${props.variant === 'white' ||
+      props.variant === 'highContrast'
         ? colorSchemes.white.background
         : colors.ui.background__light.rgba};
-      outline: 1px solid ${getReadOnlyBorderColor(props.variant)};
+      outline: 1px solid ${colorScheme.color};
     `;
   }}
 `;
