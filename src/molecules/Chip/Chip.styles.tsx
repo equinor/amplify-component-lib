@@ -41,7 +41,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.interactive.primary__resting.rgba}`,
@@ -55,7 +55,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: 'transparent',
       },
     },
   },
@@ -71,7 +71,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
   },
   // Per new ACL Figma design, Warning is built on the Data Viz/Orange
@@ -88,7 +88,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.warning__highlight.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.dataviz.orange.darker}`,
@@ -119,7 +119,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.danger__highlight.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.interactive.danger__highlight.rgba}`,
@@ -149,7 +149,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.dataviz.darkblue.darker}`,
@@ -163,7 +163,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: 'transparent',
       },
     },
   },
@@ -179,7 +179,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.dataviz.darkyellow.darker}`,
@@ -193,7 +193,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: 'transparent',
       },
     },
   },
@@ -212,7 +212,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.dataviz.darkpurple.darker}`,
@@ -226,7 +226,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: 'transparent',
       },
     },
   },
@@ -244,7 +244,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.dataviz.darkpink.darker}`,
@@ -258,7 +258,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: 'transparent',
       },
     },
   },
@@ -274,7 +274,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.dataviz.darkgreen.darker}`,
@@ -288,7 +288,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: 'transparent',
       },
     },
   },
@@ -304,7 +304,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.text.static_icons__default.rgba}`,
@@ -318,7 +318,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: 'transparent',
       },
     },
   },
@@ -330,6 +330,14 @@ const getColorSchemeBy = (variant: Variant = 'default', selected = false) => {
   const usingVariant = selected && variant === 'white' ? 'default' : variant;
   const colorScheme = colorSchemes[usingVariant];
   return selected && colorScheme.selected ? colorScheme.selected : colorScheme;
+};
+
+// Read-only chips always use a neutral border, except warning/error which
+// keep a subtle tinted border per the ACL Figma design.
+const getReadOnlyBorderColor = (variant: Variant = 'default') => {
+  if (variant === 'warning') return colors.interactive.warning__highlight.rgba;
+  if (variant === 'error') return colors.interactive.danger__highlight.rgba;
+  return colors.interactive.disabled__border.rgba;
 };
 
 const commonChipStyle = css`
@@ -400,14 +408,12 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
 export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
   ${commonChipStyle}
   ${(props) => {
-    const colorScheme = getColorSchemeBy(props.variant, true);
-
     return css`
       color: ${colors.text.static_icons__default.rgba};
       background-color: ${props.variant === 'white'
         ? colorSchemes.white.background
         : colors.ui.background__light.rgba};
-      outline: 1px solid ${colorScheme.disabled.borderColor};
+      outline: 1px solid ${getReadOnlyBorderColor(props.variant)};
     `;
   }}
 `;
