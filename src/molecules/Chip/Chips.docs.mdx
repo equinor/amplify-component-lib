@@ -6,7 +6,7 @@ import * as ComponentStories from 'src/molecules/Chip/Chip.stories';
 
 Chips, also known as tags or badges, are advanced badges that represent discrete information.
 
-<Links figmaUrl="https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/💠-Component-Library---Amplify?node-id=2382-84016&t=eBjrjWKcBq1Sc2Bi-11" />
+<Links figmaUrl="https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/💠-Component-Library---Amplify?node-id=25212-3947&t=rqPmZfiLqBx4H5NZ-1" />
 
 <Primary />
 
@@ -38,3 +38,10 @@ Read only chips are when chips only should display information, and not be inter
 ### Grid of all the variants
 
 <Canvas of={ComponentStories.ChipVariantsWithStates} />
+
+## Accessibility
+
+Don't rely on the `error` ("Danger") and `green` colors alone to convey opposite
+meanings (e.g. failed vs. succeeded) — this combination is hard to distinguish for
+people with red-green color blindness. Pair the color with an icon or a clear label
+instead.

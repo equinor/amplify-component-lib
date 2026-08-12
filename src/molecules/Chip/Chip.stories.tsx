@@ -20,7 +20,7 @@ const meta: Meta<typeof Chip> = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=2382-84328&m=dev',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=25212-3947&m=dev',
     },
     docs: {
       page,
@@ -53,7 +53,18 @@ const meta: Meta<typeof Chip> = {
     variant: {
       control: {
         type: 'radio',
-        options: ['default', 'white', 'warning', 'error'],
+        options: [
+          'default',
+          'white',
+          'warning',
+          'error',
+          'blue',
+          'yellow',
+          'purple',
+          'pink',
+          'green',
+          'highContrast',
+        ],
       },
       name: 'Variant',
       defaultValue: 'active',
@@ -191,9 +202,15 @@ export const ReadOnlyChip: Story = {
 
 const CHIP_VARIANTS: BaseChipProps['variant'][] = [
   'default',
+  'white',
   'warning',
   'error',
-  'white',
+  'blue',
+  'yellow',
+  'purple',
+  'pink',
+  'green',
+  'highContrast',
 ];
 
 const Template: StoryFn<InteractiveChipProps> = (args) => (
