@@ -1,8 +1,10 @@
+import { useState } from 'react';
+
 import { hill_shading, users_circle } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
-import { Toast } from 'src/molecules/Toast/Toast';
+import { Toast, type ToastProps } from 'src/molecules/Toast/Toast';
 
 import { expect, fn, userEvent } from 'storybook/test';
 
@@ -75,6 +77,16 @@ const meta: Meta<typeof Toast> = {
 export default meta;
 type Story = StoryObj<typeof Toast>;
 
+type ToastVariant = NonNullable<ToastProps['variant']>;
+
+const TOAST_VARIANTS: ToastVariant[] = [
+  'neutral',
+  'info',
+  'warning',
+  'error',
+  'success',
+];
+
 export const Default: Story = {
   args: {
     icon: users_circle,
@@ -104,12 +116,51 @@ export const Variants: Story = {
 export const WithDuration: Story = {
   args: {
     icon: users_circle,
-    duration: 120,
+    duration: 16,
   },
+  render: (args) => <WithDurationRender {...args} />,
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await expect(canvas.getAllByRole('progressbar')).toHaveLength(5);
   },
 };
+
+function WithDurationRender(args: ToastProps) {
+  const [keysByVariant, setKeysByVariant] = useState<
+    Record<ToastVariant, number>
+  >({
+    neutral: 0,
+    info: 0,
+    warning: 0,
+    error: 0,
+    success: 0,
+  });
+
+  const handleOnClose = (variant: ToastVariant) => {
+    setKeysByVariant((current) => ({
+      ...current,
+      [variant]: current[variant] + 1,
+    }));
+  };
+
+  return (
+    <div
+      style={{ display: 'flex', flexDirection: 'column', gap: spacings.medium }}
+    >
+      {TOAST_VARIANTS.map((variant) => (
+        <Toast
+          key={`${variant}-${keysByVariant[variant]}`}
+          title={args.title}
+          icon={args.icon}
+          variant={variant}
+          description={args.description}
+          action={args.action}
+          duration={args.duration}
+          onClose={() => handleOnClose(variant)}
+        />
+      ))}
+    </div>
+  );
+}
 
 export const WithDescription: Story = {
   args: {
@@ -128,7 +179,7 @@ export const WithAction: Story = {
     description: 'This is the description, it can be a longer text',
     action: {
       onClick: fn(),
-      text: 'Undo',
+      text: 'Read more',
     },
   },
   play: async ({ canvas, args }) => {
