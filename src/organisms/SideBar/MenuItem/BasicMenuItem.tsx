@@ -1,11 +1,11 @@
 import { FC, MouseEvent, useCallback, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { Feature } from '@equinor/subsurface-app-management';
 import { useMatchRoute } from '@tanstack/react-router';
 
 import { BasicSideBarMenuItem } from 'src/atoms/types/SideBar';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import {
   IconContainer,
   ItemText,
@@ -50,7 +50,7 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
 
   const content = useMemo(() => {
     return (
-      <OptionalTooltip title={name} placement="right">
+      <Tooltip title={name} placement="right">
         <MenuItemWrapper>
           <Link
             aria-disabled={disabled}
@@ -75,7 +75,7 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
             )}
           </Link>
         </MenuItemWrapper>
-      </OptionalTooltip>
+      </Tooltip>
     );
   }, [disabled, handleOnClick, icon, isActive, isOpen, name, linkProps]);
 

@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
-import { Tooltip, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { RequestChangeOrcaTypes } from '../Notifications.types';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 
@@ -30,11 +30,11 @@ export const RequestChangeOrca: FC<RequestChangeProps> = ({
   return (
     <Tooltip title={`Go to ${branchName}`}>
       <Container onClick={onClick}>
-        <OptionalTooltip title={`Go to ${branchName}`}>
+        <Tooltip title={`Go to ${branchName}`}>
           <Typography group="table" variant="cell_text">
             {fromUser.displayName} has requested changes for branch {branchName}
           </Typography>
-        </OptionalTooltip>
+        </Tooltip>
       </Container>
     </Tooltip>
   );

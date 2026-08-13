@@ -1,10 +1,10 @@
 import { forwardRef, HTMLAttributes } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 
 import { ToggleGroupOption as ToggleGroupOptionType } from './ToggleGroup.types';
 import { colors, shape, spacings } from 'src/atoms/style';
-import { OptionalTooltip } from 'src/molecules';
 
 import styled from 'styled-components';
 
@@ -98,12 +98,9 @@ export const ToggleGroupOption = forwardRef<
     >
       {icon ? (
         'tooltip' in rest && rest.tooltip ? (
-          <OptionalTooltip
-            title={rest.tooltip}
-            placement={rest.tooltipPlacement}
-          >
+          <Tooltip title={rest.tooltip} placement={rest.tooltipPlacement}>
             <Icon data={icon} size={24} />
-          </OptionalTooltip>
+          </Tooltip>
         ) : (
           <Icon data={icon} size={24} />
         )

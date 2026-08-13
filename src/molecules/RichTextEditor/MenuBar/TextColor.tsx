@@ -1,11 +1,11 @@
 import { ChangeEvent, FC } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { format_color_text } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 
@@ -69,7 +69,7 @@ export const TextColor: FC<EditorPanel> = ({ editor, features }) => {
   if (features && !features.includes(RichTextEditorFeatures.TEXT_COLOR))
     return null;
   return (
-    <OptionalTooltip title="Text Color" enterDelay={300}>
+    <Tooltip title="Text Color" enterDelay={300}>
       <TextColorStyle>
         <input
           type="color"
@@ -91,6 +91,6 @@ export const TextColor: FC<EditorPanel> = ({ editor, features }) => {
           }}
         />
       </TextColorStyle>
-    </OptionalTooltip>
+    </Tooltip>
   );
 };

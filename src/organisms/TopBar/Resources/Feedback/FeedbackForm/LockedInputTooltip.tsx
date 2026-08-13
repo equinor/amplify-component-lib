@@ -1,10 +1,10 @@
 import { forwardRef, ReactNode, useMemo } from 'react';
 
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
+import { Tooltip } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
 
-const DisabledTooltip = styled(OptionalTooltip)`
+const DisabledTooltip = styled(Tooltip)`
   white-space: break-spaces;
   text-align: center;
   width: 400px;

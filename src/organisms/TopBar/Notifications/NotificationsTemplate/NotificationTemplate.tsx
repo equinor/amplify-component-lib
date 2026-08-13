@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -36,7 +37,6 @@ import {
 } from './NotificationTemplate.style';
 import { formatRelativeDateTime } from 'src/atoms/utils';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
 
 const { colors } = tokens;
@@ -157,11 +157,11 @@ export const NotificationTemplate: FC<
                   {field}
                 </Typography>
               </div>
-              <OptionalTooltip title="Delete notification">
+              <Tooltip title="Delete notification">
                 <DeleteButton onClick={onDelete} variant="ghost_icon">
                   <Icon data={delete_to_trash} />
                 </DeleteButton>
-              </OptionalTooltip>
+              </Tooltip>
             </FooterContainer>
           )}
         </GridContainer>
