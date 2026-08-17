@@ -40,3 +40,40 @@ test('White selected chip has expected styling from default', () => {
     `1px solid ${defaultStyling.selected?.borderColor}`
   );
 });
+
+test('Green chip has expected resting colors', () => {
+  const handleOnClick = vi.fn();
+  const someText = faker.animal.crocodilia();
+
+  render(
+    <Chip variant="green" onClick={handleOnClick}>
+      {someText}
+    </Chip>
+  );
+
+  const chip = screen.getByRole('button');
+
+  expect(chip).toHaveStyleRule('color', colorSchemes.green.color);
+  expect(chip).toHaveStyleRule(
+    'background-color',
+    colorSchemes.green.background
+  );
+});
+
+test('Error selected chip has expected background', () => {
+  const handleOnClick = vi.fn();
+  const someText = faker.animal.crocodilia();
+
+  render(
+    <Chip variant="error" selected onClick={handleOnClick}>
+      {someText}
+    </Chip>
+  );
+
+  const chip = screen.getByRole('button');
+
+  expect(chip).toHaveStyleRule(
+    'background-color',
+    colorSchemes.error.selected?.background
+  );
+});
