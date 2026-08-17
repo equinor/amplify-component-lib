@@ -1,4 +1,4 @@
-import { FC, RefObject, useEffect } from 'react';
+import { FC, ReactNode, RefObject, useEffect } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { close, IconData } from '@equinor/eds-icons';
@@ -21,7 +21,7 @@ export interface ToastProps {
   onClose: () => void;
   icon?: IconData;
   variant?: 'neutral' | 'info' | 'warning' | 'error' | 'success';
-  description?: string;
+  description?: ReactNode;
   action?: {
     onClick: () => void;
     text: string;
