@@ -1,9 +1,11 @@
 import { FC, ReactNode, useEffect, useRef } from 'react';
 
+import { Typography } from '@equinor/eds-core-react';
+
 import { Comment, CommentData } from './Comment';
-import { spacings } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 import { SideSheet, SideSheetProps } from 'src/organisms';
-import { AddComment } from 'src/organisms/Comments/AddComment.tsx';
+import { AddComment } from 'src/organisms/Comments/AddComment';
 import { Divider } from 'src/organisms/TopBar/Notifications/NotificationsTemplate/NotificationTemplate.style';
 
 import { styled } from 'styled-components';
@@ -25,6 +27,7 @@ export type CommentsProps = {
   onDeleteComment: (commentId: string) => void;
   subHeaderElements?: ReactNode;
   commentActions?: ReactNode;
+  emptyContent?: ReactNode;
   users?: User[];
 } & DistributiveOmit<SideSheetProps, 'children'>;
 
@@ -41,6 +44,14 @@ const CommentsContainer = styled.div`
   overflow: auto;
 `;
 
+const NoCommentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px dashed ${colors.ui.background__medium.rgba};
+  padding: ${spacings.medium} ${spacings.large};
+`;
+
 export const Comments: FC<CommentsProps> = ({
   subHeaderElements,
   comments,
@@ -49,6 +60,7 @@ export const Comments: FC<CommentsProps> = ({
   onEditComment,
   readonly,
   users,
+  emptyContent,
   ...sideSheetProps
 }) => {
   const commentsContainer = useRef<HTMLDivElement>(null);
@@ -72,16 +84,28 @@ export const Comments: FC<CommentsProps> = ({
       )}
 
       <CommentsContainer ref={commentsContainer}>
-        {comments.map((c) => (
-          <Comment
-            key={c.id}
-            comment={c}
-            onDelete={onDeleteComment}
-            readonly={readonly}
-            onEdit={onEditComment}
-            users={users}
-          />
-        ))}
+        {comments.length > 0
+          ? comments.map((c) => (
+              <Comment
+                key={c.id}
+                comment={c}
+                onDelete={onDeleteComment}
+                readonly={readonly}
+                onEdit={onEditComment}
+                users={users}
+              />
+            ))
+          : (emptyContent ?? (
+              <NoCommentsContainer>
+                <Typography
+                  group="paragraph"
+                  variant="body_short"
+                  color={colors.text.static_icons__tertiary.rgba}
+                >
+                  No comments yet.
+                </Typography>
+              </NoCommentsContainer>
+            ))}
       </CommentsContainer>
       {!readonly && <AddComment addComment={onAddComment} users={users} />}
     </SideSheet>

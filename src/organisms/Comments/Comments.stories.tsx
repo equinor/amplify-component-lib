@@ -140,6 +140,41 @@ export const Introduction: Story = {
   render: () => <CommentsStory />,
 };
 
+export const EmptyComments: Story = {
+  render: () => (
+    <Comments
+      comments={[]}
+      onAddComment={() => {}}
+      onEditComment={() => {}}
+      onDeleteComment={() => {}}
+      title="Comments"
+      open
+      type="modal"
+      onClose={() => {}}
+    />
+  ),
+};
+
+export const CustomEmptyContent: Story = {
+  render: () => (
+    <Comments
+      comments={[]}
+      onAddComment={() => {}}
+      onEditComment={() => {}}
+      onDeleteComment={() => {}}
+      title="Comments"
+      open
+      type="modal"
+      onClose={() => {}}
+      emptyContent={
+        <div>
+          <p>No comments available.</p>
+        </div>
+      }
+    />
+  ),
+};
+
 const FIRST_COMMENT_TEXT = 'First comment to interact with';
 const SECOND_COMMENT_TEXT = 'Second comment that stays untouched';
 const NEW_COMMENT_TEXT = 'This is a brand new comment';
